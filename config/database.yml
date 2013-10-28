@@ -50,6 +50,7 @@ test:
   pool: 5
   username: tahi
   password:
+  host: localhost
 
 production:
   adapter: postgresql

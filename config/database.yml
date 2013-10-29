@@ -57,5 +57,4 @@ production:
   encoding: unicode
   database: tahi_production
   pool: 5
-  username: tahi
   password:

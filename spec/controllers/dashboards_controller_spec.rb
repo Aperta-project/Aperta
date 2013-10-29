@@ -9,7 +9,6 @@ describe DashboardsController do
       password: 'password',
       password_confirmation: 'password',
       affiliation: 'Universität Zürich'
-    user.confirm!
     user
   end
 

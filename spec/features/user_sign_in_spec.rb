@@ -34,7 +34,7 @@ feature "Account creation" do
     sign_in_page = SignInPage.new
     sign_in_page.sign_in_as(User.last)
     expect(page.current_path).to eq(root_path)
-    expect(dashboard_page.header).to have_content 'Welcome'
+    expect(dashboard_page.header).to have_content 'Welcome, Albert Einstein'
   end
 end
 

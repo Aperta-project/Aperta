@@ -39,7 +39,7 @@ feature "Account creation" do
 end
 
 feature "Signing in" do
-  scenario "User can sign in to the site" do
+  scenario "User can sign in to & out of the site" do
     user = User.create! first_name: 'Albert',
       last_name: 'Einstein',
       email: 'einstein@example.org',
@@ -49,7 +49,9 @@ feature "Signing in" do
     user.confirm!
 
     sign_in_page = SignInPage.new
-    sign_in_page.sign_in_as(user)
+    dashboard_page = sign_in_page.sign_in_as(user)
     expect(page.current_path).to eq(root_path)
+    dashboard_page.sign_out
+    expect(page.current_path).to eq new_user_session_path
   end
 end

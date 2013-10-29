@@ -4,5 +4,6 @@ class SignInPage < Page
     fill_in "Email", with: user.email
     fill_in "Password", with: 'password'
     click_on "Sign in"
+    DashboardPage.new
   end
 end

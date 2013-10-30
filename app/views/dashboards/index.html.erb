@@ -1,10 +1,10 @@
-<header>Welcome, <%= current_user.first_name %> <%= current_user.last_name %></header>
-<%= link_to 'Sign out', destroy_user_session_path, method: :delete %>
-<%= link_to 'New submission', new_paper_path %>
+<header><h3>Welcome, <%= current_user.first_name %> <%= current_user.last_name %></h3></header>
+<%= link_to 'New submission', new_paper_path, class: 'btn btn-primary' %>
 
 
+<h3>Submissions</h3>
 <ul class="submissions">
   <%- @papers.each do |paper| %>
-    <li><%= paper.short_title %></li>
+    <li><%= link_to paper.short_title, edit_paper_path(paper) %></li>
   <% end %>
 </ul>

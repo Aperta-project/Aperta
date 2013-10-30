@@ -33,5 +33,18 @@ describe DashboardsController do
       get :index
       expect(response).to render_template :index
     end
+
+    describe "papers" do
+      before do
+        Paper.create!
+        Paper.create! user: user
+      end
+
+      it "assigns papers" do
+        get :index
+        expect(assigns(:papers)).to match_array user.papers
+      end
+    end
+
   end
 end

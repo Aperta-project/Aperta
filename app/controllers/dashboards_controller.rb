@@ -2,6 +2,6 @@ class DashboardsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @papers = Paper.all
+    @papers = current_user.papers
   end
 end

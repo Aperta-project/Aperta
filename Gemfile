@@ -49,6 +49,10 @@ gem 'unicorn'
 #
 gem 'pry-rails'
 
+group :development do
+  gem 'license_finder'
+end
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara-webkit'

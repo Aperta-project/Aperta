@@ -12,26 +12,14 @@ describe DashboardsController do
   end
 
   describe "GET 'index'" do
-    context "when the user is not signed in" do
-      before { sign_out :user }
+    subject(:do_request) { get :index }
 
-      it "redirects to the sign in page" do
-        get :index
-        expect(response).to redirect_to new_user_session_path
-      end
-    end
+    it_behaves_like "when the user is not signed in"
 
     before { sign_in user }
 
-    it "returns http success" do
-      get :index
-      expect(response).to be_success
-    end
-
-    it "renders the index template" do
-      get :index
-      expect(response).to render_template :index
-    end
+    it { should be_success }
+    it { should render_template :index }
 
     describe "papers" do
       before do
@@ -40,7 +28,7 @@ describe DashboardsController do
       end
 
       it "assigns papers" do
-        get :index
+        do_request
         expect(assigns(:papers)).to match_array user.papers
       end
     end

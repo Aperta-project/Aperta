@@ -23,7 +23,7 @@ feature "Signing in" do
       password_confirmation: 'password',
       affiliation: 'Universität Zürich'
 
-    sign_in_page = SignInPage.new
+    sign_in_page = SignInPage.visit
     dashboard_page = sign_in_page.sign_in_as(user)
     expect(page.current_path).to eq(root_path)
     dashboard_page.sign_out

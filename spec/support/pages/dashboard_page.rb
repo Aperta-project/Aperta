@@ -1,12 +1,5 @@
 class DashboardPage < Page
-  def self.visit
-    self.new.tap { |p| p.navigate }
-  end
-
-  def navigate
-    visit root_path
-    expect(page.current_path).to eq root_path
-  end
+  path :root
 
   def new_submission
     click_on "New submission"

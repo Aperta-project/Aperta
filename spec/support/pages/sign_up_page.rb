@@ -1,12 +1,5 @@
 class SignUpPage < Page
-  def self.visit
-    self.new.tap { |p| p.navigate }
-  end
-
-  def navigate
-    visit new_user_registration_path
-    expect(page.current_path).to eq new_user_registration_path
-  end
+  path :new_user_registration
 
   def sign_up_as options
     fill_in "First name", with: options.fetch(:first_name)

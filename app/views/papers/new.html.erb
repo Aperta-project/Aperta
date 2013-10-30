@@ -1,0 +1,7 @@
+<%= form_for @paper do |f| %>
+  <div class="form-group">
+    <%= f.label :short_title %>
+    <%= f.text_field :short_title, class: 'form-control' %>
+  </div>
+  <button type="submit" class="btn btn-default">Create</button>
+<% end %>

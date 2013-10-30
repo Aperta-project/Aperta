@@ -3,13 +3,12 @@ require 'spec_helper'
 describe DashboardsController do
 
   let :user do
-    user = User.create! first_name: 'Albert',
+    User.create! first_name: 'Albert',
       last_name: 'Einstein',
       email: 'einstein@example.org',
       password: 'password',
       password_confirmation: 'password',
       affiliation: 'Universität Zürich'
-    user
   end
 
   describe "GET 'index'" do

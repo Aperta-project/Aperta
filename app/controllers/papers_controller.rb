@@ -4,7 +4,7 @@ class PapersController < ApplicationController
   end
 
   def create
-    @paper = Paper.new(paper_params)
+    @paper = current_user.papers.new(paper_params)
 
     if @paper.save
       redirect_to edit_paper_path @paper

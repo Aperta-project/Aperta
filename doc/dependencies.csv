@@ -21,6 +21,8 @@ devise, 3.1.1, MIT
 diff-lcs, 1.2.4, MIT
 erubis, 2.7.0, MIT
 execjs, 2.0.2, MIT
+haml, 4.0.3, MIT
+haml-rails, 0.4, MIT
 hike, 1.2.3, MIT
 httparty, 0.12.0, MIT
 i18n, 0.6.5, MIT
@@ -47,13 +49,13 @@ pry-rails, 0.3.2, MIT
 rack, 1.5.2, MIT
 rack-test, 0.6.2, MIT
 rails, 4.0.0, MIT
-rails_12factor, 0.0.2, LICENSE
+rails_12factor, 0.0.2, BSD
 rails_serve_static_assets, 0.0.1, New BSD
 rails_stdout_logging, 0.0.3, MIT
 railties, 4.0.0, MIT
 raindrops, 0.12.0, LGPL
 rake, 10.1.0, MIT
-rdoc, 3.12.2, other
+rdoc, 3.12.2, GPLv2
 rspec-core, 2.14.6, MIT
 rspec-expectations, 2.14.3, MIT
 rspec-mocks, 2.14.4, MIT

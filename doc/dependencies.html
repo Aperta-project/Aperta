@@ -31,69 +31,24 @@
   <div class="summary hero-unit">
     <h2>Dependencies</h2>
 
-    <p>As of October 30, 2013  2:09pm</p>
+    <p>As of October 30, 2013  5:25pm</p>
 
     <h4>
-      78 total
+      80 total
 
-              <span class="badge badge-important">6 unapproved</span>
           </h4>
 
     <ul>
-              <li>65 MIT</li>
+              <li>67 MIT</li>
               <li>4 Apache 2.0</li>
+              <li>2 BSD</li>
+              <li>2 GPLv2</li>
               <li>2 LGPL</li>
-              <li>1 BSD</li>
-              <li>1 New BSD</li>
               <li>1 ruby</li>
               <li>1 ISC</li>
-              <li>1 LICENSE</li>
-              <li>1 other</li>
-              <li>1 GPLv2</li>
+              <li>1 New BSD</li>
           </ul>
   </div>
-      <div class="action-items hero-unit">
-      <h2>Action Items</h2>
-      <h4>6 unapproved dependencies</h4>
-      <ul>
-                  <li>
-          <a href='#rdoc'>
-            rdoc
-          </a>
-          (other)
-          </li>
-                  <li>
-          <a href='#json'>
-            json
-          </a>
-          (Ruby)
-          </li>
-                  <li>
-          <a href='#kgio'>
-            kgio
-          </a>
-          (LGPL)
-          </li>
-                  <li>
-          <a href='#rails_12factor'>
-            rails_12factor
-          </a>
-          (LICENSE)
-          </li>
-                  <li>
-          <a href='#raindrops'>
-            raindrops
-          </a>
-          (LGPL)
-          </li>
-                  <li>
-          <a href='#unicorn'>
-            unicorn
-          </a>
-          (GPLv2)
-          </li>
-              </ul>
-    </div>
     <div class="dependencies">
           <div id="actionmailer" class="approved">
         <h2>
@@ -158,6 +113,7 @@
                           <dd>sprockets-rails</dd>
                           <dd>rails</dd>
                           <dd>rspec-rails</dd>
+                          <dd>haml-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -310,6 +266,7 @@
                           <dd>sprockets-rails</dd>
                           <dd>rails</dd>
                           <dd>rspec-rails</dd>
+                          <dd>haml-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -560,6 +517,7 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>license_finder</dd>
                           <dd>rails</dd>
                           <dd>uglifier</dd>
+                          <dd>haml-rails</dd>
                       </dl>
                       </div>
           <div id="capybara" class="approved">
@@ -919,6 +877,82 @@ We are happy to report that this issue has been resolved.</td>
                           <dd>rake</dd>
                       </dl>
               </div>
+          <div id="haml" class="approved">
+        <h2>
+                      <a href="http://haml.info/">haml</a>
+                    v4.0.3
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>An elegant, structured (X)HTML/XML templating engine.</td>
+            <td>Haml (HTML Abstraction Markup Language) is a layer on top of HTML or XML that's
+designed to express the structure of documents in a non-repetitive, elegant, and
+easy way by using indentation rather than closing tags and allowing Ruby to be
+embedded with ease. It was originally envisioned as a plugin for Ruby on Rails,
+but it can function as a stand-alone templating engine.
+</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>tilt</dd>
+                          <dd>haml-rails</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>tilt</dd>
+                          <dd>rails</dd>
+                          <dd>minitest</dd>
+                          <dd>nokogiri</dd>
+                      </dl>
+              </div>
+          <div id="haml-rails" class="approved">
+        <h2>
+                      <a href="http://github.com/indirect/haml-rails">haml-rails</a>
+                    v0.4
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>let your Gemfile do the configuring</td>
+            <td>Haml-rails provides Haml generators for Rails 3. It also enables Haml as the templating engine for you, so you don't have to screw around in your own application.rb when your Gemfile already clearly indicated what templating engine you have installed. Hurrah.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>haml</dd>
+                          <dd>activesupport</dd>
+                          <dd>actionpack</dd>
+                          <dd>railties</dd>
+                          <dd>rails</dd>
+                          <dd>bundler</dd>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
           <div id="hike" class="approved">
         <h2>
                       <a href="http://github.com/sstephenson/hike">hike</a>
@@ -1112,7 +1146,7 @@ We are happy to report that this issue has been resolved.</td>
                           <dd>turbolinks</dd>
                       </dl>
               </div>
-          <div id="json" class="unapproved">
+          <div id="json" class="approved">
         <h2>
                       <a href="http://flori.github.com/json">json</a>
                     v1.8.1
@@ -1149,7 +1183,7 @@ We are happy to report that this issue has been resolved.</td>
                           <dd>sdoc</dd>
                       </dl>
               </div>
-          <div id="kgio" class="unapproved">
+          <div id="kgio" class="approved">
         <h2>
                       <a href="http://bogomips.org/kgio/">kgio</a>
                     v2.8.1
@@ -1526,6 +1560,7 @@ extract-method refactorings still apply.</td>
                           <dd>slop</dd>
                           <dd>pry-rails</dd>
                           <dd>rdoc</dd>
+                          <dd>haml</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1631,6 +1666,7 @@ enough of it.</td>
                           <dd>capybara</dd>
                           <dd>tilt</dd>
                           <dd>rspec-core</dd>
+                          <dd>haml</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1929,6 +1965,8 @@ request helpers feature.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>license_finder</dd>
+                          <dd>haml</dd>
+                          <dd>haml-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1941,7 +1979,7 @@ request helpers feature.</td>
                           <dd>sprockets-rails</dd>
                       </dl>
               </div>
-          <div id="rails_12factor" class="unapproved">
+          <div id="rails_12factor" class="approved">
         <h2>
                       <a href="https://github.com/heroku/rails_12factor">rails_12factor</a>
                     v0.0.2
@@ -1960,7 +1998,7 @@ request helpers feature.</td>
             <td>Following best practices from http://12factor.net run a maintainable, clean, and scalable app on Rails</td>
             <td>Run Rails the 12factor way</td>
             <td>
-                              LICENSE
+                              <a href="http://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>
                           </td>
           </tr>
           </tbody>
@@ -2059,6 +2097,7 @@ request helpers feature.</td>
                           <dd>rails</dd>
                           <dd>rspec-rails</dd>
                           <dd>sass-rails</dd>
+                          <dd>haml-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2068,7 +2107,7 @@ request helpers feature.</td>
                           <dd>thor</dd>
                       </dl>
               </div>
-          <div id="raindrops" class="unapproved">
+          <div id="raindrops" class="approved">
         <h2>
                       <a href="http://raindrops.bogomips.org/">raindrops</a>
                     v0.12.0
@@ -2156,13 +2195,14 @@ multiple processes.</td>
                           <dd>rspec-expectations</dd>
                           <dd>rspec-mocks</dd>
                           <dd>rspec-rails</dd>
+                          <dd>haml-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>minitest</dd>
                       </dl>
               </div>
-          <div id="rdoc" class="unapproved">
+          <div id="rdoc" class="approved">
         <h2>
                       <a href="http://docs.seattlerb.org/rdoc">rdoc</a>
                     v3.12.2
@@ -2184,7 +2224,7 @@ documentation.
 
 See RDoc for a description of RDoc's markup and basic use.</td>
             <td>
-                              other
+                              <a href="http://www.gnu.org/licenses/gpl-2.0.txt">GPLv2</a>
                           </td>
           </tr>
           </tbody>
@@ -2725,6 +2765,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>sprockets</dd>
+                          <dd>haml</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2734,6 +2775,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                           <dd>nokogiri</dd>
                           <dd>rdoc</dd>
                           <dd>sass</dd>
+                          <dd>haml</dd>
                       </dl>
               </div>
           <div id="treetop" class="approved">
@@ -2870,7 +2912,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                           <dd>rdoc</dd>
                       </dl>
               </div>
-          <div id="unicorn" class="unapproved">
+          <div id="unicorn" class="approved">
         <h2>
                       <a href="http://unicorn.bogomips.org/">unicorn</a>
                     v4.6.3

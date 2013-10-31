@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
+source "$HOME/.rvm/scripts/rvm"
 rvm use "2.0.0-p247@tahi"
 
 set -e

@@ -9,17 +9,17 @@
     .modal-content
       .modal-header
         %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
-        %h4#myModalLabel.modal-title Modal title
-      .modal-body
-        = form_tag({action: :upload}, multipart: true) do
+        %h4#myModalLabel.modal-title Upload File
+      = form_tag({action: :upload}, multipart: true) do
+        .modal-body
           .form-group
             = label_tag :upload_file, 'Upload Word Document'
             = file_field_tag :upload_file, class: 'form-control'
-          = button_tag "Upload File", type: 'submit', class: 'btn btn-primary'
+            %p.help-block Uploading a file will replace your current work.
 
-      .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", type: "button"} Close
-        %button.btn.btn-primary{type: "button"} Save changes
+        .modal-footer
+          %button.btn.btn-default{"data-dismiss" => "modal", type: "button"} Close
+          = button_tag "Upload File", type: 'submit', class: 'btn btn-primary'
 
 %br
 %br

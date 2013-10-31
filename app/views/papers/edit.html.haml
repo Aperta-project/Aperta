@@ -1,0 +1,22 @@
+%h3
+  Edit submission for
+  %em= @paper.short_title
+
+= form_for @paper do |f|
+  .form-group
+    = f.label :short_title
+    = f.text_field :short_title, class: 'form-control'
+
+  .form-group
+    = f.label :title
+    = f.text_field :title, class: 'form-control'
+
+  .form-group
+    = f.label :abstract
+    = f.text_area :abstract, class: 'form-control', rows: 4
+
+  .form-group
+    = f.label :body
+    = f.text_area :body, class: 'form-control', rows: 8
+
+  = f.button "Save", type: 'submit', class: 'btn btn-primary'

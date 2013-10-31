@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe PapersController do
 
+  ALLOWED_PARAMS = %i(short_title title abstract body)
+
   let :user do
     User.create! first_name: 'Albert',
       last_name: 'Einstein',
@@ -29,6 +31,11 @@ describe PapersController do
 
     it_behaves_like "when the user is not signed in"
 
+    it_behaves_like "a controller enforcing strong parameters" do
+      let(:model_identifier) { :paper }
+      let(:allowed_params) { ALLOWED_PARAMS }
+    end
+
     it "saves a new paper record" do
       do_request
       expect(Paper.first).to be_persisted
@@ -45,4 +52,29 @@ describe PapersController do
     end
   end
 
+  describe "PUT 'update'" do
+    let(:paper) { Paper.create! }
+
+    subject(:do_request) do
+      put :update, { id: paper.to_param, paper: { short_title: 'ABC101' } }
+    end
+
+    it_behaves_like "when the user is not signed in"
+
+    it_behaves_like "a controller enforcing strong parameters" do
+      let(:params_id) { paper.to_param }
+      let(:model_identifier) { :paper }
+      let(:allowed_params) { ALLOWED_PARAMS }
+    end
+
+    it "redirects to dashboard" do
+      do_request
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "updates the paper" do
+      do_request
+      expect(paper.reload.short_title).to eq('ABC101')
+    end
+  end
 end

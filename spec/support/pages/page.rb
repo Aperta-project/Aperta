@@ -15,8 +15,8 @@ class Page
       @_path_regex = ActionDispatch::Routing::RouteWrapper.new(route).json_regexp
     end
 
-    def visit
-      page.visit Rails.application.routes.url_helpers.send @_path
+    def visit args = []
+      page.visit Rails.application.routes.url_helpers.send @_path, *args
       new
     end
   end

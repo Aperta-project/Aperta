@@ -5,4 +5,37 @@ class EditSubmissionPage < Page
     click_link 'Dashboard'
     DashboardPage.new
   end
+
+  def short_title=(val)
+    fill_in "Short title", with: val
+  end
+
+  def title=(val)
+    fill_in "Title", with: val
+  end
+
+  def abstract=(val)
+    fill_in "Abstract", with: val
+  end
+
+  def body=(val)
+    fill_in "Body", with: val
+  end
+
+  def title
+    find_field("Title").value
+  end
+
+  def abstract
+    find_field("Abstract").value
+  end
+
+  def body
+    find_field("Body").value
+  end
+
+  def save
+    click_on 'Save'
+    DashboardPage.new
+  end
 end

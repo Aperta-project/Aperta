@@ -19,4 +19,9 @@ class DashboardPage < Page
       page.all('li').map &:text
     end
   end
+
+  def edit_submission short_title
+    click_on short_title
+    EditSubmissionPage.new
+  end
 end

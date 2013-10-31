@@ -17,8 +17,16 @@ class PapersController < ApplicationController
     @paper = Paper.find(params[:id])
   end
 
+  def update
+    @paper = Paper.find(params[:id])
+
+    if @paper.update paper_params
+      redirect_to root_path
+    end
+  end
+
   private
   def paper_params
-    params.require(:paper).permit(:short_title)
+    params.require(:paper).permit(:short_title, :title, :abstract, :body)
   end
 end

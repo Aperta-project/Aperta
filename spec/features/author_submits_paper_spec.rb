@@ -10,7 +10,7 @@ feature "Paper Submission" do
       email: 'einstein@example.org',
       password: 'password',
       affiliation: 'Universität Zürich'
-    login_as(author, :scope => :user)
+    login_as(author, scope: :user)
 
     dashboard_page = DashboardPage.visit
     new_submission_page = dashboard_page.new_submission

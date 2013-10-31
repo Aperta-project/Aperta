@@ -58,6 +58,13 @@ GEM
     diff-lcs (1.2.4)
     erubis (2.7.0)
     execjs (2.0.2)
+    haml (4.0.3)
+      tilt
+    haml-rails (0.4)
+      actionpack (>= 3.1, < 4.1)
+      activesupport (>= 3.1, < 4.1)
+      haml (>= 3.1, < 4.1)
+      railties (>= 3.1, < 4.1)
     hike (1.2.3)
     httparty (0.12.0)
       json (~> 1.8)
@@ -189,6 +196,7 @@ DEPENDENCIES
   capybara-webkit
   coffee-rails (~> 4.0.0)
   devise
+  haml-rails
   jbuilder (~> 1.2)
   jquery-rails
   jquery-turbolinks

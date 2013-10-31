@@ -1,5 +1,9 @@
 #!/bin/sh
 
+rvm use "2.0.0-p247@tahi"
+
+set -e
+
 cat <<EOF > config/database.yml
 test:
   adapter: postgresql

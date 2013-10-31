@@ -4,16 +4,21 @@ feature "Editing paper" do
   include Warden::Test::Helpers
   Warden.test_mode!
 
-  scenario "Author edits paper" do
-    author = User.create! first_name: "Albert",
+  let(:author) do
+    User.create! first_name: "Albert",
       last_name: 'Einstein',
       email: 'einstein@example.org',
       password: 'password',
       affiliation: 'Universität Zürich'
+  end
+
+  let(:paper) { paper = author.papers.create! }
+
+  before do
     login_as(author, scope: :user)
+  end
 
-    paper = author.papers.create!
-
+  scenario "Author edits paper" do
     edit_paper = EditSubmissionPage.visit paper
     edit_paper.short_title = "lorem-ipsum"
     edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
@@ -27,5 +32,13 @@ feature "Editing paper" do
     expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"
     expect(edit_paper.abstract).to eq "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
     expect(edit_paper.body).to eq "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum"
+  end
+
+  scenario "Author uploads paper in Word format" do
+    edit_paper = EditSubmissionPage.visit paper
+
+    edit_paper.upload_word_doc
+    expect(edit_paper.title).to eq "This is a Title About Turtles"
+    expect(edit_paper.body).to match /And this is my subtitle/
   end
 end

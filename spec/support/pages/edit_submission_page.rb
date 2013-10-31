@@ -38,4 +38,11 @@ class EditSubmissionPage < Page
     click_on 'Save'
     DashboardPage.new
   end
+
+  def upload_word_doc
+    click_on "Upload Manuscript"
+    attach_file 'Upload Word Document', Rails.root.join('spec/fixtures/about_turtles.docx')
+    click_on "Upload File"
+    self
+  end
 end

@@ -77,4 +77,45 @@ describe PapersController do
       expect(paper.reload.short_title).to eq('ABC101')
     end
   end
+
+  describe "POST 'upload'" do
+    let(:paper) { Paper.create! }
+
+    let(:uploaded_file) do
+      double(:uploaded_file, path: '/path/to/file.docx').tap do |d|
+        d.stub(:to_param).and_return d
+      end
+    end
+
+    subject :do_request do
+      post :upload, id: paper.to_param, upload_file: uploaded_file
+    end
+
+    before do
+      DocumentParser.stub(:parse).and_return(title: 'This is a Title About Turtles',
+        body: "Heroes in a half shell! Turtle power!")
+    end
+
+    it_behaves_like "when the user is not signed in"
+
+    it "redirect to the paper's edit page" do
+      do_request
+      expect(response).to redirect_to edit_paper_path(paper)
+    end
+
+    it "passes the uploaded file's path to the document parser" do
+      do_request
+      expect(DocumentParser).to have_received(:parse).with(uploaded_file.path)
+    end
+
+    it "updates the paper's title" do
+      do_request
+      expect(paper.reload.title).to eq 'This is a Title About Turtles'
+    end
+
+    it "updates the paper's body" do
+      do_request
+      expect(paper.reload.body).to eq "Heroes in a half shell! Turtle power!"
+    end
+  end
 end

@@ -2,6 +2,27 @@
   Edit submission for
   %em= @paper.short_title
 
+%a.btn.btn-primary.btn-lg{"href" => "#myModal", "data-toggle" => "modal"} Upload Manuscript
+
+#myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+        %h4#myModalLabel.modal-title Modal title
+      .modal-body
+        = form_tag({action: :upload}, multipart: true) do
+          .form-group
+            = label_tag :upload_file, 'Upload Word Document'
+            = file_field_tag :upload_file, class: 'form-control'
+          = button_tag "Upload File", type: 'submit', class: 'btn btn-primary'
+
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", type: "button"} Close
+        %button.btn.btn-primary{type: "button"} Save changes
+
+%br
+%br
 = form_for @paper do |f|
   .form-group
     = f.label :short_title
@@ -20,3 +41,4 @@
     = f.text_area :body, class: 'form-control', rows: 8
 
   = f.button "Save", type: 'submit', class: 'btn btn-primary'
+

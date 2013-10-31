@@ -25,7 +25,16 @@ class PapersController < ApplicationController
     end
   end
 
+  def upload
+    @paper = Paper.find(params[:id])
+
+    manuscript_data = DocumentParser.parse(params[:upload_file].path)
+    @paper.update manuscript_data
+    redirect_to edit_paper_path(@paper)
+  end
+
   private
+
   def paper_params
     params.require(:paper).permit(:short_title, :title, :abstract, :body)
   end

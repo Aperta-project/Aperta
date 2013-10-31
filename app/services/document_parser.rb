@@ -1,3 +1,5 @@
+require 'open3'
+
 class DocumentParser
 
   def self.parse(filename)

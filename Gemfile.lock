@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/galetahub/ckeditor.git
+  revision: e8dcbbe646cd5cc526acdbfa688c8017ee0b9f5f
+  specs:
+    ckeditor (4.0.6)
+      mime-types
+      orm_adapter
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -194,6 +202,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass (~> 3.0.0.0.rc2)
   capybara-webkit
+  ckeditor!
   coffee-rails (~> 4.0.0)
   devise
   haml-rails

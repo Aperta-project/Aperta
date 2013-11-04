@@ -1,7 +1,6 @@
 require 'open3'
 
 class DocumentParser
-
   def self.parse(filename)
     tika_path = Rails.root.join('vendor/java/tika-app-1.4.jar')
     stdout, errors, _ = Open3.capture3 "java -jar #{tika_path} -t #{filename}"

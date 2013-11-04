@@ -23,22 +23,44 @@
 
 %br
 %br
-= form_for @paper do |f|
-  .form-group
-    = f.label :short_title
-    = f.text_field :short_title, class: 'form-control'
 
-  .form-group
-    = f.label :title
-    = f.text_field :title, class: 'form-control'
+.small_text Short Title
+.short_title
+  %h4{contenteditable: true}
+    = @paper.short_title
+%br
+%br
 
-  .form-group
-    = f.label :abstract
-    = f.text_area :abstract, class: 'form-control', rows: 4
+.small_text Title
+.title
+  %h2{contenteditable: true}
+    = @paper.title
 
-  .form-group
-    = f.label :body
-    = f.text_area :body, class: 'form-control', rows: 8
+.small_text ABSTRACT
+#abstract_editable.editable{contenteditable: true}
+  = @paper.abstract.html_safe
 
-  = f.button "Save", type: 'submit', class: 'btn btn-primary'
+.small_text BODY
+#body_editable.editable{contenteditable: true}
+  = @paper.body.html_safe
 
+%button#save_button.btn.btn-primary{type: :submit, data: { url: paper_path(@paper.id) }} Save Paper
+
+-# = form_for @paper do |f|
+-#   .form-group
+-#     = f.label :short_title
+-#     = f.text_field :short_title, class: 'form-control'
+-#
+-#   .form-group
+-#     = f.label :title
+-#     = f.text_field :title, class: 'form-control'
+-#
+-#   .form-group
+-#     = f.label :abstract
+-#     = f.cktext_area :abstract, class: 'form-control', rows: 4
+-#
+-#   .form-group
+-#     = f.label :body
+-#     = f.cktext_area :body, class: 'form-control', rows: 8
+-#
+-#   = f.button "Save", type: 'submit', class: 'btn btn-primary'

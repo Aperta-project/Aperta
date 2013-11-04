@@ -21,7 +21,10 @@ class PapersController < ApplicationController
     @paper = Paper.find(params[:id])
 
     if @paper.update paper_params
-      redirect_to root_path
+      respond_to do |f|
+        f.html { redirect_to root_path }
+        f.json { head :ok }
+      end
     end
   end
 

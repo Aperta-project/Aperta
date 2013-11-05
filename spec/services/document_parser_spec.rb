@@ -3,23 +3,10 @@ require 'spec_helper'
 describe DocumentParser do
 
   describe '.parse' do
-    let(:filename) { '/path/to/file' }
-    let(:paper_title) { 'Paper Title' }
+    let(:filename) { Rails.root.join('spec/fixtures/about_turtles.docx') }
+    let(:paper_title) { 'This is a Title About Turtles' }
     let(:paper_body) do
-      <<-TEXT.strip_heredoc
-        Paper subtitle
-
-        This is the body of the paper.
-
-        This is the next paragraph.
-
-        In conclusion, the Teenage Mutant Ninja Turtles rock!
-      TEXT
-    end
-
-    before do
-      paper_text = "#{paper_title}\n#{paper_body}"
-      Open3.stub(:capture3).and_return [paper_text, nil, nil]
+      "<h2 class=\"subtitle\">And this is my subtitle about how turtles are awesome</h2>\n<p></p>\n<p>Turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles.</p>\n<p></p>\n<p><a name=\"_GoBack\"></a>The end.</p>\n<p></p>\n<p></p>"
     end
 
     subject { DocumentParser.parse filename }

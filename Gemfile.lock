@@ -211,6 +211,7 @@ DEPENDENCIES
   jquery-turbolinks
   launchy
   license_finder
+  nokogiri
   pg
   pry-rails
   rails (= 4.0.0)

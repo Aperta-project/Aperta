@@ -68,3 +68,5 @@ gem "bootstrap-sass", "~> 3.0.0.0.rc2"
 gem 'rails_12factor', group: [:production, :staging]
 
 gem "ckeditor", git: 'https://github.com/galetahub/ckeditor.git'
+
+gem "nokogiri"

@@ -11,8 +11,8 @@ $(document).ready ->
       data:
         paper:
           title: $.trim($('#title_editable').text())
-          body: $.trim($('#body_editable').text())
-          abstract: $.trim($('#abstract_editable').text())
+          body: CKEDITOR.instances.body_editable.getData()
+          abstract: CKEDITOR.instances.abstract_editable.getData()
           short_title: $.trim($('#short_title_editable').text())
       success:
         window.location = "/"

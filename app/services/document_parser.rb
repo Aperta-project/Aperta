@@ -1,8 +1,6 @@
 require 'open3'
 
 class DocumentParser
-  attr_accessor :title, :body
-
   def initialize(filename)
     @filename = filename
     to_hash

@@ -21,7 +21,7 @@ class DashboardPage < Page
   end
 
   def edit_submission short_title
-    click_on short_title
+    click_link short_title
     EditSubmissionPage.new
   end
 end

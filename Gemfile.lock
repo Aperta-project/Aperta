@@ -57,6 +57,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
+    database_cleaner (1.2.0)
     devise (3.1.1)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -204,6 +205,7 @@ DEPENDENCIES
   capybara-webkit
   ckeditor!
   coffee-rails (~> 4.0.0)
+  database_cleaner
   devise
   haml-rails
   jbuilder (~> 1.2)

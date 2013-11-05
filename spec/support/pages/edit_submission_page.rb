@@ -1,4 +1,6 @@
 class EditSubmissionPage < Page
+  include ActionView::Helpers::JavaScriptHelper
+
   path :edit_paper
 
   def visit_dashboard
@@ -7,35 +9,39 @@ class EditSubmissionPage < Page
   end
 
   def short_title=(val)
-    fill_in "Short title", with: val
+    page.execute_script "$('#short_title_editable').text('#{val}')"
   end
 
   def title=(val)
-    fill_in "Title", with: val
+    page.execute_script "$('#title_editable').text('#{val}')"
   end
 
   def abstract=(val)
-    fill_in "Abstract", with: val
+    abstract_node.click
+    page.execute_script "$('#abstract_editable').text('#{escape_javascript val}')"
+    abstract_node.synchronize { abstract == val }
   end
 
   def body=(val)
-    fill_in "Body", with: val
+    body_node.click
+    page.execute_script "$('#body_editable').text('#{escape_javascript val}')"
+    body_node.synchronize { body == val }
   end
 
   def title
-    find_field("Title").value
+    find(:css, '#title_editable').text
   end
 
   def abstract
-    find_field("Abstract").value
+    abstract_node.text
   end
 
   def body
-    find_field("Body").value
+    body_node.text
   end
 
   def save
-    click_on 'Save'
+    click_on 'Save Paper'
     DashboardPage.new
   end
 
@@ -44,5 +50,15 @@ class EditSubmissionPage < Page
     attach_file 'Upload Word Document', Rails.root.join('spec/fixtures/about_turtles.docx')
     click_on "Upload File"
     self
+  end
+
+  private
+
+  def abstract_node
+    find(:css, '#abstract_editable')
+  end
+
+  def body_node
+    find(:css, '#body_editable')
   end
 end

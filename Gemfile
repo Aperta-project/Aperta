@@ -59,6 +59,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'capybara-webkit'
   gem 'launchy'
+  gem 'database_cleaner'
 end
 
 gem 'devise'
@@ -70,3 +71,4 @@ gem 'rails_12factor', group: [:production, :staging]
 gem "ckeditor", git: 'https://github.com/galetahub/ckeditor.git'
 
 gem "nokogiri"
+

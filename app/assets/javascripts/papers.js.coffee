@@ -14,14 +14,13 @@ $(document).ready ->
         removePlugins: 'floatingspace,resize'
         sharedSpaces:
           top: 'ckeditor-toolbar'
-        toolbarGroups: [
-          { name: 'styles' }
-          { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] }
-          { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] }
-          { name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] }
-          { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] }
-          { name: 'links' }
-          { name: 'tools' }
+        toolbar: [
+          [ 'Styles', 'Format', 'FontSize' ]
+          [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ]
+          [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'CreateDiv']
+          [ 'PasteFromWord' ],
+          [ 'Link', 'Unlink', 'Anchor']
+          [ 'Find', 'Replace', '-', 'Scayt', '-', 'ShowBlocks' ]
         ]
 
   $('#save_button').on 'click', (e) ->

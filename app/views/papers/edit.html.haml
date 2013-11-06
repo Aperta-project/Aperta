@@ -31,16 +31,15 @@
 %br
 %br
 
-.small_text Title
+#ckeditor-toolbar
+
 .title
   %h2#title_editable{contenteditable: true}
     = @paper.title
 
-.small_text ABSTRACT
 #abstract_editable.editable{contenteditable: true}
   = @paper.abstract.html_safe
 
-.small_text BODY
 #body_editable.editable{contenteditable: true}
   = @paper.body.html_safe
 

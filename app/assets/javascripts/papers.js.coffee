@@ -1,7 +1,11 @@
 $(document).ready ->
-  if $('#body_editable').length > 0
-    CKEDITOR.inline( 'body_editable' )
-    CKEDITOR.inline( 'abstract_editable' )
+  if $('[contenteditable!=false]').length > 0
+    for elementId in ['body_editable', 'abstract_editable']
+      CKEDITOR.inline elementId,
+        extraPlugins: 'sharedspace'
+        removePlugins: 'floatingspace,resize'
+        sharedSpaces:
+          top: 'ckeditor-toolbar'
 
   $('#save_button').on 'click', (e) ->
     e.preventDefault()

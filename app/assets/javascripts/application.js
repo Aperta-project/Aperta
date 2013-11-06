@@ -16,4 +16,5 @@
 //= require bootstrap
 //= require turbolinks
 //= require ckeditor-jquery
+//= require ckeditor/plugins/sharedspace/sharedspace
 //= require_tree .

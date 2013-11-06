@@ -60,6 +60,7 @@ group :development, :test do
   gem 'capybara-webkit'
   gem 'launchy'
   gem 'database_cleaner'
+  gem "jasmine", ">= 2.0.0.rc5"
 end
 
 gem 'devise'

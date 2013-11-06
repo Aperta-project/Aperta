@@ -1,3 +1,11 @@
+
+window.Tahi = {}
+Tahi.papers =
+  init: ->
+    $('#add_author').on 'click', (e) ->
+      e.preventDefault()
+      $('<li class="author">').appendTo $('ul.authors')
+
 $(document).ready ->
   if $('[contenteditable!=false]').length > 0
     for elementId in ['body_editable', 'abstract_editable']
@@ -29,3 +37,4 @@ $(document).ready ->
           short_title: $.trim($('#short_title_editable').text())
       success:
         window.location = "/"
+  Tahi.papers.init()

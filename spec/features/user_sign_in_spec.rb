@@ -3,7 +3,8 @@ require 'spec_helper'
 feature "Account creation" do
   scenario "User can create an account" do
     sign_up_page = SignUpPage.visit
-    dashboard_page = sign_up_page.sign_up_as first_name: 'Albert',
+    dashboard_page = sign_up_page.sign_up_as username: 'albert',
+      first_name: 'Albert',
       last_name: 'Einstein',
       email: 'einstein@example.org',
       password: 'password',
@@ -16,7 +17,8 @@ end
 
 feature "Signing in" do
   scenario "User can sign in to & out of the site" do
-    user = User.create! first_name: 'Albert',
+    user = User.create! username: 'albert',
+      first_name: 'Albert',
       last_name: 'Einstein',
       email: 'einstein@example.org',
       password: 'password',

@@ -6,6 +6,15 @@ $(document).ready ->
         removePlugins: 'floatingspace,resize'
         sharedSpaces:
           top: 'ckeditor-toolbar'
+        toolbarGroups: [
+          { name: 'styles' }
+          { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] }
+          { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] }
+          { name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] }
+          { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] }
+          { name: 'links' }
+          { name: 'tools' }
+        ]
 
   $('#save_button').on 'click', (e) ->
     e.preventDefault()

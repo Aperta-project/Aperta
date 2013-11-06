@@ -16,7 +16,7 @@ feature "Account creation" do
 end
 
 feature "Signing in" do
-  scenario "User can sign in to & out of the site" do
+  scenario "User can sign in to & out of the site using their email address" do
     user = User.create! username: 'albert',
       first_name: 'Albert',
       last_name: 'Einstein',
@@ -26,7 +26,23 @@ feature "Signing in" do
       affiliation: 'Universität Zürich'
 
     sign_in_page = SignInPage.visit
-    dashboard_page = sign_in_page.sign_in_as(user)
+    dashboard_page = sign_in_page.sign_in user.email
+    expect(page.current_path).to eq(root_path)
+    dashboard_page.sign_out
+    expect(page.current_path).to eq new_user_session_path
+  end
+
+  scenario "User can sign in to & out of the site using their username" do
+    user = User.create! username: 'albert',
+      first_name: 'Albert',
+      last_name: 'Einstein',
+      email: 'einstein@example.org',
+      password: 'password',
+      password_confirmation: 'password',
+      affiliation: 'Universität Zürich'
+
+    sign_in_page = SignInPage.visit
+    dashboard_page = sign_in_page.sign_in user.username
     expect(page.current_path).to eq(root_path)
     dashboard_page.sign_out
     expect(page.current_path).to eq new_user_session_path

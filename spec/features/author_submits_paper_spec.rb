@@ -5,11 +5,14 @@ feature "Paper Submission" do
   Warden.test_mode!
 
   scenario "Author creates a submission" do
-    author = User.create! first_name: "Albert",
+    author = User.create! username: 'albert',
+      first_name: 'Albert',
       last_name: 'Einstein',
       email: 'einstein@example.org',
       password: 'password',
+      password_confirmation: 'password',
       affiliation: 'Universität Zürich'
+
     login_as(author, scope: :user)
 
     dashboard_page = DashboardPage.visit

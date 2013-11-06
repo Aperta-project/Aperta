@@ -4,7 +4,8 @@ feature "Editing paper", js: true do
   include ActionView::Helpers::JavaScriptHelper
 
   let(:author) do
-    User.create! first_name: "Albert",
+    User.create! username: 'albert',
+      first_name: 'Albert',
       last_name: 'Einstein',
       email: 'einstein@example.org',
       password: 'password',
@@ -16,7 +17,7 @@ feature "Editing paper", js: true do
 
   before do
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in_as author
+    sign_in_page.sign_in author.email
   end
 
   scenario "Author edits paper" do

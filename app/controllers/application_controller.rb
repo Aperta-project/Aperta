@@ -8,6 +8,6 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up).concat %i(first_name last_name affiliation username)
+    devise_parameter_sanitizer.for(:sign_up).concat %i(first_name last_name affiliation email username)
   end
 end

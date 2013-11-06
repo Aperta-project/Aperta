@@ -3,7 +3,8 @@ require 'spec_helper'
 describe DashboardsController do
 
   let :user do
-    User.create! first_name: 'Albert',
+    User.create! username: 'albert',
+      first_name: 'Albert',
       last_name: 'Einstein',
       email: 'einstein@example.org',
       password: 'password',

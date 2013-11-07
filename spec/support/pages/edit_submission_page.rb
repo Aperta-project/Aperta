@@ -43,6 +43,17 @@ class EditSubmissionPage < Page
     body_node.synchronize { body == val }
   end
 
+  def add_author author
+    click_on "Add author"
+
+    within('.author:last-of-type') do
+      fill_in "First name", with: author[:first_name]
+      fill_in "Last name", with: author[:last_name]
+      fill_in "Affiliation", with: author[:affiliation]
+      fill_in "Email", with: author[:email]
+    end
+  end
+
   def title
     find(:css, '#title_editable').text
   end

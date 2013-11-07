@@ -35,4 +35,5 @@ $(document).ready ->
           short_title: $.trim($('#short_title_editable').text())
       success:
         window.location = "/"
+
   Tahi.papers.init()

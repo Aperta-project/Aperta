@@ -27,8 +27,8 @@ feature "Editing paper", js: true do
     edit_paper.abstract = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
     edit_paper.body = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum"
 
-    dashboard_page = edit_paper.save
-    DashboardPage.visit
+    edit_paper.save
+    dashboard_page = DashboardPage.visit
     expect(dashboard_page.submissions).to include 'lorem-ipsum'
 
     edit_paper = EditSubmissionPage.visit paper
@@ -78,5 +78,18 @@ feature "Editing paper", js: true do
     expect(funding_disclosure.answer).to eq "Yes"
     expect(ethics_declaration.answer).to eq "No"
     expect(competing_interest_declaration.answer).to eq "Sometimes"
+  end
+
+  scenario "Author specifies contributing authors" do
+    edit_paper = EditSubmissionPage.visit paper
+    edit_paper.add_author first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@bohr.com"
+    edit_paper.add_author first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe"
+    edit_paper.save
+
+    edit_paper = DashboardPage.visit.edit_submission paper.short_title
+    expect(edit_paper.authors).to match_array [
+      { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@bohr.com" },
+      { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe" }
+    ]
   end
 end

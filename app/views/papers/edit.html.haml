@@ -14,6 +14,9 @@
     #abstract_editable.editable{contenteditable: true}
       = @paper.abstract.html_safe
 
+    %ul.authors
+    %a#add_author{href: '#'} Add author
+
     #body_editable.editable{contenteditable: true}
       = @paper.body.html_safe
 

@@ -1,0 +1,10 @@
+# This file is managed by Chef!
+# Override node.default["git_pairs_authors"] and node.default["git_pairs_domain"] in attributes/git_pairs.rb to modify.
+
+pairs:
+  mm: Mike Mazur; mike
+  rr: Rizwan Reza; riz
+
+email:
+  prefix: pair
+  domain: neo.com

@@ -1,46 +1,40 @@
 %h3
-  Edit submission for
-  %em= @paper.short_title
+  Editing
+  %span#short_title_editable{contenteditable: true}
+    %em= @paper.short_title
 
-%a.btn.btn-primary.btn-lg{"href" => "#myModal", "data-toggle" => "modal"} Upload Manuscript
+.row
+  %section.article-view
+    #ckeditor-toolbar
 
-#myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-header
-        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
-        %h4#myModalLabel.modal-title Upload File
-      = form_tag({action: :upload}, multipart: true) do
-        .modal-body
-          .form-group
-            = label_tag :upload_file, 'Upload Word Document'
-            = file_field_tag :upload_file, class: 'form-control'
-            %p.help-block Uploading a file will replace your current work.
+    .title
+      %h2#title_editable{contenteditable: true}
+        = @paper.title
 
-        .modal-footer
-          %button.btn.btn-default{"data-dismiss" => "modal", type: "button"} Close
-          = button_tag "Upload File", type: 'submit', class: 'btn btn-primary'
+    #abstract_editable.editable{contenteditable: true}
+      = @paper.abstract.html_safe
 
-%br
-%br
+    #body_editable.editable{contenteditable: true}
+      = @paper.body.html_safe
 
-.small_text Short Title
-.short_title
-  %h4#short_title_editable{contenteditable: true}
-    = @paper.short_title
-%br
-%br
+    %a#save_button.btn.btn-primary{href: "#", data: { url: paper_path(@paper.id) }} Save Paper
 
-#ckeditor-toolbar
+  %aside.article-metadata
+    %a.btn.btn-primary.btn-lg{"href" => "#myModal", "data-toggle" => "modal"} Upload Manuscript
 
-.title
-  %h2#title_editable{contenteditable: true}
-    = @paper.title
+    #myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+            %h4#myModalLabel.modal-title Upload File
+          = form_tag({action: :upload}, multipart: true) do
+            .modal-body
+              .form-group
+                = label_tag :upload_file, 'Upload Word Document'
+                = file_field_tag :upload_file, class: 'form-control'
+                %p.help-block Uploading a file will replace your current work.
 
-#abstract_editable.editable{contenteditable: true}
-  = @paper.abstract.html_safe
-
-#body_editable.editable{contenteditable: true}
-  = @paper.body.html_safe
-
-%a#save_button.btn.btn-primary{href: "#", data: { url: paper_path(@paper.id) }} Save Paper
+            .modal-footer
+              %button.btn.btn-default{"data-dismiss" => "modal", type: "button"} Close
+              = button_tag "Upload File", type: 'submit', class: 'btn btn-primary'

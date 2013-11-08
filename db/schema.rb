@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131107215024) do
+ActiveRecord::Schema.define(version: 20131108191221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "declarations", force: true do |t|
+    t.text    "question", null: false
+    t.text    "answer"
+    t.integer "paper_id"
+  end
+
+  add_index "declarations", ["paper_id"], name: "index_declarations_on_paper_id", using: :btree
 
   create_table "papers", force: true do |t|
     t.string   "short_title"

@@ -23,7 +23,7 @@ RAILS_ENV=test rake db:test:load
 
 set +e
 
-rake jasmine:ci
+RAILS_ENV=test rake jasmine:ci
 jasmine_result=$?
 
 rspec spec --format=documentation

@@ -24,4 +24,8 @@ class Page
   def initialize
     expect(current_path).to match self.class._path_regex
   end
+
+  def reload
+    visit page.current_path
+  end
 end

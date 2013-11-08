@@ -18,3 +18,7 @@
 //= require ckeditor-jquery
 //= require ckeditor/plugins/sharedspace/sharedspace
 //= require_tree .
+
+$(document).ready(function() {
+  Tahi.init()
+});

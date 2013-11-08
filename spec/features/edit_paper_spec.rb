@@ -44,4 +44,14 @@ feature "Editing paper", js: true do
     expect(edit_paper.title).to eq "This is a Title About Turtles"
     expect(edit_paper.body).to match /And this is my subtitle/
   end
+
+  scenario "Author specifies paper metadata" do
+    edit_paper = EditSubmissionPage.visit paper
+
+    expect(edit_paper.paper_type).to eq 'Research'
+    edit_paper.paper_type = 'Front matter'
+    expect(edit_paper.paper_type).to eq 'Front matter'
+    edit_paper.reload
+    expect(edit_paper.paper_type).to eq 'Front matter'
+  end
 end

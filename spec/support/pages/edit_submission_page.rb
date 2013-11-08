@@ -40,6 +40,16 @@ class EditSubmissionPage < Page
     body_node.text
   end
 
+  def paper_type
+    select = find('#paper_paper_type')
+    select.find("option[value='#{select.value}']").text
+  end
+
+  def paper_type=(value)
+    select = find('#paper_paper_type')
+    select.select value
+  end
+
   def save
     click_on 'Save Paper'
     DashboardPage.new

@@ -1,4 +1,3 @@
-
 window.Tahi = {}
 Tahi.papers =
   init: ->

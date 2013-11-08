@@ -6,6 +6,5 @@
 }
 
 .article-metadata {
-  @include make-lg-column(2);
-  @include make-lg-column-offset(1);
+  @include make-lg-column(3);
 }

@@ -43,3 +43,14 @@
       .form-group
         = f.label :paper_type
         = f.select :paper_type, Paper::PAPER_TYPES.map { |t| [t.humanize, t] }
+
+    %br
+    %br
+
+    %h4 Declarations
+    = form_for @paper, remote: true, format: :json do |paper_form|
+      = paper_form.fields_for :declarations do |declaration|
+        .form-group.declaration
+          = declaration.label :answer, declaration.object.question
+          = declaration.text_area :answer
+      = paper_form.submit 'Save declarations'

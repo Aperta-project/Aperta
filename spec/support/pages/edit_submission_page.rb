@@ -1,4 +1,19 @@
 class EditSubmissionPage < Page
+  class Declaration
+    def initialize element
+      @element = element
+    end
+
+    def answer
+      @element.find('textarea').value
+    end
+
+    def answer= value
+      id = @element.find('textarea')[:id]
+      @element.fill_in id, with: value
+    end
+  end
+
   include ActionView::Helpers::JavaScriptHelper
 
   path :edit_paper
@@ -48,6 +63,14 @@ class EditSubmissionPage < Page
   def paper_type=(value)
     select = find('#paper_paper_type')
     select.select value
+  end
+
+  def declarations
+    all('.declaration').map { |d| Declaration.new d }
+  end
+
+  def save_declarations
+    click_on 'Save declarations'
   end
 
   def save

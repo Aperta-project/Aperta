@@ -6,7 +6,7 @@ Tahi.papers =
       $('<li class="author">').appendTo $('ul.authors')
 
 $(document).ready ->
-  if $('[contenteditable!=false]').length > 0
+  if $("[contenteditable]").length > 0
     for elementId in ['body_editable', 'abstract_editable']
       CKEDITOR.inline elementId,
         extraPlugins: 'sharedspace'

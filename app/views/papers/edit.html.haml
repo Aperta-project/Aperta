@@ -39,7 +39,7 @@
               %button.btn.btn-default{"data-dismiss" => "modal", type: "button"} Close
               = button_tag "Upload File", type: 'submit', class: 'btn btn-primary'
 
-    = form_for @paper, remote: true, html: { class: 'js-submit-on-change edit_paper' } do |f|
+    = form_for @paper, remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
       .form-group
         = f.label :paper_type
         = f.select :paper_type, Paper::PAPER_TYPES.map { |t| [t.humanize, t] }

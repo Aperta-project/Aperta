@@ -16,7 +16,7 @@ describe DocumentParser do
 
     describe "body" do
       let :original_body do
-        "<h1 class=\"title\">Title here</h1><h2 class=\"subtitle\">Subtitle</h2>\n<p/>\n<p>Turtles.</p>\n<p/>\n<p><a name=\"_GoBack\"></a>The end.</p>\n<p/>\n<p/>"
+        "<p><br /></p><h1 class=\"title\">Title here</h1><h2 class=\"subtitle\">Subtitle</h2>\n<p/>\n<p>Turtles.</p>\n<p/>\n<p><a name=\"_GoBack\"></a>The end.</p>\n<p/>\n<p/>"
       end
       let :expected_body do
         "<h2 class=\"subtitle\">Subtitle</h2><p>Turtles.</p><p><a name=\"_GoBack\"></a>The end.</p>"

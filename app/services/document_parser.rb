@@ -21,7 +21,8 @@ class DocumentParser
   end
 
   def body
-    Nokogiri::HTML(output :html).css('body').children[1..-1].to_html.strip
+    elements = Nokogiri::HTML(output :html).css('body').children[1..-1]
+    Nokogiri::XML::NodeSet.new(elements.document, elements.reject { |e| e.inner_text.blank? }).to_html.strip
   end
 
   def to_hash

@@ -1,3 +1,5 @@
+class PageNotReady < Capybara::ElementNotFound; end
+
 class EditSubmissionPage < Page
   class Declaration
     def initialize element
@@ -85,7 +87,11 @@ class EditSubmissionPage < Page
   end
 
   def save
+    current_path = page.current_path
     click_on 'Save Paper'
+    find('body').synchronize do
+      raise PageNotReady if page.current_path == current_path
+    end
     DashboardPage.new
   end
 

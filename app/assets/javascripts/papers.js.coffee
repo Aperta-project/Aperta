@@ -3,7 +3,21 @@ Tahi.papers =
   init: ->
     $('#add_author').on 'click', (e) ->
       e.preventDefault()
-      $('<li class="author">').appendTo $('ul.authors')
+      li = $('<li class="author">')
+      li.html $('#author-template').html()
+      li.appendTo $('ul.authors')
+
+  authors: ->
+    authorsArray = []
+    $('li.author').each (index, value) ->
+      authorsArray.push({
+        first_name: $(this).children('.author-first-name').text()
+        last_name: $(this).children('.author-last-name').text()
+        affiliation: $(this).children('.author-affiliation').text()
+        email: $(this).children('.author-email').text()
+      })
+    authorsArray
+
 
 $(document).ready ->
   if $("[contenteditable]").length > 0
@@ -34,6 +48,8 @@ $(document).ready ->
           body: CKEDITOR.instances.body_editable.getData()
           abstract: CKEDITOR.instances.abstract_editable.getData()
           short_title: $.trim($('#short_title_editable').text())
+          authors: (-> JSON.stringify Tahi.papers.authors())()
+
       success: ->
         location.href = "/"
     false

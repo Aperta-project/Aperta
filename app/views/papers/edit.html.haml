@@ -15,6 +15,37 @@
       = @paper.abstract.html_safe
 
     %ul.authors
+      - @paper.authors.each do |author|
+        %li.author
+          %span.small_text First name
+          %span.author-detail.author-first-name{contenteditable: true}
+            = author["first_name"]
+          %br
+          %span.small_text Last name
+          %span.author-detail.author-last-name{contenteditable: true}
+            = author["last_name"]
+          %br
+          %span.small_text Affiliation
+          %span.author-detail.author-affiliation{contenteditable: true}
+            = author["affiliation"]
+          %br
+          %span.small_text Email
+          %span.author-detail.author-email{contenteditable: true}
+            = author["email"]
+    #author-template.hidden
+      %span.small_text First name
+      %span.author-detail.author-first-name{contenteditable: true}
+      %br
+      %span.small_text Last name
+      %span.author-detail.author-last-name{contenteditable: true}
+      %br
+      %span.small_text Affiliation
+      %span.author-detail.author-affiliation{contenteditable: true}
+      %br
+      %span.small_text Email
+      %span.author-detail.author-email{contenteditable: true}
+
+
     %a#add_author{href: '#'} Add author
 
     #body_editable.editable{contenteditable: true}

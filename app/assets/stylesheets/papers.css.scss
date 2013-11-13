@@ -8,3 +8,8 @@
 .article-metadata {
   @include make-lg-column(3);
 }
+
+.author-detail {
+  display: inline-block;
+  min-width: 100px;
+}

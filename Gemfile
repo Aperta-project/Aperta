@@ -58,6 +58,7 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara-webkit'
+  gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'
   gem "jasmine", ">= 2.0.0.rc5"

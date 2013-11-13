@@ -41,6 +41,8 @@ GEM
     capybara-webkit (1.0.0)
       capybara (~> 2.0, >= 2.0.2)
       json
+    childprocess (0.3.9)
+      ffi (~> 1.0, >= 1.0.11)
     ckeditor_rails (4.2.2)
       railties (>= 3.0)
     coderay (1.0.9)
@@ -61,6 +63,7 @@ GEM
     diff-lcs (1.2.4)
     erubis (2.7.0)
     execjs (2.0.2)
+    ffi (1.9.3)
     haml (4.0.3)
       tilt
     haml-rails (0.4)
@@ -156,6 +159,7 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
+    rubyzip (1.0.0)
     sass (3.2.12)
     sass-rails (4.0.1)
       railties (>= 4.0.0, < 5.0)
@@ -164,6 +168,11 @@ GEM
     sdoc (0.3.20)
       json (>= 1.1.3)
       rdoc (~> 3.10)
+    selenium-webdriver (2.37.0)
+      childprocess (>= 0.2.5)
+      multi_json (~> 1.0)
+      rubyzip (~> 1.0.0)
+      websocket (~> 1.0.4)
     sequel (4.3.0)
     slop (3.4.6)
     sprockets (2.10.0)
@@ -195,6 +204,7 @@ GEM
       raindrops (~> 0.7)
     warden (1.2.3)
       rack (>= 1.0)
+    websocket (1.0.7)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -223,6 +233,7 @@ DEPENDENCIES
   rspec-rails
   sass-rails (~> 4.0.0)
   sdoc
+  selenium-webdriver
   turbolinks
   uglifier (>= 1.3.0)
   unicorn

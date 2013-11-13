@@ -54,6 +54,7 @@
     %a#save_button.btn.btn-primary{href: "#", data: { url: paper_path(@paper.id) }} Save Paper
 
   %aside.article-metadata
+    = link_to 'Review and submit', new_paper_submission_path(@paper), class: 'btn-primary btn-lg btn'
     %a.btn.btn-primary.btn-lg{"href" => "#myModal", "data-toggle" => "modal"} Upload Manuscript
 
     #myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}

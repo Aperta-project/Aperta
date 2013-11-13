@@ -1,0 +1,29 @@
+%h1
+  You're about submit paper
+  = @paper.short_title
+
+%h2#paper-title= @paper.title
+
+#paper-abstract= @paper.abstract
+
+%table#paper-authors.table.table-hover
+  %tr
+    %thead Name
+    %thead Affiliation
+    %thead Email
+  - @paper.authors.each do |author|
+    %tr
+      %td= "#{author[:first_name]} #{author[:last_name]}"
+      %td= author[:affiliation]
+      %td= author[:email]
+
+%table#paper-declarations.table.table-hover
+  %tr
+    %thead Question
+    %thead Answer
+  - @paper.declarations.each do |declaration|
+    %tr
+      %td= declaration.question
+      %td= declaration.answer
+
+= button_to 'Submit', paper_submissions_path(@paper), class: 'btn-primary btn-lg btn'

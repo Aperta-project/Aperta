@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PapersController do
 
-  ALLOWED_PARAMS = [:short_title, :title, :abstract, :body, :paper_type, :authors, declarations_attributes: [:id, :answer]]
+  ALLOWED_PARAMS = [:short_title, :title, :abstract, :body, :paper_type, :authors, :submitted, declarations_attributes: [:id, :answer]]
 
   let :user do
     User.create! username: 'albert',

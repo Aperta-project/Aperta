@@ -109,6 +109,11 @@ class EditSubmissionPage < Page
     self
   end
 
+  def submit
+    click_on "Review and submit"
+    SubmitPaperPage.new
+  end
+
   private
 
   def abstract_node

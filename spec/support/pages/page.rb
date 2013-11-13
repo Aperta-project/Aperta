@@ -28,4 +28,8 @@ class Page
   def reload
     visit page.current_path
   end
+
+  def notice
+    find('p.notice').text
+  end
 end

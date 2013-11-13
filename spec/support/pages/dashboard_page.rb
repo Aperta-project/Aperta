@@ -20,6 +20,12 @@ class DashboardPage < Page
     end
   end
 
+  def submitted_papers
+    within("ul.submitted") do
+      page.all('li').map &:text
+    end
+  end
+
   def edit_submission short_title
     click_link short_title
     EditSubmissionPage.new

@@ -11,7 +11,7 @@ class Paper < ActiveRecord::Base
 
   validates :paper_type, inclusion: { in: PAPER_TYPES }
 
-  before_save :decode_authors, if: -> { authors.present? }
+  before_create :decode_authors, if: -> { authors.present? }
 
   private
 

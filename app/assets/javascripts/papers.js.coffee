@@ -26,14 +26,16 @@ $(document).ready ->
     e.preventDefault()
     $.ajax
       url: $(this).data('url') + '.json'
-      method: "PUT"
+      method: "POST"
       data:
+        _method: "patch"
         paper:
           title: $.trim($('#title_editable').text())
           body: CKEDITOR.instances.body_editable.getData()
           abstract: CKEDITOR.instances.abstract_editable.getData()
           short_title: $.trim($('#short_title_editable').text())
-      success:
-        window.location = "/"
+      success: ->
+        location.href = "/"
+    false
 
   Tahi.papers.init()

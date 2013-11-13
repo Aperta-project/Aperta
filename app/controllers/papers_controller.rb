@@ -23,7 +23,7 @@ class PapersController < ApplicationController
     if @paper.update paper_params
       respond_to do |f|
         f.html { redirect_to root_path }
-        f.json { head :ok }
+        f.json { head :no_content }
       end
     end
   end

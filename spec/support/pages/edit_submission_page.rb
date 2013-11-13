@@ -34,15 +34,11 @@ class EditSubmissionPage < Page
   end
 
   def abstract=(val)
-    abstract_node.click
-    page.execute_script "$('#abstract_editable').text('#{escape_javascript val}')"
-    abstract_node.synchronize { abstract == val }
+    page.execute_script "CKEDITOR.instances.abstract_editable.setData('#{escape_javascript val}')"
   end
 
   def body=(val)
-    body_node.click
-    page.execute_script "$('#body_editable').text('#{escape_javascript val}')"
-    body_node.synchronize { body == val }
+    page.execute_script "CKEDITOR.instances.body_editable.setData('#{escape_javascript val}')"
   end
 
   def add_author author

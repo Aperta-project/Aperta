@@ -8,9 +8,9 @@
 
 %table#paper-authors.table.table-hover
   %tr
-    %thead Name
-    %thead Affiliation
-    %thead Email
+    %th Name
+    %th Affiliation
+    %th Email
   - @paper.authors.map { |a| a.with_indifferent_access }.each do |author|
     %tr
       %td= "#{author[:first_name]} #{author[:last_name]}"
@@ -19,8 +19,8 @@
 
 %table#paper-declarations.table.table-hover
   %tr
-    %thead Question
-    %thead Answer
+    %th Question
+    %th Answer
   - @paper.declarations.each do |declaration|
     %tr
       %td= declaration.question

@@ -26,4 +26,5 @@
       %td= declaration.question
       %td= declaration.answer
 
+= link_to 'Cancel', edit_paper_path(@paper), class: 'btn-primary btn-lg btn'
 = button_to 'Submit', paper_submissions_path(@paper), class: 'btn-primary btn-lg btn'

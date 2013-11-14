@@ -17,7 +17,7 @@ describe PapersController do
   before { sign_in user }
 
   describe "GET 'show'" do
-    let(:paper) { user.papers.create! }
+    let(:paper) { user.papers.create! submitted: true }
     subject(:do_request) { get :show, id: paper.to_param }
 
     it_behaves_like "when the user is not signed in"
@@ -28,6 +28,31 @@ describe PapersController do
     it "assigns paper" do
       do_request
       expect(assigns :paper).to eq(paper)
+    end
+
+    context "when the paper is not submitted" do
+      before { paper.update_attribute(:submitted, false) }
+      it { should redirect_to(edit_paper_path paper) }
+    end
+  end
+
+  describe "GET 'edit'" do
+    let(:paper) { user.papers.create! }
+    subject(:do_request) { get :edit, id: paper.to_param }
+
+    it_behaves_like "when the user is not signed in"
+
+    it { should be_success }
+    it { should render_template :edit }
+
+    it "assigns paper" do
+      do_request
+      expect(assigns :paper).to eq(paper)
+    end
+
+    context "when the paper is submitted" do
+      before { paper.update_attribute(:submitted, true) }
+      it { should redirect_to(paper_path paper) }
     end
   end
 

@@ -3,6 +3,7 @@ class PapersController < ApplicationController
 
   def show
     @paper = current_user.papers.find(params[:id])
+    redirect_to edit_paper_path(@paper) unless @paper.submitted?
   end
 
   def new
@@ -19,6 +20,7 @@ class PapersController < ApplicationController
 
   def edit
     @paper = Paper.find(params[:id])
+    redirect_to paper_path(@paper) if @paper.submitted?
   end
 
   def update

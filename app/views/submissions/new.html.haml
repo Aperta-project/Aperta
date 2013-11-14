@@ -4,7 +4,7 @@
 
 %h2#paper-title= @paper.title
 
-#paper-abstract= @paper.abstract
+#paper-abstract= @paper.abstract.html_safe
 
 %table#paper-authors.table.table-hover
   %tr

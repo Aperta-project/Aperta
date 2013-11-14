@@ -16,6 +16,21 @@ describe PapersController do
 
   before { sign_in user }
 
+  describe "GET 'show'" do
+    let(:paper) { user.papers.create! }
+    subject(:do_request) { get :show, id: paper.to_param }
+
+    it_behaves_like "when the user is not signed in"
+
+    it { should be_success }
+    it { should render_template :show }
+
+    it "assigns paper" do
+      do_request
+      expect(assigns :paper).to eq(paper)
+    end
+  end
+
   describe "GET 'new'" do
     subject(:do_request) { get :new }
 

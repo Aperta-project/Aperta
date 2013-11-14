@@ -1,0 +1,50 @@
+%h3
+  %span#paper-short-title
+    %em= @paper.short_title
+
+.row
+  %section.article-view
+    .title
+      %h2#paper-title
+        = @paper.title
+
+    #paper-abstract
+      = @paper.abstract.html_safe
+
+    %ul.authors
+      - @paper.authors.each do |author|
+        %li.author
+          %span.small_text First name
+          %span.author-detail.author-first-name
+            = author["first_name"]
+          %br
+          %span.small_text Last name
+          %span.author-detail.author-last-name
+            = author["last_name"]
+          %br
+          %span.small_text Affiliation
+          %span.author-detail.author-affiliation
+            = author["affiliation"]
+          %br
+          %span.small_text Email
+          %span.author-detail.author-email
+            = author["email"]
+
+    #paper-body
+      = @paper.body.html_safe
+
+  %aside.article-metadata
+    #paper-type
+      Paper type:
+      %span.small_text= @paper.paper_type
+
+    %br
+    %br
+
+    %h4 Declarations
+    - @paper.declarations.each do |declaration|
+      .paper-declaration
+        .declaration-question
+          = declaration.question
+        .declaration-answer
+          = declaration.answer

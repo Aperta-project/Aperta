@@ -12,6 +12,6 @@
 <h3>Submitted Papers</h3>
 <ul class="submitted">
   <%- @submitted_papers.each do |paper| %>
-    <li><%= link_to paper.short_title, edit_paper_path(paper) %></li>
+    <li><%= link_to paper.short_title, paper_path(paper) %></li>
   <% end %>
 </ul>

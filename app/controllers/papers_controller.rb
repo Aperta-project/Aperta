@@ -1,6 +1,10 @@
 class PapersController < ApplicationController
   before_filter :authenticate_user!
 
+  def show
+    @paper = current_user.papers.find(params[:id])
+  end
+
   def new
     @paper = Paper.new
   end

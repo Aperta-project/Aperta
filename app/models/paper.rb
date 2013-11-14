@@ -4,7 +4,7 @@ class Paper < ActiveRecord::Base
   after_initialize :initialize_defaults
 
   belongs_to :user
-  has_many :declarations
+  has_many :declarations, -> { order :id }
 
   accepts_nested_attributes_for :declarations
   serialize :authors, Array

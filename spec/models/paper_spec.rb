@@ -77,4 +77,22 @@ describe Paper do
       end
     end
   end
+
+  describe "associations" do
+    let(:paper) do
+      Paper.create! declarations: [
+        Declaration.new(question: "Q1"),
+        Declaration.new(question: "Q2")
+      ]
+    end
+
+    describe "declarations" do
+      it "returns them in order for consistency" do
+        old_declarations = paper.declarations
+        paper.declarations.first.answer = 'icecream'
+        paper.declarations.first.save!
+        expect(paper.reload.declarations).to eq(old_declarations)
+      end
+    end
+  end
 end

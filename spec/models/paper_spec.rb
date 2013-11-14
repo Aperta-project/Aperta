@@ -58,4 +58,23 @@ describe Paper do
       end
     end
   end
+
+  describe "scopes" do
+    let(:ongoing_paper)   { Paper.create! submitted: false }
+    let(:submitted_paper) { Paper.create! submitted: true  }
+
+    describe ".submitted" do
+      it "returns submitted papers only" do
+        expect(Paper.submitted).to_not include(ongoing_paper)
+        expect(Paper.submitted).to include(submitted_paper)
+      end
+    end
+
+    describe ".ongoing" do
+      it "returns submitted papers only" do
+        expect(Paper.ongoing).to_not include(submitted_paper)
+        expect(Paper.ongoing).to include(ongoing_paper)
+      end
+    end
+  end
 end

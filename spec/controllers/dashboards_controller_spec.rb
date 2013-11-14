@@ -30,7 +30,8 @@ describe DashboardsController do
 
       it "assigns papers" do
         do_request
-        expect(assigns(:papers)).to match_array user.papers
+        expect(assigns(:ongoing_papers)).to match_array user.papers
+        expect(assigns(:submitted_papers)).to be_empty
       end
     end
 

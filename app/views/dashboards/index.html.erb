@@ -4,14 +4,14 @@
 
 <h3>Submissions</h3>
 <ul class="submissions">
-  <%- @papers.each do |paper| %>
+  <%- @ongoing_papers.each do |paper| %>
     <li><%= link_to paper.short_title, edit_paper_path(paper) %></li>
   <% end %>
 </ul>
 
 <h3>Submitted Papers</h3>
 <ul class="submitted">
-  <%- @papers.each do |paper| %>
+  <%- @submitted_papers.each do |paper| %>
     <li><%= link_to paper.short_title, edit_paper_path(paper) %></li>
   <% end %>
 </ul>

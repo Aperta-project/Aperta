@@ -11,6 +11,14 @@ class Paper < ActiveRecord::Base
 
   validates :paper_type, inclusion: { in: PAPER_TYPES }
 
+  def self.submitted
+    where(submitted: true)
+  end
+
+  def self.ongoing
+    where(submitted: false)
+  end
+
   private
 
   def initialize_defaults

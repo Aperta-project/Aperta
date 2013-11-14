@@ -11,7 +11,8 @@ shared_examples_for "a controller enforcing strong parameters" do
   let(:params_id) { nil }
 
   it "allows specified params" do
-    fake_params = double(:params, :[] => params_id)
+    fake_params = double(:params)
+    fake_params.stub(:[]) { |key| key.to_s == 'id' ? params_id : {} }
     model_params = double(:model_params)
 
     controller.stub(:params).and_return fake_params

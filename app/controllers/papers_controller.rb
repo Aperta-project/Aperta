@@ -19,6 +19,7 @@ class PapersController < ApplicationController
 
   def update
     @paper = Paper.find(params[:id])
+    params[:paper][:authors] = JSON.parse params[:paper][:authors] if params[:paper].has_key? :authors
 
     if @paper.update paper_params
       respond_to do |f|
@@ -39,6 +40,6 @@ class PapersController < ApplicationController
   private
 
   def paper_params
-    params.require(:paper).permit(:short_title, :title, :abstract, :body, :paper_type, :authors, :submitted, declarations_attributes: [:id, :answer])
+    params.require(:paper).permit(:short_title, :title, :abstract, :body, :paper_type, :submitted, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email])
   end
 end

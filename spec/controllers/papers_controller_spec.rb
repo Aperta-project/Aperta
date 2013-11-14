@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PapersController do
 
-  ALLOWED_PARAMS = [:short_title, :title, :abstract, :body, :paper_type, :authors, :submitted, declarations_attributes: [:id, :answer]]
+  ALLOWED_PARAMS = [:short_title, :title, :abstract, :body, :paper_type, :submitted, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email]]
 
   let :user do
     User.create! username: 'albert',
@@ -56,9 +56,33 @@ describe PapersController do
   describe "PUT 'update'" do
     let(:paper) { Paper.create! }
 
+    let(:params) { {} }
+
     subject(:do_request) do
-      put :update, { id: paper.to_param, paper: { short_title: 'ABC101' } }
+      put :update, { id: paper.to_param, paper: { short_title: 'ABC101' }.merge(params) }
     end
+
+    describe "authors" do
+      context "when there is an authors key in params" do
+        let(:authors) { [{ first_name: 'Bob', last_name: 'Marley', affiliation: "Jamaica Inc.", email: 'jamaican@example.com' }] }
+        let(:params) { { authors: authors.to_json } }
+
+        it "decodes JSON string into an array before saving" do
+          do_request
+          expect(paper.reload.authors).to eq authors.map(&:with_indifferent_access)
+        end
+      end
+
+      context "when authors key is not present" do
+        let(:params) { {} }
+
+        it "decodes JSON string into an array before saving" do
+          do_request
+          expect(paper.reload.authors).to be_empty
+        end
+      end
+    end
+
 
     it_behaves_like "when the user is not signed in"
 

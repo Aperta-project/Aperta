@@ -11,7 +11,7 @@
     %thead Name
     %thead Affiliation
     %thead Email
-  - @paper.authors.each do |author|
+  - @paper.authors.map { |a| a.with_indifferent_access }.each do |author|
     %tr
       %td= "#{author[:first_name]} #{author[:last_name]}"
       %td= author[:affiliation]

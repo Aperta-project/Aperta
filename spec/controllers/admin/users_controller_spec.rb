@@ -31,7 +31,7 @@ describe Admin::UsersController do
   end
 
   describe "PUT 'update'" do
-    subject(:do_request) { put :update, {id: user.to_param, user: {admin: true}} }
+    subject(:do_request) { put :update, { id: user.to_param, user: { admin: true } } }
 
     it_behaves_like "when the user is not signed in"
 

@@ -7,7 +7,7 @@ class Admin::UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    
+
     if @user.update user_params
       respond_to do |f|
         f.html { redirect_to root_path }

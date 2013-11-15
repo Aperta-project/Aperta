@@ -17,7 +17,7 @@ shared_examples_for "a controller enforcing strong parameters" do
 
     controller.stub(:params).and_return fake_params
     expect(fake_params).to receive(:require).with(model_identifier).and_return(model_params)
-    expect(model_params).to receive(:permit).with *allowed_params
+    expect(model_params).to receive(:permit).with *expected_params
 
     do_request
   end

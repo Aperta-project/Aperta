@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PapersController do
 
-  ALLOWED_PARAMS = [:short_title, :title, :abstract, :body, :paper_type, :submitted, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email]]
+  let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :submitted, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email]] }
 
   let :user do
     User.create! username: 'albert',
@@ -74,7 +74,7 @@ describe PapersController do
 
     it_behaves_like "a controller enforcing strong parameters" do
       let(:model_identifier) { :paper }
-      let(:allowed_params) { ALLOWED_PARAMS }
+      let(:expected_params) { permitted_params }
     end
 
     it "saves a new paper record" do
@@ -129,7 +129,7 @@ describe PapersController do
     it_behaves_like "a controller enforcing strong parameters" do
       let(:params_id) { paper.to_param }
       let(:model_identifier) { :paper }
-      let(:allowed_params) { ALLOWED_PARAMS }
+      let(:expected_params) { permitted_params }
     end
 
     it "redirects to dashboard" do

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Admin::UsersController do
-  ALLOWED_PARAMS = [:admin]
+  let(:permitted_params) { [:admin] }
 
   let :user do
     User.create! username: 'albert',
@@ -37,7 +37,7 @@ describe Admin::UsersController do
 
     it_behaves_like "a controller enforcing strong parameters" do
       let(:model_identifier) { :user }
-      let(:allowed_params) { ALLOWED_PARAMS }
+      let(:expected_params) { permitted_params }
       let(:params_id) { user.to_param }
     end
 

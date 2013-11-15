@@ -10,7 +10,8 @@ describe Admin::UsersController do
       email: 'einstein@example.org',
       password: 'password',
       password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
+      affiliation: 'Universität Zürich',
+      admin: true
   end
 
   before { sign_in user }
@@ -22,7 +23,7 @@ describe Admin::UsersController do
     it { should render_template :index }
 
     it_behaves_like "when the user is not signed in"
-    #it_behaves_like "when the user is not an admin"
+    it_behaves_like "when the user is not an admin"
 
     it "assigns users to be all users" do
       do_request
@@ -31,9 +32,10 @@ describe Admin::UsersController do
   end
 
   describe "PUT 'update'" do
-    subject(:do_request) { put :update, { id: user.to_param, user: { admin: true } } }
+    subject(:do_request) { put :update, { id: user.to_param, user: { admin: false } } }
 
     it_behaves_like "when the user is not signed in"
+    it_behaves_like "when the user is not an admin"
 
     it_behaves_like "a controller enforcing strong parameters" do
       let(:model_identifier) { :user }
@@ -41,14 +43,10 @@ describe Admin::UsersController do
       let(:params_id) { user.to_param }
     end
 
-    it "assigns the user" do
-      do_request
-      expect(assigns :user).to eq(user)
-    end
-
     it "updates the user's attributes" do
-      do_request
-      expect(assigns(:user)).to be_an_admin
+      expect do
+        do_request
+      end.to change { user.reload.admin? }.from(true).to false
     end
   end
 

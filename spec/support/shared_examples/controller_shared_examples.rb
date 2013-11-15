@@ -7,6 +7,21 @@ shared_examples_for "when the user is not signed in" do
   end
 end
 
+shared_examples_for "when the user is not an admin" do
+  before do
+    user.update_attribute :admin, false
+    do_request
+  end
+
+  it "renders a flash alert" do
+    expect(flash[:alert]).to eq "Permission denied"
+  end
+
+  it "redirects to the root path" do
+    expect(response).to redirect_to root_path
+  end
+end
+
 shared_examples_for "a controller enforcing strong parameters" do
   let(:params_id) { nil }
 

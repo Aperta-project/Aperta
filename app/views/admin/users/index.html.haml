@@ -1,0 +1,13 @@
+%h1 Users
+%table.users
+  %tr
+    %th ID
+    %th Username
+    %th Admin?
+  - @users.each do |user|
+    %tr.user
+      %td= user.id
+      %td= user.username
+      %td
+        = form_for user, url: admin_user_path(user), remote: true, html: { class: 'js-submit-on-change' } do |f|
+          = f.check_box :admin

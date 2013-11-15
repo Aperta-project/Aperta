@@ -11,11 +11,11 @@ class AdminUsersPage < Page
     end
 
     def admin?
-      !!@element.all('td')[2].find('input[type="checkbox"]').checked?
+      !!@element.all('td')[4].find('input[type="checkbox"]').checked?
     end
 
     def set_admin
-      @element.all('td')[2].find('input[type="checkbox"]').set(true)
+      @element.all('td')[4].find('input[type="checkbox"]').set(true)
     end
   end
 

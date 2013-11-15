@@ -32,6 +32,21 @@ describe DashboardsController do
         do_request
         expect(assigns(:ongoing_papers)).to match_array user.papers
         expect(assigns(:submitted_papers)).to be_empty
+        expect(assigns(:all_submitted_papers)).to_not be
+      end
+
+      context "when the user is an admin" do
+        before do
+          user.update_attribute(:admin, true)
+          Paper.create! submitted: true
+        end
+
+        it "assigns papers" do
+          do_request
+          expect(assigns(:ongoing_papers)).to match_array user.papers
+          expect(assigns(:submitted_papers)).to be_empty
+          expect(assigns(:all_submitted_papers)).to match_array Paper.submitted
+        end
       end
     end
 

@@ -4,5 +4,6 @@ class DashboardsController < ApplicationController
   def index
     @ongoing_papers = current_user.papers.ongoing
     @submitted_papers = current_user.papers.submitted
+    @all_submitted_papers = Paper.submitted if current_user.admin?
   end
 end

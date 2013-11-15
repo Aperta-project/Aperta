@@ -20,6 +20,12 @@ class DashboardPage < Page
     end
   end
 
+  def all_submitted_papers
+    within("ul.all_submitted") do
+      page.all('li').map &:text
+    end
+  end
+
   def submitted_papers
     within("ul.submitted") do
       page.all('li').map &:text

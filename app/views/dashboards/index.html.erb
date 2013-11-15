@@ -15,3 +15,12 @@
     <li><%= link_to paper.short_title, paper_path(paper) %></li>
   <% end %>
 </ul>
+
+<% if @all_submitted_papers %>
+  <h3>All Submitted Papers</h3>
+  <ul class="all_submitted">
+    <%- @all_submitted_papers.each do |paper| %>
+      <li><%= link_to paper.short_title, paper_path(paper) %></li>
+    <% end %>
+  </ul>
+<% end %>

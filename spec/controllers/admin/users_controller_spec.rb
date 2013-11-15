@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Admin::UsersController do
+  ALLOWED_PARAMS = [:admin]
 
   let :user do
     User.create! username: 'albert',
@@ -33,6 +34,12 @@ describe Admin::UsersController do
     subject(:do_request) { put :update, {id: user.to_param, user: {admin: true}} }
 
     it_behaves_like "when the user is not signed in"
+
+    it_behaves_like "a controller enforcing strong parameters" do
+      let(:model_identifier) { :user }
+      let(:allowed_params) { ALLOWED_PARAMS }
+      let(:params_id) { user.to_param }
+    end
 
     it "assigns the user" do
       do_request

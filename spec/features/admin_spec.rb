@@ -8,7 +8,8 @@ feature "Tahi administration", js: true do
       email: 'einstein@example.org',
       password: 'password',
       password_confirmation: 'password',
-      affiliation: 'universität zürich'
+      affiliation: 'universität zürich',
+      admin: true
   end
 
   let!(:user) do

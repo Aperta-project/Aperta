@@ -29,4 +29,20 @@ describe Admin::UsersController do
     end
   end
 
+  describe "PUT 'update'" do
+    subject(:do_request) { put :update, {id: user.to_param, user: {admin: true}} }
+
+    it_behaves_like "when the user is not signed in"
+
+    it "assigns the user" do
+      do_request
+      expect(assigns :user).to eq(user)
+    end
+
+    it "updates the user's attributes" do
+      do_request
+      expect(assigns(:user)).to be_an_admin
+    end
+  end
+
 end

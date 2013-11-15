@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Tahi administration" do
+feature "Tahi administration", js: true do
   let(:admin) do
     User.create! username: 'albert',
       first_name: 'albert',
@@ -32,9 +32,9 @@ feature "Tahi administration" do
 
     user_record = users.detect { |u| u.id == user.id }
     expect(user_record).to_not be_admin
-    user_record.set_admin
 
-    dashboard_page = admin_page.save
+    user_record.set_admin
+    dashboard_page = admin_page.dashboard
     admin_page = dashboard_page.visit_admin
     user_record = admin_page.users.detect { |u| u.id == user.id }
     expect(user_record).to be_admin

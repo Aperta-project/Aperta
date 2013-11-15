@@ -13,9 +13,18 @@ class AdminUsersPage < Page
     def admin?
       !!@element.all('td')[2].find('input[type="checkbox"]').checked?
     end
+
+    def set_admin
+      @element.all('td')[2].find('input[type="checkbox"]').set(true)
+    end
   end
 
   def users
     all('.user').map { |u| UserFragment.new u }
+  end
+
+  def dashboard
+    visit '/'
+    DashboardPage.new
   end
 end

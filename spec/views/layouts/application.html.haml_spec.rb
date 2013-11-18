@@ -1,6 +1,6 @@
 require 'spec_helper'
 describe "layouts/application" do
-  before { view.stub(:current_user).and_return current_user }
+  before { allow(view).to receive(:current_user).and_return(current_user) }
 
   let(:current_user) { mock_model User, admin?: false }
 
@@ -15,8 +15,7 @@ describe "layouts/application" do
   end
 
   context "when the user is an admin" do
-    before { current_user.stub(:admin?).and_return true }
+    before { allow(current_user).to receive(:admin?).and_return true }
     it { should have_link 'Admin' }
   end
 end
-

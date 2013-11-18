@@ -56,7 +56,9 @@ group :development do
 end
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', "~> 3.0.0.beta1"
+  gem "rspec-its", "~> 1.0.0.pre"
+  gem 'capybara', "~> 2.2.0.rc1"
   gem 'capybara-webkit'
   gem 'selenium-webdriver'
   gem 'launchy'

@@ -3,7 +3,7 @@ describe "dashboards/index" do
   let(:all_submitted_papers) { [] }
 
   before do
-    view.stub(:current_user).and_return mock_model(User)
+    allow(view).to receive(:current_user).and_return(mock_model User)
     assign(:ongoing_papers, [])
     assign(:submitted_papers, [])
     assign(:all_submitted_papers, all_submitted_papers)

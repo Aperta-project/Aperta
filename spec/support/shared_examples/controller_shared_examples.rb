@@ -27,10 +27,10 @@ shared_examples_for "a controller enforcing strong parameters" do
 
   it "allows specified params" do
     fake_params = double(:params)
-    fake_params.stub(:[]) { |key| key.to_s == 'id' ? params_id : {} }
+    allow(fake_params).to receive(:[]) { |key| key.to_s == 'id' ? params_id : {} }
     model_params = double(:model_params)
 
-    controller.stub(:params).and_return fake_params
+    allow(controller).to receive(:params).and_return(fake_params)
     expect(fake_params).to receive(:require).with(model_identifier).and_return(model_params)
     expect(model_params).to receive(:permit).with *expected_params
 

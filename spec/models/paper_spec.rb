@@ -33,7 +33,7 @@ describe Paper do
           Declaration.new(question: 'Question 2'),
           Declaration.new(question: 'Question 3')
         ]
-        Declaration.stub(:default_declarations).and_return default_declarations
+        allow(Declaration).to receive(:default_declarations).and_return(default_declarations)
 
         expect(paper.declarations).to match_array default_declarations
       end
@@ -67,7 +67,7 @@ describe Paper do
           expect(paper).to be_valid
         end
         paper.paper_type = 'invalid paper type'
-        expect(paper).to have(1).error_on :paper_type
+        expect(paper.error_on(:paper_type).size).to eq(1)
       end
     end
   end

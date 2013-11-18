@@ -29,7 +29,7 @@ feature "Tahi administration", js: true do
   scenario "Admin can toggle the admin bit on other users" do
     admin_page = DashboardPage.visit.visit_admin
     users = admin_page.users
-    expect(users).to have(2).user_records
+    expect(users.size).to eq(2)
 
     user_record = users.detect { |u| u.id == user.id }
     expect(user_record).to_not be_admin

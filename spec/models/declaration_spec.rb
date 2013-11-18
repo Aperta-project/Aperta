@@ -13,7 +13,7 @@ describe Declaration do
     subject(:declarations) { Declaration.default_declarations }
 
     it "returns an array of declaration instances for each default question" do
-      expect(declarations).to have(3).items
+      expect(declarations.size).to eq(3)
       expect(declarations[0].question).to eq "What is your mother's maiden name?"
       expect(declarations[0].answer).to be_nil
       expect(declarations[1].question).to eq "What was your favorite pet's name?"
@@ -23,7 +23,7 @@ describe Declaration do
     end
 
     it "does not persist any of the declarations" do
-      expect(declarations.all? &:new_record?).to be_true
+      expect(declarations.all? &:new_record?).to be true
     end
   end
 end

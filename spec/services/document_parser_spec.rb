@@ -22,9 +22,10 @@ describe DocumentParser do
         "<h2 class=\"subtitle\">Subtitle</h2><p>Turtles.</p><p><a name=\"_GoBack\"></a>The end.</p>"
       end
 
-      let(:body) { DocumentParser.new(filename).body }
+      let(:document) { DocumentParser.new filename }
+      let(:body) { document.body }
 
-      before { DocumentParser.any_instance.stub(:output).and_return original_body }
+      before { allow(document).to receive(:output).and_return(original_body) }
 
       it "doesn't contain empty <p> tags" do
         expect(body).to eq expected_body

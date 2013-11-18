@@ -163,7 +163,7 @@ describe PapersController do
 
     let(:uploaded_file) do
       double(:uploaded_file, path: '/path/to/file.docx').tap do |d|
-        d.stub(:to_param).and_return d
+        allow(d).to receive(:to_param).and_return(d)
       end
     end
 
@@ -172,8 +172,10 @@ describe PapersController do
     end
 
     before do
-      DocumentParser.stub(:parse).and_return(title: 'This is a Title About Turtles',
-        body: "Heroes in a half shell! Turtle power!")
+      allow(DocumentParser).to receive(:parse).and_return(
+        title: 'This is a Title About Turtles',
+        body: "Heroes in a half shell! Turtle power!"
+      )
     end
 
     it_behaves_like "when the user is not signed in"

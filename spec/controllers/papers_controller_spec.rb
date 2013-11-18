@@ -34,6 +34,16 @@ describe PapersController do
       before { paper.update_attribute(:submitted, false) }
       it { should redirect_to(edit_paper_path paper) }
     end
+
+    context "when the user is an admin" do
+      let(:paper) { Paper.create! submitted: true }
+      before { user.update_attribute(:admin, true) }
+
+      it "assigns a submitted paper" do
+        do_request
+        expect(assigns :paper).to eq(paper)
+      end
+    end
   end
 
   describe "GET 'edit'" do

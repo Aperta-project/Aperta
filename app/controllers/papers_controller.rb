@@ -2,7 +2,8 @@ class PapersController < ApplicationController
   before_filter :authenticate_user!
 
   def show
-    @paper = current_user.papers.find(params[:id])
+    @paper = current_paper || submitted_paper_for_admin
+    raise ActiveRecord::RecordNotFound unless @paper
     redirect_to edit_paper_path(@paper) unless @paper.submitted?
   end
 
@@ -44,6 +45,14 @@ class PapersController < ApplicationController
   end
 
   private
+
+  def submitted_paper_for_admin
+    Paper.where(id: params[:id], submitted: true).first if current_user.admin?
+  end
+
+  def current_paper
+    current_user.papers.where(id: params[:id]).first
+  end
 
   def paper_params
     params.require(:paper).permit(:short_title, :title, :abstract, :body, :paper_type, :submitted, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email])

@@ -30,10 +30,10 @@ $(document).ready ->
         toolbar: [
           [ 'Styles', 'Format', 'FontSize' ]
           [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ]
-          [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'CreateDiv', 'Table']
+          [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'Table' ]
           [ 'PasteFromWord' ],
-          [ 'Link', 'Unlink', 'Anchor']
-          [ 'Find', 'Replace', '-', 'Scayt', '-', 'ShowBlocks' ]
+          [ 'Link', 'Unlink', 'Anchor' ]
+          [ 'Find', 'Replace', '-', 'Scayt' ]
         ]
 
   $('#save_button').on 'click', (e) ->

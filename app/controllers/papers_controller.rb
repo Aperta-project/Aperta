@@ -16,6 +16,8 @@ class PapersController < ApplicationController
 
     if @paper.save
       redirect_to edit_paper_path @paper
+    else
+      render :new
     end
   end
 

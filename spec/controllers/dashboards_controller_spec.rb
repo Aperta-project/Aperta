@@ -24,8 +24,8 @@ describe DashboardsController do
 
     describe "papers" do
       before do
-        Paper.create!
-        Paper.create! user: user
+        Paper.create! short_title: 'paper-dashboard'
+        Paper.create! user: user, short_title: 'users-paper-dashboard'
       end
 
       it "assigns papers" do
@@ -38,7 +38,7 @@ describe DashboardsController do
       context "when the user is an admin" do
         before do
           user.update_attribute(:admin, true)
-          Paper.create! submitted: true
+          Paper.create! submitted: true, short_title: 'submitted-paper-dashboard'
         end
 
         it "assigns papers" do

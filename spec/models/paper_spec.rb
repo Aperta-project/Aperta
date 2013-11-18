@@ -1,23 +1,27 @@
 require 'spec_helper'
 
 describe Paper do
+  let(:paper) { Paper.new short_title: 'Example' }
+
   describe "initialization" do
     describe "paper_type" do
       context "when no paper_type is specified" do
         it "defaults to research" do
-          expect(Paper.new.paper_type).to eq 'research'
+          expect(paper.paper_type).to eq 'research'
         end
       end
 
       context "when paper_type is the empty string" do
         it "defaults to research" do
-          expect(Paper.new(paper_type: '').paper_type).to eq 'research'
+          paper = Paper.new short_title: 'Example', paper_type: ''
+          expect(paper.paper_type).to eq 'research'
         end
       end
 
       context "when paper_type is specified" do
         it "uses specified paper_type" do
-          expect(Paper.new(paper_type: 'foobar').paper_type).to eq 'foobar'
+          paper.paper_type = 'foobar'
+          expect(paper.paper_type).to eq 'foobar'
         end
       end
     end
@@ -31,14 +35,13 @@ describe Paper do
         ]
         Declaration.stub(:default_declarations).and_return default_declarations
 
-        paper = Paper.new
         expect(paper.declarations).to match_array default_declarations
       end
 
       context "when declarations are specified" do
         it "uses provided declarations" do
           declarations = [Declaration.new(question: 'Question')]
-          paper = Paper.new declarations: declarations
+          paper.declarations = declarations
           expect(paper.declarations).to match_array declarations
         end
       end
@@ -46,9 +49,19 @@ describe Paper do
   end
 
   describe "validations" do
+    describe "short_title" do
+      it "must be unique" do
+        expect(Paper.new).to_not be_valid
+      end
+
+      it "must be present" do
+        Paper.create! short_title: 'Duplicate'
+        expect(Paper.new short_title: 'Duplicate').to_not be_valid
+      end
+    end
+
     describe "paper_type" do
       it "must be one of Paper::PAPER_TYPES" do
-        paper = Paper.new
         Paper::PAPER_TYPES.each do |type|
           paper.paper_type = type
           expect(paper).to be_valid
@@ -60,8 +73,8 @@ describe Paper do
   end
 
   describe "scopes" do
-    let(:ongoing_paper)   { Paper.create! submitted: false }
-    let(:submitted_paper) { Paper.create! submitted: true  }
+    let(:ongoing_paper)   { Paper.create! submitted: false, short_title: 'Ongoing' }
+    let(:submitted_paper) { Paper.create! submitted: true, short_title: 'Submitted' }
 
     describe ".submitted" do
       it "returns submitted papers only" do
@@ -80,10 +93,11 @@ describe Paper do
 
   describe "associations" do
     let(:paper) do
-      Paper.create! declarations: [
-        Declaration.new(question: "Q1"),
-        Declaration.new(question: "Q2")
-      ]
+      Paper.create! short_title: 'Paper with declarations',
+        declarations: [
+          Declaration.new(question: "Q1"),
+          Declaration.new(question: "Q2")
+        ]
     end
 
     describe "declarations" do

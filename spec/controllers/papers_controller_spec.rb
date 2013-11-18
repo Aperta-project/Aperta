@@ -17,7 +17,7 @@ describe PapersController do
   before { sign_in user }
 
   describe "GET 'show'" do
-    let(:paper) { user.papers.create! submitted: true }
+    let(:paper) { user.papers.create! submitted: true, short_title: 'submitted-paper' }
     subject(:do_request) { get :show, id: paper.to_param }
 
     it_behaves_like "when the user is not signed in"
@@ -36,7 +36,7 @@ describe PapersController do
     end
 
     context "when the user is an admin" do
-      let(:paper) { Paper.create! submitted: true }
+      let(:paper) { Paper.create! submitted: true, short_title: 'submitted-paper' }
       before { user.update_attribute(:admin, true) }
 
       it "assigns a submitted paper" do
@@ -47,7 +47,7 @@ describe PapersController do
   end
 
   describe "GET 'edit'" do
-    let(:paper) { user.papers.create! }
+    let(:paper) { user.papers.create! short_title: 'user\'s paper'}
     subject(:do_request) { get :edit, id: paper.to_param }
 
     it_behaves_like "when the user is not signed in"
@@ -101,10 +101,15 @@ describe PapersController do
       do_request
       expect(response).to redirect_to(edit_paper_path Paper.first)
     end
+
+    it "renders new template if the paper can't be saved" do
+      post :create, { paper: { short_title: '' } }
+      expect(response).to render_template(:new)
+    end
   end
 
   describe "PUT 'update'" do
-    let(:paper) { Paper.create! }
+    let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated' }
 
     let(:params) { {} }
 
@@ -154,7 +159,7 @@ describe PapersController do
   end
 
   describe "POST 'upload'" do
-    let(:paper) { Paper.create! }
+    let(:paper) { Paper.create! short_title: 'paper-needs-uploads' }
 
     let(:uploaded_file) do
       double(:uploaded_file, path: '/path/to/file.docx').tap do |d|

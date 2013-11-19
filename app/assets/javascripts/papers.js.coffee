@@ -20,6 +20,15 @@ Tahi.papers =
 
 
 $(document).ready ->
+  $('header').scrollToFixed()
+  $('#toolbar').scrollToFixed(marginTop: $('header h3').outerHeight(true))
+
+  $('main > aside').scrollToFixed 
+    marginTop: ->
+      marginTop = $(window).height() - $('#cart').outerHeight(true) - 20
+      return 20 if (marginTop >= 0)
+      marginTop
+
   if $("[contenteditable]").length > 0
     for elementId in ['body_editable', 'abstract_editable']
       CKEDITOR.inline elementId,

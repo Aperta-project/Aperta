@@ -17,6 +17,7 @@
 //= require turbolinks
 //= require ckeditor-jquery
 //= require ckeditor/plugins/sharedspace/sharedspace
+//= require scrollToFixed
 //= require_tree .
 
 $(document).ready(function() {

@@ -1,15 +1,24 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins";
 
-.article-view {
-  @include make-lg-column(9);
-}
-
-.article-metadata {
-  @include make-lg-column(3);
-}
 
 .author-detail {
   display: inline-block;
   min-width: 100px;
+}
+
+main, header {
+  @extend .row;
+
+  > article {
+    @include make-lg-column(9);
+  }
+
+  > aside {
+    @include make-lg-column(3);
+  }
+}
+
+header > aside {
+  margin: 20px 0 10px 0;
 }

@@ -1,11 +1,15 @@
-%h3
-  Editing
-  %span#short_title_editable{contenteditable: true}
-    %em= @paper.short_title
+%header
+  %article
+    %h3
+      %span#short_title_editable{contenteditable: true}
+        %em= @paper.short_title
+  %aside
+    %a#save_button.btn.btn-primary{href: "#", data: { url: paper_path(@paper.id) }} Save
+    = link_to 'Submit', new_paper_submission_path(@paper), class: 'btn-primary btn'
 
-.row
-  %section.article-view
-    #ckeditor-toolbar
+%main
+  %article
+    #toolbar
 
     .title
       %h2#title_editable{contenteditable: true}
@@ -51,10 +55,7 @@
     #body_editable.editable{contenteditable: true}
       = @paper.body.html_safe
 
-    %a#save_button.btn.btn-primary{href: "#", data: { url: paper_path(@paper.id) }} Save Paper
-
-  %aside.article-metadata
-    = link_to 'Review and submit', new_paper_submission_path(@paper), class: 'btn-primary btn-lg btn'
+  %aside
     %a.btn.btn-primary.btn-lg{"href" => "#myModal", "data-toggle" => "modal"} Upload Manuscript
 
     #myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}

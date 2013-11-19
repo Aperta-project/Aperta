@@ -26,7 +26,7 @@ $(document).ready ->
         extraPlugins: 'sharedspace'
         removePlugins: 'floatingspace,resize'
         sharedSpaces:
-          top: 'ckeditor-toolbar'
+          top: 'toolbar'
         toolbar: [
           [ 'Styles', 'Format', 'FontSize' ]
           [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ]

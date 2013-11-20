@@ -1,4 +1,4 @@
-%header
+%header.row
   %article
     %h3
       %span#short_title_editable{contenteditable: true}
@@ -7,7 +7,7 @@
     %a#save_button.btn.btn-primary{href: "#", data: { url: paper_path(@paper.id) }} Save
     = link_to 'Submit', new_paper_submission_path(@paper), class: 'btn-primary btn'
 
-%main
+%main.row
   %article
     #toolbar
 
@@ -58,23 +58,6 @@
   %aside
     %a.btn.btn-primary.btn-lg{"href" => "#myModal", "data-toggle" => "modal"} Upload Manuscript
 
-    #myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
-      .modal-dialog
-        .modal-content
-          .modal-header
-            %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
-            %h4#myModalLabel.modal-title Upload File
-          = form_tag({action: :upload}, multipart: true) do
-            .modal-body
-              .form-group
-                = label_tag :upload_file, 'Upload Word Document'
-                = file_field_tag :upload_file, class: 'form-control'
-                %p.help-block Uploading a file will replace your current work.
-
-            .modal-footer
-              %button.btn.btn-default{"data-dismiss" => "modal", type: "button"} Close
-              = button_tag "Upload File", type: 'submit', class: 'btn btn-primary'
-
     = form_for @paper, remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
       .form-group
         = f.label :paper_type
@@ -90,3 +73,20 @@
           = declaration.label :answer, declaration.object.question
           = declaration.text_area :answer
       = paper_form.submit 'Save declarations'
+
+#myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+        %h4#myModalLabel.modal-title Upload File
+      = form_tag({action: :upload}, multipart: true) do
+        .modal-body
+          .form-group
+            = label_tag :upload_file, 'Upload Word Document'
+            = file_field_tag :upload_file, class: 'form-control'
+            %p.help-block Uploading a file will replace your current work.
+
+        .modal-footer
+          %button.btn.btn-default{"data-dismiss" => "modal", type: "button"} Close
+          = button_tag "Upload File", type: 'submit', class: 'btn btn-primary'

@@ -6,6 +6,7 @@ Tahi.papers =
       li = $('<li class="author">')
       li.html $('#author-template').html()
       li.appendTo $('ul.authors')
+    @fixArticleControls()
 
   authors: ->
     authorsArray = []
@@ -18,16 +19,15 @@ Tahi.papers =
       })
     authorsArray
 
+  fixArticleControls: ->
+    $('header').scrollToFixed()
+    $('#toolbar').scrollToFixed(marginTop: $('header').outerHeight(true))
+    $('main > aside').scrollToFixed
+      marginTop: $('header').outerHeight(true)
+      unfixed: ->
+        $(this).css('top', '0px')
 
 $(document).ready ->
-  $('header').scrollToFixed()
-  $('#toolbar').scrollToFixed(marginTop: $('header h3').outerHeight(true))
-
-  $('main > aside').scrollToFixed 
-    marginTop: ->
-      marginTop = $(window).height() - $('#cart').outerHeight(true) - 20
-      return 20 if (marginTop >= 0)
-      marginTop
 
   if $("[contenteditable]").length > 0
     for elementId in ['body_editable', 'abstract_editable']

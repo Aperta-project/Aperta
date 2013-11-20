@@ -1,14 +1,13 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins";
 
-
 .author-detail {
   display: inline-block;
   min-width: 100px;
 }
 
 main, header {
-  @extend .row;
+  background-color: #fff;
 
   > article {
     @include make-lg-column(9);

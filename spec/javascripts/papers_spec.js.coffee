@@ -81,14 +81,15 @@ describe "Tahi.papers", ->
 
     describe "right bar (aside)", ->
       it "has its top set to 0 on unfixed", ->
-        aside = $("aside")
-        aside.css('top', '100px')
+        aside = $("aside")[0]
+        aside.style.top = '100px'
+        expect(aside.style.top).toEqual '100px'
 
         asideCall = null
         for call in $.fn.scrollToFixed.calls.all()
-          if call.object[0] == aside[0]
+          if call.object[0] == aside
             asideCall = call
 
         asideCall.args[0].unfixed.call aside
 
-        expect(aside.css('top')).toEqual '0px'
+        expect(aside.style.top).toEqual '0px'

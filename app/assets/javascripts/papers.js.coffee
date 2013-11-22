@@ -7,9 +7,8 @@ Tahi.papers =
       li.html $('#author-template').html()
       li.appendTo $('ul.authors')
     @fixArticleControls()
-    unless window.jasmine?
-      @instantiateEditables()
-      @togglePlaceholders()
+    @instantiateEditables()
+    @togglePlaceholders()
 
   authors: ->
     authorsArray = []
@@ -64,27 +63,27 @@ Tahi.papers =
 
     if $('#abstract_editable').text().trim() == ''
       abstract_placeholder_text = "<p class=\"placeholder\">#{$('#abstract_editable').attr('placeholder')}</p>"
-      CKEDITOR.instances.abstract_editable.setData abstract_placeholder_text
+      CKEDITOR.instances.abstract_editable?.setData abstract_placeholder_text
 
-      CKEDITOR.instances.abstract_editable.on 'focus', ->
-        if $.trim(CKEDITOR.instances.abstract_editable.getData()) == abstract_placeholder_text
-          CKEDITOR.instances.abstract_editable.setData ''
+      CKEDITOR.instances.abstract_editable?.on 'focus', ->
+        if $.trim(CKEDITOR.instances.abstract_editable?.getData()) == abstract_placeholder_text
+          CKEDITOR.instances.abstract_editable?.setData ''
 
-      CKEDITOR.instances.abstract_editable.on 'blur', ->
-        if $.trim(CKEDITOR.instances.abstract_editable.getData()) == ''
-          CKEDITOR.instances.abstract_editable.setData abstract_placeholder_text
+      CKEDITOR.instances.abstract_editable?.on 'blur', ->
+        if $.trim(CKEDITOR.instances.abstract_editable?.getData()) == ''
+          CKEDITOR.instances.abstract_editable?.setData abstract_placeholder_text
 
     if $('#body_editable').text().trim() == ''
       body_placeholder_text = "<p class=\"placeholder\">#{$('#body_editable').attr('placeholder')}</p>"
-      CKEDITOR.instances.body_editable.setData body_placeholder_text
+      CKEDITOR.instances.body_editable?.setData body_placeholder_text
 
-      CKEDITOR.instances.body_editable.on 'focus', ->
-        if $.trim(CKEDITOR.instances.body_editable.getData()) == body_placeholder_text
-          CKEDITOR.instances.body_editable.setData ''
+      CKEDITOR.instances.body_editable?.on 'focus', ->
+        if $.trim(CKEDITOR.instances.body_editable?.getData()) == body_placeholder_text
+          CKEDITOR.instances.body_editable?.setData ''
 
-      CKEDITOR.instances.body_editable.on 'blur', ->
-        if $.trim(CKEDITOR.instances.body_editable.getData()) == ''
-          CKEDITOR.instances.body_editable.setData body_placeholder_text
+      CKEDITOR.instances.body_editable?.on 'blur', ->
+        if $.trim(CKEDITOR.instances.body_editable?.getData()) == ''
+          CKEDITOR.instances.body_editable?.setData body_placeholder_text
 
 $(document).ready ->
 

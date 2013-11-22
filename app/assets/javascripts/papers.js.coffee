@@ -32,8 +32,8 @@ Tahi.papers =
 
   instantiateEditables: ->
     if $("[contenteditable]").length > 0
-      new Tahi.RichEditableElement(document.getElementById 'body_editable')
-      new Tahi.RichEditableElement(document.getElementById 'abstract_editable')
+      Tahi.body_editable = new Tahi.RichEditableElement(document.getElementById 'body_editable')
+      Tahi.abstract_editable = new Tahi.RichEditableElement(document.getElementById 'abstract_editable')
 
   togglePlaceholders: ->
     if $('.title h2').text().trim() == ''
@@ -52,6 +52,10 @@ $(document).ready ->
 
   $('#save_button').on 'click', (e) ->
     e.preventDefault()
+    Tahi.body_editable.clearPlaceholder()
+    Tahi.abstract_editable.clearPlaceholder()
+    if $('.title h2 span.placeholder').length > 0
+      $('.title h2').empty()
     $.ajax
       url: $(this).data('url') + '.json'
       method: "POST"

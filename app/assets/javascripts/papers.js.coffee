@@ -63,29 +63,28 @@ Tahi.papers =
           $(this).html('<span class="placeholder">' + title_placeholder_text + '</span>')
 
     if $('#abstract_editable').text().trim() == ''
-      placeholder_text = $('#abstract_editable').attr('placeholder')
-      CKEDITOR.instances.abstract_editable.setData "<p class='placeholder'>#{placeholder_text}</p>"
+      abstract_placeholder_text = "<p class=\"placeholder\">#{$('#abstract_editable').attr('placeholder')}</p>"
+      CKEDITOR.instances.abstract_editable.setData abstract_placeholder_text
 
       CKEDITOR.instances.abstract_editable.on 'focus', ->
-        if $.trim(CKEDITOR.instances.abstract_editable.getData()) == '<p class="placeholder">Type the abstract of your article here</p>'
+        if $.trim(CKEDITOR.instances.abstract_editable.getData()) == abstract_placeholder_text
           CKEDITOR.instances.abstract_editable.setData ''
 
       CKEDITOR.instances.abstract_editable.on 'blur', ->
         if $.trim(CKEDITOR.instances.abstract_editable.getData()) == ''
-          CKEDITOR.instances.abstract_editable.setData '<p class="placeholder">Type the abstract of your article here</p>'
+          CKEDITOR.instances.abstract_editable.setData abstract_placeholder_text
 
     if $('#body_editable').text().trim() == ''
-      placeholder_text = $('#body_editable').attr('placeholder')
-      CKEDITOR.instances.body_editable.setData "<p class='placeholder'>#{placeholder_text}</p>"
+      body_placeholder_text = "<p class=\"placeholder\">#{$('#body_editable').attr('placeholder')}</p>"
+      CKEDITOR.instances.body_editable.setData body_placeholder_text
 
       CKEDITOR.instances.body_editable.on 'focus', ->
-        if $.trim(CKEDITOR.instances.body_editable.getData()) == '<p class="placeholder">Type the body of your article here</p>'
+        if $.trim(CKEDITOR.instances.body_editable.getData()) == body_placeholder_text
           CKEDITOR.instances.body_editable.setData ''
 
       CKEDITOR.instances.body_editable.on 'blur', ->
         if $.trim(CKEDITOR.instances.body_editable.getData()) == ''
-          CKEDITOR.instances.body_editable.setData '<p class="placeholder">Type the body of your article here</p>'
-
+          CKEDITOR.instances.body_editable.setData body_placeholder_text
 
 $(document).ready ->
 

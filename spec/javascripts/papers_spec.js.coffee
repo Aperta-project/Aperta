@@ -67,19 +67,6 @@ describe "Tahi.papers", ->
       $('div.title h2').blur()
       expect($('div.title h2').text()).toEqual("Hello")
 
-    it "shows the placeholder text in the abstract field", ->
-      expect(CKEDITOR.instances.abstract_editable.getData()).toMatch(/Goodbye/)
-
-    it "shows the placeholder text in the body field", ->
-      expect(CKEDITOR.instances.body_editable.getData()).toMatch(/Body/)
-
-    it "empties the abstract field on focus"
-    it "empties the body field on focus"
-    it "shows the abstract placeholder text after losing focus"
-    it "shows the body placeholder text after losing focus"
-
-
-
   describe "#fixArticleControls", ->
     beforeEach ->
       $('#jasmine_content').html """

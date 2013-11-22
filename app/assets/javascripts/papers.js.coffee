@@ -1,4 +1,5 @@
-window.Tahi = {}
+window.Tahi ||= {}
+
 Tahi.papers =
   init: ->
     $('#add_author').on 'click', (e) ->
@@ -31,23 +32,8 @@ Tahi.papers =
 
   instantiateEditables: ->
     if $("[contenteditable]").length > 0
-      for elementId in ['body_editable', 'abstract_editable']
-        CKEDITOR.inline elementId,
-          extraPlugins: 'sharedspace'
-          removePlugins: 'floatingspace,resize'
-          sharedSpaces:
-            top: 'toolbar'
-          toolbar: [
-            [ 'Styles', 'Format', 'FontSize' ]
-            [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ]
-            [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'Table' ]
-            [ 'PasteFromWord' ],
-            [ 'Link', 'Unlink', 'Anchor' ]
-            [ 'Find', 'Replace', '-', 'Scayt' ]
-          ]
-          extraAllowedContent:
-            p:
-              classes: 'placeholder'
+      new Tahi.RichEditableElement(document.getElementById 'body_editable')
+      new Tahi.RichEditableElement(document.getElementById 'abstract_editable')
 
   togglePlaceholders: ->
     if $('.title h2').text().trim() == ''
@@ -60,30 +46,6 @@ Tahi.papers =
       $('.title h2').on 'blur', (e) ->
         if $(this).text().trim() == ''
           $(this).html('<span class="placeholder">' + title_placeholder_text + '</span>')
-
-    if $('#abstract_editable').text().trim() == ''
-      abstract_placeholder_text = "<p class=\"placeholder\">#{$('#abstract_editable').attr('placeholder')}</p>"
-      CKEDITOR.instances.abstract_editable?.setData abstract_placeholder_text
-
-      CKEDITOR.instances.abstract_editable?.on 'focus', ->
-        if $.trim(CKEDITOR.instances.abstract_editable?.getData()) == abstract_placeholder_text
-          CKEDITOR.instances.abstract_editable?.setData ''
-
-      CKEDITOR.instances.abstract_editable?.on 'blur', ->
-        if $.trim(CKEDITOR.instances.abstract_editable?.getData()) == ''
-          CKEDITOR.instances.abstract_editable?.setData abstract_placeholder_text
-
-    if $('#body_editable').text().trim() == ''
-      body_placeholder_text = "<p class=\"placeholder\">#{$('#body_editable').attr('placeholder')}</p>"
-      CKEDITOR.instances.body_editable?.setData body_placeholder_text
-
-      CKEDITOR.instances.body_editable?.on 'focus', ->
-        if $.trim(CKEDITOR.instances.body_editable?.getData()) == body_placeholder_text
-          CKEDITOR.instances.body_editable?.setData ''
-
-      CKEDITOR.instances.body_editable?.on 'blur', ->
-        if $.trim(CKEDITOR.instances.body_editable?.getData()) == ''
-          CKEDITOR.instances.body_editable?.setData body_placeholder_text
 
 $(document).ready ->
 

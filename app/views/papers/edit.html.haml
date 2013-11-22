@@ -13,10 +13,10 @@
     #toolbar
 
     .title
-      %h2#title_editable{contenteditable: true}
+      %h2#title_editable{contenteditable: true, placeholder: 'Type your article title here'}
         = @paper.title
 
-    #abstract_editable.editable{contenteditable: true}
+    #abstract_editable.editable{contenteditable: true, placeholder: 'Type your abstract here'}
       = @paper.abstract.html_safe
 
     %ul.authors
@@ -53,7 +53,7 @@
 
     %a#add_author{href: '#'} Add author
 
-    #body_editable.editable{contenteditable: true}
+    #body_editable.editable{contenteditable: true, placeholder: 'Type the body of your article here'}
       = @paper.body.html_safe
 
   %aside

@@ -48,25 +48,6 @@ describe "Tahi.papers", ->
         { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
       ]
 
-  describe "#togglePlaceholders", ->
-    beforeEach ->
-      $('#jasmine_content').html """
-        <div class="title"><h2 placeholder="Hello"></h2></div>
-        <div id="abstract_editable" placeholder="Goodbye" contenteditable="true"></div>
-        <div id="body_editable" placeholder="Body" contenteditable="true"></div>
-      """
-      Tahi.papers.instantiateEditables()
-      Tahi.papers.togglePlaceholders()
-
-    it "makes the title behave like an HTML5 placeholder", ->
-      expect($('div.title h2').text()).toEqual("Hello")
-
-      $('div.title h2').click()
-      expect($('div.title h2').text()).toEqual("")
-
-      $('div.title h2').blur()
-      expect($('div.title h2').text()).toEqual("Hello")
-
   describe "#fixArticleControls", ->
     beforeEach ->
       $('#jasmine_content').html """

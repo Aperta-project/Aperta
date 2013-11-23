@@ -9,7 +9,6 @@ Tahi.papers =
       li.appendTo $('ul.authors')
     @fixArticleControls()
     @instantiateEditables()
-    @togglePlaceholders()
 
   authors: ->
     authorsArray = []
@@ -34,28 +33,15 @@ Tahi.papers =
     if $("[contenteditable]").length > 0
       Tahi.body_editable = new Tahi.RichEditableElement(document.getElementById 'body_editable')
       Tahi.abstract_editable = new Tahi.RichEditableElement(document.getElementById 'abstract_editable')
-
-  togglePlaceholders: ->
-    if $('.title h2').text().trim() == ''
-      title_placeholder_text = $('.title h2').attr('placeholder')
-      $('.title h2').html('<span class="placeholder">' + title_placeholder_text + '</span>')
-      $('.title h2').on 'click', (e) ->
-        if $('.title h2 span.placeholder').length > 0
-          $(this).empty()
-
-      $('.title h2').on 'blur', (e) ->
-        if $(this).text().trim() == ''
-          $(this).html('<span class="placeholder">' + title_placeholder_text + '</span>')
+      Tahi.title_editable = new Tahi.PlaceholderElement(document.getElementById 'title_editable')
 
 $(document).ready ->
-
-
   $('#save_button').on 'click', (e) ->
     e.preventDefault()
     Tahi.body_editable.clearPlaceholder()
     Tahi.abstract_editable.clearPlaceholder()
-    if $('.title h2 span.placeholder').length > 0
-      $('.title h2').empty()
+    Tahi.title_editable.clearPlaceholder()
+
     $.ajax
       url: $(this).data('url') + '.json'
       method: "POST"

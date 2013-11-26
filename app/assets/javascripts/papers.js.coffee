@@ -36,16 +36,6 @@ Tahi.papers =
       Tahi.title_editable = new Tahi.PlaceholderElement(document.getElementById 'title_editable')
 
 $(document).ready ->
-  $('.close-button').on 'click', (e) ->
-    $('.app-overlay').hide()
-    $('.overlay-content').hide()
-    e.preventDefault()
-
-  $('.display-overlay').on 'click', (e) ->
-    $('.app-overlay').show()
-    $('.overlay-content').show()
-    e.preventDefault()
-
   $('#save_button').on 'click', (e) ->
     e.preventDefault()
     Tahi.body_editable.clearPlaceholder()

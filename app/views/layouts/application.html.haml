@@ -6,10 +6,13 @@
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
   %body
-    .app-overlay{style: 'display: none'}
-      .overlay-content
-        %a.close-button{href: "#"} Close
-        %h2 Overlay
+    #overlay{style: 'display: none'}
+      %header
+        %a.close-overlay{href: "#"} Close
+      %main
+      %footer
+        %a.close-overlay{href: "#"} Close
+
     .container
       %nav.navbar.navbar-default{role: "navigation"}
         .navbar-header
@@ -17,7 +20,6 @@
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           %ul.nav.navbar-nav.navbar-right
             %li= link_to 'Dashboard', root_path
-            %li= link_to 'Show overlay', '#', class: 'display-overlay'
             - if current_user
               - if current_user.admin?
                 %li= link_to 'Admin', admin_users_path

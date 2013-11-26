@@ -81,14 +81,17 @@ feature "Editing paper", js: true do
 
   scenario "Author specifies contributing authors" do
     edit_paper = EditSubmissionPage.visit paper
-    edit_paper.add_author first_name: 'Neils', last_name: 'Bohr', affiliation: 'University of Copenhagen', email: 'neils@bohr.com'
-    edit_paper.add_author first_name: 'Nikola', last_name: 'Tesla', affiliation: 'Wardenclyffe'
-    edit_paper.save
 
-    edit_paper = DashboardPage.visit.edit_submission paper.short_title
-    expect(edit_paper.authors).to match_array [
-      { first_name: 'Neils', last_name: 'Bohr', affiliation: 'University of Copenhagen', email: 'neils@bohr.com' },
-      { first_name: 'Nikola', last_name: 'Tesla', affiliation: 'Wardenclyffe', email: '' }
-    ]
+    edit_paper.authors_overlay do
+      add_author first_name: 'Neils', last_name: 'Bohr', affiliation: 'University of Copenhagen', email: 'neils@bohr.com'
+      add_author first_name: 'Nikola', last_name: 'Tesla', affiliation: 'Wardenclyffe'
+    end
+
+    expect(edit_paper.authors).to eq "Neils Bohr, Nikola Tesla"
+
+    dashboard_page = edit_paper.save
+
+    edit_paper = dashboard_page.edit_submission paper.short_title
+    expect(edit_paper.authors).to eq "Neils Bohr, Nikola Tesla"
   end
 end

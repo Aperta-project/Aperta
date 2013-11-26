@@ -16,6 +16,25 @@ class EditSubmissionPage < Page
     end
   end
 
+  class AuthorsOverlay
+    def initialize element
+      @element = element
+    end
+
+    def dismiss
+      @element.all('.close-overlay').first.click
+    end
+
+    def add_author author
+      @element.click_on "Add new"
+      @element.fill_in "First name", with: author[:first_name]
+      @element.fill_in "Last name", with: author[:last_name]
+      @element.fill_in "Email", with: author[:email]
+      @element.fill_in "Affiliation", with: author[:affiliation]
+      @element.click_on "done"
+    end
+  end
+
   include ActionView::Helpers::JavaScriptHelper
 
   path :edit_paper
@@ -41,26 +60,15 @@ class EditSubmissionPage < Page
     page.execute_script "CKEDITOR.instances.body_editable.setData('#{escape_javascript val}')"
   end
 
-  def add_author author
-    click_on "Add author"
-
-    page.execute_script "$('li.author:last-of-type .author-first-name').text('#{author[:first_name]}')"
-    page.execute_script "$('li.author:last-of-type .author-last-name').text('#{author[:last_name]}')"
-    page.execute_script "$('li.author:last-of-type .author-affiliation').text('#{author[:affiliation]}')"
-    page.execute_script "$('li.author:last-of-type .author-email').text('#{author[:email]}')"
+  def authors_overlay &block
+    find('#authors').click
+    overlay = AuthorsOverlay.new find('#overlay')
+    overlay.instance_eval &block
+    overlay.dismiss
   end
 
   def authors
-    [].tap do |a|
-      all('.author').map do |li|
-        a << {}.tap do |h|
-          h[:first_name] = li.find('.author-first-name').text
-          h[:last_name] = li.find('.author-last-name').text
-          h[:affiliation] = li.find('.author-affiliation').text
-          h[:email] = li.find('.author-email').text
-        end
-      end
-    end
+    find('#authors').text
   end
 
   def title

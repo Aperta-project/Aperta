@@ -27,9 +27,14 @@
         %ul.authors
           - @paper.authors.each do |author|
             %li.author
-              %h4= "#{author["first_name"]} #{author["last_name"]}"
-              %h4= author["email"]
-              %h4= author["affiliation"]
+              %h4
+                %span.author-first-name
+                  = author["first_name"]
+                %span.author-last-name
+                  = author["last_name"]
+              %h4.author-email= author["email"]
+              %h4.author-affiliation= author["affiliation"]
+
         = link_to '#', id: 'add-author', class: 'btn btn-default btn-xs' do
           %span.glyphicon.glyphicon-plus-sign
           Add new

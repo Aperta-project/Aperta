@@ -10,15 +10,20 @@ Tahi.papers =
     @fixArticleControls()
     @instantiateEditables()
 
+    $('#authors').click => @bindCloseToUpdateAuthors()
+    @updateAuthors()
+
   authors: ->
     authorsArray = []
     $('li.author').each (index, value) ->
-      authorsArray.push({
-        first_name: $(this).children('.author-first-name').text()
-        last_name: $(this).children('.author-last-name').text()
-        affiliation: $(this).children('.author-affiliation').text()
-        email: $(this).children('.author-email').text()
-      })
+      li = $(this)
+      author =
+        first_name: $('.author-first-name', li).text().trim()
+        last_name: $('.author-last-name', li).text().trim()
+        affiliation: $('.author-affiliation', li).text().trim()
+        email: $('.author-email', li).text().trim()
+      if author.first_name.length > 0 || author.last_name.length > 0 || author.affiliation.length > 0 || author.email.length > 0
+        authorsArray.push author
     authorsArray
 
   fixArticleControls: ->
@@ -34,6 +39,18 @@ Tahi.papers =
       Tahi.body_editable = new Tahi.RichEditableElement(document.getElementById 'body_editable')
       Tahi.abstract_editable = new Tahi.RichEditableElement(document.getElementById 'abstract_editable')
       Tahi.title_editable = new Tahi.PlaceholderElement(document.getElementById 'title_editable')
+
+  updateAuthors: ->
+    authors = Tahi.papers.authors()
+    if authors.length > 0
+      authorNames = authors.map (author) -> "#{author.first_name} #{author.last_name}"
+      $('#authors').text authorNames.join(', ')
+    else
+      $('#authors').text 'Click here to add authors'
+
+  bindCloseToUpdateAuthors: ->
+    $('.close-overlay').on 'click', =>
+      @updateAuthors()
 
 $(document).ready ->
   $('#save_button').on 'click', (e) ->

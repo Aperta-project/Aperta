@@ -107,12 +107,14 @@ describe "Tahi.papers", ->
   describe "#fixArticleControls", ->
     beforeEach ->
       $('#jasmine_content').html """
-        <header style="height: 246px;"><h1>This is the header</h1></header>
-        <main>
-          <div id="toolbar">Toolbar goes here</div>
-          <article>Main text</article>
-          <aside>Sidebar</aside>
-        </main>
+        <div class="container">
+          <header style="height: 246px;"><h1>This is the header</h1></header>
+          <main>
+            <div id="toolbar">Toolbar goes here</div>
+            <article>Main text</article>
+            <aside>Sidebar</aside>
+          </main>
+        </div>
       """
 
       spyOn($.fn, 'scrollToFixed')

@@ -27,10 +27,10 @@ Tahi.papers =
     authorsArray
 
   fixArticleControls: ->
-    $('header').scrollToFixed()
-    $('#toolbar').scrollToFixed(marginTop: $('header').outerHeight(true))
-    $('main > aside').scrollToFixed
-      marginTop: $('header').outerHeight(true)
+    $('.container > header').scrollToFixed()
+    $('#toolbar').scrollToFixed(marginTop: $('.container > header').outerHeight(true))
+    $('.container > main > aside').scrollToFixed
+      marginTop: $('.container > header').outerHeight(true)
       unfixed: ->
         $(this).css('top', '0px')
 

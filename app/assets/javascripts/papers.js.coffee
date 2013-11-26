@@ -57,5 +57,3 @@ $(document).ready ->
       success: ->
         location.href = "/"
     false
-
-  Tahi.papers.init()

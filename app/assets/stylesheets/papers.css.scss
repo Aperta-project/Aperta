@@ -6,7 +6,7 @@
   min-width: 100px;
 }
 
-main, header {
+.container > main, .container > header {
   background-color: #fff;
 
   > article {

@@ -19,39 +19,39 @@
     #abstract_editable.editable{contenteditable: true, placeholder: 'Type your abstract here'}
       = @paper.abstract.html_safe
 
-    %ul.authors
-      - @paper.authors.each do |author|
-        %li.author
-          %span.small_text First name
-          %span.author-detail.author-first-name{contenteditable: true}
-            = author["first_name"]
-          %br
-          %span.small_text Last name
-          %span.author-detail.author-last-name{contenteditable: true}
-            = author["last_name"]
-          %br
-          %span.small_text Affiliation
-          %span.author-detail.author-affiliation{contenteditable: true}
-            = author["affiliation"]
-          %br
-          %span.small_text Email
-          %span.author-detail.author-email{contenteditable: true}
-            = author["email"]
-    #author-template.hidden
-      %span.small_text First name
-      %span.author-detail.author-first-name{contenteditable: true}
-      %br
-      %span.small_text Last name
-      %span.author-detail.author-last-name{contenteditable: true}
-      %br
-      %span.small_text Affiliation
-      %span.author-detail.author-affiliation{contenteditable: true}
-      %br
-      %span.small_text Email
-      %span.author-detail.author-email{contenteditable: true}
+    #authors{data: { 'overlay-name' => 'authors' }}
+      Click here to add authors
+
+    #authors-content{style: 'display: none'}
+      .content
+        = link_to '#', id: 'add-author', class: 'btn btn-default btn-xs' do
+          %span.glyphicon.glyphicon-plus-sign
+          Add new
+        %ul.authors
+          - @paper.authors.each do |author|
+            %li.author
+              %h4
+                %span.author-first-name
+                  = author["first_name"]
+                %span.author-last-name
+                  = author["last_name"]
+              %h4.author-email= author["email"]
+              %h4.author-affiliation= author["affiliation"]
 
 
-    %a#add_author{href: '#'} Add author
+    #author-form-template.hidden
+      .form-group.form-inline
+        .form-group
+          = text_field_tag :author_first_name, '', class: 'form-control', placeholder: 'First name'
+        .form-group
+          = text_field_tag :author_last_name, '', class: 'form-control', placeholder: 'Last name'
+      .form-group
+        = text_field_tag :author_email, '',class: 'form-control', placeholder: 'Email'
+      .form-group.form-inline
+        .form-group
+          = text_field_tag :author_affiliation, '',class: 'form-control', placeholder: 'Affiliation'
+        .form-group
+          = submit_tag 'done', class: 'btn btn-primary'
 
     #body_editable.editable{contenteditable: true, placeholder: 'Type the body of your article here'}
       = @paper.body.html_safe

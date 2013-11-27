@@ -8,11 +8,11 @@ class Tahi.RichEditableElement
       sharedSpaces:
         top: 'toolbar'
       toolbar: [
-        [ 'Styles', 'Format', 'FontSize' ]
+        [ 'Format' ]
         [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ]
-        [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote', 'Table' ]
+        [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Table' ]
         [ 'PasteFromWord' ],
-        [ 'Link', 'Unlink', 'Anchor' ]
+        [ 'Link', 'Unlink' ]
         [ 'Find', 'Replace', '-', 'Scayt' ]
       ]
 

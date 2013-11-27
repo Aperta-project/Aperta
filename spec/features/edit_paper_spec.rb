@@ -57,34 +57,59 @@ feature "Editing paper", js: true do
   scenario "Author makes declarations" do
     edit_paper = EditSubmissionPage.visit paper
 
-    funding_disclosure, ethics_declaration, competing_interest_declaration = edit_paper.declarations
-    expect(funding_disclosure.answer).to be_empty
-    expect(ethics_declaration.answer).to be_empty
-    expect(competing_interest_declaration.answer).to be_empty
+    edit_paper.declarations_overlay do |overlay|
+      funding_disclosure, ethics_declaration, competing_interest_declaration = overlay.declarations
+      expect(funding_disclosure.answer).to be_empty
+      expect(ethics_declaration.answer).to be_empty
+      expect(competing_interest_declaration.answer).to be_empty
 
-    funding_disclosure.answer = "Yes"
-    ethics_declaration.answer = "No"
-    competing_interest_declaration.answer = "Sometimes"
-    edit_paper.save_declarations
+      funding_disclosure.answer = "Yes"
+      ethics_declaration.answer = "No"
+      competing_interest_declaration.answer = "Sometimes"
+      overlay.save_declarations
 
-    funding_disclosure, ethics_declaration, competing_interest_declaration = edit_paper.declarations
-    expect(funding_disclosure.answer).to eq "Yes"
-    expect(ethics_declaration.answer).to eq "No"
-    expect(competing_interest_declaration.answer).to eq "Sometimes"
+      funding_disclosure, ethics_declaration, competing_interest_declaration = overlay.declarations
+      expect(funding_disclosure.answer).to eq "Yes"
+      expect(ethics_declaration.answer).to eq "No"
+      expect(competing_interest_declaration.answer).to eq "Sometimes"
+    end
 
     edit_paper.reload
-    funding_disclosure, ethics_declaration, competing_interest_declaration = edit_paper.declarations
-    expect(funding_disclosure.answer).to eq "Yes"
-    expect(ethics_declaration.answer).to eq "No"
-    expect(competing_interest_declaration.answer).to eq "Sometimes"
+    edit_paper.declarations_overlay do |overlay|
+      funding_disclosure, ethics_declaration, competing_interest_declaration = overlay.declarations
+      expect(funding_disclosure.answer).to eq "Yes"
+      expect(ethics_declaration.answer).to eq "No"
+      expect(competing_interest_declaration.answer).to eq "Sometimes"
+    end
+
+    #funding_disclosure, ethics_declaration, competing_interest_declaration = edit_paper.declarations
+    #expect(funding_disclosure.answer).to be_empty
+    #expect(ethics_declaration.answer).to be_empty
+    #expect(competing_interest_declaration.answer).to be_empty
+
+    #funding_disclosure.answer = "Yes"
+    #ethics_declaration.answer = "No"
+    #competing_interest_declaration.answer = "Sometimes"
+    #edit_paper.save_declarations
+
+    #funding_disclosure, ethics_declaration, competing_interest_declaration = edit_paper.declarations
+    #expect(funding_disclosure.answer).to eq "Yes"
+    #expect(ethics_declaration.answer).to eq "No"
+    #expect(competing_interest_declaration.answer).to eq "Sometimes"
+
+    #edit_paper.reload
+    #funding_disclosure, ethics_declaration, competing_interest_declaration = edit_paper.declarations
+    #expect(funding_disclosure.answer).to eq "Yes"
+    #expect(ethics_declaration.answer).to eq "No"
+    #expect(competing_interest_declaration.answer).to eq "Sometimes"
   end
 
   scenario "Author specifies contributing authors" do
     edit_paper = EditSubmissionPage.visit paper
 
-    edit_paper.authors_overlay do
-      add_author first_name: 'Neils', last_name: 'Bohr', affiliation: 'University of Copenhagen', email: 'neils@bohr.com'
-      add_author first_name: 'Nikola', last_name: 'Tesla', affiliation: 'Wardenclyffe'
+    edit_paper.authors_overlay do |overlay|
+      overlay.add_author first_name: 'Neils', last_name: 'Bohr', affiliation: 'University of Copenhagen', email: 'neils@bohr.com'
+      overlay.add_author first_name: 'Nikola', last_name: 'Tesla', affiliation: 'Wardenclyffe'
     end
 
     expect(edit_paper.authors).to eq "Neils Bohr, Nikola Tesla"

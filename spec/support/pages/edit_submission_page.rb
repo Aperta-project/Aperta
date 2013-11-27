@@ -35,6 +35,24 @@ class EditSubmissionPage < Page
     end
   end
 
+  class DeclarationsOverlay
+    def initialize element
+      @element = element
+    end
+
+    def dismiss
+      @element.all('.close-overlay').first.click
+    end
+
+    def declarations
+      @element.all('.declaration').map { |d| Declaration.new d }
+    end
+
+    def save_declarations
+      @element.click_on 'Save declarations'
+    end
+  end
+
   include ActionView::Helpers::JavaScriptHelper
 
   path :edit_paper
@@ -63,7 +81,7 @@ class EditSubmissionPage < Page
   def authors_overlay &block
     find('#authors').click
     overlay = AuthorsOverlay.new find('#overlay')
-    overlay.instance_eval &block
+    block.call overlay
     overlay.dismiss
   end
 
@@ -93,12 +111,11 @@ class EditSubmissionPage < Page
     select.select value
   end
 
-  def declarations
-    all('.declaration').map { |d| Declaration.new d }
-  end
-
-  def save_declarations
-    click_on 'Save declarations'
+  def declarations_overlay &block
+    click_on 'Declarations'
+    overlay = DeclarationsOverlay.new find('#overlay')
+    block.call overlay
+    overlay.dismiss
   end
 
   def save

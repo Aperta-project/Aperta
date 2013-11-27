@@ -24,6 +24,9 @@
 
     #authors-content{style: 'display: none'}
       .content
+        = link_to '#', id: 'add-author', class: 'btn btn-default btn-xs' do
+          %span.glyphicon.glyphicon-plus-sign
+          Add new
         %ul.authors
           - @paper.authors.each do |author|
             %li.author
@@ -35,9 +38,6 @@
               %h4.author-email= author["email"]
               %h4.author-affiliation= author["affiliation"]
 
-        = link_to '#', id: 'add-author', class: 'btn btn-default btn-xs' do
-          %span.glyphicon.glyphicon-plus-sign
-          Add new
 
     #author-form-template.hidden
       .form-group.form-inline

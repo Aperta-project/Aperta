@@ -13,7 +13,7 @@ class Tahi.RichEditableElement
         [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Table' ]
         [ 'PasteFromWord' ],
         [ 'Link', 'Unlink' ]
-        [ 'Find', 'Replace', '-', 'Scayt' ]
+        [ 'Replace', '-', 'Scayt' ]
       ]
 
     @placeholderText = @element.attributes['placeholder'].value

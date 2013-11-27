@@ -15,6 +15,7 @@ class Tahi.RichEditableElement
         [ 'Link', 'Unlink' ]
         [ 'Replace', '-', 'Scayt' ]
       ]
+      format_tags: 'h2;h3;h4;h5;h6;p;div;pre;address'
 
     @placeholderText = @element.attributes['placeholder'].value
     @setPlaceholder()

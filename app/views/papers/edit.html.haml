@@ -68,12 +68,12 @@
 
     #declarations-content.hidden
       %h3 Declarations
-      = form_for @paper, remote: true, format: :json do |paper_form|
-        = paper_form.fields_for :declarations do |declaration|
-          .form-group.declaration
-            = declaration.label :answer, declaration.object.question
-            = declaration.text_area :answer, class: 'form-control', rows: 6
-        = paper_form.submit 'Save declarations', class: 'btn-lg btn-primary btn'
+      - @paper.declarations.each do |declaration_icecream|
+        = form_for @paper, remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
+          = f.fields_for :declarations, declaration_icecream do |declaration|
+            .form-group.declaration
+              = declaration.label :answer, declaration.object.question
+              = declaration.text_area :answer, class: 'form-control', rows: 6
 
 #myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
   .modal-dialog

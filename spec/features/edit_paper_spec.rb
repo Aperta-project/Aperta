@@ -66,7 +66,6 @@ feature "Editing paper", js: true do
       funding_disclosure.answer = "Yes"
       ethics_declaration.answer = "No"
       competing_interest_declaration.answer = "Sometimes"
-      overlay.save_declarations
 
       funding_disclosure, ethics_declaration, competing_interest_declaration = overlay.declarations
       expect(funding_disclosure.answer).to eq "Yes"
@@ -81,27 +80,6 @@ feature "Editing paper", js: true do
       expect(ethics_declaration.answer).to eq "No"
       expect(competing_interest_declaration.answer).to eq "Sometimes"
     end
-
-    #funding_disclosure, ethics_declaration, competing_interest_declaration = edit_paper.declarations
-    #expect(funding_disclosure.answer).to be_empty
-    #expect(ethics_declaration.answer).to be_empty
-    #expect(competing_interest_declaration.answer).to be_empty
-
-    #funding_disclosure.answer = "Yes"
-    #ethics_declaration.answer = "No"
-    #competing_interest_declaration.answer = "Sometimes"
-    #edit_paper.save_declarations
-
-    #funding_disclosure, ethics_declaration, competing_interest_declaration = edit_paper.declarations
-    #expect(funding_disclosure.answer).to eq "Yes"
-    #expect(ethics_declaration.answer).to eq "No"
-    #expect(competing_interest_declaration.answer).to eq "Sometimes"
-
-    #edit_paper.reload
-    #funding_disclosure, ethics_declaration, competing_interest_declaration = edit_paper.declarations
-    #expect(funding_disclosure.answer).to eq "Yes"
-    #expect(ethics_declaration.answer).to eq "No"
-    #expect(competing_interest_declaration.answer).to eq "Sometimes"
   end
 
   scenario "Author specifies contributing authors" do

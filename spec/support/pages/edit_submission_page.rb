@@ -13,6 +13,8 @@ class EditSubmissionPage < Page
     def answer= value
       id = @element.find('textarea')[:id]
       @element.fill_in id, with: value
+      @element.find('label').click # blur the textarea
+      sleep 0.5 # and wait for the AJAX request to finish
     end
   end
 

@@ -5,7 +5,7 @@ Tahi.init = ->
   Tahi.overlays.authors.init()
 
   for form in $("form.js-submit-on-change[data-remote='true']")
-    @setupSubmitOnChange $(form), $('select, input[type="checkbox"]', form)
+    @setupSubmitOnChange $(form), $('select, input[type="checkbox"], textarea', form)
 
   for element in $('[data-overlay-name]')
     Tahi.initOverlay(element)

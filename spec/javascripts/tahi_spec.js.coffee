@@ -12,6 +12,7 @@ describe "tahi", ->
               <option value="2">Option 2</option>
             </select>
             <input type="checkbox" value="1" />
+            <textarea></textarea>
           </form>
           <form id="regular-form" class="js-submit-on-change">
             <select>
@@ -19,14 +20,15 @@ describe "tahi", ->
               <option value="2">Option 2</option>
             </select>
             <input type="checkbox" value="1" />
+            <textarea></textarea>
           </form>
         """
         $('#jasmine_content').html html
 
-      it "configures submit on change for remote forms and its select fields", ->
+      it "configures submit on change for inputs in remote forms", ->
         spyOn Tahi, 'setupSubmitOnChange'
         form = $('#remote-form')
-        fields = $('select, input[type="checkbox"]', form)
+        fields = $('select, input[type="checkbox"], textarea', form)
 
         Tahi.init()
 

@@ -79,7 +79,6 @@ describe "tahi", ->
     it "shows the overlay div", ->
       Tahi.displayOverlay($('#planes'))
       expect($('#overlay')).toBeVisible()
-      expect($('#overlay main')).toBeVisible()
 
     describe "when the overlay is dismissed", ->
       it "moves back the overlay content to its original container", ->

@@ -16,7 +16,7 @@
     .container
       %nav.navbar.navbar-default{role: "navigation"}
         .navbar-header
-          %a.navbar-brand{href: "#"} Tahi
+          = link_to 'Tahi', root_path, class: 'navbar-brand'
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           %ul.nav.navbar-nav.navbar-right
             %li= link_to 'Dashboard', root_path

@@ -79,9 +79,11 @@
     #upload-figures-content.hidden
       - @paper.figures.each do |figure|
         = image_tag figure.attachment
-      = form_for [@paper, @paper.figures.build] do |f|
-        = f.label :attachment
-        = f.file_field :attachment, multiple: true, class: 'js-jquery-fileupload'
+      %span.btn.btn-primary.fileinput-button
+        %span.glyphicon.glyphicon-plus-sign
+        Add new
+        = form_for [@paper, @paper.figures.build] do |f|
+          = f.file_field :attachment, multiple: true, class: 'js-jquery-fileupload'
 
     #upload-figures-content.hidden
       %h3 Upload Figures

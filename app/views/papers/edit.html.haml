@@ -75,6 +75,18 @@
               = declaration.label :answer, declaration.object.question
               = declaration.text_area :answer, class: 'form-control', rows: 6
 
+    = link_to 'Upload Figures', '#', data: { 'overlay-name' => 'upload-figures' }, class: 'btn btn-primary btn-lg'
+    #upload-figures-content.hidden
+      - @paper.figures.each do |figure|
+        = image_tag figure.attachment
+      = form_for [@paper, @paper.figures.build] do |f|
+        = f.label :attachment
+        = f.file_field :attachment
+        = f.submit "Upload Figure"
+
+    #upload-figures-content.hidden
+      %h3 Upload Figures
+
 #myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
   .modal-dialog
     .modal-content

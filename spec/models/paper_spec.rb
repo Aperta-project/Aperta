@@ -92,15 +92,15 @@ describe Paper do
   end
 
   describe "associations" do
-    let(:paper) do
-      Paper.create! short_title: 'Paper with declarations',
-        declarations: [
-          Declaration.new(question: "Q1"),
-          Declaration.new(question: "Q2")
-        ]
-    end
-
     describe "declarations" do
+      let(:paper) do
+        Paper.create! short_title: 'Paper with declarations',
+          declarations: [
+            Declaration.new(question: "Q1"),
+            Declaration.new(question: "Q2")
+          ]
+      end
+
       it "returns them in order for consistency" do
         old_declarations = paper.declarations
         paper.declarations.first.answer = 'icecream'

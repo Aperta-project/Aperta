@@ -37,6 +37,28 @@ class EditSubmissionPage < Page
     end
   end
 
+  class UploadOverlay
+    def initialize element
+      @element = element
+    end
+
+    def dismiss
+      @element.all('.close-overlay').first.click
+    end
+
+    def has_image? image_name
+      @element.has_selector? "img[src$='#{image_name}']"
+    end
+
+    def attach_figure
+      @element.attach_file('Attachment', Rails.root.join('spec', 'fixtures', 'yeti.tiff'))
+    end
+
+    def upload_figures
+      @element.click_button "Upload Figure"
+    end
+  end
+
   class DeclarationsOverlay
     def initialize element
       @element = element
@@ -78,6 +100,17 @@ class EditSubmissionPage < Page
 
   def body=(val)
     page.execute_script "CKEDITOR.instances.body_editable.setData('#{escape_javascript val}')"
+  end
+
+  def uploads_overlay &block
+    click_on 'Upload Figures'
+    overlay = UploadOverlay.new find('#overlay')
+    if block_given?
+      block.call overlay
+      overlay.dismiss
+    else
+      overlay
+    end
   end
 
   def authors_overlay &block

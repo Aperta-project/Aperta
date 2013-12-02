@@ -5,6 +5,7 @@ class Paper < ActiveRecord::Base
 
   belongs_to :user
   has_many :declarations, -> { order :id }
+  has_many :figures
 
   accepts_nested_attributes_for :declarations
   serialize :authors, Array

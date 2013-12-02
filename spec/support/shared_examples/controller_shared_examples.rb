@@ -27,7 +27,9 @@ shared_examples_for "a controller enforcing strong parameters" do
 
   it "allows specified params" do
     fake_params = double(:params)
-    allow(fake_params).to receive(:[]) { |key| key.to_s == 'id' ? params_id : {} }
+    allow(fake_params).to receive(:[]) do |key|
+      fake_scoped_model_id key
+    end
     model_params = double(:model_params)
 
     allow(controller).to receive(:params).and_return(fake_params)
@@ -35,5 +37,17 @@ shared_examples_for "a controller enforcing strong parameters" do
     expect(model_params).to receive(:permit).with *expected_params
 
     do_request
+  end
+
+  def fake_scoped_model_id key
+    if key.to_s == 'id'
+      params_id
+    elsif key.to_s.ends_with? '_id'
+      scoped_model_name = key.to_s.scan(/(.*)_id/).first.first
+      scoped_model_method = "params_#{scoped_model_name}_id"
+      send(scoped_model_method) if respond_to? scoped_model_method
+    elsif !key.to_s.ends_with?('id')
+      {}
+    end
   end
 end

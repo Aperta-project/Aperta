@@ -76,3 +76,4 @@ gem "ckeditor_rails"
 
 gem "nokogiri"
 
+gem "carrierwave"

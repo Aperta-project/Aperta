@@ -23,5 +23,4 @@
 
 $(document).ready(function() {
   Tahi.init()
-  $('#figure_attachment').fileupload();
 });

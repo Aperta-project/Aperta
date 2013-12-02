@@ -34,7 +34,7 @@ shared_examples_for "a controller enforcing strong parameters" do
 
     allow(controller).to receive(:params).and_return(fake_params)
     expect(fake_params).to receive(:require).with(model_identifier).and_return(model_params)
-    expect(model_params).to receive(:permit).with *expected_params
+    expect(model_params).to receive(:permit).with(*expected_params).and_return({})
 
     do_request
   end

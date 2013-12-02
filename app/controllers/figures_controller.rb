@@ -3,7 +3,10 @@ class FiguresController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @paper.figures.create(figure_params)
+    figures = Array.wrap(figure_params.delete(:attachment))
+    figures.each do |figure|
+      @paper.figures.create(figure_params.merge(attachment: figure))
+    end
     redirect_to edit_paper_path @paper
   end
 
@@ -14,6 +17,6 @@ class FiguresController < ApplicationController
   end
 
   def figure_params
-    params.require(:figure).permit(:attachment)
+    params.require(:figure).permit(:attachment, attachment: [])
   end
 end

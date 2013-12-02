@@ -85,9 +85,11 @@ feature "Editing paper", js: true do
   scenario "Author uploads figures" do
     edit_paper = EditSubmissionPage.visit paper
 
-    overlay = edit_paper.uploads_overlay
-    overlay.attach_figure
-    overlay.upload_figures
+    edit_paper.uploads_overlay do |overlay|
+      overlay.attach_figure
+    end
+
+    edit_paper.reload
 
     edit_paper.uploads_overlay do |overlay|
       expect(overlay).to have_image('yeti.tiff')

@@ -11,15 +11,17 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery_ujs
 //= require jquery.turbolinks
+//= require jquery_ujs
+//= require jquery-fileupload/basic
 //= require bootstrap
-//= require turbolinks
 //= require ckeditor-jquery
 //= require ckeditor/plugins/sharedspace/sharedspace
 //= require scrollToFixed
+//= require turbolinks
 //= require_tree .
 
 $(document).ready(function() {
   Tahi.init()
+  $('#figure_attachment').fileupload();
 });

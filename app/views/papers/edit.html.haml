@@ -81,7 +81,7 @@
         = image_tag figure.attachment
       = form_for [@paper, @paper.figures.build] do |f|
         = f.label :attachment
-        = f.file_field :attachment
+        = f.file_field :attachment, multiple: true
         = f.submit "Upload Figure"
 
     #upload-figures-content.hidden

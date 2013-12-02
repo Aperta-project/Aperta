@@ -76,4 +76,6 @@ gem "ckeditor_rails"
 
 gem "nokogiri"
 
+gem "jquery-fileupload-rails"
+
 gem "carrierwave"

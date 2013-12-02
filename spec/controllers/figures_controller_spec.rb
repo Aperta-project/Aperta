@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FiguresController do
-  let(:permitted_params) { [:attachment] }
+  let(:permitted_params) { [:attachment, attachment: []] }
 
   let :user do
     User.create! username: 'albert',
@@ -19,7 +19,7 @@ describe FiguresController do
     let(:paper) { Paper.create! short_title: 'Paper with attachment' }
 
     subject(:do_request) do
-      post :create, paper_id: paper.to_param, figure: { attachment: 'yeti.tiff' }
+      post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff') }
     end
 
     it_behaves_like "when the user is not signed in"
@@ -38,6 +38,17 @@ describe FiguresController do
     it "redirects to paper's edit page" do
       do_request
       expect(response).to redirect_to edit_paper_path(paper)
+    end
+
+    context "when the attachments are in an array" do
+      subject(:do_request) do
+        post :create, paper_id: paper.to_param, figure: { attachment: [fixture_file_upload('yeti.tiff'), fixture_file_upload('yeti.jpg')] }
+      end
+
+      it "saves each attachment to this paper" do
+        expect { do_request }.to change(Figure, :count).by(2)
+        expect(Figure.last.paper).to eq paper
+      end
     end
   end
 end

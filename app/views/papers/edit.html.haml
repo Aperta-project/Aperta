@@ -80,7 +80,7 @@
       %span.btn.btn-primary.fileinput-button
         %span.glyphicon.glyphicon-plus-sign
         Add new
-        = form_for [@paper, @paper.figures.build] do |f|
+        = form_for [@paper, @paper.figures.build], format: :json do |f|
           = f.file_field :attachment, multiple: true, class: 'js-jquery-fileupload'
       %ul#paper-figure-uploads
       %ul#paper-figures

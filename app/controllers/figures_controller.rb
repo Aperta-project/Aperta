@@ -4,10 +4,16 @@ class FiguresController < ApplicationController
 
   def create
     figures = Array.wrap(figure_params.delete(:attachment))
-    figures.each do |figure|
-      @paper.figures.create(figure_params.merge(attachment: figure))
+
+    results = figures.map do |figure|
+      f = @paper.figures.create(figure_params.merge(attachment: figure))
+      { filename: f.attachment.file.filename, alt: f.attachment.file.basename.humanize, id: f.id, src: f.attachment.url }
     end
-    redirect_to edit_paper_path @paper
+
+    respond_to do |f|
+      f.html { redirect_to edit_paper_path @paper }
+      f.json { render json: results }
+    end
   end
 
   private

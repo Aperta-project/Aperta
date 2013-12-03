@@ -50,5 +50,19 @@ describe FiguresController do
         expect(Figure.last.paper).to eq paper
       end
     end
+
+    context "when it's an AJAX request" do
+      subject(:do_request) do
+        post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff') }, format: :json
+      end
+
+      it "responds with a JSON array of figure data" do
+        do_request
+        figure = Figure.last
+        expect(JSON.parse(response.body)).to eq [
+          { filename: 'yeti.tiff', alt: 'Yeti', src: figure.attachment.url, id: figure.id }.with_indifferent_access
+        ]
+      end
+    end
   end
 end

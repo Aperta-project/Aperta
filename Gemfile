@@ -76,6 +76,6 @@ gem "ckeditor_rails"
 
 gem "nokogiri"
 
-gem "jquery-fileupload-rails"
+gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 
 gem "carrierwave"

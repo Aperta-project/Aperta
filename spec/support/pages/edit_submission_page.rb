@@ -51,7 +51,9 @@ class EditSubmissionPage < Page
     end
 
     def attach_figure
-      @element.attach_file('Attachment', Rails.root.join('spec', 'fixtures', 'yeti.tiff'))
+      @element.session.execute_script "$('#figure_attachment').css('position', 'relative')"
+      @element.attach_file('figure_attachment', Rails.root.join('spec', 'fixtures', 'yeti.tiff'), visible: false)
+      @element.session.execute_script "$('#figure_attachment').css('position', 'absolute')"
     end
 
     def upload_figures

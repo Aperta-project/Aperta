@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require jquery-fileupload/basic
+//= require jquery-fileupload/basicplus
 //= require bootstrap
 //= require ckeditor-jquery
 //= require ckeditor/plugins/sharedspace/sharedspace

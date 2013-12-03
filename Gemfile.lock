@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/neo-tahi/jquery-fileupload-rails.git
+  revision: 5252879d45d9da58687033e32e290a2af7457a40
+  specs:
+    jquery-fileupload-rails (0.4.1)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -89,9 +97,6 @@ GEM
     jbuilder (1.5.2)
       activesupport (>= 3.0.0)
       multi_json (>= 1.2.0)
-    jquery-fileupload-rails (0.4.1)
-      actionpack (>= 3.1)
-      railties (>= 3.1)
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
@@ -237,7 +242,7 @@ DEPENDENCIES
   haml-rails
   jasmine (>= 2.0.0.rc5)
   jbuilder (~> 1.2)
-  jquery-fileupload-rails
+  jquery-fileupload-rails!
   jquery-rails
   jquery-turbolinks
   launchy

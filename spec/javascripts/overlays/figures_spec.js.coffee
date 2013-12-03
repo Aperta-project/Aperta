@@ -25,6 +25,10 @@ describe "Tahi.overlays.figures", ->
       Tahi.overlays.figures.init()
       expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploaddone', Tahi.overlays.figures.fileUploadDone
 
+    it "sets up a fileuploadprogress handler", ->
+      Tahi.overlays.figures.init()
+      expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploadprogress', Tahi.overlays.figures.fileUploadProgress
+
   describe "#fileUploadProcessAlways", ->
     it "appends a file upload progress section", ->
       $('#jasmine_content').html """
@@ -37,7 +41,10 @@ describe "Tahi.overlays.figures", ->
       ]
       Tahi.overlays.figures.fileUploadProcessAlways event, data
       expect($('#paper-figure-uploads').html()).toEqual """
-        <li data-file-id="real-yeti.jpg"><div id="file-preview"></div><div class="progress progress-striped active"></div></li>
+        <li data-file-id="real-yeti.jpg"><div id="file-preview"></div><div class="progress">
+          <div class="progress-bar">
+          </div>
+        </div></li>
       """
 
   describe "#fileUploadDone", ->
@@ -69,3 +76,32 @@ describe "Tahi.overlays.figures", ->
       expect($('#paper-figures').html()).toEqual """
         <li><img src="/foo/bar/real-yeti.jpg" alt="Real yeti"></li>
       """
+  describe "#fileUploadProgress", ->
+    beforeEach ->
+      $('#jasmine_content').html """
+        <ul id='paper-figure-uploads'>
+          <li data-file-id="real-yeti.jpg">
+            <div id="file-preview"></div>
+            <div class="progress">
+              <div class="progress-bar">
+              </div>
+            </div>
+          </li>
+        </ul>
+        <ul id='paper-figures'></ul>
+      """
+    it "updates the progress bar with the current progress", ->
+      @event = jasmine.createSpyObj 'event', ['target']
+      @data = jasmine.createSpy 'data'
+      @data.files = [
+        { preview: $('<div id="file-preview" />')[0], name: 'real-yeti.jpg' }
+      ]
+      @data.loaded = 124.0
+      @data.total = 620.0
+
+      progressBar = $('#paper-figure-uploads .progress .progress-bar')
+      originalWidth = parseInt(progressBar.css('width'), 10)
+      expectedWidth = originalWidth * @data.loaded / @data.total
+
+      Tahi.overlays.figures.fileUploadProgress @event, @data
+      expect(progressBar.css('width')).toEqual "#{expectedWidth}px"

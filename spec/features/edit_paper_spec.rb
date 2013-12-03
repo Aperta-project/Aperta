@@ -87,6 +87,7 @@ feature "Editing paper", js: true do
 
     edit_paper.uploads_overlay do |overlay|
       overlay.attach_figure
+      expect(overlay).to have_image 'yeti.tiff'
     end
 
     edit_paper.reload

@@ -7,13 +7,14 @@ class Tahi.RichEditableElement
       removePlugins: 'floatingspace,resize'
       sharedSpaces:
         top: 'toolbar'
+      scayt_autoStartup: true
       toolbar: [
         [ 'Format' ]
         [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ]
         [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Table' ]
         [ 'PasteFromWord' ],
         [ 'Link', 'Unlink' ]
-        [ 'Replace', '-', 'Scayt' ]
+        [ 'Replace' ]
       ]
       format_tags: 'h2;h3;h4;h5;h6;p;div;pre;address'
 

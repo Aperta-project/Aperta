@@ -1,3 +1,7 @@
+<% if @paper.errors.present? %>
+  <div class="alert alert-warning"><%= @paper.errors.full_messages.to_sentence %></div>
+<% end %>
+
 <%= form_for @paper do |f| %>
   <div class="form-group">
     <%= f.label :short_title %>

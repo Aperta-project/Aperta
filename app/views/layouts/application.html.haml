@@ -13,20 +13,21 @@
       %footer
         %a.btn.btn-primary.close-overlay{href: "#"} Close
 
-    %nav#nav-bar
-      %header
-        = link_to root_path do
-          %i.glyphicon.glyphicon-home
-          Tahi
-      %section
-        %ul
-          %li.nav-bar-item= active_link_to 'Dashboard', root_path
-          - if current_user && current_user.admin?
-            %li.nav-bar-item= active_link_to 'Admin', admin_users_path
-        %ul
-          - if current_user
-            %li.nav-bar-text= link_to 'Sign out', destroy_user_session_path, method: :delete
-            %li.nav-bar-text Welcome back, Dr. Zaius
+    #nav-container
+      %nav#nav-bar
+        %header
+          = link_to root_path do
+            %i.glyphicon.glyphicon-home
+            Tahi
+        %section
+          %ul
+            %li.nav-bar-item= active_link_to 'Dashboard', root_path
+            - if current_user && current_user.admin?
+              %li.nav-bar-item= active_link_to 'Admin', admin_users_path
+          %ul
+            - if current_user
+              %li.nav-bar-text= link_to 'Sign out', destroy_user_session_path, method: :delete
+              %li.nav-bar-text Welcome back, Dr. Zaius
 
     .container
       %p.notice= notice

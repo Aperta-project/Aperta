@@ -7,7 +7,9 @@ class FiguresController < ApplicationController
 
     results = figures.map do |figure|
       f = @paper.figures.create(figure_params.merge(attachment: figure))
-      { filename: f.attachment.file.filename, alt: f.attachment.file.basename.humanize, id: f.id, src: f.attachment.url }
+      filename = f[:attachment]
+      alt = filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize
+      { filename: filename, alt: alt, id: f.id, src: f.attachment.url }
     end
 
     respond_to do |f|

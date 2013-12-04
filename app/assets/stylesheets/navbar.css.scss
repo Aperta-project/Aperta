@@ -7,7 +7,7 @@ $navbar-hover-color: #64184a;
 $navbar-active-color: #a42778;
 $navbar-font-family: 'cabinregular';
 
-#nav-container {
+#nav-bar-container {
   background-color: $navbar-background-color;
   width: 100%;
 }
@@ -17,7 +17,7 @@ $navbar-font-family: 'cabinregular';
   background-color: $navbar-background-color;
   font-family: $navbar-font-family;
   min-width: 960px;
-  max-width: 1280px;
+  max-width: 1120px;
 }
 
 #nav-bar header {

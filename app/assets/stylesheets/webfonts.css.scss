@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'cabinbold';
+  src: asset-url('cabin-bold-webfont.eot');
+  src: asset-url('cabin-bold-webfont.eot?#iefix') format('embedded-opentype'),
+       asset-url('cabin-bold-webfont.woff') format('woff'),
+       asset-url('cabin-bold-webfont.ttf') format('truetype'),
+       asset-url('cabin-bold-webfont.svg#cabinbold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'cabinitalic';
+  src: asset-url('cabin-italic-webfont.eot');
+  src: asset-url('cabin-italic-webfont.eot?#iefix') format('embedded-opentype'),
+       asset-url('cabin-italic-webfont.woff') format('woff'),
+       asset-url('cabin-italic-webfont.ttf') format('truetype'),
+       asset-url('cabin-italic-webfont.svg#cabinitalic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'cabinregular';
+  src: asset-url('cabin-regular-webfont.eot');
+  src: asset-url('cabin-regular-webfont.eot?#iefix') format('embedded-opentype'),
+       asset-url('cabin-regular-webfont.woff') format('woff'),
+       asset-url('cabin-regular-webfont.ttf') format('truetype'),
+       asset-url('cabin-regular-webfont.svg#cabinregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

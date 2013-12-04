@@ -27,7 +27,7 @@
           %ul
             - if current_user
               %li.nav-bar-text= link_to 'Sign out', destroy_user_session_path, method: :delete
-              %li.nav-bar-text Welcome back, Dr. Zaius
+              %li.nav-bar-text Welcome back, #{current_user.username}
 
     .container
       %p.notice= notice

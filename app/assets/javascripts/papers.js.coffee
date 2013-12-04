@@ -36,9 +36,9 @@ Tahi.papers =
 
   instantiateEditables: ->
     if $("[contenteditable]").length > 0
-      Tahi.body_editable = new Tahi.RichEditableElement(document.getElementById 'body_editable')
-      Tahi.abstract_editable = new Tahi.RichEditableElement(document.getElementById 'abstract_editable')
-      Tahi.title_editable = new Tahi.PlaceholderElement(document.getElementById 'title_editable')
+      Tahi.body_editable = new Tahi.RichEditableElement(document.getElementById 'body-editable')
+      Tahi.abstract_editable = new Tahi.RichEditableElement(document.getElementById 'abstract-editable')
+      Tahi.title_editable = new Tahi.PlaceholderElement(document.getElementById 'title-editable')
 
   updateAuthors: ->
     authors = Tahi.papers.authors()
@@ -65,10 +65,10 @@ $(document).ready ->
       data:
         _method: "patch"
         paper:
-          title: $.trim($('#title_editable').text())
-          body: CKEDITOR.instances.body_editable.getData()
-          abstract: CKEDITOR.instances.abstract_editable.getData()
-          short_title: $.trim($('#short_title_editable').text())
+          title: $.trim($('#title-editable').text())
+          body: CKEDITOR.instances['body-editable'].getData()
+          abstract: CKEDITOR.instances['abstract-editable'].getData()
+          short_title: $.trim($('#short-title-editable').text())
           authors: (-> JSON.stringify Tahi.papers.authors())()
 
       success: ->

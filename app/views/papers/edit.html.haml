@@ -3,7 +3,7 @@
     #control-bar
       %section
         %ul
-          %li#short_title_editable{contenteditable: true}= @paper.short_title
+          %li#short-title-editable{contenteditable: true}= @paper.short_title
           %li#revision R0
         %ul
           %li
@@ -16,10 +16,10 @@
     #toolbar
 
     .title
-      %h2#title_editable{contenteditable: true, placeholder: 'Type your article title here'}
+      %h2#title-editable{contenteditable: true, placeholder: 'Type your article title here'}
         = @paper.title
 
-    #abstract_editable.editable{contenteditable: true, placeholder: 'Type your abstract here'}
+    #abstract-editable.editable{contenteditable: true, placeholder: 'Type your abstract here'}
       = @paper.abstract.html_safe
 
     #authors{data: { 'overlay-name' => 'authors' }}
@@ -56,7 +56,7 @@
         .form-group
           = submit_tag 'done', class: 'btn btn-primary'
 
-    #body_editable.editable{contenteditable: true, placeholder: 'Type the body of your article here'}
+    #body-editable.editable{contenteditable: true, placeholder: 'Type the body of your article here'}
       = @paper.body.html_safe
 
   %aside
@@ -69,12 +69,12 @@
 
     #declarations-content.hidden
       %h3 Declarations
-      - @paper.declarations.each do |declaration_icecream|
+      - @paper.declarations.each do |declaration|
         = form_for @paper, remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
-          = f.fields_for :declarations, declaration_icecream do |declaration|
+          = f.fields_for :declarations, declaration do |declaration_fields|
             .form-group.declaration
-              = declaration.label :answer, declaration.object.question
-              = declaration.text_area :answer, class: 'form-control', rows: 6
+              = declaration_fields.label :answer, declaration_fields.object.question
+              = declaration_fields.text_area :answer, class: 'form-control', rows: 6
 
     = link_to 'Upload Figures', '#', data: { 'overlay-name' => 'upload-figures' }, class: 'btn btn-primary btn-lg'
     #upload-figures-content.hidden

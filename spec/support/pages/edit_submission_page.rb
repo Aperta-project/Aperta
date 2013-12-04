@@ -89,19 +89,19 @@ class EditSubmissionPage < Page
   end
 
   def short_title=(val)
-    page.execute_script "$('#short_title_editable').text('#{val}')"
+    page.execute_script "$('#short-title-editable').text('#{val}')"
   end
 
   def title=(val)
-    page.execute_script "$('#title_editable').text('#{val}')"
+    page.execute_script "$('#title-editable').text('#{val}')"
   end
 
   def abstract=(val)
-    page.execute_script "CKEDITOR.instances.abstract_editable.setData('#{escape_javascript val}')"
+    page.execute_script "CKEDITOR.instances['abstract-editable'].setData('#{escape_javascript val}')"
   end
 
   def body=(val)
-    page.execute_script "CKEDITOR.instances.body_editable.setData('#{escape_javascript val}')"
+    page.execute_script "CKEDITOR.instances['body-editable'].setData('#{escape_javascript val}')"
   end
 
   def uploads_overlay &block
@@ -127,7 +127,7 @@ class EditSubmissionPage < Page
   end
 
   def title
-    find(:css, '#title_editable').text
+    find(:css, '#title-editable').text
   end
 
   def abstract
@@ -179,10 +179,10 @@ class EditSubmissionPage < Page
   private
 
   def abstract_node
-    find(:css, '#abstract_editable')
+    find(:css, '#abstract-editable')
   end
 
   def body_node
-    find(:css, '#body_editable')
+    find(:css, '#body-editable')
   end
 end

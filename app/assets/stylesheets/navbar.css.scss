@@ -1,21 +1,21 @@
 $grid-float-breakpoint: 0;
 @import "bootstrap";
 
-$navbar-background-color: black;
-$navbar-color: white;
-$navbar-hover-color: #64184a;
-$navbar-active-color: #a42778;
-$navbar-font-family: 'cabinregular';
+$nav-bar-background-color: black;
+$nav-bar-color: white;
+$nav-bar-hover-color: #64184a;
+$nav-bar-active-color: #a42778;
+$nav-bar-font-family: 'cabinregular';
 
 #nav-bar-container {
-  background-color: $navbar-background-color;
+  background-color: $nav-bar-background-color;
   width: 100%;
 }
 
 #nav-bar {
   margin: 0 auto;
-  background-color: $navbar-background-color;
-  font-family: $navbar-font-family;
+  background-color: $nav-bar-background-color;
+  font-family: $nav-bar-font-family;
   min-width: 960px;
   max-width: 1120px;
 }
@@ -25,7 +25,7 @@ $navbar-font-family: 'cabinregular';
 
   > a {
     @extend .navbar-brand;
-    color: $navbar-color;
+    color: $nav-bar-color;
     padding: 14px 20px;
   }
 }
@@ -36,7 +36,7 @@ $navbar-font-family: 'cabinregular';
 
 #nav-bar section > ul {
   @extend .nav, .navbar-nav;
-  color: $navbar-color;
+  color: $nav-bar-color;
 }
 
 #nav-bar section > ul:last-of-type {
@@ -49,7 +49,7 @@ $navbar-font-family: 'cabinregular';
 }
 
 #nav-bar section > ul > li > a {
-  color: $navbar-color;
+  color: $nav-bar-color;
   padding-left: 20px;
   padding-right: 20px;
 
@@ -57,11 +57,11 @@ $navbar-font-family: 'cabinregular';
 
 #nav-bar section > ul > li.nav-bar-item > a {
   &:hover {
-    background: $navbar-hover-color;
+    background: $nav-bar-hover-color;
   }
 
   &.active {
-    background: $navbar-active-color;
+    background: $nav-bar-active-color;
   }
 }
 

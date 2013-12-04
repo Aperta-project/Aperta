@@ -53,14 +53,14 @@ Tahi.papers =
       @updateAuthors()
 
 $(document).ready ->
-  $('#save_button').on 'click', (e) ->
+  $('#save-button').on 'click', (e) ->
     e.preventDefault()
     Tahi.body_editable.clearPlaceholder()
     Tahi.abstract_editable.clearPlaceholder()
     Tahi.title_editable.clearPlaceholder()
 
     $.ajax
-      url: $(this).data('url') + '.json'
+      url: $(this).attr('href')
       method: "POST"
       data:
         _method: "patch"

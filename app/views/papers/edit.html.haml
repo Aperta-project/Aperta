@@ -7,7 +7,7 @@
           %li#revision R0
         %ul
           %li
-            = link_to 'Save', '#', data: { url: paper_path(@paper) }, id: 'save_button'
+            = link_to 'Save', paper_path(@paper, format: :json), id: 'save-button'
           %li
             = link_to 'Submit', new_paper_submission_path(@paper)
 

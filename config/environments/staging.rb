@@ -88,4 +88,7 @@ Tahi::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  config.s3_bucket = 'tahi-staging'
+  config.carrierwave_storage = :fog
 end

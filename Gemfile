@@ -79,3 +79,5 @@ gem "nokogiri"
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 
 gem "carrierwave"
+gem "fog"
+gem "unf"

@@ -1,3 +1,8 @@
+$btn-primary-bg: #a42778;
+$btn-primary-bg-hover: #64184a;
+
+@import 'bootstrap';
+
 body {
   background-color: #f8f8f8;
 }
@@ -7,7 +12,6 @@ textarea {
 }
 
 .container {
-  padding-top: 10px;
   background-color: #fff;
 }
 
@@ -19,6 +23,15 @@ textarea {
 
 .editable, .title {
   margin-bottom: 36px
+}
+
+.primary-button {
+  @extend .btn, .btn-primary;
+  text-transform: uppercase;
+  border: none;
+  &:hover {
+    background-color: $btn-primary-bg-hover;
+  }
 }
 
 #overlay {

@@ -1,12 +1,15 @@
-%header.row
-  %article
-    %h3
-      %span{style: 'color: gray'} R0
-      %span#short_title_editable{contenteditable: true}
-        %em= @paper.short_title
-  %aside
-    %a#save_button.btn.btn-primary{href: "#", data: { url: paper_path(@paper.id) }} Save
-    = link_to 'Submit', new_paper_submission_path(@paper), class: 'btn-primary btn'
+- content_for :control_bar do
+  #control-bar-container
+    #control-bar
+      %section
+        %ul
+          %li#short_title_editable{contenteditable: true}= @paper.short_title
+          %li#revision R0
+        %ul
+          %li
+            = link_to 'Save', '#', data: { url: paper_path(@paper) }, id: 'save_button'
+          %li
+            = link_to 'Submit', new_paper_submission_path(@paper)
 
 %main.row
   %article

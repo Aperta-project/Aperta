@@ -108,7 +108,7 @@ describe "Tahi.papers", ->
     beforeEach ->
       $('#jasmine_content').html """
         <div class="container">
-          <header style="height: 246px;"><h1>This is the header</h1></header>
+          <div id='control-bar-container' style="height: 246px;"><h1>This is the header</h1></div>
           <main>
             <div id="toolbar">Toolbar goes here</div>
             <article>Main text</article>
@@ -123,7 +123,7 @@ describe "Tahi.papers", ->
     it "fixes the header", ->
       expect($.fn.scrollToFixed).toHaveBeenCalled()
       objects = $.fn.scrollToFixed.calls.all().map (c)-> c.object[0]
-      expect(objects).toContain $('header')[0], "Expected <header> to be fixed"
+      expect(objects).toContain $('#control-bar-container')[0], "Expected control bar container to be fixed"
 
     it "fixes the toolbar", ->
       expect($.fn.scrollToFixed).toHaveBeenCalledWith(marginTop: 246)

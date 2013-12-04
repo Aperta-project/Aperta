@@ -30,6 +30,8 @@
               %li.nav-bar-text= link_to 'Sign out', destroy_user_session_path, method: :delete
               %li.nav-bar-text Welcome back, #{current_user.username}
 
+    = yield :control_bar
+
     .container
       %p.notice= notice
       %p.alert= alert

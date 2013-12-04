@@ -1,5 +1,59 @@
-@import "bootstrap/variables";
-@import "bootstrap/mixins";
+$grid-float-breakpoint: 0;
+@import "bootstrap";
+@import 'tahi';
+
+$control-bar-background-color: #eff5df;
+$control-bar-color: black;
+$control-bar-hover-color: #64184a;
+$control-bar-active-color: #a42778;
+$control-bar-font-family: 'cabinregular';
+$control-bar-secondary-color: #878787;
+
+#control-bar-container {
+  background-color: $control-bar-background-color;
+  width: 100%;
+}
+
+#control-bar {
+  margin: 0 auto;
+  background-color: $control-bar-background-color;
+  font-family: $control-bar-font-family;
+  min-width: 960px;
+  max-width: 1120px;
+  height: 65px;
+  padding: 15px 0;
+}
+
+#control-bar section {
+  @extend .collapse, .navbar-collapse;
+}
+
+#control-bar section > ul {
+  @extend .nav, .navbar-nav;
+  color: $control-bar-color;
+
+  li {
+    margin-right: 10px;
+  }
+}
+
+#control-bar section > ul:last-of-type {
+  @extend .navbar-right;
+
+  li > a {
+    @extend .primary-button;
+  }
+}
+
+#short_title_editable {
+  font-size: 18px;
+  line-height: 36px;
+}
+
+#revision {
+  line-height: 36px;
+  color: $control-bar-secondary-color;
+}
 
 .author-detail {
   display: inline-block;
@@ -7,7 +61,7 @@
 }
 
 .container > main, .container > header {
-  background-color: #fff;
+  background-color: white;
 
   > article {
     @include make-lg-column(9);
@@ -23,5 +77,5 @@ header > aside {
 }
 
 .placeholder {
-  color: #aaa
+  color: #aaa;
 }

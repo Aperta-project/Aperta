@@ -101,7 +101,7 @@ describe "Tahi.overlays.figures", ->
 
       progressBar = $('#paper-figure-uploads .progress .progress-bar')
       originalWidth = parseInt(progressBar.css('width'), 10)
-      expectedWidth = originalWidth * @data.loaded / @data.total
+      expectedWidth = Math.round(originalWidth * @data.loaded / @data.total)
 
       Tahi.overlays.figures.fileUploadProgress @event, @data
       expect(progressBar.css('width')).toEqual "#{expectedWidth}px"

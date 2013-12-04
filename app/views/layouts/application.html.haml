@@ -20,9 +20,9 @@
           Tahi
       %section
         %ul
-          %li.nav-bar-item= link_to 'Dashboard', root_path
+          %li.nav-bar-item= active_link_to 'Dashboard', root_path
           - if current_user && current_user.admin?
-            %li.nav-bar-item= link_to 'Admin', admin_users_path
+            %li.nav-bar-item= active_link_to 'Admin', admin_users_path
         %ul
           - if current_user
             %li.nav-bar-text= link_to 'Sign out', destroy_user_session_path, method: :delete

@@ -7,7 +7,7 @@ class DashboardPage < Page
   end
 
   def header
-    page.find 'header'
+    page.find '.container header'
   end
 
   def sign_out

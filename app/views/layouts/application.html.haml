@@ -13,17 +13,22 @@
       %footer
         %a.btn.btn-primary.close-overlay{href: "#"} Close
 
+    %nav#nav-bar
+      %header
+        = link_to root_path do
+          %i.glyphicon.glyphicon-home
+          Tahi
+      %section
+        %ul
+          %li.nav-bar-item= link_to 'Dashboard', root_path
+          - if current_user && current_user.admin?
+            %li.nav-bar-item= link_to 'Admin', admin_users_path
+        %ul
+          - if current_user
+            %li.nav-bar-text= link_to 'Sign out', destroy_user_session_path, method: :delete
+            %li.nav-bar-text Welcome back, Dr. Zaius
+
     .container
-      %nav.navbar.navbar-default{role: "navigation"}
-        .navbar-header
-          = link_to 'Tahi', root_path, class: 'navbar-brand'
-        #bs-example-navbar-collapse-1.collapse.navbar-collapse
-          %ul.nav.navbar-nav.navbar-right
-            %li= link_to 'Dashboard', root_path
-            - if current_user
-              - if current_user.admin?
-                %li= link_to 'Admin', admin_users_path
-              %li= link_to 'Sign out', destroy_user_session_path, method: :delete
       %p.notice= notice
       %p.alert= alert
       = yield

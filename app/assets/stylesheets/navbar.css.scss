@@ -1,0 +1,64 @@
+@import "bootstrap";
+
+$navbar-background-color: black;
+$navbar-color: white;
+$navbar-hover-color: #64184a;
+$navbar-active-color: #a42778;
+$navbar-font-family: 'cabinregular';
+
+#nav-bar {
+  background-color: $navbar-background-color;
+  font-family: $navbar-font-family;
+}
+
+#nav-bar header {
+  text-transform: uppercase;
+
+  > a {
+    @extend .navbar-brand;
+    color: $navbar-color;
+    padding: 14px 20px;
+  }
+}
+
+#nav-bar section {
+  @extend .collapse, .navbar-collapse;
+}
+
+#nav-bar section > ul {
+  @extend .nav, .navbar-nav;
+  color: $navbar-color;
+}
+
+#nav-bar section > ul:last-of-type {
+  @extend .navbar-right;
+}
+
+#nav-bar section > ul:last-of-type li:last-of-type {
+  @extend .navbar-text;
+  padding-right: 20px;
+}
+
+#nav-bar section > ul > li > a {
+  color: $navbar-color;
+  padding-left: 20px;
+  padding-right: 20px;
+
+}
+
+#nav-bar section > ul > li.nav-bar-item > a {
+  &:hover {
+    background: $navbar-hover-color;
+  }
+
+  &.active {
+    background: $navbar-active-color;
+  }
+}
+
+#nav-bar section > ul > li.nav-bar-text > a {
+  &:hover {
+    text-decoration: underline;
+    background-color: transparent;
+  }
+}

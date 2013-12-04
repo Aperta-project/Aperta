@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby "2.0.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.1'
+gem 'rails', '4.0.2'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -30,7 +30,7 @@ gem 'jquery-turbolinks'
 gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
+gem 'jbuilder'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -58,7 +58,7 @@ end
 group :development, :test do
   gem 'rspec-rails', "~> 3.0.0.beta1"
   gem "rspec-its", "~> 1.0.0.pre"
-  gem 'capybara', "~> 2.2.0.rc1"
+  gem 'capybara'
   gem 'capybara-webkit'
   gem 'selenium-webdriver'
   gem 'launchy'
@@ -68,7 +68,7 @@ end
 
 gem 'devise'
 
-gem "bootstrap-sass", "~> 3.0.0.0.rc2"
+gem "bootstrap-sass"
 
 gem 'rails_12factor', group: [:production, :staging]
 

@@ -107,7 +107,7 @@ describe "Tahi.papers", ->
   describe "#fixArticleControls", ->
     beforeEach ->
       $('#jasmine_content').html """
-        <div class="container">
+        <div id="tahi-container">
           <div id='control-bar-container' style="height: 246px;"><h1>This is the header</h1></div>
           <main>
             <div id="toolbar">Toolbar goes here</div>

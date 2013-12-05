@@ -19,7 +19,6 @@ $control-bar-secondary-color: #878787;
 #control-bar {
   margin: 0 auto;
   background-color: $control-bar-background-color;
-  font-family: $tahi-font-family;
   min-width: 960px;
   max-width: 1120px;
   height: 65px;
@@ -84,6 +83,7 @@ $control-bar-secondary-color: #878787;
 
   > aside {
     @include make-xs-column(3);
+    padding-top: 60px
   }
 }
 
@@ -109,4 +109,21 @@ main > aside > div {
 
 #authors {
   font-style: italic;
+}
+
+.card {
+  background-color: #eff5df;
+  color: $btn-primary-bg;
+  width: 100%;
+  font-size: 18px;
+  padding: 10px 15px;
+  display: block;
+  border-radius: 5px;
+  margin-bottom: 20px;
+
+  &:hover {
+    background-color: $btn-primary-bg;
+    color: white;
+    text-decoration: none;
+  }
 }

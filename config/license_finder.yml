@@ -4,10 +4,12 @@ whitelist:
 - Apache 2.0
 - ISC
 - BSD
+- 2-clause BSDL
 - New BSD
 - Ruby
 - LGPL
 - GPLv2
+- GPLv2+
 ignore_groups:
 #- test
 #- development

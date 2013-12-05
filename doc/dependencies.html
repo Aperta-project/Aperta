@@ -31,24 +31,45 @@
   <div class="summary hero-unit">
     <h2>Dependencies</h2>
 
-    <p>As of November 25, 2013  8:57am</p>
+    <p>As of December  5, 2013  8:13am</p>
 
     <h4>
-      95 total
+      105 total
 
+              <span class="badge badge-important">2 unapproved</span>
           </h4>
 
     <ul>
-              <li>78 MIT</li>
+              <li>87 MIT</li>
               <li>6 Apache 2.0</li>
               <li>3 BSD</li>
-              <li>2 ruby</li>
               <li>2 LGPL</li>
-              <li>2 GPLv2</li>
+              <li>2 ruby</li>
               <li>1 ISC</li>
               <li>1 New BSD</li>
+              <li>1 GPLv2+</li>
+              <li>1 GPLv2</li>
+              <li>1 2-clause BSDL</li>
           </ul>
   </div>
+      <div class="action-items hero-unit">
+      <h2>Action Items</h2>
+      <h4>2 unapproved dependencies</h4>
+      <ul>
+                  <li>
+          <a href='#unicorn'>
+            unicorn
+          </a>
+          (GPLv2+)
+          </li>
+                  <li>
+          <a href='#unf'>
+            unf
+          </a>
+          (2-clause BSDL)
+          </li>
+              </ul>
+    </div>
     <div class="dependencies">
           <div id="ScrollToFixed" class="approved">
         <h2>
@@ -77,7 +98,7 @@
           <div id="actionmailer" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">actionmailer</a>
-                    v4.0.1
+                    v4.0.2
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -110,7 +131,7 @@
           <div id="actionpack" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">actionpack</a>
-                    v4.0.1
+                    v4.0.2
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -138,6 +159,7 @@
                           <dd>rails</dd>
                           <dd>rspec-rails</dd>
                           <dd>haml-rails</dd>
+                          <dd>jquery-fileupload-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -153,7 +175,7 @@
           <div id="activemodel" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">activemodel</a>
-                    v4.0.1
+                    v4.0.2
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -178,6 +200,7 @@
                           <dd>actionpack</dd>
                           <dd>activerecord</dd>
                           <dd>rspec-rails</dd>
+                          <dd>carrierwave</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -188,7 +211,7 @@
           <div id="activerecord" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">activerecord</a>
-                    v4.0.1
+                    v4.0.2
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -259,7 +282,7 @@
           <div id="activesupport" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">activesupport</a>
-                    v4.0.1
+                    v4.0.2
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -292,6 +315,8 @@
                           <dd>rails</dd>
                           <dd>rspec-rails</dd>
                           <dd>haml-rails</dd>
+                          <dd>carrierwave</dd>
+                          <dd>excon</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -444,7 +469,7 @@ database compatibility and query generation.</td>
           <div id="bootstrap-sass" class="approved">
         <h2>
                       <a href="http://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a>
-                    v3.0.0.0.rc2
+                    v3.0.2.1
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -507,6 +532,7 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>actionpack</dd>
                           <dd>activemodel</dd>
                           <dd>tilt</dd>
+                          <dd>fog</dd>
                       </dl>
                       </div>
           <div id="bundler" class="approved">
@@ -547,12 +573,14 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>rspec-support</dd>
                           <dd>rspec-collection_matchers</dd>
                           <dd>rspec-its</dd>
+                          <dd>unf_ext</dd>
+                          <dd>unf</dd>
                       </dl>
                       </div>
           <div id="capybara" class="approved">
         <h2>
                       <a href="http://github.com/jnicklas/capybara">capybara</a>
-                    v2.2.0.rc1
+                    v2.2.0
                       (development, test)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -624,6 +652,39 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>selenium-webdriver</dd>
                       </dl>
               </div>
+          <div id="carrierwave" class="approved">
+        <h2>
+                      <a href="https://github.com/carrierwaveuploader/carrierwave">carrierwave</a>
+                    v0.9.0
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Ruby file upload library</td>
+            <td>Upload files in your Ruby applications, map them to a range of ORMs, store them on different backends.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>activesupport</dd>
+                          <dd>activemodel</dd>
+                          <dd>json</dd>
+                          <dd>rails</dd>
+                          <dd>fog</dd>
+                      </dl>
+              </div>
           <div id="childprocess" class="approved">
         <h2>
                       <a href="http://github.com/jarib/childprocess">childprocess</a>
@@ -692,7 +753,7 @@ simple to do.  Currently the following builder objects are supported:
           <div id="coderay" class="approved">
         <h2>
                       <a href="http://coderay.rubychan.de">coderay</a>
-                    v1.0.9
+                    v1.1.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -850,7 +911,7 @@ simple to do.  Currently the following builder objects are supported:
           <div id="devise" class="approved">
         <h2>
                       <a href="http://github.com/plataformatec/devise">devise</a>
-                    v3.1.1
+                    v3.2.2
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -965,6 +1026,40 @@ We are happy to report that this issue has been resolved.</td>
                           <dd>tilt</dd>
                       </dl>
                       </div>
+          <div id="excon" class="approved">
+        <h2>
+                      <a href="https://github.com/geemus/excon">excon</a>
+                    v0.28.0
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>speed, persistence, http(s)</td>
+            <td>EXtended http(s) CONnections</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>fog</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>activesupport</dd>
+                          <dd>rake</dd>
+                          <dd>rdoc</dd>
+                      </dl>
+              </div>
           <div id="execjs" class="approved">
         <h2>
                       <a href="https://github.com/sstephenson/execjs">execjs</a>
@@ -1031,10 +1126,87 @@ We are happy to report that this issue has been resolved.</td>
                           <dd>rake</dd>
                       </dl>
               </div>
+          <div id="fog" class="approved">
+        <h2>
+                      <a href="http://github.com/fog/fog">fog</a>
+                    v1.18.0
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>brings clouds to you</td>
+            <td>The Ruby cloud services library. Supports all major cloud providers including AWS, Rackspace, Linode, Blue Box, StormOnDemand, and many others. Full support for most AWS services including EC2, S3, CloudWatch, SimpleDB, ELB, and RDS.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>carrierwave</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>builder</dd>
+                          <dd>excon</dd>
+                          <dd>formatador</dd>
+                          <dd>multi_json</dd>
+                          <dd>mime-types</dd>
+                          <dd>net-scp</dd>
+                          <dd>net-ssh</dd>
+                          <dd>nokogiri</dd>
+                          <dd>ruby-hmac</dd>
+                          <dd>rake</dd>
+                          <dd>thor</dd>
+                          <dd>pry</dd>
+                          <dd>unf</dd>
+                      </dl>
+              </div>
+          <div id="formatador" class="approved">
+        <h2>
+                      <a href="http://github.com/geemus/formatador">formatador</a>
+                    v0.2.4
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Ruby STDOUT text formatting</td>
+            <td>STDOUT text formatting</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>fog</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
           <div id="haml" class="approved">
         <h2>
                       <a href="http://haml.info/">haml</a>
-                    v4.0.3
+                    v4.0.4
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1075,7 +1247,7 @@ but it can function as a stand-alone templating engine.
           <div id="haml-rails" class="approved">
         <h2>
                       <a href="http://github.com/indirect/haml-rails">haml-rails</a>
-                    v0.4
+                    v0.5.1
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -1175,7 +1347,7 @@ but it can function as a stand-alone templating engine.
           <div id="i18n" class="approved">
         <h2>
                       <a href="http://github.com/svenfuchs/i18n">i18n</a>
-                    v0.6.5
+                    v0.6.9
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1276,7 +1448,7 @@ but it can function as a stand-alone templating engine.
           <div id="jbuilder" class="approved">
         <h2>
                       jbuilder
-                    v1.5.2
+                    v1.5.3
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -1301,6 +1473,37 @@ but it can function as a stand-alone templating engine.
             <dt>Children</dt>
                           <dd>activesupport</dd>
                           <dd>multi_json</dd>
+                      </dl>
+              </div>
+          <div id="jquery-fileupload-rails" class="approved">
+        <h2>
+                      <a href="https://github.com/tors/jquery-fileupload-rails">jquery-fileupload-rails</a>
+                    v0.4.1
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>jQuery File Upload for Rails 3.1 Asset Pipeline</td>
+            <td>jQuery File Upload by Sebastian Tschan integrated for Rails 3.1 Asset Pipeline</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>railties</dd>
+                          <dd>actionpack</dd>
+                          <dd>rails</dd>
                       </dl>
               </div>
           <div id="jquery-rails" class="approved">
@@ -1398,6 +1601,7 @@ but it can function as a stand-alone templating engine.
                           <dd>rdoc</dd>
                           <dd>sdoc</dd>
                           <dd>uglifier</dd>
+                          <dd>carrierwave</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1438,7 +1642,7 @@ applications (that run on Unix-like platforms).</td>
           <div id="launchy" class="approved">
         <h2>
                       <a href="http://github.com/copiousfreetime/launchy">launchy</a>
-                    v2.3.0
+                    v2.4.2
                       (development, test)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -1586,7 +1790,7 @@ applications (that run on Unix-like platforms).</td>
           <div id="mime-types" class="approved">
         <h2>
                       <a href="http://mime-types.rubyforge.org/">mime-types</a>
-                    v1.25
+                    v1.25.1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1600,14 +1804,16 @@ applications (that run on Unix-like platforms).</td>
           <tr>
             <td>This library allows for the identification of a file's likely MIME content type</td>
             <td>This library allows for the identification of a file's likely MIME content
-type. This is release 1.25, adding experimental caching and lazy loading
-functionality.
+type. This is release 1.25.1, fixing an issue with priority comparison for
+mime-types 1.x. The current release is 2.0, which only supports Ruby 1.9 or
+later.
 
-The caching and lazy loading features were initially implemented by Greg
-Brockman (gdb). As these features are experimental, they are disabled by
-default and must be enabled through the use of environment variables. The cache
-is invalidated on a per-version basis; the cache for version 1.25 will not be
-reused for version 1.26.
+Release 1.25.1 contains all features of 1.25, including the experimental
+caching and lazy loading functionality. The caching and lazy loading features
+were initially implemented by Greg Brockman (gdb). As these features are
+experimental, they are disabled by default and must be enabled through the use
+of environment variables. The cache is invalidated on a per-version basis; the
+cache for version 1.25 will not be reused for any later version.
 
 To use lazy loading, set the environment variable +RUBY_MIME_TYPES_LAZY_LOAD+
 to any value other than 'false'. When using lazy loading, the initial startup
@@ -1638,8 +1844,7 @@ complete; don't hesitate to ask to add additional information. This library
 follows the IANA collection of MIME types (see below for reference).
 
 MIME::Types for Ruby was originally based on MIME::Types for Perl by Mark
-Overmeer, copyright 2001 - 2009. As of version 1.15, the data format for the
-MIME::Type list has changed and the synchronization will no longer happen.
+Overmeer, copyright 2001 - 2009.
 
 MIME::Types is built to conform to the MIME types of RFCs 2045 and 2231. It
 tracks the {IANA registry}[http://www.iana.org/assignments/media-types/]
@@ -1656,6 +1861,7 @@ and added by the users of MIME::Types.</td>
             <dt>Parents</dt>
                           <dd>mail</dd>
                           <dd>capybara</dd>
+                          <dd>fog</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1818,6 +2024,7 @@ extract-method refactorings still apply.</td>
                           <dd>sprockets</dd>
                           <dd>jasmine</dd>
                           <dd>selenium-webdriver</dd>
+                          <dd>fog</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1856,6 +2063,67 @@ extract-method refactorings still apply.</td>
                           <dd>bundler</dd>
                       </dl>
               </div>
+          <div id="net-scp" class="approved">
+        <h2>
+                      <a href="https://github.com/net-ssh/net-scp">net-scp</a>
+                    v1.1.2
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>A pure Ruby implementation of the SCP client protocol</td>
+            <td>A pure Ruby implementation of the SCP client protocol</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>fog</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>net-ssh</dd>
+                      </dl>
+              </div>
+          <div id="net-ssh" class="approved">
+        <h2>
+                      <a href="https://github.com/net-ssh/net-ssh">net-ssh</a>
+                    v2.7.0
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Net::SSH: a pure-Ruby implementation of the SSH2 client protocol.</td>
+            <td>Net::SSH: a pure-Ruby implementation of the SSH2 client protocol. It allows you to write programs that invoke and interact with processes on remote servers, via SSH2.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>net-scp</dd>
+                          <dd>fog</dd>
+                      </dl>
+                      </div>
           <div id="nokogiri" class="approved">
         <h2>
                       <a href="http://nokogiri.org">nokogiri</a>
@@ -1891,6 +2159,7 @@ enough of it.</td>
                           <dd>tilt</dd>
                           <dd>rspec-core</dd>
                           <dd>haml</dd>
+                          <dd>fog</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1903,7 +2172,7 @@ enough of it.</td>
           <div id="orm_adapter" class="approved">
         <h2>
                       <a href="http://github.com/ianwhite/orm_adapter">orm_adapter</a>
-                    v0.4.0
+                    v0.5.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2048,7 +2317,7 @@ augments 'require' to find and load matching files.</td>
           <div id="pry" class="approved">
         <h2>
                       <a href="http://pry.github.com">pry</a>
-                    v0.9.12.2
+                    v0.9.12.4
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2073,6 +2342,7 @@ augments 'require' to find and load matching files.</td>
                           <dd>capybara</dd>
                           <dd>license_finder</dd>
                           <dd>pry-rails</dd>
+                          <dd>fog</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2200,7 +2470,7 @@ request helpers feature.</td>
           <div id="rails" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">rails</a>
-                    v4.0.1
+                    v4.0.2
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -2228,6 +2498,8 @@ request helpers feature.</td>
                           <dd>haml-rails</dd>
                           <dd>ckeditor_rails</dd>
                           <dd>jasmine</dd>
+                          <dd>carrierwave</dd>
+                          <dd>jquery-fileupload-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2329,7 +2601,7 @@ request helpers feature.</td>
           <div id="railties" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">railties</a>
-                    v4.0.1
+                    v4.0.2
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2360,6 +2632,7 @@ request helpers feature.</td>
                           <dd>sass-rails</dd>
                           <dd>haml-rails</dd>
                           <dd>ckeditor_rails</dd>
+                          <dd>jquery-fileupload-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2465,6 +2738,11 @@ multiple processes.</td>
                           <dd>jasmine</dd>
                           <dd>rspec-support</dd>
                           <dd>rspec-its</dd>
+                          <dd>excon</dd>
+                          <dd>formatador</dd>
+                          <dd>fog</dd>
+                          <dd>uglifier</dd>
+                          <dd>unf</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2514,6 +2792,9 @@ See RDoc for a description of RDoc's markup and basic use.</td>
                           <dd>rdoc</dd>
                           <dd>sdoc</dd>
                           <dd>uglifier</dd>
+                          <dd>excon</dd>
+                          <dd>unf_ext</dd>
+                          <dd>unf</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2760,6 +3041,36 @@ See RDoc for a description of RDoc's markup and basic use.</td>
                           <dd>rake</dd>
                       </dl>
               </div>
+          <div id="ruby-hmac" class="approved">
+        <h2>
+                      <a href="http://ruby-hmac.rubyforge.org">ruby-hmac</a>
+                    v0.4.0
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>This module provides common interface to HMAC functionality</td>
+            <td>This module provides common interface to HMAC functionality. HMAC is a kind of "Message Authentication Code" (MAC) algorithm whose standard is documented in RFC2104. Namely, a MAC provides a way to check the integrity of information transmitted over or stored in an unreliable medium, based on a secret key.
+
+Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>fog</dd>
+                      </dl>
+                      </div>
           <div id="rubyzip" class="approved">
         <h2>
                       <a href="http://github.com/rubyzip/rubyzip">rubyzip</a>
@@ -2932,8 +3243,8 @@ See RDoc for a description of RDoc's markup and basic use.</td>
               </div>
           <div id="sequel" class="approved">
         <h2>
-                      <a href="http://sequel.rubyforge.org">sequel</a>
-                    v4.3.0
+                      <a href="http://sequel.jeremyevans.net">sequel</a>
+                    v4.5.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2960,8 +3271,8 @@ See RDoc for a description of RDoc's markup and basic use.</td>
                       </div>
           <div id="slop" class="approved">
         <h2>
-                      <a href="http://github.com/injekt/slop">slop</a>
-                    v3.4.6
+                      <a href="http://github.com/leejarvis/slop">slop</a>
+                    v3.4.7
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2994,7 +3305,7 @@ See RDoc for a description of RDoc's markup and basic use.</td>
           <div id="sprockets" class="approved">
         <h2>
                       <a href="http://getsprockets.org/">sprockets</a>
-                    v2.10.0
+                    v2.10.1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3140,6 +3451,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                           <dd>jquery-rails</dd>
                           <dd>license_finder</dd>
                           <dd>ckeditor_rails</dd>
+                          <dd>fog</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3280,7 +3592,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
           <div id="turbolinks" class="approved">
         <h2>
                       turbolinks
-                    v1.3.0
+                    v1.3.1
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -3343,7 +3655,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
           <div id="uglifier" class="approved">
         <h2>
                       <a href="http://github.com/lautis/uglifier">uglifier</a>
-                    v2.3.0
+                    v2.3.2
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -3357,7 +3669,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
           <tbody>
           <tr>
             <td>Ruby wrapper for UglifyJS JavaScript compressor</td>
-            <td></td>
+            <td>Uglifier minifies JavaScript files by wrapping UglifyJS to be accessible in Ruby</td>
             <td>
                               <a href="http://opensource.org/licenses/mit-license">MIT</a>
                           </td>
@@ -3374,12 +3686,84 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                           <dd>json</dd>
                           <dd>bundler</dd>
                           <dd>rdoc</dd>
+                          <dd>rake</dd>
                       </dl>
               </div>
-          <div id="unicorn" class="approved">
+          <div id="unf" class="unapproved">
+        <h2>
+                      <a href="https://github.com/knu/ruby-unf">unf</a>
+                    v0.1.3
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>A wrapper library to bring Unicode Normalization Form support to Ruby/JRuby</td>
+            <td>This is a wrapper library to bring Unicode Normalization Form support
+to Ruby/JRuby.
+</td>
+            <td>
+                              2-clause BSDL
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>fog</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>unf_ext</dd>
+                          <dd>bundler</dd>
+                          <dd>rake</dd>
+                          <dd>rdoc</dd>
+                      </dl>
+              </div>
+          <div id="unf_ext" class="approved">
+        <h2>
+                      <a href="https://github.com/knu/ruby-unf_ext">unf_ext</a>
+                    v0.0.6
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Unicode Normalization Form support library for CRuby</td>
+            <td>Unicode Normalization Form support library for CRuby</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>unf</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rdoc</dd>
+                          <dd>bundler</dd>
+                      </dl>
+              </div>
+          <div id="unicorn" class="unapproved">
         <h2>
                       <a href="http://unicorn.bogomips.org/">unicorn</a>
-                    v4.6.3
+                    v4.7.0
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -3399,7 +3783,7 @@ advantage of features in Unix/Unix-like kernels.  Slow clients should
 only be served by placing a reverse proxy capable of fully buffering
 both the the request and response in between \Unicorn and slow clients.</td>
             <td>
-                              <a href="http://www.gnu.org/licenses/gpl-2.0.txt">GPLv2</a>
+                              GPLv2+
                           </td>
           </tr>
           </tbody>

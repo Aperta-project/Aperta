@@ -10,7 +10,7 @@ Tahi.papers =
     @fixArticleControls()
     @instantiateEditables()
 
-    $('#paper-authors').click => @bindCloseToUpdateAuthors()
+    $('#paper-authors.editable').click => @bindCloseToUpdateAuthors()
     @updateAuthors()
 
   authors: ->
@@ -44,9 +44,9 @@ Tahi.papers =
     authors = Tahi.papers.authors()
     if authors.length > 0
       authorNames = authors.map (author) -> "#{author.first_name} #{author.last_name}"
-      $('#paper-authors').text authorNames.join(', ')
+      $('#paper-authors.editable').text authorNames.join(', ')
     else
-      $('#paper-authors').html '<span class="placeholder">Click here to add authors</span>'
+      $('#paper-authors.editable').html '<span class="placeholder">Click here to add authors</span>'
 
   bindCloseToUpdateAuthors: ->
     $('.close-overlay').on 'click', =>

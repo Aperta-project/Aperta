@@ -25,7 +25,7 @@ describe "Tahi.papers", ->
         expect(Tahi.papers.fixArticleControls).toHaveBeenCalled()
 
       it "binds #bindCloseToUpdateAuthors to #authors click", ->
-        $('#jasmine_content').html """<div id="paper-authors"></div>"""
+        $('#jasmine_content').html """<div id="paper-authors" class="editable"></div>"""
         spyOn Tahi.papers, 'bindCloseToUpdateAuthors'
         Tahi.papers.init()
         $('#paper-authors').click()
@@ -50,7 +50,7 @@ describe "Tahi.papers", ->
   describe "#updateAuthors", ->
     beforeEach ->
       $('#jasmine_content').html """
-        <div id="paper-authors">
+        <div id="paper-authors" class="editable">
           Some text that's here on page load
         </div>
       """

@@ -11,5 +11,4 @@ class Declaration < ActiveRecord::Base
   def self.default_declarations
     DEFAULT_DECLARATION_QUESTIONS.map { |q| Declaration.new question: q }
   end
-
 end

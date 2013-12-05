@@ -29,7 +29,7 @@ Tahi.papers =
   fixArticleControls: ->
     $('#control-bar-container').scrollToFixed()
     $('#toolbar').scrollToFixed(marginTop: $('#control-bar-container').outerHeight(true))
-    $('#tahi-container > main > aside').scrollToFixed
+    $('#tahi-container > main > aside > div').scrollToFixed
       marginTop: $('#control-bar-container').outerHeight(true)
       unfixed: ->
         $(this).css('top', '0px')

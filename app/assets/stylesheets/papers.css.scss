@@ -83,7 +83,6 @@ $control-bar-secondary-color: #878787;
 
   > aside {
     @include make-xs-column(3);
-    padding-top: 60px
   }
 }
 
@@ -101,6 +100,7 @@ main > article > div {
 }
 
 main > aside > div {
+  padding-top: 60px;
   width: 220px;
 }
 #tahi-container > main > article * {

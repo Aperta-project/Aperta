@@ -112,7 +112,7 @@ describe "Tahi.papers", ->
           <main>
             <div id="toolbar">Toolbar goes here</div>
             <article>Main text</article>
-            <aside>Sidebar</aside>
+            <aside><div id='right-rail'>Sidebar</div></aside>
           </main>
         </div>
       """
@@ -135,19 +135,19 @@ describe "Tahi.papers", ->
         marginTop: 246
         unfixed: jasmine.any(Function)
       objects = $.fn.scrollToFixed.calls.all().map (c)-> c.object[0]
-      expect(objects).toContain $('aside')[0], "Expected <aside> to be fixed"
+      expect(objects).toContain $('#right-rail')[0], "Expected right rail to be fixed"
 
-    describe "right bar (aside)", ->
+    describe "right rail", ->
       it "has its top set to 0 on unfixed", ->
-        aside = $("aside")[0]
-        aside.style.top = '100px'
-        expect(aside.style.top).toEqual '100px'
+        rightRail = $("#right-rail")[0]
+        rightRail.style.top = '100px'
+        expect(rightRail.style.top).toEqual '100px'
 
-        asideCall = null
+        rightRailCall = null
         for call in $.fn.scrollToFixed.calls.all()
-          if call.object[0] == aside
-            asideCall = call
+          if call.object[0] == rightRail
+            rightRailCall = call
 
-        asideCall.args[0].unfixed.call aside
+        rightRailCall.args[0].unfixed.call rightRail
 
-        expect(aside.style.top).toEqual '0px'
+        expect(rightRail.style.top).toEqual '0px'

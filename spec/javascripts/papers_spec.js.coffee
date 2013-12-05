@@ -25,10 +25,10 @@ describe "Tahi.papers", ->
         expect(Tahi.papers.fixArticleControls).toHaveBeenCalled()
 
       it "binds #bindCloseToUpdateAuthors to #authors click", ->
-        $('#jasmine_content').html """<div id="authors"></div>"""
+        $('#jasmine_content').html """<div id="paper-authors"></div>"""
         spyOn Tahi.papers, 'bindCloseToUpdateAuthors'
         Tahi.papers.init()
-        $('#authors').click()
+        $('#paper-authors').click()
         expect(Tahi.papers.bindCloseToUpdateAuthors).toHaveBeenCalled()
 
       it "runs #updateAuthors", ->
@@ -50,7 +50,7 @@ describe "Tahi.papers", ->
   describe "#updateAuthors", ->
     beforeEach ->
       $('#jasmine_content').html """
-        <div id="authors">
+        <div id="paper-authors">
           Some text that's here on page load
         </div>
       """
@@ -61,13 +61,13 @@ describe "Tahi.papers", ->
         { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
       ]
       Tahi.papers.updateAuthors()
-      expect($('#authors').text().trim()).toEqual('Neils Bohr, Nikola Tesla')
+      expect($('#paper-authors').text().trim()).toEqual('Neils Bohr, Nikola Tesla')
 
     context "when there are no authors", ->
       it "puts a 'click here' message in the authors div", ->
         spyOn(Tahi.papers, 'authors').and.returnValue []
         Tahi.papers.updateAuthors()
-        expect($('#authors').text().trim()).toEqual('Click here to add authors')
+        expect($('#paper-authors').text().trim()).toEqual('Click here to add authors')
 
 
   describe "#authors", ->

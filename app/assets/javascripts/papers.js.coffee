@@ -10,7 +10,7 @@ Tahi.papers =
     @fixArticleControls()
     @instantiateEditables()
 
-    $('#authors').click => @bindCloseToUpdateAuthors()
+    $('#paper-authors').click => @bindCloseToUpdateAuthors()
     @updateAuthors()
 
   authors: ->
@@ -36,17 +36,17 @@ Tahi.papers =
 
   instantiateEditables: ->
     if $("[contenteditable]").length > 0
-      Tahi.body_editable = new Tahi.RichEditableElement(document.getElementById 'body-editable')
-      Tahi.abstract_editable = new Tahi.RichEditableElement(document.getElementById 'abstract-editable')
-      Tahi.title_editable = new Tahi.PlaceholderElement(document.getElementById 'title-editable')
+      Tahi.body_editable = new Tahi.RichEditableElement($('#paper-body[contenteditable]')[0])
+      Tahi.abstract_editable = new Tahi.RichEditableElement($('#paper-abstract[contenteditable]')[0])
+      Tahi.title_editable = new Tahi.PlaceholderElement($('#paper-title[contenteditable]')[0])
 
   updateAuthors: ->
     authors = Tahi.papers.authors()
     if authors.length > 0
       authorNames = authors.map (author) -> "#{author.first_name} #{author.last_name}"
-      $('#authors').text authorNames.join(', ')
+      $('#paper-authors').text authorNames.join(', ')
     else
-      $('#authors').html '<span class="placeholder">Click here to add authors</span>'
+      $('#paper-authors').html '<span class="placeholder">Click here to add authors</span>'
 
   bindCloseToUpdateAuthors: ->
     $('.close-overlay').on 'click', =>
@@ -65,10 +65,10 @@ $(document).ready ->
       data:
         _method: "patch"
         paper:
-          title: $.trim($('#title-editable').text())
-          body: CKEDITOR.instances['body-editable'].getData()
-          abstract: CKEDITOR.instances['abstract-editable'].getData()
-          short_title: $.trim($('#short-title-editable').text())
+          title: $.trim($('#paper-title').text())
+          body: CKEDITOR.instances['paper-body'].getData()
+          abstract: CKEDITOR.instances['paper-abstract'].getData()
+          short_title: $.trim($('#paper-short-title').text())
           authors: (-> JSON.stringify Tahi.papers.authors())()
 
       success: ->

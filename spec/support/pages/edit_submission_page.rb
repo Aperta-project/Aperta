@@ -89,19 +89,19 @@ class EditSubmissionPage < Page
   end
 
   def short_title=(val)
-    page.execute_script "$('#short-title-editable').text('#{val}')"
+    page.execute_script "$('#paper-short-title').text('#{val}')"
   end
 
   def title=(val)
-    page.execute_script "$('#title-editable').text('#{val}')"
+    page.execute_script "$('#paper-title').text('#{val}')"
   end
 
   def abstract=(val)
-    page.execute_script "CKEDITOR.instances['abstract-editable'].setData('#{escape_javascript val}')"
+    page.execute_script "CKEDITOR.instances['paper-abstract'].setData('#{escape_javascript val}')"
   end
 
   def body=(val)
-    page.execute_script "CKEDITOR.instances['body-editable'].setData('#{escape_javascript val}')"
+    page.execute_script "CKEDITOR.instances['paper-body'].setData('#{escape_javascript val}')"
   end
 
   def uploads_overlay &block
@@ -116,18 +116,18 @@ class EditSubmissionPage < Page
   end
 
   def authors_overlay &block
-    find('#authors').click
+    find('#paper-authors').click
     overlay = AuthorsOverlay.new find('#overlay')
     block.call overlay
     overlay.dismiss
   end
 
   def authors
-    find('#authors').text
+    find('#paper-authors').text
   end
 
   def title
-    find(:css, '#title-editable').text
+    find(:css, '#paper-title').text
   end
 
   def abstract
@@ -179,10 +179,10 @@ class EditSubmissionPage < Page
   private
 
   def abstract_node
-    find(:css, '#abstract-editable')
+    find(:css, '#paper-abstract')
   end
 
   def body_node
-    find(:css, '#body-editable')
+    find(:css, '#paper-body')
   end
 end

@@ -6,8 +6,8 @@
     #control-bar
       %section
         %ul
-          %li#short-title-editable{contenteditable: true}= @paper.short_title
-          %li#revision R0
+          %li#paper-short-title{contenteditable: true}= @paper.short_title
+          %li#paper-revision R0
         %ul
           %li
             = link_to 'Save', paper_path(@paper, format: :json), id: 'save-button'
@@ -20,13 +20,13 @@
       #toolbar
 
       .title
-        %h2#title-editable{contenteditable: true, placeholder: 'Type your article title here'}
+        %h2#paper-title{contenteditable: true, placeholder: 'Type your article title here'}
           = @paper.title
 
-      #abstract-editable.editable{contenteditable: true, placeholder: 'Type your abstract here'}
+      #paper-abstract.editable{contenteditable: true, placeholder: 'Type your abstract here'}
         = @paper.abstract.html_safe
 
-      #authors{data: { 'overlay-name' => 'authors' }}
+      #paper-authors{data: { 'overlay-name' => 'authors' }}
         %span.placeholder Click here to add authors
 
       #authors-content.hidden
@@ -60,7 +60,7 @@
           .form-group
             = submit_tag 'done', class: 'btn btn-primary'
 
-      #body-editable.editable{contenteditable: true, placeholder: 'Type the body of your article here'}
+      #paper-body.editable{contenteditable: true, placeholder: 'Type the body of your article here'}
         = @paper.body.html_safe
 
   %aside

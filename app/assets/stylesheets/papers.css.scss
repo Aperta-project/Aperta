@@ -46,30 +46,39 @@ $control-bar-secondary-color: #878787;
   }
 }
 
-#short-title-editable {
+#paper-short-title {
   font-size: 18px;
   line-height: 36px;
 }
 
-#revision {
+#paper-revision {
   line-height: 36px;
   color: $control-bar-secondary-color;
 }
 
-#title-editable {
-  margin-top: 0;
+#toolbar {
+  height: 60px;
 }
 
-#body-editable {
-  min-height: 500px;
+#paper-title {
+  margin-top: 60px;
+
+  &[contenteditable] {
+    margin-top: 0;
+  }
 }
 
-#abstract-editable {
+#paper-abstract {
   display: none;
 }
 
-#toolbar {
-  height: 60px;
+#paper-authors {
+  font-style: italic;
+  margin: 20px 0;
+}
+
+#paper-body {
+  min-height: 500px;
 }
 
 .author-detail {
@@ -113,10 +122,6 @@ main > aside > div {
 }
 #tahi-container > main > article * {
   font-family: $paper-font-family;
-}
-
-#authors {
-  font-style: italic;
 }
 
 .card {

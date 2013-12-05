@@ -1,6 +1,11 @@
 @import 'variables';
 @import 'bootstrap';
 
+html {
+  overflow: -moz-scrollbars-vertical; 
+  overflow-y: scroll;
+}
+
 body {
   background-color: #f8f8f8;
   font-family: $tahi-font-family;

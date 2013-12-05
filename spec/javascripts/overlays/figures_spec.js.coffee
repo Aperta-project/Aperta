@@ -41,7 +41,7 @@ describe "Tahi.overlays.figures", ->
       ]
       Tahi.overlays.figures.fileUploadProcessAlways event, data
       expect($('#paper-figure-uploads').html()).toEqual """
-        <li data-file-id="real-yeti.jpg"><div id="file-preview"></div><div class="progress">
+        <li data-file-id="real-yeti.jpg"><div class="preview-container"><div id="file-preview"></div></div><div class="progress">
           <div class="progress-bar">
           </div>
         </div></li>

@@ -25,7 +25,7 @@ textarea {
 }
 
 .small_text {
-  font-weight: bold;
+  font-weight: boldsecondary;
   text-transform: uppercase;
   color: #999;
 }
@@ -43,3 +43,22 @@ textarea {
   }
 }
 
+.secondary-button {
+  @extend .btn, .btn-default;
+  color: $btn-primary-bg;
+  border-color: $btn-primary-bg;
+  text-transform: uppercase;
+  &:hover {
+    background-color: #f2e3ed;
+    border-color: $btn-primary-bg;
+    color: $btn-primary-bg;
+  }
+}
+
+.progress {
+  @extend .progress-striped, .active;
+}
+
+.progress .progress-bar {
+  @include progress-bar-variant($tahi-trim);
+}

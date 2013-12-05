@@ -1,4 +1,11 @@
-$btn-primary-bg: #a42778;
-$btn-primary-bg-hover: #64184a;
+$tahi-primary: #a42778;
+$tahi-primary-dark: #64184a;
+$tahi-secondary: #eff5df;
+$tahi-trim: #d0d0d0;
+$tahi-trim-dark: #878787;
+
+$btn-primary-bg: $tahi-primary;
+$btn-primary-bg-hover: $tahi-primary-dark;
+
 $tahi-font-family: 'cabin', helvetica, sans-serif;
 $grid-float-breakpoint: 0;

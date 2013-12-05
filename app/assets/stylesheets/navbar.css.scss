@@ -3,8 +3,8 @@
 
 $nav-bar-background-color: black;
 $nav-bar-color: white;
-$nav-bar-hover-color: #64184a;
-$nav-bar-active-color: #a42778;
+$nav-bar-hover-color: $tahi-primary-dark;
+$nav-bar-active-color: $tahi-primary;
 
 #nav-bar-container {
   background-color: $nav-bar-background-color;

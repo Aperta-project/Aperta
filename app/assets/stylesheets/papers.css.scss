@@ -3,12 +3,12 @@
 @import 'tahi';
 
 $paper-font-family: 'librebaskerville';
-$paper-trim-color: #d0d0d0;
-$control-bar-background-color: #eff5df;
+$paper-trim-color: $tahi-trim;
+$control-bar-background-color: $tahi-secondary;
 $control-bar-color: black;
-$control-bar-hover-color: #64184a;
-$control-bar-active-color: #a42778;
-$control-bar-secondary-color: #878787;
+$control-bar-hover-color: $tahi-primary-dark;
+$control-bar-active-color: $tahi-primary;
+$control-bar-secondary-color: $tahi-trim-dark;
 
 #control-bar-container {
   background-color: $control-bar-background-color;
@@ -125,7 +125,7 @@ main > aside > div {
 }
 
 .card {
-  background-color: #eff5df;
+  background-color: $tahi-secondary;
   color: $btn-primary-bg;
   width: 100%;
   font-size: 18px;

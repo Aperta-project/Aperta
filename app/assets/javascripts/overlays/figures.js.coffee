@@ -12,7 +12,9 @@ Tahi.overlays.figures =
   fileUploadProcessAlways: (event, data) ->
     file = data.files[0]
     li = $("<li data-file-id='#{file.name}'>")
-    li.append(file.preview)
+    previewContainer = $('<div class="preview-container">')
+    previewContainer.append(file.preview)
+    li.append(previewContainer)
     progressHtml = """
       <div class="progress">
         <div class="progress-bar">

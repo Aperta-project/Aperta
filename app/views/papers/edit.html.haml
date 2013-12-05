@@ -78,9 +78,9 @@
 
       = link_to 'Upload Figures', '#', data: { 'overlay-name' => 'upload-figures', 'overlay-title' => @paper.short_title }, class: 'card'
       #upload-figures-content.hidden
-        %span.btn.btn-primary.fileinput-button
-          %span.glyphicon.glyphicon-plus-sign
-          Add new
+        %h1 Figures
+        %span.secondary-button.fileinput-button
+          Add new Figures
           = form_for [@paper, Figure.new], format: :json do |f|
             = f.file_field :attachment, multiple: true, class: 'js-jquery-fileupload'
         %ul#paper-figure-uploads

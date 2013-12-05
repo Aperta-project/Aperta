@@ -33,4 +33,7 @@
     = yield :control_bar
 
     #tahi-container
+      - if flash.present?
+        %p.notice= notice
+        %p.alert= alert
       = yield

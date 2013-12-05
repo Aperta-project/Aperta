@@ -46,7 +46,7 @@ Tahi.papers =
       authorNames = authors.map (author) -> "#{author.first_name} #{author.last_name}"
       $('#authors').text authorNames.join(', ')
     else
-      $('#authors').text 'Click here to add authors'
+      $('#authors').html '<span class="placeholder">Click here to add authors</span>'
 
   bindCloseToUpdateAuthors: ->
     $('.close-overlay').on 'click', =>

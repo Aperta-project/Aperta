@@ -3,6 +3,7 @@
 @import 'tahi';
 
 $paper-font-family: 'librebaskerville';
+$paper-trim-color: #e0e0e0;
 $control-bar-background-color: #eff5df;
 $control-bar-color: black;
 $control-bar-hover-color: #64184a;
@@ -12,6 +13,7 @@ $control-bar-secondary-color: #878787;
 #control-bar-container {
   background-color: $control-bar-background-color;
   width: 100%;
+  border-bottom: 1px solid $paper-trim-color;
 }
 
 #control-bar {
@@ -77,6 +79,7 @@ $control-bar-secondary-color: #878787;
 
   > article {
     @include make-xs-column(9);
+    border-right: 1px solid $paper-trim-color;
   }
 
   > aside {

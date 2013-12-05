@@ -1,4 +1,4 @@
-$grid-float-breakpoint: 0;
+@import 'variables';
 @import "bootstrap";
 @import 'tahi';
 
@@ -6,7 +6,6 @@ $control-bar-background-color: #eff5df;
 $control-bar-color: black;
 $control-bar-hover-color: #64184a;
 $control-bar-active-color: #a42778;
-$control-bar-font-family: 'cabin';
 $control-bar-secondary-color: #878787;
 
 #control-bar-container {
@@ -17,7 +16,7 @@ $control-bar-secondary-color: #878787;
 #control-bar {
   margin: 0 auto;
   background-color: $control-bar-background-color;
-  font-family: $control-bar-font-family;
+  font-family: $tahi-font-family;
   min-width: 960px;
   max-width: 1120px;
   height: 65px;
@@ -65,6 +64,7 @@ $control-bar-secondary-color: #878787;
 
   > article {
     @include make-lg-column(9);
+    font-family: $paper-font-family;
   }
 
   > aside {

@@ -1,11 +1,10 @@
-$grid-float-breakpoint: 0;
+@import 'variables';
 @import "bootstrap";
 
 $nav-bar-background-color: black;
 $nav-bar-color: white;
 $nav-bar-hover-color: #64184a;
 $nav-bar-active-color: #a42778;
-$nav-bar-font-family: 'cabin';
 
 #nav-bar-container {
   background-color: $nav-bar-background-color;
@@ -15,7 +14,7 @@ $nav-bar-font-family: 'cabin';
 #nav-bar {
   margin: 0 auto;
   background-color: $nav-bar-background-color;
-  font-family: $nav-bar-font-family;
+  font-family: $tahi-font-family;
   min-width: 960px;
   max-width: 1120px;
 }

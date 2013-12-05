@@ -1,0 +1,63 @@
+@import 'variables';
+@import 'bootstrap';
+
+#overlay {
+  background-color: rgba(255,255,255,0.95);
+  bottom: 0;
+  left: 0;
+  overflow-x: auto;
+  overflow-y: scroll;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 9999;
+}
+
+#overlay main {
+  min-height:600px;
+  padding:8px;
+  margin: 0 auto;
+  position: static;
+  z-index: 10;
+  font-size: 13px;
+  padding: 20px 30px 0;
+  top: 110px !important;
+  width: 960px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+#overlay header, #overlay footer {
+  @extend .row;
+  width: 960px;
+  position: relative;
+}
+
+#overlay header {
+  margin: 20px auto 0;
+}
+
+#overlay footer {
+  margin: 10px auto 20px;
+}
+
+#overlay header h2 {
+  @extend .col-xs-11;
+  margin: 0 0 15px 0;
+  padding: 0;
+  font-size: 24px;
+  font-family: $tahi-font-family;
+  color: $btn-primary-bg;
+}
+
+#overlay header a {
+  @extend .col-xs-1;
+  bottom: 10px;
+  position: absolute;
+}
+
+#overlay footer a {
+  @extend .col-xs-1, .col-xs-offset-11;
+  top: 0;
+  position: absolute;
+}

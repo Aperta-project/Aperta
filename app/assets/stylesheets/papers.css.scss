@@ -2,6 +2,7 @@
 @import "bootstrap";
 @import 'tahi';
 
+$paper-font-family: 'librebaskerville';
 $control-bar-background-color: #eff5df;
 $control-bar-color: black;
 $control-bar-hover-color: #64184a;
@@ -54,28 +55,55 @@ $control-bar-secondary-color: #878787;
   color: $control-bar-secondary-color;
 }
 
+#title-editable {
+  margin-top: 0;
+}
+
+#toolbar {
+  height: 60px;
+}
+
 .author-detail {
   display: inline-block;
   min-width: 100px;
 }
 
-.container > main, .container > header {
+#tahi-container > main {
+  @extend .row;
+  margin-left: 0;
+  margin-right: 0;
   background-color: white;
+  min-width: 960px;
 
   > article {
-    @include make-lg-column(9);
-    font-family: $paper-font-family;
+    @include make-xs-column(9);
   }
 
   > aside {
-    @include make-lg-column(3);
+    @include make-xs-column(3);
   }
-}
-
-header > aside {
-  margin: 20px 0 10px 0;
 }
 
 .placeholder {
   color: #aaa;
+}
+
+main > article > div,
+main > aside > div {
+  margin: 0 auto;
+}
+
+main > article > div {
+  width: 700px;
+}
+
+main > aside > div {
+  width: 220px;
+}
+#tahi-container > main > article * {
+  font-family: $paper-font-family;
+}
+
+#authors {
+  font-style: italic;
 }

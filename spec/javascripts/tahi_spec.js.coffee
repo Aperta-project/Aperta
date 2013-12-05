@@ -65,11 +65,14 @@ describe "tahi", ->
     beforeEach ->
       $('#jasmine_content').html """
         <div id="overlay" style="display: none">
-          <a href="#" class="close-overlay">Close</a>
+          <header>
+            <h2></h2>
+            <a href="#" class="close-overlay">Close</a>
+          </header>
           <main></main>
         </div>
         <div id="planes-content" style="display: none"><div class="content">Hello</div></div>
-        <div id="planes" data-overlay-name="planes">Show overlay</div>
+        <div id="planes" data-overlay-name="planes" data-overlay-title="It's a plane!">Show overlay</div>
       """
 
     it "moves given div content inside overlay-content", ->
@@ -77,6 +80,10 @@ describe "tahi", ->
       Tahi.displayOverlay($('#planes'))
       expect($('#overlay main').html()).toEqual expected_html
       expect($('#planes-content')).toBeEmpty()
+
+    it "sets the overlay title", ->
+      Tahi.displayOverlay($('#planes'))
+      expect($('#overlay header h2').text()).toEqual "It's a plane!"
 
     it "shows the overlay div", ->
       Tahi.displayOverlay($('#planes'))
@@ -89,6 +96,11 @@ describe "tahi", ->
         $('.close-overlay').click()
         expect($('#planes-content').html()).toEqual expected_html
         expect($('#overlay main')).toBeEmpty()
+
+      it "clears the overlay title", ->
+        Tahi.displayOverlay($('#planes'))
+        $('.close-overlay').click()
+        expect($('#overlay header h2').text()).toEqual ""
 
       it "hides the overlay", ->
         Tahi.displayOverlay($('#planes'))

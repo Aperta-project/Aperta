@@ -17,7 +17,14 @@ Tahi.setupSubmitOnChange = (form, elements) ->
 
 Tahi.displayOverlay = (element) ->
   overlay = $('#overlay')
-  overlayName = $(element).data('overlay-name')
+
+  $element = $(element)
+  overlayName = $element.data('overlay-name')
+  overlayTitle = $element.data('overlay-title')
+
+  titleContainer = $('header h2', overlay)
+  titleContainer.text overlayTitle
+
   contentContainer = $("##{overlayName}-content")
   container = $('main', overlay)
   contentContainer.children().appendTo(container)
@@ -26,6 +33,7 @@ Tahi.displayOverlay = (element) ->
     e.preventDefault()
     container.children().appendTo(contentContainer)
     overlay.hide()
+    titleContainer.empty()
     $('.close-overlay').unbind('click', handler)
 
   $('.close-overlay', overlay).on 'click', handler

@@ -8,7 +8,7 @@ html {
 }
 
 body {
-  background-color: #f8f8f8;
+  background-color: $tahi-matte;
 }
 
 body, h1, h2, h3, h4, h5, h6 {
@@ -49,9 +49,9 @@ textarea {
   border-color: $tahi-primary;
   text-transform: uppercase;
   &:hover {
-    background-color: $tahi-tertiary;
-    border-color: $tahi-primary-dark;
-    color: $tahi-primary-dark;
+    background-color: $tahi-secondary;
+    border-color: $tahi-primary-hover;
+    color: $tahi-primary-hover;
   }
 }
 
@@ -60,5 +60,5 @@ textarea {
 }
 
 .progress .progress-bar {
-  @include progress-bar-variant($tahi-trim);
+  @include progress-bar-variant($tahi-tertiary);
 }

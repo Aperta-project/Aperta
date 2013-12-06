@@ -1,13 +1,12 @@
-$tahi-primary: #39a329; // pop
-$tahi-primary-dark: #0f7400; // pop hover
-$tahi-tertiary: #8ecb87; // secondary    SWAP
-$tahi-secondary: #d5d8d5; // tertiary
-$tahi-trim: $tahi-secondary; // matte
-$tahi-trim-dark: #878787; // tertiary dark
+$tahi-primary: #39a329;
+$tahi-primary-hover: #0f7400;
+$tahi-secondary: #8ecb87;
+$tahi-tertiary: #d5d8d5;
+$tahi-tertiary-dark: #878787; // tertiary dark
 $tahi-matte: #eaeaea;
 
 $btn-primary-bg: $tahi-primary;
-$btn-primary-bg-hover: $tahi-primary-dark;
+$btn-primary-bg-hover: $tahi-primary-hover;
 
 $tahi-font-family: 'cabin', helvetica, sans-serif;
 $grid-float-breakpoint: 0;

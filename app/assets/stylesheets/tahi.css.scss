@@ -45,13 +45,13 @@ textarea {
 
 .secondary-button {
   @extend .btn, .btn-default;
-  color: $btn-primary-bg;
-  border-color: $btn-primary-bg;
+  color: $tahi-primary;
+  border-color: $tahi-primary;
   text-transform: uppercase;
   &:hover {
-    background-color: #f2e3ed;
-    border-color: $btn-primary-bg;
-    color: $btn-primary-bg;
+    background-color: $tahi-tertiary;
+    border-color: $tahi-primary-dark;
+    color: $tahi-primary-dark;
   }
 }
 

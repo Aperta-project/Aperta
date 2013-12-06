@@ -158,10 +158,7 @@ class EditSubmissionPage < Page
   def save
     current_path = page.current_path
     click_on 'Save'
-    find('body').synchronize do
-      raise PageNotReady if page.current_path == current_path
-    end
-    DashboardPage.new
+    self
   end
 
   def upload_word_doc

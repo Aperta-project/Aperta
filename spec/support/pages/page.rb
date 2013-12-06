@@ -32,4 +32,11 @@ class Page
   def notice
     find('p.notice').text
   end
+
+  def navigate_to_dashboard
+    within('#nav-bar') do
+      click_on 'Dashboard'
+      DashboardPage.new
+    end
+  end
 end

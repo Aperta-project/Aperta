@@ -70,7 +70,4 @@ $(document).ready ->
           abstract: CKEDITOR.instances['paper-abstract'].getData()
           short_title: $.trim($('#paper-short-title').text())
           authors: (-> JSON.stringify Tahi.papers.authors())()
-
-      success: ->
-        location.href = "/"
     false

@@ -2,7 +2,7 @@
 @import 'bootstrap';
 
 #overlay {
-  background-color: rgba(255,255,255,0.95);
+  background-color: rgba(255,255,255,0.98);
   bottom: 0;
   left: 0;
   overflow-x: auto;
@@ -34,11 +34,11 @@
 }
 
 #overlay header {
-  margin: 20px auto 0;
+  margin: 65px auto 0;
 }
 
 #overlay footer {
-  margin: 10px auto 20px;
+  margin: 10px auto 65px;
 }
 
 #overlay header h2 {

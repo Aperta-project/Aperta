@@ -1,0 +1,7 @@
+%h1 Declarations
+- @paper.declarations.each do |declaration|
+  = form_for @paper, remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
+    = f.fields_for :declarations, declaration do |declaration_fields|
+      .form-group.declaration
+        = declaration_fields.label :answer, declaration_fields.object.question
+        = declaration_fields.text_area :answer, class: 'form-control', rows: 6

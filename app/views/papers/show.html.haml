@@ -29,39 +29,16 @@
   %aside
     %div
       = link_to 'Declarations', '#', data: { 'overlay-name' => 'declarations', 'overlay-title' => @paper.short_title }, class: 'card'
-
       #declarations-content.hidden
-        %h3 Declarations
-        - @paper.declarations.each do |declaration|
-          = form_for @paper, remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
-            = f.fields_for :declarations, declaration do |declaration_fields|
-              .form-group.declaration
-                = declaration_fields.label :answer, declaration_fields.object.question
-                = declaration_fields.text_area :answer, class: 'form-control', rows: 6
+        = render 'overlays/declarations'
 
       = link_to 'Upload Figures', '#', data: { 'overlay-name' => 'upload-figures', 'overlay-title' => @paper.short_title }, class: 'card'
       #upload-figures-content.hidden
-        %span.btn.btn-primary.fileinput-button
-          %span.glyphicon.glyphicon-plus-sign
-          Add new
-          = form_for [@paper, Figure.new], format: :json do |f|
-            = f.file_field :attachment, multiple: true, class: 'js-jquery-fileupload'
-        %ul#paper-figure-uploads
-        %ul#paper-figures
-          - @paper.figures.each do |figure|
-            %li= image_tag figure.attachment
-
-      #upload-figures-content.hidden
-        %h3 Upload Figures
+        = render 'overlays/figures'
 
       = link_to 'Upload Manuscript', '#', data: { 'overlay-name' => 'upload-manuscript', 'overlay-title' => @paper.short_title }, class: 'card'
       #upload-manuscript-content.hidden
-        = form_tag({action: :upload}, multipart: true) do
-          .form-group
-            = label_tag :upload_file, 'Upload Word Document'
-            = file_field_tag :upload_file, class: 'form-control'
-            %p.help-block Uploading a file will replace your current work.
-            = button_tag "Upload File", type: 'submit', class: 'btn btn-primary'
+        = render 'overlays/upload_manuscript'
 
       = form_for @paper, remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
         .form-group

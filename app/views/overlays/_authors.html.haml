@@ -1,0 +1,15 @@
+%h1 Authors
+.content
+  = link_to '#', id: 'add-author', class: 'btn btn-default btn-xs' do
+    %span.glyphicon.glyphicon-plus-sign
+    Add new
+  %ul.authors
+    - @paper.authors.each do |author|
+      %li.author
+        %h4
+          %span.author-first-name
+            = author["first_name"]
+          %span.author-last-name
+            = author["last_name"]
+        %h4.author-email= author["email"]
+        %h4.author-affiliation= author["affiliation"]

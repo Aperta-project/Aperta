@@ -30,6 +30,7 @@
         %span.placeholder Click here to add authors
 
       #authors-content.hidden
+        %h1 Authors
         .content
           = link_to '#', id: 'add-author', class: 'btn btn-default btn-xs' do
             %span.glyphicon.glyphicon-plus-sign
@@ -68,7 +69,7 @@
       = link_to 'Declarations', '#', data: { 'overlay-name' => 'declarations', 'overlay-title' => @paper.short_title }, class: 'card'
 
       #declarations-content.hidden
-        %h3 Declarations
+        %h1 Declarations
         - @paper.declarations.each do |declaration|
           = form_for @paper, remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
             = f.fields_for :declarations, declaration do |declaration_fields|
@@ -89,10 +90,11 @@
             %li= image_tag figure.attachment
 
       #upload-figures-content.hidden
-        %h3 Upload Figures
+        %h1 Upload Figures
 
       = link_to 'Upload Manuscript', '#', data: { 'overlay-name' => 'upload-manuscript', 'overlay-title' => @paper.short_title }, class: 'card'
       #upload-manuscript-content.hidden
+        %h1 Upload Manuscript
         = form_tag({action: :upload}, multipart: true) do
           .form-group
             = label_tag :upload_file, 'Upload Word Document'

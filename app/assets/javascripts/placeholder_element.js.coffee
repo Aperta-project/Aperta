@@ -8,6 +8,10 @@ class Tahi.PlaceholderElement
     $element.on 'blur', => @setPlaceholder()
     @setPlaceholder()
 
+  getText: () ->
+    text = @element.innerText
+    if text == @placeholder || text == '' then '' else text
+
   clearPlaceholder: ->
     if @element.innerText == @placeholder
       @element.innerText = ''

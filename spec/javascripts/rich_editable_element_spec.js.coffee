@@ -28,6 +28,25 @@ describe "Tahi.RichEditableElement", ->
         @richEditableElement.instance.fire 'blur'
         expect(@richEditableElement.setPlaceholder).toHaveBeenCalled()
 
+  describe "#getText", ->
+    context "when the element contains placeholder text", ->
+      it "returns empty text", ->
+        element = $('<div id="article_body_editable" contenteditable="true" placeholder="Article placeholder text">Article placeholder text</div>')
+        @richEditableElement = new Tahi.RichEditableElement(element[0])
+        expect(@richEditableElement.getText()).toEqual('')
+
+    context "when the element doesn't contain placeholder text", ->
+      it "returns the text", ->
+        element = $('<div id="article_body_editable" contenteditable="true" placeholder="Article placeholder text">Frappuccino is nice but I think I am starting to get over it.</div>')
+        @richEditableElement = new Tahi.RichEditableElement(element[0])
+        expect(@richEditableElement.getText()).toEqual('Frappuccino is nice but I think I am starting to get over it.')
+
+    context "when the element is empty", ->
+      it "returns empty text", ->
+        element = $('<div id="article_body_editable" contenteditable="true" placeholder="Article placeholder text"></div>')
+        @richEditableElement = new Tahi.RichEditableElement(element[0])
+        expect(@richEditableElement.getText()).toEqual('')
+
   describe "#setPlaceholder", ->
     context "when the element is empty", ->
       it "sets the content of the element with the placeholder", ->
@@ -35,7 +54,6 @@ describe "Tahi.RichEditableElement", ->
         @richEditableElement.setPlaceholder()
         expect(@richEditableElement.instance.getData()).toEqual('Article placeholder text')
         expect(@richEditableElement.element.classList.contains('placeholder')).toBeTruthy()
-
 
     context "when the element's content is that of placeholder's", ->
       it "sets the content of the element with the placeholder", ->

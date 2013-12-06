@@ -23,6 +23,10 @@ class Tahi.RichEditableElement
     @instance.on 'focus', => @clearPlaceholder()
     @instance.on 'blur', => @setPlaceholder()
 
+  getText: ->
+    text = $($.parseHTML(@instance.getData())).text().trim()
+    if text == @placeholderText || text == '' then '' else text
+
   setPlaceholder: ->
     text = $($.parseHTML(@instance.getData())).text().trim()
     if text == '' || text == @placeholderText

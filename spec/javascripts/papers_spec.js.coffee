@@ -151,3 +151,34 @@ describe "Tahi.papers", ->
         rightRailCall.args[0].unfixed.call rightRail
 
         expect(rightRail.style.top).toEqual '0px'
+
+  describe "#savePaper", ->
+    it "makes AJAX request", ->
+      spyOn($, 'ajax')
+
+      Tahi.papers.titleEditable = jasmine.createSpyObj('titleEditable', ['getText'])
+      Tahi.papers.titleEditable.getText.and.returnValue('Melting rates of soy-milk based frozen desserts')
+
+      Tahi.papers.bodyEditable = jasmine.createSpyObj('bodyEditable', ['getText'])
+      Tahi.papers.bodyEditable.getText.and.returnValue('This is the melted body of the really melted frozen dessert.')
+
+      Tahi.papers.abstractEditable = jasmine.createSpyObj('abstractEditable', ['getText'])
+      Tahi.papers.abstractEditable.getText.and.returnValue('ME ME ABSTRACT ABSTRACT')
+
+      event = jasmine.createSpyObj('event', ['target', 'preventDefault'])
+      event.target.and.returnValue
+        attr: (key) ->
+          { href: '/path/to/resource' }[key]
+      Tahi.papers.savePaper(event)
+
+      expect($.ajax).toHaveBeenCalledWith
+        url: '/path/to/resource'
+        method: 'POST'
+        data:
+          _method: 'patch'
+          paper:
+            title: 'Melting rates of soy-milk based frozen desserts'
+            body: 'This is the melted body of the really melted frozen dessert.'
+            abstract: 'ME ME ABSTRACT ABSTRACT'
+            short_title: ''
+            authors: '[]'

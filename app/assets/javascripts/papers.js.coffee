@@ -44,20 +44,16 @@ Tahi.papers =
 
   savePaper: (e) ->
     e.preventDefault()
-    @bodyEditable.clearPlaceholder()
-    @abstractEditable.clearPlaceholder()
-    @titleEditable.clearPlaceholder()
-
     $.ajax
       url: $(e.target).attr('href')
       method: "POST"
       data:
         _method: "patch"
         paper:
-          title: $.trim($('#paper-title').text())
-          body: CKEDITOR.instances['paper-body'].getData()
-          abstract: CKEDITOR.instances['paper-abstract'].getData()
-          short_title: $.trim($('#paper-short-title').text())
+          title: @titleEditable.getText()
+          body: @bodyEditable.getText()
+          abstract: @abstractEditable.getText()
+          short_title: $.trim $('#paper-short-title').text()
           authors: (=> JSON.stringify @authors())()
     false
 

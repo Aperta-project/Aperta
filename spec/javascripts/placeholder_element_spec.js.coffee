@@ -27,6 +27,31 @@ describe "Tahi.PlaceholderElement", ->
         $('#title').trigger 'blur'
         expect(@placeholderElement.setPlaceholder).toHaveBeenCalled()
 
+  describe "#getText", ->
+    context "when the element contains placeholder text", ->
+      it "returns empty text", ->
+        html = """
+          <h1 id="title" contenteditable="true" placeholder="Placeholder for heading">Placeholder for heading</h1>
+        """
+        $('#jasmine_content').html(html)
+        @placeholderElement = new Tahi.PlaceholderElement(document.getElementById('title'))
+        expect(@placeholderElement.getText()).toEqual('')
+
+    context "when the element doesn't contain placeholder text", ->
+      it "returns the text", ->
+        html = """
+          <h1 id="title" contenteditable="true" placeholder="Placeholder for heading">The new Retina iPad minis rock!</h1>
+        """
+        $('#jasmine_content').html(html)
+        @placeholderElement = new Tahi.PlaceholderElement(document.getElementById('title'))
+        expect(@placeholderElement.getText()).toEqual('The new Retina iPad minis rock!')
+
+    context "when the element is empty", ->
+      it "returns empty text", ->
+        element = $('<div id="article_body_editable" contenteditable="true" placeholder="Article placeholder text"></div>')
+        @richEditableElement = new Tahi.RichEditableElement(element[0])
+        expect(@richEditableElement.getText()).toEqual('')
+
   describe "#setPlaceholder", ->
     context "when there is no content", ->
       it "places the placeholder text", ->

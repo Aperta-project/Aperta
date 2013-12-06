@@ -13,6 +13,8 @@ Tahi.papers =
     $('#paper-authors.editable').click => @bindCloseToUpdateAuthors()
     @updateAuthors()
 
+    $('#save-button').click (e) => @savePaper e
+
   authors: ->
     authorsArray = []
     $('li.author').each (index, value) ->
@@ -36,9 +38,28 @@ Tahi.papers =
 
   instantiateEditables: ->
     if $("[contenteditable]").length > 0
-      Tahi.body_editable = new Tahi.RichEditableElement($('#paper-body[contenteditable]')[0])
-      Tahi.abstract_editable = new Tahi.RichEditableElement($('#paper-abstract[contenteditable]')[0])
-      Tahi.title_editable = new Tahi.PlaceholderElement($('#paper-title[contenteditable]')[0])
+      @bodyEditable = new Tahi.RichEditableElement($('#paper-body[contenteditable]')[0])
+      @abstractEditable = new Tahi.RichEditableElement($('#paper-abstract[contenteditable]')[0])
+      @titleEditable = new Tahi.PlaceholderElement($('#paper-title[contenteditable]')[0])
+
+  savePaper: (e) ->
+    e.preventDefault()
+    @bodyEditable.clearPlaceholder()
+    @abstractEditable.clearPlaceholder()
+    @titleEditable.clearPlaceholder()
+
+    $.ajax
+      url: $(e.target).attr('href')
+      method: "POST"
+      data:
+        _method: "patch"
+        paper:
+          title: $.trim($('#paper-title').text())
+          body: CKEDITOR.instances['paper-body'].getData()
+          abstract: CKEDITOR.instances['paper-abstract'].getData()
+          short_title: $.trim($('#paper-short-title').text())
+          authors: (=> JSON.stringify @authors())()
+    false
 
   updateAuthors: ->
     authors = Tahi.papers.authors()
@@ -51,23 +72,3 @@ Tahi.papers =
   bindCloseToUpdateAuthors: ->
     $('.close-overlay').on 'click', =>
       @updateAuthors()
-
-$(document).ready ->
-  $('#save-button').on 'click', (e) ->
-    e.preventDefault()
-    Tahi.body_editable.clearPlaceholder()
-    Tahi.abstract_editable.clearPlaceholder()
-    Tahi.title_editable.clearPlaceholder()
-
-    $.ajax
-      url: $(this).attr('href')
-      method: "POST"
-      data:
-        _method: "patch"
-        paper:
-          title: $.trim($('#paper-title').text())
-          body: CKEDITOR.instances['paper-body'].getData()
-          abstract: CKEDITOR.instances['paper-abstract'].getData()
-          short_title: $.trim($('#paper-short-title').text())
-          authors: (-> JSON.stringify Tahi.papers.authors())()
-    false

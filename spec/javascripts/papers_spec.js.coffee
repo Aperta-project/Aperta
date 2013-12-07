@@ -165,6 +165,9 @@ describe "Tahi.papers", ->
       Tahi.papers.abstractEditable = jasmine.createSpyObj('abstractEditable', ['getText'])
       Tahi.papers.abstractEditable.getText.and.returnValue('ME ME ABSTRACT ABSTRACT')
 
+      Tahi.papers.authors = ->
+        [1,2,3]
+
       event = jasmine.createSpyObj('event', ['target', 'preventDefault'])
       event.target.and.returnValue
         attr: (key) ->
@@ -181,4 +184,4 @@ describe "Tahi.papers", ->
             body: 'This is the melted body of the really melted frozen dessert.'
             abstract: 'ME ME ABSTRACT ABSTRACT'
             short_title: ''
-            authors: '[]'
+            authors: '[1,2,3]'

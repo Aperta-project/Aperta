@@ -27,6 +27,11 @@ describe "Tahi.PlaceholderElement", ->
         $('#title').trigger 'blur'
         expect(@placeholderElement.setPlaceholder).toHaveBeenCalled()
 
+      it "calls supressEnterKey on keyUp", ->
+        spyOn @placeholderElement, 'supressEnterKey'
+        $('#title').trigger 'keyUp'
+        expect(@placeholderElement.supressEnterKey).toHaveBeenCalled()
+
   describe "#getText", ->
     context "when the element contains placeholder text", ->
       it "returns empty text", ->
@@ -51,6 +56,15 @@ describe "Tahi.PlaceholderElement", ->
         element = $('<div id="article_body_editable" contenteditable="true" placeholder="Article placeholder text"></div>')
         @richEditableElement = new Tahi.RichEditableElement(element[0])
         expect(@richEditableElement.getText()).toEqual('')
+
+  describe "#supressEnterKey", ->
+    context "when the enter key is pressed", ->
+      it "gets supressed", ->
+        $('#title').text('foobar')
+        press = jQuery.Event('keypress', {keyCode: 113, which: 113})
+        press.keyCode = 113
+        $('#title').trigger(press)
+        expect($('#title').text()).toEqual('foo')
 
   describe "#setPlaceholder", ->
     context "when there is no content", ->

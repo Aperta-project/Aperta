@@ -9,6 +9,21 @@ describe "Tahi.PlaceholderElement", ->
     $('#jasmine_content').html(html)
     @placeholderElement = new Tahi.PlaceholderElement(document.getElementById('title'))
 
+  describe "#supressEnterKey", ->
+    context "when the enter key is pressed", ->
+      it "gets supressed", ->
+        press = jQuery.Event('keydown', {keyCode: 13, which: 13})
+        press.preventDefault = jasmine.createSpy 'press.preventDefault'
+        $('#title').trigger(press)
+        expect(press.preventDefault).toHaveBeenCalled()
+
+    context "when any other key is pressed", ->
+      it "does not get supressed", ->
+        press = jQuery.Event('keydown', {keyCode: 71, which: 71})
+        press.cancel = jasmine.createSpy 'pressEventCancel'
+        $('#title').trigger(press)
+        expect(press.cancel).not.toHaveBeenCalled()
+
   describe "constructor", ->
     it "stores the placeholder text from the element's placeholder attribute", ->
       expect(@placeholderElement.placeholder).toEqual("Placeholder for heading")
@@ -29,7 +44,7 @@ describe "Tahi.PlaceholderElement", ->
 
       it "calls supressEnterKey on keyUp", ->
         spyOn @placeholderElement, 'supressEnterKey'
-        $('#title').trigger 'keyUp'
+        $('#title').trigger 'keydown'
         expect(@placeholderElement.supressEnterKey).toHaveBeenCalled()
 
   describe "#getText", ->
@@ -56,15 +71,6 @@ describe "Tahi.PlaceholderElement", ->
         element = $('<div id="article_body_editable" contenteditable="true" placeholder="Article placeholder text"></div>')
         @richEditableElement = new Tahi.RichEditableElement(element[0])
         expect(@richEditableElement.getText()).toEqual('')
-
-  describe "#supressEnterKey", ->
-    context "when the enter key is pressed", ->
-      it "gets supressed", ->
-        $('#title').text('foobar')
-        press = jQuery.Event('keypress', {keyCode: 113, which: 113})
-        press.keyCode = 113
-        $('#title').trigger(press)
-        expect($('#title').text()).toEqual('foo')
 
   describe "#setPlaceholder", ->
     context "when there is no content", ->

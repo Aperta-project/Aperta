@@ -6,14 +6,16 @@ class Tahi.PlaceholderElement
     $element = $(@element)
     $element.on 'focus', => @clearPlaceholder()
     $element.on 'blur', => @setPlaceholder()
-    $element.on 'keyUp', => @supressEnterKey()
+    $element.on 'keydown', (e) => @supressEnterKey(e)
     @setPlaceholder()
 
   getText: () ->
     text = @element.innerText
     if text == @placeholder || text == '' then '' else text
 
-  supressEnterKey: ->
+  supressEnterKey: (e) ->
+    if e.keyCode == 13 || e.which == 13
+      e.preventDefault()
 
   clearPlaceholder: ->
     if @element.innerText == @placeholder

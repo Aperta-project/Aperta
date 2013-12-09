@@ -40,6 +40,7 @@ Tahi.papers =
     if $("[contenteditable]").length > 0
       @bodyEditable = new Tahi.RichEditableElement($('#paper-body[contenteditable]')[0])
       @abstractEditable = new Tahi.RichEditableElement($('#paper-abstract[contenteditable]')[0])
+      @shortTitleEditable = new Tahi.PlaceholderElement($('#paper-short-title[contenteditable]')[0])
       @titleEditable = new Tahi.PlaceholderElement($('#paper-title[contenteditable]')[0])
 
   savePaper: (e) ->
@@ -53,7 +54,7 @@ Tahi.papers =
           title: @titleEditable.getText()
           body: @bodyEditable.getText()
           abstract: @abstractEditable.getText()
-          short_title: $.trim $('#paper-short-title').text()
+          short_title: @shortTitleEditable.getText()
           authors: (=> JSON.stringify @authors())()
     false
 

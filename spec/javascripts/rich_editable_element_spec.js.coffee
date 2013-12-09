@@ -37,9 +37,9 @@ describe "Tahi.RichEditableElement", ->
 
     context "when the element doesn't contain placeholder text", ->
       it "returns the text", ->
-        element = $('<div id="article_body_editable" contenteditable="true" placeholder="Article placeholder text">Frappuccino is nice but I think I am starting to get over it.</div>')
+        element = $('<div id="article_body_editable" contenteditable="true" placeholder="Article placeholder text">Frappuccino is nice but I think <strong>I am starting to get over it</strong>.</div>')
         @richEditableElement = new Tahi.RichEditableElement(element[0])
-        expect(@richEditableElement.getText()).toEqual('Frappuccino is nice but I think I am starting to get over it.')
+        expect(@richEditableElement.getText()).toEqual('Frappuccino is nice but I think <strong>I am starting to get over it</strong>.')
 
     context "when the element is empty", ->
       it "returns empty text", ->

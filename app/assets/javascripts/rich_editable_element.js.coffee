@@ -24,8 +24,9 @@ class Tahi.RichEditableElement
     @instance.on 'blur', => @setPlaceholder()
 
   getText: ->
-    text = $($.parseHTML(@instance.getData())).text().trim()
-    if text == @placeholderText || text == '' then '' else text
+    editorData = @instance.getData()
+    text = $($.parseHTML(editorData)).text().trim()
+    if text == @placeholderText || text == '' then '' else editorData
 
   setPlaceholder: ->
     text = $($.parseHTML(@instance.getData())).text().trim()

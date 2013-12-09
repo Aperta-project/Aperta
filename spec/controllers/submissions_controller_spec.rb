@@ -42,7 +42,7 @@ describe SubmissionsController do
 
     it "renders a flash notice" do
       do_request
-      expect(flash[:notice]).to eq 'Your paper has been submitted to PLoS'
+      expect(flash[:notice]).to eq 'Your paper has been submitted to PLOS'
     end
 
   end

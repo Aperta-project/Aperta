@@ -9,7 +9,7 @@ class SubmissionsController < ApplicationController
     @paper = Paper.find(params[:paper_id])
 
     if @paper.update(submitted: true)
-      redirect_to root_path, notice: 'Your paper has been submitted to PLoS'
+      redirect_to root_path, notice: 'Your paper has been submitted to PLOS'
     end
   end
 end

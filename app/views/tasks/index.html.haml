@@ -1,0 +1,13 @@
+- content_for :control_bar do
+  #control-bar-container
+    #control-bar
+      %section
+        %ul
+          %li#paper-short-title{contenteditable: true, placeholder: 'Type your short title here'}= @paper.short_title
+          %li#paper-revision R0
+          %li= link_to 'Article', edit_paper_path(@paper)
+
+%ul
+  - @task_manager.phases.each do |phase|
+    %li.phase
+      %h2= phase.name

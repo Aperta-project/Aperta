@@ -20,7 +20,7 @@ describe Paper do
 
       context "when paper_type is specified" do
         it "uses specified paper_type" do
-          paper.paper_type = 'foobar'
+          paper = Paper.new short_title: 'Example', paper_type: 'foobar'
           expect(paper.paper_type).to eq 'foobar'
         end
       end
@@ -41,8 +41,22 @@ describe Paper do
       context "when declarations are specified" do
         it "uses provided declarations" do
           declarations = [Declaration.new(question: 'Question')]
-          paper.declarations = declarations
+          paper = Paper.new short_title: 'Example', declarations: declarations
           expect(paper.declarations).to match_array declarations
+        end
+      end
+    end
+
+    describe "task manager" do
+      it "initializes a new task manager" do
+        expect(paper.task_manager).to be_a TaskManager
+      end
+
+      context "when a task manager is specified" do
+        it "uses the provided task manager" do
+          task_manager = TaskManager.new
+          paper = Paper.new short_title: 'Example', task_manager: task_manager
+          expect(paper.task_manager).to eq task_manager
         end
       end
     end

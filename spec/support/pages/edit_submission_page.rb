@@ -88,6 +88,11 @@ class EditSubmissionPage < Page
     DashboardPage.new
   end
 
+  def navigate_to_task_manager
+    click_link 'Task Manager'
+    TaskManagerPage.new
+  end
+
   def short_title=(val)
     page.execute_script "$('#paper-short-title').text('#{val}')"
   end

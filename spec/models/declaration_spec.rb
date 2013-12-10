@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe Declaration do
+  it "defines a DEFAULT_DECLARATION_QUESTIONS" do
+    expect(Declaration.const_defined? :DEFAULT_DECLARATION_QUESTIONS).to be_truthy
+  end
+
   describe ".default_declarations" do
     before do
       stub_const "Declaration::DEFAULT_DECLARATION_QUESTIONS", [

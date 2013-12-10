@@ -8,6 +8,7 @@
         %ul
           %li#paper-short-title{contenteditable: true, placeholder: 'Type your short title here'}= @paper.short_title
           %li#paper-revision R0
+          %li= link_to 'Task Manager', manage_paper_path(@paper)
         %ul
           %li
             = link_to 'Save', paper_path(@paper, format: :json), id: 'save-button'

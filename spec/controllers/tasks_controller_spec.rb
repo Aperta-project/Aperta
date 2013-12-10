@@ -8,7 +8,8 @@ describe TasksController do
       email: 'einstein@example.org',
       password: 'password',
       password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
+      affiliation: 'Universität Zürich',
+      admin: true
   end
 
   before { sign_in user }
@@ -19,6 +20,7 @@ describe TasksController do
     subject(:do_request) { get 'index', id: paper.to_param }
 
     it_behaves_like "when the user is not signed in"
+    it_behaves_like "when the user is not an admin"
 
     it "assigns the task manager" do
       do_request

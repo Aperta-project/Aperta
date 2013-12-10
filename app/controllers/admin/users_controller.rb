@@ -21,8 +21,4 @@ class Admin::UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:admin)
   end
-
-  def verify_admin!
-    redirect_to(root_path, alert: "Permission denied") unless current_user.admin?
-  end
 end

@@ -5,8 +5,8 @@
         %ul
           %li#paper-short-title{contenteditable: true, placeholder: 'Type your short title here'}= @paper.short_title
           %li#paper-revision R0
+        %ul
           %li= link_to 'Article', edit_paper_path(@paper)
-
 %ul
   - @task_manager.phases.each do |phase|
     %li.phase

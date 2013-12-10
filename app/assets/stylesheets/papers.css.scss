@@ -36,12 +36,28 @@ $control-bar-secondary-color: $tahi-tertiary-dark;
   li {
     margin-right: 10px;
   }
+
+  li > a {
+    padding: 10px;
+    line-height: 14px;
+
+    color: $tahi-primary;
+    font-weight: bold;
+    background: none;
+    text-transform: none;
+
+    &:hover {
+      text-decoration: underline;
+      background: none;
+      color: $tahi-primary;
+    }
+  }
 }
 
 #control-bar section > ul:last-of-type {
   @extend .navbar-right;
 
-  li > a {
+  li > a[class=primary-button] {
     @extend .primary-button;
   }
 }

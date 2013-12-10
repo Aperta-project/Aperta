@@ -10,7 +10,8 @@ feature "Displays Task Manager", js: true do
       email: 'einstein@example.org',
       password: 'password',
       password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
+      affiliation: 'Universität Zürich',
+      admin: true
   end
 
   let(:paper) { paper = admin.papers.create! short_title: 'foobar', title: 'Foo bar' }

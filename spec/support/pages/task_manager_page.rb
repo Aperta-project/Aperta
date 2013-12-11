@@ -18,11 +18,11 @@ class TaskManagerPage < Page
     end
 
     def mark_as_complete
-      @element.check 'task_completed'
+      @element.find('footer input[type="checkbox"]').click
     end
 
     def completed?
-      @element.find('#task_completed').checked?
+      @element.find('footer input[type="checkbox"]').checked?
     end
   end
 

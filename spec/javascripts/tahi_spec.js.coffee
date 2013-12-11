@@ -70,9 +70,12 @@ describe "tahi", ->
             <a href="#" class="close-overlay">Close</a>
           </header>
           <main></main>
+          <footer>
+            <div class="content"></div>
+          </footer>
         </div>
         <div id="planes-content" style="display: none"><div class="content">Hello</div></div>
-        <div id="planes" data-overlay-name="planes" data-overlay-title="It's a plane!">Show overlay</div>
+        <div id="planes" data-overlay-name="planes" data-overlay-title="It's a plane!" data-paper-id='123' data-task-id='456' data-task-completed="true">Show overlay</div>
       """
 
     it "moves given div content inside overlay-content", ->
@@ -89,6 +92,59 @@ describe "tahi", ->
       Tahi.displayOverlay($('#planes'))
       expect($('#overlay')).toBeVisible()
 
+    context "when there is a task id data attribute", ->
+      it "adds form in footer", ->
+        Tahi.displayOverlay($('#planes'))
+        expect($('#overlay footer .content form').attr('action')).toEqual('/papers/123/tasks/456')
+
+      it "sets the form up to submit on change", ->
+        spyOn Tahi, 'setupSubmitOnChange'
+        Tahi.displayOverlay($('#planes'))
+
+        form = $('#complete_task_456')
+        field = $('input[type="checkbox"]', form)
+
+        expect(Tahi.setupSubmitOnChange.calls.count()).toEqual 1
+        args = Tahi.setupSubmitOnChange.calls.mostRecent().args
+        expect(form.is(args[0])).toEqual true
+        expect(args[1].is(field)).toEqual true, "Expected second argument to be #{field}"
+
+      context "when the task is already completed", ->
+        it "checks the checkbox", ->
+          Tahi.displayOverlay($('#planes'))
+          expect($('#overlay footer .content input[type="checkbox"]:checked').length).toEqual 1
+
+      context "when the task is not completed", ->
+        beforeEach ->
+          $('#jasmine_content').html """
+            <div id="overlay" style="display: none">
+              <footer>
+                <div class="content"></div>
+              </footer>
+            </div>
+            <div id="planes-content" style="display: none"><div class="content">Hello</div></div>
+            <div id="planes" data-overlay-name="planes" data-overlay-title="It's a plane!" data-paper-id='123' data-task-id='456' data-task-completed="false">Show overlay</div>
+          """
+
+        it "does not check the checkbox", ->
+          Tahi.displayOverlay($('#planes'))
+          expect($('#overlay footer .content input[type="checkbox"]:checked').length).toEqual 0
+
+    context "when there is no task id data attribute", ->
+      beforeEach ->
+        $('#jasmine_content').html """
+          <div id="overlay" style="display: none">
+            <footer>
+              <div class="content"></div>
+            </footer>
+          </div>
+          <div id="planes" data-overlay-name="planes" data-overlay-title="It's a plane!" data-paper-id='123'>Show overlay</div>
+        """
+
+      it "doesn't add the form in the footer", ->
+        Tahi.displayOverlay($('#planes'))
+        expect($('#overlay footer .content form').length).toEqual 0
+
     describe "when the overlay is dismissed", ->
       it "moves back the overlay content to its original container", ->
         Tahi.displayOverlay($('#planes'))
@@ -99,8 +155,15 @@ describe "tahi", ->
 
       it "clears the overlay title", ->
         Tahi.displayOverlay($('#planes'))
+        expect($('#overlay header h2').text()).not.toEqual ""
         $('.close-overlay').click()
         expect($('#overlay header h2').text()).toEqual ""
+
+      it "clears the overlay footer content", ->
+        Tahi.displayOverlay($('#planes'))
+        expect($('#overlay footer .content').children().length).toBeGreaterThan 0
+        $('.close-overlay').click()
+        expect($('#overlay footer .content').children().length).toEqual 0
 
       it "hides the overlay", ->
         Tahi.displayOverlay($('#planes'))

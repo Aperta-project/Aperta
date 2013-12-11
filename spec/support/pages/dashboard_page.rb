@@ -42,6 +42,11 @@ class DashboardPage < Page
     PaperPage.new
   end
 
+  def view_submitted_paper short_title
+    within('.all_submitted') { click_link short_title }
+    PaperPage.new
+  end
+
   def visit_admin
     click_on "Admin"
     AdminUsersPage.new

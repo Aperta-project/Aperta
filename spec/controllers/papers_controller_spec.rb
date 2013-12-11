@@ -142,7 +142,6 @@ describe PapersController do
       end
     end
 
-
     it_behaves_like "when the user is not signed in"
 
     it_behaves_like "a controller enforcing strong parameters" do

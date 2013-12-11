@@ -1,8 +1,55 @@
 class TaskManagerPage < Page
+  class PaperAdminOverlay
+    def initialize element
+      @element = element
+    end
+
+    def dismiss
+      @element.all('.close-overlay').first.click
+    end
+
+    def assignee
+      selected_option = @element.all('#task_assignee_id option[selected]').first
+      selected_option.try :text
+    end
+
+    def assignee=(name)
+      @element.select name, from: 'Assignee'
+    end
+
+    def mark_as_complete
+      @element.check 'task_completed'
+    end
+
+    def completed?
+      @element.find('#task_completed').checked?
+    end
+  end
+
+  class PhaseFragment
+    def initialize element
+      @element = element
+    end
+
+    def view_card card_name, &block
+      @element.click_on card_name
+      overlay = PaperAdminOverlay.new @element.session.find('#overlay')
+      block.call overlay
+      overlay.dismiss
+    end
+  end
+
   path :manage_paper
 
   def phases
     all('.phase h2').map(&:text)
+  end
+
+  def phase phase_name
+    phase = all('.phase').detect do |p|
+      p.find('h2').text == phase_name
+    end
+    PhaseFragment.new phase
   end
 
   def navigate_to_edit_paper

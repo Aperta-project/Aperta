@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe TasksController do
+
+  let(:permitted_params) { [:assignee_id, :completed] }
+
   let :user do
     User.create! username: 'albert',
       first_name: 'Albert',
@@ -30,6 +33,29 @@ describe TasksController do
     it "renders index template" do
       do_request
       expect(response).to render_template(:index)
+    end
+  end
+
+  describe "PATCH 'update'" do
+    let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated', journal: Journal.create! }
+    let(:task) { Task.create! }
+
+    subject(:do_request) do
+      patch :update, { paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }
+    end
+
+    it_behaves_like "when the user is not signed in"
+
+    it_behaves_like "a controller enforcing strong parameters" do
+      let(:params_id) { task.to_param }
+      let(:paper_id) { paper.to_param }
+      let(:model_identifier) { :task }
+      let(:expected_params) { permitted_params }
+    end
+
+    it "updates the paper" do
+      do_request
+      expect(task.reload).to be_completed
     end
   end
 end

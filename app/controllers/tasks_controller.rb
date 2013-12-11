@@ -6,4 +6,16 @@ class TasksController < ApplicationController
     @paper = Paper.find(params[:id])
     @task_manager = @paper.task_manager
   end
+
+  def update
+    task = Task.where(id: params[:id]).first
+    task.update task_params
+    head :no_content
+  end
+
+  private
+
+  def task_params
+    params.require(:task).permit(:assignee_id, :completed)
+  end
 end

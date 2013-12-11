@@ -22,6 +22,31 @@ describe Phase do
     it "does not persist any of the phases" do
       expect(phases.all? &:new_record?).to be true
     end
+  end
 
+  describe "initialization" do
+    describe "tasks" do
+      context "when the phase is a 'Needs Editor' phase" do
+        it "initializes one paper admin task" do
+          phase = Phase.new name: 'Needs Editor'
+          expect(phase.tasks.map(&:class).any? { |c| c == PaperAdminTask }).to eq true
+        end
+      end
+
+      context "when the phase is not a 'Needs Editor' phase" do
+        it "does not assign a paper admin task" do
+          phase = Phase.new name: 'Custom Phase'
+          expect(phase.tasks.map(&:class).any? { |c| c == PaperAdminTask }).to eq false
+        end
+      end
+
+      context "when tasks are specified" do
+        it "uses provided task" do
+          tasks = [Task.new]
+          phase = Phase.new name: 'Needs Editor', tasks: tasks
+          expect(phase.tasks).to eq tasks
+        end
+      end
+    end
   end
 end

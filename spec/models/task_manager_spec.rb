@@ -22,7 +22,6 @@ describe TaskManager do
 
   describe "initialization" do
     describe "phases" do
-      let(:task_manager) { TaskManager.new }
       it "initializes default phases" do
         default_phases = [
           Phase.new(name: 'name 1'),
@@ -31,12 +30,14 @@ describe TaskManager do
         ]
         allow(Phase).to receive(:default_phases).and_return(default_phases)
 
+        task_manager = TaskManager.new
         expect(task_manager.phases).to match_array default_phases
       end
 
       context "when phases are specified" do
         it "uses provided phases" do
           phases = [Phase.new(name: 'Doing')]
+
           task_manager = TaskManager.new phases: phases
           expect(task_manager.phases).to match_array phases
         end

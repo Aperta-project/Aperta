@@ -73,6 +73,19 @@ ActiveRecord::Schema.define(version: 20131211004616) do
 
   add_index "task_managers", ["paper_id"], name: "index_task_managers_on_paper_id", using: :btree
 
+  create_table "tasks", force: true do |t|
+    t.string   "title"
+    t.string   "type"
+    t.integer  "assignee_id"
+    t.integer  "phase_id"
+    t.boolean  "completed"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tasks", ["assignee_id"], name: "index_tasks_on_assignee_id", using: :btree
+  add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+
   create_table "users", force: true do |t|
     t.string   "first_name",             default: "",    null: false
     t.string   "last_name",              default: "",    null: false

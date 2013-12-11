@@ -21,7 +21,8 @@ feature "Submitting a paper", js: true do
       title: "Paper title",
       abstract: "Paper abstract",
       body: "Paper body",
-      authors: [{ first_name: 'Agnes', last_name: 'Stuart', affiliation: 'ABCMouse, Inc.', email: 'agnes@example.com' }]
+      authors: [{ first_name: 'Agnes', last_name: 'Stuart', affiliation: 'ABCMouse, Inc.', email: 'agnes@example.com' }],
+      journal: Journal.create!
   end
 
   scenario "Author submits a paper" do

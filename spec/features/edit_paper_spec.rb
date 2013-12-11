@@ -13,7 +13,7 @@ feature "Editing paper", js: true do
       affiliation: 'Universität Zürich'
   end
 
-  let(:paper) { paper = author.papers.create! short_title: 'foo bar' }
+  let(:paper) { paper = author.papers.create! short_title: 'foo bar', journal: Journal.create! }
 
   before do
     sign_in_page = SignInPage.visit

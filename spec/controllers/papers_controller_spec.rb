@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PapersController do
 
-  let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :submitted, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email]] }
+  let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :submitted, :journal_id, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email]] }
 
   let :user do
     User.create! username: 'albert',

@@ -131,6 +131,10 @@ class EditSubmissionPage < Page
     find('#paper-authors').text
   end
 
+  def journal
+    find(:css, '#paper-journal').text
+  end
+
   def title
     find(:css, '#paper-title').text
   end

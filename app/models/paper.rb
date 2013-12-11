@@ -4,6 +4,7 @@ class Paper < ActiveRecord::Base
   after_initialize :initialize_defaults
 
   belongs_to :user
+  belongs_to :journal
 
   has_many :declarations, -> { order :id }
   has_many :figures

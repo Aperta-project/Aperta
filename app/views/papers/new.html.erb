@@ -7,5 +7,9 @@
     <%= f.label :short_title %>
     <%= f.text_field :short_title, class: 'form-control' %>
   </div>
+  <div class="form-group">
+    <%= f.label :journal_id %>
+    <%= f.select :journal_id, Journal.pluck(:name, :id), class: 'form-control' %>
+  </div>
   <button type="submit" class="btn btn-default">Create</button>
 <% end %>

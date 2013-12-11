@@ -57,6 +57,6 @@ class PapersController < ApplicationController
   end
 
   def paper_params
-    params.require(:paper).permit(:short_title, :title, :abstract, :body, :paper_type, :submitted, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email])
+    params.require(:paper).permit(:short_title, :title, :abstract, :body, :paper_type, :submitted, :journal_id, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email])
   end
 end

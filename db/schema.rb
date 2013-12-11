@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131210004255) do
+ActiveRecord::Schema.define(version: 20131210232316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,12 @@ ActiveRecord::Schema.define(version: 20131210004255) do
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
 
+  create_table "journals", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "papers", force: true do |t|
     t.string   "short_title"
     t.string   "title"
@@ -44,8 +50,10 @@ ActiveRecord::Schema.define(version: 20131210004255) do
     t.string   "paper_type"
     t.text     "authors",     default: "--- []\n"
     t.boolean  "submitted",   default: false,      null: false
+    t.integer  "journal_id"
   end
 
+  add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
   create_table "phases", force: true do |t|

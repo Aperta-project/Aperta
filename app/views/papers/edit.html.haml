@@ -6,6 +6,7 @@
     #control-bar
       %section
         %ul
+          %li#paper-journal= @paper.journal.name
           %li#paper-short-title{contenteditable: true, placeholder: 'Type your short title here'}= @paper.short_title
           %li#paper-revision R0
         %ul

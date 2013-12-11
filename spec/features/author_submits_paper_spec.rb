@@ -5,6 +5,7 @@ feature "Paper Submission" do
   Warden.test_mode!
 
   scenario "Author creates a submission" do
+    journal = Journal.create! name: 'PLOS One'
     author = User.create! username: 'albert',
       first_name: 'Albert',
       last_name: 'Einstein',
@@ -17,8 +18,9 @@ feature "Paper Submission" do
 
     dashboard_page = DashboardPage.visit
     new_submission_page = dashboard_page.new_submission
-    edit_submission_page = new_submission_page.create_submission 'This is a short title'
+    edit_submission_page = new_submission_page.create_submission 'This is a short title', journal: 'PLOS One'
 
+    expect(edit_submission_page.journal).to eq('PLOS One')
     dashboard_page = edit_submission_page.visit_dashboard
     expect(dashboard_page.submissions).to include 'This is a short title'
   end

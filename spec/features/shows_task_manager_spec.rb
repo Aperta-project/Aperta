@@ -14,7 +14,12 @@ feature "Displays Task Manager", js: true do
       admin: true
   end
 
-  let(:paper) { paper = admin.papers.create! short_title: 'foobar', title: 'Foo bar' }
+  let(:paper) do
+    paper = admin.papers.create!(
+                  short_title: 'foobar',
+                  title: 'Foo bar',
+                  journal: Journal.create!)
+  end
 
   before do
     sign_in_page = SignInPage.visit

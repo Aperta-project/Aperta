@@ -6,7 +6,7 @@ class AddJournalIdToPapers < ActiveRecord::Migration
       dir.up do
         execute <<-SQL
           INSERT INTO "journals" ("name") VALUES ('PLOS Yeti');
-          UPDATE "papers" SET "journal_id" = (SELECT "journals".id FROM "journals" ORDER BY "journals"."id" DESC LIMIT 1) WHERE "papers"."journal_id" IS NULL;
+          UPDATE "papers" SET "journal_id" = (SELECT "journals".id FROM "journals" WHERE "journals"."name" = 'PLOS Yeti' LIMIT 1);
         SQL
       end
 

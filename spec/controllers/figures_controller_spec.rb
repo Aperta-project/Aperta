@@ -16,7 +16,7 @@ describe FiguresController do
   before { sign_in user }
 
   describe "POST 'create'" do
-    let(:paper) { Paper.create! short_title: 'Paper with attachment' }
+    let(:paper) { Paper.create! short_title: 'Paper with attachment', journal: Journal.create! }
 
     subject(:do_request) do
       post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff') }

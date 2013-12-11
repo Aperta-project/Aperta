@@ -12,7 +12,7 @@ describe SubmissionsController do
       affiliation: 'Universität Zürich'
   end
 
-  let(:paper) { user.papers.create! short_title: 'paper-for-submission' }
+  let(:paper) { user.papers.create! short_title: 'paper-for-submission', journal: Journal.create! }
 
   before { sign_in user }
 

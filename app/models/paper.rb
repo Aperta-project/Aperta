@@ -16,6 +16,7 @@ class Paper < ActiveRecord::Base
 
   validates :paper_type, inclusion: { in: PAPER_TYPES }
   validates :short_title, presence: true, uniqueness: true
+  validates :journal, presence: true
 
   def self.submitted
     where(submitted: true)

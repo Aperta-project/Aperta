@@ -17,7 +17,9 @@ describe PapersController do
   before { sign_in user }
 
   describe "GET 'show'" do
-    let(:paper) { user.papers.create! submitted: true, short_title: 'submitted-paper' }
+    let(:paper) do
+      user.papers.create!(submitted: true, short_title: 'submitted-paper', journal: Journal.create!)
+    end
     subject(:do_request) { get :show, id: paper.to_param }
 
     it_behaves_like "when the user is not signed in"
@@ -36,7 +38,7 @@ describe PapersController do
     end
 
     context "when the user is an admin" do
-      let(:paper) { Paper.create! submitted: true, short_title: 'submitted-paper' }
+      let(:paper) { Paper.create! submitted: true, short_title: 'submitted-paper', journal: Journal.create! }
       before { user.update_attribute(:admin, true) }
 
       it "assigns a submitted paper" do
@@ -47,7 +49,7 @@ describe PapersController do
   end
 
   describe "GET 'edit'" do
-    let(:paper) { user.papers.create! short_title: 'user\'s paper'}
+    let(:paper) { user.papers.create! short_title: 'user\'s paper', journal: Journal.create!}
     subject(:do_request) { get :edit, id: paper.to_param }
 
     it_behaves_like "when the user is not signed in"
@@ -76,8 +78,10 @@ describe PapersController do
   end
 
   describe "POST 'create'" do
+    before { Journal.create! }
+
     subject(:do_request) do
-      post :create, { paper: { short_title: 'ABC101' } }
+      post :create, { paper: { short_title: 'ABC101', journal_id: Journal.last.id } }
     end
 
     it_behaves_like "when the user is not signed in"
@@ -109,7 +113,7 @@ describe PapersController do
   end
 
   describe "PUT 'update'" do
-    let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated' }
+    let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated', journal: Journal.create! }
 
     let(:params) { {} }
 
@@ -159,7 +163,7 @@ describe PapersController do
   end
 
   describe "POST 'upload'" do
-    let(:paper) { Paper.create! short_title: 'paper-needs-uploads' }
+    let(:paper) { Paper.create! short_title: 'paper-needs-uploads', journal: Journal.create! }
 
     let(:uploaded_file) do
       double(:uploaded_file, path: '/path/to/file.docx').tap do |d|

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Paper do
-  let(:paper) { Paper.new short_title: 'Example' }
+  let(:paper) { Paper.new short_title: 'Example', journal: Journal.new }
 
   describe "initialization" do
     describe "paper_type" do
@@ -65,12 +65,19 @@ describe Paper do
   describe "validations" do
     describe "short_title" do
       it "must be unique" do
-        expect(Paper.new).to_not be_valid
+        expect(Paper.new(journal: Journal.create!)).to_not be_valid
       end
 
       it "must be present" do
-        Paper.create! short_title: 'Duplicate'
-        expect(Paper.new short_title: 'Duplicate').to_not be_valid
+        Paper.create! short_title: 'Duplicate', journal: Journal.create!
+        expect(Paper.new short_title: 'Duplicate', journal: Journal.create!).to_not be_valid
+      end
+    end
+
+    describe "journal" do
+      it "must be present" do
+        paper = Paper.new(short_title: 'YOLO')
+        expect(paper).to_not be_valid
       end
     end
 
@@ -87,8 +94,8 @@ describe Paper do
   end
 
   describe "scopes" do
-    let(:ongoing_paper)   { Paper.create! submitted: false, short_title: 'Ongoing' }
-    let(:submitted_paper) { Paper.create! submitted: true, short_title: 'Submitted' }
+    let(:ongoing_paper)   { Paper.create! submitted: false, short_title: 'Ongoing', journal: Journal.create! }
+    let(:submitted_paper) { Paper.create! submitted: true, short_title: 'Submitted', journal: Journal.create! }
 
     describe ".submitted" do
       it "returns submitted papers only" do
@@ -109,6 +116,7 @@ describe Paper do
     describe "declarations" do
       let(:paper) do
         Paper.create! short_title: 'Paper with declarations',
+          journal: Journal.create!,
           declarations: [
             Declaration.new(question: "Q1"),
             Declaration.new(question: "Q2")

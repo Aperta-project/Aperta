@@ -15,7 +15,7 @@ describe TasksController do
   before { sign_in user }
 
   describe "GET 'index'" do
-    let(:paper) { Paper.create! short_title: "abcd" }
+    let(:paper) { Paper.create! short_title: "abcd", journal: Journal.create! }
 
     subject(:do_request) { get 'index', id: paper.to_param }
 

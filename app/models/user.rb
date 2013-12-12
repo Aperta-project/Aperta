@@ -19,6 +19,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.admins
+    where admin: true
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end

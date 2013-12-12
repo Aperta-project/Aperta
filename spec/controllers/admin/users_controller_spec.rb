@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Admin::UsersController do
   let(:permitted_params) { [:admin] }
 
+  let :journal do
+    Journal.create! name: 'albert'
+  end
+
   let :user do
     User.create! username: 'albert',
       first_name: 'Albert',
@@ -17,7 +21,7 @@ describe Admin::UsersController do
   before { sign_in user }
 
   describe "GET 'index'" do
-    subject(:do_request) { get :index }
+    subject(:do_request) { get :index, journal_id: journal.id }
 
     it { should be_success }
     it { should render_template :index }
@@ -32,7 +36,7 @@ describe Admin::UsersController do
   end
 
   describe "PUT 'update'" do
-    subject(:do_request) { put :update, { id: user.to_param, user: { admin: false } } }
+    subject(:do_request) { put :update, { id: user.to_param, journal_id: journal.id, user: { admin: false } } }
 
     it_behaves_like "when the user is not signed in"
     it_behaves_like "when the user is not an admin"

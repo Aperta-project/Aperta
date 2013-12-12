@@ -1,5 +1,5 @@
 class AdminUsersPage < Page
-  path :admin_users
+  path :admin_journals
 
   class UserFragment
     def initialize element
@@ -17,6 +17,10 @@ class AdminUsersPage < Page
     def set_admin
       @element.all('td')[4].find('input[type="checkbox"]').set(true)
     end
+  end
+
+  def visit_journal journal_name
+    click_link journal_name
   end
 
   def users

@@ -11,7 +11,9 @@ Tahi::Application.routes.draw do
   end
 
   namespace :admin do
-    resources :users, only: [:index, :update]
+    resources :journals, only: :index do
+      resources :users, only: [:index, :update]
+    end
   end
 
   root 'dashboards#index'

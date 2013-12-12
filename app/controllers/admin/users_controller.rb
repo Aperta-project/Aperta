@@ -3,6 +3,7 @@ class Admin::UsersController < ApplicationController
   before_action :verify_admin!
 
   def index
+    @journal = Journal.find(params[:journal_id])
     @users = User.all
   end
 

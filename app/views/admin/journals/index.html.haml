@@ -1,9 +1,0 @@
-%h1 Journals
-%table.table.table-hover.journals
-  %tr
-    %th ID
-    %th Name
-  - @journals.each do |journal|
-    %tr.journal
-      %td= journal.id
-      %td= link_to journal.name, admin_journal_users_path(journal)

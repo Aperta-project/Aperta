@@ -1,4 +1,5 @@
 Tahi::Application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
   devise_for :users
   resources :papers, only: [:new, :create, :show, :edit, :update] do
     resources :figures, only: :create
@@ -7,12 +8,6 @@ Tahi::Application.routes.draw do
     member do
       post :upload
       get :manage, to: 'tasks#index'
-    end
-  end
-
-  namespace :admin do
-    resources :journals, only: :index do
-      resources :users, only: [:index, :update]
     end
   end
 

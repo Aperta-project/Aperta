@@ -1,34 +1,11 @@
 class AdminUsersPage < Page
-  path :admin_journals
-
-  class UserFragment
-    def initialize element
-      @element = element
+  def edit_user user_id
+    wait_for_pjax
+    user_row = all('#list table tbody tr').detect do |tr|
+      tr.find('.id_field').text == user_id.to_s
     end
-
-    def id
-      @element.all('td')[0].text.to_i
-    end
-
-    def admin?
-      !!@element.all('td')[4].find('input[type="checkbox"]').checked?
-    end
-
-    def set_admin
-      @element.all('td')[4].find('input[type="checkbox"]').set(true)
-    end
-  end
-
-  def visit_journal journal_name
-    click_link journal_name
-  end
-
-  def users
-    all('.user').map { |u| UserFragment.new u }
-  end
-
-  def dashboard
-    visit '/'
-    DashboardPage.new
+    user_row.click_on 'Edit'
+    wait_for_pjax
+    AdminEditUserPage.new
   end
 end

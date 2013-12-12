@@ -22,7 +22,7 @@ class Page
   end
 
   def initialize
-    expect(current_path).to match self.class._path_regex
+    expect(current_path).to match self.class._path_regex unless self.class._path_regex.nil?
   end
 
   def reload
@@ -38,5 +38,11 @@ class Page
       click_on 'Dashboard'
       DashboardPage.new
     end
+  end
+
+  protected
+
+  def wait_for_pjax
+    sleep 0.1
   end
 end

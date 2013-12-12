@@ -31,51 +31,44 @@ feature "Tahi administration", js: true do
   scenario "Admin can toggle the admin bit on other users" do
     admin_page = DashboardPage.visit.visit_admin
 
-    journal_admin_page = admin_page.visit_journal 'Journal 2'
-    users = admin_page.users
-    expect(users.size).to eq(2)
+    users_page = admin_page.navigate_to 'Users'
 
-    user_record = users.detect { |u| u.id == user.id }
-    expect(user_record).to_not be_admin
+    edit_user_page = users_page.edit_user user.id
+    expect(edit_user_page).to_not be_admin
 
-    user_record.set_admin
-    dashboard_page = admin_page.dashboard
-    admin_page = dashboard_page.visit_admin
+    users_page = edit_user_page.set_admin.save
 
-    journal_admin_page = admin_page.visit_journal 'Journal 2'
-    user_record = admin_page.users.detect { |u| u.id == user.id }
-    expect(user_record).to be_admin
+    edit_user_page = users_page.edit_user user.id
+    expect(edit_user_page).to be_admin
   end
 
   scenario "Admin can toggle editor and reviewer bits on other users" do
     admin_page = DashboardPage.visit.visit_admin
-    journal_admin_page = admin_page.visit_journal 'Journal 2'
+    roles_page = admin_page.navigate_to 'Roles'
 
-    users = journal_admin_page.users
-    user_record = users.detect { |u| u.id == user.id }
-    user_record.set_editor
+    new_roles_page = roles_page.add_role
 
-    admin_page = journal_admin_page.visit_admin
-    journal_admin_page = admin_page.visit_journal 'Journal 1'
+    new_roles_page.user = user.full_name
+    new_roles_page.journal = 'Journal 1'
 
-    users = journal_admin_page.users
-    user_record = users.detect { |u| u.id == user.id }
-    user_record.set_reviewer
+    new_roles_page.set_editor
+    roles_page = new_roles_page.save
 
-    admin_page = journal_admin_page.visit_admin
-    dashboard_page = journal_admin_page.dashboard
-    admin_page = dashboard_page.visit_admin
-    journal_admin_page = admin_page.visit_journal 'Journal 2'
+    new_roles_page = roles_page.add_role
 
-    user_record = journal_admin_page.users.detect { |u| u.id == user.id }
-    expect(user_record).to be_editor
-    expect(user_record).not_to be_reviewer
+    new_roles_page.user = user.full_name
+    new_roles_page.journal = 'Journal 2'
 
-    admin_page = journal_admin_page.visit_admin
-    journal_admin_page = admin_page.visit_journal 'Journal 1'
+    new_roles_page.set_reviewer
+    roles_page = new_roles_page.save
 
-    user_record = journal_admin_page.users.detect { |u| u.id == user.id }
-    expect(user_record).not_to be_editor
-    expect(user_record).to be_reviewer
+    edit_role_page = roles_page.edit_role user.full_name, 'Journal 1'
+    expect(edit_role_page).to be_editor
+    expect(edit_role_page).to_not be_reviewer
+    roles_page = edit_role_page.cancel
+
+    edit_role_page = roles_page.edit_role user.full_name, 'Journal 2'
+    expect(edit_role_page).to_not be_editor
+    expect(edit_role_page).to be_reviewer
   end
 end

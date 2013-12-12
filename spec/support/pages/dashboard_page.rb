@@ -49,6 +49,6 @@ class DashboardPage < Page
 
   def visit_admin
     click_on "Admin"
-    AdminUsersPage.new
+    AdminDashboardPage.new
   end
 end

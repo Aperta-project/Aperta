@@ -202,3 +202,15 @@ describe "tahi", ->
           $('#overlay footer .content form input[type="checkbox"]').click()
           $('.close-overlay').click()
           expect($('#planes').data('task-completed')).toEqual false
+
+        it "sets 'completed' class depending on the checkbox's value", ->
+          expect($('#planes').data('task-completed')).toEqual false
+          Tahi.displayOverlay $('#planes')
+          $('#overlay footer .content form input[type="checkbox"]').click()
+          $('.close-overlay').click()
+          expect($('#planes')).toHaveClass 'completed'
+
+          Tahi.displayOverlay $('#planes')
+          $('#overlay footer .content form input[type="checkbox"]').click()
+          $('.close-overlay').click()
+          expect($('#planes')).not.toHaveClass 'completed'

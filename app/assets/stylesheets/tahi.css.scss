@@ -7,6 +7,11 @@ html {
   overflow-y: scroll;
 }
 
+
+*, *:hover {
+  @include transition(all 0.2s ease-in-out);
+}
+
 body {
   background-color: $tahi-matte;
 }

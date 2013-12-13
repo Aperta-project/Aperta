@@ -177,3 +177,28 @@ describe "tahi", ->
         $('#overlay').show()
         $('.close-overlay').click()
         expect($('#overlay')).toBeVisible()
+
+      context "when there is a completed checkbox", ->
+        beforeEach ->
+          $('#jasmine_content').html """
+            <div id="overlay" style="display: none">
+              <footer>
+                <div class="content"></div>
+                <a href="#" class="close-overlay">Close</a>
+              </footer>
+            </div>
+            <div id="planes-content" style="display: none"><div class="content">Hello</div></div>
+            <div id="planes" data-overlay-name="planes" data-overlay-title="It's a plane!" data-paper-id='123' data-task-id='456' data-task-completed="false">Show overlay</div>
+          """
+
+        it "changes the attribute data-task-completed attributed to the checkbox's value", ->
+          expect($('#planes').data('task-completed')).toEqual false
+          Tahi.displayOverlay $('#planes')
+          $('#overlay footer .content form input[type="checkbox"]').click()
+          $('.close-overlay').click()
+          expect($('#planes').data('task-completed')).toEqual true
+
+          Tahi.displayOverlay $('#planes')
+          $('#overlay footer .content form input[type="checkbox"]').click()
+          $('.close-overlay').click()
+          expect($('#planes').data('task-completed')).toEqual false

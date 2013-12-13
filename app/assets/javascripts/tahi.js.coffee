@@ -54,6 +54,7 @@ Tahi.displayOverlay = (element) ->
     container.children().appendTo(contentContainer)
     overlay.hide()
     titleContainer.empty()
+    $element.data 'task-completed', $('form input[type="checkbox"]', footerContainer).is(':checked')
     footerContainer.empty()
     $('.close-overlay').unbind('click', handler)
 

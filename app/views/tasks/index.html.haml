@@ -15,7 +15,7 @@
       %ul.cards
         - phase.tasks.each do |task|
           %li
-            = link_to '#', class: 'card', data: { 'overlay-name' => 'paper-admin-card', 'overlay-title' => @paper.short_title, 'paper-id' => @paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do
+            = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => 'paper-admin-card', 'overlay-title' => @paper.short_title, 'paper-id' => @paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do
               %span.glyphicon.glyphicon-ok
               = task.title
             #paper-admin-card-content.hidden

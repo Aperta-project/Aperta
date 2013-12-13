@@ -1,6 +1,6 @@
-class AdminNewRolePage < Page
+class AdminNewJournalRolePage < Page
   def user= full_name
-    within('#role_user_id_field') do
+    within('#journal_role_user_id_field') do
       find('label.ui-button').click
     end
 
@@ -10,7 +10,7 @@ class AdminNewRolePage < Page
   end
 
   def journal= journal_name
-    within('#role_journal_id_field') do
+    within('#journal_role_journal_id_field') do
       find('label.ui-button').click
     end
 
@@ -29,6 +29,6 @@ class AdminNewRolePage < Page
 
   def save
     click_on 'Save'
-    AdminRolesPage.new
+    AdminJournalRolesPage.new
   end
 end

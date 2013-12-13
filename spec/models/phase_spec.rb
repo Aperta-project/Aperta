@@ -27,9 +27,14 @@ describe Phase do
   describe "initialization" do
     describe "tasks" do
       context "when the phase is a 'Needs Editor' phase" do
+        let(:phase) { Phase.new name: 'Needs Editor' }
+
         it "initializes one paper admin task" do
-          phase = Phase.new name: 'Needs Editor'
-          expect(phase.tasks.map(&:class).any? { |c| c == PaperAdminTask }).to eq true
+          expect(phase.tasks.map(&:class)).to include(PaperAdminTask)
+        end
+
+        it "initializes one paper editor task" do
+          expect(phase.tasks.map(&:class)).to include(PaperEditorTask)
         end
       end
 

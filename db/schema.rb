@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131212212656) do
+ActiveRecord::Schema.define(version: 20131213195521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,18 @@ ActiveRecord::Schema.define(version: 20131212212656) do
   end
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
+
+  create_table "journal_roles", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "journal_id"
+    t.boolean  "editor",     default: false, null: false
+    t.boolean  "reviewer",   default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "journal_roles", ["journal_id"], name: "index_journal_roles_on_journal_id", using: :btree
+  add_index "journal_roles", ["user_id"], name: "index_journal_roles_on_user_id", using: :btree
 
   create_table "journals", force: true do |t|
     t.string   "name"
@@ -77,18 +89,6 @@ ActiveRecord::Schema.define(version: 20131212212656) do
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
-
-  create_table "roles", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "journal_id"
-    t.boolean  "editor",     default: false, null: false
-    t.boolean  "reviewer",   default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "roles", ["journal_id"], name: "index_roles_on_journal_id", using: :btree
-  add_index "roles", ["user_id"], name: "index_roles_on_user_id", using: :btree
 
   create_table "task_managers", force: true do |t|
     t.integer  "paper_id"

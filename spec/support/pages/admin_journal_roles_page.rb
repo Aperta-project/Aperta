@@ -1,7 +1,7 @@
-class AdminRolesPage < Page
+class AdminJournalRolesPage < Page
   def add_role
     click_on 'Add new'
-    AdminNewRolePage.new
+    AdminNewJournalRolePage.new
   end
 
   def edit_role full_name, journal_name
@@ -11,6 +11,6 @@ class AdminRolesPage < Page
     end
     role_row.click_on 'Edit'
     wait_for_pjax
-    AdminEditRolePage.new
+    AdminEditJournalRolePage.new
   end
 end

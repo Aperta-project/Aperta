@@ -44,7 +44,7 @@ feature "Tahi administration", js: true do
 
   scenario "Admin can toggle editor and reviewer bits on other users" do
     admin_page = DashboardPage.visit.visit_admin
-    roles_page = admin_page.navigate_to 'Roles'
+    roles_page = admin_page.navigate_to 'Journal roles'
 
     new_roles_page = roles_page.add_role
 

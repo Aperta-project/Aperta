@@ -18,8 +18,9 @@ class Phase < ActiveRecord::Base
   private
 
   def initialize_defaults
-    if name == 'Needs Editor'
-      self.tasks << PaperAdminTask.new if tasks.empty?
+    if name == 'Needs Editor' && tasks.empty?
+      self.tasks << PaperAdminTask.new
+      self.tasks << PaperEditorTask.new
     end
   end
 end

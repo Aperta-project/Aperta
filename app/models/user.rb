@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_many :papers
+  has_many :journal_roles
 
   attr_accessor :login
 
@@ -21,6 +22,10 @@ class User < ActiveRecord::Base
 
   def self.admins
     where admin: true
+  end
+
+  def self.editors_for(journal)
+    joins(:journal_roles).where("journal_roles.journal_id" => journal.id, "journal_roles.editor" => true)
   end
 
   def full_name

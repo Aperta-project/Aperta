@@ -5,6 +5,8 @@ class AdminDashboardPage < Page
     within(all('ul.nav.nav-list').first) do
       click_on model_name
     end
-    "Admin#{model_name}Page".constantize.new
+
+    model_class = model_name.gsub(/\s/, '_').camelize
+    "Admin#{model_class}Page".constantize.new
   end
 end

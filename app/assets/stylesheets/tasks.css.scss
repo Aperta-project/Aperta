@@ -1,0 +1,26 @@
+@import 'variables';
+@import 'bootstrap';
+@import 'tahi';
+
+.phases {
+  @extend .row;
+  list-style-type: none;
+  padding: 0;
+  li.phase {
+    @extend .col-xs-3;
+    border-right: 1px solid $tahi-tertiary;
+    min-height: 600px;
+  }
+  li.phase:last-of-type {
+    border-right: none;
+  }
+}
+
+.cards {
+  list-style-type: none;
+  padding: 0;
+}
+
+.phase.active {
+  background: white;
+}

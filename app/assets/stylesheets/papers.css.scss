@@ -149,11 +149,34 @@ main > aside > div {
   padding: 10px 15px;
   display: block;
   border-radius: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   &:hover {
     background-color: $btn-primary-bg;
     color: white;
     text-decoration: none;
+  }
+  span.glyphicon {
+    display: none;
+  }
+
+  &.completed {
+    background: $tahi-tertiary;
+    color: $tahi-tertiary - #666;
+  }
+
+  &.completed:hover {
+    background: $tahi-tertiary - #333;
+    color: white;
+  }
+
+  &.completed span.glyphicon {
+    display: inline;
+    margin-right: 5px;
+    color: $tahi-primary;
+  }
+
+  &.completed:hover span.glyphicon {
+    color: white;
   }
 }

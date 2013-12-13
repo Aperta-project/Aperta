@@ -1,5 +1,5 @@
 class TaskManagerPage < Page
-  class PaperAdminOverlay
+  class CardOverlay
     def initialize element
       @element = element
     end
@@ -26,6 +26,20 @@ class TaskManagerPage < Page
     end
   end
 
+  class PaperAdminOverlay < CardOverlay
+  end
+
+  class AssignEditorOverlay < CardOverlay
+    def paper_editor=(name)
+      @element.select name, from: 'Editor'
+    end
+
+    def paper_editor
+      selected_option = @element.all('#task_paper_role_attributes_user_id option[selected]').first
+      selected_option.try :text
+    end
+  end
+
   class PhaseFragment
     def initialize element
       @element = element
@@ -33,7 +47,7 @@ class TaskManagerPage < Page
 
     def view_card card_name, &block
       @element.click_on card_name
-      overlay = PaperAdminOverlay.new @element.session.find('#overlay')
+      overlay = "TaskManagerPage::#{card_name.gsub ' ', ''}Overlay".constantize.new @element.session.find('#overlay')
       block.call overlay
       overlay.dismiss
     end

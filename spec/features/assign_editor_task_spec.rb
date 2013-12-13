@@ -45,7 +45,8 @@ feature "Assigns Editor", js: true do
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay.assignee).to_not be
       expect(overlay).to_not be_completed
-      overlay.assignee = 'Albert Einstein'
+      overlay.assignee = admin.full_name
+      overlay.paper_editor = editor.full_name
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end
@@ -55,7 +56,8 @@ feature "Assigns Editor", js: true do
     needs_editor_phase = task_manager_page.phase 'Needs Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay).to be_completed
-      expect(overlay.assignee).to eq 'Albert Einstein'
+      expect(overlay.assignee).to eq admin.full_name
+      expect(overlay.paper_editor).to eq editor.full_name
     end
   end
 end

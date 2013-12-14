@@ -26,7 +26,7 @@ class TaskManagerPage < Page
     end
   end
 
-  class PaperAdminOverlay < CardOverlay
+  class PaperShepherdOverlay < CardOverlay
   end
 
   class AssignEditorOverlay < CardOverlay

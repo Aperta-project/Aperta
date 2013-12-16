@@ -1,8 +1,15 @@
 require 'spec_helper'
 
 describe PaperAdminTask do
+  describe "defaults" do
+    subject(:task) { PaperAdminTask.new }
+    specify { expect(task.title).to eq 'Paper Shepherd' }
+    specify { expect(task.role).to eq 'admin' }
+  end
+
   describe "callbacks" do
     let(:phase) { Phase.create!.tap { |p| TaskManager.create! phases: [p] } }
+    let(:default_task_attrs) { { title: 'A title', role: 'admin', phase: phase } }
 
     describe "after_update" do
       let(:bob) { User.create! email: 'bob@plos.org',
@@ -18,14 +25,14 @@ describe PaperAdminTask do
       context "when the assignee is not changing" do
         it "does not modify other tasks" do
           paper_admin_task = PaperAdminTask.create! assignee: bob, phase: phase
-          task = Task.create! role: 'admin', phase: phase
+          task = Task.create! default_task_attrs
           paper_admin_task.update! completed: true
           expect(task.reload.assignee).to be_nil
         end
       end
 
       context "when there are admin tasks with no assignee" do
-        let!(:task) { Task.create! role: 'admin', phase: phase }
+        let!(:task) { Task.create! default_task_attrs }
 
         it "assigns the task to the PaperAdminTask assignee" do
           PaperAdminTask.create! assignee: bob, phase: phase
@@ -37,7 +44,7 @@ describe PaperAdminTask do
         let!(:paper_admin_task) { PaperAdminTask.create! assignee: bob, phase: phase }
 
         it "assigns the task to the PaperAdminTask assignee" do
-          task = Task.create!(role: 'admin', assignee: bob, phase: phase)
+          task = Task.create! default_task_attrs.merge(assignee: bob)
           paper_admin_task.update! assignee: steve
           expect(task.reload.assignee).to eq(steve)
         end
@@ -52,7 +59,7 @@ describe PaperAdminTask do
         let!(:paper_admin_task) { PaperAdminTask.create! assignee: bob, phase: phase }
 
         it "does not assign the task to the PaperAdminTask assignee" do
-          task = Task.create!(role: 'admin', assignee: dave, phase: phase)
+          task = Task.create! default_task_attrs.merge(assignee: dave)
           paper_admin_task.update! assignee: steve
           expect(task.reload.assignee).to eq(dave)
         end
@@ -62,7 +69,7 @@ describe PaperAdminTask do
         let!(:paper_admin_task) { PaperAdminTask.create! assignee: bob, phase: phase }
 
         it "does not assign the task to the PaperAdminTask assignee" do
-          task = Task.create! role: 'admin', completed: true, assignee: bob, phase: phase
+          task = Task.create! default_task_attrs.merge(completed: true, assignee: bob)
           paper_admin_task.update! assignee: steve
           expect(task.reload.assignee).to eq bob
         end
@@ -78,7 +85,7 @@ describe PaperAdminTask do
         end
 
         it "updates their assignee" do
-          task = Task.create! role: 'admin', phase: writing_phase
+          task = Task.create! default_task_attrs.merge(phase: writing_phase)
           paper_admin_task.update! assignee: steve
           expect(task.reload.assignee).to eq steve
         end
@@ -95,35 +102,9 @@ describe PaperAdminTask do
         end
 
         it "does not update their assignee" do
-          task = Task.create! role: 'admin', phase: writing_phase
+          task = Task.create! default_task_attrs.merge(phase: writing_phase)
           paper_admin_task.update! assignee: steve
           expect(task.reload.assignee).to be_nil
-        end
-      end
-    end
-  end
-
-  describe "initialization" do
-    describe "title" do
-      it "initializes title to 'Paper Shepherd'" do
-        expect(PaperAdminTask.new.title).to eq 'Paper Shepherd'
-      end
-
-      context "when a title is provided" do
-        it "uses the specified title" do
-          expect(PaperAdminTask.new(title: 'foo').title).to eq 'foo'
-        end
-      end
-    end
-
-    describe "role" do
-      it "initializes title to 'admin'" do
-        expect(PaperAdminTask.new.role).to eq 'admin'
-      end
-
-      context "when a role is provided" do
-        it "uses the specified role" do
-          expect(PaperAdminTask.new(role: 'foo').role).to eq 'foo'
         end
       end
     end

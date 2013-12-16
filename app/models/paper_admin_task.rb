@@ -1,13 +1,10 @@
 class PaperAdminTask < Task
-  after_initialize :initialize_defaults
   after_save :assign_tasks_to_admin, if: -> { assignee_id_changed? }
 
-  private
+  title 'Paper Shepherd'
+  role 'admin'
 
-  def initialize_defaults
-    self.title = 'Paper Shepherd' if title.blank?
-    self.role = 'admin' if role.blank?
-  end
+  private
 
   def assign_tasks_to_admin
     query = Task.where(role: 'admin', completed: false, phase_id: [task_manager.phases.pluck(:id)])

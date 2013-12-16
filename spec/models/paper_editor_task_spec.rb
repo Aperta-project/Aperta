@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe PaperEditorTask do
+  describe "defaults" do
+    subject(:task) { PaperEditorTask.new }
+    specify { expect(task.title).to eq 'Assign Editor' }
+    specify { expect(task.role).to eq 'admin' }
+  end
+
   describe "initialization" do
     describe "title" do
       it "initializes title to 'Assign Editor'" do

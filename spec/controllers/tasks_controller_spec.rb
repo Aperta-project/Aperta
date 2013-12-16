@@ -38,7 +38,7 @@ describe TasksController do
 
   describe "PATCH 'update'" do
     let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated', journal: Journal.create! }
-    let(:task) { Task.create! }
+    let(:task) { Task.create! title: "sample task", role: "sample role"}
 
     subject(:do_request) do
       patch :update, { paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }

@@ -1,81 +1,53 @@
 class PageNotReady < Capybara::ElementNotFound; end
 
 class EditSubmissionPage < Page
-  class Declaration
-    def initialize element
-      @element = element
-    end
-
+  class Declaration < PageFragment
     def answer
-      @element.find('textarea').value
+      find('textarea').value
     end
 
     def answer= value
-      id = @element.find('textarea')[:id]
-      @element.fill_in id, with: value
-      @element.find('label').click # blur the textarea
+      id = find('textarea')[:id]
+      fill_in id, with: value
+      find('label').click # blur the textarea
       sleep 0.5 # and wait for the AJAX request to finish
     end
   end
 
-  class AuthorsOverlay
-    def initialize element
-      @element = element
-    end
-
-    def dismiss
-      @element.all('.close-overlay').first.click
-    end
-
+  class AuthorsOverlay < CardOverlay
     def add_author author
-      @element.click_on "Add new"
-      @element.fill_in "First name", with: author[:first_name]
-      @element.fill_in "Last name", with: author[:last_name]
-      @element.fill_in "Email", with: author[:email]
-      @element.fill_in "Affiliation", with: author[:affiliation]
-      @element.click_on "done"
+      click_on "Add new"
+      fill_in "First name", with: author[:first_name]
+      fill_in "Last name", with: author[:last_name]
+      fill_in "Email", with: author[:email]
+      fill_in "Affiliation", with: author[:affiliation]
+      click_on "done"
     end
   end
 
-  class UploadOverlay
-    def initialize element
-      @element = element
-    end
-
-    def dismiss
-      @element.all('.close-overlay').first.click
-    end
-
+  class UploadOverlay < CardOverlay
     def has_image? image_name
-      @element.has_selector? "img[src$='#{image_name}']"
+      has_selector? "img[src$='#{image_name}']"
     end
 
     def attach_figure
-      @element.session.execute_script "$('#figure_attachment').css('position', 'relative')"
-      @element.attach_file('figure_attachment', Rails.root.join('spec', 'fixtures', 'yeti.tiff'), visible: false)
-      @element.session.execute_script "$('#figure_attachment').css('position', 'absolute')"
+      session.execute_script "$('#figure_attachment').css('position', 'relative')"
+      attach_file('figure_attachment', Rails.root.join('spec', 'fixtures', 'yeti.tiff'), visible: false)
+      session.execute_script "$('#figure_attachment').css('position', 'absolute')"
     end
 
     def upload_figures
-      @element.click_button "Upload Figure"
+      click_button "Upload Figure"
     end
   end
 
-  class DeclarationsOverlay
-    def initialize element
-      @element = element
-    end
-
-    def dismiss
-      @element.all('.close-overlay').first.click
-    end
-
+  class DeclarationsOverlay < CardOverlay
     def declarations
-      @element.all('.declaration').map { |d| Declaration.new d }
+      all('.declaration').map { |d| Declaration.new d }
     end
 
     def save_declarations
-      @element.click_on 'Save declarations'
+      click_on 'Save declarations'
     end
   end
 

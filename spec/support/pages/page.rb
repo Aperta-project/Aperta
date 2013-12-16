@@ -1,6 +1,23 @@
-class Page
-  include Capybara::DSL
+class PageFragment
   include RSpec::Matchers
+
+  delegate :select, to: :@element
+
+  def initialize element = nil
+    @element = element || page
+  end
+
+  def method_missing method, *args, &block
+    if @element.respond_to? method
+      @element.send method, *args, &block
+    else
+      super
+    end
+  end
+end
+
+class Page < PageFragment
+  include Capybara::DSL
 
   class << self
     include Capybara::DSL

@@ -51,7 +51,9 @@ feature "Task Manager", js: true do
       expect(overlay.assignee).to eq 'Zoey Bob'
     end
 
-    # now all other 'admin' type cards are assigned to me
-    # the shepherd card is indicated as completed
+    needs_editor_phase.view_card 'Assign Editor' do |overlay|
+      expect(overlay).to_not be_completed
+      expect(overlay.assignee).to eq 'Zoey Bob'
+    end
   end
 end

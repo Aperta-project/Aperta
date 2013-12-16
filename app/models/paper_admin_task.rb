@@ -6,6 +6,7 @@ class PaperAdminTask < Task
 
   def initialize_defaults
     self.title = 'Paper Shepherd' if title.blank?
+    self.role = 'admin' if role.blank?
   end
 
   def assign_tasks_to_admin

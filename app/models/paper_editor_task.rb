@@ -15,5 +15,6 @@ class PaperEditorTask < Task
 
   def initialize_defaults
     self.title = 'Assign Editor' if title.blank?
+    self.role = 'admin' if role.blank?
   end
 end

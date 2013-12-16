@@ -9,7 +9,19 @@ describe PaperEditorTask do
 
       context "when a title is provided" do
         it "uses the specified title" do
-          expect(PaperAdminTask.new(title: 'foo').title).to eq 'foo'
+          expect(PaperEditorTask.new(title: 'foo').title).to eq 'foo'
+        end
+      end
+    end
+
+    describe "role" do
+      it "initializes title to 'admin'" do
+        expect(PaperEditorTask.new.role).to eq 'admin'
+      end
+
+      context "when a role is provided" do
+        it "uses the specified role" do
+          expect(PaperEditorTask.new(role: 'foo').role).to eq 'foo'
         end
       end
     end

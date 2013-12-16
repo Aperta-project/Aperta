@@ -115,5 +115,17 @@ describe PaperAdminTask do
         end
       end
     end
+
+    describe "role" do
+      it "initializes title to 'admin'" do
+        expect(PaperAdminTask.new.role).to eq 'admin'
+      end
+
+      context "when a role is provided" do
+        it "uses the specified role" do
+          expect(PaperAdminTask.new(role: 'foo').role).to eq 'foo'
+        end
+      end
+    end
   end
 end

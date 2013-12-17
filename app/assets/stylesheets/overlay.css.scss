@@ -35,6 +35,15 @@
 
 #overlay header {
   margin: 65px auto 0;
+  > h2, > h2 > a {
+    padding: 0;
+    font-size: 24px;
+    font-family: $tahi-font-family;
+    color: $btn-primary-bg;
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 #overlay footer {
@@ -44,13 +53,9 @@
 #overlay header h2 {
   @extend .col-xs-11;
   margin: 0 0 15px 0;
-  padding: 0;
-  font-size: 24px;
-  font-family: $tahi-font-family;
-  color: $btn-primary-bg;
 }
 
-#overlay header a {
+#overlay header > a {
   @extend .col-xs-1;
   bottom: 10px;
   position: absolute;

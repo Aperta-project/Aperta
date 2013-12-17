@@ -22,12 +22,12 @@ Tahi.displayOverlay = (element) ->
   overlayName = $element.data('overlay-name')
   overlayTitle = $element.data('overlay-title')
 
+  paperId = $element.data('paper-id')
   titleContainer = $('header h2', overlay)
-  titleContainer.text overlayTitle
+  titleContainer.html $("<a href='/papers/#{paperId}'>#{overlayTitle}</a>")
 
   taskId = $element.data('task-id')
   if taskId?
-    paperId = $element.data('paper-id')
     taskCompleted = $element.data('task-completed')
     formHtml = """
       <form accept-charset="UTF-8" action="/papers/#{paperId}/tasks/#{taskId}" class="js-submit-on-change" data-remote="true" id="complete_task_#{taskId}" method="post">

@@ -84,9 +84,11 @@ describe "tahi", ->
       expect($('#overlay main').html()).toEqual expected_html
       expect($('#planes-content')).toBeEmpty()
 
-    it "sets the overlay title", ->
+    it "sets the overlay title with the link to the paper", ->
       Tahi.displayOverlay($('#planes'))
-      expect($('#overlay header h2').text()).toEqual "It's a plane!"
+      expect($('#overlay header h2').html()).toEqual """
+        <a href="/papers/123">It's a plane!</a>
+      """
 
     it "shows the overlay div", ->
       Tahi.displayOverlay($('#planes'))

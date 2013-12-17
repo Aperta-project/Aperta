@@ -14,6 +14,13 @@ class PageFragment
       super
     end
   end
+
+  def view_card card_name, &block
+    click_on card_name
+    overlay = "#{card_name.gsub ' ', ''}Overlay".constantize.new session.find('#overlay')
+    block.call overlay
+    overlay.dismiss
+  end
 end
 
 class Page < PageFragment

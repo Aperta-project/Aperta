@@ -1,0 +1,2 @@
+class PaperShepherdOverlay < CardOverlay
+end

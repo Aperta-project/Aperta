@@ -5,6 +5,6 @@ class NewSubmissionPage < Page
     fill_in 'Short title', with: short_title
     select journal, from: 'Journal'
     click_on 'Create'
-    EditSubmissionPage.new
+    EditPaperPage.new
   end
 end

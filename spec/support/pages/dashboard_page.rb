@@ -34,7 +34,7 @@ class DashboardPage < Page
 
   def edit_submission short_title
     within('.submissions') { click_link short_title }
-    EditSubmissionPage.new
+    EditPaperPage.new
   end
 
   def view_paper short_title

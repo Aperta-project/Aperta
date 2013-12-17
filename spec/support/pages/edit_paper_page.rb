@@ -1,56 +1,19 @@
 class PageNotReady < Capybara::ElementNotFound; end
 
-class EditSubmissionPage < Page
-  class Declaration < PageFragment
-    def answer
-      find('textarea').value
-    end
-
-    def answer= value
-      id = find('textarea')[:id]
-      fill_in id, with: value
-      find('label').click # blur the textarea
-      sleep 0.5 # and wait for the AJAX request to finish
-    end
+class DeclarationFragment < PageFragment
+  def answer
+    find('textarea').value
   end
 
-  class AuthorsOverlay < CardOverlay
-    def add_author author
-      click_on "Add new"
-      fill_in "First name", with: author[:first_name]
-      fill_in "Last name", with: author[:last_name]
-      fill_in "Email", with: author[:email]
-      fill_in "Affiliation", with: author[:affiliation]
-      click_on "done"
-    end
+  def answer= value
+    id = find('textarea')[:id]
+    fill_in id, with: value
+    find('label').click # blur the textarea
+    sleep 0.5 # and wait for the AJAX request to finish
   end
+end
 
-  class UploadOverlay < CardOverlay
-    def has_image? image_name
-      has_selector? "img[src$='#{image_name}']"
-    end
-
-    def attach_figure
-      session.execute_script "$('#figure_attachment').css('position', 'relative')"
-      attach_file('figure_attachment', Rails.root.join('spec', 'fixtures', 'yeti.tiff'), visible: false)
-      session.execute_script "$('#figure_attachment').css('position', 'absolute')"
-    end
-
-    def upload_figures
-      click_button "Upload Figure"
-    end
-  end
-
-  class DeclarationsOverlay < CardOverlay
-    def declarations
-      all('.declaration').map { |d| Declaration.new d }
-    end
-
-    def save_declarations
-      click_on 'Save declarations'
-    end
-  end
-
+class EditPaperPage < Page
   include ActionView::Helpers::JavaScriptHelper
 
   path :edit_paper

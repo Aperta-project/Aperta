@@ -26,7 +26,7 @@ feature "Submitting a paper", js: true do
   end
 
   scenario "Author submits a paper" do
-    submit_paper_page = EditSubmissionPage.visit(paper).submit
+    submit_paper_page = EditPaperPage.visit(paper).submit
 
     expect(submit_paper_page).to have_paper_title
     #expect(submit_paper_page).to have_paper_abstract

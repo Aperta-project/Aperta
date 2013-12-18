@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source "$HOME/.rvm/scripts/rvm"
-rvm use "2.0.0-p247@tahi" --create
+rvm use "2.0.0-p353@tahi" --create
 
 set -e
 

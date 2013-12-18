@@ -2,7 +2,7 @@ class PaperRole < ActiveRecord::Base
   belongs_to :user
   belongs_to :paper
 
-  after_save :assign_tasks_to_editor, if: :user_id_changed?
+  after_save :assign_tasks_to_editor, if: -> { user_id_changed? && editor? }
 
   protected
 

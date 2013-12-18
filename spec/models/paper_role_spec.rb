@@ -25,6 +25,14 @@ describe PaperRole do
         end
       end
 
+      context "when the role is not editor" do
+        it "does not modify other tasks" do
+          task = Task.create! default_task_attrs
+          paper_role = PaperRole.create! user: bob, paper: paper, editor: false
+          expect(task.reload.assignee).to be_nil
+        end
+      end
+
       context "when there are editor tasks with no assignee" do
         it "assigns the task to the PaperEditorTask assignee" do
           task = Task.create! default_task_attrs

@@ -2,8 +2,9 @@ class PapersController < ApplicationController
   before_filter :authenticate_user!
 
   def show
-    @assigned_tasks = current_user.tasks
     @paper = PaperPolicy.new(params[:id], current_user).paper
+    phases = @paper.task_manager.phases.pluck(:id)
+    @assigned_tasks = current_user.tasks.where(phase_id: phases)
     raise ActiveRecord::RecordNotFound unless @paper
     redirect_to edit_paper_path(@paper) unless @paper.submitted?
   end

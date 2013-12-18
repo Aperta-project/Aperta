@@ -28,10 +28,12 @@ describe PapersController do
     it { should render_template :show }
 
     it "assigns paper and assigned tasks" do
-      task = Task.create! assignee: user, title: 'Change the world', role: 'editor'
+      task1 = Task.create! assignee: user, title: 'Change the world', role: 'editor'
+      task2 = Task.create! assignee: user, title: 'Change the world', role: 'editor', phase: paper.task_manager.phases.first
       do_request
       expect(assigns :paper).to eq(paper)
-      expect(assigns :assigned_tasks).to include(task)
+      expect(assigns :assigned_tasks).to include(task2)
+      expect(assigns :assigned_tasks).not_to include(task1)
     end
 
     context "when the paper is not submitted" do

@@ -19,4 +19,12 @@ class CardOverlay < PageFragment
   def completed?
     find('footer input[type="checkbox"]').checked?
   end
+
+  def view_paper
+    old_position = session.evaluate_script "$('header a').css('position')"
+    session.execute_script "$('header a').css('position', 'relative')"
+    find('header h2 a').click
+    session.execute_script "$('header a').css('position', '#{old_position}')"
+    PaperPage.new
+  end
 end

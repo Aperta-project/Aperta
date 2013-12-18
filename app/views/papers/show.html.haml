@@ -29,6 +29,15 @@
         = @paper.body.html_safe
 
   %aside
+    %ul.assigned-tasks.cards
+      %ul.cards
+        - @assigned_tasks.each do |task|
+          %li
+            = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => "card-#{task.id}", 'overlay-title' => task.paper.short_title, 'paper-id' => task.paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do
+              %span.glyphicon.glyphicon-ok
+              = task.title
+          .hidden{id: "card-#{task.id}-content"}
+            = render task, paper: task.paper
     %div
       = link_to 'Declarations', '#', data: { 'overlay-name' => 'declarations', 'overlay-title' => @paper.short_title }, class: 'card'
       #declarations-content.hidden

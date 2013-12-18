@@ -2,6 +2,8 @@ class Phase < ActiveRecord::Base
   belongs_to :task_manager
   has_many :tasks
 
+  delegate :paper, to: :task_manager
+
   after_initialize :initialize_defaults
 
   DEFAULT_PHASE_NAMES = [
@@ -18,9 +20,13 @@ class Phase < ActiveRecord::Base
   private
 
   def initialize_defaults
-    if name == 'Needs Editor' && tasks.empty?
+    return unless tasks.empty?
+    case name
+    when 'Needs Editor'
       self.tasks << PaperAdminTask.new
       self.tasks << PaperEditorTask.new
+    when 'Needs Reviewer'
+      self.tasks << PaperReviewerTask.new
     end
   end
 end

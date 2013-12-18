@@ -53,9 +53,37 @@ describe TasksController do
       let(:expected_params) { permitted_params }
     end
 
-    it "updates the paper" do
-      do_request
-      expect(task.reload).to be_completed
+    context "when the user is an admin" do
+      it "updates the task" do
+        do_request
+        expect(task.reload).to be_completed
+      end
+    end
+
+    context "when the task is assigned to the user" do
+      before do
+        user.update! admin: false
+        task.update! assignee: user
+      end
+
+      it "updates the task" do
+        do_request
+        expect(task.reload).to be_completed
+      end
+    end
+
+    context "when the user is not an admin or the assignee" do
+      before { user.update! admin: false }
+
+      it "returns a 403" do
+        do_request
+        expect(response.status).to eq 403
+      end
+
+      it "does not update the task" do
+        do_request
+        expect(task.reload).not_to be_completed
+      end
     end
   end
 end

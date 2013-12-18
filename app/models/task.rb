@@ -3,7 +3,13 @@ class Task < ActiveRecord::Base
 
   after_initialize :initialize_defaults
 
+  delegate :paper, to: :phase
+  delegate :task_manager, to: :phase
+
   validates :title, :role, presence: true
+
+  belongs_to :assignee, class_name: 'User'
+  belongs_to :phase
 
   class << self
     attr_reader :_default_title, :_default_role
@@ -14,11 +20,6 @@ class Task < ActiveRecord::Base
       end
     end
   end
-
-  belongs_to :assignee, class_name: 'User'
-  belongs_to :phase
-
-  delegate :task_manager, to: :phase
 
   protected
 

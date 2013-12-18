@@ -27,9 +27,11 @@ describe PapersController do
     it { should be_success }
     it { should render_template :show }
 
-    it "assigns paper" do
+    it "assigns paper and assigned tasks" do
+      task = Task.create! assignee: user, title: 'Change the world', role: 'editor'
       do_request
       expect(assigns :paper).to eq(paper)
+      expect(assigns :assigned_tasks).to include(task)
     end
 
     context "when the paper is not submitted" do

@@ -1,8 +1,8 @@
 class PaperAdminTask < Task
-  after_save :assign_tasks_to_admin, if: -> { assignee_id_changed? }
-
   title 'Paper Shepherd'
   role 'admin'
+
+  after_save :assign_tasks_to_admin, if: -> { assignee_id_changed? }
 
   private
 

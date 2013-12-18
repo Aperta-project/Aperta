@@ -5,7 +5,7 @@ class PaperPolicy
   end
 
   def paper
-    paper_for_author || submitted_paper_for_admin
+    paper_for_author || submitted_paper_for_admin || submitted_paper_for_editor
   end
 
   private
@@ -15,6 +15,14 @@ class PaperPolicy
   end
 
   def submitted_paper_for_admin
-    Paper.where(id: @paper_id, submitted: true).first if @user.admin?
+    Paper.submitted.where(id: @paper_id).first if @user.admin?
+  end
+
+  def submitted_paper_for_editor
+    Paper.submitted.
+      where(id: @paper_id).
+      joins(:paper_roles).
+      where("paper_roles.user_id = ? AND paper_roles.editor = ?", @user.id, true).
+      first
   end
 end

@@ -10,7 +10,6 @@ feature "Assigns Reviewer", js: true do
       password: 'password',
       password_confirmation: 'password',
       affiliation: 'PLOS',
-      admin: true,
       journal_roles: [JournalRole.new(journal: journal, editor: true)]
   end
 
@@ -28,28 +27,31 @@ feature "Assigns Reviewer", js: true do
   end
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in editor.email
-
     paper = Paper.create! short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
       journal: journal
+
+    paper_role = PaperRole.create! paper: paper, user: editor, editor: true
+
+    sign_in_page = SignInPage.visit
+    sign_in_page.sign_in editor.email
   end
 
   scenario "Editor can assign a reviewer to a paper" do
     dashboard_page = DashboardPage.visit
-    editor_card = dashboard_page.view_card 'Assign Reviewers'
-    paper_show_page = editor_card.view_paper
-    paper_show_page.view_card 'Assign Reviewers' do |overlay|
-      overlay.paper_reviewer = reviewer.full_name
+    reviewer_card = dashboard_page.view_card 'Assign Reviewer'
+    paper_show_page = reviewer_card.view_paper
+
+    paper_show_page.view_card 'Assign Reviewer' do |overlay|
+      overlay.paper_reviewers = reviewer.full_name
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end
 
     paper_show_page.reload
 
-    paper_show_page.view_card 'Assign Reviewers' do |overlay|
+    paper_show_page.view_card 'Assign Reviewer' do |overlay|
       expect(overlay).to be_completed
       expect(overlay.paper_reviewer).to eq(reviewer.full_name)
     end

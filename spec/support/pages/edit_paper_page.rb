@@ -9,7 +9,7 @@ class DeclarationFragment < PageFragment
     id = find('textarea')[:id]
     fill_in id, with: value
     find('label').click # blur the textarea
-    sleep 0.5 # and wait for the AJAX request to finish
+    wait_for_pjax
   end
 end
 
@@ -90,6 +90,7 @@ class EditPaperPage < Page
   def paper_type=(value)
     select = find('#paper_paper_type')
     select.select value
+    wait_for_pjax
   end
 
   def declarations_overlay &block

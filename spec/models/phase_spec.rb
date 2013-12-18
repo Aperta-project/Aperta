@@ -26,7 +26,7 @@ describe Phase do
 
   describe "initialization" do
     describe "tasks" do
-      context "when the phase is a 'Needs Editor' phase" do
+      describe "Needs Editor phase" do
         let(:phase) { Phase.new name: 'Needs Editor' }
 
         it "initializes one paper admin task" do
@@ -38,11 +38,16 @@ describe Phase do
         end
       end
 
-      context "when the phase is not a 'Needs Editor' phase" do
-        it "does not assign a paper admin task" do
-          phase = Phase.new name: 'Custom Phase'
-          expect(phase.tasks.map(&:class).any? { |c| c == PaperAdminTask }).to eq false
+      describe "Needs Reviewer phase" do
+        let(:phase) { Phase.new name: 'Needs Reviewer' }
+
+        it "initializes one assign reviewer task" do
+          expect(phase.tasks.map(&:class)).to include(PaperReviewerTask)
         end
+      end
+
+      context "when the phase is not one of the default phases" do
+        specify { expect(Phase.new.tasks).to be_empty }
       end
 
       context "when tasks are specified" do

@@ -1,11 +1,11 @@
-class PaperEditorTask < Task
+class PaperReviewerTask < Task
   PERMITTED_ATTRIBUTES = [{ paper_role_attributes: [:user_id] }]
 
-  title 'Assign Editor'
-  role 'admin'
+  title 'Assign Reviewer'
+  role 'editor'
 
   def paper_role
-    PaperRole.where(paper: paper, editor: true).first_or_initialize
+    PaperRole.where(paper: phase.task_manager.paper, reviewer: true).first_or_initialize
   end
 
   def paper_role_attributes=(attributes)

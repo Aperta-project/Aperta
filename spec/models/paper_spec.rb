@@ -131,4 +131,16 @@ describe Paper do
       end
     end
   end
+
+  describe "#editor" do
+    let(:user) { User.create! username: 'bob', email: 'bobdylan@example.com', password: 'password', password_confirmation: 'password' }
+    context "when the paper has an editor" do
+      before { PaperRole.create! user: user, paper: paper, editor: true }
+      specify { expect(paper.editor).to eq(user) }
+    end
+
+    context "when the paper doesn't have an editor" do
+      specify { expect(paper.editor).to be_nil }
+    end
+  end
 end

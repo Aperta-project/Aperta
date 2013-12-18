@@ -15,11 +15,29 @@ class PageFragment
     end
   end
 
+  def session
+    if Capybara::Session === @element
+      @element
+    else
+      @element.session
+    end
+  end
+
   def view_card card_name, &block
     click_on card_name
     overlay = "#{card_name.gsub ' ', ''}Overlay".constantize.new session.find('#overlay')
-    block.call overlay
-    overlay.dismiss
+    if block_given?
+      block.call overlay
+      overlay.dismiss
+    else
+      overlay
+    end
+  end
+
+  protected
+
+  def wait_for_pjax
+    sleep 0.1
   end
 end
 
@@ -46,6 +64,7 @@ class Page < PageFragment
   end
 
   def initialize
+    super
     expect(current_path).to match self.class._path_regex unless self.class._path_regex.nil?
   end
 
@@ -62,11 +81,5 @@ class Page < PageFragment
       click_on 'Dashboard'
       DashboardPage.new
     end
-  end
-
-  protected
-
-  def wait_for_pjax
-    sleep 0.1
   end
 end

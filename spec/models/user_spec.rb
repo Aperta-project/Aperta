@@ -40,6 +40,16 @@ describe User do
         expect(editors).to_not include user1
       end
     end
+
+    describe ".reviewers_for" do
+      it "includes reviewers for the given journal" do
+        journal = Journal.create!
+        JournalRole.create! journal: journal, user: user2, reviewer: true
+        reviewers = User.reviewers_for journal
+        expect(reviewers).to include user2
+        expect(reviewers).to_not include user1
+      end
+    end
   end
 
   describe "#full_name" do

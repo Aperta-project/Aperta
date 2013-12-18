@@ -7,28 +7,22 @@ describe PaperEditorTask do
     specify { expect(task.role).to eq 'admin' }
   end
 
-  describe "initialization" do
-    describe "title" do
-      it "initializes title to 'Assign Editor'" do
-        expect(PaperEditorTask.new.title).to eq 'Assign Editor'
-      end
+  describe "#paper_role" do
+    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
+    let(:phase) { paper.task_manager.phases.first }
 
-      context "when a title is provided" do
-        it "uses the specified title" do
-          expect(PaperEditorTask.new(title: 'foo').title).to eq 'foo'
-        end
+    context "when the role is not present" do
+      it "initializes a new editor role" do
+        role = PaperEditorTask.new(phase: phase).paper_role
+        expect(role.paper).to eq paper
+        expect(role).to be_editor
       end
     end
 
-    describe "role" do
-      it "initializes title to 'admin'" do
-        expect(PaperEditorTask.new.role).to eq 'admin'
-      end
-
-      context "when a role is provided" do
-        it "uses the specified role" do
-          expect(PaperEditorTask.new(role: 'foo').role).to eq 'foo'
-        end
+    context "when the role is present" do
+      it "returns the role" do
+        role = PaperRole.create! paper: paper, editor: true
+        expect(PaperEditorTask.new(phase: phase).paper_role).to eq role
       end
     end
   end

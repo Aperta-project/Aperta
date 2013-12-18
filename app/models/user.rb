@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_many :papers
   has_many :journal_roles
+  has_many :tasks, foreign_key: 'assignee_id'
 
   attr_accessor :login
 
@@ -26,6 +27,10 @@ class User < ActiveRecord::Base
 
   def self.editors_for(journal)
     joins(:journal_roles).where("journal_roles.journal_id" => journal.id, "journal_roles.editor" => true)
+  end
+
+  def self.reviewers_for(journal)
+    joins(:journal_roles).where("journal_roles.journal_id" => journal.id, "journal_roles.reviewer" => true)
   end
 
   def full_name

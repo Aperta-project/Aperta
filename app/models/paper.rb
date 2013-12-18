@@ -8,6 +8,7 @@ class Paper < ActiveRecord::Base
 
   has_many :declarations, -> { order :id }
   has_many :figures
+  has_many :paper_roles
 
   has_one :task_manager
 
@@ -24,6 +25,11 @@ class Paper < ActiveRecord::Base
 
   def self.ongoing
     where(submitted: false)
+  end
+
+  def editor
+    role = paper_roles.where(editor: true).first
+    role.user if role
   end
 
   private

@@ -25,14 +25,17 @@ describe DashboardsController do
     describe "papers" do
       before do
         Paper.create! short_title: 'paper-dashboard', journal: Journal.create!
-        Paper.create! user: user, short_title: 'users-paper-dashboard', journal: Journal.create!
       end
 
-      it "assigns papers" do
+      let(:paper) { Paper.create! user: user, short_title: 'users-paper-dashboard', journal: Journal.create! }
+      let!(:task) { paper.task_manager.phases.first.tasks.create! assignee: user, title: 'Assign Editors', role: 'admin' }
+
+      it "assigns papers and tasks" do
         do_request
         expect(assigns(:ongoing_papers)).to match_array user.papers
         expect(assigns(:submitted_papers)).to be_empty
         expect(assigns(:all_submitted_papers)).to_not be
+        expect(assigns(:assigned_tasks).to_a).to include(task)
       end
 
       context "when the user is an admin" do
@@ -46,6 +49,7 @@ describe DashboardsController do
           expect(assigns(:ongoing_papers)).to match_array user.papers
           expect(assigns(:submitted_papers)).to be_empty
           expect(assigns(:all_submitted_papers)).to match_array Paper.submitted
+          expect(assigns(:assigned_tasks).to_a).to include(task)
         end
       end
     end

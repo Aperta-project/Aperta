@@ -7,6 +7,7 @@ describe "dashboards/index" do
     assign(:ongoing_papers, [])
     assign(:submitted_papers, [])
     assign(:all_submitted_papers, all_submitted_papers)
+    assign(:assigned_tasks, [])
   end
 
   subject { render; Capybara.string(rendered) }

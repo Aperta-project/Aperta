@@ -8,7 +8,7 @@ html {
 }
 
 
-*, *:hover {
+a, a:hover, button, button:hover, .glyphicon, .glyphicon:hover {
   @include transition(all 0.2s ease-in-out);
 }
 

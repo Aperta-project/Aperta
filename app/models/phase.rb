@@ -24,6 +24,7 @@ class Phase < ActiveRecord::Base
     case name
     when 'Needs Editor'
       self.tasks << PaperAdminTask.new
+      self.tasks << TechCheckTask.new
       self.tasks << PaperEditorTask.new
     when 'Needs Reviewer'
       self.tasks << PaperReviewerTask.new

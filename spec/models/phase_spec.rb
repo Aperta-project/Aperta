@@ -33,6 +33,10 @@ describe Phase do
           expect(phase.tasks.map(&:class)).to include(PaperAdminTask)
         end
 
+        it "initializes one tech check task" do
+          expect(phase.tasks.map(&:class)).to include(TechCheckTask)
+        end
+
         it "initializes one paper editor task" do
           expect(phase.tasks.map(&:class)).to include(PaperEditorTask)
         end

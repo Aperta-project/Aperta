@@ -25,7 +25,12 @@ class PageFragment
 
   def view_card card_name, &block
     click_on card_name
-    overlay = "#{card_name.gsub ' ', ''}Overlay".constantize.new session.find('#overlay')
+    overlay_class = begin
+                      "#{card_name.gsub ' ', ''}Overlay".constantize
+                    rescue NameError
+                      CardOverlay
+                    end
+    overlay = overlay_class.new session.find('#overlay')
     if block_given?
       block.call overlay
       overlay.dismiss

@@ -1,2 +1,0 @@
-class PaperShepherdOverlay < CardOverlay
-end

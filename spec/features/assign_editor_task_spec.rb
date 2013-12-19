@@ -30,7 +30,7 @@ feature "Assigns Editor", js: true do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin.email
 
-    paper = Paper.create! short_title: 'foobar',
+    Paper.create! short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
       journal: journal

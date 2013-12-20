@@ -1,5 +1,9 @@
 require 'spec_helper'
 
+class FakeTask < Task
+  PERMITTED_ATTRIBUTES = [{ some_attribute: [some_value: []] }]
+end
+
 describe TasksController do
 
   let(:permitted_params) { [:assignee_id, :completed] }
@@ -51,6 +55,18 @@ describe TasksController do
       let(:paper_id) { paper.to_param }
       let(:model_identifier) { :task }
       let(:expected_params) { permitted_params }
+    end
+
+    describe "subclasses of task" do
+      let(:task) { FakeTask.create! title: "sample task", role: "sample role"}
+      let(:permitted_params) { [:assignee_id, :completed, some_attribute: [some_value: []]] }
+
+      it_behaves_like "a controller enforcing strong parameters" do
+        let(:params_id) { task.to_param }
+        let(:paper_id) { paper.to_param }
+        let(:model_identifier) { :task }
+        let(:expected_params) { permitted_params }
+      end
     end
 
     context "when the user is an admin" do

@@ -1,6 +1,8 @@
 class AssignReviewerOverlay < CardOverlay
-  def paper_reviewers=(name)
-    select name, from: 'Reviewers'
+  def paper_reviewers=(names)
+    names.each do |name|
+      select name, from: 'Reviewers'
+    end
   end
 
   def paper_reviewer

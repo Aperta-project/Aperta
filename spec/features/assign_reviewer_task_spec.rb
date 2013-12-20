@@ -15,7 +15,7 @@ feature "Assigns Reviewer", js: true do
 
   let(:journal) { Journal.create! }
 
-  let!(:reviewer) do
+  let!(:albert) do
     User.create! username: 'albert',
       first_name: 'Albert',
       last_name: 'Einstein',
@@ -23,6 +23,17 @@ feature "Assigns Reviewer", js: true do
       password: 'password',
       password_confirmation: 'password',
       affiliation: 'Universität Zürich',
+      journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
+  end
+
+  let!(:neil) do
+    User.create! username: 'neilsbohr',
+      first_name: 'Neils',
+      last_name: 'Bohr',
+      email: 'neil@example.org',
+      password: 'password',
+      password_confirmation: 'password',
+      affiliation: 'University of Copenhagen',
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 
@@ -44,7 +55,7 @@ feature "Assigns Reviewer", js: true do
     paper_show_page = reviewer_card.view_paper
 
     paper_show_page.view_card 'Assign Reviewer' do |overlay|
-      overlay.paper_reviewers = reviewer.full_name
+      overlay.paper_reviewers = [albert.full_name, neil.full_name]
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end
@@ -53,7 +64,8 @@ feature "Assigns Reviewer", js: true do
 
     paper_show_page.view_card 'Assign Reviewer' do |overlay|
       expect(overlay).to be_completed
-      expect(overlay.paper_reviewer).to eq(reviewer.full_name)
+      expect(overlay.paper_reviewer).to eq(albert.full_name)
+      expect(overlay.paper_reviewer).to eq(neil.full_name)
     end
   end
 end

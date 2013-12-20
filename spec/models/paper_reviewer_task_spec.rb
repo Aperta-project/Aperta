@@ -7,22 +7,58 @@ describe PaperReviewerTask do
     specify { expect(task.role).to eq 'editor' }
   end
 
-  describe "#paper_role" do
-    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
-    let(:phase) { paper.task_manager.phases.first }
+  let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
+  let(:phase) { paper.task_manager.phases.first }
 
-    context "when the role is not present" do
-      it "initializes a new reviewer role" do
-        role = PaperReviewerTask.new(phase: phase).paper_role
-        expect(role.paper).to eq paper
-        expect(role).to be_reviewer
-      end
+  let(:albert) do
+    User.create! username: 'albert',
+      first_name: 'albert',
+      last_name: 'einstein',
+      email: 'einstein@example.org',
+      password: 'password',
+      password_confirmation: 'password',
+      affiliation: 'universität zürich',
+      admin: true
+  end
+
+  let(:neil) do
+    User.create! username: 'neil',
+      first_name: 'Neil',
+      last_name: 'Bohrs',
+      email: 'neil@example.org',
+      password: 'password',
+      password_confirmation: 'password',
+      affiliation: 'universität zürich'
+  end
+
+  describe "#paper_role" do
+    context "when no roles exist" do
+      specify { expect(PaperReviewerTask.new(phase: phase).paper_roles).to be_empty }
     end
 
-    context "when the role is present" do
-      it "returns the role" do
-        role = PaperRole.create! paper: paper, reviewer: true
-        expect(PaperReviewerTask.new(phase: phase).paper_role).to eq role
+    context "when roles exist" do
+      it "returns the roles" do
+        roles = [PaperRole.create!(paper: paper, reviewer: true),
+                 PaperRole.create!(paper: paper, reviewer: true)]
+        expect(PaperReviewerTask.new(phase: phase).paper_roles).to eq roles
+      end
+    end
+  end
+
+  describe "#paper_roles_attributes=" do
+    let(:task) { PaperReviewerTask.new(phase: phase) }
+
+    context "there are reviewer paper roles already" do
+      it "creates reviewer paper roles only for new ids" do
+        PaperRole.create! paper: paper, reviewer: true, user: albert
+        task.paper_roles_attributes = { user_id: ["", neil.id.to_s] }
+        expect(PaperRole.where(paper: paper, reviewer: true, user: neil)).not_to be_empty
+      end
+
+      it "deletes paper roles not present in the specified user_id" do
+        PaperRole.create! paper: paper, reviewer: true, user: albert
+        task.paper_roles_attributes = { user_id: ["", neil.id.to_s] }
+        expect(PaperRole.where(paper: paper, reviewer: true, user: albert)).to be_empty
       end
     end
   end

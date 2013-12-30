@@ -2,5 +2,5 @@
 = form_for [paper, paper_reviewer_task], as: :task, url: paper_task_path(paper, paper_reviewer_task), remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
   = f.label :assignee_id
   = f.collection_select :assignee_id, User.editors_for(paper.journal), :id, :full_name, prompt: 'Please select assignee'
-  = f.label :paper_roles_attributes_user_id, 'Reviewers'
+  = f.label :paper_roles, 'Reviewers'
   = f.collection_select 'paper_roles', User.reviewers_for(paper.journal), :id, :full_name, {}, {multiple: true}

@@ -64,8 +64,8 @@ feature "Assigns Reviewer", js: true do
 
     paper_show_page.view_card 'Assign Reviewer' do |overlay|
       expect(overlay).to be_completed
-      expect(overlay.paper_reviewer).to eq(albert.full_name)
-      expect(overlay.paper_reviewer).to eq(neil.full_name)
+      expect(overlay.paper_reviewers).to include(albert.full_name)
+      expect(overlay.paper_reviewers).to include(neil.full_name)
     end
   end
 end

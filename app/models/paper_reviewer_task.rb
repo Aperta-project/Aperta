@@ -9,13 +9,17 @@ class PaperReviewerTask < Task
   end
 
   def paper_roles=(user_ids)
-    existing_ids = PaperRole.where(paper: paper, reviewer: true).map(&:user_id).map &:to_s
-    current_ids = user_ids.reject!(&:empty?)
-    new_ids = current_ids - existing_ids
-    old_ids = existing_ids - current_ids
-    new_ids.each do |id|
-      PaperRole.create(paper: phase.task_manager.paper, reviewer: true, user_id: id)
+    new_ids = user_ids - existing_user_ids
+    old_ids = existing_user_ids - user_ids
+    new_ids.reject(&:empty?).each do |id|
+      PaperRole.reviewers_for(paper).where(user_id: id).create!
     end
-    PaperRole.where(paper: phase.task_manager.paper, reviewer: true, user_id: old_ids).destroy_all
+    PaperRole.reviewers_for(paper).where(user_id: old_ids).destroy_all
+  end
+
+  private
+  
+  def existing_user_ids
+    PaperRole.reviewers_for(paper).map { |paper_role| paper_role.user_id.to_s }
   end
 end

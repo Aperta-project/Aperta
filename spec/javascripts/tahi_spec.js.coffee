@@ -38,6 +38,13 @@ describe "tahi", ->
         for field in fields
           expect(args[1].is(field)).toEqual true, "Expected second argument to include #{field}"
 
+  describe "#initChosen", ->
+    it "calls chosen on elements with chosen-select class", ->
+      spyOn $.fn, "chosen"
+      Tahi.initChosen()
+      expect($.fn.chosen).toHaveBeenCalledWith
+        width: '300px'
+
   describe "#setupSubmitOnChange", ->
     it "triggers 'submit.rails' event on the form when an element's change event is called", ->
       form = $('<form>')

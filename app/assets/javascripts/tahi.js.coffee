@@ -11,6 +11,12 @@ Tahi.init = ->
   for element in $('[data-overlay-name]')
     Tahi.initOverlay(element)
 
+  Tahi.initChosen()
+
+Tahi.initChosen = ->
+  $('.chosen-select').chosen
+    width: '300px'
+
 Tahi.setupSubmitOnChange = (form, elements) ->
   elements.on 'change', (e) ->
     form.trigger 'submit.rails'

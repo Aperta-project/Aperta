@@ -50,18 +50,30 @@ describe PaperReviewerTask do
   describe "#paper_roles=" do
     let(:task) { PaperReviewerTask.new(phase: phase) }
 
-    context "there are reviewer paper roles already" do
-      it "creates reviewer paper roles only for new ids" do
-        PaperRole.create! paper: paper, reviewer: true, user: albert
-        task.paper_roles = ["", neil.id.to_s]
-        expect(PaperRole.where(paper: paper, reviewer: true, user: neil)).not_to be_empty
-      end
+    it "creates reviewer paper roles only for new ids" do
+      PaperRole.create! paper: paper, reviewer: true, user: albert
+      task.paper_roles = ["", neil.id.to_s]
+      expect(PaperRole.where(paper: paper, reviewer: true, user: neil)).not_to be_empty
+    end
 
-      it "deletes paper roles not present in the specified user_id" do
-        PaperRole.create! paper: paper, reviewer: true, user: albert
-        task.paper_roles = ["", neil.id.to_s]
-        expect(PaperRole.where(paper: paper, reviewer: true, user: albert)).to be_empty
-      end
+    it "creates reviewer report tasks only for new ids" do
+      task.paper_roles = ["", neil.id.to_s]
+      phase = paper.task_manager.phases.where(name: 'Needs Review').first
+      expect(ReviewerReportTask.where(assignee: neil, phase: phase)).to be_present
+    end
+
+    it "deletes reviewer report tasks of the ids not specified" do
+      phase = paper.task_manager.phases.where(name: 'Needs Review').first
+      PaperRole.create! paper: paper, reviewer: true, user: albert
+      ReviewerReportTask.create! assignee: albert, phase: phase
+      task.paper_roles = ["", neil.id.to_s]
+      expect(ReviewerReportTask.where(assignee: albert, phase: phase)).to be_empty
+    end
+
+    it "deletes paper roles not present in the specified user_id" do
+      PaperRole.create! paper: paper, reviewer: true, user: albert
+      task.paper_roles = ["", neil.id.to_s]
+      expect(PaperRole.where(paper: paper, reviewer: true, user: albert)).to be_empty
     end
   end
 end

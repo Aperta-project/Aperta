@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131216194029) do
+ActiveRecord::Schema.define(version: 20140106195353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,15 @@ ActiveRecord::Schema.define(version: 20131216194029) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "paper_reviews", force: true do |t|
+    t.integer  "task_id"
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "paper_reviews", ["task_id"], name: "index_paper_reviews_on_task_id", using: :btree
 
   create_table "paper_roles", force: true do |t|
     t.integer  "user_id"

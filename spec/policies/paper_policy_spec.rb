@@ -48,6 +48,19 @@ describe PaperPolicy do
         end
       end
 
+      context "when the user is a reviewer on that paper" do
+        before { PaperRole.create! paper: paper, user: user, reviewer: true }
+
+        context "when the paper has not yet been submitted" do
+          specify { expect(policy.paper).to be_nil }
+        end
+
+        context "when the paper has been submitted" do
+          before { paper.update! submitted: true }
+          specify { expect(policy.paper).to eq paper }
+        end
+      end
+
       context "when the user is an editor on that paper" do
         before { PaperRole.create! paper: paper, user: user, editor: true }
 

@@ -5,7 +5,7 @@ class PaperPolicy
   end
 
   def paper
-    paper_for_author || submitted_paper_for_admin || submitted_paper_for_editor
+    paper_for_author || submitted_paper_for_admin || submitted_paper_for_editor || submitted_paper_for_reviewer
   end
 
   private
@@ -23,6 +23,14 @@ class PaperPolicy
       where(id: @paper_id).
       joins(:paper_roles).
       where("paper_roles.user_id = ? AND paper_roles.editor = ?", @user.id, true).
+      first
+  end
+
+  def submitted_paper_for_reviewer
+    Paper.submitted.
+      where(id: @paper_id).
+      joins(:paper_roles).
+      where("paper_roles.user_id = ? AND paper_roles.reviewer = ?", @user.id, true).
       first
   end
 end

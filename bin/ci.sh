@@ -1,7 +1,9 @@
 #!/bin/bash
 
 source "$HOME/.rvm/scripts/rvm"
-rvm use "2.0.0-p353@tahi" --create
+ruby_version=$(cat .ruby-version)
+ruby_gemset=$(cat .ruby-gemset)
+rvm use "$ruby_version@$ruby_gemset" --create
 
 set -e
 

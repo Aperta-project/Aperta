@@ -91,29 +91,29 @@ describe "tahi", ->
       context "when the escape key is pressed", ->
         it "binds the keyup event on escape to close the overlay", ->
           Tahi.displayOverlay($('#planes'))
-          expected_html = $('#overlay main').html()
+          expectedHtml = $('#overlay main').html()
 
           event = jQuery.Event("keyup", { which: 27 });
-          $(document).trigger(event)
+          $('body').trigger(event)
 
-          expect($('#planes-content').html()).toEqual expected_html
+          expect($('#planes-content').html()).toEqual expectedHtml
           expect($('#overlay main')).toBeEmpty()
 
       context "when any other key is pressed", ->
-        it "binds the keyup event on escape to close the overlay", ->
+        it "doesn't do anything", ->
           Tahi.displayOverlay($('#planes'))
-          expected_html = $('#overlay main').html()
+          expectedHtml = $('#overlay main').html()
 
           event = jQuery.Event("keyup", { which: 12 });
           $(document).trigger(event)
 
           expect($('#planes-content')).toBeEmpty()
-          expect($('#overlay main').html()).toEqual expected_html
+          expect($('#overlay main').html()).toEqual expectedHtml
 
     it "moves given div content inside overlay-content", ->
-      expected_html = $('#planes-content').html()
+      expectedHtml = $('#planes-content').html()
       Tahi.displayOverlay($('#planes'))
-      expect($('#overlay main').html()).toEqual expected_html
+      expect($('#overlay main').html()).toEqual expectedHtml
       expect($('#planes-content')).toBeEmpty()
 
     it "sets the overlay title with the link to the paper", ->
@@ -182,9 +182,9 @@ describe "tahi", ->
     describe "when the overlay is dismissed", ->
       it "moves back the overlay content to its original container", ->
         Tahi.displayOverlay($('#planes'))
-        expected_html = $('#overlay main').html()
+        expectedHtml = $('#overlay main').html()
         $('.close-overlay').click()
-        expect($('#planes-content').html()).toEqual expected_html
+        expect($('#planes-content').html()).toEqual expectedHtml
         expect($('#overlay main')).toBeEmpty()
 
       it "clears the overlay title", ->

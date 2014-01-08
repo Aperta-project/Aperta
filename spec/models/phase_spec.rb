@@ -50,6 +50,14 @@ describe Phase do
         end
       end
 
+      describe "Needs Decision phase" do
+        let(:phase) { Phase.new name: 'Needs Decision' }
+
+        it "initializes one register decision task" do
+          expect(phase.tasks.map(&:class)).to include(RegisterDecisionTask)
+        end
+      end
+
       context "when the phase is not one of the default phases" do
         specify { expect(Phase.new.tasks).to be_empty }
       end

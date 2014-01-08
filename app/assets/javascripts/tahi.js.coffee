@@ -6,7 +6,7 @@ Tahi.init = ->
   Tahi.overlays.figures.init()
 
   for form in $("form.js-submit-on-change[data-remote='true']")
-    @setupSubmitOnChange $(form), $('select, input[type="checkbox"], textarea', form)
+    @setupSubmitOnChange $(form), $('select, input[type="radio"], input[type="checkbox"], textarea', form)
 
   for element in $('[data-overlay-name]')
     Tahi.initOverlay(element)
@@ -67,6 +67,10 @@ Tahi.displayOverlay = (element) ->
     $('.close-overlay').unbind('click', handler)
 
   $('.close-overlay', overlay).on 'click', handler
+
+  $('body').on 'keyup', (e) ->
+    if e.which == 27
+      $('.close-overlay').click()
 
   overlay.show()
 

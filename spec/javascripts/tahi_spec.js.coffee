@@ -12,6 +12,7 @@ describe "tahi", ->
               <option value="2">Option 2</option>
             </select>
             <input type="checkbox" value="1" />
+            <input type="radio" value="1" />
             <textarea></textarea>
           </form>
           <form id="regular-form" class="js-submit-on-change">
@@ -20,6 +21,7 @@ describe "tahi", ->
               <option value="2">Option 2</option>
             </select>
             <input type="checkbox" value="1" />
+            <input type="radio" value="1" />
             <textarea></textarea>
           </form>
         """
@@ -28,7 +30,7 @@ describe "tahi", ->
       it "configures submit on change for inputs in remote forms", ->
         spyOn Tahi, 'setupSubmitOnChange'
         form = $('#remote-form')
-        fields = $('select, input[type="checkbox"], textarea', form)
+        fields = $('select, input[type="checkbox"], input[type="radio"], textarea', form)
 
         Tahi.init()
 
@@ -85,10 +87,33 @@ describe "tahi", ->
         <div id="planes" data-overlay-name="planes" data-overlay-title="It's a plane!" data-paper-id='123' data-task-id='456' data-task-completed="true">Show overlay</div>
       """
 
+    describe "escape key closes the overlay", ->
+      context "when the escape key is pressed", ->
+        it "binds the keyup event on escape to close the overlay", ->
+          Tahi.displayOverlay($('#planes'))
+          expectedHtml = $('#overlay main').html()
+
+          event = jQuery.Event("keyup", { which: 27 });
+          $('body').trigger(event)
+
+          expect($('#planes-content').html()).toEqual expectedHtml
+          expect($('#overlay main')).toBeEmpty()
+
+      context "when any other key is pressed", ->
+        it "doesn't do anything", ->
+          Tahi.displayOverlay($('#planes'))
+          expectedHtml = $('#overlay main').html()
+
+          event = jQuery.Event("keyup", { which: 12 });
+          $(document).trigger(event)
+
+          expect($('#planes-content')).toBeEmpty()
+          expect($('#overlay main').html()).toEqual expectedHtml
+
     it "moves given div content inside overlay-content", ->
-      expected_html = $('#planes-content').html()
+      expectedHtml = $('#planes-content').html()
       Tahi.displayOverlay($('#planes'))
-      expect($('#overlay main').html()).toEqual expected_html
+      expect($('#overlay main').html()).toEqual expectedHtml
       expect($('#planes-content')).toBeEmpty()
 
     it "sets the overlay title with the link to the paper", ->
@@ -157,9 +182,9 @@ describe "tahi", ->
     describe "when the overlay is dismissed", ->
       it "moves back the overlay content to its original container", ->
         Tahi.displayOverlay($('#planes'))
-        expected_html = $('#overlay main').html()
+        expectedHtml = $('#overlay main').html()
         $('.close-overlay').click()
-        expect($('#planes-content').html()).toEqual expected_html
+        expect($('#planes-content').html()).toEqual expectedHtml
         expect($('#overlay main')).toBeEmpty()
 
       it "clears the overlay title", ->

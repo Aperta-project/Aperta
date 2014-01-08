@@ -28,6 +28,8 @@ class Phase < ActiveRecord::Base
       self.tasks << PaperEditorTask.new
     when 'Needs Reviewer'
       self.tasks << PaperReviewerTask.new
+    when 'Needs Decision'
+      self.tasks << RegisterDecisionTask.new
     end
   end
 end

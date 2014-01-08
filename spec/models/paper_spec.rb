@@ -72,6 +72,12 @@ describe Paper do
         Paper.create! short_title: 'Duplicate', journal: Journal.create!
         expect(Paper.new short_title: 'Duplicate', journal: Journal.create!).to_not be_valid
       end
+
+      it "must be less than 50 characters" do
+        paper = Paper.new short_title: 'Longer than 50 characters is not an awesome short title coz short titles should be short, stupid!',
+          journal: Journal.create!
+        expect(paper).to_not be_valid
+      end
     end
 
     describe "journal" do

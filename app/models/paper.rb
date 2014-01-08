@@ -16,7 +16,7 @@ class Paper < ActiveRecord::Base
   serialize :authors, Array
 
   validates :paper_type, inclusion: { in: PAPER_TYPES }
-  validates :short_title, presence: true, uniqueness: true
+  validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
   validates :journal, presence: true
 
   def self.submitted

@@ -68,6 +68,10 @@ Tahi.displayOverlay = (element) ->
 
   $('.close-overlay', overlay).on 'click', handler
 
+  $(document).on 'keyup', (e) ->
+    if e.which == 27
+      $('.close-overlay').click()
+
   overlay.show()
 
 Tahi.initOverlay = (element) ->

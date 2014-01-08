@@ -87,6 +87,29 @@ describe "tahi", ->
         <div id="planes" data-overlay-name="planes" data-overlay-title="It's a plane!" data-paper-id='123' data-task-id='456' data-task-completed="true">Show overlay</div>
       """
 
+    describe "escape key closes the overlay", ->
+      context "when the escape key is pressed", ->
+        it "binds the keyup event on escape to close the overlay", ->
+          Tahi.displayOverlay($('#planes'))
+          expected_html = $('#overlay main').html()
+
+          event = jQuery.Event("keyup", { which: 27 });
+          $(document).trigger(event)
+
+          expect($('#planes-content').html()).toEqual expected_html
+          expect($('#overlay main')).toBeEmpty()
+
+      context "when any other key is pressed", ->
+        it "binds the keyup event on escape to close the overlay", ->
+          Tahi.displayOverlay($('#planes'))
+          expected_html = $('#overlay main').html()
+
+          event = jQuery.Event("keyup", { which: 12 });
+          $(document).trigger(event)
+
+          expect($('#planes-content')).toBeEmpty()
+          expect($('#overlay main').html()).toEqual expected_html
+
     it "moves given div content inside overlay-content", ->
       expected_html = $('#planes-content').html()
       Tahi.displayOverlay($('#planes'))

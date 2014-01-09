@@ -10,7 +10,7 @@ class Tahi.PlaceholderElement
     @setPlaceholder()
 
   getText: () ->
-    text = @element.innerText
+    text = @element.textContent
     if text == @placeholder || text == '' then '' else text
 
   supressEnterKey: (e) ->
@@ -18,12 +18,12 @@ class Tahi.PlaceholderElement
       e.preventDefault()
 
   clearPlaceholder: ->
-    if @element.innerText == @placeholder
-      @element.innerText = ''
+    if @element.textContent == @placeholder
+      @element.textContent = ''
       @element.classList.remove('placeholder')
 
   setPlaceholder: ->
-    if @element.innerText.trim() == ''
-      @element.innerText = @placeholder
+    if @element.textContent.trim() == ''
+      @element.textContent = @placeholder
       @element.classList.add('placeholder')
 

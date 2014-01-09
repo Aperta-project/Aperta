@@ -1,5 +1,13 @@
 class TaskManagerPage < Page
   class PhaseFragment < PageFragment
+    def new_card(**params)
+      click_on 'Add new card'
+      overlay = session.find('#new-overlay')
+      overlay.fill_in 'Title', with: params[:title]
+      overlay.fill_in 'Body', with: params[:body]
+      overlay.select_from_chosen params[:assignee].full_name, from: 'Assignee'
+      overlay.click_on 'Create Card'
+    end
   end
 
   path :manage_paper

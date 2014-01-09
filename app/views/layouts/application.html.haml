@@ -6,7 +6,8 @@
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
   %body
-    #overlay{style: 'display: none'}
+    #new-overlay
+    #overlay
       %header
         %h2
         %a.primary-button.close-overlay{href: "#"} Close

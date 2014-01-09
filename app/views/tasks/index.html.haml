@@ -20,3 +20,5 @@
               = task.title
           .hidden{id: "card-#{task.id}-content"}
             = render task, paper: @paper
+        %li
+          = link_to 'Add new card', '#', class: "secondary-button"

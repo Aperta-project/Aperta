@@ -1,7 +1,7 @@
 @import 'variables';
 @import 'bootstrap';
 
-#overlay {
+#overlay, #new-overlay {
   background-color: rgba(255,255,255,0.98);
   bottom: 0;
   left: 0;
@@ -11,6 +11,7 @@
   right: 0;
   top: 0;
   z-index: 9999;
+  display: none;
 }
 
 #overlay main {

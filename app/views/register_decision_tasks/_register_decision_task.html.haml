@@ -2,7 +2,7 @@
 
 = form_for [paper, register_decision_task], as: :task, url: paper_task_path(paper, register_decision_task), remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
   = f.label :assignee_id
-  = f.collection_select :assignee_id, User.editors_for(paper.journal), :id, :full_name, prompt: 'Please select assignee'
+  = f.collection_select :assignee_id, User.editors_for(paper.journal), :id, :full_name, { prompt: 'Please select assignee' }, class: 'chosen-select'
   %p Editor's Decision
   - %w(Accepted Rejected Revise).each do |decision_string|
     = f.radio_button :paper_decision, decision_string, id: "#{decision_string.downcase}_option"

@@ -1,7 +1,7 @@
 %h1= paper_editor_task.title
 = form_for [paper, paper_editor_task], as: :task, url: paper_task_path(paper, paper_editor_task), remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
   = f.label :assignee_id
-  = f.collection_select :assignee_id, User.admins, :id, :full_name, prompt: 'Please select assignee'
+  = f.collection_select :assignee_id, User.admins, :id, :full_name, { prompt: 'Please select assignee' }, class: 'chosen-select'
   = f.fields_for :paper_role do |role|
     = role.label :user_id, 'Editor'
-    = role.collection_select :user_id, User.editors_for(paper.journal), :id, :full_name, prompt: 'Please select editor'
+    = role.collection_select :user_id, User.editors_for(paper.journal), :id, :full_name, { prompt: 'Please select editor' }, class: 'chosen-select'

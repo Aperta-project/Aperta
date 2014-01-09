@@ -1,7 +1,7 @@
 %h1= tech_check_task.title
 = form_for [paper, tech_check_task], as: :task, url: paper_task_path(paper, tech_check_task), remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
   = f.label :assignee_id
-  = f.collection_select :assignee_id, User.admins, :id, :full_name, prompt: 'Please select assignee'
+  = f.collection_select :assignee_id, User.admins, :id, :full_name, { prompt: 'Please select assignee' }, class: 'chosen-select'
 
   %h3 Tech Check steps
   %ul{style: 'list-style-type: decimal;'}

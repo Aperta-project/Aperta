@@ -4,12 +4,11 @@ class CardOverlay < PageFragment
   end
 
   def assignee
-    selected_option = all('#task_assignee_id option[selected]').first
-    selected_option.try :text
+    find('#task_assignee_id_chosen').text
   end
 
   def assignee=(name)
-    select name, from: 'Assignee'
+    select_from_chosen name, from: 'Assignee'
   end
 
   def mark_as_complete

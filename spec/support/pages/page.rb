@@ -41,6 +41,14 @@ class PageFragment
 
   protected
 
+  def select_from_chosen(item_text, options)
+    field = find_field(options[:from], visible: false)
+    session.execute_script(%Q!$("##{field[:id]}_chosen").mousedown()!)
+    session.execute_script(%Q!$("##{field[:id]}_chosen input").val("#{item_text}")!)
+    session.execute_script(%Q!$("##{field[:id]}_chosen input").keyup()!)
+    session.execute_script(%Q!$("##{field[:id]}_chosen input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
+  end
+
   def wait_for_pjax
     sleep 0.1
   end

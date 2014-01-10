@@ -213,6 +213,11 @@ GEM
     rake (10.1.0)
     rdoc (3.12.2)
       json (~> 1.4)
+    react-rails (0.8.0.0)
+      execjs
+      rails (>= 3.1)
+      react-source (= 0.8.0)
+    react-source (0.8.0)
     remotipart (1.2.1)
     rspec-collection_matchers (0.0.2)
       rspec-expectations (>= 2.99.0.beta1)
@@ -316,6 +321,7 @@ DEPENDENCIES
   rails (= 4.0.2)
   rails_12factor
   rails_admin
+  react-rails
   rspec-its (~> 1.0.0.pre)
   rspec-rails (~> 3.0.0.beta1)
   sass-rails (~> 4.0.1)

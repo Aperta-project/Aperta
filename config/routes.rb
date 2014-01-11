@@ -4,7 +4,7 @@ Tahi::Application.routes.draw do
   resources :papers, only: [:new, :create, :show, :edit, :update] do
     resources :figures, only: :create
     resources :submissions, only: [:new, :create]
-    resources :tasks, only: :update
+    resources :tasks, only: [:update, :create]
     member do
       post :upload
       get :manage, to: 'tasks#index'

@@ -1,0 +1,7 @@
+%h1= task.title
+
+= form_for [paper, task], as: :task, url: paper_task_path(paper, task), remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
+  = f.label :assignee_id
+  = f.collection_select :assignee_id, User.admins, :id, :full_name, { prompt: 'Please select assignee' }, class: 'chosen-select'
+
+%p= task.body

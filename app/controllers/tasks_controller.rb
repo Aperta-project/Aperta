@@ -21,10 +21,17 @@ class TasksController < ApplicationController
     end
   end
 
+  def create
+    task = Task.new task_params
+    task.role = 'admin'
+    task.save!
+    render nothing: true
+  end
+
   private
 
   def task_params(task = nil)
-    attributes = [:assignee_id, :completed]
+    attributes = [:assignee_id, :completed, :title, :body, :phase_id]
     attributes += task.class::PERMITTED_ATTRIBUTES if task
     params.require(:task).permit(*attributes)
   end

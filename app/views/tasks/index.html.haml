@@ -21,4 +21,11 @@
           .hidden{id: "card-#{task.id}-content"}
             = render task, paper: @paper
         %li
-          = link_to 'Add new card', '#', data: { assignees: User.admins.map { |u| [u.id, u.full_name] }.to_json }, class: "secondary-button react-new-card-overlay"
+          :ruby
+            haml_io << link_to('Add new card', '#',
+              data: {
+                assignees: User.admins.map { |u| [u.id, u.full_name] }.to_json,
+                url: paper_tasks_path(@task_manager.paper, format: :json),
+                phase_id: phase.id
+              },
+              class: "secondary-button react-new-card-overlay")

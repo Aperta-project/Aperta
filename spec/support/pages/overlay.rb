@@ -11,6 +11,14 @@ class CardOverlay < PageFragment
     select_from_chosen name, from: 'Assignee'
   end
 
+  def title
+    find('main > h1').text
+  end
+
+  def body
+    find('main > p').text
+  end
+
   def mark_as_complete
     find('footer input[type="checkbox"]').click
   end

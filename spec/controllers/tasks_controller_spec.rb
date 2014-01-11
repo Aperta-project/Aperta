@@ -40,6 +40,30 @@ describe TasksController do
     end
   end
 
+  describe "POST 'create'" do
+    let!(:paper) { Paper.create! short_title: 'some-paper', journal: Journal.create! }
+
+    subject(:do_request) do
+      post :create, { paper_id: paper.to_param, task: { assignee_id: '1',
+                                                        phase_id: paper.task_manager.phases.last.id,
+                                                        title: 'Verify Signatures',
+                                                        body: 'Seriously, do it!' } }
+    end
+
+    it_behaves_like "when the user is not signed in"
+
+    it_behaves_like "a controller enforcing strong parameters" do
+      let(:params_id) { task.to_param }
+      let(:paper_id) { paper.to_param }
+      let(:model_identifier) { :task }
+      let(:expected_params) { permitted_params }
+    end
+
+    it "creates a task" do
+      expect { do_request }.to change(Task, :count).by 1
+    end
+  end
+
   describe "PATCH 'update'" do
     let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated', journal: Journal.create! }
     let(:task) { Task.create! title: "sample task", role: "sample role"}

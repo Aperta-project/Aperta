@@ -42,7 +42,12 @@ class PageFragment
   protected
 
   def select_from_chosen(item_text, options)
-    field = find_field(options[:from], visible: false)
+    field = if Capybara::Node::Element === options[:from]
+              options[:from]
+            else
+              find_field(options[:from], visible: false)
+            end
+
     session.execute_script(%Q!$("##{field[:id]}_chosen").mousedown()!)
     session.execute_script(%Q!$("##{field[:id]}_chosen input").val("#{item_text}")!)
     session.execute_script(%Q!$("##{field[:id]}_chosen input").keyup()!)

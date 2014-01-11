@@ -4,6 +4,7 @@ Tahi.init = ->
   Tahi.papers.init()
   Tahi.overlays.authors.init()
   Tahi.overlays.figures.init()
+  Tahi.overlays.newCard.init()
 
   for form in $("form.js-submit-on-change[data-remote='true']")
     @setupSubmitOnChange $(form), $('select, input[type="radio"], input[type="checkbox"], textarea', form)

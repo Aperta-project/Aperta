@@ -52,6 +52,12 @@ describe "New Card Overlay", ->
       Tahi.overlays.newCard.hideOverlay(@event)
       expect($('#new-overlay')).toBeHidden()
 
+    it "unmounts the component", ->
+      spyOn React, 'unmountComponentAtNode'
+      Tahi.overlays.newCard.hideOverlay(@event)
+      expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('new-overlay')
+
+
   describe "#displayNewCardOverlay", ->
     beforeEach ->
       spyOn React, 'renderComponent'

@@ -15,6 +15,7 @@ Tahi.overlays.newCard =
   hideOverlay: (e) ->
     e?.preventDefault()
     $('#new-overlay').hide()
+    React.unmountComponentAtNode document.getElementById('new-overlay')
 
   displayNewCardOverlay: (e) ->
     e.preventDefault(e)

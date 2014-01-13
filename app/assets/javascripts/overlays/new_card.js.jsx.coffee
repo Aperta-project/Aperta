@@ -8,14 +8,23 @@ Tahi.overlays.newCard =
   init: ->
     $('.react-new-card-overlay').on 'click', Tahi.overlays.newCard.displayNewCardOverlay
 
+    $('body').on 'keyup', (e) ->
+      if e.which == 27
+        Tahi.overlays.newCard.hideOverlay()
+
+  hideOverlay: (e) ->
+    e?.preventDefault()
+    $('#new-overlay').hide()
+
   displayNewCardOverlay: (e) ->
     e.preventDefault(e)
 
     assignees = $(e.target).data('assignees')
     url = $(e.target).data('url')
     phaseId = $(e.target).data('phaseId')
+    paperShortTitle = $(e.target).data('paperShortTitle')
     NewCardOverlay = Tahi.overlays.newCard.components.NewCardOverlay
-    React.renderComponent `<NewCardOverlay assignees={assignees} url={url} phaseId={phaseId} />`, document.getElementById('new-overlay'), Tahi.initChosen
+    React.renderComponent `<NewCardOverlay assignees={assignees} url={url} phaseId={phaseId} paperShortTitle={paperShortTitle} />`, document.getElementById('new-overlay'), Tahi.initChosen
     $('#new-overlay').show()
 
   components:
@@ -25,7 +34,6 @@ Tahi.overlays.newCard =
         assigneeId = @refs.task_assignee_id.getDOMNode().value.trim()
         body = @refs.task_body.getDOMNode().value.trim()
         phaseId = @props.phaseId
-
         $.ajax
           url: @props.url
           method: 'POST'
@@ -35,6 +43,7 @@ Tahi.overlays.newCard =
               body: body
               assignee_id: assigneeId
               phase_id: phaseId
+        Tahi.overlays.newCard.hideOverlay()
 
       render: ->
         options = @props.assignees.map (a) ->
@@ -67,13 +76,15 @@ Tahi.overlays.newCard =
 
         `<div>
           <header>
-            <h2></h2>
+            <h2>{this.props.paperShortTitle}</h2>
           </header>
           <main>
             {this.form}
           </main>
           <footer>
-            <a href="#">Cancel</a>
+            <div className="content">
+              <a className="close-overlay" onClick={Tahi.overlays.newCard.hideOverlay} href="#">Cancel</a>
+            </div>
             <a href="#" className="primary-button" onClick={this.submitForm}>Create card</a>
           </footer>
         </div>`

@@ -13,6 +13,12 @@ Tahi.init = ->
     Tahi.initOverlay(element)
 
   Tahi.initChosen()
+  Tahi.escapeKeyClosesOverlay()
+
+Tahi.escapeKeyClosesOverlay = ->
+  $('body').on 'keyup', (e) ->
+    if e.which == 27
+      $('.close-overlay').click()
 
 Tahi.initChosen = ->
   $('.chosen-select').chosen
@@ -68,10 +74,6 @@ Tahi.displayOverlay = (element) ->
     $('.close-overlay').unbind('click', handler)
 
   $('.close-overlay', overlay).on 'click', handler
-
-  $('body').on 'keyup', (e) ->
-    if e.which == 27
-      $('.close-overlay').click()
 
   overlay.show()
 

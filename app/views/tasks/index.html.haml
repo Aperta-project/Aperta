@@ -25,7 +25,8 @@
             haml_io << link_to('Add new card', '#',
               data: {
                 assignees: User.admins.map { |u| [u.id, u.full_name] }.to_json,
-                url: paper_tasks_path(@task_manager.paper, format: :json),
-                phase_id: phase.id
+                url: paper_tasks_path(@paper, format: :json),
+                phase_id: phase.id,
+                paper_short_title: @paper.short_title
               },
               class: "secondary-button react-new-card-overlay")

@@ -67,16 +67,17 @@
   position: absolute;
 }
 
-#new-overlay footer a,
-#overlay footer a {
-  @extend .col-xs-1, .col-xs-offset-11;
+#new-overlay footer > a,
+#overlay footer > a {
+  @extend .col-xs-2, .col-xs-offset-10;
   top: 0;
   position: absolute;
 }
 
+#new-overlay footer .content,
 #overlay footer .content {
   text-align: right;
-  padding: 6px 100px 0 0;
+  padding: 6px 200px 0 0;
   text-transform: uppercase;
   color: $tahi-primary;
 
@@ -86,11 +87,35 @@
     -moz-transform: scale(2); /* FF */
     -webkit-transform: scale(2); /* Safari and Chrome */
   }
+
+  a {
+    color: $tahi-primary;
+    text-transform: none;
+  }
 }
 
 #overlay h1 {
   font-size: 48px;
   margin: 0 0 60px;
+}
+
+#new-overlay input#task_title {
+  width: 360px;
+  border-radius: 3px;
+  border: 1px solid $tahi-matte;
+  padding: 5px;
+}
+
+#new-overlay label {
+  padding-right: 25px;
+}
+
+#new-overlay textarea#task_body {
+  width: 660px;
+  height: 90px;
+  border-radius: 3px;
+  border: 1px solid $tahi-matte;
+  padding: 5px;
 }
 
 #upload-figures-content img {

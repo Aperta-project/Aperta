@@ -60,7 +60,6 @@ group :development, :test do
   gem "rspec-its", "~> 1.0.0.pre"
   gem 'capybara'
   gem 'capybara-webkit'
-  gem 'poltergeist'
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'

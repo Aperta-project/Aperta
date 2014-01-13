@@ -25,7 +25,7 @@ class TasksController < ApplicationController
     task = Task.new task_params
     task.role = 'admin'
     task.save!
-    render nothing: true
+    head :no_content
   end
 
   private

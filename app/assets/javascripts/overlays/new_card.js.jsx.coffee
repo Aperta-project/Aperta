@@ -38,6 +38,8 @@ Tahi.overlays.newCard =
         $.ajax
           url: @props.url
           method: 'POST'
+          success: ->
+            Turbolinks.visit(window.location)
           data:
             task:
               title: title

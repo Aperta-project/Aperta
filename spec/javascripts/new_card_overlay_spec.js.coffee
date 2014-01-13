@@ -95,12 +95,25 @@ describe "New Card Overlay", ->
         expect($.ajax).toHaveBeenCalledWith
           url: '/path/to/create/task'
           method: 'POST'
+          success: jasmine.any(Function)
           data:
             task:
               title: 'This is a title'
               body: 'This is the body'
               assignee_id: '2'
               phase_id: '26'
+
+      it "uses Turbolinks to reload the page on success", ->
+        spyOn $, 'ajax'
+
+        @form.refs.task_title.getDOMNode().value = 'This is a title'
+        @form.refs.task_assignee_id.getDOMNode().value = '2'
+        @form.refs.task_body.getDOMNode().value = 'This is the body'
+
+        @form.submit()
+        spyOn Turbolinks, 'visit'
+        $.ajax.calls.mostRecent().args[0].success()
+        expect(Turbolinks.visit).toHaveBeenCalledWith window.location
 
   describe "NewCardOverlay component", ->
     describe "#render", ->

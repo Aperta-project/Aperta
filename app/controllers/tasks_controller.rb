@@ -24,7 +24,7 @@ class TasksController < ApplicationController
   def create
     task = Task.new task_params
     task.role = 'admin'
-    task.save!
+    task.save
     head :no_content
   end
 

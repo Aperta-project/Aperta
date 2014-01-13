@@ -6,7 +6,7 @@ end
 
 describe TasksController do
 
-  let(:permitted_params) { [:assignee_id, :completed] }
+  let(:permitted_params) { [:assignee_id, :completed, :title, :body, :phase_id] }
 
   let :user do
     User.create! username: 'albert',
@@ -83,7 +83,7 @@ describe TasksController do
 
     describe "subclasses of task" do
       let(:task) { FakeTask.create! title: "sample task", role: "sample role"}
-      let(:permitted_params) { [:assignee_id, :completed, some_attribute: [some_value: []]] }
+      let(:permitted_params) { [:assignee_id, :completed, :title, :body, :phase_id, some_attribute: [some_value: []]] }
 
       it_behaves_like "a controller enforcing strong parameters" do
         let(:params_id) { task.to_param }

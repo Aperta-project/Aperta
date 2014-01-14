@@ -57,12 +57,12 @@
 
 #new-overlay header h2,
 #overlay header h2 {
-  @extend .col-xs-11;
+  @extend .col-xs-10;
   margin: 0 0 15px 0;
 }
 
 #overlay header > a {
-  @extend .col-xs-1;
+  @extend .col-xs-2;
   bottom: 10px;
   position: absolute;
 }

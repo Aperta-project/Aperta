@@ -66,7 +66,7 @@ describe TasksController do
 
   describe "PATCH 'update'" do
     let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated', journal: Journal.create! }
-    let(:task) { Task.create! title: "sample task", role: "sample role"}
+    let(:task) { Task.create! title: "sample task", role: "sample role", phase: paper.task_manager.phases.first }
 
     subject(:do_request) do
       patch :update, { paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }
@@ -82,7 +82,7 @@ describe TasksController do
     end
 
     describe "subclasses of task" do
-      let(:task) { FakeTask.create! title: "sample task", role: "sample role"}
+      let(:task) { FakeTask.create! title: "sample task", role: "sample role", phase: paper.task_manager.phases.first }
       let(:permitted_params) { [:assignee_id, :completed, :title, :body, :phase_id, some_attribute: [some_value: []]] }
 
       it_behaves_like "a controller enforcing strong parameters" do

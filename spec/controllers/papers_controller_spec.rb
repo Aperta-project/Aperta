@@ -28,7 +28,7 @@ describe PapersController do
     it { should render_template :show }
 
     it "assigns paper and assigned tasks" do
-      task = Task.create! assignee: user, title: 'Change the world', role: 'editor'
+      task = Task.create! assignee: user, title: 'Change the world', role: 'editor', phase: paper.task_manager.phases.first
       tasks = double 'tasks', tasks: [task]
       allow(TaskPolicy).to receive(:new).and_return(tasks)
       do_request

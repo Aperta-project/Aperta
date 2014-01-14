@@ -8,7 +8,7 @@ describe PaperAdminTask do
   end
 
   describe "callbacks" do
-    let(:phase) { Phase.create!.tap { |p| TaskManager.create! phases: [p] } }
+    let(:phase) { Phase.create! task_manager: TaskManager.create! }
     let(:default_task_attrs) { { title: 'A title', role: 'admin', phase: phase } }
 
     describe "after_update" do
@@ -76,13 +76,10 @@ describe PaperAdminTask do
       end
 
       describe "tasks in other phases in the same task manager" do
-        let(:reading_phase) { Phase.create! }
-        let(:writing_phase) { Phase.create! }
+        let(:task_manager) { TaskManager.create! }
+        let(:reading_phase) { Phase.create! task_manager: task_manager }
+        let(:writing_phase) { Phase.create! task_manager: task_manager }
         let(:paper_admin_task) { PaperAdminTask.create! phase: reading_phase }
-
-        before do
-          TaskManager.create! phases: [reading_phase, writing_phase]
-        end
 
         it "updates their assignee" do
           task = Task.create! default_task_attrs.merge(phase: writing_phase)
@@ -92,14 +89,9 @@ describe PaperAdminTask do
       end
 
       describe "tasks in other task managers" do
-        let(:reading_phase) { Phase.create! }
-        let(:writing_phase) { Phase.create! }
+        let(:reading_phase) { Phase.create! task_manager: TaskManager.create! }
+        let(:writing_phase) { Phase.create! task_manager: TaskManager.create! }
         let(:paper_admin_task) { PaperAdminTask.create! phase: reading_phase }
-
-        before do
-          TaskManager.create! phases: [reading_phase]
-          TaskManager.create! phases: [writing_phase]
-        end
 
         it "does not update their assignee" do
           task = Task.create! default_task_attrs.merge(phase: writing_phase)

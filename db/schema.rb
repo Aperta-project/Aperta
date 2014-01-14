@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140110220220) do
+ActiveRecord::Schema.define(version: 20140114191934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 20140110220220) do
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
   create_table "phases", force: true do |t|
-    t.integer  "task_manager_id"
+    t.integer  "task_manager_id", null: false
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -122,14 +122,14 @@ ActiveRecord::Schema.define(version: 20140110220220) do
   add_index "task_managers", ["paper_id"], name: "index_task_managers_on_paper_id", using: :btree
 
   create_table "tasks", force: true do |t|
-    t.string   "title"
+    t.string   "title",                       null: false
     t.string   "type"
     t.integer  "assignee_id"
-    t.integer  "phase_id"
+    t.integer  "phase_id",                    null: false
     t.boolean  "completed",   default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role"
+    t.string   "role",                        null: false
     t.text     "body"
   end
 

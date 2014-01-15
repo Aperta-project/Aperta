@@ -1,6 +1,6 @@
 class CardOverlay < PageFragment
   def dismiss
-    all('.close-overlay').first.click
+    all('a').detect { |a| a.text == 'CLOSE' }.click
   end
 
   def assignee

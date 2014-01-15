@@ -12,7 +12,7 @@ asset_files = (status_after.split("\n") - status_before.split("\n")).map { |f| f
 unless asset_files.empty?
   puts "FAIL"
   puts "Looks like you forgot to precompile assets"
-  puts "Run `git add #{asset_files.join(' ')}` and try committing again"
+  puts "Run `git add public/assets` and try committing again"
   exit 1
 end
 puts "PASS"

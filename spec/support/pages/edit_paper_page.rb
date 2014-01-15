@@ -95,7 +95,7 @@ class EditPaperPage < Page
 
   def declarations_overlay &block
     click_on 'Declarations'
-    overlay = DeclarationsOverlay.new find('#overlay')
+    overlay = DeclarationsOverlay.new find('#new-overlay')
     block.call overlay
     overlay.dismiss
   end

@@ -63,7 +63,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'
-  gem "jasmine", ">= 2.0.0.rc5"
+  gem "jasmine"
 end
 
 gem 'devise'

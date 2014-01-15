@@ -1,6 +1,8 @@
 class Task < ActiveRecord::Base
   PERMITTED_ATTRIBUTES = []
 
+  default_scope { order("completed ASC") }
+
   after_initialize :initialize_defaults
 
   delegate :paper, to: :phase

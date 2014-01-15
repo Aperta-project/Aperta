@@ -9,6 +9,24 @@ class TaskWithoutDefaults < Task
 end
 
 describe Task do
+  describe "default_scope" do
+    let(:paper) { Paper.create! short_title: 'Hello world', journal: Journal.create! }
+
+    it "orders so the completed ones are below the incomplete ones" do
+      completed_task = Task.create! title: "Paper Shepherd",
+        completed: true,
+        role: 'admin',
+        phase: paper.task_manager.phases.first
+
+      incomplete_task = Task.create! title: "Reviewer Report",
+        completed: false,
+        role: 'reviewer',
+        phase: paper.task_manager.phases.first
+
+      expect(Task.all.map(&:completed).last).to eq(true)
+    end
+  end
+
   describe "initialization" do
     describe "title" do
       it "initializes title to specified title" do

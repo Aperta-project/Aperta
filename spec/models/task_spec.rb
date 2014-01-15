@@ -24,6 +24,10 @@ describe Task do
         phase: paper.task_manager.phases.first
 
       expect(Task.all.map(&:completed).last).to eq(true)
+
+      task = Task.first
+      task.update! completed: true
+      expect(Task.first).to_not eq(task)
     end
   end
 

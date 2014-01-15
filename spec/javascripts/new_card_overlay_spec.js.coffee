@@ -38,7 +38,7 @@ describe "New Card Overlay", ->
           $('body').trigger(event)
 
           expect($('#new-overlay')).toBeVisible()
-  
+
   describe "#hideOverlay", ->
     beforeEach ->
       $('#new-overlay').show()
@@ -56,7 +56,6 @@ describe "New Card Overlay", ->
       spyOn React, 'unmountComponentAtNode'
       Tahi.overlays.newCard.hideOverlay(@event)
       expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('new-overlay')
-
 
   describe "#displayNewCardOverlay", ->
     beforeEach ->

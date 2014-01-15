@@ -41,9 +41,7 @@
 
   %aside
     %div
-      = link_to 'Declarations', '#', data: { 'overlay-name' => 'declarations', 'overlay-title' => @paper.short_title }, class: 'card'
-      #declarations-content.hidden
-        = render 'overlays/declarations'
+      = link_to 'Declarations', '#', data: { 'card-name' => 'declarations', 'paper-title' => "#{@paper.short_title}", 'paper-path' => "#{paper_path @paper}", declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json }, class: 'card'
 
       = link_to 'Upload Figures', '#', data: { 'overlay-name' => 'upload-figures', 'overlay-title' => @paper.short_title }, class: 'card'
       #upload-figures-content.hidden

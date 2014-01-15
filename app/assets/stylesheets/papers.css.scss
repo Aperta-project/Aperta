@@ -154,6 +154,7 @@ main > aside > div {
   padding: 10px 15px;
   display: block;
   margin-bottom: 10px;
+  border-radius: 5px;
 
   &:hover {
     background-color: $btn-primary-bg;

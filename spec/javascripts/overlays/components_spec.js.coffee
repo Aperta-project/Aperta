@@ -20,7 +20,7 @@ describe "Tahi overlay components", ->
 
   describe "CompletedCheckbox", ->
     beforeEach ->
-      @component = Tahi.overlays.components.CompletedCheckbox()
+      @component = Tahi.overlays.components.CompletedCheckbox({action: '/form/action'})
 
     describe "#formContent", ->
       context "when the task has been completed", ->
@@ -28,14 +28,14 @@ describe "Tahi overlay components", ->
 
         it "checks the checkbox", ->
           checkbox = @component.formContent().props.children[1]
-          expect(checkbox.props.checked).toEqual 'checked'
+          expect(checkbox.props.defaultChecked).toEqual true
 
       context "when the task has not been completed", ->
         beforeEach -> @component.props.taskCompleted = false
 
         it "does not check the checkbox", ->
           checkbox = @component.formContent().props.children[1]
-          expect(checkbox.props.checked).toBeUndefined()
+          expect(checkbox.props.defaultChecked).toEqual false
 
     describe "#render", ->
       it "generates a form for the task", ->
@@ -46,10 +46,10 @@ describe "Tahi overlay components", ->
     describe "#componentDidMount", ->
       it "sets up submit on change for the check box", ->
         spyOn Tahi, 'setupSubmitOnChange'
-        html = $('<div><form><input type="checkbox" /></form></div>')[0]
+        html = $('<form><input type="checkbox" /></form>')[0]
         @component.componentDidMount html
         args = Tahi.setupSubmitOnChange.calls.mostRecent().args
-        expect(args[0][0]).toEqual $('form', html)[0]
+        expect(args[0][0]).toEqual $(html)[0]
         expect(args[1][0]).toEqual $('input[type="checkbox"]', html)[0]
 
   describe "OverlayHeader", ->

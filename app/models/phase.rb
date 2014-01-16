@@ -7,6 +7,7 @@ class Phase < ActiveRecord::Base
   after_initialize :initialize_defaults
 
   DEFAULT_PHASE_NAMES = [
+    "Submit Paper",
     "Needs Editor",
     "Needs Reviewer",
     "Needs Review",
@@ -22,6 +23,8 @@ class Phase < ActiveRecord::Base
   def initialize_defaults
     return unless tasks.empty?
     case name
+    when 'Submit Paper'
+      self.tasks << DeclarationTask.new
     when 'Needs Editor'
       self.tasks << PaperAdminTask.new
       self.tasks << TechCheckTask.new

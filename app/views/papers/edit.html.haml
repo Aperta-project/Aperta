@@ -41,7 +41,10 @@
 
   %aside
     %div
-      = link_to 'Declarations', '#', data: { 'card-name' => 'declarations', 'paper-title' => "#{@paper.short_title}", 'paper-path' => "#{paper_path @paper}", declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json }, class: 'card'
+      - task = Task.where(title: "Declarations", phase: @paper.phases.where(name: 'Submit Paper').first).first
+      = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'task-completed' => task.completed?, declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json } do
+        %span.glyphicon.glyphicon-ok
+        = task.title
 
       = link_to 'Upload Figures', '#', data: { 'overlay-name' => 'upload-figures', 'overlay-title' => @paper.short_title }, class: 'card'
       #upload-figures-content.hidden

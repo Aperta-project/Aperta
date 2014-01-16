@@ -42,7 +42,7 @@ describe PaperReviewerTask do
       it "returns the roles" do
         roles = [PaperRole.create!(paper: paper, reviewer: true, user: bob).user_id,
                  PaperRole.create!(paper: paper, reviewer: true, user: ralph).user_id]
-        expect(PaperReviewerTask.new(phase: phase).paper_roles).to eq roles
+        expect(PaperReviewerTask.new(phase: phase).paper_roles).to match_array roles
       end
     end
   end

@@ -7,12 +7,18 @@
 %ul.assigned-tasks.cards
   %ul.cards
     - @assigned_tasks.each do |task|
-      %li
-        = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => "card-#{task.id}", 'overlay-title' => task.paper.short_title, 'paper-id' => task.paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do
-          %span.glyphicon.glyphicon-ok
-          = task.title
-      .hidden{id: "card-#{task.id}-content"}
-        = render task, paper: task.paper
+      - if task.title == 'Declarations'
+        %li
+          = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => task.paper.short_title, 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), 'task-completed' => task.completed?, declarations: task.paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json } do
+            %span.glyphicon.glyphicon-ok
+            = task.title
+      - else
+        %li
+          = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => "card-#{task.id}", 'overlay-title' => task.paper.short_title, 'paper-id' => task.paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do
+            %span.glyphicon.glyphicon-ok
+            = task.title
+        .hidden{id: "card-#{task.id}-content"}
+          = render task, paper: task.paper
 
 %h3 Submissions
 %ul.submissions

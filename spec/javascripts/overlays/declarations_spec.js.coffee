@@ -4,8 +4,8 @@ beforeEach ->
 describe "Declarations Card", ->
   beforeEach ->
     $('#jasmine_content').html """
-      <a href="#" id="link-1" data-card-name="declarations" data-paper-title="Something" data-paper-path="/path/to/paper" data-declarations="[]">Foo</a>
-      <a href="#" id="link-2" data-card-name="declarations" data-paper-title="Something" data-paper-path="/path/to/paper" data-declarations="[]">Bar</a>
+      <a href="#" id="link-1" data-card-name="declarations" data-paper-title="Something" data-paper-path="/path/to/paper" data-task-path="/path/to/task" data-task-completed="false" data-declarations="[]">Foo</a>
+      <a href="#" id="link-2" data-card-name="declarations" data-paper-title="Something" data-paper-path="/path/to/paper" data-task-path="/path/to/task" data-task-completed="false" data-declarations="[]">Bar</a>
       <div id="new-overlay" style="display: none;"></div>
     """
 
@@ -32,7 +32,12 @@ describe "Declarations Card", ->
 
     it "renders DeclarationsOverlay component inserting it into #new-overlay", ->
       Tahi.overlays.declarations.displayOverlay(@event)
-      declarationsOverlay = Tahi.overlays.declarations.components.DeclarationsOverlay({paperTitle: 'Something', paperPath: '/path/to/paper', declarations: []})
+      declarationsOverlay = Tahi.overlays.declarations.components.DeclarationsOverlay
+        paperTitle: 'Something'
+        paperPath: '/path/to/paper'
+        declarations: []
+        taskPath: '/path/to/task'
+        taskCompleted: false
       expect(React.renderComponent).toHaveBeenCalledWith(declarationsOverlay, $('#new-overlay')[0], Tahi.initChosen)
 
     it "displays the overlay", ->

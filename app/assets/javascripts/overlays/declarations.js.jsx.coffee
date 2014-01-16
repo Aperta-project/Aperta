@@ -20,7 +20,9 @@ Tahi.overlays.declarations =
     component = Tahi.overlays.declarations.components.DeclarationsOverlay
       paperTitle: $target.data('paperTitle')
       paperPath: $target.data('paperPath')
+      taskPath: $target.data('taskPath')
       declarations: $target.data('declarations')
+      taskCompleted: $target.data('taskCompleted')
     React.renderComponent component, document.getElementById('new-overlay'), Tahi.initChosen
 
     $('#new-overlay').show()
@@ -44,6 +46,7 @@ Tahi.overlays.declarations =
         HiddenDivComponent = Tahi.overlays.components.RailsFormHiddenDiv
 
         formAction = "#{this.props.paperPath}.json"
+        checkboxFormAction = "#{this.props.taskPath}.json"
         `<div>
           <OverlayHeader paperTitle={this.props.paperTitle} paperPath={this.props.paperPath} closeCallback={Tahi.overlays.declarations.hideOverlay} />
           <main>
@@ -53,7 +56,7 @@ Tahi.overlays.declarations =
               {this.declarations()}
             </form>
           </main>
-          <OverlayFooter closeCallback={Tahi.overlays.declarations.hideOverlay} />
+          <OverlayFooter closeCallback={Tahi.overlays.declarations.hideOverlay} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} />
         </div>`
 
       componentDidMount: (rootNode) ->

@@ -26,6 +26,14 @@ describe Phase do
 
   describe "initialization" do
     describe "tasks" do
+      describe "Submit Paper phase" do
+        let(:phase) { Phase.new name: 'Submit Paper' }
+
+        it "initializes one declaration task" do
+          expect(phase.tasks.map(&:class)).to include(DeclarationTask)
+        end
+      end
+
       describe "Needs Editor phase" do
         let(:phase) { Phase.new name: 'Needs Editor' }
 

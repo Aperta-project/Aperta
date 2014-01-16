@@ -99,6 +99,28 @@ describe Paper do
     end
   end
 
+  describe "callbacks" do
+    let(:user) { User.create! email: 'author@example.com', password: 'password', password_confirmation: 'password', username: 'author' }
+    let(:paper)   { Paper.new short_title: 'Paper', journal: Journal.create!, user: user }
+
+    it "assigns all author tasks to the paper author" do
+      paper.save!
+      tasks = Task.where(role: 'author', phase_id: paper.task_manager.phases.map(&:id))
+      expect(tasks.all? { |t| t.assignee == user }).to eq true
+    end
+
+    context "when the paper is persisted" do
+      before { paper.save! }
+
+      it "assigns all author tasks to the paper author" do
+        tasks = Task.where(role: 'author', phase_id: paper.task_manager.phases.map(&:id))
+        not_author = User.create! email: 'not_author@example.com', password: 'password', password_confirmation: 'password', username: 'not_author'
+        paper.update! user: not_author
+        expect(tasks.all? { |t| t.assignee == user }).to eq true
+      end
+    end
+  end
+
   describe "scopes" do
     let(:ongoing_paper)   { Paper.create! submitted: false, short_title: 'Ongoing', journal: Journal.create! }
     let(:submitted_paper) { Paper.create! submitted: true, short_title: 'Submitted', journal: Journal.create! }

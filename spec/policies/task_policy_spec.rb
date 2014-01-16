@@ -6,25 +6,24 @@ describe TaskPolicy do
                  username: 'albert',
                  password: 'password',
                  password_confirmation: 'password' }
-    let(:paper) { 
+    let(:paper) {
       Paper.create! short_title: "world_of_policies",
         journal: Journal.create!
     }
 
-    let(:expected_tasks) do
-      tasks = paper.task_manager.phases.collect(&:tasks).flatten
-      expect(tasks.length).to be > 3
-      tasks.first(3)
-    end
-
-    before do
-      expected_tasks.each do |task|
-        task.update assignee_id: user.id
+    let!(:expected_tasks) do
+      tasks = paper.task_manager.phases.collect(&:tasks).flatten.in_groups(2)
+      assigned_tasks = tasks.first.each do |task|
+        task.update! assignee: user
       end
+      tasks.second.each do |task|
+        task.reload.update! assignee_id: nil
+      end
+      assigned_tasks
     end
 
     it "returns the tasks assigned to the current user" do
-      expect(TaskPolicy.new(paper, user).tasks).to match_array(expected_tasks)
+      expect(TaskPolicy.new(paper, user).tasks.to_a).to match_array(expected_tasks.to_a)
     end
 
     context "when the user is an editor on the paper" do

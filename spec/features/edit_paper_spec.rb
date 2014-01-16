@@ -72,6 +72,9 @@ feature "Editing paper", js: true do
       expect(funding_disclosure.answer).to eq "Yes"
       expect(ethics_declaration.answer).to eq "No"
       expect(competing_interest_declaration.answer).to eq "Sometimes"
+
+      overlay.mark_as_complete
+      expect(overlay).to be_completed
     end
 
     edit_paper.reload
@@ -80,6 +83,7 @@ feature "Editing paper", js: true do
       expect(funding_disclosure.answer).to eq "Yes"
       expect(ethics_declaration.answer).to eq "No"
       expect(competing_interest_declaration.answer).to eq "Sometimes"
+      expect(overlay).to be_completed
     end
   end
 

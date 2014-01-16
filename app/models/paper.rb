@@ -19,6 +19,10 @@ class Paper < ActiveRecord::Base
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
   validates :journal, presence: true
 
+  delegate :phases, to: :task_manager
+
+  after_create :assign_user_to_author_tasks
+
   def self.submitted
     where(submitted: true)
   end
@@ -33,6 +37,12 @@ class Paper < ActiveRecord::Base
   end
 
   private
+
+  def assign_user_to_author_tasks
+    task_manager.phases.collect(&:tasks).flatten.each do |task|
+      task.update assignee: user
+    end
+  end
 
   def initialize_defaults
     self.paper_type = 'research' if paper_type.blank?

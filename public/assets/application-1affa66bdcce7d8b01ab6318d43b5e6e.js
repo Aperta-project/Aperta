@@ -32752,6 +32752,164 @@ module.exports = traverseAllChildren;
   };
 
 }).call(this);
+/** @jsx React.DOM*/
+
+
+(function() {
+  var _base;
+
+  window.Tahi || (window.Tahi = {});
+
+  Tahi.overlays || (Tahi.overlays = {});
+
+  (_base = Tahi.overlays).components || (_base.components = {});
+
+  Tahi.overlays.components.RailsForm = React.createClass({
+    render: function() {
+      var RailsFormHiddenDiv;
+      RailsFormHiddenDiv = Tahi.overlays.components.RailsFormHiddenDiv;
+      return React.DOM.form( {'accept-charset':"UTF-8", action:this.props.action, 'data-remote':"true", method:"post"}, 
+      RailsFormHiddenDiv( {method:"patch"} ),
+      this.props.formContent
+    );
+    }
+  });
+
+  Tahi.overlays.components.CompletedCheckbox = React.createClass({
+    formContent: function() {
+      var inputId;
+      inputId = "task_declarations_checkbox_completed";
+      return React.DOM.div(null, 
+      React.DOM.input( {name:"task[completed]", type:"hidden", value:"0"} ),
+      React.DOM.input( {id:inputId, name:"task[completed]", type:"checkbox", value:"1", defaultChecked:this.props.taskCompleted} ),
+      React.DOM.label( {htmlFor:inputId}, "Completed")
+    );
+    },
+    render: function() {
+      var RailsForm;
+      RailsForm = Tahi.overlays.components.RailsForm;
+      return RailsForm( {action:this.props.action, formContent:this.formContent()} );
+    },
+    componentDidMount: function(rootNode) {
+      return Tahi.setupSubmitOnChange($(rootNode), $('input[type="checkbox"]', rootNode));
+    }
+  });
+
+  Tahi.overlays.components.OverlayHeader = React.createClass({
+    render: function() {
+      return React.DOM.header(null, 
+      React.DOM.h2(null, React.DOM.a( {href:this.props.paperPath}, this.props.paperTitle)),
+      React.DOM.a( {className:"primary-button", onClick:this.props.closeCallback}, "Close")
+    );
+    }
+  });
+
+  Tahi.overlays.components.OverlayFooter = React.createClass({
+    render: function() {
+      var CompletedCheckbox;
+      CompletedCheckbox = Tahi.overlays.components.CompletedCheckbox;
+      return React.DOM.footer(null, 
+      React.DOM.div( {className:"content"}, 
+        CompletedCheckbox( {action:this.props.checkboxFormAction, taskCompleted:this.props.taskCompleted} )
+      ),
+      React.DOM.a( {className:"primary-button", onClick:this.props.closeCallback}, "Close")
+    );
+    }
+  });
+
+  Tahi.overlays.components.RailsFormHiddenDiv = React.createClass({
+    render: function() {
+      var style;
+      style = {
+        margin: 0,
+        padding: 0,
+        display: "inline"
+      };
+      return React.DOM.div( {style:style}, 
+      React.DOM.input( {name:"utf8", type:"hidden", value:"✓"} ),
+      React.DOM.input( {name:"_method", type:"hidden", value:this.props.method} )
+    );
+    }
+  });
+
+}).call(this);
+/** @jsx React.DOM*/
+
+
+(function() {
+  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  window.Tahi || (window.Tahi = {});
+
+  Tahi.overlays || (Tahi.overlays = {});
+
+  Tahi.overlays.declarations = {
+    init: function() {
+      return $('[data-card-name=declarations]').on('click', Tahi.overlays.declarations.displayOverlay);
+    },
+    hideOverlay: function(e) {
+      if (e != null) {
+        e.preventDefault();
+      }
+      $('#new-overlay').hide();
+      return React.unmountComponentAtNode(document.getElementById('new-overlay'));
+    },
+    displayOverlay: function(e) {
+      var $target, component;
+      e.preventDefault();
+      $target = $(e.target);
+      component = Tahi.overlays.declarations.components.DeclarationsOverlay({
+        paperTitle: $target.data('paperTitle'),
+        paperPath: $target.data('paperPath'),
+        taskPath: $target.data('taskPath'),
+        declarations: $target.data('declarations'),
+        taskCompleted: $target.data('taskCompleted')
+      });
+      React.renderComponent(component, document.getElementById('new-overlay'), Tahi.initChosen);
+      return $('#new-overlay').show();
+    },
+    components: {
+      DeclarationsOverlay: React.createClass({
+        declarations: function() {
+          return this.props.declarations.map(function(declaration, index) {
+            var hiddenField;
+            hiddenField = __indexOf.call(Object.keys(declaration), 'id') >= 0 ? React.DOM.input( {id:"paper_declarations_attributes_" + index + "_id", name:"paper[declarations_attributes][" + index + "][id]", type:"hidden", value:declaration['id']} ) : void 0;
+            return React.DOM.div( {key:index, className:"form-group declaration"}, 
+            React.DOM.label( {htmlFor:"paper_declarations_attributes_" + index + "_answer"}, declaration['question']),
+            React.DOM.textarea( {className:"form-control", id:"paper_declarations_attributes_" + index + "_answer", name:"paper[declarations_attributes][" + index + "][answer]", rows:"6", defaultValue:declaration['answer']} ),
+            hiddenField
+          );
+          });
+        },
+        render: function() {
+          var HiddenDivComponent, OverlayFooter, OverlayHeader, checkboxFormAction, formAction;
+          OverlayHeader = Tahi.overlays.components.OverlayHeader;
+          OverlayFooter = Tahi.overlays.components.OverlayFooter;
+          HiddenDivComponent = Tahi.overlays.components.RailsFormHiddenDiv;
+          formAction = "" + this.props.paperPath + ".json";
+          checkboxFormAction = "" + this.props.taskPath + ".json";
+          return React.DOM.div(null, 
+          OverlayHeader( {paperTitle:this.props.paperTitle, paperPath:this.props.paperPath, closeCallback:Tahi.overlays.declarations.hideOverlay} ),
+          React.DOM.main(null, 
+            React.DOM.h1(null, "Declarations"),
+            React.DOM.form( {'accept-charset':"UTF-8", action:formAction, 'data-remote':"true", method:"post"}, 
+              HiddenDivComponent( {method:"patch"} ),
+              this.declarations()
+            )
+          ),
+          OverlayFooter( {closeCallback:Tahi.overlays.declarations.hideOverlay, checkboxFormAction:checkboxFormAction, taskCompleted:this.props.taskCompleted} )
+        );
+        },
+        componentDidMount: function(rootNode) {
+          var form;
+          form = $('form', rootNode);
+          return Tahi.setupSubmitOnChange(form, $('textarea', form));
+        }
+      })
+    }
+  };
+
+}).call(this);
 (function() {
   window.Tahi || (window.Tahi = {});
 
@@ -33137,6 +33295,7 @@ module.exports = traverseAllChildren;
     Tahi.overlays.authors.init();
     Tahi.overlays.figures.init();
     Tahi.overlays.newCard.init();
+    Tahi.overlays.declarations.init();
     _ref = $("form.js-submit-on-change[data-remote='true']");
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       form = _ref[_i];

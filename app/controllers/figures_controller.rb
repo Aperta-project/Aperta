@@ -6,10 +6,7 @@ class FiguresController < ApplicationController
     figures = Array.wrap(figure_params.delete(:attachment))
 
     results = figures.map do |figure|
-      f = @paper.figures.create(figure_params.merge(attachment: figure))
-      filename = f[:attachment]
-      alt = filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize
-      { filename: filename, alt: alt, id: f.id, src: f.attachment.url }
+      @paper.figures.create(figure_params.merge(attachment: figure)).access_details
     end
 
     respond_to do |f|

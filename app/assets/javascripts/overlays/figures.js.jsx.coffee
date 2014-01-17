@@ -90,25 +90,29 @@ Tahi.overlays.figures =
         </div>`
 
       componentDidMount: (rootNode) ->
-        el = $('.js-jquery-fileupload', rootNode)
-        uploader = el.fileupload()
+        uploader = $('.js-jquery-fileupload', rootNode).fileupload()
         uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
         uploader.on 'fileuploaddone',          @fileUploadDone
         uploader.on 'fileuploadprogress',      @fileUploadProgress
 
       fileUploadProcessAlways: (event, data) ->
         uploads = @state.uploads
+        file = data.files[0]
         window.tempStorage ||= {}
-        window.tempStorage[data.files[0].name] = data.files[0].preview
-        newUploads = uploads.concat [{filename: data.files[0].name, progress: 0}]
+        window.tempStorage[file.name] = file.preview
+        newUploads = uploads.concat [{filename: file.name, progress: 0}]
         @setState uploads: newUploads
 
       fileUploadDone: (event, data) ->
         uploads = @state.uploads
-        newUploads = uploads.filter (u) -> u.filename != data.files[0].name
+        file = data.files[0]
+        newUploads = uploads.filter (u) -> u.filename != file.name
 
         figures = @state.figures
         newFigures = figures.concat [{src: data.result[0].src, alt: data.result[0].alt}]
+
+        window.tempStorage ||= {}
+        delete window.tempStorage[file.name]
 
         @setState
           uploads: newUploads

@@ -49,7 +49,10 @@ describe "Tahi.overlays.figures", ->
           taskCompleted: false
 
         @component.state =
-          uploads: []
+          uploads: [
+            {filename: 'in-progress.jpg', progress: 40},
+            {filename: 'real-yeti.jpg', progress: 33}
+          ]
           figures: [
             {
               filename: 'file-a.jpg'
@@ -90,6 +93,13 @@ describe "Tahi.overlays.figures", ->
       it "renders a ul for upload progress", ->
         paperFigureUploads = @component.render().props.children[1].props.children[2]
         expect(paperFigureUploads.props.id).toEqual 'paper-figure-uploads'
+        expect(paperFigureUploads.props.children.length).toEqual 2
+        upload1 = paperFigureUploads.props.children[0]
+        upload2 = paperFigureUploads.props.children[1]
+
+        FigureUpload = Tahi.overlays.figures.components.FigureUpload
+        expect(upload1.constructor).toEqual FigureUpload.componentConstructor
+        expect(upload2.constructor).toEqual FigureUpload.componentConstructor
 
       it "renders the existing figures", ->
         paperFigures = @component.render().props.children[1].props.children[3]
@@ -102,106 +112,121 @@ describe "Tahi.overlays.figures", ->
         expect(imageTag1.props.src).toEqual '/path/to/file-a.jpg'
         expect(imageTag2.props.src).toEqual '/path/to/file-b.jpg'
 
-  # describe "#oldInit", ->
-  #   beforeEach ->
-  #     @fakeUploader = jasmine.createSpyObj 'uploader', ['on']
-  #     spyOn($.fn, 'fileupload').and.returnValue @fakeUploader
+    describe "#componentDidMount", ->
+      beforeEach ->
+        @fakeUploader = jasmine.createSpyObj 'uploader', ['on']
+        spyOn($.fn, 'fileupload').and.returnValue @fakeUploader
+        @html = $("""
+          <div>
+            <input id='jquery-file-attachment' type='file' class='js-jquery-fileupload' />
+            <input id='file-attachment' type='file' />
+          </div>
+        """)[0]
+        @component = Tahi.overlays.figures.components.FiguresOverlay()
 
-  #   it "initializes jQuery filepicker", ->
-  #     $('#jasmine_content').html """
-  #       <input id='jquery-file-attachment' type='file' class='js-jquery-fileupload' />
-  #       <input id='file-attachment' type='file' />
-  #     """
-  #     Tahi.overlays.figures.oldInit()
-  #     expect($.fn.fileupload).toHaveBeenCalled()
-  #     call = $.fn.fileupload.calls.mostRecent()
-  #     expect(call.object).toEqual $('#jquery-file-attachment')
+      it "initializes jQuery filepicker", ->
+        @component.componentDidMount(@html)
+        expect($.fn.fileupload).toHaveBeenCalled()
+        call = $.fn.fileupload.calls.mostRecent()
+        expect(call.object).toEqual $('#jquery-file-attachment', @html)
 
-  #   it "sets up a fileuploadprocessalways handler", ->
-  #     Tahi.overlays.figures.oldInit()
-  #     expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploadprocessalways', Tahi.overlays.figures.fileUploadProcessAlways
+      it "sets up a fileuploadprocessalways handler", ->
+        @component.componentDidMount(@html)
+        expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploadprocessalways', @component.fileUploadProcessAlways
 
-  #   it "sets up a fileuploaddone handler", ->
-  #     Tahi.overlays.figures.oldInit()
-  #     expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploaddone', Tahi.overlays.figures.fileUploadDone
+      it "sets up a fileuploaddone handler", ->
+        @component.componentDidMount(@html)
+        expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploaddone', @component.fileUploadDone
 
-  #   it "sets up a fileuploadprogress handler", ->
-  #     Tahi.overlays.figures.oldInit()
-  #     expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploadprogress', Tahi.overlays.figures.fileUploadProgress
+      it "sets up a fileuploadprogress handler", ->
+        @component.componentDidMount(@html)
+        expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploadprogress', @component.fileUploadProgress
 
-  # describe "#fileUploadProcessAlways", ->
-  #   it "appends a file upload progress section", ->
-  #     $('#jasmine_content').html """
-  #       <ul id="paper-figure-uploads" />
-  #     """
-  #     event = jasmine.createSpyObj 'event', ['target']
-  #     data = jasmine.createSpy 'data'
-  #     data.files = [
-  #       { preview: $('<div id="file-preview" />')[0], name: 'real-yeti.jpg' }
-  #     ]
-  #     Tahi.overlays.figures.fileUploadProcessAlways event, data
-  #     expect($('#paper-figure-uploads').html()).toEqual """
-  #       <li data-file-id="real-yeti.jpg"><div class="preview-container"><div id="file-preview"></div></div><div class="progress">
-  #         <div class="progress-bar">
-  #         </div>
-  #       </div></li>
-  #     """
+    describe "jQuery File Upload callbacks", ->
+      beforeEach ->
+        @component = Tahi.overlays.figures.components.FiguresOverlay()
+        spyOn @component, 'setState'
 
-  # describe "#fileUploadDone", ->
-  #   beforeEach ->
-  #     $('#jasmine_content').html """
-  #       <ul id='paper-figure-uploads'>
-  #         <li data-file-id="real-yeti.jpg">
-  #           <div id="file-preview"></div>
-  #           <div class="progress progress-striped active"></div>
-  #         </li>
-  #       </ul>
-  #       <ul id='paper-figures'></ul>
-  #     """
-  #     @event = jasmine.createSpyObj 'event', ['target']
-  #     @data = jasmine.createSpy 'data'
-  #     @data.files = [
-  #       { preview: $('<div id="file-preview" />')[0], name: 'real-yeti.jpg' }
-  #     ]
-  #     @data.result = [
-  #       { filename: 'real-yeti.jpg', alt: 'Real yeti', src: '/foo/bar/real-yeti.jpg', id: 123 }
-  #     ]
+        @event = jasmine.createSpyObj 'event', ['target']
+        @data = jasmine.createSpy 'data'
+        @previewElement = $('<div id="file-preview" />')[0]
+        @data.files = [
+          { preview: @previewElement, name: 'real-yeti.jpg' }
+        ]
 
-  #   it "removes the file upload progress section for this file", ->
-  #     Tahi.overlays.figures.fileUploadDone @event, @data
-  #     expect($('#paper-figure-uploads').html().trim()).toEqual ''
+      describe "#fileUploadProcessAlways", ->
+        beforeEach ->
+          @component.state =
+            figures: []
+            uploads: [{filename: 'in-progress.jpg', progress: 40}]
 
-  #   it "appends an uploaded file section", ->
-  #     Tahi.overlays.figures.fileUploadDone @event, @data
-  #     expect($('#paper-figures').html()).toEqual """
-  #       <li><img src="/foo/bar/real-yeti.jpg" alt="Real yeti"></li>
-  #     """
-  # describe "#fileUploadProgress", ->
-  #   beforeEach ->
-  #     $('#jasmine_content').html """
-  #       <ul id='paper-figure-uploads'>
-  #         <li data-file-id="real-yeti.jpg">
-  #           <div id="file-preview"></div>
-  #           <div class="progress">
-  #             <div class="progress-bar">
-  #             </div>
-  #           </div>
-  #         </li>
-  #       </ul>
-  #       <ul id='paper-figures'></ul>
-  #     """
-  #   it "updates the progress bar with the current progress", ->
-  #     @event = jasmine.createSpyObj 'event', ['target']
-  #     @data = jasmine.createSpy 'data'
-  #     @data.files = [
-  #       { preview: $('<div id="file-preview" />')[0], name: 'real-yeti.jpg' }
-  #     ]
-  #     @data.loaded = 124.0
-  #     @data.total = 620.0
+        it "stores preview on window.tempStorage", ->
+          expect(window.tempStorage).toBeUndefined()
+          @component.fileUploadProcessAlways @event, @data
+          expect(window.tempStorage['real-yeti.jpg']).toEqual @previewElement
 
-  #     progressBar = $('#paper-figure-uploads .progress .progress-bar')
-  #     originalWidth = parseInt(progressBar.css('width'), 10)
-  #     expectedWidth = Math.round(originalWidth * @data.loaded / @data.total)
+        it "updates the upload state", ->
+          @component.fileUploadProcessAlways @event, @data
+          expect(@component.setState).toHaveBeenCalledWith
+            uploads: [
+              {filename: 'in-progress.jpg', progress: 40},
+              {filename: 'real-yeti.jpg', progress: 0}
+            ]
 
-  #     Tahi.overlays.figures.fileUploadProgress @event, @data
-  #     expect(progressBar.css('width')).toEqual "#{expectedWidth}px"
+      describe "#fileUploadDone", ->
+        beforeEach ->
+          @component.state =
+            figures: [{src: '/path/to/existing.jpg', alt: 'Existing'}]
+            uploads: [
+              {filename: 'in-progress.jpg', progress: 40},
+              {filename: 'real-yeti.jpg', progress: 99}
+            ]
+          @data.result = [
+            { filename: 'real-yeti.jpg', alt: 'Real yeti', src: '/foo/bar/real-yeti.jpg', id: 123 }
+          ]
+
+        it "removes the preview from window.tempStorage", ->
+          window.tempStorage ||= {}
+          window.tempStorage['real-yeti.jpg'] = 'foo'
+          @component.fileUploadDone @event, @data
+          expect(window.tempStorage['real-yeti.jpg']).toBeUndefined()
+
+        it "updates in-progress and figures state", ->
+          @component.fileUploadDone @event, @data
+          expect(@component.setState).toHaveBeenCalledWith
+            figures: [
+              {src: '/path/to/existing.jpg', alt: 'Existing'},
+              {src: '/foo/bar/real-yeti.jpg', alt: 'Real yeti'}
+            ]
+            uploads: [{filename: 'in-progress.jpg', progress: 40}]
+
+      describe "#fileUploadProgress", ->
+        it "updates state with the current progress", ->
+          @component.state =
+            figures: [{src: '/path/to/existing.jpg', alt: 'Existing'}]
+            uploads: [
+              {filename: 'in-progress.jpg', progress: 40},
+              {filename: 'real-yeti.jpg', progress: 10}
+            ]
+          @data.loaded = 124.0
+          @data.total = 620.0
+          # 124.0 * 100 / 620.0 = 20
+          @component.fileUploadProgress @event, @data
+          expect(@component.setState).toHaveBeenCalledWith
+            uploads: [
+              {filename: 'in-progress.jpg', progress: 40},
+              {filename: 'real-yeti.jpg', progress: 20}
+            ]
+
+  describe "FigureUpload component", ->
+    describe "#componentDidMount", ->
+      it "appends the preview to preview-container", ->
+        html = $('<div><div class="preview-container" /></div>')[0]
+        preview = $('<div id="preview" />')[0]
+        window.tempStorage ||= {}
+        window.tempStorage['foo.jpg'] = preview
+        component = Tahi.overlays.figures.components.FigureUpload
+          filename: 'foo.jpg'
+          progress: 0
+        component.componentDidMount(html)
+        expect($('#preview', html)[0]).toEqual preview

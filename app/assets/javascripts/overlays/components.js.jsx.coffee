@@ -6,6 +6,19 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.components ||= {}
 
+Tahi.overlays.components.Overlay = React.createClass
+  render: ->
+    OverlayHeader = Tahi.overlays.components.OverlayHeader
+    OverlayFooter = Tahi.overlays.components.OverlayFooter
+
+    checkboxFormAction = "#{this.props.taskPath}.json"
+    `<div>
+      <OverlayHeader paperTitle={this.props.paperTitle} paperPath={this.props.paperPath} closeCallback={Tahi.overlays.figures.hideOverlay} />
+      {this.props.mainContent}
+      <OverlayFooter closeCallback={Tahi.overlays.figures.hideOverlay} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} onCompletedChanged={this.props.onCompletedChanged} />
+    </div>`
+
+
 Tahi.overlays.components.RailsForm = React.createClass
   getDefaultProps: ->
     method: 'patch'

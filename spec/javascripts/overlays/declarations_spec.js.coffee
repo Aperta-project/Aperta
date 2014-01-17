@@ -93,15 +93,10 @@ describe "Declarations Card", ->
           paperPath: '/path/to/paper'
           declarations: []
 
-      it "renders an overlay header", ->
-        header = @component.render().props.children[0]
-        OverlayHeader = Tahi.overlays.components.OverlayHeader
-        expect(header.constructor).toEqual OverlayHeader.componentConstructor
-
-      it "renders an overlay footer", ->
-        footer = @component.render().props.children[2]
-        OverlayFooter = Tahi.overlays.components.OverlayFooter
-        expect(footer.constructor).toEqual OverlayFooter.componentConstructor
+      it "renders an Overlay component wrapping our content", ->
+        overlay = @component.render()
+        Overlay = Tahi.overlays.components.Overlay
+        expect(overlay.constructor).toEqual Overlay.componentConstructor
 
     describe "#componentDidMount", ->
       it "sets up submit on change for the form", ->

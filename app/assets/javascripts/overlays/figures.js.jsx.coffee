@@ -59,8 +59,7 @@ Tahi.overlays.figures =
         figures: @props.figures
 
       render: ->
-        OverlayHeader = Tahi.overlays.components.OverlayHeader
-        OverlayFooter = Tahi.overlays.components.OverlayFooter
+        Overlay = Tahi.overlays.components.Overlay
         RailsForm = Tahi.overlays.components.RailsForm
         FigureUpload = Tahi.overlays.figures.components.FigureUpload
 
@@ -75,23 +74,27 @@ Tahi.overlays.figures =
         formAction = "#{this.props.figuresPath}.json"
         checkboxFormAction = "#{this.props.taskPath}.json"
         inputField = `<input id='figure_attachment' className="js-jquery-fileupload" multiple="multiple" name="figure[attachment][]" type="file" />`
-        `<div>
-          <OverlayHeader paperTitle={this.props.paperTitle} paperPath={this.props.paperPath} closeCallback={Tahi.overlays.figures.hideOverlay} />
-          <main>
-            <h1>Figures</h1>
-            <span className="secondary-button fileinput-button">
-              Add new Figures
-              <RailsForm action={formAction} formContent={inputField} method="POST" />
-            </span>
-            <ul id="paper-figure-uploads">
-              {uploadLIs}
-            </ul>
-            <ul id="paper-figures">
-              {figureLIs}
-            </ul>
-          </main>
-          <OverlayFooter closeCallback={Tahi.overlays.figures.hideOverlay} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} onCompletedChanged={this.props.onCompletedChanged} />
-        </div>`
+        mainContent = `<main>
+          <h1>Figures</h1>
+          <span className="secondary-button fileinput-button">
+            Add new Figures
+            <RailsForm action={formAction} formContent={inputField} method="POST" />
+          </span>
+          <ul id="paper-figure-uploads">
+            {uploadLIs}
+          </ul>
+          <ul id="paper-figures">
+            {figureLIs}
+          </ul>
+        </main>`
+        `<Overlay
+            paperTitle={this.props.paperTitle}
+            paperPath={this.props.paperPath}
+            closeCallback={Tahi.overlays.figures.hideOverlay}
+            taskPath={this.props.taskPath}
+            taskCompleted={this.props.taskCompleted}
+            onCompletedChanged={this.props.onCompletedChanged}
+            mainContent={mainContent} />`
 
       componentDidMount: (rootNode) ->
         uploader = $('.js-jquery-fileupload', rootNode).fileupload()

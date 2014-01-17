@@ -8,11 +8,6 @@ Tahi.overlays.declarations =
   init: ->
     $('[data-card-name=declarations]').on 'click', Tahi.overlays.declarations.displayOverlay
 
-  hideOverlay: (e) ->
-    e?.preventDefault()
-    $('#new-overlay').hide()
-    React.unmountComponentAtNode document.getElementById('new-overlay')
-
   displayOverlay: (e) ->
     e.preventDefault()
 
@@ -27,6 +22,11 @@ Tahi.overlays.declarations =
     React.renderComponent component, document.getElementById('new-overlay'), Tahi.initChosen
 
     $('#new-overlay').show()
+
+  hideOverlay: (e) ->
+    e?.preventDefault()
+    $('#new-overlay').hide()
+    React.unmountComponentAtNode document.getElementById('new-overlay')
 
   handleCompletedChanged: (event, data) ->
     $('[data-card-name=declarations]').toggleClass 'completed', data.completed
@@ -45,23 +45,27 @@ Tahi.overlays.declarations =
           </div>`
 
       render: ->
-        OverlayHeader = Tahi.overlays.components.OverlayHeader
-        OverlayFooter = Tahi.overlays.components.OverlayFooter
+        Overlay = Tahi.overlays.components.Overlay
         HiddenDivComponent = Tahi.overlays.components.RailsFormHiddenDiv
 
         formAction = "#{this.props.paperPath}.json"
         checkboxFormAction = "#{this.props.taskPath}.json"
-        `<div>
-          <OverlayHeader paperTitle={this.props.paperTitle} paperPath={this.props.paperPath} closeCallback={Tahi.overlays.declarations.hideOverlay} />
-          <main>
-            <h1>Declarations</h1>
-            <form accept-charset="UTF-8" action={formAction} data-remote="true" method="post">
-              <HiddenDivComponent method="patch" />
-              {this.declarations()}
-            </form>
-          </main>
-          <OverlayFooter closeCallback={Tahi.overlays.declarations.hideOverlay} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} onCompletedChanged={this.props.onCompletedChanged} />
-        </div>`
+        mainContent = `<main>
+          <h1>Declarations</h1>
+          <form accept-charset="UTF-8" action={formAction} data-remote="true" method="post">
+            <HiddenDivComponent method="patch" />
+            {this.declarations()}
+          </form>
+        </main>`
+        `<Overlay
+            declarations={this.props.declarations}
+            paperTitle={this.props.paperTitle}
+            paperPath={this.props.paperPath}
+            closeCallback={Tahi.overlays.declarations.hideOverlay}
+            taskPath={this.props.taskPath}
+            taskCompleted={this.props.taskCompleted}
+            onCompletedChanged={this.props.onCompletedChanged}
+            mainContent={mainContent} />`
 
       componentDidMount: (rootNode) ->
         form = $('form', rootNode)

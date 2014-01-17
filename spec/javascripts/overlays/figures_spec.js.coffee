@@ -144,30 +144,20 @@ describe "Tahi.overlays.figures", ->
             }
           ]
 
-      it "renders an overlay header", ->
-        header = @component.render().props.children[0]
-        OverlayHeader = Tahi.overlays.components.OverlayHeader
-        expect(header.constructor).toEqual OverlayHeader.componentConstructor
-        expect(header.props.paperTitle).toEqual 'Something'
-        expect(header.props.paperPath).toEqual '/path/to/paper'
-
-      it "renders an overlay footer, passing it an onCompletedChanged callback", ->
-        footer = @component.render().props.children[2]
-        OverlayFooter = Tahi.overlays.components.OverlayFooter
-        expect(footer.constructor).toEqual OverlayFooter.componentConstructor
-        expect(footer.props.checkboxFormAction).toEqual '/path/to/task.json'
-        expect(footer.props.taskCompleted).toEqual false
-        expect(footer.props.onCompletedChanged).toEqual @onCompletedChangedCallback
+      it "renders an Overlay component wrapping our content", ->
+        overlay = @component.render()
+        Overlay = Tahi.overlays.components.Overlay
+        expect(overlay.constructor).toEqual Overlay.componentConstructor
 
       it "renders a Rails form for a new figure", ->
-        form = @component.render().props.children[1].props.children[1].props.children[1]
+        form = @component.render().props.mainContent.props.children[1].props.children[1]
         RailsForm = Tahi.overlays.components.RailsForm
         expect(form.constructor).toEqual RailsForm.componentConstructor
         expect(form.props.action).toEqual '/path/to/figures.json'
         expect(form.props.formContent.props.name).toEqual 'figure[attachment][]'
 
       it "renders a ul for upload progress", ->
-        paperFigureUploads = @component.render().props.children[1].props.children[2]
+        paperFigureUploads = @component.render().props.mainContent.props.children[2]
         expect(paperFigureUploads.props.id).toEqual 'paper-figure-uploads'
         expect(paperFigureUploads.props.children.length).toEqual 2
         upload1 = paperFigureUploads.props.children[0]
@@ -178,7 +168,7 @@ describe "Tahi.overlays.figures", ->
         expect(upload2.constructor).toEqual FigureUpload.componentConstructor
 
       it "renders the existing figures", ->
-        paperFigures = @component.render().props.children[1].props.children[3]
+        paperFigures = @component.render().props.mainContent.props.children[3]
         expect(paperFigures.props.id).toEqual 'paper-figures'
 
         expect(paperFigures.props.children.length).toEqual 2

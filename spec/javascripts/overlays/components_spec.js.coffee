@@ -1,4 +1,37 @@
 describe "Tahi overlay components", ->
+  describe "Overlay", ->
+    describe "#render", ->
+      beforeEach ->
+        @onCompletedChangedCallback = jasmine.createSpy 'onCompletedChanged'
+        @mainContent = React.DOM.main()
+        @component = Tahi.overlays.components.Overlay
+          paperTitle: 'A working title'
+          paperPath: '/path/to/paper'
+          taskPath: '/path/to/task'
+          taskCompleted: false
+          onCompletedChanged: @onCompletedChangedCallback
+          mainContent: @mainContent
+
+      it "renders an overlay header", ->
+        header = @component.render().props.children[0]
+        OverlayHeader = Tahi.overlays.components.OverlayHeader
+        expect(header.constructor).toEqual OverlayHeader.componentConstructor
+        expect(header.props.paperTitle).toEqual 'A working title'
+        expect(header.props.paperPath).toEqual '/path/to/paper'
+
+      it "renders an overlay footer, passing it an onCompletedChanged callback", ->
+        footer = @component.render().props.children[2]
+        OverlayFooter = Tahi.overlays.components.OverlayFooter
+        expect(footer.constructor).toEqual OverlayFooter.componentConstructor
+        expect(footer.props.checkboxFormAction).toEqual '/path/to/task.json'
+        expect(footer.props.taskCompleted).toEqual false
+        expect(footer.props.onCompletedChanged).toEqual @onCompletedChangedCallback
+
+      it "renders the main content between the header and footer", ->
+        mainContent = @component.render().props.children[1]
+        expect(mainContent).toEqual @mainContent
+
+
   describe "RailsForm", ->
     describe "#render", ->
       beforeEach ->

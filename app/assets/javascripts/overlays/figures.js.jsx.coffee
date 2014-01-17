@@ -86,7 +86,7 @@ Tahi.overlays.figures =
               {figureLIs}
             </ul>
           </main>
-          <OverlayFooter closeCallback={Tahi.overlays.figures.hideOverlay} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} />
+          <OverlayFooter closeCallback={Tahi.overlays.figures.hideOverlay} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} onCompletedChanged={this.props.onCompletedChanged} />
         </div>`
 
       componentDidMount: (rootNode) ->

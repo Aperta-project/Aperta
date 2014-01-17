@@ -63,9 +63,12 @@ Tahi.displayOverlay = (element) ->
   container = $('main', overlay)
   contentContainer.children().appendTo(container)
 
+  $('html').addClass 'noscroll'
+
   handler = (e) ->
     e.preventDefault()
     container.children().appendTo(contentContainer)
+    $('html').removeClass 'noscroll'
     overlay.hide()
     titleContainer.empty()
     isCompleted = $('form input[type="checkbox"]', footerContainer).is(':checked')

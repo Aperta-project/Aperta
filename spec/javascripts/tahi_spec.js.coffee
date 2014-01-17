@@ -110,6 +110,18 @@ describe "tahi", ->
           expect($('#planes-content')).toBeEmpty()
           expect($('#overlay main').html()).toEqual expectedHtml
 
+    it "adds the noscroll class to the body", ->
+      spyOn $.fn, 'addClass'
+      Tahi.displayOverlay($('#planes'))
+      expect($.fn.addClass).toHaveBeenCalledWith('noscroll')
+
+    context "when the overlay is closed", ->
+      it "removes the noscroll class to the body", ->
+        spyOn $.fn, 'removeClass'
+        Tahi.displayOverlay($('#planes'))
+        $('.close-overlay').click()
+        expect($.fn.removeClass).toHaveBeenCalledWith('noscroll')
+
     it "moves given div content inside overlay-content", ->
       expectedHtml = $('#planes-content').html()
       Tahi.displayOverlay($('#planes'))

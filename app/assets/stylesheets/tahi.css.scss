@@ -67,3 +67,7 @@ textarea {
 .progress .progress-bar {
   @include progress-bar-variant($tahi-tertiary);
 }
+
+.noscroll {
+  overflow: hidden;
+}

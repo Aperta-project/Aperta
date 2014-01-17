@@ -22,10 +22,14 @@ Tahi.overlays.declarations =
       paperPath: $target.data('paperPath')
       taskPath: $target.data('taskPath')
       declarations: $target.data('declarations')
-      taskCompleted: $target.data('taskCompleted')
+      taskCompleted: $target.hasClass('completed')
+      onCompletedChanged: Tahi.overlays.declarations.handleCompletedChanged
     React.renderComponent component, document.getElementById('new-overlay'), Tahi.initChosen
 
     $('#new-overlay').show()
+
+  handleCompletedChanged: (event, data) ->
+    $('[data-card-name=declarations]').toggleClass 'completed', data.completed
 
   components:
     DeclarationsOverlay: React.createClass
@@ -56,7 +60,7 @@ Tahi.overlays.declarations =
               {this.declarations()}
             </form>
           </main>
-          <OverlayFooter closeCallback={Tahi.overlays.declarations.hideOverlay} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} />
+          <OverlayFooter closeCallback={Tahi.overlays.declarations.hideOverlay} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} onCompletedChanged={this.props.onCompletedChanged} />
         </div>`
 
       componentDidMount: (rootNode) ->

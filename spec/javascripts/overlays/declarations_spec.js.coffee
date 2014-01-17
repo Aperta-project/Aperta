@@ -25,24 +25,47 @@ describe "Declarations Card", ->
       spyOn React, 'renderComponent'
       @event = jasmine.createSpyObj 'event', ['preventDefault']
       @event.target = document.getElementById('link1')
+      @overlay = jasmine.createSpy 'DeclarationsOverlay'
+      spyOn(Tahi.overlays.declarations.components, 'DeclarationsOverlay').and.returnValue @overlay
 
     it "prevents event propagation", ->
       Tahi.overlays.declarations.displayOverlay(@event)
       expect(@event.preventDefault).toHaveBeenCalled()
 
+    it "instantiates a DeclarationsOverlay component", ->
+      Tahi.overlays.declarations.displayOverlay(@event)
+      expect(Tahi.overlays.declarations.components.DeclarationsOverlay).toHaveBeenCalledWith(
+        jasmine.objectContaining
+          paperTitle: 'Something'
+          paperPath: '/path/to/paper'
+          taskPath: '/path/to/task'
+          declarations: []
+          onCompletedChanged: Tahi.overlays.declarations.handleCompletedChanged
+      )
+
     it "renders DeclarationsOverlay component inserting it into #new-overlay", ->
       Tahi.overlays.declarations.displayOverlay(@event)
-      declarationsOverlay = Tahi.overlays.declarations.components.DeclarationsOverlay
-        paperTitle: 'Something'
-        paperPath: '/path/to/paper'
-        declarations: []
-        taskPath: '/path/to/task'
-        taskCompleted: false
-      expect(React.renderComponent).toHaveBeenCalledWith(declarationsOverlay, $('#new-overlay')[0], Tahi.initChosen)
+      expect(React.renderComponent).toHaveBeenCalledWith(@overlay, $('#new-overlay')[0], Tahi.initChosen)
 
     it "displays the overlay", ->
       Tahi.overlays.declarations.displayOverlay(@event)
       expect($('#new-overlay')).toBeVisible()
+
+    context "when the link does not have the completed class", ->
+      it "instantiates the component with taskCompleted false", ->
+        $('#link1, #link2').removeClass 'completed'
+        Tahi.overlays.declarations.displayOverlay(@event)
+        expect(Tahi.overlays.declarations.components.DeclarationsOverlay).toHaveBeenCalledWith(
+          jasmine.objectContaining taskCompleted: false
+        )
+
+    context "when the link has the completed class", ->
+      it "instantiates the component with taskCompleted true", ->
+        $('#link1, #link2').addClass 'completed'
+        Tahi.overlays.declarations.displayOverlay(@event)
+        expect(Tahi.overlays.declarations.components.DeclarationsOverlay).toHaveBeenCalledWith(
+          jasmine.objectContaining taskCompleted: true
+        )
 
   describe "#hideOverlay", ->
     beforeEach ->

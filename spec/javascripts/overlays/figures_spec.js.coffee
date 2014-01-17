@@ -47,6 +47,10 @@ describe "Tahi.overlays.figures", ->
       Tahi.overlays.figures.displayOverlay(@event)
       expect(React.renderComponent).toHaveBeenCalledWith(@overlay, $('#new-overlay')[0], Tahi.initChosen)
 
+    it "displays the overlay", ->
+      Tahi.overlays.figures.displayOverlay(@event)
+      expect($('#new-overlay')).toBeVisible()
+
     context "when the link does not have the completed class", ->
       it "instantiates the component with taskCompleted false", ->
         $('#link1, #link2').removeClass 'completed'

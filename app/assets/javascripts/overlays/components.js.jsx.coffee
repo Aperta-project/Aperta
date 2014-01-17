@@ -31,7 +31,7 @@ Tahi.overlays.components.CompletedCheckbox = React.createClass
     `<RailsForm action={this.props.action} formContent={this.formContent()} />`
 
   componentDidMount: (rootNode) ->
-    Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode)
+    Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode), success: @props.onSuccess
 
 Tahi.overlays.components.OverlayHeader = React.createClass
   render: ->

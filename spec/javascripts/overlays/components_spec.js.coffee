@@ -20,7 +20,10 @@ describe "Tahi overlay components", ->
 
   describe "CompletedCheckbox", ->
     beforeEach ->
-      @component = Tahi.overlays.components.CompletedCheckbox({action: '/form/action'})
+      @successCallback = jasmine.createSpy 'successCallback'
+      @component = Tahi.overlays.components.CompletedCheckbox
+        action: '/form/action'
+        onSuccess: @successCallback
 
     describe "#formContent", ->
       context "when the task has been completed", ->
@@ -51,6 +54,7 @@ describe "Tahi overlay components", ->
         args = Tahi.setupSubmitOnChange.calls.mostRecent().args
         expect(args[0][0]).toEqual $(html)[0]
         expect(args[1][0]).toEqual $('input[type="checkbox"]', html)[0]
+        expect(args[2]).toEqual success: @successCallback
 
   describe "OverlayHeader", ->
     describe "#render", ->

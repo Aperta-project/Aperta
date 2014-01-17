@@ -5,7 +5,6 @@ class FakeTask < Task
 end
 
 describe TasksController do
-
   let(:permitted_params) { [:assignee_id, :completed, :title, :body, :phase_id] }
 
   let :user do
@@ -97,6 +96,11 @@ describe TasksController do
       it "updates the task" do
         do_request
         expect(task.reload).to be_completed
+      end
+
+      it "renders the task id and completed status as JSON" do
+        do_request
+        expect(JSON.parse(response.body)).to eq({ id: task.id, completed: true }.with_indifferent_access)
       end
     end
 

@@ -15,7 +15,8 @@ class TasksController < ApplicationController
            end
     if task
       task.update task_params(task)
-      head :no_content
+      attributes = %w(id completed)
+      render json: task.as_json.slice(*attributes)
     else
       head :forbidden
     end

@@ -48,15 +48,24 @@ describe "tahi", ->
         width: '300px'
 
   describe "#setupSubmitOnChange", ->
+    beforeEach ->
+      @form = $('<form>')
+      @element = $('<input>')
+
+      spyOn @form, 'trigger'
+      spyOn @form, 'on'
+
     it "triggers 'submit.rails' event on the form when an element's change event is called", ->
-      form = $('<form>')
-      element = $('<input>')
+      Tahi.setupSubmitOnChange @form, @element
 
-      spyOn form, 'trigger'
-      Tahi.setupSubmitOnChange form, element
+      @element.trigger 'change'
+      expect(@form.trigger).toHaveBeenCalledWith 'submit.rails'
 
-      element.trigger 'change'
-      expect(form.trigger).toHaveBeenCalledWith 'submit.rails'
+    context "when a success callback is provided", ->
+      it "assigns the callback as a handler for ajax:success events", ->
+        callback = jasmine.createSpy 'success'
+        Tahi.setupSubmitOnChange @form, @element, success: callback
+        expect(@form.on).toHaveBeenCalledWith 'ajax:success', callback
 
   describe "initOverlay", ->
     it "binds a click event to the element which opens the overlay", ->

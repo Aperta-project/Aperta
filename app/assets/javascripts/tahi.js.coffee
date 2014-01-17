@@ -25,7 +25,8 @@ Tahi.initChosen = ->
   $('.chosen-select').chosen
     width: '300px'
 
-Tahi.setupSubmitOnChange = (form, elements) ->
+Tahi.setupSubmitOnChange = (form, elements, options) ->
+  form.on 'ajax:success', options?.success
   elements.on 'change', (e) ->
     form.trigger 'submit.rails'
 

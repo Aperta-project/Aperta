@@ -4,8 +4,8 @@ beforeEach ->
 describe "Tahi.overlays.figures", ->
   beforeEach ->
     $('#jasmine_content').html """
-      <a href="#" id="link-1" data-card-name="figures" data-paper-title="Something" data-paper-path="/path/to/paper" data-figures-path="/path/to/figures" data-task-path="/path/to/task" data-task-completed="false">Foo</a>
-      <a href="#" id="link-2" data-card-name="figures" data-paper-title="Something" data-paper-path="/path/to/paper" data-figures-path="/path/to/figures" data-task-path="/path/to/task" data-task-completed="false">Bar</a>
+      <a href="#" id="link1" data-card-name="figures" data-paper-title="Something" data-paper-path="/path/to/paper" data-figures-path="/path/to/figures" data-task-path="/path/to/task">Foo</a>
+      <a href="#" id="link2" data-card-name="figures" data-paper-title="Something" data-paper-path="/path/to/paper" data-figures-path="/path/to/figures" data-task-path="/path/to/task">Bar</a>
       <div id="new-overlay" style="display: none;"></div>
     """
 
@@ -13,12 +13,55 @@ describe "Tahi.overlays.figures", ->
     it "binds click on all elements with data-card-name=figures", ->
       spyOn Tahi.overlays.figures, 'displayOverlay'
       Tahi.overlays.figures.init()
-      $('#link-1').click()
+      $('#link1').click()
       expect(Tahi.overlays.figures.displayOverlay).toHaveBeenCalled()
 
       Tahi.overlays.figures.displayOverlay.calls.reset()
-      $('#link-2').click()
+      $('#link2').click()
       expect(Tahi.overlays.figures.displayOverlay).toHaveBeenCalled()
+
+  describe "#displayOverlay", ->
+    beforeEach ->
+      spyOn React, 'renderComponent'
+      @event = jasmine.createSpyObj 'event', ['preventDefault']
+      @event.target = document.getElementById('link1')
+      @overlay = jasmine.createSpy 'FiguresOverlay'
+      spyOn(Tahi.overlays.figures.components, 'FiguresOverlay').and.returnValue @overlay
+
+    it "prevents event propagation", ->
+      Tahi.overlays.figures.displayOverlay(@event)
+      expect(@event.preventDefault).toHaveBeenCalled()
+
+    it "instantiates a FiguresOverlay component", ->
+      Tahi.overlays.figures.displayOverlay(@event)
+      expect(Tahi.overlays.figures.components.FiguresOverlay).toHaveBeenCalledWith(
+        jasmine.objectContaining
+          paperTitle: 'Something'
+          paperPath: '/path/to/paper'
+          figuresPath: '/path/to/figures'
+          taskPath: '/path/to/task'
+          onCompletedChanged: Tahi.overlays.figures.handleCompletedChanged
+      )
+
+    it "renders FiguresOverlay component inserting it into #new-overlay", ->
+      Tahi.overlays.figures.displayOverlay(@event)
+      expect(React.renderComponent).toHaveBeenCalledWith(@overlay, $('#new-overlay')[0], Tahi.initChosen)
+
+    context "when the link does not have the completed class", ->
+      it "instantiates the component with taskCompleted false", ->
+        $('#link1, #link2').removeClass 'completed'
+        Tahi.overlays.figures.displayOverlay(@event)
+        expect(Tahi.overlays.figures.components.FiguresOverlay).toHaveBeenCalledWith(
+          jasmine.objectContaining taskCompleted: false
+        )
+
+    context "when the link has the completed class", ->
+      it "instantiates the component with taskCompleted true", ->
+        $('#link1, #link2').addClass 'completed'
+        Tahi.overlays.figures.displayOverlay(@event)
+        expect(Tahi.overlays.figures.components.FiguresOverlay).toHaveBeenCalledWith(
+          jasmine.objectContaining taskCompleted: true
+        )
 
   describe "#hideOverlay", ->
     beforeEach ->
@@ -37,6 +80,33 @@ describe "Tahi.overlays.figures", ->
       spyOn React, 'unmountComponentAtNode'
       Tahi.overlays.figures.hideOverlay(@event)
       expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('new-overlay')
+
+  describe "#handleCompletedChanged", ->
+    context "when the task has been completed", ->
+      it "sets the completed class", ->
+        $('#link1, #link2').removeClass 'completed'
+        event = jasmine.createSpy 'event'
+        data =
+          completed: true
+          id: 123
+
+        Tahi.overlays.figures.init()
+        Tahi.overlays.figures.handleCompletedChanged event, data
+        expect($('#link1')).toHaveClass 'completed'
+        expect($('#link2')).toHaveClass 'completed'
+
+    context "when the task has not been completed", ->
+      it "clears the completed class", ->
+        $('#link1, #link2').addClass 'completed'
+        event = jasmine.createSpy 'event'
+        data =
+          completed: false
+          id: 123
+
+        Tahi.overlays.figures.init()
+        Tahi.overlays.figures.handleCompletedChanged event, data
+        expect($('#link1')).not.toHaveClass 'completed'
+        expect($('#link2')).not.toHaveClass 'completed'
 
   describe "FiguresOverlay component", ->
     describe "#render", ->

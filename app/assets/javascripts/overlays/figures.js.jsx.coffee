@@ -18,7 +18,8 @@ Tahi.overlays.figures =
       figuresPath: $target.data('figuresPath')
       taskPath: $target.data('taskPath')
       figures: $target.data('figures')
-      taskCompleted: $target.data('taskCompleted')
+      taskCompleted: $target.hasClass('completed')
+      onCompletedChanged: Tahi.overlays.figures.handleCompletedChanged
     React.renderComponent component, document.getElementById('new-overlay'), Tahi.initChosen
 
     $('#new-overlay').show()
@@ -27,6 +28,9 @@ Tahi.overlays.figures =
     e?.preventDefault()
     $('#new-overlay').hide()
     React.unmountComponentAtNode document.getElementById('new-overlay')
+
+  handleCompletedChanged: (event, data) ->
+    $('[data-card-name=figures]').toggleClass 'completed', data.completed
 
   components:
     FigureUpload: React.createClass

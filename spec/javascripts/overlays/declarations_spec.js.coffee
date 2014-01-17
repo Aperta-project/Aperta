@@ -4,8 +4,8 @@ beforeEach ->
 describe "Declarations Card", ->
   beforeEach ->
     $('#jasmine_content').html """
-      <a href="#" id="link-1" data-card-name="declarations" data-paper-title="Something" data-paper-path="/path/to/paper" data-task-path="/path/to/task" data-task-completed="false" data-declarations="[]">Foo</a>
-      <a href="#" id="link-2" data-card-name="declarations" data-paper-title="Something" data-paper-path="/path/to/paper" data-task-path="/path/to/task" data-task-completed="false" data-declarations="[]">Bar</a>
+      <a href="#" id="link1" data-card-name="declarations" data-paper-title="Something" data-paper-path="/path/to/paper" data-task-path="/path/to/task" data-task-completed="false" data-declarations="[]">Foo</a>
+      <a href="#" id="link2" data-card-name="declarations" data-paper-title="Something" data-paper-path="/path/to/paper" data-task-path="/path/to/task" data-task-completed="false" data-declarations="[]">Bar</a>
       <div id="new-overlay" style="display: none;"></div>
     """
 
@@ -13,18 +13,18 @@ describe "Declarations Card", ->
     it "binds click on all elements with data-card-name=declarations", ->
       spyOn Tahi.overlays.declarations, 'displayOverlay'
       Tahi.overlays.declarations.init()
-      $('#link-1').click()
+      $('#link1').click()
       expect(Tahi.overlays.declarations.displayOverlay).toHaveBeenCalled()
 
       Tahi.overlays.declarations.displayOverlay.calls.reset()
-      $('#link-2').click()
+      $('#link2').click()
       expect(Tahi.overlays.declarations.displayOverlay).toHaveBeenCalled()
 
   describe "#displayOverlay", ->
     beforeEach ->
       spyOn React, 'renderComponent'
       @event = jasmine.createSpyObj 'event', ['preventDefault']
-      @event.target = document.getElementById('link-1')
+      @event.target = document.getElementById('link1')
 
     it "prevents event propagation", ->
       Tahi.overlays.declarations.displayOverlay(@event)

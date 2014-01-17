@@ -93,12 +93,15 @@ feature "Editing paper", js: true do
     edit_paper.uploads_overlay do |overlay|
       overlay.attach_figure
       expect(overlay).to have_image 'yeti.tiff'
+      overlay.mark_as_complete
+      expect(overlay).to be_completed
     end
 
     edit_paper.reload
 
     edit_paper.uploads_overlay do |overlay|
       expect(overlay).to have_image('yeti.tiff')
+      expect(overlay).to be_completed
     end
   end
 

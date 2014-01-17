@@ -7,10 +7,13 @@ Tahi.overlays ||= {}
 Tahi.overlays.components ||= {}
 
 Tahi.overlays.components.RailsForm = React.createClass
+  getDefaultProps: ->
+    method: 'patch'
+
   render: ->
     RailsFormHiddenDiv = Tahi.overlays.components.RailsFormHiddenDiv
     `<form accept-charset="UTF-8" action={this.props.action} data-remote="true" method="post">
-      <RailsFormHiddenDiv method="patch" />
+      <RailsFormHiddenDiv method={this.props.method} />
       {this.props.formContent}
     </form>`
 

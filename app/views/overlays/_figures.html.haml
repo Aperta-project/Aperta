@@ -1,7 +1,7 @@
 %h1 Figures
 %span.secondary-button.fileinput-button
   Add new Figures
-  = form_for [@paper, Figure.new], format: :json do |f|
+  = form_for [@paper, Figure.new], remote: true, format: :json do |f|
     = f.file_field :attachment, multiple: true, class: 'js-jquery-fileupload'
 %ul#paper-figure-uploads
 %ul#paper-figures

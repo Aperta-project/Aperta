@@ -46,7 +46,7 @@ class EditPaperPage < Page
 
   def uploads_overlay &block
     click_on 'Upload Figures'
-    overlay = UploadOverlay.new find('#overlay')
+    overlay = UploadOverlay.new find('#new-overlay')
     if block_given?
       block.call overlay
       overlay.dismiss

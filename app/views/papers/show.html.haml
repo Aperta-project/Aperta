@@ -32,7 +32,7 @@
     %ul.assigned-tasks.cards
       %ul.cards
         - @tasks.each do |task|
-          - if task.title == 'Declarations'
+          - if ['Declarations', 'Upload Figures'].include? task.title
             %li
               = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'task-completed' => task.completed?, declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json } do
                 %span.glyphicon.glyphicon-ok

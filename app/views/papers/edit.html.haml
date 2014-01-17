@@ -46,9 +46,10 @@
         %span.glyphicon.glyphicon-ok
         = task.title
 
-      = link_to 'Upload Figures', '#', data: { 'overlay-name' => 'upload-figures', 'overlay-title' => @paper.short_title }, class: 'card'
-      #upload-figures-content.hidden
-        = render 'overlays/figures'
+      - task = Task.where(title: "Upload Figures", phase: @paper.phases.where(name: 'Submit Paper').first).first
+      = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "figures", 'paper-title' => @paper.short_title, 'figures-path' => paper_figures_path(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'task-completed' => task.completed?, figures: @paper.figures.map(&:access_details).to_json } do
+        %span.glyphicon.glyphicon-ok
+        Upload Figures
 
       = link_to 'Upload Manuscript', '#', data: { 'overlay-name' => 'upload-manuscript', 'overlay-title' => @paper.short_title }, class: 'card'
       #upload-manuscript-content.hidden

@@ -12,7 +12,8 @@ describe TaskPolicy do
     }
 
     let!(:expected_tasks) do
-      tasks = paper.task_manager.phases.collect(&:tasks).flatten.in_groups(2)
+      tasks = paper.task_manager.phases.collect(&:tasks).flatten.in_groups(2, false)
+      expect(tasks.flatten.length).to be > 3
       assigned_tasks = tasks.first.each do |task|
         task.update! assignee: user
       end

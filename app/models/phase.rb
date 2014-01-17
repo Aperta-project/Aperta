@@ -25,6 +25,7 @@ class Phase < ActiveRecord::Base
     case name
     when 'Submit Paper'
       self.tasks << DeclarationTask.new
+      self.tasks << FigureTask.new
     when 'Needs Editor'
       self.tasks << PaperAdminTask.new
       self.tasks << TechCheckTask.new

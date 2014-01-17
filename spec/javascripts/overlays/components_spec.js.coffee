@@ -89,12 +89,20 @@ describe "Tahi overlay components", ->
   describe "OverlayFooter", ->
     describe "#render", ->
       it "passes an on click callback to the close button", ->
-        callback = ->
+        callback = jasmine.createSpy 'closeCallback'
         component = Tahi.overlays.components.OverlayFooter
           closeCallback: callback
 
         button  = component.render().props.children[1]
         expect(button.props.onClick).toEqual callback
+
+      it "passes onCompletedChanged as an onSuccess callback to CompletedCheckbox", ->
+        callback = jasmine.createSpy 'onCompletedChanged'
+        component = Tahi.overlays.components.OverlayFooter
+          onCompletedChanged: callback
+
+        checkbox  = component.render().props.children[0].props.children
+        expect(checkbox.props.onSuccess).toEqual callback
 
   describe "RailsFormHiddenDiv", ->
     describe "#render", ->

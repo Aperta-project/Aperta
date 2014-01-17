@@ -45,7 +45,7 @@ Tahi.overlays.components.OverlayFooter = React.createClass
     CompletedCheckbox = Tahi.overlays.components.CompletedCheckbox
     `<footer>
       <div className="content">
-        <CompletedCheckbox action={this.props.checkboxFormAction} taskCompleted={this.props.taskCompleted} />
+        <CompletedCheckbox action={this.props.checkboxFormAction} taskCompleted={this.props.taskCompleted} onSuccess={this.props.onCompletedChanged} />
       </div>
       <a className="primary-button" onClick={this.props.closeCallback}>Close</a>
     </footer>`

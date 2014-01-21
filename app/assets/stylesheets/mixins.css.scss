@@ -1,6 +1,0 @@
-@mixin tahi-gradient-vertical-three-colors($start-color: #00b3ee, $start-color-stop: 25%, $mid-color: #7a43b6, $mid-color-stop: 50%, $end-color: #c3325f, $end-color-stop: 100%) {
-  background-image: -webkit-linear-gradient($start-color $start-color-stop, $mid-color $mid-color-stop, $end-color $end-color-stop);
-  background-image: linear-gradient($start-color $start-color-stop, $mid-color $mid-color-stop, $end-color $end-color-stop);
-  background-repeat: no-repeat;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=0); // IE9 and down, gets no color-stop at all for proper fallback
-}

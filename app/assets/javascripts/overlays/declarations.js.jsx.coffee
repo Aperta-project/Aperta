@@ -27,7 +27,7 @@ Tahi.overlays.declarations =
 
       render: ->
         Overlay = Tahi.overlays.components.Overlay
-        HiddenDivComponent = Tahi.overlays.components.RailsFormHiddenDiv
+        RailsForm = Tahi.overlays.components.RailsForm
 
         formAction = "#{this.props.paperPath}.json"
         checkboxFormAction = "#{this.props.taskPath}.json"
@@ -41,10 +41,9 @@ Tahi.overlays.declarations =
             onCompletedChanged={this.props.onCompletedChanged}>
           <main>
             <h1>Declarations</h1>
-            <form accept-charset="UTF-8" action={formAction} data-remote="true" method="post">
-              <HiddenDivComponent method="patch" />
+            <RailsForm action={formAction}>
               {this.declarations()}
-            </form>
+            </RailsForm>
           </main>
         </Overlay>`
 

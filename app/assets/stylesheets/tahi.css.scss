@@ -27,6 +27,10 @@ textarea {
 #tahi-container {
   max-width: 1120px;
   margin: 0 auto;
+
+  &.full-width {
+    max-width: none;
+  }
 }
 
 .small_text {

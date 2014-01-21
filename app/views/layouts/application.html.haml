@@ -36,7 +36,7 @@
 
     = yield :control_bar
 
-    #tahi-container
+    #tahi-container{class: yield(:tahi_container_class)}
       - if flash.present?
         %p.notice= notice
         %p.alert= alert

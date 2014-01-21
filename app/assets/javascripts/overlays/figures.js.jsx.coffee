@@ -54,28 +54,33 @@ Tahi.overlays.figures =
 
         formAction = "#{this.props.figuresPath}.json"
         checkboxFormAction = "#{this.props.taskPath}.json"
-        inputField = `<input id='figure_attachment' className="js-jquery-fileupload" multiple="multiple" name="figure[attachment][]" type="file" />`
-        mainContent = `<main>
-          <h1>Figures</h1>
-          <span className="secondary-button fileinput-button">
-            Add new Figures
-            <RailsForm action={formAction} formContent={inputField} method="POST" />
-          </span>
-          <ul id="paper-figure-uploads">
-            {uploadLIs}
-          </ul>
-          <ul id="paper-figures">
-            {figureLIs}
-          </ul>
-        </main>`
         `<Overlay
             paperTitle={this.props.paperTitle}
             paperPath={this.props.paperPath}
             closeCallback={Tahi.overlays.figures.hideOverlay}
             taskPath={this.props.taskPath}
             taskCompleted={this.props.taskCompleted}
-            onCompletedChanged={this.props.onCompletedChanged}
-            mainContent={mainContent} />`
+            onCompletedChanged={this.props.onCompletedChanged}>
+          <main>
+            <h1>Figures</h1>
+            <span className="secondary-button fileinput-button">
+              Add new Figures
+              <RailsForm action={formAction} method="POST">
+                <input id='figure_attachment'
+                       className="js-jquery-fileupload"
+                       multiple="multiple"
+                       name="figure[attachment][]"
+                       type="file" />
+              </RailsForm>
+            </span>
+            <ul id="paper-figure-uploads">
+              {uploadLIs}
+            </ul>
+            <ul id="paper-figures">
+              {figureLIs}
+            </ul>
+          </main>
+        </Overlay>`
 
       componentDidMount: (rootNode) ->
         uploader = $('.js-jquery-fileupload', rootNode).fileupload()

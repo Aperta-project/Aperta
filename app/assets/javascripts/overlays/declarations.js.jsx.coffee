@@ -31,13 +31,6 @@ Tahi.overlays.declarations =
 
         formAction = "#{this.props.paperPath}.json"
         checkboxFormAction = "#{this.props.taskPath}.json"
-        mainContent = `<main>
-          <h1>Declarations</h1>
-          <form accept-charset="UTF-8" action={formAction} data-remote="true" method="post">
-            <HiddenDivComponent method="patch" />
-            {this.declarations()}
-          </form>
-        </main>`
         `<Overlay
             declarations={this.props.declarations}
             paperTitle={this.props.paperTitle}
@@ -45,8 +38,15 @@ Tahi.overlays.declarations =
             closeCallback={Tahi.overlays.declarations.hideOverlay}
             taskPath={this.props.taskPath}
             taskCompleted={this.props.taskCompleted}
-            onCompletedChanged={this.props.onCompletedChanged}
-            mainContent={mainContent} />`
+            onCompletedChanged={this.props.onCompletedChanged}>
+          <main>
+            <h1>Declarations</h1>
+            <form accept-charset="UTF-8" action={formAction} data-remote="true" method="post">
+              <HiddenDivComponent method="patch" />
+              {this.declarations()}
+            </form>
+          </main>
+        </Overlay>`
 
       componentDidMount: (rootNode) ->
         form = $('form', rootNode)

@@ -14,7 +14,7 @@ Tahi.overlays.components.Overlay = React.createClass
     checkboxFormAction = "#{this.props.taskPath}.json"
     `<div>
       <OverlayHeader paperTitle={this.props.paperTitle} paperPath={this.props.paperPath} closeCallback={Tahi.overlay.hide} />
-      {this.props.mainContent}
+      {this.props.children}
       <OverlayFooter closeCallback={Tahi.overlay.hide} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} onCompletedChanged={this.props.onCompletedChanged} />
     </div>`
 
@@ -26,21 +26,20 @@ Tahi.overlays.components.RailsForm = React.createClass
     RailsFormHiddenDiv = Tahi.overlays.components.RailsFormHiddenDiv
     `<form accept-charset="UTF-8" action={this.props.action} data-remote="true" method="post">
       <RailsFormHiddenDiv method={this.props.method} />
-      {this.props.formContent}
+      {this.props.children}
     </form>`
 
 Tahi.overlays.components.CompletedCheckbox = React.createClass
-  formContent: ->
-    inputId = "task_declarations_checkbox_completed"
-    `<div>
-      <input name="task[completed]" type="hidden" value="0" />
-      <input id={inputId} name="task[completed]" type="checkbox" value="1" defaultChecked={this.props.taskCompleted} />
-      <label htmlFor={inputId}>Completed</label>
-    </div>`
-
   render: ->
     RailsForm = Tahi.overlays.components.RailsForm
-    `<RailsForm action={this.props.action} formContent={this.formContent()} />`
+    inputId = "task_declarations_checkbox_completed"
+    `<RailsForm action={this.props.action}>
+      <div>
+        <input name="task[completed]" type="hidden" value="0" />
+        <input id={inputId} name="task[completed]" type="checkbox" value="1" defaultChecked={this.props.taskCompleted} />
+        <label htmlFor={inputId}>Completed</label>
+      </div>
+    </RailsForm>`
 
   componentDidMount: (rootNode) ->
     Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode), success: @props.onSuccess

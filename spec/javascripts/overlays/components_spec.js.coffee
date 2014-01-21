@@ -4,13 +4,16 @@ describe "Tahi overlay components", ->
       beforeEach ->
         @onCompletedChangedCallback = jasmine.createSpy 'onCompletedChanged'
         @mainContent = React.DOM.main()
-        @component = Tahi.overlays.components.Overlay
-          paperTitle: 'A working title'
-          paperPath: '/path/to/paper'
-          taskPath: '/path/to/task'
-          taskCompleted: false
-          onCompletedChanged: @onCompletedChangedCallback
-          mainContent: @mainContent
+        @component = Tahi.overlays.components.Overlay(
+          {
+            paperTitle: 'A working title'
+            paperPath: '/path/to/paper'
+            taskPath: '/path/to/task'
+            taskCompleted: false
+            onCompletedChanged: @onCompletedChangedCallback
+          },
+          @mainContent
+        )
 
       it "renders an overlay header", ->
         header = @component.render().props.children[0]
@@ -35,9 +38,10 @@ describe "Tahi overlay components", ->
   describe "RailsForm", ->
     describe "#render", ->
       beforeEach ->
-        @component = Tahi.overlays.components.RailsForm
-          action: '/form/action'
-          formContent: React.DOM.input({type: 'foo'})
+        @component = Tahi.overlays.components.RailsForm(
+          { action: '/form/action' },
+          React.DOM.input({type: 'foo'})
+        )
 
       it "renders a form with the specified action", ->
         form = @component.render()
@@ -58,26 +62,25 @@ describe "Tahi overlay components", ->
         action: '/form/action'
         onSuccess: @successCallback
 
-    describe "#formContent", ->
+    describe "#render", ->
+      it "generates a form for the task", ->
+        # paperId, taskId, taskCompleted
+        form = @component.render()
+        expect(form.props.action).toEqual '/form/action'
+
       context "when the task has been completed", ->
         beforeEach -> @component.props.taskCompleted = true
 
         it "checks the checkbox", ->
-          checkbox = @component.formContent().props.children[1]
+          checkbox = @component.render().props.children.props.children[1]
           expect(checkbox.props.defaultChecked).toEqual true
 
       context "when the task has not been completed", ->
         beforeEach -> @component.props.taskCompleted = false
 
         it "does not check the checkbox", ->
-          checkbox = @component.formContent().props.children[1]
+          checkbox = @component.render().props.children.props.children[1]
           expect(checkbox.props.defaultChecked).toEqual false
-
-    describe "#render", ->
-      it "generates a form for the task", ->
-        # paperId, taskId, taskCompleted
-        form = @component.render()
-        expect(form.props.action).toEqual '/form/action'
 
     describe "#componentDidMount", ->
       it "sets up submit on change for the check box", ->

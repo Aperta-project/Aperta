@@ -73,14 +73,14 @@ describe "Tahi.overlays.figures", ->
         expect(overlay.constructor).toEqual Overlay.componentConstructor
 
       it "renders a Rails form for a new figure", ->
-        form = @component.render().props.mainContent.props.children[1].props.children[1]
+        form = @component.render().props.children.props.children[1].props.children[1]
         RailsForm = Tahi.overlays.components.RailsForm
         expect(form.constructor).toEqual RailsForm.componentConstructor
         expect(form.props.action).toEqual '/path/to/figures.json'
-        expect(form.props.formContent.props.name).toEqual 'figure[attachment][]'
+        expect(form.props.children.props.name).toEqual 'figure[attachment][]'
 
       it "renders a ul for upload progress", ->
-        paperFigureUploads = @component.render().props.mainContent.props.children[2]
+        paperFigureUploads = @component.render().props.children.props.children[2]
         expect(paperFigureUploads.props.id).toEqual 'paper-figure-uploads'
         expect(paperFigureUploads.props.children.length).toEqual 2
         upload1 = paperFigureUploads.props.children[0]
@@ -91,7 +91,7 @@ describe "Tahi.overlays.figures", ->
         expect(upload2.constructor).toEqual FigureUpload.componentConstructor
 
       it "renders the existing figures", ->
-        paperFigures = @component.render().props.mainContent.props.children[3]
+        paperFigures = @component.render().props.children.props.children[3]
         expect(paperFigures.props.id).toEqual 'paper-figures'
 
         expect(paperFigures.props.children.length).toEqual 2

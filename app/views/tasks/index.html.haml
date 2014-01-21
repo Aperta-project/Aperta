@@ -9,7 +9,7 @@
           %li= link_to 'Article', edit_paper_path(@paper)
 %ul.phases
   - @task_manager.phases.each do |phase|
-    %li.phase{class: "#{'active' if @task_manager.phases.first == phase}"}
+    %li.phase{class: "#{'active' if @task_manager.phases.first == phase}"}>
       %h2= phase.name
 
       %ul.cards

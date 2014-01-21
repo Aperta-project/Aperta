@@ -4,14 +4,18 @@
 @import 'tahi';
 
 .phases {
-  @extend .row;
   list-style-type: none;
   padding: 40px 0 0;
   min-height: 800px;
   background: white;
+  white-space: nowrap;
+  overflow-x: scroll;
 
   .phase {
-    @extend .col-xs-3;
+    width: 280px;
+    padding: 0 15px;
+    display: inline-block;
+    vertical-align: top;
     @include tahi-gradient-vertical-three-colors(white, 25%, #ececec, 50%, white, 85%);
     border-right: 1px solid $tahi-tertiary;
     min-height: 600px;

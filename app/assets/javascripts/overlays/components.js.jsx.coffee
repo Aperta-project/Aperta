@@ -18,7 +18,6 @@ Tahi.overlays.components.Overlay = React.createClass
       <OverlayFooter closeCallback={Tahi.overlays.figures.hideOverlay} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} onCompletedChanged={this.props.onCompletedChanged} />
     </div>`
 
-
 Tahi.overlays.components.RailsForm = React.createClass
   getDefaultProps: ->
     method: 'patch'

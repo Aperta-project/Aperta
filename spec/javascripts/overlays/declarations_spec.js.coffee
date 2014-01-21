@@ -4,86 +4,33 @@ beforeEach ->
 describe "Declarations Card", ->
   beforeEach ->
     $('#jasmine_content').html """
-      <a href="#" id="link1" data-card-name="declarations" data-paper-title="Something" data-paper-path="/path/to/paper" data-task-path="/path/to/task" data-task-completed="false" data-declarations="[]">Foo</a>
-      <a href="#" id="link2" data-card-name="declarations" data-paper-title="Something" data-paper-path="/path/to/paper" data-task-path="/path/to/task" data-task-completed="false" data-declarations="[]">Bar</a>
+      <a href="#"
+         id="link1"
+         data-card-name="declarations"
+         data-declarations="[1, 2]">Foo</a>
+      <a href="#"
+         id="link2"
+         data-card-name="declarations"
+         data-declarations="[1, 2]">Bar</a>
       <div id="new-overlay" style="display: none;"></div>
     """
 
   describe "#init", ->
-    it "binds click on all elements with data-card-name=declarations", ->
-      spyOn Tahi.overlays.declarations, 'displayOverlay'
+    it "calls Tahi.overlay.init", ->
+      spyOn Tahi.overlay, 'init'
       Tahi.overlays.declarations.init()
-      $('#link1').click()
-      expect(Tahi.overlays.declarations.displayOverlay).toHaveBeenCalled()
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'declarations', Tahi.overlays.declarations.createComponent
 
-      Tahi.overlays.declarations.displayOverlay.calls.reset()
-      $('#link2').click()
-      expect(Tahi.overlays.declarations.displayOverlay).toHaveBeenCalled()
-
-  describe "#displayOverlay", ->
-    beforeEach ->
-      spyOn React, 'renderComponent'
-      @event = jasmine.createSpyObj 'event', ['preventDefault']
-      @event.target = document.getElementById('link1')
-      @overlay = jasmine.createSpy 'DeclarationsOverlay'
-      spyOn(Tahi.overlays.declarations.components, 'DeclarationsOverlay').and.returnValue @overlay
-
-    it "prevents event propagation", ->
-      Tahi.overlays.declarations.displayOverlay(@event)
-      expect(@event.preventDefault).toHaveBeenCalled()
-
+  describe "#createComponent", ->
     it "instantiates a DeclarationsOverlay component", ->
-      Tahi.overlays.declarations.displayOverlay(@event)
+      spyOn Tahi.overlays.declarations.components, 'DeclarationsOverlay'
+      Tahi.overlays.declarations.createComponent $('#link1'), one: 1, two: 2
       expect(Tahi.overlays.declarations.components.DeclarationsOverlay).toHaveBeenCalledWith(
         jasmine.objectContaining
-          paperTitle: 'Something'
-          paperPath: '/path/to/paper'
-          taskPath: '/path/to/task'
-          declarations: []
-          onCompletedChanged: Tahi.overlays.declarations.handleCompletedChanged
+          one: 1
+          two: 2
+          declarations: [1, 2]
       )
-
-    it "renders DeclarationsOverlay component inserting it into #new-overlay", ->
-      Tahi.overlays.declarations.displayOverlay(@event)
-      expect(React.renderComponent).toHaveBeenCalledWith(@overlay, $('#new-overlay')[0], Tahi.initChosen)
-
-    it "displays the overlay", ->
-      Tahi.overlays.declarations.displayOverlay(@event)
-      expect($('#new-overlay')).toBeVisible()
-
-    context "when the link does not have the completed class", ->
-      it "instantiates the component with taskCompleted false", ->
-        $('#link1, #link2').removeClass 'completed'
-        Tahi.overlays.declarations.displayOverlay(@event)
-        expect(Tahi.overlays.declarations.components.DeclarationsOverlay).toHaveBeenCalledWith(
-          jasmine.objectContaining taskCompleted: false
-        )
-
-    context "when the link has the completed class", ->
-      it "instantiates the component with taskCompleted true", ->
-        $('#link1, #link2').addClass 'completed'
-        Tahi.overlays.declarations.displayOverlay(@event)
-        expect(Tahi.overlays.declarations.components.DeclarationsOverlay).toHaveBeenCalledWith(
-          jasmine.objectContaining taskCompleted: true
-        )
-
-  describe "#hideOverlay", ->
-    beforeEach ->
-      $('#new-overlay').show()
-      @event = jasmine.createSpyObj 'event', ['preventDefault']
-
-    it "prevents default on the event", ->
-      Tahi.overlays.declarations.hideOverlay(@event)
-      expect(@event.preventDefault).toHaveBeenCalled()
-
-    it "hides the overlay", ->
-      Tahi.overlays.declarations.hideOverlay(@event)
-      expect($('#new-overlay')).toBeHidden()
-
-    it "unmounts the component", ->
-      spyOn React, 'unmountComponentAtNode'
-      Tahi.overlays.declarations.hideOverlay(@event)
-      expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('new-overlay')
 
   describe "DeclarationsOverlay component", ->
     describe "#render", ->

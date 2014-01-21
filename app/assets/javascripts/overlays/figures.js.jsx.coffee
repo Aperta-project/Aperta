@@ -6,31 +6,12 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.figures =
   init: ->
-    $('[data-card-name=figures]').on 'click', Tahi.overlays.figures.displayOverlay
+    Tahi.overlay.init 'figures', @createComponent
 
-  displayOverlay: (e) ->
-    e.preventDefault()
-
-    $target = $(e.target)
-    component = Tahi.overlays.figures.components.FiguresOverlay
-      paperTitle: $target.data('paperTitle')
-      paperPath: $target.data('paperPath')
-      figuresPath: $target.data('figuresPath')
-      taskPath: $target.data('taskPath')
-      figures: $target.data('figures')
-      taskCompleted: $target.hasClass('completed')
-      onCompletedChanged: Tahi.overlays.figures.handleCompletedChanged
-    React.renderComponent component, document.getElementById('new-overlay'), Tahi.initChosen
-
-    $('#new-overlay').show()
-
-  hideOverlay: (e) ->
-    e?.preventDefault()
-    $('#new-overlay').hide()
-    React.unmountComponentAtNode document.getElementById('new-overlay')
-
-  handleCompletedChanged: (event, data) ->
-    $('[data-card-name=figures]').toggleClass 'completed', data.completed
+  createComponent: (target, props) ->
+    props.figuresPath = target.data('figuresPath')
+    props.figures = target.data('figures')
+    Tahi.overlays.figures.components.FiguresOverlay props
 
   components:
     FigureUpload: React.createClass

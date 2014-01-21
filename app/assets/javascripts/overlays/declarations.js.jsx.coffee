@@ -6,30 +6,11 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.declarations =
   init: ->
-    $('[data-card-name=declarations]').on 'click', Tahi.overlays.declarations.displayOverlay
+    Tahi.overlay.init 'declarations', @createComponent
 
-  displayOverlay: (e) ->
-    e.preventDefault()
-
-    $target = $(e.target)
-    component = Tahi.overlays.declarations.components.DeclarationsOverlay
-      paperTitle: $target.data('paperTitle')
-      paperPath: $target.data('paperPath')
-      taskPath: $target.data('taskPath')
-      declarations: $target.data('declarations')
-      taskCompleted: $target.hasClass('completed')
-      onCompletedChanged: Tahi.overlays.declarations.handleCompletedChanged
-    React.renderComponent component, document.getElementById('new-overlay'), Tahi.initChosen
-
-    $('#new-overlay').show()
-
-  hideOverlay: (e) ->
-    e?.preventDefault()
-    $('#new-overlay').hide()
-    React.unmountComponentAtNode document.getElementById('new-overlay')
-
-  handleCompletedChanged: (event, data) ->
-    $('[data-card-name=declarations]').toggleClass 'completed', data.completed
+  createComponent: (target, props) ->
+    props.declarations = target.data('declarations')
+    Tahi.overlays.declarations.components.DeclarationsOverlay props
 
   components:
     DeclarationsOverlay: React.createClass

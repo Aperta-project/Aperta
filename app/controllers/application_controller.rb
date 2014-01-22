@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  http_basic_authenticate_with name: "tahi", password: "tahi3000", if: -> { %w(development production staging).include? Rails.env }
+  http_basic_authenticate_with name: "tahi", password: "tahi3000", if: -> { %w(production staging).include? Rails.env }
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
 

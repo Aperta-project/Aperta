@@ -3,6 +3,9 @@ beforeEach ->
 
 describe "Tahi.papers", ->
   describe "#init", ->
+    beforeEach ->
+      spyOn Tahi.papers, 'initAuthors'
+
     describe "Add authors link", ->
       it "adds a new form row", ->
         $('#jasmine_content').html """
@@ -31,10 +34,9 @@ describe "Tahi.papers", ->
         $('#paper-authors').click()
         expect(Tahi.papers.bindCloseToUpdateAuthors).toHaveBeenCalled()
 
-      it "runs #updateAuthors", ->
-        spyOn Tahi.papers, 'updateAuthors'
+      it "runs #initAuthors", ->
         Tahi.papers.init()
-        expect(Tahi.papers.updateAuthors).toHaveBeenCalled()
+        expect(Tahi.papers.initAuthors).toHaveBeenCalled()
 
   describe "#bindCloseToUpdateAuthors", ->
     context "when clicked", ->
@@ -47,6 +49,58 @@ describe "Tahi.papers", ->
         $('.close-overlay').click()
         expect(Tahi.papers.updateAuthors).toHaveBeenCalled()
 
+  describe "#initAuthors", ->
+    beforeEach ->
+      spyOn React, 'renderComponent'
+      authors = [
+        { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
+        { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
+      ]
+      $('#jasmine_content').html """
+        <div id='paper-authors' data-authors='#{JSON.stringify(authors)}' />
+      """
+
+    it "provides author data to component", ->
+      spyOn Tahi.papers.components, 'Authors'
+      Tahi.papers.initAuthors()
+      expect(Tahi.papers.components.Authors).toHaveBeenCalledWith
+        authors: [
+          { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
+          { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
+        ]
+
+    it "assigns authors", ->
+      Tahi.papers.initAuthors()
+      expect(Tahi.papers.authors).toBeDefined()
+      expect(Tahi.papers.authors.constructor).toEqual Tahi.papers.components.Authors.componentConstructor
+
+    it "mounts a component at paper-authors", ->
+      Tahi.papers.initAuthors()
+      component = Tahi.papers.authors
+      expect(React.renderComponent).toHaveBeenCalledWith component, document.getElementById('paper-authors')
+
+  describe "Authors component", ->
+    describe "#render", ->
+      beforeEach ->
+        @component = Tahi.papers.components.Authors()
+        @component.state ||= {}
+
+      it "contains a comma-separated list of authors' first and last names", ->
+        @component.state.authors = [
+            { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
+            { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
+          ]
+        result = @component.render()
+        expect(result.props.className).toBeUndefined()
+        expect(result.props.children).toEqual('Neils Bohr, Nikola Tesla')
+
+      context "when the authors array is empty", ->
+        it "renders placeholder text", ->
+          @component.state.authors = []
+          result = @component.render()
+          expect(result.props.className).toEqual 'placeholder'
+          expect(result.props.children).toEqual('Click here to add authors')
+
   describe "#updateAuthors", ->
     beforeEach ->
       $('#jasmine_content').html """
@@ -56,7 +110,7 @@ describe "Tahi.papers", ->
       """
 
     it "processes the authors array and puts it in the #authors div", ->
-      spyOn(Tahi.papers, 'authors').and.returnValue [
+      spyOn(Tahi.papers, 'authorArray').and.returnValue [
         { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
         { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
       ]
@@ -65,12 +119,11 @@ describe "Tahi.papers", ->
 
     context "when there are no authors", ->
       it "puts a 'click here' message in the authors div", ->
-        spyOn(Tahi.papers, 'authors').and.returnValue []
+        spyOn(Tahi.papers, 'authorArray').and.returnValue []
         Tahi.papers.updateAuthors()
         expect($('#paper-authors').text().trim()).toEqual('Click here to add authors')
 
-
-  describe "#authors", ->
+  describe "#authorArray", ->
     it "returns an array of objects describing authors", ->
       $('#jasmine_content').html """
         <ul class="authors">
@@ -98,7 +151,7 @@ describe "Tahi.papers", ->
           </li>
         </ul>
       """
-      authors = Tahi.papers.authors()
+      authors = Tahi.papers.authorArray()
       expect(authors).toEqual [
         { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
         { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
@@ -168,7 +221,7 @@ describe "Tahi.papers", ->
       Tahi.papers.abstractEditable = jasmine.createSpyObj('abstractEditable', ['getText'])
       Tahi.papers.abstractEditable.getText.and.returnValue('ME ME ABSTRACT ABSTRACT')
 
-      Tahi.papers.authors = ->
+      Tahi.papers.authorArray = ->
         [1,2,3]
 
       event = jasmine.createSpyObj('event', ['target', 'preventDefault'])

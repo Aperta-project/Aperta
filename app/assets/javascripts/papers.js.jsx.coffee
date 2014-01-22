@@ -1,3 +1,5 @@
+###* @jsx React.DOM ###
+
 window.Tahi ||= {}
 
 Tahi.papers =
@@ -11,11 +13,11 @@ Tahi.papers =
     @instantiateEditables()
 
     $('#paper-authors.editable').click => @bindCloseToUpdateAuthors()
-    @updateAuthors()
+    @initAuthors()
 
     $('#save-button').click (e) => @savePaper e
 
-  authors: ->
+  authorArray: ->
     authorsArray = []
     $('li.author').each (index, value) ->
       li = $(this)
@@ -55,11 +57,11 @@ Tahi.papers =
           body: @bodyEditable.getText()
           abstract: @abstractEditable.getText()
           short_title: @shortTitleEditable.getText()
-          authors: (=> JSON.stringify @authors())()
+          authors: (=> JSON.stringify @authorArray())()
     false
 
   updateAuthors: ->
-    authors = Tahi.papers.authors()
+    authors = Tahi.papers.authorArray()
     if authors.length > 0
       authorNames = authors.map (author) -> "#{author.first_name} #{author.last_name}"
       $('#paper-authors.editable').text authorNames.join(', ')
@@ -69,3 +71,24 @@ Tahi.papers =
   bindCloseToUpdateAuthors: ->
     $('.close-overlay').on 'click', =>
       @updateAuthors()
+
+  initAuthors: ->
+    @authors = @components.Authors
+      authors: $('#paper-authors').data('authors')
+    React.renderComponent @authors, document.getElementById('paper-authors')
+
+  components:
+    Authors: React.createClass
+      getInitialState: ->
+        authors: []
+
+      componentWillMount: ->
+        @setState authors: @props.authors
+
+      render: ->
+        if @state.authors.length > 0
+          authorNames = @state.authors.map (author) ->
+            "#{author.first_name} #{author.last_name}"
+          `<span>{authorNames.join(', ')}</span>`
+        else
+          `<span className='placeholder'>Click here to add authors</span>`

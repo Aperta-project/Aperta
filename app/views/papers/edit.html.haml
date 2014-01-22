@@ -29,8 +29,8 @@
       #paper-abstract{contenteditable: true, placeholder: 'Type your abstract here'}
         = @paper.abstract.html_safe
 
-      #paper-authors.editable{data: { 'overlay-name' => 'authors', 'overlay-title' => @paper.short_title }}
-        %span.placeholder Click here to add authors
+      - authors_array = @paper.authors.map { |a| a.slice(:first_name, :last_name, :email, :affiliation) }
+      #paper-authors.editable{data: { 'overlay-name' => 'authors', 'overlay-title' => @paper.short_title, authors: authors_array.to_json }}
 
       #authors-content.hidden
         = render 'overlays/authors'

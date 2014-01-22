@@ -27,6 +27,13 @@ describe "tahi", ->
         """
         $('#jasmine_content').html html
 
+      beforeEach ->
+        spyOn Tahi.papers, 'init'
+        spyOn Tahi.overlays.authors, 'init'
+        spyOn Tahi.overlays.figures, 'init'
+        spyOn Tahi.overlays.newCard, 'init'
+        spyOn Tahi.overlays.declarations, 'init'
+
       it "configures submit on change for inputs in remote forms", ->
         spyOn Tahi, 'setupSubmitOnChange'
         form = $('#remote-form')
@@ -39,6 +46,14 @@ describe "tahi", ->
         expect(form.is(args[0])).toEqual true
         for field in fields
           expect(args[1].is(field)).toEqual true, "Expected second argument to include #{field}"
+
+      it "invokes init on other modules and overlays", ->
+        Tahi.init()
+        expect(Tahi.papers.init).toHaveBeenCalled()
+        expect(Tahi.overlays.authors.init).toHaveBeenCalled()
+        expect(Tahi.overlays.figures.init).toHaveBeenCalled()
+        expect(Tahi.overlays.newCard.init).toHaveBeenCalled()
+        expect(Tahi.overlays.declarations.init).toHaveBeenCalled()
 
   describe "#initChosen", ->
     it "calls chosen on elements with chosen-select class", ->

@@ -38,6 +38,7 @@ Tahi.overlays.declarations =
             closeCallback={Tahi.overlays.declarations.hideOverlay}
             taskPath={this.props.taskPath}
             taskCompleted={this.props.taskCompleted}
+            onOverlayClosed={this.props.onOverlayClosed}
             onCompletedChanged={this.props.onCompletedChanged}>
           <main>
             <h1>Declarations</h1>

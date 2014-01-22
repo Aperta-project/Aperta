@@ -111,6 +111,21 @@ describe "Tahi.overlay", ->
           @callback null, completed: false
           expect($('#link1')).not.toHaveClass 'completed'
 
+    describe "onOverlayClosed callback", ->
+      beforeEach ->
+        spyOn Turbolinks, 'visit'
+        @callback = Tahi.overlay.defaultProps($(@event.target)).onOverlayClosed
+
+      it "uses Turbolinks to reload the page", ->
+        @callback null, completed: true
+        expect(Turbolinks.visit).toHaveBeenCalledWith window.location
+
+      context "when data-refresh-on-close is false", ->
+        it "does not reload the page", ->
+          $('#link1, #link2').data('refreshOnClose', false)
+          @callback null, completed: true
+          expect(Turbolinks.visit).not.toHaveBeenCalled()
+
     describe "taskCompleted", ->
       context "when the event target does not have the completed class", ->
         it "returns taskCompleted: false", ->

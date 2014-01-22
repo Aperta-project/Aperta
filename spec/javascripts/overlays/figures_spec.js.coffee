@@ -39,12 +39,14 @@ describe "Tahi.overlays.figures", ->
     describe "#render", ->
       beforeEach ->
         @onCompletedChangedCallback = jasmine.createSpy 'onCompletedChanged'
+        @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
         @component = Tahi.overlays.figures.components.FiguresOverlay
           paperTitle: 'Something'
           paperPath: '/path/to/paper'
           figuresPath: '/path/to/figures'
           taskPath: '/path/to/task'
           taskCompleted: false
+          onOverlayClosed: @onOverlayClosedCallback
           onCompletedChanged: @onCompletedChangedCallback
 
         @component.state =
@@ -71,6 +73,7 @@ describe "Tahi.overlays.figures", ->
         overlay = @component.render()
         Overlay = Tahi.overlays.components.Overlay
         expect(overlay.constructor).toEqual Overlay.componentConstructor
+        expect(overlay.props.onOverlayClosed).toEqual @onOverlayClosedCallback
 
       it "renders a Rails form for a new figure", ->
         form = @component.render().props.children.props.children[1].props.children[1]

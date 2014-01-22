@@ -13,9 +13,16 @@ Tahi.overlays.components.Overlay = React.createClass
 
     checkboxFormAction = "#{this.props.taskPath}.json"
     `<div>
-      <OverlayHeader paperTitle={this.props.paperTitle} paperPath={this.props.paperPath} closeCallback={Tahi.overlay.hide} />
+      <OverlayHeader
+        paperTitle={this.props.paperTitle}
+        paperPath={this.props.paperPath}
+        closeCallback={this.props.onOverlayClosed} />
       {this.props.children}
-      <OverlayFooter closeCallback={Tahi.overlay.hide} checkboxFormAction={checkboxFormAction} taskCompleted={this.props.taskCompleted} onCompletedChanged={this.props.onCompletedChanged} />
+      <OverlayFooter
+        closeCallback={this.props.onOverlayClosed}
+        checkboxFormAction={checkboxFormAction}
+        taskCompleted={this.props.taskCompleted}
+        onCompletedChanged={this.props.onCompletedChanged} />
     </div>`
 
 Tahi.overlays.components.RailsForm = React.createClass

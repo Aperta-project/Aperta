@@ -60,6 +60,7 @@ Tahi.overlays.figures =
             closeCallback={Tahi.overlays.figures.hideOverlay}
             taskPath={this.props.taskPath}
             taskCompleted={this.props.taskCompleted}
+            onOverlayClosed={this.props.onOverlayClosed}
             onCompletedChanged={this.props.onCompletedChanged}>
           <main>
             <h1>Figures</h1>

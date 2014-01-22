@@ -18,6 +18,12 @@ Tahi.overlay =
     paperPath: element.data('paperPath')
     taskPath: element.data('taskPath')
     taskCompleted: element.hasClass('completed')
+    onOverlayClosed: (e) =>
+      @hide(e)
+      # we default to true,
+      # so refreshOnClose is true for all values except false
+      refreshOnClose = element.data('refreshOnClose') != false
+      Turbolinks.visit(window.location) if refreshOnClose
     onCompletedChanged: (event, data) ->
       $("[data-card-name='#{element.data('cardName')}']").toggleClass 'completed', data.completed
 

@@ -95,9 +95,10 @@
   }
 }
 
+#new-overlay h1,
 #overlay h1 {
   font-size: 48px;
-  margin: 0 0 60px;
+  margin: 0 0 20px 0;
 }
 
 #new-overlay input#task_title {
@@ -123,12 +124,6 @@
   margin: 30px 0;
   font-size: 16px;
 }
-
-#overlay h1 {
-  margin-bottom: 20px;
-}
-
-
 
 #upload-figures-content img {
   min-height: 190px;

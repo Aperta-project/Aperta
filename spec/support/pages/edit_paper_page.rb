@@ -57,7 +57,7 @@ class EditPaperPage < Page
 
   def authors_overlay &block
     find('#paper-authors').click
-    overlay = AuthorsOverlay.new find('#overlay')
+    overlay = AuthorsOverlay.new find('#new-overlay')
     block.call overlay
     overlay.dismiss
   end
@@ -101,7 +101,6 @@ class EditPaperPage < Page
   end
 
   def save
-    current_path = page.current_path
     click_on 'Save'
     self
   end

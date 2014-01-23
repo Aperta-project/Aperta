@@ -11,24 +11,9 @@ Tahi.papers =
       li.appendTo $('ul.authors')
     @fixArticleControls()
     @instantiateEditables()
-
-    $('#paper-authors.editable').click => @bindCloseToUpdateAuthors()
     @initAuthors()
 
     $('#save-button').click (e) => @savePaper e
-
-  authorArray: ->
-    authorsArray = []
-    $('li.author').each (index, value) ->
-      li = $(this)
-      author =
-        first_name: $('.author-first-name', li).text().trim()
-        last_name: $('.author-last-name', li).text().trim()
-        affiliation: $('.author-affiliation', li).text().trim()
-        email: $('.author-email', li).text().trim()
-      if author.first_name.length > 0 || author.last_name.length > 0 || author.affiliation.length > 0 || author.email.length > 0
-        authorsArray.push author
-    authorsArray
 
   fixArticleControls: ->
     $('#control-bar-container').scrollToFixed()
@@ -57,25 +42,13 @@ Tahi.papers =
           body: @bodyEditable.getText()
           abstract: @abstractEditable.getText()
           short_title: @shortTitleEditable.getText()
-          authors: (=> JSON.stringify @authorArray())()
     false
-
-  updateAuthors: ->
-    authors = Tahi.papers.authorArray()
-    if authors.length > 0
-      authorNames = authors.map (author) -> "#{author.first_name} #{author.last_name}"
-      $('#paper-authors.editable').text authorNames.join(', ')
-    else
-      $('#paper-authors.editable').html '<span class="placeholder">Click here to add authors</span>'
-
-  bindCloseToUpdateAuthors: ->
-    $('.close-overlay').on 'click', =>
-      @updateAuthors()
 
   initAuthors: ->
     @authors = @components.Authors
       authors: $('#paper-authors').data('authors')
-    React.renderComponent @authors, document.getElementById('paper-authors')
+    mountPoint = document.getElementById('paper-authors')
+    React.renderComponent @authors, mountPoint if mountPoint
 
   components:
     Authors: React.createClass

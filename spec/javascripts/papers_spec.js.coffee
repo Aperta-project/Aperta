@@ -27,27 +27,9 @@ describe "Tahi.papers", ->
         Tahi.papers.init()
         expect(Tahi.papers.fixArticleControls).toHaveBeenCalled()
 
-      it "binds #bindCloseToUpdateAuthors to #authors click", ->
-        $('#jasmine_content').html """<div id="paper-authors" class="editable"></div>"""
-        spyOn Tahi.papers, 'bindCloseToUpdateAuthors'
-        Tahi.papers.init()
-        $('#paper-authors').click()
-        expect(Tahi.papers.bindCloseToUpdateAuthors).toHaveBeenCalled()
-
       it "runs #initAuthors", ->
         Tahi.papers.init()
         expect(Tahi.papers.initAuthors).toHaveBeenCalled()
-
-  describe "#bindCloseToUpdateAuthors", ->
-    context "when clicked", ->
-      it "binds click event to update authors in the #authors div", ->
-        $('#jasmine_content').html """
-          <a class="close-overlay"></a>
-        """
-        spyOn(Tahi.papers, 'updateAuthors')
-        Tahi.papers.bindCloseToUpdateAuthors()
-        $('.close-overlay').click()
-        expect(Tahi.papers.updateAuthors).toHaveBeenCalled()
 
   describe "#initAuthors", ->
     beforeEach ->
@@ -78,6 +60,12 @@ describe "Tahi.papers", ->
       Tahi.papers.initAuthors()
       component = Tahi.papers.authors
       expect(React.renderComponent).toHaveBeenCalledWith component, document.getElementById('paper-authors')
+
+    context "when the mount point does not exist", ->
+      it "does not attempt to mount the component", ->
+        $('#jasmine_content').empty()
+        Tahi.papers.initAuthors()
+        expect(React.renderComponent).not.toHaveBeenCalled()
 
   describe "Authors component", ->
     describe "#componentDidMount", ->
@@ -121,62 +109,6 @@ describe "Tahi.papers", ->
           result = @component.render()
           expect(result.props.className).toEqual 'placeholder'
           expect(result.props.children).toEqual('Click here to add authors')
-
-  describe "#updateAuthors", ->
-    beforeEach ->
-      $('#jasmine_content').html """
-        <div id="paper-authors" class="editable">
-          Some text that's here on page load
-        </div>
-      """
-
-    it "processes the authors array and puts it in the #authors div", ->
-      spyOn(Tahi.papers, 'authorArray').and.returnValue [
-        { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
-        { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
-      ]
-      Tahi.papers.updateAuthors()
-      expect($('#paper-authors').text().trim()).toEqual('Neils Bohr, Nikola Tesla')
-
-    context "when there are no authors", ->
-      it "puts a 'click here' message in the authors div", ->
-        spyOn(Tahi.papers, 'authorArray').and.returnValue []
-        Tahi.papers.updateAuthors()
-        expect($('#paper-authors').text().trim()).toEqual('Click here to add authors')
-
-  describe "#authorArray", ->
-    it "returns an array of objects describing authors", ->
-      $('#jasmine_content').html """
-        <ul class="authors">
-          <li class="author">
-            <h4>
-              <div class="author-first-name">
-                Neils
-              </div>
-              <div class="author-last-name">             Bohr   </div>
-            </h4>
-            <div class="author-affiliation">University of Copenhagen</div>
-            <div class="author-email">neils@example.org</div>
-          </li>
-          <li class="author">
-            <h4>
-              <div class="author-first-name">Nikola</div>
-              <div class="author-last-name">Tesla</div>
-            </h4>
-            <div class="author-affiliation">Wardenclyffe</div>
-            <div class="author-email"></div>
-          </li>
-          <li class="author">
-            <h4>
-            </h4>
-          </li>
-        </ul>
-      """
-      authors = Tahi.papers.authorArray()
-      expect(authors).toEqual [
-        { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
-        { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
-      ]
 
   describe "#fixArticleControls", ->
     beforeEach ->
@@ -242,9 +174,6 @@ describe "Tahi.papers", ->
       Tahi.papers.abstractEditable = jasmine.createSpyObj('abstractEditable', ['getText'])
       Tahi.papers.abstractEditable.getText.and.returnValue('ME ME ABSTRACT ABSTRACT')
 
-      Tahi.papers.authorArray = ->
-        [1,2,3]
-
       event = jasmine.createSpyObj('event', ['target', 'preventDefault'])
       event.target.and.returnValue
         attr: (key) ->
@@ -261,4 +190,3 @@ describe "Tahi.papers", ->
             body: 'This is the melted body of the really melted frozen dessert.'
             abstract: 'ME ME ABSTRACT ABSTRACT'
             short_title: 'melted-rates'
-            authors: '[1,2,3]'

@@ -114,10 +114,7 @@ feature "Editing paper", js: true do
     end
 
     expect(edit_paper.authors).to eq "Neils Bohr, Nikola Tesla"
-
-    dashboard_page = edit_paper.save.navigate_to_dashboard
-    edit_paper = dashboard_page.edit_submission paper.short_title
-
+    edit_paper.reload
     expect(edit_paper.authors).to eq "Neils Bohr, Nikola Tesla"
   end
 end

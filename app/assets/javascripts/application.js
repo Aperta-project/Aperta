@@ -24,8 +24,6 @@
 //= require turbolinks
 //= require_tree .
 
-<% unless Rails.env.test? %>
 $(document).ready(function() {
   Tahi.init()
 });
-<% end %>

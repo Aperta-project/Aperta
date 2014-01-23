@@ -87,8 +87,22 @@ Tahi.overlays.authors =
 
       updateAuthor: (key, author) ->
         authors = @state.authors
+        author.edit = false
         authors[key] = author
+        authors = authors.map (author) ->
+          first_name: author.first_name
+          last_name: author.last_name
+          affiliation: author.affiliation
+          email: author.email
+        $.ajax
+          url: "#{@props.paperPath}.json"
+          method: 'POST'
+          data:
+            _method: 'patch'
+            paper:
+              authors: JSON.stringify(authors)
         @setState authors: authors
+        Tahi.pubsub.publish 'update_authors', authors
 
     AuthorDetails: React.createClass
       render: ->

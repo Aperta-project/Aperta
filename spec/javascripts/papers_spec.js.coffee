@@ -80,6 +80,27 @@ describe "Tahi.papers", ->
       expect(React.renderComponent).toHaveBeenCalledWith component, document.getElementById('paper-authors')
 
   describe "Authors component", ->
+    describe "#componentDidMount", ->
+      it "sets subscribes to the update_authors topic", (done) ->
+        authors = jasmine.createSpy('authors')
+        component = Tahi.papers.components.Authors()
+        spyOn(component, 'setState')
+        component.componentDidMount()
+        Tahi.pubsub.publish('update_authors', authors)
+        setTimeout (->
+          expect(component.setState).toHaveBeenCalledWith
+            authors: authors
+          done()
+        )
+
+    describe "#componentWillUnmount", ->
+      it "unsubscribes from the update_authors topic", ->
+        component = Tahi.papers.components.Authors()
+        component.token = 123
+        spyOn(Tahi.pubsub, 'unsubscribe')
+        component.componentWillUnmount()
+        expect(Tahi.pubsub.unsubscribe).toHaveBeenCalledWith(123)
+
     describe "#render", ->
       beforeEach ->
         @component = Tahi.papers.components.Authors()

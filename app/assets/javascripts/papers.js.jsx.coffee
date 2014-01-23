@@ -92,3 +92,10 @@ Tahi.papers =
           `<span>{authorNames.join(', ')}</span>`
         else
           `<span className='placeholder'>Click here to add authors</span>`
+
+      componentDidMount: ->
+        @token = Tahi.pubsub.subscribe 'update_authors', (topic, authors) =>
+          @setState authors: authors
+
+      componentWillUnmount: ->
+        Tahi.pubsub.unsubscribe @token

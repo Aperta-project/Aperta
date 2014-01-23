@@ -105,13 +105,44 @@ describe "Tahi.overlays.authors", ->
         expect(@event.preventDefault).toHaveBeenCalled()
 
     describe "#updateAuthor", ->
-      it "updates the author at the given index", ->
-        component = Tahi.overlays.authors.components.AuthorsOverlay()
-        component.state =
-          authors: [{one: 1, two: 2}, {one: 'i', two: 'ii'}]
-        spyOn component, 'setState'
-        component.updateAuthor 1, one: 'I', two: 'II'
-        expect(component.setState).toHaveBeenCalledWith authors: [{one: 1, two: 2}, {one: 'I', two: 'II'}]
+      beforeEach ->
+        @component = Tahi.overlays.authors.components.AuthorsOverlay
+          paperPath: '/path/to/paper'
+        @component.state =
+          authors: [
+            { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
+            { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "", edit: true }
+          ]
+        spyOn @component, 'setState'
+        spyOn $, 'ajax'
+
+      it "updates the author at the given index, setting edit to false", ->
+        @component.updateAuthor 1, first_name: 'Nick', last_name: 'Frost', affiliation: 'North Pole', email: 'cold@example.com', edit: true
+        expect(@component.setState).toHaveBeenCalledWith
+          authors: [
+            { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
+            { first_name: "Nick", last_name: "Frost", affiliation: "North Pole", email: "cold@example.com" }
+          ]
+
+      it "sends all authors to the server via AJAX", ->
+        @component.updateAuthor 1, first_name: 'Nick', last_name: 'Frost', affiliation: 'North Pole', email: 'cold@example.com', edit: true
+        expect($.ajax).toHaveBeenCalledWith
+          url: '/path/to/paper.json'
+          method: 'POST'
+          data:
+            _method: 'patch'
+            paper:
+              authors: JSON.stringify([
+                { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
+                { first_name: "Nick", last_name: "Frost", affiliation: "North Pole", email: "cold@example.com" }
+              ])
+      it "publishes on the update_authors topic", ->
+        spyOn(Tahi.pubsub, "publish")
+        @component.updateAuthor 1, first_name: 'Nick', last_name: 'Frost', affiliation: 'North Pole', email: 'cold@example.com', edit: true
+        expect(Tahi.pubsub.publish).toHaveBeenCalledWith 'update_authors', [
+          { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
+          { first_name: "Nick", last_name: "Frost", affiliation: "North Pole", email: "cold@example.com" }
+        ]
 
   describe "AuthorDetailsForm component", ->
     describe "#handleSubmit", ->

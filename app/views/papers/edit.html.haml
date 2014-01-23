@@ -29,8 +29,9 @@
       #paper-abstract{contenteditable: true, placeholder: 'Type your abstract here'}
         = @paper.abstract.html_safe
 
+      - task = Task.where(title: "Declarations", phase: @paper.phases.where(name: 'Submit Paper').first).first
       - authors_array = @paper.authors.map { |a| a.slice(:first_name, :last_name, :email, :affiliation) }
-      #paper-authors.editable{data: { 'overlay-name' => 'authors', 'overlay-title' => @paper.short_title, authors: authors_array.to_json }}
+      #paper-authors.editable{data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: authors_array.to_json, 'refresh-on-close' => false }}
 
       #authors-content.hidden
         = render 'overlays/authors'
@@ -41,7 +42,6 @@
 
   %aside
     %div
-      - task = Task.where(title: "Declarations", phase: @paper.phases.where(name: 'Submit Paper').first).first
       = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json, 'refresh-on-close' => false } do
         %span.glyphicon.glyphicon-ok
         = task.title

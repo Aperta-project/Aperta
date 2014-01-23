@@ -22,8 +22,8 @@
       #paper-abstract
         = @paper.abstract
 
-      #paper-authors
-        = @paper.authors.map { |a| "#{a[:first_name]} #{a[:last_name]}" }.join ', '
+      - authors_array = @paper.authors.map { |a| a.slice(:first_name, :last_name, :email, :affiliation) }
+      #paper-authors{data: { authors: authors_array.to_json }}
 
       #paper-body
         = @paper.body.html_safe

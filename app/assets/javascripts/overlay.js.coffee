@@ -8,7 +8,7 @@ Tahi.overlay =
   display: (event, constructComponentCallback) ->
     event.preventDefault()
 
-    $target = $(event.target)
+    $target = $(event.target).closest '[data-card-name]'
     component = constructComponentCallback $target, @defaultProps($target)
     React.renderComponent component, document.getElementById('new-overlay'), Tahi.initChosen
     $('#new-overlay').show()

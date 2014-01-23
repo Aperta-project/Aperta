@@ -6,7 +6,7 @@ describe "Tahi.overlay", ->
          data-paper-title="Something"
          data-paper-path="/path/to/paper"
          data-task-path="/path/to/task"
-         data-card-name="some-card">Foo</a>
+         data-card-name="some-card"><span>Foo</span></a>
       <a href="#"
          id="link2"
          data-card-name="some-card">Bar</a>
@@ -50,6 +50,7 @@ describe "Tahi.overlay", ->
       expect(@event.preventDefault).toHaveBeenCalled()
 
     it "invokes constructComponentCallback to obtain a component", ->
+      @event.target = $('#link1 span')
       Tahi.overlay.display @event, @constructComponentCallback
       expect(@constructComponentCallback).toHaveBeenCalled()
       args = @constructComponentCallback.calls.mostRecent().args

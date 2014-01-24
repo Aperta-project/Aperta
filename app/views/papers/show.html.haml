@@ -49,9 +49,8 @@
                 %span.glyphicon.glyphicon-ok
                 = task.title
           - when 'Authors'
-            - authors_array = @paper.authors.map { |a| a.slice(:first_name, :last_name, :email, :affiliation) }
             %li
-              = link_to '#', class: "card", data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: authors_array.to_json, 'refresh-on-close' => false } do
+              = link_to '#', class: "card", data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: @paper.authors_json, 'refresh-on-close' => false } do
                 %span.glyphicon.glyphicon-ok
                 = task.title
           - else
@@ -68,7 +67,7 @@
         = task.title
 
       - task = Task.where(title: "Authors", phase: @paper.phases.where(name: 'Submit Paper').first).first
-      = link_to '#', class: "card", data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: authors_array.to_json, 'refresh-on-close' => false } do
+      = link_to '#', class: "card", data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: @paper.authors_json, 'refresh-on-close' => false } do
         %span.glyphicon.glyphicon-ok
         = task.title
 

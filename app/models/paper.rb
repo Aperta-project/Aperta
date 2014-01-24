@@ -36,6 +36,10 @@ class Paper < ActiveRecord::Base
     role.user if role
   end
 
+  def authors_json
+    authors.map { |a| a.slice(:first_name, :last_name, :email, :affiliation) }.to_json
+  end
+
   private
 
   def assign_user_to_author_tasks

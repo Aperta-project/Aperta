@@ -26,6 +26,7 @@ class Phase < ActiveRecord::Base
     when 'Submit Paper'
       self.tasks << DeclarationTask.new
       self.tasks << FigureTask.new
+      self.tasks << AuthorsTask.new
     when 'Needs Editor'
       self.tasks << PaperAdminTask.new
       self.tasks << TechCheckTask.new

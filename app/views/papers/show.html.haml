@@ -32,9 +32,21 @@
     %ul.assigned-tasks.cards
       %ul.cards
         - @tasks.each do |task|
-          - if ['Declarations', 'Upload Figures'].include? task.title
+          - case task.title
+          - when 'Declarations'
             %li
               = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'task-completed' => task.completed?, declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json } do
+                %span.glyphicon.glyphicon-ok
+                = task.title
+          - when 'Upload Figures'
+            %li
+              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "figures", 'paper-title' => @paper.short_title, 'figures-path' => paper_figures_path(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), figures: @paper.figures.map(&:access_details).to_json } do
+                %span.glyphicon.glyphicon-ok
+                Upload Figures
+          - when 'Authors'
+            - authors_array = @paper.authors.map { |a| a.slice(:first_name, :last_name, :email, :affiliation) }
+            %li
+              = link_to '#', class: "card", data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: authors_array.to_json, 'refresh-on-close' => false } do
                 %span.glyphicon.glyphicon-ok
                 = task.title
           - else
@@ -47,6 +59,11 @@
     %div
       - task = Task.where(title: "Declarations", phase: @paper.phases.where(name: 'Submit Paper').first).first
       = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json } do
+        %span.glyphicon.glyphicon-ok
+        = task.title
+
+      - task = Task.where(title: "Authors", phase: @paper.phases.where(name: 'Submit Paper').first).first
+      = link_to '#', class: "card", data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: authors_array.to_json, 'refresh-on-close' => false } do
         %span.glyphicon.glyphicon-ok
         = task.title
 

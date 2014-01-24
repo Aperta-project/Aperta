@@ -111,10 +111,18 @@ feature "Editing paper", js: true do
     edit_paper.authors_overlay do |overlay|
       overlay.add_author first_name: 'Neils', last_name: 'Bohr', affiliation: 'University of Copenhagen', email: 'neils@bohr.com'
       overlay.add_author first_name: 'Nikola', last_name: 'Tesla', affiliation: 'Wardenclyffe'
+      overlay.mark_as_complete
+      expect(overlay).to be_completed
     end
 
     expect(edit_paper.authors).to eq "Neils Bohr, Nikola Tesla"
+
     edit_paper.reload
+
     expect(edit_paper.authors).to eq "Neils Bohr, Nikola Tesla"
+
+    edit_paper.authors_overlay do |overlay|
+      expect(overlay).to be_completed
+    end
   end
 end

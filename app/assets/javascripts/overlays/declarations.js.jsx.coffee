@@ -14,14 +14,21 @@ Tahi.overlays.declarations =
 
   components:
     DeclarationsOverlay: React.createClass
+      getInitialState: ->
+        declarations: []
+
+      componentWillMount: ->
+        @setState
+          declarations: @props.declarations
+
       declarations: ->
         @props.declarations.map (declaration, index) ->
           hiddenField = if 'id' in Object.keys(declaration)
             `<input id={"paper_declarations_attributes_" + index + "_id"} name={"paper[declarations_attributes][" + index + "][id]"} type="hidden" value={declaration['id']} />`
 
           `<div key={index} className="form-group declaration">
-            <label htmlFor={"paper_declarations_attributes_" + index + "_answer"}>{declaration['question']}</label>
-            <textarea className="form-control" id={"paper_declarations_attributes_" + index + "_answer"} name={"paper[declarations_attributes][" + index + "][answer]"} rows="6" defaultValue={declaration['answer']} />
+            <label ref={"declaration_question_" + index} htmlFor={"paper_declarations_attributes_" + index + "_answer"}>{declaration['question']}</label>
+            <textarea ref={"declaration_answer_" + index} className="form-control" id={"paper_declarations_attributes_" + index + "_answer"} name={"paper[declarations_attributes][" + index + "][answer]"} rows="6" defaultValue={declaration['answer']} />
             {hiddenField}
           </div>`
 
@@ -51,3 +58,11 @@ Tahi.overlays.declarations =
       componentDidMount: (rootNode) ->
         form = $('form', rootNode)
         Tahi.setupSubmitOnChange form, $('textarea', form)
+
+      componentWillUnmount: ->
+        declarations = @props.declarations.map (declaration, index) =>
+          question: @refs["declaration_question_#{index}"].props.children
+          answer: @refs["declaration_answer_#{index}"].getDOMNode().value.trim()
+          id: declaration.id
+
+        $("[data-card-name='declarations']").data('declarations', declarations)

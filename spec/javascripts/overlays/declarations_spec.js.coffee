@@ -58,6 +58,61 @@ describe "Declarations Card", ->
         expect(args[0][0]).toEqual $('form', html)[0]
         expect(args[1][0]).toEqual $('textarea', html)[0]
 
+    describe "#componentWillUnmount", ->
+      it "updates the declarations data attribute on all cards", ->
+        $('#jasmine_content').html """
+          <div id="one" data-card-name='declarations' data-declarations='[1, 2, 3]' />
+          <div id="two" data-card-name='declarations' data-declarations='[1, 2, 3]' />
+        """
+
+        component = Tahi.overlays.declarations.components.DeclarationsOverlay
+          declarations: [
+            {
+              question: 'Question 1'
+              answer: 'Answer 1'
+              id: 43
+            },
+            {
+              question: 'Question 2'
+              answer: 'Answer 2'
+              id: 44
+            }
+          ]
+
+        component.refs =
+          declaration_question_0:
+            props:
+              children:
+                'Question 1'
+          declaration_question_1:
+            props:
+              children:
+                'Question 2'
+          declaration_answer_0:
+            getDOMNode: ->
+              value: 'Answer 1'
+          declaration_answer_1:
+            getDOMNode: ->
+              value: 'New answer'
+
+        component.componentWillUnmount()
+
+        expectedDeclarations = [
+          {
+            question: 'Question 1'
+            answer: 'Answer 1'
+            id: 43
+          },
+          {
+            question: 'Question 2'
+            answer: 'New answer'
+            id: 44
+          }
+        ]
+
+        expect($('#one').data('declarations')).toEqual expectedDeclarations
+        expect($('#two').data('declarations')).toEqual expectedDeclarations
+
     describe "#declarations", ->
       beforeEach ->
         @component = Tahi.overlays.declarations.components.DeclarationsOverlay

@@ -124,5 +124,6 @@ feature "Editing paper", js: true do
     edit_paper.authors_overlay do |overlay|
       expect(overlay).to be_completed
     end
+    sleep 0.1
   end
 end

@@ -37,7 +37,14 @@ Tahi.overlays.figures =
     FiguresOverlay: React.createClass
       getInitialState: ->
         uploads: []
-        figures: @props.figures
+        figures: []
+
+      componentWillMount: ->
+        @setState
+          figures: @props.figures
+
+      componentWillUnmount: ->
+        $("[data-card-name='figures']").data('figures', @state.figures)
 
       render: ->
         Overlay = Tahi.overlays.components.Overlay

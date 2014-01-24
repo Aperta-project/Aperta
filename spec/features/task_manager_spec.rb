@@ -36,7 +36,7 @@ feature "Task Manager", js: true do
     paper_page = dashboard_page.view_submitted_paper 'foobar'
     task_manager_page = paper_page.navigate_to_task_manager
 
-    needs_editor_phase = task_manager_page.phase 'Needs Editor'
+    needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Paper Shepherd' do |overlay|
       expect(overlay.assignee).not_to eq 'Zoey Bob'
       overlay.assignee = 'Zoey Bob'
@@ -45,7 +45,7 @@ feature "Task Manager", js: true do
     end
 
     task_manager_page.reload
-    needs_editor_phase = task_manager_page.phase 'Needs Editor'
+    needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Paper Shepherd' do |overlay|
       expect(overlay).to be_completed
       expect(overlay.assignee).to eq 'Zoey Bob'

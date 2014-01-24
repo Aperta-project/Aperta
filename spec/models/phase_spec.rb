@@ -26,8 +26,8 @@ describe Phase do
 
   describe "initialization" do
     describe "tasks" do
-      describe "Submit Paper phase" do
-        let(:phase) { Phase.new name: 'Submit Paper' }
+      describe "Submission Data phase" do
+        let(:phase) { Phase.new name: 'Submission Data' }
 
         it "initializes one declaration task" do
           expect(phase.tasks.map(&:class)).to include(DeclarationTask)
@@ -46,8 +46,8 @@ describe Phase do
         end
       end
 
-      describe "Needs Editor phase" do
-        let(:phase) { Phase.new name: 'Needs Editor' }
+      describe "Assign Editor phase" do
+        let(:phase) { Phase.new name: 'Assign Editor' }
 
         it "initializes one paper admin task" do
           expect(phase.tasks.map(&:class)).to include(PaperAdminTask)
@@ -62,16 +62,16 @@ describe Phase do
         end
       end
 
-      describe "Needs Reviewer phase" do
-        let(:phase) { Phase.new name: 'Needs Reviewer' }
+      describe "Assign Reviewers phase" do
+        let(:phase) { Phase.new name: 'Assign Reviewers' }
 
         it "initializes one assign reviewer task" do
           expect(phase.tasks.map(&:class)).to include(PaperReviewerTask)
         end
       end
 
-      describe "Needs Decision phase" do
-        let(:phase) { Phase.new name: 'Needs Decision' }
+      describe "Make Decision phase" do
+        let(:phase) { Phase.new name: 'Make Decision' }
 
         it "initializes one register decision task" do
           expect(phase.tasks.map(&:class)).to include(RegisterDecisionTask)
@@ -85,7 +85,7 @@ describe Phase do
       context "when tasks are specified" do
         it "uses provided task" do
           tasks = [Task.new]
-          phase = Phase.new name: 'Needs Editor', tasks: tasks
+          phase = Phase.new name: 'Assign Editor', tasks: tasks
           expect(phase.tasks).to eq tasks
         end
       end

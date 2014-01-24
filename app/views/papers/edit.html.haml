@@ -29,7 +29,7 @@
       #paper-abstract{contenteditable: true, placeholder: 'Type your abstract here'}
         = @paper.abstract.html_safe
 
-      - task = Task.where(title: "Authors", phase: @paper.phases.where(name: 'Submit Paper').first).first
+      - task = Task.where(title: "Authors", phase: @paper.phases.where(name: 'Submission Data').first).first
       #paper-authors.editable{class: "#{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: @paper.authors_json, 'refresh-on-close' => false }}
 
       #paper-body.editable{contenteditable: true, placeholder: 'Type the body of your article here'}
@@ -37,22 +37,22 @@
 
   %aside
     %div
-      - task = Task.where(title: "Declarations", phase: @paper.phases.where(name: 'Submit Paper').first).first
+      - task = Task.where(title: "Declarations", phase: @paper.phases.where(name: 'Submission Data').first).first
       = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json, 'refresh-on-close' => false } do
         %span.glyphicon.glyphicon-ok
         = task.title
 
-      - task = Task.where(title: "Authors", phase: @paper.phases.where(name: 'Submit Paper').first).first
+      - task = Task.where(title: "Authors", phase: @paper.phases.where(name: 'Submission Data').first).first
       = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: @paper.authors_json, 'refresh-on-close' => false } do
         %span.glyphicon.glyphicon-ok
         = task.title
 
-      - task = Task.where(title: "Upload Figures", phase: @paper.phases.where(name: 'Submit Paper').first).first
+      - task = Task.where(title: "Upload Figures", phase: @paper.phases.where(name: 'Submission Data').first).first
       = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "figures", 'paper-title' => @paper.short_title, 'figures-path' => paper_figures_path(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), figures: @paper.figures.map(&:access_details).to_json, 'refresh-on-close' => false } do
         %span.glyphicon.glyphicon-ok
         = task.title
 
-      - task = Task.where(title: "Upload Manuscript", phase: @paper.phases.where(name: 'Submit Paper').first).first
+      - task = Task.where(title: "Upload Manuscript", phase: @paper.phases.where(name: 'Submission Data').first).first
       = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => @paper.short_title, 'paper-path' => upload_paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'refresh-on-close' => false } do
         %span.glyphicon.glyphicon-ok
         = task.title

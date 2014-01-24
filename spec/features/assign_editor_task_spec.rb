@@ -41,7 +41,7 @@ feature "Assigns Editor", js: true do
     paper_page = dashboard_page.view_submitted_paper 'foobar'
     task_manager_page = paper_page.navigate_to_task_manager
 
-    needs_editor_phase = task_manager_page.phase 'Needs Editor'
+    needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay.assignee).to eq 'Please select assignee'
       expect(overlay).to_not be_completed
@@ -53,7 +53,7 @@ feature "Assigns Editor", js: true do
 
     task_manager_page.reload
 
-    needs_editor_phase = task_manager_page.phase 'Needs Editor'
+    needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay).to be_completed
       expect(overlay.assignee).to eq admin.full_name

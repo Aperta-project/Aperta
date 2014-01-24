@@ -41,7 +41,7 @@ feature 'Add a new card', js: true do
   scenario "Admin can add a new card" do
     task_manager_page = TaskManagerPage.visit paper
 
-    needs_editor_phase = task_manager_page.phase 'Needs Editor'
+    needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.new_card title: 'Verify Author Signatures',
       body: 'Please remember to verify signatures of every paper author.',
       assignee: albert
@@ -54,7 +54,7 @@ feature 'Add a new card', js: true do
 
     task_manager_page.reload
 
-    needs_editor_phase = task_manager_page.phase 'Needs Editor'
+    needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Verify Author Signatures' do |overlay|
       expect(overlay.assignee).to eq 'Albert Einstein'
       expect(overlay.title).to eq 'Verify Author Signatures'

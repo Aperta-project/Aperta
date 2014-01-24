@@ -21,7 +21,7 @@ feature "Reviewer Report", js: true do
       submitted: true,
       journal: journal
 
-    paper_reviewer_task = paper.task_manager.phases.where(name: 'Needs Reviewer').first.tasks.where(type: 'PaperReviewerTask').first
+    paper_reviewer_task = paper.task_manager.phases.where(name: 'Assign Reviewers').first.tasks.where(type: 'PaperReviewerTask').first
     paper_reviewer_task.paper_roles = [reviewer.id.to_s]
 
     sign_in_page = SignInPage.visit

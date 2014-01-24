@@ -23,7 +23,7 @@ feature "Tech Check", js: true do
       submitted: true,
       journal: journal
 
-    phase = paper.task_manager.phases.where(name: 'Needs Editor').first
+    phase = paper.task_manager.phases.where(name: 'Assign Editor').first
     task = phase.tasks.where(title: 'Tech Check').first
     task.update! assignee: admin
   end

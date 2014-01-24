@@ -7,11 +7,11 @@ class Phase < ActiveRecord::Base
   after_initialize :initialize_defaults
 
   DEFAULT_PHASE_NAMES = [
-    "Submit Paper",
-    "Needs Editor",
-    "Needs Reviewer",
-    "Needs Review",
-    "Needs Decision"
+    "Submission Data",
+    "Assign Editor",
+    "Assign Reviewers",
+    "Get Reviews",
+    "Make Decision"
   ]
 
   def self.default_phases
@@ -23,18 +23,18 @@ class Phase < ActiveRecord::Base
   def initialize_defaults
     return unless tasks.empty?
     case name
-    when 'Submit Paper'
+    when 'Submission Data'
       self.tasks << DeclarationTask.new
       self.tasks << FigureTask.new
       self.tasks << AuthorsTask.new
       self.tasks << UploadManuscriptTask.new
-    when 'Needs Editor'
+    when 'Assign Editor'
       self.tasks << PaperAdminTask.new
       self.tasks << TechCheckTask.new
       self.tasks << PaperEditorTask.new
-    when 'Needs Reviewer'
+    when 'Assign Reviewers'
       self.tasks << PaperReviewerTask.new
-    when 'Needs Decision'
+    when 'Make Decision'
       self.tasks << RegisterDecisionTask.new
     end
   end

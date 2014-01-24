@@ -17,7 +17,12 @@
         %li
           = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "figures", 'paper-title' => task.paper.short_title, 'figures-path' => paper_figures_path(task.paper), 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), figures: task.paper.figures.map(&:access_details).to_json } do
             %span.glyphicon.glyphicon-ok
-            Upload Figures
+            = task.title
+      - when 'Upload Manuscript'
+        %li
+          = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => task.paper.short_title, 'figures-path' => paper_figures_path(task.paper), 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task) } do
+            %span.glyphicon.glyphicon-ok
+            = task.title
       - when 'Authors'
         - authors_array = task.paper.authors.map { |a| a.slice(:first_name, :last_name, :email, :affiliation) }
         %li

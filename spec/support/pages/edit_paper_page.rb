@@ -93,6 +93,11 @@ class EditPaperPage < Page
     wait_for_pjax
   end
 
+  def upload_manuscript_overlay &block
+    click_on 'Upload Manuscript'
+    UploadManuscriptOverlay.new find('#new-overlay')
+  end
+
   def declarations_overlay &block
     click_on 'Declarations'
     overlay = DeclarationsOverlay.new find('#new-overlay')
@@ -102,13 +107,6 @@ class EditPaperPage < Page
 
   def save
     click_on 'Save'
-    self
-  end
-
-  def upload_word_doc
-    click_on "Upload Manuscript"
-    attach_file 'Upload Word Document', Rails.root.join('spec/fixtures/about_turtles.docx')
-    click_on "Upload File"
     self
   end
 

@@ -40,9 +40,11 @@ feature "Editing paper", js: true do
   scenario "Author uploads paper in Word format" do
     edit_paper = EditPaperPage.visit paper
 
-    edit_paper.upload_word_doc
+    edit_paper.upload_manuscript_overlay.upload_word_doc
+
     expect(edit_paper.title).to eq "This is a Title About Turtles"
     expect(edit_paper.body).to match /And this is my subtitle/
+    # expect(edit_paper.upload_manuscript_overlay).to be_completed
   end
 
   scenario "Author specifies paper metadata" do

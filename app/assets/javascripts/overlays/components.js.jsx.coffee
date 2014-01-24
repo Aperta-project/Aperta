@@ -39,7 +39,7 @@ Tahi.overlays.components.RailsForm = React.createClass
 Tahi.overlays.components.CompletedCheckbox = React.createClass
   render: ->
     RailsForm = Tahi.overlays.components.RailsForm
-    inputId = "task_declarations_checkbox_completed"
+    inputId = "task_checkbox_completed"
     `<RailsForm action={this.props.action}>
       <div>
         <input name="task[completed]" type="hidden" value="0" />

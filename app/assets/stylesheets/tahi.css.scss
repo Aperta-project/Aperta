@@ -75,3 +75,17 @@ textarea {
 .noscroll {
   overflow: hidden;
 }
+
+.warning {
+  font-size: 14px;
+  color: red;
+  font-style: italic;
+}
+
+#upload-file-wrapper {
+  color: red;
+  margin: 50px 0;
+  .warning {
+    margin-top: 10px;
+  }
+}

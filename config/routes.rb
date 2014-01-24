@@ -6,7 +6,7 @@ Tahi::Application.routes.draw do
     resources :submissions, only: [:new, :create]
     resources :tasks, only: [:update, :create]
     member do
-      post :upload
+      patch :upload
       get :manage, to: 'tasks#index'
     end
   end

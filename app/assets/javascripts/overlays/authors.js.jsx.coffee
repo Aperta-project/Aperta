@@ -76,6 +76,9 @@ Tahi.overlays.authors =
         @setState authors: authors
         Tahi.pubsub.publish 'update_authors', authors
 
+      componentWillUnmount: ->
+        $("[data-card-name='authors']").data('authors', @state.authors)
+
     AuthorDetails: React.createClass
       render: ->
         `<li className='author'>

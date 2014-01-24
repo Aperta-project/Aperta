@@ -38,6 +38,28 @@ describe "Tahi.overlays.authors", ->
         component = Tahi.overlays.authors.components.AuthorsOverlay()
         expect(component.getInitialState()).toEqual authors: []
 
+    describe "#componentWillUnmount", ->
+      it "sets the data attribute on authors card with the updated data", ->
+        $('#jasmine_content').html """
+          <div id="one" data-card-name='authors' data-authors='[1, 2, 3]' />
+          <div id="two" data-card-name='authors' data-authors='[1, 2, 3]' />
+        """
+        @component = Tahi.overlays.authors.components.AuthorsOverlay
+          authors:
+            [
+              { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
+              { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
+            ]
+        expectedAuthors = [
+          { first_name: "Albert", last_name: "Einstein", affiliation: "University of Copenhagen", email: "neils@example.org" },
+          { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
+        ]
+        @component.state = authors: expectedAuthors
+        @component.componentWillUnmount()
+
+        expect($('#one').data('authors')).toEqual expectedAuthors
+        expect($('#two').data('authors')).toEqual expectedAuthors
+
     describe "#componentWillMount", ->
       it "sets state.authors to props.authors", ->
         authors = jasmine.createSpy 'props.authors'

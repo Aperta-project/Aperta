@@ -11,6 +11,7 @@ Tahi.overlay =
     $target = $(event.target).closest '[data-card-name]'
     component = constructComponentCallback $target, @defaultProps($target)
     React.renderComponent component, document.getElementById('new-overlay'), Tahi.initChosen
+    $('html').addClass 'noscroll'
     $('#new-overlay').show()
 
   defaultProps: (element) ->
@@ -29,5 +30,6 @@ Tahi.overlay =
 
   hide: (e) ->
     e?.preventDefault()
+    $('html').removeClass 'noscroll'
     $('#new-overlay').hide()
     React.unmountComponentAtNode document.getElementById('new-overlay')

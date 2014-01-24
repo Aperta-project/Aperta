@@ -65,6 +65,12 @@ describe "Tahi.overlay", ->
       Tahi.overlay.display @event, @constructComponentCallback
       expect($('#new-overlay')).toBeVisible()
 
+    it "adds the noscroll class to the body", ->
+      spyOn $.fn, 'addClass'
+      Tahi.overlay.display @event, @constructComponentCallback
+      expect($.fn.addClass.calls.mostRecent().object.selector).toEqual 'html'
+      expect($.fn.addClass).toHaveBeenCalledWith('noscroll')
+
   describe "#hide", ->
     beforeEach ->
       $('#new-overlay').show()
@@ -77,6 +83,12 @@ describe "Tahi.overlay", ->
     it "hides the overlay", ->
       Tahi.overlay.hide(@event)
       expect($('#new-overlay')).toBeHidden()
+
+    it "removes the noscroll class from the html", ->
+      spyOn $.fn, 'removeClass'
+      Tahi.overlay.hide(@event)
+      expect($.fn.removeClass.calls.mostRecent().object.selector).toEqual 'html'
+      expect($.fn.removeClass).toHaveBeenCalledWith('noscroll')
 
     it "unmounts the component", ->
       spyOn React, 'unmountComponentAtNode'

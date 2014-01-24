@@ -137,6 +137,7 @@ describe "tahi", ->
     it "adds the noscroll class to the body", ->
       spyOn $.fn, 'addClass'
       Tahi.displayOverlay($('#planes'))
+      expect($.fn.addClass.calls.mostRecent().object.selector).toEqual 'html'
       expect($.fn.addClass).toHaveBeenCalledWith('noscroll')
 
     context "when the overlay is closed", ->

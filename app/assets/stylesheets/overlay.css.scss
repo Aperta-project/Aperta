@@ -13,22 +13,22 @@
   z-index: 9999;
   display: none;
 }
-#new-overlay {
+#overlay, #new-overlay {
   background-color: rgba(0,0,0,0.7);
   height: 100%;
 }
 
-#new-overlay > div {
+#overlay > div, #new-overlay > div {
   padding: 10px 80px;
   width: 1120px;
   background: white;
   margin: 0 auto;
-  min-height: 100%;
+  margin-top: 40px;
 }
 
 #new-overlay main,
 #overlay main {
-  min-height: 600px;
+  min-height: 300px;
   padding:8px;
   margin: 0 auto;
   position: static;
@@ -40,33 +40,27 @@
   border-bottom: 1px solid black;
 }
 
-#overlay main {
-  width: 960px;
+#new-overlay main p {
+  margin: 15px;
 }
 
-#new-overlay header, #new-overlay footer {
-  @extend .row;
-  position: relative;
-}
-
-#overlay header, #overlay footer {
-  @extend .row;
-  width: 960px;
-  position: relative;
-}
-
+#overlay header,
+#overlay footer,
+#new-overlay header,
 #new-overlay footer {
+  @extend .row;
+  position: relative;
+}
+
+#overlay footer, #new-overlay footer {
   margin: 0;
   padding-bottom: 50px;
 }
 
+#overlay header,
 #new-overlay header {
   margin: 0;
   padding-top: 50px;
-}
-
-#overlay header {
-  margin: 65px auto 0;
 }
 
 #new-overlay header,
@@ -82,10 +76,7 @@
   }
 }
 
-#overlay footer {
-  margin: 10px auto 65px;
-}
-
+#overlay footer,
 #new-overlay footer {
   margin-top: 10px;
   margin-bottom: 0;

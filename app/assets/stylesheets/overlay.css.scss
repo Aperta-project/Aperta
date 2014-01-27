@@ -13,10 +13,22 @@
   z-index: 9999;
   display: none;
 }
+#new-overlay {
+  background-color: rgba(0,0,0,0.7);
+  height: 100%;
+}
+
+#new-overlay > div {
+  padding: 10px 80px;
+  width: 1120px;
+  background: white;
+  margin: 0 auto;
+  min-height: 100%;
+}
 
 #new-overlay main,
 #overlay main {
-  min-height:600px;
+  min-height: 600px;
   padding:8px;
   margin: 0 auto;
   position: static;
@@ -24,21 +36,41 @@
   font-size: 14px;
   padding: 40px 30px 60px;
   top: 110px !important;
-  width: 960px;
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
 
-#new-overlay header, #new-overlay footer,
+#overlay main {
+  width: 960px;
+}
+
+#new-overlay header, #new-overlay footer {
+  @extend .row;
+  position: relative;
+}
+
 #overlay header, #overlay footer {
   @extend .row;
   width: 960px;
   position: relative;
 }
 
-#new-overlay header,
+#new-overlay footer {
+  margin: 0;
+  padding-bottom: 50px;
+}
+
+#new-overlay header {
+  margin: 0;
+  padding-top: 50px;
+}
+
 #overlay header {
   margin: 65px auto 0;
+}
+
+#new-overlay header,
+#overlay header {
   > h2, > h2 > a {
     padding: 0;
     font-size: 24px;
@@ -50,9 +82,13 @@
   }
 }
 
-#new-overlay footer,
 #overlay footer {
   margin: 10px auto 65px;
+}
+
+#new-overlay footer {
+  margin-top: 10px;
+  margin-bottom: 0;
 }
 
 #new-overlay header h2,
@@ -169,7 +205,6 @@
     width: 100px;
     height: 100px;
   }
-
 
   li .progress {
     @extend .col-xs-9;

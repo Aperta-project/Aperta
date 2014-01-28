@@ -3,16 +3,17 @@
 @import 'tahi';
 
 $paper-trim-color: $tahi-tertiary;
-$control-bar-background-color: $tahi-tertiary;
+$control-bar-background-color: #f7f7f7;
 $control-bar-color: black;
 $control-bar-hover-color: $tahi-primary-hover;
 $control-bar-active-color: $tahi-primary;
 $control-bar-secondary-color: $tahi-tertiary-dark;
+$control-bar-border-color: #939393;
 
 #control-bar-container {
   background-color: $control-bar-background-color;
   width: 100%;
-  border-bottom: 1px solid $paper-trim-color;
+  border-bottom: 1px solid $control-bar-border-color;
 }
 
 #control-bar {

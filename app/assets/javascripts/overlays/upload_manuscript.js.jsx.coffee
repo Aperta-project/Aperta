@@ -13,15 +13,21 @@ Tahi.overlays.uploadManuscript =
 
   components:
     UploadManuscriptOverlay: React.createClass
-      componentDidMount: (rootNode) ->
-        uploader = $('.js-jquery-fileupload', rootNode).fileupload
-          done: ->
-            $('#task_checkbox_completed:not(:checked)').click()
-            Turbolinks.visit(window.location)
+      getInitialState: ->
+        uploadProgress: null
 
       render: ->
         Overlay = Tahi.overlays.components.Overlay
         RailsForm = Tahi.overlays.components.RailsForm
+        ProgressBar = Tahi.overlays.components.ProgressBar
+
+        {li, div} = React.DOM
+
+        uploadManuscriptProgress = if !isNaN(parseInt(@state.uploadProgress, 10))
+          (li {}, [
+            (div {className: 'preview-container glyphicon glyphicon-file'}),
+            ProgressBar(progress: @state.uploadProgress)
+          ])
 
         formAction = "#{this.props.paperPath}.json"
         checkboxFormAction = "#{this.props.taskPath}.json"
@@ -47,6 +53,23 @@ Tahi.overlays.uploadManuscript =
               </span>
               <p className='warning'>NOTE:<br />Uploading a document will replace your current work</p>
             </div>
+            <ul id="paper-manuscript-upload">
+              {uploadManuscriptProgress}
+            </ul>
             <p>Or you may simply write your paper directly in Tahi's Article View. It's up to you.</p>
           </main>
         </Overlay>`
+
+      componentDidMount: (rootNode) ->
+        uploader = $('.js-jquery-fileupload', rootNode).fileupload
+          done: ->
+            $('#task_checkbox_completed:not(:checked)').click()
+            Turbolinks.visit(window.location)
+        uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
+        uploader.on 'fileuploadprogress',      @fileUploadProgress
+
+      fileUploadProcessAlways: (event, data) ->
+        @setState uploadProgress: 0
+
+      fileUploadProgress: (event, data) ->
+        @setState uploadProgress: data.loaded / data.total * 100.0

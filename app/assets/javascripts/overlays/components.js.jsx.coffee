@@ -51,6 +51,13 @@ Tahi.overlays.components.CompletedCheckbox = React.createClass
   componentDidMount: (rootNode) ->
     Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode), success: @props.onSuccess
 
+Tahi.overlays.components.ProgressBar = React.createClass
+  render: ->
+    style = {width: "#{@props.progress}%"}
+    `<div className="progress">
+      <div className="progress-bar" style={style} />
+     </div>`
+
 Tahi.overlays.components.OverlayHeader = React.createClass
   render: ->
     `<header>

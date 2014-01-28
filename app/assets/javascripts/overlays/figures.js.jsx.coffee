@@ -16,7 +16,7 @@ Tahi.overlays.figures =
   components:
     FigureUpload: React.createClass
       render: ->
-        ProgressBar = Tahi.overlays.figures.components.ProgressBar
+        ProgressBar = Tahi.overlays.components.ProgressBar
 
         `<li>
           <div className="preview-container" />
@@ -26,13 +26,6 @@ Tahi.overlays.figures =
       componentDidMount: (rootNode) ->
         previewContainer = $('.preview-container', rootNode)
         previewContainer.append window.tempStorage[this.props.filename]
-
-    ProgressBar: React.createClass
-      render: ->
-        style = {width: "#{@props.progress}%"}
-        `<div className="progress">
-          <div className="progress-bar" style={style} />
-         </div>`
 
     FiguresOverlay: React.createClass
       getInitialState: ->

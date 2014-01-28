@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe "dashboards/index" do
   let(:all_submitted_papers) { [] }
 

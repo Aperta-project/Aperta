@@ -74,6 +74,12 @@ $control-bar-border-color: #939393;
   }
 }
 
+#paper-short-title {
+  font-size: 18px;
+  line-height: 36px;
+  min-width: 5px;
+}
+
 #paper-short-title h2 {
   font-family: $tahi-article-font-family;
   margin: 0;
@@ -81,6 +87,7 @@ $control-bar-border-color: #939393;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 36px;
 }
 
 #paper-revision {

@@ -186,6 +186,13 @@
     margin-top: 20px;
   }
 
+  li .processing {
+    @extend .col-xs-9;
+    margin-left: 70px;
+    font-size: 32px;
+    margin-top: 28px;
+  }
+
   li .preview-container {
     @extend .col-xs-2;
     width: 100px;

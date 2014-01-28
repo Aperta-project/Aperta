@@ -23,10 +23,16 @@ Tahi.overlays.uploadManuscript =
 
         {li, div} = React.DOM
 
-        uploadManuscriptProgress = if !isNaN(parseInt(@state.uploadProgress, 10))
+        progress = parseInt(@state.uploadProgress, 10)
+        uploadManuscriptProgress = if !isNaN(progress)
+          content = if progress == 100
+            (div {className: 'processing'}, "Processing...")
+          else
+            ProgressBar(progress: progress)
+
           (li {}, [
             (div {className: 'preview-container glyphicon glyphicon-file'}),
-            ProgressBar(progress: @state.uploadProgress)
+            content
           ])
 
         formAction = "#{this.props.paperPath}.json"
@@ -60,10 +66,14 @@ Tahi.overlays.uploadManuscript =
           </main>
         </Overlay>`
 
+      componentDidUpdate: (prevProps, prevState, rootNode) ->
+        new Spinner(top: '0', left: '-64px').spin $('.processing', rootNode)[0]
+
       componentDidMount: (rootNode) ->
         uploader = $('.js-jquery-fileupload', rootNode).fileupload
           done: ->
             $('#task_checkbox_completed:not(:checked)').click()
+            $('html').removeClass 'noscroll'
             Turbolinks.visit(window.location)
         uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
         uploader.on 'fileuploadprogress',      @fileUploadProgress

@@ -1,14 +1,17 @@
 - content_for :tahi_container_class do
   full-width
+
 - content_for :control_bar do
   #control-bar-container
     #control-bar
       %section
         %ul
+          %li#paper-journal= image_tag @paper.journal.logo.url
           %li#paper-short-title= @paper.short_title
           %li#paper-revision R0
         %ul
           %li= link_to 'Article', edit_paper_path(@paper)
+
 %ul.phases
   - @task_manager.phases.each do |phase|
     %li.phase>

@@ -13,7 +13,6 @@
               %div
                 = @paper.journal.name
           %li#paper-short-title= @paper.short_title
-          %li#paper-revision R0
         %ul
           - if current_user.admin?
             %li= link_to 'Task Manager', manage_paper_path(@paper)

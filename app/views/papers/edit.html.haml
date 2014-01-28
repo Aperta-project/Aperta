@@ -16,8 +16,6 @@
             %li= link_to 'Task Manager', manage_paper_path(@paper)
           %li
             = link_to 'Save', paper_path(@paper, format: :json), id: 'save-button', class: 'primary-button'
-          %li
-            = link_to 'Submit', new_paper_submission_path(@paper), class: 'primary-button'
 
 %main
   %article
@@ -63,4 +61,6 @@
         .form-group
           = f.label :paper_type
           = f.select :paper_type, Paper::PAPER_TYPES.map { |t| [t.humanize, t] }
+      %hr
+      = link_to 'Submit', new_paper_submission_path(@paper), class: 'primary-button wide-button'
 

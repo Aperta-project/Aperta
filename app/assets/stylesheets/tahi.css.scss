@@ -50,6 +50,11 @@ textarea {
   &:hover {
     background-color: $btn-primary-bg-hover;
   }
+
+  &.wide-button {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
 }
 
 .secondary-button {

@@ -22,8 +22,11 @@ feature "Tahi administration", js: true do
       affiliation: 'universität zürich'
   end
 
-  before do
+  let!(:journal) do
     Journal.create! name: 'Journal 1'
+  end
+
+  before do
     Journal.create! name: 'Journal 2'
     SignInPage.visit.sign_in admin.email
   end
@@ -70,5 +73,15 @@ feature "Tahi administration", js: true do
     edit_role_page = roles_page.edit_role user.full_name, 'Journal 2'
     expect(edit_role_page).to_not be_editor
     expect(edit_role_page).to be_reviewer
+  end
+
+  scenario "Admin can upload a logo for the journal" do
+    admin_page = DashboardPage.visit.visit_admin
+    journals_page = admin_page.navigate_to 'Journals'
+    edit_journal_page = journals_page.edit_journal journal.id
+    edit_journal_page.upload_logo
+    journals_page = edit_journal_page.save
+    journal_page = journals_page.view_journal journal.id
+    expect(journal_page.logo).to end_with 'yeti.jpg'
   end
 end

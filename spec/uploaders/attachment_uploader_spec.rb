@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe AttachmentUploader do
-  #include CarrierWave::Test::Matchers
-
   describe "#store_dir" do
     it "includes the paper id in the path" do
       paper = Paper.create! short_title: 'Uploader tests', journal: Journal.create!

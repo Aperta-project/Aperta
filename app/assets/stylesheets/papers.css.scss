@@ -55,6 +55,10 @@ $control-bar-secondary-color: $tahi-tertiary-dark;
 #control-bar section > ul:last-of-type {
   @extend .navbar-right;
 
+  li > a {
+    text-transform: uppercase;
+  }
+
   li > a[class=primary-button] {
     @extend .primary-button;
   }
@@ -72,7 +76,7 @@ $control-bar-secondary-color: $tahi-tertiary-dark;
 #paper-short-title h2 {
   font-family: $tahi-article-font-family;
   margin: 0;
-  width: 660px;
+  width: 645px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

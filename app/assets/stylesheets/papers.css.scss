@@ -62,6 +62,9 @@ $control-bar-secondary-color: $tahi-tertiary-dark;
 }
 
 #paper-journal {
+  div {
+    padding-top: 9px;
+  }
   img {
     height: 36px;
   }

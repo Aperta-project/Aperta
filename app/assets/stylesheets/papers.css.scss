@@ -2,7 +2,6 @@
 @import "bootstrap";
 @import 'tahi';
 
-$paper-font-family: 'librebaskerville';
 $paper-trim-color: $tahi-tertiary;
 $control-bar-background-color: $tahi-tertiary;
 $control-bar-color: black;
@@ -70,10 +69,9 @@ $control-bar-secondary-color: $tahi-tertiary-dark;
   }
 }
 
-#paper-short-title {
-  font-size: 18px;
-  line-height: 36px;
-  min-width: 5px;
+#paper-short-title h2 {
+  font-family: $tahi-article-font-family;
+  margin: 0;
 }
 
 #paper-revision {
@@ -150,8 +148,9 @@ main > aside > div {
   padding-top: 60px;
   width: 220px;
 }
+
 #tahi-container > main > article * {
-  font-family: $paper-font-family;
+  font-family: $tahi-article-font-family;
 }
 
 .card {

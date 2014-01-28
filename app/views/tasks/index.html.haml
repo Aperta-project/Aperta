@@ -12,7 +12,8 @@
             - else
               %div
                 = @paper.journal.name
-          %li#paper-short-title= @paper.short_title
+          %li#paper-short-title
+            %h2= @paper.short_title
         %ul
           %li= link_to 'Article', edit_paper_path(@paper)
 

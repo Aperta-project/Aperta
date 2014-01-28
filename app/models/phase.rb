@@ -24,10 +24,10 @@ class Phase < ActiveRecord::Base
     return unless tasks.empty?
     case name
     when 'Submission Data'
-      self.tasks << DeclarationTask.new
-      self.tasks << FigureTask.new
-      self.tasks << AuthorsTask.new
       self.tasks << UploadManuscriptTask.new
+      self.tasks << AuthorsTask.new
+      self.tasks << FigureTask.new
+      self.tasks << DeclarationTask.new
     when 'Assign Editor'
       self.tasks << PaperAdminTask.new
       self.tasks << TechCheckTask.new

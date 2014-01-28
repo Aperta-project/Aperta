@@ -6,7 +6,12 @@
     #control-bar
       %section
         %ul
-          %li#paper-journal= image_tag @paper.journal.logo.url
+          %li#paper-journal
+            - if @paper.journal.logo.present?
+              = image_tag @paper.journal.logo.url
+            - else
+              %div
+                = @paper.journal.name
           %li#paper-short-title= @paper.short_title
           %li#paper-revision R0
         %ul

@@ -105,8 +105,10 @@ describe Paper do
 
     it "assigns all author tasks to the paper author" do
       paper.save!
-      tasks = Task.where(role: 'author', phase_id: paper.task_manager.phases.map(&:id))
-      expect(tasks.all? { |t| t.assignee == user }).to eq true
+      author_tasks = Task.where(role: 'author', phase_id: paper.task_manager.phases.pluck(:id))
+      other_tasks = Task.where("role != 'author'", phase_id: paper.task_manager.phases.pluck(:id))
+      expect(author_tasks.all? { |t| t.assignee == user }).to eq true
+      expect(other_tasks.all? { |t| t.assignee != user }).to eq true
     end
 
     context "when the paper is persisted" do

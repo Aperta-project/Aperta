@@ -43,7 +43,9 @@ class Paper < ActiveRecord::Base
   private
 
   def assign_user_to_author_tasks
-    task_manager.phases.collect(&:tasks).flatten.each do |task|
+    phase_ids = task_manager.phases.pluck(:id)
+
+    Task.where(phase_id: phase_ids, role: 'author').each do |task|
       task.update assignee: user
     end
   end

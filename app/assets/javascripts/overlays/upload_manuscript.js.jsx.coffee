@@ -65,7 +65,7 @@ Tahi.overlays.uploadManuscript =
         </Overlay>`
 
       componentDidUpdate: (prevProps, prevState, rootNode) ->
-        new Spinner(top: '0', left: '-64px').spin $('.processing', rootNode)[0]
+        new Spinner(top: '0', left: '-64px', color: '#39a329').spin $('.processing', rootNode)[0]
 
       componentDidMount: (rootNode) ->
         uploader = $('.js-jquery-fileupload', rootNode).fileupload

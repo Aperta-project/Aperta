@@ -171,6 +171,10 @@
   height: 190px
 }
 
+#paper-manuscript-upload {
+  color: $tahi-primary;
+}
+
 #paper-manuscript-upload,
 #paper-figure-uploads {
   margin-bottom: 0;
@@ -207,7 +211,6 @@
 
   li .glyphicon {
     font-size: 72px;
-    color: $tahi-primary;
     text-align: center;
     padding-top: 14px;
     width: 80px;

@@ -64,8 +64,3 @@
       = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json, 'refresh-on-close' => false } do
         %span.glyphicon.glyphicon-ok
         = task.title
-
-      = form_for @paper, remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
-        .form-group
-          = f.label :paper_type
-          = f.select :paper_type, Paper::PAPER_TYPES.map { |t| [t.humanize, t] }

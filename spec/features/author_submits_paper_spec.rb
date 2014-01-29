@@ -18,7 +18,7 @@ feature "Paper Submission" do
 
     dashboard_page = DashboardPage.visit
     new_submission_page = dashboard_page.new_submission
-    edit_submission_page = new_submission_page.create_submission 'This is a short title', journal: 'PLOS One'
+    edit_submission_page = new_submission_page.create_submission 'This is a short title', journal: 'PLOS One', paper_type: 'Front matter'
 
     expect(edit_submission_page.journal).to eq('PLOS One')
     dashboard_page = edit_submission_page.visit_dashboard

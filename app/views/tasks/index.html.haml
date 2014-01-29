@@ -31,27 +31,27 @@
           - case task.title
           - when 'Enter Declarations'
             %li
-              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'task-completed' => task.completed?, declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json } do
+              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'task-completed' => task.completed?, declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json } do
                 %span.glyphicon.glyphicon-ok
                 = task.title
           - when 'Upload Figures'
             %li
-              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "figures", 'paper-title' => @paper.short_title, 'figures-path' => paper_figures_path(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), figures: @paper.figures.map(&:access_details).to_json } do
+              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "figures", 'paper-title' => truncated_title(@paper), 'figures-path' => paper_figures_path(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), figures: @paper.figures.map(&:access_details).to_json } do
                 %span.glyphicon.glyphicon-ok
                 = task.title
           - when 'Upload Manuscript'
             %li
-              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => @paper.short_title, 'paper-path' => upload_paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task) } do
+              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => truncated_title(@paper), 'paper-path' => upload_paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task) } do
                 %span.glyphicon.glyphicon-ok
                 = task.title
           - when 'Add Authors'
             %li
-              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: @paper.authors_json, 'refresh-on-close' => false } do
+              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: @paper.authors_json, 'refresh-on-close' => false } do
                 %span.glyphicon.glyphicon-ok
                 = task.title
           - else
             %li
-              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => "card-#{task.id}", 'overlay-title' => @paper.short_title, 'paper-id' => @paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do
+              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => "card-#{task.id}", 'overlay-title' => truncated_title(@paper), 'paper-id' => @paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do
                 %span.glyphicon.glyphicon-ok
                 = task.title
             .hidden{id: "card-#{task.id}-content"}
@@ -63,6 +63,6 @@
                 assignees: User.admins.map { |u| [u.id, u.full_name] }.to_json,
                 url: paper_tasks_path(@paper, format: :json),
                 phase_id: phase.id,
-                paper_short_title: @paper.short_title
+                paper_short_title: truncated_title(@paper)
               },
               class: "secondary-button react-new-card-overlay")

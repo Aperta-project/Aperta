@@ -46,7 +46,7 @@ Tahi.overlays.uploadManuscript =
             onCompletedChanged={this.props.onCompletedChanged}>
           <main>
             <h1>Upload Manuscript</h1>
-            <p>You may upload a manuscript at any time.</p>
+            <h2>You may upload a manuscript at any time.</h2>
             <div id="upload-file-wrapper">
               <span className="secondary-button fileinput-button">
                 Select and upload document
@@ -57,12 +57,10 @@ Tahi.overlays.uploadManuscript =
                          type="file" />
                 </RailsForm>
               </span>
-              <p className='warning'>NOTE:<br />Uploading a document will replace your current work</p>
             </div>
             <ul id="paper-manuscript-upload">
               {uploadManuscriptProgress}
             </ul>
-            <p>Or you may simply write your paper directly in Tahi's Article View. It's up to you.</p>
           </main>
         </Overlay>`
 

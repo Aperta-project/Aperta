@@ -8,7 +8,7 @@
 
 %main
   %section#my-submissions
-    %h3 Your Submissions
+    %h2 Your Submissions
     - if @papers.empty?
       %p.info-text Your scientific paper submissions will appear here.
     - else
@@ -19,7 +19,7 @@
 
   - if @paper_tasks.present?
     %section#my-tasks
-      %h3 Your Tasks
+      %h2 Your Tasks
       - @paper_tasks.each do |paper, tasks|
         %p.paper-title= link_to paper.title || paper.short_title, paper_path(paper)
         %ul.cards

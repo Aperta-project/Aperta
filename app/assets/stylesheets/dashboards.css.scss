@@ -6,9 +6,12 @@ h1.large {
   margin: 40px 0;
 }
 
-#my-submissions,
+#my-submissions {
+  @extend .col-xs-5;
+}
 #my-tasks {
-  @extend .col-xs-6;
+  @extend .col-md-offset-2;
+  @extend .col-xs-5;
 }
 
 .info-text {
@@ -34,4 +37,5 @@ ul.cards {
 .paper-title a {
   color: $tahi-primary;
   font-size: 18px;
+  line-height: 1;
 }

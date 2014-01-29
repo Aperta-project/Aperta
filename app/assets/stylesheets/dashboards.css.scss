@@ -10,3 +10,28 @@ h1.large {
 #my-tasks {
   @extend .col-xs-6;
 }
+
+.info-text {
+  font-size: 24px;
+  color: gray;
+  font-style: italic;
+}
+
+ul.submitted {
+  list-style-type: none;
+  margin: 30px 0;
+  padding: 0;
+
+  li {
+    margin-bottom: 10px;
+  }
+}
+
+ul.cards {
+  padding-bottom: 20px;
+}
+
+.paper-title a {
+  color: $tahi-primary;
+  font-size: 18px;
+}

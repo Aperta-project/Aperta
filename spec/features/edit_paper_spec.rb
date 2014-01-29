@@ -29,7 +29,7 @@ feature "Editing paper", js: true do
     sleep 1
 
     dashboard_page = edit_paper.save.navigate_to_dashboard
-    expect(dashboard_page.submissions).to include 'lorem-ipsum'
+    expect(dashboard_page.submissions).to include "Lorem Ipsum Dolor Sit Amet"
 
     edit_paper = EditPaperPage.visit paper
     expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"

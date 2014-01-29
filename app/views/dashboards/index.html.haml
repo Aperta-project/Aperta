@@ -14,7 +14,7 @@
     - else
       %ul.submitted
         - @papers.each do |paper|
-          %li.paper-title= link_to paper.short_title, paper_path(paper)
+          %li.paper-title= link_to (paper.title || paper.short_title), paper_path(paper)
     = link_to 'Create new submission', new_paper_path, class: 'primary-button wide-button'
 
   - if @paper_tasks.present?

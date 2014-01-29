@@ -28,7 +28,7 @@
           %ul
             - if current_user
               - if current_user.admin?
-                %li.nav-bar-item= active_link_to 'Admin View', rails_admin_path
+                %li.nav-bar-item= active_link_to 'Admin', rails_admin_path
               %li.nav-bar-text= link_to 'Sign out', destroy_user_session_path, method: :delete
               %li.nav-bar-text Welcome back, #{current_user.username}
 

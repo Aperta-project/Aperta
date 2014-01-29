@@ -24,7 +24,7 @@ $nav-bar-active-color: $tahi-primary;
   > a {
     @extend .navbar-brand;
     color: $nav-bar-color;
-    padding: 14px 20px;
+    padding: 8px 20px;
   }
 }
 
@@ -44,12 +44,16 @@ $nav-bar-active-color: $tahi-primary;
 #nav-bar section > ul:last-of-type li:last-of-type {
   @extend .navbar-text;
   padding-right: 20px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 #nav-bar section > ul > li > a {
   color: $nav-bar-color;
   padding-left: 20px;
   padding-right: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 #nav-bar section > ul > li.nav-bar-item > a {

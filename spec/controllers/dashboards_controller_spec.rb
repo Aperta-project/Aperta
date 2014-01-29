@@ -32,10 +32,9 @@ describe DashboardsController do
 
       it "assigns papers and tasks" do
         do_request
-        expect(assigns(:ongoing_papers)).to match_array user.papers
-        expect(assigns(:submitted_papers)).to be_empty
+        expect(assigns(:papers)).to match_array user.papers
         expect(assigns(:all_submitted_papers)).to_not be
-        expect(assigns(:assigned_tasks).to_a).to include(task)
+        expect(assigns(:paper_tasks).values.flatten).to include(task)
       end
 
       context "when the user is an admin" do
@@ -46,10 +45,9 @@ describe DashboardsController do
 
         it "assigns papers" do
           do_request
-          expect(assigns(:ongoing_papers)).to match_array user.papers
-          expect(assigns(:submitted_papers)).to be_empty
+          expect(assigns(:papers)).to match_array user.papers
           expect(assigns(:all_submitted_papers)).to match_array Paper.submitted
-          expect(assigns(:assigned_tasks).to_a).to include(task)
+          expect(assigns(:paper_tasks).values.flatten).to include(task)
         end
       end
     end

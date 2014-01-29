@@ -1,54 +1,58 @@
 %header
-  %h3
-    Welcome, #{current_user.first_name} #{current_user.last_name}
-= link_to 'New submission', new_paper_path, class: 'btn btn-primary'
+  %h1.large
+    Welcome to TAHI, #{current_user.first_name}.
+%hr
 
-%h3 Assigned Tasks
-%ul.assigned-tasks.cards
-  %ul.cards
-    - @assigned_tasks.each do |task|
-      - case task.title
-      - when 'Declarations'
-        %li
-          = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => task.paper.short_title, 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), 'task-completed' => task.completed?, declarations: task.paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json } do
-            %span.glyphicon.glyphicon-ok
-            = task.title
-      - when 'Upload Figures'
-        %li
-          = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "figures", 'paper-title' => task.paper.short_title, 'figures-path' => paper_figures_path(task.paper), 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), figures: task.paper.figures.map(&:access_details).to_json } do
-            %span.glyphicon.glyphicon-ok
-            = task.title
-      - when 'Upload Manuscript'
-        %li
-          = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => task.paper.short_title, 'figures-path' => paper_figures_path(task.paper), 'paper-path' => upload_paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task) } do
-            %span.glyphicon.glyphicon-ok
-            = task.title
-      - when 'Authors'
-        - authors_array = task.paper.authors.map { |a| a.slice(:first_name, :last_name, :email, :affiliation) }
-        %li
-          = link_to '#', class: "card", data: { 'card-name' => "authors", 'paper-title' => task.paper.short_title, 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), authors: authors_array.to_json, 'refresh-on-close' => false } do
-            %span.glyphicon.glyphicon-ok
-            = task.title
-      - else
-        %li
-          = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => "card-#{task.id}", 'overlay-title' => task.paper.short_title, 'paper-id' => task.paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do
-            %span.glyphicon.glyphicon-ok
-            = task.title
-        .hidden{id: "card-#{task.id}-content"}
-          = render task, paper: task.paper
+%main
+  %section#my-submissions
+    %h3 Your Submissions
+    %p Your scientific paper submissions will appear here.
+    %ul.submitted
+      - @papers.each do |paper|
+        %li= link_to paper.short_title, paper_path(paper)
+    = link_to 'New submission', new_paper_path, class: 'btn btn-primary'
 
-%h3 Submissions
-%ul.submissions
-  - @ongoing_papers.each do |paper|
-    %li= link_to paper.short_title, edit_paper_path(paper)
+  %section#my-tasks
+    %h3 Your Tasks
+    %p Your scientific paper submissions will appear here.
+    %ul.assigned-tasks.cards
+      - @paper_tasks.each do |paper, tasks|
+        %p= paper.title || paper.short_title
+        %ul.cards
+          - tasks.each do |task|
+            - case task.title
+            - when 'Declarations'
+              %li
+                = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => task.paper.short_title, 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), 'task-completed' => task.completed?, declarations: task.paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json } do
+                  %span.glyphicon.glyphicon-ok
+                  = task.title
+            - when 'Upload Figures'
+              %li
+                = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "figures", 'paper-title' => task.paper.short_title, 'figures-path' => paper_figures_path(task.paper), 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), figures: task.paper.figures.map(&:access_details).to_json } do
+                  %span.glyphicon.glyphicon-ok
+                  = task.title
+            - when 'Upload Manuscript'
+              %li
+                = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => task.paper.short_title, 'figures-path' => paper_figures_path(task.paper), 'paper-path' => upload_paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task) } do
+                  %span.glyphicon.glyphicon-ok
+                  = task.title
+            - when 'Authors'
+              - authors_array = task.paper.authors.map { |a| a.slice(:first_name, :last_name, :email, :affiliation) }
+              %li
+                = link_to '#', class: "card", data: { 'card-name' => "authors", 'paper-title' => task.paper.short_title, 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), authors: authors_array.to_json, 'refresh-on-close' => false } do
+                  %span.glyphicon.glyphicon-ok
+                  = task.title
+            - else
+              %li
+                = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => "card-#{task.id}", 'overlay-title' => task.paper.short_title, 'paper-id' => task.paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do
+                  %span.glyphicon.glyphicon-ok
+                  = task.title
+              .hidden{id: "card-#{task.id}-content"}
+                = render task, paper: task.paper
 
-%h3 Submitted Papers
-%ul.submitted
-  - @submitted_papers.each do |paper|
-    %li= link_to paper.short_title, paper_path(paper)
-
-- if @all_submitted_papers
-  %h3 All Submitted Papers
-  %ul.all_submitted
-    - @all_submitted_papers.each do |paper|
-      %li= link_to paper.short_title, paper_path(paper)
+- if Rails.env.test?
+  - if @all_submitted_papers
+    %h3 All Submitted Papers
+    %ul.all_submitted
+      - @all_submitted_papers.each do |paper|
+        %li= link_to paper.short_title, paper_path(paper)

@@ -7,12 +7,15 @@ html {
   overflow-y: scroll;
 }
 
-
 a, a:hover, button, button:hover, .glyphicon, .glyphicon:hover {
   @include transition(all 0.2s ease-in-out);
 }
 
-body {
+hr {
+  border-top: 1px solid #d6d6d6;
+}
+
+body.matte {
   background-color: $tahi-matte;
 }
 
@@ -31,7 +34,17 @@ textarea {
   &.full-width {
     max-width: none;
   }
+
+  > main {
+    @extend .row;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: white;
+    min-width: 960px;
+  }
 }
+
+
 
 .small_text {
   font-weight: bold;

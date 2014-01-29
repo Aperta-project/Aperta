@@ -11,7 +11,7 @@ feature "Account creation" do
       affiliation: 'Universität Zürich'
 
     expect(page.current_path).to eq(root_path)
-    expect(dashboard_page.header).to have_content 'Welcome, Albert Einstein'
+    expect(dashboard_page.header).to have_content 'Welcome to TAHI, Albert.'
   end
 end
 

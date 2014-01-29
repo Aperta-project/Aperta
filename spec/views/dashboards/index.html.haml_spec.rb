@@ -5,10 +5,9 @@ describe "dashboards/index" do
 
   before do
     allow(view).to receive(:current_user).and_return(mock_model User)
-    assign(:ongoing_papers, [])
-    assign(:submitted_papers, [])
+    assign(:papers, [])
     assign(:all_submitted_papers, all_submitted_papers)
-    assign(:assigned_tasks, [])
+    assign(:paper_tasks, [])
   end
 
   subject { render; Capybara.string(rendered) }

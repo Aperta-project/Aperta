@@ -144,12 +144,6 @@ $control-bar-border-color: #939393;
 }
 
 #tahi-container > main {
-  @extend .row;
-  margin-left: 0;
-  margin-right: 0;
-  background-color: white;
-  min-width: 960px;
-
   > article {
     @include make-xs-column(9);
     border-right: 1px solid $paper-trim-color;

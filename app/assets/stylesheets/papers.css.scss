@@ -40,13 +40,11 @@ $control-bar-border-color: #939393;
     padding: 10px;
     line-height: 14px;
 
-    color: $tahi-primary;
     font-weight: bold;
     background: none;
     text-transform: none;
 
     &:hover {
-      text-decoration: underline;
       background: none;
       color: $tahi-primary;
     }

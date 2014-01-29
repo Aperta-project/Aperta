@@ -174,11 +174,7 @@ describe "Tahi.papers", ->
       Tahi.papers.abstractEditable = jasmine.createSpyObj('abstractEditable', ['getText'])
       Tahi.papers.abstractEditable.getText.and.returnValue('ME ME ABSTRACT ABSTRACT')
 
-      event = jasmine.createSpyObj('event', ['target', 'preventDefault'])
-      event.target.and.returnValue
-        attr: (key) ->
-          { href: '/path/to/resource' }[key]
-      Tahi.papers.savePaper(event)
+      Tahi.papers.savePaper('/path/to/resource' )
 
       expect($.ajax).toHaveBeenCalledWith
         url: '/path/to/resource'

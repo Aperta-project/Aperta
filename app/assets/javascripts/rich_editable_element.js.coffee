@@ -3,11 +3,12 @@ window.Tahi ||= {}
 class Tahi.RichEditableElement
   constructor: (@element) ->
     @instance = CKEDITOR.inline @element,
-      extraPlugins: 'sharedspace'
+      extraPlugins: 'sharedspace,save_button'
       removePlugins: 'floatingspace,resize'
       sharedSpaces:
         top: 'toolbar'
       toolbar: [
+        [ 'TahiSave' ]
         [ 'Format' ]
         [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ]
         [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Table' ]

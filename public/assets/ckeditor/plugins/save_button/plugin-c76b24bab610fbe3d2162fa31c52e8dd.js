@@ -1,0 +1,1 @@
+CKEDITOR.plugins.add("save_button",{icons:null,init:function(a){a.addCommand("savePaper",{exec:function(){url=$("main article").data("paperPath"),Tahi.papers.savePaper(url)}}),a.ui.addButton("TahiSave",{label:"Save",command:"savePaper",toolbar:"tahiSave"})}});

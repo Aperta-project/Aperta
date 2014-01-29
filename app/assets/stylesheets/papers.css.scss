@@ -97,6 +97,19 @@ $control-bar-border-color: #939393;
 
 #toolbar {
   height: 60px;
+  width: 100%;
+
+  .cke_button_icon.cke_button__tahisave_icon {
+    display: none;
+  }
+
+  .cke_button_label.cke_button__tahisave_label {
+    display: inline;
+    padding-left: 0;
+    padding: 0 5px;
+    // text-transform: uppercase;
+    // font-weight: bold;
+  }
 }
 
 #paper-title {
@@ -140,6 +153,7 @@ $control-bar-border-color: #939393;
   > article {
     @include make-xs-column(9);
     border-right: 1px solid $paper-trim-color;
+    padding: 0;
   }
 
   > aside {
@@ -209,3 +223,4 @@ main > aside > div {
     color: white;
   }
 }
+

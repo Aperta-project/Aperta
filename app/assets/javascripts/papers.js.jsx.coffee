@@ -13,8 +13,6 @@ Tahi.papers =
     @instantiateEditables()
     @initAuthors()
 
-    $('#save-button').click (e) => @savePaper e
-
   fixArticleControls: ->
     $('#control-bar-container').scrollToFixed()
     $('#toolbar').scrollToFixed(marginTop: $('#control-bar-container').outerHeight(true))
@@ -30,10 +28,9 @@ Tahi.papers =
       @shortTitleEditable = new Tahi.PlaceholderElement($('#paper-short-title[contenteditable]')[0])
       @titleEditable = new Tahi.PlaceholderElement($('#paper-title[contenteditable]')[0])
 
-  savePaper: (e) ->
-    e.preventDefault()
+  savePaper: (url) ->
     $.ajax
-      url: $(e.target).attr('href')
+      url: url
       method: "POST"
       data:
         _method: "patch"

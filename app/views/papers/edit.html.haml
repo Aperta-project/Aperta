@@ -14,14 +14,12 @@
         %ul
           - if current_user.admin?
             %li= link_to 'Task Manager', manage_paper_path(@paper)
-          %li
-            = link_to 'Save', paper_path(@paper, format: :json), id: 'save-button', class: 'primary-button'
 
 %main
-  %article
-    %div
-      #toolbar
+  %article{data: { 'paper-path' => paper_path(@paper, format: :json) } }
+    #toolbar
 
+    %div
       .title
         %h2#paper-title{contenteditable: true, placeholder: 'Type your article title here'}
           = @paper.title

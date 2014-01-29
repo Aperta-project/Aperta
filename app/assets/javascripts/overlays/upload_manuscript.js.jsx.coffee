@@ -9,6 +9,7 @@ Tahi.overlays.uploadManuscript =
     Tahi.overlay.init 'upload-manuscript', @createComponent
 
   createComponent: (target, props) ->
+    props.uploadPaperPath = target.data('uploadPaperPath')
     Tahi.overlays.uploadManuscript.components.UploadManuscriptOverlay props
 
   components:
@@ -35,7 +36,6 @@ Tahi.overlays.uploadManuscript =
             content
           ])
 
-        formAction = "#{this.props.paperPath}.json"
         checkboxFormAction = "#{this.props.taskPath}.json"
         `<Overlay
             paperTitle={this.props.paperTitle}
@@ -50,7 +50,7 @@ Tahi.overlays.uploadManuscript =
             <div id="upload-file-wrapper">
               <span className="secondary-button fileinput-button">
                 Select and upload document
-                <RailsForm action={formAction}>
+                <RailsForm action={this.props.uploadPaperPath}>
                   <input id='upload_file'
                          className="js-jquery-fileupload"
                          name="upload_file"

@@ -36,7 +36,7 @@
   %aside
     %div
       - task = Task.where(title: "Upload Manuscript", phase: @paper.phases.where(name: 'Submission Data').first).first
-      = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => truncated_title(@paper), 'paper-path' => upload_paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'refresh-on-close' => false } do
+      = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => truncated_title(@paper), 'upload-paper-path' => upload_paper_path(@paper, format: :json), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'refresh-on-close' => false } do
         %span.glyphicon.glyphicon-ok
         = task.title
 

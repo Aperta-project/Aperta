@@ -37,7 +37,7 @@
                   = task.title
             - when 'Upload Manuscript'
               %li
-                = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => truncated_title(task.paper), 'figures-path' => paper_figures_path(task.paper), 'paper-path' => upload_paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task) } do
+                = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => truncated_title(task.paper), 'upload-paper-path' => upload_paper_path(@paper, format: :json), 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task) } do
                   %span.glyphicon.glyphicon-ok
                   = task.title
             - when 'Add Authors'

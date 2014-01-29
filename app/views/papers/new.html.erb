@@ -11,9 +11,5 @@
     <%= f.label :journal_id %>
     <%= f.select :journal_id, Journal.pluck(:name, :id), class: 'form-control' %>
   </div>
-  <div class="form-group">
-    <%= f.label :paper_type %>
-    <%= f.select :paper_type, Paper::PAPER_TYPES.map { |t| [t.humanize, t] } %>
-  </div>
   <button type="submit" class="btn btn-default">Create</button>
 <% end %>

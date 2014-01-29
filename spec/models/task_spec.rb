@@ -13,7 +13,7 @@ describe Task do
     let(:paper) { Paper.create! short_title: 'Hello world', journal: Journal.create! }
 
     it "orders so the completed ones are below the incomplete ones" do
-      completed_task = Task.create! title: "Paper Shepherd",
+      completed_task = Task.create! title: "Paper Admin",
         completed: true,
         role: 'admin',
         phase: paper.task_manager.phases.first

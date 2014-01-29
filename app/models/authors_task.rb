@@ -1,4 +1,4 @@
 class AuthorsTask < Task
-  title "Authors"
+  title "Add Authors"
   role "author"
 end

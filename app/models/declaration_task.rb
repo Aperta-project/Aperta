@@ -1,4 +1,4 @@
 class DeclarationTask < Task
-  title "Declarations"
+  title "Enter Declarations"
   role "author"
 end

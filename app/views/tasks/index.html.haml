@@ -29,7 +29,7 @@
       %ul.cards
         - phase.tasks.each do |task|
           - case task.title
-          - when 'Declarations'
+          - when 'Enter Declarations'
             %li
               = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'task-completed' => task.completed?, declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json } do
                 %span.glyphicon.glyphicon-ok
@@ -44,7 +44,7 @@
               = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => @paper.short_title, 'paper-path' => upload_paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task) } do
                 %span.glyphicon.glyphicon-ok
                 = task.title
-          - when 'Authors'
+          - when 'Add Authors'
             %li
               = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => @paper.short_title, 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: @paper.authors_json, 'refresh-on-close' => false } do
                 %span.glyphicon.glyphicon-ok

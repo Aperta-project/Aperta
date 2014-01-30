@@ -41,7 +41,8 @@ feature "Assigns Reviewer", js: true do
     paper = Paper.create! short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
-      journal: journal
+      journal: journal,
+      user: editor
 
     paper_role = PaperRole.create! paper: paper, user: editor, editor: true
 

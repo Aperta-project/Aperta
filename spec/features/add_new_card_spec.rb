@@ -35,7 +35,8 @@ feature 'Add a new card', js: true do
     Paper.create! short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
-      journal: journal
+      journal: journal,
+      user: admin
   end
 
   scenario "Admin can add a new card" do

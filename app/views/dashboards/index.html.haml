@@ -49,6 +49,11 @@
                 = link_to '#', class: "card", data: { 'card-name' => "authors", 'paper-title' => truncated_title(task.paper), 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), authors: authors_array.to_json, 'refresh-on-close' => false } do
                   %span.glyphicon.glyphicon-ok
                   = task.title
+            - when 'Register Decision'
+              %li
+                = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "register-decision", 'paper-title' => truncated_title(task.paper), 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), 'task-completed' => task.completed?, 'decision-letters' => {"Accepted" => task.accept_letter, "Rejected" => task.reject_letter, "Revise" => task.revise_letter}.to_json, assignees: User.editors_for(task.paper.journal).map { |u| [u.id, u.full_name] }.to_json, 'decision-letter' => task.paper.decision_letter, 'decision' => task.paper.decision, 'assignee' => (task.assignee.id if task.assignee) } do
+                  %span.glyphicon.glyphicon-ok
+                  = task.title
             - else
               %li
                 = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => "card-#{task.id}", 'overlay-title' => truncated_title(task.paper), 'paper-id' => task.paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do

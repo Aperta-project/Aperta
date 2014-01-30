@@ -51,4 +51,15 @@ class DashboardPage < Page
     click_on "Admin"
     AdminDashboardPage.new
   end
+
+  def register_decision_overlay
+    click_on 'Register Decision'
+    overlay = RegisterDecisionOverlay.new find('#new-overlay')
+    if block_given?
+      block.call overlay
+      overlay.dismiss
+    else
+      overlay
+    end
+  end
 end

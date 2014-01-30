@@ -33,7 +33,8 @@ feature "Assigns Editor", js: true do
     Paper.create! short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
-      journal: journal
+      journal: journal,
+      user: admin
   end
 
   scenario "Admin can assign an editor to a paper" do

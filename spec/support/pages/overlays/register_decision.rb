@@ -4,14 +4,14 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def decision_letter=(body)
-    fill_in 'Decision Letter', with: body
+    fill_in 'task_paper_decision_letter', with: body
   end
 
   def decision_letter
-    find('textarea#task_paper_decision_letter').value
+    find('#task_paper_decision_letter').value
   end
 
   def accepted?
-    find('input[type="radio"][checked=checked]')[:value] == 'Accepted'
+    find('input[type="radio"][checked]')[:value] == 'Accepted'
   end
 end

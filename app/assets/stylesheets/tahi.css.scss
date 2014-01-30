@@ -67,6 +67,7 @@ textarea {
 
 .primary-button {
   @extend .btn, .btn-primary;
+  -webkit-font-smoothing: antialiased;
   text-transform: uppercase;
   border: none;
   &:hover {

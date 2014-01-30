@@ -24,7 +24,7 @@ $nav-bar-active-color: $tahi-primary;
   > a {
     @extend .navbar-brand;
     color: $nav-bar-color;
-    padding: 8px 20px;
+    padding: 8px 0;
   }
 }
 

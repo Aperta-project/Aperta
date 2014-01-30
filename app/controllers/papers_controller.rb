@@ -23,7 +23,7 @@ class PapersController < ApplicationController
   end
 
   def edit
-    @paper = Paper.find(params[:id])
+    @paper = PaperPolicy.new(params[:id], current_user).paper
     redirect_to paper_path(@paper) if @paper.submitted?
   end
 

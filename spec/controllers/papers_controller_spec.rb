@@ -27,12 +27,18 @@ describe PapersController do
     it { should be_success }
     it { should render_template :show }
 
-    it "assigns paper and assigned tasks" do
+    it "uses PaperPolicy to retrieve the paper" do
+      policy = double('paper policy', paper: paper)
+      expect(PaperPolicy).to receive(:new).and_return policy
+      do_request
+      expect(assigns :paper).to eq(paper)
+    end
+
+    it "assigns assigned tasks" do
       task = Task.create! assignee: user, title: 'Change the world', role: 'editor', phase: paper.task_manager.phases.first
       tasks = double 'tasks', tasks: [task]
       allow(TaskPolicy).to receive(:new).and_return(tasks)
       do_request
-      expect(assigns :paper).to eq(paper)
       expect(assigns :tasks).to include(task)
     end
 
@@ -51,7 +57,9 @@ describe PapersController do
     it { should be_success }
     it { should render_template :edit }
 
-    it "assigns paper" do
+    it "uses PaperPolicy to retrieve the paper" do
+      policy = double('paper policy', paper: paper)
+      expect(PaperPolicy).to receive(:new).and_return policy
       do_request
       expect(assigns :paper).to eq(paper)
     end

@@ -51,7 +51,7 @@
                 = task.title
           - when 'Register Decision'
             %li
-              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "register-decision", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'task-completed' => task.completed?, 'decision-letters' => {"Accepted" => task.accept_letter, "Rejected" => task.reject_letter, "Revise" => task.revise_letter}.to_json, assignees: User.editors_for(@paper.journal).map { |u| [u.id, u.full_name] }.to_json, 'decision-letter' => @paper.decision_letter, 'decision' => @paper.decision, 'assignee' => task.assignee.id } do
+              = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "register-decision", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'task-completed' => task.completed?, 'decision-letters' => {"Accepted" => task.accept_letter, "Rejected" => task.reject_letter, "Revise" => task.revise_letter}.to_json, assignees: User.editors_for(@paper.journal).map { |u| [u.id, u.full_name] }.to_json, 'decision-letter' => @paper.decision_letter, 'decision' => @paper.decision, 'assignee' => (task.assignee.id if task.assignee) } do
                 %span.glyphicon.glyphicon-ok
                 = task.title
           - else

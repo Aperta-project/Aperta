@@ -8,6 +8,7 @@ Tahi.init = ->
   Tahi.overlays.declarations.init()
   Tahi.overlays.registerDecision.init()
   Tahi.overlays.uploadManuscript.init()
+  Tahi.overlays.techCheck.init()
 
   for form in $("form.js-submit-on-change[data-remote='true']")
     @setupSubmitOnChange $(form), $('select, input[type="radio"], input[type="checkbox"], textarea', form)
@@ -25,7 +26,7 @@ Tahi.escapeKeyClosesOverlay = ->
 
 Tahi.initChosen = ->
   $('.chosen-select').chosen
-    width: '300px'
+    width: '200px'
 
 Tahi.setupSubmitOnChange = (form, elements, options) ->
   form.on 'ajax:success', options?.success
@@ -47,15 +48,18 @@ Tahi.displayOverlay = (element) ->
   if taskId?
     taskCompleted = $element.data('task-completed')
     formHtml = """
-      <form accept-charset="UTF-8" action="/papers/#{paperId}/tasks/#{taskId}" class="js-submit-on-change" data-remote="true" id="complete_task_#{taskId}" method="post">
-        <div style="margin:0;padding:0;display:inline">
-          <input name="utf8" type="hidden" value="✓">
-          <input name="_method" type="hidden" value="patch">
-        </div>
-        <input name="task[completed]" type="hidden" value="0">
-        <input id="task_#{taskId}_completed" name="task[completed]" type="checkbox" value="1" #{if taskCompleted then 'checked="checked"'}>
-        <label for="task_#{taskId}_completed">Completed</label>
-      </form>
+      <div class="assignee-drop-down" />
+      <div class="completed-checkbox">
+        <form accept-charset="UTF-8" action="/papers/#{paperId}/tasks/#{taskId}" class="js-submit-on-change" data-remote="true" id="complete_task_#{taskId}" method="post">
+          <div style="margin:0;padding:0;display:inline">
+            <input name="utf8" type="hidden" value="✓">
+            <input name="_method" type="hidden" value="patch">
+          </div>
+          <input name="task[completed]" type="hidden" value="0">
+          <input id="task_#{taskId}_completed" name="task[completed]" type="checkbox" value="1" #{if taskCompleted then 'checked="checked"'}>
+          <label for="task_#{taskId}_completed">Completed</label>
+        </form>
+      </div>
     """
     footerContainer = $('footer .content')
     footerContainer.html formHtml

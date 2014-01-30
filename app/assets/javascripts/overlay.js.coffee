@@ -19,6 +19,8 @@ Tahi.overlay =
     paperPath: element.data('paperPath')
     taskPath: element.data('taskPath')
     taskCompleted: element.hasClass('completed')
+    assignees: element.data('assignees')
+    assigneeId: element.data('assigneeId')
     onOverlayClosed: (e) =>
       @hide(e)
       # we default to true,

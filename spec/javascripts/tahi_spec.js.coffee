@@ -33,6 +33,8 @@ describe "tahi", ->
         spyOn Tahi.overlays.figures, 'init'
         spyOn Tahi.overlays.newCard, 'init'
         spyOn Tahi.overlays.declarations, 'init'
+        spyOn Tahi.overlays.uploadManuscript, 'init'
+        spyOn Tahi.overlays.techCheck, 'init'
 
       it "configures submit on change for inputs in remote forms", ->
         spyOn Tahi, 'setupSubmitOnChange'
@@ -54,13 +56,14 @@ describe "tahi", ->
         expect(Tahi.overlays.figures.init).toHaveBeenCalled()
         expect(Tahi.overlays.newCard.init).toHaveBeenCalled()
         expect(Tahi.overlays.declarations.init).toHaveBeenCalled()
+        expect(Tahi.overlays.uploadManuscript.init).toHaveBeenCalled()
+        expect(Tahi.overlays.techCheck.init).toHaveBeenCalled()
 
   describe "#initChosen", ->
     it "calls chosen on elements with chosen-select class", ->
       spyOn $.fn, "chosen"
       Tahi.initChosen()
-      expect($.fn.chosen).toHaveBeenCalledWith
-        width: '300px'
+      expect($.fn.chosen).toHaveBeenCalled()
 
   describe "#setupSubmitOnChange", ->
     beforeEach ->

@@ -14,10 +14,7 @@
                 = @paper.journal.name
           %li#paper-short-title
             %h2.tasks-paper-title
-              - if @paper.title.present?
-                = @paper.title
-              - else
-                = @paper.short_title
+              = truncated_title(@paper)
         %ul
           %li= link_to 'Article', edit_paper_path(@paper)
 

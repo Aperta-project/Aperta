@@ -15,13 +15,13 @@ describe PaperHelper do
         expect(helper.truncated_title(paper)).to eq('Hello title world')
       end
 
-      context "when title is longer than 120 characters" do
+      context "when title is longer than 110 characters" do
         it "returns truncated title" do
           title = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
           paper = double(:paper, short_title: 'Hello world', title: title)
-          expect(helper.truncated_title(paper)).to eq('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna...')
+          expect(helper.truncated_title(paper)).to eq('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et...')
         end
       end
     end

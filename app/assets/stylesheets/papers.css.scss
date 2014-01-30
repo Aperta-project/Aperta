@@ -82,9 +82,8 @@ $control-bar-border-color: #939393;
   font-family: $tahi-article-font-family;
   margin: 0;
   width: 800px;
-  white-space: nowrap;
+  max-height: 70px;
   overflow: hidden;
-  text-overflow: ellipsis;
   line-height: 36px;
 }
 

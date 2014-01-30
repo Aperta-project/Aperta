@@ -21,7 +21,8 @@ feature "Tech Check", js: true do
     paper = Paper.create! short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
-      journal: journal
+      journal: journal,
+      user: admin
 
     phase = paper.task_manager.phases.where(name: 'Assign Editor').first
     task = phase.tasks.where(title: 'Tech Check').first
@@ -30,18 +31,19 @@ feature "Tech Check", js: true do
 
   scenario "Admin can complete the tech check card" do
     dashboard_page = DashboardPage.visit
-    tech_check_card = dashboard_page.view_card 'Tech Check'
+    tech_check_card = dashboard_page.view_card 'Tech Check', :new
     paper_show_page = tech_check_card.view_paper
 
-    paper_show_page.view_card 'Tech Check' do |overlay|
+    paper_show_page.view_card 'Tech Check', :new do |overlay|
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end
 
     paper_show_page.reload
 
-    paper_show_page.view_card 'Tech Check' do |overlay|
+    paper_show_page.view_card 'Tech Check', :new do |overlay|
       expect(overlay).to be_completed
     end
+    sleep 0.1
   end
 end

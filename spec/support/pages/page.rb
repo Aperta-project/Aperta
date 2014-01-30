@@ -23,14 +23,15 @@ class PageFragment
     end
   end
 
-  def view_card card_name, &block
+  def view_card card_name, overlay_prefix = nil, &block
     click_on card_name
     overlay_class = begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize
                     rescue NameError
                       CardOverlay
                     end
-    overlay = overlay_class.new session.find('#overlay')
+    id = overlay_prefix ? "#{overlay_prefix}-overlay" : "overlay"
+    overlay = overlay_class.new session.find("##{id}")
     if block_given?
       block.call overlay
       overlay.dismiss

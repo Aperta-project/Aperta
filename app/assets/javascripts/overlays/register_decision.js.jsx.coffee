@@ -9,8 +9,6 @@ Tahi.overlays.registerDecision =
     Tahi.overlay.init 'register-decision', @createComponent
 
   createComponent: (target, props) ->
-    props.assignee = target.data('assignee')
-    props.assignees = target.data('assignees')
     props.decision = target.data('decision')
     props.decisionLetter = target.data('decisionLetter')
     props.decisionLetters = target.data('decisionLetters')
@@ -40,18 +38,13 @@ Tahi.overlays.registerDecision =
             closeCallback={Tahi.overlays.registerDecision.hideOverlay}
             taskPath={this.props.taskPath}
             taskCompleted={this.props.taskCompleted}
+            assigneeId={this.props.assigneeId}
+            assignees={this.props.assignees}
             onOverlayClosed={this.props.onOverlayClosed}
             onCompletedChanged={this.props.onCompletedChanged}>
           <main>
             <h1>Register Decision</h1>
             <RailsForm action={this.props.taskPath}>
-              <div className="form-group">
-                <label htmlFor="task_assignee_id">Assigned to:</label>
-                <select name="task[assignee_id]" className="chosen-select" id="task_assignee_id" ref="task_assignee_id" defaultValue={this.props.assignee}>
-                  <option value="">Please select assignee</option>
-                  {options}
-                </select>
-              </div>
               <div className="decision-selections">
                 <div className="form-group">
                   <input onChange={this.updateDecisionLetter} id="accepted_option" name="task[paper_decision]" type="radio" defaultValue="Accepted" defaultChecked={this.state.decision === 'Accepted'} />

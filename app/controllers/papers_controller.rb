@@ -25,6 +25,7 @@ class PapersController < ApplicationController
   def edit
     @paper = PaperPolicy.new(params[:id], current_user).paper
     redirect_to paper_path(@paper) if @paper.submitted?
+    @tasks = TaskPolicy.new(@paper, current_user).tasks
   end
 
   def update

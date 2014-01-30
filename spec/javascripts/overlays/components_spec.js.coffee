@@ -96,6 +96,51 @@ describe "Tahi overlay components", ->
         expect(args[1][0]).toEqual $('input[type="checkbox"]', html)[0]
         expect(args[2]).toEqual success: @successCallback
 
+  describe "AssigneeDropDown", ->
+    beforeEach ->
+      @component = Tahi.overlays.components.AssigneeDropDown
+        action: '/form/action'
+        assignees: [[1, 'one'], [2, 'two']]
+
+    describe "#render", ->
+      it "generates a form for the task", ->
+        form = @component.render()
+        expect(form.props.action).toEqual '/form/action'
+
+      it "generates an option for each assignee", ->
+        options = @component.render().props.children[1].props.children
+        optionData = options.map (o) -> { value: o.props.value, name: o.props.children }
+        expect(optionData).toContain { value: 1, name: 'one' }
+        expect(optionData).toContain { value: 2, name: 'two' }
+
+      it "includes a 'Please select an assignee' option", ->
+        options = @component.render().props.children[1].props.children
+        optionData = options.map (o) -> { value: o.props.value, name: o.props.children }
+        expect(optionData).toContain { value: null, name: 'Please select assignee' }
+
+      context "when the task is already assigned", ->
+        beforeEach -> @component.props.assigneeId = 1
+
+        it "sets the current assigneeId", ->
+          select = @component.render().props.children[1]
+          expect(select.props.defaultValue).toEqual 1
+
+      context "when the task isn't assigned", ->
+        beforeEach -> @component.props.assigneeId = null
+
+        it "does not set an assigneeId", ->
+          select = @component.render().props.children[1]
+          expect(select.props.defaultValue).toEqual null
+
+    describe "#componentDidMount", ->
+      it "sets up submit on change for the drop down", ->
+        spyOn Tahi, 'setupSubmitOnChange'
+        html = $('<form><select /></form>')[0]
+        @component.componentDidMount html
+        args = Tahi.setupSubmitOnChange.calls.mostRecent().args
+        expect(args[0][0]).toEqual $(html)[0]
+        expect(args[1][0]).toEqual $('select', html)[0]
+
   describe "OverlayHeader", ->
     describe "#render", ->
       it "includes the paper title which is a link to the paper", ->
@@ -141,8 +186,26 @@ describe "Tahi overlay components", ->
         component = Tahi.overlays.components.OverlayFooter
           onCompletedChanged: callback
 
-        checkbox  = component.render().props.children[0].props.children
+        checkbox  = component.render().props.children[0].props.children[1].props.children
         expect(checkbox.props.onSuccess).toEqual callback
+
+      it "passes assigneeId and assignees to AssigneeDropDown", ->
+        component = Tahi.overlays.components.OverlayFooter
+          assigneeId: 1
+          assignees: [[1, 'one']]
+
+        assigneeDropDown  = component.render().props.children[0].props.children[0].props.children
+        expect(assigneeDropDown.props.assigneeId).toEqual 1
+        expect(assigneeDropDown.props.assignees).toEqual [[1, 'one']]
+
+      context "when assignees property is undefined", ->
+        it "does not render the AssigneeDropDown", ->
+          component = Tahi.overlays.components.OverlayFooter
+            assigneeId: undefined
+            assignees: undefined
+
+          content  = component.render().props.children[0].props.children[0].props.children
+          expect(content).toBeUndefined()
 
   describe "RailsFormHiddenDiv", ->
     describe "#render", ->

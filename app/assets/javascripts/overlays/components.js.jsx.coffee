@@ -11,7 +11,7 @@ Tahi.overlays.components.Overlay = React.createClass
     OverlayHeader = Tahi.overlays.components.OverlayHeader
     OverlayFooter = Tahi.overlays.components.OverlayFooter
 
-    checkboxFormAction = "#{this.props.taskPath}.json"
+    updateTaskPath = "#{this.props.taskPath}.json"
     `<div>
       <OverlayHeader
         paperTitle={this.props.paperTitle}
@@ -20,9 +20,12 @@ Tahi.overlays.components.Overlay = React.createClass
       {this.props.children}
       <OverlayFooter
         closeCallback={this.props.onOverlayClosed}
-        checkboxFormAction={checkboxFormAction}
+        assigneeFormAction={updateTaskPath}
+        checkboxFormAction={updateTaskPath}
         taskCompleted={this.props.taskCompleted}
-        onCompletedChanged={this.props.onCompletedChanged} />
+        onCompletedChanged={this.props.onCompletedChanged}
+        assigneeId={this.props.assigneeId}
+        assignees={this.props.assignees} />
     </div>`
 
 Tahi.overlays.components.RailsForm = React.createClass
@@ -41,15 +44,28 @@ Tahi.overlays.components.CompletedCheckbox = React.createClass
     RailsForm = Tahi.overlays.components.RailsForm
     inputId = "task_checkbox_completed"
     `<RailsForm action={this.props.action}>
-      <div>
-        <input name="task[completed]" type="hidden" value="0" />
-        <input id={inputId} name="task[completed]" type="checkbox" value="1" defaultChecked={this.props.taskCompleted} />
-        <label htmlFor={inputId}>Completed</label>
-      </div>
-    </RailsForm>`
+        <div>
+          <input name="task[completed]" type="hidden" value="0" />
+          <input id={inputId} name="task[completed]" type="checkbox" value="1" defaultChecked={this.props.taskCompleted} />
+          <label htmlFor={inputId}>Completed</label>
+        </div>
+      </RailsForm>`
 
   componentDidMount: (rootNode) ->
     Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode), success: @props.onSuccess
+
+Tahi.overlays.components.AssigneeDropDown = React.createClass
+  render: ->
+    {div, label, select, option} = React.DOM
+
+    (Tahi.overlays.components.RailsForm {action: @props.action}, [
+      (label {htmlFor: "task_assignee_id"}, 'This card is owned by'),
+      (select {className: 'chosen-select', id: "task_assignee_id", name: "task[assignee_id]", defaultValue: @props.assigneeId},
+        ([[null, 'Please select assignee']].concat @props.assignees).map (assignee) ->
+          (option {value: assignee[0]}, assignee[1]))])
+
+  componentDidMount: (rootNode) ->
+    Tahi.setupSubmitOnChange $(rootNode), $('select', rootNode)
 
 Tahi.overlays.components.ProgressBar = React.createClass
   render: ->
@@ -67,10 +83,20 @@ Tahi.overlays.components.OverlayHeader = React.createClass
 
 Tahi.overlays.components.OverlayFooter = React.createClass
   render: ->
+    AssigneeDropDown = Tahi.overlays.components.AssigneeDropDown
     CompletedCheckbox = Tahi.overlays.components.CompletedCheckbox
+
+    assigneeDropDown = if @props.assignees?
+      `<AssigneeDropDown action={this.props.assigneeFormAction} assigneeId={this.props.assigneeId} assignees={this.props.assignees} />`
+
     `<footer>
       <div className="content">
-        <CompletedCheckbox action={this.props.checkboxFormAction} taskCompleted={this.props.taskCompleted} onSuccess={this.props.onCompletedChanged} />
+        <div className="assignee-drop-down">
+          {assigneeDropDown}
+        </div>
+        <div className="completed-checkbox">
+          <CompletedCheckbox action={this.props.checkboxFormAction} taskCompleted={this.props.taskCompleted} onSuccess={this.props.onCompletedChanged} />
+        </div>
       </div>
       <a className="primary-button" onClick={this.props.closeCallback}>Close</a>
     </footer>`

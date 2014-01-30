@@ -67,6 +67,7 @@
 #overlay header {
   > h2, > h2 > a {
     padding: 0;
+    padding-right: 15px;
     font-size: 18px;
     font-family: $tahi-font-family;
     color: $btn-primary-bg;
@@ -97,28 +98,31 @@
 
 #new-overlay footer > a,
 #overlay footer > a {
-  @extend .col-xs-2, .col-xs-offset-10;
-  top: 0;
-  position: absolute;
+  @extend .col-xs-2;
 }
 
 #new-overlay footer .content,
 #overlay footer .content {
-  text-align: right;
-  padding: 6px 200px 0 0;
-  text-transform: uppercase;
-  color: $tahi-primary;
+  @extend .col-xs-10;
+  margin-top: 5px;
 
   input[type="checkbox"] {
     margin-right: 10px;
     -ms-transform: scale(2); /* IE */
     -moz-transform: scale(2); /* FF */
     -webkit-transform: scale(2); /* Safari and Chrome */
+    vertical-align: 2px;
   }
 
-  a {
+  .assignee-drop-down {
+    @extend .col-xs-9;
+  }
+
+  .completed-checkbox {
+    @extend .col-xs-3;
+    text-align: right;
+    text-transform: uppercase;
     color: $tahi-primary;
-    text-transform: none;
   }
 }
 

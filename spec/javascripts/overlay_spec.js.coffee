@@ -6,12 +6,16 @@ describe "Tahi.overlay", ->
          data-paper-title="Something"
          data-paper-path="/path/to/paper"
          data-task-path="/path/to/task"
+         data-assignee-id="2"
+         data-assignees='[[1,"User 1"],[2,"User 2"]]'
          data-card-name="some-card"><span>Foo</span></a>
       <a href="#"
          id="link2"
          data-card-name="some-card">Bar</a>
          data-paper-title="Something"
          data-paper-path="/path/to/paper"
+         data-assignee-id="2"
+         data-assignees='[[1,"User 1"],[2,"User 2"]]'
          data-task-path="/path/to/task"
       <div id="new-overlay" style="display: none;"></div>
     """
@@ -105,6 +109,8 @@ describe "Tahi.overlay", ->
       expect(props.paperTitle).toEqual 'Something'
       expect(props.paperPath).toEqual '/path/to/paper'
       expect(props.taskPath).toEqual '/path/to/task'
+      expect(props.assignees).toEqual [[1, 'User 1'], [2, 'User 2']]
+      expect(props.assigneeId).toEqual 2
 
     describe "onCompletedChanged callback", ->
       beforeEach ->

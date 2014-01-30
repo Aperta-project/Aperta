@@ -6,6 +6,7 @@ Tahi.init = ->
   Tahi.overlays.figures.init()
   Tahi.overlays.newCard.init()
   Tahi.overlays.declarations.init()
+  Tahi.overlays.registerDecision.init()
   Tahi.overlays.uploadManuscript.init()
 
   for form in $("form.js-submit-on-change[data-remote='true']")

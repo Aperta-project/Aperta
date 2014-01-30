@@ -224,3 +224,40 @@
     margin-top: 40px;
   }
 }
+
+.decision-selections > .form-group {
+  display: inline-block;
+
+  &:first-child {
+    margin-left: 10px;
+  }
+}
+
+.form-group p {
+  font-size: 18px;
+  margin: 15px 0;
+}
+
+#task_paper_decision_letter {
+  border-radius: 10px;
+  border: 1px solid #333;
+  padding: 20px;
+  width: 640px;
+  height: 270px;
+}
+
+.decision-selections label {
+  padding-left: 10px;
+  font-size: 24px;
+  font-weight: normal;
+  vertical-align: -4px;
+  margin-right: 70px;
+}
+
+.decision-selections input[type=radio] {
+  -ms-transform: scale(2);
+  -moz-transform: scale(2);
+  -webkit-transform: scale(2);
+  transform: scale(2);
+}
+

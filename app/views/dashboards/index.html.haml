@@ -10,7 +10,10 @@
   %section#my-submissions
     %h2 Your Submissions
     - if @papers.empty?
-      %p.info-text Your scientific paper submissions will appear here.
+      %p.info-text
+        Your scientific paper submissions will
+        %br
+        appear here.
     - else
       %ul.submitted
         - @papers.each do |paper|

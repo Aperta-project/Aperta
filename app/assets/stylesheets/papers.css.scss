@@ -157,6 +157,10 @@ $control-bar-border-color: #939393;
   color: #aaa;
 }
 
+#tahi-container > main > article table.cke_show_border > tbody > tr > td {
+  border: #666 1px dotted;
+}
+
 main > article > div,
 main > aside > div {
   margin: 0 auto;

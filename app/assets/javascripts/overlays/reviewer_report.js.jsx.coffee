@@ -14,7 +14,7 @@ Tahi.overlays.reviewerReport =
   components:
     ReviewerReportOverlay: React.createClass
       render: ->
-        {div, main, section, h3, p, label, textarea, input} = React.DOM
+        {div, main, section, h3, h1, p, label, textarea, input} = React.DOM
 
         formAction = "#{@props.taskPath}.json"
         (Tahi.overlays.components.Overlay {
@@ -30,6 +30,7 @@ Tahi.overlays.reviewerReport =
             assignees: @props.assignees
           },
           (main {className: 'reviewer-form'}, [
+            (h1 {}, "Reviewer Report"),
             (section {}, [
               (h3 {}, "Do you have any potential or perceived competing interests that may influence your review?"),
               (p {className: 'clarification'}, "Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write:"),

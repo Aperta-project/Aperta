@@ -56,7 +56,7 @@ Tahi.overlays.declarations =
         </Overlay>`
 
       componentDidMount: (rootNode) ->
-        form = $('form', rootNode)
+        form = $('main form', rootNode)
         Tahi.setupSubmitOnChange form, $('textarea', form)
 
       componentWillUnmount: ->

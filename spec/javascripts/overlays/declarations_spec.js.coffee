@@ -52,7 +52,7 @@ describe "Declarations Card", ->
       it "sets up submit on change for the form", ->
         spyOn Tahi, 'setupSubmitOnChange'
         component = Tahi.overlays.declarations.components.DeclarationsOverlay()
-        html = $('<div><form><textarea /></form></div>')[0]
+        html = $('<div><main><form><textarea /></form></main></div>')[0]
         component.componentDidMount html
         args = Tahi.setupSubmitOnChange.calls.mostRecent().args
         expect(args[0][0]).toEqual $('form', html)[0]

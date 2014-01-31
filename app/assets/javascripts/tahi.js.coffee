@@ -9,6 +9,7 @@ Tahi.init = ->
   Tahi.overlays.registerDecision.init()
   Tahi.overlays.uploadManuscript.init()
   Tahi.overlays.techCheck.init()
+  Tahi.overlays.reviewerReport.init()
 
   for form in $("form.js-submit-on-change[data-remote='true']")
     @setupSubmitOnChange $(form), $('select, input[type="radio"], input[type="checkbox"], textarea', form)

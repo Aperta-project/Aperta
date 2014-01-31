@@ -1,9 +1,0 @@
-%h1= reviewer_report_task.title
-
-- reviewer_report_task.paper_review ||= PaperReview.new
-= form_for [paper, reviewer_report_task], as: :task, url: paper_task_path(paper, reviewer_report_task), remote: true, format: :json, html: { class: 'js-submit-on-change' } do |f|
-  = f.label :assignee
-  = text_field_tag 'task_assignee', f.object.assignee.full_name, readonly: true
-  = f.fields_for :paper_review do |pr|
-    = pr.label :body
-    = pr.text_area :body

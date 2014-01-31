@@ -4,18 +4,19 @@ window.Tahi ||= {}
 
 Tahi.overlays ||= {}
 
-Tahi.overlays.techCheck =
+Tahi.overlays.reviewerReport =
   init: ->
-    Tahi.overlay.init 'tech-check', @createComponent
+    Tahi.overlay.init 'reviewer-report', @createComponent
 
   createComponent: (target, props) ->
-    Tahi.overlays.techCheck.components.TechCheckOverlay props
+    Tahi.overlays.reviewerReport.components.ReviewerReportOverlay props
 
   components:
-    TechCheckOverlay: React.createClass
+    ReviewerReportOverlay: React.createClass
       render: ->
-        {main, h1, h3, ul, li, label, select, option} = React.DOM
+        {main, label, textarea} = React.DOM
 
+        formAction = "#{@props.taskPath}.json"
         (Tahi.overlays.components.Overlay {
             onOverlayClosed: @props.onOverlayClosed
             paperTitle: @props.paperTitle
@@ -29,12 +30,13 @@ Tahi.overlays.techCheck =
             assignees: @props.assignees
           },
           (main {}, [
-            (h1 {}, "Tech Check"),
-            (h3 {}, "Tech check steps"),
-            (ul {style: {'list-style-type': 'decimal'}}, [
-              (li {}, 'Review ethics statement'),
-              (li {}, 'Review competing interest statement'),
-              (li {}, 'Review funding disclosure')
+            (Tahi.overlays.components.RailsForm {action: formAction}, [
+              (label {htmlFor: 'task_paper_review_attributes_body'}, 'Body'),
+              (textarea {id: 'task_paper_review_attributes_body', name: 'task[paper_review_attributes][body]'})
             ])
           ])
         )
+
+      componentDidMount: (rootNode) ->
+        form = $('main form', rootNode)
+        Tahi.setupSubmitOnChange form, $('textarea', form)

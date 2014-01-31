@@ -70,11 +70,11 @@ Tahi.overlays.uploadManuscript =
 
       componentDidMount: (rootNode) ->
         uploader = $('.js-jquery-fileupload', rootNode).fileupload
-          add: @fileUploadAdd
           done: ->
             $('#task_checkbox_completed:not(:checked)').click()
             $('html').removeClass 'noscroll'
             Turbolinks.visit(window.location)
+        uploader.on 'fileuploadadd',           @fileUploadAdd
         uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
         uploader.on 'fileuploadprogress',      @fileUploadProgress
 
@@ -83,11 +83,13 @@ Tahi.overlays.uploadManuscript =
         acceptFileTypes = /(\.|\/)(docx)$/i
         if data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])
           @setState error: "Sorry! '#{data.originalFiles[0]['name']}' is not of an accepted file type"
+          e.preventDefault()
         else
           data.submit()
 
       fileUploadProcessAlways: (event, data) ->
-        @setState uploadProgress: 0
+        unless (@state || {}).error?
+          @setState uploadProgress: 0
 
       fileUploadProgress: (event, data) ->
         @setState uploadProgress: data.loaded / data.total * 100.0

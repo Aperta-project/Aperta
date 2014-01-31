@@ -62,7 +62,10 @@ describe "Upload Manuscript Card", ->
         expect($.fn.fileupload).toHaveBeenCalled()
         call = $.fn.fileupload.calls.mostRecent()
         expect(call.object).toEqual $('#jquery-file-attachment', @html)
-        expect(call.args[0]['add']).toEqual @component.fileUploadAdd
+
+      it "sets up a fileuploadadd handler", ->
+        @component.componentDidMount(@html)
+        expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploadadd', @component.fileUploadAdd
 
       it "sets up a fileuploadprocessalways handler", ->
         @component.componentDidMount(@html)
@@ -77,7 +80,7 @@ describe "Upload Manuscript Card", ->
         @component = Tahi.overlays.uploadManuscript.components.UploadManuscriptOverlay()
         spyOn @component, 'setState'
 
-        @event = jasmine.createSpyObj 'event', ['target']
+        @event = jasmine.createSpyObj 'event', ['target', 'preventDefault']
         @data = jasmine.createSpy 'data'
         @previewElement = $('<div id="file-preview" />')[0]
         @data.files = [
@@ -101,6 +104,10 @@ describe "Upload Manuscript Card", ->
           @component.fileUploadAdd @event, @data
           expect(@data.submit).toHaveBeenCalled()
 
+        it "does not prevent default on the event", ->
+          @component.fileUploadAdd @event, @data
+          expect(@event.preventDefault).not.toHaveBeenCalled()
+
         context "when the file is not an accepted format", ->
           beforeEach ->
             @data.originalFiles = [{ name: 'real-yeti.jpg' }]
@@ -109,6 +116,10 @@ describe "Upload Manuscript Card", ->
             @component.fileUploadAdd @event, @data
             errorMessage =  "Sorry! 'real-yeti.jpg' is not of an accepted file type"
             expect(@component.setState).toHaveBeenCalledWith error: errorMessage
+
+          it "prevents default on the event", ->
+            @component.fileUploadAdd @event, @data
+            expect(@event.preventDefault).toHaveBeenCalled()
 
           it "does not submit the data", ->
             @component.fileUploadAdd @event, @data
@@ -119,6 +130,12 @@ describe "Upload Manuscript Card", ->
           @component.fileUploadProcessAlways @event, @data
           expect(@component.setState).toHaveBeenCalledWith
             uploadProgress: 0
+
+        context "when there are errors", ->
+          it "does not update the upload state", ->
+            @component.state = error: 'foo'
+            @component.fileUploadProcessAlways @event, @data
+            expect(@component.setState).not.toHaveBeenCalled()
 
       describe "#fileUploadProgress", ->
         it "updates state with the current progress", ->

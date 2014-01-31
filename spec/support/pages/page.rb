@@ -45,8 +45,10 @@ class PageFragment
   def select_from_chosen(item_text, options)
     field = if Capybara::Node::Element === options[:from]
               options[:from]
-            else
+            elsif options.has_key? :from
               find_field(options[:from], visible: false)
+            elsif options.has_key? :id
+              find("##{options[:id]}", visible: false)
             end
 
     session.execute_script(%Q!$("##{field[:id]}_chosen").mousedown()!)

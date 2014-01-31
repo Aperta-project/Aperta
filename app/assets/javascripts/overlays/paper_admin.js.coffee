@@ -2,20 +2,20 @@ window.Tahi ||= {}
 
 Tahi.overlays ||= {}
 
-Tahi.overlays.assignEditor =
+Tahi.overlays.paperAdmin =
   init: ->
-    Tahi.overlay.init 'assign-editor', @createComponent
+    Tahi.overlay.init 'paper-admin', @createComponent
 
   createComponent: (target, props) ->
-    props.editorId = target.data('editorId')
-    props.editors = target.data('editors')
-    Tahi.overlays.assignEditor.components.AssignEditorOverlay props
+    props.adminId = target.data('adminId')
+    props.admins = target.data('admins')
+    Tahi.overlays.paperAdmin.components.PaperAdminOverlay props
 
   components:
-    AssignEditorOverlay: React.createClass
+    PaperAdminOverlay: React.createClass
       render: ->
         {main, h1, select, option, input, label} = React.DOM
-        editors = [[null, 'Please select editor']].concat @props.editors
+        admins = [['', 'Please select admin']].concat @props.admins
 
         (Tahi.overlays.components.Overlay {
             onOverlayClosed: @props.onOverlayClosed
@@ -26,15 +26,13 @@ Tahi.overlays.assignEditor =
             taskCompleted: @props.taskCompleted
             onOverlayClosed: @props.onOverlayClosed
             onCompletedChanged: @props.onCompletedChanged
-            assigneeId: @props.assigneeId
-            assignees: @props.assignees
           },
           (main {}, [
-            (h1 {}, 'Assign Editor'),
+            (h1 {}, 'Assign Admin'),
             (Tahi.overlays.components.RailsForm {action: @props.taskPath}, [
-              (label {htmlFor: 'task_paper_role_attributes_user_id'}, 'Editor'),
-              (select {id: 'task_paper_role_attributes_user_id', name: 'task[paper_role_attributes][user_id]', className: 'chosen-select', defaultValue: @props.editorId},
-                editors.map (editor) -> (option {value: editor[0]}, editor[1])
+              (label {htmlFor: 'task_assignee_id'}, 'Assignee'),
+              (select {id: 'task_assignee_id', name: 'task[assignee_id]', className: 'chosen-select', defaultValue: @props.adminId},
+                admins.map (admin) -> (option {value: admin[0]}, admin[1])
               )
             ])
           ])

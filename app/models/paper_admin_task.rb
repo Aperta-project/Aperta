@@ -1,5 +1,5 @@
 class PaperAdminTask < Task
-  title 'Paper Admin'
+  title 'Assign Admin'
   role 'admin'
 
   after_save :assign_tasks_to_admin, if: -> { assignee_id_changed? }
@@ -13,6 +13,6 @@ class PaperAdminTask < Task
             else
               query.where(assignee_id: nil)
             end
-    query.update_all(assignee_id: assignee.id)
+    query.update_all(assignee_id: assignee_id)
   end
 end

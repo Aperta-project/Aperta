@@ -8,7 +8,7 @@ class CardOverlay < PageFragment
   end
 
   def assignee=(name)
-    select_from_chosen name, from: 'Assignee'
+    select_from_chosen name, id: 'task_assignee_id'
   end
 
   def title

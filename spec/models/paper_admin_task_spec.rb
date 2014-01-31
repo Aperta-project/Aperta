@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PaperAdminTask do
   describe "defaults" do
     subject(:task) { PaperAdminTask.new }
-    specify { expect(task.title).to eq 'Paper Admin' }
+    specify { expect(task.title).to eq 'Assign Admin' }
     specify { expect(task.role).to eq 'admin' }
   end
 
@@ -11,7 +11,7 @@ describe PaperAdminTask do
     let(:phase) { Phase.create! task_manager: TaskManager.create! }
     let(:default_task_attrs) { { title: 'A title', role: 'admin', phase: phase } }
 
-    describe "after_update" do
+    describe "after_save" do
       let(:bob) { User.create! email: 'bob@plos.org',
           password: 'abcd1234',
           password_confirmation: 'abcd1234',
@@ -47,6 +47,14 @@ describe PaperAdminTask do
           task = Task.create! default_task_attrs.merge(assignee: bob)
           paper_admin_task.update! assignee: steve
           expect(task.reload.assignee).to eq(steve)
+        end
+
+        context "when the new assignee is nil" do
+          it "clears the assignee from the other admin tasks" do
+            task = Task.create! default_task_attrs.merge(assignee: bob)
+            paper_admin_task.update! assignee: nil
+            expect(task.reload.assignee).to eq nil
+          end
         end
       end
 

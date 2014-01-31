@@ -39,6 +39,7 @@ describe "tahi", ->
         spyOn Tahi.overlays.reviewerReport, 'init'
         spyOn Tahi.overlays.assignEditor, 'init'
         spyOn Tahi.overlays.assignReviewers, 'init'
+        spyOn Tahi.overlays.paperAdmin, 'init'
 
       it "configures submit on change for inputs in remote forms", ->
         spyOn Tahi, 'setupSubmitOnChange'
@@ -66,6 +67,7 @@ describe "tahi", ->
         expect(Tahi.overlays.reviewerReport.init).toHaveBeenCalled()
         expect(Tahi.overlays.assignEditor.init).toHaveBeenCalled()
         expect(Tahi.overlays.assignReviewers.init).toHaveBeenCalled()
+        expect(Tahi.overlays.paperAdmin.init).toHaveBeenCalled()
 
   describe "#initChosen", ->
     it "calls chosen on elements with chosen-select class", ->

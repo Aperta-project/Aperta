@@ -62,6 +62,7 @@ describe "Upload Manuscript Card", ->
         expect($.fn.fileupload).toHaveBeenCalled()
         call = $.fn.fileupload.calls.mostRecent()
         expect(call.object).toEqual $('#jquery-file-attachment', @html)
+        expect(call.args[0]['add']).toEqual @component.fileUploadAdd
 
       it "sets up a fileuploadprocessalways handler", ->
         @component.componentDidMount(@html)
@@ -82,6 +83,36 @@ describe "Upload Manuscript Card", ->
         @data.files = [
           { preview: @previewElement, name: 'real-yeti.jpg' }
         ]
+
+      describe "#fileUploadAdd", ->
+        beforeEach ->
+          @component.fileUploadProcessAlways @event, @data
+          expect(@component.setState).toHaveBeenCalledWith
+            uploadProgress: 0
+          @component.state ||= {}
+          @data.submit = jasmine.createSpy 'data#submit'
+          @data.originalFiles = [{ name: 'real-yeti.docx' }]
+
+        it "clears any errors", ->
+          @component.fileUploadAdd @event, @data
+          expect(@component.setState).toHaveBeenCalledWith error: null
+
+        it "submits the data", ->
+          @component.fileUploadAdd @event, @data
+          expect(@data.submit).toHaveBeenCalled()
+
+        context "when the file is not an accepted format", ->
+          beforeEach ->
+            @data.originalFiles = [{ name: 'real-yeti.jpg' }]
+
+          it "sets errors", ->
+            @component.fileUploadAdd @event, @data
+            errorMessage =  "Sorry! 'real-yeti.jpg' is not of an accepted file type"
+            expect(@component.setState).toHaveBeenCalledWith error: errorMessage
+
+          it "does not submit the data", ->
+            @component.fileUploadAdd @event, @data
+            expect(@data.submit).not.toHaveBeenCalled()
 
       describe "#fileUploadProcessAlways", ->
         it "updates the upload state", ->

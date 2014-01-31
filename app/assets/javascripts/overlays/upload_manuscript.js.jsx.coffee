@@ -58,6 +58,7 @@ Tahi.overlays.uploadManuscript =
                 </RailsForm>
               </span>
             </div>
+            {this.state.error}
             <ul id="paper-manuscript-upload">
               {uploadManuscriptProgress}
             </ul>
@@ -69,12 +70,21 @@ Tahi.overlays.uploadManuscript =
 
       componentDidMount: (rootNode) ->
         uploader = $('.js-jquery-fileupload', rootNode).fileupload
+          add: @fileUploadAdd
           done: ->
             $('#task_checkbox_completed:not(:checked)').click()
             $('html').removeClass 'noscroll'
             Turbolinks.visit(window.location)
         uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
         uploader.on 'fileuploadprogress',      @fileUploadProgress
+
+      fileUploadAdd: (e, data) ->
+        @setState error: null
+        acceptFileTypes = /(\.|\/)(docx)$/i
+        if data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])
+          @setState error: "Sorry! '#{data.originalFiles[0]['name']}' is not of an accepted file type"
+        else
+          data.submit()
 
       fileUploadProcessAlways: (event, data) ->
         @setState uploadProgress: 0

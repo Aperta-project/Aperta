@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PaperReviewerTask do
   describe "defaults" do
     subject(:task) { PaperReviewerTask.new }
-    specify { expect(task.title).to eq 'Assign Reviewer' }
+    specify { expect(task.title).to eq 'Assign Reviewers' }
     specify { expect(task.role).to eq 'editor' }
   end
 

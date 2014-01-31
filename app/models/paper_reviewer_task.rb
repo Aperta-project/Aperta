@@ -1,7 +1,7 @@
 class PaperReviewerTask < Task
   PERMITTED_ATTRIBUTES = [{ paper_roles: [] }]
 
-  title 'Assign Reviewer'
+  title 'Assign Reviewers'
   role 'editor'
 
   def paper_roles

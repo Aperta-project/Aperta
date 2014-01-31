@@ -58,11 +58,13 @@ Tahi.overlays.components.AssigneeDropDown = React.createClass
   render: ->
     {div, label, select, option} = React.DOM
 
+    assignees = [[null, 'Please select assignee']].concat @props.assignees
     (Tahi.overlays.components.RailsForm {action: @props.action}, [
       (label {htmlFor: "task_assignee_id"}, 'This card is owned by'),
       (select {className: 'chosen-select', id: "task_assignee_id", name: "task[assignee_id]", defaultValue: @props.assigneeId},
-        ([[null, 'Please select assignee']].concat @props.assignees).map (assignee) ->
-          (option {value: assignee[0]}, assignee[1]))])
+        assignees.map (assignee) -> (option {value: assignee[0]}, assignee[1])
+      )
+    ])
 
   componentDidMount: (rootNode) ->
     Tahi.setupSubmitOnChange $(rootNode), $('select', rootNode)

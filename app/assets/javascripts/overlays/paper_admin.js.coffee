@@ -30,7 +30,7 @@ Tahi.overlays.paperAdmin =
           (main {}, [
             (h1 {}, 'Assign Admin'),
             (Tahi.overlays.components.RailsForm {action: @props.taskPath}, [
-              (label {htmlFor: 'task_assignee_id'}, 'Assignee'),
+              (label {htmlFor: 'task_assignee_id'}, 'Assign admin to:'),
               (select {id: 'task_assignee_id', name: 'task[assignee_id]', className: 'chosen-select', defaultValue: @props.adminId},
                 admins.map (admin) -> (option {value: admin[0]}, admin[1])
               )

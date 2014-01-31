@@ -51,9 +51,10 @@ feature "Task Manager", js: true do
       expect(overlay.assignee).to eq 'Zoey Bob'
     end
 
-    needs_editor_phase.view_card 'Assign Editor' do |overlay|
+    needs_editor_phase.view_card 'Assign Editor', :new do |overlay|
       expect(overlay).to_not be_completed
       expect(overlay.assignee).to eq 'Zoey Bob'
     end
+    sleep 0.1
   end
 end

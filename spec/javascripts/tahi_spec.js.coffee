@@ -37,6 +37,7 @@ describe "tahi", ->
         spyOn Tahi.overlays.techCheck, 'init'
         spyOn Tahi.overlays.registerDecision, 'init'
         spyOn Tahi.overlays.reviewerReport, 'init'
+        spyOn Tahi.overlays.assignEditor, 'init'
         spyOn Tahi.overlays.assignReviewers, 'init'
 
       it "configures submit on change for inputs in remote forms", ->
@@ -63,6 +64,7 @@ describe "tahi", ->
         expect(Tahi.overlays.techCheck.init).toHaveBeenCalled()
         expect(Tahi.overlays.registerDecision.init).toHaveBeenCalled()
         expect(Tahi.overlays.reviewerReport.init).toHaveBeenCalled()
+        expect(Tahi.overlays.assignEditor.init).toHaveBeenCalled()
         expect(Tahi.overlays.assignReviewers.init).toHaveBeenCalled()
 
   describe "#initChosen", ->

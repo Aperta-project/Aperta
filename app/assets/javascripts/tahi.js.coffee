@@ -10,6 +10,7 @@ Tahi.init = ->
   Tahi.overlays.uploadManuscript.init()
   Tahi.overlays.techCheck.init()
   Tahi.overlays.reviewerReport.init()
+  Tahi.overlays.assignEditor.init()
   Tahi.overlays.assignReviewers.init()
 
   for form in $("form.js-submit-on-change[data-remote='true']")

@@ -26,6 +26,7 @@ $control-bar-border-color: #939393;
 
 #control-bar section {
   @extend .collapse, .navbar-collapse;
+  padding-left: 0px;
 }
 
 #control-bar section > ul {

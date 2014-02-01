@@ -41,7 +41,7 @@ Tahi.overlays.authors =
             onOverlayClosed={this.props.onOverlayClosed}
             onCompletedChanged={this.props.onCompletedChanged}>
           <main>
-            <h1>Authors</h1>
+            <h1>Add Authors</h1>
             <a href="#" className='btn btn-default btn-xs' onClick={this.addNew}>
               <span className="glyphicon glyphicon-plus-sign" />
               Add new

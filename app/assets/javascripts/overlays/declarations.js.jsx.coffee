@@ -48,7 +48,7 @@ Tahi.overlays.declarations =
             onOverlayClosed={this.props.onOverlayClosed}
             onCompletedChanged={this.props.onCompletedChanged}>
           <main>
-            <h1>Declarations</h1>
+            <h1>Enter Declarations</h1>
             <RailsForm action={formAction}>
               {this.declarations()}
             </RailsForm>

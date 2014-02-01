@@ -5,7 +5,7 @@ class TaskManagerPage < Page
       overlay = session.find('#new-overlay')
       overlay.fill_in 'task_title', with: params[:title]
       overlay.fill_in 'task_body', with: params[:body]
-      select_from_chosen params[:assignee].full_name, from: overlay.find_field('Assignee', visible: false)
+      select_from_chosen params[:assignee].full_name, from: overlay.find('#task_assignee_id', visible: false)
       overlay.click_on 'Create card'
     end
   end

@@ -57,7 +57,7 @@ Tahi.overlays.newCard =
             <input type="text" id="task_title" placeholder="Type a short card title here" ref="task_title" />
           </div>
           <div className="form-group">
-            <label htmlFor="task_assignee_id">Assignee</label>
+            <label htmlFor="task_assignee_id">Assign this task to:</label>
             <select className="chosen-select" id="task_assignee_id" ref="task_assignee_id">
               <option value="">Please select assignee</option>
               {options}

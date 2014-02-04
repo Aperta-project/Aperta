@@ -1,0 +1,2 @@
+class TechCheckTaskPresenter < TaskPresenter
+end

@@ -27,14 +27,13 @@ feature "Assigns Editor", js: true do
   end
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin.email
-
     Paper.create! short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
       journal: journal,
       user: admin
+
+    SignInPage.visit.sign_in admin.email
   end
 
   scenario "Admin can assign an editor to a paper" do

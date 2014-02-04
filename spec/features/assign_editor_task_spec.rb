@@ -60,6 +60,5 @@ feature "Assigns Editor", js: true do
       expect(overlay.assignee).to eq admin.full_name
       expect(overlay.paper_editor).to eq editor.full_name
     end
-    sleep 0.1
   end
 end

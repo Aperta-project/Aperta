@@ -64,4 +64,9 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
+  config.after(:each, type: :feature) do
+    # wait for Turblinks to finish rendering the page
+    sleep 0.2
+  end
 end

@@ -68,6 +68,5 @@ feature "Assigns Reviewer", js: true do
       expect(overlay.paper_reviewers).to include(albert.full_name)
       expect(overlay.paper_reviewers).to include(neil.full_name)
     end
-    sleep 0.1
   end
 end

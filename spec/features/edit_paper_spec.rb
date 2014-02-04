@@ -77,7 +77,6 @@ feature "Editing paper", js: true do
       expect(competing_interest_declaration.answer).to eq "Sometimes"
       expect(overlay).to be_completed
     end
-    sleep 0.1
   end
 
   scenario "Author uploads figures" do
@@ -96,7 +95,6 @@ feature "Editing paper", js: true do
       expect(overlay).to have_image('yeti.tiff')
       expect(overlay).to be_completed
     end
-    sleep 0.1
   end
 
   scenario "Author specifies contributing authors" do
@@ -118,6 +116,5 @@ feature "Editing paper", js: true do
     edit_paper.authors_overlay do |overlay|
       expect(overlay).to be_completed
     end
-    sleep 0.1
   end
 end

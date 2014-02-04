@@ -54,6 +54,5 @@ feature "Reviewer Report", js: true do
       expect(overlay).to be_completed
       # expect(overlay.report).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue massa sit amet lacus volutpat pharetra. Quisque lobortis eu risus sit amet')
     end
-    sleep 0.1
   end
 end

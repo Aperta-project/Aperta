@@ -56,6 +56,5 @@ feature "Task Manager", js: true do
       expect(overlay).to_not be_completed
       expect(overlay.assignee).to eq 'Zoey Bob'
     end
-    sleep 0.1
   end
 end

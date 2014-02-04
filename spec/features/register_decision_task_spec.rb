@@ -46,8 +46,5 @@ feature "Register Decision", js: true do
       expect(overlay).to be_accepted
       expect(overlay.decision_letter).to eq("Accepting this because I can")
     end
-    # wait for... we don't really know what, but it prevents random failures
-    # at the end
-    sleep 0.1
   end
 end

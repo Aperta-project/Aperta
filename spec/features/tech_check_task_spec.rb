@@ -44,6 +44,5 @@ feature "Tech Check", js: true do
     paper_show_page.view_card 'Tech Check', :new do |overlay|
       expect(overlay).to be_completed
     end
-    sleep 0.1
   end
 end

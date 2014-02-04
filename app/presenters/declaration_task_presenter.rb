@@ -4,5 +4,4 @@ class DeclarationTaskPresenter < TaskPresenter
       'declarations' => task.paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json
     })
   end
-# declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json
 end

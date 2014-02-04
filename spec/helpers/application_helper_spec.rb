@@ -37,8 +37,7 @@ describe ApplicationHelper do
     end
 
     subject(:link) do
-      output = capture_haml { helper.card task }
-      Capybara.string(output).find 'a'
+      Capybara.string(helper.card task).find 'a'
     end
 
     specify { expect(link.text.strip).to eq task.title }

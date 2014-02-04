@@ -28,7 +28,7 @@
         = @paper.abstract.html_safe
 
       - task = Task.where(title: "Add Authors", phase: @paper.phases.where(name: 'Submission Data').first).first
-      #paper-authors.editable{class: "#{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: @paper.authors_json, 'refresh-on-close' => false }}
+      #paper-authors.editable{class: "#{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: task.authors.to_json, 'refresh-on-close' => false }}
 
       #paper-body.editable{contenteditable: true, placeholder: 'Type the body of your article here'}
         = @paper.body.html_safe
@@ -80,20 +80,16 @@
                   = render task, paper: task.paper
 
       - task = author_tasks.detect { |t| t.title == 'Upload Manuscript' }
-      = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "upload-manuscript", 'paper-title' => truncated_title(@paper), 'upload-paper-path' => upload_paper_path(@paper, format: :json), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'refresh-on-close' => false } do
-        %span.glyphicon.glyphicon-ok
-        = task.title
+      = card task
 
       - task = author_tasks.detect { |t| t.title == 'Add Authors' }
-      = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: @paper.authors_json, 'refresh-on-close' => false } do
-        %span.glyphicon.glyphicon-ok
-        = task.title
+      = card task
 
       - task = author_tasks.detect { |t| t.title == 'Upload Figures' }
-      - card task
+      = card task
 
       - task = author_tasks.detect { |t| t.title == 'Enter Declarations' }
-      - card task
+      = card task
 
       %hr
       = link_to 'Submit', new_paper_submission_path(@paper), class: 'primary-button wide-button'

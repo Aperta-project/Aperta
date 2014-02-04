@@ -20,8 +20,8 @@ describe FigureTaskPresenter do
 
     subject(:data_attributes) { FigureTaskPresenter.new(task).data_attributes }
 
-    it "includes standard task data" do
-      expect(data_attributes).to include 'card-name' => 'figure'
+    it_behaves_like "all tasks, which have common attributes" do
+      let(:card_name) { 'figure' }
     end
 
     it "includes custom figure data" do

@@ -6,7 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.declarations =
   init: ->
-    Tahi.overlay.init 'declarations', @createComponent
+    Tahi.overlay.init 'declaration', @createComponent
 
   createComponent: (target, props) ->
     props.declarations = target.data('declarations')
@@ -65,4 +65,4 @@ Tahi.overlays.declarations =
           answer: @refs["declaration_answer_#{index}"].getDOMNode().value.trim()
           id: declaration.id
 
-        $("[data-card-name='declarations']").data('declarations', declarations)
+        $("[data-card-name='declaration']").data('declarations', declarations)

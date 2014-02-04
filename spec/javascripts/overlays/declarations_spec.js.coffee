@@ -6,11 +6,11 @@ describe "Declarations Card", ->
     $('#jasmine_content').html """
       <a href="#"
          id="link1"
-         data-card-name="declarations"
+         data-card-name="declaration"
          data-declarations="[1, 2]">Foo</a>
       <a href="#"
          id="link2"
-         data-card-name="declarations"
+         data-card-name="declaration"
          data-declarations="[1, 2]">Bar</a>
       <div id="new-overlay" style="display: none;"></div>
     """
@@ -19,7 +19,7 @@ describe "Declarations Card", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.declarations.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'declarations', Tahi.overlays.declarations.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'declaration', Tahi.overlays.declarations.createComponent
 
   describe "#createComponent", ->
     it "instantiates a DeclarationsOverlay component", ->
@@ -61,8 +61,8 @@ describe "Declarations Card", ->
     describe "#componentWillUnmount", ->
       it "updates the declarations data attribute on all cards", ->
         $('#jasmine_content').html """
-          <div id="one" data-card-name='declarations' data-declarations='[1, 2, 3]' />
-          <div id="two" data-card-name='declarations' data-declarations='[1, 2, 3]' />
+          <div id="one" data-card-name='declaration' data-declarations='[1, 2, 3]' />
+          <div id="two" data-card-name='declaration' data-declarations='[1, 2, 3]' />
         """
 
         component = Tahi.overlays.declarations.components.DeclarationsOverlay

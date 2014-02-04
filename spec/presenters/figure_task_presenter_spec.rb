@@ -18,14 +18,14 @@ describe FigureTaskPresenter do
       task
     end
 
+    subject(:data_attributes) { FigureTaskPresenter.new(task).data_attributes }
+
     it "includes standard task data" do
-      expect(FigureTaskPresenter.new(task).data_attributes).to include(
-        'card-name' => 'figure'
-      )
+      expect(data_attributes).to include 'card-name' => 'figure'
     end
 
     it "includes custom figure data" do
-      expect(FigureTaskPresenter.new(task).data_attributes).to include(
+      expect(data_attributes).to include(
         'figures' => '[{"one":1},{"two":2}]',
         'figures-path' => paper_figures_path(task.paper)
       )

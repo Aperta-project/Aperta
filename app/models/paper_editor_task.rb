@@ -11,4 +11,16 @@ class PaperEditorTask < Task
   def paper_role_attributes=(attributes)
     paper_role.update attributes
   end
+
+  def editor_id
+    paper_role.user_id
+  end
+
+  def editors
+    User.editors_for(paper.journal)
+  end
+
+  def assignees
+    User.admins
+  end
 end

@@ -8,12 +8,12 @@ describe "Assign Reviewers Card", ->
          id="link1"
          data-editor-id="1"
          data-editors='[[1, "one"], [2, "two"], [3, "three"]]'
-         data-card-name="assign-editor">Foo</a>
+         data-card-name="paper-editor">Foo</a>
       <a href="#"
          id="link2"
          data-editor-id="1"
          data-editors='[[1, "one"], [2, "two"], [3, "three"]]'
-         data-card-name="assign-editor">Bar</a>
+         data-card-name="paper-editor">Bar</a>
       <div id="new-overlay" style="display: none;"></div>
     """
 
@@ -21,7 +21,7 @@ describe "Assign Reviewers Card", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.assignEditor.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'assign-editor', Tahi.overlays.assignEditor.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'paper-editor', Tahi.overlays.assignEditor.createComponent
 
   describe "#createComponent", ->
     it "instantiates a AssignEditorOverlay component", ->

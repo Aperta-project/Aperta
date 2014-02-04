@@ -26,4 +26,46 @@ describe PaperEditorTask do
       end
     end
   end
+
+  describe "#editor_id" do
+    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
+    let(:task) { PaperEditorTask.create! phase: paper.task_manager.phases.first }
+
+    let :editor do
+      User.create! username: 'editor',
+        first_name: 'Ernie', last_name: 'Editor',
+        password: 'password', password_confirmation: 'password',
+        email: 'editor@example.org'
+    end
+
+    before do
+      PaperRole.create! paper: paper, editor: true, user: editor
+    end
+
+    it "returns the current editor's id" do
+      expect(task.editor_id).to eq editor.id
+    end
+  end
+
+  describe "#editors" do
+    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
+    let(:task) { PaperEditorTask.create! phase: paper.task_manager.phases.first }
+
+    it "returns list of editors for the journal" do
+      editors = double(:editors)
+      expect(User).to receive(:editors_for).with(paper.journal).and_return editors
+      expect(task.editors).to eq editors
+    end
+  end
+
+  describe "#assignees" do
+    let(:task) { PaperEditorTask.new phase: paper.task_manager.phases.first }
+    let(:paper) { Paper.create! short_title: 'hello', journal: Journal.create! }
+
+    it "returns admins for this paper's journal" do
+      admins = double(:admins)
+      expect(User).to receive(:admins).and_return admins
+      expect(task.assignees).to eq admins
+    end
+  end
 end

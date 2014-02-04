@@ -30,6 +30,10 @@ class TaskPresenter
   protected
 
   def assignees
-    task.assignees.map { |a| [a.id, a.full_name] }.to_json
+    select_options_for_users(task.assignees).to_json
+  end
+
+  def select_options_for_users(users)
+    users.map { |u| [u.id, u.full_name] }
   end
 end

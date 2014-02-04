@@ -102,6 +102,10 @@ class RegisterDecisionTask < Task
     paper.update(decision_letter: body)
   end
 
+  def assignees
+    User.editors_for(paper.journal)
+  end
+
   private
 
   def template_data

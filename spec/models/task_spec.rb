@@ -72,4 +72,8 @@ describe Task do
       end
     end
   end
+
+  describe "#assignees" do
+    specify { expect(Task.new.assignees).to eq [] }
+  end
 end

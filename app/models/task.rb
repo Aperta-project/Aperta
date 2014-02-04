@@ -23,6 +23,10 @@ class Task < ActiveRecord::Base
     end
   end
 
+  def assignees
+    []
+  end
+
   protected
 
   def initialize_defaults

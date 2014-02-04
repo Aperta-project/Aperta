@@ -47,16 +47,6 @@ feature "Editing paper", js: true do
     # expect(edit_paper.upload_manuscript_overlay).to be_completed
   end
 
-#   scenario "Author specifies paper metadata" do
-#     edit_paper = EditPaperPage.visit paper
-#
-#     expect(edit_paper.paper_type).to eq 'Research'
-#     edit_paper.paper_type = 'Front matter'
-#     expect(edit_paper.paper_type).to eq 'Front matter'
-#     edit_paper.reload
-#     expect(edit_paper.paper_type).to eq 'Front matter'
-#   end
-
   scenario "Author makes declarations" do
     edit_paper = EditPaperPage.visit paper
 

@@ -6,12 +6,12 @@ describe "Tahi.overlays.figures", ->
     $('#jasmine_content').html """
       <a href="#"
          id="link1"
-         data-card-name="figures"
+         data-card-name="figure"
          data-figures-path="/path/to/figures"
          data-figures="[1, 2, 3]">Foo</a>
       <a href="#"
          id="link2"
-         data-card-name="figures"
+         data-card-name="figure"
          data-figures-path="/path/to/figures"
          data-figures="[1, 2, 3]">Bar</a>
       <div id="new-overlay" style="display: none;"></div>
@@ -21,7 +21,7 @@ describe "Tahi.overlays.figures", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.figures.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'figures', Tahi.overlays.figures.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'figure', Tahi.overlays.figures.createComponent
 
   describe "#createComponent", ->
     it "instantiates a FiguresOverlay component", ->

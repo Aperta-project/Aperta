@@ -90,9 +90,7 @@
         = task.title
 
       - task = author_tasks.detect { |t| t.title == 'Upload Figures' }
-      = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "figures", 'paper-title' => truncated_title(@paper), 'figures-path' => paper_figures_path(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), figures: @paper.figures.map(&:access_details).to_json, 'refresh-on-close' => false } do
-        %span.glyphicon.glyphicon-ok
-        = task.title
+      - card task
 
       - task = author_tasks.detect { |t| t.title == 'Enter Declarations' }
       = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "declarations", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), declarations: @paper.declarations.map { |d| d.slice(:question, :answer, :id) }.to_json, 'refresh-on-close' => false } do

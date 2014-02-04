@@ -4,4 +4,17 @@ module ApplicationHelper
       link_to link_text, path, class: 'active'
     end
   end
+
+  def card task
+    classes = ['card'].tap { |a| a << 'completed' if task.completed? }
+
+    haml_concat(link_to(
+      paper_task_path(task.paper, task),
+      class: classes.join(' '),
+      data: TaskPresenter.for(task).data_attributes
+    ) do
+      haml_tag :span, class: 'glyphicon glyphicon-ok'
+      haml_concat task.title
+    end)
+  end
 end

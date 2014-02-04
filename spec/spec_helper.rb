@@ -52,6 +52,11 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
 
+  config.include Haml::Helpers, type: :helper
+  config.before(:each, type: :helper) do
+    init_haml_helpers
+  end
+
   config.before(:each) do
     DatabaseCleaner.start
   end

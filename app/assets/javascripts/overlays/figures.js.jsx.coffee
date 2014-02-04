@@ -6,7 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.figures =
   init: ->
-    Tahi.overlay.init 'figures', @createComponent
+    Tahi.overlay.init 'figure', @createComponent
 
   createComponent: (target, props) ->
     props.figuresPath = target.data('figuresPath')
@@ -37,7 +37,7 @@ Tahi.overlays.figures =
           figures: @props.figures
 
       componentWillUnmount: ->
-        $("[data-card-name='figures']").data('figures', @state.figures)
+        $("[data-card-name='figure']").data('figures', @state.figures)
 
       render: ->
         Overlay = Tahi.overlays.components.Overlay

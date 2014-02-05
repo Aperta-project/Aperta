@@ -127,6 +127,7 @@ textarea {
   display: block;
   margin-bottom: 10px;
   border-radius: 5px;
+  word-wrap: break-word;
 
   &:hover {
     background-color: $btn-primary-bg;

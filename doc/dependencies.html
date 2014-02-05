@@ -31,24 +31,26 @@
   <div class="summary hero-unit">
     <h2>Dependencies</h2>
 
-    <p>As of December 17, 2013  5:36pm</p>
+    <p>As of February  5, 2014  8:17am</p>
 
     <h4>
-      113 total
+      121 total
 
           </h4>
 
     <ul>
-              <li>95 MIT</li>
-              <li>6 Apache 2.0</li>
+              <li>100 MIT</li>
+              <li>7 Apache 2.0</li>
               <li>3 BSD</li>
+              <li>2 other</li>
               <li>2 LGPL</li>
-              <li>2 ruby</li>
               <li>1 ISC</li>
               <li>1 New BSD</li>
-              <li>1 GPLv2+</li>
-              <li>1 GPLv2</li>
+              <li>1 ruby</li>
               <li>1 2-clause BSDL</li>
+              <li>1 GPLv2</li>
+              <li>1 GPLv2+</li>
+              <li>1 APL 2.0</li>
           </ul>
   </div>
     <div class="dependencies">
@@ -481,6 +483,7 @@ database compatibility and query generation.</td>
                           <dd>capybara</dd>
                           <dd>tzinfo</dd>
                           <dd>jquery-rails</dd>
+                          <dd>compass</dd>
                       </dl>
               </div>
           <div id="builder" class="approved">
@@ -523,7 +526,7 @@ simple to do.  Currently the following builder objects are supported:
           <div id="bundler" class="approved">
         <h2>
                       <a href="http://bundler.io">bundler</a>
-                    v1.5.0.rc.1
+                    v1.5.1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -563,6 +566,8 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>kaminari</dd>
                           <dd>nested_form</dd>
                           <dd>rails_admin</dd>
+                          <dd>chosen-rails</dd>
+                          <dd>react-rails</dd>
                       </dl>
                       </div>
           <div id="capybara" class="approved">
@@ -708,6 +713,89 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>ffi</dd>
                       </dl>
               </div>
+          <div id="chosen-rails" class="approved">
+        <h2>
+                      <a href="https://github.com/tsechingho/chosen-rails">chosen-rails</a>
+                    v1.0.2
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Integrate Chosen javascript library with Rails asset pipeline</td>
+            <td>Chosen is a javascript library of select box enhancer for jQuery and Protoype. This gem integrates Chosen with Rails asset pipeline for easy of use.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>railties</dd>
+                          <dd>coffee-rails</dd>
+                          <dd>sass-rails</dd>
+                          <dd>compass-rails</dd>
+                          <dd>bundler</dd>
+                          <dd>rails</dd>
+                          <dd>thor</dd>
+                      </dl>
+              </div>
+          <div id="chunky_png" class="approved">
+        <h2>
+                      <a href="http://wiki.github.com/wvanbergen/chunky_png">chunky_png</a>
+                    v1.2.9
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Pure ruby library for read/write, chunk-level access to PNG files</td>
+            <td>    This pure Ruby library can read and write PNG images without depending on an external 
+    image library, like RMagick. It tries to be memory efficient and reasonably fast.
+    
+    It supports reading and writing all PNG variants that are defined in the specification, 
+    with one limitation: only 8-bit color depth is supported. It supports all transparency, 
+    interlacing and filtering options the PNG specifications allows. It can also read and 
+    write textual metadata from PNG files. Low-level read/write access to PNG chunks is
+    also possible.
+    
+    This library supports simple drawing on the image canvas and simple operations like
+    alpha composition and cropping. Finally, it can import from and export to RMagick for 
+    interoperability.
+    
+    Also, have a look at OilyPNG at http://github.com/wvanbergen/oily_png. OilyPNG is a 
+    drop in mixin module that implements some of the ChunkyPNG algorithms in C, which 
+    provides a massive speed boost to encoding and decoding.
+</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>compass</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
           <div id="ckeditor_rails" class="approved">
         <h2>
                       <a href="https://github.com/tsechingho/ckeditor-rails">ckeditor_rails</a>
@@ -797,6 +885,8 @@ simple to do.  Currently the following builder objects are supported:
             <dt>Parents</dt>
                           <dd>turbolinks</dd>
                           <dd>rails_admin</dd>
+                          <dd>chosen-rails</dd>
+                          <dd>react-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -874,6 +964,74 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>sprockets</dd>
                       </dl>
                       </div>
+          <div id="compass" class="approved">
+        <h2>
+                      <a href="http://compass-style.org">compass</a>
+                    v0.12.2
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>A Real Stylesheet Framework</td>
+            <td>Compass is a Sass-based Stylesheet Framework that streamlines the creation and maintainance of CSS.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>bootstrap-sass</dd>
+                          <dd>compass-rails</dd>
+                          <dd>jasmine-core</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>sass</dd>
+                          <dd>chunky_png</dd>
+                          <dd>fssm</dd>
+                      </dl>
+              </div>
+          <div id="compass-rails" class="approved">
+        <h2>
+                      <a href="https://github.com/Compass/compass-rails">compass-rails</a>
+                    v1.1.3
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Integrate Compass into Rails 3.0 and up.</td>
+            <td>Integrate Compass into Rails 3.0 and up.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>chosen-rails</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>compass</dd>
+                      </dl>
+              </div>
           <div id="database_cleaner" class="approved">
         <h2>
                       <a href="http://github.com/bmabey/database_cleaner">database_cleaner</a>
@@ -1083,6 +1241,7 @@ We are happy to report that this issue has been resolved.</td>
                           <dd>coffee-script</dd>
                           <dd>sprockets</dd>
                           <dd>uglifier</dd>
+                          <dd>react-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1227,6 +1386,38 @@ We are happy to report that this issue has been resolved.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>fog</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="fssm" class="approved">
+        <h2>
+                      <a href="https://github.com/ttilley/fssm">fssm</a>
+                    v0.2.10
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>File System State Monitor</td>
+            <td>The File System State Monitor keeps track of the state of any number of paths and will fire events when said state changes (create/update/delete). FSSM supports using FSEvents on MacOS, Inotify on GNU/Linux, and polling anywhere else.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>compass</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1412,7 +1603,7 @@ but it can function as a stand-alone templating engine.
           <div id="jasmine" class="approved">
         <h2>
                       <a href="http://pivotal.github.com/jasmine/">jasmine</a>
-                    v2.0.0.rc5
+                    v2.0.0
                       (development, test)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -1442,12 +1633,13 @@ but it can function as a stand-alone templating engine.
                           <dd>rack</dd>
                           <dd>rake</dd>
                           <dd>phantomjs</dd>
+                          <dd>nokogiri</dd>
                       </dl>
               </div>
           <div id="jasmine-core" class="approved">
         <h2>
                       <a href="http://pivotal.github.com/jasmine">jasmine-core</a>
-                    v2.0.0.rc5
+                    v2.0.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1474,6 +1666,7 @@ but it can function as a stand-alone templating engine.
                           <dl>
             <dt>Children</dt>
                           <dd>rake</dd>
+                          <dd>compass</dd>
                       </dl>
               </div>
           <div id="jbuilder" class="approved">
@@ -1637,7 +1830,7 @@ but it can function as a stand-alone templating engine.
               </div>
           <div id="json" class="approved">
         <h2>
-                      <a href="http://flori.github.com/json">json</a>
+                      json
                     v1.8.1
                   </h2>
         <table class="table table-striped table-bordered">
@@ -1650,10 +1843,10 @@ but it can function as a stand-alone templating engine.
           </thead>
           <tbody>
           <tr>
-            <td>JSON Implementation for Ruby</td>
-            <td>This is a JSON implementation as a Ruby extension in C.</td>
+            <td>This json is bundled with Ruby</td>
+            <td></td>
             <td>
-                              <a href="http://www.ruby-lang.org/en/LICENSE.txt">Ruby</a>
+                              other
                           </td>
           </tr>
           </tbody>
@@ -1669,11 +1862,7 @@ but it can function as a stand-alone templating engine.
                           <dd>carrierwave</dd>
                           <dd>jquery-ui-rails</dd>
                       </dl>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>sdoc</dd>
-                      </dl>
-              </div>
+                      </div>
           <div id="kaminari" class="approved">
         <h2>
                       <a href="https://github.com/amatsuda/kaminari">kaminari</a>
@@ -2007,7 +2196,7 @@ and added by the users of MIME::Types.</td>
                       </div>
           <div id="minitest" class="approved">
         <h2>
-                      <a href="https://github.com/seattlerb/minitest">minitest</a>
+                      minitest
                     v4.7.5
                   </h2>
         <table class="table table-striped table-bordered">
@@ -2020,62 +2209,10 @@ and added by the users of MIME::Types.</td>
           </thead>
           <tbody>
           <tr>
-            <td>minitest provides a complete suite of testing facilities supporting TDD, BDD, mocking, and benchmarking</td>
-            <td>minitest provides a complete suite of testing facilities supporting
-TDD, BDD, mocking, and benchmarking.
-
-    "I had a class with Jim Weirich on testing last week and we were
-     allowed to choose our testing frameworks. Kirk Haines and I were
-     paired up and we cracked open the code for a few test
-     frameworks...
-
-     I MUST say that minitest is *very* readable / understandable
-     compared to the 'other two' options we looked at. Nicely done and
-     thank you for helping us keep our mental sanity."
-
-    -- Wayne E. Seguin
-
-minitest/unit is a small and incredibly fast unit testing framework.
-It provides a rich set of assertions to make your tests clean and
-readable.
-
-minitest/spec is a functionally complete spec engine. It hooks onto
-minitest/unit and seamlessly bridges test assertions over to spec
-expectations.
-
-minitest/benchmark is an awesome way to assert the performance of your
-algorithms in a repeatable manner. Now you can assert that your newb
-co-worker doesn't replace your linear algorithm with an exponential
-one!
-
-minitest/mock by Steven Baker, is a beautifully tiny mock (and stub)
-object framework.
-
-minitest/pride shows pride in testing and adds coloring to your test
-output. I guess it is an example of how to write IO pipes too. :P
-
-minitest/unit is meant to have a clean implementation for language
-implementors that need a minimal set of methods to bootstrap a working
-test suite. For example, there is no magic involved for test-case
-discovery.
-
-    "Again, I can't praise enough the idea of a testing/specing
-     framework that I can actually read in full in one sitting!"
-
-    -- Piotr Szotkowski
-
-Comparing to rspec:
-
-    rspec is a testing DSL. minitest is ruby.
-
-    -- Adam Hawkins, "Bow Before MiniTest"
-
-minitest doesn't reinvent anything that ruby already provides, like:
-classes, modules, inheritance, methods. This means you only have to
-learn ruby to use minitest and all of your regular OO practices like
-extract-method refactorings still apply.</td>
+            <td>This minitest is bundled with Ruby</td>
+            <td></td>
             <td>
-                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                              other
                           </td>
           </tr>
           </tbody>
@@ -2095,11 +2232,7 @@ extract-method refactorings still apply.</td>
                           <dd>rdoc</dd>
                           <dd>haml</dd>
                       </dl>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>rdoc</dd>
-                      </dl>
-              </div>
+                      </div>
           <div id="multi_json" class="approved">
         <h2>
                       <a href="http://github.com/intridea/multi_json">multi_json</a>
@@ -2302,6 +2435,7 @@ enough of it.</td>
                           <dd>haml</dd>
                           <dd>fog</dd>
                           <dd>rack-pjax</dd>
+                          <dd>jasmine</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2396,7 +2530,7 @@ A small example usage:
           <div id="phantomjs" class="approved">
         <h2>
                       <a href="https://github.com/colszowka/phantomjs-gem">phantomjs</a>
-                    v1.9.2.0
+                    v1.9.2.1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2677,6 +2811,9 @@ request helpers feature.</td>
                           <dd>carrierwave</dd>
                           <dd>jquery-fileupload-rails</dd>
                           <dd>rails_admin</dd>
+                          <dd>chosen-rails</dd>
+                          <dd>react-rails</dd>
+                          <dd>spinjs-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2854,6 +2991,7 @@ request helpers feature.</td>
                           <dd>jquery-fileupload-rails</dd>
                           <dd>font-awesome-rails</dd>
                           <dd>jquery-ui-rails</dd>
+                          <dd>chosen-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2903,8 +3041,8 @@ multiple processes.</td>
               </div>
           <div id="rake" class="approved">
         <h2>
-                      <a href="http://rake.rubyforge.org">rake</a>
-                    v10.1.0
+                      <a href="http://github.com/jimweirich/rake">rake</a>
+                    v10.1.1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2967,6 +3105,8 @@ multiple processes.</td>
                           <dd>kaminari</dd>
                           <dd>nested_form</dd>
                           <dd>remotipart</dd>
+                          <dd>chunky_png</dd>
+                          <dd>fssm</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3002,7 +3142,6 @@ See RDoc for a description of RDoc's markup and basic use.</td>
         </table>
                   <dl>
             <dt>Parents</dt>
-                          <dd>minitest</dd>
                           <dd>mime-types</dd>
                           <dd>mail</dd>
                           <dd>arel</dd>
@@ -3028,6 +3167,67 @@ See RDoc for a description of RDoc's markup and basic use.</td>
                           <dd>rdoc</dd>
                       </dl>
               </div>
+          <div id="react-rails" class="approved">
+        <h2>
+                      <a href="https://github.com/facebook/react-rails">react-rails</a>
+                    v0.8.0.0
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>React/JSX adapter for the Ruby on Rails asset pipeline.</td>
+            <td>Compile your JSX on demand or precompile for production.</td>
+            <td>
+                              APL 2.0
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>bundler</dd>
+                          <dd>coffee-rails</dd>
+                          <dd>execjs</dd>
+                          <dd>rails</dd>
+                          <dd>react-source</dd>
+                      </dl>
+              </div>
+          <div id="react-source" class="approved">
+        <h2>
+                      <a href="https://github.com/facebook/react">react-source</a>
+                    v0.8.0
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Ruby bridge to JSX & the React JavaScript library.</td>
+            <td></td>
+            <td>
+                              <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache-2.0</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>react-rails</dd>
+                      </dl>
+                      </div>
           <div id="remotipart" class="approved">
         <h2>
                       <a href="http://opensource.alfajango.com/remotipart/">remotipart</a>
@@ -3423,6 +3623,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                           <dd>tilt</dd>
                           <dd>sprockets</dd>
                           <dd>sass-rails</dd>
+                          <dd>compass</dd>
                       </dl>
                       </div>
           <div id="sass-rails" class="approved">
@@ -3454,6 +3655,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                           <dd>bootstrap-sass</dd>
                           <dd>font-awesome-rails</dd>
                           <dd>rails_admin</dd>
+                          <dd>chosen-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3486,10 +3688,6 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
           </tr>
           </tbody>
         </table>
-                  <dl>
-            <dt>Parents</dt>
-                          <dd>json</dd>
-                      </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>rdoc</dd>
@@ -3593,6 +3791,35 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
             <dt>Children</dt>
                           <dd>rake</dd>
                           <dd>minitest</dd>
+                      </dl>
+              </div>
+          <div id="spinjs-rails" class="approved">
+        <h2>
+                      <a href="https://github.com/dnagir/spinjs-rails">spinjs-rails</a>
+                    v1.3
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>A spinning activity indicator for Rails 3 with no images and CSS.</td>
+            <td>An animated CSS3 loading spinner with VML fallback for IE.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rails</dd>
                       </dl>
               </div>
           <div id="sprockets" class="approved">
@@ -3746,6 +3973,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                           <dd>license_finder</dd>
                           <dd>ckeditor_rails</dd>
                           <dd>fog</dd>
+                          <dd>chosen-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>

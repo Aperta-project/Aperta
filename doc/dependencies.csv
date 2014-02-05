@@ -11,16 +11,20 @@ atomic, 1.1.14, Apache-2.0
 bcrypt-ruby, 3.1.2, MIT
 bootstrap-sass, 3.0.2.1, Apache 2.0
 builder, 3.1.4, MIT
-bundler, 1.5.0.rc.1, MIT
+bundler, 1.5.1, MIT
 capybara, 2.2.0, MIT
 capybara-webkit, 1.1.0, MIT
 carrierwave, 0.9.0, MIT
 childprocess, 0.3.9, MIT
+chosen-rails, 1.0.2, MIT
+chunky_png, 1.2.9, MIT
 ckeditor_rails, 4.2.2, MIT
 coderay, 1.1.0, MIT
 coffee-rails, 4.0.1, MIT
 coffee-script, 2.2.0, MIT
 coffee-script-source, 1.6.3, MIT
+compass, 0.12.2, MIT
+compass-rails, 1.1.3, MIT
 database_cleaner, 1.2.0, MIT
 devise, 3.2.2, MIT
 diff-lcs, 1.2.5, MIT
@@ -31,19 +35,20 @@ ffi, 1.9.3, BSD
 fog, 1.18.0, MIT
 font-awesome-rails, 4.0.3.0, MIT
 formatador, 0.2.4, MIT
+fssm, 0.2.10, MIT
 haml, 4.0.4, MIT
 haml-rails, 0.5.1, MIT
 hike, 1.2.3, MIT
 httparty, 0.12.0, MIT
 i18n, 0.6.9, MIT
-jasmine, 2.0.0.rc5, MIT
-jasmine-core, 2.0.0.rc5, MIT
+jasmine, 2.0.0, MIT
+jasmine-core, 2.0.0, MIT
 jbuilder, 1.5.3, MIT
 jquery-fileupload-rails, 0.4.1, MIT
 jquery-rails, 3.0.4, MIT
 jquery-turbolinks, 2.0.1, MIT
 jquery-ui-rails, 4.1.0, MIT
-json, 1.8.1, Ruby
+json, 1.8.1, other
 kaminari, 0.15.0, MIT
 kgio, 2.8.1, LGPL
 launchy, 2.4.2, ISC
@@ -52,7 +57,7 @@ mail, 2.5.4, MIT
 method_source, 0.8.2, MIT
 mime-types, 1.25.1, MIT
 mini_portile, 0.5.2, MIT
-minitest, 4.7.5, MIT
+minitest, 4.7.5, other
 multi_json, 1.8.2, MIT
 multi_xml, 0.5.5, MIT
 nested_form, 0.3.2, MIT
@@ -61,7 +66,7 @@ net-ssh, 2.7.0, MIT
 nokogiri, 1.6.1, MIT
 orm_adapter, 0.5.0, MIT
 pg, 0.17.0, BSD
-phantomjs, 1.9.2.0, MIT
+phantomjs, 1.9.2.1, MIT
 polyglot, 0.3.3, MIT
 pry, 0.9.12.4, MIT
 pry-rails, 0.3.2, MIT
@@ -75,8 +80,10 @@ rails_serve_static_assets, 0.0.1, New BSD
 rails_stdout_logging, 0.0.3, MIT
 railties, 4.0.2, MIT
 raindrops, 0.12.0, LGPL
-rake, 10.1.0, MIT
+rake, 10.1.1, MIT
 rdoc, 3.12.2, GPLv2
+react-rails, 0.8.0.0, APL 2.0
+react-source, 0.8.0, Apache-2.0
 remotipart, 1.2.1, MIT
 rspec-collection_matchers, 0.0.2, MIT
 rspec-core, 3.0.0.beta1, MIT
@@ -94,6 +101,7 @@ sdoc, 0.3.20, MIT
 selenium-webdriver, 2.37.0, Apache 2.0
 sequel, 4.5.0, MIT
 slop, 3.4.7, MIT
+spinjs-rails, 1.3, MIT
 sprockets, 2.10.1, MIT
 sprockets-rails, 2.0.1, MIT
 sqlite3, 1.3.8, MIT

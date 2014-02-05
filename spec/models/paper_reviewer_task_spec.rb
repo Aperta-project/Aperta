@@ -76,4 +76,54 @@ describe PaperReviewerTask do
       expect(PaperRole.where(paper: paper, reviewer: true, user: albert)).to be_empty
     end
   end
+
+  describe "#reviewer_ids" do
+    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
+    let(:task) { PaperReviewerTask.create! phase: paper.task_manager.phases.first }
+
+    let :reviewer1 do
+      User.create! username: 'revi',
+        first_name: 'Rose', last_name: 'Reviewer',
+        password: 'password', password_confirmation: 'password',
+        email: 'rose@example.org'
+    end
+
+    let :reviewer2 do
+      User.create! username: 'ewer',
+        first_name: 'Robbie', last_name: 'Reviewer',
+        password: 'password', password_confirmation: 'password',
+        email: 'robbie@example.org'
+    end
+
+    before do
+      PaperRole.create! paper: paper, reviewer: true, user: reviewer1
+      PaperRole.create! paper: paper, reviewer: true, user: reviewer2
+    end
+
+    it "returns the current reviewer IDs" do
+      expect(task.reviewer_ids).to eq [reviewer1.id, reviewer2.id]
+    end
+  end
+
+  describe "#reviewers" do
+    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
+    let(:task) { PaperReviewerTask.create! phase: paper.task_manager.phases.first }
+
+    it "returns list of reviewers for the journal" do
+      reviewers = double(:reviewers)
+      expect(User).to receive(:reviewers_for).with(paper.journal).and_return reviewers
+      expect(task.reviewers).to eq reviewers
+    end
+  end
+
+  describe "#assignees" do
+    let(:task) { PaperReviewerTask.new phase: paper.task_manager.phases.first }
+    let(:paper) { Paper.create! short_title: 'hello', journal: Journal.create! }
+
+    it "returns admins for this paper's journal" do
+      admins = double(:admins)
+      expect(User).to receive(:admins).and_return admins
+      expect(task.assignees).to eq admins
+    end
+  end
 end

@@ -55,10 +55,7 @@
               - elsif task.title == 'Assign Editor'
                 %li= card task
               - elsif task.title == 'Assign Reviewers'
-                %li
-                  = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "assign-reviewers", 'paper-title' => truncated_title(task.paper), 'paper-path' => paper_path(task.paper), 'paper-id' => task.paper.to_param, 'task-path' => paper_task_path(task.paper, task), 'assignee-id' => task.assignee_id, assignees: User.editors_for(task.paper.journal).map { |u| [u.id, u.full_name] }.to_json, 'reviewer-ids' => task.paper_roles, reviewers: User.reviewers_for(task.paper.journal).map { |u| [u.id, u.full_name] } } do
-                    %span.glyphicon.glyphicon-ok
-                    = task.title
+                %li= card task
               - else
                 %li
                   = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => "card-#{task.id}", 'overlay-title' => truncated_title(@paper), 'paper-id' => task.paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do

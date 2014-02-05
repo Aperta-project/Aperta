@@ -20,6 +20,16 @@ class PaperReviewerTask < Task
     ReviewerReportTask.where(assignee_id: old_ids, phase: phase).destroy_all
   end
 
+  alias :reviewer_ids :paper_roles
+
+  def reviewers
+    User.reviewers_for(paper.journal)
+  end
+
+  def assignees
+    User.admins
+  end
+
   private
 
   def existing_user_ids

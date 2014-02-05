@@ -67,6 +67,6 @@ RSpec.configure do |config|
 
   config.after(:each, type: :feature) do
     # wait for Turblinks to finish rendering the page
-    sleep 0.2
+    sleep 0.3
   end
 end

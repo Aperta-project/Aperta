@@ -1,7 +1,7 @@
 @import 'variables';
 @import 'bootstrap';
 
-#overlay, #new-overlay {
+#overlay {
   background-color: rgba(255,255,255,0.98);
   bottom: 0;
   left: 0;
@@ -13,12 +13,12 @@
   z-index: 9999;
   display: none;
 }
-#overlay, #new-overlay {
+#overlay {
   background-color: rgba(0,0,0,0.7);
   height: 100%;
 }
 
-#overlay > div, #new-overlay > div {
+#overlay > div {
   padding: 10px 80px;
   width: 1120px;
   background: white;
@@ -26,7 +26,6 @@
   margin-top: 40px;
 }
 
-#new-overlay main,
 #overlay main {
   min-height: 300px;
   padding:8px;
@@ -40,30 +39,26 @@
   border-bottom: 1px solid black;
 }
 
-#new-overlay main p {
+#overlay main p {
   margin: 15px;
 }
 
 #overlay header,
-#overlay footer,
-#new-overlay header,
-#new-overlay footer {
+#overlay footer {
   @extend .row;
   position: relative;
 }
 
-#overlay footer, #new-overlay footer {
+#overlay footer {
   margin: 0;
   padding-bottom: 50px;
 }
 
-#overlay header,
-#new-overlay header {
+#overlay header {
   margin: 0;
   padding-top: 50px;
 }
 
-#new-overlay header,
 #overlay header {
   > h2, > h2 > a {
     padding: 0;
@@ -77,31 +72,26 @@
   }
 }
 
-#overlay footer,
-#new-overlay footer {
+#overlay footer {
   margin-top: 10px;
   margin-bottom: 0;
 }
 
-#new-overlay header h2,
 #overlay header h2 {
   @extend .col-xs-10;
   margin: 0 0 15px 0;
 }
 
-#new-overlay header > a,
 #overlay header > a {
   @extend .col-xs-2;
   bottom: 10px;
   position: absolute;
 }
 
-#new-overlay footer > a,
 #overlay footer > a {
   @extend .col-xs-2;
 }
 
-#new-overlay footer .content,
 #overlay footer .content {
   @extend .col-xs-10;
   margin-top: 5px;
@@ -126,34 +116,28 @@
   }
 }
 
-#new-overlay h1,
 #overlay h1 {
   font-size: 48px;
   margin: 0 0 20px 0;
 }
 
-#new-overlay input#task_title {
+#overlay input#task_title {
   width: 360px;
   border-radius: 3px;
   border: 1px solid $tahi-matte;
   padding: 5px;
 }
 
-#new-overlay label {
+#overlay label {
   padding-right: 25px;
 }
 
-#new-overlay textarea#task_body {
+#overlay textarea#task_body {
   width: 660px;
   height: 90px;
   border-radius: 3px;
   border: 1px solid $tahi-matte;
   padding: 5px;
-}
-
-#overlay #task-body {
-  margin: 30px 0;
-  font-size: 16px;
 }
 
 #upload-figures-content img {
@@ -264,4 +248,3 @@
   -webkit-transform: scale(2);
   transform: scale(2);
 }
-

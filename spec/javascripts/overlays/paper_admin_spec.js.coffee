@@ -14,7 +14,7 @@ describe "Assign Reviewers Card", ->
          data-admin-id="1"
          data-admins='[[1, "one"], [2, "two"], [3, "three"]]'
          data-card-name="paper-admin">Bar</a>
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->

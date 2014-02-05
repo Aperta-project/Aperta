@@ -56,7 +56,7 @@ feature 'Add a new card', js: true do
     task_manager_page.reload
 
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
-    needs_editor_phase.view_card 'Verify Author Signatures', :new do |overlay|
+    needs_editor_phase.view_card 'Verify Author Signatures' do |overlay|
       expect(overlay.assignee).to eq 'Albert Einstein'
       expect(overlay.title).to eq 'Verify Author Signatures'
       expect(overlay.body).to eq 'Please remember to verify signatures of every paper author.'

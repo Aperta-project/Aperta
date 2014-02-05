@@ -14,7 +14,7 @@ describe "Assign Reviewers Card", ->
          data-editor-id="1"
          data-editors='[[1, "one"], [2, "two"], [3, "three"]]'
          data-card-name="paper-editor">Bar</a>
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->

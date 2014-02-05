@@ -10,7 +10,7 @@ describe "Tech Check Card", ->
       <a href="#"
          id="link2"
          data-card-name="tech-check">Bar</a>
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->

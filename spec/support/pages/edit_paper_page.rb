@@ -44,24 +44,6 @@ class EditPaperPage < Page
     page.execute_script "CKEDITOR.instances['paper-body'].setData('#{escape_javascript val}')"
   end
 
-  def uploads_overlay &block
-    click_on 'Upload Figures'
-    overlay = UploadOverlay.new find('#new-overlay')
-    if block_given?
-      block.call overlay
-      overlay.dismiss
-    else
-      overlay
-    end
-  end
-
-  def authors_overlay &block
-    find('#paper-authors').click
-    overlay = AuthorsOverlay.new find('#new-overlay')
-    block.call overlay
-    overlay.dismiss
-  end
-
   def authors
     find('#paper-authors').text
   end
@@ -91,18 +73,6 @@ class EditPaperPage < Page
     select = find('#paper_paper_type')
     select.select value
     wait_for_pjax
-  end
-
-  def upload_manuscript_overlay &block
-    click_on 'Upload Manuscript'
-    UploadManuscriptOverlay.new find('#new-overlay')
-  end
-
-  def declarations_overlay &block
-    click_on 'Declarations'
-    overlay = DeclarationsOverlay.new find('#new-overlay')
-    block.call overlay
-    overlay.dismiss
   end
 
   def save

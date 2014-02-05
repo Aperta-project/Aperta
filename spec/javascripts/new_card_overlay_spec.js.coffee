@@ -6,7 +6,7 @@ describe "New Card Overlay", ->
     $('#jasmine_content').html """
       <a href="#" id="link-1" class="react-new-card-overlay" data-url="/some/path" data-phase-id="11" data-assignees="[1, 2, 3]" data-paper-short-title="Something"></a>
       <a href="#" id="link-2" class="react-new-card-overlay" data-url="/some/path" data-phase-id="11" data-assignees="[1, 2, 3]" data-paper-short-title="Something"></a>
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->
@@ -23,25 +23,25 @@ describe "New Card Overlay", ->
     describe "escape key closes the overlay", ->
       context "when the escape key is pressed", ->
         it "binds the keyup event on escape to close the overlay", ->
-          $('#new-overlay').show()
+          $('#overlay').show()
 
           event = jQuery.Event("keyup", { which: 27 });
           $('body').trigger(event)
 
-          expect($('#new-overlay')).toBeHidden()
+          expect($('#overlay')).toBeHidden()
 
       context "when any other key is pressed", ->
         it "doesn't do anything", ->
-          $('#new-overlay').show()
+          $('#overlay').show()
 
           event = jQuery.Event("keyup", { which: 12 });
           $('body').trigger(event)
 
-          expect($('#new-overlay')).toBeVisible()
+          expect($('#overlay')).toBeVisible()
 
   describe "#hideOverlay", ->
     beforeEach ->
-      $('#new-overlay').show()
+      $('#overlay').show()
       @event = jasmine.createSpyObj 'event', ['preventDefault']
 
     it "prevents default on the event", ->
@@ -50,12 +50,12 @@ describe "New Card Overlay", ->
 
     it "hides the overlay", ->
       Tahi.overlays.newCard.hideOverlay(@event)
-      expect($('#new-overlay')).toBeHidden()
+      expect($('#overlay')).toBeHidden()
 
     it "unmounts the component", ->
       spyOn React, 'unmountComponentAtNode'
       Tahi.overlays.newCard.hideOverlay(@event)
-      expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('new-overlay')
+      expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('overlay')
 
   describe "#displayNewCardOverlay", ->
     beforeEach ->
@@ -63,14 +63,14 @@ describe "New Card Overlay", ->
       @event = jasmine.createSpyObj 'event', ['preventDefault']
       @event.target = document.getElementById('link-1')
 
-    it "renders NewCardOverlay component inserting it into #new-overlay", ->
+    it "renders NewCardOverlay component inserting it into #overlay", ->
       Tahi.overlays.newCard.displayNewCardOverlay(@event)
       newCardOverlay = Tahi.overlays.newCard.components.NewCardOverlay({url: '/some/path', phaseId: 11, assignees: [1, 2, 3], paperShortTitle: 'Something'})
-      expect(React.renderComponent).toHaveBeenCalledWith(newCardOverlay, $('#new-overlay')[0], Tahi.initChosen)
+      expect(React.renderComponent).toHaveBeenCalledWith(newCardOverlay, $('#overlay')[0], Tahi.initChosen)
 
     it "displays the overlay", ->
       Tahi.overlays.newCard.displayNewCardOverlay(@event)
-      expect($('#new-overlay')).toBeVisible()
+      expect($('#overlay')).toBeVisible()
 
   describe "NewCardForm component", ->
     describe "#submit", ->

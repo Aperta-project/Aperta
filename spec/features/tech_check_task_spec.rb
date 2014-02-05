@@ -31,17 +31,17 @@ feature "Tech Check", js: true do
 
   scenario "Admin can complete the tech check card" do
     dashboard_page = DashboardPage.visit
-    tech_check_card = dashboard_page.view_card 'Tech Check', :new
+    tech_check_card = dashboard_page.view_card 'Tech Check'
     paper_show_page = tech_check_card.view_paper
 
-    paper_show_page.view_card 'Tech Check', :new do |overlay|
+    paper_show_page.view_card 'Tech Check' do |overlay|
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end
 
     paper_show_page.reload
 
-    paper_show_page.view_card 'Tech Check', :new do |overlay|
+    paper_show_page.view_card 'Tech Check' do |overlay|
       expect(overlay).to be_completed
     end
   end

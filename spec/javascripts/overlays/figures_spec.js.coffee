@@ -14,7 +14,7 @@ describe "Tahi.overlays.figures", ->
          data-card-name="figure"
          data-figures-path="/path/to/figures"
          data-figures="[1, 2, 3]">Bar</a>
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->

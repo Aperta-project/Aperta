@@ -14,7 +14,7 @@ describe "Assign Reviewers Card", ->
          data-reviewer-ids="[1,2]"
          data-reviewers='[[1, "one"], [2, "two"], [3, "three"]]'
          data-card-name="paper-reviewer">Bar</a>
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->

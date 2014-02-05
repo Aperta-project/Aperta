@@ -12,7 +12,7 @@ describe "Task Card", ->
          id="link2"
          data-task-body="Too many muscles!"
          data-card-name="task">Bar</a>
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->

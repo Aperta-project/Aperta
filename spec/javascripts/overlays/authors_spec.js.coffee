@@ -12,7 +12,7 @@ describe "Tahi.overlays.authors", ->
          id="link2"
          data-card-name="authors"
          data-authors="[1, 2, 3]">Bar</a>
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->

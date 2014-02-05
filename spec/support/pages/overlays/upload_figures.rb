@@ -1,4 +1,4 @@
-class UploadOverlay < CardOverlay
+class UploadFiguresOverlay < CardOverlay
   def has_image? image_name
     has_selector? "img[src$='#{image_name}']"
   end

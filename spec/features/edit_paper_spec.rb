@@ -40,17 +40,17 @@ feature "Editing paper", js: true do
   scenario "Author uploads paper in Word format" do
     edit_paper = EditPaperPage.visit paper
 
-    edit_paper.upload_manuscript_overlay.upload_word_doc
+    edit_paper.view_card('Upload Manuscript').upload_word_doc
 
     expect(edit_paper.title).to eq "This is a Title About Turtles"
     expect(edit_paper.body).to match /And this is my subtitle/
-    # expect(edit_paper.upload_manuscript_overlay).to be_completed
+    # expect(edit_paper.view_card 'Upload Manuscript').to be_completed
   end
 
   scenario "Author makes declarations" do
     edit_paper = EditPaperPage.visit paper
 
-    edit_paper.declarations_overlay do |overlay|
+    edit_paper.view_card 'Declarations' do |overlay|
       funding_disclosure, ethics_declaration, competing_interest_declaration = overlay.declarations
       expect(funding_disclosure.answer).to be_empty
       expect(ethics_declaration.answer).to be_empty
@@ -70,7 +70,7 @@ feature "Editing paper", js: true do
     end
 
     edit_paper.reload
-    edit_paper.declarations_overlay do |overlay|
+    edit_paper.view_card 'Declarations' do |overlay|
       funding_disclosure, ethics_declaration, competing_interest_declaration = overlay.declarations
       expect(funding_disclosure.answer).to eq "Yes"
       expect(ethics_declaration.answer).to eq "No"
@@ -82,7 +82,7 @@ feature "Editing paper", js: true do
   scenario "Author uploads figures" do
     edit_paper = EditPaperPage.visit paper
 
-    edit_paper.uploads_overlay do |overlay|
+    edit_paper.view_card 'Upload Figures' do |overlay|
       overlay.attach_figure
       expect(overlay).to have_image 'yeti.tiff'
       overlay.mark_as_complete
@@ -91,7 +91,7 @@ feature "Editing paper", js: true do
 
     edit_paper.reload
 
-    edit_paper.uploads_overlay do |overlay|
+    edit_paper.view_card 'Upload Figures' do |overlay|
       expect(overlay).to have_image('yeti.tiff')
       expect(overlay).to be_completed
     end
@@ -100,7 +100,7 @@ feature "Editing paper", js: true do
   scenario "Author specifies contributing authors" do
     edit_paper = EditPaperPage.visit paper
 
-    edit_paper.authors_overlay do |overlay|
+    edit_paper.view_card 'Add Authors' do |overlay|
       overlay.add_author first_name: 'Neils', last_name: 'Bohr', affiliation: 'University of Copenhagen', email: 'neils@bohr.com'
       overlay.add_author first_name: 'Nikola', last_name: 'Tesla', affiliation: 'Wardenclyffe'
       overlay.mark_as_complete
@@ -113,7 +113,7 @@ feature "Editing paper", js: true do
 
     expect(edit_paper.authors).to eq "Neils Bohr, Nikola Tesla"
 
-    edit_paper.authors_overlay do |overlay|
+    edit_paper.view_card 'Add Authors' do |overlay|
       expect(overlay).to be_completed
     end
   end

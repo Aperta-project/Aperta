@@ -10,7 +10,7 @@ describe "Reviewer Report Card", ->
       <a href="#"
          id="link2"
          data-card-name="reviewer-report">Bar</a>
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->

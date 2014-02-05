@@ -17,7 +17,7 @@ describe "Tahi.overlay", ->
          data-assignee-id="2"
          data-assignees='[[1,"User 1"],[2,"User 2"]]'
          data-task-path="/path/to/task"
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->
@@ -61,13 +61,13 @@ describe "Tahi.overlay", ->
       expect(args[0][0]).toEqual document.getElementById('link1')
       expect(args[1]).toEqual one: 1, two: 2
 
-    it "renders constructed component, mounting it on #new-overlay", ->
+    it "renders constructed component, mounting it on #overlay", ->
       Tahi.overlay.display @event, @constructComponentCallback
-      expect(React.renderComponent).toHaveBeenCalledWith(@overlay, $('#new-overlay')[0], Tahi.initChosen)
+      expect(React.renderComponent).toHaveBeenCalledWith(@overlay, $('#overlay')[0], Tahi.initChosen)
 
     it "displays the overlay", ->
       Tahi.overlay.display @event, @constructComponentCallback
-      expect($('#new-overlay')).toBeVisible()
+      expect($('#overlay')).toBeVisible()
 
     it "adds the noscroll class to the body", ->
       spyOn $.fn, 'addClass'
@@ -77,7 +77,7 @@ describe "Tahi.overlay", ->
 
   describe "#hide", ->
     beforeEach ->
-      $('#new-overlay').show()
+      $('#overlay').show()
       @event = jasmine.createSpyObj 'event', ['preventDefault']
 
     it "prevents default on the event", ->
@@ -86,7 +86,7 @@ describe "Tahi.overlay", ->
 
     it "hides the overlay", ->
       Tahi.overlay.hide(@event)
-      expect($('#new-overlay')).toBeHidden()
+      expect($('#overlay')).toBeHidden()
 
     it "removes the noscroll class from the html", ->
       spyOn $.fn, 'removeClass'
@@ -97,7 +97,7 @@ describe "Tahi.overlay", ->
     it "unmounts the component", ->
       spyOn React, 'unmountComponentAtNode'
       Tahi.overlay.hide(@event)
-      expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('new-overlay')
+      expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('overlay')
 
   describe "#defaultProps", ->
     beforeEach ->

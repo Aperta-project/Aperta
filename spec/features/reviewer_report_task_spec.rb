@@ -39,10 +39,10 @@ feature "Reviewer Report", js: true do
 
   scenario "Reviewer can write a reviewer report" do
     dashboard_page = DashboardPage.visit
-    reviewer_report_card = dashboard_page.view_card 'Reviewer Report', :new
+    reviewer_report_card = dashboard_page.view_card 'Reviewer Report'
     paper_show_page = reviewer_report_card.view_paper
 
-    paper_show_page.view_card 'Reviewer Report', :new do |overlay|
+    paper_show_page.view_card 'Reviewer Report' do |overlay|
       # overlay.report = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue massa sit amet lacus volutpat pharetra. Quisque lobortis eu risus sit amet'
       overlay.mark_as_complete
       expect(overlay).to be_completed
@@ -50,7 +50,7 @@ feature "Reviewer Report", js: true do
 
     paper_show_page.reload
 
-    paper_show_page.view_card 'Reviewer Report', :new do |overlay|
+    paper_show_page.view_card 'Reviewer Report' do |overlay|
       expect(overlay).to be_completed
       # expect(overlay.report).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue massa sit amet lacus volutpat pharetra. Quisque lobortis eu risus sit amet')
     end

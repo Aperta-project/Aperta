@@ -1,4 +1,4 @@
-class AuthorsOverlay < CardOverlay
+class AddAuthorsOverlay < CardOverlay
   def add_author author
     click_on "Add new"
     fill_in "First name", with: author[:first_name]

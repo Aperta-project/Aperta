@@ -12,7 +12,7 @@ describe "Declarations Card", ->
          id="link2"
          data-card-name="declaration"
          data-declarations="[1, 2]">Bar</a>
-      <div id="new-overlay" style="display: none;"></div>
+      <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->

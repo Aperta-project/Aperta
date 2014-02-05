@@ -24,7 +24,7 @@ class Task < ActiveRecord::Base
   end
 
   def assignees
-    []
+    User.admins
   end
 
   protected

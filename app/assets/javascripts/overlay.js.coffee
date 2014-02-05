@@ -18,6 +18,7 @@ Tahi.overlay =
     paperTitle: element.data('paperTitle')
     paperPath: element.data('paperPath')
     taskPath: element.data('taskPath')
+    taskTitle: element.data('taskTitle')
     taskCompleted: element.hasClass('completed')
     assignees: element.data('assignees')
     assigneeId: element.data('assigneeId')

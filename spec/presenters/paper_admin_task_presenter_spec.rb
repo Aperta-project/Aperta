@@ -31,6 +31,8 @@ describe PaperAdminTaskPresenter do
 
     it_behaves_like "all tasks, which have common attributes" do
       let(:card_name) { 'paper-admin' }
+      let(:assignees) { '[]' }
+      let(:assignee_id) { nil }
     end
 
     it "returns custom data for paper admin task" do

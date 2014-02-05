@@ -74,6 +74,10 @@ describe Task do
   end
 
   describe "#assignees" do
-    specify { expect(Task.new.assignees).to eq [] }
+    it "returns all admins" do
+      admins = double(:admins)
+      expect(User).to receive(:admins).and_return admins
+      expect(Task.new.assignees).to eq admins
+    end
   end
 end

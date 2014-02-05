@@ -17,7 +17,13 @@ describe AuthorsTaskPresenter do
     subject(:data_attributes) { AuthorsTaskPresenter.new(task).data_attributes }
 
     it_behaves_like "all tasks, which have common attributes" do
+      before do
+        user = mock_model User, full_name: 'Mock User'
+        allow(User).to receive(:admins).and_return [user]
+      end
+
       let(:card_name) { 'authors' }
+      let(:assignees) { '[]' }
     end
 
     it "includes custom figure data" do

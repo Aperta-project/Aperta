@@ -13,6 +13,7 @@ Tahi.init = ->
   Tahi.overlays.assignEditor.init()
   Tahi.overlays.assignReviewers.init()
   Tahi.overlays.paperAdmin.init()
+  Tahi.overlays.task.init()
 
   for form in $("form.js-submit-on-change[data-remote='true']")
     @setupSubmitOnChange $(form), $('select, input[type="radio"], input[type="checkbox"], textarea', form)

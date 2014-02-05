@@ -38,28 +38,7 @@
         %ul.assigned-tasks.cards
           %ul.cards
             - assigned_tasks.each do |task|
-              - if task.title == 'Register Decision'
-                %li
-                  = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'card-name' => "register-decision", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), 'task-completed' => task.completed?, 'decision-letters' => {"Accepted" => task.accept_letter, "Rejected" => task.reject_letter, "Revise" => task.revise_letter}.to_json, assignees: User.editors_for(@paper.journal).map { |u| [u.id, u.full_name] }.to_json, 'decision-letter' => @paper.decision_letter, 'decision' => @paper.decision, 'assignee-id' => task.assignee_id } do
-                    %span.glyphicon.glyphicon-ok
-                    = task.title
-              - elsif task.title == 'Tech Check'
-                %li= card task
-              - elsif task.title == 'Reviewer Report'
-                %li= card task
-              - elsif task.title == 'Assign Admin'
-                %li= card task
-              - elsif task.title == 'Assign Editor'
-                %li= card task
-              - elsif task.title == 'Assign Reviewers'
-                %li= card task
-              - else
-                %li
-                  = link_to '#', class: "card #{'completed' if task.completed?}", data: { 'overlay-name' => "card-#{task.id}", 'overlay-title' => truncated_title(@paper), 'paper-id' => task.paper.to_param, 'task-id' => task.to_param, 'task-completed' => task.completed? } do
-                    %span.glyphicon.glyphicon-ok
-                    = task.title
-                .hidden{id: "card-#{task.id}-content"}
-                  = render task, paper: task.paper
+              %li= card task
 
       - task = author_tasks.detect { |t| t.title == 'Upload Manuscript' }
       = card task

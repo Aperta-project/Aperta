@@ -17,7 +17,13 @@ describe UploadManuscriptTaskPresenter do
     subject(:data_attributes) { UploadManuscriptTaskPresenter.new(task).data_attributes }
 
     it_behaves_like "all tasks, which have common attributes" do
+      before do
+        user = mock_model User, full_name: 'Mock User'
+        allow(User).to receive(:admins).and_return [user]
+      end
+
       let(:card_name) { 'upload-manuscript' }
+      let(:assignees) { '[]' }
     end
 
     specify do

@@ -8,15 +8,6 @@
     = csrf_meta_tags
   %body{class: ('matte' if params[:controller] == 'papers')}
     #new-overlay
-    #overlay
-      %div
-        %header
-          %h2
-          %a.primary-button.close-overlay{href: "#"} Close
-        %main
-        %footer
-          .content
-          %a.primary-button.close-overlay{href: "#"} Close
 
     #nav-bar-container
       %nav#nav-bar

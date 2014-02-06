@@ -12,7 +12,8 @@ shared_examples_for "all tasks, which have common attributes" do
       'task-body' => task.body,
       'card-name' => card_name,
       'assignee-id' => assignee_id,
-      'assignees' => assignees
+      'assignees' => assignees,
+      'task-id' => task.id
     )
   end
 end

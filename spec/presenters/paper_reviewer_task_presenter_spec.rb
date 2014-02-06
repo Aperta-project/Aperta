@@ -47,7 +47,8 @@ describe PaperReviewerTaskPresenter do
     it "returns custom data for paper reviewer task" do
       expect(data_attributes).to include({
         'reviewer-ids' => [reviewer.id].to_json,
-        'reviewers'   => [[reviewer.id, reviewer.full_name]].to_json
+        'reviewers'   => [[reviewer.id, reviewer.full_name]].to_json,
+        'refresh-on-close' => true
       })
     end
   end

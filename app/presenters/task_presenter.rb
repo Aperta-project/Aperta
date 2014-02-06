@@ -21,6 +21,7 @@ class TaskPresenter
       'card-name' => task.class.name.underscore.dasherize.gsub(/-task/, ''),
       'assignee-id' => task.assignee_id,
       'assignees' => assignees,
+      'task-id' => task.id
     }
   end
 

@@ -4,14 +4,14 @@ window.Tahi ||= {}
 
 Tahi.overlays ||= {}
 
-Tahi.overlays.figures =
+Tahi.overlays.figure =
   init: ->
     Tahi.overlay.init 'figure', @createComponent
 
   createComponent: (target, props) ->
     props.figuresPath = target.data('figuresPath')
     props.figures = target.data('figures')
-    Tahi.overlays.figures.components.FiguresOverlay props
+    Tahi.overlays.figure.components.FigureOverlay props
 
   components:
     FigureUpload: React.createClass
@@ -27,7 +27,7 @@ Tahi.overlays.figures =
         previewContainer = $('.preview-container', rootNode)
         previewContainer.append window.tempStorage[this.props.filename]
 
-    FiguresOverlay: React.createClass
+    FigureOverlay: React.createClass
       getInitialState: ->
         uploads: []
         figures: []
@@ -42,7 +42,7 @@ Tahi.overlays.figures =
       render: ->
         Overlay = Tahi.overlays.components.Overlay
         RailsForm = Tahi.overlays.components.RailsForm
-        FigureUpload = Tahi.overlays.figures.components.FigureUpload
+        FigureUpload = Tahi.overlays.figure.components.FigureUpload
 
         uploadLIs = @state.uploads.map (upload) ->
           `<FigureUpload key={upload.filename} filename={upload.filename} progress={upload.progress} />`
@@ -57,7 +57,7 @@ Tahi.overlays.figures =
         `<Overlay
             paperTitle={this.props.paperTitle}
             paperPath={this.props.paperPath}
-            closeCallback={Tahi.overlays.figures.hideOverlay}
+            closeCallback={Tahi.overlays.figure.hideOverlay}
             taskPath={this.props.taskPath}
             taskCompleted={this.props.taskCompleted}
             onOverlayClosed={this.props.onOverlayClosed}

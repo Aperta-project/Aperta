@@ -22,7 +22,7 @@ describe "Tahi.overlays.authors", ->
       expect(Tahi.overlay.init).toHaveBeenCalledWith 'authors', Tahi.overlays.authors.createComponent
 
   describe "#createComponent", ->
-    it "instantiates a FiguresOverlay component", ->
+    it "instantiates a AuthorsOverlay component", ->
       spyOn Tahi.overlays.authors.components, 'AuthorsOverlay'
       Tahi.overlays.authors.createComponent $('#link1'), one: 1, two: 2
       expect(Tahi.overlays.authors.components.AuthorsOverlay).toHaveBeenCalledWith(

@@ -30,15 +30,15 @@ describe "tahi", ->
       beforeEach ->
         spyOn Tahi.papers, 'init'
         spyOn Tahi.overlays.authors, 'init'
-        spyOn Tahi.overlays.figures, 'init'
+        spyOn Tahi.overlays.figure, 'init'
         spyOn Tahi.overlays.newCard, 'init'
-        spyOn Tahi.overlays.declarations, 'init'
+        spyOn Tahi.overlays.declaration, 'init'
         spyOn Tahi.overlays.uploadManuscript, 'init'
         spyOn Tahi.overlays.techCheck, 'init'
         spyOn Tahi.overlays.registerDecision, 'init'
         spyOn Tahi.overlays.reviewerReport, 'init'
-        spyOn Tahi.overlays.assignEditor, 'init'
-        spyOn Tahi.overlays.assignReviewers, 'init'
+        spyOn Tahi.overlays.paperEditor, 'init'
+        spyOn Tahi.overlays.paperReviewer, 'init'
         spyOn Tahi.overlays.paperAdmin, 'init'
         spyOn Tahi.overlays.task, 'init'
 
@@ -59,15 +59,15 @@ describe "tahi", ->
         Tahi.init()
         expect(Tahi.papers.init).toHaveBeenCalled()
         expect(Tahi.overlays.authors.init).toHaveBeenCalled()
-        expect(Tahi.overlays.figures.init).toHaveBeenCalled()
+        expect(Tahi.overlays.figure.init).toHaveBeenCalled()
         expect(Tahi.overlays.newCard.init).toHaveBeenCalled()
-        expect(Tahi.overlays.declarations.init).toHaveBeenCalled()
+        expect(Tahi.overlays.declaration.init).toHaveBeenCalled()
         expect(Tahi.overlays.uploadManuscript.init).toHaveBeenCalled()
         expect(Tahi.overlays.techCheck.init).toHaveBeenCalled()
         expect(Tahi.overlays.registerDecision.init).toHaveBeenCalled()
         expect(Tahi.overlays.reviewerReport.init).toHaveBeenCalled()
-        expect(Tahi.overlays.assignEditor.init).toHaveBeenCalled()
-        expect(Tahi.overlays.assignReviewers.init).toHaveBeenCalled()
+        expect(Tahi.overlays.paperEditor.init).toHaveBeenCalled()
+        expect(Tahi.overlays.paperReviewer.init).toHaveBeenCalled()
         expect(Tahi.overlays.paperAdmin.init).toHaveBeenCalled()
         expect(Tahi.overlays.task.init).toHaveBeenCalled()
 

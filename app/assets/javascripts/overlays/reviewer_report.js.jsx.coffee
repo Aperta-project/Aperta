@@ -21,7 +21,7 @@ Tahi.overlays.reviewerReport =
             onOverlayClosed: @props.onOverlayClosed
             paperTitle: @props.paperTitle
             paperPath: @props.paperPath
-            closeCallback: Tahi.overlays.figures.hideOverlay
+            closeCallback: Tahi.overlays.figure.hideOverlay
             taskPath: @props.taskPath
             taskCompleted: @props.taskCompleted
             onOverlayClosed: @props.onOverlayClosed

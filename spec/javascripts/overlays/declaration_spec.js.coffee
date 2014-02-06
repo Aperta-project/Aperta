@@ -18,25 +18,25 @@ describe "Declarations Card", ->
   describe "#init", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
-      Tahi.overlays.declarations.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'declaration', Tahi.overlays.declarations.createComponent
+      Tahi.overlays.declaration.init()
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'declaration', Tahi.overlays.declaration.createComponent
 
   describe "#createComponent", ->
-    it "instantiates a DeclarationsOverlay component", ->
-      spyOn Tahi.overlays.declarations.components, 'DeclarationsOverlay'
-      Tahi.overlays.declarations.createComponent $('#link1'), one: 1, two: 2
-      expect(Tahi.overlays.declarations.components.DeclarationsOverlay).toHaveBeenCalledWith(
+    it "instantiates a DeclarationOverlay component", ->
+      spyOn Tahi.overlays.declaration.components, 'DeclarationOverlay'
+      Tahi.overlays.declaration.createComponent $('#link1'), one: 1, two: 2
+      expect(Tahi.overlays.declaration.components.DeclarationOverlay).toHaveBeenCalledWith(
         jasmine.objectContaining
           one: 1
           two: 2
           declarations: [1, 2]
       )
 
-  describe "DeclarationsOverlay component", ->
+  describe "DeclarationOverlay component", ->
     describe "#render", ->
       beforeEach ->
         @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
-        @component = Tahi.overlays.declarations.components.DeclarationsOverlay
+        @component = Tahi.overlays.declaration.components.DeclarationOverlay
           paperTitle: 'Something'
           paperPath: '/path/to/paper'
           onOverlayClosed: @onOverlayClosedCallback
@@ -51,7 +51,7 @@ describe "Declarations Card", ->
     describe "#componentDidMount", ->
       it "sets up submit on change for the form", ->
         spyOn Tahi, 'setupSubmitOnChange'
-        component = Tahi.overlays.declarations.components.DeclarationsOverlay()
+        component = Tahi.overlays.declaration.components.DeclarationOverlay()
         html = $('<div><main><form><textarea /></form></main></div>')[0]
         component.componentDidMount html
         args = Tahi.setupSubmitOnChange.calls.mostRecent().args
@@ -65,7 +65,7 @@ describe "Declarations Card", ->
           <div id="two" data-card-name='declaration' data-declarations='[1, 2, 3]' />
         """
 
-        component = Tahi.overlays.declarations.components.DeclarationsOverlay
+        component = Tahi.overlays.declaration.components.DeclarationOverlay
           declarations: [
             {
               question: 'Question 1'
@@ -115,7 +115,7 @@ describe "Declarations Card", ->
 
     describe "#declarations", ->
       beforeEach ->
-        @component = Tahi.overlays.declarations.components.DeclarationsOverlay
+        @component = Tahi.overlays.declaration.components.DeclarationOverlay
           declarations: [
             {
               question: 'Question 1'

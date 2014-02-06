@@ -4,16 +4,16 @@ window.Tahi ||= {}
 
 Tahi.overlays ||= {}
 
-Tahi.overlays.declarations =
+Tahi.overlays.declaration =
   init: ->
     Tahi.overlay.init 'declaration', @createComponent
 
   createComponent: (target, props) ->
     props.declarations = target.data('declarations')
-    Tahi.overlays.declarations.components.DeclarationsOverlay props
+    Tahi.overlays.declaration.components.DeclarationOverlay props
 
   components:
-    DeclarationsOverlay: React.createClass
+    DeclarationOverlay: React.createClass
       getInitialState: ->
         declarations: []
 
@@ -42,7 +42,7 @@ Tahi.overlays.declarations =
             declarations={this.props.declarations}
             paperTitle={this.props.paperTitle}
             paperPath={this.props.paperPath}
-            closeCallback={Tahi.overlays.declarations.hideOverlay}
+            closeCallback={Tahi.overlays.declaration.hideOverlay}
             taskPath={this.props.taskPath}
             taskCompleted={this.props.taskCompleted}
             onOverlayClosed={this.props.onOverlayClosed}

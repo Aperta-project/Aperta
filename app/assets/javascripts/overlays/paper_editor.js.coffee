@@ -2,17 +2,17 @@ window.Tahi ||= {}
 
 Tahi.overlays ||= {}
 
-Tahi.overlays.assignEditor =
+Tahi.overlays.paperEditor =
   init: ->
     Tahi.overlay.init 'paper-editor', @createComponent
 
   createComponent: (target, props) ->
     props.editorId = target.data('editorId')
     props.editors = target.data('editors')
-    Tahi.overlays.assignEditor.components.AssignEditorOverlay props
+    Tahi.overlays.paperEditor.components.PaperEditorOverlay props
 
   components:
-    AssignEditorOverlay: React.createClass
+    PaperEditorOverlay: React.createClass
       render: ->
         {main, h1, select, option, input, label} = React.DOM
         editors = [[null, 'Please select editor']].concat @props.editors
@@ -21,7 +21,7 @@ Tahi.overlays.assignEditor =
             onOverlayClosed: @props.onOverlayClosed
             paperTitle: @props.paperTitle
             paperPath: @props.paperPath
-            closeCallback: Tahi.overlays.figures.hideOverlay
+            closeCallback: Tahi.overlays.figure.hideOverlay
             taskPath: @props.taskPath
             taskCompleted: @props.taskCompleted
             onOverlayClosed: @props.onOverlayClosed

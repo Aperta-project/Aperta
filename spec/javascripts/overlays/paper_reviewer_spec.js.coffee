@@ -1,7 +1,7 @@
 beforeEach ->
   $('#jasmine_content').empty()
 
-describe "Assign Reviewers Card", ->
+describe "PaperReviewer Card", ->
   beforeEach ->
     $('#jasmine_content').html """
       <a href="#"
@@ -20,14 +20,14 @@ describe "Assign Reviewers Card", ->
   describe "#init", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
-      Tahi.overlays.assignReviewers.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'paper-reviewer', Tahi.overlays.assignReviewers.createComponent
+      Tahi.overlays.paperReviewer.init()
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'paper-reviewer', Tahi.overlays.paperReviewer.createComponent
 
   describe "#createComponent", ->
-    it "instantiates a AssignReviewersOverlay component", ->
-      spyOn Tahi.overlays.assignReviewers.components, 'AssignReviewersOverlay'
-      Tahi.overlays.assignReviewers.createComponent $('#link1'), one: 1, two: 2
-      expect(Tahi.overlays.assignReviewers.components.AssignReviewersOverlay).toHaveBeenCalledWith(
+    it "instantiates a PaperReviewerOverlay component", ->
+      spyOn Tahi.overlays.paperReviewer.components, 'PaperReviewerOverlay'
+      Tahi.overlays.paperReviewer.createComponent $('#link1'), one: 1, two: 2
+      expect(Tahi.overlays.paperReviewer.components.PaperReviewerOverlay).toHaveBeenCalledWith(
         jasmine.objectContaining
           one: 1
           two: 2
@@ -35,11 +35,11 @@ describe "Assign Reviewers Card", ->
           reviewers: [[1, 'one'], [2, 'two'], [3, 'three']]
       )
 
-  describe "AssignReviewersOverlay component", ->
+  describe "PaperReviewerOverlay component", ->
     describe "#render", ->
       beforeEach ->
         @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
-        @component = Tahi.overlays.assignReviewers.components.AssignReviewersOverlay
+        @component = Tahi.overlays.paperReviewer.components.PaperReviewerOverlay
           paperTitle: 'Something'
           paperPath: '/path/to/paper'
           onOverlayClosed: @onOverlayClosedCallback
@@ -55,7 +55,7 @@ describe "Assign Reviewers Card", ->
     describe "#componentDidMount", ->
       it "sets up submit on change for the form", ->
         spyOn Tahi, 'setupSubmitOnChange'
-        component = Tahi.overlays.assignReviewers.components.AssignReviewersOverlay()
+        component = Tahi.overlays.paperReviewer.components.PaperReviewerOverlay()
         html = $('<div><main><form><select /></form></main></div>')[0]
         component.componentDidMount html
         args = Tahi.setupSubmitOnChange.calls.mostRecent().args

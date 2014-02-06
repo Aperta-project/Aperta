@@ -35,7 +35,7 @@ Tahi.overlays.authors =
         `<Overlay
             paperTitle={this.props.paperTitle}
             paperPath={this.props.paperPath}
-            closeCallback={Tahi.overlays.figures.hideOverlay}
+            closeCallback={Tahi.overlays.figure.hideOverlay}
             taskPath={this.props.taskPath}
             taskCompleted={this.props.taskCompleted}
             onOverlayClosed={this.props.onOverlayClosed}

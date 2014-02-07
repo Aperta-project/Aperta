@@ -20,7 +20,7 @@ Tahi.overlay =
     history.pushState currentState, null, "tasks/#{cardId}"
 
   defaultProps: (element) ->
-    currentUrl = window.location.href
+    turbolinksState = window.history.state
 
     paperTitle: element.data('paperTitle')
     paperPath: element.data('paperPath')
@@ -30,12 +30,12 @@ Tahi.overlay =
     assignees: element.data('assignees')
     assigneeId: element.data('assigneeId')
     onOverlayClosed: (e) =>
-      @hide(e, currentUrl)
+      @hide(e, turbolinksState)
 
     onCompletedChanged: (event, data) ->
       $("[data-card-name='#{element.data('cardName')}']").toggleClass 'completed', data.completed
 
-  hide: (event, currentUrl=null) ->
+  hide: (event, turbolinksState=null) ->
     event?.preventDefault()
     $('html').removeClass 'noscroll'
     $('#overlay').hide()
@@ -43,11 +43,11 @@ Tahi.overlay =
     React.unmountComponentAtNode document.getElementById('overlay')
 
     if event?.type isnt "popstate"
-      history.pushState({hideOverlay: true}, null, currentUrl)
+      state = $.extend turbolinksState, hideOverlay: true
+      history.pushState state, null, turbolinksState.url
 
   popstateOverlay: (e) =>
     history = Tahi.utils.windowHistory()
-    console.log "===> popstate:", history.state
     if history.state?.cardName?
       cardName = Tahi.utils.windowHistory().state.cardName
       cardId = Tahi.utils.windowHistory().state.cardId
@@ -59,7 +59,9 @@ Tahi.overlay =
   renderCard: (cardName, targetElement) ->
     cardName = toCamel cardName
     component = Tahi.overlays[cardName].createComponent targetElement, Tahi.overlay.defaultProps(targetElement)
+
     React.renderComponent component, document.getElementById('overlay'), Tahi.initChosen
+
     $('html').addClass 'noscroll'
     $('#overlay').show()
 

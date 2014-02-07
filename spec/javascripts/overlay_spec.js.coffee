@@ -134,31 +134,33 @@ describe "Tahi.overlay", ->
     beforeEach ->
       $('#overlay').show()
       @event = jasmine.createSpyObj 'event', ['preventDefault']
+      @turbolinksState = {}
+      @turbolinksState.url = 'http://random/'
+      spyOn history, 'pushState'
 
     it "prevents default on the event", ->
-      Tahi.overlay.hide(@event)
+      Tahi.overlay.hide(@event, @turbolinksState)
       expect(@event.preventDefault).toHaveBeenCalled()
 
     it "hides the overlay", ->
-      Tahi.overlay.hide(@event)
+      Tahi.overlay.hide(@event, @turbolinksState)
       expect($('#overlay')).toBeHidden()
 
     it "removes the noscroll class from the html", ->
       spyOn $.fn, 'removeClass'
-      Tahi.overlay.hide(@event)
+      Tahi.overlay.hide(@event, @turbolinksState)
       expect($.fn.removeClass.calls.mostRecent().object.selector).toEqual 'html'
       expect($.fn.removeClass).toHaveBeenCalledWith('noscroll')
 
     it "unmounts the component", ->
       spyOn React, 'unmountComponentAtNode'
-      Tahi.overlay.hide(@event)
+      Tahi.overlay.hide(@event, @turbolinksState)
       expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('overlay')
 
     context "if event type is not popstate", ->
       it "calls history.pushState with currentUrl", ->
-        spyOn history, 'pushState'
         @event.type = 'notPopstate'
-        Tahi.overlay.hide(@event)
+        Tahi.overlay.hide(@event, @turbolinksState)
         expect(history.pushState).toHaveBeenCalled()
 
 
@@ -194,20 +196,10 @@ describe "Tahi.overlay", ->
           expect($('#link1')).not.toHaveClass 'completed'
 
     describe "onOverlayClosed callback", ->
-      beforeEach ->
-        spyOn Turbolinks, 'visit'
-        @callback = Tahi.overlay.defaultProps($(@event.target)).onOverlayClosed
-
-      it "uses Turbolinks to reload the page", ->
-        $('#link1, #link2').data('refreshOnClose', true)
-        @callback null, completed: true
-        expect(Turbolinks.visit).toHaveBeenCalledWith window.location
-
-      context "when data-refresh-on-close is false", ->
-        it "does not reload the page", ->
-          $('#link1, #link2').data('refreshOnClose', false)
-          @callback null, completed: true
-          expect(Turbolinks.visit).not.toHaveBeenCalled()
+      it "it calls Tahi.overlay.hide", ->
+        spyOn(Tahi.overlay, 'hide')
+        Tahi.overlay.defaultProps($('#link1')).onOverlayClosed('foo')
+        expect(Tahi.overlay.hide).toHaveBeenCalledWith('foo', window.history.state)
 
     describe "taskCompleted", ->
       context "when the event target does not have the completed class", ->

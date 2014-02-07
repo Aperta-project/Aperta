@@ -17,7 +17,7 @@ describe "Upload Manuscript Card", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.uploadManuscript.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'upload-manuscript', Tahi.overlays.uploadManuscript.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'upload-manuscript'
 
   describe "#createComponent", ->
     it "instantiates a UploadManuscriptOverlay component", ->

@@ -6,7 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.registerDecision =
   init: ->
-    Tahi.overlay.init 'register-decision', @createComponent
+    Tahi.overlay.init 'register-decision'
 
   createComponent: (target, props) ->
     props.decision = target.data('decision')

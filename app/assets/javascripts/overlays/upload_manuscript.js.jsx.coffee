@@ -6,7 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.uploadManuscript =
   init: ->
-    Tahi.overlay.init 'upload-manuscript', @createComponent
+    Tahi.overlay.init 'upload-manuscript'
 
   createComponent: (target, props) ->
     props.uploadPaperPath = target.data('uploadPaperPath')

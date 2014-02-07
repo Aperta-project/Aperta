@@ -19,7 +19,7 @@ describe "Task Card", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.task.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'task', Tahi.overlays.task.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'task'
 
   describe "#createComponent", ->
     it "instantiates a TaskOverlay component", ->

@@ -6,7 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.declaration =
   init: ->
-    Tahi.overlay.init 'declaration', @createComponent
+    Tahi.overlay.init 'declaration'
 
   createComponent: (target, props) ->
     props.declarations = target.data('declarations')

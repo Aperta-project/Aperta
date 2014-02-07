@@ -21,7 +21,7 @@ describe "PaperEditor Card", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.paperEditor.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'paper-editor', Tahi.overlays.paperEditor.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'paper-editor'
 
   describe "#createComponent", ->
     it "instantiates a PaperEditorOverlay component", ->

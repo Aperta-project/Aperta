@@ -19,7 +19,7 @@ describe "Tahi.overlays.authors", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.authors.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'authors', Tahi.overlays.authors.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'authors'
 
   describe "#createComponent", ->
     it "instantiates a AuthorsOverlay component", ->

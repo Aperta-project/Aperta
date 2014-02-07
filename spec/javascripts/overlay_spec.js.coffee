@@ -8,72 +8,127 @@ describe "Tahi.overlay", ->
          data-task-path="/path/to/task"
          data-assignee-id="2"
          data-assignees='[[1,"User 1"],[2,"User 2"]]'
-         data-card-name="some-card"><span>Foo</span></a>
+         data-card-name="some-card"
+         data-task-id="12"><span>Foo</span></a>
       <a href="#"
          id="link2"
-         data-card-name="some-card">Bar</a>
          data-paper-title="Something"
          data-paper-path="/path/to/paper"
          data-assignee-id="2"
          data-assignees='[[1,"User 1"],[2,"User 2"]]'
          data-task-path="/path/to/task"
+         data-task-id="12"
+         data-card-name="some-card">Bar</a>
       <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->
     it "binds click on all elements with data-card-name=some-card", ->
       spyOn Tahi.overlay, 'display'
-      constructComponentCallback = jasmine.createSpy 'constructComponent'
-      Tahi.overlay.init 'some-card', constructComponentCallback
+      Tahi.overlay.init 'some-card'
       $('#link1').click()
 
       expect(Tahi.overlay.display).toHaveBeenCalledWith(
         jasmine.objectContaining(target: $('#link1')[0]),
-        constructComponentCallback
+        'some-card'
       )
 
       Tahi.overlay.display.calls.reset()
       $('#link2').click()
       expect(Tahi.overlay.display).toHaveBeenCalledWith(
         jasmine.objectContaining(target: $('#link2')[0]),
-        constructComponentCallback
+        'some-card'
       )
 
-  describe "#display", ->
+  describe "#renderCard", ->
     beforeEach ->
+      spyOn(history, 'pushState')
       spyOn React, 'renderComponent'
       @event = jasmine.createSpyObj 'event', ['preventDefault']
       @event.target = document.getElementById('link1')
       @overlay = jasmine.createSpy 'someOverlay'
-      @constructComponentCallback = jasmine.createSpy 'constructComponent'
-      @constructComponentCallback.and.returnValue @overlay
+      Tahi.overlays.someCard = jasmine.createSpyObj 'someCard overlay', ['createComponent']
+      Tahi.overlays.someCard.createComponent.and.returnValue @overlay
       spyOn(Tahi.overlay, 'defaultProps').and.returnValue one: 1, two: 2
 
-    it "prevents event propagation", ->
-      Tahi.overlay.display @event, @constructComponentCallback
-      expect(@event.preventDefault).toHaveBeenCalled()
+    it "creates a someCard component", ->
+      Tahi.overlay.renderCard 'some-card', @event.target
+      expect(Tahi.overlays.someCard.createComponent).toHaveBeenCalledWith @event.target, one: 1, two: 2
 
-    it "invokes constructComponentCallback to obtain a component", ->
-      @event.target = $('#link1 span')
-      Tahi.overlay.display @event, @constructComponentCallback
-      expect(@constructComponentCallback).toHaveBeenCalled()
-      args = @constructComponentCallback.calls.mostRecent().args
-      expect(args[0][0]).toEqual document.getElementById('link1')
-      expect(args[1]).toEqual one: 1, two: 2
+    it "retrieves properties from the target", ->
+      Tahi.overlay.renderCard 'some-card', @event.target
+      expect(Tahi.overlay.defaultProps).toHaveBeenCalledWith @event.target
 
     it "renders constructed component, mounting it on #overlay", ->
-      Tahi.overlay.display @event, @constructComponentCallback
+      Tahi.overlay.renderCard 'some-card', @event.target
       expect(React.renderComponent).toHaveBeenCalledWith(@overlay, $('#overlay')[0], Tahi.initChosen)
 
     it "displays the overlay", ->
-      Tahi.overlay.display @event, @constructComponentCallback
+      Tahi.overlay.renderCard 'some-card', @event.target
       expect($('#overlay')).toBeVisible()
 
     it "adds the noscroll class to the body", ->
       spyOn $.fn, 'addClass'
-      Tahi.overlay.display @event, @constructComponentCallback
+      Tahi.overlay.renderCard 'some-card', @event.target
       expect($.fn.addClass.calls.mostRecent().object.selector).toEqual 'html'
       expect($.fn.addClass).toHaveBeenCalledWith('noscroll')
+
+  describe "#display", ->
+    beforeEach ->
+      spyOn(history, 'pushState')
+      spyOn React, 'renderComponent'
+      @event = jasmine.createSpyObj 'event', ['preventDefault']
+      @event.target = document.getElementById('link1')
+      @overlay = jasmine.createSpy 'someOverlay'
+      spyOn(Tahi.overlay, 'defaultProps').and.returnValue one: 1, two: 2
+      spyOn(Tahi.overlay, 'renderCard')
+
+    it "prevents event propagation", ->
+      Tahi.overlay.display @event, 'some-card'
+      expect(@event.preventDefault).toHaveBeenCalled()
+
+    it "calls renderCard with cardName and target element", ->
+      @event.target = $('#link1 span')
+      Tahi.overlay.display @event, 'some-card'
+      expect(Tahi.overlay.renderCard).toHaveBeenCalled()
+      args = Tahi.overlay.renderCard.calls.mostRecent().args
+      expect(args[0]).toEqual 'some-card'
+      expect(args[1][0]).toEqual $('#link1')[0]
+
+    it "calls history.pushState with the currentState and tasks URL", ->
+      Tahi.overlay.display @event, 'some-card'
+      state =
+        cardName: 'some-card'
+        cardId: 12
+      expect(history.pushState).toHaveBeenCalledWith state, null, "tasks/12"
+
+  describe "#popstateOverlay", ->
+    beforeEach ->
+      @historyObj = jasmine.createSpy()
+      spyOn(Tahi.utils, 'windowHistory').and.returnValue(@historyObj)
+      spyOn(Tahi.overlay, 'renderCard')
+
+    it "renders the component if the history state and cardName are present", ->
+      @historyObj.state =
+        cardName: 'Hello'
+        cardId: 12
+
+      Tahi.overlay.popstateOverlay()
+      expect(Tahi.overlay.renderCard).toHaveBeenCalled()
+      args = Tahi.overlay.renderCard.calls.mostRecent().args
+      expect(args[0]).toEqual 'Hello'
+      expect(args[1][0]).toEqual $('#link1')[0]
+
+    context "if the history doesn't have a state", ->
+      it "doesn't call renderCard", ->
+        Tahi.overlay.popstateOverlay()
+        expect(Tahi.overlay.renderCard).not.toHaveBeenCalled()
+
+    context "if the history state doesn't have a cardName", ->
+      it "doesn't call renderCard", ->
+        @historyObj.state = {}
+        Tahi.overlay.popstateOverlay()
+        expect(Tahi.overlay.renderCard).not.toHaveBeenCalled()
 
   describe "#hide", ->
     beforeEach ->
@@ -98,6 +153,14 @@ describe "Tahi.overlay", ->
       spyOn React, 'unmountComponentAtNode'
       Tahi.overlay.hide(@event)
       expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('overlay')
+
+    context "if event type is not popstate", ->
+      it "calls history.pushState with currentUrl", ->
+        spyOn history, 'pushState'
+        @event.type = 'notPopstate'
+        Tahi.overlay.hide(@event)
+        expect(history.pushState).toHaveBeenCalled()
+
 
   describe "#defaultProps", ->
     beforeEach ->
@@ -136,6 +199,7 @@ describe "Tahi.overlay", ->
         @callback = Tahi.overlay.defaultProps($(@event.target)).onOverlayClosed
 
       it "uses Turbolinks to reload the page", ->
+        $('#link1, #link2').data('refreshOnClose', true)
         @callback null, completed: true
         expect(Turbolinks.visit).toHaveBeenCalledWith window.location
 

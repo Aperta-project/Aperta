@@ -6,7 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.figure =
   init: ->
-    Tahi.overlay.init 'figure', @createComponent
+    Tahi.overlay.init 'figure'
 
   createComponent: (target, props) ->
     props.figuresPath = target.data('figuresPath')

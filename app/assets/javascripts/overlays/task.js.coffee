@@ -4,7 +4,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.task =
   init: ->
-    Tahi.overlay.init 'task', @createComponent
+    Tahi.overlay.init 'task'
 
   createComponent: (target, props) ->
     props.taskBody = target.data 'taskBody'

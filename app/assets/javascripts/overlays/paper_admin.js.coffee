@@ -4,7 +4,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.paperAdmin =
   init: ->
-    Tahi.overlay.init 'paper-admin', @createComponent
+    Tahi.overlay.init 'paper-admin'
 
   createComponent: (target, props) ->
     props.adminId = target.data('adminId')

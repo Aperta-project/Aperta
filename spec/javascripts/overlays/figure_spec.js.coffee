@@ -21,7 +21,7 @@ describe "Tahi.overlays.figure", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.figure.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'figure', Tahi.overlays.figure.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'figure'
 
   describe "#createComponent", ->
     it "instantiates a FigureOverlay component", ->

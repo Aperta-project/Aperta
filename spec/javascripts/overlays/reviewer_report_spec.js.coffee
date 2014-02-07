@@ -17,7 +17,7 @@ describe "Reviewer Report Card", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.reviewerReport.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'reviewer-report', Tahi.overlays.reviewerReport.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'reviewer-report'
 
   describe "#createComponent", ->
     it "instantiates a ReviewerReportOverlay component", ->

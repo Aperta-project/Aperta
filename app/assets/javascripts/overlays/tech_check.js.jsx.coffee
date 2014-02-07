@@ -6,7 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.techCheck =
   init: ->
-    Tahi.overlay.init 'tech-check', @createComponent
+    Tahi.overlay.init 'tech-check'
 
   createComponent: (target, props) ->
     Tahi.overlays.techCheck.components.TechCheckOverlay props

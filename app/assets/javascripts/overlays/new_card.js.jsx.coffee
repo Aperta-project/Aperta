@@ -8,10 +8,6 @@ Tahi.overlays.newCard =
   init: ->
     $('.react-new-card-overlay').on 'click', Tahi.overlays.newCard.displayNewCardOverlay
 
-    $('body').on 'keyup', (e) ->
-      if e.which == 27
-        Tahi.overlays.newCard.hideOverlay()
-
   hideOverlay: (e) ->
     e?.preventDefault()
     $('#overlay').hide()

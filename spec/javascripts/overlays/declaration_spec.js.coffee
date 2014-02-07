@@ -19,7 +19,7 @@ describe "Declarations Card", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.declaration.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'declaration', Tahi.overlays.declaration.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'declaration'
 
   describe "#createComponent", ->
     it "instantiates a DeclarationOverlay component", ->

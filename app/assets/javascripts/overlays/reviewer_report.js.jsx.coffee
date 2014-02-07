@@ -6,7 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.reviewerReport =
   init: ->
-    Tahi.overlay.init 'reviewer-report', @createComponent
+    Tahi.overlay.init 'reviewer-report'
 
   createComponent: (target, props) ->
     Tahi.overlays.reviewerReport.components.ReviewerReportOverlay props

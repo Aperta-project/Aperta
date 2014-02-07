@@ -4,7 +4,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.paperEditor =
   init: ->
-    Tahi.overlay.init 'paper-editor', @createComponent
+    Tahi.overlay.init 'paper-editor'
 
   createComponent: (target, props) ->
     props.editorId = target.data('editorId')

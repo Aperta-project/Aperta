@@ -21,7 +21,7 @@ describe "Assign Reviewers Card", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.paperAdmin.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'paper-admin', Tahi.overlays.paperAdmin.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'paper-admin'
 
   describe "#createComponent", ->
     it "instantiates a PaperAdminOverlay component", ->

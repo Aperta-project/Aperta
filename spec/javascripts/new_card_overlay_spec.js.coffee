@@ -20,25 +20,6 @@ describe "New Card Overlay", ->
       $('#link-2').click()
       expect(Tahi.overlays.newCard.displayNewCardOverlay).toHaveBeenCalled()
 
-    describe "escape key closes the overlay", ->
-      context "when the escape key is pressed", ->
-        it "binds the keyup event on escape to close the overlay", ->
-          $('#overlay').show()
-
-          event = jQuery.Event("keyup", { which: 27 });
-          $('body').trigger(event)
-
-          expect($('#overlay')).toBeHidden()
-
-      context "when any other key is pressed", ->
-        it "doesn't do anything", ->
-          $('#overlay').show()
-
-          event = jQuery.Event("keyup", { which: 12 });
-          $('body').trigger(event)
-
-          expect($('#overlay')).toBeVisible()
-
   describe "#hideOverlay", ->
     beforeEach ->
       $('#overlay').show()

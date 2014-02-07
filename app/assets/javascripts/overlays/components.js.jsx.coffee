@@ -84,6 +84,15 @@ Tahi.overlays.components.OverlayHeader = React.createClass
     </header>`
 
 Tahi.overlays.components.OverlayFooter = React.createClass
+  componentDidMount: ->
+    window.addEventListener 'keyup', @handleEscKey
+
+  componentWillUnmount: ->
+    window.removeEventListener 'keyup', @handleEscKey
+
+  handleEscKey: (e) ->
+    @props.closeCallback(e) if e.keyCode is 27
+
   render: ->
     AssigneeDropDown = Tahi.overlays.components.AssigneeDropDown
     CompletedCheckbox = Tahi.overlays.components.CompletedCheckbox

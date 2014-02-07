@@ -17,7 +17,7 @@ describe "Tech Check Card", ->
     it "calls Tahi.overlay.init", ->
       spyOn Tahi.overlay, 'init'
       Tahi.overlays.techCheck.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'tech-check', Tahi.overlays.techCheck.createComponent
+      expect(Tahi.overlay.init).toHaveBeenCalledWith 'tech-check'
 
   describe "#createComponent", ->
     it "instantiates a TechCheckOverlay component", ->

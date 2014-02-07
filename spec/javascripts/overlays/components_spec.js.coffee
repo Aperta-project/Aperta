@@ -172,6 +172,39 @@ describe "Tahi overlay components", ->
         expect(button.props.onClick).toEqual callback
 
   describe "OverlayFooter", ->
+    describe "#componentDidMount", ->
+      it "adds event listener on keyup to #handleEscKey", ->
+        spyOn window, 'addEventListener'
+        component = Tahi.overlays.components.OverlayFooter()
+        component.componentDidMount()
+        expect(window.addEventListener).toHaveBeenCalledWith 'keyup', component.handleEscKey
+
+    describe "#componentWillUnmount", ->
+      it "removes event listener on keyup to #handleEscKey", ->
+        spyOn window, 'removeEventListener'
+        component = Tahi.overlays.components.OverlayFooter()
+        component.componentWillUnmount()
+        expect(window.removeEventListener).toHaveBeenCalledWith 'keyup', component.handleEscKey
+
+    describe "#handleEscKey", ->
+      beforeEach ->
+        @callback = jasmine.createSpy 'closeCallback'
+        @component = Tahi.overlays.components.OverlayFooter
+          closeCallback: @callback
+        @event = jasmine.createSpy 'event'
+
+      context "if the key code is 27", ->
+        it "close callback is called", ->
+          @event.keyCode = 27
+          @component.handleEscKey @event
+          expect(@callback).toHaveBeenCalledWith @event
+
+      context "if the key code isn't 27", ->
+        it "close callback is not called", ->
+          @event.keyCode = 'random'
+          @component.handleEscKey @event
+          expect(@callback).not.toHaveBeenCalled()
+
     describe "#render", ->
       it "passes an on click callback to the close button", ->
         callback = jasmine.createSpy 'closeCallback'

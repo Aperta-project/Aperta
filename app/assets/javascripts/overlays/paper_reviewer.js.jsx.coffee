@@ -6,7 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.paperReviewer =
   init: ->
-    Tahi.overlay.init 'paper-reviewer', @createComponent
+    Tahi.overlay.init 'paper-reviewer'
 
   createComponent: (target, props) ->
     props.reviewers = target.data('reviewers')
@@ -18,10 +18,8 @@ Tahi.overlays.paperReviewer =
       render: ->
         {main, h1, select, option, input, label} = React.DOM
         (Tahi.overlays.components.Overlay {
-            onOverlayClosed: @props.onOverlayClosed
             paperTitle: @props.paperTitle
             paperPath: @props.paperPath
-            closeCallback: Tahi.overlays.figure.hideOverlay
             taskPath: @props.taskPath
             taskCompleted: @props.taskCompleted
             onOverlayClosed: @props.onOverlayClosed

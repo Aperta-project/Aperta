@@ -6,7 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.authors =
   init: ->
-    Tahi.overlay.init 'authors', @createComponent
+    Tahi.overlay.init 'authors'
 
   createComponent: (target, props) ->
     props.authors = target.data('authors')

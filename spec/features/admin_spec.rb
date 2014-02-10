@@ -77,7 +77,6 @@ feature "Tahi administration", js: true do
 
   scenario "Admin can upload a logo for the journal" do
     admin_page = DashboardPage.visit.visit_admin
-    sleep 0.3
     journals_page = admin_page.navigate_to 'Journals'
     edit_journal_page = journals_page.edit_journal journal.id
     edit_journal_page.upload_logo

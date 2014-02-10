@@ -17,7 +17,7 @@ Tahi.overlay =
 
     cardId = $target.data 'taskId'
     currentState = {cardName: cardName, cardId: cardId}
-    history.pushState currentState, null, "tasks/#{cardId}"
+    history.pushState currentState, null, "#{@defaultProps($target).paperPath}/tasks/#{cardId}"
 
   defaultProps: (element) ->
     turbolinksState = window.history.state

@@ -49,6 +49,7 @@ class DashboardPage < Page
 
   def visit_admin
     click_on "Admin"
+    wait_for_turbolinks
     AdminDashboardPage.new
   end
 end

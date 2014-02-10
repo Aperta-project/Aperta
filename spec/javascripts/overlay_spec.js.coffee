@@ -80,7 +80,7 @@ describe "Tahi.overlay", ->
       @event = jasmine.createSpyObj 'event', ['preventDefault']
       @event.target = document.getElementById('link1')
       @overlay = jasmine.createSpy 'someOverlay'
-      spyOn(Tahi.overlay, 'defaultProps').and.returnValue one: 1, two: 2
+      spyOn(Tahi.overlay, 'defaultProps').and.returnValue one: 1, two: 2, paperPath: 'path/to/paper'
       spyOn(Tahi.overlay, 'renderCard')
 
     it "prevents event propagation", ->
@@ -100,7 +100,7 @@ describe "Tahi.overlay", ->
       state =
         cardName: 'some-card'
         cardId: 12
-      expect(history.pushState).toHaveBeenCalledWith state, null, "tasks/12"
+      expect(history.pushState).toHaveBeenCalledWith state, null, "path/to/paper/tasks/12"
 
   describe "#popstateOverlay", ->
     beforeEach ->

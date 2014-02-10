@@ -17,10 +17,10 @@ Tahi.overlay =
 
     cardId = $target.data 'taskId'
     currentState = {cardName: cardName, cardId: cardId}
-    history.pushState currentState, null, "#{@defaultProps($target).paperPath}/tasks/#{cardId}"
+    Tahi.utils.windowHistory().pushState currentState, null, "#{@defaultProps($target).paperPath}/tasks/#{cardId}"
 
   defaultProps: (element) ->
-    turbolinksState = window.history.state
+    turbolinksState = Tahi.utils.windowHistory().state
 
     paperTitle: element.data('paperTitle')
     paperPath: element.data('paperPath')
@@ -44,11 +44,11 @@ Tahi.overlay =
 
     if event?.type isnt "popstate"
       state = $.extend turbolinksState, hideOverlay: true
-      history.pushState state, null, turbolinksState.url
+      Tahi.utils.windowHistory().pushState state, null, turbolinksState.url
 
   popstateOverlay: (e) =>
     history = Tahi.utils.windowHistory()
-    if history.state?.cardName?
+    if Tahi.utils.windowHistory().state?.cardName?
       cardName = Tahi.utils.windowHistory().state.cardName
       cardId = Tahi.utils.windowHistory().state.cardId
       targetElement = $("[data-task-id=#{cardId}]").first()

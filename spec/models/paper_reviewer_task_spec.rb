@@ -101,7 +101,7 @@ describe PaperReviewerTask do
     end
 
     it "returns the current reviewer IDs" do
-      expect(task.reviewer_ids).to eq [reviewer1.id, reviewer2.id]
+      expect(task.reviewer_ids).to match_array [reviewer1.id, reviewer2.id]
     end
   end
 

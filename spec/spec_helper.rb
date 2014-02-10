@@ -15,8 +15,6 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
-Capybara.javascript_driver = :webkit
-
 RSpec.configure do |config|
   # ## Mock Framework
   #
@@ -66,7 +64,7 @@ RSpec.configure do |config|
   end
 
   config.after(:each, type: :feature) do
-    # wait for Turblinks to finish rendering the page
+    # wait for Turbolinks to finish rendering the page
     sleep 0.3
   end
 end

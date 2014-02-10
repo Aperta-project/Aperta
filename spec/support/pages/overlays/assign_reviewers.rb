@@ -4,9 +4,6 @@ class AssignReviewersOverlay < CardOverlay
   end
 
   def paper_reviewers
-    reviewer_ids = find('#task_paper_roles', visible: false).value
-    all('#task_paper_roles option', visible: false).select do |o|
-      reviewer_ids.include? o.value
-    end.map &:text
+    all('#task_paper_roles_chosen .search-choice').map &:text
   end
 end

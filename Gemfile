@@ -85,3 +85,5 @@ gem 'rails_admin'
 gem "chosen-rails", "~> 1.0.2"
 gem 'react-rails'
 gem 'spinjs-rails'
+
+gem 'jquery-historyjs'

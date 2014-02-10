@@ -70,10 +70,10 @@ Tahi.overlays.uploadManuscript =
 
       componentDidMount: (rootNode) ->
         uploader = $('.js-jquery-fileupload', rootNode).fileupload
-          done: ->
+          done: =>
             $('#task_checkbox_completed:not(:checked)').click()
             $('html').removeClass 'noscroll'
-            Turbolinks.visit(window.location)
+            Turbolinks.visit(@props.paperPath)
         uploader.on 'fileuploadadd',           @fileUploadAdd
         uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
         uploader.on 'fileuploadprogress',      @fileUploadProgress

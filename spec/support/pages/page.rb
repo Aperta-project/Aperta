@@ -34,6 +34,7 @@ class PageFragment
     if block_given?
       block.call overlay
       overlay.dismiss
+      wait_for_turbolinks
     else
       overlay
     end
@@ -58,6 +59,10 @@ class PageFragment
 
   def wait_for_pjax
     sleep 0.1
+  end
+
+  def wait_for_turbolinks
+    sleep 0.3
   end
 end
 
@@ -90,6 +95,7 @@ class Page < PageFragment
 
   def reload
     visit page.current_path
+    wait_for_turbolinks
   end
 
   def notice

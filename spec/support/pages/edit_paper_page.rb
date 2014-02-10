@@ -76,7 +76,8 @@ class EditPaperPage < Page
   end
 
   def save
-    click_on 'Save'
+    page.execute_script '$(".cke_button__tahisave_label").click()'
+    # click_on 'Save'
     self
   end
 

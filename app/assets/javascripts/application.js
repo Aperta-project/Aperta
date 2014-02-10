@@ -22,6 +22,7 @@
 //= require ./polyfills
 //= require react
 //= require spin
+//= require history
 //= require turbolinks
 //= require_tree .
 

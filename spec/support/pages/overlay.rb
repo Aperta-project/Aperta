@@ -1,4 +1,6 @@
-class CardOverlay < PageFragment
+class CardOverlay < Page
+  path :paper_task
+
   def dismiss
     all('a').detect { |a| a.text == 'CLOSE' }.click
   end

@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :verify_admin!, except: :update
+  before_action :verify_admin!, except: [:show, :update]
 
   def index
     @paper = Paper.find(params[:id])
@@ -27,6 +27,11 @@ class TasksController < ApplicationController
     task.role = 'admin'
     task.save
     head :no_content
+  end
+
+  def show
+    @task = Task.find(params[:id])
+    render layout: 'overlay'
   end
 
   private

@@ -130,4 +130,28 @@ describe TasksController do
       end
     end
   end
+
+  describe "GET 'show'" do
+    let!(:paper) { Paper.create! short_title: "abcd", journal: Journal.create! }
+    let(:task) { Task.where(title: "Assign Admin").first }
+
+    it_behaves_like "when the user is not signed in"
+
+    subject(:do_request) { get :show, { id: task.id, paper_id: paper.id } }
+
+    it "assigns the task from the given id" do
+      do_request
+      expect(assigns :task).to eq(task)
+    end
+
+    it "renders the show template" do
+      do_request
+      expect(response).to render_template(:show)
+    end
+
+    it "uses the overlay layout" do
+      do_request
+      expect(response).to render_template(layout: :overlay)
+    end
+  end
 end

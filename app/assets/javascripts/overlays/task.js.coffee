@@ -15,20 +15,7 @@ Tahi.overlays.task =
       render: ->
         {main, p, h1} = React.DOM
 
-        (Tahi.overlays.components.Overlay {
-            onOverlayClosed: @props.onOverlayClosed
-            paperTitle: @props.paperTitle
-            paperPath: @props.paperPath
-            closeCallback: Tahi.overlays.figure.hideOverlay
-            taskPath: @props.taskPath
-            taskCompleted: @props.taskCompleted
-            onOverlayClosed: @props.onOverlayClosed
-            onCompletedChanged: @props.onCompletedChanged
-            assigneeId: @props.assigneeId
-            assignees: @props.assignees
-            taskBody: @props.taskBody
-          },
+        (Tahi.overlays.components.Overlay @props.overlayProps,
           (main {}, [
             (h1 {}, @props.taskTitle),
-            (p {id: 'task-body'}, @props.taskBody)
-          ]))
+            (p {id: 'task-body'}, @props.taskBody)]))

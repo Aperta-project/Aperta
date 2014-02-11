@@ -40,9 +40,10 @@ describe "PaperEditor Card", ->
       beforeEach ->
         @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
         @component = Tahi.overlays.paperEditor.components.PaperEditorOverlay
-          paperTitle: 'Something'
-          paperPath: '/path/to/paper'
-          onOverlayClosed: @onOverlayClosedCallback
+          overlayProps:
+            paperTitle: 'Something'
+            paperPath: '/path/to/paper'
+            onOverlayClosed: @onOverlayClosedCallback
           editorId: 1
           editors: [[1, 'one'], [2, 'two'], [3, 'three']]
 

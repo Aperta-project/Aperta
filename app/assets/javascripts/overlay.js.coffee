@@ -17,23 +17,25 @@ Tahi.overlay =
 
     cardId = $target.data 'taskId'
     currentState = {cardName: cardName, cardId: cardId}
-    Tahi.utils.windowHistory().pushState currentState, null, "#{@defaultProps($target).paperPath}/tasks/#{cardId}"
+    Tahi.utils.windowHistory().pushState currentState, null, "#{@defaultProps($target).overlayProps.paperPath}/tasks/#{cardId}"
 
   defaultProps: (element) ->
     turbolinksState = Tahi.utils.windowHistory().state
 
-    paperTitle: element.data('paperTitle')
-    paperPath: element.data('paperPath')
-    taskPath: element.data('taskPath')
     taskTitle: element.data('taskTitle')
-    taskCompleted: element.hasClass('completed')
-    assignees: element.data('assignees')
-    assigneeId: element.data('assigneeId')
-    onOverlayClosed: (e) =>
-      @hide(e, turbolinksState)
+    overlayProps:
+      paperTitle: element.data('paperTitle')
+      paperPath: element.data('paperPath')
+      taskPath: element.data('taskPath')
+      taskTitle: element.data('taskTitle')
+      taskCompleted: element.hasClass('completed')
+      assignees: element.data('assignees')
+      assigneeId: element.data('assigneeId')
+      onOverlayClosed: (e) =>
+        @hide(e, turbolinksState)
 
-    onCompletedChanged: (event, data) ->
-      $("[data-card-name='#{element.data('cardName')}']").toggleClass 'completed', data.completed
+      onCompletedChanged: (event, data) ->
+        $("[data-card-name='#{element.data('cardName')}']").toggleClass 'completed', data.completed
 
   hide: (event, turbolinksState=null) ->
     event?.preventDefault()

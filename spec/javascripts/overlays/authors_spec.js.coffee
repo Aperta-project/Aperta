@@ -120,7 +120,8 @@ describe "Tahi.overlays.authors", ->
     describe "#updateAuthor", ->
       beforeEach ->
         @component = Tahi.overlays.authors.components.AuthorsOverlay
-          paperPath: '/path/to/paper'
+          overlayProps:
+            paperPath: '/path/to/paper'
         @component.state =
           authors: [
             { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },

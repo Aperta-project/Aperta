@@ -1,5 +1,3 @@
-###* @jsx React.DOM ###
-
 window.Tahi ||= {}
 
 Tahi.overlays ||= {}
@@ -22,48 +20,34 @@ Tahi.overlays.uploadManuscript =
         RailsForm = Tahi.overlays.components.RailsForm
         ProgressBar = Tahi.overlays.components.ProgressBar
 
-        {li, div} = React.DOM
+        {main, h1, h2, div, span, ul, li, input} = React.DOM
 
         progress = parseInt(@state.uploadProgress, 10)
         uploadManuscriptProgress = if !isNaN(progress)
           content = if progress == 100
             (div {className: 'processing'}, "Processing...")
           else
-            ProgressBar(progress: progress)
+            (ProgressBar {progress: progress})
 
           (li {}, [
             (div {className: 'preview-container glyphicon glyphicon-file'}),
-            content
-          ])
+            content])
 
-        checkboxFormAction = "#{this.props.taskPath}.json"
-        `<Overlay
-            paperTitle={this.props.paperTitle}
-            paperPath={this.props.paperPath}
-            taskPath={this.props.taskPath}
-            taskCompleted={this.props.taskCompleted}
-            onOverlayClosed={this.props.onOverlayClosed}
-            onCompletedChanged={this.props.onCompletedChanged}>
-          <main>
-            <h1>{this.props.tasktitle}</h1>
-            <h2>You may upload a manuscript at any time.</h2>
-            <div id="upload-file-wrapper">
-              <span className="secondary-button fileinput-button">
-                Select and upload document
-                <RailsForm action={this.props.uploadPaperPath}>
-                  <input id='upload_file'
-                         className="js-jquery-fileupload"
-                         name="upload_file"
-                         type="file" />
-                </RailsForm>
-              </span>
-            </div>
-            {this.state.error}
-            <ul id="paper-manuscript-upload">
-              {uploadManuscriptProgress}
-            </ul>
-          </main>
-        </Overlay>`
+        (Overlay @props.overlayProps,
+          (main {}, [
+            (h1 {}, @props.taskTitle),
+            (h2 {}, 'You may upload a manuscript at any time.'),
+            (div {id: 'upload-file-wrapper'},
+              (span {className: 'secondary-button fileinput-button'}, [
+                'Select and upload document',
+                (RailsForm {action: @props.uploadPaperPath},
+                  (input {
+                    id: 'upload_file',
+                    className: 'js-jquery-fileupload',
+                    name: 'upload_file',
+                    type: 'file'}))])),
+            (@state.error),
+            (ul {id: 'paper-manuscript-upload'}, uploadManuscriptProgress)]))
 
       componentDidUpdate: (prevProps, prevState, rootNode) ->
         new Spinner(top: '0', left: '-64px', color: '#39a329').spin $('.processing', rootNode)[0]
@@ -73,7 +57,7 @@ Tahi.overlays.uploadManuscript =
           done: =>
             $('#task_checkbox_completed:not(:checked)').click()
             $('html').removeClass 'noscroll'
-            Turbolinks.visit(@props.paperPath)
+            Turbolinks.visit(@props.overlayProps.paperPath)
         uploader.on 'fileuploadadd',           @fileUploadAdd
         uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
         uploader.on 'fileuploadprogress',      @fileUploadProgress

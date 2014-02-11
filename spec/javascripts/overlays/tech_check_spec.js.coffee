@@ -32,14 +32,12 @@ describe "Tech Check Card", ->
   describe "TechCheckOverlay component", ->
     describe "#render", ->
       beforeEach ->
-        @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
         @component = Tahi.overlays.techCheck.components.TechCheckOverlay
-          paperTitle: 'Something'
-          paperPath: '/path/to/paper'
-          onOverlayClosed: @onOverlayClosedCallback
+          overlayProps:
+            paperTitle: 'Something'
+            paperPath: '/path/to/paper'
 
       it "renders an Overlay component wrapping our content", ->
         overlay = @component.render()
         Overlay = Tahi.overlays.components.Overlay
         expect(overlay.constructor).toEqual Overlay.componentConstructor
-        expect(overlay.props.onOverlayClosed).toEqual @onOverlayClosedCallback

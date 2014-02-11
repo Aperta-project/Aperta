@@ -32,18 +32,16 @@ describe "Upload Manuscript Card", ->
   describe "UploadManuscriptOverlay component", ->
     describe "#render", ->
       beforeEach ->
-        @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
         @component = Tahi.overlays.uploadManuscript.components.UploadManuscriptOverlay
-          paperTitle: 'Something'
-          paperPath: '/path/to/paper'
-          onOverlayClosed: @onOverlayClosedCallback
+          overlayProps:
+            paperTitle: 'Something'
+            paperPath: '/path/to/paper'
         @component.state = uploadProgress: null
 
       it "renders an Overlay component wrapping our content", ->
         overlay = @component.render()
         Overlay = Tahi.overlays.components.Overlay
         expect(overlay.constructor).toEqual Overlay.componentConstructor
-        expect(overlay.props.onOverlayClosed).toEqual @onOverlayClosedCallback
 
     describe "#componentDidMount", ->
       beforeEach ->

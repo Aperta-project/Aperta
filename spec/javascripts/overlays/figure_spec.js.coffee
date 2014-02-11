@@ -41,13 +41,15 @@ describe "Tahi.overlays.figure", ->
         @onCompletedChangedCallback = jasmine.createSpy 'onCompletedChanged'
         @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
         @component = Tahi.overlays.figure.components.FigureOverlay
-          paperTitle: 'Something'
-          paperPath: '/path/to/paper'
+          overlayProps:
+            paperTitle: 'Something'
+            paperPath: '/path/to/paper'
+            taskPath: '/path/to/task'
+            taskCompleted: false
+            onOverlayClosed: @onOverlayClosedCallback
+            onCompletedChanged: @onCompletedChangedCallback
+
           figuresPath: '/path/to/figures'
-          taskPath: '/path/to/task'
-          taskCompleted: false
-          onOverlayClosed: @onOverlayClosedCallback
-          onCompletedChanged: @onCompletedChangedCallback
 
         @component.state =
           uploads: [

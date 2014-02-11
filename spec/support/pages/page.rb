@@ -88,8 +88,8 @@ class Page < PageFragment
     end
   end
 
-  def initialize
-    super
+  def initialize element = nil
+    super element
     expect(current_path).to match self.class._path_regex unless self.class._path_regex.nil?
   end
 

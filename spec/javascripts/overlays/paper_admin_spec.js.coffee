@@ -1,7 +1,7 @@
 beforeEach ->
   $('#jasmine_content').empty()
 
-describe "Assign Reviewers Card", ->
+describe "Assign Admins Card", ->
   beforeEach ->
     $('#jasmine_content').html """
       <a href="#"
@@ -40,9 +40,10 @@ describe "Assign Reviewers Card", ->
       beforeEach ->
         @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
         @component = Tahi.overlays.paperAdmin.components.PaperAdminOverlay
-          paperTitle: 'Something'
-          paperPath: '/path/to/paper'
-          onOverlayClosed: @onOverlayClosedCallback
+          overlayProps: 
+            paperTitle: 'Something'
+            paperPath: '/path/to/paper'
+            onOverlayClosed: @onOverlayClosedCallback
           adminId: 1
           admins: [[1, 'one'], [2, 'two'], [3, 'three']]
 

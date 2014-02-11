@@ -80,7 +80,7 @@ describe "Tahi.overlay", ->
       @event = jasmine.createSpyObj 'event', ['preventDefault']
       @event.target = document.getElementById('link1')
       @overlay = jasmine.createSpy 'someOverlay'
-      spyOn(Tahi.overlay, 'defaultProps').and.returnValue one: 1, two: 2, paperPath: 'path/to/paper'
+      spyOn(Tahi.overlay, 'defaultProps').and.returnValue one: 1, two: 2, overlayProps: { paperPath: 'path/to/paper' }
       spyOn(Tahi.overlay, 'renderCard')
 
     it "prevents event propagation", ->
@@ -170,7 +170,7 @@ describe "Tahi.overlay", ->
       @event.target = document.getElementById('link1')
 
     it "includes default properties pulled from the event target", ->
-      props = Tahi.overlay.defaultProps $(@event.target)
+      props = Tahi.overlay.defaultProps($(@event.target)).overlayProps
       expect(props.paperTitle).toEqual 'Something'
       expect(props.paperPath).toEqual '/path/to/paper'
       expect(props.taskPath).toEqual '/path/to/task'
@@ -179,7 +179,7 @@ describe "Tahi.overlay", ->
 
     describe "onCompletedChanged callback", ->
       beforeEach ->
-        @callback = Tahi.overlay.defaultProps($(@event.target)).onCompletedChanged
+        @callback = Tahi.overlay.defaultProps($(@event.target)).overlayProps.onCompletedChanged
 
       context "when data.completed is true", ->
         it "adds the 'completed' class to all links", ->
@@ -198,18 +198,18 @@ describe "Tahi.overlay", ->
     describe "onOverlayClosed callback", ->
       it "it calls Tahi.overlay.hide", ->
         spyOn(Tahi.overlay, 'hide')
-        Tahi.overlay.defaultProps($('#link1')).onOverlayClosed('foo')
+        Tahi.overlay.defaultProps($('#link1')).overlayProps.onOverlayClosed('foo')
         expect(Tahi.overlay.hide).toHaveBeenCalledWith('foo', window.history.state)
 
     describe "taskCompleted", ->
       context "when the event target does not have the completed class", ->
         it "returns taskCompleted: false", ->
           $('#link1, #link2').removeClass 'completed'
-          props = Tahi.overlay.defaultProps $(@event.target)
+          props = Tahi.overlay.defaultProps($(@event.target)).overlayProps
           expect(props.taskCompleted).toEqual false
 
       context "when the event target has the completed class", ->
         it "returns taskCompleted: true", ->
           $('#link1, #link2').addClass 'completed'
-          props = Tahi.overlay.defaultProps $(@event.target)
+          props = Tahi.overlay.defaultProps($(@event.target)).overlayProps
           expect(props.taskCompleted).toEqual true

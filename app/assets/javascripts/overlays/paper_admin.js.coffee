@@ -15,28 +15,22 @@ Tahi.overlays.paperAdmin =
     PaperAdminOverlay: React.createClass
       render: ->
         {main, h1, select, option, input, label} = React.DOM
+        Overlay = Tahi.overlays.components.Overlay
+        RailsForm = Tahi.overlays.components.RailsForm
+
         admins = [['', 'Please select admin']].concat @props.admins
 
-        (Tahi.overlays.components.Overlay {
-            onOverlayClosed: @props.onOverlayClosed
-            paperTitle: @props.paperTitle
-            paperPath: @props.paperPath
-            closeCallback: Tahi.overlays.figure.hideOverlay
-            taskPath: @props.taskPath
-            taskCompleted: @props.taskCompleted
-            onOverlayClosed: @props.onOverlayClosed
-            onCompletedChanged: @props.onCompletedChanged
-          },
+        (Overlay @props.overlayProps,
           (main {}, [
             (h1 {}, 'Assign Admin'),
-            (Tahi.overlays.components.RailsForm {action: @props.taskPath}, [
+            (RailsForm {action: @props.overlayProps.taskPath}, [
               (label {htmlFor: 'task_assignee_id'}, 'Assign admin to:'),
-              (select {id: 'task_assignee_id', name: 'task[assignee_id]', className: 'chosen-select', defaultValue: @props.adminId},
-                admins.map (admin) -> (option {value: admin[0]}, admin[1])
-              )
-            ])
-          ])
-        )
+              (select {
+                 id: 'task_assignee_id',
+                 name: 'task[assignee_id]',
+                 className: 'chosen-select',
+                 defaultValue: @props.adminId},
+                admins.map (admin) -> (option {value: admin[0]}, admin[1]))])]))
 
       componentDidMount: (rootNode) ->
         form = $('main form', rootNode)

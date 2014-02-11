@@ -97,7 +97,7 @@ Tahi.overlays.components.OverlayFooter = React.createClass
     AssigneeDropDown = Tahi.overlays.components.AssigneeDropDown
     CompletedCheckbox = Tahi.overlays.components.CompletedCheckbox
 
-    assigneeDropDown = if @props.assignees?
+    assigneeDropDown = if @props.assignees?.length > 0
       `<AssigneeDropDown action={this.props.assigneeFormAction} assigneeId={this.props.assigneeId} assignees={this.props.assignees} />`
 
     `<footer>

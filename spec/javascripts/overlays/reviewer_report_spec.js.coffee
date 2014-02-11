@@ -32,17 +32,14 @@ describe "Reviewer Report Card", ->
   describe "ReviewerReportOverlay component", ->
     describe "#render", ->
       beforeEach ->
-        @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
         @component = Tahi.overlays.reviewerReport.components.ReviewerReportOverlay
           paperTitle: 'Something'
           paperPath: '/path/to/paper'
-          onOverlayClosed: @onOverlayClosedCallback
 
       it "renders an Overlay component wrapping our content", ->
         overlay = @component.render()
         Overlay = Tahi.overlays.components.Overlay
         expect(overlay.constructor).toEqual Overlay.componentConstructor
-        expect(overlay.props.onOverlayClosed).toEqual @onOverlayClosedCallback
 
     describe "#componentDidMount", ->
       it "sets up submit on change for the form", ->

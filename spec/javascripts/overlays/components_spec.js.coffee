@@ -231,13 +231,22 @@ describe "Tahi overlay components", ->
         expect(assigneeDropDown.props.assigneeId).toEqual 1
         expect(assigneeDropDown.props.assignees).toEqual [[1, 'one']]
 
+      context "when assignees property is an empty array", ->
+        it "does not render the AssigneeDropDown", ->
+          component = Tahi.overlays.components.OverlayFooter
+            assigneeId: null
+            assignees: []
+
+          content = component.render().props.children[0].props.children[0].props.children
+          expect(content).toBeUndefined()
+
       context "when assignees property is undefined", ->
         it "does not render the AssigneeDropDown", ->
           component = Tahi.overlays.components.OverlayFooter
-            assigneeId: undefined
+            assigneeId: null
             assignees: undefined
 
-          content  = component.render().props.children[0].props.children[0].props.children
+          content = component.render().props.children[0].props.children[0].props.children
           expect(content).toBeUndefined()
 
   describe "RailsFormHiddenDiv", ->

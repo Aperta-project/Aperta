@@ -37,9 +37,10 @@ describe "Declarations Card", ->
       beforeEach ->
         @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
         @component = Tahi.overlays.declaration.components.DeclarationOverlay
-          paperTitle: 'Something'
-          paperPath: '/path/to/paper'
-          onOverlayClosed: @onOverlayClosedCallback
+          overlayProps:
+            paperTitle: 'Something'
+            paperPath: '/path/to/paper'
+            onOverlayClosed: @onOverlayClosedCallback
           declarations: []
 
       it "renders an Overlay component wrapping our content", ->

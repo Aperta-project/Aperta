@@ -38,11 +38,10 @@ describe "PaperReviewer Card", ->
   describe "PaperReviewerOverlay component", ->
     describe "#render", ->
       beforeEach ->
-        @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
         @component = Tahi.overlays.paperReviewer.components.PaperReviewerOverlay
-          paperTitle: 'Something'
-          paperPath: '/path/to/paper'
-          onOverlayClosed: @onOverlayClosedCallback
+          overlayProps:
+            paperTitle: 'Something'
+            paperPath: '/path/to/paper'
           reviewerIds: [1, 2]
           reviewers: [[1, 'one'], [2, 'two'], [3, 'three']]
 
@@ -50,7 +49,6 @@ describe "PaperReviewer Card", ->
         overlay = @component.render()
         Overlay = Tahi.overlays.components.Overlay
         expect(overlay.constructor).toEqual Overlay.componentConstructor
-        expect(overlay.props.onOverlayClosed).toEqual @onOverlayClosedCallback
 
     describe "#componentDidMount", ->
       it "sets up submit on change for the form", ->

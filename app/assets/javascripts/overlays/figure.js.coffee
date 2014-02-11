@@ -1,5 +1,3 @@
-###* @jsx React.DOM ###
-
 window.Tahi ||= {}
 
 Tahi.overlays ||= {}
@@ -16,12 +14,12 @@ Tahi.overlays.figure =
   components:
     FigureUpload: React.createClass
       render: ->
+        {div, li} = React.DOM
         ProgressBar = Tahi.overlays.components.ProgressBar
 
-        `<li>
-          <div className="preview-container" />
-          <ProgressBar progress={this.props.progress} />
-        </li>`
+        (li {}, [
+          (div {className: 'preview-container'}),
+          (ProgressBar {progress: @props.progress})])
 
       componentDidMount: (rootNode) ->
         previewContainer = $('.preview-container', rootNode)
@@ -40,48 +38,32 @@ Tahi.overlays.figure =
         $("[data-card-name='figure']").data('figures', @state.figures)
 
       render: ->
+        {main, h1, span, input, ul, li, img} = React.DOM
+
         Overlay = Tahi.overlays.components.Overlay
         RailsForm = Tahi.overlays.components.RailsForm
         FigureUpload = Tahi.overlays.figure.components.FigureUpload
 
         uploadLIs = @state.uploads.map (upload) ->
-          `<FigureUpload key={upload.filename} filename={upload.filename} progress={upload.progress} />`
+          (FigureUpload {key: upload.filename, filename: upload.filename, progress: upload.progress})
 
         figureLIs = @state.figures.map (figure, index) ->
-          `<li key={index}>
-            <img src={figure.src} alt={figure.alt} />
-          </li>`
+          (li {key: index}, (img {src: figure.src, alt: figure.alt}))
 
-        formAction = "#{this.props.figuresPath}.json"
-        checkboxFormAction = "#{this.props.taskPath}.json"
-        `<Overlay
-            paperTitle={this.props.paperTitle}
-            paperPath={this.props.paperPath}
-            closeCallback={Tahi.overlays.figure.hideOverlay}
-            taskPath={this.props.taskPath}
-            taskCompleted={this.props.taskCompleted}
-            onOverlayClosed={this.props.onOverlayClosed}
-            onCompletedChanged={this.props.onCompletedChanged}>
-          <main>
-            <h1>{this.props.tasktitle}</h1>
-            <span className="secondary-button fileinput-button">
-              Add new Figures
-              <RailsForm action={formAction} method="POST">
-                <input id='figure_attachment'
-                       className="js-jquery-fileupload"
-                       multiple="multiple"
-                       name="figure[attachment][]"
-                       type="file" />
-              </RailsForm>
-            </span>
-            <ul id="paper-figure-uploads">
-              {uploadLIs}
-            </ul>
-            <ul id="paper-figures">
-              {figureLIs}
-            </ul>
-          </main>
-        </Overlay>`
+        (Overlay @props.overlayProps,
+          (main {}, [
+            (h1 {}, @props.taskTitle),
+            (span {className: 'secondary-button fileinput-button'}, [
+              'Add new Figures',
+              (RailsForm {action: "#{@props.figuresPath}.json", method: 'POST'},
+                (input {
+                  id: 'figure_attachment',
+                  className: 'js-jquery-fileupload',
+                  multiple: 'multiple',
+                  name: 'figure[attachment][]',
+                  type: 'file'}))]),
+            (ul {id: 'paper-figure-uploads'}, uploadLIs),
+            (ul {id: 'paper-figures'}, figureLIs)]))
 
       componentDidMount: (rootNode) ->
         uploader = $('.js-jquery-fileupload', rootNode).fileupload()

@@ -29,7 +29,7 @@ Tahi.overlays.techCheck =
             assignees: @props.assignees
           },
           (main {}, [
-            (h1 {}, "Tech Check"),
+            (h1 {}, @props.taskTitle),
             (h3 {}, "Tech check steps"),
             (ul {style: {'list-style-type': 'decimal'}}, [
               (li {}, 'Review ethics statement'),

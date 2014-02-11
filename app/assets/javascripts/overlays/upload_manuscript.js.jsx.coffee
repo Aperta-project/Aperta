@@ -45,7 +45,7 @@ Tahi.overlays.uploadManuscript =
             onOverlayClosed={this.props.onOverlayClosed}
             onCompletedChanged={this.props.onCompletedChanged}>
           <main>
-            <h1>Upload Manuscript</h1>
+            <h1>{this.props.tasktitle}</h1>
             <h2>You may upload a manuscript at any time.</h2>
             <div id="upload-file-wrapper">
               <span className="secondary-button fileinput-button">

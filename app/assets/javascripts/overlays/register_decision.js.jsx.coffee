@@ -43,7 +43,7 @@ Tahi.overlays.registerDecision =
             onOverlayClosed={this.props.onOverlayClosed}
             onCompletedChanged={this.props.onCompletedChanged}>
           <main>
-            <h1>Register Decision</h1>
+            <h1>{this.props.tasktitle}</h1>
             <RailsForm action={this.props.taskPath}>
               <div className="decision-selections">
                 <div className="form-group">

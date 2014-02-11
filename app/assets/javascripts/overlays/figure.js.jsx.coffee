@@ -63,7 +63,7 @@ Tahi.overlays.figure =
             onOverlayClosed={this.props.onOverlayClosed}
             onCompletedChanged={this.props.onCompletedChanged}>
           <main>
-            <h1>Upload Figures</h1>
+            <h1>{this.props.tasktitle}</h1>
             <span className="secondary-button fileinput-button">
               Add new Figures
               <RailsForm action={formAction} method="POST">

@@ -28,7 +28,7 @@ Tahi.overlays.paperReviewer =
             assignees: @props.assignees
           },
           (main {}, [
-            (h1 {}, 'Assign Reviewers'),
+            (h1 {}, @props.taskTitle),
             (Tahi.overlays.components.RailsForm {action: @props.taskPath}, [
               (input {type: 'hidden', name: "task[paper_roles][]", value: null}),
               (label {htmlFor: 'task_paper_roles'}, 'Reviewers'),

@@ -30,7 +30,7 @@ Tahi.overlays.reviewerReport =
             assignees: @props.assignees
           },
           (main {className: 'reviewer-form'}, [
-            (h1 {}, "Reviewer Report"),
+            (h1 {}, @props.taskTitle),
             (section {}, [
               (h3 {}, "Do you have any potential or perceived competing interests that may influence your review?"),
               (p {className: 'clarification'}, "Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write:"),

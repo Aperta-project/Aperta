@@ -20,6 +20,7 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
 
   delegate :phases, to: :task_manager
+  delegate :tasks, to: :task_manager
 
   after_create :assign_user_to_author_tasks
 

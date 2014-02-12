@@ -4,6 +4,9 @@ class TaskManager < ActiveRecord::Base
 
   after_initialize :initialize_defaults
 
+  def tasks
+    phases.map(&:tasks).flatten
+  end
   private
 
   def initialize_defaults

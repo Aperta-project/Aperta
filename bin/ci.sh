@@ -5,7 +5,7 @@ ruby_version=$(cat .ruby-version)
 ruby_gemset=$(cat .ruby-gemset)
 rvm use "$ruby_version@$ruby_gemset" --create
 
-set -e
+set -ve
 
 cat <<EOF > config/database.yml
 test:

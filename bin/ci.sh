@@ -1,11 +1,13 @@
 #!/bin/bash
 
-set -ve
+set -e
 
 source "$HOME/.rvm/scripts/rvm"
 ruby_version=$(cat .ruby-version)
 ruby_gemset=$(cat .ruby-gemset)
 rvm use "$ruby_version@$ruby_gemset" --create
+
+set -v
 
 cat <<EOF > config/database.yml
 test:

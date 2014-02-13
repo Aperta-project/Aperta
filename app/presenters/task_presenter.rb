@@ -15,7 +15,7 @@ class TaskPresenter
       'paper-title' => task.paper.title,
       'paper-path' => paper_path(task.paper),
       'paper-id' => task.paper.to_param,
-      'task-path' => paper_task_path(task.paper, task), # TODO: remove me, use href
+      'task-path' => paper_task_path(task.paper, task),
       'task-title' => task.title,
       'task-body' => task.body,
       'card-name' => task.class.name.underscore.dasherize.gsub(/-task/, ''),

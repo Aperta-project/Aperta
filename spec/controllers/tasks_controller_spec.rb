@@ -135,9 +135,11 @@ describe TasksController do
     let!(:paper) { Paper.create! short_title: "abcd", journal: Journal.create! }
     let(:task) { Task.where(title: "Assign Admin").first }
 
+    let(:format) { nil }
+
     it_behaves_like "when the user is not signed in"
 
-    subject(:do_request) { get :show, { id: task.id, paper_id: paper.id } }
+    subject(:do_request) { get :show, { id: task.id, paper_id: paper.id, format: format } }
 
     it "assigns the task from the given id" do
       do_request
@@ -152,6 +154,16 @@ describe TasksController do
     it "uses the overlay layout" do
       do_request
       expect(response).to render_template(layout: :overlay)
+    end
+
+    context "json requests" do
+      let(:format) { :json }
+
+      it "renders task's data attributes in JSON" do
+        do_request
+        data_attributes = JSON.parse response.body
+        expect(data_attributes).to eq TaskPresenter.new(task).data_attributes
+      end
     end
   end
 end

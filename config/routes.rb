@@ -12,5 +12,7 @@ Tahi::Application.routes.draw do
     end
   end
 
+  resource :flow_manager, only: :show
+
   root 'dashboards#index'
 end

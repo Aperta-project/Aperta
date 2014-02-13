@@ -159,10 +159,16 @@ describe TasksController do
     context "json requests" do
       let(:format) { :json }
 
+      it "requests the proper task presenter" do
+        allow(TaskPresenter).to receive(:for).and_call_original
+        do_request
+        expect(TaskPresenter).to have_received(:for).with task
+      end
+
       it "renders task's data attributes in JSON" do
         do_request
         data_attributes = JSON.parse response.body
-        expect(data_attributes).to eq TaskPresenter.new(task).data_attributes
+        expect(data_attributes).to eq TaskPresenter.for(task).data_attributes
       end
     end
   end

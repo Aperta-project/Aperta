@@ -1,7 +1,20 @@
 require 'spec_helper'
 
+class FakeTaskPresenter
+  def initialize *args
+  end
+end
+
+class FakeTask
+end
+
 describe TaskPresenter do
   include Rails.application.routes.url_helpers
+
+  describe ".for" do
+    let(:task) { FakeTask.new }
+    specify { expect(TaskPresenter.for(task)).to be_a FakeTaskPresenter }
+  end
 
   describe "#data_attributes" do
     let :admin do

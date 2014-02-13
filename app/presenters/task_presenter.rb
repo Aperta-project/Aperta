@@ -25,7 +25,6 @@ class TaskPresenter
     }
   end
 
-  # TODO: test me
   def self.for(task)
     "#{task.class.name}Presenter".constantize.new(task)
   end

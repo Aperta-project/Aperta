@@ -3,99 +3,88 @@ window.Tahi ||= {}
 Tahi.overlays ||= {}
 
 Tahi.overlays.figure =
-  init: ->
-    Tahi.overlay.init 'figure'
+  FigureUpload: React.createClass
+    render: ->
+      {div, li} = React.DOM
+      ProgressBar = Tahi.overlays.components.ProgressBar
 
-  createComponent: (target, props) ->
-    props.figuresPath = target.data('figuresPath')
-    props.figures = target.data('figures')
-    Tahi.overlays.figure.components.FigureOverlay props
+      (li {}, [
+        (div {className: 'preview-container'}),
+        (ProgressBar {progress: @props.progress})])
 
-  components:
-    FigureUpload: React.createClass
-      render: ->
-        {div, li} = React.DOM
-        ProgressBar = Tahi.overlays.components.ProgressBar
+    componentDidMount: (rootNode) ->
+      previewContainer = $('.preview-container', rootNode)
+      previewContainer.append window.tempStorage[this.props.filename]
 
-        (li {}, [
-          (div {className: 'preview-container'}),
-          (ProgressBar {progress: @props.progress})])
+  Overlay: React.createClass
+    getInitialState: ->
+      uploads: []
+      figures: []
 
-      componentDidMount: (rootNode) ->
-        previewContainer = $('.preview-container', rootNode)
-        previewContainer.append window.tempStorage[this.props.filename]
+    componentWillMount: ->
+      @setState
+        figures: (@props.figures || [])
 
-    FigureOverlay: React.createClass
-      getInitialState: ->
-        uploads: []
-        figures: []
+    componentWillUnmount: ->
+      $("[data-card-name='figure']").data('figures', @state.figures)
 
-      componentWillMount: ->
-        @setState
-          figures: @props.figures
+    render: ->
+      {main, h1, span, input, ul, li, img} = React.DOM
 
-      componentWillUnmount: ->
-        $("[data-card-name='figure']").data('figures', @state.figures)
+      RailsForm = Tahi.overlays.components.RailsForm
+      FigureUpload = Tahi.overlays.figure.FigureUpload
 
-      render: ->
-        {main, h1, span, input, ul, li, img} = React.DOM
+      uploadLIs = @state.uploads.map (upload) ->
+        (FigureUpload {key: upload.filename, filename: upload.filename, progress: upload.progress})
 
-        Overlay = Tahi.overlays.components.Overlay
-        RailsForm = Tahi.overlays.components.RailsForm
-        FigureUpload = Tahi.overlays.figure.components.FigureUpload
+      figureLIs = @state.figures.map (figure, index) ->
+        (li {key: index}, (img {src: figure.src, alt: figure.alt}))
 
-        uploadLIs = @state.uploads.map (upload) ->
-          (FigureUpload {key: upload.filename, filename: upload.filename, progress: upload.progress})
+      (main {}, [
+        (h1 {}, @props.taskTitle),
+        (span {className: 'secondary-button fileinput-button'}, [
+          'Add new Figures',
+          (RailsForm {action: "#{@props.figuresPath}.json", method: 'POST'},
+            (input {
+              id: 'figure_attachment',
+              className: 'js-jquery-fileupload',
+              multiple: 'multiple',
+              name: 'figure[attachment][]',
+              type: 'file'}))]),
+        (ul {id: 'paper-figure-uploads'}, uploadLIs),
+        (ul {id: 'paper-figures'}, figureLIs)])
 
-        figureLIs = @state.figures.map (figure, index) ->
-          (li {key: index}, (img {src: figure.src, alt: figure.alt}))
+    componentDidMount: (rootNode) ->
+      uploader = $('.js-jquery-fileupload', rootNode).fileupload()
+      uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
+      uploader.on 'fileuploaddone',          @fileUploadDone
+      uploader.on 'fileuploadprogress',      @fileUploadProgress
 
-        (Overlay @props.overlayProps,
-          (main {}, [
-            (h1 {}, @props.taskTitle),
-            (span {className: 'secondary-button fileinput-button'}, [
-              'Add new Figures',
-              (RailsForm {action: "#{@props.figuresPath}.json", method: 'POST'},
-                (input {
-                  id: 'figure_attachment',
-                  className: 'js-jquery-fileupload',
-                  multiple: 'multiple',
-                  name: 'figure[attachment][]',
-                  type: 'file'}))]),
-            (ul {id: 'paper-figure-uploads'}, uploadLIs),
-            (ul {id: 'paper-figures'}, figureLIs)]))
+    fileUploadProcessAlways: (event, data) ->
+      uploads = @state.uploads
+      file = data.files[0]
+      window.tempStorage ||= {}
+      window.tempStorage[file.name] = file.preview
+      newUploads = uploads.concat [{filename: file.name, progress: 0}]
+      @setState uploads: newUploads
 
-      componentDidMount: (rootNode) ->
-        uploader = $('.js-jquery-fileupload', rootNode).fileupload()
-        uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
-        uploader.on 'fileuploaddone',          @fileUploadDone
-        uploader.on 'fileuploadprogress',      @fileUploadProgress
+    fileUploadDone: (event, data) ->
+      uploads = @state.uploads
+      file = data.files[0]
+      newUploads = uploads.filter (u) -> u.filename != file.name
 
-      fileUploadProcessAlways: (event, data) ->
-        uploads = @state.uploads
-        file = data.files[0]
-        window.tempStorage ||= {}
-        window.tempStorage[file.name] = file.preview
-        newUploads = uploads.concat [{filename: file.name, progress: 0}]
-        @setState uploads: newUploads
+      figures = @state.figures
+      newFigures = figures.concat [{src: data.result[0].src, alt: data.result[0].alt}]
 
-      fileUploadDone: (event, data) ->
-        uploads = @state.uploads
-        file = data.files[0]
-        newUploads = uploads.filter (u) -> u.filename != file.name
+      window.tempStorage ||= {}
+      delete window.tempStorage[file.name]
 
-        figures = @state.figures
-        newFigures = figures.concat [{src: data.result[0].src, alt: data.result[0].alt}]
+      @setState
+        uploads: newUploads
+        figures: newFigures
 
-        window.tempStorage ||= {}
-        delete window.tempStorage[file.name]
-
-        @setState
-          uploads: newUploads
-          figures: newFigures
-
-      fileUploadProgress: (event, data) ->
-        uploads = @state.uploads
-        currentUpload = uploads.filter((u) -> u.filename == data.files[0].name)[0]
-        currentUpload.progress = data.loaded / data.total * 100.0
-        @setState uploads: uploads
+    fileUploadProgress: (event, data) ->
+      uploads = @state.uploads
+      currentUpload = uploads.filter((u) -> u.filename == data.files[0].name)[0]
+      currentUpload.progress = data.loaded / data.total * 100.0
+      @setState uploads: uploads

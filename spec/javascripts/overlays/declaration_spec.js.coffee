@@ -1,122 +1,33 @@
-beforeEach ->
-  $('#jasmine_content').empty()
-
 describe "Declarations Card", ->
-  beforeEach ->
-    $('#jasmine_content').html """
-      <a href="#"
-         id="link1"
-         data-card-name="declaration"
-         data-declarations="[1, 2]">Foo</a>
-      <a href="#"
-         id="link2"
-         data-card-name="declaration"
-         data-declarations="[1, 2]">Bar</a>
-      <div id="overlay" style="display: none;"></div>
-    """
-
-  describe "#init", ->
-    it "calls Tahi.overlay.init", ->
-      spyOn Tahi.overlay, 'init'
-      Tahi.overlays.declaration.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'declaration'
-
-  describe "#createComponent", ->
-    it "instantiates a DeclarationOverlay component", ->
-      spyOn Tahi.overlays.declaration.components, 'DeclarationOverlay'
-      Tahi.overlays.declaration.createComponent $('#link1'), one: 1, two: 2
-      expect(Tahi.overlays.declaration.components.DeclarationOverlay).toHaveBeenCalledWith(
-        jasmine.objectContaining
-          one: 1
-          two: 2
-          declarations: [1, 2]
-      )
-
-  describe "DeclarationOverlay component", ->
-    describe "#render", ->
-      beforeEach ->
-        @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
-        @component = Tahi.overlays.declaration.components.DeclarationOverlay
-          overlayProps:
-            paperTitle: 'Something'
-            paperPath: '/path/to/paper'
-            onOverlayClosed: @onOverlayClosedCallback
-          declarations: []
-
-      it "renders an Overlay component wrapping our content", ->
-        overlay = @component.render()
-        Overlay = Tahi.overlays.components.Overlay
-        expect(overlay.constructor).toEqual Overlay.componentConstructor
-        expect(overlay.props.onOverlayClosed).toEqual @onOverlayClosedCallback
-
+  describe "Overlay component", ->
     describe "#componentDidMount", ->
       it "sets up submit on change for the form", ->
         spyOn Tahi, 'setupSubmitOnChange'
-        component = Tahi.overlays.declaration.components.DeclarationOverlay()
-        html = $('<div><main><form><textarea /></form></main></div>')[0]
+        component = Tahi.overlays.declaration.Overlay()
+        html = $('<main><form><textarea /></form></main>')[0]
         component.componentDidMount html
         args = Tahi.setupSubmitOnChange.calls.mostRecent().args
         expect(args[0][0]).toEqual $('form', html)[0]
         expect(args[1][0]).toEqual $('textarea', html)[0]
 
-    describe "#componentWillUnmount", ->
-      it "updates the declarations data attribute on all cards", ->
-        $('#jasmine_content').html """
-          <div id="one" data-card-name='declaration' data-declarations='[1, 2, 3]' />
-          <div id="two" data-card-name='declaration' data-declarations='[1, 2, 3]' />
-        """
+    describe "#componentWillReceiveProps", ->
+      it "sets state.declarations to props.declarations", ->
+        declarations = jasmine.createSpy 'props.declarations'
+        component = Tahi.overlays.declaration.Overlay declarations: declarations
+        spyOn component, 'setState'
+        component.componentWillReceiveProps({declarations: declarations})
+        expect(component.setState).toHaveBeenCalledWith declarations: declarations
 
-        component = Tahi.overlays.declaration.components.DeclarationOverlay
-          declarations: [
-            {
-              question: 'Question 1'
-              answer: 'Answer 1'
-              id: 43
-            },
-            {
-              question: 'Question 2'
-              answer: 'Answer 2'
-              id: 44
-            }
-          ]
-
-        component.refs =
-          declaration_question_0:
-            props:
-              children:
-                'Question 1'
-          declaration_question_1:
-            props:
-              children:
-                'Question 2'
-          declaration_answer_0:
-            getDOMNode: ->
-              value: 'Answer 1'
-          declaration_answer_1:
-            getDOMNode: ->
-              value: 'New answer'
-
-        component.componentWillUnmount()
-
-        expectedDeclarations = [
-          {
-            question: 'Question 1'
-            answer: 'Answer 1'
-            id: 43
-          },
-          {
-            question: 'Question 2'
-            answer: 'New answer'
-            id: 44
-          }
-        ]
-
-        expect($('#one').data('declarations')).toEqual expectedDeclarations
-        expect($('#two').data('declarations')).toEqual expectedDeclarations
+      context "when props.declarations is falsy", ->
+        it "sets state.declarations to the empty list", ->
+          component = Tahi.overlays.declaration.Overlay()
+          spyOn component, 'setState'
+          component.componentWillReceiveProps({declarations: null})
+          expect(component.setState).toHaveBeenCalledWith declarations: []
 
     describe "#declarations", ->
       beforeEach ->
-        @component = Tahi.overlays.declaration.components.DeclarationOverlay
+        @component = Tahi.overlays.declaration.Overlay
           declarations: [
             {
               question: 'Question 1'
@@ -128,6 +39,8 @@ describe "Declarations Card", ->
               answer: 'Answer 2'
             }
           ]
+        @component.state =
+          declarations: @component.props.declarations
 
       it "contains a div for each declaration", ->
         declarations = @component.declarations()

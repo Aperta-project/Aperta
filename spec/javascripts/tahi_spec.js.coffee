@@ -29,18 +29,8 @@ describe "tahi", ->
 
       beforeEach ->
         spyOn Tahi.papers, 'init'
-        spyOn Tahi.overlays.authors, 'init'
-        spyOn Tahi.overlays.figure, 'init'
+        spyOn Tahi.overlay, 'init'
         spyOn Tahi.overlays.newCard, 'init'
-        spyOn Tahi.overlays.declaration, 'init'
-        spyOn Tahi.overlays.uploadManuscript, 'init'
-        spyOn Tahi.overlays.techCheck, 'init'
-        spyOn Tahi.overlays.registerDecision, 'init'
-        spyOn Tahi.overlays.reviewerReport, 'init'
-        spyOn Tahi.overlays.paperEditor, 'init'
-        spyOn Tahi.overlays.paperReviewer, 'init'
-        spyOn Tahi.overlays.paperAdmin, 'init'
-        spyOn Tahi.overlays.task, 'init'
 
       it "configures submit on change for inputs in remote forms", ->
         spyOn Tahi, 'setupSubmitOnChange'
@@ -58,18 +48,8 @@ describe "tahi", ->
       it "invokes init on other modules and overlays", ->
         Tahi.init()
         expect(Tahi.papers.init).toHaveBeenCalled()
-        expect(Tahi.overlays.authors.init).toHaveBeenCalled()
-        expect(Tahi.overlays.figure.init).toHaveBeenCalled()
+        expect(Tahi.overlay.init).toHaveBeenCalled()
         expect(Tahi.overlays.newCard.init).toHaveBeenCalled()
-        expect(Tahi.overlays.declaration.init).toHaveBeenCalled()
-        expect(Tahi.overlays.uploadManuscript.init).toHaveBeenCalled()
-        expect(Tahi.overlays.techCheck.init).toHaveBeenCalled()
-        expect(Tahi.overlays.registerDecision.init).toHaveBeenCalled()
-        expect(Tahi.overlays.reviewerReport.init).toHaveBeenCalled()
-        expect(Tahi.overlays.paperEditor.init).toHaveBeenCalled()
-        expect(Tahi.overlays.paperReviewer.init).toHaveBeenCalled()
-        expect(Tahi.overlays.paperAdmin.init).toHaveBeenCalled()
-        expect(Tahi.overlays.task.init).toHaveBeenCalled()
 
   describe "#initChosen", ->
     it "calls chosen on elements with chosen-select class", ->

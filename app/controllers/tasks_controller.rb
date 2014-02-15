@@ -33,8 +33,12 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     respond_to do |f|
       f.json { render json: TaskPresenter.for(@task).data_attributes }
-      f.html { render layout: 'overlay' }
+      f.html { render layout: 'overlay', :content_type => 'application/json' }
     end
+  end
+
+  def new
+    render json: { one: 1, two: [1, 2] }
   end
 
   private

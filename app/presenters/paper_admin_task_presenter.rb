@@ -1,10 +1,10 @@
 class PaperAdminTaskPresenter < TaskPresenter
   def data_attributes
     attrs = super
-    attrs['admin-id'] = attrs['assignee-id']
+    attrs['adminId'] = attrs['assigneeId']
     attrs['admins'] = attrs['assignees']
-    attrs['assignee-id'] = nil
-    attrs['assignees'] = "[]"
+    attrs['assigneeId'] = nil
+    attrs['assignees'] = []
     attrs
   end
 end

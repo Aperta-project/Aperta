@@ -1,59 +1,49 @@
 describe "Tahi.overlay", ->
   beforeEach ->
     $('#jasmine_content').html """
-      <a href="#"
+      <a href="/path/to/task/1"
          id="link1"
-         data-paper-title="Something"
-         data-paper-path="/path/to/paper"
-         data-task-path="/path/to/task"
-         data-assignee-id="2"
-         data-assignees='[[1,"User 1"],[2,"User 2"]]'
-         data-card-name="some-card"
-         data-task-id="12"><span>Foo</span></a>
-      <a href="#"
+         data-card-name="some-card"><span>Foo</span></a>
+      <a href="/path/to/task/2"
          id="link2"
-         data-paper-title="Something"
-         data-paper-path="/path/to/paper"
-         data-assignee-id="2"
-         data-assignees='[[1,"User 1"],[2,"User 2"]]'
-         data-task-path="/path/to/task"
-         data-task-id="12"
-         data-card-name="some-card">Bar</a>
+         data-card-name="some-other-card">Bar</a>
       <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->
     it "binds click on all elements with data-card-name=some-card", ->
       spyOn Tahi.overlay, 'display'
-      Tahi.overlay.init 'some-card'
+      Tahi.overlay.init()
       $('#link1').click()
+      $('#link2').click()
 
       expect(Tahi.overlay.display).toHaveBeenCalledWith(
         jasmine.objectContaining(target: $('#link1')[0]),
         'some-card'
       )
 
-      Tahi.overlay.display.calls.reset()
-      $('#link2').click()
       expect(Tahi.overlay.display).toHaveBeenCalledWith(
         jasmine.objectContaining(target: $('#link2')[0]),
-        'some-card'
+        'some-other-card'
       )
 
   describe "#renderCard", ->
     beforeEach ->
-      spyOn(history, 'pushState')
       spyOn React, 'renderComponent'
       @event = jasmine.createSpyObj 'event', ['preventDefault']
       @event.target = document.getElementById('link1')
       @overlay = jasmine.createSpy 'someOverlay'
-      Tahi.overlays.someCard = jasmine.createSpyObj 'someCard overlay', ['createComponent']
-      Tahi.overlays.someCard.createComponent.and.returnValue @overlay
+      spyOn(Tahi.overlays.components, 'Overlay').and.returnValue @overlay
+      Tahi.overlays.someCard =
+        Overlay: jasmine.createSpy 'someCard overlay'
       spyOn(Tahi.overlay, 'defaultProps').and.returnValue one: 1, two: 2
 
-    it "creates a someCard component", ->
+    it "creates a Overlay component", ->
       Tahi.overlay.renderCard 'some-card', @event.target
-      expect(Tahi.overlays.someCard.createComponent).toHaveBeenCalledWith @event.target, one: 1, two: 2
+      expect(Tahi.overlays.components.Overlay).toHaveBeenCalledWith
+        one: 1
+        two: 2
+        componentToRender: Tahi.overlays.someCard.Overlay
 
     it "retrieves properties from the target", ->
       Tahi.overlay.renderCard 'some-card', @event.target
@@ -99,8 +89,8 @@ describe "Tahi.overlay", ->
       Tahi.overlay.display @event, 'some-card'
       state =
         cardName: 'some-card'
-        cardId: 12
-      expect(history.pushState).toHaveBeenCalledWith state, null, "path/to/paper/tasks/12"
+        taskHref: '/path/to/task/1'
+      expect(history.pushState).toHaveBeenCalledWith state, null, "/path/to/task/1"
 
   describe "#popstateOverlay", ->
     beforeEach ->
@@ -111,7 +101,7 @@ describe "Tahi.overlay", ->
     it "renders the component if the history state and cardName are present", ->
       @historyObj.state =
         cardName: 'Hello'
-        cardId: 12
+        taskHref: '/path/to/task/1'
 
       Tahi.overlay.popstateOverlay()
       expect(Tahi.overlay.renderCard).toHaveBeenCalled()
@@ -170,16 +160,12 @@ describe "Tahi.overlay", ->
       @event.target = document.getElementById('link1')
 
     it "includes default properties pulled from the event target", ->
-      props = Tahi.overlay.defaultProps($(@event.target)).overlayProps
-      expect(props.paperTitle).toEqual 'Something'
-      expect(props.paperPath).toEqual '/path/to/paper'
-      expect(props.taskPath).toEqual '/path/to/task'
-      expect(props.assignees).toEqual [[1, 'User 1'], [2, 'User 2']]
-      expect(props.assigneeId).toEqual 2
+      props = Tahi.overlay.defaultProps($(@event.target))
+      expect(props.taskPath).toEqual '/path/to/task/1'
 
     describe "onCompletedChanged callback", ->
       beforeEach ->
-        @callback = Tahi.overlay.defaultProps($(@event.target)).overlayProps.onCompletedChanged
+        @callback = Tahi.overlay.defaultProps($(@event.target)).onCompletedChanged
 
       context "when data.completed is true", ->
         it "adds the 'completed' class to all links", ->
@@ -198,18 +184,18 @@ describe "Tahi.overlay", ->
     describe "onOverlayClosed callback", ->
       it "it calls Tahi.overlay.hide", ->
         spyOn(Tahi.overlay, 'hide')
-        Tahi.overlay.defaultProps($('#link1')).overlayProps.onOverlayClosed('foo')
+        Tahi.overlay.defaultProps($('#link1')).onOverlayClosed('foo')
         expect(Tahi.overlay.hide).toHaveBeenCalledWith('foo', window.history.state)
 
     describe "taskCompleted", ->
       context "when the event target does not have the completed class", ->
         it "returns taskCompleted: false", ->
           $('#link1, #link2').removeClass 'completed'
-          props = Tahi.overlay.defaultProps($(@event.target)).overlayProps
+          props = Tahi.overlay.defaultProps($(@event.target))
           expect(props.taskCompleted).toEqual false
 
       context "when the event target has the completed class", ->
         it "returns taskCompleted: true", ->
           $('#link1, #link2').addClass 'completed'
-          props = Tahi.overlay.defaultProps($(@event.target)).overlayProps
+          props = Tahi.overlay.defaultProps($(@event.target))
           expect(props.taskCompleted).toEqual true

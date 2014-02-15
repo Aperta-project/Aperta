@@ -5,9 +5,13 @@ toCamel = (string) ->
     $1.toUpperCase().replace "-", ""
 
 Tahi.overlay =
-  init: (overlayName) ->
-    $("[data-card-name='#{overlayName}']").on 'click', (e) ->
-      Tahi.overlay.display e, overlayName
+  init: ->
+    $("[data-card-name]").each (_, el) ->
+      $el = $(el)
+      overlayName = $el.data('cardName')
+      $el.on 'click', (e) ->
+        e.preventDefault()
+        Tahi.overlay.display e, overlayName
 
   display: (event, cardName) ->
     event.preventDefault()
@@ -15,27 +19,20 @@ Tahi.overlay =
 
     @renderCard(cardName, $target)
 
-    cardId = $target.data 'taskId'
-    currentState = {cardName: cardName, cardId: cardId}
-    Tahi.utils.windowHistory().pushState currentState, null, "#{@defaultProps($target).overlayProps.paperPath}/tasks/#{cardId}"
+    taskHref = $target.attr('href')
+    currentState = {cardName: cardName, taskHref: taskHref}
+    Tahi.utils.windowHistory().pushState currentState, null, taskHref
 
   defaultProps: (element) ->
     turbolinksState = Tahi.utils.windowHistory().state
 
-    taskTitle: element.data('taskTitle')
-    overlayProps:
-      paperTitle: element.data('paperTitle')
-      paperPath: element.data('paperPath')
-      taskPath: element.data('taskPath')
-      taskTitle: element.data('taskTitle')
-      taskCompleted: element.hasClass('completed')
-      assignees: element.data('assignees')
-      assigneeId: element.data('assigneeId')
-      onOverlayClosed: (e) =>
-        @hide(e, turbolinksState)
+    taskPath: element.attr('href')
+    taskCompleted: element.hasClass('completed')
+    onOverlayClosed: (e) =>
+      @hide(e, turbolinksState)
 
-      onCompletedChanged: (event, data) ->
-        $("[data-card-name='#{element.data('cardName')}']").toggleClass 'completed', data.completed
+    onCompletedChanged: (event, data) ->
+      $("[data-card-name='#{element.data('cardName')}']").toggleClass 'completed', data.completed
 
   hide: (event, turbolinksState=null) ->
     event?.preventDefault()
@@ -52,15 +49,17 @@ Tahi.overlay =
     history = Tahi.utils.windowHistory()
     if Tahi.utils.windowHistory().state?.cardName?
       cardName = Tahi.utils.windowHistory().state.cardName
-      cardId = Tahi.utils.windowHistory().state.cardId
-      targetElement = $("[data-task-id=#{cardId}]").first()
+      taskHref = Tahi.utils.windowHistory().state.taskHref
+      targetElement = $("[href='#{taskHref}']").first()
       Tahi.overlay.renderCard(cardName, targetElement)
     else if history.state?.hideOverlay
       Tahi.overlay.hide(e)
 
   renderCard: (cardName, targetElement) ->
     cardName = toCamel cardName
-    component = Tahi.overlays[cardName].createComponent targetElement, Tahi.overlay.defaultProps(targetElement)
+    props = Tahi.overlay.defaultProps(targetElement)
+    props.componentToRender = Tahi.overlays[cardName].Overlay
+    component = Tahi.overlays.components.Overlay props
 
     React.renderComponent component, document.getElementById('overlay'), Tahi.initChosen
 

@@ -1,64 +1,38 @@
-beforeEach ->
-  $('#jasmine_content').empty()
+describe "PaperAdmin Card", ->
+  describe "Overlay", ->
+    describe "#admins", ->
+      context "when we have admins in props", ->
+        it "returns a list of admins including placeholder", ->
+          component = Tahi.overlays.paperAdmin.Overlay
+            admins: [[1, 'one']]
+          expect(component.admins()).toEqual [[null, 'Please select admin'], [1, 'one']]
 
-describe "Assign Admins Card", ->
-  beforeEach ->
-    $('#jasmine_content').html """
-      <a href="#"
-         id="link1"
-         data-admin-id="1"
-         data-admins='[[1, "one"], [2, "two"], [3, "three"]]'
-         data-card-name="paper-admin">Foo</a>
-      <a href="#"
-         id="link2"
-         data-admin-id="1"
-         data-admins='[[1, "one"], [2, "two"], [3, "three"]]'
-         data-card-name="paper-admin">Bar</a>
-      <div id="overlay" style="display: none;"></div>
-    """
-
-  describe "#init", ->
-    it "calls Tahi.overlay.init", ->
-      spyOn Tahi.overlay, 'init'
-      Tahi.overlays.paperAdmin.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'paper-admin'
-
-  describe "#createComponent", ->
-    it "instantiates a PaperAdminOverlay component", ->
-      spyOn Tahi.overlays.paperAdmin.components, 'PaperAdminOverlay'
-      Tahi.overlays.paperAdmin.createComponent $('#link1'), one: 1, two: 2
-      expect(Tahi.overlays.paperAdmin.components.PaperAdminOverlay).toHaveBeenCalledWith(
-        jasmine.objectContaining
-          one: 1
-          two: 2
-          adminId: 1
-          admins: [[1, 'one'], [2, 'two'], [3, 'three']]
-      )
-
-  describe "PaperAdminOverlay component", ->
-    describe "#render", ->
-      beforeEach ->
-        @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
-        @component = Tahi.overlays.paperAdmin.components.PaperAdminOverlay
-          overlayProps: 
-            paperTitle: 'Something'
-            paperPath: '/path/to/paper'
-            onOverlayClosed: @onOverlayClosedCallback
-          adminId: 1
-          admins: [[1, 'one'], [2, 'two'], [3, 'three']]
-
-      it "renders an Overlay component wrapping our content", ->
-        overlay = @component.render()
-        Overlay = Tahi.overlays.components.Overlay
-        expect(overlay.constructor).toEqual Overlay.componentConstructor
-        expect(overlay.props.onOverlayClosed).toEqual @onOverlayClosedCallback
+      context "when props admins is falsy", ->
+        it "returns an empty list", ->
+          component = Tahi.overlays.paperAdmin.Overlay
+            admins: undefined
+          expect(component.admins()).toEqual []
 
     describe "#componentDidMount", ->
       it "sets up submit on change for the form", ->
         spyOn Tahi, 'setupSubmitOnChange'
-        component = Tahi.overlays.paperAdmin.components.PaperAdminOverlay()
-        html = $('<div><main><form><select /></form></main></div>')[0]
+        component = Tahi.overlays.paperAdmin.Overlay()
+        html = $('<main><form><select /></form></main>')[0]
         component.componentDidMount html
         args = Tahi.setupSubmitOnChange.calls.mostRecent().args
         expect(args[0][0]).toEqual $('form', html)[0]
         expect(args[1][0]).toEqual $('select', html)[0]
+
+    describe "#componentDidUpdate", ->
+      it "forces chosen to update", (done) ->
+        selectDOMNode = $('<div>')
+        selectDOMNode.on 'chosen:updated', ->
+          done()
+
+        selectRef = jasmine.createSpyObj 'select', ['getDOMNode']
+        selectRef.getDOMNode.and.returnValue selectDOMNode[0]
+
+        component = Tahi.overlays.paperAdmin.Overlay()
+        component.refs = adminSelect: selectRef
+
+        component.componentDidUpdate()

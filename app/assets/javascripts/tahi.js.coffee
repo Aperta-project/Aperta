@@ -2,18 +2,8 @@ window.Tahi ||= {}
 
 Tahi.init = ->
   Tahi.papers.init()
-  Tahi.overlays.authors.init()
-  Tahi.overlays.figure.init()
+  Tahi.overlay.init()
   Tahi.overlays.newCard.init()
-  Tahi.overlays.declaration.init()
-  Tahi.overlays.registerDecision.init()
-  Tahi.overlays.uploadManuscript.init()
-  Tahi.overlays.techCheck.init()
-  Tahi.overlays.reviewerReport.init()
-  Tahi.overlays.paperEditor.init()
-  Tahi.overlays.paperReviewer.init()
-  Tahi.overlays.paperAdmin.init()
-  Tahi.overlays.task.init()
 
   for form in $("form.js-submit-on-change[data-remote='true']")
     @setupSubmitOnChange $(form), $('select, input[type="radio"], input[type="checkbox"], textarea', form)
@@ -31,3 +21,4 @@ Tahi.setupSubmitOnChange = (form, elements, options) ->
   form.on 'ajax:success', options?.success
   elements.on 'change', (e) ->
     form.trigger 'submit.rails'
+

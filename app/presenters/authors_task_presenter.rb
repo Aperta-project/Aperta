@@ -1,5 +1,5 @@
 class AuthorsTaskPresenter < TaskPresenter
   def data_attributes
-    super.merge 'authors' => task.authors.to_json
+    super.merge 'authors' => task.authors
   end
 end

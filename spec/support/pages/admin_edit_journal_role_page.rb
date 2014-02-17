@@ -1,4 +1,8 @@
 class AdminEditJournalRolePage < Page
+  def admin?
+    find('#journal_role_admin').checked?
+  end
+
   def editor?
     find('#journal_role_editor').checked?
   end

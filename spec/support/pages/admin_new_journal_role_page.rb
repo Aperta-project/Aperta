@@ -19,6 +19,10 @@ class AdminNewJournalRolePage < Page
     end
   end
 
+  def set_admin
+    check 'Admin'
+  end
+
   def set_editor
     check 'Editor'
   end

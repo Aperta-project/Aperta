@@ -31,9 +31,8 @@ feature "Tahi administration", js: true do
     SignInPage.visit.sign_in admin.email
   end
 
-  scenario "Admin can toggle the admin bit on other users" do
+  scenario "Admin can toggle the super admin bit on other users" do
     admin_page = DashboardPage.visit.visit_admin
-
     users_page = admin_page.navigate_to 'Users'
 
     edit_user_page = users_page.edit_user user.id
@@ -43,6 +42,26 @@ feature "Tahi administration", js: true do
 
     edit_user_page = users_page.edit_user user.id
     expect(edit_user_page).to be_admin
+  end
+
+  scenario "Admin can toggle the admin bit on other users" do
+    admin_page = DashboardPage.visit.visit_admin
+
+    roles_page = admin_page.navigate_to 'Journal roles'
+
+    new_roles_page = roles_page.add_role
+
+    new_roles_page.user = user.full_name
+    new_roles_page.journal = 'Journal 1'
+
+    new_roles_page.set_admin
+    roles_page = new_roles_page.save
+
+    edit_role_page = roles_page.edit_role user.full_name, 'Journal 1'
+    expect(edit_role_page).to be_admin
+    expect(edit_role_page).to_not be_editor
+    expect(edit_role_page).to_not be_reviewer
+    roles_page = edit_role_page.cancel
   end
 
   scenario "Admin can toggle editor and reviewer bits on other users" do
@@ -68,11 +87,14 @@ feature "Tahi administration", js: true do
     edit_role_page = roles_page.edit_role user.full_name, 'Journal 1'
     expect(edit_role_page).to be_editor
     expect(edit_role_page).to_not be_reviewer
+    expect(edit_role_page).to_not be_admin
+
     roles_page = edit_role_page.cancel
 
     edit_role_page = roles_page.edit_role user.full_name, 'Journal 2'
-    expect(edit_role_page).to_not be_editor
     expect(edit_role_page).to be_reviewer
+    expect(edit_role_page).to_not be_editor
+    expect(edit_role_page).to_not be_admin
   end
 
   scenario "Admin can upload a logo for the journal" do

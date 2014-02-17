@@ -4,6 +4,12 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.paperReviewer =
   Overlay: React.createClass
+    componentWillMount: ->
+      @setState @props
+
+    componentWillReceiveProps: (nextProps) ->
+      @setState nextProps
+
     render: ->
       {main, h1, select, option, input, label} = React.DOM
       RailsForm = Tahi.overlays.components.RailsForm
@@ -15,12 +21,16 @@ Tahi.overlays.paperReviewer =
           (label {htmlFor: 'task_paper_roles'}, 'Reviewers'),
           (Chosen {
              id: 'task_paper_roles',
-             multiple: true,
+             multiple: 'multiple',
              name: "task[paper_roles][]",
-             width: "200px",
-             defaultValue: @props.reviewerIds},
+             value: @state.reviewerIds,
+             onChange: @handleChange,
+             width: "200px"},
             (@props.reviewers || []).map (reviewer) ->
               (option {value: reviewer[0]}, reviewer[1]))])])
+
+    handleChange: (e) ->
+      @setState reviewerIds: $(e.target).val()
 
     submitFormsOnChange: (rootNode) ->
       form = $('form', rootNode)

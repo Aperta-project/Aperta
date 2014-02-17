@@ -9,7 +9,7 @@ Tahi.overlays.components ||= {}
 Tahi.overlays.components.Overlay = React.createClass
   getInitialState: ->
     {}
-    
+
   componentWillMount: ->
     @setState @props
 
@@ -28,7 +28,7 @@ Tahi.overlays.components.Overlay = React.createClass
         paperTitle={this.state.paperTitle}
         paperPath={this.state.paperPath}
         closeCallback={this.state.onOverlayClosed} />
-      {this.state.componentToRender(this.state)}
+      {this.props.componentToRender(this.state)}
       <OverlayFooter
         closeCallback={this.state.onOverlayClosed}
         assigneeFormAction={updateTaskPath}

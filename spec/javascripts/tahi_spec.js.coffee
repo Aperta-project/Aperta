@@ -51,12 +51,6 @@ describe "tahi", ->
         expect(Tahi.overlay.init).toHaveBeenCalled()
         expect(Tahi.overlays.newCard.init).toHaveBeenCalled()
 
-  describe "#initChosen", ->
-    it "calls chosen on elements with chosen-select class", ->
-      spyOn $.fn, "chosen"
-      Tahi.initChosen()
-      expect($.fn.chosen).toHaveBeenCalled()
-
   describe "#setupSubmitOnChange", ->
     beforeEach ->
       @form = $('<form>')

@@ -61,7 +61,7 @@ Tahi.overlay =
     props.componentToRender = Tahi.overlays[cardName].Overlay
     component = Tahi.overlays.components.Overlay props
 
-    React.renderComponent component, document.getElementById('overlay'), Tahi.initChosen
+    React.renderComponent component, document.getElementById('overlay')
 
     $('html').addClass 'noscroll'
     $('#overlay').show()

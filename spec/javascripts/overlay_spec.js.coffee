@@ -51,7 +51,7 @@ describe "Tahi.overlay", ->
 
     it "renders constructed component, mounting it on #overlay", ->
       Tahi.overlay.renderCard 'some-card', @event.target
-      expect(React.renderComponent).toHaveBeenCalledWith(@overlay, $('#overlay')[0], Tahi.initChosen)
+      expect(React.renderComponent).toHaveBeenCalledWith(@overlay, $('#overlay')[0])
 
     it "displays the overlay", ->
       Tahi.overlay.renderCard 'some-card', @event.target

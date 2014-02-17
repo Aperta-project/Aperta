@@ -13,12 +13,11 @@ Tahi.overlays.paperReviewer =
         (RailsForm {action: @props.taskPath}, [
           (input {type: 'hidden', name: "task[paper_roles][]", value: null}),
           (label {htmlFor: 'task_paper_roles'}, 'Reviewers'),
-          (select {
+          (Chosen {
              id: 'task_paper_roles',
-             ref: 'reviewerSelect',
-             multiple: 'multiple',
+             multiple: true,
              name: "task[paper_roles][]",
-             className: "chosen-select",
+             width: "200px",
              defaultValue: @props.reviewerIds},
             (@props.reviewers || []).map (reviewer) ->
               (option {value: reviewer[0]}, reviewer[1]))])])
@@ -31,6 +30,4 @@ Tahi.overlays.paperReviewer =
       @submitFormsOnChange(rootNode)
 
     componentDidUpdate: (prevProps, prevState, rootNode) ->
-      domNode = @refs.reviewerSelect.getDOMNode()
-      $(domNode).trigger('chosen:updated')
       @submitFormsOnChange(rootNode)

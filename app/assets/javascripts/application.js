@@ -21,6 +21,7 @@
 //= require chosen-jquery
 //= require ./polyfills
 //= require react
+//= require react-chosen
 //= require spin
 //= require turbolinks
 //= require_tree .

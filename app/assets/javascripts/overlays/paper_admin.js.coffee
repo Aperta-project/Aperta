@@ -18,19 +18,16 @@ Tahi.overlays.paperAdmin =
         (h1 {}, 'Assign Admin'),
         (RailsForm {action: @props.taskPath}, [
           (label {htmlFor: 'task_assignee_id'}, 'Assign admin to:'),
-          (select {
+          (Chosen {
              id: 'task_assignee_id',
              name: 'task[assignee_id]',
-             className: 'chosen-select',
              value: @state.adminId,
              onChange: @handleChange,
-             ref: 'adminSelect'},
+             width: '200px'},
             @admins().map (admin) ->
               (option {value: admin[0]}, admin[1]))])])
 
     handleChange: (e) ->
-      debugger
-      # $(@refs.adminSelect.getDOMNode()).closest('form').trigger 'submit:rails'
       @setState adminId: e.target.value
 
     admins: ->
@@ -42,6 +39,4 @@ Tahi.overlays.paperAdmin =
       Tahi.setupSubmitOnChange form, $('select', form)
 
     componentDidUpdate: (previousProps, previousState, rootNode) ->
-      domNode = @refs.adminSelect.getDOMNode()
-      $(domNode).trigger('chosen:updated')
       @submitFormsOnChange(rootNode)

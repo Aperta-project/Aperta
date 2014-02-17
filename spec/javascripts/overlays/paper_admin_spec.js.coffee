@@ -13,26 +13,12 @@ describe "PaperAdmin Card", ->
             admins: undefined
           expect(component.admins()).toEqual []
 
-    describe "#componentDidMount", ->
+    describe "#componentDidUpdate", ->
       it "sets up submit on change for the form", ->
         spyOn Tahi, 'setupSubmitOnChange'
         component = Tahi.overlays.paperAdmin.Overlay()
         html = $('<main><form><select /></form></main>')[0]
-        component.componentDidMount html
+        component.componentDidUpdate {}, {}, html
         args = Tahi.setupSubmitOnChange.calls.mostRecent().args
         expect(args[0][0]).toEqual $('form', html)[0]
         expect(args[1][0]).toEqual $('select', html)[0]
-
-    describe "#componentDidUpdate", ->
-      it "forces chosen to update", (done) ->
-        selectDOMNode = $('<div>')
-        selectDOMNode.on 'chosen:updated', ->
-          done()
-
-        selectRef = jasmine.createSpyObj 'select', ['getDOMNode']
-        selectRef.getDOMNode.and.returnValue selectDOMNode[0]
-
-        component = Tahi.overlays.paperAdmin.Overlay()
-        component.refs = adminSelect: selectRef
-
-        component.componentDidUpdate()

@@ -56,8 +56,8 @@ Tahi.overlay =
       Tahi.overlay.hide(e)
 
   renderCard: (cardName, targetElement) ->
-    cardName = toCamel cardName
     props = Tahi.overlay.defaultProps(targetElement)
+    cardName = toCamel cardName
     props.componentToRender = Tahi.overlays[cardName].Overlay
     component = Tahi.overlays.components.Overlay props
 

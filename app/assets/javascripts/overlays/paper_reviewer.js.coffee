@@ -15,6 +15,7 @@ Tahi.overlays.paperReviewer =
           (label {htmlFor: 'task_paper_roles'}, 'Reviewers'),
           (select {
              id: 'task_paper_roles',
+             ref: 'reviewerSelect',
              multiple: 'multiple',
              name: "task[paper_roles][]",
              className: "chosen-select",
@@ -30,4 +31,6 @@ Tahi.overlays.paperReviewer =
       @submitFormsOnChange(rootNode)
 
     componentDidUpdate: (prevProps, prevState, rootNode) ->
+      domNode = @refs.reviewerSelect.getDOMNode()
+      $(domNode).trigger('chosen:updated')
       @submitFormsOnChange(rootNode)

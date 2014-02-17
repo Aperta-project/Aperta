@@ -4,35 +4,34 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.paperAdmin =
   Overlay: React.createClass
+    componentWillMount: ->
+      @setState @props
+
     componentWillReceiveProps: (nextProps) ->
       @setState nextProps
-    
+
     render: ->
       {main, h1, select, option, input, label} = React.DOM
       RailsForm = Tahi.overlays.components.RailsForm
 
-      window.selects ||= []
-
-      mySelect = (select {
-             id: 'task_assignee_id',
-             name: 'task[assignee_id]',
-             className: 'chosen-select',
-             defaultValue: @props.adminId,
-             ref: 'adminSelect'},
-            @admins().map (admin) -> (option {value: admin[0]}, admin[1]))
-
-      window.selects.push mySelect
-
-      console.log "===> props admin Id", @props.adminId
-      console.log "===> state admin Id", @state?.adminId
-
-      console.log "===> rendering select"
       (main {}, [
         (h1 {}, 'Assign Admin'),
         (RailsForm {action: @props.taskPath}, [
           (label {htmlFor: 'task_assignee_id'}, 'Assign admin to:'),
-          mySelect
-          ])])
+          (select {
+             id: 'task_assignee_id',
+             name: 'task[assignee_id]',
+             className: 'chosen-select',
+             value: @state.adminId,
+             onChange: @handleChange,
+             ref: 'adminSelect'},
+            @admins().map (admin) ->
+              (option {value: admin[0]}, admin[1]))])])
+
+    handleChange: (e) ->
+      debugger
+      # $(@refs.adminSelect.getDOMNode()).closest('form').trigger 'submit:rails'
+      @setState adminId: e.target.value
 
     admins: ->
       return [] unless @props.admins
@@ -44,6 +43,5 @@ Tahi.overlays.paperAdmin =
 
     componentDidUpdate: (previousProps, previousState, rootNode) ->
       domNode = @refs.adminSelect.getDOMNode()
-      console.log "===> updating chosen"
       $(domNode).trigger('chosen:updated')
       @submitFormsOnChange(rootNode)

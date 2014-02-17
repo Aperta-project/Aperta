@@ -30,7 +30,7 @@
           :ruby
             haml_io << link_to('Add new card', '#',
               data: {
-                assignees: User.admins.map { |u| [u.id, u.full_name] }.to_json,
+                assignees: User.admins_for(@paper.journal).map { |u| [u.id, u.full_name] }.to_json,
                 url: paper_tasks_path(@paper, format: :json),
                 phase_id: phase.id,
                 paper_short_title: truncated_title(@paper)

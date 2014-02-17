@@ -31,6 +31,16 @@ describe User do
       end
     end
 
+    describe ".admins_for" do
+      it "includes admins for the given journal" do
+        journal = Journal.create!
+        JournalRole.create! journal: journal, user: user2, admin: true
+        editors = User.admins_for journal
+        expect(editors).to include user2
+        expect(editors).to_not include user1
+      end
+    end
+
     describe ".editors_for" do
       it "includes editors for the given journal" do
         journal = Journal.create!

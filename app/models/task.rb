@@ -7,6 +7,7 @@ class Task < ActiveRecord::Base
 
   delegate :paper, to: :phase
   delegate :task_manager, to: :phase
+  delegate :journal, to: :paper
 
   validates :title, :role, presence: true
 
@@ -24,7 +25,7 @@ class Task < ActiveRecord::Base
   end
 
   def assignees
-    User.admins
+    User.admins_for(journal)
   end
 
   protected

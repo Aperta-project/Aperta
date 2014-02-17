@@ -20,8 +20,7 @@ feature 'Add a new card', js: true do
       password: 'password',
       password_confirmation: 'password',
       affiliation: 'Universität Zürich',
-      admin: true,
-      journal_roles: [JournalRole.new(journal: journal, editor: true)]
+      journal_roles: [JournalRole.new(journal: journal, admin: true)]
   end
 
   before do

@@ -74,10 +74,27 @@ describe Task do
   end
 
   describe "#assignees" do
+    let(:paper) { Paper.create! short_title: 'Hello world', journal: Journal.create!(name: "Yeti show") }
+    let(:task) { Task.create! title: "Paper Admin",
+        role: 'admin',
+        phase: paper.task_manager.phases.first
+    }
+
+    let(:user) do
+      User.create! username: 'albert',
+        first_name: 'albert',
+        last_name: 'einstein',
+        email: 'einstein@example.org',
+        password: 'password',
+        password_confirmation: 'password',
+        affiliation: 'universität zürich'
+    end
+
+    let!(:journal_role) { JournalRole.create! user: user, journal: paper.journal, admin: true }
+
     it "returns all admins" do
-      admins = double(:admins)
-      expect(User).to receive(:admins).and_return admins
-      expect(Task.new.assignees).to eq admins
+      task.assignees
+      expect(task.assignees).to include user
     end
   end
 end

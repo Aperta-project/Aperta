@@ -27,7 +27,7 @@ class PaperReviewerTask < Task
   end
 
   def assignees
-    User.admins
+    User.editors_for(journal)
   end
 
   private

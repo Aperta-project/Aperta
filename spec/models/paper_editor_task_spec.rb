@@ -57,15 +57,4 @@ describe PaperEditorTask do
       expect(task.editors).to eq editors
     end
   end
-
-  describe "#assignees" do
-    let(:task) { PaperEditorTask.new phase: paper.task_manager.phases.first }
-    let(:paper) { Paper.create! short_title: 'hello', journal: Journal.create! }
-
-    it "returns admins for this paper's journal" do
-      admins = double(:admins)
-      expect(User).to receive(:admins).and_return admins
-      expect(task.assignees).to eq admins
-    end
-  end
 end

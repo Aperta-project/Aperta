@@ -120,10 +120,10 @@ describe PaperReviewerTask do
     let(:task) { PaperReviewerTask.new phase: paper.task_manager.phases.first }
     let(:paper) { Paper.create! short_title: 'hello', journal: Journal.create! }
 
-    it "returns admins for this paper's journal" do
-      admins = double(:admins)
-      expect(User).to receive(:admins).and_return admins
-      expect(task.assignees).to eq admins
+    it "returns editors for this paper's journal" do
+      editors = double(:editors)
+      expect(User).to receive(:editors_for).with(paper.journal).and_return editors
+      expect(task.assignees).to eq editors
     end
   end
 end

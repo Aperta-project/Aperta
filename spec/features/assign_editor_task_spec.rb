@@ -10,7 +10,8 @@ feature "Assigns Editor", js: true do
       password: 'password',
       password_confirmation: 'password',
       affiliation: 'PLOS',
-      admin: true
+      admin: true,
+      journal_roles: [JournalRole.new(journal: journal, admin: true)]
   end
 
   let(:journal) { Journal.create! }

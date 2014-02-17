@@ -19,8 +19,4 @@ class PaperEditorTask < Task
   def editors
     User.editors_for(paper.journal)
   end
-
-  def assignees
-    User.admins
-  end
 end

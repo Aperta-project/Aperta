@@ -1,48 +1,5 @@
-beforeEach ->
-  $('#jasmine_content').empty()
-
 describe "Upload Manuscript Card", ->
-  beforeEach ->
-    $('#jasmine_content').html """
-      <a href="#"
-         id="link1"
-         data-card-name="upload-manuscript">Foo</a>
-      <a href="#"
-         id="link2"
-         data-card-name="upload-manuscript">Bar</a>
-      <div id="overlay" style="display: none;"></div>
-    """
-
-  describe "#init", ->
-    it "calls Tahi.overlay.init", ->
-      spyOn Tahi.overlay, 'init'
-      Tahi.overlays.uploadManuscript.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'upload-manuscript'
-
-  describe "#createComponent", ->
-    it "instantiates a UploadManuscriptOverlay component", ->
-      spyOn Tahi.overlays.uploadManuscript.components, 'UploadManuscriptOverlay'
-      Tahi.overlays.uploadManuscript.createComponent $('#link1'), one: 1, two: 2
-      expect(Tahi.overlays.uploadManuscript.components.UploadManuscriptOverlay).toHaveBeenCalledWith(
-        jasmine.objectContaining
-          one: 1
-          two: 2
-      )
-
   describe "UploadManuscriptOverlay component", ->
-    describe "#render", ->
-      beforeEach ->
-        @component = Tahi.overlays.uploadManuscript.components.UploadManuscriptOverlay
-          overlayProps:
-            paperTitle: 'Something'
-            paperPath: '/path/to/paper'
-        @component.state = uploadProgress: null
-
-      it "renders an Overlay component wrapping our content", ->
-        overlay = @component.render()
-        Overlay = Tahi.overlays.components.Overlay
-        expect(overlay.constructor).toEqual Overlay.componentConstructor
-
     describe "#componentDidMount", ->
       beforeEach ->
         @fakeUploader = jasmine.createSpyObj 'uploader', ['on']
@@ -53,7 +10,7 @@ describe "Upload Manuscript Card", ->
             <input id='file-attachment' type='file' />
           </div>
         """)[0]
-        @component = Tahi.overlays.uploadManuscript.components.UploadManuscriptOverlay()
+        @component = Tahi.overlays.uploadManuscript.Overlay()
 
       it "initializes jQuery filepicker", ->
         @component.componentDidMount(@html)
@@ -75,7 +32,7 @@ describe "Upload Manuscript Card", ->
 
     describe "jQuery File Upload callbacks", ->
       beforeEach ->
-        @component = Tahi.overlays.uploadManuscript.components.UploadManuscriptOverlay()
+        @component = Tahi.overlays.uploadManuscript.Overlay()
         spyOn @component, 'setState'
 
         @event = jasmine.createSpyObj 'event', ['target', 'preventDefault']

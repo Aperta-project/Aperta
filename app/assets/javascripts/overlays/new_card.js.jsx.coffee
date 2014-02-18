@@ -21,7 +21,7 @@ Tahi.overlays.newCard =
     phaseId = $(e.target).data('phaseId')
     paperShortTitle = $(e.target).data('paperShortTitle')
     NewCardOverlay = Tahi.overlays.newCard.components.NewCardOverlay
-    React.renderComponent `<NewCardOverlay assignees={assignees} url={url} phaseId={phaseId} paperShortTitle={paperShortTitle} />`, document.getElementById('overlay'), Tahi.initChosen
+    React.renderComponent `<NewCardOverlay assignees={assignees} url={url} phaseId={phaseId} paperShortTitle={paperShortTitle} />`, document.getElementById('overlay')
     $('#overlay').show()
 
   components:
@@ -54,10 +54,10 @@ Tahi.overlays.newCard =
           </div>
           <div className="form-group">
             <label htmlFor="task_assignee_id">Assign this task to:</label>
-            <select className="chosen-select" id="task_assignee_id" ref="task_assignee_id">
+            <Chosen id="task_assignee_id" ref="task_assignee_id" width="200px">
               <option value="">Please select assignee</option>
               {options}
-            </select>
+            </Chosen>
           </div>
           <div className="form-group">
             <textarea id="task_body" placeholder="Provide some details here" ref="task_body"></textarea>

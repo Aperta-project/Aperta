@@ -2,71 +2,26 @@ beforeEach ->
   $('#jasmine_content').empty()
 
 describe "Tahi.overlays.authors", ->
-  beforeEach ->
-    $('#jasmine_content').html """
-      <a href="#"
-         id="link1"
-         data-card-name="authors"
-         data-authors="[1, 2, 3]">Foo</a>
-      <a href="#"
-         id="link2"
-         data-card-name="authors"
-         data-authors="[1, 2, 3]">Bar</a>
-      <div id="overlay" style="display: none;"></div>
-    """
-
-  describe "#init", ->
-    it "calls Tahi.overlay.init", ->
-      spyOn Tahi.overlay, 'init'
-      Tahi.overlays.authors.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'authors'
-
-  describe "#createComponent", ->
-    it "instantiates a AuthorsOverlay component", ->
-      spyOn Tahi.overlays.authors.components, 'AuthorsOverlay'
-      Tahi.overlays.authors.createComponent $('#link1'), one: 1, two: 2
-      expect(Tahi.overlays.authors.components.AuthorsOverlay).toHaveBeenCalledWith(
-        jasmine.objectContaining
-          one: 1
-          two: 2
-          authors: [1, 2, 3]
-      )
-
   describe "AuthorsOverlay component", ->
     describe "#getInitialState", ->
       it "returns an object with authors set to the empty array", ->
-        component = Tahi.overlays.authors.components.AuthorsOverlay()
+        component = Tahi.overlays.authors.Overlay()
         expect(component.getInitialState()).toEqual authors: []
 
-    describe "#componentWillUnmount", ->
-      it "sets the data attribute on authors card with the updated data", ->
-        $('#jasmine_content').html """
-          <div id="one" data-card-name='authors' data-authors='[1, 2, 3]' />
-          <div id="two" data-card-name='authors' data-authors='[1, 2, 3]' />
-        """
-        @component = Tahi.overlays.authors.components.AuthorsOverlay
-          authors:
-            [
-              { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
-              { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
-            ]
-        expectedAuthors = [
-          { first_name: "Albert", last_name: "Einstein", affiliation: "University of Copenhagen", email: "neils@example.org" },
-          { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
-        ]
-        @component.state = authors: expectedAuthors
-        @component.componentWillUnmount()
-
-        expect($('#one').data('authors')).toEqual expectedAuthors
-        expect($('#two').data('authors')).toEqual expectedAuthors
-
-    describe "#componentWillMount", ->
+    describe "#componentWillReceiveProps", ->
       it "sets state.authors to props.authors", ->
         authors = jasmine.createSpy 'props.authors'
-        component = Tahi.overlays.authors.components.AuthorsOverlay authors: authors
+        component = Tahi.overlays.authors.Overlay authors: authors
         spyOn component, 'setState'
-        component.componentWillMount()
+        component.componentWillReceiveProps({authors: authors})
         expect(component.setState).toHaveBeenCalledWith authors: authors
+
+      context "when props.authors is falsy", ->
+        it "sets state.authors to the empty list", ->
+          component = Tahi.overlays.authors.Overlay()
+          spyOn component, 'setState'
+          component.componentWillReceiveProps({authors: null})
+          expect(component.setState).toHaveBeenCalledWith authors: []
 
     describe "#render", ->
       beforeEach ->
@@ -74,27 +29,22 @@ describe "Tahi.overlays.authors", ->
             { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
             { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
           ]
-        @component = Tahi.overlays.authors.components.AuthorsOverlay()
+        @component = Tahi.overlays.authors.Overlay()
         @component.state =
           authors: @authors
 
-      it "renders an Overlay component wrapping our content", ->
-        overlay = @component.render()
-        Overlay = Tahi.overlays.components.Overlay
-        expect(overlay.constructor).toEqual Overlay.componentConstructor
-
       it "renders a 'Add new' button", ->
         overlay = @component.render()
-        button = overlay.props.children.props.children[1]
+        button = overlay.props.children[1]
         expect(button.props.children[1].trim()).toEqual "Add new"
         expect(button.props.onClick).toEqual @component.addNew
 
       it "renders an AuthorDetails component for every author", ->
         overlay = @component.render()
-        authorDetails1 = overlay.props.children.props.children[2].props.children[0]
-        authorDetails2 = overlay.props.children.props.children[2].props.children[1]
+        authorDetails1 = overlay.props.children[2].props.children[0]
+        authorDetails2 = overlay.props.children[2].props.children[1]
 
-        AuthorDetails = Tahi.overlays.authors.components.AuthorDetails
+        AuthorDetails = Tahi.overlays.authors.AuthorDetails
         expect(authorDetails1.constructor).toEqual AuthorDetails.componentConstructor
         expect(authorDetails1.props.author).toEqual @authors[0]
         expect(authorDetails2.constructor).toEqual AuthorDetails.componentConstructor
@@ -103,7 +53,7 @@ describe "Tahi.overlays.authors", ->
     describe "#addNew", ->
       beforeEach ->
         @authors = [one: 1, two: 2]
-        @component = Tahi.overlays.authors.components.AuthorsOverlay()
+        @component = Tahi.overlays.authors.Overlay()
         @component.state =
           authors: @authors
         spyOn @component, 'setState'
@@ -119,9 +69,8 @@ describe "Tahi.overlays.authors", ->
 
     describe "#updateAuthor", ->
       beforeEach ->
-        @component = Tahi.overlays.authors.components.AuthorsOverlay
-          overlayProps:
-            paperPath: '/path/to/paper'
+        @component = Tahi.overlays.authors.Overlay
+          paperPath: '/path/to/paper'
         @component.state =
           authors: [
             { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
@@ -162,7 +111,7 @@ describe "Tahi.overlays.authors", ->
     describe "#handleSubmit", ->
       beforeEach ->
         @handleSubmit = jasmine.createSpy 'handleSubmit'
-        @component = Tahi.overlays.authors.components.AuthorDetailsForm
+        @component = Tahi.overlays.authors.AuthorDetailsForm
           key: 134
           author: {}
           handleSubmit: @handleSubmit

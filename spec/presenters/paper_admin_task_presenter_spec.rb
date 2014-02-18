@@ -31,14 +31,14 @@ describe PaperAdminTaskPresenter do
 
     it_behaves_like "all tasks, which have common attributes" do
       let(:card_name) { 'paper-admin' }
-      let(:assignees) { '[]' }
+      let(:assignees) { [] }
       let(:assignee_id) { nil }
     end
 
     it "returns custom data for paper admin task" do
       expect(data_attributes).to include({
-        'admin-id' => task.assignee_id,
-        'admins'   => [[assignee.id, assignee.full_name]].to_json
+        'adminId' => task.assignee_id,
+        'admins'  => [[assignee.id, assignee.full_name]]
       })
     end
   end

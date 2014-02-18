@@ -1,60 +1,10 @@
-beforeEach ->
-  $('#jasmine_content').empty()
-
 describe "PaperReviewer Card", ->
-  beforeEach ->
-    $('#jasmine_content').html """
-      <a href="#"
-         id="link1"
-         data-reviewer-ids="[1,2]"
-         data-reviewers='[[1, "one"], [2, "two"], [3, "three"]]'
-         data-card-name="paper-reviewer">Foo</a>
-      <a href="#"
-         id="link2"
-         data-reviewer-ids="[1,2]"
-         data-reviewers='[[1, "one"], [2, "two"], [3, "three"]]'
-         data-card-name="paper-reviewer">Bar</a>
-      <div id="overlay" style="display: none;"></div>
-    """
-
-  describe "#init", ->
-    it "calls Tahi.overlay.init", ->
-      spyOn Tahi.overlay, 'init'
-      Tahi.overlays.paperReviewer.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'paper-reviewer'
-
-  describe "#createComponent", ->
-    it "instantiates a PaperReviewerOverlay component", ->
-      spyOn Tahi.overlays.paperReviewer.components, 'PaperReviewerOverlay'
-      Tahi.overlays.paperReviewer.createComponent $('#link1'), one: 1, two: 2
-      expect(Tahi.overlays.paperReviewer.components.PaperReviewerOverlay).toHaveBeenCalledWith(
-        jasmine.objectContaining
-          one: 1
-          two: 2
-          reviewerIds: [1, 2]
-          reviewers: [[1, 'one'], [2, 'two'], [3, 'three']]
-      )
-
-  describe "PaperReviewerOverlay component", ->
-    describe "#render", ->
-      beforeEach ->
-        @component = Tahi.overlays.paperReviewer.components.PaperReviewerOverlay
-          overlayProps:
-            paperTitle: 'Something'
-            paperPath: '/path/to/paper'
-          reviewerIds: [1, 2]
-          reviewers: [[1, 'one'], [2, 'two'], [3, 'three']]
-
-      it "renders an Overlay component wrapping our content", ->
-        overlay = @component.render()
-        Overlay = Tahi.overlays.components.Overlay
-        expect(overlay.constructor).toEqual Overlay.componentConstructor
-
+  describe "Overlay", ->
     describe "#componentDidMount", ->
       it "sets up submit on change for the form", ->
         spyOn Tahi, 'setupSubmitOnChange'
-        component = Tahi.overlays.paperReviewer.components.PaperReviewerOverlay()
-        html = $('<div><main><form><select /></form></main></div>')[0]
+        component = Tahi.overlays.paperReviewer.Overlay()
+        html = $('<main><form><select /></form></main>')[0]
         component.componentDidMount html
         args = Tahi.setupSubmitOnChange.calls.mostRecent().args
         expect(args[0][0]).toEqual $('form', html)[0]

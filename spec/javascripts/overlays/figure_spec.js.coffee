@@ -1,111 +1,5 @@
-beforeEach ->
-  $('jasmine_content').empty()
-
 describe "Tahi.overlays.figure", ->
-  beforeEach ->
-    $('#jasmine_content').html """
-      <a href="#"
-         id="link1"
-         data-card-name="figure"
-         data-figures-path="/path/to/figures"
-         data-figures="[1, 2, 3]">Foo</a>
-      <a href="#"
-         id="link2"
-         data-card-name="figure"
-         data-figures-path="/path/to/figures"
-         data-figures="[1, 2, 3]">Bar</a>
-      <div id="overlay" style="display: none;"></div>
-    """
-
-  describe "#init", ->
-    it "calls Tahi.overlay.init", ->
-      spyOn Tahi.overlay, 'init'
-      Tahi.overlays.figure.init()
-      expect(Tahi.overlay.init).toHaveBeenCalledWith 'figure'
-
-  describe "#createComponent", ->
-    it "instantiates a FigureOverlay component", ->
-      spyOn Tahi.overlays.figure.components, 'FigureOverlay'
-      Tahi.overlays.figure.createComponent $('#link1'), one: 1, two: 2
-      expect(Tahi.overlays.figure.components.FigureOverlay).toHaveBeenCalledWith(
-        jasmine.objectContaining
-          one: 1
-          two: 2
-          figuresPath: '/path/to/figures'
-          figures: [1, 2, 3]
-      )
-
   describe "FigureOverlay component", ->
-    describe "#render", ->
-      beforeEach ->
-        @onCompletedChangedCallback = jasmine.createSpy 'onCompletedChanged'
-        @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
-        @component = Tahi.overlays.figure.components.FigureOverlay
-          overlayProps:
-            paperTitle: 'Something'
-            paperPath: '/path/to/paper'
-            taskPath: '/path/to/task'
-            taskCompleted: false
-            onOverlayClosed: @onOverlayClosedCallback
-            onCompletedChanged: @onCompletedChangedCallback
-
-          figuresPath: '/path/to/figures'
-
-        @component.state =
-          uploads: [
-            {filename: 'in-progress.jpg', progress: 40},
-            {filename: 'real-yeti.jpg', progress: 33}
-          ]
-          figures: [
-            {
-              filename: 'file-a.jpg'
-              alt: 'File a'
-              id: '123'
-              src: '/path/to/file-a.jpg'
-            },
-            {
-              filename: 'file-b.jpg'
-              alt: 'File b'
-              id: '124'
-              src: '/path/to/file-b.jpg'
-            }
-          ]
-
-      it "renders an Overlay component wrapping our content", ->
-        overlay = @component.render()
-        Overlay = Tahi.overlays.components.Overlay
-        expect(overlay.constructor).toEqual Overlay.componentConstructor
-        expect(overlay.props.onOverlayClosed).toEqual @onOverlayClosedCallback
-
-      it "renders a Rails form for a new figure", ->
-        form = @component.render().props.children.props.children[1].props.children[1]
-        RailsForm = Tahi.overlays.components.RailsForm
-        expect(form.constructor).toEqual RailsForm.componentConstructor
-        expect(form.props.action).toEqual '/path/to/figures.json'
-        expect(form.props.children.props.name).toEqual 'figure[attachment][]'
-
-      it "renders a ul for upload progress", ->
-        paperFigureUploads = @component.render().props.children.props.children[2]
-        expect(paperFigureUploads.props.id).toEqual 'paper-figure-uploads'
-        expect(paperFigureUploads.props.children.length).toEqual 2
-        upload1 = paperFigureUploads.props.children[0]
-        upload2 = paperFigureUploads.props.children[1]
-
-        FigureUpload = Tahi.overlays.figure.components.FigureUpload
-        expect(upload1.constructor).toEqual FigureUpload.componentConstructor
-        expect(upload2.constructor).toEqual FigureUpload.componentConstructor
-
-      it "renders the existing figures", ->
-        paperFigures = @component.render().props.children.props.children[3]
-        expect(paperFigures.props.id).toEqual 'paper-figures'
-
-        expect(paperFigures.props.children.length).toEqual 2
-        imageTag1 = paperFigures.props.children[0].props.children
-        imageTag2 = paperFigures.props.children[1].props.children
-
-        expect(imageTag1.props.src).toEqual '/path/to/file-a.jpg'
-        expect(imageTag2.props.src).toEqual '/path/to/file-b.jpg'
-
     describe "#componentDidMount", ->
       beforeEach ->
         @fakeUploader = jasmine.createSpyObj 'uploader', ['on']
@@ -116,7 +10,7 @@ describe "Tahi.overlays.figure", ->
             <input id='file-attachment' type='file' />
           </div>
         """)[0]
-        @component = Tahi.overlays.figure.components.FigureOverlay()
+        @component = Tahi.overlays.figure.Overlay()
 
       it "initializes jQuery filepicker", ->
         @component.componentDidMount(@html)
@@ -138,7 +32,7 @@ describe "Tahi.overlays.figure", ->
 
     describe "jQuery File Upload callbacks", ->
       beforeEach ->
-        @component = Tahi.overlays.figure.components.FigureOverlay()
+        @component = Tahi.overlays.figure.Overlay()
         spyOn @component, 'setState'
 
         @event = jasmine.createSpyObj 'event', ['target']
@@ -219,7 +113,7 @@ describe "Tahi.overlays.figure", ->
         preview = $('<div id="preview" />')[0]
         window.tempStorage ||= {}
         window.tempStorage['foo.jpg'] = preview
-        component = Tahi.overlays.figure.components.FigureUpload
+        component = Tahi.overlays.figure.FigureUpload
           filename: 'foo.jpg'
           progress: 0
         component.componentDidMount(html)

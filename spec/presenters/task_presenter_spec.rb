@@ -41,5 +41,24 @@ describe TaskPresenter do
     it_behaves_like "all tasks, which have common attributes" do
       let(:card_name) { 'task' }
     end
+
+    context "when the paper title is missing" do
+      let :task do
+        paper = Paper.create! short_title: "Foo", journal: Journal.create!
+        Task.create! title: "Verify Signatures",
+          assignee: journal_admin,
+          completed: true,
+          body: 'Too many muscles!',
+          role: 'admin',
+          phase: paper.task_manager.phases.first
+      end
+
+      it "returns short_title instead of nil" do
+        expect(TaskPresenter.for(task).data_attributes).to include(
+          'paperTitle' => task.paper.short_title,
+        )
+
+      end
+    end
   end
 end

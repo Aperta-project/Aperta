@@ -1,23 +1,21 @@
 describe "Tahi overlay components", ->
   describe "Overlay", ->
-    describe "#render", ->
-      beforeEach ->
-        @onCompletedChangedCallback = jasmine.createSpy 'onCompletedChanged'
-        @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
-        @mainContent = React.DOM.main()
-        @component = Tahi.overlays.components.Overlay(
-          {
-            paperTitle: 'A working title'
-            paperPath: '/path/to/paper'
-            taskPath: '/path/to/task'
-            taskCompleted: false
-            onOverlayClosed: @onOverlayClosedCallback
-            onCompletedChanged: @onCompletedChangedCallback
-          },
-          @mainContent
-        )
+    beforeEach ->
+      @onCompletedChangedCallback = jasmine.createSpy 'onCompletedChanged'
+      @onOverlayClosedCallback = jasmine.createSpy 'onOverlayClosed'
+      @mainComponent = jasmine.createSpy 'fakeComponent'
+      @component = Tahi.overlays.components.Overlay
+        taskPath: '/path/to/task'
+        componentToRender: @mainComponent
+        onOverlayClosed: @onOverlayClosedCallback
+        onCompletedChanged: @onCompletedChangedCallback
 
+    describe "#render", ->
       it "renders an overlay header", ->
+        @component.state =
+          jQuery.extend @component.props,
+            paperTitle: "A working title",
+            paperPath: "/path/to/paper"
         header = @component.render().props.children[0]
         OverlayHeader = Tahi.overlays.components.OverlayHeader
         expect(header.constructor).toEqual OverlayHeader.componentConstructor
@@ -26,6 +24,11 @@ describe "Tahi overlay components", ->
         expect(header.props.closeCallback).toEqual @onOverlayClosedCallback
 
       it "renders an overlay footer, passing it an onCompletedChanged callback", ->
+        @component.state =
+          jQuery.extend @component.props,
+            paperPath: "/path/to/paper",
+            taskCompleted: false,
+
         footer = @component.render().props.children[2]
         OverlayFooter = Tahi.overlays.components.OverlayFooter
         expect(footer.constructor).toEqual OverlayFooter.componentConstructor
@@ -35,9 +38,30 @@ describe "Tahi overlay components", ->
         expect(footer.props.closeCallback).toEqual @onOverlayClosedCallback
 
       it "renders the main content between the header and footer", ->
+        main = React.DOM.main()
+        @mainComponent.and.returnValue main
+        @component.state =
+          jQuery.extend @component.props,
+            one: 1
+            two: 2
         mainContent = @component.render().props.children[1]
-        expect(mainContent).toEqual @mainContent
+        expect(@mainComponent).toHaveBeenCalledWith @component.state
+        expect(mainContent).toEqual main
 
+    describe "#componentDidMount", ->
+      it "sends an Ajax request to grab data attributes", ->
+        spyOn($, 'ajax')
+        @component.componentDidMount()
+        expect($.ajax).toHaveBeenCalledWith jasmine.objectContaining
+          url: '/path/to/task'
+          dataType: 'json'
+          success: @component.updateState
+
+    describe "#updateState", ->
+      it "sets data as the state of the component", ->
+        spyOn @component, 'setState'
+        @component.updateState {one: 1, two: 2}
+        expect(@component.setState).toHaveBeenCalledWith one: 1, two: 2
 
   describe "RailsForm", ->
     describe "#render", ->

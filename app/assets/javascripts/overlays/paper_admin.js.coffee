@@ -3,35 +3,40 @@ window.Tahi ||= {}
 Tahi.overlays ||= {}
 
 Tahi.overlays.paperAdmin =
-  init: ->
-    Tahi.overlay.init 'paper-admin'
+  Overlay: React.createClass
+    componentWillMount: ->
+      @setState @props
 
-  createComponent: (target, props) ->
-    props.adminId = target.data('adminId')
-    props.admins = target.data('admins')
-    Tahi.overlays.paperAdmin.components.PaperAdminOverlay props
+    componentWillReceiveProps: (nextProps) ->
+      @setState nextProps
 
-  components:
-    PaperAdminOverlay: React.createClass
-      render: ->
-        {main, h1, select, option, input, label} = React.DOM
-        Overlay = Tahi.overlays.components.Overlay
-        RailsForm = Tahi.overlays.components.RailsForm
+    render: ->
+      {main, h1, select, option, input, label} = React.DOM
+      RailsForm = Tahi.overlays.components.RailsForm
 
-        admins = [['', 'Please select admin']].concat @props.admins
+      (main {}, [
+        (h1 {}, 'Assign Admin'),
+        (RailsForm {action: @props.taskPath}, [
+          (label {htmlFor: 'task_assignee_id'}, 'Assign admin to:'),
+          (Chosen {
+             id: 'task_assignee_id',
+             name: 'task[assignee_id]',
+             value: @state.adminId,
+             onChange: @handleChange,
+             width: '200px'},
+            @admins().map (admin) ->
+              (option {value: admin[0]}, admin[1]))])])
 
-        (Overlay @props.overlayProps,
-          (main {}, [
-            (h1 {}, 'Assign Admin'),
-            (RailsForm {action: @props.overlayProps.taskPath}, [
-              (label {htmlFor: 'task_assignee_id'}, 'Assign admin to:'),
-              (select {
-                 id: 'task_assignee_id',
-                 name: 'task[assignee_id]',
-                 className: 'chosen-select',
-                 defaultValue: @props.adminId},
-                admins.map (admin) -> (option {value: admin[0]}, admin[1]))])]))
+    handleChange: (e) ->
+      @setState adminId: e.target.value
 
-      componentDidMount: (rootNode) ->
-        form = $('main form', rootNode)
-        Tahi.setupSubmitOnChange form, $('select', form)
+    admins: ->
+      return [] unless @props.admins
+      [[null, 'Please select admin']].concat @props.admins
+
+    submitFormsOnChange: (rootNode) ->
+      form = $('form', rootNode)
+      Tahi.setupSubmitOnChange form, $('select', form)
+
+    componentDidUpdate: (previousProps, previousState, rootNode) ->
+      @submitFormsOnChange(rootNode)

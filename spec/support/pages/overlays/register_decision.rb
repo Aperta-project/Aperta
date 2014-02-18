@@ -14,6 +14,6 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def accepted?
-    find('input[type="radio"][checked]')[:value] == 'Accepted'
+    find('input[type="radio"]:checked')[:value] == 'Accepted'
   end
 end

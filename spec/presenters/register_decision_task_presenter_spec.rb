@@ -33,16 +33,16 @@ describe RegisterDecisionTaskPresenter do
     it_behaves_like "all tasks, which have common attributes" do
       let(:card_name) { 'register-decision' }
       let(:assignee_id) { task.assignee_id }
-      let(:assignees) { [[assignee.id, 'Busy Bee']].to_json }
+      let(:assignees) { [[assignee.id, 'Busy Bee']] }
     end
 
     it "includes custom figure data" do
       expect(data_attributes).to include(
-        'decision-letters' => {"Accepted" => task.accept_letter,
+        'decisionLetters' => {"Accepted" => task.accept_letter,
                                "Rejected" => task.reject_letter,
-                               "Revise"   => task.revise_letter}.to_json,
+                               "Revise"   => task.revise_letter},
         'decision' => task.paper.decision,
-        'decision-letter' => task.paper.decision_letter
+        'decisionLetter' => task.paper.decision_letter
       )
     end
   end

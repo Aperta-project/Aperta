@@ -23,12 +23,12 @@ describe UploadManuscriptTaskPresenter do
       end
 
       let(:card_name) { 'upload-manuscript' }
-      let(:assignees) { '[]' }
+      let(:assignees) { [] }
     end
 
     specify do
       expect(data_attributes).to include(
-        'upload-paper-path' => upload_paper_path(task.paper, format: :json)
+        'uploadPaperPath' => upload_paper_path(task.paper, format: :json)
       )
     end
   end

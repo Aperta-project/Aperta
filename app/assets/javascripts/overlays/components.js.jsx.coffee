@@ -7,25 +7,36 @@ Tahi.overlays ||= {}
 Tahi.overlays.components ||= {}
 
 Tahi.overlays.components.Overlay = React.createClass
+  getInitialState: ->
+    {}
+
+  componentWillMount: ->
+    @setState @props
+
+  componentDidMount: ->
+    $.get @props.taskPath, @updateState, 'json'
+
+  updateState: (data) ->
+    @setState data
+
   render: ->
     OverlayHeader = Tahi.overlays.components.OverlayHeader
     OverlayFooter = Tahi.overlays.components.OverlayFooter
-
-    updateTaskPath = "#{this.props.taskPath}.json"
+    updateTaskPath = "#{this.state.taskPath}.json"
     `<div>
       <OverlayHeader
-        paperTitle={this.props.paperTitle}
-        paperPath={this.props.paperPath}
-        closeCallback={this.props.onOverlayClosed} />
-      {this.props.children}
+        paperTitle={this.state.paperTitle}
+        paperPath={this.state.paperPath}
+        closeCallback={this.state.onOverlayClosed} />
+      {this.props.componentToRender(this.state)}
       <OverlayFooter
-        closeCallback={this.props.onOverlayClosed}
+        closeCallback={this.state.onOverlayClosed}
         assigneeFormAction={updateTaskPath}
         checkboxFormAction={updateTaskPath}
-        taskCompleted={this.props.taskCompleted}
-        onCompletedChanged={this.props.onCompletedChanged}
-        assigneeId={this.props.assigneeId}
-        assignees={this.props.assignees} />
+        taskCompleted={this.state.taskCompleted}
+        onCompletedChanged={this.state.onCompletedChanged}
+        assigneeId={this.state.assigneeId}
+        assignees={this.state.assignees} />
     </div>`
 
 Tahi.overlays.components.RailsForm = React.createClass
@@ -51,6 +62,9 @@ Tahi.overlays.components.CompletedCheckbox = React.createClass
         </div>
       </RailsForm>`
 
+  componentDidUpdate: (prevProps, prevState, rootNode) ->
+    Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode), success: @props.onSuccess
+
   componentDidMount: (rootNode) ->
     Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode), success: @props.onSuccess
 
@@ -61,10 +75,17 @@ Tahi.overlays.components.AssigneeDropDown = React.createClass
     assignees = [[null, 'Please select assignee']].concat @props.assignees
     (Tahi.overlays.components.RailsForm {action: @props.action}, [
       (label {htmlFor: "task_assignee_id"}, 'This card is owned by'),
-      (select {className: 'chosen-select', id: "task_assignee_id", name: "task[assignee_id]", defaultValue: @props.assigneeId},
+      (Chosen {
+        id: "task_assignee_id"
+        name: "task[assignee_id]"
+        width: "200px"
+        defaultValue: @props.assigneeId },
         assignees.map (assignee) -> (option {value: assignee[0]}, assignee[1])
       )
     ])
+
+  componentDidUpdate: (prevProps, prevState, rootNode) ->
+    Tahi.setupSubmitOnChange $(rootNode), $('select', rootNode)
 
   componentDidMount: (rootNode) ->
     Tahi.setupSubmitOnChange $(rootNode), $('select', rootNode)

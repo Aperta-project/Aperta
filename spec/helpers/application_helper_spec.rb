@@ -45,11 +45,9 @@ describe ApplicationHelper do
     specify { expect(link['class']).to include 'card' }
     specify { expect(link['class']).to_not include 'completed' }
 
-    it "uses presenter to obtain data attributes" do
-      fake_presenter = double(:presenter, data_attributes: { one: 1, two: 2 })
-      expect(TaskPresenter).to receive(:for).with(task).and_return fake_presenter
-      expect(link['data-one']).to eq "1"
-      expect(link['data-two']).to eq "2"
+    it "includes data necessary to render a card" do
+      expect(link['data-task-path']).to eq paper_task_path(task.paper, task)
+      expect(link['data-card-name']).to eq 'task'
     end
 
     it "contains a glyphicon span" do

@@ -27,12 +27,15 @@ describe DeclarationTaskPresenter do
       end
 
       let(:card_name) { 'declaration' }
-      let(:assignees) { '[]' }
+      let(:assignees) { [] }
     end
 
     it "includes custom figure data" do
       expect(data_attributes).to include(
-        'declarations' => '[{"question":"Q1","answer":"A1","id":1},{"question":"Q2","answer":"A2","id":2}]',
+        'declarations' => [
+          { question: "Q1", answer: "A1", id: 1 },
+          { question: "Q2", answer: "A2", id: 2 }
+        ]
       )
     end
   end

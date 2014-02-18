@@ -41,13 +41,13 @@ describe PaperReviewerTaskPresenter do
     it_behaves_like "all tasks, which have common attributes" do
       let(:card_name) { 'paper-reviewer' }
       let(:assignee_id) { assignee.id }
-      let(:assignees) { [[assignee.id, assignee.full_name]].to_json }
+      let(:assignees) { [[assignee.id, assignee.full_name]] }
     end
 
     it "returns custom data for paper reviewer task" do
       expect(data_attributes).to include({
-        'reviewer-ids' => [reviewer.id].to_json,
-        'reviewers'   => [[reviewer.id, reviewer.full_name]].to_json,
+        'reviewerIds' => [reviewer.id],
+        'reviewers'   => [[reviewer.id, reviewer.full_name]],
         'refresh-on-close' => true
       })
     end

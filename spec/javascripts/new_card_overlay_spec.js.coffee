@@ -47,7 +47,7 @@ describe "New Card Overlay", ->
     it "renders NewCardOverlay component inserting it into #overlay", ->
       Tahi.overlays.newCard.displayNewCardOverlay(@event)
       newCardOverlay = Tahi.overlays.newCard.components.NewCardOverlay({url: '/some/path', phaseId: 11, assignees: [1, 2, 3], paperShortTitle: 'Something'})
-      expect(React.renderComponent).toHaveBeenCalledWith(newCardOverlay, $('#overlay')[0], Tahi.initChosen)
+      expect(React.renderComponent).toHaveBeenCalledWith(newCardOverlay, $('#overlay')[0])
 
     it "displays the overlay", ->
       Tahi.overlays.newCard.displayNewCardOverlay(@event)

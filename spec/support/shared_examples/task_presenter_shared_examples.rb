@@ -1,21 +1,19 @@
 shared_examples_for "all tasks, which have common attributes" do
   let(:assignee_id) { task.assignee_id }
-  let(:assignees) do
-    task.assignees.map { |u| [u.id, u.full_name] }.to_json
-  end
+  let(:assignees) { User.admins_for(task.paper.journal).map { |u| [u.id, u.full_name] } }
 
   it "returns a hash of data used to render an overlay" do
     expect(TaskPresenter.for(task).data_attributes).to include(
-      'paper-title' => task.paper.title,
-      'paper-path' => paper_path(task.paper),
-      'paper-id' => task.paper.to_param,
-      'task-path' => paper_task_path(task.paper, task),
-      'task-title' => task.title,
-      'task-body' => task.body,
-      'card-name' => card_name,
-      'assignee-id' => assignee_id,
+      'paperTitle' => task.paper.title,
+      'paperPath' => paper_path(task.paper),
+      'paperId' => task.paper.to_param,
+      'taskPath' => paper_task_path(task.paper, task),
+      'taskTitle' => task.title,
+      'taskBody' => task.body,
+      'cardName' => card_name,
+      'assigneeId' => assignee_id,
       'assignees' => assignees,
-      'task-id' => task.id
+      'taskId' => task.id
     )
   end
 end

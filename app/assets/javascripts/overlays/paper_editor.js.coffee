@@ -3,36 +3,44 @@ window.Tahi ||= {}
 Tahi.overlays ||= {}
 
 Tahi.overlays.paperEditor =
-  init: ->
-    Tahi.overlay.init 'paper-editor'
+  Overlay: React.createClass
+    componentWillMount: ->
+      @setState @props
 
-  createComponent: (target, props) ->
-    props.editorId = target.data('editorId')
-    props.editors = target.data('editors')
-    Tahi.overlays.paperEditor.components.PaperEditorOverlay props
+    componentWillReceiveProps: (nextProps) ->
+      @setState nextProps
 
-  components:
-    PaperEditorOverlay: React.createClass
-      render: ->
-        {main, h1, select, option, input, label} = React.DOM
-        Overlay = Tahi.overlays.components.Overlay
-        RailsForm = Tahi.overlays.components.RailsForm
+    render: ->
+      {main, h1, select, option, input, label} = React.DOM
+      RailsForm = Tahi.overlays.components.RailsForm
 
-        editors = [[null, 'Please select editor']].concat @props.editors
+      (main {}, [
+        (h1 {}, 'Assign Editor'),
+        (RailsForm {action: @props.taskPath}, [
+          (label {htmlFor: 'task_paper_role_attributes_user_id'}, 'Editor'),
+          (Chosen {
+             id: 'task_paper_role_attributes_user_id',
+             name: 'task[paper_role_attributes][user_id]',
+             value: @state.editorId,
+             onChange: @handleChange,
+             width: "200px"},
+            @editors().map (editor) ->
+              (option {value: editor[0]}, editor[1]))])])
 
-        (Overlay @props.overlayProps,
-          (main {}, [
-            (h1 {}, 'Assign Editor'),
-            (RailsForm {action: @props.overlayProps.taskPath}, [
-              (label {htmlFor: 'task_paper_role_attributes_user_id'}, 'Editor'),
-              (select {
-                 id: 'task_paper_role_attributes_user_id',
-                 name: 'task[paper_role_attributes][user_id]',
-                 className: 'chosen-select',
-                 defaultValue: @props.editorId},
-                editors.map (editor) ->
-                  (option {value: editor[0]}, editor[1]))])]))
+    handleChange: (e) ->
+      @setState editorId: e.target.value
 
-      componentDidMount: (rootNode) ->
-        form = $('main form', rootNode)
-        Tahi.setupSubmitOnChange form, $('select', form)
+    editors: ->
+      return [] unless @props.editors
+      [[null, 'Please select editor']].concat @props.editors
+
+    submitFormsOnChange: (rootNode) ->
+      form = $('form', rootNode)
+      Tahi.setupSubmitOnChange form, $('select', form)
+
+    componentDidMount: (rootNode) ->
+      @submitFormsOnChange rootNode
+
+    componentDidUpdate: (previousProps, previousState, rootNode) ->
+      @submitFormsOnChange rootNode
+

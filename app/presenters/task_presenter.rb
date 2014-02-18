@@ -12,16 +12,16 @@ class TaskPresenter
 
   def data_attributes
     {
-      'paper-title' => task.paper.title,
-      'paper-path' => paper_path(task.paper),
-      'paper-id' => task.paper.to_param,
-      'task-path' => paper_task_path(task.paper, task),
-      'task-title' => task.title,
-      'task-body' => task.body,
-      'card-name' => task.class.name.underscore.dasherize.gsub(/-task/, ''),
-      'assignee-id' => task.assignee_id,
+      'paperTitle' => task.paper.title || task.paper.short_title,
+      'paperPath' => paper_path(task.paper),
+      'paperId' => task.paper.to_param,
+      'taskPath' => paper_task_path(task.paper, task),
+      'taskTitle' => task.title,
+      'taskBody' => task.body,
+      'cardName' => task.class.name.underscore.dasherize.gsub(/-task/, ''),
+      'assigneeId' => task.assignee_id,
       'assignees' => assignees,
-      'task-id' => task.id
+      'taskId' => task.id
     }
   end
 
@@ -32,7 +32,7 @@ class TaskPresenter
   protected
 
   def assignees
-    select_options_for_users(task.assignees).to_json
+    select_options_for_users(task.assignees)
   end
 
   def select_options_for_users(users)

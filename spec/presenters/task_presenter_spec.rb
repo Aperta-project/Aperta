@@ -57,7 +57,6 @@ describe TaskPresenter do
         expect(TaskPresenter.for(task).data_attributes).to include(
           'paperTitle' => task.paper.short_title,
         )
-
       end
     end
   end

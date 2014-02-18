@@ -27,7 +27,6 @@ Tahi.overlay =
     turbolinksState = Tahi.utils.windowHistory().state
 
     taskPath: element.attr('href')
-    taskCompleted: element.hasClass('completed')
     onOverlayClosed: (e) =>
       @hide(e, turbolinksState)
 

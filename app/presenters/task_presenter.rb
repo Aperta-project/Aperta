@@ -18,6 +18,7 @@ class TaskPresenter
       'taskPath' => paper_task_path(task.paper, task),
       'taskTitle' => task.title,
       'taskBody' => task.body,
+      'taskCompleted' => task.completed?,
       'cardName' => task.class.name.underscore.dasherize.gsub(/-task/, ''),
       'assigneeId' => task.assignee_id,
       'assignees' => assignees,

@@ -10,6 +10,7 @@ shared_examples_for "all tasks, which have common attributes" do
       'taskPath' => paper_task_path(task.paper, task),
       'taskTitle' => task.title,
       'taskBody' => task.body,
+      'taskCompleted' => task.completed?,
       'cardName' => card_name,
       'assigneeId' => assignee_id,
       'assignees' => assignees,

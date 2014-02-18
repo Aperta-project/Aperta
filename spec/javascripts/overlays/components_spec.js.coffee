@@ -89,26 +89,27 @@ describe "Tahi overlay components", ->
       @component = Tahi.overlays.components.CompletedCheckbox
         action: '/form/action'
         onSuccess: @successCallback
+      @component.state =
+        taskCompleted: false
 
     describe "#render", ->
       it "generates a form for the task", ->
-        # paperId, taskId, taskCompleted
         form = @component.render()
         expect(form.props.action).toEqual '/form/action'
 
       context "when the task has been completed", ->
-        beforeEach -> @component.props.taskCompleted = true
+        beforeEach -> @component.state.taskCompleted = true
 
         it "checks the checkbox", ->
           checkbox = @component.render().props.children.props.children[1]
-          expect(checkbox.props.defaultChecked).toEqual true
+          expect(checkbox.props.checked).toEqual true
 
       context "when the task has not been completed", ->
-        beforeEach -> @component.props.taskCompleted = false
+        beforeEach -> @component.state.taskCompleted = false
 
         it "does not check the checkbox", ->
           checkbox = @component.render().props.children.props.children[1]
-          expect(checkbox.props.defaultChecked).toEqual false
+          expect(checkbox.props.checked).toEqual false
 
     describe "#componentDidMount", ->
       it "sets up submit on change for the check box", ->

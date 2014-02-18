@@ -186,16 +186,3 @@ describe "Tahi.overlay", ->
         spyOn(Tahi.overlay, 'hide')
         Tahi.overlay.defaultProps($('#link1')).onOverlayClosed('foo')
         expect(Tahi.overlay.hide).toHaveBeenCalledWith('foo', window.history.state)
-
-    describe "taskCompleted", ->
-      context "when the event target does not have the completed class", ->
-        it "returns taskCompleted: false", ->
-          $('#link1, #link2').removeClass 'completed'
-          props = Tahi.overlay.defaultProps($(@event.target))
-          expect(props.taskCompleted).toEqual false
-
-      context "when the event target has the completed class", ->
-        it "returns taskCompleted: true", ->
-          $('#link1, #link2').addClass 'completed'
-          props = Tahi.overlay.defaultProps($(@event.target))
-          expect(props.taskCompleted).toEqual true

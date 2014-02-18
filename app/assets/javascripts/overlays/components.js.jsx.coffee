@@ -50,6 +50,12 @@ Tahi.overlays.components.RailsForm = React.createClass
       {this.props.children}
     </form>`
 
+  componentDidMount: (rootNode) ->
+    $(rootNode).on 'ajax:success', @props.ajaxOptions?.success
+
+  submit: ->
+    $(@getDOMNode()).trigger 'submit.rails'
+
 Tahi.overlays.components.CompletedCheckbox = React.createClass
   componentWillMount: ->
     @setState taskCompleted: @props.taskCompleted

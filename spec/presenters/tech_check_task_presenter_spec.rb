@@ -32,7 +32,7 @@ describe TechCheckTaskPresenter do
     it_behaves_like "all tasks, which have common attributes" do
       let(:card_name) { 'tech-check' }
       let(:assignee_id) { task.assignee_id }
-      let(:assignees) { [[assignee.id, 'Busy Bee']].to_json }
+      let(:assignees) { [[assignee.id, 'Busy Bee']] }
     end
   end
 end

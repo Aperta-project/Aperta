@@ -22,8 +22,10 @@ Tahi.overlays.figure =
       figures: []
 
     componentWillMount: ->
-      @setState
-        figures: (@props.figures || [])
+      @setState @props
+
+    componentWillReceiveProps: (nextProps) ->
+      @setState nextProps
 
     componentWillUnmount: ->
       $("[data-card-name='figure']").data('figures', @state.figures)

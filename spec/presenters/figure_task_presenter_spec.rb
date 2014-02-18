@@ -27,13 +27,13 @@ describe FigureTaskPresenter do
       end
 
       let(:card_name) { 'figure' }
-      let(:assignees) { '[]' }
+      let(:assignees) { [] }
     end
 
     it "includes custom figure data" do
       expect(data_attributes).to include(
-        'figures' => '[{"one":1},{"two":2}]',
-        'figures-path' => paper_figures_path(task.paper)
+        'figures' => [{ one: 1 }, { two: 2 }],
+        'figuresPath' => paper_figures_path(task.paper)
       )
     end
   end

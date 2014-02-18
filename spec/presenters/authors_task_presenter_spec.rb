@@ -23,12 +23,12 @@ describe AuthorsTaskPresenter do
       end
 
       let(:card_name) { 'authors' }
-      let(:assignees) { '[]' }
+      let(:assignees) { [] }
     end
 
     it "includes custom figure data" do
       expect(data_attributes).to include(
-        'authors' => '[{"one":1},{"two":2}]',
+        'authors' => [{ one: 1 }, { two: 2 }]
       )
     end
   end

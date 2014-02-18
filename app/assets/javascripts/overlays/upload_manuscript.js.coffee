@@ -47,7 +47,7 @@ Tahi.overlays.uploadManuscript =
         done: =>
           $('#task_checkbox_completed:not(:checked)').click()
           $('html').removeClass 'noscroll'
-          Turbolinks.visit(@props.overlayProps.paperPath)
+          Turbolinks.visit(@props.paperPath)
       uploader.on 'fileuploadadd',           @fileUploadAdd
       uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
       uploader.on 'fileuploadprogress',      @fileUploadProgress

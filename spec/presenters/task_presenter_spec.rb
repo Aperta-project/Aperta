@@ -46,7 +46,7 @@ describe TaskPresenter do
       let :task do
         paper = Paper.create! short_title: "Foo", journal: Journal.create!
         Task.create! title: "Verify Signatures",
-          assignee: admin,
+          assignee: journal_admin,
           completed: true,
           body: 'Too many muscles!',
           role: 'admin',

@@ -33,7 +33,7 @@ describe RegisterDecisionTaskPresenter do
     it_behaves_like "all tasks, which have common attributes" do
       let(:card_name) { 'register-decision' }
       let(:assignee_id) { task.assignee_id }
-      let(:assignees) { [[assignee.id, 'Busy Bee']].to_json }
+      let(:assignees) { [[assignee.id, 'Busy Bee']] }
     end
 
     it "includes custom figure data" do

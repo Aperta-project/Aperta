@@ -7,10 +7,11 @@ Tahi.overlays.registerDecision =
     getInitialState: ->
       decisionLetters: null
 
+    componentWillMount: ->
+      @setState @props
+
     componentWillReceiveProps: (nextProps) ->
-      @setState
-        decisionLetters: nextProps.decisionLetters
-        decision: nextProps.decision
+      @setState nextProps
 
     render: ->
       {main, h1, div, p, label, input, textarea} = React.DOM
@@ -25,9 +26,9 @@ Tahi.overlays.registerDecision =
                 id: 'accepted_option',
                 name: 'task[paper_decision]',
                 type: 'radio',
-                onChange: @updateDecisionLetter,
-                defaultValue: 'Accepted',
-                defaultChecked: @state.decision == 'Accepted'}),
+                onChange: @updateDecision,
+                value: 'Accepted',
+                checked: @state.decision == 'Accepted'}),
               ' ',
               (label {className: 'decision-label', htmlFor: 'accepted_option'}, 'Accepted')]),
             (div {className: 'form-group'}, [
@@ -35,9 +36,9 @@ Tahi.overlays.registerDecision =
                 id: 'rejected_option',
                 name: 'task[paper_decision]',
                 type: 'radio',
-                onChange: @updateDecisionLetter,
-                defaultValue: 'Rejected',
-                defaultChecked: @state.decision == 'Rejected'}),
+                onChange: @updateDecision,
+                value: 'Rejected',
+                checked: @state.decision == 'Rejected'}),
               ' ',
               (label {className: 'decision-label', htmlFor: 'rejected_option'}, 'Rejected')]),
             (div {className: 'form-group'}, [
@@ -45,9 +46,9 @@ Tahi.overlays.registerDecision =
                 id: 'revise_option',
                 name: 'task[paper_decision]',
                 type: 'radio',
-                onChange: @updateDecisionLetter,
-                defaultValue: 'Revise',
-                defaultChecked: @state.decision == 'Revise'}),
+                onChange: @updateDecision,
+                value: 'Revise',
+                checked: @state.decision == 'Revise'}),
               ' ',
               (label {className: 'decision-label', htmlFor: 'revise_option'}, 'Revise')])]),
           (div {className: 'form-group'}, [
@@ -56,20 +57,18 @@ Tahi.overlays.registerDecision =
               id: 'task_paper_decision_letter',
               name: 'task[paper_decision_letter]',
               placeholder: 'A boilerplate decision letter will appear here.',
-              defaultValue: @state.decisionLetter})])])])
+              onChange: @updateDecisionLetter,
+              value: @state.decisionLetter})])])])
+
+    updateDecision: (event) ->
+      @setState
+        decision: event.target.value
+        decisionLetter: @state.decisionLetters[event.target.value]
 
     updateDecisionLetter: (event) ->
-      textarea = $('textarea', this.getDOMNode())
-      textarea.val @state.decisionLetters[event.target.value]
-      textarea.trigger 'change'
-
-    submitFormsOnChange: (rootNode) ->
-      form = $('form', rootNode)
-      Tahi.setupSubmitOnChange form, $('input, textarea', form)
-
-    componentDidUpdate: (prevProps, prevState, rootNode) ->
-      @submitFormsOnChange(rootNode)
+      @setState decisionLetter: event.target.value
 
     componentDidMount: (rootNode) ->
-      @submitFormsOnChange(rootNode)
+      form = $('form', rootNode)
+      Tahi.setupSubmitOnChange form, $('input, textarea', form)
 

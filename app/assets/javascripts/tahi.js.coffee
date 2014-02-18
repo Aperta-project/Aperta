@@ -13,5 +13,6 @@ Tahi.init = ->
 
 Tahi.setupSubmitOnChange = (form, elements, options) ->
   form.on 'ajax:success', options?.success
+  elements.off 'change'
   elements.on 'change', (e) ->
     form.trigger 'submit.rails'

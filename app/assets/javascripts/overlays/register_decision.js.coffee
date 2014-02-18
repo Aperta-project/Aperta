@@ -13,6 +13,18 @@ Tahi.overlays.registerDecision =
     componentWillReceiveProps: (nextProps) ->
       @setState nextProps
 
+    updateDecision: (event) ->
+      @setState
+        decision: event.target.value
+        decisionLetter: @state.decisionLetters[event.target.value]
+
+    updateDecisionLetter: (event) ->
+      @setState decisionLetter: event.target.value
+
+    componentDidMount: (rootNode) ->
+      form = $('form', rootNode)
+      Tahi.setupSubmitOnChange form, $('input, textarea', form)
+
     render: ->
       {main, h1, div, p, label, input, textarea} = React.DOM
       RailsForm = Tahi.overlays.components.RailsForm
@@ -59,16 +71,3 @@ Tahi.overlays.registerDecision =
               placeholder: 'A boilerplate decision letter will appear here.',
               onChange: @updateDecisionLetter,
               value: @state.decisionLetter})])])])
-
-    updateDecision: (event) ->
-      @setState
-        decision: event.target.value
-        decisionLetter: @state.decisionLetters[event.target.value]
-
-    updateDecisionLetter: (event) ->
-      @setState decisionLetter: event.target.value
-
-    componentDidMount: (rootNode) ->
-      form = $('form', rootNode)
-      Tahi.setupSubmitOnChange form, $('input, textarea', form)
-

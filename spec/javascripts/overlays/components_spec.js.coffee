@@ -89,6 +89,7 @@ describe "Tahi overlay components", ->
       @component = Tahi.overlays.components.CompletedCheckbox
         action: '/form/action'
         onSuccess: @successCallback
+        taskCompleted: false
 
     describe "#render", ->
       it "generates a form for the task", ->

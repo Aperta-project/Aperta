@@ -38,6 +38,3 @@ Tahi.overlays.paperReviewer =
 
     componentDidMount: (rootNode) ->
       @submitFormsOnChange(rootNode)
-
-    componentDidUpdate: (prevProps, prevState, rootNode) ->
-      @submitFormsOnChange(rootNode)

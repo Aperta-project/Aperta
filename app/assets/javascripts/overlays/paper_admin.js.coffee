@@ -38,5 +38,5 @@ Tahi.overlays.paperAdmin =
       form = $('form', rootNode)
       Tahi.setupSubmitOnChange form, $('select', form)
 
-    componentDidUpdate: (previousProps, previousState, rootNode) ->
+    componentDidMount: (rootNode) ->
       @submitFormsOnChange(rootNode)

@@ -14,7 +14,7 @@ Tahi.overlays.declaration =
     declarations: ->
       {div, input, label, textarea} = React.DOM
 
-      @state.declarations.map (declaration, index) ->
+      @state.declarations.map (declaration, index) =>
         hiddenField = if 'id' in Object.keys(declaration)
           (input {
             id: "paper_declarations_attributes_#{index}_id"
@@ -28,9 +28,12 @@ Tahi.overlays.declaration =
           (textarea {
             ref: "declaration_answer_#{index}",
             id: "paper_declarations_attributes_#{index}_answer",
+            onBlur: @submitForm,
+            onChange: @updateContent,
+            "data-declaration-index": index,
             name: "paper[declarations_attributes][#{index}][answer]",
             className: 'form-control', rows: 6
-            defaultValue: declaration['answer']}),
+            value: declaration['answer']}),
           hiddenField])
 
     render: ->
@@ -39,11 +42,14 @@ Tahi.overlays.declaration =
 
       (main {}, [
         (h1 {}, @props.taskTitle),
-        (RailsForm {action:  "#{@props.paperPath}.json"}, @declarations())])
+        (RailsForm {action:  "#{@props.paperPath}.json", ref: 'form'},
+          @declarations())])
 
-    submitFormsOnChange: (rootNode) ->
-      form = $('form', rootNode)
-      Tahi.setupSubmitOnChange form, $('textarea', form)
+    submitForm: ->
+      @refs.form.submit()
 
-    componentDidMount: (rootNode) ->
-      @submitFormsOnChange rootNode
+    updateContent: (e) ->
+      index = $(e.target).data("declarationIndex")
+      newDecs = @state.declarations.slice()
+      newDecs[index].answer = e.target.value
+      @setState {declarations: newDecs}

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Flow Manager" do
+feature "Flow Manager", js: true do
   let(:admin) do
     User.create! username: 'zoey',
       first_name: 'Zoey',
@@ -41,16 +41,16 @@ feature "Flow Manager" do
       title: 'Baz Qux',
       submitted: true,
       journal: Journal.create!
-    paper1.tasks.each { |t| t.update(assignee: admin) if paper2_task_titles.include? t.title }
+    paper2.tasks.each { |t| t.update(assignee: admin) if paper2_task_titles.include? t.title }
 
     dashboard_page = DashboardPage.visit
     flow_manager_page = dashboard_page.view_flow_manager
     my_tasks = flow_manager_page.column 'My Tasks'
     papers = my_tasks.papers
-    expect(papers.map &:title).to eq [paper1.title, paper2.title]
+    expect(papers.map &:title).to match_array [paper1.title, paper2.title]
     paper1_cards = papers.detect { |p| p.title == paper1.title }.cards
     paper2_cards = papers.detect { |p| p.title == paper2.title }.cards
-    expect(paper1_cards.map &:title).to eq paper1_task_titles
-    expect(paper2_cards.map &:title).to eq paper2_task_titles
+    expect(paper1_cards.map &:title).to match_array paper1_task_titles
+    expect(paper2_cards.map &:title).to match_array paper2_task_titles
   end
 end

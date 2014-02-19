@@ -7,7 +7,7 @@ class FlowManagerPage < Page
 
   class PaperSummary < PageFragment
     def title
-      find('h2').text
+      find('h4').text
     end
 
     def cards
@@ -17,11 +17,12 @@ class FlowManagerPage < Page
 
   class Column < PageFragment
     def papers
-      all('.paper').map { |p| PaperSummary.new p }
+      all('.paper-profile').map { |p| PaperSummary.new p }
     end
   end
 
   def column title
+    wait_for_turbolinks
     el = all('.column').detect { |c| c.find('h1').text == title }
     Column.new el if el
   end

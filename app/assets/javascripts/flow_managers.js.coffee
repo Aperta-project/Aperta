@@ -1,29 +1,40 @@
 window.Tahi ||= {}
 
 Card = React.createClass
-  displayOverlay: (e) ->
-    e.preventDefault()
-
   render: ->
-    {p} = React.DOM
-    (p {}, @props.title)
+    {a} = React.DOM
+    (a {
+        className: 'card',
+        onClick: @displayCard,
+        "data-card-name": @props.task.cardName,
+        "data-task-path": @props.task.taskPath,
+        href: @props.task.taskPath
+      },
+      @props.task.taskTitle
+    )
+
+  displayCard: (event) ->
+    Tahi.overlay.display event, @props.task.cardName
 
 PaperProfile = React.createClass
   render: ->
-    {div, h1, p} = React.DOM
+    {div, h4} = React.DOM
 
-    (div {}, [
-      (h1 {}, @props.profile.title),
+    (div {className: 'paper-profile'}, [
+      (h4 {}, @props.profile.title),
+
       for task in @props.profile.tasks
-        (Card task)])
+        (Card {task: task})])
 
 Flow = React.createClass
   render: ->
-    {ul, li} = React.DOM
+    {h1, ul, li, div} = React.DOM
 
-    (ul {},
-      for paperProfile in @props.paperProfiles
-        (li {}, PaperProfile {profile: paperProfile}))
+    (div {className: 'column'},
+      (h1 {}, "My Tasks"),
+      (ul {},
+        for paperProfile in @props.paperProfiles
+          (li {}, PaperProfile {profile: paperProfile})))
 
 FlowManager = React.createClass
   render: ->
@@ -35,6 +46,7 @@ FlowManager = React.createClass
 
 Tahi.flowManager =
   init: ->
-    flowManager = FlowManager flows: [window.myTasks]
-    React.renderComponent flowManager, document.getElementById('flow-manager')
+    if document.getElementById('flow-manager')
+      flowManager = FlowManager flows: [window.myTasks]
+      React.renderComponent flowManager, document.getElementById('flow-manager')
 

@@ -24,6 +24,7 @@
 //= require react-chosen
 //= require spin
 //= require turbolinks
+//= require underscore
 //= require_tree .
 
 $(document).ready(function() {

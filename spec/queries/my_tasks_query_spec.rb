@@ -29,10 +29,8 @@ describe MyTasksQuery do
   describe "#paper_profiles" do
     it "returns a summary of papers and their tasks" do
       expect(my_tasks.paper_profiles).to include({
-        paper2 => [task3]
-      })
-      expect(my_tasks.paper_profiles).to include({
-        paper1 => [task2, task1]
+        paper2 => [task3],
+        paper1 => a_collection_containing_exactly(task1, task2)
       })
     end
   end

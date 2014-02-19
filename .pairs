@@ -8,7 +8,8 @@ pairs:
   km: Kyle Murphy; kyle
   ap: Andi Plantenberg; andi
   aw: Andy Waite; andy
-  cw: Chris Westra; chris
+  cw: Chris Westra; chris.westra
+  rs: Ryan Stocker; ryan.stocker
 
 email:
   prefix: pair

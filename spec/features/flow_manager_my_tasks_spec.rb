@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Flow Manager", js: true do
+feature "Flow Manager: my tasks", js: true do
   let(:admin) do
     User.create! username: 'zoey',
       first_name: 'Zoey',

@@ -1,10 +1,16 @@
 window.Tahi ||= {}
 
 Card = React.createClass
+  cardClass: ->
+    Tahi.className
+      'card': true
+      'flow-card': true
+      'completed': @props.task.taskCompleted
+
   render: ->
     {a} = React.DOM
     (a {
-        className: 'card',
+        className: @cardClass(),
         onClick: @displayCard,
         "data-card-name": @props.task.cardName,
         "data-task-path": @props.task.taskPath,
@@ -31,7 +37,7 @@ Flow = React.createClass
     {h1, ul, li, div} = React.DOM
 
     (div {className: 'column'},
-      (h1 {}, "My Tasks"),
+      (h1 {}, @props.title),
       (ul {},
         for paperProfile in @props.paperProfiles
           (li {}, PaperProfile {profile: paperProfile})))
@@ -47,6 +53,6 @@ FlowManager = React.createClass
 Tahi.flowManager =
   init: ->
     if document.getElementById('flow-manager')
-      flowManager = FlowManager flows: [window.myTasks]
+      flowManager = FlowManager flows: [window.incompleteTasks, window.completeTasks]
       React.renderComponent flowManager, document.getElementById('flow-manager')
 

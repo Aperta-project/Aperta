@@ -19,6 +19,8 @@
   width: 235px;
   padding-right: 15px;
   border-right: 1px solid $tahi-tertiary;
+  float: left;
+  margin-right: 15px;
 }
 
 .column h1 {
@@ -33,12 +35,15 @@
   width: 220px;
 }
 
+.card.flow-card {
+  background: rgb(194,232,188);
+}
+
 .column a.card {
   width: inherit;
   margin-bottom: 0;
   border-radius: 0;
   border-top: 1px solid white;
-  background: rgb(194,232,188);
 
   &:hover {
     background: $tahi-primary;

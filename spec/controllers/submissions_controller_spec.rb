@@ -21,11 +21,11 @@ describe SubmissionsController do
 
     it_behaves_like "when the user is not signed in"
 
-    it { should be_success }
+    specify { expect(do_request).to be_success }
 
     it "assigns paper" do
       do_request
-      assigns(:paper).should eq(paper)
+      expect(assigns(:paper)).to eq(paper)
     end
   end
 
@@ -34,7 +34,7 @@ describe SubmissionsController do
 
     it_behaves_like "when the user is not signed in"
 
-    it { should redirect_to root_path }
+    specify { expect(do_request).to redirect_to root_path }
 
     it "submits the paper" do
       expect { do_request }.to change { paper.reload.submitted? }.from(false).to(true)

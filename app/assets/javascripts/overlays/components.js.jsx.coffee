@@ -50,6 +50,12 @@ Tahi.overlays.components.RailsForm = React.createClass
       {this.props.children}
     </form>`
 
+  componentDidMount: (rootNode) ->
+    $(rootNode).on 'ajax:success', (@props.ajaxSuccess || null)
+
+  submit: ->
+    $(@getDOMNode()).trigger 'submit.rails'
+
 Tahi.overlays.components.CompletedCheckbox = React.createClass
   componentWillMount: ->
     @setState taskCompleted: @props.taskCompleted
@@ -60,7 +66,7 @@ Tahi.overlays.components.CompletedCheckbox = React.createClass
   render: ->
     RailsForm = Tahi.overlays.components.RailsForm
     inputId = "task_checkbox_completed"
-    `<RailsForm action={this.props.action}>
+    `<RailsForm action={this.props.action} ref='form' ajaxSuccess={this.props.onSuccess}>
         <div>
           <input name="task[completed]" type="hidden" value="0" />
           <input id={inputId} name="task[completed]" type="checkbox" value="1" onChange={this.updateCompleted} checked={this.state.taskCompleted} />
@@ -71,34 +77,27 @@ Tahi.overlays.components.CompletedCheckbox = React.createClass
   updateCompleted: (e) ->
     @setState
       taskCompleted: $(e.target).is(':checked')
-
-  componentDidUpdate: (prevProps, prevState, rootNode) ->
-    Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode), success: @props.onSuccess
-
-  componentDidMount: (rootNode) ->
-    Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode), success: @props.onSuccess
+    @refs.form.submit()
 
 Tahi.overlays.components.AssigneeDropDown = React.createClass
   render: ->
     {div, label, select, option} = React.DOM
 
     assignees = [[null, 'Please select assignee']].concat @props.assignees
-    (Tahi.overlays.components.RailsForm {action: @props.action}, [
+    (Tahi.overlays.components.RailsForm {action: @props.action, ref: 'form'}, [
       (label {htmlFor: "task_assignee_id"}, 'This card is owned by'),
       (Chosen {
         id: "task_assignee_id"
         name: "task[assignee_id]"
         width: "200px"
+        onChange: @handleChange,
         defaultValue: @props.assigneeId },
         assignees.map (assignee) -> (option {value: assignee[0]}, assignee[1])
       )
     ])
 
-  componentDidUpdate: (prevProps, prevState, rootNode) ->
-    Tahi.setupSubmitOnChange $(rootNode), $('select', rootNode)
-
-  componentDidMount: (rootNode) ->
-    Tahi.setupSubmitOnChange $(rootNode), $('select', rootNode)
+  handleChange: (e) ->
+    @refs.form.submit()
 
 Tahi.overlays.components.ProgressBar = React.createClass
   render: ->

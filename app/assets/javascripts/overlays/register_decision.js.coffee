@@ -13,13 +13,24 @@ Tahi.overlays.registerDecision =
     componentWillReceiveProps: (nextProps) ->
       @setState nextProps
 
+    updateDecision: (event) ->
+      @setState
+        decision: event.target.value
+        decisionLetter: @state.decisionLetters[event.target.value], @submitForm
+
+    updateDecisionLetter: (event) ->
+      @setState decisionLetter: event.target.value
+
+    submitForm: ->
+      @refs.form.submit()
+
     render: ->
       {main, h1, div, p, label, input, textarea} = React.DOM
       RailsForm = Tahi.overlays.components.RailsForm
 
       (main {}, [
         (h1 {}, @props.taskTitle),
-        (RailsForm {action: @props.taskPath}, [
+        (RailsForm {action: @props.taskPath, ref: 'form'}, [
           (div {className: 'decision-selections'}, [
             (div {className: 'form-group'}, [
               (input {
@@ -58,17 +69,5 @@ Tahi.overlays.registerDecision =
               name: 'task[paper_decision_letter]',
               placeholder: 'A boilerplate decision letter will appear here.',
               onChange: @updateDecisionLetter,
+              onBlur: @submitForm,
               value: @state.decisionLetter})])])])
-
-    updateDecision: (event) ->
-      @setState
-        decision: event.target.value
-        decisionLetter: @state.decisionLetters[event.target.value]
-
-    updateDecisionLetter: (event) ->
-      @setState decisionLetter: event.target.value
-
-    componentDidMount: (rootNode) ->
-      form = $('form', rootNode)
-      Tahi.setupSubmitOnChange form, $('input, textarea', form)
-

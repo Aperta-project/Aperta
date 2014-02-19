@@ -77,8 +77,5 @@ Tahi.overlays.reviewerReport =
       form = $('form', rootNode)
       Tahi.setupSubmitOnChange form, $('textarea', form)
 
-    componentDidUpdate: (prevProps, prevState, rootNode) ->
-      @submitFormsOnChange(rootNode)
-
     componentDidMount: (rootNode) ->
       @submitFormsOnChange(rootNode)

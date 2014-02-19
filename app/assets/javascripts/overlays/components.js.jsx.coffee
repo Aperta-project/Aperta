@@ -78,9 +78,6 @@ Tahi.overlays.components.CompletedCheckbox = React.createClass
     @setState
       taskCompleted: $(e.target).is(':checked')
 
-  componentDidUpdate: (prevProps, prevState, rootNode) ->
-    Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode), success: @props.onSuccess
-
   componentDidMount: (rootNode) ->
     Tahi.setupSubmitOnChange $(rootNode), $('input[type="checkbox"]', rootNode), success: @props.onSuccess
 

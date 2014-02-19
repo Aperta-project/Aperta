@@ -40,7 +40,3 @@ Tahi.overlays.paperEditor =
 
     componentDidMount: (rootNode) ->
       @submitFormsOnChange rootNode
-
-    componentDidUpdate: (previousProps, previousState, rootNode) ->
-      @submitFormsOnChange rootNode
-

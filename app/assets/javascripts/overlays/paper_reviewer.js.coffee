@@ -32,4 +32,3 @@ Tahi.overlays.paperReviewer =
     handleChange: (e) ->
       @setState reviewerIds: $(e.target).val()
       @refs.myForm.submit()
-

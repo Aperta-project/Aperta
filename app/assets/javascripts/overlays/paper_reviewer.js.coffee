@@ -16,7 +16,7 @@ Tahi.overlays.paperReviewer =
 
       (main {}, [
         (h1 {}, @props.taskTitle),
-        (RailsForm {action: @props.taskPath, ref: 'myForm'}, [
+        (RailsForm {action: @props.taskPath, ref: 'form'}, [
           (input {type: 'hidden', name: "task[paper_roles][]", value: null}),
           (label {htmlFor: 'task_paper_roles'}, 'Reviewers'),
           (Chosen {
@@ -31,4 +31,5 @@ Tahi.overlays.paperReviewer =
 
     handleChange: (e) ->
       @setState reviewerIds: $(e.target).val()
-      @refs.myForm.submit()
+      @refs.form.submit()
+

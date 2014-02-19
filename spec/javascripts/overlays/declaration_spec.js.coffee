@@ -1,15 +1,5 @@
 describe "Declarations Card", ->
   describe "Overlay component", ->
-    describe "#componentDidMount", ->
-      it "sets up submit on change for the form", ->
-        spyOn Tahi, 'setupSubmitOnChange'
-        component = Tahi.overlays.declaration.Overlay()
-        html = $('<main><form><textarea /></form></main>')[0]
-        component.componentDidMount html
-        args = Tahi.setupSubmitOnChange.calls.mostRecent().args
-        expect(args[0][0]).toEqual $('form', html)[0]
-        expect(args[1][0]).toEqual $('textarea', html)[0]
-
     describe "#componentWillReceiveProps", ->
       it "sets state.declarations to props.declarations", ->
         declarations = jasmine.createSpy 'props.declarations'
@@ -54,8 +44,8 @@ describe "Declarations Card", ->
         expect(label1.props.children).toEqual 'Question 1'
         expect(label2.props.children).toEqual 'Question 2'
 
-        expect(textarea1.props.defaultValue).toEqual 'Answer 1'
-        expect(textarea2.props.defaultValue).toEqual 'Answer 2'
+        expect(textarea1.props.value).toEqual 'Answer 1'
+        expect(textarea2.props.value).toEqual 'Answer 2'
 
       context "when a declaration has an ID", ->
         it "includes a hidden field with declaration ID", ->

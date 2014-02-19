@@ -92,6 +92,9 @@ describe "Tahi overlay components", ->
         taskCompleted: false
 
     describe "#render", ->
+      beforeEach ->
+        @component.state = taskCompleted: false
+
       it "generates a form for the task", ->
         form = @component.render()
         expect(form.props.action).toEqual '/form/action'
@@ -109,16 +112,6 @@ describe "Tahi overlay components", ->
         it "does not check the checkbox", ->
           checkbox = @component.render().props.children.props.children[1]
           expect(checkbox.props.checked).toEqual false
-
-    describe "#componentDidMount", ->
-      it "sets up submit on change for the check box", ->
-        spyOn Tahi, 'setupSubmitOnChange'
-        html = $('<form><input type="checkbox" /></form>')[0]
-        @component.componentDidMount html
-        args = Tahi.setupSubmitOnChange.calls.mostRecent().args
-        expect(args[0][0]).toEqual $(html)[0]
-        expect(args[1][0]).toEqual $('input[type="checkbox"]', html)[0]
-        expect(args[2]).toEqual success: @successCallback
 
   describe "AssigneeDropDown", ->
     beforeEach ->
@@ -155,15 +148,6 @@ describe "Tahi overlay components", ->
         it "does not set an assigneeId", ->
           select = @component.render().props.children[1]
           expect(select.props.defaultValue).toEqual null
-
-    describe "#componentDidMount", ->
-      it "sets up submit on change for the drop down", ->
-        spyOn Tahi, 'setupSubmitOnChange'
-        html = $('<form><select /></form>')[0]
-        @component.componentDidMount html
-        args = Tahi.setupSubmitOnChange.calls.mostRecent().args
-        expect(args[0][0]).toEqual $(html)[0]
-        expect(args[1][0]).toEqual $('select', html)[0]
 
   describe "OverlayHeader", ->
     describe "#render", ->

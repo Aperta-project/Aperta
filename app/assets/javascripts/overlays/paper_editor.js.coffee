@@ -16,7 +16,7 @@ Tahi.overlays.paperEditor =
 
       (main {}, [
         (h1 {}, 'Assign Editor'),
-        (RailsForm {action: @props.taskPath}, [
+        (RailsForm {action: @props.taskPath, ref: 'form' }, [
           (label {htmlFor: 'task_paper_role_attributes_user_id'}, 'Editor'),
           (Chosen {
              id: 'task_paper_role_attributes_user_id',
@@ -29,14 +29,8 @@ Tahi.overlays.paperEditor =
 
     handleChange: (e) ->
       @setState editorId: e.target.value
+      @refs.form.submit()
 
     editors: ->
       return [] unless @props.editors
       [[null, 'Please select editor']].concat @props.editors
-
-    submitFormsOnChange: (rootNode) ->
-      form = $('form', rootNode)
-      Tahi.setupSubmitOnChange form, $('select', form)
-
-    componentDidMount: (rootNode) ->
-      @submitFormsOnChange rootNode

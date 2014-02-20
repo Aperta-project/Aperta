@@ -2,10 +2,40 @@
 @import "bootstrap";
 @import 'tahi';
 
+html, body {
+  height: 100%;
+}
+
+body.full-height {
+  overflow: hidden;
+
+  #tahi-container {
+    height: 100%;
+  }
+}
+
+#flow-manager, .columns {
+  height: 100%;
+}
+
+.paper-profiles {
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding-bottom: 150px;
+}
+
 .paper-profile {
   border: 1px solid $tahi-tertiary;
   border-bottom: 2px solid $tahi-tertiary;
   margin-bottom: 10px;
+  box-sizing: border-box;
+  width: 219px;
+
+  .paper-title {
+   color: black;
+  }
 
   h4 {
     font-family: $tahi-article-font-family;
@@ -17,10 +47,12 @@
 
 .column {
   width: 235px;
+  height: 100%;
   padding-right: 15px;
   border-right: 1px solid $tahi-tertiary;
-  float: left;
   margin-right: 15px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .column h1 {
@@ -32,7 +64,6 @@
 .column ul {
   list-style-type: none;
   padding-left: 0;
-  width: 220px;
 }
 
 .card.flow-card {

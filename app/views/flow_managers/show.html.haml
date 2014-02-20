@@ -1,4 +1,8 @@
+- content_for :tahi_body_class do
+  full-height
+
 :coffee
   window.incompleteTasks = #{render partial: 'papers/paper_profiles.json', locals: {tasks: @incomplete_tasks, flow_title: 'My Tasks'}}
   window.completeTasks = #{render partial: 'papers/paper_profiles.json', locals: {tasks: @complete_tasks, flow_title: 'Done'}}
+
 #flow-manager

@@ -6,7 +6,9 @@
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Cabin:400,700,400italic"
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
-  %body{class: ('matte' if params[:controller] == 'papers')}
+  - body_class = Array(yield :tahi_body_class)
+  - body_class << 'matte' if params[:controller] == 'papers'
+  %body{class: body_class.join(' ')}
     #overlay
 
     #nav-bar-container

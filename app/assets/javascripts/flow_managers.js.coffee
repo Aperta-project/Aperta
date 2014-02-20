@@ -8,7 +8,7 @@ Card = React.createClass
       'completed': @props.task.taskCompleted
 
   render: ->
-    {a} = React.DOM
+    {a, span} = React.DOM
     (a {
         className: @cardClass(),
         onClick: @displayCard,
@@ -16,6 +16,7 @@ Card = React.createClass
         "data-task-path": @props.task.taskPath,
         href: @props.task.taskPath
       },
+      (span {className: 'glyphicon glyphicon-ok'}),
       @props.task.taskTitle
     )
 
@@ -23,11 +24,15 @@ Card = React.createClass
     Tahi.overlay.display event, @props.task.cardName
 
 PaperProfile = React.createClass
+  componentDidMount: (DOMElement, rootNode) ->
+    $('h4', rootNode).dotdotdot
+      height: 40
+
   render: ->
     {div, h4, a} = React.DOM
 
     (div {className: 'paper-profile'}, [
-      (a {href: @props.profile.paper_path}, 
+      (a {href: @props.profile.paper_path, className: 'paper-title'},
         (h4 {}, @props.profile.title)),
 
       for task in @props.profile.tasks
@@ -39,14 +44,15 @@ Flow = React.createClass
 
     (div {className: 'column'},
       (h1 {}, @props.title),
-      (ul {},
-        for paperProfile in @props.paperProfiles
-          (li {}, PaperProfile {profile: paperProfile})))
+      (div {className: 'paper-profiles'},
+        (ul {},
+          for paperProfile in @props.paperProfiles
+            (li {}, PaperProfile {profile: paperProfile}))))
 
 FlowManager = React.createClass
   render: ->
     {div} = React.DOM
-    (div {},
+    (div {className: 'columns'},
       for flow, index in @props.flows
         Flow {key: "flow-#{index}", paperProfiles: flow.paperProfiles, title: flow.title}
     )

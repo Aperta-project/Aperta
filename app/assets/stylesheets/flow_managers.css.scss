@@ -46,7 +46,7 @@ body.full-height {
 }
 
 .column {
-  width: 235px;
+  width: 245px;
   height: 100%;
   padding-right: 15px;
   border-right: 1px solid $tahi-tertiary;
@@ -71,13 +71,29 @@ body.full-height {
 }
 
 .column a.card {
-  width: inherit;
+  width: 217px;
   margin-bottom: 0;
   border-radius: 0;
-  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   &:hover {
     background: $tahi-primary;
   }
 }
 
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 6px;
+  height: 10px
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 6px;
+  width: 3px !important;
+  min-height: 40px;
+}

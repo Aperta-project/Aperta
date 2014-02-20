@@ -11,7 +11,7 @@ class FlowManagersController < ApplicationController
       [task.paper, []]
     end
     @flows = [["My Tasks", incomplete_tasks],
-              ["Done", complete_tasks],
-              ["My Papers", paper_admin_tasks]]
+              ["My Papers", paper_admin_tasks],
+              ["Done", complete_tasks]]
   end
 end

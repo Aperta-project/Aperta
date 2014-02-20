@@ -32,7 +32,7 @@ PaperProfile = React.createClass
     {div, h4, a} = React.DOM
 
     (div {className: 'paper-profile'}, [
-      (a {href: @props.profile.paper_path}, 
+      (a {href: @props.profile.paper_path, className: 'paper-title'},
         (h4 {}, @props.profile.title)),
 
       for task in @props.profile.tasks
@@ -52,7 +52,7 @@ Flow = React.createClass
 FlowManager = React.createClass
   render: ->
     {div} = React.DOM
-    (div {},
+    (div {className: 'columns'},
       for flow, index in @props.flows
         Flow {key: "flow-#{index}", paperProfiles: flow.paperProfiles, title: flow.title}
     )

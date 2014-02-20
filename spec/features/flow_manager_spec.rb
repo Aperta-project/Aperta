@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-feature "Flow Manager: completed tasks", js: true do
+feature "Flow Manager", js: true do
   let(:admin) do
-    FactoryGirl.create :user, :admin
+    FactoryGirl.create :user, :admin, first_name: "Admin"
   end
   let(:author) do
-    FactoryGirl.create :user, :admin
+    FactoryGirl.create :user, :admin, first_name: "Author"
   end
 
   let(:paper1) do
@@ -36,10 +36,10 @@ feature "Flow Manager: completed tasks", js: true do
   end
 
   context "with tasks assigned and completed" do
-      let(:paper1_task_titles) { ['Assign Editor', 'Assign Admin'] }
-      let(:paper2_task_titles) { ['Assign Editor', 'Tech Check'] }
-      let(:paper1_completed_task_titles) { ['Assign Editor', 'Assign Admin'] }
-      let(:paper2_completed_task_titles) { ['Tech Check'] }
+    let(:paper1_task_titles) { ['Assign Editor', 'Tech Check', 'Assign Reviewers'] }
+    let(:paper2_task_titles) { ['Assign Editor', 'Assign Reviewers', 'Upload Figures'] }
+    let(:paper1_completed_task_titles) { ['Assign Editor', 'Tech Check'] }
+    let(:paper2_completed_task_titles) { ['Upload Figures'] }
 
     before do
       assign_tasks_to_user(paper1, admin, paper1_task_titles)
@@ -48,9 +48,18 @@ feature "Flow Manager: completed tasks", js: true do
       complete_tasks(paper1, paper1_completed_task_titles)
     end
 
-    scenario "Completed Tasks column" do
-      dashboard_page = DashboardPage.visit
-      flow_manager_page = dashboard_page.view_flow_manager
+    def my_task_expectations(flow_manager_page)
+      my_tasks = flow_manager_page.column 'My Tasks'
+      papers = my_tasks.paper_profiles
+      expect(papers.map &:title).to match_array [paper1.title, paper2.title]
+      paper1_cards = papers.detect { |p| p.title == paper1.title }.cards
+      paper2_cards = papers.detect { |p| p.title == paper2.title }.cards
+      expect(paper1_cards.map &:title).to match_array (paper1_task_titles - paper1_completed_task_titles)
+      expect(paper2_cards.map &:title).to match_array (paper2_task_titles - paper2_completed_task_titles)
+      papers #return papers for later use
+    end
+
+    def completed_task_expectations(flow_manager_page)
       finished_tasks = flow_manager_page.column 'Done'
       papers = finished_tasks.paper_profiles
       expect(papers.map &:title).to match_array [paper1.title, paper1.title, paper2.title]
@@ -62,7 +71,15 @@ feature "Flow Manager: completed tasks", js: true do
       expect(paper2_cards.map &:title).to match_array paper2_completed_task_titles
       expect(paper1_profiles.count).to eq(paper1_completed_task_titles.count)
       expect(paper2_profiles.count).to eq(paper2_completed_task_titles.count)
-      papers.first.view # Verify that we can go to the paper's manage page from its profile.
+      papers #return papers for later use
+    end
+
+    scenario "Viewing the flow manager" do
+      dashboard_page = DashboardPage.visit
+      flow_manager_page = dashboard_page.view_flow_manager
+      my_task_expectations flow_manager_page
+      completed_papers = completed_task_expectations flow_manager_page
+      completed_papers.first.view # Verify that we can go to the paper's manage page from its profile.
     end
   end
 end

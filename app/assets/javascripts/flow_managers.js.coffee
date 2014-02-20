@@ -50,6 +50,9 @@ Flow = React.createClass
             (li {}, PaperProfile {profile: paperProfile}))))
 
 FlowManager = React.createClass
+  componentDidMount: ->
+    $.getJSON 'flow_manager', (data,status) =>
+      @setProps flows: data.flows
   render: ->
     {div} = React.DOM
     (div {className: 'columns'},
@@ -60,6 +63,5 @@ FlowManager = React.createClass
 Tahi.flowManager =
   init: ->
     if document.getElementById('flow-manager')
-      $.getJSON 'flow_manager', (data,status) ->
-        flowManager = FlowManager flows: data.flows
-        React.renderComponent flowManager, document.getElementById('flow-manager')
+      flowManager = FlowManager flows: []
+      React.renderComponent flowManager, document.getElementById('flow-manager')

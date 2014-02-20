@@ -5,6 +5,10 @@ class Task < ActiveRecord::Base
 
   after_initialize :initialize_defaults
 
+  scope :completed, -> { where(completed: true) }
+  scope :incomplete, -> { where(completed: false) }
+  scope :assigned_to, ->(user) { where(assignee: user) }
+
   delegate :paper, to: :phase
   delegate :task_manager, to: :phase
   delegate :journal, to: :paper
@@ -13,6 +17,10 @@ class Task < ActiveRecord::Base
 
   belongs_to :assignee, class_name: 'User'
   belongs_to :phase
+
+  def self.assigned_to(user)
+    where(assignee: user)
+  end
 
   class << self
     attr_reader :_default_title, :_default_role

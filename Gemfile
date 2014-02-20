@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby "2.1.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.2'
+gem 'rails', '4.0.3'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -56,7 +56,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'rspec-rails', "~> 3.0.0.beta1"
+  gem 'rspec-rails', "~> 3.0.0.beta2"
   gem "rspec-its", "~> 1.0.0.pre"
   gem 'capybara'
   gem 'capybara-webkit'
@@ -64,6 +64,10 @@ group :development, :test do
   gem 'launchy'
   gem 'database_cleaner'
   gem "jasmine"
+end
+
+group :test do
+  gem 'factory_girl_rails'
 end
 
 gem 'devise'

@@ -5,9 +5,14 @@ class FlowManagerPage < Page
     end
   end
 
-  class PaperSummary < PageFragment
+  class PaperProfile < PageFragment
     def title
       find('h4').text
+    end
+
+    def view
+      click_link title
+      TaskManagerPage.new
     end
 
     def cards
@@ -16,9 +21,14 @@ class FlowManagerPage < Page
   end
 
   class Column < PageFragment
-    def papers
-      all('.paper-profile').map { |p| PaperSummary.new p }
+    def paper_profiles
+      all('.paper-profile').map { |p| PaperProfile.new p }
     end
+
+    def paper_profiles_for title
+      paper_profiles.select { |p| p.title == title }
+    end
+
   end
 
   def column title
@@ -26,4 +36,6 @@ class FlowManagerPage < Page
     el = all('.column').detect { |c| c.find('h1').text == title }
     Column.new el if el
   end
+
+  path :flow_manager
 end

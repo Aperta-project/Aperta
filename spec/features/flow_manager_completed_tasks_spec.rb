@@ -2,25 +2,11 @@ require 'spec_helper'
 
 feature "Flow Manager: completed tasks", js: true do
   let(:admin) do
-    User.create! username: 'zoey',
-      first_name: 'Zoey',
-      last_name: 'Bob',
-      email: 'hi@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'PLOS',
-      admin: true
+    FactoryGirl.create :user, :admin
   end
 
   let(:author) do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich',
-      admin: true
+    FactoryGirl.create :user, :admin
   end
 
   before do

@@ -60,6 +60,6 @@ FlowManager = React.createClass
 Tahi.flowManager =
   init: ->
     if document.getElementById('flow-manager')
-      flowManager = FlowManager flows: [window.incompleteTasks, window.completeTasks]
-      React.renderComponent flowManager, document.getElementById('flow-manager')
-
+      $.getJSON 'flow_manager', (data,status) ->
+        flowManager = FlowManager flows: data.flows
+        React.renderComponent flowManager, document.getElementById('flow-manager')

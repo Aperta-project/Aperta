@@ -4,6 +4,7 @@ feature "Flow Manager", js: true do
   let(:admin) do
     FactoryGirl.create :user, :admin, first_name: "Admin"
   end
+
   let(:author) do
     FactoryGirl.create :user, :admin, first_name: "Author"
   end
@@ -33,6 +34,23 @@ feature "Flow Manager", js: true do
   before do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin.email
+  end
+
+  context "an admin with papers assigned to them" do
+    before do
+      assign_tasks_to_user(paper1, admin, ['Assign Admin'])
+      assign_tasks_to_user(paper2, admin, ['Assign Admin'])
+    end
+
+    scenario "Your Papers" do
+      dashboard_page = DashboardPage.visit
+      flow_manager_page = dashboard_page.view_flow_manager
+
+      my_tasks = flow_manager_page.column 'My Papers'
+      papers = my_tasks.paper_profiles
+      expect(papers.map &:title).to match_array [paper1.title, paper2.title]
+      papers.first.view # Verify that we can go to the paper's manage page from its profile.
+    end
   end
 
   context "with tasks assigned and completed" do
@@ -81,5 +99,6 @@ feature "Flow Manager", js: true do
       completed_papers = completed_task_expectations flow_manager_page
       completed_papers.first.view # Verify that we can go to the paper's manage page from its profile.
     end
+
   end
 end

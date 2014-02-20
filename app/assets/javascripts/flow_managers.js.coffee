@@ -24,10 +24,11 @@ Card = React.createClass
 
 PaperProfile = React.createClass
   render: ->
-    {div, h4} = React.DOM
+    {div, h4, a} = React.DOM
 
     (div {className: 'paper-profile'}, [
-      (h4 {}, @props.profile.title),
+      (a {href: @props.profile.paper_path}, 
+        (h4 {}, @props.profile.title)),
 
       for task in @props.profile.tasks
         (Card {task: task})])

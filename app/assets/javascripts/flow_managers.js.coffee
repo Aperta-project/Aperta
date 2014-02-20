@@ -44,9 +44,10 @@ Flow = React.createClass
 
     (div {className: 'column'},
       (h1 {}, @props.title),
-      (ul {},
-        for paperProfile in @props.paperProfiles
-          (li {}, PaperProfile {profile: paperProfile})))
+      (div {className: 'paper-profiles'},
+        (ul {},
+          for paperProfile in @props.paperProfiles
+            (li {}, PaperProfile {profile: paperProfile}))))
 
 FlowManager = React.createClass
   render: ->

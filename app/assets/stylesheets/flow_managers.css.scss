@@ -2,6 +2,27 @@
 @import "bootstrap";
 @import 'tahi';
 
+html, body {
+  height: 100%;
+}
+
+body.full-height {
+  overflow: hidden;
+
+  #tahi-container {
+    height: 100%;
+  }
+}
+
+#flow-manager, #flow-manager > div {
+  height: 100%;
+}
+
+.paper-profiles {
+  height: 100%;
+  overflow-y: scroll;
+}
+
 .paper-profile {
   border: 1px solid $tahi-tertiary;
   border-bottom: 2px solid $tahi-tertiary;
@@ -17,6 +38,7 @@
 
 .column {
   width: 235px;
+  height: 100%;
   padding-right: 15px;
   border-right: 1px solid $tahi-tertiary;
   margin-right: 15px;

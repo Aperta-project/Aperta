@@ -8,7 +8,7 @@ Card = React.createClass
       'completed': @props.task.taskCompleted
 
   render: ->
-    {a} = React.DOM
+    {a, span} = React.DOM
     (a {
         className: @cardClass(),
         onClick: @displayCard,
@@ -16,6 +16,7 @@ Card = React.createClass
         "data-task-path": @props.task.taskPath,
         href: @props.task.taskPath
       },
+      (span {className: 'glyphicon glyphicon-ok'}),
       @props.task.taskTitle
     )
 
@@ -23,6 +24,10 @@ Card = React.createClass
     Tahi.overlay.display event, @props.task.cardName
 
 PaperProfile = React.createClass
+  componentDidMount: (DOMElement, rootNode) ->
+    $('h4', rootNode).dotdotdot
+      height: 40
+
   render: ->
     {div, h4, a} = React.DOM
 

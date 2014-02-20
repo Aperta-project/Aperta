@@ -19,8 +19,9 @@
   width: 235px;
   padding-right: 15px;
   border-right: 1px solid $tahi-tertiary;
-  float: left;
   margin-right: 15px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .column h1 {

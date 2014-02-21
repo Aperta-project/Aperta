@@ -16,7 +16,7 @@ describe "dashboards/index" do
 
   describe "my-tasks" do
     context "when there are paper tasks" do
-      let(:paper) { mock_model(Paper, title: "My paper") }
+      let(:paper) { mock_model(Paper, display_title: "My paper") }
       let(:paper_tasks) { {paper => [mock_model(Task, title: 'My huge task', completed?: true, paper: paper, assignees: [])]} }
 
       it { should have_text 'My huge task' }
@@ -37,7 +37,7 @@ describe "dashboards/index" do
 
     context "when there is a paper belonging to the user" do
       let!(:papers) do
-        [mock_model(Paper, short_title: 'my paper')]
+        [mock_model(Paper, display_title: 'my paper')]
       end
 
       it { should have_text 'my paper' }
@@ -51,7 +51,7 @@ describe "dashboards/index" do
 
     context "when there are submitted papers" do
       let(:all_submitted_papers) do
-        [mock_model(Paper, short_title: 'submitted paper')]
+        [mock_model(Paper, short_title: 'submitted paper', display_title: 'submitted paper')]
       end
 
       it { should have_text 'submitted paper' }

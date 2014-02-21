@@ -28,6 +28,10 @@ class Paper < ActiveRecord::Base
     where(submitted: true)
   end
 
+  def display_title
+    title.present? ? title : short_title
+  end
+
   def self.ongoing
     where(submitted: false)
   end

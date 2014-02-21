@@ -17,14 +17,14 @@
     - else
       %ul.submitted
         - @papers.each do |paper|
-          %li.paper-title= link_to (paper.title || paper.short_title), paper_path(paper)
+          %li.paper-title= link_to paper.display_title, paper_path(paper)
     = link_to 'Create new submission', new_paper_path, class: 'primary-button wide-button'
 
   - if @paper_tasks.present?
     %section#my-tasks
       %h2 Your Tasks
       - @paper_tasks.each do |paper, tasks|
-        %p.paper-title= link_to paper.title || paper.short_title, paper_path(paper)
+        %p.paper-title= link_to paper.display_title, paper_path(paper)
         %ul.cards
           - tasks.each do |task|
             %li= card task

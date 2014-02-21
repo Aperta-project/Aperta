@@ -12,7 +12,7 @@ class TaskPresenter
 
   def data_attributes
     {
-      'paperTitle' => task.paper.title || task.paper.short_title,
+      'paperTitle' => task.paper.display_title,
       'paperPath' => paper_path(task.paper),
       'paperId' => task.paper.to_param,
       'taskPath' => paper_task_path(task.paper, task),

@@ -10,6 +10,6 @@ class TaskManager < ActiveRecord::Base
   private
 
   def initialize_defaults
-    self.phases = Phase.default_phases if phases.blank?
+    self.phases = Phase.default_phases unless self.phases.exists?
   end
 end

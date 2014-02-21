@@ -5,14 +5,15 @@ class FlowManagersController < ApplicationController
   def show
     respond_to do |format|
       format.json do
-        incomplete_tasks = Task.assigned_to(current_user).incomplete.group_by { |t| t.paper }.to_a
-        complete_tasks = Task.assigned_to(current_user).completed.map do |task|
+        bq = Task.joins(phase: {task_manager: :paper}).assigned_to(current_user)
+        incomplete_tasks = bq.incomplete.group_by { |t| t.paper }.to_a
+        complete_tasks = bq.completed.map do |task|
           [task.paper, [task]]
         end
-        paper_admin_tasks = PaperAdminTask.assigned_to(current_user).map do |task|
+        paper_admin_tasks = PaperAdminTask.joins(phase: {task_manager: :paper}).assigned_to(current_user).map do |task|
           [task.paper, []]
         end
-        unassigned_papers = PaperAdminTask.where(assignee_id: nil).map do |task|
+        unassigned_papers = PaperAdminTask.joins(phase: {task_manager: :paper}).where(assignee_id: nil).map do |task|
           [task.paper, [task]] if User.admins_for(task.paper.journal).include? current_user
         end.compact
         @flows = [["Up for grabs", unassigned_papers],

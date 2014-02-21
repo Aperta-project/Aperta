@@ -2,7 +2,7 @@ class Phase < ActiveRecord::Base
   belongs_to :task_manager
   has_many :tasks
 
-  delegate :paper, to: :task_manager
+  has_one :paper, through: :task_manager
 
   after_initialize :initialize_defaults
 

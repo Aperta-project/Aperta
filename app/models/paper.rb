@@ -19,8 +19,8 @@ class Paper < ActiveRecord::Base
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
   validates :journal, presence: true
 
-  delegate :phases, to: :task_manager
-  delegate :tasks, to: :task_manager
+  has_many :phases, through: :task_manager
+  has_many :tasks, through: :phases
 
   after_create :assign_user_to_author_tasks
 

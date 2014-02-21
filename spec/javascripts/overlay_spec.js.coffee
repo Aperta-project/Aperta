@@ -1,11 +1,13 @@
 describe "Tahi.overlay", ->
   beforeEach ->
     $('#jasmine_content').html """
-      <a href="/path/to/task/1"
+      <a href="/path/to/task/11"
          id="link1"
+         data-task-id="11"
          data-card-name="some-card"><span>Foo</span></a>
-      <a href="/path/to/task/2"
+      <a href="/path/to/task/12"
          id="link2"
+         data-task-id="12"
          data-card-name="some-other-card">Bar</a>
       <div id="overlay" style="display: none;"></div>
     """
@@ -89,8 +91,8 @@ describe "Tahi.overlay", ->
       Tahi.overlay.display @event, 'some-card'
       state =
         cardName: 'some-card'
-        taskHref: '/path/to/task/1'
-      expect(history.pushState).toHaveBeenCalledWith state, null, "/path/to/task/1"
+        taskHref: '/path/to/task/11'
+      expect(history.pushState).toHaveBeenCalledWith state, null, "/path/to/task/11"
 
   describe "#popstateOverlay", ->
     beforeEach ->
@@ -101,7 +103,7 @@ describe "Tahi.overlay", ->
     it "renders the component if the history state and cardName are present", ->
       @historyObj.state =
         cardName: 'Hello'
-        taskHref: '/path/to/task/1'
+        taskHref: '/path/to/task/11'
 
       Tahi.overlay.popstateOverlay()
       expect(Tahi.overlay.renderCard).toHaveBeenCalled()
@@ -161,7 +163,7 @@ describe "Tahi.overlay", ->
 
     it "includes default properties pulled from the event target", ->
       props = Tahi.overlay.defaultProps($(@event.target))
-      expect(props.taskPath).toEqual '/path/to/task/1'
+      expect(props.taskPath).toEqual '/path/to/task/11'
 
     describe "onCompletedChanged callback", ->
       beforeEach ->

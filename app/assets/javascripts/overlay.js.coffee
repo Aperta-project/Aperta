@@ -31,7 +31,7 @@ Tahi.overlay =
       @hide(e, turbolinksState)
 
     onCompletedChanged: (event, data) ->
-      $("[data-card-name='#{element.data('cardName')}']").toggleClass 'completed', data.completed
+      $("[data-task-id='#{element.data('taskId')}'][data-card-name='#{element.data('cardName')}']").toggleClass 'completed', data.completed
 
   hide: (event, turbolinksState=null) ->
     event?.preventDefault()

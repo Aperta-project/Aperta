@@ -14,6 +14,7 @@ module ApplicationHelper
         class: classes.join(' '),
         data: {
           'task-path' => paper_task_path(task.paper, task),
+          'task-id' => task.id,
           'card-name' => task.class.name.underscore.dasherize.gsub(/-task/, '')
         }
       ) do

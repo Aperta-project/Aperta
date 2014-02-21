@@ -13,6 +13,7 @@ Card = React.createClass
         className: @cardClass(),
         onClick: @displayCard,
         "data-card-name": @props.task.cardName,
+        "data-task-id":   @props.task.taskId,
         "data-task-path": @props.task.taskPath,
         href: @props.task.taskPath
       },
@@ -53,6 +54,7 @@ FlowManager = React.createClass
   componentDidMount: ->
     $.getJSON 'flow_manager', (data,status) =>
       @setProps flows: data.flows
+
   render: ->
     {div} = React.DOM
     (div {className: 'columns'},

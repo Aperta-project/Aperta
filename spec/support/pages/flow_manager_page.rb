@@ -33,7 +33,7 @@ class FlowManagerPage < Page
 
   def column title
     wait_for_turbolinks
-    el = all('.column').detect { |c| c.find('h1').text == title }
+    el = all('.column').detect { |c| c.find('h2').text == title }
     Column.new el if el
   end
 

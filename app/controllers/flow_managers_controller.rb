@@ -10,7 +10,11 @@ class FlowManagersController < ApplicationController
     paper_admin_tasks = PaperAdminTask.assigned_to(current_user).map do |task|
       [task.paper, []]
     end
-    @flows = [["My Tasks", incomplete_tasks],
+    unassigned_papers = PaperAdminTask.where(assignee_id: nil).map do |task|
+      [task.paper, [task]] if User.admins_for(task.paper.journal).include? current_user
+    end.compact
+    @flows = [["Up for grabs", unassigned_papers],
+              ["My Tasks", incomplete_tasks],
               ["My Papers", paper_admin_tasks],
               ["Done", complete_tasks]]
   end

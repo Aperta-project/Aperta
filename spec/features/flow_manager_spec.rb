@@ -9,18 +9,20 @@ feature "Flow Manager", js: true do
     FactoryGirl.create :user, :admin, first_name: "Author"
   end
 
-  let(:paper1) do
+  let(:journal) { Journal.create! }
+
+  let!(:paper1) do
     author.papers.create! short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
-      journal: Journal.create!
+      journal: journal
   end
 
-  let(:paper2) do
+  let!(:paper2) do
     author.papers.create! short_title: 'bazqux',
       title: 'Baz Qux',
       submitted: true,
-      journal: Journal.create!
+      journal: journal
   end
 
   def assign_tasks_to_user(paper, user, titles)
@@ -32,8 +34,25 @@ feature "Flow Manager", js: true do
   end
 
   before do
+    JournalRole.create! user: admin, journal: journal, admin: true
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin.email
+  end
+
+  scenario "papers without assigned admins" do
+    paper1.tasks.detect { |t| t.title == 'Assign Admin' }.update! assignee: admin
+
+    dashboard_page = DashboardPage.visit
+    flow_manager_page = dashboard_page.view_flow_manager
+
+    up_for_grabs = flow_manager_page.column 'Up for grabs'
+    papers = up_for_grabs.paper_profiles
+    expect(papers.length).to eq 1
+    paper = papers.first
+    expect(paper.title).to eq paper2.title
+    cards = paper.cards
+    expect(cards.length).to eq 1
+    expect(cards.first.title).to eq 'Assign Admin'
   end
 
   context "an admin with papers assigned to them" do

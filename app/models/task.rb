@@ -9,9 +9,9 @@ class Task < ActiveRecord::Base
   scope :incomplete, -> { where(completed: false) }
   scope :assigned_to, ->(user) { where(assignee: user) }
 
-  delegate :paper, to: :phase
-  delegate :task_manager, to: :phase
-  delegate :journal, to: :paper
+  has_one :task_manager, through: :phase
+  has_one :paper, through: :task_manager
+  has_one :journal, through: :paper
 
   validates :title, :role, presence: true
 

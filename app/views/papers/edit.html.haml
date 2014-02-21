@@ -13,7 +13,7 @@
             = @paper.short_title
         %ul
           - if current_user.admin?
-            %li= link_to 'Task Manager', manage_paper_path(@paper)
+            %li= link_to 'Manuscript Manager', manage_paper_path(@paper)
 
 %main
   %article{data: { 'paper-path' => paper_path(@paper, format: :json) } }

@@ -24,7 +24,7 @@ class EditPaperPage < Page
   end
 
   def navigate_to_task_manager
-    click_link 'Task Manager'
+    click_link 'Manuscript Manager'
     TaskManagerPage.new
   end
 

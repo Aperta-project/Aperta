@@ -41,11 +41,11 @@ PaperProfile = React.createClass
 
 Flow = React.createClass
   render: ->
-    {h1, ul, li, div} = React.DOM
+    {h2, ul, li, div} = React.DOM
 
-    (div {className: 'column'},
-      (h1 {}, @props.title),
-      (div {className: 'paper-profiles'},
+    (li {className: 'column'},
+      (h2 {}, @props.title),
+      (div {className: 'column-content'},
         (ul {},
           for paperProfile in @props.paperProfiles
             (li {}, PaperProfile {profile: paperProfile}))))
@@ -56,8 +56,8 @@ FlowManager = React.createClass
       @setProps flows: data.flows
 
   render: ->
-    {div} = React.DOM
-    (div {className: 'columns'},
+    {ul} = React.DOM
+    (ul {className: 'columns'},
       for flow, index in @props.flows
         Flow {key: "flow-#{index}", paperProfiles: flow.paperProfiles, title: flow.title}
     )
@@ -66,4 +66,4 @@ Tahi.flowManager =
   init: ->
     if document.getElementById('flow-manager')
       flowManager = FlowManager flows: []
-      React.renderComponent flowManager, document.getElementById('flow-manager')
+      React.renderComponent flowManager, document.getElementById('tahi-container')

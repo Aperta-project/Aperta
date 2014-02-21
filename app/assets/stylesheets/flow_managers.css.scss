@@ -1,5 +1,5 @@
 @import 'variables';
-@import "bootstrap";
+@import 'bootstrap';
 @import 'tahi';
 
 html, body {
@@ -14,16 +14,52 @@ body.full-height {
   }
 }
 
-#flow-manager, .columns {
+.columns {
+  padding: 40px 0;
   height: 100%;
+  white-space: nowrap;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  text-align: center;
 }
 
-.paper-profiles {
+.column {
+  white-space: initial;
+  text-align: left;
   height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  width: 251px; // +1px for border
+  padding: 0 15px;
+  vertical-align: top;
+  border-right: 1px solid $tahi-tertiary;
+  display: inline-block;
+  position: relative;
+  // overflow: hidden;
+}
+
+.column:last-of-type {
+  border-right: none;
+}
+
+.column h2 {
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #aaa;
+}
+
+.column-content {
+  height: 100%;
   box-sizing: border-box;
+  width: 235px;
   padding-bottom: 150px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  top: 54px;
+
+  > ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
 }
 
 .paper-profile {
@@ -34,7 +70,7 @@ body.full-height {
   width: 219px;
 
   .paper-title {
-   color: black;
+    color: black;
   }
 
   h4 {
@@ -45,36 +81,12 @@ body.full-height {
   }
 }
 
-.column {
-  width: 245px;
-  height: 100%;
-  padding-right: 15px;
-  border-right: 1px solid $tahi-tertiary;
-  margin-right: 15px;
-  display: inline-block;
-  vertical-align: top;
-}
-
-.column h1 {
-  font-size: 30px;
-  border-bottom: 1px solid #aaa;
-  padding-bottom: 10px;
-}
-
-.column ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-
 .card.flow-card {
-  background: rgb(194,232,188);
-}
-
-.column a.card {
   width: 217px;
   margin-bottom: 0;
   border-radius: 0;
   border-bottom: 1px solid white;
+  background: rgb(194,232,188);
 
   &:last-child {
     border-bottom: none;
@@ -88,12 +100,12 @@ body.full-height {
 ::-webkit-scrollbar {
   background-color: transparent;
   width: 6px;
-  height: 10px
+  height: 10px;
+  padding-left: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #ddd;
-  border-radius: 6px;
-  width: 3px !important;
+  width: 4px !important;
   min-height: 40px;
 }

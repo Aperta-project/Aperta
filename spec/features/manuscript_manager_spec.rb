@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Task Manager", js: true do
+feature "Manuscript Manager", js: true do
   include ActionView::Helpers::JavaScriptHelper
 
   let(:admin) do

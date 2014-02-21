@@ -2,7 +2,7 @@ class PaperPage < Page
   path :paper
 
   def navigate_to_task_manager
-    click_link 'Task Manager'
+    click_link 'Manuscript Manager'
     wait_for_turbolinks
     TaskManagerPage.new
   end

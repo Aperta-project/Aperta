@@ -52,8 +52,8 @@ class Paper < ActiveRecord::Base
   end
 
   def initialize_defaults
-    self.paper_type = 'research' if paper_type.blank?
-    self.declarations = Declaration.default_declarations if declarations.blank?
-    self.task_manager = build_task_manager if task_manager.blank?
+    self.paper_type ||= 'research'
+    self.declarations = Declaration.default_declarations unless self.declarations.exists?
+    self.task_manager ||= build_task_manager
   end
 end

@@ -16,7 +16,7 @@ class Task < ActiveRecord::Base
   validates :title, :role, presence: true
 
   belongs_to :assignee, class_name: 'User'
-  belongs_to :phase
+  belongs_to :phase, inverse_of: :tasks
 
   def self.assigned_to(user)
     where(assignee: user)

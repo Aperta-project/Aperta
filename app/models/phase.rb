@@ -1,6 +1,6 @@
 class Phase < ActiveRecord::Base
-  belongs_to :task_manager
-  has_many :tasks
+  belongs_to :task_manager, inverse_of: :phases
+  has_many :tasks, inverse_of: :phase
 
   has_one :paper, through: :task_manager
 

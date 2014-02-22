@@ -5,7 +5,7 @@ class PaperRole < ActiveRecord::Base
   after_save :assign_tasks_to_editor, if: -> { user_id_changed? && editor? }
 
   def self.reviewers_for(paper)
-    where(paper: paper, reviewer: true)
+    where(paper_id: paper.id, reviewer: true)
   end
 
   protected

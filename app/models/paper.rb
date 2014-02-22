@@ -10,7 +10,7 @@ class Paper < ActiveRecord::Base
   has_many :figures
   has_many :paper_roles
 
-  has_one :task_manager
+  has_one :task_manager, inverse_of: :paper
 
   accepts_nested_attributes_for :declarations
   serialize :authors, Array
@@ -52,8 +52,8 @@ class Paper < ActiveRecord::Base
   end
 
   def initialize_defaults
-    self.paper_type ||= 'research'
-    self.declarations = Declaration.default_declarations unless self.declarations.exists?
+    self.paper_type = 'research' if self.paper_type.blank?
+    self.declarations = Declaration.default_declarations unless (self.declarations.exists? || self.declarations.any?)
     self.task_manager ||= build_task_manager
   end
 end

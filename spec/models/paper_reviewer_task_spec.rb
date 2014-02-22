@@ -48,7 +48,7 @@ describe PaperReviewerTask do
   end
 
   describe "#paper_roles=" do
-    let(:task) { PaperReviewerTask.new(phase: phase) }
+    let(:task) { PaperReviewerTask.create!(phase: phase) }
 
     it "creates reviewer paper roles only for new ids" do
       PaperRole.create! paper: paper, reviewer: true, user: albert
@@ -117,8 +117,8 @@ describe PaperReviewerTask do
   end
 
   describe "#assignees" do
-    let(:task) { PaperReviewerTask.new phase: paper.task_manager.phases.first }
     let(:paper) { Paper.create! short_title: 'hello', journal: Journal.create! }
+    let(:task) { PaperReviewerTask.create! phase: paper.task_manager.phases.first }
 
     it "returns editors for this paper's journal" do
       editors = double(:editors)

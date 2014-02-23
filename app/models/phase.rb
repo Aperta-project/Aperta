@@ -21,7 +21,7 @@ class Phase < ActiveRecord::Base
   private
 
   def initialize_defaults
-    return unless tasks.empty?
+    return if persisted? || tasks.any?
     case name
     when 'Submission Data'
       self.tasks << UploadManuscriptTask.new

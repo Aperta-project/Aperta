@@ -7,7 +7,7 @@ class PaperEditorTask < Task
   has_many :paper_roles, through: :paper
 
   def paper_role
-    paper_roles.where(editor: true).first_or_initialize
+    paper_roles.where(editor: true).first_or_initialize(paper_id: paper.id)
   end
 
   def paper_role_attributes=(attributes)

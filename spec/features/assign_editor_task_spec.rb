@@ -49,7 +49,6 @@ feature "Assigns Editor", js: true do
       overlay.assignee = admin.full_name
       overlay.paper_editor = editor.full_name
       overlay.mark_as_complete
-      binding.pry
       expect(overlay).to be_completed
     end
 

@@ -125,7 +125,7 @@ describe RegisterDecisionTask do
   end
 
   describe "#assignees" do
-    let(:task) { RegisterDecisionTask.new phase: paper.task_manager.phases.first }
+    let(:task) { RegisterDecisionTask.create! phase: paper.task_manager.phases.first }
     let(:paper) { Paper.create! short_title: 'hello',
                   journal: Journal.create!,
                   decision: "Accepted",

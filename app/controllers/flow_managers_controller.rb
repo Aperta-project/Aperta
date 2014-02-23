@@ -6,7 +6,7 @@ class FlowManagersController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        @flows = FlowManagerDataPresenter.new(current_user).flows
+        @flows = FlowManagerData.new(current_user).flows
       end
     end
   end

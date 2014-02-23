@@ -1,4 +1,4 @@
-class FlowManagerDataPresenter
+class FlowManagerData
 
   def initialize(user)
     @user = user

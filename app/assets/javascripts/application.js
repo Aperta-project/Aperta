@@ -19,7 +19,6 @@
 //= require ckeditor/plugins/sharedspace/sharedspace
 //= require scrollToFixed
 //= require chosen-jquery
-//= require jquery.dotdotdot
 //= require ./polyfills
 //= require react
 //= require react-chosen

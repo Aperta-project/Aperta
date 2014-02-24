@@ -14,8 +14,8 @@ Tahi.overlays.components.Overlay = React.createClass
     @setState @props
 
   componentDidMount: ->
-    @setState loading: true, =>
-      $.get @props.taskPath, @updateState, 'json'
+    @setState loading: true
+    $.get @props.taskPath, @updateState, 'json'
 
   updateState: (data) ->
     data.loading = false

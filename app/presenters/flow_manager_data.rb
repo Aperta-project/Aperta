@@ -5,7 +5,7 @@ class FlowManagerData
   end
 
   def base_query(task_type)
-    task_type.joins(phase: {task_manager: :paper}).includes(:paper)
+    task_type.joins(phase: {task_manager: :paper}).includes(:paper, {paper: :figures}, {paper: :declarations}, {paper: {journal: :journal_roles}})
   end
 
   def incomplete_tasks

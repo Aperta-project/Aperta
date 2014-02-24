@@ -52,15 +52,4 @@ describe PaperEditorTask do
       expect(task.editor_id).to eq editor.id
     end
   end
-
-  describe "#editors" do
-    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
-    let(:task) { PaperEditorTask.create! phase: paper.task_manager.phases.first }
-
-    it "returns list of editors for the journal" do
-      editors = double(:editors)
-      expect(User).to receive(:editors_for).with(paper.journal).and_return editors
-      expect(task.editors).to eq editors
-    end
-  end
 end

@@ -19,6 +19,6 @@ class PaperEditorTask < Task
   end
 
   def editors
-    User.editors_for(paper.journal)
+    journal.editors
   end
 end

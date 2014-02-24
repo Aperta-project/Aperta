@@ -23,11 +23,11 @@ class PaperReviewerTask < Task
   alias :reviewer_ids :paper_roles
 
   def reviewers
-    User.reviewers_for(paper.journal)
+    journal.reviewers
   end
 
   def assignees
-    User.editors_for(journal)
+    journal.editors
   end
 
   private

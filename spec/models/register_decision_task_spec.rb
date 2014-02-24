@@ -123,19 +123,4 @@ describe RegisterDecisionTask do
       end
     end
   end
-
-  describe "#assignees" do
-    let(:task) { RegisterDecisionTask.create! phase: paper.task_manager.phases.first }
-    let(:paper) { Paper.create! short_title: 'hello',
-                  journal: Journal.create!,
-                  decision: "Accepted",
-                  decision_letter: 'Lorem Ipsum' }
-
-    it "returns editors for this paper's journal" do
-      editors = double(:editors)
-      expect(User).to receive(:editors_for).with(task.paper.journal).and_return editors
-      expect(task.assignees).to eq editors
-    end
-
-  end
 end

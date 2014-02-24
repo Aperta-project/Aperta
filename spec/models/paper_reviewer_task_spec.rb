@@ -104,26 +104,4 @@ describe PaperReviewerTask do
       expect(task.reviewer_ids).to match_array [reviewer1.id, reviewer2.id]
     end
   end
-
-  describe "#reviewers" do
-    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
-    let(:task) { PaperReviewerTask.create! phase: paper.task_manager.phases.first }
-
-    it "returns list of reviewers for the journal" do
-      reviewers = double(:reviewers)
-      expect(User).to receive(:reviewers_for).with(paper.journal).and_return reviewers
-      expect(task.reviewers).to eq reviewers
-    end
-  end
-
-  describe "#assignees" do
-    let(:paper) { Paper.create! short_title: 'hello', journal: Journal.create! }
-    let(:task) { PaperReviewerTask.create! phase: paper.task_manager.phases.first }
-
-    it "returns editors for this paper's journal" do
-      editors = double(:editors)
-      expect(User).to receive(:editors_for).with(paper.journal).and_return editors
-      expect(task.assignees).to eq editors
-    end
-  end
 end

@@ -103,7 +103,7 @@ class RegisterDecisionTask < Task
   end
 
   def assignees
-    User.editors_for(paper.journal)
+    journal.editors
   end
 
   private

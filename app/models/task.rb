@@ -33,7 +33,7 @@ class Task < ActiveRecord::Base
   end
 
   def assignees
-    User.admins_for(journal)
+    journal.admins
   end
 
   protected

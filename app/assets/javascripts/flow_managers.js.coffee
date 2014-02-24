@@ -25,6 +25,10 @@ Card = React.createClass
     Tahi.overlay.display event, @props.task.cardName
 
 PaperProfile = React.createClass
+  componentDidMount: (DOMElement, rootNode) ->
+    $('h4', rootNode).dotdotdot
+      height: 40
+
   render: ->
     {div, h4, a} = React.DOM
 

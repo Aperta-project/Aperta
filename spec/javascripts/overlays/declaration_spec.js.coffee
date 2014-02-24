@@ -8,13 +8,6 @@ describe "Declarations Card", ->
         component.componentWillReceiveProps({declarations: declarations})
         expect(component.setState).toHaveBeenCalledWith declarations: declarations
 
-      context "when props.declarations is falsy", ->
-        it "sets state.declarations to the empty list", ->
-          component = Tahi.overlays.declaration.Overlay()
-          spyOn component, 'setState'
-          component.componentWillReceiveProps({declarations: null})
-          expect(component.setState).toHaveBeenCalledWith declarations: []
-
     describe "#declarations", ->
       beforeEach ->
         @component = Tahi.overlays.declaration.Overlay

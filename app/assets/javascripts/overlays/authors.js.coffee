@@ -7,6 +7,9 @@ Tahi.overlays.authors =
     getInitialState: ->
       authors: []
 
+    componentWillMount: ->
+      @setState @props
+
     componentWillReceiveProps: (nextProps) ->
       @setState authors: (nextProps.authors || [])
 

@@ -4,8 +4,10 @@ class PaperEditorTask < Task
   title 'Assign Editor'
   role 'admin'
 
+  has_many :paper_roles, through: :paper
+
   def paper_role
-    PaperRole.where(paper: paper, editor: true).first_or_initialize
+    paper_roles.where(editor: true).first_or_initialize(paper_id: paper.id)
   end
 
   def paper_role_attributes=(attributes)
@@ -17,6 +19,6 @@ class PaperEditorTask < Task
   end
 
   def editors
-    User.editors_for(paper.journal)
+    journal.editors
   end
 end

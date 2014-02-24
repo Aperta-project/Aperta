@@ -25,10 +25,6 @@ Card = React.createClass
     Tahi.overlay.display event, @props.task.cardName
 
 PaperProfile = React.createClass
-  componentDidMount: (DOMElement, rootNode) ->
-    $('h4', rootNode).dotdotdot
-      height: 40
-
   render: ->
     {div, h4, a} = React.DOM
 
@@ -54,6 +50,12 @@ FlowManager = React.createClass
   componentDidMount: ->
     $.getJSON 'flow_manager', (data,status) =>
       @setProps flows: data.flows
+
+  componentDidUpdate: ->
+    $('.paper-profile h4').dotdotdot
+      height: 40
+
+
 
   render: ->
     {ul} = React.DOM

@@ -11,7 +11,7 @@ feature "Assigns Editor", js: true do
       password_confirmation: 'password',
       affiliation: 'PLOS',
       admin: true,
-      journal_roles: [JournalRole.new(journal: journal, admin: true)]
+      journal_roles: [JournalRole.create!(journal: journal, admin: true)]
   end
 
   let(:journal) { Journal.create! }
@@ -24,7 +24,7 @@ feature "Assigns Editor", js: true do
       password: 'password',
       password_confirmation: 'password',
       affiliation: 'Universität Zürich',
-      journal_roles: [JournalRole.new(journal: journal, editor: true)]
+      journal_roles: [JournalRole.create!(journal: journal, editor: true)]
   end
 
   before do

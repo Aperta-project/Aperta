@@ -1,8 +1,8 @@
 class Phase < ActiveRecord::Base
-  belongs_to :task_manager
-  has_many :tasks
+  belongs_to :task_manager, inverse_of: :phases
+  has_many :tasks, inverse_of: :phase
 
-  delegate :paper, to: :task_manager
+  has_one :paper, through: :task_manager
 
   after_initialize :initialize_defaults
 
@@ -21,7 +21,7 @@ class Phase < ActiveRecord::Base
   private
 
   def initialize_defaults
-    return unless tasks.empty?
+    return if persisted? || tasks.any?
     case name
     when 'Submission Data'
       self.tasks << UploadManuscriptTask.new

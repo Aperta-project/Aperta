@@ -5,7 +5,7 @@ class PaperReviewerTask < Task
   role 'editor'
 
   def paper_roles
-    PaperRole.where(paper: phase.task_manager.paper, reviewer: true).pluck :user_id
+    PaperRole.where(paper_id: phase.task_manager.paper.id, reviewer: true).pluck :user_id
   end
 
   def paper_roles=(user_ids)
@@ -23,11 +23,11 @@ class PaperReviewerTask < Task
   alias :reviewer_ids :paper_roles
 
   def reviewers
-    User.reviewers_for(paper.journal)
+    journal.reviewers
   end
 
   def assignees
-    User.editors_for(journal)
+    journal.editors
   end
 
   private

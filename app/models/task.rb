@@ -9,14 +9,14 @@ class Task < ActiveRecord::Base
   scope :incomplete, -> { where(completed: false) }
   scope :assigned_to, ->(user) { where(assignee: user) }
 
-  delegate :paper, to: :phase
-  delegate :task_manager, to: :phase
-  delegate :journal, to: :paper
+  has_one :task_manager, through: :phase
+  has_one :paper, through: :task_manager
+  has_one :journal, through: :paper
 
   validates :title, :role, presence: true
 
   belongs_to :assignee, class_name: 'User'
-  belongs_to :phase
+  belongs_to :phase, inverse_of: :tasks
 
   def self.assigned_to(user)
     where(assignee: user)
@@ -33,7 +33,7 @@ class Task < ActiveRecord::Base
   end
 
   def assignees
-    User.admins_for(journal)
+    journal.admins
   end
 
   protected

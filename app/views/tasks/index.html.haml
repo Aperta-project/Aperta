@@ -1,3 +1,17 @@
+:javascript
+  window.onresize = resizeH2
+  window.onload = resizeH2
+
+  function resizeH2() {
+    var heights = $('.phase-container h2').map(function() {
+      return $(this).outerHeight(true);
+    });
+
+    var max = Math.max.apply(Math, heights);
+
+    $('.phase-container').css('height', max);
+  };
+
 - content_for :tahi_container_class do
   full-width
 

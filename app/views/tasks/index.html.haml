@@ -21,7 +21,8 @@
 %ul.phases
   - @task_manager.phases.each do |phase|
     %li.phase>
-      %h2= phase.name
+      %div.phase-container
+        %h2= phase.name
 
       %ul.cards
         - phase.tasks.each do |task|

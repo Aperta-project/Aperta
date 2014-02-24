@@ -26,6 +26,21 @@
   margin-top: 40px;
 }
 
+.loading {
+  min-height: 550px;
+  text-align: center;
+  position: relative;
+}
+
+.loading h1 {
+  position: absolute;
+  top: 43%;
+  left: 480px;
+  font-weight: bold;
+  color: $tahi-backdrop;
+  font-style: italic;
+}
+
 #overlay main {
   min-height: 300px;
   padding:8px;

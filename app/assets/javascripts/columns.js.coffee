@@ -96,35 +96,79 @@ Column = React.createClass
             @paperProfiles()
     )))
 
-Columns = React.createClass
-  componentDidMount: ->
-    $.getJSON @props.route, (data,status) =>
-      @setProps flows: data.flows, paper: data.paper
-
-  componentDidUpdate: ->
-    $('.paper-profile h4').dotdotdot
-      height: 40
-
-  render: ->
-    {ul, div} = React.DOM
-    if @props.paper
-      header = ManuscriptHeader {paper: @props.paper}
-    (div {},
-        header
-      (ul {className: 'columns'},
-        for flow, index in @props.flows
-          Column {
-            key: "flow-#{index}",
-            paperProfiles: flow.paperProfiles,
-            title: flow.title
-            tasks: flow.tasks,
-            phase_id: flow.id,
-            paper: @props.paper
-          }
-    ))
-
-Tahi.Columns =
+Tahi.columns =
   init: ()->
     if columns = document.getElementById('column-manager')
-      columns = Columns flows: [], route: columns.getAttribute("data-url")
+      columns = Tahi.columns.Columns flows: [], route: columns.getAttribute("data-url")
       React.renderComponent columns, document.getElementById('tahi-container')
+
+  Columns: React.createClass
+    componentWillMount: ->
+      @setState @props
+
+    componentDidMount: ->
+      $.getJSON @props.route, (data,status) =>
+        @setProps flows: data.flows, paper: data.paper
+
+    componentDidUpdate: ->
+      $('.paper-profile h4').dotdotdot
+        height: 40
+
+    removeFlow: (title) ->
+      @setState {flows: _.reject(@state.flows, (flow) -> flow.title == title)}, @saveFlows
+
+    saveFlows: ->
+      flowTitles = _.map @state.flows, (flow) -> flow.title
+      $.post 'user_settings/update', flows: flowTitles
+
+    render: ->
+      {ul, div} = React.DOM
+      if @props.paper
+        header = ManuscriptHeader {paper: @props.paper}
+      (div {},
+          header
+        (ul {className: 'columns'},
+          for flow, index in @props.flows
+            Tahi.columns.Column {
+              key: "flow-#{index}",
+              paperProfiles: flow.paperProfiles,
+              title: flow.title
+              tasks: flow.tasks,
+              phase_id: flow.id,
+              paper: @props.paper
+              onRemove: @removeFlow
+            }
+      ))
+
+  Column: React.createClass
+    manuscriptCards: ->
+      {li} = React.DOM
+      cards = for task in @props.tasks
+        (li {}, Card {task: task})
+      cards.concat((li {},
+        NewCardButton {
+          paper: @props.paper,
+          phase_id: @props.phase_id
+      }))
+
+    paperProfiles: ->
+      {li} = React.DOM
+      for paperProfile in @props.paperProfiles
+        (li {}, PaperProfile {profile: paperProfile})
+
+    remove: ->
+      @props.onRemove @props.title
+
+    render: ->
+      {h2, ul, li, div, li} = React.DOM
+
+      (li {className: 'column'},
+        (h2 {}, @props.title),
+        (div {className: 'remove-column glyphicon glyphicon-remove', onClick: @remove}),
+        (div {className: 'column-content'},
+          (ul {className: 'cards'},
+            if @props.tasks
+              @manuscriptCards()
+            else
+              @paperProfiles()
+      )))

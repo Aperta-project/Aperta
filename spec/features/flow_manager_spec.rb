@@ -45,6 +45,17 @@ feature "Flow Manager", js: true do
     page.driver.browser.manage.window.size = @old_size
   end
 
+  scenario "admin removes a column from their flow manager" do
+    dashboard_page = DashboardPage.visit
+    flow_manager_page = dashboard_page.view_flow_manager
+    up_for_grabs = flow_manager_page.column 'Up for grabs'
+    up_for_grabs.remove
+
+    expect(flow_manager_page).not_to have_column 'Up for grabs'
+    flow_manager_page.reload
+    expect(flow_manager_page).not_to have_column 'Up for grabs'
+  end
+
   scenario "papers without assigned admins" do
     paper1.tasks.detect { |t| t.title == 'Assign Admin' }.update! assignee: admin
 

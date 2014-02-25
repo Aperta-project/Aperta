@@ -1,16 +1,7 @@
-:javascript
-  window.onresize = resizeH2
-  window.onload = resizeH2
+:coffeescript
+  window.onresize = ->
+    Tahi.utils.resizeH2('.phase-container')
 
-  function resizeH2() {
-    var heights = $('.phase-container h2').map(function() {
-      return $(this).outerHeight(true);
-    });
-
-    var max = Math.max.apply(Math, heights);
-
-    $('.phase-container').css('height', max);
-  };
 
 - content_for :tahi_container_class do
   full-width
@@ -51,3 +42,11 @@
                 paper_short_title: truncated_title(@paper)
               },
               class: "secondary-button react-new-card-overlay")
+
+:coffeescript
+  $ ->
+    Tahi.utils.resizeH2('.phase-container')
+    # fix for safari.
+    setTimeout( ->
+      Tahi.utils.resizeH2('.phase-container')
+    ,200)

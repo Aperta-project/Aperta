@@ -29,9 +29,9 @@
         %ul
           %li= link_to 'Manuscript', edit_paper_path(@paper)
 
-%ul.phases
+%ul.columns.phases
   - @task_manager.phases.each do |phase|
-    %li.phase>
+    %li.phase.column>
       %div.phase-container
         %h2= phase.name
 

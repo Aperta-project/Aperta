@@ -64,6 +64,10 @@ textarea {
 .backdrop {
   padding-top: 50px;
 
+  img {
+    max-width: 500px;
+  }
+
   h2, p {
     color: $tahi-backdrop;
   }

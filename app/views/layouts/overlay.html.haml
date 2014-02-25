@@ -27,7 +27,7 @@
     = yield
 
     .backdrop.text-center
-      = image_tag 'PLOSmark.png'
+      = image_tag @task.paper.journal.logo.url
       %h2 Nothing to see here.
       %p.center Take a look at your dashboard for tasks needing your attention.
 

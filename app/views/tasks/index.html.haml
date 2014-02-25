@@ -2,6 +2,12 @@
   window.onresize = ->
     Tahi.utils.resizeContainer('.phase-container','h2')
 
+  $ ->
+    Tahi.utils.resizeContainer('.phase-container', 'h2')
+    # fix for safari.
+    setTimeout( ->
+      Tahi.utils.resizeContainer('.phase-container', 'h2')
+    ,200)
 
 - content_for :tahi_container_class do
   full-width
@@ -42,11 +48,3 @@
                 paper_short_title: truncated_title(@paper)
               },
               class: "secondary-button react-new-card-overlay")
-
-:coffeescript
-  $ ->
-    Tahi.utils.resizeContainer('.phase-container', 'h2')
-    # fix for safari.
-    setTimeout( ->
-      Tahi.utils.resizeContainer('.phase-container', 'h2')
-    ,200)

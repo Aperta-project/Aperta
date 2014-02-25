@@ -17,10 +17,11 @@ Tahi.overlays.chooseCardType =
       React.unmountComponentAtNode document.getElementById('overlay')
 
     render: ->
-      {div, h1, button, a} = React.DOM
-      (div {},
-        (h1 {}, "Would you like to post a task or a message?")
-        (div {},
-          (button {className: "btn-primary task"},"New Task Card"),
-          (button {className: "btn-primary message"}, "New Message Card")
-          (a {className: "cancel", onClick: @hideOverlay}, "Cancel")))
+      {div, h2, button, a} = React.DOM
+      (div {className: 'choose-card-type-overlay'},
+        (div {id: 'choose-card-type'},
+          (h2 {}, "Would you like to post a task or a message?")
+          (div {id: 'choose-card-type-buttons'},
+            (button {className: "primary-button task"},"New Task Card"),
+            (button {className: "primary-button message"}, "New Message Card")
+            (a {href: "#", className: "cancel", onClick: @hideOverlay}, "Cancel"))))

@@ -66,5 +66,5 @@ ManuscriptManager = React.createClass
 Tahi.manuscriptManager =
   init: (route, container)->
     if document.getElementById('manuscript-manager')
-      manuscriptManager = ManuscriptManager phases: [], route: route
+      manuscriptManager = ManuscriptManager phases: [], route: route || location.href
       React.renderComponent manuscriptManager, container || document.getElementById('tahi-container')

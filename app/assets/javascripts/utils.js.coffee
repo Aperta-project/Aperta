@@ -3,9 +3,8 @@ window.Tahi ||= {}
 Tahi.utils =
   windowHistory: ->
     window.history
-  resizeH2: (selector) ->
-    heights = $(selector).find('h2').map ->
+  resizeContainer: (selector, child) ->
+    heights = $(selector).find(child).map ->
       $(this).outerHeight(true)
     max = Math.max.apply(Math, heights);
-    console.log(max);
     $(selector).css('height', max);

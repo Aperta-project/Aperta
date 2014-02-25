@@ -1,6 +1,6 @@
 :coffeescript
   window.onresize = ->
-    Tahi.utils.resizeH2('.phase-container')
+    Tahi.utils.resizeContainer('.phase-container','h2')
 
 
 - content_for :tahi_container_class do
@@ -45,8 +45,8 @@
 
 :coffeescript
   $ ->
-    Tahi.utils.resizeH2('.phase-container')
+    Tahi.utils.resizeContainer('.phase-container', 'h2')
     # fix for safari.
     setTimeout( ->
-      Tahi.utils.resizeH2('.phase-container')
+      Tahi.utils.resizeContainer('.phase-container', 'h2')
     ,200)

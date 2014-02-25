@@ -1,3 +1,14 @@
+:coffeescript
+  window.onresize = ->
+    Tahi.utils.resizeContainer('.phase-container','h2')
+
+  $ ->
+    Tahi.utils.resizeContainer('.phase-container', 'h2')
+    # fix for safari.
+    setTimeout( ->
+      Tahi.utils.resizeContainer('.phase-container', 'h2')
+    ,200)
+
 - content_for :tahi_container_class do
   full-width
 
@@ -21,7 +32,8 @@
 %ul.phases
   - @task_manager.phases.each do |phase|
     %li.phase>
-      %h2= phase.name
+      %div.phase-container
+        %h2= phase.name
 
       %ul.cards
         - phase.tasks.each do |task|

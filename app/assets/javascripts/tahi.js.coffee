@@ -5,6 +5,10 @@ Tahi.init = ->
   Tahi.overlay.init()
   Tahi.overlays.newCard.init()
   Tahi.flowManager.init()
+  Tahi.manuscriptManager.init(location.href)
+  # for another day
+  # for i of Tahi
+  #   (Tahi[i].init||->)()
 
   for form in $("form.js-submit-on-change[data-remote='true']")
     @setupSubmitOnChange $(form), $('select, input[type="radio"], input[type="checkbox"], textarea', form)

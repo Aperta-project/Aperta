@@ -35,21 +35,22 @@ PaperProfile = React.createClass
       for task in @props.profile.tasks
         (Card {task: task})])
 
-Flow = React.createClass
+Phase = React.createClass
   render: ->
-    {h2, ul, li, div} = React.DOM
+    {h2, ul, li, div, li} = React.DOM
 
-    (li {className: 'column'},
-      (h2 {}, @props.title),
-      (div {className: 'column-content'},
-        (ul {},
-          for paperProfile in @props.paperProfiles
-            (li {}, PaperProfile {profile: paperProfile}))))
+    (li {className: 'column phase'},
+      (div {className: 'phase-container'},
+        (h2 {}, @props.name)),
+      (ul {className: 'cards'},
+        # for card in @props.tasks
+        #   (li {}, Task {task: task})
+      ))
 
-FlowManager = React.createClass
+ManuscriptManager = React.createClass
   componentDidMount: ->
-    $.getJSON '/flow_manager', (data,status) =>
-      @setProps flows: data.flows
+    $.getJSON @props.route, (data,status) =>
+      @setProps phases: data.phases, paper: data.paper
 
   componentDidUpdate: ->
     $('.paper-profile h4').dotdotdot
@@ -57,13 +58,13 @@ FlowManager = React.createClass
 
   render: ->
     {ul} = React.DOM
-    (ul {className: 'columns'},
-      for flow, index in @props.flows
-        Flow {key: "flow-#{index}", paperProfiles: flow.paperProfiles, title: flow.title}
+    (ul {className: 'columns phases'},
+      for phase, index in @props.phases
+        Phase {key: "flow-#{index}", tasks: phase.tasks, name: phase.name}
     )
 
-Tahi.flowManager =
-  init: ->
-    if document.getElementById('flow-manager')
-      flowManager = FlowManager flows: []
-      React.renderComponent flowManager, document.getElementById('tahi-container')
+Tahi.manuscriptManager =
+  init: (route, container)->
+    if document.getElementById('manuscript-manager')
+      manuscriptManager = ManuscriptManager phases: [], route: route
+      React.renderComponent manuscriptManager, container || document.getElementById('tahi-container')

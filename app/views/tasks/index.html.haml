@@ -27,7 +27,7 @@
             %h2.tasks-paper-title
               = truncated_title(@paper)
         %ul
-          %li= link_to 'Article', edit_paper_path(@paper)
+          %li= link_to 'Manuscript', edit_paper_path(@paper)
 
 %ul.phases
   - @task_manager.phases.each do |phase|

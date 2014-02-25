@@ -51,6 +51,7 @@ describe "Tahi overlay components", ->
     describe "#componentDidMount", ->
       it "sends an Ajax request to grab data attributes", ->
         spyOn($, 'ajax')
+        spyOn @component, 'setState'
         @component.componentDidMount()
         expect($.ajax).toHaveBeenCalledWith jasmine.objectContaining
           url: '/path/to/task'
@@ -61,7 +62,7 @@ describe "Tahi overlay components", ->
       it "sets data as the state of the component", ->
         spyOn @component, 'setState'
         @component.updateState {one: 1, two: 2}
-        expect(@component.setState).toHaveBeenCalledWith one: 1, two: 2
+        expect(@component.setState).toHaveBeenCalledWith one: 1, two: 2, loading: false
 
   describe "RailsForm", ->
     describe "#render", ->

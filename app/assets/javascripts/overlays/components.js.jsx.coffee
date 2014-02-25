@@ -8,14 +8,12 @@ Tahi.overlays.components ||= {}
 
 Tahi.overlays.components.Overlay = React.createClass
   getInitialState: ->
-    {}
+    {loading: true}
 
   componentWillMount: ->
     @setState @props
 
   componentDidMount: ->
-    @setState
-      loading: true
     $.get @props.taskPath, @updateState, 'json'
 
   updateState: (data) ->
@@ -26,7 +24,7 @@ Tahi.overlays.components.Overlay = React.createClass
     OverlayHeader = Tahi.overlays.components.OverlayHeader
     OverlayFooter = Tahi.overlays.components.OverlayFooter
     updateTaskPath = "#{this.state.taskPath}.json"
-    if this.state.loading
+    if @state.loading
       `<div className='loading'><h1>Loading&hellip;</h1></div>`
     else
       `<div>

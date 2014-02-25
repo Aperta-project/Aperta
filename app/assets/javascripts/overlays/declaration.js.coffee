@@ -7,9 +7,11 @@ Tahi.overlays.declaration =
     getInitialState: ->
       declarations: []
 
+    componentWillMount: ->
+      @setState @props
+
     componentWillReceiveProps: (nextProps) ->
-      @setState
-        declarations: (nextProps.declarations || [])
+      @setState nextProps
 
     declarations: ->
       {div, input, label, textarea} = React.DOM

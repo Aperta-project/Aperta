@@ -39,6 +39,9 @@
         - phase.tasks.each do |task|
           %li= card task
         %li
+          %a.react-choose-card-type-overlay
+            Choose Card
+        %li
           :ruby
             haml_io << link_to('Add new card', '#',
               data: {

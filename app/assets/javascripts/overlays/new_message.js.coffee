@@ -8,10 +8,8 @@ Tahi.overlays.newMessage =
       @setProps {chosenOptions: [[1, "First option"],[2, "Another"]]}
 
     chosenOptions: ->
-      opts = _.map @props.chosenOptions, ([value, label]) ->
-        (React.DOM.option {value: value}, label)
-      opts.unshift((React.DOM.option {value: ""}, "Add People"))
-      opts
+      chosenOptions = ['', 'Add People'].concat @props.chosenOptions
+      _.map chosenOptions, ([value, label]) -> React.DOM.option({value: value}, label)
 
     render: ->
       {div, button, footer, option, header, a, h2, main, ul, li, input, textarea, img} = React.DOM

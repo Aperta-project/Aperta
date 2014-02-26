@@ -1,10 +1,9 @@
 window.Tahi ||= {}
 
-Card = React.createClass
+Task = React.createClass
   cardClass: ->
     Tahi.className
       'card': true
-      'flow-card': true
       'completed': @props.task.taskCompleted
 
   render: ->
@@ -35,6 +34,19 @@ PaperProfile = React.createClass
       for task in @props.profile.tasks
         (Card {task: task})])
 
+NewCardButton = React.createClass
+  render: ->
+    {a} = React.DOM
+    (a
+      className: 'secondary-button react-new-card-overlay',
+      "data-assignees": JSON.stringify(@props.assignees),
+      "data-url": @props.url,
+      "data-phase_id": @props.id,
+      "data-paper_short_title": @props.paper_short_title,
+      href: "#",
+        "ADD NEW CARD"
+    )
+
 Phase = React.createClass
   render: ->
     {h2, ul, li, div, li} = React.DOM
@@ -43,8 +55,15 @@ Phase = React.createClass
       (div {className: 'phase-container'},
         (h2 {}, @props.name)),
       (ul {className: 'cards'},
-        # for card in @props.tasks
-        #   (li {}, Task {task: task})
+        for task in @props.tasks
+          (li {}, Task {task: task})
+        (li {},
+          NewCardButton {
+            paper: @props.paper, id: @props.id,
+            paper_short_title: @props.paper.paper_short_title,
+            url: @props.paper.url,
+            assignees: @props.paper.assignees
+          }),
       ))
 
 ManuscriptManager = React.createClass
@@ -60,7 +79,12 @@ ManuscriptManager = React.createClass
     {ul} = React.DOM
     (ul {className: 'columns phases'},
       for phase, index in @props.phases
-        Phase {key: "flow-#{index}", tasks: phase.tasks, name: phase.name}
+        Phase {
+          tasks: phase.tasks,
+          name: phase.name,
+          id: phase.id,
+          paper: @props.paper
+        }
     )
 
 Tahi.manuscriptManager =

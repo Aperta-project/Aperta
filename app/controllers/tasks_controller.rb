@@ -9,7 +9,6 @@ class TasksController < ApplicationController
       format.json do
         @paper = Paper.includes(:phases => :tasks).find(params[:id])
         @phases = @paper.phases
-        render json: { phases: @phases, paper: @paper }
       end
     end
   end

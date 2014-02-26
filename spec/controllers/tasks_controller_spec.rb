@@ -28,11 +28,6 @@ describe TasksController do
     it_behaves_like "when the user is not signed in"
     it_behaves_like "when the user is not an admin"
 
-    it "assigns the task manager" do
-      do_request
-      expect(assigns(:task_manager)).to eq(paper.task_manager)
-    end
-
     it "renders index template" do
       do_request
       expect(response).to render_template(:index)

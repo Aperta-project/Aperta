@@ -19,7 +19,7 @@ Tahi.overlays.newMessage =
       (div {id: 'new-message-overlay'},
         (header {},
           (h2 {},
-          (a {href: "#", className: 'message-color'}, @props.paperTitle))),
+            (a {href: "#", className: 'message-color'}, @props.paperTitle))),
         (main {},
           (RailsForm {action: "/papers/#{@props.paperId}/tasks.json", ref: 'form', method: 'POST'},
             (div {id: 'recipients'},
@@ -28,8 +28,7 @@ Tahi.overlays.newMessage =
                   (img {src: "/images/profile-no-image.jpg"}))
                 (li {},
                   (Chosen {width: '150px'},
-                    @chosenOptions()
-                    )))),
+                    @chosenOptions() )))),
             (div {className: 'form-group'}, (input {type: 'text', placeholder: 'Type in a subject here'})),
             (div {className: 'form-group'},(textarea {placeholder: 'Type your message here'}))
           ))

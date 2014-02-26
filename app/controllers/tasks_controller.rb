@@ -4,10 +4,9 @@ class TasksController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html do
-      end
+      format.html
       format.json do
-        @paper = Paper.includes(:phases => :tasks).find(params[:id])
+        @paper = Paper.includes(:journal, :phases => :tasks).find(params[:id])
         @phases = @paper.phases
       end
     end

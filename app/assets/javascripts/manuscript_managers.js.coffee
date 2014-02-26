@@ -61,7 +61,7 @@ Phase = React.createClass
           NewCardButton {
             paper: @props.paper, id: @props.id,
             paper_short_title: @props.paper.paper_short_title,
-            url: @props.paper.url,
+            url: @props.paper.tasks_url,
             assignees: @props.paper.assignees
           }),
       ))
@@ -76,16 +76,32 @@ ManuscriptManager = React.createClass
       height: 40
 
   render: ->
-    {ul} = React.DOM
-    (ul {className: 'columns phases'},
-      for phase, index in @props.phases
-        Phase {
-          tasks: phase.tasks,
-          name: phase.name,
-          id: phase.id,
-          paper: @props.paper
-        }
-    )
+    {ul, div, section, img, h2, li, a} = React.DOM
+    (div {},
+      if @props.paper
+        (div {id:'control-bar-container'},
+          div {id:'control-bar'},
+            section {},
+              ul {},
+                li {id:'paper-journal'},
+                  if @props.paper.journal_logo_url
+                    img {src: @props.paper.journal_logo_url}
+                  else
+                    div {}, @props.paper.journal_name
+                li {id:'paper-short-title'},
+                  h2 {className:'tasks-paper-title'}, @props.paper.paper_short_title
+              ul {},
+                li {},
+                  a {href:@props.paper.edit_url}, "Manuscript")
+      (ul {className: 'columns phases'},
+        for phase, index in @props.phases
+          Phase {
+            tasks: phase.tasks,
+            name: phase.name,
+            id: phase.id,
+            paper: @props.paper
+          }
+    ))
 
 Tahi.manuscriptManager =
   init: (route, container)->

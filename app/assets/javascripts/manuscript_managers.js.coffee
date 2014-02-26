@@ -23,17 +23,6 @@ Task = React.createClass
   displayCard: (event) ->
     Tahi.overlay.display event, @props.task.cardName
 
-PaperProfile = React.createClass
-  render: ->
-    {div, h4, a} = React.DOM
-
-    (div {className: 'paper-profile'}, [
-      (a {href: @props.profile.paper_path, className: 'paper-title'},
-        (h4 {}, @props.profile.title)),
-
-      for task in @props.profile.tasks
-        (Card {task: task})])
-
 NewCardButton = React.createClass
   render: ->
     {a} = React.DOM

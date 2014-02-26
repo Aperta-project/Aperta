@@ -321,15 +321,17 @@
 
   .chosen-drop {
     border: 1px solid $tahi-message;
+    border-top: none;
   }
 
   .chosen-results li.highlighted {
-    width: 100%
+    width: 100%;
+    background: $tahi-message;
   }
 
   #recipients {
     margin-bottom: 50px;
-    ul {
+    > ul {
       padding: 10px;
       background: #f3f3f3;
       border-top: 1px solid #ddd;

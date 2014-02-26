@@ -6,11 +6,13 @@ Tahi.overlays.newMessage =
     componentDidMount: ->
       #TODO: get the list of names and ids from the server.
       @setProps {chosenOptions: [[1, "First option"],[2, "Another"]]}
+
     chosenOptions: ->
       opts = _.map @props.chosenOptions, ([value, label]) ->
         (React.DOM.option {value: value}, label)
       opts.unshift((React.DOM.option {value: ""}, "Add People"))
       opts
+
     render: ->
       {div, button, footer, option, header, a, h2, main, ul, li, input, textarea, img} = React.DOM
       RailsForm = Tahi.overlays.components.RailsForm
@@ -33,7 +35,7 @@ Tahi.overlays.newMessage =
           ))
         (footer {},
           (div {className: "content"},
-            (a {href: "#", className: 'message-color'}, "Cancel")),
+            (a {href: "#", className: 'message-color', onClick: Tahi.overlay.hide}, "Cancel")),
           (button {className: "primary-button message", onClick: @createCard}, "Create Card")))
 
 

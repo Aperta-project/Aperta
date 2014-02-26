@@ -39,7 +39,7 @@
         - phase.tasks.each do |task|
           %li= card task
         %li
-          %a.secondary-button.react-choose-card-type-overlay{href: "#"}
+          %a.secondary-button.react-choose-card-type-overlay{href: "#", data: {phase_id: phase.id, paper_title: truncated_title(@paper), paper_id: @paper.id}}
             Choose Card
         %li
           :ruby

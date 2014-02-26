@@ -7,7 +7,7 @@ Tahi.overlays.chooseCardType =
 
   displayOverlay: (e) =>
     e.preventDefault(e)
-    React.renderComponent Tahi.overlays.chooseCardType.overlay(), $('#overlay')[0]
+    React.renderComponent Tahi.overlays.chooseCardType.overlay($(e.target).data()), $('#overlay')[0]
     $('#overlay').show()
 
   overlay: React.createClass
@@ -29,5 +29,5 @@ Tahi.overlays.chooseCardType =
     replaceOverlay: (e) ->
       e?.preventDefault()
       React.unmountComponentAtNode document.getElementById('overlay')
-      React.renderComponent Tahi.overlays.newMessage.overlay(), $('#overlay')[0]
+      React.renderComponent Tahi.overlays.newMessage.overlay(@props), $('#overlay')[0]
 

@@ -1,10 +1,6 @@
 window.Tahi ||= {}
 
 Tahi.init = ->
-  # Tahi.papers.init()
-  # Tahi.overlay.init()
-  # Tahi.flowManager.init()
-  # Tahi.manuscriptManager.init(location.href)
   Tahi.overlays.newCard.init()
   for i of Tahi
     (Tahi[i].init||->).call(Tahi[i])

@@ -8,9 +8,6 @@ Tahi.overlays.newCard =
   init: ->
     $('.react-new-card-overlay').on 'click', Tahi.overlays.newCard.displayNewCardOverlay
 
-    $('#overlay').hide()
-    React.unmountComponentAtNode document.getElementById('overlay')
-
   displayNewCardOverlay: (e) ->
     e.preventDefault(e)
 

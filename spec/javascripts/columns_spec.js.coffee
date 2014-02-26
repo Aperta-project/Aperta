@@ -22,10 +22,12 @@ describe "Columns", ->
         @component.saveFlows()
         expect($.ajax).toHaveBeenCalledWith(
           jasmine.objectContaining
-            url: 'user_settings/update'
+            url: 'user_settings'
             type: 'post'
             data:
-              flows: ['Flow 1', 'Flow 2']
+              _method: 'PATCH'
+              user_settings:
+                flows: ['Flow 1', 'Flow 2']
         )
 
   describe "Column component", ->

@@ -14,5 +14,7 @@ Tahi::Application.routes.draw do
 
   resource :flow_manager, only: :show
 
+  resource :user_settings, only: :update
+
   root 'dashboards#index'
 end

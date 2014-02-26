@@ -108,7 +108,7 @@ Tahi.columns =
 
     componentDidMount: ->
       $.getJSON @props.route, (data,status) =>
-        @setProps flows: data.flows, paper: data.paper
+        @setState flows: data.flows, paper: data.paper
 
     componentDidUpdate: ->
       $('.paper-profile h4').dotdotdot
@@ -119,23 +119,26 @@ Tahi.columns =
 
     saveFlows: ->
       flowTitles = _.map @state.flows, (flow) -> flow.title
-      $.post 'user_settings/update', flows: flowTitles
+      $.post 'user_settings',
+        _method: 'PATCH'
+        user_settings:
+          flows: flowTitles
 
     render: ->
       {ul, div} = React.DOM
-      if @props.paper
-        header = ManuscriptHeader {paper: @props.paper}
+      if @state.paper
+        header = ManuscriptHeader {paper: @state.paper}
       (div {},
           header
         (ul {className: 'columns'},
-          for flow, index in @props.flows
+          for flow, index in @state.flows
             Tahi.columns.Column {
               key: "flow-#{index}",
               paperProfiles: flow.paperProfiles,
               title: flow.title
               tasks: flow.tasks,
               phase_id: flow.id,
-              paper: @props.paper
+              paper: @state.paper
               onRemove: @removeFlow
             }
       ))
@@ -160,7 +163,7 @@ Tahi.columns =
       @props.onRemove @props.title
 
     render: ->
-      {h2, ul, li, div, li} = React.DOM
+      {h2, div, ul, li} = React.DOM
 
       (li {className: 'column'},
         (h2 {}, @props.title),

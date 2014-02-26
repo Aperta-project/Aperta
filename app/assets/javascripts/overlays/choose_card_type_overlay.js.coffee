@@ -3,7 +3,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.chooseCardType =
   init: ->
-    $('.react-choose-card-type-overlay').on 'click', Tahi.overlays.chooseCardType.displayOverlay
+    $(document).on 'click', '.react-choose-card-type-overlay', Tahi.overlays.chooseCardType.displayOverlay
 
   displayOverlay: (e) =>
     e.preventDefault(e)

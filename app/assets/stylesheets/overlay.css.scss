@@ -319,6 +319,14 @@
     }
   }
 
+  .chosen-drop {
+    border: 1px solid $tahi-message;
+  }
+
+  .chosen-results li.highlighted {
+    width: 100%
+  }
+
   #recipients {
     margin-bottom: 50px;
     ul {

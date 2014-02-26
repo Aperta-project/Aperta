@@ -3,13 +3,13 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.newMessage =
   overlay: React.createClass
-    componentDidMount: ->
-      #TODO: get the list of names and ids from the server.
-      @setProps {chosenOptions: [[1, "First option"],[2, "Another"]]}
+    getDefaultProps: ->
+      {chosenOptions: [[1, "First option"],[2, "Another"]]}
 
     chosenOptions: ->
       chosenOptions = ['', 'Add People'].concat @props.chosenOptions
-      _.map chosenOptions, ([value, label]) -> React.DOM.option({value: value}, label)
+      opts = _.map chosenOptions, ([value, label]) -> React.DOM.option({value: value}, label)
+      opts
 
     render: ->
       {div, button, footer, option, header, a, h2, main, ul, li, input, textarea, img} = React.DOM

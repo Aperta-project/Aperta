@@ -40,11 +40,13 @@
           %li= card task
         %li
           :ruby
-            haml_io << link_to('Add new card', '#',
+            haml_io << link_to('Add New Card', '#',
               data: {
                 assignees: User.admins_for(@paper.journal).map { |u| [u.id, u.full_name] }.to_json,
                 url: paper_tasks_path(@paper, format: :json),
                 phase_id: phase.id,
+                paper_id: @paper.id,
+                paper_title: truncated_title(@paper),
                 paper_short_title: truncated_title(@paper)
               },
-              class: "secondary-button react-new-card-overlay")
+              class: "secondary-button react-choose-card-type-overlay")

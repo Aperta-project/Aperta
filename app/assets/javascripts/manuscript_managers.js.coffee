@@ -27,11 +27,12 @@ NewCardButton = React.createClass
   render: ->
     {a} = React.DOM
     (a
-      className: 'secondary-button react-new-card-overlay',
-      "data-assignees": JSON.stringify(@props.assignees),
-      "data-url": @props.url,
-      "data-phase_id": @props.id,
-      "data-paper_short_title": @props.paper_short_title,
+      className: 'secondary-button react-choose-card-type-overlay',
+      "data-assignees": JSON.stringify(@props.paper.assignees),
+      "data-url": @props.paper.tasks_url,
+      "data-phase_id": @props.phase_id,
+      "data-paper_id": @props.paper.id,
+      "data-paper_title": @props.paper.paper_short_title,
       href: "#",
         "ADD NEW CARD"
     )
@@ -48,10 +49,8 @@ Phase = React.createClass
           (li {}, Task {task: task})
         (li {},
           NewCardButton {
-            paper: @props.paper, id: @props.id,
-            paper_short_title: @props.paper.paper_short_title,
-            url: @props.paper.tasks_url,
-            assignees: @props.paper.assignees
+            paper: @props.paper,
+            phase_id: @props.phase_id
           }),
       ))
 
@@ -92,7 +91,7 @@ ManuscriptManager = React.createClass
           Phase {
             tasks: phase.tasks,
             name: phase.name,
-            id: phase.id,
+            phase_id: phase.id,
             paper: @props.paper
           }
     ))

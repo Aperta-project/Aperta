@@ -6,12 +6,7 @@ Tahi.overlays ||= {}
 
 Tahi.overlays.newCard =
   init: ->
-    $(document).on 'click', '.react-new-card-overlay', Tahi.overlays.newCard.displayNewCardOverlay
-
-  hideOverlay: (e) ->
-    e?.preventDefault()
-    $('#overlay').hide()
-    React.unmountComponentAtNode document.getElementById('overlay')
+    $(document).on 'click', '.react-choose-card-type-overlay', Tahi.overlays.newCard.displayNewCardOverlay
 
   displayNewCardOverlay: (e) ->
     e.preventDefault(e)
@@ -19,7 +14,7 @@ Tahi.overlays.newCard =
     assignees = $(e.target).data('assignees')
     url = $(e.target).data('url')
     phaseId = $(e.target).data('phase_id')
-    paperShortTitle = $(e.target).data('paper_short_title')
+    paperShortTitle = $(e.target).data('paper_title')
     NewCardOverlay = Tahi.overlays.newCard.components.NewCardOverlay
     React.renderComponent `<NewCardOverlay assignees={assignees} url={url} phaseId={phaseId} paperShortTitle={paperShortTitle} />`, document.getElementById('overlay')
     $('#overlay').show()

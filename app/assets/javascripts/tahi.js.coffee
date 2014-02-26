@@ -2,6 +2,7 @@ window.Tahi ||= {}
 
 Tahi.init = ->
   Tahi.overlays.newCard.init()
+  Tahi.overlays.chooseCardType.init()
   for i of Tahi
     (Tahi[i].init||->).call(Tahi[i])
 

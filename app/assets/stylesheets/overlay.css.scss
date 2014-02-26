@@ -26,8 +26,29 @@
   margin-top: 40px;
 }
 
-.loading {
+.empty-overlay {
   min-height: 550px;
+}
+
+.choose-card-type-overlay {
+  @extend .empty-overlay;
+
+  #choose-card-type {
+    width: 550px;
+    margin: 200px auto 0;
+  }
+
+  .primary-button {
+    margin-right: 20px;
+  }
+
+  #choose-card-type-buttons {
+    margin-top: 45px;
+  }
+}
+
+.loading {
+  @extend .empty-overlay;
   text-align: center;
   position: relative;
 }
@@ -266,4 +287,60 @@
 
 .white-overlay {
   background: white !important;
+}
+
+#new-message-overlay {
+  .message-color {
+    color: $tahi-message;
+  }
+  .img {
+    height: 40px;
+    width: 40px;
+  }
+  .form-group input, .form-group textarea {
+    width: 600px;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #ddd;
+  }
+  textarea {
+    height: 150px;
+  }
+
+  .chosen-single {
+    height: 40px;
+    background: white;
+    border: 1px solid $tahi-message;
+    font-size: 18px;
+    color: $tahi-message;
+    text-transform: uppercase;
+    span, b {
+      margin-top: 8px;
+    }
+  }
+
+  .chosen-drop {
+    border: 1px solid $tahi-message;
+    border-top: none;
+  }
+
+  .chosen-results li.highlighted {
+    width: 100%;
+    background: $tahi-message;
+  }
+
+  #recipients {
+    margin-bottom: 50px;
+    > ul {
+      padding: 10px;
+      background: #f3f3f3;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      list-style: none;
+      li {
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
+  }
 }

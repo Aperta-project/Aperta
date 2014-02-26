@@ -110,6 +110,10 @@ textarea {
     padding-left: 25px;
     padding-right: 25px;
   }
+
+  &.message {
+    background: $tahi-message;
+  }
 }
 
 .secondary-button {

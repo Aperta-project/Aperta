@@ -66,6 +66,24 @@ Phase = React.createClass
           }),
       ))
 
+ManuscriptHeader = React.createClass
+  render: ->
+    {ul, div, section, img, h2, li, a, section} = React.DOM
+    (div {id:'control-bar-container'},
+      div {id:'control-bar'},
+        section {},
+          ul {},
+            li {id:'paper-journal'},
+              if @props.paper.journal_logo_url
+                img {src: @props.paper.journal_logo_url}
+              else
+                div {}, @props.paper.journal_name
+            li {id:'paper-short-title'},
+              h2 {className:'tasks-paper-title'}, @props.paper.paper_short_title
+          ul {},
+            li {},
+              a {href:@props.paper.edit_url}, "Manuscript")
+
 ManuscriptManager = React.createClass
   componentDidMount: ->
     $.getJSON @props.route, (data,status) =>
@@ -76,23 +94,10 @@ ManuscriptManager = React.createClass
       height: 40
 
   render: ->
-    {ul, div, section, img, h2, li, a} = React.DOM
+    {ul, div} = React.DOM
     (div {},
       if @props.paper
-        (div {id:'control-bar-container'},
-          div {id:'control-bar'},
-            section {},
-              ul {},
-                li {id:'paper-journal'},
-                  if @props.paper.journal_logo_url
-                    img {src: @props.paper.journal_logo_url}
-                  else
-                    div {}, @props.paper.journal_name
-                li {id:'paper-short-title'},
-                  h2 {className:'tasks-paper-title'}, @props.paper.paper_short_title
-              ul {},
-                li {},
-                  a {href:@props.paper.edit_url}, "Manuscript")
+        ManuscriptHeader {paper: @props.paper}
       (ul {className: 'columns phases'},
         for phase, index in @props.phases
           Phase {

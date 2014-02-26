@@ -35,9 +35,14 @@ feature "Flow Manager", js: true do
 
   before do
     JournalRole.create! user: admin, journal: journal, admin: true
+    @old_size = page.driver.browser.manage.window.size
     page.driver.browser.manage.window.resize_to(1250,550)
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin.email
+  end
+
+  after do
+    page.driver.browser.manage.window.size = @old_size
   end
 
   scenario "papers without assigned admins" do

@@ -20,24 +20,6 @@ describe "New Card Overlay", ->
       $('#link-2').click()
       expect(Tahi.overlays.newCard.displayNewCardOverlay).toHaveBeenCalled()
 
-  describe "#hideOverlay", ->
-    beforeEach ->
-      $('#overlay').show()
-      @event = jasmine.createSpyObj 'event', ['preventDefault']
-
-    it "prevents default on the event", ->
-      Tahi.overlays.newCard.hideOverlay(@event)
-      expect(@event.preventDefault).toHaveBeenCalled()
-
-    it "hides the overlay", ->
-      Tahi.overlays.newCard.hideOverlay(@event)
-      expect($('#overlay')).toBeHidden()
-
-    it "unmounts the component", ->
-      spyOn React, 'unmountComponentAtNode'
-      Tahi.overlays.newCard.hideOverlay(@event)
-      expect(React.unmountComponentAtNode).toHaveBeenCalledWith document.getElementById('overlay')
-
   describe "#displayNewCardOverlay", ->
     beforeEach ->
       spyOn React, 'renderComponent'
@@ -60,9 +42,9 @@ describe "New Card Overlay", ->
         React.renderComponent @form, document.getElementById('jasmine_content')
 
       it "closes the overlay", ->
-        spyOn Tahi.overlays.newCard, 'hideOverlay'
+        spyOn Tahi.overlay, 'hide'
         @form.submit()
-        expect(Tahi.overlays.newCard.hideOverlay).toHaveBeenCalled()
+        expect(Tahi.overlay.hide).toHaveBeenCalled()
 
       it "submits the contents of the form", ->
         spyOn $, 'ajax'
@@ -98,11 +80,11 @@ describe "New Card Overlay", ->
   describe "NewCardOverlay component", ->
     describe "#render", ->
       describe "Cancel button", ->
-        it "invokes Tahi.overlays.newCard.hideOverlay on click", ->
+        it "invokes Tahi.overlay.hideOverlay on click", ->
           overlay = Tahi.overlays.newCard.components.NewCardOverlay({assignees: []})
           result = overlay.render()
           cancelButton = result.props.children[2].props.children[0].props.children
-          expect(cancelButton.props.onClick).toEqual Tahi.overlays.newCard.hideOverlay
+          expect(cancelButton.props.onClick).toEqual Tahi.overlay.hide
 
       describe "Create card button", ->
         it "invokes submitForm on click", ->

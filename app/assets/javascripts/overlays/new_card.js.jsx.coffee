@@ -37,7 +37,7 @@ Tahi.overlays.newCard =
               body: body
               assignee_id: assigneeId
               phase_id: phaseId
-        Tahi.overlays.newCard.hideOverlay()
+        Tahi.overlay.hide()
 
       render: ->
         options = @props.assignees.map (a) ->
@@ -77,7 +77,7 @@ Tahi.overlays.newCard =
           </main>
           <footer>
             <div className="content">
-              <a className="close-overlay" onClick={Tahi.overlays.newCard.hideOverlay} href="#">Cancel</a>
+              <a className="close-overlay" onClick={Tahi.overlay.hide} href="#">Cancel</a>
             </div>
             <a href="#" className="primary-button" onClick={this.submitForm}>Create card</a>
           </footer>

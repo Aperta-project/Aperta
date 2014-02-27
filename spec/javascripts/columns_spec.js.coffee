@@ -31,6 +31,35 @@ describe "Columns", ->
         )
 
   describe "Column component", ->
+    describe "#render", ->
+      context "when this is a manuscript manager column (has tasks)", ->
+        beforeEach ->
+          @component = Tahi.columns.Column title: 'Column Title', tasks: [{}]
+
+        it "renders Card components", ->
+          result = @component.render()
+          element = result.props.children[2].props.children.props.children[0]
+          expect(element.props.children.constructor).toEqual Tahi.columns.Card.componentConstructor
+
+        it "does not include remove button", ->
+          result = @component.render()
+          element = result.props.children[1]
+          expect(element.props).toEqual undefined
+
+      context "when this is a flow manager column (has paperProfiles)", ->
+        beforeEach ->
+          @component = Tahi.columns.Column title: 'Column Title', paperProfiles: [{}]
+
+        it "renders PaperProfile components", ->
+          result = @component.render()
+          element = result.props.children[2].props.children.props.children[0]
+          expect(element.props.children.constructor).toEqual Tahi.columns.PaperProfile.componentConstructor
+
+        it "includes remove button", ->
+          result = @component.render()
+          element = result.props.children[1]
+          expect(element.props.className).toContain 'remove-column'
+
     describe "#remove", ->
       it "removes the current column", ->
         onRemove = jasmine.createSpy 'onRemove'

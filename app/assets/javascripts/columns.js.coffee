@@ -1,29 +1,5 @@
 window.Tahi ||= {}
 
-Card = React.createClass
-  cardClass: ->
-    Tahi.className
-      'card': true
-      'flow-card':  @props.flowCard
-      'completed': @props.task.taskCompleted
-
-  render: ->
-    {a, span} = React.DOM
-    (a {
-        className: @cardClass(),
-        onClick: @displayCard,
-        "data-card-name": @props.task.cardName,
-        "data-task-id":   @props.task.taskId,
-        "data-task-path": @props.task.taskPath,
-        href: @props.task.taskPath
-      },
-      (span {className: 'glyphicon glyphicon-ok'}),
-      @props.task.taskTitle
-    )
-
-  displayCard: (event) ->
-    Tahi.overlay.display event, @props.task.cardName
-
 NewCardButton = React.createClass
   render: ->
     {a} = React.DOM
@@ -37,17 +13,6 @@ NewCardButton = React.createClass
       href: "#",
         "ADD NEW CARD"
     )
-
-PaperProfile = React.createClass
-  render: ->
-    {div, h4, a} = React.DOM
-
-    (div {className: 'paper-profile'}, [
-      (a {href: @props.profile.paper_path, className: 'paper-title'},
-        (h4 {}, @props.profile.title)),
-
-      for task in @props.profile.tasks
-        (Card {task: task, flowCard: true})])
 
 ManuscriptHeader = React.createClass
   render: ->
@@ -71,7 +36,7 @@ Column = React.createClass
   manuscriptCards: ->
     {li} = React.DOM
     cards = for task in @props.tasks
-      (li {}, Card {task: task})
+      (li {}, Tahi.columns.Card {task: task})
     cards.concat((li {},
       NewCardButton {
         paper: @props.paper,
@@ -81,7 +46,7 @@ Column = React.createClass
   paperProfiles: ->
     {li} = React.DOM
     for paperProfile in @props.paperProfiles
-      (li {}, PaperProfile {profile: paperProfile})
+      (li {}, Tahi.columns.PaperProfile {profile: paperProfile})
 
   render: ->
     {h2, ul, li, div, li} = React.DOM
@@ -147,7 +112,7 @@ Tahi.columns =
     manuscriptCards: ->
       {li} = React.DOM
       cards = for task in @props.tasks
-        (li {}, Card {task: task})
+        (li {}, Tahi.columns.Card {task: task})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,
@@ -157,7 +122,7 @@ Tahi.columns =
     paperProfiles: ->
       {li} = React.DOM
       for paperProfile in @props.paperProfiles
-        (li {}, PaperProfile {profile: paperProfile})
+        (li {}, Tahi.columns.PaperProfile {profile: paperProfile})
 
     remove: ->
       @props.onRemove @props.title
@@ -165,13 +130,55 @@ Tahi.columns =
     render: ->
       {h2, div, ul, li} = React.DOM
 
+      isManuscriptColumn = !!@props.tasks
+
+      closeButton = ' '
+      unless isManuscriptColumn
+        closeButton = (div {className: 'remove-column glyphicon glyphicon-remove', onClick: @remove})
+
       (li {className: 'column'},
         (h2 {}, @props.title),
-        (div {className: 'remove-column glyphicon glyphicon-remove', onClick: @remove}),
+        closeButton,
         (div {className: 'column-content'},
           (ul {className: 'cards'},
-            if @props.tasks
+            if isManuscriptColumn
               @manuscriptCards()
             else
               @paperProfiles()
       )))
+
+  Card: React.createClass
+    cardClass: ->
+      Tahi.className
+        'card': true
+        'flow-card':  @props.flowCard
+        'completed': @props.task.taskCompleted
+
+    render: ->
+      {a, span} = React.DOM
+      (a {
+          className: @cardClass(),
+          onClick: @displayCard,
+          "data-card-name": @props.task.cardName,
+          "data-task-id":   @props.task.taskId,
+          "data-task-path": @props.task.taskPath,
+          href: @props.task.taskPath
+        },
+        (span {className: 'glyphicon glyphicon-ok'}),
+        @props.task.taskTitle
+      )
+
+    displayCard: (event) ->
+      Tahi.overlay.display event, @props.task.cardName
+
+
+  PaperProfile: React.createClass
+    render: ->
+      {div, h4, a} = React.DOM
+
+      (div {className: 'paper-profile'}, [
+        (a {href: @props.profile.paper_path, className: 'paper-title'},
+          (h4 {}, @props.profile.title)),
+
+        for task in @props.profile.tasks
+          (Tahi.columns.Card {task: task, flowCard: true})])

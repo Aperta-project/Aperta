@@ -4,13 +4,13 @@ beforeEach ->
 describe "New Card Overlay", ->
   beforeEach ->
     $('#jasmine_content').html """
-      <a href="#" id="link-1" class="react-new-card-overlay" data-url="/some/path" data-phase-id="11" data-assignees="[1, 2, 3]" data-paper-short-title="Something"></a>
-      <a href="#" id="link-2" class="react-new-card-overlay" data-url="/some/path" data-phase-id="11" data-assignees="[1, 2, 3]" data-paper-short-title="Something"></a>
+      <a href="#" id="link-1" class="react-choose-card-type-overlay" data-url="/some/path" data-phase_id="11" data-assignees="[1, 2, 3]" data-paper_title="Something"></a>
+      <a href="#" id="link-2" class="react-choose-card-type-overlay" data-url="/some/path" data-phase_id="11" data-assignees="[1, 2, 3]" data-paper_title="Something"></a>
       <div id="overlay" style="display: none;"></div>
     """
 
   describe "#init", ->
-    it "binds click on all .react-new-card-overlay to displayNewCardOverlay", ->
+    it "binds click on all .react-choose-card-type-overlay to displayNewCardOverlay", ->
       spyOn Tahi.overlays.newCard, 'displayNewCardOverlay'
       Tahi.overlays.newCard.init()
       $('#link-1').click()

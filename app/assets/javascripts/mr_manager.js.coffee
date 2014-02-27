@@ -67,33 +67,34 @@ ManuscriptHeader = React.createClass
             li {},
               a {href:@props.paper.edit_url}, "Manuscript")
 
-Flow = React.createClass
-  render: ->
-    {h2, ul, li, div} = React.DOM
+Column = React.createClass
+  manuscriptCards: ->
+    {li} = React.DOM
+    cards = for task in @props.tasks
+      (li {}, Card {task: task})
+    cards.concat((li {},
+      NewCardButton {
+        paper: @props.paper,
+        phase_id: @props.phase_id
+    }))
 
-    (li {className: 'column'},
-      (h2 {}, @props.title),
-      (div {className: 'column-content'},
-        (ul {},
-          for paperProfile in @props.paperProfiles
-            (li {}, PaperProfile {profile: paperProfile}))))
+  paperProfiles: ->
+    {li} = React.DOM
+    for paperProfile in @props.paperProfiles
+      (li {}, PaperProfile {profile: paperProfile})
 
-Phase = React.createClass
   render: ->
     {h2, ul, li, div, li} = React.DOM
 
     (li {className: 'column'},
-      (div {className: 'phase-container'},
-        (h2 {}, @props.name)),
-      (ul {className: 'cards'},
-        for task in @props.tasks
-          (li {}, Card {task: task})
-        (li {},
-          NewCardButton {
-            paper: @props.paper,
-            phase_id: @props.phase_id
-          }),
-      ))
+      (h2 {}, @props.title),
+      (div {className: 'column-content'},
+        (ul {className: 'cards'},
+          if @props.tasks
+            @manuscriptCards()
+          else
+            @paperProfiles()
+    )))
 
 MrManager = React.createClass
   componentDidMount: ->
@@ -106,20 +107,17 @@ MrManager = React.createClass
 
   render: ->
     {ul, div} = React.DOM
-    columnClass = Flow
     if @props.paper
       header = ManuscriptHeader {paper: @props.paper}
-      columnClass = Phase
     (div {},
         header
       (ul {className: 'columns'},
         for flow, index in @props.flows
-          columnClass {
+          Column {
             key: "flow-#{index}",
             paperProfiles: flow.paperProfiles,
             title: flow.title
             tasks: flow.tasks,
-            name: flow.name,
             phase_id: flow.id,
             paper: @props.paper
           }

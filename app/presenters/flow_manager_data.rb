@@ -31,9 +31,19 @@ class FlowManagerData
   end
 
   def flows
-    [["Up for grabs", unassigned_papers],
-     ["My Tasks", incomplete_tasks],
-     ["My Papers", paper_admin_tasks],
-     ["Done", complete_tasks]]
+    settings = @user.user_settings
+    flow_map = {
+      'Up for grabs' => unassigned_papers,
+      'My Tasks' => incomplete_tasks,
+      'My Papers' => paper_admin_tasks,
+      'Done' => complete_tasks
+    }
+    @flows = settings.flows.map do |flow_title|
+      [flow_title, flow_map[flow_title]]
+    end
+    # [["Up for grabs", unassigned_papers],
+    #  ["My Tasks", incomplete_tasks],
+    #  ["My Papers", paper_admin_tasks],
+    #  ["Done", complete_tasks]]
   end
 end

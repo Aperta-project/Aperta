@@ -96,7 +96,7 @@ Column = React.createClass
             @paperProfiles()
     )))
 
-MrManager = React.createClass
+ColumnManager = React.createClass
   componentDidMount: ->
     $.getJSON @props.route, (data,status) =>
       @setProps flows: data.flows, paper: data.paper
@@ -125,6 +125,6 @@ MrManager = React.createClass
 
 Tahi.mrManager =
   init: ()->
-    if mrManager = document.getElementById('mr-manager')
-      manuscriptManager = MrManager flows: [], route: mrManager.getAttribute("data-url")
+    if columnManager = document.getElementById('column-manager')
+      manuscriptManager = ColumnManager flows: [], route: columnManager.getAttribute("data-url")
       React.renderComponent manuscriptManager, document.getElementById('tahi-container')

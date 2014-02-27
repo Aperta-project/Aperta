@@ -129,11 +129,20 @@ Columns = React.createClass
     column = {
       key: "flow-1",
       title: "new title",
-      paper: "some paper"
+      paper: @props.paper
       tasks: []
       paperProfiles: []
     }
     @props.flows.splice(index, 0, column)
+    # do some jquery 
+    $.ajax
+      url: 'phases/new'
+      method: 'POST'
+      data:
+        task_manager_id: @props.paper.task_manager_id
+      success: (data)=>
+        column.phase_id = data.phase_id
+
     @setProps flows: @props.flows
 
   render: ->

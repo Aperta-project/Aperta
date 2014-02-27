@@ -11,4 +11,5 @@ json.paper do
   json.edit_url edit_paper_path(@paper, format: :json)
   json.journal_logo_url @paper.journal.logo_url
   json.journal_name @paper.journal.name
+  json.task_manager_id @paper.task_manager.id
 end

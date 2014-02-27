@@ -21,6 +21,23 @@ body.full-height {
   overflow-y: hidden;
   overflow-x: scroll;
   text-align: center;
+  .addColumn {
+    &:hover {
+      opacity: 1;
+    }
+    position:absolute;
+    right: -11px;
+    top: -18px;
+    background-color: $tahi-secondary;
+    width: 20px;
+    height: 15px;
+    text-align: center;
+    font-size: 10px;
+    opacity: 0.3;
+    i {
+      color: #FFFFFF;
+    }
+  }
 }
 
 .column {

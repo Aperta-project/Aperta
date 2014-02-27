@@ -1,6 +1,7 @@
 window.Tahi ||= {}
 
 Card = React.createClass
+  displayName: "Card"
   cardClass: ->
     Tahi.className
       'card': true
@@ -25,6 +26,7 @@ Card = React.createClass
     Tahi.overlay.display event, @props.task.cardName
 
 NewCardButton = React.createClass
+  displayName: "NewCardButton"
   render: ->
     {a} = React.DOM
     (a
@@ -39,6 +41,7 @@ NewCardButton = React.createClass
     )
 
 PaperProfile = React.createClass
+  displayName: "PaperProfile"
   render: ->
     {div, h4, a} = React.DOM
 
@@ -50,6 +53,7 @@ PaperProfile = React.createClass
         (Card {task: task, flowCard: true})])
 
 ManuscriptHeader = React.createClass
+  displayName: "ManuscriptHeader"
   render: ->
     {ul, div, section, img, h2, li, a, section} = React.DOM
     (div {id:'control-bar-container'},
@@ -68,6 +72,7 @@ ManuscriptHeader = React.createClass
               a {href:@props.paper.edit_url}, "Manuscript")
 
 Column = React.createClass
+  displayName: "Column"
   manuscriptCards: ->
     {li} = React.DOM
     cards = for task in @props.tasks
@@ -84,9 +89,13 @@ Column = React.createClass
       (li {}, PaperProfile {profile: paperProfile})
 
   render: ->
-    {h2, ul, li, div, li} = React.DOM
+    {h2, ul, li, div, span} = React.DOM
 
     (li {className: 'column'},
+      (ColumnAppender {
+            addFunction: @props.addFunction,
+            index: @props.index,
+            className: 'add-column'}),
       (h2 {}, @props.title),
       (div {className: 'column-content'},
         (ul {className: 'cards'},
@@ -96,7 +105,18 @@ Column = React.createClass
             @paperProfiles()
     )))
 
+ColumnAppender = React.createClass
+  displayName: "ColumnAppender"
+  handleClick: ->
+    @props.addFunction(@props.index)
+
+  render: ->
+    {span, i} = React.DOM
+    (span {className: 'addColumn', onClick: @handleClick},
+      (i {className: 'glyphicon glyphicon-plus'}))
+
 Columns = React.createClass
+  displayName: "Columns"
   componentDidMount: ->
     $.getJSON @props.route, (data,status) =>
       @setProps flows: data.flows, paper: data.paper
@@ -104,6 +124,17 @@ Columns = React.createClass
   componentDidUpdate: ->
     $('.paper-profile h4').dotdotdot
       height: 40
+
+  addColumn: (index) ->
+    column = {
+      key: "flow-1",
+      title: "new title",
+      paper: "some paper"
+      tasks: []
+      paperProfiles: []
+    }
+    @props.flows.splice(index, 0, column)
+    @setProps flows: @props.flows
 
   render: ->
     {ul, div} = React.DOM
@@ -113,14 +144,16 @@ Columns = React.createClass
         header
       (ul {className: 'columns'},
         for flow, index in @props.flows
-          Column {
+          (Column {
             key: "flow-#{index}",
+            addFunction: @addColumn,
+            index: index+1,
             paperProfiles: flow.paperProfiles,
             title: flow.title
             tasks: flow.tasks,
             phase_id: flow.id,
             paper: @props.paper
-          }
+          })
     ))
 
 Tahi.Columns =

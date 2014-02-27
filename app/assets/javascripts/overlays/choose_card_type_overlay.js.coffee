@@ -8,6 +8,7 @@ Tahi.overlays.chooseCardType =
   displayOverlay: (e) =>
     e.preventDefault(e)
     React.renderComponent Tahi.overlays.chooseCardType.overlay($(e.target).data()), $('#overlay')[0]
+    $('html').addClass 'noscroll'
     $('#overlay').show()
 
 

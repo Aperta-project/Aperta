@@ -307,6 +307,12 @@
     height: 150px;
   }
 
+  footer {
+    .message {
+      float: right;
+    }
+  }
+
   .chosen-single {
     height: 40px;
     background: white;

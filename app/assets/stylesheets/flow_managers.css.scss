@@ -33,17 +33,16 @@ body.full-height {
   border-right: 1px solid $tahi-tertiary;
   display: inline-block;
   position: relative;
-  // overflow: hidden;
+
+  h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #aaa;
+  }
 }
 
 .column:last-of-type {
   border-right: none;
-}
-
-.column h2 {
-  margin-top: 0;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #aaa;
 }
 
 .column-content {

@@ -2,6 +2,7 @@
 # Override node.default["git_pairs_authors"] and node.default["git_pairs_domain"] in attributes/git_pairs.rb to modify.
 
 pairs:
+  sn: Stuart Nelson; stuart
   mm: Mike Mazur; mike
   rr: Rizwan Reza; riz
   sm: Sam McAfee; sam

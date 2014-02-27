@@ -15,5 +15,9 @@ class Journal < ActiveRecord::Base
     users.where('journal_roles.reviewer' => true)
   end
 
+  def logo_url
+    logo.url if logo
+  end
+
   mount_uploader :logo, LogoUploader
 end

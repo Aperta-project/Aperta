@@ -9,47 +9,7 @@
       Tahi.utils.resizeContainer('.phase-container', 'h2')
     ,200)
 
-- content_for :tahi_body_class do
-  full-height
+#column-manager{data: {url: manage_paper_path(@paper)}}
 
 - content_for :tahi_container_class do
   full-width
-
-- content_for :control_bar do
-  #control-bar-container
-    #control-bar
-      %section
-        %ul
-          %li#paper-journal
-            - if @paper.journal.logo.present?
-              = image_tag @paper.journal.logo.url
-            - else
-              %div
-                = @paper.journal.name
-          %li#paper-short-title
-            %h2.tasks-paper-title
-              = truncated_title(@paper)
-        %ul
-          %li= link_to 'Manuscript', edit_paper_path(@paper)
-
-%ul.columns
-  - @task_manager.phases.each do |phase|
-    %li.column>
-      %div.phase-container
-        %h2= phase.name
-
-      %ul.cards
-        - phase.tasks.each do |task|
-          %li= card task
-        %li
-          :ruby
-            haml_io << link_to('Add New Card', '#',
-              data: {
-                assignees: User.admins_for(@paper.journal).map { |u| [u.id, u.full_name] }.to_json,
-                url: paper_tasks_path(@paper, format: :json),
-                phase_id: phase.id,
-                paper_id: @paper.id,
-                paper_title: truncated_title(@paper),
-                paper_short_title: truncated_title(@paper)
-              },
-              class: "secondary-button react-choose-card-type-overlay")

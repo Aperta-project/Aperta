@@ -1,11 +1,10 @@
 window.Tahi ||= {}
 
 Tahi.init = ->
-  Tahi.papers.init()
-  Tahi.overlay.init()
   Tahi.overlays.newCard.init()
-  Tahi.flowManager.init()
   Tahi.overlays.chooseCardType.init()
+  for i of Tahi
+    (Tahi[i].init||->).call(Tahi[i])
 
   for form in $("form.js-submit-on-change[data-remote='true']")
     @setupSubmitOnChange $(form), $('select, input[type="radio"], input[type="checkbox"], textarea', form)

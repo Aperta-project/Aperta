@@ -3,8 +3,13 @@ class TasksController < ApplicationController
   before_action :verify_admin!, except: [:show, :update]
 
   def index
-    @paper = Paper.find(params[:id])
-    @task_manager = @paper.task_manager
+    @paper = Paper.includes(:journal, :phases => :tasks).find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json do
+        @phases = @paper.phases
+      end
+    end
   end
 
   def update

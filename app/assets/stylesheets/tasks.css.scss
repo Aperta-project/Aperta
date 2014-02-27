@@ -2,27 +2,12 @@
 @import 'bootstrap';
 @import 'tahi';
 
-.phases {
-  list-style-type: none;
-  min-height: 800px;
-  overflow-x: scroll;
-
-  .phase-container {
-    position: relative;
-  }
-
-  .phase {
-    min-height: 600px;
-
-    h2 {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-    }
-  }
-
-  .phase:last-of-type {
-    border-right: none;
+.phase-container {
+  position: relative;
+  h2 {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 }
 

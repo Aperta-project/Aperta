@@ -1,4 +1,4 @@
-json.phases @phases do |phase|
+json.flows @phases do |phase|
   json.id phase.id
   json.name phase.name
   json.tasks (phase.tasks.map { |task| TaskPresenter.for(task).data_attributes })

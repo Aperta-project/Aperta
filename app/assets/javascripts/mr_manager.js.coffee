@@ -1,9 +1,10 @@
 window.Tahi ||= {}
 
-Task = React.createClass
+Card = React.createClass
   cardClass: ->
     Tahi.className
       'card': true
+      'flow-card':  @props.flowCard
       'completed': @props.task.taskCompleted
 
   render: ->
@@ -37,22 +38,16 @@ NewCardButton = React.createClass
         "ADD NEW CARD"
     )
 
-Phase = React.createClass
+PaperProfile = React.createClass
   render: ->
-    {h2, ul, li, div, li} = React.DOM
+    {div, h4, a} = React.DOM
 
-    (li {className: 'column phase'},
-      (div {className: 'phase-container'},
-        (h2 {}, @props.name)),
-      (ul {className: 'cards'},
-        for task in @props.tasks
-          (li {}, Task {task: task})
-        (li {},
-          NewCardButton {
-            paper: @props.paper,
-            phase_id: @props.phase_id
-          }),
-      ))
+    (div {className: 'paper-profile'}, [
+      (a {href: @props.profile.paper_path, className: 'paper-title'},
+        (h4 {}, @props.profile.title)),
+
+      for task in @props.profile.tasks
+        (Card {task: task, flowCard: true})])
 
 ManuscriptHeader = React.createClass
   render: ->
@@ -72,10 +67,38 @@ ManuscriptHeader = React.createClass
             li {},
               a {href:@props.paper.edit_url}, "Manuscript")
 
-ManuscriptManager = React.createClass
+Flow = React.createClass
+  render: ->
+    {h2, ul, li, div} = React.DOM
+
+    (li {className: 'column'},
+      (h2 {}, @props.title),
+      (div {className: 'column-content'},
+        (ul {},
+          for paperProfile in @props.paperProfiles
+            (li {}, PaperProfile {profile: paperProfile}))))
+
+Phase = React.createClass
+  render: ->
+    {h2, ul, li, div, li} = React.DOM
+
+    (li {className: 'column'},
+      (div {className: 'phase-container'},
+        (h2 {}, @props.name)),
+      (ul {className: 'cards'},
+        for task in @props.tasks
+          (li {}, Card {task: task})
+        (li {},
+          NewCardButton {
+            paper: @props.paper,
+            phase_id: @props.phase_id
+          }),
+      ))
+
+MrManager = React.createClass
   componentDidMount: ->
     $.getJSON @props.route, (data,status) =>
-      @setProps phases: data.phases, paper: data.paper
+      @setProps flows: data.flows, paper: data.paper
 
   componentDidUpdate: ->
     $('.paper-profile h4').dotdotdot
@@ -83,21 +106,27 @@ ManuscriptManager = React.createClass
 
   render: ->
     {ul, div} = React.DOM
+    columnClass = Flow
+    if @props.paper
+      header = ManuscriptHeader {paper: @props.paper}
+      columnClass = Phase
     (div {},
-      if @props.paper
-        ManuscriptHeader {paper: @props.paper}
-      (ul {className: 'columns phases'},
-        for phase, index in @props.phases
-          Phase {
-            tasks: phase.tasks,
-            name: phase.name,
-            phase_id: phase.id,
+        header
+      (ul {className: 'columns'},
+        for flow, index in @props.flows
+          columnClass {
+            key: "flow-#{index}",
+            paperProfiles: flow.paperProfiles,
+            title: flow.title
+            tasks: flow.tasks,
+            name: flow.name,
+            phase_id: flow.id,
             paper: @props.paper
           }
     ))
 
-Tahi.manuscriptManager =
-  init: (route, container)->
-    if document.getElementById('manuscript-manager')
-      manuscriptManager = ManuscriptManager phases: [], route: route || location.href
-      React.renderComponent manuscriptManager, container || document.getElementById('tahi-container')
+Tahi.mrManager =
+  init: ()->
+    if mrManager = document.getElementById('mr-manager')
+      manuscriptManager = MrManager flows: [], route: mrManager.getAttribute("data-url")
+      React.renderComponent manuscriptManager, document.getElementById('tahi-container')

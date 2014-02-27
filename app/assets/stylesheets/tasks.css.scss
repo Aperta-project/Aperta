@@ -2,40 +2,12 @@
 @import 'bootstrap';
 @import 'tahi';
 
-.phases {
-  list-style-type: none;
-  padding: 40px 0 0;
-  min-height: 800px;
-  white-space: nowrap;
-  overflow-x: scroll;
-  text-align: center;
-
-  .phase-container {
-    position: relative;
-  }
-
-  .phase {
-    white-space: initial;
-    text-align: left;
-    width: 250px;
-    padding: 0 15px;
-    display: inline-block;
-    vertical-align: top;
-    border-right: 1px solid $tahi-tertiary;
-    min-height: 600px;
-
-    h2 {
-      border-bottom: 1px solid #aaa;
-      bottom: 0;
-      margin-top: 0;
-      padding-bottom: 10px;
-      position: absolute;
-      width: 100%;
-    }
-  }
-
-  .phase:last-of-type {
-    border-right: none;
+.phase-container {
+  position: relative;
+  h2 {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 }
 

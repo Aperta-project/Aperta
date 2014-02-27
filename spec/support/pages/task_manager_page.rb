@@ -14,7 +14,7 @@ class TaskManagerPage < Page
   path :manage_paper
 
   def phases
-    all('.phase h2').map(&:text)
+    all('.column h2').map(&:text)
   end
 
   def phase phase_name
@@ -22,7 +22,7 @@ class TaskManagerPage < Page
     # so we need to wait for it to load
     # Is there a already built way to deal with this?
     sleep 1
-    PhaseFragment.new(all('.phase').detect {|p| p.find('h2').text==phase_name })
+    PhaseFragment.new(all('.column').detect {|p| p.find('h2').text==phase_name })
   end
 
   def navigate_to_edit_paper

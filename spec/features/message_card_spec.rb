@@ -38,8 +38,8 @@ feature 'Message Cards', js: true do
       user: admin
   end
 
-  let(:subject_text) { 'Verify Author Signatures' }
-  let(:body_text) { 'Please remember to verify signatures of every paper author.' }
+  let(:subject_text) { 'A sample message' }
+  let(:body_text) { 'Everyone add some comments to this test post.' }
   let(:participants) { [albert] }
   scenario "Admin can add a new message" do
     task_manager_page = TaskManagerPage.visit paper

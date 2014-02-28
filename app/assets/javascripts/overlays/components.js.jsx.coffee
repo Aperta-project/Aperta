@@ -154,3 +154,13 @@ Tahi.overlays.components.RailsFormHiddenDiv = React.createClass
       <input name="utf8" type="hidden" value="✓" />
       <input name="_method" type="hidden" value={this.props.method} />
     </div>`
+
+Tahi.overlays.components.UserThumbnail = React.createClass
+  displayName: "UserThumbnail"
+  getDefaultProps: ->
+    {className: "user-thumbnail", imgSrc: "/images/profile-no-image.jpg", name: "No Name"}
+  render: ->
+    {div, img} = React.DOM
+    {className, imgSrc, name} = @props
+    (img {className: className, src: imgSrc, "data-user-name": name})
+

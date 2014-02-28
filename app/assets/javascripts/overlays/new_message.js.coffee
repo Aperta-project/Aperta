@@ -1,20 +1,39 @@
 window.Tahi ||= {}
 Tahi.overlays ||= {}
-
 Tahi.overlays.newMessage =
   overlay: React.createClass
-    getDefaultProps: ->
-      {chosenOptions: [[1, "First option"],[2, "Another"]]}
+    componentDidMount: ->
+
+    getInitialState: ->
+      participants: [Tahi.currentUser]
+      addableUsers: []
+    chosenParticipants: ->
+      _.map @state.addableUsers, (p) ->
+        [p.id, p.name]
+
+    renderParticipants: ->
+      {UserThumbnail} = Tahi.overlays.components
+      {li} = React.DOM
+      _.map @state.participants, (p) ->
+        (li {className: 'participant'},
+          (UserThumbnail {name: p.name}))
+
+    participantIds: ->
+      _.pluck @state.participants, 'id'
 
     chosenOptions: ->
-      chosenOptions = [['', 'Add People']].concat @props.chosenOptions
+      chosenOptions = [['', 'Add People']].concat(@chosenParticipants())
       _.map chosenOptions, ([value, label]) -> React.DOM.option({value: value}, label)
 
     createCard: ->
       @refs.form.submit()
+
+    addParticipant:(e) ->
+      debugger
+
     render: ->
       {div, button, footer, option, header, a, h2, main, ul, li, input, textarea, img, label} = React.DOM
-      RailsForm = Tahi.overlays.components.RailsForm
+      {RailsForm} = Tahi.overlays.components
       (div {id: 'new-message-overlay'},
         (header {},
           (h2 {},
@@ -23,15 +42,15 @@ Tahi.overlays.newMessage =
           (RailsForm {action: "/papers/#{@props.paperId}/messages.json", ref: 'form', method: 'POST', ajaxSuccess: Tahi.overlay.hide},
             (div {id: 'participants'},
               (ul {},
-                (li {className: 'participant', "data-participant-name": "No Name"},
-                  (img {src: "/images/profile-no-image.jpg"}))
+                (@renderParticipants()),
                 (li {},
-                  (label {htmlFor: 'message-participants-chosen'}, 'Participants'),
-                  (Chosen {width: '150px', id: "message-participants-chosen", name: 'task[participant_ids][]'},
+                  (label {className: "hidden", htmlFor: 'message-participants-chosen'}, 'Participants'),
+                  (Chosen {width: '150px', id: "message-participants-chosen", onChange: @addParticipant},
                     @chosenOptions() )))),
             (div {className: 'form-group'},
               (input {id: 'message-subject', name: 'task[message_subject]', type: 'text', placeholder: 'Type in a subject here'})),
             (input {type: 'hidden', name: 'phase_id', value: @props.phaseId}),
+            (input {ref: 'participants', type: 'hidden', name: 'task[participant_ids][]', value: @participantIds()}),
             (div {className: 'form-group'},
               (textarea {id: 'message-body', name: 'task[message_body]', placeholder: 'Type your message here'}))
           ))

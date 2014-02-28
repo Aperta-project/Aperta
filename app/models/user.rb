@@ -52,4 +52,7 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def image_url
+    "/images/profile-no-image.jpg"
+  end
 end

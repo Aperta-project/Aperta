@@ -63,6 +63,23 @@ Tahi.manuscriptManager =
       $('.paper-profile h4').dotdotdot
         height: 40
 
+    calculateFlowIndices: ->
+      i = 0
+      _(@state.flows).map (flow)->
+        flow.position = i++
+
+    setFlowIndices: ->
+      $.ajax
+        url: '/phases'
+        method: 'PUT'
+        dataType: 'json'
+        data:
+          task_manager_id: @state.paper.task_manager_id
+          flows: _(@state.flows).map (flow)->
+            {id: flow.id, position: flow.position}
+        success: (data)=>
+          @setState flows: @state.flows
+
     addColumn: (index) ->
       column = {
         key: "flow-1",
@@ -71,17 +88,17 @@ Tahi.manuscriptManager =
         paperProfiles: []
       }
       @state.flows.splice(index, 0, column)
+      @calculateFlowIndices()
       $.ajax
         url: '/phases'
         method: 'POST'
         dataType: 'json'
         data:
           task_manager_id: @state.paper.task_manager_id
-          position: index
         success: (data)=>
-          column.phase_id = data.id
+          column.id = data.id
           column.title = data.name
-          @setState flows: @state.flows
+          @setFlowIndices()
 
     render: ->
       {ul, div} = React.DOM
@@ -90,6 +107,11 @@ Tahi.manuscriptManager =
       (div {},
           header
         (ul {className: 'columns'},
+          for flow, index in @state.flows.concat("hack")
+            (ColumnAppender {
+              addFunction: @addColumn,
+              index: index,
+              className: 'add-column'})
           for flow, index in @state.flows
             Tahi.manuscriptManager.Column {
               addFunction: @addColumn,
@@ -106,12 +128,7 @@ Tahi.manuscriptManager =
     manuscriptCards: ->
       {li} = React.DOM
       cards = for task in @props.tasks
-        (li {},
-          (ColumnAppender {
-             addFunction: @props.addFunction,
-             index: @props.index,
-             className: 'add-column'})
-          Tahi.manuscriptManager.Card {task: task})
+        (li {}, Tahi.manuscriptManager.Card {task: task})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,

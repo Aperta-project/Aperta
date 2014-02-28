@@ -12,7 +12,7 @@ Tahi::Application.routes.draw do
     end
   end
 
-  resource :phases, only: :create
+  resource :phases, only: [:create, :update]
   resource :flow_manager, only: :show
 
   resource :user_settings, only: :update

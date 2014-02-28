@@ -40,7 +40,7 @@ Tahi.overlay =
 
     React.unmountComponentAtNode document.getElementById('overlay')
 
-    if event?.type isnt "popstate"
+    if event?.type isnt "popstate" && turbolinksState?
       state = $.extend turbolinksState, hideOverlay: true
       Tahi.utils.windowHistory().pushState state, null, turbolinksState.url
 

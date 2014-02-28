@@ -155,6 +155,11 @@ describe "Tahi.overlay", ->
         Tahi.overlay.hide(@event, @turbolinksState)
         expect(history.pushState).toHaveBeenCalled()
 
+      context "when turbolinks state is not provided", ->
+        it "doesn't invoke history.pushState", ->
+          @event.type = 'notPopstate'
+          Tahi.overlay.hide(@event)
+          expect(history.pushState).not.toHaveBeenCalled()
 
   describe "#defaultProps", ->
     beforeEach ->

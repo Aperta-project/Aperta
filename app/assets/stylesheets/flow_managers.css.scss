@@ -56,6 +56,12 @@ body.full-height {
     padding-bottom: 10px;
     border-bottom: 1px solid #aaa;
   }
+
+  .remove-column {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 
 .column:last-of-type {

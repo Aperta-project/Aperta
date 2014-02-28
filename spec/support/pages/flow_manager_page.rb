@@ -29,12 +29,19 @@ class FlowManagerPage < Page
       paper_profiles.select { |p| p.title == title }
     end
 
+    def remove
+      find('.remove-column').click
+    end
   end
 
   def column title
     wait_for_turbolinks
     el = all('.column').detect { |c| c.find('h2').text == title }
     Column.new el if el
+  end
+
+  def has_column? title
+    !!column(title)
   end
 
   path :flow_manager

@@ -19,6 +19,17 @@ class TaskManagerPage < Page
     def card_count
       all('.card-container').count
     end
+
+    def new_message_card(**params)
+      click_on 'Add New Card'
+      overlay = session.find('#overlay')
+      overlay.click_button 'New Message Card'
+      message_card = MessageCardOverlay.new overlay
+      message_card.participants = params[:participants]
+      message_card.subject = params[:subject]
+      message_card.body = params[:body]
+      message_card.create
+    end
   end
 
   path :manage_paper

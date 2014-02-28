@@ -46,6 +46,7 @@ feature 'Add a new card', js: true do
       body: 'Please remember to verify signatures of every paper author.',
       assignee: albert
 
+    # NOTE: ideally the state of the page will live-update without a reload
     # needs_editor_phase.view_card 'Verify Author Signatures' do |overlay|
     #   expect(overlay.assignee).to eq 'Albert Einstein'
     #   expect(overlay.title).to eq 'Verify Author Signatures'

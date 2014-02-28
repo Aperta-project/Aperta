@@ -76,24 +76,22 @@ Tahi.columns =
     addColumn: (index) ->
       column = {
         key: "flow-1",
-        title: "new title",
-        paper: @props.paper
+        paper: @state.paper
         tasks: []
         paperProfiles: []
       }
-      @props.flows.splice(index, 0, column)
+      @state.flows.splice(index, 0, column)
       $.ajax
         url: '/phases'
         method: 'POST'
         dataType: 'json'
         data:
-          task_manager_id: @props.paper.task_manager_id
+          task_manager_id: @state.paper.task_manager_id
           position: index
         success: (data)=>
           column.phase_id = data.id
           column.title = data.name
-
-      @setProps flows: @props.flows
+          @setState flows: @state.flows
 
     render: ->
       {ul, div} = React.DOM
@@ -121,7 +119,12 @@ Tahi.columns =
     manuscriptCards: ->
       {li} = React.DOM
       cards = for task in @props.tasks
-        (li {}, Tahi.columns.Card {task: task})
+        (li {},
+          (ColumnAppender {
+             addFunction: @props.addFunction,
+             index: @props.index,
+             className: 'add-column'})
+          Tahi.columns.Card {task: task})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,

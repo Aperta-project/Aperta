@@ -136,12 +136,15 @@ Columns = React.createClass
     @props.flows.splice(index, 0, column)
     # do some jquery 
     $.ajax
-      url: 'phases/new'
+      url: '/phases'
       method: 'POST'
+      dataType: 'json'
       data:
         task_manager_id: @props.paper.task_manager_id
+        position: index
       success: (data)=>
-        column.phase_id = data.phase_id
+        column.phase_id = data.id
+        column.title = data.name
 
     @setProps flows: @props.flows
 

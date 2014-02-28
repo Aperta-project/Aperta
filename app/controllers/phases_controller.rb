@@ -2,11 +2,10 @@ class PhasesController < ApplicationController
   before_filter :authenticate_user!
 
   def create
-    @phase = Phase.new(params[:phase])
+    # add position for phases
+    @phase = Phase.new(task_manager_id: params[:task_manager_id], name: "New Phase")
     if @phase.save
-      respond_to do |format|
-        format.json { @phase.to_json }
-      end
+      render json: @phase.to_json
     end
   end
 end

@@ -4,6 +4,16 @@ class User < ActiveRecord::Base
   has_many :tasks, foreign_key: 'assignee_id'
   has_one :user_settings
 
+  has_many :comments
+  has_many :message_tasks, through: :comments
+  has_many :message_participants, inverse_of: :participant
+
+  has_many :journals, through: :journal_roles
+  has_many :admin_journal_roles, -> { where(admin: true) }, class_name: 'JournalRole'
+  has_many :admin_journals, through: :admin_journal_roles, source: :journal
+  has_many :managed_papers, through: :admin_journals, source: :papers
+
+
   attr_accessor :login
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }

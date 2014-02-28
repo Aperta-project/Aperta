@@ -44,10 +44,10 @@ ColumnAppender = React.createClass
     (span {className: 'addColumn', onClick: @handleClick},
       (i {className: 'glyphicon glyphicon-plus'}))
 
-Tahi.columns =
+Tahi.manuscriptManager =
   init: ()->
-    if columns = document.getElementById('column-manager')
-      columns = Tahi.columns.Columns flows: [], route: columns.getAttribute("data-url")
+    if columns = document.getElementById('manuscript-manager')
+      columns = Tahi.manuscriptManager.Columns flows: [], route: columns.getAttribute("data-url")
       React.renderComponent columns, document.getElementById('tahi-container')
 
   Columns: React.createClass
@@ -62,16 +62,6 @@ Tahi.columns =
     componentDidUpdate: ->
       $('.paper-profile h4').dotdotdot
         height: 40
-
-    removeFlow: (title) ->
-      @setState {flows: _.reject(@state.flows, (flow) -> flow.title == title)}, @saveFlows
-
-    saveFlows: ->
-      flowTitles = _.map @state.flows, (flow) -> flow.title
-      $.post 'user_settings',
-        _method: 'PATCH'
-        user_settings:
-          flows: flowTitles
 
     addColumn: (index) ->
       column = {
@@ -101,16 +91,13 @@ Tahi.columns =
           header
         (ul {className: 'columns'},
           for flow, index in @state.flows
-            Tahi.columns.Column {
-              key: "flow-#{index}",
+            Tahi.manuscriptManager.Column {
               addFunction: @addColumn,
               index: index+1,
-              paperProfiles: flow.paperProfiles,
               title: flow.title
               tasks: flow.tasks,
               phase_id: flow.id,
               paper: @state.paper
-              onRemove: @removeFlow
             }
       ))
 
@@ -124,39 +111,22 @@ Tahi.columns =
              addFunction: @props.addFunction,
              index: @props.index,
              className: 'add-column'})
-          Tahi.columns.Card {task: task})
+          Tahi.manuscriptManager.Card {task: task})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,
           phase_id: @props.phase_id
       }))
 
-    paperProfiles: ->
-      {li} = React.DOM
-      for paperProfile in @props.paperProfiles
-        (li {}, Tahi.columns.PaperProfile {profile: paperProfile})
-
-    remove: ->
-      @props.onRemove @props.title
-
     render: ->
       {h2, div, ul, li} = React.DOM
 
-      isManuscriptColumn = !!@props.tasks
-
-      closeButton = ' '
-      unless isManuscriptColumn
-        closeButton = (div {className: 'remove-column glyphicon glyphicon-remove', onClick: @remove})
 
       (li {className: 'column'},
         (h2 {}, @props.title),
-        closeButton,
         (div {className: 'column-content'},
           (ul {className: 'cards'},
-            if isManuscriptColumn
-              @manuscriptCards()
-            else
-              @paperProfiles()
+            @manuscriptCards()
       )))
 
   Card: React.createClass
@@ -184,15 +154,3 @@ Tahi.columns =
     displayCard: (event) ->
       Tahi.overlay.display event, @props.task.cardName
 
-
-  PaperProfile: React.createClass
-    displayName: "PaperProfile"
-    render: ->
-      {div, h4, a} = React.DOM
-
-      (div {className: 'paper-profile'}, [
-        (a {href: @props.profile.paper_path, className: 'paper-title'},
-          (h4 {}, @props.profile.title)),
-
-        for task in @props.profile.tasks
-          (Tahi.columns.Card {task: task, flowCard: true})])

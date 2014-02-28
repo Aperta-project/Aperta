@@ -34,16 +34,6 @@ ManuscriptHeader = React.createClass
             li {},
               a {href:@props.paper.edit_url}, "Manuscript")
 
-ColumnAppender = React.createClass
-  displayName: "ColumnAppender"
-  handleClick: ->
-    @props.addFunction(@props.index)
-
-  render: ->
-    {span, i} = React.DOM
-    (span {className: 'addColumn', onClick: @handleClick},
-      (i {className: 'glyphicon glyphicon-plus'}))
-
 Tahi.manuscriptManager =
   init: ()->
     if columns = document.getElementById('manuscript-manager')
@@ -107,11 +97,10 @@ Tahi.manuscriptManager =
       (div {},
           header
         (ul {className: 'columns'},
-          for flow, index in @state.flows.concat("hack")
-            (ColumnAppender {
-              addFunction: @addColumn,
-              index: index,
-              className: 'add-column'})
+          Tahi.manuscriptManager.ColumnAppender {
+            addFunction: @addColumn
+            bonusClass: 'first-add-column'
+            index: 0}
           for flow, index in @state.flows
             Tahi.manuscriptManager.Column {
               addFunction: @addColumn,
@@ -140,11 +129,25 @@ Tahi.manuscriptManager =
 
 
       (li {className: 'column'},
+        Tahi.manuscriptManager.ColumnAppender {
+          addFunction: @props.addFunction,
+          index: @props.index}
         (h2 {}, @props.title),
         (div {className: 'column-content'},
           (ul {className: 'cards'},
             @manuscriptCards()
       )))
+
+  ColumnAppender: React.createClass
+    displayName: "ColumnAppender"
+    handleClick: ->
+      @props.addFunction(@props.index)
+
+    render: ->
+      @props.bonusClass ||= ""
+      {span, i} = React.DOM
+      (span {className: "add-column #{@props.bonusClass}", onClick: @handleClick},
+        (i {className: 'glyphicon glyphicon-plus'}))
 
   Card: React.createClass
     displayName: "Card"

@@ -21,14 +21,15 @@ body.full-height {
   overflow-y: hidden;
   overflow-x: scroll;
   text-align: center;
-  .addColumn {
+  .add-column {
     &:hover {
       opacity: 1;
     }
-    position:absolute;
-    right: -11px;
-    top: -18px;
+    display: inline-block;
+    position: absolute;
     background-color: $tahi-secondary;
+    top: -17px;
+    right: -11px;
     width: 20px;
     height: 15px;
     text-align: center;
@@ -36,6 +37,11 @@ body.full-height {
     opacity: 0;
     i {
       color: #FFFFFF;
+    }
+    &.first-add-column {
+      left: 28px;
+      top: -24px;
+      position: relative;
     }
   }
 }

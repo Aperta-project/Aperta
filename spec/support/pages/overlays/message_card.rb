@@ -1,10 +1,12 @@
 class MessageCardOverlay < CardOverlay
+
+
   def participants=(users)
     users.map(&:full_name).each { |name| select_from_chosen name, from: 'Participants' }
   end
 
   def participants
-    all('#participants .participant').map { |e| e["data-participant-name"] }
+    all('#participants .user-thumbnail').map { |e| e["data-user-name"] }
   end
 
   def subject

@@ -47,7 +47,8 @@ feature 'Message Cards', js: true do
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.new_message_card subject: subject_text,
       body: body_text,
-      participants: participants
+      participants: participants,
+      creator: admin
 
     needs_editor_phase.view_card subject_text, cardObject: MessageCardOverlay do |card|
       expect(card.subject).to == subject_text

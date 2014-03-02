@@ -3,21 +3,29 @@ Tahi.overlays ||= {}
 Tahi.overlays.newMessage =
   overlay: React.createClass
     componentDidMount: ->
+      $.getJSON '/users/chosen_options', (data) =>
+        @setState userModels: data.users
 
     getInitialState: ->
       participants: [Tahi.currentUser]
-      addableUsers: []
+      userModels: [Tahi.currentUser]
 
     chosenParticipants: ->
-      _.map @state.addableUsers, (p) ->
-        [p.id, p.name]
+      _.map @selectableUsers(), (p) ->
+        [p.id, p.fullName]
+
+
+    selectableUsers: ->
+      pIds = @participantIds()
+      _.reject @state.userModels, (u) ->
+        _.contains pIds, u.id
 
     renderParticipants: ->
       {UserThumbnail} = Tahi.overlays.components
       {li} = React.DOM
       _.map @state.participants, (p) ->
         (li {className: 'participant'},
-          (UserThumbnail {name: p.name}))
+          (UserThumbnail {name: p.fullName}))
 
     participantIds: ->
       _.pluck @state.participants, 'id'
@@ -30,7 +38,8 @@ Tahi.overlays.newMessage =
       @refs.form.submit()
 
     addParticipant:(e) ->
-      debugger
+      newParticipant = _.findWhere @state.userModels, {id: parseInt(e.target.value)}
+      @setState participants: (@state.participants.concat(newParticipant))
 
     render: ->
       {div, button, footer, option, header, a, h2, main, ul, li, input, textarea, img, label} = React.DOM

@@ -7,6 +7,7 @@ Tahi.overlays.newMessage =
     getInitialState: ->
       participants: [Tahi.currentUser]
       addableUsers: []
+
     chosenParticipants: ->
       _.map @state.addableUsers, (p) ->
         [p.id, p.name]
@@ -22,7 +23,7 @@ Tahi.overlays.newMessage =
       _.pluck @state.participants, 'id'
 
     chosenOptions: ->
-      chosenOptions = [['', 'Add People']].concat(@chosenParticipants())
+      chosenOptions = [['', '']].concat(@chosenParticipants())
       _.map chosenOptions, ([value, label]) -> React.DOM.option({value: value}, label)
 
     createCard: ->
@@ -45,7 +46,7 @@ Tahi.overlays.newMessage =
                 (@renderParticipants()),
                 (li {},
                   (label {className: "hidden", htmlFor: 'message-participants-chosen'}, 'Participants'),
-                  (Chosen {width: '150px', id: "message-participants-chosen", onChange: @addParticipant},
+                  (Chosen {"data-placeholder": "Add People", width: '150px', id: "message-participants-chosen", onChange: @addParticipant},
                     @chosenOptions() )))),
             (div {className: 'form-group'},
               (input {id: 'message-subject', name: 'task[message_subject]', type: 'text', placeholder: 'Type in a subject here'})),

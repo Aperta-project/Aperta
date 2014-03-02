@@ -11,7 +11,7 @@ describe UserInfoController do
       expect(response).to be_success
       json = JSON.parse(response.body)
       expect(json['users'].count).to eq(1)
-      expect(json['users'].first).to include('id', 'full_name', 'image_url')
+      expect(json['users'].first).to include('id', 'fullName', 'imageUrl')
     end
   end
 end

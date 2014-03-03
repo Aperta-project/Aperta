@@ -99,7 +99,19 @@ describe FlowManagerData do
 
   describe "#flows" do
     it "returns a hash of flows" do
-      
+      allow(flow_manager_data).to receive(:incomplete_tasks).and_return(1)
+      allow(flow_manager_data).to receive(:complete_tasks).and_return(2)
+      allow(flow_manager_data).to receive(:paper_admin_tasks).and_return(3)
+      allow(flow_manager_data).to receive(:unassigned_papers).and_return(4)
+
+      flows = ['Up for grabs', 'My Tasks', 'My Papers', 'Done']
+      settings = double(:settings, flows: flows)
+      expect(admin).to receive(:user_settings).and_return(settings)
+
+      expect(flow_manager_data.flows).to match_array([['Up for grabs', 4],
+                                                      ['My Tasks', 1],
+                                                      ['My Papers', 3],
+                                                      ['Done', 2]])
     end
   end
 end

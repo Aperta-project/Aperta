@@ -4,10 +4,6 @@ class FlowManagerData
     @user = user
   end
 
-  def base_query(task_type)
-    task_type.joins(phase: {task_manager: :paper}).includes(:paper, {paper: :figures}, {paper: :declarations}, {paper: {journal: :journal_roles}})
-  end
-
   def incomplete_tasks
     base_query(Task).assigned_to(@user).incomplete.group_by { |t| t.paper }.to_a
   end
@@ -46,4 +42,11 @@ class FlowManagerData
     #  ["My Papers", paper_admin_tasks],
     #  ["Done", complete_tasks]]
   end
+
+  private
+
+  def base_query(task_type)
+    task_type.joins(phase: {task_manager: :paper}).includes(:paper, {paper: :figures}, {paper: :declarations}, {paper: {journal: :journal_roles}})
+  end
+
 end

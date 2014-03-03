@@ -166,11 +166,12 @@ Tahi.manuscriptManager =
         'completed': @props.task.taskCompleted
 
     componentDidMount: ->
-      $(this.getDOMNode().querySelector('.js-remove-card')).tooltip()
+      $(@getDOMNode().querySelector('.js-remove-card')).tooltip()
 
     render: ->
-      {a, span} = React.DOM
-      (a {
+      {div, a, span} = React.DOM
+      (div {className: "card-container"},
+        (a {
           className: @cardClass(),
           onClick: @displayCard,
           "data-card-name": @props.task.cardName,
@@ -178,15 +179,20 @@ Tahi.manuscriptManager =
           "data-task-path": @props.task.taskPath,
           href: @props.task.taskPath
         },
+          (span {className: 'glyphicon glyphicon-ok completed-glyph'}),
+            @props.task.taskTitle
+        ),
         (span {
           className: 'glyphicon glyphicon-remove-circle remove-card js-remove-card',
           "data-toggle": "tooltip",
           "data-placement": "right",
-          "title": "Delete Card" })
-        (span {className: 'glyphicon glyphicon-ok completed-glyph'}),
-        @props.task.taskTitle
+          "title": "Delete Card",
+          onClick: @removeCard })
       )
 
     displayCard: (event) ->
       Tahi.overlay.display event, @props.task.cardName
+
+    removeCard: (event) ->
+      $(@getDOMNode()).remove()
 

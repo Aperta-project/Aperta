@@ -42,6 +42,15 @@ class TasksController < ApplicationController
     end
   end
 
+  def destroy
+    task = Paper.includes(:tasks).find_by_id(params[:paper_id]).tasks.where(id: params[:id]).first
+    if task && task.destroy
+      render json: true
+    else
+      render status: 400
+    end
+  end
+
   def new
     render json: { one: 1, two: [1, 2] }
   end

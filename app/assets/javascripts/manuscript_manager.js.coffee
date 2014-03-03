@@ -187,12 +187,16 @@ Tahi.manuscriptManager =
           "data-toggle": "tooltip",
           "data-placement": "right",
           "title": "Delete Card",
-          onClick: @removeCard })
+          onClick: @destroyCard })
       )
 
     displayCard: (event) ->
       Tahi.overlay.display event, @props.task.cardName
 
-    removeCard: (event) ->
-      $(@getDOMNode()).remove()
+    destroyCard: ->
+      $.ajax
+        url: 'tasks/' + @props.task.taskId
+        method: 'DELETE'
+        success: =>
+          $(@getDOMNode()).remove()
 

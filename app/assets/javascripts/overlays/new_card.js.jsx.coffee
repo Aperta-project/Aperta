@@ -19,6 +19,10 @@ Tahi.overlays.newCard =
     React.renderComponent `<NewCardOverlay assignees={assignees} url={url} phaseId={phaseId} paperShortTitle={paperShortTitle} />`, document.getElementById('overlay')
     $('#overlay').show()
 
+  hideOverlay: (e) ->
+    e?.preventDefault()
+    Tahi.overlay.hide()
+
   components:
     NewCardForm: React.createClass
       submit: ->

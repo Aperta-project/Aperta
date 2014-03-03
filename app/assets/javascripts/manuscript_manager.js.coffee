@@ -165,6 +165,9 @@ Tahi.manuscriptManager =
         'flow-card':  @props.flowCard
         'completed': @props.task.taskCompleted
 
+    componentDidMount: ->
+      $(this.getDOMNode().querySelector('.js-remove-card')).tooltip()
+
     render: ->
       {a, span} = React.DOM
       (a {
@@ -175,7 +178,12 @@ Tahi.manuscriptManager =
           "data-task-path": @props.task.taskPath,
           href: @props.task.taskPath
         },
-        (span {className: 'glyphicon glyphicon-ok'}),
+        (span {
+          className: 'glyphicon glyphicon-remove-circle remove-card js-remove-card',
+          "data-toggle": "tooltip",
+          "data-placement": "right",
+          "title": "Delete Card" })
+        (span {className: 'glyphicon glyphicon-ok completed-glyph'}),
         @props.task.taskTitle
       )
 

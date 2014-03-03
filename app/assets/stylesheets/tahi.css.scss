@@ -161,6 +161,7 @@ textarea {
   font-size: 20px;
   padding: 10px 15px;
   display: block;
+  position: relative;
   margin-bottom: 10px;
   border-radius: 5px;
   word-wrap: break-word;
@@ -169,9 +170,21 @@ textarea {
     background-color: $btn-primary-bg;
     color: white;
     text-decoration: none;
+    .remove-card {
+      position: absolute;
+      display: inline;
+      top: 5px;
+      right: 5px;
+      font-size: 14px;
+      color: #FFFFFF;
+    }
   }
 
-  span.glyphicon {
+  .tooltip {
+    position: fixed;
+  }
+
+  span.completed-glyph {
     display: none;
   }
 
@@ -185,10 +198,14 @@ textarea {
     color: white;
   }
 
-  &.completed span.glyphicon {
+  &.completed span.completed-glyph {
     display: inline;
     margin-right: 5px;
     color: $tahi-primary;
+  }
+
+  .remove-card {
+    display: none;
   }
 
   &.completed:hover span.glyphicon {

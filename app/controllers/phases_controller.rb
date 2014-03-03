@@ -21,3 +21,4 @@ class PhasesController < ApplicationController
     end
     render json: true
   end
+end

@@ -34,6 +34,22 @@ feature "Manuscript Manager", js: true do
     sign_in_page.sign_in admin.email
   end
 
+  scenario 'Adding new phases' do
+    dashboard_page = DashboardPage.visit
+    paper_page = dashboard_page.view_submitted_paper 'foobar'
+    task_manager_page = paper_page.navigate_to_task_manager
+
+    sleep 0.4
+    add_columns = all('.add-column')
+    add_columns = page.execute_script('return document.querySelectorAll(".add-column")')
+    original_count = add_columns.count
+    add_columns.first.click
+    sleep 0.4
+    expect(
+      page.execute_script('return document.querySelectorAll(".add-column")').length
+    ).to eq(original_count + 1)
+  end
+
   scenario "Admin can assign a paper to themselves" do
     dashboard_page = DashboardPage.visit
     paper_page = dashboard_page.view_submitted_paper 'foobar'

@@ -9,7 +9,10 @@
       Tahi.utils.resizeContainer('.phase-container', 'h2')
     ,200)
 
-#column-manager{data: {url: manage_paper_path(@paper)}}
+#manuscript-manager{data: {url: manage_paper_path(@paper)}}
+
+- content_for :tahi_body_class do
+  full-height
 
 - content_for :tahi_container_class do
   full-width

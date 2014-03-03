@@ -1,6 +1,7 @@
 window.Tahi ||= {}
 
 NewCardButton = React.createClass
+  displayName: "NewCardButton"
   render: ->
     {a} = React.DOM
     (a
@@ -15,6 +16,7 @@ NewCardButton = React.createClass
     )
 
 ManuscriptHeader = React.createClass
+  displayName: "ManuscriptHeader"
   render: ->
     {ul, div, section, img, h2, li, a, section} = React.DOM
     (div {id:'control-bar-container'},
@@ -32,42 +34,14 @@ ManuscriptHeader = React.createClass
             li {},
               a {href:@props.paper.edit_url}, "Manuscript")
 
-Column = React.createClass
-  manuscriptCards: ->
-    {li} = React.DOM
-    cards = for task in @props.tasks
-      (li {}, Tahi.columns.Card {task: task})
-    cards.concat((li {},
-      NewCardButton {
-        paper: @props.paper,
-        phase_id: @props.phase_id
-    }))
-
-  paperProfiles: ->
-    {li} = React.DOM
-    for paperProfile in @props.paperProfiles
-      (li {}, Tahi.columns.PaperProfile {profile: paperProfile})
-
-  render: ->
-    {h2, ul, li, div, li} = React.DOM
-
-    (li {className: 'column'},
-      (h2 {}, @props.title),
-      (div {className: 'column-content'},
-        (ul {className: 'cards'},
-          if @props.tasks
-            @manuscriptCards()
-          else
-            @paperProfiles()
-    )))
-
-Tahi.columns =
+Tahi.manuscriptManager =
   init: ()->
-    if columns = document.getElementById('column-manager')
-      columns = Tahi.columns.Columns flows: [], route: columns.getAttribute("data-url")
+    if columns = document.getElementById('manuscript-manager')
+      columns = Tahi.manuscriptManager.Columns flows: [], route: columns.getAttribute("data-url")
       React.renderComponent columns, document.getElementById('tahi-container')
 
   Columns: React.createClass
+    displayName: "Columns"
     componentWillMount: ->
       @setState @props
 
@@ -79,15 +53,42 @@ Tahi.columns =
       $('.paper-profile h4').dotdotdot
         height: 40
 
-    removeFlow: (title) ->
-      @setState {flows: _.reject(@state.flows, (flow) -> flow.title == title)}, @saveFlows
+    calculateFlowIndices: ->
+      i = 0
+      _(@state.flows).map (flow)->
+        flow.position = i++
 
-    saveFlows: ->
-      flowTitles = _.map @state.flows, (flow) -> flow.title
-      $.post 'user_settings',
-        _method: 'PATCH'
-        user_settings:
-          flows: flowTitles
+    setFlowIndices: ->
+      $.ajax
+        url: '/phases'
+        method: 'PUT'
+        dataType: 'json'
+        data:
+          task_manager_id: @state.paper.task_manager_id
+          flows: _(@state.flows).map (flow)->
+            {id: flow.id, position: flow.position}
+        success: (data)=>
+          @setState flows: @state.flows
+
+    addColumn: (index) ->
+      column = {
+        key: "flow-1",
+        paper: @state.paper
+        tasks: []
+        paperProfiles: []
+      }
+      @state.flows.splice(index, 0, column)
+      @calculateFlowIndices()
+      $.ajax
+        url: '/phases'
+        method: 'POST'
+        dataType: 'json'
+        data:
+          task_manager_id: @state.paper.task_manager_id
+        success: (data)=>
+          column.id = data.id
+          column.title = data.name
+          @setFlowIndices()
 
     render: ->
       {ul, div} = React.DOM
@@ -96,58 +97,68 @@ Tahi.columns =
       (div {},
           header
         (ul {className: 'columns'},
+          Tahi.manuscriptManager.ColumnAppender {
+            addFunction: @addColumn
+            bonusClass: 'first-add-column'
+            index: 0}
           for flow, index in @state.flows
-            Tahi.columns.Column {
-              key: "flow-#{index}",
-              paperProfiles: flow.paperProfiles,
+            Tahi.manuscriptManager.Column {
+              addFunction: @addColumn,
+              index: index+1,
               title: flow.title
               tasks: flow.tasks,
               phase_id: flow.id,
               paper: @state.paper
-              onRemove: @removeFlow
             }
       ))
 
   Column: React.createClass
+    displayName: "Column"
     manuscriptCards: ->
       {li} = React.DOM
       cards = for task in @props.tasks
-        (li {}, Tahi.columns.Card {task: task})
+        (li {}, Tahi.manuscriptManager.Card {task: task})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,
           phase_id: @props.phase_id
       }))
 
-    paperProfiles: ->
-      {li} = React.DOM
-      for paperProfile in @props.paperProfiles
-        (li {}, Tahi.columns.PaperProfile {profile: paperProfile})
-
-    remove: ->
-      @props.onRemove @props.title
-
     render: ->
       {h2, div, ul, li} = React.DOM
 
-      isManuscriptColumn = !!@props.tasks
-
-      closeButton = ' '
-      unless isManuscriptColumn
-        closeButton = (div {className: 'remove-column glyphicon glyphicon-remove', onClick: @remove})
 
       (li {className: 'column'},
+        Tahi.manuscriptManager.ColumnAppender {
+          addFunction: @props.addFunction,
+          index: @props.index}
         (h2 {}, @props.title),
-        closeButton,
         (div {className: 'column-content'},
           (ul {className: 'cards'},
-            if isManuscriptColumn
-              @manuscriptCards()
-            else
-              @paperProfiles()
+            @manuscriptCards()
       )))
 
+  ColumnAppender: React.createClass
+    displayName: "ColumnAppender"
+    handleClick: ->
+      @props.addFunction(@props.index)
+
+    render: ->
+      @props.bonusClass ||= ""
+      {span, i} = React.DOM
+      (span {
+        className: "add-column #{@props.bonusClass}",
+        "data-toggle": "tooltip",
+        "data-placement": "auto right",
+        "title": "Add Phase"
+        onClick: @handleClick},
+        (i {className: 'glyphicon glyphicon-plus'}))
+
+    componentDidMount: ->
+      $(this.getDOMNode()).tooltip()
+
   Card: React.createClass
+    displayName: "Card"
     cardClass: ->
       Tahi.className
         'card': true
@@ -171,14 +182,3 @@ Tahi.columns =
     displayCard: (event) ->
       Tahi.overlay.display event, @props.task.cardName
 
-
-  PaperProfile: React.createClass
-    render: ->
-      {div, h4, a} = React.DOM
-
-      (div {className: 'paper-profile'}, [
-        (a {href: @props.profile.paper_path, className: 'paper-title'},
-          (h4 {}, @props.profile.title)),
-
-        for task in @props.profile.tasks
-          (Tahi.columns.Card {task: task, flowCard: true})])

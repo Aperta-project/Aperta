@@ -162,7 +162,6 @@ Tahi.manuscriptManager =
     cardClass: ->
       Tahi.className
         'card': true
-        'flow-card':  @props.flowCard
         'completed': @props.task.taskCompleted
 
     componentDidMount: ->

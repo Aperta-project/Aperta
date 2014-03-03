@@ -18,3 +18,22 @@ describe "Manuscript Manager", ->
           result = @component.render()
           element = result.props.children[2].props.children.props.children[0]
           expect(element.props.children.constructor).toEqual Tahi.manuscriptManager.Card.componentConstructor
+
+  describe "Card component", ->
+    describe "#render", ->
+      beforeEach ->
+        task =
+          cardName: "upload-manuscript"
+          taskId: 1
+          taskPath: "/papers/1/tasks/1"
+        @component = Tahi.manuscriptManager.Card task: task
+
+      it "renders the Cards", ->
+        result = @component.render()
+        cardAnchor = result.props.children[0].props
+        expect(cardAnchor.className).toEqual "card"
+        expect(cardAnchor['data-card-name']).toEqual "upload-manuscript"
+        expect(cardAnchor['data-task-id']).toEqual 1
+        expect(cardAnchor['data-task-path']).toEqual "/papers/1/tasks/1"
+
+

@@ -2,13 +2,7 @@ require 'spec_helper'
 
 describe FlowManagerData do
   let :admin do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
+    FactoryGirl.create :user, :admin
   end
 
   let! :paper do

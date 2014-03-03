@@ -192,6 +192,15 @@ textarea {
     color: white;
     text-decoration: none;
   }
+  &.message {
+    background-color: $tahi-message-light;
+    color: #3f1587;
+    &:hover {
+      background-color: $tahi-message;
+      color: white;
+      text-decoration: none;
+    }
+  }
 
   span.completed-glyph {
     display: none;

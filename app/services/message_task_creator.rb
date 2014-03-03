@@ -6,7 +6,7 @@ class MessageTaskCreator
     body = message_params[:message_body]
     participant_ids = message_params[:participant_ids]
     MessageTask.transaction do
-      message_task = phase.message_tasks.create!(message_subject: subject, participant_ids: participant_ids)
+      message_task = phase.message_tasks.create!(title: subject, message_subject: subject, participant_ids: participant_ids)
       if body
         comment = message_task.comments.create!(body: body, commenter_id: creator.id)
       end

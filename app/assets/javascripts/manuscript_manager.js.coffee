@@ -178,6 +178,7 @@ Tahi.manuscriptManager =
       Tahi.className
         'card': true
         'completed': @props.task.taskCompleted
+        'message': (@props.task.cardName == 'message')
 
     componentDidMount: ->
       $(@getDOMNode().querySelector('.js-remove-card')).tooltip()

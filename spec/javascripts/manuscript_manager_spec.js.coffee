@@ -27,11 +27,11 @@ describe "Manuscript Manager", ->
           taskId: 1
           taskPath: "/papers/1/tasks/1"
         @component = Tahi.manuscriptManager.Card task: task
+        @result = @component.render()
 
       context "the anchor tag", ->
         beforeEach ->
-          result = @component.render()
-          @cardAnchor = result.props.children[0].props
+          @cardAnchor = @result.props.children[0].props
 
         it "rendering", ->
           expect(@cardAnchor.className).toEqual "card"
@@ -42,3 +42,14 @@ describe "Manuscript Manager", ->
         it "child glyphicon", ->
           glyphOk = @cardAnchor.children[0]
           expect(glyphOk.props.className.match("glyphicon glyphicon-ok")).toBeTruthy()
+
+
+      context "the card delete span", ->
+        beforeEach ->
+          @deleteSpan = @result.props.children[1].props
+
+        it "renders the Cards", ->
+          expect(@deleteSpan.className.match("glyphicon glyphicon-remove-circle")).toBeTruthy()
+          expect(@deleteSpan['data-toggle']).toEqual "tooltip"
+          expect(@deleteSpan['title']).toEqual "Delete Card"
+          expect(@deleteSpan.onClick).toEqual Tahi.manuscriptManager.Card.originalSpec.destroyCard

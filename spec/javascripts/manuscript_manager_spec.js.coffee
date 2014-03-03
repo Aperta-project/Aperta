@@ -28,12 +28,17 @@ describe "Manuscript Manager", ->
           taskPath: "/papers/1/tasks/1"
         @component = Tahi.manuscriptManager.Card task: task
 
-      it "renders the Cards", ->
-        result = @component.render()
-        cardAnchor = result.props.children[0].props
-        expect(cardAnchor.className).toEqual "card"
-        expect(cardAnchor['data-card-name']).toEqual "upload-manuscript"
-        expect(cardAnchor['data-task-id']).toEqual 1
-        expect(cardAnchor['data-task-path']).toEqual "/papers/1/tasks/1"
+      context "the anchor tag", ->
+        beforeEach ->
+          result = @component.render()
+          @cardAnchor = result.props.children[0].props
 
+        it "rendering", ->
+          expect(@cardAnchor.className).toEqual "card"
+          expect(@cardAnchor['data-card-name']).toEqual "upload-manuscript"
+          expect(@cardAnchor['data-task-id']).toEqual 1
+          expect(@cardAnchor['data-task-path']).toEqual "/papers/1/tasks/1"
 
+        it "child glyphicon", ->
+          glyphOk = @cardAnchor.children[0]
+          expect(glyphOk.props.className.match("glyphicon glyphicon-ok")).toBeTruthy()

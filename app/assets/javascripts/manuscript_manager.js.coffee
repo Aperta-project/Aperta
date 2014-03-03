@@ -146,8 +146,16 @@ Tahi.manuscriptManager =
     render: ->
       @props.bonusClass ||= ""
       {span, i} = React.DOM
-      (span {className: "add-column #{@props.bonusClass}", onClick: @handleClick},
+      (span {
+        className: "add-column #{@props.bonusClass}",
+        "data-toggle": "tooltip",
+        "data-placement": "auto right",
+        "title": "Add Phase"
+        onClick: @handleClick},
         (i {className: 'glyphicon glyphicon-plus'}))
+
+    componentDidMount: ->
+      $(this.getDOMNode()).tooltip()
 
   Card: React.createClass
     displayName: "Card"

@@ -12,12 +12,26 @@ describe "Manuscript Manager", ->
     describe "#render", ->
       context "when this is a manuscript manager column (has tasks)", ->
         beforeEach ->
-          @component = Tahi.manuscriptManager.Column title: 'Column Title', tasks: [{}]
+          @addFn = -> console.log 'Arbitrary Function'
+          component = Tahi.manuscriptManager.Column title: 'Column Title', tasks: [{}], addFunction: @addFn
+          @children = component.render().props.children
 
         it "renders Card components", ->
-          result = @component.render()
-          element = result.props.children[2].props.children.props.children[0]
+          element = @children[2].props.children.props.children[0]
           expect(element.props.children.constructor).toEqual Tahi.manuscriptManager.Card.componentConstructor
+
+        it "passes its addFunction through to the ColumnAppender", ->
+          expect(@children[0].props.addFunction).toEqual @addFn
+
+  describe "ColumnAppender component", ->
+    describe "#render", ->
+      beforeEach ->
+        task =
+          cardName: "upload-manuscript"
+          taskId: 1
+          taskPath: "/papers/1/tasks/1"
+        @component = Tahi.manuscriptManager.ColumnAppender task: task
+        @result = @component.render()
 
   describe "Card component", ->
     describe "#render", ->

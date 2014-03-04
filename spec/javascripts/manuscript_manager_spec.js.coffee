@@ -1,13 +1,4 @@
 describe "Manuscript Manager", ->
-  describe "Columns component", ->
-    beforeEach ->
-      flows = [
-        {title: "Flow 1"},
-        {title: "Flow 2"}
-      ]
-      @component = Tahi.manuscriptManager.Columns flows: flows
-      @component.state = flows: flows
-
   describe "Column component", ->
     describe "#render", ->
       context "when this is a manuscript manager column (has tasks)", ->

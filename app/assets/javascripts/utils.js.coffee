@@ -3,9 +3,20 @@ window.Tahi ||= {}
 Tahi.utils =
   windowHistory: ->
     window.history
-  resizeContainer: (selector, child) ->
-    $selector = $(selector)
-    heights = $selector.find(child).map ->
-      $(this).outerHeight(true)
+
+  bindColumnResize: ->
+    $(window).off('resize.columns').on 'resize.columns', =>
+      @resizeColumnHeaders()
+
+  resizeColumnHeaders: ->
+    $children = $('.columns h2')
+    return unless $children.length
+
+    $children.css('height', '')
+    heights = $children.map ->
+      $(this).outerHeight()
+
     max = Math.max.apply(Math, heights)
-    $selector.css('height', max)
+
+    $children.css('height', max)
+    $('.column-content').css('top', max)

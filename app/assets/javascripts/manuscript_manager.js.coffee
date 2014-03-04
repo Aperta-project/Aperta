@@ -46,10 +46,14 @@ Tahi.manuscriptManager =
       @setState @props
 
     componentDidMount: ->
+      Tahi.utils.bindColumnResize()
+
       $.getJSON @props.route, (data,status) =>
         @setState flows: data.flows, paper: data.paper
 
     componentDidUpdate: ->
+      Tahi.utils.resizeColumnHeaders()
+
       $('.paper-profile h4').dotdotdot
         height: 40
 

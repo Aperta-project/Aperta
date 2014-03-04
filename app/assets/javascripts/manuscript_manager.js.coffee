@@ -74,6 +74,17 @@ Tahi.manuscriptManager =
         success: (data)=>
           @setState flows: @state.flows
 
+    removeCard: (taskId, phaseId) ->
+      $.ajax
+        url: 'tasks/' + taskId
+        method: 'DELETE'
+        success: =>
+          newFlows = @state.flows.slice(0)
+          flow = _.findWhere(newFlows, {id: phaseId})
+          flow.tasks = _.reject flow.tasks, (task) ->
+            task.taskId == taskId
+          @setState flows: newFlows
+
     addColumn: (index) ->
       column = {
         key: "flow-1",
@@ -113,6 +124,7 @@ Tahi.manuscriptManager =
               tasks: flow.tasks,
               phase_id: flow.id,
               paper: @state.paper
+              removeCard: @removeCard
             }
       ))
 
@@ -120,18 +132,17 @@ Tahi.manuscriptManager =
     displayName: "Column"
     manuscriptCards: ->
       {li} = React.DOM
-      cards = for task in @props.tasks
-        (li {}, Tahi.manuscriptManager.Card {task: task})
+      cards = _.map @props.tasks, (task) =>
+        (li {}, Tahi.manuscriptManager.Card {task: task, removeCard: => @props.removeCard(task.taskId, @props.phase_id)})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,
           phase_id: @props.phase_id
       }))
 
+
     render: ->
       {h2, div, ul, li} = React.DOM
-
-
       (li {className: 'column'},
         Tahi.manuscriptManager.ColumnAppender {
           addFunction: @props.addFunction,
@@ -159,7 +170,7 @@ Tahi.manuscriptManager =
         (i {className: 'glyphicon glyphicon-plus'}))
 
     componentDidMount: ->
-      $(this.getDOMNode()).tooltip()
+      $(@getDOMNode()).tooltip()
 
   Card: React.createClass
     displayName: "Card"
@@ -190,16 +201,8 @@ Tahi.manuscriptManager =
           "data-toggle": "tooltip",
           "data-placement": "right",
           "title": "Delete Card",
-          onClick: @destroyCard })
+          onClick: @props.removeCard })
       )
 
     displayCard: (event) ->
       Tahi.overlay.display event, @props.task.cardName
-
-    destroyCard: ->
-      $.ajax
-        url: 'tasks/' + @props.task.taskId
-        method: 'DELETE'
-        success: =>
-          $(@getDOMNode()).remove()
-

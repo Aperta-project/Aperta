@@ -38,9 +38,19 @@ Tahi.manuscriptManager =
       columns = Tahi.manuscriptManager.Columns flows: [], route: columns.getAttribute("data-url")
       React.renderComponent columns, document.getElementById('tahi-container')
 
-      $(document).on 'dragend', 'li.column', (e) ->
-        # debugger
-        columns.move(window.elementBeingDragged, e.targetPosition)
+      $(document).on 'dragover', 'li.column', (e) ->
+        e.preventDefault()
+        e.stopPropagation()
+
+      $(document).on 'drop', 'li.column', (e) ->
+        e.preventDefault()
+        e.stopPropagation()
+        columns.move(window.elementBeingDragged, this)
+
+      $(document).on "dragstart", "a.card", (e) ->
+        dt =  e.originalEvent.dataTransfer
+        dt.effectAllowed = "copyMove"
+        true
 
   Columns: React.createClass
     displayName: "Columns"
@@ -57,6 +67,11 @@ Tahi.manuscriptManager =
         if draggedTask?
           flow.tasks.splice(flow.tasks.indexOf(draggedTask), 1)
           break
+
+      destinationColumn = _.find currentFlows, (flow) ->
+        flow.title == $('h2', destination).text()
+
+      destinationColumn.tasks.push(draggedTask)
 
       @setState
         flows: currentFlows

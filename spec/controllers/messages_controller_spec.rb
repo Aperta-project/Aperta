@@ -22,8 +22,8 @@ describe MessagesController do
     def verify_response(response)
         json = JSON.parse(response.body)
         expect(json["cardName"]).to eq("message")
-        expect(json["message_subject"]).to eq(msg_subject)
-        expect(json["title"]).to eq(msg_subject)
+        expect(json["messageSubject"]).to eq(msg_subject)
+        expect(json["taskTitle"]).to eq(msg_subject)
         expect(json["comments"].count).to eq(1)
     end
     context "with a paper that the user administers through a journal" do

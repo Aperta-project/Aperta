@@ -20,6 +20,8 @@ a {
   }
 }
 
+.card { cursor: pointer; }
+
 hr {
   border-top: 1px solid #d6d6d6;
 }
@@ -229,4 +231,8 @@ textarea {
 
 .pointer {
   cursor: pointer;
+}
+
+.drop-column {
+  opacity: 0.5;
 }

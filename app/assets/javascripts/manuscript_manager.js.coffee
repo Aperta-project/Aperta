@@ -33,55 +33,70 @@ ManuscriptHeader = React.createClass
               a {href:@props.paper.edit_url}, "Manuscript")
 
 Tahi.manuscriptManager =
-  init: ()->
+  init: ->
     if columns = document.getElementById('manuscript-manager')
       columns = Tahi.manuscriptManager.Columns flows: [], route: columns.getAttribute("data-url")
       React.renderComponent columns, document.getElementById('tahi-container')
+      @setupDragListeners columns
 
-      $(document).on 'dragover', 'li.column', (e) ->
-        e.preventDefault()
-        e.stopPropagation()
+  setupDragListeners: (columns) ->
+    $(document).on 'dragover', 'li.column, li.column *', (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      if $(e.currentTarget.offsetParent).hasClass 'column'
+        $(e.currentTarget.offsetParent).addClass 'drop-column'
 
-      $(document).on 'drop', 'li.column', (e) ->
-        e.preventDefault()
-        e.stopPropagation()
-        columns.move(window.elementBeingDragged, this)
+    $(document).on 'dragleave', 'li.column', (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      $(this).removeClass 'drop-column'
 
-      $(document).on "dragstart", "a.card", (e) ->
-        dt =  e.originalEvent.dataTransfer
-        dt.effectAllowed = "copyMove"
-        true
+    $(document).on 'drop', 'li.column', (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      $(this).removeClass 'drop-column'
+      columns.move(Tahi.elementBeingDragged, this)
+      Tahi.elementBeingDragged = ''
 
   Columns: React.createClass
     displayName: "Columns"
 
-    move: (card, destination) ->
-      currentFlows = _.clone(@state.flows)
-      cardTitle = $(card).text()
-
+    popDraggedTask: (cardId) ->
       draggedTask
 
-      for flow in currentFlows
+      for flow in @state.flows
         draggedTask = _.find flow.tasks, (task) ->
-          task.taskTitle == cardTitle
+          task.taskId == cardId
         if draggedTask?
-          flow.tasks.splice(flow.tasks.indexOf(draggedTask), 1)
+          flow.tasks.splice(flow.tasks.indexOf draggedTask, 1)
           break
 
-      destinationColumn = _.find currentFlows, (flow) ->
+      return draggedTask
+
+    pushDraggedTask: (task, destination) ->
+      destinationFlow = _.find @state.flows, (flow) ->
         flow.title == $('h2', destination).text()
 
-      destinationColumn.tasks.push(draggedTask)
+      destinationFlow.tasks.push task
+      destinationFlow
 
+    syncTask: (draggedTask, destinationFlow) ->
+      $.ajax
+        url: "/papers/#{draggedTask.paperId}/tasks/#{draggedTask.taskId}"
+        method: 'POST'
+        data:
+          _method: 'PUT'
+          task:
+            id: draggedTask.taskId
+            phase_id: destinationFlow.id
+
+    move: (card, destination) ->
+      cardId = parseInt($(card).children('.card').attr 'data-task-id')
+      draggedTask = @popDraggedTask cardId
+      destinationFlow = @pushDraggedTask draggedTask, destination
+      @syncTask draggedTask, destinationFlow
       @setState
-        flows: currentFlows
-        paper: @state.paper
-
-      # pop the card being dragged from flows
-      # card = current_flows.pop_card(card)
-      # # push the card into its new place
-      # current_flows.push_card(card, destination)
-      # @setState flows: current_flows
+        flows: @state.flows
 
     componentWillMount: ->
       @setState @props
@@ -221,16 +236,21 @@ Tahi.manuscriptManager =
       dragging: false
 
     dragStart: (e) ->
-      window.elementBeingDragged = $(e.nativeEvent.target).parent('li')[0]
+      Tahi.elementBeingDragged = $(e.nativeEvent.target).parent('li')[0]
+
+      e.nativeEvent.dataTransfer.effectAllowed = "move"
+
+      # This is needed to make divs draggable in Firefox.
+      # http://html5doctor.com/native-drag-and-drop/
+      #
+      e.nativeEvent.dataTransfer.setData 'text', 'drag'
+
       @setState
         dragging: true
 
     dragEnd: (e) ->
       @setState
         dragging: false
-
-    onDrag: (e) ->
-      console.log "On Drag event: ", e
 
     cardClass: ->
       Tahi.className
@@ -252,7 +272,6 @@ Tahi.manuscriptManager =
           "data-card-name": @props.task.cardName,
           "data-task-id":   @props.task.taskId,
           "data-task-path": @props.task.taskPath,
-          href: @props.task.taskPath,
           draggable: true
         },
           (span {className: 'glyphicon glyphicon-ok completed-glyph'}),

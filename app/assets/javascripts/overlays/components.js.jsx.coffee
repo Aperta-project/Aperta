@@ -84,6 +84,7 @@ Tahi.overlays.components.AssigneeDropDown = React.createClass
   assigneeOptions: ->
     _.map @props.assignees, (a) ->
       [a.id, a.full_name]
+
   render: ->
     {div, label, select, option} = React.DOM
 

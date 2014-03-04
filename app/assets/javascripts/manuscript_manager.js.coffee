@@ -38,8 +38,36 @@ Tahi.manuscriptManager =
       columns = Tahi.manuscriptManager.Columns flows: [], route: columns.getAttribute("data-url")
       React.renderComponent columns, document.getElementById('tahi-container')
 
+      $(document).on 'dragend', 'li.column', (e) ->
+        # debugger
+        columns.move(window.elementBeingDragged, e.targetPosition)
+
   Columns: React.createClass
     displayName: "Columns"
+
+    move: (card, destination) ->
+      currentFlows = _.clone(@state.flows)
+      cardTitle = $(card).text()
+
+      draggedTask
+
+      for flow in currentFlows
+        draggedTask = _.find flow.tasks, (task) ->
+          task.taskTitle == cardTitle
+        if draggedTask?
+          flow.tasks.splice(flow.tasks.indexOf(draggedTask), 1)
+          break
+
+      @setState
+        flows: currentFlows
+        paper: @state.paper
+
+      # pop the card being dragged from flows
+      # card = current_flows.pop_card(card)
+      # # push the card into its new place
+      # current_flows.push_card(card, destination)
+      # @setState flows: current_flows
+
     componentWillMount: ->
       @setState @props
 
@@ -128,6 +156,7 @@ Tahi.manuscriptManager =
 
   Column: React.createClass
     displayName: "Column"
+
     manuscriptCards: ->
       {li} = React.DOM
       cards = _.map @props.tasks, (task) =>
@@ -172,6 +201,22 @@ Tahi.manuscriptManager =
 
   Card: React.createClass
     displayName: "Card"
+
+    getInitialState: ->
+      dragging: false
+
+    dragStart: (e) ->
+      window.elementBeingDragged = $(e.nativeEvent.target).parent('li')[0]
+      @setState
+        dragging: true
+
+    dragEnd: (e) ->
+      @setState
+        dragging: false
+
+    onDrag: (e) ->
+      console.log "On Drag event: ", e
+
     cardClass: ->
       Tahi.className
         'card': true
@@ -186,11 +231,14 @@ Tahi.manuscriptManager =
       (div {className: "card-container"},
         (a {
           className: @cardClass(),
+          onDragStart: @dragStart,
+          onDragEnd: @dragEnd,
           onClick: @displayCard,
           "data-card-name": @props.task.cardName,
           "data-task-id":   @props.task.taskId,
           "data-task-path": @props.task.taskPath,
-          href: @props.task.taskPath
+          href: @props.task.taskPath,
+          draggable: true
         },
           (span {className: 'glyphicon glyphicon-ok completed-glyph'}),
             @props.task.taskTitle

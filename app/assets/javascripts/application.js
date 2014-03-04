@@ -20,6 +20,7 @@
 //= require scrollToFixed
 //= require chosen-jquery
 //= require jquery.dotdotdot
+//= require jquery.timeago
 //= require ./polyfills
 //= require react
 //= require react-chosen

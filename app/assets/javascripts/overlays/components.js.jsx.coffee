@@ -1,5 +1,6 @@
 ###* @jsx React.DOM ###
 Tahi.overlays.components.Overlay = React.createClass
+  displayName: "Overlay"
   getInitialState: ->
     {loading: true}
 
@@ -20,7 +21,7 @@ Tahi.overlays.components.Overlay = React.createClass
     if @state.loading
       `<div className='loading'><h1>Loading&hellip;</h1></div>`
     else
-      `<div>
+      `<div className={this.props.cardName + "-overlay"}>
         <OverlayHeader
           paperTitle={this.state.paperTitle}
           paperPath={this.state.paperPath}
@@ -78,6 +79,7 @@ Tahi.overlays.components.CompletedCheckbox = React.createClass
     @refs.form.submit()
 
 Tahi.overlays.components.AssigneeDropDown = React.createClass
+  displayName: "AssigneeDropDown"
   render: ->
     {div, label, select, option} = React.DOM
 
@@ -105,6 +107,7 @@ Tahi.overlays.components.ProgressBar = React.createClass
      </div>`
 
 Tahi.overlays.components.OverlayHeader = React.createClass
+  displayName: "OverlayHeader"
   render: ->
     `<header>
       <h2><a href={this.props.paperPath}>{this.props.paperTitle}</a></h2>
@@ -112,6 +115,7 @@ Tahi.overlays.components.OverlayHeader = React.createClass
     </header>`
 
 Tahi.overlays.components.OverlayFooter = React.createClass
+  displayName: "OverlayFooter"
   componentDidMount: ->
     window.addEventListener 'keyup', @handleEscKey
 

@@ -24,6 +24,7 @@ Tahi.overlay =
   defaultProps: (element) ->
     turbolinksState = Tahi.utils.windowHistory().state
 
+    cardName: $(element).data('cardName')
     taskPath: element.attr('href')
     onOverlayClosed: (e) =>
       @hide(e, turbolinksState)

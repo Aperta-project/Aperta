@@ -50,7 +50,10 @@ feature 'Message Cards', js: true do
       participants: participants,
       creator: admin
 
-    needs_editor_phase.view_card subject_text, cardObject: MessageCardOverlay do |card|
+    #reload the page for now
+    task_manager_page.reload
+    needs_editor_phase = task_manager_page.phase 'Assign Editor'
+    needs_editor_phase.view_card subject_text, MessageCardOverlay do |card|
       expect(card.subject).to == subject_text
       expect(card.body).to == body_text
       expect(card.participants).to match_array(participants.map(&:full_name))

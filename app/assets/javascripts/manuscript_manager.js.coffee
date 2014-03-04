@@ -10,7 +10,7 @@ NewCardButton = React.createClass
       "data-paper_id": @props.paper.id,
       "data-paper_title": @props.paper.paper_short_title,
       href: "#",
-        "ADD NEW CARD"
+        "Add New Card"
     )
 
 ManuscriptHeader = React.createClass

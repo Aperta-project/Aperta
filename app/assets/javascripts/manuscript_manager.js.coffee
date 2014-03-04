@@ -186,7 +186,7 @@ Tahi.manuscriptManager =
             @props.task.taskTitle
         ),
         (span {
-          className: 'glyphicon glyphicon-remove-circle remove-card js-remove-card',
+          className: 'glyphicon glyphicon-remove-circle remove-card js-remove-card pointer',
           "data-toggle": "tooltip",
           "data-placement": "right",
           "title": "Delete Card",

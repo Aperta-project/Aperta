@@ -1,7 +1,7 @@
 class MessageTaskPresenter < TaskPresenter
   def data_attributes
     super.merge({
-      'message_subject' => task.message_subject,
+      'messageSubject' => task.message_subject,
       'participants' => participant_data,
       'comments' => comment_data,
       'phase_id' => task.phase_id})

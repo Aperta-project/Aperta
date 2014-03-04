@@ -19,6 +19,13 @@ class TaskManagerPage < Page
     def card_count
       all('.card-container').count
     end
+
+    def add_phase
+      container = find('.add-column', visible: false)
+      container.hover
+      container.click
+    end
+
   end
 
   path :manage_paper
@@ -33,6 +40,10 @@ class TaskManagerPage < Page
     # Is there a already built way to deal with this?
     sleep 1
     PhaseFragment.new(all('.column').detect {|p| p.find('h2').text == phase_name })
+  end
+
+  def phase_count
+    TaskManagerPage.new.all('.column').count
   end
 
   def navigate_to_edit_paper

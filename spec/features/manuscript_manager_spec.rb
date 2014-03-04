@@ -38,16 +38,9 @@ feature "Manuscript Manager", js: true do
     dashboard_page = DashboardPage.visit
     paper_page = dashboard_page.view_submitted_paper 'foobar'
     task_manager_page = paper_page.navigate_to_task_manager
+    phase = task_manager_page.phase 'Submission Data'
 
-    sleep 0.4
-    add_columns = all('.add-column')
-    add_columns = page.execute_script('return document.querySelectorAll(".add-column")')
-    original_count = add_columns.count
-    add_columns.first.click
-    sleep 0.4
-    expect(
-      page.execute_script('return document.querySelectorAll(".add-column")').length
-    ).to eq(original_count + 1)
+    expect { phase.add_phase }.to change { task_manager_page.phase_count }.by(1)
   end
 
   scenario 'Removing a task' do

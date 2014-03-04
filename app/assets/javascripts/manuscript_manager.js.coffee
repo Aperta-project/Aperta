@@ -43,8 +43,7 @@ Tahi.manuscriptManager =
     $(document).on 'dragover', 'li.column, li.column *', (e) ->
       e.preventDefault()
       e.stopPropagation()
-      if $(e.currentTarget.offsetParent).hasClass 'column'
-        $(e.currentTarget.offsetParent).addClass 'drop-column'
+      $(e.currentTarget.offsetParent).closest('.column').addClass 'drop-column'
 
     $(document).on 'dragleave', 'li.column', (e) ->
       e.preventDefault()
@@ -68,7 +67,7 @@ Tahi.manuscriptManager =
         draggedTask = _.find flow.tasks, (task) ->
           task.taskId == cardId
         if draggedTask?
-          flow.tasks.splice(flow.tasks.indexOf draggedTask, 1)
+          flow.tasks.splice(flow.tasks.indexOf(draggedTask), 1)
           break
 
       return draggedTask
@@ -91,7 +90,7 @@ Tahi.manuscriptManager =
             phase_id: destinationFlow.id
 
     move: (card, destination) ->
-      cardId = parseInt($(card).children('.card').attr 'data-task-id')
+      cardId = parseInt($(card).find('.card').attr 'data-task-id')
       draggedTask = @popDraggedTask cardId
       destinationFlow = @pushDraggedTask draggedTask, destination
       @syncTask draggedTask, destinationFlow
@@ -236,7 +235,7 @@ Tahi.manuscriptManager =
       dragging: false
 
     dragStart: (e) ->
-      Tahi.elementBeingDragged = $(e.nativeEvent.target).parent('li')[0]
+      Tahi.elementBeingDragged = $(e.nativeEvent.target).parent().parent()[0]
 
       e.nativeEvent.dataTransfer.effectAllowed = "move"
 

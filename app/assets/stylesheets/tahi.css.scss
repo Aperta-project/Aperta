@@ -154,6 +154,27 @@ textarea {
   }
 }
 
+.card-container {
+  position: relative;
+}
+
+.card-container {
+  &:hover .remove-card {
+    display: inline;
+  }
+  .remove-card {
+    position: absolute;
+    display: none;
+    top: 5px;
+    right: 20px;
+    font-size: 14px;
+    color: #FFFFFF;
+  }
+  .tooltip {
+    position: fixed;
+  }
+}
+
 .card {
   background-color: $tahi-secondary;
   color: $tahi-primary-hover;
@@ -161,6 +182,7 @@ textarea {
   font-size: 20px;
   padding: 10px 15px;
   display: block;
+  position: relative;
   margin-bottom: 10px;
   border-radius: 5px;
   word-wrap: break-word;
@@ -171,7 +193,7 @@ textarea {
     text-decoration: none;
   }
 
-  span.glyphicon {
+  span.completed-glyph {
     display: none;
   }
 
@@ -185,7 +207,7 @@ textarea {
     color: white;
   }
 
-  &.completed span.glyphicon {
+  &.completed span.completed-glyph {
     display: inline;
     margin-right: 5px;
     color: $tahi-primary;
@@ -194,4 +216,8 @@ textarea {
   &.completed:hover span.glyphicon {
     color: white;
   }
+}
+
+.pointer {
+  cursor: pointer;
 }

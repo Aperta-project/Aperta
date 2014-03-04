@@ -42,6 +42,15 @@ class TasksController < ApplicationController
     end
   end
 
+  def destroy
+    task = PaperPolicy.new(params[:paper_id], current_user).tasks_for_paper(params[:id]).first
+    if task && task.destroy
+      render json: true
+    else
+      render status: 400
+    end
+  end
+
   def new
     render json: { one: 1, two: [1, 2] }
   end

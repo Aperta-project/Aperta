@@ -8,8 +8,11 @@ class PaperPolicy
     paper_for_author || paper_for_admin || paper_for_editor || paper_for_reviewer
   end
 
-  private
+  def tasks_for_paper(task_ids)
+    paper ? paper.tasks.where(id: task_ids) : []
+  end
 
+  private
   def paper_for_author
     @user.papers.where(id: @paper_id).first
   end

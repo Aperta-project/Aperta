@@ -9,6 +9,16 @@ class TaskManagerPage < Page
       select_from_chosen params[:assignee].full_name, from: overlay.find('#task_assignee_id', visible: false)
       overlay.click_on 'Create card'
     end
+
+    def remove_card(card_name)
+      container = find('.card-container', text: card_name)
+      container.hover
+      container.find('.remove-card').click
+    end
+
+    def card_count
+      all('.card-container').count
+    end
   end
 
   path :manage_paper

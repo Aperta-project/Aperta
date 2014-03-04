@@ -46,10 +46,14 @@ Tahi.manuscriptManager =
       @setState @props
 
     componentDidMount: ->
+      Tahi.utils.bindColumnResize()
+
       $.getJSON @props.route, (data,status) =>
         @setState flows: data.flows, paper: data.paper
 
     componentDidUpdate: ->
+      Tahi.utils.resizeColumnHeaders()
+
       $('.paper-profile h4').dotdotdot
         height: 40
 
@@ -69,6 +73,17 @@ Tahi.manuscriptManager =
             {id: flow.id, position: flow.position}
         success: (data)=>
           @setState flows: @state.flows
+
+    removeCard: (taskId, phaseId) ->
+      $.ajax
+        url: 'tasks/' + taskId
+        method: 'DELETE'
+        success: =>
+          newFlows = @state.flows.slice(0)
+          flow = _.findWhere(newFlows, {id: phaseId})
+          flow.tasks = _.reject flow.tasks, (task) ->
+            task.taskId == taskId
+          @setState flows: newFlows
 
     addColumn: (index) ->
       column = {
@@ -109,6 +124,7 @@ Tahi.manuscriptManager =
               tasks: flow.tasks,
               phase_id: flow.id,
               paper: @state.paper
+              removeCard: @removeCard
             }
       ))
 
@@ -116,18 +132,17 @@ Tahi.manuscriptManager =
     displayName: "Column"
     manuscriptCards: ->
       {li} = React.DOM
-      cards = for task in @props.tasks
-        (li {}, Tahi.manuscriptManager.Card {task: task})
+      cards = _.map @props.tasks, (task) =>
+        (li {}, Tahi.manuscriptManager.Card {task: task, removeCard: => @props.removeCard(task.taskId, @props.phase_id)})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,
           phase_id: @props.phase_id
       }))
 
+
     render: ->
       {h2, div, ul, li} = React.DOM
-
-
       (li {className: 'column'},
         Tahi.manuscriptManager.ColumnAppender {
           addFunction: @props.addFunction,
@@ -155,19 +170,22 @@ Tahi.manuscriptManager =
         (i {className: 'glyphicon glyphicon-plus'}))
 
     componentDidMount: ->
-      $(this.getDOMNode()).tooltip()
+      $(@getDOMNode()).tooltip()
 
   Card: React.createClass
     displayName: "Card"
     cardClass: ->
       Tahi.className
         'card': true
-        'flow-card':  @props.flowCard
         'completed': @props.task.taskCompleted
 
+    componentDidMount: ->
+      $(@getDOMNode().querySelector('.js-remove-card')).tooltip()
+
     render: ->
-      {a, span} = React.DOM
-      (a {
+      {div, a, span} = React.DOM
+      (div {className: "card-container"},
+        (a {
           className: @cardClass(),
           onClick: @displayCard,
           "data-card-name": @props.task.cardName,
@@ -175,10 +193,16 @@ Tahi.manuscriptManager =
           "data-task-path": @props.task.taskPath,
           href: @props.task.taskPath
         },
-        (span {className: 'glyphicon glyphicon-ok'}),
-        @props.task.taskTitle
+          (span {className: 'glyphicon glyphicon-ok completed-glyph'}),
+            @props.task.taskTitle
+        ),
+        (span {
+          className: 'glyphicon glyphicon-remove-circle remove-card js-remove-card pointer',
+          "data-toggle": "tooltip",
+          "data-placement": "right",
+          "title": "Delete Card",
+          onClick: @props.removeCard })
       )
 
     displayCard: (event) ->
       Tahi.overlay.display event, @props.task.cardName
-

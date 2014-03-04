@@ -17,3 +17,6 @@
 /tags
 /public/uploads
 /bin
+
+# Ignore SVG from Railsroady
+/doc/*svg

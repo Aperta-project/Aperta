@@ -53,6 +53,7 @@ gem 'pry-rails'
 
 group :development do
   gem 'license_finder'
+  gem 'railroady'
 end
 
 group :development, :test do

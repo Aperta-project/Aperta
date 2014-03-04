@@ -1,11 +1,4 @@
 ###* @jsx React.DOM ###
-
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
-Tahi.overlays.components ||= {}
-
 Tahi.overlays.components.Overlay = React.createClass
   getInitialState: ->
     {loading: true}

@@ -1,7 +1,3 @@
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
 Tahi.overlays.paperReviewer =
   Overlay: React.createClass
     componentWillMount: ->

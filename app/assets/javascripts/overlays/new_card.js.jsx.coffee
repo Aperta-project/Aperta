@@ -1,9 +1,4 @@
 ###* @jsx React.DOM ###
-
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
 Tahi.overlays.newCard =
   hideOverlay: (e) ->
     e?.preventDefault()

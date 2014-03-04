@@ -26,6 +26,7 @@
 //= require spin
 //= require turbolinks
 //= require underscore
+//= require namespace
 //= require_tree .
 
 $(document).ready(function() {

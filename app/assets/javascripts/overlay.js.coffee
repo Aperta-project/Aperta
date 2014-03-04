@@ -1,5 +1,3 @@
-window.Tahi ||= {}
-
 toCamel = (string) ->
   string.replace /(\-[a-z])/g, ($1) ->
     $1.toUpperCase().replace "-", ""

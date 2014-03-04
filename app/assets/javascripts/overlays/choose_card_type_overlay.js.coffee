@@ -1,6 +1,3 @@
-window.Tahi ||= {}
-Tahi.overlays ||= {}
-
 Tahi.overlays.chooseCardType =
   init: ->
     $(document).on 'click', '.react-choose-card-type-overlay', Tahi.overlays.chooseCardType.displayOverlay

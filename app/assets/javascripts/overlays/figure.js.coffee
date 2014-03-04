@@ -1,7 +1,3 @@
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
 Tahi.overlays.figure =
   FigureUpload: React.createClass
     render: ->

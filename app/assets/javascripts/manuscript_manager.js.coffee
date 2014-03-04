@@ -1,5 +1,3 @@
-window.Tahi ||= {}
-
 NewCardButton = React.createClass
   displayName: "NewCardButton"
   render: ->

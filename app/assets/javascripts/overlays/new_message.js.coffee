@@ -1,5 +1,3 @@
-window.Tahi ||= {}
-Tahi.overlays ||= {}
 Tahi.overlays.newMessage =
   overlay: React.createClass
     componentDidMount: ->

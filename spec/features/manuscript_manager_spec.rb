@@ -50,6 +50,19 @@ feature "Manuscript Manager", js: true do
     ).to eq(original_count + 1)
   end
 
+  scenario 'Removing a task' do
+    dashboard_page = DashboardPage.visit
+    paper_page = dashboard_page.view_submitted_paper 'foobar'
+    task_manager_page = paper_page.navigate_to_task_manager
+
+    phase = task_manager_page.phase 'Submission Data'
+    remove_card_buttons = phase.all('.remove-card', visible: false)
+    original_count = remove_card_buttons.count
+    phase.all('.card').first.hover
+    remove_card_buttons.first.click
+    expect(phase.all('.remove-card', visible: false).count).to be(original_count - 1)
+  end
+
   scenario "Admin can assign a paper to themselves" do
     dashboard_page = DashboardPage.visit
     paper_page = dashboard_page.view_submitted_paper 'foobar'

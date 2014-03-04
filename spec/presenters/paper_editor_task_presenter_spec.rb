@@ -41,13 +41,13 @@ describe PaperEditorTaskPresenter do
     it_behaves_like "all tasks, which have common attributes" do
       let(:card_name) { 'paper-editor' }
       let(:assignee_id) { assignee.id }
-      let(:assignees) { [[assignee.id, assignee.full_name]] }
+      let(:assignees) { [user_select_hash(assignee)] }
     end
 
     it "returns custom data for paper editor task" do
       expect(data_attributes).to include({
         'editorId' => editor.id,
-        'editors'  => [[editor.id, editor.full_name]]
+        'editors'  => [user_select_hash(editor)]
       })
     end
   end

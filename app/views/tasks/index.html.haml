@@ -1,14 +1,3 @@
-:coffeescript
-  window.onresize = ->
-    Tahi.utils.resizeContainer('.phase-container','h2')
-
-  $ ->
-    Tahi.utils.resizeContainer('.phase-container', 'h2')
-    # fix for safari.
-    setTimeout( ->
-      Tahi.utils.resizeContainer('.phase-container', 'h2')
-    ,200)
-
 #manuscript-manager{data: {url: manage_paper_path(@paper)}}
 
 - content_for :tahi_body_class do

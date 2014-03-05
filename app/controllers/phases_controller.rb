@@ -3,11 +3,14 @@ class PhasesController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
 
   def create
-    render json: Phase.insert_or_update_positions(phase_params)
+    phase = Phase.insert_at_position(new_phase_params)
+    render json: phase
   end
 
   def update
-    render json: Phase.insert_or_update_positions(phase_params)
+    phase = Phase.find params[:id]
+    phase.update_attributes! update_phase_params
+    render json: phase
   end
 
   private
@@ -16,7 +19,12 @@ class PhasesController < ApplicationController
     render status: 400, json: {errors: e.record.errors}
   end
 
-  def phase_params
-    params.required(:phase).permit(:id, :task_manager_id, :name, :position)
+  def new_phase_params
+    params.required(:phase).permit(:task_manager_id, :name, :position)
   end
+
+  def update_phase_params
+    params.required(:phase).permit(:name)
+  end
+
 end

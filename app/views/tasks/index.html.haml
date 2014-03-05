@@ -2,9 +2,6 @@
 
 :javascript
   window.Tahi.currentUser = {id: #{current_user.id}, fullName: "#{current_user.full_name}", imageUrl: "#{current_user.image_url}"}
-:coffeescript
-  window.onresize = ->
-    Tahi.utils.resizeContainer('.phase-container','h2')
 
 - content_for :tahi_body_class do
   full-height

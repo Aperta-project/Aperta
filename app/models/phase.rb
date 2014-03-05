@@ -4,6 +4,7 @@ class Phase < ActiveRecord::Base
   has_many :message_tasks, -> { where(type: 'MessageTask') }, inverse_of: :phase
 
   has_one :paper, through: :task_manager
+  validates :position, presence: true
 
   after_initialize :initialize_defaults
 
@@ -19,25 +20,21 @@ class Phase < ActiveRecord::Base
     DEFAULT_PHASE_NAMES.map.with_index { |name, pos| Phase.new name: name, position: pos }
   end
 
-  def self.insert_or_update_positions(phase_params)
+  def self.insert_at_position(phase_params)
     Phase.transaction do
-      if phase_params[:id]
-        new_phase = Phase.find(phase_params[:id].to_i).update_attributes! phase_params
-      else
-        new_phase = Phase.create! phase_params
-      end
+      new_phase = Phase.create! phase_params
 
-      head, tail = new_phase.task_manager.phases.partition do |phase|
-        phase.position >= new_phase.position
+      head, tail = new_phase.task_manager.phases.sort_by(&:position).partition do |phase|
+        phase.position < new_phase.position
       end
 
       tail.each do |phase|
         phase.position = phase.position + 1
         phase.save
       end
-    end
 
-    new_phase
+      new_phase
+    end
   end
 
   private

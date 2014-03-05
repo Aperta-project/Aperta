@@ -55,15 +55,25 @@ Tahi.manuscriptManager =
       $('.paper-profile h4').dotdotdot
         height: 40
 
+    removeCard: (taskId, phaseId) ->
+      $.ajax
+        url: 'tasks/' + taskId
+        method: 'DELETE'
+        success: =>
+          newFlows = @state.flows.slice(0)
+          flow = _.findWhere(newFlows, {id: phaseId})
+          flow.tasks = _.reject flow.tasks, (task) ->
+            task.taskId == taskId
+          @setState flows: newFlows
+
     addColumn: (position) ->
       newPosition = position + 1
-      column = {
+      column =
         paper: @state.paper
         tasks: []
         paperProfiles: []
         position: newPosition
         name: "New Phase"
-      }
       newFlows = @state.flows.slice(0)
       newFlows.splice(newPosition, 0, column)
       $.ajax
@@ -75,10 +85,8 @@ Tahi.manuscriptManager =
             task_manager_id: @state.paper.task_manager_id
             position: column.position
             name: column.name
-        success: (data)=>
-          column.id = data.id
-          column.title = data.name
-          @setFlowIndices()
+        success: (data) =>
+          @setState flows: newFlows
 
     render: ->
       {ul, div} = React.DOM
@@ -108,7 +116,7 @@ Tahi.manuscriptManager =
     manuscriptCards: ->
       {li} = React.DOM
       cards = _.map @props.tasks, (task) =>
-        (li {}, Tahi.manuscriptManager.Card {task: task, removeCard: => @props.removeCard(task.taskId, @props.phase_id)})
+        (li {}, Tahi.columnComponents.Card {task: task, removeCard: => @props.removeCard(task.taskId, @props.phase_id)})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,

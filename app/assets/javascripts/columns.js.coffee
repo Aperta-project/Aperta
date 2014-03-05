@@ -1,6 +1,3 @@
-window.Tahi ||= {}
-Tahi.columnComponents ||={}
-
 Tahi.columnComponents.Card = React.createClass
   displayName: "Card"
   cardClass: ->

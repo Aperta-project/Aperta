@@ -8,7 +8,8 @@ describe PaperAdminTask do
   end
 
   describe "callbacks" do
-    let(:phase) { Phase.create! task_manager: TaskManager.create! }
+    let(:task_manager) { TaskManager.create! }
+    let(:phase) { task_manager.phases.first }
     let(:default_task_attrs) { { title: 'A title', role: 'admin', phase: phase } }
 
     describe "after_save" do
@@ -85,8 +86,8 @@ describe PaperAdminTask do
 
       describe "tasks in other phases in the same task manager" do
         let(:task_manager) { TaskManager.create! }
-        let(:reading_phase) { Phase.create! task_manager: task_manager }
-        let(:writing_phase) { Phase.create! task_manager: task_manager }
+        let(:reading_phase) { Phase.create! task_manager: task_manager, position: 0}
+        let(:writing_phase) { Phase.create! task_manager: task_manager, position: 1 }
         let(:paper_admin_task) { PaperAdminTask.create! phase: reading_phase }
 
         it "updates their assignee" do
@@ -97,8 +98,8 @@ describe PaperAdminTask do
       end
 
       describe "tasks in other task managers" do
-        let(:reading_phase) { Phase.create! task_manager: TaskManager.create! }
-        let(:writing_phase) { Phase.create! task_manager: TaskManager.create! }
+        let(:reading_phase) { Phase.create! task_manager: TaskManager.create!, position: 0 }
+        let(:writing_phase) { Phase.create! task_manager: TaskManager.create!, position: 0 }
         let(:paper_admin_task) { PaperAdminTask.create! phase: reading_phase }
 
         it "does not update their assignee" do

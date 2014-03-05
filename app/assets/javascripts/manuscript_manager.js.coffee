@@ -66,8 +66,8 @@ Tahi.manuscriptManager =
       {ul, div} = React.DOM
       if @state.paper
         header = ManuscriptHeader {paper: @state.paper}
-      (div {},
-          header
+      (div {className: "full-height"},
+        header
         (ul {className: 'columns'},
           Tahi.manuscriptManager.ColumnAppender {
             addFunction: @addColumn

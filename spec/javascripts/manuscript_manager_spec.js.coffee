@@ -69,7 +69,7 @@ describe "Tahi.manuscriptManager", ->
         ]
 
       html = """
-        <div id="destination">
+        <div id="destination" data-phase-id="321">
           <h2>Hello world</h2>
         </div>
       """

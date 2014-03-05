@@ -46,6 +46,7 @@ Tahi.flowManager =
               index: index,
               paperProfiles: flow.paperProfiles,
               title: flow.title
+              empty_text: flow.empty_text
               tasks: flow.tasks,
               phase_id: flow.id,
               paper: @state.paper
@@ -74,9 +75,12 @@ Tahi.flowManager =
         (h2 {}, @props.title),
         closeButton,
         (div {className: 'column-content'},
-          (ul {className: 'cards'},
-            @paperProfiles()
-      )))
+          if @props.paperProfiles.length
+            (ul {className: 'cards'},
+              @paperProfiles())
+          else
+            (div {className: 'empty-text'}, @props.empty_text)
+      ))
 
   Card: React.createClass
     displayName: "Card"

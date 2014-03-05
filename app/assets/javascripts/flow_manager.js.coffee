@@ -28,9 +28,8 @@ Tahi.flowManager =
     saveFlows: ->
       flowTitles = _.map @state.flows, (flow) -> flow.title
       $.post 'user_settings',
+        flows: flowTitles
         _method: 'PATCH'
-        user_settings:
-          flows: flowTitles
 
     render: ->
       {ul, div} = React.DOM

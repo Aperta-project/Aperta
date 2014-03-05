@@ -3,7 +3,7 @@ class UserSettingsController < ApplicationController
 
   def update
     settings = UserSettings.where(user: current_user).first_or_initialize
-    settings_params = params.require(:user_settings).permit(flows: [])
+    settings_params = params.permit(flows: []).reverse_merge!(flows: [])
     settings.update settings_params
     head :no_content
   end

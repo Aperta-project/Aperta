@@ -32,7 +32,7 @@ Tahi.overlays.message =
                 @chosenOptions() )))),
         (ul {className: "message-comments"},
           _.map @state.comments, (comment)->
-            (li {},
+            (li {className: "message-comment"},
               (Tahi.overlays.components.UserThumbnail {className: 'user-thumbnail comment-avatar', imgSrc: comment.avatar, name: comment.name}),
               (span {className: "comment-date"}, $.timeago(comment.created_at.split('T')[0]))
               (span {className: "comment-name"}, "#{comment.name} posted")

@@ -21,6 +21,7 @@ class Paper < ActiveRecord::Base
 
   has_many :phases, -> { order 'phases.position ASC' }, through: :task_manager
   has_many :tasks, through: :phases
+  has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
 
   after_create :assign_user_to_author_tasks
 

@@ -38,7 +38,7 @@ describe PaperAdminTaskPresenter do
     it "returns custom data for paper admin task" do
       expect(data_attributes).to include({
         'adminId' => task.assignee_id,
-        'admins'  => [[assignee.id, assignee.full_name]]
+        'admins'  => [user_select_hash(assignee)]
       })
     end
   end

@@ -1,5 +1,3 @@
-window.Tahi ||= {}
-
 Tahi.flowManager =
   init: ()->
     if columns = document.getElementById('flow-manager')

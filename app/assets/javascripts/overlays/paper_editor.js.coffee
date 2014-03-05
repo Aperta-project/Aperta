@@ -1,7 +1,3 @@
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
 Tahi.overlays.paperEditor =
   Overlay: React.createClass
     componentWillMount: ->
@@ -33,4 +29,4 @@ Tahi.overlays.paperEditor =
 
     editors: ->
       return [] unless @props.editors
-      [[null, 'Please select editor']].concat @props.editors
+      [[null, 'Please select editor']].concat _.map(@props.editors, (e) -> [e.id, e.full_name])

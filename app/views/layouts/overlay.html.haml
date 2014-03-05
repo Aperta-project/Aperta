@@ -32,7 +32,8 @@
       %p.center Take a look at your dashboard for tasks needing your attention.
 
     :javascript
+      window.Tahi.currentUser = {id: #{current_user.id}, fullName: "#{current_user.full_name}", imageUrl: "#{current_user.image_url}"};
+
       $(document).ready(function() {
         $('a:hidden').click();
       });
-

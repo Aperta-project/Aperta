@@ -1,7 +1,3 @@
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
 Tahi.overlays.reviewerReport =
   Overlay: React.createClass
     render: ->

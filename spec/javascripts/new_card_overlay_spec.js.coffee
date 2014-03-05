@@ -9,32 +9,6 @@ describe "New Card Overlay", ->
       <div id="overlay" style="display: none;"></div>
     """
 
-  describe "#init", ->
-    it "binds click on all .react-choose-card-type-overlay to displayNewCardOverlay", ->
-      spyOn Tahi.overlays.newCard, 'displayNewCardOverlay'
-      Tahi.overlays.newCard.init()
-      $('#link-1').click()
-      expect(Tahi.overlays.newCard.displayNewCardOverlay).toHaveBeenCalled()
-
-      Tahi.overlays.newCard.displayNewCardOverlay.calls.reset()
-      $('#link-2').click()
-      expect(Tahi.overlays.newCard.displayNewCardOverlay).toHaveBeenCalled()
-
-  describe "#displayNewCardOverlay", ->
-    beforeEach ->
-      spyOn React, 'renderComponent'
-      @event = jasmine.createSpyObj 'event', ['preventDefault']
-      @event.target = document.getElementById('link-1')
-
-    it "renders NewCardOverlay component inserting it into #overlay", ->
-      Tahi.overlays.newCard.displayNewCardOverlay(@event)
-      newCardOverlay = Tahi.overlays.newCard.components.NewCardOverlay({url: '/some/path', phaseId: 11, assignees: [1, 2, 3], paperShortTitle: 'Something'})
-      expect(React.renderComponent).toHaveBeenCalledWith(newCardOverlay, $('#overlay')[0])
-
-    it "displays the overlay", ->
-      Tahi.overlays.newCard.displayNewCardOverlay(@event)
-      expect($('#overlay')).toBeVisible()
-
   describe "NewCardForm component", ->
     describe "#submit", ->
       beforeEach ->
@@ -75,7 +49,7 @@ describe "New Card Overlay", ->
         @form.submit()
         spyOn Turbolinks, 'visit'
         $.ajax.calls.mostRecent().args[0].success()
-        expect(Turbolinks.visit).toHaveBeenCalledWith window.location
+        expect(Turbolinks.visit).toHaveBeenCalledWith window.location.pathname
 
   describe "NewCardOverlay component", ->
     describe "#render", ->
@@ -84,7 +58,7 @@ describe "New Card Overlay", ->
           overlay = Tahi.overlays.newCard.components.NewCardOverlay({assignees: []})
           result = overlay.render()
           cancelButton = result.props.children[2].props.children[0].props.children
-          expect(cancelButton.props.onClick).toEqual Tahi.overlay.hide
+          expect(cancelButton.props.onClick).toEqual Tahi.overlays.newCard.hideOverlay
 
       describe "Create card button", ->
         it "invokes submitForm on click", ->

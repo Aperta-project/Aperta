@@ -1,6 +1,10 @@
 shared_examples_for "all tasks, which have common attributes" do
   let(:assignee_id) { task.assignee_id }
-  let(:assignees) { User.admins_for(task.paper.journal).map { |u| [u.id, u.full_name] } }
+  let(:assignees) do
+    User.admins_for(task.paper.journal).map do |u|
+      user_select_hash(u)
+    end
+  end
 
   it "returns a hash of data used to render an overlay" do
     expect(TaskPresenter.for(task).data_attributes).to include(

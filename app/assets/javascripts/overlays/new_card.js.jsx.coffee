@@ -1,26 +1,12 @@
 ###* @jsx React.DOM ###
-
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
 Tahi.overlays.newCard =
-  init: ->
-    $(document).on 'click', '.react-choose-card-type-overlay', Tahi.overlays.newCard.displayNewCardOverlay
-
-  displayNewCardOverlay: (e) ->
-    e.preventDefault(e)
-
-    assignees = $(e.target).data('assignees')
-    url = $(e.target).data('url')
-    phaseId = $(e.target).data('phase_id')
-    paperShortTitle = $(e.target).data('paper_title')
-    NewCardOverlay = Tahi.overlays.newCard.components.NewCardOverlay
-    React.renderComponent `<NewCardOverlay assignees={assignees} url={url} phaseId={phaseId} paperShortTitle={paperShortTitle} />`, document.getElementById('overlay')
-    $('#overlay').show()
+  hideOverlay: (e) ->
+    e?.preventDefault()
+    Tahi.overlay.hide()
 
   components:
     NewCardForm: React.createClass
+      displayName: "NewCardForm"
       submit: ->
         title = @refs.task_title.getDOMNode().value.trim()
         assigneeId = @refs.task_assignee_id.getDOMNode().value.trim()
@@ -30,14 +16,14 @@ Tahi.overlays.newCard =
           url: @props.url
           method: 'POST'
           success: ->
-            Turbolinks.visit(window.location)
+            Turbolinks.visit(window.location.pathname)
           data:
             task:
               title: title
               body: body
               assignee_id: assigneeId
               phase_id: phaseId
-        Tahi.overlay.hide()
+        Tahi.overlays.newCard.hideOverlay()
 
       render: ->
         options = @props.assignees.map (a) ->
@@ -60,6 +46,8 @@ Tahi.overlays.newCard =
         </form>`
 
     NewCardOverlay: React.createClass
+      displayName: 'NewCardOverlay'
+
       submitForm: (e) ->
         e.preventDefault()
         @form.submit()
@@ -77,7 +65,7 @@ Tahi.overlays.newCard =
           </main>
           <footer>
             <div className="content">
-              <a className="close-overlay" onClick={Tahi.overlay.hide} href="#">Cancel</a>
+              <a className="close-overlay" onClick={Tahi.overlays.newCard.hideOverlay} href="#">Cancel</a>
             </div>
             <a href="#" className="primary-button" onClick={this.submitForm}>Create card</a>
           </footer>

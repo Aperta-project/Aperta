@@ -1,5 +1,3 @@
-window.Tahi ||= {}
-
 class Tahi.PlaceholderElement
   constructor: (@element, options={}) ->
     @placeholder = @element.attributes['placeholder'].value

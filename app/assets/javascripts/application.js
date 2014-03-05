@@ -20,12 +20,14 @@
 //= require scrollToFixed
 //= require chosen-jquery
 //= require jquery.dotdotdot
+//= require jquery.timeago
 //= require ./polyfills
 //= require react
 //= require react-chosen
 //= require spin
 //= require turbolinks
 //= require underscore
+//= require namespace
 //= require_tree .
 
 $(document).ready(function() {

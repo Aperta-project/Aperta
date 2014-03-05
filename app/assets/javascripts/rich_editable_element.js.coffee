@@ -1,5 +1,3 @@
-window.Tahi ||= {}
-
 class Tahi.RichEditableElement
   constructor: (@element) ->
     @instance = CKEDITOR.inline @element,

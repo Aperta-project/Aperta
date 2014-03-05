@@ -289,7 +289,21 @@
   background: white !important;
 }
 
-#new-message-overlay {
+
+#overlay .message-overlay header h2  a {
+  color: $tahi-message;
+}
+
+#overlay .message-overlay footer .primary-button,
+#overlay .message-overlay header .primary-button {
+  background-color: $tahi-message;
+}
+
+#overlay .message-overlay footer .content .completed-checkbox {
+  color: $tahi-message;
+}
+
+.message-overlay {
   .message-color {
     color: $tahi-message;
   }
@@ -335,7 +349,7 @@
     background: $tahi-message;
   }
 
-  #recipients {
+  #participants {
     margin-bottom: 50px;
     > ul {
       padding: 10px;
@@ -349,4 +363,23 @@
       }
     }
   }
+}
+
+.message-comments {
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+.comment-date,
+.comment-avatar {
+  margin-right: 8px;
+}
+
+.comment-avatar { width: 40px; }
+
+.comment-name { font-weight: bold; }
+
+.comment-body {
+  padding-top: 8px;
+  line-height: 1.3;
 }

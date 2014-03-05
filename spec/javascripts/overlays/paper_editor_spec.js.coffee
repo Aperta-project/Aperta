@@ -4,7 +4,7 @@ describe "PaperEditor Card", ->
       context "when we have editors in props", ->
         it "returns a list of editors including placeholder", ->
           component = Tahi.overlays.paperEditor.Overlay
-            editors: [[1, 'one']]
+            editors: [{id: 1, full_name: 'one'}]
           expect(component.editors()).toEqual [[null, 'Please select editor'], [1, 'one']]
 
       context "when props editors is falsy", ->

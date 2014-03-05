@@ -34,5 +34,6 @@
         %p.alert= alert
       = yield
 
-:javascript
-  window.Tahi.currentUser = {id: #{current_user.id}, fullName: "#{current_user.full_name}", imageUrl: "#{current_user.image_url}"};
+- if current_user
+  :javascript
+    window.Tahi.currentUser = {id: #{current_user.id}, fullName: "#{current_user.full_name}", imageUrl: "#{current_user.image_url}"};

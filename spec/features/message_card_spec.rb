@@ -63,8 +63,27 @@ feature 'Message Cards', js: true do
   end
 
   describe "commenting on an existing message" do
-    context" the user isn't a participant"
-    context " the user is already a participant"
+    let(:phase) { paper.phases.first }
+    let(:initial_comment) { FactoryGirl.create :comment }
+    let!(:message) do
+      FactoryGirl.create :message_task, comments: [initial_comment], phase: phase, participants: participants
+    end
+
+    context " the user is already a participant" do
+      let(:participants) { [admin] }
+      scenario "adding a comment" do
+        task_manager_page = TaskManagerPage.visit paper
+        task_manager_page.view_card message.message_subject, MessageCardOverlay do |card|
+          card.post_message 'Hello'
+          expect(card.participants).to match_array(participants.map(&:full_name))
+          expect(card.comments.last.find('.comment-name')).to have_text(admin.full_name)
+        end
+      end
+    end
+
+    context " the user isn't a participant" do
+      let(:participants) { [albert] }
+    end
   end
 
   describe "viewing a message card on the dashboard"

@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 feature "Add contributing authors", js: true do
-  include ActionView::Helpers::JavaScriptHelper
-
   let(:author) { FactoryGirl.create :user }
   let(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
 

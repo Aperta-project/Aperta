@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 feature "Displaying task", js: true do
-  include ActionView::Helpers::JavaScriptHelper
-
   let(:admin) do
     User.create! username: 'zoey',
       first_name: 'Zoey',

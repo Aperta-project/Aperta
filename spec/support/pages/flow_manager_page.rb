@@ -29,6 +29,10 @@ class FlowManagerPage < Page
       paper_profiles.select { |p| p.title == title }
     end
 
+    def has_empty_text?
+      all('.empty-text').present?
+    end
+
     def remove
       find('.remove-column').click
     end

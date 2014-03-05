@@ -5,8 +5,8 @@ describe TaskManager do
     describe "phases" do
       let(:task_manager) do
         TaskManager.create! phases: [
-          Phase.new(name: 'Todo'),
-          Phase.new(name: 'Doing')
+          Phase.new(name: 'Todo', position: 0),
+          Phase.new(name: 'Doing', position: 1)
         ]
       end
 

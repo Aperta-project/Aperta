@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   http_basic_authenticate_with name: "tahi", password: "tahi3000", if: -> { %w(production staging).include? Rails.env }
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
+  rescue_from ActiveRecord::RecordInvalid, with: :render_errors
 
   protected
   def configure_permitted_parameters
@@ -15,5 +16,9 @@ class ApplicationController < ActionController::Base
   private
   def verify_admin!
     redirect_to(root_path, alert: "Permission denied") unless current_user.admin?
+  end
+
+  def render_errors(e)
+    render status: 400, json: {errors: e.record.errors}
   end
 end

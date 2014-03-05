@@ -2,23 +2,28 @@ class PhasesController < ApplicationController
   before_filter :authenticate_user!
 
   def create
-    # add position for phases
-    @phase = Phase.new(task_manager_id: params[:task_manager_id], name: "New Phase")
-    if @phase.save
-      render json: @phase.to_json
+    @phase = Phase.insert_at_position(new_phase_params)
+    respond_to do |format|
+      format.json { render :show }
     end
   end
 
   def update
-    flows = params[:flows].values
-    ids = flows.map {|e| e[:id] }
-    positions = flows.map {|e| e[:position] }
-
-    @phases = Phase.where(task_manager_id: params[:task_manager_id])
-    flows.each do |flow|
-      phase = @phases.where(id: flow[:id]).first
-      phase.update_attributes(position: flow[:position]) if phase
+    @phase = Phase.find params[:id]
+    @phase.update_attributes! update_phase_params
+    respond_to do |format|
+      format.json { render :show }
     end
-    render json: true
   end
+
+  private
+
+  def new_phase_params
+    params.require(:phase).permit(:task_manager_id, :name, :position)
+  end
+
+  def update_phase_params
+    params.require(:phase).permit(:name)
+  end
+
 end

@@ -5,6 +5,38 @@ describe Phase do
     expect(Phase.const_defined? :DEFAULT_PHASE_NAMES).to be_truthy
   end
 
+  describe "#insert_at_position" do
+    context "A task manager with phases" do
+      let!(:task_manager) { TaskManager.create! } # this will create 5 phases
+      let(:new_pos) { 0 }
+      let(:new_params) { {task_manager_id: task_manager.id, name: "New phase", position: new_pos} }
+
+      let(:insert) { Phase.insert_at_position new_params }
+
+      it "returns a persisted phase with the given parameters" do
+        result = insert
+        expect(result.position).to eq(new_pos)
+        expect(result.persisted?).to eq(true)
+      end
+
+      describe "reordering existing phases" do
+        let(:new_pos) { 2 }
+        it "increments the positions of existing phases with positions >= the new phase's position" do
+          p2 = Phase.where(position: 2).first
+          p3 = Phase.where(position: 3).first
+          insert
+          expect(p2.reload.position).to eq(3)
+          expect(p3.reload.position).to eq(4)
+        end
+        it "doesn't move phases whose positions are less than the new phase" do
+          existing_phase = Phase.where(position: 1).first
+          insert
+          expect(existing_phase.reload.position).to eq(1)
+        end
+      end
+    end
+  end
+
   describe ".default_phases" do
     before do
       stub_const "Phase::DEFAULT_PHASE_NAMES", %w(Todo Doing Done)

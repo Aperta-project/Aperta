@@ -78,31 +78,6 @@ Tahi.flowManager =
             @paperProfiles()
       )))
 
-  Card: React.createClass
-    displayName: "Card"
-    cardClass: ->
-      Tahi.className
-        'card': true
-        'flow-card':  @props.flowCard
-        'completed': @props.task.taskCompleted
-
-    render: ->
-      {a, span} = React.DOM
-      (a {
-          className: @cardClass(),
-          onClick: @displayCard,
-          "data-card-name": @props.task.cardName,
-          "data-task-id":   @props.task.taskId,
-          "data-task-path": @props.task.taskPath,
-          href: @props.task.taskPath
-        },
-        (span {className: 'glyphicon glyphicon-ok'}),
-        @props.task.taskTitle
-      )
-
-    displayCard: (event) ->
-      Tahi.overlay.display event, @props.task.cardName
-
 
   PaperProfile: React.createClass
     displayName: "PaperProfile"
@@ -114,4 +89,4 @@ Tahi.flowManager =
           (h4 {}, @props.profile.title)),
 
         for task in @props.profile.tasks
-          (Tahi.flowManager.Card {task: task, flowCard: true})])
+          (Tahi.columnComponents.Card {task: task, flowCard: true})])

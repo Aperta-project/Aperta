@@ -1,6 +1,7 @@
 json.flows @phases do |phase|
   json.id phase.id
-  json.title phase.name
+  json.name phase.name
+  json.position phase.position
   json.tasks (phase.tasks.map { |task| TaskPresenter.for(task).data_attributes })
 end
 

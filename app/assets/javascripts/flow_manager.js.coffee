@@ -23,8 +23,9 @@ Tahi.flowManager =
       $('.paper-profile h4').dotdotdot
         height: 40
 
-    removeFlow: (title) ->
-      @setState {flows: _.reject(@state.flows, (flow) -> flow.title == title)}, @saveFlows
+    removeFlow: (index) ->
+      @state.flows.splice(index, 1)
+      @setState {flows: @state.flows}, @saveFlows
 
     saveFlows: ->
       flowTitles = _.map @state.flows, (flow) -> flow.title
@@ -44,7 +45,7 @@ Tahi.flowManager =
             Tahi.flowManager.Column {
               key: "flow-#{index}",
               addFunction: @addColumn,
-              index: index+1,
+              index: index,
               paperProfiles: flow.paperProfiles,
               title: flow.title
               tasks: flow.tasks,
@@ -63,7 +64,7 @@ Tahi.flowManager =
         (li {}, Tahi.flowManager.PaperProfile {profile: paperProfile})
 
     remove: ->
-      @props.onRemove @props.title
+      @props.onRemove @props.index
 
     render: ->
       {h2, div, ul, li} = React.DOM

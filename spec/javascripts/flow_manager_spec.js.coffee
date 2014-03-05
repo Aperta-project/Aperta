@@ -11,7 +11,7 @@ describe "Columns", ->
     describe "#removeFlow", ->
       it "removes the flow with the specified title from the flows collection", ->
         spyOn(@component, 'setState')
-        @component.removeFlow 'Flow 1'
+        @component.removeFlow 0
         expect(@component.setState).toHaveBeenCalledWith
           flows: [{title: "Flow 2", paperProfile: []}],
           @component.saveFlows
@@ -49,6 +49,6 @@ describe "Columns", ->
     describe "#remove", ->
       it "removes the current column", ->
         onRemove = jasmine.createSpy 'onRemove'
-        component = Tahi.flowManager.Column title: 'Flow Title', paperProfiles: [], onRemove: onRemove
+        component = Tahi.flowManager.Column index: 1, title: 'Flow Title', paperProfiles: [], onRemove: onRemove
         component.remove()
-        expect(onRemove).toHaveBeenCalledWith 'Flow Title'
+        expect(onRemove).toHaveBeenCalledWith 1

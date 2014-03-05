@@ -1,3 +1,7 @@
+window.Tahi ||= {}
+
+elementBeingDragged = null
+
 NewCardButton = React.createClass
   displayName: "NewCardButton"
   render: ->
@@ -33,13 +37,66 @@ ManuscriptHeader = React.createClass
               a {href:@props.paper.edit_url}, "Manuscript")
 
 Tahi.manuscriptManager =
-  init: ()->
+  init: ->
     if columns = document.getElementById('manuscript-manager')
       columns = Tahi.manuscriptManager.Columns flows: [], route: columns.getAttribute("data-url")
       React.renderComponent columns, document.getElementById('tahi-container')
+      @setupDragListeners columns
+
+  setupDragListeners: (columns) ->
+    $(document).on 'dragover', 'li.column, li.column *', (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      $(e.currentTarget.offsetParent).closest('.column').addClass 'drop-column'
+
+    $(document).on 'dragleave', 'li.column', (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      $(this).removeClass 'drop-column'
+
+    $(document).on 'drop', 'li.column', (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      $(this).removeClass 'drop-column'
+      columns.move(elementBeingDragged, this)
+      elementBeingDragged = null
 
   Columns: React.createClass
     displayName: "Columns"
+
+    popDraggedTask: (cardId) ->
+      for flow in @state.flows
+        draggedTask = _.find flow.tasks, (task) ->
+          task.taskId == cardId
+        if draggedTask?
+          flow.tasks.splice(flow.tasks.indexOf(draggedTask), 1)
+          return draggedTask
+
+    pushDraggedTask: (task, destination) ->
+      destinationFlow = _.find @state.flows, (flow) ->
+        flow.title == $('h2', destination).text()
+
+      destinationFlow.tasks.push task
+      destinationFlow
+
+    syncTask: (draggedTask, destinationFlow) ->
+      $.ajax
+        url: "/papers/#{draggedTask.paperId}/tasks/#{draggedTask.taskId}"
+        method: 'POST'
+        data:
+          _method: 'PUT'
+          task:
+            id: draggedTask.taskId
+            phase_id: destinationFlow.id
+
+    move: (card, destination) ->
+      cardId = parseInt($(card).find('.card').attr 'data-task-id')
+      draggedTask = @popDraggedTask cardId
+      destinationFlow = @pushDraggedTask draggedTask, destination
+      @syncTask draggedTask, destinationFlow
+      @setState
+        flows: @state.flows
+
     componentWillMount: ->
       @setState @props
 
@@ -128,10 +185,11 @@ Tahi.manuscriptManager =
 
   Column: React.createClass
     displayName: "Column"
+
     manuscriptCards: ->
       {li} = React.DOM
       cards = _.map @props.tasks, (task) =>
-        (li {}, Tahi.manuscriptManager.Card {task: task, removeCard: => @props.removeCard(task.taskId, @props.phase_id)})
+        (li {className: 'card-item'}, Tahi.manuscriptManager.Card {task: task, removeCard: => @props.removeCard(task.taskId, @props.phase_id)})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,
@@ -172,6 +230,27 @@ Tahi.manuscriptManager =
 
   Card: React.createClass
     displayName: "Card"
+
+    getInitialState: ->
+      dragging: false
+
+    dragStart: (e) ->
+      elementBeingDragged = $(e.nativeEvent.target).closest('li.card-item')[0]
+
+      e.nativeEvent.dataTransfer.effectAllowed = "move"
+
+      # This is needed to make divs draggable in Firefox.
+      # http://html5doctor.com/native-drag-and-drop/
+      #
+      e.nativeEvent.dataTransfer.setData 'text', 'drag'
+
+      @setState
+        dragging: true
+
+    dragEnd: (e) ->
+      @setState
+        dragging: false
+
     cardClass: ->
       Tahi.className
         'card': true
@@ -186,11 +265,13 @@ Tahi.manuscriptManager =
       (div {className: "card-container"},
         (a {
           className: @cardClass(),
+          onDragStart: @dragStart,
+          onDragEnd: @dragEnd,
           onClick: @displayCard,
           "data-card-name": @props.task.cardName,
           "data-task-id":   @props.task.taskId,
           "data-task-path": @props.task.taskPath,
-          href: @props.task.taskPath
+          draggable: true
         },
           (span {className: 'glyphicon glyphicon-ok completed-glyph'}),
             @props.task.taskTitle

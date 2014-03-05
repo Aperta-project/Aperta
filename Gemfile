@@ -69,6 +69,7 @@ end
 
 group :test do
   gem 'factory_girl_rails'
+  gem "codeclimate-test-reporter", require: nil
 end
 
 gem 'devise'
@@ -92,3 +93,4 @@ gem 'react-rails'
 gem 'spinjs-rails'
 
 gem 'newrelic_rpm'
+

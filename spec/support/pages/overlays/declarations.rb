@@ -1,4 +1,4 @@
-class DeclarationsOverlay < CardOverlay
+class EnterDeclarationsOverlay < CardOverlay
   def declarations
     all('.declaration').map { |d| DeclarationFragment.new d }
   end

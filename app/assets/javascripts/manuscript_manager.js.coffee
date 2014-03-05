@@ -95,7 +95,7 @@ Tahi.manuscriptManager =
 
     pushDraggedTask: (task, destination) ->
       destinationFlow = _.find @state.flows, (flow) ->
-        flow.title == $('h2', destination).text()
+        flow.id == parseInt $(destination).attr('data-phase-id')
 
       destinationFlow.tasks.push task
       destinationFlow
@@ -172,7 +172,7 @@ Tahi.manuscriptManager =
     displayName: "Column"
     render: ->
       {h2, div, ul, li} = React.DOM
-      (li {className: 'column'},
+      (li {className: 'column', 'data-phase-id': @props.phase_id },
         Tahi.manuscriptManager.ColumnAppender {
           addFunction: @props.addFunction,
           position: @props.position}
@@ -191,7 +191,6 @@ Tahi.manuscriptManager =
           paper: @props.paper,
           phase_id: @props.phase_id
       }))
-
 
   ColumnAppender: React.createClass
     displayName: "ColumnAppender"

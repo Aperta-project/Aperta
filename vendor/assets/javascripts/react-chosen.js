@@ -4,8 +4,9 @@ var Chosen = React.createClass({
     // chosen doesn't refresh the options by itself, babysit it
     $(this.getDOMNode()).trigger('chosen:updated');
   },
-  componentDidMount: function(select) {
-    $(select)
+  componentDidMount: function() {
+    // this.getDOMNode() now returns the root node in 0.9
+    $(this.getDOMNode())
       .chosen({
         disable_search_threshold: this.props.disableSearchThreshold,
         no_results_text: this.props.noResultsText,

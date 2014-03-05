@@ -38,26 +38,35 @@ feature 'Message Cards', js: true do
       user: admin
   end
 
-  let(:subject_text) { 'A sample message' }
-  let(:body_text) { 'Everyone add some comments to this test post.' }
-  let(:participants) { [albert] }
-  scenario "Admin can add a new message" do
-    task_manager_page = TaskManagerPage.visit paper
+  describe "creating a new message" do
+    let(:subject_text) { 'A sample message' }
+    let(:body_text) { 'Everyone add some comments to this test post.' }
+    let(:participants) { [albert] }
+    scenario "Admin can add a new message" do
+      task_manager_page = TaskManagerPage.visit paper
 
-    needs_editor_phase = task_manager_page.phase 'Assign Editor'
-    needs_editor_phase.new_message_card subject: subject_text,
-      body: body_text,
-      participants: participants,
-      creator: admin
+      needs_editor_phase = task_manager_page.phase 'Assign Editor'
+      needs_editor_phase.new_message_card subject: subject_text,
+        body: body_text,
+        participants: participants,
+        creator: admin
 
-    #reload the page for now
-    task_manager_page.reload
-    needs_editor_phase = task_manager_page.phase 'Assign Editor'
-    needs_editor_phase.view_card subject_text, MessageCardOverlay do |card|
-      expect(card.subject).to eq subject_text
-      expect(card.body).to eq body_text
-      expect(card.participants).to match_array [albert.full_name, admin.full_name]
+      #reload the page for now
+      task_manager_page.reload
+      needs_editor_phase = task_manager_page.phase 'Assign Editor'
+      needs_editor_phase.view_card subject_text, NewMessageCardOverlay do |card|
+        expect(card.subject).to eq subject_text
+        expect(card.body).to eq body_text
+        expect(card.participants).to match_array [albert.full_name, admin.full_name]
+      end
     end
   end
+
+  describe "commenting on an existing message" do
+    context" the user isn't a participant"
+    context " the user is already a participant"
+  end
+
+  describe "viewing a message card on the dashboard"
 
 end

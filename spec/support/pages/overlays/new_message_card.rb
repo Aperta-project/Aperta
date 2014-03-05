@@ -1,4 +1,4 @@
-class MessageCardOverlay < CardOverlay
+class NewMessageCardOverlay < CardOverlay
 
 
   def participants=(users)

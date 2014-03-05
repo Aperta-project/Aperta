@@ -9,7 +9,7 @@ describe "Manuscript Manager", ->
 
         it "renders Card components", ->
           element = @children[2].props.children.props.children[0]
-          expect(element.props.children.constructor).toEqual Tahi.manuscriptManager.Card.componentConstructor
+          expect(element.props.children.constructor).toEqual Tahi.columnComponents.Card.componentConstructor
 
         it "passes its addFunction through to the ColumnAppender", ->
           expect(@children[0].props.addFunction).toEqual @addFn
@@ -31,7 +31,7 @@ describe "Manuscript Manager", ->
           cardName: "upload-manuscript"
           taskId: 1
           taskPath: "/papers/1/tasks/1"
-        @component = Tahi.manuscriptManager.Card task: task
+        @component = Tahi.columnComponents.Card task: task
         @result = @component.render()
 
       context "the anchor tag", ->
@@ -57,4 +57,4 @@ describe "Manuscript Manager", ->
           expect(@deleteSpan.className.match("glyphicon glyphicon-remove-circle")).toBeTruthy()
           expect(@deleteSpan['data-toggle']).toEqual "tooltip"
           expect(@deleteSpan['title']).toEqual "Delete Card"
-          expect(@deleteSpan.onClick).toEqual Tahi.manuscriptManager.Card.originalSpec.destroyCard
+          expect(@deleteSpan.onClick).toEqual Tahi.columnComponents.Card.originalSpec.destroyCard

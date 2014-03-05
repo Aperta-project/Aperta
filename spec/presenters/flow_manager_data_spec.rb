@@ -101,11 +101,20 @@ describe FlowManagerData do
       flows = ['Up for grabs', 'My Tasks', 'My Papers', 'Done']
       settings = double(:settings, flows: flows)
       expect(admin).to receive(:user_settings).and_return(settings)
+      table_data = [
+        {title: 'Up for grabs', tasks: 4},
+        {title: 'My Tasks', tasks: 1},
+        {title: 'My Papers', tasks: 3},
+        {title: 'Done', tasks: 2}
+      ]
 
-      expect(flow_manager_data.flows).to match_array([['Up for grabs', 4],
-                                                      ['My Tasks', 1],
-                                                      ['My Papers', 3],
-                                                      ['Done', 2]])
+      flow_manager_data.flows.each do |flow|
+        table_data.each do |data|
+          if flow.name == data[:title]
+            expect(flow.tasks).to eq(data[:tasks])
+          end
+        end
+      end
     end
   end
 end

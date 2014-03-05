@@ -89,6 +89,16 @@ feature "Flow Manager", js: true do
     end
   end
 
+  context "empty tasks" do
+    scenario "there are no tasks" do
+      dashboard_page = DashboardPage.visit
+      flow_manager_page = dashboard_page.view_flow_manager
+
+      my_tasks = flow_manager_page.column 'My Papers'
+      expect(my_tasks.has_empty_text?).to eq(true)
+    end
+  end
+
   context "with tasks assigned and completed" do
     let(:paper1_task_titles) { ['Assign Editor', 'Tech Check', 'Assign Reviewers'] }
     let(:paper2_task_titles) { ['Assign Editor', 'Assign Reviewers', 'Upload Figures'] }

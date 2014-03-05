@@ -1,3 +1,4 @@
+require 'ostruct'
 class FlowManagerData
 
   def initialize(user)
@@ -28,22 +29,26 @@ class FlowManagerData
 
   def flows
     settings = @user.user_settings
-    flow_map = {
-      'Up for grabs' => unassigned_papers,
-      'My Tasks' => incomplete_tasks,
-      'My Papers' => paper_admin_tasks,
-      'Done' => complete_tasks
-    }
-    @flows = settings.flows.map do |flow_title|
-      [flow_title, flow_map[flow_title]]
-    end
-    # [["Up for grabs", unassigned_papers],
-    #  ["My Tasks", incomplete_tasks],
-    #  ["My Papers", paper_admin_tasks],
-    #  ["Done", complete_tasks]]
+    flow_map = [
+      {'title' => 'Up for grabs', 'tasks' => unassigned_papers},
+      {'title' => 'My Tasks',     'tasks' => incomplete_tasks},
+      {'title' => 'My Papers',    'tasks' => paper_admin_tasks},
+      {'title' => 'Done',         'tasks' => complete_tasks},
+    ]
+    flow_map.each {|flow| flow['empty_text'] = empty_text(flow['title']) }
+      .select! {|flow| settings.flows.include? flow['title'] }
+    flow_map.map {|flow| OpenStruct.new(flow) }
   end
 
   private
+  def empty_text key
+    {
+      'up for grabs' => "Right now, there are no papers for you to grab.",
+      'my tasks'     => "You don't have any tasks right now.",
+      'my papers'    => "You aren't on any papers right now.",
+      'done'         => "There is no recent activity to report."
+    }[key.downcase]
+  end
 
   def base_query(task_type)
     task_type.joins(phase: {task_manager: :paper}).includes(:paper, {paper: :figures}, {paper: :declarations}, {paper: {journal: :journal_roles}})

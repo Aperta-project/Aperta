@@ -5,7 +5,7 @@ Tahi.columnComponents.Card = React.createClass
     dragging: false
 
   dragStart: (e) ->
-    elementBeingDragged = $(e.nativeEvent.target).closest('li.card-item')[0]
+    Tahi.elementBeingDragged = $(e.nativeEvent.target).closest('li.card-item')[0]
 
     e.nativeEvent.dataTransfer.effectAllowed = "move"
 
@@ -45,7 +45,6 @@ Tahi.columnComponents.Card = React.createClass
         "data-card-name": @props.task.cardName,
         "data-task-id":   @props.task.taskId,
         "data-task-path": @props.task.taskPath,
-        href: @props.task.taskPath,
         draggable: true
       },
         (span {className: 'glyphicon glyphicon-ok completed-glyph'}),

@@ -1,3 +1,7 @@
+window.Tahi ||= {}
+
+elementBeingDragged = null
+
 NewCardButton = React.createClass
   displayName: "NewCardButton"
   render: ->
@@ -54,23 +58,19 @@ Tahi.manuscriptManager =
       e.preventDefault()
       e.stopPropagation()
       $(this).removeClass 'drop-column'
-      columns.move(Tahi.elementBeingDragged, this)
-      Tahi.elementBeingDragged = ''
+      columns.move(elementBeingDragged, this)
+      elementBeingDragged = null
 
   Columns: React.createClass
     displayName: "Columns"
 
     popDraggedTask: (cardId) ->
-      draggedTask
-
       for flow in @state.flows
         draggedTask = _.find flow.tasks, (task) ->
           task.taskId == cardId
         if draggedTask?
           flow.tasks.splice(flow.tasks.indexOf(draggedTask), 1)
-          break
-
-      return draggedTask
+          return draggedTask
 
     pushDraggedTask: (task, destination) ->
       destinationFlow = _.find @state.flows, (flow) ->
@@ -189,7 +189,7 @@ Tahi.manuscriptManager =
     manuscriptCards: ->
       {li} = React.DOM
       cards = _.map @props.tasks, (task) =>
-        (li {}, Tahi.manuscriptManager.Card {task: task, removeCard: => @props.removeCard(task.taskId, @props.phase_id)})
+        (li {className: 'card-item'}, Tahi.manuscriptManager.Card {task: task, removeCard: => @props.removeCard(task.taskId, @props.phase_id)})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,
@@ -235,7 +235,7 @@ Tahi.manuscriptManager =
       dragging: false
 
     dragStart: (e) ->
-      Tahi.elementBeingDragged = $(e.nativeEvent.target).parent().parent()[0]
+      elementBeingDragged = $(e.nativeEvent.target).closest('li.card-item')[0]
 
       e.nativeEvent.dataTransfer.effectAllowed = "move"
 

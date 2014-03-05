@@ -18,7 +18,7 @@ module ApplicationHelper
           'card-name' => task.class.name.underscore.dasherize.gsub(/-task/, '')
         }
       ) do
-        haml_tag :span, class: 'glyphicon glyphicon-ok'
+        haml_tag :span, class: 'glyphicon glyphicon-ok completed-glyph'
         haml_concat task.title
       end)
     end

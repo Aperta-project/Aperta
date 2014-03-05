@@ -2,7 +2,6 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def create
@@ -25,9 +24,6 @@ class MessagesController < ApplicationController
     params.require(:task).permit([:message_body, :message_subject, {participant_ids: []}])
   end
 
-  def render_errors(e)
-    render status: 400, json: {errors: e.record.errors}
-  end
 
   def render_404
     head 404

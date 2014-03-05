@@ -19,11 +19,11 @@ class PhasesController < ApplicationController
   private
 
   def new_phase_params
-    params.required(:phase).permit(:task_manager_id, :name, :position)
+    params.require(:phase).permit(:task_manager_id, :name, :position)
   end
 
   def update_phase_params
-    params.required(:phase).permit(:name)
+    params.require(:phase).permit(:name)
   end
 
 end

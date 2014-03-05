@@ -65,6 +65,7 @@ feature "Manuscript Manager", js: true do
       overlay.assignee = 'Zoey Bob'
       overlay.mark_as_complete
       expect(overlay).to be_completed
+      expect(overlay.assignee).to eq 'Zoey Bob'
     end
 
     task_manager_page.reload

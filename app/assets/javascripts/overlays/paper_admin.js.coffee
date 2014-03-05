@@ -29,4 +29,4 @@ Tahi.overlays.paperAdmin =
 
     admins: ->
       return [] unless @props.admins
-      [[null, 'Please select admin']].concat @props.admins
+      [[null, 'Please select admin']].concat _.map(@props.admins, (e) -> [e.id, e.full_name])

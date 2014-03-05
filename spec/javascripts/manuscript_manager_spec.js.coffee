@@ -57,4 +57,53 @@ describe "Manuscript Manager", ->
           expect(@deleteSpan.className.match("glyphicon glyphicon-remove-circle")).toBeTruthy()
           expect(@deleteSpan['data-toggle']).toEqual "tooltip"
           expect(@deleteSpan['title']).toEqual "Delete Card"
-          expect(@deleteSpan.onClick).toEqual Tahi.columnComponents.Card.originalSpec.destroyCard
+          expect(@deleteSpan.onClick).toEqual Tahi.manuscriptManager.Card.originalSpec.destroyCard
+
+describe "Tahi.manuscriptManager", ->
+  describe "Columns component", ->
+    beforeEach ->
+      @component = Tahi.manuscriptManager.Columns()
+      @component.state =
+        flows: [
+          {id: 321, title: "Hello world", tasks: [{taskId: 1}, {taskId: 2}, {taskId: 3}]}
+        ]
+
+      html = """
+        <div id="destination">
+          <h2>Hello world</h2>
+        </div>
+      """
+      $('#jasmine_content').html html
+
+    describe "#pushDraggedTask", ->
+      beforeEach ->
+        task = {taskId: 10}
+        @destinationFlow = @component.pushDraggedTask(task, $('#destination')[0])
+
+      it "returns the destinationFlow", ->
+        expect(@destinationFlow.title).toEqual 'Hello world'
+
+      it "pushes the dragged task into the destination flow", ->
+        expect(@destinationFlow.tasks.length).toEqual 4
+
+    describe "#popDraggedTask", ->
+      it "removes the task from the flow", ->
+        task = @component.popDraggedTask(1)
+        expect(@component.state.flows[0].tasks.length).toEqual(2)
+
+      it "returns the task matching the flow", ->
+        task = @component.popDraggedTask(1)
+        expect(task).toEqual({taskId: 1})
+
+    describe "#syncTask", ->
+      it "sends an ajax request with task and phase id", ->
+        spyOn($, 'ajax')
+        @component.syncTask({taskId: 1, paperId: 4}, @component.state.flows[0])
+        expect($.ajax).toHaveBeenCalledWith
+          url: "/papers/4/tasks/1"
+          method: 'POST'
+          data:
+            _method: 'PUT'
+            task:
+              id: 1
+              phase_id: 321

@@ -1,5 +1,26 @@
 Tahi.columnComponents.Card = React.createClass
   displayName: "Card"
+
+  getInitialState: ->
+    dragging: false
+
+  dragStart: (e) ->
+    elementBeingDragged = $(e.nativeEvent.target).closest('li.card-item')[0]
+
+    e.nativeEvent.dataTransfer.effectAllowed = "move"
+
+    # This is needed to make divs draggable in Firefox.
+    # http://html5doctor.com/native-drag-and-drop/
+    #
+    e.nativeEvent.dataTransfer.setData 'text', 'drag'
+
+    @setState
+      dragging: true
+
+  dragEnd: (e) ->
+    @setState
+      dragging: false
+
   cardClass: ->
     Tahi.className
       'card': true
@@ -15,11 +36,14 @@ Tahi.columnComponents.Card = React.createClass
     (div {className: "card-container"},
       (a {
         className: @cardClass(),
+        onDragStart: @dragStart,
+        onDragEnd: @dragEnd,
         onClick: @displayCard,
         "data-card-name": @props.task.cardName,
         "data-task-id":   @props.task.taskId,
         "data-task-path": @props.task.taskPath,
-        href: @props.task.taskPath
+        href: @props.task.taskPath,
+        draggable: true
       },
         (span {className: 'glyphicon glyphicon-ok completed-glyph'}),
           @props.task.taskTitle
@@ -31,4 +55,7 @@ Tahi.columnComponents.Card = React.createClass
         "title": "Delete Card",
         onClick: @props.removeCard })
     )
+
+    displayCard: (event) ->
+      Tahi.overlay.display event, @props.task.cardName
 

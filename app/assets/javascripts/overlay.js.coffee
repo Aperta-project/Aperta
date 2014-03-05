@@ -17,15 +17,16 @@ Tahi.overlay =
 
     @renderCard(cardName, $target)
 
-    taskHref = $target.attr('href')
-    currentState = {cardName: cardName, taskHref: taskHref}
-    Tahi.utils.windowHistory().pushState currentState, null, taskHref
+    taskPath = $target.data('taskPath')
+    currentState = {cardName: cardName, taskPath: taskPath}
+    Tahi.utils.windowHistory().pushState currentState, null, taskPath
 
   defaultProps: (element) ->
     turbolinksState = Tahi.utils.windowHistory().state
 
     cardName: $(element).data('cardName')
-    taskPath: element.attr('href')
+    taskPath: element.data('taskPath')
+
     onOverlayClosed: (e) =>
       @hide(e, turbolinksState)
 
@@ -47,8 +48,8 @@ Tahi.overlay =
     history = Tahi.utils.windowHistory()
     if Tahi.utils.windowHistory().state?.cardName?
       cardName = Tahi.utils.windowHistory().state.cardName
-      taskHref = Tahi.utils.windowHistory().state.taskHref
-      targetElement = $("[href='#{taskHref}']").first()
+      taskPath = Tahi.utils.windowHistory().state.taskPath
+      targetElement = $("[data-task-path='#{taskPath}']").first()
       Tahi.overlay.renderCard(cardName, targetElement)
     else if history.state?.hideOverlay
       Tahi.overlay.hide(e)

@@ -1,7 +1,3 @@
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
 Tahi.overlays.uploadManuscript =
   Overlay: React.createClass
     getInitialState: ->

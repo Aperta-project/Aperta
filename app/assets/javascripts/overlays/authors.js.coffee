@@ -1,7 +1,3 @@
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
 Tahi.overlays.authors =
   Overlay: React.createClass
     getInitialState: ->

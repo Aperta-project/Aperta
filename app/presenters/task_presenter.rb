@@ -37,6 +37,6 @@ class TaskPresenter
   end
 
   def select_options_for_users(users)
-    users.map { |u| [u.id, u.full_name] }
+    users.map { |u| {id: u.id, full_name: u.full_name, avatar: u.image_url} }
   end
 end

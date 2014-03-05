@@ -16,6 +16,17 @@ ActiveRecord::Schema.define(version: 20140228175852) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "comments", force: true do |t|
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "commenter_id"
+    t.integer  "task_id"
+  end
+
+  add_index "comments", ["commenter_id"], name: "index_comments_on_commenter_id", using: :btree
+  add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
+
   create_table "declarations", force: true do |t|
     t.text    "question", null: false
     t.text    "answer"
@@ -52,6 +63,16 @@ ActiveRecord::Schema.define(version: 20140228175852) do
     t.datetime "updated_at"
     t.string   "logo"
   end
+
+  create_table "message_participants", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "task_id"
+    t.integer  "participant_id"
+  end
+
+  add_index "message_participants", ["participant_id"], name: "index_message_participants_on_participant_id", using: :btree
+  add_index "message_participants", ["task_id"], name: "index_message_participants_on_task_id", using: :btree
 
   create_table "paper_reviews", force: true do |t|
     t.integer  "task_id"
@@ -125,15 +146,16 @@ ActiveRecord::Schema.define(version: 20140228175852) do
   add_index "task_managers", ["paper_id"], name: "index_task_managers_on_paper_id", using: :btree
 
   create_table "tasks", force: true do |t|
-    t.string   "title",                       null: false
+    t.string   "title",                           null: false
     t.string   "type"
     t.integer  "assignee_id"
-    t.integer  "phase_id",                    null: false
-    t.boolean  "completed",   default: false, null: false
+    t.integer  "phase_id",                        null: false
+    t.boolean  "completed",       default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role",                        null: false
+    t.string   "role",                            null: false
     t.text     "body"
+    t.string   "message_subject"
   end
 
   add_index "tasks", ["assignee_id"], name: "index_tasks_on_assignee_id", using: :btree

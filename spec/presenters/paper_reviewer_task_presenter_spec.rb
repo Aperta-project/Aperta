@@ -41,13 +41,13 @@ describe PaperReviewerTaskPresenter do
     it_behaves_like "all tasks, which have common attributes" do
       let(:card_name) { 'paper-reviewer' }
       let(:assignee_id) { assignee.id }
-      let(:assignees) { [[assignee.id, assignee.full_name]] }
+      let(:assignees) { [user_select_hash(assignee)] }
     end
 
     it "returns custom data for paper reviewer task" do
       expect(data_attributes).to include({
         'reviewerIds' => [reviewer.id],
-        'reviewers'   => [[reviewer.id, reviewer.full_name]],
+        'reviewers'   => [user_select_hash(reviewer)],
         'refresh-on-close' => true
       })
     end

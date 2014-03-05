@@ -21,4 +21,14 @@ FactoryGirl.define do
       admin true
     end
   end
+
+  factory :paper do
+    short_title 'Test Paper'
+    journal
+  end
+
+  factory :journal do
+    name "Test Journal"
+  end
+
 end

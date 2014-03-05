@@ -3,6 +3,7 @@ json.flows @phases do |phase|
   json.title phase.name
   json.tasks (phase.tasks.map { |task| TaskPresenter.for(task).data_attributes })
 end
+
 json.paper do
   json.id @paper.id
   json.paper_short_title truncated_title(@paper)

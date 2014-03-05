@@ -1,12 +1,6 @@
 ###* @jsx React.DOM ###
-
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
-Tahi.overlays.components ||= {}
-
 Tahi.overlays.components.Overlay = React.createClass
+  displayName: "Overlay"
   getInitialState: ->
     {loading: true}
 
@@ -27,7 +21,7 @@ Tahi.overlays.components.Overlay = React.createClass
     if @state.loading
       `<div className='loading'><h1>Loading&hellip;</h1></div>`
     else
-      `<div>
+      `<div className={this.props.cardName + "-overlay"}>
         <OverlayHeader
           paperTitle={this.state.paperTitle}
           paperPath={this.state.paperPath}
@@ -56,6 +50,7 @@ Tahi.overlays.components.RailsForm = React.createClass
 
   componentDidMount: (rootNode) ->
     $(rootNode).on 'ajax:success', (@props.ajaxSuccess || null)
+    $(rootNode).on 'ajax:error', (@props.ajaxError || null)
 
   submit: ->
     $(@getDOMNode()).trigger 'submit.rails'
@@ -84,10 +79,16 @@ Tahi.overlays.components.CompletedCheckbox = React.createClass
     @refs.form.submit()
 
 Tahi.overlays.components.AssigneeDropDown = React.createClass
+  displayName: "AssigneeDropDown"
+
+  assigneeOptions: ->
+    _.map @props.assignees, (a) ->
+      [a.id, a.full_name]
+
   render: ->
     {div, label, select, option} = React.DOM
 
-    assignees = [[null, 'Please select assignee']].concat @props.assignees
+    assignees = [[null, 'Please select assignee']].concat @assigneeOptions()
     (Tahi.overlays.components.RailsForm {action: @props.action, ref: 'form'}, [
       (label {htmlFor: "task_assignee_id"}, 'This card is owned by'),
       (Chosen {
@@ -111,6 +112,7 @@ Tahi.overlays.components.ProgressBar = React.createClass
      </div>`
 
 Tahi.overlays.components.OverlayHeader = React.createClass
+  displayName: "OverlayHeader"
   render: ->
     `<header>
       <h2><a href={this.props.paperPath}>{this.props.paperTitle}</a></h2>
@@ -118,6 +120,7 @@ Tahi.overlays.components.OverlayHeader = React.createClass
     </header>`
 
 Tahi.overlays.components.OverlayFooter = React.createClass
+  displayName: "OverlayFooter"
   componentDidMount: ->
     window.addEventListener 'keyup', @handleEscKey
 
@@ -153,3 +156,13 @@ Tahi.overlays.components.RailsFormHiddenDiv = React.createClass
       <input name="utf8" type="hidden" value="✓" />
       <input name="_method" type="hidden" value={this.props.method} />
     </div>`
+
+Tahi.overlays.components.UserThumbnail = React.createClass
+  displayName: "UserThumbnail"
+  getDefaultProps: ->
+    {className: "user-thumbnail", imgSrc: "/images/profile-no-image.jpg", name: "No Name"}
+  render: ->
+    {div, img} = React.DOM
+    {className, imgSrc, name} = @props
+    (img {className: className, src: imgSrc, "data-user-name": name})
+

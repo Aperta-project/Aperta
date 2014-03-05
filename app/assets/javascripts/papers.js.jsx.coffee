@@ -1,7 +1,4 @@
 ###* @jsx React.DOM ###
-
-window.Tahi ||= {}
-
 Tahi.papers =
   init: ->
     $('#add_author').on 'click', (e) ->

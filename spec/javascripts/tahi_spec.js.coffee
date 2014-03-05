@@ -30,7 +30,6 @@ describe "tahi", ->
       beforeEach ->
         spyOn Tahi.papers, 'init'
         spyOn Tahi.overlay, 'init'
-        spyOn Tahi.overlays.newCard, 'init'
 
       it "configures submit on change for inputs in remote forms", ->
         spyOn Tahi, 'setupSubmitOnChange'
@@ -49,7 +48,6 @@ describe "tahi", ->
         Tahi.init()
         expect(Tahi.papers.init).toHaveBeenCalled()
         expect(Tahi.overlay.init).toHaveBeenCalled()
-        expect(Tahi.overlays.newCard.init).toHaveBeenCalled()
 
   describe "#setupSubmitOnChange", ->
     beforeEach ->

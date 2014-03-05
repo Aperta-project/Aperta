@@ -1,5 +1,3 @@
-window.Tahi ||= {}
-
 toCamel = (string) ->
   string.replace /(\-[a-z])/g, ($1) ->
     $1.toUpperCase().replace "-", ""
@@ -26,6 +24,7 @@ Tahi.overlay =
   defaultProps: (element) ->
     turbolinksState = Tahi.utils.windowHistory().state
 
+    cardName: $(element).data('cardName')
     taskPath: element.attr('href')
     onOverlayClosed: (e) =>
       @hide(e, turbolinksState)

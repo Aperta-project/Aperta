@@ -1,7 +1,3 @@
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
 Tahi.overlays.paperReviewer =
   Overlay: React.createClass
     componentWillMount: ->
@@ -27,7 +23,7 @@ Tahi.overlays.paperReviewer =
              onChange: @handleChange,
              width: "200px"},
             (@props.reviewers || []).map (reviewer) ->
-              (option {value: reviewer[0]}, reviewer[1]))])])
+              (option {value: reviewer.id}, reviewer.full_name))])])
 
     handleChange: (e) ->
       @setState reviewerIds: $(e.target).val()

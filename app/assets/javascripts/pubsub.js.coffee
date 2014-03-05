@@ -1,5 +1,3 @@
-window.Tahi ||= {}
-
 subUid = -1
 topics = {}
 

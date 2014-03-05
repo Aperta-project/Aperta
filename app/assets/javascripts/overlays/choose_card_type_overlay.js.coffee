@@ -1,18 +1,23 @@
-window.Tahi ||= {}
-Tahi.overlays ||= {}
-
 Tahi.overlays.chooseCardType =
   init: ->
     $(document).on 'click', '.react-choose-card-type-overlay', Tahi.overlays.chooseCardType.displayOverlay
 
   displayOverlay: (e) =>
     e.preventDefault(e)
-    React.renderComponent Tahi.overlays.chooseCardType.overlay($(e.target).data()), $('#overlay')[0]
+    data = $(e.target).data()
+    cardData =
+      assignees: data.assignees
+      url: data.url
+      phaseId: data.phase_id
+      paperId: data.paper_id
+      paperShortTitle: data.paper_title
+    React.renderComponent Tahi.overlays.chooseCardType.overlay(cardData), $('#overlay')[0]
     $('html').addClass 'noscroll'
     $('#overlay').show()
 
 
   overlay: React.createClass
+    displayName: "ChooseCardType"
     render: ->
       {div, h2, button, a} = React.DOM
       (div {className: 'choose-card-type-overlay'},

@@ -118,7 +118,7 @@ describe "Tahi overlay components", ->
     beforeEach ->
       @component = Tahi.overlays.components.AssigneeDropDown
         action: '/form/action'
-        assignees: [[1, 'one'], [2, 'two']]
+        assignees: [{id: 1, full_name: 'one'}, {id: 2, full_name: 'two'}]
 
     describe "#render", ->
       it "generates a form for the task", ->

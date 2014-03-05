@@ -23,9 +23,9 @@ class PageFragment
     end
   end
 
-  def view_card card_name, &block
+  def view_card card_name, overlay_class=nil, &block
     click_on card_name
-    overlay_class = begin
+    overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize
                     rescue NameError
                       CardOverlay
@@ -42,7 +42,7 @@ class PageFragment
 
   protected
 
-  def select_from_chosen(item_text, options)
+  def select_from_chosen(item_text, options={})
     field = if Capybara::Node::Element === options[:from]
               options[:from]
             elsif options.has_key? :from

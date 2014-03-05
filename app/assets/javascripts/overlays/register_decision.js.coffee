@@ -1,7 +1,3 @@
-window.Tahi ||= {}
-
-Tahi.overlays ||= {}
-
 Tahi.overlays.registerDecision =
   Overlay: React.createClass
     getInitialState: ->

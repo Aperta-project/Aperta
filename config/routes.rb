@@ -5,7 +5,10 @@ Tahi::Application.routes.draw do
   resources :papers, only: [:new, :create, :show, :edit, :update] do
     resources :figures, only: :create
     resources :submissions, only: [:new, :create]
-    resources :tasks, only: [:update, :create, :show, :new, :destroy]
+    resources :tasks, only: [:update, :create, :show, :new, :destroy] do
+      resources :comments, only: :create
+    end
+    resources :messages, only: [:create]
     member do
       patch :upload
       get :manage, to: 'tasks#index'
@@ -13,6 +16,9 @@ Tahi::Application.routes.draw do
   end
 
   resource :phases, only: [:create, :update]
+
+  get 'users/chosen_options', to: 'user_info#thumbnails', defaults: {format: 'json'}
+
   resource :flow_manager, only: :show
 
   resource :user_settings, only: :update

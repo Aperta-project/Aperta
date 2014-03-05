@@ -28,14 +28,14 @@ describe FlowManagersController do
 
       it "includes papers with Assigned Admin tasks with no assignee" do
         do_request_json
-        unassigned_papers = assigns(:flows).first.last.map &:first
-        expect(unassigned_papers).to include paper1
+        unassigned_papers = assigns(:flows).first.tasks
+        expect(unassigned_papers.flatten).to include paper1
       end
 
       it "does not include unassigned papers from journals the user is not an admin for" do
         do_request_json
-        unassigned_papers = assigns(:flows).first.last.map &:first
-        expect(unassigned_papers).not_to include paper2
+        unassigned_papers = assigns(:flows).first.tasks
+        expect(unassigned_papers.flatten).not_to include paper2
       end
     end
   end

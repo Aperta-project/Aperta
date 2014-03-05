@@ -16,7 +16,28 @@ class Phase < ActiveRecord::Base
   ]
 
   def self.default_phases
-    DEFAULT_PHASE_NAMES.map { |name| Phase.new name: name }
+    DEFAULT_PHASE_NAMES.map.with_index { |name, pos| Phase.new name: name, position: pos }
+  end
+
+  def self.insert_or_update_positions(phase_params)
+    Phase.transaction do
+      if phase_params[:id]
+        new_phase = Phase.find(phase_params[:id].to_i).update_attributes! phase_params
+      else
+        new_phase = Phase.create! phase_params
+      end
+
+      head, tail = new_phase.task_manager.phases.partition do |phase|
+        phase.position >= new_phase.position
+      end
+
+      tail.each do |phase|
+        phase.position = phase.position + 1
+        phase.save
+      end
+    end
+
+    new_phase
   end
 
   private

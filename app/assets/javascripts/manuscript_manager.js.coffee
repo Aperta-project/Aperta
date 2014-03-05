@@ -55,49 +55,26 @@ Tahi.manuscriptManager =
       $('.paper-profile h4').dotdotdot
         height: 40
 
-    calculateFlowIndices: ->
-      i = 0
-      _(@state.flows).map (flow)->
-        flow.position = i++
-
-    setFlowIndices: ->
-      $.ajax
-        url: '/phases'
-        method: 'PUT'
-        dataType: 'json'
-        data:
-          task_manager_id: @state.paper.task_manager_id
-          flows: _(@state.flows).map (flow)->
-            {id: flow.id, position: flow.position}
-        success: (data)=>
-          @setState flows: @state.flows
-
-    removeCard: (taskId, phaseId) ->
-      $.ajax
-        url: 'tasks/' + taskId
-        method: 'DELETE'
-        success: =>
-          newFlows = @state.flows.slice(0)
-          flow = _.findWhere(newFlows, {id: phaseId})
-          flow.tasks = _.reject flow.tasks, (task) ->
-            task.taskId == taskId
-          @setState flows: newFlows
-
-    addColumn: (index) ->
+    addColumn: (position) ->
+      newPosition = position + 1
       column = {
-        key: "flow-1",
         paper: @state.paper
         tasks: []
         paperProfiles: []
+        position: newPosition
+        name: "New Phase"
       }
-      @state.flows.splice(index, 0, column)
-      @calculateFlowIndices()
+      newFlows = @state.flows.slice(0)
+      newFlows.splice(newPosition, 0, column)
       $.ajax
         url: '/phases'
         method: 'POST'
         dataType: 'json'
         data:
-          task_manager_id: @state.paper.task_manager_id
+          phase:
+            task_manager_id: @state.paper.task_manager_id
+            position: column.position
+            name: column.name
         success: (data)=>
           column.id = data.id
           column.title = data.name
@@ -113,11 +90,11 @@ Tahi.manuscriptManager =
           Tahi.manuscriptManager.ColumnAppender {
             addFunction: @addColumn
             bonusClass: 'first-add-column'
-            index: 0}
-          for flow, index in @state.flows
+            position: -1}
+          for flow, position in @state.flows
             Tahi.manuscriptManager.Column {
               addFunction: @addColumn,
-              index: index+1,
+              position: flow.position
               title: flow.title
               tasks: flow.tasks,
               phase_id: flow.id,
@@ -144,7 +121,7 @@ Tahi.manuscriptManager =
       (li {className: 'column'},
         Tahi.manuscriptManager.ColumnAppender {
           addFunction: @props.addFunction,
-          index: @props.index}
+          position: @props.position}
         (h2 {}, @props.title),
         (div {className: 'column-content'},
           (ul {className: 'cards'},
@@ -154,7 +131,7 @@ Tahi.manuscriptManager =
   ColumnAppender: React.createClass
     displayName: "ColumnAppender"
     handleClick: ->
-      @props.addFunction(@props.index)
+      @props.addFunction(@props.position)
 
     render: ->
       @props.bonusClass ||= ""
@@ -169,39 +146,3 @@ Tahi.manuscriptManager =
 
     componentDidMount: ->
       $(@getDOMNode()).tooltip()
-
-  Card: React.createClass
-    displayName: "Card"
-    cardClass: ->
-      Tahi.className
-        'card': true
-        'completed': @props.task.taskCompleted
-        'message': (@props.task.cardName == 'message')
-
-    componentDidMount: ->
-      $(@getDOMNode().querySelector('.js-remove-card')).tooltip()
-
-    render: ->
-      {div, a, span} = React.DOM
-      (div {className: "card-container"},
-        (a {
-          className: @cardClass(),
-          onClick: @displayCard,
-          "data-card-name": @props.task.cardName,
-          "data-task-id":   @props.task.taskId,
-          "data-task-path": @props.task.taskPath,
-          href: @props.task.taskPath
-        },
-          (span {className: 'glyphicon glyphicon-ok completed-glyph'}),
-            @props.task.taskTitle
-        ),
-        (span {
-          className: 'glyphicon glyphicon-remove-circle remove-card js-remove-card pointer',
-          "data-toggle": "tooltip",
-          "data-placement": "right",
-          "title": "Delete Card",
-          onClick: @props.removeCard })
-      )
-
-    displayCard: (event) ->
-      Tahi.overlay.display event, @props.task.cardName

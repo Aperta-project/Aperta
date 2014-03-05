@@ -13,10 +13,11 @@ class User < ActiveRecord::Base
   has_many :admin_journals, through: :admin_journal_roles, source: :journal
   has_many :managed_papers, through: :admin_journals, source: :papers
 
-
   attr_accessor :login
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
+
+  before_create :add_default_user_settings
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
@@ -54,5 +55,10 @@ class User < ActiveRecord::Base
 
   def image_url
     "/images/profile-no-image.jpg"
+  end
+
+  private
+  def add_default_user_settings
+    build_user_settings(flows: ["Up for grabs", "My Tasks", "My Papers", "Done"])
   end
 end

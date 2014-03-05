@@ -15,7 +15,6 @@ FactoryGirl.define do
     password 'password'
     password_confirmation 'password'
     affiliation { ['PLOS', 'Universität Zürich'].sample }
-    user_settings { UserSettings.new flows: ['Up for grabs', 'My Tasks', 'My Papers', 'Done'] }
     admin false
     trait :admin do
       admin true

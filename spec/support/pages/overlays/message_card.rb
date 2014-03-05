@@ -10,7 +10,7 @@ class MessageCardOverlay < CardOverlay
   end
 
   def subject
-    find_field('message-subject').text
+    find('main > h1').text
   end
 
   def subject=(new_text)
@@ -18,7 +18,7 @@ class MessageCardOverlay < CardOverlay
   end
 
   def body
-    find_field('message-body').text
+    find('.comment-body').text
   end
 
   def body=(new_text)

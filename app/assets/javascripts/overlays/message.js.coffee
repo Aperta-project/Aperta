@@ -2,17 +2,18 @@ Tahi.overlays.message =
   Overlay: React.createClass
     displayName: "MessageOverlay"
     mixins: [Tahi.mixins.MessageParticipants]
+
     componentWillMount: ->
       @mergeAssigneesToComments()
       @setState @props
 
     mergeAssigneesToComments: ->
-      {assignees, comments} = @props
+      {participants, comments} = @props
       _(comments).each (comment)->
-         match = _(assignees).find (assignee)->
-           assignee.id == comment.commenter_id
-         comment.name = match.full_name
-         comment.avatar = match.avatar
+        match = _(participants).find (participant)->
+          participant.id == comment.commenter_id
+        comment.name = match.fullName
+        comment.avatar = match.image_url
 
     getInitialState: ->
       userModels: [Tahi.currentUser]

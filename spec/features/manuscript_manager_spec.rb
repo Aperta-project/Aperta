@@ -40,7 +40,7 @@ feature "Manuscript Manager", js: true do
     task_manager_page = paper_page.navigate_to_task_manager
     phase = task_manager_page.phase 'Submission Data'
 
-    expect { phase.add_phase }.to change { task_manager_page.phase_count }.by(1)
+    expect { phase.add_phase; sleep 0.5 }.to change { task_manager_page.phase_count }.by(1)
   end
 
   scenario 'Removing a task' do

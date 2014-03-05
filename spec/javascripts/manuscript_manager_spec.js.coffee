@@ -57,7 +57,7 @@ describe "Manuscript Manager", ->
           expect(@deleteSpan.className.match("glyphicon glyphicon-remove-circle")).toBeTruthy()
           expect(@deleteSpan['data-toggle']).toEqual "tooltip"
           expect(@deleteSpan['title']).toEqual "Delete Card"
-          expect(@deleteSpan.onClick).toEqual Tahi.manuscriptManager.Card.originalSpec.destroyCard
+          expect(@deleteSpan.onClick).toEqual Tahi.columnComponents.Card.originalSpec.destroyCard
 
 describe "Tahi.manuscriptManager", ->
   describe "Columns component", ->

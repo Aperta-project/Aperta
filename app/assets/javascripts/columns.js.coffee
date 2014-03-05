@@ -31,6 +31,9 @@ Tahi.columnComponents.Card = React.createClass
   componentDidMount: ->
     $(@getDOMNode().querySelector('.js-remove-card')).tooltip()
 
+  displayCard: (event) ->
+    Tahi.overlay.display event, @props.task.cardName
+
   render: ->
     {div, a, span} = React.DOM
     (div {className: "card-container"},
@@ -53,9 +56,6 @@ Tahi.columnComponents.Card = React.createClass
         "data-toggle": "tooltip",
         "data-placement": "right",
         "title": "Delete Card",
-        onClick: @props.removeCard })
-    )
+        onClick: @props.removeCard }))
 
-    displayCard: (event) ->
-      Tahi.overlay.display event, @props.task.cardName
 

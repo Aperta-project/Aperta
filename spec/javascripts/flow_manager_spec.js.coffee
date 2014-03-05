@@ -26,8 +26,7 @@ describe "Columns", ->
             type: 'post'
             data:
               _method: 'PATCH'
-              user_settings:
-                flows: ['Flow 1', 'Flow 2']
+              flows: ['Flow 1', 'Flow 2']
         )
 
   describe "Column component", ->

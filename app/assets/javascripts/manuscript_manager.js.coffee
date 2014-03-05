@@ -1,5 +1,3 @@
-elementBeingDragged = null
-
 NewCardButton = React.createClass
   displayName: "NewCardButton"
   render: ->
@@ -56,8 +54,8 @@ Tahi.manuscriptManager =
       e.preventDefault()
       e.stopPropagation()
       $(this).removeClass 'drop-column'
-      columns.move(elementBeingDragged, this)
-      elementBeingDragged = null
+      columns.move(Tahi.elementBeingDragged, this)
+      Tahi.elementBeingDragged = null
 
   Columns: React.createClass
     displayName: "Columns"

@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby "2.1.1"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.3'
+gem 'rails', '4.1.0.rc1'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -64,7 +64,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'
-  gem "jasmine"
+  gem "jasmine", github: 'pivotal/jasmine-gem', ref: 'a0aff0490a45755eadbc918a40cb49c87631cbf2'
 end
 
 group :test do

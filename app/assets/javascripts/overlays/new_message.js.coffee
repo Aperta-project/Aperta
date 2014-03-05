@@ -28,7 +28,8 @@ Tahi.overlays.newMessage =
             (div {className: 'form-group'},
               (input {id: 'message-subject', name: 'task[message_subject]', type: 'text', placeholder: 'Type in a subject here'})),
             (input {type: 'hidden', name: 'phase_id', value: @props.phaseId}),
-            (input {ref: 'participants', type: 'hidden', name: 'task[participant_ids][]', value: @participantIds()}),
+            (_.map @participantIds(), (p) ->
+              (input {type: 'hidden', name: "task[participant_ids][]", value: p})),
             (div {className: 'form-group'},
               (textarea {id: 'message-body', name: 'task[message_body]', placeholder: 'Type your message here'}))
           ))

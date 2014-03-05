@@ -14,6 +14,7 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-fileupload/basicplus
+//= require underscore
 //= require bootstrap
 //= require ckeditor-jquery
 //= require ckeditor/plugins/sharedspace/sharedspace
@@ -26,7 +27,6 @@
 //= require react-chosen
 //= require spin
 //= require turbolinks
-//= require underscore
 //= require namespace
 //= require_tree .
 

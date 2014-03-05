@@ -12,7 +12,7 @@ feature "Make declarations", js: true do
   scenario "Author makes declarations" do
     edit_paper = EditPaperPage.visit paper
 
-    edit_paper.view_card 'Declarations' do |overlay|
+    edit_paper.view_card 'Enter Declarations' do |overlay|
       funding_disclosure, ethics_declaration, competing_interest_declaration = overlay.declarations
       expect(funding_disclosure.answer).to be_empty
       expect(ethics_declaration.answer).to be_empty
@@ -32,7 +32,7 @@ feature "Make declarations", js: true do
     end
 
     edit_paper.reload
-    edit_paper.view_card 'Declarations' do |overlay|
+    edit_paper.view_card 'Enter Declarations' do |overlay|
       funding_disclosure, ethics_declaration, competing_interest_declaration = overlay.declarations
       expect(funding_disclosure.answer).to eq "Yes"
       expect(ethics_declaration.answer).to eq "No"

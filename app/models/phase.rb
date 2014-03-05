@@ -4,7 +4,7 @@ class Phase < ActiveRecord::Base
   has_many :message_tasks, -> { where(type: 'MessageTask') }, inverse_of: :phase
 
   has_one :paper, through: :task_manager
-  validates :position, presence: true
+  validates :position, presence: true, numericality: {only_integer: true}
 
   after_initialize :initialize_defaults
 

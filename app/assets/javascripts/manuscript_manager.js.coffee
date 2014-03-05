@@ -40,6 +40,30 @@ Tahi.manuscriptManager =
 
   Columns: React.createClass
     displayName: "Columns"
+
+    render: ->
+      {ul, div} = React.DOM
+      if @state.paper
+        header = ManuscriptHeader {paper: @state.paper}
+      (div {},
+          header
+        (ul {className: 'columns'},
+          Tahi.manuscriptManager.ColumnAppender {
+            addFunction: @addColumn
+            bonusClass: 'first-add-column'
+            position: -1}
+          for flow, position in @state.flows
+            Tahi.manuscriptManager.Column {
+              addFunction: @addColumn,
+              position: flow.position
+              name: flow.name
+              tasks: flow.tasks,
+              phase_id: flow.id,
+              paper: @state.paper
+              removeCard: @removeCard
+            }
+      ))
+
     componentWillMount: ->
       @setState @props
 
@@ -71,11 +95,8 @@ Tahi.manuscriptManager =
       column =
         paper: @state.paper
         tasks: []
-        paperProfiles: []
         position: newPosition
         name: "New Phase"
-      newFlows = @state.flows.slice(0)
-      newFlows.splice(newPosition, 0, column)
       $.ajax
         url: '/phases'
         method: 'POST'
@@ -86,33 +107,27 @@ Tahi.manuscriptManager =
             position: column.position
             name: column.name
         success: (data) =>
+          newPhase = data.phase
+          newPhase.paper = @state.paper
+          newFlows = @state.flows.slice(0) #don't mutate old state
+          newFlows.splice(newPosition, 0, newPhase)
           @setState flows: newFlows
 
-    render: ->
-      {ul, div} = React.DOM
-      if @state.paper
-        header = ManuscriptHeader {paper: @state.paper}
-      (div {},
-          header
-        (ul {className: 'columns'},
-          Tahi.manuscriptManager.ColumnAppender {
-            addFunction: @addColumn
-            bonusClass: 'first-add-column'
-            position: -1}
-          for flow, position in @state.flows
-            Tahi.manuscriptManager.Column {
-              addFunction: @addColumn,
-              position: flow.position
-              title: flow.title
-              tasks: flow.tasks,
-              phase_id: flow.id,
-              paper: @state.paper
-              removeCard: @removeCard
-            }
-      ))
 
   Column: React.createClass
     displayName: "Column"
+    render: ->
+      {h2, div, ul, li} = React.DOM
+      (li {className: 'column'},
+        Tahi.manuscriptManager.ColumnAppender {
+          addFunction: @props.addFunction,
+          position: @props.position}
+        (h2 {}, @props.name),
+        (div {className: 'column-content'},
+          (ul {className: 'cards'},
+            @manuscriptCards()
+      )))
+
     manuscriptCards: ->
       {li} = React.DOM
       cards = _.map @props.tasks, (task) =>
@@ -124,23 +139,8 @@ Tahi.manuscriptManager =
       }))
 
 
-    render: ->
-      {h2, div, ul, li} = React.DOM
-      (li {className: 'column'},
-        Tahi.manuscriptManager.ColumnAppender {
-          addFunction: @props.addFunction,
-          position: @props.position}
-        (h2 {}, @props.title),
-        (div {className: 'column-content'},
-          (ul {className: 'cards'},
-            @manuscriptCards()
-      )))
-
   ColumnAppender: React.createClass
     displayName: "ColumnAppender"
-    handleClick: ->
-      @props.addFunction(@props.position)
-
     render: ->
       @props.bonusClass ||= ""
       {span, i} = React.DOM
@@ -151,6 +151,10 @@ Tahi.manuscriptManager =
         "title": "Add Phase"
         onClick: @handleClick},
         (i {className: 'glyphicon glyphicon-plus'}))
+
+    handleClick: ->
+      @props.addFunction(@props.position)
+
 
     componentDidMount: ->
       $(@getDOMNode()).tooltip()

@@ -2,14 +2,18 @@ class PhasesController < ApplicationController
   before_filter :authenticate_user!
 
   def create
-    phase = Phase.insert_at_position(new_phase_params)
-    render json: phase
+    @phase = Phase.insert_at_position(new_phase_params)
+    respond_to do |format|
+      format.json { render :show }
+    end
   end
 
   def update
-    phase = Phase.find params[:id]
-    phase.update_attributes! update_phase_params
-    render json: phase
+    @phase = Phase.find params[:id]
+    @phase.update_attributes! update_phase_params
+    respond_to do |format|
+      format.json { render :show }
+    end
   end
 
   private

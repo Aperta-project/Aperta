@@ -29,6 +29,7 @@ class Phase < ActiveRecord::Base
         phase.position < new_phase.position
       end
 
+      tail = tail - [new_phase]
       tail.each do |phase|
         if phase.id != new_phase.id
           phase.position = phase.position + 1

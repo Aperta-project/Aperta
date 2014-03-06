@@ -95,4 +95,20 @@ feature "Manuscript Manager", js: true do
       expect(overlay.assignee).to eq 'Zoey Bob'
     end
   end
+
+  scenario 'Renaming a phase' do
+    # TODO: Make this work
+    # dashboard_page = DashboardPage.visit
+    # paper_page = dashboard_page.view_submitted_paper 'foobar'
+    # task_manager_page = paper_page.navigate_to_task_manager
+
+    # sleep 0.4
+    # phase = task_manager_page.phase 'Assign Editor'
+    # execute_script("return $('.column h2')[0].classList.add('changedColumn')")
+    # title = phase.all('.column h2').first
+    # title.set "Some Other Title"
+    # binding.pry
+    # execute_script("return $('.changedColumn').blur()")
+    # page.reload
+  end
 end

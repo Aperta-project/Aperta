@@ -7,7 +7,7 @@ Tahi.utils =
       @resizeColumnHeaders()
 
   resizeColumnHeaders: ->
-    $children = $('.columns h2')
+    $children = $('.columns .column-title')
     return unless $children.length
 
     $children.css('height', '')

@@ -58,9 +58,8 @@ body.full-height {
   position: relative;
 
   h2 {
+    outline: none;
     margin-top: 0;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #aaa;
   }
 
   .remove-column {
@@ -74,8 +73,53 @@ body.full-height {
   border-right: none;
 }
 
+.column-title {
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #aaa;
+
+  .edit-icon {
+    display: none;
+    color: $tahi-secondary;
+    font-size: 14px;
+    position: absolute;
+    right: 10px;
+    top: 3px;
+  }
+  &:hover .edit-icon {
+    display: inline;
+  }
+}
+
 .full-height {
   height: 100%;
+}
+
+.column-header-update-buttons {
+  display: none;
+  position: absolute;
+  bottom: -34px;
+  right: 0;
+  left: 0;
+}
+
+.active .column-header-update-buttons {
+  display: block;
+  bottom: -35px;
+  z-index: 1;
+  border-bottom: 1px solid #aaa;
+  padding: 10px 0;
+  background: #fff;
+}
+
+.column-header-update-save {
+  float: right;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.btn-link.column-header-update-cancel {
+  color: $tahi-primary;
 }
 
 .column-content {

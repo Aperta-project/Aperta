@@ -22,6 +22,7 @@ class Phase < ActiveRecord::Base
 
   def self.insert_at_position(phase_params)
     Phase.transaction do
+
       new_phase = Phase.create! phase_params
 
       head, tail = new_phase.task_manager.phases.sort_by(&:position).partition do |phase|
@@ -29,8 +30,10 @@ class Phase < ActiveRecord::Base
       end
 
       tail.each do |phase|
-        phase.position = phase.position + 1
-        phase.save
+        if phase.id != new_phase.id
+          phase.position = phase.position + 1
+          phase.save
+        end
       end
 
       new_phase

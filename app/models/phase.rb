@@ -28,6 +28,7 @@ class Phase < ActiveRecord::Base
         phase.position < new_phase.position
       end
 
+      tail = tail - [new_phase]
       tail.each do |phase|
         phase.position = phase.position + 1
         phase.save

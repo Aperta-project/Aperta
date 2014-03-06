@@ -51,10 +51,6 @@ class TasksController < ApplicationController
     end
   end
 
-  def new
-    render json: { one: 1, two: [1, 2] }
-  end
-
   private
 
   def task_params(task = nil)

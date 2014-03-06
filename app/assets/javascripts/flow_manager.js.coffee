@@ -71,8 +71,9 @@ Tahi.flowManager =
       closeButton = (div {className: 'remove-column glyphicon glyphicon-remove', onClick: @remove})
 
       (li {className: 'column'},
-        (h2 {}, @props.title),
-        closeButton,
+        (div {className: "column-title"},
+          (h2 {}, @props.title),
+          closeButton),
         (div {className: 'column-content'},
           if @props.paperProfiles.length
             (ul {className: 'cards'},

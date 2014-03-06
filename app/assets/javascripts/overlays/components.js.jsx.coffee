@@ -48,9 +48,9 @@ Tahi.overlays.components.RailsForm = React.createClass
       {this.props.children}
     </form>`
 
-  componentDidMount: (rootNode) ->
-    $(rootNode).on 'ajax:success', (@props.ajaxSuccess || null)
-    $(rootNode).on 'ajax:error', (@props.ajaxError || null)
+  componentDidMount: ->
+    $(@getDOMNode()).on 'ajax:success', (@props.ajaxSuccess || null)
+    $(@getDOMNode()).on 'ajax:error', (@props.ajaxError || null)
 
   submit: ->
     $(@getDOMNode()).trigger 'submit.rails'

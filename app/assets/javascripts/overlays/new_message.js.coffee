@@ -9,15 +9,18 @@ Tahi.overlays.newMessage =
     createCard: ->
       @refs.form.submit()
 
+    ajaxSuccess: ->
+      Turbolinks.visit(window.location.pathname)
+
     render: ->
       {div, button, footer, option, header, a, h2, main, ul, li, input, textarea, img, label} = React.DOM
       {RailsForm} = Tahi.overlays.components
       (div {id: 'new-message-overlay', className: 'message-overlay'},
         (header {},
           (h2 {},
-            (a {href: "#", className: 'message-color'}, @props.paperTitle))),
+            (a {href: "#", className: 'message-color'}, @props.paperShortTitle))),
         (main {},
-          (RailsForm {action: "/papers/#{@props.paperId}/messages.json", ref: 'form', method: 'POST', ajaxSuccess: Tahi.overlay.hide},
+          (RailsForm {action: "/papers/#{@props.paperId}/messages.json", ref: 'form', method: 'POST', ajaxSuccess: @ajaxSuccess},
             (div {id: 'participants'},
               (ul {},
                 (@renderParticipants()),

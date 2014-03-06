@@ -58,6 +58,9 @@ body.full-height {
   position: relative;
 
   h2 {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     outline: none;
     margin-top: 0;
   }
@@ -98,14 +101,13 @@ body.full-height {
 .column-header-update-buttons {
   display: none;
   position: absolute;
-  bottom: -34px;
   right: 0;
   left: 0;
 }
 
 .active .column-header-update-buttons {
   display: block;
-  bottom: -35px;
+  bottom: -48px;
   z-index: 1;
   border-bottom: 1px solid #aaa;
   padding: 10px 0;

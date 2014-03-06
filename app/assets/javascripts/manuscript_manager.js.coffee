@@ -120,6 +120,9 @@ Tahi.manuscriptManager =
     componentWillMount: ->
       @setState @props
 
+    componentDidUpdate: ->
+      Tahi.utils.resizeColumnHeaders()
+
     componentDidMount: ->
       Tahi.utils.bindColumnResize()
 

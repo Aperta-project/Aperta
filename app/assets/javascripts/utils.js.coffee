@@ -11,7 +11,7 @@ Tahi.utils =
     return unless $children.length
 
     $children.css('height', '')
-    heights = $children.map ->
+    heights = $children.find('h2').map ->
       $(this).outerHeight()
 
     max = Math.max.apply(Math, heights)

@@ -74,6 +74,7 @@ Tahi.manuscriptManager =
           for flow, position in @state.flows
             Tahi.manuscriptManager.Column {
               addFunction: @addColumn,
+              updateName: @updateColumnName
               position: flow.position
               name: flow.name
               tasks: flow.tasks,
@@ -152,6 +153,30 @@ Tahi.manuscriptManager =
       updatedFlows = head.concat newPhase, tail
       @setState flows: updatedFlows
 
+    findPhase: (phase_id)->
+      _(@state.flows).find (phase)-> phase.id == phase_id
+
+    updateColumnName: (phase_id)->
+      (e)=>
+        storedPhase = @findPhase(phase_id)
+        if e.target.innerText != storedPhase.name
+          $.ajax
+            url: "/phases"
+            method: 'PUT'
+            data:
+              id: phase_id
+              phase:
+                name: e.target.innerText
+            success: (data)=>
+              newFlows = @state.flows.slice(0)
+              i = newFlows.indexOf storedPhase
+              # data.phase.tasks are being sent from the server in a different
+              # order, so use the same unchanged tasks to preserve order
+              tasks = newFlows[i].tasks.slice(0)
+              newFlows.splice(i, 1, data.phase)
+              newFlows[i].tasks = tasks
+              @setState flows: newFlows
+
     addColumn: (position) ->
       newPosition = position + 1
       column =
@@ -170,7 +195,6 @@ Tahi.manuscriptManager =
             name: column.name
         success: (data) => @insertPhase(data.phase)
 
-
   Column: React.createClass
     displayName: "Column"
     render: ->
@@ -179,7 +203,7 @@ Tahi.manuscriptManager =
         Tahi.manuscriptManager.ColumnAppender {
           addFunction: @props.addFunction,
           position: @props.position}
-        (h2 {}, @props.name),
+        (h2 {onBlur: @props.updateName(@props.phase_id), contentEditable: "true"}, @props.name),
         (div {className: 'column-content'},
           (ul {className: 'cards'},
             @manuscriptCards()

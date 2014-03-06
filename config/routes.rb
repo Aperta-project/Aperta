@@ -8,7 +8,13 @@ Tahi::Application.routes.draw do
     resources :tasks, only: [:update, :create, :show, :destroy] do
       resources :comments, only: :create
     end
-    resources :messages, only: [:create]
+
+    resources :messages, only: [:create] do
+      member do
+        patch :update_participants
+      end
+    end
+
     member do
       patch :upload
       get :manage, to: 'tasks#index'

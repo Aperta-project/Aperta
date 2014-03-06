@@ -2,7 +2,10 @@ class MessageCardOverlay < CardOverlay
 
 
   def add_participants(users)
-    users.map(&:full_name).each { |name| select_from_chosen name, from: 'Participants' }
+    users.map(&:full_name).each do |name|
+      select_from_chosen name, from: 'Participants'
+      expect(page).to have_css "#participants [data-user-name='#{name}']"
+    end
   end
 
   def participants

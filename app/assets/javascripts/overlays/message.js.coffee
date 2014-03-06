@@ -32,6 +32,17 @@ Tahi.overlays.message =
     postMessage: (e)->
       @refs.form.submit()
 
+    persistNewParticipant: (e) ->
+      participantId = e.target.value
+      $.ajax
+        url: "/papers/#{@state.paperId}/messages/#{@state.taskId}/update_participants"
+        method: 'PATCH'
+        data:
+          task:
+            participant_ids: _.pluck(@state.participants, 'id').concat(participantId)
+        success: (data) =>
+          @setState participants: data.users
+
     clearMessageContent: ->
       @refs.body.getDOMNode().value = null
 
@@ -45,7 +56,7 @@ Tahi.overlays.message =
             (@renderParticipants()),
             (li {},
               (label {className: "hidden", htmlFor: 'message_participants_chosen'}, 'Participants'),
-              (Chosen {"data-placeholder": "Add People", width: '150px', id: "message_participants_chosen", onChange: @addParticipant},
+              (Chosen {"data-placeholder": "Add People", width: '150px', id: "message_participants_chosen", onChange: @persistNewParticipant},
                 @chosenOptions() )))),
         (ul {className: "message-comments"},
           _.map @state.comments, (comment)->

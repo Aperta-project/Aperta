@@ -24,7 +24,7 @@ class TaskManagerPage < Page
       click_on 'Add New Card'
       overlay = session.find('#overlay')
       overlay.click_button 'New Message Card'
-      message_card = MessageCardOverlay.new overlay
+      message_card = NewMessageCardOverlay.new overlay
       expect(message_card.participants).to include(params[:creator].full_name)
       message_card.participants = params[:participants]
       all_participants = params[:participants] + [params[:creator]]

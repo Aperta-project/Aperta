@@ -26,6 +26,9 @@ Tahi.mixins.MessageParticipants =
     chosenOptions = [['', '']].concat(@chosenParticipants())
     _.map chosenOptions, ([value, label]) -> React.DOM.option({value: value}, label)
 
-  addParticipant:(e) ->
-    newParticipant = _.findWhere @state.userModels, {id: parseInt(e.target.value)}
+  addParticipantCallback: (e) ->
+    @addParticipant(parseInt(e.target.value))
+
+  addParticipant:(id) ->
+    newParticipant = _.findWhere @state.userModels, {id: id}
     @setState participants: (@state.participants.concat(newParticipant))

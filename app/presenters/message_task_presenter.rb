@@ -9,13 +9,13 @@ class MessageTaskPresenter < TaskPresenter
 
   def participant_data
     task.participants.map do |p|
-      {id: p.id, fullName: p.full_name, image_url: "/images/profile-no-image.jpg"}
+      {id: p.id, fullName: p.full_name, imageUrl: "/images/profile-no-image.jpg"}
     end
   end
 
   def comment_data
     task.comments.map do |c|
-      {commenter_id: c.commenter_id, body: c.body, created_at: c.created_at}
+      {commenterId: c.commenter_id, body: c.body, createdAt: c.created_at}
     end
   end
 

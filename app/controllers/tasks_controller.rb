@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :verify_admin!, except: [:show, :update]
+  before_action :verify_admin!, except: [:show, :update, :update_participants]
 
   def index
     @paper = Paper.includes(:journal, :phases => :tasks).find(params[:id])

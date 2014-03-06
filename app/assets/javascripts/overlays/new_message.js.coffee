@@ -26,7 +26,7 @@ Tahi.overlays.newMessage =
                 (@renderParticipants()),
                 (li {},
                   (label {className: "hidden", htmlFor: 'message_participants_chosen'}, 'Participants'),
-                  (Chosen {"data-placeholder": "Add People", width: '150px', id: "message_participants_chosen", onChange: @addParticipant},
+                  (Chosen {"data-placeholder": "Add People", width: '150px', id: "message_participants_chosen", onChange: @addParticipantCallback},
                     @chosenOptions() )))),
             (div {className: 'form-group'},
               (input {id: 'message-subject', name: 'task[message_subject]', type: 'text', placeholder: 'Type in a subject here'})),

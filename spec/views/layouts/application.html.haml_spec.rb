@@ -2,7 +2,8 @@ require 'spec_helper'
 describe "layouts/application" do
   before { allow(view).to receive(:current_user).and_return(current_user) }
 
-  let(:current_user) { mock_model User, admin?: false }
+  let(:admin) { false }
+  let(:current_user) { mock_model User, admin?: admin, full_name: "Batman", image_url: "none" }
 
   subject { render; Capybara.string(rendered) }
 
@@ -15,7 +16,7 @@ describe "layouts/application" do
   end
 
   context "when the user is an admin" do
-    before { allow(current_user).to receive(:admin?).and_return true }
+    let(:admin) { true }
     it { should have_link 'Admin' }
   end
 end

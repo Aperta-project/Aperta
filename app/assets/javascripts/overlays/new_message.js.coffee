@@ -10,7 +10,7 @@ Tahi.overlays.newMessage =
       @refs.form.submit()
 
     ajaxSuccess: ->
-      Turbolinks.visit(window.location.pathname)
+      window.location.reload(true)
 
     render: ->
       {div, button, footer, option, header, a, h2, main, ul, li, input, textarea, img, label} = React.DOM

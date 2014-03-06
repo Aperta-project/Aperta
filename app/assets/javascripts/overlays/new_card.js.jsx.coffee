@@ -4,6 +4,9 @@ Tahi.overlays.newCard =
     e?.preventDefault()
     Tahi.overlay.hide()
 
+  ajaxSuccess: ->
+    window.location.reload(true)
+
   components:
     NewCardForm: React.createClass
       displayName: "NewCardForm"
@@ -16,7 +19,7 @@ Tahi.overlays.newCard =
           url: @props.url
           method: 'POST'
           success: ->
-            Turbolinks.visit(window.location.pathname)
+            Tahi.overlays.newCard.ajaxSuccess()
           data:
             task:
               title: title

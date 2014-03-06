@@ -45,11 +45,11 @@ describe "New Card Overlay", ->
         @form.refs.task_title.getDOMNode().value = 'This is a title'
         @form.refs.task_assignee_id.getDOMNode().value = '2'
         @form.refs.task_body.getDOMNode().value = 'This is the body'
-
         @form.submit()
-        spyOn Turbolinks, 'visit'
+
+        spyOn Tahi.overlays.newCard, 'ajaxSuccess'
         $.ajax.calls.mostRecent().args[0].success()
-        expect(Turbolinks.visit).toHaveBeenCalledWith window.location.pathname
+        expect(Tahi.overlays.newCard.ajaxSuccess).toHaveBeenCalled()
 
   describe "NewCardOverlay component", ->
     describe "#render", ->

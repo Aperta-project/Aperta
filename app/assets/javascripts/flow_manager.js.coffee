@@ -1,5 +1,55 @@
+FlowManagerHeader = React.createClass
+  displayName: "FlowManagerHeader"
+
+  displayChangeOverlay: (e) ->
+    e.preventDefault()
+    $('#overlay').show()
+    React.renderComponent ChooseFlowManagerColumn(), document.getElementById('overlay')
+
+  render: ->
+    {ul, div, section, img, h2, span, li, a, section} = React.DOM
+
+    (div {id:'control-bar-container'},
+      div {id:'control-bar'},
+        section {},
+          ul {},
+            li {},
+              a {className: 'add-column-button secondary-button', href: "#", onClick: @displayChangeOverlay},
+              "Add New Column",
+              " ",
+              span {className: 'glyphicon glyphicon-plus'})
+
+ChooseFlowManagerColumn = React.createClass
+  displayName: 'chooseFlowManagerColumnOverlay'
+
+  addColumnToFlowManager: (e)->
+    e.preventDefault()
+    newFlowName = $(e.target).data('flowTitle')
+
+    $.ajax
+      method: 'POST'
+      url: 'user_settings'
+      data:
+        _method: 'PATCH'
+        flow_title: newFlowName
+      success: ->
+        React.unmountComponentAtNode document.getElementById('tahi-container')
+        Tahi.flowManager.init()
+        $('#overlay').hide()
+
+  render: ->
+    {div, h2, a, li, span, ul} = React.DOM
+    (div {className: 'flow-manager-column-overlay'},
+      (a {href: "#", className: 'close-button', onClick: Tahi.overlay.hide}, span {className: 'glyphicon glyphicon-remove'}),
+      (h2 {className: "modal-heading"}, "Choose a new column"),
+      (ul {className: "modal-buttons list-unstyled"},
+        li {}, (a {className: 'secondary-button btn-lg', onClick: @addColumnToFlowManager, 'data-flow-title': "Up for grabs"}, "Up for grabs"),
+        li {}, (a {className: 'secondary-button btn-lg', onClick: @addColumnToFlowManager, 'data-flow-title': "My Tasks"}, "My Tasks"),
+        li {}, (a {className: 'secondary-button btn-lg', onClick: @addColumnToFlowManager, 'data-flow-title': "My Papers"}, "My Papers"),
+        li {}, (a {className: 'secondary-button btn-lg', onClick: @addColumnToFlowManager, 'data-flow-title': "Done"}, "Done")))
+
 Tahi.flowManager =
-  init: ()->
+  init: ->
     if columns = document.getElementById('flow-manager')
       columns = Tahi.flowManager.Columns flows: [], route: columns.getAttribute("data-url")
       React.renderComponent columns, document.getElementById('tahi-container')
@@ -11,8 +61,10 @@ Tahi.flowManager =
 
     componentDidMount: ->
       Tahi.utils.bindColumnResize()
+      @getFlows()
 
-      $.getJSON @props.route, (data,status) =>
+    getFlows: ->
+      $.getJSON @props.route, (data, status) =>
         @setState flows: data.flows, paper: data.paper
 
     componentDidUpdate: ->
@@ -33,13 +85,11 @@ Tahi.flowManager =
 
     render: ->
       {ul, div} = React.DOM
-      if @state.paper
-        header = ManuscriptHeader {paper: @state.paper}
-      (div {},
-          header
+      (div {className: 'full-height'},
+        (div {}, FlowManagerHeader {}),
         (ul {className: 'columns'},
           for flow, index in @state.flows
-            Tahi.flowManager.Column {
+            Tahi.flowManager.Column
               key: "flow-#{index}",
               addFunction: @addColumn,
               index: index,
@@ -50,8 +100,8 @@ Tahi.flowManager =
               phase_id: flow.id,
               paper: @state.paper
               onRemove: @removeFlow
-            }
-      ))
+        )
+      )
 
   Column: React.createClass
     displayName: "Column"

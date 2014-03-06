@@ -56,6 +56,19 @@ feature "Flow Manager", js: true do
     expect(flow_manager_page).not_to have_column 'Up for grabs'
   end
 
+  scenario "admin adds a column to their flow manager" do
+    dashboard_page = DashboardPage.visit
+    flow_manager_page = dashboard_page.view_flow_manager
+
+    expect { flow_manager_page.add_column "Up for grabs" }.to change {
+      flow_manager_page.columns("Up for grabs").count
+    }.by(1)
+
+    flow_manager_page.reload
+
+    expect(flow_manager_page.columns("Up for grabs").count).to eq(2)
+  end
+
   scenario "papers without assigned admins" do
     paper1.tasks.detect { |t| t.title == 'Assign Admin' }.update! assignee: admin
 

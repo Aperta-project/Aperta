@@ -9,6 +9,7 @@
   - body_class = Array(yield :tahi_body_class)
   - body_class << 'matte' if params[:controller] == 'papers'
   %body{class: body_class.join(' ')}
+    = yield :body_content
     #spinner{style: 'display: none;'}
     #overlay
     #nav-bar-container

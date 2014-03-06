@@ -16,7 +16,7 @@ NewCardButton = React.createClass
 ManuscriptHeader = React.createClass
   displayName: "ManuscriptHeader"
   render: ->
-    {ul, div, section, img, h2, li, a, section} = React.DOM
+    {ul, div, section, img, h2, li, a} = React.DOM
     (div {id:'control-bar-container'},
       div {id:'control-bar'},
         section {},

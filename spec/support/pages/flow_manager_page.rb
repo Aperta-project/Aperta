@@ -38,10 +38,20 @@ class FlowManagerPage < Page
     end
   end
 
+  def add_column title
+    find('a', text: "ADD NEW COLUMN").click
+    all('a').detect { |button| button.text == title }.click
+  end
+
   def column title
     wait_for_turbolinks
     el = all('.column').detect { |c| c.find('h2').text == title }
     Column.new el if el
+  end
+
+  def columns title
+    wait_for_turbolinks
+    el = all('.column').select { |c| c.find('h2').text == title }
   end
 
   def has_column? title

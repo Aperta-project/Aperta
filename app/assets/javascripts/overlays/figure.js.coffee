@@ -8,8 +8,8 @@ Tahi.overlays.figure =
         (div {className: 'preview-container'}),
         (ProgressBar {progress: @props.progress})])
 
-    componentDidMount: (rootNode) ->
-      previewContainer = $('.preview-container', rootNode)
+    componentDidMount: ->
+      previewContainer = $('.preview-container', @getDOMNode())
       previewContainer.append window.tempStorage[this.props.filename]
 
   Overlay: React.createClass
@@ -52,8 +52,8 @@ Tahi.overlays.figure =
         (ul {id: 'paper-figure-uploads'}, uploadLIs),
         (ul {id: 'paper-figures'}, figureLIs)])
 
-    componentDidMount: (rootNode) ->
-      uploader = $('.js-jquery-fileupload', rootNode).fileupload()
+    componentDidMount: ->
+      uploader = $('.js-jquery-fileupload', @getDOMNode()).fileupload()
       uploader.on 'fileuploadprocessalways', @fileUploadProcessAlways
       uploader.on 'fileuploaddone',          @fileUploadDone
       uploader.on 'fileuploadprogress',      @fileUploadProgress

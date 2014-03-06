@@ -11,23 +11,24 @@ describe "Tahi.overlays.figure", ->
           </div>
         """)[0]
         @component = Tahi.overlays.figure.Overlay()
+        spyOn(@component, 'getDOMNode').and.returnValue($(@html)[0])
 
       it "initializes jQuery filepicker", ->
-        @component.componentDidMount(@html)
+        @component.componentDidMount()
         expect($.fn.fileupload).toHaveBeenCalled()
         call = $.fn.fileupload.calls.mostRecent()
         expect(call.object).toEqual $('#jquery-file-attachment', @html)
 
       it "sets up a fileuploadprocessalways handler", ->
-        @component.componentDidMount(@html)
+        @component.componentDidMount()
         expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploadprocessalways', @component.fileUploadProcessAlways
 
       it "sets up a fileuploaddone handler", ->
-        @component.componentDidMount(@html)
+        @component.componentDidMount()
         expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploaddone', @component.fileUploadDone
 
       it "sets up a fileuploadprogress handler", ->
-        @component.componentDidMount(@html)
+        @component.componentDidMount()
         expect(@fakeUploader.on).toHaveBeenCalledWith 'fileuploadprogress', @component.fileUploadProgress
 
     describe "jQuery File Upload callbacks", ->
@@ -116,5 +117,6 @@ describe "Tahi.overlays.figure", ->
         component = Tahi.overlays.figure.FigureUpload
           filename: 'foo.jpg'
           progress: 0
-        component.componentDidMount(html)
+        spyOn(component, 'getDOMNode').and.returnValue($(html)[0])
+        component.componentDidMount()
         expect($('#preview', html)[0]).toEqual preview

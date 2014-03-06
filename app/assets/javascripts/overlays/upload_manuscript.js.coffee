@@ -35,11 +35,11 @@ Tahi.overlays.uploadManuscript =
         (@state.error),
         (ul {id: 'paper-manuscript-upload'}, uploadManuscriptProgress)])
 
-    componentDidUpdate: (prevProps, prevState, rootNode) ->
-      new Spinner(top: '0', left: '-64px', color: '#39a329').spin $('.processing', rootNode)[0]
+    componentDidUpdate: (prevProps, prevState) ->
+      new Spinner(top: '0', left: '-64px', color: '#39a329').spin $('.processing', @getDOMNode())[0]
 
-    componentDidMount: (rootNode) ->
-      uploader = $('.js-jquery-fileupload', rootNode).fileupload
+    componentDidMount: ->
+      uploader = $('.js-jquery-fileupload', @getDOMNode()).fileupload
         done: =>
           $('#task_checkbox_completed:not(:checked)').click()
           $('html').removeClass 'noscroll'

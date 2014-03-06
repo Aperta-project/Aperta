@@ -31,10 +31,8 @@ class Phase < ActiveRecord::Base
 
       tail = tail - [new_phase]
       tail.each do |phase|
-        if phase.id != new_phase.id
-          phase.position = phase.position + 1
-          phase.save
-        end
+        phase.position = phase.position + 1
+        phase.save
       end
 
       new_phase

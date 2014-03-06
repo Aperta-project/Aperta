@@ -34,6 +34,7 @@ class TaskManagerPage < Page
       message_card.create
     end
 
+    # add a phase AFTER this phase.
     def add_phase
       container = find('.add-column', visible: false)
       container.hover
@@ -44,19 +45,17 @@ class TaskManagerPage < Page
   path :manage_paper
 
   def phases
+    expect(page).to have_css('.column h2')
     all('.column h2').map(&:text)
   end
 
   def phase phase_name
-    # loading via REACT happens after this runs
-    # so we need to wait for it to load
-    # Is there a already built way to deal with this?
-    sleep 1
+    expect(page).to have_content(phase_name) # use have_content/css/stuff assertion to avoid sleeps.
     PhaseFragment.new(all('.column').detect {|p| p.find('h2').text == phase_name })
   end
 
   def phase_count
-    TaskManagerPage.new.all('.column').count
+    TaskManagerPage.new.phases.count
   end
 
   def navigate_to_edit_paper

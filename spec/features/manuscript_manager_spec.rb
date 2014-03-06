@@ -32,13 +32,29 @@ feature "Manuscript Manager", js: true do
     sign_in_page.sign_in admin.email
   end
 
-  scenario 'Adding new phases' do
-    dashboard_page = DashboardPage.visit
-    paper_page = dashboard_page.view_submitted_paper 'foobar'
-    task_manager_page = paper_page.navigate_to_task_manager
-    phase = task_manager_page.phase 'Submission Data'
+  describe "Adding phases" do
+    scenario 'Adding a phase' do
+      task_manager_page = TaskManagerPage.visit paper
+      phase = task_manager_page.phase 'Submission Data'
 
-    expect { phase.add_phase; sleep 0.5 }.to change { task_manager_page.phase_count }.by(1)
+      expect { phase.add_phase; expect(page).to have_content "New Phase" }.to change { task_manager_page.phase_count }.by(1)
+    end
+
+    scenario 'Preserving order of added phases after reload' do
+      task_manager_page = TaskManagerPage.visit paper
+      original_phases = task_manager_page.phases
+      # put new phases in the second and forth positions.
+      task_manager_page.phase(original_phases[0]).add_phase
+      task_manager_page.phase(original_phases[1]).add_phase
+      new_phases = task_manager_page.phases
+      expect(new_phases[1]).to eq("New Phase")
+      expect(new_phases[3]).to eq("New Phase")
+      task_manager_page.reload
+      reloaded_phases = task_manager_page.phases
+      expect(reloaded_phases[1]).to eq("New Phase")
+      expect(reloaded_phases[3]).to eq("New Phase")
+
+    end
   end
 
   scenario 'Removing a task' do

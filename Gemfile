@@ -54,6 +54,7 @@ gem 'pry-rails'
 group :development do
   gem 'license_finder'
   gem 'railroady'
+  gem 'spring'
 end
 
 group :development, :test do
@@ -93,4 +94,3 @@ gem 'react-rails'
 gem 'spinjs-rails'
 
 gem 'newrelic_rpm'
-

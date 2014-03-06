@@ -285,6 +285,7 @@ GEM
     slop (3.4.7)
     spinjs-rails (1.3)
       rails (>= 3.1)
+    spring (1.1.2)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -361,6 +362,7 @@ DEPENDENCIES
   sdoc
   selenium-webdriver
   spinjs-rails
+  spring
   turbolinks
   uglifier (>= 1.3.0)
   unf

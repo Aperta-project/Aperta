@@ -156,26 +156,25 @@ Tahi.manuscriptManager =
     findPhase: (phase_id)->
       _(@state.flows).find (phase)-> phase.id == phase_id
 
-    updateColumnName: (phase_id)->
-      (e)=>
-        storedPhase = @findPhase(phase_id)
-        if e.target.innerText != storedPhase.name
-          $.ajax
-            url: "/phases"
-            method: 'PUT'
-            data:
-              id: phase_id
-              phase:
-                name: e.target.innerText
-            success: (data)=>
-              newFlows = @state.flows.slice(0)
-              i = newFlows.indexOf storedPhase
-              # data.phase.tasks are being sent from the server in a different
-              # order, so use the same unchanged tasks to preserve order
-              tasks = newFlows[i].tasks.slice(0)
-              newFlows.splice(i, 1, data.phase)
-              newFlows[i].tasks = tasks
-              @setState flows: newFlows
+    updateColumnName: (name, phase_id)->
+      storedPhase = @findPhase(phase_id)
+      if name != storedPhase.name
+        $.ajax
+          url: "/phases"
+          method: 'PUT'
+          data:
+            id: phase_id
+            phase:
+              name: name
+          success: (data)=>
+            newFlows = @state.flows.slice(0)
+            i = newFlows.indexOf storedPhase
+            # data.phase.tasks are being sent from the server in a different
+            # order, so use the same unchanged tasks to preserve order
+            tasks = newFlows[i].tasks.slice(0)
+            newFlows.splice(i, 1, data.phase)
+            newFlows[i].tasks = tasks
+            @setState flows: newFlows
 
     addColumn: (position) ->
       newPosition = position + 1
@@ -198,16 +197,42 @@ Tahi.manuscriptManager =
   Column: React.createClass
     displayName: "Column"
     render: ->
-      {h2, div, ul, li} = React.DOM
+      {h2, div, ul, li, span, button} = React.DOM
       (li {className: 'column', 'data-phase-id': @props.phase_id },
         Tahi.manuscriptManager.ColumnAppender {
           addFunction: @props.addFunction,
           position: @props.position}
-        (h2 {onBlur: @props.updateName(@props.phase_id), contentEditable: "true"}, @props.name),
+        (div {className: "column-title"},
+          (h2 {
+            onClick: @showButtons
+            contentEditable: "true"},
+            @props.name)
+
+          (div {className: "column-header-update-buttons"},
+            button {onClick: @cancelEdit, className: "column-header-update-cancel btn-link"},     "cancel"
+            button {onClick: @updateName, className: "column-header-update-save primary-button"}, "Save")
+
+          (span {className: "glyphicon glyphicon-pencil edit-icon"}, "")
+        )
         (div {className: 'column-content'},
           (ul {className: 'cards'},
             @manuscriptCards()
       )))
+
+    cancelEdit: ->
+      $(@getDOMNode()).find("h2").text(@props.name)
+      @hideButtons()
+
+    updateName: ->
+      name = $(@getDOMNode()).find("h2").text()
+      @props.updateName(name, @props.phase_id)
+      @hideButtons()
+
+    hideButtons: ->
+      $(@getDOMNode()).find(".column-title").removeClass('active')
+
+    showButtons: ->
+      $(@getDOMNode()).find(".column-title").addClass('active')
 
     manuscriptCards: ->
       {li} = React.DOM

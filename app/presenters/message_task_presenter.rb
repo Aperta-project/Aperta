@@ -15,7 +15,7 @@ class MessageTaskPresenter < TaskPresenter
 
   def comment_data
     task.comments.map do |c|
-      {commenter_id: c.commenter_id, body: c.body, created_at: c.created_at}
+      {commenterId: c.commenter_id, body: c.body, createdAt: c.created_at}
     end
   end
 

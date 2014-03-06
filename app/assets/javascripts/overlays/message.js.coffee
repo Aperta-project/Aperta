@@ -4,25 +4,32 @@ Tahi.overlays.message =
     mixins: [Tahi.mixins.MessageParticipants]
 
     componentWillMount: ->
-      @mergeAssigneesToComments()
+      {participants, comments} = @props
+      @mergeAssigneesToComments(participants, comments)
       @setState @props
 
-    mergeAssigneesToComments: ->
-      {participants, comments} = @props
+    mergeAssigneesToComments: (participants, comments)->
       _(comments).each (comment)->
         match = _(participants).find (participant)->
-          participant.id == comment.commenter_id
+          participant.id == comment.commenterId
         comment.name = match.fullName
         comment.avatar = match.image_url
 
-    refreshComments: (data) ->
+    refreshComments: (e, data) ->
+      newComments = @state.comments.concat(data.comment)
+      @mergeAssigneesToComments(@state.participants, newComments)
+      @setState(comments: newComments)
+      @clearMessageContent()
 
     getInitialState: ->
       userModels: [Tahi.currentUser]
       participants: []
 
-    postMessage: ->
+    postMessage: (e)->
       @refs.form.submit()
+
+    clearMessageContent: ->
+      @refs.body.getDOMNode().value = null
 
     render: ->
       {RailsForm, UserThumbnail} = Tahi.overlays.components
@@ -40,13 +47,13 @@ Tahi.overlays.message =
           _.map @state.comments, (comment)->
             (li {className: "message-comment"},
               (UserThumbnail {className: 'user-thumbnail comment-avatar', imgSrc: comment.avatar, name: comment.name}),
-              (span {className: "comment-date"}, $.timeago(comment.created_at.split('T')[0]))
-              (span {className: "comment-name"}, "#{comment.name} posted")
+              (span {className: "comment-date"}, $.timeago(comment.createdAt)),
+              (span {className: "comment-name"}, "#{comment.name} posted"),
               (div  {className: "comment-body"}, comment.body))),
-        (RailsForm {action: "/papers/#{@props.paperId}/tasks/#{@props.taskId}/comments.json", ref: 'form', method: 'POST', ajaxSuccess: @refreshComments},
-          (input {type: 'hidden', name: 'task[commentor_id]', value: Tahi.currentUser.id}),
+        (RailsForm {action: "/papers/#{@props.paperId}/tasks/#{@props.taskId}/comments.json", ref: 'form', method: 'POST', datatype: 'json', ajaxSuccess: @refreshComments},
+          (input {type: 'hidden', name: 'comment[commenter_id]', value: Tahi.currentUser.id}),
           (div {className: 'form-group'},
-            (textarea {id: 'message-body', name: 'task[message_body]', placeholder: 'Type your message here'}))),
+            (textarea {ref: 'body', id: 'message-body', name: 'comment[body]', placeholder: 'Type your message here'}))),
         (div {className: "content"},
           (a {href: "#", className: 'message-color', onClick: @clearMessageContent}, "Cancel")),
         (button {className: "primary-button message", onClick: @postMessage}, "Post Message"))

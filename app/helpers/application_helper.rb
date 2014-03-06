@@ -6,7 +6,10 @@ module ApplicationHelper
   end
 
   def card task
-    classes = ['card'].tap { |a| a << 'completed' if task.completed? }
+    classes = ['card'].tap do |a|
+      a << 'completed' if task.completed?
+      a << 'message' if task.type == 'MessageTask'
+    end
 
     capture_haml do
       haml_concat(link_to(

@@ -26,6 +26,9 @@
       - @paper_tasks.each do |paper, tasks|
         %p.paper-title= link_to paper.display_title, paper_path(paper)
         %ul.cards
+          - paper.message_tasks.each do |message_task|
+            %li= card message_task
+        %ul.cards
           - tasks.each do |task|
             %li= card task
 

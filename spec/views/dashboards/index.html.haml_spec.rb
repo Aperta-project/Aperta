@@ -16,7 +16,7 @@ describe "dashboards/index" do
 
   describe "my-tasks" do
     context "when there are paper tasks" do
-      let(:paper) { mock_model(Paper, display_title: "My paper") }
+      let(:paper) { mock_model(Paper, display_title: "My paper", message_tasks: []) }
       let(:paper_tasks) { {paper => [mock_model(Task, title: 'My huge task', completed?: true, paper: paper, assignees: [])]} }
 
       it { should have_text 'My huge task' }

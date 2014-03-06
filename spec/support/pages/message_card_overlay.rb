@@ -14,12 +14,14 @@ class MessageCardOverlay < CardOverlay
   end
 
   def comments
+    expect(page).to have_css('.message-comment')
     all('.message-comment')
   end
 
   def post_message(new_message)
     fill_in 'message-body', with: new_message
     click_button 'Post Message'
+    expect(page).to have_content new_message
   end
 
 end

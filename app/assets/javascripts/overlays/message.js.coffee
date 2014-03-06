@@ -13,12 +13,16 @@ Tahi.overlays.message =
         match = _(participants).find (participant)->
           participant.id == comment.commenterId
         comment.name = match.fullName
-        comment.avatar = match.image_url
+        comment.avatar = match.imageUrl
 
     refreshComments: (e, data) ->
       newComments = @state.comments.concat(data.comment)
-      @mergeAssigneesToComments(@state.participants, newComments)
-      @setState(comments: newComments)
+      newParticipants = @state.participants.concat(Tahi.currentUser)
+      newParticipants = _.uniq newParticipants, (p) ->
+        p.id
+
+      @mergeAssigneesToComments(newParticipants, newComments)
+      @setState({participants: newParticipants, comments: newComments})
       @clearMessageContent()
 
     getInitialState: ->

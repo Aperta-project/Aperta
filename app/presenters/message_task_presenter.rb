@@ -9,7 +9,7 @@ class MessageTaskPresenter < TaskPresenter
 
   def participant_data
     task.participants.map do |p|
-      {id: p.id, fullName: p.full_name, image_url: "/images/profile-no-image.jpg"}
+      {id: p.id, fullName: p.full_name, imageUrl: "/images/profile-no-image.jpg"}
     end
   end
 

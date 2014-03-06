@@ -1,6 +1,10 @@
 class PaperPolicy
   def initialize paper_id, user
-    @paper_id = paper_id
+    if paper_id.respond_to? :id
+      @paper_id = paper_id.id
+    else
+      @paper_id = paper_id
+    end
     @user = user
   end
 

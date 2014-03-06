@@ -123,7 +123,7 @@ Tahi.manuscriptManager =
       Tahi.utils.bindColumnResize()
 
       $.getJSON @props.route, (data,status) =>
-        @setState flows: data.flows, paper: data.paper
+        @setState flows: _.sortBy(data.flows, (f) -> f.position), paper: data.paper
 
     componentDidUpdate: ->
       Tahi.utils.resizeColumnHeaders()
@@ -142,6 +142,16 @@ Tahi.manuscriptManager =
             task.taskId == taskId
           @setState flows: newFlows
 
+    insertPhase: (newPhase) ->
+      newPhase.paper = @state.paper
+      newFlows = @state.flows.slice(0) #don't mutate old state
+      [head, tail] =  _.partition newFlows, (flow) ->
+        flow.position < newPhase.position
+      _.map tail, (flow) ->
+        flow.position += 1
+      updatedFlows = head.concat newPhase, tail
+      @setState flows: updatedFlows
+
     addColumn: (position) ->
       newPosition = position + 1
       column =
@@ -156,14 +166,9 @@ Tahi.manuscriptManager =
         data:
           phase:
             task_manager_id: @state.paper.task_manager_id
-            position: column.position
+            position: newPosition
             name: column.name
-        success: (data) =>
-          newPhase = data.phase
-          newPhase.paper = @state.paper
-          newFlows = @state.flows.slice(0) #don't mutate old state
-          newFlows.splice(newPosition, 0, newPhase)
-          @setState flows: newFlows
+        success: (data) => @insertPhase(data.phase)
 
 
   Column: React.createClass

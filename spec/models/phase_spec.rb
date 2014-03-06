@@ -15,7 +15,7 @@ describe Phase do
 
       it "returns a persisted phase with the given parameters" do
         result = insert
-        expect(result.position).to eq(new_pos)
+        expect(result.reload.position).to eq(new_pos)
         expect(result.persisted?).to eq(true)
       end
 
@@ -24,7 +24,7 @@ describe Phase do
         it "increments the positions of existing phases with positions >= the new phase's position" do
           p2 = Phase.where(position: 2).first
           p3 = Phase.where(position: 3).first
-          insert
+          result = insert
           expect(p2.reload.position).to eq(3)
           expect(p3.reload.position).to eq(4)
         end

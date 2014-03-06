@@ -302,7 +302,7 @@
 #overlay .message-overlay footer .content .completed-checkbox {
   color: $tahi-message;
 }
-
+$message-body-width: 600px;
 .message-overlay {
   .message-color {
     color: $tahi-message;
@@ -312,7 +312,7 @@
     width: 40px;
   }
   .form-group input, .form-group textarea {
-    width: 600px;
+    width: $message-body-width;
     border-radius: 5px;
     padding: 5px;
     border: 1px solid #ddd;
@@ -327,6 +327,12 @@
     }
   }
 
+  .comment-buttons {
+    width: $message-body-width;
+    .message {
+      float: right;
+    }
+  }
   .chosen-single {
     height: 40px;
     background: white;

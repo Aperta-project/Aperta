@@ -69,6 +69,6 @@ Tahi.overlays.message =
           (input {type: 'hidden', name: 'comment[commenter_id]', value: Tahi.currentUser.id}),
           (div {className: 'form-group'},
             (textarea {ref: 'body', id: 'message-body', name: 'comment[body]', placeholder: 'Type your message here'}))),
-        (div {className: "content"},
-          (a {href: "#", className: 'message-color', onClick: @clearMessageContent}, "Cancel")),
-        (button {className: "primary-button message", onClick: @postMessage}, "Post Message"))
+        (div {className: "comment-buttons"},
+          (a {href: "#", className: 'message-color', onClick: @clearMessageContent}, "Cancel"),
+          (button {className: "primary-button message", onClick: @postMessage}, "Post Message")))

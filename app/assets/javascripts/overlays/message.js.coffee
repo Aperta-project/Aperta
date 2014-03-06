@@ -68,7 +68,7 @@ Tahi.overlays.message =
         (RailsForm {action: "/papers/#{@props.paperId}/tasks/#{@props.taskId}/comments.json", ref: 'form', method: 'POST', datatype: 'json', ajaxSuccess: @refreshComments},
           (input {type: 'hidden', name: 'comment[commenter_id]', value: Tahi.currentUser.id}),
           (div {className: 'form-group'},
-            (textarea {ref: 'body', id: 'message-body', name: 'comment[body]', placeholder: 'Type your message here'}))),
+            (textarea {className: 'new-comment', ref: 'body', id: 'message-body', name: 'comment[body]', placeholder: 'Type your message here'}))),
         (div {className: "comment-buttons"},
           (a {href: "#", className: 'message-color', onClick: @clearMessageContent}, "Cancel"),
-          (button {className: "primary-button message", onClick: @postMessage}, "Post Message")))
+          (button {className: "secondary-button message", onClick: @postMessage}, "Post Message")))

@@ -91,8 +91,6 @@ describe FlowManagerData do
     end
   end
 
-  pending "doesn't show message cards anywhere"
-
   describe "#flows" do
     it "returns a hash of flows" do
       allow(flow_manager_data).to receive(:incomplete_tasks).and_return(1)

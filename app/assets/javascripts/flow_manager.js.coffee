@@ -106,6 +106,9 @@ Tahi.flowManager =
   Column: React.createClass
     displayName: "Column"
 
+    getInitialState: ->
+      hovered: false
+
     paperProfiles: ->
       {li} = React.DOM
       for paperProfile in @props.paperProfiles
@@ -114,13 +117,19 @@ Tahi.flowManager =
     remove: ->
       @props.onRemove @props.index
 
+    componentDidMount: ->
+
+    toggleHover: ->
+      @setState
+        hovered: !@state.hovered
+
     render: ->
       {h2, div, ul, li} = React.DOM
 
       closeButton = ' '
-      closeButton = (div {className: 'remove-column glyphicon glyphicon-remove', onClick: @remove})
+      closeButton = (div {className: "#{if @state.hovered then '' else 'hidden'} remove-column glyphicon glyphicon-remove", onClick: @remove})
 
-      (li {className: 'column'},
+      (li {className: 'column', onMouseEnter: @toggleHover, onMouseLeave: @toggleHover },
         (div {className: "column-title"},
           (h2 {}, @props.title),
           closeButton),

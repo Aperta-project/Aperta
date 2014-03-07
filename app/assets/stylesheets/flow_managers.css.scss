@@ -67,9 +67,12 @@ body.full-height {
 
   .remove-column {
     position: absolute;
-    top: 0;
+    top: -8px;
     right: 0;
+    cursor: pointer;
+    color: $tahi-primary;
   }
+
 }
 
 .column:last-of-type {

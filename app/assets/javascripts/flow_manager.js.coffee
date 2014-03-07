@@ -3,8 +3,8 @@ FlowManagerHeader = React.createClass
 
   displayChangeOverlay: (e) ->
     e.preventDefault()
-    $('#overlay').show()
     React.renderComponent ChooseFlowManagerColumn(), document.getElementById('overlay')
+    $('#overlay').show()
 
   render: ->
     {ul, div, section, img, h2, span, li, a, section} = React.DOM

@@ -74,7 +74,7 @@ Tahi.manuscriptManager =
           for flow, position in @state.flows
             Tahi.manuscriptManager.Column {
               addFunction: @addColumn
-              removeFunction: @removeColumn
+              onRemove: @removeColumn
               updateName: @updateColumnName
               position: flow.position
               name: flow.name
@@ -199,16 +199,15 @@ Tahi.manuscriptManager =
         success: (data) => @insertPhase(data.phase)
 
     removeColumn: (phaseId) ->
-      =>
-        $.ajax
-          url: "/phases"
-          method: 'DELETE'
-          dataType: 'json'
-          data:
-            id: phaseId
-          success: =>
-            newFlows = _(@state.flows.slice(0)).reject (flow)-> flow.id == phaseId
-            @setState flows: newFlows
+      $.ajax
+        url: "/phases"
+        method: 'DELETE'
+        dataType: 'json'
+        data:
+          id: phaseId
+        success: =>
+          newFlows = _(@state.flows.slice(0)).reject (flow)-> flow.id == phaseId
+          @setState flows: newFlows
 
   Column: React.createClass
     displayName: "Column"
@@ -230,12 +229,15 @@ Tahi.manuscriptManager =
 
           (span {className: "glyphicon glyphicon-pencil edit-icon column-icon"}, "")
           if !@props.tasks.length
-            (span {className: "glyphicon glyphicon-remove remove-icon column-icon", onClick: @props.removeFunction(@props.phase_id)}, "")
+            (span {className: "glyphicon glyphicon-remove remove-icon column-icon", onClick: @remove}, "")
         )
         (div {className: 'column-content'},
           (ul {className: 'cards'},
             @manuscriptCards()
       )))
+
+    remove: ->
+      @props.onRemove @props.phase_id
 
     cancelEdit: ->
       $(@getDOMNode()).find("h2").text(@props.name)

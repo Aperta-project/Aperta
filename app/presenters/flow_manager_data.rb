@@ -28,19 +28,22 @@ class FlowManagerData
   end
 
   def flows
-    settings = @user.user_settings
-    flow_map = [
+    @user.user_settings.flows.inject(Array.new) { |acc, title|
+      acc << flow_map.detect { |flow| title == flow['title'] }
+    }.map {|flow| OpenStruct.new(flow) }
+  end
+
+  private
+
+  def flow_map
+    [
       {'title' => 'Up for grabs', 'tasks' => unassigned_papers},
       {'title' => 'My Tasks',     'tasks' => incomplete_tasks},
       {'title' => 'My Papers',    'tasks' => paper_admin_tasks},
       {'title' => 'Done',         'tasks' => complete_tasks},
-    ]
-    flow_map.each {|flow| flow['empty_text'] = empty_text(flow['title']) }
-      .select! {|flow| settings.flows.include? flow['title'] }
-    flow_map.map {|flow| OpenStruct.new(flow) }
+    ].each {|flow| flow['empty_text'] = empty_text(flow['title']) }
   end
 
-  private
   def empty_text key
     {
       'up for grabs' => "Right now, there are no papers for you to grab.",

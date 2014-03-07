@@ -123,6 +123,8 @@ textarea {
   color: $tahi-primary;
   border-color: $tahi-primary;
   text-transform: uppercase;
+  background: white;
+
   &:hover {
     background-color: $tahi-secondary;
     border-color: $tahi-primary-hover;

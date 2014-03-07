@@ -73,12 +73,13 @@ Tahi.manuscriptManager =
             position: -1}
           for flow, position in @state.flows
             Tahi.manuscriptManager.Column {
-              addFunction: @addColumn,
+              addFunction: @addColumn
+              removeFunction: @removeColumn
               updateName: @updateColumnName
               position: flow.position
               name: flow.name
-              tasks: flow.tasks,
-              phase_id: flow.id,
+              tasks: flow.tasks
+              phase_id: flow.id
               paper: @state.paper
               removeCard: @removeCard
             }
@@ -197,6 +198,18 @@ Tahi.manuscriptManager =
             name: column.name
         success: (data) => @insertPhase(data.phase)
 
+    removeColumn: (phaseId) ->
+      =>
+        $.ajax
+          url: "/phases"
+          method: 'DELETE'
+          dataType: 'json'
+          data:
+            id: phaseId
+          success: =>
+            newFlows = _(@state.flows.slice(0)).reject (flow)-> flow.id == phaseId
+            @setState flows: newFlows
+
   Column: React.createClass
     displayName: "Column"
     render: ->
@@ -215,7 +228,9 @@ Tahi.manuscriptManager =
             button {onClick: @cancelEdit, className: "column-header-update-cancel btn-link"},     "cancel"
             button {onClick: @updateName, className: "column-header-update-save primary-button"}, "Save")
 
-          (span {className: "glyphicon glyphicon-pencil edit-icon"}, "")
+          (span {className: "glyphicon glyphicon-pencil edit-icon column-icon"}, "")
+          if !@props.tasks.length
+            (span {className: "glyphicon glyphicon-remove remove-icon column-icon", onClick: @props.removeFunction(@props.phase_id)}, "")
         )
         (div {className: 'column-content'},
           (ul {className: 'cards'},

@@ -21,7 +21,7 @@ Tahi::Application.routes.draw do
     end
   end
 
-  resource :phases, only: [:create, :update]
+  resource :phases, only: [:create, :update, :destroy]
 
   get 'users/chosen_options', to: 'user_info#thumbnails', defaults: {format: 'json'}
 

@@ -16,6 +16,15 @@ class PhasesController < ApplicationController
     end
   end
 
+  def destroy
+    @phase = Phase.find params[:id]
+    if @phase.tasks.empty? && @phase.destroy
+      render json: true
+    else
+      render :nothing => true, :status => 400
+    end
+  end
+
   private
 
   def new_phase_params
@@ -25,5 +34,4 @@ class PhasesController < ApplicationController
   def update_phase_params
     params.require(:phase).permit(:name)
   end
-
 end

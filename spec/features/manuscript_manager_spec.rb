@@ -57,6 +57,23 @@ feature "Manuscript Manager", js: true do
     end
   end
 
+  describe "Removing phases" do
+    scenario 'Removing an Empty Phase' do
+      task_manager_page = TaskManagerPage.visit paper
+      phase = task_manager_page.phase 'Submission Data'
+      phase.add_phase
+      task_manager_page.reload
+      new_phase = task_manager_page.phase 'New Phase'
+      expect { new_phase.remove_phase; sleep 0.4 }.to change { task_manager_page.phase_count }.by(-1)
+    end
+
+    scenario 'Non-empty phase' do
+      task_manager_page = TaskManagerPage.visit paper
+      phase = task_manager_page.phase 'Submission Data'
+      expect(phase.all('.remove-icon')).to be_empty
+    end
+  end
+
   scenario 'Removing a task' do
     dashboard_page = DashboardPage.visit
     paper_page = dashboard_page.view_submitted_paper 'foobar'

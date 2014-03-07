@@ -25,6 +25,21 @@ describe PhasesController do
     end
   end
 
+  describe 'DELETE destroy' do
+    let(:permitted_params) { [:task_manager_id, :name, :position] }
+
+    it "with tasks" do
+      phase = Phase.create tasks: [Task.new(title: "task", role: "author")], task_manager_id: 1, position: 1
+      delete :destroy, format: :json, id: phase.id
+      expect(response).to_not be_success
+    end
+
+    it "without tasks" do
+      phase = Phase.create task_manager_id: 1, position: 1
+      delete :destroy, format: :json, id: phase.id
+      expect(response).to be_success
+    end
+  end
 
   describe 'PATCH update' do
     let(:permitted_params) { [:name] }

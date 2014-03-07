@@ -40,6 +40,13 @@ class TaskManagerPage < Page
       container.hover
       container.click
     end
+
+    def remove_phase
+      container = find('.column-title')
+      container.hover
+      remove = find('.remove-icon')
+      remove.click
+    end
   end
 
   path :manage_paper

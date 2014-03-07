@@ -84,16 +84,21 @@ body.full-height {
   padding-bottom: 10px;
   border-bottom: 1px solid #aaa;
 
-  .edit-icon {
-    display: none;
+  .column-icon {
     color: $tahi-secondary;
     font-size: 14px;
     position: absolute;
-    right: 10px;
-    top: 3px;
+    display: none;
   }
-  &:hover .edit-icon {
+  .edit-icon {
+    right: 10px;
+  }
+  .remove-icon {
+    right: 30px;
+  }
+  &:hover .column-icon {
     display: inline;
+    top: -10px;
   }
 }
 

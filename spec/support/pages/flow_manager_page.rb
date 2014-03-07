@@ -34,6 +34,7 @@ class FlowManagerPage < Page
     end
 
     def remove
+      hover
       find('.remove-column').click
     end
   end

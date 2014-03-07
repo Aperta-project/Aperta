@@ -62,10 +62,13 @@ Tahi.overlays.components.CompletedCheckbox = React.createClass
   componentWillReceiveProps: (nextProps) ->
     @setState nextProps
 
+  completedTrigger: (event, response) ->
+    @props.onSuccess(response.completed)
+
   render: ->
     RailsForm = Tahi.overlays.components.RailsForm
     inputId = "task_checkbox_completed"
-    `<RailsForm action={this.props.action} ref='form' ajaxSuccess={this.props.onSuccess}>
+    `<RailsForm action={this.props.action} ref='form' ajaxSuccess={this.completedTrigger}>
         <div>
           <input name="task[completed]" type="hidden" value="0" />
           <input id={inputId} name="task[completed]" type="checkbox" value="1" onChange={this.updateCompleted} checked={this.state.taskCompleted} />

@@ -81,8 +81,20 @@ Tahi.manuscriptManager =
               phase_id: flow.id,
               paper: @state.paper
               removeCard: @removeCard
+              onCompletedChanged: @onCompletedChanged
             }
       ))
+
+    onCompletedChanged: (phaseId, taskId, completed) ->
+      flows = @state.flows
+      flow = _.find flows, (flow) ->
+        flow.id == phaseId
+
+      task = _.find flow.tasks, (task) ->
+        task.taskId == taskId
+
+      task.taskCompleted = completed
+      @setState flows: flows
 
     popDraggedTask: (cardId) ->
       for flow in @state.flows
@@ -237,10 +249,13 @@ Tahi.manuscriptManager =
     showButtons: ->
       $(@getDOMNode()).find(".column-title").addClass('active')
 
+    onCompletedChanged: (taskId, completed) ->
+      @props.onCompletedChanged(@props.phase_id, taskId, completed)
+
     manuscriptCards: ->
       {li} = React.DOM
       cards = _.map @props.tasks, (task) =>
-        (li {className: 'card-item'}, Tahi.columnComponents.Card {task: task, removeCard: => @props.removeCard(task.taskId, @props.phase_id)})
+        (li {className: 'card-item'}, Tahi.columnComponents.Card {onCompletedChanged: @onCompletedChanged, task: task, removeCard: => @props.removeCard(task.taskId, @props.phase_id)})
       cards.concat((li {},
         NewCardButton {
           paper: @props.paper,

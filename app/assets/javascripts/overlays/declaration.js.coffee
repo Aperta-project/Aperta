@@ -39,7 +39,7 @@ Tahi.overlays.declaration =
       RailsForm = Tahi.overlays.components.RailsForm
 
       (main {}, [
-        (h1 {}, @props.taskTitle),
+        (h1 {}, @state.taskTitle),
         (RailsForm {action:  "#{@props.paperPath}.json", ref: 'form'},
           @declarations())])
 

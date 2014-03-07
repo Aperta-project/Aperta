@@ -33,7 +33,7 @@ ChooseFlowManagerColumn = React.createClass
         _method: 'PATCH'
         flow_title: newFlowName
       success: ->
-        React.unmountComponentAtNode document.getElementById('tahi-container')
+        React.unmountComponentAtNode document.getElementById('flow-manager')
         Tahi.flowManager.init()
         $('#overlay').hide()
 
@@ -52,7 +52,7 @@ Tahi.flowManager =
   init: ->
     if columns = document.getElementById('flow-manager')
       columns = Tahi.flowManager.Columns flows: [], route: columns.getAttribute("data-url")
-      React.renderComponent columns, document.getElementById('tahi-container')
+      React.renderComponent columns, document.getElementById('flow-manager')
 
   Columns: React.createClass
     displayName: "Columns"

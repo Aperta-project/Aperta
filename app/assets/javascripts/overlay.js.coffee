@@ -7,7 +7,8 @@ Tahi.overlay =
         e.preventDefault()
         Tahi.overlay.display e, overlayName
 
-  # Should be migrated to using #renderComponent?
+  # This is the old implementation. Would be good to implement a common
+  # interface using only #renderComponent, which is currently used for the Card component
   renderCard: (cardName, targetElement) ->
     props = Tahi.overlay.defaultProps(targetElement)
     cardName = Tahi.utils.toCamel cardName
@@ -72,7 +73,7 @@ Tahi.overlay =
     if Tahi.utils.windowHistory().state?.cardName?
       cardName = Tahi.utils.windowHistory().state.cardName
       taskPath = Tahi.utils.windowHistory().state.taskPath
-      targetElement = $("[data-task-path='#{taskPath}']")[0]
+      targetElement = $("[data-task-path='#{taskPath}']").first()
       Tahi.overlay.renderCard(cardName, targetElement)
     else if history.state?.hideOverlay
       Tahi.overlay.hide(e)

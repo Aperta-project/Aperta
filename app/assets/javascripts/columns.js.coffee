@@ -32,7 +32,19 @@ Tahi.columnComponents.Card = React.createClass
     $(@getDOMNode().querySelector('.js-remove-card')).tooltip()
 
   displayCard: (event) ->
-    Tahi.overlay.display event, @props.task.cardName
+    event.preventDefault()
+    cardName = Tahi.utils.toCamel @props.task.cardName
+    overlayProps =
+      cardName: cardName
+      taskId: @props.task.taskId
+      taskPath: @props.task.taskPath
+      onCompletedChanged: @onCompletedChanged
+      componentToRender: Tahi.overlays[cardName].Overlay
+
+    Tahi.overlay.renderComponent event, overlayProps
+
+  onCompletedChanged: (completed) ->
+    @props.onCompletedChanged @props.task.taskId, completed
 
   render: ->
     {div, a, span} = React.DOM

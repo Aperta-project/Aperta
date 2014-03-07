@@ -1,4 +1,8 @@
 Tahi.utils =
+  toCamel: (string) ->
+    string.replace /(\-[a-z])/g, ($1) ->
+      $1.toUpperCase().replace "-", ""
+
   windowHistory: ->
     window.history
 

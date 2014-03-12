@@ -22,7 +22,7 @@ class TasksController < ApplicationController
       task.update task_params(task)
       attributes = %w(id completed)
       payload = task.as_json.slice(*attributes)
-      Net::HTTP.post_form(URI.parse(event_stream_update_url), card: payload.to_json)
+      Net::HTTP.post_form(URI.parse(event_stream_update_url), card: payload.to_json, stream: event_stream_name)
       render json: payload
     else
       head :forbidden
@@ -56,7 +56,7 @@ class TasksController < ApplicationController
   def event_stream
     data = {
       url: event_stream_url,
-      eventName: "stream" # change this to be a by paper/task event name
+      eventName: event_stream_name
     }
     render json: data.to_json
   end
@@ -68,6 +68,10 @@ class TasksController < ApplicationController
 
   def event_stream_update_url
     ENV["ES_UPDATE_URL"] || "http://localhost:8080/update_stream"
+  end
+
+  def event_stream_name
+    "paper_#{params[:paper_id]}"
   end
 
   def task_params(task = nil)

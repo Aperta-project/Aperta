@@ -9,6 +9,9 @@ Tahi::Application.routes.draw do
       resources :comments, only: :create
     end
 
+    # event stream route is declared here so it is given the :paper_id param
+    get :event_stream, to: "tasks#event_stream"
+
     resources :messages, only: [:create] do
       member do
         patch :update_participants
@@ -18,7 +21,6 @@ Tahi::Application.routes.draw do
     member do
       patch :upload
       get :manage, to: 'tasks#index'
-      get :event_stream, to: "tasks#event_stream"
     end
   end
 

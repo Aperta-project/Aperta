@@ -153,8 +153,7 @@ Tahi.manuscriptManager =
           source = new EventSource(data.url)
           source.addEventListener data.eventName, (msg)=>
             tasks = _.flatten(_.map(@state.flows, (f)-> f.tasks))
-            # TODO: This should not be returning a stringified ruby hash
-            es_task = JSON.parse(msg.data.replace(/\=>/g, ":"))
+            es_task = JSON.parse(msg.data)
             task = _(tasks).find((t)-> t.taskId == es_task.id)
             task.taskCompleted = es_task.completed
             @setState flows: _.sortBy(@state.flows, (f) -> f.position)

@@ -22,7 +22,7 @@ class TasksController < ApplicationController
       task.update task_params(task)
       attributes = %w(id completed)
       payload = task.as_json.slice(*attributes)
-      Net::HTTP.post_form(URI.parse(event_stream_url), card: payload)
+      Net::HTTP.post_form(URI.parse(event_stream_update_url), card: payload.to_json)
       render json: payload
     else
       head :forbidden
@@ -64,6 +64,10 @@ class TasksController < ApplicationController
   private
   def event_stream_url
     ENV["ES_URL"] || "http://localhost:8080/stream"
+  end
+
+  def event_stream_update_url
+    ENV["ES_UPDATE_URL"] || "http://localhost:8080/update_stream"
   end
 
   def task_params(task = nil)

@@ -138,9 +138,15 @@ Tahi.manuscriptManager =
 
     componentDidMount: ->
       Tahi.utils.bindColumnResize()
+      @startPolling()
+      @getColumns()
 
+    getColumns: ->
       $.getJSON @props.route, (data,status) =>
         @setState flows: _.sortBy(data.flows, (f) -> f.position), paper: data.paper
+
+    startPolling: ->
+      setInterval((=> @getColumns()), 5000)
 
     componentDidUpdate: ->
       Tahi.utils.resizeColumnHeaders()

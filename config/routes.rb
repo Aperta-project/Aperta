@@ -18,6 +18,7 @@ Tahi::Application.routes.draw do
     member do
       patch :upload
       get :manage, to: 'tasks#index'
+      get :event_stream, to: "tasks#event_stream"
     end
   end
 

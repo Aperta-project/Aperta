@@ -89,6 +89,7 @@ describe TasksController do
 
     context "when the user is an admin" do
       it "updates the task" do
+        expect(controller).to receive(:post_to_event_server)
         do_request
         expect(task.reload).to be_completed
       end

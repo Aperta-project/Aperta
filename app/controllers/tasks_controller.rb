@@ -22,7 +22,10 @@ class TasksController < ApplicationController
       task.update task_params(task)
       attributes = %w(id completed)
       payload = task.as_json.slice(*attributes)
-      Net::HTTP.post_form(URI.parse(event_stream_update_url), card: payload.to_json, stream: event_stream_name)
+      Net::HTTP.post_form(
+        URI.parse(event_stream_update_url),
+        card: payload.to_json, stream: event_stream_name, token: event_stream_token
+      )
       render json: payload
     else
       head :forbidden
@@ -62,8 +65,12 @@ class TasksController < ApplicationController
   end
 
   private
+  def event_stream_token
+    ENV["ES_TOKEN"] || "token123" # Digest::MD5.hexdigest("some token")
+  end
+
   def event_stream_url
-    ENV["ES_URL"] || "http://localhost:8080/stream"
+    ENV["ES_URL"] || "http://localhost:8080/stream?token=#{event_stream_token}"
   end
 
   def event_stream_update_url
@@ -71,7 +78,7 @@ class TasksController < ApplicationController
   end
 
   def event_stream_name
-    "paper_#{params[:paper_id]}"
+    Digest::MD5.hexdigest "paper_#{params[:paper_id]}"
   end
 
   def task_params(task = nil)

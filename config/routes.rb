@@ -11,6 +11,9 @@ Tahi::Application.routes.draw do
 
     # event stream route is declared here so it is given the :paper_id param
     get :event_stream, to: "tasks#event_stream"
+    # look at making this abstracterized later
+    # get '/:controller/:id/event_stream', to: 'application#event_stream'
+    # and then make the event listener off of :controller_:id
 
     resources :messages, only: [:create] do
       member do
@@ -33,4 +36,5 @@ Tahi::Application.routes.draw do
   resource :user_settings, only: :update
 
   root 'dashboards#index'
+  get :event_stream, to: "dashboards#event_stream"
 end

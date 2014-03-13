@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   def event_stream
     data = {
       url: event_stream_url,
-      eventName: event_stream_name(params[:paper_id] || params[:id])
+      eventName: event_stream_name(params[:id])
     }
     render json: data.to_json
   end

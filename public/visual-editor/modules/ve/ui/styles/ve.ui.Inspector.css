@@ -1,0 +1,84 @@
+/*!
+ * ObjectOriented UserInterface Inspector styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-inspector {
+	-webkit-transition: opacity 100ms;
+	-moz-transition: opacity 100ms;
+	-o-transition: opacity 100ms;
+	transition: opacity 100ms;
+}
+
+.ve-ui-inspector .oo-ui-frame {
+	width: 17.25em;
+	height: 3em;
+}
+
+.ve-ui-inspector-content .oo-ui-window-head {
+	height: 2em;
+	padding: 0.5em;
+}
+
+.ve-ui-inspector-content .oo-ui-window-icon {
+	padding-left: 0.5em;
+	margin-left: 0.25em;
+	border-left: solid 1px #eee;
+}
+
+.ve-ui-inspector-content .ve-ui-inspector-closeButton {
+	float: left;
+}
+
+.ve-ui-inspector-content .ve-ui-inspector-removeButton {
+	float: right;
+}
+
+.ve-ui-inspector-content .oo-ui-window-body form {
+	margin: 0.25em 0 0 0;
+	padding: 0;
+	white-space: nowrap;
+}
+
+/* ve.ui.SpecialCharacterInspector.js */
+
+.ve-specialchar-spinner {
+	/* There might be a better place for a spinner? */
+	/* @embed */
+	background-image: url(images/spinner.gif);
+	width: 31px;
+	height: 31px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.ve-specialchar-list h3 {
+	font-size: 1em;
+	text-transform: capitalize;
+}
+
+.ve-specialchar-list-group {
+	white-space: normal;
+}
+
+.ve-specialchar-list-character {
+	cursor: pointer;
+	font-size: 1.5em;
+	line-height: 1.5em;
+	width: 1.5em;
+	height: 1.5em;
+	text-align: center;
+	display: inline-block;
+	margin: 0 1px 1px 0;
+	border: 1px solid #e6e6e6;
+	-webkit-transition: border-color 100ms;
+	-moz-transition: border-color 100ms;
+	-o-transition: border-color 100ms;
+	transition: border-color 100ms;
+}
+
+.ve-specialchar-list-character:hover {
+	border-color: #ccc;
+}

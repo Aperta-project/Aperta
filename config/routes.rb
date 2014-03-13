@@ -30,6 +30,5 @@ Tahi::Application.routes.draw do
   resource :user_settings, only: :update
 
   root 'dashboards#index'
-  get :event_stream, to: "dashboards#event_stream"
-  get '/:controller/:id/event_stream', to: 'application#event_stream'
+  resource :event_stream, only: :show
 end

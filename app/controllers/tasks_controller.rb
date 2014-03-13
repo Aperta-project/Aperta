@@ -22,7 +22,7 @@ class TasksController < ApplicationController
       task.update task_params(task)
       attributes = %w(id completed)
       payload = task.as_json.slice(*attributes)
-      post_to_event_server(payload.to_json)
+      EventStream.post_event(params[:paper_id], payload.to_json)
       render json: payload
     else
       head :forbidden
@@ -54,14 +54,6 @@ class TasksController < ApplicationController
   end
 
   private
-  def post_to_event_server(card_json)
-    Thread.new do
-      Net::HTTP.post_form(
-        URI.parse(event_stream_update_url),
-        card: card_json, stream: event_stream_name(params[:paper_id]), token: event_stream_token
-      )
-    end
-  end
 
   def task_params(task = nil)
     attributes = [:assignee_id, :completed, :title, :body, :phase_id]

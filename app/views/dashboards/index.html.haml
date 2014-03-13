@@ -26,7 +26,7 @@
       - @paper_tasks.each do |paper, tasks|
         :javascript
           $.ajax({
-            url: 'event_stream',
+            url: '/event_stream',
             data: { id: #{paper.id} },
             method: 'GET',
             success: function(data) {

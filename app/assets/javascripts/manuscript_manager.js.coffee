@@ -139,16 +139,18 @@ Tahi.manuscriptManager =
     componentDidMount: ->
       Tahi.utils.bindColumnResize()
       @getColumns()
-      @connectEventStream()
 
     getColumns: ->
       $.getJSON @props.route, (data,status) =>
         @setState flows: _.sortBy(data.flows, (f) -> f.position), paper: data.paper
+        @connectEventStream()
 
     connectEventStream: ->
       $.ajax
-        url: 'event_stream'
+        url: '/event_stream'
         method: 'GET'
+        data:
+          id: @state.paper.id
         success: (data)=>
           source = new EventSource(data.url)
           source.addEventListener data.eventName, (msg)=>

@@ -18,7 +18,10 @@ describe TasksController do
       admin: true
   end
 
-  before { sign_in user }
+  before do
+    sign_in user
+    allow(EventStream).to receive(:post_event)
+  end
 
   describe "GET 'index'" do
     let(:paper) { Paper.create! short_title: "abcd", journal: Journal.create! }
@@ -87,17 +90,21 @@ describe TasksController do
       end
     end
 
-    context "when the user is an admin" do
-      it "updates the task" do
-        expect(controller).to receive(:post_to_event_server)
-        do_request
-        expect(task.reload).to be_completed
-      end
+    it "updates the task" do
+      do_request
+      expect(task.reload).to be_completed
+    end
 
-      it "renders the task id and completed status as JSON" do
-        do_request
-        expect(JSON.parse(response.body)).to eq({ id: task.id, completed: true }.with_indifferent_access)
-      end
+    it "posts an event to the event stream" do
+      do_request
+      task.reload
+      task_json = { id: task.id, completed: task.completed }.to_json
+      expect(EventStream).to have_received(:post_event).with(paper.to_param, task_json)
+    end
+
+    it "renders the task id and completed status as JSON" do
+      do_request
+      expect(JSON.parse(response.body)).to eq({ id: task.id, completed: true }.with_indifferent_access)
     end
 
     context "when the task is assigned to the user" do

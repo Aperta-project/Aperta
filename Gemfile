@@ -51,6 +51,9 @@ gem 'unicorn'
 #
 gem 'pry-rails'
 
+gem 'ember-rails'
+gem 'ember-source', '1.4.0'
+
 group :development do
   gem 'license_finder'
   gem 'railroady'

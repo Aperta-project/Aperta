@@ -33,6 +33,8 @@ GEM
       activesupport (= 4.1.0.rc1)
       builder (~> 3.1)
       erubis (~> 2.7.0)
+    active_model_serializers (0.8.1)
+      activemodel (>= 3.0)
     activemodel (4.1.0.rc1)
       activesupport (= 4.1.0.rc1)
       builder (~> 3.1)
@@ -49,6 +51,10 @@ GEM
     addressable (2.3.5)
     arel (5.0.0)
     atomic (1.1.15)
+    barber (0.4.2)
+      ember-source
+      execjs
+      handlebars-source
     bcrypt-ruby (3.1.2)
     bootstrap-sass (3.0.2.1)
       sass (~> 3.2)
@@ -101,6 +107,19 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
     docile (1.1.3)
+    ember-data-source (0.14)
+      ember-source
+    ember-rails (0.14.1)
+      active_model_serializers
+      barber (>= 0.4.1)
+      ember-data-source
+      ember-source
+      execjs (>= 1.2)
+      handlebars-source
+      jquery-rails (>= 1.0.17)
+      railties (>= 3.1)
+    ember-source (1.4.0)
+      handlebars-source (~> 1.0)
     erubis (2.7.0)
     excon (0.28.0)
     execjs (2.0.2)
@@ -131,6 +150,7 @@ GEM
       activesupport (>= 4.0.1)
       haml (>= 3.1, < 5.0)
       railties (>= 4.0.1)
+    handlebars-source (1.3.0)
     hike (1.2.3)
     httparty (0.12.0)
       json (~> 1.8)
@@ -337,6 +357,8 @@ DEPENDENCIES
   coffee-rails (~> 4.0.1)
   database_cleaner
   devise
+  ember-rails
+  ember-source (= 1.4.0)
   factory_girl_rails
   fog
   haml-rails

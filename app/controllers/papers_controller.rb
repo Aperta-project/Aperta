@@ -2,10 +2,22 @@ class PapersController < ApplicationController
   before_filter :authenticate_user!
 
   def show
-    @paper = PaperPolicy.new(params[:id], current_user).paper
-    raise ActiveRecord::RecordNotFound unless @paper
-    redirect_to edit_paper_path(@paper) unless @paper.submitted?
-    @tasks = TaskPolicy.new(@paper, current_user).tasks
+
+    respond_to do |format|
+      format.html do
+        @paper = PaperPolicy.new(params[:id], current_user).paper
+        raise ActiveRecord::RecordNotFound unless @paper
+        redirect_to edit_paper_path(@paper) unless @paper.submitted?
+        @tasks = TaskPolicy.new(@paper, current_user).tasks
+      end
+
+      format.json do
+        @paper = PaperPolicy.new(params[:id], current_user).paper
+        raise ActiveRecord::RecordNotFound unless @paper
+
+        render json: @paper
+      end
+    end
   end
 
   def new

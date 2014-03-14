@@ -36,6 +36,3 @@
 //= require_tree .
 
 window.ETahi = Ember.Application.create({rootElement: '#ember-app'});
-$(document).ready(function() {
-  Tahi.init()
-});

@@ -1,3 +1,7 @@
-ETahi.PapersRoute = Ember.Route.extend()
+ETahi.PaperRoute = Ember.Route.extend
+  model: (params) ->
+    @store.find('paper', params.paper_id)
 
-ETahi.PapersManageRoute = Ember.Route.extend()
+ETahi.PaperManageRoute = Ember.Route.extend
+  model: ->
+    @modelFor 'paper'

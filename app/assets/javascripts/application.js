@@ -28,8 +28,14 @@
 //= require spin
 //= require turbolinks
 //= require namespace
+//= require handlebars
+//= require ember
+//= require ember-data
+//= require_self
+//= require e_tahi
 //= require_tree .
 
+window.ETahi = Ember.Application.create({rootElement: '#ember-app'});
 $(document).ready(function() {
   Tahi.init()
 });

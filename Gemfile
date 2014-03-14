@@ -53,6 +53,7 @@ gem 'pry-rails'
 
 gem 'ember-rails'
 gem 'ember-source', '1.4.0'
+gem "ember-data-source", "~> 1.0.0.beta.7"
 
 group :development do
   gem 'license_finder'

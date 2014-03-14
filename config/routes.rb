@@ -23,6 +23,8 @@ Tahi::Application.routes.draw do
 
   resource :phases, only: [:create, :update, :destroy]
 
+  get 'ember', to: 'ember#index'
+
   get 'users/chosen_options', to: 'user_info#thumbnails', defaults: {format: 'json'}
 
   resource :flow_manager, only: :show

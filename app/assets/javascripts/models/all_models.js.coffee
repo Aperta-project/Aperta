@@ -18,6 +18,7 @@ ETahi.Task = DS.Model.extend
   body: a('string')
   messageSubject: a('string')
   comments: DS.hasMany('comment')
+  isMessage: Ember.computed.equal('type', 'MessageTask')
 
 ETahi.User = DS.Model.extend
   imageUrl: a('string')

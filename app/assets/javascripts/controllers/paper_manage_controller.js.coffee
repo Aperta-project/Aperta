@@ -5,3 +5,7 @@ ETahi.PaperManageController = Ember.ObjectController.extend
       sortProperties: ['position']
     })
   ).property('model.phases')
+
+  actions:
+    addColumn: (phaseId) ->
+

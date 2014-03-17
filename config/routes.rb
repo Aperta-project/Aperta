@@ -21,8 +21,7 @@ Tahi::Application.routes.draw do
     end
   end
 
-  delete 'phases/:id', to: 'phases#destroy'
-  resource :phases, only: [:create, :update, :destroy]
+  resources :phases, only: [:create, :update, :destroy]
 
   get 'ember', to: 'ember#index'
 

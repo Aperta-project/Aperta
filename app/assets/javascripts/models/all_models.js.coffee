@@ -9,6 +9,7 @@ ETahi.Phase = DS.Model.extend
   position: a('number')
   paper: DS.belongsTo('paper')
   tasks: DS.hasMany('task')
+  noTasks: Ember.computed.empty('tasks.[]')
 
 ETahi.User = DS.Model.extend
   imageUrl: a('string')

@@ -8,6 +8,9 @@
           {{add-column position=phase.position action="addPhase"}}
           <div class="column-title">
             <h2>{{phase.name}}</h2>
+            {{#if phase.noTasks}}
+              <span class="glyphicon glyphicon-remove remove-icon column-icon" {{action 'removePhase' phase}}></span>
+            {{/if}}
           </div>
           <div class="column-content">
             <ul class='cards'>

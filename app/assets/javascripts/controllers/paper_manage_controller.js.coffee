@@ -7,5 +7,9 @@ ETahi.PaperManageController = Ember.ObjectController.extend
   ).property('model.phases')
 
   actions:
-    addColumn: (position) ->
+    addPhase: (position) ->
 
+    removePhase: (phase) ->
+      paper = phase.get('paper')
+      phase.destroyRecord().then (phase) ->
+        paper.reload()

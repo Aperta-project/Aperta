@@ -29,6 +29,7 @@
 //= require turbolinks
 //= require namespace
 //= require_tree .
+//= require standard_tasks/application
 
 $(document).ready(function() {
   Tahi.init()

@@ -51,7 +51,7 @@ class Phase < ActiveRecord::Base
       self.tasks << DeclarationTask.new
     when 'Assign Editor'
       self.tasks << PaperAdminTask.new
-      self.tasks << TechCheckTask.new
+      self.tasks << StandardTasks::TechCheckTask.new
       self.tasks << PaperEditorTask.new
     when 'Assign Reviewers'
       self.tasks << PaperReviewerTask.new

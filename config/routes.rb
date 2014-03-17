@@ -1,8 +1,6 @@
 Tahi::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  mount StandardTasks::Engine => '/standard_tasks', at: 'standard_tasks'
-
   devise_for :users
 
   resources :papers, only: [:new, :create, :show, :edit, :update] do

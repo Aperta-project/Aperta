@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TechCheckTaskPresenter do
+describe StandardTasks::TechCheckTaskPresenter do
   include Rails.application.routes.url_helpers
 
   describe "#data_attributes" do
@@ -19,7 +19,7 @@ describe TechCheckTaskPresenter do
         short_title: "Foo",
         journal: Journal.create!,
         user: author
-      task = TechCheckTask.create! completed: true,
+      task = StandardTasks::TechCheckTask.create! completed: true,
         phase: paper.task_manager.phases.first,
         assignee: assignee
       allow(task).to receive(:paper).and_return paper
@@ -27,10 +27,10 @@ describe TechCheckTaskPresenter do
       task
     end
 
-    subject(:data_attributes) { TechCheckTaskPresenter.new(task).data_attributes }
+    subject(:data_attributes) { StandardTasks::TechCheckTaskPresenter.new(task).data_attributes }
 
     it_behaves_like "all tasks, which have common attributes" do
-      let(:card_name) { 'tech-check' }
+      let(:card_name) { 'standards/tech-check' }
       let(:assignee_id) { task.assignee_id }
       let(:assignees) { [user_select_hash(assignee)] }
     end

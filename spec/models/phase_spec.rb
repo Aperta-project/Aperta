@@ -86,7 +86,7 @@ describe Phase do
         end
 
         it "initializes one tech check task" do
-          expect(phase.tasks.map(&:class)).to include(TechCheckTask)
+          expect(phase.tasks.map(&:class)).to include(StandardTasks::TechCheckTask)
         end
 
         it "initializes one paper editor task" do

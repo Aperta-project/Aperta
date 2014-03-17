@@ -95,6 +95,4 @@ gem 'spinjs-rails'
 
 gem 'newrelic_rpm'
 
-
-
 gem 'standard_tasks', path: 'engines/standard_tasks'

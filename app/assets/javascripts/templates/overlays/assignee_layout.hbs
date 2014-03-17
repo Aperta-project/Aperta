@@ -10,7 +10,8 @@
     <footer>
       <div class="content">
         <div class="assignee-drop-down">
-          {{chosen content=assignees value=assignee.id optionValuePath="content.id" optionLabelPath="content.fullName"}}
+          <label for="assignee">This card is owned by</label>
+          {{chosen content=assignees name='assignee' value=assignee.id optionValuePath="content.id" optionLabelPath="content.fullName"}}
         </div>
         <div class="completed-checkbox">
           {{input type='checkbox' name="task_completed" checked=completed}}

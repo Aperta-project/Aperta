@@ -10,19 +10,6 @@ ETahi.Phase = DS.Model.extend
   paper: DS.belongsTo('paper')
   tasks: DS.hasMany('task')
 
-ETahi.Task = DS.Model.extend
-  title: a('string')
-  type: a('string')
-  completed: a('boolean')
-  role: a('string')
-  body: a('string')
-  messageSubject: a('string')
-  comments: DS.hasMany('comment')
-  isMessage: Ember.computed.equal('type', 'MessageTask')
-  phase: DS.belongsTo('phase')
-  assignees: DS.hasMany('user')
-  assignee: DS.belongsTo('user')
-
 ETahi.User = DS.Model.extend
   imageUrl: a('string')
   fullName: a('string')

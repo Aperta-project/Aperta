@@ -1,3 +1,8 @@
 <h1>Assign Admin</h1>
 <label for="admin">Admin</label>
-{{chosen content=admins name="admin" value=admin.id optionValuePath="content.id" optionLabelPath="content.fullName"}}
+{{chosen content=admins
+         name="admin"
+         value=admin.id
+         prompt="Please select an admin"
+         optionValuePath="content.id"
+         optionLabelPath="content.fullName"}}

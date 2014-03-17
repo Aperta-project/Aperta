@@ -2,7 +2,7 @@
 ETahi.Router.map ()->
   @resource 'paper', { path: '/papers/:paper_id' }, ->
     @route('manage')
-    @resource('tasks')
+    @route('task', {path: '/tasks/:task_id'})
 
 ETahi.Router.reopen({
   rootURL: '/ember/'

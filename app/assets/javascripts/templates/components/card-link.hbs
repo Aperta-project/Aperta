@@ -1,0 +1,6 @@
+<div class='card-container'>
+  <a {{bind-attr class=':card task.completed:completed task.isMessage:message' href=taskHref}} >
+    <span class='glyphicon glyphicon-ok completed-glyph'></span>
+    <span>{{task.title}}</span>
+  </a>
+</div>

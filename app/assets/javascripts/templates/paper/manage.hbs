@@ -23,12 +23,7 @@
             <ul class='cards'>
               {{#each task in phase.tasks}}
                 <li class='card-item'>
-                  <div class='card-container'>
-                    <a {{bind-attr class=':card task.completed:completed task.isMessage:message'}} {{action 'showTaskOverlay' task}}>
-                      <span class='glyphicon glyphicon-ok completed-glyph'></span>
-                      <span>{{task.title}}</span>
-                    </a>
-                  </div>
+                  {{card-link task=task paper=model}}
                 </li>
               {{/each}}
             </ul>

@@ -7,9 +7,9 @@ require "standard_tasks/version"
 Gem::Specification.new do |s|
   s.name        = "standard_tasks"
   s.version     = StandardTasks::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
+  s.authors     = ["Neo"]
+  s.email       = ["tahi-project@neo.com"]
+  s.homepage    = "http://www.tahi.com"
   s.summary     = "TODO: Summary of StandardTasks."
   s.description = "TODO: Description of StandardTasks."
   s.license     = "MIT"

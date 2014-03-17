@@ -6,6 +6,14 @@ ETahi.PaperManageController = Ember.ObjectController.extend
     })
   ).property('model.phases.@each')
 
+  updatePositions: (phase)->
+    relevantPhases = _(this.get('model.phases').content).filter((p)->
+      p != phase && p.get('position') >= phase.get('position')
+    )
+    _(relevantPhases).each((p)->
+      p.incrementProperty('position')
+    )
+
   actions:
     addPhase: (position) ->
       paper = @get('model')
@@ -13,6 +21,7 @@ ETahi.PaperManageController = Ember.ObjectController.extend
         position: position + 1
         name: "New Phase"
         paper: paper
+      @updatePositions(phase)
       phase.save().then ->
         paper.reload()
 

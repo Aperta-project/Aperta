@@ -20,10 +20,12 @@ ETahi.Task = DS.Model.extend
   comments: DS.hasMany('comment')
   isMessage: Ember.computed.equal('type', 'MessageTask')
   phase: DS.belongsTo('phase')
+  assignees: DS.hasMany('user')
+  assignee: DS.belongsTo('user')
 
 ETahi.User = DS.Model.extend
   imageUrl: a('string')
-  name: a('string')
+  fullName: a('string')
 
 ETahi.Comment = DS.Model.extend
   body: a('string')

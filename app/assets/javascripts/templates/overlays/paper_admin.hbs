@@ -1,22 +1,3 @@
-<div id="overlay">
-  <div>
-    <header>
-      <h2><a href='paperpath'>{{paperTitle}}</a></h2>
-      <a class="primary-button" {{action 'closeOverlay'}}>Close</a>
-    </header>
-    <main>
-    <h1>Assign Admin</h1>
-    </main>
-    <footer>
-      <div class="content">
-        <div class="assignee-drop-down">
-          dropdown
-        </div>
-        <div class="completed-checkbox">
-          checkbox
-        </div>
-      </div>
-      <a class="primary-button" {{action 'closeOverlay'}}>Close</a>
-    </footer>
-  </div>
-</div>
+<h1>Assign Admin</h1>
+<label for="admin">Admin</label>
+{{chosen content=admins name="admin" value=admin.id optionValuePath="content.id" optionLabelPath="content.fullName"}}

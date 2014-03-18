@@ -70,7 +70,7 @@ describe Phase do
         end
 
         it "initializes one authors task" do
-          expect(phase.tasks.map(&:class)).to include(AuthorsTask)
+          expect(phase.tasks.map(&:class)).to include(StandardTasks::AuthorsTask)
         end
 
         it "initializes one upload manuscript task" do

@@ -1,4 +1,4 @@
-Tahi.overlays.authors =
+Tahi.overlays['standards/authors'] =
   Overlay: React.createClass
     getInitialState: ->
       authors: []
@@ -12,8 +12,8 @@ Tahi.overlays.authors =
     render: ->
       {main, h1, a, span, ul} = React.DOM
 
-      AuthorDetails = Tahi.overlays.authors.AuthorDetails
-      AuthorDetailsForm = Tahi.overlays.authors.AuthorDetailsForm
+      AuthorDetails = Tahi.overlays['standards/authors'].AuthorDetails
+      AuthorDetailsForm = Tahi.overlays['standards/authors'].AuthorDetailsForm
 
       authors = @state.authors.map (author, index) =>
         if author.edit

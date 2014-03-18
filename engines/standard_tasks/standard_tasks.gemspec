@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   s.homepage    = "http://www.tahi.com"
   s.summary     = "TODO: Summary of StandardTasks."
   s.description = "TODO: Description of StandardTasks."
-  s.license     = "MIT"
+  s.license     = "TBD"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]# add license info like "MIT-LICENSE"
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", "~> 4.1.0.rc1"

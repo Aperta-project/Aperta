@@ -46,7 +46,7 @@ class Phase < ActiveRecord::Base
     case name
     when 'Submission Data'
       self.tasks << UploadManuscriptTask.new
-      self.tasks << AuthorsTask.new
+      self.tasks << StandardTasks::AuthorsTask.new
       self.tasks << FigureTask.new
       self.tasks << DeclarationTask.new
     when 'Assign Editor'

@@ -1,24 +1,24 @@
 beforeEach ->
   $('#jasmine_content').empty()
 
-describe "Tahi.overlays.authors", ->
+describe "Tahi.overlays['standards/authors']", ->
   describe "AuthorsOverlay component", ->
     describe "#getInitialState", ->
       it "returns an object with authors set to the empty array", ->
-        component = Tahi.overlays.authors.Overlay()
+        component = Tahi.overlays['standards/authors'].Overlay()
         expect(component.getInitialState()).toEqual authors: []
 
     describe "#componentWillReceiveProps", ->
       it "sets state.authors to props.authors", ->
         authors = jasmine.createSpy 'props.authors'
-        component = Tahi.overlays.authors.Overlay authors: authors
+        component = Tahi.overlays['standards/authors'].Overlay authors: authors
         spyOn component, 'setState'
         component.componentWillReceiveProps({authors: authors})
         expect(component.setState).toHaveBeenCalledWith authors: authors
 
       context "when props.authors is falsy", ->
         it "sets state.authors to the empty list", ->
-          component = Tahi.overlays.authors.Overlay()
+          component = Tahi.overlays['standards/authors'].Overlay()
           spyOn component, 'setState'
           component.componentWillReceiveProps({authors: null})
           expect(component.setState).toHaveBeenCalledWith authors: []
@@ -29,7 +29,7 @@ describe "Tahi.overlays.authors", ->
             { first_name: "Neils", last_name: "Bohr", affiliation: "University of Copenhagen", email: "neils@example.org" },
             { first_name: "Nikola", last_name: "Tesla", affiliation: "Wardenclyffe", email: "" }
           ]
-        @component = Tahi.overlays.authors.Overlay()
+        @component = Tahi.overlays['standards/authors'].Overlay()
         @component.state =
           authors: @authors
 
@@ -44,7 +44,7 @@ describe "Tahi.overlays.authors", ->
         authorDetails1 = overlay.props.children[2].props.children[0]
         authorDetails2 = overlay.props.children[2].props.children[1]
 
-        AuthorDetails = Tahi.overlays.authors.AuthorDetails
+        AuthorDetails = Tahi.overlays['standards/authors'].AuthorDetails
         expect(authorDetails1.constructor).toEqual AuthorDetails.componentConstructor
         expect(authorDetails1.props.author).toEqual @authors[0]
         expect(authorDetails2.constructor).toEqual AuthorDetails.componentConstructor
@@ -53,7 +53,7 @@ describe "Tahi.overlays.authors", ->
     describe "#addNew", ->
       beforeEach ->
         @authors = [one: 1, two: 2]
-        @component = Tahi.overlays.authors.Overlay()
+        @component = Tahi.overlays['standards/authors'].Overlay()
         @component.state =
           authors: @authors
         spyOn @component, 'setState'
@@ -69,7 +69,7 @@ describe "Tahi.overlays.authors", ->
 
     describe "#updateAuthor", ->
       beforeEach ->
-        @component = Tahi.overlays.authors.Overlay
+        @component = Tahi.overlays['standards/authors'].Overlay
           paperPath: '/path/to/paper'
         @component.state =
           authors: [
@@ -111,7 +111,7 @@ describe "Tahi.overlays.authors", ->
     describe "#handleSubmit", ->
       beforeEach ->
         @handleSubmit = jasmine.createSpy 'handleSubmit'
-        @component = Tahi.overlays.authors.AuthorDetailsForm
+        @component = Tahi.overlays['standards/authors'].AuthorDetailsForm
           key: 134
           author: {}
           handleSubmit: @handleSubmit

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe AuthorsTask do
+describe StandardTasks::AuthorsTask do
   describe "defaults" do
-    subject(:task) { AuthorsTask.new }
+    subject(:task) { StandardTasks::AuthorsTask.new }
     specify { expect(task.title).to eq 'Add Authors' }
     specify { expect(task.role).to eq 'author' }
   end
@@ -10,7 +10,7 @@ describe AuthorsTask do
   describe "#authors" do
     let :task do
       paper = Paper.create! title: "Foo bar", short_title: "Foo", journal: Journal.create!
-      task = AuthorsTask.create! completed: true,
+      task = StandardTasks::AuthorsTask.create! completed: true,
         phase: paper.task_manager.phases.first
 
       allow(paper).to receive(:authors).and_return [

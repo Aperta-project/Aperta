@@ -32,4 +32,4 @@ ETahi.PaperManageController = Ember.ObjectController.extend
 
   refreshColumnHeights: (->
     Ember.run.next(this, Tahi.utils.resizeColumnHeaders)
-  ).observes('phases.[]')
+  ).observes('phases.[]', 'phases.@each.name')

@@ -1,6 +1,3 @@
-@import 'variables';
-@import 'bootstrap';
-
 html {
   overflow: -moz-scrollbars-vertical;
   -webkit-font-smoothing: antialiased;
@@ -97,39 +94,6 @@ textarea {
 
 .editable, .title {
   margin-bottom: 36px
-}
-
-.primary-button {
-  @extend .btn, .btn-primary;
-  -webkit-font-smoothing: antialiased;
-  text-transform: uppercase;
-  border: none;
-  &:hover {
-    background-color: $btn-primary-bg-hover;
-  }
-
-  &.wide-button {
-    padding-left: 25px;
-    padding-right: 25px;
-  }
-
-  &.message {
-    background: $tahi-message;
-  }
-}
-
-.secondary-button {
-  @extend .btn, .btn-default;
-  color: $tahi-primary;
-  border-color: $tahi-primary;
-  text-transform: uppercase;
-  background: white;
-
-  &:hover {
-    background-color: $tahi-secondary;
-    border-color: $tahi-primary-hover;
-    color: $tahi-primary-hover;
-  }
 }
 
 .progress {

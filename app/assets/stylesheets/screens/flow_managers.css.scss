@@ -1,7 +1,3 @@
-@import 'variables';
-@import 'bootstrap';
-@import 'tahi';
-
 html, body {
   height: 100%;
 }
@@ -107,19 +103,25 @@ body.full-height {
 }
 
 .column-header-update-buttons {
-  display: none;
   position: absolute;
   right: 0;
+  bottom: -25px;
   left: 0;
+  height: 0;
+  background: #fff;
+  z-index: 1;
+  opacity: 0;
+  @include transition-property(opacity bottom);
+  @include transition-duration(0.15s);
 }
 
 .active .column-header-update-buttons {
   display: block;
   bottom: -48px;
-  z-index: 1;
+  height: 50px;
   border-bottom: 1px solid #aaa;
-  padding: 10px 0;
-  background: #fff;
+  padding-top: 10px;
+  opacity: 1.0;
 }
 
 .column-header-update-save {

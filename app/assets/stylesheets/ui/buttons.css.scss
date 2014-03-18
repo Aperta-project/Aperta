@@ -1,0 +1,34 @@
+.primary-button {
+  @extend .btn, .btn-primary;
+  text-transform: uppercase;
+  border: none;
+  background-color: $tahi-primary;
+  -webkit-font-smoothing: antialiased;
+
+  &:hover {
+    background-color: $btn-primary-bg-hover;
+  }
+
+  &.wide-button {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  &.message {
+    background: $tahi-message;
+  }
+}
+
+.secondary-button {
+  @extend .btn, .btn-default;
+  color: $tahi-primary;
+  border-color: $tahi-primary;
+  text-transform: uppercase;
+  background: white;
+
+  &:hover {
+    background-color: $tahi-secondary;
+    border-color: $tahi-primary-hover;
+    color: $tahi-primary-hover;
+  }
+}

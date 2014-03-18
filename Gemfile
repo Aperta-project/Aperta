@@ -82,6 +82,7 @@ end
 gem 'devise'
 
 gem "bootstrap-sass"
+gem 'bourbon'
 
 gem 'rails_12factor', group: [:production, :staging]
 

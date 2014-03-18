@@ -11,7 +11,22 @@
  *= require_self
  *= require jquery.fileupload-ui
  *= require chosen
- *= require_tree .
  */
 
+@import "bourbon";
 @import "bootstrap";
+@import "variables";
+@import "webfonts";
+
+@import "tahi";
+
+@import "ui/buttons";
+@import "ui/navbar";
+@import "ui/overlay";
+
+@import "screens/authors";
+@import "screens/dashboards";
+@import "screens/flow_managers";
+@import "screens/papers";
+@import "screens/reviewer_report";
+@import "screens/tasks";

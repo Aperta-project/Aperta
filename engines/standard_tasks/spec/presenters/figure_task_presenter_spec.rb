@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FigureTaskPresenter do
+describe StandardTasks::FigureTaskPresenter do
   include Rails.application.routes.url_helpers
 
   describe "#data_attributes" do
@@ -10,7 +10,7 @@ describe FigureTaskPresenter do
         double(:figure, access_details: { one: 1 }),
         double(:figure, access_details: { two: 2 })
       ]
-      task = FigureTask.create! title: "Paper Admin",
+      task = StandardTasks::FigureTask.create! title: "Paper Admin",
         completed: true,
         role: 'admin',
         phase: paper.task_manager.phases.first
@@ -18,7 +18,7 @@ describe FigureTaskPresenter do
       task
     end
 
-    subject(:data_attributes) { FigureTaskPresenter.new(task).data_attributes }
+    subject(:data_attributes) { StandardTasks::FigureTaskPresenter.new(task).data_attributes }
 
     it_behaves_like "all tasks, which have common attributes" do
       before do
@@ -26,7 +26,7 @@ describe FigureTaskPresenter do
         allow(User).to receive(:admins).and_return [user]
       end
 
-      let(:card_name) { 'figure' }
+      let(:card_name) { 'standards-figure' }
       let(:assignees) { [] }
     end
 

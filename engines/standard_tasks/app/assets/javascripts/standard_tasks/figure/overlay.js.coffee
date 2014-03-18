@@ -1,4 +1,4 @@
-Tahi.overlays.figure =
+Tahi.overlays.standardsFigure =
   FigureUpload: React.createClass
     render: ->
       {div, li} = React.DOM
@@ -30,7 +30,7 @@ Tahi.overlays.figure =
       {main, h1, span, input, ul, li, img} = React.DOM
 
       RailsForm = Tahi.overlays.components.RailsForm
-      FigureUpload = Tahi.overlays.figure.FigureUpload
+      FigureUpload = Tahi.overlays.standardsFigure.FigureUpload
 
       uploadLIs = @state.uploads.map (upload) ->
         (FigureUpload {key: upload.filename, filename: upload.filename, progress: upload.progress})

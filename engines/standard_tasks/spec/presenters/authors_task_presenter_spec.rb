@@ -22,7 +22,7 @@ describe StandardTasks::AuthorsTaskPresenter do
         allow(User).to receive(:admins).and_return [user]
       end
 
-      let(:card_name) { 'standards/authors' }
+      let(:card_name) { 'standards-authors' }
       let(:assignees) { [] }
     end
 

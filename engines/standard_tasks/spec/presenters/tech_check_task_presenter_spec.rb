@@ -30,7 +30,7 @@ describe StandardTasks::TechCheckTaskPresenter do
     subject(:data_attributes) { StandardTasks::TechCheckTaskPresenter.new(task).data_attributes }
 
     it_behaves_like "all tasks, which have common attributes" do
-      let(:card_name) { 'standards/tech-check' }
+      let(:card_name) { 'standards-tech-check' }
       let(:assignee_id) { task.assignee_id }
       let(:assignees) { [user_select_hash(assignee)] }
     end

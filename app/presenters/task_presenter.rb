@@ -19,7 +19,7 @@ class TaskPresenter
       'taskTitle' => task.title,
       'taskBody' => task.body,
       'taskCompleted' => task.completed?,
-      'cardName' => task.class.name.underscore.dasherize.gsub(/-task/, ''),
+      'cardName' => task.class.name.gsub(/::/, '_').underscore.dasherize.gsub(/-task/, ''),
       'assigneeId' => task.assignee_id,
       'assignees' => assignees,
       'taskId' => task.id

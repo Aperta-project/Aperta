@@ -10,7 +10,7 @@ describe "Upload Manuscript Card", ->
             <input id='file-attachment' type='file' />
           </div>
         """)[0]
-        @component = Tahi.overlays.uploadManuscript.Overlay()
+        @component = Tahi.overlays.standardsUploadManuscript.Overlay()
         spyOn(@component, 'getDOMNode').and.returnValue(@html)
 
       it "initializes jQuery filepicker", ->
@@ -33,7 +33,7 @@ describe "Upload Manuscript Card", ->
 
     describe "jQuery File Upload callbacks", ->
       beforeEach ->
-        @component = Tahi.overlays.uploadManuscript.Overlay()
+        @component = Tahi.overlays.standardsUploadManuscript.Overlay()
         spyOn @component, 'setState'
 
         @event = jasmine.createSpyObj 'event', ['target', 'preventDefault']

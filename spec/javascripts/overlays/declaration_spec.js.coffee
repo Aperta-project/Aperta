@@ -3,14 +3,14 @@ describe "Declarations Card", ->
     describe "#componentWillReceiveProps", ->
       it "sets state.declarations to props.declarations", ->
         declarations = jasmine.createSpy 'props.declarations'
-        component = Tahi.overlays.declaration.Overlay declarations: declarations
+        component = Tahi.overlays.standardsDeclaration.Overlay declarations: declarations
         spyOn component, 'setState'
         component.componentWillReceiveProps({declarations: declarations})
         expect(component.setState).toHaveBeenCalledWith declarations: declarations
 
     describe "#declarations", ->
       beforeEach ->
-        @component = Tahi.overlays.declaration.Overlay
+        @component = Tahi.overlays.standardsDeclaration.Overlay
           declarations: [
             {
               question: 'Question 1'

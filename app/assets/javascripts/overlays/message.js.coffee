@@ -47,6 +47,7 @@ Tahi.overlays.message =
       @refs.body.getDOMNode().value = null
 
     render: ->
+      debugger
       {RailsForm, UserThumbnail} = Tahi.overlays.components
       {main, h1, div, ul, li, label, span, input, textarea, a, button} = React.DOM
       (main {className: 'message-overlay'},

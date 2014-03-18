@@ -1,7 +1,7 @@
 class Phase < ActiveRecord::Base
   belongs_to :task_manager, inverse_of: :phases
   has_many :tasks, inverse_of: :phase
-  has_many :message_tasks, -> { where(type: 'MessageTask') }, inverse_of: :phase
+  # has_many :message_tasks, -> { where(type: 'StandardTasks::MessageTask') }, inverse_of: :phase
 
   has_one :paper, through: :task_manager
   validates :position, presence: true, numericality: {only_integer: true}
@@ -15,6 +15,10 @@ class Phase < ActiveRecord::Base
     "Get Reviews",
     "Make Decision"
   ]
+
+  def message_tasks
+    tasks.where(type: 'StandardTasks::MessageTask')
+  end
 
   def self.default_phases
     DEFAULT_PHASE_NAMES.map.with_index { |name, pos| Phase.new name: name, position: pos }
@@ -45,18 +49,18 @@ class Phase < ActiveRecord::Base
     return if persisted? || tasks.any?
     case name
     when 'Submission Data'
-      self.tasks << UploadManuscriptTask.new
+      self.tasks << StandardTasks::UploadManuscriptTask.new
       self.tasks << StandardTasks::AuthorsTask.new
       self.tasks << StandardTasks::FigureTask.new
-      self.tasks << DeclarationTask.new
+      self.tasks << StandardTasks::DeclarationTask.new
     when 'Assign Editor'
-      self.tasks << PaperAdminTask.new
+      self.tasks << StandardTasks::PaperAdminTask.new
       self.tasks << StandardTasks::TechCheckTask.new
-      self.tasks << PaperEditorTask.new
+      self.tasks << StandardTasks::PaperEditorTask.new
     when 'Assign Reviewers'
-      self.tasks << PaperReviewerTask.new
+      self.tasks << StandardTasks::PaperReviewerTask.new
     when 'Make Decision'
-      self.tasks << RegisterDecisionTask.new
+      self.tasks << StandardTasks::RegisterDecisionTask.new
     end
   end
 end

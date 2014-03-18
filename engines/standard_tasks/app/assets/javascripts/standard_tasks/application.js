@@ -10,27 +10,5 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery.turbolinks
-//= require jquery_ujs
-//= require jquery-fileupload/basicplus
-//= require underscore
-//= require bootstrap
-//= require ckeditor-jquery
-//= require ckeditor/plugins/sharedspace/sharedspace
-//= require scrollToFixed
-//= require chosen-jquery
-//= require jquery.dotdotdot
-//= require jquery.timeago
-//= require ./polyfills
-//= require react
-//= require react-chosen
-//= require spin
-//= require turbolinks
-//= require namespace
 //= require_tree .
-//= require standard_tasks/application
-
-$(document).ready(function() {
-  Tahi.init()
-});
+//

@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe AuthorsTaskPresenter do
+describe StandardTasks::AuthorsTaskPresenter do
   include Rails.application.routes.url_helpers
 
   describe "#data_attributes" do
     let(:task) do
       paper = Paper.create! title: "Foo bar", short_title: "Foo", journal: Journal.create!
-      task = AuthorsTask.create! title: "Paper Admin",
+      task = StandardTasks::AuthorsTask.create! title: "Paper Admin",
         completed: true,
         role: 'admin',
         phase: paper.task_manager.phases.first
@@ -14,7 +14,7 @@ describe AuthorsTaskPresenter do
       task
     end
 
-    subject(:data_attributes) { AuthorsTaskPresenter.new(task).data_attributes }
+    subject(:data_attributes) { StandardTasks::AuthorsTaskPresenter.new(task).data_attributes }
 
     it_behaves_like "all tasks, which have common attributes" do
       before do
@@ -22,7 +22,7 @@ describe AuthorsTaskPresenter do
         allow(User).to receive(:admins).and_return [user]
       end
 
-      let(:card_name) { 'authors' }
+      let(:card_name) { 'standards-authors' }
       let(:assignees) { [] }
     end
 

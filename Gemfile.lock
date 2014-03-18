@@ -17,6 +17,12 @@ GIT
       rack (>= 1.2.1)
       rake
 
+PATH
+  remote: engines/standard_tasks
+  specs:
+    standard_tasks (0.0.1)
+      rails (~> 4.1.0.rc1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -363,6 +369,7 @@ DEPENDENCIES
   selenium-webdriver
   spinjs-rails
   spring
+  standard_tasks!
   turbolinks
   uglifier (>= 1.3.0)
   unf

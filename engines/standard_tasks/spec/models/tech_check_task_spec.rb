@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe TechCheckTask do
+describe StandardTasks::TechCheckTask do
   describe "defaults" do
-    subject(:task) { TechCheckTask.new }
+    subject(:task) { StandardTasks::TechCheckTask.new }
     specify { expect(task.title).to eq 'Tech Check' }
     specify { expect(task.role).to eq 'admin' }
   end

@@ -1,4 +1,4 @@
-Tahi.overlays.techCheck =
+Tahi.overlays.standardsTechCheck =
   Overlay: React.createClass
     render: ->
       {main, h1, h3, ul, li, label, select, option} = React.DOM

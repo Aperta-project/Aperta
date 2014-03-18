@@ -8,6 +8,12 @@ ETahi.ApplicationRoute = Ember.Route.extend
         outlet: 'overlay'
         controller: 'task')
 
+    showGenericOverlay: (templateName) ->
+      @render(templateName,
+        into: 'application'
+        outlet: 'overlay')
+
+
     closeOverlay: ->
       @disconnectOutlet(
         outlet: 'overlay'

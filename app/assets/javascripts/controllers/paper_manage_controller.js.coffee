@@ -30,6 +30,11 @@ ETahi.PaperManageController = Ember.ObjectController.extend
       phase.destroyRecord().then ->
         paper.reload()
 
+    removeTask: (task) ->
+      paper = task.get('phase.paper')
+      task.destroyRecord().then ->
+        paper.reload()
+
   refreshColumnHeights: (->
     Ember.run.next(this, Tahi.utils.resizeColumnHeaders)
   ).observes('phases.[]', 'phases.@each.name')

@@ -43,7 +43,8 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    task = PaperPolicy.new(params[:paper_id], current_user).tasks_for_paper(params[:id]).first
+    task_temp = Task.find(params[:id])
+    task = PaperPolicy.new(task_temp.paper, current_user).tasks_for_paper(params[:id]).first
     if task && task.destroy
       render json: true
     else

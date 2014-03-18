@@ -6,7 +6,7 @@ ETahi.AddColumnComponent = Ember.Component.extend
   placement: 'auto right'
   title: 'Add Phase'
 
-  click: (e) ->
+  click: ->
     @sendAction('action', @get('position'))
   didInsertElement: ->
     @.$().tooltip()

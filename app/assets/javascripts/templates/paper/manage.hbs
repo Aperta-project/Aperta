@@ -23,7 +23,7 @@
             <ul class='cards'>
               {{#each task in phase.tasks}}
                 <li class='card-item'>
-                  {{card-link task=task paper=model}}
+                  {{card-link task=task paper=model action="removeTask"}}
                 </li>
               {{/each}}
             </ul>

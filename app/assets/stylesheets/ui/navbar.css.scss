@@ -3,69 +3,69 @@ $nav-bar-color: white;
 $nav-bar-hover-color: $tahi-primary-hover;
 $nav-bar-active-color: $tahi-primary;
 
-#nav-bar-container {
-  background-color: $nav-bar-background-color;
+.nav-bar {
+  overflow: hidden;
   width: 100%;
+  height: 36px;
+  line-height: 36px;
+  background: $nav-bar-background-color;
 }
 
-#nav-bar {
-  margin: 0 auto;
-  background-color: $nav-bar-background-color;
+.nav-bar nav {
   min-width: 960px;
   max-width: 1120px;
+  margin: 0 auto;
+  background: $nav-bar-background-color;
 }
 
-#nav-bar header {
+.nav-bar-home {
+  color: $nav-bar-color;
   text-transform: uppercase;
+  padding: 8px 0;
+  font-size: 18px;
+  line-height: 20px;
 
-  > a {
-    @extend .navbar-brand;
-    color: $nav-bar-color;
-    padding: 8px 0;
-  }
-}
-
-#nav-bar section {
-  @extend .collapse, .navbar-collapse;
-}
-
-#nav-bar section > ul {
-  @extend .nav, .navbar-nav;
-  color: $nav-bar-color;
-}
-
-#nav-bar section > ul:last-of-type {
-  @extend .navbar-right;
-}
-
-#nav-bar section > ul:last-of-type li:last-of-type {
-  @extend .navbar-text;
-  padding-right: 20px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
-#nav-bar section > ul > li > a {
-  color: $nav-bar-color;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-#nav-bar section > ul > li.nav-bar-item > a {
   &:hover {
-    background: $nav-bar-hover-color;
-  }
-
-  &.active {
-    background: $nav-bar-active-color;
+    color: #fff;
+    text-decoration: none;
   }
 }
 
-#nav-bar section > ul > li.nav-bar-text > a {
+.nav-bar-links {
+  float: right;
+  list-style-type: none;
+  color: $nav-bar-color;
+}
+
+.nav-bar-text,
+.nav-bar-item {
+  float: left;
+  display: block;
+}
+
+.nav-bar-text a,
+.nav-bar-item a {
+  display: inline-block;
+  color: $nav-bar-color;
+  padding: 0 20px;
+}
+
+.nav-bar-item a {
+  text-decoration: none;
+
+  &:hover  { background: $nav-bar-hover-color; }
+  &.active { background: $nav-bar-active-color; }
+}
+
+.nav-bar-text a {
+  color: $nav-bar-color;
+
   &:hover {
     text-decoration: underline;
     background-color: transparent;
   }
+}
+
+.nav-bar-welcome {
+  padding-left: 20px;
 }

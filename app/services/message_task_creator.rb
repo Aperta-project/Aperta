@@ -1,7 +1,6 @@
 class MessageTaskCreator
 
   def self.with_initial_comment(phase, message_params, creator)
-    binding.pry
     subject = message_params[:message_subject]
     body = message_params[:message_body]
     participant_ids = message_params[:participant_ids]

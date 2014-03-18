@@ -1,7 +1,10 @@
 class Phase < ActiveRecord::Base
   belongs_to :task_manager, inverse_of: :phases
   has_many :tasks, inverse_of: :phase
-  # has_many :message_tasks, -> { where(type: 'StandardTasks::MessageTask') }, inverse_of: :phase
+  has_many :message_tasks,
+           -> { where(type: 'StandardTasks::MessageTask') },
+           class_name: 'StandardTasks::MessageTask',
+           inverse_of: :phase
 
   has_one :paper, through: :task_manager
   validates :position, presence: true, numericality: {only_integer: true}
@@ -15,10 +18,6 @@ class Phase < ActiveRecord::Base
     "Get Reviews",
     "Make Decision"
   ]
-
-  def message_tasks
-    tasks.where(type: 'StandardTasks::MessageTask')
-  end
 
   def self.default_phases
     DEFAULT_PHASE_NAMES.map.with_index { |name, pos| Phase.new name: name, position: pos }

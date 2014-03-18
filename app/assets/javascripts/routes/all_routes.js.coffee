@@ -37,7 +37,7 @@ ETahi.PaperManageRoute = Ember.Route.extend
 
 ETahi.PaperTaskRoute = Ember.Route.extend
   model: (params) ->
-    @store.find('task', params.task_id)
+    @store.filter('task', params.task_id)
 
   setupController: (controller, model) ->
     oldPaperId = @controllerFor('paper.manage').get('model.id')

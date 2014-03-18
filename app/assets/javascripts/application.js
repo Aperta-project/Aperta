@@ -35,4 +35,7 @@
 //= require e_tahi
 //= require_tree .
 
-window.ETahi = Ember.Application.create({rootElement: '#ember-app'});
+window.ETahi = Ember.Application.create({rootElement: '#ember-app',
+                                        LOG_VIEW_LOOKUPS: true,
+                                        LOG_TRANSITIONS: true,
+                                        LOG_TRANSITIONS_INTERNAL: true});

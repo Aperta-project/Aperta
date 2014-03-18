@@ -24,3 +24,18 @@ ETahi.PaperAdminTask = ETahi.Task.extend
   admins: DS.hasMany('user')
   admin: DS.belongsTo('user')
 
+ETahi.AuthorsTask = ETahi.Task.extend
+  authors: DS.hasMany('user')
+
+ETahi.DeclarationTask = ETahi.Task.extend
+  declarations: a('string')
+
+ETahi.FigureTask = ETahi.Task.extend
+  figures: a('string')
+
+ETahi.TechCheckTask = ETahi.Task.extend()
+ETahi.RegisterDecisionTask = ETahi.Task.extend()
+ETahi.ReviewerReportTask = ETahi.Task.extend()
+ETahi.MessageTask = ETahi.Task.extend()
+ETahi.UploadManuscriptTask = ETahi.Task.extend()
+

@@ -1,0 +1,2 @@
+class RegisterDecisionTaskSerializer < TaskSerializer
+end

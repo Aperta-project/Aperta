@@ -1,0 +1,2 @@
+class MessageTaskSerializer < TaskSerializer
+end

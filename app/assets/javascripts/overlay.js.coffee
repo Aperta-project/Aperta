@@ -55,6 +55,9 @@ Tahi.overlay =
       @hide(e, turbolinksState)
 
     onCompletedChanged: (event, data) ->
+      # BUG: Throws error when marking a card is completed if you directly
+      # navigate to the card route (vs navigating there from the manuscript
+      # manager)
       $("[data-task-id='#{element.data('taskId')}'][data-card-name='#{element.data('cardName')}']").toggleClass 'completed', data.completed
 
   hide: (event, turbolinksState=null) ->

@@ -23,21 +23,24 @@
   - if @paper_tasks.present?
     %section#my-tasks
       %h2 Your Tasks
-      - @paper_tasks.each do |paper, tasks|
-        :javascript
-          $.ajax({
-            url: '/event_stream',
-            data: { id: #{paper.id} },
-            method: 'GET',
-            success: function(data) {
-              var source = new EventSource(data.url);
-              source.addEventListener(data.eventName, function(msg) {
+      :javascript
+        $.ajax({
+          url: '/event_stream',
+          data: { id: #{@papers.map(&:id)} },
+          method: 'GET',
+          success: function(data) {
+            var source = new EventSource(data.url);
+            // make one connection and listeners for every paper
+            data.eventName.forEach(function(eventName) {
+              source.addEventListener(eventName, function(msg) {
                 var data = JSON.parse(msg.data);
                 var $task = $("[data-task-id="+data.id+"]");
                 data.completed ? $task.addClass("completed") : $task.removeClass("completed");
               });
-            }
-          });
+            });
+          }
+        });
+      - @paper_tasks.each do |paper, tasks|
         %p.paper-title= link_to paper.display_title, paper_path(paper)
         %ul.cards
           - paper.message_tasks.each do |message_task|

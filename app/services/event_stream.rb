@@ -16,7 +16,11 @@ class EventStream
   end
 
   def self.name(paper_id)
-    Digest::MD5.hexdigest "paper_#{paper_id}"
+    if Array === paper_id
+      paper_id.map {|id| name id }
+    else
+      Digest::MD5.hexdigest "paper_#{paper_id}"
+    end
   end
 
   def self.token

@@ -6,14 +6,19 @@
       {{#each phase in sortedPhases}}
         <li class="column">
           {{add-column position=phase.position action="addPhase"}}
-          <div class="column-title">
-            {{#view ETahi.ContenteditableView phase=phase}}
-              {{view.phase.name}}
-            {{/view}}
+
+          {{#view ETahi.ColumnTitleView phase=phase}}
+            <h2 contenteditable="true">{{view.phase.name}}</h2>
+            <div class="column-header-update-buttons">
+              <button class="column-header-update-cancel btn-link" {{action "cancel" target="view"}}>cancel</button>
+              <button class="column-header-update-save primary-button" {{action "save" target="view"}}>Save</button>
+            </div>
+            <span class="glyphicon glyphicon-pencil edit-icon column-icon"></span>
             {{#if phase.noTasks}}
               <span class="glyphicon glyphicon-remove remove-icon column-icon" {{action 'removePhase' phase}}></span>
             {{/if}}
-          </div>
+          {{/view}}
+
           <div class="column-content">
             <ul class='cards'>
               {{#each task in phase.tasks}}

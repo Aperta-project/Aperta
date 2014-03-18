@@ -23,13 +23,13 @@ ETahi.PaperSerializer = DS.ActiveModelSerializer.extend
 
       #jshint loopfunc:true
       for hash in payload[prop]
-        icecream = if hash.type
-          hash.type
+        # custom code starts here
+        typeName = if hash.type
+          @typeForRoot hash.type
         else
-          prop
-        typeName = @typeForRoot(icecream)
+          @typeForRoot prop
+        # custom code ends here
         type = store.modelFor(typeName)
-        console.log "===> prop:", prop, ", icecream:", icecream, ", typeName:", typeName, ", type:", type
         typeSerializer = store.serializerFor(type)
         hash = typeSerializer.normalize(type, hash, prop)
         isFirstCreatedRecord = isPrimary and not recordId and not primaryRecord

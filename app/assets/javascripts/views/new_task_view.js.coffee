@@ -1,3 +1,3 @@
 ETahi.NewTaskView = Ember.View.extend
   templateName: 'overlays/new_task'
-  layoutName: 'layouts/blank_layout'
+  layoutName: 'layouts/new_task_layout'

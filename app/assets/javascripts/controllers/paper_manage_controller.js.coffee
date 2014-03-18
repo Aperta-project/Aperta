@@ -36,7 +36,7 @@ ETahi.PaperManageController = Ember.ObjectController.extend
         paper.reload()
 
     addTask: ->
-      @send('showGenericOverlay', 'new_task')
+      @send('showGenericOverlay', 'new_card')
 
 
   refreshColumnHeights: (->

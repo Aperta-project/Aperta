@@ -1,18 +1,13 @@
-<div class="choose-card-type-overlay">
-  <div id="choose-card-type">
-    <h2>
-      Would you like to post a task or a message?
-    </h2>
-
-    <div id="choose-card-type-buttons">
-      <button class="primary-button task">
-        New Task Card
-      </button>
-      <button class="primary-button message">
-        New Message Card
-      </button>
-      <a class="cancel" {{action 'closeOverlay'}}>cancel</a>
-
-    </div>
-  </div>
+<div class="form-group">
+  <input type="text" id="task_title" placeholder="Type a short card title here">
+</div>
+<div class="form-group">
+  <label for="task_assignee_id">Assign this task to:</label>
+  {{chosen content=task.paper.assignees
+     name="assignee"
+     value=assignee.id
+     prompt="Assign this task to"}}
+</div>
+<div class="form-group">
+  <textarea id="task_body" placeholder="Provide some details here" value=""></textarea>
 </div>

@@ -13,6 +13,14 @@ ETahi.ApplicationRoute = Ember.Route.extend
         into: 'application'
         outlet: 'overlay')
 
+    cardCreationOverlay: () ->
+      paper = @controllerFor('paperManage').get('model')
+      @controllerFor('newTask').set('model', paper)
+
+      @render('newTask',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'newTask')
 
     closeOverlay: ->
       @disconnectOutlet(

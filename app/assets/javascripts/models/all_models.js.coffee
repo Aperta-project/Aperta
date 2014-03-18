@@ -2,6 +2,7 @@ a = DS.attr
 ETahi.Paper = DS.Model.extend
   shortTitle: a('string')
   title: a('string')
+  assignees: a()
   phases: DS.hasMany('phase')
 
 ETahi.Phase = DS.Model.extend

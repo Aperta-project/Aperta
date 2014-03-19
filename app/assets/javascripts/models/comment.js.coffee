@@ -1,4 +1,4 @@
-a = DS.attr
 ETahi.Comment = DS.Model.extend
-  body: a('string')
-  task: DS.belongsTo('task')
+  commenter: DS.belongsTo('user')
+  body: DS.attr('string')
+  messageTask: DS.belongsTo('messageTask')

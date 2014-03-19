@@ -33,9 +33,12 @@ ETahi.DeclarationTask = ETahi.Task.extend
 ETahi.FigureTask = ETahi.Task.extend
   figures: a('string')
 
+ETahi.MessageTask = ETahi.Task.extend
+  participants: DS.hasMany('user')
+  comments: DS.hasMany('comment')
+
 ETahi.TechCheckTask = ETahi.Task.extend()
 ETahi.RegisterDecisionTask = ETahi.Task.extend()
 ETahi.ReviewerReportTask = ETahi.Task.extend()
-ETahi.MessageTask = ETahi.Task.extend()
 ETahi.UploadManuscriptTask = ETahi.Task.extend()
 

@@ -10,7 +10,6 @@
   - body_class << 'matte' if params[:controller] == 'papers'
   %body{class: body_class.join(' ')}
     #spinner{style: 'display: none;'}
-    #overlay
     %header.nav-bar
       %nav
         = link_to root_path, {class: 'nav-bar-home'} do

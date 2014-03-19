@@ -1,0 +1,20 @@
+<div id="overlay">
+  <div>
+    <header>
+      <h2><a href='paperpath'>{{paperTitle}}</a></h2>
+      <a class="primary-button" {{action closeAction}}>Close</a>
+    </header>
+    <main>
+      {{yield}}
+    </main>
+    <footer>
+      <div class="content">
+        <div class="completed-checkbox">
+          {{input type='checkbox' name="task_completed" checked=completed}}
+          <label for="task_completed">Completed</label>
+        </div>
+      </div>
+      <a class="primary-button" {{action closeAction}}>Close</a>
+    </footer>
+  </div>
+</div>

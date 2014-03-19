@@ -7,5 +7,5 @@ ETahi.TaskController = Ember.ObjectController.extend
       @send(@get('onClose'))
 
     showManager: ->
-      @transitionTo('paper.manage', @get('paper'))
+      @transitionToRoute('paper.manage', @get('paper'))
 

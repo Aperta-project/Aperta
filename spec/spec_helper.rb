@@ -18,7 +18,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
 # Load engine factories
-# FactoryGirl.definition_file_paths = %w{./spec/factories ./engines/*/*/factories}
+FactoryGirl.definition_file_paths = %w{./spec/factories ./engines/*/*/factories}
 
 RSpec.configure do |config|
   # ## Mock Framework

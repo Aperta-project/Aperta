@@ -30,10 +30,10 @@ FactoryGirl.define do
     name "Test Journal"
   end
 
-  factory :message_task, class: StandardTasks::MessageTask do
-    title "a subject" # should match subject
-    message_subject "a subject"
-  end
+  # factory :message_task, class: StandardTasks::MessageTask do
+  #   title "a subject" # should match subject
+  #   message_subject "a subject"
+  # end
 
   factory :comment do
     body "HEY"

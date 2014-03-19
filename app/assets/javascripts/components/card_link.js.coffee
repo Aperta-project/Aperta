@@ -7,5 +7,6 @@ ETahi.CardLinkComponent = Ember.Component.extend
     if $(e.target).hasClass('js-remove-card')
       @sendAction('action', @get('task'))
 
-  didInsertElement: ->
+  setupTooltip: (->
     @.$().find('.js-remove-card').tooltip()
+  ).on('didInsertElement')

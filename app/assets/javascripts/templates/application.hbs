@@ -5,10 +5,12 @@
     </a>
 
     <ul class="nav-bar-links">
-      <li class="nav-bar-text">
-        <a href="#">Sign out</a>
-      </li>
-      <li class="nav-bar-item nav-bar-welcome">Welcome Back, currentUser</li>
+      {{#if Tahi.currentUser.admin}}
+        <li class="nav-bar-item">{{#link-to 'flow_manager'}}Flow Manager{{/link-to}}</li>
+        <li class="nav-bar-item"><a href="/admin">Admin</a></li>
+      {{/if}}
+      <li class="nav-bar-text"><a href="#">Sign out</a></li>
+      <li class="nav-bar-text nav-bar-welcome">Welcome back, {{unbound Tahi.currentUser.fullName}}</li>
     </ul>
   </nav>
 </header>

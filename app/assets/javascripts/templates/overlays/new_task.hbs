@@ -3,9 +3,9 @@
 </div>
 <div class="form-group">
   <label for="task_assignee_id">Assign this task to:</label>
-  {{chosen content=task.paper.assignees
-     name="assignee"
-     value=assignee.id
+  {{chosen content=model.assignees
+     optionLabelPath="content.full_name"
+     optionValuePath="content.id"
      prompt="Assign this task to"}}
 </div>
 <div class="form-group">

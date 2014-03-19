@@ -37,7 +37,7 @@ class TasksController < ApplicationController
   def show
     @task = Task.find(params[:id])
     respond_to do |f|
-      f.json { render json: TaskPresenter.for(@task).data_attributes }
+      f.json { render json: @task }
       f.html { render layout: 'overlay' }
     end
   end

@@ -1,13 +1,5 @@
 ETahi.ApplicationRoute = Ember.Route.extend
   actions:
-    showTaskOverlay: (task) ->
-      taskName = task.get('type').replace(/Task$/,'')
-      @controllerFor('task').set('model', task)
-      @render(taskName,
-        into: 'application'
-        outlet: 'overlay'
-        controller: 'task')
-
     showNewCardOverlay: (phase) ->
       @controllerFor('newCard').set('phase', phase)
 

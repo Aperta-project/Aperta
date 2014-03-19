@@ -36,5 +36,5 @@ Tahi.overlays.chooseCardType =
     replaceMessageOverlay: (e) ->
       e?.preventDefault()
       React.unmountComponentAtNode $('#overlay')[0]
-      React.renderComponent Tahi.overlays.newMessage.overlay(@props), $('#overlay')[0]
+      React.renderComponent Tahi.overlays.standardsNewMessage.overlay(@props), $('#overlay')[0]
 

@@ -1,4 +1,5 @@
-Tahi.overlays.newMessage =
+# Look into creating a flexible interface for calling different overlays in Tahi.overlays.chooseCardType
+Tahi.overlays.standardsNewMessage =
   overlay: React.createClass
     mixins: [Tahi.mixins.MessageParticipants]
 

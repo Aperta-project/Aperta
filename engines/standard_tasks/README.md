@@ -20,6 +20,8 @@ After
   - `gem 'standard_tasks', path: 'engines/standard_tasks'`
 - require js files on bottom of application.js sprocket
   - `//= require standard_tasks/application`
+- require css files on bottom of application.css sprocket
+  - `*= require standard_tasks/application`
 - Move model file over
   - In order for model file to autoload, it must be under a namespaced folder under   
   - "engines/standard\_tasks/models/standard\_tasks/blah_task.rb"

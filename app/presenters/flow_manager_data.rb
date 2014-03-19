@@ -16,13 +16,13 @@ class FlowManagerData
   end
 
   def paper_admin_tasks
-    base_query(PaperAdminTask).assigned_to(@user).map do |task|
+    base_query(StandardTasks::PaperAdminTask).assigned_to(@user).map do |task|
       [task.paper, []]
     end
   end
 
   def unassigned_papers
-    base_query(PaperAdminTask).includes(:journal).where(assignee_id: nil).map do |task|
+    base_query(StandardTasks::PaperAdminTask).includes(:journal).where(assignee_id: nil).map do |task|
       [task.paper, [task]] if User.admins_for(task.paper.journal).include? @user
     end.compact
   end

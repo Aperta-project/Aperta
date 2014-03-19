@@ -1,3 +1,11 @@
 ETahi.TaskController = Ember.ObjectController.extend
-  paperTitle: Ember.computed.alias('model.phase.paper.title')
+  paper: Ember.computed.alias('model.phase.paper')
+  paperTitle: Ember.computed.alias('paper.title')
+  onClose: 'closeOverlay'
+  actions:
+    closeAction: ->
+      @send(@get('onClose'))
+
+    showManager: ->
+      @transitionTo('paper.manage', @get('paper'))
 

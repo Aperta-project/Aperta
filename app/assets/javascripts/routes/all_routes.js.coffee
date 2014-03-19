@@ -45,10 +45,13 @@ ETahi.PaperTaskRoute = Ember.Route.extend
     paperTasks.findBy('id', params.task_id)
 
   setupController: (controller, model) ->
-    oldPaperId = @controllerFor('paper.manage').get('model.id')
-    if oldPaperId == model.get('phase.paper.id')
+    currentPaperId = @controllerFor('paper.manage').get('model.id')
+    taskController = @controllerFor('task')
+    taskController.set('model', model)
+    if currentPaperId == model.get('phase.paper.id')
       @set('shouldRenderManager', true)
-    @controllerFor('task').set('model', model)
+      taskController.set('onClose', 'showManager')
+
     @set('taskName', model.get('type').replace(/Task$/,''))
 
   renderTemplate: ->

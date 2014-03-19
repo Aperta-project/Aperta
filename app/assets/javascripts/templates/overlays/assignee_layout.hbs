@@ -2,7 +2,7 @@
   <div>
     <header>
       <h2><a href='paperpath'>{{paperTitle}}</a></h2>
-      <a class="primary-button" {{action 'closeOverlay'}}>Close</a>
+      <a class="primary-button" {{action closeAction}}>Close</a>
     </header>
     <main>
       {{yield}}
@@ -18,7 +18,7 @@
           <label for="task_completed">Completed</label>
         </div>
       </div>
-      <a class="primary-button" {{action 'closeOverlay'}}>Close</a>
+      <a class="primary-button" {{action closeAction}}>Close</a>
     </footer>
   </div>
 </div>

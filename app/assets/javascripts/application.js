@@ -35,7 +35,21 @@
 //= require e_tahi
 //= require_tree .
 
-window.ETahi = Ember.Application.create({rootElement: '#ember-app',
-                                        LOG_VIEW_LOOKUPS: true,
-                                        LOG_TRANSITIONS: true,
-                                        LOG_TRANSITIONS_INTERNAL: true});
+(function(context) {
+  var development = true;
+
+  context.ETahi = Ember.Application.create({
+    rootElement: '#ember-app',
+
+    // Ember
+    LOG_STACKTRACE_ON_DEPRECATION  : development,
+    LOG_BINDINGS                   : development,
+    LOG_TRANSITIONS                : development,
+    LOG_TRANSITIONS_INTERNAL       : false,
+    LOG_VIEW_LOOKUPS               : false,
+    LOG_ACTIVE_GENERATION          : false,
+    // Tahi
+    LOG_RSVP_ERRORS                : development,
+    LOG_VIEW_RENDERING_PERFORMANCE : development
+  });
+})(window);

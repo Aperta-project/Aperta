@@ -1,5 +1,4 @@
 class PaperSerializer < ActiveModel::Serializer
-  attributes :id, :short_title, :title, :assignees
-  has_many :phases, embed: :ids, include: true
-  has_many :assignees
+  attributes :id, :short_title, :title
+  %i!phases assignees!.each {|relation| has_many relation, embed: :ids, include: true }
 end

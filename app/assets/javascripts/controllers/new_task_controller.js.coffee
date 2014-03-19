@@ -1,2 +1,4 @@
-ETahi.NewTaskController = Ember.ObjectController.extend
-  model: null
+ETahi.NewTaskController = Ember.Controller.extend
+  actions:
+    createCard: ->
+      @get('task').save()

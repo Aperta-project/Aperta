@@ -10,7 +10,7 @@ ETahi.Task = DS.Model.extend
   isMessage: Ember.computed.equal('type', 'MessageTask')
   phase: DS.belongsTo('phase')
   assignees: DS.hasMany('user')
-  assignee: DS.belongsTo('user')
+  assignee: DS.belongsTo('assignee')
 
 ETahi.PaperReviewerTask = ETahi.Task.extend
   reviewers: DS.hasMany('user')

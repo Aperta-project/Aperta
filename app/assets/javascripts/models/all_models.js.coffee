@@ -2,7 +2,7 @@ a = DS.attr
 ETahi.Paper = DS.Model.extend
   shortTitle: a('string')
   title: a('string')
-  assignees: a()
+  assignees: DS.hasMany('assignee')
   phases: DS.hasMany('phase')
 
 ETahi.Phase = DS.Model.extend
@@ -15,6 +15,8 @@ ETahi.Phase = DS.Model.extend
 ETahi.User = DS.Model.extend
   imageUrl: a('string')
   fullName: a('string')
+
+ETahi.Assignee = ETahi.User.extend()
 
 ETahi.Comment = DS.Model.extend
   body: a('string')

@@ -13,10 +13,10 @@ module ApplicationHelper
 
     capture_haml do
       haml_concat(link_to(
-        paper_task_path(task.paper, task),
+        task_path(task),
         class: classes.join(' '),
         data: {
-          'task-path' => paper_task_path(task.paper, task),
+          'task-path' => task_path(task),
           'task-id' => task.id,
           'card-name' => task.class.name.underscore.dasherize.gsub(/-task/, '')
         }

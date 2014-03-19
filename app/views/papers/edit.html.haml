@@ -28,7 +28,7 @@
         = @paper.abstract.html_safe
 
       - task = Task.where(title: "Add Authors", phase: @paper.phases.where(name: 'Submission Data').first).first
-      #paper-authors.editable{class: "#{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: task.authors.to_json, 'refresh-on-close' => false }}
+      #paper-authors.editable{class: "#{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => task_path(task), authors: task.authors.to_json, 'refresh-on-close' => false }}
 
       #paper-body.editable{contenteditable: true, placeholder: 'Type the body of your manuscript here'}
         = @paper.body.html_safe

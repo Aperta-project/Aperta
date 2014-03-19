@@ -41,12 +41,12 @@ describe ApplicationHelper do
     end
 
     specify { expect(link.text.strip).to eq task.title }
-    specify { expect(link['href']).to eq paper_task_path(task.paper, task) }
+    specify { expect(link['href']).to eq task_path(task) }
     specify { expect(link['class']).to include 'card' }
     specify { expect(link['class']).to_not include 'completed' }
 
     it "includes data necessary to render a card" do
-      expect(link['data-task-path']).to eq paper_task_path(task.paper, task)
+      expect(link['data-task-path']).to eq task_path(task)
       expect(link['data-card-name']).to eq 'task'
     end
 

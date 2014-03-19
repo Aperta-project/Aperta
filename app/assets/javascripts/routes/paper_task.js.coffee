@@ -11,7 +11,7 @@ ETahi.PaperTaskRoute = Ember.Route.extend
       @set('shouldRenderManager', true)
       taskController.set('onClose', 'showManager')
 
-    @set('taskName', model.get('type').replace(/Task$/,''))
+    @set('taskName', model.get('type').replace(/Task$/,'') || 'AdHoc')
 
   renderTemplate: ->
     @render(@get('taskName'),

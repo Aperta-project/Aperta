@@ -13,6 +13,8 @@ class Task < ActiveRecord::Base
   has_one :paper, through: :task_manager
   has_one :journal, through: :paper
 
+  has_many :assignees, -> { admins }, through: :journal, source: :users
+
   validates :title, :role, presence: true
 
   belongs_to :assignee, class_name: 'User'
@@ -30,10 +32,6 @@ class Task < ActiveRecord::Base
         instance_variable_set :"@_default_#{attr}", default_attr
       end
     end
-  end
-
-  def assignees
-    journal.admins
   end
 
   protected

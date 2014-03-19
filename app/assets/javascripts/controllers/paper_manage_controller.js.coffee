@@ -36,8 +36,7 @@ ETahi.PaperManageController = Ember.ObjectController.extend
         paper.reload()
 
     addTask: (phase)->
-      task = @store.createRecord('task', {phase: phase})
-      @send('showNewCardOverlay', task)
+      @send('showNewCardOverlay', phase)
 
   refreshColumnHeights: (->
     Ember.run.next(this, Tahi.utils.resizeColumnHeaders)

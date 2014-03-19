@@ -8,14 +8,18 @@ ETahi.ApplicationRoute = Ember.Route.extend
         outlet: 'overlay'
         controller: 'task')
 
-    showGenericOverlay: (templateName) ->
-      @render(templateName,
-        into: 'application'
-        outlet: 'overlay')
+    showNewCardOverlay: (task) ->
+      @controllerFor('newCard').set('task', task)
 
-    cardCreationOverlay: () ->
+      @render('new_card',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'newCard')
+
+    cardCreationOverlay: (task) ->
       paper = @controllerFor('paperManage').get('model')
-      @controllerFor('newTask').set('model', paper)
+      @controllerFor('newTask').set('paper', paper)
+      @controllerFor('newTask').set('task', task)
 
       @render('newTask',
         into: 'application'

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ReviewerReportTaskPresenter do
+describe StandardTasks::ReviewerReportTaskPresenter do
   include Rails.application.routes.url_helpers
 
   describe "#data_attributes" do
@@ -19,17 +19,17 @@ describe ReviewerReportTaskPresenter do
         short_title: "Foo",
         journal: Journal.create!,
         user: author
-      task = ReviewerReportTask.create! completed: true,
+      task = StandardTasks::ReviewerReportTask.create! completed: true,
         phase: paper.task_manager.phases.first,
         assignee: assignee
       allow(task).to receive(:paper).and_return paper
       task
     end
 
-    subject(:data_attributes) { ReviewerReportTaskPresenter.new(task).data_attributes }
+    subject(:data_attributes) { StandardTasks::ReviewerReportTaskPresenter.new(task).data_attributes }
 
     it_behaves_like "all tasks, which have common attributes" do
-      let(:card_name) { 'reviewer-report' }
+      let(:card_name) { 'standards-reviewer-report' }
       let(:assignee_id) { task.assignee_id }
     end
   end

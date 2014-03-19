@@ -3,7 +3,7 @@ describe "Reviewer Report Card", ->
     describe "#componentDidMount", ->
       it "sets up submit on change for the form", ->
         spyOn Tahi, 'setupSubmitOnChange'
-        component = Tahi.overlays.reviewerReport.Overlay()
+        component = Tahi.overlays.standardsReviewerReport.Overlay()
         html = $('<main><form><textarea /></form></main>')[0]
         spyOn(component, 'getDOMNode').and.returnValue(html)
         component.componentDidMount()

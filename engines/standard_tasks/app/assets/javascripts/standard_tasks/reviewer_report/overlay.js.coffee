@@ -1,4 +1,4 @@
-Tahi.overlays.reviewerReport =
+Tahi.overlays.standardsReviewerReport =
   Overlay: React.createClass
     render: ->
       {div, main, section, h3, h1, p, label, textarea, input} = React.DOM

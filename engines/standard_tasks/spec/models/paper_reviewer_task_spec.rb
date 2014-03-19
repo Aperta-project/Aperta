@@ -59,15 +59,15 @@ describe StandardTasks::PaperReviewerTask do
     it "creates reviewer report tasks only for new ids" do
       task.paper_roles = ["", neil.id.to_s]
       phase = paper.task_manager.phases.where(name: 'Get Reviews').first
-      expect(ReviewerReportTask.where(assignee: neil, phase: phase)).to be_present
+      expect(StandardTasks::ReviewerReportTask.where(assignee: neil, phase: phase)).to be_present
     end
 
     it "deletes reviewer report tasks of the ids not specified" do
       phase = paper.task_manager.phases.where(name: 'Get Reviews').first
       PaperRole.create! paper: paper, reviewer: true, user: albert
-      ReviewerReportTask.create! assignee: albert, phase: phase
+      StandardTasks::ReviewerReportTask.create! assignee: albert, phase: phase
       task.paper_roles = ["", neil.id.to_s]
-      expect(ReviewerReportTask.where(assignee: albert, phase: phase)).to be_empty
+      expect(StandardTasks::ReviewerReportTask.where(assignee: albert, phase: phase)).to be_empty
     end
 
     it "deletes paper roles not present in the specified user_id" do

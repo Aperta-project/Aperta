@@ -14,3 +14,25 @@
     </li>
   </ul>
 </div>
+
+<ul class="message-comments">
+  {{#each comment in comments}}
+    <li class="message-comment">
+      {{userThumbnail comment.commenter}}
+      <span class="comment-date">
+        {{comment.createdAt}}
+      </span>
+      <span class="comment-name">{{comment.name}} posted</span>
+      <span class="comment-body">{{comment.body}}</span>
+    </li>
+  {{/each}}
+</ul>
+
+<div class="form-group">
+  {{textarea value=newCommentBody placeholder="Type your message here"}}
+</div>
+
+<div class="comment-buttons">
+  <a href="#" class="message-color" {{action 'clearMessageContent'}}>Cancel</a>
+  <button type="submit" class="secondary-button message" {{action 'postComment'}}>Post Message</button>
+</div>

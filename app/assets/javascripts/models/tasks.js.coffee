@@ -11,6 +11,7 @@ ETahi.Task = DS.Model.extend
   phase: DS.belongsTo('phase')
   assignees: DS.hasMany('assignee')
   assignee: DS.belongsTo('assignee')
+  controllerName: 'task'
 
 ETahi.PaperReviewerTask = ETahi.Task.extend
   reviewers: DS.hasMany('user')
@@ -36,6 +37,8 @@ ETahi.FigureTask = ETahi.Task.extend
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
   comments: DS.hasMany('comment')
+  newCommentBody: ""
+  controllerName: 'messageTask'
 
 ETahi.TechCheckTask = ETahi.Task.extend()
 ETahi.RegisterDecisionTask = ETahi.Task.extend()

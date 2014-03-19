@@ -12,8 +12,7 @@ class PapersController < ApplicationController
       end
 
       format.json do
-        @tasks = @paper.phases.flat_map(&:tasks)
-        @users = @tasks.flat_map(&:assignees).uniq
+        render json: @paper
       end
     end
   end

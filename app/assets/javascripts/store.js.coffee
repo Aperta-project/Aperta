@@ -7,6 +7,21 @@ ETahi.Store = DS.Store.extend
 
 
 ETahi.PaperSerializer = DS.ActiveModelSerializer.extend
+  normalizePayload: (primaryType, payload) ->
+    tasks = payload.tasks
+    taskHash = _.reduce(tasks, (memo, task) ->
+      memo[task.id] = task
+      memo
+    , {})
+    for phase in payload.phases
+      taskObjs = []
+      for taskId in phase.task_ids
+        taskObjs.push {id: taskId, type: taskHash[taskId].type}
+      phase.tasks = taskObjs
+      delete phase.task_ids
+
+    payload
+
   extractSingle: (store, primaryType, payload, recordId, requestType) ->
     payload = @normalizePayload(primaryType, payload)
     primaryTypeName = primaryType.typeKey
@@ -23,6 +38,7 @@ ETahi.PaperSerializer = DS.ActiveModelSerializer.extend
 
       #jshint loopfunc:true
       for hash in payload[prop]
+        hash.foobar = 'hello!'
         # custom code starts here
         typeName = if hash.type
           @typeForRoot hash.type

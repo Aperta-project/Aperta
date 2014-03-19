@@ -1,0 +1,16 @@
+<h1>{{title}}</h1>
+<div id="participants">
+  <ul>
+    {{#each p in participants}}
+      <li class='participant'>{{userThumbnail p}}</li>
+    {{/each}}
+    <li>
+      <label for="participants">Add People</label>
+      {{chosen content=participants
+               name="participants"
+               prompt="Add People"
+               optionValuePath="content.id"
+               optionLabelPath="content.fullName"}}
+    </li>
+  </ul>
+</div>

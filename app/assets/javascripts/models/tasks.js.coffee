@@ -8,7 +8,7 @@ ETahi.Task = DS.Model.extend
   messageSubject: a('string')
   comments: DS.hasMany('comment')
   isMessage: Ember.computed.equal('type', 'MessageTask')
-  phase: DS.belongsTo('phase', {polymorphic: true})
+  phase: DS.belongsTo('phase')
   assignees: DS.hasMany('user')
   assignee: DS.belongsTo('user')
 

@@ -30,8 +30,11 @@ class TasksController < ApplicationController
   def create
     task = Task.new task_params
     task.role = 'admin'
-    task.save
-    head :no_content
+    if task.save
+      render json: task
+    else
+      render status: 500
+    end
   end
 
   def show

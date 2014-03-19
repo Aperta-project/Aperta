@@ -1,0 +1,57 @@
+<div id="control-bar-container">
+  <div id="control-bar">
+    <section>
+      <ul>
+        <li>
+          <a class="add-column-button secondary-button" href="#" {{action 'displayChangeOverlay'}}>
+            Add New Column <span class="glyphicon glyphicon-plus"></span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<ul class="columns">
+  <li class="column">
+    <div class="column-title">
+      <h2>Title Here</h2>
+      <div class="remove-column glyphicon glyphicon-remove" {{action 'remove'}}></div>
+    </div>
+
+    <div class="column-content">
+      {{#if paperProfiles.length}}
+        <ul class="cards">
+          {{#each profile in paperProfiles}}
+            <li>
+              <div class="paper-profile">
+                <a class="paper-title" href="{{paper_path}}">
+                  <h4>{{profile.title}}<h4>
+                </a>
+
+                {{#each task in profile.tasks}}
+                  <div class="card-container">
+                    <a class="card flow-card completed message">
+                      <span class="glyphicon glyphicon-ok completed-glyph">
+                        {{task.title}}
+                      </span>
+                    </a>
+                    <span
+                      class="glyphicon glyphicon-remove-circle remove-card js-remove-card pointer"
+                      data-toggle="tooltip"
+                      data-placement="right"
+                      title="Delete Card" {{action 'removeTask'}}>
+                    </span>
+                  </div>
+                {{/each}}
+
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <div class="empty-text">EMPTY TEXT: {{emptyText}}</div>
+      {{/if}}
+    </div>
+  </li>
+</ul>

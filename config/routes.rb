@@ -17,6 +17,7 @@ Tahi::Application.routes.draw do
     end
   end
 
+  resources :comments, only: :create
   resources :tasks, only: [:update, :create, :show, :destroy] do
     resources :comments, only: :create
   end

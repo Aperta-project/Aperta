@@ -1,9 +1,12 @@
 ETahi.MessageTaskController = ETahi.TaskController.extend
   newCommentBody: ""
 
+  _clearNewMessage: ->
+    @set('newCommentBody', "")
+
   actions:
     clearMessageContent: ->
-      @set('newCommentBody', "")
+      @_clearNewMessage()
 
     postComment: ->
       userId = Tahi.currentUser.id.toString()
@@ -13,3 +16,6 @@ ETahi.MessageTaskController = ETahi.TaskController.extend
         messageTask: @get('model')
         body: @get('newCommentBody')
       newComment = @store.createRecord('comment', commentFields)
+      newComment.save().then(
+        => @_clearNewMessage(),
+        -> newComment.deleteRecord())

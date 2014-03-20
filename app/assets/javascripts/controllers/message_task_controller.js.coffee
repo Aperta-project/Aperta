@@ -2,7 +2,9 @@ ETahi.MessageTaskController = ETahi.TaskController.extend
   newCommentBody: ""
 
   actions:
-    clearMessageContent: -> null
+    clearMessageContent: ->
+      @set('newCommentBody', "")
+
     postComment: ->
       userId = Tahi.currentUser.id.toString()
       commenter = @store.all('user').findBy('id', userId)

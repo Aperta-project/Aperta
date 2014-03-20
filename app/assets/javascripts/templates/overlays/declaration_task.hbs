@@ -1,0 +1,14 @@
+<h1>Enter Declarations</h1>
+
+<form>
+  <div class="form-group">
+    <fieldset>
+    {{#each declaration in declarations}}
+        <label>{{declaration.question}}</label>
+      <div>
+        {{textarea value=declaration.answer classNames='form-control' rows='6'}}
+      </div>
+    {{/each}}
+    </fieldset>
+  </div>
+</form>

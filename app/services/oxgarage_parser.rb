@@ -11,7 +11,7 @@ class OxgarageParser
           :url => 'http://ec2-54-193-185-100.us-west-1.compute.amazonaws.com:8080/ege-webservice/Conversions/docx%3Aapplication%3Avnd.openxmlformats-officedocument.wordprocessingml.document/TEI%3Atext%3Axml/xhtml%3Aapplication%3Axhtml%2Bxml/',
           :payload => {
             :multipart => true,
-            :file => File.new(Rails.root.join('about_equations.docx'), 'rb')
+            :file => File.new(@filename, 'rb')
           })
     response = request.execute
 

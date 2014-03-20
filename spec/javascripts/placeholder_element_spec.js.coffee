@@ -66,12 +66,6 @@ describe "Tahi.PlaceholderElement", ->
         @placeholderElement = new Tahi.PlaceholderElement(document.getElementById('title'))
         expect(@placeholderElement.getText()).toEqual('The new Retina iPad minis rock!')
 
-    context "when the element is empty", ->
-      it "returns empty text", ->
-        element = $('<div id="article_body_editable" contenteditable="true" placeholder="Article placeholder text"></div>')
-        @richEditableElement = new Tahi.RichEditableElement(element[0])
-        expect(@richEditableElement.getText()).toEqual('')
-
   describe "#setPlaceholder", ->
     context "when there is no content", ->
       it "places the placeholder text", ->

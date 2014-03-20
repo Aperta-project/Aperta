@@ -79,8 +79,6 @@ gem "bootstrap-sass"
 
 gem 'rails_12factor', group: [:production, :staging]
 
-gem "ckeditor_rails"
-
 gem "nokogiri"
 
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'

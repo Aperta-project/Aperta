@@ -74,8 +74,6 @@ GEM
       railties (>= 3.0)
       sass-rails (>= 3.2)
     chunky_png (1.2.9)
-    ckeditor_rails (4.2.2)
-      railties (>= 3.0)
     codeclimate-test-reporter (0.3.0)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
@@ -335,7 +333,6 @@ DEPENDENCIES
   capybara-webkit
   carrierwave
   chosen-rails (~> 1.0.2)
-  ckeditor_rails
   codeclimate-test-reporter
   coffee-rails (~> 4.0.1)
   database_cleaner

@@ -32,7 +32,6 @@ Tahi.papers =
 
       window.visualEditor = target
 
-      @abstractEditable = new Tahi.RichEditableElement($('#paper-abstract[contenteditable]')[0])
       @titleEditable = new Tahi.PlaceholderElement($('#paper-title[contenteditable]')[0])
 
   savePaper: (url) ->

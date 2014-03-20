@@ -12,6 +12,7 @@ ETahi.Task = DS.Model.extend
   assignees: DS.hasMany('assignee')
   assignee: DS.belongsTo('assignee')
   controllerName: 'task'
+  paper: Ember.computed.alias('phase.paper')
 
 ETahi.PaperReviewerTask = ETahi.Task.extend
   reviewers: DS.hasMany('user')
@@ -29,7 +30,7 @@ ETahi.AuthorsTask = ETahi.Task.extend
   authors: DS.hasMany('user')
 
 ETahi.DeclarationTask = ETahi.Task.extend
-  declarations: a('string')
+  declarations: Ember.computed.alias('paper.declarations')
 
 ETahi.FigureTask = ETahi.Task.extend
   figures: a('string')

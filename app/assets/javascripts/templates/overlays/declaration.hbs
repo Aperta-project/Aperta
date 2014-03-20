@@ -3,15 +3,12 @@
 <form>
   <div class="form-group">
     <fieldset>
-    <div>
-     {{view ETahi.RailsFormView valueBinding='hi' viewName='RailsFormView' classNames='bye'}}
-    </div>
-    <div>
-     {{view ETahi.RailsFormView valueBinding='hi' viewName='RailsFormView'}}
-    </div>
-    <div>
-     {{view ETahi.RailsFormView valueBinding='hi' viewName='RailsFormView'}}
-    </div>
+    {{#each declaration in declarations}}
+        <label>{{declaration.question}}</label>
+      <div>
+        {{textarea value=declaration.answer classNames='form-control' rows='6'}}
+      </div>
+    {{/each}}
     </fieldset>
   </div>
 </form>

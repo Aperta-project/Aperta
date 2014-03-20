@@ -1,5 +1,3 @@
-require 'net/http'
-
 class OxgarageParser
   def initialize(filename)
     @filename = filename

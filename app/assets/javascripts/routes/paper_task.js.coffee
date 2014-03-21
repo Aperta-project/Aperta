@@ -1,7 +1,8 @@
 ETahi.PaperTaskRoute = Ember.Route.extend
   model: (params) ->
     paperTasks = _.flatten @modelFor('paper').get('phases').mapProperty('tasks.content')
-    paperTasks.findBy('id', params.task_id)
+    task = paperTasks.findBy('id', params.task_id)
+    task.reload()
 
   actions:
     saveModel: ->

@@ -5,6 +5,11 @@ ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('assignee')
   phases: DS.hasMany('phase')
   declarations: DS.hasMany('declaration')
+  reviewers: DS.hasMany('user')
+  availableReviewers: DS.hasMany('user')
+  editors: DS.hasMany('user')
+  journal: DS.belongsTo('journal')
+
   displayTitle: (->
     if @get('title.length') > 0
       @get('title')

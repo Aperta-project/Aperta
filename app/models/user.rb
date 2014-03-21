@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_many :papers
   has_many :journal_roles
+  has_many :paper_roles
   has_many :tasks, foreign_key: 'assignee_id'
   has_one :user_settings
 

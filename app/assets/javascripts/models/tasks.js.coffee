@@ -14,7 +14,6 @@ ETahi.Task = DS.Model.extend
   paper: Ember.computed.alias('phase.paper')
 
 ETahi.PaperReviewerTask = ETahi.Task.extend
-  reviewers: DS.hasMany('user')
   reviewer: DS.belongsTo('user')
 
 ETahi.PaperEditorTask = ETahi.Task.extend

@@ -9,6 +9,8 @@ class Paper < ActiveRecord::Base
   has_many :declarations, -> { order :id }
   has_many :figures
   has_many :paper_roles
+  has_many :reviewers, -> { where("paper_roles.reviewer" => true) }, through: :paper_roles, source: :user
+  has_many :editors, -> { where("paper_roles.editor" => true) }, through: :paper_roles, source: :user
 
   has_one :task_manager, inverse_of: :paper
 

@@ -1,3 +1,9 @@
 <h1>Assign Reviewers</h1>
 <label for="reviewer">Reviewers</label>
-{{chosen content=reviewers multiple="multiple" name="reviewer" prompt="Select reviewers" optionValuePath="content.id" optionLabelPath="content.fullName"}}
+
+{{chosen content=model.paper.availableReviewers
+         prompt="Select reviewers"
+         multiple="multiple"
+         value=model.paper.reviewers
+         optionValuePath="content"
+         optionLabelPath="content.fullName"}}

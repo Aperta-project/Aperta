@@ -1,6 +1,9 @@
 ETahi.TaskSerializer = DS.ActiveModelSerializer.extend
+  serializeIntoHash: (data, type, record, options) ->
+      root = 'task'
+      data[root] = this.serialize(record, options)
+
   extractSingle: (store, primaryType, payload, recordId, requestType) ->
-    debugger
     payload = @normalizePayload(primaryType, payload)
     primaryTypeName = primaryType.typeKey
     primaryRecord = undefined
@@ -47,3 +50,15 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend
           store.push typeName, hash
 
     primaryRecord
+
+ETahi.PaperReviewerTaskSerializer = ETahi.TaskSerializer.extend()
+ETahi.PaperEditorTaskSerializer = ETahi.TaskSerializer.extend()
+ETahi.PaperAdminTaskSerializer = ETahi.TaskSerializer.extend()
+ETahi.AuthorsTaskSerializer = ETahi.TaskSerializer.extend()
+ETahi.DeclarationTaskSerializer= ETahi.TaskSerializer.extend()
+ETahi.FigureTaskSerializer= ETahi.TaskSerializer.extend()
+ETahi.MessageTaskSerializer= ETahi.TaskSerializer.extend()
+ETahi.TechCheckTaskSerializer= ETahi.TaskSerializer.extend()
+ETahi.RegisterDecisionTaskSerializer= ETahi.TaskSerializer.extend()
+ETahi.ReviewerReportTaskSerializer= ETahi.TaskSerializer.extend()
+ETahi.UploadManuscriptTaskSerializer= ETahi.TaskSerializer.extend()

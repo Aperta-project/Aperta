@@ -20,8 +20,7 @@ class TasksController < ApplicationController
            end
     if task
       task.update task_params(task)
-      attributes = %w(id completed)
-      render json: task.as_json.slice(*attributes)
+      render json: task
     else
       head :forbidden
     end

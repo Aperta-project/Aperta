@@ -3,6 +3,10 @@ ETahi.PaperTaskRoute = Ember.Route.extend
     paperTasks = _.flatten @modelFor('paper').get('phases').mapProperty('tasks.content')
     paperTasks.findBy('id', params.task_id)
 
+  actions:
+    saveModel: ->
+      @modelFor('paperTask').save()
+
   setupController: (controller, model) ->
     currentPaperId = @controllerFor('paper.manage').get('model.id')
     taskController = @controllerFor model.get('type')

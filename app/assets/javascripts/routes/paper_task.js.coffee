@@ -5,7 +5,9 @@ ETahi.PaperTaskRoute = Ember.Route.extend
 
   setupController: (controller, model) ->
     currentPaperId = @controllerFor('paper.manage').get('model.id')
-    taskController = @controllerFor('task')
+    taskControllerName = model.get('controllerName')
+    taskController = @controllerFor(taskControllerName)
+    @set('taskControllerName', taskControllerName)
     taskController.set('model', model)
     if currentPaperId == model.get('phase.paper.id')
       @set('shouldRenderManager', true)
@@ -17,7 +19,7 @@ ETahi.PaperTaskRoute = Ember.Route.extend
     @render(@get('taskName'),
       into: 'application'
       outlet: 'overlay'
-      controller: 'task')
+      controller: @get('taskControllerName'))
     if @get('shouldRenderManager')
       @render('paper/manage',
         into: 'application')

@@ -1,8 +1,13 @@
 ETahi.NewTaskController = Ember.Controller.extend
+  availableParticipants: (->
+    # change to users or however they want participants
+    @store.all('assignee')
+  ).property()
   actions:
     cancel: ->
-      @get('task').deleteRecord()
+      @get('model').deleteRecord()
       @send('closeOverlay')
     createCard: ->
-      @get('task').save()
+      debugger
+      @get('model').save()
       @send('closeOverlay')

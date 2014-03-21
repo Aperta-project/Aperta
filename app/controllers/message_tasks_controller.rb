@@ -5,13 +5,9 @@ class MessageTasksController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def create
-    # Parameters: {
-    # "message_task"=>{"title"=>"title", "type"=>"MessageTask",
-    # "completed"=>false, "role"=>nil, "body"=>"body", "phase_id"=>"17",
-    # "assignee_id"=>nil}
-    # }
-    message_task = params[:message_task]
-    # then put in the appropriate shiat.
+    # paper_id, phase_id, 
+    # { paper_id: id, phase_id: id, task: {message_body: "body", task_title: "title", participant_ids [1,2,3]}
+    # params.require(:task).permit([:message_body, :message_subject, {participant_ids: []}])
     if current_user.admin
       paper = Paper.find(params[:paper_id])
     else
@@ -41,7 +37,7 @@ class MessageTasksController < ApplicationController
  private
 
   def message_task_params
-    params.require(:message_task).permit([:message_body, :message_subject, {participant_ids: []}])
+    params.require(:task).permit([:message_body, :message_subject, {participant_ids: []}])
   end
 
   def update_participants_params

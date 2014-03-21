@@ -5,7 +5,6 @@ ETahi.Task = DS.Model.extend
   completed: a('boolean')
   role: a('string')
   body: a('string')
-  messageSubject: a('string')
   comments: DS.hasMany('comment')
   isMessage: Ember.computed.equal('type', 'MessageTask')
   phase: DS.belongsTo('phase')
@@ -36,8 +35,7 @@ ETahi.FigureTask = ETahi.Task.extend
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
   comments: DS.hasMany('comment')
-  newCommentBody: ""
-  controllerName: 'messageTask'
+  paper: Ember.computed.alias('phase.paper')
 
 ETahi.TechCheckTask = ETahi.Task.extend()
 ETahi.RegisterDecisionTask = ETahi.Task.extend()

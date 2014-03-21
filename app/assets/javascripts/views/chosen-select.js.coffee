@@ -4,6 +4,11 @@ ETahi.ChosenView = Ember.Select.extend
   disableSearchThreshold: 10
   searchContains: true
   attributeBindings:['multiple', 'width', 'disableSearchThreshold', 'searchContains']
+  changeAction: null
+  change: ->
+    action = @get('changeAction')
+    @get('controller').send(action) if action
+
   didInsertElement: ->
     options =
       multiple: @get('multiple')

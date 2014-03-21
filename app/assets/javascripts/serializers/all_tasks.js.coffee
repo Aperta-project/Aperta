@@ -3,6 +3,12 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend
       root = 'task'
       data[root] = this.serialize(record, options)
 
+  serializeHasMany: (record, json, relationship) ->
+    key = relationship.key
+    relationshipType = DS.RelationshipChange.determineRelationshipType(record.constructor, relationship)
+    json[key] = Em.get(record, key).mapBy("id")  if relationshipType is "manyToNone" or relationshipType is "manyToMany"
+    return
+
   extractSingle: (store, primaryType, payload, recordId, requestType) ->
     payload = @normalizePayload(primaryType, payload)
     primaryTypeName = primaryType.typeKey

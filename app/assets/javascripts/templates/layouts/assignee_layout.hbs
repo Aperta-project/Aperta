@@ -11,7 +11,12 @@
       <div class="content">
         <div class="assignee-drop-down">
           <label for="assignee">This card is owned by</label>
-          {{chosen content=assignees name='assignee' value=assignee.id optionValuePath="content.id" optionLabelPath="content.fullName"}}
+          {{chosen content=assignees name='assignee'
+                    prompt="Please select an assignee"
+                    value=assignee
+                    changeAction='saveModel'
+                    optionValuePath="content"
+                    optionLabelPath="content.fullName"}}
         </div>
         <div class="completed-checkbox">
           {{input type='checkbox' name="task_completed" checked=completed}}

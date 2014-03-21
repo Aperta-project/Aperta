@@ -1,4 +1,4 @@
-ETahi.MessageView = Ember.View.extend
+ETahi.MessageTaskView = Ember.View.extend
   templateName: 'overlays/message'
   layoutName: 'layouts/assignee_layout'
 

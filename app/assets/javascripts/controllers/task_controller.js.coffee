@@ -9,3 +9,7 @@ ETahi.TaskController = Ember.ObjectController.extend
     showManager: ->
       @transitionToRoute('paper.manage', @get('paper'))
 
+  saveOnCompletedChange: (->
+    return unless @get('model.isDirty')
+    @get('model').save()
+  ).observes('model.completed')

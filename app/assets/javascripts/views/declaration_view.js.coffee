@@ -1,5 +1,3 @@
-ETahi.DeclarationView = Ember.View.extend
-  templateName: 'overlays/declaration'
+ETahi.DeclarationTaskView = Ember.View.extend
+  templateName: 'overlays/declaration_task'
   layoutName: 'layouts/overlay_layout'
-  focusOut: (e) ->
-    @get('declaration').save()

@@ -11,7 +11,6 @@ ETahi.Task = DS.Model.extend
   phase: DS.belongsTo('phase')
   assignees: DS.hasMany('assignee')
   assignee: DS.belongsTo('assignee')
-  controllerName: 'task'
   paper: Ember.computed.alias('phase.paper')
 
 ETahi.PaperReviewerTask = ETahi.Task.extend

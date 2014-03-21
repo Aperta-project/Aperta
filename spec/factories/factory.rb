@@ -39,4 +39,9 @@ FactoryGirl.define do
     body "HEY"
   end
 
+  factory :declaration do
+    question "What is the cake?"
+    answer "A lie!"
+  end
+
 end

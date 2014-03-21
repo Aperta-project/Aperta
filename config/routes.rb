@@ -23,6 +23,8 @@ Tahi::Application.routes.draw do
 
   resources :phases, only: [:create, :update, :destroy]
 
+  resources :declarations, only: [:update]
+
   get 'ember', to: 'ember#index'
 
   get 'users/chosen_options', to: 'user_info#thumbnails', defaults: {format: 'json'}

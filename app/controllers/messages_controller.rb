@@ -21,7 +21,7 @@ class MessageTasksController < ApplicationController
     message_task = MessageTaskCreator.with_initial_comment(phase,
                                                            message_task_params,
                                                            current_user)
-    respond_with MessageTaskPresenter.for(message_task).data_attributes, location: task_path(message_task)
+    render json: message_task
   end
 
   def update_participants

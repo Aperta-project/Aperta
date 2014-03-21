@@ -8,6 +8,5 @@ ETahi.NewTaskController = Ember.Controller.extend
       @get('model').deleteRecord()
       @send('closeOverlay')
     createCard: ->
-      debugger
       @get('model').save()
       @send('closeOverlay')

@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :verify_admin!, except: [:show, :update, :update_participants]
+  respond_to :json
 
   def index
     @paper = Paper.includes(:journal, :phases => :tasks).find(params[:id])
@@ -27,10 +28,13 @@ class TasksController < ApplicationController
   end
 
   def create
-    task = Task.new task_params
-    task.role = 'admin'
-    if task.save
-      render json: task
+    klass = "#{params[:task][:type]}"
+    task = "#{klass}Creator".constantize.call(task_params(klass.constantize.new), current_user)
+
+    # task.role = 'admin'
+
+    if task.persisted?
+      respond_with task, location: task_url(task)
     else
       render status: 500
     end

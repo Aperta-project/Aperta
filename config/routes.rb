@@ -29,7 +29,7 @@ Tahi::Application.routes.draw do
 
   get 'users/chosen_options', to: 'user_info#thumbnails', defaults: {format: 'json'}
 
-  resource :flow_manager, only: :show
+  resource :flow_managers, only: :show
 
   resource :user_settings, only: :update
 

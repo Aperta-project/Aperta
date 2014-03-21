@@ -5,3 +5,9 @@ ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('assignee')
   phases: DS.hasMany('phase')
   declarations: DS.hasMany('declaration')
+  displayTitle: (->
+    if @get('title.length') > 0
+      @get('title')
+    else
+      @get 'shortTitle'
+  ).property 'title', 'shortTitle'

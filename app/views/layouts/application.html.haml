@@ -2,9 +2,9 @@
 %html
   %head
     %title Tahi
-    = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
+    = stylesheet_link_tag    "application", media: "all"
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Cabin:400,700,400italic"
-    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = javascript_include_tag "application"
     = csrf_meta_tags
   - body_class = Array(yield :tahi_body_class)
   - body_class << 'matte' if params[:controller] == 'papers'

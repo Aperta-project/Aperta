@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-fileupload/basicplus
 //= require underscore
@@ -26,7 +25,6 @@
 //= require react
 //= require react-chosen
 //= require spin
-//= require turbolinks
 //= require namespace
 //= require handlebars
 //= require ember

@@ -1,3 +1,24 @@
+<div class="control-bar">
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      <li id="control-bar-paper-journal-logo">
+        {{#if paper.logo}}
+          <img src="">
+        {{else}}
+          <div>Logo</div>
+        {{/if}}
+      </li>
+      <li id="control-bar-paper-short-title">
+        <h2 class="tasks-paper-title">{{shortTitle}}</h2>
+      </li>
+    </ul>
+    <ul>
+      <li><a href="#">Manuscript</a></li>
+    </ul>
+  </div>
+</div>
+
+
 <div id="manuscript-manager">
   {{title}}
   <div class="full-height">

@@ -3,13 +3,13 @@
     #control-bar
       %section
         %ul
-          %li#paper-journal
+          %li#control-bar-paper-journal-logo
             - if @paper.journal.logo.present?
               = image_tag @paper.journal.logo.url
             - else
               %div
                 = @paper.journal.name
-          -# %li#paper-short-title{contenteditable: true, placeholder: 'Type your short title here'}
+          -# %li#control-bar-paper-short-title{contenteditable: true, placeholder: 'Type your short title here'}
             = @paper.short_title
         %ul
           - if current_user.admin?

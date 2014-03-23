@@ -21,12 +21,12 @@ ManuscriptHeader = React.createClass
       div {id:'control-bar'},
         section {},
           ul {},
-            li {id:'paper-journal'},
+            li {id:'control-bar-paper-journal-logo'},
               if @props.paper.journal_logo_url
                 img {src: @props.paper.journal_logo_url}
               else
                 div {}, @props.paper.journal_name
-            li {id:'paper-short-title'},
+            li {id:'control-bar-paper-short-title'},
               h2 {className:'tasks-paper-title'}, @props.paper.paper_short_title
           ul {},
             li {},

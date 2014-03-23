@@ -202,3 +202,16 @@ textarea {
 .drop-column {
   opacity: 0.5;
 }
+
+.clear-before-and-after {
+  &:before {
+    content: ' ';
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+    content: ' ';
+    display: table;
+  }
+}

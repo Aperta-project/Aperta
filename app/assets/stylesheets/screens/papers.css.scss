@@ -1,92 +1,24 @@
 $paper-trim-color: $tahi-tertiary;
-$control-bar-background-color: #e1e1e1;
-$control-bar-color: black;
-$control-bar-hover-color: $tahi-primary-hover;
-$control-bar-active-color: $tahi-primary;
-$control-bar-secondary-color: $tahi-tertiary-dark;
-$control-bar-border-color: #939393;
 
-#control-bar-container {
-  background-color: $control-bar-background-color;
-  width: 100%;
-  border-bottom: 1px solid $control-bar-border-color;
+#control-bar-paper-journal-logo {
+  div { padding-top: 6px; }
+  img { height: 36px; }
 }
 
-#control-bar {
-  margin: 0 auto;
-  background-color: $control-bar-background-color;
-  min-width: 960px;
-  max-width: 1120px;
-  padding: 9px 0 5px;
-}
-
-#control-bar section {
-  @extend .collapse, .navbar-collapse;
-  padding-left: 0px;
-}
-
-#control-bar section > ul {
-  @extend .nav, .navbar-nav;
-  color: $control-bar-color;
-
-  li {
-    margin-right: 10px;
-  }
-
-  li > a {
-    padding: 10px;
-    line-height: 14px;
-
-    font-weight: bold;
-    background: none;
-    text-transform: none;
-
-    &:hover {
-      background: none;
-      color: $tahi-primary;
-    }
-  }
-}
-
-#control-bar section > ul:last-of-type {
-  @extend .navbar-right;
-
-  li > a {
-    text-transform: uppercase;
-  }
-
-  li > a[class=primary-button] {
-    @extend .primary-button;
-  }
-}
-
-#paper-journal {
-  div {
-    padding-top: 9px;
-  }
-  img {
-    height: 36px;
-  }
-}
-
-#paper-short-title {
-  font-size: 18px;
-  line-height: 36px;
+#control-bar-paper-short-title {
   min-width: 5px;
-}
+  font-size: 18px;
 
-#paper-short-title h2 {
-  font-family: $tahi-article-font-family;
-  margin: 0;
-  width: 800px;
-  max-height: 70px;
-  overflow: hidden;
-  line-height: 36px;
-}
+  h2 {
+    overflow: hidden;
+    width: 800px;
+    max-height: 70px;
+    font-family: $tahi-article-font-family;
+    line-height: 36px;
 
-#paper-revision {
-  line-height: 36px;
-  color: $control-bar-secondary-color;
+    // override from generic h2:
+    margin: 0;
+  }
 }
 
 #toolbar {

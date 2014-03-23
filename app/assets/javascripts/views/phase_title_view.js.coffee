@@ -6,6 +6,9 @@ ETahi.ColumnTitleView = Em.View.extend
   focusIn: (e)->
     @set('active', true)
 
+  keyUp: (e)->
+    Tahi.utils.resizeColumnHeaders()
+
   actions:
     save: ->
       @set('active', false)

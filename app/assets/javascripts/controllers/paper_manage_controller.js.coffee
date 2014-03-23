@@ -34,9 +34,6 @@ ETahi.PaperManageController = Ember.ObjectController.extend
       task.destroyRecord().then ->
         paper.reload()
 
+    # TODO: can we just call showNewCardOverlay from the template?
     addTask: (phase)->
       @send('showNewCardOverlay', phase)
-
-  refreshColumnHeights: (->
-    Ember.run.next(this, Tahi.utils.resizeColumnHeaders)
-  ).observes('phases.[]', 'phases.@each.name')

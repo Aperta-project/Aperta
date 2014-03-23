@@ -7,12 +7,11 @@ ETahi.PaperManageController = Ember.ObjectController.extend
   ).property('model.phases.@each')
 
   updatePositions: (phase)->
-    relevantPhases = _(this.get('model.phases').content).filter((p)->
+    relevantPhases = this.get('model.phases').filter((p)->
       p != phase && p.get('position') >= phase.get('position')
     )
-    _(relevantPhases).each((p)->
-      p.incrementProperty('position')
-    )
+
+    relevantPhases.invoke('incrementProperty', 'position')
 
   actions:
     addPhase: (position) ->

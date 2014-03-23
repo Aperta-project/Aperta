@@ -5,7 +5,7 @@
   background-color: $tahi-primary;
   -webkit-font-smoothing: antialiased;
 
-  &:hover {
+  &:focus, &:hover {
     background-color: $btn-primary-bg-hover;
   }
 

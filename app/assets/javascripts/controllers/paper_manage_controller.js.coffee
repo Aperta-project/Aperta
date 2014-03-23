@@ -33,7 +33,3 @@ ETahi.PaperManageController = Ember.ObjectController.extend
       paper = task.get('phase.paper')
       task.destroyRecord().then ->
         paper.reload()
-
-    # TODO: can we just call showNewCardOverlay from the template?
-    addTask: (phase)->
-      @send('showNewCardOverlay', phase)

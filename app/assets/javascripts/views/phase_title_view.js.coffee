@@ -12,8 +12,8 @@ ETahi.ColumnTitleView = Em.View.extend
   actions:
     save: ->
       @set('active', false)
-      name = @.$('h2').get(0).innerText
-      phase = @.get('phase')
+      name = @$('h2').get(0).innerText
+      phase = @get('phase')
 
       if phase.get('name') != name
         phase.set('name', name)

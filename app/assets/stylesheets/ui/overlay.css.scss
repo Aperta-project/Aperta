@@ -1,4 +1,4 @@
-#overlay {
+.overlay {
   background-color: rgba(255,255,255,0.98);
   bottom: 0;
   left: 0;
@@ -9,12 +9,12 @@
   top: 0;
   z-index: 9999;
 }
-#overlay {
+.overlay {
   background-color: rgba(0,0,0,0.7);
   height: 100%;
 }
 
-#overlay > div {
+.overlay > div {
   padding: 10px 80px;
   width: 1120px;
   background: white;
@@ -58,7 +58,7 @@
   font-style: italic;
 }
 
-#overlay main {
+.overlay main {
   min-height: 300px;
   padding:8px;
   margin: 0 auto;
@@ -71,27 +71,27 @@
   border-bottom: 1px solid black;
 }
 
-#overlay main p {
+.overlay main p {
   margin: 15px;
 }
 
-#overlay header,
-#overlay footer {
+.overlay header,
+.overlay footer {
   @extend .row;
   position: relative;
 }
 
-#overlay footer {
+.overlay footer {
   margin: 0;
   padding-bottom: 50px;
 }
 
-#overlay header {
+.overlay header {
   margin: 0;
   padding-top: 50px;
 }
 
-#overlay header {
+.overlay header {
   > h2, > h2 > a {
     padding: 0;
     padding-right: 15px;
@@ -104,27 +104,27 @@
   }
 }
 
-#overlay footer {
+.overlay footer {
   margin-top: 10px;
   margin-bottom: 0;
 }
 
-#overlay header h2 {
+.overlay header h2 {
   @extend .col-xs-10;
   margin: 0 0 15px 0;
 }
 
-#overlay header > a {
+.overlay header > a {
   @extend .col-xs-2;
   bottom: 10px;
   position: absolute;
 }
 
-#overlay footer > a {
+.overlay footer > a {
   @extend .col-xs-2;
 }
 
-#overlay footer .content {
+.overlay footer .content {
   @extend .col-xs-10;
   margin-top: 5px;
 
@@ -148,23 +148,23 @@
   }
 }
 
-#overlay h1 {
+.overlay h1 {
   font-size: 48px;
   margin: 0 0 20px 0;
 }
 
-#overlay input#task_title {
+.overlay input#task_title {
   width: 360px;
   border-radius: 3px;
   border: 1px solid $tahi-matte;
   padding: 5px;
 }
 
-#overlay label {
+.overlay label {
   padding-right: 25px;
 }
 
-#overlay textarea#task_body {
+.overlay textarea#task_body {
   width: 660px;
   height: 90px;
   border-radius: 3px;
@@ -286,16 +286,16 @@
 }
 
 
-#overlay .message-overlay header h2  a {
+.overlay .message-overlay header h2  a {
   color: $tahi-message;
 }
 
-#overlay .message-overlay footer .primary-button,
-#overlay .message-overlay header .primary-button {
+.overlay .message-overlay footer .primary-button,
+.overlay .message-overlay header .primary-button {
   background-color: $tahi-message;
 }
 
-#overlay .message-overlay footer .content .completed-checkbox {
+.overlay .message-overlay footer .content .completed-checkbox {
   color: $tahi-message;
 }
 

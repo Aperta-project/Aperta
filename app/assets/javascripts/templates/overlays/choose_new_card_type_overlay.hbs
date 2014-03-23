@@ -1,0 +1,15 @@
+<div class="choose-card-type-overlay">
+  <div id="choose-card-type">
+    <h2>Would you like to post a task or a message? </h2>
+
+    <div id="choose-card-type-buttons">
+      <button class="primary-button task" {{action "showTaskCreationOverlay" phase}}>
+        New Task Card
+      </button>
+      <button class="primary-button message" {{action "showMessageCreationOverlay" phase}}>
+        New Message Card
+      </button>
+      <a class="cancel" {{action 'closeOverlay'}}>cancel</a>
+    </div>
+  </div>
+</div>

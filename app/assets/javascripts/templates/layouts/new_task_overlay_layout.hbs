@@ -1,0 +1,16 @@
+<div class="overlay">
+  <div>
+    <header><h2>{{paper.shortTitle}}</h2></header>
+
+    <main>
+      {{yield}}
+    </main>
+
+    <footer>
+      <div class="content">
+        <a class="close-overlay" {{action 'cancel'}}>Cancel</a>
+      </div>
+      <a class="primary-button" {{action 'createCard'}}>Create card</a>
+    </footer>
+  </div>
+</div>

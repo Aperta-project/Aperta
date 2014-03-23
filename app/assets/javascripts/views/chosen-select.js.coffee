@@ -9,7 +9,7 @@ ETahi.ChosenView = Ember.Select.extend
     action = @get('changeAction')
     @get('controller').send(action) if action
 
-  didInsertElement: ->
+  setup: (->
     options =
       multiple: @get('multiple')
       width: @get('width')
@@ -31,6 +31,7 @@ ETahi.ChosenView = Ember.Select.extend
 
     @addObserver @get("optionLabelPath").replace(/^content/, "content.@each"), =>
       @rerenderChosen()
+  ).on('didInsertElement')
 
   cleanSearchText: (option, context) ->
     option.text

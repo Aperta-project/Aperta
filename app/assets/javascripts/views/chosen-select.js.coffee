@@ -33,6 +33,10 @@ ETahi.ChosenView = Ember.Select.extend
       @rerenderChosen()
   ).on('didInsertElement')
 
+  teardown: (->
+    @.$().chosen('destroy')
+  ).on('willDestroyElement')
+
   cleanSearchText: (option, context) ->
     option.text
 

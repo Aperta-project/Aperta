@@ -9,7 +9,7 @@ ETahi.UploadManuscriptOverlayView = Ember.View.extend
     uploader = $('.js-jquery-fileupload')
 
     uploader.fileupload
-      url: '/papers/1/upload'
+      url: "/papers/#{@controller.get('paper.id')}/upload"
       dataType: 'json'
       method: 'PATCH'
 

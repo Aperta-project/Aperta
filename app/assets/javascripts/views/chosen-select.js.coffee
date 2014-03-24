@@ -3,7 +3,7 @@ ETahi.ChosenView = Ember.Select.extend
   width: '200px'
   disableSearchThreshold: 10
   searchContains: true
-  attributeBindings:['multiple', 'width', 'disableSearchThreshold', 'searchContains']
+  attributeBindings:['multiple', 'width', 'disableSearchThreshold', 'searchContains', 'data-placeholder']
   changeAction: null
   change: ->
     action = @get('changeAction')
@@ -21,11 +21,6 @@ ETahi.ChosenView = Ember.Select.extend
 
     options.clean_search_text = @cleanSearchText
     options.calling_context = @
-
-    if @get('multiple')
-      options.placeholder_text_multiple = @get('prompt');
-    else
-      options.placeholder_text_single = @get('prompt');
 
     @.$().chosen(options)
 

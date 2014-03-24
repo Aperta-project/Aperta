@@ -31,19 +31,11 @@ class TasksController < ApplicationController
     klass = "#{params[:task][:type]}"
     task = "#{klass}Creator".constantize.call(task_params(klass.constantize.new), current_user)
 
-    # task.role = 'admin'
-
     if task.persisted?
       respond_with task, location: task_url(task)
     else
       render status: 500
     end
-
-    # if task.save
-    #   render json: task
-    # else
-    #   render status: 500
-    # end
   end
 
   def show

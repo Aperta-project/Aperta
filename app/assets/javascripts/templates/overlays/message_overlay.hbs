@@ -3,9 +3,10 @@
     {{#each p in participants}}
       <li class='participant'>{{userThumbnail p}}</li>
     {{/each}}
-    <li class="chosen-li participant">
+    <li class="chosen-style-override participant">
       {{chosen content=participants
                name="participants"
+               width="150px"
                prompt="Add People"
                optionValuePath="content.id"
                optionLabelPath="content.fullName"}}

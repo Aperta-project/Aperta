@@ -382,7 +382,7 @@ $message-body-width: 700px;
   }
 }
 
-.chosen-li .chosen-container-single .chosen-single {
+.chosen-style-override .chosen-container-single .chosen-single {
   height: 40px;
   background: white;
   border: 1px solid #5d4aac;
@@ -398,7 +398,7 @@ $message-body-width: 700px;
   }
 }
 
-.chosen-li .chosen-container-active.chosen-with-drop .chosen-single div b {
+.chosen-style-override .chosen-container-active.chosen-with-drop .chosen-single div b {
   background-position: -18px 8px;
 }
 

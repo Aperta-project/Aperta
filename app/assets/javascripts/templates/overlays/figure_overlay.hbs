@@ -1,0 +1,26 @@
+<h1>{{model.title}}</h1>
+
+<span class="secondary-button fileinput-button">
+  <span>Add new Figures</span>
+  <input id="figure_attachment" class="js-jquery-fileupload" multiple="" type="file">
+  {{file-uploader id='figure_attachment'
+                  class='js-jquery-fileupload'
+                  multiple=true
+                  type='file'}}
+</span>
+
+<ul id="paper-figure-uploads"></ul>
+<ul id="paper-figures">
+
+</ul>
+
+USED FOR REFERENCE:
+<ul id="paper-manuscript-upload">
+  <li>
+    <div class="preview-container glyphicon glyphicon-file"></div>
+
+    <div class="progress">
+      <div class="progress-bar" {{bind-attr style=view.progressBarStyle}}></div>
+    </div>
+  </li>
+</ul>

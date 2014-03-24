@@ -164,7 +164,7 @@
   padding-right: 25px;
 }
 
-.overlay #task_body {
+.overlay #task_body, .new-comment {
   width: 700px;
   height: 90px;
   border-radius: 3px;
@@ -336,12 +336,6 @@ $message-body-width: 700px;
     }
   }
 
-  .comment-buttons {
-    width: $message-body-width;
-    .message {
-      float: right;
-    }
-  }
   .chosen-single {
     height: 40px;
     background: white;
@@ -378,6 +372,13 @@ $message-body-width: 700px;
         margin-right: 10px;
       }
     }
+  }
+}
+
+.comment-buttons {
+  width: $message-body-width;
+  .message {
+    float: right;
   }
 }
 

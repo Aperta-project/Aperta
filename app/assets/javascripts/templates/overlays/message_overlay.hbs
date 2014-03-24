@@ -1,10 +1,9 @@
-<div id="participants">
-  <ul>
+<div>
+  <ul class="participants">
     {{#each p in participants}}
       <li class='participant'>{{userThumbnail p}}</li>
     {{/each}}
     <li>
-      <label for="participants">Add People</label>
       {{chosen content=participants
                name="participants"
                prompt="Add People"
@@ -21,17 +20,17 @@
       <span class="comment-date">
         {{comment.createdAt}}
       </span>
-      <span class="comment-name">{{comment.name}} posted</span>
-      <span class="comment-body">{{comment.body}}</span>
+      <span class="comment-name">{{comment.commenter.fullName}} posted</span>
+      <div class="comment-body">{{comment.body}}</div>
     </li>
   {{/each}}
 </ul>
 
 <div class="form-group">
-  {{textarea value=newCommentBody placeholder="Type your message here"}}
+  {{textarea classNames="new-comment" value=newCommentBody placeholder="Type your message here"}}
 </div>
 
-<div class="comment-buttons">
+<div class="comment-buttons message-overlay">
   <a class="message-color" {{action 'clearMessageContent'}}>Cancel</a>
   <button type="submit" class="secondary-button message" {{action 'postComment'}}>Post Message</button>
 </div>

@@ -3,7 +3,7 @@ class DeclarationsController < ApplicationController
   def update
     @declaration = Declaration.find(params[:id])
     @declaration.update_attributes(declaration_params)
-    head :update
+    head :no_content
   end
 
   private

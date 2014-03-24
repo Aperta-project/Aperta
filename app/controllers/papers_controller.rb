@@ -54,7 +54,7 @@ class PapersController < ApplicationController
 
     manuscript_data = DocumentParser.parse(params[:upload_file].path)
     @paper.update manuscript_data
-    redirect_to edit_paper_path(@paper)
+    head :no_content
   end
 
   private

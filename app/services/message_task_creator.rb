@@ -1,4 +1,4 @@
-class MessageTaskCreator
+module MessageTaskCreator
   def self.call(message_params, creator)
     phase = Phase.find message_params[:phase_id]
     subject = message_params[:title]

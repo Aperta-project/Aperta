@@ -38,6 +38,12 @@ class TasksController < ApplicationController
     else
       render status: 500
     end
+
+    # if task.save
+    #   render json: task
+    # else
+    #   render status: 500
+    # end
   end
 
   def show

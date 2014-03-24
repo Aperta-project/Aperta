@@ -1,6 +1,6 @@
 ETahi.ChosenView = Ember.Select.extend
   multiple: false
-  width: '150px'
+  width: '200px'
   disableSearchThreshold: 10
   searchContains: true
   attributeBindings:['multiple', 'width', 'disableSearchThreshold', 'searchContains', 'data-placeholder']

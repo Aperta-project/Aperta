@@ -1,16 +1,16 @@
 <div>
+  {{chosen content=availableParticipants
+     optionLabelPath="content.fullName"
+     optionValuePath="content"
+     selectionBinding=model.participants
+     multiple=true
+     prompt="Add people"}}
   <ul class="participants">
     {{#each p in model.participants}}
       <li class="participant">
         {{userThumbnail p}}
       </li>
     {{/each}}
-    {{chosen content=availableParticipants
-       optionLabelPath="content.fullName"
-       optionValuePath="content"
-       selectionBinding=model.participants
-       multiple=true
-       prompt="Add people"}}
   </ul>
 </div>
 

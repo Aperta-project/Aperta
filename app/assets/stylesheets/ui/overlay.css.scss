@@ -153,8 +153,8 @@
   margin: 0 0 20px 0;
 }
 
-.overlay input#task_title {
-  width: 360px;
+.overlay #task_title {
+  width: 700px;
   border-radius: 3px;
   border: 1px solid $tahi-matte;
   padding: 5px;
@@ -164,8 +164,8 @@
   padding-right: 25px;
 }
 
-.overlay textarea#task_body {
-  width: 660px;
+.overlay #task_body {
+  width: 700px;
   height: 90px;
   border-radius: 3px;
   border: 1px solid $tahi-matte;

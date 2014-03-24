@@ -2,8 +2,9 @@
 <label for="reviewer">Reviewers</label>
 
 {{chosen content=model.paper.availableReviewers
-         prompt="Select reviewers"
          multiple="multiple"
          value=model.paper.reviewers
          optionValuePath="content"
-         optionLabelPath="content.fullName"}}
+         optionLabelPath="content.fullName"
+         data-placeholder="Select reviewers"
+}}

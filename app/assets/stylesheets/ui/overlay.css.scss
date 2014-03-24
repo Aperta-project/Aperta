@@ -382,6 +382,26 @@ $message-body-width: 700px;
   }
 }
 
+.chosen-li .chosen-container-single .chosen-single {
+  height: 40px;
+  background: white;
+  border: 1px solid #5d4aac;
+  font-size: 18px;
+  color: #5d4aac;
+  text-transform: uppercase;
+  span {
+    color: $tahi-message;
+    margin-top: 8px;
+  }
+  div b {
+    background-position: 0px 8px;
+  }
+}
+
+.chosen-li .chosen-container-active.chosen-with-drop .chosen-single div b {
+  background-position: -18px 8px;
+}
+
 .message-comments {
   list-style-type: none;
   padding-left: 10px;

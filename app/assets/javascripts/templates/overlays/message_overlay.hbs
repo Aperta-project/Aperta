@@ -3,7 +3,7 @@
     {{#each p in participants}}
       <li class='participant'>{{userThumbnail p}}</li>
     {{/each}}
-    <li>
+    <li class="chosen-li participant">
       {{chosen content=participants
                name="participants"
                prompt="Add People"

@@ -1,8 +1,6 @@
 ETahi.NewCardOverlayController = Ember.Controller.extend
   availableParticipants: (->
-    # TODO: change to users or however they want participants
-    # @store.all('assignee')
-    @store.all('user')
+    @store.all('user') #simply getting all users for now
   ).property()
 
   actions:

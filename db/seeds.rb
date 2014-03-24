@@ -35,4 +35,16 @@ when 'development'
 
   mike.journal_roles.create(admin: true, journal_id: plos_journal.id)
 
+  # make some extra users
+  (1..10).each {|i|
+    u = User.create(
+      first_name: "Name#{i}",
+      last_name: "Last#{i}",
+      email: "email#{i}@example.com",
+      username: "dumbuser#{i}",
+      password:"password1",
+      admin: true,
+      affiliation:"skyline")
+    u.journal_roles.create(journal_id: plos_journal.id, admin: true)
+  }
 end

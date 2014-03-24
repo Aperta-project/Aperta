@@ -20,6 +20,7 @@ ETahi.ApplicationRoute = Ember.Route.extend
         {phase: phase, type: taskType.replace(/^new/, ''), paper_id: paper.get('id')})
 
       @controllerFor('newCardOverlay').set('model', newTask)
+      @controllerFor('newCardOverlay').set('paper', paper)
 
       @render(tmplName,
         into: 'application'

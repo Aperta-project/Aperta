@@ -18,7 +18,7 @@
     <li class="message-comment">
       {{userThumbnail comment.commenter}}
       <span class="comment-date">
-        {{comment.createdAt}}
+        {{formattedTime comment.createdAt}}
       </span>
       <span class="comment-name">{{comment.commenter.fullName}} posted</span>
       <div class="comment-body">{{comment.body}}</div>

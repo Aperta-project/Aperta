@@ -1,12 +1,10 @@
-<div id="participants">
-  <ul>
-    PARTICIPANT THUMBNAILS:
-    {{#each p in selectedUsers}}
+<div>
+  <ul class="participants">
+    {{#each p in model.participants}}
       <li class="participant">
         {{userThumbnail p}}
       </li>
     {{/each}}
-    FIX ME
     {{chosen content=availableParticipants
        optionLabelPath="content.fullName"
        optionValuePath="content"
@@ -15,9 +13,12 @@
        prompt="Add people"}}
   </ul>
 </div>
-<div>
+
+<div class="form-group">
   {{input id="task_title" value=model.title placeholder="Type a short card title here"}}
 </div>
 
+<div class="form-group">
 {{textarea id="task_body" value=model.body placeholder="Provide some details here"}}
+</div>
 

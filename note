@@ -1,6 +1,0 @@
-- Create declaration_answer_template
-- Create declaration_answer_view
-- Bind textarea value to declaration.answer
-- send save action to declaration_controller
-- Establish declaration PUT route
-- Update declaration in Rails controler somehow

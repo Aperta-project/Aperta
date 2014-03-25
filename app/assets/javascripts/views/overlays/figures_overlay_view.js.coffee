@@ -1,3 +1,35 @@
-ETahi.FiguresOverlayView = Ember.View.extend
-  templateName: 'overlays/upload_figures_overlay'
-  layoutName: 'layouts/assignee_overlay_layout'
+ETahi.FigureOverlayView = Ember.View.extend
+  templateName: 'overlays/figure_overlay'
+  layoutName: 'layouts/assignee_overlay_layout' #TODO: include assignee here?
+  uploads: Ember.ArrayController.create content: []
+  figures: Ember.ArrayController.create content: []
+
+  didInsertElement: ->
+    uploader = $('.js-jquery-fileupload')
+    uploader.fileupload
+      url: "/papers/#{@controller.get('paper.id')}/figures"
+      dataType: 'json'
+      method: 'POST'
+
+    uploader.on 'fileuploadprocessalways', (e, data) =>
+      file = data.files[0]
+      @uploads.pushObject
+        filename: file.name
+        preview: file.preview?.toDataURL()
+        progress: 0
+        progressBarStyle: "width: 0%;"
+
+
+    uploader.on 'fileuploadprogress', (e, data) =>
+      currentUpload = @uploads.findBy('filename', data.files[0].name)
+      progress = parseInt(data.loaded / data.total * 100.0, 10) #rounds the number
+      Ember.setProperties currentUpload,
+        progress: progress
+        progressBarStyle: "width: #{progress}%;"
+
+    uploader.on 'fileuploaddone', (e, data) =>
+      newUpload = @uploads.findBy 'filename', data.files[0].name
+      @uploads.removeObject newUpload
+      @figures.pushObject
+        src: data.result.figures[0].src
+        alt: data.result.figures[0].alt

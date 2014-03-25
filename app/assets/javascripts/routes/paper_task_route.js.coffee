@@ -14,6 +14,7 @@ ETahi.PaperTaskRoute = Ember.Route.extend
 
     taskController = @controllerFor(baseObjectName)
     taskController.set('model', model)
+    taskController.set('paper', model.get('paper'))
     @set('taskController', taskController)
 
     currentPaperId = @controllerFor('paper.manage').get('model.id')

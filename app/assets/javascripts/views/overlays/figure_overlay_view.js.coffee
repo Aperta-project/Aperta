@@ -2,9 +2,10 @@ ETahi.FigureOverlayView = Ember.View.extend
   templateName: 'overlays/figure_overlay'
   layoutName: 'layouts/assignee_overlay_layout' #TODO: include assignee here?
   uploads: Ember.ArrayController.create content: []
-  figures: Ember.ArrayController.create content: []
+  figures: null
 
   didInsertElement: ->
+    @set 'figures', @get('controller.model.figures')
     uploader = $('.js-jquery-fileupload')
     uploader.fileupload
       url: "/papers/#{@controller.get('paper.id')}/figures"
@@ -30,6 +31,9 @@ ETahi.FigureOverlayView = Ember.View.extend
     uploader.on 'fileuploaddone', (e, data) =>
       newUpload = @uploads.findBy 'filename', data.files[0].name
       @uploads.removeObject newUpload
-      @figures.pushObject
-        src: data.result.figures[0].src
-        alt: data.result.figures[0].alt
+
+      store = @get('controller.store')
+      updatedFigures = _.map data.result.figures, (figure) ->
+        store.createRecord 'figure', figure
+
+      @figures.pushObjects updatedFigures

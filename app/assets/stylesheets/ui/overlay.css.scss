@@ -91,18 +91,21 @@
   padding-top: 50px;
 }
 
-.overlay header {
-  > h2, > h2 > a {
-    padding: 0;
-    padding-right: 15px;
-    font-size: 18px;
-    font-family: $tahi-font-family;
-    color: $btn-primary-bg;
-    &:hover {
-      text-decoration: none;
-    }
+.overlay-paper-title {
+  padding: 0;
+  padding-right: 15px;
+  font-size: 18px;
+  font-family: $tahi-font-family;
+  color: $btn-primary-bg;
+  &:hover {
+    text-decoration: none;
   }
 }
+
+.message .overlay-paper-title {
+  color: $tahi-message;
+}
+
 
 .overlay footer {
   margin-top: 10px;
@@ -140,12 +143,13 @@
     @extend .col-xs-9;
   }
 
-  .completed-checkbox {
-    @extend .col-xs-3;
-    text-align: right;
-    text-transform: uppercase;
-    color: $tahi-primary;
-  }
+}
+
+.completed-checkbox {
+  @extend .col-xs-3;
+  text-align: right;
+  text-transform: uppercase;
+  color: $tahi-primary;
 }
 
 .overlay h1 {
@@ -166,8 +170,8 @@
 
 .overlay #task_body, .new-comment {
   width: 700px;
-  height: 90px;
-  border-radius: 3px;
+  height: 60px;
+  border-radius: 5px;
   border: 1px solid $tahi-matte;
   padding: 5px;
 }
@@ -286,16 +290,12 @@
 }
 
 
-.overlay .message-overlay header h2  a {
-  color: $tahi-message;
-}
-
 .overlay .message-overlay footer .primary-button,
 .overlay .message-overlay header .primary-button {
   background-color: $tahi-message;
 }
 
-.overlay .message-overlay footer .content .completed-checkbox {
+.message .completed-checkbox {
   color: $tahi-message;
 }
 
@@ -385,16 +385,24 @@ $message-body-width: 700px;
 .chosen-style-override .chosen-container-single .chosen-single {
   height: 40px;
   background: white;
-  border: 1px solid #5d4aac;
+  border: 1px solid $tahi-primary;
   font-size: 18px;
-  color: #5d4aac;
+  color: $tahi-primary;
   text-transform: uppercase;
   span {
-    color: $tahi-message;
+    color: $tahi-primary;
     margin-top: 8px;
   }
   div b {
     background-position: 0px 8px;
+  }
+}
+
+.message .chosen-style-override .chosen-container-single .chosen-single {
+  border-color: $tahi-message;
+  color: $tahi-message;
+  span {
+    color: $tahi-message;
   }
 }
 

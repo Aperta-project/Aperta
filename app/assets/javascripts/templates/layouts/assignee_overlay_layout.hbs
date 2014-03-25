@@ -1,8 +1,8 @@
-<div class="overlay">
+<div {{bind-attr class=":overlay message"}}>
   <div>
     <header>
-      <h2><a href='paperpath'>{{paper.displayTitle}}</a></h2>
-      <a class="primary-button" {{action 'closeAction'}}>Close</a>
+      <h2><a class="overlay-paper-title" href='paperpath'>{{paper.displayTitle}}</a></h2>
+      <a {{bind-attr class=":primary-button message"}} {{action 'closeAction'}}>Close</a>
     </header>
     <main>
       {{yield}}
@@ -23,7 +23,7 @@
           <label for="task_completed">Completed</label>
         </div>
       </div>
-      <a class="primary-button" {{action 'closeAction'}}>Close</a>
+      <a {{bind-attr class=":primary-button message"}} {{action 'closeAction'}}>Close</a>
     </footer>
   </div>
 </div>

@@ -1,6 +1,8 @@
 ETahi.MessageOverlayController = ETahi.TaskController.extend
   newCommentBody: ""
 
+  message: true
+
   _clearNewMessage: ->
     @set('newCommentBody', "")
 

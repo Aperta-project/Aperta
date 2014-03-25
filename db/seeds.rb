@@ -33,7 +33,7 @@ when 'development'
     body: "The quick man bear pig jumped over the fox"
   )
 
-  mike.journal_roles.create(admin: true, journal_id: plos_journal.id)
+  mike.journal_roles.create(admin: true, reviewer: true, editor: true, journal_id: plos_journal.id)
 
   # make some extra users
   (1..10).each {|i|
@@ -45,6 +45,6 @@ when 'development'
       password:"password1",
       admin: true,
       affiliation:"skyline")
-    u.journal_roles.create(journal_id: plos_journal.id, admin: true)
+    u.journal_roles.create(journal_id: plos_journal.id, admin: true, editor: true, reviewer: true)
   }
 end

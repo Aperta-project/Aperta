@@ -9,6 +9,7 @@ ETahi.Paper = DS.Model.extend
   availableReviewers: DS.hasMany('user')
   editors: DS.hasMany('user')
   journal: DS.belongsTo('journal')
+  figures: DS.hasMany('figure')
 
   displayTitle: (->
     if @get('title.length') > 0

@@ -6,7 +6,7 @@ ETahi.Paper = DS.Model.extend
   phases: DS.hasMany('phase')
   declarations: DS.hasMany('declaration')
   reviewers: DS.hasMany('user')
-  availableReviewers: DS.hasMany('user')
+  availableReviewers: Ember.computed.alias('journal.reviewers')
   editors: DS.hasMany('user')
   journal: DS.belongsTo('journal')
   figures: DS.hasMany('figure')

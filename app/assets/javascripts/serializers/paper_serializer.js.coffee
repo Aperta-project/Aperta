@@ -14,10 +14,23 @@ ETahi.PaperSerializer = DS.ActiveModelSerializer.extend
 
     payload
 
+  relationshipMap: ->
+    {
+      manyToNone: true
+      manyToMany: true
+      manyToOne: true
+    }
+
+  toSnakeCase: (string)->
+    string.replace /([A-Z])/g, ($1)->
+      "_" + $1.toLowerCase()
+
   serializeHasMany: (record, json, relationship) ->
     key = relationship.key
+    idsKey = key.substr(0, key.length-1) + "_ids"
     relationshipType = DS.RelationshipChange.determineRelationshipType(record.constructor, relationship)
-    json[key] = Em.get(record, key).mapBy("id")  if relationshipType is "manyToNone" or relationshipType is "manyToMany"
+    if @relationshipMap relationshipType
+      json[@toSnakeCase(idsKey)] = Em.get(record, key).mapBy("id")
     return
 
   extractSingle: (store, primaryType, payload, recordId, requestType) ->

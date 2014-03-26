@@ -14,7 +14,6 @@ class Paper < ActiveRecord::Base
 
   has_one :task_manager, inverse_of: :paper
 
-  accepts_nested_attributes_for :declarations
   serialize :authors, Array
 
   validates :paper_type, inclusion: { in: PAPER_TYPES }

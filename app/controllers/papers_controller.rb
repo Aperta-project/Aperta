@@ -39,13 +39,11 @@ class PapersController < ApplicationController
 
   def update
     @paper = Paper.find(params[:id])
-    params[:paper][:authors] = JSON.parse params[:paper][:authors] if params[:paper].has_key? :authors
-
     if @paper.update paper_params
-      respond_to do |f|
-        f.html { redirect_to root_path }
-        f.json { head :no_content }
-      end
+      PaperRole.where(user_id: params[:paper][:reviewer_ids]).update_all reviewer: true
+      render json: @paper
+    else
+      render status: 500
     end
   end
 
@@ -63,9 +61,11 @@ class PapersController < ApplicationController
     params.require(:paper).permit(
       :short_title, :title, :abstract,
       :body, :paper_type, :submitted,
-      :journal_id, declarations_attributes: [:id, :answer],
+      :journal_id,
       authors: [:first_name, :last_name, :affiliation, :email],
-      reviewers_attributes: [:id]
+      declaration_ids: [],
+      reviewer_ids: [],
+      phase_ids: []
     )
   end
 end

@@ -6,4 +6,3 @@ ETahi.User = DS.Model.extend
 
 ETahi.Assignee = ETahi.User.extend()
 ETahi.Reviewer = ETahi.User.extend()
-ETahi.AvailableReviewer = ETahi.User.extend()

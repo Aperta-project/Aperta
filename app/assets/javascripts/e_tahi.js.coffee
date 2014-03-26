@@ -1,4 +1,5 @@
 #= require ./store
+#= require_tree ./mixins
 #= require_tree ./models
 #= require ./controllers/task_controller
 #= require_tree ./controllers

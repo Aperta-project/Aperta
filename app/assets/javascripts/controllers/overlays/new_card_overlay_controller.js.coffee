@@ -1,8 +1,4 @@
-ETahi.NewCardOverlayController = Ember.Controller.extend
-  availableParticipants: (->
-    @store.all('user') #simply getting all users for now
-  ).property()
-
+ETahi.NewCardOverlayController = Ember.Controller.extend ETahi.ControllerParticipants,
   actions:
     cancel: ->
       @get('model').deleteRecord()

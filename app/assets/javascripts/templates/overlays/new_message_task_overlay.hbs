@@ -2,10 +2,8 @@
   {{chosen content=availableParticipants
      optionLabelPath="content.fullName"
      optionValuePath="content"
-     selectionBinding=model.participants
-     multiple=true
-     data-placeholder="Add people"
-   }}
+     value=selectedUser
+     prompt="Add people"}}
   <ul class="participants">
     {{#each p in model.participants}}
       <li class="participant">

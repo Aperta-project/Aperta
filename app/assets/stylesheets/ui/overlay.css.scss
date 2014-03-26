@@ -285,6 +285,10 @@
   transform: scale(2);
 }
 
+.decision-letter-description {
+  font-size: 18px;
+}
+
 .white-overlay {
   background: white !important;
 }
@@ -439,3 +443,11 @@ $message-body-width: 700px;
   line-height: 1.3;
   width: $message-body-width;
 }
+
+.author-form {
+  display: none;
+  &.show-new-author-form {
+    display: block;
+  }
+}
+

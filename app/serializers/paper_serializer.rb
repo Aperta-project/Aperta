@@ -8,7 +8,7 @@ class PaperSerializer < ActiveModel::Serializer
   has_one :journal, embed: :ids, include: true
 
   def admin_id
-    object.admin.id
+    object.admin.try(:id)
   end
 
   def authors

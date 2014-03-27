@@ -12,15 +12,7 @@ ETahi.Paper = DS.Model.extend
   editors: DS.hasMany('user')
   journal: DS.belongsTo('journal')
   figures: DS.hasMany('figure')
-  authors: a('string')
-  authorsArray: (->
-    authors = JSON.parse @get('authors')
-    _.each authors, (author) ->
-      author.firstName = author.first_name
-      author.lastName = author.last_name
-      delete author.first_name
-      delete author.last_name
-  ).property 'authors'
+  authors: a()
 
   displayTitle: (->
     if @get('title.length') > 0

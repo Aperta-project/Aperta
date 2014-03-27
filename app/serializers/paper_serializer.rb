@@ -7,6 +7,6 @@ class PaperSerializer < ActiveModel::Serializer
   has_one :journal, embed: :ids, include: true
 
   def authors
-    object.authors.to_json
+    object.authors
   end
 end

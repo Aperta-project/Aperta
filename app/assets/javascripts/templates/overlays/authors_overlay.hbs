@@ -1,24 +1,20 @@
 <h1>{{title}}</h1>
-<a class="btn btn-default btn-xs" {{action 'addNewAuthor' target='view'}}>
+<a class="btn btn-default btn-xs" {{action 'toggleAuthorForm'}}>
   <span class="glyphicon glyphicon-plus-sign"></span>
   Add new
 </a>
 <div {{bind-attr class=":author-form showNewAuthorForm"}}>
-  heres the author form
+  {{view ETahi.AddAuthorView newAuthor=newAuthor}}
 </div>
 <ul class="authors">
-  {{#each author in authors}}
+  {{#each author in paper.authors}}
     <li class="author">
-      {{#if author.isEditing}}
-        {{view ETahi.AddAuthorView author=author}}
-      {{else}}
-        <h4>
-          <span class="author-first-name">{{author.firstName}}</span>
-          <span class="author-last-name">{{author.lastName}}</span>
-        </h4>
-        <h4 class="author-email">{{author.email}}</h4>
-        <h4 class="author-affiliation">{{author.affiliation}}</h4>
-      {{/if}}
+    <h4>
+      <span class="author-first-name">{{author.first_name}}</span>
+      <span class="author-last-name">{{author.last_name}}</span>
+    </h4>
+    <h4 class="author-email">{{author.email}}</h4>
+    <h4 class="author-affiliation">{{author.affiliation}}</h4>
     </li>
   {{/each}}
 </ul>

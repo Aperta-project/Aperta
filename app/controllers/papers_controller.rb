@@ -38,9 +38,6 @@ class PapersController < ApplicationController
   end
 
   def update
-    authors = params['paper']['authors']
-    params['paper']['authors'] = JSON.parse authors if authors
-
     @paper = Paper.find(params[:id])
     if @paper.update paper_params
       PaperRole.where(user_id: params[:paper][:reviewer_ids]).update_all reviewer: true

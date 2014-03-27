@@ -1,11 +1,15 @@
-ul.authors {
+.authors {
   list-style-type: none;
   padding-left: 0;
   overflow: auto;
-  li.author {
+  .author {
     width: 42%;
     padding: 10px;
     float: left;
   }
 }
 
+.add-author-form {
+  width: 355px;
+  margin: 15px 0;
+}

@@ -37,7 +37,19 @@ ETahi.MessageTask = ETahi.Task.extend
   comments: DS.hasMany('comment')
   paper: Ember.computed.alias('phase.paper')
 
+ETahi.RegisterDecisionTask = ETahi.Task.extend
+  decisionLetters: a('string')
+  acceptedLetterTemplate: (->
+    JSON.parse(@get('decisionLetters')).Accepted
+  ).property 'decisionLetters'
+  rejectedLetterTemplate: (->
+    JSON.parse(@get('decisionLetters')).Rejected
+  ).property 'decisionLetters'
+  reviseLetterTemplate: (->
+    JSON.parse(@get('decisionLetters')).Revise
+  ).property 'decisionLetters'
+
+
 ETahi.TechCheckTask = ETahi.Task.extend()
-ETahi.RegisterDecisionTask = ETahi.Task.extend()
 ETahi.ReviewerReportTask = ETahi.Task.extend()
 ETahi.UploadManuscriptTask = ETahi.Task.extend()

@@ -9,7 +9,10 @@ ETahi.PaperTaskRoute = Ember.Route.extend
       @modelFor('paperTask').save()
 
   setupController: (controller, model) ->
-    baseObjectName = (model.get('type') || 'AdHoc').replace('Task', 'Overlay')
+    # FIXME: Rename AdHocTask to Task (here, in views, and in templates)
+    currentType = model.get('type')
+    currentType = 'AdHocTask' if currentType == 'Task'
+    baseObjectName = (currentType || 'AdHocTask').replace('Task', 'Overlay')
     @set('baseObjectName', baseObjectName)
 
     taskController = @controllerFor(baseObjectName)

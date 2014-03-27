@@ -262,7 +262,7 @@
   margin: 15px 0;
 }
 
-#task_paper_decision_letter {
+.task_paper_decision_letter {
   border-radius: 10px;
   border: 1px solid #333;
   padding: 20px;
@@ -283,6 +283,10 @@
   -moz-transform: scale(2);
   -webkit-transform: scale(2);
   transform: scale(2);
+}
+
+.decision-letter-description {
+  font-size: 18px;
 }
 
 .white-overlay {
@@ -439,3 +443,11 @@ $message-body-width: 700px;
   line-height: 1.3;
   width: $message-body-width;
 }
+
+.author-form {
+  display: none;
+  &.show-new-author-form {
+    display: block;
+  }
+}
+

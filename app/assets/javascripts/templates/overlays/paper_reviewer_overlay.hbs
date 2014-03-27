@@ -1,10 +1,10 @@
 <h1>Assign Reviewers</h1>
-<label for="reviewer" {{action save}} >Reviewers</label>
+<label for="reviewer" >Reviewers</label>
 {{chosen content=paper.availableReviewers
          multiple=true
          selectionBinding=model.paper.reviewers
          optionValuePath="content"
          optionLabelPath="content.fullName"
          data-placeholder="Select reviewers"
-         change='save'
+         changeAction='save'
 }}

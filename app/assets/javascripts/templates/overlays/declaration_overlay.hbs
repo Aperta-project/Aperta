@@ -6,10 +6,10 @@
     {{#each declaration in declarations}}
       <label>{{declaration.question}}</label>
       <div>
-        {{declaration-answer value=declaration.answer
-                             declaration=declaration
-                             classNames='form-control'
-                             rows='6'}}
+        {{view ETahi.TextArea value=declaration.answer
+          model=declaration
+          classNames='form-control'
+          rows='6'}}
       </div>
     {{/each}}
     </fieldset>

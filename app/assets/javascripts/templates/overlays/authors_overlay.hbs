@@ -3,7 +3,9 @@
   <span class="glyphicon glyphicon-plus-sign"></span>
   Add new
 </a>
-
+<div {{bind-attr class=":author-form showNewAuthorForm"}}>
+  heres the author form
+</div>
 <ul class="authors">
   {{#each author in authors}}
     <li class="author">

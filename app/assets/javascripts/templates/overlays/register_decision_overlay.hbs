@@ -1,0 +1,40 @@
+<h1>Register Decision</h1>
+<div class="decision-selections">
+  {{view
+  ETahi.RadioButton
+  name="decision"
+  model=model.paper
+  selectionBinding=model.paper.decision
+  value="Accepted"}}
+  <label class="decision-label" for="accepted_option">
+    Accepted
+  </label>
+
+  {{view
+  ETahi.RadioButton
+  name="decision"
+  model=model.paper
+  selectionBinding=model.paper.decision
+  value="Rejected"}}
+  <label class="decision-label" for="rejected_option">
+    Rejected
+  </label>
+
+  {{view
+  ETahi.RadioButton
+  name="decision"
+  model=model.paper
+  selectionBinding=model.paper.decision
+  value="Revise"}}
+  <label class="decision-label" for="revise_option">
+    Revise
+  </label>
+</div>
+
+<div>
+  <p class="decision-letter-description">Feel free to modify the standard decision letter. Your changes will be saved.</p>
+  {{view ETahi.TextArea
+    model=model.paper
+    class="task_paper_decision_letter"
+    valueBinding=model.paper.decisionLetter}}
+</div>

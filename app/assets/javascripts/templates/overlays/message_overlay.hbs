@@ -5,11 +5,12 @@
       <li class='participant'>{{userThumbnail p}}</li>
     {{/each}}
     <li class="chosen-style-override participant">
-      {{chosen content=participants
+      {{chosen content=availableParticipants
                name="participants"
                width="150px"
                prompt="Add People"
-               optionValuePath="content.id"
+               value=selectedUser
+               optionValuePath="content"
                optionLabelPath="content.fullName"}}
     </li>
   </ul>

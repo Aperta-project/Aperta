@@ -1,1 +1,4 @@
-ETahi.PaperAdminOverlayController = ETahi.TaskController.extend()
+ETahi.PaperAdminOverlayController = ETahi.TaskController.extend
+  actions:
+    save: ->
+      @get('paper').save()

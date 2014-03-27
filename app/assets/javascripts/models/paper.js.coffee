@@ -13,11 +13,11 @@ ETahi.Paper = DS.Model.extend
   authors: a('string')
   authorsArray: (->
     authors = JSON.parse @get('authors')
-    _.each authors, (a) ->
-      a.firstName = a.first_name
-      a.lastName = a.last_name
-      delete a.first_name
-      delete a.last_name
+    _.each authors, (author) ->
+      author.firstName = author.first_name
+      author.lastName = author.last_name
+      delete author.first_name
+      delete author.last_name
   ).property 'authors'
 
   displayTitle: (->

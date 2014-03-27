@@ -7,16 +7,17 @@
 <ul class="authors">
   {{#each author in authors}}
     <li class="author">
-      <h4>
-        <span class="author-first-name">{{author.firstName}}</span>
-        <span class="author-last-name">{{author.lastName}}</span>
-      </h4>
-      <h4 class="author-email">{{author.email}}</h4>
-      <h4 class="author-affiliation">{{author.affiliation}}</h4>
+      {{#if author.isEditing}}
+        {{view ETahi.AddAuthorView author=author}}
+      {{else}}
+        <h4>
+          <span class="author-first-name">{{author.firstName}}</span>
+          <span class="author-last-name">{{author.lastName}}</span>
+        </h4>
+        <h4 class="author-email">{{author.email}}</h4>
+        <h4 class="author-affiliation">{{author.affiliation}}</h4>
+      {{/if}}
     </li>
   {{/each}}
-  <!-- li class='author'>
-    {{!view ETahi.AddAuthorView authors=authors}}
-  </li-->
 </ul>
 

@@ -2,37 +2,35 @@
   <div class="form-group form-inline">
     <div class="form-group">
       {{input type='text'
-              value=authors
+              value=author.firstName
               class='form-control'
               placeholder='First name'}}
     </div>
     <div class="form-group">
       {{input type='text'
-              value=authors
+              value=author.lastName
               class='form-control'
               placeholder='Last name'}}
     </div>
   </div>
-
   <div class="form-group">
     {{input type='text'
-            value=authors
+            value=author.email
             class='form-control'
             placeholder='Email'}}
   </div>
-
   <div class="form-group form-inline">
     <div class="form-group">
       {{input type='text'
-              value=authors
+              value=author.affiliation
               class='form-control'
               placeholder='Affiliation'}}
     </div>
     <div class="form-group">
-      <input class='btn-primary btn'
+      <input class='secondary-button'
              type='submit'
-             value='done'
-             {{action 'saveNewAuthor' target='view'}}>
+             value='DONE'
+             {{action 'saveNewAuthor'}}>
     </div>
   </div>
 </div>

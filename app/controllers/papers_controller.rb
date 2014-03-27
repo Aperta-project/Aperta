@@ -39,9 +39,6 @@ class PapersController < ApplicationController
 
   def update
     @paper = Paper.find(params[:id])
-    if admin = User.find_by_id(params[:paper].delete(:admin_id))
-      @paper.admin = admin
-    end
     if @paper.update paper_params
       PaperRole.where(user_id: paper_params[:reviewer_ids]).update_all reviewer: true
       render json: @paper
@@ -65,7 +62,7 @@ class PapersController < ApplicationController
       :short_title, :title, :abstract,
       :body, :paper_type, :submitted,
       :decision, :decision_letter,
-      :journal_id, :admin_id,
+      :journal_id,
       authors: [:first_name, :last_name, :affiliation, :email],
       declaration_ids: [],
       reviewer_ids: [],

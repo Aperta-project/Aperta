@@ -10,7 +10,6 @@ ETahi.Paper = DS.Model.extend
   reviewers: DS.hasMany('user')
   availableReviewers: Ember.computed.alias('journal.reviewers')
   editors: DS.hasMany('user')
-  admin: DS.belongsTo('assignee')
   journal: DS.belongsTo('journal')
   figures: DS.hasMany('figure')
   authors: a()

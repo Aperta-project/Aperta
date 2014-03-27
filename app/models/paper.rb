@@ -28,18 +28,6 @@ class Paper < ActiveRecord::Base
 
   after_create :assign_user_to_author_tasks
 
-  def paper_admin_task
-    tasks.where(type: 'PaperAdminTask').first
-  end
-
-  def admin
-    paper_admin_task.assignee
-  end
-
-  def admin= user
-    paper_admin_task.update_attribute :assignee, user
-  end
-
   def self.submitted
     where(submitted: true)
   end

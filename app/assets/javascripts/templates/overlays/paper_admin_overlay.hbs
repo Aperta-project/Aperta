@@ -1,8 +1,8 @@
 <h1>Assign Admin</h1>
 <label for="admin">Admin</label>
-{{chosen content=paper.assignees
+{{chosen content=model.assignees
          name="admin"
-         selectionBinding=paper.admin
+         selectionBinding=model.assignee
          prompt="Please select an admin"
          optionValuePath="content.id"
          changeAction='save'

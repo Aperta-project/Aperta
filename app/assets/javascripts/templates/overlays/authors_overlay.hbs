@@ -6,16 +6,23 @@
 <div {{bind-attr class=":author-form showNewAuthorForm"}}>
   {{view ETahi.AddAuthorView newAuthor=newAuthor}}
 </div>
-<ul class="authors">
-  {{#each author in paper.authors}}
-    <li class="author">
-    <h4>
-      <span class="author-first-name">{{author.first_name}}</span>
-      <span class="author-last-name">{{author.last_name}}</span>
-    </h4>
-    <h4 class="author-email">{{author.email}}</h4>
-    <h4 class="author-affiliation">{{author.affiliation}}</h4>
-    </li>
-  {{/each}}
-</ul>
+
+{{#if paper.authors}}
+  <table class="table table-striped table-bordered author-table">
+    <thead>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Affiliation</th>
+    </thead>
+    <tbody>
+    {{#each author in paper.authors}}
+    <tr>
+      <td>{{author.first_name}} {{author.last_name}}</td>
+      <td>{{author.email}}</td>
+      <td>{{author.affiliation}}</td>
+    </tr>
+    {{/each}}
+    </tbody>
+  </table>
+{{/if}}
 

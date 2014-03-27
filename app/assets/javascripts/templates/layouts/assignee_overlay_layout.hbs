@@ -13,7 +13,7 @@
           <label for="assignee">This card is owned by</label>
           {{chosen content=assignees name='assignee'
                     prompt="Please select an assignee"
-                    value=assignee
+                    value=paper.admin
                     changeAction='saveModel'
                     optionValuePath="content"
                     optionLabelPath="content.fullName"}}

@@ -1,4 +1,4 @@
-ETahi.AuthorsOverlayView = Ember.View.extend
+ETahi.AuthorsOverlayView = ETahi.OverlayView.extend
   templateName: 'overlays/authors_overlay'
   layoutName: 'layouts/assignee_overlay_layout'
 

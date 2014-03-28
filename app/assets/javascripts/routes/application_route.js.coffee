@@ -28,6 +28,9 @@ ETahi.ApplicationRoute = Ember.Route.extend
         controller: 'newCardOverlay')
 
     closeOverlay: ->
-      @disconnectOutlet(
-        outlet: 'overlay'
-        parentView: 'application')
+      self = @
+
+      ETahi.animateOverlayOut().then ->
+        self.disconnectOutlet
+          outlet: 'overlay'
+          parentView: 'application'

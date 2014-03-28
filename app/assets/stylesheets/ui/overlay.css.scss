@@ -1,25 +1,38 @@
 .overlay {
-  background-color: rgba(255,255,255,0.98);
+  position: fixed;
+  top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
   overflow-x: auto;
   overflow-y: scroll;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 9999;
-}
-.overlay {
-  background-color: rgba(0,0,0,0.7);
   height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  z-index: 9999;
+  opacity: 0;
+
+  @extend .fadeInAndOutAnimation;
 }
 
 .overlay > div {
-  padding: 10px 80px;
   width: 1120px;
+  padding: 10px 80px;
+  margin: 40px auto 0 auto;
   background: white;
-  margin: 0 auto;
-  margin-top: 40px;
+  opacity: 0;
+}
+
+.overlay.in > div {
+  @include animation-name(fadeInDown);
+  @include animation-duration(500ms);
+  @include animation-fill-mode(both);
+  @include animation-timing-function(cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.overlay.out > div {
+  @include animation-name(fadeOutDown);
+  @include animation-duration(200ms);
+  @include animation-fill-mode(both);
 }
 
 .empty-overlay {

@@ -1,4 +1,4 @@
-ETahi.FigureOverlayView = Ember.View.extend
+ETahi.FigureOverlayView = ETahi.OverlayView.extend
   templateName: 'overlays/figure_overlay'
   layoutName: 'layouts/assignee_overlay_layout' #TODO: include assignee here?
   uploads: Ember.ArrayController.create content: []

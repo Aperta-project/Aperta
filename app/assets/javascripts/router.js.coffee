@@ -6,6 +6,6 @@ ETahi.Router.map ()->
     @route('task', {path: '/tasks/:task_id'})
 
 ETahi.Router.reopen({
-  rootURL: '/ember/'
+  rootURL: '/'
+  location: 'history'
 })
-

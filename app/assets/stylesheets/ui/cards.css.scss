@@ -1,0 +1,76 @@
+.card-item,
+.card-container {
+  display: block;
+  position: relative;
+}
+
+.remove-card {
+  display: none;
+  position: absolute;
+  display: none;
+  top: 5px;
+  right: 10px;
+  font-size: 14px;
+  color: #FFFFFF;
+}
+
+.card-item:hover .remove-card {
+  display: inline;
+}
+
+.card-item .tooltip {
+  position: fixed;
+}
+
+.card {
+  cursor: pointer;
+  background-color: $tahi-secondary;
+  color: $tahi-primary-hover;
+  width: 220px;
+  font-size: 20px;
+  padding: 10px 15px;
+  display: block;
+  position: relative;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  word-wrap: break-word;
+
+  &:hover {
+    background-color: $btn-primary-bg;
+    color: white;
+    text-decoration: none;
+  }
+  &.message {
+    background-color: $tahi-message-light;
+    color: #3f1587;
+    &:hover {
+      background-color: $tahi-message;
+      color: white;
+      text-decoration: none;
+    }
+  }
+
+  span.completed-glyph {
+    display: none;
+  }
+
+  &.completed {
+    background: $tahi-tertiary;
+    color: $tahi-tertiary - #666;
+  }
+
+  &.completed:hover {
+    background: $tahi-tertiary - #333;
+    color: white;
+  }
+
+  &.completed span.completed-glyph {
+    display: inline;
+    margin-right: 5px;
+    color: $tahi-primary;
+  }
+
+  &.completed:hover span.glyphicon {
+    color: white;
+  }
+}

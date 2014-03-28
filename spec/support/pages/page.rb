@@ -30,7 +30,7 @@ class PageFragment
                     rescue NameError
                       CardOverlay
                     end
-    overlay = overlay_class.new session.find("#overlay")
+    overlay = overlay_class.new session.find(".overlay")
     if block_given?
       block.call overlay
       overlay.dismiss
@@ -46,15 +46,15 @@ class PageFragment
     field = if Capybara::Node::Element === options[:from]
               options[:from]
             elsif options.has_key? :from
-              find_field(options[:from], visible: false)
+              # find_field(options[:from], visible: false)
             elsif options.has_key? :id
-              find("##{options[:id]}", visible: false)
+              # find("##{options[:id]}", visible: false)
             end
 
-    session.execute_script(%Q!$("##{field[:id]}_chosen").mousedown()!)
-    session.execute_script(%Q!$("##{field[:id]}_chosen input").val("#{item_text}")!)
-    session.execute_script(%Q!$("##{field[:id]}_chosen input").keyup()!)
-    session.execute_script(%Q!$("##{field[:id]}_chosen input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
+    session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first").mousedown()!)
+    session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").val("#{item_text}")!)
+    session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").keyup()!)
+    session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
   end
 
   def wait_for_pjax

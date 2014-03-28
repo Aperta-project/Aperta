@@ -6,11 +6,11 @@ class CardOverlay < Page
   end
 
   def assignee
-    find('#task_assignee_id_chosen').text
+    all('.chosen-assignee.chosen-container').first.text
   end
 
   def assignee=(name)
-    select_from_chosen name, id: 'task_assignee_id'
+    select_from_chosen name, class: 'chosen-assignee'
   end
 
   def title

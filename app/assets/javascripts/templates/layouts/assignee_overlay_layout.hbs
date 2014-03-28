@@ -12,11 +12,12 @@
         <div class="assignee-drop-down chosen-style-override">
           <label for="assignee">This card is owned by</label>
           {{chosen content=assignees name='assignee'
-                    prompt="Please select an assignee"
-                    value=assignee
-                    changeAction='saveModel'
-                    optionValuePath="content"
-                    optionLabelPath="content.fullName"}}
+                   prompt="Please select an assignee"
+                   value=assignee
+                   changeAction='saveModel'
+                   optionValuePath="content"
+                   optionLabelPath="content.fullName"
+                   class="chosen-assignee"}}
         </div>
         <div class="completed-checkbox">
           {{input id="task_completed" type='checkbox' name="task_completed" checked=completed}}

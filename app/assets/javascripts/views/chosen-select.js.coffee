@@ -1,10 +1,11 @@
 ETahi.ChosenView = Ember.Select.extend
   multiple: false
   width: '200px'
-  disableSearchThreshold: 10
+  disableSearchThreshold: 0
   searchContains: true
   attributeBindings:['multiple', 'width', 'disableSearchThreshold', 'searchContains', 'data-placeholder']
   changeAction: null
+
   change: ->
     action = @get('changeAction')
     @get('controller').send(action) if action
@@ -18,6 +19,7 @@ ETahi.ChosenView = Ember.Select.extend
       no_results_text: @get('noResultsText')
       max_selected_options: @get('maxSelectedOptions')
       allow_single_deselect: @get('allowSingleDeselect')
+      inherit_select_classes: true
 
     options.clean_search_text = @cleanSearchText
     options.calling_context = @

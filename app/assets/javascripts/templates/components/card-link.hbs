@@ -1,8 +1,8 @@
 <div class='card-container'>
-  <a {{bind-attr class=':card task.completed:completed task.isMessage:message' href=taskHref}} >
+  {{#link-to 'paper.task' task classNameBindings=':card task.completed:completed task.isMessage:message' }}
     <span class='glyphicon glyphicon-ok completed-glyph'></span>
     <span>{{task.title}}</span>
-  </a>
+  {{/link-to}}
   <span class="glyphicon glyphicon-remove-circle remove-card js-remove-card pointer"
     data-toggle="tooltip"
     data-placement="right"

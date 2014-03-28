@@ -13,6 +13,13 @@ ETahi.PaperManageController = Ember.ObjectController.extend
 
     relevantPhases.invoke('incrementProperty', 'position')
 
+  changeTaskPhase: (taskID, newPhase) ->
+    #this.store.find('task', taskID).then (task)->
+      #task.set('phase', newPhase)
+      #oldPhase.save()
+      #newPhase.save()
+
+
   actions:
     addPhase: (position) ->
       paper = @get('model')

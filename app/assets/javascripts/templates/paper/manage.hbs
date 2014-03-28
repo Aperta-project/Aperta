@@ -25,36 +25,7 @@
     <ul class="columns">
       {{add-column position=-1 action="addPhase" bonusClass='first-add-column'}}
       {{#each phase in sortedPhases}}
-        <li class="column">
-          {{add-column position=phase.position action="addPhase"}}
-
-          {{#view ETahi.ColumnTitleView phase=phase}}
-            <h2 contenteditable="true">{{view.phase.name}}</h2>
-            <div class="column-header-update-buttons">
-              <button class="column-header-update-cancel btn-link" {{action "cancel" target="view"}}>cancel</button>
-              <button class="column-header-update-save primary-button" {{action "save" target="view"}}>Save</button>
-            </div>
-            <span class="glyphicon glyphicon-pencil edit-icon column-icon"></span>
-            {{#if phase.noTasks}}
-              <span class="glyphicon glyphicon-remove remove-icon column-icon" {{action 'removePhase' phase}}></span>
-            {{/if}}
-          {{/view}}
-
-          <div class="column-content">
-            <ul class='cards'>
-              {{#each task in phase.tasks}}
-                <li class='card-item'>
-                  {{card-link task=task paper=model action="removeTask"}}
-                </li>
-              {{/each}}
-                <li class='card-item'>
-                  <a {{action "chooseNewCardTypeOverlay" phase}} class="secondary-button react-choose-card-type-overlay">
-                    Add New Card
-                  </a>
-                </li>
-            </ul>
-          </div>
-        </li>
+        {{view ETahi.ManuscriptManagerColumnView phase=phase}}
       {{/each}}
     </ul>
   </div>

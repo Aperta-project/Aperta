@@ -1,0 +1,13 @@
+<div class="card-container" {{action 'viewCard' task}}>
+  <span {{bind-attr class=":card task.completed:completed task.isMessage:message"}}>
+    <span class="glyphicon glyphicon-ok completed-glyph"></span>
+    {{task.title}}
+  </span>
+</div>
+
+<span {{action 'removeTask' task}}
+  class="glyphicon glyphicon-remove-circle remove-card pointer"
+  data-toggle="tooltip"
+  data-placement="right"
+  title="Delete Card">
+</span>

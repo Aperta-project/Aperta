@@ -1,4 +1,4 @@
 ETahi.TextArea = Ember.TextArea.extend
-  attributeBindings: [ "name", "type", "value", "model"]
+  attributeBindings: ["name", "type", "value"]
   focusOut: ->
     @get('model').save()

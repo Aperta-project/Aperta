@@ -22,7 +22,7 @@ ETahi.animateElement =
     defer.promise
 
 ETahi.animateOverlayIn = ->
-  ETahi.animateElement.in '.overlay', 530
+  ETahi.animateElement.in '.overlay', 330
 
 ETahi.animateOverlayOut = ->
   ETahi.animateElement.out '.overlay', 230

@@ -24,7 +24,7 @@
 
 .overlay.in > div {
   @include animation-name(fadeInDown);
-  @include animation-duration(500ms);
+  @include animation-duration(300ms);
   @include animation-fill-mode(both);
   @include animation-timing-function(cubic-bezier(0.23, 1, 0.32, 1));
 }

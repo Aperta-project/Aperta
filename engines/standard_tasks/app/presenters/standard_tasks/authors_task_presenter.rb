@@ -1,4 +1,4 @@
-class AuthorsTaskPresenter < TaskPresenter
+class StandardTasks::AuthorsTaskPresenter < TaskPresenter
   def data_attributes
     super.merge 'authors' => task.authors
   end

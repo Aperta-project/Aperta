@@ -31,5 +31,17 @@
   "app/assets/javascripts/templates/*.hbs": {
     "command": "jtemplate",
     "alternate": "app/assets/javascripts/views/%s.js.coffee"
-  }
+  },
+
+  "app/assets/stylesheets/*.css.scss": {
+    "command": "css",
+  },
+
+  "app/assets/stylesheets/screens/*.css.scss": {
+    "command": "cssscreen",
+  },
+
+  "app/assets/stylesheets/ui/*.css.scss": {
+    "command": "cssui",
+  },
 }

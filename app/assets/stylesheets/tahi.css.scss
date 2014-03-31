@@ -1,7 +1,36 @@
+html, body {
+  height: 100%;
+}
+
+body.matte { background-color: $tahi-matte; }
+
 html {
   overflow: -moz-scrollbars-vertical;
   -webkit-font-smoothing: antialiased;
   overflow-y: scroll;
+}
+
+.full-height { height: 100%; }
+
+body.full-height {
+  overflow: hidden;
+
+  #tahi-container {
+    height: 100%;
+  }
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 6px;
+  height: 10px;
+  padding-left: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  width: 4px !important;
+  min-height: 40px;
 }
 
 a, a:hover, button, button:hover, .glyphicon, .glyphicon:hover {
@@ -17,21 +46,13 @@ a {
   }
 }
 
-hr {
-  border-top: 1px solid #d6d6d6;
-}
-
-body.matte {
-  background-color: $tahi-matte;
-}
+hr { border-top: 1px solid #d6d6d6; }
 
 body, h1, h2, h3, h4, h5, h6 {
   font-family: $tahi-font-family;
 }
 
-textarea {
-  resize: none;
-}
+textarea { resize: none; }
 
 #tahi-container {
   max-width: 1120px;
@@ -54,20 +75,12 @@ textarea {
   z-index: 0 !important;
 }
 
-.fixed {
-  position: fixed;
-}
-
 .backdrop {
   padding-top: 50px;
 
-  img {
-    max-width: 500px;
-  }
+  img { max-width: 500px; }
 
-  h2, p {
-    color: $tahi-backdrop;
-  }
+  h2, p { color: $tahi-backdrop; }
 
   h2 {
     font-weight: bold;
@@ -78,10 +91,6 @@ textarea {
     font-size: 20px;
     font-style: italic
   }
-}
-
-.bring-front {
-  z-index: 2;
 }
 
 .small_text {

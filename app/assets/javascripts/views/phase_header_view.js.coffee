@@ -1,5 +1,6 @@
-ETahi.ColumnTitleView = Em.View.extend
-  classNames: ['column-title']
+ETahi.PhaseHeaderView = Em.View.extend
+  templateName: 'phase_header'
+  classNames: ['column-header']
   classNameBindings: ['active']
   active: false
 

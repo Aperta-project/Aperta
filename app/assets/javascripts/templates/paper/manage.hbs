@@ -24,9 +24,7 @@
   <div class="full-height">
     <ul class="columns">
       {{add-column position=-1 action="addPhase" bonusClass='first-add-column'}}
-      {{#each phase in sortedPhases}}
-        {{view ETahi.ManuscriptManagerColumnView phase=phase}}
-      {{/each}}
+      {{each sortedPhases itemViewClass='ETahi.ManuscriptManagerColumnView'}}
     </ul>
   </div>
 </div>

@@ -1,6 +1,6 @@
 ETahi.CardItemView = Em.View.extend(DragNDrop.Dragable, {
   tagName: 'li'
-  templateName: 'card-item'
+  templateName: 'card_item'
   classNames: ['card-item']
 
   setupTooltip: (->

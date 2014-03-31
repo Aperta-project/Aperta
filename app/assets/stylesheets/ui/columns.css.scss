@@ -1,0 +1,140 @@
+// Columns
+//
+// A description goes here.
+// Used on Flow Manager and Manuscript Manager screens
+//
+// Markup:
+// <div class="columns">
+//   <div class="column">
+//
+//     <div class="column-header">
+//       <h2 class="column-title">Super Column Title</h2>
+//       (icons here...)
+//     </div>
+//
+//     <div class="column-content">
+//       content here...
+//     </div>
+//
+//   </div>
+// </div>
+//
+// Styleguide Columns
+
+.columns {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  height: 800px; // TODO: do we need this?
+  padding: 40px 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.column {
+  position: relative;
+  display: inline-block;
+  width: 251px; // +1px for border
+  height: 100%;
+  border-right: 1px solid $tahi-tertiary;
+  padding: 0 15px;
+  text-align: left;
+  vertical-align: top;
+  white-space: initial;
+
+  &:last-of-type { border-right: none; }
+}
+
+
+.remove-column {
+  display: none;
+  position: absolute;
+  top: -8px;
+  right: 0;
+  cursor: pointer;
+  color: $tahi-primary;
+}
+
+.column:hover .remove-column {
+  display: block;
+}
+
+
+.column-header {
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #aaa;
+}
+
+.column-title {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  outline: none;
+  margin-top: 0;
+}
+
+.column-icon {
+  color: $tahi-secondary;
+  font-size: 14px;
+  position: absolute;
+  display: none;
+}
+
+// TODO: scope these better?
+
+.edit-icon   { right: 10px; }
+.remove-icon { right: 30px; }
+
+.column-header:hover .column-icon {
+  display: inline;
+  top: -10px;
+}
+
+
+.column-content {
+  position: absolute;
+  top: 56px;
+  right: 0;
+  bottom: 0;
+  left: 15px;
+  width: 225px;
+  padding-top: 10px;
+  overflow-y: auto;
+
+  > ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .empty-text {
+    color: #999;
+    font-size: 19px;
+    font-style: italic;
+  }
+}
+
+
+// Add button between columns
+
+.add-column {
+  position: absolute;
+  top: -17px;
+  right: -11px;
+  display: inline-block;
+  width: 20px;
+  height: 15px;
+  font-size: 10px;
+  text-align: center;
+  opacity: 0;
+  background-color: $tahi-secondary;
+
+  i { color: #FFFFFF; }
+
+  &:hover { opacity: 1; }
+
+  &.first-add-column {
+    position: relative;
+    top: -24px;
+    left: 28px;
+  }
+}

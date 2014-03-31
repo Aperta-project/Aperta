@@ -5,6 +5,8 @@ ETahi.Router.map ()->
     @route('manage')
     @route('task', {path: '/tasks/:task_id'})
 
+  @route('task', {path: '/tasks/:task_id'})
+
 ETahi.Router.reopen({
   rootURL: '/'
   location: 'history'

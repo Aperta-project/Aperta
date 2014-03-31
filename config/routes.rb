@@ -3,7 +3,6 @@ Tahi::Application.routes.draw do
   devise_for :users
 
   get '/papers/:id/manage' => 'ember#index'
-  get '/papers/:id/tasks/:task_id' => 'ember#index'
 
   resources :papers, only: [:new, :create, :show, :edit, :update] do
     resources :figures, only: :create

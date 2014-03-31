@@ -42,7 +42,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     respond_to do |f|
       f.json { render json: @task }
-      f.html { render layout: 'overlay' }
+      f.html { render 'ember/index' }
     end
   end
 

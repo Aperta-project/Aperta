@@ -107,6 +107,7 @@ body.full-height {
 }
 
 .column-header-update-buttons {
+  overflow: hidden;
   position: absolute;
   right: 0;
   bottom: -25px;

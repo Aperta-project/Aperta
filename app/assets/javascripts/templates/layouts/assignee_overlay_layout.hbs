@@ -4,7 +4,7 @@
       <h2><a class="overlay-paper-title" href='paperpath'>{{paper.displayTitle}}</a></h2>
       <a {{bind-attr class=":primary-button message"}} {{action 'closeAction'}}>Close</a>
     </header>
-    <main>
+    <main {{bind-attr class="mainClass"}}>
       {{yield}}
     </main>
     <footer>

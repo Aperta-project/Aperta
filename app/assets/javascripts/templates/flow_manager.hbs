@@ -1,55 +1,32 @@
-<div id="control-bar-container">
-  <div id="control-bar">
-    <section>
-      <ul>
-        <li>
-          <a class="add-column-button secondary-button" {{action 'displayChangeOverlay'}}>
-            Add New Column <span class="glyphicon glyphicon-plus"></span>
-          </a>
-        </li>
-      </ul>
-    </section>
+<div class="control-bar">
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      <li>
+        <a class="add-column-button secondary-button" {{action 'displayChangeOverlay'}}>
+          Add New Column <span class="glyphicon glyphicon-plus"></span>
+        </a>
+      </li>
+    </ul>
   </div>
 </div>
 
 <ul class="columns">
-  <li class="column">
-    <div class="column-header">
-      <h2 class="column-title">Title Here</h2>
-      <div class="remove-column glyphicon glyphicon-remove" {{action 'remove'}}></div>
-    </div>
+  {{#each flow in content}}
+    <li class="column">
+      <div class="column-title">
+        <h2>{{flow.title}}</h2>
+        <div class="remove-column glyphicon glyphicon-remove" {{action 'removeFlow'}}></div>
+      </div>
 
-    <div class="column-content">
-      {{#if paperProfiles.length}}
+      <div class="column-content">
         <ul class="cards">
-          {{#each profile in paperProfiles}}
-            <li>
-              <div class="paper-profile">
-                <a class="paper-title" href="{{paper_path}}">
-                  <h4>{{profile.title}}<h4>
-                </a>
-
-                {{#each task in profile.tasks}}
-                  <div class="card-content flow-card completed message">
-                    <span class="glyphicon glyphicon-ok completed-glyph">
-                      {{task.title}}
-                    </span>
-                  </div>
-                  <span
-                    class="glyphicon glyphicon-remove-circle remove-card js-remove-card pointer"
-                    data-toggle="tooltip"
-                    data-placement="right"
-                    title="Delete Card" {{action 'removeTask'}}>
-                  </span>
-                {{/each}}
-
-              </div>
-            </li>
+          {{#each task in flow.tasks}}
+            {{partial "flow_task_group"}}
+          {{else}}
+            <div class="empty-text">{{flow.emptyText}}</div>
           {{/each}}
         </ul>
-      {{else}}
-        <div class="empty-text">EMPTY TEXT: {{emptyText}}</div>
-      {{/if}}
-    </div>
-  </li>
+      </div>
+    </li>
+  {{/each}}
 </ul>

@@ -9,6 +9,7 @@ class PaperSerializer < ActiveModel::Serializer
     has_many relation, embed: :ids, include: true, root: :users
   end
 
+  has_many :tasks, embed: :ids, include: false
   has_one :journal, embed: :ids, include: true
 
   def authors

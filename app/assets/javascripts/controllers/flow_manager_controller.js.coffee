@@ -1,1 +1,1 @@
-ETahi.FlowManagerController = Ember.ObjectController.extend()
+ETahi.FlowManagerController = Ember.ArrayController.extend()

@@ -1,12 +1,9 @@
 a = DS.attr
-ETahi.FlowManager = DS.Model.extend
-  flows: DS.hasMany('flow')
 
-ETahi.Flow = Em.Object.extend()
-# emptyText: a('string')
-# title: a('string')
-# paperProfiles: DS.hasMany('paperProfile')
-
-ETahi.PaperProfile = DS.Model.extend
+ETahi.Flow = DS.Model.extend
+  emptyText: a('string')
   title: a('string')
-  tasks: DS.hasMany('tasks')
+  papers: DS.hasMany('paper')
+  tasks: (->
+    allTasks = _.flatten @get('papers').mapBy('allTasks')
+  ).property('phases.@each.tasks')

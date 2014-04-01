@@ -6,6 +6,11 @@ Tahi::Application.routes.draw do
 
   resources :journals, only: [:index]
 
+  get '/flow_manager' => 'ember#index'
+
+  # give me a better name
+  resources :flows, only: :index
+
   resources :papers, only: [:new, :create, :show, :edit, :update] do
     resources :figures, only: :create
     resources :submissions, only: [:new, :create]
@@ -41,9 +46,6 @@ Tahi::Application.routes.draw do
 
   get 'users/chosen_options', to: 'user_info#thumbnails', defaults: {format: 'json'}
   get 'users/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
-
-  resource :flow_managers, only: :show
-  resource :flow_manager, only: :show #Remove this
 
   resource :user_settings, only: :update
   root 'dashboards#index'

@@ -5,6 +5,7 @@ class Paper < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :journal
+  belongs_to :flow
 
   has_many :declarations, -> { order :id }
   has_many :figures

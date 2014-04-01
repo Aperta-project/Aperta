@@ -17,3 +17,10 @@ ETahi.Paper = DS.Model.extend
   displayTitle: (->
     if Em.isEmpty(@get('title.length')) then @get('shortTitle') else @get('title')
   ).property 'title', 'shortTitle'
+
+  editor: Ember.computed.alias('editors.firstObject')
+
+  allTasks: (->
+    allTasks = _.flatten @get('phases.content').mapBy('tasks.content')
+  ).property('phases.@each.tasks')
+

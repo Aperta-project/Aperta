@@ -18,4 +18,41 @@
       </ul>
     </div>
   </div>
+
+  <main>
+    <article>
+      <div id="toolbar"></div>
+      <div>
+        <div class="title">
+          <h2 id="paper-title" contenteditable="true"
+              placeholder="Type your manuscript title here">
+            {{title}}
+          </h2>
+        </div>
+
+        <div id="paper-authors" class="editable">
+        </div>
+
+        <div id="paper-abstract" contenteditable="true"
+            placeholder="Type your abstract here">
+          {{abstract}}
+        </div>
+        <div id="paper-body" class="editable" contenteditable="true"
+            placeholder="Type the body of your manuscript here">
+          {{body}}
+        </div>
+      </div>
+    </article>
+    <aside>
+      <div>
+        <ul class="assigned-tasks cards">
+          {{each assignedTasks itemViewClass="ETahi.CardView"}}
+        </ul>
+
+        <ul class="author-tasks cards">
+          {{each authorTasks itemViewClass="ETahi.CardView"}}
+        </ul>
+      </div>
+    </aside>
+  </main>
 </div>

@@ -1,6 +1,9 @@
-require 'net/http'
-
 class OxgarageParser
+
+  def self.parse(filename)
+    new(filename).to_hash
+  end
+
   def initialize(filename)
     @filename = filename
   end
@@ -11,26 +14,19 @@ class OxgarageParser
           :url => 'http://ec2-54-193-185-100.us-west-1.compute.amazonaws.com:8080/ege-webservice/Conversions/docx%3Aapplication%3Avnd.openxmlformats-officedocument.wordprocessingml.document/TEI%3Atext%3Axml/xhtml%3Aapplication%3Axhtml%2Bxml/',
           :payload => {
             :multipart => true,
-            :file => File.new(Rails.root.join('about_equations.docx'), 'rb')
+            :file => File.new(@filename, 'rb')
           })
     response = request.execute
 
-    tempfile = Tempfile.new("current_file", encoding: 'ascii-8bit')
-    tempfile.write(response)
+    return response if extract_filename(response.headers).ends_with? 'html'
 
-    html_file = nil
-    Zip::File.open(tempfile) do |zip_file|
-      zip_file.each do |entry|
-        if entry.name =~ /html/
-          html_file = entry.get_input_stream.read
-        end
-      end
-      entry = zip_file.glob('*.html').first
-      puts entry.get_input_stream.read
-      html_file = entry.get_input_stream.read
-    end
+    extract_document_from response
+  end
 
-    html_file
+  def extract_document_from response
+    central_directory = Zip::CentralDirectory.read_from_stream StringIO.new(response)
+    document_entry = central_directory.detect { |e| e.name.ends_with? 'html' }
+    document_entry.get_input_stream.read
   end
 
   def title
@@ -48,7 +44,10 @@ class OxgarageParser
     { title: title, body: body }
   end
 
-  def self.parse(filename)
-    new(filename).to_hash
+  private
+
+  def extract_filename response_headers
+    response_headers[:content_disposition].split('filename=').last.chomp('"')
   end
+
 end

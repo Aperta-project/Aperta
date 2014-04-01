@@ -1,0 +1,46 @@
+/*!
+ * VisualEditor UserInterface Widget styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/* ve.ui.LanguageInputWidget */
+
+.ve-ui-languageInputWidget-languageTextInput {
+	width: 10em;
+}
+
+.ve-ui-languageInputWidget-directionSelect {
+	margin-bottom: 0.5em;
+}
+
+/* ve.ui.SurfaceWidget.js */
+
+.ve-ui-surfaceWidget-surface {
+	border: solid 1px #ddd;
+	border-radius: 0.25em;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+}
+
+.ve-ui-surfaceWidget-surface .ve-ce-documentNode {
+	padding: 1.875em; /* 1.5/0.8 */
+}
+
+.ve-ui-surfaceWidget-toolbar {
+	font-size: 1.25em;
+}
+
+.ve-ui-surfaceWidget-toolbar > .oo-ui-toolbar-bar {
+	border: solid 1px #ddd;
+	border-radius: 0.25em;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-width: 0;
+}
+
+/* ve.ui.MediaSizeWidget */
+.ve-ui-mediaSizeWidget-input-hasError input[type="text"] {
+	background: #ffc2c2;
+}

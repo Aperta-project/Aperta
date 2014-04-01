@@ -16,8 +16,6 @@
 //= require jquery-fileupload/basicplus
 //= require underscore
 //= require bootstrap
-//= require ckeditor-jquery
-//= require ckeditor/plugins/sharedspace/sharedspace
 //= require scrollToFixed
 //= require chosen-jquery
 //= require jquery.dotdotdot
@@ -29,6 +27,7 @@
 //= require turbolinks
 //= require namespace
 //= require_tree .
+//= require standard_tasks/application
 
 $(document).ready(function() {
   Tahi.init()

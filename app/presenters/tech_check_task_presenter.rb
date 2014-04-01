@@ -1,2 +1,0 @@
-class TechCheckTaskPresenter < TaskPresenter
-end

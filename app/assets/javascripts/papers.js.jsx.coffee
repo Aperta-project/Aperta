@@ -40,7 +40,6 @@ Tahi.papers =
     bodyContentWrapper.html()
 
   savePaper: (url) ->
-    # TODO: make this nicer. It probably belongs in a nice function.
     $.ajax
       url: url
       method: "POST"

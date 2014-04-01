@@ -7,9 +7,11 @@
 
   <div class="form-group">
     <label>Journal</label>
-    <select>
-      <option>PLOS Yeti</option>
-    </select>
+    {{view Ember.Select
+       content=model
+       value=journal
+       optionValuePath="content"
+       optionLabelPath="content.name"}}
   </div>
 
   <button type="submit" class="primary-button wide-button" {{action 'createNewPaper'}}>Create</button>

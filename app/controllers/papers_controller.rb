@@ -22,13 +22,8 @@ class PapersController < ApplicationController
   end
 
   def create
-    @paper = current_user.papers.new(paper_params)
-
-    if @paper.save
-      redirect_to edit_paper_path @paper
-    else
-      render :new
-    end
+    @paper = current_user.papers.create!(paper_params)
+    render json: @paper
   end
 
   def edit
@@ -66,7 +61,10 @@ class PapersController < ApplicationController
       authors: [:first_name, :last_name, :affiliation, :email],
       declaration_ids: [],
       reviewer_ids: [],
-      phase_ids: []
+      phase_ids: [],
+      assignee_ids: [],
+      editor_ids: [],
+      figure_ids: []
     )
   end
 end

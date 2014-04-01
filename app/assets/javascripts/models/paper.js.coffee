@@ -15,8 +15,5 @@ ETahi.Paper = DS.Model.extend
   authors: a()
 
   displayTitle: (->
-    if @get('title.length') > 0
-      @get('title')
-    else
-      @get 'shortTitle'
+    if Em.isEmpty(@get('title.length')) then @get('shortTitle') else @get('title')
   ).property 'title', 'shortTitle'

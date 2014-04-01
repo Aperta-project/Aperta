@@ -4,6 +4,8 @@ Tahi::Application.routes.draw do
 
   get '/papers/:id/manage' => 'ember#index'
 
+  resources :journals, only: [:index]
+
   resources :papers, only: [:new, :create, :show, :edit, :update] do
     resources :figures, only: :create
     resources :submissions, only: [:new, :create]

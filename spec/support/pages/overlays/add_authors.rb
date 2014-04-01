@@ -1,6 +1,6 @@
 class AddAuthorsOverlay < CardOverlay
   def add_author author
-    click_on "Add new"
+    find('.btn-xs', text: "Add new").click
     fill_in "First name", with: author[:first_name]
     fill_in "Last name", with: author[:last_name]
     fill_in "Email", with: author[:email]

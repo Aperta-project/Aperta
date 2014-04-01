@@ -10,19 +10,6 @@
   - body_class << 'matte' if params[:controller] == 'papers'
   %body{class: body_class.join(' ')}
     #spinner{style: 'display: none;'}
-    %header.nav-bar
-      %nav
-        = link_to root_path, {class: 'nav-bar-home'} do
-          %strong Tahi
-          Dashboard
-        %ul.nav-bar-links
-          - if current_user
-            - if current_user.admin?
-              %li.nav-bar-item= active_link_to 'Admin', rails_admin_path
-            %li.nav-bar-text= link_to 'Sign out', destroy_user_session_path, method: :delete
-            %li.nav-bar-text.nav-bar-welcome Welcome back, #{current_user.username}
-
-    = yield :control_bar
 
     #ember-app
     #tahi-container{class: yield(:tahi_container_class)}
@@ -33,4 +20,9 @@
 
 - if current_user
   :javascript
-    window.Tahi.currentUser = {id: #{current_user.id}, admin: #{current_user.admin}, fullName: "#{current_user.full_name}", imageUrl: "#{current_user.image_url}"};
+    window.Tahi.currentUser = {id: #{current_user.id},
+    admin: #{current_user.admin},
+    test: true,
+    username: "#{current_user.username}",
+    fullName: "#{current_user.full_name}",
+    imageUrl: "#{current_user.image_url}"};

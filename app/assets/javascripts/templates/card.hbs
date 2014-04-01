@@ -1,0 +1,11 @@
+<div class="card-content" {{action 'viewCard' view.content}}>
+  <span class="glyphicon glyphicon-ok completed-glyph"></span>
+  {{title}}
+</div>
+
+<span {{action 'removeTask' view.content}}
+  class="glyphicon glyphicon-remove-circle remove-card"
+  data-toggle="tooltip"
+  data-placement="right"
+  title="Delete Card">
+</span>

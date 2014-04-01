@@ -1,14 +1,18 @@
-<div class="overlay">
-  <div>
-    <header>
-      <h2><a href='paperpath'>{{paperTitle}}</a></h2>
+<div {{bind-attr class=":overlay overlayClass"}}>
+  <div class="overlay-container">
+    <header class="overlay-header">
+      <h2>
+        {{#link-to 'paper.manage' paper class="overlay-paper-title"}}
+          {{paper.displayTitle}}
+        {{/link-to}}
+      </h2>
       <a class="primary-button" {{action 'closeAction'}}>Close</a>
     </header>
-    <main>
-      {{yield}}
-    </main>
-    <footer>
-      <div class="content">
+
+    <main class="overlay-content">{{yield}}</main>
+
+    <footer class="overlay-footer">
+      <div class="overlay-footer-content">
         <div class="completed-checkbox">
           {{input id="task_completed" type='checkbox' name="task_completed" checked=completed}}
           <label for="task_completed">Completed</label>

@@ -14,7 +14,7 @@
   "app/assets/javascripts/views/*.js.coffee": {
     "command": "jview",
     "alternate": "spec/views/%s_spec.js",
-    "related": "app/js/javascripts/templates/%s.hb",
+    "related": "app/js/javascripts/templates/%s.hbs",
     "template": "%SView = Ember.View.extend({\n});"
   },
 

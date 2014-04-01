@@ -30,19 +30,17 @@
                 </a>
 
                 {{#each task in profile.tasks}}
-                  <div class="card-container">
-                    <a class="card flow-card completed message">
-                      <span class="glyphicon glyphicon-ok completed-glyph">
-                        {{task.title}}
-                      </span>
-                    </a>
-                    <span
-                      class="glyphicon glyphicon-remove-circle remove-card js-remove-card pointer"
-                      data-toggle="tooltip"
-                      data-placement="right"
-                      title="Delete Card" {{action 'removeTask'}}>
+                  <div class="card-content flow-card completed message">
+                    <span class="glyphicon glyphicon-ok completed-glyph">
+                      {{task.title}}
                     </span>
                   </div>
+                  <span
+                    class="glyphicon glyphicon-remove-circle remove-card js-remove-card pointer"
+                    data-toggle="tooltip"
+                    data-placement="right"
+                    title="Delete Card" {{action 'removeTask'}}>
+                  </span>
                 {{/each}}
 
               </div>

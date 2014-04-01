@@ -1,13 +1,11 @@
-<div class="overlay">
-  <div>
-    <header><h2>{{paper.shortTitle}}</h2></header>
+<div {{bind-attr class=":overlay overlayClass"}}>
+  <div class="overlay-container">
+    <header class="overlay-header"><h2>{{paper.shortTitle}}</h2></header>
 
-    <main>
-      {{yield}}
-    </main>
+    <main class="overlay-content">{{yield}}</main>
 
-    <footer>
-      <div class="content">
+    <footer class="overlay-footer">
+      <div class="overlay-footer-content">
         <a class="close-overlay" {{action 'cancel'}}>Cancel</a>
       </div>
       <a class="primary-button" {{action 'createCard'}}>Create card</a>

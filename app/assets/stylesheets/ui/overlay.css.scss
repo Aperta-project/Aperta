@@ -14,7 +14,7 @@
   @extend .fadeInAndOutAnimation;
 }
 
-.overlay > div {
+.overlay-container {
   width: 1120px;
   padding: 10px 80px;
   margin: 40px auto 0 auto;
@@ -22,25 +22,21 @@
   opacity: 0;
 }
 
-.overlay.in > div {
+.overlay.in .overlay-container  {
   @include animation-name(fadeInDown);
   @include animation-duration(300ms);
   @include animation-fill-mode(both);
   @include animation-timing-function(cubic-bezier(0.23, 1, 0.32, 1));
 }
 
-.overlay.out > div {
+.overlay.out .overlay-container {
   @include animation-name(fadeOutDown);
   @include animation-duration(200ms);
   @include animation-fill-mode(both);
 }
 
-.empty-overlay {
-  min-height: 550px;
-}
-
 .choose-card-type-overlay {
-  @extend .empty-overlay;
+  min-height: 550px;
 
   #choose-card-type {
     width: 550px;
@@ -57,7 +53,7 @@
 }
 
 .loading {
-  @extend .empty-overlay;
+  min-height: 550px;
   text-align: center;
   position: relative;
 }
@@ -71,7 +67,7 @@
   font-style: italic;
 }
 
-.overlay main {
+.overlay-content {
   min-height: 300px;
   padding:8px;
   margin: 0 auto;
@@ -84,22 +80,22 @@
   border-bottom: 1px solid black;
 }
 
-.overlay main p {
+.overlay-content p {
   margin: 15px;
 }
 
-.overlay header,
-.overlay footer {
+.overlay-header,
+.overlay-footer {
   @extend .row;
   position: relative;
 }
 
-.overlay footer {
+.overlay-footer {
   margin: 0;
   padding-bottom: 50px;
 }
 
-.overlay header {
+.overlay-header {
   margin: 0;
   padding-top: 50px;
 }
@@ -120,27 +116,27 @@
 }
 
 
-.overlay footer {
+.overlay-footer {
   margin-top: 10px;
   margin-bottom: 0;
 }
 
-.overlay header h2 {
+.overlay-header h2 {
   @extend .col-xs-10;
   margin: 0 0 15px 0;
 }
 
-.overlay header > a {
+.overlay-header > a {
   @extend .col-xs-2;
   bottom: 10px;
   position: absolute;
 }
 
-.overlay footer > a {
+.overlay-footer > a {
   @extend .col-xs-2;
 }
 
-.overlay footer .content {
+.overlay-footer-content {
   @extend .col-xs-10;
   margin-top: 5px;
 
@@ -155,7 +151,6 @@
   .assignee-drop-down {
     @extend .col-xs-9;
   }
-
 }
 
 .completed-checkbox {
@@ -181,6 +176,7 @@
   padding-right: 25px;
 }
 
+// TODO: overlay specific style:
 .overlay #task_body, .new-comment {
   width: 700px;
   height: 60px;
@@ -189,10 +185,12 @@
   padding: 5px;
 }
 
+// TODO: overlay specific style:
 #upload-figures-content img {
   min-height: 190px;
 }
 
+// TODO: overlay specific style:
 #paper-figures {
   list-style-type: none;
   margin: 20px 0 0;
@@ -204,14 +202,17 @@
   }
 }
 
+// TODO: overlay specific style:
 #paper-figures li img {
   height: 190px
 }
 
+// TODO: overlay specific style:
 #paper-manuscript-upload {
   color: $tahi-primary;
 }
 
+// TODO: overlay specific style:
 #paper-manuscript-upload,
 #paper-figure-uploads {
   margin-bottom: 0;
@@ -262,6 +263,7 @@
   }
 }
 
+// TODO: overlay specific style:
 .decision-selections > .form-group {
   display: inline-block;
 
@@ -275,6 +277,7 @@
   margin: 15px 0;
 }
 
+// TODO: overlay specific style:
 .task_paper_decision_letter {
   border-radius: 10px;
   border: 1px solid #333;
@@ -283,6 +286,7 @@
   height: 270px;
 }
 
+// TODO: overlay specific style:
 .decision-selections label {
   padding-left: 10px;
   font-size: 24px;
@@ -291,6 +295,7 @@
   margin-right: 70px;
 }
 
+// TODO: overlay specific style:
 .decision-selections input[type=radio] {
   -ms-transform: scale(2);
   -moz-transform: scale(2);
@@ -298,6 +303,7 @@
   transform: scale(2);
 }
 
+// TODO: overlay specific style:
 .decision-letter-description {
   font-size: 18px;
 }
@@ -307,15 +313,18 @@
 }
 
 
-.overlay .message-overlay footer .primary-button,
-.overlay .message-overlay header .primary-button {
+// TODO: overlay specific style:
+.overlay .message-overlay-footer .primary-button,
+.overlay .message-overlay-header .primary-button {
   background-color: $tahi-message;
 }
 
+// TODO: overlay specific style:
 .message .completed-checkbox {
   color: $tahi-message;
 }
 
+// TODO: overlay specific style:
 $message-body-width: 700px;
 .message-overlay {
   .secondary-button {

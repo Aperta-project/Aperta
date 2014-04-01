@@ -1,76 +1,90 @@
-.card-item,
-.card-container {
-  display: block;
+// Card
+//
+// Description goes here
+//
+// Markup:
+// <div class="card {$modifiers}">
+//   <div class="card-content">...</div>
+//   <div class="remove-card"></div>
+// </div>
+//
+// .card-message   - Use if Task is message type
+// .card-completed - Use if Task is completed
+//
+// Styleguide Card
+
+.card {
   position: relative;
+  display: block;
+
+  .tooltip { position: fixed; }
 }
 
 .remove-card {
-  display: none;
   position: absolute;
-  display: none;
   top: 5px;
   right: 10px;
+  display: none;
   font-size: 14px;
   color: #FFFFFF;
+  cursor: pointer;
 }
 
-.card-item:hover .remove-card {
+.card:hover .remove-card {
   display: inline;
 }
 
-.card-item .tooltip {
-  position: fixed;
-}
-
-.card {
-  cursor: pointer;
-  background-color: $tahi-secondary;
-  color: $tahi-primary-hover;
-  width: 220px;
-  font-size: 20px;
-  padding: 10px 15px;
-  display: block;
+.card-content {
   position: relative;
+  width: 220px;
+  display: block;
   margin-bottom: 10px;
   border-radius: 5px;
+  padding: 10px 15px;
+  color: $tahi-primary-hover;
+  font-size: 20px;
   word-wrap: break-word;
+  background-color: $tahi-secondary;
+  cursor: pointer;
 
   &:hover {
-    background-color: $btn-primary-bg;
     color: white;
     text-decoration: none;
-  }
-  &.message {
-    background-color: $tahi-message-light;
-    color: #3f1587;
-    &:hover {
-      background-color: $tahi-message;
-      color: white;
-      text-decoration: none;
-    }
+    background-color: $btn-primary-bg;
   }
 
-  span.completed-glyph {
+  .completed-glyph {
     display: none;
   }
+}
 
-  &.completed {
-    background: $tahi-tertiary;
-    color: $tahi-tertiary - #666;
-  }
+// .card modifier:
+.card-message .card-content {
+  color: #3f1587;
+  background-color: $tahi-message-light;
 
-  &.completed:hover {
-    background: $tahi-tertiary - #333;
+  &:hover {
     color: white;
+    text-decoration: none;
+    background-color: $tahi-message;
+  }
+}
+
+// .card modifier:
+.card-completed .card-content {
+  color: $tahi-tertiary - #666;
+  background: $tahi-tertiary;
+
+  &:hover {
+    color: white;
+    background: $tahi-tertiary - #333;
+
+    .glyphicon { color: white; }
   }
 
-  &.completed span.completed-glyph {
+  .completed-glyph {
     display: inline;
     margin-right: 5px;
     color: $tahi-primary;
-  }
-
-  &.completed:hover span.glyphicon {
-    color: white;
   }
 }

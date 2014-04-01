@@ -127,10 +127,11 @@
   text-align: center;
   opacity: 0;
   background-color: $tahi-secondary;
-
-  i { color: #FFFFFF; }
+  cursor: pointer;
 
   &:hover { opacity: 1; }
+
+  i { color: #FFFFFF; }
 
   &.first-add-column {
     position: relative;

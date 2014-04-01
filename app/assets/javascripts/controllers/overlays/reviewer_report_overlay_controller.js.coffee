@@ -1,2 +1,2 @@
 ETahi.ReviewerReportOverlayController = ETahi.TaskController.extend
-  mainClass: 'reviewer-form'
+  overlayClass: 'reviewer-form'

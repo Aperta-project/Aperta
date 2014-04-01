@@ -1,16 +1,16 @@
-<div {{bind-attr class=":overlay message"}}>
-  <div>
-    <header>
+<div {{bind-attr class=":overlay overlayClass message"}}>
+  <div class="overlay-container">
+    <header class="overlay-header">
       {{#link-to 'paper.manage' paper class="overlay-paper-title"}}
         {{paperTitle}}
       {{/link-to}}
       <a {{bind-attr class=":primary-button message"}} {{action 'closeAction'}}>Close</a>
     </header>
-    <main {{bind-attr class="mainClass"}}>
-      {{yield}}
-    </main>
-    <footer>
-      <div class="content">
+
+    <main class="overlay-content">{{yield}}</main>
+
+    <footer class="overlay-footer">
+      <div class="overlay-footer-content">
         <div class="assignee-drop-down chosen-style-override">
           <label for="assignee">This card is owned by</label>
           {{chosen content=assignees name='assignee'

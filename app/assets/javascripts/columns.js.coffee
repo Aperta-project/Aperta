@@ -26,7 +26,7 @@ Tahi.columnComponents.Card = React.createClass
       'card': true
       'flow-card':  @props.flowCard
       'completed': @props.task.taskCompleted
-      'message': (@props.task.cardName == 'message')
+      'message': (@props.task.cardName == 'standards-message')
 
   componentDidMount: ->
     $(@getDOMNode().querySelector('.js-remove-card')).tooltip()

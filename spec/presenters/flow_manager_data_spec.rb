@@ -59,7 +59,7 @@ describe FlowManagerData do
   end
 
   describe "#paper_admin_tasks" do
-    let(:paper_admin_task) { PaperAdminTask.first }
+    let(:paper_admin_task) { StandardTasks::PaperAdminTask.first }
 
     it "returns papers for which the given user is a paper admin of" do
       paper_admin_task.update! assignee: admin
@@ -80,7 +80,7 @@ describe FlowManagerData do
       end
 
       it "returns the paper admin task with the paper" do
-        expect(flow_manager_data.unassigned_papers).to match_array([[paper, [PaperAdminTask.first]]])
+        expect(flow_manager_data.unassigned_papers).to match_array([[paper, [StandardTasks::PaperAdminTask.first]]])
       end
     end
 

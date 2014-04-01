@@ -29,4 +29,3 @@ describe StandardTasks::AuthorsTask do
     end
   end
 end
-

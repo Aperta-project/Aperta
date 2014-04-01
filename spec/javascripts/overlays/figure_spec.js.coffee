@@ -1,4 +1,4 @@
-describe "Tahi.overlays.figure", ->
+describe "Tahi.overlays.standardsFigure", ->
   describe "FigureOverlay component", ->
     describe "#componentDidMount", ->
       beforeEach ->
@@ -10,7 +10,7 @@ describe "Tahi.overlays.figure", ->
             <input id='file-attachment' type='file' />
           </div>
         """)[0]
-        @component = Tahi.overlays.figure.Overlay()
+        @component = Tahi.overlays.standardsFigure.Overlay()
         spyOn(@component, 'getDOMNode').and.returnValue($(@html)[0])
 
       it "initializes jQuery filepicker", ->
@@ -33,7 +33,7 @@ describe "Tahi.overlays.figure", ->
 
     describe "jQuery File Upload callbacks", ->
       beforeEach ->
-        @component = Tahi.overlays.figure.Overlay()
+        @component = Tahi.overlays.standardsFigure.Overlay()
         spyOn @component, 'setState'
 
         @event = jasmine.createSpyObj 'event', ['target']
@@ -114,7 +114,7 @@ describe "Tahi.overlays.figure", ->
         preview = $('<div id="preview" />')[0]
         window.tempStorage ||= {}
         window.tempStorage['foo.jpg'] = preview
-        component = Tahi.overlays.figure.FigureUpload
+        component = Tahi.overlays.standardsFigure.FigureUpload
           filename: 'foo.jpg'
           progress: 0
         spyOn(component, 'getDOMNode').and.returnValue($(html)[0])

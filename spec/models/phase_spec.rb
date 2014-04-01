@@ -62,11 +62,11 @@ describe Phase do
         let(:phase) { Phase.new name: 'Submission Data' }
 
         it "initializes one declaration task" do
-          expect(phase.tasks.map(&:class)).to include(DeclarationTask)
+          expect(phase.tasks.map(&:class)).to include(StandardTasks::DeclarationTask)
         end
 
         it "initializes one figures task" do
-          expect(phase.tasks.map(&:class)).to include(FigureTask)
+          expect(phase.tasks.map(&:class)).to include(StandardTasks::FigureTask)
         end
 
         it "initializes one authors task" do
@@ -74,7 +74,7 @@ describe Phase do
         end
 
         it "initializes one upload manuscript task" do
-          expect(phase.tasks.map(&:class)).to include(UploadManuscriptTask)
+          expect(phase.tasks.map(&:class)).to include(StandardTasks::UploadManuscriptTask)
         end
       end
 
@@ -82,7 +82,7 @@ describe Phase do
         let(:phase) { Phase.new name: 'Assign Editor' }
 
         it "initializes one paper admin task" do
-          expect(phase.tasks.map(&:class)).to include(PaperAdminTask)
+          expect(phase.tasks.map(&:class)).to include(StandardTasks::PaperAdminTask)
         end
 
         it "initializes one tech check task" do
@@ -90,7 +90,7 @@ describe Phase do
         end
 
         it "initializes one paper editor task" do
-          expect(phase.tasks.map(&:class)).to include(PaperEditorTask)
+          expect(phase.tasks.map(&:class)).to include(StandardTasks::PaperEditorTask)
         end
       end
 
@@ -98,7 +98,7 @@ describe Phase do
         let(:phase) { Phase.new name: 'Assign Reviewers' }
 
         it "initializes one assign reviewer task" do
-          expect(phase.tasks.map(&:class)).to include(PaperReviewerTask)
+          expect(phase.tasks.map(&:class)).to include(StandardTasks::PaperReviewerTask)
         end
       end
 
@@ -106,7 +106,7 @@ describe Phase do
         let(:phase) { Phase.new name: 'Make Decision' }
 
         it "initializes one register decision task" do
-          expect(phase.tasks.map(&:class)).to include(RegisterDecisionTask)
+          expect(phase.tasks.map(&:class)).to include(StandardTasks::RegisterDecisionTask)
         end
       end
 

@@ -14,7 +14,7 @@ class MessagesController < ApplicationController
     message_task = MessageTaskCreator.with_initial_comment(phase,
                                                            message_task_params,
                                                            current_user)
-    respond_with MessageTaskPresenter.for(message_task).data_attributes, location: paper_task_path(paper, message_task)
+    respond_with StandardTasks::MessageTaskPresenter.for(message_task).data_attributes, location: paper_task_path(paper, message_task)
   end
 
   def update_participants

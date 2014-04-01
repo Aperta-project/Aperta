@@ -21,7 +21,7 @@ describe MessagesController do
 
     def verify_response(response)
         json = JSON.parse(response.body)
-        expect(json["cardName"]).to eq("message")
+        expect(json["cardName"]).to eq("standards-message")
         expect(json["messageSubject"]).to eq(msg_subject)
         expect(json["taskTitle"]).to eq(msg_subject)
         expect(json["comments"].count).to eq(1)

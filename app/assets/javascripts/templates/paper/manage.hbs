@@ -1,30 +1,32 @@
-<div class="control-bar">
-  <div class="control-bar-inner-wrapper">
-    <ul>
-      <li id="control-bar-paper-journal-logo">
-        {{#if paper.logo}}
-          <img src="">
-        {{else}}
-          <div>Logo</div>
-        {{/if}}
-      </li>
-      <li id="control-bar-paper-short-title">
-        <h2 class="tasks-paper-title">{{shortTitle}}</h2>
-      </li>
-    </ul>
-    <ul>
-      <li><a href="#">Manuscript</a></li>
-    </ul>
+<div id="tahi-container" class="full-width">
+  <div class="control-bar">
+    <div class="control-bar-inner-wrapper">
+      <ul>
+        <li id="control-bar-paper-journal-logo">
+          {{#if paper.logo}}
+            <img src="">
+          {{else}}
+            <div>Logo</div>
+          {{/if}}
+        </li>
+        <li id="control-bar-paper-short-title">
+          <h2 class="tasks-paper-title">{{shortTitle}}</h2>
+        </li>
+      </ul>
+      <ul>
+        <li><a href="#">Manuscript</a></li>
+      </ul>
+    </div>
   </div>
-</div>
 
 
-<div id="manuscript-manager">
-  {{title}}
-  <div class="full-height">
-    <ul class="columns">
-      {{add-column position=-1 action="addPhase" bonusClass='first-add-column'}}
-      {{each sortedPhases itemViewClass='ETahi.ManuscriptManagerColumnView'}}
-    </ul>
+  <div id="manuscript-manager">
+    {{title}}
+    <div class="full-height">
+      <ul class="columns">
+        {{add-column position=-1 action="addPhase" bonusClass='first-add-column'}}
+        {{each sortedPhases itemViewClass='ETahi.ManuscriptManagerColumnView'}}
+      </ul>
+    </div>
   </div>
 </div>

@@ -1,1 +1,44 @@
-<div>Dashboard</div>
+<div id="tahi-container">
+  <header>
+    <h1 class="large">Welcome, {{currentUser.fullName}}</h1>
+  </header>
+  <hr />
+
+  <main>
+    <section id="my-submissions">
+      <h2>Your Submissions</h2>
+      {{#if hasSubmissions}}
+        <ul class="submitted">
+          {{#each paper in submissions}}
+            <li class="paper-title">
+              {{#link-to 'paper.edit' paper.id}}{{paper.short_title}}
+              {{/link-to}}
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p class="info-text">
+          Your scientific paper submissions will
+          <br />
+          appear here.
+        </p>
+      {{/if}}
+      {{#link-to 'paper.new' classNames='primary-button wide-button'}}Create new submission{{/link-to}}
+    </section>
+
+    {{#if hasAssignedTasks}}
+      <section id="my-tasks">
+        <h2>Your Tasks</h2>
+        {{#each paper in tasksByPaper}}
+          <p class="paper-title">
+            {{#link-to 'paper.edit' paper.id}}{{paper.title}}{{/link-to}}
+          </p>
+          <ul class="cards">
+            ADD MESSAGE TASKS
+            {{each paper.tasks itemViewClass="ETahi.CardItemView"}}
+          </ul>
+        {{/each}}
+      </section>
+    {{/if}}
+  </main>
+</div>

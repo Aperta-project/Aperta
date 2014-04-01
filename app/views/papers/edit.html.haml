@@ -16,7 +16,7 @@
             %li= link_to 'Manuscript Manager', manage_paper_path(@paper)
 
 %main
-  %article{data: { 'paper-path' => paper_path(@paper, format: :json) } }
+  %article
     #toolbar
 
     %div
@@ -57,6 +57,7 @@
 
       %hr
       = link_to 'Submit', new_paper_submission_path(@paper), class: 'primary-button wide-button'
+      = link_to 'Save', '#', class: 'primary-button wide-button', onclick: "Tahi.papers.savePaper('#{paper_path(@paper, format: :json)}'); return false;"
 
 
 / jquery

@@ -31,26 +31,27 @@
   <div class="summary hero-unit">
     <h2>Dependencies</h2>
 
-    <p>As of March  4, 2014  9:40am</p>
+    <p>As of April  1, 2014  1:27pm</p>
 
     <h4>
-      124 total
+      132 total
 
           </h4>
 
     <ul>
-              <li>102 MIT</li>
+              <li>110 MIT</li>
               <li>7 Apache 2.0</li>
               <li>3 BSD</li>
-              <li>2 other</li>
-              <li>2 GPLv2</li>
               <li>2 LGPL</li>
-              <li>1 ISC</li>
+              <li>2 GPLv2</li>
               <li>1 ruby</li>
               <li>1 2-clause BSDL</li>
               <li>1 New BSD</li>
-              <li>1 GPLv2+</li>
+              <li>1 other</li>
+              <li>1 ISC</li>
               <li>1 APL 2.0</li>
+              <li>1 GPLv2+</li>
+              <li>1 TBD</li>
           </ul>
   </div>
     <div class="dependencies">
@@ -81,7 +82,7 @@
           <div id="actionmailer" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">actionmailer</a>
-                    v4.0.3
+                    v4.1.0.rc1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -109,12 +110,13 @@
             <dt>Children</dt>
                           <dd>actionpack</dd>
                           <dd>mail</dd>
+                          <dd>actionview</dd>
                       </dl>
               </div>
           <div id="actionpack" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">actionpack</a>
-                    v4.0.3
+                    v4.1.0.rc1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -144,22 +146,60 @@
                           <dd>haml-rails</dd>
                           <dd>jquery-fileupload-rails</dd>
                           <dd>kaminari</dd>
+                          <dd>actionview</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>activesupport</dd>
+                          <dd>rack</dd>
+                          <dd>rack-test</dd>
+                          <dd>activemodel</dd>
+                          <dd>actionview</dd>
+                      </dl>
+              </div>
+          <div id="actionview" class="approved">
+        <h2>
+                      <a href="http://www.rubyonrails.org">actionview</a>
+                    v4.1.0.rc1
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Rendering framework putting the V in MVC (part of Rails).</td>
+            <td>Simple, battle-tested conventions and helpers for building web pages.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>actionpack</dd>
+                          <dd>actionmailer</dd>
+                          <dd>railties</dd>
+                          <dd>rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>activesupport</dd>
                           <dd>builder</dd>
-                          <dd>rack</dd>
-                          <dd>rack-test</dd>
                           <dd>erubis</dd>
+                          <dd>actionpack</dd>
                           <dd>activemodel</dd>
-                          <dd>tzinfo</dd>
                       </dl>
               </div>
           <div id="activemodel" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">activemodel</a>
-                    v4.0.3
+                    v4.1.0.rc1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -172,7 +212,7 @@
           <tbody>
           <tr>
             <td>A toolkit for building modeling frameworks (part of Rails).</td>
-            <td>A toolkit for building modeling frameworks like Active Record. Rich support for attributes, callbacks, validations, observers, serialization, internationalization, and testing.</td>
+            <td>A toolkit for building modeling frameworks like Active Record. Rich support for attributes, callbacks, validations, serialization, internationalization, and testing.</td>
             <td>
                               <a href="http://opensource.org/licenses/mit-license">MIT</a>
                           </td>
@@ -185,6 +225,8 @@
                           <dd>activerecord</dd>
                           <dd>rspec-rails</dd>
                           <dd>carrierwave</dd>
+                          <dd>actionview</dd>
+                          <dd>rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -195,7 +237,7 @@
           <div id="activerecord" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">activerecord</a>
-                    v4.0.3
+                    v4.1.0.rc1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -217,7 +259,6 @@
         </table>
                   <dl>
             <dt>Parents</dt>
-                          <dd>activerecord-deprecated_finders</dd>
                           <dd>orm_adapter</dd>
                           <dd>rails</dd>
                       </dl>
@@ -226,47 +267,12 @@
                           <dd>activesupport</dd>
                           <dd>activemodel</dd>
                           <dd>arel</dd>
-                          <dd>activerecord-deprecated_finders</dd>
-                      </dl>
-              </div>
-          <div id="activerecord-deprecated_finders" class="approved">
-        <h2>
-                      <a href="https://github.com/rails/activerecord-deprecated_finders">activerecord-deprecated_finders</a>
-                    v1.0.3
-                  </h2>
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Description</th>
-            <th>License</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>This gem contains deprecated finder APIs extracted from Active Record.</td>
-            <td>Deprecated finder APIs extracted from Active Record.</td>
-            <td>
-                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
-                          </td>
-          </tr>
-          </tbody>
-        </table>
-                  <dl>
-            <dt>Parents</dt>
-                          <dd>activerecord</dd>
-                      </dl>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>minitest</dd>
-                          <dd>activerecord</dd>
-                          <dd>sqlite3</dd>
                       </dl>
               </div>
           <div id="activesupport" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">activesupport</a>
-                    v4.0.3
+                    v4.1.0.rc1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -305,14 +311,16 @@
                           <dd>kaminari</dd>
                           <dd>factory_girl</dd>
                           <dd>railroady</dd>
+                          <dd>actionview</dd>
+                          <dd>spring</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>i18n</dd>
-                          <dd>multi_json</dd>
                           <dd>tzinfo</dd>
                           <dd>minitest</dd>
                           <dd>thread_safe</dd>
+                          <dd>json</dd>
                       </dl>
               </div>
           <div id="addressable" class="approved">
@@ -354,7 +362,7 @@ adds support for IRIs and URI templates.
           <div id="arel" class="approved">
         <h2>
                       <a href="http://github.com/rails/arel">arel</a>
-                    v4.0.2
+                    v5.0.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -370,7 +378,7 @@ adds support for IRIs and URI templates.
             <td>Arel is a SQL AST manager for Ruby. It
 
 1. Simplifies the generation of complex SQL queries
-2. Adapts to various RDBMS systems
+2. Adapts to various RDBMSes
 
 It is intended to be a framework framework; that is, you can build your own ORM
 with it, focusing on innovative object and collection modeling as opposed to
@@ -394,7 +402,7 @@ database compatibility and query generation.</td>
           <div id="atomic" class="approved">
         <h2>
                       <a href="http://github.com/headius/ruby-atomic">atomic</a>
-                    v1.1.14
+                    v1.1.15
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -491,7 +499,7 @@ database compatibility and query generation.</td>
           <div id="builder" class="approved">
         <h2>
                       <a href="http://onestepback.org">builder</a>
-                    v3.1.4
+                    v3.2.2
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -518,11 +526,11 @@ simple to do.  Currently the following builder objects are supported:
         </table>
                   <dl>
             <dt>Parents</dt>
-                          <dd>actionpack</dd>
                           <dd>activemodel</dd>
                           <dd>tilt</dd>
                           <dd>fog</dd>
                           <dd>rails_admin</dd>
+                          <dd>actionview</dd>
                       </dl>
                       </div>
           <div id="bundler" class="approved">
@@ -559,7 +567,6 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>rails</dd>
                           <dd>uglifier</dd>
                           <dd>haml-rails</dd>
-                          <dd>ckeditor_rails</dd>
                           <dd>rspec-support</dd>
                           <dd>rspec-collection_matchers</dd>
                           <dd>rspec-its</dd>
@@ -571,6 +578,7 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>chosen-rails</dd>
                           <dd>react-rails</dd>
                           <dd>railroady</dd>
+                          <dd>codeclimate-test-reporter</dd>
                       </dl>
                       </div>
           <div id="capybara" class="approved">
@@ -604,6 +612,7 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>license_finder</dd>
                           <dd>kaminari</dd>
                           <dd>nested_form</dd>
+                          <dd>standard_tasks</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -686,7 +695,7 @@ simple to do.  Currently the following builder objects are supported:
           <div id="childprocess" class="approved">
         <h2>
                       <a href="http://github.com/jarib/childprocess">childprocess</a>
-                    v0.3.9
+                    v0.5.2
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -799,11 +808,11 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>rake</dd>
                       </dl>
               </div>
-          <div id="ckeditor_rails" class="approved">
+          <div id="codeclimate-test-reporter" class="approved">
         <h2>
-                      <a href="https://github.com/tsechingho/ckeditor-rails">ckeditor_rails</a>
-                    v4.2.2
-                      (default)
+                      codeclimate-test-reporter
+                    v0.3.0
+                      (test)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -815,8 +824,8 @@ simple to do.  Currently the following builder objects are supported:
           </thead>
           <tbody>
           <tr>
-            <td>Integrate CKEditor javascript library with Rails asset pipeline</td>
-            <td>CKEditor is a javascript library of the WYSIWYG rich-text editor. This gem integrates CKEditor with Rails asset pipeline for easy of use.</td>
+            <td>Uploads Ruby test coverage data to Code Climate.</td>
+            <td>Collects test coverage data from your Ruby test suite and sends it to Code Climate's hosted, automated code review service. Based on SimpleCov.</td>
             <td>
                               <a href="http://opensource.org/licenses/mit-license">MIT</a>
                           </td>
@@ -825,10 +834,10 @@ simple to do.  Currently the following builder objects are supported:
         </table>
                           <dl>
             <dt>Children</dt>
-                          <dd>railties</dd>
+                          <dd>simplecov</dd>
                           <dd>bundler</dd>
-                          <dd>rails</dd>
-                          <dd>thor</dd>
+                          <dd>rake</dd>
+                          <dd>pry</dd>
                       </dl>
               </div>
           <div id="coderay" class="approved">
@@ -1141,6 +1150,39 @@ We are happy to report that this issue has been resolved.</td>
                           <dd>rake</dd>
                       </dl>
               </div>
+          <div id="docile" class="approved">
+        <h2>
+                      <a href="http://ms-ati.github.com/docile/">docile</a>
+                    v1.1.3
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Docile keeps your Ruby DSLs tame and well-behaved</td>
+            <td>Docile turns any Ruby object into a DSL. Especially useful with the Builder pattern.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>simplecov</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rake</dd>
+                          <dd>mime-types</dd>
+                      </dl>
+              </div>
           <div id="erubis" class="approved">
         <h2>
                       <a href="http://www.kuwata-lab.com/erubis/">erubis</a>
@@ -1178,8 +1220,8 @@ We are happy to report that this issue has been resolved.</td>
         </table>
                   <dl>
             <dt>Parents</dt>
-                          <dd>actionpack</dd>
                           <dd>tilt</dd>
+                          <dd>actionview</dd>
                       </dl>
                       </div>
           <div id="excon" class="approved">
@@ -1284,6 +1326,7 @@ We are happy to report that this issue has been resolved.</td>
             <dt>Children</dt>
                           <dd>activesupport</dd>
                           <dd>sqlite3</dd>
+                          <dd>simplecov</dd>
                       </dl>
               </div>
           <div id="factory_girl_rails" class="approved">
@@ -1312,6 +1355,10 @@ We are happy to report that this issue has been resolved.</td>
           </tr>
           </tbody>
         </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>standard_tasks</dd>
+                      </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>railties</dd>
@@ -1399,7 +1446,7 @@ We are happy to report that this issue has been resolved.</td>
           <div id="font-awesome-rails" class="approved">
         <h2>
                       <a href="https://github.com/bokmann/font-awesome-rails">font-awesome-rails</a>
-                    v4.0.3.0
+                    v4.0.3.1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1498,7 +1545,7 @@ We are happy to report that this issue has been resolved.</td>
           <div id="haml" class="approved">
         <h2>
                       <a href="http://haml.info/">haml</a>
-                    v4.0.4
+                    v4.0.5
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1540,7 +1587,7 @@ but it can function as a stand-alone templating engine.
           <div id="haml-rails" class="approved">
         <h2>
                       <a href="http://github.com/indirect/haml-rails">haml-rails</a>
-                    v0.5.1
+                    v0.5.3
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -1804,7 +1851,7 @@ but it can function as a stand-alone templating engine.
           <div id="jquery-rails" class="approved">
         <h2>
                       <a href="http://rubygems.org/gems/jquery-rails">jquery-rails</a>
-                    v3.0.4
+                    v3.1.0
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -1869,7 +1916,7 @@ but it can function as a stand-alone templating engine.
           <div id="jquery-ui-rails" class="approved">
         <h2>
                       <a href="https://github.com/joliss/jquery-ui-rails">jquery-ui-rails</a>
-                    v4.1.0
+                    v4.2.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1932,12 +1979,13 @@ but it can function as a stand-alone templating engine.
                           <dd>uglifier</dd>
                           <dd>carrierwave</dd>
                           <dd>jquery-ui-rails</dd>
+                          <dd>activesupport</dd>
                       </dl>
                       </div>
           <div id="kaminari" class="approved">
         <h2>
                       <a href="https://github.com/amatsuda/kaminari">kaminari</a>
-                    v0.15.0
+                    v0.15.1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1949,7 +1997,7 @@ but it can function as a stand-alone templating engine.
           </thead>
           <tbody>
           <tr>
-            <td>A pagination engine plugin for Rails 3+ or other modern frameworks</td>
+            <td>A pagination engine plugin for Rails 3+ and other modern frameworks</td>
             <td>Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator for Rails 3+</td>
             <td>
                               <a href="http://opensource.org/licenses/mit-license">MIT</a>
@@ -1967,7 +2015,6 @@ but it can function as a stand-alone templating engine.
                           <dd>actionpack</dd>
                           <dd>bundler</dd>
                           <dd>rake</dd>
-                          <dd>sqlite3</dd>
                           <dd>tzinfo</dd>
                           <dd>capybara</dd>
                           <dd>database_cleaner</dd>
@@ -2228,6 +2275,7 @@ and added by the users of MIME::Types.</td>
                           <dd>mail</dd>
                           <dd>capybara</dd>
                           <dd>fog</dd>
+                          <dd>docile</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2267,8 +2315,8 @@ and added by the users of MIME::Types.</td>
                       </div>
           <div id="minitest" class="approved">
         <h2>
-                      minitest
-                    v4.7.5
+                      <a href="https://github.com/seattlerb/minitest">minitest</a>
+                    v5.3.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2280,10 +2328,62 @@ and added by the users of MIME::Types.</td>
           </thead>
           <tbody>
           <tr>
-            <td>This minitest is bundled with Ruby</td>
-            <td></td>
+            <td>minitest provides a complete suite of testing facilities supporting TDD, BDD, mocking, and benchmarking</td>
+            <td>minitest provides a complete suite of testing facilities supporting
+TDD, BDD, mocking, and benchmarking.
+
+    "I had a class with Jim Weirich on testing last week and we were
+     allowed to choose our testing frameworks. Kirk Haines and I were
+     paired up and we cracked open the code for a few test
+     frameworks...
+
+     I MUST say that minitest is *very* readable / understandable
+     compared to the 'other two' options we looked at. Nicely done and
+     thank you for helping us keep our mental sanity."
+
+    -- Wayne E. Seguin
+
+minitest/unit is a small and incredibly fast unit testing framework.
+It provides a rich set of assertions to make your tests clean and
+readable.
+
+minitest/spec is a functionally complete spec engine. It hooks onto
+minitest/unit and seamlessly bridges test assertions over to spec
+expectations.
+
+minitest/benchmark is an awesome way to assert the performance of your
+algorithms in a repeatable manner. Now you can assert that your newb
+co-worker doesn't replace your linear algorithm with an exponential
+one!
+
+minitest/mock by Steven Baker, is a beautifully tiny mock (and stub)
+object framework.
+
+minitest/pride shows pride in testing and adds coloring to your test
+output. I guess it is an example of how to write IO pipes too. :P
+
+minitest/unit is meant to have a clean implementation for language
+implementors that need a minimal set of methods to bootstrap a working
+test suite. For example, there is no magic involved for test-case
+discovery.
+
+    "Again, I can't praise enough the idea of a testing/specing
+     framework that I can actually read in full in one sitting!"
+
+    -- Piotr Szotkowski
+
+Comparing to rspec:
+
+    rspec is a testing DSL. minitest is ruby.
+
+    -- Adam Hawkins, "Bow Before MiniTest"
+
+minitest doesn't reinvent anything that ruby already provides, like:
+classes, modules, inheritance, methods. This means you only have to
+learn ruby to use minitest and all of your regular OO practices like
+extract-method refactorings still apply.</td>
             <td>
-                              other
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
                           </td>
           </tr>
           </tbody>
@@ -2293,7 +2393,6 @@ and added by the users of MIME::Types.</td>
                           <dd>rake</dd>
                           <dd>activesupport</dd>
                           <dd>mime-types</dd>
-                          <dd>activerecord-deprecated_finders</dd>
                           <dd>arel</dd>
                           <dd>nokogiri</dd>
                           <dd>launchy</dd>
@@ -2304,12 +2403,17 @@ and added by the users of MIME::Types.</td>
                           <dd>haml</dd>
                           <dd>railroady</dd>
                           <dd>rspec-expectations</dd>
+                          <dd>newrelic_rpm</dd>
                       </dl>
-                      </div>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rdoc</dd>
+                      </dl>
+              </div>
           <div id="multi_json" class="approved">
         <h2>
                       <a href="http://github.com/intridea/multi_json">multi_json</a>
-                    v1.8.4
+                    v1.9.2
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2331,12 +2435,12 @@ and added by the users of MIME::Types.</td>
         </table>
                   <dl>
             <dt>Parents</dt>
-                          <dd>activesupport</dd>
                           <dd>jbuilder</dd>
                           <dd>sprockets</dd>
                           <dd>jasmine</dd>
                           <dd>selenium-webdriver</dd>
                           <dd>fog</dd>
+                          <dd>simplecov</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2471,6 +2575,75 @@ and added by the users of MIME::Types.</td>
                           <dd>fog</dd>
                       </dl>
                       </div>
+          <div id="netrc" class="approved">
+        <h2>
+                      <a href="https://github.com/geemus/netrc">netrc</a>
+                    v0.7.7
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Library to read and write netrc files.</td>
+            <td>This library can read and update netrc files, preserving formatting including comments and whitespace.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>rest_client</dd>
+                      </dl>
+                      </div>
+          <div id="newrelic_rpm" class="approved">
+        <h2>
+                      <a href="http://www.github.com/newrelic/rpm">newrelic_rpm</a>
+                    v3.7.2.195
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>New Relic Ruby Agent</td>
+            <td>New Relic is a performance management system, developed by New Relic,
+Inc (http://www.newrelic.com).  New Relic provides you with deep
+information about the performance of your web application as it runs
+in production. The New Relic Ruby Agent is dual-purposed as a either a
+Gem or plugin, hosted on
+http://github.com/newrelic/rpm/
+</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rake</dd>
+                          <dd>minitest</dd>
+                          <dd>rdoc</dd>
+                          <dd>rails</dd>
+                          <dd>sqlite3</dd>
+                          <dd>sequel</dd>
+                          <dd>pry</dd>
+                      </dl>
+              </div>
           <div id="nokogiri" class="approved">
         <h2>
                       <a href="http://nokogiri.org">nokogiri</a>
@@ -2603,7 +2776,7 @@ A small example usage:
           <div id="phantomjs" class="approved">
         <h2>
                       <a href="https://github.com/colszowka/phantomjs-gem">phantomjs</a>
-                    v1.9.2.1
+                    v1.9.7.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2630,6 +2803,7 @@ A small example usage:
                           <dl>
             <dt>Children</dt>
                           <dd>rake</dd>
+                          <dd>simplecov</dd>
                       </dl>
               </div>
           <div id="polyglot" class="approved">
@@ -2692,6 +2866,8 @@ augments 'require' to find and load matching files.</td>
                           <dd>license_finder</dd>
                           <dd>pry-rails</dd>
                           <dd>fog</dd>
+                          <dd>codeclimate-test-reporter</dd>
+                          <dd>newrelic_rpm</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2885,7 +3061,7 @@ request helpers feature.</td>
           <div id="rails" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">rails</a>
-                    v4.0.3
+                    v4.1.0.rc1
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -2911,7 +3087,6 @@ request helpers feature.</td>
                           <dd>license_finder</dd>
                           <dd>haml</dd>
                           <dd>haml-rails</dd>
-                          <dd>ckeditor_rails</dd>
                           <dd>jasmine</dd>
                           <dd>carrierwave</dd>
                           <dd>jquery-fileupload-rails</dd>
@@ -2919,6 +3094,8 @@ request helpers feature.</td>
                           <dd>chosen-rails</dd>
                           <dd>react-rails</dd>
                           <dd>spinjs-rails</dd>
+                          <dd>newrelic_rpm</dd>
+                          <dd>standard_tasks</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2929,6 +3106,8 @@ request helpers feature.</td>
                           <dd>railties</dd>
                           <dd>bundler</dd>
                           <dd>sprockets-rails</dd>
+                          <dd>actionview</dd>
+                          <dd>activemodel</dd>
                       </dl>
               </div>
           <div id="rails_12factor" class="approved">
@@ -2964,7 +3143,7 @@ request helpers feature.</td>
           <div id="rails_admin" class="approved">
         <h2>
                       <a href="https://github.com/sferik/rails_admin">rails_admin</a>
-                    v0.6.0
+                    v0.6.1
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -3062,7 +3241,7 @@ request helpers feature.</td>
           <div id="railties" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">railties</a>
-                    v4.0.3
+                    v4.1.0.rc1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3092,7 +3271,6 @@ request helpers feature.</td>
                           <dd>rspec-rails</dd>
                           <dd>sass-rails</dd>
                           <dd>haml-rails</dd>
-                          <dd>ckeditor_rails</dd>
                           <dd>jquery-fileupload-rails</dd>
                           <dd>font-awesome-rails</dd>
                           <dd>jquery-ui-rails</dd>
@@ -3105,6 +3283,7 @@ request helpers feature.</td>
                           <dd>actionpack</dd>
                           <dd>rake</dd>
                           <dd>thor</dd>
+                          <dd>actionview</dd>
                       </dl>
               </div>
           <div id="raindrops" class="approved">
@@ -3215,6 +3394,13 @@ multiple processes.</td>
                           <dd>fssm</dd>
                           <dd>factory_girl_rails</dd>
                           <dd>railroady</dd>
+                          <dd>thread_safe</dd>
+                          <dd>docile</dd>
+                          <dd>simplecov-html</dd>
+                          <dd>simplecov</dd>
+                          <dd>codeclimate-test-reporter</dd>
+                          <dd>newrelic_rpm</dd>
+                          <dd>spring</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3267,6 +3453,9 @@ See RDoc for a description of RDoc's markup and basic use.</td>
                           <dd>unf_ext</dd>
                           <dd>unf</dd>
                           <dd>kaminari</dd>
+                          <dd>minitest</dd>
+                          <dd>newrelic_rpm</dd>
+                          <dd>rest_client</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3278,7 +3467,7 @@ See RDoc for a description of RDoc's markup and basic use.</td>
           <div id="react-rails" class="approved">
         <h2>
                       <a href="https://github.com/facebook/react-rails">react-rails</a>
-                    v0.8.0.0
+                    v0.9.0.0
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -3311,7 +3500,7 @@ See RDoc for a description of RDoc's markup and basic use.</td>
           <div id="react-source" class="approved">
         <h2>
                       <a href="https://github.com/facebook/react">react-source</a>
-                    v0.8.0
+                    v0.9.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3368,6 +3557,36 @@ See RDoc for a description of RDoc's markup and basic use.</td>
                           <dl>
             <dt>Children</dt>
                           <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="rest_client" class="approved">
+        <h2>
+                      <a href="http://github.com/rest-client/rest-client">rest_client</a>
+                    v1.7.3
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Simple HTTP and REST client for Ruby, inspired by microframework syntax for specifying actions.</td>
+            <td>Same as rest-client, but removes mime-types dependency. -- A simple HTTP and REST client for Ruby, inspired by the Sinatra microframework style of specifying actions: get, put, post, delete.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>netrc</dd>
+                          <dd>rdoc</dd>
                       </dl>
               </div>
           <div id="rspec-collection_matchers" class="approved">
@@ -3564,6 +3783,7 @@ See RDoc for a description of RDoc's markup and basic use.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>nested_form</dd>
+                          <dd>standard_tasks</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3648,7 +3868,8 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
           <div id="rubyzip" class="approved">
         <h2>
                       <a href="http://github.com/rubyzip/rubyzip">rubyzip</a>
-                    v1.0.0
+                    v1.1.2
+                      (default)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3675,8 +3896,8 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                       </div>
           <div id="safe_yaml" class="approved">
         <h2>
-                      <a href="http://dtao.github.com/safe_yaml/">safe_yaml</a>
-                    v0.9.7
+                      <a href="https://github.com/dtao/safe_yaml">safe_yaml</a>
+                    v1.0.1
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3689,7 +3910,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
           <tbody>
           <tr>
             <td>SameYAML provides an alternative implementation of YAML.load suitable for accepting user input in Ruby applications.</td>
-            <td>Parse YAML safely, without that pesky arbitrary object deserialization vulnerability</td>
+            <td>Parse YAML safely</td>
             <td>
                               <a href="http://opensource.org/licenses/mit-license">MIT</a>
                           </td>
@@ -3704,7 +3925,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
           <div id="sass" class="approved">
         <h2>
                       <a href="http://sass-lang.com/">sass</a>
-                    v3.2.12
+                    v3.2.14
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3735,6 +3956,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                           <dd>sprockets</dd>
                           <dd>sass-rails</dd>
                           <dd>compass</dd>
+                          <dd>simplecov-html</dd>
                       </dl>
                       </div>
           <div id="sass-rails" class="approved">
@@ -3808,7 +4030,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
           <div id="selenium-webdriver" class="approved">
         <h2>
                       <a href="http://selenium.googlecode.com">selenium-webdriver</a>
-                    v2.37.0
+                    v2.41.0
                       (development, test)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -3869,8 +4091,80 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                   <dl>
             <dt>Parents</dt>
                           <dd>license_finder</dd>
+                          <dd>newrelic_rpm</dd>
                       </dl>
                       </div>
+          <div id="simplecov" class="approved">
+        <h2>
+                      <a href="http://github.com/colszowka/simplecov">simplecov</a>
+                    v0.8.2
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Code coverage for Ruby 1.9+ with a powerful configuration library and automatic merging of coverage across test suites</td>
+            <td>Code coverage for Ruby 1.9+ with a powerful configuration library and automatic merging of coverage across test suites</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>codeclimate-test-reporter</dd>
+                          <dd>factory_girl</dd>
+                          <dd>phantomjs</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>multi_json</dd>
+                          <dd>simplecov-html</dd>
+                          <dd>docile</dd>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="simplecov-html" class="approved">
+        <h2>
+                      <a href="https://github.com/colszowka/simplecov-html">simplecov-html</a>
+                    v0.8.0
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Default HTML formatter for SimpleCov code coverage tool for ruby 1.9+</td>
+            <td>Default HTML formatter for SimpleCov code coverage tool for ruby 1.9+</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>simplecov</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rake</dd>
+                          <dd>sprockets</dd>
+                          <dd>sass</dd>
+                      </dl>
+              </div>
           <div id="slop" class="approved">
         <h2>
                       <a href="http://github.com/leejarvis/slop">slop</a>
@@ -3933,6 +4227,36 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                           <dd>rails</dd>
                       </dl>
               </div>
+          <div id="spring" class="approved">
+        <h2>
+                      <a href="http://github.com/rails/spring">spring</a>
+                    v1.1.2
+                      (development)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Rails application preloader</td>
+            <td>Rails application preloader</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>activesupport</dd>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
           <div id="sprockets" class="approved">
         <h2>
                       <a href="http://getsprockets.org/">sprockets</a>
@@ -3959,6 +4283,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                   <dl>
             <dt>Parents</dt>
                           <dd>sprockets-rails</dd>
+                          <dd>simplecov-html</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -4042,17 +4367,50 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>i18n</dd>
-                          <dd>activerecord-deprecated_finders</dd>
                           <dd>orm_adapter</dd>
                           <dd>license_finder</dd>
-                          <dd>kaminari</dd>
                           <dd>factory_girl</dd>
+                          <dd>newrelic_rpm</dd>
+                          <dd>standard_tasks</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>minitest</dd>
                           <dd>rdoc</dd>
                           <dd>mini_portile</dd>
+                      </dl>
+              </div>
+          <div id="standard_tasks" class="approved">
+        <h2>
+                      <a href="http://www.tahi.com">standard_tasks</a>
+                    v0.0.1
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>TODO: Summary of StandardTasks.</td>
+            <td>TODO: Description of StandardTasks.</td>
+            <td>
+                              TBD
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rails</dd>
+                          <dd>sqlite3</dd>
+                          <dd>rspec-rails</dd>
+                          <dd>capybara</dd>
+                          <dd>factory_girl_rails</dd>
                       </dl>
               </div>
           <div id="thor" class="approved">
@@ -4083,7 +4441,6 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                           <dd>railties</dd>
                           <dd>jquery-rails</dd>
                           <dd>license_finder</dd>
-                          <dd>ckeditor_rails</dd>
                           <dd>fog</dd>
                           <dd>chosen-rails</dd>
                       </dl>
@@ -4095,7 +4452,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
           <div id="thread_safe" class="approved">
         <h2>
                       <a href="https://github.com/headius/thread_safe">thread_safe</a>
-                    v0.1.3
+                    v0.2.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -4119,10 +4476,12 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
             <dt>Parents</dt>
                           <dd>activesupport</dd>
                           <dd>devise</dd>
+                          <dd>tzinfo</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>atomic</dd>
+                          <dd>rake</dd>
                       </dl>
               </div>
           <div id="tika" class="approved">
@@ -4259,7 +4618,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
           <div id="tzinfo" class="approved">
         <h2>
                       <a href="http://tzinfo.github.io">tzinfo</a>
-                    v0.3.38
+                    v1.1.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -4271,8 +4630,8 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
           </thead>
           <tbody>
           <tr>
-            <td>Daylight-savings aware timezone library</td>
-            <td>TZInfo is a Ruby library that uses the standard tz (Olson) database to provide daylight savings aware transformations between times in different time zones.</td>
+            <td>Daylight savings aware timezone library</td>
+            <td>TZInfo provides daylight savings aware transformations between times in different time zones.</td>
             <td>
                               <a href="http://opensource.org/licenses/mit-license">MIT</a>
                           </td>
@@ -4282,12 +4641,15 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>activesupport</dd>
-                          <dd>actionpack</dd>
                           <dd>bootstrap-sass</dd>
                           <dd>font-awesome-rails</dd>
                           <dd>kaminari</dd>
                       </dl>
-                      </div>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>thread_safe</dd>
+                      </dl>
+              </div>
           <div id="uglifier" class="approved">
         <h2>
                       <a href="http://github.com/lautis/uglifier">uglifier</a>

@@ -13,8 +13,8 @@
 <ul class="columns">
   {{#each flow in content}}
     <li class="column">
-      <div class="column-title">
-        <h2>{{flow.title}}</h2>
+      <div class="column-header">
+        <h2 class="column-title">{{flow.title}}</h2>
         <div class="remove-column glyphicon glyphicon-remove" {{action 'removeFlow'}}></div>
       </div>
 

@@ -162,17 +162,13 @@ describe "Tahi.papers", ->
     it "makes AJAX request", ->
       spyOn($, 'ajax')
 
-      # Tahi.papers.shortTitleEditable = jasmine.createSpyObj('shortTitleEditable', ['getText'])
-      # Tahi.papers.shortTitleEditable.getText.and.returnValue('melted-rates')
-
       Tahi.papers.titleEditable = jasmine.createSpyObj('titleEditable', ['getText'])
       Tahi.papers.titleEditable.getText.and.returnValue('Melting rates of soy-milk based frozen desserts')
 
-      Tahi.papers.bodyEditable = jasmine.createSpyObj('bodyEditable', ['getText'])
-      Tahi.papers.bodyEditable.getText.and.returnValue('This is the melted body of the really melted frozen dessert.')
+      spyOn(Tahi.papers, 'bodyContent').and.returnValue 'This is the melted body of the really melted frozen dessert.'
 
-      Tahi.papers.abstractEditable = jasmine.createSpyObj('abstractEditable', ['getText'])
-      Tahi.papers.abstractEditable.getText.and.returnValue('ME ME ABSTRACT ABSTRACT')
+      # Tahi.papers.abstractEditable = jasmine.createSpyObj('abstractEditable', ['getText'])
+      # Tahi.papers.abstractEditable.getText.and.returnValue('ME ME ABSTRACT ABSTRACT')
 
       Tahi.papers.savePaper('/path/to/resource' )
 
@@ -184,4 +180,4 @@ describe "Tahi.papers", ->
           paper:
             title: 'Melting rates of soy-milk based frozen desserts'
             body: 'This is the melted body of the really melted frozen dessert.'
-            abstract: 'ME ME ABSTRACT ABSTRACT'
+            # abstract: 'ME ME ABSTRACT ABSTRACT'

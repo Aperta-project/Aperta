@@ -34,10 +34,13 @@ Tahi.papers =
 
       @titleEditable = new Tahi.PlaceholderElement($('#paper-title[contenteditable]')[0])
 
-  savePaper: (url) ->
-    # TODO: make this nicer. It probably belongs in a nice function.
+  bodyContent: ->
     bodyContentWrapper = $('<div/>')
     ve.dm.converter.getDomSubtreeFromModel(visualEditor.surface.getModel().getDocument(), bodyContentWrapper[0])
+    bodyContentWrapper.html()
+
+  savePaper: (url) ->
+    # TODO: make this nicer. It probably belongs in a nice function.
     $.ajax
       url: url
       method: "POST"
@@ -45,7 +48,7 @@ Tahi.papers =
         _method: "patch"
         paper:
           title: @titleEditable.getText()
-          body: bodyContentWrapper.html()
+          body: @bodyContent()
           # abstract: @abstractEditable.getText()
           # short_title: @shortTitleEditable.getText()
     false

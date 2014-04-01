@@ -6,4 +6,4 @@ ETahi.Flow = DS.Model.extend
   papers: DS.hasMany('paper')
   tasks: (->
     allTasks = _.flatten @get('papers').mapBy('allTasks')
-  ).property('phases.@each.tasks')
+  ).property('papers.@each.allTasks')

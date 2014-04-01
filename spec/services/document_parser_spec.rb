@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# TODO: make spec for OxGarage
 describe DocumentParser do
 
   describe '.parse' do

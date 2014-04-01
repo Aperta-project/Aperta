@@ -16,6 +16,27 @@ describe PapersController do
 
   before { sign_in user }
 
+  describe "GET download" do
+    let(:paper) do
+      user.papers.create!(submitted: true, short_title: 'submitted-paper', journal: Journal.create!)
+    end
+    subject(:do_request) { get :download, id: paper.to_param }
+
+    it "uses PaperPolicy to retrieve the paper" do
+      policy = double('paper policy', paper: paper)
+      expect(PaperPolicy).to receive(:new).and_return policy
+      get :download, id: paper.id
+      expect(assigns :paper).to eq(paper)
+    end
+
+    it "sends file back" do
+      controller.stub(:render).and_return(nothing: true)
+      expect(controller).to receive(:send_file)
+      get :download, id: paper.id
+    end
+
+  end
+
   describe "GET 'show'" do
     let(:paper) do
       user.papers.create!(submitted: true, short_title: 'submitted-paper', journal: Journal.create!)

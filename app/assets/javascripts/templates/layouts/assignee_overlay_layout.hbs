@@ -1,9 +1,11 @@
 <div {{bind-attr class=":overlay overlayClass message"}}>
   <div class="overlay-container">
     <header class="overlay-header">
-      {{#link-to 'paper.manage' paper class="overlay-paper-title"}}
-        {{paperTitle}}
-      {{/link-to}}
+      <h2>
+        {{#link-to 'paper.manage' paper class="overlay-paper-title"}}
+          {{paperTitle}}
+        {{/link-to}}
+      </h2>
       <a {{bind-attr class=":primary-button message"}} {{action 'closeAction'}}>Close</a>
     </header>
 

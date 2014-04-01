@@ -25,11 +25,11 @@ ETahi.PaperTaskRoute = Ember.Route.extend
 
 
   renderTemplate: ->
-    @render(@controllerFor('application').get('overlayBackground'), into: 'application')
     @render @get('baseObjectName'),
       into: 'application'
       outlet: 'overlay'
       controller: @get('taskController')
+    @render(@controllerFor('application').get('overlayBackground'))
 
 
   deactivate: ->

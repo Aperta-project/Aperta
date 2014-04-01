@@ -16,8 +16,6 @@
 //= require jquery-fileupload/basicplus
 //= require underscore
 //= require bootstrap
-//= require ckeditor-jquery
-//= require ckeditor/plugins/sharedspace/sharedspace
 //= require scrollToFixed
 //= require chosen-jquery
 //= require jquery.dotdotdot

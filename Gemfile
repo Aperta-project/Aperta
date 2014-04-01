@@ -79,8 +79,6 @@ gem "bootstrap-sass"
 
 gem 'rails_12factor', group: [:production, :staging]
 
-gem "ckeditor_rails"
-
 gem "nokogiri"
 
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
@@ -94,5 +92,9 @@ gem 'react-rails'
 gem 'spinjs-rails'
 
 gem 'newrelic_rpm'
+
+gem "rest_client", "~> 1.7.3"
+
+gem 'rubyzip'
 
 gem 'standard_tasks', path: 'engines/standard_tasks'

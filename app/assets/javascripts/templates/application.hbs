@@ -1,20 +1,18 @@
 <header class="nav-bar">
   <nav>
-    <a href="#" class="nav-bar-home">
+    {{#link-to 'index' classNames='nav-bar-home'}}
       <strong>Tahi</strong> Dashboard
-    </a>
-
+    {{/link-to}}
     <ul class="nav-bar-links">
       {{#if Tahi.currentUser.admin}}
         <li class="nav-bar-item">{{#link-to 'flow_manager'}}Flow Manager{{/link-to}}</li>
         <li class="nav-bar-item"><a href="/admin">Admin</a></li>
       {{/if}}
-      <li class="nav-bar-text"><a href="#">Sign out</a></li>
-      <li class="nav-bar-text nav-bar-welcome">Welcome back, {{unbound Tahi.currentUser.fullName}}</li>
+      <li class="nav-bar-text"><a href="users/sign_out">Sign out</a></li>
+      <li class="nav-bar-text nav-bar-welcome">Welcome back, {{unbound Tahi.currentUser.username}}</li>
     </ul>
   </nav>
 </header>
-
 <div id="tahi-container" class="full-width">
   {{outlet}}
 </div>

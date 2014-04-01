@@ -9,6 +9,8 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend
     json[key] = Em.get(record, key).mapBy("id")  if relationshipType is "manyToNone" or relationshipType is "manyToMany"
     return
 
+  # This is overridden because finding a 'task' and getting back a root key of 'author_task' will
+  # break the isPrimary check.
   extractSingle: (store, primaryType, payload, recordId, requestType) ->
     payload = @normalizePayload(primaryType, payload)
     primaryTypeName = primaryType.typeKey
@@ -17,12 +19,14 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend
       typeName = @typeForRoot(prop)
       type = store.modelFor(typeName)
       isPrimary = type.typeKey is primaryTypeName
+      # =======Custom check for primary type
       if payload[prop].parent_type == 'task'
         isPrimary = true
         primaryType = type
         primaryTypeName = type.typeKey
       else
         isPrimary = type.typeKey is primaryTypeName
+      # =======Custom check for primary type
 
       # legacy support for singular resources
       if isPrimary and Ember.typeOf(payload[prop]) isnt "array"

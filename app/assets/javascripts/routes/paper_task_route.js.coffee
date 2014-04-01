@@ -20,21 +20,18 @@ ETahi.PaperTaskRoute = Ember.Route.extend
     taskController.set('paper', model.get('paper'))
     @set('taskController', taskController)
 
-    currentPaperId = @controllerFor('paper.manage').get('model.id')
-    if currentPaperId == model.get('phase.paper.id')
-      @set('shouldRenderManager', true)
-      taskController.set('onClose', 'showManager')
+    if @controllerFor('application').get('overlayRedirect')
+      taskController.set('onClose', 'redirect')
 
 
   renderTemplate: ->
+    @render(@controllerFor('application').get('overlayBackground'), into: 'application')
     @render @get('baseObjectName'),
       into: 'application'
       outlet: 'overlay'
       controller: @get('taskController')
 
-    if @get 'shouldRenderManager'
-      @render('paper/manage',
-        into: 'application')
-    else
-      @render('overlay_background',
-        into: 'application')
+
+  deactivate: ->
+    @send('closeOverlay')
+    @controllerFor('application').setProperties(overlayRedirect: null, overlayBackground: null)

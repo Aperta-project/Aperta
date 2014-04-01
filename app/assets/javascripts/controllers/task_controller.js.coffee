@@ -1,12 +1,14 @@
 ETahi.TaskController = Ember.ObjectController.extend
+  needs: ['application']
   paper: Ember.computed.alias('model.phase.paper')
   onClose: 'closeOverlay'
   actions:
     closeAction: ->
       @send(@get('onClose'))
 
-    showManager: ->
-      @transitionToRoute('paper.manage', @get('paper'))
+    redirect: ->
+      @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect'))
+
 
   saveOnCompletedChange: (->
     return unless @get('model.isDirty')

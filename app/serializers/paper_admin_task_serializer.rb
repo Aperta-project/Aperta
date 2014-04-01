@@ -1,5 +1,8 @@
 class PaperAdminTaskSerializer < TaskSerializer
-   attributes :admins, :admin
+   embed :ids
+
+   has_one :admin, include: true, root: :users
+   has_many :admins, include: true, root: :users
 
   def admin
     assignee

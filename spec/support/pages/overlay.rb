@@ -22,11 +22,11 @@ class CardOverlay < Page
   end
 
   def mark_as_complete
-    find('footer input[type="checkbox"]').click
+    check "Completed"
   end
 
   def completed?
-    find('footer input[type="checkbox"]').checked?
+    find(checkbox_selector).checked?
   end
 
   def view_paper
@@ -36,5 +36,10 @@ class CardOverlay < Page
     session.execute_script "$('header a').css('position', '#{old_position}')"
     wait_for_turbolinks
     PaperPage.new
+  end
+
+  private
+  def checkbox_selector
+    'footer input[type=checkbox]'
   end
 end

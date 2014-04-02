@@ -1,17 +1,19 @@
 a = DS.attr
 ETahi.Task = DS.Model.extend
+  assignee: DS.belongsTo('user')
+  assignees: DS.hasMany('user')
+  comments: DS.hasMany('comment')
+  phase: DS.belongsTo('phase')
+
+  body: a('string')
+  completed: a('boolean')
+  paperTitle: a('string')
+  role: a('string')
   title: a('string')
   type: a('string')
-  completed: a('boolean')
-  role: a('string')
-  body: a('string')
-  comments: DS.hasMany('comment')
+
   isMessage: Ember.computed.equal('type', 'MessageTask')
-  phase: DS.belongsTo('phase')
-  assignees: DS.hasMany('user')
-  assignee: DS.belongsTo('user')
   paper: Ember.computed.alias('phase.paper')
-  paperTitle: a('string')
 
 ETahi.PaperReviewerTask = ETahi.Task.extend
   reviewer: DS.belongsTo('user')

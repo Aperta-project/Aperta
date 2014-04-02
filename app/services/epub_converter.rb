@@ -24,20 +24,20 @@ class EpubConverter
 
     def generate_epub_builder(paper, temp_paper_path)
       workdir = File.dirname temp_paper_path
-      GEPUB::Builder.new {
+      GEPUB::Builder.new do
         language 'en'
         unique_identifier 'http://tahi.org/hello-world', 'BookID', 'URL'
         title paper.title || paper.short_title
         creator paper.user.full_name
         date Date.today.to_s
-        resources(workdir: workdir) {
+        resources(workdir: workdir) do
           # cover_image 'img/image1.jpg' => 'image1.jpg' #TODO: Figure out cover image
-          ordered {
+          ordered do
             file "./#{File.basename temp_paper_path}"
             heading 'Main Content'
-          }
-        }
-      }
+          end
+        end
+      end
     end
 
     def construct_epub_html(paper)

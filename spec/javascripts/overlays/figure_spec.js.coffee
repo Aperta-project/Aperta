@@ -70,9 +70,10 @@ describe "Tahi.overlays.figure", ->
               {filename: 'in-progress.jpg', progress: 40},
               {filename: 'real-yeti.jpg', progress: 99}
             ]
-          @data.result = [
-            { filename: 'real-yeti.jpg', alt: 'Real yeti', src: '/foo/bar/real-yeti.jpg', id: 123 }
-          ]
+          @data.result =
+            figures: [
+              { filename: 'real-yeti.jpg', alt: 'Real yeti', src: '/foo/bar/real-yeti.jpg', id: 123 }
+            ]
 
         it "removes the preview from window.tempStorage", ->
           window.tempStorage ||= {}

@@ -98,3 +98,5 @@ gem "rest_client", "~> 1.7.3"
 gem 'rubyzip', require: 'zip'
 
 gem 'standard_tasks', path: 'engines/standard_tasks'
+
+gem "active_model_serializers"

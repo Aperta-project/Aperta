@@ -1,5 +1,5 @@
 class PaperPage < Page
-  path :paper
+  path :edit_paper
 
   def navigate_to_task_manager
     click_link 'Manuscript Manager'

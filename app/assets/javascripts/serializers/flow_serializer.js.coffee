@@ -12,6 +12,13 @@ ETahi.FlowSerializer = DS.ActiveModelSerializer.extend
       flow.tasks = taskObjs
       delete flow.task_ids
 
+    for phase in payload.phases
+      taskObjs = []
+      for taskId in phase.task_ids
+        taskObjs.push {id: taskId, type: taskHash[taskId].type}
+      phase.tasks = taskObjs
+      delete phase.task_ids
+
     payload
 
   relationshipMap: ->

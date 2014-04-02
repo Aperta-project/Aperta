@@ -24,7 +24,7 @@ class PageFragment
   end
 
   def view_card card_name, overlay_class=nil, &block
-    find('a', text: card_name).click
+    find('.card-content', text: card_name).click
     overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize
                     rescue NameError

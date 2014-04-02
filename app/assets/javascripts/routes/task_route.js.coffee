@@ -2,10 +2,6 @@ ETahi.TaskRoute = Ember.Route.extend
   model: (params) ->
     @store.find('task', params.task_id)
 
-  actions:
-    saveModel: ->
-      @modelFor('paperTask').save()
-
   setupController: (controller, model) ->
     # FIXME: Rename AdHocTask to Task (here, in views, and in templates)
     currentType = model.get('type')

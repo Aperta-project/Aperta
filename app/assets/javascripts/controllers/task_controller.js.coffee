@@ -3,6 +3,9 @@ ETahi.TaskController = Ember.ObjectController.extend
   paper: Ember.computed.alias('model.phase.paper')
   onClose: 'closeOverlay'
   actions:
+    saveModel: ->
+      @get('model').save()
+
     closeAction: ->
       @send(@get('onClose'))
 

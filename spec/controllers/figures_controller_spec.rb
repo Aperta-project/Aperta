@@ -59,9 +59,16 @@ describe FiguresController do
       it "responds with a JSON array of figure data" do
         do_request
         figure = Figure.last
-        expect(JSON.parse(response.body)).to eq [
-          { filename: 'yeti.tiff', alt: 'Yeti', src: figure.attachment.url, id: figure.id }.with_indifferent_access
-        ]
+        expect(JSON.parse(response.body)).to eq(
+          {
+            figures: [
+              { filename: 'yeti.tiff',
+                alt: 'Yeti',
+                src: figure.attachment.url,
+                id: figure.id }
+            ]
+          }.with_indifferent_access
+        )
       end
     end
   end

@@ -1,4 +1,4 @@
-ETahi.PaperSerializer = ETahi.ApplicationSerializer.extend
+ETahi.PaperSerializer = DS.ActiveModelSerializer.extend
   relationshipMap: ->
     {
       manyToNone: true

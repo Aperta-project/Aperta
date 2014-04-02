@@ -1,7 +1,7 @@
 class FlowSerializer < ActiveModel::Serializer
   attributes :id, :title, :empty_text, :paper_map
   has_many :papers, embed: :ids, include: true, serializer: FlowPaperSerializer
-  has_many :tasks, embed: :ids, include: true, serializer: TaskSerializer
+  has_many :tasks, embed: :ids, include: true, polymorphic: true, serializer: TaskSerializer
 
   def tasks
     @tasks ||= flow_map[object.title]

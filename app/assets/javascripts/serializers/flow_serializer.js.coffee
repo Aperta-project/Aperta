@@ -1,4 +1,4 @@
-ETahi.FlowSerializer = ETahi.ApplicationSerializer.extend ETahi.NormalizePolymorphic,
+ETahi.FlowSerializer = DS.ActiveModelSerializer.extend
   relationshipMap: ->
     {
       manyToNone: true

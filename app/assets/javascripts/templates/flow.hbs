@@ -2,7 +2,7 @@
   <div class="paper-profile">
     {{link-to paper.title 'paper.manage' view.paper class="paper-profile-title"}}
 
-    {{#each task in view.tasksForPaper}}
+    {{#each task in view.tasks}}
     <div {{bind-attr class=":card :flow-card task.completed:card-completed task.isMessage:card-message"}}>
       <div class="card-content" {{action 'viewCard' paper task}}>
         <span class="glyphicon glyphicon-ok completed-glyph"></span>

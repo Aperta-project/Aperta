@@ -1,7 +1,7 @@
 class FlowSerializer < ActiveModel::Serializer
-  attributes :id, :title, :empty_text, :paper_map
+  attributes :id, :title, :empty_text
   has_many :papers, embed: :ids, include: true, serializer: FlowPaperSerializer
-  has_many :tasks, embed: :ids, include: true, polymorphic: true, serializer: TaskSerializer
+  has_many :tasks, embed: :ids, include: true, polymorphic: true
 
   def tasks
     @tasks ||= flow_map[object.title]
@@ -9,16 +9,6 @@ class FlowSerializer < ActiveModel::Serializer
 
   def papers
     @papers ||= tasks.flat_map(&:paper).uniq
-  end
-
-  def paper_map
-    # I'm sorry
-    tasks.group_by {|t| t.paper.id }.map {|k,v|
-      [
-        k,
-        v.map {|task| [task.id, task.type]}
-      ]
-    }.to_h
   end
 
   def cached_tasks

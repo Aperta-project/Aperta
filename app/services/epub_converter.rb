@@ -3,6 +3,7 @@ class EpubConverter
     temp_paper = Tempfile.new 'temp-paper.html'
     html = construct_epub_html paper
     temp_paper.write html
+    temp_paper.flush
 
     epub_name = construct_epub_name paper
     builder = generate_epub_builder paper, temp_paper

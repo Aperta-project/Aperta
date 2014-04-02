@@ -51,9 +51,8 @@ class PapersController < ApplicationController
   def download
     @paper = PaperPolicy.new(params[:id], current_user).paper
 
-    EpubConverter.generate_epub(@paper, current_user) do |epub|
-      #TODO: look at removing the file after send?
-      send_file epub
+    EpubConverter.generate_epub(@paper, current_user) do |epub_stream, epub_name|
+      send_data epub_stream.string, filename: epub_name, disposition: 'attachment'
     end
   end
 

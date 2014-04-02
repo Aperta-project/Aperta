@@ -4,13 +4,11 @@ class EpubConverter
     html = construct_epub_html paper
     temp_paper.write html
 
-    epub_path = construct_epub_path paper
-
+    epub_name = construct_epub_name paper
     builder = generate_epub_builder paper, temp_paper
-    builder.generate_epub epub_path
 
     begin
-      block.call epub_path
+      block.call builder.generate_epub_stream, epub_name
     ensure
       temp_paper.unlink
     end
@@ -18,9 +16,8 @@ class EpubConverter
 
 
   private
-  def self.construct_epub_path(paper)
-    epub_file_name = paper.short_title.squish.downcase.tr(" ", "_") + ".epub"
-    File.join(Rails.root.join(epub_file_name))
+  def self.construct_epub_name(paper)
+    paper.short_title.squish.downcase.tr(" ", "_") + ".epub"
   end
 
   def self.generate_epub_builder(paper, temp_paper)
@@ -42,22 +39,19 @@ class EpubConverter
   end
 
   def self.construct_epub_html(paper)
-    #TODO: get the paper title in there
-    html_top = <<-EOD
+    body = paper.body.force_encoding('UTF-8')
+
+    <<-HTML
       <?xml version="1.0" encoding="UTF-8"?>
       <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
-      <title>#{paper.short_title}</title>
+        <title>#{paper.short_title}</title>
       </head>
       <body>
-    EOD
-
-    html_bottom = <<-EOD
+        #{body}
       </body>
       </html>
-    EOD
-
-    html_top + paper.body.force_encoding('UTF-8') + html_bottom
+    HTML
   end
 
 end

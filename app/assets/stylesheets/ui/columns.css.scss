@@ -73,6 +73,40 @@
   margin-top: 0;
 }
 
+.column-title-update-buttons {
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  bottom: -25px;
+  left: 0;
+  height: 0;
+  background: #fff;
+  z-index: 1;
+  opacity: 0;
+
+  @include transition-property(opacity bottom);
+  @include transition-duration(0.15s);
+}
+
+.active .column-title-update-buttons {
+  bottom: -48px;
+  display: block;
+  height: 50px;
+  border-bottom: 1px solid #aaa;
+  padding-top: 10px;
+  opacity: 1.0;
+}
+
+.column-header-update-save {
+  float: right;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.btn-link.column-header-update-cancel {
+  color: $tahi-primary;
+}
+
 .column-icon {
   color: $tahi-secondary;
   font-size: 14px;

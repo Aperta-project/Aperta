@@ -1,44 +1,8 @@
-// Column title update:
-// .column-header
-//     .column-title
-// .column-title-update-buttons
-//     .column-header-update-save
-//     .column-header-update-cancel
-// .column-content
-
-.column-title-update-buttons {
-  overflow: hidden;
-  position: absolute;
-  right: 0;
-  bottom: -25px;
-  left: 0;
-  height: 0;
-  background: #fff;
-  z-index: 1;
-  opacity: 0;
-
-  @include transition-property(opacity bottom);
-  @include transition-duration(0.15s);
-}
-
-.active .column-title-update-buttons {
-  bottom: -48px;
-  display: block;
-  height: 50px;
-  border-bottom: 1px solid #aaa;
-  padding-top: 10px;
-  opacity: 1.0;
-}
-
-.column-header-update-save {
-  float: right;
-  padding-top: 2px;
-  padding-bottom: 2px;
-}
-
-.btn-link.column-header-update-cancel {
-  color: $tahi-primary;
-}
+/*
+  .paper-profile
+    .paper-profile-title
+    .card.flow-card
+*/
 
 .paper-profile {
   width: 219px;
@@ -69,6 +33,14 @@
   &:hover { background: $tahi-primary; }
 }
 
+
+/*
+  .overlay.flow-manager.column.overlay
+    .overlay-container
+      .overlay-close-button
+      .modal-heading
+      .modal-buttons
+*/
 
 .flow-manager-column-overlay .overlay-container {
   width: 700px;
@@ -108,7 +80,7 @@
 
 
 // in 'choose flow manager column' overlay
-.close-button {
+.overlay-close-button {
   float: right;
   position: relative;
   top: 13px;

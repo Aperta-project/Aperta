@@ -4,6 +4,6 @@ class AssignReviewersOverlay < CardOverlay
   end
 
   def paper_reviewers
-    all('#task_paper_roles_chosen .search-choice').map &:text
+    all('.reviewers-select .search-choice').map &:text
   end
 end

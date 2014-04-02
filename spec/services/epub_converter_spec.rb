@@ -5,21 +5,15 @@ describe EpubConverter do
   let(:paper_body) do
     "<h2 class=\"subtitle\">And this is my subtitle about how turtles are awesome</h2><p>Turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles.</p><p><a name=\"_GoBack\"></a>The end.</p>"
   end
-  let(:user) { FactoryGirl.create :user}
   let(:paper) do
-    FactoryGirl.create :paper, body: paper_body, short_title: paper_title, user: user
+    FactoryGirl.create :paper, body: paper_body, short_title: paper_title, user: FactoryGirl.create(:user)
   end
 
   describe '#generate_epub' do
-    it 'returns an epub file path' do
-      EpubConverter.generate_epub(paper, user) do |epub|
-        expect(epub).to match /.epub$/
-      end
-    end
-    it 'returns a path to the generated epub file' do
-      EpubConverter.generate_epub(paper, user) do |epub|
-        expect(File.exists? epub).to eq true
-      end
+    it 'returns a stream of data to the controller' do
+      epub = EpubConverter.generate_epub(paper)
+      expect(epub[:stream]).to be_a StringIO
+      expect(epub[:file_name]).to end_with '.epub'
     end
   end
 end

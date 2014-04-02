@@ -31,7 +31,7 @@ describe PapersController do
 
     it "sends file back" do
       controller.stub(:render).and_return(nothing: true)
-      expect(controller).to receive(:send_file)
+      expect(controller).to receive(:send_data)
       get :download, id: paper.id
     end
 

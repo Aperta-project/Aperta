@@ -50,10 +50,8 @@ class PapersController < ApplicationController
 
   def download
     @paper = PaperPolicy.new(params[:id], current_user).paper
-
-    EpubConverter.generate_epub(@paper, current_user) do |epub_stream, epub_name|
-      send_data epub_stream.string, filename: epub_name, disposition: 'attachment'
-    end
+    epub = EpubConverter.generate_epub @paper
+    send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
   end
 
   private

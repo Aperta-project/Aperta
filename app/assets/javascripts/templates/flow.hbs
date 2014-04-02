@@ -1,7 +1,8 @@
 <li>
   <div class="paper-profile">
-    {{link-to task.paperTitle 'paper.manage' task.paper.id class="paper-profile-title"}}
+    {{link-to paper.title 'paper.manage' view.paper class="paper-profile-title"}}
 
+    {{#each task in view.tasksForPaper}}
     <div {{bind-attr class=":card :flow-card task.completed:card-completed task.isMessage:card-message"}}>
       <div class="card-content">
         <span class="glyphicon glyphicon-ok completed-glyph"></span>
@@ -14,6 +15,7 @@
         title="Delete Card">
       </span>
     </div>
+    {{/each}}
 
   </div>
 </li>

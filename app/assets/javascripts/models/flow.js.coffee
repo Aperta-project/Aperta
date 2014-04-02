@@ -5,3 +5,4 @@ ETahi.Flow = DS.Model.extend
   title: a('string')
   papers: DS.hasMany('paper')
   tasks: DS.hasMany('task', {polymorphic: true})
+  paperMap: a()

@@ -20,8 +20,8 @@
 
       <div class="column-content">
         <ul class="cards">
-          {{#each task in flow.tasks}}
-            {{partial "flow_task_group"}}
+          {{#each paper in flow.papers}}
+            {{view ETahi.FlowPaperView flow=flow paper=paper paperMap=flow.paperMap}}
           {{else}}
             <div class="empty-text">{{flow.emptyText}}</div>
           {{/each}}

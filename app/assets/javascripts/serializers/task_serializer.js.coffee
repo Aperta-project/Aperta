@@ -9,6 +9,9 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend
     json[key] = Em.get(record, key).mapBy("id")  if relationshipType is "manyToNone" or relationshipType is "manyToMany"
     return
 
+  coerceId: (id) ->
+    (if not id? then null else id + "")
+
   # This is overridden because finding a 'task' and getting back a root key of 'author_task' will
   # break the isPrimary check.
   extractSingle: (store, primaryType, payload, recordId, requestType) ->
@@ -46,7 +49,7 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend
         typeSerializer = store.serializerFor(type)
         hash = typeSerializer.normalize(type, hash, prop)
         isFirstCreatedRecord = isPrimary and not recordId and not primaryRecord
-        isUpdatedRecord = isPrimary and coerceId(hash.id) is recordId
+        isUpdatedRecord = isPrimary and @coerceId(hash.id) is recordId
 
         # find the primary record.
         #

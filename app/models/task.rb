@@ -12,8 +12,9 @@ class Task < ActiveRecord::Base
   has_one :task_manager, through: :phase
   has_one :paper, through: :task_manager
   has_one :journal, through: :paper
+  has_many :journal_roles, through: :journal
 
-  has_many :assignees, -> { admins }, through: :journal, source: :users
+  has_many :assignees, -> { where("journal_roles.admin" => true) }, through: :journal_roles, source: :user
 
   validates :title, :role, presence: true
 

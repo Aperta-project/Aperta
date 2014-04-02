@@ -38,6 +38,9 @@ class PapersController < ApplicationController
       PaperRole.where(user_id: paper_params[:reviewer_ids]).update_all reviewer: true
       render json: @paper
     else
+      # Ember doesn't re-render the paper if there is an error.
+      # e.g. Fails to update on adding new authors, but new authors stay in
+      # memory client side even though they aren't persisted in the DB.
       render status: 500
     end
   end

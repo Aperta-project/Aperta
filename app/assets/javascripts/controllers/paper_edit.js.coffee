@@ -10,4 +10,8 @@ ETahi.PaperEditController = Ember.ObjectController.extend
 
   assignedTasks: Ember.computed.setDiff('allTasks', 'authorTasks')
 
-
+  authorNames: ( ->
+    authors = @get('authors').map (author) ->
+      [author.first_name, author.last_name].join(' ')
+    authors.join(', ')
+  ).property('authors')

@@ -1,19 +1,4 @@
 ETahi.TaskSerializer = DS.ActiveModelSerializer.extend
-  normalizePayload: (primaryType, payload) ->
-    tasks = payload.tasks
-    taskHash = _.reduce(tasks, (memo, task) ->
-      memo[task.id] = task
-      memo
-    , {})
-    for phase in payload.phases
-      taskObjs = []
-      for taskId in phase.task_ids
-        taskObjs.push {id: taskId, type: taskHash[taskId].type}
-      phase.tasks = taskObjs
-      delete phase.task_ids
-
-    payload
-
   serializeIntoHash: (data, type, record, options) ->
       root = 'task'
       data[root] = this.serialize(record, options)

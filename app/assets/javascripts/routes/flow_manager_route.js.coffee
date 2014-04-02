@@ -8,3 +8,16 @@ ETahi.FlowManagerRoute = Ember.Route.extend
         into: 'application'
         outlet: 'overlay'
         controller: 'chooseNewFlowManagerColumnOverlay')
+
+    viewCard: (paper, task) ->
+      currentType = task.get('type')
+      currentType = 'AdHocTask' if currentType == 'Task'
+      baseObjectName = (currentType || 'AdHocTask').replace('Task', 'Overlay')
+      controller = @controllerFor(baseObjectName)
+      controller.set('model', task)
+      controller.set('paper', paper)
+
+      @render(baseObjectName,
+        into: 'application'
+        outlet: 'overlay'
+        controller: baseObjectName)

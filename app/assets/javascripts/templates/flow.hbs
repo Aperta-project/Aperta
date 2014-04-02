@@ -4,7 +4,7 @@
 
     {{#each task in view.tasksForPaper}}
     <div {{bind-attr class=":card :flow-card task.completed:card-completed task.isMessage:card-message"}}>
-      <div class="card-content">
+      <div class="card-content" {{action 'viewCard' paper task}}>
         <span class="glyphicon glyphicon-ok completed-glyph"></span>
         {{task.title}}
       </div>

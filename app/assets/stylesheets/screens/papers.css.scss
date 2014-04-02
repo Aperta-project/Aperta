@@ -12,9 +12,10 @@ $paper-trim-color: $tahi-tertiary;
   h2 {
     overflow: hidden;
     width: 800px;
-    max-height: 70px;
     font-family: $tahi-article-font-family;
     line-height: 36px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
     // override from generic h2:
     margin: 0;

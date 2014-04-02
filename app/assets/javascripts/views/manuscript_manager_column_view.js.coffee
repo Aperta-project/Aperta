@@ -1,6 +1,5 @@
 ETahi.ManuscriptManagerColumnView = Em.View.extend(DragNDrop.Droppable, {
   templateName: 'manuscript_manager_column'
-  tagName: 'li'
   classNames: ['column']
 
   drop: (e) ->

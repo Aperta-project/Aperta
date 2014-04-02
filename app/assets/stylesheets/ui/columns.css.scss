@@ -22,10 +22,14 @@
 // Styleguide Columns
 
 .columns {
+  position: absolute;
+  top: 85px;
+  right: 0;
+  bottom: 0;
+  left: 0;
   overflow-y: hidden;
   overflow-x: scroll;
-  height: 800px; // TODO: do we need this?
-  padding: 40px 0;
+  padding-top: 40px;
   text-align: center;
   white-space: nowrap;
 }
@@ -133,6 +137,7 @@
   left: 15px;
   width: 225px;
   padding-top: 10px;
+  overflow-x: hidden;
   overflow-y: auto;
 
   > ul {

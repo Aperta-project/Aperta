@@ -3,13 +3,9 @@
 {{view ETahi.PhaseHeaderView phase=view.content}}
 
 <div class="column-content">
-  <ul class="cards">
-    {{each tasks itemViewClass="ETahi.CardView"}}
+  {{each tasks itemViewClass="ETahi.CardView"}}
 
-    <li>
-      <a {{action 'chooseNewCardTypeOverlay' view.content}} class="secondary-button react-choose-card-type-overlay">
-        Add New Card
-      </a>
-    </li>
-  </ul>
+  <a {{action 'chooseNewCardTypeOverlay' view.content}} class="secondary-button react-choose-card-type-overlay">
+    Add New Card
+  </a>
 </div>

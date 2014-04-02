@@ -1,5 +1,4 @@
 ETahi.CardView = Em.View.extend(DragNDrop.Dragable, {
-  tagName: 'li'
   templateName: 'card'
   classNames: ['card']
   classNameBindings: ['completed', 'isMessage']

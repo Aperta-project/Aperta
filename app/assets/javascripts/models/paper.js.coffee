@@ -14,6 +14,8 @@ ETahi.Paper = DS.Model.extend
   figures: DS.hasMany('figure')
   authors: a()
 
+  relationshipsToSerialize: ['']
+
   displayTitle: (->
     @get('title') || @get('shortTitle')
   ).property 'title', 'shortTitle'

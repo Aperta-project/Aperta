@@ -8,8 +8,8 @@ ETahi.Task = DS.Model.extend
   comments: DS.hasMany('comment')
   isMessage: Ember.computed.equal('type', 'MessageTask')
   phase: DS.belongsTo('phase')
-  assignees: DS.hasMany('assignee')
-  assignee: DS.belongsTo('assignee')
+  assignees: DS.hasMany('user')
+  assignee: DS.belongsTo('user')
   paper: Ember.computed.alias('phase.paper')
   paperTitle: a('string')
 

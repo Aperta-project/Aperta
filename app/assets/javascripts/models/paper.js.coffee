@@ -4,7 +4,7 @@ ETahi.Paper = DS.Model.extend
   title: a('string')
   decision: a('string')
   decisionLetter: a('string')
-  assignees: DS.hasMany('assignee')
+  assignees: DS.hasMany('user')
   phases: DS.hasMany('phase')
   declarations: DS.hasMany('declaration')
   reviewers: DS.hasMany('user')

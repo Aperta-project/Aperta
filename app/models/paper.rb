@@ -25,7 +25,8 @@ class Paper < ActiveRecord::Base
   has_many :tasks, through: :phases
   has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
 
-  has_many :assignees, -> { admins }, through: :journal, source: :users
+  has_many :journal_roles, through: :journal
+  has_many :assignees, -> { where("journal_roles.admin" => true) }, through: :journal_roles, source: :user
 
   after_create :assign_user_to_author_tasks
 

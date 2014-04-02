@@ -20,4 +20,4 @@ ETahi.FlowManagerRoute = Ember.Route.extend
       @render(baseObjectName,
         into: 'application'
         outlet: 'overlay'
-        controller: baseObjectName)
+        controller: controller)

@@ -15,7 +15,7 @@ ETahi.Paper = DS.Model.extend
   authors: a()
 
   displayTitle: (->
-    if Em.isEmpty(@get('title.length')) then @get('shortTitle') else @get('title')
+    @get('title') || @get('shortTitle')
   ).property 'title', 'shortTitle'
 
   editor: Ember.computed.alias('editors.firstObject')

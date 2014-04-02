@@ -1,6 +1,8 @@
 class PapersController < ApplicationController
   before_filter :authenticate_user!
 
+  layout 'ember'
+
   def show
     respond_to do |format|
       @paper = PaperPolicy.new(params[:id], current_user).paper

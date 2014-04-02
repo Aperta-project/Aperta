@@ -54,6 +54,7 @@ class EpubConverter
   <title>#{paper.short_title}</title>
 </head>
 <body>
+  <h1>#{paper.title}</h1>
   #{body}
 </body>
 </html>

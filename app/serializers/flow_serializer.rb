@@ -1,5 +1,5 @@
 class FlowSerializer < ActiveModel::Serializer
-  attributes :title, :empty_text
+  attributes :id, :title, :empty_text
   has_many :papers, embed: :ids, include: true, serializer: FlowPaperSerializer
   has_many :tasks, embed: :ids, include: true, serializer: TaskSerializer
 

@@ -1,11 +1,4 @@
 ETahi.FlowSerializer = DS.ActiveModelSerializer.extend
-  extractArray: (store, type, hash) ->
-    hash.flows.forEach (flow)->
-      flow.id = flow.title.length << (Math.random()*10|0)
-
-    @_super.apply(@, arguments)
-
-
   normalizePayload: (primaryType, payload) ->
     tasks = payload.tasks
     taskHash = _.reduce(tasks, (memo, task) ->

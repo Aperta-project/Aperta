@@ -1,21 +1,19 @@
 <li>
   <div class="paper-profile">
-    <a class="paper-title" href="{{paper_path}}">
-      <h4>{{task.paper.title}}<h4>
-    </a>
+    {{link-to task.paperTitle 'paper.manage' task.paper.id class="paper-profile-title"}}
 
-    <div class="card-container">
-      <a class="card flow-card completed message">
-        <span class="glyphicon glyphicon-ok completed-glyph">
-          {{task.title}}
-        </span>
-      </a>
-      <span
-        class="glyphicon glyphicon-remove-circle remove-card js-remove-card pointer"
+    <div {{bind-attr class=":card :flow-card task.completed:card-completed task.isMessage:card-message"}}>
+      <div class="card-content">
+        <span class="glyphicon glyphicon-ok completed-glyph"></span>
+        {{task.title}}
+      </div>
+      <span {{action 'removeTask'}}
+        class="glyphicon glyphicon-remove-circle remove-card"
         data-toggle="tooltip"
         data-placement="right"
-        title="Delete Card" {{action 'removeTask'}}>
+        title="Delete Card">
       </span>
     </div>
+
   </div>
 </li>

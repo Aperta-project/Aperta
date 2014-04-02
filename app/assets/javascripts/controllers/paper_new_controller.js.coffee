@@ -11,5 +11,5 @@ ETahi.PaperNewController = Ember.ArrayController.extend
       })
 
       newPaper.save().then (paper) ->
-        this.set('shortTitle', null)
+        self.set('shortTitle', null)
         self.transitionToRoute('paper.edit', paper)

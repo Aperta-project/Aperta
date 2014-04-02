@@ -36,7 +36,7 @@ class PapersController < ApplicationController
     @paper = Paper.find(params[:id])
     if @paper.update paper_params
       PaperRole.where(user_id: paper_params[:reviewer_ids]).update_all reviewer: true
-      render json: @paper
+      head 200
     else
       # Ember doesn't re-render the paper if there is an error.
       # e.g. Fails to update on adding new authors, but new authors stay in

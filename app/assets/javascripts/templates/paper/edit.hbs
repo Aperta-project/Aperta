@@ -24,10 +24,12 @@
       <div id="toolbar"></div>
       <div>
         <div class="title">
-          <h2 id="paper-title" contenteditable="true"
-              placeholder="Type your manuscript title here">
-            {{title}}
-          </h2>
+          {{view Em.ContentEditableView
+                 tagName="h2"
+                 value=title
+                 editable="true"
+                 id="paper-title"
+                 placeholder="Type your manuscript title here"}}
         </div>
 
         <div id="paper-authors" class="editable">
@@ -48,6 +50,8 @@
       <div>
         {{each assignedTasks itemViewClass="ETahi.CardView"}}
         {{each authorTasks   itemViewClass="ETahi.CardView"}}
+        <a id="submit-paper" class="primary-button wide-button" href="#" {{action 'confirmSubmitPaper'}}>Submit</a>
+        <a class="primary-button wide-button" href="#" {{action 'savePaper'}}>Save</a>
       </div>
     </aside>
   </main>

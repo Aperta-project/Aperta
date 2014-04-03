@@ -27,7 +27,7 @@ class DashboardPage < Page
   end
 
   def submitted_papers
-    within("ul.submitted") do
+    within(".dashboard-submitted-papers") do
       page.all('li').map &:text
     end
   end
@@ -38,7 +38,7 @@ class DashboardPage < Page
   end
 
   def view_paper short_title
-    within('.submitted') { click_link short_title }
+    within('.dashboard-submitted-papers') { click_link short_title }
     EditPaperPage.new
   end
 

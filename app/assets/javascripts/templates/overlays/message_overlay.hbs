@@ -18,7 +18,7 @@
 </div>
 
 <ul class="message-comments">
-  {{#each comment in comments}}
+  {{#each comment in sortedComments}}
     <li class="message-comment">
       {{userThumbnail comment.commenter}}
       <span class="comment-date">

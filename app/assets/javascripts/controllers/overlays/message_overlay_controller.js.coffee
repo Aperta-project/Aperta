@@ -6,6 +6,9 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
   _clearNewMessage: ->
     @set('newCommentBody', "")
 
+  commentSort: ['createdAt:asc']
+  sortedComments: Ember.computed.sort('comments', 'commentSort')
+
   actions:
     clearMessageContent: ->
       @_clearNewMessage()

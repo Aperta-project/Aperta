@@ -4,6 +4,7 @@ ETahi.Router.map ()->
   @resource 'paper', { path: '/papers/:paper_id' }, ->
     @route('edit')
     @route('manage')
+    @route('submit')
     @route('task', {path: '/tasks/:task_id'})
 
   @route('paper_new', { path: '/papers/new' })

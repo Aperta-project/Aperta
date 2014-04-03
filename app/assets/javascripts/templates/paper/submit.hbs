@@ -1,0 +1,39 @@
+<div id="tahi-container">
+
+  <h1>You're about submit paper {{short_title}}</h1>
+  <h2 id="paper-title">{{title}}</h2>
+
+  <div id="paper-abstract">{{abstract}}</div>
+
+  <table id="paper-authors" class="table table-hover">
+    <tr>
+      <th>Name</th>
+      <th>Affiliation</th>
+      <th>Email</th>
+    </tr>
+    {{#each author in authors}}
+      <tr>
+        <td>{{author.first_name}} {{author.last_name}}</td>
+        <td>{{author.affiliation}}</td>
+        <td>{{author.email}}</td>
+      </tr>
+    {{/each}}
+  </table>
+
+  <table id="paper-declarations" class"table table-hover">
+    <tr>
+      <th>Question</th>
+      <th>Answer</th>
+    </tr>
+    {{#each declaration in declarations}}
+      <tr>
+        <td>{{declaration.question}}</td>
+        <td>{{declaration.answer}}</td>
+      </tr>
+    {{/each}}
+  </table>
+
+  {{link-to 'Cancel' 'paper.edit' this class="btn-primary btn-lg btn"}}
+  <button id="submit-paper" class="btn-primary btn-lg btn" {{action 'submitPaper'}}>Submit</button>
+
+</div>

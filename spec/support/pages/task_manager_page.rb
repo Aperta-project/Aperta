@@ -11,18 +11,18 @@ class TaskManagerPage < Page
     end
 
     def remove_card(card_name)
-      container = find('.card-container', text: card_name)
+      container = find('.card', text: card_name)
       container.hover
       container.find('.remove-card').click
     end
 
     def card_count
-      all('.card-container').count
+      all('.card').count
     end
 
     def new_message_card(**params)
       find('a', text: 'ADD NEW CARD').click
-      overlay = session.find('.overlay-container')
+      overlay = session.find('.overlay')
       overlay.click_button 'New Message Card'
       message_card = NewMessageCardOverlay.new overlay
       expect(message_card.participants).to include(params[:creator].full_name)

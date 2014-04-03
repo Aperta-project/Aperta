@@ -7,7 +7,7 @@ class DashboardPage < Page
   end
 
   def header
-    page.find '#tahi-container header'
+    page.find '.dashboard-header'
   end
 
   def sign_out

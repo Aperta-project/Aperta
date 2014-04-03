@@ -14,4 +14,4 @@ ETahi.PaperEditController = Ember.ObjectController.extend
     authors = @get('authors').map (author) ->
       [author.first_name, author.last_name].join(' ')
     authors.join(', ')
-  ).property('authors')
+  ).property('authors.@each')

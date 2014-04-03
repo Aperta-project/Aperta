@@ -12,6 +12,7 @@ ETahi.Paper = DS.Model.extend
   decision: a('string')
   decisionLetter: a('string')
   shortTitle: a('string')
+  submitted: a('boolean')
   title: a('string')
 
   availableReviewers: Ember.computed.alias('journal.reviewers')

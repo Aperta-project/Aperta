@@ -1,24 +1,24 @@
-<div id="tahi-container" class="full-width">
-  <div class="control-bar">
-    <div class="control-bar-inner-wrapper">
-      <ul>
-        <li id="control-bar-paper-journal-logo">
-          {{#if paper.logo}}
-            <img src="">
-          {{else}}
-            <div>Logo</div>
-          {{/if}}
-        </li>
-        <li id="control-bar-paper-short-title">
-          <h2 class="tasks-paper-title">{{shortTitle}}</h2>
-        </li>
-      </ul>
-      <ul>
-        <li>{{link-to 'Manuscript Manager' 'paper.manage' model class="control-bar-link"}}</li>
-      </ul>
-    </div>
+<div class="control-bar">
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      <li id="control-bar-paper-journal-logo">
+        {{#if paper.logo}}
+          <img src="">
+        {{else}}
+          <div>Logo</div>
+        {{/if}}
+      </li>
+      <li id="control-bar-paper-short-title">
+        <h2 class="tasks-paper-title">{{shortTitle}}</h2>
+      </li>
+    </ul>
+    <ul>
+      <li>{{link-to 'Manuscript Manager' 'paper.manage' model class="control-bar-link"}}</li>
+    </ul>
   </div>
+</div>
 
+<div id="tahi-container">
   <main>
     <article>
       <div id="toolbar"></div>
@@ -46,13 +46,8 @@
     </article>
     <aside>
       <div>
-        <ul class="assigned-tasks cards">
-          {{each assignedTasks itemViewClass="ETahi.CardView"}}
-        </ul>
-
-        <ul class="author-tasks cards">
-          {{each authorTasks itemViewClass="ETahi.CardView"}}
-        </ul>
+        {{each assignedTasks itemViewClass="ETahi.CardView"}}
+        {{each authorTasks   itemViewClass="ETahi.CardView"}}
       </div>
     </aside>
   </main>

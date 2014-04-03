@@ -35,6 +35,11 @@ class Task < ActiveRecord::Base
     end
   end
 
+
+  def authorize_update!(params, user)
+    true
+  end
+
   protected
 
   def initialize_defaults

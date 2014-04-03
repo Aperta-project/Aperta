@@ -9,6 +9,7 @@ ETahi.Router.map ()->
   @route('paper_new', { path: '/papers/new' })
 
   @route('task', {path: '/tasks/:task_id'})
+  @route('signin', {path: '/users/sign_in'})
 
 ETahi.Router.reopen({
   rootURL: '/'

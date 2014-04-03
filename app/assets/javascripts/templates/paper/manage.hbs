@@ -3,7 +3,7 @@
     <div class="control-bar-inner-wrapper">
       <ul>
         <li id="control-bar-paper-journal-logo">
-          {{#if paper.logo}}
+          {{#if logo}}
             <img src="">
           {{else}}
             <div>Logo</div>
@@ -14,7 +14,7 @@
         </li>
       </ul>
       <ul>
-        <li><a href="#" class="control-bar-link">Manuscript</a></li>
+        <li>{{link-to 'Manuscript' 'paper.edit' model}}</li>
       </ul>
     </div>
   </div>

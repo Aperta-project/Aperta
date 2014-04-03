@@ -32,7 +32,6 @@ FactoryGirl.define do
 
   factory :message_task do
     title "a subject" # should match subject
-    message_subject "a subject"
   end
 
   factory :comment do

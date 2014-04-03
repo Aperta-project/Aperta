@@ -8,14 +8,11 @@ ETahi.ControllerParticipants = Ember.Mixin.create
 
   participants: Ember.computed.alias 'model.participants'
 
-  selectedUser: null
-
-  selectedUserDidChange: (->
-    Ember.run.once(this, @addParticipant)
-  ).observes('selectedUser')
-
-  addParticipant:(->
-    selectedUser = @get('selectedUser')
-    if selectedUser
-      @get('participants').pushObject(selectedUser)
-  )
+  actions:
+    addParticipant: (newParticipant) ->
+      if newParticipant
+        @get('participants').pushObject(newParticipant)
+    saveNewParticipant: (newParticipant) ->
+      if newParticipant
+        @get('participants').pushObject(newParticipant)
+        @send('saveModel')

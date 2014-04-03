@@ -9,7 +9,8 @@
                name="participants"
                width="150px"
                prompt="Add People"
-               value=selectedUser
+               class='participant-select'
+               changeAction='saveNewParticipant'
                optionValuePath="content"
                optionLabelPath="content.fullName"}}
     </li>
@@ -30,7 +31,7 @@
 </ul>
 
 <div class="form-group">
-  {{textarea classNames="new-comment" value=newCommentBody placeholder="Type your message here"}}
+  {{textarea classNames="new-comment" id="comment-body" value=newCommentBody placeholder="Type your message here"}}
 </div>
 
 <div class="comment-buttons message-overlay">

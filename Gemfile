@@ -94,6 +94,7 @@ gem 'spinjs-rails'
 gem 'newrelic_rpm'
 
 gem "rest_client", "~> 1.7.3"
+gem 'gepub'
 
 gem 'rubyzip', require: 'zip'
 

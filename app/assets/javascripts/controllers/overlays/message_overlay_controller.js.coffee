@@ -19,6 +19,7 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
         commenter: commenter
         messageTask: @get('model')
         body: @get('newCommentBody')
+        createdAt: new Date()
       newComment = @store.createRecord('comment', commentFields)
       newComment.save()
         .then(@_clearNewMessage.bind(@), newComment.deleteRecord)

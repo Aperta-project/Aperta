@@ -44,10 +44,7 @@ class PageFragment
 
   def select_from_chosen(item_text, options={})
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first").mousedown()!)
-    session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").val("#{item_text}")!)
-    sleep 0.1
-    session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").keyup()!)
-    expect(page).to have_css('li.highlighted', text: item_text)
+    find(".#{options[:class]}.chosen-container input[type=text]").set(item_text)
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
   end
 

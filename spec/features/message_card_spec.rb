@@ -110,7 +110,4 @@ feature 'Message Cards', js: true do
       end
     end
   end
-
-  describe "viewing a message card on the dashboard"
-
 end

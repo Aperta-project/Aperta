@@ -11,11 +11,12 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
       @_clearNewMessage()
 
     postComment: ->
-      userId = Tahi.currentUser.id.toString()
-      commenter = @store.all('user').findBy('id', userId)
+      commenter = @get('currentUser')
       commentFields =
         commenter: commenter
         messageTask: @get('model')
         body: @get('newCommentBody')
       newComment = @store.createRecord('comment', commentFields)
-      newComment.save().then(@_clearNewMessage.bind(@), newComment.deleteRecord)
+      newComment.save()
+        .then(@_clearNewMessage.bind(@), newComment.deleteRecord)
+        .then(@send('saveNewParticipant', commenter))

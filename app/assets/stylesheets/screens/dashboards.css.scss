@@ -12,6 +12,8 @@
 #dashboard-my-tasks {
   @extend .col-md-offset-2;
   @extend .col-xs-5;
+
+  .card { width: 220px; }
 }
 
 .dashboard-info-text {

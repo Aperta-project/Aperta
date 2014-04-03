@@ -1,13 +1,7 @@
-ETahi.TaskSerializer = DS.ActiveModelSerializer.extend
+ETahi.TaskSerializer = DS.ActiveModelSerializer.extend ETahi.SerializesHasMany,
   serializeIntoHash: (data, type, record, options) ->
       root = 'task'
       data[root] = this.serialize(record, options)
-
-  serializeHasMany: (record, json, relationship) ->
-    key = relationship.key
-    relationshipType = DS.RelationshipChange.determineRelationshipType(record.constructor, relationship)
-    json[key] = Em.get(record, key).mapBy("id")  if relationshipType is "manyToNone" or relationshipType is "manyToMany"
-    return
 
   coerceId: (id) ->
     (if not id? then null else id + "")

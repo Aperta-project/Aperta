@@ -1,41 +1,28 @@
 <div id="tahi-container">
-  <header>
-    <h1 class="large">Welcome, {{currentUser.fullName}}</h1>
-  </header>
-  <hr />
+  <h1 class="dashboard-header">Welcome, {{currentUser.fullName}}</h1>
 
   <main>
-    <section id="my-submissions">
+    <section id="dashboard-my-submissions">
       <h2>Your Submissions</h2>
       {{#if hasSubmissions}}
-        <ul class="submitted">
+        <ul class="dashboard-submitted-papers">
           {{#each paper in submissions}}
-            <li class="paper-title">
-              {{#link-to 'paper.edit' paper.id}}{{paper.short_title}}
-              {{/link-to}}
-            </li>
+            <li class="dashboard-paper-title">{{link-to paper.short_title "paper.edit" paper.id}}</li>
           {{/each}}
         </ul>
       {{else}}
-        <p class="info-text">
-          Your scientific paper submissions will
-          <br />
-          appear here.
-        </p>
+        <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>
       {{/if}}
-      {{#link-to 'paper_new' classNames='primary-button wide-button'}}Create new submission{{/link-to}}
+
+      {{link-to "Create new submission" "paper_new" classNames="primary-button wide-button"}}
     </section>
 
     {{#if hasAssignedTasks}}
-      <section id="my-tasks">
+      <section id="dashboard-my-tasks">
         <h2>Your Tasks</h2>
         {{#each paper in tasksByPaper}}
-          <p class="paper-title">
-            {{#link-to 'paper.edit' paper.id}}{{paper.title}}{{/link-to}}
-          </p>
-          <ul class="cards">
-            {{each paper.tasks itemViewClass="ETahi.CardView"}}
-          </ul>
+          <h3 class="dashboard-paper-title">{{link-to paper.shortTitle "paper.edit" paper.id}}</h3>
+          {{each paper.tasks itemViewClass="ETahi.CardView"}}
         {{/each}}
       </section>
     {{/if}}

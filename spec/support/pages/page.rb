@@ -43,17 +43,11 @@ class PageFragment
   protected
 
   def select_from_chosen(item_text, options={})
-    field = if Capybara::Node::Element === options[:from]
-              options[:from]
-            elsif options.has_key? :from
-              # find_field(options[:from], visible: false)
-            elsif options.has_key? :id
-              # find("##{options[:id]}", visible: false)
-            end
-
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first").mousedown()!)
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").val("#{item_text}")!)
+    sleep 0.1
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").keyup()!)
+    expect(page).to have_css('li.highlighted', text: item_text)
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
   end
 

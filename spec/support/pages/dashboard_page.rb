@@ -39,7 +39,7 @@ class DashboardPage < Page
 
   def view_paper short_title
     within('.submitted') { click_link short_title }
-    PaperPage.new
+    EditPaperPage.new
   end
 
   def view_flow_manager
@@ -48,8 +48,8 @@ class DashboardPage < Page
   end
 
   def view_submitted_paper short_title
-    within('.all_submitted') { click_link short_title }
-    PaperPage.new
+    within('.submitted') { click_link short_title }
+    EditPaperPage.new
   end
 
   def visit_admin

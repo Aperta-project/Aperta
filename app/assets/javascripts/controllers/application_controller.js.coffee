@@ -1,7 +1,8 @@
 ETahi.ApplicationController= Ember.Controller.extend
-  currentUser: ->
+  currentUser:(->
     userId = Tahi.currentUser.id.toString()
     @store.getById('user', userId)
+  ).property()
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')
 

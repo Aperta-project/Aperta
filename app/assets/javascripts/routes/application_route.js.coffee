@@ -15,9 +15,10 @@ ETahi.ApplicationRoute = Ember.Route.extend
 
     showNewCardOverlay: (tmplName, taskType, phase) ->
       paper = @controllerFor('paperManage').get('model')
-
-      newTask = @store.createRecord(taskType,
-        {phase: phase, type: taskType.replace(/^new/, ''), paper_id: paper.get('id')})
+      newTaskParams = {phase: phase, type: taskType.replace(/^new/, ''), paper_id: paper.get('id')}
+      newTask = @store.createRecord(taskType, newTaskParams)
+      if taskType == 'MessageTask'
+        newTask.get('participants').pushObject(@controllerFor('application').get('currentUser'))
 
       @controllerFor('newCardOverlay').set('model', newTask)
       @controllerFor('newCardOverlay').set('paper', paper)

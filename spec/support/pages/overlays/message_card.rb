@@ -1,6 +1,5 @@
 class MessageCardOverlay < CardOverlay
 
-
   def add_participants(users)
     users.map(&:full_name).each do |name|
       select_from_chosen name, from: 'Participants'
@@ -9,7 +8,8 @@ class MessageCardOverlay < CardOverlay
   end
 
   def participants
-    all('#participants .user-thumbnail').map { |e| e["data-user-name"] }
+    expect(page).to have_css '.participants'
+    all('.participant .user-thumbnail').map { |e| e["alt"] }
   end
 
   def subject

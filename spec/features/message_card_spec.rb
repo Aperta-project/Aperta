@@ -54,9 +54,9 @@ feature 'Message Cards', js: true do
       #reload the page for now
       task_manager_page.reload
       needs_editor_phase = task_manager_page.phase 'Assign Editor'
-      needs_editor_phase.view_card subject_text, NewMessageCardOverlay do |card|
+      needs_editor_phase.view_card subject_text, MessageCardOverlay do |card|
         expect(card.subject).to eq subject_text
-        expect(card.body).to eq body_text
+        expect(card.comments.first).to have_text body_text
         expect(card.participants).to match_array [albert.full_name, admin.full_name]
       end
     end

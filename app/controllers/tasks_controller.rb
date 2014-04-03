@@ -28,8 +28,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    klass = "#{params[:task][:type]}"
-    task = "#{klass}Creator".constantize.call(task_params(klass.constantize.new), current_user)
+    task = build_task params
 
     if task.persisted?
       respond_with task, location: task_url(task)
@@ -62,5 +61,11 @@ class TasksController < ApplicationController
     attributes = [:assignee_id, :completed, :title, :body, :phase_id]
     attributes += task.class::PERMITTED_ATTRIBUTES if task
     params.require(:task).permit(*attributes)
+  end
+
+  def build_task(params)
+    task_type = params[:task][:type]
+    sanitized_params = task_params task_type.constantize.new
+    TaskFactory.build_task task_type, sanitized_params, current_user
   end
 end

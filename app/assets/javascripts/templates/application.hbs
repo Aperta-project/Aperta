@@ -3,7 +3,7 @@
     {{#link-to 'index' classNames='nav-bar-home'}}
       <strong>Tahi</strong> Dashboard
     {{/link-to}}
-    {{#if currentUser}}
+    {{#if Tahi.currentUser}}
     <ul class="nav-bar-links">
       {{#if Tahi.currentUser.admin}}
         <li class="nav-bar-item">{{#link-to 'flow_manager'}}Flow Manager{{/link-to}}</li>

@@ -16,6 +16,7 @@
 .card {
   position: relative;
   display: block;
+  margin-bottom: 8px;
 
   .tooltip { position: fixed; }
 }
@@ -43,11 +44,10 @@
 .card-content {
   position: relative;
   display: block;
-  margin-bottom: 10px;
   border-radius: 5px;
   padding: 10px 15px;
   color: $tahi-primary-hover;
-  font-size: 20px;
+  font-size: 18px;
   word-wrap: break-word;
   background-color: $tahi-secondary;
   cursor: pointer;

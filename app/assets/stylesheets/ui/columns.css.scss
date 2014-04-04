@@ -46,6 +46,17 @@
   white-space: initial;
 
   &:last-of-type { border-right: none; }
+
+  .edit-icon   { right: 10px; }
+  .remove-icon { right: 30px; cursor: pointer; }
+}
+
+.column.current-drop-target {
+  background: #f6f6f6;
+}
+
+.column.not-drop-target {
+  //opacity: 0.6;
 }
 
 
@@ -74,7 +85,9 @@
   bottom: 0;
   width: 100%;
   outline: none;
-  margin-top: 0;
+  margin: 0;
+  padding-bottom: 10px;
+  font-size: 27px;
 }
 
 .column-title-update-buttons {
@@ -118,10 +131,6 @@
   display: none;
 }
 
-// TODO: scope these better?
-
-.edit-icon   { right: 10px; }
-.remove-icon { right: 30px; }
 
 .column-header:hover .column-icon {
   display: inline;

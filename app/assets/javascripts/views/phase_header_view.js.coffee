@@ -10,6 +10,13 @@ ETahi.PhaseHeaderView = Em.View.extend
   keyUp: (e)->
     Tahi.utils.resizeColumnHeaders()
 
+  phaseTitleDidChange: (->
+    # race condition? :(
+    Em.run.later (->
+      Tahi.utils.resizeColumnHeaders()
+    ), 40
+  ).observes('phase.name')
+
   actions:
     save: ->
       @set('active', false)

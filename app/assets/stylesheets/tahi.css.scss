@@ -105,9 +105,8 @@ textarea { resize: none; }
   @include progress-bar-variant($tahi-tertiary);
 }
 
-.noscroll {
-  overflow: hidden;
-}
+// For HTML tag when overlays are being displayed
+.noscroll { overflow: hidden; }
 
 .warning {
   font-size: 14px;
@@ -121,10 +120,6 @@ textarea { resize: none; }
   .warning {
     margin-top: 10px;
   }
-}
-
-.pointer {
-  cursor: pointer;
 }
 
 .drop-column {

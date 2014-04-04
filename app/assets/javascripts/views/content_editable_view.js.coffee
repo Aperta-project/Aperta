@@ -1,11 +1,17 @@
-Ember.ContentEditableView = Em.View.extend
-  tagName: 'div'
+# modified from: https://github.com/KasperTidemann/ember-contenteditable-view
+
+ETahi.ContentEditableView = Em.View.extend
   attributeBindings: ['contenteditable', 'placeholder']
 
-  # Variables:
-  editable: false
-  isUserTyping: false
+  editable: true
+  userIsTyping: false
   plaintext: false
+  preventEnterKey: false
+
+  setup: (->
+    @setHTMLFromValue()
+    @setPlaceholder() if @elementIsEmpty()
+  ).on('didInsertElement')
 
   # Properties:
   contenteditable: (->
@@ -14,25 +20,53 @@ Ember.ContentEditableView = Em.View.extend
   ).property('editable')
 
   # Observers:
-  valueObserver: (->
-    @setContent()  if not @get('isUserTyping') and @get('value')
+  valueDidChange: (->
+    @setHTMLFromValue() if @get('value') and not @get('userIsTyping')
   ).observes('value')
 
-  # Events:
-  didInsertElement: ->
-    @setContent()
-
-  focusOut: ->
-    @set 'isUserTyping', false
-
+  # DOM Events:
   keyDown: (event) ->
-    @set 'isUserTyping', true  unless event.metaKey
+    @set 'userIsTyping', true  unless event.metaKey
+    @supressEnterKeyEvent(event)
+
+    if @elementHasPlaceholder() and not event.metaKey
+      @removePlaceholder()
 
   keyUp: (event) ->
-    if @get('plaintext')
-      @set 'value', @$().text()
-    else
-      @set 'value', @$().html()
+    (@setPlaceholder(); return) if @elementIsEmpty()
 
-  setContent: ->
-    @$().html @get('value')
+    if Em.isEmpty(@.$().text())
+      @setPlaceholder()
+    else
+      @setValueFromHTML()
+
+  focusOut: ->
+    @set 'userIsTyping', false
+    @setPlaceholder() if @elementIsEmpty()
+
+
+  elementIsEmpty: ->
+    Em.isEmpty(@.$().text())
+
+  elementHasPlaceholder: ->
+    @.$().text() == @get('placeholder')
+
+  setPlaceholder: ->
+    @.$().text(@get('placeholder')).addClass('placeholder')
+
+  removePlaceholder: ->
+    @.$().text('').removeClass('placeholder')
+
+  setHTMLFromValue: ->
+    @.$().html(@get('value'))
+
+  setValueFromHTML: ->
+    if @get('plaintext')
+      @set 'value', @.$().text()
+    else
+      @set 'value', @.$().html()
+
+  supressEnterKeyEvent: (e) ->
+    return unless @get('preventEnterKey')
+    if e.keyCode == 13 || e.which == 13
+      e.preventDefault()

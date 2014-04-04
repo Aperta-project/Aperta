@@ -1,8 +1,8 @@
 ETahi.PaperEditView = Ember.View.extend
   setBackgroundColor:(->
-    $('body').addClass('matte')
+    $('html').addClass('matte')
   ).on('didInsertElement')
 
   resetBackgroundColor:(->
-    $('body').removeClass('matte')
+    $('html').removeClass('matte')
   ).on('willDestroyElement')

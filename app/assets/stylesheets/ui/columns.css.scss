@@ -23,7 +23,7 @@
 
 .columns {
   position: absolute;
-  top: 85px;
+  top: $tahi-nav-bar-height + $tahi-control-bar-height;
   right: 0;
   bottom: 0;
   left: 0;

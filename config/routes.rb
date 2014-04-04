@@ -51,5 +51,5 @@ Tahi::Application.routes.draw do
   get 'users/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 
   resource :user_settings, only: :update
-  root 'dashboards#index'
+  root 'ember#index'
 end

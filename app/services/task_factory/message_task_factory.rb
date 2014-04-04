@@ -4,7 +4,7 @@ module TaskFactory
       phase = Phase.find message_params[:phase_id]
       subject = message_params[:title]
       body = message_params[:body]
-      participant_ids = message_params[:participants] || user.id # participant_id cant be nil
+      participant_ids = message_params[:participant_ids] || user.id # participant_id cant be nil
       MessageTask.transaction do
         message_task = phase.message_tasks.create!(title: subject, participant_ids: participant_ids)
         if body

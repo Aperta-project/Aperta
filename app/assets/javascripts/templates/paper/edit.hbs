@@ -13,7 +13,7 @@
       </li>
     </ul>
     <ul>
-      <li>{{link-to 'Manuscript Manager' 'paper.manage' model class="control-bar-link"}}</li>
+      <li>{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
     </ul>
   </div>
 </div>
@@ -24,12 +24,11 @@
       <div id="toolbar"></div>
       <div>
         <div class="title">
-          {{view ETahi.ContentEditableView
-                 tagName="h2"
-                 value=title
-                 id="paper-title"
-                 preventEnterKey="true"
-                 placeholder="Type your manuscript title here"}}
+          {{content-editable tagName="h2"
+                             id="paper-title"
+                             placeholder="Type your manuscript title here"
+                             value=title
+                             preventEnterKey="true"}}
         </div>
 
         <div id="paper-authors" class="editable">
@@ -51,8 +50,8 @@
         {{each assignedTasks itemViewClass="ETahi.CardView"}}
         {{each authorTasks   itemViewClass="ETahi.CardView"}}
         <hr>
-        <a id="submit-paper" class="primary-button wide-button" href="#" {{action 'confirmSubmitPaper'}}>Submit</a>
-        <a class="primary-button wide-button" href="#" {{action 'savePaper'}}>Save</a>
+        <a id="submit-paper" class="primary-button wide-button" href="#" {{action "confirmSubmitPaper"}}>Submit</a>
+        <a class="primary-button wide-button" href="#" {{action "savePaper"}}>Save</a>
       </div>
     </aside>
   </main>

@@ -1,6 +1,6 @@
 # modified from: https://github.com/KasperTidemann/ember-contenteditable-view
 
-ETahi.ContentEditableView = Em.View.extend
+ETahi.ContentEditableComponent = Em.Component.extend
   attributeBindings: ['contenteditable', 'placeholder']
 
   editable: true
@@ -26,19 +26,17 @@ ETahi.ContentEditableView = Em.View.extend
 
   # DOM Events:
   keyDown: (event) ->
-    @set 'userIsTyping', true  unless event.metaKey
-    @supressEnterKeyEvent(event)
-
-    if @elementHasPlaceholder() and not event.metaKey
-      @removePlaceholder()
+    @set('userIsTyping', true)
+    @supressEnterKeyEvent(event) if @get('preventEnterKey')
+    @removePlaceholder() if @elementHasPlaceholder()
 
   keyUp: (event) ->
-    (@setPlaceholder(); return) if @elementIsEmpty()
-
-    if Em.isEmpty(@.$().text())
+    if @elementIsEmpty() || @elementHasPlaceholder()
+      @set('value', '')
       @setPlaceholder()
-    else
-      @setValueFromHTML()
+      return
+
+    @setValueFromHTML()
 
   focusOut: ->
     @set 'userIsTyping', false
@@ -67,6 +65,5 @@ ETahi.ContentEditableView = Em.View.extend
       @set 'value', @.$().html()
 
   supressEnterKeyEvent: (e) ->
-    return unless @get('preventEnterKey')
     if e.keyCode == 13 || e.which == 13
       e.preventDefault()

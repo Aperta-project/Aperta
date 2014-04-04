@@ -3,8 +3,8 @@
     <div class="control-bar-inner-wrapper">
       <ul>
         <li id="control-bar-paper-journal-logo">
-          {{#if logo}}
-            <img src="">
+          {{#if journal.logoUrl}}
+            <img src="{{unbound journal.logoUrl}}">
           {{else}}
             <div>Logo</div>
           {{/if}}
@@ -21,7 +21,6 @@
 
 
   <div id="manuscript-manager">
-    {{title}}
     <div class="full-height">
       <div class="columns">
         {{add-column position=-1 action="addPhase" bonusClass="first-add-column"}}

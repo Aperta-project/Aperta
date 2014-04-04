@@ -5,16 +5,22 @@ DragNDrop.cancel = (e) ->
   e.preventDefault()
   false
 
-DragNDrop.Dragable = Ember.Mixin.create(
+DragNDrop.draggingStarted = (dropTargetsSelector, currentDropTarget)->
+  $(dropTargetsSelector).removeClass('current-drop-target').addClass('not-drop-target')
+  $(currentDropTarget).removeClass('not-drop-target').addClass('current-drop-target')
+
+DragNDrop.draggingStopped = (dropTargetsSelector)->
+  $(dropTargetsSelector).removeClass('current-drop-target').removeClass('not-drop-target')
+
+DragNDrop.Dragable = Ember.Mixin.create
   attributeBindings: 'draggable'
   draggable: 'true'
   dragStart: (e) ->
     dataTransfer = e.originalEvent.dataTransfer
     dataTransfer.setData 'Text', @get('task.id')
     return
-)
 
-DragNDrop.Droppable = Ember.Mixin.create(
+DragNDrop.Droppable = Ember.Mixin.create
   dragEnter: DragNDrop.cancel
   dragOver: DragNDrop.cancel
   drop: (e) ->
@@ -22,4 +28,3 @@ DragNDrop.Droppable = Ember.Mixin.create(
     #Ember.View.views[viewId].destroy()
     e.preventDefault()
     false
-)

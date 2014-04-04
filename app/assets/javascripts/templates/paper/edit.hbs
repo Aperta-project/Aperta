@@ -50,6 +50,7 @@
       <div>
         {{each assignedTasks itemViewClass="ETahi.CardView"}}
         {{each authorTasks   itemViewClass="ETahi.CardView"}}
+        <hr>
         <a id="submit-paper" class="primary-button wide-button" href="#" {{action 'confirmSubmitPaper'}}>Submit</a>
         <a class="primary-button wide-button" href="#" {{action 'savePaper'}}>Save</a>
       </div>

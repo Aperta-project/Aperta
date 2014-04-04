@@ -1,6 +1,6 @@
 <div id="tahi-container">
 
-  <h1>You're about submit paper {{short_title}}</h1>
+  <h1>You're about submit {{shortTitle}}</h1>
   <h2 id="paper-title">{{title}}</h2>
 
   <div id="paper-abstract">{{abstract}}</div>
@@ -20,7 +20,7 @@
     {{/each}}
   </table>
 
-  <table id="paper-declarations" class"table table-hover">
+  <table id="paper-declarations" class="table table-hover">
     <tr>
       <th>Question</th>
       <th>Answer</th>
@@ -33,7 +33,7 @@
     {{/each}}
   </table>
 
-  {{link-to 'Cancel' 'paper.edit' this class="btn-primary btn-lg btn"}}
-  <button id="submit-paper" class="btn-primary btn-lg btn" {{action 'submitPaper'}}>Submit</button>
+  {{link-to 'Cancel' 'paper.edit' this class="primary-button btn-lg"}}
+  <button id="submit-paper" class="primary-button btn-lg" {{action 'submitPaper'}}>Submit</button>
 
 </div>

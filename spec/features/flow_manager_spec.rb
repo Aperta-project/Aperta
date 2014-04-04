@@ -74,7 +74,6 @@ feature "Flow Manager", js: true do
 
     dashboard_page = DashboardPage.visit
     flow_manager_page = dashboard_page.view_flow_manager
-
     up_for_grabs = flow_manager_page.column 'Up for grabs'
     papers = up_for_grabs.paper_profiles
     expect(papers.length).to eq 1

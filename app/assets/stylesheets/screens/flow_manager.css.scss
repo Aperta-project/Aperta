@@ -8,7 +8,6 @@
   width: 219px;
   margin-bottom: 10px;
   border: 1px solid $tahi-tertiary;
-  border-bottom: 2px solid $tahi-tertiary;
 }
 
 .paper-profile-title {
@@ -20,17 +19,17 @@
   line-height: 17px;
 }
 
+.flow-card { margin-bottom: 0; }
 .flow-card .card-content {
   width: auto;
-  margin-bottom: 0;
   border-radius: 0;
   border-bottom: 1px solid white;
   background-color: rgb(194,232,188);
 
   &.card-message { background-color: $tahi-message-light; }
 
-  &:last-child { border-bottom: none; }
   &:hover { background: $tahi-primary; }
+  &:last-of-type { border-bottom: none; }
 }
 
 

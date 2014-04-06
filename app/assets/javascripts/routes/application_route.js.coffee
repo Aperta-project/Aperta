@@ -17,11 +17,16 @@ ETahi.ApplicationRoute = Ember.Route.extend
       paper = @controllerFor('paperManage').get('model')
       newTaskParams = {phase: phase, type: taskType.replace(/^new/, ''), paper_id: paper.get('id')}
       newTask = @store.createRecord(taskType, newTaskParams)
+      controller = @controllerFor('newCardOverlay')
+
       if taskType == 'MessageTask'
         newTask.get('participants').pushObject(@controllerFor('application').get('currentUser'))
 
-      @controllerFor('newCardOverlay').set('model', newTask)
-      @controllerFor('newCardOverlay').set('paper', paper)
+      controller.setProperties({
+        model: newTask
+        paper: paper
+        overlayClass: (if taskType == 'MessageTask' then 'message-overlay' else 'new-adhoc-overlay')
+      })
 
       @render(tmplName,
         into: 'application'

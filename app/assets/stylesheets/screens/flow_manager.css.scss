@@ -36,8 +36,9 @@
 /*
   .overlay.flow-manager.column.overlay
     .overlay-container
-      .overlay-close-button
       .modal-heading
+        h2
+        .overlay-close-button
       .modal-buttons
 */
 
@@ -50,12 +51,16 @@
 }
 
 .modal-heading {
-  margin-top: 0;
-  margin-bottom: 0;
+  position: relative;
   padding: 16px;
-  font-size: 20px;
   background: white;
-  color: #666;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 20px;
+    color: #666;
+  }
 }
 
 .modal-buttons {
@@ -80,12 +85,14 @@
 
 // in 'choose flow manager column' overlay
 .overlay-close-button {
-  float: right;
-  position: relative;
-  top: 13px;
-  right: 16px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40px;
   color: gray;
   font-size: 24px;
+  line-height: 58px;
 }
 
 // control bar:

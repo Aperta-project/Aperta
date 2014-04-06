@@ -25,7 +25,7 @@ body { background: transparent; } // override bootstrap
 }
 
 a, a:hover, button, button:hover, .glyphicon, .glyphicon:hover {
-  @include transition(all 0.2s ease-in-out);
+  @include transition(all 0.1s ease-in-out);
 }
 
 a {

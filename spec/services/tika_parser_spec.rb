@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe TikaParser do
-
   describe '.parse' do
     let(:filename) { Rails.root.join('spec/fixtures/about_turtles.docx') }
     let(:paper_title) { 'This is a Title About Turtles' }

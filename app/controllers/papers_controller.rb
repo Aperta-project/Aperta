@@ -48,6 +48,12 @@ class PapersController < ApplicationController
     redirect_to edit_paper_path(@paper)
   end
 
+  def download
+    @paper = PaperPolicy.new(params[:id], current_user).paper
+    epub = EpubConverter.generate_epub @paper
+    send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
+  end
+
   private
 
   def paper_params

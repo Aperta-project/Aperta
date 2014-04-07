@@ -6,7 +6,7 @@ class NewAdhocCardOverlay < CardOverlay
   end
 
   def title=(new_text)
-    fill_in 'task_title', with: new_text
+    fill_in 'task-title-field', with: new_text
   end
 
   def body

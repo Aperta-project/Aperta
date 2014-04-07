@@ -57,6 +57,7 @@ GEM
     acts_as_list (0.4.0)
       activerecord (>= 3.0)
     addressable (2.3.5)
+    angularjs-rails (1.2.16)
     arel (5.0.0)
     atomic (1.1.15)
     barber (0.4.2)
@@ -370,6 +371,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   acts_as_list
+  angularjs-rails
   bootstrap-sass
   bourbon
   capybara

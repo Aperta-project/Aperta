@@ -25,7 +25,7 @@ class PapersController < ApplicationController
 
   def create
     @paper = current_user.papers.create!(paper_params)
-    render json: @paper
+    render status: 201, json: @paper
   end
 
   def edit
@@ -36,7 +36,8 @@ class PapersController < ApplicationController
 
   def update
     @paper = Paper.find(params[:id])
-    if @paper.update paper_params
+
+    if @paper.update(paper_params)
       PaperRole.where(user_id: paper_params[:reviewer_ids]).update_all reviewer: true
       head 200
     else

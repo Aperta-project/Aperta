@@ -171,7 +171,7 @@ describe TasksController do
           let(:msg_subject) { nil }
           it "returns an error" do
             do_request
-            expect(response.status).to eq(400)
+            expect(response.status).to eq(422)
             expect(JSON.parse(response.body)).to have_key("errors")
           end
         end

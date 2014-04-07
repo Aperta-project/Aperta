@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PapersController do
 
-  let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :submitted, :journal_id, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email]] }
+  let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :submitted, :decision, :decision_letter, :journal_id, {authors: [:first_name, :last_name, :affiliation, :email], reviewer_ids: [], declaration_ids: [], phase_ids: [], figure_ids: [], assignee_ids: [], editor_ids: []}] }
 
   let :user do
     User.create! username: 'albert',
@@ -117,11 +117,6 @@ describe PapersController do
 
     it_behaves_like "when the user is not signed in"
 
-    it_behaves_like "a controller enforcing strong parameters" do
-      let(:model_identifier) { :paper }
-      let(:expected_params) { permitted_params }
-    end
-
     it "saves a new paper record" do
       do_request
       expect(Paper.first).to be_persisted
@@ -132,14 +127,16 @@ describe PapersController do
       expect(Paper.first.user).to eq(user)
     end
 
-    it "redirects to edit paper page" do
+    it "returns a 201 and the paper's id in json" do
       do_request
-      expect(response).to redirect_to(edit_paper_path Paper.first)
+      expect(response.status).to eq(201)
+      json = JSON.parse(response.body)
+      expect(json['paper']['id']).to eq(Paper.first.id)
     end
 
     it "renders new template if the paper can't be saved" do
       post :create, { paper: { short_title: '' } }
-      expect(response).to render_template(:new)
+      expect(response.status).to eq(422)
     end
   end
 
@@ -155,7 +152,7 @@ describe PapersController do
     describe "authors" do
       context "when there is an authors key in params" do
         let(:authors) { [{ first_name: 'Bob', last_name: 'Marley', affiliation: "Jamaica Inc.", email: 'jamaican@example.com' }] }
-        let(:params) { { authors: authors.to_json } }
+        let(:params) { { authors: authors } }
 
         it "decodes JSON string into an array before saving" do
           do_request
@@ -174,17 +171,6 @@ describe PapersController do
     end
 
     it_behaves_like "when the user is not signed in"
-
-    it_behaves_like "a controller enforcing strong parameters" do
-      let(:params_id) { paper.to_param }
-      let(:model_identifier) { :paper }
-      let(:expected_params) { permitted_params }
-    end
-
-    it "redirects to dashboard" do
-      do_request
-      expect(response).to redirect_to(root_path)
-    end
 
     it "updates the paper" do
       do_request
@@ -215,7 +201,7 @@ describe PapersController do
 
     it "redirect to the paper's edit page" do
       do_request
-      expect(response).to redirect_to edit_paper_path(paper)
+      expect(response.status).to eq(204)
     end
 
     it "passes the uploaded file's path to the document parser" do

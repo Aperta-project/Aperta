@@ -1,6 +1,6 @@
 require 'open3'
 
-class DocumentParser
+class TikaParser
   def initialize(filename)
     @filename = filename
     to_hash

@@ -16,11 +16,11 @@ class OxgarageParser
             :multipart => true,
             :file => File.new(@filename, 'rb')
           })
-    response = request.execute
+    @response ||= request.execute
 
-    return response if extract_filename(response.headers).ends_with? 'html'
+    return @response if extract_filename(@response.headers).ends_with? 'html'
 
-    extract_document_from response
+    extract_document_from @response
   end
 
   def extract_document_from response

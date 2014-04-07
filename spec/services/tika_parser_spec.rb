@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DocumentParser do
+describe TikaParser do
 
   describe '.parse' do
     let(:filename) { Rails.root.join('spec/fixtures/about_turtles.docx') }
@@ -9,7 +9,7 @@ describe DocumentParser do
       "<h2 class=\"subtitle\">And this is my subtitle about how turtles are awesome</h2><p>Turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles.</p><p><a name=\"_GoBack\"></a>The end.</p>"
     end
 
-    subject { DocumentParser.parse filename }
+    subject { TikaParser.parse filename }
 
     its([:title]) { should eq paper_title }
     its([:body]) { should eq paper_body }
@@ -22,7 +22,7 @@ describe DocumentParser do
         "<h2 class=\"subtitle\">Subtitle</h2><p>Turtles.</p><p><a name=\"_GoBack\"></a>The end.</p>"
       end
 
-      let(:document) { DocumentParser.new filename }
+      let(:document) { TikaParser.new filename }
       let(:body) { document.body }
 
       before { allow(document).to receive(:output).and_return(original_body) }

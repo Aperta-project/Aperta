@@ -2,10 +2,10 @@
   <div class="control-bar-inner-wrapper">
     <ul>
       <li id="control-bar-paper-journal-logo">
-        {{#if paper.logo}}
-          <img src="">
+        {{#if journal.logoUrl}}
+          <img src="{{unbound journal.logoUrl}}">
         {{else}}
-          <div>Logo</div>
+          <div class="paper-journal">{{unbound journal.name}}</div>
         {{/if}}
       </li>
       <li id="control-bar-paper-short-title">

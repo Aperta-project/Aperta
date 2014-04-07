@@ -15,7 +15,7 @@ class DashboardPage < Page
   end
 
   def submissions
-    within("#my-submissions") do
+    within("#dashboard-my-submissions") do
       page.all('li').map &:text
     end
   end

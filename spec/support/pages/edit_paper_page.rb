@@ -54,7 +54,7 @@ class EditPaperPage < Page
   end
 
   def journal
-    find(:css, '#paper-journal').text
+    find(:css, '.paper-journal').text
   end
 
   def title

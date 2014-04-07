@@ -1,6 +1,6 @@
 require 'spec_helper'
 describe "layouts/application" do
-  before { allow(view).to receive(:current_user).and_return(current_user) }
+  before { pending; allow(view).to receive(:current_user).and_return(current_user) }
 
   let(:admin) { false }
   let(:current_user) { mock_model User, admin?: admin, full_name: "Batman", image_url: "none" }

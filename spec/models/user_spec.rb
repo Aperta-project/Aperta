@@ -77,6 +77,7 @@ describe User do
       end
 
       it "initializes with a set of default user setting flows" do
+        pending
         user = FactoryGirl.create :user
         default_flows = ["Up for grabs", "My Tasks", "My Papers", "Done"]
         expect(user.user_settings.flows).to match_array default_flows

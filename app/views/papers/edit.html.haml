@@ -1,4 +1,237 @@
 %main
+- content_for :control_bar do
+  #control-bar-container
+    #control-bar
+      %section
+        %ul
+          %li#paper-journal
+            - if @paper.journal.logo.present?
+              = image_tag @paper.journal.logo.url
+            - else
+              %div
+                = @paper.journal.name
+          -# %li#paper-short-title{contenteditable: true, placeholder: 'Type your short title here'}
+            = @paper.short_title
+        %ul
+          %li= link_to 'Download ePub', download_paper_path(@paper), target: '_blank'
+          - if current_user.admin?
+            %li= link_to 'Manuscript Manager', manage_paper_path(@paper)
+
+%main
+  %article
+    #toolbar
+
+    %div
+      .title
+        %h2#paper-title{contenteditable: true, placeholder: 'Type your manuscript title here'}
+          = @paper.title
+
+      #paper-abstract{contenteditable: true, placeholder: 'Type your abstract here'}
+        = @paper.abstract.html_safe
+
+      - task = Task.where(title: "Add Authors", phase: @paper.phases.where(name: 'Submission Data').first).first
+      #paper-authors.editable{class: "#{'completed' if task.completed?}", data: { 'card-name' => "authors", 'paper-title' => truncated_title(@paper), 'paper-path' => paper_path(@paper), 'paper-id' => @paper.to_param, 'task-path' => paper_task_path(@paper, task), authors: task.authors.to_json, 'refresh-on-close' => false }}
+
+      #paper-body.editable{placeholder: 'Type the body of your manuscript here'}
+        = @paper.body.html_safe
+
   %aside
     %div
       = link_to 'Submit', new_paper_submission_path(@paper), class: 'primary-button wide-button'
+      = link_to 'Save', '#', class: 'primary-button wide-button', onclick: "Tahi.papers.savePaper('#{paper_path(@paper, format: :json)}'); return false;"
+
+
+/ jquery
+%script{src: "/visual-editor/lib/jquery/jquery.client.js"}
+%script{src: "/visual-editor/lib/jquery/jquery.visibleText.js"}
+/ oojs
+%script{src: "/visual-editor/lib/oojs/oojs.js"}
+/ oojs-ui
+%script{src: "/visual-editor/lib/oojs-ui/oojs-ui.js"}
+/ rangy
+%script{src: "/visual-editor/lib/rangy/rangy-core-1.3.js"}
+%script{src: "/visual-editor/lib/rangy/rangy-position-1.3.js"}
+%script{src: "/visual-editor/lib/rangy/rangy-export.js"}
+/ unicodejs
+%script{src: "/visual-editor/modules/unicodejs/unicodejs.js"}
+%script{src: "/visual-editor/modules/unicodejs/unicodejs.textstring.js"}
+%script{src: "/visual-editor/modules/unicodejs/unicodejs.graphemebreakproperties.js"}
+%script{src: "/visual-editor/modules/unicodejs/unicodejs.graphemebreak.js"}
+%script{src: "/visual-editor/modules/unicodejs/unicodejs.wordbreakproperties.js"}
+%script{src: "/visual-editor/modules/unicodejs/unicodejs.wordbreak.js"}
+/ jquery.i18n
+%script{src: "/visual-editor/lib/jquery.i18n/src/jquery.i18n.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/jquery.i18n.messagestore.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/jquery.i18n.parser.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/jquery.i18n.emitter.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/jquery.i18n.language.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/jquery.i18n.fallbacks.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/bs.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/dsb.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/fi.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/ga.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/he.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/hsb.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/hu.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/hy.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/la.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/ml.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/os.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/ru.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/sl.js"}
+%script{src: "/visual-editor/lib/jquery.i18n/src/languages/uk.js"}
+/ visualEditor.base
+%script{src: "/visual-editor/modules/ve/ve.js"}
+%script{src: "/visual-editor/modules/ve/ve.debug.js"}
+%script{src: "/visual-editor/modules/ve/ve.track.js"}
+%script{src: "/visual-editor/modules/ve/init/ve.init.js"}
+%script{src: "/visual-editor/modules/ve/init/ve.init.Platform.js"}
+%script{src: "/visual-editor/modules/ve/init/ve.init.Target.js"}
+/ visualEditor.standalone
+%script{src: "/visual-editor/modules/ve/init/sa/ve.init.sa.js"}
+%script{src: "/visual-editor/modules/ve/init/sa/ve.init.sa.Platform.js"}
+%script{src: "/visual-editor/modules/ve/init/sa/ve.init.sa.Target.js"}
+/ visualEditor.core
+%script{src: "/visual-editor/modules/ve/ve.Range.js"}
+%script{src: "/visual-editor/modules/ve/ve.Scalable.js"}
+%script{src: "/visual-editor/modules/ve/ve.Node.js"}
+%script{src: "/visual-editor/modules/ve/ve.BranchNode.js"}
+%script{src: "/visual-editor/modules/ve/ve.LeafNode.js"}
+%script{src: "/visual-editor/modules/ve/ve.Document.js"}
+%script{src: "/visual-editor/modules/ve/ve.EventSequencer.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.Model.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.ModelRegistry.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.NodeFactory.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.AnnotationFactory.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.AnnotationSet.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.MetaItemFactory.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.Node.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.BranchNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.LeafNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.Annotation.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.InternalList.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.MetaItem.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.MetaList.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.TransactionProcessor.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.Transaction.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.Surface.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.SurfaceFragment.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.DataString.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.Document.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.DocumentSlice.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.LinearData.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.DocumentSynchronizer.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.IndexValueStore.js"}
+%script{src: "/visual-editor/modules/ve/dm/ve.dm.Converter.js"}
+%script{src: "/visual-editor/modules/ve/dm/lineardata/ve.dm.FlatLinearData.js"}
+%script{src: "/visual-editor/modules/ve/dm/lineardata/ve.dm.ElementLinearData.js"}
+%script{src: "/visual-editor/modules/ve/dm/lineardata/ve.dm.MetaLinearData.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.GeneratedContentNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.AlienNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.BreakNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.CenterNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.DefinitionListItemNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.DefinitionListNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.DivNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.DocumentNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.HeadingNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.ImageNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.InternalItemNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.InternalListNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.ListItemNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.ListNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.ParagraphNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.PreformattedNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.TableCaptionNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.TableCellNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.TableNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.TableRowNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.TableSectionNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/nodes/ve.dm.TextNode.js"}
+%script{src: "/visual-editor/modules/ve/dm/annotations/ve.dm.LanguageAnnotation.js"}
+%script{src: "/visual-editor/modules/ve/dm/annotations/ve.dm.LinkAnnotation.js"}
+%script{src: "/visual-editor/modules/ve/dm/annotations/ve.dm.TextStyleAnnotation.js"}
+%script{src: "/visual-editor/modules/ve/dm/metaitems/ve.dm.AlienMetaItem.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.DomRange.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.AnnotationFactory.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.NodeFactory.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.Document.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.View.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.Annotation.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.Node.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.BranchNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.ContentBranchNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.LeafNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.ProtectedNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.FocusableNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.RelocatableNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.ResizableNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.Surface.js"}
+%script{src: "/visual-editor/modules/ve/ce/ve.ce.SurfaceObserver.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.GeneratedContentNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.AlienNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.BreakNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.CenterNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.DefinitionListItemNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.DefinitionListNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.DivNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.DocumentNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.HeadingNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.ImageNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.InternalItemNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.InternalListNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.ListItemNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.ListNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.ParagraphNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.PreformattedNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.TableCaptionNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.TableCellNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.TableNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.TableRowNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.TableSectionNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/nodes/ve.ce.TextNode.js"}
+%script{src: "/visual-editor/modules/ve/ce/annotations/ve.ce.LanguageAnnotation.js"}
+%script{src: "/visual-editor/modules/ve/ce/annotations/ve.ce.LinkAnnotation.js"}
+%script{src: "/visual-editor/modules/ve/ce/annotations/ve.ce.TextStyleAnnotation.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.Surface.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.Context.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.Dialog.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.Inspector.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.WindowSet.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.Toolbar.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.TargetToolbar.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.ToolFactory.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.Command.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.CommandRegistry.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.Trigger.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.TriggerRegistry.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.Action.js"}
+%script{src: "/visual-editor/modules/ve/ui/ve.ui.ActionFactory.js"}
+%script{src: "/visual-editor/modules/ve/ui/actions/ve.ui.AnnotationAction.js"}
+%script{src: "/visual-editor/modules/ve/ui/actions/ve.ui.ContentAction.js"}
+%script{src: "/visual-editor/modules/ve/ui/actions/ve.ui.DialogAction.js"}
+%script{src: "/visual-editor/modules/ve/ui/actions/ve.ui.FormatAction.js"}
+%script{src: "/visual-editor/modules/ve/ui/actions/ve.ui.HistoryAction.js"}
+%script{src: "/visual-editor/modules/ve/ui/actions/ve.ui.IndentationAction.js"}
+%script{src: "/visual-editor/modules/ve/ui/actions/ve.ui.InspectorAction.js"}
+%script{src: "/visual-editor/modules/ve/ui/actions/ve.ui.ListAction.js"}
+%script{src: "/visual-editor/modules/ve/ui/dialogs/ve.ui.CommandHelpDialog.js"}
+%script{src: "/visual-editor/modules/ve/ui/widgets/ve.ui.SurfaceWidget.js"}
+%script{src: "/visual-editor/modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"}
+%script{src: "/visual-editor/modules/ve/ui/tools/ve.ui.AnnotationTool.js"}
+%script{src: "/visual-editor/modules/ve/ui/tools/ve.ui.ClearAnnotationTool.js"}
+%script{src: "/visual-editor/modules/ve/ui/tools/ve.ui.DialogTool.js"}
+%script{src: "/visual-editor/modules/ve/ui/tools/ve.ui.FormatTool.js"}
+%script{src: "/visual-editor/modules/ve/ui/tools/ve.ui.HistoryTool.js"}
+%script{src: "/visual-editor/modules/ve/ui/tools/ve.ui.IndentationTool.js"}
+%script{src: "/visual-editor/modules/ve/ui/tools/ve.ui.InspectorTool.js"}
+%script{src: "/visual-editor/modules/ve/ui/tools/ve.ui.LanguageInspectorTool.js"}
+%script{src: "/visual-editor/modules/ve/ui/tools/ve.ui.ListTool.js"}
+%script{src: "/visual-editor/modules/ve/ui/inspectors/ve.ui.AnnotationInspector.js"}
+%script{src: "/visual-editor/modules/ve/ui/inspectors/ve.ui.LinkInspector.js"}
+%script{src: "/visual-editor/modules/ve/ui/widgets/ve.ui.LanguageInputWidget.js"}
+%script{src: "/visual-editor/modules/ve/ui/inspectors/ve.ui.LanguageInspector.js"}
+%script{src: "/visual-editor/modules/ve/ui/inspectors/ve.ui.SpecialCharacterInspector.js"}

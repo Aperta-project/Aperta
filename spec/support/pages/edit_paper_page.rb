@@ -42,11 +42,19 @@ class EditPaperPage < Page
   end
 
   def abstract=(val)
-    page.execute_script "CKEDITOR.instances['paper-abstract'].setData('#{escape_javascript val}')"
+    page.execute_script "$('#paper-abstract').text('#{escape_javascript val}')"
   end
 
   def body=(val)
-    page.execute_script "CKEDITOR.instances['paper-body'].setData('#{escape_javascript val}')"
+    page.execute_script <<-JS
+      var element = window.visualEditor.$element;
+      element.empty();
+
+      window.visualEditor = new ve.init.sa.Target(
+        element,
+        ve.createDocumentFromHtml('#{escape_javascript val}')
+      );
+    JS
   end
 
   def authors
@@ -66,7 +74,7 @@ class EditPaperPage < Page
   end
 
   def body
-    body_node.text
+    page.evaluate_script 'visualEditor.surface.getModel().getDocument().getText()'
   end
 
   def paper_type
@@ -81,8 +89,7 @@ class EditPaperPage < Page
   end
 
   def save
-    page.execute_script '$(".cke_button__tahisave_label").click()'
-    # click_on 'Save'
+    click_on 'Save'
     self
   end
 
@@ -95,9 +102,5 @@ class EditPaperPage < Page
 
   def abstract_node
     find(:css, '#paper-abstract')
-  end
-
-  def body_node
-    find(:css, '#paper-body')
   end
 end

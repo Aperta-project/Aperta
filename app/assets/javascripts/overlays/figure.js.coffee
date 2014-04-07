@@ -72,7 +72,7 @@ Tahi.overlays.figure =
       newUploads = uploads.filter (u) -> u.filename != file.name
 
       figures = @state.figures
-      newFigures = figures.concat [{src: data.result[0].src, alt: data.result[0].alt}]
+      newFigures = figures.concat [{src: data.result.figures[0].src, alt: data.result.figures[0].alt}]
 
       window.tempStorage ||= {}
       delete window.tempStorage[file.name]

@@ -50,9 +50,15 @@ class PapersController < ApplicationController
   def upload
     @paper = Paper.find(params[:id])
 
-    manuscript_data = DocumentParser.parse(params[:upload_file].path)
+    manuscript_data = OxgarageParser.parse(params[:upload_file].path)
     @paper.update manuscript_data
     head :no_content
+  end
+
+  def download
+    @paper = PaperPolicy.new(params[:id], current_user).paper
+    epub = EpubConverter.generate_epub @paper
+    send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
   end
 
   private

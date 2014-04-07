@@ -18,7 +18,7 @@ module ApplicationHelper
         data: {
           'task-path' => task_path(task),
           'task-id' => task.id,
-          'card-name' => task.class.name.underscore.dasherize.gsub(/-task/, '')
+          'card-name' => task.class.name.gsub(/::/, '_').underscore.dasherize.gsub(/-task/, ''),
         }
       ) do
         haml_tag :span, class: 'glyphicon glyphicon-ok completed-glyph'

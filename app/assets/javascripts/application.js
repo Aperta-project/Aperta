@@ -15,8 +15,6 @@
 //= require jquery-fileupload/basicplus
 //= require underscore
 //= require bootstrap
-//= require ckeditor-jquery
-//= require ckeditor/plugins/sharedspace/sharedspace
 //= require scrollToFixed
 //= require chosen-jquery
 //= require jquery.dotdotdot
@@ -32,6 +30,7 @@
 //= require_self
 //= require e_tahi
 //= require_tree .
+//= require standard_tasks/application
 
 (function(context) {
   var development = true;

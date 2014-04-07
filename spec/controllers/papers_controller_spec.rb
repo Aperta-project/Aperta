@@ -16,6 +16,27 @@ describe PapersController do
 
   before { sign_in user }
 
+  describe "GET download" do
+    let(:paper) do
+      user.papers.create!(submitted: true, short_title: 'submitted-paper', journal: Journal.create!)
+    end
+    subject(:do_request) { get :download, id: paper.to_param }
+
+    it "uses PaperPolicy to retrieve the paper" do
+      policy = double('paper policy', paper: paper)
+      expect(PaperPolicy).to receive(:new).and_return policy
+      get :download, id: paper.id
+      expect(assigns :paper).to eq(paper)
+    end
+
+    it "sends file back" do
+      controller.stub(:render).and_return(nothing: true)
+      expect(controller).to receive(:send_data)
+      get :download, id: paper.id
+    end
+
+  end
+
   describe "GET 'show'" do
     let(:paper) do
       user.papers.create!(submitted: true, short_title: 'submitted-paper', journal: Journal.create!)
@@ -175,9 +196,8 @@ describe PapersController do
     let(:paper) { Paper.create! short_title: 'paper-needs-uploads', journal: Journal.create! }
 
     let(:uploaded_file) do
-      double(:uploaded_file, path: '/path/to/file.docx').tap do |d|
-        allow(d).to receive(:to_param).and_return(d)
-      end
+      docx_file_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      fixture_file_upload('about_turtles.docx', docx_file_type, :binary)
     end
 
     subject :do_request do
@@ -185,7 +205,7 @@ describe PapersController do
     end
 
     before do
-      allow(DocumentParser).to receive(:parse).and_return(
+      allow(OxgarageParser).to receive(:parse).and_return(
         title: 'This is a Title About Turtles',
         body: "Heroes in a half shell! Turtle power!"
       )
@@ -200,7 +220,7 @@ describe PapersController do
 
     it "passes the uploaded file's path to the document parser" do
       do_request
-      expect(DocumentParser).to have_received(:parse).with(uploaded_file.path)
+      expect(OxgarageParser).to have_received(:parse).with(uploaded_file.path)
     end
 
     it "updates the paper's title" do

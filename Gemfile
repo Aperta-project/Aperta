@@ -77,6 +77,8 @@ end
 group :test do
   gem 'factory_girl_rails'
   gem "codeclimate-test-reporter", require: nil
+  gem 'vcr'
+  gem 'webmock'
 end
 
 gem 'devise'
@@ -85,8 +87,6 @@ gem "bootstrap-sass"
 gem 'bourbon'
 
 gem 'rails_12factor', group: [:production, :staging]
-
-gem "ckeditor_rails"
 
 gem "nokogiri"
 
@@ -101,3 +101,12 @@ gem 'react-rails'
 gem 'spinjs-rails'
 
 gem 'newrelic_rpm'
+
+gem "rest_client", "~> 1.7.3"
+gem 'gepub'
+
+gem 'rubyzip', require: 'zip'
+
+gem 'standard_tasks', path: 'engines/standard_tasks'
+
+gem "active_model_serializers"

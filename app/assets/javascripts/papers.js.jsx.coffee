@@ -20,10 +20,24 @@ Tahi.papers =
 
   instantiateEditables: ->
     if $("[contenteditable]").length > 0
-      @bodyEditable = new Tahi.RichEditableElement($('#paper-body[contenteditable]')[0])
-      @abstractEditable = new Tahi.RichEditableElement($('#paper-abstract[contenteditable]')[0])
-      # @shortTitleEditable = new Tahi.PlaceholderElement($('#control-bar-paper-short-title[contenteditable]')[0])
+      ve.init.platform.setModulesUrl( '/visual-editor/modules' )
+      container = $('<div>')
+      pageHtml = $('#paper-body').html()
+      $('#paper-body').html(container)
+
+      target = new ve.init.sa.Target(
+        container,
+        ve.createDocumentFromHtml(pageHtml)
+      )
+
+      window.visualEditor = target
+
       @titleEditable = new Tahi.PlaceholderElement($('#paper-title[contenteditable]')[0])
+
+  bodyContent: ->
+    bodyContentWrapper = $('<div/>')
+    ve.dm.converter.getDomSubtreeFromModel(visualEditor.surface.getModel().getDocument(), bodyContentWrapper[0])
+    bodyContentWrapper.html()
 
   savePaper: (url) ->
     $.ajax
@@ -33,8 +47,8 @@ Tahi.papers =
         _method: "patch"
         paper:
           title: @titleEditable.getText()
-          body: @bodyEditable.getText()
-          abstract: @abstractEditable.getText()
+          body: @bodyContent()
+          # abstract: @abstractEditable.getText()
           # short_title: @shortTitleEditable.getText()
     false
 

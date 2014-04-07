@@ -35,7 +35,7 @@ describe TasksController do
   end
 
   describe "POST 'create'" do
-    let!(:paper) { Paper.create! short_title: 'some-paper', journal: Journal.create! }
+    let!(:paper) { Paper.create! short_title: 'some-paper', journal: Journal.create!, user: user }
 
     subject(:do_request) do
       post :create, { format: 'json', paper_id: paper.to_param, task: { assignee_id: '1',
@@ -61,7 +61,7 @@ describe TasksController do
   end
 
   describe "PATCH 'update'" do
-    let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated', journal: Journal.create! }
+    let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated', journal: Journal.create!, user: user }
     let(:task) { Task.create! title: "sample task", role: "sample role", phase: paper.task_manager.phases.first }
 
     subject(:do_request) do

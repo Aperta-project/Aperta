@@ -11,6 +11,7 @@ ETahi.Router.map ()->
 
   @route('task', {path: '/tasks/:task_id'})
   @route('signin', {path: '/users/sign_in'})
+  @route('signup', {path: '/users/sign_up'})
 
 ETahi.Router.reopen({
   rootURL: '/'

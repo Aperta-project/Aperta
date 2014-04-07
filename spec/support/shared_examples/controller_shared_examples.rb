@@ -33,18 +33,19 @@ end
 
 shared_examples_for "a controller enforcing strong parameters" do
   let(:params_id) { nil }
+  let(:returned_params) { {} }
 
   it "allows specified params" do
+    params_format ||= 'html'
     fake_params = double(:params)
     allow(fake_params).to receive(:[]) do |key|
       fake_scoped_model_id key
     end
     model_params = double(:model_params)
-
     allow(controller).to receive(:params).and_return(fake_params)
-    expect(fake_params).to receive(:require).with(model_identifier).and_return(model_params)
-    expect(model_params).to receive(:permit).with(*expected_params).and_return({})
-
+    expect(fake_params).to receive(:require).at_least(:once).with(model_identifier).and_return(model_params)
+    expect(model_params).to receive(:permit).at_least(:once).with(*expected_params).and_return(returned_params)
+    controller.stub(:render)
     do_request
   end
 

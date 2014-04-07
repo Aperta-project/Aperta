@@ -8,11 +8,11 @@ describe TaskFactory::MessageTaskFactory do
       let(:paper) { FactoryGirl.create :paper }
       let(:phase) { paper.phases.first }
 
-      let(:msg_subject) { "A subject." }
+      let(:title) { "A subject." }
       let(:participant_ids) { [user.id] }
       let(:msg_body) { "It's a test body." }
       let(:msg_params) do
-        { title: msg_subject,
+        { title: title,
           body: msg_body,
           participant_ids: participant_ids,
           phase_id: phase.id }
@@ -23,7 +23,7 @@ describe TaskFactory::MessageTaskFactory do
 
       context "with a message subject and body" do
         it "returns a new MessageTask with a subject and participants" do
-          expect(result.title).to eq(msg_subject)
+          expect(result.title).to eq(title)
           expect(result.participants.map(&:id)).to match_array(participant_ids)
         end
 
@@ -38,7 +38,7 @@ describe TaskFactory::MessageTaskFactory do
       context "with no message body" do
         let(:msg_body) { nil }
         it "creates the MessageTask, but no comment" do
-          expect(result.title).to eq(msg_subject)
+          expect(result.title).to eq(title)
           expect(result.comments.count).to eq(0)
         end
       end

@@ -4,29 +4,30 @@ ETahi.ContentEditableComponent = Em.Component.extend
   attributeBindings: ['contenteditable', 'placeholder']
 
   editable: true
-  userIsTyping: false
+  placeholder: null
   plaintext: false
   preventEnterKey: false
 
+  _userIsTyping: false
+
   setup: (->
     @setHTMLFromValue()
-    @setPlaceholder() if @elementIsEmpty()
+    @setPlaceholder() if @elementIsEmpty() and @get('placeholder')
   ).on('didInsertElement')
 
   # Properties:
   contenteditable: (->
-    editable = @get('editable')
-    (if editable then 'true' else `undefined`)
+    (if @get('editable') then 'true' else `undefined`)
   ).property('editable')
 
   # Observers:
   valueDidChange: (->
-    @setHTMLFromValue() if @get('value') and not @get('userIsTyping')
+    @setHTMLFromValue() if @get('value') and not @get('_userIsTyping')
   ).observes('value')
 
   # DOM Events:
   keyDown: (event) ->
-    @set('userIsTyping', true)
+    @set('_userIsTyping', true)
     @supressEnterKeyEvent(event) if @get('preventEnterKey')
     @removePlaceholder() if @elementHasPlaceholder()
 
@@ -39,7 +40,7 @@ ETahi.ContentEditableComponent = Em.Component.extend
     @setValueFromHTML()
 
   focusOut: ->
-    @set 'userIsTyping', false
+    @set '_userIsTyping', false
     @setPlaceholder() if @elementIsEmpty()
 
 

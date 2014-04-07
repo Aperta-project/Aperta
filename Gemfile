@@ -71,7 +71,8 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'
-  gem "jasmine", github: 'pivotal/jasmine-gem', ref: 'a0aff0490a45755eadbc918a40cb49c87631cbf2'
+  gem "teaspoon"
+  gem "phantomjs"
 end
 
 group :test do

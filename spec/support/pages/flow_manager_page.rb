@@ -7,7 +7,7 @@ class FlowManagerPage < Page
 
   class PaperProfile < PageFragment
     def title
-      find('h4').text
+      find('.paper-profile-title').text
     end
 
     def view

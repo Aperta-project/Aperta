@@ -94,7 +94,7 @@ feature "Flow Manager", js: true do
       dashboard_page = DashboardPage.visit
       flow_manager_page = dashboard_page.view_flow_manager
 
-      my_tasks = flow_manager_page.column 'My Papers'
+      my_tasks = flow_manager_page.column 'My papers'
       papers = my_tasks.paper_profiles
       expect(papers.map &:title).to match_array [paper1.title, paper2.title]
       papers.first.view # Verify that we can go to the paper's manage page from its profile.
@@ -106,7 +106,7 @@ feature "Flow Manager", js: true do
       dashboard_page = DashboardPage.visit
       flow_manager_page = dashboard_page.view_flow_manager
 
-      my_tasks = flow_manager_page.column 'My Papers'
+      my_tasks = flow_manager_page.column 'My papers'
       expect(my_tasks.has_empty_text?).to eq(true)
     end
   end
@@ -125,7 +125,7 @@ feature "Flow Manager", js: true do
     end
 
     def my_task_expectations(flow_manager_page)
-      my_tasks = flow_manager_page.column 'My Tasks'
+      my_tasks = flow_manager_page.column 'My tasks'
       papers = my_tasks.paper_profiles
       expect(papers.map &:title).to match_array [paper1.title, paper2.title]
       paper1_cards = papers.detect { |p| p.title == paper1.title }.cards
@@ -138,15 +138,13 @@ feature "Flow Manager", js: true do
     def completed_task_expectations(flow_manager_page)
       finished_tasks = flow_manager_page.column 'Done'
       papers = finished_tasks.paper_profiles
-      expect(papers.map &:title).to match_array [paper1.title, paper1.title, paper2.title]
+      expect(papers.map &:title).to match_array [paper1.title, paper2.title]
       paper1_profiles = finished_tasks.paper_profiles_for paper1.title
       paper2_profiles = finished_tasks.paper_profiles_for paper2.title
       paper1_cards = paper1_profiles.flat_map(&:cards)
       paper2_cards = paper2_profiles.flat_map(&:cards)
       expect(paper1_cards.map &:title).to match_array paper1_completed_task_titles
       expect(paper2_cards.map &:title).to match_array paper2_completed_task_titles
-      expect(paper1_profiles.count).to eq(paper1_completed_task_titles.count)
-      expect(paper2_profiles.count).to eq(paper2_completed_task_titles.count)
       papers #return papers for later use
     end
 

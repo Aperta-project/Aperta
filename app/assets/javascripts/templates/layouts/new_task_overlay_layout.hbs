@@ -1,6 +1,8 @@
-<div {{bind-attr class=":overlay overlayClass"}}>
-  <div class="overlay-container">
-    <header class="overlay-header"><h2 class="overlay-header-title">{{paper.shortTitle}}</h2></header>
+<div class="overlay">
+  <div {{bind-attr class=":overlay-container overlayClass"}}>
+    <header class="overlay-header">
+      <h2 class="overlay-header-title message-color" {{action 'createCard'}}>{{paper.displayTitle}}</h2>
+    </header>
 
     <main class="overlay-content">{{yield}}</main>
 

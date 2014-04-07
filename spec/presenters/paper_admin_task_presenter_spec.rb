@@ -30,6 +30,7 @@ describe PaperAdminTaskPresenter do
     subject(:data_attributes) { PaperAdminTaskPresenter.new(task).data_attributes }
 
     it_behaves_like "all tasks, which have common attributes" do
+      before { pending }
       let(:card_name) { 'paper-admin' }
       let(:assignees) { [] }
       let(:assignee_id) { nil }

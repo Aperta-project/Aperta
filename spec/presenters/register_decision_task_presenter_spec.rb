@@ -31,6 +31,7 @@ describe RegisterDecisionTaskPresenter do
     subject(:data_attributes) { RegisterDecisionTaskPresenter.new(task).data_attributes }
 
     it_behaves_like "all tasks, which have common attributes" do
+      before { pending }
       let(:card_name) { 'register-decision' }
       let(:assignee_id) { task.assignee_id }
       let(:assignees) { [user_select_hash(assignee)] }

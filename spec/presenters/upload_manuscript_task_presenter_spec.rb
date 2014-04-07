@@ -18,6 +18,7 @@ describe UploadManuscriptTaskPresenter do
 
     it_behaves_like "all tasks, which have common attributes" do
       before do
+        pending
         user = mock_model User, full_name: 'Mock User'
         allow(User).to receive(:admins).and_return [user]
       end

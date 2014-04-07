@@ -39,6 +39,7 @@ describe TaskPresenter do
     end
 
     it_behaves_like "all tasks, which have common attributes" do
+      before { pending }
       let(:card_name) { 'task' }
     end
 

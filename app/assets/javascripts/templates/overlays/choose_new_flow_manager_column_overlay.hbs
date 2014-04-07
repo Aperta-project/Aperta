@@ -5,9 +5,8 @@
   </div>
 
   <ul class="modal-buttons list-unstyled">
-    <li><a class="secondary-button btn-lg">Up for grabs</a></li>
-    <li><a class="secondary-button btn-lg">My Tasks</a></li>
-    <li><a class="secondary-button btn-lg">My Papers</a></li>
-    <li><a class="secondary-button btn-lg">Done</a></li>
+    {{#each flow in flows}}
+      <li><a class="secondary-button btn-lg" {{action 'createFlow' flow}}>{{flow}}</a></li>
+    {{/each}}
   </ul>
 </div>

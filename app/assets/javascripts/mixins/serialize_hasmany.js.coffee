@@ -11,7 +11,7 @@ ETahi.SerializesHasMany = Ember.Mixin.create
       "_" + $1.toLowerCase()
 
   serializeHasMany: (record, json, relationship) ->
-    return unless record.get('relationshipsToSerialize').contains(relationship.key)
+    return unless record.get('relationshipsToSerialize')?.contains(relationship.key)
 
     key = relationship.key
     idsKey = key.substr(0, key.length-1) + "_ids"

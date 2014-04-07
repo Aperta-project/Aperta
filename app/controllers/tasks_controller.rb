@@ -33,8 +33,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    task = build_task params
-
+    task = build_task
     if task.persisted?
       respond_with task, location: task_url(task)
     else
@@ -63,13 +62,13 @@ class TasksController < ApplicationController
   private
 
   def task_params(task = nil)
-    attributes = [:assignee_id, :completed, :title, :body, :phase_id]
+    attributes = [:assignee_id, :completed, :title, :body, :phase_id, :type]
     attributes += task.class::PERMITTED_ATTRIBUTES if task
     params.require(:task).permit(*attributes)
   end
 
-  def build_task(params)
-    task_type = params[:task][:type]
+  def build_task
+    task_type = task_params[:type]
     sanitized_params = task_params task_type.constantize.new
     TaskFactory.build_task task_type, sanitized_params, current_user
   end

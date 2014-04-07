@@ -2,32 +2,16 @@
 %html
   %head
     %title Tahi
-    = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
+    = stylesheet_link_tag    "application", media: "all"
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Cabin:400,700,400italic"
-    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = javascript_include_tag "application"
     = csrf_meta_tags
   - body_class = Array(yield :tahi_body_class)
   - body_class << 'matte' if params[:controller] == 'papers'
   %body{class: body_class.join(' ')}
     #spinner{style: 'display: none;'}
-    #overlay
-    #nav-bar-container
-      %nav#nav-bar
-        %header
-          = link_to root_path do
-            %strong Tahi
-            Dashboard
-        %section
-          %ul
-            - if current_user
-              - if current_user.admin?
-                %li.nav-bar-item= active_link_to 'Flow Manager', flow_manager_path
-                %li.nav-bar-item= active_link_to 'Admin', rails_admin_path
-              %li.nav-bar-text= link_to 'Sign out', destroy_user_session_path, method: :delete
-              %li.nav-bar-text Welcome back, #{current_user.username}
 
-    = yield :control_bar
-
+    #ember-app
     #tahi-container{class: yield(:tahi_container_class)}
       - if flash.present?
         %p.notice= notice
@@ -36,4 +20,9 @@
 
 - if current_user
   :javascript
-    window.Tahi.currentUser = {id: #{current_user.id}, fullName: "#{current_user.full_name}", imageUrl: "#{current_user.image_url}"};
+    window.Tahi.currentUser = {id: #{current_user.id},
+    admin: #{current_user.admin},
+    test: true,
+    username: "#{current_user.username}",
+    fullName: "#{current_user.full_name}",
+    imageUrl: "#{current_user.image_url}"};

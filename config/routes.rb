@@ -2,6 +2,18 @@ Tahi::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   devise_for :users
+  devise_scope :user do
+    get "users/sign_out" => "devise/sessions#destroy"
+  end
+
+  get '/papers/:id/manage' => 'ember#index'
+
+  resources :journals, only: [:index]
+
+  get '/flow_manager' => 'ember#index'
+
+  # give me a better name
+  resources :flows, only: [:index, :destroy, :create]
 
   namespace :api do
     resources :papers
@@ -27,13 +39,23 @@ Tahi::Application.routes.draw do
     end
   end
 
-  resource :phases, only: [:create, :update, :destroy]
+  resources :comments, only: :create
+
+  resources :message_tasks, only: [:create] do
+    member do
+      patch :update_participants
+    end
+  end
+
+  resources :tasks, only: [:update, :create, :show, :destroy]
+
+  resources :phases, only: [:create, :update, :destroy]
+
+  resources :declarations, only: [:update]
 
   get 'users/chosen_options', to: 'user_info#thumbnails', defaults: {format: 'json'}
-
-  resource :flow_manager, only: :show
+  get 'users/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 
   resource :user_settings, only: :update
-
-  root 'dashboards#index'
+  root 'ember#index'
 end

@@ -1,0 +1,17 @@
+<div class="form-group">
+  {{input id="task-title-field" value=model.title placeholder="Type a short card title here"}}
+</div>
+
+<div class="form-group">
+  <label for="task_assignee">Assign this task to:</label>
+  {{chosen content=model.paper.assignees
+     optionLabelPath="content.fullName"
+     optionValuePath="content"
+     class="select-assignee"
+     value=model.assignee
+     data-placeholder="Assign this task to"}}
+</div>
+
+<div class="form-group">
+  {{textarea id="task_body" value=model.body placeholder="Provide some details here"}}
+</div>

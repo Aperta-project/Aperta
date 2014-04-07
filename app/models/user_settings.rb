@@ -1,4 +1,12 @@
 class UserSettings < ActiveRecord::Base
   belongs_to :user
-  serialize :flows, Array
+  has_many :flows
+
+  after_create :add_flows
+
+  def add_flows
+    [Flow.templates.values].each do |attrs|
+      flows.create! attrs
+    end
+  end
 end

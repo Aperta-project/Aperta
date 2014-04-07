@@ -1,0 +1,58 @@
+<div class="control-bar">
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      <li id="control-bar-paper-journal-logo">
+        {{#if journal.logoUrl}}
+          <img src="{{unbound journal.logoUrl}}">
+        {{else}}
+          <div class="paper-journal">{{unbound journal.name}}</div>
+        {{/if}}
+      </li>
+      <li id="control-bar-paper-short-title">
+        <h2 class="tasks-paper-title">{{shortTitle}}</h2>
+      </li>
+    </ul>
+    <ul>
+      <li>{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
+    </ul>
+  </div>
+</div>
+
+<div id="tahi-container" class="with-control-bar">
+  <main>
+    <article>
+      <div id="toolbar"></div>
+      <div>
+        <div class="title">
+          {{content-editable tagName="h2"
+                             id="paper-title"
+                             placeholder="Type your manuscript title here"
+                             value=title
+                             preventEnterKey="true"}}
+        </div>
+
+        <div id="paper-authors" class="editable">
+          {{authorNames}}
+        </div>
+
+        <div id="paper-abstract" contenteditable="true"
+            placeholder="Type your abstract here">
+          {{abstract}}
+        </div>
+        <div id="paper-body" class="editable" contenteditable="true"
+            placeholder="Type the body of your manuscript here">
+          {{body}}
+        </div>
+      </div>
+    </article>
+    <aside>
+      <div>
+        {{each assignedTasks itemViewClass="ETahi.CardView"}}
+        {{each authorTasks   itemViewClass="ETahi.CardView"}}
+        <hr>
+        <a id="submit-paper" class="primary-button wide-button" href="#" {{action "confirmSubmitPaper"}}>Submit</a>
+        <a class="primary-button wide-button" href="#" {{action "savePaper"}}>Save</a>
+      </div>
+    </aside>
+  </main>
+</div>

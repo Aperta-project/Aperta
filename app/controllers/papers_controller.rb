@@ -1,11 +1,22 @@
 class PapersController < ApplicationController
   before_filter :authenticate_user!
 
+  layout 'ember'
+
   def show
-    @paper = PaperPolicy.new(params[:id], current_user).paper
-    raise ActiveRecord::RecordNotFound unless @paper
-    redirect_to edit_paper_path(@paper) unless @paper.submitted?
-    @tasks = TaskPolicy.new(@paper, current_user).tasks
+    respond_to do |format|
+      @paper = PaperPolicy.new(params[:id], current_user).paper
+      raise ActiveRecord::RecordNotFound unless @paper
+
+      format.html do
+        redirect_to edit_paper_path(@paper) unless @paper.submitted?
+        @tasks = TaskPolicy.new(@paper, current_user).tasks
+      end
+
+      format.json do
+        render json: @paper
+      end
+    end
   end
 
   def new
@@ -13,13 +24,8 @@ class PapersController < ApplicationController
   end
 
   def create
-    @paper = current_user.papers.new(paper_params)
-
-    if @paper.save
-      redirect_to edit_paper_path @paper
-    else
-      render :new
-    end
+    @paper = current_user.papers.create!(paper_params)
+    render json: @paper
   end
 
   def edit
@@ -30,13 +36,14 @@ class PapersController < ApplicationController
 
   def update
     @paper = Paper.find(params[:id])
-    params[:paper][:authors] = JSON.parse params[:paper][:authors] if params[:paper].has_key? :authors
-
     if @paper.update paper_params
-      respond_to do |f|
-        f.html { redirect_to root_path }
-        f.json { head :no_content }
-      end
+      PaperRole.where(user_id: paper_params[:reviewer_ids]).update_all reviewer: true
+      head 200
+    else
+      # Ember doesn't re-render the paper if there is an error.
+      # e.g. Fails to update on adding new authors, but new authors stay in
+      # memory client side even though they aren't persisted in the DB.
+      render status: 500
     end
   end
 
@@ -45,7 +52,7 @@ class PapersController < ApplicationController
 
     manuscript_data = OxgarageParser.parse(params[:upload_file].path)
     @paper.update manuscript_data
-    redirect_to edit_paper_path(@paper)
+    head :no_content
   end
 
   def download
@@ -57,6 +64,18 @@ class PapersController < ApplicationController
   private
 
   def paper_params
-    params.require(:paper).permit(:short_title, :title, :abstract, :body, :paper_type, :submitted, :journal_id, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email])
+    params.require(:paper).permit(
+      :short_title, :title, :abstract,
+      :body, :paper_type, :submitted,
+      :decision, :decision_letter,
+      :journal_id,
+      authors: [:first_name, :last_name, :affiliation, :email],
+      declaration_ids: [],
+      reviewer_ids: [],
+      phase_ids: [],
+      assignee_ids: [],
+      editor_ids: [],
+      figure_ids: []
+    )
   end
 end

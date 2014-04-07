@@ -21,12 +21,12 @@ ManuscriptHeader = React.createClass
       div {id:'control-bar'},
         section {},
           ul {},
-            li {id:'paper-journal'},
+            li {id:'control-bar-paper-journal-logo'},
               if @props.paper.journal_logo_url
                 img {src: @props.paper.journal_logo_url}
               else
                 div {}, @props.paper.journal_name
-            li {id:'paper-short-title'},
+            li {id:'control-bar-paper-short-title'},
               h2 {className:'tasks-paper-title'}, @props.paper.paper_short_title
           ul {},
             li {},
@@ -229,13 +229,13 @@ Tahi.manuscriptManager =
         Tahi.manuscriptManager.ColumnAppender {
           addFunction: @props.addFunction,
           position: @props.position}
-        (div {className: "column-title"},
+        (div {className: "column-header"},
           (h2 {
             onClick: @showButtons
             contentEditable: "true"},
             @props.name)
 
-          (div {className: "column-header-update-buttons"},
+          (div {className: "column-title-update-buttons"},
             button {onClick: @cancelEdit, className: "column-header-update-cancel btn-link"},     "cancel"
             button {onClick: @updateName, className: "column-header-update-save primary-button"}, "Save")
 
@@ -261,10 +261,10 @@ Tahi.manuscriptManager =
       @hideButtons()
 
     hideButtons: ->
-      $(@getDOMNode()).find(".column-title").removeClass('active')
+      $(@getDOMNode()).find(".column-header").removeClass('active')
 
     showButtons: ->
-      $(@getDOMNode()).find(".column-title").addClass('active')
+      $(@getDOMNode()).find(".column-header").addClass('active')
 
     onCompletedChanged: (taskId, completed) ->
       @props.onCompletedChanged(@props.phase_id, taskId, completed)

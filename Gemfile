@@ -32,6 +32,8 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder'
 
+gem 'acts_as_list'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -50,6 +52,10 @@ gem 'unicorn'
 # gem 'debugger', group: [:development, :test]
 #
 gem 'pry-rails'
+
+gem 'ember-rails'
+gem 'ember-source', '1.4.0'
+gem "ember-data-source", "~> 1.0.0.beta.7"
 
 group :development do
   gem 'license_finder'
@@ -78,6 +84,7 @@ end
 gem 'devise'
 
 gem "bootstrap-sass"
+gem 'bourbon'
 
 gem 'rails_12factor', group: [:production, :staging]
 

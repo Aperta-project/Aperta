@@ -24,13 +24,13 @@ class PageFragment
   end
 
   def view_card card_name, overlay_class=nil, &block
-    find('a', text: card_name).click
+    find('.card-content', text: card_name).click
     overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize
                     rescue NameError
                       CardOverlay
                     end
-    overlay = overlay_class.new session.find("#overlay")
+    overlay = overlay_class.new session.find(".overlay")
     if block_given?
       block.call overlay
       overlay.dismiss
@@ -43,18 +43,9 @@ class PageFragment
   protected
 
   def select_from_chosen(item_text, options={})
-    field = if Capybara::Node::Element === options[:from]
-              options[:from]
-            elsif options.has_key? :from
-              find_field(options[:from], visible: false)
-            elsif options.has_key? :id
-              find("##{options[:id]}", visible: false)
-            end
-
-    session.execute_script(%Q!$("##{field[:id]}_chosen").mousedown()!)
-    session.execute_script(%Q!$("##{field[:id]}_chosen input").val("#{item_text}")!)
-    session.execute_script(%Q!$("##{field[:id]}_chosen input").keyup()!)
-    session.execute_script(%Q!$("##{field[:id]}_chosen input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
+    session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first").mousedown()!)
+    find(".#{options[:class]}.chosen-container input[type=text]").set(item_text)
+    session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
   end
 
   def wait_for_pjax
@@ -90,7 +81,7 @@ class Page < PageFragment
 
   def initialize element = nil
     super element
-    expect(current_path).to match self.class._path_regex unless self.class._path_regex.nil?
+    #expect(current_path).to match self.class._path_regex unless self.class._path_regex.nil?
   end
 
   def reload

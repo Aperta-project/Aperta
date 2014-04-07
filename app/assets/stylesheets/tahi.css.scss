@@ -1,14 +1,31 @@
-@import 'variables';
-@import 'bootstrap';
+html, body { height: 100%; }
 
 html {
   overflow: -moz-scrollbars-vertical;
   -webkit-font-smoothing: antialiased;
-  overflow-y: scroll;
+  overflow-y: auto;
+}
+
+body { background: transparent; } // override bootstrap
+
+.matte { background-color: $tahi-matte; }
+.full-height { height: 100%; }
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 6px;
+  height: 10px;
+  padding-left: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  width: 4px !important;
+  min-height: 40px;
 }
 
 a, a:hover, button, button:hover, .glyphicon, .glyphicon:hover {
-  @include transition(all 0.2s ease-in-out);
+  @include transition(all 0.1s ease-in-out);
 }
 
 a {
@@ -20,30 +37,23 @@ a {
   }
 }
 
-.card { cursor: pointer; }
-
-hr {
-  border-top: 1px solid #d6d6d6;
-}
-
-body.matte {
-  background-color: $tahi-matte;
-}
+hr { border-top: 1px solid #d6d6d6; }
 
 body, h1, h2, h3, h4, h5, h6 {
   font-family: $tahi-font-family;
 }
 
-textarea {
-  resize: none;
-}
+textarea { resize: none; }
 
 #tahi-container {
   max-width: 1120px;
   margin: 0 auto;
+  padding-top: $tahi-nav-bar-height;
 
-  &.full-width {
-    max-width: none;
+  &.full-width { max-width: none; }
+
+  &.with-control-bar {
+    padding-top: $tahi-nav-bar-height + $tahi-control-bar-height;
   }
 
   > main {
@@ -59,20 +69,12 @@ textarea {
   z-index: 0 !important;
 }
 
-.fixed {
-  position: fixed;
-}
-
 .backdrop {
   padding-top: 50px;
 
-  img {
-    max-width: 500px;
-  }
+  img { max-width: 500px; }
 
-  h2, p {
-    color: $tahi-backdrop;
-  }
+  h2, p { color: $tahi-backdrop; }
 
   h2 {
     font-weight: bold;
@@ -85,10 +87,6 @@ textarea {
   }
 }
 
-.bring-front {
-  z-index: 2;
-}
-
 .small_text {
   font-weight: bold;
   text-transform: uppercase;
@@ -99,39 +97,6 @@ textarea {
   margin-bottom: 36px
 }
 
-.primary-button {
-  @extend .btn, .btn-primary;
-  -webkit-font-smoothing: antialiased;
-  text-transform: uppercase;
-  border: none;
-  &:hover {
-    background-color: $btn-primary-bg-hover;
-  }
-
-  &.wide-button {
-    padding-left: 25px;
-    padding-right: 25px;
-  }
-
-  &.message {
-    background: $tahi-message;
-  }
-}
-
-.secondary-button {
-  @extend .btn, .btn-default;
-  color: $tahi-primary;
-  border-color: $tahi-primary;
-  text-transform: uppercase;
-  background: white;
-
-  &:hover {
-    background-color: $tahi-secondary;
-    border-color: $tahi-primary-hover;
-    color: $tahi-primary-hover;
-  }
-}
-
 .progress {
   @extend .progress-striped, .active;
 }
@@ -140,9 +105,8 @@ textarea {
   @include progress-bar-variant($tahi-tertiary);
 }
 
-.noscroll {
-  overflow: hidden;
-}
+// For HTML tag when overlays are being displayed
+.noscroll { overflow: hidden; }
 
 .warning {
   font-size: 14px;
@@ -158,83 +122,29 @@ textarea {
   }
 }
 
-.card-container {
-  position: relative;
-}
+.clear-before-and-after {
+  &:before {
+    content: ' ';
+    display: table;
+  }
 
-.card-container {
-  &:hover .remove-card {
-    display: inline;
-  }
-  .remove-card {
-    position: absolute;
-    display: none;
-    top: 5px;
-    right: 10px;
-    font-size: 14px;
-    color: #FFFFFF;
-  }
-  .tooltip {
-    position: fixed;
+  &:after {
+    clear: both;
+    content: ' ';
+    display: table;
   }
 }
 
-.card {
-  background-color: $tahi-secondary;
-  color: $tahi-primary-hover;
-  width: 220px;
-  font-size: 20px;
-  padding: 10px 15px;
-  display: block;
-  position: relative;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  word-wrap: break-word;
-
-  &:hover {
-    background-color: $btn-primary-bg;
-    color: white;
-    text-decoration: none;
-  }
-  &.message {
-    background-color: $tahi-message-light;
-    color: #3f1587;
-    &:hover {
-      background-color: $tahi-message;
-      color: white;
-      text-decoration: none;
-    }
-  }
-
-  span.completed-glyph {
-    display: none;
-  }
-
-  &.completed {
-    background: $tahi-tertiary;
-    color: $tahi-tertiary - #666;
-  }
-
-  &.completed:hover {
-    background: $tahi-tertiary - #333;
-    color: white;
-  }
-
-  &.completed span.completed-glyph {
-    display: inline;
-    margin-right: 5px;
-    color: $tahi-primary;
-  }
-
-  &.completed:hover span.glyphicon {
-    color: white;
-  }
+.participants {
+  padding: 10px;
+  width: 700px;
+  background: #f3f3f3;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  list-style: none;
 }
 
-.pointer {
-  cursor: pointer;
-}
-
-.drop-column {
-  opacity: 0.5;
+.participant {
+  display: inline-block;
+  margin-right: 10px;
 }

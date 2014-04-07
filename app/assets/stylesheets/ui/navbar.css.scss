@@ -1,0 +1,77 @@
+$nav-bar-background-color: black;
+$nav-bar-color: white;
+$nav-bar-hover-color: $tahi-primary-hover;
+$nav-bar-active-color: $tahi-primary;
+
+.nav-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  width: 100%;
+  height: $tahi-nav-bar-height;
+  line-height: $tahi-nav-bar-height;
+  background: $nav-bar-background-color;
+  z-index: 2;
+}
+
+.nav-bar nav {
+  min-width: 960px;
+  max-width: 1120px;
+  margin: 0 auto;
+  background: $nav-bar-background-color;
+}
+
+.nav-bar-home {
+  color: $nav-bar-color;
+  text-transform: uppercase;
+  padding: 8px 0;
+  font-size: 18px;
+  line-height: 20px;
+
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+.nav-bar-links {
+  float: right;
+  list-style-type: none;
+  color: $nav-bar-color;
+}
+
+.nav-bar-text,
+.nav-bar-item {
+  float: left;
+  display: block;
+  font-size: 14px;
+
+  a {
+    display: inline-block;
+    color: $nav-bar-color;
+    padding: 0 20px;
+  }
+}
+
+.nav-bar-item a {
+  text-decoration: none;
+
+  &:hover  { background: $nav-bar-hover-color; }
+  &.active { background: $nav-bar-active-color; }
+}
+
+.nav-bar-text a {
+  color: $nav-bar-color;
+
+  &:hover {
+    text-decoration: underline;
+    background-color: transparent;
+  }
+}
+
+.nav-bar-welcome {
+  padding-right: 20px;
+  padding-left: 20px;
+}

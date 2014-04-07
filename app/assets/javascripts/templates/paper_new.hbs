@@ -1,0 +1,19 @@
+<div id="tahi-container">
+  <h1>Give your submission a short title</h1>
+
+  <div class="form-group">
+    {{input type="text" value=shortTitle class="form-control" id="paper-short-title"}}
+  </div>
+
+  <div class="form-group">
+    <label for="paper-journal-name">Journal</label>
+    {{view Ember.Select
+       content=model
+       value=journal
+       id="paper-journal-name"
+       optionValuePath="content"
+       optionLabelPath="content.name"}}
+  </div>
+
+  <button type="submit" class="primary-button wide-button" {{action 'createNewPaper'}}>Create</button>
+</div>

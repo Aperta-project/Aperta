@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Account creation" do
+feature "Account creation", js: true do
   scenario "User can create an account" do
     sign_up_page = SignUpPage.visit
     dashboard_page = sign_up_page.sign_up_as username: 'albert',
@@ -11,11 +11,11 @@ feature "Account creation" do
       affiliation: 'Universität Zürich'
 
     expect(page.current_path).to eq(root_path)
-    expect(dashboard_page.header).to have_content 'Welcome to TAHI, Albert.'
+    expect(dashboard_page.header.text).to eq "Welcome, Albert Einstein"
   end
 end
 
-feature "Signing in" do
+feature "Signing in", js: true do
   scenario "User can sign in to & out of the site using their email address" do
     user = User.create! username: 'albert',
       first_name: 'Albert',

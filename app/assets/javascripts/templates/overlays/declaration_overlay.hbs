@@ -1,0 +1,17 @@
+<h1>Enter Declarations</h1>
+
+<form>
+  <div class="form-group">
+    <fieldset>
+    {{#each declaration in declarations}}
+      <div class="declaration">
+        <label>{{declaration.question}}</label>
+        {{view ETahi.TextArea value=declaration.answer
+          model=declaration
+          class='form-control'
+          rows='6'}}
+      </div>
+    {{/each}}
+    </fieldset>
+  </div>
+</form>

@@ -7,7 +7,7 @@ class FlowManagerPage < Page
 
   class PaperProfile < PageFragment
     def title
-      find('h4').text
+      find('.paper-profile-title').text
     end
 
     def view
@@ -40,8 +40,8 @@ class FlowManagerPage < Page
   end
 
   def add_column title
-    find('a', text: "ADD NEW COLUMN").click
-    all('a').detect { |button| button.text == title }.click
+    find('.add-flow-column-button').click
+    find('.overlay a', text: title).click
   end
 
   def column title

@@ -1,3 +1,4 @@
+%main
 - content_for :control_bar do
   #control-bar-container
     #control-bar
@@ -36,27 +37,6 @@
 
   %aside
     %div
-      - author_tasks = Task.where(role: 'author', phase: @paper.phases.where(name: 'Submission Data').first)
-      - assigned_tasks = @tasks - author_tasks
-      - unless assigned_tasks.empty?
-        %ul.assigned-tasks.cards
-          %ul.cards
-            - assigned_tasks.each do |task|
-              %li= card task
-
-      - task = author_tasks.detect { |t| t.title == 'Upload Manuscript' }
-      = card task
-
-      - task = author_tasks.detect { |t| t.title == 'Add Authors' }
-      = card task
-
-      - task = author_tasks.detect { |t| t.title == 'Upload Figures' }
-      = card task
-
-      - task = author_tasks.detect { |t| t.title == 'Enter Declarations' }
-      = card task
-
-      %hr
       = link_to 'Submit', new_paper_submission_path(@paper), class: 'primary-button wide-button'
       = link_to 'Save', '#', class: 'primary-button wide-button', onclick: "Tahi.papers.savePaper('#{paper_path(@paper, format: :json)}'); return false;"
 

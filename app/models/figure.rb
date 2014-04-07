@@ -3,10 +3,20 @@ class Figure < ActiveRecord::Base
 
   mount_uploader :attachment, AttachmentUploader
 
+  def filename
+    self[:attachment]
+  end
+
+  def alt
+    filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize
+  end
+
+  def src
+    attachment.url
+  end
+
   def access_details
-    filename = self[:attachment]
-    alt = filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize
-    { filename: filename, alt: alt, id: id, src: attachment.url }
+    { filename: filename, alt: alt, id: id, src: src }
   end
 
 end

@@ -1,0 +1,119 @@
+/*
+  .paper-profile
+    .paper-profile-title
+    .card.flow-card
+*/
+
+.paper-profile {
+  width: 219px;
+  margin-bottom: 10px;
+  border: 1px solid $tahi-tertiary;
+}
+
+.paper-profile-title {
+  display: block;
+  margin: 10px;
+  color: black;
+  font-family: $tahi-article-font-family;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.flow-card { margin-bottom: 0; }
+.flow-card .card-content {
+  width: auto;
+  border-radius: 0;
+  border-bottom: 1px solid white;
+  background-color: rgb(194,232,188);
+
+  &.card-message { background-color: $tahi-message-light; }
+
+  &:hover { background: $tahi-primary; }
+  &:last-of-type { border-bottom: none; }
+}
+
+
+/*
+  .overlay.flow-manager.column.overlay
+    .overlay-container
+      .modal-heading
+        h2
+        .overlay-close-button
+      .modal-buttons
+*/
+
+.flow-manager-column-overlay .overlay-container {
+  width: 700px;
+  height: 500px;
+  margin-top: 100px;
+  padding: 0;
+  background: #ececec;
+}
+
+.modal-heading {
+  position: relative;
+  padding: 16px;
+  background: white;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 20px;
+    color: #666;
+  }
+}
+
+.modal-buttons {
+  margin: 40px auto 0;
+  width: 460px;
+
+  li { margin-bottom: 15px; }
+
+  a {
+    display: block;
+    height: 80px;
+    padding-top: 18px;
+    font-size: 30px;
+    color: #444;
+    text-transform: none;
+    border: 1px solid #d0d0d0;
+
+    &:hover { background: #e4f4e1; }
+  }
+}
+
+
+// in 'choose flow manager column' overlay
+.flow-overlay-close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40px;
+  color: gray;
+  font-size: 24px;
+  line-height: 58px;
+}
+
+// control bar:
+.add-column-button {
+  padding-top: 6px;
+  padding-bottom: 8px;
+  padding-left: 11px;
+  font-weight: normal;
+  background: white;
+
+  &:hover {
+    border-color: $tahi-primary-hover;
+    color: $tahi-primary-hover;
+    background-color: $tahi-secondary;
+
+    .glyphicon { color: $tahi-primary-hover; }
+  }
+
+  .glyphicon {
+    margin-left: 4px;
+    font-size: 20px;
+    vertical-align: -4px;
+  }
+}

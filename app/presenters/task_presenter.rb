@@ -15,7 +15,7 @@ class TaskPresenter
       'paperTitle' => task.paper.display_title,
       'paperPath' => paper_path(task.paper),
       'paperId' => task.paper.to_param,
-      'taskPath' => paper_task_path(task.paper, task),
+      'taskPath' => task_path(task),
       'taskTitle' => task.title,
       'taskBody' => task.body,
       'taskCompleted' => task.completed?,

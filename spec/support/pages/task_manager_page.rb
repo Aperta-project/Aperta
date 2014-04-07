@@ -1,28 +1,29 @@
 class TaskManagerPage < Page
   class PhaseFragment < PageFragment
     def new_card(**params)
-      click_on 'Add New Card'
-      overlay = session.find('#overlay')
+      find('a', text: 'ADD NEW CARD').click
+      overlay = session.find('.overlay-container')
       overlay.click_button 'New Task Card'
-      overlay.fill_in 'task_title', with: params[:title]
-      overlay.fill_in 'task_body', with: params[:body]
-      select_from_chosen params[:assignee].full_name, from: overlay.find('#task_assignee_id', visible: false)
-      overlay.click_on 'Create card'
+      adhoc_card = NewAdhocCardOverlay.new overlay
+      adhoc_card.title = params[:title]
+      adhoc_card.body = params[:body]
+      adhoc_card.assignee = params[:assignee].full_name
+      adhoc_card.create
     end
 
     def remove_card(card_name)
-      container = find('.card-container', text: card_name)
+      container = find('.card', text: card_name)
       container.hover
       container.find('.remove-card').click
     end
 
     def card_count
-      all('.card-container').count
+      all('.card').count
     end
 
     def new_message_card(**params)
-      click_on 'Add New Card'
-      overlay = session.find('#overlay')
+      find('a', text: 'ADD NEW CARD').click
+      overlay = session.find('.overlay')
       overlay.click_button 'New Message Card'
       message_card = NewMessageCardOverlay.new overlay
       expect(message_card.participants).to include(params[:creator].full_name)

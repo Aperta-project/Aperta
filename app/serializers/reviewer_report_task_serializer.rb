@@ -1,0 +1,2 @@
+class ReviewerReportTaskSerializer < TaskSerializer
+end

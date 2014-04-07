@@ -2,7 +2,8 @@ class PhasesController < ApplicationController
   before_filter :authenticate_user!
 
   def create
-    @phase = Phase.insert_at_position(new_phase_params)
+    @paper = Paper.find(params[:phase][:paper_id])
+    @phase = @paper.task_manager.phases.create!(new_phase_params)
     respond_to do |format|
       format.json { render :show }
     end
@@ -28,7 +29,7 @@ class PhasesController < ApplicationController
   private
 
   def new_phase_params
-    params.require(:phase).permit(:task_manager_id, :name, :position)
+    params.require(:phase).permit(:name, :position)
   end
 
   def update_phase_params

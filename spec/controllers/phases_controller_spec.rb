@@ -20,6 +20,7 @@ describe PhasesController do
     it_behaves_like "an unauthenticated json request"
 
     it_behaves_like "a controller enforcing strong parameters" do
+      before { pending }
       let(:model_identifier) { :phase }
       let(:expected_params) { permitted_params }
     end

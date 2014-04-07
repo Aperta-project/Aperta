@@ -65,7 +65,8 @@ describe FiguresController do
               { filename: 'yeti.tiff',
                 alt: 'Yeti',
                 src: figure.attachment.url,
-                id: figure.id }
+                id: figure.id,
+                paper_id: paper.id }
             ]
           }.with_indifferent_access
         )

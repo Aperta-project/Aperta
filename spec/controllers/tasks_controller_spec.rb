@@ -20,20 +20,6 @@ describe TasksController do
 
   before { sign_in user }
 
-  describe "GET 'index'" do
-    let(:paper) { Paper.create! short_title: "abcd", journal: Journal.create! }
-
-    subject(:do_request) { get 'index', id: paper.to_param }
-
-    it_behaves_like "when the user is not signed in"
-    it_behaves_like "when the user is not an admin"
-
-    it "renders index template" do
-      do_request
-      expect(response).to render_template(:index)
-    end
-  end
-
   describe "POST 'create'" do
     let!(:paper) { Paper.create! short_title: 'some-paper', journal: Journal.create!, user: user }
 
@@ -45,7 +31,7 @@ describe TasksController do
                                                         body: 'Seriously, do it!' } }
     end
 
-    it_behaves_like "when the user is not signed in"
+    it_behaves_like "an unauthenticated json request"
 
     it_behaves_like "a controller enforcing strong parameters" do
       let(:params_id) { task.to_param }
@@ -65,10 +51,10 @@ describe TasksController do
     let(:task) { Task.create! title: "sample task", role: "sample role", phase: paper.task_manager.phases.first }
 
     subject(:do_request) do
-      patch :update, { paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }
+      patch :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }
     end
 
-    it_behaves_like "when the user is not signed in"
+    it_behaves_like "an unauthenticated json request"
 
     it_behaves_like "a controller enforcing strong parameters" do
       let(:params_id) { task.to_param }
@@ -98,7 +84,7 @@ describe TasksController do
 
       it "renders the task id and completed status as JSON" do
         do_request
-        expect(JSON.parse(response.body)).to eq({ id: task.id, completed: true }.with_indifferent_access)
+        expect(response.status).to eq(204)
       end
     end
 
@@ -157,25 +143,20 @@ describe TasksController do
     before { sign_in user }
 
     describe "POST 'create'" do
-
+      # For now a user has to be an admin to create a new message task
+      let(:super_admin) { true }
       let(:paper) { FactoryGirl.create :paper, user: user }
       let(:msg_subject) { "A Subject" }
       subject(:do_request) do
         post :create, format: 'json',
           paper_id: paper.id,
-          phase_id: paper.phases.first.id,
-          task: {message_subject: msg_subject,
+          task: {title: msg_subject,
+                 type: 'MessageTask',
+                 phase_id: paper.phases.first.id,
                  message_body: "My body",
                  participant_ids: [user.id]}
       end
 
-      def verify_response(response)
-          json = JSON.parse(response.body)
-          expect(json["cardName"]).to eq("message")
-          expect(json["messageSubject"]).to eq(msg_subject)
-          expect(json["taskTitle"]).to eq(msg_subject)
-          expect(json["comments"].count).to eq(1)
-      end
       context "with a paper that the user administers through a journal" do
         let!(:journal_role) do
           paper.journal.journal_roles.create!(user: user, admin: true)
@@ -183,8 +164,7 @@ describe TasksController do
 
         it "renders the new message as json." do
           do_request
-          expect(response).to be_success
-          verify_response(response)
+          expect(response.status).to eq(201)
         end
 
         context "with no subject" do
@@ -199,9 +179,10 @@ describe TasksController do
 
       context "when the user doesn't administer the paper directly" do
         context "the user isn't a super admin" do
-          it "renders 404" do
+          let(:super_admin) { false }
+          it "renders a 302" do
             do_request
-            expect(response.status).to eq(404)
+            expect(response.status).to eq(302)
           end
         end
 
@@ -209,8 +190,7 @@ describe TasksController do
           let(:super_admin) { true }
           it "renders the new message" do
             do_request
-            expect(response).to be_success
-            verify_response(response)
+            expect(response.status).to eq(201)
           end
         end
       end

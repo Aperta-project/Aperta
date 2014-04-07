@@ -1,5 +1,4 @@
 class MessageTask < Task
-  title 'Message'
   role 'user'
 
   PERMITTED_ATTRIBUTES = [:body, {participant_ids: []}]

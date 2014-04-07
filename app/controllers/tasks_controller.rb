@@ -26,7 +26,7 @@ class TasksController < ApplicationController
 
     if task && task.authorize_update!(tp, current_user)
       task.update tp
-      render json: task
+      respond_with task
     else
       head :forbidden
     end

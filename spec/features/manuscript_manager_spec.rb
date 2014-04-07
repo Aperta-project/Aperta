@@ -23,7 +23,7 @@ feature "Manuscript Manager", js: true do
       admin: true
   end
 
-  let(:paper) { author.papers.create! short_title: 'foobar', title: 'Foo bar', submitted: true, journal: Journal.create! }
+  let(:paper) { admin.papers.create! short_title: 'foobar', title: 'Foo bar', submitted: true, journal: Journal.create! }
 
   before do
     JournalRole.create! admin: true, journal: paper.journal, user: admin

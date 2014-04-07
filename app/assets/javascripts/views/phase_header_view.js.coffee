@@ -7,18 +7,17 @@ ETahi.PhaseHeaderView = Em.View.extend
   focusIn: (e)->
     @set('active', true)
 
-  keyUp: (e)->
-    Tahi.utils.resizeColumnHeaders()
+  phaseNameDidChange: (->
+    # race condition with binding and cancel action? :(
+    Em.run.later (->
+      Tahi.utils.resizeColumnHeaders()
+    ), 30
+  ).observes('phase.name')
 
   actions:
     save: ->
       @set('active', false)
-      name = @$('h2').get(0).innerText
-      phase = @get('phase')
-
-      if phase.get('name') != name
-        phase.set('name', name)
-        phase.save()
+      @get('phase').save()
 
     cancel: ->
       @set('active', false)

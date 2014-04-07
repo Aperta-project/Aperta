@@ -4,11 +4,16 @@ $nav-bar-hover-color: $tahi-primary-hover;
 $nav-bar-active-color: $tahi-primary;
 
 .nav-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
   overflow: hidden;
   width: 100%;
-  height: 36px;
-  line-height: 36px;
+  height: $tahi-nav-bar-height;
+  line-height: $tahi-nav-bar-height;
   background: $nav-bar-background-color;
+  z-index: 2;
 }
 
 .nav-bar nav {
@@ -41,13 +46,13 @@ $nav-bar-active-color: $tahi-primary;
 .nav-bar-item {
   float: left;
   display: block;
-}
+  font-size: 14px;
 
-.nav-bar-text a,
-.nav-bar-item a {
-  display: inline-block;
-  color: $nav-bar-color;
-  padding: 0 20px;
+  a {
+    display: inline-block;
+    color: $nav-bar-color;
+    padding: 0 20px;
+  }
 }
 
 .nav-bar-item a {
@@ -67,5 +72,6 @@ $nav-bar-active-color: $tahi-primary;
 }
 
 .nav-bar-welcome {
+  padding-right: 20px;
   padding-left: 20px;
 }

@@ -2,7 +2,7 @@
   <div class="control-bar-inner-wrapper">
     <ul>
       <li>
-        <a class="add-column-button secondary-button" {{action 'chooseNewFlowMangerColumn'}}>
+        <a class="add-flow-column-button secondary-button" {{action 'chooseNewFlowMangerColumn'}}>
           Add New Column <span class="glyphicon glyphicon-plus"></span>
         </a>
       </li>
@@ -15,7 +15,7 @@
     <li class="column">
       <div class="column-header">
         <h2 class="column-title">{{flow.title}}</h2>
-        <div class="remove-column glyphicon glyphicon-remove" {{action 'removeFlow'}}></div>
+        <div class="remove-column glyphicon glyphicon-remove" {{action 'removeFlow' flow}}></div>
       </div>
 
       <div class="column-content">

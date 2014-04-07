@@ -8,7 +8,7 @@ ETahi.ChosenView = Ember.Select.extend
 
   change: ->
     action = @get('changeAction')
-    @get('controller').send(action) if action
+    @get('controller').send(action, @get('value')) if action
 
   setup: (->
     options =

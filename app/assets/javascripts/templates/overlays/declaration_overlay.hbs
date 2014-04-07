@@ -4,8 +4,8 @@
   <div class="form-group">
     <fieldset>
     {{#each declaration in declarations}}
-      <label>{{declaration.question}}</label>
-      <div>
+      <div class="declaration">
+        <label>{{declaration.question}}</label>
         {{view ETahi.TextArea value=declaration.answer
           model=declaration
           class='form-control'

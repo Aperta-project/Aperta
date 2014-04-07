@@ -2,11 +2,12 @@ class NewMessageCardOverlay < CardOverlay
 
 
   def participants=(users)
-    users.map(&:full_name).each { |name| select_from_chosen name, from: 'Participants' }
+    users.map(&:full_name).each { |name| select_from_chosen name, class: 'participant-select' }
   end
 
   def participants
-    all('#participants .user-thumbnail').map { |e| e["data-user-name"] }
+    expect(page).to have_css '.participants'
+    all('.participant .user-thumbnail').map { |e| e["alt"] }
   end
 
   def subject
@@ -14,19 +15,19 @@ class NewMessageCardOverlay < CardOverlay
   end
 
   def subject=(new_text)
-    fill_in 'message-subject', with: new_text
+    fill_in 'task_title', with: new_text
   end
 
   def body
-    find('.comment-body').text
+    find('#task_body').text
   end
 
   def body=(new_text)
-    fill_in 'message-body', with: new_text
+    fill_in 'task_body', with: new_text
   end
 
   def create
-    click_button 'Create Card'
+    find('a', text: 'CREATE CARD').click
   end
 
 end

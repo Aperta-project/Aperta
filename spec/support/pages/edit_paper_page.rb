@@ -18,6 +18,11 @@ class EditPaperPage < Page
 
   path :edit_paper
 
+  def initialize element = nil
+    expect(page).to have_css('h2#paper-title')
+    super
+  end
+
   def visit_dashboard
     click_link 'Dashboard'
     DashboardPage.new

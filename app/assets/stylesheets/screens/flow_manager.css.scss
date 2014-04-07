@@ -8,7 +8,6 @@
   width: 219px;
   margin-bottom: 10px;
   border: 1px solid $tahi-tertiary;
-  border-bottom: 2px solid $tahi-tertiary;
 }
 
 .paper-profile-title {
@@ -20,25 +19,26 @@
   line-height: 17px;
 }
 
+.flow-card { margin-bottom: 0; }
 .flow-card .card-content {
   width: auto;
-  margin-bottom: 0;
   border-radius: 0;
   border-bottom: 1px solid white;
   background-color: rgb(194,232,188);
 
   &.card-message { background-color: $tahi-message-light; }
 
-  &:last-child { border-bottom: none; }
   &:hover { background: $tahi-primary; }
+  &:last-of-type { border-bottom: none; }
 }
 
 
 /*
   .overlay.flow-manager.column.overlay
     .overlay-container
-      .overlay-close-button
       .modal-heading
+        h2
+        .overlay-close-button
       .modal-buttons
 */
 
@@ -51,12 +51,16 @@
 }
 
 .modal-heading {
-  margin-top: 0;
-  margin-bottom: 0;
+  position: relative;
   padding: 16px;
-  font-size: 20px;
   background: white;
-  color: #666;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 20px;
+    color: #666;
+  }
 }
 
 .modal-buttons {
@@ -80,13 +84,15 @@
 
 
 // in 'choose flow manager column' overlay
-.overlay-close-button {
-  float: right;
-  position: relative;
-  top: 13px;
-  right: 16px;
+.flow-overlay-close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40px;
   color: gray;
   font-size: 24px;
+  line-height: 58px;
 }
 
 // control bar:

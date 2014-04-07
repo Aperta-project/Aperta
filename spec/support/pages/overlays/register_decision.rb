@@ -5,7 +5,7 @@ class RegisterDecisionOverlay < CardOverlay
 
   def decision_letter=(body)
     fill_in 'task_paper_decision_letter', with: body
-    find('label[for=task_assignee_id]').click
+    find('label[for=assignee]').click
     wait_for_pjax
   end
 
@@ -14,6 +14,6 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def accepted?
-    find('input[type="radio"]:checked')[:value] == 'Accepted'
+    find('#accepted_option:checked')
   end
 end

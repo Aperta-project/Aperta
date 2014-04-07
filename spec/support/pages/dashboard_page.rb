@@ -7,7 +7,7 @@ class DashboardPage < Page
   end
 
   def header
-    page.find '#tahi-container header'
+    page.find '.dashboard-header'
   end
 
   def sign_out
@@ -27,7 +27,7 @@ class DashboardPage < Page
   end
 
   def submitted_papers
-    within("ul.submitted") do
+    within(".dashboard-submitted-papers") do
       page.all('li').map &:text
     end
   end
@@ -38,8 +38,8 @@ class DashboardPage < Page
   end
 
   def view_paper short_title
-    within('.submitted') { click_link short_title }
-    PaperPage.new
+    within('.dashboard-submitted-papers') { click_link short_title }
+    EditPaperPage.new
   end
 
   def view_flow_manager
@@ -48,8 +48,8 @@ class DashboardPage < Page
   end
 
   def view_submitted_paper short_title
-    within('.all_submitted') { click_link short_title }
-    PaperPage.new
+    within('.dashboard-submitted-papers') { click_link short_title }
+    EditPaperPage.new
   end
 
   def visit_admin

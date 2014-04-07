@@ -1,6 +1,9 @@
 Tahi::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
   devise_for :users
+  devise_scope :user do
+    get "users/sign_out" => "devise/sessions#destroy"
+  end
 
   get '/papers/:id/manage' => 'ember#index'
 
@@ -9,7 +12,7 @@ Tahi::Application.routes.draw do
   get '/flow_manager' => 'ember#index'
 
   # give me a better name
-  resources :flows, only: :index
+  resources :flows, only: [:index, :destroy]
 
   resources :papers, only: [:new, :create, :show, :edit, :update] do
     resources :figures, only: :create
@@ -48,5 +51,5 @@ Tahi::Application.routes.draw do
   get 'users/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 
   resource :user_settings, only: :update
-  root 'dashboards#index'
+  root 'ember#index'
 end

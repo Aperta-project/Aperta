@@ -1,6 +1,7 @@
 ETahi.PaperEditRoute = Ember.Route.extend
   model: ->
     @modelFor('paper')
+
   actions:
     viewCard: (task) ->
       paper = @modelFor('paper')

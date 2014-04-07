@@ -1,33 +1,34 @@
-<div id="tahi-container" class="full-width">
-  <div class="control-bar">
-    <div class="control-bar-inner-wrapper">
-      <ul>
-        <li id="control-bar-paper-journal-logo">
-          {{#if paper.logo}}
-            <img src="">
-          {{else}}
-            <div>Logo</div>
-          {{/if}}
-        </li>
-        <li id="control-bar-paper-short-title">
-          <h2 class="tasks-paper-title">{{shortTitle}}</h2>
-        </li>
-      </ul>
-      <ul>
-        <li>{{link-to 'Manuscript Manager' 'paper.manage' model class="control-bar-link"}}</li>
-      </ul>
-    </div>
+<div class="control-bar">
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      <li id="control-bar-paper-journal-logo">
+        {{#if paper.logo}}
+          <img src="">
+        {{else}}
+          <div>Logo</div>
+        {{/if}}
+      </li>
+      <li id="control-bar-paper-short-title">
+        <h2 class="tasks-paper-title">{{shortTitle}}</h2>
+      </li>
+    </ul>
+    <ul>
+      <li>{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
+    </ul>
   </div>
+</div>
 
+<div id="tahi-container" class="with-control-bar">
   <main>
     <article>
       <div id="toolbar"></div>
       <div>
         <div class="title">
-          <h2 id="paper-title" contenteditable="true"
-              placeholder="Type your manuscript title here">
-            {{title}}
-          </h2>
+          {{content-editable tagName="h2"
+                             id="paper-title"
+                             placeholder="Type your manuscript title here"
+                             value=title
+                             preventEnterKey="true"}}
         </div>
 
         <div id="paper-authors" class="editable">
@@ -46,13 +47,11 @@
     </article>
     <aside>
       <div>
-        <ul class="assigned-tasks cards">
-          {{each assignedTasks itemViewClass="ETahi.CardView"}}
-        </ul>
-
-        <ul class="author-tasks cards">
-          {{each authorTasks itemViewClass="ETahi.CardView"}}
-        </ul>
+        {{each assignedTasks itemViewClass="ETahi.CardView"}}
+        {{each authorTasks   itemViewClass="ETahi.CardView"}}
+        <hr>
+        <a id="submit-paper" class="primary-button wide-button" href="#" {{action "confirmSubmitPaper"}}>Submit</a>
+        <a class="primary-button wide-button" href="#" {{action "savePaper"}}>Save</a>
       </div>
     </aside>
   </main>

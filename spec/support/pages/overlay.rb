@@ -23,6 +23,7 @@ class CardOverlay < Page
 
   def mark_as_complete
     check "Completed"
+    check "Completed" unless completed?
   end
 
   def completed?

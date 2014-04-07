@@ -16,6 +16,7 @@
 .card {
   position: relative;
   display: block;
+  margin-bottom: 8px;
 
   .tooltip { position: fixed; }
 }
@@ -23,51 +24,47 @@
 .remove-card {
   position: absolute;
   top: 5px;
-  right: 10px;
+  right: 5px;
   display: none;
   font-size: 14px;
   color: #FFFFFF;
   cursor: pointer;
 }
 
-.card:hover .remove-card {
-  display: inline;
-}
+.card:hover {
+  .remove-card { display: inline; }
 
-.card-content {
-  position: relative;
-  width: 220px;
-  display: block;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  padding: 10px 15px;
-  color: $tahi-primary-hover;
-  font-size: 20px;
-  word-wrap: break-word;
-  background-color: $tahi-secondary;
-  cursor: pointer;
-
-  &:hover {
+  .card-content {
     color: white;
     text-decoration: none;
     background-color: $btn-primary-bg;
   }
+}
 
-  .completed-glyph {
-    display: none;
-  }
+.card-content {
+  position: relative;
+  display: block;
+  border-radius: 5px;
+  padding: 10px 15px;
+  color: $tahi-primary-hover;
+  font-size: 18px;
+  word-wrap: break-word;
+  background-color: $tahi-secondary;
+  cursor: pointer;
+
+  .completed-glyph { display: none; }
 }
 
 // .card modifier:
 .card-message .card-content {
   color: #3f1587;
   background-color: $tahi-message-light;
+}
 
-  &:hover {
-    color: white;
-    text-decoration: none;
-    background-color: $tahi-message;
-  }
+.card-message:hover .card-content {
+  color: white;
+  text-decoration: none;
+  background-color: $tahi-message;
 }
 
 // .card modifier:
@@ -75,16 +72,16 @@
   color: $tahi-tertiary - #666;
   background: $tahi-tertiary;
 
-  &:hover {
-    color: white;
-    background: $tahi-tertiary - #333;
-
-    .glyphicon { color: white; }
-  }
-
   .completed-glyph {
     display: inline;
     margin-right: 5px;
     color: $tahi-primary;
   }
+}
+
+.card-completed:hover .card-content {
+  color: white;
+  background: $tahi-tertiary - #333;
+
+  .glyphicon { color: white; }
 }

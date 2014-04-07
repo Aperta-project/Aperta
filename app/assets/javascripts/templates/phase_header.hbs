@@ -1,4 +1,8 @@
-<h2 class="column-title" contenteditable="true">{{view.phase.name}}</h2>
+{{content-editable tagName="h2"
+                   class="column-title"
+                   value=view.phase.name
+                   plaintext="true"
+                   preventEnterKey="true"}}
 
 <div class="column-title-update-buttons">
   <button class="column-header-update-cancel btn-link" {{action "cancel" target="view"}}>cancel</button>

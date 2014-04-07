@@ -1,32 +1,27 @@
-<div id="tahi-container" class="full-width">
-  <div class="control-bar">
-    <div class="control-bar-inner-wrapper">
-      <ul>
+<div class="control-bar">
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      {{#if journal.logoUrl}}
         <li id="control-bar-paper-journal-logo">
-          {{#if logo}}
-            <img src="">
-          {{else}}
-            <div>Logo</div>
-          {{/if}}
+          <img src="{{unbound journal.logoUrl}}">
         </li>
-        <li id="control-bar-paper-short-title">
-          <h2 class="tasks-paper-title">{{shortTitle}}</h2>
-        </li>
-      </ul>
-      <ul>
-        <li>{{link-to 'Manuscript' 'paper.edit' model}}</li>
-      </ul>
-    </div>
+      {{/if}}
+      <li id="control-bar-paper-short-title">
+        <h2 class="tasks-paper-title">{{shortTitle}}</h2>
+      </li>
+    </ul>
+    <ul>
+      <li>{{link-to "Manuscript" "paper.edit" model class="control-bar-link"}}</li>
+    </ul>
   </div>
+</div>
 
 
-  <div id="manuscript-manager">
-    {{title}}
-    <div class="full-height">
-      <div class="columns">
-        {{add-column position=-1 action="addPhase" bonusClass='first-add-column'}}
-        {{each sortedPhases itemViewClass='ETahi.ManuscriptManagerColumnView'}}
-      </div>
+<div id="manuscript-manager">
+  <div class="full-height">
+    <div class="columns">
+      {{add-column position=-1 action="addPhase" bonusClass="first-add-column"}}
+      {{each sortedPhases itemViewClass="ETahi.ManuscriptManagerColumnView"}}
     </div>
   </div>
 </div>

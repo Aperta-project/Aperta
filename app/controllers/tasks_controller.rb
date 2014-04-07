@@ -3,6 +3,8 @@ class TasksController < ApplicationController
   before_action :verify_admin!, except: [:show, :update, :update_participants]
   respond_to :json
 
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+
   def index
     @paper = Paper.includes(:journal, :phases => :tasks).find(params[:id])
     respond_to do |format|
@@ -19,8 +21,11 @@ class TasksController < ApplicationController
            else
              current_user.tasks.where(id: params[:id]).first
            end
-    if task
-      task.update task_params(task)
+
+    tp = task_params(task)
+
+    if task && task.authorize_update!(tp, current_user)
+      task.update tp
       render json: task
     else
       head :forbidden
@@ -67,5 +72,9 @@ class TasksController < ApplicationController
     task_type = params[:task][:type]
     sanitized_params = task_params task_type.constantize.new
     TaskFactory.build_task task_type, sanitized_params, current_user
+  end
+
+  def render_404
+    head 404
   end
 end

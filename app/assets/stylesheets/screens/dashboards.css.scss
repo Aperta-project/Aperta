@@ -1,17 +1,23 @@
-h1.large {
-  font-size: 48px;
+.dashboard-header {
   margin: 40px 0;
+  border-bottom: 1px solid #d6d6d6;
+  padding-bottom: 40px;
+  font-size: 48px;
 }
 
-#my-submissions {
+#dashboard-my-submissions {
   @extend .col-xs-5;
+  padding: 0;
 }
-#my-tasks {
+
+#dashboard-my-tasks {
   @extend .col-md-offset-2;
   @extend .col-xs-5;
+
+  .card { width: 220px; }
 }
 
-.info-text {
+.dashboard-info-text {
   font-size: 24px;
   color: gray;
   font-style: italic;
@@ -19,16 +25,14 @@ h1.large {
   padding-bottom: 10px;
 }
 
-ul.submitted {
+.dashboard-submitted-papers {
   list-style-type: none;
   padding: 0;
 
-  li {
-    margin-bottom: 10px;
-  }
+  li { margin-bottom: 10px; }
 }
 
-.paper-title a {
+.dashboard-paper-title a {
   color: $tahi-primary;
   font-size: 18px;
   line-height: 1;

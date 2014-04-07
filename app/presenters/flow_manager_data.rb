@@ -27,12 +27,8 @@ class FlowManagerData
   end
 
   def flows
-    @flows ||= [
-      Flow.where(title: 'Up for grabs').first,
-      Flow.where(title: 'My tasks').first,
-      Flow.where(title: 'My papers').first,
-      Flow.where(title: 'Done').first
-    ].map {|f| f.papers = flow_map[f.title]; f }
+    @flows ||= @user.user_settings.flows
+      .map {|f| f.papers = flow_map[f.title]; f }
   end
 
   private

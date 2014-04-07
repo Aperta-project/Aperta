@@ -50,4 +50,20 @@
     LOG_RSVP_ERRORS                : development,
     LOG_VIEW_RENDERING_PERFORMANCE : development
   });
+
+  ETahi.ApplicationAdapter = DS.ActiveModelAdapter.extend({
+    ajaxError: function(jqXHR) {
+      var error = this._super(jqXHR);
+      if (jqXHR && jqXHR.status === 401) {
+        window.location.href = '/users/sign_in'
+      }
+      return error;
+    }
+  });
+
+  $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+    if (jqXHR.status === 401) {
+      document.location.href = '/users/sign_in';
+    }
+  });
 })(window);

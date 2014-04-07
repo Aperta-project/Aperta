@@ -9,6 +9,9 @@ ETahi.FlowManagerRoute = Ember.Route.extend
         outlet: 'overlay'
         controller: 'chooseNewFlowManagerColumnOverlay')
 
+    removeFlow: (flow) ->
+      flow.destroyRecord()
+
     viewCard: (paper, task) ->
       currentType = task.get('type')
       currentType = 'AdHocTask' if currentType == 'Task'

@@ -51,12 +51,10 @@ feature 'Message Cards', js: true do
         participants: participants,
         creator: admin
 
-      #reload the page for now
-      task_manager_page.reload
       needs_editor_phase = task_manager_page.phase 'Assign Editor'
-      needs_editor_phase.view_card subject_text, NewMessageCardOverlay do |card|
+      needs_editor_phase.view_card subject_text, MessageCardOverlay do |card|
         expect(card.subject).to eq subject_text
-        expect(card.body).to eq body_text
+        expect(card.comments.first).to have_text body_text
         expect(card.participants).to match_array [albert.full_name, admin.full_name]
       end
     end
@@ -74,7 +72,7 @@ feature 'Message Cards', js: true do
       let(:participants) { [admin] }
       scenario "the user can add a commment" do
         task_manager_page = TaskManagerPage.visit paper
-        task_manager_page.view_card message.message_subject, MessageCardOverlay do |card|
+        task_manager_page.view_card message.title, MessageCardOverlay do |card|
           expect(card).to have_css('.message-overlay')
           card.post_message 'Hello'
           expect(card.participants).to match_array(participants.map(&:full_name))
@@ -84,13 +82,13 @@ feature 'Message Cards', js: true do
 
       scenario "the user can add any other user as a participant" do
         task_manager_page = TaskManagerPage.visit paper
-        task_manager_page.view_card message.message_subject, MessageCardOverlay do |card|
+        task_manager_page.view_card message.title, MessageCardOverlay do |card|
           expect(card).to have_css('.message-overlay')
           card.add_participants [albert]
           expect(card.participants).to include(albert.full_name)
         end
         task_manager_page = TaskManagerPage.visit paper
-        task_manager_page.view_card message.message_subject, MessageCardOverlay do |card|
+        task_manager_page.view_card message.title, MessageCardOverlay do |card|
           expect(card.participants).to include(albert.full_name)
         end
       end
@@ -101,7 +99,7 @@ feature 'Message Cards', js: true do
       let(:participants) { [albert] }
       scenario "the user becomes a participant after commenting" do
         task_manager_page = TaskManagerPage.visit paper
-        task_manager_page.view_card message.message_subject, MessageCardOverlay do |card|
+        task_manager_page.view_card message.title, MessageCardOverlay do |card|
           expect(card).to have_css('.message-overlay')
           card.post_message 'Hello'
           expect(card.participants).to include(admin.full_name, albert.full_name)
@@ -110,7 +108,4 @@ feature 'Message Cards', js: true do
       end
     end
   end
-
-  describe "viewing a message card on the dashboard"
-
 end

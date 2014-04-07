@@ -15,6 +15,8 @@ ETahi.Task = DS.Model.extend
   isMessage: Ember.computed.equal('type', 'MessageTask')
   paper: Ember.computed.alias('phase.paper')
 
+  relationshipsToSerialize: []
+
 ETahi.PaperReviewerTask = ETahi.Task.extend
   reviewer: DS.belongsTo('user')
 
@@ -38,7 +40,8 @@ ETahi.FigureTask = ETahi.Task.extend
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
   comments: DS.hasMany('comment')
-  paper: Ember.computed.alias('phase.paper')
+
+  relationshipsToSerialize: ['participants']
 
 ETahi.RegisterDecisionTask = ETahi.Task.extend
   decisionLetters: a('string')

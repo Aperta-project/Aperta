@@ -1,6 +1,8 @@
 a = DS.attr
 ETahi.User = DS.Model.extend
   admin: a('boolean')
+  affiliation: a('string')
+  email: a('string')
   fullName: a('string')
   imageUrl: a('string')
   username: a('string')

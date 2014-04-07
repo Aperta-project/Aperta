@@ -1,10 +1,15 @@
 .control-bar {
   overflow: hidden;
-  height: 50px;
+  position: fixed;
+  top: $tahi-nav-bar-height;
+  right: 0;
+  left: 0;
+  height: $tahi-control-bar-height;
   border-bottom: 1px solid #939393;
   padding: 7px 0 5px 0;
   color: #000;
   background: #e1e1e1;
+  z-index: 2;
 }
 
 .control-bar-inner-wrapper {
@@ -17,7 +22,8 @@
 .control-bar ul {
   list-style-type: none;
   float: left;
-  margin-bottom: 0;
+  margin-bottom: 0; // from bootstrap?
+  padding-left: 0;  // from bootstrap?
   @extend .clear-before-and-after;
 
   li {

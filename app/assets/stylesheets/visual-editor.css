@@ -12,11 +12,11 @@
 /* Textures */
 
 .oo-ui-texture-pending {
-  background-image: /* @embed */ url(/assets/textures/pending.gif);
+  background-image: /* @embed */ url(/assets/visual-editor/textures/pending.gif);
 }
 
 .oo-ui-texture-transparency {
-  background-image: /* @embed */ url(/assets/textures/transparency.png);
+  background-image: /* @embed */ url(/assets/visual-editor/textures/transparency.png);
 }
 
 /* RTL Definitions */
@@ -569,7 +569,7 @@
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-active .oo-ui-tool-link .oo-ui-iconedElement-icon {
-  background-image: /* @embed */ url(/assets/icons/check.png);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/check.png);
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link {
@@ -1124,109 +1124,109 @@
 /* Icons */
 
 .oo-ui-icon-add-item {
-  background-image: /* @embed */ url(/assets/icons/add-item.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/add-item.svg);
 }
 
 .oo-ui-icon-advanced {
-  background-image: /* @embed */ url(/assets/icons/advanced.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/advanced.svg);
 }
 
 .oo-ui-icon-alert {
-  background-image: /* @embed */ url(/assets/icons/alert.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/alert.svg);
 }
 
 .oo-ui-icon-check {
-  background-image: /* @embed */ url(/assets/icons/check.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/check.svg);
 }
 
 .oo-ui-icon-clear {
-  background-image: /* @embed */ url(/assets/icons/clear.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/clear.svg);
 }
 
 .oo-ui-icon-close {
-  background-image: /* @embed */ url(/assets/icons/close.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/close.svg);
 }
 
 .oo-ui-icon-code {
-  background-image: /* @embed */ url(/assets/icons/code.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/code.svg);
 }
 
 .oo-ui-icon-collapse {
-  background-image: /* @embed */ url(/assets/icons/collapse.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/collapse.svg);
 }
 
 .oo-ui-icon-comment {
-  background-image: /* @embed */ url(/assets/icons/comment.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/comment.svg);
 }
 
 .oo-ui-icon-expand {
-  background-image: /* @embed */ url(/assets/icons/expand.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/expand.svg);
 }
 
 .oo-ui-icon-help {
-  background-image: /* @embed */ url(/assets/icons/help.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/help.svg);
 }
 
 .oo-ui-icon-link {
-  background-image: /* @embed */ url(/assets/icons/link.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/link.svg);
 }
 
 .oo-ui-icon-menu {
-  background-image: /* @embed */ url(/assets/icons/menu.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/menu.svg);
 }
 
 .oo-ui-icon-next {
-  background-image: /* @embed */ url(/assets/icons/move-ltr.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/move-ltr.svg);
 }
 
 .oo-ui-icon-picture {
-  background-image: /* @embed */ url(/assets/icons/picture.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/picture.svg);
 }
 
 .oo-ui-icon-previous {
-  background-image: /* @embed */ url(/assets/icons/move-rtl.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/move-rtl.svg);
 }
 
 .oo-ui-icon-redo {
-  background-image: /* @embed */ url(/assets/icons/arched-arrow-ltr.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/arched-arrow-ltr.svg);
 }
 
 .oo-ui-icon-remove {
-  background-image: /* @embed */ url(/assets/icons/remove.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/remove.svg);
 }
 
 .oo-ui-icon-search {
-  background-image: /* @embed */ url(/assets/icons/search.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/search.svg);
 }
 
 .oo-ui-icon-settings {
-  background-image: /* @embed */ url(/assets/icons/settings.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/settings.svg);
 }
 
 .oo-ui-icon-tag {
-  background-image: /* @embed */ url(/assets/icons/tag.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/tag.svg);
 }
 
 .oo-ui-icon-undo {
-  background-image: /* @embed */ url(/assets/icons/arched-arrow-rtl.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/arched-arrow-rtl.svg);
 }
 
 .oo-ui-icon-window {
-  background-image: /* @embed */ url(/assets/icons/window.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/icons/window.svg);
 }
 
 /* Indicators */
 
 .oo-ui-indicator-down {
-  background-image: /* @embed */ url(/assets/indicators/down.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/indicators/down.svg);
 }
 
 .oo-ui-indicator-required {
-  background-image: /* @embed */ url(/assets/indicators/required.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/indicators/required.svg);
 }
 
 .oo-ui-indicator-up {
-  background-image: /* @embed */ url(/assets/indicators/up.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/indicators/up.svg);
 }
 .oo-ui-dialog {
   background-color: #fff;
@@ -1297,7 +1297,7 @@
 .oo-ui-toolbar-shadow {
   bottom: -9px;
   height: 9px;
-  background-image: /* @embed */ url(/assets/toolbar-shadow.png);
+  background-image: /* @embed */ url(/assets/visual-editor/toolbar-shadow.png);
   opacity: 0.125;
   -webkit-transition: opacity 500ms ease-in-out;
      -moz-transition: opacity 500ms ease-in-out;
@@ -1745,7 +1745,7 @@
   width: 15px;
   height: 8px;
   margin-left: -7px;
-  background-image: /* @embed */ url(/assets/tail.svg);
+  background-image: /* @embed */ url(/assets/visual-editor/tail.svg);
 }
 
 .oo-ui-popupWidget-transitioning .oo-ui-popupWidget-popup {
@@ -2742,7 +2742,7 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 .ve-specialchar-spinner {
 	/* There might be a better place for a spinner? */
 	/* @embed */
-	background-image: url(/assets/spinner.gif);
+	background-image: url(/assets/visual-editor/spinner.gif);
 	width: 31px;
 	height: 31px;
 	margin-left: auto;
@@ -2874,271 +2874,271 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 
 .oo-ui-icon-align-center {
 	/* @embed */
-	background-image: url(/assets/icons/align-center.svg);
+	background-image: url(/assets/visual-editor/icons/align-center.svg);
 }
 
 .oo-ui-icon-align-float-left {
 	/* @embed */
-	background-image: url(/assets/icons/align-float-left.svg);
+	background-image: url(/assets/visual-editor/icons/align-float-left.svg);
 }
 
 .oo-ui-icon-align-float-right {
 	/* @embed */
-	background-image: url(/assets/icons/align-float-right.svg);
+	background-image: url(/assets/visual-editor/icons/align-float-right.svg);
 }
 
 .oo-ui-icon-bold-a {
 	/* @embed */
-	background-image: url(/assets/icons/bold-a.svg);
+	background-image: url(/assets/visual-editor/icons/bold-a.svg);
 }
 
 .oo-ui-icon-bold-b {
 	/* @embed */
-	background-image: url(/assets/icons/bold-b.svg);
+	background-image: url(/assets/visual-editor/icons/bold-b.svg);
 }
 
 .oo-ui-icon-bold-arab-ain {
 	/* @embed */
-	background-image: url(/assets/icons/bold-arab-ain.svg);
+	background-image: url(/assets/visual-editor/icons/bold-arab-ain.svg);
 }
 
 .oo-ui-icon-bold-arab-dad {
 	/* @embed */
-	background-image: url(/assets/icons/bold-arab-dad.svg);
+	background-image: url(/assets/visual-editor/icons/bold-arab-dad.svg);
 }
 
 .oo-ui-icon-bold-cyrl-be {
 	/* @embed */
-	background-image: url(/assets/icons/bold-cyrl-be.svg);
+	background-image: url(/assets/visual-editor/icons/bold-cyrl-be.svg);
 }
 
 .oo-ui-icon-bold-cyrl-te {
 	/* @embed */
-	background-image: url(/assets/icons/bold-cyrl-te.svg);
+	background-image: url(/assets/visual-editor/icons/bold-cyrl-te.svg);
 }
 
 .oo-ui-icon-bold-cyrl-zhe {
 	/* @embed */
-	background-image: url(/assets/icons/bold-cyrl-zhe.svg);
+	background-image: url(/assets/visual-editor/icons/bold-cyrl-zhe.svg);
 }
 
 .oo-ui-icon-bold-f {
 	/* @embed */
-	background-image: url(/assets/icons/bold-f.svg);
+	background-image: url(/assets/visual-editor/icons/bold-f.svg);
 }
 
 .oo-ui-icon-bold-g {
 	/* @embed */
-	background-image: url(/assets/icons/bold-g.svg);
+	background-image: url(/assets/visual-editor/icons/bold-g.svg);
 }
 
 .oo-ui-icon-bold-geor-man {
 	/* @embed */
-	background-image: url(/assets/icons/bold-geor-man.svg);
+	background-image: url(/assets/visual-editor/icons/bold-geor-man.svg);
 }
 
 .oo-ui-icon-bold-l {
 	/* @embed */
-	background-image: url(/assets/icons/bold-l.svg);
+	background-image: url(/assets/visual-editor/icons/bold-l.svg);
 }
 
 .oo-ui-icon-bold-n {
 	/* @embed */
-	background-image: url(/assets/icons/bold-n.svg);
+	background-image: url(/assets/visual-editor/icons/bold-n.svg);
 }
 
 .oo-ui-icon-bold-v {
 	/* @embed */
-	background-image: url(/assets/icons/bold-v.svg);
+	background-image: url(/assets/visual-editor/icons/bold-v.svg);
 }
 
 .oo-ui-icon-bullet-list {
 	/* @embed */
-	background-image: url(/assets/icons/bullet-list-ltr.svg);
+	background-image: url(/assets/visual-editor/icons/bullet-list-ltr.svg);
 }
 
 /* @noflip */
 .ve-ui-dir-block-rtl .oo-ui-icon-bullet-list {
 	/* @embed */
-	background-image: url(/assets/icons/bullet-list-rtl.svg);
+	background-image: url(/assets/visual-editor/icons/bullet-list-rtl.svg);
 }
 
 /* @noflip */
 .ve-ui-dir-block-ltr .oo-ui-icon-bullet-list {
 	/* @embed */
-	background-image: url(/assets/icons/bullet-list-ltr.svg);
+	background-image: url(/assets/visual-editor/icons/bullet-list-ltr.svg);
 }
 
 .oo-ui-icon-indent-list {
 	/* @embed */
-	background-image: url(/assets/icons/indent-list-ltr.svg);
+	background-image: url(/assets/visual-editor/icons/indent-list-ltr.svg);
 }
 
 /* @noflip */
 .ve-ui-dir-block-rtl .oo-ui-icon-indent-list {
 	/* @embed */
-	background-image: url(/assets/icons/indent-list-rtl.svg);
+	background-image: url(/assets/visual-editor/icons/indent-list-rtl.svg);
 }
 
 /* @noflip */
 .ve-ui-dir-block-ltr .oo-ui-icon-indent-list {
 	/* @embed */
-	background-image: url(/assets/icons/indent-list-ltr.svg);
+	background-image: url(/assets/visual-editor/icons/indent-list-ltr.svg);
 }
 
 .oo-ui-icon-italic-a {
 	/* @embed */
-	background-image: url(/assets/icons/italic-a.svg);
+	background-image: url(/assets/visual-editor/icons/italic-a.svg);
 }
 
 .oo-ui-icon-italic-c {
 	/* @embed */
-	background-image: url(/assets/icons/italic-c.svg);
+	background-image: url(/assets/visual-editor/icons/italic-c.svg);
 }
 
 .oo-ui-icon-italic-d {
 	/* @embed */
-	background-image: url(/assets/icons/italic-d.svg);
+	background-image: url(/assets/visual-editor/icons/italic-d.svg);
 }
 
 .oo-ui-icon-italic-e {
 	/* @embed */
-	background-image: url(/assets/icons/italic-e.svg);
+	background-image: url(/assets/visual-editor/icons/italic-e.svg);
 }
 
 .oo-ui-icon-italic-s {
 	/* @embed */
-	background-image: url(/assets/icons/italic-s.svg);
+	background-image: url(/assets/visual-editor/icons/italic-s.svg);
 }
 
 .oo-ui-icon-italic-arab-meem {
 	/* @embed */
-	background-image: url(/assets/icons/italic-arab-meem.svg);
+	background-image: url(/assets/visual-editor/icons/italic-arab-meem.svg);
 }
 
 .oo-ui-icon-italic-arab-keheh-jeem {
 	/* @embed */
-	background-image: url(/assets/icons/italic-arab-keheh-jeem.svg);
+	background-image: url(/assets/visual-editor/icons/italic-arab-keheh-jeem.svg);
 }
 
 .oo-ui-icon-italic-geor-kan {
 	/* @embed */
-	background-image: url(/assets/icons/italic-geor-kan.svg);
+	background-image: url(/assets/visual-editor/icons/italic-geor-kan.svg);
 }
 
 .oo-ui-icon-italic-i {
 	/* @embed */
-	background-image: url(/assets/icons/italic-i.svg);
+	background-image: url(/assets/visual-editor/icons/italic-i.svg);
 }
 
 .oo-ui-icon-italic-k,
 .oo-ui-icon-italic-cyrl-ka {
 	/* Latin K and Cyrillic Ka use same glyph */
 	/* @embed */
-	background-image: url(/assets/icons/italic-k.svg);
+	background-image: url(/assets/visual-editor/icons/italic-k.svg);
 }
 
 .oo-ui-icon-language {
 	/* @embed */
-	background-image: url(/assets/icons/language.svg); }
+	background-image: url(/assets/visual-editor/icons/language.svg); }
 
 .oo-ui-icon-number-list {
 	/* @embed */
-	background-image: url(/assets/icons/number-list-ltr.svg);
+	background-image: url(/assets/visual-editor/icons/number-list-ltr.svg);
 }
 
 /* @noflip */
 .ve-ui-dir-block-rtl .oo-ui-icon-number-list {
 	/* @embed */
-	background-image: url(/assets/icons/number-list-rtl.svg);
+	background-image: url(/assets/visual-editor/icons/number-list-rtl.svg);
 }
 
 /* @noflip */
 .ve-ui-dir-block-ltr .oo-ui-icon-number-list {
 	/* @embed */
-	background-image: url(/assets/icons/number-list-ltr.svg);
+	background-image: url(/assets/visual-editor/icons/number-list-ltr.svg);
 }
 
 .oo-ui-icon-outdent-list {
 	/* @embed */
-	background-image: url(/assets/icons/outdent-list-ltr.svg);
+	background-image: url(/assets/visual-editor/icons/outdent-list-ltr.svg);
 }
 
 /* @noflip */
 .ve-ui-dir-block-rtl .oo-ui-icon-outdent-list {
 	/* @embed */
-	background-image: url(/assets/icons/outdent-list-rtl.svg);
+	background-image: url(/assets/visual-editor/icons/outdent-list-rtl.svg);
 }
 
 /* @noflip */
 .ve-ui-dir-block-ltr .oo-ui-icon-outdent-list {
 	/* @embed */
-	background-image: url(/assets/icons/outdent-list-ltr.svg);
+	background-image: url(/assets/visual-editor/icons/outdent-list-ltr.svg);
 }
 
 .oo-ui-icon-special-character {
 	/* @embed */
-	background-image: url(/assets/icons/special-character.svg);
+	background-image: url(/assets/visual-editor/icons/special-character.svg);
 }
 
 .oo-ui-icon-strikethrough-a {
 	/* @embed */
-	background-image: url(/assets/icons/strikethrough-a.svg);
+	background-image: url(/assets/visual-editor/icons/strikethrough-a.svg);
 }
 
 .oo-ui-icon-strikethrough-s {
 	/* @embed */
-	background-image: url(/assets/icons/strikethrough-s.svg);
+	background-image: url(/assets/visual-editor/icons/strikethrough-s.svg);
 }
 
 .oo-ui-icon-strikethrough-y {
 	/* @embed */
-	background-image: url(/assets/icons/strikethrough-y.svg);
+	background-image: url(/assets/visual-editor/icons/strikethrough-y.svg);
 }
 
 .oo-ui-icon-subscript {
 	/* @embed */
-	background-image: url(/assets/icons/subscript.svg);
+	background-image: url(/assets/visual-editor/icons/subscript.svg);
 }
 
 .oo-ui-icon-superscript {
 	/* @embed */
-	background-image: url(/assets/icons/superscript.svg);
+	background-image: url(/assets/visual-editor/icons/superscript.svg);
 }
 
 /* @noflip */
 .oo-ui-icon-text-dir-ltr {
 	/* @embed */
-	background-image: url(/assets/icons/text-dir-ltr.svg);
+	background-image: url(/assets/visual-editor/icons/text-dir-ltr.svg);
 }
 
 /* @noflip */
 .oo-ui-icon-text-dir-rtl {
 	/* @embed */
-	background-image: url(/assets/icons/text-dir-rtl.svg);
+	background-image: url(/assets/visual-editor/icons/text-dir-rtl.svg);
 }
 
 .oo-ui-icon-text-style {
 	/* @embed */
-	background-image: url(/assets/icons/text-style.svg);
+	background-image: url(/assets/visual-editor/icons/text-style.svg);
 }
 
 .oo-ui-icon-underline-a {
 	/* @embed */
-	background-image: url(/assets/icons/underline-a.svg);
+	background-image: url(/assets/visual-editor/icons/underline-a.svg);
 }
 
 .oo-ui-icon-underline-u {
 	/* @embed */
-	background-image: url(/assets/icons/underline-u.svg);
+	background-image: url(/assets/visual-editor/icons/underline-u.svg);
 }
 
 .ve-ui-icon-resize-nw-se {
-	background-image: url(/assets/resize-nw-se.svg);
+	background-image: url(/assets/visual-editor/resize-nw-se.svg);
 }
 
 .ve-ui-icon-resize-ne-sw {
-	background-image: url(/assets/resize-ne-sw.svg);
+	background-image: url(/assets/visual-editor/resize-ne-sw.svg);
 }
 
 /*!

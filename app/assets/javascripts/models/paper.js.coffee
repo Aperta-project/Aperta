@@ -9,6 +9,7 @@ ETahi.Paper = DS.Model.extend
   reviewers: DS.hasMany('user')
 
   authors: a()
+  body: a('string')
   decision: a('string')
   decisionLetter: a('string')
   shortTitle: a('string')

@@ -4,10 +4,9 @@ moduleForModel 'paper', 'Unit: Paper Model',
   needs: ['model:user', 'model:declaration', 'model:figure', 'model:journal', 'model:phase', 'model:task', 'model:comment']
 
 test 'displayTitle displays short title if title is missing', ->
-  paper = null
   shortTitle = 'test short title'
 
-  Ember.run =>
+  paper = Ember.run =>
     paper = @store().createRecord 'paper',
       title: ''
       shortTitle: shortTitle
@@ -15,39 +14,36 @@ test 'displayTitle displays short title if title is missing', ->
   equal paper.get('displayTitle'), shortTitle
 
 test 'displayTitle displays title if present', ->
-  paper = null
   title = 'Test Title'
 
-  Ember.run =>
-    paper = @store().createRecord 'paper',
+  paper = Ember.run =>
+    @store().createRecord 'paper',
       title: title
       shortTitle: 'test short title'
 
   equal paper.get('displayTitle'), title
 
 test 'allTasks returns all tasks for the paper', ->
-
-  paper = null
-  Ember.run =>
+  task1 = null; task2 = null
+  allTasks = Ember.run =>
     paper = @store().createRecord 'paper',
-      id: 1
       title: 'title'
       shortTitle: 'short title'
-
     phase = @store().createRecord 'phase',
-      id: 1
-      paperId: 1
+      paper: paper
 
     task1 = @store().createRecord 'task',
       title: 'task1'
-      phaseId: 1
+      phase: phase
 
     task2 = @store().createRecord 'task',
       title: 'task2'
-      phaseId: 1
+      phase: phase
 
+    paper.setProperties phase: phase
+    paper.get 'allTasks'
 
-  equal paper.get('allTasks'), ['task1', 'task2']
+  equal allTasks, [task1, task2]
 
 test 'Paper hasMany assignees as User', ->
   relationships = Ember.get ETahi.Paper, 'relationships'

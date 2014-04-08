@@ -43,7 +43,7 @@ test 'allTasks returns all tasks for the paper', ->
     paper.setProperties phase: phase
     paper.get 'allTasks'
 
-  equal allTasks, [task1, task2]
+  deepEqual allTasks.mapBy('title'), [task1.get('title'), task2.get('title')]
 
 test 'Paper hasMany assignees as User', ->
   relationships = Ember.get ETahi.Paper, 'relationships'

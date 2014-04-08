@@ -35,7 +35,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     respond_to do |f|
       f.json { render json: @task }
-      f.html { render 'ember/index' }
+      f.html { render 'ember/index' , layout: 'ember'}
     end
   end
 

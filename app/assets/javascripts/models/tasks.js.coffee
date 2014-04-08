@@ -29,7 +29,7 @@ ETahi.PaperAdminTask = ETahi.Task.extend
   admin: DS.belongsTo('user')
 
 ETahi.AuthorsTask = ETahi.Task.extend
-  authors: Ember.computed.alias('phase.paper.authorsArray')
+  authors: Ember.computed.alias('paper.authorsArray')
 
 ETahi.DeclarationTask = ETahi.Task.extend
   declarations: Ember.computed.alias('paper.declarations')

@@ -51,7 +51,6 @@ Tahi::Application.routes.draw do
 
   resources :declarations, only: [:update]
 
-  get 'users/chosen_options', to: 'user_info#thumbnails', defaults: {format: 'json'}
   get 'users/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 
   resource :user_settings, only: :update

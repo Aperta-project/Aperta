@@ -2,11 +2,6 @@ class UserInfoController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  def thumbnails
-    @users = User.all
-    render "user_info/thumbnails.json.jbuilder"
-  end
-
   def dashboard
     assigned_tasks = current_user.tasks.includes({paper: :message_tasks}, :assignee)
     @tasks = assigned_tasks.group_by { |t| t.paper }.map do |paper, tasks|

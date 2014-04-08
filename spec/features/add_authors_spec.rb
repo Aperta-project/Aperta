@@ -10,6 +10,7 @@ feature "Add contributing authors", js: true do
   end
 
   scenario "Author specifies contributing authors" do
+    pending
     edit_paper = EditPaperPage.visit paper
 
     edit_paper.view_card 'Add Authors' do |overlay|

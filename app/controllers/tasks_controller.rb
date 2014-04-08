@@ -52,13 +52,13 @@ class TasksController < ApplicationController
   private
 
   def task_params(task = nil)
-    attributes = [:assignee_id, :completed, :title, :body, :phase_id, :type]
+    attributes = [:assignee_id, :completed, :title, :body, :phase_id]
     attributes += task.class::PERMITTED_ATTRIBUTES if task
     params.require(:task).permit(*attributes)
   end
 
   def build_task
-    task_type = task_params[:type]
+    task_type = params[:task][:type]
     sanitized_params = task_params task_type.constantize.new
     TaskFactory.build_task task_type, sanitized_params, current_user
   end

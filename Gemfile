@@ -24,13 +24,6 @@ gem 'coffee-rails', '~> 4.0.1'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-gem 'jquery-turbolinks'
-
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder'
 
 gem 'acts_as_list'
 
@@ -71,7 +64,6 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'
-  gem "jasmine", github: 'pivotal/jasmine-gem', ref: 'a0aff0490a45755eadbc918a40cb49c87631cbf2'
 end
 
 group :test do
@@ -97,7 +89,6 @@ gem "fog"
 gem "unf"
 gem 'rails_admin'
 gem "chosen-rails", "~> 1.0.2"
-gem 'react-rails'
 gem 'spinjs-rails'
 
 gem 'newrelic_rpm'

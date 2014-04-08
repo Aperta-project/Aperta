@@ -21,23 +21,23 @@ After
 - require js files on bottom of application.js sprocket
   - `//= require standard_tasks/application`
 - Move model file over
-  - In order for model file to autoload, it must be under a namespaced folder under   
-  - "engines/standard\_tasks/models/standard\_tasks/blah_task.rb"
+  - In order for model file to autoload, it must be under a namespaced folder under
+  - "engines/standard\_tasks/models/standard\_tasks/foo_task.rb"
 
 Changes in root app
 -------------------
 - In `phase.rb`, change the task name for task creation command under #initialize_defaults
-  - Example: changing `BlahTask.new` to `StandardTasks::BlahTask.new`
-- Change corresponding task presenter class names
-  - `StandardTasks::TechCheckTaskPresenter`
+  - Example: changing `FooTask.new` to `StandardTasks::FooTask.new`
+- Change corresponding task serializer class names
+  - `StandardTasks::TechCheckTaskSerializer`
 
 Specs
 ------
 - Make sure to run all specs (root spec folder and engine spec folder)
   - run `rspec .` or `rspec spec engines`
-- Move: model, presenter specs, change class names.
+- Move: model, serializer specs, change class names.
 - Change class names in `phase_spec.rb` in the 'tasks' describe block.
-- Change `card_name` in presenter spec in the let block.
+- Change `card_name` in serializer spec in the let block.
 
 For module testing from within the engine (ignore for now)
 ----------------------------------------------------------

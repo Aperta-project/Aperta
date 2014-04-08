@@ -2,7 +2,6 @@ a = DS.attr
 ETahi.Task = DS.Model.extend
   assignee: DS.belongsTo('user')
   assignees: DS.hasMany('user')
-  comments: DS.hasMany('comment')
   phase: DS.belongsTo('phase')
 
   body: a('string')

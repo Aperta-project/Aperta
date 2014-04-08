@@ -4,7 +4,8 @@ describe PhasesController do
 
   let(:phase_name) { 'Verification' }
   let(:new_position) { 0 }
-  let!(:task_manager) { TaskManager.create! }
+  let(:paper) { FactoryGirl.create(:paper) }
+  let(:task_manager) { paper.task_manager }
   let(:user) { FactoryGirl.create(:user) }
 
   before { sign_in user }
@@ -13,10 +14,17 @@ describe PhasesController do
     subject(:do_request) do
       post :create, format: :json, phase: {task_manager_id: task_manager.id,
                             name: phase_name,
+                            paper_id: paper.id,
                             position: new_position}
     end
 
     it_behaves_like "an unauthenticated json request"
+
+    it "returns new the phase object as json" do
+      do_request
+      json = JSON.parse(response.body)
+      expect(json["phase"]["id"]).to eq(Phase.last.id)
+    end
   end
 
   describe 'DELETE destroy' do
@@ -40,5 +48,10 @@ describe PhasesController do
     end
 
     it_behaves_like "an unauthenticated json request"
+
+    it "should be successful" do
+      do_request
+      expect(response).to be_success
+    end
   end
 end

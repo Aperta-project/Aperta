@@ -5,13 +5,11 @@ describe UserInfoController do
   let(:user) { FactoryGirl.create :user, admin: false }
   before { sign_in user }
 
-  describe "GET 'thumbnails'" do
-    it "returns an array of user info" do
-      get :thumbnails
-      expect(response).to be_success
+  describe "GET 'dashboard'" do
+    it "renders the dashboard info as json" do
+      get :dashboard
       json = JSON.parse(response.body)
-      expect(json['users'].count).to eq(1)
-      expect(json['users'].first).to include('id', 'fullName', 'imageUrl')
+      expect(json.keys).to match_array %w(user submissions task_papers assigned_tasks)
     end
   end
 end

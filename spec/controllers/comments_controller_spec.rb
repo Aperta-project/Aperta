@@ -15,10 +15,9 @@ describe CommentsController do
   describe 'POST create' do
     subject(:do_request) do
       post :create, format: :json,
-        paper_id: paper.id,
-        task_id: message_task.id,
         comment: {commenter_id: user.id,
-                  body: "My comment"}
+                  body: "My comment",
+                  message_task_id: message_task.id}
     end
 
     context "the user can't see the task's paper" do
@@ -32,18 +31,15 @@ describe CommentsController do
     context "the user can see the task's paper" do
       let(:paper_user) { user }
       it "creates a new comment" do
-        pending
         do_request
         expect(Comment.last.body).to eq('My comment')
         expect(Comment.last.commenter_id).to eq(user.id)
       end
 
       it "returns the new comment as json" do
-        pending
         do_request
-        expect(response).to be_success
         json = JSON.parse(response.body)
-        expect(json["comment"].keys).to include("taskId", "commenterId", "body", "createdAt")
+        expect(json["comment"]["id"]).to eq(Comment.last.id)
       end
       it_behaves_like "an unauthenticated json request"
     end

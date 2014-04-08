@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe DeclarationsController do
-  before { pending; sign_in user }
+  let(:user) { FactoryGirl.create :user }
+  before { sign_in user }
 
   let(:declaration) { FactoryGirl.create(:declaration, question: "Who's the best?", answer: "PLOS")}
 

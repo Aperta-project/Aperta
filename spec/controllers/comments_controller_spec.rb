@@ -13,7 +13,6 @@ describe CommentsController do
   before { sign_in user }
 
   describe 'POST create' do
-    let(:permitted_params) { [:commenter_id, :body] }
     subject(:do_request) do
       post :create, format: :json,
         paper_id: paper.id,
@@ -47,13 +46,6 @@ describe CommentsController do
         expect(json["comment"].keys).to include("taskId", "commenterId", "body", "createdAt")
       end
       it_behaves_like "an unauthenticated json request"
-
-      it_behaves_like "a controller enforcing strong parameters" do
-        before { pending }
-        let(:params_task_id) { message_task.to_param }
-        let(:model_identifier) { :comment }
-        let(:expected_params) { permitted_params }
-      end
     end
   end
 end

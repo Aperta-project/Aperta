@@ -55,7 +55,8 @@ ETahi.RegisterDecisionTask = ETahi.Task.extend
     JSON.parse(@get('decisionLetters')).Revise
   ).property 'decisionLetters'
 
+ETahi.ReviewerReportTask = ETahi.Task.extend
+  paperReview: DS.hasOne('paperReview')
 
 ETahi.TechCheckTask = ETahi.Task.extend()
-ETahi.ReviewerReportTask = ETahi.Task.extend()
 ETahi.UploadManuscriptTask = ETahi.Task.extend()

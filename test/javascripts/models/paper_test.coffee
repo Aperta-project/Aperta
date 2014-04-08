@@ -1,13 +1,7 @@
 #= require test_helper
 
 moduleForModel 'paper', 'Unit: Paper Model',
-  needs: ['model:user', 'model:declaration', 'model:figure', 'model:journal', 'model:phase']
-  setup: ->
-    # beforeEach
-    # Ember.run ETahi, ETahi.advanceReadiness
-  teardown: ->
-    # afterEach
-    # ETahi.reset()
+  needs: ['model:user', 'model:declaration', 'model:figure', 'model:journal', 'model:phase', 'model:task', 'model:comment']
 
 test 'displayTitle displays short title if title is missing', ->
   paper = null
@@ -31,6 +25,30 @@ test 'displayTitle displays title if present', ->
 
   equal paper.get('displayTitle'), title
 
+test 'allTasks returns all tasks for the paper', ->
+
+  paper = null
+  Ember.run =>
+    paper = @store().createRecord 'paper',
+      id: 1
+      title: 'title'
+      shortTitle: 'short title'
+
+    phase = @store().createRecord 'phase',
+      id: 1
+      paperId: 1
+
+    task1 = @store().createRecord 'task',
+      title: 'task1'
+      phaseId: 1
+
+    task2 = @store().createRecord 'task',
+      title: 'task2'
+      phaseId: 1
+
+
+  equal paper.get('allTasks'), ['task1', 'task2']
+
 test 'Paper hasMany assignees as User', ->
   relationships = Ember.get ETahi.Paper, 'relationships'
   assigneeRelation = _.detect relationships.get(ETahi.User), (relationship) ->
@@ -40,17 +58,17 @@ test 'Paper hasMany assignees as User', ->
 
 test 'Paper hasMany editors as User', ->
   relationships = Ember.get ETahi.Paper, 'relationships'
-  assigneeRelation = _.detect relationships.get(ETahi.User), (relationship) ->
+  editorsRelation = _.detect relationships.get(ETahi.User), (relationship) ->
     relationship.name == 'editors'
 
-  deepEqual assigneeRelation, { name: "editors", kind: "hasMany" }
+  deepEqual editorsRelation, { name: "editors", kind: "hasMany" }
 
 test 'Paper hasMany reviewers as User', ->
   relationships = Ember.get ETahi.Paper, 'relationships'
-  assigneeRelation = _.detect relationships.get(ETahi.User), (relationship) ->
+  reviewersRelation = _.detect relationships.get(ETahi.User), (relationship) ->
     relationship.name == 'reviewers'
 
-  deepEqual assigneeRelation, { name: "reviewers", kind: "hasMany" }
+  deepEqual reviewersRelation, { name: "reviewers", kind: "hasMany" }
 
 test 'Paper hasMany declarations', ->
   relationships = Ember.get ETahi.Paper, 'relationships'
@@ -67,5 +85,3 @@ test 'Paper hasMany phases', ->
 test 'Paper belongsTo Journal', ->
   relationships = Ember.get ETahi.Paper, 'relationships'
   deepEqual relationships.get(ETahi.Journal)[0], { name: "journal", kind: "belongsTo" }
-
-

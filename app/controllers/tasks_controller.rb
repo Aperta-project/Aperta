@@ -5,16 +5,6 @@ class TasksController < ApplicationController
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
-  def index
-    @paper = Paper.includes(:journal, :phases => :tasks).find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json do
-        @phases = @paper.phases
-      end
-    end
-  end
-
   def update
     task = if current_user.admin?
              Task.where(id: params[:id]).first

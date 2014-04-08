@@ -6,8 +6,6 @@ Tahi::Application.routes.draw do
     get "users/sign_out" => "devise/sessions#destroy"
   end
 
-  get '/papers/:id/manage' => 'ember#index'
-
   resources :journals, only: [:index]
 
   get '/flow_manager' => 'ember#index'
@@ -34,7 +32,7 @@ Tahi::Application.routes.draw do
 
     member do
       patch :upload
-      get :manage, to: 'tasks#index'
+      get :manage, to: 'ember#index'
       get :download
     end
   end

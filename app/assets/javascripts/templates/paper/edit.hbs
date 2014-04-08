@@ -8,11 +8,9 @@
           <div class="paper-journal">{{unbound journal.name}}</div>
         {{/if}}
       </li>
-      <li id="control-bar-paper-short-title">
-        <h2 class="tasks-paper-title">{{shortTitle}}</h2>
-      </li>
     </ul>
     <ul>
+      <li><a href="{{unbound downloadLink}}" class="control-bar-link">Download ePub</a></li>
       <li>{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
     </ul>
   </div>

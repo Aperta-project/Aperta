@@ -9,11 +9,12 @@ $paper-trim-color: $tahi-tertiary;
   min-width: 5px;
   font-size: 18px;
 
+  // TODO: Do we need the h2?
   h2 {
     overflow: hidden;
-    width: 800px;
+    width: 680px;
     font-family: $tahi-article-font-family;
-    line-height: 36px;
+    line-height: 32px;
     white-space: nowrap;
     text-overflow: ellipsis;
 

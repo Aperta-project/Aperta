@@ -1,8 +1,11 @@
 ETahi.PaperEditController = Ember.ObjectController.extend
-
   submissionPhase: ( ->
     @get('phases').findBy('name', 'Submission Data')
   ).property('phases.@each.name')
+
+  downloadLink: ( ->
+    "/papers/#{@get('id')}/download"
+  ).property()
 
   authorTasks: Ember.computed.filterBy('submissionPhase.tasks', 'role', 'author')
 

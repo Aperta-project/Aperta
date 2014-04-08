@@ -1,19 +1,23 @@
 #= require test_helper
 
 emq.globalize()
-ETahi.setupForTesting()
 ETahi.injectTestHelpers()
 ETahi.Resolver = Ember.DefaultResolver.extend namespace: ETahi
-setResolver ETahi.Resolver.create()
+setResolver ETahi.__container__
 
 ETahi.setupForTesting()
 
-moduleForModel 'paper', 'Unit: Paper Model'
-moduleForModel 'user', 'Unit: User Model'
+moduleForModel 'paper', 'Unit: Paper Model',
+  needs: ['model:user', 'model:declaration', 'model:figure', 'model:journal', 'model:phase']
 
 test 'displayTitle displays short title if title is missing', ->
+  debugger
   paper = @subject
     title: ''
     shortTitle: 'test short title'
-  displayTitle = paper.get('displayTitle')
-  equal displayTitle, 'test short title'
+  equal paper.get('displayTitle'), 'test short title'
+
+  paper.setProperties
+    title: 'Hello world'
+
+  equal paper.get('displayTitle'), 'Hello world'

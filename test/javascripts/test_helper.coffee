@@ -27,3 +27,9 @@
 # You can require javascript files here. A good place to start is by requiring your application.js.
 #= require application
 #= require support/ember-qunit
+
+emq.globalize()
+ETahi.injectTestHelpers()
+setResolver ETahi.__container__
+ETahi.setupForTesting()
+

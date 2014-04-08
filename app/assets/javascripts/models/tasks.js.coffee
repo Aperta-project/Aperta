@@ -56,7 +56,7 @@ ETahi.RegisterDecisionTask = ETahi.Task.extend
   ).property 'decisionLetters'
 
 ETahi.ReviewerReportTask = ETahi.Task.extend
-  paperReview: DS.hasOne('paperReview')
+  paperReview: DS.belongsTo('paperReview')
 
 ETahi.TechCheckTask = ETahi.Task.extend()
 ETahi.UploadManuscriptTask = ETahi.Task.extend()

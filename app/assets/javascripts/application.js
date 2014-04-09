@@ -19,11 +19,8 @@
 //= require chosen-jquery
 //= require jquery.dotdotdot
 //= require jquery.timeago
+//= require utils
 //= require ./polyfills
-//= require react
-//= require react-chosen
-//= require spin
-//= require namespace
 //= require handlebars
 //= require ember
 //= require ember-data

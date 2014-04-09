@@ -17,11 +17,14 @@ ETahi.ApplicationRoute = Ember.Route.extend
       paper = @controllerFor('paperManage').get('model')
       newTaskParams = {phase: phase, type: taskType.replace(/^new/, ''), paper_id: paper.get('id')}
       newTask = @store.createRecord(taskType, newTaskParams)
-
+      controllerName = 'newCardOverlay'
       if taskType == 'MessageTask'
-        newTask.get('participants').pushObject(@controllerFor('application').get('currentUser'))
+        controllerName = 'newMessageCardOverlay'
+        currentUser = @controllerFor('application').get('currentUser')
+        newTask.get('participants').pushObject(currentUser)
+        newTask.get('comments').pushObject(@store.createRecord('comment', commenter: currentUser))
 
-      @controllerFor('newCardOverlay').setProperties({
+      @controllerFor(controllerName).setProperties({
         model: newTask
         paper: paper
       })
@@ -29,7 +32,7 @@ ETahi.ApplicationRoute = Ember.Route.extend
       @render(tmplName,
         into: 'application'
         outlet: 'overlay'
-        controller: 'newCardOverlay')
+        controller: controllerName)
 
     closeOverlay: ->
       ETahi.animateOverlayOut().then =>

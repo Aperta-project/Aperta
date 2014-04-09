@@ -37,6 +37,4 @@ ETahi.PaperManageController = Ember.ObjectController.extend
         paper.reload()
 
     removeTask: (task) ->
-      paper = task.get('phase.paper')
-      task.destroyRecord().then ->
-        paper.reload()
+      task.destroyRecord()

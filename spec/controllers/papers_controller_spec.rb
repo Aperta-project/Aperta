@@ -76,7 +76,7 @@ describe PapersController do
     it_behaves_like "when the user is not signed in"
 
     it { should be_success }
-    it { should render_template :edit }
+    it { should render_template "ember/index" }
 
     it "uses PaperPolicy to retrieve the paper" do
       policy = double('paper policy', paper: paper)
@@ -95,7 +95,7 @@ describe PapersController do
 
     context "when the paper is submitted" do
       before { paper.update_attribute(:submitted, true) }
-      it { should redirect_to(paper_path paper) }
+      it { should redirect_to(paper_path(paper)) }
     end
   end
 

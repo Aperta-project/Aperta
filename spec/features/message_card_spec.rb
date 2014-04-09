@@ -43,7 +43,6 @@ feature 'Message Cards', js: true do
     let(:body_text) { 'Everyone add some comments to this test post.' }
     let(:participants) { [albert] }
     scenario "Admin can add a new message" do
-      pending
       task_manager_page = TaskManagerPage.visit paper
 
       needs_editor_phase = task_manager_page.phase 'Assign Editor'
@@ -72,7 +71,6 @@ feature 'Message Cards', js: true do
       let(:commenter) { admin }
       let(:participants) { [admin] }
       scenario "the user can add a commment" do
-        pending
         task_manager_page = TaskManagerPage.visit paper
         task_manager_page.view_card message.title, MessageCardOverlay do |card|
           expect(card).to have_css('.message-overlay')

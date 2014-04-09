@@ -8,19 +8,19 @@ class EventStream
     end
   end
 
-  def self.connection_info(paper_id)
+  def self.connection_info(paper_ids)
     {
       url: url,
-      eventName: name(paper_id)
+      eventNames: names(paper_ids)
     }
   end
 
+  def self.names ids
+    ids.map {|id| name id }
+  end
+
   def self.name(paper_id)
-    if Array === paper_id
-      paper_id.map {|id| name id }
-    else
-      Digest::MD5.hexdigest "paper_#{paper_id}"
-    end
+    Digest::MD5.hexdigest "paper_#{paper_id}"
   end
 
   def self.token

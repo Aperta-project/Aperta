@@ -15,5 +15,15 @@ describe EpubConverter do
       expect(epub[:stream]).to be_a StringIO
       expect(epub[:file_name]).to end_with '.epub'
     end
+
+    context 'empty paper body' do
+      let(:paper) do
+        FactoryGirl.create :paper, body: nil, short_title: 'Paper with no body', user: FactoryGirl.create(:user)
+      end
+
+      it 'returns paper body with default text' do
+        expect{ EpubConverter.generate_epub(paper) }.to_not raise_error
+      end
+    end
   end
 end

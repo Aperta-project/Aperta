@@ -41,7 +41,7 @@ class EpubConverter
     end
 
     def construct_epub_html(paper)
-      body = paper.body.force_encoding('UTF-8')
+      body = paper.body || 'The manuscript is currently empty.'
 
       # ePub is sensitive to leading white space, therefore we need the first
       # line to start at column 0. No, `String#strip_heredoc` doesn't solve the
@@ -55,7 +55,7 @@ class EpubConverter
 </head>
 <body>
   <h1>#{paper.title}</h1>
-  #{body}
+  #{body.force_encoding('UTF-8')}
 </body>
 </html>
       HTMl

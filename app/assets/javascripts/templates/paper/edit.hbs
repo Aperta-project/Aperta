@@ -10,7 +10,9 @@
       </li>
     </ul>
     <ul>
-      <li><a href="{{unbound downloadLink}}" class="control-bar-link">Download ePub</a></li>
+      {{#if view.shouldShowDownloadLink}}
+        <li><a href="{{unbound downloadLink}}" class="control-bar-link">Download ePub</a></li>
+      {{/if}}
       <li>{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
     </ul>
   </div>

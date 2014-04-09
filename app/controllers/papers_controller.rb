@@ -30,7 +30,9 @@ class PapersController < ApplicationController
 
   def edit
     @paper = PaperPolicy.new(params[:id], current_user).paper
-    redirect_to paper_path(@paper) if @paper.submitted?
+    if @paper.submitted?
+      redirect_to paper_path(@paper) and return
+    end
     @tasks = TaskPolicy.new(@paper, current_user).tasks
 
     render 'ember/index'
@@ -40,6 +42,7 @@ class PapersController < ApplicationController
     @paper = Paper.find(params[:id])
 
     if @paper.update(paper_params)
+      # TODO: this updates for roles on ALL papers, is that really what is intended?
       PaperRole.where(user_id: paper_params[:reviewer_ids]).update_all reviewer: true
       head 200
     else

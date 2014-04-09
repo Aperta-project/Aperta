@@ -8,13 +8,7 @@ class TaskSerializer < ActiveModel::Serializer
     'task'
   end
 
-  def type
-    # Client doesn't need to know about the task's namespace.
-    object.type.gsub(/.+::/,'')
-  end
-
   def paper_title
     object.paper.display_title
   end
-
 end

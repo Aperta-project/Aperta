@@ -16,7 +16,7 @@ ETahi.ApplicationController = Ember.Controller.extend
           source.addEventListener eventName, (msg)->
             esData = JSON.parse(msg.data)
             Ember.run ->
-              store.pushPayload(esData.task.type, esData)
+              store.pushPayload(esData.task.type.replace(/.+::/, ''), esData)
 
     Ember.$.ajax(params)
   ).on('init')

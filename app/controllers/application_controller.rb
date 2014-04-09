@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
   def verify_admin!
     redirect_to(root_path, alert: "Permission denied") unless current_user.admin?
   end

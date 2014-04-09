@@ -13,9 +13,11 @@ class TasksController < ApplicationController
            end
 
     tp = task_params(task)
-
     if task && task.authorize_update!(tp, current_user)
       task.update tp
+      task.reload
+      ts = TaskSerializer.new(task)
+      EventStream.post_event(task.paper.id, ts.to_json)
       respond_with task
     else
       head :forbidden

@@ -16,7 +16,10 @@ describe TasksController do
       admin: true
   end
 
-  before { sign_in user }
+  before do
+    sign_in user
+    allow(EventStream).to receive(:post_event)
+  end
 
   describe "POST 'create'" do
     let!(:paper) { Paper.create! short_title: 'some-paper', journal: Journal.create!, user: user }
@@ -46,16 +49,21 @@ describe TasksController do
 
     it_behaves_like "an unauthenticated json request"
 
-    context "when the user is an admin" do
-      it "updates the task" do
-        do_request
-        expect(task.reload).to be_completed
-      end
+    it "updates the task" do
+      do_request
+      expect(task.reload).to be_completed
+    end
 
-      it "renders the task id and completed status as JSON" do
-        do_request
-        expect(response.status).to eq(204)
-      end
+    it "posts an event to the event stream" do
+      do_request
+      task.reload
+      ts = TaskSerializer.new(task)
+      expect(EventStream).to have_received(:post_event).with(paper.id, ts.to_json)
+    end
+
+    it "renders the task id and completed status as JSON" do
+      do_request
+      expect(response.status).to eq(204)
     end
 
     context "when the task is assigned to the user" do

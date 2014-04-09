@@ -15,6 +15,6 @@ ETahi.ControllerParticipants = Ember.Mixin.create
       if newParticipant
         @get('participants').pushObject(newParticipant)
     saveNewParticipant: (newParticipant) ->
-      if newParticipant
+      unless @get('participants').contains newParticipant
         @get('participants').pushObject(newParticipant)
         @send('saveModel')

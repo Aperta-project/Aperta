@@ -1,1 +1,0 @@
-window.context = window.describe

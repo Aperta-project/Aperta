@@ -24,8 +24,8 @@ ETahi.PaperEditView = Ember.View.extend
   ).on('willDestroyElement')
 
   saveVisualEditorChanges: ->
-    html = $('#paper-body [contenteditable]').html()
-    @set('controller.model.body', html)
+    documentNode = ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())
+    @set('controller.model.body', $(documentNode).find('body').html())
 
   actions:
     save: ->

@@ -1,3 +1,5 @@
+#= require test_helper
+
 moduleFor 'controller:paperManage', 'PaperManageController',
   setup: ->
     @phase1 = Ember.Object.create position: 1

@@ -1,3 +1,4 @@
+window.Tahi ||= {}
 Tahi.utils =
   toCamel: (string) ->
     string.replace /(\-[a-z])/g, ($1) ->

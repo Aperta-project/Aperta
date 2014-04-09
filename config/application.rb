@@ -27,6 +27,5 @@ module Tahi
 
     config.s3_bucket = :not_set
     config.carrierwave_storage = :file
-    config.react.variant = :production
   end
 end

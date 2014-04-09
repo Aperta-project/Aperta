@@ -5,16 +5,6 @@ class TasksController < ApplicationController
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
-  def index
-    @paper = Paper.includes(:journal, :phases => :tasks).find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json do
-        @phases = @paper.phases
-      end
-    end
-  end
-
   def update
     task = if current_user.admin?
              Task.where(id: params[:id]).first
@@ -45,7 +35,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     respond_to do |f|
       f.json { render json: @task }
-      f.html { render 'ember/index' }
+      f.html { render 'ember/index' , layout: 'ember'}
     end
   end
 
@@ -62,13 +52,13 @@ class TasksController < ApplicationController
   private
 
   def task_params(task = nil)
-    attributes = [:assignee_id, :completed, :title, :body, :phase_id, :type]
+    attributes = [:assignee_id, :completed, :title, :body, :phase_id]
     attributes += task.class::PERMITTED_ATTRIBUTES if task
     params.require(:task).permit(*attributes)
   end
 
   def build_task
-    task_type = task_params[:type]
+    task_type = params[:task][:type]
     sanitized_params = task_params task_type.constantize.new
     TaskFactory.build_task task_type, sanitized_params, current_user
   end

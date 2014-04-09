@@ -5,8 +5,6 @@ class FakeTask < Task
 end
 
 describe TasksController do
-  let(:permitted_params) { [:assignee_id, :completed, :title, :body, :phase_id, :type] }
-
   let :user do
     User.create! username: 'albert',
       first_name: 'Albert',
@@ -33,14 +31,6 @@ describe TasksController do
 
     it_behaves_like "an unauthenticated json request"
 
-    it_behaves_like "a controller enforcing strong parameters" do
-      let(:params_id) { task.to_param }
-      let(:paper_id) { paper.to_param }
-      let(:model_identifier) { :task }
-      let(:expected_params) { permitted_params }
-      let(:returned_params) { {type: "Task"} }
-    end
-
     it "creates a task" do
       expect { do_request }.to change(Task, :count).by 1
     end
@@ -55,26 +45,6 @@ describe TasksController do
     end
 
     it_behaves_like "an unauthenticated json request"
-
-    it_behaves_like "a controller enforcing strong parameters" do
-      let(:params_id) { task.to_param }
-      let(:paper_id) { paper.to_param }
-
-      let(:model_identifier) { :task }
-      let(:expected_params) { permitted_params }
-    end
-
-    describe "subclasses of task" do
-      let(:task) { FakeTask.create! title: "sample task", role: "sample role", phase: paper.task_manager.phases.first }
-      let(:permitted_params) { [:assignee_id, :completed, :title, :body, :phase_id, :type, some_attribute: [some_value: []]] }
-
-      it_behaves_like "a controller enforcing strong parameters" do
-        let(:params_id) { task.to_param }
-        let(:paper_id) { paper.to_param }
-        let(:model_identifier) { :task }
-        let(:expected_params) { permitted_params }
-      end
-    end
 
     context "when the user is an admin" do
       it "updates the task" do

@@ -6,23 +6,10 @@
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Cabin:400,700,400italic"
     = javascript_include_tag "application"
     = csrf_meta_tags
-  - body_class = Array(yield :tahi_body_class)
-  - body_class << 'matte' if params[:controller] == 'papers'
-  %body{class: body_class.join(' ')}
-    #spinner{style: 'display: none;'}
-
+  %body.sessions
     #ember-app
     #tahi-container{class: yield(:tahi_container_class)}
       - if flash.present?
         %p.notice= notice
         %p.alert= alert
       = yield
-
-- if current_user
-  :javascript
-    window.Tahi.currentUser = {id: #{current_user.id},
-    admin: #{current_user.admin},
-    test: true,
-    username: "#{current_user.username}",
-    fullName: "#{current_user.full_name}",
-    imageUrl: "#{current_user.image_url}"};

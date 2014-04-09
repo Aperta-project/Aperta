@@ -23,3 +23,6 @@
 
 # Ignore OS X Desktop Services Store
 .DS_Store
+
+# Ignore rake commands cache
+.zsh_rake_cache

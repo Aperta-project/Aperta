@@ -1,171 +1,3219 @@
 /*!
- * VisualEditor standalone demo
+ * OOjs UI v0.1.0-pre (98570355f6)
+ * https://www.mediawiki.org/wiki/OOjs_UI
+ *
+ * Copyright 2011–2014 OOjs Team and other contributors.
+ * Released under the MIT license
+ * http://oojs.mit-license.org
+ *
+ * Date: Fri Apr 04 2014 10:37:07 GMT-0700 (PDT)
+ */
+
+/* Textures */
+
+.oo-ui-texture-pending {
+  background-image: /* @embed */ url(/assets/visual-editor/textures/pending.gif);
+}
+
+.oo-ui-texture-transparency {
+  background-image: /* @embed */ url(/assets/visual-editor/textures/transparency.png);
+}
+
+/* RTL Definitions */
+
+/* @noflip */
+
+.oo-ui-rtl {
+  direction: rtl;
+}
+
+/* @noflip */
+
+.oo-ui-ltr {
+  direction: ltr;
+}
+
+.oo-ui-dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1em;
+  line-height: 1em;
+  /* Fix for strange opacity-related rendering issues.
+	   CAUTION: -webkit-backface-visibility: hidden; is EXTREMELY DANGEROUS.
+	   If applied to a VE surface directly, it will break selection of
+	   FocusableNodes, and in the past it's caused transparent PNGs to
+	   render as opaque black images. For some reason applying it to the dialog
+	   wrapper in the main document fixes opacity-related behavior in the iframe
+	   document, but doesn't break the surface inside the iframe. */
+
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+
+.oo-ui-dialog .oo-ui-window-frame {
+  position: fixed;
+  top: 1em;
+  right: 0;
+  bottom: 1em;
+  left: 0;
+  min-height: 12em;
+  margin: auto;
+  overflow: hidden;
+}
+
+.oo-ui-dialog-small .oo-ui-window-frame {
+  width: 400px;
+  max-height: 230px;
+}
+
+.oo-ui-dialog-medium .oo-ui-window-frame {
+  width: 600px;
+  max-height: 460px;
+}
+
+.oo-ui-dialog-large .oo-ui-window-frame {
+  width: 800px;
+  max-height: 690px;
+}
+
+.oo-ui-dialog .oo-ui-frame {
+  width: 100%;
+  height: 100%;
+}
+
+.oo-ui-dialog-content .oo-ui-window-head,
+.oo-ui-dialog-content .oo-ui-window-body,
+.oo-ui-dialog-content .oo-ui-window-foot {
+  position: absolute;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.oo-ui-dialog-content .oo-ui-window-head {
+  top: 0;
+  height: 3.8em;
+  padding: 0.5em;
+}
+
+.oo-ui-dialog-content .oo-ui-window-title {
+  line-height: 2.8em;
+}
+
+.oo-ui-dialog-content .oo-ui-window-icon {
+  width: 2.4em;
+  height: 2.8em;
+  line-height: 2.8em;
+}
+
+.oo-ui-dialog-content .oo-ui-window-closeButton {
+  float: right;
+  margin: 0.25em 0.25em;
+}
+
+.oo-ui-dialog-content .oo-ui-window-body {
+  top: 3.8em;
+  bottom: 4.8em;
+}
+
+.oo-ui-dialog-content .oo-ui-window-foot {
+  bottom: 0;
+  height: 4.8em;
+  padding: 1em;
+}
+
+.oo-ui-dialog-content .oo-ui-window-foot .oo-ui-buttonedElement-framed {
+  float: left;
+  margin: 0.125em 0.25em;
+}
+
+.oo-ui-dialog-content .oo-ui-window-foot .oo-ui-flaggableElement-primary,
+.oo-ui-dialog-content .oo-ui-window-foot .oo-ui-flaggableElement-constructive,
+.oo-ui-dialog-content .oo-ui-window-foot .oo-ui-flaggableElement-destructive {
+  float: right;
+}
+
+.oo-ui-dialog-content-footless .oo-ui-window-body {
+  bottom: 0;
+}
+
+.oo-ui-dialog-content-footless .oo-ui-window-foot {
+  display: none;
+}
+
+.oo-ui-frame {
+  padding: 0;
+  margin: 0;
+}
+
+.oo-ui-frame-body {
+  padding: 0;
+  margin: 0;
+  background: none;
+}
+
+.oo-ui-toolbar {
+  clear: both;
+}
+
+.oo-ui-toolbar-bar {
+  line-height: 1em;
+}
+
+.oo-ui-toolbar-bottom .oo-ui-toolbar-bar {
+  position: absolute;
+}
+
+.oo-ui-toolbar-actions {
+  float: right;
+}
+
+.oo-ui-toolbar-tools {
+  float: left;
+}
+
+.oo-ui-toolbar-tools,
+.oo-ui-toolbar-actions,
+.oo-ui-toolbar-shadow {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.oo-ui-toolbar-actions .oo-ui-popupWidget {
+  -webkit-user-select: all;
+     -moz-user-select: all;
+      -ms-user-select: all;
+          user-select: all;
+  -webkit-touch-callout: default;
+}
+
+.oo-ui-toolbar-shadow {
+  position: absolute;
+  width: 100%;
+  pointer-events: none;
+  background-position: left top;
+  background-repeat: repeat-x;
+}
+
+.oo-ui-toolGroup {
+  display: inline-block;
+  margin: 0.3em;
+  vertical-align: middle;
+}
+
+.oo-ui-toolGroup-empty {
+  display: none;
+}
+
+.oo-ui-toolGroup .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-window-head {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.oo-ui-window-icon {
+  float: left;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-window-title {
+  float: left;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.oo-ui-window-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.oo-ui-buttonedElement .oo-ui-buttonedElement-button {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.oo-ui-buttonedElement .oo-ui-buttonedElement-button > .oo-ui-iconedElement-icon {
+  display: none;
+  margin-left: 0;
+}
+
+.oo-ui-buttonedElement .oo-ui-buttonedElement-button > .oo-ui-indicatedElement-indicator {
+  display: none;
+  margin-right: -0.75em;
+}
+
+.oo-ui-buttonedElement.oo-ui-widget-disabled .oo-ui-buttonedElement-button {
+  cursor: default;
+}
+
+.oo-ui-buttonedElement.oo-ui-indicatedElement .oo-ui-buttonedElement-button > .oo-ui-indicatedElement-indicator,
+.oo-ui-buttonedElement.oo-ui-iconedElement .oo-ui-buttonedElement-button > .oo-ui-iconedElement-icon {
+  display: inline-block;
+  vertical-align: middle;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-buttonedElement-frameless {
+  position: relative;
+  display: inline-block;
+}
+
+.oo-ui-buttonedElement-frameless .oo-ui-buttonedElement-button > .oo-ui-labeledElement-label {
+  display: inline-block;
+  margin-left: 0.25em;
+  vertical-align: middle;
+}
+
+.oo-ui-buttonedElement-framed .oo-ui-buttonedElement-button {
+  display: inline-block;
+  padding: 0.2em 0.8em;
+  margin: 0.1em 0;
+  text-align: center;
+  vertical-align: top;
+}
+
+.oo-ui-buttonedElement-framed .oo-ui-buttonedElement-button > .oo-ui-labeledElement-label {
+  display: inline-block;
+  line-height: 1.9em;
+  vertical-align: middle;
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-iconedElement .oo-ui-buttonedElement-button > .oo-ui-iconedElement-icon {
+  margin-right: -0.5em;
+  margin-left: -0.5em;
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-iconedElement.oo-ui-labeledElement .oo-ui-buttonedElement-button > .oo-ui-iconedElement-icon {
+  margin-right: 0.3em;
+  margin-left: -0.5em;
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button,
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button.oo-ui-buttonedElement-active,
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button.oo-ui-buttonedElement-pressed {
+  cursor: default;
+}
+
+.oo-ui-clippableElement-clippable {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.oo-ui-bookletLayout-stackLayout.oo-ui-stackLayout-continuous .oo-ui-panelLayout-scrollable {
+  overflow-y: hidden;
+}
+
+.oo-ui-bookletLayout-stackLayout .oo-ui-panelLayout {
+  width: 100%;
+  padding: 1.5em;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.oo-ui-bookletLayout-stackLayout .oo-ui-panelLayout-scrollable {
+  overflow-y: auto;
+}
+
+.oo-ui-bookletLayout-stackLayout .oo-ui-panelLayout-padded {
+  padding: 2em;
+}
+
+.oo-ui-bookletLayout-outlinePanel-editable .oo-ui-outlineWidget {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 3em;
+  left: 0;
+  overflow-y: auto;
+}
+
+.oo-ui-bookletLayout-outlinePanel .oo-ui-outlineControlsWidget {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.oo-ui-fieldLayout {
+  margin-bottom: 1em;
+}
+
+.oo-ui-fieldLayout:last-child {
+  margin-bottom: 0;
+}
+
+.oo-ui-fieldLayout:before,
+.oo-ui-fieldLayout:after {
+  display: table;
+  content: " ";
+}
+
+.oo-ui-fieldLayout:after {
+  clear: both;
+}
+
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-left > .oo-ui-labeledElement-label,
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-right > .oo-ui-labeledElement-label {
+  display: block;
+  float: left;
+  width: 35%;
+  padding-top: 0.5em;
+  margin-right: 5%;
+}
+
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-left > .oo-ui-fieldLayout-field,
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-right > .oo-ui-fieldLayout-field {
+  display: block;
+  float: left;
+  width: 60%;
+}
+
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-right > .oo-ui-labeledElement-label {
+  text-align: right;
+}
+
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-inline > .oo-ui-labeledElement-label {
+  display: inline-block;
+  padding: 0.75em 0.5em 0.5em 0.5em;
+  vertical-align: middle;
+}
+
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-inline > .oo-ui-fieldLayout-field {
+  display: inline-block;
+  padding: 0.5em 0;
+  vertical-align: middle;
+}
+
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-top > .oo-ui-labeledElement-label {
+  padding: 0.5em 0;
+}
+
+.oo-ui-fieldsetLayout {
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.oo-ui-fieldsetLayout + .oo-ui-fieldsetLayout {
+  margin-top: 2em;
+}
+
+.oo-ui-fieldsetLayout-labeled {
+  margin-top: -0.75em;
+}
+
+.oo-ui-fieldsetLayout > legend.oo-ui-labeledElement-label {
+  padding: 0.25em 0;
+  margin-bottom: 0.5em;
+}
+
+.oo-ui-fieldsetLayout.oo-ui-iconedElement > legend.oo-ui-labeledElement-label {
+  padding-left: 1.75em;
+}
+
+.oo-ui-fieldsetLayout.oo-ui-iconedElement > .oo-ui-iconedElement-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 2em;
+  height: 2em;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-gridLayout {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.oo-ui-labelWidget {
+  padding: 0.5em 0;
+}
+
+.oo-ui-panelLayout {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.oo-ui-panelLayout-scrollable {
+  overflow-y: auto;
+}
+
+.oo-ui-panelLayout-padded {
+  padding: 2em;
+}
+
+.oo-ui-stackLayout > .oo-ui-panelLayout {
+  display: none;
+}
+
+.oo-ui-stackLayout-continuous > .oo-ui-panelLayout {
+  position: relative;
+  display: block;
+}
+
+.oo-ui-barToolGroup > .oo-ui-iconedElement-icon,
+.oo-ui-barToolGroup > .oo-ui-labeledElement-label {
+  display: none;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool-link {
+  display: block;
+  height: 1.5em;
+  padding: 0.25em;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  display: block;
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool-link .oo-ui-tool-title {
+  display: none;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link {
+  cursor: default;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool-title,
+.oo-ui-barToolGroup .oo-ui-tool-accel {
+  display: none;
+}
+
+.oo-ui-barToolGroup.oo-ui-widget-enabled .oo-ui-tool-link {
+  cursor: pointer;
+}
+
+.oo-ui-listToolGroup .oo-ui-toolGroup-tools {
+  padding: 0.25em;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool {
+  display: inline-block;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool-link {
+  display: block;
+  padding-right: 0.5em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link {
+  cursor: default;
+}
+
+.oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
+  min-width: 8em;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool {
+  display: block;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-link {
+  display: block;
+  padding: 0.25em 1em 0.25em 0.25em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  background-image: none;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-active .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/check.png);
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link {
+  cursor: default;
+}
+
+.oo-ui-popupToolGroup {
+  position: relative;
+  height: 2em;
+  min-width: 2.5em;
+}
+
+.oo-ui-popupToolGroup.oo-ui-indicatedElement.oo-ui-iconedElement {
+  min-width: 3.5em;
+}
+
+.oo-ui-popupToolGroup-handle {
+  display: block;
+  cursor: pointer;
+}
+
+.oo-ui-popupToolGroup-handle .oo-ui-indicatedElement-indicator,
+.oo-ui-popupToolGroup-handle .oo-ui-iconedElement-icon {
+  position: absolute;
+  top: 0;
+  width: 2em;
+  height: 2em;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-popupToolGroup-handle .oo-ui-indicatedElement-indicator {
+  right: 0;
+}
+
+.oo-ui-popupToolGroup-handle .oo-ui-iconedElement-icon {
+  left: 0.25em;
+}
+
+.oo-ui-popupToolGroup-handle .oo-ui-labeledElement-label {
+  margin: 0 1em;
+  font-size: 0.8em;
+  line-height: 2.6em;
+}
+
+.oo-ui-popupToolGroup.oo-ui-widget-disabled .oo-ui-popupToolGroup-handle {
+  cursor: default;
+}
+
+.oo-ui-popupToolGroup.oo-ui-iconedElement .oo-ui-popupToolGroup-handle .oo-ui-labeledElement-label {
+  margin-left: 3em;
+}
+
+.oo-ui-popupToolGroup.oo-ui-indicatedElement .oo-ui-popupToolGroup-handle .oo-ui-labeledElement-label {
+  margin-right: 2.25em;
+}
+
+.oo-ui-popupToolGroup .oo-ui-toolGroup-tools {
+  position: absolute;
+  top: 2em;
+  left: -1px;
+  z-index: 4;
+  display: none;
+}
+
+.oo-ui-popupToolGroup .oo-ui-toolGroup-tools .oo-ui-iconedElement-icon {
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-popupToolGroup-active.oo-ui-widget-enabled > .oo-ui-toolGroup-tools {
+  display: block;
+}
+
+.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  margin-right: 0.25em;
+  vertical-align: middle;
+}
+
+.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title {
+  display: inline-block;
+  font-size: 0.8em;
+  line-height: 2em;
+  vertical-align: middle;
+}
+
+.oo-ui-popupToolGroup .oo-ui-tool-accel {
+  display: none;
+}
+
+.oo-ui-popupTool .oo-ui-popupWidget {
+  margin-left: 1.25em;
+  font-size: 0.8em;
+}
+
+.oo-ui-popupTool .oo-ui-popupWidget-popup,
+.oo-ui-popupTool .oo-ui-popupWidget-tail {
+  z-index: 4;
+}
+
+.oo-ui-iconWidget {
+  display: inline-block;
+  width: 1.9em;
+  height: 1.9em;
+  line-height: 2.5em;
+  vertical-align: middle;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+}
+
+.oo-ui-iconWidget.oo-ui-widget-disabled {
+  opacity: 0.2;
+}
+
+.oo-ui-indicatorWidget {
+  display: inline-block;
+  width: 1.9em;
+  height: 1.9em;
+  line-height: 2.5em;
+  vertical-align: middle;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+}
+
+.oo-ui-indicatorWidget.oo-ui-widget-disabled {
+  opacity: 0.2;
+}
+
+.oo-ui-selectWidget {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.oo-ui-optionWidget {
+  position: relative;
+  display: block;
+  margin: 0;
+  list-style: none;
+  cursor: pointer;
+  border: none;
+}
+
+.oo-ui-optionWidget.oo-ui-widget-disabled {
+  cursor: default;
+}
+
+.oo-ui-optionWidget .oo-ui-labeledElement-label {
+  display: block;
+  overflow: hidden;
+  line-height: 1.5em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.oo-ui-optionWidget .oo-ui-iconedElement-icon,
+.oo-ui-optionWidget .oo-ui-indicatedElement-indicator {
+  position: absolute;
+  top: 50%;
+  width: 2em;
+  height: 2em;
+  margin-top: -1em;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-optionWidget .oo-ui-iconedElement-icon {
+  left: 0.5em;
+}
+
+.oo-ui-optionWidget .oo-ui-indicatedElement-indicator {
+  right: 0.5em;
+}
+
+.oo-ui-menuWidget {
+  position: absolute;
+}
+
+.oo-ui-menuWidget input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.oo-ui-popupWidget-popup {
+  position: absolute;
+  overflow: hidden;
+}
+
+.oo-ui-popupWidget-tail {
+  display: none;
+}
+
+.oo-ui-popupWidget-tailed .oo-ui-popupWidget-popup {
+  margin-top: 7px;
+}
+
+.oo-ui-popupWidget-tailed .oo-ui-popupWidget-tail {
+  position: absolute;
+  display: block;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-popupWidget-head {
+  height: 2.5em;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.oo-ui-popupWidget-head .oo-ui-buttonWidget {
+  float: right;
+  margin: 0.25em;
+}
+
+.oo-ui-popupWidget-head .oo-ui-labeledElement-label {
+  float: left;
+  margin: 0.75em 1em;
+  cursor: default;
+}
+
+.oo-ui-popupWidget-body {
+  clear: both;
+}
+
+.oo-ui-buttonGroupWidget {
+  border-radius: 0.3em;
+}
+
+.oo-ui-buttonGroupWidget .oo-ui-buttonedElement-framed .oo-ui-buttonedElement-button {
+  margin-bottom: -1px;
+  margin-left: -1px;
+  border-radius: 0;
+}
+
+.oo-ui-buttonGroupWidget .oo-ui-buttonedElement-framed:first-child .oo-ui-buttonedElement-button {
+  margin-left: 0;
+  border-bottom-left-radius: 0.3em;
+  border-top-left-radius: 0.3em;
+}
+
+.oo-ui-buttonGroupWidget .oo-ui-buttonedElement-framed:last-child .oo-ui-buttonedElement-button {
+  border-top-right-radius: 0.3em;
+  border-bottom-right-radius: 0.3em;
+}
+
+.oo-ui-buttonOptionWidget {
+  display: inline-block;
+  background-color: transparent;
+}
+
+.oo-ui-buttonOptionWidget .oo-ui-buttonedElement-button {
+  position: relative;
+  height: 1.9em;
+}
+
+.oo-ui-buttonOptionWidget.oo-ui-iconedElement .oo-ui-iconedElement-icon,
+.oo-ui-buttonOptionWidget.oo-ui-indicatedElement .oo-ui-indicatedElement-indicator {
+  position: static;
+  display: inline-block;
+  height: 1.9em;
+  margin-top: 0;
+  vertical-align: middle;
+}
+
+.oo-ui-buttonSelectWidget {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.oo-ui-buttonWidget {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.oo-ui-inlineMenuWidget {
+  position: relative;
+  display: inline-block;
+  min-width: 20em;
+  margin: 0.25em 0;
+}
+
+.oo-ui-inlineMenuWidget-handle {
+  display: inline-block;
+  width: 100%;
+  height: 2.5em;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.oo-ui-inlineMenuWidget-handle .oo-ui-indicatedElement-indicator,
+.oo-ui-inlineMenuWidget-handle .oo-ui-iconedElement-icon {
+  position: absolute;
+  top: 0;
+  width: 2.5em;
+  height: 2.5em;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-inlineMenuWidget-handle .oo-ui-indicatedElement-indicator {
+  right: 0;
+}
+
+.oo-ui-inlineMenuWidget-handle .oo-ui-iconedElement-icon {
+  left: 0.25em;
+}
+
+.oo-ui-inlineMenuWidget-handle .oo-ui-labeledElement-label {
+  margin: 0 0.5em;
+  line-height: 2.5em;
+}
+
+.oo-ui-inlineMenuWidget.oo-ui-iconedElement .oo-ui-inlineMenuWidget-handle .oo-ui-labeledElement-label {
+  margin-left: 3em;
+}
+
+.oo-ui-inlineMenuWidget.oo-ui-indicatedElement .oo-ui-inlineMenuWidget-handle .oo-ui-labeledElement-label {
+  margin-right: 2em;
+}
+
+.oo-ui-inlineMenuWidget .oo-ui-menuWidget {
+  z-index: 1;
+  width: 100%;
+}
+
+.oo-ui-inlineMenuWidget.oo-ui-widget-disabled .oo-ui-inlineMenuWidget-handle {
+  cursor: default;
+}
+
+.oo-ui-menuItemWidget {
+  position: relative;
+}
+
+.oo-ui-menuItemWidget .oo-ui-iconedElement-icon {
+  display: none;
+}
+
+.oo-ui-menuItemWidget.oo-ui-optionWidget-selected {
+  background-color: transparent;
+}
+
+.oo-ui-menuItemWidget.oo-ui-optionWidget-selected .oo-ui-iconedElement-icon {
+  display: block;
+}
+
+.oo-ui-menuSectionItemWidget {
+  cursor: default;
+}
+
+.oo-ui-outlineControlsWidget {
+  height: 3em;
+}
+
+.oo-ui-outlineControlsWidget-adders,
+.oo-ui-outlineControlsWidget-movers {
+  float: left;
+  height: 2em;
+  padding: 0;
+  margin: 0.5em;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.oo-ui-outlineControlsWidget > .oo-ui-iconedElement-icon {
+  float: left;
+  width: 1.5em;
+  height: 2em;
+  margin: 0.5em 0 0.5em 0.5em;
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-outlineControlsWidget-adders {
+  float: left;
+  margin-left: 0;
+}
+
+.oo-ui-outlineControlsWidget-adders .oo-ui-buttonWidget {
+  float: left;
+}
+
+.oo-ui-outlineControlsWidget-movers {
+  float: right;
+}
+
+.oo-ui-outlineControlsWidget-movers .oo-ui-buttonWidget {
+  float: right;
+}
+
+.oo-ui-outlineItemWidget {
+  position: relative;
+  padding: 0.75em;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.oo-ui-popupButtonWidget {
+  position: relative;
+}
+
+.oo-ui-popupButtonWidget .oo-ui-popupWidget {
+  position: absolute;
+  left: 1em;
+  cursor: auto;
+}
+
+.oo-ui-searchWidget-query {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4em;
+  padding: 0 1em;
+}
+
+.oo-ui-searchWidget-query .oo-ui-textInputWidget {
+  width: 100%;
+  margin: 0.75em 0;
+}
+
+.oo-ui-searchWidget-results {
+  position: absolute;
+  top: 4em;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1em;
+  overflow-x: hidden;
+  overflow-y: auto;
+  line-height: 0;
+}
+
+.oo-ui-textInputWidget {
+  position: relative;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.oo-ui-textInputWidget input,
+.oo-ui-textInputWidget textarea {
+  display: inline-block;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  resize: none;
+}
+
+.oo-ui-textInputWidget-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+
+.oo-ui-toggleSwitchWidget {
+  position: relative;
+  display: inline-block;
+  width: 4em;
+  height: 2em;
+  overflow: hidden;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-transform: translateZ(0);
+     -moz-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+       -o-transform: translateZ(0);
+          transform: translateZ(0);
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.oo-ui-toggleSwitchWidget.oo-ui-widget-disabled {
+  cursor: default;
+}
+
+.oo-ui-toggleSwitchWidget-grip {
+  position: absolute;
+  top: 0.25em;
+  left: 0.25em;
+  display: block;
+  width: 1.5em;
+  height: 1.5em;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: left 200ms ease-in-out, margin-left 200ms ease-in-out;
+     -moz-transition: left 200ms ease-in-out, margin-left 200ms ease-in-out;
+      -ms-transition: left 200ms ease-in-out, margin-left 200ms ease-in-out;
+       -o-transition: left 200ms ease-in-out, margin-left 200ms ease-in-out;
+          transition: left 200ms ease-in-out, margin-left 200ms ease-in-out;
+}
+
+.oo-ui-toggleSwitchWidget .oo-ui-toggleSwitchWidget-glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-transition: opacity 200ms ease-in-out;
+     -moz-transition: opacity 200ms ease-in-out;
+      -ms-transition: opacity 200ms ease-in-out;
+       -o-transition: opacity 200ms ease-in-out;
+          transition: opacity 200ms ease-in-out;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.oo-ui-toggleWidget-on .oo-ui-toggleSwitchWidget-grip {
+  left: 2.25em;
+  margin-left: -2px;
+}
+
+.oo-ui-toggleWidget-off .oo-ui-toggleSwitchWidget-grip {
+  left: 0.25em;
+  margin-left: 0;
+}
+
+.oo-ui-toggleWidget-off .oo-ui-toggleSwitchWidget-glow {
+  display: none;
+}
+
+/* Icons */
+
+.oo-ui-icon-add-item {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/add-item.svg);
+}
+
+.oo-ui-icon-advanced {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/advanced.svg);
+}
+
+.oo-ui-icon-alert {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/alert.svg);
+}
+
+.oo-ui-icon-check {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/check.svg);
+}
+
+.oo-ui-icon-clear {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/clear.svg);
+}
+
+.oo-ui-icon-close {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/close.svg);
+}
+
+.oo-ui-icon-code {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/code.svg);
+}
+
+.oo-ui-icon-collapse {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/collapse.svg);
+}
+
+.oo-ui-icon-comment {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/comment.svg);
+}
+
+.oo-ui-icon-expand {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/expand.svg);
+}
+
+.oo-ui-icon-help {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/help.svg);
+}
+
+.oo-ui-icon-link {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/link.svg);
+}
+
+.oo-ui-icon-menu {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/menu.svg);
+}
+
+.oo-ui-icon-next {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/move-ltr.svg);
+}
+
+.oo-ui-icon-picture {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/picture.svg);
+}
+
+.oo-ui-icon-previous {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/move-rtl.svg);
+}
+
+.oo-ui-icon-redo {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/arched-arrow-ltr.svg);
+}
+
+.oo-ui-icon-remove {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/remove.svg);
+}
+
+.oo-ui-icon-search {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/search.svg);
+}
+
+.oo-ui-icon-settings {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/settings.svg);
+}
+
+.oo-ui-icon-tag {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/tag.svg);
+}
+
+.oo-ui-icon-undo {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/arched-arrow-rtl.svg);
+}
+
+.oo-ui-icon-window {
+  background-image: /* @embed */ url(/assets/visual-editor/icons/window.svg);
+}
+
+/* Indicators */
+
+.oo-ui-indicator-down {
+  background-image: /* @embed */ url(/assets/visual-editor/indicators/down.svg);
+}
+
+.oo-ui-indicator-required {
+  background-image: /* @embed */ url(/assets/visual-editor/indicators/required.svg);
+}
+
+.oo-ui-indicator-up {
+  background-image: /* @embed */ url(/assets/visual-editor/indicators/up.svg);
+}
+.oo-ui-dialog {
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  -webkit-transition: all 250ms ease-in-out;
+     -moz-transition: all 250ms ease-in-out;
+      -ms-transition: all 250ms ease-in-out;
+       -o-transition: all 250ms ease-in-out;
+          transition: all 250ms ease-in-out;
+}
+
+.oo-ui-dialog .oo-ui-window-frame {
+  background-color: #fff;
+  border: solid 1px #ccc;
+  border-radius: 0.5em;
+  -webkit-transform: scale(0.5);
+     -moz-transform: scale(0.5);
+      -ms-transform: scale(0.5);
+       -o-transform: scale(0.5);
+          transform: scale(0.5);
+  box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
+  -webkit-transition: all 250ms ease-in-out;
+     -moz-transition: all 250ms ease-in-out;
+      -ms-transition: all 250ms ease-in-out;
+       -o-transition: all 250ms ease-in-out;
+          transition: all 250ms ease-in-out;
+}
+
+.oo-ui-dialog-open {
+  opacity: 1;
+}
+
+.oo-ui-dialog-open .oo-ui-window-frame {
+  -webkit-transform: scale(1);
+     -moz-transform: scale(1);
+      -ms-transform: scale(1);
+       -o-transform: scale(1);
+          transform: scale(1);
+}
+
+.oo-ui-dialog-content .oo-ui-window-body {
+  box-shadow: 0 0 0.66em rgba(0, 0, 0, 0.25);
+}
+
+.oo-ui-frame-content {
+  font-family: sans-serif;
+  font-size: 0.8em;
+}
+
+.oo-ui-toolbar-bar {
+  background: #f8fbfd;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #ffffff), color-stop(100%, #f1f7fb));
+  background-image: -webkit-linear-gradient(top, #ffffff 0%, #f1f7fb 100%);
+  background-image: -moz-linear-gradient(top, #ffffff 0%, #f1f7fb 100%);
+  background-image: -ms-linear-gradient(top, #ffffff 0%, #f1f7fb 100%);
+  background-image: -o-linear-gradient(top, #ffffff 0%, #f1f7fb 100%);
+  background-image: linear-gradient(top, #ffffff 0%, #f1f7fb 100%);
+  border-bottom: solid 1px #ccc;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#ffffff', endColorstr='#f1f7fb');
+}
+
+.oo-ui-toolbar-bar .oo-ui-toolbar-bar {
+  background: none;
+  border: none;
+}
+
+.oo-ui-toolbar-shadow {
+  bottom: -9px;
+  height: 9px;
+  background-image: /* @embed */ url(/assets/visual-editor/toolbar-shadow.png);
+  opacity: 0.125;
+  -webkit-transition: opacity 500ms ease-in-out;
+     -moz-transition: opacity 500ms ease-in-out;
+      -ms-transition: opacity 500ms ease-in-out;
+       -o-transition: opacity 500ms ease-in-out;
+          transition: opacity 500ms ease-in-out;
+}
+
+.oo-ui-toolGroup {
+  border: solid 1px transparent;
+  border-radius: 0.25em;
+  -webkit-transition: border-color 300ms ease-in-out;
+     -moz-transition: border-color 300ms ease-in-out;
+      -ms-transition: border-color 300ms ease-in-out;
+       -o-transition: border-color 300ms ease-in-out;
+          transition: border-color 300ms ease-in-out;
+}
+
+.oo-ui-toolGroup.oo-ui-widget-enabled:hover {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.oo-ui-toolGroup.oo-ui-widget-enabled .oo-ui-tool-link .oo-ui-tool-title {
+  color: #000;
+}
+
+.oo-ui-window-body {
+  padding: 0 0.75em;
+}
+
+.oo-ui-window-icon {
+  width: 2em;
+  height: 2em;
+  margin-right: 0.5em;
+  line-height: 2em;
+}
+
+.oo-ui-window-title {
+  line-height: 2em;
+  color: #333;
+}
+
+.oo-ui-window-overlay {
+  font-family: sans-serif;
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
+.oo-ui-buttonedElement .oo-ui-buttonedElement-button {
+  color: #333;
+}
+
+.oo-ui-buttonedElement.oo-ui-indicatedElement .oo-ui-buttonedElement-button > .oo-ui-indicatedElement-indicator,
+.oo-ui-buttonedElement.oo-ui-iconedElement .oo-ui-buttonedElement-button > .oo-ui-iconedElement-icon {
+  width: 1.9em;
+  height: 1.9em;
+  opacity: 0.8;
+}
+
+.oo-ui-buttonedElement-frameless .oo-ui-buttonedElement-button > .oo-ui-iconedElement-icon {
+  /* Don't animate opacities for now, causes wiggling in Chrome (bug 63020) */
+
+  /*.oo-ui-transition(opacity 200ms);*/
+
+}
+
+.oo-ui-buttonedElement-frameless .oo-ui-buttonedElement-button:hover > .oo-ui-iconedElement-icon,
+.oo-ui-buttonedElement-frameless .oo-ui-buttonedElement-button:focus > .oo-ui-iconedElement-icon {
+  opacity: 1;
+}
+
+.oo-ui-buttonedElement-frameless .oo-ui-buttonedElement-button:hover > .oo-ui-labeledElement-label,
+.oo-ui-buttonedElement-frameless .oo-ui-buttonedElement-button:focus > .oo-ui-labeledElement-label {
+  color: #000;
+}
+
+.oo-ui-buttonedElement-frameless .oo-ui-buttonedElement-button > .oo-ui-labeledElement-label {
+  color: #333;
+}
+
+.oo-ui-buttonedElement-frameless.oo-ui-widget-disabled .oo-ui-buttonedElement-button > .oo-ui-iconedElement-icon {
+  opacity: 0.2;
+}
+
+.oo-ui-buttonedElement-frameless.oo-ui-widget-disabled .oo-ui-buttonedElement-button > .oo-ui-labeledElement-label {
+  color: #ccc;
+}
+
+.oo-ui-buttonedElement-framed .oo-ui-buttonedElement-button {
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+  background: #eeeeee;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #ffffff), color-stop(100%, #dddddd));
+  background-image: -webkit-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+  background-image: -moz-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+  background-image: -ms-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+  background-image: -o-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+  background-image: linear-gradient(top, #ffffff 0%, #dddddd 100%);
+  border: 1px #c9c9c9 solid;
+  border-radius: 0.3em;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#ffffff', endColorstr='#dddddd');
+  -webkit-transition: border-color 100ms ease-in-out;
+     -moz-transition: border-color 100ms ease-in-out;
+      -ms-transition: border-color 100ms ease-in-out;
+       -o-transition: border-color 100ms ease-in-out;
+          transition: border-color 100ms ease-in-out;
+}
+
+.oo-ui-buttonedElement-framed .oo-ui-buttonedElement-button:hover,
+.oo-ui-buttonedElement-framed .oo-ui-buttonedElement-button:focus {
+  border-color: #aaa;
+}
+
+.oo-ui-buttonedElement-framed .oo-ui-buttonedElement-button.oo-ui-buttonedElement-active,
+.oo-ui-buttonedElement-framed .oo-ui-buttonedElement-button.oo-ui-buttonedElement-pressed {
+  color: black;
+  background: #eeeeee;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #dddddd), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+  background-image: -moz-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+  background-image: -ms-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+  background-image: -o-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+  background-image: linear-gradient(top, #dddddd 0%, #ffffff 100%);
+  border-color: #c9c9c9;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#dddddd', endColorstr='#ffffff');
+  box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-primary .oo-ui-buttonedElement-button {
+  background: #cde7f4;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #eaf4fa), color-stop(100%, #b0d9ee));
+  background-image: -webkit-linear-gradient(top, #eaf4fa 0%, #b0d9ee 100%);
+  background-image: -moz-linear-gradient(top, #eaf4fa 0%, #b0d9ee 100%);
+  background-image: -ms-linear-gradient(top, #eaf4fa 0%, #b0d9ee 100%);
+  background-image: -o-linear-gradient(top, #eaf4fa 0%, #b0d9ee 100%);
+  background-image: linear-gradient(top, #eaf4fa 0%, #b0d9ee 100%);
+  border: solid 1px #a6cee1;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#eaf4fa', endColorstr='#b0d9ee');
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-primary .oo-ui-buttonedElement-button:hover,
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-primary .oo-ui-buttonedElement-button:focus {
+  border-color: #9dc2d4;
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-primary .oo-ui-buttonedElement-button.oo-ui-buttonedElement-active,
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-primary .oo-ui-buttonedElement-button.oo-ui-buttonedElement-pressed {
+  background: #cde7f4;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #b0d9ee), color-stop(100%, #eaf4fa));
+  background-image: -webkit-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+  background-image: -moz-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+  background-image: -ms-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+  background-image: -o-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+  background-image: linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+  border: solid 1px #a6cee1;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#b0d9ee', endColorstr='#eaf4fa');
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-constructive .oo-ui-buttonedElement-button {
+  background: #daf0be;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #f0fbe1), color-stop(100%, #c3e59a));
+  background-image: -webkit-linear-gradient(top, #f0fbe1 0%, #c3e59a 100%);
+  background-image: -moz-linear-gradient(top, #f0fbe1 0%, #c3e59a 100%);
+  background-image: -ms-linear-gradient(top, #f0fbe1 0%, #c3e59a 100%);
+  background-image: -o-linear-gradient(top, #f0fbe1 0%, #c3e59a 100%);
+  background-image: linear-gradient(top, #f0fbe1 0%, #c3e59a 100%);
+  border: solid 1px #b8d892;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#f0fbe1', endColorstr='#c3e59a');
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-constructive .oo-ui-buttonedElement-button:hover,
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-constructive .oo-ui-buttonedElement-button:focus {
+  border-color: #adcb89;
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-constructive .oo-ui-buttonedElement-button.oo-ui-buttonedElement-active,
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-constructive .oo-ui-buttonedElement-button.oo-ui-buttonedElement-pressed {
+  background: #daf0be;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #c3e59a), color-stop(100%, #f0fbe1));
+  background-image: -webkit-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+  background-image: -moz-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+  background-image: -ms-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+  background-image: -o-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+  background-image: linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+  border: solid 1px #b8d892;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#c3e59a', endColorstr='#f0fbe1');
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-flaggableElement-destructive .oo-ui-buttonedElement-button {
+  color: #d45353;
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button,
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button.oo-ui-buttonedElement-active,
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button.oo-ui-buttonedElement-pressed {
+  color: #333;
+  background: #eee;
+  border-color: #ccc;
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button:hover,
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button.oo-ui-buttonedElement-active:hover,
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button.oo-ui-buttonedElement-pressed:hover,
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button:focus,
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button.oo-ui-buttonedElement-active:focus,
+.oo-ui-buttonedElement-framed.oo-ui-widget-disabled .oo-ui-buttonedElement-button.oo-ui-buttonedElement-pressed:focus {
+  border-color: #ccc;
+  box-shadow: none;
+}
+
+.oo-ui-bookletLayout > .oo-ui-gridLayout > .oo-ui-panelLayout {
+  -webkit-transition: width 250ms ease-in-out, height 250ms ease-in-out, top 250ms ease-in-out, left 250ms ease-in-out;
+     -moz-transition: width 250ms ease-in-out, height 250ms ease-in-out, top 250ms ease-in-out, left 250ms ease-in-out;
+      -ms-transition: width 250ms ease-in-out, height 250ms ease-in-out, top 250ms ease-in-out, left 250ms ease-in-out;
+       -o-transition: width 250ms ease-in-out, height 250ms ease-in-out, top 250ms ease-in-out, left 250ms ease-in-out;
+          transition: width 250ms ease-in-out, height 250ms ease-in-out, top 250ms ease-in-out, left 250ms ease-in-out;
+}
+
+.oo-ui-bookletLayout-outlinePanel {
+  border-right: solid 1px #ddd;
+}
+
+.oo-ui-bookletLayout-outlinePanel .oo-ui-outlineControlsWidget {
+  box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
+}
+
+.oo-ui-fieldsetLayout {
+  border: none;
+}
+
+.oo-ui-fieldsetLayout > legend.oo-ui-labeledElement-label {
+  font-size: 1.5em;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool {
+  margin: -1px 0 -1px -1px;
+  border: solid 1px transparent;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool:first-child {
+  border-bottom-left-radius: 0.25em;
+  border-top-left-radius: 0.25em;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool:last-child {
+  margin-right: -1px;
+  border-top-right-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  opacity: 0.8;
+}
+
+.oo-ui-barToolGroup.oo-ui-widget-enabled .oo-ui-tool.oo-ui-widget-enabled:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.oo-ui-barToolGroup.oo-ui-widget-enabled .oo-ui-tool-active.oo-ui-widget-enabled {
+  background: #f8fbfd;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #f1f7fb), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: -moz-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: -ms-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: -o-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  border-color: rgba(0, 0, 0, 0.2);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#f1f7fb', endColorstr='#ffffff');
+  box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
+}
+
+.oo-ui-barToolGroup.oo-ui-widget-enabled .oo-ui-tool-active.oo-ui-widget-enabled + .oo-ui-tool-active.oo-ui-widget-enabled {
+  border-left-color: rgba(0, 0, 0, 0.1);
+}
+
+.oo-ui-barToolGroup.oo-ui-widget-enabled .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  opacity: 0.2;
+}
+
+.oo-ui-barToolGroup.oo-ui-widget-enabled .oo-ui-tool.oo-ui-widget-enabled .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  opacity: 0.8;
+}
+
+.oo-ui-barToolGroup.oo-ui-widget-enabled .oo-ui-tool.oo-ui-widget-enabled:hover .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  opacity: 1;
+}
+
+.oo-ui-barToolGroup.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  opacity: 0.2;
+}
+
+.oo-ui-listToolGroup.oo-ui-popupToolGroup-active {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.oo-ui-listToolGroup .oo-ui-tool {
+  margin: -1px 0;
+  border: solid 1px transparent;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool-active.oo-ui-widget-enabled {
+  background: #f8fbfd;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #f1f7fb), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: -moz-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: -ms-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: -o-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  border-color: rgba(0, 0, 0, 0.1);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#f1f7fb', endColorstr='#ffffff');
+  box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
+}
+
+.oo-ui-listToolGroup .oo-ui-tool-active.oo-ui-widget-enabled + .oo-ui-tool-active.oo-ui-widget-enabled {
+  border-top-color: rgba(0, 0, 0, 0.1);
+}
+
+.oo-ui-listToolGroup .oo-ui-tool-active.oo-ui-widget-enabled:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-enabled:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-enabled .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  opacity: 0.8;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-enabled:hover .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  opacity: 1;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-tool-title {
+  color: #ccc;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  opacity: 0.2;
+}
+
+.oo-ui-listToolGroup.oo-ui-widget-disabled .oo-ui-indicatedElement-indicator,
+.oo-ui-listToolGroup.oo-ui-widget-disabled .oo-ui-iconedElement-icon {
+  opacity: 0.2;
+}
+
+.oo-ui-menuToolGroup {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.oo-ui-menuToolGroup.oo-ui-widget-enabled:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.oo-ui-menuToolGroup.oo-ui-popupToolGroup-active {
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-enabled:hover {
+  background-color: #e1f3ff;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-tool-title {
+  color: #ccc;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-iconedElement-icon {
+  opacity: 0.2;
+}
+
+.oo-ui-menuToolGroup.oo-ui-widget-disabled {
+  color: #ccc;
+  text-shadow: 0 1px 1px #fff;
+  background-color: #f3f3f3;
+  border-color: #ddd;
+}
+
+.oo-ui-menuToolGroup.oo-ui-widget-disabled .oo-ui-indicatedElement-indicator,
+.oo-ui-menuToolGroup.oo-ui-widget-disabled .oo-ui-iconedElement-icon {
+  opacity: 0.2;
+}
+
+.oo-ui-popupToolGroup-handle .oo-ui-indicatedElement-indicator,
+.oo-ui-popupToolGroup-handle .oo-ui-iconedElement-icon {
+  opacity: 0.8;
+}
+
+.oo-ui-popupToolGroup .oo-ui-toolGroup-tools {
+  background-color: white;
+  border: solid 1px #ccc;
+  box-shadow: 0 0.25em 1em rgba(0, 0, 0, 0.25);
+}
+
+.oo-ui-popupToolGroup-active.oo-ui-widget-enabled {
+  background: #f8fbfd;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #f1f7fb), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: -moz-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: -ms-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: -o-linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  background-image: linear-gradient(top, #f1f7fb 0%, #ffffff 100%);
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#f1f7fb', endColorstr='#ffffff');
+  box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
+}
+
+.oo-ui-optionWidget {
+  padding: 0.5em 2em 0.5em 3em;
+}
+
+.oo-ui-optionWidget-highlighted {
+  background-color: #e1f3ff;
+}
+
+.oo-ui-selectWidget-depressed .oo-ui-optionWidget-selected {
+  background-color: #a7dcff;
+}
+
+.oo-ui-selectWidget-pressed .oo-ui-optionWidget-pressed {
+  background-color: #a7dcff;
+}
+
+.oo-ui-optionWidget.oo-ui-widget-disabled {
+  color: #ccc;
+}
+
+.oo-ui-menuWidget {
+  margin-top: -1px;
+  background: #fff;
+  border: solid 1px #ccc;
+  border-radius: 0 0 0.25em 0.25em;
+  box-shadow: 0 0.15em 1em 0 rgba(0, 0, 0, 0.2);
+}
+
+.oo-ui-popupWidget-popup {
+  background-color: #fff;
+  border: solid 1px #ccc;
+  border-radius: 0.25em;
+  box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
+}
+
+.oo-ui-popupWidget-tailed .oo-ui-popupWidget-tail {
+  width: 15px;
+  height: 8px;
+  margin-left: -7px;
+  background-image: /* @embed */ url(/assets/visual-editor/tail.svg);
+}
+
+.oo-ui-popupWidget-transitioning .oo-ui-popupWidget-popup {
+  -webkit-transition: width 100ms ease-in-out, height 100ms ease-in-out, left 100ms ease-in-out;
+     -moz-transition: width 100ms ease-in-out, height 100ms ease-in-out, left 100ms ease-in-out;
+      -ms-transition: width 100ms ease-in-out, height 100ms ease-in-out, left 100ms ease-in-out;
+       -o-transition: width 100ms ease-in-out, height 100ms ease-in-out, left 100ms ease-in-out;
+          transition: width 100ms ease-in-out, height 100ms ease-in-out, left 100ms ease-in-out;
+}
+
+.oo-ui-popupWidget-body {
+  box-shadow: 0 0 0.66em rgba(0, 0, 0, 0.25);
+}
+
+.oo-ui-buttonGroupWidget {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.oo-ui-buttonOptionWidget {
+  padding: 0;
+}
+
+.oo-ui-buttonOptionWidget.oo-ui-optionWidget-selected,
+.oo-ui-buttonOptionWidget.oo-ui-optionWidget-pressed,
+.oo-ui-buttonOptionWidget.oo-ui-optionWidget-highlighted {
+  background-color: transparent;
+}
+
+.oo-ui-buttonSelectWidget {
+  border-radius: 0.3em;
+}
+
+.oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget .oo-ui-buttonedElement-button {
+  margin-left: -1px;
+  border-radius: 0;
+}
+
+.oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget:first-child .oo-ui-buttonedElement-button {
+  margin-left: 0;
+  border-bottom-left-radius: 0.3em;
+  border-top-left-radius: 0.3em;
+}
+
+.oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget:last-child .oo-ui-buttonedElement-button {
+  border-top-right-radius: 0.3em;
+  border-bottom-right-radius: 0.3em;
+}
+
+.oo-ui-inlineMenuWidget-handle {
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  border-radius: 0.25em;
+}
+
+.oo-ui-inlineMenuWidget-handle:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.oo-ui-inlineMenuWidget-handle .oo-ui-indicatedElement-indicator,
+.oo-ui-inlineMenuWidget-handle .oo-ui-iconedElement-icon {
+  opacity: 0.8;
+}
+
+.oo-ui-inlineMenuWidget.oo-ui-widget-disabled .oo-ui-inlineMenuWidget-handle {
+  color: #ccc;
+  text-shadow: 0 1px 1px #fff;
+  background-color: #f3f3f3;
+  border-color: #ddd;
+}
+
+.oo-ui-inlineMenuWidget.oo-ui-widget-disabled .oo-ui-indicatedElement-indicator {
+  opacity: 0.2;
+}
+
+.oo-ui-menuItemWidget.oo-ui-optionWidget-highlighted {
+  background-color: #e1f3ff;
+}
+
+.oo-ui-menuSectionItemWidget {
+  padding: 0.33em 0.75em;
+  color: #888;
+}
+
+.oo-ui-outlineControlsWidget {
+  background-color: #fff;
+}
+
+.oo-ui-outlineControlsWidget > .oo-ui-iconedElement-icon {
+  opacity: 0.2;
+}
+
+.oo-ui-outlineItemWidget {
+  font-size: 1.1em;
+}
+
+.oo-ui-outlineItemWidget.oo-ui-indicatedElement .oo-ui-labeledElement-label {
+  padding-right: 1.5em;
+}
+
+.oo-ui-outlineItemWidget-level-0 {
+  padding-left: 3.5em;
+}
+
+.oo-ui-outlineItemWidget-level-0 .oo-ui-iconedElement-icon {
+  left: 1em;
+}
+
+.oo-ui-outlineItemWidget-level-1 {
+  padding-left: 5em;
+}
+
+.oo-ui-outlineItemWidget-level-1 .oo-ui-iconedElement-icon {
+  left: 2.5em;
+}
+
+.oo-ui-outlineItemWidget-level-2 {
+  padding-left: 6.5em;
+}
+
+.oo-ui-outlineItemWidget-level-2 .oo-ui-iconedElement-icon {
+  left: 4em;
+}
+
+.oo-ui-selectWidget-depressed .oo-ui-outlineItemWidget.oo-ui-optionWidget-selected {
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+  background-color: #a7dcff;
+}
+
+.oo-ui-outlineItemWidget.oo-ui-flaggableElement-important {
+  font-weight: bold;
+}
+
+.oo-ui-outlineItemWidget.oo-ui-flaggableElement-placeholder {
+  font-style: italic;
+}
+
+.oo-ui-outlineItemWidget.oo-ui-flaggableElement-empty .oo-ui-iconedElement-icon,
+.oo-ui-outlineItemWidget.oo-ui-flaggableElement-empty .oo-ui-indicatedElement-indicator {
+  opacity: 0.5;
+}
+
+.oo-ui-outlineItemWidget.oo-ui-flaggableElement-empty .oo-ui-labeledElement-label {
+  color: #777;
+}
+
+.oo-ui-searchWidget-query {
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+}
+
+.oo-ui-textInputWidget {
+  width: 20em;
+}
+
+.oo-ui-textInputWidget input,
+.oo-ui-textInputWidget textarea {
+  padding: 0.5em;
+  font-family: sans-serif;
+  font-size: 1em;
+  background-color: #fff;
+  border: solid 1px #ccc;
+  border-radius: 0.25em;
+  box-shadow: 0 0 0 white, inset 0 0.1em 0.2em #ddd;
+  -webkit-transition: border-color 200ms, box-shadow 200ms;
+     -moz-transition: border-color 200ms, box-shadow 200ms;
+      -ms-transition: border-color 200ms, box-shadow 200ms;
+       -o-transition: border-color 200ms, box-shadow 200ms;
+          transition: border-color 200ms, box-shadow 200ms;
+}
+
+.oo-ui-textInputWidget-decorated input,
+.oo-ui-textInputWidget-decorated textarea {
+  padding-left: 2em;
+}
+
+.oo-ui-textInputWidget-icon {
+  width: 2em;
+}
+
+.oo-ui-textInputWidget.oo-ui-widget-enabled input:focus,
+.oo-ui-textInputWidget.oo-ui-widget-enabled textarea:focus {
+  border-color: #a7dcff;
+  outline: none;
+  box-shadow: 0 0 0.3em #a7dcff, 0 0 0 white;
+}
+
+.oo-ui-textInputWidget input[readonly],
+.oo-ui-textInputWidget textarea[readonly] {
+  color: #777;
+  text-shadow: 0 1px 1px #fff;
+}
+
+.oo-ui-textInputWidget-pending input,
+.oo-ui-textInputWidget-pending textarea {
+  background-color: transparent;
+}
+
+.oo-ui-textInputWidget.oo-ui-widget-disabled input,
+.oo-ui-textInputWidget.oo-ui-widget-disabled input:focus,
+.oo-ui-textInputWidget.oo-ui-widget-disabled textarea,
+.oo-ui-textInputWidget.oo-ui-widget-disabled textarea:focus {
+  color: #ccc;
+  text-shadow: 0 1px 1px #fff;
+  background-color: #f3f3f3;
+  border-color: #ddd;
+}
+
+.oo-ui-toggleSwitchWidget {
+  background: #eeeeee;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #dddddd), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+  background-image: -moz-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+  background-image: -ms-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+  background-image: -o-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+  background-image: linear-gradient(top, #dddddd 0%, #ffffff 100%);
+  border: solid 1px #ccc;
+  border-radius: 1em;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#dddddd', endColorstr='#ffffff');
+  box-shadow: 0 0 0 white, inset 0 0.1em 0.2em #ddd;
+}
+
+.oo-ui-toggleSwitchWidget.oo-ui-widget-disabled {
+  opacity: 0.5;
+}
+
+.oo-ui-toggleSwitchWidget-grip {
+  background: #eeeeee;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #ffffff), color-stop(100%, #dddddd));
+  background-image: -webkit-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+  background-image: -moz-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+  background-image: -ms-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+  background-image: -o-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+  background-image: linear-gradient(top, #ffffff 0%, #dddddd 100%);
+  border: 1px #c9c9c9 solid;
+  border-radius: 1em;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#ffffff', endColorstr='#dddddd');
+  box-shadow: 0 0.1em 0.25em rgba(0, 0, 0, 0.1);
+}
+
+.oo-ui-toggleSwitchWidget.oo-ui-widget-enabled:hover,
+.oo-ui-toggleSwitchWidget.oo-ui-widget-enabled:hover .oo-ui-toggleSwitchWidget-grip {
+  border-color: #aaa;
+}
+
+.oo-ui-toggleSwitchWidget .oo-ui-toggleSwitchWidget-glow {
+  background: #cde7f4;
+  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0%, #b0d9ee), color-stop(100%, #eaf4fa));
+  background-image: -webkit-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+  background-image: -moz-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+  background-image: -ms-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+  background-image: -o-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+  background-image: linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+  border-radius: 1em;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#b0d9ee', endColorstr='#eaf4fa');
+  box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+}
+
+.oo-ui-toggleWidget-on .oo-ui-toggleSwitchWidget-glow {
+  opacity: 1;
+}
+
+.oo-ui-toggleWidget-off .oo-ui-toggleSwitchWidget-glow {
+  display: block;
+  opacity: 0;
+}
+/*!
+ * VisualEditor Standalone Initialization styles.
  *
  * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* Demo */
-
-.ve-demo-menu {
-  list-style: none;
-  margin: 0 0 1em 0;
-  display: inline-block;
+.ve-ce-documentNode {
+	font-size: 0.8em;
 }
 
-.ve-demo-menu li {
-  list-style: none;
-  margin: 0 0.75em 0 0;
-  padding: 0;
-  display: inline-block;
+.oo-ui-menuWidget {
+	font-size: 0.9em;
 }
 
-.ve-demo-error,
-.ve-demo-utilities {
-  margin: 1em 2.5em;
-  border: solid 1px #ccc;
-  border-radius: 0.5em;
-  padding: 1em 2em;
-  font-size: 0.8em;
-  box-shadow: 0 0.25em 1.5em 0 #ddd;
+/*!
+ * VisualEditor Initialization Debug Bar styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-init-debugBar-commands {
+	font-size: 0.8em;
 }
 
-.ve-demo-error {
-  color: #d45353;
-  margin-bottom: 0;
-  -webkit-border-bottom-right-radius: 0;
-  -moz-border-bottom-right-radius: 0;
-  -o-border-bottom-right-radius: 0;
-  border-bottom-right-radius: 0;
-  -webkit-border-bottom-left-radius: 0;
-  -moz-border-bottom-left-radius: 0;
-  -o-border-bottom-left-radius: 0;
-  border-bottom-left-radius: 0;
+.ve-init-debugBar-commands > .oo-ui-widget,
+.ve-init-debugBar-commands-divider {
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 1em;
 }
 
-.ve-demo-error:empty {
-  display: none;
+.ve-init-debugBar-commands .oo-ui-textInputWidget {
+	width: 4em;
 }
 
-.ve-demo-utilities {
-  margin-top: 0;
-  border-top-width: 0;
-  -webkit-border-top-right-radius: 0;
-  -moz-border-top-right-radius: 0;
-  -o-border-top-right-radius: 0;
-  border-top-right-radius: 0;
-  -webkit-border-top-left-radius: 0;
-  -moz-border-top-left-radius: 0;
-  -o-border-top-left-radius: 0;
-  border-top-left-radius: 0;
+.ve-init-debugBar-commands-divider {
+	border-right: 1px solid #ddd;
+	padding-left: 0.2em;
+	width: 0;
 }
 
-.ve-demo-utilities-commands .oo-ui-widget,
-.ve-demo-utilities-commands-divider {
-  display: inline-block;
-  margin-right: 1em;
+.ve-init-debugBar-dump {
+	font-size: 0.7em;
+	margin-top: 2em;
+	display: none;
+	background-color: #f3f3f3;
+	width: 100%;
+	border: 1px solid #ddd;
+	border-radius: 0;
+	border-top-right-radius: 0.25em;
+	border-top-left-radius: 0.25em;
 }
 
-.ve-demo-utilities-commands .oo-ui-textInputWidget {
-  width: 4em;
+.ve-init-debugBar-dump td {
+	padding: 0.25em 1em;
+	background-color: #fff;
+	vertical-align: top;
 }
 
-.ve-demo-utilities-commands-divider {
-  border-right: solid 1px #ddd;
-  padding-left: 0.2em;
-  width: 0;
+.ve-init-debugBar-dump-linmod {
+	width: 30%;
 }
 
-.ve-demo-dump {
-  margin: 2em 0 1.5em 0;
-  display: none;
-  background-color: #f3f3f3;
-  width: 100%;
-  font-size: 0.9em;
-  border: solid 1px #ddd;
-  border-radius: 0;
-  -webkit-border-top-right-radius: 0.25em;
-  -moz-border-top-right-radius: 0.25em;
-  -o-border-top-right-radius: 0.25em;
-  border-top-right-radius: 0.25em;
-  -webkit-border-top-left-radius: 0.25em;
-  -moz-border-top-left-radius: 0.25em;
-  -o-border-top-left-radius: 0.25em;
-  border-top-left-radius: 0.25em;
+.ve-init-debugBar-dump th {
+	padding: 0.5em 1em;
+	color: #555;
+	text-shadow: 0 1px 1px #fff;
 }
 
-.ve-demo-dump td {
-  padding: 0.25em 1em;
-  background-color: #fff;
+.ve-init-debugBar-dump ol {
+	padding-left: 1.5em;
+	color: #999;
 }
 
-.ve-demo-dump th {
-  padding: 0.5em 1em;
-  color: #555;
-  text-shadow: 0 1px 1px #fff;
+.ve-init-debugBar-dump li > span {
+	display: inline-block;
+	background-color: #f3f3f3;
+	border-radius: 0.3em;
+	margin: 0.25em 0 0.25em 0;
+	padding: 0.125em 0.5em;
+	text-shadow: 0 1px 1px #fff;
+	color: #000;
 }
 
-.ve-demo-dump ol {
-  padding-left: 1.5em;
-  color: #999;
+.ve-init-debugBar-dump li > span > span {
+	color: #aaa;
+	text-shadow: 0 1px 1px #fff;
 }
 
-.ve-demo-dump li > span {
-  display: inline-block;
-  background-color: #f3f3f3;
-  border-radius: 0.3em;
-  margin: 0.25em 0 0.25em 0;
-  padding: 0.125em 0.5em;
-  text-shadow: 0 1px 1px #fff;
-  color: #000;
+.ve-init-debugBar-dump li .ve-init-debugBar-dump-element {
+	background-color: #ddeeff;
 }
 
-.ve-demo-dump li > span > span {
-  color: #aaa;
-  text-shadow: 0 1px 1px #fff;
+.ve-init-debugBar-dump li .ve-init-debugBar-dump-char {
+	background-color: #ddffee;
 }
 
-.ve-demo-dump li .ve-demo-dump-element {
-  background-color: #ddeeff;
+.ve-init-debugBar-dump li .ve-init-debugBar-dump-achar {
+	background-color: #ffeedd;
 }
 
-.ve-demo-dump li .ve-demo-dump-char {
-  background-color: #ddffee;
+/*!
+ * VisualEditor ContentEditable AlienNode styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/* Fix weird Chrome native selection involving floated elements */
+.ve-ce-alienBlockNode:before,
+.ve-ce-alienBlockNode:after {
+	content: '';
 }
 
-.ve-demo-dump li .ve-demo-dump-achar {
-  background-color: #ffeedd;
+.ve-ce-alienBlockNode {
+	display: block;
 }
 
-/* Editor */
-
-.ve-ui-surface {
-  margin: 2em 0 0 0;
-  margin-top: 0;
-  box-shadow: 0 0.25em 1.5em 0 #ddd;
-  border-radius: 0.5em;
+.ve-ce-alienInlineNode  {
+	display: inline;
 }
+
+.ve-ce-alienNode-phantom {
+	background-color: #C3E59A;
+	background-image: -ms-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
+	background-image: -webkit-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
+	background-image: -moz-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px);
+	background-image: repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
+	background-size: 14px 14px;
+	box-shadow: none;
+	cursor: not-allowed;
+}
+
+/*!
+ * VisualEditor ContentEditable BranchNode styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ce-branchNode-blockSlugWrapper {
+	background-color: transparent;
+	outline: transparent dashed 1px;
+	outline-offset: 10px;
+	-webkit-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+	-moz-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+	-o-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+	transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+}
+
+.ve-ce-branchNode-blockSlugWrapper .ve-ce-branchNode-blockSlug {
+	overflow: hidden;
+	-webkit-transition: font-size 200ms ease-out, margin 200ms ease-out;
+	-moz-transition: font-size 200ms ease-out, margin 200ms ease-out;
+	-o-transition: font-size 200ms ease-out, margin 200ms ease-out;
+	transition: font-size 200ms ease-out, margin 200ms ease-out;
+}
+
+.ve-ce-branchNode-blockSlugWrapper-unfocused {
+	margin: 0 0 -0.2em 0;
+	outline-offset: 0;
+}
+
+.ve-ce-branchNode-blockSlugWrapper-unfocused:hover {
+	outline-color: #ccc;
+	/* rgba(#f1f7fb, 0.5) */
+	background-color: rgba(241, 247, 251, 0.75);
+}
+
+.ve-ce-branchNode-blockSlugWrapper-unfocused .ve-ce-branchNode-blockSlug {
+	font-size: 0.8em;
+	margin: 0.2em 0;
+}
+
+/* Pre-formatted node styling */
+
+pre.ve-ce-branchNode {
+	white-space: pre-wrap;
+}
+
+/* Hack for empty headings and paragraphs; can't use min-height because of IE */
+
+.ve-ce-branchNode h1:empty:before,
+.ve-ce-branchNode h2:empty:before,
+.ve-ce-branchNode h3:empty:before,
+.ve-ce-branchNode h4:empty:before,
+.ve-ce-branchNode h5:empty:before,
+.ve-ce-branchNode h6:empty:before,
+.ve-ce-branchNode p:empty:before {
+	content: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+}
+
+/* Emulate the first paragraph in each list item being unwrapped */
+
+/* TODO use CSS class for wrapper paragraph */
+li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
+	margin: 0;
+	padding: 0;
+}
+
+/*!
+ * VisualEditor ContentEditable DocumentNode styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
 
 .ve-ce-documentNode {
-  border: solid 1px #ccc;
-  border-top: none;
-  padding: 0.75em 1.5em;
+	cursor: text;
+	overflow: hidden;
 }
 
-.ve-init-sa-target-toolbar .oo-ui-toolbar-bar {
-  border: solid 1px #ccc;
-  border-radius: 0;
-  -webkit-border-top-right-radius: 0.25em;
-  -moz-border-top-right-radius: 0.25em;
-  -o-border-top-right-radius: 0.25em;
-  border-top-right-radius: 0.25em;
-  -webkit-border-top-left-radius: 0.25em;
-  -moz-border-top-left-radius: 0.25em;
-  -o-border-top-left-radius: 0.25em;
-  border-top-left-radius: 0.25em;
+/*
+ * Don't bother with -moz-selection becase Firefox 24 only
+ * supports overriding text selection colour, not images
+ * (i.e. any focusable nodes)
+ */
+.ve-ce-documentNode::selection,
+.ve-ce-documentNode *::selection {
+	background: rgba(109, 169, 247, 0.5); /* #6da9f7 */
 }
 
-.ve-init-sa-target-toolbar.ve-ui-toolbar-floating .oo-ui-toolbar-bar {
-  border-top: none;
-  border-radius: 0;
+/* Prevent focus outline on editor */
+.ve-ce-documentNode[contenteditable="true"]:focus {
+	outline: none;
+}
+
+/*!
+ * VisualEditor ContentEditable FocusableNode styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ce-focusableNode-highlight {
+	background: #6da9f7;
+	position: absolute;
+}
+
+/*!
+ * VisualEditor ContentEditable GeneratedContentNode styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/* Prevent GeneratedContentNode wrappers from being interacted with  */
+.ve-ce-generatedContentNode {
+	pointer-events: none;
+}
+
+/* Allow GeneratedContentNode content to be interacted with  */
+.ve-ce-generatedContentNode .ve-ce-protectedNode-shield {
+	pointer-events: all;
+}
+
+.ve-ce-generatedContentNode-generating {
+	opacity: 0.5;
+}
+
+/*!
+ * VisualEditor ContentEditable ImageNode styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ce-imageNode {
+	cursor: default;
+}
+
+/*!
+ * VisualEditor ContentEditable LanguageAnnotation styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ce-LanguageAnnotation {
+	border-bottom: 1px dashed #ccc;
+	background-color: #ebf3f5;
+}
+
+/*!
+ * VisualEditor ContentEditable ProtectedNode styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ce-protectedNode,
+.ve-ce-protectedNode * {
+	position: relative !important;
+	top: 0 !important;
+	left: 0 !important;
+	bottom: 0 !important;
+	right: 0 !important;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.ve-ce-protectedNode::-moz-selection,
+.ve-ce-protectedNode *::-moz-selection {
+	background: transparent;
+}
+
+.ve-ce-protectedNode-shield {
+	position: absolute !important;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: transparent !important;
+	-webkit-user-select: auto;
+	-moz-user-select: element;
+	-ms-user-select: element;
+	user-select: element;
+}
+
+.ve-ce-protectedNode-phantom {
+	position: absolute;
+	background-color: rgba(104, 171, 255, 0.1);
+	box-shadow: inset 0 0 0 1px #68abff;
+	cursor: default;
+}
+
+/*!
+ * VisualEditor RelocatableNode Node styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ce-relocatableNode-marker {
+	cursor: move;
+	position: absolute;
+}
+
+.ve-ce-relocatableNode-marker.relocating {
+	background: rgba(0, 0, 0, 1);
+}
+
+/*!
+ * VisualEditor ContentEditable ResizableNode styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ce-resizableNode-handles {
+	position: absolute;
+	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.ve-ce-resizableNode-handles div {
+	position: absolute;
+	width: 11px;
+	height: 11px;
+	background-repeat: no-repeat;
+}
+
+.ve-ce-resizableNode-nwHandle {
+	cursor: nw-resize;
+	left: -6px;
+	top: -6px;
+}
+
+.ve-ce-resizableNode-neHandle {
+	cursor: ne-resize;
+	right: -6px;
+	top: -6px;
+}
+
+.ve-ce-resizableNode-swHandle {
+	cursor: sw-resize;
+	bottom: -6px;
+	left: -6px;
+}
+
+.ve-ce-resizableNode-seHandle {
+	cursor: se-resize;
+	bottom: -6px;
+	right: -6px;
+}
+
+.ve-ce-resizableNode-sizeLabel {
+	position: absolute;
+	text-align: center;
+	opacity: 0;
+	-webkit-transition: opacity 200ms;
+	-moz-transition: opacity 200ms;
+	-o-transition: opacity 200ms;
+	transition: opacity 200ms;
+}
+
+.ve-ce-resizableNode-sizeLabel-resizing {
+	opacity: 0.75;
+}
+
+.ve-ce-resizableNode-sizeText {
+	font-size: 0.8em;
+	padding: 0.25em 0.5em;
+	border: 1px solid #ccc;
+	background-color: white;
+	border-radius: 0.3em;
+	white-space: nowrap;
+}
+
+.ve-ce-resizableNode-sizeText span:not(:first-child) {
+	margin-left: 0.4em;
+	padding-left: 0.4em;
+	border-left: 1px solid #ccc;
+}
+
+.ve-ce-resizableNode-sizeText-warning {
+	background-color: #ecc;
+	border-color: #caa;
+}
+
+/*!
+ * VisualEditor ContentEditable Surface styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ce-surface {
+	overflow: hidden;
+	font-size: 1em; /* to look more like MediaWiki use: 0.8em */;
+}
+
+.ve-ce-surface-textarea {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+	color: white;
+	background-color: #fff;
+	border: none;
+	padding: 0;
+	margin: 0;
+	width: 1px;
+}
+
+.ve-ce-surface-textarea:focus {
+	outline: none;
+}
+
+.ve-ce-surface-cursor {
+	position: absolute;
+	background-color: #000;
+	width: 1px;
+	display: none;
+}
+
+/* @noflip */
+.ve-ce-surface-phantoms {
+	left: 0;
+	opacity: 0.75;
+	position: absolute;
+	top: 0;
+}
+
+/* @noflip */
+.ve-ce-surface-highlights {
+	left: 0;
+	opacity: 0.5;
+	pointer-events: none;
+	position: absolute;
+	top: 0;
+}
+
+.ve-ce-surface-paste {
+	height: 1px;
+	left: 0;
+	opacity: 0;
+	overflow: hidden;
+	position: fixed;
+	top: 0;
+	width: 1px;
+}
+
+.ve-ce-surface-paste * {
+	height: 1px !important;
+	width: 1px !important;
+}
+
+/* MediaWiki PHP Parser does not wrap text inside image captions in <p> but we do (cause we have to).
+ * Let's make those <p> looks like they are not there by proper CSS styling.
+ */
+/*csslint overqualified-elements:false */
+.ve-ce-surface .thumbcaption p.ve-ce-generated-wrapper {
+	display: inline;
+	padding: 0;
+	line-height: inherit;
+}
+
+.ve-ce-surface .thumbcaption .ve-ce-branchNode-slug {
+	display: none;
+}
+
+/*!
+ * VisualEditor UserInterface CommandHelpDialog styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-commandHelpDialog-container {
+	-ms-column-count: 2;
+	-moz-column-count: 2;
+	-webkit-column-count: 2;
+	column-count: 2;
+	margin: 0 3em;
+	/*
+	 * Hack 1.1: The height isn't calculated correctly with the inline-block
+	 * hack so fix it to prevent unnecessary scroll bars.
+	 */
+	height: 37em;
+}
+
+.ve-ui-commandHelpDialog-section {
+	/*
+	 * Hack 1: Prevent splitting over columns. This should be done with
+	 * column-break-inside but it's not well supported yet.
+	 */
+	display: inline-block;
+	width: 100%;
+}
+
+.ve-ui-commandHelpDialog-section h3 {
+	margin: 1em 0;
+	padding: 0;
+}
+
+.ve-ui-commandHelpDialog-list {
+	margin: 1em 0;
+}
+
+.ve-ui-commandHelpDialog-list dd {
+	float: left;
+	width: 45%;
+	margin: 0;
+}
+
+.ve-ui-commandHelpDialog-list dt {
+	float: left;
+	clear: left;
+	width: 40%;
+	text-align: right;
+	margin-right: 1em;
+	font-weight: bold;
+}
+
+.ve-ui-commandHelpDialog-list dd,
+.ve-ui-commandHelpDialog-list dt {
+	line-height: 110%;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+/*!
+ * VisualEditor UserInterface Context styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-desktopContext,
+.ve-ui-desktopContext-inspectors,
+.ve-ui-desktopContext-menu {
+	position: absolute;
+}
+
+.ve-ui-desktopContext-menu .oo-ui-toolbar-bar {
+	white-space: nowrap;
+	border: none;
+	background: none;
+}
+
+.ve-ui-desktopContext-menu .oo-ui-toolGroup {
+	border: none;
+	margin: 0;
+}
+
+.ve-ui-desktopContext-menu .oo-ui-tool,
+.ve-ui-desktopContext-menu .oo-ui-tool:hover {
+	border: none;
+}
+
+.ve-ui-desktopContext-menu .oo-ui-tool:active,
+.ve-ui-desktopContext-menu .oo-ui-tool-active {
+	background-image: none;
+}
+
+.ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
+	margin-top: 0.25em;
+}
+
+/* @noflip */
+.ltr .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
+	margin-left: -0.5em;
+}
+
+/* @noflip */
+.rtl .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
+	margin-left: 0.5em;
+}
+
+.ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-context-menu {
+	right: 0;
+}
+
+/* HACK: Compensate for oo-ui-frame-content setting the font size to 0.8em */
+.oo-ui-frame-content .ve-ui-desktopContext .oo-ui-popupWidget {
+	font-size: 1.25em;
+}
+
+/*!
+ * VisualEditor FormatTool styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-paragraph .oo-ui-tool-title {
+	font-weight: normal;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-tool-title {
+	font-size: 150%;
+	font-weight: normal;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-tool-title {
+	font-size: 120%;
+	font-weight: normal;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading3 .oo-ui-tool-title {
+	font-size: 105%;
+	font-weight: bold;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading4 .oo-ui-tool-title {
+	font-size: 92%;
+	font-weight: bold;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading5 .oo-ui-tool-title {
+	font-size: 80%;
+	font-weight: bold;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading6 .oo-ui-tool-title {
+	font-size: 64%;
+	font-weight: bold;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-preformatted .oo-ui-tool-title {
+	font-family: monospace, "Courier New";
+}
+
+/*!
+ * ObjectOriented UserInterface Inspector styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-inspector {
+	-webkit-transition: opacity 100ms;
+	-moz-transition: opacity 100ms;
+	-o-transition: opacity 100ms;
+	transition: opacity 100ms;
+}
+
+.ve-ui-inspector-content .ve-ui-inspector-closeButton {
+	float: left;
+}
+
+.ve-ui-inspector-content .ve-ui-inspector-removeButton {
+	float: right;
+}
+
+.ve-ui-inspector-content .oo-ui-window-body form {
+	margin: 0.25em 0 0 0;
+	padding: 0;
+	white-space: nowrap;
+}
+
+/*!
+ * VisualEditor UserInterface LanguageInputWidget styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-languageInputWidget-languageTextInput {
+	width: 10em;
+}
+
+.ve-ui-languageInputWidget-directionSelect {
+	margin-bottom: 0.5em;
+}
+/*!
+ * VisualEditor UserInterface MediaSizeWidget styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-mediaSizeWidget-input-hasError input[type="text"] {
+	background: #ffc2c2;
+}
+
+/*!
+ * ObjectOriented UserInterface SpecialCharacterInspector styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-specialchar-spinner {
+	/* There might be a better place for a spinner? */
+	/* @embed */
+	background-image: url(/assets/visual-editor/spinner.gif);
+	width: 31px;
+	height: 31px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.ve-specialchar-list h3 {
+	font-size: 1em;
+	text-transform: capitalize;
+}
+
+.ve-specialchar-list-group {
+	white-space: normal;
+}
+
+.ve-specialchar-list-character {
+	cursor: pointer;
+	font-size: 1.5em;
+	line-height: 1.5em;
+	width: 1.5em;
+	height: 1.5em;
+	text-align: center;
+	display: inline-block;
+	margin: 0 1px 1px 0;
+	border: 1px solid #e6e6e6;
+	-webkit-transition: border-color 100ms;
+	-moz-transition: border-color 100ms;
+	-o-transition: border-color 100ms;
+	transition: border-color 100ms;
+}
+
+.ve-specialchar-list-character:hover {
+	border-color: #ccc;
+}
+
+/*!
+ * VisualEditor Surface styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-surface {
+	position: relative;
+}
+
+.ve-ui-surface:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+.ve-ui-surface-overlay {
+	font-family: sans-serif;
+	line-height: 1.5em;
+	font-size: 1em;
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+}
+
+.ve-ui-surface-overlay-local {
+	z-index: 1;
+}
+
+/*!
+ * VisualEditor UserInterface SurfaceWidget styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-surfaceWidget-surface {
+	border: 1px solid #ddd;
+	border-radius: 0.25em;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+}
+
+.ve-ui-surfaceWidget-surface .ve-ce-documentNode {
+	padding: 1.875em; /* 1.5/0.8 */
+}
+
+.ve-ui-surfaceWidget-toolbar {
+	font-size: 1.25em;
+}
+
+.ve-ui-surfaceWidget-toolbar > .oo-ui-toolbar-bar {
+	border: 1px solid #ddd;
+	border-radius: 0.25em;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-width: 0;
+}
+
+/*!
+ * VisualEditor Toolbar styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.oo-ui-toolbar-bar {
+	position: relative;
+}
+
+.ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
+	position: fixed;
+	top: 0;
+	z-index: 100;
+	border-top: none;
+}
+
+.ve-ui-toolbar-floating .oo-ui-toolbar-shadow {
+	opacity: 0.5;
+}
+
+/*!
+ * VisualEditor UserInterface vector icon styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+/*csslint duplicate-background-images:false */
+
+.oo-ui-icon-align-center {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/align-center.svg);
+}
+
+.oo-ui-icon-align-float-left {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/align-float-left.svg);
+}
+
+.oo-ui-icon-align-float-right {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/align-float-right.svg);
+}
+
+.oo-ui-icon-bold-a {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-a.svg);
+}
+
+.oo-ui-icon-bold-b {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-b.svg);
+}
+
+.oo-ui-icon-bold-arab-ain {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-arab-ain.svg);
+}
+
+.oo-ui-icon-bold-arab-dad {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-arab-dad.svg);
+}
+
+.oo-ui-icon-bold-cyrl-be {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-cyrl-be.svg);
+}
+
+.oo-ui-icon-bold-cyrl-te {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-cyrl-te.svg);
+}
+
+.oo-ui-icon-bold-cyrl-zhe {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-cyrl-zhe.svg);
+}
+
+.oo-ui-icon-bold-f {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-f.svg);
+}
+
+.oo-ui-icon-bold-g {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-g.svg);
+}
+
+.oo-ui-icon-bold-geor-man {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-geor-man.svg);
+}
+
+.oo-ui-icon-bold-l {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-l.svg);
+}
+
+.oo-ui-icon-bold-n {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-n.svg);
+}
+
+.oo-ui-icon-bold-v {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bold-v.svg);
+}
+
+.oo-ui-icon-bullet-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bullet-list-ltr.svg);
+}
+
+/* @noflip */
+.ve-ui-dir-block-rtl .oo-ui-icon-bullet-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bullet-list-rtl.svg);
+}
+
+/* @noflip */
+.ve-ui-dir-block-ltr .oo-ui-icon-bullet-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/bullet-list-ltr.svg);
+}
+
+.oo-ui-icon-indent-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/indent-list-ltr.svg);
+}
+
+/* @noflip */
+.ve-ui-dir-block-rtl .oo-ui-icon-indent-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/indent-list-rtl.svg);
+}
+
+/* @noflip */
+.ve-ui-dir-block-ltr .oo-ui-icon-indent-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/indent-list-ltr.svg);
+}
+
+.oo-ui-icon-italic-a {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/italic-a.svg);
+}
+
+.oo-ui-icon-italic-c {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/italic-c.svg);
+}
+
+.oo-ui-icon-italic-d {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/italic-d.svg);
+}
+
+.oo-ui-icon-italic-e {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/italic-e.svg);
+}
+
+.oo-ui-icon-italic-s {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/italic-s.svg);
+}
+
+.oo-ui-icon-italic-arab-meem {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/italic-arab-meem.svg);
+}
+
+.oo-ui-icon-italic-arab-keheh-jeem {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/italic-arab-keheh-jeem.svg);
+}
+
+.oo-ui-icon-italic-geor-kan {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/italic-geor-kan.svg);
+}
+
+.oo-ui-icon-italic-i {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/italic-i.svg);
+}
+
+.oo-ui-icon-italic-k,
+.oo-ui-icon-italic-cyrl-ka {
+	/* Latin K and Cyrillic Ka use same glyph */
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/italic-k.svg);
+}
+
+.oo-ui-icon-language {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/language.svg); }
+
+.oo-ui-icon-number-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/number-list-ltr.svg);
+}
+
+/* @noflip */
+.ve-ui-dir-block-rtl .oo-ui-icon-number-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/number-list-rtl.svg);
+}
+
+/* @noflip */
+.ve-ui-dir-block-ltr .oo-ui-icon-number-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/number-list-ltr.svg);
+}
+
+.oo-ui-icon-outdent-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/outdent-list-ltr.svg);
+}
+
+/* @noflip */
+.ve-ui-dir-block-rtl .oo-ui-icon-outdent-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/outdent-list-rtl.svg);
+}
+
+/* @noflip */
+.ve-ui-dir-block-ltr .oo-ui-icon-outdent-list {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/outdent-list-ltr.svg);
+}
+
+.oo-ui-icon-special-character {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/special-character.svg);
+}
+
+.oo-ui-icon-strikethrough-a {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/strikethrough-a.svg);
+}
+
+.oo-ui-icon-strikethrough-s {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/strikethrough-s.svg);
+}
+
+.oo-ui-icon-strikethrough-y {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/strikethrough-y.svg);
+}
+
+.oo-ui-icon-subscript {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/subscript.svg);
+}
+
+.oo-ui-icon-superscript {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/superscript.svg);
+}
+
+/* @noflip */
+.oo-ui-icon-text-dir-ltr {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/text-dir-ltr.svg);
+}
+
+/* @noflip */
+.oo-ui-icon-text-dir-rtl {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/text-dir-rtl.svg);
+}
+
+.oo-ui-icon-text-style {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/text-style.svg);
+}
+
+.oo-ui-icon-underline-a {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/underline-a.svg);
+}
+
+.oo-ui-icon-underline-u {
+	/* @embed */
+	background-image: url(/assets/visual-editor/icons/underline-u.svg);
+}
+
+.ve-ui-icon-resize-nw-se {
+	background-image: url(/assets/visual-editor/resize-nw-se.svg);
+}
+
+.ve-ui-icon-resize-ne-sw {
+	background-image: url(/assets/visual-editor/resize-ne-sw.svg);
+}
+
+/*!
+ * ObjectOriented UserInterface Inspector styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-inspector .oo-ui-frame {
+	width: 17.25em;
+	height: 3em;
+}
+
+.ve-ui-inspector-content .oo-ui-window-head {
+	height: 2em;
+	padding: 0.5em;
+}
+
+.ve-ui-inspector-content .oo-ui-window-icon {
+	padding-left: 0.5em;
+	margin-left: 0.25em;
+	border-left: solid 1px #eee;
+}
+
+/*!
+ * VisualEditor UserInterface MobileContext styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/* Most vendor prefixes are not needed on mobile devices */
+/*csslint compatible-vendor-prefixes:false */
+
+.ve-ui-mobileContext {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: #fff;
+
+	opacity: .5;
+	-webkit-transform: translate3d(0, -100%, 0);
+	transform: translate3d(0, -100%, 0);
+	/* needed for iOS, where translate by 100% sometimes fails and a hidden
+	 * context ends up preventing interaction with the toolbar and part of
+	 * the surface */
+	visibility: hidden;
+
+	-webkit-transition: -webkit-transform .3s, opacity .3s, visibility 0s .3s;
+	transition: transform .3s, opacity .3s, visibility 0s .3s;
+}
+
+.ve-ui-mobileContext-visible {
+	opacity: 1;
+	-webkit-transform: none;
+	transform: none;
+	visibility: visible;
+
+	-webkit-transition: -webkit-transform .3s, opacity .3s;
+	transition: transform .3s, opacity .3s;
+}
+
+.ve-ui-mobileContext-enabled {
+	height: 100%;
+	overflow: hidden;
+}
+
+.ve-ui-mobileContext-enabled .ve-ui-surface-overlay-global {
+	height: 100%;
+}
+
+/* inspector styles */
+
+.ve-ui-mobileContext .oo-ui-frame {
+	width: 100%;
 }

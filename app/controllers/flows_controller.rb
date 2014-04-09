@@ -3,7 +3,7 @@ class FlowsController < ApplicationController
   before_action :verify_admin!
 
   def index
-    render json: FlowManagerData.new(current_user).flows, each_serializer: FlowSerializer
+    render json: current_user.user_settings.flows, each_serializer: FlowSerializer
   end
 
   def create

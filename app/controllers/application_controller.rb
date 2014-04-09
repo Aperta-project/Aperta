@@ -22,4 +22,9 @@ class ApplicationController < ActionController::Base
     # TODO: render HTML if the requested format is HTML
     render status: 422, json: {errors: e.record.errors}
   end
+
+  # customize devise signout path
+  def after_sign_out_path_for(resource_or_scope)
+    new_user_session_path
+  end
 end

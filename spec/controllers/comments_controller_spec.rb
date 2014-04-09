@@ -13,13 +13,11 @@ describe CommentsController do
   before { sign_in user }
 
   describe 'POST create' do
-    let(:permitted_params) { [:commenter_id, :body] }
     subject(:do_request) do
       post :create, format: :json,
-        paper_id: paper.id,
-        task_id: message_task.id,
         comment: {commenter_id: user.id,
-                  body: "My comment"}
+                  body: "My comment",
+                  message_task_id: message_task.id}
     end
 
     context "the user can't see the task's paper" do
@@ -40,17 +38,10 @@ describe CommentsController do
 
       it "returns the new comment as json" do
         do_request
-        expect(response).to be_success
         json = JSON.parse(response.body)
-        expect(json["comment"].keys).to include("taskId", "commenterId", "body", "createdAt")
+        expect(json["comment"]["id"]).to eq(Comment.last.id)
       end
       it_behaves_like "an unauthenticated json request"
-
-      it_behaves_like "a controller enforcing strong parameters" do
-        let(:params_task_id) { message_task.to_param }
-        let(:model_identifier) { :comment }
-        let(:expected_params) { permitted_params }
-      end
     end
   end
 end

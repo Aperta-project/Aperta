@@ -2,7 +2,6 @@ a = DS.attr
 ETahi.Task = DS.Model.extend
   assignee: DS.belongsTo('user')
   assignees: DS.hasMany('user')
-  comments: DS.hasMany('comment')
   phase: DS.belongsTo('phase')
 
   body: a('string')
@@ -29,7 +28,7 @@ ETahi.PaperAdminTask = ETahi.Task.extend
   admin: DS.belongsTo('user')
 
 ETahi.AuthorsTask = ETahi.Task.extend
-  authors: Ember.computed.alias('phase.paper.authorsArray')
+  authors: Ember.computed.alias('paper.authorsArray')
 
 ETahi.DeclarationTask = ETahi.Task.extend
   declarations: Ember.computed.alias('paper.declarations')
@@ -55,7 +54,8 @@ ETahi.RegisterDecisionTask = ETahi.Task.extend
     JSON.parse(@get('decisionLetters')).Revise
   ).property 'decisionLetters'
 
+ETahi.ReviewerReportTask = ETahi.Task.extend
+  paperReview: DS.belongsTo('paperReview')
 
 ETahi.TechCheckTask = ETahi.Task.extend()
-ETahi.ReviewerReportTask = ETahi.Task.extend()
 ETahi.UploadManuscriptTask = ETahi.Task.extend()

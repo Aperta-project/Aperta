@@ -1,6 +1,0 @@
-- if Rails.env.test?
-  - if @all_submitted_papers
-    %h3 All Submitted Papers
-    %ul.all_submitted
-      - @all_submitted_papers.each do |paper|
-        %li= link_to paper.short_title, paper_path(paper)

@@ -93,9 +93,7 @@ textarea { resize: none; }
   color: #999;
 }
 
-.editable, .title {
-  margin-bottom: 36px
-}
+.editable { margin-bottom: 36px }
 
 .progress {
   @extend .progress-striped, .active;

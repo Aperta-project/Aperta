@@ -1,10 +1,11 @@
-ETahi.ApplicationController= Ember.Controller.extend
+ETahi.ApplicationController = Ember.Controller.extend
   currentUser:(->
     userId = Tahi.currentUser?.id.toString()
     @store.getById('user', userId)
   ).property().volatile()
 
   connectToES:(->
+    return unless Tahi.currentUser?.id
     store = @store
     params =
       url: '/event_stream'
@@ -17,7 +18,7 @@ ETahi.ApplicationController= Ember.Controller.extend
             store.pushPayload(esData.task.type, esData)
 
     Ember.$.ajax(params)
-  ).on("init")
+  ).on('init')
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')
 

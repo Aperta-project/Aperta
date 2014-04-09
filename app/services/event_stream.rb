@@ -10,7 +10,7 @@ class EventStream
 
   def self.connection_info(paper_ids)
     {
-      url: url,
+      url: stream_url,
       eventNames: names(paper_ids)
     }
   end
@@ -24,14 +24,18 @@ class EventStream
   end
 
   def self.token
-    ENV["ES_TOKEN"] || 'token123' # Digest::MD5.hexdigest("some token")
+    ENV["ES_TOKEN"] || 'token123'
   end
 
   def self.url
-    ENV["ES_URL"] || "http://localhost:8080/stream?token=#{token}"
+    ENV["ES_URL"] || "http://localhost:8080"
+  end
+
+  def self.stream_url
+    url + "/stream?token=#{token}"
   end
 
   def self.update_url
-    ENV["ES_UPDATE_URL"] || "http://localhost:8080/update_stream"
+    url + "/update_stream"
   end
 end

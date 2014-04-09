@@ -30,6 +30,7 @@ feature "Tech Check", js: true do
   end
 
   scenario "Admin can complete the tech check card" do
+    pending
     dashboard_page = DashboardPage.visit
     tech_check_card = dashboard_page.view_card 'Tech Check'
     paper_show_page = tech_check_card.view_paper

@@ -1,0 +1,23 @@
+<ul class="participants">
+  {{#each p in model.participants}}
+    <li class="participant">
+      {{userThumbnail p}}
+    </li>
+  {{/each}}
+  <li>
+    {{chosen content=availableParticipants
+       optionLabelPath="content.fullName"
+       optionValuePath="content"
+       class='participant-select'
+       changeAction='addParticipant'
+       prompt="Add people"}}
+  </li>
+</ul>
+
+<div class="form-group">
+  {{input id="task-title-field" value=model.title placeholder="Type a short card title here"}}
+</div>
+
+<div class="form-group">
+  {{textarea id="task_body" value=model.body placeholder="Provide some details here"}}
+</div>

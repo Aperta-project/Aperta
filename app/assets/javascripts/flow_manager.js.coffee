@@ -130,7 +130,7 @@ Tahi.flowManager =
       closeButton = (div {className: "#{if @state.hovered then '' else 'hidden'} remove-column glyphicon glyphicon-remove", onClick: @remove})
 
       (li {className: 'column', onMouseEnter: @toggleHover, onMouseLeave: @toggleHover },
-        (div {className: "column-title"},
+        (div {className: "column-header"},
           (h2 {}, @props.title),
           closeButton),
         (div {className: 'column-content'},

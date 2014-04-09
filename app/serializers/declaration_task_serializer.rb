@@ -1,0 +1,2 @@
+class DeclarationTaskSerializer < TaskSerializer
+end

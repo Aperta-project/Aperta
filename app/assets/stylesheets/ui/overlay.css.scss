@@ -1,0 +1,468 @@
+/*
+  .overlay
+    .overlay-header
+      .overlay-header-title
+    .overlay-content
+    .overlay-footer
+*/
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  z-index: 9999;
+  opacity: 0;
+
+  @extend .fadeInAndOutAnimation;
+}
+
+.overlay-container {
+  width: 1120px;
+  padding: 10px 80px;
+  margin: 40px auto 0 auto;
+  background: white;
+  opacity: 0;
+}
+
+.overlay.in .overlay-container  {
+  @include animation-name(fadeInDown);
+  @include animation-duration(300ms);
+  @include animation-fill-mode(both);
+  @include animation-timing-function(cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.overlay.out .overlay-container {
+  @include animation-name(fadeOutDown);
+  @include animation-duration(200ms);
+  @include animation-fill-mode(both);
+}
+
+
+.overlay-content {
+  min-height: 300px;
+  margin: 0 auto;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 40px 20px 60px 20px;
+  font-size: 14px;
+
+  p { margin: 15px; }
+}
+
+.overlay-header,
+.overlay-footer {
+  @extend .row;
+  position: relative;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.overlay-footer {
+  margin-top: 10px;
+  padding-bottom: 50px;
+}
+
+.overlay-header {
+  padding: 50px 0 0 20px;
+}
+
+.overlay-header-title {
+  float: left;
+  width: 83%;
+  margin: 0 0 12px 0;
+}
+
+.overlay-close-button {
+  @extend .col-xs-2;
+}
+
+.overlay-header .overlay-close-button {
+  bottom: 10px;
+  position: absolute;
+}
+
+.overlay-footer-content {
+  @extend .col-xs-10;
+  margin-top: 5px;
+  padding-left: 0; // bootstrap override
+
+  .assignee-drop-down {
+    @extend .col-xs-9;
+    padding-left: 0; // bootstrap override
+  }
+}
+
+.overlay-completed-checkbox {
+  @extend .col-xs-3;
+  text-align: right;
+
+  label {
+    color: $tahi-primary;
+    text-transform: uppercase;
+  }
+
+  input {
+    margin-right: 10px;
+    vertical-align: 2px;
+    @include transform(scale(2));
+  }
+}
+
+
+.choose-card-type-overlay {
+  min-height: 550px;
+
+  #choose-card-type {
+    width: 550px;
+    margin: 200px auto 0;
+  }
+
+  .primary-button {
+    margin-right: 20px;
+  }
+
+  #choose-card-type-buttons {
+    margin-top: 45px;
+  }
+}
+
+.overlay-paper-title {
+  padding: 0;
+  padding-right: 15px;
+  font-size: 18px;
+  font-family: $tahi-font-family;
+  color: $btn-primary-bg;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.message .overlay-paper-title {
+  color: $tahi-message;
+}
+
+.overlay h1 {
+  font-size: 48px;
+  margin: 0 0 20px 0;
+}
+
+.overlay label {
+  padding-right: 25px;
+}
+
+
+
+// TODO: overlay specific style:
+.overlay #task-title-field {
+  width: 700px;
+  border-radius: 3px;
+  border: 1px solid $tahi-matte;
+  padding: 5px;
+}
+
+
+// TODO: overlay specific style:
+.overlay #task_body, .new-comment {
+  width: 700px;
+  height: 60px;
+  border-radius: 5px;
+  border: 1px solid $tahi-matte;
+  padding: 5px;
+}
+
+// TODO: overlay specific style:
+#upload-figures-content img {
+  min-height: 190px;
+}
+
+// TODO: overlay specific style:
+#paper-figures {
+  list-style-type: none;
+  margin: 20px 0 0;
+  padding: 0;
+  li {
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-right: 20px;
+  }
+}
+
+// TODO: overlay specific style:
+#paper-figures li img {
+  height: 190px
+}
+
+// TODO: overlay specific style:
+#paper-manuscript-upload {
+  color: $tahi-primary;
+}
+
+// TODO: overlay specific style:
+#paper-manuscript-upload,
+#paper-figure-uploads {
+  margin-bottom: 0;
+  list-style-type: none;
+  padding: 0;
+
+  li {
+    border: 1px solid $tahi-tertiary;
+    background: white;
+    padding: 10px;
+    @extend .row;
+    margin: 0;
+    margin-top: 20px;
+  }
+
+  li .processing {
+    @extend .col-xs-9;
+    margin-left: 70px;
+    font-size: 32px;
+    margin-top: 28px;
+  }
+
+  li .preview-container {
+    @extend .col-xs-2;
+    width: 100px;
+    height: 100px;
+    padding: 0;
+  }
+
+  li .preview-container > * {
+    width: 100px;
+    height: 100px;
+  }
+
+  li .glyphicon {
+    font-size: 72px;
+    text-align: center;
+    padding-top: 14px;
+    width: 80px;
+  }
+
+  li .progress {
+    @extend .col-xs-9;
+    padding: 0;
+    margin-bottom: 0;
+    margin-left: 60px;
+    margin-top: 40px;
+  }
+}
+
+// TODO: overlay specific style:
+.decision-selections > .form-group {
+  display: inline-block;
+
+  &:first-child {
+    margin-left: 10px;
+  }
+}
+
+// TODO: move or rename. Seems to be spcific to overlay forms
+.form-group p {
+  font-size: 18px;
+  margin: 15px 0;
+}
+
+// TODO: overlay specific style:
+.task_paper_decision_letter {
+  border-radius: 10px;
+  border: 1px solid #333;
+  padding: 20px;
+  width: 640px;
+  height: 270px;
+}
+
+// TODO: overlay specific style:
+.decision-selections label {
+  padding-left: 10px;
+  font-size: 24px;
+  font-weight: normal;
+  vertical-align: -4px;
+  margin-right: 70px;
+}
+
+// TODO: overlay specific style:
+.decision-selections input[type=radio] {
+  -ms-transform: scale(2);
+  -moz-transform: scale(2);
+  -webkit-transform: scale(2);
+  transform: scale(2);
+}
+
+// TODO: overlay specific style:
+.decision-letter-description {
+  font-size: 18px;
+}
+
+.white-overlay {
+  background: white !important;
+}
+
+
+// TODO: overlay specific style:
+.overlay .message-overlay-footer .primary-button,
+.overlay .message-overlay-header .primary-button {
+  background-color: $tahi-message;
+}
+
+// TODO: overlay specific style:
+.message .completed-checkbox {
+  color: $tahi-message;
+}
+
+// TODO: overlay specific style:
+$message-body-width: 700px;
+.message-overlay {
+  .secondary-button {
+    color: $tahi-message;
+    border: 1px solid $tahi-message;
+    &:hover {
+      background: $tahi-message;
+      color: white;
+      border: 1px solid $tahi-message;
+    }
+  }
+  .message-color {
+    color: $tahi-message;
+  }
+  .img {
+    height: 40px;
+    width: 40px;
+  }
+  .form-group input, .form-group textarea {
+    width: $message-body-width;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #ddd;
+  }
+  textarea {
+    height: 150px;
+
+    &.new-comment {
+      height: 60px;
+    }
+  }
+
+  footer {
+    .message {
+      float: right;
+    }
+  }
+
+  .chosen-single {
+    height: 40px;
+    background: white;
+    border: 1px solid $tahi-message;
+    font-size: 18px;
+    color: $tahi-message;
+    text-transform: uppercase;
+    span, b {
+      margin-top: 8px;
+    }
+  }
+
+  .chosen-drop {
+    border: 1px solid $tahi-message;
+    border-top: none;
+  }
+
+  .chosen-results li.highlighted {
+    width: 100%;
+    background: $tahi-message;
+  }
+
+  #participants {
+    margin-bottom: 10px;
+    > ul {
+      padding: 10px;
+      width: $message-body-width;
+      background: #f3f3f3;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      list-style: none;
+      li {
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+// TODO: overlay specific styles (message)
+.comment-buttons {
+  width: $message-body-width;
+  .message {
+    float: right;
+  }
+}
+
+.chosen-style-override .chosen-container-single .chosen-single {
+  height: 40px;
+  background: white;
+  border: 1px solid $tahi-primary;
+  font-size: 18px;
+  color: $tahi-primary;
+  text-transform: uppercase;
+  span {
+    color: $tahi-primary;
+    margin-top: 8px;
+  }
+  div b {
+    background-position: 0px 8px;
+  }
+}
+
+.message .chosen-style-override .chosen-container-single .chosen-single {
+  border-color: $tahi-message;
+  color: $tahi-message;
+  span {
+    color: $tahi-message;
+  }
+}
+
+.chosen-style-override .chosen-container-active.chosen-with-drop .chosen-single div b {
+  background-position: -18px 8px;
+}
+
+.message-comments {
+  list-style-type: none;
+  padding-left: 10px;
+  margin-bottom: 30px;
+}
+
+.message-comment {
+  padding: 10px 0;
+  width: $message-body-width;
+  border-top: 1px solid #ddd;
+  &:first-of-type {
+    border-top: none;
+  }
+}
+
+.comment-date,
+.comment-avatar {
+  margin: 0 5px;
+}
+
+.comment-avatar { width: 40px; }
+
+.comment-name { font-weight: bold; }
+
+.comment-body {
+  padding-top: 8px;
+  line-height: 1.3;
+  width: $message-body-width;
+}
+
+.author-form {
+  display: none;
+  &.show-new-author-form {
+    display: block;
+  }
+}
+

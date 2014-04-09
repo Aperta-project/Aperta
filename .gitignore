@@ -20,3 +20,6 @@
 
 # Ignore SVG from Railsroady
 /doc/*svg
+
+# Ignore OS X Desktop Services Store
+.DS_Store

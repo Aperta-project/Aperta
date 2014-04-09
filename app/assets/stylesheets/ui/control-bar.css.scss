@@ -1,0 +1,51 @@
+.control-bar {
+  overflow: hidden;
+  position: fixed;
+  top: $tahi-nav-bar-height;
+  right: 0;
+  left: 0;
+  height: $tahi-control-bar-height;
+  border-bottom: 1px solid #939393;
+  padding: 7px 0 5px 0;
+  color: #000;
+  background: #e1e1e1;
+  z-index: 2;
+}
+
+.control-bar-inner-wrapper {
+  overflow: hidden;
+  margin: 0 auto;
+  min-width: 960px;
+  max-width: 1120px;
+}
+
+.control-bar ul {
+  list-style-type: none;
+  float: left;
+  margin-bottom: 0; // from bootstrap?
+  padding-left: 0;  // from bootstrap?
+  @extend .clear-before-and-after;
+
+  li {
+    position: relative;
+    float: left;
+    display: block;
+    margin-right: 10px;
+  }
+}
+
+.control-bar-link {
+  padding: 10px;
+  line-height: 34px;
+  font-weight: bold;
+  text-transform: none;
+  background: none;
+
+  &:hover { text-decoration: none; }
+}
+
+.control-bar ul:last-of-type {
+  float: right;
+
+  a { text-transform: uppercase; }
+}

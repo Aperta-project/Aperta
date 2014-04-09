@@ -1,0 +1,106 @@
+$paper-trim-color: $tahi-tertiary;
+
+#control-bar-paper-journal-logo {
+  div { padding-top: 6px; }
+  img { height: 36px; }
+}
+
+#control-bar-paper-short-title {
+  min-width: 5px;
+  font-size: 18px;
+
+  // TODO: Do we need the h2?
+  h2 {
+    overflow: hidden;
+    width: 680px;
+    font-family: $tahi-article-font-family;
+    line-height: 32px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    // override from generic h2:
+    margin: 0;
+  }
+}
+
+#toolbar {
+  height: 60px;
+  width: 100%;
+
+  .cke_button_icon.cke_button__tahisave_icon {
+    display: none;
+  }
+
+  .cke_button_label.cke_button__tahisave_label {
+    display: inline;
+    padding-left: 0;
+    padding: 0 5px;
+    // text-transform: uppercase;
+    // font-weight: bold;
+  }
+}
+
+#paper-title {
+  margin-top: 60px;
+
+  &[contenteditable] {
+    margin-top: 0;
+    padding: 5px 0;
+    // Bootstrap's default height is 33px and we add 4px for the above padding.
+    // This is required for Firefox, without which the H2 height shrinks to 0
+    // when empty.
+    min-height: 37px;
+  }
+}
+
+#paper-authors {
+  font-style: italic;
+  margin: 20px 0;
+}
+
+#paper-body {
+  min-height: 500px;
+}
+
+.author-detail {
+  display: inline-block;
+  min-width: 100px;
+}
+
+#tahi-container > main {
+  > article {
+    @include make-xs-column(9);
+    border-right: 1px solid $paper-trim-color;
+    padding: 0;
+  }
+
+  > aside {
+    @include make-xs-column(3);
+  }
+}
+
+.placeholder {
+  color: #aaa;
+}
+
+#tahi-container > main > article table.cke_show_border > tbody > tr > td {
+  border: #666 1px dotted;
+}
+
+main > article > div,
+main > aside > div {
+  margin: 0 auto;
+}
+
+main > article > div {
+  width: 700px;
+}
+
+main > aside > div {
+  padding-top: 60px;
+  width: 220px;
+}
+
+#tahi-container > main > article * {
+  font-family: $tahi-article-font-family;
+}

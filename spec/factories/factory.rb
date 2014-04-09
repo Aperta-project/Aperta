@@ -32,11 +32,15 @@ FactoryGirl.define do
 
   factory :message_task do
     title "a subject" # should match subject
-    message_subject "a subject"
   end
 
   factory :comment do
     body "HEY"
+  end
+
+  factory :declaration do
+    question "What is the cake?"
+    answer "A lie!"
   end
 
 end

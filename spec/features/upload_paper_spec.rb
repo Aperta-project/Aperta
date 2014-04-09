@@ -10,6 +10,7 @@ feature "Upload paper", js: true do
   end
 
   scenario "Author uploads paper in Word format" do
+    pending
     edit_paper = EditPaperPage.visit paper
 
     edit_paper.view_card('Upload Manuscript').upload_word_doc

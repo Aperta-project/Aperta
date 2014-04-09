@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140305151322) do
+ActiveRecord::Schema.define(version: 20140407160015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,14 @@ ActiveRecord::Schema.define(version: 20140305151322) do
   end
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
+
+  create_table "flows", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "title"
+    t.string   "empty_text"
+    t.integer  "user_settings_id"
+  end
 
   create_table "journal_roles", force: true do |t|
     t.integer  "user_id"
@@ -146,23 +154,21 @@ ActiveRecord::Schema.define(version: 20140305151322) do
   add_index "task_managers", ["paper_id"], name: "index_task_managers_on_paper_id", using: :btree
 
   create_table "tasks", force: true do |t|
-    t.string   "title",                           null: false
-    t.string   "type"
+    t.string   "title",                        null: false
+    t.string   "type",        default: "Task"
     t.integer  "assignee_id"
-    t.integer  "phase_id",                        null: false
-    t.boolean  "completed",       default: false, null: false
+    t.integer  "phase_id",                     null: false
+    t.boolean  "completed",   default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role",                            null: false
+    t.string   "role",                         null: false
     t.text     "body"
-    t.string   "message_subject"
   end
 
   add_index "tasks", ["assignee_id"], name: "index_tasks_on_assignee_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
 
   create_table "user_settings", force: true do |t|
-    t.string   "flows"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"

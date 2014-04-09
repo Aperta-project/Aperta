@@ -1,16 +1,9 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :verify_admin!, except: [:show, :update, :update_participants]
+  respond_to :json
 
-  def index
-    @paper = Paper.includes(:journal, :phases => :tasks).find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json do
-        @phases = @paper.phases
-      end
-    end
-  end
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def update
     task = if current_user.admin?
@@ -18,34 +11,37 @@ class TasksController < ApplicationController
            else
              current_user.tasks.where(id: params[:id]).first
            end
-    if task
-      task.update task_params(task)
-      attributes = %w(id completed)
-      payload = task.as_json.slice(*attributes)
-      EventStream.post_event(params[:paper_id], payload.to_json)
-      render json: payload
+
+    tp = task_params(task)
+    if task && task.authorize_update!(tp, current_user)
+      task.update tp
+      EventStream.post_event(params[:paper_id], task.as_json)
+      respond_with task
     else
       head :forbidden
     end
   end
 
   def create
-    task = Task.new task_params
-    task.role = 'admin'
-    task.save
-    head :no_content
+    task = build_task
+    if task.persisted?
+      respond_with task, location: task_url(task)
+    else
+      render status: 500
+    end
   end
 
   def show
     @task = Task.find(params[:id])
     respond_to do |f|
-      f.json { render json: TaskPresenter.for(@task).data_attributes }
-      f.html { render layout: 'overlay' }
+      f.json { render json: @task }
+      f.html { render 'ember/index' , layout: 'ember'}
     end
   end
 
   def destroy
-    task = PaperPolicy.new(params[:paper_id], current_user).tasks_for_paper(params[:id]).first
+    task_temp = Task.find(params[:id])
+    task = PaperPolicy.new(task_temp.paper, current_user).tasks_for_paper(params[:id]).first
     if task && task.destroy
       render json: true
     else
@@ -59,5 +55,15 @@ class TasksController < ApplicationController
     attributes = [:assignee_id, :completed, :title, :body, :phase_id]
     attributes += task.class::PERMITTED_ATTRIBUTES if task
     params.require(:task).permit(*attributes)
+  end
+
+  def build_task
+    task_type = params[:task][:type]
+    sanitized_params = task_params task_type.constantize.new
+    TaskFactory.build_task task_type, sanitized_params, current_user
+  end
+
+  def render_404
+    head 404
   end
 end

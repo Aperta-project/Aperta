@@ -22,30 +22,3 @@ with `rake jasmine`. Running the Jasmine specs headless requires RAILS_ENV to be
 polyfill (see [polyfills.js.erb in the repo][polyfill]).
 
 [polyfill]: https://github.com/Tahi-project/tahi/blob/master/app/assets/javascripts/polyfills.js.erb
-
-### We precompile assets
-
-As of the time of this writing, the enironment Heroku uses to precompile assets
-for Rails apps uses Node 0.4. This version of Node has issues compiling JSX. As
-a result, we precompile our assets and check them in. A typical workflow looks
-like this:
-
-```bash
-$ bin/precompile-assets.sh
-$ git status
-$ git add -A
-$ git commit
-```
-
-There is also a pre-commit hook which checks whether assets need compiling. To
-install the commit hook, run this in the project directory:
-
-```bash
-$ ln -snf bin/asset-pipeline-precommit .git/hooks/pre-commit
-```
-
-There's a [Github issue for React][react-issue] documenting this problem. It
-looks like React is taking steps to fix this, so hopefully this won't be
-necessary for much longer.
-
-[react-issue]: https://github.com/facebook/react-rails/issues/9

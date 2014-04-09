@@ -18,6 +18,11 @@ class EditPaperPage < Page
 
   path :edit_paper
 
+  def initialize element = nil
+    expect(page).to have_css('h2#paper-title')
+    super
+  end
+
   def visit_dashboard
     click_link 'Dashboard'
     DashboardPage.new
@@ -37,11 +42,19 @@ class EditPaperPage < Page
   end
 
   def abstract=(val)
-    page.execute_script "CKEDITOR.instances['paper-abstract'].setData('#{escape_javascript val}')"
+    page.execute_script "$('#paper-abstract').text('#{escape_javascript val}')"
   end
 
   def body=(val)
-    page.execute_script "CKEDITOR.instances['paper-body'].setData('#{escape_javascript val}')"
+    page.execute_script <<-JS
+      var element = window.visualEditor.$element;
+      element.empty();
+
+      window.visualEditor = new ve.init.sa.Target(
+        element,
+        ve.createDocumentFromHtml('#{escape_javascript val}')
+      );
+    JS
   end
 
   def authors
@@ -49,7 +62,7 @@ class EditPaperPage < Page
   end
 
   def journal
-    find(:css, '#paper-journal').text
+    find(:css, '.paper-journal').text
   end
 
   def title
@@ -61,7 +74,7 @@ class EditPaperPage < Page
   end
 
   def body
-    body_node.text
+    page.evaluate_script 'visualEditor.surface.getModel().getDocument().getText()'
   end
 
   def paper_type
@@ -76,8 +89,7 @@ class EditPaperPage < Page
   end
 
   def save
-    page.execute_script '$(".cke_button__tahisave_label").click()'
-    # click_on 'Save'
+    click_on 'Save'
     self
   end
 
@@ -90,9 +102,5 @@ class EditPaperPage < Page
 
   def abstract_node
     find(:css, '#paper-abstract')
-  end
-
-  def body_node
-    find(:css, '#paper-body')
   end
 end

@@ -22,7 +22,7 @@ class PaperReviewerTask < Task
 
   alias :reviewer_ids :paper_roles
 
-  def reviewers
+  def journal_reviewers
     journal.reviewers
   end
 

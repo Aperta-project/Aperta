@@ -5,13 +5,13 @@ class FiguresController < ApplicationController
   def create
     figures = Array.wrap(figure_params.delete(:attachment))
 
-    results = figures.map do |figure|
-      @paper.figures.create(figure_params.merge(attachment: figure)).access_details
+    new_figures = figures.map do |figure|
+      @paper.figures.create(figure_params.merge(attachment: figure))
     end
 
     respond_to do |f|
       f.html { redirect_to edit_paper_path @paper }
-      f.json { render json: results }
+      f.json { render json: new_figures }
     end
   end
 

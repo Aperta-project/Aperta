@@ -3,14 +3,15 @@
     #control-bar
       %section
         %ul
-          %li#paper-journal
+          %li#control-bar-paper-journal-logo
             - if @paper.journal.logo.present?
               = image_tag @paper.journal.logo.url
             - else
               %div
                 = @paper.journal.name
-          -# %li#paper-short-title= @paper.short_title
+          -# %li#control-bar-paper-short-title= @paper.short_title
         %ul
+          %li= link_to 'Download ePub', download_paper_path(@paper), target: '_blank'
           - if current_user.admin?
             %li= link_to 'Manuscript Manager', manage_paper_path(@paper)
 

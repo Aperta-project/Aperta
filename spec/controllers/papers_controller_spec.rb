@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PapersController do
 
-  let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :submitted, :journal_id, declarations_attributes: [:id, :answer], authors: [:first_name, :last_name, :affiliation, :email]] }
+  let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :submitted, :decision, :decision_letter, :journal_id, {authors: [:first_name, :last_name, :affiliation, :email], reviewer_ids: [], declaration_ids: [], phase_ids: [], figure_ids: [], assignee_ids: [], editor_ids: []}] }
 
   let :user do
     User.create! username: 'albert',
@@ -15,6 +15,27 @@ describe PapersController do
   end
 
   before { sign_in user }
+
+  describe "GET download" do
+    let(:paper) do
+      user.papers.create!(submitted: true, short_title: 'submitted-paper', journal: Journal.create!)
+    end
+    subject(:do_request) { get :download, id: paper.to_param }
+
+    it "uses PaperPolicy to retrieve the paper" do
+      policy = double('paper policy', paper: paper)
+      expect(PaperPolicy).to receive(:new).and_return policy
+      get :download, id: paper.id
+      expect(assigns :paper).to eq(paper)
+    end
+
+    it "sends file back" do
+      controller.stub(:render).and_return(nothing: true)
+      expect(controller).to receive(:send_data)
+      get :download, id: paper.id
+    end
+
+  end
 
   describe "GET 'show'" do
     let(:paper) do
@@ -96,11 +117,6 @@ describe PapersController do
 
     it_behaves_like "when the user is not signed in"
 
-    it_behaves_like "a controller enforcing strong parameters" do
-      let(:model_identifier) { :paper }
-      let(:expected_params) { permitted_params }
-    end
-
     it "saves a new paper record" do
       do_request
       expect(Paper.first).to be_persisted
@@ -111,14 +127,16 @@ describe PapersController do
       expect(Paper.first.user).to eq(user)
     end
 
-    it "redirects to edit paper page" do
+    it "returns a 201 and the paper's id in json" do
       do_request
-      expect(response).to redirect_to(edit_paper_path Paper.first)
+      expect(response.status).to eq(201)
+      json = JSON.parse(response.body)
+      expect(json['paper']['id']).to eq(Paper.first.id)
     end
 
     it "renders new template if the paper can't be saved" do
       post :create, { paper: { short_title: '' } }
-      expect(response).to render_template(:new)
+      expect(response.status).to eq(422)
     end
   end
 
@@ -134,7 +152,7 @@ describe PapersController do
     describe "authors" do
       context "when there is an authors key in params" do
         let(:authors) { [{ first_name: 'Bob', last_name: 'Marley', affiliation: "Jamaica Inc.", email: 'jamaican@example.com' }] }
-        let(:params) { { authors: authors.to_json } }
+        let(:params) { { authors: authors } }
 
         it "decodes JSON string into an array before saving" do
           do_request
@@ -154,17 +172,6 @@ describe PapersController do
 
     it_behaves_like "when the user is not signed in"
 
-    it_behaves_like "a controller enforcing strong parameters" do
-      let(:params_id) { paper.to_param }
-      let(:model_identifier) { :paper }
-      let(:expected_params) { permitted_params }
-    end
-
-    it "redirects to dashboard" do
-      do_request
-      expect(response).to redirect_to(root_path)
-    end
-
     it "updates the paper" do
       do_request
       expect(paper.reload.short_title).to eq('ABC101')
@@ -175,9 +182,8 @@ describe PapersController do
     let(:paper) { Paper.create! short_title: 'paper-needs-uploads', journal: Journal.create! }
 
     let(:uploaded_file) do
-      double(:uploaded_file, path: '/path/to/file.docx').tap do |d|
-        allow(d).to receive(:to_param).and_return(d)
-      end
+      docx_file_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      fixture_file_upload('about_turtles.docx', docx_file_type, :binary)
     end
 
     subject :do_request do
@@ -185,7 +191,7 @@ describe PapersController do
     end
 
     before do
-      allow(DocumentParser).to receive(:parse).and_return(
+      allow(OxgarageParser).to receive(:parse).and_return(
         title: 'This is a Title About Turtles',
         body: "Heroes in a half shell! Turtle power!"
       )
@@ -195,12 +201,12 @@ describe PapersController do
 
     it "redirect to the paper's edit page" do
       do_request
-      expect(response).to redirect_to edit_paper_path(paper)
+      expect(response.status).to eq(204)
     end
 
     it "passes the uploaded file's path to the document parser" do
       do_request
-      expect(DocumentParser).to have_received(:parse).with(uploaded_file.path)
+      expect(OxgarageParser).to have_received(:parse).with(uploaded_file.path)
     end
 
     it "updates the paper's title" do

@@ -1,0 +1,41 @@
+<h1>{{model.title}}</h1>
+
+<span class="secondary-button fileinput-button">
+  <span>Add new Figures</span>
+  {{file-uploader id='figure_attachment'
+                  class='js-jquery-fileupload'
+                  name="figure[attachment][]"
+                  multiple=true
+                  type='file'}}
+</span>
+
+<ul id="paper-figure-uploads">
+  {{!#TODO: extract items in each block into their own views?}}
+  {{#each upload in view.uploads}}
+  <li>
+    <div class="preview-container">
+      {{#if upload.preview}}
+        <img {{bind-attr src=upload.preview}} />
+      {{else}}
+        <div class="preview-container glyphicon glyphicon-file"></div>
+      {{/if}}
+    </div>
+    <div class="progress">
+      <div class="progress-bar" {{bind-attr style=upload.progressBarStyle}}></div>
+    </div>
+  </li>
+  {{/each}}
+</ul>
+
+<ul id="paper-figures">
+  {{!#TODO: extract items in each block into their own views?}}
+  {{#each figure in view.figures}}
+  <li>
+    {{#if figure.src}}
+      <img {{bind-attr src=figure.src alt=figure.alt}} />
+    {{else}}
+      <div class="preview-container glyphicon glyphicon-file"></div>
+    {{/if}}
+  </li>
+  {{/each}}
+</ul>

@@ -1,0 +1,11 @@
+<h1>Assign Reviewers</h1>
+<label for="reviewer" >Reviewers</label>
+{{chosen content=paper.availableReviewers
+         multiple=true
+         selectionBinding=model.paper.reviewers
+         class="reviewers-select"
+         optionValuePath="content"
+         optionLabelPath="content.fullName"
+         data-placeholder="Select reviewers"
+         changeAction='save'
+}}

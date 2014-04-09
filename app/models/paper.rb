@@ -5,14 +5,16 @@ class Paper < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :journal
+  belongs_to :flow
 
   has_many :declarations, -> { order :id }
   has_many :figures
   has_many :paper_roles
+  has_many :reviewers, -> { where("paper_roles.reviewer" => true) }, through: :paper_roles, source: :user
+  has_many :editors, -> { where("paper_roles.editor" => true) }, through: :paper_roles, source: :user
 
   has_one :task_manager, inverse_of: :paper
 
-  accepts_nested_attributes_for :declarations
   serialize :authors, Array
 
   validates :paper_type, inclusion: { in: PAPER_TYPES }
@@ -22,6 +24,9 @@ class Paper < ActiveRecord::Base
   has_many :phases, -> { order 'phases.position ASC' }, through: :task_manager
   has_many :tasks, through: :phases
   has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
+
+  has_many :journal_roles, through: :journal
+  has_many :assignees, -> { where("journal_roles.admin" => true) }, through: :journal_roles, source: :user
 
   after_create :assign_user_to_author_tasks
 

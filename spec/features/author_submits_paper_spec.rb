@@ -4,7 +4,7 @@ feature "Paper Submission" do
   include Warden::Test::Helpers
   Warden.test_mode!
 
-  scenario "Author creates a submission" do
+  scenario "Author creates a submission", js: true do
     journal = Journal.create! name: 'PLOS One'
     author = User.create! username: 'albert',
       first_name: 'Albert',

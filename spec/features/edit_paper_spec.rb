@@ -10,6 +10,7 @@ feature "Editing paper", js: true do
   end
 
   scenario "Author edits paper" do
+    pending
     edit_paper = EditPaperPage.visit paper
     # edit_paper.short_title = "lorem-ipsum"
     edit_paper.title = "Lorem Ipsum Dolor Sit Amet"

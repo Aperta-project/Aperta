@@ -1,0 +1,10 @@
+<h1>Assign Admin</h1>
+<label for="admin">Admin</label>
+{{chosen content=model.assignees
+         name="admin"
+         selectionBinding=model.assignee
+         prompt="Please select an admin"
+         optionValuePath="content.id"
+         changeAction='save'
+         optionLabelPath="content.fullName"
+         class="chosen-assignee"}}

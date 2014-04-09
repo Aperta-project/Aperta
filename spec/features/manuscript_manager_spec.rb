@@ -23,10 +23,12 @@ feature "Manuscript Manager", js: true do
       admin: true
   end
 
-  let(:paper) { author.papers.create! short_title: 'foobar', title: 'Foo bar', submitted: true, journal: Journal.create! }
+  let(:paper) { admin.papers.create! short_title: 'foobar', title: 'Foo bar', submitted: true, journal: Journal.create! }
 
   before do
     JournalRole.create! admin: true, journal: paper.journal, user: admin
+
+    page.driver.browser.manage.window.maximize
 
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin.email
@@ -80,7 +82,6 @@ feature "Manuscript Manager", js: true do
     task_manager_page = paper_page.navigate_to_task_manager
 
     phase = task_manager_page.phase 'Submission Data'
-
     expect { phase.remove_card('Upload Manuscript') }.to change { phase.card_count }.by(-1)
   end
 
@@ -109,7 +110,7 @@ feature "Manuscript Manager", js: true do
     needs_editor_phase = TaskManagerPage.new.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay).to_not be_completed
-      expect(overlay.assignee).to eq 'Zoey Bob'
+      expect(overlay.assignee).to eq 'ZOEY BOB'
     end
   end
 

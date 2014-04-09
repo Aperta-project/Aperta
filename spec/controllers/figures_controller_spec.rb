@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe FiguresController do
-  let(:permitted_params) { [:attachment, attachment: []] }
-
   let :user do
     User.create! username: 'albert',
       first_name: 'Albert',
@@ -23,12 +21,6 @@ describe FiguresController do
     end
 
     it_behaves_like "when the user is not signed in"
-
-    it_behaves_like "a controller enforcing strong parameters" do
-      let(:model_identifier) { :figure }
-      let(:params_paper_id) { paper.to_param }
-      let(:expected_params) { permitted_params }
-    end
 
     it "saves the attachment to this paper" do
       expect { do_request }.to change(Figure, :count).by(1)
@@ -59,9 +51,17 @@ describe FiguresController do
       it "responds with a JSON array of figure data" do
         do_request
         figure = Figure.last
-        expect(JSON.parse(response.body)).to eq [
-          { filename: 'yeti.tiff', alt: 'Yeti', src: figure.attachment.url, id: figure.id }.with_indifferent_access
-        ]
+        expect(JSON.parse(response.body)).to eq(
+          {
+            figures: [
+              { filename: 'yeti.tiff',
+                alt: 'Yeti',
+                src: figure.attachment.url,
+                id: figure.id,
+                paper_id: paper.id }
+            ]
+          }.with_indifferent_access
+        )
       end
     end
   end

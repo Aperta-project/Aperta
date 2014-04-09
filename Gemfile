@@ -32,6 +32,8 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder'
 
+gem 'acts_as_list'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -50,6 +52,10 @@ gem 'unicorn'
 # gem 'debugger', group: [:development, :test]
 #
 gem 'pry-rails'
+
+gem 'ember-rails'
+gem 'ember-source', '1.5.0'
+gem "ember-data-source", "~> 1.0.0.beta.7"
 
 group :development do
   gem 'license_finder'
@@ -71,15 +77,16 @@ end
 group :test do
   gem 'factory_girl_rails'
   gem "codeclimate-test-reporter", require: nil
+  gem 'vcr'
+  gem 'webmock'
 end
 
 gem 'devise'
 
 gem "bootstrap-sass"
+gem 'bourbon'
 
 gem 'rails_12factor', group: [:production, :staging]
-
-gem "ckeditor_rails"
 
 gem "nokogiri"
 
@@ -94,3 +101,12 @@ gem 'react-rails'
 gem 'spinjs-rails'
 
 gem 'newrelic_rpm'
+
+gem "rest_client", "~> 1.7.3"
+gem 'gepub'
+
+gem 'rubyzip', require: 'zip'
+
+gem 'standard_tasks', path: 'engines/standard_tasks'
+
+gem "active_model_serializers"

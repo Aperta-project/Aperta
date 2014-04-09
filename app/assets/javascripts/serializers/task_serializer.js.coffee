@@ -1,7 +1,19 @@
 ETahi.TaskSerializer = DS.ActiveModelSerializer.extend ETahi.SerializesHasMany,
+  normalize: (type, hash) ->
+    hash.qualified_type = hash.type
+    hash.type = hash.type.replace(/.+::/, '')
+    this._super.apply(this, arguments)
+
   serializeIntoHash: (data, type, record, options) ->
       root = 'task'
       data[root] = this.serialize(record, options)
+
+  serialize: (record, options) ->
+    json = this._super(record, options)
+    if json.qualified_type
+      json.type = json.qualified_type
+      delete json.qualified_type
+    return json
 
   coerceId: (id) ->
     (if not id? then null else id + "")
@@ -32,9 +44,11 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend ETahi.SerializesHasMany,
 
       #jshint loopfunc:true
       for hash in payload[prop]
-        hash.foobar = 'hello!'
+        # hash.foobar = 'hello!'
         # custom code starts here
         typeName = if hash.type
+          hash.qualified_type = hash.type
+          hash.type = hash.type.replace(/.+::/, '')
           @typeForRoot hash.type
         else
           @typeForRoot prop

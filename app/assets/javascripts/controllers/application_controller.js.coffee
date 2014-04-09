@@ -10,7 +10,7 @@ ETahi.ApplicationController= Ember.Controller.extend
       method: 'GET'
       success:(data)->
         source = new EventSource(data.url)
-        # make one connection and listeners for every paper
+        # make one connection with listeners for every paper
         data.eventNames.forEach (eventName)->
           source.addEventListener eventName, (msg)->
             data = JSON.parse(msg.data)

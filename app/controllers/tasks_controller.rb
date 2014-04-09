@@ -15,7 +15,8 @@ class TasksController < ApplicationController
     tp = task_params(task)
     if task && task.authorize_update!(tp, current_user)
       task.update tp
-      EventStream.post_event(params[:paper_id], task.as_json)
+      task.reload
+      EventStream.post_event(task.paper.id, task.to_json)
       respond_with task
     else
       head :forbidden

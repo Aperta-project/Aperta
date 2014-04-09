@@ -5,16 +5,16 @@ ETahi.ApplicationController= Ember.Controller.extend
   ).property().volatile()
 
   connectToES:(->
+    store = @store
     params =
       url: '/event_stream'
       method: 'GET'
       success:(data)->
         source = new EventSource(data.url)
-        # make one connection with listeners for every paper
         data.eventNames.forEach (eventName)->
           source.addEventListener eventName, (msg)->
-            data = JSON.parse(msg.data)
-            # do something with the data
+            esData = JSON.parse(msg.data)
+            store.pushPayload(esData.task.type, esData)
 
     Ember.$.ajax(params)
   ).on("init")

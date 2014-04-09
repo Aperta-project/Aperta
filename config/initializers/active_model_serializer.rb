@@ -11,6 +11,7 @@ module ActiveModel
 
         def serialize_ids_with_polymorphism
           return associated_object.map do |item|
+            type = item.type || item.class.name
             {id: item.id, type: item.type.gsub(/.+::/,'')}
           end if option(:polymorphic)
           serialize_ids_without_polymorphism

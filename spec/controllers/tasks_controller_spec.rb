@@ -57,7 +57,8 @@ describe TasksController do
     it "posts an event to the event stream" do
       do_request
       task.reload
-      expect(EventStream).to have_received(:post_event).with(paper.to_param, task.as_json)
+      ts = TaskSerializer.new(task)
+      expect(EventStream).to have_received(:post_event).with(paper.id, ts.to_json)
     end
 
     it "renders the task id and completed status as JSON" do

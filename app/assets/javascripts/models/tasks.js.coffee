@@ -10,6 +10,7 @@ ETahi.Task = DS.Model.extend
   role: a('string')
   title: a('string')
   type: a('string')
+  qualifiedType: a('string')
 
   isMessage: Ember.computed.equal('type', 'MessageTask')
   paper: Ember.computed.alias('phase.paper')
@@ -29,6 +30,7 @@ ETahi.PaperAdminTask = ETahi.Task.extend
 
 ETahi.AuthorsTask = ETahi.Task.extend
   authors: Ember.computed.alias('paper.authorsArray')
+  qualifiedType: "StandardTasks::AuthorsTask"
 
 ETahi.DeclarationTask = ETahi.Task.extend
   declarations: Ember.computed.alias('paper.declarations')
@@ -57,5 +59,7 @@ ETahi.RegisterDecisionTask = ETahi.Task.extend
 ETahi.ReviewerReportTask = ETahi.Task.extend
   paperReview: DS.belongsTo('paperReview')
 
-ETahi.TechCheckTask = ETahi.Task.extend()
+ETahi.TechCheckTask = ETahi.Task.extend
+  qualifiedType: "StandardTasks::TechCheckTask"
+
 ETahi.UploadManuscriptTask = ETahi.Task.extend()

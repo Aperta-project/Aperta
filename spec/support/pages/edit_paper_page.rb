@@ -47,13 +47,9 @@ class EditPaperPage < Page
 
   def body=(val)
     page.execute_script <<-JS
-      var element = window.visualEditor.$element;
-      element.empty();
-
-      window.visualEditor = new ve.init.sa.Target(
-        element,
-        ve.createDocumentFromHtml('#{escape_javascript val}')
-      );
+      $(".ve-ce-documentNode").mousedown();
+      $(".ve-ce-documentNode").text('#{escape_javascript val}');
+      $(".ve-ce-documentNode").trigger(jQuery.Event("keyup", { keyCode: 13 }))
     JS
   end
 
@@ -74,7 +70,7 @@ class EditPaperPage < Page
   end
 
   def body
-    page.evaluate_script 'visualEditor.surface.getModel().getDocument().getText()'
+    page.evaluate_script 've.instances[0].getModel().getDocument().getText()'
   end
 
   def paper_type

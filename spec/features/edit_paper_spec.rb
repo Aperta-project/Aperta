@@ -10,18 +10,13 @@ feature "Editing paper", js: true do
   end
 
   scenario "Author edits paper" do
-    pending
     edit_paper = EditPaperPage.visit paper
     edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
-    edit_paper.abstract = "Lorem Ipsum is simply dummy text"
     edit_paper.body = "Contrary to popular belief"
 
     dashboard_page = edit_paper.save
     edit_paper = EditPaperPage.visit paper
 
-    # This is working when tested manually. There is something weird about how
-    # we are setting the title with jQuery that isn't changing the title on the
-    # model.
     expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"
     expect(edit_paper.body).to eq "Contrary to popular belief"
   end

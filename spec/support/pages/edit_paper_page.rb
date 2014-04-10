@@ -33,24 +33,17 @@ class EditPaperPage < Page
     TaskManagerPage.new
   end
 
-  def short_title=(val)
-    page.execute_script "$('#paper-short-title').text('#{val}')"
-  end
-
   def title=(val)
-    page.execute_script "$('#paper-title').text('#{val}')"
+    find('#paper-title').set(val)
   end
 
   def abstract=(val)
-    page.execute_script "$('#paper-abstract').text('#{escape_javascript val}')"
+    # find('#paper-title').set(val)
+    raise NotImplementedError, "TODO: The UI on paper#edit needs to be implemented"
   end
 
   def body=(val)
-    page.execute_script <<-JS
-      $(".ve-ce-documentNode").mousedown();
-      $(".ve-ce-documentNode").text('#{escape_javascript val}');
-      $(".ve-ce-documentNode").trigger(jQuery.Event("keyup", { keyCode: 13 }))
-    JS
+    find('.ve-ce-documentNode').set(val)
   end
 
   def authors

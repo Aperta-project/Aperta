@@ -16,7 +16,7 @@
 }
 
 .oo-ui-texture-transparency {
-  background-image: /* @embed */ url(/assets/visual-editor/textures/transparency.png);
+  background-image: url(<%= asset_path 'visual-editor/textures/transparency.png' %>);
 }
 
 /* RTL Definitions */
@@ -42,12 +42,12 @@
   padding: 1em;
   line-height: 1em;
   /* Fix for strange opacity-related rendering issues.
-	   CAUTION: -webkit-backface-visibility: hidden; is EXTREMELY DANGEROUS.
-	   If applied to a VE surface directly, it will break selection of
-	   FocusableNodes, and in the past it's caused transparent PNGs to
-	   render as opaque black images. For some reason applying it to the dialog
-	   wrapper in the main document fixes opacity-related behavior in the iframe
-	   document, but doesn't break the surface inside the iframe. */
+     CAUTION: -webkit-backface-visibility: hidden; is EXTREMELY DANGEROUS.
+     If applied to a VE surface directly, it will break selection of
+     FocusableNodes, and in the past it's caused transparent PNGs to
+     render as opaque black images. For some reason applying it to the dialog
+     wrapper in the main document fixes opacity-related behavior in the iframe
+     document, but doesn't break the surface inside the iframe. */
 
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
@@ -569,7 +569,7 @@
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-active .oo-ui-tool-link .oo-ui-iconedElement-icon {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/check.png);
+  background-image: url(<%= asset_path 'visual-editor/icons/check.png' %>);
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link {
@@ -1124,95 +1124,95 @@
 /* Icons */
 
 .oo-ui-icon-add-item {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/add-item.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/add-item.svg' %>);
 }
 
 .oo-ui-icon-advanced {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/advanced.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/advanced.svg' %>);
 }
 
 .oo-ui-icon-alert {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/alert.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/alert.svg' %>);
 }
 
 .oo-ui-icon-check {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/check.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/check.svg' %>);
 }
 
 .oo-ui-icon-clear {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/clear.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/clear.svg' %>);
 }
 
 .oo-ui-icon-close {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/close.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/close.svg' %>);
 }
 
 .oo-ui-icon-code {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/code.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/code.svg' %>);
 }
 
 .oo-ui-icon-collapse {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/collapse.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/collapse.svg' %>);
 }
 
 .oo-ui-icon-comment {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/comment.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/comment.svg' %>);
 }
 
 .oo-ui-icon-expand {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/expand.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/expand.svg' %>);
 }
 
 .oo-ui-icon-help {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/help.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/help.svg' %>);
 }
 
 .oo-ui-icon-link {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/link.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/link.svg' %>);
 }
 
 .oo-ui-icon-menu {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/menu.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/menu.svg' %>);
 }
 
 .oo-ui-icon-next {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/move-ltr.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/move-ltr.svg' %>);
 }
 
 .oo-ui-icon-picture {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/picture.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/picture.svg' %>);
 }
 
 .oo-ui-icon-previous {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/move-rtl.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/move-rtl.svg' %>);
 }
 
 .oo-ui-icon-redo {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/arched-arrow-ltr.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/arched-arrow-ltr.svg' %>);
 }
 
 .oo-ui-icon-remove {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/remove.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/remove.svg' %>);
 }
 
 .oo-ui-icon-search {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/search.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/search.svg' %>);
 }
 
 .oo-ui-icon-settings {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/settings.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/settings.svg' %>);
 }
 
 .oo-ui-icon-tag {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/tag.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/tag.svg' %>);
 }
 
 .oo-ui-icon-undo {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/arched-arrow-rtl.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/arched-arrow-rtl.svg' %>);
 }
 
 .oo-ui-icon-window {
-  background-image: /* @embed */ url(/assets/visual-editor/icons/window.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/window.svg' %>);
 }
 
 /* Indicators */
@@ -1222,11 +1222,11 @@
 }
 
 .oo-ui-indicator-required {
-  background-image: /* @embed */ url(/assets/visual-editor/indicators/required.svg);
+  background-image: url(<%= asset_path 'visual-editor/indicators/required.svg' %>);
 }
 
 .oo-ui-indicator-up {
-  background-image: /* @embed */ url(/assets/visual-editor/indicators/up.svg);
+  background-image: url(<%= asset_path 'visual-editor/indicators/up.svg' %>);
 }
 .oo-ui-dialog {
   background-color: #fff;
@@ -1297,7 +1297,7 @@
 .oo-ui-toolbar-shadow {
   bottom: -9px;
   height: 9px;
-  background-image: /* @embed */ url(/assets/visual-editor/toolbar-shadow.png);
+  background-image: url(<%= asset_path 'visual-editor/toolbar-shadow.png' %>);
   opacity: 0.125;
   -webkit-transition: opacity 500ms ease-in-out;
      -moz-transition: opacity 500ms ease-in-out;
@@ -1745,7 +1745,7 @@
   width: 15px;
   height: 8px;
   margin-left: -7px;
-  background-image: /* @embed */ url(/assets/visual-editor/tail.svg);
+  background-image: url(<%= asset_path 'visual-editor/tail.svg' %>);
 }
 
 .oo-ui-popupWidget-transitioning .oo-ui-popupWidget-popup {
@@ -2018,11 +2018,11 @@
  */
 
 .ve-ce-documentNode {
-	font-size: 0.8em;
+  font-size: 0.8em;
 }
 
 .oo-ui-menuWidget {
-	font-size: 0.9em;
+  font-size: 0.9em;
 }
 
 /*!
@@ -2033,84 +2033,84 @@
  */
 
 .ve-init-debugBar-commands {
-	font-size: 0.8em;
+  font-size: 0.8em;
 }
 
 .ve-init-debugBar-commands > .oo-ui-widget,
 .ve-init-debugBar-commands-divider {
-	display: inline-block;
-	vertical-align: middle;
-	margin-right: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 1em;
 }
 
 .ve-init-debugBar-commands .oo-ui-textInputWidget {
-	width: 4em;
+  width: 4em;
 }
 
 .ve-init-debugBar-commands-divider {
-	border-right: 1px solid #ddd;
-	padding-left: 0.2em;
-	width: 0;
+  border-right: 1px solid #ddd;
+  padding-left: 0.2em;
+  width: 0;
 }
 
 .ve-init-debugBar-dump {
-	font-size: 0.7em;
-	margin-top: 2em;
-	display: none;
-	background-color: #f3f3f3;
-	width: 100%;
-	border: 1px solid #ddd;
-	border-radius: 0;
-	border-top-right-radius: 0.25em;
-	border-top-left-radius: 0.25em;
+  font-size: 0.7em;
+  margin-top: 2em;
+  display: none;
+  background-color: #f3f3f3;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  border-top-right-radius: 0.25em;
+  border-top-left-radius: 0.25em;
 }
 
 .ve-init-debugBar-dump td {
-	padding: 0.25em 1em;
-	background-color: #fff;
-	vertical-align: top;
+  padding: 0.25em 1em;
+  background-color: #fff;
+  vertical-align: top;
 }
 
 .ve-init-debugBar-dump-linmod {
-	width: 30%;
+  width: 30%;
 }
 
 .ve-init-debugBar-dump th {
-	padding: 0.5em 1em;
-	color: #555;
-	text-shadow: 0 1px 1px #fff;
+  padding: 0.5em 1em;
+  color: #555;
+  text-shadow: 0 1px 1px #fff;
 }
 
 .ve-init-debugBar-dump ol {
-	padding-left: 1.5em;
-	color: #999;
+  padding-left: 1.5em;
+  color: #999;
 }
 
 .ve-init-debugBar-dump li > span {
-	display: inline-block;
-	background-color: #f3f3f3;
-	border-radius: 0.3em;
-	margin: 0.25em 0 0.25em 0;
-	padding: 0.125em 0.5em;
-	text-shadow: 0 1px 1px #fff;
-	color: #000;
+  display: inline-block;
+  background-color: #f3f3f3;
+  border-radius: 0.3em;
+  margin: 0.25em 0 0.25em 0;
+  padding: 0.125em 0.5em;
+  text-shadow: 0 1px 1px #fff;
+  color: #000;
 }
 
 .ve-init-debugBar-dump li > span > span {
-	color: #aaa;
-	text-shadow: 0 1px 1px #fff;
+  color: #aaa;
+  text-shadow: 0 1px 1px #fff;
 }
 
 .ve-init-debugBar-dump li .ve-init-debugBar-dump-element {
-	background-color: #ddeeff;
+  background-color: #ddeeff;
 }
 
 .ve-init-debugBar-dump li .ve-init-debugBar-dump-char {
-	background-color: #ddffee;
+  background-color: #ddffee;
 }
 
 .ve-init-debugBar-dump li .ve-init-debugBar-dump-achar {
-	background-color: #ffeedd;
+  background-color: #ffeedd;
 }
 
 /*!
@@ -2123,26 +2123,26 @@
 /* Fix weird Chrome native selection involving floated elements */
 .ve-ce-alienBlockNode:before,
 .ve-ce-alienBlockNode:after {
-	content: '';
+  content: '';
 }
 
 .ve-ce-alienBlockNode {
-	display: block;
+  display: block;
 }
 
 .ve-ce-alienInlineNode  {
-	display: inline;
+  display: inline;
 }
 
 .ve-ce-alienNode-phantom {
-	background-color: #C3E59A;
-	background-image: -ms-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
-	background-image: -webkit-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
-	background-image: -moz-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px);
-	background-image: repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
-	background-size: 14px 14px;
-	box-shadow: none;
-	cursor: not-allowed;
+  background-color: #C3E59A;
+  background-image: -ms-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
+  background-image: -webkit-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
+  background-image: -moz-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px);
+  background-image: repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
+  background-size: 14px 14px;
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
 /*!
@@ -2153,43 +2153,43 @@
  */
 
 .ve-ce-branchNode-blockSlugWrapper {
-	background-color: transparent;
-	outline: transparent dashed 1px;
-	outline-offset: 10px;
-	-webkit-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
-	-moz-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
-	-o-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
-	transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+  background-color: transparent;
+  outline: transparent dashed 1px;
+  outline-offset: 10px;
+  -webkit-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+  -moz-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+  -o-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+  transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
 }
 
 .ve-ce-branchNode-blockSlugWrapper .ve-ce-branchNode-blockSlug {
-	overflow: hidden;
-	-webkit-transition: font-size 200ms ease-out, margin 200ms ease-out;
-	-moz-transition: font-size 200ms ease-out, margin 200ms ease-out;
-	-o-transition: font-size 200ms ease-out, margin 200ms ease-out;
-	transition: font-size 200ms ease-out, margin 200ms ease-out;
+  overflow: hidden;
+  -webkit-transition: font-size 200ms ease-out, margin 200ms ease-out;
+  -moz-transition: font-size 200ms ease-out, margin 200ms ease-out;
+  -o-transition: font-size 200ms ease-out, margin 200ms ease-out;
+  transition: font-size 200ms ease-out, margin 200ms ease-out;
 }
 
 .ve-ce-branchNode-blockSlugWrapper-unfocused {
-	margin: 0 0 -0.2em 0;
-	outline-offset: 0;
+  margin: 0 0 -0.2em 0;
+  outline-offset: 0;
 }
 
 .ve-ce-branchNode-blockSlugWrapper-unfocused:hover {
-	outline-color: #ccc;
-	/* rgba(#f1f7fb, 0.5) */
-	background-color: rgba(241, 247, 251, 0.75);
+  outline-color: #ccc;
+  /* rgba(#f1f7fb, 0.5) */
+  background-color: rgba(241, 247, 251, 0.75);
 }
 
 .ve-ce-branchNode-blockSlugWrapper-unfocused .ve-ce-branchNode-blockSlug {
-	font-size: 0.8em;
-	margin: 0.2em 0;
+  font-size: 0.8em;
+  margin: 0.2em 0;
 }
 
 /* Pre-formatted node styling */
 
 pre.ve-ce-branchNode {
-	white-space: pre-wrap;
+  white-space: pre-wrap;
 }
 
 /* Hack for empty headings and paragraphs; can't use min-height because of IE */
@@ -2201,15 +2201,15 @@ pre.ve-ce-branchNode {
 .ve-ce-branchNode h5:empty:before,
 .ve-ce-branchNode h6:empty:before,
 .ve-ce-branchNode p:empty:before {
-	content: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+  content: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
 }
 
 /* Emulate the first paragraph in each list item being unwrapped */
 
 /* TODO use CSS class for wrapper paragraph */
 li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /*!
@@ -2220,8 +2220,8 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ce-documentNode {
-	cursor: text;
-	overflow: hidden;
+  cursor: text;
+  overflow: hidden;
 }
 
 /*
@@ -2231,12 +2231,12 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 .ve-ce-documentNode::selection,
 .ve-ce-documentNode *::selection {
-	background: rgba(109, 169, 247, 0.5); /* #6da9f7 */
+  background: rgba(109, 169, 247, 0.5); /* #6da9f7 */
 }
 
 /* Prevent focus outline on editor */
 .ve-ce-documentNode[contenteditable="true"]:focus {
-	outline: none;
+  outline: none;
 }
 
 /*!
@@ -2247,8 +2247,8 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ce-focusableNode-highlight {
-	background: #6da9f7;
-	position: absolute;
+  background: #6da9f7;
+  position: absolute;
 }
 
 /*!
@@ -2260,16 +2260,16 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 
 /* Prevent GeneratedContentNode wrappers from being interacted with  */
 .ve-ce-generatedContentNode {
-	pointer-events: none;
+  pointer-events: none;
 }
 
 /* Allow GeneratedContentNode content to be interacted with  */
 .ve-ce-generatedContentNode .ve-ce-protectedNode-shield {
-	pointer-events: all;
+  pointer-events: all;
 }
 
 .ve-ce-generatedContentNode-generating {
-	opacity: 0.5;
+  opacity: 0.5;
 }
 
 /*!
@@ -2280,7 +2280,7 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ce-imageNode {
-	cursor: default;
+  cursor: default;
 }
 
 /*!
@@ -2291,8 +2291,8 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ce-LanguageAnnotation {
-	border-bottom: 1px dashed #ccc;
-	background-color: #ebf3f5;
+  border-bottom: 1px dashed #ccc;
+  background-color: #ebf3f5;
 }
 
 /*!
@@ -2304,40 +2304,40 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 
 .ve-ce-protectedNode,
 .ve-ce-protectedNode * {
-	position: relative !important;
-	top: 0 !important;
-	left: 0 !important;
-	bottom: 0 !important;
-	right: 0 !important;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .ve-ce-protectedNode::-moz-selection,
 .ve-ce-protectedNode *::-moz-selection {
-	background: transparent;
+  background: transparent;
 }
 
 .ve-ce-protectedNode-shield {
-	position: absolute !important;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	background-color: transparent !important;
-	-webkit-user-select: auto;
-	-moz-user-select: element;
-	-ms-user-select: element;
-	user-select: element;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: transparent !important;
+  -webkit-user-select: auto;
+  -moz-user-select: element;
+  -ms-user-select: element;
+  user-select: element;
 }
 
 .ve-ce-protectedNode-phantom {
-	position: absolute;
-	background-color: rgba(104, 171, 255, 0.1);
-	box-shadow: inset 0 0 0 1px #68abff;
-	cursor: default;
+  position: absolute;
+  background-color: rgba(104, 171, 255, 0.1);
+  box-shadow: inset 0 0 0 1px #68abff;
+  cursor: default;
 }
 
 /*!
@@ -2348,12 +2348,12 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ce-relocatableNode-marker {
-	cursor: move;
-	position: absolute;
+  cursor: move;
+  position: absolute;
 }
 
 .ve-ce-relocatableNode-marker.relocating {
-	background: rgba(0, 0, 0, 1);
+  background: rgba(0, 0, 0, 1);
 }
 
 /*!
@@ -2364,76 +2364,76 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ce-resizableNode-handles {
-	position: absolute;
-	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+  position: absolute;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .ve-ce-resizableNode-handles div {
-	position: absolute;
-	width: 11px;
-	height: 11px;
-	background-repeat: no-repeat;
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  background-repeat: no-repeat;
 }
 
 .ve-ce-resizableNode-nwHandle {
-	cursor: nw-resize;
-	left: -6px;
-	top: -6px;
+  cursor: nw-resize;
+  left: -6px;
+  top: -6px;
 }
 
 .ve-ce-resizableNode-neHandle {
-	cursor: ne-resize;
-	right: -6px;
-	top: -6px;
+  cursor: ne-resize;
+  right: -6px;
+  top: -6px;
 }
 
 .ve-ce-resizableNode-swHandle {
-	cursor: sw-resize;
-	bottom: -6px;
-	left: -6px;
+  cursor: sw-resize;
+  bottom: -6px;
+  left: -6px;
 }
 
 .ve-ce-resizableNode-seHandle {
-	cursor: se-resize;
-	bottom: -6px;
-	right: -6px;
+  cursor: se-resize;
+  bottom: -6px;
+  right: -6px;
 }
 
 .ve-ce-resizableNode-sizeLabel {
-	position: absolute;
-	text-align: center;
-	opacity: 0;
-	-webkit-transition: opacity 200ms;
-	-moz-transition: opacity 200ms;
-	-o-transition: opacity 200ms;
-	transition: opacity 200ms;
+  position: absolute;
+  text-align: center;
+  opacity: 0;
+  -webkit-transition: opacity 200ms;
+  -moz-transition: opacity 200ms;
+  -o-transition: opacity 200ms;
+  transition: opacity 200ms;
 }
 
 .ve-ce-resizableNode-sizeLabel-resizing {
-	opacity: 0.75;
+  opacity: 0.75;
 }
 
 .ve-ce-resizableNode-sizeText {
-	font-size: 0.8em;
-	padding: 0.25em 0.5em;
-	border: 1px solid #ccc;
-	background-color: white;
-	border-radius: 0.3em;
-	white-space: nowrap;
+  font-size: 0.8em;
+  padding: 0.25em 0.5em;
+  border: 1px solid #ccc;
+  background-color: white;
+  border-radius: 0.3em;
+  white-space: nowrap;
 }
 
 .ve-ce-resizableNode-sizeText span:not(:first-child) {
-	margin-left: 0.4em;
-	padding-left: 0.4em;
-	border-left: 1px solid #ccc;
+  margin-left: 0.4em;
+  padding-left: 0.4em;
+  border-left: 1px solid #ccc;
 }
 
 .ve-ce-resizableNode-sizeText-warning {
-	background-color: #ecc;
-	border-color: #caa;
+  background-color: #ecc;
+  border-color: #caa;
 }
 
 /*!
@@ -2444,63 +2444,63 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ce-surface {
-	overflow: hidden;
-	font-size: 1em; /* to look more like MediaWiki use: 0.8em */;
+  overflow: hidden;
+  font-size: 1em; /* to look more like MediaWiki use: 0.8em */;
 }
 
 .ve-ce-surface-textarea {
-	position: absolute;
-	z-index: -1;
-	opacity: 0;
-	color: white;
-	background-color: #fff;
-	border: none;
-	padding: 0;
-	margin: 0;
-	width: 1px;
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  color: white;
+  background-color: #fff;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 1px;
 }
 
 .ve-ce-surface-textarea:focus {
-	outline: none;
+  outline: none;
 }
 
 .ve-ce-surface-cursor {
-	position: absolute;
-	background-color: #000;
-	width: 1px;
-	display: none;
+  position: absolute;
+  background-color: #000;
+  width: 1px;
+  display: none;
 }
 
 /* @noflip */
 .ve-ce-surface-phantoms {
-	left: 0;
-	opacity: 0.75;
-	position: absolute;
-	top: 0;
+  left: 0;
+  opacity: 0.75;
+  position: absolute;
+  top: 0;
 }
 
 /* @noflip */
 .ve-ce-surface-highlights {
-	left: 0;
-	opacity: 0.5;
-	pointer-events: none;
-	position: absolute;
-	top: 0;
+  left: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
 }
 
 .ve-ce-surface-paste {
-	height: 1px;
-	left: 0;
-	opacity: 0;
-	overflow: hidden;
-	position: fixed;
-	top: 0;
-	width: 1px;
+  height: 1px;
+  left: 0;
+  opacity: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 1px;
 }
 
 .ve-ce-surface-paste * {
-	height: 1px !important;
-	width: 1px !important;
+  height: 1px !important;
+  width: 1px !important;
 }
 
 /* MediaWiki PHP Parser does not wrap text inside image captions in <p> but we do (cause we have to).
@@ -2508,13 +2508,13 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 /*csslint overqualified-elements:false */
 .ve-ce-surface .thumbcaption p.ve-ce-generated-wrapper {
-	display: inline;
-	padding: 0;
-	line-height: inherit;
+  display: inline;
+  padding: 0;
+  line-height: inherit;
 }
 
 .ve-ce-surface .thumbcaption .ve-ce-branchNode-slug {
-	display: none;
+  display: none;
 }
 
 /*!
@@ -2525,56 +2525,56 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ui-commandHelpDialog-container {
-	-ms-column-count: 2;
-	-moz-column-count: 2;
-	-webkit-column-count: 2;
-	column-count: 2;
-	margin: 0 3em;
-	/*
-	 * Hack 1.1: The height isn't calculated correctly with the inline-block
-	 * hack so fix it to prevent unnecessary scroll bars.
-	 */
-	height: 37em;
+  -ms-column-count: 2;
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  column-count: 2;
+  margin: 0 3em;
+  /*
+   * Hack 1.1: The height isn't calculated correctly with the inline-block
+   * hack so fix it to prevent unnecessary scroll bars.
+   */
+  height: 37em;
 }
 
 .ve-ui-commandHelpDialog-section {
-	/*
-	 * Hack 1: Prevent splitting over columns. This should be done with
-	 * column-break-inside but it's not well supported yet.
-	 */
-	display: inline-block;
-	width: 100%;
+  /*
+   * Hack 1: Prevent splitting over columns. This should be done with
+   * column-break-inside but it's not well supported yet.
+   */
+  display: inline-block;
+  width: 100%;
 }
 
 .ve-ui-commandHelpDialog-section h3 {
-	margin: 1em 0;
-	padding: 0;
+  margin: 1em 0;
+  padding: 0;
 }
 
 .ve-ui-commandHelpDialog-list {
-	margin: 1em 0;
+  margin: 1em 0;
 }
 
 .ve-ui-commandHelpDialog-list dd {
-	float: left;
-	width: 45%;
-	margin: 0;
+  float: left;
+  width: 45%;
+  margin: 0;
 }
 
 .ve-ui-commandHelpDialog-list dt {
-	float: left;
-	clear: left;
-	width: 40%;
-	text-align: right;
-	margin-right: 1em;
-	font-weight: bold;
+  float: left;
+  clear: left;
+  width: 40%;
+  text-align: right;
+  margin-right: 1em;
+  font-weight: bold;
 }
 
 .ve-ui-commandHelpDialog-list dd,
 .ve-ui-commandHelpDialog-list dt {
-	line-height: 110%;
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
+  line-height: 110%;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 /*!
@@ -2587,51 +2587,51 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 .ve-ui-desktopContext,
 .ve-ui-desktopContext-inspectors,
 .ve-ui-desktopContext-menu {
-	position: absolute;
+  position: absolute;
 }
 
 .ve-ui-desktopContext-menu .oo-ui-toolbar-bar {
-	white-space: nowrap;
-	border: none;
-	background: none;
+  white-space: nowrap;
+  border: none;
+  background: none;
 }
 
 .ve-ui-desktopContext-menu .oo-ui-toolGroup {
-	border: none;
-	margin: 0;
+  border: none;
+  margin: 0;
 }
 
 .ve-ui-desktopContext-menu .oo-ui-tool,
 .ve-ui-desktopContext-menu .oo-ui-tool:hover {
-	border: none;
+  border: none;
 }
 
 .ve-ui-desktopContext-menu .oo-ui-tool:active,
 .ve-ui-desktopContext-menu .oo-ui-tool-active {
-	background-image: none;
+  background-image: none;
 }
 
 .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
-	margin-top: 0.25em;
+  margin-top: 0.25em;
 }
 
 /* @noflip */
 .ltr .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
-	margin-left: -0.5em;
+  margin-left: -0.5em;
 }
 
 /* @noflip */
 .rtl .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
-	margin-left: 0.5em;
+  margin-left: 0.5em;
 }
 
 .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-context-menu {
-	right: 0;
+  right: 0;
 }
 
 /* HACK: Compensate for oo-ui-frame-content setting the font size to 0.8em */
 .oo-ui-frame-content .ve-ui-desktopContext .oo-ui-popupWidget {
-	font-size: 1.25em;
+  font-size: 1.25em;
 }
 
 /*!
@@ -2642,41 +2642,41 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-paragraph .oo-ui-tool-title {
-	font-weight: normal;
+  font-weight: normal;
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-tool-title {
-	font-size: 150%;
-	font-weight: normal;
+  font-size: 150%;
+  font-weight: normal;
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-tool-title {
-	font-size: 120%;
-	font-weight: normal;
+  font-size: 120%;
+  font-weight: normal;
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-heading3 .oo-ui-tool-title {
-	font-size: 105%;
-	font-weight: bold;
+  font-size: 105%;
+  font-weight: bold;
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-heading4 .oo-ui-tool-title {
-	font-size: 92%;
-	font-weight: bold;
+  font-size: 92%;
+  font-weight: bold;
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-heading5 .oo-ui-tool-title {
-	font-size: 80%;
-	font-weight: bold;
+  font-size: 80%;
+  font-weight: bold;
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-heading6 .oo-ui-tool-title {
-	font-size: 64%;
-	font-weight: bold;
+  font-size: 64%;
+  font-weight: bold;
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-preformatted .oo-ui-tool-title {
-	font-family: monospace, "Courier New";
+  font-family: monospace, "Courier New";
 }
 
 /*!
@@ -2687,24 +2687,24 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ui-inspector {
-	-webkit-transition: opacity 100ms;
-	-moz-transition: opacity 100ms;
-	-o-transition: opacity 100ms;
-	transition: opacity 100ms;
+  -webkit-transition: opacity 100ms;
+  -moz-transition: opacity 100ms;
+  -o-transition: opacity 100ms;
+  transition: opacity 100ms;
 }
 
 .ve-ui-inspector-content .ve-ui-inspector-closeButton {
-	float: left;
+  float: left;
 }
 
 .ve-ui-inspector-content .ve-ui-inspector-removeButton {
-	float: right;
+  float: right;
 }
 
 .ve-ui-inspector-content .oo-ui-window-body form {
-	margin: 0.25em 0 0 0;
-	padding: 0;
-	white-space: nowrap;
+  margin: 0.25em 0 0 0;
+  padding: 0;
+  white-space: nowrap;
 }
 
 /*!
@@ -2715,11 +2715,11 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ui-languageInputWidget-languageTextInput {
-	width: 10em;
+  width: 10em;
 }
 
 .ve-ui-languageInputWidget-directionSelect {
-	margin-bottom: 0.5em;
+  margin-bottom: 0.5em;
 }
 /*!
  * VisualEditor UserInterface MediaSizeWidget styles.
@@ -2729,7 +2729,7 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ui-mediaSizeWidget-input-hasError input[type="text"] {
-	background: #ffc2c2;
+  background: #ffc2c2;
 }
 
 /*!
@@ -2740,42 +2740,42 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-specialchar-spinner {
-	/* There might be a better place for a spinner? */
-	/* @embed */
-	background-image: url(/assets/visual-editor/spinner.gif);
-	width: 31px;
-	height: 31px;
-	margin-left: auto;
-	margin-right: auto;
+  /* There might be a better place for a spinner? */
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/spinner.gif' %>);
+  width: 31px;
+  height: 31px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .ve-specialchar-list h3 {
-	font-size: 1em;
-	text-transform: capitalize;
+  font-size: 1em;
+  text-transform: capitalize;
 }
 
 .ve-specialchar-list-group {
-	white-space: normal;
+  white-space: normal;
 }
 
 .ve-specialchar-list-character {
-	cursor: pointer;
-	font-size: 1.5em;
-	line-height: 1.5em;
-	width: 1.5em;
-	height: 1.5em;
-	text-align: center;
-	display: inline-block;
-	margin: 0 1px 1px 0;
-	border: 1px solid #e6e6e6;
-	-webkit-transition: border-color 100ms;
-	-moz-transition: border-color 100ms;
-	-o-transition: border-color 100ms;
-	transition: border-color 100ms;
+  cursor: pointer;
+  font-size: 1.5em;
+  line-height: 1.5em;
+  width: 1.5em;
+  height: 1.5em;
+  text-align: center;
+  display: inline-block;
+  margin: 0 1px 1px 0;
+  border: 1px solid #e6e6e6;
+  -webkit-transition: border-color 100ms;
+  -moz-transition: border-color 100ms;
+  -o-transition: border-color 100ms;
+  transition: border-color 100ms;
 }
 
 .ve-specialchar-list-character:hover {
-	border-color: #ccc;
+  border-color: #ccc;
 }
 
 /*!
@@ -2786,30 +2786,30 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ui-surface {
-	position: relative;
+  position: relative;
 }
 
 .ve-ui-surface:after {
-	content: ".";
-	display: block;
-	clear: both;
-	visibility: hidden;
-	line-height: 0;
-	height: 0;
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
 }
 
 .ve-ui-surface-overlay {
-	font-family: sans-serif;
-	line-height: 1.5em;
-	font-size: 1em;
-	position: absolute;
-	top: 0;
-	right: 0;
-	left: 0;
+  font-family: sans-serif;
+  line-height: 1.5em;
+  font-size: 1em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
 }
 
 .ve-ui-surface-overlay-local {
-	z-index: 1;
+  z-index: 1;
 }
 
 /*!
@@ -2820,26 +2820,26 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ui-surfaceWidget-surface {
-	border: 1px solid #ddd;
-	border-radius: 0.25em;
-	border-top-right-radius: 0;
-	border-top-left-radius: 0;
+  border: 1px solid #ddd;
+  border-radius: 0.25em;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
 }
 
 .ve-ui-surfaceWidget-surface .ve-ce-documentNode {
-	padding: 1.875em; /* 1.5/0.8 */
+  padding: 1.875em; /* 1.5/0.8 */
 }
 
 .ve-ui-surfaceWidget-toolbar {
-	font-size: 1.25em;
+  font-size: 1.25em;
 }
 
 .ve-ui-surfaceWidget-toolbar > .oo-ui-toolbar-bar {
-	border: 1px solid #ddd;
-	border-radius: 0.25em;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
-	border-bottom-width: 0;
+  border: 1px solid #ddd;
+  border-radius: 0.25em;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-width: 0;
 }
 
 /*!
@@ -2850,18 +2850,18 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .oo-ui-toolbar-bar {
-	position: relative;
+  position: relative;
 }
 
 .ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
-	position: fixed;
-	top: 0;
-	z-index: 100;
-	border-top: none;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  border-top: none;
 }
 
 .ve-ui-toolbar-floating .oo-ui-toolbar-shadow {
-	opacity: 0.5;
+  opacity: 0.5;
 }
 
 /*!
@@ -2873,272 +2873,269 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 /*csslint duplicate-background-images:false */
 
 .oo-ui-icon-align-center {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/align-center.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/align-center.svg' %>);
 }
 
 .oo-ui-icon-align-float-left {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/align-float-left.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/align-float-left.svg' %>);
 }
 
 .oo-ui-icon-align-float-right {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/align-float-right.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/align-float-right.svg' %>);
 }
 
 .oo-ui-icon-bold-a {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-a.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-a.svg' %>);
 }
 
 .oo-ui-icon-bold-b {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-b.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-b.svg' %>);
 }
 
 .oo-ui-icon-bold-arab-ain {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-arab-ain.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-arab-ain.svg' %>);
 }
 
 .oo-ui-icon-bold-arab-dad {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-arab-dad.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-arab-dad.svg' %>);
 }
 
 .oo-ui-icon-bold-cyrl-be {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-cyrl-be.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-cyrl-be.svg' %>);
 }
 
 .oo-ui-icon-bold-cyrl-te {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-cyrl-te.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-cyrl-te.svg' %>);
 }
 
 .oo-ui-icon-bold-cyrl-zhe {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-cyrl-zhe.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-cyrl-zhe.svg' %>);
 }
 
 .oo-ui-icon-bold-f {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-f.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-f.svg' %>);
 }
 
 .oo-ui-icon-bold-g {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-g.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-g.svg' %>);
 }
 
 .oo-ui-icon-bold-geor-man {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-geor-man.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-geor-man.svg' %>);
 }
 
 .oo-ui-icon-bold-l {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-l.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-l.svg' %>);
 }
 
 .oo-ui-icon-bold-n {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-n.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-n.svg' %>);
 }
 
 .oo-ui-icon-bold-v {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bold-v.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bold-v.svg' %>);
 }
 
 .oo-ui-icon-bullet-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bullet-list-ltr.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bullet-list-ltr.svg' %>);
 }
 
 /* @noflip */
 .ve-ui-dir-block-rtl .oo-ui-icon-bullet-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bullet-list-rtl.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bullet-list-rtl.svg' %>);
 }
 
 /* @noflip */
 .ve-ui-dir-block-ltr .oo-ui-icon-bullet-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/bullet-list-ltr.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/bullet-list-ltr.svg' %>);
 }
 
 .oo-ui-icon-indent-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/indent-list-ltr.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/indent-list-ltr.svg' %>);
 }
 
 /* @noflip */
 .ve-ui-dir-block-rtl .oo-ui-icon-indent-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/indent-list-rtl.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/indent-list-rtl.svg' %>);
 }
 
 /* @noflip */
 .ve-ui-dir-block-ltr .oo-ui-icon-indent-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/indent-list-ltr.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/indent-list-ltr.svg' %>);
 }
 
 .oo-ui-icon-italic-a {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/italic-a.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/italic-a.svg' %>);
 }
 
 .oo-ui-icon-italic-c {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/italic-c.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/italic-c.svg' %>);
 }
 
 .oo-ui-icon-italic-d {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/italic-d.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/italic-d.svg' %>);
 }
 
 .oo-ui-icon-italic-e {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/italic-e.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/italic-e.svg' %>);
 }
 
 .oo-ui-icon-italic-s {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/italic-s.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/italic-s.svg' %>);
 }
 
 .oo-ui-icon-italic-arab-meem {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/italic-arab-meem.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/italic-arab-meem.svg' %>);
 }
 
 .oo-ui-icon-italic-arab-keheh-jeem {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/italic-arab-keheh-jeem.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/italic-arab-keheh-jeem.svg' %>);
 }
 
 .oo-ui-icon-italic-geor-kan {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/italic-geor-kan.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/italic-geor-kan.svg' %>);
 }
 
 .oo-ui-icon-italic-i {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/italic-i.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/italic-i.svg' %>);
 }
 
 .oo-ui-icon-italic-k,
 .oo-ui-icon-italic-cyrl-ka {
-	/* Latin K and Cyrillic Ka use same glyph */
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/italic-k.svg);
+  background-image: url(<%= asset_path 'visual-editor/icons/italic-k.svg' %>);
 }
 
 .oo-ui-icon-language {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/language.svg); }
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/language.svg' %>);
+}
 
 .oo-ui-icon-number-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/number-list-ltr.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/number-list-ltr.svg' %>);
 }
 
 /* @noflip */
 .ve-ui-dir-block-rtl .oo-ui-icon-number-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/number-list-rtl.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/number-list-rtl.svg' %>);
 }
 
 /* @noflip */
 .ve-ui-dir-block-ltr .oo-ui-icon-number-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/number-list-ltr.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/number-list-ltr.svg' %>);
 }
 
 .oo-ui-icon-outdent-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/outdent-list-ltr.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/outdent-list-ltr.svg' %>);
 }
 
 /* @noflip */
 .ve-ui-dir-block-rtl .oo-ui-icon-outdent-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/outdent-list-rtl.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/outdent-list-rtl.svg' %>);
 }
 
 /* @noflip */
 .ve-ui-dir-block-ltr .oo-ui-icon-outdent-list {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/outdent-list-ltr.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/outdent-list-ltr.svg' %>);
 }
 
 .oo-ui-icon-special-character {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/special-character.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/special-character.svg' %>);
 }
 
 .oo-ui-icon-strikethrough-a {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/strikethrough-a.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/strikethrough-a.svg' %>);
 }
 
 .oo-ui-icon-strikethrough-s {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/strikethrough-s.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/strikethrough-s.svg' %>);
 }
 
 .oo-ui-icon-strikethrough-y {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/strikethrough-y.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/strikethrough-y.svg' %>);
 }
 
 .oo-ui-icon-subscript {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/subscript.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/subscript.svg' %>);
 }
 
 .oo-ui-icon-superscript {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/superscript.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/superscript.svg' %>);
 }
 
 /* @noflip */
 .oo-ui-icon-text-dir-ltr {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/text-dir-ltr.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/text-dir-ltr.svg' %>);
 }
 
 /* @noflip */
 .oo-ui-icon-text-dir-rtl {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/text-dir-rtl.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/text-dir-rtl.svg' %>);
 }
 
 .oo-ui-icon-text-style {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/text-style.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/text-style.svg' %>);
 }
 
 .oo-ui-icon-underline-a {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/underline-a.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/underline-a.svg' %>);
 }
 
 .oo-ui-icon-underline-u {
-	/* @embed */
-	background-image: url(/assets/visual-editor/icons/underline-u.svg);
+  /* @embed */
+  background-image: url(<%= asset_path 'visual-editor/icons/underline-u.svg' %>);
 }
 
 .ve-ui-icon-resize-nw-se {
-	background-image: url(/assets/visual-editor/resize-nw-se.svg);
+  background-image: url(<%= asset_path 'visual-editor/resize-nw-se.svg' %>);
 }
 
 .ve-ui-icon-resize-ne-sw {
-	background-image: url(/assets/visual-editor/resize-ne-sw.svg);
+  background-image: url(<%= asset_path 'visual-editor/resize-ne-sw.svg' %>);
 }
 
 /*!
@@ -3149,19 +3146,19 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
  */
 
 .ve-ui-inspector .oo-ui-frame {
-	width: 17.25em;
-	height: 3em;
+  width: 17.25em;
+  height: 3em;
 }
 
 .ve-ui-inspector-content .oo-ui-window-head {
-	height: 2em;
-	padding: 0.5em;
+  height: 2em;
+  padding: 0.5em;
 }
 
 .ve-ui-inspector-content .oo-ui-window-icon {
-	padding-left: 0.5em;
-	margin-left: 0.25em;
-	border-left: solid 1px #eee;
+  padding-left: 0.5em;
+  margin-left: 0.25em;
+  border-left: solid 1px #eee;
 }
 
 /*!
@@ -3175,45 +3172,45 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 /*csslint compatible-vendor-prefixes:false */
 
 .ve-ui-mobileContext {
-	position: absolute;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background: #fff;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
 
-	opacity: .5;
-	-webkit-transform: translate3d(0, -100%, 0);
-	transform: translate3d(0, -100%, 0);
-	/* needed for iOS, where translate by 100% sometimes fails and a hidden
-	 * context ends up preventing interaction with the toolbar and part of
-	 * the surface */
-	visibility: hidden;
+  opacity: .5;
+  -webkit-transform: translate3d(0, -100%, 0);
+  transform: translate3d(0, -100%, 0);
+  /* needed for iOS, where translate by 100% sometimes fails and a hidden
+   * context ends up preventing interaction with the toolbar and part of
+   * the surface */
+  visibility: hidden;
 
-	-webkit-transition: -webkit-transform .3s, opacity .3s, visibility 0s .3s;
-	transition: transform .3s, opacity .3s, visibility 0s .3s;
+  -webkit-transition: -webkit-transform .3s, opacity .3s, visibility 0s .3s;
+  transition: transform .3s, opacity .3s, visibility 0s .3s;
 }
 
 .ve-ui-mobileContext-visible {
-	opacity: 1;
-	-webkit-transform: none;
-	transform: none;
-	visibility: visible;
+  opacity: 1;
+  -webkit-transform: none;
+  transform: none;
+  visibility: visible;
 
-	-webkit-transition: -webkit-transform .3s, opacity .3s;
-	transition: transform .3s, opacity .3s;
+  -webkit-transition: -webkit-transform .3s, opacity .3s;
+  transition: transform .3s, opacity .3s;
 }
 
 .ve-ui-mobileContext-enabled {
-	height: 100%;
-	overflow: hidden;
+  height: 100%;
+  overflow: hidden;
 }
 
 .ve-ui-mobileContext-enabled .ve-ui-surface-overlay-global {
-	height: 100%;
+  height: 100%;
 }
 
 /* inspector styles */
 
 .ve-ui-mobileContext .oo-ui-frame {
-	width: 100%;
+  width: 100%;
 }

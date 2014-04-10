@@ -16,14 +16,14 @@ feature "Editing paper", js: true do
     edit_paper.abstract = "Lorem Ipsum is simply dummy text"
     edit_paper.body = "Contrary to popular belief"
 
-    binding.pry
+    #binding.pry
     dashboard_page = edit_paper.save
-    binding.pry
-    edit_paper.navigate_to_dashboard
+    #binding.pry
+    #edit_paper.navigate_to_dashboard
     # expect(dashboard_page.submissions).to include "Lorem Ipsum Dolor Sit Amet"
 
     edit_paper = EditPaperPage.visit paper
-    binding.pry
+    #binding.pry
     expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"
     # expect(edit_paper.abstract).to match /Lorem Ipsum is simply dummy text/
     expect(edit_paper.body).to eq "Contrary to popular belief"

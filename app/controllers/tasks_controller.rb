@@ -16,8 +16,8 @@ class TasksController < ApplicationController
     if task && task.authorize_update!(tp, current_user)
       task.update tp
       task.reload
-      ts = TaskSerializer.new(task)
-      EventStream.post_event(task.paper.id, ts.to_json)
+      ts = task.active_model_serializer.new(task, root: :task)
+      EventStream.post_event(task.paper.id, ts.as_json.merge({type: ts.type}).to_json)
       respond_with task
     else
       head :forbidden

@@ -29,11 +29,11 @@ ETahi.animateOverlayOut = ->
 
 ETahi.Spinner = Ember.Object.extend
 
-  opts:
-    lines: 9 # The number of lines to draw
+  opts:( ->
+    lines: 7 # The number of lines to draw
     length: 0 # The length of each line
     width: 7 # The line thickness
-    radius: 14 # The radius of the inner circle
+    radius: 7 # The radius of the inner circle
     corners: 1 # Corner roundness (0..1)
     rotate: 0 # The rotation offset
     direction: 1 # 1: clockwise, -1: counterclockwise
@@ -44,13 +44,20 @@ ETahi.Spinner = Ember.Object.extend
     hwaccel: false # Whether to use hardware acceleration
     className: "spinner" # The CSS class to assign to the spinner
     zIndex: 2e9 # The z-index (defaults to 2000000000)
+  ).property()
 
   spinner: null
 
   start: ( ->
-    spinner =  new Spinner(@get('opts')).spin()
+    options = @get('opts')
+    if $("#top-nav").length
+      spinner = new Spinner(options).spin()
+      $("#top-nav").append(spinner.el)
+    else
+      options = Ember.merge(options, {lines: 20, radius: 30})
+      spinner = new Spinner(options).spin()
+      $("body").append(spinner.el)
     @set('spinner', spinner)
-    $("body").append(spinner.el)
   ).on('init')
 
   stop: ( ->

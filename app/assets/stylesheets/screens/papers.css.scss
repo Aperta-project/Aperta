@@ -62,6 +62,14 @@ $paper-trim-color: $tahi-tertiary;
   min-height: 500px;
 }
 
+#paper-body .ve-init-sa-target-toolbar { // visual-editor override
+  position: fixed;
+  top: 86px;
+  margin-left: -70px;
+  width: 839px;
+  z-index: 1001;
+}
+
 .author-detail {
   display: inline-block;
   min-width: 100px;

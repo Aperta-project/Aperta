@@ -20,6 +20,11 @@ ETahi.PaperEditView = Ember.View.extend
       ve.createDocumentFromHtml(@get('controller.model.body') || '')
     )
 
+    # :( VE seems to need time to initialize:
+    Em.run.later (->
+      target.toolbar.disableFloatable()
+    ), 100
+
     @set('visualEditor', target)
   ).on('didInsertElement')
 

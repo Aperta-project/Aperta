@@ -1,5 +1,10 @@
 ETahi.ApplicationRoute = Ember.Route.extend
   actions:
+
+    loading: (transition, originRoute) ->
+      spinner = ETahi.Spinner.create()
+      this.router.one('didTransition', spinner, 'stop')
+
     chooseNewCardTypeOverlay: (phase) ->
       @controllerFor('chooseNewCardTypeOverlay').set('phase', phase)
       @render('chooseNewCardTypeOverlay',

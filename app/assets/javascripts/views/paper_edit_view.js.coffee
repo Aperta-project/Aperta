@@ -1,8 +1,4 @@
 ETahi.PaperEditView = Ember.View.extend
-  shouldShowDownloadLink: (->
-    !!@get('controller.model.body')
-  ).property('controller.model.body')
-
   visualEditor: null,
 
   setBackgroundColor:(->

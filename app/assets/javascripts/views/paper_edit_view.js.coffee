@@ -5,6 +5,27 @@ ETahi.PaperEditView = Ember.View.extend
     $('html').addClass('matte')
   ).on('didInsertElement')
 
+  setupScrollFixing: (->
+    $('.control-bar').scrollToFixed()
+
+    $('#tahi-container > main > aside > div').scrollToFixed
+      marginTop: $('.control-bar').outerHeight(true)
+      unfixed: ->
+        $(this).css('top', '0px')
+
+    Em.run.later (->
+      $('.oo-ui-toolbar').scrollToFixed
+        marginTop: $('.control-bar').outerHeight(true)
+        unfixed: ->
+          $(this).addClass('not-fixed')
+          $(this).css('marginTop', '-86px')
+        preFixed: ->
+          $(this).removeClass('not-fixed')
+          $(this).css('marginTop', '0')
+
+    ), 250
+  ).on('didInsertElement')
+
   setupVisualEditor: (->
     ve.init.platform.setModulesUrl('/visual-editor/modules')
     container = $('<div>')

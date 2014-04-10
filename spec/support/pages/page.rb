@@ -94,7 +94,7 @@ class Page < PageFragment
   end
 
   def navigate_to_dashboard
-    within('#nav-bar') do
+    within('.nav-bar') do
       click_on 'Dashboard'
       DashboardPage.new
     end

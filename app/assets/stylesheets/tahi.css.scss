@@ -48,13 +48,8 @@ textarea { resize: none; }
 #tahi-container {
   max-width: 1120px;
   margin: 0 auto;
-  padding-top: $tahi-nav-bar-height;
 
   &.full-width { max-width: none; }
-
-  &.with-control-bar {
-    padding-top: $tahi-nav-bar-height + $tahi-control-bar-height;
-  }
 
   > main {
     @extend .row;

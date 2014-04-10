@@ -3,7 +3,7 @@ ETahi.UploadManuscriptOverlayView = ETahi.OverlayView.extend
   layoutName: 'layouts/assignee_overlay_layout'
 
   didInsertElement: ->
-    new Spinner(top: '0', left: '-64px', color: '#39a329').spin $('.processing')[0]
+    new Spinner(top: '20px', left: '-30px', color: '#39a329').spin $('.processing')[0]
     $('ul#paper-manuscript-upload, .processing, .progress').hide()
 
     uploader = $('.js-jquery-fileupload')

@@ -1,9 +1,11 @@
-ETahi.TaskSerializer = DS.ActiveModelSerializer.extend ETahi.SerializesHasMany,
-  normalize: (type, hash) ->
+ETahi.normalizeTask = (hash)->
     hash.qualified_type = hash.type
-    taskType = hash.type || 'Task'
-    hash.type = taskType.replace(/.+::/, '')
-    this._super.apply(this, arguments)
+    hash.type = hash.type.replace(/.+::/, '')
+
+ETahi.TaskSerializer = DS.ActiveModelSerializer.extend ETahi.SerializesHasMany,
+  normalizeHash:
+    task: ETahi.normalizeTask
+    tasks: ETahi.normalizeTask
 
   serializeIntoHash: (data, type, record, options) ->
       root = 'task'

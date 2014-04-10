@@ -40,6 +40,7 @@ ETahi.ChosenView = Ember.Select.extend
   rerenderChosen: ->
     # Don't trigger Chosen update until after DOM elements have finished rendering.
     Ember.run.scheduleOnce 'afterRender', @, ->
-      @.$().trigger('chosen:updated')
+      if @.$()
+        @.$().trigger('chosen:updated')
 
 Ember.Handlebars.helper('chosen', ETahi.ChosenView)

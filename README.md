@@ -2,6 +2,29 @@
 
 ## Development Notes
 
+### Setting up the event server
+
+You will need:
+- Go with your $GOPATH environment variable set.
+- a cloned copy of https://github.com/stuartnelson3/golang-eventsource: 
+  `$ git clone git@github.com:stuartnelson3/golang-eventsource.git`
+
+From your golang-eventsource folder:
+
+Download your server dependencies
+```
+$ for f in github.com/antage/eventsource/http github.com/martini-contrib/cors github.com/codegangsta/martini; do
+  go get $f
+  done
+```
+
+Run your server
+`$ PORT=8080 TOKEN=token123 go run server.go`
+
+By default, the eventsource server checks every request for a token that matches against its `$TOKEN` environment variable. Tahi's default token is `token123`. To change this behavior, set the `ES_TOKEN` environment variable for tahi.
+
+By default, tahi attempts to connect to a stream server at `http://localhost:8080`. To change this behavior, set the `ES_URL` environment variable for tahi.
+
 ### Running specs
 
 We use:

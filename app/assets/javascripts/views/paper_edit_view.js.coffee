@@ -17,7 +17,7 @@ ETahi.PaperEditView = Ember.View.extend
 
     target = new ve.init.sa.Target(
       container,
-      ve.createDocumentFromHtml(@get('controller.model.body'))
+      ve.createDocumentFromHtml(@get('controller.model.body') || '')
     )
 
     @set('visualEditor', target)

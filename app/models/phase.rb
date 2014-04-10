@@ -16,7 +16,7 @@ class Phase < ActiveRecord::Base
   ]
 
   def self.default_phases
-    DEFAULT_PHASE_NAMES.map.with_index { |name, pos| Phase.new name: name, position: pos }
+    DEFAULT_PHASE_NAMES.map.with_index { |name, pos| Phase.new name: name, position: pos + 1 }
   end
 
   private

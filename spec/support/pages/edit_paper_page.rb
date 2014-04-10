@@ -67,7 +67,10 @@ class EditPaperPage < Page
   end
 
   def cards
-    all('.card-content').map &:text
+    {
+      metadata: all('#paper-metadata-tasks .card-content').map(&:text),
+      assigned: all('#paper-assigned-tasks .card-content').map(&:text)
+    }
   end
 
   def paper_type

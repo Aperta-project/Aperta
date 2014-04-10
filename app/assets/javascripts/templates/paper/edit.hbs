@@ -42,9 +42,15 @@
     </article>
     <aside>
       <div>
-        {{!each assignedTasks itemViewClass="ETahi.CardView"}}
+        {{#if assignedTasks }}
+        <div id="paper-assigned-tasks">
+          {{each assignedTasks itemViewClass="ETahi.CardView"}}
+        </div>
         <hr>
-        {{each authorTasks   itemViewClass="ETahi.CardView"}}
+        {{/if}}
+        <div id="paper-metadata-tasks">
+          {{each authorTasks   itemViewClass="ETahi.CardView"}}
+        </div>
         <hr>
         <a class="primary-button wide-button" href="#" {{action "submit" target="view"}}>Submit</a>
         <a class="primary-button wide-button" href="#" {{action "save"   target="view"}}>Save</a>

@@ -1,4 +1,6 @@
 ETahi.PaperEditController = Ember.ObjectController.extend
+  needs: ['application']
+
   submissionPhase: ( ->
     @get('phases').findBy('name', 'Submission Data')
   ).property('phases.@each.name')
@@ -9,9 +11,12 @@ ETahi.PaperEditController = Ember.ObjectController.extend
 
   authorTasks: Ember.computed.filterBy('submissionPhase.tasks', 'role', 'author')
 
-  reviewerTasks: Ember.computed.filterBy('allTasks', 'role', 'reviewer')
+  assignedTasks: (->
+    assignedTasks = @get('allTasks').filterBy 'assignee', @get('controllers.application.currentUser')
+    _.difference assignedTasks, @get('authorTasks')
+  ).property('allTasks.@each')
 
-  assignedTasks: Ember.computed.setDiff('allTasks', 'authorTasks')
+  reviewerTasks: Ember.computed.filterBy('allTasks', 'role', 'reviewer')
 
   authorNames: ( ->
     authors = @get('authors').map (author) ->

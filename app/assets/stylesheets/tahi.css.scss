@@ -48,13 +48,8 @@ textarea { resize: none; }
 #tahi-container {
   max-width: 1120px;
   margin: 0 auto;
-  padding-top: $tahi-nav-bar-height;
 
   &.full-width { max-width: none; }
-
-  &.with-control-bar {
-    padding-top: $tahi-nav-bar-height + $tahi-control-bar-height;
-  }
 
   > main {
     @extend .row;
@@ -146,3 +141,19 @@ textarea { resize: none; }
   display: inline-block;
   margin-right: 10px;
 }
+
+
+#top-nav {
+  position: relative;
+
+  .spinner {
+    left: 180px;
+    top: 18px;
+  }
+}
+
+.body-spinner {
+  top: 50%;
+  left: 50%;
+}
+

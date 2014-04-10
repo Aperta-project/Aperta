@@ -60,14 +60,17 @@ $paper-trim-color: $tahi-tertiary;
 
 #paper-body {
   min-height: 500px;
+
+  .ve-ce-documentNode.ve-ce-branchNode { // visual-editor override
+    min-height: 500px;
+  }
 }
 
-#paper-body .ve-init-sa-target-toolbar { // visual-editor override
-  position: fixed;
-  top: 86px;
-  margin-left: -70px;
-  width: 839px;
-  z-index: 1001;
+#paper-body .oo-ui-toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 #paper-abstract { display: none; }
@@ -82,6 +85,8 @@ $paper-trim-color: $tahi-tertiary;
     @include make-xs-column(9);
     border-right: 1px solid $paper-trim-color;
     padding: 0;
+
+    .title { margin-top: 55px; }
   }
 
   > aside {

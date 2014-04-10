@@ -4,10 +4,6 @@ $nav-bar-hover-color: $tahi-primary-hover;
 $nav-bar-active-color: $tahi-primary;
 
 .nav-bar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
   overflow: hidden;
   width: 100%;
   height: $tahi-nav-bar-height;

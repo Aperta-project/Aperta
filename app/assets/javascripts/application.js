@@ -22,6 +22,7 @@
 //= require utils
 //= require ./polyfills
 //= require handlebars
+//= require spin
 //= require ember
 //= require ember-data
 //= require_self

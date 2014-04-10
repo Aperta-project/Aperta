@@ -29,7 +29,7 @@
 
 <ul id="paper-figures">
   {{!#TODO: extract items in each block into their own views?}}
-  {{#each figure in view.figures}}
+  {{#each figure in model.figures}}
   <li>
     {{#if figure.src}}
       <img {{bind-attr src=figure.src alt=figure.alt}} />

@@ -13,14 +13,7 @@ ETahi.FlowManagerRoute = Ember.Route.extend
       flow.destroyRecord()
 
     viewCard: (paper, task) ->
-      currentType = task.get('type')
-      currentType = 'AdHocTask' if currentType == 'Task'
-      baseObjectName = (currentType || 'AdHocTask').replace('Task', 'Overlay')
-      controller = @controllerFor(baseObjectName)
-      controller.set('model', task)
-      controller.set('paper', paper)
-
-      @render(baseObjectName,
-        into: 'application'
-        outlet: 'overlay'
-        controller: controller)
+      redirectParams = ['flow_manager']
+      @controllerFor('application').set('overlayRedirect', redirectParams)
+      @controllerFor('application').set('overlayBackground', 'flow_manager')
+      @transitionTo('paper.task', paper, task.id)

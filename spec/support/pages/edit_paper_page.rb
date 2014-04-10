@@ -66,6 +66,10 @@ class EditPaperPage < Page
     page.evaluate_script 've.instances[0].getModel().getDocument().getText()'
   end
 
+  def cards
+    all('.card-content').map &:text
+  end
+
   def paper_type
     select = find('#paper_paper_type')
     select.find("option[value='#{select.value}']").text

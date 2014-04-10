@@ -42,7 +42,8 @@
     </article>
     <aside>
       <div>
-        {{each assignedTasks itemViewClass="ETahi.CardView"}}
+        {{!each assignedTasks itemViewClass="ETahi.CardView"}}
+        <hr>
         {{each authorTasks   itemViewClass="ETahi.CardView"}}
         <hr>
         <a class="primary-button wide-button" href="#" {{action "submit" target="view"}}>Submit</a>

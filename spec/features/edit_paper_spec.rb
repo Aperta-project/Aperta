@@ -9,7 +9,7 @@ feature "Editing paper", js: true do
     sign_in_page.sign_in author.email
   end
 
-  scenario "Author edits paper" do
+  scenario "Author edits paper and metadata cards" do
     edit_paper = EditPaperPage.visit paper
     edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
     edit_paper.body = "Contrary to popular belief"
@@ -19,5 +19,6 @@ feature "Editing paper", js: true do
 
     expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"
     expect(edit_paper.body).to eq "Contrary to popular belief"
+    expect(edit_paper.cards).to match_array ['Upload Manuscript', 'Add Authors', 'Upload Figures', 'Enter Declarations']
   end
 end

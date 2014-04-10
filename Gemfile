@@ -64,6 +64,8 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'
+  gem "teaspoon"
+  gem "phantomjs"
 end
 
 group :test do

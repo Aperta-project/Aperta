@@ -42,6 +42,6 @@ ETahi.UploadManuscriptOverlayView = ETahi.OverlayView.extend
         isUploading: false
       $('ul#paper-manuscript-upload').hide()
       $('#task_completed:not(:checked)').click()
-      # TODO: make this work AFTER manuscript page is converted to Ember
-      # @controoler.transitionToRoute('paper', @get('model.paper'))
-      $('.overlay').hide()
+      paper = @controller.get('model.paper')
+      paper.reload().then =>
+        @controller.send('closeAction')

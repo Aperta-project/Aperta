@@ -2,53 +2,41 @@ source 'https://rubygems.org'
 
 ruby "2.1.1"
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.0.rc1'
-
-# Use postgresql as the database for Active Record
-gem 'pg'
-
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.1'
-
-gem 'haml-rails'
-
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-
-# Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.1'
-
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-
-gem 'acts_as_list'
-
-group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
-end
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.1.2'
-
-# Use unicorn as the app server
 gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-#
-gem 'pry-rails'
-
+gem 'pg'
 gem 'ember-rails'
 gem 'ember-source', '1.5.0'
 gem "ember-data-source", "~> 1.0.0.beta.7"
+gem 'sass-rails', '~> 4.0.1'
+gem 'haml-rails'
+gem 'uglifier', '>= 1.3.0'
+gem 'coffee-rails', '~> 4.0.1'
+gem 'jquery-rails'
+gem 'acts_as_list'
+gem 'devise'
+gem "bootstrap-sass"
+gem 'bourbon'
+gem 'rails_12factor', group: [:production, :staging]
+gem "nokogiri"
+gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
+gem "carrierwave"
+gem "fog"
+gem "unf"
+gem 'rails_admin'
+gem "chosen-rails", "~> 1.0.2"
+gem 'spinjs-rails'
+gem 'newrelic_rpm'
+gem "rest_client", "~> 1.7.3"
+gem 'gepub'
+gem 'rubyzip', require: 'zip'
+gem 'standard_tasks', path: 'engines/standard_tasks'
+gem "active_model_serializers"
+gem 'pry-rails'
+
+group :doc do
+  gem 'sdoc', require: false
+end
 
 group :development do
   gem 'license_finder'
@@ -74,32 +62,3 @@ group :test do
   gem 'vcr'
   gem 'webmock'
 end
-
-gem 'devise'
-
-gem "bootstrap-sass"
-gem 'bourbon'
-
-gem 'rails_12factor', group: [:production, :staging]
-
-gem "nokogiri"
-
-gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
-
-gem "carrierwave"
-gem "fog"
-gem "unf"
-gem 'rails_admin'
-gem "chosen-rails", "~> 1.0.2"
-gem 'spinjs-rails'
-
-gem 'newrelic_rpm'
-
-gem "rest_client", "~> 1.7.3"
-gem 'gepub'
-
-gem 'rubyzip', require: 'zip'
-
-gem 'standard_tasks', path: 'engines/standard_tasks'
-
-gem "active_model_serializers"

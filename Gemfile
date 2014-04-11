@@ -33,6 +33,10 @@ gem 'standard_tasks', path: 'engines/standard_tasks'
 gem "active_model_serializers"
 gem 'pry-rails'
 
+group :production do
+  gem 'heroku-deflater'
+end
+
 group :doc do
   gem 'sdoc', require: false
 end

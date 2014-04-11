@@ -42,6 +42,7 @@ group :doc do
 end
 
 group :development do
+  gem 'rack-mini-profiler'
   gem 'license_finder'
   gem 'railroady'
   gem 'spring'

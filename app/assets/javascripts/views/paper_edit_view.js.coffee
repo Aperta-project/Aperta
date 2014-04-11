@@ -38,8 +38,8 @@ ETahi.PaperEditView = Ember.View.extend
     )
 
     # :( VE seems to need time to initialize:
-    Em.run.later (->
-      target.toolbar.disableFloatable()
+    Em.run.later target, (->
+      this.toolbar.disableFloatable()
     ), 250
 
     @set('visualEditor', target)

@@ -1,4 +1,7 @@
 ETahi.PaperEditRoute = Ember.Route.extend
+  afterModel: (model) ->
+    @transitionTo('paper.index', model) if model.get('submitted')
+
   actions:
     viewCard: (task) ->
       paper = @modelFor('paper')

@@ -361,9 +361,6 @@ $message-body-width: 700px;
     font-size: 18px;
     color: $tahi-message;
     text-transform: uppercase;
-    span, b {
-      margin-top: 8px;
-    }
   }
 
   .chosen-drop {
@@ -413,11 +410,11 @@ $message-body-width: 700px;
     margin-top: 8px;
   }
   div b {
-    background-position: 0px 2px;
+    background-position: 0px 10px;
   }
 }
 
-.message .chosen-style-override .chosen-container-single .chosen-single {
+.message-overlay .chosen-style-override .chosen-container-single .chosen-single {
   border-color: $tahi-message;
   color: $tahi-message;
   span {

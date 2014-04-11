@@ -32,6 +32,24 @@
   &:last-of-type { border-bottom: none; }
 }
 
+.flow-card.card-completed .card-content {
+  color: $tahi-tertiary - #666;
+  background: $tahi-tertiary;
+
+  .completed-glyph {
+    display: inline;
+    margin-right: 5px;
+    color: $tahi-primary;
+  }
+}
+
+.card-completed:hover .card-content {
+  color: white;
+  background: $tahi-tertiary - #333;
+
+  .glyphicon { color: white; }
+}
+
 
 /*
   .overlay.flow-manager.column.overlay

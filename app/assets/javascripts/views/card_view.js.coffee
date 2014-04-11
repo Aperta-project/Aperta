@@ -14,4 +14,7 @@ ETahi.CardView = Em.View.extend(DragNDrop.Dragable, {
   isMessage: (->
     if @get('content.isMessage') then 'card-message' else false
   ).property('content.isMessage')
+
+  dragStart: (e) ->
+    ETahi.set('dragItem', @get('content'))
 })

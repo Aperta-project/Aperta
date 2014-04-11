@@ -5,6 +5,10 @@ ETahi.PaperEditView = Ember.View.extend
     $('html').addClass('matte')
   ).on('didInsertElement')
 
+  resetBackgroundColor:(->
+    $('html').removeClass('matte')
+  ).on('willDestroyElement')
+
   setupScrollFixing: (->
     $('.control-bar').scrollToFixed()
 
@@ -44,10 +48,6 @@ ETahi.PaperEditView = Ember.View.extend
 
     @set('visualEditor', target)
   ).on('didInsertElement')
-
-  resetBackgroundColor:(->
-    $('html').removeClass('matte')
-  ).on('willDestroyElement')
 
   saveVisualEditorChanges: ->
     documentNode = ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())

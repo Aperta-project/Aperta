@@ -1,4 +1,4 @@
-ETahi.PaperEditController = Ember.ObjectController.extend
+ETahi.PaperController = Ember.ObjectController.extend
   needs: ['application']
 
   submissionPhase: ( ->
@@ -23,3 +23,8 @@ ETahi.PaperEditController = Ember.ObjectController.extend
       [author.first_name, author.last_name].join(' ')
     authors.join(', ')
   ).property('authors.@each')
+
+# These controllers have to be here for now since the load order
+# gets messed up otherwise
+ETahi.PaperIndexController = ETahi.PaperController.extend()
+ETahi.PaperEditController = ETahi.PaperController.extend()

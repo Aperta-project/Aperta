@@ -1,3 +1,5 @@
 ETahi.FlowPaperView = Ember.View.extend
   templateName: 'flow_paper'
-  tasks: Ember.computed.intersect('flow.tasks.content', 'paper.allTasks')
+  tasks: ( ->
+    @get('flow.tasks.content').filterBy('paper', @get('paper'))
+  ).property('flow.tasks.@each.paper', 'paper')

@@ -29,7 +29,7 @@ class FlowSerializer < ActiveModel::Serializer
 
   # simplify this and then remove the base_query
   def unassigned_papers
-    base_query(PaperAdminTask).includes(:journal).where(assignee_id: nil)
+    PaperAdminTask.where(assignee_id: nil).includes(:journal, :paper)
   end
 
   def flow_map
@@ -42,6 +42,6 @@ class FlowSerializer < ActiveModel::Serializer
   end
 
   def base_query(task_type)
-    task_type.joins(phase: {task_manager: :paper}).includes(:paper, {paper: :figures}, {paper: :declarations}, {paper: {journal: :journal_roles}})
+    task_type.joins(phase: {task_manager: :paper}).includes(:paper)
   end
 end

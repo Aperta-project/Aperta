@@ -16,5 +16,6 @@ ETahi.CardView = Em.View.extend(DragNDrop.Dragable, {
   ).property('content.isMessage')
 
   dragStart: (e) ->
+    e.dataTransfer.setData('Text', 'TAHI!')
     ETahi.set('dragItem', @get('content'))
 })

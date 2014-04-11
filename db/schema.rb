@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140407160015) do
+ActiveRecord::Schema.define(version: 20140411142524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20140407160015) do
     t.integer  "task_id"
   end
 
+  add_index "comments", ["commenter_id", "task_id"], name: "index_comments_on_commenter_id_and_task_id", using: :btree
   add_index "comments", ["commenter_id"], name: "index_comments_on_commenter_id", using: :btree
   add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
 
@@ -52,6 +53,8 @@ ActiveRecord::Schema.define(version: 20140407160015) do
     t.integer  "user_settings_id"
   end
 
+  add_index "flows", ["user_settings_id"], name: "index_flows_on_user_settings_id", using: :btree
+
   create_table "journal_roles", force: true do |t|
     t.integer  "user_id"
     t.integer  "journal_id"
@@ -63,6 +66,7 @@ ActiveRecord::Schema.define(version: 20140407160015) do
   end
 
   add_index "journal_roles", ["journal_id"], name: "index_journal_roles_on_journal_id", using: :btree
+  add_index "journal_roles", ["user_id", "journal_id"], name: "index_journal_roles_on_user_id_and_journal_id", using: :btree
   add_index "journal_roles", ["user_id"], name: "index_journal_roles_on_user_id", using: :btree
 
   create_table "journals", force: true do |t|
@@ -101,6 +105,7 @@ ActiveRecord::Schema.define(version: 20140407160015) do
   end
 
   add_index "paper_roles", ["paper_id"], name: "index_paper_roles_on_paper_id", using: :btree
+  add_index "paper_roles", ["user_id", "paper_id"], name: "index_paper_roles_on_user_id_and_paper_id", using: :btree
   add_index "paper_roles", ["user_id"], name: "index_paper_roles_on_user_id", using: :btree
 
   create_table "papers", force: true do |t|
@@ -166,6 +171,7 @@ ActiveRecord::Schema.define(version: 20140407160015) do
   end
 
   add_index "tasks", ["assignee_id"], name: "index_tasks_on_assignee_id", using: :btree
+  add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
 
   create_table "user_settings", force: true do |t|

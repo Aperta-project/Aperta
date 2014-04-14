@@ -12,10 +12,10 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
 
   shownComments: (->
     @get('sortedComments').slice(0,5).reverseObjects()
-  ).property('model.comments.@each')
+  ).property('model.comments.length')
 
   showAllComments: (->
-    @get('sortedComments.length') > 5
+    @get('sortedComments.length') < 6
   ).property('model.comments.length')
 
   omittedCommentsCount: (->
@@ -28,7 +28,7 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
 
     showAllComments: ->
       @set('shownComments', @get('sortedComments').reverseObjects())
-      @set('showAllComments', false)
+      @set('showAllComments', true)
 
     postComment: ->
       commenter = @get('currentUser')

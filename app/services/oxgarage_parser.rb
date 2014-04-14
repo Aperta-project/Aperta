@@ -11,7 +11,8 @@ class OxgarageParser
   def output
     request = RestClient::Request.new(
           :method => :post,
-          :url => 'http://ec2-54-193-185-100.us-west-1.compute.amazonaws.com:8080/ege-webservice/Conversions/docx%3Aapplication%3Avnd.openxmlformats-officedocument.wordprocessingml.document/TEI%3Atext%3Axml/xhtml%3Aapplication%3Axhtml%2Bxml/',
+          :url => 'http://oxgarage.oucs.ox.ac.uk:8080/ege-webservice/Conversions/docx%3Aapplication%3Avnd.openxmlformats-officedocument.wordprocessingml.document/TEI%3Atext%3Axml/xhtml%3Aapplication%3Axhtml%2Bxml/conversion',
+          params: {properties: '<conversions><conversion index="0"><property id="oxgarage.getImages">true</property><property id="oxgarage.getOnlineImages">true</property><property id="oxgarage.lang">en</property><property id="oxgarage.textOnly">false</property><property id="pl.psnc.dl.ege.tei.profileNames">sciencejournal</property></conversion><conversion index="1"><property id="oxgarage.getImages">true</property><property id="oxgarage.getOnlineImages">true</property><property id="oxgarage.lang">en</property><property id="oxgarage.textOnly">false</property><property id="pl.psnc.dl.ege.tei.profileNames">sciencejournal</property></conversion></conversions>'},
           :payload => {
             :multipart => true,
             :file => File.new(@filename, 'rb')

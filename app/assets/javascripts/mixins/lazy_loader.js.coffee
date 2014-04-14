@@ -1,0 +1,2 @@
+ETahi.LazyLoaderMixin =
+  loaded: {}

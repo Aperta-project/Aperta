@@ -27,4 +27,16 @@ class MessageCardOverlay < CardOverlay
     expect(page).to have_content new_message
   end
 
+  def load_comments
+    find('.load-all-comments').click
+  end
+
+  def verify_comment_count(expected_count)
+    expect(comments.count).to eq(expected_count)
+  end
+
+  def omitted_comment_count
+    find('a.load-all-comments').text.scan(/\d/).first.to_i
+  end
+
 end

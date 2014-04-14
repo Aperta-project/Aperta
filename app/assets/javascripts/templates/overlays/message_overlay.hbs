@@ -17,8 +17,17 @@
   </ul>
 </div>
 
+{{#unless showAllComments}}
+  <div class='comment-actions' {{action 'showAllComments'}}>
+    <a class='load-all-comments' href="#">
+      <span class='glyphicon glyphicon-comment'></span>
+      View previous {{omittedCommentsCount}} {{pluralize omittedCommentsCount 'comment' 'comments'}}
+    </a>
+  </div>
+{{/unless}}
+
 <ul class="message-comments">
-  {{#each comment in sortedComments}}
+  {{#each comment in shownComments}}
     <li class="message-comment">
       {{userThumbnail comment.commenter}}
       <span class="comment-date">

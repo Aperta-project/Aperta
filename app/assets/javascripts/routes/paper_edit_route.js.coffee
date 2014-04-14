@@ -1,4 +1,10 @@
 ETahi.PaperEditRoute = Ember.Route.extend
+  beforeModel: ->
+    visualEditorScript = '/visual-editor.js'
+    unless ETahi.LazyLoaderMixin.loaded[visualEditorScript]
+      $.getScript(visualEditorScript).then ->
+        ETahi.LazyLoaderMixin.loaded[visualEditorScript] = true
+
   afterModel: (model) ->
     @transitionTo('paper.index', model) if model.get('submitted')
 

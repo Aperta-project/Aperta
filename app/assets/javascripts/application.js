@@ -20,7 +20,6 @@
 //= require jquery.dotdotdot
 //= require jquery.timeago
 //= require utils
-//= require ./polyfills
 //= require handlebars
 //= require spin
 //= require ember

@@ -6,3 +6,11 @@ ETahi.PaperIndexView = Ember.View.extend
   resetBackgroundColor:(->
     $('html').removeClass('matte')
   ).on('willDestroyElement')
+
+  setupScrollFixing: (->
+    $('.control-bar').scrollToFixed()
+    $('#tahi-container > main > aside > div').scrollToFixed
+      marginTop: $('.control-bar').outerHeight(true)
+      unfixed: ->
+        $(this).css('top', '0px')
+  ).on('didInsertElement')

@@ -8,12 +8,8 @@ class PaperAdminTask < Task
     Task.where(role: 'admin', completed: false, phase_id: [task_manager.phases.pluck(:id)], assignee_id: assignee_id)
   end
 
-  def update_status
-    200
-  end
-
-  def update_content
-    ActiveModel::ArraySerializer.new(tasks_for_admin, root: :tasks)
+  def update_responder
+    UpdateResponders::PaperAdminTask
   end
 
   private

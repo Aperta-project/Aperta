@@ -31,8 +31,7 @@ feature "Reviewer Report", js: true do
       user: author
 
     paper_reviewer_task = paper.task_manager.phases.where(name: 'Assign Reviewers').first.tasks.where(type: 'PaperReviewerTask').first
-    paper_reviewer_task.paper_roles = [reviewer.id.to_s]
-
+    paper_reviewer_task.reviewer_ids = [reviewer.id.to_s]
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in reviewer.email
   end

@@ -2,10 +2,10 @@
 <label for="reviewer" >Reviewers</label>
 {{chosen content=paper.availableReviewers
          multiple=true
-         selectionBinding=model.paper.reviewers
+         selectionBinding='reviewers'
          class="reviewers-select"
          optionValuePath="content"
          optionLabelPath="content.fullName"
          data-placeholder="Select reviewers"
-         changeAction='save'
+         changeAction='saveModel'
 }}

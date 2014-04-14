@@ -18,7 +18,8 @@ ETahi.Task = DS.Model.extend
   relationshipsToSerialize: []
 
 ETahi.PaperReviewerTask = ETahi.Task.extend
-  reviewer: DS.belongsTo('user')
+  reviewers: DS.hasMany('user')
+  relationshipsToSerialize: ['reviewers']
 
 ETahi.PaperEditorTask = ETahi.Task.extend
   editors: DS.hasMany('user')

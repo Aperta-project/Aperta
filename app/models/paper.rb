@@ -34,6 +34,10 @@ class Paper < ActiveRecord::Base
     where(submitted: true)
   end
 
+  def tasks_for_type(klass_name)
+    tasks.where(type: klass_name)
+  end
+
   def display_title
     title.present? ? title : short_title
   end

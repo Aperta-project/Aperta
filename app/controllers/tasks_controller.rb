@@ -18,7 +18,8 @@ class TasksController < ApplicationController
       task.reload
       ts = task.active_model_serializer.new(task, root: :task)
       EventStream.post_event(task.paper.id, ts.as_json.merge({type: ts.type}).to_json)
-      render status: task.update_status, json: task.update_content
+
+      render task.update_responder.new(task, view_context).response
     else
       head :forbidden
     end

@@ -1,26 +1,26 @@
 class PaperReviewerTask < Task
-  PERMITTED_ATTRIBUTES = [{ paper_roles: [] }]
+  PERMITTED_ATTRIBUTES = [{ reviewer_ids: [] }]
 
   title 'Assign Reviewers'
   role 'editor'
 
-  def paper_roles
-    PaperRole.where(paper_id: phase.task_manager.paper.id, reviewer: true).pluck :user_id
-  end
-
-  def paper_roles=(user_ids)
-    new_ids = user_ids - existing_user_ids
-    old_ids = existing_user_ids - user_ids
+  def reviewer_ids=(user_ids)
+    user_ids ||= []
+    new_ids = user_ids - reviewer_ids
+    old_ids = reviewer_ids - user_ids
     phase = paper.task_manager.phases.where(name: 'Get Reviews').first
-    new_ids.reject(&:empty?).each do |id|
+    new_ids.each do |id|
       PaperRole.reviewers_for(paper).where(user_id: id).create!
       ReviewerReportTask.create! assignee_id: id, phase: phase
     end
     PaperRole.reviewers_for(paper).where(user_id: old_ids).destroy_all
     ReviewerReportTask.where(assignee_id: old_ids, phase: phase).destroy_all
+    user_ids
   end
 
-  alias :reviewer_ids :paper_roles
+  def reviewer_ids
+    reviewers.pluck :user_id
+  end
 
   def journal_reviewers
     journal.reviewers
@@ -30,9 +30,11 @@ class PaperReviewerTask < Task
     journal.editors
   end
 
-  private
+  def reviewers
+    paper.reviewers
+  end
 
-  def existing_user_ids
-    PaperRole.reviewers_for(paper).map { |paper_role| paper_role.user_id.to_s }
+  def update_responder
+    UpdateResponders::PaperReviewerTask
   end
 end

@@ -2,7 +2,7 @@ ETahi.PaperTaskRoute = Ember.Route.extend
   model: (params) ->
     paperTasks = _.flatten @modelFor('paper').get('phases').mapProperty('tasks.content')
     task = paperTasks.findBy('id', params.task_id)
-    task.reload()
+    task
 
   setupController: (controller, model) ->
     # FIXME: Rename AdHocTask to Task (here, in views, and in templates)
@@ -19,14 +19,12 @@ ETahi.PaperTaskRoute = Ember.Route.extend
     if @controllerFor('application').get('overlayRedirect')
       taskController.set('onClose', 'redirect')
 
-
   renderTemplate: ->
     @render @get('baseObjectName'),
       into: 'application'
       outlet: 'overlay'
       controller: @get('taskController')
     @render(@controllerFor('application').get('overlayBackground'))
-
 
   deactivate: ->
     @send('closeOverlay')

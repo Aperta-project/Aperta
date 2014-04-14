@@ -5,6 +5,10 @@ ETahi.PaperEditView = Ember.View.extend
     $('html').addClass('matte')
   ).on('didInsertElement')
 
+  resetBackgroundColor:(->
+    $('html').removeClass('matte')
+  ).on('willDestroyElement')
+
   setupScrollFixing: (->
     $('.control-bar').scrollToFixed()
 
@@ -38,16 +42,12 @@ ETahi.PaperEditView = Ember.View.extend
     )
 
     # :( VE seems to need time to initialize:
-    Em.run.later (->
-      target.toolbar.disableFloatable()
+    Em.run.later target, (->
+      this.toolbar.disableFloatable()
     ), 250
 
     @set('visualEditor', target)
   ).on('didInsertElement')
-
-  resetBackgroundColor:(->
-    $('html').removeClass('matte')
-  ).on('willDestroyElement')
 
   saveVisualEditorChanges: ->
     documentNode = ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())

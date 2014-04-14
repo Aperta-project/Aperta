@@ -14,6 +14,7 @@ ETahi.TaskController = Ember.ObjectController.extend
 
 
   saveOnCompletedChange: (->
-    return unless @get('model.isDirty')
-    @get('model').save()
+    Ember.run.once this, ->
+      return unless @get('model.isDirty')
+      @get('model').save()
   ).observes('model.completed')

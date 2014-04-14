@@ -4,6 +4,18 @@ class PaperAdminTask < Task
 
   after_save :assign_tasks_to_admin, if: -> { assignee_id_changed? }
 
+  def tasks_for_admin
+    Task.where(role: 'admin', completed: false, phase_id: [task_manager.phases.pluck(:id)], assignee_id: assignee_id)
+  end
+
+  def update_status
+    200
+  end
+
+  def update_content
+    ActiveModel::ArraySerializer.new(tasks_for_admin, root: :tasks)
+  end
+
   private
 
   def assign_tasks_to_admin

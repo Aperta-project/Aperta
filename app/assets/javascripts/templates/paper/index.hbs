@@ -1,0 +1,52 @@
+<div class="control-bar">
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      <li id="control-bar-paper-journal-logo">
+        {{#if journal.logoUrl}}
+          <img src="{{unbound journal.logoUrl}}">
+        {{else}}
+          <div class="paper-journal">{{unbound journal.name}}</div>
+        {{/if}}
+      </li>
+    </ul>
+    <ul>
+      <li><a href="{{unbound downloadLink}}" class="control-bar-link">Download ePub</a></li>
+      <li>{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
+    </ul>
+  </div>
+</div>
+
+<div id="tahi-container">
+  <main>
+    <article>
+      <div>
+        <h2 id="paper-title">
+          {{title}}
+        </h2>
+
+        <div id="paper-authors">
+          {{authorNames}}
+        </div>
+
+        <div id="paper-abstract" contenteditable="true" placeholder="Type your abstract here">
+          {{abstract}}
+        </div>
+
+        <div id="paper-body">{{{body}}}</div>
+      </div>
+    </article>
+    <aside>
+      <div>
+        {{#if assignedTasks }}
+        <div id="paper-assigned-tasks">
+          {{each assignedTasks itemViewClass="ETahi.CardView"}}
+        </div>
+        <hr>
+        {{/if}}
+        <div id="paper-metadata-tasks">
+          {{each authorTasks   itemViewClass="ETahi.CardView"}}
+        </div>
+      </div>
+    </aside>
+  </main>
+</div>

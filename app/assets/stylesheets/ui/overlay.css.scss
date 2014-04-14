@@ -354,16 +354,13 @@ $message-body-width: 700px;
     }
   }
 
-  .chosen-single {
+  .chosen-container-single .chosen-single {
     height: 40px;
     background: white;
     border: 1px solid $tahi-message;
     font-size: 18px;
     color: $tahi-message;
     text-transform: uppercase;
-    span, b {
-      margin-top: 8px;
-    }
   }
 
   .chosen-drop {
@@ -413,11 +410,11 @@ $message-body-width: 700px;
     margin-top: 8px;
   }
   div b {
-    background-position: 0px 8px;
+    background-position: 0px 10px;
   }
 }
 
-.message .chosen-style-override .chosen-container-single .chosen-single {
+.message-overlay .chosen-style-override .chosen-container-single .chosen-single {
   border-color: $tahi-message;
   color: $tahi-message;
   span {
@@ -426,7 +423,7 @@ $message-body-width: 700px;
 }
 
 .chosen-style-override .chosen-container-active.chosen-with-drop .chosen-single div b {
-  background-position: -18px 8px;
+  background-position: -18px 10px;
 }
 
 .message-comments {

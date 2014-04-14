@@ -1,7 +1,7 @@
 class FlowSerializer < ActiveModel::Serializer
   attributes :id, :title, :empty_text
-  has_many :papers, embed: :ids, include: true
-  has_many :tasks, embed: :ids, include: true, polymorphic: true
+  has_many :papers, embed: :ids, include: true, root: :lite_papers, serializer: LitePaperSerializer
+  has_many :tasks, embed: :ids, include: true, root: :card_thumbnails, serializer: CardThumbnailSerializer
 
   def tasks
     @tasks ||= flow_map[object.title]
@@ -12,7 +12,7 @@ class FlowSerializer < ActiveModel::Serializer
   end
 
   def cached_tasks
-    @cached_tasks ||= Task.assigned_to(current_user)
+    @cached_tasks ||= Task.assigned_to(current_user).includes(:paper)
   end
 
   def incomplete_tasks
@@ -29,7 +29,7 @@ class FlowSerializer < ActiveModel::Serializer
 
   # simplify this and then remove the base_query
   def unassigned_papers
-    base_query(PaperAdminTask).includes(:journal).where(assignee_id: nil)
+    PaperAdminTask.where(assignee_id: nil).includes(:journal, :paper)
   end
 
   def flow_map
@@ -42,6 +42,6 @@ class FlowSerializer < ActiveModel::Serializer
   end
 
   def base_query(task_type)
-    task_type.joins(phase: {task_manager: :paper}).includes(:paper, {paper: :figures}, {paper: :declarations}, {paper: {journal: :journal_roles}})
+    task_type.joins(phase: {task_manager: :paper}).includes(:paper)
   end
 end

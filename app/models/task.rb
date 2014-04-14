@@ -35,6 +35,13 @@ class Task < ActiveRecord::Base
     end
   end
 
+  def update_status
+    204
+  end
+
+  def update_content
+    nil
+  end
 
   def authorize_update!(params, user)
     true

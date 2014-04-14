@@ -415,6 +415,10 @@ $message-body-width: 700px;
   }
 }
 
+.chosen-container .chosen-results li {
+  text-transform: capitalize;
+}
+
 .message-overlay .chosen-style-override .chosen-container-single .chosen-single {
   border-color: $tahi-message;
   color: $tahi-message;

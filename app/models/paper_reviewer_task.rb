@@ -5,7 +5,7 @@ class PaperReviewerTask < Task
   role 'editor'
 
   def reviewer_ids=(user_ids)
-    user_ids ||= []
+    user_ids = user_ids.map(&:to_i)
     new_ids = user_ids - reviewer_ids
     old_ids = reviewer_ids - user_ids
     phase = paper.task_manager.phases.where(name: 'Get Reviews').first
@@ -19,7 +19,7 @@ class PaperReviewerTask < Task
   end
 
   def reviewer_ids
-    reviewers.pluck :user_id
+    reviewers.pluck(:user_id)
   end
 
   def journal_reviewers

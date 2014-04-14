@@ -6,8 +6,8 @@ module UpdateResponders
     end
 
     def content
-      tasks = @task.paper.tasks_for_type("ReviewerReportTask").assigned_to(current_user)
-      ActiveModel::ArraySerializer.new(tasks, root: :tasks)
+      phases = @task.paper.phases.where(name: 'Get Reviews')
+      ActiveModel::ArraySerializer.new(phases, root: :phases)
     end
   end
 end

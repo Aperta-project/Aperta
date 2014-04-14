@@ -32,6 +32,7 @@ gem 'rubyzip', require: 'zip'
 gem 'standard_tasks', path: 'engines/standard_tasks'
 gem "active_model_serializers"
 gem 'pry-rails'
+gem 'pry-byebug'
 
 group :production, :staging do
   gem 'heroku-deflater'

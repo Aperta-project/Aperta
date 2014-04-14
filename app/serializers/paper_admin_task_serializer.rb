@@ -5,7 +5,7 @@ class PaperAdminTaskSerializer < TaskSerializer
    has_many :admins, include: true, root: :users
 
   def admin
-    assignee
+    object.paper.admins.first
   end
 
   def admins

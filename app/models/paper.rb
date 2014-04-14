@@ -12,6 +12,7 @@ class Paper < ActiveRecord::Base
   has_many :paper_roles
   has_many :reviewers, -> { where("paper_roles.reviewer" => true) }, through: :paper_roles, source: :user
   has_many :editors, -> { where("paper_roles.editor" => true) }, through: :paper_roles, source: :user
+  has_many :admins, -> { where("paper_roles.admin" => true) }, through: :paper_roles, source: :user
 
   has_one :task_manager, inverse_of: :paper
 
@@ -38,18 +39,31 @@ class Paper < ActiveRecord::Base
     tasks.where(type: klass_name)
   end
 
+  def self.ongoing
+    where(submitted: false)
+  end
+
   def display_title
     title.present? ? title : short_title
   end
 
-  def self.ongoing
-    where(submitted: false)
+  def assign_admin!(user)
+    transaction do
+      paper_roles.admins.destroy_all
+      paper_roles.admins.create!(user: user)
+    end
   end
 
   def editor
     role = paper_roles.where(editor: true).first
     role.user if role
   end
+
+  def admin
+    role = paper_roles.where(admin: true).first
+    role.user if role
+  end
+
 
   private
 

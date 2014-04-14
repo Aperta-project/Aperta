@@ -1,5 +1,5 @@
 ETahi.PaperEditView = Ember.View.extend
-  visualEditor: null,
+  visualEditor: null
 
   setBackgroundColor:(->
     $('html').addClass('matte')
@@ -16,7 +16,9 @@ ETahi.PaperEditView = Ember.View.extend
       marginTop: $('.control-bar').outerHeight(true)
       unfixed: ->
         $(this).css('top', '0px')
+  ).on('didInsertElement')
 
+  setupStickyToolbar: ->
     Em.run.later (->
       $('.oo-ui-toolbar').scrollToFixed
         marginTop: $('.control-bar').outerHeight(true)
@@ -28,13 +30,19 @@ ETahi.PaperEditView = Ember.View.extend
           $(this).css('marginTop', '0')
 
     ), 250
-  ).on('didInsertElement')
 
   setupVisualEditor: (->
     ve.init.platform.setModulesUrl('/visual-editor/modules')
+    @updateVisualEditor()
+
+    @addObserver 'controller.model.body', =>
+      @updateVisualEditor()
+  ).on('didInsertElement')
+
+  updateVisualEditor: ->
     container = $('<div>')
 
-    $('#paper-body').append(container)
+    $('#paper-body').html('').append(container)
 
     target = new ve.init.sa.Target(
       container,
@@ -42,12 +50,13 @@ ETahi.PaperEditView = Ember.View.extend
     )
 
     # :( VE seems to need time to initialize:
-    Em.run.later target, (->
+    that = @
+    Em.run.later target, ->
       this.toolbar.disableFloatable()
-    ), 250
+      that.setupStickyToolbar()
+    , 250
 
     @set('visualEditor', target)
-  ).on('didInsertElement')
 
   saveVisualEditorChanges: ->
     documentNode = ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())

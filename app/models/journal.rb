@@ -1,5 +1,5 @@
 class Journal < ActiveRecord::Base
-  has_many :papers
+  has_many :papers, inverse_of: :journal
   has_many :journal_roles
   has_many :users, through: :journal_roles
 

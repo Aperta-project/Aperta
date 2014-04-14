@@ -3,8 +3,8 @@ class Paper < ActiveRecord::Base
 
   after_initialize :initialize_defaults
 
-  belongs_to :user
-  belongs_to :journal
+  belongs_to :user, inverse_of: :papers
+  belongs_to :journal, inverse_of: :papers
   belongs_to :flow
 
   has_many :declarations, -> { order :id }

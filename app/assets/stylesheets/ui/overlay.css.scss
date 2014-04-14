@@ -464,3 +464,18 @@ $message-body-width: 700px;
   }
 }
 
+.comment-actions {
+  width: $message-body-width;
+  padding-left: 10px;
+  height: 31px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+
+  a, a:hover { color: $tahi-message; }
+}
+
+.load-all-comments {
+  .glyphicon {
+    padding-right: 20px;
+  }
+}

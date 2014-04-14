@@ -7,12 +7,28 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
   _clearNewMessage: ->
     @set('newCommentBody', "")
 
-  commentSort: ['createdAt:asc']
-  sortedComments: Ember.computed.sort('comments', 'commentSort')
+  commentSort: ['createdAt:desc']
+  sortedComments: Ember.computed.sort('model.comments', 'commentSort')
+
+  shownComments: (->
+    @get('sortedComments').slice(0,5).reverseObjects()
+  ).property('model.comments.@each')
+
+  showAllComments: (->
+    @get('sortedComments.length') > 5
+  ).property('model.comments.length')
+
+  omittedCommentsCount: (->
+    @get('sortedComments.length') - 5
+  ).property('model.comments.length')
 
   actions:
     clearMessageContent: ->
       @_clearNewMessage()
+
+    showAllComments: ->
+      @set('shownComments', @get('sortedComments').reverseObjects())
+      @set('showAllComments', false)
 
     postComment: ->
       commenter = @get('currentUser')

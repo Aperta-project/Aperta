@@ -67,7 +67,7 @@ feature 'Message Cards', js: true do
       FactoryGirl.create :message_task, comments: [initial_comment], phase: phase, participants: participants
     end
 
-    context " the user is already a participant" do
+    context "the user is already a participant" do
       let(:commenter) { admin }
       let(:participants) { [admin] }
       scenario "the user can add a commment" do
@@ -94,7 +94,7 @@ feature 'Message Cards', js: true do
       end
     end
 
-    context " the user isn't a participant" do
+    context "the user isn't a participant" do
       let(:commenter) { albert }
       let(:participants) { [albert] }
       scenario "the user becomes a participant after commenting" do
@@ -104,6 +104,43 @@ feature 'Message Cards', js: true do
           card.post_message 'Hello'
           expect(card.participants).to include(admin.full_name, albert.full_name)
           expect(card.comments.last.find('.comment-name')).to have_text(admin.full_name)
+        end
+      end
+    end
+  end
+
+  describe "viewing a message's comments" do
+    let(:commenter) { admin }
+    let(:participants) { [admin] }
+    let(:phase) { paper.phases.first }
+    let(:initial_comments) do
+      comment_count.times.map { FactoryGirl.create :comment, commenter: commenter }
+    end
+    let!(:message) do
+      FactoryGirl.create :message_task, comments: initial_comments, phase: phase, participants: participants
+    end
+    let(:task_manager_page) { TaskManagerPage.visit paper }
+    context "the message has less than or equal to 5 comments" do
+      let(:comment_count) { 4 }
+      scenario "'show all comments button' is not visible. All comments are visible." do
+        task_manager_page.view_card message.title, MessageCardOverlay do |card|
+          expect(card).to have_css('.message-overlay')
+          expect(card).to have_no_css('.comment-actions.active')
+          expect(card.comments.count).to eq(initial_comments.count)
+        end
+      end
+    end
+
+    context "the message has more than 5 comments" do
+      let(:comment_count) { 10 }
+      scenario "'show all comments button' and the most recent 5 comments are visible" do
+        task_manager_page.view_card message.title, MessageCardOverlay do |card|
+          expect(card).to have_css('.message-overlay')
+          expect(card).to have_css('.comment-actions')
+          card.verify_comment_count 5
+          expect(card.omitted_comment_count).to eq(comment_count - 5)
+          card.load_comments
+          card.verify_comment_count comment_count
         end
       end
     end

@@ -4,8 +4,6 @@ class PaperAdminTask < Task
 
   attr_accessor :admin_id
 
-  PERMITTED_ATTRIBUTES = [:admin_id]
-
   after_save :update_paper_admin_and_tasks, if: :paper_admin_changed?
 
   def tasks_for_admin
@@ -14,6 +12,10 @@ class PaperAdminTask < Task
 
   def update_responder
     UpdateResponders::PaperAdminTask
+  end
+
+  def permitted_attributes
+    super + [:admin_id]
   end
 
   private

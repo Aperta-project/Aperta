@@ -13,6 +13,10 @@ describe TaskAdminAssigneeUpdater do
         password: 'abcd1234',
         password_confirmation: 'abcd1234',
         username: 'bobplos' }
+    let(:gus) { User.create! email: 'gus@plos.org',
+        password: 'abcd1234',
+        password_confirmation: 'abcd1234',
+        username: 'gusplos' }
 
     let(:updater) { TaskAdminAssigneeUpdater.new(task.reload) }
 
@@ -50,7 +54,7 @@ describe TaskAdminAssigneeUpdater do
 
       it "will change the assignee on other uncompleted tasks" do
         updater.update
-        expect(task.paper.tasks.incomplete.map(&:assignee).uniq).to match_array([sally])
+        expect(task.paper.tasks.incomplete.admin.map(&:assignee).uniq).to match_array([sally])
       end
 
       it "will not change the assignee on other completed tasks" do
@@ -73,10 +77,30 @@ describe TaskAdminAssigneeUpdater do
       end
 
       it "will change the assignee if same as previous admin" do
-        # if paper.admin == new task.assginee, then update
+        # given that bob is the admin of a paper and the assignee of the task
+        # when I change the admin of the paper to sally
+        # then the assignee of the task should become sally
+
+        # bob is the admin of the paper
+        paper.paper_roles << PaperRole.new(user: bob, admin: true)
+
+        updater.update
+        expect(paper.admin).to eq(sally)
+        expect(task.reload.assignee).to eq(sally)
       end
 
-      it "will not change the assignee if same as previous admin"
+      it "will not change the assignee if *not* same as previous admin" do
+        # given that bob is the admin of the paper and sally is the assignee of the task
+        # when I change the admin to Gus
+        # then the assignee of the task should remain sally
+
+        task.update_column(:assignee_id, sally.id)
+        paper.paper_roles << PaperRole.new(user: bob, admin: true)
+
+        task.admin_id = gus.id
+        updater.update
+        expect(task.reload.assignee).to eq(sally)
+      end
     end
 
   end

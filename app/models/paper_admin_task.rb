@@ -19,7 +19,6 @@ class PaperAdminTask < Task
   private
 
   def update_paper_admin_and_tasks
-    binding.pry
     TaskAdminAssigneeUpdater.new(self).update
 
     # query = Task.where(role: 'admin', completed: false, phase_id: [task_manager.phases.pluck(:id)])

@@ -25,6 +25,10 @@ class Task < ActiveRecord::Base
     where(assignee: user)
   end
 
+  def self.admin
+    where(role: 'admin')
+  end
+
   class << self
     attr_reader :_default_title, :_default_role
 

@@ -1,5 +1,7 @@
 class PaperEditorTask < Task
-  PERMITTED_ATTRIBUTES = [:editor_id, { paper_role_attributes: [:user_id, :editor_id] }]
+  def permitted_attributes
+    super + [:editor_id, { paper_role_attributes: [:user_id, :editor_id] }]
+  end
 
   title 'Assign Editor'
   role 'admin'

@@ -12,11 +12,10 @@ class TasksController < ApplicationController
              current_user.tasks.where(id: params[:id]).first
            end
 
-    unmunge_empty_arrays!(task)
-    tp = task_params(task)
+    if task && task.authorize_update!(params, current_user)
+      unmunge_empty_arrays!(task)
+      tp = task_params(task)
 
-
-    if task && task.authorize_update!(tp, current_user)
       task.update! tp
       task.reload
       ts = task.active_model_serializer.new(task, root: :task)
@@ -57,9 +56,8 @@ class TasksController < ApplicationController
 
   private
 
-  def task_params(task = nil)
-    attributes = [:assignee_id, :completed, :title, :body, :phase_id]
-    attributes += task.class::PERMITTED_ATTRIBUTES if task
+  def task_params(task)
+    attributes = task.permitted_attributes
     params.require(:task).permit(*attributes)
   end
 
@@ -70,7 +68,7 @@ class TasksController < ApplicationController
   end
 
   def unmunge_empty_arrays!(task)
-    task.class.array_attributes.each do |key|
+    task.array_attributes.each do |key|
       if params[:task].has_key?(key) && params[:task][key].nil?
         params[:task][key] = []
       end

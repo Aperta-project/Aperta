@@ -1,10 +1,12 @@
 class PaperReviewerTask < Task
-  PERMITTED_ATTRIBUTES = [{ reviewer_ids: [] }]
+  def permitted_attributes
+    super + [{ reviewer_ids: [] }]
+  end
 
   title 'Assign Reviewers'
   role 'editor'
 
-  def self.array_attributes
+  def array_attributes
     [:reviewer_ids]
   end
 

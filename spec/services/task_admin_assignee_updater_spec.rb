@@ -105,23 +105,4 @@ describe TaskAdminAssigneeUpdater do
 
   end
 
-
-      # admin jeff -> steve
-      #
-      # assignee jeff -> steve
-      # assignee bob -> bob
-      # assignee nil -> steve
-
-  # describe "paper admin is being changed" do
-  #   context "assignee being set is the same as previous admin" do
-  #     it "will not change the assignee on the paper admin task"
-  #   end
-  #
-  #   context "when the assignee is unrelated"
-  #
-  #   context "paper admin task without an admin assigned" do
-  #     it "will change the assignee on the paper admin task"
-  #   end
-  # end
-
 end

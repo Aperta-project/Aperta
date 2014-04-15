@@ -9,7 +9,9 @@ ETahi.PaperController = Ember.ObjectController.extend
 
   assignedTasks: (->
     assignedTasks = @get('allTasks').filterBy 'assignee', @get('controllers.application.currentUser')
-    _.difference assignedTasks, @get('authorTasks')
+    authorTasks   = @get('authorTasks')
+
+    assignedTasks.filter (t)-> !authorTasks.contains(t)
   ).property('allTasks.@each.assignee')
 
   reviewerTasks: Ember.computed.filterBy('allTasks', 'role', 'reviewer')

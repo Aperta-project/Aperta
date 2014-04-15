@@ -26,3 +26,5 @@
 
 # Ignore rake commands cache
 .zsh_rake_cache
+
+config/secrets.yml

@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Neo"]
   s.email       = ["tahi-project@neo.com"]
   s.homepage    = "http://www.tahi.com"
-  s.summary     = "TODO: Summary of StandardTasks."
-  s.description = "TODO: Description of StandardTasks."
+  s.summary     = %q(A modular set of Task models for assembling workflows)
+  s.description = %q(Provides a set of modular Tasks that can be easily combined into different workflows.)
   s.license     = "TBD"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]# add license info like "MIT-LICENSE"

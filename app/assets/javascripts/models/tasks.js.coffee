@@ -15,11 +15,14 @@ ETahi.Task = DS.Model.extend
   isMessage: Ember.computed.equal('type', 'MessageTask')
   paper: Ember.computed.alias('phase.paper')
 
+  #these are both for the SerializesHasMany mixin on TaskSerializer
   relationshipsToSerialize: []
+  serializeEmptyRelationships: []
 
 ETahi.PaperReviewerTask = ETahi.Task.extend
   reviewers: DS.hasMany('user')
   relationshipsToSerialize: ['reviewers']
+  serializeEmptyRelationships: ['reviewers']
 
 ETahi.PaperEditorTask = ETahi.Task.extend
   editors: DS.hasMany('user')

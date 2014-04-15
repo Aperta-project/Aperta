@@ -1,1 +1,1 @@
-ETahi.PaperSerializer = DS.ActiveModelSerializer.extend(ETahi.SerializesHasMany)
+ETahi.PaperSerializer = DS.ActiveModelSerializer.extend()

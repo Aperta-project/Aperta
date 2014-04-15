@@ -6,6 +6,11 @@ ETahi.SerializesHasMany = Ember.Mixin.create
       manyToOne: true
     }
 
+  defaultArray: ["-1"]
+
+  overrideEmptyRelation: (arrayLike) ->
+    if Em.isEmpty(arrayLike) then @defaultArray else arrayLike
+
   toSnakeCase: (string)->
     string.replace /([A-Z])/g, ($1)->
       "_" + $1.toLowerCase()
@@ -16,6 +21,12 @@ ETahi.SerializesHasMany = Ember.Mixin.create
     key = relationship.key
     idsKey = key.substr(0, key.length-1) + "_ids"
     relationshipType = DS.RelationshipChange.determineRelationshipType(record.constructor, relationship)
+    relationshipValue = Em.get(record, key).mapBy("id")
+
+    if record.get('serializeEmptyRelationships')?.contains(relationship.key)
+      relationshipValue = @overrideEmptyRelation(relationshipValue)
+
     if @relationshipMap relationshipType
-      json[@toSnakeCase(idsKey)] = Em.get(record, key).mapBy("id")
+      json[@toSnakeCase(idsKey)] = relationshipValue
+
     return

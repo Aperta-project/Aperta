@@ -36,10 +36,18 @@ describe PaperReviewerTask do
       expect(ReviewerReportTask.where(assignee: albert, phase: phase)).to be_empty
     end
 
-    it "deletes paper roles not present in the specified user_id" do
-      PaperRole.create! paper: paper, reviewer: true, user: albert
-      task.reviewer_ids = [neil.id.to_s]
-      expect(PaperRole.where(paper: paper, reviewer: true, user: albert)).to be_empty
+    context "deleting existing roles" do
+      it "deletes paper roles not present in the specified user_id" do
+        PaperRole.create! paper: paper, reviewer: true, user: albert
+        task.reviewer_ids = [neil.id.to_s]
+        expect(PaperRole.where(paper: paper, reviewer: true, user: albert)).to be_empty
+      end
+
+      it "receives ['-1'] and deletes all paper roles" do
+        PaperRole.create! paper: paper, reviewer: true, user: albert
+        task.reviewer_ids = ["-1"]
+        expect(PaperRole.where(paper: paper, reviewer: true, user: albert)).to be_empty
+      end
     end
   end
 

@@ -28,7 +28,7 @@
                              preventEnterKey="true"}}
         </div>
 
-        <div id="paper-authors" class="editable" {{action 'viewCard' authorsTask}}>
+        <div id="paper-authors" class="editable" {{action "viewCard" authorsTask}}>
           {{authorNames}}
         </div>
 
@@ -41,16 +41,18 @@
     </article>
     <aside>
       <div>
-        {{#if assignedTasks }}
-        <div id="paper-assigned-tasks">
-          {{each assignedTasks itemViewClass="ETahi.CardView"}}
-        </div>
-        <hr>
+        {{#if assignedTasks}}
+          <div id="paper-assigned-tasks">
+            {{each assignedTasks itemViewClass="ETahi.CardView"}}
+          </div>
+          <hr>
         {{/if}}
-        <div id="paper-metadata-tasks">
-          {{each authorTasks   itemViewClass="ETahi.CardView"}}
-        </div>
-        <hr>
+        {{#if authorTasks}}
+          <div id="paper-metadata-tasks">
+            {{each authorTasks itemViewClass="ETahi.CardView"}}
+          </div>
+          <hr>
+        {{/if}}
         <a class="primary-button wide-button" href="#" {{action "submit" target="view"}}>Submit</a>
         <a class="primary-button wide-button" href="#" {{action "save"   target="view"}}>Save</a>
       </div>

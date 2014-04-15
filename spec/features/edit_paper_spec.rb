@@ -24,4 +24,15 @@ feature "Editing paper", js: true do
     expect(edit_paper.cards[:metadata]).to match_array ['Upload Manuscript', 'Add Authors', 'Upload Figures', 'Enter Declarations']
     expect(edit_paper.cards[:assigned]).to include 'Tech Check', 'Assign Admin'
   end
+
+  scenario "author placeholder text" do
+    edit_paper = EditPaperPage.visit paper
+    expect(edit_paper.authors).to eq("Click here to add authors")
+  end
+
+  scenario "clicking the author text" do
+    edit_paper = EditPaperPage.visit paper
+    edit_paper.find("#paper-authors").click
+    expect(page).to have_content /add authors/i
+  end
 end

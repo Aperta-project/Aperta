@@ -1,5 +1,7 @@
 class RegisterDecisionTask < Task
-  PERMITTED_ATTRIBUTES = [:paper_decision, :paper_decision_letter]
+  def permitted_attributes
+    super + [:paper_decision, :paper_decision_letter]
+  end
 
   title "Register Decision"
   role "editor"
@@ -12,7 +14,7 @@ class RegisterDecisionTask < Task
 
       Your manuscript will now be passed on to our Production staff, who will check your files for correct formatting and completeness. During this process, you may be contacted to make necessary alterations to your manuscript, though not all manuscripts require this.
 
-      If you or your institution will be preparing press materials for this manuscript, you must inform our press team in advance. Your manuscript will remain under a strict press embargo until the publication date and time. 
+      If you or your institution will be preparing press materials for this manuscript, you must inform our press team in advance. Your manuscript will remain under a strict press embargo until the publication date and time.
 
       Please contact me if you have any other questions or concerns. Thank you for submitting your work to PLOS ONE.
 
@@ -62,7 +64,7 @@ class RegisterDecisionTask < Task
     template = <<-TEXT.strip_heredoc
       Dear Dr. %{author_last_name},
 
-      Thank you for submitting your manuscript, %{manuscript_title}, to %{journal_name}. After careful consideration, we have decided that your manuscript does not meet our criteria for publication and must therefore be rejected. 
+      Thank you for submitting your manuscript, %{manuscript_title}, to %{journal_name}. After careful consideration, we have decided that your manuscript does not meet our criteria for publication and must therefore be rejected.
 
       Specifically:
 

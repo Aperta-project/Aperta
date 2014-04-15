@@ -1,5 +1,7 @@
 class ReviewerReportTask < Task
-  PERMITTED_ATTRIBUTES = [{paper_review_attributes: [:body, :id]}]
+  def permitted_attributes
+    super + [{paper_review_attributes: [:body, :id]}]
+  end
 
   title 'Reviewer Report'
   role 'reviewer'

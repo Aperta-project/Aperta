@@ -1,11 +1,17 @@
 class PaperReviewerTask < Task
-  PERMITTED_ATTRIBUTES = [{ reviewer_ids: [] }]
+  def permitted_attributes
+    super + [{ reviewer_ids: [] }]
+  end
 
   title 'Assign Reviewers'
   role 'editor'
 
+  def array_attributes
+    [:reviewer_ids]
+  end
+
   def reviewer_ids=(user_ids)
-    user_ids = check_empty_flag(user_ids).map(&:to_i)
+    user_ids = user_ids.map(&:to_i)
     new_ids = user_ids - reviewer_ids
     old_ids = reviewer_ids - user_ids
     phase = paper.task_manager.phases.where(name: 'Get Reviews').first
@@ -36,11 +42,5 @@ class PaperReviewerTask < Task
 
   def update_responder
     UpdateResponders::PaperReviewerTask
-  end
-
-  private
-
-  def check_empty_flag(ids)
-    ids == ["-1"] ? [] : ids
   end
 end

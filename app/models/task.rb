@@ -1,6 +1,4 @@
 class Task < ActiveRecord::Base
-  PERMITTED_ATTRIBUTES = []
-
   default_scope { order("completed ASC") }
 
   after_initialize :initialize_defaults
@@ -23,6 +21,14 @@ class Task < ActiveRecord::Base
 
   def self.assigned_to(user)
     where(assignee: user)
+  end
+
+  def array_attributes
+    []
+  end
+
+  def permitted_attributes
+    [:assignee_id, :completed, :title, :body, :phase_id]
   end
 
   class << self

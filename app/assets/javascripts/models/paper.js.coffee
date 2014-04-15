@@ -18,7 +18,7 @@ ETahi.Paper = DS.Model.extend
 
   availableReviewers: Ember.computed.alias('journal.reviewers')
   editor: Ember.computed.alias('editors.firstObject')
-  relationshipsToSerialize: ['reviewers']
+  relationshipsToSerialize: []
 
   displayTitle: (->
     @get('title') || @get('shortTitle')

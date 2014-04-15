@@ -12,8 +12,10 @@ class TasksController < ApplicationController
              current_user.tasks.where(id: params[:id]).first
            end
 
-    tp = task_params(task)
-    if task && task.authorize_update!(tp, current_user)
+    if task && task.authorize_update!(params, current_user)
+      unmunge_empty_arrays!(task)
+      tp = task_params(task)
+
       task.update! tp
       task.reload
       ts = task.active_model_serializer.new(task, root: :task)
@@ -54,9 +56,8 @@ class TasksController < ApplicationController
 
   private
 
-  def task_params(task = nil)
-    attributes = [:assignee_id, :completed, :title, :body, :phase_id]
-    attributes += task.class::PERMITTED_ATTRIBUTES if task
+  def task_params(task)
+    attributes = task.permitted_attributes
     params.require(:task).permit(*attributes)
   end
 
@@ -64,6 +65,14 @@ class TasksController < ApplicationController
     task_type = params[:task][:type]
     sanitized_params = task_params task_type.constantize.new
     TaskFactory.build_task task_type, sanitized_params, current_user
+  end
+
+  def unmunge_empty_arrays!(task)
+    task.array_attributes.each do |key|
+      if params[:task].has_key?(key) && params[:task][key].nil?
+        params[:task][key] = []
+      end
+    end
   end
 
   def render_404

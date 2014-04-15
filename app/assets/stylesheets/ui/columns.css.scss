@@ -103,7 +103,7 @@
   opacity: 0;
 
   @include transition-property(opacity bottom);
-  @include transition-duration(0.15s);
+  @include transition-duration(0.1s);
 }
 
 .active .column-title-update-buttons {

@@ -1,6 +1,4 @@
 class Task < ActiveRecord::Base
-  PERMITTED_ATTRIBUTES = []
-
   default_scope { order("completed ASC") }
 
   after_initialize :initialize_defaults
@@ -31,6 +29,14 @@ class Task < ActiveRecord::Base
 
   def self.without(task)
     where.not(id: task.id)
+  end
+
+  def array_attributes
+    []
+  end
+
+  def permitted_attributes
+    [:assignee_id, :completed, :title, :body, :phase_id]
   end
 
   class << self

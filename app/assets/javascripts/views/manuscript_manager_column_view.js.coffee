@@ -1,4 +1,4 @@
-ETahi.ManuscriptManagerColumnView = Em.View.extend(DragNDrop.Droppable, {
+ETahi.ManuscriptManagerColumnView = Em.View.extend DragNDrop.Droppable,
   templateName: 'manuscript_manager_column'
   classNames: ['column']
 
@@ -14,4 +14,3 @@ ETahi.ManuscriptManagerColumnView = Em.View.extend(DragNDrop.Droppable, {
     @get('controller').changeTaskPhase(ETahi.get('dragItem'), @get('content'))
     e.preventDefault()
     false
-})

@@ -1,7 +1,9 @@
 class MessageTask < Task
   role 'user'
 
-  PERMITTED_ATTRIBUTES = [:body, {participant_ids: []}]
+  def permitted_attributes
+    super + [:body, {participant_ids: []}]
+  end
 
   has_many :comments, inverse_of: :message_task, foreign_key: 'task_id', dependent: :destroy
   has_many :message_participants, inverse_of: :message_task, foreign_key: 'task_id', dependent: :destroy

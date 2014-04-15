@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 class FakeTask < Task
-  PERMITTED_ATTRIBUTES = [{ some_attribute: [some_value: []] }]
+  def permitted_attributes
+    super + [{ some_attribute: [some_value: []] }]
+  end
 end
 
 describe TasksController do

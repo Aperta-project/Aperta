@@ -2,11 +2,11 @@
 http_interactions:
 - request:
     method: post
-    uri: http://oxgarage.oucs.ox.ac.uk:8080/ege-webservice/Conversions/docx:application:vnd.openxmlformats-officedocument.wordprocessingml.document/TEI:text:xml/xhtml:application:xhtml+xml/conversion
+    uri: http://ec2-54-193-185-100.us-west-1.compute.amazonaws.com:8080/ege-webservice/Conversions/docx:application:vnd.openxmlformats-officedocument.wordprocessingml.document/TEI:text:xml/xhtml:application:xhtml+xml/conversion
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        LS00MzgwMjkNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFt
+        LS0zMzAzOTENCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFt
         ZT0iZmlsZSI7IGZpbGVuYW1lPSJhYm91dF90dXJ0bGVzLmRvY3giDQpDb250
         ZW50LVR5cGU6IHRleHQvcGxhaW4NCg0KUEsDBBQABgAIAAAAIQDpURCwjQEA
         AMIFAAATAAgCW0NvbnRlbnRfVHlwZXNdLnhtbCCiBAIooAACAAAAAAAAAAAA
@@ -1433,7 +1433,7 @@ http_interactions:
         Qk3oq0wCAADnBwAAEgAAAAAAAAAAAAAAAADL8QAAd29yZC9mb250VGFibGUu
         eG1sUEsBAi0AFAAGAAgAAAAhAMOntIOBAQAA0QIAABAAAAAAAAAAAAAAAAAA
         R/QAAGRvY1Byb3BzL2FwcC54bWxQSwUGAAAAAA0ADQBOAwAA/vYAAAAADQot
-        LTQzODAyOS0tDQo=
+        LTMzMDM5MS0tDQo=
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -1442,7 +1442,7 @@ http_interactions:
       Content-Length:
       - '64226'
       Content-Type:
-      - multipart/form-data; boundary=438029
+      - multipart/form-data; boundary=330391
       User-Agent:
       - Ruby
   response:
@@ -1459,7 +1459,7 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       Date:
-      - Mon, 07 Apr 2014 17:55:27 GMT
+      - Tue, 15 Apr 2014 20:50:15 GMT
     body:
       encoding: ASCII-8BIT
       string: !binary |-
@@ -1506,9 +1506,9 @@ http_interactions:
         My0xMC0yOTxiciAvPjwhLS0KCSAgR2VuZXJhdGVkIGZyb20gaW5kZXgueG1s
         IHVzaW5nIFhTTFQgc3R5bGVzaGVldHMgdmVyc2lvbiA3LjExLjAKCgkgICAg
         ICAgYmFzZWQgb24gaHR0cDovL3d3dy50ZWktYy5vcmcvU3R5bGVzaGVldHMv
-        CgkgICAgICAgb24gMjAxNC0wNC0wN1QxNzo1NToyN1ouCgkgICAgICAgU0FY
+        CgkgICAgICAgb24gMjAxNC0wNC0xNVQyMDo1MDoxNVouCgkgICAgICAgU0FY
         T04gSEUgOS40LjAuMy4KCQkgLS0+PC9hZGRyZXNzPjwvZGl2PjwvYm9keT48
         L2h0bWw+
     http_version: 
-  recorded_at: Mon, 07 Apr 2014 17:56:07 GMT
+  recorded_at: Tue, 15 Apr 2014 20:50:33 GMT
 recorded_with: VCR 2.9.0

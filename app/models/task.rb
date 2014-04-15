@@ -25,7 +25,7 @@ class Task < ActiveRecord::Base
     where(assignee: user)
   end
 
-  def self.admin
+  def self.only_admin
     where(role: 'admin')
   end
 

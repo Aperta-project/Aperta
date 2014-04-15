@@ -54,7 +54,7 @@ describe TaskAdminAssigneeUpdater do
 
       it "will change the assignee on other uncompleted tasks" do
         updater.update
-        expect(task.paper.tasks.incomplete.admin.map(&:assignee).uniq).to match_array([sally])
+        expect(task.paper.tasks.incomplete.only_admin.map(&:assignee).uniq).to match_array([sally])
       end
 
       it "will not change the assignee on other completed tasks" do

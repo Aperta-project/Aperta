@@ -13,7 +13,7 @@ class TaskAdminAssigneeUpdater
   def update
     paper.transaction do
       paper.assign_admin!(task_admin)
-      paper.tasks.without(task).incomplete.admin.update_all(assignee_id: task_admin)
+      paper.tasks.without(task).incomplete.only_admin.update_all(assignee_id: task_admin)
       if admin_was_assignee?
         task.update_column(:assignee_id, task_admin)
       end

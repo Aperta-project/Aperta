@@ -19,15 +19,8 @@ class PaperAdminTask < Task
   private
 
   def update_paper_admin_and_tasks
+    #TODO: eventually move callback to controller
     TaskAdminAssigneeUpdater.new(self).update
-
-    # query = Task.where(role: 'admin', completed: false, phase_id: [task_manager.phases.pluck(:id)])
-    # query = if assignee_id_was.present?
-    #           query.where('assignee_id IS NULL OR assignee_id = ?', assignee_id_was)
-    #         else
-    #           query.where(assignee_id: nil)
-    #         end
-    # query.update_all(assignee_id: assignee_id)
   end
 
   def paper_admin_changed?

@@ -27,7 +27,7 @@ describe TaskAdminAssigneeUpdater do
 
     it "will set the paper admin" do
       updater.update
-      expect(task.paper.admin).to eq(sally)
+      expect(task.paper.reload.admin).to eq(sally)
     end
 
 
@@ -85,7 +85,7 @@ describe TaskAdminAssigneeUpdater do
         paper.paper_roles << PaperRole.new(user: bob, admin: true)
 
         updater.update
-        expect(paper.admin).to eq(sally)
+        expect(paper.reload.admin).to eq(sally)
         expect(task.reload.assignee).to eq(sally)
       end
 

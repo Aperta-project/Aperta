@@ -4,6 +4,10 @@ class PaperReviewerTask < Task
   title 'Assign Reviewers'
   role 'editor'
 
+  def self.array_attributes
+    [:reviewer_ids]
+  end
+
   def reviewer_ids=(user_ids)
     user_ids = user_ids.map(&:to_i)
     new_ids = user_ids - reviewer_ids

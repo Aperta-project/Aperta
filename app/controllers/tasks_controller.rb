@@ -12,9 +12,9 @@ class TasksController < ApplicationController
              current_user.tasks.where(id: params[:id]).first
            end
 
+    unmunge_empty_arrays!(task)
     tp = task_params(task)
 
-    tp = munge_empty_arrays(tp)
 
     if task && task.authorize_update!(tp, current_user)
       task.update! tp
@@ -69,17 +69,12 @@ class TasksController < ApplicationController
     TaskFactory.build_task task_type, sanitized_params, current_user
   end
 
-  def munge_empty_arrays(task_params)
-    permitted_empty_arrays.each do |key|
+  def unmunge_empty_arrays!(task)
+    task.class.array_attributes.each do |key|
       if params[:task].has_key?(key) && params[:task][key].nil?
-        task_params[key.to_s] = []
+        params[:task][key] = []
       end
     end
-    task_params
-  end
-
-  def permitted_empty_arrays
-    [:reviewer_ids]
   end
 
   def render_404

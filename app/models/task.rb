@@ -29,6 +29,10 @@ class Task < ActiveRecord::Base
     where(role: 'admin')
   end
 
+  def self.without(task)
+    where.not(id: task.id)
+  end
+
   class << self
     attr_reader :_default_title, :_default_role
 

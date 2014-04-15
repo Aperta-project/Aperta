@@ -31,6 +31,22 @@ describe Task do
     end
   end
 
+  describe ".without" do
+    let!(:tasks) do
+      2.times.map do
+        Task.create! title: "Paper Admin",
+          completed: true,
+          role: 'admin',
+          phase_id: 3
+      end
+    end
+
+    it "excludes task" do
+      expect(Task.count).to eq(2)
+      expect(Task.without(tasks.last).count).to eq(1)
+    end
+  end
+
   describe "initialization" do
     describe "title" do
       it "initializes title to specified title" do

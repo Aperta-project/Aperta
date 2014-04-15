@@ -12,9 +12,9 @@ ETahi.PaperController = Ember.ObjectController.extend
   authorTasks: Ember.computed.filterBy('submissionPhase.tasks', 'role', 'author')
 
   authorsTask: (->
-    @get('findAuthorsTask').objectAt(0)
-  ).property('submissionPhase.task')
-  findAuthorsTask: Ember.computed.filterBy('submissionPhase.tasks', 'type', 'AuthorsTask')
+    phase = @get('phases').findBy('name', 'Submission Data')
+    task = phase.get('tasks').findBy('type', 'AuthorsTask')
+  ).property()
 
   assignedTasks: (->
     assignedTasks = @get('allTasks').filterBy 'assignee', @get('controllers.application.currentUser')

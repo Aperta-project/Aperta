@@ -11,11 +11,6 @@ ETahi.PaperController = Ember.ObjectController.extend
 
   authorTasks: Ember.computed.filterBy('submissionPhase.tasks', 'role', 'author')
 
-  authorsTask: (->
-    phase = @get('phases').findBy('name', 'Submission Data')
-    task = phase.get('tasks').findBy('type', 'AuthorsTask')
-  ).property()
-
   assignedTasks: (->
     assignedTasks = @get('allTasks').filterBy 'assignee', @get('controllers.application.currentUser')
     _.difference assignedTasks, @get('authorTasks')
@@ -32,4 +27,7 @@ ETahi.PaperController = Ember.ObjectController.extend
 # These controllers have to be here for now since the load order
 # gets messed up otherwise
 ETahi.PaperIndexController = ETahi.PaperController.extend()
-ETahi.PaperEditController = ETahi.PaperController.extend()
+ETahi.PaperEditController = ETahi.PaperController.extend
+  authorsTask: (->
+    this.get('allTasks').findBy('type', 'AuthorsTask')
+  ).property()

@@ -7,6 +7,7 @@ Tahi::Application.routes.draw do
   end
 
   resources :journals, only: [:index]
+  get '/journals/*manage' => 'ember#index'
 
   get '/flow_manager' => 'ember#index'
 

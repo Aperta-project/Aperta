@@ -13,6 +13,11 @@ ETahi.Router.map ()->
   @route('signin', {path: '/users/sign_in'})
   @route('signup', {path: '/users/sign_up'})
 
+  @resource 'journal', path: '/journals/:journal_id', ->
+    @resource 'manuscript_manager_template', path: '/manuscript_manager_templates', ->
+      @route('new')
+      @route('edit', path: '/:template_id/edit')
+
 ETahi.Router.reopen({
   rootURL: '/'
   location: 'history'

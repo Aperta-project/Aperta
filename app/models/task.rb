@@ -23,6 +23,14 @@ class Task < ActiveRecord::Base
     where(assignee: user)
   end
 
+  def self.only_admin
+    where(role: 'admin')
+  end
+
+  def self.without(task)
+    where.not(id: task.id)
+  end
+
   def array_attributes
     []
   end

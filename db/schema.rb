@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140411142524) do
+ActiveRecord::Schema.define(version: 20140414170614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(version: 20140411142524) do
     t.boolean  "reviewer",   default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "admin",      default: false
   end
 
   add_index "paper_roles", ["paper_id"], name: "index_paper_roles_on_paper_id", using: :btree

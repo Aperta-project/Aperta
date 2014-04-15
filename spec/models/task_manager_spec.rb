@@ -22,7 +22,9 @@ describe TaskManager do
 
   describe "#tasks" do
     it "grabs the tasks from each phase and flattens to an array" do
-      task_manager = TaskManager.create!
+      journal = Journal.create!
+      paper = Paper.create!(short_title: "Title", journal: journal)
+      task_manager = paper.task_manager
       allow(task_manager).to receive(:phases).and_return([double(:phase, tasks: [:task1, :task2]),
                                                           double(:phase, tasks: [:task3, :task4])])
       expect(task_manager.tasks).to match_array([:task1, :task2, :task3, :task4])

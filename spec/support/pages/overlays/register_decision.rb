@@ -4,9 +4,9 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def decision_letter=(body)
+    wait_for_pjax
     fill_in 'task_paper_decision_letter', with: body
     find('label[for=assignee]').click
-    wait_for_pjax
   end
 
   def decision_letter

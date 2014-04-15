@@ -8,6 +8,10 @@ class PaperRole < ActiveRecord::Base
     where(paper_id: paper.id, reviewer: true)
   end
 
+  def self.admins
+    where(admin: true)
+  end
+
   protected
 
   def assign_tasks_to_editor

@@ -20,6 +20,11 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
     @get('sortedComments.length') < 6
   ).property('model.comments.length')
 
+  setupTooltips: (->
+    Ember.run.later ->
+      $('.user-thumbnail').tooltip(placement: 'bottom')
+  ).observes('model.participants.length')
+
   omittedCommentsCount: (->
     @get('sortedComments.length') - 5
   ).property('model.comments.length')

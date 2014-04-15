@@ -10,7 +10,7 @@
 
 .fadeInAndOutAnimation {
   &.in {
-    @include animation(fadeIn 300ms $ease-out-quad);
+    @include animation(fadeIn 200ms $ease-out-quad);
     @include animation-fill-mode(forwards);
   }
   &.out {

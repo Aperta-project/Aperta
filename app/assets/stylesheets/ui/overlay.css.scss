@@ -27,22 +27,21 @@
   padding: 10px 80px;
   margin: 40px auto 0 auto;
   background: white;
-  opacity: 0;
+  //opacity: 0;
 }
 
-.overlay.in .overlay-container  {
-  @include animation-name(fadeInDown);
-  @include animation-duration(300ms);
-  @include animation-fill-mode(both);
-  @include animation-timing-function(cubic-bezier(0.23, 1, 0.32, 1));
-}
-
-.overlay.out .overlay-container {
-  @include animation-name(fadeOutDown);
-  @include animation-duration(200ms);
-  @include animation-fill-mode(both);
-}
-
+// .overlay.in .overlay-container  {
+//   @include animation-name(fadeInDown);
+//   @include animation-duration(300ms);
+//   @include animation-fill-mode(both);
+//   @include animation-timing-function(cubic-bezier(0.23, 1, 0.32, 1));
+// }
+//
+// .overlay.out .overlay-container {
+//   @include animation-name(fadeOutDown);
+//   @include animation-duration(200ms);
+//   @include animation-fill-mode(both);
+// }
 
 .overlay-content {
   min-height: 300px;

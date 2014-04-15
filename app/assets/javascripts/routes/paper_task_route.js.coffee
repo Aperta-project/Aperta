@@ -2,7 +2,7 @@ ETahi.PaperTaskRoute = Ember.Route.extend
   model: (params) ->
     paperTasks = _.flatten @modelFor('paper').get('phases').mapProperty('tasks.content')
     task = paperTasks.findBy('id', params.task_id)
-    task
+    task.reload()
 
   setupController: (controller, model) ->
     # FIXME: Rename AdHocTask to Task (here, in views, and in templates)

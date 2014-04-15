@@ -3,9 +3,9 @@ class TaskAdminAssigneeUpdater
   attr_accessor :task, :paper, :task_admin, :previous_assignee, :previous_admin
 
   def initialize(task)
-    @task           = task
-    @paper          = task.paper
-    @task_admin     = User.where(id: task.admin_id).first
+    @task = task
+    @paper = task.paper
+    @task_admin = User.where(id: task.admin_id).first
     @previous_admin = paper.admin
     @previous_assignee = task.assignee
   end

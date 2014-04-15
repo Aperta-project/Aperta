@@ -32,7 +32,6 @@ gem 'rubyzip', require: 'zip'
 gem 'standard_tasks', path: 'engines/standard_tasks'
 gem "active_model_serializers"
 gem 'pry-rails'
-gem 'pry-byebug'
 
 group :production, :staging do
   gem 'heroku-deflater'
@@ -44,6 +43,7 @@ end
 
 group :development do
   # gem 'rack-mini-profiler' #NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
+  gem 'pry-byebug'
   gem 'bullet'
   gem 'license_finder'
   gem 'railroady'

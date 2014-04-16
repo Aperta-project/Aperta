@@ -1,8 +1,8 @@
 ETahi.FigureThumbnailView = Em.View.extend
   tagName: 'li'
   templateName: 'figure_thumbnail'
-  classNames: ['figure-container']
-  classNameBindings: ['destroyState:destroy']
+  classNames: ['figure-thumbnail']
+  classNameBindings: ['destroyState:figure-destroy']
 
   destroyState: false
 

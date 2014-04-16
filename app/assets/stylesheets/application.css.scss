@@ -4,26 +4,27 @@
  *= require chosen
  */
 
-@import "bourbon";
-@import "bootstrap";
-@import "variables";
-@import "webfonts";
-@import "animations";
-@import "visual-editor";
+@import 'bourbon';
+@import 'bootstrap';
+@import 'variables';
+@import 'webfonts';
+@import 'animations';
+@import 'visual-editor';
 
-@import "tahi";
+@import 'tahi';
 
-@import "ui/buttons";
-@import "ui/cards";
-@import "ui/columns";
-@import "ui/control-bar";
-@import "ui/navbar";
-@import "ui/overlay";
-@import "ui/spinner";
+@import 'ui/buttons';
+@import 'ui/cards';
+@import 'ui/columns';
+@import 'ui/control-bar';
+@import 'ui/navbar';
+@import 'ui/overlay';
+@import 'ui/spinner';
 
-@import "screens/authors";
-@import "screens/dashboards";
-@import "screens/flow_manager";
-@import "screens/papers";
-@import "screens/reviewer_report";
-@import "screens/tasks";
+@import 'screens/authors';
+@import 'screens/dashboards';
+@import 'screens/figures_overlay';
+@import 'screens/flow_manager';
+@import 'screens/papers';
+@import 'screens/reviewer_report';
+@import 'screens/tasks';

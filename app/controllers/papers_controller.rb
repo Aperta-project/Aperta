@@ -68,8 +68,10 @@ class PapersController < ApplicationController
       end
 
       format.pdf do
-        pdf = PDFKit.new(@paper.body).to_pdf
-        send_data pdf, filename: 'hello_world', type: 'application/pdf', disposition: 'attachment'
+        send_data PDFKit.new(@paper.body).to_pdf,
+          filename: @paper.short_title.parameterize("_"),
+          type: 'application/pdf',
+          disposition: 'attachment'
       end
     end
   end

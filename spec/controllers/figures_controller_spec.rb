@@ -37,7 +37,8 @@ describe FiguresController do
     end
 
     it "will not allow access" do
-      expect { do_request }.to raise_error
+      do_request
+      expect(response.status).to eq(404)
     end
   end
 

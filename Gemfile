@@ -8,9 +8,9 @@ gem 'pg'
 gem 'ember-rails'
 gem 'ember-source', '1.5.0'
 gem "ember-data-source", "~> 1.0.0.beta.7"
-gem 'sass-rails', '~> 4.0.1'
+gem 'sass-rails', '~> 4.0.3'
 gem 'haml-rails'
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier', '~> 2.5.0'
 gem 'coffee-rails', '~> 4.0.1'
 gem 'jquery-rails'
 gem 'acts_as_list'
@@ -24,7 +24,7 @@ gem "carrierwave"
 gem "fog"
 gem "unf"
 gem 'rails_admin'
-gem "chosen-rails", "~> 1.0.2"
+gem "chosen-rails", "~> 1.1.0"
 gem 'newrelic_rpm'
 gem "rest_client", "~> 1.7.3"
 gem 'gepub'

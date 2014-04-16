@@ -11,7 +11,9 @@ describe FiguresController do
       affiliation: 'Universität Zürich'
   end
 
-  before { sign_in user }
+  before do
+    sign_in user
+  end
 
   describe "destroying the figure" do
     let(:paper) { user.papers.create! short_title: 'Paper with attachment', journal: Journal.create! }
@@ -27,8 +29,20 @@ describe FiguresController do
     end
   end
 
-  describe "POST 'create'" do
+  describe "Unauthorized Request" do
     let(:paper) { Paper.create! short_title: 'Paper with attachment', journal: Journal.create! }
+
+    subject(:do_request) do
+      post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff') }
+    end
+
+    it "will not allow access" do
+      expect { do_request }.to raise_error
+    end
+  end
+
+  describe "POST 'create'" do
+    let(:paper) { Paper.create! short_title: 'Paper with attachment', journal: Journal.create!, user: user }
 
     subject(:do_request) do
       post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff') }

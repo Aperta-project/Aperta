@@ -14,10 +14,10 @@ describe FiguresController do
   before { sign_in user }
 
   describe "destroying the figure" do
-    let(:paper) { Paper.create! short_title: 'Paper with attachment', journal: Journal.create! }
-    let(:do_request) { delete :destroy, id: paper.figures.last.id, paper_id: paper.id }
+    let(:paper) { user.papers.create! short_title: 'Paper with attachment', journal: Journal.create! }
+    subject(:do_request) { delete :destroy, id: paper.figures.last.id, paper_id: paper.id }
     before(:each) do
-      post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff') }
+      paper.figures.create! attachment: fixture_file_upload('yeti.tiff')
     end
 
     it "destroys the figure record" do

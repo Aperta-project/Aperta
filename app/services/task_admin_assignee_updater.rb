@@ -20,7 +20,7 @@ class TaskAdminAssigneeUpdater
   private
 
   def related_tasks
-    paper.tasks.without(task).incomplete.only_admin.assigned_to(nil, previous_task_admin)
+    paper.tasks.without(task).for_admins.incomplete.assigned_to(nil, previous_task_admin)
   end
 
 end

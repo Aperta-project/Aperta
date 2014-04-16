@@ -16,6 +16,7 @@ Tahi::Application.routes.draw do
 
   namespace :api do
     resources :papers, only: [:index, :show]
+    resources :users, only: [:show]
   end
 
   resources :papers, only: [:new, :create, :show, :edit, :update] do

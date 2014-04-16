@@ -3,10 +3,10 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
   showNewAuthorForm: false
   actions:
     toggleAuthorForm: ->
-      @set("showNewAuthorForm", !@showNewAuthorForm)
+      @set('showNewAuthorForm', !@showNewAuthorForm)
 
     saveNewAuthor: ->
       @get('paper.authors').pushObject @newAuthor
       @get('paper').save()
-      @set("newAuthor", {})
+      @set('newAuthor', {})
       @send('toggleAuthorForm')

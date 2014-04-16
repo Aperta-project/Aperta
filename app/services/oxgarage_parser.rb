@@ -38,6 +38,7 @@ class OxgarageParser
     body = Nokogiri::HTML(output).css('body')
     body.css('.stdheader').remove
     body.css('body > *:first-child').remove
+    body.css('.stdfooter').remove
     non_blank_elements = body.children.reject { |e| e.inner_text.blank? }
     Nokogiri::XML::NodeSet.new(body.document, non_blank_elements).to_html.strip
   end

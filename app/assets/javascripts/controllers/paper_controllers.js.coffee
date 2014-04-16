@@ -16,11 +16,15 @@ ETahi.PaperController = Ember.ObjectController.extend
 
   reviewerTasks: Ember.computed.filterBy('allTasks', 'role', 'reviewer')
 
+  noAuthors: (->
+    Em.isEmpty(@get('authors'))
+  ).property('authors.[]')
+
   authorNames: ( ->
     authors = @get('authors').map (author) ->
       [author.first_name, author.last_name].join(' ')
     authors.join(', ') || 'Click here to add authors'
-  ).property('authors.@each')
+  ).property('authors.[]', 'authors.@each')
 
 # These controllers have to be here for now since the load order
 # gets messed up otherwise

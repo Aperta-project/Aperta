@@ -61,8 +61,19 @@ class PapersController < ApplicationController
 
   def download
     @paper = PaperPolicy.new(params[:id], current_user).paper
-    epub = EpubConverter.generate_epub @paper
-    send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
+    respond_to do |format|
+      format.html do
+        epub = EpubConverter.generate_epub @paper
+        send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
+      end
+
+      format.pdf do
+        send_data PDFKit.new(html_pdf).to_pdf,
+          filename: @paper.short_title.parameterize("_"),
+          type: 'application/pdf',
+          disposition: 'attachment'
+      end
+    end
   end
 
   private
@@ -81,5 +92,18 @@ class PapersController < ApplicationController
       editor_ids: [],
       figure_ids: []
     )
+  end
+
+  def html_pdf
+    <<-HTML
+      <html>
+        <head>
+          <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        </head>
+        <body>
+          #{@paper.body}
+        </body>
+      </html>
+    HTML
   end
 end

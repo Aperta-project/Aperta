@@ -188,6 +188,7 @@
   padding: 0;
 }
 
+// TODO: overlay specific style:
 .figure-container {
   position: relative;
   display: inline-block;
@@ -195,6 +196,7 @@
   margin-right: 20px;
 }
 
+// TODO: overlay specific style:
 .figure-overlay {
   display: none;
   position: absolute;
@@ -202,8 +204,12 @@
   right: 0;
   bottom: 0;
   left: 0;
-  line-height: 200px;
   text-align: center;
+}
+
+// TODO: overlay specific style:
+.figure-edit-options {
+  line-height: 200px;
   background-color: rgba(0,0,0, 0.6);
 
   .glyphicon {
@@ -214,8 +220,26 @@
   }
 }
 
-.figure-container:hover .figure-overlay {
+// TODO: overlay specific style:
+.figure-container:hover .figure-edit-options {
   display: block;
+}
+
+// TODO: overlay specific style:
+.figure-confirm-destroy {
+  background-color: #29a904;
+
+  .primary-button {
+    color: #29a904;
+    background-color: #fff;
+
+    &:hover { background-color: rgba(255,255,255, 0.7); }
+  }
+}
+
+.figure-container.destroy .figure-confirm-destroy {
+  display: block;
+  z-index: 1;
 }
 
 // TODO: overlay specific style:

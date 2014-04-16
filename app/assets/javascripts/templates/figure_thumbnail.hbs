@@ -1,0 +1,13 @@
+{{#if view.content.src}}
+  <img class="figure-image" src={{unbound view.content.src}} alt={{unbound view.content.alt}}>
+{{else}}
+  <div class="preview-container glyphicon glyphicon-file"></div>
+{{/if}}
+<div class="figure-overlay figure-edit-options">
+  <span class="glyphicon glyphicon-pencil"></span>
+  <span class="glyphicon glyphicon-trash" {{action "confirmDestroyFigure" target="view"}}></span>
+</div>
+<div class="figure-overlay figure-confirm-destroy">
+  <button class="primary-button white-button" {{action "cancelDestroyFigure" target="view"}}>Cancel</button>
+  <button class="primary-button white-button figure-delete-button" {{action "destroyFigure" view.content}}>Delete Forever</button>
+</div>

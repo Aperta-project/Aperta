@@ -1,5 +1,5 @@
 class FiguresController < ApplicationController
-  before_action :load_paper
+  before_action :load_paper, only: :create
   before_action :authenticate_user!
 
   def create
@@ -13,6 +13,12 @@ class FiguresController < ApplicationController
       f.html { redirect_to edit_paper_path @paper }
       f.json { render json: new_figures }
     end
+  end
+
+  def destroy
+    f = current_user.figures.find(params[:id])
+    f.destroy
+    head :ok
   end
 
   private

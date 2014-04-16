@@ -10,8 +10,9 @@ Tahi::Application.routes.draw do
 
   get '/flow_manager' => 'ember#index'
 
-  # give me a better name
   resources :flows, only: [:index, :destroy, :create]
+
+  resources :figures, only: :destroy
 
   namespace :api do
     resources :papers

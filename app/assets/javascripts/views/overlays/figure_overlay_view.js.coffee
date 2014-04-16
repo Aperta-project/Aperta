@@ -1,11 +1,10 @@
 ETahi.FigureOverlayView = ETahi.OverlayView.extend
   templateName: 'overlays/figure_overlay'
   layoutName: 'layouts/overlay_layout' #TODO: include assignee here?
-  uploads: Ember.ArrayController.create content: []
-  figures: null
+  uploads: []
+  figures: Em.computed.alias('controller.paper.figures')
 
-  didInsertElement: ->
-    @set 'figures', @get('controller.model.figures')
+  setupUpload: (->
     uploader = $('.js-jquery-fileupload')
     uploader.fileupload
       url: "/papers/#{@controller.get('paper.id')}/figures"
@@ -20,7 +19,6 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
         progress: 0
         progressBarStyle: "width: 0%;"
 
-
     uploader.on 'fileuploadprogress', (e, data) =>
       currentUpload = @uploads.findBy('filename', data.files[0].name)
       progress = parseInt(data.loaded / data.total * 100.0, 10) #rounds the number
@@ -34,6 +32,8 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
 
       store = @get('controller.store')
       updatedFigures = _.map data.result.figures, (figure) ->
-        store.createRecord 'figure', figure
+        store.push 'figure', figure
 
-      @figures.pushObjects updatedFigures
+      @get('figures').pushObjects updatedFigures
+
+  ).on('didInsertElement')

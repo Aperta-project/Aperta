@@ -19,11 +19,11 @@ class Task < ActiveRecord::Base
   belongs_to :assignee, class_name: 'User'
   belongs_to :phase, inverse_of: :tasks
 
-  def self.assigned_to(user)
-    where(assignee: user)
+  def self.assigned_to(*users)
+    where(assignee: users)
   end
 
-  def self.only_admin
+  def self.for_admins
     where(role: 'admin')
   end
 

@@ -2,45 +2,32 @@
 
 <span class="secondary-button fileinput-button">
   <span>Add new Figures</span>
-  {{file-uploader id='figure_attachment'
-                  class='js-jquery-fileupload'
+  {{file-uploader id="figure_attachment"
+                  class="js-jquery-fileupload"
                   name="figure[attachment][]"
                   accept=".jpg,.jpeg,.tiff,.gif,.png"
                   multiple=true
-                  type='file'}}
+                  type="file"}}
 </span>
 
 <ul id="paper-figure-uploads">
   {{!#TODO: extract items in each block into their own views?}}
   {{#each upload in view.uploads}}
-  <li>
-    <div class="preview-container">
-      {{#if upload.preview}}
-        <img {{bind-attr src=upload.preview}} />
-      {{else}}
-        <div class="preview-container glyphicon glyphicon-file"></div>
-      {{/if}}
-    </div>
-    <div class="progress">
-      <div class="progress-bar" {{bind-attr style=upload.progressBarStyle}}></div>
-    </div>
-  </li>
+    <li>
+      <div class="preview-container">
+        {{#if upload.preview}}
+          <img {{bind-attr src=upload.preview}}>
+        {{else}}
+          <div class="preview-container glyphicon glyphicon-file"></div>
+        {{/if}}
+      </div>
+      <div class="progress">
+        <div class="progress-bar" {{bind-attr style=upload.progressBarStyle}}></div>
+      </div>
+    </li>
   {{/each}}
 </ul>
 
 <ul class="paper-figures">
-  {{!#TODO: extract items in each block into their own views?}}
-  {{#each figure in paper.figures}}
-  <li class="figure-container">
-    {{#if figure.src}}
-      <img class="figure-image" {{bind-attr src=figure.src alt=figure.alt}} />
-    {{else}}
-      <div class="preview-container glyphicon glyphicon-file"></div>
-    {{/if}}
-    <div class="figure-overlay">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <span class="glyphicon glyphicon-trash" {{action 'destroyFigure' figure}}></span>
-    </div>
-  </li>
-  {{/each}}
+  {{each paper.figures itemViewClass="ETahi.FigureThumbnailView"}}
 </ul>

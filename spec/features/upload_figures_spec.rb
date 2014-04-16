@@ -33,6 +33,7 @@ feature "Upload figures", js: true do
       overlay.attach_figure
       find('.figure-container').hover
       find('.glyphicon-trash').click
+      find('.figure-delete-button').click
       expect(overlay).to_not have_selector('.figure-image')
     end
   end
@@ -48,6 +49,7 @@ feature "Upload figures", js: true do
     edit_paper.view_card 'Upload Figures' do |overlay|
       find('.figure-container').hover
       find('.glyphicon-trash').click
+      find('.figure-delete-button').click
       expect(overlay).to_not have_selector('.figure-image')
     end
   end

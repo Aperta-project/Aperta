@@ -10,7 +10,7 @@ describe Api::PapersController do
                                                  affiliation: 'Personal',
                                                  email: 'user@example.com' }]) }
 
-  describe "GET index" do
+  describe "GET 'index'" do
     let!(:paper2) { FactoryGirl.create(:paper,
                                        short_title: "paper-1",
                                        title: "Second paper") }
@@ -31,7 +31,7 @@ describe Api::PapersController do
     end
   end
 
-  describe "GET show" do
+  describe "GET 'show'" do
     it "user can get a single paper" do
       get :show, { id: paper1.id }
 

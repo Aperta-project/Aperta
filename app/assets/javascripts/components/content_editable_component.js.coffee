@@ -43,7 +43,6 @@ ETahi.ContentEditableComponent = Em.Component.extend
     @set '_userIsTyping', false
     @setPlaceholder() if @elementIsEmpty()
 
-
   elementIsEmpty: ->
     Em.isEmpty(@.$().text())
 
@@ -58,6 +57,7 @@ ETahi.ContentEditableComponent = Em.Component.extend
 
   setHTMLFromValue: ->
     @.$().html(@get('value'))
+    @.$().removeClass('placeholder')
 
   setValueFromHTML: ->
     if @get('plaintext')

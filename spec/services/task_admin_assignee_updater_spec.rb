@@ -77,6 +77,20 @@ describe TaskAdminAssigneeUpdater do
         updater.update
         expect(other_paper.tasks.map(&:assignee)).not_to include(sally)
       end
+
+      it "will not update the assignee for tasks that are assigned to a third party" do
+        related_task = Task.create!(phase: phase, assignee: gus, completed: false, role: "admin", title: "Something")
+        updater.update
+        expect(related_task.reload.assignee).to eq(gus)
+      end
+
+      it "will update the assignee for tasks that are assigned to the previous admin" do
+        paper.assign_admin!(bob)
+        related_task = Task.create!(phase: phase, assignee: bob, completed: false, role: "admin", title: "Something")
+        updater.update
+        expect(related_task.reload.assignee).to eq(sally)
+      end
+
     end
 
   end

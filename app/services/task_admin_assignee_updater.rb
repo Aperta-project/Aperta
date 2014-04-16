@@ -1,10 +1,11 @@
 class TaskAdminAssigneeUpdater
 
-  attr_accessor :task, :paper, :task_admin
+  attr_accessor :task, :paper, :task_admin, :previous_admin
 
   def initialize(task)
     @task = task
     @paper = task.paper
+    @previous_admin = paper.admin
     @task_admin = User.where(id: task.admin_id).first
   end
 
@@ -19,7 +20,7 @@ class TaskAdminAssigneeUpdater
   private
 
   def related_tasks
-    paper.tasks.without(task).incomplete.only_admin.assigned_to(nil)
+    paper.tasks.without(task).incomplete.only_admin.assigned_to(nil, previous_admin)
   end
 
 end

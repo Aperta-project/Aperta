@@ -44,7 +44,6 @@ end
 
 group :development do
   # gem 'rack-mini-profiler' #NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
-  gem 'pry-byebug'
   gem 'bullet'
   gem 'license_finder'
   gem 'railroady'
@@ -61,6 +60,8 @@ group :development, :test do
   gem 'database_cleaner'
   gem "teaspoon"
   gem "phantomjs"
+  gem 'pry-byebug'
+  gem 'pry-stack_explorer'
 end
 
 group :test do

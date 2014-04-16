@@ -16,6 +16,20 @@ describe Figure do
     end
   end
 
+  describe "acceptable content types" do
+    it "accepts standard image types" do
+      %w{gif jpg jpeg png tiff}.each do |type|
+        expect(Figure.acceptable_content_type? "image/#{type}").to eq true
+      end
+    end
+
+    it "rejects non-image types" do
+      %w{doc docx pdf epub raw bmp}.each do |type|
+        expect(Figure.acceptable_content_type? "image/#{type}").to eq false
+      end
+    end
+  end
+
   describe "removing the attachment" do
     it "destroys the attachment on destroy" do
       # remove_attachment! is a built-in callback.

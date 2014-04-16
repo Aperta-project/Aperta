@@ -5,6 +5,8 @@ class FiguresController < ApplicationController
   def create
     figures = Array.wrap(figure_params.delete(:attachment))
 
+    figures.select! {|f| Figure.acceptable_content_type? f.content_type }
+
     new_figures = figures.map do |figure|
       @paper.figures.create(figure_params.merge(attachment: figure))
     end

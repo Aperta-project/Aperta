@@ -20,5 +20,9 @@ class Journal < ActiveRecord::Base
     logo.url if logo
   end
 
+  def paper_types
+    ["Research", "Presubmission"]
+  end
+
   mount_uploader :logo, LogoUploader
 end

@@ -6,7 +6,7 @@ Tahi::Application.routes.draw do
     get "users/sign_out" => "devise/sessions#destroy"
   end
 
-  resources :journals, only: [:index]
+  resources :journals, only: [:index, :show]
   get '/journals/*manage' => 'ember#index'
 
   get '/flow_manager' => 'ember#index'

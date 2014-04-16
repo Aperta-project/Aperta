@@ -3,6 +3,10 @@ class JournalsController < ApplicationController
   respond_to :json
 
   def index
-    render json: Journal.all
+    respond_with Journal.all
+  end
+
+  def show
+    respond_with Journal.find(params[:id])
   end
 end

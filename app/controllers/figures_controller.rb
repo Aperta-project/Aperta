@@ -16,7 +16,7 @@ class FiguresController < ApplicationController
   end
 
   def destroy
-    f = Figure.find(params[:id])
+    f = current_user.figures.find(params[:id])
     f.destroy
     head :ok
   end

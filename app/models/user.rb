@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   has_many :tasks, foreign_key: 'assignee_id'
   has_one :user_settings
 
+  has_many :figures, through: :papers
+
   has_many :comments
   has_many :message_tasks, through: :comments
   has_many :message_participants, inverse_of: :participant

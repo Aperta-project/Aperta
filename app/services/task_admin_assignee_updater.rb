@@ -11,8 +11,15 @@ class TaskAdminAssigneeUpdater
   def update
     paper.transaction do
       paper.assign_admin!(task_admin)
-      paper.tasks.without(task).incomplete.only_admin.update_all(assignee_id: task_admin)
+      related_tasks.update_all(assignee_id: task_admin)
     end
+  end
+
+
+  private
+
+  def related_tasks
+    paper.tasks.without(task).incomplete.only_admin.assigned_to(nil)
   end
 
 end

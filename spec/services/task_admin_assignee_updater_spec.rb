@@ -34,14 +34,20 @@ describe TaskAdminAssigneeUpdater do
     describe "impact on other tasks" do
 
       let!(:incomplete_tasks) do
-        3.times.map do
-          Task.create(phase: phase, assignee: bob)
+        2.times.map do
+          Task.create!(phase: phase, assignee: nil, role: "admin", title: "Incomplete Task")
         end
       end
 
       let!(:complete_tasks) do
-        3.times.map do
-          Task.create(phase: phase, assignee: bob, completed: true)
+        2.times.map do
+          Task.create!(phase: phase, assignee: bob, completed: true, role: "admin", title: "Complete Task")
+        end
+      end
+
+      let!(:incomplete_tasks_with_assignee) do
+        2.times.map do
+          Task.create!(phase: phase, assignee: bob, completed: false, role: "admin", title: "Incomplete Task with Assignee")
         end
       end
 
@@ -52,14 +58,19 @@ describe TaskAdminAssigneeUpdater do
         end
       }
 
-      it "will change the assignee on other uncompleted tasks" do
+      it "will change the assignee on other unassigned incomplete tasks" do
         updater.update
-        expect(task.paper.tasks.incomplete.without(task).only_admin.map(&:assignee).uniq).to match_array([sally])
+        expect(incomplete_tasks.map{ |t| t.reload.assignee}.uniq).to match_array([sally])
       end
 
       it "will not change the assignee on other completed tasks" do
         updater.update
         expect(task.paper.tasks.completed.map(&:assignee)).not_to include(sally)
+      end
+
+      it "will not change the assignee if one is already assigned" do
+        updater.update
+        expect(incomplete_tasks_with_assignee.map { |t| t.reload.assignee }.uniq).not_to include(sally)
       end
 
       it "will not change the assignee for tasks within another paper" do

@@ -20,6 +20,8 @@ Tahi::Application.routes.draw do
     resources :users, only: [:show]
   end
 
+  resources :manuscript_manager_templates, except: :destroy
+
   resources :papers, only: [:new, :create, :show, :edit, :update] do
     resources :figures, only: :create
     resources :submissions, only: [:new, :create]

@@ -30,11 +30,17 @@ describe PapersController do
     end
 
     it "sends file back" do
-      controller.stub(:render).and_return(nothing: true)
+      allow(controller).to receive(:render).and_return(nothing: true)
       expect(controller).to receive(:send_data)
       get :download, id: paper.id
     end
 
+    it "sends a pdf file back if there's a pdf extension" do
+      allow(PDFKit).to receive_message_chain(:new, :to_pdf)
+      allow(controller).to receive(:render).and_return(nothing: true)
+      expect(controller).to receive(:send_data)
+      get :download, format: :pdf, id: paper.id
+    end
   end
 
   describe "GET 'show'" do

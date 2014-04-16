@@ -32,6 +32,8 @@ gem 'rubyzip', require: 'zip'
 gem 'standard_tasks', path: 'engines/standard_tasks'
 gem "active_model_serializers"
 gem 'pry-rails'
+gem 'pdfkit'
+gem 'wkhtmltopdf-binary'
 
 group :production, :staging do
   gem 'heroku-deflater'

@@ -1,6 +1,6 @@
 ETahi.UploadManuscriptOverlayView = ETahi.OverlayView.extend
   templateName: 'overlays/upload_manuscript_overlay'
-  layoutName: 'layouts/assignee_overlay_layout'
+  layoutName: 'layouts/no_assignee_overlay_layout'
 
   didInsertElement: ->
     new Spinner(top: '20px', left: '-30px', color: '#39a329').spin $('.processing')[0]

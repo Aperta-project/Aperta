@@ -1,6 +1,6 @@
 ETahi.AuthorsOverlayView = ETahi.OverlayView.extend
   templateName: 'overlays/authors_overlay'
-  layoutName: 'layouts/assignee_overlay_layout'
+  layoutName: 'layouts/no_assignee_overlay_layout'
 
 ETahi.AddAuthorView = Ember.View.extend
   attributeBindings: ['newAuthor']

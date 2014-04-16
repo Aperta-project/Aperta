@@ -182,19 +182,44 @@
 }
 
 // TODO: overlay specific style:
-#paper-figures {
+.paper-figures {
   list-style-type: none;
   margin: 20px 0 0;
   padding: 0;
-  li {
-    display: inline-block;
-    margin-bottom: 20px;
-    margin-right: 20px;
+}
+
+.figure-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.figure-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  line-height: 200px;
+  text-align: center;
+  background-color: rgba(0,0,0, 0.6);
+
+  .glyphicon {
+    margin: 0 10px;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
   }
 }
 
+.figure-container:hover .figure-overlay {
+  display: block;
+}
+
 // TODO: overlay specific style:
-#paper-figures li img {
+.figure-image {
   height: 190px
 }
 

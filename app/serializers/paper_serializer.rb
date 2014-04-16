@@ -1,7 +1,7 @@
 class PaperSerializer < ActiveModel::Serializer
   attributes :id, :short_title, :title, :body, :decision, :decision_letter, :authors, :submitted
 
-  %i!phases declarations !.each do |relation|
+  %i!phases declarations figures!.each do |relation|
     has_many relation, embed: :ids, include: true
   end
 

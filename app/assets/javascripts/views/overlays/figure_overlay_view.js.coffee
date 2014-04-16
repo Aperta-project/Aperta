@@ -5,7 +5,7 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
   figures: null
 
   didInsertElement: ->
-    @set 'figures', @get('controller.model.figures')
+    @set 'figures', @get('controller.paper.figures')
     uploader = $('.js-jquery-fileupload')
     uploader.fileupload
       url: "/papers/#{@controller.get('paper.id')}/figures"

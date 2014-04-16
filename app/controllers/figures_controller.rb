@@ -1,5 +1,5 @@
 class FiguresController < ApplicationController
-  before_action :load_paper
+  before_action :load_paper, only: :create
   before_action :authenticate_user!
 
   def create
@@ -16,10 +16,9 @@ class FiguresController < ApplicationController
   end
 
   def destroy
-    if f = @paper.figures.find_by_id(params[:id])
-      f.destroy
-      head :ok
-    end
+    f = Figure.find(params[:id])
+    f.destroy
+    head :ok
   end
 
   private

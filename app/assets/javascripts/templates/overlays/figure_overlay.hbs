@@ -27,15 +27,19 @@
   {{/each}}
 </ul>
 
-<ul id="paper-figures">
+<ul class="paper-figures">
   {{!#TODO: extract items in each block into their own views?}}
-  {{#each figure in model.figures}}
-  <li>
+  {{#each figure in paper.figures}}
+  <li class="figure-container">
     {{#if figure.src}}
-      <img {{bind-attr src=figure.src alt=figure.alt}} />
+      <img class="figure-image" {{bind-attr src=figure.src alt=figure.alt}} />
     {{else}}
       <div class="preview-container glyphicon glyphicon-file"></div>
     {{/if}}
+    <div class="figure-overlay">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <span class="glyphicon glyphicon-trash" {{action 'destroyFigure' figure}}></span>
+    </div>
   </li>
   {{/each}}
 </ul>

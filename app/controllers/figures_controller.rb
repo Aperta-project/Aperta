@@ -15,6 +15,13 @@ class FiguresController < ApplicationController
     end
   end
 
+  def destroy
+    if f = @paper.figures.find_by_id(params[:id])
+      f.destroy
+      head :ok
+    end
+  end
+
   private
 
   def load_paper

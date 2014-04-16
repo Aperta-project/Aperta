@@ -17,7 +17,7 @@ describe FiguresController do
     let(:paper) { user.papers.create! short_title: 'Paper with attachment', journal: Journal.create! }
     subject(:do_request) { delete :destroy, id: paper.figures.last.id, paper_id: paper.id }
     before(:each) do
-      paper.figures.create! attachment: fixture_file_upload('yeti.tiff')
+      paper.figures.create! attachment: fixture_file_upload('yeti.tiff', 'image/tiff')
     end
 
     it "destroys the figure record" do
@@ -31,7 +31,7 @@ describe FiguresController do
     let(:paper) { Paper.create! short_title: 'Paper with attachment', journal: Journal.create! }
 
     subject(:do_request) do
-      post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff') }
+      post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff', 'image/tiff') }
     end
 
     it_behaves_like "when the user is not signed in"
@@ -46,9 +46,17 @@ describe FiguresController do
       expect(response).to redirect_to edit_paper_path(paper)
     end
 
+    context "validating the filetype" do
+      it "rejects bad filetypes" do
+        expect {
+          post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('about_turtles.docx') }
+        }.to change{Figure.count}.by 0
+      end
+    end
+
     context "when the attachments are in an array" do
       subject(:do_request) do
-        post :create, paper_id: paper.to_param, figure: { attachment: [fixture_file_upload('yeti.tiff'), fixture_file_upload('yeti.jpg')] }
+        post :create, paper_id: paper.to_param, figure: { attachment: [fixture_file_upload('yeti.tiff', 'image/tiff'), fixture_file_upload('yeti.jpg', 'image/jpg')] }
       end
 
       it "saves each attachment to this paper" do
@@ -59,7 +67,7 @@ describe FiguresController do
 
     context "when it's an AJAX request" do
       subject(:do_request) do
-        post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff') }, format: :json
+        post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff', 'image/tiff') }, format: :json
       end
 
       it "responds with a JSON array of figure data" do

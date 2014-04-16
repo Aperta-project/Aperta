@@ -50,14 +50,14 @@ ETahi.ContentEditableComponent = Em.Component.extend
     @.$().text() == @get('placeholder')
 
   setPlaceholder: ->
-    @.$().text(@get('placeholder')).addClass('placeholder')
+    @.$().text(@get('placeholder')).addClass('muted')
 
   removePlaceholder: ->
-    @.$().text('').removeClass('placeholder')
+    @.$().text('').removeClass('muted')
 
   setHTMLFromValue: ->
     @.$().html(@get('value'))
-    @.$().removeClass('placeholder')
+    @.$().removeClass('muted')
 
   setValueFromHTML: ->
     if @get('plaintext')

@@ -31,7 +31,7 @@ feature "Upload figures", js: true do
     edit_paper = EditPaperPage.visit paper
     edit_paper.view_card 'Upload Figures' do |overlay|
       overlay.attach_figure
-      find('.figure-container').hover
+      find('.figure-thumbnail').hover
       find('.glyphicon-trash').click
       find('.figure-delete-button').click
       expect(overlay).to_not have_selector('.figure-image')
@@ -47,7 +47,7 @@ feature "Upload figures", js: true do
     edit_paper.reload
 
     edit_paper.view_card 'Upload Figures' do |overlay|
-      find('.figure-container').hover
+      find('.figure-thumbnail').hover
       find('.glyphicon-trash').click
       find('.figure-delete-button').click
       expect(overlay).to_not have_selector('.figure-image')

@@ -26,4 +26,29 @@ feature "Upload figures", js: true do
       expect(overlay).to be_completed
     end
   end
+
+  scenario "Author destroys figure immediately" do
+    edit_paper = EditPaperPage.visit paper
+    edit_paper.view_card 'Upload Figures' do |overlay|
+      overlay.attach_figure
+      find('.figure-container').hover
+      find('.glyphicon-trash').click
+      expect(overlay).to_not have_selector('.figure-image')
+    end
+  end
+
+  scenario "Author destroys figure after page reload" do
+    edit_paper = EditPaperPage.visit paper
+    edit_paper.view_card 'Upload Figures' do |overlay|
+      overlay.attach_figure
+    end
+
+    edit_paper.reload
+
+    edit_paper.view_card 'Upload Figures' do |overlay|
+      find('.figure-container').hover
+      find('.glyphicon-trash').click
+      expect(overlay).to_not have_selector('.figure-image')
+    end
+  end
 end

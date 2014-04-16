@@ -28,7 +28,7 @@
                              preventEnterKey="true"}}
         </div>
 
-        <div id="paper-authors" class="editable" {{action "viewCard" addAuthorsTask}}>
+        <div id="paper-authors" {{bind-attr class="noAuthors:placeholder"}} {{action "viewCard" addAuthorsTask}}>
           {{authorNames}}
         </div>
 

@@ -4,26 +4,22 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
     @get('journal.paperTypes')
   ).property('journal.paperTypes.@each')
 
-  sortedPhases: ( ->
-    @get('template.phases').map (phase) ->
-      tasks = phase.task_types.map (task) ->
-        Ember.Object.create(title: task, isMessage: false)
+  sortedPhases: Ember.computed.alias 'template.phases'
 
-      Ember.Object.create(tasks: tasks, name: phase.name)
-  ).property('template.phases')
+  updatePositions: (phase) ->
+    # relevantPhases = @get('model.phases').filter((p)->
+    #   p != phase && p.get('position') >= phase.get('position')
+    # )
 
-  updatePositions: (phase)->
-    relevantPhases = @get('model.phases').filter((p)->
-      p != phase && p.get('position') >= phase.get('position')
-    )
-
-    relevantPhases.invoke('incrementProperty', 'position')
+    # relevantPhases.invoke('incrementProperty', 'position')
 
 
   actions:
     changeTaskPhase: (task, targetPhase) ->
 
     addPhase: (position) ->
+      newPhase = Ember.Object.create name: 'New Phase', tasks: [], position: position
+      @get('template.phases').insertAt(position - 1, newPhase)
 
     removePhase: (phase) ->
 

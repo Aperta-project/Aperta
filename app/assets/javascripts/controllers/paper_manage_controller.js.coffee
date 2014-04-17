@@ -36,3 +36,9 @@ ETahi.PaperManageController = Ember.ObjectController.extend
 
     removeTask: (task) ->
       task.destroyRecord()
+
+    savePhase: (phase) ->
+      phase.save()
+
+    rollbackPhase: (phase) ->
+      phase.rollback()

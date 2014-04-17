@@ -7,6 +7,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
       Ember.Object.create(tasks: tasks, name: phase.name)
   ).property('template.phases')
+
   updatePositions: (phase)->
     relevantPhases = @get('model.phases').filter((p)->
       p != phase && p.get('position') >= phase.get('position')
@@ -17,11 +18,15 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
   actions:
     changeTaskPhase: (task, targetPhase) ->
-      task.set('phase', targetPhase)
-      task.save()
 
     addPhase: (position) ->
 
     removePhase: (phase) ->
 
     removeTask: (task) ->
+
+    savePhase: (phase) ->
+
+    rollbackPhase: (phase) ->
+
+

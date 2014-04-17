@@ -16,8 +16,8 @@ ETahi.PhaseHeaderView = Em.View.extend
   actions:
     save: ->
       @set('active', false)
-      @get('phase').save()
+      @get('controller').send('savePhase', @get('phase'))
 
     cancel: ->
       @set('active', false)
-      @get('phase').rollback()
+      @get('controller').send('rollbackPhase', @get('phase'))

@@ -1,4 +1,6 @@
 class Task < ActiveRecord::Base
+  include EventStreamNotifier
+
   default_scope { order("completed ASC") }
 
   after_initialize :initialize_defaults

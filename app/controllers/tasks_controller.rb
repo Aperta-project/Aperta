@@ -17,9 +17,6 @@ class TasksController < ApplicationController
       tp = task_params(task)
 
       task.update! tp
-      task.reload
-      ts = task.active_model_serializer.new(task)
-      EventStream.post_event(task.paper.id, ts.as_json.merge({type: ts.type}).to_json)
 
       render task.update_responder.new(task, view_context).response
     else

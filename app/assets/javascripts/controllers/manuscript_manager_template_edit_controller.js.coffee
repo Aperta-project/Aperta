@@ -24,6 +24,8 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
     removePhase: (phase) ->
 
     removeTask: (task) ->
+      taskArray = task.get('phase.tasks')
+      taskArray.removeAt(taskArray.indexOf(task))
 
     savePhase: (phase) ->
 

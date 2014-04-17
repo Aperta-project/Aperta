@@ -24,7 +24,7 @@ when 'development'
   plos_journal = Journal.where(name: 'PLOS Yeti').first_or_create(logo: '')
 
   Paper.where(
-    user_id: mike.id, 
+    user_id: mike.id,
     journal_id: plos_journal.id,
     short_title: "The great scientific paper of 2014"
   ).first_or_create(
@@ -50,4 +50,11 @@ when 'development'
       affiliation:"skyline")
     u.journal_roles.create(journal_id: plos_journal.id, admin: true, editor: true, reviewer: true)
   }
+
+  puts "Creating manuscript manager templates"
+  plos_journal.manuscript_manager_templates.first_or_create(
+    name: 'Default Template',
+    paper_type: 'Research',
+    template: {phases: [{name: 'Submission', task_types: ['AssignEditorTask', 'FigureTask']}]}
+  )
 end

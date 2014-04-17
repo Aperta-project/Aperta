@@ -46,7 +46,7 @@ describe FiguresController do
     let(:paper) { Paper.create! short_title: 'Paper with attachment', journal: Journal.create!, user: user }
 
     subject(:do_request) do
-      post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff') }
+      post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff', "image/tiff") }
     end
 
     it_behaves_like "when the user is not signed in"

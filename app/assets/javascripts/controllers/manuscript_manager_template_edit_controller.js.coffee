@@ -18,7 +18,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
     changeTaskPhase: (task, targetPhase) ->
 
     addPhase: (position) ->
-      newPhase = Ember.Object.create name: 'New Phase', tasks: [], position: position + 1
+      newPhase = Ember.Object.create name: 'New Phase', tasks: []
       @get('template.phases').insertAt(position, newPhase)
 
     removePhase: (phase) ->

@@ -7,11 +7,11 @@ ETahi.ManuscriptManagerTemplateRoute = Ember.Route.extend
   normalizeTemplateModels: (data) ->
     data.manuscript_manager_templates.map (templateModel) ->
       templateModel = Ember.Object.create(templateModel)
-      normalizedPhases = templateModel.get('template.phases').map (phase, index) ->
+      normalizedPhases = templateModel.get('template.phases').map (phase) ->
         tasks = phase.task_types.map (task) ->
           Ember.Object.create(title: task, isMessage: false)
 
-        Ember.Object.create(name: phase.name, tasks: tasks, position: index + 1)
+        Ember.Object.create(name: phase.name, tasks: tasks)
 
       templateModel.set('template.phases', normalizedPhases)
       templateModel

@@ -20,7 +20,7 @@ test '#rollbackPhase sets the given old name on the given phase', ->
   @ctrl.send 'rollbackPhase', phase, "Captain Kirk"
   equal(phase.get('name'), "Captain Kirk")
 
-test '#addPhase adds a phase at a specified position', ->
-  @ctrl.send 'addPhase', 1
+test '#addPhase adds a phase at a specified index', ->
+  @ctrl.send 'addPhase', 0
   equal @ctrl.get('sortedPhases.firstObject.name'), 'New Phase'
 

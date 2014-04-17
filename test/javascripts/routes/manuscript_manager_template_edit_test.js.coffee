@@ -17,9 +17,6 @@ test '#normalizeTemplateModels creates phase objects for the phases in a templat
   equal @phases.length, 1
   equal @phases.get('firstObject.name'), 'First Phase'
 
-test '#normalizeTemplateModels assigns a position to the created phase object', ->
-  equal @phases.get('firstObject.position'), 1
-
 test '#normalizeTemplateModels creates task objects for the task types in a phase', ->
   tasks = @phases.get('firstObject.tasks')
   equal tasks.get('length'), 2

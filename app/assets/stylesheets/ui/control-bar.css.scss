@@ -6,6 +6,10 @@
   color: #000;
   background: #e1e1e1;
   z-index: 2;
+
+  &.control-bar-blue {
+    background-color: #87c0f9;
+  }
 }
 
 .control-bar-inner-wrapper {

@@ -1,0 +1,43 @@
+.manuscript-manager-template-control-bar {
+  // override to allow for Chosen select to expand
+  overflow: visible;
+  height: 85px;
+
+  .control-bar-inner-wrapper {
+    // override to allow for Chosen select to expand
+    overflow: visible;
+  }
+
+  .primary-button {
+    border-color: #47a6fd;
+    color: #47a6fd;
+    background: #fff;
+  }
+
+  .template-cancel-button {
+    color: #fff;
+  }
+}
+
+/*
+  JavaScript will toggle the classes 'view-mode' and 'edit-mode'
+  on .manuscript-manager-template-control-bar
+*/
+
+.view-mode {
+  .template-cancel-button,
+  .template-save-button,
+  .template-edit-name,
+  .template-paper-type-edit { display: none; }
+}
+
+.edit-mode {
+  .template-edit-button,
+  .template-name,
+  .template-paper-type { display: none; }
+}
+
+.manuscript-manager-template-columns {
+  // override .columns to allow for larger .control-bar
+  top: 121px;
+}

@@ -5,4 +5,4 @@ ETahi.ManuscriptManagerTemplateEditRoute = Ember.Route.extend
 
   setupController: (controller, model) ->
     controller.set('model', model)
-    controller.set('paperTypes', @modelFor('journal').get('paperTypes'))
+    controller.set('journal', @modelFor('journal'))

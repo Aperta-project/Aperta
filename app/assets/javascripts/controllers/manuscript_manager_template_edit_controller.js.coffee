@@ -1,5 +1,9 @@
 ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
+  paperTypes: (->
+    @get('journal.paperTypes')
+  ).property('journal.paperTypes.@each')
+
   sortedPhases: ( ->
     @get('template.phases').map (phase) ->
       tasks = phase.task_types.map (task) ->

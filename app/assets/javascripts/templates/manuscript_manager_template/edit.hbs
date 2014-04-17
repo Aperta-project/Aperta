@@ -1,29 +1,43 @@
-<div class="control-bar">
+<div {{bind-attr class="view.editMode:edit-mode:view-mode :control-bar :control-bar-blue :manuscript-manager-template-control-bar"}}>
   <div class="control-bar-inner-wrapper">
     <ul>
-      <li>
+      <li id="control-bar-paper-journal-logo">
+        {{editMode}}
+        {{#if journal.logoUrl}}
+          <img src="{{unbound journal.logoUrl}}">
+        {{else}}
+          <div class="paper-journal">{{unbound journal.name}}</div>
+        {{/if}}
+      </li>
+    </ul>
+    <ul>
+      <li class="template-name">{{name}}</li>
+      <li class="template-edit-name">
         {{input value=name placeholder="Template Name"}}
       </li>
-      <li>
+      <li class="template-paper-type">
+        {{paper_type}}
+      </li>
+      <li class="template-paper-type-edit">
         {{chosen content=paperTypes
                  name="paper_types"
                  width="150px"
                  prompt="Select a paper type"
-                 class='paper-type-select'
+                 class="paper-type-select"
                  value=paper_type
                  optionValuePath="content"
                  optionLabelPath="content"}}
       </li>
-      <li>
-        <a class="primary-button" {{action 'saveTemplate'}}> Save </a>
-      </li>
+      <li><a class="btn btn-link template-cancel-button" {{action "cancelEdit" target="view"}}>Cancel</a></li>
+      <li><a class="primary-button template-edit-button" {{action "startEdit" target="view"}}>Edit</a></li>
+      <li><a class="primary-button template-save-button" {{action "saveTemplate"}}>Save</a></li>
     </ul>
   </div>
 </div>
 
 <div id="manuscript-manager">
   <div class="full-height">
-    <div class="columns">
+    <div class="columns manuscript-manager-template-columns">
       {{add-column position=-1 action="addPhase" bonusClass="first-add-column"}}
       {{each sortedPhases itemViewClass="ETahi.ManuscriptManagerColumnView"}}
     </div>

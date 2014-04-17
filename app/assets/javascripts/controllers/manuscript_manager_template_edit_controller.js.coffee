@@ -6,14 +6,6 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
   sortedPhases: Ember.computed.alias 'template.phases'
 
-  updatePositions: (phase) ->
-    # relevantPhases = @get('model.phases').filter((p)->
-    #   p != phase && p.get('position') >= phase.get('position')
-    # )
-
-    # relevantPhases.invoke('incrementProperty', 'position')
-
-
   actions:
     changeTaskPhase: (task, targetPhase) ->
 

@@ -14,7 +14,5 @@ ETahi.ManuscriptManagerTemplateRoute = Ember.Route.extend
         newPhase.set('tasks', tasks)
         newPhase
 
-
       templateModel.set('template.phases', normalizedPhases)
       templateModel
-

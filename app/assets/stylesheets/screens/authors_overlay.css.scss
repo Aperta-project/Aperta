@@ -1,0 +1,23 @@
+.authors-overlay-list {
+  list-style-type: none;
+  padding-left: 0;
+  overflow: auto;
+
+  li {
+    float: left;
+    width: 45%;
+    padding: 10px 20px 10px 0;
+    font-size: 18px;
+
+    div {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+.add-author-form {
+  width: 355px;
+  margin: 15px 0;
+}

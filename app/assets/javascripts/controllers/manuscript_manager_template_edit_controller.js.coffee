@@ -14,11 +14,12 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
     relevantPhases.invoke('incrementProperty', 'position')
 
-  changeTaskPhase: (task, targetPhase) ->
-    task.set('phase', targetPhase)
-    task.save()
 
   actions:
+    changeTaskPhase: (task, targetPhase) ->
+      task.set('phase', targetPhase)
+      task.save()
+
     addPhase: (position) ->
 
     removePhase: (phase) ->

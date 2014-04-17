@@ -11,6 +11,6 @@ ETahi.ManuscriptManagerColumnView = Em.View.extend DragNDrop.Droppable,
 
   drop: (e) ->
     DragNDrop.draggingStopped('.column')
-    @get('controller').changeTaskPhase(ETahi.get('dragItem'), @get('content'))
+    @get('controller').send('changeTaskPhase', ETahi.get('dragItem'), @get('content'))
     e.preventDefault()
     false

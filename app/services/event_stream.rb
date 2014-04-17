@@ -1,4 +1,5 @@
 class EventStream
+
   def self.post_event(paper_id, card_json)
     Thread.new do
       Net::HTTP.post_form(

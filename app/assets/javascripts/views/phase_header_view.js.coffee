@@ -6,6 +6,8 @@ ETahi.PhaseHeaderView = Em.View.extend
 
   focusIn: (e)->
     @set('active', true)
+    if $(e.target).attr('contentEditable')
+      @set('oldPhaseName', @get('phase.name'))
 
   phaseNameDidChange: (->
     Ember.run.schedule('afterRender' , this, ->
@@ -20,4 +22,4 @@ ETahi.PhaseHeaderView = Em.View.extend
 
     cancel: ->
       @set('active', false)
-      @get('controller').send('rollbackPhase', @get('phase'))
+      @get('controller').send('rollbackPhase', @get('phase'), @get('oldPhaseName'))

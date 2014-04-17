@@ -52,6 +52,8 @@ GEM
       execjs
       handlebars-source
     bcrypt-ruby (3.1.2)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.0.2.1)
       sass (~> 3.2)
     bourbon (3.1.8)
@@ -106,6 +108,7 @@ GEM
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     database_cleaner (1.2.0)
+    debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
     devise (3.2.2)
       bcrypt-ruby (~> 3.0)
@@ -219,6 +222,9 @@ GEM
       pry (~> 0.9.12)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
+    pry-stack_explorer (0.4.9.1)
+      binding_of_caller (>= 0.7)
+      pry (>= 0.9.11)
     rack (1.5.2)
     rack-pjax (0.7.0)
       nokogiri (~> 1.5)
@@ -390,6 +396,7 @@ DEPENDENCIES
   phantomjs
   pry-byebug
   pry-rails
+  pry-stack_explorer
   railroady
   rails (= 4.1.0)
   rails_12factor

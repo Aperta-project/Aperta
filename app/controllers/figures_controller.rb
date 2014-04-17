@@ -31,9 +31,9 @@ class FiguresController < ApplicationController
 
   def paper
     @paper ||= begin
-       paper_policy.paper.tap do |p|
-         raise ActiveRecord::RecordNotFound unless p.present?
-       end
+      paper_policy.paper.tap do |p|
+        raise ActiveRecord::RecordNotFound unless p.present?
+      end
     end
   end
 

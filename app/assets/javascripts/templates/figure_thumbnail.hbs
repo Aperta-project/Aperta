@@ -10,6 +10,7 @@
   <span class="glyphicon glyphicon-trash" {{action "confirmDestroyFigure" target="view"}}></span>
 </div>
 <div class="figure-overlay figure-overlay-confirm-destroy">
+  <p>This will permanently delete your image. Are you sure?</p>
   <button class="primary-button white-button" {{action "cancelDestroyFigure" target="view"}}>Cancel</button>
   <button class="primary-button white-button figure-delete-button" {{action "destroyFigure" view.content}}>Delete Forever</button>
 </div>

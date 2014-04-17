@@ -30,11 +30,11 @@
   right: 0;
   bottom: 0;
   left: 0;
-  text-align: center;
 }
 
 .figure-overlay-edit-options {
   line-height: 200px;
+  text-align: center;
   background-color: rgba(0,0,0, 0.6);
 
   .glyphicon {
@@ -50,7 +50,15 @@
 }
 
 .figure-overlay-confirm-destroy {
+  padding: 30px 30px 0 30px;
+  color: #fff;
   background-color: #29a904;
+
+  p {
+    margin: 0 0 15px 0;
+    font-size: 21px;
+    font-weight: bold;
+  }
 
   .primary-button {
     color: #29a904;
@@ -62,6 +70,7 @@
 
 .figure-thumbnail.figure-destroy .figure-overlay-confirm-destroy {
   display: block;
+  min-width: 340px;
   z-index: 1;
 }
 

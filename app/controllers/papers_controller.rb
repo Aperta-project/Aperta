@@ -68,8 +68,8 @@ class PapersController < ApplicationController
       end
 
       format.pdf do
-        send_data PDFKit.new(html_pdf).to_pdf,
-          filename: @paper.short_title.parameterize("_"),
+        send_data PDFKit.new(html_pdf @paper).to_pdf,
+          filename: @paper.display_title.parameterize("_"),
           type: 'application/pdf',
           disposition: 'attachment'
       end
@@ -94,14 +94,15 @@ class PapersController < ApplicationController
     )
   end
 
-  def html_pdf
+  def html_pdf(paper)
     <<-HTML
       <html>
         <head>
           <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
         </head>
         <body>
-          #{@paper.body}
+          <h1>#{paper.display_title}</h1>
+          #{paper.body}
         </body>
       </html>
     HTML

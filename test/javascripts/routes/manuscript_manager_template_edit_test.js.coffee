@@ -3,7 +3,7 @@
 moduleFor 'route:manuscriptManagerTemplate', 'Unit: route/ManuscriptManagerTemplateRoute',
   setup: ->
     phase = name: 'First Phase', task_types: ['ATask', 'AnotherTask']
-    template = Ember.Object.create
+    template =
       name: 'A name'
       paper_type: 'A type'
       template:

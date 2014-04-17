@@ -1,5 +1,6 @@
 class FiguresController < ApplicationController
-  before_action :load_paper, only: :create
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+
   before_action :authenticate_user!
 
   def create
@@ -8,11 +9,11 @@ class FiguresController < ApplicationController
     figures.select! {|f| Figure.acceptable_content_type? f.content_type }
 
     new_figures = figures.map do |figure|
-      @paper.figures.create(figure_params.merge(attachment: figure))
+      paper.figures.create(figure_params.merge(attachment: figure))
     end
 
     respond_to do |f|
-      f.html { redirect_to edit_paper_path @paper }
+      f.html { redirect_to edit_paper_path paper }
       f.json { render json: new_figures }
     end
   end
@@ -25,11 +26,19 @@ class FiguresController < ApplicationController
 
   private
 
-  def load_paper
-    @paper = Paper.find(params[:paper_id])
+  def paper
+    @paper ||= begin
+      PaperPolicy.new(params[:paper_id], current_user).paper.tap do |p|
+        raise ActiveRecord::RecordNotFound unless p.present?
+      end
+    end
   end
 
   def figure_params
     params.require(:figure).permit(:attachment, attachment: [])
+  end
+
+  def render_404
+    return head 404
   end
 end

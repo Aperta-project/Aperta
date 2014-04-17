@@ -20,6 +20,11 @@ ETahi.ApplicationController = Ember.Controller.extend
               delete esData.type
               store.pushPayload(type, esData)
 
+              if esData.task
+                store.find('task', esData.task.id).then (task)->
+                  # ember.js bug:  need to tell phase about any new tasks
+                  task.get('phase').get('tasks').pushObject(task)
+
     Ember.$.ajax(params)
   ).on('init')
 

@@ -55,6 +55,6 @@ when 'development'
   plos_journal.manuscript_manager_templates.first_or_create(
     name: 'Default Template',
     paper_type: 'Research',
-    template: {phases: [{name: 'Submission', task_types: ['AssignEditorTask', 'FigureTask']}]}
+    template: {phases: [{name: 'Submission', task_types: ['MessageTask', 'FigureTask']}]}
   )
 end

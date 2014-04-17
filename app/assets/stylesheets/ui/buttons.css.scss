@@ -32,13 +32,3 @@
     color: $tahi-primary-hover;
   }
 }
-
-.message-overlay {
-  .primary-button {
-    background-color: $tahi-message;
-  }
-
-  .close-overlay, .overlay-completed-checkbox label {
-    color: $tahi-message;
-  }
-}

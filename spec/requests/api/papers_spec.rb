@@ -16,7 +16,7 @@ describe Api::PapersController do
                                        title: "Second paper") }
 
     it "user can get a list of papers" do
-      get :index
+      get api_papers_path
 
       expect(JSON.parse(response.body)).to eq(
         {
@@ -33,7 +33,7 @@ describe Api::PapersController do
 
   describe "GET 'show'" do
     it "user can get a single paper" do
-      get :show, { id: paper1.id }
+      get api_paper_path(paper1.id)
 
       data = JSON.parse response.body
       expect(data['papers'].length).to eq 1
@@ -46,6 +46,18 @@ describe Api::PapersController do
           ]
         }.with_indifferent_access
       )
+    end
+  end
+
+  describe "PATCH 'published_at'" do
+    it "updates the published_at attribute for a paper" do
+      patch_params = '[{ "op": "replace", "path": "/papers/0/publishedAt", "value": "2014-03-21" }]'
+      patch api_paper_path(paper1.id), patch_params, { 'CONTENT_TYPE' => "application/json-patch+json",
+                                                         'ACCEPT' => "application/vnd.api+json" }
+
+      expect(response.body).to_not be_nil
+      expect(response.status).to eq 204
+      expect(paper1.published_at).to eq("2014-03-21")
     end
   end
 end

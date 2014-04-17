@@ -21,7 +21,7 @@ ETahi.ApplicationController = Ember.Controller.extend
               store.pushPayload(type, esData)
 
     Ember.$.ajax(params)
-  )
+  ).on('init')
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')
 

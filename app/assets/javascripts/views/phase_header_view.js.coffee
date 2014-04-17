@@ -8,10 +8,9 @@ ETahi.PhaseHeaderView = Em.View.extend
     @set('active', true)
 
   phaseNameDidChange: (->
-    # race condition with binding and cancel action? :(
-    Em.run.later (->
+    Ember.run.schedule('afterRender' , this, ->
       Tahi.utils.resizeColumnHeaders()
-    ), 30
+    )
   ).observes('phase.name')
 
   actions:

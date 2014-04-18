@@ -1,3 +1,4 @@
+// Override default overlay styles:
 .message-overlay {
   .overlay-paper-title {
     color: $tahi-message;
@@ -10,36 +11,32 @@
   .close-overlay, .overlay-completed-checkbox label {
     color: $tahi-message;
   }
-}
 
-.message-overlay {
   .secondary-button {
     color: $tahi-message;
     border: 1px solid $tahi-message;
+
     &:hover {
-      background: $tahi-message;
-      color: white;
       border: 1px solid $tahi-message;
+      color: white;
+      background: $tahi-message;
     }
   }
-  .message-color {
-    color: $tahi-message;
-  }
-  .img {
-    height: 40px;
-    width: 40px;
-  }
+}
 
-  textarea.new-comment { height: 60px; }
-  footer .message { float: right; }
-
+// Chosen overrides for message overlay:
+.message-overlay {
   .chosen-container-single .chosen-single {
     height: 40px;
-    background: white;
-    border: 1px solid $tahi-message;
-    font-size: 18px;
+    border-color: $tahi-message;
     color: $tahi-message;
+    font-size: 18px;
     text-transform: uppercase;
+    background: #fff;
+
+    span {
+      color: $tahi-message;
+    }
   }
 
   .chosen-drop {
@@ -51,6 +48,10 @@
     width: 100%;
     background: $tahi-message;
   }
+}
+
+.message-overlay {
+  textarea.new-comment { height: 60px; }
 
   #participants {
     margin-bottom: 10px;
@@ -68,3 +69,50 @@
     }
   }
 }
+
+.message-comment-buttons {
+  width: $message-body-width;
+  a { color: $tahi-message; }
+  .secondary-button { float: right; }
+}
+
+.message-comments {
+  list-style-type: none;
+  margin-bottom: 30px;
+  padding-left: 10px;
+}
+
+.message-comment {
+  width: $message-body-width;
+  border-top: 1px solid #ddd;
+  padding: 10px 0;
+
+  &:first-of-type { border-top: none; }
+}
+
+.comment-date,
+.comment-avatar {
+  margin: 0 5px;
+}
+
+.comment-avatar { width: 40px; }
+
+.comment-name { font-weight: bold; }
+
+.comment-body {
+  padding-top: 8px;
+  line-height: 1.3;
+  width: $message-body-width;
+}
+
+.comment-actions {
+  width: $message-body-width;
+  padding-left: 10px;
+  height: 31px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+
+  a, a:hover { color: $tahi-message; }
+}
+
+.load-all-comments .glyphicon { padding-right: 20px; }

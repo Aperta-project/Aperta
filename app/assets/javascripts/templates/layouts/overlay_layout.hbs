@@ -1,4 +1,4 @@
-<div {{bind-attr class=":overlay overlayClass message"}}>
+<div {{bind-attr class=":overlay overlayClass"}}>
   <div class="overlay-container">
     <header class="overlay-header">
       <h2 class="overlay-header-title">
@@ -6,7 +6,7 @@
           {{paperTitle}}
         {{/link-to}}
       </h2>
-      <a {{bind-attr class=":primary-button :overlay-close-button message"}} {{action 'closeAction'}}>Close</a>
+      <a {{bind-attr class=":primary-button :overlay-close-button"}} {{action 'closeAction'}}>Close</a>
     </header>
 
     <main class="overlay-content">{{yield}}</main>
@@ -19,7 +19,7 @@
           <label for="task_completed">Completed</label>
         </div>
       </div>
-      <a {{bind-attr class=":primary-button :overlay-close-button message"}} {{action 'closeAction'}}>Close</a>
+      <a {{bind-attr class=":primary-button :overlay-close-button"}} {{action 'closeAction'}}>Close</a>
     </footer>
   </div>
 </div>

@@ -1,27 +1,25 @@
 <h1>{{model.title}}</h1>
-<div>
-  <ul class="participants">
-    {{#each p in participants}}
-      <li class='participant'>{{userThumbnail p}}</li>
-    {{/each}}
-    <li class="chosen-style-override participant">
-      {{chosen content=availableParticipants
-               name="participants"
-               width="150px"
-               prompt="Add People"
-               class='participant-select'
-               changeAction='saveNewParticipant'
-               optionValuePath="content"
-               optionLabelPath="content.fullName"}}
-    </li>
-  </ul>
-</div>
+<ul class="participants">
+  {{#each p in participants}}
+    <li class="participant">{{userThumbnail p}}</li>
+  {{/each}}
+  <li class="chosen-style-override participant">
+    {{chosen content=availableParticipants
+             name="participants"
+             width="150px"
+             prompt="Add People"
+             class="participant-select"
+             changeAction="saveNewParticipant"
+             optionValuePath="content"
+             optionLabelPath="content.fullName"}}
+  </li>
+</ul>
 
 {{#unless showAllComments}}
-  <div class='comment-actions' {{action 'showAllComments'}}>
-    <a class='load-all-comments' href="#">
-      <span class='glyphicon glyphicon-comment'></span>
-      View previous {{omittedCommentsCount}} {{pluralize omittedCommentsCount 'comment' 'comments'}}
+  <div class="comment-actions" {{action "showAllComments"}}>
+    <a class="load-all-comments" href="#">
+      <span class="glyphicon glyphicon-comment"></span>
+      View previous {{omittedCommentsCount}} {{pluralize omittedCommentsCount "comment" "comments"}}
     </a>
   </div>
 {{/unless}}
@@ -30,9 +28,7 @@
   {{#each comment in shownComments}}
     <li class="message-comment">
       {{userThumbnail comment.commenter}}
-      <span class="comment-date">
-        {{formattedTime comment.createdAt}}
-      </span>
+      <span class="comment-date">{{formattedTime comment.createdAt}}</span>
       <span class="comment-name">{{comment.commenter.fullName}} posted</span>
       <div class="comment-body">{{comment.body}}</div>
     </li>
@@ -43,7 +39,7 @@
   {{textarea classNames="new-comment" id="comment-body" value=newCommentBody placeholder="Type your message here"}}
 </div>
 
-<div class="comment-buttons message-overlay">
-  <a class="message-color" href='#' {{action 'clearMessageContent'}}>Cancel</a>
-  <button type="submit" class="secondary-button message" {{action 'postComment'}}>Post Message</button>
+<div class="message-comment-buttons">
+  <a href="#" {{action "clearMessageContent"}}>Cancel</a>
+  <button type="submit" class="secondary-button" {{action "postComment"}}>Post Message</button>
 </div>

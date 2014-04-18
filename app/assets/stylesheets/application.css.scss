@@ -21,14 +21,15 @@
 @import 'ui/overlay';
 @import 'ui/spinner';
 
-@import 'screens/authors_overlay';
-@import 'screens/choose_new_card_type_overlay';
 @import 'screens/dashboards';
-@import 'screens/figures_overlay';
 @import 'screens/flow_manager';
-@import 'screens/new_message_overlay';
 @import 'screens/papers';
-@import 'screens/register_decision_overlay';
 @import 'screens/reviewer_report';
 @import 'screens/tasks';
-@import 'screens/upload_manuscript_overlay';
+
+@import 'overlays/authors_overlay';
+@import 'overlays/choose_new_card_type_overlay';
+@import 'overlays/figures_overlay';
+@import 'overlays/new_message_overlay';
+@import 'overlays/register_decision_overlay';
+@import 'overlays/upload_manuscript_overlay';

@@ -21,3 +21,8 @@
   width: 355px;
   margin: 15px 0;
 }
+
+.author-form {
+  display: none;
+  &.show-new-author-form { display: block; }
+}

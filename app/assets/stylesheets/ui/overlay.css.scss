@@ -114,24 +114,6 @@
   }
 }
 
-
-.choose-card-type-overlay {
-  min-height: 550px;
-
-  #choose-card-type {
-    width: 550px;
-    margin: 200px auto 0;
-  }
-
-  .primary-button {
-    margin-right: 20px;
-  }
-
-  #choose-card-type-buttons {
-    margin-top: 45px;
-  }
-}
-
 .overlay-paper-title {
   padding: 0;
   padding-right: 15px;
@@ -143,10 +125,6 @@
   }
 }
 
-.message .overlay-paper-title {
-  color: $tahi-message;
-}
-
 .overlay h1 {
   font-size: 48px;
   margin: 0 0 20px 0;
@@ -156,39 +134,10 @@
   padding-right: 25px;
 }
 
-
-
-// TODO: overlay specific style:
-.overlay #task-title-field {
-  width: 700px;
-  border-radius: 3px;
-  border: 1px solid $tahi-matte;
-  padding: 5px;
-}
-
-
-// TODO: message overlay specific style:
-.new-comment {
-  width: 700px;
-  height: 60px;
-  border-radius: 5px;
-  border: 1px solid $tahi-matte;
-  padding: 5px;
-}
-
 // TODO: move or rename. Seems to be spcific to overlay forms
 .form-group p {
   font-size: 18px;
   margin: 15px 0;
-}
-
-// TODO: overlay specific style:
-.task_paper_decision_letter {
-  border-radius: 10px;
-  border: 1px solid #333;
-  padding: 20px;
-  width: 640px;
-  height: 270px;
 }
 
 .chosen-style-override .chosen-container-single .chosen-single {
@@ -218,18 +167,19 @@
 }
 
 
-// TODO: overlay specific style:
-.author-form {
-  display: none;
-  &.show-new-author-form {
-    display: block;
-  }
-}
-
+// Used in New Card (ad-hoc & message) overlays
 #task_body {
   width: $message-body-width;
   height: 150px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+// Used in New Card (ad-hoc & message) overlays
+#task-title-field {
+  width: 700px;
+  border-radius: 3px;
+  border: 1px solid $tahi-matte;
   padding: 5px;
 }

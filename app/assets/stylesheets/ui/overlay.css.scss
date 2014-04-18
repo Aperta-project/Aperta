@@ -233,15 +233,6 @@
   }
 }
 
-// TODO: overlay specific style:
-.decision-selections > .form-group {
-  display: inline-block;
-
-  &:first-child {
-    margin-left: 10px;
-  }
-}
-
 // TODO: move or rename. Seems to be spcific to overlay forms
 .form-group p {
   font-size: 18px;
@@ -257,36 +248,19 @@
   height: 270px;
 }
 
-// TODO: overlay specific style:
-.decision-selections label {
-  padding-left: 10px;
-  font-size: 24px;
-  font-weight: normal;
-  vertical-align: -4px;
-  margin-right: 70px;
-}
-
-// TODO: overlay specific style:
-.decision-selections input[type=radio] {
-  @include transform(scale(2));
-}
-
-// TODO: overlay specific style:
-.decision-letter-description {
-  font-size: 18px;
-}
-
 .chosen-style-override .chosen-container-single .chosen-single {
   height: 40px;
-  background: white;
   border: 1px solid $tahi-primary;
-  font-size: 18px;
   color: $tahi-primary;
+  font-size: 18px;
   text-transform: uppercase;
+  background: #fff;
+
   span {
     color: $tahi-primary;
     margin-top: 8px;
   }
+
   div b {
     background-position: 0px 10px;
   }

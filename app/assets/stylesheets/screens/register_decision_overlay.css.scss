@@ -1,0 +1,18 @@
+.decision-selections {
+  > .form-group {
+    display: inline-block;
+    &:first-child { margin-left: 10px; }
+  }
+
+  label {
+    margin-right: 70px;
+    padding-left: 10px;
+    font-size: 24px;
+    font-weight: normal;
+    vertical-align: -4px;
+  }
+
+  input[type=radio] { @include transform(scale(2)); }
+}
+
+.decision-letter-description { font-size: 18px; }

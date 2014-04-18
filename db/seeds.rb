@@ -35,13 +35,16 @@ when 'development'
 
   mike.journal_roles.create(admin: true, reviewer: true, editor: true, journal_id: plos_journal.id)
 
+  first_names = ['Oliver', 'Charlotte', 'Jack', 'Emily', 'James', 'Ruby', 'William', 'Sophie', 'Mason', 'Olivia', 'Richard']
+  last_names  = ['Smith', 'Jones', 'Taylor', 'Brown', 'Davies', 'Evans', 'Roberts', 'Johnson', 'Robinson', 'Edwards', 'Prentice']
+
   # make some extra users
   (1..10).each {|i|
     u = User.create(
-      first_name: "Name#{i}",
-      last_name: "Last#{i}",
-      email: "email#{i}@example.com",
-      username: "dumbuser#{i}",
+      first_name: first_names[i],
+      last_name: last_names[i],
+      email: "#{first_names[i].downcase}.#{last_names[i].downcase}@example.com",
+      username: "#{first_names[i].downcase}",
       password:"password1",
       admin: true,
       affiliation:"skyline")

@@ -3,6 +3,7 @@ ETahi.Task = DS.Model.extend
   assignee: DS.belongsTo('user')
   assignees: DS.hasMany('user')
   phase: DS.belongsTo('phase')
+  typeKey: 'Task'
 
   body: a('string')
   completed: a('boolean')

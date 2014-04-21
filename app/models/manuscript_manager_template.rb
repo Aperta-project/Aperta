@@ -1,4 +1,5 @@
 class ManuscriptManagerTemplate < ActiveRecord::Base
+  #TODO: Remove these and change the tests' references.
   VALID_TASK_TYPES = ["ReviewerReportTask",
                       "PaperAdminTask",
                       "MessageTask",

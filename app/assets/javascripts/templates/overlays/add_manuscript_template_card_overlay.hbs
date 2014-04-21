@@ -3,11 +3,16 @@
     <h2>Pick the type of card to add</h2>
 
     <div id="choose-card-type-buttons">
-      <button class="primary-button task" {{action "showTaskCreationOverlay" phase}}>
-        New Task Card
-      </button>
-      <button class="primary-button message" {{action "showMessageCreationOverlay" phase}}>
-        New Message Card
+      {{chosen content=taskTypes
+               name="task_types"
+               width="150px"
+               prompt="Select a task type"
+               class="task-type-select"
+               value=task_type
+               optionValuePath="content"
+               optionLabelPath="content"}}
+      <button class="primary-button message" {{action "addTaskType" phase task_type}}>
+        Add
       </button>
       <a class="cancel" {{action 'closeOverlay'}}>cancel</a>
     </div>

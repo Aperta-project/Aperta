@@ -1,7 +1,7 @@
-ETahi.ProgressSpinnerComponent = Ember.View.extend
+ETahi.ProgressSpinnerComponent = Ember.Component.extend
   classNames: ['spinner-component']
   classNameBindings: ['visible']
-  opts:( ->
+  options:
     lines: 9 # The number of lines to draw
     length: 0 # The length of each line
     width: 7 # The line thickness
@@ -16,12 +16,29 @@ ETahi.ProgressSpinnerComponent = Ember.View.extend
     hwaccel: false # Whether to use hardware acceleration
     className: 'spinner' # The CSS class to assign to the spinner
     zIndex: 2e9 # The z-index (defaults to 2000000000)
-  ).property()
+
+  bodyOptions:
+    lines: 20
+    radius: 30
+
+  headerOptions:
+    lines: 7
+    radius: 7
+    className: 'body-spinner'
 
   visible: false
 
+  bodySpinner: false
+  headerSpinner: false
+
   show: (->
-    @spinner = new Spinner(@get('opts')).spin(@$().get(0))
+    options = @get('options')
+    if @get('bodySpinner')
+      options = Ember.merge(options, @get('bodyOptions'))
+    if @get('headerSpinner')
+      options = Ember.merge(options, @get('headerOptions'))
+
+    @spinner = new Spinner(options).spin(@$().get(0))
   ).on('didInsertElement')
 
   teardown: (->

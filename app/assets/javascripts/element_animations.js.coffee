@@ -37,12 +37,12 @@ ETahi.Spinner = Ember.Object.extend
     corners: 1 # Corner roundness (0..1)
     rotate: 0 # The rotation offset
     direction: 1 # 1: clockwise, -1: counterclockwise
-    color: "#8ecb87" # #rgb or #rrggbb or array of colors
+    color: '#8ecb87' # #rgb or #rrggbb or array of colors
     speed: 1.3 # Rounds per second
     trail: 68 # Afterglow percentage
     shadow: false # Whether to render a shadow
     hwaccel: false # Whether to use hardware acceleration
-    className: "spinner" # The CSS class to assign to the spinner
+    className: 'spinner' # The CSS class to assign to the spinner
     zIndex: 2e9 # The z-index (defaults to 2000000000)
   ).property()
 
@@ -50,17 +50,17 @@ ETahi.Spinner = Ember.Object.extend
 
   start: ( ->
     options = @get('opts')
-    if $("#top-nav").length
+    if $('#top-nav').length
+      options = Ember.merge(options, {className: 'header-spinner'})
       spinner = new Spinner(options).spin()
-      $("#top-nav").append(spinner.el)
     else
       options = Ember.merge(options, {className: 'body-spinner', lines: 20, radius: 30})
       spinner = new Spinner(options).spin()
-      $("body").append(spinner.el)
+
     @set('spinner', spinner)
+    $('body').append(spinner.el)
   ).on('init')
 
   stop: ( ->
     @get('spinner').stop()
   )
-

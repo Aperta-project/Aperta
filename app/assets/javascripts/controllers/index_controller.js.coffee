@@ -1,14 +1,13 @@
 ETahi.IndexController = Ember.ObjectController.extend
   currentUser:(-> Tahi.currentUser).property()
-  hasSubmissions: Ember.computed.notEmpty('submissions')
-  hasAssignedTasks: Ember.computed.notEmpty('assigned_tasks')
+  hasSubmissions: Ember.computed.notEmpty('model.submissions')
+  hasAssignedTasks: Ember.computed.notEmpty('model.assignedTasks')
 
   tasksByPaper:(->
-    @get('assigned_tasks').map (item) =>
-      paper = @get('task_papers').findBy('id', item.id)
-      id: item.id
-      shortTitle: paper.short_title
-      title: paper.title
-      tasks: item.tasks
-  ).property('assigned_tasks')
+    obj = _(this.get('assignedTasks').content).groupBy((t)-> t.get('phase.paper.id'))
+    thing = _(obj).map (tasks, paper_id)->
+      paper = tasks[0].get('phase.paper')
+      {shortTitle: paper.get('shortTitle'), id: paper.get('id'), tasks: tasks}
+
+  ).property('model.assignedTasks.@each')
 

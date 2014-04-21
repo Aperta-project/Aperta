@@ -1,6 +1,11 @@
 ETahi.IndexRoute = Ember.Route.extend
+  beforeModel: ->
+    store = @store
+    Ember.$.getJSON('/users/dashboard_info').then (data)->
+      store.pushPayload('dashboard', data)
+
   model: ->
-    Ember.$.getJSON('/users/dashboard_info')
+    @store.all('dashboard').get('firstObject')
 
   actions:
     viewCard: (task) ->

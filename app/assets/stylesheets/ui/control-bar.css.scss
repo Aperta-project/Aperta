@@ -37,7 +37,7 @@
   text-transform: none;
   background: none;
 
-  &:hover { text-decoration: none; }
+  &:focus, &:hover { text-decoration: none; }
 }
 
 .control-bar ul:last-of-type {

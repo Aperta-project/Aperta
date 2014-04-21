@@ -26,9 +26,9 @@
   text-transform: uppercase;
   background: white;
 
-  &:hover {
-    background-color: $tahi-secondary;
+  &:focus, &:hover {
     border-color: $tahi-primary-hover;
     color: $tahi-primary-hover;
+    background-color: $tahi-secondary;
   }
 }

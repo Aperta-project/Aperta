@@ -31,7 +31,7 @@ a, button, .glyphicon, {
 a {
   color: $tahi-primary;
 
-  &:hover {
+  &:focus, &:hover {
     text-decoration: underline;
     color: $tahi-primary;
   }

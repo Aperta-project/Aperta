@@ -2,16 +2,15 @@
 
 moduleFor 'controller:manuscriptManagerTemplateEdit', 'ManuscriptManagerTemplateEditController',
   setup: ->
-    @phase = Ember.Object.create name: 'First Phase'
-    @task1 = Ember.Object.create title: 'ATask', isMessage: false, phase: @phase
-    @task2 = Ember.Object.create title: 'BTask', isMessage: false, phase: @phase
-    @phase.tasks = [@task1, @task2]
+    @phase = ETahi.TemplatePhase.create name: 'First Phase'
+    @task1 = ETahi.TemplateTask.create title: 'ATask', phase: @phase
+    @task2 = ETahi.TemplateTask.create title: 'BTask', phase: @phase
+    @phase.set('tasks', [@task1, @task2])
 
     @template = Ember.Object.create
       name: 'A name'
       paper_type: 'A type'
-      template:
-        phases: [@phase]
+      phases: [@phase]
     Ember.run =>
       @ctrl = @subject()
       @ctrl.set 'model', @template
@@ -26,8 +25,9 @@ test '#addPhase adds a phase at a specified index', ->
   equal @ctrl.get('sortedPhases.firstObject.name'), 'New Phase'
 
 test "#removeTask removes the given task from the template's phase", ->
-  @ctrl.send 'removeTask', @task1
-  tasks = @ctrl.get('sortedPhases.firstObject.tasks')
-  deepEqual tasks.mapBy('title'), ['BTask']
+  Ember.run =>
+    @ctrl.send 'removeTask', @task1
+    tasks = @ctrl.get('sortedPhases.firstObject.tasks')
+    deepEqual tasks.mapBy('title'), ['BTask']
 
 

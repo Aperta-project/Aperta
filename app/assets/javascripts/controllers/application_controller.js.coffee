@@ -26,7 +26,7 @@ ETahi.ApplicationController = Ember.Controller.extend
                   task.get('phase').get('tasks').pushObject(task)
 
     Ember.$.ajax(params)
-  ).on('init')
+  )
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')
 

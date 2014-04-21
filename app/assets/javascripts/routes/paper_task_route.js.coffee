@@ -2,6 +2,7 @@ ETahi.PaperTaskRoute = Ember.Route.extend
   model: (params) ->
     paperTasks = _.flatten @modelFor('paper').get('phases').mapProperty('tasks.content')
     task = paperTasks.findBy('id', params.task_id)
+    # ADD ME BACK IN BEFORE COMMITTING
     task.reload()
 
   setupController: (controller, model) ->

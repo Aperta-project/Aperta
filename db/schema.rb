@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140414170614) do
+ActiveRecord::Schema.define(version: 20140421140428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,14 +27,6 @@ ActiveRecord::Schema.define(version: 20140414170614) do
   add_index "comments", ["commenter_id", "task_id"], name: "index_comments_on_commenter_id_and_task_id", using: :btree
   add_index "comments", ["commenter_id"], name: "index_comments_on_commenter_id", using: :btree
   add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
-
-  create_table "declarations", force: true do |t|
-    t.text    "question", null: false
-    t.text    "answer"
-    t.integer "paper_id"
-  end
-
-  add_index "declarations", ["paper_id"], name: "index_declarations_on_paper_id", using: :btree
 
   create_table "figures", force: true do |t|
     t.string   "attachment"
@@ -150,6 +142,12 @@ ActiveRecord::Schema.define(version: 20140414170614) do
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
+
+  create_table "surveys", force: true do |t|
+    t.text    "question", null: false
+    t.text    "answer"
+    t.integer "task_id"
+  end
 
   create_table "task_managers", force: true do |t|
     t.integer  "paper_id"

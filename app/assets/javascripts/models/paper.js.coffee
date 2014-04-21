@@ -1,7 +1,6 @@
 a = DS.attr
 ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('user')
-  declarations: DS.hasMany('declaration')
   editors: DS.hasMany('user')
   figures: DS.hasMany('figure')
   journal: DS.belongsTo('journal')

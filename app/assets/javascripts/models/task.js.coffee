@@ -34,7 +34,7 @@ ETahi.AuthorsTask = ETahi.Task.extend
   qualifiedType: "StandardTasks::AuthorsTask"
 
 ETahi.DeclarationTask = ETahi.Task.extend
-  declarations: Ember.computed.alias('paper.declarations')
+  surveys: DS.hasMany('survey')
 
 ETahi.FigureTask = ETahi.Task.extend()
 

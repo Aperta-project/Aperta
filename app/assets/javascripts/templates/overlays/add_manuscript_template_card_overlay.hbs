@@ -5,13 +5,13 @@
     <div id="choose-card-type-buttons">
       {{chosen content=taskTypes
                name="task_types"
-               width="150px"
+               width="200px"
                prompt="Select a task type"
                class="task-type-select"
-               value=task_type
+               value=taskType
                optionValuePath="content"
                optionLabelPath="content"}}
-      <button class="primary-button message" {{action "addTaskType" phase task_type}}>
+      <button class="primary-button message" {{action "addTaskType" phase taskType}}>
         Add
       </button>
       <a class="cancel" {{action 'closeOverlay'}}>cancel</a>

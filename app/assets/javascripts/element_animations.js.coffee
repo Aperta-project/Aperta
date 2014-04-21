@@ -52,11 +52,10 @@ ETahi.Spinner = Ember.Object.extend
     options = @get('opts')
     if $('#top-nav').length
       options = Ember.merge(options, {className: 'header-spinner'})
-      spinner = new Spinner(options).spin()
     else
       options = Ember.merge(options, {className: 'body-spinner', lines: 20, radius: 30})
-      spinner = new Spinner(options).spin()
 
+    spinner = new Spinner(options).spin()
     @set('spinner', spinner)
     $('body').append(spinner.el)
   ).on('init')

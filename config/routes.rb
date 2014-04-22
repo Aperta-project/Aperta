@@ -1,5 +1,5 @@
 Tahi::Application.routes.draw do
-  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+  mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
 
   devise_for :users
   devise_scope :user do

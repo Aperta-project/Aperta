@@ -3,7 +3,7 @@ ETahi.PaperController = Ember.ObjectController.extend
 
   downloadLink: ( ->
     "/papers/#{@get('id')}/download"
-  ).property()
+  ).property('id')
 
   authorTasks: Ember.computed.filterBy('allTasks', 'role', 'author')
 

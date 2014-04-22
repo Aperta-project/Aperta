@@ -11,6 +11,10 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
       phases: normalizedPhases
       template: null
 
+  articleCount: 0
+
+  phaseCount: Ember.computed.alias 'phases.length'
+
   templateJSON: ( ->
     serializedPhases = @get('phases').map (phase) ->
       task_types = phase.get('tasks').map (task) ->

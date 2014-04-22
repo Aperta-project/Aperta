@@ -17,8 +17,33 @@
   .template-cancel-button {
     color: #fff;
   }
+
 }
 
+.manuscript-manager-template {
+  .blue-box {
+    border-color: #47a6fd;
+    background: #47a6fd;
+    color: #fff;
+  }
+
+  .template-thubmnail {
+    display: inline-block;
+    padding: 10px;
+
+    a {
+      color: #fff;
+    }
+  }
+
+  .template-stats {
+    padding: 0;
+
+    .stat-item {
+      list-style-type: none
+    }
+  }
+}
 /*
   JavaScript will toggle the classes 'view-mode' and 'edit-mode'
   on .manuscript-manager-template-control-bar

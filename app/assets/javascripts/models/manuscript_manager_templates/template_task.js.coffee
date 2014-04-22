@@ -5,7 +5,9 @@ ETahi.TemplateTask = Em.Object.extend
     @get('type') == "MessageTask"
   ).property('type')
 
-  title: Ember.computed.alias('type')
+  title: (->
+    @get('type').replace(/([a-z])([A-Z])/g, '$1 $2')
+  ).property('type')
 
   destroy: ->
     @get('phase').removeTask(this)

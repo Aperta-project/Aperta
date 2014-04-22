@@ -21,6 +21,18 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend ETahi.SerializesHasMany,
   coerceId: (id) ->
     (if not id? then null else id + "")
 
+  normalizeType: (hash) ->
+    if hash.type
+      hash.qualified_type = hash.type
+      hash.type = hash.type.replace(/.+::/, '')
+    hash
+
+  extractTypeName: (prop, hash) ->
+    if hash.type
+      @typeForRoot hash.type
+    else
+      @typeForRoot prop
+
   # This is overridden because finding a 'task' and getting back a root key of 'author_task' will
   # break the isPrimary check.
   extractSingle: (store, primaryType, payload, recordId, requestType) ->
@@ -38,15 +50,10 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend ETahi.SerializesHasMany,
 
       #jshint loopfunc:true
       for hash in payload[prop]
-        # hash.foobar = 'hello!'
-        # custom code starts here
-        typeName = if hash.type
-          hash.qualified_type = hash.type
-          hash.type = hash.type.replace(/.+::/, '')
-          @typeForRoot hash.type
-        else
-          @typeForRoot prop
-        # custom code ends here
+        # ===========> custom code for namespacing and sti starts here
+        hash = @normalizeType(hash)
+        typeName = @extractTypeName(prop, hash)
+        # <=========== custom code for namespacing and sti ends here
         type = store.modelFor(typeName)
         typeSerializer = store.serializerFor(type)
         hash = typeSerializer.normalize(type, hash, prop)
@@ -65,6 +72,39 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend ETahi.SerializesHasMany,
           store.push typeName, hash
 
     primaryRecord
+
+  extractArray: (store, primaryType, payload) ->
+    payload = @normalizePayload(primaryType, payload)
+    # primaryTypeName = primaryType.typeKey
+    primaryTypeName = 'task' # we'll always look for tasks at the root.
+    primaryArray = undefined
+    for prop of payload
+      typeKey = prop
+      forcedSecondary = false
+      if prop.charAt(0) is "_"
+        forcedSecondary = true
+        typeKey = prop.substr(1)
+      typeName = @typeForRoot(typeKey)
+      type = store.modelFor(typeName)
+      arrayTypeSerializer = store.serializerFor(type) # cache the serializer based on the array's type key
+      isPrimary = (not forcedSecondary and (type.typeKey is primaryTypeName))
+
+      #jshint loopfunc:true
+      normalizedArray = Ember.ArrayPolyfills.map.call(payload[prop], (hash) ->
+        # =======> Each item in the array of tasks could have a different type.
+        hash = @normalizeType(hash)
+        if hash.type
+          itemSerializer = store.serializerFor(hash.type)
+        else
+          itemSerializer =  arrayTypeSerializer
+        itemType = store.modelFor(@extractTypeName(prop, hash))
+        itemSerializer.normalize(itemType, hash, prop)
+      , this)
+      if isPrimary
+        primaryArray = normalizedArray
+      else
+        store.pushMany typeName, normalizedArray
+    primaryArray
 
 ETahi.PaperReviewerTaskSerializer = ETahi.TaskSerializer.extend()
 ETahi.PaperEditorTaskSerializer = ETahi.TaskSerializer.extend()

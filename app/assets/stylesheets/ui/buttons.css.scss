@@ -41,3 +41,10 @@
     color: $tahi-primary-hover;
   }
 }
+
+.disabled-button {
+  cursor: default;
+  background-color: #bbb;
+
+  &:focus, &:hover { background-color: #bbb; }
+}

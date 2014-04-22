@@ -20,4 +20,14 @@ ETahi.Paper = DS.Model.extend
 
   displayTitle: (->
     @get('title') || @get('shortTitle')
-  ).property 'title', 'shortTitle'
+  ).property('title', 'shortTitle')
+
+  allTasks: (->
+    _.flatten @get('phases.content').mapBy('tasks.content')
+  ).property('phases.@each.tasks')
+
+  allTasksCompleted: ETahi.computed.all('allTasks', 'completed', true)
+
+  editable: (->
+    !(@get('allTasksCompleted') and @get('submitted'))
+  ).property('allTasksCompleted', 'submitted')

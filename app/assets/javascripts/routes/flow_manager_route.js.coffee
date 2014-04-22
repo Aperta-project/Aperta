@@ -21,4 +21,4 @@ ETahi.FlowManagerRoute = Ember.Route.extend
       redirectParams = ['flow_manager']
       @controllerFor('application').set('overlayRedirect', redirectParams)
       @controllerFor('application').set('overlayBackground', 'flow_manager')
-      @transitionTo('paper.task', paper.id, task.id)
+      @transitionTo('task', paper.id, task.id)

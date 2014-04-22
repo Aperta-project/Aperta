@@ -19,7 +19,7 @@ ETahi.PaperEditRoute = Ember.Route.extend
       redirectParams = ['paper.edit', @modelFor('paper')]
       @controllerFor('application').set('overlayRedirect', redirectParams)
       @controllerFor('application').set('overlayBackground', 'paper/edit')
-      @transitionTo('paper.task', paper, task.id)
+      @transitionTo('task', paper.id, task.id)
 
     confirmSubmitPaper: ->
       @modelFor('paperEdit').save()

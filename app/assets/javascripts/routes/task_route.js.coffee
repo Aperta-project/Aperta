@@ -1,8 +1,6 @@
-ETahi.PaperTaskRoute = Ember.Route.extend
+ETahi.TaskRoute = Ember.Route.extend
   model: (params) ->
-    @modelFor('paper').get('tasks')
-      .then((tasks) -> tasks.findBy('id', params.task_id))
-      .then((task) -> task.reload())
+      @store.find('task', params.task_id).then((task) -> task.reload())
       #reload fixes some several small problems in the app.
 
   setupController: (controller, model) ->

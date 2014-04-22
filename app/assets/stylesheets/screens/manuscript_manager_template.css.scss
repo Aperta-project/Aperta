@@ -20,30 +20,65 @@
 
 }
 
+$template-thubmnail-side-padding: 10px;
+
 .manuscript-manager-template {
   .blue-box {
-    border-color: #47a6fd;
-    background: #47a6fd;
+    background: #87c0f9;
     color: #fff;
   }
+}
 
-  .template-thubmnail {
-    display: inline-block;
-    padding: 10px;
 
-    a {
-      color: #fff;
-    }
+.template-thubmnail {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  width: 200px;
+  height: 175px;
+  padding: 15px $template-thubmnail-side-padding;
+
+  h3 {
+    margin: 0; // override bootstrap
+    font-size: 21px;
   }
 
-  .template-stats {
-    padding: 0;
+  a { color: #fff; }
+}
 
-    .stat-item {
-      list-style-type: none
-    }
+.template-stats {
+  list-style-type: none;
+  @include position(absolute, auto $template-thubmnail-side-padding 0px $template-thubmnail-side-padding);
+  padding: 0;
+  font-size: 15px;
+
+  li span {
+    margin-right: 5px;
+    font-size: 18px;
   }
 }
+
+.template-thubmnail-overlay {
+  display: none;
+  @include position(absolute, 0px 0px 0px 0px);
+  line-height: 200px;
+  text-align: center;
+  background-color: rgba(52, 123, 197, 0.6);
+
+  .glyphicon {
+    margin: 0 10px;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+
+    &:hover { text-decoration: none; }
+  }
+}
+
+.template-thubmnail:hover .template-thubmnail-overlay {
+  display: block;
+}
+
 /*
   JavaScript will toggle the classes 'view-mode' and 'edit-mode'
   on .manuscript-manager-template-control-bar

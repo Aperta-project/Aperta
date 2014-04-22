@@ -2,12 +2,17 @@
   <h2>Manuscript Manager Templates</h2>
   {{#each item in content}}
     <div class="template-thubmnail blue-box">
-      <p>{{link-to item.name 'manuscript_manager_template.edit' item}}</p>
+      <h3>{{item.name}}</h3>
 
       <ul class="template-stats">
-        <li class='stat-item'>{{item.phaseCount}} Phases</li>
-        <li class='stat-item'>{{item.articleCount}} Active Articles</li>
+        <li><span>{{item.phaseCount}}</span> Phases</li>
+        <li><span>{{item.articleCount}}</span> Active Articles</li>
       </ul>
+
+      <div class="template-thubmnail-overlay">
+        {{link-to "" "manuscript_manager_template.edit" item class="glyphicon glyphicon-pencil"}}
+        <span class="glyphicon glyphicon-trash"></span>
+      </div>
     </div>
   {{/each}}
   <button class="primary-button blue-box" {{action "addTemplate" phase taskType}}>

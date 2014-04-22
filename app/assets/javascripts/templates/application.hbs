@@ -1,12 +1,12 @@
 <header class="nav-bar">
-  <nav id='top-nav'>
-    {{#link-to 'index' classNames='nav-bar-home'}}
+  <nav id="top-nav">
+    {{#link-to "index" classNames="nav-bar-home"}}
       <strong>Tahi</strong> Dashboard
     {{/link-to}}
     {{#if Tahi.currentUser}}
     <ul class="nav-bar-links">
       {{#if Tahi.currentUser.admin}}
-        <li class="nav-bar-item">{{#link-to 'flow_manager'}}Flow Manager{{/link-to}}</li>
+        <li class="nav-bar-item">{{#link-to "flow_manager"}}Flow Manager{{/link-to}}</li>
         <li class="nav-bar-item"><a href="/admin">Admin</a></li>
       {{/if}}
       <li class="nav-bar-text"><a href="/users/sign_out">Sign out</a></li>
@@ -16,4 +16,4 @@
   </nav>
 </header>
 {{outlet}}
-{{outlet 'overlay'}}
+{{outlet "overlay"}}

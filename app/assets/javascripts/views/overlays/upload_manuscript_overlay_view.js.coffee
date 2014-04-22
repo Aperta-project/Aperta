@@ -2,7 +2,7 @@ ETahi.UploadManuscriptOverlayView = ETahi.OverlayView.extend
   templateName: 'overlays/upload_manuscript_overlay'
   layoutName: 'layouts/overlay_layout'
 
-  didInsertElement: ->
+  setupUploader: (->
     new Spinner(top: '20px', left: '-30px', color: '#39a329').spin $('.processing')[0]
     $('ul#paper-manuscript-upload, .processing, .progress').hide()
 
@@ -45,3 +45,4 @@ ETahi.UploadManuscriptOverlayView = ETahi.OverlayView.extend
       paper = @controller.get('model.paper')
       paper.reload().then =>
         @controller.send('closeAction')
+  ).on('didInsertElement')

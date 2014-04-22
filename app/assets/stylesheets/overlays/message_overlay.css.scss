@@ -1,6 +1,6 @@
 // Override default overlay styles:
 .message-overlay {
-  .overlay-paper-title {
+  .overlay-paper-link {
     color: $tahi-message;
   }
 
@@ -121,4 +121,18 @@
   border-radius: 5px;
   border: 1px solid $tahi-matte;
   padding: 5px;
+}
+
+.participants {
+  padding: 10px;
+  width: 700px;
+  background: #f3f3f3;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  list-style: none;
+}
+
+.participant {
+  display: inline-block;
+  margin-right: 10px;
 }

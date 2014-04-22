@@ -22,12 +22,18 @@
   padding-left: 0;  // from bootstrap?
   @extend .clear-before-and-after;
 
-  li {
-    position: relative;
-    float: left;
-    display: block;
-    margin-right: 10px;
+  &:last-of-type {
+    float: right;
+
+    a { text-transform: uppercase; }
   }
+}
+
+.control-bar-item {
+  position: relative;
+  float: left;
+  display: block;
+  margin-right: 10px;
 }
 
 .control-bar-link {
@@ -37,11 +43,5 @@
   text-transform: none;
   background: none;
 
-  &:hover { text-decoration: none; }
-}
-
-.control-bar ul:last-of-type {
-  float: right;
-
-  a { text-transform: uppercase; }
+  &:focus, &:hover { text-decoration: none; }
 }

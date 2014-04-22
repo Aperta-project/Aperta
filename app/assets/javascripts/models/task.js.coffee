@@ -13,7 +13,7 @@ ETahi.Task = DS.Model.extend
   qualifiedType: a('string')
 
   isMessage: Ember.computed.equal('type', 'MessageTask')
-  paper: Ember.computed.alias('phase.paper')
+  paper: DS.belongsTo('paper', {async: true})
 
   relationshipsToSerialize: []
 

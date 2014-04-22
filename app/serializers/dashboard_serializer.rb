@@ -18,15 +18,12 @@ class DashboardSerializer < ActiveModel::Serializer
   end
 
   def assigned_tasks
-    # all tasks that i am assigned too
-    # i may not have authored the paper
-    direct_tasks = current_user.tasks.includes({paper: :message_tasks}, :assignee)
-    # (direct_tasks + paper.message_tasks)
-    direct_tasks
+    # all the tasks I have been associated with
+    (current_user.tasks + current_user.papers.flat_map(&:message_tasks)).uniq
   end
 
   def task_paper
-
+    # perhaps add all the papers from assigned tasks
   end
 
 end

@@ -1,9 +1,9 @@
 ETahi.PaperTaskRoute = Ember.Route.extend
   model: (params) ->
-    paperTasks = _.flatten @modelFor('paper').get('phases').mapProperty('tasks.content')
-    task = paperTasks.findBy('id', params.task_id)
-    # ADD ME BACK IN BEFORE COMMITTING
-    task.reload()
+    @modelFor('paper').get('tasks')
+      .then((tasks) -> tasks.findBy('id', params.task_id))
+      .then((task) -> task.reload())
+      #reload fixes some several small problems in the app.
 
   setupController: (controller, model) ->
     # FIXME: Rename AdHocTask to Task (here, in views, and in templates)
@@ -14,7 +14,6 @@ ETahi.PaperTaskRoute = Ember.Route.extend
 
     taskController = @controllerFor(baseObjectName)
     taskController.set('model', model)
-    taskController.set('paper', model.get('paper'))
     @set('taskController', taskController)
 
     if @controllerFor('application').get('overlayRedirect')

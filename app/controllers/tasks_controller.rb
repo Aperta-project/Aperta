@@ -24,6 +24,10 @@ class TasksController < ApplicationController
     end
   end
 
+  def index
+    respond_with Task.find(params[:ids])
+  end
+
   def create
     task = build_task
     if task.persisted?

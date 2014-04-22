@@ -6,6 +6,7 @@ ETahi.Paper = DS.Model.extend
   journal: DS.belongsTo('journal')
   phases: DS.hasMany('phase')
   reviewers: DS.hasMany('user')
+  tasks: DS.hasMany('task', {async: true, polymorphic: true})
 
   authors: a()
   body: a('string')
@@ -23,6 +24,4 @@ ETahi.Paper = DS.Model.extend
     @get('title') || @get('shortTitle')
   ).property 'title', 'shortTitle'
 
-  allTasks: (->
-    allTasks = _.flatten @get('phases.content').mapBy('tasks.content')
-  ).property('phases.@each.tasks')
+  allTasks: Ember.computed.alias 'tasks'

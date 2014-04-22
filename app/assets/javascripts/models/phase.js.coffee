@@ -1,7 +1,7 @@
 a = DS.attr
 ETahi.Phase = DS.Model.extend
   paper: DS.belongsTo('paper')
-  tasks: DS.hasMany('task', {polymorphic: true})
+  tasks: DS.hasMany('task', {polymorphic: true, async: true})
   name: a('string')
   position: a('number')
   noTasks: Ember.computed.empty('tasks.[]')

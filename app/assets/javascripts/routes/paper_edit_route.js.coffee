@@ -5,6 +5,11 @@ ETahi.PaperEditRoute = Ember.Route.extend
       $.getScript(visualEditorScript).then ->
         ETahi.LazyLoaderMixin.loaded[visualEditorScript] = true
 
+  model: (params) ->
+    paper = @modelFor('paper')
+    new Ember.RSVP.Promise((resolve, reject) ->
+      paper.get('tasks').then((tasks) -> resolve(paper)))
+
   afterModel: (model) ->
     @transitionTo('paper.index', model) if model.get('submitted')
 

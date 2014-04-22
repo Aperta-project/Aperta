@@ -18,11 +18,15 @@
         {{#if upload.preview}}
           <img {{bind-attr src=upload.preview}}>
         {{else}}
-          <div class="preview-container glyphicon glyphicon-file"></div>
+            <div class="preview-container glyphicon glyphicon-file"></div>
         {{/if}}
       </div>
-      <div class="progress">
-        <div class="progress-bar" {{bind-attr style=upload.progressBarStyle}}></div>
+      <div class="progess">
+        {{#if upload.error}}
+          {{upload.error}}
+        {{else}}
+          <div class="progress-bar" {{bind-attr style=upload.progressBarStyle}}></div>
+        {{/if}}
       </div>
     </li>
   {{/each}}

@@ -22,7 +22,7 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
         progressBarStyle: "width: 0%;"
 
       if file.error
-        upload.error = "File #{file.name} is an incorrect format. You may upload .jpg, .jpeg, .gif, .png, or .tiff."
+        upload.error = "File #{file.name} is not an image. You may upload files with the extension .jpg, .jpeg, .gif, .png, or .tiff."
 
       @uploads.pushObject upload
 

@@ -7,6 +7,6 @@ class JournalsController < ApplicationController
   end
 
   def show
-    respond_with Journal.find(params[:id])
+    respond_with Journal.find(params[:id]), serializer: JournalWithTemplatesSerializer, root: "journal"
   end
 end

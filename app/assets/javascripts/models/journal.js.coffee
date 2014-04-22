@@ -4,3 +4,4 @@ ETahi.Journal = DS.Model.extend
   logoUrl: a('string')
   name: a('string')
   paperTypes: a()
+  manuscriptManagerTemplates: a()

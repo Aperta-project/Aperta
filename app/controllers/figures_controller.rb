@@ -38,7 +38,11 @@ class FiguresController < ApplicationController
   end
 
   def paper_policy
-    @paper_policy ||= PaperPolicy.new(params[:paper_id], current_user)
+    @paper_policy ||= PaperPolicy.new(params[:paper_id].presence || figure_paper.id, current_user)
+  end
+
+  def figure_paper
+    Figure.find(params[:id]).paper
   end
 
   def figure_params

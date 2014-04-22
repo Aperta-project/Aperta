@@ -1,5 +1,3 @@
-html, body { height: 100%; } // TOOD: Do we need this anymore?
-
 html {
   overflow: -moz-scrollbars-vertical;
   -webkit-font-smoothing: antialiased;
@@ -26,14 +24,14 @@ body { background: transparent; } // override bootstrap
   background: #ddd;
 }
 
-a, a:hover, button, button:hover, .glyphicon, .glyphicon:hover {
+a, button, .glyphicon, {
   @include transition(all 0.1s ease-in-out);
 }
 
 a {
   color: $tahi-primary;
 
-  &:hover {
+  &:focus, &:hover {
     text-decoration: underline;
     color: $tahi-primary;
   }
@@ -54,11 +52,11 @@ textarea { resize: none; }
   &.full-width { max-width: none; }
 
   > main {
-    @extend .row;
+    overflow: hidden;
+    min-width: 960px;
     margin-left: 0;
     margin-right: 0;
     background-color: white;
-    min-width: 960px;
   }
 }
 
@@ -69,8 +67,8 @@ textarea { resize: none; }
 }
 
 #upload-file-wrapper {
-  color: red;
   margin: 50px 0;
+  color: red;
 
   .warning { margin-top: 10px; }
 }

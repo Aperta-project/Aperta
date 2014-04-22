@@ -1,6 +1,11 @@
 ETahi.FlowManagerRoute = Ember.Route.extend
+  beforeModel: (transition)->
+    unless Tahi.currentUser.admin
+      transition.abort()
+      @transitionTo('index')
+
   model: ->
-    @store.find("flow")
+    @store.find('flow')
 
   actions:
     chooseNewFlowMangerColumn: ->

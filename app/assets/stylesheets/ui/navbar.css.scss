@@ -32,7 +32,7 @@ $nav-bar-active-color: $tahi-primary;
   font-size: 18px;
   line-height: 20px;
 
-  &:hover {
+  &:focus, &:hover {
     color: #fff;
     text-decoration: none;
   }
@@ -67,7 +67,7 @@ $nav-bar-active-color: $tahi-primary;
 .nav-bar-text a {
   color: $nav-bar-color;
 
-  &:hover {
+  &:focus, &:hover {
     text-decoration: underline;
     background-color: transparent;
   }

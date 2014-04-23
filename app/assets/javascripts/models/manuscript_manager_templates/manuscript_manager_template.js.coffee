@@ -1,5 +1,5 @@
 ETahi.ManuscriptManagerTemplate = Ember.Object.extend
-  init:  ->
+  init: ->
     normalizedPhases = @get('template').phases.map (phase) ->
       newPhase = ETahi.TemplatePhase.create(name: phase.name)
       tasks = phase.task_types.map (task) ->
@@ -7,6 +7,7 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
       newPhase.set('tasks', tasks)
       newPhase
     @setProperties
+      journalId: @get('journal_id')
       paperType: @get('paper_type')
       phases: normalizedPhases
       template: null
@@ -31,3 +32,22 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
         phases: serializedPhases
   ).property().volatile()
 
+  ajaxPayload: ( ->
+    payload = { journal_id: @get('journalId'), manuscript_manager_template: @get('templateJSON') }
+    id = @get('id')
+    if id
+      url = "/manuscript_manager_templates/#{id}"
+      type = "PUT"
+    else
+      url = "/manuscript_manager_templates/"
+      type = "POST"
+
+    url: url
+    type: type
+    data: JSON.stringify(payload)
+    contentType: 'application/json; charset=utf-8'
+  ).property().volatile()
+
+  save: ->
+    saveTemplate = new Ember.RSVP.Promise (resolve, reject) =>
+      $.ajax(@get('ajaxPayload')).then(resolve).fail(reject)

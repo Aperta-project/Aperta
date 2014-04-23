@@ -1,5 +1,4 @@
 ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
-
   paperTypes: (->
     @get('journal.paperTypes')
   ).property('journal.paperTypes.@each')
@@ -33,12 +32,4 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
     saveTemplate: ->
       template = @get('model')
-      payload = { journal_id: @get('journal.id'), manuscript_manager_template: template.get('templateJSON') }
-      saveTemplate = new Ember.RSVP.Promise (resolve, reject) =>
-        $.ajax
-          url: "/manuscript_manager_templates/#{template.get('id')}"
-          type: "PUT"
-          data: JSON.stringify(payload)
-          success: resolve
-          error: reject
-          contentType: 'application/json; charset=utf-8'
+      template.save()

@@ -10,8 +10,6 @@ ETahi.Paper = DS.Model.extend
 
   authors: a()
   body: a('string')
-  decision: a('string')
-  decisionLetter: a('string')
   shortTitle: a('string')
   submitted: a('boolean')
   title: a('string')

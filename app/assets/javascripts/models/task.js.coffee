@@ -46,6 +46,8 @@ ETahi.MessageTask = ETahi.Task.extend
 
 ETahi.RegisterDecisionTask = ETahi.Task.extend
   decisionLetters: a('string')
+  paperDecision: a('string')
+  paperDecisionLetter: a('string')
   acceptedLetterTemplate: (->
     JSON.parse(@get('decisionLetters')).Accepted
   ).property 'decisionLetters'

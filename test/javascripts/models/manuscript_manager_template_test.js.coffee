@@ -46,26 +46,26 @@ test "#templateJSON serializes the template's state.", ->
   }
   deepEqual testTemplate.get('templateJSON'), testData
 
-test "#ajaxPayload sets the request type to PUT if the template has an id", ->
-  ajaxPayload = testTemplate.get('ajaxPayload')
-  equal ajaxPayload.type, "PUT"
+test "#savePayload sets the request type to PUT if the template has an id", ->
+  savePayload = testTemplate.get('savePayload')
+  equal savePayload.type, "PUT"
 
-test "#ajaxPayload sets the request type to POST if the template has no id", ->
+test "#savePayload sets the request type to POST if the template has no id", ->
   testTemplate.set('id', null)
-  ajaxPayload = testTemplate.get('ajaxPayload')
-  equal ajaxPayload.type, "POST"
+  savePayload = testTemplate.get('savePayload')
+  equal savePayload.type, "POST"
 
-test "#ajaxPayload sets the url to the update endpoint if the template has an id", ->
-  ajaxPayload = testTemplate.get('ajaxPayload')
-  equal ajaxPayload.url, "/manuscript_manager_templates/1"
+test "#savePayload sets the url to the update endpoint if the template has an id", ->
+  savePayload = testTemplate.get('savePayload')
+  equal savePayload.url, "/manuscript_manager_templates/1"
 
-test "#ajaxPayload sets the url to the create endpoint if the template has no id", ->
+test "#savePayload sets the url to the create endpoint if the template has no id", ->
   testTemplate.set('id', null)
-  ajaxPayload = testTemplate.get('ajaxPayload')
-  equal ajaxPayload.url, "/manuscript_manager_templates/"
+  savePayload = testTemplate.get('savePayload')
+  equal savePayload.url, "/manuscript_manager_templates/"
 
-test "#ajaxPayload includes the journal id as part of the data object", ->
-  ajaxPayload = testTemplate.get('ajaxPayload')
-  data = JSON.parse(ajaxPayload.data)
+test "#savePayload includes the journal id as part of the data object", ->
+  savePayload = testTemplate.get('savePayload')
+  data = JSON.parse(savePayload.data)
   equal data.journal_id, 5
 

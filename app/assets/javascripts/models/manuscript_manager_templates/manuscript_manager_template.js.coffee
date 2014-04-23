@@ -16,6 +16,8 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
 
   phaseCount: Ember.computed.alias 'phases.length'
 
+  isNew: Em.computed.empty('id')
+
   templateJSON: ( ->
     serializedPhases = @get('phases').map (phase) ->
       task_types = phase.get('tasks').map (task) ->
@@ -32,15 +34,15 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
         phases: serializedPhases
   ).property().volatile()
 
-  ajaxPayload: ( ->
+  savePayload: ( ->
     payload = { journal_id: @get('journalId'), manuscript_manager_template: @get('templateJSON') }
     id = @get('id')
-    if id
-      url = "/manuscript_manager_templates/#{id}"
-      type = "PUT"
-    else
+    if @get('isNew')
       url = "/manuscript_manager_templates/"
       type = "POST"
+    else
+      url = "/manuscript_manager_templates/#{id}"
+      type = "PUT"
 
     url: url
     type: type
@@ -49,5 +51,6 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
   ).property().volatile()
 
   save: ->
-    saveTemplate = new Ember.RSVP.Promise (resolve, reject) =>
-      $.ajax(@get('ajaxPayload')).then(resolve).fail(reject)
+    new Ember.RSVP.Promise (resolve, reject) =>
+      $.ajax(@get('savePayload')).then(resolve).fail(reject)
+

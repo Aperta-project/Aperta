@@ -1,16 +1,34 @@
-{{#if view.content.src}}
-  <img class="figure-image" src={{unbound view.content.src}} alt={{unbound view.content.alt}}>
-{{else}}
-  <div class="figure-image-placeholder">
-    <span class="glyphicon glyphicon-file"></span>
+<div class="figure-thumbnail-row">
+  <span class="figure-thumbnail-destroy-icon glyphicon glyphicon-trash" {{action "confirmDestroyFigure" target="view"}}></span>
+
+  {{#if view.content.src}}
+    <img class="figure-thumbnail-image" {{action "togglePreview" target="view"}} src={{unbound view.content.src}} alt={{unbound view.content.alt}}>
+  {{else}}
+    <div class="figure-thumbnail-image _placeholder">
+      <span class="glyphicon glyphicon-file"></span>
+    </div>
+  {{/if}}
+
+  <div class="figure-thumbnail-text-content">
+    <h2 class="figure-thumbnail-title">Figure X: Figure Title Here</h2>
+    <div class="figure-thumbnail-caption _empty">No caption for this figure</div>
+  </div>
+
+  <div class="figure-thumbnail-edit-actions">
+    <a href="#">cancel</a>
+    <a href="#" class="primary-button btn-xs">Save</a>
+  </div>
+
+  <div class="figure-thumbnail-destroy-overlay">
+    <p>This will permanently delete your image. Are you sure?</p>
+    <button class="primary-button white-button" {{action "cancelDestroyFigure" target="view"}}>Cancel</button>
+    <button class="primary-button white-button figure-delete-button" {{action "destroyFigure" target="view"}}>Delete Forever</button>
+  </div>
+</div>
+
+{{#if view.previewState}}
+  <div class="figure-thumbnail-preview">
+    <div {{action "togglePreview" target="view"}} class="figure-thumbnail-preview-close">&times;</div>
+    <img src={{unbound view.content.src}} alt={{unbound view.content.alt}}>
   </div>
 {{/if}}
-<div class="figure-overlay figure-overlay-edit-options">
-  <span class="glyphicon glyphicon-pencil"></span>
-  <span class="glyphicon glyphicon-trash" {{action "confirmDestroyFigure" target="view"}}></span>
-</div>
-<div class="figure-overlay figure-overlay-confirm-destroy">
-  <p>This will permanently delete your image. Are you sure?</p>
-  <button class="primary-button white-button" {{action "cancelDestroyFigure" target="view"}}>Cancel</button>
-  <button class="primary-button white-button figure-delete-button" {{action "destroyFigure" view.content}}>Delete Forever</button>
-</div>

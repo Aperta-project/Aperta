@@ -1,4 +1,4 @@
-ETahi.DashboardSerializer = DS.ActiveModelSerializer.extend ETahi.SerializesHasMany,
+ETahi.DashboardSerializer = ETahi.ApplicationSerializer.extend ETahi.SerializesHasMany,
   normalizeHash:
     tasks: (hash)->
       hash.qualified_type = hash.type

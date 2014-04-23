@@ -112,7 +112,7 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
       typeName = @typeForRoot(prop)
 
       #jshint loopfunc:true
-      normalizedArray = map.call(Ember.makeArray(payload[prop]), (hash) ->
+      normalizedArray = Ember.ArrayPolyfills.map.call(Ember.makeArray(payload[prop]), (hash) ->
         hash = @normalizeType(hash)
         itemType = store.modelFor(@extractTypeName(prop, hash))
         @normalize itemType, hash, prop

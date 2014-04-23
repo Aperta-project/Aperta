@@ -9,8 +9,8 @@ ETahi.Store = DS.Store.extend
     oldType = type
     dataType = data.type
     modelType = oldType
-    if dataType && (@modelFor(oldType) != @modelFor(dataType))
-      genericTypeRecord = @recordForId(oldType, data.id)
+    if dataType and (@modelFor(oldType) != @modelFor(dataType)) # is this a subclass?
       modelType = dataType
-      @dematerializeRecord(genericTypeRecord)
+      if oldRecord = @getById(oldType, data.id)
+        @dematerializeRecord(oldRecord)
     @_super @modelFor(modelType), data, _partial

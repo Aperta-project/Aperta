@@ -1,5 +1,6 @@
 ETahi.TaskRoute = Ember.Route.extend
   model: (params) ->
+    @set('paperId', params.paper_id)
     @store.find('task', params.task_id)
 
   setupController: (controller, model) ->
@@ -11,6 +12,7 @@ ETahi.TaskRoute = Ember.Route.extend
 
     taskController = @controllerFor(baseObjectName)
     taskController.set('model', model)
+    taskController.set('paperId', @get('paperId'))
     @set('taskController', taskController)
 
     if @controllerFor('application').get('overlayRedirect')

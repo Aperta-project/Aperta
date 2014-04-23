@@ -5,7 +5,11 @@ ETahi.FlowManagerRoute = Ember.Route.extend
       @transitionTo('index')
 
   model: ->
-    @store.find('flow')
+    if cachedModel =  @controllerFor('application').get('cachedModel')
+      @controllerFor('application').set('cachedModel' , null)
+      cachedModel
+    else
+      @store.find('flow')
 
   actions:
     chooseNewFlowMangerColumn: ->
@@ -20,5 +24,6 @@ ETahi.FlowManagerRoute = Ember.Route.extend
     viewCard: (paper, task) ->
       redirectParams = ['flow_manager']
       @controllerFor('application').set('overlayRedirect', redirectParams)
+      @controllerFor('application').set('cachedModel' , @modelFor('flow_manager'))
       @controllerFor('application').set('overlayBackground', 'flow_manager')
       @transitionTo('task', paper.id, task.id)

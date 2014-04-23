@@ -26,3 +26,8 @@ ETahi.TaskRoute = Ember.Route.extend
   deactivate: ->
     @send('closeOverlay')
     @controllerFor('application').setProperties(overlayRedirect: null, overlayBackground: null)
+
+  actions:
+    willTransition: (transition) ->
+      unless transition.get('targetName') == 'flow_manager'
+        @controllerFor('application').set('cachedModel', null)

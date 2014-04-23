@@ -7,6 +7,10 @@ ETahi.IndexRoute = Ember.Route.extend
   model: ->
     @store.all('dashboard').get('firstObject')
 
+  afterModel: (model) ->
+    assignedPapers = Ember.RSVP.all(model.get('assignedTasks').mapBy('paper')).then (papers) ->
+      model.set('assignedPapers', papers)
+
   actions:
     viewCard: (task) ->
       redirectParams = ['index']

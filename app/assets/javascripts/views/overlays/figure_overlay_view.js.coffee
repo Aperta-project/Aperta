@@ -2,12 +2,16 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
   templateName: 'overlays/figure_overlay'
   layoutName: 'layouts/overlay_layout' #TODO: include assignee here?
   uploads: []
-  figures: Em.computed.alias('controller.paper.figures')
+  figures: null
+  _figures: ( ->
+    @get('controller.paper').then (paper) =>
+      @set('figures', paper.get('figures'))
+  ).observes('controller.paper')
 
   setupUpload: (->
     uploader = $('.js-jquery-fileupload')
     uploader.fileupload
-      url: "/papers/#{@controller.get('paper.id')}/figures"
+      url: "/papers/#{@controller.get('paperId')}/figures"
       dataType: 'json'
       acceptFileTypes: /(\.|\/)(gif|jpe?g|png|tiff)$/i
       method: 'POST'

@@ -1,7 +1,6 @@
 ETahi.TaskRoute = Ember.Route.extend
   model: (params) ->
-      @store.find('task', params.task_id).then((task) -> task.reload())
-      #reload fixes some several small problems in the app.
+    @store.find('task', params.task_id)
 
   setupController: (controller, model) ->
     # FIXME: Rename AdHocTask to Task (here, in views, and in templates)

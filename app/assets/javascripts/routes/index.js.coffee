@@ -12,4 +12,5 @@ ETahi.IndexRoute = Ember.Route.extend
       redirectParams = ['index']
       @controllerFor('application').set('overlayRedirect', redirectParams)
       @controllerFor('application').set('overlayBackground', 'index')
-      @transitionTo('paper.task', task.paper_id, task.id)
+      task.get('paper').then (paper) =>
+        @transitionTo('task', paper.get('id'), task.id)

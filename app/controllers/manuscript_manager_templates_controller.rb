@@ -14,13 +14,19 @@ class ManuscriptManagerTemplatesController < ApplicationController
   end
 
   def update
-     template = @journal.manuscript_manager_templates.find(params[:id])
-     template.update_attributes!(template_params)
-     respond_with template
+    template = @journal.manuscript_manager_templates.find(params[:id])
+    template.update_attributes!(template_params)
+    respond_with template
   end
 
   def create
     template = @journal.manuscript_manager_templates.create!(template_params)
+    respond_with template
+  end
+
+  def destroy
+    template = @journal.manuscript_manager_templates.find(params[:id])
+    template.destroy
     respond_with template
   end
 

@@ -20,7 +20,7 @@
 
 }
 
-$template-thubmnail-side-padding: 10px;
+$template-thumbnail-side-padding: 10px;
 
 .manuscript-manager-template {
   .blue-box {
@@ -30,13 +30,14 @@ $template-thubmnail-side-padding: 10px;
 }
 
 
-.template-thubmnail {
+.template-thumbnail {
   position: relative;
   overflow: hidden;
   display: inline-block;
   width: 200px;
   height: 175px;
-  padding: 15px $template-thubmnail-side-padding;
+  margin-right: 10px;
+  padding: 15px $template-thumbnail-side-padding;
 
   h3 {
     margin: 0; // override bootstrap
@@ -48,7 +49,7 @@ $template-thubmnail-side-padding: 10px;
 
 .template-stats {
   list-style-type: none;
-  @include position(absolute, auto $template-thubmnail-side-padding 0px $template-thubmnail-side-padding);
+  @include position(absolute, auto $template-thumbnail-side-padding 0px $template-thumbnail-side-padding);
   padding: 0;
   font-size: 15px;
 
@@ -58,12 +59,13 @@ $template-thubmnail-side-padding: 10px;
   }
 }
 
-.template-thubmnail-overlay {
+.template-thumbnail-overlay {
   display: none;
   @include position(absolute, 0px 0px 0px 0px);
-  line-height: 200px;
+  line-height: 160px;
   text-align: center;
   background-color: rgba(52, 123, 197, 0.6);
+  padding: 15px 12px;
 
   .glyphicon {
     margin: 0 10px;
@@ -75,7 +77,24 @@ $template-thubmnail-side-padding: 10px;
   }
 }
 
-.template-thubmnail:hover .template-thubmnail-overlay {
+.template-thumbnail-overlay-confirm-destroy {
+  padding-top: 45px;
+  line-height: 1.2;
+  background-color: rgb(52, 123, 197);
+
+  .primary-button {
+    color: rgb(52, 123, 197);
+    background-color: #fff;
+
+    &:hover { background-color: rgba(255,255,255, 0.7); }
+  }
+}
+
+.template-thumbnail:hover .template-thumbnail-edit-options {
+  display: block;
+}
+
+.template-thumbnail.template-thumbnail-destroy .template-thumbnail-overlay-confirm-destroy {
   display: block;
 }
 

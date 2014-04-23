@@ -50,7 +50,22 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
     contentType: 'application/json; charset=utf-8'
   ).property().volatile()
 
+  deletePayload: ( ->
+    payload = { journal_id: @get('journalId'), "_method": "delete" }
+
+    url: "/manuscript_manager_templates/#{@get('id')}"
+    type: "DELETE"
+    data: JSON.stringify(payload)
+    contentType: 'application/json; charset=utf-8'
+  ).property().volatile()
+
   save: ->
     new Ember.RSVP.Promise (resolve, reject) =>
       $.ajax(@get('savePayload')).then(resolve).fail(reject)
 
+  destroyRecord: ->
+    new Ember.RSVP.Promise (resolve, reject) =>
+      if @get('isNew')
+        resolve()
+      else
+        $.ajax(@get('deletePayload')).then(resolve).fail(reject)

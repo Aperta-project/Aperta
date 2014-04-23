@@ -41,8 +41,10 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
       isPrimary = type.typeKey is primaryTypeName
       # legacy support for singular resources
       if isPrimary and Ember.typeOf(payload[prop]) isnt "array"
-        if specificType = payload[prop].type
-          primaryType = store.modelFor(specificType)
+        hash = payload[prop]
+        hash = @normalizeType(hash)
+        typeName = @extractTypeName(prop, hash)
+        primaryType = store.modelFor(typeName)
         primaryRecord = @normalize(primaryType, payload[prop], prop)
         continue
 
@@ -103,3 +105,19 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
       else
         store.pushMany typeName, normalizedArray
     primaryArray
+
+  pushPayload: (store, payload) ->
+    payload = @normalizePayload(null, payload)
+    for prop of payload
+      typeName = @typeForRoot(prop)
+
+      #jshint loopfunc:true
+      normalizedArray = map.call(Ember.makeArray(payload[prop]), (hash) ->
+        hash = @normalizeType(hash)
+        itemType = store.modelFor(@extractTypeName(prop, hash))
+        @normalize itemType, hash, prop
+      , this)
+
+      #pushMany will call push and account for the type attributes correctly.
+      store.pushMany typeName, normalizedArray
+    return

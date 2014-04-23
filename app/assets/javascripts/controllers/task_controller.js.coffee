@@ -1,6 +1,5 @@
 ETahi.TaskController = Ember.ObjectController.extend
   needs: ['application']
-  paper: Ember.computed.alias('model.phase.paper')
   onClose: 'closeOverlay'
   isLoading: false
 

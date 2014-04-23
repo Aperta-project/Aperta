@@ -13,3 +13,4 @@ ETahi.ManuscriptManagerTemplateRoute = Ember.Route.extend
   setupController: (controller, model) ->
     controller.set('model', model)
     controller.set('taskTypes', @get('taskTypes'))
+

@@ -4,6 +4,7 @@ ETahi.ManuscriptManagerTemplateEditView = Em.View.extend
   actions:
     cancelEdit: ->
       @set('editMode', false)
+      @get('controller').send('rollbackTemplate')
 
     startEdit: ->
       @set('editMode', true)

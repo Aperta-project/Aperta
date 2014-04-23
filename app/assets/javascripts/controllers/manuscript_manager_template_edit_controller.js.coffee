@@ -31,5 +31,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       phase.set('name', oldName)
 
     saveTemplate: ->
-      template = @get('model')
-      template.save()
+      @get('model').save()
+
+    rollbackTemplate: ->
+      @get('model').rollback()

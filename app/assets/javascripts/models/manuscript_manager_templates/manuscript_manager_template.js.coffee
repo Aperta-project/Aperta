@@ -11,6 +11,7 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
       paperType: @get('paper_type')
       phases: normalizedPhases
       template: null
+    @updateSnapshot()
 
   articleCount: 0
 
@@ -26,12 +27,11 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
         name: phase.get('name')
         task_types: task_types
 
-    payload =
-      id: @get('id')
-      paper_type: @get('paperType')
-      name: @get('name')
-      template:
-        phases: serializedPhases
+    id: @get('id')
+    paper_type: @get('paperType')
+    name: @get('name')
+    template:
+      phases: serializedPhases
   ).property().volatile()
 
   savePayload: ( ->
@@ -60,6 +60,7 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
   ).property().volatile()
 
   save: ->
+    @updateSnapshot()
     new Ember.RSVP.Promise (resolve, reject) =>
       $.ajax(@get('savePayload')).then(resolve).fail(reject)
 
@@ -69,3 +70,12 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
         resolve()
       else
         $.ajax(@get('deletePayload')).then(resolve).fail(reject)
+
+  rollback: ->
+    @setProperties @get('snapshot')
+
+  updateSnapshot: ->
+    @set 'snapshot',
+      name: @get('name')
+      paperType: @get('paperType')
+      phases: @get('phases')

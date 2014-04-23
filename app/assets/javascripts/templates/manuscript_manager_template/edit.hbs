@@ -12,14 +12,14 @@
         </li>
       </ul>
       <ul>
-        <li class="template-name">{{name}}</li>
-        <li class="template-edit-name">
+        <li class="template-name control-bar-item">{{name}}</li>
+        <li class="template-edit-name control-bar-item">
           {{input value=name placeholder="Template Name"}}
         </li>
-        <li class="template-paper-type">
-          {{paper_type}}
+        <li class="template-paper-type control-bar-item">
+          {{paperType}}
         </li>
-        <li class="template-paper-type-edit">
+        <li class="template-paper-type-edit control-bar-item">
           {{chosen content=paperTypes
                    name="paper_types"
                    width="150px"
@@ -29,9 +29,9 @@
                    optionValuePath="content"
                    optionLabelPath="content"}}
         </li>
-        <li><a class="btn btn-link template-cancel-button" {{action "cancelEdit" target="view"}}>Cancel</a></li>
-        <li><a class="primary-button template-edit-button" {{action "startEdit" target="view"}}>Edit</a></li>
-        <li><a class="primary-button template-save-button" {{action "saveTemplate"}}>Save</a></li>
+        <li class="control-bar-item"><a class="btn btn-link template-cancel-button" {{action "cancelEdit" target="view"}}>Cancel</a></li>
+        <li class="control-bar-item"><a class="primary-button template-edit-button" {{action "startEdit" target="view"}}>Edit</a></li>
+        <li class="control-bar-item"><a class="primary-button template-save-button" {{action "saveTemplate"}}>Save</a></li>
       </ul>
     </div>
   </div>

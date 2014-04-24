@@ -15,9 +15,22 @@ ETahi.Store = DS.Store.extend
         @dematerializeRecord(oldRecord)
     @_super @modelFor(modelType), data, _partial
 
-  # find any task in the store even when subclassed
+  # find any task by id regardless of subclass
   findTask: (id) ->
-    matchingTask = _(@typeMaps).detect (tm) ->
-      tm.type.toString().match(/Task$/) and tm.idToRecord[id]
+    matchingTask = _(@get('allTaskClasses')).detect (tm) -> tm.idToRecord[id]
     if matchingTask
       matchingTask.idToRecord[id]
+
+  # all tasks including subclasses
+  allTasks:( ->
+    tasksByClass = @get('allTaskClasses').map (tm) =>
+      @all(tm.type)
+  ).property().volatile()
+
+  # all task classes including subclasses
+  allTaskClasses:(->
+    _(@typeMaps).filter (tm) ->
+      tm.type.toString().match(/Task$/)
+  ).property().volatile()
+
+

@@ -9,11 +9,8 @@ ETahi.IndexRoute = Ember.Route.extend
 
   afterModel: (model) ->
     assignedTasks = model.get('assignedTasks')
-    assignedPapers = Ember.RSVP.all(assignedTasks.mapBy('paper')).then (papers) ->
-      tasksByPaper = papers.map (paper) ->
-        tasks = assignedTasks.filterBy('paper.content', paper)
-        { shortTitle: paper.get('shortTitle'), id: paper.get('id'), tasks: tasks }
-      model.set('tasksByPaper', tasksByPaper)
+    Ember.RSVP.all(assignedTasks.mapBy('paper')).then (papers) ->
+      model.set('assignedPapers', papers.uniq())
 
   actions:
     viewCard: (task) ->

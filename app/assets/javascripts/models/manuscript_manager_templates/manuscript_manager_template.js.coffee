@@ -61,8 +61,12 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
 
   save: ->
     @updateSnapshot()
-    new Ember.RSVP.Promise (resolve, reject) =>
+    promise = new Ember.RSVP.Promise (resolve, reject) =>
       $.ajax(@get('savePayload')).then(resolve).fail(reject)
+    promise.then (response) =>
+      if response && response.manuscript_manager_template
+        @set('id', response.manuscript_manager_template.id)
+      this
 
   destroyRecord: ->
     new Ember.RSVP.Promise (resolve, reject) =>

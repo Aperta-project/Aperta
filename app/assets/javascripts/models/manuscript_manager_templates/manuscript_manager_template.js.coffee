@@ -72,10 +72,14 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
         $.ajax(@get('deletePayload')).then(resolve).fail(reject)
 
   rollback: ->
-    @setProperties @get('snapshot')
+    snapshot = @get('snapshot')
+    @setProperties
+      name: snapshot.name
+      paperType: snapshot.paperType
+      phases: snapshot.phases.copy(true)
 
   updateSnapshot: ->
     @set 'snapshot',
       name: @get('name')
       paperType: @get('paperType')
-      phases: @get('phases')
+      phases: @get('phases').copy(true)

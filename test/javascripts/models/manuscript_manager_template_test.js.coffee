@@ -6,7 +6,6 @@ testTemplate = undefined
 module 'Unit: ManuscriptManagerTemplate',
   setup: ->
     phase = name: 'First Phase', task_types: ['ATask', 'AnotherTask']
-    @testThing = 5
     template =
       name: 'A name'
       id: 1

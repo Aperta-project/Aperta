@@ -1,5 +1,5 @@
 a = DS.attr
-ETahi.Task = DS.Model.extend
+ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
   assignee: DS.belongsTo('user')
   assignees: DS.hasMany('user')
   phase: DS.belongsTo('phase')

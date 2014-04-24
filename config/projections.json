@@ -5,13 +5,13 @@
     "template": "ETahi.%S = DS.Model.extend({\n});"
   },
 
-  "app/assets/javascripts/controllers/*.js.coffee": {
+  "app/assets/javascripts/controllers/*_controller.js.coffee": {
     "command": "jcontroller",
     "alternate": "spec/controllers/%s_spec.js",
     "template": "ETahi.%SController = Ember.ObjectController.extend({\n});"
   },
 
-  "app/assets/javascripts/views/*.js.coffee": {
+  "app/assets/javascripts/views/*_view.js.coffee": {
     "command": "jview",
     "alternate": "spec/views/%s_spec.js",
     "related": "app/js/javascripts/templates/%s.hbs",
@@ -22,7 +22,7 @@
     "command": "jrouter"
   },
 
-  "app/assets/javascripts/routes/*.js.coffee": {
+  "app/assets/javascripts/routes/*_route.js.coffee": {
     "command": "jroute",
     "alternate": "spec/routes/%s_spec.js",
     "template": "ETahi.%SRoute = Ember.Route.extend({\n});"

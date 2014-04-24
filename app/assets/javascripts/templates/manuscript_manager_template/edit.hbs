@@ -11,6 +11,9 @@
         </li>
       </ul>
       <ul>
+        <li class="template-edit-message control-bar-item">
+          <span {{bind-attr class="dirty:show:hidden :alert-warning :control-bar-message"}}>You have unsaved changes!</span>
+        </li>
         <li class="template-edit-name control-bar-item">
           {{input value=name placeholder="Template Name"}}
         </li>
@@ -20,7 +23,7 @@
                    width="150px"
                    prompt="Select a paper type"
                    class="paper-type-select"
-                   value=paper_type
+                   value=paperType
                    optionValuePath="content"
                    optionLabelPath="content"}}
         </li>

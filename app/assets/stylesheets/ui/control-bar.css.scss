@@ -17,6 +17,7 @@
   margin: 0 auto;
   min-width: 960px;
   max-width: 1120px;
+  position: relative;
 }
 
 .control-bar ul {
@@ -48,4 +49,9 @@
   background: none;
 
   &:focus, &:hover { text-decoration: none; }
+}
+
+.control-bar-message {
+  padding: 2px 5px;
+  border-radius: 5px;
 }

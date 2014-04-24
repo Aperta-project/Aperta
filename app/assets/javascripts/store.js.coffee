@@ -14,3 +14,10 @@ ETahi.Store = DS.Store.extend
       if oldRecord = @getById(oldType, data.id)
         @dematerializeRecord(oldRecord)
     @_super @modelFor(modelType), data, _partial
+
+  # find any task in the store even when subclassed
+  findTask: (id) ->
+    matchingTask = _(@typeMaps).detect (tm) ->
+      tm.type.toString().match(/Task$/) and tm.idToRecord[id]
+    if matchingTask
+      matchingTask.idToRecord[id]

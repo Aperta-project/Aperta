@@ -2,7 +2,7 @@ ETahi.CardThumbnailObserver = Ember.Mixin.create
   createThumbnail: ( ->
     thumbnailParams = @getProperties('id', 'completed', 'title')
     thumbnailParams.taskType = @get('type')
-    @store.createRecord('cardThumbnail', thumbnailParams)
+    @store.push('cardThumbnail', thumbnailParams)
   ).on('didCreate')
 
   updateThumbnail: ( ->

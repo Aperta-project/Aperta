@@ -28,6 +28,8 @@ ETahi.ChosenView = Ember.Select.extend
 
     @addObserver @get("optionLabelPath").replace(/^content/, "content.@each"), =>
       @rerenderChosen()
+    @addObserver "value", =>
+      @rerenderChosen()
   ).on('didInsertElement')
 
   teardown: (->

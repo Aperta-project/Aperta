@@ -18,6 +18,7 @@ ETahi.ManuscriptManagerTemplateEditRoute = Ember.Route.extend
 
     addTaskType: (phase, taskType) ->
       @controllerFor('manuscriptManagerTemplateEdit').send('addTask', phase, taskType)
+      @send('closeOverlay')
 
     closeAction: ->
       @send('closeOverlay')

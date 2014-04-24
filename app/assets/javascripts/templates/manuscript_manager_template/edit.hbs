@@ -1,9 +1,8 @@
 <div id="tahi-container" class="full-width manuscript-manager-template">
-  <div {{bind-attr class="view.editMode:edit-mode:view-mode :control-bar :control-bar-blue :manuscript-manager-template-control-bar"}}>
+  <div class="control-bar control-bar-blue manuscript-manager-template-control-bar">
     <div class="control-bar-inner-wrapper">
       <ul>
         <li id="control-bar-paper-journal-logo">
-          {{editMode}}
           {{#if journal.logoUrl}}
             <img src="{{unbound journal.logoUrl}}">
           {{else}}
@@ -12,12 +11,8 @@
         </li>
       </ul>
       <ul>
-        <li class="template-name control-bar-item">{{name}}</li>
         <li class="template-edit-name control-bar-item">
           {{input value=name placeholder="Template Name"}}
-        </li>
-        <li class="template-paper-type control-bar-item">
-          {{paperType}}
         </li>
         <li class="template-paper-type-edit control-bar-item">
           {{chosen content=paperTypes
@@ -30,7 +25,6 @@
                    optionLabelPath="content"}}
         </li>
         <li class="control-bar-item"><a class="btn btn-link template-cancel-button" {{action "cancelEdit" target="view"}}>Cancel</a></li>
-        <li class="control-bar-item"><a class="primary-button template-edit-button" {{action "startEdit" target="view"}}>Edit</a></li>
         <li class="control-bar-item"><a class="primary-button template-save-button" {{action "saveTemplate"}}>Save</a></li>
       </ul>
     </div>

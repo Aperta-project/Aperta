@@ -98,24 +98,6 @@ $template-thumbnail-side-padding: 10px;
   display: block;
 }
 
-/*
-  JavaScript will toggle the classes 'view-mode' and 'edit-mode'
-  on .manuscript-manager-template-control-bar
-*/
-
-.view-mode {
-  .template-cancel-button,
-  .template-save-button,
-  .template-edit-name,
-  .template-paper-type-edit { display: none; }
-}
-
-.edit-mode {
-  .template-edit-button,
-  .template-name,
-  .template-paper-type { display: none; }
-}
-
 .manuscript-manager-template-columns {
   // override .columns to allow for larger .control-bar
   top: 121px;

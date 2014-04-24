@@ -32,3 +32,12 @@
     background-color: $tahi-secondary;
   }
 }
+
+.upload-error-button {
+  font-size: 40px;
+  color: $tahi-primary;
+  line-height: .5;
+  &:hover {
+    color: $tahi-primary-hover;
+  }
+}

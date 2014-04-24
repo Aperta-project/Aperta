@@ -15,5 +15,11 @@
     {{/if}}
   </nav>
 </header>
+
 {{outlet}}
+
+{{progress-spinner visible=isLoading
+                   class="header-spinner"
+                   styleOptions=spinnerOptions}}
+
 {{outlet "overlay"}}

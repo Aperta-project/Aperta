@@ -1,7 +1,7 @@
 #= require test_helper
 
 moduleForModel 'paper', 'Unit: Paper Model',
-  needs: ['model:user', 'model:declaration', 'model:figure', 'model:journal', 'model:phase', 'model:task', 'model:comment']
+  needs: ['model:user', 'model:figure', 'model:journal', 'model:phase', 'model:task', 'model:comment']
 
 test 'displayTitle displays short title if title is missing', ->
   shortTitle = 'test short title'
@@ -65,10 +65,6 @@ test 'Paper hasMany reviewers as User', ->
     relationship.name == 'reviewers'
 
   deepEqual reviewersRelation, { name: "reviewers", kind: "hasMany" }
-
-test 'Paper hasMany declarations', ->
-  relationships = Ember.get ETahi.Paper, 'relationships'
-  deepEqual relationships.get(ETahi.Declaration)[0], { name: "declarations", kind: "hasMany" }
 
 test 'Paper hasMany figures', ->
   relationships = Ember.get ETahi.Paper, 'relationships'

@@ -13,6 +13,7 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
+/log/cas
 /tmp
 /tags
 /public/uploads

@@ -1,5 +1,8 @@
 ETahi.TemplatePhase = Ember.Object.extend Ember.Copyable,
-  tasks: []
+  init: ->
+    @set 'tasks', []
+
+  tasks: null
 
   noTasks: Ember.computed.empty('tasks.[]')
 

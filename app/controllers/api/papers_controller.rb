@@ -10,6 +10,22 @@ class Api::PapersController < ApplicationController
   end
 
   def update
-    head :no_content
+    path = params["_json"].first["path"].split("/")
+    id = path[-2]
+    attribute = path.last.underscore
+
+    if attribute.in? allowed_attributes
+      Paper.find(id).update_attribute(attribute,
+                                      params["_json"].first["value"])
+      head :no_content
+    else
+      head :unauthorized
+    end
+  end
+
+  private
+  def allowed_attributes
+    ['published_at']
   end
 end
+

@@ -124,8 +124,10 @@ describe Paper do
   end
 
   describe "scopes" do
-    let(:ongoing_paper)   { Paper.create! submitted: false, short_title: 'Ongoing', journal: Journal.create! }
-    let(:submitted_paper) { Paper.create! submitted: true, short_title: 'Submitted', journal: Journal.create! }
+    let(:ongoing_paper)   { create :paper, submitted: false }
+    let(:submitted_paper) { create :paper, submitted: true }
+    let(:published_paper) { create :paper, published_at: 2.days.ago }
+    let(:unpublished_paper) { create :paper }
 
     describe ".submitted" do
       it "returns submitted papers only" do
@@ -138,6 +140,20 @@ describe Paper do
       it "returns submitted papers only" do
         expect(Paper.ongoing).to_not include(submitted_paper)
         expect(Paper.ongoing).to include(ongoing_paper)
+      end
+    end
+
+    describe ".published" do
+      it "returns published papers only" do
+        expect(Paper.published).to include published_paper
+        expect(Paper.published).to_not include unpublished_paper
+      end
+    end
+
+    describe ".unpublished" do
+      it "returns published papers only" do
+        expect(Paper.unpublished).to include unpublished_paper
+        expect(Paper.unpublished).to_not include published_paper
       end
     end
   end

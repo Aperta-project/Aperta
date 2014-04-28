@@ -29,6 +29,38 @@ describe Api::PapersController do
         }.with_indifferent_access
       )
     end
+
+    context "when the published parameter is false" do
+      it "user can get a list of non-published papers" do
+        paper1.update_attribute('published_at', 2.days.ago)
+        get api_papers_path(published: false)
+
+        expect(JSON.parse(response.body)).to eq(
+          {
+            papers: [
+              { id: paper2.id, title: "Second paper", authors: [], paper_type: 'research' }
+            ]
+          }.with_indifferent_access
+        )
+      end
+    end
+
+    context "when the published parameter is true" do
+      it "user can get a list of non-published papers" do
+        paper1.update_attribute('published_at', 2.days.ago)
+        get api_papers_path(published: true)
+
+        expect(JSON.parse(response.body)).to eq(
+          {
+            papers: [
+              { id: paper1.id, title: "First paper",
+                authors: [{ first_name: 'Ryan', last_name: 'Wold', affiliation: 'Personal', email: 'user@example.com' }],
+                paper_type: 'front_matter' }
+            ]
+          }.with_indifferent_access
+        )
+      end
+    end
   end
 
   describe "GET 'show'" do

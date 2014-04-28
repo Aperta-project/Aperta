@@ -52,7 +52,7 @@ describe Api::PapersController do
   describe "PATCH 'published_at'" do
     context "whitelisted attribute" do
       it "updates the published_at attribute for a paper" do
-        patch_params = %Q{[{ "op": "replace", "path": "/papers/#{paper1.id}/publishedAt", "value": "2014-03-21" }]}
+        patch_params = %Q{[{ "op": "replace", "path": "/papers/0/publishedAt", "value": "2014-03-21" }]}
         patch api_paper_path(paper1.id), patch_params, { 'CONTENT_TYPE' => "application/json-patch+json",
                                                          'ACCEPT' => "application/vnd.api+json" }
 
@@ -64,14 +64,13 @@ describe Api::PapersController do
 
     context "non-whitelisted attribute" do
       it "does not update when attribute is not whitelisted for a paper" do
-        patch_params = %Q{[{ "op": "replace", "path": "/papers/#{paper1.id}/createdAt", "value": "2014-03-21" }]}
+        patch_params = %Q{[{ "op": "replace", "path": "/papers/0/createdAt", "value": "2014-03-21" }]}
         patch api_paper_path(paper1.id), patch_params, { 'CONTENT_TYPE' => "application/json-patch+json",
                                                          'ACCEPT' => "application/vnd.api+json" }
 
         expect(response.status).to eq 401
         expect(paper1.reload.created_at).to_not eq "2014-03-21"
       end
-
     end
   end
 end

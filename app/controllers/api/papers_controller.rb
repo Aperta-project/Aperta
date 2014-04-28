@@ -11,7 +11,7 @@ class Api::PapersController < ApplicationController
 
   def update
     path = params["_json"].first["path"].split("/")
-    id = path[-2]
+    id = params[:id]
     attribute = path.last.underscore
 
     if attribute.in? allowed_attributes

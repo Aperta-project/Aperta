@@ -7,10 +7,19 @@ ETahi.FigureThumbnailView = Em.View.extend
   destroyState: false
   previewState: false
 
+  editState: false
+
   scrollToView: ->
     $('.overlay').animate
       scrollTop: @$().offset().top + $('.overlay').scrollTop()
     , 500, 'easeInCubic'
+
+  focusIn: (e) ->
+    @set('editState', true)
+
+  focusOut: (e) ->
+    @set('editState', false)
+    @get('controller.model').save()
 
   actions:
     cancelDestroyFigure: ->

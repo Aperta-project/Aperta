@@ -10,13 +10,17 @@
   {{/if}}
 
   <div class="figure-thumbnail-text-content">
-    <h2 class="figure-thumbnail-title">Figure X: Figure Title Here</h2>
-    <div class="figure-thumbnail-caption _empty">No caption for this figure</div>
+    {{content-editable tagName="h2"
+                       class="figure-thumbnail-title"
+                       value=model.title
+                       plaintext="true"
+                       preventEnterKey="true"}}
+    <div class="figure-thumbnail-caption _empty" contenteditable>No caption for this figure</div>
   </div>
 
   <div class="figure-thumbnail-edit-actions">
-    <a href="#">cancel</a>
-    <a href="#" class="primary-button btn-xs">Save</a>
+    <a href="#" {{bind-attr class="view.editState::disabled"}}>cancel</a>
+    <a href="#" {{bind-attr class="view.editState::disabled :primary-button :btn-xs"}}>Save</a>
   </div>
 
   <div class="figure-thumbnail-destroy-overlay">

@@ -1,6 +1,6 @@
 class Api::PapersController < ApplicationController
   def index
-    @papers = Paper.all
+    @papers = filtered_papers
     render json: @papers, each_serializer: Api::PaperSerializer
   end
 
@@ -24,7 +24,18 @@ class Api::PapersController < ApplicationController
   end
 
   private
+
   def allowed_attributes
     ['published_at']
+  end
+
+  def filtered_papers
+    if params[:published] == "true"
+      Paper.published
+    elsif params[:published] == "false"
+      Paper.unpublished
+    else
+      Paper.all
+    end
   end
 end

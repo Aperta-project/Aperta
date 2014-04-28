@@ -35,6 +35,14 @@ class Paper < ActiveRecord::Base
     where(submitted: true)
   end
 
+  def self.published
+    where('published_at IS NOT NULL')
+  end
+
+  def self.unpublished
+    where('published_at IS NULL')
+  end
+
   def tasks_for_type(klass_name)
     tasks.where(type: klass_name)
   end

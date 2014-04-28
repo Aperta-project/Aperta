@@ -49,7 +49,7 @@ Tahi::Application.routes.draw do
 
   resources :tasks
 
-  resources :phases, only: [:create, :update, :destroy]
+  resources :phases, only: [:create, :update, :show, :destroy]
 
   resources :surveys, only: [:update]
 

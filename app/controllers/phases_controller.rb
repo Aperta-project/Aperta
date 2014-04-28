@@ -14,6 +14,11 @@ class PhasesController < ApplicationController
     respond_with phase
   end
 
+  def show
+    phase = Phase.find(params[:id])
+    respond_with phase
+  end
+
   def destroy
     phase = Phase.find params[:id]
     if phase.tasks.empty? && phase.destroy

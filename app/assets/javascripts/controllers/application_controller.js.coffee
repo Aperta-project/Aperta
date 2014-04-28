@@ -22,12 +22,12 @@ ETahi.ApplicationController = Ember.Controller.extend
   pushUpdate: (esData)->
     Ember.run =>
       @store.pushPayload('task', esData)
-
       # add code for when esData is a message_task
       if esData.task
         if task = @store.findTask(esData.task.id)
           # ember.js bug:  need to tell phase about any new tasks
           # make sure the phases tasks are updated.
+          task.triggerLater('didLoad')
           task.get('phase').get('tasks').then (taskArray) ->
             taskArray.addObject(task)
 

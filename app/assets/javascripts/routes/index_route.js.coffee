@@ -7,6 +7,9 @@ ETahi.IndexRoute = Ember.Route.extend
   model: ->
     @store.all('dashboard').get('firstObject')
 
+  afterModel: (model) ->
+    model.set('allCardThumbnails', @store.all('cardThumbnail'))
+
   actions:
     viewCard: (task) ->
       redirectParams = ['index']

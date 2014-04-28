@@ -11,7 +11,7 @@ feature "Event streaming", js: true do
 
   scenario "On the dashboard page" do
     expect(page).to have_no_selector(".completed")
-    t = Task.find 2
+    t = author.papers.first.tasks_for_type(UploadManuscriptTask).first
     t.completed = true
     t.save
     expect(page).to have_css(".card-completed", count: 1)

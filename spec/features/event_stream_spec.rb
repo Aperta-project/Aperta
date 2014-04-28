@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+# In general, updating database objects occurs faster than Ember transitions.
+# Because of this I have littered sleeps throughout the code to make sure the
+# transition finishes before asserting there was a UI update.
 feature "Event streaming", js: true do
   let!(:author) { FactoryGirl.create :user }
   let!(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
@@ -19,15 +22,27 @@ feature "Event streaming", js: true do
     expect(page).to have_css(".card-completed", count: 1)
   end
 
-  scenario "Looking at a task" do
-    edit_paper = EditPaperPage.visit paper
-    edit_paper.view_card('Upload Manuscript')
-    checkbox = find("#task_completed")
-    expect(checkbox).to_not be_checked
-    upload_task.completed = true
-    upload_task.save
-    sleep 0.3
-    expect(checkbox).to be_checked
+  describe "tasks" do
+    scenario "enter declarations" do
+      edit_paper = EditPaperPage.visit paper
+      edit_paper.view_card('Enter Declarations')
+      sleep 0.3
+      survey = Survey.first
+      survey.answer = "Hello!"
+      survey.save
+      expect(all('textarea').map(&:value)).to include("Hello!")
+    end
+
+    scenario "marking a task completed" do
+      edit_paper = EditPaperPage.visit paper
+      edit_paper.view_card('Upload Manuscript')
+      checkbox = find("#task_completed")
+      expect(checkbox).to_not be_checked
+      upload_task.completed = true
+      upload_task.save
+      sleep 0.3
+      expect(checkbox).to be_checked
+    end
   end
 
   scenario "On the edit paper page" do

@@ -62,6 +62,10 @@ group :development, :test do
   gem "phantomjs"
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
+
+  # Put me in test once you figure me out in development.
+  gem 'sinatra'
+  gem 'thin'
 end
 
 group :test do

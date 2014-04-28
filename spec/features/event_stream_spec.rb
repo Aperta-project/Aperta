@@ -70,6 +70,14 @@ feature "Event streaming", js: true do
       sleep 0.3
       expect(checkbox).to be_checked
     end
+
+    scenario "adding new comments" do
+      sleep 0.3
+      @mt.comments.create body: "Hey-o", commenter_id: author.id
+      within '.message-comments' do
+        expect(page).to have_content "Hey-o"
+      end
+    end
   end
 
   describe "tasks" do

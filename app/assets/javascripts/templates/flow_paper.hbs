@@ -1,10 +1,10 @@
 <li>
   <div class="paper-profile">
-    {{link-to paper.displayTitle 'paper.manage' view.paper.id class="paper-profile-title"}}
+    {{link-to litePaper.displayTitle 'paper.manage' view.litePaper.id class="paper-profile-title"}}
 
     {{#each task in view.tasks}}
       <div {{bind-attr class=":card :flow-card task.completed:card-completed task.isMessage:card-message"}}>
-        <div class="card-content" {{action 'viewCard' paper task}}>
+        <div class="card-content" {{action 'viewCard' litePaper task}}>
           <span class="glyphicon glyphicon-ok completed-glyph"></span>
           {{task.title}}
         </div>

@@ -102,4 +102,20 @@ describe FiguresController do
       end
     end
   end
+
+  describe "PUT 'update'" do
+    let(:paper) { user.papers.create! short_title: 'Paper with attachment', journal: Journal.create! }
+    subject(:do_request) { patch :update, id: paper.figures.last.id, paper_id: paper.id, figure: {title: "new title", caption: "new caption"} }
+    before(:each) do
+      paper.figures.create! attachment: fixture_file_upload('yeti.tiff', 'image/tiff')
+    end
+
+    it "allows updates for title and caption" do
+      do_request
+
+      figure = paper.figures.last
+      expect(figure.caption).to eq("new caption")
+      expect(figure.title).to eq("new title")
+    end
+  end
 end

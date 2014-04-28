@@ -21,12 +21,6 @@ ETahi.Store = DS.Store.extend
     if matchingTask
       matchingTask.idToRecord[id]
 
-  # all tasks including subclasses
-  allTasks:( ->
-    tasksByClass = @get('allTaskClasses').map (tm) =>
-      @all(tm.type)
-  ).property().volatile()
-
   # all task classes including subclasses
   allTaskClasses:(->
     _(@typeMaps).filter (tm) ->

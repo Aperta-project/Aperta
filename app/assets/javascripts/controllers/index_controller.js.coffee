@@ -3,17 +3,16 @@ ETahi.IndexController = Ember.ObjectController.extend
   hasSubmissions: Ember.computed.notEmpty('model.submissions')
   hasAssignedTasks: Ember.computed.notEmpty('model.assignedTasks')
 
-  allTasks: Ember.computed.alias 'store.allTasks'
   viewableAssignedTasks: ( ->
     currentUser = @get('currentUser')
-    flatTasks = _.flatten(@get('allTasks').mapBy('content'))
-    flatTasks.filter (task) ->
-      task.get('assignee.id') == currentUser.id.toString() || task.get('isMessage')
-  ).property('allTasks.@each.[]')
+    cardThumbnails = @store.all('cardThumbnail')
+    cardThumbnails.filter (thumbnail) ->
+      thumbnail.get('assigneeId') == currentUser.id || thumbnail.get('isMessage')
+  ).property()
 
   tasksByPaper:(->
     assignedTasks = @get('viewableAssignedTasks')
-    tasksByPaper = @get('assignedPapers').map (paper) ->
-      tasks = assignedTasks.filterBy('paper.content', paper)
-      { shortTitle: paper.get('shortTitle'), id: paper.get('id'), tasks: tasks }
+    tasksByPaper = @get('submissions').map (litePaper) ->
+      tasks = assignedTasks.filterBy('paper', litePaper)
+      { shortTitle: litePaper.get('shortTitle'), id: litePaper.get('id'), tasks: tasks }
   ).property('viewableAssignedTasks')

@@ -4,6 +4,7 @@ ETahi.CardThumbnail = DS.Model.extend
   taskType: a('string')
   completed: a('boolean')
   position: a('number')
+  assigneeId: a('number')
   paper: DS.belongsTo('litePaper')
   task: DS.belongsTo('task', polymorphic: true)
   flow: DS.belongsTo('flow')

@@ -78,6 +78,13 @@ feature "Event streaming", js: true do
         expect(page).to have_content "Hey-o"
       end
     end
+
+    scenario "adding new participants" do
+      sleep 0.3
+      @mt.participants << FactoryGirl.create(:user)
+      @mt.save
+      expect(all('.user-thumbnail').count).to eq(2)
+    end
   end
 
   describe "tasks" do

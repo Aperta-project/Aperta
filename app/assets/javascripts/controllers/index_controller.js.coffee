@@ -12,7 +12,8 @@ ETahi.IndexController = Ember.ObjectController.extend
 
   tasksByPaper:(->
     assignedTasks = @get('viewableAssignedTasks')
-    tasksByPaper = @get('submissions').map (litePaper) ->
-      tasks = assignedTasks.filterBy('litePaper', litePaper)
+    tasksByPaperId = _.groupBy(assignedTasks, (task) -> task.get('litePaper.id'))
+    _(tasksByPaperId).map (tasks, litePaperId) =>
+      litePaper = @store.getById('litePaper', litePaperId)
       { shortTitle: litePaper.get('shortTitle'), id: litePaper.get('id'), tasks: tasks }
   ).property('viewableAssignedTasks')

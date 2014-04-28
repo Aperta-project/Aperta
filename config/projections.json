@@ -22,7 +22,7 @@
   "app/assets/javascripts/views/*_view.js.coffee": {
     "command": "jview",
     "alternate": "test/javascripts/views/%s_test.js.coffee",
-    "related": "app/js/javascripts/templates/%s.hbs",
+    "related": "app/assets/javascripts/templates/%s.hbs",
     "template": "%SView = Ember.View.extend"
   },
 
@@ -39,7 +39,7 @@
 
   "app/assets/javascripts/templates/*.hbs": {
     "command": "jtemplate",
-    "alternate": "app/assets/javascripts/views/%s_view.js.coffee"
+    "related": "app/assets/javascripts/views/%s_view.js.coffee"
   },
 
   "app/serializers/*_serializer.rb": {

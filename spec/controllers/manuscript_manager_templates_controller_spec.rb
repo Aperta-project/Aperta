@@ -19,7 +19,7 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe 'POST create' do
-    let(:new_params) { {name: 'New name', paper_type: 'new type', template: {}} }
+    let(:new_params) { {name: 'New name', paper_type: 'new type', template: { "phases" => [] }} }
     subject(:do_request) do
       post :create, format: 'json', journal_id: journal.id, manuscript_manager_template: new_params
     end

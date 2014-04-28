@@ -24,9 +24,10 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       @set('dirty', true)
 
     addTask: (phase, taskName) ->
-      newTask = ETahi.TemplateTask.create type: taskName
-      phase.addTask(newTask)
-      @set('dirty', true)
+      unless Ember.isBlank(taskName)
+        newTask = ETahi.TemplateTask.create type: taskName
+        phase.addTask(newTask)
+        @set('dirty', true)
 
     removeTask: (task) ->
       task.destroy()

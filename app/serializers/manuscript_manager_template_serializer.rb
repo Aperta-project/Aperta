@@ -3,8 +3,9 @@ class ManuscriptManagerTemplateSerializer < ActiveModel::Serializer
   has_one :journal, embed: :ids
 
   def template
+    phases = object.template["phases"] || []
     object.template.merge({
-      "phases" => object.template["phases"].map do |phase|
+      "phases" => phases.map do |phase|
         phase["task_types"] = [] unless phase["task_types"]
         phase
       end

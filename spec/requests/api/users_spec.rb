@@ -5,7 +5,7 @@ describe Api::UsersController do
     let(:user) { FactoryGirl.create :user }
 
     it "returns a single user" do
-      get :show, { id: user.id }
+      get api_user_path(user.id)
 
       data = JSON.parse response.body
       expect(data['users'].length).to eq 1

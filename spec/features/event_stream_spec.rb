@@ -23,6 +23,19 @@ feature "Event streaming", js: true do
   end
 
   describe "tasks" do
+    scenario "creating a new task" do
+      edit_paper = EditPaperPage.visit paper
+      edit_paper.navigate_to_task_manager
+
+      submission_phase = paper.phases.find_by_name("Submission Data")
+      submission_phase.tasks.create title: "Wicked Awesome Card", type: "Task", body: "Hi there!", role: "admin"
+
+      phase = all('.column').detect {|p| p.find('h2').text == "Submission Data" }
+      within phase do
+        expect(page).to have_content "Wicked Awesome Card"
+      end
+    end
+
     scenario "enter declarations" do
       edit_paper = EditPaperPage.visit paper
       edit_paper.view_card('Enter Declarations')

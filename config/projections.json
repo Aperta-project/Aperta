@@ -33,6 +33,13 @@
     "alternate": "app/assets/javascripts/views/%s_view.js.coffee"
   },
 
+  "app/serializers/*_serializer.rb": {
+    "command": "serializer",
+    "alternate": "spec/serializers/%s_serializer_spec.rb",
+    "related": "app/models/%s.rb",
+    "template": "%SSerializer < ActiveModel::Serializer\n  attributes :id\nend"
+  },
+
   "app/assets/stylesheets/*.css.scss": {
     "command": "css",
   },

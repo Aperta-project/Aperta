@@ -15,7 +15,7 @@ Tahi::Application.routes.draw do
   resources :figures, only: :destroy
 
   namespace :api do
-    resources :papers, only: [:index, :show]
+    resources :papers, only: [:index, :show, :update]
     resources :users, only: [:show]
   end
 

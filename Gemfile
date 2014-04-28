@@ -62,10 +62,6 @@ group :development, :test do
   gem "phantomjs"
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
-
-  # Put me in test once you figure me out in development.
-  gem 'sinatra'
-  gem 'thin'
 end
 
 group :test do
@@ -73,4 +69,8 @@ group :test do
   gem "codeclimate-test-reporter", require: nil
   gem 'vcr'
   gem 'webmock'
+
+  # For testing event streaming.
+  gem 'sinatra'
+  gem 'thin'
 end

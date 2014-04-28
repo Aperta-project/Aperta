@@ -13,6 +13,7 @@
       <ul>
         <li class="template-edit-message control-bar-item">
           <span {{bind-attr class="dirty:show:hidden :alert-warning :control-bar-message"}}>You have unsaved changes!</span>
+          <span {{bind-attr class="errorText:show:hidden :alert-danger :control-bar-message"}}>{{errorText}}</span>
         </li>
         <li class="template-edit-name control-bar-item">
           {{input value=name placeholder="Template Name"}}

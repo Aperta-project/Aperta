@@ -25,10 +25,12 @@
   float: left;
   margin-bottom: 0; // from bootstrap?
   padding-left: 0;  // from bootstrap?
+  padding-right: 20px;
   @extend .clear-before-and-after;
 
   &:last-of-type {
     float: right;
+    padding-right: 0;
 
     a { text-transform: uppercase; }
   }

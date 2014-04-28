@@ -32,13 +32,13 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
   def no_duplicate_phase_names
     names = phases.map { |phase| phase["name"] }
     unless names.length == names.uniq.length
-      errors.add(:phases, "Phases cannot have duplicate names")
+      errors.add(:phases, "Phases cannot have duplicate names.")
     end
   end
 
   def task_types_in_whitelist
     if task_types.present? && task_types.any? { |task_type| !VALID_TASK_TYPES.include? task_type }
-      errors.add(:task_types, "Task types must be in the allowed list")
+      errors.add(:task_types, "Task types must be in the allowed list.")
     end
   end
 

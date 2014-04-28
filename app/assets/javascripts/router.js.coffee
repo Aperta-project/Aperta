@@ -5,11 +5,9 @@ ETahi.Router.map ()->
     @route('edit')
     @route('manage')
     @route('submit')
-    @route('task', {path: '/tasks/:task_id'})
 
+  @route('task', {path: '/papers/:paper_id/tasks/:task_id'})
   @route('paper_new', { path: '/papers/new' })
-
-  @route('task', {path: '/tasks/:task_id'})
   @route('signin', {path: '/users/sign_in'})
   @route('signup', {path: '/users/sign_up'})
 

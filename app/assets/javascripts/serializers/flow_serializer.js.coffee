@@ -1,1 +1,1 @@
-ETahi.FlowSerializer = DS.ActiveModelSerializer.extend(ETahi.SerializesHasMany)
+ETahi.FlowSerializer = ETahi.ApplicationSerializer.extend(ETahi.SerializesHasMany)

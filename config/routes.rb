@@ -47,11 +47,11 @@ Tahi::Application.routes.draw do
     end
   end
 
-  resources :tasks, only: [:update, :create, :show, :destroy]
+  resources :tasks
 
   resources :phases, only: [:create, :update, :destroy]
 
-  resources :declarations, only: [:update]
+  resources :surveys, only: [:update]
 
   get 'users/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 

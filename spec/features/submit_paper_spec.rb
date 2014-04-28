@@ -25,6 +25,10 @@ feature "Submitting a paper", js: true do
       journal: Journal.create!
   end
 
+  before do
+    paper.tasks.update_all(completed: true)
+  end
+
   scenario "Author submits a paper" do
     submit_paper_page = EditPaperPage.visit(paper).submit
 

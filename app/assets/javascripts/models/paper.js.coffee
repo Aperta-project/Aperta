@@ -26,7 +26,11 @@ ETahi.Paper = DS.Model.extend
     _.flatten @get('phases.content').mapBy('tasks.content')
   ).property('phases.@each.tasks')
 
-  allTasksCompleted: ETahi.computed.all('allTasks', 'completed', true)
+  allMetadataTasks: (->
+      @get('allTasks').filterBy('isMetadataTask')
+    ).property('phases.@each.tasks')
+
+  allMetadataTasksCompleted: ETahi.computed.all('allMetadataTasks', 'completed', true)
 
   editable: (->
     !(@get('allTasksCompleted') and @get('submitted'))

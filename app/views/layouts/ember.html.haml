@@ -8,6 +8,7 @@
 
   %body
     #ember-app
+    #ember-app-loading
 
 - if current_user
   :javascript
@@ -17,3 +18,15 @@
     username: "#{current_user.username}",
     fullName: "#{current_user.full_name}",
     imageUrl: "#{current_user.image_url}"};
+
+    $('#ember-app-loading').append(
+      (new Spinner({
+        lines: 20,
+        length: 0,
+        width: 7,
+        radius: 30,
+        corners: 1,
+        color: '#8ecb87',
+        speed: 1.5,
+      }).spin()).el
+    );

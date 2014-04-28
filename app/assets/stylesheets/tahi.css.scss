@@ -24,6 +24,10 @@ body { background: transparent; } // override bootstrap
   background: #ddd;
 }
 
+#ember-app-loading {
+  @include position(absolute, 50% auto auto 50%);
+}
+
 a, button, .glyphicon, {
   @include transition(all 0.1s ease-in-out);
 }

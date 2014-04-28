@@ -17,26 +17,15 @@ ETahi.ProgressSpinnerComponent = Ember.Component.extend
     className: 'spinner' # The CSS class to assign to the spinner
     zIndex: 2e9 # The z-index (defaults to 2000000000)
 
-  bodyOptions:
-    lines: 20
-    radius: 30
-
-  headerOptions:
-    lines: 7
-    radius: 7
-    className: 'body-spinner'
-
   visible: false
+  styleOptions: null
 
-  bodySpinner: false
   headerSpinner: false
 
   show: (->
     options = @get('options')
-    if @get('bodySpinner')
-      options = Ember.merge(options, @get('bodyOptions'))
-    if @get('headerSpinner')
-      options = Ember.merge(options, @get('headerOptions'))
+    if @get('styleOptions')
+      options = Ember.merge(options, @get('styleOptions'))
 
     @spinner = new Spinner(options).spin(@$().get(0))
   ).on('didInsertElement')

@@ -1,4 +1,9 @@
 ETahi.ApplicationController = Ember.Controller.extend
+  isLoading: false
+  spinnerOptions:
+    lines: 7
+    radius: 7
+
   currentUser:(->
     userId = Tahi.currentUser?.id.toString()
     @store.getById('user', userId)

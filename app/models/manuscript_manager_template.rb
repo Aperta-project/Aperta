@@ -17,14 +17,16 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
   belongs_to :journal
 
   validate :no_duplicate_phase_names
-  validate :task_type_in_whitelist
+  validate :task_types_in_whitelist
+
+  private
 
   def phases
     template["phases"] || []
   end
 
   def task_types
-    phases.flat_map { |phase| phase["task_types"] }.uniq
+    phases.flat_map { |phase| phase["task_types"] }.compact.uniq
   end
 
   def no_duplicate_phase_names
@@ -34,8 +36,8 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
     end
   end
 
-  def task_type_in_whitelist
-    unless task_types.all? { |task_type| VALID_TASK_TYPES.include? task_type }
+  def task_types_in_whitelist
+    if task_types.present? && task_types.any? { |task_type| !VALID_TASK_TYPES.include? task_type }
       errors.add(:task_types, "Task types must be in the allowed list")
     end
   end

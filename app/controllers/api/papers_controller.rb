@@ -28,4 +28,3 @@ class Api::PapersController < ApplicationController
     ['published_at']
   end
 end
-

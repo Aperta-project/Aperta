@@ -21,5 +21,3 @@ ETahi.Paper = DS.Model.extend
   displayTitle: (->
     @get('title') || @get('shortTitle')
   ).property 'title', 'shortTitle'
-
-  allTasks: Ember.computed.alias 'tasks'

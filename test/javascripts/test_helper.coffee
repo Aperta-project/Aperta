@@ -2,6 +2,7 @@
 #= require support/sinon
 #= require application
 #= require support/ember-qunit
+#= require support/qunit-bdd
 
 # ember-qunit lib setup code
 emq.globalize()

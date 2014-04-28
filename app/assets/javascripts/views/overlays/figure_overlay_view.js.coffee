@@ -14,11 +14,17 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
 
     uploader.on 'fileuploadprocessalways', (e, data) =>
       file = data.files[0]
-      @uploads.pushObject
+
+      upload =
         filename: file.name
         preview: file.preview?.toDataURL()
         progress: 0
         progressBarStyle: "width: 0%;"
+
+      if file.error
+        upload.error = "File #{file.name} is not an image. You may upload files with the extension .jpg, .jpeg, .gif, .png, or .tiff."
+
+      @uploads.pushObject upload
 
     uploader.on 'fileuploadprogress', (e, data) =>
       currentUpload = @uploads.findBy('filename', data.files[0].name)

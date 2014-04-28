@@ -1,12 +1,10 @@
 class TaskSerializer < ActiveModel::Serializer
-  attributes :id, :title, :type, :completed, :parent_type, :body, :paper_title, :role
+  attributes :id, :title, :type, :completed, :body, :paper_title, :role
   has_one :phase, embed: :id
   has_many :assignees, embed: :ids, include: true, root: :users
   has_one :assignee, embed: :ids, include: true, root: :users
 
-  def parent_type
-    'task'
-  end
+  self.root = :task
 
   def paper_title
     object.paper.display_title

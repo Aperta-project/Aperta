@@ -1,0 +1,25 @@
+.chosen-style-override .chosen-container-single .chosen-single {
+  height: 40px;
+  border: 1px solid $tahi-primary;
+  color: $tahi-primary;
+  font-size: 18px;
+  text-transform: uppercase;
+  background: #fff;
+
+  span {
+    color: $tahi-primary;
+    margin-top: 8px;
+  }
+
+  div b {
+    background-position: 0px 10px;
+  }
+}
+
+.chosen-container .chosen-results li {
+  text-transform: capitalize;
+}
+
+.chosen-style-override .chosen-container-active.chosen-with-drop .chosen-single div b {
+  background-position: -18px 10px;
+}

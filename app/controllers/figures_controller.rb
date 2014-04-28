@@ -19,19 +19,30 @@ class FiguresController < ApplicationController
   end
 
   def destroy
-    f = current_user.figures.find(params[:id])
-    f.destroy
-    head :ok
+    if paper_policy.paper.present?
+      paper.figures.find(params[:id]).destroy
+      head :ok
+    else
+      head :forbidden
+    end
   end
 
   private
 
   def paper
     @paper ||= begin
-      PaperPolicy.new(params[:paper_id], current_user).paper.tap do |p|
+      paper_policy.paper.tap do |p|
         raise ActiveRecord::RecordNotFound unless p.present?
       end
     end
+  end
+
+  def paper_policy
+    @paper_policy ||= PaperPolicy.new(params[:paper_id].presence || figure_paper.id, current_user)
+  end
+
+  def figure_paper
+    Figure.find(params[:id]).paper
   end
 
   def figure_params

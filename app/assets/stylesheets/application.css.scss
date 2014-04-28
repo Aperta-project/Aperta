@@ -2,7 +2,7 @@
  *= require_self
  *= require jquery.fileupload-ui
  *= require chosen
- */
+*/
 
 @import 'bourbon';
 @import 'bootstrap';
@@ -13,18 +13,26 @@
 
 @import 'tahi';
 
+@import 'ui/backdrop';
 @import 'ui/buttons';
 @import 'ui/cards';
+@import 'ui/chosen';
 @import 'ui/columns';
 @import 'ui/control-bar';
 @import 'ui/navbar';
 @import 'ui/overlay';
+@import 'ui/progress';
 @import 'ui/spinner';
 
-@import 'screens/authors_overlay';
 @import 'screens/dashboards';
-@import 'screens/figures_overlay';
 @import 'screens/flow_manager';
 @import 'screens/papers';
 @import 'screens/reviewer_report';
 @import 'screens/tasks';
+
+@import 'overlays/authors_overlay';
+@import 'overlays/choose_new_card_type_overlay';
+@import 'overlays/figures_overlay';
+@import 'overlays/message_overlay';
+@import 'overlays/register_decision_overlay';
+@import 'overlays/upload_manuscript_overlay';

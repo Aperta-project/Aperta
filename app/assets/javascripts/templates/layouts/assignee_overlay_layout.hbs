@@ -1,12 +1,12 @@
-<div {{bind-attr class=":overlay overlayClass message"}}>
+<div {{bind-attr class=":overlay overlayClass"}}>
   <div class="overlay-container">
     <header class="overlay-header">
       <h2 class="overlay-header-title">
-        {{#link-to 'paper.edit' paper class="overlay-paper-title"}}
+        {{#link-to "paper.edit" paper class="overlay-paper-link"}}
           {{paperTitle}}
         {{/link-to}}
       </h2>
-      <a {{bind-attr class=":primary-button :overlay-close-button message"}} {{action 'closeAction'}}>Close</a>
+      <a {{bind-attr class=":primary-button :overlay-close-button"}} {{action "closeAction"}}>Close</a>
     </header>
 
     <main class="overlay-content">{{yield}}</main>
@@ -17,20 +17,20 @@
         <div class="assignee-drop-down chosen-style-override">
           <label for="assignee">This card is owned by</label>
           {{chosen content=assignees
-                   name='assignee'
+                   name="assignee"
                    prompt="Please select assignee"
                    value=assignee
-                   changeAction='saveModel'
+                   changeAction="saveModel"
                    optionValuePath="content"
                    optionLabelPath="content.fullName"
                    class="chosen-assignee"}}
         </div>
         <div class="overlay-completed-checkbox">
-          {{input id="task_completed" type='checkbox' name="task_completed" checked=completed}}
+          {{input id="task_completed" type="checkbox" name="task_completed" checked=completed}}
           <label for="task_completed">Completed</label>
         </div>
       </div>
-      <a {{bind-attr class=":primary-button :overlay-close-button message"}} {{action 'closeAction'}}>Close</a>
+      <a {{bind-attr class=":primary-button :overlay-close-button"}} {{action "closeAction"}}>Close</a>
     </footer>
   </div>
 </div>

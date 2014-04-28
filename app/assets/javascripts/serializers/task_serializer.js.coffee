@@ -25,21 +25,12 @@ ETahi.TaskSerializer = DS.ActiveModelSerializer.extend ETahi.SerializesHasMany,
   # break the isPrimary check.
   extractSingle: (store, primaryType, payload, recordId, requestType) ->
     payload = @normalizePayload(primaryType, payload)
-    primaryTypeName = primaryType.typeKey
+    primaryTypeName = 'task'
     primaryRecord = undefined
     for prop of payload
       typeName = @typeForRoot(prop)
       type = store.modelFor(typeName)
       isPrimary = type.typeKey is primaryTypeName
-      # =======Custom check for primary type
-      if payload[prop].parent_type == 'task'
-        isPrimary = true
-        primaryType = type
-        primaryTypeName = type.typeKey
-      else
-        isPrimary = type.typeKey is primaryTypeName
-      # =======Custom check for primary type
-
       # legacy support for singular resources
       if isPrimary and Ember.typeOf(payload[prop]) isnt "array"
         primaryRecord = @normalize(primaryType, payload[prop], prop)

@@ -23,7 +23,11 @@ Run your server
 
 By default, the eventsource server checks every request for a token that matches against its `$TOKEN` environment variable. Tahi's default token is `token123`. To change this behavior, set the `ES_TOKEN` environment variable for tahi.
 
-By default, tahi attempts to connect to a stream server at `http://localhost:8080`. To change this behavior, set the `ES_URL` environment variable for tahi.
+By default, tahi attempts to connect to a stream server at `http://localhost:8080`. To change this behavior, set the `ES_URL` environment variable for tahi. There is an event stream server up on heroku:
+
+```
+ES_URL=http://tahi-eventsource.herokuapp.com rails s
+```
 
 ### Running specs
 

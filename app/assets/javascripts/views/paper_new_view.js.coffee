@@ -6,3 +6,7 @@ ETahi.PaperNewView = Ember.View.extend
   resetBackgroundColor:(->
     $('html').removeClass('matte')
   ).on('willDestroyElement')
+
+  focusOnTitleField: (->
+    @.$('#paper-short-title').focus()
+  ).on('didInsertElement')

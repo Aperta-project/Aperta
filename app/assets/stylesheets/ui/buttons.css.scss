@@ -26,19 +26,18 @@
   text-transform: uppercase;
   background: white;
 
-  &:hover {
-    background-color: $tahi-secondary;
+  &:focus, &:hover {
     border-color: $tahi-primary-hover;
     color: $tahi-primary-hover;
+    background-color: $tahi-secondary;
   }
 }
 
-.message-overlay {
-  .primary-button {
-    background-color: $tahi-message;
-  }
-
-  .close-overlay, .overlay-completed-checkbox label {
-    color: $tahi-message;
+.upload-error-button {
+  font-size: 40px;
+  color: $tahi-primary;
+  line-height: .5;
+  &:hover {
+    color: $tahi-primary-hover;
   }
 }

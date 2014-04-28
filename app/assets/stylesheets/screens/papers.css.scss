@@ -60,6 +60,7 @@ $paper-trim-color: $tahi-tertiary;
 
 #paper-body {
   min-height: 500px;
+  margin-bottom: 36px;
 
   .ve-ce-documentNode.ve-ce-branchNode { // visual-editor override
     min-height: 500px;

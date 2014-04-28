@@ -1,7 +1,7 @@
 <div class="control-bar">
   <div class="control-bar-inner-wrapper">
     <ul>
-      <li id="control-bar-paper-journal-logo">
+      <li id="control-bar-paper-journal-logo" class="control-bar-item">
         {{#if journal.logoUrl}}
           <img src="{{unbound journal.logoUrl}}">
         {{else}}
@@ -10,9 +10,9 @@
       </li>
     </ul>
     <ul>
-      <li><a href="{{unbound downloadLink}}" class="control-bar-link">Download ePub</a></li>
-      <li><a href="{{unbound downloadLink}}.pdf" class="control-bar-link">Download PDF</a></li>
-      <li>{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
+      <li class="control-bar-item">{{directLinkTo downloadLink "Download ePub" "control-bar-link"}}</li>
+      <li class="control-bar-item">{{directLinkTo downloadLink "Download PDF" "control-bar-link" "pdf"}}</li>
+      <li class="control-bar-item">{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
     </ul>
   </div>
 </div>

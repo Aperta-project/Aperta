@@ -3,10 +3,10 @@
 <div id="upload-file-wrapper">
   <span class="secondary-button fileinput-button">
     Select and upload a document
-    {{file-uploader id='upload-files'
-                    class='js-jquery-fileupload'
-                    type='file'
-                    name='upload_file'
+    {{file-uploader id="upload-files"
+                    class="js-jquery-fileupload"
+                    type="file"
+                    name="upload_file"
                     model=model}}
   </span>
 </div>
@@ -16,7 +16,7 @@
 <ul id="paper-manuscript-upload">
   <li>
     <div class="preview-container glyphicon glyphicon-file"></div>
-    <div class="processing" >Processing...</div>
+    <div class="processing">Processing...</div>
 
     <div class="progress">
       <div class="progress-bar" {{bind-attr style=view.progressBarStyle}}></div>

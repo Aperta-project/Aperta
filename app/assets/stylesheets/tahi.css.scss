@@ -1,37 +1,37 @@
-html, body { height: 100%; }
-
 html {
   overflow: -moz-scrollbars-vertical;
   -webkit-font-smoothing: antialiased;
   overflow-y: auto;
+
+  // For HTML tag when overlays are being displayed
+  &.noscroll { overflow: hidden; }
+
+  &.matte { background-color: $tahi-matte; }
 }
 
 body { background: transparent; } // override bootstrap
 
-.matte { background-color: $tahi-matte; }
-.full-height { height: 100%; }
-
 ::-webkit-scrollbar {
-  background-color: transparent;
   width: 6px;
   height: 10px;
   padding-left: 10px;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ddd;
   width: 4px !important;
   min-height: 40px;
+  background: #ddd;
 }
 
-a, a:hover, button, button:hover, .glyphicon, .glyphicon:hover {
+a, button, .glyphicon, {
   @include transition(all 0.1s ease-in-out);
 }
 
 a {
   color: $tahi-primary;
 
-  &:hover {
+  &:focus, &:hover {
     text-decoration: underline;
     color: $tahi-primary;
   }
@@ -52,67 +52,25 @@ textarea { resize: none; }
   &.full-width { max-width: none; }
 
   > main {
-    @extend .row;
+    overflow: hidden;
+    min-width: 960px;
     margin-left: 0;
     margin-right: 0;
     background-color: white;
-    min-width: 960px;
   }
 }
-
-.reset-z-index {
-  z-index: 0 !important;
-}
-
-.backdrop {
-  padding-top: 50px;
-
-  img { max-width: 500px; }
-
-  h2, p { color: $tahi-backdrop; }
-
-  h2 {
-    font-weight: bold;
-    font-style: italic;
-  }
-
-  p {
-    font-size: 20px;
-    font-style: italic
-  }
-}
-
-.small_text {
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #999;
-}
-
-.editable { margin-bottom: 36px }
-
-.progress {
-  @extend .progress-striped, .active;
-}
-
-.progress .progress-bar {
-  @include progress-bar-variant($tahi-tertiary);
-}
-
-// For HTML tag when overlays are being displayed
-.noscroll { overflow: hidden; }
 
 .warning {
-  font-size: 14px;
   color: red;
+  font-size: 14px;
   font-style: italic;
 }
 
 #upload-file-wrapper {
-  color: red;
   margin: 50px 0;
-  .warning {
-    margin-top: 10px;
-  }
+  color: red;
+
+  .warning { margin-top: 10px; }
 }
 
 .clear-before-and-after {
@@ -127,33 +85,3 @@ textarea { resize: none; }
     display: table;
   }
 }
-
-.participants {
-  padding: 10px;
-  width: 700px;
-  background: #f3f3f3;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  list-style: none;
-}
-
-.participant {
-  display: inline-block;
-  margin-right: 10px;
-}
-
-
-#top-nav {
-  position: relative;
-
-  .spinner {
-    left: 180px;
-    top: 18px;
-  }
-}
-
-.body-spinner {
-  top: 50%;
-  left: 50%;
-}
-

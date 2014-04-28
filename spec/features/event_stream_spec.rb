@@ -19,6 +19,17 @@ feature "Event streaming", js: true do
     expect(page).to have_css(".card-completed", count: 1)
   end
 
+  scenario "Looking at a task" do
+    edit_paper = EditPaperPage.visit paper
+    edit_paper.view_card('Upload Manuscript')
+    checkbox = find("#task_completed")
+    expect(checkbox).to_not be_checked
+    upload_task.completed = true
+    upload_task.save
+    sleep 0.3
+    expect(checkbox).to be_checked
+  end
+
   scenario "On the edit paper page" do
     EditPaperPage.visit paper
     expect(page).to have_no_selector(".completed")

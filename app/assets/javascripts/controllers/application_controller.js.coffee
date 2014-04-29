@@ -21,15 +21,15 @@ ETahi.ApplicationController = Ember.Controller.extend
 
   pushUpdate: (esData)->
     Ember.run =>
-      @store.pushPayload('task', esData)
       # add code for when esData is a message_task
       if esData.task
         if task = @store.findTask(esData.task.id)
-          # ember.js bug:  need to tell phase about any new tasks
-          # make sure the phases tasks are updated.
+          # This is an ember bug.  A task's phase needs to be notified that the other side of
+          # the hasMany relationship has changed via set.  Simply loading the updated task into the store
+          # won't trigger the relationship update. 
+          task.set('phase', @store.getById('phase', esData.task.phase_id))
           task.triggerLater('didLoad')
-          task.get('phase').get('tasks').then (taskArray) ->
-            taskArray.addObject(task)
+      @store.pushPayload('task', esData)
 
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')

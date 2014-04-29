@@ -4,7 +4,7 @@ ETahi.PaperManageController = Ember.ObjectController.extend
       content: @get('model.phases')
       sortProperties: ['position']
     })
-  ).property('model.phases.[]')
+  ).property('model.phases.[], model.phases.tasks.@each')
 
   updatePositions: (phase)->
     relevantPhases = @get('model.phases').filter((p)->

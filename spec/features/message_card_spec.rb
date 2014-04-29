@@ -46,7 +46,8 @@ feature 'Message Cards', js: true do
       task_manager_page = TaskManagerPage.visit paper
 
       needs_editor_phase = task_manager_page.phase 'Assign Editor'
-      needs_editor_phase.new_message_card subject: subject_text,
+      needs_editor_phase.new_card overlay: NewMessageCardOverlay,
+        subject: subject_text,
         body: body_text,
         participants: participants,
         creator: admin

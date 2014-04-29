@@ -45,4 +45,11 @@ FactoryGirl.define do
     answer "A lie!"
   end
 
+  factory :manuscript_manager_template do
+    name 'Sample Template'
+    paper_type 'Research'
+    template { {} }
+
+  end
+
 end

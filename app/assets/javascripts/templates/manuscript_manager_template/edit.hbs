@@ -1,0 +1,45 @@
+<div id="tahi-container" class="full-width manuscript-manager-template">
+  <div class="control-bar control-bar-blue manuscript-manager-template-control-bar">
+    <div class="control-bar-inner-wrapper">
+      <ul>
+        <li id="control-bar-paper-journal-logo">
+          {{#if journal.logoUrl}}
+            <img src="{{unbound journal.logoUrl}}">
+          {{else}}
+            <div class="paper-journal">{{unbound journal.name}}</div>
+          {{/if}}
+        </li>
+      </ul>
+      <ul>
+        <li class="template-edit-message control-bar-item">
+          <span {{bind-attr class="dirty:show:hidden :alert-warning :control-bar-message"}}>You have unsaved changes!</span>
+          <span {{bind-attr class="errorText:show:hidden :alert-danger :control-bar-message"}}>{{errorText}}</span>
+        </li>
+        <li class="template-edit-name control-bar-item">
+          {{input value=name placeholder="Template Name"}}
+        </li>
+        <li class="template-paper-type-edit control-bar-item">
+          {{chosen content=paperTypes
+                   name="paper_types"
+                   width="150px"
+                   prompt="Select a paper type"
+                   class="paper-type-select"
+                   value=paperType
+                   optionValuePath="content"
+                   optionLabelPath="content"}}
+        </li>
+        <li class="control-bar-item"><a class="btn btn-link template-cancel-button" {{action "cancelEdit" target="view"}}>Cancel</a></li>
+        <li class="control-bar-item"><a class="primary-button template-save-button" {{action "saveTemplate"}}>Save</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="manuscript-manager">
+    <div class="full-height">
+      <div class="columns manuscript-manager-template-columns">
+        {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
+        {{each sortedPhases itemViewClass="ETahi.ManuscriptManagerColumnView"}}
+      </div>
+    </div>
+  </div>
+</div>

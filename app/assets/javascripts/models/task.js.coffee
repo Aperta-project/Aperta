@@ -12,6 +12,7 @@ ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
   type: a('string')
   qualifiedType: a('string')
 
+  isMetadataTask: false
   isMessage: Ember.computed.equal('type', 'MessageTask')
   paper: DS.belongsTo('paper', {async: true})
   litePaper: DS.belongsTo('litePaper')
@@ -32,6 +33,7 @@ ETahi.PaperAdminTask = ETahi.Task.extend
 
 ETahi.DeclarationTask = ETahi.Task.extend
   surveys: DS.hasMany('survey')
+  isMetadataTask: true
 
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
@@ -56,4 +58,5 @@ ETahi.RegisterDecisionTask = ETahi.Task.extend
 ETahi.ReviewerReportTask = ETahi.Task.extend
   paperReview: DS.belongsTo('paperReview')
 
-ETahi.UploadManuscriptTask = ETahi.Task.extend()
+ETahi.UploadManuscriptTask = ETahi.Task.extend
+  isMetadataTask: true

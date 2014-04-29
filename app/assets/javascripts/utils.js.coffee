@@ -23,3 +23,10 @@ Tahi.utils =
 
     $children.css('height', max)
     $('.column-content').css('top', max)
+
+  setPropertyWithDelay: (obj, prop, startVal, endVal, ms) ->
+    obj.set(prop, startVal)
+    setTimeout( ->
+      Ember.run.schedule("actions", obj, 'set', prop, endVal)
+    ms)
+

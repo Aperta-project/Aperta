@@ -55,6 +55,10 @@ class TasksController < ApplicationController
     end
   end
 
+  def task_types
+    render json: Journal::VALID_TASK_TYPES, root: :task_types
+  end
+
   private
 
   def task_params(task)

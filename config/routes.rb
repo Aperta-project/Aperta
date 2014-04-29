@@ -1,5 +1,5 @@
 Tahi::Application.routes.draw do
-  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+  mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
 
   if Rails.env.test?
     require_relative '../spec/support/stream_server/stream_server'
@@ -12,7 +12,8 @@ Tahi::Application.routes.draw do
     get "users/sign_out" => "devise/sessions#destroy"
   end
 
-  resources :journals, only: [:index]
+  resources :journals, only: [:index, :show]
+  get '/admin/journals/*manage' => 'ember#index'
 
   get '/flow_manager' => 'ember#index'
 
@@ -24,6 +25,8 @@ Tahi::Application.routes.draw do
     resources :papers, only: [:index, :show, :update]
     resources :users, only: [:show]
   end
+
+  resources :manuscript_manager_templates
 
   resources :papers, only: [:new, :create, :show, :edit, :update] do
     resources :figures, only: :create
@@ -53,7 +56,11 @@ Tahi::Application.routes.draw do
     end
   end
 
-  resources :tasks
+  resources :tasks, only: [:update, :create, :show, :destroy] do
+    collection do
+      get :task_types
+    end
+  end
 
   resources :phases, only: [:create, :update, :show, :destroy]
 

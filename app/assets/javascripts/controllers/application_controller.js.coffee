@@ -17,7 +17,7 @@ ETahi.ApplicationController = Ember.Controller.extend
             @pushUpdate(esData)
 
     Ember.$.ajax(params)
-  )
+  ).on('init')
 
   pushUpdate: (esData)->
     Ember.run =>

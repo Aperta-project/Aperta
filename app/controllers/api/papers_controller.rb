@@ -1,4 +1,6 @@
 class Api::PapersController < ApplicationController
+  protect_from_forgery except: :update
+
   def index
     @papers = filtered_papers
     render json: @papers, each_serializer: Api::PaperSerializer

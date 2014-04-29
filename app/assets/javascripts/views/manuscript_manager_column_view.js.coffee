@@ -2,6 +2,10 @@ ETahi.ManuscriptManagerColumnView = Em.View.extend DragNDrop.Droppable,
   templateName: 'manuscript_manager_column'
   classNames: ['column']
 
+  nextPosition: (->
+    @get('contentIndex') + 1
+  ).property('contentIndex')
+
   dragOver: (e) ->
     DragNDrop.draggingStarted('.column', @.$())
     DragNDrop.cancel(e)
@@ -11,6 +15,6 @@ ETahi.ManuscriptManagerColumnView = Em.View.extend DragNDrop.Droppable,
 
   drop: (e) ->
     DragNDrop.draggingStopped('.column')
-    @get('controller').changeTaskPhase(ETahi.get('dragItem'), @get('content'))
+    @get('controller').send('changeTaskPhase', ETahi.get('dragItem'), @get('content'))
     e.preventDefault()
     false

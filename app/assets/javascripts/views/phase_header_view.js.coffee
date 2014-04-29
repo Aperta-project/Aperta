@@ -6,19 +6,20 @@ ETahi.PhaseHeaderView = Em.View.extend
 
   focusIn: (e)->
     @set('active', true)
+    if $(e.target).attr('contentEditable')
+      @set('oldPhaseName', @get('phase.name'))
 
   phaseNameDidChange: (->
-    # race condition with binding and cancel action? :(
-    Em.run.later (->
+    Ember.run.schedule('afterRender' , this, ->
       Tahi.utils.resizeColumnHeaders()
-    ), 30
+    )
   ).observes('phase.name')
 
   actions:
     save: ->
       @set('active', false)
-      @get('phase').save()
+      @get('controller').send('savePhase', @get('phase'))
 
     cancel: ->
       @set('active', false)
-      @get('phase').rollback()
+      @get('controller').send('rollbackPhase', @get('phase'), @get('oldPhaseName'))

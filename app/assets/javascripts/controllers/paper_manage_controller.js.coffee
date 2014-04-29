@@ -13,9 +13,6 @@ ETahi.PaperManageController = Ember.ObjectController.extend
 
     relevantPhases.invoke('incrementProperty', 'position')
 
-  changeTaskPhase: (task, targetPhase) ->
-    task.set('phase', targetPhase)
-    task.save()
 
   actions:
     addPhase: (position) ->
@@ -28,6 +25,10 @@ ETahi.PaperManageController = Ember.ObjectController.extend
       phase.save().then ->
         paper.reload()
 
+    changeTaskPhase: (task, targetPhase) ->
+      task.set('phase', targetPhase)
+      task.save()
+
     removePhase: (phase) ->
       paper = phase.get('paper')
       phase.destroyRecord().then ->
@@ -35,3 +36,9 @@ ETahi.PaperManageController = Ember.ObjectController.extend
 
     removeTask: (task) ->
       task.destroyRecord()
+
+    savePhase: (phase) ->
+      phase.save()
+
+    rollbackPhase: (phase) ->
+      phase.rollback()

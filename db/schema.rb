@@ -68,6 +68,15 @@ ActiveRecord::Schema.define(version: 20140428164422) do
     t.string   "logo"
   end
 
+  create_table "manuscript_manager_templates", force: true do |t|
+    t.string  "name"
+    t.string  "paper_type"
+    t.json    "template"
+    t.integer "journal_id"
+  end
+
+  add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
+
   create_table "message_participants", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"

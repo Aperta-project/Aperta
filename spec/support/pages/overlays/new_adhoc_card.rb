@@ -1,5 +1,10 @@
 class NewAdhocCardOverlay < CardOverlay
 
+  def self.launch(session)
+    overlay = session.find('.overlay-container')
+    overlay.click_button 'New Task Card'
+    new overlay
+  end
 
   def title
     find('main > h1').text
@@ -17,8 +22,12 @@ class NewAdhocCardOverlay < CardOverlay
     fill_in 'task_body', with: new_text
   end
 
-  def create
+  def create(params)
+    self.title = params[:title]
+    self.body = params[:body]
+    self.assignee = params[:assignee].full_name
     find('a', text: 'CREATE CARD').click
+    self
   end
 
   def assignee=(name)

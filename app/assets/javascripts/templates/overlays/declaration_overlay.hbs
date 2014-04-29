@@ -3,11 +3,11 @@
 <form>
   <div class="form-group">
     <fieldset>
-    {{#each declaration in declarations}}
+    {{#each survey in surveys}}
       <div class="declaration">
-        <label>{{declaration.question}}</label>
-        {{view ETahi.TextArea value=declaration.answer
-          model=declaration
+        <label>{{survey.question}}</label>
+        {{view ETahi.TextArea value=survey.answer
+          model=survey
           class='form-control'
           rows='6'}}
       </div>

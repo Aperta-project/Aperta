@@ -31,6 +31,7 @@ feature "Register Decision", js: true do
     dashboard_page = DashboardPage.visit
     register_decision_card = dashboard_page.view_card 'Register Decision'
     paper_show_page = register_decision_card.view_paper
+    sleep(0.5)
 
     paper_show_page.view_card 'Register Decision' do |overlay|
       overlay.register_decision = "Accepted"

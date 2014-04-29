@@ -6,5 +6,6 @@ ETahi.NewCardOverlayController = Ember.Controller.extend ETahi.ControllerPartici
       @get('model').deleteRecord()
       @send('closeOverlay')
     createCard: ->
-      @get('model').save()
+      @get('model').save().then (model) ->
+        model.get('phase.tasks').pushObject(model)
       @send('closeOverlay')

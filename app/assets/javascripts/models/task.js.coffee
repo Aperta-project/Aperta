@@ -1,5 +1,5 @@
 a = DS.attr
-ETahi.Task = DS.Model.extend
+ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
   assignee: DS.belongsTo('user')
   assignees: DS.hasMany('user')
   phase: DS.belongsTo('phase')
@@ -13,7 +13,8 @@ ETahi.Task = DS.Model.extend
   qualifiedType: a('string')
 
   isMessage: Ember.computed.equal('type', 'MessageTask')
-  paper: Ember.computed.alias('phase.paper')
+  paper: DS.belongsTo('paper', {async: true})
+  litePaper: DS.belongsTo('litePaper')
 
   relationshipsToSerialize: []
 
@@ -29,14 +30,8 @@ ETahi.PaperAdminTask = ETahi.Task.extend
   admins: DS.hasMany('user')
   admin: DS.belongsTo('user')
 
-ETahi.AuthorsTask = ETahi.Task.extend
-  authors: Ember.computed.alias('paper.authorsArray')
-  qualifiedType: "StandardTasks::AuthorsTask"
-
 ETahi.DeclarationTask = ETahi.Task.extend
-  declarations: Ember.computed.alias('paper.declarations')
-
-ETahi.FigureTask = ETahi.Task.extend()
+  surveys: DS.hasMany('survey')
 
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
@@ -46,6 +41,8 @@ ETahi.MessageTask = ETahi.Task.extend
 
 ETahi.RegisterDecisionTask = ETahi.Task.extend
   decisionLetters: a('string')
+  paperDecision: a('string')
+  paperDecisionLetter: a('string')
   acceptedLetterTemplate: (->
     JSON.parse(@get('decisionLetters')).Accepted
   ).property 'decisionLetters'
@@ -58,8 +55,5 @@ ETahi.RegisterDecisionTask = ETahi.Task.extend
 
 ETahi.ReviewerReportTask = ETahi.Task.extend
   paperReview: DS.belongsTo('paperReview')
-
-ETahi.TechCheckTask = ETahi.Task.extend
-  qualifiedType: "StandardTasks::TechCheckTask"
 
 ETahi.UploadManuscriptTask = ETahi.Task.extend()

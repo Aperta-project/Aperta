@@ -9,8 +9,22 @@ ETahi.Store = DS.Store.extend
     oldType = type
     dataType = data.type
     modelType = oldType
-    if dataType && (@modelFor(oldType) != @modelFor(dataType))
-      genericTypeRecord = @recordForId(oldType, data.id)
+    if dataType and (@modelFor(oldType) != @modelFor(dataType)) # is this a subclass?
       modelType = dataType
-      @dematerializeRecord(genericTypeRecord)
+      if oldRecord = @getById(oldType, data.id)
+        @dematerializeRecord(oldRecord)
     @_super @modelFor(modelType), data, _partial
+
+  # find any task by id regardless of subclass
+  findTask: (id) ->
+    matchingTask = _(@get('allTaskClasses')).detect (tm) -> tm.idToRecord[id]
+    if matchingTask
+      matchingTask.idToRecord[id]
+
+  # all task classes including subclasses
+  allTaskClasses:(->
+    _(@typeMaps).filter (tm) ->
+      tm.type.toString().match(/Task$/)
+  ).property().volatile()
+
+

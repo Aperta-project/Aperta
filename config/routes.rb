@@ -16,7 +16,7 @@ Tahi::Application.routes.draw do
   resources :figures, only: :destroy
 
   namespace :api do
-    resources :papers, only: [:index, :show]
+    resources :papers, only: [:index, :show, :update]
     resources :users, only: [:show]
   end
 
@@ -56,9 +56,9 @@ Tahi::Application.routes.draw do
     end
   end
 
-  resources :phases, only: [:create, :update, :destroy]
+  resources :phases, only: [:create, :update, :show, :destroy]
 
-  resources :declarations, only: [:update]
+  resources :surveys, only: [:update]
 
   get 'users/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 

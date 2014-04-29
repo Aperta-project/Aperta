@@ -1,8 +1,7 @@
-ETahi.PaperTaskRoute = Ember.Route.extend
+ETahi.TaskRoute = Ember.Route.extend
   model: (params) ->
-    paperTasks = _.flatten @modelFor('paper').get('phases').mapProperty('tasks.content')
-    task = paperTasks.findBy('id', params.task_id)
-    task.reload()
+    @set('paperId', params.paper_id)
+    @store.find('task', params.task_id)
 
   setupController: (controller, model) ->
     # FIXME: Rename AdHocTask to Task (here, in views, and in templates)
@@ -13,7 +12,7 @@ ETahi.PaperTaskRoute = Ember.Route.extend
 
     taskController = @controllerFor(baseObjectName)
     taskController.set('model', model)
-    taskController.set('paper', model.get('paper'))
+    taskController.set('paperId', @get('paperId'))
     @set('taskController', taskController)
 
     if @controllerFor('application').get('overlayRedirect')
@@ -29,3 +28,8 @@ ETahi.PaperTaskRoute = Ember.Route.extend
   deactivate: ->
     @send('closeOverlay')
     @controllerFor('application').setProperties(overlayRedirect: null, overlayBackground: null)
+
+  actions:
+    willTransition: (transition) ->
+      unless transition.get('targetName') == 'flow_manager'
+        @controllerFor('application').set('cachedModel', null)

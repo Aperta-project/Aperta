@@ -22,7 +22,9 @@ FactoryGirl.define do
   end
 
   factory :paper do
-    short_title 'Test Paper'
+    sequence :short_title do |n|
+      "Test Paper #{n}"
+    end
     journal
   end
 
@@ -38,7 +40,7 @@ FactoryGirl.define do
     body "HEY"
   end
 
-  factory :declaration do
+  factory :survey do
     question "What is the cake?"
     answer "A lie!"
   end

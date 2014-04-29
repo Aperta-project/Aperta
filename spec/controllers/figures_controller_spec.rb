@@ -91,10 +91,12 @@ describe FiguresController do
         expect(JSON.parse(response.body)).to eq(
           {
             figures: [
-              { filename: 'yeti.tiff',
-                alt: 'Yeti',
-                src: figure.attachment.url,
-                id: figure.id,
+              { id: figure.id,
+                filename: "yeti.tiff",
+                alt: "Yeti",
+                src: "/uploads/paper/1/figure/attachment/1/yeti.tiff",
+                title: "yeti.tiff",
+                caption: nil,
                 paper_id: paper.id }
             ]
           }.with_indifferent_access

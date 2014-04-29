@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 20140416140245) do
     t.boolean  "reviewer",   default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "admin",      default: false
   end
 
   add_index "paper_roles", ["paper_id"], name: "index_paper_roles_on_paper_id", using: :btree

@@ -23,51 +23,6 @@ test 'displayTitle displays title if present', ->
 
   equal paper.get('displayTitle'), title
 
-test 'allTasks returns all tasks for the paper', ->
-  task1 = null; task2 = null
-  allTasks = Ember.run =>
-    paper = @store().createRecord 'paper',
-      title: 'title'
-      shortTitle: 'short title'
-    phase = @store().createRecord 'phase',
-      paper: paper
-
-    task1 = @store().createRecord 'task',
-      title: 'task1'
-      phase: phase
-
-    task2 = @store().createRecord 'task',
-      title: 'task2'
-      phase: phase
-
-    paper.setProperties phase: phase
-    paper.get 'allTasks'
-
-  deepEqual allTasks.mapBy('title'), [task1.get('title'), task2.get('title')]
-
-test 'allMetadataTasks returns only metadata cards', ->
-  task1 = null; task2 = null
-  allMetadataTasks = Ember.run =>
-    paper = @store().createRecord 'paper',
-      title: 'title'
-      shortTitle: 'short title'
-    phase = @store().createRecord 'phase',
-      paper: paper
-
-    task1 = @store().createRecord 'task',
-      title: 'task1'
-      phase: phase
-      isMetadataTask: true
-
-    task2 = @store().createRecord 'task',
-      title: 'task2'
-      phase: phase
-
-    paper.setProperties phase: phase
-    paper.get 'allMetadataTasks'
-
-  deepEqual allMetadataTasks.mapBy('title'), [task1.get('title')]
-
 
 test 'Paper hasMany assignees as User', ->
   relationships = Ember.get ETahi.Paper, 'relationships'

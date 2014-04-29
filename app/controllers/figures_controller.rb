@@ -24,7 +24,6 @@ class FiguresController < ApplicationController
     head :no_content
   end
 
-
   def destroy
     if paper_policy.paper.present?
       paper.figures.find(params[:id]).destroy

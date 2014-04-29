@@ -23,7 +23,7 @@ ETahi.PaperEditRoute = Ember.Route.extend
 
     confirmSubmitPaper: ->
       return unless @modelFor('paperEdit').get('allMetadataTasksCompleted')
-      @modelFor('paperEdit').save()
+      @modelFor('paperEdit').save() #then().catch( alert('hello'))
       @transitionTo('paper.submit')
 
     savePaper: ->

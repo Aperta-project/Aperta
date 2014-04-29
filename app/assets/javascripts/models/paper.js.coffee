@@ -22,13 +22,9 @@ ETahi.Paper = DS.Model.extend
     @get('title') || @get('shortTitle')
   ).property('title', 'shortTitle')
 
-  allTasks: (->
-    _.flatten @get('phases.content').mapBy('tasks.content')
-  ).property('phases.@each.tasks')
-
   allMetadataTasks: (->
-      @get('allTasks').filterBy('isMetadataTask')
-    ).property('phases.@each.tasks')
+    @get('tasks').filterBy('isMetadataTask')
+  ).property('tasks.content.@each.isMetadataTask')
 
   allMetadataTasksCompleted: ETahi.computed.all('allMetadataTasks', 'completed', true)
 

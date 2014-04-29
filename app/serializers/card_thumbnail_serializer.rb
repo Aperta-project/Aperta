@@ -1,6 +1,6 @@
 class CardThumbnailSerializer < ActiveModel::Serializer
   attributes :id, :task_type, :completed, :task, :title
-  has_one :lite_paper, embed: :id
+  has_one :lite_paper, embed: :id, include: true
   has_one :assignee, embed: :id
 
   def task

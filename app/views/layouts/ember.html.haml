@@ -4,6 +4,7 @@
     %title Tahi
     = stylesheet_link_tag    "application", media: "all"
     = javascript_include_tag "application"
+    = javascript_tag "$.fx.off = true" if Rails.env.test? # disable animations
     = csrf_meta_tags
 
   %body

@@ -40,6 +40,7 @@ feature "Reviewer Report", js: true do
     dashboard_page = DashboardPage.visit
     reviewer_report_card = dashboard_page.view_card 'Reviewer Report'
     paper_show_page = reviewer_report_card.view_paper
+    sleep(0.5)
 
     paper_show_page.view_card 'Reviewer Report' do |overlay|
       # overlay.report = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue massa sit amet lacus volutpat pharetra. Quisque lobortis eu risus sit amet'

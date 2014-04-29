@@ -6,27 +6,31 @@ ETahi.ApplicationController = Ember.Controller.extend
 
   connectToES:(->
     return unless Tahi.currentUser?.id
-    store = @store
     params =
       url: '/event_stream'
       method: 'GET'
-      success:(data)->
+      success: (data) =>
         source = new EventSource(data.url)
-        data.eventNames.forEach (eventName)->
-          source.addEventListener eventName, (msg)->
+        data.eventNames.forEach (eventName) =>
+          source.addEventListener eventName, (msg) =>
             esData = JSON.parse(msg.data)
-            Ember.run ->
-              type = esData.type.replace(/.+::/, '')
-              delete esData.type
-              store.pushPayload(type, esData)
-
-              if esData.task
-                store.find('task', esData.task.id).then (task)->
-                  # ember.js bug:  need to tell phase about any new tasks
-                  task.get('phase').get('tasks').pushObject(task)
+            @pushUpdate(esData)
 
     Ember.$.ajax(params)
   ).on('init')
+
+  pushUpdate: (esData)->
+    Ember.run =>
+      @store.pushPayload('task', esData)
+      # add code for when esData is a message_task
+      if esData.task
+        if task = @store.findTask(esData.task.id)
+          # ember.js bug:  need to tell phase about any new tasks
+          # make sure the phases tasks are updated.
+          task.triggerLater('didLoad')
+          task.get('phase').get('tasks').then (taskArray) ->
+            taskArray.addObject(task)
+
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')
 

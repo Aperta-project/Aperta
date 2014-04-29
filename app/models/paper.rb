@@ -7,7 +7,6 @@ class Paper < ActiveRecord::Base
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
 
-  has_many :declarations, -> { order :id }
   has_many :figures
   has_many :paper_roles
   has_many :reviewers, -> { where("paper_roles.reviewer" => true) }, through: :paper_roles, source: :user
@@ -86,7 +85,6 @@ class Paper < ActiveRecord::Base
   def initialize_defaults
     unless persisted?
       self.paper_type = 'research' if self.paper_type.blank?
-      self.declarations = Declaration.default_declarations unless (self.declarations.exists? || self.declarations.any?)
       self.task_manager ||= build_task_manager
     end
   end

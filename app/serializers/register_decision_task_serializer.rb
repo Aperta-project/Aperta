@@ -1,5 +1,5 @@
 class RegisterDecisionTaskSerializer < TaskSerializer
-  attributes :id, :decision_letters
+  attributes :id, :decision_letters, :paper_decision, :paper_decision_letter
 
   def decision_letters
     { Accepted: object.accept_letter,

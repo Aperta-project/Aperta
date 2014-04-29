@@ -26,27 +26,6 @@ describe Paper do
       end
     end
 
-    describe "declarations" do
-      it "initializes default declarations" do
-        default_declarations = [
-          Declaration.new(question: 'Question 1'),
-          Declaration.new(question: 'Question 2'),
-          Declaration.new(question: 'Question 3')
-        ]
-        allow(Declaration).to receive(:default_declarations).and_return(default_declarations)
-
-        expect(paper.declarations).to match_array default_declarations
-      end
-
-      context "when declarations are specified" do
-        it "uses provided declarations" do
-          declarations = [Declaration.new(question: 'Question')]
-          paper = Paper.new short_title: 'Example', declarations: declarations
-          expect(paper.declarations).to match_array declarations
-        end
-      end
-    end
-
     describe "task manager" do
       it "initializes a new task manager" do
         expect(paper.task_manager).to be_a TaskManager
@@ -154,26 +133,6 @@ describe Paper do
       it "returns published papers only" do
         expect(Paper.unpublished).to include unpublished_paper
         expect(Paper.unpublished).to_not include published_paper
-      end
-    end
-  end
-
-  describe "associations" do
-    describe "declarations" do
-      let(:paper) do
-        Paper.create! short_title: 'Paper with declarations',
-          journal: Journal.create!,
-          declarations: [
-            Declaration.new(question: "Q1"),
-            Declaration.new(question: "Q2")
-          ]
-      end
-
-      it "returns them in order for consistency" do
-        old_declarations = paper.declarations
-        paper.declarations.first.answer = 'icecream'
-        paper.declarations.first.save!
-        expect(paper.reload.declarations).to eq(old_declarations)
       end
     end
   end

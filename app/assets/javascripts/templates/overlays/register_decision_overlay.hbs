@@ -3,8 +3,8 @@
   {{view
     ETahi.DecisionRadioButton
     name="decision"
-    model=model.paper
-    selection=model.paper.decision
+    model=model
+    selection=paperDecision
     id="accepted_option"
     value="accepted"}}
   <label class="decision-label" for="accepted_option">
@@ -14,8 +14,8 @@
   {{view
     ETahi.DecisionRadioButton
     name="decision"
-    model=model.paper
-    selection=model.paper.decision
+    model=model
+    selection=paperDecision
     id="rejected_option"
     value="rejected"}}
   <label class="decision-label" for="rejected_option">
@@ -25,8 +25,8 @@
   {{view
     ETahi.DecisionRadioButton
     name="decision"
-    model=model.paper
-    selection=model.paper.decision
+    model=model
+    selection=paperDecision
     id="revise_option"
     value="revise"}}
   <label class="decision-label" for="revise_option">
@@ -37,9 +37,9 @@
 <div>
   <p class="decision-letter-description">Feel free to modify the standard decision letter. Your changes will be saved.</p>
   {{view ETahi.TextArea
-    model=model.paper
+    model=model
     id="task_paper_decision_letter"
     class="task_paper_decision_letter"
     placeholder="A boilerplate decision letter will appear here"
-    value=model.paper.decisionLetter}}
+    value=paperDecisionLetter}}
 </div>

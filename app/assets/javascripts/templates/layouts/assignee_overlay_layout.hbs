@@ -1,13 +1,7 @@
 <div {{bind-attr class=":overlay overlayClass"}}>
   <div class="overlay-container">
-    <header class="overlay-header">
-      <h2 class="overlay-header-title">
-        {{#link-to "paper.edit" paper class="overlay-paper-link"}}
-          {{paperTitle}}
-        {{/link-to}}
-      </h2>
-      <a {{bind-attr class=":primary-button :overlay-close-button"}} {{action "closeAction"}}>Close</a>
-    </header>
+
+    {{partial "overlay-header"}}
 
     <main class="overlay-content">{{yield}}</main>
     {{progress-spinner visible=isLoading}}

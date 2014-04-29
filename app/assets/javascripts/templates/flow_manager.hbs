@@ -20,8 +20,8 @@
 
       <div class="column-content">
         <ul class="cards">
-          {{#each paper in flow.papers}}
-            {{view ETahi.FlowPaperView flow=flow paper=paper}}
+          {{#each litePaper in flow.litePapers}}
+            {{view ETahi.FlowPaperView flow=flow litePaper=litePaper}}
           {{else}}
             <div class="empty-text">{{flow.emptyText}}</div>
           {{/each}}

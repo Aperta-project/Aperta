@@ -11,6 +11,7 @@ ETahi.NewMessageCardOverlayController = ETahi.NewCardOverlayController.extend
       initialComment = @get('newComment')
       shouldSaveComment = @get('hasComment')
       @get('model').save().then (task) =>
+        task.get('phase.tasks').pushObject(task)
         if shouldSaveComment
           initialComment.save()
         else

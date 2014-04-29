@@ -6,8 +6,8 @@
       <h2>Your Submissions</h2>
       {{#if hasSubmissions}}
         <ul class="dashboard-submitted-papers">
-          {{#each paper in submissions}}
-            <li class="dashboard-paper-title">{{link-to paper.short_title "paper.edit" paper.id}}</li>
+          {{#each paper in model.submissions}}
+            <li class="dashboard-paper-title">{{link-to paper.shortTitle "paper.edit" paper.id}}</li>
           {{/each}}
         </ul>
       {{else}}

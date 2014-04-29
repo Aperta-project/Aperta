@@ -55,6 +55,13 @@
     }
   });
 
+  ETahi.computed = {};
+  ETahi.computed.all = function(hasMany, key, value){
+    return Em.computed(hasMany+'.@each.'+key, function(){
+      return this.get(hasMany).everyProperty(key, value);
+    });
+  };
+
   $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
     if (jqXHR.status === 401) {
       document.location.href = '/users/sign_in';

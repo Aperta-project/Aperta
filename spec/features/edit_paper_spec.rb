@@ -25,6 +25,17 @@ feature "Editing paper", js: true do
     expect(edit_paper.cards[:assigned]).to include 'Tech Check', 'Assign Admin'
   end
 
+  scenario "Author completes all metadata cards" do
+    edit_paper = EditPaperPage.visit paper
+    edit_paper.should have_css('a.disabled-button')
+    edit_paper.cards[:metadata].each do |card|
+      edit_paper.view_card card do |overlay|
+        overlay.mark_as_complete
+      end
+    end
+    edit_paper.should_not have_css('a.disabled-button')
+  end
+
   scenario "author placeholder text" do
     edit_paper = EditPaperPage.visit paper
     expect(edit_paper.authors).to eq("Click here to add authors")

@@ -9,7 +9,7 @@ describe UserInfoController do
     it "renders the dashboard info as json" do
       get :dashboard
       json = JSON.parse(response.body)
-      expect(json.keys).to match_array %w(dashboard papers tasks users)
+      expect(json.keys).to match_array %w(dashboard lite_papers card_thumbnails users)
     end
   end
 end

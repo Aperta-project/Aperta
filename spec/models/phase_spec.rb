@@ -34,7 +34,7 @@ describe Phase do
         end
 
         it "initializes one figures task" do
-          expect(phase.tasks.map(&:class)).to include(FigureTask)
+          expect(phase.tasks.map(&:class)).to include(StandardTasks::FigureTask)
         end
 
         it "initializes one authors task" do

@@ -8,14 +8,11 @@ ETahi.IndexRoute = Ember.Route.extend
     @store.all('dashboard').get('firstObject')
 
   afterModel: (model) ->
-    assignedTasks = model.get('assignedTasks')
-    Ember.RSVP.all(assignedTasks.mapBy('paper')).then (papers) ->
-      model.set('assignedPapers', papers.uniq())
+    model.set('allCardThumbnails', @store.all('cardThumbnail'))
 
   actions:
     viewCard: (task) ->
       redirectParams = ['index']
       @controllerFor('application').set('overlayRedirect', redirectParams)
       @controllerFor('application').set('overlayBackground', 'index')
-      task.get('paper').then (paper) =>
-        @transitionTo('task', paper.get('id'), task.id)
+      @transitionTo('task', task.get('litePaper.id'), task.get('id'))

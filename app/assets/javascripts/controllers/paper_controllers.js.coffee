@@ -5,16 +5,16 @@ ETahi.PaperController = Ember.ObjectController.extend
     "/papers/#{@get('id')}/download"
   ).property('id')
 
-  authorTasks: Ember.computed.filterBy('allTasks', 'role', 'author')
+  authorTasks: Ember.computed.filterBy('tasks', 'role', 'author')
 
   assignedTasks: (->
-    assignedTasks = @get('allTasks').filterBy 'assignee', @get('controllers.application.currentUser')
+    assignedTasks = @get('tasks').filterBy 'assignee', @get('controllers.application.currentUser')
     authorTasks   = @get('authorTasks')
 
     assignedTasks.filter (t)-> !authorTasks.contains(t)
-  ).property('allTasks.@each.assignee')
+  ).property('tasks.@each.assignee')
 
-  reviewerTasks: Ember.computed.filterBy('allTasks', 'role', 'reviewer')
+  reviewerTasks: Ember.computed.filterBy('tasks', 'role', 'reviewer')
 
   noAuthors: (->
     Em.isEmpty(@get('authors'))
@@ -31,5 +31,5 @@ ETahi.PaperController = Ember.ObjectController.extend
 ETahi.PaperIndexController = ETahi.PaperController.extend()
 ETahi.PaperEditController = ETahi.PaperController.extend
   addAuthorsTask: (->
-    this.get('allTasks').findBy('type', 'AuthorsTask')
+    this.get('tasks').findBy('type', 'AuthorsTask')
   ).property()

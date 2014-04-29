@@ -14,6 +14,7 @@ ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
 
   isMessage: Ember.computed.equal('type', 'MessageTask')
   paper: DS.belongsTo('paper', {async: true})
+  litePaper: DS.belongsTo('litePaper')
 
   relationshipsToSerialize: []
 
@@ -29,14 +30,8 @@ ETahi.PaperAdminTask = ETahi.Task.extend
   admins: DS.hasMany('user')
   admin: DS.belongsTo('user')
 
-ETahi.AuthorsTask = ETahi.Task.extend
-  authors: Ember.computed.alias('paper.authorsArray')
-  qualifiedType: "StandardTasks::AuthorsTask"
-
 ETahi.DeclarationTask = ETahi.Task.extend
   surveys: DS.hasMany('survey')
-
-ETahi.FigureTask = ETahi.Task.extend()
 
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
@@ -60,8 +55,5 @@ ETahi.RegisterDecisionTask = ETahi.Task.extend
 
 ETahi.ReviewerReportTask = ETahi.Task.extend
   paperReview: DS.belongsTo('paperReview')
-
-ETahi.TechCheckTask = ETahi.Task.extend
-  qualifiedType: "StandardTasks::TechCheckTask"
 
 ETahi.UploadManuscriptTask = ETahi.Task.extend()

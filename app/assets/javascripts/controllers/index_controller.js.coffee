@@ -3,17 +3,17 @@ ETahi.IndexController = Ember.ObjectController.extend
   hasSubmissions: Ember.computed.notEmpty('model.submissions')
   hasAssignedTasks: Ember.computed.notEmpty('model.assignedTasks')
 
-  allTasks: Ember.computed.alias 'store.allTasks'
   viewableAssignedTasks: ( ->
     currentUser = @get('currentUser')
-    flatTasks = _.flatten(@get('allTasks').mapBy('content'))
-    flatTasks.filter (task) ->
-      task.get('assignee.id') == currentUser.id.toString() || task.get('isMessage')
-  ).property('allTasks.@each.[]')
+    cardThumbnails = @get('allCardThumbnails')
+    cardThumbnails.filter (thumbnail) ->
+      thumbnail.get('assigneeId') == currentUser.id.toString() || thumbnail.get('isMessage')
+  ).property('allCardThumbnails.@each.[]', 'allCardThumbnails.@each.assigneeId',  'allCardThumbnails.@each.completed')
 
   tasksByPaper:(->
     assignedTasks = @get('viewableAssignedTasks')
-    tasksByPaper = @get('assignedPapers').map (paper) ->
-      tasks = assignedTasks.filterBy('paper.content', paper)
-      { shortTitle: paper.get('shortTitle'), id: paper.get('id'), tasks: tasks }
+    tasksByPaperId = _.groupBy(assignedTasks, (task) -> task.get('litePaper.id'))
+    _(tasksByPaperId).map (tasks, litePaperId) =>
+      litePaper = @store.getById('litePaper', litePaperId)
+      { shortTitle: litePaper.get('shortTitle'), id: litePaper.get('id'), tasks: tasks }
   ).property('viewableAssignedTasks')

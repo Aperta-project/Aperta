@@ -1,8 +1,5 @@
 require 'spec_helper'
 
-# In general, updating database objects occurs faster than Ember transitions.
-# Because of this I have littered sleeps throughout the code to make sure the
-# transition finishes before asserting there was a UI update.
 feature "Event streaming", js: true do
   let!(:author) { FactoryGirl.create :user }
   let!(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
@@ -14,8 +11,7 @@ feature "Event streaming", js: true do
   end
 
   scenario "On the dashboard page" do
-    # Weird race condition if this test doesn't run first.
-    sleep 0.3
+    expect(page).to have_css(".dashboard-header")
     expect(page).to have_no_selector(".completed")
     upload_task.completed = true
     upload_task.save
@@ -60,19 +56,17 @@ feature "Event streaming", js: true do
       @mt.participants << author
       @mt.save!
       find('.card-content', text: "Wicked Message Card").click
+      expect(page).to have_css(".overlay-content")
     end
 
     scenario "marking complete" do
-      checkbox = find("#task_completed")
-      expect(checkbox).to_not be_checked
+      expect(page).to have_css("#task_completed:not(:checked)")
       @mt.completed = true
       @mt.save
-      sleep 0.3
-      expect(checkbox).to be_checked
+      expect(page).to have_css("#task_completed:checked")
     end
 
     scenario "adding new comments" do
-      sleep 0.3
       @mt.comments.create body: "Hey-o", commenter_id: author.id
       within '.message-comments' do
         expect(page).to have_content "Hey-o"
@@ -80,7 +74,6 @@ feature "Event streaming", js: true do
     end
 
     scenario "adding new participants" do
-      sleep 0.3
       @mt.participants << FactoryGirl.create(:user)
       @mt.save
       expect(all('.user-thumbnail').count).to eq(2)
@@ -91,7 +84,7 @@ feature "Event streaming", js: true do
     scenario "enter declarations" do
       edit_paper = EditPaperPage.visit paper
       edit_paper.view_card('Enter Declarations')
-      sleep 0.3
+      expect(page).to have_css(".overlay-content")
       survey = Survey.first
       survey.answer = "Hello!"
       survey.save
@@ -101,12 +94,10 @@ feature "Event streaming", js: true do
     scenario "marking a task completed" do
       edit_paper = EditPaperPage.visit paper
       edit_paper.view_card('Upload Manuscript')
-      checkbox = find("#task_completed")
-      expect(checkbox).to_not be_checked
+      expect(page).to have_css("#task_completed:not(:checked)")
       upload_task.completed = true
       upload_task.save
-      sleep 0.3
-      expect(checkbox).to be_checked
+      expect(page).to have_css("#task_completed:checked")
     end
   end
 

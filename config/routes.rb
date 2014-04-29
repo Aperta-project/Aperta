@@ -16,6 +16,7 @@ Tahi::Application.routes.draw do
   get '/admin/journals/*manage' => 'ember#index'
 
   get '/flow_manager' => 'ember#index'
+  get '/profile' => 'ember#index'
 
   resources :flows, only: [:index, :destroy, :create]
 
@@ -67,6 +68,7 @@ Tahi::Application.routes.draw do
   resources :surveys, only: [:update]
 
   get 'users/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
+  get 'users/profile', to: 'users#profile'
 
   root 'ember#index'
   resource :event_stream, only: :show

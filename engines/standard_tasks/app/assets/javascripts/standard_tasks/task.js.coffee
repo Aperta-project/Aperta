@@ -9,4 +9,3 @@ ETahi.FigureTask = ETahi.Task.extend
 
 ETahi.TechCheckTask = ETahi.Task.extend
   qualifiedType: "StandardTasks::TechCheckTask"
-  isMetadataTask: true

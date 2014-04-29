@@ -1,6 +1,12 @@
 Tahi::Application.routes.draw do
   mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
 
+  if Rails.env.test?
+    require_relative '../spec/support/stream_server/stream_server'
+    get '/stream' => StreamServer
+    post '/update_stream' => StreamServer
+  end
+
   devise_for :users
   devise_scope :user do
     get "users/sign_out" => "devise/sessions#destroy"

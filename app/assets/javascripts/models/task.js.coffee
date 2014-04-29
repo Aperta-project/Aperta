@@ -33,6 +33,7 @@ ETahi.PaperAdminTask = ETahi.Task.extend
 
 ETahi.DeclarationTask = ETahi.Task.extend
   surveys: DS.hasMany('survey')
+  isMetadataTask: true
 
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')

@@ -103,7 +103,7 @@ describe TasksController do
 
     it_behaves_like "when the user is not signed in"
 
-    subject(:do_request) { get :show, { id: paper_admin_task.id, paper_id: paper.id, format: format } }
+    subject(:do_request) { get :show, { id: paper_admin_task.id, format: format } }
 
     context "json requests" do
       let(:format) { :json }

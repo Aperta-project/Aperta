@@ -82,7 +82,6 @@ ActiveRecord::Schema.define(version: 20140501201221) do
   end
 
   create_table "manuscript_manager_templates", force: true do |t|
-    t.string  "name"
     t.string  "paper_type"
     t.json    "template"
     t.integer "journal_id"

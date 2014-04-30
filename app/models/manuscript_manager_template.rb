@@ -1,6 +1,8 @@
 class ManuscriptManagerTemplate < ActiveRecord::Base
-  validates :name, :paper_type, presence: true
   belongs_to :journal
+
+  validates :paper_type, presence: true
+  validates :paper_type, uniqueness: { scope: :journal_id }
 
   validate :no_duplicate_phase_names
   validate :task_types_in_whitelist

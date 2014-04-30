@@ -29,7 +29,6 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
 
     id: @get('id')
     paper_type: @get('paperType')
-    name: @get('name')
     template:
       phases: serializedPhases
   ).property().volatile()
@@ -78,12 +77,10 @@ ETahi.ManuscriptManagerTemplate = Ember.Object.extend
   rollback: ->
     snapshot = @get('snapshot')
     @setProperties
-      name: snapshot.name
       paperType: snapshot.paperType
       phases: snapshot.phases.copy(true)
 
   updateSnapshot: ->
     @set 'snapshot',
-      name: @get('name')
       paperType: @get('paperType')
       phases: @get('phases').copy(true)

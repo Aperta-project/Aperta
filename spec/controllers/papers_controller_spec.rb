@@ -140,7 +140,13 @@ describe PapersController do
       expect(json['paper']['id']).to eq(Paper.first.id)
     end
 
-    it "renders new template if the paper can't be saved" do
+    it "adds the current user to the paper's authors" do
+      do_request
+      json = JSON.parse(response.body)
+      expect(json['paper']['authors'][0]['first_name']).to eq(user.first_name)
+    end
+
+    it "renders the errors for the paper if it can't be saved" do
       post :create, { paper: { short_title: '' } }
       expect(response.status).to eq(422)
     end

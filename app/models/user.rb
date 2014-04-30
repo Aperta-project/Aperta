@@ -57,7 +57,11 @@ class User < ActiveRecord::Base
   end
 
   def image_url
-    "/images/profile-no-image.jpg"
+    if avatar.present?
+      avatar.url
+    else
+      "/images/profile-no-image.jpg"
+    end
   end
 
   private

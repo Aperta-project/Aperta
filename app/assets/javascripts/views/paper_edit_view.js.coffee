@@ -19,17 +19,14 @@ ETahi.PaperEditView = Ember.View.extend
   ).on('didInsertElement')
 
   setupStickyToolbar: ->
-    Em.run.later (->
-      $('.oo-ui-toolbar').scrollToFixed
-        marginTop: $('.control-bar').outerHeight(true)
-        unfixed: ->
-          $(this).addClass('not-fixed')
-          $(this).css('marginTop', '-86px')
-        preFixed: ->
-          $(this).removeClass('not-fixed')
-          $(this).css('marginTop', '0')
-
-    ), 250
+    $('.oo-ui-toolbar').scrollToFixed
+      marginTop: $('.control-bar').outerHeight(true)
+      unfixed: ->
+        $(this).addClass('not-fixed')
+        $(this).css('marginTop', '-86px')
+      preFixed: ->
+        $(this).removeClass('not-fixed')
+        $(this).css('marginTop', '0')
 
   setupVisualEditor: (->
     ve.init.platform.setModulesUrl('/visual-editor/modules')
@@ -43,18 +40,16 @@ ETahi.PaperEditView = Ember.View.extend
     container = $('<div>')
 
     $('#paper-body').html('').append(container)
-
     target = new ve.init.sa.Target(
       container,
       ve.createDocumentFromHtml(@get('controller.model.body') || '')
     )
 
-    # :( VE seems to need time to initialize:
-    that = @
-    Em.run.later target, ->
-      this.toolbar?.disableFloatable()
-      that.setupStickyToolbar()
-    , 250
+    self = @
+    target.on('surfaceReady', ->
+      target.toolbar.disableFloatable()
+      self.setupStickyToolbar()
+    )
 
     @set('visualEditor', target)
 

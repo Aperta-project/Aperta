@@ -71,6 +71,9 @@ class Paper < ActiveRecord::Base
     role.user if role
   end
 
+  def add_author(user)
+    authors.push user.slice(*%w(first_name last_name email))
+  end
 
   private
 

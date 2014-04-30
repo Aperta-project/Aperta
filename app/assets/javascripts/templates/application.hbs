@@ -9,8 +9,15 @@
         <li class="nav-bar-item">{{#link-to "flow_manager"}}Flow Manager{{/link-to}}</li>
         <li class="nav-bar-item"><a href="/rails_admin">Admin</a></li>
       {{/if}}
-      <li class="nav-bar-text"><a href="/users/sign_out">Sign out</a></li>
-      <li class="nav-bar-text nav-bar-welcome">Welcome back, {{unbound Tahi.currentUser.username}}</li>
+      <li class="nav-bar-text nav-bar-welcome dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          Welcome back, {{unbound Tahi.currentUser.username}}
+        </a>
+        <ul class="dropdown-menu">
+          <li>{{#link-to 'profile'}}Edit My Profile{{/link-to}}</li>
+          <li><a href="/users/sign_out">Sign out</a></li>
+        </ul>
+      </li>
     </ul>
     {{/if}}
   </nav>

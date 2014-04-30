@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
 
   before_create :add_default_user_settings
 
+  mount_uploader :avatar, AvatarUploader
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys: [:login]

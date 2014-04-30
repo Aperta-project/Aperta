@@ -4,7 +4,7 @@ class TaskManagerPage < Page
 
   def phases
     expect(page).to have_css('.column h2')
-    phase_headers = page.all(:xpath, "//div[contains(@class,'column')]//h2")
+    phase_headers = session.all(:css, ".column h2")
     phase_headers.map(&:text)
   end
 

@@ -36,6 +36,9 @@
   margin-bottom: 20px;
   border: 1px solid #d7d7d7;
   padding: 10px;
+
+  a.disabled:not(.btn-xs) { color: gray; }
+  .btn.disabled { background-color: gray; }
 }
 
 // (2) -----------------------------------
@@ -82,10 +85,12 @@
 .figure-thumbnail-title {
   margin: 3px 0 1em 0;
   font-size: 21px;
+  outline: none;
 }
 
 .figure-thumbnail-caption {
   font-size: 14px;
+  outline: none;
 
   &._empty {
     color: #666;

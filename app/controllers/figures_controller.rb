@@ -18,6 +18,12 @@ class FiguresController < ApplicationController
     end
   end
 
+  def update
+    figure = Figure.find params[:id]
+    figure.update_attributes figure_params
+    head :no_content
+  end
+
   def destroy
     if paper_policy.paper.present?
       paper.figures.find(params[:id]).destroy
@@ -46,7 +52,7 @@ class FiguresController < ApplicationController
   end
 
   def figure_params
-    params.require(:figure).permit(:attachment, attachment: [])
+    params.require(:figure).permit(:title, :caption, :attachment, attachment: [])
   end
 
   def render_404

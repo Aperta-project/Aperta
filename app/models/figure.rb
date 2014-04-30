@@ -5,6 +5,12 @@ class Figure < ActiveRecord::Base
   # Why the hell is that happening?
   default_scope { order(:id) }
 
+  before_create :insert_title
+
+  def insert_title
+    self.title = attachment.filename if attachment.present?
+  end
+
   mount_uploader :attachment, AttachmentUploader
 
   def self.acceptable_content_type?(content_type)

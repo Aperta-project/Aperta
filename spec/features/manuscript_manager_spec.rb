@@ -48,6 +48,7 @@ feature "Manuscript Manager", js: true do
       # put new phases in the second and forth positions.
       task_manager_page.phase(original_phases[0]).add_phase
       task_manager_page.phase(original_phases[1]).add_phase
+      sleep(0.4)
       new_phases = task_manager_page.phases
       expect(new_phases[1]).to eq("New Phase")
       expect(new_phases[3]).to eq("New Phase")

@@ -3,11 +3,12 @@ ETahi.TaskController = Ember.ObjectController.extend
   onClose: 'closeOverlay'
   isLoading: false
 
-  saveOnCompletedChange: (->
-    Ember.run.once this, ->
-      return unless @get('model.isDirty')
-      @get('model').save()
-  ).observes('model.completed')
+  addSave: ( ->
+    self = @
+    @.saveModel = ( ->
+      self.send('saveModel')
+    )
+  ).on('init')
 
   actions:
     saveModel: ->

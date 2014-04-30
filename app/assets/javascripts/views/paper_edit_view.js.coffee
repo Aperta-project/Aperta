@@ -32,7 +32,7 @@ ETahi.PaperEditView = Ember.View.extend
     ve.init.platform.setModulesUrl('/visual-editor/modules')
     @updateVisualEditor()
 
-    @addObserver 'controller.model.body', =>
+    @addObserver 'controller.body', =>
       @updateVisualEditor()
   ).on('didInsertElement')
 
@@ -42,7 +42,7 @@ ETahi.PaperEditView = Ember.View.extend
     $('#paper-body').html('').append(container)
     target = new ve.init.sa.Target(
       container,
-      ve.createDocumentFromHtml(@get('controller.model.body') || '')
+      ve.createDocumentFromHtml(@get('controller.body') || '')
     )
 
     self = @
@@ -55,7 +55,7 @@ ETahi.PaperEditView = Ember.View.extend
 
   saveVisualEditorChanges: ->
     documentNode = ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())
-    @set('controller.model.body', $(documentNode).find('body').html())
+    @set('controller.body', $(documentNode).find('body').html())
 
   actions:
     save: ->

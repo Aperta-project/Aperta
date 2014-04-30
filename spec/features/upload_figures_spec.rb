@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Upload figures", js: true do
-  let(:author) { FactoryGirl.create :user }
+  let(:author) { create :user }
   let(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
 
   before do
@@ -52,5 +52,25 @@ feature "Upload figures", js: true do
       find('.figure-delete-button').click
       expect(overlay).to_not have_selector('.figure-image')
     end
+  end
+
+  scenario "Author can edit title and caption" do
+    edit_paper = EditPaperPage.visit paper
+    edit_paper.view_card 'Upload Figures' do |overlay|
+      overlay.attach_figure
+      title = find('h2.figure-thumbnail-title')
+      caption = find('div.figure-thumbnail-caption')
+
+      caption.set 'New figure caption'
+      title.set 'new_figure_title'
+      all('a', :text => 'SAVE').last.click
+
+      expect(title.text).to eq 'new_figure_title'
+      expect(caption.text).to eq 'New figure caption'
+    end
+
+    figure = paper.figures.last
+    expect(figure.title).to eq 'new_figure_title'
+    expect(figure.caption).to eq 'New figure caption'
   end
 end

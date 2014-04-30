@@ -69,4 +69,8 @@ group :test do
   gem "codeclimate-test-reporter", require: nil
   gem 'vcr'
   gem 'webmock'
+
+  # For testing event streaming.
+  gem 'sinatra'
+  gem 'thin'
 end

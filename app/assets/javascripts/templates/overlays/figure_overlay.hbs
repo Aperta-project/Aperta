@@ -40,5 +40,7 @@
 </ul>
 
 <ul class="paper-figures">
-  {{each paper.figures itemViewClass="ETahi.FigureThumbnailView"}}
+  {{#each paper.figures}}
+    {{figure-thumbnail figure=this}}
+  {{/each}}
 </ul>

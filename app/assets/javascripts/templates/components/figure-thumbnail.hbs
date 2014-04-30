@@ -1,0 +1,45 @@
+<div class="figure-thumbnail-row">
+  <span class="figure-thumbnail-destroy-icon glyphicon glyphicon-trash" {{action "confirmDestroyFigure"}}></span>
+
+  {{#if figure.src}}
+    <img class="figure-thumbnail-image" {{action "togglePreview"}} src={{unbound figure.src}} alt={{unbound figure.alt}}>
+  {{else}}
+    <div class="figure-thumbnail-image _placeholder">
+      <span class="glyphicon glyphicon-file"></span>
+    </div>
+  {{/if}}
+
+  <div class="figure-thumbnail-text-content">
+    {{content-editable tagName="h2"
+                       class="figure-thumbnail-title"
+                       value=figure.title
+                       placeholder='Figure title here'
+                       plaintext="true"
+                       preventEnterKey="true"}}
+
+    {{content-editable tagName="div"
+                       class="figure-thumbnail-caption _empty"
+                       value=figure.caption
+                       placeholder='There is no caption for this image.'
+                       plaintext="true"
+                       preventEnterKey="true"}}
+  </div>
+
+  <div class="figure-thumbnail-edit-actions">
+    <a href="#" {{bind-attr class="editState::disabled"}} {{action 'cancelEditing'}}>cancel</a>
+    <a href="#" {{bind-attr class="editState::disabled :primary-button :btn-xs"}} {{action 'saveFigure'}}>Save</a>
+  </div>
+
+  <div class="figure-thumbnail-destroy-overlay">
+    <p>This will permanently delete your image. Are you sure?</p>
+    <button class="primary-button white-button" {{action "cancelDestroyFigure"}}>Cancel</button>
+    <button class="primary-button white-button figure-delete-button" {{action "destroyFigure"}}>Delete Forever</button>
+  </div>
+</div>
+
+{{#if view.previewState}}
+  <div class="figure-thumbnail-preview">
+    <div {{action "togglePreview"}} class="figure-thumbnail-preview-close">&times;</div>
+    <img src={{unbound figure.src}} alt={{unbound figure.alt}}>
+  </div>
+{{/if}}

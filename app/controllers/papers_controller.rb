@@ -26,7 +26,9 @@ class PapersController < ApplicationController
   end
 
   def create
-    @paper = current_user.papers.create!(paper_params)
+    @paper = current_user.papers.build(paper_params)
+    @paper.add_author(current_user)
+    @paper.save!
     render status: 201, json: @paper
   end
 

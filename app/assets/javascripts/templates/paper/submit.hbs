@@ -35,5 +35,5 @@
 
   {{link-to 'Cancel' 'paper.edit' this class="primary-button btn-lg"}}
   <button id="submit-paper" class="primary-button btn-lg" {{action 'submitPaper'}}>Submit</button>
-
+  <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
 </div>

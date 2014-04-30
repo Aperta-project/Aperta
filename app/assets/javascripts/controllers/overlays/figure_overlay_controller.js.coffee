@@ -1,4 +1,1 @@
-ETahi.FigureOverlayController = ETahi.TaskController.extend
-  actions:
-    destroyFigure: (figure)->
-      figure.destroyRecord()
+ETahi.FigureOverlayController = ETahi.TaskController.extend()

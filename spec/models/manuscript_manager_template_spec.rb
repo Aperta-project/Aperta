@@ -38,7 +38,7 @@ describe ManuscriptManagerTemplate do
         end
         context "valid task types" do
           let(:template_json) do
-            {phases: [{name: "Birth", task_types: [ManuscriptManagerTemplate::VALID_TASK_TYPES.first]}]}
+            {phases: [{name: "Birth", task_types: [Journal::VALID_TASK_TYPES.first]}]}
           end
           it 'are valid' do
             expect(new_template).to have(0).errors_on(:task_types)

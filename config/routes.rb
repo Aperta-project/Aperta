@@ -20,7 +20,7 @@ Tahi::Application.routes.draw do
 
   resources :flows, only: [:index, :destroy, :create]
 
-  resources :figures, only: :destroy
+  resources :figures, only: [:destroy, :update]
 
   namespace :api do
     resources :papers, only: [:index, :show, :update]

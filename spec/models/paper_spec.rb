@@ -148,4 +148,18 @@ describe Paper do
       specify { expect(paper.editor).to be_nil }
     end
   end
+
+  describe ".assignees" do
+    let(:user)  { FactoryGirl.build(:user) }
+    let(:admin_user)  { FactoryGirl.build(:user, :admin) }
+    let(:paper) { FactoryGirl.build(:paper, user: user) }
+
+    before do
+      allow(paper).to receive(:admin_assignees).and_return([admin_user])
+    end
+
+    it "should contain both users and assignees" do
+      expect(paper.assignees).to match_array([user, admin_user])
+    end
+  end
 end

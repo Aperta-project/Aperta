@@ -1,7 +1,7 @@
 class Task < ActiveRecord::Base
   include EventStreamNotifier
 
-  METADATA_TYPES = ["DeclarationTask","StandardTasks::FigureTask", "StandardTasks::AuthorsTask", "UploadManuscriptTask"]
+  METADATA_TYPES = ["DeclarationTask", "StandardTasks::FigureTask", "StandardTasks::AuthorsTask", "UploadManuscriptTask"]
 
   default_scope { order("completed ASC") }
 

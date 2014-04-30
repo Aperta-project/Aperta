@@ -13,7 +13,7 @@ class ProfilePage < Page
   end
 
   def affiliations
-    all('#profile-affiliations h4')
+    all('#profile-affiliations h4').map(&:text)[1..-1]
   end
 
 end

@@ -30,7 +30,7 @@ class PageFragment
                     rescue NameError
                       CardOverlay
                     end
-    overlay = overlay_class.new session.find(".overlay")
+    overlay = overlay_class.new session.find(".overlay", visible: false)
     if block_given?
       block.call overlay
       overlay.dismiss

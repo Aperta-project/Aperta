@@ -1,18 +1,4 @@
 class ManuscriptManagerTemplate < ActiveRecord::Base
-  #TODO: Remove these and change the tests' references.
-  VALID_TASK_TYPES = ["ReviewerReportTask",
-                      "PaperAdminTask",
-                      "MessageTask",
-                      "StandardTasks::TechCheckTask",
-                      "UploadManuscriptTask",
-                      "PaperEditorTask",
-                      "FigureTask",
-                      "DeclarationTask",
-                      "Task",
-                      "PaperReviewerTask",
-                      "RegisterDecisionTask",
-                      "StandardTasks::AuthorsTask"]
-
   validates :name, :paper_type, presence: true
   belongs_to :journal
 
@@ -37,7 +23,7 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
   end
 
   def task_types_in_whitelist
-    if task_types.present? && task_types.any? { |task_type| !VALID_TASK_TYPES.include? task_type }
+    if task_types.present? && task_types.any? { |task_type| !Journal::VALID_TASK_TYPES.include? task_type }
       errors.add(:task_types, "Task types must be in the allowed list.")
     end
   end

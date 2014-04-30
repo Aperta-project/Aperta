@@ -3,13 +3,9 @@ class TaskManagerPage < Page
   path :manage_paper
 
   def phases
-    begin
-      expect(page).to have_css('.column h2')
-      all('.column h2').map(&:text)
-    rescue Selenium::WebDriver::Error::StaleElementReferenceError
-      sleep 1
-      retry
-    end
+    expect(page).to have_css('.column h2')
+    phase_headers = page.all(:xpath, "//div[contains(@class,'column')]//h2")
+    phase_headers.map(&:text)
   end
 
   def phase phase_name

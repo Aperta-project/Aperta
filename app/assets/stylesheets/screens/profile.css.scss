@@ -1,0 +1,21 @@
+/*
+  #profile-name
+*/
+
+#profile-name h1 {
+  @include card-title;
+}
+
+#profile-username h2, #profile-email h2 {
+  @include column-title;
+}
+
+#reset-password {
+  @include text-link-lg;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.user-profile {
+  padding-top: 60px;
+}

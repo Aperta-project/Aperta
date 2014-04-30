@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Event streaming", js: true do
-  let!(:author) { FactoryGirl.create :user }
+  let!(:author) { FactoryGirl.create :user, :admin }
   let!(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
   let(:upload_task) { author.papers.first.tasks_for_type(UploadManuscriptTask).first }
 

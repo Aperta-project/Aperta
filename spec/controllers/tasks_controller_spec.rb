@@ -96,7 +96,7 @@ describe TasksController do
   end
 
   describe "GET 'show'" do
-    let!(:paper) { Paper.create! short_title: "abcd", journal: Journal.create! }
+    let!(:paper) { Paper.create! short_title: "abcd", journal: Journal.create!, user: user }
     let(:paper_admin_task) { Task.where(title: "Assign Admin").first }
 
     let(:format) { nil }

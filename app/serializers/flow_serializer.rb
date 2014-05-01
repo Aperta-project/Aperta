@@ -27,7 +27,6 @@ class FlowSerializer < ActiveModel::Serializer
     cached_tasks.where(type: "PaperAdminTask")
   end
 
-  # simplify this and then remove the base_query
   def unassigned_papers
     PaperAdminTask.where(assignee_id: nil).includes(:journal, :paper)
   end
@@ -41,7 +40,4 @@ class FlowSerializer < ActiveModel::Serializer
     }
   end
 
-  def base_query(task_type)
-    task_type.joins(phase: {task_manager: :paper}).includes(:paper)
-  end
 end

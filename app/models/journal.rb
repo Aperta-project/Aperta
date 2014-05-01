@@ -3,6 +3,7 @@ class Journal < ActiveRecord::Base
                       "PaperAdminTask",
                       "MessageTask",
                       "StandardTasks::TechCheckTask",
+                      "StandardTasks::FigureTask",
                       "UploadManuscriptTask",
                       "PaperEditorTask",
                       "FigureTask",

@@ -15,6 +15,7 @@ ETahi.ProfileAvatarView = Ember.View.extend
       url: "/users/#{@get('controller.model.id')}"
       dataType: 'json'
       method: 'PATCH'
+      acceptFileTypes: /(\.|\/)(gif|jpe?g|png|tiff)$/i
 
     uploader.on 'fileuploadalways', (e, data) =>
       $('#profile-avatar-hover').hide()

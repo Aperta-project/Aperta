@@ -42,8 +42,23 @@ class EditPaperPage < Page
     raise NotImplementedError, "TODO: The UI on paper#edit needs to be implemented"
   end
 
-  def body=(val)
-    find('.ve-ce-documentNode').set(val)
+  def body=(string)
+    code = <<HERE
+     var surf = ve.instances[0].getModel();
+     var doc = surf.getDocument();
+     var l = doc.getData().length;
+     var range = new ve.Range(0, l);
+     var clearTransaction = ve.dm.Transaction.newFromRemoval(doc, range, true);
+     surf.change(clearTransaction);
+     var newData = '#{string}'.split('');
+     newTransaction = ve.dm.Transaction.newFromInsertion(doc, 0, newData);
+     surf.change(newTransaction);
+HERE
+    page.execute_script code
+  end
+
+  def body
+    page.evaluate_script 've.instances[0].getModel().getDocument().getText()'
   end
 
   def authors
@@ -62,9 +77,6 @@ class EditPaperPage < Page
     abstract_node.text
   end
 
-  def body
-    page.evaluate_script 've.instances[0].getModel().getDocument().getText()'
-  end
 
   def cards
     {

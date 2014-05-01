@@ -7,7 +7,7 @@ describe PaperReviewerTask do
     specify { expect(task.role).to eq 'editor' }
   end
 
-  let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
+  let(:paper) { FactoryGirl.create :paper }
   let(:phase) { paper.task_manager.phases.first }
 
   let(:albert) { create :user, :admin }
@@ -44,7 +44,6 @@ describe PaperReviewerTask do
   end
 
   describe "#reviewer_ids" do
-    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
     let(:task) { PaperReviewerTask.create! phase: paper.task_manager.phases.first }
     let (:reviewer1) { create :user }
     let (:reviewer2) { create :user }

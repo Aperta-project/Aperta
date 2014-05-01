@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 feature "Make declarations", js: true do
-  let(:author) { create :user }
-  let(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
+  let(:author) { FactoryGirl.create :user }
+  let(:paper) { FactoryGirl.create :paper, user: author, short_title: 'foo bar' }
 
   before do
     sign_in_page = SignInPage.visit

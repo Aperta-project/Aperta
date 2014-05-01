@@ -9,9 +9,9 @@ class TaskWithoutDefaults < Task
 end
 
 describe Task do
-  describe "default_scope" do
-    let(:paper) { Paper.create! short_title: 'Hello world', journal: Journal.create! }
+  let(:paper) { FactoryGirl.create :paper }
 
+  describe "default_scope" do
     it "orders so the completed ones are below the incomplete ones" do
       completed_task = Task.create! title: "Paper Admin",
         completed: true,
@@ -140,7 +140,6 @@ describe Task do
   end
 
   describe "#assignees" do
-    let(:paper) { Paper.create! short_title: 'Hello world', journal: Journal.create!(name: "Yeti show") }
     let(:task) { Task.create! title: "Paper Admin",
         role: 'admin',
         phase: paper.task_manager.phases.first

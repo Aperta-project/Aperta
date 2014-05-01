@@ -6,10 +6,9 @@ describe TaskPolicy do
                  username: 'albert',
                  password: 'password',
                  password_confirmation: 'password' }
-    let(:paper) {
-      Paper.create! short_title: "world_of_policies",
-        journal: Journal.create!
-    }
+    let(:paper) do
+      FactoryGirl.create(:paper, user: user)
+    end
 
     let!(:expected_tasks) do
       tasks = paper.task_manager.phases.collect(&:tasks).flatten.in_groups(2, false)

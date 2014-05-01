@@ -18,13 +18,12 @@ feature "Assigns Reviewer", js: true do
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 
-  before do
-    paper = Paper.create! short_title: 'foobar',
-      title: 'Foo bar',
-      submitted: true,
-      journal: journal,
-      user: editor
+  let!(:paper) do
+    FactoryGirl.create :paper, user: editor, submitted: true, journal: journal,
+      short_title: 'foobar', title: 'Foo Bar'
+  end
 
+  before do
     paper_role = PaperRole.create! paper: paper, user: editor, editor: true
 
     sign_in_page = SignInPage.visit

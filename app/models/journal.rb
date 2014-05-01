@@ -34,7 +34,7 @@ class Journal < ActiveRecord::Base
   end
 
   def paper_types
-    ["Research", "Presubmission"]
+    self.manuscript_manager_templates.pluck(:paper_type)
   end
 
   mount_uploader :logo, LogoUploader

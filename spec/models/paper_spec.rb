@@ -1,28 +1,14 @@
 require 'spec_helper'
 
 describe Paper do
-  let(:paper) { Paper.new short_title: 'Example', journal: Journal.new }
+  let(:paper) { FactoryGirl.build :paper }
 
   describe "initialization" do
     describe "paper_type" do
-      context "when no paper_type is specified" do
-        it "defaults to research" do
-          expect(paper.paper_type).to eq 'research'
-        end
-      end
-
-      context "when paper_type is the empty string" do
-        it "defaults to research" do
-          paper = Paper.new short_title: 'Example', paper_type: ''
-          expect(paper.paper_type).to eq 'research'
-        end
-      end
-
-      context "when paper_type is specified" do
-        it "uses specified paper_type" do
-          paper = Paper.new short_title: 'Example', paper_type: 'foobar'
-          expect(paper.paper_type).to eq 'foobar'
-        end
+      it "is required" do
+        paper = Paper.new short_title: 'Example'
+        expect(paper).to_not be_valid
+        expect(paper).to have(1).errors_on(:paper_type)
       end
     end
 
@@ -43,19 +29,23 @@ describe Paper do
 
   describe "validations" do
     describe "short_title" do
-      it "must be unique" do
-        expect(Paper.new(journal: Journal.create!)).to_not be_valid
+      it "must be present" do
+        paper = FactoryGirl.build(:paper, short_title: nil)
+        expect(paper).to_not be_valid
+        expect(paper).to have(1).errors_on(:short_title)
       end
 
-      it "must be present" do
-        Paper.create! short_title: 'Duplicate', journal: Journal.create!
-        expect(Paper.new short_title: 'Duplicate', journal: Journal.create!).to_not be_valid
+      it "must be unique" do
+        paper = FactoryGirl.create(:paper, short_title: 'Duplicate')
+        dup_paper = FactoryGirl.build(:paper, short_title: 'Duplicate')
+        expect(dup_paper).to_not be_valid
+        expect(dup_paper).to have(1).errors_on(:short_title)
       end
 
       it "must be less than 50 characters" do
-        paper = Paper.new short_title: 'Longer than 50 characters is not an awesome short title coz short titles should be short, stupid!',
-          journal: Journal.create!
+        paper = FactoryGirl.build(:paper, short_title: 'Longer than 50 characters is not an awesome short title coz short titles should be short, stupid!')
         expect(paper).to_not be_valid
+        expect(paper).to have(1).errors_on(:short_title)
       end
     end
 
@@ -66,35 +56,11 @@ describe Paper do
       end
     end
 
-    describe "paper_type" do
-      it "must be one of Paper::PAPER_TYPES" do
-        Paper::PAPER_TYPES.each do |type|
-          paper.paper_type = type
-          expect(paper).to be_valid
-        end
-        paper.paper_type = 'invalid paper type'
-        expect(paper.error_on(:paper_type).size).to eq(1)
-      end
-    end
-
-    describe "submission" do
-      let(:paper) { Paper.create!(short_title: 'Yoda', journal: Journal.create!) }
-      it "should not be valid when metadata tasks are incomplete" do
-        paper.submitted = true
-        expect(paper).to_not be_valid
-      end
-
-      it "should be valid when metadata tasks are completed" do
-        paper.tasks.metadata.map{ |t| t.update_attribute(:completed, true) }
-        paper.submitted = true
-        expect(paper).to be_valid
-      end
-    end
   end
 
   describe "callbacks" do
     let(:user) { User.create! email: 'author@example.com', password: 'password', password_confirmation: 'password', username: 'author' }
-    let(:paper)   { Paper.new short_title: 'Paper', journal: Journal.create!, user: user }
+    let(:paper)   { FactoryGirl.build :paper, user: user }
 
     it "assigns all author tasks to the paper author" do
       paper.save!

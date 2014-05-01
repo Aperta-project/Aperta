@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature "Upload figures", js: true do
   let(:author) { create :user }
-  let(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
+  let(:paper) { FactoryGirl.create :paper, user: author }
 
   before do
     sign_in_page = SignInPage.visit

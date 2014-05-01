@@ -9,14 +9,16 @@ end
 describe TasksController do
   let(:user) { create :user, admin: true }
 
+  let!(:paper) do
+    FactoryGirl.create(:paper, user: user)
+  end
+
   before do
     sign_in user
     allow(EventStream).to receive(:post_event)
   end
 
   describe "POST 'create'" do
-    let!(:paper) { Paper.create! short_title: 'some-paper', journal: Journal.create!, user: user }
-
     subject(:do_request) do
       post :create, { format: 'json', paper_id: paper.to_param, task: { assignee_id: '1',
                                                         type: 'Task',
@@ -33,7 +35,6 @@ describe TasksController do
   end
 
   describe "PATCH 'update'" do
-    let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated', journal: Journal.create!, user: user }
     let(:task) { Task.create! title: "sample task", role: "sample role", phase: paper.task_manager.phases.first }
 
     subject(:do_request) do
@@ -88,6 +89,7 @@ describe TasksController do
 
   describe "GET 'show'" do
     let!(:paper) { Paper.create! short_title: "abcd", journal: Journal.create!, user: user }
+    let(:paper) { FactoryGirl.create(:paper, user: user) }
     let(:paper_admin_task) { Task.where(title: "Assign Admin").first }
 
     let(:format) { nil }

@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Manuscript Manager", js: true do
   let(:admin) { create :user, admin: true }
   let(:author) { create :user, admin: true }
-  let(:paper) { admin.papers.create! short_title: 'foobar', title: 'Foo bar', submitted: true, journal: Journal.create! }
+  let(:paper) { FactoryGirl.create :paper, user: admin, submitted: true }
 
   before do
     JournalRole.create! admin: true, journal: paper.journal, user: admin
@@ -58,7 +58,7 @@ feature "Manuscript Manager", js: true do
 
   scenario 'Removing a task' do
     dashboard_page = DashboardPage.visit
-    paper_page = dashboard_page.view_submitted_paper 'foobar'
+    paper_page = dashboard_page.view_submitted_paper paper.short_title
     task_manager_page = paper_page.visit_task_manager
 
     phase = task_manager_page.phase 'Submission Data'
@@ -67,7 +67,7 @@ feature "Manuscript Manager", js: true do
 
   scenario "Admin can assign a paper to themselves" do
     dashboard_page = DashboardPage.visit
-    paper_page = dashboard_page.view_submitted_paper 'foobar'
+    paper_page = dashboard_page.view_submitted_paper paper.short_title
     task_manager_page = paper_page.visit_task_manager
 
     sleep 0.4
@@ -97,7 +97,7 @@ feature "Manuscript Manager", js: true do
   scenario 'Renaming a phase' do
     # TODO: Make this work
     # dashboard_page = DashboardPage.visit
-    # paper_page = dashboard_page.view_submitted_paper 'foobar'
+    # paper_page = dashboard_page.view_submitted_paper paper.short_title
     # task_manager_page = paper_page.visit_task_manager
 
     # sleep 0.4

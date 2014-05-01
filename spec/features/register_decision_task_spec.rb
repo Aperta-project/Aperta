@@ -2,20 +2,18 @@ require 'spec_helper'
 
 feature "Register Decision", js: true do
 
-  let(:journal) { create :journal }
+  let(:journal) { FactoryGirl.create :journal }
 
   let!(:editor) do
     create :user,
       journal_roles: [JournalRole.new(journal: journal, editor: true)]
   end
 
-  before do
-    paper = Paper.create! short_title: 'foo-bar',
-      title: 'Foo Bar',
-      submitted: true,
-      journal: journal,
-      user: editor
+  let!(:paper) do
+    FactoryGirl.create(:paper, user: editor, submitted: true, journal: journal)
+  end
 
+  before do
     paper_role = PaperRole.create! user: editor, paper: paper, editor: true
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in editor.email

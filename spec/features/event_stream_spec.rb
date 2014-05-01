@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 feature "Event streaming", js: true do
-  let!(:author) { create :user, :admin }
-  let!(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
-  let(:upload_task) { author.papers.first.tasks_for_type(UploadManuscriptTask).first }
+  let!(:author) { FactoryGirl.create :user, :admin }
+  let!(:paper) { FactoryGirl.create :paper, user: author }
+  let(:upload_task) { paper.tasks_for_type(UploadManuscriptTask).first }
 
   before do
     sign_in_page = SignInPage.visit

@@ -2,10 +2,13 @@ require 'spec_helper'
 
 describe FiguresController do
   let(:user) { create :user }
+  let(:paper) do
+    FactoryGirl.create(:paper, user: user)
+  end
+
   before { sign_in user }
 
   describe "destroying the figure" do
-    let(:paper) { user.papers.create! short_title: 'Paper with attachment', journal: Journal.create! }
     subject(:do_request) { delete :destroy, id: paper.figures.last.id, paper_id: paper.id }
     before(:each) do
       paper.figures.create! attachment: fixture_file_upload('yeti.tiff', 'image/tiff')
@@ -19,7 +22,9 @@ describe FiguresController do
   end
 
   describe "Unauthorized Request" do
-    let(:paper) { Paper.create! short_title: 'Paper with attachment', journal: Journal.create! }
+    let(:paper) do
+      FactoryGirl.create(:paper)
+    end
 
     subject(:do_request) do
       post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff', 'image/tiff') }
@@ -32,8 +37,6 @@ describe FiguresController do
   end
 
   describe "POST 'create'" do
-    let(:paper) { Paper.create! short_title: 'Paper with attachment', journal: Journal.create!, user: user }
-
     subject(:do_request) do
       post :create, paper_id: paper.to_param, figure: { attachment: fixture_file_upload('yeti.tiff', "image/tiff") }
     end
@@ -95,7 +98,6 @@ describe FiguresController do
   end
 
   describe "PUT 'update'" do
-    let(:paper) { user.papers.create! short_title: 'Paper with attachment', journal: Journal.create! }
     subject(:do_request) { patch :update, id: paper.figures.last.id, paper_id: paper.id, figure: {title: "new title", caption: "new caption"} }
     before(:each) do
       paper.figures.create! attachment: fixture_file_upload('yeti.tiff', 'image/tiff')

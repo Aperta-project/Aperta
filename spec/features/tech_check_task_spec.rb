@@ -4,13 +4,11 @@ feature "Tech Check", js: true do
   let(:user) { create :user }
   let(:journal) { create :journal }
 
-  before do
-    paper = Paper.create! short_title: 'foobar',
-      title: 'Foo bar',
-      submitted: true,
-      journal: journal,
-      user: user
+  let(:paper) do
+    FactoryGirl.create(:paper, user: user, submitted: true)
+  end
 
+  before do
     make_user_journal_admin(user, paper)
 
     phase = paper.task_manager.phases.where(name: 'Assign Editor').first

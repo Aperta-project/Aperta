@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe PaperEditorTask do
+  let(:paper) { FactoryGirl.create :paper }
   describe "defaults" do
     subject(:task) { PaperEditorTask.new }
     specify { expect(task.title).to eq 'Assign Editor' }
@@ -8,8 +9,7 @@ describe PaperEditorTask do
   end
 
   describe "#paper_role" do
-    let(:user) { build(:user) }
-    let!(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
+    let(:user) { FactoryGirl.build(:user) }
     let!(:paper_role) { PaperRole.create! paper: paper, editor: true, user: user }
     let!(:phase) { paper.task_manager.phases.first }
     let(:task) { PaperEditorTask.create!(phase: phase) }
@@ -35,7 +35,6 @@ describe PaperEditorTask do
   end
 
   describe "#editor_id" do
-    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
     let(:task) { PaperEditorTask.create! phase: paper.task_manager.phases.first }
 
     let :editor do

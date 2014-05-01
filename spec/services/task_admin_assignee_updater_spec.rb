@@ -3,7 +3,7 @@ require 'spec_helper'
 describe TaskAdminAssigneeUpdater do
 
     let(:task)  { PaperAdminTask.create!(phase: phase) }
-    let(:paper) { Paper.create!(short_title: "something", journal: Journal.create!) }
+    let(:paper) { FactoryGirl.create(:paper) }
     let(:phase) { paper.task_manager.phases.first }
     let(:jim) { User.create! email: 'jim@plos.org',
         password: 'abcd1234',
@@ -55,12 +55,12 @@ describe TaskAdminAssigneeUpdater do
         end
       end
 
-      let(:other_paper) {
-        Paper.create!(short_title: "something cooler", journal: Journal.create!).tap do |p|
+      let(:other_paper) do
+        FactoryGirl.create(:paper).tap do |p|
           phase = paper.task_manager.phases.first
           PaperAdminTask.create(phase: phase)
         end
-      }
+      end
 
       it "will change the assignee on other unassigned incomplete tasks" do
         updater.update

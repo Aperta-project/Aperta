@@ -1,6 +1,4 @@
 class Paper < ActiveRecord::Base
-  PAPER_TYPES = %w(research front_matter)
-
   after_initialize :initialize_defaults
 
   has_one :task_manager, inverse_of: :paper
@@ -21,7 +19,7 @@ class Paper < ActiveRecord::Base
 
   serialize :authors, Array
 
-  validates :paper_type, inclusion: { in: PAPER_TYPES }
+  validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
   validates :journal, presence: true
   validate :metadata_tasks_completed?, if: :submitting?
@@ -110,7 +108,6 @@ class Paper < ActiveRecord::Base
 
   def initialize_defaults
     unless persisted?
-      self.paper_type = 'research' if self.paper_type.blank?
       self.task_manager ||= build_task_manager
     end
   end

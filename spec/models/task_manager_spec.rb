@@ -21,9 +21,9 @@ describe TaskManager do
   end
 
   describe "#tasks" do
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:journal) { paper.journal }
     it "grabs the tasks from each phase and flattens to an array" do
-      journal = Journal.create!
-      paper = Paper.create!(short_title: "Title", journal: journal)
       task_manager = paper.task_manager
       allow(task_manager).to receive(:phases).and_return([double(:phase, tasks: [:task1, :task2]),
                                                           double(:phase, tasks: [:task3, :task4])])

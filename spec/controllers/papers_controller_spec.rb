@@ -6,12 +6,14 @@ describe PapersController do
 
   let(:user) { create :user }
 
+  let(:submitted) { false }
+  let(:paper) do
+    FactoryGirl.create(:paper, submitted: submitted, user: user)
+  end
+
   before { sign_in user }
 
   describe "GET download" do
-    let(:paper) do
-      user.papers.create!(submitted: true, short_title: 'submitted-paper', journal: Journal.create!)
-    end
     subject(:do_request) { get :download, id: paper.to_param }
 
     it "uses PaperPolicy to retrieve the paper" do
@@ -36,9 +38,7 @@ describe PapersController do
   end
 
   describe "GET 'show'" do
-    let(:paper) do
-      user.papers.create!(submitted: true, short_title: 'submitted-paper', journal: Journal.create!)
-    end
+    let(:submitted) { true }
     subject(:do_request) { get :show, id: paper.to_param }
 
     it_behaves_like "when the user is not signed in"
@@ -62,13 +62,12 @@ describe PapersController do
     end
 
     context "when the paper is not submitted" do
-      before { paper.update_attribute(:submitted, false) }
+      let(:submitted) { false }
       it { should redirect_to(edit_paper_path paper) }
     end
   end
 
   describe "GET 'edit'" do
-    let(:paper) { user.papers.create! short_title: 'user\'s paper', journal: Journal.create!}
     subject(:do_request) { get :edit, id: paper.to_param }
 
     it_behaves_like "when the user is not signed in"
@@ -92,7 +91,7 @@ describe PapersController do
     end
 
     context "when the paper is submitted" do
-      before { paper.update_attribute(:submitted, true) }
+      let(:submitted) { true }
       it { should redirect_to(paper_path(paper)) }
     end
   end
@@ -110,7 +109,7 @@ describe PapersController do
     before { Journal.create! }
 
     subject(:do_request) do
-      post :create, { paper: { short_title: 'ABC101', journal_id: Journal.last.id } }
+      post :create, { paper: { short_title: 'ABC101', journal_id: Journal.last.id, paper_type: 'research' } }
     end
 
     it_behaves_like "when the user is not signed in"
@@ -145,8 +144,6 @@ describe PapersController do
   end
 
   describe "PUT 'update'" do
-    let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated', journal: Journal.create! }
-
     let(:params) { {} }
 
     subject(:do_request) do
@@ -183,7 +180,6 @@ describe PapersController do
   end
 
   describe "POST 'upload'" do
-    let(:paper) { Paper.create! short_title: 'paper-needs-uploads', journal: Journal.create! }
 
     let(:uploaded_file) do
       docx_file_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'

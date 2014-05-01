@@ -15,11 +15,7 @@ feature 'Message Cards', js: true do
   end
 
   let(:paper) do
-    Paper.create! short_title: 'foobar',
-      title: 'Foo bar',
-      submitted: true,
-      journal: journal,
-      user: admin
+    FactoryGirl.create(:paper, user: admin, submitted: true, journal: journal)
   end
 
   describe "creating a new message" do

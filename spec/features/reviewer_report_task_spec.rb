@@ -1,21 +1,21 @@
 require 'spec_helper'
 
 feature "Reviewer Report", js: true do
-  let(:journal) { create :journal }
-  let(:author) { create :user }
+  let(:journal) { FactoryGirl.create :journal }
 
   let!(:reviewer) do
-    create :user,
-      journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
+    FactoryGirl.create :user, journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
+  end
+
+  let!(:author) do
+    author = FactoryGirl.create :user
+  end
+
+  let!(:paper) do
+    FactoryGirl.create(:paper, user: author, journal: journal, submitted: true)
   end
 
   before do
-    paper = Paper.create! short_title: 'foo-bar',
-      title: 'Foo Bar',
-      submitted: true,
-      journal: journal,
-      user: author
-
     paper_reviewer_task = paper.task_manager.phases.where(name: 'Assign Reviewers').first.tasks.where(type: 'PaperReviewerTask').first
     paper_reviewer_task.reviewer_ids = [reviewer.id.to_s]
     sign_in_page = SignInPage.visit

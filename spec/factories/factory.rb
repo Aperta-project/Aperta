@@ -13,10 +13,8 @@ FactoryGirl.define do
   end
 
   factory :manuscript_manager_template do
-    name 'Sample Template'
-    paper_type 'Research'
+    sequence(:paper_type) {|n| "Research #{n}" }
     template { {} }
-
   end
 
 end

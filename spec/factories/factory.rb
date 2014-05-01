@@ -21,17 +21,6 @@ FactoryGirl.define do
     end
   end
 
-  factory :paper do
-    sequence :short_title do |n|
-      "Test Paper #{n}"
-    end
-    journal
-  end
-
-  factory :journal do
-    name "Test Journal"
-  end
-
   factory :message_task do
     title "a subject" # should match subject
   end

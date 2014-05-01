@@ -27,21 +27,19 @@ class FlowSerializer < ActiveModel::Serializer
     cached_tasks.where(type: "PaperAdminTask")
   end
 
-  # simplify this and then remove the base_query
-  def unassigned_papers
-    PaperAdminTask.where(assignee_id: nil).includes(:journal, :paper)
+  def unassigned_tasks
+    Task.joins(paper: :journal)
+      .incomplete.unassigned
+      .where(type: "PaperAdminTask")
+      .where(journals: {id: current_user.journal_ids})
   end
 
   def flow_map
     {
-      'Up for grabs' => unassigned_papers,
+      'Up for grabs' => unassigned_tasks,
       'My tasks' => incomplete_tasks,
       'My papers' => paper_admin_tasks,
       'Done' => complete_tasks
     }
-  end
-
-  def base_query(task_type)
-    task_type.joins(phase: {task_manager: :paper}).includes(:paper)
   end
 end

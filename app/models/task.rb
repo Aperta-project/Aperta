@@ -11,6 +11,7 @@ class Task < ActiveRecord::Base
   scope :metadata, -> { where(type: METADATA_TYPES) }
   scope :incomplete, -> { where(completed: false) }
   scope :assigned_to, ->(user) { where(assignee: user) }
+  scope :unassigned, -> { where(assignee: nil) }
 
   has_one :task_manager, through: :phase
   has_one :paper, through: :task_manager

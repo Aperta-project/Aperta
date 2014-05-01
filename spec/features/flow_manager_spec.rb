@@ -9,20 +9,24 @@ feature "Flow Manager", js: true do
     FactoryGirl.create :user, :admin, first_name: "Author"
   end
 
-  let(:journal) { Journal.create! }
+  let(:journal) { FactoryGirl.create(:journal) }
 
   let!(:paper1) do
-    author.papers.create! short_title: 'foobar',
+    FactoryGirl.create(:paper,
+      short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
-      journal: journal
+      journal: journal,
+      user: author)
   end
 
   let!(:paper2) do
-    author.papers.create! short_title: 'bazqux',
+    FactoryGirl.create(:paper,
+      short_title: 'bazqux',
       title: 'Baz Qux',
       submitted: true,
-      journal: journal
+      journal: journal,
+      user: author)
   end
 
   def assign_tasks_to_user(paper, user, titles)
@@ -69,20 +73,63 @@ feature "Flow Manager", js: true do
     expect(flow_manager_page.columns("Up for grabs").count).to eq(2)
   end
 
-  scenario "papers without assigned admins" do
-    paper1.tasks.detect { |t| t.title == 'Assign Admin' }.update! assignee: admin
+  context "PaperAdminTasks without assigned admin column placements" do
+    before do
+      paper1.tasks.where(type: "PaperAdminTask").update_all(completed: false, assignee_id: nil)
+      paper2.tasks.where(type: "PaperAdminTask").update_all(completed: false, assignee_id: admin)
+      dashboard_page = DashboardPage.visit
+      dashboard_page.view_flow_manager
+    end
 
-    dashboard_page = DashboardPage.visit
-    flow_manager_page = dashboard_page.view_flow_manager
-    up_for_grabs = flow_manager_page.column 'Up for grabs'
-    papers = up_for_grabs.paper_profiles
-    expect(papers.length).to eq 1
-    paper = papers.first
-    expect(paper.title).to eq paper2.title
-    cards = paper.cards
-    expect(cards.length).to eq 1
-    expect(cards.first.title).to eq 'Assign Admin'
+    scenario "papers with and without assigned admins" do
+      within(".column", text: "Up for grabs") do
+        expect(page).to have_content(paper1.title)
+        expect(page).to have_no_content(paper2.title)
+        expect(page).to have_content("Assign Admin")
+      end
+    end
   end
+
+  context "PaperAdminTask column placements" do
+
+    let(:unassociated_paper) do
+      FactoryGirl.create(:paper,
+        short_title: 'unassociated',
+        title: 'unassociated',
+        submitted: true,
+        journal: Journal.create!)
+    end
+
+    let(:unassigned_paper) do
+      FactoryGirl.create(:paper,
+        short_title: 'unassigned',
+        title: 'unassigned',
+        submitted: true,
+        journal: journal)
+    end
+
+    before do
+      unassigned_paper.tasks.where(type: "PaperAdminTask").update_all(completed: true, assignee_id: nil)
+      unassociated_paper.tasks.where(type: "PaperAdminTask").update_all(completed: false, assignee_id: nil)
+      dashboard_page = DashboardPage.visit
+      dashboard_page.view_flow_manager
+    end
+
+    ["Up for grabs", "Done"].each do |phase_title|
+      scenario "completed PaperAdminTasks should not be in #{phase_title} column" do
+        within(".column", text: phase_title) do
+          expect(page).to have_no_content(unassigned_paper.title)
+        end
+      end
+    end
+
+    scenario "unassociated paper admin task should not appear in the done column" do
+      within(".column", text: "Up for grabs") do
+        expect(page).to have_no_content(unassociated_paper.title)
+      end
+    end
+  end
+
 
   context "an admin with papers assigned to them" do
     before do
@@ -155,6 +202,5 @@ feature "Flow Manager", js: true do
       completed_papers = completed_task_expectations flow_manager_page
       completed_papers.first.view # Verify that we can go to the paper's manage page from its profile.
     end
-
   end
 end

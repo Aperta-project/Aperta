@@ -29,7 +29,9 @@ Tahi::Application.routes.draw do
 
   resources :manuscript_manager_templates
 
-  resources :users, only: [:update]
+  resources :users, only: [:update] do
+    get :profile, on: :collection
+  end
 
   resources :papers, only: [:new, :create, :show, :edit, :update] do
     resources :figures, only: :create

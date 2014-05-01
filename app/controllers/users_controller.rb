@@ -1,9 +1,14 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!
+
+  def profile
+    render json: current_user
+  end
+
   def update
-    user = current_user if params[:id].to_i == current_user.id
-    user.avatar = params[:profile][:avatar].first
-    if user.save
-      render json: {image_url: user.avatar.url}
+    current_user.avatar = params[:profile][:avatar].first
+    if current_user.save
+      render json: {image_url: current_user.avatar.url}
     else
       head 500
     end

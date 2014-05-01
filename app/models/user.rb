@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
 
   before_create :add_default_user_settings
 
+  mount_uploader :avatar, AvatarUploader
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys: [:login]
@@ -55,7 +57,11 @@ class User < ActiveRecord::Base
   end
 
   def image_url
-    "/images/profile-no-image.jpg"
+    if avatar.present?
+      avatar.url
+    else
+      "/images/profile-no-image.jpg"
+    end
   end
 
   private

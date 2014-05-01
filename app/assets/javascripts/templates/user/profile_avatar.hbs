@@ -1,0 +1,13 @@
+<div id="profile-avatar">
+  <img {{bind-attr src="model.imageUrl"}}>
+  <div id="profile-avatar-hover">
+    <span class="secondary-button fileinput-button">
+      <span>Upload New</span>
+      {{file-uploader id="profile_avatar"
+                      class="js-jquery-fileupload"
+                      name="profile[avatar][]"
+                      accept=".jpg,.jpeg,.tiff,.gif,.png"
+                      type="file"}}
+    </span>
+  </div>
+</div>

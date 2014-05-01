@@ -1,0 +1,29 @@
+<div id="tahi-container" class="user-profile">
+  <div class="row">
+    <div class="col-md-2">
+      {{view ETahi.ProfileAvatarView}}
+    </div>
+
+    <div class="col-md-10">
+      <div id="profile-name">
+        <h4 class="secondary"><small>First and last name:</small></h4>
+        <h1>{{model.fullName}}</h1>
+      </div>
+
+      <div id="profile-username">
+        <h4 class="secondary"><small>Username:</small></h4>
+        <h2>{{model.username}}</h2>
+      </div>
+      <div id="profile-email">
+        <h4 class="secondary"><small>Email:</small></h4>
+        <h4>{{model.email}}</h4>
+      </div>
+      <div id="profile-affiliations">
+        <h4 class="secondary"><small>Affiliations:</small></h4>
+        <h4>{{model.affiliation}}</h4>
+      </div>
+
+      <a href="#" id="reset-password">Reset my password</a>
+    </div>
+  </div>
+</div>

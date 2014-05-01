@@ -4,5 +4,3 @@ class EmberController < ApplicationController
     #do nothing
   end
 end
-
-

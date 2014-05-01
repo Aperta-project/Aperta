@@ -8,5 +8,6 @@ ETahi.User = DS.Model.extend
   username: a('string')
   name: Ember.computed.alias 'fullName'
 
+ETahi.CurrentUser = ETahi.User.extend()
 ETahi.Assignee = ETahi.User.extend()
 ETahi.Reviewer = ETahi.User.extend()

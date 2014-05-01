@@ -10,6 +10,7 @@ ETahi.Router.map ()->
   @route('paper_new', { path: '/papers/new' })
   @route('signin', {path: '/users/sign_in'})
   @route('signup', {path: '/users/sign_up'})
+  @route('profile', {path: '/profile'})
 
   @resource 'journal', path: '/admin/journals/:journal_id', ->
     @resource 'manuscript_manager_template', path: '/manuscript_manager_templates', ->

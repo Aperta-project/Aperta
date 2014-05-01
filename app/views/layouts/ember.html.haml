@@ -12,6 +12,7 @@
 
 - if current_user
   :javascript
+    window.ETahi.currentUser = #{UserSerializer.new(current_user).to_json}
     window.Tahi.currentUser = {id: #{current_user.id},
     admin: #{current_user.admin},
     test: true,

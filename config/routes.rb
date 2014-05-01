@@ -69,7 +69,7 @@ Tahi::Application.routes.draw do
 
   resources :surveys, only: [:update]
 
-  get 'users/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
+  get '/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 
   root 'ember#index'
   resource :event_stream, only: :show

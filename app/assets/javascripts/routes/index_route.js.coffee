@@ -1,7 +1,7 @@
 ETahi.IndexRoute = Ember.Route.extend
   beforeModel: ->
     store = @store
-    Ember.$.getJSON('/users/dashboard_info').then (data)->
+    Ember.$.getJSON('/dashboard_info').then (data)->
       store.pushPayload('dashboard', data)
 
   model: ->

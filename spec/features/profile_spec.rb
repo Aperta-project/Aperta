@@ -10,7 +10,7 @@ feature "Profile Page", js: true do
 
   scenario "the page contains user's info if user is signed in" do
     profile_page = ProfilePage.visit
-    expect(profile_page.user_full_name).to eq admin.full_name
+    expect(profile_page.full_name).to eq admin.full_name
     expect(profile_page.username).to eq admin.username
     expect(profile_page.email).to eq admin.email
     expect(profile_page.affiliations).to match_array [admin.affiliation]

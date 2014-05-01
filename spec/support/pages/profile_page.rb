@@ -1,6 +1,7 @@
 class ProfilePage < Page
   path :profile
-  def user_full_name
+
+  def full_name
     find('#profile-name h1').text
   end
 

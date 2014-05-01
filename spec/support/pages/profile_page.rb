@@ -15,4 +15,18 @@ class ProfilePage < Page
   def affiliations
     all('#profile-affiliations h4').map(&:text)[1..-1]
   end
+
+  def attach_image(filename)
+    attach_file 'profile_avatar', Rails.root.join('spec', 'fixtures', filename), visible: false
+  end
+
+  def image
+    find('#profile-avatar img')['src'].split('/').last
+  end
+
+  def image_size
+    width = page.evaluate_script("$('#profile-avatar img').innerWidth()")
+    height = page.evaluate_script("$('#profile-avatar img').innerHeight()")
+    "#{width}x#{height}"
+  end
 end

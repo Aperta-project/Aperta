@@ -30,4 +30,15 @@ feature "Profile Page", js: true do
     expect(profile_page.image).to eq('yeti.jpg')
     expect(profile_page.image_size).to eq('160x160')
   end
+
+  scenario "user cannot upload an avatar image of unsupported type" do
+    profile_page = ProfilePage.visit
+    profile_page.attach_image('about_turtles.docx')
+    expect(profile_page.image).to_not eq('about_turtles.docx')
+    expect(profile_page.image).to eq('profile-no-image.png')
+
+    profile_page.reload
+    expect(profile_page.image).to_not eq('about_turtles.docx')
+    expect(profile_page.image).to eq('profile-no-image.png')
+  end
 end

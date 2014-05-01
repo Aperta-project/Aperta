@@ -7,5 +7,5 @@ ETahi.PaperSubmitRoute = Ember.Route.extend
           ,
           (errorResponse) =>
             errors = _.values(errorResponse.errors.base).join(' ')
-            Tahi.utils.setPropertyWithDelay(@controllerFor('paper'), 'errorText', errors, '', 5000)
+            Tahi.utils.togglePropertyAfterDelay(@controllerFor('paper'), 'errorText', errors, '', 5000)
       )

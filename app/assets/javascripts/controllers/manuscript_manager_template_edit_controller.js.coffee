@@ -50,7 +50,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
           errors = _.values(errorResponse.responseJSON.errors).join(' ')
         else
           errors = "There was an error saving your changes. Please try again"
-        Tahi.utils.setPropertyWithDelay(this, 'errorText', errors, '', 5000)
+        Tahi.utils.togglePropertyAfterDelay(this, 'errorText', errors, '', 5000)
 
     rollbackTemplate: ->
       @get('model').rollback()

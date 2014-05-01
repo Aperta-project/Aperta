@@ -115,22 +115,17 @@ feature "Flow Manager", js: true do
       dashboard_page.view_flow_manager
     end
 
-    # turn these into a table test
+    ["Up for grabs", "Done"].each do |phase_title|
+      scenario "completed PaperAdminTasks should not be in #{phase_title} column" do
+        within(".column", text: phase_title) do
+          expect(page).to have_no_content(unassigned_paper.title)
+        end
+      end
+    end
+
     scenario "unassociated paper admin task should not appear in the done column" do
       within(".column", text: "Up for grabs") do
         expect(page).to have_no_content(unassociated_paper.title)
-      end
-    end
-
-    scenario "completed PaperAdminTasks should not be in 'Up for grabs' column" do
-      within(".column", text: "Up for grabs") do
-        expect(page).to have_no_content(unassigned_paper.title)
-      end
-    end
-
-    scenario "unassigned completed PaperAdminTasks should not be in 'Done' column" do
-      within(".column", text: "Done") do
-        expect(page).to have_no_content(unassigned_paper.title)
       end
     end
   end

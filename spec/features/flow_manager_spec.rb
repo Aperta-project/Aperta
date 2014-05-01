@@ -29,8 +29,6 @@ feature "Flow Manager", js: true do
       user: author)
   end
 
-
-
   def assign_tasks_to_user(paper, user, titles)
     paper.tasks.each { |t| t.update(assignee: user) if titles.include? t.title }
   end
@@ -209,6 +207,5 @@ feature "Flow Manager", js: true do
       completed_papers = completed_task_expectations flow_manager_page
       completed_papers.first.view # Verify that we can go to the paper's manage page from its profile.
     end
-
   end
 end

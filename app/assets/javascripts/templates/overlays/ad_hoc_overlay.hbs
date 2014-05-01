@@ -1,14 +1,2 @@
 <h1>{{title}}</h1>
-  <div class="form-group">
-    <label for="task_assignee">Assign this task to:</label>
-    {{chosen content=model.assignees
-       prompt="Please select assignee"
-       changeAction="saveModel"
-       optionLabelPath="content.fullName"
-       optionValuePath="content"
-       id="task_assignee"
-       class="select-assignee"
-       value=model.assignee
-       data-placeholder="Assign this task to"}}
-  </div>
 <p>{{body}}</p>

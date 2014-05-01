@@ -30,6 +30,7 @@ ETahi.PaperController = Ember.ObjectController.extend
 # gets messed up otherwise
 ETahi.PaperIndexController = ETahi.PaperController.extend()
 ETahi.PaperEditController = ETahi.PaperController.extend
+  errorText: ""
   addAuthorsTask: (->
     this.get('tasks').findBy('type', 'AuthorsTask')
   ).property()

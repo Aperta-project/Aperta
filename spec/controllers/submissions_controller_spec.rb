@@ -29,6 +29,10 @@ describe SubmissionsController do
     end
   end
 
+  before do
+    paper.tasks.metadata.map{ |t| t.update_attribute(:completed, true) }
+  end
+
   describe "POST 'create'" do
     subject(:do_request) { post :create, paper_id: paper.to_param }
 

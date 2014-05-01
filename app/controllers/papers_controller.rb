@@ -3,6 +3,8 @@ class PapersController < ApplicationController
 
   layout 'ember'
 
+  respond_to :json
+
   def show
     respond_to do |format|
       @paper = PaperPolicy.new(params[:id], current_user).paper
@@ -42,14 +44,13 @@ class PapersController < ApplicationController
 
   def update
     @paper = Paper.find(params[:id])
-
     if @paper.update(paper_params)
       head 204
     else
       # Ember doesn't re-render the paper if there is an error.
       # e.g. Fails to update on adding new authors, but new authors stay in
       # memory client side even though they aren't persisted in the DB.
-      render status: 500
+      respond_with @paper
     end
   end
 

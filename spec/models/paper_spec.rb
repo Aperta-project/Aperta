@@ -76,6 +76,20 @@ describe Paper do
         expect(paper.error_on(:paper_type).size).to eq(1)
       end
     end
+
+    describe "submission" do
+      let(:paper) { Paper.create!(short_title: 'Yoda', journal: Journal.create!) }
+      it "should not be valid when metadata tasks are incomplete" do
+        paper.submitted = true
+        expect(paper).to_not be_valid
+      end
+
+      it "should be valid when metadata tasks are completed" do
+        paper.tasks.metadata.map{ |t| t.update_attribute(:completed, true) }
+        paper.submitted = true
+        expect(paper).to be_valid
+      end
+    end
   end
 
   describe "callbacks" do

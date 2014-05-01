@@ -3,8 +3,9 @@ class TaskManagerPage < Page
   path :manage_paper
 
   def phases
-    expect(page).to have_css('.column h2')
-    all('.column h2').map(&:text)
+    expect(session).to have_css('.column h2')
+    phase_headers = session.all(:css, ".column h2")
+    phase_headers.map(&:text)
   end
 
   def phase phase_name

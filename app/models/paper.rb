@@ -20,6 +20,7 @@ class Paper < ActiveRecord::Base
   validates :paper_type, inclusion: { in: PAPER_TYPES }
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
   validates :journal, presence: true
+  validate :metadata_tasks_completed?, if: :submitting?
 
   has_many :phases, -> { order 'phases.position ASC' }, through: :task_manager
   has_many :tasks, through: :phases
@@ -69,6 +70,16 @@ class Paper < ActiveRecord::Base
   def admin
     role = paper_roles.where(admin: true).first
     role.user if role
+  end
+
+  def metadata_tasks_completed?
+    if tasks.metadata.count != tasks.metadata.completed.count
+      errors.add(:base, "can't submit a paper when all of the metadata tasks aren't completed")
+    end
+  end
+
+  def submitting?
+    submitted_changed? && submitted
   end
 
   def add_author(user)

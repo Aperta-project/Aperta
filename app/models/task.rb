@@ -1,11 +1,14 @@
 class Task < ActiveRecord::Base
   include EventStreamNotifier
 
+  METADATA_TYPES = ["DeclarationTask", "StandardTasks::FigureTask", "StandardTasks::AuthorsTask", "UploadManuscriptTask"]
+
   default_scope { order("completed ASC") }
 
   after_initialize :initialize_defaults
 
   scope :completed, -> { where(completed: true) }
+  scope :metadata, -> { where(type: METADATA_TYPES) }
   scope :incomplete, -> { where(completed: false) }
   scope :assigned_to, ->(user) { where(assignee: user) }
 

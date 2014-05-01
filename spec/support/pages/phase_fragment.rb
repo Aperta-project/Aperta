@@ -23,7 +23,8 @@ class PhaseFragment < PageFragment
   def add_phase
     container = find('.add-column', visible: false)
     container.hover
-    container.click
+    find('.add-column', visible: false).click
+    sleep(0.3)
   end
 
   def remove_phase

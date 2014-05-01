@@ -14,7 +14,6 @@ FactoryGirl.define do
     email
     password 'password'
     password_confirmation 'password'
-    affiliation { ['PLOS', 'Universität Zürich'].sample }
     admin false
     trait :admin do
       admin true

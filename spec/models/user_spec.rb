@@ -8,8 +8,7 @@ describe User do
         last_name: 'Istrator',
         email: 'admin@example.org',
         password: 'password',
-        password_confirmation: 'password',
-        affiliation: 'PLOS'
+        password_confirmation: 'password'
     end
 
     let! :user2 do
@@ -18,8 +17,7 @@ describe User do
         last_name: 'Er',
         email: 'user@example.org',
         password: 'password',
-        password_confirmation: 'password',
-        affiliation: 'Research Institute'
+        password_confirmation: 'password'
     end
 
     describe ".admins" do

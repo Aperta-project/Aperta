@@ -3,6 +3,5 @@ class UserSerializer < ActiveModel::Serializer
     :full_name,
     :image_url,
     :username,
-    :affiliation,
     :email
 end

@@ -17,12 +17,12 @@ class Task < ActiveRecord::Base
   has_one :journal, through: :paper
   has_many :journal_roles, through: :journal
 
-  has_many :assignees, -> { where("journal_roles.admin" => true) }, through: :journal_roles, source: :user
-
   validates :title, :role, presence: true
 
   belongs_to :assignee, class_name: 'User'
   belongs_to :phase, inverse_of: :tasks
+
+  delegate :assignees, to: :paper
 
   def self.assigned_to(*users)
     where(assignee: users)

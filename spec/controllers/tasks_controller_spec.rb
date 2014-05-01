@@ -96,14 +96,14 @@ describe TasksController do
   end
 
   describe "GET 'show'" do
-    let!(:paper) { Paper.create! short_title: "abcd", journal: Journal.create! }
+    let!(:paper) { Paper.create! short_title: "abcd", journal: Journal.create!, user: user }
     let(:paper_admin_task) { Task.where(title: "Assign Admin").first }
 
     let(:format) { nil }
 
     it_behaves_like "when the user is not signed in"
 
-    subject(:do_request) { get :show, { id: paper_admin_task.id, paper_id: paper.id, format: format } }
+    subject(:do_request) { get :show, { id: paper_admin_task.id, format: format } }
 
     context "json requests" do
       let(:format) { :json }

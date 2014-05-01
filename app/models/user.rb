@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
     if avatar.present?
       avatar.url
     else
-      "/images/profile-no-image.jpg"
+      "/images/profile-no-image.png"
     end
   end
 

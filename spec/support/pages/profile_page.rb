@@ -15,5 +15,4 @@ class ProfilePage < Page
   def affiliations
     all('#profile-affiliations h4').map(&:text)[1..-1]
   end
-
 end

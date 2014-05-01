@@ -11,6 +11,7 @@ class DashboardPage < Page
   end
 
   def sign_out
+    find('a.dropdown-toggle').click
     click_on 'Sign out'
   end
 

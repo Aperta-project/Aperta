@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Upload paper", js: true do
+feature "Upload paper", js: true, vcr: {cassette_name: 'upload_manuscript'} do
   let(:author) { FactoryGirl.create :user }
   let(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
 

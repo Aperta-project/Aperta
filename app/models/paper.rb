@@ -3,6 +3,8 @@ class Paper < ActiveRecord::Base
 
   after_initialize :initialize_defaults
 
+  has_one :task_manager, inverse_of: :paper
+
   belongs_to :user, inverse_of: :papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
@@ -12,7 +14,10 @@ class Paper < ActiveRecord::Base
   has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user
   has_many :available_users, through: :journal_roles, class_name: "User", source: :user
 
-  has_one :task_manager, inverse_of: :paper
+  has_many :phases, -> { order 'phases.position ASC' }, through: :task_manager
+  has_many :tasks, through: :phases
+  has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
+  has_many :journal_roles, through: :journal
 
   serialize :authors, Array
 
@@ -21,13 +26,27 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
   validate :metadata_tasks_completed?, if: :submitting?
 
-  has_many :phases, -> { order 'phases.position ASC' }, through: :task_manager
-  has_many :tasks, through: :phases
-  has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
-
-  has_many :journal_roles, through: :journal
-
   after_create :assign_user_to_author_tasks
+
+  def self.submitted
+    where(submitted: true)
+  end
+
+  def self.ongoing
+    where(submitted: false)
+  end
+
+  def self.published
+    where('published_at IS NOT NULL')
+  end
+
+  def self.unpublished
+    where('published_at IS NULL')
+  end
+
+  def tasks_for_type(klass_name)
+    tasks.where(type: klass_name)
+  end
 
   def assignees
     (available_admins + [user]).uniq
@@ -47,26 +66,6 @@ class Paper < ActiveRecord::Base
 
   def reviewers
     assigned_users.merge(PaperRole.reviewers)
-  end
-
-  def self.submitted
-    where(submitted: true)
-  end
-
-  def self.published
-    where('published_at IS NOT NULL')
-  end
-
-  def self.unpublished
-    where('published_at IS NULL')
-  end
-
-  def tasks_for_type(klass_name)
-    tasks.where(type: klass_name)
-  end
-
-  def self.ongoing
-    where(submitted: false)
   end
 
   def display_title

@@ -10,7 +10,6 @@ feature "Upload paper", js: true do
   end
 
   scenario "Author uploads paper in Word format" do
-    pending
     edit_paper = EditPaperPage.visit paper
 
     edit_paper.view_card('Upload Manuscript').upload_word_doc
@@ -18,6 +17,6 @@ feature "Upload paper", js: true do
     expect(page).to have_text(/turtles/)
     expect(edit_paper.title).to eq "This is a Title About Turtles"
     expect(edit_paper.body).to match /And this is my subtitle/
-    # expect(edit_paper.view_card 'Upload Manuscript').to be_completed
+    expect(edit_paper.view_card 'Upload Manuscript').to be_completed
   end
 end

@@ -3,10 +3,11 @@ require 'spec_helper'
 describe PaperRole do
   describe "scopes" do
     describe "reviewers_for" do
+      let(:user) { FactoryGirl.build(:user) }
       let(:paper) { Paper.create! short_title: "Hello", journal: Journal.create! }
       it "returns reviewers for a given paper" do
-        reviewer_paper_role = PaperRole.create! reviewer: true, paper: paper
-        other_paper_role = PaperRole.create! paper: paper
+        reviewer_paper_role = PaperRole.create!(reviewer: true, paper: paper, user: user)
+        other_paper_role = PaperRole.create!(paper: paper, user: user)
         
         expect(PaperRole.reviewers_for(paper)).to_not include other_paper_role
         expect(PaperRole.reviewers_for(paper)).to include reviewer_paper_role

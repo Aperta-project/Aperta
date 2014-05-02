@@ -4,4 +4,5 @@ class JournalRole < ActiveRecord::Base
   belongs_to :user
   belongs_to :journal
 
+  validates :user, :journal, presence: true
 end

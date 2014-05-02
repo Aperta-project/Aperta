@@ -79,11 +79,6 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  def editor
-    role = paper_roles.where(editor: true).first
-    role.user if role
-  end
-
   def admin
     role = paper_roles.where(admin: true).first
     role.user if role

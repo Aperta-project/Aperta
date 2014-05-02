@@ -5,7 +5,7 @@ class TaskPolicy
   end
 
   def tasks
-    if paper.editor == user
+    if paper.editors.exists?(user)
       assigned_tasks + reviewer_tasks
     else
       assigned_tasks

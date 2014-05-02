@@ -18,7 +18,7 @@ describe RegisterDecisionTask do
       editor = double(:full_name, full_name: 'Andi Plantenberg')
       journal = double(:name, name: 'PLOS Yeti')
       allow(paper).to receive(:user).and_return(user)
-      allow(paper).to receive(:editor).and_return(editor)
+      allow(paper).to receive(:editors).and_return([editor])
       allow(paper).to receive(:journal).and_return(journal)
       allow(task).to receive(:paper).and_return(paper)
     end
@@ -79,7 +79,7 @@ describe RegisterDecisionTask do
 
     context "when the editor hasn't been assigned yet" do
       it "returns 'Editor not assigned'" do
-        allow(paper).to receive(:editor).and_return(nil)
+        allow(paper).to receive(:editors).and_return([])
         expect(task.accept_letter).to match(/Editor not assigned/)
         expect(task.accept_letter).to_not match(/Andi Plantenberg/)
       end

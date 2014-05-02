@@ -2,14 +2,20 @@ ETahi.UploadManuscriptOverlayView = ETahi.OverlayView.extend
   templateName: 'overlays/upload_manuscript_overlay'
   layoutName: 'layouts/overlay_layout'
 
-  setupUploader: (->
+  resolvedPaper: null
+  didInsertElement: ->
+    @controller.get('paper').then (paper) =>
+      @set('resolvedPaper', paper)
+      @setupUploader()
+
+  setupUploader: ->
     new Spinner(top: '20px', left: '-30px', color: '#39a329').spin $('.processing')[0]
     $('ul#paper-manuscript-upload, .processing, .progress').hide()
 
     uploader = $('.js-jquery-fileupload')
 
     uploader.fileupload
-      url: "/papers/#{@controller.get('paper.id')}/upload"
+      url: "/papers/#{@get('resolvedPaper.id')}/upload"
       dataType: 'json'
       method: 'PATCH'
 
@@ -42,7 +48,4 @@ ETahi.UploadManuscriptOverlayView = ETahi.OverlayView.extend
         isUploading: false
       $('ul#paper-manuscript-upload').hide()
       $('#task_completed:not(:checked)').click()
-      paper = @controller.get('model.paper')
-      paper.reload().then =>
-        @controller.send('closeAction')
-  ).on('didInsertElement')
+      @get('resolvedPaper').reload().then => @controller.send('closeAction')

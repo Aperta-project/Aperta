@@ -37,11 +37,11 @@ class Paper < ActiveRecord::Base
   end
 
   def self.published
-    where('published_at IS NOT NULL')
+    where.not(published_at: nil)
   end
 
   def self.unpublished
-    where('published_at IS NULL')
+    where(published_at: nil)
   end
 
   def tasks_for_type(klass_name)

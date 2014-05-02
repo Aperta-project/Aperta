@@ -9,9 +9,8 @@ class Paper < ActiveRecord::Base
 
   has_many :figures
   has_many :paper_roles
-  has_many :reviewers, -> { where("paper_roles.reviewer" => true) }, through: :paper_roles, source: :user
-  has_many :editors, -> { where("paper_roles.editor" => true) }, through: :paper_roles, source: :user
-  has_many :admins, -> { where("paper_roles.admin" => true) }, through: :paper_roles, source: :user
+  has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user
+  has_many :available_users, through: :journal_roles, class_name: "User", source: :user
 
   has_one :task_manager, inverse_of: :paper
 
@@ -27,12 +26,27 @@ class Paper < ActiveRecord::Base
   has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
 
   has_many :journal_roles, through: :journal
-  has_many :admin_assignees, -> { merge(JournalRole.admin) }, through: :journal_roles, source: :user
 
   after_create :assign_user_to_author_tasks
 
   def assignees
-    (admin_assignees + [user]).uniq
+    (available_admins + [user]).uniq
+  end
+
+  def available_admins
+    available_users.merge(JournalRole.admins)
+  end
+
+  def admins
+    assigned_users.merge(PaperRole.admins)
+  end
+
+  def editors
+    assigned_users.merge(PaperRole.editors)
+  end
+
+  def reviewers
+    assigned_users.merge(PaperRole.reviewers)
   end
 
   def self.submitted

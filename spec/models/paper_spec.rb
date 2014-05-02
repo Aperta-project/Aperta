@@ -169,7 +169,7 @@ describe Paper do
     let(:paper) { FactoryGirl.build(:paper, user: user) }
 
     before do
-      allow(paper).to receive(:admin_assignees).and_return([admin_user])
+      allow(paper).to receive(:available_admins).and_return([admin_user])
     end
 
     it "should contain both users and assignees" do

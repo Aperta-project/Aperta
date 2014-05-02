@@ -1,4 +1,6 @@
 class PaperRole < ActiveRecord::Base
+  include Roleable
+
   belongs_to :user
   belongs_to :paper
 
@@ -6,18 +8,6 @@ class PaperRole < ActiveRecord::Base
 
   def self.reviewers_for(paper)
     reviewers.where(paper_id: paper.id)
-  end
-
-  def self.admins
-    where(admin: true)
-  end
-
-  def self.editors
-    where(editor: true)
-  end
-
-  def self.reviewers
-    where(reviewer: true)
   end
 
   protected

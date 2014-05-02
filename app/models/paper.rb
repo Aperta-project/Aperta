@@ -8,7 +8,7 @@ class Paper < ActiveRecord::Base
   belongs_to :flow
 
   has_many :figures
-  has_many :paper_roles
+  has_many :paper_roles, inverse_of: :paper
   has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user
   has_many :available_users, through: :journal_roles, class_name: "User", source: :user
 

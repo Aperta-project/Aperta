@@ -1,8 +1,8 @@
 class PaperRole < ActiveRecord::Base
   include Roleable
 
-  belongs_to :user
-  belongs_to :paper
+  belongs_to :user, inverse_of: :paper_roles
+  belongs_to :paper, inverse_of: :paper_roles
 
   validates :user, :paper, presence: true
 

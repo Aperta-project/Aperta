@@ -13,7 +13,7 @@ class Journal < ActiveRecord::Base
                       "StandardTasks::AuthorsTask"]
 
   has_many :papers, inverse_of: :journal
-  has_many :journal_roles
+  has_many :journal_roles, inverse_of: :journal
   has_many :users, through: :journal_roles
   has_many :manuscript_manager_templates
 

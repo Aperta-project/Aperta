@@ -4,3 +4,7 @@ ETahi.Affiliation = DS.Model.extend
   name: a('string')
   endDate: a('string')
   startDate: a('string')
+
+  displayEndDate: (->
+    @get('endDate') || "Current"
+  ).property('endDate')

@@ -21,9 +21,8 @@
       <div id="profile-affiliations">
         <h4 class="secondary"><small>Affiliations:</small></h4>
         {{#each a in model.affiliations}}
-          <div>name: {{a.name}}</div>
-          <div>start date: {{a.startDate}}</div>
-          <div>end date: {{a.endDate}}</div>
+          <div>{{a.name}}</div>
+          <div>{{a.startDate}} - {{a.displayEndDate}}</div>
         {{/each}}
       </div>
 

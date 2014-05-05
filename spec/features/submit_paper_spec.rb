@@ -6,9 +6,7 @@ feature "Submitting a paper", js: true do
     sign_in_page.sign_in author.email
   end
 
-  let :author do
-    FactoryGirl.create :user
-  end
+  let(:author) { FactoryGirl.create :user }
 
   let :paper do
     author.papers.create! short_title: 'foo bar',

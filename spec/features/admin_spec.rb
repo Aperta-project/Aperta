@@ -2,24 +2,11 @@ require 'spec_helper'
 
 feature "Tahi administration", js: true do
   let(:admin) do
-    User.create! username: 'albert',
-      first_name: 'albert',
-      last_name: 'einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'universität zürich',
-      admin: true
+    FactoryGirl.create :user, admin: true
   end
 
   let!(:user) do
-    User.create! username: 'neil',
-      first_name: 'Neil',
-      last_name: 'Bohrs',
-      email: 'neil@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'universität zürich'
+    FactoryGirl.create :user
   end
 
   let!(:journal) do

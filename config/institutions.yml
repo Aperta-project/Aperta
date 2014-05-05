@@ -1,0 +1,4343 @@
+---
+- href: http://www.atsu.edu/
+  name: A.T. Still University of Health Sciences
+- href: http://www.acu.edu/
+  name: Abilene Christian University
+- href: http://www.abac.edu/
+  name: Abraham Baldwin Agricultural College
+- href: http://www.academyart.edu/
+  name: Academy of Art University
+- href: http://www.adams.edu/
+  name: Adams State College
+- href: http://www.adelphi.edu/
+  name: Adelphi University
+- href: http://www.alfredadler.edu/
+  name: Adler Graduate School
+- href: http://www.adler.edu/
+  name: Adler School of Professional Psychology
+- href: http://adrian.edu/
+  name: Adrian College
+- href: http://www.adu.edu/
+  name: Adventist University of Health Sciences
+- href: http://www.agnesscott.edu/
+  name: Agnes Scott College
+- href: http://www.aib.edu/
+  name: AIB College of Business
+- href: http://www.afit.edu/
+  name: Air Force Institute of Technology
+- href: http://www.maxwell.af.mil/units/au/
+  name: Air University
+- href: http://www.aamu.edu/
+  name: Alabama A&M University
+- href: http://www.alasu.edu/
+  name: Alabama State University
+- href: http://www.akbible.edu/
+  name: Alaska Bible College
+- href: http://www.alaskapacific.edu/
+  name: Alaska Pacific University
+- href: http://www.acphs.edu/
+  name: Albany College of Pharmacy & Health Sciences
+- href: http://www.amc.edu/
+  name: Albany Medical College
+- href: http://www.asurams.edu/
+  name: Albany State University
+- href: http://www.albertus.edu/
+  name: Albertus Magnus College
+- href: http://www.albion.edu/
+  name: Albion College
+- href: http://www.albright.edu/
+  name: Albright College
+- href: http://www.alcorn.edu/
+  name: Alcorn State University
+- href: http://www.ab.edu/
+  name: Alderson-Broaddus College
+- href: http://www.alfred.edu/
+  name: Alfred University
+- href: http://www.alc.edu/
+  name: Alice Lloyd College
+- href: http://allegheny.edu/
+  name: Allegheny College
+- href: http://www.allencollege.edu/
+  name: Allen College
+- href: http://www.allenuniversity.edu/
+  name: Allen University
+- href: http://www.alliant.edu/
+  name: Alliant International University
+- href: http://www.alma.edu/
+  name: Alma College
+- href: http://www.alvernia.edu/
+  name: Alvernia University
+- href: http://www.alverno.edu/
+  name: Alverno College
+- href: http://www.ambassador.edu/
+  name: Ambassador University
+- href: http://www.amberton.edu/
+  name: Amberton University
+- href: http://www.aaart.edu/
+  name: American Academy of Art
+- href: http://www.theamericancollege.edu/
+  name: American College
+- href: http://www.acaom.edu/
+  name: American College of Acupuncture & Oriental Medicine
+- href: http://www.ace.edu/
+  name: American College of Education
+- href: http://www.act-sf.org/
+  name: American Conservatory Theater
+- href: http://www.afi.com/
+  name: American Film Institute
+- href: http://www.aicag.edu/
+  name: American Indian College of the Assemblies of God
+- href: http://www.aiuniv.edu/
+  name: American InterContinental University
+- href: http://www.aic.edu/
+  name: American International College
+- href: http://www.aju.edu/
+  name: American Jewish University
+- href: http://www.amu.apus.edu/
+  name: American Military University
+- href: http://www.apu.apus.edu/
+  name: American Public University
+- href: http://www.american.edu/
+  name: American University
+- href: http://www.aupr.edu/
+  name: American University of Puerto Rico
+- href: http://www.amherst.edu/
+  name: Amherst College
+- href: http://www.amridgeuniversity.edu/
+  name: Amridge University
+- href: http://www.andersonuniversity.edu/
+  name: Anderson University
+- href: http://www.anderson.edu/
+  name: Anderson University
+- href: http://www.ants.edu/
+  name: Andover Newton Theological School
+- href: http://www.andrews.edu/
+  name: Andrews University
+- href: http://www.angelo.edu/
+  name: Angelo State University
+- href: http://www.annamaria.edu/
+  name: Anna Maria College
+- href: http://antiochcollege.org/
+  name: Antioch College
+- href: http://midwest.antioch.edu/
+  name: Antioch University–Midwest
+- href: http://www.antiochne.edu/
+  name: Antioch University–New England
+- href: http://www.antiochla.edu/
+  name: Antioch University–Los Angeles
+- href: http://www.antiochsb.edu/
+  name: Antioch University–Santa Barbara
+- href: http://www.antiochseattle.edu/
+  name: Antioch University–Seattle
+- href: http://aoma.edu/
+  name: AOMA Graduate School of Integrative Medicine
+- href: http://www.abc.edu/
+  name: Appalachian Bible College
+- href: http://www.appstate.edu/
+  name: Appalachian State University
+- href: http://www.aquinas.edu/
+  name: Aquinas College
+- href: http://www.aquinascollege.edu/
+  name: Aquinas College
+- href: http://www.ai.edu/
+  name: Aquinas Institute of Theology
+- href: http://www.arcadia.edu/
+  name: Arcadia University
+- href: http://www.argosy.edu/
+  name: Argosy University
+- href: http://arizonachristian.edu/
+  name: Arizona Christian University
+- href: http://www.asu.edu/
+  name: Arizona State University
+- href: http://campus.asu.edu/downtown/
+  name: Arizona State University–Downtown Phoenix Campus
+- href: http://campus.asu.edu/polytechnic/
+  name: Arizona State–Polytechnic Campus
+- href: http://campus.asu.edu/west/
+  name: Arizona State University–West Campus
+- href: http://arkansasbaptist.edu/
+  name: Arkansas Baptist College
+- href: http://www.astate.edu/
+  name: Arkansas State University
+- href: http://www.atu.edu/
+  name: Arkansas Tech University
+- href: http://www.arlingtonbaptistcollege.edu/
+  name: Arlington Baptist College
+- href: http://www.armstrong.edu/
+  name: Armstrong Atlantic State University
+- href: http://www.artacademy.edu/
+  name: Art Academy of Cincinnati
+- href: http://www.artcenter.edu/
+  name: Art Center College of Design
+- href: http://www.theartcenter.edu/
+  name: Art Center Design College
+- href: http://www.artinstitutes.edu/atlanta/
+  name: Art Institute of Atlanta
+- href: http://www.artinstitutes.edu/denver/
+  name: Art Institute of Colorado
+- href: http://www.artinstitutes.edu/dallas/
+  name: Art Institute of Dallas
+- href: http://www.artinstitutes.edu/houston/
+  name: Art Institute of Houston
+- href: http://www.artinstitutes.edu/pittsburgh/
+  name: Art Institute of Pittsburgh
+- href: http://www.artinstitutes.edu/portland/
+  name: Art Institute of Portland
+- href: http://www.artinstitutes.edu/seattle/
+  name: Art Institute of Seattle
+- href: http://www.asburyseminary.edu/
+  name: Asbury Theological Seminary
+- href: http://www.asbury.edu/
+  name: Asbury University
+- href: http://www.ashford.edu/
+  name: Ashford University
+- href: http://www.ashland.edu/
+  name: Ashland University
+- href: http://www.ambs.edu/
+  name: Associated Mennonite Biblical Seminary
+- href: http://www.assumption.edu/
+  name: Assumption College
+- href: http://www.athenaeum.edu/
+  name: Athenaeum of Ohio
+- href: http://www.athens.edu/
+  name: Athens State University
+- href: http://www.auburn.edu/
+  name: Auburn University
+- href: http://www.aum.edu/
+  name: Auburn University at Montgomery
+- href: http://www.augsburg.edu/
+  name: Augsburg College
+- href: http://www.aug.edu/
+  name: Augusta State University
+- href: http://www.augustana.edu/
+  name: Augustana College
+- href: http://www.augie.edu/
+  name: Augustana College
+- href: http://www.aurora.edu/
+  name: Aurora University
+- href: http://www.austincollege.edu/
+  name: Austin College
+- href: http://www.austingrad.edu/
+  name: Austin Graduate School of Theology
+- href: http://www.apsu.edu/
+  name: Austin Peay State University
+- href: http://www.austinseminary.edu/
+  name: Austin Presbyterian Theological Seminary
+- href: http://www.avemaria.edu/
+  name: Ave Maria University
+- href: http://www.averett.edu/
+  name: Averett University
+- href: http://www.avila.edu/
+  name: Avila University
+- href: http://www.apu.edu/
+  name: Azusa Pacific University
+- href: http://www.daemen.edu/
+  name: Daemen College
+- href: http://www.dsu.edu/
+  name: Dakota State University
+- href: http://www.dwu.edu/
+  name: Dakota Wesleyan University
+- href: http://www.dbu.edu/
+  name: Dallas Baptist University
+- href: http://www.dallas.edu/
+  name: Dallas Christian College
+- href: http://www.dts.edu/
+  name: Dallas Theological Seminary
+- href: http://www.daltonstate.edu/
+  name: Dalton State College
+- href: http://www.dwc.edu/
+  name: Daniel Webster College
+- href: http://dartmouth.edu/
+  name: Dartmouth College
+- href: http://www.davenport.edu/
+  name: Davenport University
+- href: http://www.davidson.edu/
+  name: Davidson College
+- href: http://www.davisny.edu/
+  name: Davis College
+- href: http://www.dewv.edu/
+  name: Davis & Elkins College
+- href: http://www.daytonastate.edu/
+  name: Daytona State College
+- href: http://www.dean.edu/
+  name: Dean College
+- href: http://www.defiance.edu/
+  name: Defiance College
+- href: http://www.desu.edu/
+  name: Delaware State University
+- href: http://www.delval.edu/
+  name: Delaware Valley College
+- href: http://www.deltastate.edu/
+  name: Delta State University
+- href: http://denison.edu/
+  name: Denison University
+- href: http://www.denverseminary.edu/
+  name: Denver Seminary
+- href: http://www.depaul.edu/
+  name: DePaul University
+- href: http://www.depauw.edu/
+  name: DePauw University
+- href: http://www.dmu.edu/
+  name: Des Moines University–Osteopathic Medical Center
+- href: http://www.desales.edu/
+  name: DeSales University
+- href: http://www.devry.edu/
+  name: DeVry University
+- href: http://www.add.devry.edu/
+  name: DeVry University–Addison
+- href: http://www.devry.edu/locations/campuses/loc_arlingtoncampus.jsp
+  name: DeVry University–Arlington
+- href: http://www.chi.devry.edu/
+  name: DeVry University–Chicago
+- href: http://www.atl.devry.edu/
+  name: DeVry University–Georgia
+- href: http://www.dal.devry.edu/
+  name: DeVry University–Irving
+- href: http://www.kc.devry.edu/
+  name: DeVry University–Kansas City
+- href: http://www.lb.devry.edu/
+  name: DeVry University–Long Beach
+- href: http://www.orl.devry.edu/
+  name: DeVry University–Orlando
+- href: http://www.phx.devry.edu/
+  name: DeVry University–Phoenix
+- href: http://www.pom.devry.edu/
+  name: DeVry University–Pomona
+- href: http://www.dickinson.edu/
+  name: Dickinson College
+- href: http://www.dickinsonstate.edu/
+  name: Dickinson State University
+- href: http://www.dillard.edu/
+  name: Dillard University
+- href: http://www.dwci.edu/
+  name: Divine Word College
+- href: http://www.dixie.edu/
+  name: Dixie State College
+- href: http://www.doane.edu/
+  name: Doane College
+- href: http://www.dc.edu/
+  name: Dominican College
+- href: http://www.dhs.edu/
+  name: Dominican House of Studies
+- href: http://www.dspt.edu/
+  name: Dominican School of Philosophy & Theology
+- href: http://www.dom.edu/
+  name: Dominican University
+- href: http://www.dominican.edu/
+  name: Dominican University of California
+- href: http://www.donnelly.edu/
+  name: Donnelly College
+- href: http://www.dordt.edu/
+  name: Dordt College
+- href: http://www.dowling.edu/
+  name: Dowling College
+- href: http://www.drake.edu/
+  name: Drake University
+- href: http://www.drew.edu/
+  name: Drew University
+- href: http://www.drexel.edu/
+  name: Drexel University
+- href: http://www.drury.edu/
+  name: Drury University
+- href: http://duke.edu/
+  name: Duke University
+- href: http://www.dunwoody.edu/
+  name: Dunwoody College of Technology
+- href: http://www.duq.edu/
+  name: Duquesne University
+- href: http://www.dyc.edu/
+  name: D´Youville College
+- href: http://www.earlham.edu/
+  name: Earlham College
+- href: http://www.ecu.edu/
+  name: East Carolina University
+- href: http://www.ecok.edu/
+  name: East Central University
+- href: http://www.esu.edu/
+  name: East Stroudsburg State University of Pennsylvania
+- href: http://www.etsu.edu/
+  name: East Tennessee State University
+- href: http://www.etbu.edu/
+  name: East Texas Baptist University
+- href: http://www.eastwest.edu/
+  name: East-West University
+- href: http://www.easternct.edu/
+  name: Eastern Connecticut State University
+- href: http://www.easternflorida.edu/
+  name: Eastern Florida State College
+- href: http://www.eiu.edu/
+  name: Eastern Illinois University
+- href: http://www.eku.edu/
+  name: Eastern Kentucky University
+- href: http://www.emu.edu/
+  name: Eastern Mennonite University
+- href: http://www.emich.edu/
+  name: Eastern Michigan University
+- href: http://www.enc.edu/
+  name: Eastern Nazarene College
+- href: http://www.enmu.edu/
+  name: Eastern New Mexico University
+- href: http://www.eou.edu/
+  name: Eastern Oregon University
+- href: http://www.eastern.edu/
+  name: Eastern University
+- href: http://www.evms.edu/
+  name: Eastern Virginia Medical School
+- href: http://www.ewu.edu/
+  name: Eastern Washington University
+- href: http://www.eckerd.edu/
+  name: Eckerd College
+- href: http://www.ecpi.edu/
+  name: ECPI University
+- href: http://www.eden.edu/
+  name: Eden Theological Seminary
+- href: http://www.edgewood.edu/
+  name: Edgewood College
+- href: http://www.edinboro.edu/
+  name: Edinboro University of Pennsylvania
+- href: http://www.edison.edu/
+  name: Edison State College
+- href: http://www.edpuniversity.edu/
+  name: EDP College
+- href: http://www.ewc.edu/
+  name: Edward Waters College
+- href: http://www.ecsu.edu/
+  name: Elizabeth City State University
+- href: http://www.etown.edu/
+  name: Elizabethtown College
+- href: http://www.ellis.edu/
+  name: Ellis University
+- href: http://public.elmhurst.edu/
+  name: Elmhurst College
+- href: http://www.elmira.edu/
+  name: Elmira College
+- href: http://www.elms.edu/
+  name: Elms College
+- href: http://www.elon.edu/
+  name: Elon University
+- href: http://www.erau.edu/
+  name: Embry-Riddle Aeronautical University
+- href: http://www.emerson.edu/
+  name: Emerson College
+- href: http://www.ecs.edu/
+  name: Emmanuel Christian Seminary
+- href: http://www.ec.edu/
+  name: Emmanuel College
+- href: http://www.emmanuel.edu/
+  name: Emmanuel College
+- href: http://www.emmaus.edu/
+  name: Emmaus Bible College
+- href: http://www.emporia.edu/
+  name: Emporia State University
+- href: http://www.ehc.edu/
+  name: Emory & Henry College
+- href: http://www.emory.edu/
+  name: Emory University
+- href: http://www.endicott.edu/
+  name: Endicott College
+- href: http://www.erikson.edu/
+  name: Erikson Institute
+- href: http://www.erskine.edu/
+  name: Erskine College
+- href: http://www.eap.edu/
+  name: Escuela de Artes Plásticas de Puerto Rico
+- href: http://www.eureka.edu/
+  name: Eureka College
+- href: http://www.evangel.edu/
+  name: Evangel University
+- href: http://www.evangelical.edu/
+  name: Evangelical Theological Seminary
+- href: http://www.evergladesuniversity.edu/
+  name: Everglades University
+- href: http://www.evergreen.edu/
+  name: Evergreen State College
+- href: http://www.excelsior.edu/
+  name: Excelsior College
+- href: http://www.fairfield.edu/
+  name: Fairfield University
+- href: http://www.fdu.edu/
+  name: Fairleigh Dickinson University
+- href: http://www.fairmontstate.edu/
+  name: Fairmont State University
+- href: http://www.faith.edu/
+  name: Faith Baptist Bible College & Theological Seminary
+- href: http://fidm.edu/
+  name: Fashion Institute of Design & Merchandising
+- href: http://www.faulkner.edu/
+  name: Faulkner University
+- href: http://www.uncfsu.edu/
+  name: Fayetteville State University
+- href: http://www.felician.edu/
+  name: Felician College
+- href: http://www.ferris.edu
+  name: Ferris State University
+- href: http://www.ferrum.edu/
+  name: Ferrum College
+- href: http://www.fielding.edu/
+  name: Fielding Graduate University
+- href: http://www.finlandia.edu/
+  name: Finlandia University
+- href: http://www.fisher.edu/
+  name: Fisher College
+- href: http://www.fisk.edu/
+  name: Fisk University
+- href: http://www.fitchburgstate.edu/
+  name: Fitchburg State University
+- href: http://www.ftc.edu/
+  name: Five Towns College
+- href: http://www.flagler.edu/
+  name: Flagler College
+- href: http://www.famu.edu/
+  name: Florida Agricultural & Mechanical University
+- href: http://www.fau.edu/
+  name: Florida Atlantic University
+- href: http://www.floridacollege.edu/
+  name: Florida College
+- href: http://www.fgcu.edu/
+  name: Florida Gulf Coast University
+- href: http://www.fit.edu/
+  name: Florida Institute of Technology
+- href: http://www.fiu.edu/
+  name: Florida International University
+- href: http://www.fmuniv.edu/
+  name: Florida Memorial University
+- href: http://www.fnu.edu/
+  name: Florida National University
+- href: http://www.flsouthern.edu/
+  name: Florida Southern College
+- href: http://www.fscj.edu/
+  name: Florida State College at Jacksonville
+- href: http://www.fsu.edu/
+  name: Florida State University
+- href: http://www.fontbonne.edu/
+  name: Fontbonne University
+- href: http://www.fordham.edu/
+  name: Fordham University
+- href: http://www.forest.edu/
+  name: Forest Institute of Professional Psychology
+- href: http://www.fhsu.edu/
+  name: Fort Hays State University
+- href: http://www.fortlewis.edu/
+  name: Fort Lewis College
+- href: http://www.fvsu.edu/
+  name: Fort Valley State University
+- href: http://www.framingham.edu/
+  name: Framingham State University
+- href: http://www.fmarion.edu/
+  name: Francis Marion University
+- href: http://fst.edu/
+  name: Franciscan School of Theology
+- href: http://www.franciscan.edu/
+  name: Franciscan University of Steubenville
+- href: http://www.taliesin.edu/
+  name: Frank Lloyd Wright School of Architecture
+- href: http://www.fandm.edu/
+  name: Franklin & Marshall College
+- href: http://www.franklincollege.edu/
+  name: Franklin College
+- href: http://www.franklinpierce.edu/
+  name: Franklin Pierce University
+- href: http://www.franklin.edu/
+  name: Franklin University
+- href: http://www.olin.edu/
+  name: Franklin W. Olin College of Engineering
+- href: http://www.fhu.edu/
+  name: Freed-Hardeman University
+- href: http://www.fresno.edu/
+  name: Fresno Pacific University
+- href: http://www.friends.edu/
+  name: Friends University
+- href: http://www.frontier.edu/
+  name: Frontier Nursing University
+- href: http://www.frostburg.edu/
+  name: Frostburg State University
+- href: http://www.fuller.edu/
+  name: Fuller Theological Seminary
+- href: http://www.furman.edu/
+  name: Furman University
+- href: http://www.future.edu/
+  name: Future Generations Graduate School
+- href: http://www.gallaudet.edu/
+  name: Gallaudet University
+- href: http://www.gannon.edu/
+  name: Gannon University
+- href: http://www.gardner-webb.edu/
+  name: Gardner-Webb University
+- href: http://www.garrett.edu/
+  name: Garrett-Evangelical Theological Seminary
+- href: http://www.geneva.edu/page/index.html
+  name: Geneva College
+- href: http://www.georgefox.edu/
+  name: George Fox University
+- href: http://www.gmu.edu/
+  name: George Mason University
+- href: http://www.gwu.edu/
+  name: George Washington University
+- href: http://virginia.gwu.edu/
+  name: George Washington University–Virginia Science & Technology Campus
+- href: http://www.georgetowncollege.edu/
+  name: Georgetown College
+- href: http://www.georgetown.edu/
+  name: Georgetown University
+- href: http://www.gcsu.edu/
+  name: Georgia College & State University
+- href: http://www.ggc.edu/
+  name: Georgia Gwinnett College
+- href: http://www.gatech.edu/
+  name: Georgia Institute of Technology
+- href: http://www.gru.edu/
+  name: Georgia Regents University
+- href: http://www.georgiasouthern.edu/
+  name: Georgia Southern University
+- href: http://www.gsw.edu/
+  name: Georgia Southwestern State University
+- href: http://www.gsu.edu/
+  name: Georgia State University
+- href: http://www.georgian.edu/
+  name: Georgian Court University
+- href: http://www.gettysburg.edu/
+  name: Gettysburg College
+- href: http://www.glenville.edu/
+  name: Glenville State College
+- href: http://www.globaluniversity.edu/
+  name: Global University
+- href: http://www.gbs.edu/
+  name: God's Bible School & College
+- href: http://www.goddard.edu/
+  name: Goddard College
+- href: http://www.ggbts.edu/
+  name: Golden Gate Baptist Theological Seminary
+- href: http://www.ggu.edu/
+  name: Golden Gate University
+- href: http://www.gbc.edu/
+  name: Goldey-Beacom College
+- href: http://www.barnesjewishcollege.edu/
+  name: Goldfarb School of Nursing at Barnes-Jewish College
+- href: http://www.gonzaga.edu/
+  name: Gonzaga University
+- href: http://www.goodwin.edu/
+  name: Goodwin College
+- href: http://www.gordonstate.edu/
+  name: Gordon State College
+- href: http://www.gordon.edu/
+  name: Gordon College
+- href: http://www.gordonconwell.edu/
+  name: Gordon-Conwell Theological Seminary
+- href: http://www.goshen.edu/
+  name: Goshen College
+- href: http://www.goucher.edu/
+  name: Goucher College
+- href: http://www.govst.edu/
+  name: Governors State University
+- href: http://www.gbcol.edu/
+  name: Grace Bible College
+- href: http://www.grace.edu/
+  name: Grace College & Seminary
+- href: http://www.graceuniversity.edu/
+  name: Grace University
+- href: http://www.graceland.edu/
+  name: Graceland University
+- href: http://www.gial.edu/
+  name: Graduate Institute of Applied Linguistics
+- href: http://gtu.edu/
+  name: Graduate Theological Union
+- href: http://www.gram.edu/
+  name: Grambling State University
+- href: http://www.gcu.edu/
+  name: Grand Canyon University
+- href: http://www.gvsu.edu/
+  name: Grand Valley State University
+- href: http://www.grandview.edu/
+  name: Grand View University
+- href: http://www.granite.edu/
+  name: Granite State College
+- href: http://www.gratz.edu/
+  name: Gratz College
+- href: http://www.gbcnv.edu/
+  name: Great Basin College
+- href: http://www.glcc.edu/
+  name: Great Lakes Christian College
+- href: http://www.greenmtn.edu/
+  name: Green Mountain College
+- href: http://www.greensboro.edu/
+  name: Greensboro College
+- href: http://www.greenville.edu/
+  name: Greenville College
+- href: http://www.grinnell.edu/
+  name: Grinnell College
+- href: http://www.gcc.edu/
+  name: Grove City College
+- href: http://www.guilford.edu/
+  name: Guilford College
+- href: http://www.gulfcoast.edu/
+  name: Gulf Coast State College
+- href: http://gustavus.edu/
+  name: Gustavus Adolphus College
+- href: http://www.gmercyu.edu/
+  name: Gwynedd Mercy University
+- href: http://icahn.mssm.edu/
+  name: Icahn School of Medicine at Mount Sinai
+- href: http://www.isu.edu/
+  name: Idaho State University
+- href: http://www.iliff.edu/
+  name: Iliff School of Theology
+- href: http://www.ic.edu/
+  name: Illinois College
+- href: http://www.ico.edu/
+  name: Illinois College of Optometry
+- href: http://www.artinstitutes.edu/chicago/
+  name: Illinois Institute of Art
+- href: http://www.artinstitutes.edu/schaumburg/
+  name: Illinois Institute of Art–Schaumburg
+- href: http://www.iit.edu/
+  name: Illinois Institute of Technology
+- href: http://illinoisstate.edu/
+  name: Illinois State University
+- href: http://www.iwu.edu/
+  name: Illinois Wesleyan University
+- href: http://www.immaculata.edu/
+  name: Immaculata University
+- href: http://www.irsc.edu/
+  name: Indian River State College
+- href: http://www.indianatech.edu/
+  name: Indiana Institute of Technology
+- href: http://www.indstate.edu/
+  name: Indiana State University
+- href: http://www.iub.edu/
+  name: Indiana University–Bloomington
+- href: http://www.iue.edu/
+  name: Indiana University–East
+- href: http://www.iuk.edu/
+  name: Indiana University–Kokomo
+- href: http://www.iun.edu/
+  name: Indiana University–Northwest
+- href: http://www.iusb.edu/
+  name: Indiana University–South Bend
+- href: http://www.ius.edu/
+  name: Indiana University–Southeast
+- href: http://www.indiana.edu/
+  name: Indiana University System
+- href: http://www.iupuc.edu/
+  name: Indiana University/Purdue University at Columbus
+- href: http://www.ipfw.edu/
+  name: Indiana University/Purdue University at Fort Wayne
+- href: http://www.iupui.edu/
+  name: Indiana University/Purdue University at Indianapolis
+- href: http://www.iup.edu/
+  name: Indiana University of Pennsylvania
+- href: http://www.indwes.edu/
+  name: Indiana Wesleyan University
+- href: http://www.icsw.edu/
+  name: Institute for Clinical Social Work
+- href: http://ipsciences.edu/
+  name: Institute for the Psychological Sciences
+- href: http://www.iaia.edu/
+  name: Institute of American Indian Arts
+- href: http://www.iwp.edu/
+  name: Institute of World Politics
+- href: http://www.itc.edu/
+  name: Interdenominational Theological Center
+- href: http://www.iona.edu/
+  name: Iona College
+- href: http://www.iastate.edu/
+  name: Iowa State University
+- href: http://www.iwc.edu/
+  name: Iowa Wesleyan College
+- href: http://www.cityofhope.org/grad-school
+  name: Irell & Manella Graduate School of Biological Sciences
+- href: http://www.ithaca.edu/
+  name: Ithaca College
+- href: http://www.jsums.edu/
+  name: Jackson State University
+- href: http://www.ju.edu/
+  name: Jacksonville University
+- href: http://www.jsu.edu/
+  name: Jacksonville State University
+- href: http://www.jmu.edu/
+  name: James Madison University
+- href: http://www.jarvis.edu/
+  name: Jarvis Christian College
+- href: http://www.jchs.edu/
+  name: Jefferson College of Health Sciences
+- href: http://www.jtsa.edu/
+  name: The Jewish Theological Seminary of America
+- href: http://www.jbu.edu/
+  name: John Brown University
+- href: http://www.jcu.edu/
+  name: John Carroll University
+- href: http://www.jfku.edu/
+  name: John F. Kennedy University
+- href: http://www.jmls.edu/
+  name: John Marshall Law School
+- href: http://www.jhu.edu/
+  name: Johns Hopkins University
+- href: http://www.johnsonu.edu/
+  name: Johnson University
+- href: http://www.fcc.edu/
+  name: Johnson University Florida
+- href: http://www.jcsu.edu/
+  name: Johnson C. Smith University
+- href: http://www.jsc.edu/
+  name: Johnson State College
+- href: http://www.jwu.edu/
+  name: Johnson & Wales University
+- href: http://www.jiu.edu/
+  name: Jones International University
+- href: http://www.judson.edu/
+  name: Judson College
+- href: http://www.judsonu.edu/
+  name: Judson University
+- href: http://www.juilliard.edu/
+  name: The Juilliard School
+- href: http://www.juniata.edu/
+  name: Juniata College
+- href: http://www.laroche.edu/
+  name: La Roche College
+- href: http://www.lasalle.edu/
+  name: La Salle University
+- href: http://www.lasierra.edu/
+  name: La Sierra University
+- href: http://www.laboure.edu/
+  name: Labouré College
+- href: http://www.lafayette.edu/
+  name: Lafayette College
+- href: http://www.lagrange.edu/
+  name: LaGrange College
+- href: http://www.lcad.edu/
+  name: Laguna College of Art & Design
+- href: http://www.lec.edu/
+  name: Lake Erie College
+- href: http://lecom.edu/
+  name: Lake Erie College of Osteopathic Medicine
+- href: http://www.lakeforest.edu/
+  name: Lake Forest College
+- href: http://www.lakeforestmba.edu/
+  name: Lake Forest Graduate School of Management
+- href: http://www.lssu.edu/
+  name: Lake Superior State University
+- href: http://www.lssc.edu/
+  name: Lake-Sumter State College
+- href: http://www.lakeland.edu/
+  name: Lakeland College
+- href: http://www.lakeviewcol.edu/
+  name: Lakeview College of Nursing
+- href: http://www.lamar.edu/
+  name: Lamar University
+- href: http://www.lbc.edu/
+  name: Lancaster Bible College
+- href: http://www.lancasterseminary.edu/
+  name: Lancaster Theological Seminary
+- href: http://www.lander.edu/
+  name: Lander University
+- href: http://www.landmark.edu/
+  name: Landmark College
+- href: http://www.lanecollege.edu/
+  name: Lane College
+- href: http://www.lunet.edu/
+  name: Langston University
+- href: http://www.lasell.edu/
+  name: Lasell College
+- href: http://www.ltu.edu/
+  name: Lawrence Technological University
+- href: http://www.lawrence.edu/
+  name: Lawrence University
+- href: http://www.lemoyne.edu/
+  name: Le Moyne College
+- href: http://www.lvc.edu/
+  name: Lebanon Valley College
+- href: http://www.leeuniversity.edu/
+  name: Lee University
+- href: http://www.lmc.edu/
+  name: Lees-McRae College
+- href: http://www.lehigh.edu/
+  name: Lehigh University
+- href: http://www.loc.edu/
+  name: LeMoyne-Owen College
+- href: http://www.lr.edu/
+  name: Lenoir-Rhyne University
+- href: http://www.lesley.edu/
+  name: Lesley University
+- href: http://www.letu.edu/
+  name: LeTourneau University
+- href: http://www.lclark.edu/
+  name: Lewis & Clark College
+- href: http://www.lcsc.edu/
+  name: Lewis-Clark State College
+- href: http://www.lewisu.edu/
+  name: Lewis University
+- href: http://www.lexingtoncollege.edu/
+  name: Lexington College
+- href: http://www.liberty.edu/
+  name: Liberty University
+- href: http://lifepacific.edu/
+  name: Life Pacific College
+- href: http://www.life.edu/
+  name: Life University
+- href: http://www.limcollege.edu/
+  name: LIM College
+- href: http://www.limestone.edu/
+  name: Limestone College
+- href: http://www.lincolnchristian.edu/
+  name: Lincoln Christian University
+- href: http://lincolncollege.edu/
+  name: Lincoln College
+- href: http://www.lincolncollegene.edu/
+  name: Lincoln College of New England
+- href: http://www.lmunet.edu/
+  name: Lincoln Memorial University
+- href: http://www.lincolnu.edu/
+  name: Lincoln University
+- href: http://www.lincoln.edu/
+  name: Lincoln University
+- href: http://www.lindenwood.edu/
+  name: Lindenwood University
+- href: http://www.lindsey.edu/
+  name: Lindsey Wilson College
+- href: http://www.linfield.edu/
+  name: Linfield College
+- href: http://www.lipscomb.edu/
+  name: Lipscomb University
+- href: http://www.livingstone.edu/
+  name: Livingstone College
+- href: http://www.lhup.edu/
+  name: Lock Haven University of Pennsylvania
+- href: http://www.logan.edu/
+  name: Logan University
+- href: http://www.llu.edu/
+  name: Loma Linda University
+- href: http://www.liu.edu/
+  name: Long Island University
+- href: http://www2.brooklyn.liu.edu/pharmacy/
+  name: Long Island University–Arnold & Marie Schwartz College of Pharmacy & Health
+    Sciences
+- href: http://www.liu.edu/brentwood/
+  name: Long Island University–Brentwood Campus
+- href: http://www.liu.edu/brooklyn.aspx
+  name: Long Island University–Brooklyn Campus
+- href: http://www.liu.edu/cwpost.aspx
+  name: Long Island University–C.W. Post Campus
+- href: http://www2.southampton.liu.edu/riverhead/
+  name: Long Island University at Riverhead
+- href: http://www2.liu.edu/cwis/rckld/
+  name: Long Island University–Rockland Graduate Campus
+- href: http://www.liu.edu/cwis/west/
+  name: Long Island University–Westchester Graduate Campus
+- href: http://www.longwood.edu/
+  name: Longwood University
+- href: http://www.longy.edu/
+  name: Longy School of Music
+- href: http://www.loras.edu/
+  name: Loras College
+- href: http://www.lacollege.edu/
+  name: Louisiana College
+- href: http://www.lsu.edu/
+  name: Louisiana State University
+- href: http://www.lsua.edu/
+  name: Louisiana State University–Alexandria
+- href: http://www.law.lsu.edu/
+  name: Louisiana State University–Law Center
+- href: http://www.lsuhsc.edu/
+  name: Louisiana State University Health Sciences Center–New Orleans
+- href: http://www.lsuhscshreveport.edu/
+  name: Louisiana State University Health Sciences Center–Shreveport
+- href: http://www.lsus.edu/
+  name: Louisiana State University–Shreveport
+- href: http://www.lsusystem.edu/
+  name: Louisiana State University System
+- href: http://www.latech.edu/
+  name: Louisiana Tech University
+- href: http://www.lpts.edu/
+  name: Louisville Presbyterian Theological Seminary
+- href: http://www.lourdes.edu/
+  name: Lourdes University
+- href: http://www.loyola.edu/
+  name: Loyola University Maryland
+- href: http://www.lmu.edu/
+  name: Loyola Marymount University
+- href: http://www.luc.edu/
+  name: Loyola University Chicago
+- href: http://www.loyno.edu/
+  name: Loyola University New Orleans
+- href: http://www.lcu.edu/
+  name: Lubbock Christian University
+- href: http://www.luther.edu/
+  name: Luther College
+- href: http://www.luthersem.edu/
+  name: Luther Seminary
+- href: http://www.lstc.edu/
+  name: Lutheran School of Theology at Chicago
+- href: http://www.ltsg.edu/
+  name: Lutheran Theological Seminary at Gettysburg
+- href: http://ltsp.edu/
+  name: Lutheran Theological Seminary at Philadelphia
+- href: http://www.lycoming.edu/
+  name: Lycoming College
+- href: http://www.lymeacademy.edu/
+  name: Lyme Academy College of Fine Arts
+- href: http://www.lynchburg.edu/
+  name: Lynchburg College
+- href: http://lyndonstate.edu/
+  name: Lyndon State College
+- href: http://www.lynn.edu/
+  name: Lynn University
+- href: http://www.lyon.edu/
+  name: Lyon College
+- href: http://www.naropa.edu/
+  name: Naropa University
+- href: http://www.national.edu/
+  name: National American University
+- href: http://www.ncnm.edu/
+  name: National College of Natural Medicine
+- href: http://www.ndu.edu/
+  name: National Defense University
+- href: http://ngs.edu/
+  name: National Graduate School of Quality Management
+- href: http://www.nhu.edu/
+  name: National Hispanic University
+- href: http://www.ni-u.edu/
+  name: National Intelligence University
+- href: http://www.nlc.edu/
+  name: National Labor College
+- href: http://www.nl.edu/
+  name: National-Louis University
+- href: http://www.nu.edu/
+  name: National University
+- href: http://www.nuhs.edu/
+  name: National University of Health Sciences
+- href: http://www.navajotech.edu/
+  name: Navajo Technical College
+- href: http://www.nps.navy.mil/
+  name: Naval Postgraduate School
+- href: http://www.nbc.edu/
+  name: Nazarene Bible College
+- href: http://www.naz.edu/
+  name: Nazareth College
+- href: http://www.nechristian.edu/
+  name: Nebraska Christian College
+- href: http://www.methodistcollege.edu/
+  name: Nebraska Methodist College
+- href: http://www.nebrwesleyan.edu/
+  name: Nebraska Wesleyan University
+- href: http://www.neumann.edu/
+  name: Neumann University
+- href: http://www.ncf.edu/
+  name: New College of Florida
+- href: http://www.nec.edu/
+  name: New England College
+- href: http://www.necb.edu/
+  name: New England College of Business & Finance
+- href: http://www.neco.edu/
+  name: New England College of Optometry
+- href: http://necmusic.edu/
+  name: New England Conservatory of Music
+- href: http://www.artinstitutes.edu/boston/
+  name: New England Institute of Art
+- href: http://www.neit.edu/
+  name: New England Institute of Technology
+- href: http://www.newhope.edu/
+  name: New Hope Christian College
+- href: http://www.njcu.edu/
+  name: New Jersey City University
+- href: http://www.njit.edu/
+  name: New Jersey Institute of Technology
+- href: http://www.nmhu.edu/
+  name: New Mexico Highlands University
+- href: http://www.nmt.edu/
+  name: New Mexico Institute of Mining & Technology
+- href: http://www.nmsu.edu/
+  name: New Mexico State University
+- href: http://www.nobts.edu/
+  name: New Orleans Baptist Theological Seminary
+- href: http://www.newschool.edu/
+  name: The New School
+- href: http://www.nycc.edu/
+  name: New York Chiropractic College
+- href: http://www.nyit.edu/
+  name: New York Institute of Technology
+- href: http://www.nymc.edu/
+  name: New York Medical College
+- href: http://www.nyu.edu/
+  name: New York University
+- href: http://www.newberry.edu/
+  name: Newberry College
+- href: http://www.newbury.edu/
+  name: Newbury College
+- href: http://www.newmanu.edu/
+  name: Newman University
+- href: http://www.niagara.edu/
+  name: Niagara University
+- href: http://www.nichols.edu/
+  name: Nichols College
+- href: http://www.nicholls.edu/
+  name: Nicholls State University
+- href: http://www.nsu.edu/
+  name: Norfolk State University
+- href: http://www.ncat.edu/
+  name: North Carolina A&T State University
+- href: http://www.nccu.edu/
+  name: North Carolina Central University
+- href: http://www.ncwc.edu/
+  name: North Carolina Wesleyan College
+- href: http://www.northcentral.edu/
+  name: North Central University
+- href: http://www.northcentralcollege.edu/
+  name: North Central College
+- href: http://www.ncsu.edu/
+  name: North Carolina State University
+- href: http://www.ndsu.edu/
+  name: North Dakota State University
+- href: http://www.ngu.edu/
+  name: North Greenville University
+- href: http://www.northpark.edu/
+  name: North Park University
+- href: http://www.ncu.edu/
+  name: Northcentral University
+- href: http://www.neomed.edu/
+  name: Northeast Ohio Medical University
+- href: http://www.neiu.edu/
+  name: Northeastern Illinois University
+- href: http://www.nes.edu/
+  name: Northeastern Seminary at Roberts Wesleyan College
+- href: http://www.nsuok.edu/
+  name: Northeastern State University
+- href: http://www.nsuok.edu/BrokenArrow.aspx
+  name: Northeastern State University–Broken Arrow
+- href: http://www.nsuok.edu/Muskogee.aspx
+  name: Northeastern State University–Muskogee
+- href: http://www.northeastern.edu/
+  name: Northeastern University
+- href: http://www.nau.edu/
+  name: Northern Arizona University
+- href: http://www.seminary.edu/
+  name: Northern Baptist Theological Seminary
+- href: http://www.niu.edu/
+  name: Northern Illinois University
+- href: http://www.nku.edu/
+  name: Northern Kentucky University
+- href: http://www.nmu.edu/
+  name: Northern Michigan University
+- href: http://www.nnmc.edu/
+  name: Northern New Mexico College
+- href: http://www.northern.edu/
+  name: Northern State University
+- href: http://www.northland.edu/
+  name: Northland College
+- href: http://www.nwcu.edu/
+  name: Northwest Christian University
+- href: http://www.nwfsc.edu/
+  name: Northwest Florida State College
+- href: http://www.nwic.edu/
+  name: Northwest Indian College
+- href: http://www.nwmissouri.edu/
+  name: Northwest Missouri State University
+- href: http://www.nnu.edu/
+  name: Northwest Nazarene University
+- href: http://www.northwestu.edu/
+  name: Northwest University
+- href: http://www.nwciowa.edu/
+  name: Northwestern College
+- href: http://www.nwhealth.edu/
+  name: Northwestern Health Sciences University
+- href: http://www.nwosu.edu/
+  name: Northwestern Oklahoma State University
+- href: http://www.nsula.edu/
+  name: Northwestern State University of Louisiana
+- href: http://www.northwestern.edu/
+  name: Northwestern University
+- href: http://www.northwood.edu/
+  name: Northwood University
+- href: http://www.norwich.edu/
+  name: Norwich University
+- href: http://www.notredamecollege.edu/
+  name: Notre Dame College
+- href: http://www.ndnu.edu/
+  name: Notre Dame de Namur University
+- href: http://nds.edu/
+  name: Notre Dame Seminary
+- href: http://www.nova.edu/
+  name: Nova Southeastern University
+- href: http://www.nyack.edu/
+  name: Nyack College
+- href: http://www.pace.edu/
+  name: Pace University
+- href: http://www.plu.edu/
+  name: Pacific Lutheran University
+- href: http://www.pnca.edu/
+  name: Pacific Northwest College of Art
+- href: http://www.pacificoaks.edu/
+  name: Pacific Oaks College
+- href: http://www.psr.edu/
+  name: Pacific School of Religion
+- href: http://www.puc.edu/
+  name: Pacific Union College
+- href: http://www.pacificu.edu/
+  name: Pacific University
+- href: http://www.pacifica.edu/
+  name: Pacifica Graduate Institute
+- href: http://www.paine.edu/
+  name: Paine College
+- href: http://www.pba.edu/
+  name: Palm Beach Atlantic University
+- href: http://www.palmbeachstate.edu/
+  name: Palm Beach State College
+- href: http://www.palmer.edu/
+  name: Palmer College of Chiropractic
+- href: http://www.paloaltou.edu/
+  name: Palo Alto University
+- href: http://www.prgs.edu/
+  name: Pardee RAND Graduate School
+- href: http://www.park.edu/
+  name: Park University
+- href: http://www.parker.edu/
+  name: Parker University
+- href: http://patten.edu/
+  name: Patten University
+- href: http://www.pqc.edu/
+  name: Paul Quinn College
+- href: http://www.paulsmiths.edu/
+  name: Paul Smith's College
+- href: http://www.peace.edu/
+  name: Peace College
+- href: http://www.peirce.edu/
+  name: Peirce College
+- href: http://www.pc.ctc.edu/
+  name: Peninsula College
+- href: http://www.pcad.edu/
+  name: Pennsylvania College of Art & Design
+- href: http://www.pacollege.edu/
+  name: Pennsylvania College of Health Sciences
+- href: http://www.pct.edu/
+  name: Pennsylvania College of Technology
+- href: http://www.psu.edu/
+  name: Pennsylvania State University
+- href: http://www.abington.psu.edu/
+  name: Pennsylvania State University–Abington
+- href: http://www.aa.psu.edu/
+  name: Pennsylvania State University–Altoona
+- href: http://www.br.psu.edu/
+  name: Pennsylvania State University–Beaver
+- href: http://www.bk.psu.edu/
+  name: Pennsylvania State University–Berks
+- href: http://www.brandywine.psu.edu/
+  name: Pennsylvania State University–Brandywine
+- href: http://law.psu.edu/
+  name: Pennsylvania State University–Dickinson School of Law
+- href: http://www.ds.psu.edu/
+  name: Pennsylvania State University–DuBois
+- href: http://psbehrend.psu.edu/
+  name: Pennsylvania State University–Erie, The Behrend College
+- href: http://www.fe.psu.edu/
+  name: Pennsylvania State University–Fayette, The Eberly Campus
+- href: http://www.sgps.psu.edu/
+  name: Pennsylvania State University–Great Valley School of Graduate Professional
+    Studies
+- href: http://www.ga.psu.edu/
+  name: Pennsylvania State University–Greater Allegheny
+- href: http://hbg.psu.edu/
+  name: Pennsylvania State University–Harrisburg
+- href: http://www.hazleton.psu.edu/
+  name: Pennsylvania State University–Hazleton
+- href: http://www.lv.psu.edu/
+  name: Pennsylvania State University–Lehigh Valley
+- href: http://www.pennstatehershey.org/
+  name: Pennsylvania State University–Milton S. Hershey Medical Center
+- href: http://www.ma.psu.edu/
+  name: Pennsylvania State University–Mont Alto
+- href: http://www.nk.psu.edu/
+  name: Pennsylvania State University–New Kensington
+- href: http://www.sl.psu.edu/
+  name: Pennsylvania State University–Schuylkill
+- href: http://www.shenango.psu.edu/
+  name: Pennsylvania State University–Shenango
+- href: http://www.wb.psu.edu/
+  name: Pennsylvania State University–Wilkes-Barre
+- href: http://www.sn.psu.edu/
+  name: Pennsylvania State University–Worthington Scranton
+- href: http://www.yk.psu.edu/
+  name: Pennsylvania State University–York
+- href: http://www.pensacolastate.edu/
+  name: Pensacola State College
+- href: http://www.ptseminary.edu/
+  name: Pentecostal Theological Seminary
+- href: http://www.pepperdine.edu/
+  name: Pepperdine University
+- href: http://www.peru.edu/
+  name: Peru State College
+- href: http://www.pfeiffer.edu/
+  name: Pfeiffer University
+- href: http://www.pcom.edu/
+  name: Philadelphia College of Osteopathic Medicine
+- href: http://www.philau.edu/
+  name: Philadelphia College of Textiles & Science
+- href: http://www.philander.edu/
+  name: Philander Smith College
+- href: http://www.pgi.edu/
+  name: Phillips Graduate Institute
+- href: http://ptstulsa.edu/
+  name: Phillips Theological Seminary
+- href: http://www.pulf.org/
+  name: Phillips University
+- href: http://www.piedmont.edu/
+  name: Piedmont College
+- href: http://www.pmc.edu/
+  name: Pine Manor College
+- href: http://www.pittstate.edu/
+  name: Pittsburg State University
+- href: http://www.pts.edu/
+  name: Pittsburgh Theological Seminary
+- href: http://www.plymouth.edu/
+  name: Plymouth State University
+- href: http://www.pointloma.edu/
+  name: Point Loma Nazarene University
+- href: http://www.pointpark.edu/
+  name: Point Park University
+- href: http://www.point.edu/
+  name: Point University
+- href: http://www.polk.edu/
+  name: Polk State College
+- href: http://www.psm.edu/
+  name: Ponce School of Medicine & Health Sciences
+- href: http://www.pcj.edu/
+  name: Pontifical College Josephinum
+- href: http://www.pucpr.edu
+  name: Pontificia Universidad Católica de Puerto Rico
+- href: http://www.pdx.edu/
+  name: Portland State University
+- href: http://www.post.edu/
+  name: Post University
+- href: http://www.potomac.edu/
+  name: Potomac College
+- href: http://www.pvamu.edu/
+  name: Prairie View A&M University
+- href: http://www.pratt.edu/
+  name: Pratt Institute
+- href: http://www.prescott.edu/
+  name: Prescott College
+- href: http://www.presentation.edu/
+  name: Presentation College
+- href: http://www.ptsem.edu/
+  name: Princeton Theological Seminary
+- href: http://www.princeton.edu/
+  name: Princeton University
+- href: http://www.principiacollege.edu/
+  name: Principia College
+- href: http://www.presby.edu/
+  name: Presbyterian College
+- href: http://www.providence.edu/
+  name: Providence College
+- href: http://www.purdue.edu/
+  name: Purdue University
+- href: http://www.purduecal.edu/
+  name: Purdue University–Calumet
+- href: http://www.pnc.edu/
+  name: Purdue University–North Central
+- href: http://www.tech.purdue.edu/anderson/
+  name: Purdue University College of Technology–Anderson/Muncie
+- href: http://www.tech.purdue.edu/columbus/
+  name: Purdue University College of Technology–Columbus/Greensburg
+- href: http://www.tech.purdue.edu/indy/
+  name: Purdue University College of Technology–Indianapolis
+- href: http://www.tech.purdue.edu/kokomo/
+  name: Purdue University College of Technology–Kokomo
+- href: http://www.tech.purdue.edu/lafayette/
+  name: Purdue University College of Technology–Lafayette
+- href: http://www.tech.purdue.edu/newalbany/
+  name: Purdue University College of Technology–New Albany
+- href: http://www.tech.purdue.edu/richmond/
+  name: Purdue University College of Technology–Richmond
+- href: http://www.tech.purdue.edu/southbend/
+  name: Purdue University College of Technology–South Bend/Elkhart
+- href: http://www.shms.edu/
+  name: Sacred Heart Major Seminary
+- href: http://www.shst.edu/
+  name: Sacred Heart School of Theology
+- href: http://www.sacredheart.edu/
+  name: Sacred Heart University
+- href: http://www.sage.edu/
+  name: The Sage Colleges
+- href: http://www.svsu.edu/
+  name: Saginaw Valley State University
+- href: http://www.sau.edu/
+  name: Saint Ambrose University
+- href: http://www.sapc.edu/
+  name: Saint Andrews Presbyterian College
+- href: http://www.anselm.edu/
+  name: Saint Anselm College
+- href: http://www.sacn.edu/
+  name: Saint Anthony College of Nursing
+- href: http://www.staugustine.edu/
+  name: Saint Augustine College
+- href: http://www.st-aug.edu/
+  name: Saint Augustine's University
+- href: http://www.sbu.edu/
+  name: Saint Bonaventure University
+- href: http://www.stkate.edu/
+  name: Saint Catherine University
+- href: http://www.sccky.edu/
+  name: Saint Catharine College
+- href: http://www.scs.edu/
+  name: Saint Charles Borromeo Seminary
+- href: http://www.stcloudstate.edu/
+  name: Saint Cloud State University
+- href: http://www.stedwards.edu/
+  name: Saint Edward's University
+- href: http://www.sfc.edu/
+  name: Saint Francis College
+- href: http://www.sfmccon.edu/
+  name: Saint Francis Medical Center College of Nursing
+- href: http://francis.edu/
+  name: Saint Francis University
+- href: http://www.stgregoryseminary.edu/
+  name: Saint Gregory the Great Seminary
+- href: http://www.stgregorys.edu/
+  name: Saint Gregory's University
+- href: http://www.sjfc.edu/
+  name: Saint John Fisher College
+- href: http://www.sjvcs.edu/
+  name: Saint John Vianney College Seminary
+- href: http://www.sjca.edu/
+  name: Saint John's College–Annapolis
+- href: http://www.sjcsf.edu/
+  name: Saint John's College–Santa Fe
+- href: http://www.stjohnscollegespringfield.edu/
+  name: Saint John's College
+- href: http://www.stjohnsem.edu/
+  name: Saint John's Seminary
+- href: http://www.sjs.edu/
+  name: Saint John's Seminary
+- href: http://www.csbsju.edu/
+  name: Saint John's University
+- href: http://www.stjohns.edu/
+  name: Saint John's University
+- href: http://www.sjrstate.edu/
+  name: Saint Johns River State College
+- href: http://www.sjc.edu/
+  name: Saint Joseph College
+- href: http://www.sjasc.edu/
+  name: Saint Joseph Seminary College
+- href: http://www.saintjoe.edu/
+  name: Saint Joseph's College
+- href: http://www.sjcny.edu/
+  name: Saint Joseph's College
+- href: http://www.sjcme.edu/
+  name: Saint Joseph's College of Maine
+- href: http://www.dunwoodie.edu/
+  name: Saint Joseph's Seminary
+- href: http://www.sju.edu/
+  name: Saint Joseph's University
+- href: http://www.stlawu.edu/
+  name: Saint Lawrence University
+- href: http://www.saintleo.edu/
+  name: Saint Leo University
+- href: http://www.stlcop.edu/
+  name: Saint Louis College of Pharmacy
+- href: http://www.slu.edu/
+  name: Saint Louis University
+- href: http://saintlukescollege.edu/
+  name: Saint Luke's College of Health Sciences
+- href: http://www.stmartin.edu/
+  name: Saint Martin's University
+- href: http://www.stmarysem.edu/
+  name: Saint Mary Seminary & Graduate School of Theology
+- href: http://www.smwc.edu/
+  name: Saint Mary-of-the-Woods College
+- href: http://www.saintmarys.edu/
+  name: Saint Mary's College
+- href: http://www.stmarys-ca.edu/
+  name: Saint Mary's College of California
+- href: http://www.smcm.edu/
+  name: Saint Mary's College of Maryland
+- href: http://www.stmarys.edu/
+  name: Saint Mary's Seminary & University
+- href: http://www.smumn.edu/
+  name: Saint Mary's University of Minnesota
+- href: http://www.stmarytx.edu/
+  name: Saint Mary's University
+- href: http://www.saintmeinrad.edu/
+  name: Saint Meinrad Seminary & School of Theology
+- href: http://www.smcvt.edu/
+  name: Saint Michael's College
+- href: http://www.snc.edu/
+  name: Saint Norbert College
+- href: http://www.stolaf.edu/
+  name: Saint Olaf College
+- href: http://www.stpatricksseminary.org/
+  name: Saint Patrick's Seminary & University
+- href: http://www.spst.edu/
+  name: Saint Paul School of Theology
+- href: http://saintpaulsnet.com/
+  name: Saint Paul's College
+- href: http://www.saintpeters.edu/
+  name: Saint Peter's University
+- href: http://www.spcollege.edu/
+  name: Saint Petersburg College
+- href: http://www.stac.edu/
+  name: Saint Thomas Aquinas College
+- href: http://www.stu.edu/
+  name: Saint Thomas University
+- href: http://www.stvincent.edu/
+  name: Saint Vincent College
+- href: http://www.svdp.edu/
+  name: Saint Vincent de Paul Regional Seminary
+- href: http://www.stvincentscollege.edu/
+  name: Saint Vincent's College
+- href: http://www.sxu.edu/
+  name: Saint Xavier University
+- href: http://www.salem.edu/
+  name: Salem College
+- href: http://www.salemu.edu/
+  name: Salem International University
+- href: http://www.salemstate.edu/
+  name: Salem State University
+- href: http://www.salisbury.edu/
+  name: Salisbury University
+- href: http://www.skc.edu/
+  name: Salish Kootenai College
+- href: http://www.salus.edu/
+  name: Salus University
+- href: http://www.salve.edu/
+  name: Salve Regina University
+- href: http://www.shsu.edu/
+  name: Sam Houston State University
+- href: http://www.samford.edu/
+  name: Samford University
+- href: http://www.samuelmerritt.edu/
+  name: Samuel Merritt University
+- href: http://www.sdcc.edu/
+  name: San Diego Christian College
+- href: http://www.sdsu.edu/
+  name: San Diego State University
+- href: http://www.sfai.edu/
+  name: San Francisco Art Institute
+- href: http://www.sfcm.edu/
+  name: San Francisco Conservatory of Music
+- href: http://www.sfsu.edu/
+  name: San Francisco State University
+- href: http://www.sfts.edu/
+  name: San Francisco Theological Seminary
+- href: http://www.sjcl.edu/
+  name: San Joaquin College of Law
+- href: http://www.sjsu.edu/
+  name: San José State University
+- href: http://www.sanjuanbautista.edu/
+  name: San Juan Bautista School of Medicine
+- href: http://bismarck.sanfordhealth.org/collegeofnursing/
+  name: Sanford College of Nursing
+- href: http://www.scu.edu/
+  name: Santa Clara University
+- href: http://www.sfcollege.edu/
+  name: Santa Fe College
+- href: http://www.santafeuniversity.edu/
+  name: Santa Fe University of Art & Design
+- href: http://www.slc.edu/
+  name: Sarah Lawrence College
+- href: http://www.scad.edu/
+  name: Savannah College of Art & Design
+- href: http://www.savannahstate.edu/
+  name: Savannah State University
+- href: http://www.saybrook.edu/
+  name: Saybrook University
+- href: http://www.sit.edu/
+  name: School for International Training
+- href: http://www.saic.edu/
+  name: School of the Art Institute of Chicago
+- href: http://www.sva.edu/
+  name: School of Visual Arts
+- href: http://www.schreiner.edu/
+  name: Schreiner University
+- href: http://www.scripps.edu/
+  name: Scripps Research Institute
+- href: http://www.spu.edu/
+  name: Seattle Pacific University
+- href: http://www.seattleu.edu/
+  name: Seattle University
+- href: http://www.se-pr.edu/
+  name: Seminario Evangélico de Puerto Rico
+- href: http://www.icseminary.edu/
+  name: Seminary of the Immaculate Conception
+- href: http://www.ssw.edu/
+  name: Seminary of the Southwest
+- href: http://www.seminolestate.edu/
+  name: Seminole State College of Florida
+- href: http://www.shu.edu/
+  name: Seton Hall University
+- href: http://www.setonhill.edu/
+  name: Seton Hill University
+- href: http://www.shawuniversity.edu/
+  name: Shaw University
+- href: http://www.shawnee.edu/
+  name: Shawnee State University
+- href: http://www.su.edu/
+  name: Shenandoah University
+- href: http://www.shepherd.edu/
+  name: Shepherd University
+- href: http://www.sherman.edu/
+  name: Sherman College of Chiropractic
+- href: http://www.shimer.edu/
+  name: Shimer College
+- href: http://www.ship.edu/
+  name: Shippensburg University of Pennsylvania
+- href: http://www.shorter.edu/
+  name: Shorter University
+- href: http://www.siena.edu/
+  name: Siena College
+- href: http://www.sienaheights.edu/
+  name: Siena Heights University
+- href: http://www.sierranevada.edu/
+  name: Sierra Nevada College
+- href: http://www.sl.edu/
+  name: Silver Lake College
+- href: http://www.simmons.edu/
+  name: Simmons College
+- href: http://www.sintegleska.edu/
+  name: Sinte Gleska University
+- href: http://simpsonu.edu/
+  name: Simpson University
+- href: http://simpson.edu/
+  name: Simpson College
+- href: http://sfseminary.edu/
+  name: Sioux Falls Seminary
+- href: http://www.suagm.edu/
+  name: Sistema Universitario Ana G. Méndez
+- href: http://www.suagm.edu/une/
+  name: Universidad del Este
+- href: http://www.suagm.edu/umet/
+  name: Universidad Metropolitana
+- href: http://www.suagm.edu/turabo/
+  name: Universidad del Turabo
+- href: http://www.sittingbull.edu/
+  name: Sitting Bull College
+- href: http://www.skidmore.edu/
+  name: Skidmore College
+- href: http://www.sru.edu/
+  name: Slippery Rock University of Pennsylvania
+- href: http://www.smith.edu/
+  name: Smith College
+- href: http://www.sofia.edu/
+  name: Sofia University
+- href: http://www.soka.edu/
+  name: Soka University of America
+- href: http://www.somerset.edu/
+  name: Somerset Christian College
+- href: http://www.sonoma.edu/
+  name: Sonoma State University
+- href: http://www.sdc.edu/
+  name: Soujourner-Douglass College
+- href: http://www.scsu.edu/
+  name: South Carolina State University
+- href: http://www.southcollegetn.edu/
+  name: South College
+- href: http://www.sdsmt.edu/
+  name: South Dakota School of Mines & Technology
+- href: http://www.sdstate.edu/
+  name: South Dakota State University
+- href: http://www.sfbc.edu/
+  name: South Florida Bible College & Theological Seminary
+- href: http://www.sgsc.edu/
+  name: South Georgia State College
+- href: http://www.stcl.edu/
+  name: South Texas College of Law
+- href: http://www.southuniversity.edu/
+  name: South University
+- href: http://www.semo.edu/
+  name: Southeast Missouri State University
+- href: http://www.sebts.edu/
+  name: Southeastern Baptist Theological Seminary
+- href: http://www.sebc.edu/
+  name: Southeastern Bible College
+- href: http://www.seu.edu/
+  name: Southeastern University
+- href: http://www.selu.edu/
+  name: Southeastern Louisiana University
+- href: http://www.se.edu/
+  name: Southeastern Oklahoma State University
+- href: http://www.southern.edu/
+  name: Southern Adventist University
+- href: http://www.saumag.edu/
+  name: Southern Arkansas University
+- href: http://www.sbts.edu/
+  name: Southern Baptist Theological Seminary
+- href: http://www.scco.edu/
+  name: Southern California College of Optometry
+- href: http://www.sciarc.edu/
+  name: Southern California Institute of Architecture
+- href: http://www.scuhs.edu/
+  name: Southern California University of Health Sciences
+- href: http://www.sco.edu/
+  name: Southern College of Optometry
+- href: http://www.southernct.edu/
+  name: Southern Connecticut State University
+- href: http://www.siuc.edu/
+  name: Southern Illinois University–Carbondale
+- href: http://www.siue.edu/
+  name: Southern Illinois University–Edwardsville
+- href: http://www.siu.edu/
+  name: Southern Illinois University System
+- href: http://www.smu.edu/
+  name: Southern Methodist University
+- href: http://snu.edu/
+  name: Southern Nazarene University
+- href: http://www.snhu.edu/
+  name: Southern New Hampshire University
+- href: http://www.sou.edu/
+  name: Southern Oregon University
+- href: http://www.spsu.edu/
+  name: Southern Polytechnic State University
+- href: http://www.subr.edu/
+  name: Southern University and A&M College at Baton Rouge
+- href: http://suno.edu/
+  name: Southern University at New Orleans
+- href: http://www.susla.edu/
+  name: Southern University at Shreveport
+- href: http://www.sus.edu/
+  name: Southern University System
+- href: http://www.suu.edu/
+  name: Southern Utah University
+- href: http://www.svc.edu/
+  name: Southern Vermont College
+- href: http://svu.edu/
+  name: Southern Virginia University
+- href: http://www.swu.edu/
+  name: Southern Wesleyan University
+- href: http://www.sbuniv.edu/
+  name: Southwest Baptist University
+- href: http://www.scnm.edu/
+  name: Southwest College of Naturopathic Medicine & Health Sciences
+- href: http://www.smsu.edu/
+  name: Southwest Minnesota State University
+- href: http://www.swau.edu/
+  name: Southwestern Adventist University
+- href: http://www.sagu.edu/
+  name: Southwestern Assemblies of God University
+- href: http://www.swbts.edu/
+  name: Southwestern Baptist Theological Seminary
+- href: http://www.swcc.edu/
+  name: Southwestern Christian College
+- href: http://www.swcu.edu/
+  name: Southwestern Christian University
+- href: http://www.sckans.edu/
+  name: Southwestern College
+- href: http://swc.edu/
+  name: Southwestern College
+- href: http://www.swosu.edu/
+  name: Southwestern Oklahoma State University
+- href: http://www.southwestern.edu/
+  name: Southwestern University
+- href: http://spalding.edu/
+  name: Spalding University
+- href: http://www.spelman.edu/
+  name: Spelman College
+- href: http://www.spertus.edu/
+  name: Spertus Institute of Jewish Studies
+- href: http://www.arbor.edu/
+  name: Spring Arbor University
+- href: http://www.shc.edu/
+  name: Spring Hill College
+- href: http://www.spfldcol.edu/
+  name: Springfield College
+- href: http://www.stanford.edu/
+  name: Stanford University
+- href: http://www.scf.edu/
+  name: State College of Florida, Manatee-Sarasota
+- href: http://www.suny.edu/
+  name: State University of New York System
+- href: http://www.albany.edu/
+  name: Albany
+- href: http://www.alfredstate.edu/
+  name: Alfred State University
+- href: http://www.binghamton.edu/
+  name: Binghamton
+- href: http://www.buffalo.edu/
+  name: Buffalo
+- href: http://www.buffalostate.edu/
+  name: Buffalo State College
+- href: http://www.stonybrook.edu/
+  name: Stony Brook
+- href: http://www.brockport.edu/
+  name: College at Brockport
+- href: http://www.cortland.edu/
+  name: College at Cortland
+- href: http://www.fredonia.edu/
+  name: College at Fredonia
+- href: http://www.geneseo.edu/
+  name: College at Geneseo
+- href: http://www.newpaltz.edu/
+  name: College at New Paltz
+- href: http://www.oldwestbury.edu/
+  name: College at Old Westbury
+- href: http://www.oneonta.edu/
+  name: College at Oneonta
+- href: http://www.oswego.edu/
+  name: College at Oswego
+- href: http://www.plattsburgh.edu/
+  name: College at Plattsburgh
+- href: http://www.potsdam.edu/
+  name: College at Potsdam
+- href: http://www.purchase.edu/
+  name: College at Purchase
+- href: http://www.cobleskill.edu/
+  name: College of Agriculture & Technology at Cobleskill
+- href: http://www.morrisville.edu/
+  name: College of Agriculture & Technology at Morrisville (Morrisville State College)
+- href: http://www.esf.edu/
+  name: College of Environmental Science & Forestry
+- href: http://www.sunyopt.edu/
+  name: College of Optometry
+- href: http://www.canton.edu/
+  name: College of Technology at Canton
+- href: http://www.delhi.edu/
+  name: College of Technology at Delhi
+- href: http://www.downstate.edu/
+  name: Downstate Medical Center
+- href: http://www.esc.edu/
+  name: Empire State College
+- href: http://www.farmingdale.edu/
+  name: Farmingdale State College
+- href: http://www.fitnyc.edu/
+  name: Fashion Institute of Technology
+- href: http://www.sunyit.edu/
+  name: Institute of Technology at Utica/Rome
+- href: http://www.sunymaritime.edu/
+  name: Maritime College at Fort Schuyler
+- href: http://www.upstate.edu/
+  name: Upstate Medical University
+- href: http://www.sfasu.edu/
+  name: Stephen F. Austin State University
+- href: http://www.stephens.edu/
+  name: Stephens College
+- href: http://www.sterling.edu/
+  name: Sterling College
+- href: http://www.sterlingcollege.edu/
+  name: Sterling College
+- href: http://www.stetson.edu/
+  name: Stetson University
+- href: http://www.stevens.edu/
+  name: Stevens Institute of Technology
+- href: http://www.stevenson.edu/
+  name: Stevenson University
+- href: http://www.stillman.edu/
+  name: Stillman College
+- href: http://www.stonehill.edu/
+  name: Stonehill College
+- href: http://www.strayer.edu/
+  name: Strayer University
+- href: http://www.suffolk.edu/
+  name: Suffolk University
+- href: http://www.sulross.edu/
+  name: Sul Ross State University
+- href: http://sullivan.edu/
+  name: Sullivan University
+- href: http://www.susqu.edu/
+  name: Susquehanna University
+- href: http://www.swarthmore.edu/
+  name: Swarthmore College
+- href: http://www.sbc.edu/
+  name: Sweet Briar College
+- href: http://www.syracuse.edu/
+  name: Syracuse University
+- href: http://www.pacific.edu/
+  name: University of the Pacific
+- href: http://www.upenn.edu/
+  name: University of Pennsylvania
+- href: http://www.phoenix.edu/
+  name: University of Phoenix
+- href: http://www.upike.edu/
+  name: University of Pikeville
+- href: http://www.pitt.edu/
+  name: University of Pittsburgh
+- href: http://www.upb.pitt.edu/
+  name: University of Pittsburgh–Bradford
+- href: http://www.upg.pitt.edu/
+  name: University of Pittsburgh–Greensburg
+- href: http://www.upj.pitt.edu/
+  name: University of Pittsburgh–Johnstown
+- href: http://www.up.edu/
+  name: University of Portland
+- href: http://www.uprag.edu/
+  name: University of Puerto Rico–Aguadilla
+- href: http://www.upra.edu/
+  name: University of Puerto Rico–Arecibo
+- href: http://www.uprb.edu/
+  name: University of Puerto Rico–Bayamón
+- href: http://www.uprc.edu/
+  name: University of Puerto Rico–Carolina
+- href: http://www.cayey.upr.edu/
+  name: University of Puerto Rico–Cayey
+- href: http://www.rcm.upr.edu/
+  name: University of Puerto Rico–Ciencias Médicas
+- href: http://www.uprh.edu/
+  name: University of Puerto Rico–Humacao
+- href: http://www.uprm.edu/
+  name: University of Puerto Rico–Mayagüez
+- href: http://www.uprp.edu/
+  name: University of Puerto Rico–Ponce
+- href: http://www.uprrp.edu/
+  name: University of Puerto Rico–Río Piedras
+- href: http://www.upr.edu/
+  name: University of Puerto Rico System
+- href: http://www.uprutuado.edu/
+  name: University of Puerto Rico–Utuado
+- href: http://www.pugetsound.edu/
+  name: University of Puget Sound
+- href: http://www.redlands.edu/
+  name: University of Redlands
+- href: http://www.uri.edu/
+  name: University of Rhode Island
+- href: http://www.richmond.edu/
+  name: University of Richmond
+- href: http://www.rio.edu/
+  name: University of Rio Grande
+- href: http://www.rochester.edu/
+  name: University of Rochester
+- href: http://www.rockies.edu/
+  name: University of the Rockies
+- href: http://www.stfrancis.edu/
+  name: University of St. Francis
+- href: http://www.sf.edu/
+  name: University of Saint Francis
+- href: http://www.stmary.edu/
+  name: University of Saint Mary
+- href: http://www.sandiego.edu/
+  name: University of San Diego
+- href: http://www.usfca.edu/
+  name: University of San Francisco
+- href: http://usao.edu/
+  name: University of Science & Arts of Oklahoma
+- href: http://www.usciences.edu/
+  name: University of the Sciences in Philadelphia
+- href: http://matrix.scranton.edu/
+  name: University of Scranton
+- href: http://www.usiouxfalls.edu/
+  name: University of Sioux Falls
+- href: http://www.usc.edu/
+  name: University of Southern California
+- href: http://usm.maine.edu/
+  name: University of Southern Maine
+- href: http://www.sc.edu/
+  name: University of South Carolina
+- href: http://www.usca.edu/
+  name: University of South Carolina–Aiken
+- href: http://www.uscb.edu/
+  name: University of South Carolina–Beaufort
+- href: http://www.sc.edu/about/system_and_campuses/
+  name: University of South Carolina System
+- href: http://www.uscupstate.edu/
+  name: University of South Carolina–Upstate
+- href: http://www.usd.edu/
+  name: University of South Dakota
+- href: http://www.usf.edu/
+  name: University of South Florida
+- href: http://www.usfsp.edu/
+  name: University of South Florida Saint Petersburg
+- href: http://usfsm.edu/
+  name: University of South Florida Sarasota–Manatee
+- href: http://www.usm.edu/
+  name: University of Southern Mississippi
+- href: http://www.stthom.edu/
+  name: University of Saint Thomas
+- href: http://www.stthomas.edu/
+  name: University of Saint Thomas
+- href: http://www.usouthal.edu/
+  name: University of South Alabama
+- href: http://www.usi.edu/
+  name: University of Southern Indiana
+- href: http://www.ut.edu/
+  name: University of Tampa
+- href: http://www.utk.edu/
+  name: University of Tennessee
+- href: http://www.utc.edu/
+  name: University of Tennessee–Chattanooga
+- href: http://www.uthsc.edu/
+  name: University of Tennessee Health Science Center
+- href: http://www.utm.edu/
+  name: University of Tennessee–Martin
+- href: http://www.tennessee.edu/
+  name: University of Tennessee System
+- href: http://www.uta.edu/
+  name: University of Texas–Arlington
+- href: http://www.utexas.edu/
+  name: University of Texas–Austin
+- href: http://www.utb.edu/
+  name: University of Texas–Brownsville
+- href: http://www.utdallas.edu/
+  name: University of Texas–Dallas
+- href: http://www.utep.edu/
+  name: University of Texas–El Paso
+- href: http://www.uth.edu/
+  name: University of Texas Health Science Center at Houston
+- href: http://uthscsa.edu/
+  name: University of Texas Health Science Center at San Antonio
+- href: http://www.uthct.edu/
+  name: University of Texas Health Science Center at Tyler
+- href: http://www.mdanderson.org/
+  name: University of Texas M.D. Anderson Cancer Center
+- href: http://www.utmb.edu/
+  name: University of Texas Medical Branch at Galveston
+- href: http://www.utpa.edu/
+  name: University of Texas–Pan American
+- href: http://www.utpb.edu/
+  name: University of Texas of the Permian Basin
+- href: http://www.utsa.edu/
+  name: University of Texas–San Antonio
+- href: http://www.utsouthwestern.edu/
+  name: University of Texas Southwestern Medical Center at Dallas
+- href: http://www.utsystem.edu/
+  name: University of Texas System
+- href: http://www.uttyler.edu/
+  name: University of Texas–Tyler
+- href: http://www.uarts.edu/
+  name: University of the Arts
+- href: http://www.ucumberlands.edu/
+  name: University of the Cumberlands
+- href: http://www.uiw.edu/
+  name: University of the Incarnate Word
+- href: http://www.sewanee.edu/
+  name: University of the South
+- href: http://www.usw.edu/
+  name: University of the Southwest
+- href: http://www.utoledo.edu/
+  name: University of Toledo
+- href: http://www.utulsa.edu/
+  name: University of Tulsa
+- href: http://www.utah.edu/
+  name: University of Utah
+- href: http://www.uvm.edu/
+  name: University of Vermont
+- href: http://www.uvi.edu/
+  name: University of the Virgin Islands
+- href: http://www.virginia.edu/
+  name: University of Virginia
+- href: http://www.wise.virginia.edu/
+  name: University of Virginia's College at Wise
+- href: http://www.washington.edu/
+  name: University of Washington
+- href: http://www.uwb.edu/
+  name: University of Washington–Bothell
+- href: http://www.tacoma.uw.edu/
+  name: University of Washington–Tacoma
+- href: http://www.uwa.edu/
+  name: University of West Alabama
+- href: http://uwf.edu/
+  name: University of West Florida
+- href: http://www.westga.edu/
+  name: University of West Georgia
+- href: http://www.uws.edu/
+  name: University of Western States
+- href: http://www.uwest.edu/
+  name: University of the West
+- href: http://www.uwec.edu/
+  name: University of Wisconsin–Eau Claire
+- href: http://www.uwgb.edu/
+  name: University of Wisconsin–Green Bay
+- href: http://www.uwlax.edu/
+  name: University of Wisconsin–La Crosse
+- href: http://www.wisc.edu/
+  name: University of Wisconsin–Madison
+- href: http://www.uwm.edu/
+  name: University of Wisconsin–Milwaukee
+- href: http://www.uwosh.edu/
+  name: University of Wisconsin–Oshkosh
+- href: http://www.uwp.edu/
+  name: University of Wisconsin–Parkside
+- href: http://www.uwplatt.edu/
+  name: University of Wisconsin–Platteville
+- href: http://www.uwrf.edu/
+  name: University of Wisconsin–River Falls
+- href: http://www.uwsp.edu/
+  name: University of Wisconsin–Stevens Point
+- href: http://www.uwstout.edu/
+  name: University of Wisconsin–Stout
+- href: http://www.uwsuper.edu/
+  name: University of Wisconsin–Superior
+- href: http://www.uwsa.edu/
+  name: University of Wisconsin System
+- href: http://www.uww.edu/
+  name: University of Wisconsin–Whitewater
+- href: http://www.uwyo.edu/
+  name: University of Wyoming
+- href: http://www.xavier.edu/
+  name: Xavier University
+- href: http://www.xula.edu/
+  name: Xavier University of Louisiana
+- href: http://www.yale.edu/
+  name: Yale University
+- href: http://www.yu.edu/
+  name: Yeshiva University
+- href: http://www.york.edu/
+  name: York College
+- href: http://www.ycp.edu/
+  name: York College of Pennsylvania
+- href: http://www.yhc.edu/
+  name: Young Harris College
+- href: http://www.ysu.edu/
+  name: Youngstown State University
+- href: http://www.babson.edu/
+  name: Babson College
+- href: http://www.bacone.edu/
+  name: Bacone College
+- href: http://www.bw.edu/
+  name: Baldwin-Wallace College
+- href: http://www.bsu.edu/
+  name: Ball State University
+- href: http://www.baker.edu/
+  name: Baker College
+- href: http://www.bakeru.edu/
+  name: Baker University
+- href: http://www.bts.edu/
+  name: Bangor Theological Seminary
+- href: http://www.bankstreet.edu/
+  name: Bank Street College of Education
+- href: http://www.gobbc.edu/
+  name: Baptist Bible College
+- href: http://www.bbc.edu/
+  name: Baptist Bible College & Seminary
+- href: http://www.baptistcollege.edu/
+  name: The Baptist College of Florida
+- href: http://www.bchs.edu/
+  name: Baptist Memorial College of Health Sciences
+- href: http://bmats.edu/
+  name: Baptist Missionary Association Theological Seminary
+- href: http://www.barclaycollege.edu/
+  name: Barclay College
+- href: http://www.bard.edu/
+  name: Bard College
+- href: http://www.simons-rock.edu/
+  name: Bard College at Simon's Rock
+- href: http://www.barnard.edu/
+  name: Barnard College
+- href: http://www.barry.edu/
+  name: Barry University
+- href: http://www.barton.edu/
+  name: Barton College
+- href: http://www.bastyr.edu/
+  name: Bastyr University
+- href: http://www.bates.edu/
+  name: Bates College
+- href: http://atlanta.bauder.edu/
+  name: Bauder College
+- href: http://www.baypath.edu/
+  name: Bay Path College
+- href: http://www.baystate.edu/
+  name: Bay State College
+- href: http://www.bcm.edu/
+  name: Baylor College of Medicine
+- href: http://www.baylor.edu/
+  name: Baylor University
+- href: http://www.beaconcollege.edu/
+  name: Beacon College
+- href: http://www.becker.edu/
+  name: Becker College
+- href: http://www.belhaven.edu/
+  name: Belhaven University
+- href: http://www.bellarmine.edu/
+  name: Bellarmine University
+- href: http://bellevuecollege.edu/
+  name: Bellevue College
+- href: http://www.bellevue.edu/
+  name: Bellevue University
+- href: http://www.bellincollege.edu/
+  name: Bellin College
+- href: http://www.belmont.edu
+  name: Belmont University
+- href: http://www.belmontabbeycollege.edu/
+  name: Belmont Abbey College
+- href: http://www.beloit.edu/
+  name: Beloit College
+- href: http://www.bemidjistate.edu/
+  name: Bemidji State University
+- href: http://www.benedict.edu/
+  name: Benedict College
+- href: http://www.benedictine.edu/
+  name: Benedictine College
+- href: http://www.ben.edu/
+  name: Benedictine University
+- href: http://www.bfit.edu/
+  name: Benjamin Franklin Institute of Technology
+- href: http://www.bennett.edu/
+  name: Bennett College for Women
+- href: http://www.bennington.edu/
+  name: Bennington College
+- href: http://www.bentley.edu/
+  name: Bentley University
+- href: http://www.berea.edu/
+  name: Berea College
+- href: http://www.berkeleycollege.edu/
+  name: Berkeley College
+- href: http://www.berklee.edu/
+  name: Berklee College of Music
+- href: http://www.berry.edu/
+  name: Berry College
+- href: http://www.bethanylb.edu/
+  name: Bethany College
+- href: http://www.bethanywv.edu/
+  name: Bethany College
+- href: http://www.blc.edu/
+  name: Bethany Lutheran College
+- href: http://www.bethanyseminary.edu/
+  name: Bethany Theological Seminary
+- href: http://www.bethelcollege.edu/
+  name: Bethel College
+- href: http://www.bethelks.edu/
+  name: Bethel College
+- href: http://www.bethel.edu/
+  name: Bethel University & Seminary
+- href: http://www.bethelu.edu/
+  name: Bethel University
+- href: http://www.buc.edu/
+  name: Bethesda University of California
+- href: http://www.bethune.cookman.edu/
+  name: Bethune-Cookman University
+- href: http://www.beulah.edu/
+  name: Beulah Heights University
+- href: http://www.biblical.edu/
+  name: Biblical Theological Seminary
+- href: http://www.biola.edu/
+  name: Biola University
+- href: http://www.bsc.edu/
+  name: Birmingham-Southern College
+- href: http://www.bismarckstate.edu/
+  name: Bismark State College
+- href: http://www.bhsu.edu/
+  name: Black Hills State University
+- href: http://blackburn.edu/
+  name: Blackburn College
+- href: http://www.brcn.edu/
+  name: Blessing-Rieman College of Nursing
+- href: http://www.bloomfield.edu/
+  name: Bloomfield College
+- href: http://www.bloomu.edu/
+  name: Bloomsburg University of Pennsylvania
+- href: http://www.bmc.edu/
+  name: Blue Mountain College
+- href: http://www.bluefield.edu/
+  name: Bluefield College
+- href: http://bluefieldstate.edu/
+  name: Bluefield State College
+- href: http://www.bluffton.edu/
+  name: Bluffton University
+- href: http://www.boisestate.edu/
+  name: Boise State University
+- href: http://www.boricuacollege.edu/
+  name: Boricua College
+- href: http://www.the-bac.edu/
+  name: Boston Architectural College
+- href: http://www.bc.edu/
+  name: Boston College
+- href: http://www.bostonconservatory.edu/
+  name: Boston Conservatory
+- href: http://www.bgsp.edu/
+  name: Boston Graduate School of Psychoanalysis
+- href: http://www.bu.edu/
+  name: Boston University
+- href: http://www.bowdoin.edu/
+  name: Bowdoin College
+- href: http://www.bowiestate.edu/
+  name: Bowie State University
+- href: http://www.bgsu.edu/
+  name: Bowling Green State University
+- href: http://www.bradley.edu/
+  name: Bradley University
+- href: http://www.brandeis.edu/
+  name: Brandeis University
+- href: http://www.brandman.edu/
+  name: Brandman University
+- href: http://www.brenau.edu/
+  name: Brenau University
+- href: http://www.brescia.edu/
+  name: 'Brescia University '
+- href: http://www.brevard.edu/
+  name: Brevard College
+- href: http://www.bpc.edu/
+  name: Brewton-Parker College
+- href: http://www.briarcliff.edu/
+  name: Briar Cliff University
+- href: http://www.briarcliffe.edu/
+  name: Briarcliffe College
+- href: http://www.bridgewater.edu/
+  name: Bridgewater College
+- href: http://www.bridgew.edu/
+  name: Bridgewater State University
+- href: http://www.byu.edu/
+  name: Brigham Young University
+- href: http://www.byuh.edu/
+  name: Brigham Young University–Hawaii
+- href: http://www.byui.edu/
+  name: Brigham Young University–Idaho
+- href: http://www.brite.edu/
+  name: Brite Divinity School
+- href: http://www.broward.edu/
+  name: Broward College
+- href: http://www.brown.edu/
+  name: Brown University
+- href: http://www.bryan.edu/
+  name: Bryan College
+- href: http://www.bryanhealth.com/CollegeofHealthSciences
+  name: Bryan College of Health Sciences
+- href: http://www.bryant.edu/
+  name: Bryant University
+- href: http://www.brynathyn.edu/
+  name: Bryn Athyn College of the New Church
+- href: http://www.brynmawr.edu/
+  name: Bryn Mawr College
+- href: http://www.bucknell.edu/
+  name: Bucknell University
+- href: http://www.bvu.edu/
+  name: Buena Vista University
+- href: http://www.burlington.edu/
+  name: Burlington College
+- href: http://www.butler.edu/
+  name: Butler University
+- href: http://www.cabarruscollege.edu/
+  name: Cabarrus College of Health Sciences
+- href: http://www.cabrini.edu/
+  name: Cabrini College
+- href: http://cairn.edu/
+  name: Cairn University
+- href: http://www.caldwell.edu/
+  name: Caldwell College
+- href: http://www.calbaptist.edu/
+  name: California Baptist University
+- href: http://www.cca.edu/
+  name: California College of the Arts
+- href: http://calarts.edu/
+  name: California Institute of the Arts
+- href: http://www.ciis.edu/
+  name: California Institute of Integral Studies
+- href: http://www.caltech.edu/
+  name: California Institute of Technology
+- href: http://www.callutheran.edu/
+  name: California Lutheran University
+- href: http://www.csum.edu/
+  name: California Maritime Academy
+- href: http://www.cnsu.edu/
+  name: California Northstate University
+- href: http://www.calpoly.edu/
+  name: California Polytechnic State University, San Luis Obispo
+- href: http://www.csupomona.edu/
+  name: California State Polytechnic University, Pomona
+- href: http://www.csub.edu/
+  name: California State University–Bakersfield
+- href: http://www.csuci.edu/
+  name: California State University–Channel Islands
+- href: http://www.csuchico.edu/
+  name: California State University–Chico
+- href: http://www.csudh.edu/
+  name: California State University–Dominguez Hills
+- href: http://www.csueastbay.edu/
+  name: California State University–East Bay
+- href: http://www.fresnostate.edu/
+  name: California State University–Fresno
+- href: http://www.fullerton.edu/
+  name: California State University–Fullerton
+- href: http://www.csulb.edu/
+  name: California State University–Long Beach
+- href: http://www.calstatela.edu/
+  name: California State University–Los Angeles
+- href: http://www.csumb.edu/
+  name: California State University–Monterey Bay
+- href: http://www.csun.edu/
+  name: California State University–Northridge
+- href: http://www.csus.edu/
+  name: California State University–Sacramento
+- href: http://www.csusb.edu/
+  name: California State University–San Bernardino
+- href: http://www.csusm.edu/
+  name: California State University–San Marcos
+- href: http://www.csustan.edu/
+  name: California State University–Stanislaus
+- href: http://www.calstate.edu/
+  name: California State University System
+- href: http://www.calu.edu/
+  name: California University of Pennsylvania
+- href: http://www.ccsj.edu
+  name: Calumet College of Saint Joseph
+- href: http://www.cbs.edu/
+  name: Calvary Baptist Seminary
+- href: http://www.calvary.edu/
+  name: Calvary Bible College & Theological Seminary
+- href: http://www.calvin.edu/
+  name: Calvin College
+- href: http://www.cambridgecollege.edu/
+  name: 'Cambridge College '
+- href: http://www.cameron.edu/
+  name: Cameron University
+- href: http://www.campbell.edu/
+  name: Campbell University
+- href: http://www.campbellsville.edu/
+  name: Campbellsville University
+- href: http://www.canisius.edu/
+  name: Canisius College
+- href: http://www.capella.edu/
+  name: Capella University
+- href: http://www.capital.edu/
+  name: Capital University
+- href: http://www.capitol-college.edu/
+  name: Capitol College
+- href: http://www.stritch.edu/
+  name: Cardinal Stritch University
+- href: http://www.caribbean.edu/
+  name: Caribbean University
+- href: http://www.carleton.edu/
+  name: Carleton College
+- href: http://www.albizu.edu/
+  name: Carlos Albizu University
+- href: http://www.mia.albizu.edu/
+  name: Carlos Albizu University–Miami Campus
+- href: http://www.carlow.edu/
+  name: Carlow University
+- href: http://www.cmu.edu/
+  name: Carnegie Mellon University
+- href: http://www.carroll.edu/
+  name: Carroll College
+- href: http://www.carrollu.edu/
+  name: Carroll University
+- href: http://www.cn.edu/
+  name: Carson-Newman College
+- href: http://www.carthage.edu/
+  name: Carthage College
+- href: http://www.case.edu/
+  name: Case Western Reserve University
+- href: http://www.castleton.edu/
+  name: Castleton State College
+- href: http://catawba.edu/
+  name: Catawba College
+- href: http://www.ctu.edu/
+  name: Catholic Theological Union
+- href: http://www.cua.edu/
+  name: The Catholic University of America
+- href: http://www.cazenovia.edu/
+  name: Cazenovia College
+- href: http://www.cedarcrest.edu/
+  name: Cedar Crest College
+- href: http://www.cedarville.edu/
+  name: Cedarville University
+- href: http://www.centenarycollege.edu/
+  name: Centenary College
+- href: http://www.centenary.edu/
+  name: Centenary College of Louisiana
+- href: http://www.cbc.edu/
+  name: Central Baptist College
+- href: http://www.cbts.edu/
+  name: Central Baptist Theological Seminary
+- href: http://www.centralchristian.edu/
+  name: Central Christian College of Kansas
+- href: http://www.cccb.edu/
+  name: Central Christian College of the Bible
+- href: http://www.central.edu/
+  name: Central College
+- href: http://www.ccsu.edu/
+  name: Central Connecticut State University
+- href: http://www.centralmethodist.edu/
+  name: Central Methodist University
+- href: http://www.cmich.edu/
+  name: Central Michigan University
+- href: http://www.centralpenn.edu/
+  name: Central Penn College
+- href: http://www.centralstate.edu/
+  name: Central State University
+- href: http://www.cwu.edu/
+  name: Central Washington University
+- href: http://www.centre.edu/
+  name: Centre College
+- href: http://www.ceaprc.edu/
+  name: Centro de Estudios Avanzados de Puerto Rico y el Caribe
+- href: http://www.csc.edu/
+  name: Chadron State College
+- href: http://www.chamberlain.edu/
+  name: Chamberlain College of Nursing
+- href: http://www.chaminade.edu/
+  name: Chaminade University
+- href: http://www.champlain.edu/
+  name: Champlain College
+- href: http://www.chancelloru.edu/
+  name: Chancellor University
+- href: http://www.chapman.edu/
+  name: Chapman University
+- href: http://www.cdrewu.edu/
+  name: Charles R. Drew University of Medicine & Science
+- href: http://www.csuniv.edu/
+  name: Charleston Southern University
+- href: http://www.charteroak.edu/
+  name: Charter Oak State College
+- href: http://www.chatham.edu/
+  name: Chatham College
+- href: http://chestercollege.edu/
+  name: Chester College of New England
+- href: http://www.chc.edu/
+  name: Chestnut Hill College
+- href: http://www.cheyney.edu/
+  name: Cheyney University
+- href: http://www.thechicagoschool.edu/
+  name: The Chicago School of Professional Psychology
+- href: http://www.csu.edu/
+  name: Chicago State University
+- href: http://www.ctschicago.edu/
+  name: Chicago Theological Seminary
+- href: http://www.chipola.edu/
+  name: Chipola College
+- href: http://www.chowan.edu/
+  name: Chowan College
+- href: http://www.cks.edu/
+  name: Christ the King Seminary
+- href: http://www.christendom.edu/
+  name: Christendom College
+- href: http://www.cbu.edu/
+  name: Christian Brothers University
+- href: http://www.cts.edu/
+  name: Christian Theological Seminary
+- href: http://cnu.edu/
+  name: Christopher Newport University
+- href: http://cdsp.edu/
+  name: Church Divinity School of the Pacific
+- href: http://www.ccuniversity.edu/
+  name: Cincinnati Christian University
+- href: http://www.ccms.edu/
+  name: Cincinnati College of Mortuary Science
+- href: http://www.citadel.edu/
+  name: The Citadel
+- href: http://www.cityu.edu/
+  name: City University of Seattle
+- href: http://www.cuny.edu/
+  name: City University of New York
+- href: http://www.baruch.cuny.edu/
+  name: Baruch College
+- href: http://www.brooklyn.cuny.edu/
+  name: Brooklyn College
+- href: http://www.ccny.cuny.edu/
+  name: City College
+- href: http://www.csi.cuny.edu/
+  name: College of Staten Island
+- href: http://www.gc.cuny.edu/
+  name: Graduate School & University Center
+- href: http://www.hunter.cuny.edu/
+  name: Hunter College
+- href: http://www.jjay.cuny.edu/
+  name: John Jay College of Criminal Justice
+- href: http://www.lehman.cuny.edu/
+  name: Lehman College
+- href: http://www.mec.cuny.edu/
+  name: Medgar Evers College
+- href: http://www.citytech.cuny.edu/
+  name: New York City College of Technology
+- href: http://www.qc.cuny.edu/
+  name: Queens College
+- href: http://www.york.cuny.edu/
+  name: York College
+- href: http://www.claflin.edu/
+  name: Claflin University
+- href: http://www.claremont.edu/
+  name: Claremont Consortium of Colleges
+- href: http://www.cgu.edu/
+  name: Claremont Graduate University
+- href: http://www.claremontmckenna.edu/
+  name: Claremont McKenna College
+- href: http://www.hmc.edu/
+  name: Harvey Mudd College
+- href: http://www.kgi.edu/
+  name: Keck Graduate Institute of Applied Life Sciences
+- href: http://www.pitzer.edu/
+  name: Pitzer College
+- href: http://www.pomona.edu/
+  name: Pomona College
+- href: http://www.scrippscollege.edu/
+  name: Scripps College
+- href: http://www.cst.edu/
+  name: Claremont School of Theology
+- href: http://www.clarion.edu/
+  name: Clarion University of Pennsylvania
+- href: http://www.clarku.edu/
+  name: Clark University
+- href: http://www.cau.edu/
+  name: Clark Atlanta University
+- href: http://www.clarke.edu/
+  name: Clarke University
+- href: http://www.clarksoncollege.edu/
+  name: Clarkson College
+- href: http://www.clarkson.edu/
+  name: Clarkson University
+- href: http://www.clayton.edu/
+  name: Clayton State University
+- href: http://www.ccbbc.edu/
+  name: Clear Creek Baptist Bible College
+- href: http://www.clearwater.edu/
+  name: Clearwater Christian College
+- href: http://www.cleary.edu/
+  name: Cleary University
+- href: http://www.clemson.edu/
+  name: Clemson University
+- href: http://www.cleveland.edu/
+  name: Cleveland Chiropractic College
+- href: http://www.cia.edu/
+  name: Cleveland Institute of Art
+- href: http://www.cim.edu/
+  name: Cleveland Institute of Music
+- href: http://www.csuohio.edu/
+  name: Cleveland State University
+- href: http://www.coastal.edu/
+  name: Coastal Carolina University
+- href: http://www.coe.edu/
+  name: Coe College
+- href: http://www.cogswell.edu/
+  name: Cogswell Polytechnical College
+- href: http://www.coker.edu/
+  name: Coker College
+- href: http://www.colby.edu/
+  name: Colby College
+- href: http://www.colby-sawyer.edu/
+  name: Colby-Sawyer College
+- href: http://www.cunisanjuan.edu/
+  name: Colegio Universitario de San Juan
+- href: http://www.colgate.edu/
+  name: Colgate University
+- href: http://www.collegeforcreativestudies.edu/
+  name: College for Creative Studies
+- href: http://www.cffp.edu/
+  name: College for Financial Planning
+- href: http://www.coa.edu/
+  name: College of the Atlantic
+- href: http://cbshouston.edu/
+  name: College of Biblical Studies–Houston
+- href: http://www.cf.edu/
+  name: College of Central Florida
+- href: http://www.cofc.edu/
+  name: College of Charleston
+- href: http://www.ccga.edu/
+  name: College of Coastal Georgia
+- href: http://www.holycross.edu/
+  name: College of the Holy Cross
+- href: http://www.collegeofidaho.edu/
+  name: The College of Idaho
+- href: http://www.menominee.edu/
+  name: College of the Menominee Nation
+- href: http://www.msj.edu/
+  name: College of Mount Saint Joseph
+- href: http://www.mountsaintvincent.edu/
+  name: College of Mount Saint Vincent
+- href: http://www.tcnj.edu/
+  name: The College of New Jersey
+- href: http://www.cnr.edu/
+  name: College of New Rochelle
+- href: http://www.ndm.edu/
+  name: College of Notre Dame of Maryland
+- href: http://www.cofo.edu/
+  name: College of the Ozarks
+- href: http://www.csbsju.edu/
+  name: College of Saint Benedict
+- href: http://www.cse.edu/
+  name: College of Saint Elizabeth
+- href: http://www.strose.edu/
+  name: College of Saint Rose
+- href: http://www.csj.edu/
+  name: College of Saint Joseph
+- href: http://www.csm.edu/
+  name: College of Saint Mary
+- href: http://www.css.edu/
+  name: College of Saint Scholastica
+- href: http://fishermore.edu/
+  name: College of Saints John Fisher & Thomas More
+- href: http://www.csn.edu/
+  name: College of Southern Nevada
+- href: http://www.cva.edu/
+  name: 'College of Visual Arts '
+- href: http://www.wm.edu/
+  name: College of William and Mary
+- href: http://www.wooster.edu/
+  name: College of Wooster
+- href: http://www.ccu.edu/
+  name: Colorado Christian University
+- href: http://www.coloradocollege.edu/
+  name: Colorado College
+- href: http://www.coloradomesa.edu/
+  name: Colorado Mesa University
+- href: http://www.mines.edu/
+  name: Colorado School of Mines
+- href: http://www.colostate.edu/
+  name: Colorado State University
+- href: http://www.colostate-pueblo.edu/
+  name: Colorado State University–Pueblo
+- href: http://www.coloradotech.edu/
+  name: Colorado Technical University
+- href: http://www.columbiaco.edu/
+  name: Columbia Centro Universitario
+- href: http://www.ccis.edu/
+  name: Columbia College
+- href: http://www.columbiasc.edu/
+  name: Columbia College
+- href: http://www.colum.edu/
+  name: Columbia College Chicago
+- href: http://www.ccon.edu/
+  name: Columbia College of Nursing
+- href: http://www.ciu.edu/
+  name: Columbia International University
+- href: http://www.ctsnet.edu/
+  name: Columbia Theological Seminary
+- href: http://www.columbia.edu/
+  name: Columbia University
+- href: http://www.ccad.edu/
+  name: Columbus College of Art & Design
+- href: http://www.columbusstate.edu/
+  name: Columbus State University
+- href: http://www.conception.edu/
+  name: Conception Seminary College
+- href: http://www.concord.edu/
+  name: Concord University
+- href: http://www.ccal.edu/
+  name: Concordia College–Alabama
+- href: http://www.concordia-ny.edu/
+  name: Concordia College–Bronxville
+- href: http://www.concordiacollege.edu/
+  name: Concordia College–Moorhead
+- href: http://www.concordia-ny.edu/
+  name: Concordia College–New York
+- href: http://www.csl.edu/
+  name: Concordia Seminary–Saint Louis
+- href: http://www.ctsfw.edu/
+  name: Concordia Theological Seminary
+- href: http://www.cuaa.edu/
+  name: Concordia University–Ann Arbor
+- href: http://www.cuchicago.edu/
+  name: Concordia University–Chicago
+- href: http://www.cui.edu/
+  name: Concordia University–Irvine
+- href: http://www.cune.edu/
+  name: Concordia University–Nebraska
+- href: http://www.cu-portland.edu/
+  name: Concordia University–Portland
+- href: http://www.csp.edu/
+  name: Concordia University–Saint Paul
+- href: http://www.concordia.edu/
+  name: Concordia University–Texas
+- href: http://www.cuw.edu/
+  name: Concordia University–Wisconsin
+- href: http://camel.conncoll.edu/
+  name: Connecticut College
+- href: http://cmpr.edu/
+  name: Conservatorio de Música de Puerto Rico
+- href: http://www.converse.edu/
+  name: Converse College
+- href: http://www.csld.edu/
+  name: Conway School of Landscape Design
+- href: http://cooper.edu/
+  name: The Cooper Union for the Advancement of Science & Art
+- href: http://www.coppin.edu/
+  name: Coppin State University
+- href: http://www.corban.edu/
+  name: Corban University
+- href: http://www.corcoran.edu/
+  name: Corcoran College of Art & Design
+- href: http://www.cornellcollege.edu/
+  name: Cornell College
+- href: http://www.cornell.edu/
+  name: Cornell University
+- href: http://www.cornerstone.edu/
+  name: Cornerstone University
+- href: http://www.cornish.edu/
+  name: Cornish College of the Arts
+- href: http://www.covenant.edu/
+  name: Covenant College
+- href: http://www.covenantseminary.edu/
+  name: Covenant Theological Seminary
+- href: http://coxcollege.edu/
+  name: Cox College
+- href: http://www.cranbrookart.edu/
+  name: Cranbrook Academy of Art
+- href: http://www.creighton.edu/
+  name: Creighton University
+- href: http://www.criswell.edu/
+  name: Criswell College
+- href: http://www.crossroadscollege.edu/
+  name: Crossroads College
+- href: http://www.crc.edu/
+  name: Crowley's Ridge College
+- href: http://www.crown.edu/
+  name: Crown College
+- href: http://www.ciachef.edu/
+  name: Culinary Institute of America
+- href: http://www.culver.edu/
+  name: Culver-Stockton College
+- href: http://www.cumberland.edu/
+  name: Cumberland University
+- href: http://www.curry.edu/
+  name: Curry College
+- href: http://www.curtis.edu/
+  name: Curtis Institute of Music
+- href: http://www.hamilton.edu/
+  name: Hamilton College
+- href: http://www.hamline.edu/
+  name: Hamline University
+- href: http://www.hsc.edu/
+  name: Hampden-Sydney College
+- href: http://www.hampshire.edu/
+  name: Hampshire College
+- href: http://www.hamptonu.edu/
+  name: Hampton University
+- href: http://www.hlg.edu/
+  name: Hannibal-Lagrange College
+- href: http://www.hanover.edu/
+  name: Hanover College
+- href: http://www.hsutx.edu/
+  name: Hardin-Simmons University
+- href: http://www.harding.edu/
+  name: Harding University
+- href: http://www.harrington.edu/
+  name: Harrington College of Design
+- href: http://www.hssu.edu/
+  name: Harris-Stowe State University
+- href: http://www.harrisburgu.edu/
+  name: Harrisburg University of Science & Technology
+- href: http://www.hartsem.edu/
+  name: Hartford Seminary
+- href: http://www.hartwick.edu/
+  name: Hartwick College
+- href: http://www.harvard.edu/
+  name: Harvard University
+- href: http://www.haskell.edu/
+  name: Haskell Indian Nations University
+- href: http://www.hastings.edu/
+  name: Hastings College
+- href: http://www.haverford.edu/
+  name: Haverford College
+- href: http://www.hpu.edu/
+  name: Hawaii Pacific University
+- href: http://www.hazelden.org/
+  name: Hazelden Graduate School of Addiction Studies
+- href: http://www.hebrewcollege.edu/
+  name: Hebrew College
+- href: http://www.htc.edu/
+  name: Hebrew Theological College
+- href: http://huc.edu/
+  name: Hebrew Union College–Jewish Institute of Religion
+- href: http://www.heidelberg.edu/
+  name: Heidelberg College
+- href: http://www.hchc.edu/
+  name: Hellenic College/Holy Cross Greek Orthodox School of Theology
+- href: http://www.hsu.edu/
+  name: Henderson State University
+- href: http://www.hendrix.edu/
+  name: Hendrix College
+- href: http://www.heritage.edu/
+  name: Heritage University
+- href: http://www.herzing.edu/
+  name: Herzing University
+- href: http://www.highpoint.edu/
+  name: High Point University
+- href: http://www.hilbert.edu/
+  name: Hilbert College
+- href: http://www.hillsdale.edu/
+  name: Hillsdale College
+- href: http://www.hiram.edu/
+  name: Hiram College
+- href: http://www.hws.edu/
+  name: Hobart & William Smith Colleges
+- href: http://hsbc.edu/
+  name: Hobe Sound Bible College
+- href: http://www.hodges.edu/
+  name: Hodges University
+- href: http://www.hofstra.edu/
+  name: Hofstra University
+- href: http://www.hollins.edu/
+  name: Hollins University
+- href: http://www.holyapostles.edu/
+  name: Holy Apostles College & Seminary
+- href: http://www.hcc-nd.edu/
+  name: Holy Cross College
+- href: http://www.holyfamily.edu/
+  name: Holy Family University
+- href: http://www.hnu.edu/
+  name: Holy Names University
+- href: http://www.hood.edu/
+  name: Hood College
+- href: http://www.hope.edu/
+  name: Hope College
+- href: http://www.hiu.edu/
+  name: Hope International University
+- href: http://www.houghton.edu/
+  name: Houghton College
+- href: http://www.hbu.edu/
+  name: Houston Baptist University
+- href: http://www.hputx.edu/
+  name: Howard Payne University
+- href: http://www.howard.edu/
+  name: Howard University
+- href: http://www.hult.edu/
+  name: Hult International Business School
+- href: http://www.humboldt.edu/
+  name: Humboldt State University
+- href: http://www.humphreys.edu/
+  name: Humphreys College
+- href: http://www.huntingdon.edu/
+  name: Huntingdon College
+- href: http://www.huntington.edu/
+  name: Huntington University
+- href: http://www.husson.edu/
+  name: Husson University
+- href: http://htu.edu/
+  name: Huston-Tillotson University
+- href: http://www.kzoo.edu/
+  name: Kalamazoo College
+- href: http://www.kcai.edu/
+  name: Kansas City Art Institute
+- href: http://www.kcumb.edu/
+  name: Kansas City University of Medicine & Biosciences
+- href: http://www.k-state.edu/
+  name: Kansas State University
+- href: http://www.salina.ksu.edu/
+  name: Kansas State University–Salina
+- href: http://www.kwu.edu/
+  name: Kansas Wesleyan University
+- href: http://www.kaplanuniversity.edu/
+  name: Kaplan University
+- href: http://www.kean.edu/
+  name: Kean University
+- href: http://www.keene.edu/
+  name: Keene State College
+- href: http://www.keiseruniversity.edu/
+  name: Keiser University
+- href: http://www.kendall.edu/
+  name: Kendall College
+- href: http://www.kcad.edu/
+  name: Kendall College of Art & Design of Ferris State University
+- href: http://www.kennesaw.edu/
+  name: Kennesaw State University
+- href: http://www.kenrick.edu/
+  name: Kenrick-Glennon Seminary
+- href: http://www.kent.edu/
+  name: Kent State University
+- href: http://www.ashtabula.kent.edu/
+  name: Kent State University–Ashtabula Campus
+- href: http://www.kent.edu/cpm/
+  name: Kent State University–College of Podiatric Medicine
+- href: http://www.columbiana.kent.edu/
+  name: Kent State University–Columbiana County
+- href: http://www.geauga.kent.edu/
+  name: Kent State University–Geauga
+- href: http://www.stark.kent.edu/
+  name: Kent State University–Stark
+- href: http://www.trumbull.kent.edu/
+  name: Kent State University–Trumbull Campus
+- href: http://www.tusc.kent.edu/
+  name: Kent State University–Tuscarawas
+- href: http://www.kcu.edu/
+  name: Kentucky Christian University
+- href: http://www.kmbc.edu/
+  name: Kentucky Mountain Bible College
+- href: http://www.kysu.edu/
+  name: Kentucky State University
+- href: http://www.kwc.edu/
+  name: Kentucky Wesleyan College
+- href: http://www.kenyon.edu/
+  name: Kenyon College
+- href: http://www.kc.edu/
+  name: Kettering College
+- href: http://www.kettering.edu/
+  name: Kettering University
+- href: http://keuka.edu/
+  name: Keuka College
+- href: http://www.keystone.edu/
+  name: Keystone College
+- href: http://www.king.edu/
+  name: King College
+- href: http://www.kings.edu/
+  name: King's College
+- href: http://www.tkc.edu/
+  name: The King's College
+- href: http://www.ksi.edu/
+  name: Knowledge Systems Institute
+- href: http://www.knox.edu/
+  name: Knox College
+- href: http://www.kutztown.edu/
+  name: Kutztown University of Pennsylvania
+- href: http://www.kuyper.edu/
+  name: Kuyper College
+- href: http://www.macalester.edu/
+  name: Macalester College
+- href: http://www.mac.edu/
+  name: MacMurray College
+- href: http://www.madonna.edu/
+  name: Madonna University
+- href: http://www.mum.edu/
+  name: Maharishi University of Management
+- href: http://www.meca.edu/
+  name: Maine College of Art
+- href: http://www.mainemaritime.edu/
+  name: Maine Maritime Academy
+- href: http://www.malone.edu/
+  name: Malone University
+- href: http://www.manchester.edu/
+  name: Manchester University
+- href: http://www.mccks.edu/
+  name: Manhattan Christian College
+- href: http://manhattan.edu/
+  name: Manhattan College
+- href: http://www.msmnyc.edu/
+  name: Manhattan School of Music
+- href: http://www.mville.edu/
+  name: Manhattanville  College
+- href: http://www.mansfield.edu/
+  name: Mansfield University of Pennsylvania
+- href: http://www.mbbc.edu/
+  name: Maranatha Baptist Bible College
+- href: http://www.mariacollege.edu/
+  name: Maria College of Albany
+- href: http://www.marian.edu/
+  name: Marian University
+- href: http://www.marianuniversity.edu/
+  name: Marian University
+- href: http://www.marietta.edu/
+  name: Marietta College
+- href: http://www.mcu.usmc.mil/
+  name: Marine Corps University
+- href: http://www.marist.edu/
+  name: Marist College
+- href: http://www.marlboro.edu/
+  name: Marlboro College
+- href: http://www.mu.edu/
+  name: Marquette University
+- href: http://www.mhc.edu/
+  name: Mars Hill College
+- href: http://www.marshall.edu/
+  name: Marshall University
+- href: http://www.mlc-wels.edu/
+  name: Martin Luther College
+- href: http://www.martinmethodist.edu/
+  name: Martin Methodist College
+- href: http://www.martin.edu/
+  name: Martin University
+- href: http://www.mbc.edu/
+  name: Mary Baldwin College
+- href: http://www.marygrove.edu/
+  name: Marygrove College
+- href: http://www.mica.edu/
+  name: Maryland Institute College of Art
+- href: http://www.muih.edu/
+  name: Maryland University of Integrative Health
+- href: http://www.marylhurst.edu/
+  name: Marylhurst University
+- href: http://www.marymountcalifornia.edu/
+  name: Marymount California University
+- href: http://www.mmm.edu/
+  name: Marymount Manhattan College
+- href: http://www.marymount.edu/
+  name: Marymount University
+- href: http://www.maryvillecollege.edu/
+  name: Maryville College
+- href: http://www.maryville.edu/
+  name: Maryville University of Saint Louis
+- href: http://www.marywood.edu/
+  name: Marywood University
+- href: http://www.massart.edu/
+  name: Massachusetts College of Art & Design
+- href: http://www.mcla.edu/
+  name: 'Massachusetts College of Liberal Arts '
+- href: http://www.mcphs.edu/
+  name: Massachusetts College of Pharmacy & Health Sciences
+- href: http://web.mit.edu/
+  name: Massachusetts Institute of Technology
+- href: http://www.maritime.edu/
+  name: Massachusetts Maritime Academy
+- href: http://www.mslaw.edu/
+  name: Massachusetts School of Law
+- href: http://www.mspp.edu/
+  name: Massachusetts School of Professional Psychology
+- href: http://www.masters.edu/
+  name: The Master's College
+- href: http://www.tms.edu/
+  name: The Master's Seminary
+- href: http://maui.hawaii.edu
+  name: Maui College
+- href: http://www.mayo.edu/education/
+  name: Mayo Clinic College of Medicine
+- href: http://www.mayo.edu/mgs/
+  name: Mayo Clinic College of Medicine–Graduate School
+- href: http://www.mayo.edu/mms/
+  name: Mayo Clinic College of Medicine–Medical School
+- href: http://www.mayo.edu/mshs/
+  name: Mayo Clinic College of Medicine–School of Health Sciences
+- href: http://www.mayvillestate.edu/
+  name: Mayville State University
+- href: http://mccormick.edu/
+  name: McCormick Theological Seminary
+- href: http://www.mcdaniel.edu/
+  name: McDaniel College
+- href: http://www.mckendree.edu/
+  name: McKendree University
+- href: http://www.mcm.edu/
+  name: McMurry University
+- href: http://www.mcneese.edu/
+  name: McNeese State University
+- href: http://www.mcpherson.edu/
+  name: McPherson College
+- href: http://www.medaille.edu/
+  name: Medaille College
+- href: http://www.mcw.edu/
+  name: Medical College of Wisconsin
+- href: http://www.musc.edu/
+  name: Medical University of South Carolina
+- href: http://www.mmc.edu/
+  name: Meharry Medical College
+- href: http://mca.edu/
+  name: Memphis College of Art
+- href: http://www.memphisseminary.edu/
+  name: Memphis Theological Seminary
+- href: http://www.menlo.edu/
+  name: Menlo College
+- href: http://www.mercer.edu/
+  name: Mercer University
+- href: http://www.mercy.edu/
+  name: Mercy College
+- href: http://www.mchs.edu/
+  name: Mercy College of Health Sciences
+- href: http://www.mercycollege.edu/
+  name: Mercy College of Northwest Ohio
+- href: http://www.mercyhurst.edu/
+  name: Mercyhurst College
+- href: http://www.meredith.edu/
+  name: Meredith College
+- href: http://www.merrimack.edu/
+  name: Merrimack College
+- href: http://www.messiah.edu/
+  name: Messiah College
+- href: http://www.methodistcol.edu/methodistcollege/
+  name: Methodist College
+- href: http://www.mtso.edu/
+  name: Methodist Theological School in Ohio
+- href: http://www.methodist.edu/
+  name: Methodist University
+- href: http://www.mcny.edu/
+  name: Metropolitan College of New York
+- href: http://www.metrostate.edu/
+  name: Metropolitan State University
+- href: http://www.msudenver.edu/
+  name: Metropolitan State University of Denver
+- href: http://www.mghihp.edu/
+  name: MGH Institute of Health Professions
+- href: http://www.mdc.edu/
+  name: Miami Dade College
+- href: http://www.artinstitutes.edu/miami/
+  name: Miami International University of Art & Design
+- href: http://www.miamioh.edu/
+  name: Miami University
+- href: http://www.regionals.miamioh.edu/
+  name: Miami University–Regional Campuses
+- href: http://www.mispp.edu/
+  name: Michigan School of Professional Psychology
+- href: http://www.msu.edu/
+  name: Michigan State University
+- href: http://www.mtu.edu/
+  name: Michigan Technological University
+- href: http://www.mabts.edu/
+  name: Mid-America Baptist Theological Seminary
+- href: http://www.macu.edu/
+  name: Mid-America Christian University
+- href: http://www.macuniversity.edu/
+  name: Mid-Atlantic Christian University
+- href: http://www.mnu.edu/
+  name: MidAmerica Nazarene University
+- href: http://www.midcontinent.edu/
+  name: Mid-Continent University
+- href: http://www.mga.edu/
+  name: Middle Georgia State College
+- href: http://www.mtsa.edu/
+  name: Middle Tennessee School of Anesthesia
+- href: http://www.mtsu.edu/
+  name: Middle Tennessee State University
+- href: http://www.middlebury.edu/
+  name: Middlebury College
+- href: http://www.midlandu.edu/
+  name: Midland University
+- href: http://www.midstate.edu/
+  name: Midstate College
+- href: http://www.midway.edu/
+  name: Midway College
+- href: http://www.mbts.edu/
+  name: Midwestern Baptist Theological Seminary
+- href: http://www.midwestern.edu/
+  name: Midwestern University
+- href: http://www.mwsu.edu/
+  name: Midwestern State University
+- href: http://www.miles.edu/
+  name: Miles College
+- href: http://www.millercollege.edu/
+  name: Miller College
+- href: http://www.millersville.edu/
+  name: Millersville University of Pennsylvania
+- href: http://www.milligan.edu/
+  name: Milligan College
+- href: http://www.millikin.edu/
+  name: Millikin University
+- href: http://www.mills.edu/
+  name: Mills College
+- href: http://www.millsaps.edu/
+  name: Millsaps College
+- href: http://www.miad.edu/
+  name: Milwaukee Institute of Art & Design
+- href: http://www.msoe.edu/
+  name: Milwaukee School of Engineering
+- href: http://www.mnsu.edu/
+  name: Minnesota State University–Mankato
+- href: http://www.mnstate.edu/
+  name: Minnesota State University–Moorhead
+- href: http://www.minotstateu.edu/
+  name: Minot State University
+- href: http://mcad.edu/
+  name: Minneapolis College of Art & Design
+- href: http://www.misericordia.edu/
+  name: Misericordia University
+- href: http://www.mc.edu/
+  name: Mississippi College
+- href: http://www.msstate.edu/
+  name: Mississippi State University
+- href: http://www.muw.edu/
+  name: Mississippi University for Women
+- href: http://www.mvsu.edu/
+  name: Mississippi Valley State University
+- href: http://www.mobap.edu/
+  name: Missouri Baptist University
+- href: http://www.mssu.edu/
+  name: Missouri Southern State University
+- href: http://www.missouristate.edu/
+  name: Missouri State University
+- href: http://www.mst.edu/
+  name: Missouri University of Science & Technology
+- href: http://www.moval.edu/
+  name: Missouri Valley College
+- href: http://www.missouriwestern.edu/
+  name: Missouri Western State University
+- href: http://www.mitchell.edu/
+  name: Mitchell College
+- href: http://www.molloy.edu/
+  name: Molloy College
+- href: http://www.monmouthcollege.edu/
+  name: Monmouth College
+- href: http://www.monmouth.edu/
+  name: Monmouth University
+- href: http://www.monroecollege.edu/
+  name: Monroe College
+- href: http://www.montana.edu/
+  name: Montana State University
+- href: http://www.msubillings.edu/
+  name: Montana State University–Billings
+- href: http://www.msun.edu/
+  name: Montana State University–Northern
+- href: http://www.mtech.edu/
+  name: Montana Tech of The University of Montana
+- href: http://www.montclair.edu/
+  name: Montclair State University
+- href: http://www.montreat.edu/
+  name: Montreat College
+- href: http://www.montserrat.edu/
+  name: Montserrat College of Art
+- href: http://www.moody.edu/
+  name: Moody Bible Institute
+- href: http://www.moore.edu/
+  name: Moore College of Art & Design
+- href: http://www.moravian.edu/
+  name: Moravian College
+- href: http://www.moreheadstate.edu/
+  name: Morehead State University
+- href: http://www.morehouse.edu/
+  name: Morehouse College
+- href: http://www.msm.edu/
+  name: Morehouse School of Medicine
+- href: http://www.morgan.edu/
+  name: Morgan State University
+- href: http://www.morningside.edu/
+  name: Morningside College
+- href: http://www.morris.edu/
+  name: Morris College
+- href: http://www.mtaloy.edu/
+  name: Mount Aloysius College
+- href: http://www.mountangelabbey.org/seminary/
+  name: Mount Angel Seminary
+- href: http://www.mccn.edu/
+  name: Mount Carmel College of Nursing
+- href: http://www.mtholyoke.edu/
+  name: Mount Holyoke College
+- href: http://www.mountida.edu/
+  name: Mount Ida College
+- href: http://www.mtmc.edu/
+  name: Mount Marty College
+- href: http://www.mtmary.edu/
+  name: Mount Mary College
+- href: http://www.mtmercy.edu/
+  name: Mount Mercy University
+- href: http://www.moc.edu/
+  name: Mount Olive College
+- href: http://www.msmc.edu/
+  name: Mount Saint Mary College
+- href: http://www.msmc.la.edu/
+  name: Mount Saint Mary's College
+- href: http://www.msmary.edu/
+  name: Mount Saint Mary's University
+- href: http://www.mvnu.edu/
+  name: Mount Vernon Nazarene University
+- href: http://www.mountwashington.edu/
+  name: Mount Washington College
+- href: http://www.mountainstate.edu/
+  name: Mountain State University
+- href: http://www.muhlenberg.edu/
+  name: Muhlenberg College
+- href: http://www.multnomah.edu/
+  name: Multnomah University
+- href: http://www.murraystate.edu/
+  name: Murray State University
+- href: http://www.muskingum.edu/
+  name: Muskingum University
+- href: http://www.oakhills.edu/
+  name: Oak Hills Christian College
+- href: http://www.oak.edu/
+  name: Oakland City University
+- href: http://www.oakland.edu/
+  name: Oakland University
+- href: http://www.oakwood.edu/
+  name: Oakwood University
+- href: http://www.oberlin.edu/
+  name: Oberlin College
+- href: http://www.ost.edu/
+  name: Oblate School of Theology
+- href: http://www.oxy.edu/
+  name: Occidental College
+- href: http://www.olc.edu/
+  name: Oglala Lakota College
+- href: http://www.oglethorpe.edu/
+  name: Oglethorpe University
+- href: http://www.ohiochristian.edu/
+  name: Ohio Christian University
+- href: http://www.ohiodominican.edu/
+  name: Ohio Dominican University
+- href: http://www.onu.edu/
+  name: Ohio Northern University
+- href: http://www.osu.edu/
+  name: Ohio State University
+- href: http://www.lima.osu.edu/
+  name: Ohio State University–Lima
+- href: http://www.mansfield.osu.edu/
+  name: Ohio State University–Mansfield
+- href: http://osumarion.osu.edu/
+  name: Ohio State University–Marion
+- href: http://www.newark.osu.edu/
+  name: Ohio State University–Newark
+- href: http://www.ohio.edu/
+  name: Ohio University
+- href: http://www.ohio.edu/eastern/
+  name: Ohio University–Eastern Campus
+- href: http://www.ohio.edu/lancaster/
+  name: Ohio University–Lancaster
+- href: http://www.ohio.edu/zanesville/
+  name: Ohio University–Zanesville
+- href: http://www.ovu.edu/
+  name: Ohio Valley University
+- href: http://www.owu.edu/
+  name: Ohio Wesleyan University
+- href: http://www.okbu.edu/
+  name: Oklahoma Baptist University
+- href: http://www.oc.edu/
+  name: Oklahoma Christian University
+- href: http://www.okcu.edu/
+  name: Oklahoma City University
+- href: http://www.opsu.edu/
+  name: Oklahoma Panhandle State University
+- href: http://www.okstate.edu/
+  name: Oklahoma State University
+- href: http://www.healthsciences.okstate.edu/
+  name: Oklahoma State University–Center for Health Sciences
+- href: http://www.osuit.edu/
+  name: Oklahoma State University–Institute of Technology
+- href: http://www.osuokc.edu/
+  name: Oklahoma State University–Oklahoma City
+- href: http://www.osu-tulsa.okstate.edu/
+  name: Oklahoma State University–Tulsa
+- href: http://www.okwu.edu/
+  name: Oklahoma Wesleyan University
+- href: http://www.odu.edu/
+  name: Old Dominion University
+- href: http://www.olivetcollege.edu/
+  name: Olivet College
+- href: http://www.olivet.edu/
+  name: Olivet Nazarene University
+- href: http://www.olivetuniversity.edu/
+  name: Olivet University
+- href: http://www.olympic.edu/
+  name: Olympic College
+- href: http://www.oru.edu/
+  name: Oral Roberts University
+- href: http://www.ocac.edu/
+  name: Oregon College of Art & Craft
+- href: http://www.ohsu.edu/
+  name: Oregon Health & Science University
+- href: http://www.oit.edu/
+  name: Oregon Institute of Technology
+- href: http://oregonstate.edu/
+  name: Oregon State University
+- href: http://www.otis.edu/
+  name: Otis College of Art & Design
+- href: http://www.ottawa.edu/
+  name: Ottawa University
+- href: http://www.otterbein.edu/
+  name: Otterbein University
+- href: http://www.obu.edu/
+  name: Ouachita Baptist University
+- href: http://www.olhcc.edu/
+  name: Our Lady of Holy Cross College
+- href: http://www.ololcollege.edu/
+  name: Our Lady of the Lake College
+- href: http://www.ollusa.edu/
+  name: Our Lady of the Lake University
+- href: http://occ.edu/
+  name: Ozark Christian College
+- href: http://www.queens.edu/
+  name: Queens University of Charlotte
+- href: http://www.quincy.edu/
+  name: Quincy University
+- href: http://www.quinnipiac.edu/
+  name: Quinnipiac University
+- href: http://www.radford.edu/
+  name: Radford University
+- href: http://www.ramapo.edu/
+  name: Ramapo College of New Jersey
+- href: http://www.randolphcollege.edu/
+  name: Randolph College
+- href: http://www.rmc.edu/
+  name: Randolph-Macon College
+- href: http://www.ranken.edu/
+  name: Ranken Technical College
+- href: http://www.rasmussen.edu/
+  name: Rasmussen College
+- href: http://www.rrc.edu/
+  name: Reconstructionist Rabbinical College
+- href: http://www.reed.edu/
+  name: Reed College
+- href: http://www.rts.edu/
+  name: Reformed Theological Seminary
+- href: http://www.regent.edu/
+  name: Regent University
+- href: http://www.regiscollege.edu/
+  name: Regis College
+- href: http://www.regis.edu/
+  name: Regis University
+- href: http://www.reinhardt.edu/
+  name: Reinhardt University
+- href: http://www.rpi.edu/
+  name: Rensselaer Polytechnic Institute
+- href: http://researchcollege.edu/
+  name: Research College of Nursing
+- href: http://resu.edu/
+  name: Resurrection University
+- href: http://www.ric.edu/
+  name: Rhode Island College
+- href: http://www.risd.edu/
+  name: Rhode Island School of Design
+- href: http://www.rhodes.edu/
+  name: Rhodes College
+- href: http://www.riceinfo.rice.edu/
+  name: Rice University
+- href: http://www.stockton.edu/
+  name: Richard Stockton College of New Jersey
+- href: http://richmont.edu/
+  name: Richmont Graduate University
+- href: http://www.rider.edu/
+  name: Rider University
+- href: http://www.ringling.edu/
+  name: Ringling College of Art & Design
+- href: http://www.ripon.edu/
+  name: Ripon College
+- href: http://www.rivier.edu/
+  name: Rivier University
+- href: http://www.roanoke.edu/
+  name: Roanoke College
+- href: http://www.robert-morris.edu/
+  name: Robert Morris University
+- href: http://www.robertmorris.edu/
+  name: Robert Morris University–Illinois
+- href: http://www.roberts.edu/
+  name: Roberts Wesleyan College
+- href: http://www.rc.edu/
+  name: Rochester College
+- href: http://www.rit.edu/
+  name: Rochester Institute of Technology
+- href: http://www.rockford.edu/
+  name: Rockford University
+- href: http://www.rockhurst.edu/
+  name: Rockhurst University
+- href: http://www.rocky.edu/
+  name: Rocky Mountain College
+- href: http://www.rmcad.edu/
+  name: Rocky Mountain College of Art & Design
+- href: http://www.rwu.edu/
+  name: Roger Williams University
+- href: http://www.rsu.edu/
+  name: Rogers State University
+- href: http://www.rollins.edu/
+  name: Rollins College
+- href: http://www.roosevelt.edu/
+  name: Roosevelt University
+- href: http://www.rosalindfranklin.edu/
+  name: Rosalind Franklin University of Medicine & Science
+- href: http://www.rose-hulman.edu/
+  name: Rose-Hulman Institute of Technology
+- href: http://www.roseman.edu/
+  name: Roseman University of Health Sciences
+- href: http://www.rosemont.edu/
+  name: Rosemont College
+- href: http://www.rowan.edu/
+  name: Rowan University
+- href: http://www.rushu.rush.edu/
+  name: Rush University
+- href: http://www.rustcollege.edu/
+  name: Rust College
+- href: http://www.camden.rutgers.edu/
+  name: Rutgers University–Camden
+- href: http://nb.rutgers.edu/
+  name: Rutgers University–New Brunswick
+- href: http://www.newark.rutgers.edu/
+  name: Rutgers University–Newark
+- href: http://www.tabor.edu/
+  name: Tabor College
+- href: http://www.talladega.edu/
+  name: Talladega College
+- href: http://www.tarleton.edu/
+  name: Tarleton State University
+- href: http://www.taylor.edu/
+  name: Taylor University
+- href: http://www.tcmi.org/
+  name: TCM International Institute
+- href: http://www.tc.columbia.edu/
+  name: Teachers College, Columbia University
+- href: http://www.temple.edu/
+  name: Temple University
+- href: http://www.tnstate.edu/
+  name: Tennessee State University
+- href: http://www.tntech.edu/
+  name: Tennessee Technological University
+- href: http://www.twcnet.edu/
+  name: Tennessee Wesleyan College
+- href: http://www.tamiu.edu/
+  name: Texas A&M International University
+- href: http://www.tamu.edu/
+  name: Texas A&M University
+- href: http://www.tamuct.edu/
+  name: Texas A&M University–Central Texas
+- href: http://www.tamuc.edu/
+  name: Texas A&M University–Commerce
+- href: http://www.tamucc.edu/
+  name: Texas A&M University–Corpus Christi
+- href: http://www.tamug.edu/
+  name: Texas A&M University–Galveston
+- href: http://www.tamhsc.edu/
+  name: Texas A&M University Health Science Center
+- href: http://www.tamuk.edu/
+  name: Texas A&M University–Kingsville
+- href: http://www.tamusa.tamus.edu/
+  name: Texas A&M University–San Antonio
+- href: http://www.tamut.edu/
+  name: Texas A&M University–Texarkana
+- href: http://www.txchiro.edu/
+  name: Texas Chiropractic College
+- href: http://www.tcu.edu/
+  name: Texas Christian University
+- href: http://www.texascollege.edu/
+  name: Texas College
+- href: http://www.tlu.edu/
+  name: Texas Lutheran University
+- href: http://www.tsu.edu/
+  name: Texas Southern University
+- href: http://www.txstate.edu/
+  name: Texas State University–San Marcos
+- href: http://www.ttu.edu/
+  name: Texas Tech University
+- href: http://www.ttuhsc.edu/
+  name: Texas Tech University Health Sciences Center
+- href: http://txwes.edu/
+  name: Texas Wesleyan University
+- href: http://www.twu.edu/
+  name: Texas Woman's University
+- href: http://www.thiel.edu/
+  name: Thiel College
+- href: http://www.thomasaquinas.edu/
+  name: Thomas Aquinas College
+- href: http://www.thomasu.edu/
+  name: Thomas University
+- href: http://www.thomas.edu/
+  name: Thomas College
+- href: http://www.tesc.edu/
+  name: Thomas Edison State College
+- href: http://www.jefferson.edu/
+  name: Thomas Jefferson University
+- href: http://www.cooley.edu/
+  name: Thomas M. Cooley Law School
+- href: http://www.thomasmore.edu/
+  name: Thomas More College
+- href: http://www.thomasmorecollege.edu/
+  name: The Thomas More College of Liberal Arts
+- href: http://www.thunderbird.edu/
+  name: Thunderbird School of Global Management
+- href: http://www.tiffin.edu/
+  name: Tiffin University
+- href: http://www.tfc.edu/
+  name: Toccoa Falls College
+- href: http://www.tougaloo.edu/
+  name: Tougaloo College
+- href: http://www.touro.edu/
+  name: Touro College
+- href: http://www.touro.edu/losangeles/
+  name: Touro College Los Angeles
+- href: http://www.tu.edu/
+  name: Touro University California
+- href: http://tun.touro.edu/
+  name: Touro University Nevada
+- href: http://www.tuw.edu/
+  name: Touro University Worldwide
+- href: http://www.towson.edu/
+  name: Towson University
+- href: http://www.ttic.edu/
+  name: Toyota Technological Institute at Chicago
+- href: http://www.transy.edu/
+  name: Transylvania University
+- href: http://www.trevecca.edu/
+  name: Trevecca Nazarene University
+- href: http://www.trident.edu/
+  name: Trident University International
+- href: http://www.trine.edu/
+  name: Trine University
+- href: http://www.trinitybiblecollege.edu/
+  name: Trinity Bible College
+- href: http://www.trnty.edu/
+  name: Trinity Christian College
+- href: http://www.trincoll.edu/
+  name: Trinity College
+- href: http://www.trinitycollegeqc.edu/
+  name: Trinity College of Nursing & Health Sciences
+- href: http://www.tlsohio.edu/
+  name: Trinity Lutheran Seminary
+- href: http://www.trinitydc.edu/
+  name: Trinity University
+- href: http://www.trinitycollege.edu/
+  name: Trinity College of Florida
+- href: http://www.tiu.edu/
+  name: Trinity International University
+- href: http://www.tlc.edu/
+  name: Trinity Lutheran College
+- href: http://www.trinity.edu/
+  name: Trinity University
+- href: http://www.troy.edu/
+  name: Troy University
+- href: http://www.truett.edu/
+  name: Truett-McConnell College
+- href: http://www.truman.edu/
+  name: Truman State University
+- href: http://www.tufts.edu/
+  name: Tufts University
+- href: http://www.tulane.edu/
+  name: Tulane University
+- href: http://www.tm.edu/
+  name: Turtle Mountain Community College
+- href: http://www.tusculum.edu/
+  name: Tusculum College
+- href: http://www.tuskegee.edu/
+  name: Tuskegee University
+- href: http://www.uts.edu/
+  name: Unification Theological Seminary
+- href: http://www.usuhs.mil/
+  name: Uniformed Services University of the Health Sciences
+- href: http://www.unionky.edu/
+  name: Union College
+- href: http://www.ucollege.edu/
+  name: Union College
+- href: http://www.union.edu/
+  name: Union College
+- href: http://www.uniongraduatecollege.edu/
+  name: Union Graduate College
+- href: http://www.myunion.edu/
+  name: Union Institute & University
+- href: http://www.upsem.edu/
+  name: Union Presbyterian Seminary
+- href: http://www.utsnyc.edu/
+  name: Union Theological Seminary
+- href: http://www.uu.edu/
+  name: Union University
+- href: http://www.usafa.edu/
+  name: United States Air Force Academy
+- href: http://usacac.army.mil/cac2/cgsc/
+  name: United States Army Command & General Staff College
+- href: http://www.carlisle.army.mil/
+  name: United States Army War College
+- href: http://www.uscga.edu/
+  name: United States Coast Guard Academy
+- href: http://www.usmma.edu/
+  name: United States Merchant Marine Academy
+- href: http://www.usma.edu/
+  name: United States Military Academy
+- href: http://www.usna.edu/
+  name: United States Naval Academy
+- href: http://www.usnwc.edu/
+  name: United States Naval War College
+- href: http://ussa.edu/
+  name: United States Sports Academy
+- href: http://www.usuniversity.edu/
+  name: United States University
+- href: http://www.united.edu/
+  name: United Theological Seminary
+- href: http://www.unitedseminary.edu/
+  name: United Theological Seminary of the Twin Cities
+- href: http://www.unity.edu/
+  name: Unity College
+- href: http://www.uaa.edu/
+  name: Universidad Adventista de las Antillas
+- href: http://www.ucb.edu.pr/
+  name: Universidad Central de Bayamón
+- href: http://www.uccaribe.edu/
+  name: Universidad Central del Caribe
+- href: http://www.sagrado.edu/
+  name: Universidad del Sagrado Corazón
+- href: http://www.inter.edu/
+  name: Universidad Interamericana de Puerto Rico
+- href: http://www.aguadilla.inter.edu/
+  name: Aguadilla Campus
+- href: http://www.arecibo.inter.edu/
+  name: Arecibo Campus
+- href: http://www.br.inter.edu/
+  name: Barranquitas Campus
+- href: http://bayamon.inter.edu/
+  name: Bayamón Campus
+- href: http://fajardo.inter.edu/
+  name: Fajardo Campus
+- href: http://www.guayama.inter.edu/
+  name: Guayama Campus
+- href: http://www.metro.inter.edu/
+  name: Metropolitan Campus
+- href: http://ponce.inter.edu/
+  name: Ponce Campus
+- href: http://www.sg.inter.edu/
+  name: San Germán Campus
+- href: http://www.derecho.inter.edu/
+  name: School of Law
+- href: http://www.optonet.inter.edu/
+  name: School of Optometry
+- href: http://www.pupr.edu/
+  name: Universidad Politecnica de Puerto Rico
+- href: http://www.usmd.edu/
+  name: University System of Maryland
+- href: http://www.uiu.edu/
+  name: Upper Iowa University
+- href: http://www.urbana.edu/
+  name: Urbana University
+- href: http://www.ursinus.edu/
+  name: Ursinus College
+- href: http://www.ursuline.edu/
+  name: Ursuline College
+- href: http://www.usu.edu/
+  name: Utah State University
+- href: http://www.uvu.edu/
+  name: Utah Valley University
+- href: http://www.utica.edu/
+  name: Utica College
+- href: http://www.uat.edu/
+  name: University of Advancing Technology
+- href: http://www.uakron.edu/
+  name: University of Akron
+- href: http://www.ua.edu/
+  name: University of Alabama
+- href: http://www.uab.edu/
+  name: University of Alabama–Birmingham
+- href: http://www.uah.edu/
+  name: University of Alabama–Huntsville
+- href: http://www.alaska.edu/
+  name: University of Alaska System
+- href: http://www.uaa.alaska.edu/
+  name: Anchorage
+- href: http://www.uaf.edu/
+  name: Fairbanks
+- href: http://www.uas.alaska.edu/
+  name: Southeast
+- href: http://www.arizona.edu/
+  name: University of Arizona
+- href: http://www.uark.edu/
+  name: University of Arkansas
+- href: http://uafs.edu/
+  name: University of Arkansas–Fort Smith
+- href: http://ualr.edu/
+  name: University of Arkansas–Little Rock
+- href: http://www.uams.edu/
+  name: University of Arkansas for Medical Sciences
+- href: http://www.uamont.edu/
+  name: University of Arkansas–Monticello
+- href: http://www.uapb.edu/
+  name: University of Arkansas–Pine Bluff
+- href: http://www.uasys.edu/
+  name: University of Arkansas System
+- href: http://www.ubalt.edu/
+  name: University of Baltimore
+- href: http://www.bridgeport.edu/
+  name: University of Bridgeport
+- href: http://www.berkeley.edu/
+  name: University of California–Berkeley
+- href: http://www.ucdavis.edu/
+  name: University of California–Davis
+- href: http://www.uchastings.edu/
+  name: University of California Hastings College of the Law
+- href: http://www.uci.edu/
+  name: University of California–Irvine
+- href: http://www.ucla.edu/
+  name: University of California–Los Angeles
+- href: http://www.ucmerced.edu/
+  name: University of California–Merced
+- href: http://www.ucr.edu/
+  name: University of California–Riverside
+- href: http://www.ucsd.edu/
+  name: University of California–San Diego
+- href: http://www.ucsf.edu/
+  name: University of California–San Francisco
+- href: http://www.ucsb.edu/
+  name: University of California–Santa Barbara
+- href: http://www.ucsc.edu/
+  name: University of California–Santa Cruz
+- href: http://www.ucop.edu/
+  name: University of California System
+- href: http://www.uca.edu/
+  name: University of Central Arkansas
+- href: http://www.ucf.edu/
+  name: University of Central Florida
+- href: http://www.ucmo.edu/
+  name: University of Central Missouri
+- href: http://www.uco.edu/
+  name: University of Central Oklahoma
+- href: http://www.ucwv.edu/
+  name: University of Charleston
+- href: http://www.uchicago.edu/
+  name: University of Chicago
+- href: http://www.uc.edu/
+  name: University of Cincinnati
+- href: http://www.ucblueash.edu/
+  name: University of Cincinnati–Blue Ash
+- href: http://www.colorado.edu/
+  name: University of Colorado–Boulder
+- href: http://www.uccs.edu/
+  name: University of Colorado–Colorado Springs
+- href: http://www.ucdenver.edu/
+  name: University of Colorado–Denver
+- href: http://www.cu.edu/
+  name: University of Colorado System
+- href: http://www.uconn.edu/
+  name: University of Connecticut
+- href: http://www.udallas.edu/
+  name: University of Dallas
+- href: http://www.udayton.edu/
+  name: University of Dayton
+- href: http://www.udel.edu/
+  name: University of Delaware
+- href: http://www.du.edu/
+  name: University of Denver
+- href: http://www.udc.edu/
+  name: University of the District of Columbia
+- href: http://www.udmercy.edu/
+  name: University of Detroit Mercy
+- href: http://www.dbq.edu/
+  name: University of Dubuque
+- href: http://www.evansville.edu/
+  name: University of Evansville
+- href: http://www.findlay.edu/
+  name: The University of Findlay
+- href: http://www.ufl.edu/
+  name: University of Florida
+- href: http://www.uga.edu/
+  name: University of Georgia
+- href: http://www.ugf.edu/
+  name: University of Great Falls
+- href: http://www.uog.edu/
+  name: University of Guam
+- href: http://www.hartford.edu/
+  name: University of Hartford
+- href: http://hilo.hawaii.edu/
+  name: University of Hawaii–Hilo
+- href: http://manoa.hawaii.edu/
+  name: University of Hawaii–Manoa
+- href: http://www.hawaii.edu/
+  name: University of Hawaii System
+- href: http://www.uhwo.hawaii.edu/
+  name: University of Hawaii–West O'ahu
+- href: http://www.uh.edu/
+  name: University of Houston
+- href: http://www.uhcl.edu/
+  name: University of Houston–Clear Lake
+- href: http://www.uhd.edu/
+  name: University of Houston–Downtown
+- href: http://www.uhv.edu/
+  name: University of Houston–Victoria
+- href: http://www.uidaho.edu/
+  name: University of Idaho
+- href: http://www.uic.edu/
+  name: University of Illinois–Chicago
+- href: http://www.uis.edu/
+  name: University of Illinois–Springfield
+- href: http://www.uillinois.edu/
+  name: University of Illinois System
+- href: http://illinois.edu/
+  name: University of Illinois–Urbana-Champaign
+- href: http://www.uindy.edu/
+  name: University of Indianapolis
+- href: http://www.uiowa.edu/
+  name: University of Iowa
+- href: http://www.uj.edu/
+  name: University of Jamestown
+- href: http://www.ku.edu/
+  name: University of Kansas
+- href: http://www.kumc.edu/
+  name: University of Kansas Medical Center
+- href: http://www.uky.edu/
+  name: University of Kentucky
+- href: http://laverne.edu/
+  name: University of La Verne
+- href: http://www.ulm.edu/
+  name: University of Louisiana–Monroe
+- href: http://www.louisiana.edu/
+  name: University of Louisiana–Lafayette
+- href: http://www.louisville.edu/
+  name: University of Louisville
+- href: http://www.umaine.edu/
+  name: University of Maine
+- href: http://www.uma.edu/
+  name: University of Maine–Augusta
+- href: http://www.umf.maine.edu/
+  name: University of Maine–Farmington
+- href: http://www.umfk.edu/
+  name: University of Maine–Fort Kent
+- href: http://machias.edu/
+  name: University of Maine–Machias
+- href: http://www.umpi.edu/
+  name: University of Maine–Presque Isle
+- href: http://mainelaw.maine.edu/
+  name: University of Maine School of Law
+- href: http://www.maine.edu/
+  name: University of Maine System
+- href: http://www.umary.edu/
+  name: University of Mary
+- href: http://www.umhb.edu/
+  name: University of Mary Hardin-Baylor
+- href: http://www.umw.edu/
+  name: University of Mary Washington
+- href: http://www.umaryland.edu/
+  name: University of Maryland–Baltimore
+- href: http://www.umbc.edu/
+  name: University of Maryland–Baltimore County
+- href: http://www.umd.edu/
+  name: University of Maryland–College Park
+- href: http://www.umes.edu/
+  name: University of Maryland–Eastern Shore
+- href: http://www.umuc.edu/
+  name: University of Maryland–University College
+- href: http://www.umass.edu/
+  name: University of Massachusetts–Amherst
+- href: http://www.umb.edu/
+  name: University of Massachusetts–Boston
+- href: http://www.umassd.edu/
+  name: University of Massachusetts–Dartmouth
+- href: http://www.uml.edu/
+  name: University of Massachusetts–Lowell
+- href: http://www.umassmed.edu/
+  name: University of Massachusetts Medical School at Worcester
+- href: http://www.massachusetts.edu/
+  name: University of Massachusetts System
+- href: http://www.umdnj.edu/
+  name: University of Medicine & Dentistry of New Jersey
+- href: http://www.memphis.edu/
+  name: University of Memphis
+- href: http://www.miami.edu/
+  name: University of Miami
+- href: http://www.umich.edu/
+  name: University of Michigan
+- href: http://www.umd.umich.edu/
+  name: University of Michigan–Dearborn
+- href: http://www.umflint.edu/
+  name: University of Michigan–Flint
+- href: http://www.crk.umn.edu/
+  name: University of Minnesota–Crookston
+- href: http://www.d.umn.edu/
+  name: University of Minnesota–Duluth
+- href: http://www.morris.umn.edu/
+  name: University of Minnesota–Morris
+- href: http://www.umn.edu/
+  name: University of Minnesota–Twin Cities
+- href: http://www.olemiss.edu/
+  name: University of Mississippi
+- href: http://www.umc.edu/
+  name: University of Mississippi Medical Center
+- href: http://www.missouri.edu/
+  name: University of Missouri
+- href: http://www.umkc.edu/
+  name: University of Missouri–Kansas City
+- href: http://www.umsl.edu/
+  name: University of Missouri–Saint Louis
+- href: http://www.umsystem.edu/
+  name: University of Missouri System
+- href: http://www.umobile.edu/
+  name: University of Mobile
+- href: http://www.umt.edu/
+  name: University of Montana–Missoula
+- href: http://www.umwestern.edu/
+  name: University of Montana–Western
+- href: http://www.montevallo.edu/
+  name: University of Montevallo
+- href: http://www.mountunion.edu/
+  name: University of Mount Union
+- href: http://www.unk.edu/
+  name: University of Nebraska–Kearney
+- href: http://www.unl.edu/
+  name: University of Nebraska–Lincoln
+- href: http://www.unmc.edu/
+  name: University of Nebraska Medical Center
+- href: http://www.unomaha.edu/
+  name: University of Nebraska–Omaha
+- href: http://www.nebraska.edu/
+  name: University of Nebraska System
+- href: http://www.unlv.edu/
+  name: University of Nevada–Las Vegas
+- href: http://www.unr.edu/
+  name: University of Nevada–Reno
+- href: http://www.une.edu/
+  name: University of New England
+- href: http://www.unh.edu/
+  name: University of New Hampshire
+- href: http://manchester.unh.edu/
+  name: University of New Hampshire at Manchester
+- href: http://law.unh.edu/
+  name: University of New Hampshire School of Law
+- href: http://www.newhaven.edu/
+  name: University of New Haven
+- href: http://www.unm.edu/
+  name: University of New Mexico
+- href: http://www.uno.edu/
+  name: University of New Orleans
+- href: http://www.una.edu/
+  name: University of North Alabama
+- href: http://www.unca.edu/
+  name: University of North Carolina–Asheville
+- href: http://unc.edu/
+  name: University of North Carolina–Chapel Hill
+- href: http://www.uncc.edu/
+  name: University of North Carolina–Charlotte
+- href: http://www.uncg.edu/
+  name: University of North Carolina–Greensboro
+- href: http://www.uncp.edu/
+  name: University of North Carolina–Pembroke
+- href: http://www.uncsa.edu/
+  name: University of North Carolina–School of the Arts
+- href: http://www.uncw.edu/
+  name: University of North Carolina–Wilmington
+- href: http://und.edu/
+  name: University of North Dakota
+- href: http://www.unf.edu/
+  name: University of North Florida
+- href: http://ung.edu/
+  name: University of North Georgia
+- href: http://www.unt.edu/
+  name: University of North Texas
+- href: http://www.hsc.unt.edu/
+  name: University of North Texas Health Science Center
+- href: http://www.unco.edu/
+  name: University of Northern Colorado
+- href: http://www.uni.edu/
+  name: University of Northern Iowa
+- href: http://www.unoh.edu/
+  name: University of Northwestern Ohio
+- href: http://www.unwsp.edu/
+  name: University of Northwestern–Saint Paul
+- href: http://www.nd.edu/
+  name: University of Notre Dame
+- href: http://www.ou.edu/
+  name: University of Oklahoma
+- href: http://www.ouhsc.edu/
+  name: University of Oklahoma Health Sciences Center
+- href: http://www.ou.edu/tulsa/
+  name: University of Oklahoma–Tulsa
+- href: http://uoregon.edu/
+  name: University of Oregon
+- href: http://www.ozarks.edu/
+  name: University of the Ozarks
+- href: http://www.valdosta.edu/
+  name: Valdosta State University
+- href: http://valenciacollege.edu/
+  name: Valencia College
+- href: http://www.vcsu.edu/
+  name: Valley City State University
+- href: http://www.vfcc.edu/
+  name: Valley Forge Christian College
+- href: http://www.valpo.edu/
+  name: Valparaiso University
+- href: http://www.vanderbilt.edu/
+  name: Vanderbilt University
+- href: http://www.vandercook.edu/
+  name: VanderCook College of Music
+- href: http://www.vanguard.edu/
+  name: Vanguard University of Southern California
+- href: http://www.vassar.edu/
+  name: Vassar College
+- href: http://www.vaughn.edu/
+  name: Vaughn College of Aeronautics & Technology
+- href: http://www.vcfa.edu/
+  name: Vermont College of Fine Arts
+- href: http://www.vermontlaw.edu/
+  name: Vermont Law School
+- href: http://www.vtc.edu/
+  name: Vermont Technical College
+- href: http://www.victory.edu/
+  name: Victory University
+- href: http://www.villa.edu/
+  name: Villa Maria College
+- href: http://www.villanova.edu/
+  name: Villanova University
+- href: http://www.vinu.edu/
+  name: Vincennes University
+- href: http://www.vcu.edu/
+  name: Virginia Commonwealth University
+- href: http://vic.edu/
+  name: Virginia Intermont College
+- href: http://www.vmi.edu/
+  name: Virginia Military Institute
+- href: http://www.vt.edu/
+  name: Virginia Polytechnic Institute & State University
+- href: http://www.vsu.edu/
+  name: Virginia State University
+- href: http://www.vuu.edu/
+  name: Virginia Union University
+- href: http://www.vwc.edu/
+  name: Virginia Wesleyan College
+- href: http://www.viterbo.edu/
+  name: Viterbo University
+- href: http://www.voorhees.edu/
+  name: Voorhees College
+- href: http://www.wabash.edu/
+  name: Wabash College
+- href: http://www.wadecollege.edu/
+  name: Wade College
+- href: http://wagner.edu/
+  name: Wagner College
+- href: http://www.wfu.edu/
+  name: Wake Forest University
+- href: http://www.waldenu.edu/
+  name: Walden University
+- href: http://www.waldorf.edu/
+  name: Waldorf College
+- href: http://www.wallawalla.edu/
+  name: Walla Walla University
+- href: http://www.walshcollege.edu/
+  name: Walsh College
+- href: http://www.walsh.edu/
+  name: Walsh University
+- href: http://www.warnerpacific.edu/
+  name: Warner Pacific College
+- href: http://warner.edu/
+  name: Warner University
+- href: http://www.warren-wilson.edu/
+  name: Warren Wilson College
+- href: http://www.wartburg.edu/
+  name: Wartburg College
+- href: http://www.wartburgseminary.edu/
+  name: Wartburg Theological Seminary
+- href: http://www.washburn.edu/
+  name: Washburn University
+- href: http://www.washjeff.edu/
+  name: Washington & Jefferson College
+- href: http://www.wlu.edu/
+  name: Washington & Lee University
+- href: http://www.wau.edu/
+  name: Washington Adventist University
+- href: http://www.bible.edu/
+  name: Washington Bible College/Capital Bible Seminary
+- href: http://www.washcoll.edu/
+  name: Washington College
+- href: http://www.wsu.edu/
+  name: Washington State University
+- href: http://spokane.wsu.edu/
+  name: Washington State University–Spokane
+- href: http://www.tricity.wsu.edu/
+  name: Washington State University–Tri-Cities
+- href: http://www.vancouver.wsu.edu/
+  name: Washington State University–Vancouver
+- href: http://www.wtu.edu/
+  name: Washington Theological Union
+- href: http://www.wustl.edu/
+  name: Washington University in Saint Louis
+- href: http://www.watkins.edu/
+  name: Watkins College of Art, Design, & Film
+- href: http://www.wbu.edu/
+  name: Wayland Baptist University
+- href: http://www.wsc.edu/
+  name: Wayne State College
+- href: http://wayne.edu/
+  name: Wayne State University
+- href: http://www.waynesburg.edu/
+  name: Waynesburg University
+- href: http://www.webb.edu/
+  name: Webb Institute
+- href: http://webber.edu/
+  name: Webber International University
+- href: http://www.weber.edu/
+  name: Weber State University
+- href: http://www.webster.edu/
+  name: Webster University
+- href: http://www.welch.edu/
+  name: Welch College
+- href: http://www.wellesley.edu/
+  name: Wellesley College
+- href: http://www.wells.edu/
+  name: Wells College
+- href: http://www.wit.edu/
+  name: Wentworth Institute of Technology
+- href: http://www.wesley.edu/
+  name: Wesley College
+- href: http://www.wesleyseminary.edu/
+  name: Wesley Theological Seminary
+- href: http://www.wesleyancollege.edu/
+  name: Wesleyan College
+- href: http://www.wesleyan.edu/
+  name: Wesleyan University
+- href: http://www.wcupa.edu/
+  name: West Chester University of Pennsylvania
+- href: http://westliberty.edu/
+  name: West Liberty University
+- href: http://www.wtamu.edu/
+  name: West Texas A&M University
+- href: http://www.wvstateu.edu/
+  name: West Virginia State University
+- href: http://www.wvu.edu/
+  name: West Virginia University
+- href: http://www.wvutech.edu/
+  name: West Virginia University Institute of Technology
+- href: http://www.wvup.edu/
+  name: West Virginia University at Parkersburg
+- href: http://www.wvwc.edu/
+  name: West Virginia Wesleyan College
+- href: http://www.wcu.edu/
+  name: Western Carolina University
+- href: http://www.wcsu.edu/
+  name: Western Connecticut State University
+- href: http://www.wgu.edu/
+  name: Western Governors University
+- href: http://indiana.wgu.edu/
+  name: Western Governors University–Indiana
+- href: http://missouri.wgu.edu/
+  name: Western Governors University–Missouri
+- href: http://tennessee.wgu.edu/
+  name: Western Governors University–Tennessee
+- href: http://texas.wgu.edu/
+  name: Western Governors University–Texas
+- href: http://washington.wgu.edu/
+  name: Western Governors University–Washington
+- href: http://www.wiu.edu/
+  name: Western Illinois University
+- href: http://west.edu/
+  name: Western International University
+- href: http://www.wku.edu/
+  name: Western Kentucky University
+- href: http://www.wmich.edu/
+  name: Western Michigan University
+- href: http://www.wnc.edu/
+  name: Western Nevada College
+- href: http://www.wne.edu/
+  name: Western New England University
+- href: http://wnmu.edu/
+  name: Western New Mexico University
+- href: http://www.wou.edu/
+  name: Western Oregon University
+- href: http://www.westernseminary.edu/
+  name: Western Seminary
+- href: http://www.western.edu/
+  name: Western State Colorado University
+- href: http://www.wsulaw.edu/
+  name: Western State University College of Law
+- href: http://www.westernu.edu/
+  name: Western University of Health Sciences
+- href: http://www.wwu.edu/
+  name: Western Washington University
+- href: http://www.wsc.ma.edu/
+  name: Westfield State University
+- href: http://www.westminster.edu/
+  name: Westminster College
+- href: http://www.westminster-mo.edu/
+  name: Westminster College
+- href: http://www.westminstercollege.edu/
+  name: Westminster College
+- href: http://www.wts.edu/
+  name: Westminster Theological Seminary
+- href: http://wscal.edu/
+  name: Westminster Seminary California
+- href: http://www.westmont.edu/
+  name: Westmont College
+- href: http://www.wheaton.edu/
+  name: Wheaton College
+- href: http://wheatoncollege.edu/
+  name: Wheaton College
+- href: http://www.wju.edu/
+  name: Wheeling Jesuit University
+- href: http://www.wheelock.edu/
+  name: Wheelock College
+- href: http://www.whitman.edu/
+  name: Whitman College
+- href: http://www.whittier.edu/
+  name: Whittier College
+- href: http://www.whitworth.edu/
+  name: Whitworth University
+- href: http://www.wichita.edu/
+  name: Wichita State University
+- href: http://www.widener.edu/
+  name: Widener University
+- href: http://www.wilberforce.edu/
+  name: Wilberforce University
+- href: http://www.wileyc.edu/
+  name: Wiley College
+- href: http://www.wilkes.edu/
+  name: Wilkes University
+- href: http://www.willamette.edu/
+  name: Willamette University
+- href: http://www.wmcarey.edu/
+  name: William Carey University
+- href: http://www.jessup.edu/
+  name: William Jessup University
+- href: http://www.jewell.edu/
+  name: William Jewell College
+- href: http://www.wmpenn.edu/
+  name: William Penn University
+- href: http://www.wpunj.edu/
+  name: William Paterson University
+- href: http://www.williamwoods.edu/
+  name: William Woods University
+- href: http://www.wbcoll.edu/
+  name: Williams Baptist College
+- href: http://www.williams.edu/
+  name: Williams College
+- href: http://www.wilmu.edu/
+  name: Wilmington University
+- href: http://www.wilmington.edu/
+  name: Wilmington College
+- href: http://www.wilson.edu/
+  name: Wilson College
+- href: http://www.wingate.edu/
+  name: Wingate University
+- href: http://www.winona.edu/
+  name: Winona State University
+- href: http://www.wssu.edu/
+  name: Winston-Salem State University
+- href: http://www.winthrop.edu/
+  name: Winthrop University
+- href: http://www.wlc.edu/
+  name: Wisconsin Lutheran College
+- href: http://wspp.edu/
+  name: Wisconsin School of Professional Psychology
+- href: http://www.wittenberg.edu/
+  name: Wittenberg University
+- href: http://www.wofford.edu/
+  name: Wofford College
+- href: http://www.woninstitute.edu/
+  name: Won Institute of Graduate Studies
+- href: http://www.woodbury.edu/
+  name: Woodbury University
+- href: http://www.whoi.edu/
+  name: Woods Hole Oceanographic Institution
+- href: http://www.wpi.edu/
+  name: Worcester Polytechnic Institute
+- href: http://www.worcester.edu/
+  name: Worcester State University
+- href: http://www.wi.edu/
+  name: The Wright Institute
+- href: http://www.wright.edu/
+  name: Wright State University

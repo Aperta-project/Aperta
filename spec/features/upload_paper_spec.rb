@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 feature "Upload paper", js: true, vcr: {cassette_name: 'upload_manuscript'} do
-  let(:author) { create :user }
-  let(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
+  let(:author) { FactoryGirl.create :user }
+  let(:paper) { FactoryGirl.create :paper, user: author }
 
   before do
     sign_in_page = SignInPage.visit

@@ -54,7 +54,7 @@ describe PapersController do
     end
 
     it "assigns assigned tasks" do
-      task = Task.create! assignee: user, title: 'Change the world', role: 'editor', phase: paper.task_manager.phases.first
+      task = Task.create! assignee: user, title: 'Change the world', role: 'editor', phase: paper.phases.first
       tasks = double 'tasks', tasks: [task]
       allow(TaskPolicy).to receive(:new).and_return(tasks)
       do_request
@@ -83,7 +83,7 @@ describe PapersController do
     end
 
     it "assigns assigned tasks" do
-      task = Task.create! assignee: user, title: 'Change the world', role: 'editor', phase: paper.task_manager.phases.first
+      task = Task.create! assignee: user, title: 'Change the world', role: 'editor', phase: paper.phases.first
       tasks = double 'tasks', tasks: [task]
       allow(TaskPolicy).to receive(:new).and_return(tasks)
       do_request

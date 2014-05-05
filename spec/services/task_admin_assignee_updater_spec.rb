@@ -4,7 +4,7 @@ describe TaskAdminAssigneeUpdater do
 
     let(:task)  { PaperAdminTask.create!(phase: phase) }
     let(:paper) { FactoryGirl.create(:paper) }
-    let(:phase) { paper.task_manager.phases.first }
+    let(:phase) { paper.phases.first }
     let(:jim) { User.create! email: 'jim@plos.org',
         password: 'abcd1234',
         password_confirmation: 'abcd1234',
@@ -57,7 +57,7 @@ describe TaskAdminAssigneeUpdater do
 
       let(:other_paper) do
         FactoryGirl.create(:paper).tap do |p|
-          phase = paper.task_manager.phases.first
+          phase = paper.phases.first
           PaperAdminTask.create(phase: phase)
         end
       end

@@ -10,7 +10,7 @@ describe PaperAdminTask do
   describe "updating paper admin" do
     let(:paper) { FactoryGirl.create(:paper) }
     let(:task)  { PaperAdminTask.create(phase: phase, assignee: bob, admin_id: bob.id) }
-    let(:phase) { paper.task_manager.phases.first }
+    let(:phase) { paper.phases.first }
     let(:sally) { create :user }
     let(:bob) { create :user }
 

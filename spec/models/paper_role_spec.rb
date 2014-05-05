@@ -16,7 +16,7 @@ describe PaperRole do
   end
 
   describe "callbacks" do
-    let(:default_task_attrs) { { title: 'A title', role: 'editor', phase: paper.task_manager.phases.first } }
+    let(:default_task_attrs) { { title: 'A title', role: 'editor', phase: paper.phases.first } }
 
     describe "after_save" do
       let(:bob) { User.create! email: 'bob@plos.org',

@@ -22,7 +22,7 @@ describe TasksController do
     subject(:do_request) do
       post :create, { format: 'json', paper_id: paper.to_param, task: { assignee_id: '1',
                                                         type: 'Task',
-                                                        phase_id: paper.task_manager.phases.last.id,
+                                                        phase_id: paper.phases.last.id,
                                                         title: 'Verify Signatures',
                                                         body: 'Seriously, do it!' } }
     end
@@ -35,7 +35,7 @@ describe TasksController do
   end
 
   describe "PATCH 'update'" do
-    let(:task) { Task.create! title: "sample task", role: "sample role", phase: paper.task_manager.phases.first }
+    let(:task) { Task.create! title: "sample task", role: "sample role", phase: paper.phases.first }
 
     subject(:do_request) do
       patch :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }

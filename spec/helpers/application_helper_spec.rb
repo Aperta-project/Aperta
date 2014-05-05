@@ -34,7 +34,7 @@ describe ApplicationHelper do
     let(:task) do
       Task.create! title: 'Foo task',
         role: 'some role',
-        phase: paper.task_manager.phases.first
+        phase: paper.phases.first
     end
 
     subject(:link) do

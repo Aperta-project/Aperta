@@ -11,7 +11,7 @@ describe PaperEditorTask do
   describe "#paper_role" do
     let(:user) { FactoryGirl.build(:user) }
     let!(:paper_role) { PaperRole.create! paper: paper, editor: true, user: user }
-    let!(:phase) { paper.task_manager.phases.first }
+    let!(:phase) { paper.phases.first }
     let(:task) { PaperEditorTask.create!(phase: phase) }
 
     context "when the role is not present" do
@@ -28,14 +28,14 @@ describe PaperEditorTask do
         # directly.
         # After reloading the task can get its paper_role directly,
         # but if the record hasn't been persisted we'd need to use
-        # task.phase.task_manager.paper.paper_roles.where(editor: true)
+        # task.phase.paper.paper_roles.where(editor: true)
         expect(PaperEditorTask.create!(phase: phase).reload.paper_role).to eq paper_role
       end
     end
   end
 
   describe "#editor_id" do
-    let(:task) { PaperEditorTask.create! phase: paper.task_manager.phases.first }
+    let(:task) { PaperEditorTask.create! phase: paper.phases.first }
 
     let :editor do
       User.create! username: 'editor',

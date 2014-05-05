@@ -4,18 +4,18 @@ describe PhasesController do
 
   let(:phase_name) { 'Verification' }
   let(:new_position) { 0 }
-  let(:paper) { create(:paper) }
-  let(:task_manager) { paper.task_manager }
-  let(:user) { create(:user) }
+  let(:paper) { FactoryGirl.create(:paper) }
+  let(:user) { FactoryGirl.create(:user) }
 
   before { sign_in user }
 
   describe 'POST create' do
     subject(:do_request) do
-      post :create, format: :json, phase: {task_manager_id: task_manager.id,
-                            name: phase_name,
-                            paper_id: paper.id,
-                            position: new_position}
+      post :create, format: :json, phase: {
+        name: phase_name,
+        paper_id: paper.id,
+        position: new_position
+      }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -42,7 +42,7 @@ describe PhasesController do
   end
 
   describe 'PATCH update' do
-    let(:phase) { task_manager.phases.first }
+    let(:phase) { paper.phases.first }
     subject(:do_request) do
       patch :update, {format: :json, id: phase.to_param, phase: {name: 'Verify Signatures'} }
     end

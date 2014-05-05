@@ -22,7 +22,7 @@ describe StandardTasks::FigureTask do
       StandardTasks::FigureTask.create! title: "Paper Admin",
         completed: true,
         role: 'admin',
-        phase: paper.task_manager.phases.first
+        phase: paper.phases.first
     end
 
     it "returns a JSON object of access details from figures" do

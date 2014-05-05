@@ -11,7 +11,7 @@ feature "Tech Check", js: true do
   before do
     make_user_journal_admin(user, paper)
 
-    phase = paper.task_manager.phases.where(name: 'Assign Editor').first
+    phase = paper.phases.where(name: 'Assign Editor').first
     task = phase.tasks.where(title: 'Tech Check').first
     task.update! assignee: user
 

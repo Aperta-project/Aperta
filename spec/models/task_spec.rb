@@ -16,12 +16,12 @@ describe Task do
       completed_task = Task.create! title: "Paper Admin",
         completed: true,
         role: 'admin',
-        phase: paper.task_manager.phases.first
+        phase: paper.phases.first
 
       incomplete_task = Task.create! title: "Reviewer Report",
         completed: false,
         role: 'reviewer',
-        phase: paper.task_manager.phases.first
+        phase: paper.phases.first
 
       expect(Task.all.map(&:completed).last).to eq(true)
 
@@ -142,7 +142,7 @@ describe Task do
   describe "#assignees" do
     let(:task) { Task.create! title: "Paper Admin",
         role: 'admin',
-        phase: paper.task_manager.phases.first
+        phase: paper.phases.first
     }
 
     let(:user) do

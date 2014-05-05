@@ -7,7 +7,7 @@ class PaperAdminTask < Task
   after_save :update_paper_admin_and_tasks, if: :paper_admin_changed?
 
   def tasks_for_admin
-    Task.where(role: 'admin', completed: false, phase_id: [task_manager.phases.pluck(:id)], assignee_id: assignee_id)
+    Task.where(role: 'admin', completed: false, phase_id: [paper.phase_ids], assignee_id: assignee_id)
   end
 
   def update_responder

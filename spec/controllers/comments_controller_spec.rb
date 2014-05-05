@@ -2,9 +2,8 @@ require 'spec_helper'
 
 describe CommentsController do
   render_views
-  let(:phase) { task_manager.phases.first }
-  let(:paper) { create(:paper, user: paper_user) }
-  let(:task_manager) { paper.task_manager }
+  let(:paper) { FactoryGirl.create(:paper, user: paper_user) }
+  let(:phase) { paper.phases.first }
 
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }

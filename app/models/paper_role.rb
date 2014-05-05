@@ -15,7 +15,7 @@ class PaperRole < ActiveRecord::Base
   protected
 
   def assign_tasks_to_editor
-    query = Task.where(role: 'editor', completed: false, phase_id: paper.task_manager.phases.pluck(:id))
+    query = Task.where(role: 'editor', completed: false, phase_id: paper.phase_ids)
     query = if user_id_was.present?
               query.where('assignee_id IS NULL OR assignee_id = ?', user_id_was)
             else

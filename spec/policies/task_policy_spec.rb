@@ -11,7 +11,7 @@ describe TaskPolicy do
     end
 
     let!(:expected_tasks) do
-      tasks = paper.task_manager.phases.collect(&:tasks).flatten.in_groups(2, false)
+      tasks = paper.phases.collect(&:tasks).flatten.in_groups(2, false)
       expect(tasks.flatten.length).to be > 3
       assigned_tasks = tasks.first.each do |task|
         task.update! assignee: user
@@ -33,11 +33,11 @@ describe TaskPolicy do
                        password_confirmation: 'password' }
 
       let(:expected_tasks) do
-        Task.where(phase_id: paper.task_manager.phase_ids, role: 'editor')
+        Task.where(phase_id: paper.phase_ids, role: 'editor')
       end
 
       let!(:reviewer_task) {
-        Task.create! title: 'Reviewer Report', role: 'reviewer', phase: paper.task_manager.phases.first
+        Task.create! title: 'Reviewer Report', role: 'reviewer', phase: paper.phases.first
       }
 
       before do

@@ -11,20 +11,6 @@ describe Paper do
         expect(paper).to have(1).errors_on(:paper_type)
       end
     end
-
-    describe "task manager" do
-      it "initializes a new task manager" do
-        expect(paper.task_manager).to be_a TaskManager
-      end
-
-      context "when a task manager is specified" do
-        it "uses the provided task manager" do
-          task_manager = TaskManager.new
-          paper = Paper.new short_title: 'Example', task_manager: task_manager
-          expect(paper.task_manager).to eq task_manager
-        end
-      end
-    end
   end
 
   describe "validations" do
@@ -64,8 +50,8 @@ describe Paper do
 
     it "assigns all author tasks to the paper author" do
       paper.save!
-      author_tasks = Task.where(role: 'author', phase_id: paper.task_manager.phases.pluck(:id))
-      other_tasks = Task.where("role != 'author'", phase_id: paper.task_manager.phases.pluck(:id))
+      author_tasks = Task.where(role: 'author', phase_id: paper.phases.pluck(:id))
+      other_tasks = Task.where("role != 'author'", phase_id: paper.phases.pluck(:id))
       expect(author_tasks.all? { |t| t.assignee == user }).to eq true
       expect(other_tasks.all? { |t| t.assignee != user }).to eq true
     end
@@ -74,7 +60,7 @@ describe Paper do
       before { paper.save! }
 
       it "assigns all author tasks to the paper author" do
-        tasks = Task.where(role: 'author', phase_id: paper.task_manager.phases.map(&:id))
+        tasks = Task.where(role: 'author', phase_id: paper.phases.map(&:id))
         not_author = User.create! email: 'not_author@example.com', password: 'password', password_confirmation: 'password', username: 'not_author'
         paper.update! user: not_author
         expect(tasks.all? { |t| t.assignee == user }).to eq true

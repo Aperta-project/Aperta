@@ -14,7 +14,7 @@ class PaperReviewerTask < Task
     user_ids = user_ids.map(&:to_i)
     new_ids = user_ids - reviewer_ids
     old_ids = reviewer_ids - user_ids
-    phase = paper.task_manager.phases.where(name: 'Get Reviews').first
+    phase = paper.phases.where(name: 'Get Reviews').first
     new_ids.each do |id|
       PaperRole.reviewers_for(paper).where(user_id: id).create!
       ReviewerReportTask.create! assignee_id: id, phase: phase

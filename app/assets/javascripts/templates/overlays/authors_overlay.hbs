@@ -1,11 +1,13 @@
 <h1>{{title}}</h1>
-<a class="btn btn-default btn-xs" {{action 'toggleAuthorForm'}}>
-  <span class="glyphicon glyphicon-plus-sign"></span>
-  Add new
-</a>
-<div {{bind-attr class=":author-form showNewAuthorForm"}}>
-  {{view ETahi.AddAuthorView newAuthor=newAuthor}}
-</div>
+{{#if isEditable}}
+  <a class="btn btn-default btn-xs" {{action 'toggleAuthorForm'}}>
+    <span class="glyphicon glyphicon-plus-sign"></span>
+    Add new
+  </a>
+  <div {{bind-attr class=":author-form showNewAuthorForm"}}>
+    {{view ETahi.AddAuthorView newAuthor=newAuthor}}
+  </div>
+{{/if}}
 <ul class="authors-overlay-list">
   {{#each author in paper.authors}}
     <li>

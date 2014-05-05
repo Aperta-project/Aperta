@@ -5,4 +5,8 @@ class UserSerializer < ActiveModel::Serializer
     :image_url,
     :username,
     :email
+
+  def affiliations
+    object.affiliations.by_date
+  end
 end

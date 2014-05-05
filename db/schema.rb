@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430231343) do
+ActiveRecord::Schema.define(version: 20140501201221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "affiliations", force: true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
 
   create_table "comments", force: true do |t|
     t.text     "body"
@@ -196,7 +207,6 @@ ActiveRecord::Schema.define(version: 20140430231343) do
   create_table "users", force: true do |t|
     t.string   "first_name",             default: "",    null: false
     t.string   "last_name",              default: "",    null: false
-    t.string   "affiliation",            default: "",    null: false
     t.string   "email",                  default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"

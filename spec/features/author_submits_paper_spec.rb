@@ -5,22 +5,16 @@ feature "Paper Submission" do
   Warden.test_mode!
 
   scenario "Author creates a submission", js: true do
-    journal = Journal.create! name: 'PLOS One'
-    author = User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
+    journal = FactoryGirl.create :journal
+    author = FactoryGirl.create :user
 
     login_as(author, scope: :user)
 
     dashboard_page = DashboardPage.visit
     new_submission_page = dashboard_page.new_submission
-    edit_submission_page = new_submission_page.create_submission 'This is a short title', journal: 'PLOS One'
+    edit_submission_page = new_submission_page.create_submission 'This is a short title', journal: journal.name
 
-    expect(edit_submission_page.journal).to eq('PLOS One')
+    expect(edit_submission_page.journal).to eq journal.name
     dashboard_page = edit_submission_page.visit_dashboard
     expect(dashboard_page.submissions).to include 'This is a short title'
   end

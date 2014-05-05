@@ -1,25 +1,11 @@
 require 'spec_helper'
 
 feature 'Add a new card', js: true do
-  let(:admin) do
-    User.create! username: 'zoey',
-      first_name: 'Zoey',
-      last_name: 'Bob',
-      email: 'hi@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'PLOS',
-      admin: true
-  end
+  let(:journal) { FactoryGirl.create :journal }
+  let(:admin) { FactoryGirl.create :user, admin: true }
 
   let!(:albert) do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich',
+    FactoryGirl.create :user,
       journal_roles: [JournalRole.new(journal: journal, admin: true)]
   end
 
@@ -27,8 +13,6 @@ feature 'Add a new card', js: true do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin.email
   end
-
-  let(:journal) { Journal.create! }
 
   let(:paper) do
     Paper.create! short_title: 'foobar',
@@ -49,7 +33,7 @@ feature 'Add a new card', js: true do
 
     expect(task_manager_page).to have_content('Verify Author Signatures')
     needs_editor_phase.view_card 'Verify Author Signatures' do |overlay|
-      expect(overlay.assignee).to eq 'ALBERT EINSTEIN'
+      expect(overlay.assignee).to eq albert.full_name.upcase
       expect(overlay.title).to eq 'Verify Author Signatures'
       expect(overlay.body).to eq 'Please remember to verify signatures of every paper author.'
     end

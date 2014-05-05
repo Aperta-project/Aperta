@@ -7,8 +7,7 @@ feature "Account creation", js: true do
       first_name: 'Albert',
       last_name: 'Einstein',
       email: 'einstein@example.org',
-      password: 'password',
-      affiliation: 'Universität Zürich'
+      password: 'password'
 
     expect(page.current_path).to eq(root_path)
     expect(dashboard_page.header.text).to eq "Welcome, Albert Einstein"
@@ -16,15 +15,8 @@ feature "Account creation", js: true do
 end
 
 feature "Signing in", js: true do
+  let!(:user) { FactoryGirl.create :user }
   scenario "User can sign in to & out of the site using their email address" do
-    user = User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
-
     sign_in_page = SignInPage.visit
     dashboard_page = sign_in_page.sign_in user.email
     expect(page.current_path).to eq(root_path)
@@ -33,14 +25,6 @@ feature "Signing in", js: true do
   end
 
   scenario "User can sign in to & out of the site using their username" do
-    user = User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
-
     sign_in_page = SignInPage.visit
     dashboard_page = sign_in_page.sign_in user.username
     expect(page.current_path).to eq(root_path)

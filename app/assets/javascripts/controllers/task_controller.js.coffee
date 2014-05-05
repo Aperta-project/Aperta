@@ -8,7 +8,8 @@ ETahi.TaskController = Ember.ObjectController.extend
   isMetadataAndSubmitted: Ember.computed.and('isPaperSubmitted', 'isMetadata')
   isUserEditable: Ember.computed.not('isMetadataAndSubmitted')
   isCurrentUserAdmin: (->
-    ETahi.currentUser.user.admin).property()
+    Tahi.currentUser.admin
+  ).property()
 
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
 

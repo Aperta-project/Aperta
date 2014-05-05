@@ -1,25 +1,11 @@
 require 'spec_helper'
 
 feature 'Message Cards', js: true do
-  let(:admin) do
-    User.create! username: 'zoey',
-      first_name: 'Zoey',
-      last_name: 'Bob',
-      email: 'hi@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'PLOS',
-      admin: true
-  end
+  let(:admin) { FactoryGirl.create :user, admin: true }
+  let(:journal) { FactoryGirl.create :journal }
 
   let!(:albert) do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich',
+    FactoryGirl.create :user,
       journal_roles: [JournalRole.new(journal: journal, admin: true)]
   end
 
@@ -27,8 +13,6 @@ feature 'Message Cards', js: true do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin.email
   end
-
-  let(:journal) { Journal.create! }
 
   let(:paper) do
     Paper.create! short_title: 'foobar',

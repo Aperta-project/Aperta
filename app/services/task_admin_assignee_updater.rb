@@ -6,7 +6,7 @@ class TaskAdminAssigneeUpdater
     @task = task
     @paper = task.paper
     @task_admin = User.where(id: task.admin_id).first
-    @previous_task_admin = paper.admin
+    @previous_task_admin = paper.admins.first
   end
 
   def update

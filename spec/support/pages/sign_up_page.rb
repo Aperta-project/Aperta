@@ -8,7 +8,6 @@ class SignUpPage < Page
     fill_in "Email", with: options.fetch(:email)
     fill_in "Password", with: options.fetch(:password)
     fill_in "Password confirmation", with: options.fetch(:password)
-    fill_in "Affiliation", with: options.fetch(:affiliation)
     click_on "Sign up"
 
     DashboardPage.new

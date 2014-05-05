@@ -6,7 +6,7 @@ moduleFor 'controller:task', 'TaskController',
     @litePaper = Ember.Object.create
       submitted: true
 
-    ETahi.currentUser = Ember.Object.create
+    Tahi.currentUser = Ember.Object.create
       user:
         admin: false
 
@@ -24,7 +24,7 @@ test '#isEditable: true when the task is not a metadata task', ->
 
 test '#isEditable: always true when the user is an admin', ->
   Ember.run =>
-    ETahi.currentUser.user.admin = true
+    Tahi.currentUser.admin = true
     @task.set('isMetadataTask', true)
     @litePaper.set('submitted', true)
     equal @subject().get('isEditable'), true

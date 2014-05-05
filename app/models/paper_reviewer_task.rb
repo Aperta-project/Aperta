@@ -10,6 +10,9 @@ class PaperReviewerTask < Task
     [:reviewer_ids]
   end
 
+  # TODO: Change this ASAP
+  # hard-coded phase name needs to go away.
+  # requires MMT changes
   def reviewer_ids=(user_ids)
     user_ids = user_ids.map(&:to_i)
     new_ids = user_ids - reviewer_ids

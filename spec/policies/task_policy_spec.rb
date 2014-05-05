@@ -2,54 +2,41 @@ require 'spec_helper'
 
 describe TaskPolicy do
   describe "#tasks" do
-    let(:user) { User.create! email: 'albert@example.org',
-                 username: 'albert',
-                 password: 'password',
-                 password_confirmation: 'password' }
-    let(:paper) do
-      FactoryGirl.create(:paper, user: user)
+    let(:user) { FactoryGirl.create(:user) }
+    let(:editor) { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.create(:paper, user: user) }
+    let(:phase1) { FactoryGirl.create(:phase, paper: paper) }
+    let!(:user_assigned_task) {
+      Task.create!(title: 'User task', role: 'whatever', phase: phase1, assignee: user)
+    }
+    let!(:editor_assigned_task) {
+      Task.create!(title: 'PaperAdminTask', role: 'whatever', phase: phase1, assignee: editor)
+    }
+    let!(:reviewer_task) {
+      Task.create! title: 'Reviewer Report', role: 'reviewer', phase: phase1
+    }
+
+    before do
+      paper.paper_roles.create! user: editor, editor: true
     end
 
-    let!(:expected_tasks) do
-      tasks = paper.phases.collect(&:tasks).flatten.in_groups(2, false)
-      expect(tasks.flatten.length).to be > 3
-      assigned_tasks = tasks.first.each do |task|
-        task.update! assignee: user
-      end
-      tasks.second.each do |task|
-        task.reload.update! assignee_id: nil
-      end
-      assigned_tasks
-    end
+    context "when the user is not an editor of the paper" do
+      subject { TaskPolicy.new(paper, user).tasks }
 
-    it "returns the tasks assigned to the current user" do
-      expect(TaskPolicy.new(paper, user).tasks.to_a).to match_array(expected_tasks.to_a)
+      it "returns the tasks assigned to the current user" do
+        expect(subject).to eq([user_assigned_task])
+      end
     end
 
     context "when the user is an editor on the paper" do
-      let(:editor) { User.create! email: 'neil@example.org',
-                       username: 'neil',
-                       password: 'password',
-                       password_confirmation: 'password' }
+      subject { TaskPolicy.new(paper, editor).tasks }
 
-      let(:expected_tasks) do
-        Task.where(phase_id: paper.phase_ids, role: 'editor')
+      it "returns the tasks assigned to the user" do
+        expect(subject).to include(editor_assigned_task)
       end
 
-      let!(:reviewer_task) {
-        Task.create! title: 'Reviewer Report', role: 'reviewer', phase: paper.phases.first
-      }
-
-      before do
-        paper.paper_roles.create! user: editor, editor: true
-
-        expected_tasks.each do |task|
-          task.update assignee_id: editor.id
-        end
-      end
-
-      it "returns the tasks assigned to the user and all reviewers of the paper" do
-        expect(TaskPolicy.new(paper, editor).tasks).to match_array(expected_tasks + [reviewer_task])
+      it "returns the tasks marked by 'reviewer' role" do
+        expect(subject).to include(reviewer_task)
       end
     end
   end

@@ -1,6 +1,4 @@
 class Paper < ActiveRecord::Base
-  after_initialize :initialize_defaults
-
   belongs_to :user, inverse_of: :papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
@@ -21,8 +19,6 @@ class Paper < ActiveRecord::Base
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
   validates :journal, presence: true
   validate :metadata_tasks_completed?, if: :submitting?
-
-  after_create :assign_user_to_author_tasks
 
   def self.submitted
     where(submitted: true)
@@ -94,17 +90,4 @@ class Paper < ActiveRecord::Base
     authors.push user.slice(*%w(first_name last_name email))
   end
 
-  private
-
-  def assign_user_to_author_tasks
-    Task.where(phase_id: self.phase_ids, role: 'author').each do |task|
-      task.update assignee: user
-    end
-  end
-
-  def initialize_defaults
-    unless persisted?
-      self.phases = Phase.default_phases
-    end
-  end
 end

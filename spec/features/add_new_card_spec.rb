@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 feature 'Add a new card', js: true do
-  let(:journal) { create :journal }
   let(:admin) { create :user, admin: true }
 
+  let(:journal) { FactoryGirl.create :journal, :with_default_template }
   let(:paper) do
-    FactoryGirl.create :paper, user: admin, submitted: true, journal: journal
+    FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true, journal: journal
   end
 
   let!(:albert) do

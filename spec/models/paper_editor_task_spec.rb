@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe PaperEditorTask do
-  let(:paper) { FactoryGirl.create :paper }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks }
   describe "defaults" do
     subject(:task) { PaperEditorTask.new }
     specify { expect(task.title).to eq 'Assign Editor' }

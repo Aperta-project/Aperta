@@ -8,7 +8,7 @@ describe PapersController do
 
   let(:submitted) { false }
   let(:paper) do
-    FactoryGirl.create(:paper, submitted: submitted, user: user)
+    FactoryGirl.create(:paper, :with_tasks, submitted: submitted, user: user)
   end
 
   before { sign_in user }
@@ -106,17 +106,17 @@ describe PapersController do
   end
 
   describe "POST 'create'" do
-    before { Journal.create! }
+    let(:journal) { FactoryGirl.create :journal }
 
     subject(:do_request) do
-      post :create, { paper: { short_title: 'ABC101', journal_id: Journal.last.id, paper_type: 'research' } }
+      post :create, { paper: { short_title: 'ABC101', journal_id: journal.id, paper_type: journal.paper_types.first }, format: :json }
     end
 
-    it_behaves_like "when the user is not signed in"
+    it_behaves_like "an unauthenticated json request"
 
     it "saves a new paper record" do
       do_request
-      expect(Paper.first).to be_persisted
+      expect(Paper.where(short_title: 'ABC101').count).to eq(1)
     end
 
     it "assigns the paper to the current user" do
@@ -138,7 +138,7 @@ describe PapersController do
     end
 
     it "renders the errors for the paper if it can't be saved" do
-      post :create, { paper: { short_title: '' } }
+      post :create, { paper: { short_title: ''}, format: :json }
       expect(response.status).to eq(422)
     end
   end

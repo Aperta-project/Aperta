@@ -2,7 +2,8 @@ require 'spec_helper'
 
 feature "Editing paper", js: true do
   let(:author) { FactoryGirl.create :user }
-  let(:paper) { FactoryGirl.create :paper, submitted: false, short_title: 'foo bar', user: author }
+  let(:journal) { FactoryGirl.create :journal, :with_default_template }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, submitted: false, short_title: 'foo bar', user: author }
 
   before do
     make_user_paper_admin(author, paper)

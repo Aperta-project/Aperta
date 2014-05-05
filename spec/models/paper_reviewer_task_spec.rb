@@ -7,11 +7,17 @@ describe PaperReviewerTask do
     specify { expect(task.role).to eq 'editor' }
   end
 
-  let(:paper) { FactoryGirl.create :paper }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks }
   let(:phase) { paper.phases.first }
 
   let(:albert) { create :user, :admin }
   let(:neil) { create :user }
+
+  before do
+    # TODO: This works with the hard-coded phase name in the code for
+    # PaperReviewerTask#reviewer_ids=
+    paper.phases.create!(name: "Get Reviews")
+  end
 
   describe "#reviewer_ids=" do
     let(:task) { PaperReviewerTask.create!(phase: phase) }

@@ -3,8 +3,8 @@ require 'spec_helper'
 feature "Displaying task", js: true do
   let(:admin) { create :user, admin: true }
   let(:author) { create :user }
-  let!(:paper) { FactoryGirl.create :paper, user: author }
-
+  let!(:journal) { FactoryGirl.create :journal, :with_default_template }
+  let!(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }
   let(:task) { Task.where(title: "Assign Admin").first }
 
   before do

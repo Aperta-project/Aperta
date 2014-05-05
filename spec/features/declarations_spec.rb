@@ -2,7 +2,8 @@ require 'spec_helper'
 
 feature "Make declarations", js: true do
   let(:author) { FactoryGirl.create :user }
-  let(:paper) { FactoryGirl.create :paper, user: author, short_title: 'foo bar' }
+  let(:journal) { FactoryGirl.create :journal, :with_default_template }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks, user: author, journal: journal }
 
   before do
     sign_in_page = SignInPage.visit

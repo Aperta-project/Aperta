@@ -3,10 +3,11 @@ require 'spec_helper'
 feature "Manuscript Manager", js: true do
   let(:admin) { create :user, admin: true }
   let(:author) { create :user, admin: true }
-  let(:paper) { FactoryGirl.create :paper, user: admin, submitted: true }
+  let!(:journal) { FactoryGirl.create :journal, :with_default_template }
+  let!(:paper) { FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true, journal: journal }
 
   before do
-    JournalRole.create! admin: true, journal: paper.journal, user: admin
+    JournalRole.create! admin: true, journal: journal, user: admin
 
     page.driver.browser.manage.window.maximize
 

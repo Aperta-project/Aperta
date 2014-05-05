@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature "Register Decision", js: true do
 
-  let(:journal) { FactoryGirl.create :journal }
+  let(:journal) { FactoryGirl.create :journal, :with_default_template }
 
   let!(:editor) do
     create :user,
@@ -10,7 +10,7 @@ feature "Register Decision", js: true do
   end
 
   let!(:paper) do
-    FactoryGirl.create(:paper, user: editor, submitted: true, journal: journal)
+    FactoryGirl.create(:paper, :with_tasks, user: editor, submitted: true, journal: journal)
   end
 
   before do

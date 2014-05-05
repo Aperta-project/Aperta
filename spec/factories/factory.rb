@@ -12,9 +12,4 @@ FactoryGirl.define do
     answer "A lie!"
   end
 
-  factory :manuscript_manager_template do
-    sequence(:paper_type) {|n| "Research #{n}" }
-    template { {} }
-  end
-
 end

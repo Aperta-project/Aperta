@@ -3,7 +3,7 @@ require 'spec_helper'
 describe TaskAdminAssigneeUpdater do
 
     let(:task)  { PaperAdminTask.create!(phase: phase) }
-    let(:paper) { FactoryGirl.create(:paper) }
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
     let(:phase) { paper.phases.first }
     let(:jim) { User.create! email: 'jim@plos.org',
         password: 'abcd1234',

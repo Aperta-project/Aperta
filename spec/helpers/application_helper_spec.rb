@@ -28,7 +28,7 @@ describe ApplicationHelper do
 
   describe "#card" do
     let(:paper) do
-      FactoryGirl.create(:paper)
+      FactoryGirl.create(:paper, :with_tasks)
     end
 
     let(:task) do

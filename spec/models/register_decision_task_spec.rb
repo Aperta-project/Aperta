@@ -9,7 +9,7 @@ describe RegisterDecisionTask do
 
   context "letters" do
     let(:paper) do
-      FactoryGirl.create :paper, title: "Crazy stubbing tests on rats"
+      FactoryGirl.create :paper, :with_tasks, title: "Crazy stubbing tests on rats"
     end
 
     let(:task) { RegisterDecisionTask.create! phase: paper.phases.first }

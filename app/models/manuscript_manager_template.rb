@@ -7,11 +7,11 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
   validate :no_duplicate_phase_names
   validate :task_types_in_whitelist
 
-  private
-
   def phases
     template["phases"] || []
   end
+
+  private
 
   def task_types
     phases.flat_map { |phase| phase["task_types"] }.compact.uniq

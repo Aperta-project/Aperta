@@ -2,7 +2,6 @@ require 'spec_helper'
 
 feature 'Message Cards', js: true do
   let(:admin) { create :user, admin: true }
-  let(:journal) { create :journal }
 
   let!(:albert) do
     create :user,
@@ -14,8 +13,10 @@ feature 'Message Cards', js: true do
     sign_in_page.sign_in admin.email
   end
 
+  let(:journal) { FactoryGirl.create(:journal, :with_default_template) }
+
   let(:paper) do
-    FactoryGirl.create(:paper, user: admin, submitted: true, journal: journal)
+    FactoryGirl.create(:paper, :with_tasks, user: admin, submitted: true, journal: journal)
   end
 
   describe "creating a new message" do

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Reviewer Report", js: true do
-  let(:journal) { FactoryGirl.create :journal }
+  let(:journal) { FactoryGirl.create :journal, :with_default_template }
 
   let!(:reviewer) do
     FactoryGirl.create :user, journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
@@ -12,7 +12,7 @@ feature "Reviewer Report", js: true do
   end
 
   let!(:paper) do
-    FactoryGirl.create(:paper, user: author, journal: journal, submitted: true)
+    FactoryGirl.create(:paper, :with_tasks, user: author, journal: journal, submitted: true)
   end
 
   before do

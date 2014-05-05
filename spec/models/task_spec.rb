@@ -9,7 +9,7 @@ class TaskWithoutDefaults < Task
 end
 
 describe Task do
-  let(:paper) { FactoryGirl.create :paper }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks }
 
   describe "default_scope" do
     it "orders so the completed ones are below the incomplete ones" do

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe PaperRole do
-  let(:paper) { FactoryGirl.create :paper }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks }
   describe "scopes" do
     describe "reviewers_for" do
       let(:user) { FactoryGirl.build(:user) }

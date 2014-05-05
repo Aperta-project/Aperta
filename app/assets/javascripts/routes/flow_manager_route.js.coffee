@@ -1,9 +1,4 @@
-ETahi.FlowManagerRoute = Ember.Route.extend
-  beforeModel: (transition)->
-    unless Tahi.currentUser.admin
-      transition.abort()
-      @transitionTo('index')
-
+ETahi.FlowManagerRoute = ETahi.AdminAuthorizedRoute.extend
   model: ->
     if cachedModel =  @controllerFor('application').get('cachedModel')
       @controllerFor('application').set('cachedModel' , null)

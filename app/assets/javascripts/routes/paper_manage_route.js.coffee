@@ -1,8 +1,4 @@
-ETahi.PaperManageRoute = Ember.Route.extend
-  beforeModel: (transition)->
-    unless Tahi.currentUser.admin
-      transition.abort()
-      @transitionTo('index')
+ETahi.PaperManageRoute = ETahi.AdminAuthorizedRoute.extend
   actions:
     viewCard: (task) ->
       paper = @modelFor('paper')

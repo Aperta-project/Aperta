@@ -146,6 +146,21 @@ feature "Flow Manager", js: true do
       expect(papers.map &:title).to match_array [paper1.title, paper2.title]
       papers.first.view # Verify that we can go to the paper's manage page from its profile.
     end
+
+    scenario "Completing an assign admin task" do
+      dashboard_page = DashboardPage.visit
+      flow_manager_page = dashboard_page.view_flow_manager
+
+      my_tasks = flow_manager_page.column 'My papers'
+      papers = my_tasks.paper_profiles
+      papers.first.view_card 'Assign Admin' do |card|
+        card.mark_as_complete
+      end
+
+      admin_card = papers.first.card_by_title('Assign Admin')
+      expect(admin_card).to be_completed
+    end
+
   end
 
   context "empty tasks" do

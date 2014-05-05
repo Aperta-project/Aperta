@@ -3,6 +3,10 @@ class FlowManagerPage < Page
     def title
       text
     end
+
+    def completed?
+      has_class_name?('card-completed')
+    end
   end
 
   class PaperProfile < PageFragment
@@ -18,6 +22,11 @@ class FlowManagerPage < Page
     def cards
       all('.card').map { |c| CardFragment.new c }
     end
+
+    def card_by_title(card_title)
+      cards.find { |card| card.title == card_title }
+    end
+
   end
 
   class Column < PageFragment

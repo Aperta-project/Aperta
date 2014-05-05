@@ -1,5 +1,7 @@
 FactoryGirl.define do
   factory :journal do
-    name "Test Journal"
+    sequence :name do |n|
+      "Journal #{n}"
+    end
   end
 end

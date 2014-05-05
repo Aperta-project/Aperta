@@ -1,22 +1,12 @@
 require 'spec_helper'
 
 feature "Tahi administration", js: true do
-  let(:admin) do
-    FactoryGirl.create :user, admin: true
-  end
+  let(:admin) { FactoryGirl.create :user, admin: true }
+  let!(:user) { FactoryGirl.create :user }
+  let!(:journal) { FactoryGirl.create :journal }
+  let!(:journal2) { FactoryGirl.create :journal }
 
-  let!(:user) do
-    FactoryGirl.create :user
-  end
-
-  let!(:journal) do
-    Journal.create! name: 'Journal 1'
-  end
-
-  before do
-    Journal.create! name: 'Journal 2'
-    SignInPage.visit.sign_in admin.email
-  end
+  before { SignInPage.visit.sign_in admin.email }
 
   scenario "Admin can toggle the super admin bit on other users" do
     admin_page = DashboardPage.visit.visit_admin
@@ -39,12 +29,12 @@ feature "Tahi administration", js: true do
     new_roles_page = roles_page.add_role
 
     new_roles_page.user = user.full_name
-    new_roles_page.journal = 'Journal 1'
+    new_roles_page.journal = journal.name
 
     new_roles_page.set_admin
     roles_page = new_roles_page.save
 
-    edit_role_page = roles_page.edit_role user.full_name, 'Journal 1'
+    edit_role_page = roles_page.edit_role user.full_name, journal.name
     expect(edit_role_page).to be_admin
     expect(edit_role_page).to_not be_editor
     expect(edit_role_page).to_not be_reviewer
@@ -58,7 +48,7 @@ feature "Tahi administration", js: true do
     new_roles_page = roles_page.add_role
 
     new_roles_page.user = user.full_name
-    new_roles_page.journal = 'Journal 1'
+    new_roles_page.journal = journal.name
 
     new_roles_page.set_editor
     roles_page = new_roles_page.save
@@ -66,19 +56,19 @@ feature "Tahi administration", js: true do
     new_roles_page = roles_page.add_role
 
     new_roles_page.user = user.full_name
-    new_roles_page.journal = 'Journal 2'
+    new_roles_page.journal = journal2.name
 
     new_roles_page.set_reviewer
     roles_page = new_roles_page.save
 
-    edit_role_page = roles_page.edit_role user.full_name, 'Journal 1'
+    edit_role_page = roles_page.edit_role user.full_name, journal.name
     expect(edit_role_page).to be_editor
     expect(edit_role_page).to_not be_reviewer
     expect(edit_role_page).to_not be_admin
 
     roles_page = edit_role_page.cancel
 
-    edit_role_page = roles_page.edit_role user.full_name, 'Journal 2'
+    edit_role_page = roles_page.edit_role user.full_name, journal2.name
     expect(edit_role_page).to be_reviewer
     expect(edit_role_page).to_not be_editor
     expect(edit_role_page).to_not be_admin

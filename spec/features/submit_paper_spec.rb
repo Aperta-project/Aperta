@@ -7,13 +7,7 @@ feature "Submitting a paper", js: true do
   end
 
   let :author do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
+    FactoryGirl.create :user
   end
 
   let :paper do
@@ -33,7 +27,6 @@ feature "Submitting a paper", js: true do
     submit_paper_page = EditPaperPage.visit(paper).submit
 
     expect(submit_paper_page).to have_paper_title
-    #expect(submit_paper_page).to have_paper_abstract
     expect(submit_paper_page).to have_paper_authors
     expect(submit_paper_page).to have_paper_declarations
     dashboard_page = submit_paper_page.submit

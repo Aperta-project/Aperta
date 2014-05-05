@@ -20,7 +20,11 @@
       </div>
       <div id="profile-affiliations">
         <h4 class="secondary"><small>Affiliations:</small></h4>
-        <h4>{{model.affiliation}}</h4>
+        {{#each a in model.affiliations}}
+          <div>name: {{a.name}}</div>
+          <div>start date: {{a.startDate}}</div>
+          <div>end date: {{a.endDate}}</div>
+        {{/each}}
       </div>
 
       <a href="#" id="reset-password">Reset my password</a>

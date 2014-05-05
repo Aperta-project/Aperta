@@ -26,6 +26,6 @@ class PaperAdminTask < Task
   end
 
   def paper_admin_changed?
-    paper.admin != User.where(id: admin_id).first
+    !paper.admins.exists?(id: admin_id)
   end
 end

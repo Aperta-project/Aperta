@@ -51,6 +51,7 @@
 }
 
 .message-overlay {
+  img.user-thumbnail { width: 40px; }
   #participants {
     margin-bottom: 10px;
     > ul {

@@ -12,7 +12,6 @@ ETahi.TaskController = Ember.ObjectController.extend
 
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
 
-
   addSave: ( ->
     self = @
     @.saveModel = ( ->

@@ -1,15 +1,16 @@
 <h1>{{model.title}}</h1>
 
-<span class="secondary-button fileinput-button">
-  <span>Add new Figures</span>
-  {{file-uploader id="figure_attachment"
-                  class="js-jquery-fileupload"
-                  name="figure[attachment][]"
-                  accept=".jpg,.jpeg,.tiff,.gif,.png"
-                  multiple=true
-                  type="file"}}
-</span>
-
+{{#if isEditable}}
+  <span class="secondary-button fileinput-button">
+    <span>Add new Figures</span>
+    {{file-uploader id="figure_attachment"
+                    class="js-jquery-fileupload"
+                    name="figure[attachment][]"
+                    accept=".jpg,.jpeg,.tiff,.gif,.png"
+                    multiple=true
+                    type="file"}}
+  </span>
+{{/if}}
 <ul id="paper-figure-uploads">
   {{!#TODO: extract items in each block into their own views?}}
   {{#each upload in view.uploads}}
@@ -40,7 +41,13 @@
 </ul>
 
 <ul class="paper-figures">
-  {{#each paper.figures}}
-    {{figure-thumbnail figure=this}}
-  {{/each}}
+  {{#if isEditable}}
+    {{#each figure in paper.figures}}
+      {{figure-thumbnail figure=figure}}
+    {{/each}}
+  {{else}}
+    {{#each figure in paper.figures}}
+      {{partial 'figure_show_only'}}
+    {{/each}}
+  {{/if}}
 </ul>

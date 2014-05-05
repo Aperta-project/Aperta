@@ -3,17 +3,21 @@ class Paper < ActiveRecord::Base
 
   after_initialize :initialize_defaults
 
+  has_one :task_manager, inverse_of: :paper
+
   belongs_to :user, inverse_of: :papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
 
   has_many :figures
-  has_many :paper_roles
-  has_many :reviewers, -> { where("paper_roles.reviewer" => true) }, through: :paper_roles, source: :user
-  has_many :editors, -> { where("paper_roles.editor" => true) }, through: :paper_roles, source: :user
-  has_many :admins, -> { where("paper_roles.admin" => true) }, through: :paper_roles, source: :user
+  has_many :paper_roles, inverse_of: :paper
+  has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user
+  has_many :available_users, through: :journal_roles, class_name: "User", source: :user
 
-  has_one :task_manager, inverse_of: :paper
+  has_many :phases, -> { order 'phases.position ASC' }, through: :task_manager
+  has_many :tasks, through: :phases
+  has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
+  has_many :journal_roles, through: :journal
 
   serialize :authors, Array
 
@@ -22,37 +26,46 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
   validate :metadata_tasks_completed?, if: :submitting?
 
-  has_many :phases, -> { order 'phases.position ASC' }, through: :task_manager
-  has_many :tasks, through: :phases
-  has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
-
-  has_many :journal_roles, through: :journal
-  has_many :admin_assignees, -> { merge(JournalRole.admin) }, through: :journal_roles, source: :user
-
   after_create :assign_user_to_author_tasks
-
-  def assignees
-    (admin_assignees + [user]).uniq
-  end
 
   def self.submitted
     where(submitted: true)
   end
 
+  def self.ongoing
+    where(submitted: false)
+  end
+
   def self.published
-    where('published_at IS NOT NULL')
+    where.not(published_at: nil)
   end
 
   def self.unpublished
-    where('published_at IS NULL')
+    where(published_at: nil)
   end
 
   def tasks_for_type(klass_name)
     tasks.where(type: klass_name)
   end
 
-  def self.ongoing
-    where(submitted: false)
+  def assignees
+    (available_admins + [user]).uniq
+  end
+
+  def available_admins
+    available_users.merge(JournalRole.admins)
+  end
+
+  def admins
+    assigned_users.merge(PaperRole.admins)
+  end
+
+  def editors
+    assigned_users.merge(PaperRole.editors)
+  end
+
+  def reviewers
+    assigned_users.merge(PaperRole.reviewers)
   end
 
   def display_title
@@ -64,11 +77,6 @@ class Paper < ActiveRecord::Base
       paper_roles.admins.destroy_all
       paper_roles.admins.create!(user: user)
     end
-  end
-
-  def editor
-    role = paper_roles.where(editor: true).first
-    role.user if role
   end
 
   def admin

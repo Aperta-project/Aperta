@@ -3,28 +3,32 @@ require 'spec_helper'
 feature "Assigns Editor", js: true do
 
   let(:admin) do
-    User.create! username: 'zoey',
+    user = User.create! username: 'zoey',
       first_name: 'Zoey',
       last_name: 'Bob',
       email: 'hi@example.com',
       password: 'password',
       password_confirmation: 'password',
       affiliation: 'PLOS',
-      admin: true,
-      journal_roles: [JournalRole.create!(journal: journal, admin: true)]
+      admin: true
+    JournalRole.create!(journal: journal, admin: true, user: user)
+
+    user
   end
 
   let(:journal) { Journal.create! }
 
   let!(:editor) do
-    User.create! username: 'albert',
+    user = User.create! username: 'albert',
       first_name: 'Albert',
       last_name: 'Einstein',
       email: 'einstein@example.org',
       password: 'password',
       password_confirmation: 'password',
-      affiliation: 'Universität Zürich',
-      journal_roles: [JournalRole.create!(journal: journal, editor: true)]
+      affiliation: 'Universität Zürich'
+    JournalRole.create!(journal: journal, editor: true, user: user)
+
+    user
   end
 
   before do

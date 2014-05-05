@@ -58,7 +58,7 @@ HERE
   end
 
   def body
-    page.evaluate_script 've.instances[0].getModel().getDocument().getText()'
+    find('.ve-ce-documentNode').text
   end
 
   def authors

@@ -31,5 +31,5 @@ ETahi.TaskRoute = Ember.Route.extend
 
   actions:
     willTransition: (transition) ->
-      unless transition.get('targetName') == 'flow_manager'
+      unless transition.targetName == @controllerFor('application').get('overlayRedirect.firstObject')
         @controllerFor('application').set('cachedModel', null)

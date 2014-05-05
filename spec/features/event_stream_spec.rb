@@ -21,7 +21,7 @@ feature "Event streaming", js: true do
   describe "manuscript manager" do
     before do
       edit_paper = EditPaperPage.visit paper
-      edit_paper.navigate_to_task_manager
+      edit_paper.visit_task_manager
     end
 
     let(:submission_phase) { paper.phases.find_by_name("Submission Data") }
@@ -50,7 +50,7 @@ feature "Event streaming", js: true do
   describe "message tasks" do
     before do
       edit_paper = EditPaperPage.visit paper
-      edit_paper.navigate_to_task_manager
+      edit_paper.visit_task_manager
       submission_phase = paper.phases.find_by_name("Submission Data")
       @mt = submission_phase.tasks.new title: "Wicked Message Card", type: "MessageTask", body: "Hi there!", role: "user"
       @mt.participants << author

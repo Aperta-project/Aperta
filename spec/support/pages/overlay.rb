@@ -35,7 +35,6 @@ class CardOverlay < Page
     session.execute_script "$('header a').css('position', 'relative')"
     find('header h2 a').click
     session.execute_script "$('header a').css('position', '#{old_position}')"
-    wait_for_turbolinks
     PaperPage.new
   end
 

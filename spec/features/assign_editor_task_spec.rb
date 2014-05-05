@@ -40,7 +40,7 @@ feature "Assigns Editor", js: true do
   scenario "Admin can assign an editor to a paper" do
     dashboard_page = DashboardPage.visit
     paper_page = dashboard_page.view_submitted_paper 'foobar'
-    task_manager_page = paper_page.navigate_to_task_manager
+    task_manager_page = paper_page.visit_task_manager
 
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|

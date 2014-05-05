@@ -1,3 +1,6 @@
+#
+# Page Fragment can be any element in the page.
+#
 class PageFragment
   include RSpec::Matchers
 
@@ -34,7 +37,6 @@ class PageFragment
     if block_given?
       block.call overlay
       overlay.dismiss
-      wait_for_turbolinks
     else
       overlay
     end
@@ -57,6 +59,9 @@ class PageFragment
   end
 end
 
+#
+# Page expects a path and asserts against it. Uses Rails routing helpers to accomplish this.
+#
 class Page < PageFragment
   include Capybara::DSL
 
@@ -81,12 +86,10 @@ class Page < PageFragment
 
   def initialize element = nil
     super element
-    #expect(current_path).to match self.class._path_regex unless self.class._path_regex.nil?
   end
 
   def reload
     visit page.current_path
-    wait_for_turbolinks
   end
 
   def notice

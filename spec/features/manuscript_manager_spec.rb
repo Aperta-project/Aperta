@@ -79,7 +79,7 @@ feature "Manuscript Manager", js: true do
   scenario 'Removing a task' do
     dashboard_page = DashboardPage.visit
     paper_page = dashboard_page.view_submitted_paper 'foobar'
-    task_manager_page = paper_page.navigate_to_task_manager
+    task_manager_page = paper_page.visit_task_manager
 
     phase = task_manager_page.phase 'Submission Data'
     expect { phase.remove_card('Upload Manuscript') }.to change { phase.card_count }.by(-1)
@@ -88,7 +88,7 @@ feature "Manuscript Manager", js: true do
   scenario "Admin can assign a paper to themselves" do
     dashboard_page = DashboardPage.visit
     paper_page = dashboard_page.view_submitted_paper 'foobar'
-    task_manager_page = paper_page.navigate_to_task_manager
+    task_manager_page = paper_page.visit_task_manager
 
     sleep 0.4
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
@@ -118,7 +118,7 @@ feature "Manuscript Manager", js: true do
     # TODO: Make this work
     # dashboard_page = DashboardPage.visit
     # paper_page = dashboard_page.view_submitted_paper 'foobar'
-    # task_manager_page = paper_page.navigate_to_task_manager
+    # task_manager_page = paper_page.visit_task_manager
 
     # sleep 0.4
     # phase = task_manager_page.phase 'Assign Editor'

@@ -28,7 +28,7 @@ class EditPaperPage < Page
     DashboardPage.new
   end
 
-  def navigate_to_task_manager
+  def visit_task_manager
     click_link 'Manuscript Manager'
     TaskManagerPage.new
   end
@@ -72,11 +72,6 @@ HERE
   def title
     find(:css, '#paper-title').text
   end
-
-  def abstract
-    abstract_node.text
-  end
-
 
   def cards
     {

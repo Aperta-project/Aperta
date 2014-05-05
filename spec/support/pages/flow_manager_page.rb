@@ -26,7 +26,6 @@ class FlowManagerPage < Page
     def card_by_title(card_title)
       cards.find { |card| card.title == card_title }
     end
-
   end
 
   class Column < PageFragment

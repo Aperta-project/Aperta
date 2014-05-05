@@ -1,8 +1,6 @@
 class Paper < ActiveRecord::Base
   after_initialize :initialize_defaults
 
-  has_one :task_manager, inverse_of: :paper
-
   belongs_to :user, inverse_of: :papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
@@ -12,7 +10,7 @@ class Paper < ActiveRecord::Base
   has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user
   has_many :available_users, through: :journal_roles, class_name: "User", source: :user
 
-  has_many :phases, -> { order 'phases.position ASC' }, through: :task_manager
+  has_many :phases, -> { order 'phases.position ASC' }
   has_many :tasks, through: :phases
   has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
   has_many :journal_roles, through: :journal
@@ -106,7 +104,7 @@ class Paper < ActiveRecord::Base
 
   def initialize_defaults
     unless persisted?
-      self.task_manager ||= build_task_manager
+      self.phases = Phase.default_phases
     end
   end
 end

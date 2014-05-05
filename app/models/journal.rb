@@ -13,20 +13,20 @@ class Journal < ActiveRecord::Base
                       "StandardTasks::AuthorsTask"]
 
   has_many :papers, inverse_of: :journal
-  has_many :journal_roles
+  has_many :journal_roles, inverse_of: :journal
   has_many :users, through: :journal_roles
   has_many :manuscript_manager_templates
 
   def admins
-    users.where('journal_roles.admin' => true)
+    users.merge(JournalRole.admins)
   end
 
   def editors
-    users.where('journal_roles.editor' => true)
+    users.merge(JournalRole.editors)
   end
 
   def reviewers
-    users.where('journal_roles.reviewer' => true)
+    users.merge(JournalRole.reviewers)
   end
 
   def logo_url

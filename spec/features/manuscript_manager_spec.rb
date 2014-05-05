@@ -1,28 +1,8 @@
 require 'spec_helper'
 
 feature "Manuscript Manager", js: true do
-  let(:admin) do
-    User.create! username: 'zoey',
-      first_name: 'Zoey',
-      last_name: 'Bob',
-      email: 'hi@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'PLOS',
-      admin: true
-  end
-
-  let(:author) do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich',
-      admin: true
-  end
-
+  let(:admin) { FactoryGirl.create :user, admin: true }
+  let(:author) { FactoryGirl.create :user, admin: true }
   let(:paper) { admin.papers.create! short_title: 'foobar', title: 'Foo bar', submitted: true, journal: Journal.create! }
 
   before do
@@ -93,40 +73,24 @@ feature "Manuscript Manager", js: true do
     sleep 0.4
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Admin' do |overlay|
-      expect(overlay.assignee).not_to eq 'Zoey Bob'
-      overlay.assignee = 'Zoey Bob'
+      expect(overlay.assignee).not_to eq admin.full_name
+      overlay.assignee = admin.full_name
       overlay.mark_as_complete
       expect(overlay).to be_completed
-      expect(overlay.assignee).to eq 'Zoey Bob'
+      expect(overlay.assignee).to eq admin.full_name
     end
 
     task_manager_page.reload
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Admin' do |overlay|
       expect(overlay).to be_completed
-      expect(overlay.assignee).to eq 'Zoey Bob'
+      expect(overlay.assignee).to eq admin.full_name
     end
 
     needs_editor_phase = TaskManagerPage.new.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay).to_not be_completed
-      expect(overlay.assignee).to eq 'ZOEY BOB'
+      expect(overlay.assignee).to eq admin.full_name.upcase
     end
-  end
-
-  scenario 'Renaming a phase' do
-    # TODO: Make this work
-    # dashboard_page = DashboardPage.visit
-    # paper_page = dashboard_page.view_submitted_paper 'foobar'
-    # task_manager_page = paper_page.navigate_to_task_manager
-
-    # sleep 0.4
-    # phase = task_manager_page.phase 'Assign Editor'
-    # execute_script("return $('.column h2')[0].classList.add('changedColumn')")
-    # title = phase.all('.column h2').first
-    # title.set "Some Other Title"
-    # binding.pry
-    # execute_script("return $('.changedColumn').blur()")
-    # page.reload
   end
 end

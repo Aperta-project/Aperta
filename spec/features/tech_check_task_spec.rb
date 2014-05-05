@@ -1,17 +1,8 @@
 require 'spec_helper'
 
 feature "Tech Check", js: true do
-  let(:user) do
-    User.create! username: 'zoey',
-      first_name: 'Zoey',
-      last_name: 'Bob',
-      email: 'hi@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'PLOS'
-  end
-
-  let(:journal) { Journal.create! }
+  let(:user) { FactoryGirl.create :user }
+  let(:journal) { FactoryGirl.create :journal }
 
   before do
     paper = Paper.create! short_title: 'foobar',

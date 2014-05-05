@@ -102,8 +102,7 @@ describe Task do
         last_name: 'einstein',
         email: 'einstein@example.org',
         password: 'password',
-        password_confirmation: 'password',
-        affiliation: 'universität zürich'
+        password_confirmation: 'password'
     end
 
     let!(:journal_role) { JournalRole.create! user: user, journal: paper.journal, admin: true }

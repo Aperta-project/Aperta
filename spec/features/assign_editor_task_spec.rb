@@ -1,37 +1,15 @@
 require 'spec_helper'
 
 feature "Assigns Editor", js: true do
-
-  let(:admin) do
-    user = User.create! username: 'zoey',
-      first_name: 'Zoey',
-      last_name: 'Bob',
-      email: 'hi@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'PLOS',
-      admin: true
-    JournalRole.create!(journal: journal, admin: true, user: user)
-
-    user
-  end
-
-  let(:journal) { Journal.create! }
-
-  let!(:editor) do
-    user = User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
-    JournalRole.create!(journal: journal, editor: true, user: user)
-
-    user
-  end
+  let(:admin) { FactoryGirl.create :user, admin: true }
+  let!(:editor) { FactoryGirl.create :user }
+  let(:journal) { FactoryGirl.create :journal }
 
   before do
+    [editor, admin].each do |u|
+      u.journal_roles.create! journal: journal, editor: true
+    end
+
     Paper.create! short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,

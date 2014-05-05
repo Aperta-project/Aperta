@@ -1,7 +1,8 @@
 FactoryGirl.define do
-  factory :journal do
+  factory :affiliation do
+    user
     sequence :name do |n|
-      "Journal #{n}"
+      "Affiliation #{n}"
     end
   end
 end

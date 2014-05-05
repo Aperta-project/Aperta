@@ -2,9 +2,13 @@ require 'spec_helper'
 
 describe TaskAdminAssigneeUpdater do
 
-    let(:task)  { PaperAdminTask.create(phase: phase) }
+    let(:task)  { PaperAdminTask.create!(phase: phase) }
     let(:paper) { Paper.create!(short_title: "something", journal: Journal.create!) }
     let(:phase) { paper.task_manager.phases.first }
+    let(:jim) { User.create! email: 'jim@plos.org',
+        password: 'abcd1234',
+        password_confirmation: 'abcd1234',
+        username: 'jimplos' }
     let(:sally) { User.create! email: 'sally@plos.org',
         password: 'abcd1234',
         password_confirmation: 'abcd1234',

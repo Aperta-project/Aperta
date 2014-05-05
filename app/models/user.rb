@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :affiliations, inverse_of: :user
   has_many :papers, inverse_of: :user
   has_many :journal_roles, inverse_of: :user
   has_many :paper_roles, inverse_of: :user

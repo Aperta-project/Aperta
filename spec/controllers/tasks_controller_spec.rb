@@ -7,16 +7,7 @@ class FakeTask < Task
 end
 
 describe TasksController do
-  let :user do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich',
-      admin: true
-  end
+  let(:user) { FactoryGirl.create :user, admin: true }
 
   before do
     sign_in user

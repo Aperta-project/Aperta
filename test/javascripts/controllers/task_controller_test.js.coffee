@@ -17,8 +17,6 @@ moduleFor 'controller:task', 'TaskController',
     Ember.run =>
       @subject().set('model', @task)
 
-
-
 test '#isEditable: true when the task is not a metadata task', ->
   Ember.run =>
     @task.set('isMetadataTask', false)
@@ -41,4 +39,3 @@ test '#isEditable: false when the paper is submitted and the task is a metadata 
     @litePaper.set('submitted', true)
     @task.set('isMetadataTask', true)
     equal @subject().get('isEditable'), false
-

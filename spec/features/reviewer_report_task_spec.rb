@@ -1,29 +1,15 @@
 require 'spec_helper'
 
-
 feature "Reviewer Report", js: true do
-  let(:journal) { Journal.create! }
+  let(:journal) { FactoryGirl.create :journal }
+  let(:author) { FactoryGirl.create :user }
 
   let!(:reviewer) do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universitat Zurich',
+    FactoryGirl.create :user,
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 
   before do
-    author = User.create! username: 'brain',
-      first_name: 'Brain',
-      last_name: 'Mouse',
-      email: 'brain@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Animaniacs'
-
     paper = Paper.create! short_title: 'foo-bar',
       title: 'Foo Bar',
       submitted: true,
@@ -43,7 +29,6 @@ feature "Reviewer Report", js: true do
     sleep(0.5)
 
     paper_show_page.view_card 'Reviewer Report' do |overlay|
-      # overlay.report = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue massa sit amet lacus volutpat pharetra. Quisque lobortis eu risus sit amet'
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end
@@ -52,7 +37,6 @@ feature "Reviewer Report", js: true do
 
     paper_show_page.view_card 'Reviewer Report' do |overlay|
       expect(overlay).to be_completed
-      # expect(overlay.report).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue massa sit amet lacus volutpat pharetra. Quisque lobortis eu risus sit amet')
     end
   end
 end

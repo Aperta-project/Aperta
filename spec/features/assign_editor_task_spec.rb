@@ -1,21 +1,15 @@
 require 'spec_helper'
 
 feature "Assigns Editor", js: true do
-
-  let(:admin) do
-    FactoryGirl.create :user,
-      admin: true,
-      journal_roles: [JournalRole.create!(journal: journal, admin: true)]
-  end
-
+  let(:admin) { FactoryGirl.create :user, admin: true }
+  let!(:editor) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal }
 
-  let!(:editor) do
-    FactoryGirl.create :user,
-      journal_roles: [JournalRole.create!(journal: journal, editor: true)]
-  end
-
   before do
+    [editor, admin].each do |u|
+      u.journal_roles.create! journal: journal, editor: true
+    end
+
     Paper.create! short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,

@@ -1,30 +1,9 @@
 require 'spec_helper'
 
 feature "Displaying task", js: true do
-  let(:admin) do
-    User.create! username: 'zoey',
-      first_name: 'Zoey',
-      last_name: 'Bob',
-      email: 'hi@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'PLOS',
-      admin: true
-  end
-
-
-  let(:author) do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
-  end
-
+  let(:admin) { FactoryGirl.create :user, admin: true }
+  let(:author) { FactoryGirl.create :user }
   let!(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create!, user: author }
-
   let(:task) { Task.where(title: "Assign Admin").first }
 
   before do

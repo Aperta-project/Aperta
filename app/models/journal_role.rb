@@ -1,8 +1,8 @@
 class JournalRole < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :journal
+  include Roleable
 
-  def self.admin
-    where(admin: true)
-  end
+  belongs_to :user, inverse_of: :journal_roles
+  belongs_to :journal, inverse_of: :journal_roles
+
+  validates :user, :journal, presence: true
 end

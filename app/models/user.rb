@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
   has_many :affiliations, inverse_of: :user
   has_many :papers, inverse_of: :user
-  has_many :journal_roles
-  has_many :paper_roles
+  has_many :journal_roles, inverse_of: :user
+  has_many :paper_roles, inverse_of: :user
   has_many :tasks, foreign_key: 'assignee_id'
   has_one :user_settings
 

@@ -108,10 +108,14 @@ class RegisterDecisionTask < Task
     journal.editors
   end
 
+  def paper_editor
+    paper.editors.first
+  end
+
   private
 
   def template_data
-    editor_name = paper.editor.present? ? paper.editor.full_name : "***\nEditor not assigned\n***"
+    editor_name = paper_editor.present? ? paper_editor.full_name : "***\nEditor not assigned\n***"
     { author_last_name: paper.user.last_name,
       manuscript_title: paper.title,
       journal_name: paper.journal.name,

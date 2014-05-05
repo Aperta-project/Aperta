@@ -155,11 +155,11 @@ describe Paper do
     let(:user) { User.create! username: 'bob', email: 'bobdylan@example.com', password: 'password', password_confirmation: 'password' }
     context "when the paper has an editor" do
       before { PaperRole.create! user: user, paper: paper, editor: true }
-      specify { expect(paper.editor).to eq(user) }
+      specify { expect(paper.editors).to include(user) }
     end
 
     context "when the paper doesn't have an editor" do
-      specify { expect(paper.editor).to be_nil }
+      specify { expect(paper.editors).to be_empty }
     end
   end
 
@@ -169,7 +169,7 @@ describe Paper do
     let(:paper) { FactoryGirl.build(:paper, user: user) }
 
     before do
-      allow(paper).to receive(:admin_assignees).and_return([admin_user])
+      allow(paper).to receive(:available_admins).and_return([admin_user])
     end
 
     it "should contain both users and assignees" do

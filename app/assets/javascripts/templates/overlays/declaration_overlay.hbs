@@ -6,10 +6,14 @@
     {{#each survey in surveys}}
       <div class="declaration">
         <label>{{survey.question}}</label>
-        {{view ETahi.TextArea value=survey.answer
-          model=survey
-          class='form-control'
-          rows='6'}}
+        {{#if isEditable}}
+          {{view ETahi.TextArea value=survey.answer
+            model=survey
+            class='form-control'
+            rows='6'}}
+        {{else}}
+          <div>{{survey.answer}}</div>
+        {{/if}}
       </div>
     {{/each}}
     </fieldset>

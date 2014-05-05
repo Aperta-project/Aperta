@@ -18,17 +18,23 @@ moduleFor 'controller:task', 'TaskController',
       @subject().set('model', @task)
 
 
+
 test '#isEditable: true when the task is not a metadata task', ->
-  equal @subject().get('isEditable'), true
+  Ember.run =>
+    @task.set('isMetadataTask', false)
+    equal @subject().get('isEditable'), true
 
 test '#isEditable: always true when the user is an admin', ->
-  ETahi.currentUser.user.admin = true
-  equal @subject().get('isEditable'), true
+  Ember.run =>
+    ETahi.currentUser.user.admin = true
+    @task.set('isMetadataTask', true)
+    @litePaper.set('submitted', true)
+    equal @subject().get('isEditable'), true
 
 test '#isEditable: true when paper is not submitted and task is a metadata task', ->
-  @litePaper.set('submitted', false)
-
-  equal @subject().get('isEditable'), true
+  Ember.run =>
+    @litePaper.set('submitted', false)
+    equal @subject().get('isEditable'), true
 
 test '#isEditable: false when the paper is submitted and the task is a metadata task', ->
   Ember.run =>

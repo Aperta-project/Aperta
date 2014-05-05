@@ -42,7 +42,7 @@ class PageFragment
     if block_given?
       block.call overlay
       overlay.dismiss
-      expect(session).to have_no_css('.overlay.in')
+      expect(session.has_css?('.overlay.in')).to eq false
     else
       overlay
     end

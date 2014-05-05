@@ -20,6 +20,7 @@
       </div>
       <div id="profile-affiliations">
         <h4 class="secondary"><small>Affiliations:</small></h4>
+        {{type-ahead}}
         {{#each a in model.affiliations}}
           <div>{{a.name}}</div>
           <div>{{a.startDate}} - {{a.displayEndDate}}</div>

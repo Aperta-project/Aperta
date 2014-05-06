@@ -20,7 +20,13 @@
       </div>
       <div id="profile-affiliations">
         <h4 class="secondary"><small>Affiliations:</small></h4>
-        {{type-ahead}}
+        <a class="btn btn-default btn-xs" {{action 'toggleAffiliationForm'}}>
+          <span class="glyphicon glyphicon-plus-sign"></span>
+          Add new
+        </a>
+        <div {{bind-attr class=":affiliations-form hideAffiliationForm:hide"}}>
+          {{type-ahead sourceList=institutions}}
+        </div>
         {{#each a in model.affiliations}}
           <div>{{a.name}}</div>
           <div>{{a.startDate}} - {{a.displayEndDate}}</div>

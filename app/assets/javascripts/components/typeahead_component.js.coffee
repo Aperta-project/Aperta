@@ -1,6 +1,7 @@
 ETahi.TypeAheadComponent = Ember.Component.extend
   tagName: 'input'
   attributeBindings: ['typeahead:data-provide']
+  sourceList: []
 
   didInsertElement: ->
     @.$().typeahead({
@@ -8,9 +9,9 @@ ETahi.TypeAheadComponent = Ember.Component.extend
       highlight: true,
       minLength: 1
     }, {
-      name: 'states',
+      name: 'schools',
       displayKey: 'value',
-      source: @substringMatcher(@usStates)
+      source: @substringMatcher(@get('sourceList'))
     })
 
   substringMatcher: (strs)->
@@ -23,10 +24,4 @@ ETahi.TypeAheadComponent = Ember.Component.extend
             matches.push({ value: str })
 
       cb(matches)
-
-  usStates: [
-    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-    'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-    'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-  ]
 

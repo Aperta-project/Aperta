@@ -1,5 +1,7 @@
 module StandardTasks
   class FigureTask < Task
+    include MetadataTask
+
     title "Upload Figures"
     role "author"
 

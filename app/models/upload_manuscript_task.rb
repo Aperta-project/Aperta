@@ -1,4 +1,6 @@
 class UploadManuscriptTask < Task
+  include MetadataTask
+
   title "Upload Manuscript"
   role "author"
 

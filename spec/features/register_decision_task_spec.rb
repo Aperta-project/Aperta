@@ -2,16 +2,10 @@ require 'spec_helper'
 
 feature "Register Decision", js: true do
 
-  let(:journal) { Journal.create! }
+  let(:journal) { FactoryGirl.create :journal }
 
   let!(:editor) do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universitat Zurich',
+    FactoryGirl.create :user,
       journal_roles: [JournalRole.new(journal: journal, editor: true)]
   end
 

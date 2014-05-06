@@ -1,39 +1,20 @@
 require 'spec_helper'
 
 feature "Assigns Reviewer", js: true do
+  let(:journal) { FactoryGirl.create :journal }
 
   let(:editor) do
-    User.create! username: 'zoey',
-      first_name: 'Zoey',
-      last_name: 'Bob',
-      email: 'hi@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'PLOS',
+    FactoryGirl.create :user,
       journal_roles: [JournalRole.new(journal: journal, editor: true)]
   end
 
-  let(:journal) { Journal.create! }
-
   let!(:albert) do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich',
+    FactoryGirl.create :user,
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 
   let!(:neil) do
-    User.create! username: 'neilsbohr',
-      first_name: 'Neils',
-      last_name: 'Bohr',
-      email: 'neil@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'University of Copenhagen',
+    FactoryGirl.create :user,
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 

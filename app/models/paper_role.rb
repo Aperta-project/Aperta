@@ -1,15 +1,15 @@
 class PaperRole < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :paper
+  include Roleable
+
+  belongs_to :user, inverse_of: :paper_roles
+  belongs_to :paper, inverse_of: :paper_roles
+
+  validates :paper, presence: true
 
   after_save :assign_tasks_to_editor, if: -> { user_id_changed? && editor? }
 
   def self.reviewers_for(paper)
-    where(paper_id: paper.id, reviewer: true)
-  end
-
-  def self.admins
-    where(admin: true)
+    reviewers.where(paper_id: paper.id)
   end
 
   protected

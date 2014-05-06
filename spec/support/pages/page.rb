@@ -18,6 +18,14 @@ class PageFragment
     end
   end
 
+  def class_names
+    @element[:class].split(' ')
+  end
+
+  def has_class_name?(name)
+    class_names.include?(name)
+  end
+
   def session
     if Capybara::Session === @element
       @element
@@ -37,6 +45,7 @@ class PageFragment
     if block_given?
       block.call overlay
       overlay.dismiss
+      expect(session).to have_no_css('.overlay.in')
     else
       overlay
     end

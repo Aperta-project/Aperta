@@ -3,6 +3,16 @@ ETahi.TaskController = Ember.ObjectController.extend
   onClose: 'closeOverlay'
   isLoading: false
 
+  isPaperSubmitted: Ember.computed.alias('litePaper.submitted')
+  isMetadata: Ember.computed.alias('isMetadataTask')
+  isMetadataAndSubmitted: Ember.computed.and('isPaperSubmitted', 'isMetadata')
+  isUserEditable: Ember.computed.not('isMetadataAndSubmitted')
+  isCurrentUserAdmin: (->
+    Tahi.currentUser.admin
+  ).property()
+
+  isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
+
   addSave: ( ->
     self = @
     @.saveModel = ( ->

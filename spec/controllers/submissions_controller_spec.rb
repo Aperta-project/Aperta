@@ -1,17 +1,7 @@
 require 'spec_helper'
 
 describe SubmissionsController do
-
-  let :user do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
-  end
-
+  let(:user) { FactoryGirl.create :user }
   let(:paper) { user.papers.create! short_title: 'paper-for-submission', journal: Journal.create! }
 
   before { sign_in user }

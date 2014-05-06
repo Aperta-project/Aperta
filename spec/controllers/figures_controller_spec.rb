@@ -1,19 +1,8 @@
 require 'spec_helper'
 
 describe FiguresController do
-  let :user do
-    User.create! username: 'albert',
-      first_name: 'Albert',
-      last_name: 'Einstein',
-      email: 'einstein@example.org',
-      password: 'password',
-      password_confirmation: 'password',
-      affiliation: 'Universität Zürich'
-  end
-
-  before do
-    sign_in user
-  end
+  let(:user) { FactoryGirl.create :user }
+  before { sign_in user }
 
   describe "destroying the figure" do
     let(:paper) { user.papers.create! short_title: 'Paper with attachment', journal: Journal.create! }

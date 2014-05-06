@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Profile Page", js: true do
-  let(:admin) { create :user }
+  let(:admin) { FactoryGirl.create :user, admin: true }
 
   before do
     sign_in_page = SignInPage.visit
@@ -13,7 +13,7 @@ feature "Profile Page", js: true do
     expect(profile_page.full_name).to eq admin.full_name
     expect(profile_page.username).to eq admin.username
     expect(profile_page.email).to eq admin.email
-    expect(profile_page.affiliations).to match_array [admin.affiliation]
+    expect(profile_page.affiliations).to match_array admin.affiliations.to_a
 
     find('a.dropdown-toggle').click
     click_on 'Sign out'

@@ -1,0 +1,13 @@
+<div class="figure-thumbnail-row">
+  {{#if figure.src}}
+    <img class="figure-thumbnail-image" {{action "togglePreview"}} src={{unbound figure.src}} alt={{unbound figure.alt}}>
+  {{else}}
+    <div class="figure-thumbnail-image placeholder">
+      <span class="glyphicon glyphicon-file"></span>
+    </div>
+  {{/if}}
+  <div class="figure-thumbnail-text-content">
+    <h2>{{figure.title}}</h2>
+    <div>{{figure.caption}}</div>
+  </div>
+</div>

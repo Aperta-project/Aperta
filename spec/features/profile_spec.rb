@@ -41,4 +41,13 @@ feature "Profile Page", js: true do
     expect(profile_page.image).to_not eq('about_turtles.docx')
     expect(profile_page.image).to eq('profile-no-image.png')
   end
+
+  scenario "user can add an affiliation" do
+    profile_page = ProfilePage.visit
+    profile_page.add_affiliate('Yoda University')
+    expect(profile_page.affiliations).to include(/Yoda/)
+
+    profile_page.reload
+    expect(profile_page.affiliations).to include(/Yoda/)
+  end
 end

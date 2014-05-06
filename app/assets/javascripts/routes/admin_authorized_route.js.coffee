@@ -9,4 +9,4 @@ ETahi.AdminAuthorizedRoute = Ember.Route.extend
   events:
     error: (response, transition) ->
       switch response.status
-        when 401 then @handleUnauthorizedRequest(transition)
+        when 403 then @handleUnauthorizedRequest(transition)

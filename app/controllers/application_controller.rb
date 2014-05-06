@@ -16,10 +16,12 @@ class ApplicationController < ActionController::Base
   private
 
   def verify_admin!
+    return if current_user.admin?
+
     if request.xhr? # Ember request
-      head :unauthorized
+      head :forbidden
     else
-      redirect_to(root_path, alert: "Permission denied") unless current_user.admin?
+      redirect_to(root_path, alert: "Permission denied")
     end
   end
 

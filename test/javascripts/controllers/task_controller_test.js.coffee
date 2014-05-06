@@ -9,17 +9,15 @@ moduleFor 'controller:task', 'TaskController',
 
     @currentUser = Ember.Object.create
       admin: false
+
     currentUser = @currentUser
-
-    ETahi.ApplicationController.reopen
-      getCurrentUser: -> currentUser
-
     @task = Ember.Object.create
       isMetadataTask: true
       litePaper: @litePaper
 
     Ember.run =>
       @subject().set('model', @task)
+      @subject().set('controllers.application.currentUser', currentUser)
 
 test '#isEditable: true when the task is not a metadata task', ->
   Ember.run =>

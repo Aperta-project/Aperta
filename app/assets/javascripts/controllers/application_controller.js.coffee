@@ -10,6 +10,9 @@ ETahi.ApplicationController = Ember.Controller.extend
   isAdmin: Ember.computed.alias 'currentUser.admin'
   username: Ember.computed.alias 'currentUser.username'
 
+  # this will get overridden by inject except in testing cases.
+  getCurrentUser: -> null
+
   connectToES:(->
     return unless @get('currentUser')
     params =

@@ -12,7 +12,7 @@ class TasksController < ApplicationController
              current_user.tasks.where(id: params[:id]).first
            end
 
-    if task && task.authorize_update!(params, current_user)
+    if task && task.authorize_update?(params, current_user)
       unmunge_empty_arrays!(task)
       tp = task_params(task)
 

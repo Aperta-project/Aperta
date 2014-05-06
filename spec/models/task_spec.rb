@@ -47,10 +47,10 @@ describe Task do
     end
   end
 
-  describe "authorize_update!" do
+  describe "authorize_update?" do
     let(:paper) { double('paper') }
     let(:user)  { FactoryGirl.build(:user, admin: admin) }
-    let(:authorized) { task.authorize_update!(nil, user) }
+    let(:authorized) { task.authorize_update?(nil, user) }
     before do
       allow(task).to receive(:paper).and_return paper
       allow(paper).to receive(:submitted?).and_return paper_submitted

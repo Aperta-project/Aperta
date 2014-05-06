@@ -3,12 +3,7 @@ class InstitutionsController < ApplicationController
   def index
     parser = InstitutionHashParser.new institution_hash
     parser.parse_names!
-    querier = InstitutionListQuerier.new(parser.names)
-    results = querier.list
-    if params[:query]
-      results = querier.filter params[:query]
-    end
-    render json: results
+    render json: parser.names
   end
 
   private

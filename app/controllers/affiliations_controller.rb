@@ -14,7 +14,6 @@ class AffiliationsController < ApplicationController
     end
   end
 
-
   private
 
   def institution_hash

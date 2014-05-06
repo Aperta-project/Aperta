@@ -10,7 +10,7 @@ describe AffiliationsController do
   end
 
   it "creates a new affiliate" do
-    post :create, { affiliation: { name: "new" } }
+    post :create, affiliation: { name: "new" }
     expect(response.status).to eq(200)
   end
 end

@@ -1,7 +1,7 @@
 class InstitutionHashParser
   attr_reader :hash, :names
 
-  def initialize hash
+  def initialize(hash)
     @hash = hash
   end
 

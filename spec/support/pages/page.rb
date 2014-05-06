@@ -43,7 +43,6 @@ class PageFragment
                     rescue NameError
                       CardOverlay
                     end
-    # synchronize_content! card_name
     overlay = overlay_class.new session.find(".overlay")
     if block_given?
       block.call overlay

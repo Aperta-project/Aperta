@@ -44,7 +44,7 @@ group :doc do
 end
 
 group :development do
-  # gem 'rack-mini-profiler' #NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
+  # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
   gem 'bullet'
   gem 'license_finder'
   gem 'railroady'
@@ -70,7 +70,7 @@ group :test do
   gem 'factory_girl_rails'
   gem "codeclimate-test-reporter", require: nil
   gem 'vcr'
-  gem 'webmock'
+  gem 'typhoeus'
 
   # For testing event streaming.
   gem 'sinatra'

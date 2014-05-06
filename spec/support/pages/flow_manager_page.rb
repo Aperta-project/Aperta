@@ -7,16 +7,18 @@ class FlowManagerPage < Page
   end
 
   def column title
+    synchronize_content!(title)
     el = all('.column').detect { |c| c.find('h2').text == title }
     Column.new el if el
   end
 
   def columns title
-    el = all('.column').select { |c| c.find('h2').text == title }
+    synchronize_content!(title)
+    all('.column').select { |c| c.find('h2').text == title }
   end
 
   def has_column? title
-    !!column(title)
+    page.has_content?(title)
   end
 
   class CardFragment < PageFragment

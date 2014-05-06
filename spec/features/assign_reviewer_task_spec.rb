@@ -1,20 +1,20 @@
 require 'spec_helper'
 
 feature "Assigns Reviewer", js: true do
-  let(:journal) { FactoryGirl.create :journal }
+  let(:journal) { create :journal }
 
   let(:editor) do
-    FactoryGirl.create :user,
+    create :user,
       journal_roles: [JournalRole.new(journal: journal, editor: true)]
   end
 
   let!(:albert) do
-    FactoryGirl.create :user,
+    create :user,
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 
   let!(:neil) do
-    FactoryGirl.create :user,
+    create :user,
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 

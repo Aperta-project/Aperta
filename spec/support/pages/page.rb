@@ -1,3 +1,4 @@
+class ContentNotSynchronized < StandardError; end
 #
 # Page Fragment can be any element in the page.
 #
@@ -35,17 +36,18 @@ class PageFragment
   end
 
   def view_card card_name, overlay_class=nil, &block
-    find('.card-content', text: card_name).click
+    synchronize_content! card_name
+    session.all('.card-content', text: card_name).first.click
     overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize
                     rescue NameError
                       CardOverlay
                     end
-    overlay = overlay_class.new session.find(".overlay", visible: false)
+    # synchronize_content! card_name
+    overlay = overlay_class.new session.find(".overlay")
     if block_given?
       block.call overlay
       overlay.dismiss
-      expect(session).to have_no_css('.overlay.in')
     else
       overlay
     end
@@ -65,6 +67,16 @@ class PageFragment
 
   def wait_for_turbolinks
     sleep 0.3
+  end
+
+  private
+
+  def synchronize_content! content
+    raise ContentNotSynchronized unless session.has_content? content
+  end
+
+  def synchronize_no_content! content
+    raise ContentNotSynchronized unless session.has_no_content? content
   end
 end
 

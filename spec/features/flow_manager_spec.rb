@@ -2,17 +2,17 @@ require 'spec_helper'
 
 feature "Flow Manager", js: true do
   let(:admin) do
-    FactoryGirl.create :user, :admin, first_name: "Admin"
+    create :user, :admin, first_name: "Admin"
   end
 
   let(:author) do
-    FactoryGirl.create :user, :admin, first_name: "Author"
+    create :user, :admin, first_name: "Author"
   end
 
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { create(:journal) }
 
   let!(:paper1) do
-    FactoryGirl.create(:paper,
+    create(:paper,
       short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
@@ -21,7 +21,7 @@ feature "Flow Manager", js: true do
   end
 
   let!(:paper2) do
-    FactoryGirl.create(:paper,
+    create(:paper,
       short_title: 'bazqux',
       title: 'Baz Qux',
       submitted: true,

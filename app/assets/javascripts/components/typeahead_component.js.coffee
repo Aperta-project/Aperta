@@ -1,6 +1,7 @@
-ETahi.TypeAheadComponent = Ember.Component.extend
+ETahi.TypeAheadComponent = Ember.TextField.extend
   tagName: 'input'
-  attributeBindings: ['typeahead:data-provide']
+  attributeBindings: ['typeahead:data-provide', 'placeholder']
+  classNames: ['form-control']
   sourceList: []
 
   didInsertElement: ->

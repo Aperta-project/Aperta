@@ -12,6 +12,8 @@ ETahi.Router.map ()->
   @route('signup', {path: '/users/sign_up'})
   @route('profile', {path: '/profile'})
 
+  @resource('affiliation')
+
   @resource 'journal', path: '/admin/journals/:journal_id', ->
     @resource 'manuscript_manager_template', path: '/manuscript_manager_templates', ->
       @route('new')

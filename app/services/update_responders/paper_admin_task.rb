@@ -6,7 +6,10 @@ module UpdateResponders
     end
 
     def content
-      ActiveModel::ArraySerializer.new(@task.tasks_for_admin, root: :tasks)
+      json = ActiveModel::ArraySerializer.new(@task.tasks_for_admin, root: :tasks).as_json
+      json[:tasks].unshift @task.active_model_serializer.new(@task).as_json[:task]
+      json[:tasks] = json[:tasks].uniq { |task| task[:id] }
+      json
     end
   end
 end

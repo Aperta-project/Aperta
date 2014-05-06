@@ -2,7 +2,7 @@ class CardOverlay < Page
   path :paper_task
 
   def dismiss
-    all('a').detect { |a| a.text == 'CLOSE' }.click
+    session.all('.overlay .overlay-close-button').first.click
   end
 
   def assignee

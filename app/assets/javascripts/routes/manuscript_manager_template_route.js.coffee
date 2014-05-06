@@ -1,4 +1,4 @@
-ETahi.ManuscriptManagerTemplateRoute = Ember.Route.extend
+ETahi.ManuscriptManagerTemplateRoute = ETahi.AdminAuthorizedRoute.extend
   model: (params) ->
     journal = @modelFor('journal')
     types = new Ember.RSVP.Promise((resolve, reject) -> $.getJSON("/tasks/task_types", resolve).fail(reject))
@@ -13,4 +13,3 @@ ETahi.ManuscriptManagerTemplateRoute = Ember.Route.extend
   setupController: (controller, model) ->
     controller.set('model', model)
     controller.set('taskTypes', @get('taskTypes'))
-

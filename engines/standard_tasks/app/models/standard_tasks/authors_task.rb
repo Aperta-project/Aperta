@@ -1,5 +1,7 @@
 module StandardTasks
   class AuthorsTask < Task
+    include MetadataTask
+
     title "Add Authors"
     role "author"
 

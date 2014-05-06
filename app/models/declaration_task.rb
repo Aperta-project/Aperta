@@ -1,4 +1,6 @@
 class DeclarationTask < Task
+  include MetadataTask
+
   title "Enter Declarations"
   role "author"
 

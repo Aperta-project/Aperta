@@ -11,7 +11,7 @@ class MessageTask < Task
 
   validates :participants, length: {minimum: 1}
 
-  def authorize_update!(params, user)
+  def authorize_update?(params, user)
     p = PaperPolicy.new paper, user
     p.paper ? true : false
   end

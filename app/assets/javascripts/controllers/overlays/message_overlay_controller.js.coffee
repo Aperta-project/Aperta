@@ -37,7 +37,7 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
       @set('showAllComments', true)
 
     postComment: ->
-      commenter = @get('currentUser')
+      commenter = @getCurrentUser()
       commentFields =
         commenter: commenter
         messageTask: @get('model')

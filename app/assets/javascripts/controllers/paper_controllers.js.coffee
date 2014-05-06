@@ -1,6 +1,9 @@
 ETahi.PaperController = Ember.ObjectController.extend
   needs: ['application']
 
+  currentUser: Ember.computed.alias 'controllers.application.currentUser'
+  isAdmin: Ember.computed.alias 'currentUser.admin'
+
   downloadLink: ( ->
     "/papers/#{@get('id')}/download"
   ).property('id')
@@ -8,7 +11,7 @@ ETahi.PaperController = Ember.ObjectController.extend
   authorTasks: Ember.computed.filterBy('tasks', 'role', 'author')
 
   assignedTasks: (->
-    assignedTasks = @get('tasks').filterBy 'assignee', @get('controllers.application.currentUser')
+    assignedTasks = @get('tasks').filterBy 'assignee', @get('currentUser')
     authorTasks   = @get('authorTasks')
 
     assignedTasks.filter (t)-> !authorTasks.contains(t)

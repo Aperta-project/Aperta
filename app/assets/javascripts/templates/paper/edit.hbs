@@ -12,7 +12,7 @@
     <ul>
       <li class="control-bar-item">{{directLinkTo downloadLink "Download ePub" "control-bar-link"}}</li>
       <li class="control-bar-item">{{directLinkTo downloadLink "Download PDF" "control-bar-link" "pdf"}}</li>
-      {{#if Tahi.currentUser.admin}}
+      {{#if isAdmin}}
         <li class="control-bar-item">{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
       {{/if}}
     </ul>

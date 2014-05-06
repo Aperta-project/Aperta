@@ -1,6 +1,6 @@
 ETahi.AdminAuthorizedRoute = Ember.Route.extend
   beforeModel: (transition) ->
-    @handleUnauthorizedRequest(transition) unless Tahi.currentUser.admin
+    @handleUnauthorizedRequest(transition) unless @getCurrentUser().get('admin')
 
   handleUnauthorizedRequest: (transition) ->
     transition.abort()

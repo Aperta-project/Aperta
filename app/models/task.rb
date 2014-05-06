@@ -1,14 +1,7 @@
 class Task < ActiveRecord::Base
   include EventStreamNotifier
 
-  def self.metadata_types
-    @metadata_types ||= ["DeclarationTask", "StandardTasks::FigureTask", "StandardTasks::AuthorsTask", "UploadManuscriptTask"]
-  end
-
-  def self.register_metadata_type(name)
-    @metadata_types = @metadata_types | Array(name)
-    @metadata_types
-  end
+  cattr_accessor :metadata_types
 
   default_scope { order("completed ASC") }
 

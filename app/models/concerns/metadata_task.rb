@@ -10,6 +10,9 @@ module MetadataTask
   end
 
   included do
-    Task.register_metadata_type(self.name)
+    Task.metadata_types ||= []
+    unless Task.metadata_types.include?(name)
+      Task.metadata_types << name
+    end
   end
 end

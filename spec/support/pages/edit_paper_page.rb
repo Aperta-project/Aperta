@@ -9,7 +9,7 @@ class DeclarationFragment < PageFragment
     id = find('textarea')[:id]
     fill_in id, with: value
     find('label').click # blur the textarea
-    wait_for_pjax
+    synchronize_content! "DISCLOSURE"
   end
 end
 
@@ -88,7 +88,6 @@ HERE
   def paper_type=(value)
     select = find('#paper_paper_type')
     select.select value
-    wait_for_pjax
   end
 
   def save

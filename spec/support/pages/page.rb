@@ -38,6 +38,7 @@ class PageFragment
   def view_card card_name, overlay_class=nil, &block
     synchronize_content! card_name
     session.all('.card-content', text: card_name).first.click
+
     overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize
                     rescue NameError
@@ -58,14 +59,6 @@ class PageFragment
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first").mousedown()!)
     find(".#{options[:class]}.chosen-container input[type=text]").set(item_text)
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
-  end
-
-  def wait_for_pjax
-    sleep 0.1
-  end
-
-  def wait_for_turbolinks
-    sleep 0.3
   end
 
   private

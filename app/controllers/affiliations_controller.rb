@@ -1,9 +1,8 @@
-class InstitutionsController < ApplicationController
-
+class AffiliationsController < ApplicationController
   def index
     parser = InstitutionHashParser.new institution_hash
     parser.parse_names!
-    render json: parser.names
+    render json: parser.names, root: :institutions
   end
 
   private

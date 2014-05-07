@@ -12,4 +12,6 @@ ETahi.ProfileController = Ember.ObjectController.extend
         affiliation.get('user.affiliations').pushObject(affiliation)
       @set('newAffiliation', {})
       @send('toggleAffiliationForm')
+      Ember.run.next @, ->
+        $('.datepicker').datepicker('update')
 

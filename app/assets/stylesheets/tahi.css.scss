@@ -161,3 +161,11 @@ textarea { resize: none; }
 .tt-input {
   width: 250px;
 }
+
+.datepicker-field {
+  width: 100px;
+  display: inline-block;
+  &.datepicker {
+    margin-right: 15px;
+  }
+}

@@ -27,6 +27,7 @@
 //= require ember-data
 //= require_self
 //= require e_tahi
+//= require bootstrap-datepicker
 //= require_tree .
 //= require standard_tasks/application
 

@@ -8,7 +8,7 @@ feature "Event streaming", js: true do
 
   before do
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author.email
+    sign_in_page.sign_in author
   end
 
   scenario "On the dashboard page" do

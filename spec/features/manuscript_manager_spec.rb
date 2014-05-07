@@ -12,7 +12,7 @@ feature "Manuscript Manager", js: true do
     page.driver.browser.manage.window.maximize
 
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin.email
+    sign_in_page.sign_in admin
   end
 
   describe "Adding phases" do

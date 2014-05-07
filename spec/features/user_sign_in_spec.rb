@@ -18,7 +18,7 @@ feature "Signing in", js: true do
   let!(:user) { create :user }
   scenario "User can sign in to & out of the site using their email address" do
     sign_in_page = SignInPage.visit
-    dashboard_page = sign_in_page.sign_in user.email
+    dashboard_page = sign_in_page.sign_in user
     expect(page.current_path).to eq(root_path)
     dashboard_page.sign_out
     expect(page.current_path).to eq new_user_session_path
@@ -26,7 +26,7 @@ feature "Signing in", js: true do
 
   scenario "User can sign in to & out of the site using their username" do
     sign_in_page = SignInPage.visit
-    dashboard_page = sign_in_page.sign_in user.username
+    dashboard_page = sign_in_page.sign_in user, user.username
     expect(page.current_path).to eq(root_path)
     dashboard_page.sign_out
     expect(page.current_path).to eq new_user_session_path

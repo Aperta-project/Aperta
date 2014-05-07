@@ -29,14 +29,13 @@ describe PaperFactory do
         paper_factory.apply_template
       }.to change { paper.tasks.count }.by(2)
 
-      expect(paper.tasks.first).to be_a(PaperAdminTask)
-      expect(paper.tasks.second).to be_a(DeclarationTask)
+      expect(paper.tasks.pluck(:type)).to match_array(['PaperAdminTask', 'DeclarationTask'])
     end
 
     it "sets assignee to tasks with role = author" do
       paper_factory.apply_template
-      expect(paper.tasks.first.assignee).to be_nil
-      expect(paper.tasks.second.assignee).to eq(user)
+      expect(paper.tasks.where(type: 'PaperAdminTask').first.assignee).to be_nil
+      expect(paper.tasks.where(type: 'DeclarationTask').first.assignee).to eq(user)
     end
   end
 

@@ -13,7 +13,7 @@ feature "Assigns Editor", js: true do
     [editor, admin].each do |u|
       u.journal_roles.create! journal: journal, editor: true
     end
-    SignInPage.visit.sign_in admin.email
+    SignInPage.visit.sign_in admin
   end
 
   scenario "Admin can assign an editor to a paper" do

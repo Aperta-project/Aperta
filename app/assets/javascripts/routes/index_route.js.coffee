@@ -1,9 +1,4 @@
 ETahi.IndexRoute = Ember.Route.extend
-  beforeModel: ->
-    store = @store
-    Ember.$.getJSON('/dashboard_info').then (data)->
-      store.pushPayload('dashboard', data)
-
   model: ->
     if cachedModel =  @controllerFor('application').get('cachedModel')
       @controllerFor('application').set('cachedModel' , null)

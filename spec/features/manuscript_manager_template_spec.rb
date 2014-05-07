@@ -6,7 +6,7 @@ feature "Manuscript Manager Templates", js: true do
 
   before do
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin.email
+    sign_in_page.sign_in admin
   end
 
   describe "Adding phases" do

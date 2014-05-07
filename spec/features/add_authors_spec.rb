@@ -7,7 +7,7 @@ feature "Add contributing authors", js: true do
 
   before do
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author.email
+    sign_in_page.sign_in author
   end
 
   scenario "Author specifies contributing authors" do

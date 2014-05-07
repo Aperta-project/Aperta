@@ -9,7 +9,7 @@ feature "Editing paper", js: true do
     make_user_paper_admin(author, paper)
 
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author.email
+    sign_in_page.sign_in author
   end
 
   scenario "Author edits paper and metadata cards" do

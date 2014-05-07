@@ -25,7 +25,7 @@ ETahi.ApplicationRoute = Ember.Route.extend
       controllerName = 'newCardOverlay'
       if taskType == 'MessageTask'
         controllerName = 'newMessageCardOverlay'
-        currentUser = @controllerFor('application').get('currentUser')
+        currentUser = @getCurrentUser()
         newTask.get('participants').pushObject(currentUser)
         newTask.get('comments').pushObject(@store.createRecord('comment', commenter: currentUser))
 

@@ -16,7 +16,7 @@ feature "Assigns Editor", js: true do
       journal: journal,
       user: admin
 
-    SignInPage.visit.sign_in admin.email
+    SignInPage.visit.sign_in admin
   end
 
   scenario "Admin can assign an editor to a paper" do

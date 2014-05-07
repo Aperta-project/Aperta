@@ -28,7 +28,7 @@ feature "Assigns Reviewer", js: true do
     paper_role = PaperRole.create! paper: paper, user: editor, editor: true
 
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in editor.email
+    sign_in_page.sign_in editor
   end
 
   scenario "Editor can assign a reviewer to a paper" do

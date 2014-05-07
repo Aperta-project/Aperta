@@ -18,7 +18,7 @@ feature "Register Decision", js: true do
 
     paper_role = PaperRole.create! user: editor, paper: paper, editor: true
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in editor.email
+    sign_in_page.sign_in editor
   end
 
   scenario "Editor registers a decision on the paper" do

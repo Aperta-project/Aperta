@@ -18,7 +18,7 @@ feature "Tech Check", js: true do
     task.update! assignee: user
 
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in user.email
+    sign_in_page.sign_in user
   end
 
   scenario "Journal Admin can complete the tech check card" do

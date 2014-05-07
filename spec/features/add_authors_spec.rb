@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 feature "Add contributing authors", js: true do
-  let(:author) { create :user }
-  let(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
+  let(:author) { FactoryGirl.create :user }
+  let(:journal) { FactoryGirl.create :journal, :with_default_template }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }
 
   before do
     sign_in_page = SignInPage.visit

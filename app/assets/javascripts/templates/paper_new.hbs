@@ -8,11 +8,18 @@
   <div class="form-group">
     <label for="paper-journal-name">Journal</label>
     {{view Ember.Select
-       content=model
+       content=journals
        value=journal
        id="paper-journal-name"
        optionValuePath="content"
        optionLabelPath="content.name"}}
+    <label for="paper-type">Paper Type</label>
+    {{view Ember.Select
+       contentBinding = 'journal.paperTypes'
+       valueBinding = 'paperType'
+       id="paper-type"
+       optionValuePath="content"
+       optionLabelPath="content"}}
   </div>
 
   <button type="submit" class="primary-button wide-button" {{action 'createNewPaper'}}>Create</button>

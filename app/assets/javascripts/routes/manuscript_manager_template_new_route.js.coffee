@@ -3,11 +3,8 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend
 
   model: (params) ->
     journal = @modelFor('journal')
-    paperTypes = journal.get('paperTypes')
     newTemplate = ETahi.ManuscriptManagerTemplate.create(
-      name: "New Template"
       journal_id: journal.id
-      paper_type: paperTypes.get('firstObject')
       template:
         phases: [
           name: "New Phase"

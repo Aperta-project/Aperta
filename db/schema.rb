@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140501201221) do
+ActiveRecord::Schema.define(version: 20140505181519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,7 +82,6 @@ ActiveRecord::Schema.define(version: 20140501201221) do
   end
 
   create_table "manuscript_manager_templates", force: true do |t|
-    t.string  "name"
     t.string  "paper_type"
     t.json    "template"
     t.integer "journal_id"
@@ -144,14 +143,14 @@ ActiveRecord::Schema.define(version: 20140501201221) do
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
   create_table "phases", force: true do |t|
-    t.integer  "task_manager_id", null: false
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
+    t.integer  "paper_id",   null: false
   end
 
-  add_index "phases", ["task_manager_id"], name: "index_phases_on_task_manager_id", using: :btree
+  add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
   create_table "rails_admin_histories", force: true do |t|
     t.text     "message"
@@ -171,14 +170,6 @@ ActiveRecord::Schema.define(version: 20140501201221) do
     t.text    "answer"
     t.integer "task_id"
   end
-
-  create_table "task_managers", force: true do |t|
-    t.integer  "paper_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "task_managers", ["paper_id"], name: "index_task_managers_on_paper_id", using: :btree
 
   create_table "tasks", force: true do |t|
     t.string   "title",                        null: false

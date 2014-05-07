@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe Figure do
-  let(:paper) {
-    Paper.create! short_title: 'Testing figures', journal: Journal.create!
-  }
+  let(:paper) { FactoryGirl.create :paper }
   let(:figure) {
     paper.figures.create! attachment: File.open('spec/fixtures/yeti.tiff')
   }

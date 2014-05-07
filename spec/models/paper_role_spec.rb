@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe PaperRole do
+  let(:paper) { FactoryGirl.create :paper, :with_tasks }
   describe "scopes" do
     describe "reviewers_for" do
-      let(:user) { build(:user) }
-      let(:paper) { Paper.create! short_title: "Hello", journal: Journal.create! }
+      let(:user) { FactoryGirl.build(:user) }
       it "returns reviewers for a given paper" do
         reviewer_paper_role = PaperRole.create!(reviewer: true, paper: paper, user: user)
         other_paper_role = PaperRole.create!(paper: paper, user: user)
-        
+
         expect(PaperRole.reviewers_for(paper)).to_not include other_paper_role
         expect(PaperRole.reviewers_for(paper)).to include reviewer_paper_role
       end
@@ -16,8 +16,7 @@ describe PaperRole do
   end
 
   describe "callbacks" do
-    let(:paper) { Paper.create! short_title: "Hello", journal: Journal.create! }
-    let(:default_task_attrs) { { title: 'A title', role: 'editor', phase: paper.task_manager.phases.first } }
+    let(:default_task_attrs) { { title: 'A title', role: 'editor', phase: paper.phases.first } }
 
     describe "after_save" do
       let(:bob) { User.create! email: 'bob@plos.org',

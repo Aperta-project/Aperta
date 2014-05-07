@@ -13,8 +13,14 @@ class ProfilePage < Page
     all('#profile-email h4').last.text
   end
 
+  def add_affiliate(name)
+    find('#profile-affiliations').find(".btn-affiliation").click
+    fill_in("Affiliation Name", with: name)
+    find_button("done").click
+  end
+
   def affiliations
-    all('#profile-affiliations h4').map(&:text)[1..-1]
+    find("#profile-affiliations").all('h4').map(&:text)[1..-1]
   end
 
   def attach_image(filename)

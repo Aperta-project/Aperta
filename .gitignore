@@ -18,7 +18,7 @@
 /public/uploads
 
 # Ignore SVG from Railsroady
-/doc/*svg
+doc/*.svg
 
 # Ignore OS X Desktop Services Store
 .DS_Store

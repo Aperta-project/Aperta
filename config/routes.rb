@@ -27,6 +27,8 @@ Tahi::Application.routes.draw do
     resources :users, only: [:show]
   end
 
+  resources :affiliations, only: [:index, :create]
+
   resources :manuscript_manager_templates
 
   resources :users, only: [:update, :show] do

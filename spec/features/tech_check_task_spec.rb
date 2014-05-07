@@ -4,16 +4,15 @@ feature "Tech Check", js: true do
   let(:user) { create :user }
   let(:journal) { create :journal }
 
-  before do
-    paper = Paper.create! short_title: 'foobar',
-      title: 'Foo bar',
-      submitted: true,
-      journal: journal,
-      user: user
+  let(:journal) { FactoryGirl.create(:journal, :with_default_template) }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_tasks, journal: journal, user: user, submitted: true)
+  end
 
+  before do
     make_user_journal_admin(user, paper)
 
-    phase = paper.task_manager.phases.where(name: 'Assign Editor').first
+    phase = paper.phases.where(name: 'Assign Editor').first
     task = phase.tasks.where(title: 'Tech Check').first
     task.update! assignee: user
 

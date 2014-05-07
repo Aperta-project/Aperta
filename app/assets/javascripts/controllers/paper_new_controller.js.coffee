@@ -1,15 +1,6 @@
-ETahi.PaperNewController = Ember.ArrayController.extend
-  shortTitle: null
-  journal: null
-
+ETahi.PaperNewController = Ember.ObjectController.extend
   actions:
     createNewPaper: ->
-      self = @
-      newPaper = @store.createRecord('paper', {
-        journal: @get('journal')
-        shortTitle: @get('shortTitle')
-      })
-
-      newPaper.save().then (paper) ->
-        self.set('shortTitle', null)
-        self.transitionToRoute('paper.edit', paper)
+      @get('model').save().then (paper) =>
+        @set('shortTitle', null)
+        @transitionToRoute('paper.edit', paper)

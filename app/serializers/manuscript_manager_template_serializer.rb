@@ -1,5 +1,5 @@
 class ManuscriptManagerTemplateSerializer < ActiveModel::Serializer
-  attributes :id, :name, :paper_type, :template
+  attributes :id, :paper_type, :template
   has_one :journal, embed: :ids
 
   def template

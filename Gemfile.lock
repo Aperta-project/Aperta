@@ -46,6 +46,7 @@ GEM
     acts_as_list (0.4.0)
       activerecord (>= 3.0)
     addressable (2.3.5)
+    american_date (1.1.0)
     arel (5.0.1.20140414130214)
     barber (0.4.2)
       ember-source
@@ -385,6 +386,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   acts_as_list
+  american_date
   bootstrap-sass
   bourbon
   bullet

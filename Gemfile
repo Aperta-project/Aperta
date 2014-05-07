@@ -35,6 +35,7 @@ gem 'pry-rails'
 gem 'pdfkit'
 gem 'mini_magick'
 gem 'timeliness'
+gem 'american_date'
 
 group :production, :staging do
   gem 'heroku-deflater'

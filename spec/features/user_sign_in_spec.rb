@@ -15,7 +15,7 @@ feature "Account creation", js: true do
 end
 
 feature "Signing in", js: true do
-  let!(:user) { FactoryGirl.create :user }
+  let!(:user) { create :user }
   scenario "User can sign in to & out of the site using their email address" do
     sign_in_page = SignInPage.visit
     dashboard_page = sign_in_page.sign_in user.email

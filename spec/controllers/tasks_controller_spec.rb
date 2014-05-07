@@ -7,7 +7,7 @@ class FakeTask < Task
 end
 
 describe TasksController do
-  let(:user) { FactoryGirl.create :user, admin: true }
+  let(:user) { create :user, admin: true }
 
   before do
     sign_in user

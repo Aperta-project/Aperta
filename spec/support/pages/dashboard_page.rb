@@ -21,24 +21,13 @@ class DashboardPage < Page
     end
   end
 
-  def all_submitted_papers
-    within("ul.all_submitted") do
-      page.all('li').map &:text
-    end
-  end
-
   def submitted_papers
     within(".dashboard-submitted-papers") do
       page.all('li').map &:text
     end
   end
 
-  def edit_submission short_title
-    within('.submissions') { click_link short_title }
-    EditPaperPage.new
-  end
-
-  def view_paper short_title
+  def view_submitted_paper short_title
     within('.dashboard-submitted-papers') { click_link short_title }
     EditPaperPage.new
   end
@@ -48,14 +37,8 @@ class DashboardPage < Page
     FlowManagerPage.new
   end
 
-  def view_submitted_paper short_title
-    within('.dashboard-submitted-papers') { click_link short_title }
-    EditPaperPage.new
-  end
-
   def visit_admin
     click_on "Admin"
-    wait_for_turbolinks
     AdminDashboardPage.new
   end
 end

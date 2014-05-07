@@ -1,20 +1,20 @@
 require 'spec_helper'
 
 feature "Assigns Reviewer", js: true do
-  let(:journal) { FactoryGirl.create :journal }
+  let(:journal) { create :journal }
 
   let(:editor) do
-    FactoryGirl.create :user,
+    create :user,
       journal_roles: [JournalRole.new(journal: journal, editor: true)]
   end
 
   let!(:albert) do
-    FactoryGirl.create :user,
+    create :user,
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 
   let!(:neil) do
-    FactoryGirl.create :user,
+    create :user,
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 
@@ -35,6 +35,8 @@ feature "Assigns Reviewer", js: true do
     dashboard_page = DashboardPage.visit
     reviewer_card = dashboard_page.view_card 'Assign Reviewers'
     paper_show_page = reviewer_card.view_paper
+
+    paper_show_page.reload
 
     paper_show_page.view_card 'Assign Reviewers' do |overlay|
       overlay.paper_reviewers = [albert.full_name, neil.full_name]

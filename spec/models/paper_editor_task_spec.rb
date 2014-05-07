@@ -8,7 +8,7 @@ describe PaperEditorTask do
   end
 
   describe "#paper_role" do
-    let(:user) { FactoryGirl.build(:user) }
+    let(:user) { build(:user) }
     let!(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
     let!(:paper_role) { PaperRole.create! paper: paper, editor: true, user: user }
     let!(:phase) { paper.task_manager.phases.first }

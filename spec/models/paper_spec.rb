@@ -164,9 +164,9 @@ describe Paper do
   end
 
   describe ".assignees" do
-    let(:user)  { FactoryGirl.build(:user) }
-    let(:admin_user)  { FactoryGirl.build(:user, :admin) }
-    let(:paper) { FactoryGirl.build(:paper, user: user) }
+    let(:user)  { build(:user) }
+    let(:admin_user)  { build(:user, :admin) }
+    let(:paper) { build(:paper, user: user) }
 
     before do
       allow(paper).to receive(:available_admins).and_return([admin_user])

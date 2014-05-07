@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 feature "Manuscript Manager", js: true do
-  let(:admin) { FactoryGirl.create :user, admin: true }
-  let(:author) { FactoryGirl.create :user, admin: true }
+  let(:admin) { create :user, admin: true }
+  let(:author) { create :user, admin: true }
   let(:paper) { admin.papers.create! short_title: 'foobar', title: 'Foo bar', submitted: true, journal: Journal.create! }
 
   before do
@@ -59,7 +59,7 @@ feature "Manuscript Manager", js: true do
   scenario 'Removing a task' do
     dashboard_page = DashboardPage.visit
     paper_page = dashboard_page.view_submitted_paper 'foobar'
-    task_manager_page = paper_page.navigate_to_task_manager
+    task_manager_page = paper_page.visit_task_manager
 
     phase = task_manager_page.phase 'Submission Data'
     expect { phase.remove_card('Upload Manuscript') }.to change { phase.card_count }.by(-1)
@@ -68,7 +68,7 @@ feature "Manuscript Manager", js: true do
   scenario "Admin can assign a paper to themselves" do
     dashboard_page = DashboardPage.visit
     paper_page = dashboard_page.view_submitted_paper 'foobar'
-    task_manager_page = paper_page.navigate_to_task_manager
+    task_manager_page = paper_page.visit_task_manager
 
     sleep 0.4
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
@@ -92,5 +92,21 @@ feature "Manuscript Manager", js: true do
       expect(overlay).to_not be_completed
       expect(overlay.assignee).to eq admin.full_name.upcase
     end
+  end
+
+  scenario 'Renaming a phase' do
+    # TODO: Make this work
+    # dashboard_page = DashboardPage.visit
+    # paper_page = dashboard_page.view_submitted_paper 'foobar'
+    # task_manager_page = paper_page.visit_task_manager
+
+    # sleep 0.4
+    # phase = task_manager_page.phase 'Assign Editor'
+    # execute_script("return $('.column h2')[0].classList.add('changedColumn')")
+    # title = phase.all('.column h2').first
+    # title.set "Some Other Title"
+    # binding.pry
+    # execute_script("return $('.changedColumn').blur()")
+    # page.reload
   end
 end

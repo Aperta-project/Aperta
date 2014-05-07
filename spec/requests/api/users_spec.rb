@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Api::UsersController do
   describe "GET 'show'" do
-    let(:user) { FactoryGirl.create :user }
+    let(:user) { create :user }
 
     it "returns a single user" do
       get api_user_path(user.id)

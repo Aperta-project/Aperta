@@ -11,8 +11,8 @@ describe PaperAdminTask do
     let(:task)  { PaperAdminTask.create(phase: phase, assignee: bob, admin_id: bob.id) }
     let(:paper) { Paper.create!(short_title: "something", journal: Journal.create!) }
     let(:phase) { paper.task_manager.phases.first }
-    let(:sally) { FactoryGirl.create :user }
-    let(:bob) { FactoryGirl.create :user }
+    let(:sally) { create :user }
+    let(:bob) { create :user }
 
     context "when paper admin is changed" do
       it "will update paper and tasks" do

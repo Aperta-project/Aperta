@@ -1,15 +1,13 @@
 class Journal < ActiveRecord::Base
   VALID_TASK_TYPES = ["ReviewerReportTask",
                       "PaperAdminTask",
-                      "MessageTask",
-                      "StandardTasks::TechCheckTask",
                       "UploadManuscriptTask",
                       "PaperEditorTask",
-                      "FigureTask",
                       "DeclarationTask",
-                      "Task",
                       "PaperReviewerTask",
                       "RegisterDecisionTask",
+                      "StandardTasks::TechCheckTask",
+                      "StandardTasks::FigureTask",
                       "StandardTasks::AuthorsTask"]
 
   has_many :papers, inverse_of: :journal
@@ -34,7 +32,11 @@ class Journal < ActiveRecord::Base
   end
 
   def paper_types
-    ["Research", "Presubmission"]
+    self.manuscript_manager_templates.pluck(:paper_type)
+  end
+
+  def mmt_for_paper_type(paper_type)
+    manuscript_manager_templates.where(paper_type: paper_type).first
   end
 
   mount_uploader :logo, LogoUploader

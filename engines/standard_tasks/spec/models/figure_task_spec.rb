@@ -8,9 +8,7 @@ describe StandardTasks::FigureTask do
   end
 
   describe "#figure_access_details" do
-    let(:paper) { 
-      Paper.create! title: "Foo bar", short_title: "Foo", journal: Journal.create!
-    }
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
 
     before :each do
       figures = [double(:figure, access_details: :hello)]
@@ -22,7 +20,7 @@ describe StandardTasks::FigureTask do
       StandardTasks::FigureTask.create! title: "Paper Admin",
         completed: true,
         role: 'admin',
-        phase: paper.task_manager.phases.first
+        phase: paper.phases.first
     end
 
     it "returns a JSON object of access details from figures" do

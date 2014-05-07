@@ -1,17 +1,16 @@
 require 'spec_helper'
 
 describe Api::PapersController do
-  let!(:paper1) { create(:paper,
+  let!(:paper1) { FactoryGirl.create(:paper, :with_tasks,
                                      short_title: "paper-2",
                                      title: "First paper",
-                                     paper_type: 'front_matter',
                                      authors: [{ first_name: 'Ryan',
                                                  last_name: 'Wold',
                                                  affiliation: 'Personal',
                                                  email: 'user@example.com' }]) }
 
   describe "GET 'index'" do
-    let!(:paper2) { create(:paper,
+    let!(:paper2) { FactoryGirl.create(:paper, :with_tasks,
                                        short_title: "paper-1",
                                        title: "Second paper") }
 
@@ -23,8 +22,8 @@ describe Api::PapersController do
           papers: [
             { id: paper1.id, title: "First paper",
               authors: [{ first_name: 'Ryan', last_name: 'Wold', affiliation: 'Personal', email: 'user@example.com' }],
-              paper_type: 'front_matter' },
-            { id: paper2.id, title: "Second paper", authors: [], paper_type: 'research' }
+              paper_type: paper1.paper_type },
+            { id: paper2.id, title: "Second paper", authors: [], paper_type: paper2.paper_type }
           ]
         }.with_indifferent_access
       )
@@ -38,7 +37,7 @@ describe Api::PapersController do
         expect(JSON.parse(response.body)).to eq(
           {
             papers: [
-              { id: paper2.id, title: "Second paper", authors: [], paper_type: 'research' }
+              { id: paper2.id, title: "Second paper", authors: [], paper_type: paper2.paper_type }
             ]
           }.with_indifferent_access
         )
@@ -55,7 +54,7 @@ describe Api::PapersController do
             papers: [
               { id: paper1.id, title: "First paper",
                 authors: [{ first_name: 'Ryan', last_name: 'Wold', affiliation: 'Personal', email: 'user@example.com' }],
-                paper_type: 'front_matter' }
+                paper_type: paper1.paper_type }
             ]
           }.with_indifferent_access
         )
@@ -74,7 +73,7 @@ describe Api::PapersController do
           papers: [
             { id: paper1.id, title: "First paper",
               authors: [{ first_name: 'Ryan', last_name: 'Wold', affiliation: 'Personal', email: 'user@example.com' }],
-              paper_type: 'front_matter' }
+              paper_type: paper1.paper_type }
           ]
         }.with_indifferent_access
       )

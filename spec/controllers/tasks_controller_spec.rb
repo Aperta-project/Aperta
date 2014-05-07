@@ -9,18 +9,20 @@ end
 describe TasksController do
   let(:user) { create :user, admin: true }
 
+  let!(:paper) do
+    FactoryGirl.create(:paper, :with_tasks, user: user)
+  end
+
   before do
     sign_in user
     allow(EventStream).to receive(:post_event)
   end
 
   describe "POST 'create'" do
-    let!(:paper) { Paper.create! short_title: 'some-paper', journal: Journal.create!, user: user }
-
     subject(:do_request) do
       post :create, { format: 'json', paper_id: paper.to_param, task: { assignee_id: '1',
                                                         type: 'Task',
-                                                        phase_id: paper.task_manager.phases.last.id,
+                                                        phase_id: paper.phases.last.id,
                                                         title: 'Verify Signatures',
                                                         body: 'Seriously, do it!' } }
     end
@@ -33,8 +35,7 @@ describe TasksController do
   end
 
   describe "PATCH 'update'" do
-    let(:paper) { Paper.create! short_title: 'paper-yet-to-be-updated', journal: Journal.create!, user: user }
-    let(:task) { Task.create! title: "sample task", role: "sample role", phase: paper.task_manager.phases.first }
+    let(:task) { Task.create! title: "sample task", role: "sample role", phase: paper.phases.first }
 
     subject(:do_request) do
       patch :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }
@@ -87,14 +88,15 @@ describe TasksController do
   end
 
   describe "GET 'show'" do
-    let!(:paper) { Paper.create! short_title: "abcd", journal: Journal.create!, user: user }
-    let(:paper_admin_task) { Task.where(title: "Assign Admin").first }
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks, user: user) }
+    let(:task) { paper.tasks.first }
 
-    let(:format) { nil }
+    subject(:do_request) { get :show, { id: task.id, format: format } }
 
-    it_behaves_like "when the user is not signed in"
-
-    subject(:do_request) { get :show, { id: paper_admin_task.id, format: format } }
+    context "html requests" do
+      let(:format) { nil }
+      it_behaves_like "when the user is not signed in"
+    end
 
     context "json requests" do
       let(:format) { :json }
@@ -102,7 +104,8 @@ describe TasksController do
       it "calls the Task subclass's appropriate serializer when rendering JSON" do
         do_request
         data_attributes = JSON.parse response.body
-        expect(data_attributes.keys).to match_array(PaperAdminTaskSerializer.new(paper_admin_task).as_json.stringify_keys.keys)
+        serializer = task.active_model_serializer.new(task)
+        expect(data_attributes.keys).to match_array(serializer.as_json.stringify_keys.keys)
       end
     end
   end
@@ -116,7 +119,6 @@ describe TasksController do
     describe "POST 'create'" do
       # For now a user has to be an admin to create a new message task
       let(:super_admin) { true }
-      let(:paper) { FactoryGirl.create :paper, user: user }
       let(:msg_subject) { "A Subject" }
       subject(:do_request) do
         post :create, format: 'json',

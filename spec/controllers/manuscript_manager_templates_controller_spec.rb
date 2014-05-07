@@ -19,7 +19,7 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe 'POST create' do
-    let(:new_params) { {name: 'New name', paper_type: 'new type', template: { "phases" => [] }} }
+    let(:new_params) { {paper_type: 'new type', template: { "phases" => [] }} }
     subject(:do_request) do
       post :create, format: 'json', journal_id: journal.id, manuscript_manager_template: new_params
     end
@@ -59,7 +59,7 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe "PUT update" do
-    let!(:mmt) { create :manuscript_manager_template, journal: journal }
+    let!(:mmt) { FactoryGirl.create :manuscript_manager_template, journal: journal }
     let(:new_params) { {name: 'New name', paper_type: 'new type', template: {}} }
 
     subject(:do_request) do
@@ -74,11 +74,11 @@ describe ManuscriptManagerTemplatesController do
 
     it "updates the model" do
       do_request
-      expect(ManuscriptManagerTemplate.last.name).to eq(new_params[:name])
+      expect(ManuscriptManagerTemplate.last.paper_type).to eq(new_params[:paper_type])
     end
 
     context "with invalid params" do
-      let(:new_params) { {name: "NCC1701", paper_type: nil, template: {}} }
+      let(:new_params) { {paper_type: nil, template: {}} }
       it_behaves_like "a controller rendering an invalid model"
     end
   end

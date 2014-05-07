@@ -1,18 +1,12 @@
 require 'spec_helper'
 
 describe ManuscriptManagerTemplate do
-  let(:name) { nil }
   let(:paper_type) { nil }
   let(:template_json) { {} }
-  let(:template_params) { {name: name, paper_type: paper_type, template: template_json} }
+  let(:template_params) { { paper_type: paper_type, template: template_json} }
   let (:new_template) { ManuscriptManagerTemplate.new template_params }
 
   describe "validations" do
-    it 'must have a name' do
-      expect(new_template).to_not be_valid
-      expect(new_template).to have(1).errors_on(:name)
-    end
-
     it 'must have a paper type' do
       expect(new_template).to_not be_valid
       expect(new_template).to have(1).errors_on(:paper_type)

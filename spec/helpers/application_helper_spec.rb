@@ -27,13 +27,14 @@ describe ApplicationHelper do
   end
 
   describe "#card" do
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_tasks)
+    end
+
     let(:task) do
-      paper = Paper.create! short_title: "foo",
-        journal: Journal.create!,
-        title: "foo"
       Task.create! title: 'Foo task',
         role: 'some role',
-        phase: paper.task_manager.phases.first
+        phase: paper.phases.first
     end
 
     subject(:link) do

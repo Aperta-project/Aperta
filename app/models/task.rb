@@ -13,8 +13,7 @@ class Task < ActiveRecord::Base
   scope :assigned_to, ->(user) { where(assignee: user) }
   scope :unassigned, -> { where(assignee: nil) }
 
-  has_one :task_manager, through: :phase
-  has_one :paper, through: :task_manager
+  has_one :paper, through: :phase
   has_one :journal, through: :paper
   has_many :journal_roles, through: :journal
 

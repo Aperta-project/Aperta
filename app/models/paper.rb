@@ -1,10 +1,4 @@
 class Paper < ActiveRecord::Base
-  PAPER_TYPES = %w(research front_matter)
-
-  after_initialize :initialize_defaults
-
-  has_one :task_manager, inverse_of: :paper
-
   belongs_to :user, inverse_of: :papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
@@ -14,19 +8,17 @@ class Paper < ActiveRecord::Base
   has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user
   has_many :available_users, through: :journal_roles, class_name: "User", source: :user
 
-  has_many :phases, -> { order 'phases.position ASC' }, through: :task_manager
+  has_many :phases, -> { order 'phases.position ASC' }
   has_many :tasks, through: :phases
   has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
   has_many :journal_roles, through: :journal
 
   serialize :authors, Array
 
-  validates :paper_type, inclusion: { in: PAPER_TYPES }
+  validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
   validates :journal, presence: true
   validate :metadata_tasks_completed?, if: :submitting?
-
-  after_create :assign_user_to_author_tasks
 
   def self.submitted
     where(submitted: true)
@@ -98,20 +90,4 @@ class Paper < ActiveRecord::Base
     authors.push user.slice(*%w(first_name last_name email))
   end
 
-  private
-
-  def assign_user_to_author_tasks
-    phase_ids = task_manager.phases.pluck(:id)
-
-    Task.where(phase_id: phase_ids, role: 'author').each do |task|
-      task.update assignee: user
-    end
-  end
-
-  def initialize_defaults
-    unless persisted?
-      self.paper_type = 'research' if self.paper_type.blank?
-      self.task_manager ||= build_task_manager
-    end
-  end
 end

@@ -39,7 +39,6 @@ test "#init sets the journalId", ->
 test "#templateJSON serializes the template's state.", ->
   testData = {
     id: 1,
-    name: 'A name',
     paper_type: 'A type'
     template: phases: [ {name: 'First Phase', task_types: ['ATask', 'AnotherTask']}]
   }

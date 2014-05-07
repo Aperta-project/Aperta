@@ -33,7 +33,7 @@ class ManuscriptManagerTemplatesController < ApplicationController
   private
 
   def template_params
-    tp = params.require(:manuscript_manager_template).permit([:name, :paper_type, template: {phases: [:name, task_types: []]}])
+    tp = params.require(:manuscript_manager_template).permit([:paper_type, template: {phases: [:name, task_types: []]}])
     tp[:template] = {} unless tp[:template]
     tp
   end

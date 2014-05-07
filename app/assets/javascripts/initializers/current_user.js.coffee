@@ -11,8 +11,8 @@ ETahi.initializer
         container.register('foo:current', ->
           @store.getById('user', currentUserId)
         , instantiate: false)
-        application.inject('controller', 'getCurrentUser', 'foo:current')
-        application.inject('route', 'getCurrentUser', 'foo:current')
+        application.inject('controller', 'getCurrentUser', 'user:current')
+        application.inject('route', 'getCurrentUser', 'user:current')
         ETahi.advanceReadiness()
       , (error) -> null
       )

@@ -34,6 +34,7 @@ gem "active_model_serializers"
 gem 'pry-rails'
 gem 'pdfkit'
 gem 'mini_magick'
+gem 'timeliness'
 
 group :production, :staging do
   gem 'heroku-deflater'

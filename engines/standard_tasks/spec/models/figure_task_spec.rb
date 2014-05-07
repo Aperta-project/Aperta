@@ -8,9 +8,7 @@ describe StandardTasks::FigureTask do
   end
 
   describe "#figure_access_details" do
-    let(:paper) { 
-      Paper.create! title: "Foo bar", short_title: "Foo", journal: Journal.create!
-    }
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
 
     before :each do
       figures = [double(:figure, access_details: :hello)]

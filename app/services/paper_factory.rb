@@ -41,6 +41,7 @@ class PaperFactory
     begin
       task = task_klass.constantize.new(phase: phase)
     rescue NameError => e
+      Rails.logger.error "Task #{task_klass} does not exist. ManuscriptManagerTemplate will need to be updated"
     end
 
     if task.role == 'author'

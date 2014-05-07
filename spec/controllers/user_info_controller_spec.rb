@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UserInfoController do
   render_views
-  let(:user) { FactoryGirl.create :user, admin: false }
+  let(:user) { create :user, admin: false }
   before { sign_in user }
 
   describe "GET 'dashboard'" do

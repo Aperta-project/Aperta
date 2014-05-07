@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 feature "Assigns Editor", js: true do
-  let(:admin) { FactoryGirl.create :user, admin: true }
-  let!(:editor) { FactoryGirl.create :user }
-  let(:journal) { FactoryGirl.create :journal }
+  let(:admin) { create :user, admin: true }
+  let!(:editor) { create :user }
+  let(:journal) { create :journal }
 
   before do
     [editor, admin].each do |u|

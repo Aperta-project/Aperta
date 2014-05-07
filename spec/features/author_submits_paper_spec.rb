@@ -5,8 +5,8 @@ feature "Paper Submission" do
   Warden.test_mode!
 
   scenario "Author creates a submission", js: true do
-    journal = FactoryGirl.create :journal
-    author = FactoryGirl.create :user
+    journal = create :journal
+    author = create :user
 
     login_as(author, scope: :user)
 

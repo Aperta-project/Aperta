@@ -93,7 +93,7 @@ feature "Flow Manager", js: true do
   context "PaperAdminTask column placements" do
 
     let(:unassociated_paper) do
-      FactoryGirl.create(:paper,
+      create(:paper,
         short_title: 'unassociated',
         title: 'unassociated',
         submitted: true,
@@ -101,7 +101,7 @@ feature "Flow Manager", js: true do
     end
 
     let(:unassigned_paper) do
-      FactoryGirl.create(:paper,
+      create(:paper,
         short_title: 'unassigned',
         title: 'unassigned',
         submitted: true,

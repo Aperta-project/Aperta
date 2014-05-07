@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 feature "Tahi administration", js: true do
-  let(:admin) { FactoryGirl.create :user, admin: true }
-  let!(:user) { FactoryGirl.create :user }
-  let!(:journal) { FactoryGirl.create :journal }
-  let!(:journal2) { FactoryGirl.create :journal }
+  let(:admin) { create :user, admin: true }
+  let!(:user) { create :user }
+  let!(:journal) { create :journal }
+  let!(:journal2) { create :journal }
 
   before { SignInPage.visit.sign_in admin.email }
 

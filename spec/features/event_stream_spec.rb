@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Event streaming", js: true do
-  let!(:author) { FactoryGirl.create :user, :admin }
+  let!(:author) { create :user, :admin }
   let!(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
   let(:upload_task) { author.papers.first.tasks_for_type(UploadManuscriptTask).first }
 
@@ -74,7 +74,7 @@ feature "Event streaming", js: true do
     end
 
     scenario "adding new participants" do
-      @mt.participants << FactoryGirl.create(:user)
+      @mt.participants << create(:user)
       @mt.save
       expect(all('.user-thumbnail').count).to eq(2)
     end

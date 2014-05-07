@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FiguresController do
-  let(:user) { FactoryGirl.create :user }
+  let(:user) { create :user }
   before { sign_in user }
 
   describe "destroying the figure" do

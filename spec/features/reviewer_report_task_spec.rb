@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 feature "Reviewer Report", js: true do
-  let(:journal) { FactoryGirl.create :journal }
-  let(:author) { FactoryGirl.create :user }
+  let(:journal) { create :journal }
+  let(:author) { create :user }
 
   let!(:reviewer) do
-    FactoryGirl.create :user,
+    create :user,
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 

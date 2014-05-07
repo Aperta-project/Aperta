@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe SurveysController do
-  let(:user) { FactoryGirl.create :user }
+  let(:user) { create :user }
   before { sign_in user }
 
-  let(:survey) { FactoryGirl.create(:survey, question: "Who's the best?", answer: "PLOS")}
+  let(:survey) { create(:survey, question: "Who's the best?", answer: "PLOS")}
 
   describe 'PATCH update' do
     subject(:do_request) do

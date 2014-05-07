@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Profile Page", js: true do
-  let(:admin) { FactoryGirl.create :user, admin: true }
+  let(:admin) { create :user, admin: true }
 
   before do
     sign_in_page = SignInPage.visit

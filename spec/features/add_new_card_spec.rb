@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 feature 'Add a new card', js: true do
-  let(:journal) { FactoryGirl.create :journal }
-  let(:admin) { FactoryGirl.create :user, admin: true }
+  let(:journal) { create :journal }
+  let(:admin) { create :user, admin: true }
 
   let!(:albert) do
-    FactoryGirl.create :user,
+    create :user,
       journal_roles: [JournalRole.new(journal: journal, admin: true)]
   end
 

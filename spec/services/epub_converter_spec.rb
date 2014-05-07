@@ -6,7 +6,7 @@ describe EpubConverter do
     "<h2 class=\"subtitle\">And this is my subtitle about how turtles are awesome</h2><p>Turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles.</p><p><a name=\"_GoBack\"></a>The end.</p>"
   end
   let(:paper) do
-    FactoryGirl.create :paper, body: paper_body, short_title: paper_title, user: FactoryGirl.create(:user)
+    create :paper, body: paper_body, short_title: paper_title, user: create(:user)
   end
 
   describe '#generate_epub' do
@@ -18,7 +18,7 @@ describe EpubConverter do
 
     context 'empty paper body' do
       let(:paper) do
-        FactoryGirl.create :paper, body: nil, short_title: 'Paper with no body', user: FactoryGirl.create(:user)
+        create :paper, body: nil, short_title: 'Paper with no body', user: create(:user)
       end
 
       it 'returns paper body with default text' do

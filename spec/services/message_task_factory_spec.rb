@@ -4,8 +4,8 @@ describe TaskFactory::MessageTaskFactory do
 
   describe "#build" do
     context "an existing paper and a user" do
-      let(:user) { FactoryGirl.create :user }
-      let(:paper) { FactoryGirl.create :paper }
+      let(:user) { create :user }
+      let(:paper) { create :paper }
       let(:phase) { paper.phases.first }
 
       let(:title) { "A subject." }

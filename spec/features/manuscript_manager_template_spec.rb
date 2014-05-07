@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 feature "Manuscript Manager Templates", js: true do
-  let(:admin) { FactoryGirl.create :user, :admin }
-  let(:journal) { FactoryGirl.create :journal }
+  let(:admin) { create :user, :admin }
+  let(:journal) { create :journal }
 
   before do
     sign_in_page = SignInPage.visit

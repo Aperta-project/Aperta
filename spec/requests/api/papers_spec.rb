@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Api::PapersController do
-  let!(:paper1) { FactoryGirl.create(:paper,
+  let!(:paper1) { create(:paper,
                                      short_title: "paper-2",
                                      title: "First paper",
                                      paper_type: 'front_matter',
@@ -11,7 +11,7 @@ describe Api::PapersController do
                                                  email: 'user@example.com' }]) }
 
   describe "GET 'index'" do
-    let!(:paper2) { FactoryGirl.create(:paper,
+    let!(:paper2) { create(:paper,
                                        short_title: "paper-1",
                                        title: "Second paper") }
 

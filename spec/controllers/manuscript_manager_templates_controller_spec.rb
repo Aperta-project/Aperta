@@ -9,9 +9,9 @@ describe ManuscriptManagerTemplatesController do
     end
   end
 
-  let(:admin) { FactoryGirl.create :user, :admin }
-  let(:journal) { FactoryGirl.create :journal }
-  let(:mmt) { FactoryGirl.create :manuscript_manager_template, journal: journal }
+  let(:admin) { create :user, :admin }
+  let(:journal) { create :journal }
+  let(:mmt) { create :manuscript_manager_template, journal: journal }
 
   before do
     JournalRole.create!(journal: journal, user: admin)
@@ -36,7 +36,7 @@ describe ManuscriptManagerTemplatesController do
 
   describe "GET index" do
     subject(:do_request) { get :index, {format: 'json', journal_id: journal.id} }
-    let!(:mmt) { FactoryGirl.create :manuscript_manager_template, journal: journal }
+    let!(:mmt) { create :manuscript_manager_template, journal: journal }
 
     it "returns the json list of templates for a given journal" do
       do_request
@@ -47,7 +47,7 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe "GET show" do
-    let!(:mmt) { FactoryGirl.create :manuscript_manager_template, journal: journal }
+    let!(:mmt) { create :manuscript_manager_template, journal: journal }
     subject(:do_request) { get :show, {format: 'json', id: mmt.id, journal_id: journal.id} }
 
     it "renders the given template as json" do
@@ -59,7 +59,7 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe "PUT update" do
-    let!(:mmt) { FactoryGirl.create :manuscript_manager_template, journal: journal }
+    let!(:mmt) { create :manuscript_manager_template, journal: journal }
     let(:new_params) { {name: 'New name', paper_type: 'new type', template: {}} }
 
     subject(:do_request) do

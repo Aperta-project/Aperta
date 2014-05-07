@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PaperPolicy do
   describe "#paper" do
     let(:user) { author }
-    let(:author) { FactoryGirl.create :user }
+    let(:author) { create :user }
     let(:paper) { author.papers.create! short_title: 'On Policies', journal: Journal.create! }
     subject(:policy) { PaperPolicy.new(paper.id, user) }
 
@@ -12,7 +12,7 @@ describe PaperPolicy do
     end
 
     context "when the user is not the author of the paper" do
-      let(:user) { FactoryGirl.create :user }
+      let(:user) { create :user }
       specify { expect(policy.paper).to be_nil }
 
       context "when the user is an admin" do

@@ -71,7 +71,7 @@ describe User do
     context "before_create" do
 
       it "initializes with user_settings" do
-        user = FactoryGirl.create :user
+        user = create :user
         expect(user.user_settings).to_not be_nil
       end
     end

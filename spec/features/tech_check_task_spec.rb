@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 feature "Tech Check", js: true do
-  let(:user) { FactoryGirl.create :user }
-  let(:journal) { FactoryGirl.create :journal }
+  let(:user) { create :user }
+  let(:journal) { create :journal }
 
   before do
     paper = Paper.create! short_title: 'foobar',

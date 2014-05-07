@@ -3,13 +3,13 @@ require 'spec_helper'
 describe CommentsController do
   render_views
   let(:phase) { task_manager.phases.first }
-  let(:paper) { FactoryGirl.create(:paper, user: paper_user) }
+  let(:paper) { create(:paper, user: paper_user) }
   let(:task_manager) { paper.task_manager }
 
-  let(:user) { FactoryGirl.create(:user) }
-  let(:other_user) { FactoryGirl.create(:user) }
+  let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
 
-  let(:message_task) { FactoryGirl.create(:message_task, phase: phase, participants: [paper_user]) }
+  let(:message_task) { create(:message_task, phase: phase, participants: [paper_user]) }
   before { sign_in user }
 
   describe 'POST create' do

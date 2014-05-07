@@ -1,3 +1,7 @@
+class ContentNotSynchronized < StandardError; end
+#
+# Page Fragment can be any element in the page.
+#
 class PageFragment
   include RSpec::Matchers
 
@@ -32,17 +36,18 @@ class PageFragment
   end
 
   def view_card card_name, overlay_class=nil, &block
-    find('.card-content', text: card_name).click
+    synchronize_content! card_name
+    session.all('.card-content', text: card_name).first.click
+
     overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize
                     rescue NameError
                       CardOverlay
                     end
-    overlay = overlay_class.new session.find(".overlay", visible: false)
+    overlay = overlay_class.new session.find(".overlay")
     if block_given?
       block.call overlay
       overlay.dismiss
-      expect(session).to have_no_css('.overlay.in')
     else
       overlay
     end
@@ -56,15 +61,20 @@ class PageFragment
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
   end
 
-  def wait_for_pjax
-    sleep 0.1
+  private
+
+  def synchronize_content! content
+    raise ContentNotSynchronized unless session.has_content? content
   end
 
-  def wait_for_turbolinks
-    sleep 0.3
+  def synchronize_no_content! content
+    raise ContentNotSynchronized unless session.has_no_content? content
   end
 end
 
+#
+# Page expects a path and asserts against it. Uses Rails routing helpers to accomplish this.
+#
 class Page < PageFragment
   include Capybara::DSL
 
@@ -89,12 +99,10 @@ class Page < PageFragment
 
   def initialize element = nil
     super element
-    #expect(current_path).to match self.class._path_regex unless self.class._path_regex.nil?
   end
 
   def reload
     visit page.current_path
-    wait_for_turbolinks
   end
 
   def notice

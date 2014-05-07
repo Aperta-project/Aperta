@@ -6,7 +6,7 @@ feature "Submitting a paper", js: true do
     sign_in_page.sign_in author.email
   end
 
-  let(:author) { FactoryGirl.create :user }
+  let(:author) { create :user }
 
   let :paper do
     author.papers.create! short_title: 'foo bar',
@@ -29,7 +29,7 @@ feature "Submitting a paper", js: true do
     expect(submit_paper_page).to have_paper_declarations
     dashboard_page = submit_paper_page.submit
     expect(dashboard_page.submitted_papers).to include "foo bar"
-    paper_page = dashboard_page.view_paper "foo bar"
+    paper_page = dashboard_page.view_submitted_paper "foo bar"
     expect(paper_page.title).to eq paper.title
   end
 end

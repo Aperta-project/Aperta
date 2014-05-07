@@ -1,4 +1,26 @@
 class FlowManagerPage < Page
+  path :flow_manager
+
+  def add_column title
+    find('.add-flow-column-button').click
+    find('.overlay a', text: title).click
+  end
+
+  def column title
+    synchronize_content!(title)
+    el = all('.column').detect { |c| c.find('h2').text == title }
+    Column.new el if el
+  end
+
+  def columns title
+    synchronize_content!(title)
+    all('.column').select { |c| c.find('h2').text == title }
+  end
+
+  def has_column? title
+    page.has_content?(title)
+  end
+
   class CardFragment < PageFragment
     def title
       text
@@ -46,26 +68,4 @@ class FlowManagerPage < Page
       find('.remove-column').click
     end
   end
-
-  def add_column title
-    find('.add-flow-column-button').click
-    find('.overlay a', text: title).click
-  end
-
-  def column title
-    wait_for_turbolinks
-    el = all('.column').detect { |c| c.find('h2').text == title }
-    Column.new el if el
-  end
-
-  def columns title
-    wait_for_turbolinks
-    el = all('.column').select { |c| c.find('h2').text == title }
-  end
-
-  def has_column? title
-    !!column(title)
-  end
-
-  path :flow_manager
 end

@@ -4,9 +4,9 @@ describe PhasesController do
 
   let(:phase_name) { 'Verification' }
   let(:new_position) { 0 }
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { create(:paper) }
   let(:task_manager) { paper.task_manager }
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { create(:user) }
 
   before { sign_in user }
 

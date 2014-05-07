@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 feature 'Message Cards', js: true do
-  let(:admin) { FactoryGirl.create :user, admin: true }
-  let(:journal) { FactoryGirl.create :journal }
+  let(:admin) { create :user, admin: true }
+  let(:journal) { create :journal }
 
   let!(:albert) do
-    FactoryGirl.create :user,
+    create :user,
       journal_roles: [JournalRole.new(journal: journal, admin: true)]
   end
 
@@ -47,9 +47,9 @@ feature 'Message Cards', js: true do
 
   describe "commenting on an existing message" do
     let(:phase) { paper.phases.first }
-    let(:initial_comment) { FactoryGirl.create :comment, commenter: commenter }
+    let(:initial_comment) { create :comment, commenter: commenter }
     let!(:message) do
-      FactoryGirl.create :message_task, comments: [initial_comment], phase: phase, participants: participants
+      create :message_task, comments: [initial_comment], phase: phase, participants: participants
     end
 
     context "the user is already a participant" do
@@ -99,10 +99,10 @@ feature 'Message Cards', js: true do
     let(:participants) { [admin] }
     let(:phase) { paper.phases.first }
     let(:initial_comments) do
-      comment_count.times.map { FactoryGirl.create :comment, commenter: commenter }
+      comment_count.times.map { create :comment, commenter: commenter }
     end
     let!(:message) do
-      FactoryGirl.create :message_task, comments: initial_comments, phase: phase, participants: participants
+      create :message_task, comments: initial_comments, phase: phase, participants: participants
     end
     let(:task_manager_page) { TaskManagerPage.visit paper }
     context "the message has less than or equal to 5 comments" do

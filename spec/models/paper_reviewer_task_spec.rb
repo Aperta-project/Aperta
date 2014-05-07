@@ -10,8 +10,8 @@ describe PaperReviewerTask do
   let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
   let(:phase) { paper.task_manager.phases.first }
 
-  let(:albert) { FactoryGirl.create :user, :admin }
-  let(:neil) { FactoryGirl.create :user }
+  let(:albert) { create :user, :admin }
+  let(:neil) { create :user }
 
   describe "#reviewer_ids=" do
     let(:task) { PaperReviewerTask.create!(phase: phase) }
@@ -46,8 +46,8 @@ describe PaperReviewerTask do
   describe "#reviewer_ids" do
     let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
     let(:task) { PaperReviewerTask.create! phase: paper.task_manager.phases.first }
-    let (:reviewer1) { FactoryGirl.create :user }
-    let (:reviewer2) { FactoryGirl.create :user }
+    let (:reviewer1) { create :user }
+    let (:reviewer2) { create :user }
 
     before do
       PaperRole.create! paper: paper, reviewer: true, user: reviewer1

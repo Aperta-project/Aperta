@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Add contributing authors", js: true do
-  let(:author) { FactoryGirl.create :user }
+  let(:author) { create :user }
   let(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
 
   before do

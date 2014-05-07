@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 feature "Assigns Editor", js: true do
-  let(:admin) { FactoryGirl.create :user, admin: true }
-  let!(:editor) { FactoryGirl.create :user }
-  let(:journal) { FactoryGirl.create :journal }
+  let(:admin) { create :user, admin: true }
+  let!(:editor) { create :user }
+  let(:journal) { create :journal }
 
   before do
     [editor, admin].each do |u|
@@ -22,7 +22,7 @@ feature "Assigns Editor", js: true do
   scenario "Admin can assign an editor to a paper" do
     dashboard_page = DashboardPage.visit
     paper_page = dashboard_page.view_submitted_paper 'foobar'
-    task_manager_page = paper_page.navigate_to_task_manager
+    task_manager_page = paper_page.visit_task_manager
 
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|

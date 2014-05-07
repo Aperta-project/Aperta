@@ -3,6 +3,7 @@ class CardOverlay < Page
 
   def dismiss
     session.all('.overlay .overlay-close-button').first.click
+    synchronize_no_content!("Close")
   end
 
   def assignee
@@ -31,11 +32,7 @@ class CardOverlay < Page
   end
 
   def view_paper
-    old_position = session.evaluate_script "$('header a').css('position')"
-    session.execute_script "$('header a').css('position', 'relative')"
-    find('header h2 a').click
-    session.execute_script "$('header a').css('position', '#{old_position}')"
-    wait_for_turbolinks
+    find('a.overlay-paper-link').click
     PaperPage.new
   end
 

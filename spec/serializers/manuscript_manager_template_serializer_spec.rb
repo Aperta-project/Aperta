@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ManuscriptManagerTemplateSerializer do
   describe '#template' do
-    let(:mmt) { FactoryGirl.create(:manuscript_manager_template, template: {
+    let(:mmt) { create(:manuscript_manager_template, template: {
       phases: [{name: "Only Phase"}]
     }) }
     let(:serializer) { ManuscriptManagerTemplateSerializer.new(mmt) }

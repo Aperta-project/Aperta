@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby "2.1.1"
 
-gem 'rails', '4.1.0'
+gem 'rails', '4.1.1'
 gem 'unicorn'
 gem 'pg'
 gem 'ember-rails'
@@ -44,7 +44,7 @@ group :doc do
 end
 
 group :development do
-  # gem 'rack-mini-profiler' #NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
+  # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
   gem 'bullet'
   gem 'license_finder'
   gem 'railroady'
@@ -63,13 +63,14 @@ group :development, :test do
   gem "phantomjs"
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
+  gem 'pry-rescue'
 end
 
 group :test do
   gem 'factory_girl_rails'
   gem "codeclimate-test-reporter", require: nil
   gem 'vcr'
-  gem 'webmock'
+  gem 'typhoeus'
 
   # For testing event streaming.
   gem 'sinatra'

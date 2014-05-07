@@ -12,26 +12,40 @@ case Rails.env
 when 'development'
   # create admin user
   mike = User.where(email: 'mikedoel@neo.com').first_or_create(
-    first_name: 'Mike',
-    last_name: 'Doel',
-    password: 'skyline1',
-    username: 'mikedoel',
-    affiliation: 'skyline',
-    admin: true)
+    first_name:  'Mike',
+    last_name:   'Doel',
+    password:    'skyline1',
+    username:    'mikedoel',
+    admin:       true
+  )
 
+  mike.affiliations.first_or_create(name: "skyline")
 
   # create journal
-  plos_journal = Journal.where(name: 'PLOS Yeti').first_or_create(logo: '')
+  plos_journal = Journal.where(name: 'PLOS Yeti').first
+  unless plos_journal
+    plos_journal = Journal.create(name: 'PLOS Yeti', logo: '')
+    mmt = DefaultManuscriptManagerTemplateFactory.build
+    mmt.journal = plos_journal
+    mmt.save!
+  end
 
-  Paper.where(
+  paper = Paper.where(
     user_id: mike.id,
     journal_id: plos_journal.id,
     short_title: "The great scientific paper of 2014"
-  ).first_or_create(
-    title: "The most scrumtrulescent scientific paper of 2014.",
-    abstract: "We've discovered the rain in spain tends to stay in the plain",
-    body: "The quick man bear pig jumped over the fox"
-  )
+  ).first
+  unless paper
+    paper_params = {
+      user_id:     mike.id,
+      journal_id:  plos_journal.id,
+      short_title: "The great scientific paper of 2014",
+      title:       "The most scrumtrulescent scientific paper of 2014.",
+      abstract:    "We've discovered the rain in spain tends to stay in the plain",
+      body:        "The quick man bear pig jumped over the fox"
+    }
+    paper = PaperFactory.create(paper_params, mike)
+  end
 
   mike.journal_roles.create(admin: true, reviewer: true, editor: true, journal_id: plos_journal.id)
 
@@ -41,20 +55,16 @@ when 'development'
   # make some extra users
   (1..10).each {|i|
     u = User.create(
-      first_name: first_names[i],
-      last_name: last_names[i],
-      email: "#{first_names[i].downcase}.#{last_names[i].downcase}@example.com",
-      username: "#{first_names[i].downcase}",
-      password:"password1",
-      admin: true,
-      affiliation:"skyline")
-    u.journal_roles.create(journal_id: plos_journal.id, admin: true, editor: true, reviewer: true)
+      first_name:  first_names[i],
+      last_name:   last_names[i],
+      email:       "#{first_names[i].downcase}.#{last_names[i].downcase}@example.com",
+      username:    "#{first_names[i].downcase}",
+      password:    "password1",
+      admin:       true
+    )
+    if u.persisted?
+      u.journal_roles.create!(journal_id: plos_journal.id, admin: true, editor: true, reviewer: true)
+      u.affiliations.create!(name: "Affiliation #{i}")
+    end
   }
-
-  puts "Creating manuscript manager templates"
-  plos_journal.manuscript_manager_templates.first_or_create(
-    name: 'Default Template',
-    paper_type: 'Research',
-    template: {phases: [{name: 'Submission', task_types: ['MessageTask', 'FigureTask']}]}
-  )
 end

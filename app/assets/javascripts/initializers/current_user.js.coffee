@@ -8,7 +8,7 @@ ETahi.initializer
         currentUserId = data.user.id
         store = container.lookup('store:main')
         store.pushPayload 'user', data
-        container.register('foo:current', ->
+        container.register('user:current', ->
           @store.getById('user', currentUserId)
         , instantiate: false)
         application.inject('controller', 'getCurrentUser', 'user:current')

@@ -10,7 +10,7 @@ describe AffiliationsController do
   end
 
   it "creates a new affiliate" do
-    expect{
+    expect {
       post :create, affiliation: { name: "new", email: "email@example.com" }
     }.to change{ Affiliation.count }.by(1)
   end

@@ -7,7 +7,7 @@ class NewMessageCardOverlay < CardOverlay
   end
 
   def participants=(users)
-    users.map(&:full_name).each { |name| select_from_chosen name, class: 'participant-select' }
+    users.map(&:full_name).each { |name| select_from_chosen name, class: 'participant-select', skip_synchronize: true }
   end
 
   def participants

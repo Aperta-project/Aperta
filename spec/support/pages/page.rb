@@ -61,17 +61,21 @@ class PageFragment
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first").mousedown()!)
     find(".#{options[:class]}.chosen-container input[type=text]").set(item_text)
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
-    synchronize_content!(item_text)
+    synchronize_content!(item_text) unless options[:skip_synchronize]
   end
 
   private
 
   def synchronize_content! content
-    raise ContentNotSynchronized unless session.has_content? content
+    raise ContentNotSynchronized unless session.has_content?(content) ||
+                                        session.has_content?(content.upcase) ||
+                                        session.has_content?(content.downcase)
   end
 
   def synchronize_no_content! content
-    raise ContentNotSynchronized unless session.has_no_content? content
+    raise ContentNotSynchronized unless session.has_no_content?(content) ||
+                                        session.has_no_content?(content.upcase) ||
+                                        session.has_no_content?(content.downcase)
   end
 end
 

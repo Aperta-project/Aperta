@@ -16,7 +16,7 @@ feature "Sync Reviewer Report tasks with Assigned Reviewers", js: true do
     page.driver.browser.manage.window.maximize
 
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin.email
+    sign_in_page.sign_in admin
   end
 
   scenario "Removing a paper reviewer should remove 'ReviewerReport' from the Get Reviews phase" do

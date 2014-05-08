@@ -2,7 +2,7 @@ class MessageCardOverlay < CardOverlay
 
   def add_participants(users)
     users.map(&:full_name).each do |name|
-      select_from_chosen name, class: 'participant-select'
+      select_from_chosen name, class: 'participant-select', skip_synchronize: true
       expect(page).to have_css ".participants [alt='#{name}']"
     end
   end

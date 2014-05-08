@@ -17,13 +17,12 @@ class PaperReviewerTask < Task
     user_ids = user_ids.map(&:to_i)
     new_ids = user_ids - reviewer_ids
     old_ids = reviewer_ids - user_ids
-    phase = paper.phases.where(name: 'Get Reviews').first
     new_ids.each do |id|
       PaperRole.reviewers_for(paper).where(user_id: id).create!
-      ReviewerReportTask.create! assignee_id: id, phase: phase
+      ReviewerReportTask.create! assignee_id: id, phase: reviewer_report_task_phase
     end
     PaperRole.reviewers_for(paper).where(user_id: old_ids).destroy_all
-    ReviewerReportTask.where(assignee_id: old_ids, phase: phase).destroy_all
+    paper.tasks.where(type: ReviewerReportTask, assignee_id: old_ids).destroy_all
     user_ids
   end
 
@@ -45,5 +44,12 @@ class PaperReviewerTask < Task
 
   def update_responder
     UpdateResponders::PaperReviewerTask
+  end
+
+  private
+
+  def reviewer_report_task_phase
+    get_reviews_phase = paper.phases.where(name: 'Get Reviews').first
+    get_reviews_phase || phase
   end
 end

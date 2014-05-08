@@ -14,8 +14,6 @@ describe PaperReviewerTask do
   let(:neil) { create :user }
 
   before do
-    # TODO: This works with the hard-coded phase name in the code for
-    # PaperReviewerTask#reviewer_ids=
     paper.phases.create!(name: "Get Reviews")
   end
 
@@ -46,6 +44,37 @@ describe PaperReviewerTask do
       PaperRole.create! paper: paper, reviewer: true, user: albert
       task.reviewer_ids = [neil.id.to_s]
       expect(PaperRole.where(paper: paper, reviewer: true, user: albert)).to be_empty
+    end
+
+    context "when the 'Get Reviews' phase isn't present" do
+      before do
+        paper.phases.where(name: "Get Reviews").first.destroy!
+      end
+
+      context "and the phase is of the assign reviewer's phase" do
+        it "associates the ReviewerReport task from that phase" do
+          task.reviewer_ids = [neil.id.to_s]
+          expect(ReviewerReportTask.where(assignee: neil, phase: task.phase)).to be_present
+        end
+
+        it "deletes the ReviewerReport from that phase" do
+          task.reviewer_ids = [neil.id.to_s]
+          expect(ReviewerReportTask.where(assignee: neil, phase: task.phase)).to be_present
+          task.reviewer_ids = []
+          expect(ReviewerReportTask.where(assignee: neil, phase: task.phase)).to_not be_present
+        end
+      end
+
+      context "and the phase is changed for the ReviewerReport task" do
+        it "removes the task from that phase" do
+          task.reviewer_ids = [neil.id.to_s]
+          reviewer_report_task = ReviewerReportTask.where(assignee: neil, phase: task.phase).first
+          reviewer_report_task.update_attribute('phase_id', create(:phase, paper: paper).id)
+
+          task.reviewer_ids = []
+          expect(paper.tasks.where(type: ReviewerReportTask, assignee: neil)).to be_empty
+        end
+      end
     end
   end
 

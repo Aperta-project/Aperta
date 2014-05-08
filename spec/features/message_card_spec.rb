@@ -10,7 +10,7 @@ feature 'Message Cards', js: true do
 
   before do
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin.email
+    sign_in_page.sign_in admin
   end
 
   let(:journal) { FactoryGirl.create(:journal, :with_default_template) }

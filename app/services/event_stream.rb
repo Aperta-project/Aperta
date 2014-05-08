@@ -1,18 +1,18 @@
 class EventStream
 
-  def self.post_event(paper_id, card_json)
+  def self.post_event(id, card_json)
     Thread.new do
       Net::HTTP.post_form(
         URI.parse(update_url),
-        card: card_json, stream: name(paper_id), token: token
+        card: card_json, stream: name(id), token: token
       )
     end
   end
 
-  def self.connection_info(paper_ids)
+  def self.connection_info(ids)
     {
       url: stream_url,
-      eventNames: names(paper_ids)
+      eventNames: names(ids)
     }
   end
 
@@ -20,8 +20,8 @@ class EventStream
     ids.map {|id| name id }
   end
 
-  def self.name(paper_id)
-    Digest::MD5.hexdigest "paper_#{paper_id}"
+  def self.name(id)
+    Digest::MD5.hexdigest "paper_#{id}"
   end
 
   def self.token

@@ -26,7 +26,6 @@ class ApplicationController < ActionController::Base
   end
 
   def render_errors(e)
-    # TODO: render HTML if the requested format is HTML
     render status: 422, json: {errors: e.record.errors}
   end
 

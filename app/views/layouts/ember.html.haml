@@ -12,9 +12,4 @@
 
 - if current_user
   :javascript
-    window.Tahi.currentUser = {id: #{current_user.id},
-    admin: #{current_user.admin},
-    test: true,
-    username: "#{current_user.username}",
-    fullName: "#{current_user.full_name}",
-    imageUrl: "#{current_user.image_url}"};
+    window.loggedIn = true

@@ -1,17 +1,28 @@
 ETahi.ApplicationController = Ember.Controller.extend
-  currentUser:(->
-    userId = Tahi.currentUser?.id.toString()
-    @store.getById('user', userId)
-  ).property().volatile()
+  currentUser: ( ->
+    @getCurrentUser()
+  ).property()
+
+  isLoggedIn: ( ->
+    !Ember.isBlank(@get('currentUser.id'))
+  ).property('currentUser.id')
+
+  isAdmin: Ember.computed.alias 'currentUser.admin'
+  username: Ember.computed.alias 'currentUser.username'
+
+  # this will get overridden by inject except in testing cases.
+  getCurrentUser: -> null
 
   connectToES:(->
-    return unless Tahi.currentUser?.id
+    return unless @get('currentUser')
     params =
       url: '/event_stream'
       method: 'GET'
       success: (data) =>
-        source = new EventSource(data.url)
         data.eventNames.forEach (eventName) =>
+          source = new EventSource(data.url + "&stream=#{eventName}")
+          Ember.$(window).unload ->
+            source.close()
           source.addEventListener eventName, (msg) =>
             esData = JSON.parse(msg.data)
             @pushUpdate(esData)

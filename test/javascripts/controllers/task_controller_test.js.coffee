@@ -3,19 +3,21 @@
 moduleFor 'controller:task', 'TaskController',
   needs: ['controller:application']
   setup: ->
+
     @litePaper = Ember.Object.create
       submitted: true
 
-    Tahi.currentUser = Ember.Object.create
-      user:
-        admin: false
+    @currentUser = Ember.Object.create
+      admin: false
 
+    currentUser = @currentUser
     @task = Ember.Object.create
       isMetadataTask: true
       litePaper: @litePaper
 
     Ember.run =>
       @subject().set('model', @task)
+      @subject().set('controllers.application.currentUser', currentUser)
 
 test '#isEditable: true when the task is not a metadata task', ->
   Ember.run =>
@@ -24,7 +26,7 @@ test '#isEditable: true when the task is not a metadata task', ->
 
 test '#isEditable: always true when the user is an admin', ->
   Ember.run =>
-    Tahi.currentUser.admin = true
+    @currentUser.set('admin', true)
     @task.set('isMetadataTask', true)
     @litePaper.set('submitted', true)
     equal @subject().get('isEditable'), true

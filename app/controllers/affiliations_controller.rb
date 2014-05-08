@@ -6,12 +6,8 @@ class AffiliationsController < ApplicationController
   end
 
   def create
-    affiliation = current_user.affiliations.build(affiliation_params)
-    if affiliation.save
-      render json: affiliation
-    else
-      head 500
-    end
+    affiliation = current_user.affiliations.create!(affiliation_params)
+    render json: affiliation
   end
 
   private
@@ -21,6 +17,6 @@ class AffiliationsController < ApplicationController
   end
 
   def affiliation_params
-    params.require(:affiliation).permit(:name, :start_date, :end_date)
+    params.require(:affiliation).permit(:name, :start_date, :end_date, :email)
   end
 end

@@ -21,16 +21,19 @@
       <div id="profile-affiliations">
         <h4 class="secondary"><small>Affiliations:</small></h4>
         {{#each a in model.affiliations}}
-          <h4>
-            {{a.name}}
-            <span class="muted">({{a.startDate}} - {{a.displayEndDate}})</span>
-          </h4>
+          <div class="separated">
+            <h4 class="compress">{{a.name}}</h4>
+            <div>{{a.startDate}} - {{a.displayEndDate}}</div>
+            <div>{{a.email}}</div>
+          </div>
         {{/each}}
         <a class="btn btn-default btn-xs btn-affiliation" {{action 'toggleAffiliationForm'}}>
           <span class="glyphicon glyphicon-plus-sign"></span>
           Add new
         </a>
         <div {{bind-attr class=":affiliations-form hideAffiliationForm:hide"}}>
+          <h3>New Affiliation</h3>
+          <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
           {{view ETahi.AffiliationNewView newAffiliation=newAffiliation}}
         </div>
       </div>

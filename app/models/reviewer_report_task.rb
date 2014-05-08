@@ -13,4 +13,11 @@ class ReviewerReportTask < Task
   def assignees
     journal.reviewers
   end
+
+  def destroy
+    self.transaction do
+      assignee.paper_roles.where(paper: paper, reviewer: true).destroy_all
+      super
+    end
+  end
 end

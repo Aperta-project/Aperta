@@ -1,8 +1,4 @@
 FactoryGirl.define do
-  factory :message_task do
-    title "a subject" # should match subject
-  end
-
   factory :comment do
     body "HEY"
   end

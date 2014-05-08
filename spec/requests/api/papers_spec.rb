@@ -22,8 +22,8 @@ describe Api::PapersController do
           papers: [
             { id: paper1.id, title: "First paper",
               authors: [{ first_name: 'Ryan', last_name: 'Wold', affiliation: 'Personal', email: 'user@example.com' }],
-              paper_type: paper1.paper_type },
-            { id: paper2.id, title: "Second paper", authors: [], paper_type: paper2.paper_type }
+              paper_type: paper1.paper_type, epub: api_paper_url(paper1, format: :epub) },
+            { id: paper2.id, title: "Second paper", authors: [], paper_type: paper2.paper_type, epub: api_paper_url(paper2, format: :epub) }
           ]
         }.with_indifferent_access
       )
@@ -37,7 +37,7 @@ describe Api::PapersController do
         expect(JSON.parse(response.body)).to eq(
           {
             papers: [
-              { id: paper2.id, title: "Second paper", authors: [], paper_type: paper2.paper_type }
+              { id: paper2.id, title: "Second paper", authors: [], paper_type: paper2.paper_type, epub: api_paper_url(paper2, format: :epub) }
             ]
           }.with_indifferent_access
         )
@@ -54,7 +54,7 @@ describe Api::PapersController do
             papers: [
               { id: paper1.id, title: "First paper",
                 authors: [{ first_name: 'Ryan', last_name: 'Wold', affiliation: 'Personal', email: 'user@example.com' }],
-                paper_type: paper1.paper_type }
+                paper_type: paper1.paper_type, epub: api_paper_url(paper1, format: :epub) }
             ]
           }.with_indifferent_access
         )
@@ -73,7 +73,7 @@ describe Api::PapersController do
           papers: [
             { id: paper1.id, title: "First paper",
               authors: [{ first_name: 'Ryan', last_name: 'Wold', affiliation: 'Personal', email: 'user@example.com' }],
-              paper_type: paper1.paper_type }
+              paper_type: paper1.paper_type, epub: api_paper_url(paper1, format: :epub) }
           ]
         }.with_indifferent_access
       )

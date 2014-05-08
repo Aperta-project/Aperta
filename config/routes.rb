@@ -22,7 +22,7 @@ Tahi::Application.routes.draw do
 
   resources :figures, only: [:destroy, :update]
 
-  namespace :api do
+  namespace :api, defaults: { format: 'json' } do
     resources :papers, only: [:index, :show, :update]
     resources :users, only: [:show]
   end

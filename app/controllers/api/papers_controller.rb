@@ -7,8 +7,18 @@ class Api::PapersController < ApplicationController
   end
 
   def show
-    @paper = Paper.find params[:id]
-    render json: [@paper], each_serializer: Api::PaperSerializer
+    respond_to do |format|
+      @paper = Paper.find params[:id]
+
+      format.json do
+        render json: [@paper], each_serializer: Api::PaperSerializer
+      end
+
+      format.epub do
+        epub = EpubConverter.generate_epub @paper
+        send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
+      end
+    end
   end
 
   def update

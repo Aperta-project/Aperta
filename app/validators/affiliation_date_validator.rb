@@ -7,7 +7,7 @@ class AffiliationDateValidator < ActiveModel::Validator
     end
 
     if record.end_date.present? && record.start_date.blank?
-      record.errors[:start_date] << "must provide an start date if end date is present"
+      record.errors[:start_date] << "must be provided if end date is present"
     end
 
     if has_both_dates?(record) && record.end_date < record.start_date

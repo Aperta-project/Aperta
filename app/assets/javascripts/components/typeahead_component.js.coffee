@@ -1,7 +1,7 @@
 ETahi.TypeAheadComponent = Ember.TextField.extend
   tagName: 'input'
   attributeBindings: ['typeahead:data-provide', 'placeholder']
-  classNames: ['form-control']
+  classNames: ['form-control affiliation-field']
   sourceList: []
 
   didInsertElement: ->

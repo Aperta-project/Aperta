@@ -16,7 +16,7 @@ class TaskPolicy
   attr_reader :user, :paper
 
   def phase_ids
-    paper.task_manager.phase_ids
+    paper.phase_ids
   end
 
   def assigned_tasks

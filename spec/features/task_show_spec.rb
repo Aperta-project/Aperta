@@ -3,12 +3,13 @@ require 'spec_helper'
 feature "Displaying task", js: true do
   let(:admin) { create :user, admin: true }
   let(:author) { create :user }
-  let!(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create!, user: author }
+  let!(:journal) { FactoryGirl.create :journal, :with_default_template }
+  let!(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }
   let(:task) { Task.where(title: "Assign Admin").first }
 
   before do
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin.email
+    sign_in_page.sign_in admin
   end
 
   scenario "User visits task's show page" do

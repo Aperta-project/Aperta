@@ -31,7 +31,7 @@ Tahi::Application.routes.draw do
 
   resources :manuscript_manager_templates
 
-  resources :users, only: [:update] do
+  resources :users, only: [:update, :show] do
     get :profile, on: :collection
   end
 

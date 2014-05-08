@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe SubmissionsController do
   let(:user) { create :user }
-  let(:paper) { user.papers.create! short_title: 'paper-for-submission', journal: Journal.create! }
+  let(:paper) do
+    FactoryGirl.create(:paper, user: user)
+  end
 
   before { sign_in user }
 

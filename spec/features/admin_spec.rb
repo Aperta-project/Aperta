@@ -6,7 +6,7 @@ feature "Tahi administration", js: true do
   let!(:journal) { create :journal }
   let!(:journal2) { create :journal }
 
-  before { SignInPage.visit.sign_in admin.email }
+  before { SignInPage.visit.sign_in admin }
 
   scenario "Admin can toggle the super admin bit on other users" do
     admin_page = DashboardPage.visit.visit_admin

@@ -3,15 +3,15 @@
     {{#link-to "index" classNames="nav-bar-home"}}
       <strong>Tahi</strong> Dashboard
     {{/link-to}}
-    {{#if Tahi.currentUser}}
+    {{#if isLoggedIn}}
     <ul class="nav-bar-links">
-      {{#if Tahi.currentUser.admin}}
+      {{#if isAdmin}}
         <li class="nav-bar-item">{{#link-to "flow_manager"}}Flow Manager{{/link-to}}</li>
         <li class="nav-bar-item"><a href="/rails_admin">Admin</a></li>
       {{/if}}
       <li class="nav-bar-text nav-bar-welcome dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          Welcome back, {{unbound Tahi.currentUser.username}}
+          Welcome back, {{unbound username}}
         </a>
         <ul class="dropdown-menu">
           <li>{{#link-to 'profile'}}Edit My Profile{{/link-to}}</li>

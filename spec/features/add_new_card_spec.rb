@@ -1,8 +1,12 @@
 require 'spec_helper'
 
 feature 'Add a new card', js: true do
-  let(:journal) { create :journal }
   let(:admin) { create :user, admin: true }
+
+  let(:journal) { FactoryGirl.create :journal, :with_default_template }
+  let(:paper) do
+    FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true, journal: journal
+  end
 
   let!(:albert) do
     create :user,
@@ -11,15 +15,7 @@ feature 'Add a new card', js: true do
 
   before do
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin.email
-  end
-
-  let(:paper) do
-    Paper.create! short_title: 'foobar',
-      title: 'Foo bar',
-      submitted: true,
-      journal: journal,
-      user: admin
+    sign_in_page.sign_in admin
   end
 
   scenario "Admin can add a new card" do

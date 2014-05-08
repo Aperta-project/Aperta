@@ -15,18 +15,8 @@
           <span {{bind-attr class="dirty:show:hidden :alert-warning :control-bar-message"}}>You have unsaved changes!</span>
           <span {{bind-attr class="errorText:show:hidden :alert-danger :control-bar-message"}}>{{errorText}}</span>
         </li>
-        <li class="template-edit-name control-bar-item">
-          {{input value=name placeholder="Template Name"}}
-        </li>
-        <li class="template-paper-type-edit control-bar-item">
-          {{chosen content=paperTypes
-                   name="paper_types"
-                   width="150px"
-                   prompt="Select a paper type"
-                   class="paper-type-select"
-                   value=paperType
-                   optionValuePath="content"
-                   optionLabelPath="content"}}
+        <li class="template-edit-paper-type control-bar-item">
+          {{input value=paperType placeholder="Paper Type"}}
         </li>
         <li class="control-bar-item"><a class="btn btn-link template-cancel-button" {{action "cancelEdit" target="view"}}>Cancel</a></li>
         <li class="control-bar-item"><a class="primary-button template-save-button" {{action "saveTemplate"}}>Save</a></li>

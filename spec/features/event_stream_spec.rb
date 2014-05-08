@@ -1,13 +1,15 @@
 require 'spec_helper'
 
 feature "Event streaming", js: true do
-  let!(:author) { create :user, :admin }
-  let!(:paper) { author.papers.create! short_title: 'foo bar', journal: Journal.create! }
-  let(:upload_task) { author.papers.first.tasks_for_type(UploadManuscriptTask).first }
+  let!(:author) { FactoryGirl.create :user, :admin }
+  let!(:journal) { FactoryGirl.create :journal, :with_default_template }
+  let!(:paper) { FactoryGirl.create :paper, :with_tasks, user: author, journal: journal }
+  let(:upload_task) { paper.tasks_for_type(UploadManuscriptTask).first }
 
   before do
+    JournalRole.create! user: author, journal: paper.journal, admin: true
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author.email
+    sign_in_page.sign_in author
   end
 
   scenario "On the dashboard page" do

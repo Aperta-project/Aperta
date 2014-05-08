@@ -24,6 +24,7 @@ class ProfilePage < Page
   end
 
   def attach_image(filename)
+    page.execute_script "$('#profile-avatar-hover').css('display', 'block')"
     attach_file 'profile_avatar', Rails.root.join('spec', 'fixtures', filename), visible: false
   end
 

@@ -8,9 +8,10 @@ describe RegisterDecisionTask do
   end
 
   context "letters" do
-    let(:paper) { Paper.create! short_title: 'hello',
-                  title: "Crazy stubbing tests on rats",
-                  journal: Journal.create! }
+    let(:paper) do
+      FactoryGirl.create :paper, :with_tasks, title: "Crazy stubbing tests on rats"
+    end
+
     let(:task) { RegisterDecisionTask.create! phase: paper.phases.first }
 
     before do
@@ -88,10 +89,10 @@ describe RegisterDecisionTask do
 
   describe "save and retrieve paper decision and decision letter" do
     let(:task) { RegisterDecisionTask.new }
-    let(:paper) { Paper.create! short_title: 'hello',
-                  journal: Journal.create!,
-                  decision: "Accepted",
-                  decision_letter: 'Lorem Ipsum' }
+    let(:paper) do
+      FactoryGirl.create :paper, title: "Crazy stubbing tests on rats",
+        decision: "Accepted", decision_letter: "Lorem Ipsum"
+    end
 
     before do
       allow(task).to receive(:paper).and_return(paper)

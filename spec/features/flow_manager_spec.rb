@@ -9,10 +9,10 @@ feature "Flow Manager", js: true do
     create :user, :admin, first_name: "Author"
   end
 
-  let(:journal) { create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal, :with_default_template) }
 
   let!(:paper1) do
-    create(:paper,
+    FactoryGirl.create(:paper, :with_tasks,
       short_title: 'foobar',
       title: 'Foo bar',
       submitted: true,
@@ -21,7 +21,7 @@ feature "Flow Manager", js: true do
   end
 
   let!(:paper2) do
-    create(:paper,
+    FactoryGirl.create(:paper, :with_tasks,
       short_title: 'bazqux',
       title: 'Baz Qux',
       submitted: true,
@@ -42,7 +42,7 @@ feature "Flow Manager", js: true do
     @old_size = page.driver.browser.manage.window.size
     page.driver.browser.manage.window.resize_to(1250,550)
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin.email
+    sign_in_page.sign_in admin
   end
 
   after do
@@ -93,15 +93,14 @@ feature "Flow Manager", js: true do
   context "PaperAdminTask column placements" do
 
     let(:unassociated_paper) do
-      create(:paper,
+      FactoryGirl.create(:paper, :with_tasks,
         short_title: 'unassociated',
         title: 'unassociated',
-        submitted: true,
-        journal: Journal.create!)
+        submitted: true)
     end
 
     let(:unassigned_paper) do
-      create(:paper,
+      FactoryGirl.create(:paper, :with_tasks,
         short_title: 'unassigned',
         title: 'unassigned',
         submitted: true,

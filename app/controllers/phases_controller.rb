@@ -4,7 +4,7 @@ class PhasesController < ApplicationController
 
   def create
     paper = Paper.find(params[:phase][:paper_id])
-    phase = paper.task_manager.phases.create!(new_phase_params)
+    phase = paper.phases.create!(new_phase_params)
     respond_with phase
   end
 

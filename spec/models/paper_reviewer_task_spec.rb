@@ -7,11 +7,17 @@ describe PaperReviewerTask do
     specify { expect(task.role).to eq 'editor' }
   end
 
-  let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
-  let(:phase) { paper.task_manager.phases.first }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks }
+  let(:phase) { paper.phases.first }
 
   let(:albert) { create :user, :admin }
   let(:neil) { create :user }
+
+  before do
+    # TODO: This works with the hard-coded phase name in the code for
+    # PaperReviewerTask#reviewer_ids=
+    paper.phases.create!(name: "Get Reviews")
+  end
 
   describe "#reviewer_ids=" do
     let(:task) { PaperReviewerTask.create!(phase: phase) }
@@ -24,12 +30,12 @@ describe PaperReviewerTask do
 
     it "creates reviewer report tasks only for new ids" do
       task.reviewer_ids = [neil.id.to_s]
-      phase = paper.task_manager.phases.where(name: 'Get Reviews').first
+      phase = paper.phases.where(name: 'Get Reviews').first
       expect(ReviewerReportTask.where(assignee: neil, phase: phase)).to be_present
     end
 
     it "deletes reviewer report tasks of the ids not specified" do
-      phase = paper.task_manager.phases.where(name: 'Get Reviews').first
+      phase = paper.phases.where(name: 'Get Reviews').first
       PaperRole.create! paper: paper, reviewer: true, user: albert
       ReviewerReportTask.create! assignee: albert, phase: phase
       task.reviewer_ids = [neil.id.to_s]
@@ -44,10 +50,9 @@ describe PaperReviewerTask do
   end
 
   describe "#reviewer_ids" do
-    let(:paper) { Paper.create! short_title: 'Role Tester', journal: Journal.create! }
-    let(:task) { PaperReviewerTask.create! phase: paper.task_manager.phases.first }
-    let (:reviewer1) { create :user }
-    let (:reviewer2) { create :user }
+    let(:task) { PaperReviewerTask.create! phase: paper.phases.first }
+    let (:reviewer1) { FactoryGirl.create :user }
+    let (:reviewer2) { FactoryGirl.create :user }
 
     before do
       PaperRole.create! paper: paper, reviewer: true, user: reviewer1

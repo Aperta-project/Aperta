@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Assigns Reviewer", js: true do
-  let(:journal) { create :journal }
+  let(:journal) { FactoryGirl.create(:journal, :with_default_template) }
 
   let(:editor) do
     create :user,
@@ -18,17 +18,16 @@ feature "Assigns Reviewer", js: true do
       journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
   end
 
-  before do
-    paper = Paper.create! short_title: 'foobar',
-      title: 'Foo bar',
-      submitted: true,
-      journal: journal,
-      user: editor
+  let!(:paper) do
+    FactoryGirl.create :paper, :with_tasks, user: editor, submitted: true, journal: journal,
+      short_title: 'foobar', title: 'Foo Bar'
+  end
 
+  before do
     paper_role = PaperRole.create! paper: paper, user: editor, editor: true
 
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in editor.email
+    sign_in_page.sign_in editor
   end
 
   scenario "Editor can assign a reviewer to a paper" do

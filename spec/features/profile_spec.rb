@@ -5,7 +5,7 @@ feature "Profile Page", js: true do
 
   before do
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin.email
+    sign_in_page.sign_in admin
   end
 
   scenario "the page contains user's info if user is signed in" do

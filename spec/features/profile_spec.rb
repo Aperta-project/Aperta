@@ -56,4 +56,12 @@ feature "Profile Page", js: true do
     profile_page.add_affiliate(' ')
     expect(page).to have_content /name can't be blank/i
   end
+
+  scenario "user can delete an affiliation" do
+    profile_page = ProfilePage.visit
+    profile_page.add_affiliate('Yoda University')
+    profile_page.remove_affiliate('Yoda University')
+    expect(page).to_not have_content(/Yoda University/)
+  end
+
 end

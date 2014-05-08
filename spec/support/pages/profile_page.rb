@@ -19,6 +19,11 @@ class ProfilePage < Page
     find_button("done").click
   end
 
+  def remove_affiliate(name)
+    page.find("h4", text: name).parent.find('.remove-affiliation').click()
+    page.driver.browser.switch_to.alert.accept
+  end
+
   def affiliations
     find("#profile-affiliations").all('h4').map(&:text)[1..-1]
   end

@@ -23,6 +23,7 @@
         {{#each a in model.affiliations}}
           <div class="separated">
             <h4 class="compress">{{a.name}}</h4>
+            <div class="glyphicon glyphicon-remove-circle remove-affiliation" {{action 'removeAffiliation' a}}></div>
             <div>{{a.startDate}} - {{a.displayEndDate}}</div>
             <div>{{a.email}}</div>
           </div>

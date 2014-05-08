@@ -19,4 +19,11 @@ describe AffiliationsController do
     post :create, affiliation: { name: "new", email: "email@example.com" }
     expect(Affiliation.find_by(name: "new").email).to eq("email@example.com")
   end
+
+  it "destroys an existing affiliate" do
+    affiliation = FactoryGirl.create(:affiliation, user: user)
+    expect {
+      delete :destroy, id: affiliation.id
+    }.to change{ Affiliation.count }.by(-1)
+  end
 end

@@ -10,7 +10,19 @@ class AffiliationsController < ApplicationController
     render json: affiliation
   end
 
+  def destroy
+    if affiliation.try(:destroy)
+      render json: true
+    else
+      render status: 400
+    end
+  end
+
   private
+
+  def affiliation
+    current_user.affiliations.find(params[:id])
+  end
 
   def institution_hash
     YAML.load File.read Rails.root.join("config/institutions.yml")

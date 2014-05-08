@@ -16,6 +16,7 @@ class AffiliationDateValidator < ActiveModel::Validator
   end
 
   private
+
   def has_both_dates?(record)
     record.end_date.present? && record.start_date.present?
   end

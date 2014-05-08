@@ -10,7 +10,13 @@ describe AffiliationsController do
   end
 
   it "creates a new affiliate" do
-    post :create, affiliation: { name: "new" }
-    expect(response.status).to eq(200)
+    expect {
+      post :create, affiliation: { name: "new", email: "email@example.com" }
+    }.to change{ Affiliation.count }.by(1)
+  end
+
+  it "correctly sets a new affiliate email address" do
+    post :create, affiliation: { name: "new", email: "email@example.com" }
+    expect(Affiliation.find_by(name: "new").email).to eq("email@example.com")
   end
 end

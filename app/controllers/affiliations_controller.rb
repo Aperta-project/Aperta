@@ -1,5 +1,4 @@
 class AffiliationsController < ApplicationController
-
   def index
     parser = InstitutionHashParser.new(institution_hash)
     parser.parse_names!
@@ -18,6 +17,6 @@ class AffiliationsController < ApplicationController
   end
 
   def affiliation_params
-    params.require(:affiliation).permit(:name, :start_date, :end_date)
+    params.require(:affiliation).permit(:name, :start_date, :end_date, :email)
   end
 end

@@ -7,6 +7,10 @@ ETahi.ProfileController = Ember.ObjectController.extend
     toggleAffiliationForm: ->
       @set('hideAffiliationForm', !@hideAffiliationForm)
 
+    removeAffiliation: (affiliation) ->
+      if confirm("Are you sure you want to destroy this affiliation?")
+        affiliation.destroyRecord()
+
     createAffiliation: ->
       affiliation = @store.createRecord('affiliation', @newAffiliation)
       affiliation.save().then(

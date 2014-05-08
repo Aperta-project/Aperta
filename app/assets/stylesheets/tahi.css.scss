@@ -183,11 +183,16 @@ textarea { resize: none; }
   font-size: 18px;
 
   h4 {
+    display: inline-block;
     font-weight: bold;
   }
 
   .separated {
     margin: 20px 0;
+  }
+
+  .remove-affiliation {
+    cursor: pointer;
   }
 }
 

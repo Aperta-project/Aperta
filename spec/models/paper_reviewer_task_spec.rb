@@ -92,6 +92,4 @@ describe PaperReviewerTask do
       expect(task.reviewer_ids).to match_array [reviewer1.id, reviewer2.id]
     end
   end
-
-
 end

@@ -6,7 +6,6 @@ class PageFragment
   include RSpec::Matchers
 
   delegate :select, to: :@element
-  attr_reader :element
 
   def initialize element = nil
     @element = element || page

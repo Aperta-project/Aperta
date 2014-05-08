@@ -50,4 +50,10 @@ feature "Profile Page", js: true do
     profile_page.reload
     expect(profile_page.affiliations).to include(/Yoda/)
   end
+
+  scenario "affiliation errors are handled" do
+    profile_page = ProfilePage.visit
+    profile_page.add_affiliate(' ')
+    expect(page).to have_content /name can't be blank/i
+  end
 end

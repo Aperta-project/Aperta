@@ -39,6 +39,7 @@ class PageFragment
   def view_card card_name, overlay_class=nil, &block
     synchronize_content! card_name
     session.all('.card-content', text: card_name).first.click
+    synchronize_content! 'CLOSE'
 
     overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize
@@ -60,6 +61,7 @@ class PageFragment
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first").mousedown()!)
     find(".#{options[:class]}.chosen-container input[type=text]").set(item_text)
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
+    synchronize_content!(item_text)
   end
 
   private

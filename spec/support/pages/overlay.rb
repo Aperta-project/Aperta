@@ -3,7 +3,7 @@ class CardOverlay < Page
 
   def dismiss
     session.all('.overlay .overlay-close-button').first.click
-    synchronize_no_content!("Close")
+    synchronize_no_content!("CLOSE")
   end
 
   def assignee

@@ -12,7 +12,7 @@ describe AffiliationsController do
   it "creates a new affiliate" do
     expect {
       post :create, affiliation: { name: "new", email: "email@example.com" }
-    }.to change{ Affiliation.count }.by(1)
+    }.to change { Affiliation.count }.by(1)
   end
 
   it "correctly sets a new affiliate email address" do
@@ -24,6 +24,6 @@ describe AffiliationsController do
     affiliation = FactoryGirl.create(:affiliation, user: user)
     expect {
       delete :destroy, id: affiliation.id
-    }.to change{ Affiliation.count }.by(-1)
+    }.to change { Affiliation.count }.by(-1)
   end
 end

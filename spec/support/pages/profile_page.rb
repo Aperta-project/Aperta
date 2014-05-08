@@ -20,7 +20,7 @@ class ProfilePage < Page
   end
 
   def remove_affiliate(name)
-    page.find("h4", text: name).parent.find('.remove-affiliation').click()
+    page.find("h4", text: name).parent.find('.remove-affiliation').click
     page.driver.browser.switch_to.alert.accept
   end
 

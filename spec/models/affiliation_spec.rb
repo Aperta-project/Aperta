@@ -24,4 +24,38 @@ describe "Affiliation" do
       expect(Affiliation.by_date).to eq([first, second, third])
     end
   end
+
+  describe "date validations" do
+
+    it "will not be valid if end date is not a valid date format" do
+      affiliation = build(:affiliation, start_date: 3.days.ago, end_date: "not valid")
+      expect(affiliation).to_not be_valid
+    end
+
+    it "will not be valid if start date is not a valid date format" do
+      affiliation = build(:affiliation, start_date: "not valid", end_date: nil)
+      expect(affiliation).to_not be_valid
+    end
+
+    it "will allow a nil start date and nil end date" do
+      affiliation = build(:affiliation, start_date: nil, end_date: nil)
+      expect(affiliation).to be_valid
+    end
+
+    it "requires start date if there is an end date" do
+      affiliation = build(:affiliation, start_date: nil, end_date: 4.days.ago)
+      expect(affiliation).to_not be_valid
+    end
+
+    it "will allow a start date without a end date" do
+      affiliation = build(:affiliation, start_date: 3.days.ago, end_date: nil)
+      expect(affiliation).to be_valid
+    end
+
+    it "will not allow a start date before end date" do
+      affiliation = build(:affiliation, start_date: 3.days.ago, end_date: 4.days.ago)
+      expect(affiliation).to_not be_valid
+    end
+
+  end
 end

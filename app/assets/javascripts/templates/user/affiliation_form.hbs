@@ -1,4 +1,13 @@
 {{type-ahead value=newAffiliation.name sourceList=institutions placeholder="Affiliation Name"}}
 <div class="form-group">
+  {{date-picker type='text'
+  value=newAffiliation.startDate
+  placeholder='Start Date'}}
+
+  {{date-picker type='text'
+  value=newAffiliation.endDate
+  placeholder='End Date'}}
+</div>
+<div class="form-group">
   <button class="secondary-button" {{action 'createAffiliation'}}>done</button>
 </div>

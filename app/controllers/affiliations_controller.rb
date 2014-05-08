@@ -1,4 +1,5 @@
 class AffiliationsController < ApplicationController
+
   def index
     parser = InstitutionHashParser.new(institution_hash)
     parser.parse_names!
@@ -6,12 +7,8 @@ class AffiliationsController < ApplicationController
   end
 
   def create
-    affiliation = current_user.affiliations.build(affiliation_params)
-    if affiliation.save
-      render json: affiliation
-    else
-      head 500
-    end
+    affiliation = current_user.affiliations.create!(affiliation_params)
+    render json: affiliation
   end
 
   private

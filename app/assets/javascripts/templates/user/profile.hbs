@@ -31,6 +31,7 @@
           Add new
         </a>
         <div {{bind-attr class=":affiliations-form hideAffiliationForm:hide"}}>
+          <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
           {{view ETahi.AffiliationNewView newAffiliation=newAffiliation}}
         </div>
       </div>

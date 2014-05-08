@@ -45,6 +45,11 @@ body, h1, h2, h3, h4, h5, h6 {
 
 textarea { resize: none; }
 
+.compress {
+  margin: 0;
+  padding: 0;
+}
+
 #tahi-container {
   max-width: 1120px;
   margin: 0 auto;
@@ -158,10 +163,6 @@ textarea { resize: none; }
   margin: 0;
 }
 
-.tt-input {
-  width: 250px;
-}
-
 .datepicker-field {
   width: 100px;
   display: inline-block;
@@ -169,3 +170,24 @@ textarea { resize: none; }
     margin-right: 15px;
   }
 }
+
+.affiliations-form {
+  margin-top: 40px;
+
+  .affiliation-field {
+    width: 250px;
+  }
+}
+
+#profile-affiliations {
+  font-size: 18px;
+
+  h4 {
+    font-weight: bold;
+  }
+
+  .separated {
+    margin: 20px 0;
+  }
+}
+

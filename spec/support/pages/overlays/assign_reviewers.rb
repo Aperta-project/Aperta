@@ -6,4 +6,8 @@ class AssignReviewersOverlay < CardOverlay
   def paper_reviewers
     all('.reviewers-select .search-choice').map &:text
   end
+
+  def remove_all_paper_reviewers!
+    all('a.search-choice-close').each &:click
+  end
 end

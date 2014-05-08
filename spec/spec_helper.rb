@@ -13,7 +13,7 @@ require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 # StreamServer needs to have the same URL as localhost for testing.
-ENV['ES_URL'] = "http://localhost:#{Capybara.server_port = 31337}"
+# ENV['ES_URL'] = "http://localhost:#{Capybara.server_port = 31337}"
 
 Capybara.server do |app, port|
   require 'rack/handler/thin'

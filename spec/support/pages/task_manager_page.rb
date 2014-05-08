@@ -17,6 +17,14 @@ class TaskManagerPage < Page
     TaskManagerPage.new.phases.count
   end
 
+  def tasks
+    all('.card').map(&:text)
+  end
+
+  def get_first_matching_task name
+    all('.card-content').detect { |card| card.text == name }
+  end
+
   def navigate_to_edit_paper
     within('#control-bar') do
       click_link "Article"

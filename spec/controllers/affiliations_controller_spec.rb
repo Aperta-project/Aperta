@@ -14,4 +14,9 @@ describe AffiliationsController do
       post :create, affiliation: { name: "new", email: "email@example.com" }
     }.to change{ Affiliation.count }.by(1)
   end
+
+  it "correctly sets a new affiliate email address" do
+    post :create, affiliation: { name: "new", email: "email@example.com" }
+    expect(Affiliation.find_by(name: "new").email).to eq("email@example.com")
+  end
 end

@@ -22,7 +22,7 @@
 //= require typeahead
 //= require utils
 //= require handlebars
-//= require spin
+//= require spin.js/spin
 //= require ember
 //= require ember-data
 //= require_self

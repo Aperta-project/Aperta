@@ -2,6 +2,7 @@
   "name": "dsl-generated dependencies",
   "dependencies": {
     "jquery": "latest",
-    "underscore": "latest"
+    "underscore": "latest",
+    "spin.js": "latest"
   }
 }

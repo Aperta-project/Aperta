@@ -1,2 +1,3 @@
 asset "jquery"
 asset "underscore"
+asset "spin.js"

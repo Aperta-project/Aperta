@@ -18,7 +18,7 @@
 //= require chosen-jquery
 //= require jquery.dotdotdot
 //= require jquery.timeago
-//= require typeahead
+//= require typeahead.js/dist/typeahead.bundle
 //= require utils
 //= require handlebars
 //= require spin.js/spin

@@ -4,6 +4,7 @@
     "jquery": "latest",
     "underscore": "latest",
     "spin.js": "latest",
-    "ScrollToFixed": "latest"
+    "ScrollToFixed": "latest",
+    "typeahead.js": "latest"
   }
 }

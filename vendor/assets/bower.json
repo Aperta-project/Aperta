@@ -3,6 +3,7 @@
   "dependencies": {
     "jquery": "latest",
     "underscore": "latest",
-    "spin.js": "latest"
+    "spin.js": "latest",
+    "ScrollToFixed": "latest"
   }
 }

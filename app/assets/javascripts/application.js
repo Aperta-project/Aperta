@@ -13,10 +13,12 @@
 //= require jquery
 //= require jquery-fileupload/basicplus
 //= require underscore
-//= require bootstrap
 //= require scrollToFixed
+//= require jQuery.dotdotdot/src/js/jquery.dotdotdot
+//
+//= require bootstrap
 //= require chosen-jquery
-//= require jquery.dotdotdot
+//
 //= require jquery.timeago
 //= require typeahead.js/dist/typeahead.bundle
 //= require utils

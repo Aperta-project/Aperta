@@ -13,7 +13,6 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'haml-rails'
 gem 'uglifier', '~> 2.5.0'
 gem 'coffee-rails', '~> 4.0.1'
-gem 'jquery-rails'
 gem 'acts_as_list'
 gem 'devise'
 gem "bootstrap-sass"

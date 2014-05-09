@@ -405,7 +405,6 @@ DEPENDENCIES
   haml-rails
   heroku-deflater
   jquery-fileupload-rails!
-  jquery-rails
   launchy
   license_finder
   mini_magick

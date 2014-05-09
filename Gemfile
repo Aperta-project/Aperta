@@ -16,7 +16,6 @@ gem 'coffee-rails', '~> 4.0.1'
 gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
-gem 'rails_12factor', group: [:production, :staging]
 gem "nokogiri"
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
@@ -38,6 +37,7 @@ gem 'american_date'
 
 group :production, :staging do
   gem 'heroku-deflater'
+  gem 'rails_12factor'
 end
 
 group :doc do

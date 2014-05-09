@@ -1,1 +1,2 @@
 asset "jquery"
+asset "underscore"

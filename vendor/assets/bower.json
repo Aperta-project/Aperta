@@ -6,6 +6,7 @@
     "spin.js": "latest",
     "ScrollToFixed": "latest",
     "typeahead.js": "latest",
-    "jQuery.dotdotdot": "latest"
+    "jQuery.dotdotdot": "latest",
+    "jquery-timeago": "latest"
   }
 }

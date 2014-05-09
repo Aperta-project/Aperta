@@ -15,15 +15,15 @@
 //= require underscore
 //= require scrollToFixed
 //= require jQuery.dotdotdot/src/js/jquery.dotdotdot
+//= require jquery-timeago/jquery.timeago
+//= require typeahead.js/dist/typeahead.bundle
+//= require spin.js/spin
 //
 //= require bootstrap
 //= require chosen-jquery
 //
-//= require jquery.timeago
-//= require typeahead.js/dist/typeahead.bundle
 //= require utils
 //= require handlebars
-//= require spin.js/spin
 //= require ember
 //= require ember-data
 //= require_self

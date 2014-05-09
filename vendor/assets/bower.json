@@ -2,6 +2,7 @@
   "name": "dsl-generated dependencies",
   "dependencies": {
     "jquery": "latest",
+    "bootstrap-sass": "latest",
     "underscore": "latest",
     "spin.js": "latest",
     "ScrollToFixed": "latest",

@@ -1,4 +1,5 @@
 asset "jquery"
+asset "bootstrap-sass"
 asset "underscore"
 asset "spin.js"
 asset "ScrollToFixed"

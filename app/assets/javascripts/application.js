@@ -19,7 +19,7 @@
 //= require typeahead.js/dist/typeahead.bundle
 //= require spin.js/spin
 //
-//= require bootstrap
+//= require bootstrap-sass/dist/js/bootstrap
 //= require bootstrap-datepicker
 //= require chosen-jquery
 //

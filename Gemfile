@@ -15,7 +15,6 @@ gem 'uglifier', '~> 2.5.0'
 gem 'coffee-rails', '~> 4.0.1'
 gem 'acts_as_list'
 gem 'devise'
-gem "bootstrap-sass"
 gem 'bourbon'
 gem 'rails_12factor', group: [:production, :staging]
 gem "nokogiri"

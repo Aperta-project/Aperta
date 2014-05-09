@@ -148,6 +148,7 @@ thread_safe, 0.3.3, Apache-2.0
 tika, 1.4, Apache 2.0
 tilt, 1.4.1, MIT
 treetop, 1.4.15, MIT
+typeahead.js, , MIT
 typhoeus, 0.6.8, MIT
 tzinfo, 1.1.0, MIT
 uglifier, 2.5.0, MIT

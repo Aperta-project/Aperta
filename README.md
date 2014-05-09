@@ -2,6 +2,15 @@
 
 ## Development Notes
 
+### Initial Setup
+
+- Clone the repo
+- Most of the javascript for the app is being handled by Bower.  You'll need to have node installed
+in order to proceed.  `brew install node` and then `npm install bower -g`
+- All bower dependencies are found in the `Bowerfile`
+- If you're installing new bower components you'll want to read the [rails-bower docs](https://github.com/42dev/bower-rails#rake-tasks), especially if 
+your components have stylesheets (`rake bower:resolve`)
+
 ### Setting up the event server
 
 You will need:
@@ -33,19 +42,14 @@ ES_URL=http://tahi-eventsource.herokuapp.com rails s
 
 We use:
 
-- RSpec for unit and integrations specs
-- Capybara to drive the web browser in integration specs
-- Jasmine for JavaScript specs
+- RSpec for unit and integration specs
+- Capybara and Selenium
+- Qunit and Teaspoon for JavaScript specs
+- ember-qunit for ember-specific tests.
 
 In the project directory, running `rspec` will run all unit and integration
-specs. Firefox will pop up to run integration tests. We used to run integration
-specs with capybara-webkit but that broke for us when we introduced `pushState`
-for cards.
+specs. Firefox will pop up to run integration tests.
 
-In order to run Jasmine specs in the browser, first start the Jasmine server
-with `rake jasmine`. Running the Jasmine specs headless requires RAILS_ENV to be
-`test`. Jasmine runs headless specs in PhantomJS which doesn't support
-`Function.prototype.bind`, heavily used by React. The test environment loads a
-polyfill (see [polyfills.js.erb in the repo][polyfill]).
-
-[polyfill]: https://github.com/Tahi-project/tahi/blob/master/app/assets/javascripts/polyfills.js.erb
+You can run the javascript specs via the command line with `rake teaspoon`.  If you have the rails server
+running you can run the specs from `localhost:3000/teaspoon`.  The command line tool is more robust but the browser is slightly faster.
+Rails still compiles assets between every test run.

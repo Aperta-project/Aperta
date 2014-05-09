@@ -20,7 +20,7 @@
 //= require spin.js/spin
 //
 //= require bootstrap-sass/dist/js/bootstrap
-//= require bootstrap-datepicker
+//= require bootstrap-datepicker/js/bootstrap-datepicker
 //= require chosen-jquery
 //
 //= require handlebars

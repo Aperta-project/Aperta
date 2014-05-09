@@ -8,6 +8,7 @@
     "ScrollToFixed": "latest",
     "typeahead.js": "latest",
     "jQuery.dotdotdot": "latest",
-    "jquery-timeago": "latest"
+    "jquery-timeago": "latest",
+    "bootstrap-datepicker": "latest"
   }
 }

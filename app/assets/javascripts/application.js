@@ -20,15 +20,15 @@
 //= require spin.js/spin
 //
 //= require bootstrap
+//= require bootstrap-datepicker
 //= require chosen-jquery
 //
-//= require utils
 //= require handlebars
 //= require ember
 //= require ember-data
+//= require utils
 //= require_self
 //= require e_tahi
-//= require bootstrap-datepicker
 //= require_tree .
 //= require standard_tasks/application
 

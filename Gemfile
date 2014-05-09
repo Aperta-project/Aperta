@@ -5,6 +5,7 @@ ruby "2.1.2"
 gem 'rails', '4.1.1'
 gem 'unicorn'
 gem 'pg'
+gem 'bower-rails'
 gem 'ember-rails'
 gem 'ember-source', '1.5.0'
 gem "ember-data-source", "~> 1.0.0.beta.7"

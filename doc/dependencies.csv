@@ -9,18 +9,19 @@ activerecord, 4.1.1, MIT
 activesupport, 4.1.1, MIT
 acts_as_list, 0.4.0, MIT
 addressable, 2.3.5, Apache License 2.0
+american_date, 1.1.0, MIT
 arel, 5.0.1.20140414130214, MIT
 barber, 0.4.2, MIT
 bcrypt-ruby, 3.1.2, MIT
 binding_of_caller, 0.7.2, MIT
+bootstrap-datepicker.js, , Apache 2.0
 bootstrap-sass, 3.0.2.1, Apache 2.0
 bourbon, 3.1.8, MIT
 builder, 3.2.2, MIT
 bullet, 4.8.0, MIT
-bundler, 1.5.3, MIT
+bundler, 1.6.2, MIT
 byebug, 2.7.0, BSD
 capybara, 2.2.1, MIT
-capybara-webkit, 1.1.0, MIT
 carrierwave, 0.9.0, MIT
 childprocess, 0.5.2, MIT
 chosen-rails, 1.1.0, MIT
@@ -147,6 +148,7 @@ thor, 0.19.1, MIT
 thread_safe, 0.3.3, Apache-2.0
 tika, 1.4, Apache 2.0
 tilt, 1.4.1, MIT
+timeliness, 0.3.7, MIT
 treetop, 1.4.15, MIT
 typeahead.js, , MIT
 typhoeus, 0.6.8, MIT

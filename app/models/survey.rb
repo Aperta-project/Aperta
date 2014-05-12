@@ -5,7 +5,7 @@ class Survey < ActiveRecord::Base
 
   private
 
-  def id_for_stream
-    declaration_task.id
+  def event_stream_payload
+    { task_id: declaration_task.id, journal_id: declaration_task.journal.id }
   end
 end

@@ -6,3 +6,10 @@ ActiveSupport::Notifications.subscribe('updated') do |name, start, finish, id, p
     serializer.to_json
   )
 end
+
+ActiveSupport::Notifications.subscribe('deleted') do |name, start, finish, id, payload|
+  EventStream.post_event(
+    payload[:journal_id],
+    { taskId: payload[:id], deleted: true }.to_json
+  )
+end

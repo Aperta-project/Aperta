@@ -13,17 +13,16 @@ ETahi.PaperEditView = Ember.View.extend
     $('.control-bar').scrollToFixed()
 
     $('#tahi-container > main > aside > div').scrollToFixed
-      marginTop: $('.control-bar').outerHeight(true)
+      marginTop: $('.control-bar').outerHeight()
       unfixed: ->
         $(this).css('top', '0px')
   ).on('didInsertElement')
 
   setupStickyToolbar: ->
     $('.oo-ui-toolbar').scrollToFixed
-      marginTop: $('.control-bar').outerHeight(true)
+      marginTop: $('.control-bar').outerHeight()
       unfixed: ->
         $(this).addClass('not-fixed')
-        $(this).css('marginTop', '-86px')
       preFixed: ->
         $(this).removeClass('not-fixed')
         $(this).css('marginTop', '0')

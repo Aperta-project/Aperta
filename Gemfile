@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 
-ruby "2.1.2"
+ruby "2.1.1"
 
 gem 'rails', '4.1.1'
 gem 'unicorn'
 gem 'pg'
+gem 'bower-rails'
 gem 'ember-rails'
 gem 'ember-source', '1.5.0'
 gem "ember-data-source", "~> 1.0.0.beta.7"
@@ -12,12 +13,9 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'haml-rails'
 gem 'uglifier', '~> 2.5.0'
 gem 'coffee-rails', '~> 4.0.1'
-gem 'jquery-rails'
 gem 'acts_as_list'
 gem 'devise'
-gem "bootstrap-sass"
 gem 'bourbon'
-gem 'rails_12factor', group: [:production, :staging]
 gem "nokogiri"
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
@@ -39,6 +37,7 @@ gem 'american_date'
 
 group :production, :staging do
   gem 'heroku-deflater'
+  gem 'rails_12factor'
 end
 
 group :doc do

@@ -4,7 +4,6 @@ module EventStreamNotifier
     after_commit :notify
 
     def notify
-      binding.pry
       ActiveSupport::Notifications.instrument(namespace, event_stream_payload)
     end
 

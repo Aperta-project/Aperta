@@ -10,6 +10,6 @@ end
 ActiveSupport::Notifications.subscribe('deleted') do |name, start, finish, id, payload|
   EventStream.post_event(
     payload[:journal_id],
-    {taskId: payload[:id], deleted: true}.to_json
+    { taskId: payload[:id], deleted: true }.to_json
   )
 end

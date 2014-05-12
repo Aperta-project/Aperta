@@ -51,7 +51,7 @@ feature "Event streaming", js: true do
     scenario "deleting a task" do
       submission_phase.tasks.where(title: 'Add Authors').first.destroy!
 
-      phase = all('.column').detect {|p| p.find('h2').text == "Submission Data" }
+      phase = all('.column').detect { |p| p.find('h2').text == "Submission Data" }
       within phase do
         expect(page).to_not have_content "Add Authors"
       end

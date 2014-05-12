@@ -1,0 +1,10 @@
+<ul class='journals'>
+  {{#each journal in content}}
+    <li>
+      {{#link-to "journal" journal}}
+        <img {{bind-attr src=journal.logoUrl}} />
+        {{journal.name}}
+      {{/link-to}}
+    </li>
+  {{/each}}
+</ul>

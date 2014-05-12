@@ -25,10 +25,21 @@ ETahi.ApplicationController = Ember.Controller.extend
             source.close()
           source.addEventListener eventName, (msg) =>
             esData = JSON.parse(msg.data)
-            @pushUpdate(esData)
+            if (esData.action == 'destroy')
+              @pushDestroy(esData)
+            else
+              @pushUpdate(esData)
 
     Ember.$.ajax(params)
   ).on('init')
+
+  pushDestroy: (esData)->
+    (esData.task_ids).forEach (taskId) =>
+      task = @store.findTask(taskId)
+      phase = task.get('phase')
+      phase.get('tasks').removeObject(task)
+      task.deleteRecord()
+      task.triggerLater('didDelete')
 
   pushUpdate: (esData)->
     Ember.run =>

@@ -2,11 +2,10 @@ module EventStreamNotifier
   extend ActiveSupport::Concern
   included do
 
-    after_update :notify_commit
-    after_create :notify_commit
-    after_destroy :notify_destroy
+    after_commit :notify_create_update, on: [:create, :update]
+    after_commit :notify_destroy, on: [:destroy]
 
-    def notify_commit
+    def notify_create_update
       ActiveSupport::Notifications.instrument('updated', id: id_for_stream)
     end
 

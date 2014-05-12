@@ -16,15 +16,15 @@ class Journal < ActiveRecord::Base
   has_many :manuscript_manager_templates
 
   def admins
-    users.merge(JournalRole.admins)
+    users.merge(JournalRole.admins).uniq
   end
 
   def editors
-    users.merge(JournalRole.editors)
+    users.merge(JournalRole.editors).uniq
   end
 
   def reviewers
-    users.merge(JournalRole.reviewers)
+    users.merge(JournalRole.reviewers).uniq
   end
 
   def logo_url

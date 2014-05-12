@@ -25,6 +25,7 @@ Tahi::Application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     resources :papers, only: [:index, :show, :update]
     resources :users, only: [:show]
+    resources :journals, only: [:index]
   end
 
   resources :affiliations, only: [:index, :create, :destroy]

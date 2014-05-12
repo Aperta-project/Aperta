@@ -8,9 +8,12 @@ module EventStreamNotifier
     end
 
     def event_stream_payload
-      { task_id: id, journal_id: journal.id }
+      task_payload.merge!(action: action)
     end
 
+    def task_payload
+      { task_id: id, journal_id: journal.id }
+    end
 
     private
 

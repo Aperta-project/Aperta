@@ -6,7 +6,7 @@ class Comment < ActiveRecord::Base
 
   private
 
-  def event_stream_payload
+  def task_payload
     { task_id: message_task.id, journal_id: message_task.journal.id }
   end
 end

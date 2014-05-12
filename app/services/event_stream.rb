@@ -16,8 +16,8 @@ class EventStream
     }
   end
 
-  def self.names ids
-    ids.map {|id| name id }
+  def self.names(ids)
+    ids.map {|id| name(id) }
   end
 
   def self.name(id)

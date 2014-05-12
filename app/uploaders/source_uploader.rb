@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class SourceUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
@@ -48,5 +46,4 @@ class SourceUploader < CarrierWave::Uploader::Base
   def filename
     "source.docx" if original_filename
   end
-
 end

@@ -47,6 +47,15 @@ feature "Event streaming", js: true do
         expect(page).to have_content "Wicked Awesome Card"
       end
     end
+
+    scenario "deleting a task" do
+      submission_phase.tasks.where(title: 'Add Authors').first.destroy!
+
+      phase = all('.column').detect {|p| p.find('h2').text == "Submission Data" }
+      within phase do
+        expect(page).to_not have_content "Add Authors"
+      end
+    end
   end
 
   describe "message tasks" do

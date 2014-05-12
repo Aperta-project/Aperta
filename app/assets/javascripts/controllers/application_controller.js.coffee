@@ -25,7 +25,7 @@ ETahi.ApplicationController = Ember.Controller.extend
             source.close()
           source.addEventListener eventName, (msg) =>
             esData = JSON.parse(msg.data)
-            @pushUpdate(esData)
+            if esData.deleted then @deleteRecord(esData) else @pushPayload(esData)
 
     Ember.$.ajax(params)
   ).on('init')
@@ -50,6 +50,8 @@ ETahi.ApplicationController = Ember.Controller.extend
 
         task.triggerLater('didLoad')
 
+  deleteRecord: (esData) ->
+    Ember.run => @store.findTask(esData.taskId)?.deleteRecord()
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')
 

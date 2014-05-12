@@ -2,3 +2,5 @@ StringLiterals:
   Enabled: false
 Blocks:
   Enabled: false
+ClassAndModuleChildren:
+  Enabled: false

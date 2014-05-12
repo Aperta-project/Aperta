@@ -25,7 +25,7 @@ ETahi.ApplicationController = Ember.Controller.extend
             source.close()
           source.addEventListener eventName, (msg) =>
             esData = JSON.parse(msg.data)
-            if esData.deleted then @deleteRecord(esData) else @pushPayload(esData)
+            if esData.deleted then @deleteRecord(esData) else @pushUpdate(esData)
 
     Ember.$.ajax(params)
   ).on('init')

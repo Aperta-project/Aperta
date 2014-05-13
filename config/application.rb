@@ -27,5 +27,6 @@ module Tahi
 
     config.s3_bucket = :not_set
     config.carrierwave_storage = :file
+    config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
   end
 end

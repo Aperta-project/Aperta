@@ -7,11 +7,11 @@ class Task < ActiveRecord::Base
 
   after_initialize :initialize_defaults
 
-  scope :completed, -> { where(completed: true) }
-  scope :metadata, -> { where(type: metadata_types) }
-  scope :incomplete, -> { where(completed: false) }
-  scope :assigned_to, ->(user) { where(assignee: user) }
-  scope :unassigned, -> { where(assignee: nil) }
+  scope :completed,   -> { where(completed: true) }
+  scope :metadata,    -> { where(type: metadata_types) }
+  scope :incomplete,  -> { where(completed: false) }
+  scope :assigned_to, -> (user) { where(assignee: user) }
+  scope :unassigned,  -> { where(assignee: nil) }
 
   has_one :paper, through: :phase
   has_one :journal, through: :paper

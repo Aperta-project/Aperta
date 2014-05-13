@@ -27,3 +27,10 @@ ActiveSupport::Notifications.subscribe('task:destroyed') do |name, start, finish
       { action: "destroy", task_ids: [task_id] }.to_json
     )
 end
+
+ActiveSupport::Notifications.subscribe('deleted') do |name, start, finish, id, payload|
+  EventStream.post_event(
+    payload[:journal_id],
+    { taskId: payload[:id], deleted: true }.to_json
+  )
+end

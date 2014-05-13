@@ -2,3 +2,7 @@ StringLiterals:
   Enabled: false
 Blocks:
   Enabled: false
+ClassAndModuleChildren:
+  Enabled: false
+LineLength:
+  Max: 120

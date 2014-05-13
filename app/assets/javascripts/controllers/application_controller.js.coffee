@@ -61,6 +61,8 @@ ETahi.ApplicationController = Ember.Controller.extend
 
         task.triggerLater('didLoad')
 
+  deleteRecord: (esData) ->
+    Ember.run => @store.findTask(esData.taskId)?.deleteRecord()
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')
 

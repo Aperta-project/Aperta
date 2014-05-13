@@ -3,6 +3,7 @@ class Paper < ActiveRecord::Base
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
 
+  has_one :manuscript
   has_many :figures
   has_many :paper_roles, inverse_of: :paper
   has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user

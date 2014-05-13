@@ -6,6 +6,18 @@ describe "Affiliation" do
     expect(affiliation).to be_valid
   end
 
+  describe "email validation" do
+    it "allows a valid email address" do
+      affiliation = FactoryGirl.build(:affiliation, email: "someone@example.com")
+      expect(affiliation).to be_valid
+    end
+
+    it "does not allow a invalid email address" do
+      affiliation = FactoryGirl.build(:affiliation, email: "someonetypedsomethingbad")
+      expect(affiliation).to_not be_valid
+    end
+  end
+
   context "by_date scope" do
     it "orders by start_date ascending" do
       fourth = create(:affiliation)

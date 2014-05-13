@@ -1,5 +1,5 @@
 class Phase < ActiveRecord::Base
-  has_many :tasks, inverse_of: :phase
+  has_many :tasks, inverse_of: :phase, dependent: :destroy
   has_many :message_tasks, -> { where(type: 'MessageTask') }, inverse_of: :phase
   belongs_to :paper
 

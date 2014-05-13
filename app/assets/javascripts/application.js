@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery-ujs
 //= require jquery-fileupload/basicplus
 //= require underscore
 //= require ScrollToFixed

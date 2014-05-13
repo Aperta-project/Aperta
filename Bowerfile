@@ -1,4 +1,5 @@
 asset "jquery"
+asset "jquery-ujs" #csrf support
 asset "bootstrap-sass"
 asset "underscore"
 asset "spin.js"

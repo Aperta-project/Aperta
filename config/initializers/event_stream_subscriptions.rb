@@ -21,7 +21,6 @@ ActiveSupport::Notifications.subscribe('task:destroyed') do |name, start, finish
     task_id    = payload[:task_id]
     journal_id = payload[:journal_id]
 
-    #TODO: probably need to pull out this hash into a serializer?
     EventStream.post_event(
       journal_id,
       { action: "destroy", task_ids: [task_id] }.to_json

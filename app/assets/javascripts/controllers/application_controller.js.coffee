@@ -36,8 +36,8 @@ ETahi.ApplicationController = Ember.Controller.extend
   pushDestroy: (esData)->
     (esData.task_ids).forEach (taskId) =>
       task = @store.findTask(taskId)
-      phase = task.get('phase')
-      phase.get('tasks').removeObject(task)
+      #phase = task.get('phase')
+      #phase.get('tasks').removeObject(task)
       task.deleteRecord()
       task.triggerLater('didDelete')
 

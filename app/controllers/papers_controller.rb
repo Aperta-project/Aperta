@@ -8,11 +8,9 @@ class PapersController < ApplicationController
   def show
     respond_to do |format|
       @paper = PaperPolicy.new(params[:id], current_user).paper
-      raise ActiveRecord::RecordNotFound unless @paper
 
       format.html do
-        redirect_to edit_paper_path(@paper) unless @paper.submitted?
-        @tasks = TaskPolicy.new(@paper, current_user).tasks
+        render 'ember/index'
       end
 
       format.json do
@@ -32,11 +30,6 @@ class PapersController < ApplicationController
 
   def edit
     @paper = PaperPolicy.new(params[:id], current_user).paper
-    if @paper.submitted?
-      redirect_to paper_path(@paper) and return
-    end
-    @tasks = TaskPolicy.new(@paper, current_user).tasks
-
     render 'ember/index'
   end
 

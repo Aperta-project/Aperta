@@ -1,7 +1,0 @@
-%h1 Upload Manuscript
-= form_tag({action: :upload}, multipart: true) do
-  .form-group
-    = label_tag :upload_file, 'Upload Word Document'
-    = file_field_tag :upload_file, class: 'form-control'
-    %p.help-block Uploading a file will replace your current work.
-    = button_tag "Upload File", type: 'submit', class: 'btn btn-primary'

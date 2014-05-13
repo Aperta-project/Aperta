@@ -3,7 +3,7 @@ class JournalsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with Journal.all
+    respond_with Journal.all, each_serializer: JournalWithTemplatesSerializer
   end
 
   def show

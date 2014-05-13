@@ -34,7 +34,7 @@ class Paper < ActiveRecord::Base
       where.not(published_at: nil)
     end
 
-    def self.unpublished
+    def unpublished
       where(published_at: nil)
     end
   end

@@ -11,7 +11,7 @@ update_listeners.each do |ns|
     serializer = task.active_model_serializer.new(task)
     EventStream.post_event(
       journal_id,
-      serializer.to_json
+      serializer.as_json.merge(action: action).to_json
     )
   end
 end

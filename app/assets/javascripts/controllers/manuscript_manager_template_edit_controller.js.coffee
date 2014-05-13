@@ -2,10 +2,6 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
   dirty: false
   errorText: ""
 
-  paperTypes: (->
-    @get('journal.paperTypes')
-  ).property('journal.paperTypes.@each')
-
   sortedPhases: Ember.computed.alias 'phases'
 
   actions:

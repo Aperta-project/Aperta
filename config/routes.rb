@@ -36,9 +36,8 @@ Tahi::Application.routes.draw do
     get :profile, on: :collection
   end
 
-  resources :papers, only: [:new, :create, :show, :edit, :update] do
+  resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create
-    resources :submissions, only: [:new, :create]
     resources :tasks, only: [:update, :create, :show, :destroy] do
       resources :comments, only: :create
     end
@@ -76,6 +75,8 @@ Tahi::Application.routes.draw do
 
   get '/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 
-  root 'ember#index'
   resource :event_stream, only: :show
+
+  get '*route' => 'ember#index'
+  root 'ember#index'
 end

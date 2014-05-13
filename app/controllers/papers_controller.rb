@@ -19,10 +19,6 @@ class PapersController < ApplicationController
     end
   end
 
-  def new
-    @paper = Paper.new
-  end
-
   def create
     paper = PaperFactory.create(paper_params, current_user)
     respond_with paper

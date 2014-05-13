@@ -1,6 +1,4 @@
 class SubmitPaperPage < Page
-  path :new_paper_submission
-
   def initialize(element=nil)
     expect(page).to have_css('#submit-paper')
     super

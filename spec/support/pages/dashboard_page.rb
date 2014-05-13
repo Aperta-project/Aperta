@@ -38,6 +38,6 @@ class DashboardPage < Page
   end
 
   def visit_admin
-    AdminDashboardPage.visit
+    RailsAdminDashboardPage.visit
   end
 end

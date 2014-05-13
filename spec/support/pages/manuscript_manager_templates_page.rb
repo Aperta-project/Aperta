@@ -19,4 +19,8 @@ class ManuscriptManagerTemplatePage < Page
     click_button "Add New Template"
   end
 
+  def paper_type
+    find(".template-edit-paper-type input").value
+  end
+
 end

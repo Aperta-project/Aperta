@@ -1,6 +1,7 @@
+<h2>Journal Administration</h2>
 <ul class='journals'>
   {{#each journal in content}}
-    <li>
+    <li class='journal'>
       {{#link-to "journal" journal}}
         <img {{bind-attr src=journal.logoUrl}} />
         {{journal.name}}

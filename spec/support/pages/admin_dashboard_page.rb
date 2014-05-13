@@ -1,17 +1,20 @@
 class AdminDashboardPage < Page
-  path :rails_admin
+  def self.visit
+    page.visit "/admin"
+    new
+  end
 
   def initialize(*args)
     super
-    synchronize_content! "Site Administration"
+    synchronize_content! "Journal Administration"
   end
 
-  def navigate_to model_name
-    within(all('ul.nav.nav-list').first) do
-      click_on model_name
-    end
+  def journal_names
+    all('.journals .journal').map(&:text)
+  end
 
-    model_class = model_name.gsub(/\s/, '_').camelize
-    "Admin#{model_class}Page".constantize.new
+  def visit_journal(journal)
+    click_link(journal.name)
+    JournalPage.new
   end
 end

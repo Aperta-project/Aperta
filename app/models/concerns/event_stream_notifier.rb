@@ -28,10 +28,10 @@ module EventStreamNotifier
     def action
       if previous_changes[:created_at].present?
         "created"
-      elsif previous_changes[:updated_at].present?
-        "updated"
-      else
+      elsif self.destroyed?
         "destroyed"
+      else
+        "updated"
       end
     end
   end

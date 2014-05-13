@@ -21,20 +21,22 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
   validate :metadata_tasks_completed?, if: :submitting?
 
-  def self.submitted
-    where(submitted: true)
-  end
+  class << self
+    def submitted
+      where(submitted: true)
+    end
 
-  def self.ongoing
-    where(submitted: false)
-  end
+    def ongoing
+      where(submitted: false)
+    end
 
-  def self.published
-    where.not(published_at: nil)
-  end
+    def published
+      where.not(published_at: nil)
+    end
 
-  def self.unpublished
-    where(published_at: nil)
+    def self.unpublished
+      where(published_at: nil)
+    end
   end
 
   def tasks_for_type(klass_name)
@@ -90,5 +92,4 @@ class Paper < ActiveRecord::Base
   def add_author(user)
     authors.push user.slice(*%w(first_name last_name email))
   end
-
 end

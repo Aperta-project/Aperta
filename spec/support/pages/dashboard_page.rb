@@ -38,7 +38,6 @@ class DashboardPage < Page
   end
 
   def visit_admin
-    click_on "Admin"
-    AdminDashboardPage.new
+    AdminDashboardPage.visit
   end
 end

@@ -2,7 +2,7 @@ class TahiNotifier
   def self.subscribe(*listeners)
     listeners.flatten.each do |listener|
       ActiveSupport::Notifications.subscribe(to_regexp(listener)) do |name, start, finish, id, payload|
-        yield(payload)
+        yield(name, start, finish, id, payload)
       end
     end
   end

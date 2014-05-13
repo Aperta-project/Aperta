@@ -11,22 +11,25 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery_ujs
+//= require jquery-ujs
 //= require jquery-fileupload/basicplus
 //= require underscore
-//= require bootstrap
-//= require scrollToFixed
+//= require ScrollToFixed
+//= require jQuery.dotdotdot/src/js/jquery.dotdotdot
+//= require jquery-timeago/jquery.timeago
+//= require typeahead.js/dist/typeahead.bundle
+//= require spin.js/spin
+//
+//= require bootstrap-sass/dist/js/bootstrap
+//= require bootstrap-datepicker/js/bootstrap-datepicker
 //= require chosen-jquery
-//= require jquery.dotdotdot
-//= require jquery.timeago
-//= require typeahead
+//
 //= require handlebars
-//= require spin
 //= require ember
 //= require ember-data
+//= require utils
 //= require_self
 //= require e_tahi
-//= require bootstrap-datepicker
 //= require_tree .
 //= require standard_tasks/application
 

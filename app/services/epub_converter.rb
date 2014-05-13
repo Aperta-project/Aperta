@@ -1,11 +1,11 @@
 class EpubConverter
-  def self.generate_epub paper
+  def self.generate_epub(paper, include_source=false)
     builder = Dir.mktmpdir do |dir|
       File.open(File.join(dir, 'content.html'), 'w+') do |file|
         html = construct_epub_html paper
         file.write html
         file.flush
-        generate_epub_builder paper, file.path
+        generate_epub_builder paper, file.path, include_source
       end
     end
 
@@ -22,8 +22,9 @@ class EpubConverter
       paper.short_title.squish.downcase.tr(" ", "_") + ".epub"
     end
 
-    def generate_epub_builder(paper, temp_paper_path)
+    def generate_epub_builder(paper, temp_paper_path, include_source=false)
       workdir = File.dirname temp_paper_path
+
       GEPUB::Builder.new do
         language 'en'
         unique_identifier 'http://tahi.org/hello-world', 'BookID', 'URL'
@@ -35,6 +36,15 @@ class EpubConverter
           ordered do
             file "./#{File.basename temp_paper_path}"
             heading 'Main Content'
+            if include_source && paper.manuscript.present?
+              dest_dir = "#{workdir}/original_sources"
+              src = paper.manuscript.source
+              FileUtils.mkdir_p dest_dir
+              File.open("#{dest_dir}/source.docx", 'wb') do |f|
+                f.write src.file.read
+              end
+              file "./original_sources/#{File.basename src.path}"
+            end
           end
         end
       end

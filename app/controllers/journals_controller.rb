@@ -3,10 +3,10 @@ class JournalsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with Journal.all, each_serializer: JournalWithTemplatesSerializer
+    respond_with Journal.all
   end
 
   def show
-    respond_with Journal.find(params[:id]), serializer: JournalWithTemplatesSerializer, root: "journal"
+    respond_with Journal.find(params[:id])
   end
 end

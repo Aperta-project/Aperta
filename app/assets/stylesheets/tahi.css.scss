@@ -196,3 +196,15 @@ textarea { resize: none; }
   }
 }
 
+.form-group.required {
+  position: relative;
+  &::before {
+    content: "*";
+    font-size: 24pt;
+    font-weight: bold;
+    position: absolute;
+    color: #5d4aac;
+    left: -20px;
+  }
+}
+

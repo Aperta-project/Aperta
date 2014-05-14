@@ -9,6 +9,16 @@ describe EpubConverter do
     create :paper, body: paper_body, short_title: paper_title, user: create(:user)
   end
 
+  def read_epub_stream(stream)
+    entries = []
+    Zip::InputStream.open(stream) do |io|
+      while (entry = io.get_next_entry)
+        entries << entry
+      end
+    end
+    entries
+  end
+
   describe '#generate_epub' do
     it 'returns a stream of data to the controller' do
       epub = EpubConverter.generate_epub(paper)
@@ -23,6 +33,37 @@ describe EpubConverter do
 
       it 'returns paper body with default text' do
         expect{ EpubConverter.generate_epub(paper) }.to_not raise_error
+      end
+    end
+
+    context 'paper with no uploaded source' do
+      it "has no source in the epub" do
+        epub = EpubConverter.generate_epub(paper)[:stream]
+        entries = read_epub_stream(epub)
+        expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
+      end
+
+      it "does not include a source even when requested" do
+        epub = EpubConverter.generate_epub(paper, true)[:stream]
+        entries = read_epub_stream(epub)
+        expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
+      end
+    end
+
+    context 'paper with uploaded source' do
+      let(:paper) { create :paper }
+      let!(:manuscript)  { FactoryGirl.create(:manuscript, paper: paper) }
+
+      it "includes the source doc in the epub when requested" do
+        epub = EpubConverter.generate_epub(paper, true)[:stream]
+        entries = read_epub_stream(epub)
+        expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(true)
+      end
+
+      it "does not include the source doc in the epub when not requested" do
+        epub = EpubConverter.generate_epub(paper)[:stream]
+        entries = read_epub_stream(epub)
+        expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
       end
     end
   end

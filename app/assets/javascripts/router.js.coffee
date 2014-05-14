@@ -14,10 +14,11 @@ ETahi.Router.map ()->
 
   @resource('affiliation')
 
-  @resource 'journal', path: '/admin/journals/:journal_id', ->
-    @resource 'manuscript_manager_template', path: '/manuscript_manager_templates', ->
-      @route('new')
-      @route('edit', path: '/:template_id/edit')
+  @resource 'admin', ->
+    @resource 'journal', path: '/journals/:journal_id', ->
+      @resource 'manuscript_manager_template', path: '/manuscript_manager_templates', ->
+        @route('new')
+        @route('edit', path: '/:template_id/edit')
 
 ETahi.Router.reopen
   rootURL: '/'

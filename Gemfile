@@ -70,7 +70,7 @@ group :test do
   gem 'factory_girl_rails'
   gem "codeclimate-test-reporter", require: nil
   gem 'vcr'
-  gem 'typhoeus'
+  gem 'webmock'
 
   # For testing event streaming.
   gem 'sinatra'

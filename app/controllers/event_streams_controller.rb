@@ -5,6 +5,6 @@ class EventStreamsController < ApplicationController
   end
 
   def ids
-    Journal.joins(papers: :user).where('users.id = ?', current_user.id).uniq.pluck(:id)
+    current_user.journals.pluck(:id)
   end
 end

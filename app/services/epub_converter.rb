@@ -1,5 +1,5 @@
 class EpubConverter
-  def self.generate_epub(paper, include_source=false)
+  def self.generate_epub(paper, include_source = false)
     converter = new(paper, include_source)
 
     builder = Dir.mktmpdir do |dir|
@@ -58,7 +58,7 @@ class EpubConverter
     File.open("#{dest_dir}/source.docx", 'wb') do |f|
       f.write src.file.read
     end
-    src_path =  "./original_sources/#{File.basename src.path}"
+    "./original_sources/#{File.basename src.path}"
   end
 
   def construct_epub_html

@@ -53,7 +53,7 @@ ETahi.ApplicationController = Ember.Controller.extend
         return unless msg.tasks.length
         action = msg.meta.action
         delete msg.meta
-        (ETahi.EventPollingActions[action]||->).call(@, msg)
+        (ETahi.EventStreamActions[action]||->).call(@, msg)
 
     Ember.run.later @, ->
       Ember.$.ajax(params)

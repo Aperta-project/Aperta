@@ -23,4 +23,11 @@ class ManuscriptManagerTemplatePage < Page
     find(".template-edit-paper-type input").value
   end
 
+  def paper_type=(type)
+    find(".template-edit-paper-type input").set(type)
+  end
+
+  def save
+    find(".template-save-button").click
+  end
 end

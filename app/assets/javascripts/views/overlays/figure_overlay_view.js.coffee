@@ -43,6 +43,7 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
 
       store = @get('controller.store')
       updatedFigures = _.map data.result.figures, (figure) ->
+        figure.title = "Title: " + figure.title
         store.push 'figure', figure
 
       @get('figures').pushObjects updatedFigures

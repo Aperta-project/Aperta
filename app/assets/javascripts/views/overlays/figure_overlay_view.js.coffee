@@ -11,7 +11,7 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
   setupUpload: (->
     uploader = $('.js-jquery-fileupload')
     uploader.fileupload
-      url: "/papers/#{@controller.get('paperId')}/figures"
+      url: "/papers/#{@controller.get('paper.id')}/figures"
       dataType: 'json'
       acceptFileTypes: /(\.|\/)(gif|jpe?g|png|tiff)$/i
       method: 'POST'

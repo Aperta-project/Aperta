@@ -12,6 +12,7 @@ class EventStream
   def self.connection_info(ids)
     {
       url: stream_url,
+      connectionTime: Time.now.utc,
       eventNames: names(ids)
     }
   end

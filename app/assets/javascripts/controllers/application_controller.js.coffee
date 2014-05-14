@@ -19,17 +19,46 @@ ETahi.ApplicationController = Ember.Controller.extend
       url: '/event_stream'
       method: 'GET'
       success: (data) =>
-        data.eventNames.forEach (eventName) =>
-          source = new EventSource(data.url + "&stream=#{eventName}")
-          Ember.$(window).unload -> source.close()
-          source.addEventListener eventName, (msg) =>
-            esData = JSON.parse(msg.data)
-            action = esData.action
-            delete esData.action
-            (ETahi.EventStreamActions[action]||->).call(@, esData)
+        if window.EventSource
+          @eventSource data
+        else
+          @polling data
 
     Ember.$.ajax(params)
   ).on('init')
+
+  eventSource: (data)->
+    data.eventNames.forEach (eventName) =>
+      source = new EventSource(data.url + "&stream=#{eventName}")
+      Ember.$(window).unload -> source.close()
+      source.addEventListener eventName, (msg) =>
+        esData = JSON.parse(msg.data)
+        action = esData.action
+        delete esData.action
+        (ETahi.EventStreamActions[action]||->).call(@, esData)
+
+  polling: (data)->
+    data.eventNames.forEach (eventName) =>
+      @pollingFn eventName, data.connectionTime
+
+  pollingFn: (eventName, lastTime)->
+    pollingUrl = "/polling"
+    params =
+      url: pollingUrl + "?stream=#{eventName}&time=#{lastTime}"
+      method: 'GET'
+      success: (msg) =>
+        # include journal id in response so you can stop finding it the slow
+        # way
+        @pollingFn eventName, msg.meta.time
+        return unless msg.tasks.length
+        action = msg.meta.action
+        delete msg.meta
+        (ETahi.EventStreamActions[action]||->).call(@, msg)
+
+    Ember.run.later @, ->
+      Ember.$.ajax(params)
+    , 2000
+
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')
 

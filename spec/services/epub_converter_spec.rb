@@ -42,6 +42,12 @@ describe EpubConverter do
         entries = read_epub_stream(epub)
         expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
       end
+
+      it "does not include a source even when requested" do
+        epub = EpubConverter.generate_epub(paper, true)[:stream]
+        entries = read_epub_stream(epub)
+        expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
+      end
     end
 
     context 'paper with uploaded source' do

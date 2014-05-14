@@ -76,6 +76,7 @@ Tahi::Application.routes.draw do
   get '/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 
   resource :event_stream, only: :show
+  resource :polling, only: :show
 
   get '*route' => 'ember#index'
   root 'ember#index'

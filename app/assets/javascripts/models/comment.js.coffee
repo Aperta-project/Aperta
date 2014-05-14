@@ -4,4 +4,4 @@ ETahi.Comment = DS.Model.extend
   messageTask: DS.belongsTo('messageTask')
   body: a('string')
   createdAt: a('date')
-  commentViews: DS.hasMany('commentView')
+  commentLooks: DS.hasMany('commentLook')

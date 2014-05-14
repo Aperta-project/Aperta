@@ -15,7 +15,7 @@ class Api::PapersController < ApplicationController
       end
 
       format.epub do
-        epub = EpubConverter.generate_epub @paper
+        epub = EpubConverter.generate_epub @paper, params[:include_original]
         send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
       end
     end

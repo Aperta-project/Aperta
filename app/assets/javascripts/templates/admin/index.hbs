@@ -1,0 +1,13 @@
+<div id="tahi-container" class="admin-screen">
+  <h2>Journal Administration</h2>
+  <ul class='journals'>
+    {{#each journal in content}}
+      <li class='journal'>
+        {{#link-to "journal" journal}}
+          <img {{bind-attr src=journal.logoUrl}} />
+          {{journal.name}}
+        {{/link-to}}
+      </li>
+    {{/each}}
+  </ul>
+</div>

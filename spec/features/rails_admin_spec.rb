@@ -9,7 +9,7 @@ feature "Tahi administration", js: true do
   before { SignInPage.visit.sign_in admin }
 
   scenario "Admin can toggle the super admin bit on other users" do
-    admin_page = DashboardPage.visit.visit_admin
+    admin_page = RailsAdminDashboardPage.visit
     users_page = admin_page.navigate_to 'Users'
 
     edit_user_page = users_page.edit_user user.id
@@ -22,7 +22,7 @@ feature "Tahi administration", js: true do
   end
 
   scenario "Admin can toggle the admin bit on other users" do
-    admin_page = DashboardPage.visit.visit_admin
+    admin_page = RailsAdminDashboardPage.visit
 
     roles_page = admin_page.navigate_to 'Journal roles'
 
@@ -42,7 +42,7 @@ feature "Tahi administration", js: true do
   end
 
   scenario "Admin can toggle editor and reviewer bits on other users" do
-    admin_page = DashboardPage.visit.visit_admin
+    admin_page = RailsAdminDashboardPage.visit
     roles_page = admin_page.navigate_to 'Journal roles'
 
     new_roles_page = roles_page.add_role
@@ -75,7 +75,7 @@ feature "Tahi administration", js: true do
   end
 
   scenario "Admin can upload a logo for the journal" do
-    admin_page = DashboardPage.visit.visit_admin
+    admin_page = RailsAdminDashboardPage.visit
     journals_page = admin_page.navigate_to 'Journals'
     edit_journal_page = journals_page.edit_journal journal.id
     edit_journal_page.upload_logo

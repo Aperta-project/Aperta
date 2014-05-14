@@ -11,7 +11,7 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend
           task_types: []
         ]
     )
-    @modelFor('manuscriptManagerTemplate').pushObject(newTemplate)
+    journal.get('manuscriptManagerTemplates').pushObject(newTemplate)
 
   setupController: (controller, model) ->
     controller.set('model', model)
@@ -20,18 +20,3 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend
   renderTemplate: ->
     @render 'manuscript_manager_template/edit'
 
-  actions:
-    chooseNewCardTypeOverlay: (phase) ->
-      taskTypes = @controllerFor('manuscriptManagerTemplate').get('taskTypes')
-      @controllerFor('chooseNewCardTypeOverlay').setProperties(phase: phase, taskTypes: taskTypes)
-      @render('add_manuscript_template_card_overlay',
-        into: 'application'
-        outlet: 'overlay'
-        controller: 'chooseNewCardTypeOverlay')
-
-    addTaskType: (phase, taskType) ->
-      @controllerFor('manuscriptManagerTemplateEdit').send('addTask', phase, taskType)
-      @send('closeOverlay')
-
-    closeAction: ->
-      @send('closeOverlay')

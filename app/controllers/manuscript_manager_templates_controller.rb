@@ -39,6 +39,10 @@ class ManuscriptManagerTemplatesController < ApplicationController
   end
 
   def find_journal
-    @journal = current_user.journals.find(params[:journal_id])
+    if current_user.admin?
+      @journal = Journal.find(params[:journal_id])
+    else
+      @journal = current_user.journals.find(params[:journal_id])
+    end
   end
 end

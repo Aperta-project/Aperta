@@ -34,6 +34,7 @@ gem 'pdfkit'
 gem 'mini_magick'
 gem 'timeliness'
 gem 'american_date'
+gem 'omniauth'
 
 group :production, :staging do
   gem 'heroku-deflater'

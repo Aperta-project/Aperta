@@ -39,19 +39,21 @@ ETahi.ApplicationController = Ember.Controller.extend
 
   polling: (data)->
     data.eventNames.forEach (eventName) =>
-      @pollingFn eventName
+      @pollingFn eventName, data.connectionTime
 
-  pollingFn: (eventName)->
+  pollingFn: (eventName, lastTime)->
     pollingUrl = "/polling"
     params =
-      url: pollingUrl + "&stream=#{eventName}"
+      url: pollingUrl + "?stream=#{eventName}&time=#{lastTime}"
       method: 'GET'
       success: (msg) =>
-        @pollingFn eventName
-        esData = JSON.parse(msg.data)
-        action = esData.action
-        delete esData.action
-        (ETahi.EventStreamActions[action]||->).call(@, esData)
+        # include journal id in response so you can stop finding it the slow
+        # way
+        @pollingFn eventName, msg.meta.time
+        return unless msg.tasks.length
+        action = msg.meta.action
+        delete msg.meta
+        (ETahi.EventPollingActions[action]||->).call(@, msg)
 
     Ember.run.later @, ->
       Ember.$.ajax(params)

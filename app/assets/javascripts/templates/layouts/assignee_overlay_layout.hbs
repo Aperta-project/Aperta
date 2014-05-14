@@ -19,9 +19,7 @@
                    optionLabelPath="content.fullName"
                    class="chosen-assignee"}}
         </div>
-        <div class="overlay-completed-checkbox">
-          {{partial 'overlay-completed-checkbox'}}
-        </div>
+        {{partial 'overlay-completed-checkbox'}}
       </div>
       <a {{bind-attr class=":primary-button :overlay-close-button"}} {{action "closeAction"}}>Close</a>
     </footer>

@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20140514174824) do
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
 
-  create_table "comment_views", force: true do |t|
+  create_table "comment_looks", force: true do |t|
     t.integer  "user_id"
     t.integer  "comment_id"
     t.datetime "read_at"
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 20140514174824) do
     t.datetime "updated_at"
   end
 
-  add_index "comment_views", ["comment_id"], name: "index_comment_views_on_comment_id", using: :btree
-  add_index "comment_views", ["user_id"], name: "index_comment_views_on_user_id", using: :btree
+  add_index "comment_looks", ["comment_id"], name: "index_comment_looks_on_comment_id", using: :btree
+  add_index "comment_looks", ["user_id"], name: "index_comment_looks_on_user_id", using: :btree
 
   create_table "comments", force: true do |t|
     t.text     "body"

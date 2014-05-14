@@ -10,6 +10,7 @@
     "typeahead.js": "latest",
     "jQuery.dotdotdot": "latest",
     "jquery-timeago": "latest",
-    "bootstrap-datepicker": "latest"
+    "bootstrap-datepicker": "latest",
+    "jquery.inview": "latest"
   }
 }

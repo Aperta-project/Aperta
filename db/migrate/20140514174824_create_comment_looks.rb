@@ -1,6 +1,6 @@
-class CreateCommentViews < ActiveRecord::Migration
+class CreateCommentLooks < ActiveRecord::Migration
   def change
-    create_table :comment_views do |t|
+    create_table :comment_looks do |t|
       t.references :user,    index: true
       t.references :comment, index: true
       t.datetime   :read_at, default: nil

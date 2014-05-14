@@ -19,6 +19,15 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
     @get('sortedComments.length') < 6
   ).property('model.comments.length')
 
+  unreadComment: (->
+    unreadCommentViews = @get('model.comments').map (comment) (->
+      comment.commentViews
+    ).filter (commentView) (->
+      commentView.readAt == null
+    )
+    if @get('model.readAt') then true else false
+  ).property()
+
   setupTooltips: (->
     Ember.run.later ->
       $('.user-thumbnail').tooltip(placement: 'bottom')

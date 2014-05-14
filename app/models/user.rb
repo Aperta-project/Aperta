@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :message_tasks, through: :comments
   has_many :message_participants, inverse_of: :participant
-  has_many :comment_views
+  has_many :comment_look
 
   has_many :journals, through: :journal_roles
   has_many :admin_journal_roles, -> { where(admin: true) }, class_name: 'JournalRole'

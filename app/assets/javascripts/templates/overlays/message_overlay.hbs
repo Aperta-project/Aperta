@@ -26,12 +26,7 @@
 
 <ul class="message-comments">
   {{#each comment in shownComments}}
-    <li class="message-comment">
-      {{userThumbnail comment.commenter}}
-      <span class="comment-date">{{formattedTime comment.createdAt}}</span>
-      <span class="comment-name">{{comment.commenter.fullName}} posted</span>
-      <div class="comment-body">{{comment.body}}</div>
-    </li>
+    {{ render comment }}
   {{/each}}
 </ul>
 

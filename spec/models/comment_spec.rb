@@ -6,14 +6,14 @@ describe Comment do
     let(:commenter) { create :user }
     let(:message_task) { create :message_task, participants: [commenter, participant], phase_id: 1 }
     let(:comment) { message_task.comments.create! body: "Halo" }
-    let(:comment_view) { comment.comment_views.first }
+    let(:comment_look) { comment.comment_looks.first }
 
-    it 'creates comment views for each comment and participant' do
-      expect(comment.comment_views.count).to eq(2)
+    it 'creates comment looks for each comment and participant' do
+      expect(comment.comment_looks.count).to eq(2)
     end
 
-    it 'creates comment view records for each participant' do
-      expect(comment.comment_views.map(&:user)).to match_array [commenter, participant]
+    it 'creates comment look records for each participant' do
+      expect(comment.comment_looks.map(&:user)).to match_array [commenter, participant]
     end
   end
 end

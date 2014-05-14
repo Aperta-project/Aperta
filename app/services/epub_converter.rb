@@ -26,9 +26,9 @@ class EpubConverter
 
   def generate_epub_builder(temp_paper_path)
     workdir = File.dirname temp_paper_path
-    # because instance_eval is used in GEPUB's DSL, 'self' refers to the
-    # GEPUB::Builder instance. So we need to cache the EpubConverter object
-    # in order to access its methods
+    # because the block passed to GEPUB's initialize is instance_eval'ed, we
+    # cannot access the methods for the EpubConverter object in the block.
+    # So we need to cache self in this method's scope.
     this = self
 
     GEPUB::Builder.new do
@@ -43,7 +43,7 @@ class EpubConverter
           file "./#{File.basename temp_paper_path}"
           heading 'Main Content'
           if this.include_source && this.paper.manuscript.present?
-            file this.embed_source(workdir)
+            file this.path_to(this.embed_source(workdir))
           end
         end
       end
@@ -61,7 +61,11 @@ class EpubConverter
     File.open("#{dest_dir}/source.docx", 'wb') do |f|
       f.write src.file.read
     end
-    "./original_sources/#{File.basename src.path}"
+    src
+  end
+
+  def path_to(source)
+    "./original_sources/#{File.basename source.path}"
   end
 
   def construct_epub_html

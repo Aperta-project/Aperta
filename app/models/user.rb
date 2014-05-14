@@ -25,7 +25,9 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         authentication_keys: [:login]
+         :omniauthable,
+         authentication_keys: [:login],
+         omniauth_providers: [:orcid]
 
 
   def self.find_first_by_auth_conditions(warden_conditions)

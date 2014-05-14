@@ -12,6 +12,8 @@
   <% end -%>
 
   <div><%= f.submit "Sign in" %></div>
+
+  <%= link_to "Sign in with Orcid", user_omniauth_authorize_path(:orcid) %>
 <% end %>
 
 <%= render "devise/shared/links" %>

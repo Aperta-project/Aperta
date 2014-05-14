@@ -6,7 +6,7 @@ class RailsAdminDashboardPage < Page
     synchronize_content! "Site Administration"
   end
 
-  def navigate_to model_name
+  def navigate_to(model_name)
     within(all('ul.nav.nav-list').first) do
       click_on model_name
     end

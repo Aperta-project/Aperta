@@ -23,7 +23,7 @@ feature "Manuscript Manager Templates", js: true do
     scenario "Adding a card" do
       mmt_page = ManuscriptManagerTemplatePage.visit(journal)
       mmt_page.add_new_template
-      mmt_page.paper_type="Test Type"
+      mmt_page.paper_type = "Test Type"
       phase = mmt_page.find_phase 'New Phase'
       task_type = "ReviewerReportTask"
       phase.new_card overlay: ChooseCardTypeOverlay, card_type: task_type

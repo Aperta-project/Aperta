@@ -1,21 +1,38 @@
 module EventStreamNotifier
   extend ActiveSupport::Concern
   included do
+    after_commit :notify
 
-    after_commit :notify_create_update, on: [:create, :update]
-    after_commit :notify_destroy, on: [:destroy]
-
-    def notify_create_update
-      ActiveSupport::Notifications.instrument('updated', id: id_for_stream)
+    def notify
+      ActiveSupport::Notifications.instrument(namespace, event_stream_payload)
     end
 
-    def notify_destroy
-      ActiveSupport::Notifications.instrument('deleted', id: id, journal_id: journal.id)
+    def event_stream_payload
+      task_payload.merge!(action: action)
     end
 
-    def id_for_stream
-      id
+    def task_payload
+      { task_id: id, journal_id: journal.id }
+    end
+
+    private
+
+    def namespace
+      "#{klass_name}:#{action}"
+    end
+
+    def klass_name
+      self.class.base_class.name.downcase
+    end
+
+    def action
+      if previous_changes[:created_at].present?
+        "created"
+      elsif self.destroyed?
+        "destroyed"
+      else
+        "updated"
+      end
     end
   end
-
 end

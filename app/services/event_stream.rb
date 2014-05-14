@@ -1,10 +1,10 @@
 class EventStream
 
-  def self.post_event(id, card_json)
+  def self.post_event(journal_id, task_json)
     Thread.new do
       Net::HTTP.post_form(
         URI.parse(update_url),
-        card: card_json, stream: name(id), token: token
+        card: task_json, stream: name(journal_id), token: token
       )
     end
   end
@@ -16,8 +16,8 @@ class EventStream
     }
   end
 
-  def self.names ids
-    ids.map {|id| name id }
+  def self.names(ids)
+    ids.map {|id| name(id) }
   end
 
   def self.name(id)

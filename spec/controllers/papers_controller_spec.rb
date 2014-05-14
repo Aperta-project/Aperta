@@ -44,26 +44,12 @@ describe PapersController do
     it_behaves_like "when the user is not signed in"
 
     it { should be_success }
-    it { should render_template :show }
 
     it "uses PaperPolicy to retrieve the paper" do
       policy = double('paper policy', paper: paper)
       expect(PaperPolicy).to receive(:new).and_return policy
       do_request
       expect(assigns :paper).to eq(paper)
-    end
-
-    it "assigns assigned tasks" do
-      task = Task.create! assignee: user, title: 'Change the world', role: 'editor', phase: paper.phases.first
-      tasks = double 'tasks', tasks: [task]
-      allow(TaskPolicy).to receive(:new).and_return(tasks)
-      do_request
-      expect(assigns :tasks).to include(task)
-    end
-
-    context "when the paper is not submitted" do
-      let(:submitted) { false }
-      it { should redirect_to(edit_paper_path paper) }
     end
   end
 
@@ -81,28 +67,6 @@ describe PapersController do
       do_request
       expect(assigns :paper).to eq(paper)
     end
-
-    it "assigns assigned tasks" do
-      task = Task.create! assignee: user, title: 'Change the world', role: 'editor', phase: paper.phases.first
-      tasks = double 'tasks', tasks: [task]
-      allow(TaskPolicy).to receive(:new).and_return(tasks)
-      do_request
-      expect(assigns :tasks).to include(task)
-    end
-
-    context "when the paper is submitted" do
-      let(:submitted) { true }
-      it { should redirect_to(paper_path(paper)) }
-    end
-  end
-
-  describe "GET 'new'" do
-    subject(:do_request) { get :new }
-
-    it_behaves_like "when the user is not signed in"
-
-    it { should be_success }
-    it { should render_template :new }
   end
 
   describe "POST 'create'" do

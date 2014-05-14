@@ -26,7 +26,10 @@ class EpubConverter
 
   def generate_epub_builder(temp_paper_path)
     workdir = File.dirname temp_paper_path
-    this = self # because instance_eval (JS devs see me trollin they hatin)
+    # because instance_eval is used in GEPUB's DSL, 'self' refers to the
+    # GEPUB::Builder instance. So we need to cache the EpubConverter object
+    # in order to access its methods
+    this = self
 
     GEPUB::Builder.new do
       language 'en'

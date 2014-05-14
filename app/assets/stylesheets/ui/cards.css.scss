@@ -13,6 +13,17 @@
 //
 // Styleguide Card
 
+.figure-thumbnail-text-content:hover .glyphicon-pencil {
+  display:inline-block;
+}
+
+.edit-figure-icon {
+  color: #8ecb87;
+  font-size:14px;
+  display: none;
+  margin-left: 10px;
+}
+
 .card {
   position: relative;
   display: block;

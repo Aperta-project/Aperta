@@ -44,6 +44,10 @@ class PapersController < ApplicationController
   def upload
     @paper = Paper.find(params[:id])
 
+    manuscript = @paper.manuscript || @paper.build_manuscript
+    manuscript.source = params[:upload_file]
+    manuscript.save
+
     manuscript_data = OxgarageParser.parse(params[:upload_file].path)
     @paper.update manuscript_data
     head :no_content

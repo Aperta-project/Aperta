@@ -1,8 +1,9 @@
 class PollingsController < ApplicationController
   def show
-    render json: updated_tasks, meta: {time: Time.now.utc, action: "updated"}, root: :tasks
+    render json: updated_tasks + new_tasks, meta: {time: Time.now.utc, action: "polling"}, root: :tasks
   end
 
+  private
   def updated_tasks
     tasks.where("tasks.updated_at > ?", params[:time])
   end

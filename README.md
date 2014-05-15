@@ -38,6 +38,8 @@ By default, tahi attempts to connect to a stream server at `http://localhost:808
 ES_URL=http://tahi-eventsource.herokuapp.com rails s
 ```
 
+Or alternatively, create a `.env.development` file with this (and any other) envrionment variables, and it will be loaded automatically.  See `.env-sample` for more information.
+
 ### Running specs
 
 We use:

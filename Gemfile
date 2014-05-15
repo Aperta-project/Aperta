@@ -64,6 +64,8 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'pry-rescue'
+  gem 'dotenv-rails'
+  gem 'dotenv-deployment'
 end
 
 group :test do

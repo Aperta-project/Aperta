@@ -48,7 +48,7 @@ class Paper < ActiveRecord::Base
   end
 
   def available_admins
-    available_users.merge(JournalRole.admins)
+    journal.admins
   end
 
   def admins

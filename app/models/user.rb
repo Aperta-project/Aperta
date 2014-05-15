@@ -11,9 +11,6 @@ class User < ActiveRecord::Base
   has_many :message_participants, inverse_of: :participant
 
   has_many :journals, through: :journal_roles
-  has_many :admin_journal_roles, -> { where(admin: true) }, class_name: 'JournalRole'
-  has_many :admin_journals, through: :admin_journal_roles, source: :journal
-  has_many :managed_papers, through: :admin_journals, source: :papers
 
   attr_accessor :login
 
@@ -39,18 +36,6 @@ class User < ActiveRecord::Base
 
   def self.admins
     where admin: true
-  end
-
-  def self.admins_for(journal)
-    joins(:journal_roles).where("journal_roles.journal_id" => journal.id, "journal_roles.admin" => true)
-  end
-
-  def self.editors_for(journal)
-    joins(:journal_roles).where("journal_roles.journal_id" => journal.id, "journal_roles.editor" => true)
-  end
-
-  def self.reviewers_for(journal)
-    joins(:journal_roles).where("journal_roles.journal_id" => journal.id, "journal_roles.reviewer" => true)
   end
 
   def full_name

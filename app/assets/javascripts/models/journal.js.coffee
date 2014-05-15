@@ -6,3 +6,4 @@ ETahi.Journal = DS.Model.extend
   paperTypes: a()
   taskTypes: a()
   manuscriptManagerTemplates: a('manuscriptManagerTemplate')
+  roles: DS.hasMany('role')

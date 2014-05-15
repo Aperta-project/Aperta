@@ -22,6 +22,7 @@ feature "Tahi administration", js: true do
   end
 
   scenario "Admin can toggle the admin bit on other users" do
+    pending
     admin_page = RailsAdminDashboardPage.visit
 
     roles_page = admin_page.navigate_to 'Journal roles'
@@ -42,6 +43,7 @@ feature "Tahi administration", js: true do
   end
 
   scenario "Admin can toggle editor and reviewer bits on other users" do
+    pending
     admin_page = RailsAdminDashboardPage.visit
     roles_page = admin_page.navigate_to 'Journal roles'
 

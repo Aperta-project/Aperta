@@ -21,61 +21,6 @@ feature "Tahi administration", js: true do
     expect(edit_user_page).to be_admin
   end
 
-  scenario "Admin can toggle the admin bit on other users" do
-    pending
-    admin_page = RailsAdminDashboardPage.visit
-
-    roles_page = admin_page.navigate_to 'Journal roles'
-
-    new_roles_page = roles_page.add_role
-
-    new_roles_page.user = user.full_name
-    new_roles_page.journal = journal.name
-
-    new_roles_page.set_admin
-    roles_page = new_roles_page.save
-
-    edit_role_page = roles_page.edit_role user.full_name, journal.name
-    expect(edit_role_page).to be_admin
-    expect(edit_role_page).to_not be_editor
-    expect(edit_role_page).to_not be_reviewer
-    roles_page = edit_role_page.cancel
-  end
-
-  scenario "Admin can toggle editor and reviewer bits on other users" do
-    pending
-    admin_page = RailsAdminDashboardPage.visit
-    roles_page = admin_page.navigate_to 'Journal roles'
-
-    new_roles_page = roles_page.add_role
-
-    new_roles_page.user = user.full_name
-    new_roles_page.journal = journal.name
-
-    new_roles_page.set_editor
-    roles_page = new_roles_page.save
-
-    new_roles_page = roles_page.add_role
-
-    new_roles_page.user = user.full_name
-    new_roles_page.journal = journal2.name
-
-    new_roles_page.set_reviewer
-    roles_page = new_roles_page.save
-
-    edit_role_page = roles_page.edit_role user.full_name, journal.name
-    expect(edit_role_page).to be_editor
-    expect(edit_role_page).to_not be_reviewer
-    expect(edit_role_page).to_not be_admin
-
-    roles_page = edit_role_page.cancel
-
-    edit_role_page = roles_page.edit_role user.full_name, journal2.name
-    expect(edit_role_page).to be_reviewer
-    expect(edit_role_page).to_not be_editor
-    expect(edit_role_page).to_not be_admin
-  end
-
   scenario "Admin can upload a logo for the journal" do
     admin_page = RailsAdminDashboardPage.visit
     journals_page = admin_page.navigate_to 'Journals'

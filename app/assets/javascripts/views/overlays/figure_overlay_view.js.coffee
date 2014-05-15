@@ -48,3 +48,8 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
       @get('figures').pushObjects updatedFigures
 
   ).on('didInsertElement')
+
+  setupTooltip: (->
+    @.$().find('.figure-original-download-link').tooltip()
+  ).on('didInsertElement')
+

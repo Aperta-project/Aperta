@@ -1,15 +1,18 @@
 ETahi.ManuscriptManagerTemplateRoute = ETahi.AdminAuthorizedRoute.extend
-  model: (params) ->
-    journal = @modelFor('journal')
-    types = new Ember.RSVP.Promise((resolve, reject) -> $.getJSON("/tasks/task_types", resolve).fail(reject))
-    types.then (response) =>
-      @set('taskTypes', response.task_types)
-      @normalizeTemplateModels(journal.get('manuscriptManagerTemplates'))
+  actions:
+    chooseNewCardTypeOverlay: (phase) ->
+      taskTypes = @modelFor('journal').get('taskTypes')
+      @controllerFor('chooseNewCardTypeOverlay').setProperties(phase: phase, taskTypes: taskTypes)
+      @render('add_manuscript_template_card_overlay',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'chooseNewCardTypeOverlay')
 
-  normalizeTemplateModels: (data) ->
-    data.map (templateModel) ->
-      ETahi.ManuscriptManagerTemplate.create(templateModel)
+    addTaskType: (phase, taskType) ->
+      @controllerFor('manuscriptManagerTemplateEdit').send('addTask', phase, taskType)
+      @send('closeOverlay')
 
-  setupController: (controller, model) ->
-    controller.set('model', model)
-    controller.set('taskTypes', @get('taskTypes'))
+    closeAction: ->
+      @send('closeOverlay')
+
+    viewCard: -> #no-op

@@ -29,24 +29,3 @@ ETahi.PaperController = Ember.ObjectController.extend
     authors.join(', ') || 'Click here to add authors'
   ).property('authors.[]', 'authors.@each')
 
-# These controllers have to be here for now since the load order
-# gets messed up otherwise
-ETahi.PaperIndexController = ETahi.PaperController.extend()
-ETahi.PaperEditController = ETahi.PaperController.extend
-  errorText: ""
-  addAuthorsTask: (->
-    this.get('tasks').findBy('type', 'AuthorsTask')
-  ).property()
-
-  body: ((key, value) ->
-    if arguments.length > 1 && value != @get('defaultBody')
-      @set('model.body', value)
-
-    modelBody = @get('model.body')
-    if Ember.isBlank(modelBody)
-      @get('defaultBody')
-    else
-      modelBody
-  ).property('model.body')
-
-  defaultBody: 'Type your manuscript here'

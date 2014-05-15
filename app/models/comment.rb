@@ -21,4 +21,8 @@ class Comment < ActiveRecord::Base
   def id_for_stream
     message_task.id
   end
+
+  def task_payload
+    { task_id: message_task.id, journal_id: message_task.journal.id }
+  end
 end

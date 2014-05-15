@@ -20,12 +20,21 @@ feature "Manuscript Manager Templates", js: true do
   end
 
   describe "Adding cards" do
-    scenario "Adding a cards" do
+    scenario "Adding a card" do
       mmt_page = ManuscriptManagerTemplatePage.visit(journal)
       mmt_page.add_new_template
+      mmt_page.paper_type = "Test Type"
       phase = mmt_page.find_phase 'New Phase'
       task_type = "ReviewerReportTask"
       phase.new_card overlay: ChooseCardTypeOverlay, card_type: task_type
+      expect(phase).to have_card("Reviewer Report Task")
+      expect(mmt_page).to have_content("You have unsaved changes")
+      mmt_page.save
+      expect(mmt_page).to have_no_content("You have unsaved changes")
+      expect(page.current_url).to match(%r{/admin/journals/\d+/manuscript_manager_templates/\d+/edit})
+      mmt_page.reload
+      phase = mmt_page.find_phase 'New Phase'
+      expect(mmt_page.paper_type).to eq("Test Type")
       expect(phase).to have_card("Reviewer Report Task")
     end
   end

@@ -1,33 +1,72 @@
 <div class="add-author-form">
-  <div class="form-group form-inline">
-    <div class="form-group">
+  <div class="form-group form-inline author-top">
+    <div class="form-group author-name required">
       {{input type='text'
       value=newAuthor.first_name
       class='form-control'
       placeholder='First name'}}
     </div>
-    <div class="form-group">
+    <div class="form-group author-middle">
+      {{input type='text'
+      value=newAuthor.middle_initial
+      class='form-control'
+      placeholder='MI'}}
+    </div>
+    <div class="form-group author-name required">
       {{input type='text'
       value=newAuthor.last_name
       class='form-control'
       placeholder='Last name'}}
     </div>
-  </div>
-  <div class="form-group">
-    {{input type='text'
-    value=newAuthor.email
-    class='form-control'
-    placeholder='Email'}}
+    <div class="form-group author-half required author-bump">
+      {{input type='text'
+      value=newAuthor.email
+      class='form-control'
+      placeholder='Email'}}
+    </div>
   </div>
   <div class="form-group form-inline">
-    <div class="form-group">
+    <div class="form-group author-half required">
+      {{input type='text'
+      value=newAuthor.title
+      class='form-control'
+      placeholder='Title'}}
+    </div>
+    <div class="form-group author-half required author-bump">
+      {{input type='text'
+      value=newAuthor.department
+      class='form-control'
+      placeholder='Department'}}
+    </div>
+  </div>
+  <div class="form-group form-inline">
+    <div class="form-group author-half required">
       {{input type='text'
       value=newAuthor.affiliation
       class='form-control'
       placeholder='Affiliation'}}
     </div>
-    <div class="form-group">
-      <button class='secondary-button' {{action 'saveNewAuthor'}}>done</button>
+    <div class="form-group author-half author-bump">
+      {{input type='text'
+      value=newAuthor.secondary_affiliation
+      class='form-control'
+      placeholder='Secondary Affiliation'}}
     </div>
+  </div>
+  <div class="form-group">
+      <label class="author-label">
+        {{input type='checkbox'
+        checked=newAuthor.corresponding_author}}
+        This is a corresponding author
+      </label>
+      <label class="author-label">
+        {{input type='checkbox'
+        checked=newAuthor.deceased}}
+        This person is deceased
+      </label>
+    <span class="pull-right">
+      <a class="btn-link author-cancel" {{action 'toggleAuthorForm'}}>cancel</a>
+      <button class='secondary-button' {{action 'saveNewAuthor'}}>done</button>
+    </span>
   </div>
 </div>

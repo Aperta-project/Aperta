@@ -5,9 +5,14 @@
 
   li {
     float: left;
-    width: 45%;
-    padding: 10px 20px 10px 0;
+    width: 100%;
+    padding: 30px;
     font-size: 18px;
+    border-bottom: 1px solid #cccccc;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
 
     div {
       overflow: hidden;
@@ -18,11 +23,55 @@
 }
 
 .add-author-form {
-  width: 355px;
+  padding: 30px;
   margin: 15px 0;
+  background: rgb(194, 232, 188);
+
+  .form-group.required::before {
+    left: -12px;
+    top: 4px;
+    color: $tahi-primary;
+    font-size: 18pt;
+  }
+}
+
+.author-header {
+  margin-bottom: 20px;
+}
+
+.author-half {
+  width: 391px;
+}
+
+.author-name {
+  width: 163px;
+}
+
+.author-bump {
+  margin-left: 14px;
+}
+
+.author-top {
+  border-bottom: 1px solid $tahi-secondary;
+  padding-bottom: 15px;
+}
+
+.author-middle {
+  width: 42px;
+  margin: 0 9px;
+}
+
+.author-label {
+  font-weight: normal;
+}
+
+.author-cancel, .author-cancel:hover {
+  color: $tahi-primary;
+  margin-right: 10px;
 }
 
 .author-form {
   display: none;
+  margin: 0 30px;
   &.show-new-author-form { display: block; }
 }

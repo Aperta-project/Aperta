@@ -11,6 +11,7 @@ class Comment < ActiveRecord::Base
 
   def create_comment_look
     message_task.participants.each do |participant|
+      next if participant.id == commenter.id
       CommentLook.create! user_id: participant.id, comment_id: id
     end
   end

@@ -87,7 +87,7 @@ describe FiguresController do
                 filename: "yeti.tiff",
                 alt: "Yeti",
                 src: "/uploads/paper/1/figure/attachment/1/yeti.tiff",
-                title: "yeti.tiff",
+                title: "Title: yeti.tiff",
                 caption: nil,
                 paper_id: paper.id }
             ]

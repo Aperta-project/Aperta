@@ -36,4 +36,10 @@ describe Figure do
       figure.destroy
     end
   end
+
+  describe "creation" do
+    it "prepends Title: " do
+      expect(figure.title).to eq("Title: yeti.tiff")
+    end
+  end
 end

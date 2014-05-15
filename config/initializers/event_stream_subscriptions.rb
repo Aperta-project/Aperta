@@ -1,15 +1,23 @@
-ActiveSupport::Notifications.subscribe('updated') do |name, start, finish, id, payload|
-  task = Task.find(payload[:id])
+TahiNotifier.subscribe("task:created", "task:updated", "comment:*", "survey:*") do |name, start, finish, id, payload|
+  action     = payload[:action]
+  task_id    = payload[:task_id]
+  journal_id = payload[:journal_id]
+
+  task = Task.find(task_id)
   serializer = task.active_model_serializer.new(task)
   EventStream.post_event(
-    task.journal.id,
-    serializer.to_json
+    journal_id,
+    serializer.as_json.merge(action: action).to_json
   )
 end
 
-ActiveSupport::Notifications.subscribe('deleted') do |name, start, finish, id, payload|
+TahiNotifier.subscribe("task:destroyed") do |name, start, finish, id, payload|
+  action     = payload[:action]
+  task_id    = payload[:task_id]
+  journal_id = payload[:journal_id]
+
   EventStream.post_event(
-    payload[:journal_id],
-    { taskId: payload[:id], deleted: true }.to_json
+    journal_id,
+    { action: "destroy", task_ids: [task_id] }.to_json
   )
 end

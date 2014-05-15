@@ -8,7 +8,7 @@ class Figure < ActiveRecord::Base
   before_create :insert_title
 
   def insert_title
-    self.title = attachment.filename if attachment.present?
+    self.title = "Title: #{attachment.filename}" if attachment.present?
   end
 
   mount_uploader :attachment, AttachmentUploader

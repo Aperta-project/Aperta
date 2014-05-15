@@ -1,0 +1,25 @@
+<div class="role-admin">
+  <table class="table roles">
+    <thead>
+      <tr class="admin-header">
+        <th class="role-header">Roles</th>
+        <th class="permission-header" colspan="3">
+          Permission
+          <button class="primary-button blue-box" {{action "addRole"}}>
+            Add New Role
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each role in model}}
+        <tr>
+          <td class="role-name">{{role.name}}</td>
+          <td><input type="checkbox" disabled="disabled" /><label>Manuscript Manager</label></td>
+          <td><input type="checkbox" disabled="disabled" /><label>All Manuscript Managers</label></td>
+          <td><input type="checkbox" disabled="disabled" /><label>Admin</label></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

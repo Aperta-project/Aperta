@@ -1,5 +1,5 @@
 .admin-screen {
-  h2 {
+  h1 {
     margin-bottom: 50px;
   }
 
@@ -19,11 +19,42 @@
       display: inline-block;
       position: absolute;
       right: 10px;
-      top: 18px;
+      top: 20px;
     }
   }
 
   ul.journals {
     list-style-type: none;
+  }
+
+  .blue-box {
+    background: $tahi-blue-light;
+    color: #fff;
+  }
+
+  table.roles {
+    thead {
+      th {
+        font-size: 30px;
+        font-weight: normal;
+        position: relative;
+        padding: 20px 0 20px 0;
+        line-height: 33px;
+      }
+    }
+
+    tbody {
+      color: $tahi-blue-light;
+    }
+
+    label {
+      font-size: 12pt;
+      font-weight: normal;
+    }
+
+    .role-name {
+      width: 50%;
+      font-size: 14pt;
+    }
   }
 }

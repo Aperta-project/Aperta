@@ -23,6 +23,19 @@
     }
   }
 
+  .primary-button {
+    background-color: $tahi-blue-light;
+
+    &:hover {
+      background-color: $tahi-blue-hover;
+    }
+
+  }
+
+  .btn-link {
+    color: $tahi-blue-light;
+  }
+
   ul.journals {
     list-style-type: none;
   }
@@ -43,8 +56,24 @@
       }
     }
 
+    .action-buttons {
+      display: none;
+
+      button {
+        float: right;
+      }
+
+      &.is-editing {
+        display: table-row;
+      }
+    }
+
     tbody {
       color: $tahi-blue-light;
+
+      td {
+        border: 0;
+      }
     }
 
     label {

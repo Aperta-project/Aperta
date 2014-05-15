@@ -13,12 +13,7 @@
     </thead>
     <tbody>
       {{#each role in model}}
-        <tr>
-          <td class="role-name">{{role.name}}</td>
-          <td><input type="checkbox" disabled="disabled" /><label>Manuscript Manager</label></td>
-          <td><input type="checkbox" disabled="disabled" /><label>All Manuscript Managers</label></td>
-          <td><input type="checkbox" disabled="disabled" /><label>Admin</label></td>
-        </tr>
+        {{render 'roles/role' role}}
       {{/each}}
     </tbody>
   </table>

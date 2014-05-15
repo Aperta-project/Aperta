@@ -13,7 +13,7 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
     uploader.fileupload
       url: "/papers/#{@controller.get('paper.id')}/figures"
       dataType: 'json'
-      acceptFileTypes: /(\.|\/)(gif|jpe?g|png|tiff)$/i
+      acceptFileTypes: /(\.|\/)(gif|jpe?g|png|tif?f|eps)$/i
       method: 'POST'
 
     uploader.on 'fileuploadprocessalways', (e, data) =>
@@ -26,7 +26,7 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
         progressBarStyle: "width: 0%;"
 
       if file.error
-        upload.error = "File #{file.name} is not an image. You may upload files with the extension .jpg, .jpeg, .gif, .png, or .tiff."
+        upload.error = "File #{file.name} is not an image. You may upload files with the extension .jpg, .jpeg, .gif, .png, .eps, or .tiff."
 
       @uploads.pushObject upload
 

@@ -14,7 +14,7 @@ class Figure < ActiveRecord::Base
   mount_uploader :attachment, AttachmentUploader
 
   def self.acceptable_content_type?(content_type)
-    !!(content_type =~ /^image\/(gif|jpe?g|png|tiff)$/i)
+    !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
   end
 
   def filename

@@ -29,6 +29,10 @@ class Figure < ActiveRecord::Base
     attachment.url
   end
 
+  def preview_src
+    attachment.url(:preview)
+  end
+
   def access_details
     { filename: filename, alt: alt, id: id, src: src }
   end

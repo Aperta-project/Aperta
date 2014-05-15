@@ -39,4 +39,8 @@ class MessageCardOverlay < CardOverlay
     find('a.load-all-comments').text.scan(/\d/).first.to_i
   end
 
+  def unread_comments
+    all('li.unread')
+  end
+
 end

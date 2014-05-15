@@ -28,7 +28,7 @@ ETahi.ApplicationController = Ember.Controller.extend
             if esData.deleted then @deleteRecord(esData) else @pushUpdate(esData)
 
     Ember.$.ajax(params)
-  ).on('init')
+  )#.on('init')
 
   pushUpdate: (esData)->
     Ember.run =>

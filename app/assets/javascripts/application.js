@@ -18,7 +18,6 @@
 //= require jQuery.dotdotdot/src/js/jquery.dotdotdot
 //= require jquery-timeago/jquery.timeago
 //= require typeahead.js/dist/typeahead.bundle
-//= require jquery.inview
 //= require spin.js/spin
 //
 //= require bootstrap-sass/dist/js/bootstrap

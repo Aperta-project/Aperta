@@ -28,36 +28,6 @@ describe User do
         expect(admins).not_to include user2
       end
     end
-
-    describe ".admins_for" do
-      it "includes admins for the given journal" do
-        journal = Journal.create!
-        JournalRole.create! journal: journal, user: user2, admin: true
-        editors = User.admins_for journal
-        expect(editors).to include user2
-        expect(editors).to_not include user1
-      end
-    end
-
-    describe ".editors_for" do
-      it "includes editors for the given journal" do
-        journal = Journal.create!
-        JournalRole.create! journal: journal, user: user2, editor: true
-        editors = User.editors_for journal
-        expect(editors).to include user2
-        expect(editors).to_not include user1
-      end
-    end
-
-    describe ".reviewers_for" do
-      it "includes reviewers for the given journal" do
-        journal = Journal.create!
-        JournalRole.create! journal: journal, user: user2, reviewer: true
-        reviewers = User.reviewers_for journal
-        expect(reviewers).to include user2
-        expect(reviewers).to_not include user1
-      end
-    end
   end
 
   describe "#full_name" do

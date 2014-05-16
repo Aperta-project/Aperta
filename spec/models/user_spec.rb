@@ -1,24 +1,14 @@
 require 'spec_helper'
 
 describe User do
-  describe "scopes" do
-    let! :user1 do
-      User.create! username: 'admin',
-        first_name: 'Admin',
-        last_name: 'Istrator',
-        email: 'admin@example.org',
-        password: 'password',
-        password_confirmation: 'password'
-    end
+  it "will be valid with default factory data" do
+    user = build(:user)
+    expect(user).to be_valid
+  end
 
-    let! :user2 do
-      User.create! username: 'user',
-        first_name: 'Us',
-        last_name: 'Er',
-        email: 'user@example.org',
-        password: 'password',
-        password_confirmation: 'password'
-    end
+  describe "scopes" do
+    let(:user1) { FactoryGirl.create(:user) }
+    let(:user2) { FactoryGirl.create(:user) }
 
     describe ".admins" do
       it "includes admin users only" do

@@ -144,16 +144,7 @@ describe Task do
         role: 'admin',
         phase: paper.phases.first
     }
-
-    let(:user) do
-      User.create! username: 'albert',
-        first_name: 'albert',
-        last_name: 'einstein',
-        email: 'einstein@example.org',
-        password: 'password',
-        password_confirmation: 'password'
-    end
-
+    let(:user) { FactoryGirl.create(:user) }
     let!(:journal_role) { JournalRole.create! user: user, journal: paper.journal, admin: true }
 
     it "returns all admins" do

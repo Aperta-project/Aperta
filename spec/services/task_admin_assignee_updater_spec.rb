@@ -5,22 +5,11 @@ describe TaskAdminAssigneeUpdater do
     let(:task)  { PaperAdminTask.create!(phase: phase) }
     let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
     let(:phase) { paper.phases.first }
-    let(:jim) { User.create! email: 'jim@plos.org',
-        password: 'abcd1234',
-        password_confirmation: 'abcd1234',
-        username: 'jimplos' }
-    let(:sally) { User.create! email: 'sally@plos.org',
-        password: 'abcd1234',
-        password_confirmation: 'abcd1234',
-        username: 'sallyplos' }
-    let(:bob) { User.create! email: 'bob@plos.org',
-        password: 'abcd1234',
-        password_confirmation: 'abcd1234',
-        username: 'bobplos' }
-    let(:gus) { User.create! email: 'gus@plos.org',
-        password: 'abcd1234',
-        password_confirmation: 'abcd1234',
-        username: 'gusplos' }
+
+    let(:jim) { FactoryGirl.create(:user) }
+    let(:sally) { FactoryGirl.create(:user) }
+    let(:bob) { FactoryGirl.create(:user) }
+    let(:gus) { FactoryGirl.create(:user) }
 
     let(:updater) { TaskAdminAssigneeUpdater.new(task.reload) }
 

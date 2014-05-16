@@ -1,12 +1,10 @@
 class CommentLooksController < ApplicationController
+  respond_to :json
+
   def update
     comment_look = CommentLook.find(params[:id])
-
-    if comment_look.update comment_look_params
-      render json: comment_look
-    else
-      head 404
-    end
+    comment_look.update comment_look_params
+    respond_with comment_look
   end
 
   private

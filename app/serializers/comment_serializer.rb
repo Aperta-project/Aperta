@@ -7,6 +7,6 @@ class CommentSerializer < ActiveModel::Serializer
   has_one :comment_look, include: true, embed: :ids
 
   def comment_look
-    object.comment_looks.where(user: current_user, read_at: nil).first
+    object.comment_looks.where(user: current_user, read_at: nil).first if defined? current_user
   end
 end

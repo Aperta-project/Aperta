@@ -1,25 +1,23 @@
 class User < ActiveRecord::Base
+  has_one  :user_settings
   has_many :affiliations, inverse_of: :user
   has_many :papers, inverse_of: :user
-  has_many :journal_roles, inverse_of: :user
   has_many :paper_roles, inverse_of: :user
+  has_many :managed_papers, through: :admin_journals, source: :papers
+  has_many :journal_roles, inverse_of: :user
+  has_many :admin_journal_roles, -> { where(admin: true) }, class_name: 'JournalRole'
+  has_many :admin_journals, through: :admin_journal_roles, source: :journal
+  has_many :journals, through: :journal_roles
   has_many :tasks, foreign_key: 'assignee_id'
-  has_one :user_settings
-
   has_many :comments
   has_many :message_tasks, through: :comments
   has_many :message_participants, inverse_of: :participant
 
-  has_many :journals, through: :journal_roles
-  has_many :admin_journal_roles, -> { where(admin: true) }, class_name: 'JournalRole'
-  has_many :admin_journals, through: :admin_journal_roles, source: :journal
-  has_many :managed_papers, through: :admin_journals, source: :papers
-
   attr_accessor :login
 
-  validates :username, presence: true, uniqueness: { case_sensitive: false }
-
   before_create :add_default_user_settings
+
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
 
   mount_uploader :avatar, AvatarUploader
 
@@ -38,7 +36,7 @@ class User < ActiveRecord::Base
   end
 
   def self.admins
-    where admin: true
+    where(admin: true)
   end
 
   def self.admins_for(journal)
@@ -66,6 +64,7 @@ class User < ActiveRecord::Base
   end
 
   private
+
   def add_default_user_settings
     build_user_settings
   end

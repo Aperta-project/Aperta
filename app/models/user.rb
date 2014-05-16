@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_one  :user_settings, inverse_of: :user
   has_many :affiliations, inverse_of: :user
-  has_many :papers, inverse_of: :user
+  has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'
   has_many :paper_roles, inverse_of: :user
   has_many :journals, through: :journal_roles
   has_many :journal_roles, inverse_of: :user

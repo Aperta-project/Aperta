@@ -105,7 +105,6 @@ feature "Manuscript Manager", js: true do
     # execute_script("return $('.column h2')[0].classList.add('changedColumn')")
     # title = phase.all('.column h2').first
     # title.set "Some Other Title"
-    # binding.pry
     # execute_script("return $('.changedColumn').blur()")
     # page.reload
   end

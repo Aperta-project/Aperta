@@ -1,10 +1,10 @@
 class User < ActiveRecord::Base
-  has_one  :user_settings, inverse_of: :user
   has_many :affiliations, inverse_of: :user
   has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'
   has_many :paper_roles, inverse_of: :user
-  has_many :journals, through: :journal_roles
   has_many :journal_roles, inverse_of: :user
+  has_many :journals, through: :journal_roles
+  has_many :flows, inverse_of: :user, dependent: :destroy
   has_many :tasks, foreign_key: 'assignee_id'
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many :message_tasks, through: :comments
@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :login
 
-  before_create :add_default_user_settings
+  after_create :add_flows
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
@@ -46,7 +46,9 @@ class User < ActiveRecord::Base
 
   private
 
-  def add_default_user_settings
-    build_user_settings
+  def add_flows
+    [Flow.templates.values].each do |attrs|
+      flows.create!(attrs)
+    end
   end
 end

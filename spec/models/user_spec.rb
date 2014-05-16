@@ -40,9 +40,10 @@ describe User do
   describe "callbacks" do
     context "before_create" do
 
-      it "initializes with user_settings" do
-        user = create :user
-        expect(user.user_settings).to_not be_nil
+      it "initializes with a set of default flows" do
+        user = FactoryGirl.create(:user)
+        default_flow_titles = ["Up for grabs", "My tasks", "My papers", "Done"]
+        expect(user.flows.map(&:title)).to match_array default_flow_titles
       end
     end
   end

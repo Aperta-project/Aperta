@@ -1,12 +1,12 @@
 class User < ActiveRecord::Base
-  has_one  :user_settings
+  has_one  :user_settings, inverse_of: :user
   has_many :affiliations, inverse_of: :user
   has_many :papers, inverse_of: :user
   has_many :paper_roles, inverse_of: :user
   has_many :journals, through: :journal_roles
   has_many :journal_roles, inverse_of: :user
   has_many :tasks, foreign_key: 'assignee_id'
-  has_many :comments
+  has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many :message_tasks, through: :comments
   has_many :message_participants, inverse_of: :participant
 

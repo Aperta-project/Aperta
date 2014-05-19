@@ -2,7 +2,7 @@
   <span class="figure-thumbnail-destroy-icon glyphicon glyphicon-trash" {{action "confirmDestroyFigure"}}></span>
 
   {{#if figure.previewSrc}}
-    <img class="figure-thumbnail-image" {{action "togglePreview"}} {{bind-attr src=figure.previewSrc}} {{bind-attr alt=figure.alt}}>
+    <img class="figure-thumbnail-image" {{action "togglePreview"}} src={{unbound figure.previewSrc}} alt={{unbound figure.alt}}>
   {{else}}
     <div class="figure-thumbnail-image placeholder">
       <span class="glyphicon glyphicon-file"></span>
@@ -44,6 +44,6 @@
 {{#if view.previewState}}
   <div class="figure-thumbnail-preview">
     <div {{action "togglePreview"}} class="figure-thumbnail-preview-close">&times;</div>
-    <img {{bind-attr src=figure.previewSrc}} {{bind-attr alt=figure.alt}}>
+    <img src={{unbound figure.previewSrc}} alt={{unbound figure.alt}}>
   </div>
 {{/if}}

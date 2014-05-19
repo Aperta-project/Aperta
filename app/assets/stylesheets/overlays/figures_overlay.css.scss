@@ -16,8 +16,9 @@
   (3)     .figure-thumbnail-image
   (4)     .figure-thumbnail-text-content
   (5)     .figure-thumbnail-edit-actions
-  (6)     .figure-thumbnail-destroy-overlay
-  (7)   .figure-thumbnail-preview
+  (6)     .figure-original-download-link
+  (7)     .figure-thumbnail-destroy-overlay
+  (8)   .figure-thumbnail-preview
 
   Adding the modifier class ._destroy to .figure-thumbnail
   will display .figure-thumbnail-destroy-overlay
@@ -109,6 +110,12 @@
 }
 
 // (6) -----------------------------------
+.figure-original-download-link {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+// (7) -----------------------------------
 .figure-thumbnail-destroy-overlay {
   @include position(absolute, 0px 0px 0px 0px);
   display: none;
@@ -136,7 +143,7 @@
   display: block;
 }
 
-// (7) -----------------------------------
+// (8) -----------------------------------
 .figure-thumbnail-preview {
   position: relative;
   top: -5px;

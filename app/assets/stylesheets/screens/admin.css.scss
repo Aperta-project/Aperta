@@ -3,11 +3,14 @@
     margin-bottom: 50px;
   }
 
+  .relative {
+    position: relative;
+  }
+
   .admin-header {
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     margin: 0 0 25px 0;
-    position: relative;
     padding: 20px 0;
 
     .title {
@@ -19,7 +22,6 @@
       display: inline-block;
       position: absolute;
       right: 10px;
-      top: 20px;
     }
   }
 
@@ -57,9 +59,6 @@
     }
 
     .role-name {
-      .relative {
-        position: relative;
-      }
       .hover-target {
         position: absolute;
         width: 100%;

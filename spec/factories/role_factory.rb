@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :role do
-    name "A Role"
+    sequence(:name) { |n| "#{n.ordinalize} Role" }
 
     trait :admin do
       admin true

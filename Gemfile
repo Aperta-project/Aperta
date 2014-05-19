@@ -4,6 +4,7 @@ ruby "2.1.2"
 
 # Task Engines
 gem 'standard_tasks', path: 'engines/standard_tasks'
+gem 'supporting_information', path: 'engines/supporting_information'
 
 # Gems
 gem 'rails', '4.1.1'

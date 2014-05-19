@@ -6,7 +6,7 @@ class DefaultManuscriptManagerTemplateFactory
       template: {
         phases: [{
           name: "Submission Data",
-          task_types: [DeclarationTask, StandardTasks::FigureTask, StandardTasks::AuthorsTask, UploadManuscriptTask].map(&:to_s)
+          task_types: [DeclarationTask, StandardTasks::FigureTask, SupportingInformation::Task, StandardTasks::AuthorsTask, UploadManuscriptTask].map(&:to_s)
         }, {
           name: "Assign Editor",
           task_types: [PaperEditorTask, StandardTasks::TechCheckTask, PaperAdminTask].map(&:to_s)

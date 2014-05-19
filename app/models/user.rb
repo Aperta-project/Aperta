@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many :message_tasks, through: :comments
   has_many :message_participants, inverse_of: :participant
+  has_many :comment_looks
 
   attr_accessor :login
 

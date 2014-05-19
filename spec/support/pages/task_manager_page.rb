@@ -21,6 +21,11 @@ class TaskManagerPage < Page
     all('.card').map(&:text)
   end
 
+  def message_tasks
+    synchronize_content! "Add new card"
+    all('.card-message').map { |el| MessageTaskCard.new(el) }
+  end
+
   def get_first_matching_task name
     all('.card-content').detect { |card| card.text == name }
   end
@@ -30,5 +35,11 @@ class TaskManagerPage < Page
       click_link "Article"
     end
     EditPaperPage.new
+  end
+end
+
+class MessageTaskCard < PageFragment
+  def unread_comments_badge
+    find('.badge.unread-comments-count').text.to_i
   end
 end

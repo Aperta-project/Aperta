@@ -2,6 +2,10 @@ source 'https://rubygems.org'
 
 ruby "2.1.2"
 
+# Task Engines
+gem 'standard_tasks', path: 'engines/standard_tasks'
+
+# Gems
 gem 'rails', '4.1.1'
 gem 'unicorn'
 gem 'pg'
@@ -27,7 +31,6 @@ gem 'newrelic_rpm'
 gem "rest_client", "~> 1.7.3"
 gem 'gepub'
 gem 'rubyzip', require: 'zip'
-gem 'standard_tasks', path: 'engines/standard_tasks'
 gem "active_model_serializers"
 gem 'pry-rails'
 gem 'pdfkit'

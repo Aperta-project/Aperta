@@ -57,7 +57,9 @@
     }
 
     .role-name {
-      position: relative;
+      .relative {
+        position: relative;
+      }
       .hover-target {
         position: absolute;
         width: 100%;

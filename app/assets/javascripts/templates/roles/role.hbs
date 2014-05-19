@@ -1,12 +1,14 @@
 <tr>
   <td class="role-name">
     {{#if isEditing}}
-      {{input value=name placeholder="Role name" action='save'}}
+      {{input name="role[name]" value=name placeholder="Role name" action='save'}}
     {{else}}
-      <div class="hover-target">
-        <i class="delete-button glyphicon glyphicon-trash" {{action "delete"}}></i>
-        <span {{action 'edit'}} class='name-field'>{{name}}</span>
-      </div>
+      <div class="relative">
+        <div class="hover-target">
+          <i class="delete-button glyphicon glyphicon-trash" {{action "delete"}}></i>
+          <span {{action 'edit'}} class='name-field'>{{name}}</span>
+        </div>
+      <div>
     {{/if}}
   </td>
   <td><input type="checkbox" disabled="disabled" /><label>Manuscript Manager</label></td>

@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+
+  include UserDevise
+
   has_many :affiliations, inverse_of: :user
   has_many :papers, inverse_of: :user
   has_many :journal_roles, inverse_of: :user
@@ -29,27 +32,6 @@ class User < ActiveRecord::Base
          authentication_keys: [:login],
          omniauth_providers: [:orcid]
 
-
-  def self.find_first_by_auth_conditions(warden_conditions)
-    conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
-      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
-    else
-      where(conditions).first
-    end
-  end
-
-  def self.new_with_session(params, session)
-    super.tap do |user|
-      if data = session["devise.orcid"]
-        bio = data["info"]["orcid_bio"]["personal_details"]
-        user.first_name = bio["given_names"] unless user.first_name.present?
-        user.last_name  = bio["family_name"] unless user.last_name.present?
-        user.provider   = "orcid"
-        user.uid        = data["uid"]
-      end
-    end
-  end
 
   def self.admins
     where admin: true

@@ -11,10 +11,8 @@
         </th>
       </tr>
     </thead>
-    <tbody>
-      {{#each role in model}}
-        {{render 'roles/role' role}}
-      {{/each}}
-    </tbody>
+    {{#each role in model}}
+      {{render 'roles/role' role}}
+    {{/each}}
   </table>
 </div>

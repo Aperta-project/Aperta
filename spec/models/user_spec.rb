@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe User do
   it "will be valid with default factory data" do
-    user = build(:user)
-    expect(user).to be_valid
+    expect(build(:user)).to be_valid
   end
 
   describe "scopes" do

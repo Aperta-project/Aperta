@@ -13,17 +13,19 @@ module UserDevise
     end
 
     # prefill user data using data being returned from orcid (via omniauth)
-    def self.new_with_session(params, session)
-      super.tap do |user|
+    def self.new_with_session(_, session)
+      new do |user|
         if data = session["devise.orcid"]
-          bio = data.to_hash.get("info", "orcid_bio", "personal_details")
           user.provider   = "orcid"
           user.uid        = data["uid"]
-          user.first_name = bio["given_names"] unless user.first_name.present?
-          user.last_name  = bio["family_name"] unless user.last_name.present?
+          if bio = data.to_hash.get("info", "orcid_bio", "personal_details")
+            user.first_name = bio["given_names"] unless user.first_name.present?
+            user.last_name  = bio["family_name"] unless user.last_name.present?
+          end
         end
       end
     end
+
   end
 end
 

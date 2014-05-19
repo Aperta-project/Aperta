@@ -2,6 +2,7 @@
 
 class AttachmentUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
+  include CarrierWave::MimeTypes
 
   # Choose what kind of storage to use for this uploader:
   storage Rails.application.config.carrierwave_storage
@@ -13,7 +14,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :preview do
-    process convert: "png", if: :needs_transcoded?
+    process :convert_to_png, if: :needs_transcoded?
 
     def full_filename(orig_file)
       if needs_transcoded?(orig_file)
@@ -57,11 +58,19 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   private
 
+  def convert_to_png
+    manipulate! do |image|
+      image.format("png")
+      image
+    end
+    file.content_type = "image/png"
+  end
+
   def needs_transcoded?(file)
     if file.respond_to?('content_type')
       ["image/tiff", "application/postscript"].include? file.content_type
     else
-      !!(file =~ /(tif?f|eps)/i)
+      !!(File.extname(file) =~ /(tif?f|eps)/i)
     end
   end
 end

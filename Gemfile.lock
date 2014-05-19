@@ -145,6 +145,8 @@ GEM
       railties (>= 3.0.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.9.1)
+      faraday (>= 0.7.4, < 0.10)
     ffi (1.9.3)
     fog (1.18.0)
       builder
@@ -425,6 +427,7 @@ DEPENDENCIES
   ember-rails
   ember-source (= 1.5.0)
   factory_girl_rails
+  faraday_middleware
   fog
   gepub
   haml-rails

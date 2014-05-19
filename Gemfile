@@ -35,6 +35,7 @@ gem 'mini_magick'
 gem 'timeliness'
 gem 'american_date'
 gem 'omniauth-oauth2'
+gem 'faraday_middleware'
 
 group :production, :staging do
   gem 'heroku-deflater'

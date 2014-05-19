@@ -10,7 +10,7 @@ module OmniAuth
         { site:        "http://#{api_host}",
         authorize_url: "http://#{site_host}/oauth/authorize",
         token_url:     "https://#{api_host}/oauth/token",
-        scope:         "/orcid-profile/read-limited",
+        scope:         "/orcid-bio/read-limited",
         response_type: "code",
         mode:          :header }
       end
@@ -39,9 +39,23 @@ module OmniAuth
         end
       end
 
+      def profile
+        url = "https://#{self.class.api_host}/v1.1/#{uid}/orcid-profile"
+        conn = Faraday.new(url: url) do |faraday|
+          faraday.response :xml
+          faraday.request  :url_encoded
+          faraday.adapter  Faraday.default_adapter
+        end
+        response = conn.get do |req|
+          req.headers['Content-Type']  = "application/vdn.orcid+xml"
+          req.headers['Authorization'] = "Bearer #{access_token.token}"
+        end
+        response.body['orcid_message']['orcid_profile']
+      end
+
       option :client_options, options
-      uid {  access_token.params["orcid"] }
-      info { Hash.new }
+      uid { access_token.params["orcid"] }
+      info { profile }
 
     end
   end

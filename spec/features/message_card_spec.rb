@@ -44,14 +44,15 @@ feature 'Message Cards', js: true do
 
   describe "commenting on an existing message" do
     let(:phase) { paper.phases.first }
-    let(:initial_comment) { create :comment, commenter: commenter }
-    let!(:message) do
-      create :message_task, comments: [initial_comment], phase: phase, participants: participants
+    let!(:initial_comment) { create :comment, commenter: commenter, message_task: message }
+    let(:message) do
+      create :message_task, phase: phase, participants: participants
     end
 
     context "the user is already a participant" do
       let(:commenter) { admin }
       let(:participants) { [admin] }
+
       scenario "the user can add a commment" do
         task_manager_page = TaskManagerPage.visit paper
         task_manager_page.view_card message.title, MessageCardOverlay do |card|
@@ -93,15 +94,16 @@ feature 'Message Cards', js: true do
 
   describe "viewing a message's comments" do
     let(:commenter) { admin }
-    let(:participants) { [admin] }
+    let(:participants) { [admin, albert] }
     let(:phase) { paper.phases.first }
-    let(:initial_comments) do
-      comment_count.times.map { create :comment, commenter: commenter }
+    let!(:initial_comments) do
+      comment_count.times.map { create :comment, commenter: commenter, message_task: message }
     end
-    let!(:message) do
-      create :message_task, comments: initial_comments, phase: phase, participants: participants
+    let(:message) do
+      create :message_task, phase: phase, participants: participants
     end
     let(:task_manager_page) { TaskManagerPage.visit paper }
+
     context "the message has less than or equal to 5 comments" do
       let(:comment_count) { 4 }
       scenario "'show all comments button' is not visible. All comments are visible." do
@@ -109,6 +111,24 @@ feature 'Message Cards', js: true do
           expect(card).to have_css('.message-overlay')
           expect(card).to have_no_css('.comment-actions.active')
           expect(card.comments.count).to eq(initial_comments.count)
+        end
+      end
+
+      describe "unread comments are highlighted" do
+        let!(:initial_comments) do
+          comment_count.times.map { create :comment, commenter: albert, message_task: message }
+        end
+
+        scenario "seen comments are marked as read" do
+          task_manager_page.view_card message.title, MessageCardOverlay do |card|
+            expect(card.unread_comments.length).to eq(comment_count)
+          end
+
+          task_manager_page.reload
+
+          task_manager_page.view_card message.title, MessageCardOverlay do |card|
+            expect(card.unread_comments.length).to eq(0)
+          end
         end
       end
     end
@@ -123,6 +143,20 @@ feature 'Message Cards', js: true do
           expect(card.omitted_comment_count).to eq(comment_count - 5)
           card.load_comments
           card.verify_comment_count comment_count
+        end
+      end
+
+      describe "unread comments are highlighted" do
+        let!(:initial_comments) do
+          comment_count.times.map { create :comment, commenter: albert, message_task: message }
+        end
+
+        scenario "seen comments are marked as read" do
+          task_manager_page.view_card message.title, MessageCardOverlay do |card|
+            expect(card.unread_comments.length).to eq(5)
+            card.load_comments
+            expect(card.unread_comments.length).to eq(comment_count)
+          end
         end
       end
     end

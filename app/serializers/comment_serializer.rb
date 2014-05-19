@@ -4,4 +4,9 @@ class CommentSerializer < ActiveModel::Serializer
 
   has_one :message_task
   has_one :commenter, serializer: UserSerializer, include: true, root: :users
+  has_one :comment_look, include: true, embed: :ids
+
+  def comment_look
+    object.comment_looks.where(user: current_user, read_at: nil).first if defined? current_user
+  end
 end

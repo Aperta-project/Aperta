@@ -21,6 +21,7 @@ Tahi::Application.routes.draw do
   resources :flows, only: [:index, :destroy, :create]
 
   resources :figures, only: [:destroy, :update]
+  resources :comment_looks, only: [:update]
 
   namespace :api, defaults: { format: 'json' } do
     resources :papers, only: [:index, :show, :update]

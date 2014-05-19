@@ -8,8 +8,8 @@ namespace :figure do
       begin
         f.attachment.recreate_versions!
         f.save!
-      rescue
-        nil
+      rescue => e
+        puts "Unable to recreate figure attachment versions, ignore #{e}"
       end
     end
   end

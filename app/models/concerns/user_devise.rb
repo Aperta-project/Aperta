@@ -25,7 +25,6 @@ module UserDevise
         end
       end
     end
-
   end
 end
 

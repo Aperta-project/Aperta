@@ -18,7 +18,7 @@ module OmniAuth
       # Customize the parameters passed to the OAuth provider in the authorization phase
       def authorize_params
         super.tap do |params|
-          %w[scope].each { |v| params[v.to_sym] = request.params[v] if request.params[v] }
+          %w(scope).each { |v| params[v.to_sym] = request.params[v] if request.params[v] }
           params[:scope] ||= DEFAULT_SCOPE # ensure that we're always request *some* default scope
         end
       end

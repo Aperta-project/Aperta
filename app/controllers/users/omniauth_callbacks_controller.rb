@@ -4,7 +4,6 @@ module Users
       user = User.find_by(auth.slice(:uid, :provider))
       if user.try(:persisted?)
         sign_in_and_redirect(user, :event => :authentication)
-        set_flash_message(:notice, :success, :kind => "Orcid") if is_navigational_format?
       else
         session["devise.orcid"] = auth
         redirect_to new_user_registration_url

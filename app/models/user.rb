@@ -39,6 +39,18 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session["devise.orcid"]
+        bio = data["info"]["orcid_bio"]["personal_details"]
+        user.first_name = bio["given_names"] unless user.first_name.present?
+        user.last_name  = bio["family_name"] unless user.last_name.present?
+        user.provider   = "orcid"
+        user.uid        = data["uid"]
+      end
+    end
+  end
+
   def self.admins
     where admin: true
   end

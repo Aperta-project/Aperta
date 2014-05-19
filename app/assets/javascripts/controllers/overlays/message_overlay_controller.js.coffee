@@ -37,11 +37,13 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
       @set('showAllComments', true)
 
     postComment: ->
+      body = @get('newCommentBody')
+      return unless body
       commenter = @getCurrentUser()
       commentFields =
         commenter: commenter
         messageTask: @get('model')
-        body: @get('newCommentBody')
+        body: body
         createdAt: new Date()
       newComment = @store.createRecord('comment', commentFields)
       newComment.save()

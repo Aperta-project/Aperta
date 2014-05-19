@@ -27,6 +27,19 @@ describe CommentsController do
       end
     end
 
+    context "the user tries to create a blank comment" do
+      let(:paper_user) { user }
+      it "doesn't work" do
+        expect {
+          post :create,
+          format: :json,
+          comment: {commenter_id: user.id,
+                    body: "",
+                    message_task_id: message_task.id}
+        }.to_not change { Comment.count }
+      end
+    end
+
     context "the user can see the task's paper" do
       let(:paper_user) { user }
       it "creates a new comment" do

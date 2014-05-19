@@ -10,8 +10,10 @@ ETahi.RolesRoleController = Em.ObjectController.extend
     edit: ->
       @set('isEditing', true)
     save: ->
-      @set('isEditing', false)
-      @get('model').save()
+      @get('model').save().then(
+        => @set('isEditing', false)
+      ).catch -> # ignore 422. we're displaying errors
+
     cancel: ->
       @set('isEditing', false)
       if @get('model.isNew')

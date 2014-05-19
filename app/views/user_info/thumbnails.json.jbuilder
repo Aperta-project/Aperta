@@ -2,6 +2,6 @@ json.users do
   json.array! @users do |u|
    json.id u.id
    json.fullName u.full_name
-   json.imageUrl u.image_url
+   json.avatarUrl u.avatar_url
   end
 end

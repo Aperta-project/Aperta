@@ -30,10 +30,6 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def image_url
-    avatar.url.presence || "/images/profile-no-image.png"
-  end
-
   # allow devise login using either email or username
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup

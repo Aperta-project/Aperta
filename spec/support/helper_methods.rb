@@ -1,5 +1,5 @@
 def user_select_hash(user)
-  {id: user.id, full_name: user.full_name, avatar: user.image_url}
+  {id: user.id, full_name: user.full_name, avatar: user.avatar_url}
 end
 
 def make_user_journal_admin(user, paper)

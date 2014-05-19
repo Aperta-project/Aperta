@@ -20,7 +20,7 @@ class UsersController < ApplicationController
   def update
     current_user.avatar = params[:profile][:avatar].first
     if current_user.save
-      render json: {image_url: current_user.avatar.url}
+      render json: {avatar_url: current_user.avatar.url}
     else
       head 500
     end

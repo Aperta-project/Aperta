@@ -49,6 +49,19 @@ feature 'Message Cards', js: true do
       create :message_task, phase: phase, participants: participants
     end
 
+    context "blank comments" do
+      let(:commenter) { admin }
+      let(:participants) { [admin] }
+      scenario "user can't add any" do
+        task_manager_page = TaskManagerPage.visit paper
+        task_manager_page.view_card message.title, MessageCardOverlay do |card|
+          card.post_message 'Hello'
+          card.post_message ''
+          expect(card.comments.length).to eq 2
+        end
+      end
+    end
+
     context "the user is already a participant" do
       let(:commenter) { admin }
       let(:participants) { [admin] }

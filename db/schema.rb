@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140514195101) do
+ActiveRecord::Schema.define(version: 20140516194410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,12 +33,11 @@ ActiveRecord::Schema.define(version: 20140514195101) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "commenter_id"
-    t.integer  "task_id"
+    t.integer  "message_participant_id"
   end
 
-  add_index "comments", ["commenter_id", "task_id"], name: "index_comments_on_commenter_id_and_task_id", using: :btree
   add_index "comments", ["commenter_id"], name: "index_comments_on_commenter_id", using: :btree
-  add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
+  add_index "comments", ["message_participant_id"], name: "index_comments_on_message_participant_id", using: :btree
 
   create_table "figures", force: true do |t|
     t.string   "attachment"
@@ -56,10 +55,8 @@ ActiveRecord::Schema.define(version: 20140514195101) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "empty_text"
-    t.integer  "user_settings_id"
+    t.integer  "user_id"
   end
-
-  add_index "flows", ["user_settings_id"], name: "index_flows_on_user_settings_id", using: :btree
 
   create_table "journal_roles", force: true do |t|
     t.integer  "user_id"
@@ -100,12 +97,9 @@ ActiveRecord::Schema.define(version: 20140514195101) do
   create_table "message_participants", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "task_id"
     t.integer  "participant_id"
+    t.integer  "task_id"
   end
-
-  add_index "message_participants", ["participant_id"], name: "index_message_participants_on_participant_id", using: :btree
-  add_index "message_participants", ["task_id"], name: "index_message_participants_on_task_id", using: :btree
 
   create_table "paper_reviews", force: true do |t|
     t.integer  "task_id"
@@ -194,14 +188,6 @@ ActiveRecord::Schema.define(version: 20140514195101) do
   add_index "tasks", ["assignee_id"], name: "index_tasks_on_assignee_id", using: :btree
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
-
-  create_table "user_settings", force: true do |t|
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "user_settings", ["user_id"], name: "index_user_settings_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "first_name",             default: "",    null: false

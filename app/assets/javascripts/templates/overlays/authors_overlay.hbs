@@ -9,17 +9,8 @@
 </div>
 <ul class="authors-overlay-list">
   {{#each author in paper.authors}}
-    <li>
-      <div>
-        <span>{{author.first_name}} {{author.last_name}}</span>
-        <span>{{author.email}}</span>
-      </div>
-      <div>
-        <span>{{author.title}}</span>
-        <span>{{author.department}}</span>
-      </div>
-      <div>{{author.affiliation}}</div>
-      <div>{{author.secondary_affiliation}}</div>
+    <li {{action 'showEditAuthorForm'}}>
+      {{view ETahi.AuthorView author=author}}
     </li>
   {{/each}}
 </ul>

@@ -7,6 +7,7 @@ ETahi.ContentEditableComponent = Em.Component.extend
   placeholder: null
   plaintext: false
   preventEnterKey: false
+  saveOnBlur: false
 
   _userIsTyping: false
 
@@ -42,6 +43,8 @@ ETahi.ContentEditableComponent = Em.Component.extend
   focusOut: ->
     @set '_userIsTyping', false
     @setPlaceholder() if @elementIsEmpty()
+    if @saveOnBlur
+      @model.save()
 
   elementIsEmpty: ->
     Em.isEmpty(@.$().text())

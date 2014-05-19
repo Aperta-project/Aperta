@@ -1,0 +1,53 @@
+<div>
+{{content-editable tagName="span"
+  value=author.first_name
+    plaintext="true"
+    saveOnBlur="true"
+    model=resolvedPaper
+    preventEnterKey="true"}}
+{{content-editable tagName="span"
+  value=author.last_name
+    plaintext="true"
+    saveOnBlur="true"
+    model=resolvedPaper
+    preventEnterKey="true"}}
+{{content-editable tagName="span"
+  value=author.email
+    plaintext="true"
+    saveOnBlur="true"
+    model=resolvedPaper
+    preventEnterKey="true"}}
+    </div>
+    <div>
+{{content-editable tagName="span"
+  value=author.title
+    plaintext="true"
+    saveOnBlur="true"
+    model=resolvedPaper
+    preventEnterKey="true"}}
+{{content-editable tagName="span"
+  value=author.department
+    plaintext="true"
+    saveOnBlur="true"
+    model=resolvedPaper
+    preventEnterKey="true"}}
+    </div>
+    <div>
+{{content-editable tagName="span"
+  value=author.affiliation
+    plaintext="true"
+    model=resolvedPaper
+    saveOnBlur="true"
+    preventEnterKey="true"}}
+    </div>
+    <div>
+{{content-editable tagName="span"
+  value=author.secondary_affiliation
+    plaintext="true"
+    saveOnBlur="true"
+    model=resolvedPaper
+    preventEnterKey="true"}}
+    </div>
+    <div {{bind-attr class=":author-form showEditAuthorForm:show-new-author-form"}}>
+  {{view ETahi.AddAuthorView newAuthor=author}}
+</div>

@@ -1,19 +1,30 @@
-<h1>{{title}}</h1>
+<div class="author-header">
+  <h1>{{title}}</h1>
+  {{#if isEditable}}
+    <a class="btn btn-default btn-xs" {{action 'toggleAuthorForm'}}>
+      <span class="glyphicon glyphicon-plus-sign"></span>
+      Add new
+    </a>
+  {{/if}}
+</div>
+<ul class="authors-overlay-list">
+  {{#each author in paper.authors}}
+    <li>
+      <div>
+        <span>{{author.first_name}} {{author.last_name}}</span>
+        <span>{{author.email}}</span>
+      </div>
+      <div>
+        <span>{{author.title}}</span>
+        <span>{{author.department}}</span>
+      </div>
+      <div>{{author.affiliation}}</div>
+      <div>{{author.secondary_affiliation}}</div>
+    </li>
+  {{/each}}
+</ul>
 {{#if isEditable}}
-  <a class="btn btn-default btn-xs" {{action 'toggleAuthorForm'}}>
-    <span class="glyphicon glyphicon-plus-sign"></span>
-    Add new
-  </a>
   <div {{bind-attr class=":author-form showNewAuthorForm"}}>
     {{view ETahi.AddAuthorView newAuthor=newAuthor}}
   </div>
 {{/if}}
-<ul class="authors-overlay-list">
-  {{#each author in paper.authors}}
-    <li>
-      <div>{{author.first_name}} {{author.last_name}}</div>
-      <div>{{author.email}}</div>
-      <div>{{author.affiliation}}</div>
-    </li>
-  {{/each}}
-</ul>

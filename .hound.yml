@@ -5,4 +5,4 @@ Blocks:
 ClassAndModuleChildren:
   Enabled: false
 LineLength:
-  Max: 120
+  Enabled: false

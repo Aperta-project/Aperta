@@ -3,6 +3,11 @@ ETahi.TaskRoute = Ember.Route.extend
     @store.find('paper', params.paper_id).then =>
       @store.find('task', params.task_id)
 
+  afterModel: (model) ->
+    return unless model.get('type') == "AuthorsTask"
+    Ember.$.getJSON '/affiliations', (data)->
+      model.set('institutions', data.institutions)
+
   setupController: (controller, model) ->
     # FIXME: Rename AdHocTask to Task (here, in views, and in templates)
     currentType = model.get('type')

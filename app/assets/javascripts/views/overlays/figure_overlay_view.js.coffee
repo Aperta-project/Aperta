@@ -43,7 +43,10 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
 
       store = @get('controller.store')
       updatedFigures = _.map data.result.figures, (figure) ->
-        store.push 'figure', figure
+        type = store.modelFor('figure')
+        serializer = store.serializerFor(type.typeKey)
+        record = serializer.extractSingle(store, type, {figure: figure})
+        store.push 'figure', record
 
       @get('figures').pushObjects updatedFigures
 

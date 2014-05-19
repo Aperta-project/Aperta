@@ -38,6 +38,7 @@ ETahi.DeclarationTask = ETahi.Task.extend
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
   comments: DS.hasMany('comment')
+  unreadCommentsCount: a('number')
 
   relationshipsToSerialize: ['participants']
 

@@ -5,8 +5,8 @@
     {{else}}
       <div class="hover-target">
         <i class="delete-button glyphicon glyphicon-trash" {{action "delete"}}></i>
+        <span {{action 'edit'}} class='name-field'>{{name}}</span>
       </div>
-      <span {{action 'edit'}}>{{name}}</span>
     {{/if}}
   </td>
   <td><input type="checkbox" disabled="disabled" /><label>Manuscript Manager</label></td>

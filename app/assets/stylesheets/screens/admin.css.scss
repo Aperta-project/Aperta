@@ -63,15 +63,20 @@
         width: 100%;
         height: 100%;
         left: -30px;
+        .name-field {
+          margin-left: 10px;
+        }
         &:hover {
           .delete-button {
-            display: inherit;
+            opacity: 1;
           }
         }
       }
 
       .delete-button {
-        display: none;
+        display: inline;
+        opacity: 0;
+        width: 30px;
       }
 
     }

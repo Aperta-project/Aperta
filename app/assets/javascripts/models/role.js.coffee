@@ -4,3 +4,4 @@ ETahi.Role = DS.Model.extend
   editor: DS.attr('boolean')
   reviewer: DS.attr('boolean')
   isBuiltIn: Ember.computed.or('admin', 'editor', 'reviewer')
+  journal: DS.belongsTo('journal')

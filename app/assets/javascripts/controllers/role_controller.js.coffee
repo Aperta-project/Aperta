@@ -11,10 +11,13 @@ ETahi.RolesRoleController = Em.ObjectController.extend
       @set('isEditing', true)
     save: ->
       @set('isEditing', false)
+      @get('model').save()
     cancel: ->
-      @get('model').rollback()
       @set('isEditing', false)
+      if @get('model.isNew')
+        @get('model').deleteRecord()
+      else
+        @get('model').rollback()
     delete: ->
-      console.log "action: delete"
       @send('deleteRole', @get('model'))
 

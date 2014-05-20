@@ -40,6 +40,14 @@
 
   a.disabled:not(.btn-xs) { color: gray; }
   .btn.disabled { background-color: gray; }
+
+  .white-button {
+    margin-right: 10px;
+    color: #29a904;
+    background-color: #fff;
+
+    &:hover { background-color: rgba(255,255,255, 0.7); }
+  }
 }
 
 // (2) -----------------------------------
@@ -57,9 +65,14 @@
 .figure-thumbnail-image {
   position: relative;
   float: left;
-  max-width: 400px;
-  max-height: 200px;
-  cursor: pointer;
+  width: 40%;
+
+  .preview {
+    margin: auto;
+    max-height: 200px;
+    cursor: pointer;
+    display: block;
+  }
 
   &.placeholder {
     min-width: 400px;
@@ -76,6 +89,20 @@
       font-size: 48px;
     }
   }
+}
+
+// (3.5) -----------------------------------
+.figure-thumbnail-edit-overlay {
+  display: none;
+  @include position(absolute, 0px 0px 0px 0px);
+  background-color: rgba(41, 169, 4, 0.6);
+  color: #fff;
+  line-height: 160px;
+  text-align: center;
+}
+
+.figure-thumbnail-image:hover .figure-thumbnail-edit-overlay {
+  display: block;
 }
 
 // (4) -----------------------------------
@@ -128,14 +155,6 @@
     margin: 0 0 15px 0;
     font-size: 21px;
     font-weight: bold;
-  }
-
-  .primary-button {
-    margin-right: 10px;
-    color: #29a904;
-    background-color: #fff;
-
-    &:hover { background-color: rgba(255,255,255, 0.7); }
   }
 }
 

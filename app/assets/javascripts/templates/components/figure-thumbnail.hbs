@@ -2,7 +2,13 @@
   <span class="figure-thumbnail-destroy-icon glyphicon glyphicon-trash" {{action "confirmDestroyFigure"}}></span>
 
   {{#if figure.previewSrc}}
-    <img class="figure-thumbnail-image" {{action "togglePreview"}} src={{unbound figure.previewSrc}} alt={{unbound figure.alt}}>
+    <div class="figure-thumbnail-image">
+      <img class="preview" src={{unbound figure.previewSrc}} alt={{unbound figure.alt}}>
+      <div class="figure-thumbnail-edit-overlay">
+        <button class="primary-button white-button replace">Replace Image</button>
+        <button class="primary-button white-button view-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in glyphicon-button"></span>View Detail</button>
+      </div>
+    </div>
   {{else}}
     <div class="figure-thumbnail-image placeholder">
       <span class="glyphicon glyphicon-file"></span>

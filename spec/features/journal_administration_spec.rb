@@ -16,6 +16,15 @@ feature "Journal Administration", js: true do
       journal_names = [journal, another_journal].map(&:name)
       expect(admin_page.journal_names).to match_array(journal_names)
     end
+
+    context "when the user is not an admin" do
+      let(:admin) { create :user }
+      scenario "user is redirected to the dashboard page" do
+        visit AdminDashboardPage.path
+        expect(page).to have_text "Welcome,"
+        expect(page).to_not have_text "Journal Administration"
+      end
+    end
   end
 
   describe "Visiting a journal" do

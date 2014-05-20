@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+
+  include UserDevise
+
   has_many :affiliations, inverse_of: :user
   has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'
   has_many :paper_roles, inverse_of: :user
@@ -21,7 +24,9 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         authentication_keys: [:login]
+         :omniauthable,
+         authentication_keys: [:login],
+         omniauth_providers: [:orcid]
 
   def self.admins
     where(admin: true)
@@ -29,16 +34,6 @@ class User < ActiveRecord::Base
 
   def full_name
     "#{first_name} #{last_name}"
-  end
-
-  # allow devise login using either email or username
-  def self.find_first_by_auth_conditions(warden_conditions)
-    conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
-      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
-    else
-      where(conditions).first
-    end
   end
 
   private

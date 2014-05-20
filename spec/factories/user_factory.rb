@@ -15,8 +15,14 @@ FactoryGirl.define do
     password 'password'
     password_confirmation 'password'
     admin false
+
     trait :admin do
       admin true
+    end
+
+    trait :orcid do
+      provider "orcid"
+      uid "abc123"
     end
   end
 end

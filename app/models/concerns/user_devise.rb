@@ -19,6 +19,7 @@ module UserDevise
         if data = session["devise.orcid"]
           user.provider   = "orcid"
           user.uid        = data["uid"]
+          user.auto_generate_password
           if bio = data.to_hash.get("info", "orcid_bio", "personal_details")
             user.first_name = bio["given_names"] unless user.first_name.present?
             user.last_name  = bio["family_name"] unless user.last_name.present?

@@ -21,7 +21,4 @@ class RoleFragment < PageFragment
     find(".action-buttons .primary-button").click
   end
 
-  def cancel
-
-  end
 end

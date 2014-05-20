@@ -20,6 +20,8 @@ class RolesController < ApplicationController
     respond_with role
   end
 
+  private
+
   def role_params
     params.require(:role).permit(:name, :admin, :editor, :reviewer, :journal_id)
   end

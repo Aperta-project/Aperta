@@ -28,4 +28,8 @@ class AddRoles < ActiveRecord::Migration
     remove_column :journal_roles, :admin
     remove_column :journal_roles, :reviewer
   end
+
+  def down
+    raise ActiveRecord::IrreversibleMigration
+  end
 end

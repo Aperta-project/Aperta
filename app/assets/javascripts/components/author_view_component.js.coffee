@@ -12,6 +12,7 @@ ETahi.AuthorViewComponent = Ember.Component.extend
   saveAuthor: ->
     @get('author').save()
 
-  click: ->
+  click: (e)->
+    return if e.target.classList.contains('author-cancel')
     @editAuthorForm()
 

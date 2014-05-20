@@ -45,8 +45,8 @@ describe Paper do
   end
 
   describe "callbacks" do
-    let(:user) { User.create! email: 'author@example.com', password: 'password', password_confirmation: 'password', username: 'author' }
-    let(:paper)   { FactoryGirl.build :paper, user: user }
+    let(:user) { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.build :paper, user: user }
 
     it "assigns all author tasks to the paper author" do
       paper.save!
@@ -61,7 +61,7 @@ describe Paper do
 
       it "assigns all author tasks to the paper author" do
         tasks = Task.where(role: 'author', phase_id: paper.phases.map(&:id))
-        not_author = User.create! email: 'not_author@example.com', password: 'password', password_confirmation: 'password', username: 'not_author'
+        not_author = FactoryGirl.create(:user)
         paper.update! user: not_author
         expect(tasks.all? { |t| t.assignee == user }).to eq true
       end
@@ -104,7 +104,7 @@ describe Paper do
   end
 
   describe "#editor" do
-    let(:user) { User.create! username: 'bob', email: 'bobdylan@example.com', password: 'password', password_confirmation: 'password' }
+    let(:user) { FactoryGirl.create(:user) }
     context "when the paper has an editor" do
       before { PaperRole.create! user: user, paper: paper, editor: true }
       specify { expect(paper.editors).to include(user) }

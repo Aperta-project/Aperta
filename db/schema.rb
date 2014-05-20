@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140520173418) do
+ActiveRecord::Schema.define(version: 20140520175615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20140520173418) do
     t.boolean  "deceased",       default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "paper_id"
   end
 
   create_table "comment_looks", force: true do |t|
@@ -161,9 +162,8 @@ ActiveRecord::Schema.define(version: 20140520173418) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.text     "authors",         default: "--- []\n"
-    t.boolean  "submitted",       default: false,      null: false
-    t.integer  "journal_id",                           null: false
+    t.boolean  "submitted",       default: false, null: false
+    t.integer  "journal_id",                      null: false
     t.string   "decision"
     t.text     "decision_letter"
     t.datetime "published_at"

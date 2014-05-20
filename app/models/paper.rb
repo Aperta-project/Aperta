@@ -1,5 +1,5 @@
 class Paper < ActiveRecord::Base
-  belongs_to :user, inverse_of: :papers
+  belongs_to :user, inverse_of: :submitted_papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
 

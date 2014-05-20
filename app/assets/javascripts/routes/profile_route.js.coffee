@@ -4,8 +4,5 @@ ETahi.ProfileRoute = Ember.Route.extend
 
   afterModel: (model) ->
     Ember.$.getJSON('/affiliations', (data)->
-      items = []
-      data.institutions.forEach (item) ->
-        items.push(item)
-      model.set('institutions', items)
+      model.set('institutions', data.institutions)
     )

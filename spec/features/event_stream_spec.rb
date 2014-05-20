@@ -78,7 +78,7 @@ feature "Event streaming", js: true do
     end
 
     scenario "adding new comments" do
-      @mt.comments.create body: "Hey-o", commenter_id: author.id
+      @mt.comments.create body: "Hey-o", commenter_id: create(:user).id
       within '.message-comments' do
         expect(page).to have_content "Hey-o"
       end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140514203227) do
+ActiveRecord::Schema.define(version: 20140516173923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,17 @@ ActiveRecord::Schema.define(version: 20140514203227) do
   end
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
+
+  create_table "comment_looks", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "comment_id"
+    t.datetime "read_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comment_looks", ["comment_id"], name: "index_comment_looks_on_comment_id", using: :btree
+  add_index "comment_looks", ["user_id"], name: "index_comment_looks_on_user_id", using: :btree
 
   create_table "comments", force: true do |t|
     t.text     "body"
@@ -56,10 +67,8 @@ ActiveRecord::Schema.define(version: 20140514203227) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "empty_text"
-    t.integer  "user_settings_id"
+    t.integer  "user_id"
   end
-
-  add_index "flows", ["user_settings_id"], name: "index_flows_on_user_settings_id", using: :btree
 
   create_table "journal_roles", force: true do |t|
     t.integer  "user_id"
@@ -204,14 +213,6 @@ ActiveRecord::Schema.define(version: 20140514203227) do
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
 
-  create_table "user_settings", force: true do |t|
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "user_settings", ["user_id"], name: "index_user_settings_on_user_id", using: :btree
-
   create_table "users", force: true do |t|
     t.string   "first_name",             default: "",    null: false
     t.string   "last_name",              default: "",    null: false
@@ -230,6 +231,8 @@ ActiveRecord::Schema.define(version: 20140514203227) do
     t.string   "username"
     t.boolean  "admin",                  default: false, null: false
     t.string   "avatar"
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

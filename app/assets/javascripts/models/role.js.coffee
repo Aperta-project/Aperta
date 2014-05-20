@@ -1,7 +1,9 @@
+a = DS.attr
 ETahi.Role = DS.Model.extend
-  name: DS.attr('string')
-  admin: DS.attr('boolean')
-  editor: DS.attr('boolean')
-  reviewer: DS.attr('boolean')
-  isBuiltIn: Ember.computed.or('admin', 'editor', 'reviewer')
+  name: a('string')
+  admin: a('boolean')
+  editor: a('boolean')
+  reviewer: a('boolean')
   journal: DS.belongsTo('journal')
+
+  isBuiltIn: Ember.computed.or('admin', 'editor', 'reviewer')

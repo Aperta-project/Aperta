@@ -1,4 +1,4 @@
-ETahi.RolesRoleView = Ember.View.extend
+ETahi.RolesShowView = Ember.View.extend
   tagName: 'tbody'
 
   focusObserver: (->

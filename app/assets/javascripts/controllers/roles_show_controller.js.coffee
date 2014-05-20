@@ -1,4 +1,4 @@
-ETahi.RolesRoleController = Em.ObjectController.extend
+ETahi.RolesShowController = Em.ObjectController.extend
   isEditing: false
 
   setIsEditing: (->

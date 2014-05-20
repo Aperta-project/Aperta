@@ -1,6 +1,6 @@
 <div {{bind-attr class="showEditAuthorForm:hide"}}>
   <div>
-    <span>{{author.first_name}} {{author.last_name}}</span>
+    <span>{{author.fullName}}</span>
     <span>{{author.email}}</span>
   </div>
   <div>
@@ -9,7 +9,7 @@
   </div>
   <div>
     <div>{{author.affiliation}}</div>
-    <div>{{author.secondary_affiliation}}</div>
+    <div>{{author.secondaryAffiliation}}</div>
   </div>
 </div>
 <div {{bind-attr class=":author-form showEditAuthorForm:show-new-author-form"}}>

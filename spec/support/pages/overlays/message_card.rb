@@ -1,5 +1,4 @@
 class MessageCardOverlay < CardOverlay
-
   def add_participants(users)
     users.map(&:full_name).each do |name|
       select_from_chosen name, class: 'participant-select', skip_synchronize: true
@@ -39,4 +38,7 @@ class MessageCardOverlay < CardOverlay
     find('a.load-all-comments').text.scan(/\d/).first.to_i
   end
 
+  def unread_comments
+    all('li.unread')
+  end
 end

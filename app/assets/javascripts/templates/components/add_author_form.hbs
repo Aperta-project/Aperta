@@ -41,14 +41,16 @@
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half required">
-      {{input type='text'
+      {{type-ahead 
       value=newAuthor.affiliation
+      sourceList=institutions 
       class='form-control'
       placeholder='Affiliation'}}
     </div>
     <div class="form-group author-half author-bump">
-      {{input type='text'
+      {{type-ahead 
       value=newAuthor.secondary_affiliation
+      sourceList=institutions 
       class='form-control'
       placeholder='Secondary Affiliation'}}
     </div>
@@ -64,7 +66,7 @@
         checked=newAuthor.deceased}}
         This person is deceased
       </label>
-    <span class="pull-right">
+    <span class="pull-right author-form-buttons">
       <a class="btn-link author-cancel" {{action 'toggleAuthorForm'}}>cancel</a>
       <button class='secondary-button' {{action 'saveNewAuthor'}}>done</button>
     </span>

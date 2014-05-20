@@ -3,26 +3,22 @@ class User < ActiveRecord::Base
   include UserDevise
 
   has_many :affiliations, inverse_of: :user
-  has_many :papers, inverse_of: :user
-  has_many :journal_roles, inverse_of: :user
+  has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'
   has_many :paper_roles, inverse_of: :user
+  has_many :journal_roles, inverse_of: :user
+  has_many :journals, through: :journal_roles
+  has_many :flows, inverse_of: :user, dependent: :destroy
   has_many :tasks, foreign_key: 'assignee_id'
-  has_one :user_settings
-
-  has_many :comments
+  has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many :message_tasks, through: :comments
   has_many :message_participants, inverse_of: :participant
-
-  has_many :journals, through: :journal_roles
-  has_many :admin_journal_roles, -> { where(admin: true) }, class_name: 'JournalRole'
-  has_many :admin_journals, through: :admin_journal_roles, source: :journal
-  has_many :managed_papers, through: :admin_journals, source: :papers
+  has_many :comment_looks
 
   attr_accessor :login
 
-  validates :username, presence: true, uniqueness: { case_sensitive: false }
+  after_create :add_flows
 
-  before_create :add_default_user_settings
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
 
   mount_uploader :avatar, AvatarUploader
 
@@ -32,37 +28,19 @@ class User < ActiveRecord::Base
          authentication_keys: [:login],
          omniauth_providers: [:orcid]
 
-
   def self.admins
-    where admin: true
-  end
-
-  def self.admins_for(journal)
-    joins(:journal_roles).where("journal_roles.journal_id" => journal.id, "journal_roles.admin" => true)
-  end
-
-  def self.editors_for(journal)
-    joins(:journal_roles).where("journal_roles.journal_id" => journal.id, "journal_roles.editor" => true)
-  end
-
-  def self.reviewers_for(journal)
-    joins(:journal_roles).where("journal_roles.journal_id" => journal.id, "journal_roles.reviewer" => true)
+    where(admin: true)
   end
 
   def full_name
     "#{first_name} #{last_name}"
   end
 
-  def image_url
-    if avatar.present?
-      avatar.url
-    else
-      "/images/profile-no-image.png"
-    end
-  end
-
   private
-  def add_default_user_settings
-    build_user_settings
+
+  def add_flows
+    [Flow.templates.values].each do |attrs|
+      flows.create!(attrs)
+    end
   end
 end

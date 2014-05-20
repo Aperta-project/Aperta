@@ -1,8 +1,8 @@
 <div class="figure-thumbnail-row">
   <span class="figure-thumbnail-destroy-icon glyphicon glyphicon-trash" {{action "confirmDestroyFigure"}}></span>
 
-  {{#if figure.src}}
-    <img class="figure-thumbnail-image" {{action "togglePreview"}} src={{unbound figure.src}} alt={{unbound figure.alt}}>
+  {{#if figure.previewSrc}}
+    <img class="figure-thumbnail-image" {{action "togglePreview"}} src={{unbound figure.previewSrc}} alt={{unbound figure.alt}}>
   {{else}}
     <div class="figure-thumbnail-image placeholder">
       <span class="glyphicon glyphicon-file"></span>
@@ -31,6 +31,9 @@
     <a href="#" {{bind-attr class="editState::disabled :primary-button :btn-xs"}} {{action 'saveFigure'}}>Save</a>
   </div>
 
+  <div class="clearfix"> </div>
+  <a class="figure-original-download-link" data-toggle="tooltip" data-placement="right" title="Download original image" {{bind-attr href=figure.src}} >{{figure.filename}}</a>
+
   <div class="figure-thumbnail-destroy-overlay">
     <p>This will permanently delete your image. Are you sure?</p>
     <button class="primary-button white-button" {{action "cancelDestroyFigure"}}>Cancel</button>
@@ -41,6 +44,6 @@
 {{#if view.previewState}}
   <div class="figure-thumbnail-preview">
     <div {{action "togglePreview"}} class="figure-thumbnail-preview-close">&times;</div>
-    <img src={{unbound figure.src}} alt={{unbound figure.alt}}>
+    <img src={{unbound figure.previewSrc}} alt={{unbound figure.alt}}>
   </div>
 {{/if}}

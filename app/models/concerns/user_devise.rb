@@ -1,5 +1,6 @@
 module UserDevise
   extend ActiveSupport::Concern
+
   included do
 
     # allow login using email address or username
@@ -25,6 +26,8 @@ module UserDevise
         end
       end
     end
+
   end
+
 end
 

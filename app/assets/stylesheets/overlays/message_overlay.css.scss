@@ -79,6 +79,10 @@
   list-style-type: none;
   margin-bottom: 30px;
   padding-left: 10px;
+  .unread {
+    background: #efedf7;
+    @include linear-gradient(to right,  rgba(239,237,247,0) 0%,rgba(239,237,247,0.5) 25%,rgba(239,237,247,1) 50%,rgba(239,237,247,0.5) 75%,rgba(239,237,247,0) 100%);
+  }
 }
 
 .message-comment {

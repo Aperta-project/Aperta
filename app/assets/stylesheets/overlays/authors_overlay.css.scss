@@ -33,6 +33,22 @@
     color: $tahi-primary;
     font-size: 18pt;
   }
+
+  .twitter-typeahead {
+    width: 100%;
+    &:focus {
+      border: none;
+      outline: none;
+    }
+  }
+
+  .affiliation-field {
+    border-radius: 4px;
+    width: 390px;
+    &.tt-hint {
+      height: 34px;
+    }
+  }
 }
 
 .author-header {
@@ -44,7 +60,11 @@
 }
 
 .author-name {
-  width: 163px;
+  width: 162px;
+}
+
+.author-form-buttons {
+  margin-right: 2px;
 }
 
 .author-bump {

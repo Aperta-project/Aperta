@@ -3,16 +3,16 @@ class FlowsController < ApplicationController
   before_action :verify_admin!
 
   def index
-    render json: current_user.user_settings.flows, each_serializer: FlowSerializer
+    render json: current_user.flows, each_serializer: FlowSerializer
   end
 
   def create
-    flow = current_user.user_settings.flows.create! Flow.templates[flow_params[:title].downcase]
+    flow = current_user.flows.create! Flow.templates[flow_params[:title].downcase]
     render json: flow
   end
 
   def destroy
-    flow = current_user.user_settings.flows.where(id: params[:id]).first
+    flow = current_user.flows.where(id: params[:id]).first
     if flow
       flow.destroy
       head :ok

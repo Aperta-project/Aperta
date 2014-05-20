@@ -14,8 +14,21 @@ feature "Add contributing authors", js: true do
     edit_paper = EditPaperPage.visit paper
 
     edit_paper.view_card 'Add Authors' do |overlay|
-      overlay.add_author first_name: 'Neils', last_name: 'Bohr', affiliation: 'University of Copenhagen', email: 'neils@bohr.com'
-      overlay.add_author first_name: 'Nikola', last_name: 'Tesla', affiliation: 'Wardenclyffe'
+      overlay.add_author({
+        first_name: 'Neils',
+        middle_initial: 'B.',
+        last_name: 'Bohr',
+        title: 'Soup of the day',
+        department: 'Underwhere?',
+        affiliation: 'University of Copenhagen',
+        email: 'neils@bohr.com'
+      })
+      overlay.add_author({
+        first_name: 'Nikola',
+        last_name: 'Tesla',
+        affiliation: 'Wardenclyffe',
+        secondary_affiliation: 'University of Copenhagen',
+      })
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end

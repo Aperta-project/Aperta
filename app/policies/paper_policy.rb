@@ -18,7 +18,7 @@ class PaperPolicy
 
   private
   def paper_for_author
-    @user.papers.where(id: @paper_id).first
+    @user.submitted_papers.where(id: @paper_id).first
   end
 
   def paper_for_admin

@@ -8,29 +8,12 @@
   color: #BB0000;
 }
 
-/*
-      .paper-figures
-        .figure-thumbnail
-  (1)     .figure-thumbnail-row
-  (2)     .figure-thumbnail-destroy-icon
-  (3)     .figure-thumbnail-image
-  (4)     .figure-thumbnail-text-content
-  (5)     .figure-thumbnail-edit-actions
-  (6)     .figure-original-download-link
-  (7)     .figure-thumbnail-destroy-overlay
-  (8)   .figure-thumbnail-preview
-
-  Adding the modifier class ._destroy to .figure-thumbnail
-  will display .figure-thumbnail-destroy-overlay
-*/
-
 .paper-figures {
   list-style-type: none;
   margin: 20px 0 0;
   padding: 0;
 }
 
-// (1) -----------------------------------
 .figure-thumbnail-row {
   overflow: hidden;
   position: relative;
@@ -50,7 +33,6 @@
   }
 }
 
-// (2) -----------------------------------
 .figure-thumbnail-destroy-icon {
   @include position(absolute, 0px 0px auto auto);
   padding: 14px 27px 0 0;
@@ -61,7 +43,6 @@
   &:hover { color: $tahi-primary-hover; }
 }
 
-// (3) -----------------------------------
 .figure-thumbnail-image {
   position: relative;
   float: left;
@@ -89,10 +70,10 @@
       font-size: 48px;
     }
   }
+
 }
 
-// (3.5) -----------------------------------
-.figure-thumbnail-edit-overlay {
+.figure-thumbnail-edit-overlay, .replace-spinner {
   display: none;
   @include position(absolute, 0px 0px 0px 0px);
   background-color: rgba(41, 169, 4, 0.6);
@@ -105,7 +86,6 @@
   display: block;
 }
 
-// (4) -----------------------------------
 .figure-thumbnail-text-content {
   margin: 0 20px 40px 445px; // bottom margin to make space for .figure-thumbnail-edit-actions
 }
@@ -127,7 +107,6 @@
   }
 }
 
-// (5) -----------------------------------
 .figure-thumbnail-edit-actions {
   @include position(absolute, auto 10px 10px auto);
 
@@ -136,13 +115,11 @@
   }
 }
 
-// (6) -----------------------------------
 .figure-original-download-link {
   font-size: 12px;
   font-weight: 700;
 }
 
-// (7) -----------------------------------
 .figure-thumbnail-destroy-overlay {
   @include position(absolute, 0px 0px 0px 0px);
   display: none;
@@ -162,7 +139,6 @@
   display: block;
 }
 
-// (8) -----------------------------------
 .figure-thumbnail-preview {
   position: relative;
   top: -5px;

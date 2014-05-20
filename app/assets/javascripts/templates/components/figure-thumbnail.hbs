@@ -3,9 +3,10 @@
 
   {{#if figure.previewSrc}}
     <div class="figure-thumbnail-image">
-      <img class="preview" src={{unbound figure.previewSrc}} alt={{unbound figure.alt}}>
+      <div class="replace-spinner"></div>
+      <img class="preview" {{bind-attr src=figure.previewSrc}} {{bind-attr alt=figure.alt}}>
       <div class="figure-thumbnail-edit-overlay">
-        <button class="primary-button white-button replace">Replace Image</button>
+        {{view ETahi.ReplaceFigureImageView}}
         <button class="primary-button white-button view-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in glyphicon-button"></span>View Detail</button>
       </div>
     </div>
@@ -50,6 +51,6 @@
 {{#if view.previewState}}
   <div class="figure-thumbnail-preview">
     <div {{action "togglePreview"}} class="figure-thumbnail-preview-close">&times;</div>
-    <img src={{unbound figure.previewSrc}} alt={{unbound figure.alt}}>
+    <img {{bind-attr src=figure.previewSrc}} {{bind-attr alt=figure.alt}}>
   </div>
 {{/if}}

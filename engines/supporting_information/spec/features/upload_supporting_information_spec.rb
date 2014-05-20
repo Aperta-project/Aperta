@@ -22,7 +22,7 @@ feature "Upload Supporting Information", js: true do
 
     edit_paper.reload
 
-    edit_paper.view_card 'Upload Supporting Information' do |overlay|
+    edit_paper.view_card 'Supporting Information' do |overlay|
       expect(overlay).to have_file('yeti.tiff')
       expect(overlay).to be_completed
     end

@@ -8,10 +8,20 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
     return json
 
   # handles incoming namespaced models
+  # eg. StandardTasks::FigureTask and SupportingInformation::Task
   normalizeType: (hash) ->
     if hash.type
       hash.qualified_type = hash.type
-      hash.type = hash.type.replace(/.+::/, '')
+      taskTypeNames = hash.qualified_type.split '::'
+      return hash if taskTypeNames.length is 1
+
+      hash.type = if taskTypeNames[1] is 'Task'
+        taskTypeNames.join ''
+      else if taskTypeNames[0] isnt 'Task'
+        taskTypeNames[1]
+      else
+        throw "The task type: '#{hash.type}' is not qualified."
+
     hash
 
   # uses correct model name for sideloaded payloads

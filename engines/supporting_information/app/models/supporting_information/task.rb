@@ -12,7 +12,7 @@ module SupportingInformation
     end
 
     def active_model_serializer
-      SupportingInformation::TaskSerializer
+      TaskSerializer
     end
   end
 end

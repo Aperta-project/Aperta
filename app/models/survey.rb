@@ -6,6 +6,6 @@ class Survey < ActiveRecord::Base
   private
 
   def task_payload
-    { task_id: declaration_task.id, journal_id: declaration_task.journal.id }
+    { task_id: declaration_task.id, paper_id: declaration_task.paper.id }
   end
 end

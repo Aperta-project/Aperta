@@ -5,6 +5,6 @@ class EventStreamsController < ApplicationController
   end
 
   def ids
-    current_user.journals.pluck(:id)
+    current_user.submitted_papers.pluck(:id)
   end
 end

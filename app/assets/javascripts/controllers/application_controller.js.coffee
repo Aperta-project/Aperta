@@ -19,9 +19,10 @@ ETahi.ApplicationController = Ember.Controller.extend
       url: '/event_stream'
       method: 'GET'
       success: (data) =>
+        source = new EventSource(data.url)
+        Ember.$(window).unload -> source.close()
+
         data.eventNames.forEach (eventName) =>
-          source = new EventSource(data.url + "&stream=#{eventName}")
-          Ember.$(window).unload -> source.close()
           source.addEventListener eventName, (msg) =>
             esData = JSON.parse(msg.data)
             action = esData.action

@@ -73,14 +73,13 @@ ActiveRecord::Schema.define(version: 20140516173923) do
   create_table "journal_roles", force: true do |t|
     t.integer  "user_id"
     t.integer  "journal_id"
-    t.boolean  "editor",     default: false, null: false
-    t.boolean  "reviewer",   default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin"
+    t.integer  "role_id"
   end
 
   add_index "journal_roles", ["journal_id"], name: "index_journal_roles_on_journal_id", using: :btree
+  add_index "journal_roles", ["role_id"], name: "index_journal_roles_on_role_id", using: :btree
   add_index "journal_roles", ["user_id", "journal_id"], name: "index_journal_roles_on_user_id_and_journal_id", using: :btree
   add_index "journal_roles", ["user_id"], name: "index_journal_roles_on_user_id", using: :btree
 
@@ -181,6 +180,16 @@ ActiveRecord::Schema.define(version: 20140516173923) do
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
+
+  create_table "roles", force: true do |t|
+    t.string   "name"
+    t.boolean  "admin",      default: false, null: false
+    t.boolean  "editor",     default: false, null: false
+    t.boolean  "reviewer",   default: false, null: false
+    t.integer  "journal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "surveys", force: true do |t|
     t.text    "question", null: false

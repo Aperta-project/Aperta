@@ -38,7 +38,7 @@ feature "Flow Manager", js: true do
   end
 
   before do
-    JournalRole.create! user: admin, journal: journal, admin: true
+    assign_journal_role(journal, admin, :admin)
     @old_size = page.driver.browser.manage.window.size
     page.driver.browser.manage.window.resize_to(1250,550)
     sign_in_page = SignInPage.visit

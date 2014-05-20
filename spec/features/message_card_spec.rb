@@ -2,18 +2,15 @@ require 'spec_helper'
 
 feature 'Message Cards', js: true do
   let(:admin) { create :user, admin: true }
-
-  let!(:albert) do
-    create :user,
-      journal_roles: [JournalRole.new(journal: journal, admin: true)]
-  end
+  let(:journal) { create(:journal, :with_default_template) }
+  let(:albert) { create :user }
 
   before do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
+    assign_journal_role(journal, albert, :admin)
   end
 
-  let(:journal) { FactoryGirl.create(:journal, :with_default_template) }
 
   let(:paper) do
     FactoryGirl.create(:paper, :with_tasks, user: admin, submitted: true, journal: journal)

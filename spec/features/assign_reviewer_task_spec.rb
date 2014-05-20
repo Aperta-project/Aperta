@@ -3,20 +3,11 @@ require 'spec_helper'
 feature "Assigns Reviewer", js: true do
   let(:journal) { FactoryGirl.create(:journal, :with_default_template) }
 
-  let(:editor) do
-    create :user,
-      journal_roles: [JournalRole.new(journal: journal, editor: true)]
-  end
+  let(:editor) { create :user }
 
-  let!(:albert) do
-    create :user,
-      journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
-  end
+  let!(:albert) { create :user }
 
-  let!(:neil) do
-    create :user,
-      journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
-  end
+  let!(:neil) { create :user }
 
   let!(:paper) do
     FactoryGirl.create :paper, :with_tasks, user: editor, submitted: true, journal: journal,
@@ -24,6 +15,9 @@ feature "Assigns Reviewer", js: true do
   end
 
   before do
+    assign_journal_role(journal, editor, :editor)
+    assign_journal_role(journal, albert, :reviewer)
+    assign_journal_role(journal, neil, :reviewer)
     paper_role = PaperRole.create! paper: paper, user: editor, editor: true
 
     sign_in_page = SignInPage.visit

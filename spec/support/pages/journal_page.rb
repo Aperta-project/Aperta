@@ -32,4 +32,14 @@ class JournalPage < Page
     synchronize_no_content! mmt.paper_type
     self
   end
+
+  def add_role
+    find('.permission-header .primary-button').click
+    RoleFragment.new(find('table.roles tbody', match: :first))
+  end
+
+  def find_role(name)
+    RoleFragment.new(find('table.roles tbody', text: name))
+  end
+
 end

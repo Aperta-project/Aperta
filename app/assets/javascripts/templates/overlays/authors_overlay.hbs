@@ -9,13 +9,14 @@
 </div>
 <ul class="authors-overlay-list">
   {{#each author in paper.authors}}
-    <li {{action 'showEditAuthorForm'}}>
-      {{view ETahi.AuthorView author=author}}
-    </li>
+    {{author-view author=author}}
   {{/each}}
 </ul>
 {{#if isEditable}}
   <div {{bind-attr class=":author-form showNewAuthorForm"}}>
-    {{view ETahi.AddAuthorView newAuthor=newAuthor}}
+    {{add-author-form
+      newAuthor=newAuthor
+      toggleEditAuthorForm='toggleAuthorForm'
+      saveAuthor='saveNewAuthor'}}
   </div>
 {{/if}}

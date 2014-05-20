@@ -53,5 +53,10 @@ describe User do
       expect(user.provider).to eq('orcid')
       expect(user.uid).to eq('myuid')
     end
+
+    it "will auto generate a password" do
+      user = User.new_with_session(nil, orcid_user)
+      expect(user.password).not_to be_empty
+    end
   end
 end

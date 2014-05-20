@@ -36,6 +36,10 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def auto_generate_password(length=10)
+    self.password = SecureRandom.urlsafe_base64(length-1)
+  end
+
   private
 
   def add_flows

@@ -8,12 +8,10 @@ feature 'Add a new card', js: true do
     FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true, journal: journal
   end
 
-  let!(:albert) do
-    create :user,
-      journal_roles: [JournalRole.new(journal: journal, admin: true)]
-  end
+  let!(:albert) { create :user }
 
   before do
+    assign_journal_role(journal, albert, :admin)
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
   end

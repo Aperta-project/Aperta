@@ -1,6 +1,10 @@
 class AdminDashboardPage < Page
+  def self.path
+    "/admin"
+  end
+
   def self.visit
-    page.visit "/admin"
+    page.visit path
     new
   end
 

@@ -1,0 +1,24 @@
+<tr>
+  <td class="role-name">
+    {{#if isEditing}}
+      {{input name="role[name]" value=name placeholder="Role name" action='save'}}
+    {{else}}
+      <div class="relative">
+        <div class="hover-target">
+          <i class="delete-button glyphicon glyphicon-trash" {{action "delete"}}></i>
+          <span {{action 'edit'}} class='name-field'>{{name}}</span>
+        </div>
+      </div>
+    {{/if}}
+  </td>
+  <td><input type="checkbox" disabled="disabled" /><label>Manuscript Manager</label></td>
+  <td><input type="checkbox" disabled="disabled" /><label>All Manuscript Managers</label></td>
+  <td><input type="checkbox" disabled="disabled" /><label>Admin</label></td>
+</tr>
+<tr {{bind-attr class=":action-buttons isEditing"}}>
+  <td colspan="4">
+    {{errorsOn model 'name'}}
+    <button class="column-header-update-save primary-button" {{action "save"}}>Save</button>
+    <button class="column-header-update-cancel btn-link" {{action "cancel"}}>cancel</button>
+  </td>
+</tr>

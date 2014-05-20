@@ -10,7 +10,7 @@ feature "Tech Check", js: true do
   end
 
   before do
-    make_user_journal_admin(user, paper)
+    assign_journal_role(paper.journal, user, :admin)
 
     phase = paper.phases.where(name: 'Assign Editor').first
     task = phase.tasks.where(title: 'Tech Check').first

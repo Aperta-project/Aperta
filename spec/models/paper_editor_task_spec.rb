@@ -36,13 +36,7 @@ describe PaperEditorTask do
 
   describe "#editor_id" do
     let(:task) { PaperEditorTask.create! phase: paper.phases.first }
-
-    let :editor do
-      User.create! username: 'editor',
-        first_name: 'Ernie', last_name: 'Editor',
-        password: 'password', password_confirmation: 'password',
-        email: 'editor@example.org'
-    end
+    let(:editor) { FactoryGirl.create(:user) }
 
     before do
       PaperRole.create! paper: paper, editor: true, user: editor

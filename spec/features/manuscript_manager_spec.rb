@@ -6,7 +6,7 @@ feature "Manuscript Manager", js: true do
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true, journal: journal }
 
   before do
-    JournalRole.create! admin: true, journal: journal, user: admin
+    assign_journal_role(journal, admin, :admin)
 
     page.driver.browser.manage.window.maximize
 
@@ -105,7 +105,6 @@ feature "Manuscript Manager", js: true do
     # execute_script("return $('.column h2')[0].classList.add('changedColumn')")
     # title = phase.all('.column h2').first
     # title.set "Some Other Title"
-    # binding.pry
     # execute_script("return $('.changedColumn').blur()")
     # page.reload
   end

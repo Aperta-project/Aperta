@@ -5,13 +5,11 @@ feature "Sync Reviewer Report tasks with Assigned Reviewers", js: true do
   let!(:journal) { create :journal, :with_default_template }
   let!(:paper) { create :paper, :with_tasks, user: admin, submitted: true, journal: journal }
 
-  let!(:albert) do
-    create :user,
-           journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
-  end
+  let!(:albert) { create :user }
 
   before do
-    JournalRole.create! admin: true, journal: journal, user: admin
+    assign_journal_role(journal, albert, :reviewer)
+    assign_journal_role(journal, admin, :admin)
 
     page.driver.browser.manage.window.maximize
 

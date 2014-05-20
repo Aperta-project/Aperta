@@ -10,9 +10,9 @@ feature "Assigns Editor", js: true do
   end
 
   before do
-    [editor, admin].each do |u|
-      u.journal_roles.create! journal: journal, editor: true
-    end
+    assign_journal_role(journal, admin, :editor)
+    assign_journal_role(journal, editor, :editor)
+
     SignInPage.visit.sign_in admin
   end
 

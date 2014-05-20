@@ -2,7 +2,7 @@ class PaperFactory
   attr_reader :paper, :author
 
   def self.create(paper_params, author)
-    paper = author.papers.build(paper_params)
+    paper = author.submitted_papers.build(paper_params)
     pf = new(paper, author)
     pf.create
     pf.paper

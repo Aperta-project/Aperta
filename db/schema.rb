@@ -11,22 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140514174824) do
+ActiveRecord::Schema.define(version: 20140520175615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "affiliations", force: true do |t|
-    t.integer  "user_id"
+    t.integer  "affiliable_id"
     t.string   "name"
     t.date     "start_date"
     t.date     "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email"
+    t.string   "affiliable_type"
   end
 
-  add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
+  add_index "affiliations", ["affiliable_id"], name: "index_affiliations_on_affiliable_id", using: :btree
+
+  create_table "authors", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "middle_initial"
+    t.string   "email"
+    t.string   "department"
+    t.string   "title"
+    t.boolean  "corresponding",  default: false, null: false
+    t.boolean  "deceased",       default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "paper_id"
+  end
 
   create_table "comment_looks", force: true do |t|
     t.integer  "user_id"
@@ -67,22 +82,19 @@ ActiveRecord::Schema.define(version: 20140514174824) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "empty_text"
-    t.integer  "user_settings_id"
+    t.integer  "user_id"
   end
-
-  add_index "flows", ["user_settings_id"], name: "index_flows_on_user_settings_id", using: :btree
 
   create_table "journal_roles", force: true do |t|
     t.integer  "user_id"
     t.integer  "journal_id"
-    t.boolean  "editor",     default: false, null: false
-    t.boolean  "reviewer",   default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin"
+    t.integer  "role_id"
   end
 
   add_index "journal_roles", ["journal_id"], name: "index_journal_roles_on_journal_id", using: :btree
+  add_index "journal_roles", ["role_id"], name: "index_journal_roles_on_role_id", using: :btree
   add_index "journal_roles", ["user_id", "journal_id"], name: "index_journal_roles_on_user_id_and_journal_id", using: :btree
   add_index "journal_roles", ["user_id"], name: "index_journal_roles_on_user_id", using: :btree
 
@@ -150,9 +162,8 @@ ActiveRecord::Schema.define(version: 20140514174824) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.text     "authors",         default: "--- []\n"
-    t.boolean  "submitted",       default: false,      null: false
-    t.integer  "journal_id",                           null: false
+    t.boolean  "submitted",       default: false, null: false
+    t.integer  "journal_id",                      null: false
     t.string   "decision"
     t.text     "decision_letter"
     t.datetime "published_at"
@@ -184,6 +195,16 @@ ActiveRecord::Schema.define(version: 20140514174824) do
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
 
+  create_table "roles", force: true do |t|
+    t.string   "name"
+    t.boolean  "admin",      default: false, null: false
+    t.boolean  "editor",     default: false, null: false
+    t.boolean  "reviewer",   default: false, null: false
+    t.integer  "journal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "surveys", force: true do |t|
     t.text    "question", null: false
     t.text    "answer"
@@ -206,14 +227,6 @@ ActiveRecord::Schema.define(version: 20140514174824) do
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
 
-  create_table "user_settings", force: true do |t|
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "user_settings", ["user_id"], name: "index_user_settings_on_user_id", using: :btree
-
   create_table "users", force: true do |t|
     t.string   "first_name",             default: "",    null: false
     t.string   "last_name",              default: "",    null: false
@@ -232,6 +245,8 @@ ActiveRecord::Schema.define(version: 20140514174824) do
     t.string   "username"
     t.boolean  "admin",                  default: false, null: false
     t.string   "avatar"
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

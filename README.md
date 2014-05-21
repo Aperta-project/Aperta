@@ -58,6 +58,5 @@ Rails still compiles assets between every test run.
 
 ### Making a new task engine
 
+Please see the gist below for detailed instructions:
 https://gist.github.com/neo-tahi/9611549
-- In the application root, generate a new engine: `rails plugin new --skip-test-unit --mountable engines/supporting_information_task`
-

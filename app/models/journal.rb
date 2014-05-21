@@ -13,18 +13,19 @@ class Journal < ActiveRecord::Base
   has_many :papers, inverse_of: :journal
   has_many :journal_roles, inverse_of: :journal
   has_many :users, through: :journal_roles
+  has_many :roles, inverse_of: :journal
   has_many :manuscript_manager_templates
 
   def admins
-    users.merge(JournalRole.admins).uniq
+    User.joins(:journal_roles => :role).merge(Role.admins).where('journal_roles.journal_id' => self.id)
   end
 
   def editors
-    users.merge(JournalRole.editors).uniq
+    User.joins(:journal_roles => :role).merge(Role.editors).where('journal_roles.journal_id' => self.id)
   end
 
   def reviewers
-    users.merge(JournalRole.reviewers).uniq
+    User.joins(:journal_roles => :role).merge(Role.reviewers).where('journal_roles.journal_id' => self.id)
   end
 
   def logo_url

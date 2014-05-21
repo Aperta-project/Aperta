@@ -46,7 +46,7 @@
     "command": "serializer",
     "alternate": "spec/serializers/%s_serializer_spec.rb",
     "related": "app/models/%s.rb",
-    "template": "%SSerializer < ActiveModel::Serializer\n  attributes :id\nend"
+    "template": "class %SSerializer < ActiveModel::Serializer\n  attributes :id\nend"
   },
 
   "app/assets/stylesheets/*.css.scss": {

@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   http_basic_authenticate_with name: "tahi", password: "tahi3000", if: -> { %w(production staging).include? Rails.env }
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
+
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
 
   protected

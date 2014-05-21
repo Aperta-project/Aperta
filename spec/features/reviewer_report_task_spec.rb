@@ -3,9 +3,7 @@ require 'spec_helper'
 feature "Reviewer Report", js: true do
   let(:journal) { FactoryGirl.create :journal, :with_default_template }
 
-  let!(:reviewer) do
-    FactoryGirl.create :user, journal_roles: [JournalRole.new(journal: journal, reviewer: true)]
-  end
+  let!(:reviewer) { FactoryGirl.create :user }
 
   let!(:author) do
     author = FactoryGirl.create :user
@@ -16,6 +14,7 @@ feature "Reviewer Report", js: true do
   end
 
   before do
+    assign_journal_role(journal, reviewer, :reviewer)
     paper_reviewer_task = paper.phases.where(name: 'Assign Reviewers').first.tasks.where(type: 'PaperReviewerTask').first
     paper_reviewer_task.reviewer_ids = [reviewer.id.to_s]
     sign_in_page = SignInPage.visit

@@ -35,7 +35,7 @@ describe TasksController do
   end
 
   describe "PATCH 'update'" do
-    let(:task) { Task.create! title: "sample task", role: "sample role", phase: paper.phases.first }
+    let(:task) { FactoryGirl.create(:task, phase: paper.phases.first) }
 
     subject(:do_request) do
       patch :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }
@@ -131,8 +131,9 @@ describe TasksController do
       end
 
       context "with a paper that the user administers through a journal" do
+        let!(:role) { FactoryGirl.create(:role, :admin, journal: paper.journal) }
         let!(:journal_role) do
-          paper.journal.journal_roles.create!(user: user, admin: true)
+          paper.journal.journal_roles.create!(user: user, role: role)
         end
 
         it "renders the new message as json." do

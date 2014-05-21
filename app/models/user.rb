@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable,
          authentication_keys: [:login],
-         omniauth_providers: [:orcid]
+         omniauth_providers: [:orcid, :cas]
 
   def self.admins
     where(admin: true)

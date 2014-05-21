@@ -10,6 +10,16 @@ module Users
       end
     end
 
+    def cas
+      user = User.where(email: auth["info"]["name"]).first
+      if user.try(:persisted?)
+        sign_in_and_redirect(user, event: :authentication)
+      else
+        session["devise.cas"] = auth
+        redirect_to new_user_registration_url
+      end
+    end
+
     private
 
     def auth

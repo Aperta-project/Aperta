@@ -13,7 +13,7 @@ module UserDevise
       end
     end
 
-    # prefill user data using data being returned from orcid (via omniauth)
+    # prefill user data using data being returned from orcid or cas(via omniauth)
     def self.new_with_session(_, session)
       super.tap do |user|
         if data = session["devise.orcid"]

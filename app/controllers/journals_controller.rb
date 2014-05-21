@@ -3,7 +3,7 @@ class JournalsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with Journal.all
+    respond_with current_user.admin_journals
   end
 
   def show

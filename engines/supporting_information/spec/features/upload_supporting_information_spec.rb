@@ -11,11 +11,10 @@ feature "Upload Supporting Information", js: true do
   end
 
   scenario "Author uploads supporting information" do
-    paper = FactoryGirl.create :paper, :with_tasks, journal: journal, user: author
     edit_paper = EditPaperPage.visit paper
 
     edit_paper.view_card 'Supporting Information' do |overlay|
-      overlay.attach_file
+      overlay.attach_supporting_information
       expect(overlay).to have_file 'yeti.tiff'
       overlay.mark_as_complete
       expect(overlay).to be_completed
@@ -27,5 +26,52 @@ feature "Upload Supporting Information", js: true do
       expect(overlay).to have_file('yeti.tiff')
       expect(overlay).to be_completed
     end
+  end
+
+  scenario "Author destroys supporting information immediately" do
+    edit_paper = EditPaperPage.visit paper
+    edit_paper.view_card 'Supporting Information' do |overlay|
+      overlay.attach_supporting_information
+      find('.figure-thumbnail').hover
+      find('.glyphicon-trash').click
+      find('.figure-delete-button').click
+      expect(overlay).to_not have_selector('.figure-image')
+    end
+  end
+
+  scenario "Author destroys supporting information after page reload" do
+    edit_paper = EditPaperPage.visit paper
+    edit_paper.view_card 'Supporting Information' do |overlay|
+      overlay.attach_supporting_information
+    end
+
+    edit_paper.reload
+
+    edit_paper.view_card 'Supporting Information' do |overlay|
+      find('.figure-thumbnail').hover
+      find('.glyphicon-trash').click
+      find('.figure-delete-button').click
+      expect(overlay).to_not have_selector('.figure-image')
+    end
+  end
+
+  scenario "Author can edit title and caption" do
+    edit_paper = EditPaperPage.visit paper
+    edit_paper.view_card 'Supporting Information' do |overlay|
+      overlay.attach_supporting_information
+      title = find('h2.figure-thumbnail-title')
+      caption = find('div.figure-thumbnail-caption')
+
+      caption.set 'New file caption'
+      title.set 'new_file_title'
+      all('a', :text => 'SAVE').last.click
+
+      expect(title.text).to eq 'new_file_title'
+      expect(caption.text).to eq 'New file caption'
+    end
+
+    file = paper.supporting_information_files.last
+    expect(file.title).to eq 'new_file_title'
+    expect(file.caption).to eq 'New file caption'
   end
 end

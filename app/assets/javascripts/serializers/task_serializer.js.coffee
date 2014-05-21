@@ -1,7 +1,7 @@
 ETahi.TaskSerializer = ETahi.ApplicationSerializer.extend ETahi.SerializesHasMany,
   serializeIntoHash: (data, type, record, options) ->
-      root = 'task'
-      data[root] = this.serialize(record, options)
+    root = 'task'
+    data[root] = this.serialize(record, options)
 
   primaryTypeName: (primaryType) ->
     'task'
@@ -17,4 +17,4 @@ ETahi.TechCheckTaskSerializer = ETahi.TaskSerializer.extend()
 ETahi.RegisterDecisionTaskSerializer = ETahi.TaskSerializer.extend()
 ETahi.ReviewerReportTaskSerializer = ETahi.TaskSerializer.extend()
 ETahi.UploadManuscriptTaskSerializer = ETahi.TaskSerializer.extend()
-ETahi.SupportingInformationSerializer = ETahi.TaskSerializer.extend()
+ETahi.SupportingInformationTaskSerializer = ETahi.TaskSerializer.extend()

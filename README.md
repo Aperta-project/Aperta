@@ -5,7 +5,7 @@
 ### Initial Setup
 
 - Clone the repo
-- brew install imagemagick --with-libtiff
+- `brew install imagemagick --with-libtiff`
 - Most of the javascript for the app is being handled by Bower.  You'll need to have node installed
 in order to proceed.  `brew install node` and then `npm install bower -g`
 - All bower dependencies are found in the `Bowerfile`

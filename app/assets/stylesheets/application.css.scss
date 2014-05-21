@@ -28,7 +28,8 @@
 
 @import 'screens/dashboards';
 @import 'screens/flow_manager';
-@import "screens/manuscript_manager_template"; @import 'screens/papers';
+@import "screens/manuscript_manager_template";
+@import 'screens/papers';
 @import 'screens/profile';
 @import 'screens/reviewer_report';
 @import 'screens/tasks';
@@ -39,3 +40,4 @@
 @import 'overlays/message_overlay';
 @import 'overlays/register_decision_overlay';
 @import 'overlays/upload_manuscript_overlay';
+@import 'overlays/supporting_information_overlay';

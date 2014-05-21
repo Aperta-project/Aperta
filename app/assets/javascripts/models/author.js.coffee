@@ -1,0 +1,20 @@
+a = DS.attr
+ETahi.Author = DS.Model.extend
+  paper: DS.belongsTo('paper')
+
+  firstName: a('string')
+  middleInitial: a('string')
+  lastName: a('string')
+  fullName: (->
+     "#{@get('firstName')} #{@get('middleInitial') || ''} #{@get('lastName')}"
+  ).property('firstName', 'middleInitial', 'lastName')
+
+  email: a('string')
+
+  title: a('string')
+  department: a('string')
+  affiliation: a('string')
+  secondaryAffiliation: a('string')
+
+  correspondingAuthor: a('boolean')
+  deceased: a('boolean')

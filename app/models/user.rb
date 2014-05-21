@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 
   include UserDevise
 
-  has_many :affiliations, inverse_of: :user
+  has_many :affiliations, inverse_of: :affiliable, as: :affiliable
   has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'
   has_many :paper_roles, inverse_of: :user
   has_many :journal_roles, inverse_of: :user

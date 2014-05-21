@@ -11,12 +11,16 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       @set('resolvedPaper', paper)
   ).observes('paper')
 
+  toggleAuthorForm: ->
+    @set('showNewAuthorForm', !@showNewAuthorForm)
+
+  saveNewAuthor: ->
+    @get('authors').pushObject @newAuthor
+    @get('resolvedPaper').save()
+    @set('newAuthor', {})
+    @toggleAuthorForm()
+
   actions:
     toggleAuthorForm: ->
-      @set('showNewAuthorForm', !@showNewAuthorForm)
+      @toggleAuthorForm()
 
-    saveNewAuthor: ->
-      @get('authors').pushObject @newAuthor
-      @get('resolvedPaper').save()
-      @set('newAuthor', {})
-      @send('toggleAuthorForm')

@@ -4,6 +4,7 @@
   overflow: auto;
 
   li {
+    position: relative;
     float: left;
     width: 100%;
     padding: 30px;
@@ -14,10 +15,26 @@
       border-bottom: none;
     }
 
+    & .author-form {
+      margin: 0;
+    }
+
     div {
-      overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .author-edit {
+      display: none;
+      color: $tahi-secondary;
+      font-size: 24px;
+      position: absolute;
+      right: 10px;
+      top: 38%;
+    }
+
+    &:hover .author-edit {
+      display: block;
     }
   }
 }

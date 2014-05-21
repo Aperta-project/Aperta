@@ -1,0 +1,21 @@
+<div {{bind-attr class="showEditAuthorForm:hide"}}>
+  <div>
+    <span>{{author.fullName}}</span>
+    <span>{{author.email}}</span>
+  </div>
+  <div>
+    <span>{{author.title}}</span>
+    <span>{{author.department}}</span>
+  </div>
+  <div>
+    <div>{{author.affiliation}}</div>
+    <div>{{author.secondaryAffiliation}}</div>
+  </div>
+</div>
+<div {{bind-attr class=":author-form showEditAuthorForm:show-new-author-form"}}>
+  {{add-author-form
+    newAuthor=author
+    toggleEditAuthorForm='toggleEditAuthorForm'
+    saveAuthor="saveAuthor"}}
+</div>
+<span class="glyphicon glyphicon-pencil author-edit" {{bind-attr class="showEditAuthorForm:hide"}}></span>

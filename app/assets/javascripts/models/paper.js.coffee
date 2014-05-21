@@ -3,6 +3,7 @@ ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('user')
   editors: DS.hasMany('user')
   figures: DS.hasMany('figure')
+  supportingInformationFiles: DS.hasMany('supportingInformationFile')
   journal: DS.belongsTo('journal')
   phases: DS.hasMany('phase')
   reviewers: DS.hasMany('user')

@@ -1,1 +1,48 @@
-<h1>SUPPORT</h1>
+<h1>{{model.title}}</h1>
+
+{{#if isEditable}}
+  <span class="secondary-button fileinput-button">
+    <span>Add New Supporting Information</span>
+    {{file-uploader id="file_attachment"
+                    class="js-jquery-fileupload"
+                    name="supporting_information_file[attachment][]"
+                    multiple=true
+                    type="file"}}
+  </span>
+{{/if}}
+<ul id="paper-file-uploads">
+  {{!#TODO: extract items in each block into their own views?}}
+  {{#each upload in view.uploads}}
+    <li {{bind-attr class="upload.error:alert"}}>
+      {{#if upload.error}}
+        <button type="button" class="close upload-error-button" data-dismiss="alert" aria-hidden="true">×</button>
+      {{/if}}
+      <div class="preview-container">
+        <div {{bind-attr class=":preview-container
+                                :glyphicon
+                                upload.error:glyphicon-exclamation-sign:glyphicon-file"}}></div>
+      </div>
+      <div class="progress">
+        {{#if upload.error}}
+          <span class="upload-error-text">
+            {{upload.error}}
+          </span>
+        {{else}}
+          <div class="progress-bar" {{bind-attr style=upload.progressBarStyle}}></div>
+        {{/if}}
+      </div>
+    </li>
+  {{/each}}
+</ul>
+
+<ul class="paper-files">
+  {{#if isEditable}}
+    {{#each file in paper.supportingInformationFiles}}
+      {{figure-thumbnail figure=file}}
+    {{/each}}
+  {{else}}
+    {{#each file in paper.supportingInformationFiles}}
+      {{partial 'file_show_only'}}
+    {{/each}}
+  {{/if}}
+</ul>

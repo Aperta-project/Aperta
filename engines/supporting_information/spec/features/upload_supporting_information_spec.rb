@@ -11,6 +11,7 @@ feature "Upload Supporting Information", js: true do
   end
 
   scenario "Author uploads supporting information" do
+    paper = FactoryGirl.create :paper, :with_tasks, journal: journal, user: author
     edit_paper = EditPaperPage.visit paper
 
     edit_paper.view_card 'Supporting Information' do |overlay|

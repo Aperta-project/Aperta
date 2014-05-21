@@ -6,7 +6,7 @@ module SupportingInformation
     def create
       files = Array.wrap(file_params.delete(:attachment))
       new_files = files.map do |file|
-        paper.supporting_information_files.create(file_params.merge(attachment: file))
+        paper.supporting_information_files.create!(file_params.merge(attachment: file))
       end
       respond_to do |f|
         f.html { redirect_to edit_paper_path paper }

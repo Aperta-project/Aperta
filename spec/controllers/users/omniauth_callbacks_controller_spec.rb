@@ -24,7 +24,8 @@ describe Users::OmniauthCallbacksController do
 
       before(:each) do
         user = FactoryGirl.create(:user, :orcid)
-        allow_any_instance_of(Users::OmniauthCallbacksController).to receive(:auth).and_return( { uid: user.uid, provider: user.provider })
+        credential = user.credentials.first
+        allow_any_instance_of(Users::OmniauthCallbacksController).to receive(:auth).and_return( { uid: credential.uid, provider: credential.provider })
       end
 
       it "will redirect to dashboard" do

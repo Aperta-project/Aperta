@@ -1,6 +1,6 @@
 module SerializeIdsWithPolymorphism
   def self.call(associated_object)
-    return associated_object.map do |item|
+    associated_object.map do |item|
       task_type_parts = item.type.split '::'
 
       task_type = if task_type_parts.length == 1

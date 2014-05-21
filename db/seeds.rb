@@ -47,7 +47,7 @@ when 'development'
     paper = PaperFactory.create(paper_params, mike)
   end
 
-  mike.journal_roles.create(admin: true, reviewer: true, editor: true, journal_id: plos_journal.id)
+  mike.journal_roles.create(journal_id: plos_journal.id)
 
   first_names = ['Oliver', 'Charlotte', 'Jack', 'Emily', 'James', 'Ruby', 'William', 'Sophie', 'Mason', 'Olivia', 'Richard']
   last_names  = ['Smith', 'Jones', 'Taylor', 'Brown', 'Davies', 'Evans', 'Roberts', 'Johnson', 'Robinson', 'Edwards', 'Prentice']
@@ -63,7 +63,7 @@ when 'development'
       admin:       true
     )
     if u.persisted?
-      u.journal_roles.create!(journal_id: plos_journal.id, admin: true, editor: true, reviewer: true)
+      u.journal_roles.create!(journal_id: plos_journal.id)
       u.affiliations.create!(name: "Affiliation #{i}")
     end
   }

@@ -7,7 +7,6 @@ feature "Event streaming", js: true do
   let(:upload_task) { paper.tasks_for_type(UploadManuscriptTask).first }
 
   before do
-    assign_journal_role(paper.journal, author, :admin)
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in author
   end

@@ -23,6 +23,6 @@ class Comment < ActiveRecord::Base
   end
 
   def task_payload
-    { task_id: message_task.id, journal_id: message_task.journal.id }
+    { task_id: message_task.id, paper_id: message_task.paper.id }
   end
 end

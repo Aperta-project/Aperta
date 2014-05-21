@@ -5,7 +5,7 @@ class UploadFiguresOverlay < CardOverlay
 
   def attach_figure
     session.execute_script "$('#figure_attachment').css('position', 'relative')"
-    attach_file('figure_attachment', Rails.root.join('spec', 'fixtures', 'yeti.jpg'), visible: false)
+    attach_file('figure_attachment', Rails.root.join('spec', 'fixtures', 'yeti.tiff'), visible: false)
     session.execute_script "$('#figure_attachment').css('position', 'absolute')"
   end
 

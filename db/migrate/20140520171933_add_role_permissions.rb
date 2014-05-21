@@ -4,4 +4,4 @@ class AddRolePermissions < ActiveRecord::Migration
     add_column :roles, :can_view_assigned_manuscript_managers, :boolean, default: false, null: false
     add_column :roles, :can_view_all_manuscript_managers, :boolean, default: false, null: false
   end
-en`
+end

@@ -9,7 +9,7 @@ class FiguresController < ApplicationController
     figures.select! {|f| Figure.acceptable_content_type? f.content_type }
 
     new_figures = figures.map do |figure|
-      paper.figures.create(figure_params.merge(attachment: figure))
+      paper.figures.create!(figure_params.merge(attachment: figure))
     end
 
     respond_to do |f|

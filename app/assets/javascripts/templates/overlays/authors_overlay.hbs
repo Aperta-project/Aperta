@@ -9,22 +9,17 @@
 </div>
 <ul class="authors-overlay-list">
   {{#each author in paper.authors}}
-    <li>
-      <div>
-        <span>{{author.first_name}} {{author.last_name}}</span>
-        <span>{{author.email}}</span>
-      </div>
-      <div>
-        <span>{{author.title}}</span>
-        <span>{{author.department}}</span>
-      </div>
-      <div>{{author.affiliation}}</div>
-      <div>{{author.secondary_affiliation}}</div>
-    </li>
+    {{author-view
+      institutions=institutions
+      author=author}}
   {{/each}}
 </ul>
 {{#if isEditable}}
   <div {{bind-attr class=":author-form showNewAuthorForm"}}>
-    {{view ETahi.AddAuthorView newAuthor=newAuthor}}
+    {{add-author-form
+      newAuthor=newAuthor
+      institutions=institutions
+      hideAuthorForm='toggleAuthorForm'
+      saveAuthor='saveNewAuthor'}}
   </div>
 {{/if}}

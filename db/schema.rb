@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140516173923) do
+ActiveRecord::Schema.define(version: 20140521160223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,22 @@ ActiveRecord::Schema.define(version: 20140516173923) do
   end
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
+
+  create_table "authors", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "middle_initial"
+    t.string   "email"
+    t.string   "department"
+    t.string   "title"
+    t.boolean  "corresponding",         default: false, null: false
+    t.boolean  "deceased",              default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "paper_id"
+    t.string   "affiliation"
+    t.string   "secondary_affiliation"
+  end
 
   create_table "comment_looks", force: true do |t|
     t.integer  "user_id"
@@ -147,9 +163,8 @@ ActiveRecord::Schema.define(version: 20140516173923) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.text     "authors",         default: "--- []\n"
-    t.boolean  "submitted",       default: false,      null: false
-    t.integer  "journal_id",                           null: false
+    t.boolean  "submitted",       default: false, null: false
+    t.integer  "journal_id",                      null: false
     t.string   "decision"
     t.text     "decision_letter"
     t.datetime "published_at"
@@ -183,12 +198,15 @@ ActiveRecord::Schema.define(version: 20140516173923) do
 
   create_table "roles", force: true do |t|
     t.string   "name"
-    t.boolean  "admin",      default: false, null: false
-    t.boolean  "editor",     default: false, null: false
-    t.boolean  "reviewer",   default: false, null: false
+    t.boolean  "admin",                                 default: false, null: false
+    t.boolean  "editor",                                default: false, null: false
+    t.boolean  "reviewer",                              default: false, null: false
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "can_administer_journal",                default: false, null: false
+    t.boolean  "can_view_assigned_manuscript_managers", default: false, null: false
+    t.boolean  "can_view_all_manuscript_managers",      default: false, null: false
   end
 
   create_table "surveys", force: true do |t|

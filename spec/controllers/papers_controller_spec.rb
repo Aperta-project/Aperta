@@ -88,17 +88,24 @@ describe PapersController do
       expect(Paper.first.user).to eq(user)
     end
 
+    describe "adding authors to the paper" do
+      it "assigns an author to the paper" do
+        expect {
+          do_request
+        }.to change { Author.count }.by 1
+      end
+
+      it "assigns the right author to the paper" do
+        do_request
+        expect(Paper.last.authors.first.first_name).to eq(user.first_name)
+      end
+    end
+
     it "returns a 201 and the paper's id in json" do
       do_request
       expect(response.status).to eq(201)
       json = JSON.parse(response.body)
       expect(json['paper']['id']).to eq(Paper.first.id)
-    end
-
-    it "adds the current user to the paper's authors" do
-      do_request
-      json = JSON.parse(response.body)
-      expect(json['paper']['authors'][0]['first_name']).to eq(user.first_name)
     end
 
     it "renders the errors for the paper if it can't be saved" do
@@ -112,27 +119,6 @@ describe PapersController do
 
     subject(:do_request) do
       put :update, { id: paper.to_param, paper: { short_title: 'ABC101' }.merge(params) }
-    end
-
-    describe "authors" do
-      context "when there is an authors key in params" do
-        let(:authors) { [{ first_name: 'Bob', last_name: 'Marley', affiliation: "Jamaica Inc.", email: 'jamaican@example.com' }] }
-        let(:params) { { authors: authors } }
-
-        it "decodes JSON string into an array before saving" do
-          do_request
-          expect(paper.reload.authors).to eq authors.map(&:with_indifferent_access)
-        end
-      end
-
-      context "when authors key is not present" do
-        let(:params) { {} }
-
-        it "decodes JSON string into an array before saving" do
-          do_request
-          expect(paper.reload.authors).to be_empty
-        end
-      end
     end
 
     it_behaves_like "when the user is not signed in"

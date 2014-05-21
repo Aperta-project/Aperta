@@ -1,13 +1,11 @@
 require 'spec_helper'
 
 describe Api::PapersController do
+  let(:author) { FactoryGirl.create(:author) }
   let!(:paper1) { FactoryGirl.create(:paper, :with_tasks,
                                      short_title: "paper-2",
                                      title: "First paper",
-                                     authors: [{ first_name: 'Ryan',
-                                                 last_name: 'Wold',
-                                                 affiliation: 'Personal',
-                                                 email: 'user@example.com' }]) }
+                                     authors: [ author ]) }
 
   describe "GET 'index'" do
     let!(:paper2) { FactoryGirl.create(:paper, :with_tasks,
@@ -18,15 +16,33 @@ describe Api::PapersController do
       get api_papers_path
 
       expect(JSON.parse(response.body)).to eq(
-        {
-          papers: [
-            { id: paper1.id, title: "First paper",
-              authors: [{ first_name: 'Ryan', last_name: 'Wold', affiliation: 'Personal', email: 'user@example.com' }],
-              paper_type: paper1.paper_type, epub: api_paper_url(paper1, format: :epub) },
-            { id: paper2.id, title: "Second paper", authors: [], paper_type: paper2.paper_type, epub: api_paper_url(paper2, format: :epub) }
-          ]
-        }.with_indifferent_access
-      )
+        {"authors"=>
+         [
+           {"id"=> author.id,
+           "first_name"=> author.first_name,
+           "middle_initial"=> author.middle_initial,
+           "last_name"=> author.last_name,
+           "email"=> author.email,
+           "affiliation"=>author.affiliation,
+           "secondary_affiliation"=>author.secondary_affiliation,
+           "title"=>author.title,
+           "corresponding"=>author.corresponding,
+           "deceased"=>author.deceased,
+           "department"=>author.department,
+           "paper_id"=>author.paper_id}
+         ],
+         "papers"=>
+           [{"id"=>paper1.id,
+             "title"=>paper1.title,
+             "paper_type"=>paper1.paper_type,
+             "epub"=>"http://www.example.com/api/papers/#{paper1.id}.epub",
+             "author_ids"=>paper1.author_ids},
+           {"id"=>paper2.id,
+             "title"=>paper2.title,
+             "paper_type"=>paper2.paper_type,
+             "epub"=>"http://www.example.com/api/papers/#{paper2.id}.epub",
+             "author_ids"=>paper2.author_ids}]
+        })
     end
 
     context "when the published parameter is false" do
@@ -35,12 +51,14 @@ describe Api::PapersController do
         get api_papers_path(published: false)
 
         expect(JSON.parse(response.body)).to eq(
-          {
-            papers: [
-              { id: paper2.id, title: "Second paper", authors: [], paper_type: paper2.paper_type, epub: api_paper_url(paper2, format: :epub) }
-            ]
-          }.with_indifferent_access
-        )
+          {"authors"=>[],
+           "papers"=>
+           [{"id"=>paper2.id,
+             "title"=>paper2.title,
+             "paper_type"=>paper2.paper_type,
+             "epub"=>"http://www.example.com/api/papers/#{paper2.id}.epub",
+             "author_ids"=>paper2.author_ids}]
+          })
       end
     end
 
@@ -50,14 +68,28 @@ describe Api::PapersController do
         get api_papers_path(published: true)
 
         expect(JSON.parse(response.body)).to eq(
-          {
-            papers: [
-              { id: paper1.id, title: "First paper",
-                authors: [{ first_name: 'Ryan', last_name: 'Wold', affiliation: 'Personal', email: 'user@example.com' }],
-                paper_type: paper1.paper_type, epub: api_paper_url(paper1, format: :epub) }
-            ]
-          }.with_indifferent_access
-        )
+          {"authors"=>
+           [
+             {"id"=> author.id,
+              "first_name"=> author.first_name,
+              "middle_initial"=> author.middle_initial,
+              "last_name"=> author.last_name,
+              "email"=> author.email,
+              "affiliation"=>author.affiliation,
+              "secondary_affiliation"=>author.secondary_affiliation,
+              "title"=>author.title,
+              "corresponding"=>author.corresponding,
+              "deceased"=>author.deceased,
+              "department"=>author.department,
+              "paper_id"=>author.paper_id}
+           ],
+           "papers"=>
+           [{"id"=>paper1.id,
+             "title"=>paper1.title,
+             "paper_type"=>paper1.paper_type,
+             "epub"=>"http://www.example.com/api/papers/#{paper1.id}.epub",
+             "author_ids"=>paper1.author_ids},
+           ]})
       end
     end
   end
@@ -69,13 +101,28 @@ describe Api::PapersController do
       data = JSON.parse response.body
       expect(data['papers'].length).to eq 1
       expect(data).to eq(
-        {
-          papers: [
-            { id: paper1.id, title: "First paper",
-              authors: [{ first_name: 'Ryan', last_name: 'Wold', affiliation: 'Personal', email: 'user@example.com' }],
-              paper_type: paper1.paper_type, epub: api_paper_url(paper1, format: :epub) }
-          ]
-        }.with_indifferent_access
+        {"authors"=>
+         [
+           {"id"=> author.id,
+            "first_name"=> author.first_name,
+            "middle_initial"=> author.middle_initial,
+            "last_name"=> author.last_name,
+            "email"=> author.email,
+            "affiliation"=>author.affiliation,
+            "secondary_affiliation"=>author.secondary_affiliation,
+            "title"=>author.title,
+            "corresponding"=>author.corresponding,
+            "deceased"=>author.deceased,
+            "department"=>author.department,
+            "paper_id"=>author.paper_id}
+         ],
+         "papers"=>
+         [{"id"=>paper1.id,
+           "title"=>paper1.title,
+           "paper_type"=>paper1.paper_type,
+           "epub"=>"http://www.example.com/api/papers/#{paper1.id}.epub",
+           "author_ids"=>paper1.author_ids}
+         ]}
       )
     end
   end

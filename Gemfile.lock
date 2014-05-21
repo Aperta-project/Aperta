@@ -16,8 +16,6 @@ PATH
   remote: engines/supporting_information
   specs:
     supporting_information (0.0.1)
-      pry
-      pry-rails
       rails (~> 4.1.1)
 
 GEM

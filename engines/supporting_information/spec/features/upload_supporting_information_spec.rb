@@ -1,4 +1,4 @@
-require File.expand_path('../../../../../spec/spec_helper', __FILE__)
+require 'spec_helper'
 
 feature "Upload Supporting Information", js: true do
   let(:author) { create :user }

@@ -7,20 +7,16 @@ require "supporting_information/version"
 Gem::Specification.new do |s|
   s.name        = "supporting_information"
   s.version     = SupportingInformation::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
+  s.authors     = ["Tahi"]
+  s.email       = ["tahiprojectteam@plos.org"]
+  s.homepage    = "tahi.com"
   s.summary     = "TODO: Summary of SupportingInformation."
   s.description = "TODO: Description of SupportingInformation."
-  s.license     = "MIT"
+  # s.license     = "Copyright"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile"]
 
   s.add_dependency "rails", "~> 4.1.1"
-  s.add_dependency "pry-rails"
-  s.add_dependency "pry"
 
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "pry-rails"
-  s.add_development_dependency "pry"
 end

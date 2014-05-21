@@ -1,0 +1,55 @@
+module Authorizations
+  extend ActiveSupport::Concern
+
+  class AuthorizationError < StandardError; end;
+
+  included do
+    rescue_from AuthorizationError, with: :render_forbidden
+    helper_method :can_perform?
+    helper_method :can_perform_action?
+  end
+
+  def enforce_policy
+    authorize_action!
+  end
+
+  def can_perform?(controller, action, args={})
+    user = args[:user] || current_user
+    policy = find_policy(controller, user, args)
+    policy.authorized? action
+  end
+
+  def can_perform_action?(action, args={})
+    controller = args[:controller] || controller_name
+    can_perform?(controller, action, args)
+  end
+
+  def authorize_action!(args={})
+    policy = find_policy(controller_name, current_user, args)
+    unless policy.authorized?(action_name)
+      raise AuthorizationError
+    end
+  end
+
+  def render_forbidden
+    head :forbidden
+  end
+
+  def find_policy(controller, user, args)
+    @policies ||= []
+    policy = nil
+
+    if @policies.present?
+      policy = @policies.detect { |p| p.applies_to?(controller, user, args) }
+    end
+
+    if !policy
+      policy = ApplicationPolicy.find_policy(controller, user, args)
+      @policies << policy
+    end
+
+    policy
+  end
+
+end
+

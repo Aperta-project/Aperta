@@ -1,11 +1,9 @@
 class ManuscriptManagersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :enforce_policy
 
   def show
-    if ManuscriptManagerPolicy.new.can_show?
-      head :ok
-    else
-      head :forbidden
-    end
+    head :ok
   end
 
 end

@@ -11,7 +11,7 @@ ETahi.SupportingInformationOverlayView = ETahi.OverlayView.extend
   setupUpload: (->
     uploader = $('.js-jquery-fileupload')
     uploader.fileupload
-      url: "/papers/#{@controller.get('paper.id')}/supporting_information/files"
+      url: "/supporting_information_files?paper_id=#{@controller.get('paper.id')}"
       dataType: 'json'
       method: 'POST'
 

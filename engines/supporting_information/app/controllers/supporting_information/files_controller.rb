@@ -43,7 +43,7 @@ module SupportingInformation
     end
 
     def file_paper
-      SupportingInformation::File.find(params[:id]).paper
+      ::SupportingInformation::File.find(params[:id]).paper
     end
 
     def paper_policy

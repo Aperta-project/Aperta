@@ -21,9 +21,9 @@ Tahi::Application.routes.draw do
   resources :flows, only: [:index, :destroy, :create]
 
   resources :figures, only: [:destroy, :update]
-  namespace :supporting_information, defaults: { format: 'json' } do
-    resources :files, only: [:destroy, :update]
-  end
+
+  resources :files, as: 'supporting_information_files', path: 'supporting_information_files', only: [:create, :destroy, :update], controller: 'supporting_information/files'
+
   resources :comment_looks, only: [:update]
 
   namespace :api, defaults: { format: 'json' } do
@@ -42,9 +42,6 @@ Tahi::Application.routes.draw do
 
   resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create
-    namespace :supporting_information, defaults: { format: 'json' } do
-      resources :files, only: :create
-    end
     resources :tasks, only: [:update, :create, :show, :destroy] do
       resources :comments, only: :create
     end

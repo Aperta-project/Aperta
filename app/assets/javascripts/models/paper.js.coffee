@@ -34,8 +34,13 @@ ETahi.Paper = DS.Model.extend
     !(@get('allTasksCompleted') and @get('submitted'))
   ).property('allTasksCompleted', 'submitted')
 
+  queriedAuthors: (->
+    ags = @get('authorGroups')
+    @store.all('author').filter (author)->
+      ags.indexOf(author.get('authorGroup')) > -1
+  ).property()
+
   authors: (->
-    @get('authorGroups').reduce (array, group, _) ->
-      array.concat(group.get('authors.content'))
-    , []
-  ).property('authorGroups.[]', 'authorGroups.@each')
+    @get('queriedAuthors')
+  ).property('queriedAuthors.@each')
+

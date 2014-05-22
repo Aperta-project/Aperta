@@ -3,7 +3,8 @@ require 'spec_helper'
 feature "Add contributing authors", js: true do
   let(:author) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal, :with_default_template }
-  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author, author_groups: [ author_group ] }
+  let(:author_group) { FactoryGirl.create(:author_group) }
 
   before do
     sign_in_page = SignInPage.visit
@@ -50,8 +51,8 @@ feature "Add contributing authors", js: true do
                         title: 'quantum awesome-ologist',
                         affiliation: 'university of zurich',
                         department: 'theoretical physics'
-    paper.authors.push author
-    paper.save
+    author_group.authors << author
+    author_group.save
     edit_paper = EditPaperPage.visit paper
     edit_paper.view_card 'Add Authors' do |overlay|
       overlay.edit_author last_name: 'rommel',
@@ -60,6 +61,27 @@ feature "Add contributing authors", js: true do
       within '.authors-overlay-list' do
         expect(page).to have_content "ernie@berlin.de"
         expect(page).to have_content "rommel"
+      end
+    end
+  end
+
+  describe "author groups" do
+    scenario "adding author groups" do
+      edit_paper = EditPaperPage.visit paper
+      edit_paper.view_card 'Add Authors' do |overlay|
+        expect {
+          find(".add-group").click
+        }.to change { all(".author-group").count }.by 1
+      end
+    end
+
+    scenario "removing author groups" do
+      paper.author_groups << AuthorGroup.ordinalized_create({ paper_id: paper.id })
+      edit_paper = EditPaperPage.visit paper
+      edit_paper.view_card 'Add Authors' do |overlay|
+        expect {
+          find(".remove-group").click
+        }.to change { all(".author-group").count }.by -1
       end
     end
   end

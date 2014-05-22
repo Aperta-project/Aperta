@@ -13,6 +13,8 @@ Tahi::Application.routes.draw do
   end
 
   resources :journals, only: [:index, :show]
+
+  #TODO: can these be removed?
   get '/admin/journals/*manage' => 'ember#index'
 
   get '/flow_manager' => 'ember#index'
@@ -32,6 +34,7 @@ Tahi::Application.routes.draw do
   resources :affiliations, only: [:index, :create, :destroy]
 
   resources :manuscript_manager_templates
+  resources :administrate_journals, only: [:index]
 
   resources :users, only: [:update, :show] do
     get :profile, on: :collection

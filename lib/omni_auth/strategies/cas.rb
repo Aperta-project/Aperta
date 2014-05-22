@@ -12,21 +12,28 @@ module OmniAuth
       }
 
       def profile
-        url = "http://localhost:8080/cas/oauth2.0/profile?access_token=#{access_token.token}"
-        conn = Faraday.new(url: url) do |faraday|
-          faraday.response :json
-          faraday.request  :url_encoded
-          faraday.adapter  Faraday.default_adapter
-        end
-        response = conn.get
-        { name: response.body['id'] }
+        {name: profile_response['id']}
       end
 
       uid do
-        access_token.token
+        profile_response['id']
       end
 
-      info { profile }
+      info { profile_response }
+
+      def profile_response
+        unless @profile_response
+          url = "http://localhost:8080/cas/oauth2.0/profile?access_token=#{access_token.token}"
+          conn = Faraday.new(url: url) do |faraday|
+            faraday.response :json
+            faraday.request  :url_encoded
+            faraday.adapter  Faraday.default_adapter
+          end
+          response = conn.get
+          @profile_response = response.body
+        end
+        @profile_response
+      end
     end
   end
 end

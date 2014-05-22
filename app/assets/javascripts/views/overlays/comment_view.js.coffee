@@ -5,5 +5,5 @@ ETahi.CommentView = Ember.View.extend
   classNameBindings: ['controller.unread:unread']
 
   setCommentLook: (->
-    @get('controller').send 'updateReadAt' if @get('controller.unread')
+    @get('controller').send 'updateReadAt'
   ).on('didInsertElement')

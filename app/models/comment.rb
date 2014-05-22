@@ -1,6 +1,8 @@
 class Comment < ActiveRecord::Base
   include EventStreamNotifier
 
+  include PublicActivity::Common
+
   validates :message_task, :body, presence: true
 
   belongs_to :message_task, inverse_of: :comments, foreign_key: :task_id

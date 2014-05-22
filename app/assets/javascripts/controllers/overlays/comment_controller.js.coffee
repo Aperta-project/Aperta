@@ -5,7 +5,3 @@ ETahi.CommentController = Ember.ObjectController.extend
 
   actions:
     updateReadAt: ->
-      commentLook = @get 'model.commentLook'
-      currentDate = new Date()
-      commentLook.set 'readAt', currentDate
-      commentLook.save()

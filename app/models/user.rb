@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
     where(admin: true)
   end
 
+  def admin_journals
+    journals.joins(:roles).where('roles.admin' => true)
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end

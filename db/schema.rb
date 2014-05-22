@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140521160223) do
+ActiveRecord::Schema.define(version: 20140521194736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,14 @@ ActiveRecord::Schema.define(version: 20140521160223) do
   add_index "comments", ["commenter_id", "task_id"], name: "index_comments_on_commenter_id_and_task_id", using: :btree
   add_index "comments", ["commenter_id"], name: "index_comments_on_commenter_id", using: :btree
   add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
+
+  create_table "credentials", force: true do |t|
+    t.string  "provider"
+    t.string  "uid"
+    t.integer "user_id"
+  end
+
+  add_index "credentials", ["uid", "provider"], name: "index_credentials_on_uid_and_provider", using: :btree
 
   create_table "figures", force: true do |t|
     t.string   "attachment"
@@ -257,8 +265,6 @@ ActiveRecord::Schema.define(version: 20140521160223) do
     t.string   "username"
     t.boolean  "admin",                  default: false, null: false
     t.string   "avatar"
-    t.string   "provider"
-    t.string   "uid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

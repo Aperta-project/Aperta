@@ -21,8 +21,12 @@ FactoryGirl.define do
     end
 
     trait :orcid do
-      provider "orcid"
-      uid "abc123"
+      credentials { [create(:orcid_credential)] }
     end
+  end
+
+  factory :orcid_credential, class: Credential do
+    provider "orcid"
+    uid "abc123"
   end
 end

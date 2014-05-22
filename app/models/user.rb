@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :message_tasks, through: :comments
   has_many :message_participants, inverse_of: :participant
   has_many :comment_looks
+  has_many :credentials, inverse_of: :user, dependent: :destroy
 
   attr_accessor :login
 
@@ -26,7 +27,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable,
          authentication_keys: [:login],
-         omniauth_providers: [:orcid]
+         omniauth_providers: [:orcid, :cas]
 
   def self.admins
     where(admin: true)

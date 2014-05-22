@@ -1,0 +1,4 @@
+!#/bin/sh
+bundle install &&
+rake db:migrate &&
+rake db:migrate RAILS_ENV=test

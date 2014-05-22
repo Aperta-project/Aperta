@@ -1,7 +1,7 @@
 a = DS.attr
 ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('user')
-  authors: DS.hasMany('author')
+  authorGroups: DS.hasMany('authorGroup')
   editors: DS.hasMany('user')
   figures: DS.hasMany('figure')
   supportingInformationFiles: DS.hasMany('supportingInformationFile')
@@ -33,3 +33,9 @@ ETahi.Paper = DS.Model.extend
   editable: (->
     !(@get('allTasksCompleted') and @get('submitted'))
   ).property('allTasksCompleted', 'submitted')
+
+  authors: (->
+    @get('authorGroups').reduce (array, group, _) ->
+      array.concat(group.get('authors.content'))
+    , []
+  ).property('authorGroups.[]', 'authorGroups.@each')

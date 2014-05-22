@@ -8,10 +8,13 @@
   {{/if}}
 </div>
 <ul class="authors-overlay-list">
-  {{#each author in paper.authors}}
-    {{author-view
-      institutions=institutions
-      author=author}}
+  {{#each group in paper.authorGroups}}
+    <h2>{{group.name}}</h2>
+    {{#each author in group.authors}}
+      {{author-view
+        institutions=institutions
+        author=author}}
+    {{/each}}
   {{/each}}
 </ul>
 {{#if isEditable}}

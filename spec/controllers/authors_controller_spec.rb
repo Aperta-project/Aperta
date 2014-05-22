@@ -13,10 +13,10 @@ describe AuthorsController do
         last_name: "fermi",
         email: "ricky@fermi.org",
         affiliation: "Harvey Mudd",
-        paper_id: paper.id
+        author_group_id: author_group.id
       }
     end
-    let(:paper) { FactoryGirl.create :paper }
+    let(:author_group) { FactoryGirl.create :author_group }
     let(:author) { Author.last }
 
     it "creates a new author" do
@@ -28,9 +28,9 @@ describe AuthorsController do
       expect(author.affiliation).to eq 'Harvey Mudd'
     end
 
-    it "associates the author to the paper" do
+    it "associates the author to the group" do
       do_request
-      expect(author.paper).to eq paper
+      expect(author.author_group).to eq author_group
     end
   end
 
@@ -38,10 +38,10 @@ describe AuthorsController do
     let(:do_request) do
       put :update, id: author.id, author: {
                                             secondary_affiliation: "Brisbon Uni",
-                                            paper_id: paper.id
+                                            author_group_id: author_group.id
                                           }
     end
-    let(:paper) { FactoryGirl.create :paper, authors: [ author ]}
+    let(:author_group) { FactoryGirl.create :author_group, authors: [ author ]}
     let(:author) { FactoryGirl.create :author }
 
     it "updates the author" do
@@ -50,6 +50,5 @@ describe AuthorsController do
       expect(author.reload.secondary_affiliation).to eq "Brisbon Uni"
       expect(author.first_name).to eq first_name
     end
-
   end
 end

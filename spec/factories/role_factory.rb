@@ -4,6 +4,8 @@ FactoryGirl.define do
 
     trait :admin do
       admin true
+      can_administer_journal true
+      can_view_all_manuscript_managers true
     end
 
     trait :editor do

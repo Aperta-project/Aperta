@@ -12,6 +12,9 @@ require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
+# NOTE: This will stop working after we move the engines into their own repository.
+Dir[Rails.root.join("engines/**/spec/support/**/*.rb")].each { |f| require f }
+
 # StreamServer needs to have the same URL as localhost for testing.
 ENV['ES_URL'] = "http://localhost:#{Capybara.server_port = 31337}"
 

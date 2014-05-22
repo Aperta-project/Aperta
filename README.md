@@ -56,3 +56,8 @@ specs. Firefox will pop up to run integration tests.
 You can run the javascript specs via the command line with `rake teaspoon`.  If you have the rails server
 running you can run the specs from `localhost:3000/teaspoon`.  The command line tool is more robust but the browser is slightly faster.
 Rails still compiles assets between every test run.
+
+### Making a new task engine
+
+Please see the gist below for detailed instructions:
+https://gist.github.com/neo-tahi/9611549

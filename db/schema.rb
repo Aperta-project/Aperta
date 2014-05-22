@@ -198,16 +198,24 @@ ActiveRecord::Schema.define(version: 20140521160223) do
 
   create_table "roles", force: true do |t|
     t.string   "name"
-    t.boolean  "admin",                                 default: false, null: false
-    t.boolean  "editor",                                default: false, null: false
-    t.boolean  "reviewer",                              default: false, null: false
+    t.boolean  "admin",      default: false, null: false
+    t.boolean  "editor",     default: false, null: false
+    t.boolean  "reviewer",   default: false, null: false
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "can_administer_journal",                default: false, null: false
-    t.boolean  "can_view_assigned_manuscript_managers", default: false, null: false
-    t.boolean  "can_view_all_manuscript_managers",      default: false, null: false
   end
+
+  create_table "supporting_information_files", force: true do |t|
+    t.integer  "paper_id"
+    t.string   "title"
+    t.string   "caption"
+    t.string   "attachment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
 
   create_table "surveys", force: true do |t|
     t.text    "question", null: false

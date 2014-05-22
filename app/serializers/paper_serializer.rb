@@ -1,11 +1,11 @@
 class PaperSerializer < ActiveModel::Serializer
   attributes :id, :short_title, :title, :body, :submitted, :paper_type
 
-  %i!phases figures authors!.each do |relation|
+  %i(phases figures authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
   end
 
-  %i!assignees editors reviewers!.each do |relation|
+  %i(assignees editors reviewers).each do |relation|
     has_many relation, embed: :ids, include: true, root: :users
   end
 

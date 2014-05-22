@@ -6,6 +6,7 @@ class Paper < ActiveRecord::Base
   has_one :manuscript, dependent: :destroy
 
   has_many :figures, dependent: :destroy
+  has_many :supporting_information_files, class_name: SupportingInformation::File, dependent: :destroy
   has_many :paper_roles, inverse_of: :paper, dependent: :destroy
   has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user
   has_many :available_users, through: :journal_roles, class_name: "User", source: :user
@@ -13,8 +14,7 @@ class Paper < ActiveRecord::Base
   has_many :tasks, through: :phases
   has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
   has_many :journal_roles, through: :journal
-
-  serialize :authors, Array
+  has_many :authors, inverse_of: :paper
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
@@ -89,7 +89,7 @@ class Paper < ActiveRecord::Base
     submitted_changed? && submitted
   end
 
-  def add_author(user)
-    authors.push user.slice(*%w(first_name last_name email))
+  def add_author(author)
+    authors.push Author.new(author.slice(*%w(first_name last_name email)))
   end
 end

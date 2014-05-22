@@ -99,7 +99,7 @@ describe FiguresController do
   end
 
   describe "PUT 'update'" do
-    subject(:do_request) { patch :update, id: paper.figures.last.id, paper_id: paper.id, figure: {title: "new title", caption: "new caption"} }
+    subject(:do_request) { patch :update, id: paper.figures.last.id, paper_id: paper.id, figure: {title: "new title", caption: "new caption"}, format: :json }
     before(:each) do
       paper.figures.create! attachment: fixture_file_upload('yeti.tiff', 'image/tiff')
     end

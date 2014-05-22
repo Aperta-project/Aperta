@@ -12,6 +12,12 @@ PATH
     standard_tasks (0.0.1)
       rails (~> 4.1.0.rc1)
 
+PATH
+  remote: engines/supporting_information
+  specs:
+    supporting_information (0.0.1)
+      rails (~> 4.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -460,6 +466,7 @@ DEPENDENCIES
   sinatra
   spring
   standard_tasks!
+  supporting_information!
   teaspoon
   thin
   timeliness

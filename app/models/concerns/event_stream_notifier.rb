@@ -12,7 +12,7 @@ module EventStreamNotifier
     end
 
     def task_payload
-      { task_id: id, journal_id: journal.id }
+      { task_id: id, paper_id: paper.id }
     end
 
     private

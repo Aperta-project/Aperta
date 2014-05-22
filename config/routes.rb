@@ -19,8 +19,15 @@ Tahi::Application.routes.draw do
   get '/profile' => 'ember#index'
 
   resources :flows, only: [:index, :destroy, :create]
+  resources :authors, only: [:create, :update]
 
   resources :figures, only: [:destroy, :update]
+
+  resources :files, as: 'supporting_information_files',
+                    path: 'supporting_information_files',
+                    only: [:create, :destroy, :update],
+                    controller: 'supporting_information/files'
+
   resources :comment_looks, only: [:update]
 
   namespace :api, defaults: { format: 'json' } do

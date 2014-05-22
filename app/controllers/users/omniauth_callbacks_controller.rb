@@ -15,5 +15,9 @@ module Users
     def auth
       @auth ||= request.env['omniauth.auth']
     end
+
+    def profile
+      auth['info']['orcid_bio']
+    end
   end
 end

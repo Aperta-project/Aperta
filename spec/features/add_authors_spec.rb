@@ -33,14 +33,34 @@ feature "Add contributing authors", js: true do
       expect(overlay).to be_completed
     end
 
-    expect(edit_paper.authors).to eq "Neils Bohr, Nikola Tesla"
+    expect(edit_paper.authors).to eq "Neils B. Bohr, Nikola Tesla"
 
     edit_paper.reload
 
-    expect(edit_paper.authors).to eq "Neils Bohr, Nikola Tesla"
+    expect(edit_paper.authors).to eq "Neils B. Bohr, Nikola Tesla"
 
     edit_paper.view_card 'Add Authors' do |overlay|
       expect(overlay).to be_completed
+    end
+  end
+
+  scenario "editing an existing author" do
+    author = Author.new first_name: 'erwin',
+                        last_name: 'shroedinger',
+                        title: 'quantum awesome-ologist',
+                        affiliation: 'university of zurich',
+                        department: 'theoretical physics'
+    paper.authors.push author
+    paper.save
+    edit_paper = EditPaperPage.visit paper
+    edit_paper.view_card 'Add Authors' do |overlay|
+      overlay.edit_author last_name: 'rommel',
+        email: 'ernie@berlin.de'
+      visit current_url
+      within '.authors-overlay-list' do
+        expect(page).to have_content "ernie@berlin.de"
+        expect(page).to have_content "rommel"
+      end
     end
   end
 end

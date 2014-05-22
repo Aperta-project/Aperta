@@ -13,6 +13,7 @@ ETahi.Router.map ()->
   @route('profile', {path: '/profile'})
 
   @resource('affiliation')
+  @resource('author')
 
   @resource 'admin', ->
     @resource 'journal', path: '/journals/:journal_id', ->

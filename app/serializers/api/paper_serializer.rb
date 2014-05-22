@@ -1,5 +1,6 @@
 class Api::PaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :authors, :paper_type, :epub
+  attributes :id, :title, :paper_type, :epub
+  has_many :authors, embed: :ids, include: true
 
   def attributes
     data = super

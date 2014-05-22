@@ -233,6 +233,7 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   config.omniauth :orcid, ENV['ORCID_KEY'], ENV['ORCID_SECRET'], strategy: OmniAuth::Strategies::Orcid
+  config.omniauth :cas, 'key', 'the_secret_for_caswrapper1', strategy: OmniAuth::Strategies::Cas
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

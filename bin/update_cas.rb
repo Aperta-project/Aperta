@@ -11,8 +11,10 @@ TOMCAT_CATALINA_HOME = `catalina --help | grep CATALINA_HOME | cut -d : -f 2 | t
 
 FileUtils.cd("#{RAILS_TEMP_DIR}/#{CAS_DIRECTORY}/cas-server-webapp/", verbose: true) do
   puts "Building WAR file"
+  system 'mvn clean package'
   system 'mvn package -DskipTests'
   puts "Copying CAS WAR fie to Tomcat's webapps directory"
+  FileUtils.rm_rf("#{TOMCAT_CATALINA_HOME}/webapps/cas")
   FileUtils.cp('target/cas.war', "#{TOMCAT_CATALINA_HOME}/webapps/")
 end
 

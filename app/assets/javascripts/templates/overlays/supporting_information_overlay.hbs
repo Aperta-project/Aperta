@@ -11,7 +11,6 @@
   </span>
 {{/if}}
 <ul id="paper-file-uploads">
-  {{!#TODO: extract items in each block into their own views?}}
   {{#each upload in view.uploads}}
     <li {{bind-attr class="upload.error:alert"}}>
       {{#if upload.error}}

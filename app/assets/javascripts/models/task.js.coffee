@@ -58,6 +58,3 @@ ETahi.RegisterDecisionTask = ETahi.Task.extend
 
 ETahi.ReviewerReportTask = ETahi.Task.extend
   paperReview: DS.belongsTo('paperReview')
-
-ETahi.UploadManuscriptTask = ETahi.Task.extend
-  isMetadataTask: true

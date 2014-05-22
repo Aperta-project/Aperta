@@ -18,6 +18,12 @@ PATH
     supporting_information (0.0.1)
       rails (~> 4.1.1)
 
+PATH
+  remote: engines/upload_manuscript
+  specs:
+    upload_manuscript (0.0.1)
+      rails (~> 4.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -473,5 +479,6 @@ DEPENDENCIES
   uglifier (~> 2.5.0)
   unf
   unicorn
+  upload_manuscript!
   vcr
   webmock

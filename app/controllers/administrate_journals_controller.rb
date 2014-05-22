@@ -5,6 +5,6 @@ class AdministrateJournalsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with Journal.all
+    head :ok
   end
 end

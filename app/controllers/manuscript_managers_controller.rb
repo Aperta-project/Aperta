@@ -13,6 +13,6 @@ class ManuscriptManagersController < ApplicationController
   end
 
   def enforce_policy
-    authorize_action! paper: paper
+    authorize_action!(paper: paper)
   end
 end

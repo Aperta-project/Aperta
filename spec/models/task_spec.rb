@@ -140,25 +140,19 @@ describe Task do
   end
 
   describe "#assignees" do
-    let(:task) { Task.create! title: "Paper Admin",
-        role: 'admin',
-        phase: paper.phases.first
-    }
+    let!(:task) { FactoryGirl.create(:task, phase: paper.phases.first) }
+    let!(:submitter) { paper.user }
+    let!(:journal_admin) { FactoryGirl.create(:user) }
+    let!(:role) { FactoryGirl.create(:role, :admin, journal: paper.journal) }
 
-    let(:user) do
-      User.create! username: 'albert',
-        first_name: 'albert',
-        last_name: 'einstein',
-        email: 'einstein@example.org',
-        password: 'password',
-        password_confirmation: 'password'
+    let!(:journal_role) { JournalRole.create! user: journal_admin, journal: paper.journal, role: role }
+
+    it "includes all admins for the journal" do
+      expect(task.assignees).to include journal_admin
     end
 
-    let!(:journal_role) { JournalRole.create! user: user, journal: paper.journal, admin: true }
-
-    it "returns all admins" do
-      task.assignees
-      expect(task.assignees).to include user
+    it "includes the paper's submitter" do
+      expect(task.assignees).to include submitter
     end
   end
 end

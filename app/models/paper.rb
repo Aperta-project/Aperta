@@ -1,5 +1,5 @@
 class Paper < ActiveRecord::Base
-  belongs_to :user, inverse_of: :papers
+  belongs_to :user, inverse_of: :submitted_papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
 
@@ -14,8 +14,7 @@ class Paper < ActiveRecord::Base
   has_many :tasks, through: :phases
   has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
   has_many :journal_roles, through: :journal
-
-  serialize :authors, Array
+  has_many :authors, inverse_of: :paper
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
@@ -49,7 +48,7 @@ class Paper < ActiveRecord::Base
   end
 
   def available_admins
-    available_users.merge(JournalRole.admins)
+    journal.admins
   end
 
   def admins
@@ -90,7 +89,7 @@ class Paper < ActiveRecord::Base
     submitted_changed? && submitted
   end
 
-  def add_author(user)
-    authors.push user.slice(*%w(first_name last_name email))
+  def add_author(author)
+    authors.push Author.new(author.slice(*%w(first_name last_name email)))
   end
 end

@@ -4,16 +4,14 @@ feature "Register Decision", js: true do
 
   let(:journal) { FactoryGirl.create :journal, :with_default_template }
 
-  let!(:editor) do
-    create :user,
-      journal_roles: [JournalRole.new(journal: journal, editor: true)]
-  end
+  let!(:editor) { create :user }
 
   let!(:paper) do
     FactoryGirl.create(:paper, :with_tasks, user: editor, submitted: true, journal: journal)
   end
 
   before do
+    assign_journal_role(journal, editor, :editor)
     paper_role = PaperRole.create! user: editor, paper: paper, editor: true
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in editor

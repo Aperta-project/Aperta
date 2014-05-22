@@ -19,15 +19,8 @@ describe PaperRole do
     let(:default_task_attrs) { { title: 'A title', role: 'editor', phase: paper.phases.first } }
 
     describe "after_save" do
-      let(:bob) { User.create! email: 'bob@plos.org',
-          password: 'abcd1234',
-          password_confirmation: 'abcd1234',
-          username: 'bobplos' }
-
-      let(:steve) { User.create! email: 'steve@plos.org',
-        password: 'abcd1234',
-        password_confirmation: 'abcd1234',
-        username: 'steveplos' }
+      let(:bob)   { FactoryGirl.create(:user) }
+      let(:steve) { FactoryGirl.create(:user) }
 
       context "when the assignee is not changing" do
         it "does not modify other tasks" do
@@ -63,10 +56,7 @@ describe PaperRole do
       end
 
       context "when there are editor tasks assigned to another editor" do
-        let(:dave) { User.create! email: 'dave@plos.org',
-          password: 'abcd1234',
-          password_confirmation: 'abcd1234',
-          username: 'daveplos' }
+        let(:dave) { FactoryGirl.create(:user) }
 
         it "does not assign the task to the PaperEditorTask assignee" do
           paper_role = PaperRole.create! user: bob, paper: paper, editor: true

@@ -1,7 +1,7 @@
 #= require test_helper
 
 moduleForModel 'paper', 'Unit: Paper Model',
-  needs: ['model:user', 'model:figure', 'model:journal', 'model:supportingInformationFile', 'model:phase', 'model:task', 'model:comment', 'model:litePaper']
+  needs: ['model:author', 'model:user', 'model:figure', 'model:journal', 'model:supportingInformationFile', 'model:phase', 'model:task', 'model:comment', 'model:litePaper']
 
 test 'displayTitle displays short title if title is missing', ->
   shortTitle = 'test short title'

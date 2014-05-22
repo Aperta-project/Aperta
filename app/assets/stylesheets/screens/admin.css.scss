@@ -1,13 +1,16 @@
 .admin-screen {
-  h2 {
+  h1 {
     margin-bottom: 50px;
+  }
+
+  .relative {
+    position: relative;
   }
 
   .admin-header {
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     margin: 0 0 25px 0;
-    position: relative;
     padding: 20px 0;
 
     .title {
@@ -19,11 +22,94 @@
       display: inline-block;
       position: absolute;
       right: 10px;
-      top: 18px;
     }
+  }
+
+  .primary-button {
+    background-color: $tahi-blue-light;
+
+    &:hover {
+      background-color: $tahi-blue-hover;
+    }
+
+  }
+
+  .btn-link {
+    color: $tahi-blue-light;
   }
 
   ul.journals {
     list-style-type: none;
+  }
+
+  .blue-box {
+    background: $tahi-blue-light;
+    color: #fff;
+  }
+
+  table.roles {
+    thead {
+      th {
+        font-size: 30px;
+        font-weight: normal;
+        position: relative;
+        padding: 20px 0 20px 0;
+        line-height: 33px;
+      }
+    }
+
+    .role-name {
+      .hover-target {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: -30px;
+        .name-field {
+          margin-left: 10px;
+        }
+        &:hover {
+          .delete-button {
+            opacity: 1;
+          }
+        }
+      }
+
+      .delete-button {
+        display: inline;
+        opacity: 0;
+        width: 30px;
+      }
+
+    }
+
+    .action-buttons {
+      display: none;
+
+      button {
+        float: right;
+      }
+
+      &.is-editing {
+        display: table-row;
+      }
+    }
+
+    tbody {
+      color: $tahi-blue-light;
+
+      td {
+        border: 0;
+      }
+    }
+
+    label {
+      font-size: 12pt;
+      font-weight: normal;
+    }
+
+    .role-name {
+      width: 50%;
+      font-size: 14pt;
+    }
   }
 }

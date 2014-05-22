@@ -4,7 +4,7 @@ class Comment < ActiveRecord::Base
   validates :message_task, :body, presence: true
 
   belongs_to :message_task, inverse_of: :comments, foreign_key: :task_id
-  belongs_to :commenter, class_name: 'User'
+  belongs_to :commenter, class_name: 'User', inverse_of: :comments
   has_many :comment_looks
 
   after_create :create_comment_look
@@ -23,6 +23,6 @@ class Comment < ActiveRecord::Base
   end
 
   def task_payload
-    { task_id: message_task.id, journal_id: message_task.journal.id }
+    { task_id: message_task.id, paper_id: message_task.paper.id }
   end
 end

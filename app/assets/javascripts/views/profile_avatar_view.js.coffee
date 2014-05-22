@@ -21,7 +21,7 @@ ETahi.ProfileAvatarView = Ember.View.extend
       $('#profile-avatar-hover').hide()
 
     uploader.on 'fileuploaddone', (e, data) =>
-      $('#profile-avatar img').attr('src', data.result.image_url)
+      $('#profile-avatar img').attr('src', data.result.avatar_url)
       $('#profile-avatar-spinner').hide()
 
     uploader.on 'fileuploadprogress', (e, data) =>

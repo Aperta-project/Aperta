@@ -22,14 +22,6 @@
 
 $template-thumbnail-side-padding: 10px;
 
-.manuscript-manager-template {
-  .blue-box {
-    background: #87c0f9;
-    color: #fff;
-  }
-}
-
-
 .template-thumbnail {
   position: relative;
   overflow: hidden;
@@ -101,4 +93,8 @@ $template-thumbnail-side-padding: 10px;
 .manuscript-manager-template-columns {
   // override .columns to allow for larger .control-bar
   top: 121px;
+}
+
+.manuscript-manager-template {
+  margin-bottom: 50px;
 }

@@ -21,7 +21,9 @@ class FiguresController < ApplicationController
   def update
     figure = Figure.find params[:id]
     figure.update_attributes figure_params
-    head :no_content
+    respond_to do |f|
+      f.json { render json: figure }
+    end
   end
 
   def destroy

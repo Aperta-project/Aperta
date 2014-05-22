@@ -12,7 +12,7 @@ CAS_DIRECTORY = "cas-server-#{CAS_VERSION}"
 CAS_TARBALL_FILENAME = "#{CAS_DIRECTORY}-release.tar.gz"
 CAS_DOWNLOAD_URL = "http://downloads.jasig.org/cas/#{CAS_TARBALL_FILENAME}"
 
-def brew_install package
+def brew_install(package)
   system("brew install #{package}") if system("brew info #{package} | grep 'Not installed' > /dev/null")
 end
 

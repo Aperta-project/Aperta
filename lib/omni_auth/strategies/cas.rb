@@ -26,8 +26,8 @@ module OmniAuth
           url = "http://localhost:8080/cas/oauth2.0/profile?access_token=#{access_token.token}"
           conn = Faraday.new(url: url) do |faraday|
             faraday.response :json
-            faraday.request  :url_encoded
-            faraday.adapter  Faraday.default_adapter
+            faraday.request :url_encoded
+            faraday.adapter Faraday.default_adapter
           end
           response = conn.get
           @profile_response = response.body

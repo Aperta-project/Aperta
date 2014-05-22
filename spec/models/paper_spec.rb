@@ -14,7 +14,7 @@ describe Paper do
   end
 
   describe "add author" do
-    it "adds the freaking author" do
+    it "new author is created when paper is created" do
       paper = FactoryGirl.create :paper
       author = {first_name: "Isaac", last_name: "Newton", email: "apple@england.co.uk"}.as_json
       expect { paper.add_author author }.to change { Author.count }.by 1
@@ -31,7 +31,7 @@ describe Paper do
       end
 
       it "must be unique" do
-        paper = FactoryGirl.create(:paper, short_title: 'Duplicate')
+        FactoryGirl.create(:paper, short_title: 'Duplicate')
         dup_paper = FactoryGirl.build(:paper, short_title: 'Duplicate')
         expect(dup_paper).to_not be_valid
         expect(dup_paper).to have(1).errors_on(:short_title)

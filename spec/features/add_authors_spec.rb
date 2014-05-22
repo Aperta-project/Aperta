@@ -54,13 +54,8 @@ feature "Add contributing authors", js: true do
     paper.save
     edit_paper = EditPaperPage.visit paper
     edit_paper.view_card 'Add Authors' do |overlay|
-      li = find('.authors-overlay-list li')
-      li.click
-      within li do
-        fill_in("Last name", with: "rommel")
-        fill_in("Email", with: "ernie@berlin.de")
-        click_button 'done'
-      end
+      overlay.edit_author last_name: 'rommel',
+        email: 'ernie@berlin.de'
       visit current_url
       within '.authors-overlay-list' do
         expect(page).to have_content "ernie@berlin.de"

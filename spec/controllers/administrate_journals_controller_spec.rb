@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe AdministrateJournalsController do
+
+  expect_policy_enforcement
+
   let(:user) { FactoryGirl.create(:user, :admin) }
   before { sign_in user }
 

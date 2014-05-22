@@ -87,11 +87,25 @@ class ApplicationPolicy
 
   private
 
+  def super_admin?
+    current_user.admin?
+  end
+
   def validate_params(params)
     missing = (self.class.required_params - params.keys)
     if missing.any?
       raise ApplicationPolicyError, "The following required parameters were not sent #{missing}"
     end
+  end
+
+  def administered_journals
+    Journal.joins(:journal_roles => :role)
+      .merge(Role.can_administer_journal)
+      .where('journal_roles.user_id' => current_user)
+  end
+
+  def can_administer_journal?(journal)
+    super_admin? || administered_journals.exists?(journal)
   end
 
 end

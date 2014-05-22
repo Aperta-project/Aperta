@@ -1,26 +1,45 @@
 class RolesController < ApplicationController
   before_action :authenticate_user!
-  before_action :verify_admin!
+  before_action :enforce_policy
   respond_to :json
 
   def create
-    role = Role.create(role_params)
+    role.save
     respond_with role
   end
 
   def update
-    role = Role.find(params[:id])
     role.update_attributes(role_params)
     respond_with role
   end
 
   def destroy
-    role = Role.find(params[:id])
     role.destroy
     respond_with role
   end
 
   private
+
+  def role
+    @role ||=
+      if params[:id]
+        Role.find(params[:id])
+      else
+        Role.new(role_params)
+      end
+  end
+
+  def journal
+    if params[:role] && role_params[:journal_id]
+      Journal.find(role_params[:journal_id])
+    else
+      role.journal
+    end
+  end
+
+  def enforce_policy
+    authorize_action!(journal: journal)
+  end
 
   def role_params
     params.require(:role).permit(:name, :admin, :editor, :reviewer, :journal_id,

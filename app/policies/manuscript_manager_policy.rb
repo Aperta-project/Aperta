@@ -3,7 +3,7 @@ class ManuscriptManagerPolicy < ApplicationPolicy
   require_params :paper
 
   def show?
-    current_user.admin? || can_manage_any_manuscript || can_manage_this_manuscript
+    super_admin? || can_manage_any_manuscript || can_manage_this_manuscript
   end
 
   private

@@ -13,12 +13,12 @@ class ManuscriptManagerPolicy < ApplicationPolicy
   end
 
   def can_manage_any_manuscript
-    roles.where('roles.can_view_all_manuscript_managers' => true).exists?
+    roles.merge(Role.can_view_all_manuscript_managers).exists?
   end
 
   def can_manage_this_manuscript
     paper.tasks.assigned_to(current_user).exists? &&
-      roles.where('roles.can_view_assigned_manuscript_managers' => true).exists?
+    roles.merge(Role.can_view_assigned_manuscript_managers).exists?
   end
 
 end

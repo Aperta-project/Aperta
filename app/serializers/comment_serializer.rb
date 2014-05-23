@@ -1,14 +1,11 @@
 class CommentSerializer < ActiveModel::Serializer
   embed :ids
-  attributes :id, :body, :created_at
+  attributes :id, :body, :created_at, :has_been_read
 
   has_one :message_task
   has_one :commenter, serializer: UserSerializer, include: true, root: :users
-  has_one :comment_look, include: true, embed: :ids
 
-  def comment_look
-    if (defined? current_user) && current_user
-      object.comment_looks.where(user: current_user, read_at: nil).first
-    end
+  def has_been_read
+    PublicActivity::Activity.where(trackable_id: object.id, key: 'comment.read', owner_id: current_user.id).exists?
   end
 end

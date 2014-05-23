@@ -28,8 +28,6 @@ Tahi::Application.routes.draw do
                     only: [:create, :destroy, :update],
                     controller: 'supporting_information/files'
 
-  resources :comment_looks, only: [:update]
-
   namespace :api, defaults: { format: 'json' } do
     resources :papers, only: [:index, :show, :update]
     resources :users, only: [:show]
@@ -63,7 +61,7 @@ Tahi::Application.routes.draw do
     end
   end
 
-  resources :comments, only: :create
+  resources :comments, only: [:create, :update]
 
   resources :message_tasks, only: [:create] do
     member do

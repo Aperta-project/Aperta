@@ -9,10 +9,20 @@ class CommentsController < ApplicationController
     p = PaperPolicy.new task.paper, current_user
     if p.paper
       @comment = task.comments.create! new_comment_params
+      @comment.create_activity(:read, owner: current_user)
       render json: @comment
     else
       head 404
     end
+  end
+
+  def update
+    comment = Comment.find(params[:id])
+    if params[:comment][:has_been_read]
+      comment.create_activity(:read, owner: current_user)
+    end
+
+    respond_with comment
   end
 
 

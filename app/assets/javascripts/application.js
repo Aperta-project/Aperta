@@ -47,8 +47,7 @@
     LOG_VIEW_LOOKUPS               : false,
     LOG_ACTIVE_GENERATION          : false,
     // Tahi
-    LOG_RSVP_ERRORS                : true,
-    LOG_VIEW_RENDERING_PERFORMANCE : true
+    LOG_RSVP_ERRORS                : true
   });
 
   ETahi.ApplicationAdapter = DS.ActiveModelAdapter.extend({

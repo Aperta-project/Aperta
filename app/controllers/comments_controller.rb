@@ -17,7 +17,7 @@ class CommentsController < ApplicationController
   end
 
   def update
-    comment = current_user.comments.find(params[:id])
+    comment = Comment.find(params[:id])
     if params[:comment][:has_been_read]
       comment.create_activity(:read, owner: current_user)
     end

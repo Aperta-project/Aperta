@@ -1,7 +1,6 @@
 class RemoveCommentLook < ActiveRecord::Migration
   def change
     drop_table :comment_looks
-
   end
 
   def down

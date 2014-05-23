@@ -25,7 +25,7 @@
 {{/unless}}
 
 <ul class="message-comments">
-  {{#each comment in shownComments}}
+  {{#each comment in sortedComments}}
     {{ render 'comment' comment }}
   {{/each}}
 </ul>

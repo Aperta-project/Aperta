@@ -1,12 +1,17 @@
 ETahi.CommentController = Ember.ObjectController.extend
-  setUnread: ( ->
-    @set('unread', !@get('hasBeenRead'))
-  ).on('init')
+  wasDisplayed: false
 
-  actions:
-    updateReadAt: ->
+  setUnread: (->
+    if @get('display') and !@get('wasDisplayed')
       comment = @get('model')
-      if @get('unread')
+      @set('unread', !comment.get('hasBeenRead'))
+      @set('wasDisplayed', true)
+      unless comment.get('hasBeenRead')
         comment.set('hasBeenRead', true)
         comment.save().then (comment) =>
           @get('parentController').send('commentRead', comment)
+  ).observes('display').on('init')
+
+  display: (->
+    @get('parentController.shownComments').contains(@get('model'))
+  ).property('parentController.shownComments')

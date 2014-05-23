@@ -1,4 +1,6 @@
-{{userThumbnail commenter}}
-<span class="comment-date">{{formattedTime createdAt}}</span>
-<span class="comment-name">{{commenter.fullName}} posted</span>
-<div class="comment-body">{{body}}</div>
+{{#if display}}
+  {{userThumbnail commenter}}
+  <span class="comment-date">{{formattedTime createdAt}}</span>
+  <span class="comment-name">{{commenter.fullName}} posted</span>
+  <div class="comment-body">{{unbound body}}</div>
+{{/if}}

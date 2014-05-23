@@ -5,6 +5,7 @@ namespace :data do
     Task.where(type: "FigureTask").update_all(type: "StandardTasks::FigureTask")
     Task.where(type: "TechCheckTask").update_all(type: "StandardTasks::TechCheckTask")
     Task.where(type: "AuthorsTask").update_all(type: "StandardTasks::AuthorsTask")
+    Task.where(type: "UploadManuscriptTask").update_all(type: "UploadManuscript::Task")
   end
 
   desc "Create default surveys for declaration tasks"

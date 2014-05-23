@@ -8,4 +8,5 @@ ETahi.CommentController = Ember.ObjectController.extend
       comment = @get('model')
       if @get('unread')
         comment.set('hasBeenRead', true)
-        comment.save()
+        comment.save().then (comment) =>
+          @get('parentController').send('commentRead', comment)

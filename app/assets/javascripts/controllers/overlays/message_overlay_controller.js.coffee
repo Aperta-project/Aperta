@@ -32,6 +32,9 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
     clearMessageContent: ->
       @_clearNewMessage()
 
+    commentRead: ->
+      @get('model').decrementProperty('unreadCommentsCount')
+
     showAllComments: ->
       @set('shownComments', @get('sortedComments'))
       @set('showAllComments', true)

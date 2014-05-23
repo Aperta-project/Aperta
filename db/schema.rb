@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140522195153) do
+ActiveRecord::Schema.define(version: 20140523141203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,17 +60,6 @@ ActiveRecord::Schema.define(version: 20140522195153) do
     t.string   "affiliation"
     t.string   "secondary_affiliation"
   end
-
-  create_table "comment_looks", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "comment_id"
-    t.datetime "read_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "comment_looks", ["comment_id"], name: "index_comment_looks_on_comment_id", using: :btree
-  add_index "comment_looks", ["user_id"], name: "index_comment_looks_on_user_id", using: :btree
 
   create_table "comments", force: true do |t|
     t.text     "body"

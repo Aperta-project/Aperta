@@ -20,10 +20,10 @@ class Comment < ActiveRecord::Base
   end
 
   def id_for_stream
-    message_task.id
+    task.id
   end
 
   def task_payload
-    { task_id: message_task.id, paper_id: task.paper.id }
+    { task_id: task.id, paper_id: task.paper.id }
   end
 end

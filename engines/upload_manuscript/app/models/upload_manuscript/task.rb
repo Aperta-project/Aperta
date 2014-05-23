@@ -8,5 +8,9 @@ module UploadManuscript
     def assignees
       []
     end
+
+    def active_model_serializer
+      UploadManuscript::TaskSerializer
+    end
   end
 end

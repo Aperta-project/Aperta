@@ -6,6 +6,6 @@ class CommentSerializer < ActiveModel::Serializer
   has_one :commenter, serializer: UserSerializer, include: true, root: :users
 
   def has_been_read
-    PublicActivity::Activity.where(trackable_id: object.id, key: 'comment.read', trackable_type: 'Comment', owner_id: current_user.id).exists?
+    PublicActivity::Activity.where(trackable_id: object.id, key: 'comment.read', owner_id: current_user.id).exists?
   end
 end

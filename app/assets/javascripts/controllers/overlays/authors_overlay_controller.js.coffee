@@ -17,8 +17,10 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
   saveNewAuthor: ->
     author = @store.createRecord('author', @newAuthor)
     #TODO: change this to associate with the correct author group
-    author.set('authorGroup', @get('resolvedPaper.authorGroups.firstObject'))
+    authorGroup = @get('resolvedPaper.authorGroups.firstObject')
+    author.set('authorGroup', authorGroup)
     author.save().then (author) =>
+      authorGroup.get('authors').pushObject(author)
       @set('newAuthor', {})
       @toggleAuthorForm()
 

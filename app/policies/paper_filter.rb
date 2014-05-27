@@ -9,7 +9,7 @@ class PaperFilter
   end
 
   def paper
-    paper_for_author || paper_for_admin || paper_for_editor || paper_for_reviewer
+    paper_for_author || paper_for_site_admin || paper_for_paper_admin || paper_for_editor || paper_for_reviewer
   end
 
   def tasks_for_paper(task_ids)
@@ -21,8 +21,16 @@ class PaperFilter
     @user.submitted_papers.where(id: @paper_id).first
   end
 
-  def paper_for_admin
+  def paper_for_site_admin
     Paper.where(id: @paper_id).first if @user.admin?
+  end
+
+  def paper_for_paper_admin
+    Paper.
+      where(id: @paper_id).
+      joins(:paper_roles).
+      where("paper_roles.user_id = ? AND paper_roles.admin = ?", @user.id, true).
+      first
   end
 
   def paper_for_editor

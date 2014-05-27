@@ -17,7 +17,7 @@ describe ManuscriptManagerTemplatesController do
   let(:mmt) { create :manuscript_manager_template, journal: journal }
 
   before do
-    JournalRole.create!(journal: journal, user: admin)
+    assign_journal_role journal, admin, :admin
     sign_in admin
   end
 

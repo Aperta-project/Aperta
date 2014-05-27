@@ -1,3 +1,7 @@
+class JournalRole < ActiveRecord::Base
+  belongs_to :journal
+end
+
 class AddRoles < ActiveRecord::Migration
   def up
     create_table :roles do |t|

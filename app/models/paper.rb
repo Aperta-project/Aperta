@@ -9,11 +9,9 @@ class Paper < ActiveRecord::Base
   has_many :supporting_information_files, class_name: SupportingInformation::File, dependent: :destroy
   has_many :paper_roles, inverse_of: :paper, dependent: :destroy
   has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user
-  has_many :available_users, through: :journal_roles, class_name: "User", source: :user
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy
   has_many :tasks, through: :phases
   has_many :message_tasks, -> { where(type: 'MessageTask') }, through: :phases, source: :tasks
-  has_many :journal_roles, through: :journal
   has_many :authors, inverse_of: :paper
 
   validates :paper_type, presence: true

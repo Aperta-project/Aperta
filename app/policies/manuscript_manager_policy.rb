@@ -9,7 +9,7 @@ class ManuscriptManagerPolicy < ApplicationPolicy
   private
 
   def roles
-    current_user.journal_roles.where(journal: paper.journal).joins(:role)
+    current_user.roles.where(journal: paper.journal)
   end
 
   def can_manage_any_manuscript

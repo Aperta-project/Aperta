@@ -12,21 +12,21 @@ class Journal < ActiveRecord::Base
                       "SupportingInformation::Task"]
 
   has_many :papers, inverse_of: :journal
-  has_many :journal_roles, inverse_of: :journal
-  has_many :users, through: :journal_roles
   has_many :roles, inverse_of: :journal
+  has_many :user_roles, through: :roles
+  has_many :users, through: :user_roles
   has_many :manuscript_manager_templates
 
   def admins
-    User.joins(:journal_roles => :role).merge(Role.admins).where('journal_roles.journal_id' => self.id)
+    users.merge(Role.admins)
   end
 
   def editors
-    User.joins(:journal_roles => :role).merge(Role.editors).where('journal_roles.journal_id' => self.id)
+    users.merge(Role.editors)
   end
 
   def reviewers
-    User.joins(:journal_roles => :role).merge(Role.reviewers).where('journal_roles.journal_id' => self.id)
+    users.merge(Role.reviewers)
   end
 
   def logo_url

@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
   has_many :affiliations, inverse_of: :user
   has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'
   has_many :paper_roles, inverse_of: :user
-  has_many :journal_roles, inverse_of: :user
-  has_many :journals, through: :journal_roles
+  has_many :user_roles, inverse_of: :user
+  has_many :roles, through: :user_roles
   has_many :flows, inverse_of: :user, dependent: :destroy
   has_many :tasks, foreign_key: 'assignee_id'
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'

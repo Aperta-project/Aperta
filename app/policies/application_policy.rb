@@ -99,9 +99,9 @@ class ApplicationPolicy
   end
 
   def administered_journals
-    Journal.joins(:journal_roles => :role)
+    Journal.joins(:roles => :user_roles)
       .merge(Role.can_administer_journal)
-      .where('journal_roles.user_id' => current_user)
+      .where('user_roles.user_id' => current_user)
   end
 
   def can_administer_journal?(journal)

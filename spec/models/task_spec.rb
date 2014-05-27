@@ -145,7 +145,7 @@ describe Task do
     let!(:journal_admin) { FactoryGirl.create(:user) }
     let!(:role) { FactoryGirl.create(:role, :admin, journal: paper.journal) }
 
-    let!(:journal_role) { JournalRole.create! user: journal_admin, journal: paper.journal, role: role }
+    before { UserRole.create! user: journal_admin, role: role }
 
     it "includes all admins for the journal" do
       expect(task.assignees).to include journal_admin

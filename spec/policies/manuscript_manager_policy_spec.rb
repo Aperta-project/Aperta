@@ -24,7 +24,7 @@ describe ManuscriptManagerPolicy do
     let(:role) { FactoryGirl.create(:role, journal: journal, can_view_assigned_manuscript_managers: true) }
     let(:policy) { ManuscriptManagerPolicy.new(current_user: user, paper: paper) }
     before do
-      JournalRole.create!(journal: journal, user: user, role: role)
+      UserRole.create!(user: user, role: role)
       task = paper.tasks.first
       task.assignee = user
       task.save!
@@ -40,7 +40,7 @@ describe ManuscriptManagerPolicy do
     let(:role) { FactoryGirl.create(:role, journal: journal, can_view_all_manuscript_managers: true) }
     let(:policy) { ManuscriptManagerPolicy.new(current_user: user, paper: paper) }
     before do
-      JournalRole.create!(journal: journal, user: user, role: role)
+      UserRole.create!(user: user, role: role)
     end
 
     it { expect(policy.show?).to be(true) }

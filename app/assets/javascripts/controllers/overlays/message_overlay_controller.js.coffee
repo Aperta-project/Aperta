@@ -1,30 +1,32 @@
 ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerParticipants,
   newCommentBody: ""
 
+  commentsToDisplay: 5
+
   overlayClass: 'message-overlay'
 
   _clearNewMessage: ->
     @set('newCommentBody', "")
 
   commentSort: ['createdAt:asc']
-  sortedComments: Ember.computed.sort('model.comments', 'commentSort')
+  sortedComments: Ember.computed.sort('comments', 'commentSort')
 
   commentCount: Ember.computed.alias('sortedComments.length')
 
   shownComments: (->
     commentsLength =  @get('commentCount')
     comments = @get('sortedComments')
-    if @get('showAllComments') then comments else comments.slice(commentsLength - 5)
+    if @get('showAllComments') then comments else comments.slice(commentsLength - @get('commentsToDisplay'))
   ).property('sortedComments', 'showAllComments')
 
   showAllComments: (->
-    @get('commentCount') < 6
+    @get('commentCount') <= @get('commentsToDisplay')
   ).property('commentCount')
 
   setupTooltips: (->
     Ember.run.later ->
       $('.user-thumbnail').tooltip(placement: 'bottom')
-  ).observes('model.participants.length')
+  ).observes('participants.length')
 
   omittedCommentsCount: (->
     @get('commentCount') - 5

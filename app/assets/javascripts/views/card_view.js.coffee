@@ -15,6 +15,13 @@ ETahi.CardView = Em.View.extend(DragNDrop.Dragable, {
     if @get('content.isMessage') then 'card-message' else false
   ).property('content.isMessage')
 
+  updateBadge: ( ->
+    content = @get('content')
+    if content.get('type') == 'MessageTask'
+      Ember.$.getJSON("/activities/message_tasks/#{content.get('id')}/unread_comments_count").then (data) =>
+        content.set('unreadCommentsCount', data)
+  ).on('didInsertElement')
+
   dragStart: (e) ->
     e.dataTransfer.setData('Text', 'TAHI!')
     ETahi.set('dragItem', @get('content'))

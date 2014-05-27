@@ -63,6 +63,16 @@ Tahi::Application.routes.draw do
     end
   end
 
+  namespace :activities do
+    resources :comments do
+      # /comments/1/unread
+      get :unread, on: :member
+    end
+    resources :message_tasks do
+      get :unread_comments_count, on: :member
+    end
+  end
+
   resources :phases, only: [:create, :update, :show, :destroy]
 
   resources :surveys, only: [:update]

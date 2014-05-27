@@ -1,0 +1,3 @@
+module Declaration
+  VERSION = "0.0.1"
+end

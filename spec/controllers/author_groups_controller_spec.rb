@@ -7,7 +7,7 @@ describe AuthorGroupsController do
   end
 
   describe "POST #create" do
-    let(:paper) { FactoryGirl.create(:paper) }
+    let!(:paper) { FactoryGirl.create(:paper) }
     let(:do_request) do
       post :create, author_group: { paper_id: paper.id }
     end
@@ -23,7 +23,7 @@ describe AuthorGroupsController do
     it "returns an author group with a correctly incremented name" do
       do_request
       author_group = JSON.parse(response.body)["author_group"]
-      expect(author_group['name']).to eq "First Author"
+      expect(author_group['name']).to eq "Fourth Author"
     end
   end
 

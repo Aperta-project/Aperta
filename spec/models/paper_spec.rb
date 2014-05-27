@@ -13,15 +13,6 @@ describe Paper do
     end
   end
 
-  describe "add author" do
-    it "new author is created when paper is created" do
-      paper = FactoryGirl.create :paper
-      author = {first_name: "Isaac", last_name: "Newton", email: "apple@england.co.uk"}.as_json
-      expect { paper.add_author author }.to change { Author.count }.by 1
-      expect(paper.authors.where(email: "apple@england.co.uk")).to_not be_empty
-    end
-  end
-
   describe "validations" do
     describe "short_title" do
       it "must be present" do

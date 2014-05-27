@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe AuthorGroup do
   describe "#ordinalized_create" do
-    let!(:paper) { FactoryGirl.create :paper, author_groups: [ FactoryGirl.create(:author_group) ]}
+    let!(:paper) { FactoryGirl.create :paper }
     it "increments the name of the new author group" do
       author_group = AuthorGroup.ordinalized_create({ paper_id: paper.id })
-      expect(author_group.name).to eq "Second Author"
+      expect(author_group.name).to eq "Fourth Author"
     end
 
     it "creates the new author group" do

@@ -3,8 +3,8 @@ require 'spec_helper'
 feature "Add contributing authors", js: true do
   let(:author) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal, :with_default_template }
-  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author, author_groups: [ author_group ] }
-  let(:author_group) { FactoryGirl.create(:author_group) }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }
+  let(:author_group) { paper.author_groups.first }
 
   before do
     sign_in_page = SignInPage.visit

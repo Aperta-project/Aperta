@@ -1,4 +1,4 @@
-class PaperPolicy
+class PaperFilter
   def initialize(paper_id, user)
     if paper_id.respond_to? :id
       @paper_id = paper_id.id

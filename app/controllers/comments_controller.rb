@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
 
   def create
     task = Task.find(params[:comment][:message_task_id])
-    p = PaperPolicy.new task.paper, current_user
+    p = PaperFilter.new task.paper, current_user
     if p.paper
       @comment = task.comments.create! new_comment_params
       render json: @comment

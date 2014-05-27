@@ -1,2 +1,3 @@
-Rails.application.routes.draw do
+Declaration::Engine.routes.draw do
+  resources :surveys, only: [:update]
 end

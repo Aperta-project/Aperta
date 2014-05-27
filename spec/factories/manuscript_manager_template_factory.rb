@@ -6,7 +6,7 @@ FactoryGirl.define do
       {
         phases: [{
           name: "Editorial",
-          task_types: [DeclarationTask.to_s]
+          task_types: [Declaration::Task.to_s]
         }]
       }
     end

@@ -6,7 +6,7 @@ module Declaration
     role "author"
 
     has_many :surveys,
-      ->{ order(:id) },
+      -> { order(:id) },
       foreign_key: "task_id",
       inverse_of: :declaration_task,
       dependent: :destroy

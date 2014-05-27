@@ -31,10 +31,6 @@ ETahi.PaperAdminTask = ETahi.Task.extend
   admins: DS.hasMany('user')
   admin: DS.belongsTo('user')
 
-ETahi.DeclarationTask = ETahi.Task.extend
-  surveys: DS.hasMany('survey')
-  isMetadataTask: true
-
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
   comments: DS.hasMany('comment')

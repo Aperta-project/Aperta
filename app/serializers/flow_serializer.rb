@@ -31,7 +31,7 @@ class FlowSerializer < ActiveModel::Serializer
     Task.joins(paper: :journal)
       .incomplete.unassigned
       .where(type: "PaperAdminTask")
-      .where(journals: {id: current_user.journal_ids})
+      .where(journals: {id: current_user.roles.pluck(:journal_id).uniq })
   end
 
   def flow_map

@@ -41,7 +41,7 @@ feature 'Message Cards', js: true do
 
   describe "commenting on an existing message" do
     let(:phase) { paper.phases.first }
-    let!(:initial_comment) { create :comment, commenter: commenter, message_task: message }
+    let!(:initial_comment) { create :comment, commenter: commenter, task: message }
     let(:message) do
       create :message_task, phase: phase, participants: participants
     end
@@ -107,7 +107,7 @@ feature 'Message Cards', js: true do
     let(:participants) { [admin, albert] }
     let(:phase) { paper.phases.first }
     let!(:initial_comments) do
-      comment_count.times.map { create :comment, commenter: commenter, message_task: message }
+      comment_count.times.map { create :comment, commenter: commenter, task: message }
     end
     let(:message) do
       create :message_task, phase: phase, participants: participants
@@ -125,7 +125,7 @@ feature 'Message Cards', js: true do
     let(:participants) { [admin, albert] }
     let(:phase) { paper.phases.first }
     let!(:initial_comments) do
-      comment_count.times.map { create :comment, commenter: commenter, message_task: message }
+      comment_count.times.map { create :comment, commenter: commenter, task: message }
     end
     let(:message) do
       create :message_task, phase: phase, participants: participants
@@ -144,7 +144,7 @@ feature 'Message Cards', js: true do
 
       describe "unread comments are highlighted" do
         let!(:initial_comments) do
-          comment_count.times.map { create :comment, commenter: albert, message_task: message }
+          comment_count.times.map { create :comment, commenter: albert, task: message }
         end
 
         scenario "seen comments are marked as read" do
@@ -176,7 +176,7 @@ feature 'Message Cards', js: true do
 
       describe "unread comments are highlighted" do
         let!(:initial_comments) do
-          comment_count.times.map { create :comment, commenter: albert, message_task: message }
+          comment_count.times.map { create :comment, commenter: albert, task: message }
         end
 
         scenario "seen comments are marked as read" do

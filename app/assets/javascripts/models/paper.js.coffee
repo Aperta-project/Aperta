@@ -1,14 +1,15 @@
 a = DS.attr
 ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('user')
+  authors: DS.hasMany('author')
   editors: DS.hasMany('user')
   figures: DS.hasMany('figure')
+  supportingInformationFiles: DS.hasMany('supportingInformationFile')
   journal: DS.belongsTo('journal')
   phases: DS.hasMany('phase')
   reviewers: DS.hasMany('user')
   tasks: DS.hasMany('task', {async: true, polymorphic: true})
 
-  authors: a()
   body: a('string')
   shortTitle: a('string')
   submitted: a('boolean')

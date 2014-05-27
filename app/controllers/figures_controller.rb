@@ -9,7 +9,7 @@ class FiguresController < ApplicationController
     figures.select! {|f| Figure.acceptable_content_type? f.content_type }
 
     new_figures = figures.map do |figure|
-      paper.figures.create(figure_params.merge(attachment: figure))
+      paper.figures.create!(figure_params.merge(attachment: figure))
     end
 
     respond_to do |f|
@@ -21,7 +21,9 @@ class FiguresController < ApplicationController
   def update
     figure = Figure.find params[:id]
     figure.update_attributes figure_params
-    head :no_content
+    respond_to do |f|
+      f.json { render json: figure }
+    end
   end
 
   def destroy

@@ -1,2 +1,0 @@
-class UploadManuscriptTaskSerializer < TaskSerializer
-end

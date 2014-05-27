@@ -10,11 +10,11 @@ module ActiveModel
         alias_method_chain :key, :polymorphism
 
         def serialize_ids_with_polymorphism
-          return associated_object.map do |item|
-            type = item.type || item.class.name
-            {id: item.id, type: type.gsub(/.+::/,'')}
-          end if option(:polymorphic)
-          serialize_ids_without_polymorphism
+          if option(:polymorphic)
+            SerializeIdsWithPolymorphism.call(associated_object)
+          else
+            serialize_ids_without_polymorphism
+          end
         end
         alias_method_chain :serialize_ids, :polymorphism
 

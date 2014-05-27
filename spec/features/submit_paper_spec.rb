@@ -10,7 +10,7 @@ feature "Submitting a paper", js: true do
 
   let :paper do
     FactoryGirl.create :paper, user: author,
-      authors: [{ first_name: 'Agnes', last_name: 'Stuart', affiliation: 'ABCMouse, Inc.', email: 'agnes@example.com' }]
+      authors: [ FactoryGirl.create(:author) ]
   end
 
   before do

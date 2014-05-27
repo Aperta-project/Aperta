@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140520171933) do
+ActiveRecord::Schema.define(version: 20140521194736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,22 @@ ActiveRecord::Schema.define(version: 20140520171933) do
   end
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
+
+  create_table "authors", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "middle_initial"
+    t.string   "email"
+    t.string   "department"
+    t.string   "title"
+    t.boolean  "corresponding",         default: false, null: false
+    t.boolean  "deceased",              default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "paper_id"
+    t.string   "affiliation"
+    t.string   "secondary_affiliation"
+  end
 
   create_table "comment_looks", force: true do |t|
     t.integer  "user_id"
@@ -50,6 +66,14 @@ ActiveRecord::Schema.define(version: 20140520171933) do
   add_index "comments", ["commenter_id", "task_id"], name: "index_comments_on_commenter_id_and_task_id", using: :btree
   add_index "comments", ["commenter_id"], name: "index_comments_on_commenter_id", using: :btree
   add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
+
+  create_table "credentials", force: true do |t|
+    t.string  "provider"
+    t.string  "uid"
+    t.integer "user_id"
+  end
+
+  add_index "credentials", ["uid", "provider"], name: "index_credentials_on_uid_and_provider", using: :btree
 
   create_table "figures", force: true do |t|
     t.string   "attachment"
@@ -147,9 +171,8 @@ ActiveRecord::Schema.define(version: 20140520171933) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.text     "authors",         default: "--- []\n"
-    t.boolean  "submitted",       default: false,      null: false
-    t.integer  "journal_id",                           null: false
+    t.boolean  "submitted",       default: false, null: false
+    t.integer  "journal_id",                      null: false
     t.string   "decision"
     t.text     "decision_letter"
     t.datetime "published_at"
@@ -194,6 +217,17 @@ ActiveRecord::Schema.define(version: 20140520171933) do
     t.boolean  "can_view_all_manuscript_managers",      default: false, null: false
   end
 
+  create_table "supporting_information_files", force: true do |t|
+    t.integer  "paper_id"
+    t.string   "title"
+    t.string   "caption"
+    t.string   "attachment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
+
   create_table "surveys", force: true do |t|
     t.text    "question", null: false
     t.text    "answer"
@@ -234,8 +268,6 @@ ActiveRecord::Schema.define(version: 20140520171933) do
     t.string   "username"
     t.boolean  "admin",                  default: false, null: false
     t.string   "avatar"
-    t.string   "provider"
-    t.string   "uid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

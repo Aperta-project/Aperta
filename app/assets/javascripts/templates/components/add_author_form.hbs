@@ -2,19 +2,19 @@
   <div class="form-group form-inline author-top">
     <div class="form-group author-name required">
       {{input type='text'
-      value=newAuthor.first_name
+      value=newAuthor.firstName
       class='form-control'
       placeholder='First name'}}
     </div>
     <div class="form-group author-middle">
       {{input type='text'
-      value=newAuthor.middle_initial
+      value=newAuthor.middleInitial
       class='form-control'
       placeholder='MI'}}
     </div>
     <div class="form-group author-name required">
       {{input type='text'
-      value=newAuthor.last_name
+      value=newAuthor.lastName
       class='form-control'
       placeholder='Last name'}}
     </div>
@@ -41,16 +41,16 @@
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half required">
-      {{type-ahead 
+      {{type-ahead
       value=newAuthor.affiliation
-      sourceList=institutions 
+      sourceList=institutions
       class='form-control'
       placeholder='Affiliation'}}
     </div>
     <div class="form-group author-half author-bump">
-      {{type-ahead 
-      value=newAuthor.secondary_affiliation
-      sourceList=institutions 
+      {{type-ahead
+      value=newAuthor.secondaryAffiliation
+      sourceList=institutions
       class='form-control'
       placeholder='Secondary Affiliation'}}
     </div>
@@ -58,7 +58,7 @@
   <div class="form-group">
       <label class="author-label">
         {{input type='checkbox'
-        checked=newAuthor.corresponding_author}}
+        checked=newAuthor.corresponding}}
         This is a corresponding author
       </label>
       <label class="author-label">

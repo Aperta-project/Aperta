@@ -18,7 +18,12 @@ feature 'journal admin role', js: true do
       expect(dashboard.admin_link).to be_present
     end
 
-    scenario 'the user can view the admin page for a journal'
+    scenario 'the user can view the admin page for a journal' do
+      admin_page = dashboard.visit_admin
+      expect(admin_page.journal_names).to include(journal.name)
+      admin_page.visit_journal(journal)
+    end
+
     scenario 'the user can not see other journals in the admin page'
   end
 

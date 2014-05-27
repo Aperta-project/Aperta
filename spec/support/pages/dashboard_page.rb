@@ -51,6 +51,7 @@ class DashboardPage < Page
   end
 
   def visit_admin
-    RailsAdminDashboardPage.visit
+    admin_link.click
+    AdminDashboardPage.new
   end
 end

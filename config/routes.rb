@@ -48,12 +48,6 @@ Tahi::Application.routes.draw do
       resources :comments, only: :create
     end
 
-    resources :messages, only: [:create] do
-      member do
-        patch :update_participants
-      end
-    end
-
     member do
       patch :upload
       get :manage, to: 'ember#index'
@@ -62,12 +56,6 @@ Tahi::Application.routes.draw do
   end
 
   resources :comments, only: [:create, :update]
-
-  resources :message_tasks, only: [:create] do
-    member do
-      patch :update_participants
-    end
-  end
 
   resources :tasks, only: [:update, :create, :show, :destroy] do
     collection do

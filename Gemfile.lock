@@ -7,6 +7,12 @@ GIT
       railties (>= 3.1)
 
 PATH
+  remote: engines/declaration
+  specs:
+    declaration (0.0.1)
+      rails (~> 4.1.1)
+
+PATH
   remote: engines/standard_tasks
   specs:
     standard_tasks (0.0.1)
@@ -426,6 +432,7 @@ DEPENDENCIES
   codeclimate-test-reporter
   coffee-rails (~> 4.0.1)
   database_cleaner
+  declaration!
   devise
   dotenv-deployment
   dotenv-rails

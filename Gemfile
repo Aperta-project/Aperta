@@ -3,8 +3,9 @@ source 'https://rubygems.org'
 ruby "2.1.2"
 
 # Task Engines
-gem 'standard_tasks', path: 'engines/standard_tasks'
+gem 'standard_tasks',         path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
+gem 'declaration',            path: 'engines/declaration'
 
 # Gems
 gem 'rails', '4.1.1'

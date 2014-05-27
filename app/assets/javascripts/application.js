@@ -34,6 +34,7 @@
 //= require standard_tasks/application
 //= require supporting_information/application
 //= require declaration/application
+//= require upload_manuscript/application
 
 (function(context) {
   context.ETahi = Ember.Application.create({

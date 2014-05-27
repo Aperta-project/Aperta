@@ -20,8 +20,6 @@ class DashboardSerializer < ActiveModel::Serializer
   def assigned_tasks
     # all the tasks I have been associated with
     return @assigned_tasks if @assigned_tasks
-    message_tasks = MessageTask.joins(:paper).where('papers.id' => current_user.submitted_papers.pluck(:id)).includes(:assignee, :paper)
-    user_tasks = Task.assigned_to(current_user).where.not(type: 'MessageTask').includes(:assignee, :paper)
-    @assigned_tasks = (user_tasks + message_tasks)
+    @assigned_tasks = Task.assigned_to(current_user).includes(:assignee, :paper)
   end
 end

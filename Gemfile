@@ -6,6 +6,7 @@ ruby "2.1.2"
 gem 'standard_tasks',         path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
 gem 'declaration',            path: 'engines/declaration'
+gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 
 # Gems
 gem 'rails', '4.1.1'

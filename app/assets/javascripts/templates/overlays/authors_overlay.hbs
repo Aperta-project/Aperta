@@ -1,11 +1,5 @@
 <div class="author-header">
   <h1>{{title}}</h1>
-  {{#if isEditable}}
-    <a class="btn btn-default btn-xs" {{action 'toggleAuthorForm'}}>
-      <span class="glyphicon glyphicon-plus-sign"></span>
-      Add new
-    </a>
-  {{/if}}
 </div>
 <ul class="authors-overlay-list">
   {{#each group in resolvedPaper.authorGroups}}
@@ -16,6 +10,12 @@
           institutions=institutions
           author=author}}
       {{/each}}
+      {{#if isEditable}}
+        <a class="btn btn-default btn-xs" {{action 'toggleAuthorForm' group}}>
+          <span class="glyphicon glyphicon-plus-sign"></span>
+          Add new
+        </a>
+      {{/if}}
     </div>
   {{/each}}
 </ul>

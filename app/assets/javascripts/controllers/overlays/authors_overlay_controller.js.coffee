@@ -1,7 +1,7 @@
 ETahi.AuthorsOverlayController = ETahi.TaskController.extend
   newAuthor: {}
   showNewAuthorForm: false
-
+  currentAuthorGroup: null
   authors: Ember.computed.alias 'resolvedPaper.authors'
 
   resolvedPaper: null
@@ -11,22 +11,21 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       @set('resolvedPaper', paper)
   ).observes('paper')
 
-  toggleAuthorForm: ->
-    @set('showNewAuthorForm', !@showNewAuthorForm)
-
   saveNewAuthor: ->
     author = @store.createRecord('author', @newAuthor)
     #TODO: change this to associate with the correct author group
-    authorGroup = @get('resolvedPaper.authorGroups.firstObject')
+    authorGroup = @get('currentAuthorGroup')
     author.set('authorGroup', authorGroup)
     author.save().then (author) =>
       authorGroup.get('authors').pushObject(author)
       @set('newAuthor', {})
-      @toggleAuthorForm()
+      @toggleProperty('showNewAuthorForm')
 
   actions:
-    toggleAuthorForm: ->
-      @toggleAuthorForm()
+    toggleAuthorForm: (authorGroup=null) ->
+      @set('currentAuthorGroup', authorGroup)
+      @toggleProperty('showNewAuthorForm')
+      false
 
     addAuthorGroup: ->
       newAuthorGroup = @store.createRecord('authorGroup', {})
@@ -37,4 +36,3 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       ag = @get('resolvedPaper.authorGroups.lastObject')
       if !ag.get('authors.length')
         ag.destroyRecord()
-

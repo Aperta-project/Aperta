@@ -211,3 +211,13 @@ textarea { resize: none; }
 .error-message {
   color: $tahi-error-red;
 }
+
+.add-remove-groups div {
+  width: 35px;
+  height: 25px;
+  text-align: center;
+  border: 1px solid $tahi-primary;
+  border-radius: 5px;
+  padding-top: 4px;
+  color: $tahi-primary;
+}

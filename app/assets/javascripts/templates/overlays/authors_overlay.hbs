@@ -8,12 +8,23 @@
   {{/if}}
 </div>
 <ul class="authors-overlay-list">
-  {{#each author in paper.authors}}
-    {{author-view
-      institutions=institutions
-      author=author}}
+  {{#each group in resolvedPaper.authorGroups}}
+    <div class="author-group">
+      <h2>{{group.name}}</h2>
+      {{#each author in group.authors}}
+        {{author-view
+          institutions=institutions
+          author=author}}
+      {{/each}}
+    </div>
   {{/each}}
 </ul>
+<div class="add-remove-groups">
+  <button class="secondary-button remove-group glyphicon glyphicon-minus" {{action 'removeAuthorGroup'}}>
+  </button>
+  <button class="secondary-button add-group glyphicon glyphicon-plus" {{action 'addAuthorGroup'}}>
+  </button>
+</div>
 {{#if isEditable}}
   <div {{bind-attr class=":author-form showNewAuthorForm"}}>
     {{add-author-form

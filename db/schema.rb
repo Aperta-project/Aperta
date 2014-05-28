@@ -28,6 +28,13 @@ ActiveRecord::Schema.define(version: 20140522222621) do
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
 
+  create_table "author_groups", force: true do |t|
+    t.string  "name"
+    t.integer "paper_id"
+  end
+
+  add_index "author_groups", ["paper_id"], name: "index_author_groups_on_paper_id", using: :btree
+
   create_table "authors", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -39,7 +46,7 @@ ActiveRecord::Schema.define(version: 20140522222621) do
     t.boolean  "deceased",              default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "paper_id"
+    t.integer  "author_group_id"
     t.string   "affiliation"
     t.string   "secondary_affiliation"
   end
@@ -214,15 +221,12 @@ ActiveRecord::Schema.define(version: 20140522222621) do
 
   create_table "roles", force: true do |t|
     t.string   "name"
-    t.boolean  "admin",                                 default: false, null: false
-    t.boolean  "editor",                                default: false, null: false
-    t.boolean  "reviewer",                              default: false, null: false
+    t.boolean  "admin",      default: false, null: false
+    t.boolean  "editor",     default: false, null: false
+    t.boolean  "reviewer",   default: false, null: false
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "can_administer_journal",                default: false, null: false
-    t.boolean  "can_view_assigned_manuscript_managers", default: false, null: false
-    t.boolean  "can_view_all_manuscript_managers",      default: false, null: false
   end
 
   create_table "supporting_information_files", force: true do |t|

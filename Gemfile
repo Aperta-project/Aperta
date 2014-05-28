@@ -42,6 +42,7 @@ gem 'timeliness'
 gem 'american_date'
 gem 'omniauth-oauth2'
 gem 'faraday_middleware'
+gem 'ordinalize'
 
 group :production, :staging do
   gem 'heroku-deflater'

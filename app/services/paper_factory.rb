@@ -23,7 +23,8 @@ class PaperFactory
   end
 
   def create
-    paper.add_author(author)
+    paper.build_default_author_groups
+    paper.author_groups.first.authors << Author.new(to_author(author))
     if paper.valid?
       paper.transaction do
         if template
@@ -52,5 +53,10 @@ class PaperFactory
 
   def template
     @template ||= paper.journal.mmt_for_paper_type(paper.paper_type)
+  end
+
+  private
+  def to_author(author)
+    author.slice(*%w(first_name last_name email))
   end
 end

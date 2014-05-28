@@ -146,9 +146,9 @@ describe Api::PapersController do
     context "whitelisted attribute" do
       it "updates the published_at attribute for a paper" do
         patch_params = %Q{[{ "op": "replace", "path": "/papers/0/publishedAt", "value": "2014-03-21" }]}
-        patch api_paper_path(paper1.id), patch_params, { 'CONTENT_TYPE' => "application/json-patch+json",
-                                                         'ACCEPT' => "application/vnd.api+json",
-                                                         authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)}
+        patch api_paper_path(paper1.id), patch_params, 'CONTENT_TYPE' => "application/json-patch+json",
+                                                       'ACCEPT' => "application/vnd.api+json",
+                                                       authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
         expect(response.body).to_not be_nil
         expect(response.status).to eq 204
@@ -159,9 +159,9 @@ describe Api::PapersController do
     context "non-whitelisted attribute" do
       it "does not update when attribute is not whitelisted for a paper" do
         patch_params = %Q{[{ "op": "replace", "path": "/papers/0/createdAt", "value": "2014-03-21" }]}
-        patch api_paper_path(paper1.id), patch_params, { 'CONTENT_TYPE' => "application/json-patch+json",
-                                                         'ACCEPT' => "application/vnd.api+json",
-                                                         authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)}
+        patch api_paper_path(paper1.id), patch_params, 'CONTENT_TYPE' => "application/json-patch+json",
+                                                       'ACCEPT' => "application/vnd.api+json",
+                                                       authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
         expect(response.status).to eq 401
         expect(paper1.reload.created_at).to_not eq "2014-03-21"
@@ -170,9 +170,9 @@ describe Api::PapersController do
 
     context "when API token isn't provided" do
       it "returns a 401 not authorized status" do
-        patch_params = %Q{[{ "op": "replace", "path": "/papers/0/publishedAt", "value": "2014-03-21" }]}
-        patch api_paper_path(paper1.id), patch_params, { 'CONTENT_TYPE' => "application/json-patch+json",
-                                                         'ACCEPT' => "application/vnd.api+json" }
+        patch_params = %Q([{ "op": "replace", "path": "/papers/0/publishedAt", "value": "2014-03-21" }])
+        patch api_paper_path(paper1.id), patch_params, 'CONTENT_TYPE' => "application/json-patch+json",
+                                                       'ACCEPT' => "application/vnd.api+json"
         expect(response.status).to eq(401)
       end
     end

@@ -12,4 +12,3 @@ class ApiKey < ActiveRecord::Base
     end while self.class.exists?(access_token: access_token)
   end
 end
-

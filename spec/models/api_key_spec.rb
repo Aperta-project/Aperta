@@ -10,16 +10,20 @@ describe ApiKey do
     end
 
     context "when the randomly generated token is present" do
-      it "will create another unique token" do
-        token1 = ApiKey.create!
-        token1.update_attribute :access_token, 'duplicate_token'
+      before do
+        ApiKey.create!.update_attribute :access_token, 'duplicate_token'
 
-        allow(SecureRandom).to receive(:hex) do
-          ['duplicate_token', 'new_token'].sample
+        SecureRandom.stub(:hex) do
+          SecureRandom.unstub(:hex)
+          'duplicate_token'
         end
+      end
 
-        token2 = ApiKey.create!
+      it "will create another token if there exists a duplicate" do
+        expect(SecureRandom).to receive(:hex).twice
+        ApiKey.create!
       end
     end
+
   end
 end

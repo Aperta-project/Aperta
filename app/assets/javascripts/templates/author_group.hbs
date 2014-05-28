@@ -1,0 +1,21 @@
+<div class="author-group">
+  <h2>{{group.name}}</h2>
+  {{#each author in authors}}
+    {{author-view
+      institutions=institutions
+      author=author}}
+  {{/each}}
+  {{#if isEditable}}
+    <a class="btn btn-default btn-xs" {{action 'toggleAuthorForm' group}}>
+      <span class="glyphicon glyphicon-plus-sign"></span>
+      Add new
+    </a>
+    <div {{bind-attr class=":author-form showNewAuthorForm"}}>
+      {{add-author-form
+        newAuthor=newAuthor
+        institutions=institutions
+        hideAuthorForm='toggleAuthorForm'
+        saveAuthor='saveNewAuthor'}}
+    </div>
+  {{/if}}
+</div>

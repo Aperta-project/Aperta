@@ -3,20 +3,7 @@
 </div>
 <ul class="authors-overlay-list">
   {{#each group in resolvedPaper.authorGroups}}
-    <div class="author-group">
-      <h2>{{group.name}}</h2>
-      {{#each author in group.authors}}
-        {{author-view
-          institutions=institutions
-          author=author}}
-      {{/each}}
-      {{#if isEditable}}
-        <a class="btn btn-default btn-xs" {{action 'toggleAuthorForm' group}}>
-          <span class="glyphicon glyphicon-plus-sign"></span>
-          Add new
-        </a>
-      {{/if}}
-    </div>
+    {{render 'author_group' group}}
   {{/each}}
 </ul>
 <div class="add-remove-groups">
@@ -25,12 +12,3 @@
   <button class="secondary-button add-group glyphicon glyphicon-plus" {{action 'addAuthorGroup'}}>
   </button>
 </div>
-{{#if isEditable}}
-  <div {{bind-attr class=":author-form showNewAuthorForm"}}>
-    {{add-author-form
-      newAuthor=newAuthor
-      institutions=institutions
-      hideAuthorForm='toggleAuthorForm'
-      saveAuthor='saveNewAuthor'}}
-  </div>
-{{/if}}

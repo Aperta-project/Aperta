@@ -5,6 +5,4 @@ ETahi.AuthorGroup = DS.Model.extend
 
   name: a('string')
 
-  hasAuthors: (->
-    !Ember.empty(@get('authors'))
-  ).property('authors.[]', 'authors.@each')
+  hasAuthors: Ember.computed.notEmpty('authors.[]')

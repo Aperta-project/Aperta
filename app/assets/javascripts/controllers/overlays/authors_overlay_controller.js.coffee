@@ -34,8 +34,7 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       newAuthorGroup.save()
 
     removeAuthorGroup: ->
-      ag = @get('paper.authorGroups.lastObject')
+      ag = @get('resolvedPaper.authorGroups.lastObject')
       if !ag.get('authors.length')
-        ag.deleteRecord()
-        ag.save()
+        ag.destroyRecord()
 

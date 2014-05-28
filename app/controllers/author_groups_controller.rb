@@ -16,6 +16,7 @@ class AuthorGroupsController < ApplicationController
   end
 
   private
+
   def author_group_params
     params.require(:author_group).permit(:paper_id)
   end

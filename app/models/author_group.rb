@@ -9,7 +9,7 @@ class AuthorGroup < ActiveRecord::Base
     end
   end
 
-  def self.ordinalized_create params
+  def self.ordinalized_create(params)
     papers_count = Paper.includes(:author_groups).find(params[:paper_id]).author_groups.length
     create name: "#{(papers_count + 1).ordinalise.capitalize} Author", paper_id: params[:paper_id]
   end

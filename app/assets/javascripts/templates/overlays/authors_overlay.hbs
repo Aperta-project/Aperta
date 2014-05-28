@@ -8,7 +8,7 @@
   {{/if}}
 </div>
 <ul class="authors-overlay-list">
-  {{#each group in paper.authorGroups}}
+  {{#each group in resolvedPaper.authorGroups}}
     <div class="author-group">
       <h2>{{group.name}}</h2>
       {{#each author in group.authors}}

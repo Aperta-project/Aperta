@@ -41,7 +41,7 @@ describe AuthorsController do
                                             author_group_id: author_group.id
                                           }
     end
-    let(:author_group) { FactoryGirl.create :author_group, authors: [ author ]}
+    let(:author_group) { FactoryGirl.create :author_group, authors: [author] }
     let(:author) { FactoryGirl.create :author }
 
     it "updates the author" do

@@ -13,7 +13,7 @@ class Paper < ActiveRecord::Base
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy
   has_many :tasks, through: :phases
   has_many :journal_roles, through: :journal
-  has_many :author_groups, ->{ order("id ASC") }, inverse_of: :paper, dependent: :destroy
+  has_many :author_groups, -> { order("id ASC") }, inverse_of: :paper, dependent: :destroy
   has_many :authors, through: :author_groups
 
   validates :paper_type, presence: true

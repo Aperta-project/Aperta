@@ -76,7 +76,7 @@ feature "Add contributing authors", js: true do
     end
 
     scenario "removing author groups" do
-      paper.author_groups << AuthorGroup.ordinalized_create({ paper_id: paper.id })
+      paper.author_groups << AuthorGroup.ordinalized_create(paper_id: paper.id)
       edit_paper = EditPaperPage.visit paper
       edit_paper.view_card 'Add Authors' do |overlay|
         expect {

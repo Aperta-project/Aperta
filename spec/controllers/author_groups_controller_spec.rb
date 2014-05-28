@@ -31,7 +31,7 @@ describe AuthorGroupsController do
     let(:do_request) do
       delete :destroy, id: author_group.id
     end
-    let!(:author_group) { FactoryGirl.create :author_group, authors: [ author ]}
+    let!(:author_group) { FactoryGirl.create :author_group, authors: [author] }
     let(:author) { FactoryGirl.create :author }
 
     it "destroys the author_group" do

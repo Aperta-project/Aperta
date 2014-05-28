@@ -45,6 +45,15 @@ describe PaperFactory do
       PaperFactory.create(paper_attrs, user)
     end
 
+    it "creates an author" do
+      expect { subject }.to change { Author.count }.by 1
+    end
+
+    it "sets the user as the first author on the paper's first author group" do
+      expect(subject.author_groups.first).to eq Author.last.author_group
+      expect(Author.last.first_name).to eq(user.first_name)
+    end
+
     it "sets the user" do
       expect(subject.user).to eq(user)
     end
@@ -59,6 +68,12 @@ describe PaperFactory do
 
     it "saves the paper" do
       expect(subject).to be_persisted
+    end
+
+    it "creates author groups" do
+      expect {
+        subject
+      }.to change { AuthorGroup.count }.by 3
     end
 
     context "with non-existant template" do

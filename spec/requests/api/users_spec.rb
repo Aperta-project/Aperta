@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::UsersController do
   describe "GET 'show'" do
     let(:user) { create :user }
-    let(:api_token) { ApiKey.generate_access_token }
+    let(:api_token) { ApiKey.generate! }
 
     it "returns a single user" do
       get api_user_path(user.id), nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)

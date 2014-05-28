@@ -40,7 +40,7 @@ describe User do
   describe ".new_with_session" do
     let(:personal_details) { {"personal_details" => {"given_names" => "Joe", "family_name" => "Smith"}} }
     let(:orcid_session) do
-      {"devise.provider" => {'orcid' => {"uid" => "myuid",
+      {"devise.provider" => {:orcid => {"uid" => "myuid",
                                          "info" => {"orcid_bio" => personal_details}}}}
     end
 

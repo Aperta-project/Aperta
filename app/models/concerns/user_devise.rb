@@ -13,12 +13,12 @@ module UserDevise
       end
     end
 
-    # prefill user data using data being returned from orcid or cas(via omniauth)
+    # prefill user data using data being returned from orcid or cas (via omniauth)
     def self.new_with_session(_, session)
       super.tap do |user|
         if session["devise.provider"]
           user.auto_generate_password
-          if bio = session["devise.provider"].to_hash.get("orcid", "info", "orcid_bio", "personal_details")
+          if bio = session["devise.provider"].to_hash.get(:orcid, "info", "orcid_bio", "personal_details")
             user.first_name = bio["given_names"] unless user.first_name.present?
             user.last_name  = bio["family_name"] unless user.last_name.present?
           end

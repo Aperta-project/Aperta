@@ -11,17 +11,6 @@ ETahi.ApplicationController = Ember.Controller.extend
   username: Ember.computed.alias 'currentUser.username'
   canViewAdminLinks: false
 
-  showAdminLinks: (->
-    return unless @get('currentUser')
-    Ember.$.ajax
-      url: "/admin/journals"
-      method: 'GET'
-      success: (data) =>
-        @set('canViewAdminLinks', true)
-      fail: (data) =>
-        #no-op
-  ).on('init')
-
   # this will get overridden by inject except in testing cases.
   getCurrentUser: -> null
 

@@ -5,6 +5,7 @@ FactoryGirl.define do
     last_name "Skywalker"
     department "Jedis"
     title "Head Jedi"
+    affiliation 'university of dagobah'
     email
   end
 end

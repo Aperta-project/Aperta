@@ -15,7 +15,7 @@ feature "Add contributing authors", js: true do
     edit_paper = EditPaperPage.visit paper
 
     edit_paper.view_card 'Add Authors' do |overlay|
-      overlay.add_author({
+      overlay.add_author( 'First Author', {
         first_name: 'Neils',
         middle_initial: 'B.',
         last_name: 'Bohr',
@@ -24,7 +24,7 @@ feature "Add contributing authors", js: true do
         affiliation: 'University of Copenhagen',
         email: 'neils@bohr.com'
       })
-      overlay.add_author({
+      overlay.add_author( 'Second Author', {
         first_name: 'Nikola',
         last_name: 'Tesla',
         affiliation: 'Wardenclyffe',
@@ -45,22 +45,29 @@ feature "Add contributing authors", js: true do
     end
   end
 
-  scenario "editing an existing author" do
-    author = Author.new first_name: 'erwin',
-                        last_name: 'shroedinger',
-                        title: 'quantum awesome-ologist',
-                        affiliation: 'university of zurich',
-                        department: 'theoretical physics'
-    author_group.authors << author
-    author_group.save
-    edit_paper = EditPaperPage.visit paper
-    edit_paper.view_card 'Add Authors' do |overlay|
-      overlay.edit_author last_name: 'rommel',
-        email: 'ernie@berlin.de'
-      visit current_url
-      within '.authors-overlay-list' do
-        expect(page).to have_content "ernie@berlin.de"
-        expect(page).to have_content "rommel"
+  context "with an existing author" do
+    let!(:existing_author) { create :author, author_group: author_group }
+
+    scenario "editing" do
+      edit_paper = EditPaperPage.visit paper
+      edit_paper.view_card 'Add Authors' do |overlay|
+        overlay.edit_author existing_author.first_name, last_name: 'rommel',
+          email: 'ernie@berlin.de'
+        visit current_url
+        within '.authors-overlay-list' do
+          expect(page).to have_content "ernie@berlin.de"
+          expect(page).to have_content "rommel"
+        end
+      end
+    end
+
+    scenario "deleting" do
+      edit_paper = EditPaperPage.visit paper
+      edit_paper.view_card 'Add Authors' do |overlay|
+        overlay.delete_author existing_author.first_name
+        within '.authors-overlay-list' do
+          expect(page).to have_no_content existing_author.first_name
+        end
       end
     end
   end
@@ -71,7 +78,7 @@ feature "Add contributing authors", js: true do
       edit_paper.view_card 'Add Authors' do |overlay|
         expect {
           find(".add-group").click
-        }.to change { all(".author-group").count }.by 1
+        }.to change { overlay.author_groups.count }.by 1
       end
     end
 
@@ -81,7 +88,7 @@ feature "Add contributing authors", js: true do
       edit_paper.view_card 'Add Authors' do |overlay|
         expect {
           find(".remove-group").click
-        }.to change { all(".author-group").count }.by -1
+        }.to change { overlay.author_groups.count }.by -1
       end
     end
   end

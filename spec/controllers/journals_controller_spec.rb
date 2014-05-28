@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe JournalsController do
 
-  expect_policy_enforcement
-
   let(:user) { FactoryGirl.create(:user, :admin) }
   let(:journal) { FactoryGirl.create(:journal) }
 

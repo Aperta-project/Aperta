@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe AdministrateJournalPolicy do
-  let(:policy) { AdministrateJournalPolicy.new(current_user: user) }
+describe Admin::JournalsPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
+  let(:policy) { Admin::JournalsPolicy.new(current_user: user, journal: journal) }
 
   context "admin" do
     let(:user) { FactoryGirl.create(:user, :admin) }
@@ -10,13 +10,13 @@ describe AdministrateJournalPolicy do
     it { expect(policy.index?).to be(true) }
   end
 
-  context "non admin who does not administer any journal" do
+  context "non admin who does not administer the journal" do
     let(:user) { FactoryGirl.create(:user) }
 
     it { expect(policy.index?).to be(false) }
   end
 
-  context "user who administers any journal" do
+  context "user who administers the journal" do
     let(:user) { FactoryGirl.create(:user) }
 
     before do
@@ -26,4 +26,3 @@ describe AdministrateJournalPolicy do
     it { expect(policy.index?).to be(true) }
   end
 end
-

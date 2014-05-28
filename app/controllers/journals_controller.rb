@@ -4,12 +4,10 @@ class JournalsController < ApplicationController
   respond_to :json
 
   def index
-    authorize_action!
     respond_with Journal.all
   end
 
   def show
-    authorize_action!(journal: journal)
     respond_with journal
   end
 
@@ -18,5 +16,4 @@ class JournalsController < ApplicationController
   def journal
     Journal.find(params[:id])
   end
-
 end

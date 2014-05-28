@@ -56,6 +56,10 @@ RailsAdmin.config do |config|
 
     object_label_method :full_name
 
+    edit do
+      exclude_fields :journals
+    end
+
   end
 
 end

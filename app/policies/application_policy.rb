@@ -21,9 +21,12 @@ class ApplicationPolicy
     self.allowed_params.to_a + self.required_params.to_a
   end
 
-  def self.find_policy(controller, user, args={})
-    klass = "#{controller.to_s.classify}Policy".constantize
-    klass.new({current_user: user}.merge(args))
+  def self.find_policy(controller_class, user, args={})
+    policy_class(controller_class).new({current_user: user}.merge(args))
+  end
+
+  def self.policy_class(controller_class)
+    controller_class.name.gsub(/Controller$/, "Policy").constantize
   end
 
   require_params :current_user
@@ -38,8 +41,12 @@ class ApplicationPolicy
     end
   end
 
-  def applies_to?(controller, user, args={})
-    self.class.name == "#{controller.to_s.classify}Policy" && current_user == user
+  def applies_to?(controller_class, user, args={})
+    self.class == policy_class(controller_class) && current_user == user
+  end
+
+  def policy_class(controller_class)
+    self.class.policy_class(controller_class)
   end
 
   def authorized?(action)
@@ -99,9 +106,11 @@ class ApplicationPolicy
   end
 
   def administered_journals
-    Journal.joins(:roles => :user_roles)
-      .merge(Role.can_administer_journal)
-      .where('user_roles.user_id' => current_user)
+    current_user.administered_journals
+  end
+
+  def can_administer_any_journal?
+    super_admin? || administered_journals.any?
   end
 
   def can_administer_journal?(journal)

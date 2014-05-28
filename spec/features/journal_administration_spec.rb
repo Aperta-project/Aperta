@@ -1,26 +1,44 @@
 require 'spec_helper'
 
 feature "Journal Administration", js: true do
-  let(:admin) { create :user, :admin }
+  let(:user) { create :user, :admin }
   let!(:journal) { create :journal }
   let!(:another_journal) { create :journal }
 
   before do
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin
+    sign_in_page.sign_in user
   end
 
   let(:admin_page) { AdminDashboardPage.visit }
   let(:journal_page) { admin_page.visit_journal(journal) }
 
-  describe "Admin root" do
-    scenario "Viewing available journals" do
-      journal_names = [journal, another_journal].map(&:name)
-      expect(admin_page.journal_names).to match_array(journal_names)
+  describe "journal listing" do
+    context "when the user is a site admin" do
+      let(:user) { create :user, :admin }
+
+      scenario "shows all journals" do
+        journal_names = [journal, another_journal].map(&:name)
+        expect(admin_page.journal_names).to match_array(journal_names)
+      end
     end
 
-    context "when the user is not an admin" do
-      scenario "no journals are displayed"
+    context "when the user is a journal admin" do
+      let(:user) { create :user }
+      before { assign_journal_role(journal, user, :admin) }
+
+      scenario "shows assigned journal" do
+        expect(admin_page.journal_names).to eq([journal.name])
+      end
+    end
+
+    context "when the user is not a site admin or journal admin" do
+      let(:user) { create :user }
+
+      scenario "redirects to dashboard" do
+        visit AdminDashboardPage.path
+        expect(page).to have_no_content(AdminDashboardPage.page_header)
+      end
     end
   end
 

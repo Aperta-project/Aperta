@@ -13,19 +13,8 @@ module Authorizations
     authorize_action!
   end
 
-  def can_perform?(controller, action, args={})
-    user = args[:user] || current_user
-    policy = find_policy(controller, user, args)
-    policy.authorized? action
-  end
-
-  def can_perform_action?(action, args={})
-    controller = args[:controller] || controller_name
-    can_perform?(controller, action, args)
-  end
-
   def authorize_action!(args={})
-    policy = find_policy(controller_name, current_user, args)
+    policy = find_policy(self.class, current_user, args)
     unless policy.authorized?(action_name)
       raise AuthorizationError
     end
@@ -35,16 +24,16 @@ module Authorizations
     head :forbidden
   end
 
-  def find_policy(controller, user, args)
+  def find_policy(controller_class, user, args)
     @policies ||= []
     policy = nil
 
     if @policies.present?
-      policy = @policies.detect { |p| p.applies_to?(controller, user, args) }
+      policy = @policies.detect { |p| p.applies_to?(controller_class, user, args) }
     end
 
     if !policy
-      policy = ApplicationPolicy.find_policy(controller, user, args)
+      policy = ApplicationPolicy.find_policy(controller_class, user, args)
       @policies << policy
     end
 

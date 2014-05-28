@@ -1,4 +1,4 @@
-class ManuscriptManagerPolicy < ApplicationPolicy
+class ManuscriptManagersPolicy < ApplicationPolicy
 
   require_params :paper
 

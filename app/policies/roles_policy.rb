@@ -1,4 +1,4 @@
-class RolePolicy < ApplicationPolicy
+class RolesPolicy < ApplicationPolicy
 
   require_params :journal
 

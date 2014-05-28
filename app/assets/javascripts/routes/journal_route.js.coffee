@@ -1,3 +1,3 @@
 ETahi.JournalRoute = Ember.Route.extend
   model: (params) ->
-    @store.find('journal', params.journal_id)
+    @store.find('adminJournal', params.journal_id)

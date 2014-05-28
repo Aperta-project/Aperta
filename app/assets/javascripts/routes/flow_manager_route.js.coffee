@@ -1,4 +1,7 @@
 ETahi.FlowManagerRoute = ETahi.AdminAuthorizedRoute.extend
+  beforeModel: (transition) ->
+    @handleUnauthorizedRequest(transition) unless @getCurrentUser? and @getCurrentUser().get('admin')
+
   model: ->
     if cachedModel =  @controllerFor('application').get('cachedModel')
       @controllerFor('application').set('cachedModel' , null)

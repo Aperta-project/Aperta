@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe RolePolicy do
+describe RolesPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:policy) { RolePolicy.new(current_user: user, journal: journal) }
+  let(:policy) { RolesPolicy.new(current_user: user, journal: journal) }
 
   context "admin" do
     let(:user) { FactoryGirl.create(:user, :admin) }

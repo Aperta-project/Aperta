@@ -1,4 +1,4 @@
-ETahi.AdminRoute = Ember.Route.extend
+ETahi.AdminRoute = ETahi.AdminAuthorizedRoute.extend
   model: ->
-    @store.find('journal')
+    @store.find('adminJournal')
 

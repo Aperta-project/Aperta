@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-describe ManuscriptManagerPolicy do
+describe ManuscriptManagersPolicy do
+  let(:policy) { ManuscriptManagersPolicy.new(current_user: user, paper: paper) }
+
   context "admin" do
     let(:user) { FactoryGirl.create(:user, :admin) }
     let(:paper) { FactoryGirl.create(:paper) }
-    let(:policy) { ManuscriptManagerPolicy.new(current_user: user, paper: paper) }
 
     it { expect(policy.show?).to be(true) }
   end
@@ -12,7 +13,6 @@ describe ManuscriptManagerPolicy do
   context "non admin" do
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create(:paper) }
-    let(:policy) { ManuscriptManagerPolicy.new(current_user: user, paper: paper) }
 
     it { expect(policy.show?).to be(false) }
   end
@@ -22,7 +22,6 @@ describe ManuscriptManagerPolicy do
     let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) { FactoryGirl.create(:paper, :with_tasks, journal: journal) }
     let(:role) { FactoryGirl.create(:role, journal: journal, can_view_assigned_manuscript_managers: true) }
-    let(:policy) { ManuscriptManagerPolicy.new(current_user: user, paper: paper) }
     before do
       UserRole.create!(user: user, role: role)
       task = paper.tasks.first
@@ -38,7 +37,6 @@ describe ManuscriptManagerPolicy do
     let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:role) { FactoryGirl.create(:role, journal: journal, can_view_all_manuscript_managers: true) }
-    let(:policy) { ManuscriptManagerPolicy.new(current_user: user, paper: paper) }
     before do
       UserRole.create!(user: user, role: role)
     end

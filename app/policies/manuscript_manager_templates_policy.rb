@@ -1,4 +1,4 @@
-class ManuscriptManagerTemplatePolicy < ApplicationPolicy
+class ManuscriptManagerTemplatesPolicy < ApplicationPolicy
   require_params :journal
 
   def index?

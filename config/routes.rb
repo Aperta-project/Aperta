@@ -41,7 +41,10 @@ Tahi::Application.routes.draw do
   resources :affiliations, only: [:index, :create, :destroy]
 
   resources :manuscript_manager_templates
-  resources :administrate_journals, only: [:index]
+
+  namespace :admin do
+    resources :journals, only: [:index]
+  end
 
   resources :users, only: [:update, :show] do
     get :profile, on: :collection

@@ -14,7 +14,7 @@ ETahi.ApplicationController = Ember.Controller.extend
   showAdminLinks: (->
     return unless @get('currentUser')
     Ember.$.ajax
-      url: "/administrate_journals"
+      url: "/admin/journals"
       method: 'GET'
       success: (data) =>
         @set('canViewAdminLinks', true)

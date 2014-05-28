@@ -23,8 +23,6 @@ feature 'journal admin role', js: true do
       expect(admin_page.journal_names).to include(journal.name)
       admin_page.visit_journal(journal)
     end
-
-    scenario 'the user can not see other journals in the admin page'
   end
 
   context 'non-admin user without journal admin role' do

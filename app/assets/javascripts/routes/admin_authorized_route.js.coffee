@@ -6,7 +6,7 @@ ETahi.AdminAuthorizedRoute = Ember.Route.extend
     transition.abort()
     @transitionTo 'index'
 
-  events:
+  actions:
     error: (response, transition) ->
       switch response.status
         when 403 then @handleUnauthorizedRequest(transition)

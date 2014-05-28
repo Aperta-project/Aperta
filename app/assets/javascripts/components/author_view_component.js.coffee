@@ -1,6 +1,5 @@
 ETahi.AuthorViewComponent = Ember.Component.extend
   tagName: 'li'
-  templateName: 'components/author_view'
   showEditAuthorForm: false
 
   showAuthorForm: ->

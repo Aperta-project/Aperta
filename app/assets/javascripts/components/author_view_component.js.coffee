@@ -1,11 +1,12 @@
-ETahi.AuthorViewComponent = Ember.Component.extend
+ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   tagName: 'li'
   showEditAuthorForm: false
   classNameBindings: ['showEditAuthorForm::edit-inactive']
 
+  dragStart: (e) ->
+    ETahi.set('dragItem', @get('content'))
 
   actions:
-
     edit: ->
       @set('showEditAuthorForm', true)
 

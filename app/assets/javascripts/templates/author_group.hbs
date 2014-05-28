@@ -1,9 +1,11 @@
 <div class="author-group">
   <h2>{{group.name}}</h2>
+  {{view ETahi.AuthorGroupDropTargetView}}
   {{#each author in authors}}
     {{author-view
       institutions=institutions
       author=author}}
+    {{view ETahi.AuthorGroupDropTargetView}}
   {{/each}}
   {{#if isEditable}}
     <a class="btn btn-default btn-xs" {{action 'toggleAuthorForm' group}}>

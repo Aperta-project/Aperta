@@ -3,14 +3,21 @@
   padding-left: 0;
   overflow: auto;
 
+  .author-drop-target {
+    height: 5px;
+    margin-bottom: 5px;
+    &.current-drop-target {
+      background: $tahi-secondary;
+    }
+  }
+
   li {
     position: relative;
-    float: left;
     width: 100%;
     padding: 30px;
     font-size: 18px;
     border: 1px solid #cccccc;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 
     & .author-form {
       margin: 0;

@@ -1,18 +1,15 @@
 class AuthorGroupsController < ApplicationController
   before_action :authenticate_user!
+  respond_to :json
 
   def create
-    render json: AuthorGroup.ordinalized_create(author_group_params)
+    respond_with AuthorGroup.ordinalized_create(author_group_params)
   end
 
   def destroy
-    author_group = AuthorGroup.find_by_id(params[:id])
-    if author_group
-      author_group.destroy
-      head :ok
-    else
-      head :forbidden
-    end
+    author_group = AuthorGroup.find(params[:id])
+    author_group.destroy
+    respond_with author_group
   end
 
   private

@@ -21,6 +21,6 @@
 </div>
 <div class="author-edit" {{bind-attr class="showEditAuthorForm:hide"}}>
   <span class="glyphicon glyphicon-resize-vertical"></span>
-  <span class="glyphicon glyphicon-pencil"></span>
-  <span class="glyphicon glyphicon-trash"></span>
+  <span class="glyphicon glyphicon-pencil" {{action 'edit'}}></span>
+  <span class="glyphicon glyphicon-trash" {{action 'delete'}}></span>
 </div>

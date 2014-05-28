@@ -20,12 +20,7 @@ feature "Journal Administration", js: true do
     end
 
     context "when the user is not an admin" do
-      let(:admin) { create :user }
-      scenario "user is redirected to the dashboard page" do
-        visit AdminDashboardPage.path
-        expect(page).to have_text "Welcome,"
-        expect(page).to_not have_text "Journal Administration"
-      end
+      scenario "no journals are displayed"
     end
   end
 

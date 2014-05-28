@@ -1,5 +1,4 @@
 ETahi.AuthorGroupController = Ember.ObjectController.extend
-  newAuthor: {}
   showNewAuthorForm: false
 
   institutions: Ember.computed.alias 'parentController.institutions'
@@ -11,10 +10,8 @@ ETahi.AuthorGroupController = Ember.ObjectController.extend
       @toggleProperty('showNewAuthorForm')
       false
 
-    saveNewAuthor: ->
-      author = @store.createRecord('author', @newAuthor)
+    saveNewAuthor: (newAuthor) ->
+      author = @store.createRecord('author', newAuthor)
       author.set('authorGroup', @get('model'))
       author.save().then (author) =>
-        @get('authors').pushObject(author)
-        @set('newAuthor', {})
         @toggleProperty('showNewAuthorForm')

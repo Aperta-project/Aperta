@@ -7,7 +7,9 @@
 
 <div class="template-thumbnail-overlay template-thumbnail-edit-options">
   {{link-to "" "manuscript_manager_template.edit" view.content class="glyphicon glyphicon-pencil"}}
-  <span class="glyphicon glyphicon-trash" {{action "toggleWillDestroyTemplate" target="view"}}></span>
+  {{#if view.canDeleteTemplates}}
+    <span class="glyphicon glyphicon-trash" {{action "toggleWillDestroyTemplate" target="view"}}></span>
+  {{/if}}
 </div>
 <div class="template-thumbnail-overlay template-thumbnail-overlay-confirm-destroy">
   <p>This will permanently delete your template. Are you sure?</p>

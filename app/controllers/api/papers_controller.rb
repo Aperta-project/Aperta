@@ -1,4 +1,5 @@
 class Api::PapersController < ApplicationController
+  include RestrictAccess
   protect_from_forgery except: :update
 
   def index

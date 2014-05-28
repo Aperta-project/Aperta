@@ -30,6 +30,7 @@ class EpubConverter
     # cannot access the methods for the EpubConverter object in the block.
     # So we need to cache self in this method's scope.
     this = self
+    epub_cover = this.paper.journal.epub_cover
 
     GEPUB::Builder.new do
       language 'en'
@@ -38,7 +39,7 @@ class EpubConverter
       creator this.paper.user.full_name
       date Date.today.to_s
       resources(workdir: workdir) do
-        # cover_image 'img/image1.jpg' => 'image1.jpg' #TODO: Figure out cover image
+        cover_image 'images/cover_image.jpg' => epub_cover.file.path if epub_cover.file
         ordered do
           file "./#{File.basename temp_paper_path}"
           heading 'Main Content'

@@ -7,3 +7,6 @@ ETahi.Journal = DS.Model.extend
   taskTypes: a()
   manuscriptManagerTemplates: a('manuscriptManagerTemplate')
   roles: DS.hasMany('role')
+  epubCoverUrl: a('string')
+  epubCoverFileName: a('string')
+  epubCoverUploadedAt: a('string')

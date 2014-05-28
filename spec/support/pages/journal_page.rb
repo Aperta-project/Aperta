@@ -42,4 +42,13 @@ class JournalPage < Page
     RoleFragment.new(find('table.roles tbody', text: name))
   end
 
+  def upload_epub_cover
+    session.execute_script "$('#epub-cover-upload').css('position', 'relative')"
+    attach_file('epub-cover-upload', Rails.root.join('spec', 'fixtures', 'yeti.jpg'), visible: false)
+    session.execute_script "$('#epub-cover-upload').css('position', 'absolute')"
+  end
+
+  def epub_cover
+    page.find('.epub-cover-image a').text
+  end
 end

@@ -1,6 +1,29 @@
 <div id="tahi-container" class="admin-screen">
   <h1>Journal Administration</h1>
 
+  <div class="upload-default-cover">
+    <div class="admin-header">
+      <div class='relative'>
+        <div id="upload-file-wrapper">
+          <span class="primary-button blue-box fileinput-button">
+            Upload Cover
+            {{file-uploader id="epub-cover-upload"
+                            class="js-jquery-fileupload"
+                            type="file"
+                            name="journal[epub_cover]"
+                            model=model}}
+          </span>
+        </div>
+        <h2 class="title">Upload Default Cover</h2>
+        <div class="epub-cover-image">
+          <a {{bind-attr href=epubCoverUrl}}>{{epubCoverFileName}}</a>
+          {{#if model.epubCoverUploadedAt}}
+            <p>Uploaded {{view.epubCoverUploadedAgo}}</p>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
   {{render "manuscript_manager_template/index" manuscriptManagerTemplates}}
   {{render "roles/index" roles}}
 </div>

@@ -1,5 +1,6 @@
 Tahi::Application.routes.draw do
   mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
+  mount Declaration::Engine => '/', :as => 'declaration_engine'
 
   if Rails.env.test?
     require_relative '../spec/support/stream_server/stream_server'
@@ -79,8 +80,6 @@ Tahi::Application.routes.draw do
   end
 
   resources :phases, only: [:create, :update, :show, :destroy]
-
-  resources :surveys, only: [:update]
 
   resources :roles, only: [:create, :update, :destroy]
 

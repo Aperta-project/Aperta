@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140522170833) do
+ActiveRecord::Schema.define(version: 20140522222621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,14 @@ ActiveRecord::Schema.define(version: 20140522170833) do
   end
 
   add_index "credentials", ["uid", "provider"], name: "index_credentials_on_uid_and_provider", using: :btree
+
+  create_table "declaration_surveys", force: true do |t|
+    t.text     "question",   null: false
+    t.text     "answer"
+    t.integer  "task_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "figures", force: true do |t|
     t.string   "attachment"
@@ -231,12 +239,6 @@ ActiveRecord::Schema.define(version: 20140522170833) do
   end
 
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
-
-  create_table "surveys", force: true do |t|
-    t.text    "question", null: false
-    t.text    "answer"
-    t.integer "task_id"
-  end
 
   create_table "tasks", force: true do |t|
     t.string   "title",                        null: false

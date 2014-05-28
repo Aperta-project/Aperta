@@ -11,15 +11,6 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       @set('resolvedPaper', paper)
   ).observes('paper')
 
-  saveNewAuthor: ->
-    author = @store.createRecord('author', @newAuthor)
-    #TODO: change this to associate with the correct author group
-    authorGroup = @get('currentAuthorGroup')
-    author.set('authorGroup', authorGroup)
-    author.save().then (author) =>
-      authorGroup.get('authors').pushObject(author)
-      @set('newAuthor', {})
-      @toggleProperty('showNewAuthorForm')
 
   actions:
     toggleAuthorForm: (authorGroup=null) ->
@@ -36,3 +27,13 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       ag = @get('resolvedPaper.authorGroups.lastObject')
       if !ag.get('authors.length')
         ag.destroyRecord()
+
+    saveNewAuthor: ->
+      author = @store.createRecord('author', @newAuthor)
+      #TODO: change this to associate with the correct author group
+      authorGroup = @get('currentAuthorGroup')
+      author.set('authorGroup', authorGroup)
+      author.save().then (author) =>
+        authorGroup.get('authors').pushObject(author)
+        @set('newAuthor', {})
+        @toggleProperty('showNewAuthorForm')

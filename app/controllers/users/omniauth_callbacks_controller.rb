@@ -15,7 +15,7 @@ module Users
       if credential
         sign_in_and_redirect(credential.user, event: :authentication)
       else
-        session["devise.provider"] = { provider_name => auth }
+        session["devise.provider"] = { provider_name.to_s => auth }
         redirect_to new_user_registration_url
       end
     end

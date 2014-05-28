@@ -5,7 +5,6 @@ ETahi.JournalIndexView = Ember.View.extend
   ).property('controller.model.epubCoverUploadedAt')
 
   setupUploader: (->
-    new Spinner(top: '20px', left: '-30px', color: '#39a329').spin $('.processing')[0]
     uploader = $('.js-jquery-fileupload')
 
     uploader.fileupload

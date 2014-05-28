@@ -8,7 +8,7 @@ class Admin::JournalsController < ApplicationController
     @journal = Journal.find(params[:id])
 
     if @journal.update(journal_params)
-      render json: @journal, serializer: JournalSerializer
+      render json: @journal
     else
       respond_with @journal
     end

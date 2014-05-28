@@ -26,7 +26,11 @@ class ManuscriptManagerTemplatesController < ApplicationController
 
   def destroy
     template = @journal.manuscript_manager_templates.find(params[:id])
-    template.destroy
+    if @journal.manuscript_manager_templates.count > 1
+      template.destroy
+    else
+      template.errors.add(:base, "Cannot destroy last template")
+    end
     respond_with template
   end
 

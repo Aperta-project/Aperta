@@ -5,14 +5,17 @@
     <div class="admin-header row">
       <div class='relative'>
         <h2 class="title col-md-5">Default ePub Cover</h2>
-        <div class="epub-cover-image col-md-5 text-right">
-          <a {{bind-attr href=epubCoverUrl}} target='_blank'>{{epubCoverFileName}}</a>
-          {{#if model.epubCoverUploadedAt}}
-            <p>Uploaded {{view.epubCoverUploadedAgo}}</p>
-          {{/if}}
-        </div>
 
-        <div class='epub-cover-upload col-md-2'>
+          <div class="epub-cover-image col-md-5 text-right">
+            {{#if model.epubCoverUrl}}
+              <a {{bind-attr href=epubCoverUrl}} target='_blank'>{{epubCoverFileName}}</a>
+              <p>Uploaded {{view.epubCoverUploadedAgo}}</p>
+            {{else}}
+              <p>There is currently no default ePub cover.</p>
+            {{/if}}
+          </div>
+
+        <div class='epub-cover-upload col-md-2 pull-right'>
           <span class="primary-button blue-box fileinput-button">
             Upload ePub Cover
             {{file-uploader id="epub-cover-upload"

@@ -6,6 +6,6 @@ class EpubCoverUploader < CarrierWave::Uploader::Base
   end
 
   def extension_white_list
-     %w(jpg jpeg)
+    %w(jpg jpeg)
   end
 end

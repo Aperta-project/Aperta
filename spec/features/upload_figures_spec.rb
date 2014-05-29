@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature "Upload figures", js: true do
   let(:author) { create :user }
-  let(:journal) { create :journal, :with_default_template }
+  let(:journal) { create :journal }
   let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }
 
   before do

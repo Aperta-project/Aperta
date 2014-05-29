@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature "Register Decision", js: true do
 
-  let(:journal) { FactoryGirl.create :journal, :with_default_template }
+  let(:journal) { FactoryGirl.create :journal }
 
   let!(:editor) { create :user }
 

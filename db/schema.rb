@@ -28,6 +28,12 @@ ActiveRecord::Schema.define(version: 20140529134609) do
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
 
+  create_table "api_keys", force: true do |t|
+    t.string   "access_token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "author_groups", force: true do |t|
     t.string  "name"
     t.integer "paper_id"

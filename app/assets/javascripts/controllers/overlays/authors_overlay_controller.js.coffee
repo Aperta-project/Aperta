@@ -6,13 +6,15 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       @set('resolvedPaper', paper)
   ).observes('paper')
 
+  lastAuthorGroup: Ember.computed.alias('resolvedPaper.authorGroups.lastObject')
+  canDeleteLastGroup: Ember.computed.empty('lastAuthorGroup.authors.[]')
+
   actions:
     addAuthorGroup: ->
-      newAuthorGroup = @store.createRecord('authorGroup', {})
+      newAuthorGroup = @store.createRecord('authorGroup')
       newAuthorGroup.set('paper', @get('resolvedPaper'))
       newAuthorGroup.save()
 
     removeAuthorGroup: ->
-      lastAuthorGroup = @get('resolvedPaper.authorGroups.lastObject')
-      if !lastAuthorGroup.get('authors.length')
-        lastAuthorGroup.destroyRecord()
+      if @get('canDeleteLastGroup')
+        @get('lastAuthorGroup').destroyRecord()

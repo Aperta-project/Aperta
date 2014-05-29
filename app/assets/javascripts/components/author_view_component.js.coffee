@@ -11,7 +11,7 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
       @set('showEditAuthorForm', true)
 
     delete: ->
-      @get('author').destroyRecord()
+      @sendAction('delete', @get('author'))
 
     showAuthorForm: ->
       @set('showEditAuthorForm', true)
@@ -20,6 +20,5 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
       @set('showEditAuthorForm', false)
 
     saveAuthor: ->
-      @get('author').save().then =>
-        @set('showEditAuthorForm', false)
-
+      @sendAction('save', @get('author'))
+      @set('showEditAuthorForm', false)

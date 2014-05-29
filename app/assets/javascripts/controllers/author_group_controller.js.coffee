@@ -8,6 +8,13 @@ ETahi.AuthorGroupController = Ember.ObjectController.extend
   authorSort: ['position:asc']
   sortedAuthors: Ember.computed.sort('authors', 'authorSort')
 
+  updateAuthorPositions: (author, authorList, operation)->
+    relevantAuthors = authorList.filter (a)->
+      a != author && a.get('position') >= author.get('position')
+
+    op = {add: 'incrementProperty', remove: 'decrementProperty'}
+    relevantAuthors.invoke(op[operation], 'position')
+
   actions:
     toggleAuthorForm: (authorGroup=null) ->
       @set('currentAuthorGroup', authorGroup)
@@ -22,9 +29,18 @@ ETahi.AuthorGroupController = Ember.ObjectController.extend
         @set('newAuthor', {})
         @toggleProperty('showNewAuthorForm')
 
-    changeAuthorGroup: (author, position) ->
-      success = (author) => @addAuthorPosition(author)
-      author.setProperties(authorGroup: @get('model'), position: position)
-    changeAuthorGroup: (author) ->
-      author.set('authorGroup', @get('model'))
+    saveAuthor: (author) ->
       author.save()
+
+    removeAuthor: (author) ->
+      author.destroyRecord().then (author) =>
+        @updateAuthorPositions(author, @get('authors'), 'remove')
+
+    changeAuthorGroup: (author, position) ->
+      @updateAuthorPositions(author, author.get('authorGroup.authors'), 'remove')
+
+      author.set('authorGroup', @get('model'))
+      author.set('position', position)
+      author.save()
+
+      @updateAuthorPositions(author, @get('authors'), 'add')

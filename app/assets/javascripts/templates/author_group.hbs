@@ -4,6 +4,8 @@
   {{#each author in sortedAuthors}}
     {{author-view
       institutions=institutions
+      delete='removeAuthor'
+      save='saveAuthor'
       author=author}}
     {{view ETahi.AuthorGroupDropTargetView group=group index=author.position}}
   {{/each}}

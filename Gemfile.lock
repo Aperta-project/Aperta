@@ -226,6 +226,8 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     method_source (0.8.2)
+    migration_data (0.0.4)
+      rails (>= 4.0.0.rc1)
     mime-types (1.25.1)
     mini_magick (3.7.0)
       subexec (~> 0.2.1)
@@ -457,6 +459,7 @@ DEPENDENCIES
   jquery-fileupload-rails!
   launchy
   license_finder
+  migration_data
   mini_magick
   newrelic_rpm
   nokogiri

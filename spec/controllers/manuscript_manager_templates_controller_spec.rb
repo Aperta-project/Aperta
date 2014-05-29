@@ -80,4 +80,26 @@ describe ManuscriptManagerTemplatesController do
     end
   end
 
+  describe "DELETE destroy" do
+    subject(:do_request) { delete :destroy, {format: :json, id: mmt.id, journal_id: journal.id} }
+
+    context "when a journal has one manuscript manager template" do
+      before do
+        journal.manuscript_manager_templates = [mmt]
+        do_request
+      end
+
+      it "returns an error" do
+        expect(JSON.parse(response.body)).to have_key('errors')
+      end
+    end
+
+    context "when a journal has multiple manuscript manager templates" do
+      it "returns the deleted template as JSON" do
+        do_request
+        expect(response.status).to eq(204)
+      end
+    end
+
+  end
 end

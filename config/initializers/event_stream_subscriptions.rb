@@ -1,4 +1,4 @@
-TahiNotifier.subscribe("task:created", "task:updated", "comment:*", "survey:*") do |name, start, finish, id, payload|
+TahiNotifier.subscribe("task:created", "task:updated", "comment:*", "declaration::survey:*") do |name, start, finish, id, payload|
   action     = payload[:action]
   task_id    = payload[:task_id]
   paper_id   = payload[:paper_id]

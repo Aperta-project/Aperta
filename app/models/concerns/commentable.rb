@@ -1,0 +1,7 @@
+module Commentable
+  extend ActiveSupport::Concern
+
+  included do
+    has_many :comments, foreign_key: "task_id", dependent: :destroy
+  end
+end

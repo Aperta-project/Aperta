@@ -2,7 +2,7 @@ class AddAuthorsOverlay < CardOverlay
   def add_author author
     find('.btn-xs', text: "Add new").click
     fill_in_author_form author
-    find('.add-author-form button.secondary-button').click
+    click_button 'done'
     expect(page).to have_no_css('.add-author-form')
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140527154701) do
+ActiveRecord::Schema.define(version: 20140527225657) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,19 @@ ActiveRecord::Schema.define(version: 20140527154701) do
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
 
+  create_table "api_keys", force: true do |t|
+    t.string   "access_token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "author_groups", force: true do |t|
+    t.string  "name"
+    t.integer "paper_id"
+  end
+
+  add_index "author_groups", ["paper_id"], name: "index_author_groups_on_paper_id", using: :btree
+
   create_table "authors", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -39,7 +52,7 @@ ActiveRecord::Schema.define(version: 20140527154701) do
     t.boolean  "deceased",              default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "paper_id"
+    t.integer  "author_group_id"
     t.string   "affiliation"
     t.string   "secondary_affiliation"
   end
@@ -74,6 +87,14 @@ ActiveRecord::Schema.define(version: 20140527154701) do
   end
 
   add_index "credentials", ["uid", "provider"], name: "index_credentials_on_uid_and_provider", using: :btree
+
+  create_table "declaration_surveys", force: true do |t|
+    t.text     "question",   null: false
+    t.text     "answer"
+    t.integer  "task_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "figures", force: true do |t|
     t.string   "attachment"
@@ -214,12 +235,6 @@ ActiveRecord::Schema.define(version: 20140527154701) do
   end
 
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
-
-  create_table "surveys", force: true do |t|
-    t.text    "question", null: false
-    t.text    "answer"
-    t.integer "task_id"
-  end
 
   create_table "tasks", force: true do |t|
     t.string   "title",                        null: false

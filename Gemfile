@@ -3,9 +3,10 @@ source 'https://rubygems.org'
 ruby "2.1.2"
 
 # Task Engines
-gem 'standard_tasks', path: 'engines/standard_tasks'
+gem 'standard_tasks',         path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
-gem 'upload_manuscript', path: 'engines/upload_manuscript'
+gem 'declaration',            path: 'engines/declaration'
+gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 
 # Gems
 gem 'rails', '4.1.1'
@@ -41,6 +42,7 @@ gem 'timeliness'
 gem 'american_date'
 gem 'omniauth-oauth2'
 gem 'faraday_middleware'
+gem 'ordinalize'
 
 group :production, :staging do
   gem 'heroku-deflater'

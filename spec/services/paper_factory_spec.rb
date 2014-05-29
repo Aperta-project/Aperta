@@ -5,7 +5,7 @@ describe PaperFactory do
     FactoryGirl.create(:manuscript_manager_template, template: {
       phases: [{
         name: "First Phase",
-        task_types: [PaperAdminTask.to_s, DeclarationTask.to_s]
+        task_types: [PaperAdminTask.to_s, Declaration::Task.to_s]
       }]
     })
   end
@@ -29,13 +29,13 @@ describe PaperFactory do
         paper_factory.apply_template
       }.to change { paper.tasks.count }.by(2)
 
-      expect(paper.tasks.pluck(:type)).to match_array(['PaperAdminTask', 'DeclarationTask'])
+      expect(paper.tasks.pluck(:type)).to match_array(['PaperAdminTask', 'Declaration::Task'])
     end
 
     it "sets assignee to tasks with role = author" do
       paper_factory.apply_template
       expect(paper.tasks.where(type: 'PaperAdminTask').first.assignee).to be_nil
-      expect(paper.tasks.where(type: 'DeclarationTask').first.assignee).to eq(user)
+      expect(paper.tasks.where(type: 'Declaration::Task').first.assignee).to eq(user)
     end
   end
 
@@ -43,6 +43,15 @@ describe PaperFactory do
     let(:paper_attrs) { FactoryGirl.attributes_for(:paper, journal_id: journal.id, paper_type: mmt.paper_type) }
     subject do
       PaperFactory.create(paper_attrs, user)
+    end
+
+    it "creates an author" do
+      expect { subject }.to change { Author.count }.by 1
+    end
+
+    it "sets the user as the first author on the paper's first author group" do
+      expect(subject.author_groups.first).to eq Author.last.author_group
+      expect(Author.last.first_name).to eq(user.first_name)
     end
 
     it "sets the user" do
@@ -59,6 +68,12 @@ describe PaperFactory do
 
     it "saves the paper" do
       expect(subject).to be_persisted
+    end
+
+    it "creates author groups" do
+      expect {
+        subject
+      }.to change { AuthorGroup.count }.by 3
     end
 
     context "with non-existant template" do

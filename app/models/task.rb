@@ -23,7 +23,11 @@ class Task < ActiveRecord::Base
   delegate :assignees, to: :paper
 
   def self.assigned_to(*users)
-    where(assignee: users)
+    #TODO: this is a stopgap until user <-> task relationship table can be established
+    assigned_tasks   = Task.where.not(type: "MessageTask").where(assignee: users).pluck(:id)
+    message_tasks    = MessageTask.joins(phase: :paper).where("papers.id" => Paper.where(user: users)).pluck(:id)
+
+    where(id: (assigned_tasks + message_tasks))
   end
 
   def self.for_admins

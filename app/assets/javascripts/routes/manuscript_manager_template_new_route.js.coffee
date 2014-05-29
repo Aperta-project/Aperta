@@ -7,8 +7,18 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend
       journal_id: journal.id
       template:
         phases: [
-          name: "New Phase"
-          task_types: []
+          {
+            name: "Phase 1"
+            task_types: []
+          }
+          {
+            name: "Phase 2"
+            task_types: []
+          }
+          {
+            name: "Phase 3"
+            task_types: []
+          }
         ]
     )
     journal.get('manuscriptManagerTemplates').pushObject(newTemplate)

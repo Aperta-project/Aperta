@@ -9,8 +9,7 @@ feature "Submitting a paper", js: true do
   let(:author) { create :user }
 
   let :paper do
-    FactoryGirl.create :paper, user: author,
-      authors: [ FactoryGirl.create(:author) ]
+    FactoryGirl.create :paper, user: author
   end
 
   before do

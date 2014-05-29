@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
   has_many :flows, inverse_of: :user, dependent: :destroy
   has_many :tasks, foreign_key: 'assignee_id'
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
-  has_many :message_tasks, through: :comments
   has_many :message_participants, inverse_of: :participant
   has_many :comment_looks
   has_many :credentials, inverse_of: :user, dependent: :destroy

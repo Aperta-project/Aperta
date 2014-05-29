@@ -67,7 +67,7 @@ describe Task do
     end
 
     context "a metadata task" do
-      let(:task) { DeclarationTask.new(type: 'DeclarationTask') }
+      let(:task) { Declaration::Task.new(type: 'Declaration::Task') }
 
       context 'the paper has been submitted' do
         let(:paper_submitted) { true }

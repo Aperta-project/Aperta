@@ -12,7 +12,7 @@ module TahiHelperMethods
   end
 
   def assign_journal_role(journal, user, type)
-    role = journal.roles.where(type => true).first
+    role = journal.roles.where(kind: type).first
     role ||= FactoryGirl.create(:role, type, journal: journal)
     UserRole.create!(user: user, role: role)
   end

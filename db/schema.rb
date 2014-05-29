@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140527225657) do
+ActiveRecord::Schema.define(version: 20140529135154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,16 +214,16 @@ ActiveRecord::Schema.define(version: 20140527225657) do
 
   create_table "roles", force: true do |t|
     t.string   "name"
-    t.boolean  "admin",                                 default: false, null: false
-    t.boolean  "editor",                                default: false, null: false
-    t.boolean  "reviewer",                              default: false, null: false
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "can_administer_journal",                default: false, null: false
-    t.boolean  "can_view_assigned_manuscript_managers", default: false, null: false
-    t.boolean  "can_view_all_manuscript_managers",      default: false, null: false
+    t.boolean  "can_administer_journal",                default: false,    null: false
+    t.boolean  "can_view_assigned_manuscript_managers", default: false,    null: false
+    t.boolean  "can_view_all_manuscript_managers",      default: false,    null: false
+    t.string   "kind",                                  default: "custom", null: false
   end
+
+  add_index "roles", ["kind"], name: "index_roles_on_kind", using: :btree
 
   create_table "supporting_information_files", force: true do |t|
     t.integer  "paper_id"

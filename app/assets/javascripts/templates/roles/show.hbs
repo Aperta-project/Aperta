@@ -5,7 +5,9 @@
     {{else}}
       <div class="relative">
         <div class="hover-target">
-          <i class='delete-button glyphicon glyphicon-trash' {{action 'delete' bubbles=false}}></i>
+          {{#unless 'model.required'}}
+            <i class='delete-button glyphicon glyphicon-trash' {{action 'delete' bubbles=false}}></i>
+          {{/unless}}
           <span class='name-field'>{{name}}</span>
         </div>
       </div>

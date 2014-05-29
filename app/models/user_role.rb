@@ -5,14 +5,14 @@ class UserRole < ActiveRecord::Base
   validates :user, presence: true
 
   def self.admins
-    joins(:role).where('roles.admin' => true)
+    joins(:role).merge(Role.admins)
   end
 
   def self.editors
-    joins(:role).where('roles.editor' => true)
+    joins(:role).merge(Role.editors)
   end
 
   def self.reviewers
-    joins(:role).where('roles.reviewer' => true)
+    joins(:role).merge(Role.reviewers)
   end
 end

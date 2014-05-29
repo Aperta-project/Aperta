@@ -3,17 +3,21 @@ FactoryGirl.define do
     sequence(:name) { |n| "#{n.ordinalize} Role" }
 
     trait :admin do
-      admin true
+      kind Role::ADMIN
       can_administer_journal true
       can_view_all_manuscript_managers true
     end
 
     trait :editor do
-      editor true
+      kind Role::EDITOR
     end
 
     trait :reviewer do
-      reviewer true
+      kind Role::REVIEWER
+    end
+
+    trait :custom do
+      kind Role::CUSTOM
     end
   end
 end

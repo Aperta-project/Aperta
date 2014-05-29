@@ -17,6 +17,8 @@ class Journal < ActiveRecord::Base
   has_many :users, through: :user_roles
   has_many :manuscript_manager_templates
 
+  after_create :setup_defaults
+
   def admins
     users.merge(Role.admins)
   end
@@ -42,4 +44,13 @@ class Journal < ActiveRecord::Base
   end
 
   mount_uploader :logo, LogoUploader
+
+  private
+
+  def setup_defaults
+    # TODO: remove these from being a callback (when we aren't using rails_admin)
+    JournalServices::CreateDefaultRoles.call(self)
+    JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
+  end
+
 end

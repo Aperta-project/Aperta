@@ -1,11 +1,15 @@
 ETahi.AddAuthorFormComponent = Ember.Component.extend
   tagName: 'div'
-  templateName: 'components/add_author_form'
+
+  setNewAuthor: ( ->
+    unless @get('newAuthor')
+      @set('newAuthor', {})
+  ).on('init')
 
   actions:
     toggleAuthorForm: ->
       @sendAction('hideAuthorForm')
 
     saveNewAuthor: ->
-      @sendAction('saveAuthor')
+      @sendAction('saveAuthor', @get('newAuthor'))
 

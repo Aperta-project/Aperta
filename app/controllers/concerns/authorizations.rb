@@ -41,4 +41,3 @@ module Authorizations
   end
 
 end
-

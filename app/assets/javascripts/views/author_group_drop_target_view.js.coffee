@@ -12,6 +12,7 @@ ETahi.AuthorGroupDropTargetView = Ember.View.extend DragNDrop.Droppable,
   drop: (e) ->
     DragNDrop.draggingStopped('.author-drop-target')
     e.preventDefault()
-    @get('controller').send('changeTaskPhase', ETahi.get('dragItem'), @get('content'))
+    #dragItem will be the author.
+    @get('controller').send('changeAuthorGroup', ETahi.get('dragItem'))
     ETahi.set('dragItem', null)
     false

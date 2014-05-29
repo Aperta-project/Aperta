@@ -18,3 +18,7 @@ ETahi.AuthorGroupController = Ember.ObjectController.extend
         @get('authors').pushObject(author)
         @set('newAuthor', {})
         @toggleProperty('showNewAuthorForm')
+
+    changeAuthorGroup: (author) ->
+      author.set('authorGroup', @get('model'))
+      author.save()

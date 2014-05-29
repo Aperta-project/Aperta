@@ -5,6 +5,9 @@ ETahi.AuthorGroupController = Ember.ObjectController.extend
   institutions: Ember.computed.alias 'parentController.institutions'
   isEditable: Ember.computed.alias 'parentController.isEditable'
 
+  authorSort: ['position:asc']
+  sortedAuthors: Ember.computed.sort('authors', 'authorSort')
+
   actions:
     toggleAuthorForm: (authorGroup=null) ->
       @set('currentAuthorGroup', authorGroup)
@@ -19,6 +22,9 @@ ETahi.AuthorGroupController = Ember.ObjectController.extend
         @set('newAuthor', {})
         @toggleProperty('showNewAuthorForm')
 
+    changeAuthorGroup: (author, position) ->
+      success = (author) => @addAuthorPosition(author)
+      author.setProperties(authorGroup: @get('model'), position: position)
     changeAuthorGroup: (author) ->
       author.set('authorGroup', @get('model'))
       author.save()

@@ -9,39 +9,39 @@ describe Api::PapersController do
   let!(:author) { FactoryGirl.create(:author, author_group: author_group) }
 
   let(:paper_1_author_groups) do
-    [{"id"=>1, "name"=>"First Author", "author_ids"=>[1], "paper_id"=>1},
-     {"id"=>2, "name"=>"Second Author", "author_ids"=>[], "paper_id"=>1},
-     {"id"=>3, "name"=>"Third Author", "author_ids"=>[], "paper_id"=>1}]
+    [{"id" => 1, "name" => "First Author", "author_ids" => [1], "paper_id" => 1},
+     {"id" => 2, "name" => "Second Author", "author_ids" => [], "paper_id" => 1},
+     {"id" => 3, "name" => "Third Author", "author_ids" => [], "paper_id" => 1}]
   end
 
   let(:paper_2_author_groups) do
-    [{"id"=>4, "name"=>"First Author", "author_ids"=>[], "paper_id"=>2},
-     {"id"=>5, "name"=>"Second Author", "author_ids"=>[], "paper_id"=>2},
-     {"id"=>6, "name"=>"Third Author", "author_ids"=>[], "paper_id"=>2}]
+    [{"id" => 4, "name" => "First Author", "author_ids" => [], "paper_id" => 2},
+     {"id" => 5, "name" => "Second Author", "author_ids" => [], "paper_id" => 2},
+     {"id" => 6, "name" => "Third Author", "author_ids" => [], "paper_id" => 2}]
   end
 
   def paper_json_attrs(paper)
-    {"id"=>paper.id,
-     "title"=>paper.title,
-     "paper_type"=>paper.paper_type,
-     "epub"=>"http://www.example.com/api/papers/#{paper.id}.epub",
-     "author_group_ids"=>paper.author_groups.pluck(:id)}
+    {"id" => paper.id,
+     "title" => paper.title,
+     "paper_type" => paper.paper_type,
+     "epub" => "http://www.example.com/api/papers/#{paper.id}.epub",
+     "author_group_ids" => paper.author_groups.pluck(:id)}
   end
 
   def author_json_attrs(author)
-     {"id"=> author.id,
-     "first_name"=> author.first_name,
-     "middle_initial"=> author.middle_initial,
-     "last_name"=> author.last_name,
-     "email"=> author.email,
-     "affiliation"=>author.affiliation,
-     "secondary_affiliation"=>author.secondary_affiliation,
-     "title"=>author.title,
-     "corresponding"=>author.corresponding,
-     "deceased"=>author.deceased,
-     "department"=>author.department,
-     "position"=>author.position,
-     "author_group_id"=>author_group.id}
+     {"id" => author.id,
+     "first_name" => author.first_name,
+     "middle_initial" => author.middle_initial,
+     "last_name" => author.last_name,
+     "email" => author.email,
+     "affiliation" => author.affiliation,
+     "secondary_affiliation" => author.secondary_affiliation,
+     "title" => author.title,
+     "corresponding" => author.corresponding,
+     "deceased" => author.deceased,
+     "department" => author.department,
+     "position" => author.position,
+     "author_group_id" => author_group.id}
   end
 
   describe "GET 'index'" do
@@ -53,9 +53,9 @@ describe Api::PapersController do
       get api_papers_path, nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
       expect(JSON.parse(response.body)).to eq(
-        {"authors"=> [author_json_attrs(author)],
+        {"authors" => [author_json_attrs(author)],
          "author_groups" => paper_1_author_groups + paper_2_author_groups,
-         "papers"=>
+         "papers" =>
            [paper_json_attrs(paper1), paper_json_attrs(paper2)]
         })
     end
@@ -66,9 +66,9 @@ describe Api::PapersController do
         get api_papers_path(published: false), nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
         expect(JSON.parse(response.body)).to eq(
-          {"authors"=>[],
+          {"authors" => [],
            "author_groups" => paper_2_author_groups,
-           "papers"=> [paper_json_attrs(paper2)]
+           "papers" => [paper_json_attrs(paper2)]
           })
       end
     end
@@ -79,9 +79,9 @@ describe Api::PapersController do
         get api_papers_path(published: true), nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
         expect(JSON.parse(response.body)).to eq(
-        {"authors"=> [author_json_attrs(author)],
+        {"authors" => [author_json_attrs(author)],
          "author_groups" => paper_1_author_groups,
-         "papers"=> [paper_json_attrs(paper1)]
+         "papers" => [paper_json_attrs(paper1)]
         })
       end
     end
@@ -101,9 +101,9 @@ describe Api::PapersController do
       data = JSON.parse response.body
       expect(data['papers'].length).to eq 1
       expect(data).to eq(
-        {"authors"=> [author_json_attrs(author)],
+        {"authors" => [author_json_attrs(author)],
          "author_groups" => paper_1_author_groups,
-         "papers"=> [paper_json_attrs(paper1)]
+         "papers" => [paper_json_attrs(paper1)]
         })
     end
 

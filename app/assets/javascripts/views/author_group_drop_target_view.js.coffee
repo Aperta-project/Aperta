@@ -10,9 +10,6 @@ ETahi.AuthorGroupDropTargetView = Ember.View.extend DragNDrop.Droppable,
     DragNDrop.draggingStarted('.author-drop-target', @.$())
     DragNDrop.cancel(e)
 
-  dragEnd: (e) ->
-    DragNDrop.draggingStopped('.author-drop-target')
-
   drop: (e) ->
     DragNDrop.draggingStopped('.author-drop-target')
     e.preventDefault()

@@ -6,6 +6,9 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   dragStart: (e) ->
     ETahi.set('dragItem', @get('author'))
 
+  dragEnd: (e) ->
+    DragNDrop.draggingStopped('.author-drop-target')
+
   actions:
     edit: ->
       @set('showEditAuthorForm', true)

@@ -6,13 +6,17 @@ ETahi.AddAuthorFormComponent = Ember.Component.extend
       @set('newAuthor', {})
   ).on('init')
 
+  clearNewAuthor: ->
+    if Ember.typeOf(@get('newAuthor')) == 'object'
+      @set('newAuthor', {})
+
   actions:
-    toggleAuthorForm: ->
+    cancelEdit: ->
+      @clearNewAuthor()
       @sendAction('hideAuthorForm')
 
     saveNewAuthor: ->
       author = @get('newAuthor')
       @sendAction('saveAuthor', author)
-      if Ember.typeOf(author) == 'object'
-        @set('newAuthor', {})
+      @clearNewAuthor()
 

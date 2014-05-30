@@ -3,6 +3,13 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   showEditAuthorForm: false
   classNameBindings: ['showEditAuthorForm::edit-inactive']
 
+  attachHover: ( ->
+    toggleHoverClass = (e) ->
+      $(this).toggleClass('hover')
+
+    @$().hover(toggleHoverClass, toggleHoverClass)
+  ).on('didInsertElement')
+
   dragStart: (e) ->
     e.dataTransfer.effectAllowed = 'move'
     ETahi.set('dragItem', @get('author'))

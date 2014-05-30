@@ -10,17 +10,15 @@ class AddAuthorsOverlay < CardOverlay
   end
 
   def edit_author(locator_text, new_info)
-    author_box = find('.authors-overlay-list li', text: locator_text)
-    author_box.hover
-    author_box.find('.glyphicon-pencil').click
+    page.execute_script "$('.authors-overlay-list li').toggleClass('hover')"
+    page.execute_script "$('.authors-overlay-list li:contains(#{locator_text}) .glyphicon-pencil').click()"
     fill_in_author_form new_info
     click_button 'done'
   end
 
   def delete_author(locator_text)
-    author_box = find('.authors-overlay-list li', text: locator_text)
-    author_box.hover
-    author_box.find('.glyphicon-trash').click
+    page.execute_script "$('.authors-overlay-list li').toggleClass('hover')"
+    page.execute_script "$('.authors-overlay-list li:contains(#{locator_text}) .glyphicon-trash').click()"
   end
 
   def author_groups

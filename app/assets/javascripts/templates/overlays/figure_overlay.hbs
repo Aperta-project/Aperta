@@ -4,16 +4,19 @@
   <span class="secondary-button fileinput-button">
     <span>Add new Figures</span>
     {{file-uploader id="figure_attachment"
-                    class="js-jquery-fileupload"
                     name="figure[attachment][]"
                     accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-                    multiple=true
-                    type="file"}}
+                    url=figureUploadUrl
+                    method='POST'
+                    process='processFigure'
+                    done='figureUploaded'
+                    progress='uploadProgress'
+                    multiple=true}}
   </span>
 {{/if}}
 <ul id="paper-figure-uploads">
   {{!#TODO: extract items in each block into their own views?}}
-  {{#each upload in view.uploads}}
+  {{#each upload in uploads}}
     <li {{bind-attr class="upload.error:alert"}}>
       {{#if upload.error}}
         <button type="button" class="close upload-error-button" data-dismiss="alert" aria-hidden="true">×</button>
@@ -30,7 +33,7 @@
       <div class="progress">
         {{#if upload.error}}
           <span class="upload-error-text">
-            {{upload.error}}
+            File {{upload.filename}} is not an image. You may upload files with the extension .jpg, .jpeg, .gif, .png, .eps, or .tiff.
           </span>
         {{else}}
           <div class="progress-bar" {{bind-attr style=upload.progressBarStyle}}></div>
@@ -42,11 +45,11 @@
 
 <ul class="paper-figures">
   {{#if isEditable}}
-    {{#each figure in paper.figures}}
+    {{#each figure in figures}}
       {{figure-thumbnail figure=figure}}
     {{/each}}
   {{else}}
-    {{#each figure in paper.figures}}
+    {{#each figure in figures}}
       {{partial 'figure_show_only'}}
     {{/each}}
   {{/if}}

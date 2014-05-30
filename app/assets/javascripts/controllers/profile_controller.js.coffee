@@ -3,7 +3,20 @@ ETahi.ProfileController = Ember.ObjectController.extend
   hideAffiliationForm: true
   errorText: ""
 
+  avatarUploadUrl: ( ->
+    "/users/#{@get('id')}"
+  ).property('id')
+
+  avatarUploading: false
+
   actions:
+    avatarUploading: ->
+      @set('avatarUploading', true)
+
+    avatarUploaded: (data) ->
+      @set('model.avatarUrl', data.result.avatar_url)
+      @set('avatarUploading', false)
+
     toggleAffiliationForm: ->
       @set('hideAffiliationForm', !@hideAffiliationForm)
 
@@ -28,3 +41,4 @@ ETahi.ProfileController = Ember.ObjectController.extend
             messages.join(", ")
           Tahi.utils.togglePropertyAfterDelay(@, 'errorText', errors.join(', '), '', 5000)
       )
+

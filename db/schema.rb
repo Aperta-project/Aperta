@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140527225657) do
+ActiveRecord::Schema.define(version: 20140530175237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,14 +98,14 @@ ActiveRecord::Schema.define(version: 20140527225657) do
 
   create_table "figures", force: true do |t|
     t.string   "attachment"
-    t.integer  "paper_id"
+    t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title"
     t.string   "caption"
   end
 
-  add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
+  add_index "figures", ["task_id"], name: "index_figures_on_task_id", using: :btree
 
   create_table "flows", force: true do |t|
     t.datetime "created_at"

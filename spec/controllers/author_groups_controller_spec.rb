@@ -9,7 +9,7 @@ describe AuthorGroupsController do
   describe "POST #create" do
     let!(:paper) { FactoryGirl.create(:paper) }
     let(:do_request) do
-      post :create, author_group: { paper_id: paper.id }
+      post :create, format: :json, author_group: { paper_id: paper.id }
     end
     it "creates a new author group" do
       expect { do_request }.to change { AuthorGroup.count }.by 1
@@ -29,7 +29,7 @@ describe AuthorGroupsController do
 
   describe "DELETE #destroy" do
     let(:do_request) do
-      delete :destroy, id: author_group.id
+      delete :destroy, format: :json, id: author_group.id
     end
     let!(:author_group) { FactoryGirl.create :author_group, authors: [author] }
     let(:author) { FactoryGirl.create :author }

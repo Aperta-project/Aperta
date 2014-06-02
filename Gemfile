@@ -44,6 +44,7 @@ gem 'omniauth-oauth2'
 gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
+gem 'bugsnag'
 
 group :production, :staging do
   gem 'heroku-deflater'

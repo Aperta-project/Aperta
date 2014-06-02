@@ -22,7 +22,7 @@ Tahi::Application.routes.draw do
   get '/profile' => 'ember#index'
 
   resources :flows, only: [:index, :destroy, :create]
-  resources :authors, only: [:create, :update]
+  resources :authors, only: [:create, :update, :destroy]
   resources :author_groups, only: [:create, :destroy]
 
   resources :figures, only: [:destroy, :update]

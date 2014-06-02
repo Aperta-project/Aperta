@@ -1,19 +1,24 @@
 ETahi.AuthorViewComponent = Ember.Component.extend
   tagName: 'li'
-  templateName: 'components/author_view'
   showEditAuthorForm: false
+  classNameBindings: ['showEditAuthorForm::edit-inactive']
 
-  showAuthorForm: ->
-    @set('showEditAuthorForm', true)
 
-  hideAuthorForm: ->
-    @set('showEditAuthorForm', false)
+  actions:
 
-  saveAuthor: ->
-    @get('author').save().then =>
-      @hideAuthorForm()
+    edit: ->
+      @set('showEditAuthorForm', true)
 
-  click: (e)->
-    return if e.target.classList.contains('author-cancel')
-    @showAuthorForm()
+    delete: ->
+      @get('author').destroyRecord()
+
+    showAuthorForm: ->
+      @set('showEditAuthorForm', true)
+
+    hideAuthorForm: ->
+      @set('showEditAuthorForm', false)
+
+    saveAuthor: ->
+      @get('author').save().then =>
+        @set('showEditAuthorForm', false)
 

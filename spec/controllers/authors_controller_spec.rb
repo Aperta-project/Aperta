@@ -8,7 +8,7 @@ describe AuthorsController do
 
   describe "POST #create" do
     let(:do_request) do
-      post :create, author: {
+      post :create, format: :json, author: {
         first_name: "enrico",
         last_name: "fermi",
         email: "ricky@fermi.org",
@@ -34,9 +34,23 @@ describe AuthorsController do
     end
   end
 
+  describe "DELETE #destroy" do
+    let(:do_request) do
+      delete :destroy, format: :json, id: author.id
+    end
+
+    let!(:author) { FactoryGirl.create :author }
+
+    it "destroys the associated author" do
+      expect {
+        do_request
+      }.to change { Author.count }.by -1
+    end
+  end
+
   describe "PUT #update" do
     let(:do_request) do
-      put :update, id: author.id, author: {
+      put :update, format: :json, id: author.id, author: {
                                             secondary_affiliation: "Brisbon Uni",
                                             author_group_id: author_group.id
                                           }

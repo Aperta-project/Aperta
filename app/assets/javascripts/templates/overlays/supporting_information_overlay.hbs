@@ -3,33 +3,19 @@
 {{#if isEditable}}
   <span class="secondary-button fileinput-button">
     <span>Add New Supporting Information</span>
-    {{input id="file_attachment"
-                    class="js-jquery-fileupload"
+    {{file-uploader id="file_attachment"
                     name="supporting_information_file[attachment][]"
                     multiple=true
-                    type="file"}}
+                    url=uploadUrl
+                    method='POST'
+                    process='uploadStarted'
+                    done='uploadFinished'
+                    progress='uploadProgress'}}
   </span>
 {{/if}}
 <ul id="paper-file-uploads">
-  {{#each upload in view.uploads}}
-    <li {{bind-attr class="upload.error:alert"}}>
-      {{#if upload.error}}
-        <button type="button" class="close upload-error-button" data-dismiss="alert" aria-hidden="true">×</button>
-      {{/if}}
-      <div class="preview-container">
-        <div {{bind-attr class=":glyphicon
-                                upload.error:glyphicon-exclamation-sign:glyphicon-file"}}></div>
-      </div>
-      <div class="progress">
-        {{#if upload.error}}
-          <span class="upload-error-text">
-            {{upload.error}}
-          </span>
-        {{else}}
-          <div class="progress-bar" {{bind-attr style=upload.progressBarStyle}}></div>
-        {{/if}}
-      </div>
-    </li>
+  {{#each upload in uploads}}
+    {{upload-preview upload=upload}}
   {{/each}}
 </ul>
 
@@ -40,7 +26,7 @@
     {{/each}}
   {{else}}
     {{#each file in paper.supportingInformationFiles}}
-      {{partial 'file_show_only'}}
+      {{partial 'figure_show_only'}}
     {{/each}}
   {{/if}}
 </ul>

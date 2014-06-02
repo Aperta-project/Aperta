@@ -21,7 +21,7 @@ ETahi.JournalIndexView = Ember.View.extend
         e.preventDefault()
 
     uploader.on 'fileuploaddone', (e, data) =>
-      @set('controller.model.epubCoverUrl', data.result.journal.epub_cover_url)
-      @set('controller.model.epubCoverFileName', data.result.journal.epub_cover_file_name)
-      @set('controller.model.epubCoverUploadedAt', data.result.journal.epub_cover_uploaded_at)
+      @set('controller.model.epubCoverUrl', data.result.admin_journal.epub_cover_url)
+      @set('controller.model.epubCoverFileName', data.result.admin_journal.epub_cover_file_name)
+      @set('controller.model.epubCoverUploadedAt', data.result.admin_journal.epub_cover_uploaded_at)
   ).on('didInsertElement')

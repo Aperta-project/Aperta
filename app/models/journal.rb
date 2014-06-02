@@ -19,6 +19,9 @@ class Journal < ActiveRecord::Base
 
   after_create :setup_defaults
 
+  mount_uploader :logo,       LogoUploader
+  mount_uploader :epub_cover, EpubCoverUploader
+
   def admins
     users.merge(Role.admins)
   end
@@ -35,6 +38,20 @@ class Journal < ActiveRecord::Base
     logo.url if logo
   end
 
+  def epub_cover_url
+    epub_cover.url if epub_cover
+  end
+
+  def epub_cover_uploaded_at
+    return nil unless epub_cover.file
+
+    if Rails.application.config.carrierwave_storage == :fog
+      epub_cover.file.send('file').last_modified
+    else
+      File.mtime epub_cover.file.path
+    end
+  end
+
   def paper_types
     self.manuscript_manager_templates.pluck(:paper_type)
   end
@@ -43,8 +60,6 @@ class Journal < ActiveRecord::Base
     manuscript_manager_templates.where(paper_type: paper_type).first
   end
 
-  mount_uploader :logo, LogoUploader
-
   private
 
   def setup_defaults
@@ -52,5 +67,4 @@ class Journal < ActiveRecord::Base
     JournalServices::CreateDefaultRoles.call(self)
     JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
   end
-
 end

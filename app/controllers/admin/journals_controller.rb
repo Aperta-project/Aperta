@@ -7,4 +7,20 @@ class Admin::JournalsController < ApplicationController
   def index
     respond_with current_user.administered_journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
+
+  def update
+    @journal = Journal.find(params[:id])
+
+    if @journal.update(journal_params)
+      render json: @journal
+    else
+      respond_with @journal
+    end
+  end
+
+  private
+
+  def journal_params
+    params.require(:journal).permit(:epub_cover)
+  end
 end

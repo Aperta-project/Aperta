@@ -4,4 +4,8 @@ class Admin::JournalsPolicy < ApplicationPolicy
     can_administer_any_journal?
   end
 
+  def update?
+    can_administer_any_journal?
+  end
+
 end

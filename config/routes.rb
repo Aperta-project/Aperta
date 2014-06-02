@@ -15,8 +15,9 @@ Tahi::Application.routes.draw do
 
   resources :journals, only: [:index, :show]
 
-  #TODO: can these be removed?
-  get '/admin/journals/*manage' => 'ember#index'
+  namespace 'admin' do
+    resources :journals, only: :update
+  end
 
   get '/flow_manager' => 'ember#index'
   get '/profile' => 'ember#index'

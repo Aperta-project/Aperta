@@ -10,4 +10,3 @@ ETahi.AdminJournal = DS.Model.extend
   epubCoverUrl: a('string')
   epubCoverFileName: a('string')
   epubCoverUploadedAt: a('string')
-

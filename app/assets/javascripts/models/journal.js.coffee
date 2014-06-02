@@ -5,6 +5,3 @@ ETahi.Journal = DS.Model.extend
   name: a('string')
   paperTypes: a()
   taskTypes: a()
-  epubCoverUrl: a('string')
-  epubCoverFileName: a('string')
-  epubCoverUploadedAt: a('string')

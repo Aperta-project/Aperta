@@ -1,26 +1,25 @@
 class ManuscriptManagerTemplatesController < ApplicationController
   before_action :authenticate_user!
-  before_action :verify_admin!
-  before_action :find_journal
+  before_action :enforce_policy
 
   respond_to :json
 
   def index
-    respond_with @journal.manuscript_manager_templates
+    respond_with journal.manuscript_manager_templates
   end
 
   def show
-    respond_with @journal.manuscript_manager_templates.find(params[:id])
+    respond_with journal.manuscript_manager_templates.find(params[:id])
   end
 
   def update
-    template = @journal.manuscript_manager_templates.find(params[:id])
+    template = journal.manuscript_manager_templates.find(params[:id])
     template.update_attributes!(template_params)
     respond_with template
   end
 
   def create
-    template = @journal.manuscript_manager_templates.create!(template_params)
+    template = journal.manuscript_manager_templates.create!(template_params)
     respond_with template
   end
 
@@ -42,11 +41,11 @@ class ManuscriptManagerTemplatesController < ApplicationController
     tp
   end
 
-  def find_journal
-    if current_user.admin?
-      @journal = Journal.find(params[:journal_id])
-    else
-      @journal = current_user.journals.find(params[:journal_id])
-    end
+  def enforce_policy
+    authorize_action! journal: journal
+  end
+
+  def journal
+    @journal ||= Journal.find(params[:journal_id])
   end
 end

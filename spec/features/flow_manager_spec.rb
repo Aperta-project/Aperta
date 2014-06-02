@@ -9,7 +9,7 @@ feature "Flow Manager", js: true do
     create :user, :admin, first_name: "Author"
   end
 
-  let(:journal) { FactoryGirl.create(:journal, :with_default_template) }
+  let(:journal) { FactoryGirl.create(:journal) }
 
   let!(:paper1) do
     FactoryGirl.create(:paper, :with_tasks,

@@ -1,5 +1,6 @@
 class JournalsController < ApplicationController
   before_action :authenticate_user!
+
   respond_to :json
 
   def index
@@ -7,6 +8,12 @@ class JournalsController < ApplicationController
   end
 
   def show
-    respond_with Journal.find(params[:id])
+    respond_with journal
+  end
+
+  private
+
+  def journal
+    Journal.find(params[:id])
   end
 end

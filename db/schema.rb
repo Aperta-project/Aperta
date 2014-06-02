@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140529134609) do
+ActiveRecord::Schema.define(version: 20140529190102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,24 +116,12 @@ ActiveRecord::Schema.define(version: 20140529134609) do
     t.integer  "user_id"
   end
 
-  create_table "journal_roles", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "journal_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "role_id"
-  end
-
-  add_index "journal_roles", ["journal_id"], name: "index_journal_roles_on_journal_id", using: :btree
-  add_index "journal_roles", ["role_id"], name: "index_journal_roles_on_role_id", using: :btree
-  add_index "journal_roles", ["user_id", "journal_id"], name: "index_journal_roles_on_user_id_and_journal_id", using: :btree
-  add_index "journal_roles", ["user_id"], name: "index_journal_roles_on_user_id", using: :btree
-
   create_table "journals", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "logo"
+    t.string   "epub_cover"
   end
 
   create_table "manuscript_manager_templates", force: true do |t|
@@ -228,13 +216,16 @@ ActiveRecord::Schema.define(version: 20140529134609) do
 
   create_table "roles", force: true do |t|
     t.string   "name"
-    t.boolean  "admin",      default: false, null: false
-    t.boolean  "editor",     default: false, null: false
-    t.boolean  "reviewer",   default: false, null: false
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "can_administer_journal",                default: false,    null: false
+    t.boolean  "can_view_assigned_manuscript_managers", default: false,    null: false
+    t.boolean  "can_view_all_manuscript_managers",      default: false,    null: false
+    t.string   "kind",                                  default: "custom", null: false
   end
+
+  add_index "roles", ["kind"], name: "index_roles_on_kind", using: :btree
 
   create_table "supporting_information_files", force: true do |t|
     t.integer  "paper_id"
@@ -262,6 +253,17 @@ ActiveRecord::Schema.define(version: 20140529134609) do
   add_index "tasks", ["assignee_id"], name: "index_tasks_on_assignee_id", using: :btree
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+
+  create_table "user_roles", force: true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "role_id"
+  end
+
+  add_index "user_roles", ["role_id"], name: "index_user_roles_on_role_id", using: :btree
+  add_index "user_roles", ["user_id", "role_id"], name: "index_user_roles_on_user_id_and_role_id", using: :btree
+  add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "first_name",             default: "",    null: false

@@ -38,7 +38,7 @@ class PhaseFragment < PageFragment
     field = find('h2')
     field.click
     field.set(new_name)
-    expect(self).to have_content(new_name)
     find('.primary-button').click
+    expect(self).to have_content(new_name)
   end
 end

@@ -1,6 +1,12 @@
 ETahi.ApplicationRoute = Ember.Route.extend
-  actions:
+  setupController: (controller, model) ->
+    if @getCurrentUser? && @getCurrentUser()
+      authorize = (value) -> (result) -> controller.set('canViewAdminLinks', value)
+      @store.find('adminJournal').then(authorize(true), authorize(false))
 
+    @_super(model, controller)
+
+  actions:
     loading: (transition, originRoute) ->
       spinner = ETahi.Spinner.create()
       this.router.one('didTransition', spinner, 'stop')

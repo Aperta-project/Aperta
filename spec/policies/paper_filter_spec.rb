@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe PaperPolicy do
+describe PaperFilter do
   describe "#paper" do
     let(:user) { author }
     let(:author) { create :user }
     let(:paper) { FactoryGirl.create :paper, user: author }
-    subject(:policy) { PaperPolicy.new(paper.id, user) }
+    subject(:policy) { PaperFilter.new(paper.id, user) }
 
     context "when the user is the author of the paper" do
       specify { expect(policy.paper).to eq paper }

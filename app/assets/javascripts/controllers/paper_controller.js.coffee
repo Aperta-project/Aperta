@@ -10,6 +10,16 @@ ETahi.PaperController = Ember.ObjectController.extend
 
   authorTasks: Ember.computed.filterBy('tasks', 'role', 'author')
 
+  canViewManuscriptManager: false
+
+  showManuscriptManagerLink: (->
+    Ember.$.ajax
+      url: "/papers/#{@get('id')}/manuscript_manager"
+      method: 'GET'
+      success: (data) =>
+        @set('canViewManuscriptManager', true)
+  ).observes('model')
+
   assignedTasks: (->
     assignedTasks = @get('tasks').filterBy 'assignee', @get('currentUser')
     authorTasks   = @get('authorTasks')

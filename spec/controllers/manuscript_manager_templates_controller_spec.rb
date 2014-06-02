@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe ManuscriptManagerTemplatesController do
+
+  expect_policy_enforcement
+
   def validate_template_json(test_params)
     template = JSON.parse(response.body)['manuscript_manager_template']
 
@@ -14,7 +17,7 @@ describe ManuscriptManagerTemplatesController do
   let(:mmt) { create :manuscript_manager_template, journal: journal }
 
   before do
-    JournalRole.create!(journal: journal, user: admin)
+    assign_journal_role journal, admin, :admin
     sign_in admin
   end
 
@@ -30,8 +33,6 @@ describe ManuscriptManagerTemplatesController do
 
       validate_template_json(new_params)
     end
-
-    it_behaves_like "an unauthenticated json request"
   end
 
   describe "GET index" do
@@ -42,8 +43,6 @@ describe ManuscriptManagerTemplatesController do
       do_request
       expect(JSON.parse(response.body)).to have_key('manuscript_manager_templates')
     end
-
-    it_behaves_like "an unauthenticated json request"
   end
 
   describe "GET show" do
@@ -54,8 +53,6 @@ describe ManuscriptManagerTemplatesController do
       do_request
       expect(JSON.parse(response.body)).to have_key('manuscript_manager_template')
     end
-
-    it_behaves_like "an unauthenticated json request"
   end
 
   describe "PUT update" do
@@ -106,5 +103,3 @@ describe ManuscriptManagerTemplatesController do
 
   end
 end
-
-

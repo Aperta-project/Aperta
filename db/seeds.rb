@@ -25,9 +25,6 @@ when 'development'
   plos_journal = Journal.where(name: 'PLOS Yeti').first
   unless plos_journal
     plos_journal = Journal.create(name: 'PLOS Yeti', logo: '')
-    mmt = DefaultManuscriptManagerTemplateFactory.build
-    mmt.journal = plos_journal
-    mmt.save!
   end
 
   paper = Paper.where(

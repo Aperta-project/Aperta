@@ -1,4 +1,4 @@
-ETahi.PaperManageRoute = ETahi.AdminAuthorizedRoute.extend
+ETahi.PaperManageRoute = Ember.Route.extend
   actions:
     viewCard: (task) ->
       paper = @modelFor('paper')

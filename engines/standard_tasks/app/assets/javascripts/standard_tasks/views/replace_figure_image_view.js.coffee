@@ -1,5 +1,5 @@
 ETahi.ReplaceFigureImageView = Ember.View.extend
-  templateName: 'overlays/figure/replace_image'
+  templateName: 'standard_tasks/overlays/figure/replace_image'
   tagName: 'button'
   classNames: "primary-button white-button replace fileinput-button".w()
 

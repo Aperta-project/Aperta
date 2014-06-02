@@ -1,17 +1,14 @@
 ETahi.FigureOverlayView = ETahi.OverlayView.extend
-  templateName: 'overlays/figure_overlay'
+  templateName: 'standard_tasks/overlays/figure_overlay'
   layoutName: 'layouts/overlay_layout' #TODO: include assignee here?
   uploads: []
-  figures: null
-  _figures: ( ->
-    @get('controller.paper').then (paper) =>
-      @set('figures', paper.get('figures'))
-  ).observes('controller.paper')
+
+  figures: Ember.computed.alias('controller.figures')
 
   setupUpload: (->
     uploader = $('#figure_attachment')
     uploader.fileupload
-      url: "/papers/#{@controller.get('paper.id')}/figures"
+      url: "/figures/?task_id=#{@controller.get('model.id')}"
       dataType: 'json'
       acceptFileTypes: /(\.|\/)(gif|jpe?g|png|tif?f|eps)$/i
       method: 'POST'

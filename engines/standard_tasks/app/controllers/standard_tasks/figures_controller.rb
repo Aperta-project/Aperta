@@ -30,12 +30,8 @@ module StandardTasks
     end
 
     def destroy
-      if task.present?
-        task.figures.find(params[:id]).destroy
-        head :ok
-      else
-        head :forbidden
-      end
+      StandardTasks::Figure.find(params[:id]).destroy
+      head :ok
     end
 
     private

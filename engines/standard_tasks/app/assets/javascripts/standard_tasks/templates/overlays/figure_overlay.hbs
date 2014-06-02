@@ -42,11 +42,11 @@
 
 <ul class="paper-figures">
   {{#if isEditable}}
-    {{#each figure in paper.figures}}
+    {{#each figure in figures}}
       {{figure-thumbnail figure=figure}}
     {{/each}}
   {{else}}
-    {{#each figure in paper.figures}}
+    {{#each figure in figures}}
       {{partial 'figure_show_only'}}
     {{/each}}
   {{/if}}

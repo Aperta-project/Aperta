@@ -87,8 +87,8 @@ module StandardTasks
                 { id: figure.id,
                   filename: "yeti.tiff",
                   alt: "Yeti",
-                  src: "/uploads/paper/1/standard_tasks/figure/attachment/1/yeti.tiff",
-                  preview_src: "/uploads/paper/1/standard_tasks/figure/attachment/1/preview_yeti.png",
+                  src: "/uploads/paper/1/figure/attachment/1/yeti.tiff",
+                  preview_src: "/uploads/paper/1/figure/attachment/1/preview_yeti.png",
                   title: "Title: yeti.tiff",
                   caption: nil }
               ]

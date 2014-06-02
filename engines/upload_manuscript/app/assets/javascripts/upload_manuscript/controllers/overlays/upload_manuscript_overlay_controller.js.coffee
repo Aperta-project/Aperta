@@ -13,7 +13,7 @@ ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend
       @set('isUploading', true)
 
     uploadProgress: (data) ->
-      progress = parseInt(data.loaded / data.total * 100.0, 10)
+      progress = Math.round(data.loaded / data.total)
       @set('uploadProgress', progress)
       if progress >= 100
         @setProperties(showProgress: false, isProcessing: true)

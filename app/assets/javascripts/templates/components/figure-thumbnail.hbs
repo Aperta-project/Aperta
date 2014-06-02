@@ -6,7 +6,16 @@
       <div class="replace-spinner"></div>
       <img class="preview" {{bind-attr src=figure.previewSrc}} {{bind-attr alt=figure.alt}}>
       <div class="figure-thumbnail-edit-overlay">
-        {{view ETahi.ReplaceFigureImageView}}
+        {{#replace-image}}
+          <span>Replace Image</span>
+          {{file-uploader
+              name="figure[attachment]"
+              url=figureUrl
+              accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+              multiple=true
+              progress='figureUploading'
+              done='figureUploaded'}}
+        {{/replace-image}}
         <button class="primary-button white-button view-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in glyphicon-button"></span>View Detail</button>
       </div>
     </div>

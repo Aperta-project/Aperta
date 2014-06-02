@@ -121,7 +121,6 @@ ActiveRecord::Schema.define(version: 20140529190102) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "logo"
-    t.string   "epub_cover"
   end
 
   create_table "manuscript_manager_templates", force: true do |t|

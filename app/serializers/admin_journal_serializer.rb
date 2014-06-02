@@ -6,8 +6,4 @@ class AdminJournalSerializer < ActiveModel::Serializer
   def task_types
     Journal::VALID_TASK_TYPES
   end
-
-  def epub_cover_file_name
-    object.epub_cover.file.filename if object.epub_cover.file
-  end
 end

@@ -1,24 +1,24 @@
 ETahi.FileUploaderComponent = Ember.TextField.extend
   type: 'file'
   multiple: false
-  accept: '.jpg,.jpeg'
+  accept: null
 
   dataType: 'json'
   method: 'PATCH'
 
   acceptedFileTypes: ( ->
     types = @get('accept').replace(/\./g, '').replace(/,/g, '|')
-    # new RegExp("/(\.|\/)(#{types})$/i")
     new RegExp("(#{types})$", 'i')
   ).property('accept')
 
   checkFileType: (e, data) ->
-    fileName = data.originalFiles[0]['name']
-    if fileName.length && !@get('acceptedFileTypes').test(fileName)
-      errorMessage = "Sorry! '#{data.originalFiles[0]['name']}' is not of an accepted file type"
-      @set('error', errorMessage)
-      @sendAction('error', errorMessage)
-      e.preventDefault()
+    if @get('accept')
+      fileName = data.originalFiles[0]['name']
+      if fileName.length && !@get('acceptedFileTypes').test(fileName)
+        errorMessage = "Sorry! '#{data.originalFiles[0]['name']}' is not of an accepted file type"
+        @set('error', errorMessage)
+        @sendAction('error', errorMessage)
+        e.preventDefault()
 
   setupUploader:(->
     uploader = @.$()

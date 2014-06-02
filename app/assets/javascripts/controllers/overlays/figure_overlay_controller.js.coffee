@@ -1,7 +1,7 @@
 ETahi.FigureOverlayController = ETahi.TaskController.extend
   figureUploadUrl: ( ->
-    "/papers/#{@get('paper.id')}/figures"
-  ).property('paper.id')
+    "/papers/#{@get('litePaper.id')}/figures"
+  ).property('litePaper.id')
 
   uploads: []
 

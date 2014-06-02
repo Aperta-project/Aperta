@@ -5,7 +5,7 @@
     {{/link-to}}
     {{#if isLoggedIn}}
     <ul class="nav-bar-links">
-      {{#if isAdmin}}
+      {{#if canViewAdminLinks}}
         <li class="nav-bar-item">{{#link-to "flow_manager"}}Flow Manager{{/link-to}}</li>
         <li class="nav-bar-item">{{#link-to "admin"}}Admin{{/link-to}}</li>
       {{/if}}

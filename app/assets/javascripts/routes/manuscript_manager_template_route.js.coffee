@@ -1,4 +1,4 @@
-ETahi.ManuscriptManagerTemplateRoute = ETahi.AdminAuthorizedRoute.extend
+ETahi.ManuscriptManagerTemplateRoute = Ember.Route.extend
   actions:
     chooseNewCardTypeOverlay: (phase) ->
       taskTypes = @modelFor('journal').get('taskTypes')

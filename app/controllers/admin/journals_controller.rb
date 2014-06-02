@@ -1,8 +1,12 @@
 class Admin::JournalsController < ApplicationController
   before_action :authenticate_user!
-  before_action :verify_admin!
+  before_action :enforce_policy
 
   respond_to :json
+
+  def index
+    respond_with current_user.administered_journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
+  end
 
   def update
     @journal = Journal.find(params[:id])

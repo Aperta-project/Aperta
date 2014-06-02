@@ -47,7 +47,7 @@ module SupportingInformation
     end
 
     def paper_policy
-      @paper_policy ||= ::PaperPolicy.new(params[:paper_id].presence || file_paper.id, current_user)
+      @paper_policy ||= ::PaperFilter.new(params[:paper_id].presence || file_paper.id, current_user)
     end
 
     def render_404

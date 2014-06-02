@@ -1,10 +1,15 @@
 class ApplicationController < ActionController::Base
+  include Authorizations
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  http_basic_authenticate_with name: "tahi", password: "tahi3000", if: -> { %w(production staging).include? Rails.env }
+  before_bugsnag_notify :add_user_info_to_bugsnag
 
+  # http_basic_authenticate_with name: "tahi", password: "tahi3000", if: -> { %w(production staging).include? Rails.env }
+
+  before_action :authenticate_with_basic_http
   before_filter :configure_permitted_parameters, if: :devise_controller?
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
 
@@ -15,6 +20,7 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # TODO: move me to policies
   def verify_admin!
     return if current_user.admin?
 
@@ -32,5 +38,26 @@ class ApplicationController < ActionController::Base
   # customize devise signout path
   def after_sign_out_path_for(resource_or_scope)
     new_user_session_path
+  end
+
+
+  def authenticate_with_basic_http
+    if %w(production staging).include?(Rails.env) && request.path !~ /\A\/api.*/
+      authenticate_or_request_with_http_basic 'Staging' do |name, password|
+        name == 'tahi' && password == 'tahi3000'
+      end
+    end
+  end
+
+  def add_user_info_to_bugsnag(notif)
+    return unless current_user.present?
+
+    notif.user = {
+      id: current_user.id,
+      username: current_user.username,
+      name: current_user.full_name,
+      email: current_user.email,
+      admin: current_user.admin?
+    }
   end
 end

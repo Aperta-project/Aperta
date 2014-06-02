@@ -5,8 +5,9 @@ class User < ActiveRecord::Base
   has_many :affiliations, inverse_of: :user
   has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'
   has_many :paper_roles, inverse_of: :user
-  has_many :journal_roles, inverse_of: :user
-  has_many :journals, through: :journal_roles
+  has_many :user_roles, inverse_of: :user
+  has_many :roles, through: :user_roles
+  has_many :journals, ->{ uniq }, through: :roles
   has_many :flows, inverse_of: :user, dependent: :destroy
   has_many :tasks, foreign_key: 'assignee_id'
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
@@ -38,6 +39,14 @@ class User < ActiveRecord::Base
 
   def auto_generate_password(length=10)
     self.password = SecureRandom.urlsafe_base64(length-1)
+  end
+
+  def administered_journals
+    if admin?
+      Journal.all
+    else
+      journals.merge(Role.can_administer_journal)
+    end
   end
 
   private

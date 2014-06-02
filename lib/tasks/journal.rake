@@ -3,9 +3,7 @@ namespace :journal do
   task :create_default_templates => :environment do
     Journal.all.each do |journal|
       if journal.manuscript_manager_templates.empty?
-        mmt = DefaultManuscriptManagerTemplateFactory.build
-        mmt.journal = journal
-        mmt.save!
+        mmt = JournalServices::CreateDefaultManuscriptManagerTemplates.call(journal)
         puts "Default MMT created for journal #{journal.name}"
       else
         puts "Journal #{journal.name} has MMTs already"

@@ -1,19 +1,35 @@
-ETahi.AuthorViewComponent = Ember.Component.extend
+ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   tagName: 'li'
-  templateName: 'components/author_view'
   showEditAuthorForm: false
+  classNameBindings: ['showEditAuthorForm::edit-inactive']
 
-  showAuthorForm: ->
-    @set('showEditAuthorForm', true)
+  attachHover: ( ->
+    toggleHoverClass = (e) ->
+      $(this).toggleClass('hover')
 
-  hideAuthorForm: ->
-    @set('showEditAuthorForm', false)
+    @$().hover(toggleHoverClass, toggleHoverClass)
+  ).on('didInsertElement')
 
-  saveAuthor: ->
-    @get('author').save().then =>
-      @hideAuthorForm()
+  dragStart: (e) ->
+    e.dataTransfer.effectAllowed = 'move'
+    ETahi.set('dragItem', @get('author'))
 
-  click: (e)->
-    return if e.target.classList.contains('author-cancel')
-    @showAuthorForm()
+  dragEnd: (e) ->
+    DragNDrop.draggingStopped('.author-drop-target')
 
+  actions:
+    edit: ->
+      @set('showEditAuthorForm', true)
+
+    delete: ->
+      @sendAction('delete', @get('author'))
+
+    showAuthorForm: ->
+      @set('showEditAuthorForm', true)
+
+    hideAuthorForm: ->
+      @set('showEditAuthorForm', false)
+
+    saveAuthor: ->
+      @sendAction('save', @get('author'))
+      @set('showEditAuthorForm', false)

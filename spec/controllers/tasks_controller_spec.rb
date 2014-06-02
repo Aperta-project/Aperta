@@ -131,9 +131,8 @@ describe TasksController do
       end
 
       context "with a paper that the user administers through a journal" do
-        let!(:role) { FactoryGirl.create(:role, :admin, journal: paper.journal) }
-        let!(:journal_role) do
-          paper.journal.journal_roles.create!(user: user, role: role)
+        before do
+          assign_journal_role(paper.journal, user, :admin)
         end
 
         it "renders the new message as json." do

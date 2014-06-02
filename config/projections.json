@@ -49,6 +49,13 @@
     "template": "class %SSerializer < ActiveModel::Serializer\n  attributes :id\nend"
   },
 
+  "app/policies/*_policy.rb": {
+    "command": "policy",
+    "alternate": "spec/policies/%s_policy_spec.rb",
+    "related": "app/controllers/%p_controller.rb",
+    "template": "class %SPolicy < ApplicationPolicy\nend"
+  },
+
   "app/assets/stylesheets/*.css.scss": {
     "command": "css",
   },

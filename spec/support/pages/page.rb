@@ -66,15 +66,19 @@ class PageFragment
   private
 
   def synchronize_content! content
-    raise ContentNotSynchronized unless session.has_content?(content) ||
-                                        session.has_content?(content.upcase) ||
-                                        session.has_content?(content.downcase)
+    unless (session.has_content?(content) ||
+            session.has_content?(content.upcase) ||
+            session.has_content?(content.downcase))
+      raise ContentNotSynchronized.new("Page has no content #{content}")
+    end
   end
 
   def synchronize_no_content! content
-    raise ContentNotSynchronized unless session.has_no_content?(content) ||
-                                        session.has_no_content?(content.upcase) ||
-                                        session.has_no_content?(content.downcase)
+    unless (session.has_no_content?(content) ||
+            session.has_no_content?(content.upcase) ||
+            session.has_no_content?(content.downcase))
+      raise ContentNotSynchronized.new("Page expected to not have content \"#{content}\", but it does")
+    end
   end
 end
 

@@ -33,11 +33,25 @@ class DashboardPage < Page
   end
 
   def view_flow_manager
-    click_link "Flow Manager"
+    flow_manager_link.click
     FlowManagerPage.new
   end
 
+  def flow_manager_link
+    find('.nav-bar-item a', text: "Flow Manager")
+  end
+
+  #doesn't wait for elements to appear.
+  def has_no_admin_link?
+    all('.nav-bar-item a', text: 'Admin').empty?
+  end
+
+  def admin_link
+    find('.nav-bar-item a', text: "Admin")
+  end
+
   def visit_admin
-    RailsAdminDashboardPage.visit
+    admin_link.click
+    AdminDashboardPage.new
   end
 end

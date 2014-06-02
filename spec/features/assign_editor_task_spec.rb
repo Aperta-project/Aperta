@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Assigns Editor", js: true do
   let(:admin) { create :user, admin: true }
   let!(:editor) { create :user }
-  let(:journal) { FactoryGirl.create :journal, :with_default_template }
+  let(:journal) { FactoryGirl.create :journal }
   let!(:paper) do
     FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true, journal: journal,
       short_title: 'foobar', title: 'Foo Bar'

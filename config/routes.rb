@@ -23,7 +23,7 @@ Tahi::Application.routes.draw do
   get '/profile' => 'ember#index'
 
   resources :flows, only: [:index, :destroy, :create]
-  resources :authors, only: [:create, :update]
+  resources :authors, only: [:create, :update, :destroy]
   resources :author_groups, only: [:create, :destroy]
 
   resources :figures, only: [:destroy, :update]
@@ -45,12 +45,17 @@ Tahi::Application.routes.draw do
 
   resources :manuscript_manager_templates
 
+  namespace :admin do
+    resources :journals, only: [:index]
+  end
+
   resources :users, only: [:update, :show] do
     get :profile, on: :collection
   end
 
   resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create
+    resource :manuscript_manager, only: :show
     resources :tasks, only: [:update, :create, :show, :destroy] do
       resources :comments, only: :create
     end

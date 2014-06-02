@@ -77,6 +77,9 @@ GEM
       sass (>= 3.2.0)
       thor
     bower-rails (0.7.2)
+    bugsnag (2.0.2)
+      httparty (>= 0.6, < 1.0)
+      multi_json (~> 1.0)
     builder (3.2.2)
     bullet (4.8.0)
       activesupport
@@ -226,6 +229,8 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     method_source (0.8.2)
+    migration_data (0.0.4)
+      rails (>= 4.0.0.rc1)
     mime-types (1.25.1)
     mini_magick (3.7.0)
       subexec (~> 0.2.1)
@@ -434,6 +439,7 @@ DEPENDENCIES
   american_date
   bourbon
   bower-rails
+  bugsnag
   bullet
   capybara
   carrierwave
@@ -457,6 +463,7 @@ DEPENDENCIES
   jquery-fileupload-rails!
   launchy
   license_finder
+  migration_data
   mini_magick
   newrelic_rpm
   nokogiri

@@ -1,15 +1,22 @@
 class AuthorsController < ApplicationController
   before_action :authenticate_user!
+  respond_to :json
 
   def create
     author = Author.create author_params
-    render json: author
+    respond_with author
   end
 
   def update
     author = Author.find(params[:id])
     author.update author_params
-    render json: author
+    respond_with author
+  end
+
+  def destroy
+    author = Author.find(params[:id])
+    author.destroy
+    respond_with author
   end
 
   private
@@ -25,7 +32,8 @@ class AuthorsController < ApplicationController
       :corresponding,
       :affiliation,
       :secondary_affiliation,
-      :author_group_id
+      :author_group_id,
+      :position
     )
   end
 end

@@ -6,12 +6,11 @@ describe Admin::JournalsController do
     let(:admin) { create :user, :admin }
     let(:image_file) { fixture_file_upload 'yeti.jpg' }
 
-    before do
-      JournalRole.create!(journal: journal, user: admin)
-    end
-
     context "when the journal is updated successfully" do
-      before { sign_in admin }
+      before do
+        assign_journal_role journal, admin, :admin
+        sign_in admin
+      end
       it "stores the epub cover image successfully" do
         patch :update, id: journal.id, journal: { epub_cover: image_file }
         uploader = journal.reload.epub_cover

@@ -13,10 +13,14 @@ class ProfilePage < Page
     all('#profile-email h4').last.text
   end
 
-  def add_affiliate(name)
-    find('#profile-affiliations').find(".btn-affiliation").click
+  def set_affiliate name
+    find('a', text: 'Add new').click
     fill_in("Affiliation Name", with: name)
-    find_button("done").click
+  end
+
+  def add_affiliate(name)
+    set_affiliate name
+    click_button "done"
   end
 
   def remove_affiliate(name)

@@ -39,5 +39,4 @@ module Authorizations
 
     policy
   end
-
 end

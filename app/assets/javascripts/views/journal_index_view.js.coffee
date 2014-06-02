@@ -1,8 +1,5 @@
 ETahi.JournalIndexView = Ember.View.extend
   error: null
-  epubCoverUploadedAgo: (->
-    $.timeago @get('controller.model.epubCoverUploadedAt')
-  ).property('controller.model.epubCoverUploadedAt')
 
   setupUploader: (->
     uploader = $('.js-jquery-fileupload')
@@ -23,5 +20,4 @@ ETahi.JournalIndexView = Ember.View.extend
     uploader.on 'fileuploaddone', (e, data) =>
       @set('controller.model.epubCoverUrl', data.result.admin_journal.epub_cover_url)
       @set('controller.model.epubCoverFileName', data.result.admin_journal.epub_cover_file_name)
-      @set('controller.model.epubCoverUploadedAt', data.result.admin_journal.epub_cover_uploaded_at)
   ).on('didInsertElement')

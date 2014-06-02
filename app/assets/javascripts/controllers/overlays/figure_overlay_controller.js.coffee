@@ -9,16 +9,15 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend
 
   actions:
     processFigure: (data) ->
-      @get('uploads').pushObject ETahi.FigureUpload.create(file: data.files[0])
+      @get('uploads').pushObject ETahi.FileUpload.create(file: data.files[0])
 
     uploadProgress: (data) ->
-      currentUpload = @get('uploads').findBy('filename', data.files[0].name)
-      progress = parseInt(data.loaded / data.total * 100.0, 10) #rounds the number
-      currentUpload.set('progress', progress)
+      currentUpload = @get('uploads').findBy('file', data.files[0])
+      currentUpload.setProperties(dataLoaded: data.loaded, dataTotal: data.total)
 
     figureUploaded: (data) ->
       uploads = @get('uploads')
-      newUpload = uploads.findBy('filename', data.files[0].name)
+      newUpload = uploads.findBy('file', data.files[0])
       uploads.removeObject newUpload
 
       _.map data.result.figures, (figure) =>

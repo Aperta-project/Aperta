@@ -1,0 +1,23 @@
+<li {{bind-attr class="error:alert"}}>
+  {{#if error}}
+    <button type="button" class="close upload-error-button" data-dismiss="alert" aria-hidden="true">×</button>
+  {{/if}}
+  <div class="preview-container">
+    {{#if preview}}
+      <img {{bind-attr src=preview}}>
+    {{else}}
+        <div
+          {{bind-attr class=":preview-container :glyphicon error:glyphicon-exclamation-sign:glyphicon-file"}}
+        ></div>
+    {{/if}}
+  </div>
+  <div class="progress">
+    {{#if error}}
+      <span class="upload-error-text">
+        File {{filename}} is not an image. You may upload files with the extension .jpg, .jpeg, .gif, .png, .eps, or .tiff.
+      </span>
+    {{else}}
+      <div class="progress-bar" {{bind-attr style=progressBarStyle}}></div>
+    {{/if}}
+  </div>
+</li>

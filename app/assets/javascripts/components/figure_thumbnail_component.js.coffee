@@ -1,6 +1,5 @@
 ETahi.FigureThumbnailComponent = Ember.Component.extend
   tagName: 'li'
-  templateName: 'figure_thumbnail'
   classNames: ['figure-thumbnail']
   classNameBindings: ['destroyState:_destroy']
   destroyState: false

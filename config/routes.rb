@@ -17,7 +17,6 @@ Tahi::Application.routes.draw do
 
   namespace 'admin' do
     resources :journals, only: :update
-    get 'journals/*manage' => '/ember#index'
   end
 
   get '/flow_manager' => 'ember#index'

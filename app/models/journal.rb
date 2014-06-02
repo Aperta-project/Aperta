@@ -52,16 +52,6 @@ class Journal < ActiveRecord::Base
     epub_cover.url if epub_cover
   end
 
-  def epub_cover_uploaded_at
-    return nil unless epub_cover.file
-
-    if Rails.application.config.carrierwave_storage == :fog
-      epub_cover.file.send('file').last_modified
-    else
-      File.mtime epub_cover.file.path
-    end
-  end
-
   def paper_types
     self.manuscript_manager_templates.pluck(:paper_type)
   end

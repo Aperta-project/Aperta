@@ -14,7 +14,7 @@
   <div class="progress">
     {{#if error}}
       <span class="upload-error-text">
-        File {{filename}} is not an image. You may upload files with the extension .jpg, .jpeg, .gif, .png, .eps, or .tiff.
+        {{error}}
       </span>
     {{else}}
       <div class="progress-bar" {{bind-attr style=progressBarStyle}}></div>

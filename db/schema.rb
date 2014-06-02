@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20140529190102) do
     t.integer  "author_group_id"
     t.string   "affiliation"
     t.string   "secondary_affiliation"
+    t.integer  "position"
   end
 
   create_table "comment_looks", force: true do |t|
@@ -120,6 +121,7 @@ ActiveRecord::Schema.define(version: 20140529190102) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "logo"
+    t.string   "epub_cover"
   end
 
   create_table "manuscript_manager_templates", force: true do |t|

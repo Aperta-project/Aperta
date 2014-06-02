@@ -13,7 +13,8 @@ describe AuthorsController do
         last_name: "fermi",
         email: "ricky@fermi.org",
         affiliation: "Harvey Mudd",
-        author_group_id: author_group.id
+        author_group_id: author_group.id,
+        position: 1
       }
     end
     let(:author_group) { FactoryGirl.create :author_group }

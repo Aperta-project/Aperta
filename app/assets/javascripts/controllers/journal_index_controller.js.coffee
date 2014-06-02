@@ -1,14 +1,19 @@
 ETahi.JournalIndexController = Ember.ObjectController.extend
   journalUrl: (->
-    url: "/admin/journals/#{@get('id')}"
-  ).property('id')
+    "/admin/journals/#{@get('model.id')}"
+  ).property('model.id')
 
   epubCoverUploadedAgo: (->
-    $.timeago @get('epubCoverUploadedAt')
+    uploadTime = @get('epubCoverUploadedAt')
+    if uploadTime
+      $.timeago @get('epubCoverUploadedAt')
+    else
+      null
   ).property('epubCoverUploadedAt')
 
   actions:
-    coverUploaded: ({result: journal}) =>
+    coverUploaded: (data) ->
+      journal = data.result.journal
       @setProperties
         epubCoverUrl: journal.epub_cover_url
         epubCoverFileName: journal.epub_cover_file_name

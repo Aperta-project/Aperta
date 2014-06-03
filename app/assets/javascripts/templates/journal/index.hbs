@@ -1,40 +1,9 @@
 <div id="tahi-container" class="admin-screen">
   <h1>Journal Administration</h1>
 
-<<<<<<< HEAD
   {{partial "journal/upload-epub-cover"}}
   {{partial "journal/upload-epub-css"}}
-=======
-  <div class="epub-cover">
-    <div class="admin-header row">
-      <div class='relative'>
-        <h2 class="title col-md-5">Default ePub Cover</h2>
 
-          <div class="epub-cover-image col-md-5 text-right">
-            {{#if epubCoverUrl}}
-              <a {{bind-attr href=epubCoverUrl}} target='_blank'>{{epubCoverFileName}}</a>
-              <p>Uploaded {{epubCoverUploadedAgo}}</p>
-            {{else}}
-              <p>There is currently no default ePub cover.</p>
-            {{/if}}
-          </div>
-
-        <div class='epub-cover-upload col-md-2 pull-right'>
-          <span class="primary-button blue-box fileinput-button">
-            Upload ePub Cover
-            {{file-uploader id="epub-cover-upload"
-                            class="primary-button blue-box"
-                            name="journal[epub_cover]"
-                            accept='.jpg,.jpeg'
-                            url=journalUrl
-                            done='coverUploaded'}}
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-
->>>>>>> master
   {{render "manuscript_manager_template/index" manuscriptManagerTemplates}}
   {{render "roles/index" roles}}
 </div>

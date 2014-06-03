@@ -27,5 +27,9 @@ Tahi::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
+  config.s3_bucket = 'tahi-development'
+  # defaults to local storage
+  # config.carrierwave_storage = :fog
+
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 end

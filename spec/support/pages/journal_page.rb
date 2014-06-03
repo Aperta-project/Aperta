@@ -43,9 +43,7 @@ class JournalPage < Page
   end
 
   def upload_epub_cover
-    session.execute_script "$('#epub-cover-upload').css('position', 'relative')"
     attach_file('epub-cover-upload', Rails.root.join('spec', 'fixtures', 'yeti.jpg'), visible: false)
-    session.execute_script "$('#epub-cover-upload').css('position', 'absolute')"
   end
 
   def epub_cover

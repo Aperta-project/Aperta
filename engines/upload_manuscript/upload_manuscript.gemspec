@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Tahi"]
   s.email       = ["tahiprojectteam@plos.org"]
   s.homepage    = "http://www.tahi.com"
-  s.summary     = "Summary of UploadManuscript."
-  s.description = "Description of UploadManuscript."
+  s.summary     = "Upload a manuscript"
+  s.description = "Allows a user to upload a manuscript document for the manuscript card"
   # s.license     = ""
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile"]

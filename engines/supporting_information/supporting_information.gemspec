@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Tahi"]
   s.email       = ["tahiprojectteam@plos.org"]
   s.homepage    = "http://www.tahi.com"
-  s.summary     = "Summary of SupportingInformation."
-  s.description = "Description of SupportingInformation."
+  s.summary     = "Allows users to upload supporting materials for tasks"
+  s.description = "This is a generic version of uploading materials to support figure tasks"
   # s.license     = "Copyright"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile"]

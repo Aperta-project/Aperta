@@ -22,6 +22,10 @@ Tahi::Application.routes.draw do
   get '/flow_manager' => 'ember#index'
   get '/profile' => 'ember#index'
 
+  get '/direct_uploads' => 'direct_uploads#new'
+  get '/request_policy' => 'direct_uploads#request_policy'
+  post '/file_url' => 'direct_uploads#file_url'
+
   resources :flows, only: [:index, :destroy, :create]
   resources :authors, only: [:create, :update, :destroy]
   resources :author_groups, only: [:create, :destroy]

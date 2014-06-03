@@ -39,8 +39,6 @@ By default, tahi attempts to connect to a stream server at `http://localhost:808
 ES_URL=http://tahi-eventsource.herokuapp.com rails s
 ```
 
-Or alternatively, create a `.env.development` file with this (and any other) envrionment variables, and it will be loaded automatically.  See `.env-sample` for more information.
-
 ### Running specs
 
 We use:
@@ -61,3 +59,8 @@ Rails still compiles assets between every test run.
 
 Please see the gist below for detailed instructions:
 https://gist.github.com/neo-tahi/9611549
+
+*** Configuring S3 direct uploads
+
+aws s3api put-bucket-cors --bucket tahi-development --cors-configuration file://config/services/s3.cors.development.json
+

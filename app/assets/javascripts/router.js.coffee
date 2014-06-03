@@ -12,6 +12,8 @@ ETahi.Router.map ()->
   @route('signup', {path: '/users/sign_up'})
   @route('profile', {path: '/profile'})
 
+  @route('direct_uploads')
+
   @resource('affiliation')
   @resource('author')
 

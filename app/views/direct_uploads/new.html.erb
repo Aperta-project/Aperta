@@ -1,0 +1,84 @@
+<form
+  action="https://<%= Rails.application.config.s3_bucket %>.s3.amazonaws.com"
+  method="post"
+  enctype="multipart/form-data"
+  class='direct-upload'>
+  <input type="hidden", name="key">
+  <input type="hidden" name="AWSAccessKeyId", value="<%= ENV['AWS_ACCESS_KEY_ID'] %>">
+  <input type="hidden" name="acl", value='public-read'>
+  <input type="hidden" name="policy">
+  <input type="hidden" name="signature">
+  <input type="hidden" name="success_action_status", value="201">
+  <input type="file" name="file">
+</form>
+
+<div class="progress progress-striped active">
+  <div class="bar"></div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+
+  $('form').each(function() {
+
+    var form = $(this)
+
+    form.fileupload({
+      url: form.attr('action'),
+      type: 'POST',
+      autoUpload: true,
+      dataType: 'xml', // This is really important as s3 gives us back the url of the file in a XML document
+      add: function (event, data) {
+        $.ajax({
+          url: "/request_policy",
+          type: 'GET',
+          dataType: 'json',
+          data: {doc: {title: data.files[0].name}}, // send the file name to the server so it can generate the key param
+          async: false,
+          success: function(data) {
+            // Now that we have our data, we update the form so it contains all
+            // the needed data to sign the request
+            form.find('input[name=key]').val(data.key)
+            form.find('input[name=policy]').val(data.policy)
+            form.find('input[name=signature]').val(data.signature)
+          }
+        })
+        data.submit();
+      },
+      send: function(e, data) {
+        $('.progress').fadeIn();
+      },
+      progress: function(e, data){
+        // This is what makes everything really cool, thanks to that callback
+        // you can now update the progress bar based on the upload progress
+        var percent = Math.round((e.loaded / e.total) * 100)
+        $('.bar').css('width', percent + '%')
+      },
+      fail: function(e, data) {
+        console.log('fail')
+      },
+      success: function(data) {
+        // Here we get the file url on s3 in an xml doc
+        var url = $(data).find('Location').text()
+        notifyRails(url);
+      },
+      done: function (event, data) {
+        $('.progress').fadeOut(300, function() {
+          $('.bar').css('width', 0)
+        })
+      },
+    })
+  })
+})
+
+function notifyRails(url) {
+  $.ajax({
+    url: "/file_url",
+    type: 'POST',
+    data: {url: url}, // send the file name to the server so it can generate the key param
+    error: function() {
+      setTimeout(function() { notifyRails(url) }, 3000);
+    }
+  });
+}
+</script>

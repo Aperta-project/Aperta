@@ -6,9 +6,11 @@
     {{render 'author_group' group}}
   {{/each}}
 </ul>
-<div class="add-remove-groups">
-  <button class="secondary-button remove-group glyphicon glyphicon-minus" {{action 'removeAuthorGroup'}}>
-  </button>
-  <button class="secondary-button add-group glyphicon glyphicon-plus" {{action 'addAuthorGroup'}}>
-  </button>
-</div>
+{{#if isEditable}}
+  <div class="add-remove-groups">
+    <button class="secondary-button remove-group glyphicon glyphicon-minus" {{action 'removeAuthorGroup'}}>
+    </button>
+    <button class="secondary-button add-group glyphicon glyphicon-plus" {{action 'addAuthorGroup'}}>
+    </button>
+  </div>
+{{/if}}

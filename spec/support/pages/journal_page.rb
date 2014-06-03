@@ -50,16 +50,20 @@ class JournalPage < Page
 
   def update_epub_css css
     click_on 'EDIT EPUB CSS'
-    fill_in '.epub-css-content', with: css
+    fill_in 'epub-css-content', with: css
     click_on 'Save'
   end
 
   def view_epub_css
     click_on 'EDIT EPUB CSS'
-    find('.epub-css-content').text
+    find('#epub-css-content').value
   end
 
   def epub_cover
-    page.find('.epub-cover-image a').text
+    find('.epub-cover-image a').text
+  end
+
+  def css_saved?
+    find('span.save-status').text == "Saved"
   end
 end

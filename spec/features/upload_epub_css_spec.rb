@@ -13,12 +13,12 @@ feature 'Upload default ePub CSS to journal', js: true do
   let!(:journal_page) { admin_page.visit_journal(journal) }
 
   scenario 'uploading an ePub CSS source' do
-    css = 'body: { background-color: red; }'
+    css = 'body { background-color: red; }'
     journal_page.update_epub_css css
     expect(journal_page.view_epub_css).to eq css
+    expect(journal_page.css_saved?).to eq(true)
 
     journal_page.reload
-
     expect(journal_page.view_epub_css).to eq css
   end
 end

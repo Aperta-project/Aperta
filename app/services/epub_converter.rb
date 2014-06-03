@@ -38,6 +38,7 @@ class EpubConverter
       creator this.paper.user.full_name
       date Date.today.to_s
       resources(workdir: workdir) do
+        file 'css/default.css' => this.epub_css
         cover_image 'images/cover_image.jpg' => this.epub_cover_path
         ordered do
           file "./#{File.basename temp_paper_path}"
@@ -80,6 +81,7 @@ class EpubConverter
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>#{paper.short_title}</title>
+  <link rel="stylesheet" type="text/css" href="css/default.css">
 </head>
 <body>
   <h1>#{paper.title}</h1>
@@ -92,12 +94,21 @@ class EpubConverter
   def epub_cover_path
     epub_cover = paper.journal.epub_cover
     if Rails.application.config.carrierwave_storage == :fog && epub_cover.file
-      image_temp = Tempfile.new("foo")
+      image_temp = Tempfile.new("epub_cover")
       image_temp.binmode
       image_temp.write RestClient.get(epub_cover.file.url)
+      image_temp.close
       image_temp.path
     else
       epub_cover.file.path
     end
+  end
+
+  def epub_css
+    epub_css = paper.journal.epub_css
+    css_temp = Tempfile.new("epub_css")
+    css_temp.write epub_css
+    css_temp.close
+    css_temp.path
   end
 end

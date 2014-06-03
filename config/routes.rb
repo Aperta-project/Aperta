@@ -27,8 +27,6 @@ Tahi::Application.routes.draw do
   resources :authors, only: [:create, :update, :destroy]
   resources :author_groups, only: [:create, :destroy]
 
-  # resources :figures, only: [:destroy, :update]
-
   resources :files, as: 'supporting_information_files',
                     path: 'supporting_information_files',
                     only: [:create, :destroy, :update],

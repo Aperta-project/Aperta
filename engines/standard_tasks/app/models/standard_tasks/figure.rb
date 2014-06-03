@@ -2,8 +2,6 @@ module StandardTasks
   class Figure < ActiveRecord::Base
     self.table_name = "figures"
 
-    # include PaperDecorator
-
     belongs_to :figure_task, class_name: "StandardTasks::FigureTask", inverse_of: :figures, foreign_key: :task_id
 
     # paper.figures are being returned in reverse-id order

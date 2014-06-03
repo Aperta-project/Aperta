@@ -45243,7 +45243,7 @@ ve.ui.Heading4FormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading4' );
 ve.ui.Heading4FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 4 } };
 ve.ui.Heading4FormatTool.static.commandName = 'heading4';
-ve.ui.toolFactory.register( ve.ui.Heading4FormatTool );
+// ve.ui.toolFactory.register( ve.ui.Heading4FormatTool );
 
 /**
  * UserInterface heading 5 tool.
@@ -45264,7 +45264,7 @@ ve.ui.Heading5FormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading5' );
 ve.ui.Heading5FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 5 } };
 ve.ui.Heading5FormatTool.static.commandName = 'heading5';
-ve.ui.toolFactory.register( ve.ui.Heading5FormatTool );
+// ve.ui.toolFactory.register( ve.ui.Heading5FormatTool );
 
 /**
  * UserInterface heading 6 tool.
@@ -45285,7 +45285,7 @@ ve.ui.Heading6FormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading6' );
 ve.ui.Heading6FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 6 } };
 ve.ui.Heading6FormatTool.static.commandName = 'heading6';
-ve.ui.toolFactory.register( ve.ui.Heading6FormatTool );
+// ve.ui.toolFactory.register( ve.ui.Heading6FormatTool );
 
 /**
  * UserInterface preformatted tool.

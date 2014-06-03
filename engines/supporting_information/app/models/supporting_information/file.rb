@@ -4,7 +4,7 @@ module SupportingInformation
 
     before_create :insert_title
 
-    mount_uploader :attachment, SupportingInformation::AttachmentUploader
+    mount_uploader :attachment, AttachmentUploader
 
     def filename
       self[:attachment]

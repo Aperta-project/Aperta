@@ -39,7 +39,7 @@ class EpubConverter
       date Date.today.to_s
       resources(workdir: workdir) do
         file 'css/default.css' => this.epub_css
-        cover_image 'images/cover_image.jpg' => this.epub_cover_path
+        cover_image 'images/cover_image.jpg' => this.epub_cover_path if this.paper.journal.epub_cover.file
         ordered do
           file "./#{File.basename temp_paper_path}"
           heading 'Main Content'

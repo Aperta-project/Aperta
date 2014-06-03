@@ -1,0 +1,53 @@
+require 'spec_helper'
+
+module StandardTasks
+  describe Figure do
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_tasks)
+    end
+    let(:task) do
+      FactoryGirl.create(:task, phase: paper.phases.first, type: "StandardTasks::FigureTask")
+      StandardTasks::FigureTask.first
+    end
+    let(:figure) {
+      task.figures.create! attachment: File.open('spec/fixtures/yeti.tiff')
+    }
+    describe "#access_details" do
+      it "returns a hash with attachment src, filename, alt, and S3 URL" do
+        expect(figure.access_details).to eq(filename: 'yeti.tiff',
+                                            alt: 'Yeti',
+                                            src: figure.attachment.url,
+                                            id: figure.id)
+      end
+    end
+
+    describe "acceptable content types" do
+      it "accepts standard image types" do
+        %w{gif jpg jpeg png tiff}.each do |type|
+          expect(StandardTasks::Figure.acceptable_content_type? "image/#{type}").to eq true
+        end
+      end
+
+      it "rejects non-image types" do
+        %w{doc docx pdf epub raw bmp}.each do |type|
+          expect(StandardTasks::Figure.acceptable_content_type? "image/#{type}").to eq false
+        end
+      end
+    end
+
+    describe "removing the attachment" do
+      it "destroys the attachment on destroy" do
+        # remove_attachment! is a built-in callback.
+        # this spec exists so that we don't duplicate that behavior
+        expect(figure).to receive(:remove_attachment!)
+        figure.destroy
+      end
+    end
+
+    describe "creation" do
+      it "prepends Title: " do
+        expect(figure.title).to eq("Title: yeti.tiff")
+      end
+    end
+  end
+end

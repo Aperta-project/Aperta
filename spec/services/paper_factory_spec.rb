@@ -8,9 +8,12 @@ describe PaperFactory do
         phases: [{
           name: "First Phase",
           task_types: [PaperAdminTask.to_s, Declaration::Task.to_s]
-        }]
+        },
+        {name: "Phase With No Tasks"}
+        ]
       }})
   end
+
   let(:journal) { FactoryGirl.create(:journal, manuscript_manager_templates: [mmt]) }
   let(:user) { FactoryGirl.create :user }
 
@@ -21,7 +24,7 @@ describe PaperFactory do
     it "reifies the phases for the given paper from the correct MMT" do
       expect {
         paper_factory.apply_template
-      }.to change { paper.phases.count }.by(mmt.phases.count)
+      }.to change { paper.phases.count }.by(2)
 
       expect(paper.phases.first.name).to eq(mmt.phases.first["name"])
     end
@@ -65,7 +68,7 @@ describe PaperFactory do
     end
 
     it "applies the template" do
-      expect(subject.phases.count).to eq(1)
+      expect(subject.phases.count).to eq(2)
     end
 
     it "saves the paper" do

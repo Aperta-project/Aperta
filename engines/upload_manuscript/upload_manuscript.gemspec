@@ -7,11 +7,11 @@ require "upload_manuscript/version"
 Gem::Specification.new do |s|
   s.name        = "upload_manuscript"
   s.version     = UploadManuscript::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of UploadManuscript."
-  s.description = "TODO: Description of UploadManuscript."
+  s.authors     = ["Tahi"]
+  s.email       = ["tahiprojectteam@plos.org"]
+  s.homepage    = "http://www.tahi.com"
+  s.summary     = "Upload a manuscript"
+  s.description = "Allows a user to upload a manuscript document for the manuscript card"
   # s.license     = ""
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile"]

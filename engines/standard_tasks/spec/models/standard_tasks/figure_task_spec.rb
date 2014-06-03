@@ -12,8 +12,7 @@ describe StandardTasks::FigureTask do
 
     before :each do
       figures = [double(:figure, access_details: :hello)]
-      paper = double(:paper, figures: figures)
-      allow(figure_task).to receive(:paper).and_return(paper)
+      allow(figure_task).to receive(:figures).and_return(figures)
     end
 
     let(:figure_task) do

@@ -12,7 +12,7 @@ describe Admin::JournalsController do
         sign_in admin
       end
       it "stores the epub cover image successfully" do
-        patch :update, id: journal.id, journal: { epub_cover: image_file }
+        patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
         uploader = journal.reload.epub_cover
 
         expect(uploader).to be_a EpubCoverUploader
@@ -20,14 +20,14 @@ describe Admin::JournalsController do
       end
 
       it "renders status 2xx" do
-        patch :update, id: journal.id, journal: { epub_cover: image_file }
+        patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
         expect(response.status).to eq 200
       end
     end
 
     context "when the user is unauthorized" do
       it "renders status 401" do
-        xhr :patch, :update, id: journal.id, journal: { epub_cover: image_file }
+        xhr :patch, :update, id: journal.id, admin_journal: { epub_cover: image_file }
         expect(response.status).to eq 401
       end
     end

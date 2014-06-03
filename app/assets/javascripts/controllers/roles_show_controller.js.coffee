@@ -1,5 +1,6 @@
 ETahi.RolesShowController = Em.ObjectController.extend
   isEditing: false
+  notEditing: Ember.computed.not('isEditing')
 
   setIsEditing: (->
     if @get('model.isNew')

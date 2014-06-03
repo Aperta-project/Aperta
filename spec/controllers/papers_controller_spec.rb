@@ -16,9 +16,9 @@ describe PapersController do
   describe "GET download" do
     subject(:do_request) { get :download, id: paper.to_param }
 
-    it "uses PaperPolicy to retrieve the paper" do
+    it "uses PaperFilter to retrieve the paper" do
       policy = double('paper policy', paper: paper)
-      expect(PaperPolicy).to receive(:new).and_return policy
+      expect(PaperFilter).to receive(:new).and_return policy
       get :download, id: paper.id
       expect(assigns :paper).to eq(paper)
     end
@@ -45,9 +45,9 @@ describe PapersController do
 
     it { should be_success }
 
-    it "uses PaperPolicy to retrieve the paper" do
+    it "uses PaperFilter to retrieve the paper" do
       policy = double('paper policy', paper: paper)
-      expect(PaperPolicy).to receive(:new).and_return policy
+      expect(PaperFilter).to receive(:new).and_return policy
       do_request
       expect(assigns :paper).to eq(paper)
     end
@@ -61,9 +61,9 @@ describe PapersController do
     it { should be_success }
     it { should render_template "ember/index" }
 
-    it "uses PaperPolicy to retrieve the paper" do
+    it "uses PaperFilter to retrieve the paper" do
       policy = double('paper policy', paper: paper)
-      expect(PaperPolicy).to receive(:new).and_return policy
+      expect(PaperFilter).to receive(:new).and_return policy
       do_request
       expect(assigns :paper).to eq(paper)
     end

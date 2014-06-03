@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature "Sync Reviewer Report tasks with Assigned Reviewers", js: true do
   let(:admin) { create :user, admin: true }
-  let!(:journal) { create :journal, :with_default_template }
+  let!(:journal) { create :journal }
   let!(:paper) { create :paper, :with_tasks, user: admin, submitted: true, journal: journal }
 
   let!(:albert) { create :user }

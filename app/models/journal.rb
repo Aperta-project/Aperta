@@ -12,25 +12,44 @@ class Journal < ActiveRecord::Base
                       "SupportingInformation::Task"]
 
   has_many :papers, inverse_of: :journal
-  has_many :journal_roles, inverse_of: :journal
-  has_many :users, through: :journal_roles
   has_many :roles, inverse_of: :journal
+  has_many :user_roles, through: :roles
+  has_many :users, through: :user_roles
   has_many :manuscript_manager_templates
 
+  after_create :setup_defaults
+
+  mount_uploader :logo,       LogoUploader
+  mount_uploader :epub_cover, EpubCoverUploader
+
   def admins
-    User.joins(:journal_roles => :role).merge(Role.admins).where('journal_roles.journal_id' => self.id)
+    users.merge(Role.admins)
   end
 
   def editors
-    User.joins(:journal_roles => :role).merge(Role.editors).where('journal_roles.journal_id' => self.id)
+    users.merge(Role.editors)
   end
 
   def reviewers
-    User.joins(:journal_roles => :role).merge(Role.reviewers).where('journal_roles.journal_id' => self.id)
+    users.merge(Role.reviewers)
   end
 
   def logo_url
     logo.url if logo
+  end
+
+  def epub_cover_file_name
+    return nil unless epub_cover.file
+
+    if Rails.application.config.carrierwave_storage == :fog
+      URI(epub_cover.file.url).path.split('/').last
+    else
+      epub_cover.file.filename
+    end
+  end
+
+  def epub_cover_url
+    epub_cover.url if epub_cover
   end
 
   def paper_types
@@ -41,5 +60,11 @@ class Journal < ActiveRecord::Base
     manuscript_manager_templates.where(paper_type: paper_type).first
   end
 
-  mount_uploader :logo, LogoUploader
+  private
+
+  def setup_defaults
+    # TODO: remove these from being a callback (when we aren't using rails_admin)
+    JournalServices::CreateDefaultRoles.call(self)
+    JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
+  end
 end

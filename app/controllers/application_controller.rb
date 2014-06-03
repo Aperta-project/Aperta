@@ -1,7 +1,11 @@
 class ApplicationController < ActionController::Base
+  include Authorizations
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+
+  before_bugsnag_notify :add_user_info_to_bugsnag
 
   # http_basic_authenticate_with name: "tahi", password: "tahi3000", if: -> { %w(production staging).include? Rails.env }
 
@@ -16,6 +20,7 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # TODO: move me to policies
   def verify_admin!
     return if current_user.admin?
 
@@ -42,5 +47,17 @@ class ApplicationController < ActionController::Base
         name == 'tahi' && password == 'tahi3000'
       end
     end
+  end
+
+  def add_user_info_to_bugsnag(notif)
+    return unless current_user.present?
+
+    notif.user = {
+      id: current_user.id,
+      username: current_user.username,
+      name: current_user.full_name,
+      email: current_user.email,
+      admin: current_user.admin?
+    }
   end
 end

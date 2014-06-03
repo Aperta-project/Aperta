@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Assigns Reviewer", js: true do
-  let(:journal) { FactoryGirl.create(:journal, :with_default_template) }
+  let(:journal) { FactoryGirl.create(:journal) }
 
   let(:editor) { create :user }
 

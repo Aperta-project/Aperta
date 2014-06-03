@@ -15,7 +15,10 @@ Tahi::Application.routes.draw do
   end
 
   resources :journals, only: [:index, :show]
-  get '/admin/journals/*manage' => 'ember#index'
+
+  namespace 'admin' do
+    resources :journals, only: :update
+  end
 
   get '/flow_manager' => 'ember#index'
   get '/profile' => 'ember#index'
@@ -43,12 +46,16 @@ Tahi::Application.routes.draw do
 
   resources :manuscript_manager_templates
 
+  namespace :admin do
+    resources :journals, only: [:index]
+  end
+
   resources :users, only: [:update, :show] do
     get :profile, on: :collection
   end
 
   resources :papers, only: [:create, :show, :edit, :update] do
-    # resources :figures, only: :create
+    resource :manuscript_manager, only: :show
     resources :tasks, only: [:update, :create, :show, :destroy] do
       resources :comments, only: :create
     end

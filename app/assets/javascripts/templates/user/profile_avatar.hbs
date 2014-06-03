@@ -5,10 +5,11 @@
     <span class="secondary-button fileinput-button">
       <span>Upload New</span>
       {{file-uploader id="profile_avatar"
-                      class="js-jquery-fileupload"
                       name="profile[avatar][]"
                       accept=".jpg,.jpeg,.tiff,.gif,.png"
-                      type="file"}}
+                      progress='avatarUploading'
+                      done='avatarUploaded'
+                      url=avatarUploadUrl}}
     </span>
   </div>
 </div>

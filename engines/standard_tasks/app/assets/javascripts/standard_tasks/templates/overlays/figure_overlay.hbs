@@ -4,39 +4,19 @@
   <span class="secondary-button fileinput-button">
     <span>Add new Figures</span>
     {{file-uploader id="figure_attachment"
-                    class="js-jquery-fileupload"
                     name="figure[attachment][]"
                     accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-                    multiple=true
-                    type="file"}}
+                    url=figureUploadUrl
+                    method='POST'
+                    process='uploadStarted'
+                    done='uploadFinished'
+                    progress='uploadProgress'
+                    multiple=true}}
   </span>
 {{/if}}
 <ul id="paper-figure-uploads">
-  {{!#TODO: extract items in each block into their own views?}}
-  {{#each upload in view.uploads}}
-    <li {{bind-attr class="upload.error:alert"}}>
-      {{#if upload.error}}
-        <button type="button" class="close upload-error-button" data-dismiss="alert" aria-hidden="true">×</button>
-      {{/if}}
-      <div class="preview-container">
-        {{#if upload.preview}}
-          <img {{bind-attr src=upload.preview}}>
-        {{else}}
-            <div
-              {{bind-attr class=":preview-container :glyphicon upload.error:glyphicon-exclamation-sign:glyphicon-file"}}
-            ></div>
-        {{/if}}
-      </div>
-      <div class="progress">
-        {{#if upload.error}}
-          <span class="upload-error-text">
-            {{upload.error}}
-          </span>
-        {{else}}
-          <div class="progress-bar" {{bind-attr style=upload.progressBarStyle}}></div>
-        {{/if}}
-      </div>
-    </li>
+  {{#each upload in uploads}}
+    {{upload-preview upload=upload}}
   {{/each}}
 </ul>
 

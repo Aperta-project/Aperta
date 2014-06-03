@@ -54,7 +54,7 @@ feature "Profile Page", js: true do
   scenario "affiliation errors are handled" do
     profile_page = ProfilePage.visit
     profile_page.add_affiliate(' ')
-    expect(page).to have_content /name can't be blank/i
+    expect(page).to have_content(/name can't be blank/i)
   end
 
   scenario "user can delete an affiliation" do
@@ -64,4 +64,20 @@ feature "Profile Page", js: true do
     expect(page).to_not have_content(/Yoda University/)
   end
 
+  describe "canceling affiliation creation" do
+    let(:uni) { 'Yoda University' }
+    before do
+      ProfilePage.visit.set_affiliate(uni)
+      find('a', text: 'cancel').click
+    end
+
+    it "hides the form" do
+      expect(page).to_not have_content(/new affiliation/i)
+    end
+
+    it "clears the form" do
+      find('a', text: 'Add new').click
+      expect(page).to_not have_content(uni)
+    end
+  end
 end

@@ -3,14 +3,25 @@
   padding-left: 0;
   overflow: auto;
 
+  .author-group {
+    width: 920px;
+  }
+  .author-drop-target {
+    height: 5px;
+    margin-bottom: 5px;
+    &.current-drop-target {
+      height: 90px;
+      border: 4px dashed $tahi-secondary;
+    }
+  }
+
   li {
     position: relative;
-    float: left;
     width: 100%;
     padding: 30px;
     font-size: 18px;
     border: 1px solid #cccccc;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 
     & .author-form {
       margin: 0;
@@ -36,7 +47,7 @@
       }
     }
 
-    &.edit-inactive:hover {
+    &.edit-inactive.hover {
       background: $tahi-primary;
       opacity: 0.7;
       .author-edit {

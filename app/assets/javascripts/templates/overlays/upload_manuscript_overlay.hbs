@@ -5,24 +5,29 @@
     <span class="secondary-button fileinput-button">
       Select and upload a document
       {{file-uploader id="upload-files"
-                      class="js-jquery-fileupload"
-                      type="file"
                       name="upload_file"
-                      model=model}}
+                      accept='.docx'
+                      start='uploadStarted'
+                      progress='uploadProgress'
+                      done='uploadFinished'
+                      error='uploadError'
+                      url=manuscriptUploadUrl}}
     </span>
   </div>
   {{else}}
   <p>Currently, Uploading a Manuscript is disabled</p>
 {{/if}}
 
-{{view.error}}
+{{#if uploadError}}
+  <span>Sorry! {{fileName}} is not of an accepted file type</span>
+{{/if}}
 
-<ul id="paper-manuscript-upload">
+<ul id="paper-manuscript-upload" {{bind-attr class=isUploading::hidden}}>
   <li>
     <div class="preview-container glyphicon glyphicon-file"></div>
-    <div class="processing">Processing...</div>
+    <div {{bind-attr class=":processing isProcessing::hidden"}}>Processing...</div>
 
-    <div class="progress">
+    <div {{bind-attr class=":progress showProgress::hidden"}}>
       <div class="progress-bar" {{bind-attr style=view.progressBarStyle}}></div>
     </div>
   </li>

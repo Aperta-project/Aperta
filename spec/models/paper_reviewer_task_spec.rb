@@ -7,7 +7,14 @@ describe PaperReviewerTask do
     specify { expect(task.role).to eq 'editor' }
   end
 
-  let(:paper) { FactoryGirl.create :paper, :with_tasks }
+  let(:journal) do
+    journal = create :journal
+    journal.manuscript_manager_templates.destroy_all
+    create :manuscript_manager_template, journal: journal
+    journal
+  end
+
+  let(:paper) { create :paper, :with_tasks, journal: journal }
   let(:phase) { paper.phases.first }
 
   let(:albert) { create :user, :admin }

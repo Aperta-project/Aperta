@@ -7,7 +7,7 @@ class PapersController < ApplicationController
 
   def show
     respond_to do |format|
-      @paper = PaperPolicy.new(params[:id], current_user).paper
+      @paper = PaperFilter.new(params[:id], current_user).paper
 
       format.html do
         render 'ember/index'
@@ -24,7 +24,7 @@ class PapersController < ApplicationController
   end
 
   def edit
-    @paper = PaperPolicy.new(params[:id], current_user).paper
+    @paper = PaperFilter.new(params[:id], current_user).paper
     render 'ember/index'
   end
 
@@ -53,7 +53,7 @@ class PapersController < ApplicationController
   end
 
   def download
-    @paper = PaperPolicy.new(params[:id], current_user).paper
+    @paper = PaperFilter.new(params[:id], current_user).paper
     respond_to do |format|
       format.html do
         epub = EpubConverter.generate_epub @paper

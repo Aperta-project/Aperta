@@ -15,9 +15,9 @@ DragNDrop.draggingStopped = (dropTargetsSelector)->
 DragNDrop.Dragable = Ember.Mixin.create
   attributeBindings: 'draggable'
   draggable: 'true'
-  #dragStart: (e) ->
+  dragStart: (e) -> throw "Implement dragStart"
 
 DragNDrop.Droppable = Ember.Mixin.create
   dragEnter: DragNDrop.cancel
   dragOver: DragNDrop.cancel
-  #drop: (e) ->
+  drop: (e) -> throw "Implement drop"

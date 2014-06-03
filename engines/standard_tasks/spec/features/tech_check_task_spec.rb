@@ -4,7 +4,7 @@ feature "Tech Check", js: true do
   let(:user) { create :user }
   let(:journal) { create :journal }
 
-  let(:journal) { FactoryGirl.create(:journal, :with_default_template) }
+  let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) do
     FactoryGirl.create(:paper, :with_tasks, journal: journal, user: user, submitted: true)
   end

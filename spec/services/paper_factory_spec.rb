@@ -2,12 +2,14 @@ require 'spec_helper'
 
 describe PaperFactory do
   let(:mmt) do
-    FactoryGirl.create(:manuscript_manager_template, template: {
-      phases: [{
-        name: "First Phase",
-        task_types: [PaperAdminTask.to_s, Declaration::Task.to_s]
-      }]
-    })
+    FactoryGirl.create(:manuscript_manager_template, {
+      paper_type: "Science!",
+      template: {
+        phases: [{
+          name: "First Phase",
+          task_types: [PaperAdminTask.to_s, Declaration::Task.to_s]
+        }]
+      }})
   end
   let(:journal) { FactoryGirl.create(:journal, manuscript_manager_templates: [mmt]) }
   let(:user) { FactoryGirl.create :user }

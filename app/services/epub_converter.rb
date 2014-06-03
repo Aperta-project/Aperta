@@ -38,7 +38,7 @@ class EpubConverter
       creator this.paper.user.full_name
       date Date.today.to_s
       resources(workdir: workdir) do
-        # cover_image 'img/image1.jpg' => 'image1.jpg' #TODO: Figure out cover image
+        cover_image 'images/cover_image.jpg' => this.epub_cover_path if this.paper.journal.epub_cover.file
         ordered do
           file "./#{File.basename temp_paper_path}"
           heading 'Main Content'
@@ -87,5 +87,17 @@ class EpubConverter
 </body>
 </html>
     HTMl
+  end
+
+  def epub_cover_path
+    epub_cover = paper.journal.epub_cover
+    if Rails.application.config.carrierwave_storage == :fog && epub_cover.file
+      image_temp = Tempfile.new("foo")
+      image_temp.binmode
+      image_temp.write RestClient.get(epub_cover.file.url)
+      image_temp.path
+    else
+      epub_cover.file.path
+    end
   end
 end

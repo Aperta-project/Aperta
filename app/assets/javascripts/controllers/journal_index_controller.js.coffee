@@ -13,7 +13,7 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
 
   actions:
     coverUploaded: (data) ->
-      journal = data.result.journal
+      journal = data.result.admin_journal
       @setProperties
         epubCoverUrl: journal.epub_cover_url
         epubCoverFileName: journal.epub_cover_file_name

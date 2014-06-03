@@ -30,7 +30,6 @@ class EpubConverter
     # cannot access the methods for the EpubConverter object in the block.
     # So we need to cache self in this method's scope.
     this = self
-    epub_cover = this.paper.journal.epub_cover
 
     GEPUB::Builder.new do
       language 'en'
@@ -39,7 +38,7 @@ class EpubConverter
       creator this.paper.user.full_name
       date Date.today.to_s
       resources(workdir: workdir) do
-        cover_image 'images/cover_image.jpg' => epub_cover.file.path if epub_cover.file
+        cover_image 'images/cover_image.jpg' => this.epub_cover_path
         ordered do
           file "./#{File.basename temp_paper_path}"
           heading 'Main Content'
@@ -88,5 +87,17 @@ class EpubConverter
 </body>
 </html>
     HTMl
+  end
+
+  def epub_cover_path
+    epub_cover = paper.journal.epub_cover
+    if Rails.application.config.carrierwave_storage == :fog && epub_cover.file
+      image_temp = Tempfile.new("foo")
+      image_temp.binmode
+      image_temp.write RestClient.get(epub_cover.file.url)
+      image_temp.path
+    else
+      epub_cover.file.path
+    end
   end
 end

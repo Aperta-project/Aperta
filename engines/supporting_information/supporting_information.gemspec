@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = SupportingInformation::VERSION
   s.authors     = ["Tahi"]
   s.email       = ["tahiprojectteam@plos.org"]
-  s.homepage    = "tahi.com"
-  s.summary     = "TODO: Summary of SupportingInformation."
-  s.description = "TODO: Description of SupportingInformation."
+  s.homepage    = "http://www.tahi.com"
+  s.summary     = "Summary of SupportingInformation."
+  s.description = "Description of SupportingInformation."
   # s.license     = "Copyright"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile"]

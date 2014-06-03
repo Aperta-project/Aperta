@@ -3,6 +3,7 @@
   {{view ETahi.AuthorGroupDropTargetView group=group index=0}}
   {{#each author in sortedAuthors}}
     {{author-view
+      isEditable=isEditable
       institutions=institutions
       delete='removeAuthor'
       save='saveAuthor'

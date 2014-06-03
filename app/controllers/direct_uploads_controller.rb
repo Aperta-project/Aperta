@@ -3,15 +3,16 @@ class DirectUploadsController < ApplicationController
 
   def request_policy
     render json: {
+      access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+      acl: 'public-read',
       policy: s3_upload_policy_document,
       signature: s3_upload_signature,
-      key: "uploads/user/avatar/#{current_user.id}",
-      success_action_redirect: profile_path
+      key: "uploads/user/avatar/#{current_user.id}"
     }
   end
 
   def file_url
-    # some carrierwave processing method
+    # TODO: Move this to an async queue
     current_user.avatar.download! params[:url]
     current_user.save!
     head :ok

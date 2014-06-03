@@ -28,22 +28,21 @@ $(function() {
       type: 'POST',
       autoUpload: true,
       dataType: 'xml', // This is really important as s3 gives us back the url of the file in a XML document
-      add: function (event, data) {
+      add: function (event, uploadData) {
         $.ajax({
           url: "/request_policy",
           type: 'GET',
           dataType: 'json',
-          data: {doc: {title: data.files[0].name}}, // send the file name to the server so it can generate the key param
-          async: false,
+          data: {doc: {title: uploadData.files[0].name}}, // send the file name to the server so it can generate the key param
           success: function(data) {
             // Now that we have our data, we update the form so it contains all
             // the needed data to sign the request
             form.find('input[name=key]').val(data.key)
             form.find('input[name=policy]').val(data.policy)
             form.find('input[name=signature]').val(data.signature)
+            uploadData.submit();
           }
         })
-        data.submit();
       },
       send: function(e, data) {
         $('.progress').fadeIn();

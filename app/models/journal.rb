@@ -38,18 +38,18 @@ class Journal < ActiveRecord::Base
     logo.url if logo
   end
 
-  def epub_cover_url
-    epub_cover.url if epub_cover
-  end
-
-  def epub_cover_uploaded_at
+  def epub_cover_file_name
     return nil unless epub_cover.file
 
     if Rails.application.config.carrierwave_storage == :fog
-      epub_cover.file.send('file').last_modified
+      URI(epub_cover.file.url).path.split('/').last
     else
-      File.mtime epub_cover.file.path
+      epub_cover.file.filename
     end
+  end
+
+  def epub_cover_url
+    epub_cover.url if epub_cover
   end
 
   def paper_types

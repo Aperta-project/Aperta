@@ -4,7 +4,7 @@ ETahi.ProfileController = Ember.ObjectController.extend
   errorText: ""
 
   avatarUploadUrl: ( ->
-    "/users/#{@get('id')}"
+    "/users/#{@get('id')}/update_avatar"
   ).property('id')
 
   avatarUploading: false

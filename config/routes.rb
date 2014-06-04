@@ -22,9 +22,7 @@ Tahi::Application.routes.draw do
   get '/flow_manager' => 'ember#index'
   get '/profile' => 'ember#index'
 
-  get '/direct_uploads' => 'direct_uploads#new'
   get '/request_policy' => 'direct_uploads#request_policy'
-  post '/file_url' => 'direct_uploads#file_url'
 
   resources :flows, only: [:index, :destroy, :create]
   resources :authors, only: [:create, :update, :destroy]
@@ -53,8 +51,9 @@ Tahi::Application.routes.draw do
     resources :journals, only: [:index]
   end
 
-  resources :users, only: [:update, :show] do
+  resources :users, only: [:show] do
     get :profile, on: :collection
+    put :update_avatar, on: :member
   end
 
   resources :papers, only: [:create, :show, :edit, :update] do
@@ -71,7 +70,7 @@ Tahi::Application.routes.draw do
     end
 
     member do
-      patch :upload
+      put :upload
       get :manage, to: 'ember#index'
       get :download
     end

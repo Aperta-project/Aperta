@@ -17,8 +17,8 @@ class UsersController < ApplicationController
     end
   end
 
-  def update
-    current_user.avatar = params[:profile][:avatar].first
+  def update_avatar
+    current_user.avatar.download! params[:url]
     if current_user.save
       render json: {avatar_url: current_user.avatar.url}
     else

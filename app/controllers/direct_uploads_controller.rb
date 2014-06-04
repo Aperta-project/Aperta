@@ -7,18 +7,15 @@ class DirectUploadsController < ApplicationController
       acl: 'public-read',
       policy: s3_upload_policy_document,
       signature: s3_upload_signature,
-      key: "uploads/user/avatar/#{current_user.id}"
+      key: "uploads/#{params[:file_prefix]}/#{current_user.id}"
     }
   end
 
-  def file_url
-    # TODO: Move this to an async queue
-    current_user.avatar.download! params[:url]
-    current_user.save!
-    head :ok
-  end
-
   private
+
+  def request_params
+    params.require(:file_prefix)
+  end
 
   # generate the policy document that amazon is expecting.
   def s3_upload_policy_document

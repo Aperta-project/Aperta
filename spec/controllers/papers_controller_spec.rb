@@ -130,43 +130,6 @@ describe PapersController do
   end
 
   describe "POST 'upload'" do
-
-    let(:uploaded_file) do
-      docx_file_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-      fixture_file_upload('about_turtles.docx', docx_file_type, :binary)
-    end
-
-    subject :do_request do
-      post :upload, id: paper.to_param, upload_file: uploaded_file
-    end
-
-    before do
-      allow(OxgarageParser).to receive(:parse).and_return(
-        title: 'This is a Title About Turtles',
-        body: "Heroes in a half shell! Turtle power!"
-      )
-    end
-
-    it_behaves_like "when the user is not signed in"
-
-    it "redirect to the paper's edit page" do
-      do_request
-      expect(response.status).to eq(204)
-    end
-
-    it "passes the uploaded file's path to the document parser" do
-      do_request
-      expect(OxgarageParser).to have_received(:parse).with(uploaded_file.path)
-    end
-
-    it "updates the paper's title" do
-      do_request
-      expect(paper.reload.title).to eq 'This is a Title About Turtles'
-    end
-
-    it "updates the paper's body" do
-      do_request
-      expect(paper.reload.body).to eq "Heroes in a half shell! Turtle power!"
-    end
+    pending "implementation will change when we get background workers... let's not write throwaway tests"
   end
 end

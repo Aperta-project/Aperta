@@ -44,11 +44,13 @@ class PapersController < ApplicationController
     @paper = Paper.find(params[:id])
 
     manuscript = @paper.manuscript || @paper.build_manuscript
-    manuscript.source = params[:upload_file]
+
+    # TODO: we're downloading this once, then using `open` to download it again
+    # is there a way to reuse the same file for both?
+    manuscript.source.download!(params[:url])
     manuscript.save
 
-    manuscript_data = OxgarageParser.parse(params[:upload_file].path)
-    @paper.update manuscript_data
+    @paper.update OxgarageParser.new(open(manuscript.source.file.url)).to_hash
     head :no_content
   end
 

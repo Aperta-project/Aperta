@@ -46,7 +46,22 @@ class JournalPage < Page
     attach_file('epub-cover-upload', Rails.root.join('spec', 'fixtures', 'yeti.jpg'), visible: false)
   end
 
+  def update_epub_css css
+    click_on 'EDIT EPUB CSS'
+    fill_in 'epub-css-content', with: css
+    click_on 'Save'
+  end
+
+  def view_epub_css
+    click_on 'EDIT EPUB CSS'
+    find('#epub-css-content').value
+  end
+
   def epub_cover
-    page.find('.epub-cover-image a').text
+    find('.epub-cover-image a').text
+  end
+
+  def epub_css_saved?
+    find('span.save-status').text == "Saved"
   end
 end

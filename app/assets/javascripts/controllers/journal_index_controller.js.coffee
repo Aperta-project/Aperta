@@ -1,4 +1,6 @@
 ETahi.JournalIndexController = Ember.ObjectController.extend
+  saveStatus: ''
+
   journalUrl: (->
     "/admin/journals/#{@get('model.id')}"
   ).property('model.id')
@@ -18,3 +20,6 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
         epubCoverUrl: journal.epub_cover_url
         epubCoverFileName: journal.epub_cover_file_name
         epubCoverUploadedAt: journal.epub_cover_uploaded_at
+    saveCss: ->
+      @get('model').save()
+      @set('saveStatus', 'Saved')

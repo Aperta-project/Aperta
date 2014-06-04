@@ -9,3 +9,4 @@ ETahi.AdminJournal = DS.Model.extend
   roles: DS.hasMany('role')
   epubCoverUrl: a('string')
   epubCoverFileName: a('string')
+  epubCss: a('string')

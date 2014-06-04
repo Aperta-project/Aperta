@@ -29,5 +29,3 @@ describe PDFConverter do
     end
   end
 end
-
-

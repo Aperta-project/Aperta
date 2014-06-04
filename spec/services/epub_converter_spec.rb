@@ -32,7 +32,7 @@ describe EpubConverter do
       end
 
       it 'returns paper body with default text' do
-        expect{ EpubConverter.convert(paper) }.to_not raise_error
+        expect { EpubConverter.convert(paper) }.to_not raise_error
       end
     end
 

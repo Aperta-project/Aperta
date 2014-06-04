@@ -24,34 +24,12 @@ feature "Upload figures", js: true do
       expect(overlay).to be_completed
     end
 
-    edit_paper.reload
-
-    edit_paper.view_card 'Upload Figures' do |overlay|
-      expect(overlay).to have_image('yeti.tiff')
-      expect(overlay).to be_completed
-    end
   end
 
-  scenario "Author destroys figure immediately" do
+  scenario "Author destroys figure" do
     edit_paper = EditPaperPage.visit paper
     edit_paper.view_card 'Upload Figures' do |overlay|
       overlay.attach_figure
-      find('.figure-thumbnail').hover
-      find('.glyphicon-trash').click
-      find('.figure-delete-button').click
-      expect(overlay).to_not have_selector('.figure-image')
-    end
-  end
-
-  scenario "Author destroys figure after page reload" do
-    edit_paper = EditPaperPage.visit paper
-    edit_paper.view_card 'Upload Figures' do |overlay|
-      overlay.attach_figure
-    end
-
-    edit_paper.reload
-
-    edit_paper.view_card 'Upload Figures' do |overlay|
       find('.figure-thumbnail').hover
       find('.glyphicon-trash').click
       find('.figure-delete-button').click
@@ -73,9 +51,5 @@ feature "Upload figures", js: true do
       expect(title.text).to eq 'new_figure_title'
       expect(caption.text).to eq 'New figure caption'
     end
-
-    figure = task.reload.figures.last
-    expect(figure.title).to eq 'new_figure_title'
-    expect(figure.caption).to eq 'New figure caption'
   end
 end

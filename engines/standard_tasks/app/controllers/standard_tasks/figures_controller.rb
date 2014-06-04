@@ -1,6 +1,7 @@
 module StandardTasks
   class FiguresController < ::ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :render_404
+    respond_to :json
 
     before_action :authenticate_user!
 
@@ -30,8 +31,8 @@ module StandardTasks
     end
 
     def destroy
-      StandardTasks::Figure.find(params[:id]).destroy
-      head :ok
+      figure = StandardTasks::Figure.find(params[:id]).destroy
+      respond_with figure
     end
 
     private

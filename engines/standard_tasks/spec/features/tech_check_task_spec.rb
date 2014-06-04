@@ -32,10 +32,5 @@ feature "Tech Check", js: true do
       expect(overlay).to be_completed
     end
 
-    paper_show_page.reload
-
-    paper_show_page.view_card 'Tech Check' do |overlay|
-      expect(overlay).to be_completed
-    end
   end
 end

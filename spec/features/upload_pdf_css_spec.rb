@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-require 'spec_helper'
-
 feature 'Upload default PDF CSS to journal', js: true do
   let(:admin) { create :user, :admin }
   let!(:journal) { create :journal }
@@ -21,6 +19,6 @@ feature 'Upload default PDF CSS to journal', js: true do
     expect(journal_page.pdf_css_saved?).to eq(true)
 
     journal_page.reload
-    expect(journal_page.view_epub_css).to eq css
+    expect(journal_page.view_pdf_css).to eq css
   end
 end

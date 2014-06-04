@@ -62,6 +62,21 @@ class JournalPage < Page
   end
 
   def epub_css_saved?
-    find('span.save-status').text == "Saved"
+    find('.epub-css span.save-status').text == "Saved"
+  end
+
+  def view_pdf_css
+    click_on 'EDIT PDF CSS'
+    find('#pdf-css-content').value
+  end
+
+  def update_pdf_css css
+    click_on 'EDIT PDF CSS'
+    fill_in 'pdf-css-content', with: css
+    click_on 'Save'
+  end
+
+  def pdf_css_saved?
+    find('.pdf-css span.save-status').text == "Saved"
   end
 end

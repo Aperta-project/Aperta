@@ -11,6 +11,16 @@ html {
 
 body { background: transparent; } // override bootstrap
 
+// top level error above overlay
+.application-error {
+  position: absolute;
+  top: 50px;
+  z-index: 10000;
+  right: 40%;
+  text-align: center;
+  min-width: 20%;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 10px;

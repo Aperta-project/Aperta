@@ -21,6 +21,6 @@ class Admin::JournalsController < ApplicationController
   private
 
   def journal_params
-    params.require(:journal).permit(:epub_cover)
+    params.require(:admin_journal).permit(:epub_cover, :epub_css)
   end
 end

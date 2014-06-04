@@ -1,9 +1,11 @@
 ETahi.FigureOverlayController = ETahi.TaskController.extend
   figureUploadUrl: ( ->
-    "/figures/?task_id=#{@get('model.id')}"
-  ).property('model.id')
+    "/papers/#{@get('litePaper.id')}/figures"
+  ).property('litePaper.id')
 
   uploads: []
+
+  figures: Ember.computed.alias 'paper.figures'
 
   actions:
     uploadStarted: (data) ->

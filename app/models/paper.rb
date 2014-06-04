@@ -5,6 +5,7 @@ class Paper < ActiveRecord::Base
 
   has_one :manuscript, dependent: :destroy
 
+  has_many :figures, dependent: :destroy
   has_many :supporting_information_files, class_name: SupportingInformation::File, dependent: :destroy
   has_many :paper_roles, inverse_of: :paper, dependent: :destroy
   has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user

@@ -99,14 +99,14 @@ ActiveRecord::Schema.define(version: 20140603172146) do
 
   create_table "figures", force: true do |t|
     t.string   "attachment"
-    t.integer  "task_id"
+    t.integer  "paper_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title"
     t.string   "caption"
   end
 
-  add_index "figures", ["task_id"], name: "index_figures_on_task_id", using: :btree
+  add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
 
   create_table "flows", force: true do |t|
     t.datetime "created_at"

@@ -1,5 +1,5 @@
 ETahi.FigureOverlayView = ETahi.OverlayView.extend
-  templateName: 'standard_tasks/overlays/figure_overlay'
+  templateName: 'overlays/figure_overlay'
   layoutName: 'layouts/overlay_layout' #TODO: include assignee here?
 
   setupTooltip: (->

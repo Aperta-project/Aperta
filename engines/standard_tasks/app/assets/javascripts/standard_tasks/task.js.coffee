@@ -6,7 +6,6 @@ ETahi.AuthorsTask = ETahi.Task.extend
 ETahi.FigureTask = ETahi.Task.extend
   qualifiedType: "StandardTasks::FigureTask"
   isMetadataTask: true
-  figures: DS.hasMany('figure')
 
 ETahi.TechCheckTask = ETahi.Task.extend
   qualifiedType: "StandardTasks::TechCheckTask"

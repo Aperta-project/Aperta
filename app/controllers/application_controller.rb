@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include Authorizations
 
+  CUSTOM_HTTP_HEADERS = ["HTTP_TAHI_AUTHORIZATION_CHECK"]
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
@@ -11,6 +13,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_with_basic_http
   before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_action :add_custom_http_headers
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
 
   protected
@@ -59,5 +62,15 @@ class ApplicationController < ActionController::Base
       email: current_user.email,
       admin: current_user.admin?
     }
+  end
+
+  # return any custom http request headers with the response
+  def add_custom_http_headers
+    CUSTOM_HTTP_HEADERS.each do |header|
+      if value = request.headers[header]
+        translated_header = header.gsub(/^HTTP_/, '')
+        response.headers[translated_header] = value
+      end
+    end
   end
 end

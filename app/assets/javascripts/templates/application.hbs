@@ -22,5 +22,8 @@
     {{/if}}
   </nav>
 </header>
+{{#if error}}
+  <div class='alert alert-danger alert-dismissable'>{{error}}</div>
+{{/if}}
 {{outlet}}
 {{outlet "overlay"}}

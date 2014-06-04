@@ -1,3 +1,20 @@
+<!--[if lte IE 9]>
+  <h2 class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</h2>
+<![endif]-->
+
+<script>
+  var getIEVersion = function(){
+    var IERegex = /MSIE\s?(\d+)(?:\.(\d+))?/i;
+    var matches = navigator.userAgent.match(IERegex);
+
+    if (matches != null && parseInt(matches[1]) == 10){
+      $('#tahi-container').prepend('<h3 class="browsehappy">You are using an <strong>unsupported</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</h3>');
+    }
+  }
+
+  getIEVersion();
+</script>
+
 <h2>Sign in</h2>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>

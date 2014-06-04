@@ -61,7 +61,7 @@ class JournalPage < Page
     find('.epub-cover-image a').text
   end
 
-  def css_saved?
+  def epub_css_saved?
     find('span.save-status').text == "Saved"
   end
 end

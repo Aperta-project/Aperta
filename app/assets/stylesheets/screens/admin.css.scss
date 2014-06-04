@@ -122,7 +122,8 @@
     }
   }
 
-  .epub-cover, .epub-css {
+  .epub-css,
+  .epub-cover {
     .title { padding: 0; }
     .admin-header {
       border-bottom: 0;

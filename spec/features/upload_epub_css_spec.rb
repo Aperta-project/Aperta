@@ -16,7 +16,7 @@ feature 'Upload default ePub CSS to journal', js: true do
     css = 'body { background-color: red; }'
     journal_page.update_epub_css css
     expect(journal_page.view_epub_css).to eq css
-    expect(journal_page.css_saved?).to eq(true)
+    expect(journal_page.epub_css_saved?).to eq(true)
 
     journal_page.reload
     expect(journal_page.view_epub_css).to eq css

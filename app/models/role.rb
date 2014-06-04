@@ -9,7 +9,7 @@ class Role < ActiveRecord::Base
   KINDS = REQUIRED_KINDS + [CUSTOM]
 
   belongs_to :journal, inverse_of: :roles
-  has_many :user_roles, inverse_of: :role
+  has_many :user_roles, inverse_of: :role, dependent: :destroy
   has_many :users, through: :user_roles
 
   validates :name, presence: true
@@ -53,6 +53,7 @@ class Role < ActiveRecord::Base
   private
 
   def prevent_destroying_required_role
+    return true if journal.blank? || journal.marked_for_destruction?
     if required?
       errors.add(:base, "This role is required. It may not be deleted.")
       false

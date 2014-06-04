@@ -15,9 +15,10 @@ class Journal < ActiveRecord::Base
   has_many :roles, inverse_of: :journal
   has_many :user_roles, through: :roles
   has_many :users, through: :user_roles
-  has_many :manuscript_manager_templates
+  has_many :manuscript_manager_templates, dependent: :destroy
 
   after_create :setup_defaults
+  before_destroy :destroy_roles
 
   mount_uploader :logo,       LogoUploader
   mount_uploader :epub_cover, EpubCoverUploader
@@ -66,5 +67,12 @@ class Journal < ActiveRecord::Base
     # TODO: remove these from being a callback (when we aren't using rails_admin)
     JournalServices::CreateDefaultRoles.call(self)
     JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
+  end
+
+  def destroy_roles
+    # roles that are marked as 'required' are prevented from being destroyed, so you cannot use
+    # a dependent_destroy on the AR relationship.
+    self.mark_for_destruction
+    roles.destroy_all
   end
 end

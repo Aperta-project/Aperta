@@ -21,6 +21,3 @@ ETahi.JournalIndexView = Ember.View.extend
       @set('controller.model.epubCoverUrl', data.result.admin_journal.epub_cover_url)
       @set('controller.model.epubCoverFileName', data.result.admin_journal.epub_cover_file_name)
   ).on('didInsertElement')
-
-  actions:
-    cancelModal: -> @set('controller.saveStatus', '')

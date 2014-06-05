@@ -19,9 +19,9 @@ describe EpubConverter do
     entries
   end
 
-  describe '#generate_epub' do
+  describe '#convert' do
     it 'returns a stream of data to the controller' do
-      epub = EpubConverter.generate_epub(paper)
+      epub = EpubConverter.convert(paper)
       expect(epub[:stream]).to be_a StringIO
       expect(epub[:file_name]).to end_with '.epub'
     end
@@ -32,19 +32,19 @@ describe EpubConverter do
       end
 
       it 'returns paper body with default text' do
-        expect{ EpubConverter.generate_epub(paper) }.to_not raise_error
+        expect { EpubConverter.convert(paper) }.to_not raise_error
       end
     end
 
     context 'paper with no uploaded source' do
       it "has no source in the epub" do
-        epub = EpubConverter.generate_epub(paper)[:stream]
+        epub = EpubConverter.convert(paper)[:stream]
         entries = read_epub_stream(epub)
         expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
       end
 
       it "does not include a source even when requested" do
-        epub = EpubConverter.generate_epub(paper, true)[:stream]
+        epub = EpubConverter.convert(paper, true)[:stream]
         entries = read_epub_stream(epub)
         expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
       end
@@ -55,13 +55,13 @@ describe EpubConverter do
       let!(:manuscript)  { FactoryGirl.create(:manuscript, paper: paper) }
 
       it "includes the source doc in the epub when requested" do
-        epub = EpubConverter.generate_epub(paper, true)[:stream]
+        epub = EpubConverter.convert(paper, true)[:stream]
         entries = read_epub_stream(epub)
         expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(true)
       end
 
       it "does not include the source doc in the epub when not requested" do
-        epub = EpubConverter.generate_epub(paper)[:stream]
+        epub = EpubConverter.convert(paper)[:stream]
         entries = read_epub_stream(epub)
         expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
       end

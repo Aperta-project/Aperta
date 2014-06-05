@@ -1,5 +1,5 @@
 class EpubConverter
-  def self.generate_epub(paper, include_source = false)
+  def self.convert(paper, include_source = false)
     converter = new(paper, include_source)
 
     builder = Dir.mktmpdir do |dir|

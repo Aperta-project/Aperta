@@ -4,7 +4,7 @@
       <h2 class="title col-md-5">ePub CSS</h2>
 
       <div class='epub-cover-upload col-md-2 pull-right'>
-        <span class="save-status">{{saveStatus}}</span>
+        <span class="save-status">{{epubCssSaveStatus}}</span>
         <a class="primary-button blue-box" href='#' data-toggle="modal" data-target="#edit-epub-css-modal">EDIT EPUB CSS</a>
       </div>
 
@@ -18,7 +18,7 @@
             </div>
             <div class="modal-footer">
               <a data-dismiss="modal" href='#' class="cancel-link" {{action cancelModal target=view}}>Cancel</a>
-              <button type="button" data-dismiss="modal" {{action saveCss}}>Save</button>
+              <button type="button" data-dismiss="modal" {{action saveEpubCss}}>Save</button>
             </div>
           </div>
         </div>

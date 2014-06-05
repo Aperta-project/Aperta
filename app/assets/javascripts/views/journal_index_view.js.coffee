@@ -23,4 +23,6 @@ ETahi.JournalIndexView = Ember.View.extend
   ).on('didInsertElement')
 
   actions:
-    cancelModal: -> @set('controller.saveStatus', '')
+    cancelModal: ->
+      @set('controller.epubCssSaveStatus', '')
+      @set('controller.pdfCssSaveStatus', '')

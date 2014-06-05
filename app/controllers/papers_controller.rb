@@ -56,15 +56,15 @@ class PapersController < ApplicationController
     @paper = PaperFilter.new(params[:id], current_user).paper
     respond_to do |format|
       format.html do
-        epub = EpubConverter.generate_epub @paper
+        epub = EpubConverter.convert @paper
         send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
       end
 
       format.pdf do
-        send_data PDFKit.new(html_pdf @paper).to_pdf,
-          filename: @paper.display_title.parameterize("_"),
-          type: 'application/pdf',
-          disposition: 'attachment'
+        send_data PDFConverter.convert(@paper),
+                  filename: @paper.display_title.parameterize("_"),
+                  type: 'application/pdf',
+                  disposition: 'attachment'
       end
     end
   end
@@ -86,17 +86,4 @@ class PapersController < ApplicationController
     )
   end
 
-  def html_pdf(paper)
-    <<-HTML
-      <html>
-        <head>
-          <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-        </head>
-        <body>
-          <h1>#{paper.display_title}</h1>
-          #{paper.body}
-        </body>
-      </html>
-    HTML
-  end
 end

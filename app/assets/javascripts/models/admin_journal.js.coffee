@@ -1,6 +1,5 @@
 a = DS.attr
 ETahi.AdminJournal = DS.Model.extend
-  # journal: DS.belongsTo('journal')
   logoUrl: a('string')
   name: a('string')
   paperTypes: a()
@@ -10,3 +9,4 @@ ETahi.AdminJournal = DS.Model.extend
   epubCoverUrl: a('string')
   epubCoverFileName: a('string')
   epubCss: a('string')
+  pdfCss: a('string')

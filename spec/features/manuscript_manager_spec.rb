@@ -59,7 +59,7 @@ feature "Manuscript Manager", js: true do
   end
 
   scenario 'Removing a task' do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     paper_page = dashboard_page.view_submitted_paper paper.short_title
     task_manager_page = paper_page.visit_task_manager
 
@@ -69,7 +69,7 @@ feature "Manuscript Manager", js: true do
   end
 
   scenario "Admin can assign a paper to themselves" do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     paper_page = dashboard_page.view_submitted_paper paper.short_title
     task_manager_page = paper_page.visit_task_manager
 

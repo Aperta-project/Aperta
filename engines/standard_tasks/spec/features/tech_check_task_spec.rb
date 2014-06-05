@@ -21,7 +21,7 @@ feature "Tech Check", js: true do
   end
 
   scenario "Journal Admin can complete the tech check card" do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     dashboard_page.view_card 'Tech Check' do |overlay|
       overlay.mark_as_complete
       expect(overlay).to be_completed

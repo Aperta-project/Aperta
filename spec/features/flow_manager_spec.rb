@@ -50,7 +50,7 @@ feature "Flow Manager", js: true do
   end
 
   scenario "admin removes a column from their flow manager" do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     flow_manager_page = dashboard_page.view_flow_manager
     up_for_grabs = flow_manager_page.column 'Up for grabs'
     up_for_grabs.remove
@@ -60,7 +60,7 @@ feature "Flow Manager", js: true do
   end
 
   scenario "admin adds a column to their flow manager" do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     flow_manager_page = dashboard_page.view_flow_manager
 
     expect { flow_manager_page.add_column "Up for grabs" }.to change {
@@ -74,7 +74,7 @@ feature "Flow Manager", js: true do
     before do
       paper1.tasks.where(type: "PaperAdminTask").update_all(completed: false, assignee_id: nil)
       paper2.tasks.where(type: "PaperAdminTask").update_all(completed: false, assignee_id: admin)
-      dashboard_page = DashboardPage.visit
+      dashboard_page = DashboardPage.new
       dashboard_page.view_flow_manager
     end
 
@@ -107,7 +107,7 @@ feature "Flow Manager", js: true do
     before do
       unassigned_paper.tasks.where(type: "PaperAdminTask").update_all(completed: true, assignee_id: nil)
       unassociated_paper.tasks.where(type: "PaperAdminTask").update_all(completed: false, assignee_id: nil)
-      dashboard_page = DashboardPage.visit
+      dashboard_page = DashboardPage.new
       dashboard_page.view_flow_manager
     end
 
@@ -134,7 +134,7 @@ feature "Flow Manager", js: true do
     end
 
     scenario "Your Papers" do
-      dashboard_page = DashboardPage.visit
+      dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
       my_tasks = flow_manager_page.column 'My papers'
@@ -144,7 +144,7 @@ feature "Flow Manager", js: true do
     end
 
     scenario "Completing an assign admin task" do
-      dashboard_page = DashboardPage.visit
+      dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
       my_tasks = flow_manager_page.column 'My papers'
@@ -161,7 +161,7 @@ feature "Flow Manager", js: true do
 
   context "empty tasks" do
     scenario "there are no tasks" do
-      dashboard_page = DashboardPage.visit
+      dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
       my_tasks = flow_manager_page.column 'My papers'
@@ -207,7 +207,7 @@ feature "Flow Manager", js: true do
     end
 
     scenario "Viewing the flow manager" do
-      dashboard_page = DashboardPage.visit
+      dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
       my_task_expectations flow_manager_page
       completed_papers = completed_task_expectations flow_manager_page

@@ -22,7 +22,7 @@ feature "Reviewer Report", js: true do
   end
 
   scenario "Reviewer can write a reviewer report" do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     dashboard_page.view_card 'Reviewer Report' do |overlay|
       overlay.mark_as_complete
       expect(overlay).to be_completed

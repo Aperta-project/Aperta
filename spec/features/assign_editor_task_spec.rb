@@ -17,7 +17,7 @@ feature "Assigns Editor", js: true do
   end
 
   scenario "Admin can assign an editor to a paper" do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     paper_page = dashboard_page.view_submitted_paper 'foobar'
     task_manager_page = paper_page.visit_task_manager
 

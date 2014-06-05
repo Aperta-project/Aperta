@@ -25,7 +25,7 @@ feature "Assigns Reviewer", js: true do
   end
 
   scenario "Editor can assign a reviewer to a paper" do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     dashboard_page.view_card 'Assign Reviewers' do |overlay|
       overlay.paper_reviewers = [albert.full_name, neil.full_name]
       overlay.mark_as_complete

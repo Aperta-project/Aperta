@@ -55,9 +55,8 @@ feature "Flow Manager", js: true do
     up_for_grabs = flow_manager_page.column 'Up for grabs'
     up_for_grabs.remove
 
-    expect(flow_manager_page).not_to have_column 'Up for grabs'
-    flow_manager_page.reload
-    expect(flow_manager_page).not_to have_column 'Up for grabs'
+    expect(flow_manager_page).to have_no_column 'Up for grabs'
+    expect(flow_manager_page).to have_no_application_error
   end
 
   scenario "admin adds a column to their flow manager" do
@@ -68,9 +67,7 @@ feature "Flow Manager", js: true do
       flow_manager_page.columns("Up for grabs").count
     }.by(1)
 
-    flow_manager_page.reload
-
-    expect(flow_manager_page.columns("Up for grabs").count).to eq(2)
+    expect(flow_manager_page).to have_no_application_error
   end
 
   context "PaperAdminTasks without assigned admin column placements" do

@@ -15,7 +15,7 @@ class FlowsController < ApplicationController
     flow = current_user.flows.where(id: params[:id]).first
     if flow
       flow.destroy
-      head :ok
+      head :no_content
     else
       head :forbidden
     end

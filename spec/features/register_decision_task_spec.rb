@@ -21,21 +21,12 @@ feature "Register Decision", js: true do
     dashboard_page = DashboardPage.visit
     register_decision_card = dashboard_page.view_card 'Register Decision'
     paper_show_page = register_decision_card.view_paper
-    paper_show_page.reload
 
     paper_show_page.view_card 'Register Decision' do |overlay|
       overlay.register_decision = "Accepted"
       overlay.decision_letter = "Accepting this because I can"
       overlay.mark_as_complete
       expect(overlay).to be_completed
-    end
-
-    paper_show_page.reload
-
-    paper_show_page.view_card 'Register Decision' do |overlay|
-      expect(overlay).to be_completed
-      expect(overlay).to be_accepted
-      expect(overlay.decision_letter).to eq("Accepting this because I can")
     end
   end
 end

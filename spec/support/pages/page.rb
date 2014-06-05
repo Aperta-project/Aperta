@@ -39,6 +39,10 @@ class PageFragment
     session.has_no_css?("#application-error")
   end
 
+  def has_application_error?
+    session.has_css?("#application-error")
+  end
+
   def view_card card_name, overlay_class=nil, &block
     synchronize_content! card_name
     session.all('.card-content', text: card_name).first.click

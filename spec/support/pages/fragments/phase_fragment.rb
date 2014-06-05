@@ -39,6 +39,6 @@ class PhaseFragment < PageFragment
     field.click
     field.set(new_name)
     find('.primary-button').click
-    expect(self).to have_content(new_name)
+    synchronize_content!(new_name)
   end
 end

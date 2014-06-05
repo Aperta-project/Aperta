@@ -50,31 +50,28 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
             acl: data.acl
           uploadData.submit()
 
-    params.success = (data) =>
+    # No matter how dumb this looks, it is necessary.
+    that = @
+    params.success = (fileData) ->
+      filename = @files[0].name
       $.ajax
-        url: @get('url')
+        url: that.get('url')
         dataType: 'json'
-        type: @get('railsMethod')
-        data: {url: $(data).find('Location').text()}
+        type: that.get('railsMethod')
+        data: {url: $(fileData).find('Location').text()}
         success: (data) =>
-          @sendAction('done', data)
+          that.sendAction('done', data, filename)
 
     uploader.fileupload(params)
 
     uploader.on 'fileuploadadd', (e, uploadData) =>
       Ember.run.bind(this, @checkFileType)
 
-    uploader.on 'fileuploadstart', (e, data) =>
-      # @sendAction('start', data)
-
     uploader.on 'fileuploadsend', (e, data) =>
       @sendAction('start', data)
 
     uploader.on 'fileuploadprogress', (e, data) =>
       @sendAction('progress', data)
-
-    uploader.on 'fileuploaddone', (e, data) =>
-      # @sendAction('done', data)
 
     uploader.on 'fileuploadprocessstart', (e, data) =>
       @sendAction('process', data)

@@ -8,7 +8,7 @@ ETahi.UploadPreviewComponent = Ember.Component.extend
   ).property('file.preview')
 
   progress: ( ->
-    Math.round(@get('upload.dataLoaded') / @get('upload.dataTotal'))
+    Math.round(@get('upload.dataLoaded') / @get('upload.dataTotal') * 100)
   ).property('upload.dataLoaded', 'upload.dataTotal')
 
   error: null

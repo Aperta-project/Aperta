@@ -56,7 +56,7 @@ class PapersController < ApplicationController
     @paper = PaperFilter.new(params[:id], current_user).paper
     respond_to do |format|
       format.html do
-        epub = EpubConverter.convert @paper
+        epub = EpubConverter.convert @paper, current_user
         send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
       end
 

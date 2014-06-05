@@ -8,6 +8,7 @@ describe EpubConverter do
   let(:paper) do
     create :paper, body: paper_body, short_title: paper_title, user: create(:user)
   end
+  let(:downloader) { FactoryGirl.create :user }
 
   def read_epub_stream(stream)
     entries = []
@@ -20,8 +21,11 @@ describe EpubConverter do
   end
 
   describe '#convert' do
+    def epub(include_source: false)
+      EpubConverter.convert paper, downloader, include_source
+    end
+
     it 'returns a stream of data to the controller' do
-      epub = EpubConverter.convert(paper)
       expect(epub[:stream]).to be_a StringIO
       expect(epub[:file_name]).to end_with '.epub'
     end
@@ -32,20 +36,18 @@ describe EpubConverter do
       end
 
       it 'returns paper body with default text' do
-        expect { EpubConverter.convert(paper) }.to_not raise_error
+        expect { epub }.to_not raise_error
       end
     end
 
     context 'paper with no uploaded source' do
       it "has no source in the epub" do
-        epub = EpubConverter.convert(paper)[:stream]
-        entries = read_epub_stream(epub)
+        entries = read_epub_stream(epub[:stream])
         expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
       end
 
       it "does not include a source even when requested" do
-        epub = EpubConverter.convert(paper, true)[:stream]
-        entries = read_epub_stream(epub)
+        entries = read_epub_stream epub(include_source: true)[:stream]
         expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
       end
     end
@@ -55,14 +57,12 @@ describe EpubConverter do
       let!(:manuscript)  { FactoryGirl.create(:manuscript, paper: paper) }
 
       it "includes the source doc in the epub when requested" do
-        epub = EpubConverter.convert(paper, true)[:stream]
-        entries = read_epub_stream(epub)
+        entries = read_epub_stream(epub(include_source: true)[:stream])
         expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(true)
       end
 
       it "does not include the source doc in the epub when not requested" do
-        epub = EpubConverter.convert(paper)[:stream]
-        entries = read_epub_stream(epub)
+        entries = read_epub_stream(epub[:stream])
         expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
       end
     end

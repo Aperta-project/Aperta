@@ -61,7 +61,7 @@ class PapersController < ApplicationController
       end
 
       format.pdf do
-        send_data PDFConverter.convert(@paper),
+        send_data PDFConverter.convert(@paper, current_user),
                   filename: @paper.display_title.parameterize("_"),
                   type: 'application/pdf',
                   disposition: 'attachment'

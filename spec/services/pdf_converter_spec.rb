@@ -13,16 +13,18 @@ describe PDFConverter do
     create :paper, body: paper_body, short_title: paper_title, user: create(:user), journal: journal
   end
 
+  let(:user) { create :user }
+
   describe ".convert" do
     it "uses PDFKit to generate PDF" do
       expect(PDFKit).to receive_message_chain(:new, :to_pdf)
-      PDFConverter.convert(paper)
+      PDFConverter.convert paper, user
     end
   end
 
   describe ".pdf_html" do
     it "includes all necessary info and default journal stylesheet in the generated HTML" do
-      pdf_html = PDFConverter.pdf_html(paper)
+      pdf_html = PDFConverter.pdf_html paper, user
       expect(pdf_html).to include journal.pdf_css
       expect(pdf_html).to include paper.display_title
       expect(pdf_html).to include paper.body

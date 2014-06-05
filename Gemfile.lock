@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/dandorman/omniauth-cas.git
+  revision: 83210ff52667c2c4574666dcfc9b577542fb595f
+  ref: 83210ff52667c2c4574666dcfc9b577542fb595f
+  specs:
+    omniauth-cas (1.0.4)
+      addressable (~> 2.3)
+      nokogiri (~> 1.5)
+      omniauth (~> 1.2.0)
+
+GIT
   remote: git://github.com/neo-tahi/jquery-fileupload-rails.git
   revision: 5252879d45d9da58687033e32e290a2af7457a40
   specs:
@@ -467,6 +477,7 @@ DEPENDENCIES
   mini_magick
   newrelic_rpm
   nokogiri
+  omniauth-cas!
   omniauth-oauth2
   ordinalize
   pdfkit

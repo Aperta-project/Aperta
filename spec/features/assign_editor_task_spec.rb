@@ -30,14 +30,5 @@ feature "Assigns Editor", js: true do
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end
-
-    task_manager_page.reload
-
-    needs_editor_phase = task_manager_page.phase 'Assign Editor'
-    needs_editor_phase.view_card 'Assign Editor' do |overlay|
-      expect(overlay).to be_completed
-      expect(overlay.assignee).to eq admin.full_name.upcase
-      expect(overlay.paper_editor).to eq editor.full_name
-    end
   end
 end

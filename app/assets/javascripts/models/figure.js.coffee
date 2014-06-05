@@ -1,6 +1,6 @@
 a = DS.attr
 ETahi.Figure = DS.Model.extend
-  figureTask: DS.belongsTo('figureTask')
+  paper: DS.belongsTo('paper')
   alt: a('string')
   filename: a('string')
   src: a('string')

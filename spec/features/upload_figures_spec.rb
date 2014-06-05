@@ -4,10 +4,6 @@ feature "Upload figures", js: true do
   let(:author) { create :user }
   let(:journal) { create :journal }
   let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }
-  let(:task) do
-    FactoryGirl.create(:task, phase: paper.phases.first, type: "StandardTasks::FigureTask")
-    StandardTasks::FigureTask.first
-  end
 
   before do
     sign_in_page = SignInPage.visit
@@ -74,7 +70,7 @@ feature "Upload figures", js: true do
       expect(caption.text).to eq 'New figure caption'
     end
 
-    figure = task.reload.figures.last
+    figure = paper.figures.last
     expect(figure.title).to eq 'new_figure_title'
     expect(figure.caption).to eq 'New figure caption'
   end

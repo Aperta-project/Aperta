@@ -29,3 +29,8 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
     savePdfCss: ->
       @get('model').save()
       @set('pdfCssSaveStatus', 'Saved')
+
+    resetSaveStatuses: ->
+      @set('epubCssSaveStatus', '')
+      @set('pdfCssSaveStatus', '')
+

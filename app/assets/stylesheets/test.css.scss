@@ -6,3 +6,17 @@
   -o-transition: color 0 ease-in;
   transition: none;
 }
+
+.overlay {
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -o-animation: none !important;
+  -ms-animation: none !important;
+  animation: none !important;
+  &.in {
+    opacity: 1
+  }
+  &.out {
+    opacity: 0
+  }
+}

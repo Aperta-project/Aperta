@@ -19,7 +19,7 @@ class PDFConverter
           <div id='publishing-information'>
             #{publishing_info_presenter.html}
           </div>
-          <div id='paper-body'>
+          <div id='paper-body' styles='page-break-before: always;'>
             <h1>#{paper.display_title}</h1>
             #{paper.body}
           </div>

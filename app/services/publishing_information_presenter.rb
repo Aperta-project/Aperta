@@ -16,7 +16,7 @@ class PublishingInformationPresenter
 
       #downloader-name {
         position: absolute;
-        top: 90%;
+        top: 85%;
         right: 0;
       }
     CSS

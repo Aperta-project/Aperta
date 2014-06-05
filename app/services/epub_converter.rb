@@ -18,18 +18,19 @@ class EpubConverter
 
   def builder
     Dir.mktmpdir do |dir|
-      publishing_info_file_path = write_to_file(dir,
+      publishing_info_file_path = write_to_file dir,
                                                 publishing_information_html,
-                                                'publishing_information.html')
-      content_file_path = write_to_file(dir,
+                                                'publishing_information.html'
+
+      content_file_path = write_to_file dir,
                                         epub_html,
-                                        'content.html')
+                                        'content.html'
 
       generate_epub_builder publishing_info_file_path, content_file_path
     end
   end
 
-  def generate_epub_builder(publishing_information_path, temp_paper_path)
+  def generate_epub_builder(publishing_info_path, temp_paper_path)
     workdir = File.dirname temp_paper_path
     this = self
 
@@ -43,7 +44,7 @@ class EpubConverter
         file 'css/default.css' => this.epub_css
         cover_image 'images/cover_image.jpg' => this.epub_cover_path if this.paper.journal.epub_cover.file
         ordered do
-          file "./#{File.basename publishing_information_path}"
+          file "./#{File.basename publishing_info_path}"
           file "./#{File.basename temp_paper_path}"
           heading 'Main Content'
           if this.include_source && this.paper.manuscript.present?

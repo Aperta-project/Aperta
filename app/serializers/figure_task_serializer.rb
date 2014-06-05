@@ -1,0 +1,2 @@
+class FigureTaskSerializer < TaskSerializer
+end

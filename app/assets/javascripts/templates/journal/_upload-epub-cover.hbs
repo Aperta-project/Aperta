@@ -1,0 +1,26 @@
+<div class="epub-cover">
+  <div class="admin-header row">
+    <div class='relative'>
+      <h2 class="title col-md-5">Default ePub Cover</h2>
+
+        <div class="epub-cover-image col-md-5 text-right">
+          {{#if epubCoverUrl}}
+            <a {{bind-attr href=epubCoverUrl}} target='_blank'>{{epubCoverFileName}}</a>
+          {{else}}
+            <p>There is currently no default ePub cover.</p>
+          {{/if}}
+        </div>
+
+      <div class='epub-cover-upload col-md-2 pull-right'>
+        <span class="primary-button blue-box fileinput-button">
+          Upload ePub Cover
+          {{input id="epub-cover-upload"
+                          class="js-jquery-fileupload primary-button blue-box"
+                          type="file"
+                          name="admin_journal[epub_cover]"
+                          model=model}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

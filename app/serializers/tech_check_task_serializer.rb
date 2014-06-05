@@ -1,0 +1,2 @@
+class TechCheckTaskSerializer < TaskSerializer
+end

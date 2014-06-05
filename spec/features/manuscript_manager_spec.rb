@@ -31,6 +31,7 @@ feature "Manuscript Manager", js: true do
       new_phases = task_manager_page.phases
       expect(new_phases[1]).to eq("New Phase")
       expect(new_phases[3]).to eq("New Phase")
+      expect(task_manager_page).to have_no_application_error
       task_manager_page.reload
       reloaded_phases = task_manager_page.phases
       expect(reloaded_phases[1]).to eq("New Phase")
@@ -63,6 +64,7 @@ feature "Manuscript Manager", js: true do
 
     phase = task_manager_page.phase 'Submission Data'
     expect { phase.remove_card('Upload Manuscript') }.to change { phase.card_count }.by(-1)
+    expect(task_manager_page).to have_no_application_error
   end
 
   scenario "Admin can assign a paper to themselves" do
@@ -80,12 +82,7 @@ feature "Manuscript Manager", js: true do
       expect(overlay.assignee).to eq admin.full_name
     end
 
-    task_manager_page.reload
-    needs_editor_phase = task_manager_page.phase 'Assign Editor'
-    needs_editor_phase.view_card 'Assign Admin' do |overlay|
-      expect(overlay).to be_completed
-      expect(overlay.assignee).to eq admin.full_name
-    end
+    expect(task_manager_page).to have_no_application_error
 
     needs_editor_phase = TaskManagerPage.new.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|

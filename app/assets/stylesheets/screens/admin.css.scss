@@ -122,6 +122,7 @@
     }
   }
 
+  .pdf-css,
   .epub-css,
   .epub-cover {
     .title { padding: 0; }
@@ -129,11 +130,11 @@
       border-bottom: 0;
       padding-top: 25px;
       padding-bottom: 0;
-      margin-bottom: 10px;
     }
   }
 
-  .epub-css  {
+  .pdf-css,
+  .epub-css {
     span.save-status {
       color: $tahi-blue-light;
       vertical-align: -6px;

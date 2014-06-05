@@ -37,6 +37,7 @@ class PhaseFragment < PageFragment
     field = find('h2')
     field.click
     field.set(new_name)
+    sleep(0.2)
     find('.primary-button').click
     synchronize_content!(new_name)
   end

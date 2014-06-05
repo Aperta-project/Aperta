@@ -5,23 +5,32 @@ class FiguresController < ApplicationController
 
   def create
     filename = params[:url].split("%2F").last
-    new_figure = paper.figures.new
-    new_figure.attachment.download! params[:url]
-    new_figure.title = filename
-    new_figure.save
+    figure = paper.figures.new
+    figure.attachment.download! params[:url]
+    figure.title = filename
+    figure.save
 
     respond_to do |f|
       f.html { redirect_to edit_paper_path paper }
-      f.json { render json: new_figure }
+      f.json { render json: figure }
     end
   end
 
   def update
     figure = Figure.find params[:id]
     figure.update_attributes figure_params
+
     respond_to do |f|
       f.json { render json: figure }
     end
+  end
+
+  def update_attachment
+    figure = Figure.find(params[:id])
+    figure.attachment.download! params[:url]
+    figure.save
+
+    render json: figure
   end
 
   def destroy

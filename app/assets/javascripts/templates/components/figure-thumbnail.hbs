@@ -10,8 +10,10 @@
           <span>Replace Image</span>
           {{file-uploader
               url=figureUrl
+              railsMethod="PUT"
               accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-              multiple=true
+              multiple=false
+              filePrefix='paper/figures'
               progress='figureUploading'
               done='figureUploaded'}}
         {{/replace-image}}

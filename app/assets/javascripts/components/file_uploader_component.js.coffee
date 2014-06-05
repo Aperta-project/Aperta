@@ -7,6 +7,7 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
 
   dataType: 'json'
   method: 'POST'
+  railsMethod: 'POST'
   bucketUrl: 'https://tahi-development.s3.amazonaws.com'
 
   acceptedFileTypes: ( ->
@@ -53,8 +54,10 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
       $.ajax
         url: @get('url')
         dataType: 'json'
-        type: @get('method')
+        type: @get('railsMethod')
         data: {url: $(data).find('Location').text()}
+        success: (data) =>
+          @sendAction('done', data)
 
     uploader.fileupload(params)
 
@@ -62,17 +65,17 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
       Ember.run.bind(this, @checkFileType)
 
     uploader.on 'fileuploadstart', (e, data) =>
-      @sendAction('start')
+      # @sendAction('start', data)
+
+    uploader.on 'fileuploadsend', (e, data) =>
+      @sendAction('start', data)
 
     uploader.on 'fileuploadprogress', (e, data) =>
       @sendAction('progress', data)
 
     uploader.on 'fileuploaddone', (e, data) =>
-      @sendAction('done', data)
+      # @sendAction('done', data)
 
-    uploader.on 'fileuploadsuccess', (e, data) =>
-      debugger
-
-    uploader.on 'fileuploadprocessalways', (e, data) =>
+    uploader.on 'fileuploadprocessstart', (e, data) =>
       @sendAction('process', data)
   ).on('didInsertElement')

@@ -28,7 +28,9 @@ Tahi::Application.routes.draw do
   resources :authors, only: [:create, :update, :destroy]
   resources :author_groups, only: [:create, :destroy]
 
-  resources :figures, only: [:destroy, :update]
+  resources :figures, only: [:destroy, :update] do
+    put :update_attachment, on: :member
+  end
 
   resources :files, as: 'supporting_information_files',
                     path: 'supporting_information_files',

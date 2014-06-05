@@ -4,10 +4,10 @@
   <span class="secondary-button fileinput-button">
     <span>Add new Figures</span>
     {{file-uploader id="figure_attachment"
-                    name="figure[attachment][]"
                     accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
                     url=figureUploadUrl
                     method='POST'
+                    filePrefix='paper/figures'
                     process='uploadStarted'
                     done='uploadFinished'
                     progress='uploadProgress'

@@ -4,17 +4,15 @@ class FiguresController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    figures = Array.wrap(figure_params.delete(:attachment))
-
-    figures.select! {|f| Figure.acceptable_content_type? f.content_type }
-
-    new_figures = figures.map do |figure|
-      paper.figures.create!(figure_params.merge(attachment: figure))
-    end
+    filename = params[:url].split("%2F").last
+    new_figure = paper.figures.new
+    new_figure.attachment.download! params[:url]
+    new_figure.title = filename
+    new_figure.save
 
     respond_to do |f|
       f.html { redirect_to edit_paper_path paper }
-      f.json { render json: new_figures }
+      f.json { render json: new_figure }
     end
   end
 

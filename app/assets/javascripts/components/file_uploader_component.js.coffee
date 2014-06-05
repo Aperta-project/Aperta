@@ -30,25 +30,30 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
     params.url = @get('bucketUrl')
     params.dataType = 'xml'
     params.add = (e, uploadData) =>
+      file = uploadData.files[0]
       $.ajax
         url: "/request_policy",
         type: 'GET',
         dataType: 'json',
         data: 
           file_prefix: @get('filePrefix')
+          content_type: file.type
         success: (data) ->
           uploadData.formData =
-            key: data.key
+            key: "#{data.key}/#{file.name}"
             policy: data.policy
             success_action_status: 201
+            'Content-Type': file.type
             signature: data.signature
             AWSAccessKeyId: data.access_key_id
             acl: data.acl
           uploadData.submit()
+
     params.success = (data) =>
       $.ajax
         url: @get('url')
-        type: 'PUT'
+        dataType: 'json'
+        type: @get('method')
         data: {url: $(data).find('Location').text()}
 
     uploader.fileupload(params)

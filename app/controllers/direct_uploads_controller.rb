@@ -7,7 +7,7 @@ class DirectUploadsController < ApplicationController
       acl: 'public-read',
       policy: s3_upload_policy_document,
       signature: s3_upload_signature,
-      key: "uploads/#{params[:file_prefix]}/#{current_user.id}"
+      key: "uploads/#{current_user.id}/#{params[:file_prefix]}/#{SecureRandom.uuid}"
     }
   end
 
@@ -26,6 +26,7 @@ class DirectUploadsController < ApplicationController
           { bucket: ENV['S3_BUCKET'] },
           { acl: 'public-read' },
           ["starts-with", "$key", "uploads/"],
+          ["eq", "$Content-Type", params[:content_type]],
           { success_action_status: '201' }
         ]
       }.to_json

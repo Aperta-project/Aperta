@@ -124,6 +124,7 @@
 
   .pdf-css,
   .epub-css,
+  .manuscript-css,
   .epub-cover {
     .title { padding: 0; }
     .admin-header {
@@ -134,7 +135,8 @@
   }
 
   .pdf-css,
-  .epub-css {
+  .epub-css,
+  .manuscript-css {
     span.save-status {
       color: $tahi-blue-light;
       vertical-align: -6px;

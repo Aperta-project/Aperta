@@ -4,7 +4,13 @@
   {{partial "journal/upload-epub-cover"}}
   {{partial "journal/upload-epub-css"}}
   {{partial "journal/upload-pdf-css"}}
-  {{partial "journal/upload-manuscript-css"}}
+  {{!partial "journal/upload-manuscript-css"}}
+  {{modal-text-area class='manuscript-css'
+                    rowTitle='Manuscript CSS'
+                    modalId='edit-manuscript-css-modal'
+                    modalTitle='Manuscript CSS'
+                    modalButtonText='EDIT MANUSCRIPT CSS'
+  }}
 
   {{render "manuscript_manager_template/index" manuscriptManagerTemplates}}
   {{render "roles/index" roles}}

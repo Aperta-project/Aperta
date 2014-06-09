@@ -5,4 +5,5 @@
 # Mime::Type.register_alias "text/html", :iphone
 
 json_content_types = Mime::JSON.instance_variable_get("@synonyms")
+Mime::Type.unregister(:json)
 Mime::Type.register "application/json", :json, json_content_types + %w( application/json-patch+json application/vnd.api+json )

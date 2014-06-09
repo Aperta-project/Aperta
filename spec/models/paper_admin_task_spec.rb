@@ -16,7 +16,7 @@ describe PaperAdminTask do
 
     context "when paper admin is changed" do
       it "will update paper and tasks" do
-        task.should_receive(:update_paper_admin_and_tasks)
+        expect(task).to receive(:update_paper_admin_and_tasks)
         task.admin_id = sally.id
         task.save
       end
@@ -24,7 +24,7 @@ describe PaperAdminTask do
 
     context "when paper admin is not changed" do
       it "will not update paper or tasks" do
-        task.should_not_receive(:update_paper_admin_and_tasks)
+        expect(task).to_not receive(:update_paper_admin_and_tasks)
         task.save
       end
     end

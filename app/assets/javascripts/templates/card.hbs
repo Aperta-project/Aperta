@@ -1,9 +1,9 @@
 <div class="card-content" {{action 'viewCard' view.content}}>
-  <span class="glyphicon glyphicon-ok completed-glyph"></span>
+  <div class="glyphicon glyphicon-ok completed-glyph"></div>
   {{#if unreadCommentsCount}}
     <span class="badge unread-comments-count">{{unreadCommentsCount}}</span>
   {{/if}}
-  {{title}}
+  <div class="task-title">{{title}}</div>
 </div>
 
 <span {{action 'removeTask' view.content}}

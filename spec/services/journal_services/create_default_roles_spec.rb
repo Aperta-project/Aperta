@@ -13,7 +13,7 @@ describe JournalServices::CreateDefaultRoles do
   end
 
   it "will raise a service error if it fails" do
-    journal.stub(:roles).and_raise(ActiveRecord::RecordInvalid.new(Role.new))
+    allow(journal).to receive(:roles).and_raise(ActiveRecord::RecordInvalid.new(Role.new))
     expect do
       JournalServices::CreateDefaultRoles.call(journal)
     end.to raise_error(JournalServices::ServiceError)

@@ -1,13 +1,18 @@
-development:
+default: &default
   ssl: false
   host: 'localhost'
-  port: '8080'
   login_url: '/cas/login'
   service_validate_url: '/cas/serviceValidate'
+
+development:
+  <<: *default
+  port: '8080'
 
 staging:
+  <<: *default
   ssl: true
   host: 'register.plos.org'
-  login_url: '/cas/login'
-  service_validate_url: '/cas/serviceValidate'
 
+test:
+  <<: *default
+  port: '8080'

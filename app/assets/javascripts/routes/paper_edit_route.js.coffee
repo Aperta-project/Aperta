@@ -1,4 +1,4 @@
-ETahi.PaperEditRoute = Ember.Route.extend
+ETahi.PaperEditRoute = ETahi.AdminAuthorizedRoute.extend
   beforeModel: ->
     visualEditorScript = '/visual-editor.js'
     unless ETahi.LazyLoaderMixin.loaded[visualEditorScript]

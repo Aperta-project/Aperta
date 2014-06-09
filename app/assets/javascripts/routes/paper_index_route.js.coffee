@@ -1,4 +1,4 @@
-ETahi.PaperIndexRoute = Ember.Route.extend
+ETahi.PaperIndexRoute = ETahi.AdminAuthorizedRoute.extend
   afterModel: (model) ->
     @transitionTo('paper.edit', model) unless model.get('submitted')
 

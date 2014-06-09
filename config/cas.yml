@@ -1,0 +1,13 @@
+development:
+  ssl: false
+  host: 'localhost'
+  port: '8080'
+  login_url: '/cas/login'
+  service_validate_url: '/cas/serviceValidate'
+
+staging:
+  ssl: true
+  host: 'register.plos.org'
+  login_url: '/cas/login'
+  service_validate_url: '/cas/serviceValidate'
+

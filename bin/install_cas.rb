@@ -101,8 +101,7 @@ FileUtils.cd("#{RAILS_TEMP_DIR}/#{CAS_DIRECTORY}/cas-server-webapp/src/main/weba
       xml.property(name: "id", value: "1")
       xml.property(name: "name", value: "the_key_for_caswrapper1")
       xml.property(name: "description", value: "the_secret_for_caswrapper1")
-      xml.property(name: "serviceId", value: "http://localhost:")
-      xml.property(name: "theme", value: "Tahi")
+      xml.property(name: "serviceId", value: "**")
     }
   end
   bean = builder.doc.root.to_xml

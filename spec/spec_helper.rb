@@ -34,6 +34,7 @@ VCR.configure do |config|
   config.default_cassette_options = { record: :new_episodes }
   config.configure_rspec_metadata!
   config.ignore_localhost = true # Makes Selenium work
+  config.ignore_hosts 'codeclimate.com'
 end
 
 RSpec.configure do |config|

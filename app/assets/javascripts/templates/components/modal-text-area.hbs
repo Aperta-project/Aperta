@@ -1,9 +1,9 @@
 <div class="admin-header row">
   <div class='relative'>
-    <h2 class="title col-md-5">{{rowTitle}}</h2>
+    <h2 class="title col-md-5">{{modalTitle}}</h2>
 
     <div class='col-md-3 pull-right'>
-      <span class="save-status">{{manuscriptCssSaveStatus}}</span>
+      <span class="save-status">{{saveStatus}}</span>
       <a class="primary-button blue-box" href='#' data-toggle="modal" data-target=#{{unbound modalId}}>{{modalButtonText}}</a>
     </div>
 
@@ -12,12 +12,13 @@
         <div class="modal-content">
           <div class="modal-body">
             <h1>{{modalTitle}}</h1>
-            <p>Enter or edit CSS to format the manuscript editor and output for this journal.</p>
-            {{textarea id="manuscript-css-content" value=manuscriptCss placeholder="Type your ePub CSS here"}}
+            <p>{{helperText}}</p>
+            {{textarea value=attr placeholder=textAreaPlaceHolder}}
           </div>
           <div class="modal-footer">
+            {{log journal}}
             <a data-dismiss="modal" href='#' class="cancel-link" {{action resetSaveStatuses}}>Cancel</a>
-            <button type="button" data-dismiss="modal" {{action saveManuscriptCss}}>Save</button>
+            <button type="button" data-dismiss="modal" {{action saveAttr}}>Save</button>
           </div>
         </div>
       </div>

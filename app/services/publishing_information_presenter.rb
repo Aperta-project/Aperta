@@ -14,13 +14,9 @@ class PublishingInformationPresenter
         display: relative;
       }
 
-      #paper-body {
-        page-break-before: always;
-      }
-
       #downloader-name {
         position: absolute;
-        top: 90%;
+        top: 85%;
         right: 0;
       }
     CSS

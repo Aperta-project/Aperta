@@ -30,12 +30,5 @@ feature "Make declarations", js: true do
       expect(overlay).to be_completed
     end
 
-    edit_paper.reload
-    edit_paper.view_card 'Enter Declarations' do |overlay|
-      expect(overlay.disclosure_declaration.answer).to eq("Yes")
-      expect(overlay.interests_declaration.answer).to eq("Sometimes")
-      expect(overlay.ethics_declaration.answer).to eq("No")
-      expect(overlay).to be_completed
-    end
   end
 end

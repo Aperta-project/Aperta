@@ -66,7 +66,7 @@ end
 group :development, :test do
   gem 'rspec-rails', "~> 3.0.0.beta2"
   gem "rspec-its", "~> 1.0.0.pre"
-  gem 'capybara'
+  gem 'capybara', "~> 2.3.0"
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'

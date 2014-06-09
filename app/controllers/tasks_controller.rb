@@ -47,10 +47,9 @@ class TasksController < ApplicationController
   def destroy
     task_temp = Task.find(params[:id])
     task = PaperFilter.new(task_temp.paper, current_user).tasks_for_paper(params[:id]).first
-    if task && task.destroy
-      render json: true
-    else
-      render status: 400
+    if task
+      task.destroy
+      respond_with task
     end
   end
 

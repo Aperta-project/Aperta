@@ -29,7 +29,7 @@ class FiguresController < ApplicationController
   def destroy
     if paper_policy.paper.present?
       paper.figures.find(params[:id]).destroy
-      head :ok
+      head :no_content
     else
       head :forbidden
     end

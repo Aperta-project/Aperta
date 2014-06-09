@@ -25,19 +25,13 @@ feature "Profile Page", js: true do
     profile_page.attach_image('yeti.jpg')
     expect(profile_page.image).to eq('yeti.jpg')
     expect(profile_page.image_size).to eq('160x160')
-
-    profile_page.reload
-    expect(profile_page.image).to eq('yeti.jpg')
-    expect(profile_page.image_size).to eq('160x160')
+    expect(profile_page).to have_no_application_error
   end
 
   scenario "user cannot upload an avatar image of unsupported type" do
     profile_page = ProfilePage.visit
     profile_page.attach_image('about_turtles.docx')
-    expect(profile_page.image).to_not eq('about_turtles.docx')
-    expect(profile_page.image).to eq('profile-no-image.png')
-
-    profile_page.reload
+    expect(profile_page).to have_application_error
     expect(profile_page.image).to_not eq('about_turtles.docx')
     expect(profile_page.image).to eq('profile-no-image.png')
   end
@@ -47,21 +41,21 @@ feature "Profile Page", js: true do
     profile_page.add_affiliate('Yoda University')
     expect(profile_page.affiliations).to include(/Yoda/)
 
-    profile_page.reload
-    expect(profile_page.affiliations).to include(/Yoda/)
+    expect(profile_page).to have_no_application_error
   end
 
   scenario "affiliation errors are handled" do
     profile_page = ProfilePage.visit
     profile_page.add_affiliate(' ')
     expect(page).to have_content(/name can't be blank/i)
+    expect(profile_page).to have_no_application_error
   end
 
   scenario "user can delete an affiliation" do
     profile_page = ProfilePage.visit
     profile_page.add_affiliate('Yoda University')
     profile_page.remove_affiliate('Yoda University')
-    expect(page).to_not have_content(/Yoda University/)
+    expect(page).to have_no_content(/Yoda University/)
   end
 
   describe "canceling affiliation creation" do
@@ -72,12 +66,12 @@ feature "Profile Page", js: true do
     end
 
     it "hides the form" do
-      expect(page).to_not have_content(/new affiliation/i)
+      expect(page).to have_no_content(/new affiliation/i)
     end
 
     it "clears the form" do
       find('a', text: 'Add new').click
-      expect(page).to_not have_content(uni)
+      expect(page).to have_no_content(uni)
     end
   end
 end

@@ -17,9 +17,9 @@ feature "Displaying task", js: true do
     expect(assign_admin_overlay).to_not be_completed
 
     assign_admin_overlay.mark_as_complete
-    assign_admin_overlay.reload
 
     expect(assign_admin_overlay).to be_completed
+    expect(assign_admin_overlay).to have_no_application_error
   end
 
 end

@@ -57,14 +57,36 @@
   position: relative;
   display: block;
   border-radius: 5px;
-  padding: 10px 10px;
+  padding: 10px 15px;
   color: $tahi-primary-hover;
   font-size: 20px;
   word-wrap: break-word;
   background-color: $tahi-secondary;
   cursor: pointer;
 
-  .completed-glyph { display: none; }
+}
+
+.card {
+  .completed-glyph {
+    display: none;
+  }
+
+  .task-title {
+    display: inline-block;
+    width: 90%;
+  }
+
+  &.card-completed  {
+    .task-title {
+      margin-left: 30px;
+    }
+
+    .completed-glyph {
+      color: $tahi-primary;
+      position: absolute;
+      top: 15px;
+    }
+  }
 }
 
 // .card modifier:

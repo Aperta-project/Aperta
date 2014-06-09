@@ -28,18 +28,13 @@ feature "Editing paper", js: true do
 
   scenario "Author completes all metadata cards" do
     edit_paper = EditPaperPage.visit paper
-    edit_paper.should have_css('a.disabled-button')
+    expect(edit_paper).to have_css('a.disabled-button')
     edit_paper.cards[:metadata].each do |card|
       edit_paper.view_card card do |overlay|
         overlay.mark_as_complete
       end
-      # rapidly transitioning from paper.edit to task and back
-      # will break subsequent transitions to task.  we need a sleep
-      # here for the time being.
-      sleep 0.1
-
     end
-    edit_paper.should_not have_css('a.disabled-button')
+    expect(edit_paper).to_not have_css('a.disabled-button')
   end
 
   scenario "author placeholder text" do

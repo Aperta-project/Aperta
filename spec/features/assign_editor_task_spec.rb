@@ -17,7 +17,7 @@ feature "Assigns Editor", js: true do
   end
 
   scenario "Admin can assign an editor to a paper" do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     paper_page = dashboard_page.view_submitted_paper 'foobar'
     task_manager_page = paper_page.visit_task_manager
 
@@ -29,15 +29,6 @@ feature "Assigns Editor", js: true do
       overlay.paper_editor = editor.full_name
       overlay.mark_as_complete
       expect(overlay).to be_completed
-    end
-
-    task_manager_page.reload
-
-    needs_editor_phase = task_manager_page.phase 'Assign Editor'
-    needs_editor_phase.view_card 'Assign Editor' do |overlay|
-      expect(overlay).to be_completed
-      expect(overlay.assignee).to eq admin.full_name.upcase
-      expect(overlay.paper_editor).to eq editor.full_name
     end
   end
 end

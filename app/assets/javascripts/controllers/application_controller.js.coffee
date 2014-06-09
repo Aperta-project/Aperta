@@ -14,6 +14,10 @@ ETahi.ApplicationController = Ember.Controller.extend
   # this will get overridden by inject except in testing cases.
   getCurrentUser: -> null
 
+  clearError:( ->
+    @set('error', null)
+  ).observes('currentPath')
+
   connectToES:(->
     return unless @get('currentUser')
     params =

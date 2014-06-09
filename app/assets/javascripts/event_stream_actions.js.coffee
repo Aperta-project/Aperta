@@ -22,6 +22,7 @@ ETahi.EventStreamActions = {
   destroy: (esData)->
     esData.task_ids.forEach (taskId) =>
       task = @store.findTask(taskId)
-      task.deleteRecord()
-      task.triggerLater('didDelete')
+      if task
+        task.deleteRecord()
+        task.triggerLater('didDelete')
 }

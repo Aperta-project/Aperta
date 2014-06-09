@@ -8,7 +8,6 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
   dataType: 'json'
   method: 'POST'
   railsMethod: 'POST'
-  bucketUrl: 'https://tahi-development.s3.amazonaws.com'
 
   acceptedFileTypes: ( ->
     types = @get('accept').replace(/\./g, '').replace(/,/g, '|')
@@ -28,7 +27,6 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
     uploader = @.$()
 
     params = @getProperties('dataType', 'method', 'acceptFileTypes')
-    params.url = @get('bucketUrl')
     params.dataType = 'xml'
     params.add = (e, uploadData) =>
       file = uploadData.files[0]
@@ -40,6 +38,7 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
           file_prefix: @get('filePrefix')
           content_type: file.type
         success: (data) ->
+          uploadData.url = data.url
           uploadData.formData =
             key: "#{data.key}/#{file.name}"
             policy: data.policy
@@ -54,11 +53,13 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
     that = @
     params.success = (fileData) ->
       filename = @files[0].name
+      location = $(fileData).find('Location').text().replace(/%2F/g, "/")
+
       $.ajax
         url: that.get('url')
         dataType: 'json'
         type: that.get('railsMethod')
-        data: {url: $(fileData).find('Location').text()}
+        data: {url: location}
         success: (data) =>
           that.sendAction('done', data, filename)
 

@@ -3,15 +3,20 @@ class DirectUploadsController < ApplicationController
 
   def request_policy
     render json: {
+      url: url,
       access_key_id: ENV['AWS_ACCESS_KEY_ID'],
       acl: 'public-read',
       policy: s3_upload_policy_document,
       signature: s3_upload_signature,
-      key: "uploads/#{current_user.id}/#{params[:file_prefix]}/#{SecureRandom.uuid}"
+      key: "pending/#{current_user.id}/#{params[:file_prefix]}/#{SecureRandom.uuid}"
     }
   end
 
   private
+
+  def url
+    "http://#{ENV['S3_BUCKET']}.s3.amazonaws.com"
+  end
 
   def request_params
     params.require(:file_prefix)
@@ -25,7 +30,7 @@ class DirectUploadsController < ApplicationController
         conditions: [
           { bucket: ENV['S3_BUCKET'] },
           { acl: 'public-read' },
-          ["starts-with", "$key", "uploads/"],
+          ["starts-with", "$key", "pending/"],
           ["eq", "$Content-Type", params[:content_type]],
           { success_action_status: '201' }
         ]

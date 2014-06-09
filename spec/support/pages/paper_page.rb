@@ -9,4 +9,8 @@ class PaperPage < Page
   def title
     find("#paper-title").text
   end
+
+  def css
+    find('#paper-body')['style']
+  end
 end

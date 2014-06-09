@@ -11,7 +11,10 @@ development:
 staging:
   <<: *default
   ssl: true
-  host: 'register.plos.org'
+  host: 'tahi-cas-staging.herokuapp.com'
+  port: '443'
+  login_url: '/login'
+  service_validate_url: '/serviceValidate'
 
 test:
   <<: *default

@@ -122,13 +122,58 @@
     }
   }
 
+  .pdf-css,
+  .epub-css,
+  .manuscript-css,
   .epub-cover {
     .title { padding: 0; }
     .admin-header {
       border-bottom: 0;
       padding-top: 25px;
       padding-bottom: 0;
-      margin-bottom: 10px;
+    }
+  }
+
+  .pdf-css,
+  .epub-css,
+  .manuscript-css {
+    span.save-status {
+      color: $tahi-blue-light;
+      vertical-align: -6px;
+      font-style: italic;
+    }
+
+    .modal-dialog {
+      width: 1120px;
+      textarea {
+        width: 100%;
+        height: 500px;
+      }
+
+      h1 { @include card-title; }
+
+      .modal-content {
+        padding: 20px 100px;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        border-radius: 0;
+        -webkit-border-radius: 0;
+      }
+
+      .modal-footer {
+        border-top: none;
+
+        button {
+          @extend .primary-button;
+          @extend .wide-button;
+        }
+
+        .cancel-link {
+          text-transform: uppercase;
+          margin-right: 10px;
+        }
+      }
+
     }
   }
 }

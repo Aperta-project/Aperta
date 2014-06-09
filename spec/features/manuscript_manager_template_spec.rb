@@ -34,10 +34,7 @@ feature "Manuscript Manager Templates", js: true do
       mmt_page.save
       expect(mmt_page).to have_no_content("You have unsaved changes")
       expect(page.current_url).to match(%r{/admin/journals/\d+/manuscript_manager_templates/\d+/edit})
-      mmt_page.reload
-      phase = mmt_page.find_phase 'Phase 1'
-      expect(mmt_page.paper_type).to eq("Test Type")
-      expect(phase).to have_card("Reviewer Report Task")
+      expect(mmt_page).to have_no_application_error
     end
   end
 end

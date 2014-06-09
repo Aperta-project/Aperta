@@ -1,0 +1,30 @@
+class PDFConverter
+  def self.convert(paper, downloader)
+    PDFKit.new(pdf_html paper, downloader).to_pdf
+  end
+
+  def self.pdf_html(paper, downloader)
+    publishing_info_presenter = PublishingInformationPresenter.new paper, downloader
+
+    <<-HTML
+      <html>
+        <head>
+          <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+          <style>
+            #{publishing_info_presenter.css}
+            #{paper.journal.pdf_css}
+          </style>
+        </head>
+        <body>
+          <div id='publishing-information'>
+            #{publishing_info_presenter.html}
+          </div>
+          <div id='paper-body' styles='page-break-before: always;'>
+            <h1>#{paper.display_title}</h1>
+            #{paper.body}
+          </div>
+        </body>
+      </html>
+    HTML
+  end
+end

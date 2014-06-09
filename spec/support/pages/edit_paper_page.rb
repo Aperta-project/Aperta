@@ -100,6 +100,10 @@ HERE
     SubmitPaperPage.new
   end
 
+  def css
+    find('#paper-body')['style']
+  end
+
   private
 
   def abstract_node

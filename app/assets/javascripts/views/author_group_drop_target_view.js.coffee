@@ -1,8 +1,10 @@
 ETahi.AuthorGroupDropTargetView = Ember.View.extend DragNDrop.Droppable,
   tagName: 'div'
-  classNames: ['author-drop-target']
+  classNameBindings: [':author-drop-target', 'isEditable::hidden']
 
   authorGroup: Ember.computed.alias('controller.model')
+  isEditable: Ember.computed.alias('controller.isEditable')
+
   position: ( ->
     @get('index') + 1
   ).property('index')

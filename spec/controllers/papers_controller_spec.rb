@@ -30,7 +30,7 @@ describe PapersController do
     end
 
     it "sends a pdf file back if there's a pdf extension" do
-      allow(PDFKit).to receive_message_chain(:new, :to_pdf)
+      allow(PDFConverter).to receive(:convert).and_return "<html><body>PDF CONTENT</body></html>"
       allow(controller).to receive(:render).and_return(nothing: true)
       expect(controller).to receive(:send_data)
       get :download, format: :pdf, id: paper.id

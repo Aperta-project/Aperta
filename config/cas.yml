@@ -1,0 +1,21 @@
+default: &default
+  ssl: false
+  host: 'localhost'
+  login_url: '/cas/login'
+  service_validate_url: '/cas/serviceValidate'
+
+development:
+  <<: *default
+  port: '8080'
+
+staging:
+  <<: *default
+  ssl: true
+  host: 'tahi-cas-staging.herokuapp.com'
+  port: '443'
+  login_url: '/login'
+  service_validate_url: '/serviceValidate'
+
+test:
+  <<: *default
+  port: '8080'

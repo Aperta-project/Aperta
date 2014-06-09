@@ -1,32 +1,40 @@
 <div id="tahi-container" class="admin-screen">
   <h1>Journal Administration</h1>
 
-  <div class="epub-cover">
-    <div class="admin-header row">
-      <div class='relative'>
-        <h2 class="title col-md-5">Default ePub Cover</h2>
+  {{partial "journal/upload-epub-cover"}}
 
-          <div class="epub-cover-image col-md-5 text-right">
-            {{#if model.epubCoverUrl}}
-              <a {{bind-attr href=epubCoverUrl}} target='_blank'>{{epubCoverFileName}}</a>
-            {{else}}
-              <p>There is currently no default ePub cover.</p>
-            {{/if}}
-          </div>
+  {{modal-text-area name='epub'
+                    class='epub-css'
+                    attr=epubCss
+                    action='saveAttr'
+                    resetSaveStatusAction='resetSaveStatuses'
+                    saveStatus=epubCssSaveStatus
+                    modalTitle='ePub CSS'
+                    modalButtonText='Edit ePub CSS'
+                    helperText="Enter or edit CSS to format the ePub output for this journal's papers."
+                    textAreaPlaceHolder='Type your CSS here'}}
 
-        <div class='epub-cover-upload col-md-2 pull-right'>
-          <span class="primary-button blue-box fileinput-button">
-            Upload ePub Cover
-            {{input id="epub-cover-upload"
-                            class="js-jquery-fileupload primary-button blue-box"
-                            type="file"
-                            name="journal[epub_cover]"
-                            model=model}}
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
+  {{modal-text-area name='pdf'
+                    class='pdf-css'
+                    attr=pdfCss
+                    action='saveAttr'
+                    resetSaveStatusAction='resetSaveStatuses'
+                    saveStatus=pdfCssSaveStatus
+                    modalTitle='PDF CSS'
+                    modalButtonText='Edit PDF CSS'
+                    helperText="Enter or edit CSS to format the PDF output for this journal's papers."
+                    textAreaPlaceHolder='Type your CSS here'}}
+
+  {{modal-text-area name='manuscript'
+                    class='manuscript-css'
+                    attr=manuscriptCss
+                    action='saveAttr'
+                    resetSaveStatusAction='resetSaveStatuses'
+                    saveStatus=manuscriptCssSaveStatus
+                    modalTitle='Manuscript CSS'
+                    modalButtonText='Edit Manuscript CSS'
+                    helperText='Enter or edit CSS to format the manuscript editor and output for this journal.'
+                    textAreaPlaceHolder='Type your CSS here'}}
 
   {{render "manuscript_manager_template/index" manuscriptManagerTemplates}}
   {{render "roles/index" roles}}

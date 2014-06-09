@@ -1,7 +1,7 @@
 ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   tagName: 'li'
   showEditAuthorForm: false
-  classNameBindings: ['showEditAuthorForm::edit-inactive']
+  classNameBindings: ['showEditAuthorForm::edit-inactive', 'isEditable:editable']
 
   attachHover: ( ->
     toggleHoverClass = (e) ->

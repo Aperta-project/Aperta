@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = SupportingInformation::VERSION
   s.authors     = ["Tahi"]
   s.email       = ["tahiprojectteam@plos.org"]
-  s.homepage    = "tahi.com"
-  s.summary     = "TODO: Summary of SupportingInformation."
-  s.description = "TODO: Description of SupportingInformation."
+  s.homepage    = "http://www.tahi.com"
+  s.summary     = "Allows users to upload supporting materials for tasks"
+  s.description = "This is a generic version of uploading materials to support figure tasks"
   # s.license     = "Copyright"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile"]

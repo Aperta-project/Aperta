@@ -35,6 +35,14 @@ class PageFragment
     end
   end
 
+  def has_no_application_error?
+    session.has_no_css?("#application-error")
+  end
+
+  def has_application_error?
+    session.has_css?("#application-error")
+  end
+
   def view_card card_name, overlay_class=nil, &block
     synchronize_content! card_name
     session.all('.card-content', text: card_name).first.click
@@ -48,6 +56,7 @@ class PageFragment
     overlay = overlay_class.new session.find(".overlay")
     if block_given?
       block.call overlay
+      expect(overlay).to have_no_application_error
       overlay.dismiss
     else
       overlay

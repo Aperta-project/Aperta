@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/dandorman/omniauth-cas.git
+  revision: 83210ff52667c2c4574666dcfc9b577542fb595f
+  ref: 83210ff52667c2c4574666dcfc9b577542fb595f
+  specs:
+    omniauth-cas (1.0.4)
+      addressable (~> 2.3)
+      nokogiri (~> 1.5)
+      omniauth (~> 1.2.0)
+
+GIT
   remote: git://github.com/neo-tahi/jquery-fileupload-rails.git
   revision: 5252879d45d9da58687033e32e290a2af7457a40
   specs:
@@ -63,7 +73,7 @@ GEM
       tzinfo (~> 1.1)
     acts_as_list (0.4.0)
       activerecord (>= 3.0)
-    addressable (2.3.5)
+    addressable (2.3.6)
     american_date (1.1.0)
     arel (5.0.1.20140414130214)
     barber (0.4.2)
@@ -87,7 +97,7 @@ GEM
     byebug (2.7.0)
       columnize (~> 0.3)
       debugger-linecache (~> 1.2)
-    capybara (2.2.1)
+    capybara (2.3.0)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
@@ -235,7 +245,7 @@ GEM
     mini_magick (3.7.0)
       subexec (~> 0.2.1)
     mini_portile (0.6.0)
-    minitest (5.3.3)
+    minitest (5.3.4)
     multi_json (1.10.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -327,7 +337,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     raindrops (0.12.0)
-    rake (10.3.1)
+    rake (10.3.2)
     rdoc (3.12.2)
       json (~> 1.4)
     remotipart (1.2.1)
@@ -356,7 +366,7 @@ GEM
     rspec-support (3.0.0.beta2)
     ruby-hmac (0.4.0)
     rubyzip (1.1.3)
-    safe_yaml (1.0.1)
+    safe_yaml (1.0.3)
     sass (3.2.19)
     sass-rails (4.0.3)
       railties (>= 4.0.0, < 5.0)
@@ -394,20 +404,20 @@ GEM
       sprockets (~> 2.8)
     sqlite3 (1.3.8)
     subexec (0.2.3)
-    teaspoon (0.7.9)
+    teaspoon (0.8.0)
       railties (>= 3.2.5, < 5)
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
       rack (>= 1.0.0)
     thor (0.19.1)
-    thread_safe (0.3.3)
+    thread_safe (0.3.4)
     tilt (1.4.1)
     timeliness (0.3.7)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (1.1.0)
+    tzinfo (1.2.1)
       thread_safe (~> 0.1)
     uglifier (2.5.0)
       execjs (>= 0.3.0)
@@ -420,11 +430,11 @@ GEM
       rack
       raindrops (~> 0.7)
     uniform_notifier (1.4.0)
-    vcr (2.9.0)
+    vcr (2.9.2)
     warden (1.2.3)
       rack (>= 1.0)
-    webmock (1.17.4)
-      addressable (>= 2.2.7)
+    webmock (1.18.0)
+      addressable (>= 2.3.6)
       crack (>= 0.3.2)
     websocket (1.0.7)
     xpath (2.0.0)
@@ -441,7 +451,7 @@ DEPENDENCIES
   bower-rails
   bugsnag
   bullet
-  capybara
+  capybara (~> 2.3.0)
   carrierwave
   chosen-rails (~> 1.1.0)
   codeclimate-test-reporter
@@ -466,6 +476,7 @@ DEPENDENCIES
   mini_magick
   newrelic_rpm
   nokogiri
+  omniauth-cas!
   omniauth-oauth2
   ordinalize
   pdfkit

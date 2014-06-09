@@ -43,12 +43,55 @@ class JournalPage < Page
   end
 
   def upload_epub_cover
-    session.execute_script "$('#epub-cover-upload').css('position', 'relative')"
     attach_file('epub-cover-upload', Rails.root.join('spec', 'fixtures', 'yeti.jpg'), visible: false)
-    session.execute_script "$('#epub-cover-upload').css('position', 'absolute')"
+  end
+
+  def update_epub_css css
+    click_on 'Edit ePub CSS'
+    find('textarea').set css
+    click_on 'Save'
+  end
+
+  def view_epub_css
+    click_on 'Edit ePub CSS'
+    find('textarea').value
   end
 
   def epub_cover
-    page.find('.epub-cover-image a').text
+    find('.epub-cover-image a').text
+  end
+
+  def epub_css_saved?
+    find('.epub-css span.save-status').text == "Saved"
+  end
+
+  def view_pdf_css
+    click_on 'Edit PDF CSS'
+    find('textarea').value
+  end
+
+  def update_pdf_css css
+    click_on 'Edit PDF CSS'
+    find('textarea').set css
+    click_on 'Save'
+  end
+
+  def pdf_css_saved?
+    find('.pdf-css span.save-status').text == "Saved"
+  end
+
+  def update_manuscript_css css
+    click_on 'Edit Manuscript CSS'
+    find('textarea').set css
+    click_on 'Save'
+  end
+
+  def view_manuscript_css
+    click_on 'Edit Manuscript CSS'
+    find('textarea').value
+  end
+
+  def manuscript_css_saved?
+    find('.manuscript-css span.save-status').text == "Saved"
   end
 end

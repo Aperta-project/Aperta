@@ -1,5 +1,14 @@
 class AdminJournalSerializer < ActiveModel::Serializer
-  attributes :id, :name, :logo_url, :paper_types, :task_types, :epub_cover_url, :epub_cover_file_name
+  attributes :id,
+             :name,
+             :logo_url,
+             :paper_types,
+             :task_types,
+             :epub_cover_url,
+             :epub_cover_file_name,
+             :epub_css,
+             :pdf_css,
+             :manuscript_css
   has_many :manuscript_manager_templates, include: true
   has_many :roles, embed: :ids, include: true
 

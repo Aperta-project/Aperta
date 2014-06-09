@@ -5,8 +5,8 @@
     {{#each task in view.tasks}}
       <div {{bind-attr class=":card :flow-card task.completed:card-completed task.isMessage:card-message"}}>
         <div class="card-content" {{action 'viewCard' litePaper task}}>
-          <span class="glyphicon glyphicon-ok completed-glyph"></span>
-          {{task.title}}
+          <div class="glyphicon glyphicon-ok completed-glyph"></div>
+          <div class="task-title">{{task.title}}</div>
         </div>
         <span {{action 'removeTask'}}
           class="glyphicon glyphicon-remove-circle remove-card"

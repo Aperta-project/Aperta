@@ -35,14 +35,6 @@ feature "Add contributing authors", js: true do
     end
 
     expect(edit_paper.authors).to eq "Neils B. Bohr, Nikola Tesla"
-
-    edit_paper.reload
-
-    expect(edit_paper.authors).to eq "Neils B. Bohr, Nikola Tesla"
-
-    edit_paper.view_card 'Add Authors' do |overlay|
-      expect(overlay).to be_completed
-    end
   end
 
   context "with an existing author" do

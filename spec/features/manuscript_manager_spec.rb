@@ -31,6 +31,7 @@ feature "Manuscript Manager", js: true do
       new_phases = task_manager_page.phases
       expect(new_phases[1]).to eq("New Phase")
       expect(new_phases[3]).to eq("New Phase")
+      expect(task_manager_page).to have_no_application_error
       task_manager_page.reload
       reloaded_phases = task_manager_page.phases
       expect(reloaded_phases[1]).to eq("New Phase")
@@ -44,9 +45,10 @@ feature "Manuscript Manager", js: true do
       task_manager_page = TaskManagerPage.visit paper
       phase = task_manager_page.phase 'Submission Data'
       phase.add_phase
-      task_manager_page.reload
       new_phase = task_manager_page.phase 'New Phase'
-      expect { new_phase.remove_phase; sleep 0.4 }.to change { task_manager_page.phase_count }.by(-1)
+      new_phase.remove_phase
+      expect(task_manager_page).to have_no_content 'New Phase'
+      expect(task_manager_page).to have_no_application_error
     end
 
     scenario 'Non-empty phase' do
@@ -57,20 +59,21 @@ feature "Manuscript Manager", js: true do
   end
 
   scenario 'Removing a task' do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     paper_page = dashboard_page.view_submitted_paper paper.short_title
     task_manager_page = paper_page.visit_task_manager
 
     phase = task_manager_page.phase 'Submission Data'
     expect { phase.remove_card('Upload Manuscript') }.to change { phase.card_count }.by(-1)
+    expect(task_manager_page).to have_no_application_error
   end
 
   scenario "Admin can assign a paper to themselves" do
-    dashboard_page = DashboardPage.visit
+    dashboard_page = DashboardPage.new
     paper_page = dashboard_page.view_submitted_paper paper.short_title
     task_manager_page = paper_page.visit_task_manager
 
-    sleep 0.4
+    expect(task_manager_page).to have_content 'Assign Editor'
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Admin' do |overlay|
       expect(overlay.assignee).not_to eq admin.full_name
@@ -80,32 +83,12 @@ feature "Manuscript Manager", js: true do
       expect(overlay.assignee).to eq admin.full_name
     end
 
-    task_manager_page.reload
-    needs_editor_phase = task_manager_page.phase 'Assign Editor'
-    needs_editor_phase.view_card 'Assign Admin' do |overlay|
-      expect(overlay).to be_completed
-      expect(overlay.assignee).to eq admin.full_name
-    end
+    expect(task_manager_page).to have_no_application_error
 
     needs_editor_phase = TaskManagerPage.new.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay).to_not be_completed
       expect(overlay.assignee).to eq admin.full_name.upcase
     end
-  end
-
-  scenario 'Renaming a phase' do
-    # TODO: Make this work
-    # dashboard_page = DashboardPage.visit
-    # paper_page = dashboard_page.view_submitted_paper paper.short_title
-    # task_manager_page = paper_page.visit_task_manager
-
-    # sleep 0.4
-    # phase = task_manager_page.phase 'Assign Editor'
-    # execute_script("return $('.column h2')[0].classList.add('changedColumn')")
-    # title = phase.all('.column h2').first
-    # title.set "Some Other Title"
-    # execute_script("return $('.changedColumn').blur()")
-    # page.reload
   end
 end

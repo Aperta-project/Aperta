@@ -79,4 +79,19 @@ class JournalPage < Page
   def pdf_css_saved?
     find('.pdf-css span.save-status').text == "Saved"
   end
+
+  def update_manuscript_css css
+    click_on 'EDIT MANUSCRIPT CSS'
+    fill_in 'manuscript-css-content', with: css
+    click_on 'Save'
+  end
+
+  def view_manuscript_css
+    click_on 'EDIT MANUSCRIPT CSS'
+    find('#manuscript-css-content').value
+  end
+
+  def manuscript_css_saved?
+    find('.manuscript-css span.save-status').text == "Saved"
+  end
 end

@@ -10,3 +10,4 @@ ETahi.AdminJournal = DS.Model.extend
   epubCoverFileName: a('string')
   epubCss: a('string')
   pdfCss: a('string')
+  manuscriptCss: a('string')

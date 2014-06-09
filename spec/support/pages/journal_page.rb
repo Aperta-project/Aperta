@@ -47,14 +47,14 @@ class JournalPage < Page
   end
 
   def update_epub_css css
-    click_on 'EDIT EPUB CSS'
-    fill_in 'epub-css-content', with: css
+    click_on 'Edit ePub CSS'
+    find('textarea').set css
     click_on 'Save'
   end
 
   def view_epub_css
-    click_on 'EDIT EPUB CSS'
-    find('#epub-css-content').value
+    click_on 'Edit ePub CSS'
+    find('textarea').value
   end
 
   def epub_cover
@@ -66,13 +66,13 @@ class JournalPage < Page
   end
 
   def view_pdf_css
-    click_on 'EDIT PDF CSS'
-    find('#pdf-css-content').value
+    click_on 'Edit PDF CSS'
+    find('textarea').value
   end
 
   def update_pdf_css css
-    click_on 'EDIT PDF CSS'
-    fill_in 'pdf-css-content', with: css
+    click_on 'Edit PDF CSS'
+    find('textarea').set css
     click_on 'Save'
   end
 
@@ -81,14 +81,14 @@ class JournalPage < Page
   end
 
   def update_manuscript_css css
-    click_on 'EDIT MANUSCRIPT CSS'
-    fill_in 'manuscript-css-content', with: css
+    click_on 'Edit Manuscript CSS'
+    find('textarea').set css
     click_on 'Save'
   end
 
   def view_manuscript_css
-    click_on 'EDIT MANUSCRIPT CSS'
-    find('#manuscript-css-content').value
+    click_on 'Edit Manuscript CSS'
+    find('textarea').value
   end
 
   def manuscript_css_saved?

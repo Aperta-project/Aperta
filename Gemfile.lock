@@ -420,7 +420,7 @@ GEM
       rack
       raindrops (~> 0.7)
     uniform_notifier (1.4.0)
-    vcr (2.9.0)
+    vcr (2.9.2)
     warden (1.2.3)
       rack (>= 1.0)
     webmock (1.17.4)

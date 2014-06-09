@@ -38,6 +38,11 @@ class Paper < ActiveRecord::Base
     end
   end
 
+
+  def role_for(role:, user:)
+    paper_roles(role => true, user: user)
+  end
+
   def tasks_for_type(klass_name)
     tasks.where(type: klass_name)
   end

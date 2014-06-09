@@ -28,28 +28,10 @@ class PapersPolicy < ApplicationPolicy
 
   private
 
-  def paper_editor?
-    Paper.
-      where(id: paper.id).
-      joins(:paper_roles).
-      where("paper_roles.user_id = ? AND paper_roles.editor = ?", current_user.id, true).
-      present?
-  end
-
-  def paper_reviewer?
-    Paper.
-      where(id: paper.id).
-      joins(:paper_roles).
-      where("paper_roles.user_id = ? AND paper_roles.reviewer = ?", current_user.id, true).
-      present?
-  end
-
-  def paper_admin?
-    Paper.
-      where(id: paper.id).
-      joins(:paper_roles).
-      where("paper_roles.user_id = ? AND paper_roles.admin = ?", current_user.id, true).
-      present?
+  %w(editor reviewer admin).each do |role|
+    define_method "paper_#{role}?" do
+      paper.role_for(role: role, user: current_user).present?
+    end
   end
 
   def author?

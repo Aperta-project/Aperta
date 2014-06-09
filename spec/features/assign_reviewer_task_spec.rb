@@ -25,24 +25,11 @@ feature "Assigns Reviewer", js: true do
   end
 
   scenario "Editor can assign a reviewer to a paper" do
-    dashboard_page = DashboardPage.visit
-    reviewer_card = dashboard_page.view_card 'Assign Reviewers'
-    paper_show_page = reviewer_card.view_paper
-
-    paper_show_page.reload
-
-    paper_show_page.view_card 'Assign Reviewers' do |overlay|
+    dashboard_page = DashboardPage.new
+    dashboard_page.view_card 'Assign Reviewers' do |overlay|
       overlay.paper_reviewers = [albert.full_name, neil.full_name]
       overlay.mark_as_complete
       expect(overlay).to be_completed
-    end
-
-    paper_show_page.reload
-
-    paper_show_page.view_card 'Assign Reviewers' do |overlay|
-      expect(overlay).to be_completed
-      expect(overlay.paper_reviewers).to include(albert.full_name)
-      expect(overlay.paper_reviewers).to include(neil.full_name)
     end
   end
 end

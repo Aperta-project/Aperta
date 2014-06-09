@@ -21,6 +21,10 @@ class FlowManagerPage < Page
     page.has_content?(title)
   end
 
+  def has_no_column? title
+    page.has_no_content?(title)
+  end
+
   class CardFragment < PageFragment
     def title
       text

@@ -16,8 +16,6 @@ feature "Upload default ePub cover for journal", js: true do
     journal_page
     journal_page.upload_epub_cover
     expect(journal_page.epub_cover).to eq('yeti.jpg')
-
-    journal_page.reload
-    expect(journal_page.epub_cover).to eq('yeti.jpg')
+    expect(journal_page).to have_no_application_error
   end
 end

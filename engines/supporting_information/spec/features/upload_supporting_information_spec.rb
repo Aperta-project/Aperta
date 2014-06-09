@@ -19,35 +19,12 @@ feature "Upload Supporting Information", js: true do
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end
-
-    edit_paper.reload
-
-    edit_paper.view_card 'Supporting Information' do |overlay|
-      expect(overlay).to have_file('yeti.tiff')
-      expect(overlay).to be_completed
-    end
   end
 
   scenario "Author destroys supporting information immediately" do
     edit_paper = EditPaperPage.visit paper
     edit_paper.view_card 'Supporting Information' do |overlay|
       overlay.attach_supporting_information
-      find('.figure-thumbnail').hover
-      find('.glyphicon-trash').click
-      find('.figure-delete-button').click
-      expect(overlay).to_not have_selector('.figure-image')
-    end
-  end
-
-  scenario "Author destroys supporting information after page reload" do
-    edit_paper = EditPaperPage.visit paper
-    edit_paper.view_card 'Supporting Information' do |overlay|
-      overlay.attach_supporting_information
-    end
-
-    edit_paper.reload
-
-    edit_paper.view_card 'Supporting Information' do |overlay|
       find('.figure-thumbnail').hover
       find('.glyphicon-trash').click
       find('.figure-delete-button').click

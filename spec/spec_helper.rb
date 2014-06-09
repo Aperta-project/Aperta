@@ -31,9 +31,10 @@ VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
   config.hook_into :webmock
   config.allow_http_connections_when_no_cassette = false
-  config.default_cassette_options = { record: :new_episodes }
+  config.default_cassette_options = { record: :once }
   config.configure_rspec_metadata!
   config.ignore_localhost = true # Makes Selenium work
+  config.ignore_hosts 'codeclimate.com'
 end
 
 RSpec.configure do |config|

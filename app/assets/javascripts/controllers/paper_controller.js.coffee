@@ -17,7 +17,7 @@ ETahi.PaperController = Ember.ObjectController.extend
       url: "/papers/#{@get('id')}/manuscript_manager"
       method: 'GET'
       headers:
-        'TAHI_AUTHORIZATION_CHECK': true
+        'Tahi-Authorization-Check': true
       success: (data) =>
         @set('canViewManuscriptManager', true)
   ).observes('model')

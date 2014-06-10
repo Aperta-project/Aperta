@@ -38,7 +38,7 @@ module StandardTasks
     private
 
     def paper_policy
-      @paper_policy ||= PaperFilter.new(figure_paper.id, current_user)
+      @paper_policy ||= PaperQuery.new(figure_paper.id, current_user)
     end
 
     def figure_paper

@@ -6,8 +6,8 @@ class CommentsController < ApplicationController
 
   def create
     task = Task.find(params[:comment][:message_task_id])
-    p = PaperFilter.new task.paper, current_user
-    if p.paper
+
+    if PaperQuery.new(task.paper, current_user).paper
       @comment = task.comments.create! new_comment_params
       render json: @comment
     else
@@ -15,11 +15,11 @@ class CommentsController < ApplicationController
     end
   end
 
+  private
+
   def new_comment_params
     params.require(:comment).permit(:commenter_id, :body)
   end
-
-  private
 
   def render_404
     head 404

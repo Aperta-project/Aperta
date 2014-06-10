@@ -13,7 +13,7 @@ class MessageTask < Task
   end
 
   def authorize_update?(params, user)
-    p = PaperFilter.new paper, user
+    p = PaperQuery.new paper, user
     p.paper ? true : false
   end
 end

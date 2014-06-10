@@ -1,4 +1,4 @@
-ETahi.FlowManagerRoute = ETahi.AdminAuthorizedRoute.extend
+ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
   beforeModel: (transition) ->
     @handleUnauthorizedRequest(transition) unless @getCurrentUser? and @getCurrentUser().get('admin')
 

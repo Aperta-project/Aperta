@@ -1,5 +1,6 @@
 class PapersController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
+  before_action :enforce_policy
 
   layout 'ember'
 
@@ -7,14 +8,12 @@ class PapersController < ApplicationController
 
   def show
     respond_to do |format|
-      @paper = PaperFilter.new(params[:id], current_user).paper
-
       format.html do
         render 'ember/index'
       end
 
       format.json do
-        render json: @paper
+        render json: paper
       end
     end
   end
@@ -24,45 +23,40 @@ class PapersController < ApplicationController
   end
 
   def edit
-    @paper = PaperFilter.new(params[:id], current_user).paper
     render 'ember/index'
   end
 
   def update
-    @paper = Paper.find(params[:id])
-    if @paper.update(paper_params)
+    if paper.update(paper_params)
       head 204
     else
       # Ember doesn't re-render the paper if there is an error.
       # e.g. Fails to update on adding new authors, but new authors stay in
       # memory client side even though they aren't persisted in the DB.
-      respond_with @paper
+      respond_with paper
     end
   end
 
   def upload
-    @paper = Paper.find(params[:id])
-
-    manuscript = @paper.manuscript || @paper.build_manuscript
+    manuscript = paper.manuscript || paper.build_manuscript
     manuscript.source = params[:upload_file]
     manuscript.save
 
     manuscript_data = OxgarageParser.parse(params[:upload_file].path)
-    @paper.update manuscript_data
+    paper.update manuscript_data
     head :no_content
   end
 
   def download
-    @paper = PaperFilter.new(params[:id], current_user).paper
     respond_to do |format|
       format.html do
-        epub = EpubConverter.convert @paper, current_user
+        epub = EpubConverter.convert paper, current_user
         send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
       end
 
       format.pdf do
-        send_data PDFConverter.convert(@paper, current_user),
-                  filename: @paper.display_title.parameterize("_"),
+        send_data PDFConverter.convert(paper, current_user),
+                  filename: paper.display_title.parameterize("_"),
                   type: 'application/pdf',
                   disposition: 'attachment'
       end
@@ -86,4 +80,11 @@ class PapersController < ApplicationController
     )
   end
 
+  def paper
+    Paper.find(params[:id]) if params[:id]
+  end
+
+  def enforce_policy
+    authorize_action!(paper: paper)
+  end
 end

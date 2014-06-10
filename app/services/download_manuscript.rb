@@ -7,5 +7,6 @@ class DownloadManuscript
     manuscript.source.download!(url)
     manuscript.save
     paper.update OxgarageParser.new(open(manuscript.source.file.url)).to_hash
+    manuscript
   end
 end

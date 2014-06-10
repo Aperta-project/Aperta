@@ -11,7 +11,7 @@ describe FiguresController do
   describe "destroying the figure" do
     subject(:do_request) { delete :destroy, id: paper.figures.last.id, paper_id: paper.id }
     before(:each) do
-      paper.figures.create! attachment: fixture_file_upload('yeti.tiff', 'image/tiff')
+      paper.figures.create!
     end
 
     it "destroys the figure record" do
@@ -32,7 +32,7 @@ describe FiguresController do
 
   describe "PUT 'update_attachment'" do
     let(:url) { "http://someawesomeurl.com" }
-    let(:figure) { paper.figures.create!(attachment: fixture_file_upload('yeti.tiff', 'image/tiff')) }
+    let(:figure) { paper.figures.create! }
     it "calls DownloadFigure" do
       expect(DownloadFigure).to receive(:call).with(figure, url).and_return(figure)
       put :update_attachment, format: "json", id: figure.id, url: url
@@ -43,7 +43,7 @@ describe FiguresController do
   describe "PUT 'update'" do
     subject(:do_request) { patch :update, id: paper.figures.last.id, paper_id: paper.id, figure: {title: "new title", caption: "new caption"}, format: :json }
     before(:each) do
-      paper.figures.create! attachment: fixture_file_upload('yeti.tiff', 'image/tiff')
+      paper.figures.create!
     end
 
     it "allows updates for title and caption" do

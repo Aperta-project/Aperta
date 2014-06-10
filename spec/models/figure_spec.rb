@@ -3,7 +3,9 @@ require 'spec_helper'
 describe Figure do
   let(:paper) { FactoryGirl.create :paper }
   let(:figure) {
-    paper.figures.create! attachment: File.open('spec/fixtures/yeti.tiff')
+    with_aws_cassette('figure') do
+      paper.figures.create! attachment: File.open('spec/fixtures/yeti.tiff')
+    end
   }
   describe "#access_details" do
     it "returns a hash with attachment src, filename, alt, and S3 URL" do

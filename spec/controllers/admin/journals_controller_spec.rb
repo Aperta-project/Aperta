@@ -12,22 +12,28 @@ describe Admin::JournalsController do
         sign_in admin
       end
       it "stores the epub cover image successfully" do
-        patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
+        with_aws_cassette('admin_journal_controller') do
+          patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
+        end
         uploader = journal.reload.epub_cover
 
         expect(uploader).to be_a EpubCoverUploader
-        expect(uploader.file.filename).to eq 'yeti.jpg'
+        expect(uploader.file.filename).to match /yeti\.jpg/
       end
 
       it "renders status 2xx" do
-        patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
+        with_aws_cassette('admin_journal_controller') do
+          patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
+        end
         expect(response.status).to eq 200
       end
     end
 
     context "when the user is unauthorized" do
       it "renders status 401" do
-        xhr :patch, :update, id: journal.id, admin_journal: { epub_cover: image_file }
+        with_aws_cassette('admin_journal_controller') do
+          xhr :patch, :update, id: journal.id, admin_journal: { epub_cover: image_file }
+        end
         expect(response.status).to eq 401
       end
     end

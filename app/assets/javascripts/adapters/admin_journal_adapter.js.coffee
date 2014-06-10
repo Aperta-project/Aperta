@@ -1,5 +1,5 @@
 ETahi.AdminJournalAdapter = DS.ActiveModelAdapter.extend
   headers:
-    'TAHI_AUTHORIZATION_CHECK': true
+    'Tahi-Authorization-Check': true
   pathForType: (type) ->
     'admin/journals'

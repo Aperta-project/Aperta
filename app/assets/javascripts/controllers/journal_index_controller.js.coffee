@@ -3,6 +3,12 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
   pdfCssSaveStatus: ''
   manuscriptCssSaveStatus: ''
 
+  epubCoverUploadUrl: (->
+    "/admin/journals/#{@get('model.id')}"
+  ).property()
+
+  epubCoverUploading: false
+
   journalUrl: (->
     "/admin/journals/#{@get('model.id')}"
   ).property('model.id')
@@ -16,7 +22,11 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
   ).property('epubCoverUploadedAt')
 
   actions:
-    coverUploaded: (data) ->
+    epubCoverUploading: ->
+      @set('epubCoverUploading', true)
+
+    epubCoverUploaded: (data) ->
+      @set('epubCoverUploading', false)
       journal = data.result.admin_journal
       @setProperties
         epubCoverUrl: journal.epub_cover_url

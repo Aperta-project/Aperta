@@ -69,13 +69,6 @@ feature "Event streaming", js: true do
       expect(page).to have_css(".overlay-content")
     end
 
-    scenario "marking complete" do
-      expect(page).to have_css("#task_completed:not(:checked)")
-      @mt.completed = true
-      @mt.save
-      expect(page).to have_css("#task_completed:checked")
-    end
-
     scenario "adding new comments" do
       @mt.comments.create body: "Hey-o", commenter_id: create(:user).id
       within '.message-comments' do

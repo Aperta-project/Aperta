@@ -38,7 +38,6 @@ class Paper < ActiveRecord::Base
     end
   end
 
-
   def role_for(role:, user:)
     paper_roles(role => true, user: user)
   end

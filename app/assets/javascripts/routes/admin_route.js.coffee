@@ -1,4 +1,4 @@
-ETahi.AdminRoute = ETahi.AdminAuthorizedRoute.extend
+ETahi.AdminRoute = ETahi.AuthorizedRoute.extend
   model: ->
     @store.find('adminJournal')
 

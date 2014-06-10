@@ -1,4 +1,4 @@
-ETahi.PaperIndexRoute = ETahi.AdminAuthorizedRoute.extend
+ETahi.PaperIndexRoute = ETahi.AuthorizedRoute.extend
   afterModel: (model) ->
     @transitionTo('paper.edit', model) unless model.get('submitted')
 

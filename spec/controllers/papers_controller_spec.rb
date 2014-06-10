@@ -78,7 +78,7 @@ describe PapersController do
       end
 
       it "renders the errors for the paper if it can't be saved" do
-        post :create, { paper: { short_title: ''}, format: :json }
+        post :create, paper: { short_title: '' }, format: :json
         expect(response.status).to eq(422)
       end
 

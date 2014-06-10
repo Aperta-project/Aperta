@@ -25,7 +25,6 @@ class PapersPolicy < ApplicationPolicy
     current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer?
   end
 
-
   private
 
   %w(editor reviewer admin).each do |role|

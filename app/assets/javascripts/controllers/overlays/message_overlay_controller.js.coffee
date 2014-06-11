@@ -15,8 +15,7 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
     commentsLength =  @get('sortedComments.length')
     comments = @get('sortedComments')
     if @get('showAllComments') then comments else comments.slice(commentsLength - 5)
-  ).property('model.comments.length', 'model.comments.@each.commentLook', 'showAllComments')
-
+  ).property('sortedComments.length', 'model.comments.@each.commentLook', 'showAllComments')
 
   setUnreadStates: ( ->
     return if @get('isClosed')
@@ -36,8 +35,8 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
   ).observes('shownComments.@each').on('init')
 
   showAllComments: (->
-    @get('sortedComments.length') < 6
-  ).property('sortedComments.length')
+    @get('comments.length') < 6
+  ).property('comments.length')
 
   setupTooltips: (->
     Ember.run.schedule 'afterRender', ->
@@ -45,8 +44,8 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
   ).observes('model.participants.length')
 
   omittedCommentsCount: (->
-    @get('sortedComments.length') - 5
-  ).property('model.comments.length')
+    @get('comments.length') - 5
+  ).property('comments.length')
 
   actions:
     clearMessageContent: ->

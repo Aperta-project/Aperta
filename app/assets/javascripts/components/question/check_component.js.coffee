@@ -1,7 +1,7 @@
-ETahi.QuestionRadioComponent = Ember.Component.extend
+ETahi.QuestionCheckComponent = Ember.Component.extend
   tagName: 'div'
   classNames: ['question']
-  layoutName: 'components/question/radio_component'
+  layoutName: 'components/question/check_component'
   helpText: null
 
   model: (->

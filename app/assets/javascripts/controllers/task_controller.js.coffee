@@ -25,5 +25,8 @@ ETahi.TaskController = Ember.ObjectController.extend
     closeAction: ->
       @send(@get('onClose'))
 
+    routeWillDeactivate: ->
+      null
+
     redirect: ->
       @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect'))

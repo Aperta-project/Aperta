@@ -7,21 +7,31 @@ class Comment < ActiveRecord::Base
 
   validates :task, :body, presence: true
 
-  after_create :create_comment_look
+  def self.create_with_comment_look(params, task)
+    c = new params
+    if task.class.method_defined?(:participants)
+      task.participants.each do |participant|
+        next if participant.id == params[:commenter_id].to_i
+        c.comment_looks.new user_id: participant.id, comment: c
+      end
+    end
+    c.save!
+    c
+  end
+
+  def meta_type
+    self.class.name
+  end
+
+  def has_meta?
+    true
+  end
+
+  def meta_id
+    id
+  end
 
   private
-
-  def create_comment_look
-    return unless task.class.method_defined?(:participants)
-    task.participants.each do |participant|
-      next if participant.id == commenter.id
-      CommentLook.create! user_id: participant.id, comment_id: id
-    end
-  end
-
-  def id_for_stream
-    task.id
-  end
 
   def task_payload
     { task_id: task.id, paper_id: task.paper.id }

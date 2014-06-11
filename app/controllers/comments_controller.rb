@@ -8,8 +8,16 @@ class CommentsController < ApplicationController
     task = Task.find(params[:comment][:message_task_id])
 
     if PaperQuery.new(task.paper, current_user).paper
-      @comment = task.comments.create! new_comment_params
-      render json: @comment
+      render json: task.comments.create_with_comment_look(new_comment_params, task)
+    else
+      head 404
+    end
+  end
+
+  def show
+    comment = Comment.find(params[:id])
+    if PaperQuery.new(comment.task.paper, current_user).paper
+      render json: comment
     else
       head 404
     end

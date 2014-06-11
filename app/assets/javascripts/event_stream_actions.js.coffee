@@ -1,4 +1,4 @@
-ETahi.EventStreamActions = {
+ETahi.EventStreamActions =
   created: (esData) ->
     Ember.run =>
       if esData.task
@@ -12,6 +12,7 @@ ETahi.EventStreamActions = {
         # won't trigger the relationship update.
         phase.get('tasks').addObject(task)
         task.triggerLater('didLoad')
+
   updated: (esData)->
     Ember.run =>
       if esData.task
@@ -19,10 +20,16 @@ ETahi.EventStreamActions = {
         @store.pushPayload('task', esData)
         task = @store.findTask(taskId)
         task.triggerLater('didLoad')
+
   destroy: (esData)->
     esData.task_ids.forEach (taskId) =>
       task = @store.findTask(taskId)
       if task
         task.deleteRecord()
         task.triggerLater('didDelete')
-}
+
+  meta: (modelName, id) ->
+    if model = @store.getById(modelName, id)
+      model.reload()
+    else
+      store.find(modelName, id)

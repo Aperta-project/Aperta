@@ -76,11 +76,11 @@ namespace :data do
       remaining_journals = journals
 
       progress("large completed manuscript", 20) do
-        FactoryGirl.create(:paper, :with_tasks, :completed, user: User.order("RANDOM()").first, journal: first_journal)
+        FactoryGirl.create(:paper, :with_tasks, :completed, user: random(User), journal: first_journal)
       end
 
       progress("typical completed manuscript", 80) do
-        FactoryGirl.create(:paper, :with_tasks, :completed, user: User.order("RANDOM()").first, journal: remaining_journals.sample)
+        FactoryGirl.create(:paper, :with_tasks, :completed, user: random(User), journal: remaining_journals.sample)
       end
     end
 
@@ -90,18 +90,18 @@ namespace :data do
       first_journal = journals.delete(journals.first)
 
       progress("one journal with 10k active manuscripts", 10) do
-        FactoryGirl.create(:paper, :with_tasks, user: User.order("RANDOM()").first, journal: first_journal)
+        FactoryGirl.create(:paper, :with_tasks, user: random(User), journal: first_journal)
       end
 
       progress("rest of the journals with active manuscripts", 26) do
-        FactoryGirl.create(:paper, :with_tasks, user: User.order("RANDOM()").first, journal: journals.sample)
+        FactoryGirl.create(:paper, :with_tasks, user: random(User), journal: journals.sample)
       end
     end
 
     desc "Bulk create ad hoc tasks"
     task :ad_hoc_tasks => [:setup, :journals, :active_manuscripts] do
       progress("ad hoc tasks", 5) do
-        FactoryGirl.create(:task, phase: Phase.order("RANDOM()").first)
+        FactoryGirl.create(:task, phase: random(Phase))
       end
     end
 
@@ -115,34 +115,6 @@ namespace :data do
 
     end
 
-    #todo: postgres_dump
-    namespace :heroku do
-
-      database_name = "tahi_#{Rails.env}"
-      dest_file = "tahi_#{Rails.env}_load_dump.sql"
-      heroku_exporter = HerokuExporter.new(database_name, dest_file)
-
-      desc "Dump postgres data"
-      task :dump do
-        heroku_exporter.dump!
-      end
-
-      desc "Save file to S3 so Heroku can access"
-      task :save_dump_to_s3 => [:setup, :dump] do
-        puts "Copying to S3"
-        access_key_id = ENV['AWS_ACCESS_KEY_ID']
-        secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
-        heroku_exporter.copy_to_s3(access_key_id, secret_access_key)
-        heroku_exporter.export_to_heroku!
-      end
-
-      desc "Load dumped data"
-      task :load_dump do
-
-      end
-    end
-
-    #todo: load_to_heroku
 
     private
 
@@ -159,6 +131,41 @@ namespace :data do
     def random(klass)
       klass.order("RANDOM()").first
     end
+
+  end
+
+  namespace :heroku do
+
+    task :setup => :environment do
+      database_name = ActiveRecord::Base.connection_config[:database]
+      dest_filename = "#{database_name}_load_dump.sql"
+      dest_file_path = Rails.root.join('tmp', dest_filename)
+
+      @heroku_exporter = HerokuExporter.new(database_name, dest_file_path)
+    end
+
+    desc "Dump postgres data"
+    task :snapshot_local do
+      @heroku_exporter.snapshot!
+    end
+
+    desc "Save file to S3"
+    task :copy_snapshot_to_s3 do
+      access_key_id = ENV['AWS_ACCESS_KEY_ID']
+      secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+
+      puts "Copying to S3...."
+
+      @heroku_exporter.copy_to_s3(access_key_id, secret_access_key)
+    end
+
+    desc "Export snapshot to Heroku"
+    task :export do
+      @heroku_exporter.export_to_heroku!
+    end
+
+    desc "Snapshot, copy, and import local database to Heroku"
+    task :import_snapshot => [:setup, :snapshot_local, :copy_snapshot_to_s3, :export]
 
   end
 end

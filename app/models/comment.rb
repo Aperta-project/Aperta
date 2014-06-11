@@ -7,11 +7,17 @@ class Comment < ActiveRecord::Base
 
   validates :task, :body, presence: true
 
-  def self.create_with_comment_look(params, task)
+  def self.create_with_comment_look(task, params)
     c = new params
     if task.class.method_defined?(:participants)
       task.participants.each do |participant|
-        next if participant.id == params[:commenter_id].to_i
+        if params[:commenter_id]
+          commenter_id = params[:commenter_id].to_i
+        else
+          commenter_id = params[:commenter].id
+        end
+
+        next if participant.id == commenter_id
         c.comment_looks.new user_id: participant.id, comment: c
       end
     end

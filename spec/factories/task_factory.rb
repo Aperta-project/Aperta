@@ -7,6 +7,7 @@ FactoryGirl.define do
 
   factory :message_task do
     title "a subject" # should match subject
+    phase
   end
 
   factory :reviewer_report_task do

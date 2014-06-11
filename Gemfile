@@ -45,6 +45,9 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
+gem 'factory_girl_rails'
+gem 'progressbar'
+gem 'activerecord-import'
 
 group :production, :staging do
   gem 'heroku-deflater'
@@ -60,7 +63,6 @@ group :development do
   gem 'bullet'
   gem 'license_finder'
   gem 'railroady'
-  gem 'spring'
 end
 
 group :development, :test do
@@ -80,7 +82,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'factory_girl_rails'
   gem "codeclimate-test-reporter", require: nil
   gem 'vcr'
   gem 'webmock'

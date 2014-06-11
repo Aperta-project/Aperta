@@ -9,10 +9,15 @@ FactoryGirl.define do
     journal
     user
 
+    trait(:completed) do
+      submitted true
+    end
+
     after(:build) do |paper|
       paper.paper_type ||= paper.journal.paper_types.first
       paper.build_default_author_groups
     end
+
     trait(:with_tasks) do
       after(:create) do |paper|
         PaperFactory.new(paper, paper.user).apply_template

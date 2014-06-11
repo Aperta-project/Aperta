@@ -128,4 +128,23 @@ describe Paper do
       expect(paper.assignees).to match_array([user, admin_user])
     end
   end
+
+  describe "#role_for" do
+    let(:user) { FactoryGirl.create :user }
+
+    before do
+      PaperRole.create! editor: true, user: user, paper: paper
+    end
+
+    it "returns roles if the role exist for the given user and role type" do
+      expect(paper.role_for(user: user, role: 'editor')).to be_present
+    end
+
+    context "when the role isn't found" do
+      it "returns nothing" do
+        PaperRole.last.update! editor: false
+        expect(paper.role_for(user: user, role: 'editor')).to_not be_present
+      end
+    end
+  end
 end

@@ -21,7 +21,7 @@ module Authorizations
   end
 
   def render_forbidden
-    if params[:format].nil? || params[:format] != "json"
+    if !request.xhr?
       redirect_to root_path
     else
       head :forbidden

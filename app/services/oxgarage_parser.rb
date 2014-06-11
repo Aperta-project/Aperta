@@ -56,7 +56,7 @@ class OxgarageParser
   private
 
   def url
-    'http://ec2-54-193-185-100.us-west-1.compute.amazonaws.com:8080/ege-webservice/Conversions/docx%3Aapplication%3Avnd.openxmlformats-officedocument.wordprocessingml.document/TEI%3Atext%3Axml/xhtml%3Aapplication%3Axhtml%2Bxml/conversion'
+    ENV['OXGARAGE_URL']
   end
 
   def properties

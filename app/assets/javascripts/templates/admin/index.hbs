@@ -1,13 +1,23 @@
 <div id="tahi-container" class="admin-screen">
-  <h2>Journal Administration</h2>
-  <ul class='journals'>
-    {{#each journal in content}}
-      <li class='journal'>
-        {{#link-to "journal" journal}}
-          <img {{bind-attr src=journal.logoUrl}} />
-          {{journal.name}}
-        {{/link-to}}
-      </li>
-    {{/each}}
-  </ul>
+  <div class='row'>
+    <div class='col-md-6'>
+      <h2 class="inline-block">Journals</h2>
+      <a class='add-new-journal secondary-button blue pull-right' href='#'>Add new journal</a>
+      <ul class='journals'>
+        {{#each journal in content}}
+          <li class='journal'>
+            {{#link-to "journal" journal class="clearfix"}}
+              <img class="pull-left" {{bind-attr src=journal.epubCoverUrl}} />
+              <h3 class="journal-name">{{journal.name}}</h3>
+              <span>{{formatNumber journal.paperCount}} {{pluralize journal.paperCount 'article' 'articles'}}</span>
+              <p>{{journal.description}}</p>
+            {{/link-to}}
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class='col-md-4 pull-right'>
+      <h2>Users</h2>
+    </div>
+  </div>
 </div>

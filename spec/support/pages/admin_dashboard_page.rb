@@ -9,7 +9,7 @@ class AdminDashboardPage < Page
   end
 
   def self.page_header
-    "Journal Administration"
+    "Journals"
   end
 
   def initialize(*args)
@@ -18,7 +18,7 @@ class AdminDashboardPage < Page
   end
 
   def journal_names
-    all('.journals .journal').map(&:text)
+    all('.journal-name').map(&:text)
   end
 
   def visit_journal(journal)

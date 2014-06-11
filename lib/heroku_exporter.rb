@@ -1,18 +1,18 @@
 require 'fog'
 
 class HerokuExporter
-  attr_accessor :source_file, :database_name, :s3_file, :s3_secure_url
+  attr_accessor :database_name, :s3_file, :s3_secure_url, :dest_file_path
 
   S3_URL_EXPIRATION_MINUTES = 5
 
-  def initialize(database_name, source_file)
+  def initialize(database_name, dest_file_path)
     @database_name = database_name
-    @source_file = source_file
+    @dest_file_path = dest_file_path
   end
 
-  def dump!
+  def snapshot!
     command = Thread.new do
-      system("pg_dump -F c -v -U tahi -h localhost #{database_name} -f #{Rails.root.join('tmp', source_file)}")
+      system("pg_dump -F c -v -U tahi -h localhost #{database_name} -f #{dest_file_path}")
     end
     command.join
   end
@@ -33,7 +33,7 @@ class HerokuExporter
 
     file = directory.files.create(
       :key    => s3_file,
-      :body   => File.open(Rails.root.join('tmp', source_file)),
+      :body   => File.open(dest_file_path),
       :public => true
     )
 
@@ -43,7 +43,7 @@ class HerokuExporter
   def export_to_heroku!
     Bundler.with_clean_env do
       command = Thread.new do
-        system(" heroku pgbackups:restore DATABASE_URL '#{s3_secure_url}' --app tahi-performance")
+        system("heroku pgbackups:restore DATABASE_URL '#{s3_secure_url}' --app tahi-performance --confirm tahi-performance")
       end
       command.join
     end
@@ -53,7 +53,11 @@ class HerokuExporter
   private
 
     def create_s3_url(file)
-      sc3_secure_url = file.url(S3_URL_EXPIRATION_MINUTES.minutes.from_now)
+      self.s3_secure_url = file.url(S3_URL_EXPIRATION_MINUTES.minutes.from_now)
+    end
+
+    def source_file
+      File.basename(dest_file_path)
     end
 
 end

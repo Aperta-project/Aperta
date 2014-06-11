@@ -1,0 +1,58 @@
+<h1>Data Availability</h1>
+
+<form>
+  <ol>
+    <li class="question">
+      <div class="question-text">
+      Do the authors confirm that all the data underlying the findings described
+      in their manuscript are fully available without restriction?
+      </div>
+      <div class="help">
+      Please see the <a href="#">PLOS Data Policy</a> for details.
+      </div>
+      <label>Yes <input type="radio" name="yes-or-no" value="Yes" /></label>
+      <label>No <input type="radio" name="yes-or-no" value="No" /></label>
+    </li>
+
+    <li class="question">
+      <p>
+        Please provide the location of each dataset analyzed in the manuscript.
+      </p>
+      <div class="help">
+        Select all that apply
+      </div>
+      <ul class="list-unstyled">
+        <li><label>{{input type="checkbox"}} Public repository: DOI/accession numbers are available now</label></li>
+        <li><label>{{input type="checkbox"}} Public repository: DOI/accession numbers will be available after acceptance</label></li>
+        <li><label>{{input type="checkbox"}} Supporting information files are/will be included with the manuscript</label></li>
+        <li><label>{{input type="checkbox"}} All data are included within the manuscript</label></li>
+        <li>
+          <label>{{input type="checkbox"}} Available upon request (this option is only permitted in limited cases)</label>
+          <div class="additional-data">
+            <div>{{input type="text" placeholder="Title of dataset"}}</div>
+            <div>{{input type="text" placeholder="Description of dataset"}}</div>
+            <div>{{textarea placeholder="Ethical / legal reasons why dataset is unavailable for public deposit"}}</div>
+            <div>{{textarea placeholder="Contact information for the group or individual(s) responsible for providing access to this data"}}</div>
+          </div>
+        </li>
+        <li>
+          <label>{{input type="checkbox"}} Data are held by someone other than the authors and are not in a public repository</label>
+          <div class="additional-data">
+            <div>{{input type="text" placeholder="Title of dataset"}}</div>
+            <div>{{input type="text" placeholder="Description of dataset"}}</div>
+            <div>{{textarea placeholder="Ethical / legal reasons why dataset is unavailable for public deposit"}}</div>
+            <div>{{textarea placeholder="Contact information for the group or individual(s) responsible for providing access to this data"}}</div>
+          </div>
+        <li>
+          <label>{{input type="checkbox"}} Dataset is not available (This may be contradictory to the PLOS data policy)</label>
+          <div class="additional-data">
+            <div>{{input type="text" placeholder="Title of dataset"}}</div>
+            <div>{{input type="text" placeholder="Description of dataset"}}</div>
+            <div>{{textarea placeholder="Ethical / legal reasons why dataset is unavailable for public deposit"}}</div>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ol>
+</form>
+

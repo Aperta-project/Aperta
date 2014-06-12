@@ -14,7 +14,7 @@ class OxgarageParser
     conn = Faraday.new do |faraday|
       faraday.request :multipart
       faraday.request :url_encoded
-      faraday.adapter  Faraday.default_adapter
+      faraday.adapter Faraday.default_adapter
     end
 
     params = {

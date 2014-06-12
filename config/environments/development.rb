@@ -27,7 +27,6 @@ Tahi::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
-  config.s3_bucket = 'tahi-development'
   # defaults to local storage
   # config.carrierwave_storage = :fog
 

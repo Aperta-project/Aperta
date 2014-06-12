@@ -1,1 +1,4 @@
 <label>{{input type="checkbox" checked=model.answer}} {{model.question}}</label>
+{{#if template}}
+  <div {{bind-attr class=":additional-data model.answer::hidden"}}>{{yield}}</div>
+{{/if}}

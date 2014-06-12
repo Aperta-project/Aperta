@@ -14,8 +14,15 @@ ETahi.QuestionCheckComponent = Ember.Component.extend
       question = @get('task.questions').createRecord
         question: @get('question')
         ident: ident
+        additionalData: [{}]
 
     question
 
   ).property('task', 'ident')
+
+  additionalData: Em.computed.alias('model.additionalData')
+
+  actions:
+    additionalDataAction: ()->
+      @get('additionalData').pushObject({})
 

@@ -20,4 +20,8 @@ namespace :data do
     end
   end
 
+  task :shorten_supporting_information do
+    Task.where(title: "Supporting Information").update_all(title: "Supporting Info")
+  end
+
 end

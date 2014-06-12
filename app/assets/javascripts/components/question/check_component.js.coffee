@@ -24,17 +24,11 @@ ETahi.QuestionCheckComponent = Ember.Component.extend
 
   additionalData: Em.computed.alias('model.additionalData')
 
-  # FIXME: this doesn't actually observe model.additionalData
-  # because it's just a POJO. So it only persists when you change the answer
-  modelDidChange: (->
-    Ember.run.debounce(this, this.saveModel, 500)
-  ).observes('model.answer', 'model.additionalData')
+  change: ->
+    Ember.run.debounce(this, this._saveModel, 500)
 
-  saveModel: ->
-    model = @get('model')
-    console.log(model.get('currentState.stateName'))
-    if model.get('isDirty')
-      model.save()
+  _saveModel: ->
+    @get('model').save()
 
   actions:
     additionalDataAction: ()->

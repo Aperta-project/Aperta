@@ -14,7 +14,10 @@ class QuestionsController < ApplicationController
     question = Question.find(params[:id])
     authorize_action!(question: question)
     question.update_attributes(question_params)
-    respond_with question
+
+    # this needs to be a 200 not a 204
+    # because Ember
+    render json: question
   end
 
   private

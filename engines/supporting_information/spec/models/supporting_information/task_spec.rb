@@ -4,7 +4,7 @@ module SupportingInformation
   describe Task do
     describe "defaults" do
       subject(:task) { SupportingInformation::Task.new }
-      specify { expect(task.title).to eq 'Supporting Information' }
+      specify { expect(task.title).to eq 'Supporting Info' }
       specify { expect(task.role).to eq 'author' }
     end
 

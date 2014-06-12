@@ -1,6 +1,6 @@
 module SupportingInformation
   class Task < ::Task
-    title "Supporting Information"
+    title "Supporting Info"
     role "author"
 
     def file_access_details

@@ -5,7 +5,7 @@
       <a class='add-new-journal secondary-button blue pull-right' href='#'>Add new journal</a>
       <ul class='journals'>
         {{#each journal in content}}
-          {{view ETahi.JournalThumbnailView journal=journal currentUser=currentUser}}
+          {{render 'journal/thumbnail' journal}}
         {{/each}}
       </ul>
     </div>

@@ -5,14 +5,7 @@
       <a class='add-new-journal secondary-button blue pull-right' href='#'>Add new journal</a>
       <ul class='journals'>
         {{#each journal in content}}
-          <li class='journal'>
-            {{#link-to "journal" journal class="clearfix"}}
-              <img class="pull-left" {{bind-attr src=journal.logoUrl}} />
-              <h3 class="journal-name">{{journal.name}}</h3>
-              <span>{{formatNumber journal.paperCount}} {{pluralize journal.paperCount 'article' 'articles'}}</span>
-              <p>{{journal.description}}</p>
-            {{/link-to}}
-          </li>
+          {{view ETahi.JournalThumbnailView journal=journal currentUser=currentUser}}
         {{/each}}
       </ul>
     </div>

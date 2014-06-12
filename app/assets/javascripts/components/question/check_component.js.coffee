@@ -11,9 +11,11 @@ ETahi.QuestionCheckComponent = Ember.Component.extend
     question = @get('task.questions').findProperty('ident', ident)
 
     unless question
-      question = @get('task.questions').createRecord
+      task = @get('task')
+      question = task.get('store').createRecord 'question',
         question: @get('question')
         ident: ident
+        task: task
         additionalData: [{}]
 
     question
@@ -21,6 +23,18 @@ ETahi.QuestionCheckComponent = Ember.Component.extend
   ).property('task', 'ident')
 
   additionalData: Em.computed.alias('model.additionalData')
+
+  # FIXME: this doesn't actually observe model.additionalData
+  # because it's just a POJO. So it only persists when you change the answer
+  modelDidChange: (->
+    Ember.run.debounce(this, this.saveModel, 500)
+  ).observes('model.answer', 'model.additionalData')
+
+  saveModel: ->
+    model = @get('model')
+    console.log(model.get('currentState.stateName'))
+    if model.get('isDirty')
+      model.save()
 
   actions:
     additionalDataAction: ()->

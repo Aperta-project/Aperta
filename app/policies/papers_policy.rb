@@ -34,6 +34,6 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def author?
-    current_user.submitted_papers.where(id: paper.id).present?
+    author_of_paper? paper
   end
 end

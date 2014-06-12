@@ -91,6 +91,8 @@ Tahi::Application.routes.draw do
 
   resources :roles, only: [:create, :update, :destroy]
 
+  resources :questions, only: [:create, :update]
+
   get '/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 
   resource :event_stream, only: :show

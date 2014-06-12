@@ -177,15 +177,15 @@
     }
   }
 
-  a.add-new-journal {
+  .add-new-journal {
     margin-top: 23px;
   }
 
-  ul.journals {
+  .journals {
     padding: 0;
   }
 
-  li.journal {
+  .journal {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -215,7 +215,7 @@
       }
     }
 
-    h3.journal-name {
+    .journal-name {
       margin: 0;
       padding: 0;
       display: inline-block;

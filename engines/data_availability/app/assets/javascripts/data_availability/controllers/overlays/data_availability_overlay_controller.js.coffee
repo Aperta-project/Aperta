@@ -5,3 +5,4 @@ ETahi.DataAvailabilityOverlayController = ETahi.TaskController.extend
 
   initQuestions:(->
   ).observes('content')
+

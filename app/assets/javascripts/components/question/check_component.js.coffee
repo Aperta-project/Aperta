@@ -1,8 +1,8 @@
 ETahi.QuestionCheckComponent = Ember.Component.extend
   tagName: 'div'
-  classNames: ['question']
   layoutName: 'components/question/check_component'
   helpText: null
+  multipleAdditionalData: false
 
   model: (->
     ident = @get('ident')

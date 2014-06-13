@@ -18,7 +18,19 @@ class AdminDashboardPage < Page
   end
 
   def journal_names
-    all('.journal-name').map(&:text)
+    all('.journal-name').map &:text
+  end
+
+  def journal_descriptions
+    all('.journal-thumbnail-show p').map &:text
+  end
+
+  def journal_paper_counts
+    all('.journal-paper-count').map { |el| el.text.split(' ')[0].to_i }
+  end
+
+  def edit_journal_name journal, name
+
   end
 
   def visit_journal(journal)

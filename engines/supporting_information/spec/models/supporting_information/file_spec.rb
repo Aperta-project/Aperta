@@ -4,7 +4,9 @@ module SupportingInformation
   describe File do
     let(:paper) { FactoryGirl.create :paper }
     let(:file) do
-      paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+      with_aws_cassette 'supporting_info' do
+        paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+      end
     end
 
     describe "#filename" do
@@ -21,7 +23,7 @@ module SupportingInformation
 
     describe "#src" do
       it "returns the file url" do
-        expect(file.src).to eq "/uploads/paper/1/supporting_information/file/attachment/1/yeti.tiff"
+        expect(file.src).to match /yeti\.tiff/
       end
     end
 

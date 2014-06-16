@@ -21,8 +21,6 @@ feature "Journal Administration", js: true do
 
   describe "editing a journal thumbnail" do
     scenario "shows edit form after clicking on pencil icon" do
-      binding.pry
-
       journal_edit_form = admin_page.edit_journal journal
       journal_edit_form.name = "Edited journal"
       # Pending: Create a page fragment for each journal.

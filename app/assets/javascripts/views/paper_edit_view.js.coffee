@@ -3,7 +3,7 @@ ETahi.PaperEditView = Ember.View.extend
 
   logoUrl: (->
     logoUrl = @get('controller.model.journal.logoUrl')
-    if /no-jounal-image/.test logoUrl
+    if /no-journal-image/.test logoUrl
       false
     else
       logoUrl

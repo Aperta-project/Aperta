@@ -9,7 +9,7 @@ class Admin::JournalsController < ApplicationController
   end
 
   def create
-    respond_with Journal.create! journal_params
+    respond_with Journal.create journal_params
   end
 
   def update

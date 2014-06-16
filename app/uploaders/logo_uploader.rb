@@ -6,6 +6,6 @@ class LogoUploader < CarrierWave::Uploader::Base
   end
 
   def default_url
-    ActionController::Base.helpers.asset_path("/assets/no-journal-image.gif", digest: false)
+    ActionController::Base.helpers.asset_path("/assets/no-journal-image.gif", digest: true)
   end
 end

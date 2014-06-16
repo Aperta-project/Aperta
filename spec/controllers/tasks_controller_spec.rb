@@ -38,7 +38,7 @@ describe TasksController do
     let(:task) { FactoryGirl.create(:task, phase: paper.phases.first) }
 
     subject(:do_request) do
-      patch :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }
+      xhr :patch, :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -121,7 +121,7 @@ describe TasksController do
       let(:super_admin) { true }
       let(:msg_subject) { "A Subject" }
       subject(:do_request) do
-        post :create, format: 'json',
+        xhr :post, :create, format: 'json',
           paper_id: paper.id,
           task: {title: msg_subject,
                  type: 'MessageTask',
@@ -153,9 +153,9 @@ describe TasksController do
       context "when the user doesn't administer the paper directly" do
         context "the user isn't a super admin" do
           let(:super_admin) { false }
-          it "renders a 302" do
+          it "renders a 403" do
             do_request
-            expect(response.status).to eq(302)
+            expect(response.status).to eq(403)
           end
         end
 

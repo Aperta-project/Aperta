@@ -1,17 +1,19 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :verify_admin!, except: [:show, :update, :update_participants]
+  before_action :enforce_policy
+  # before_action :verify_admin!, except: [:show, :update, :update_participants]
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def update
-    task = if current_user.admin?
-             Task.where(id: params[:id]).first
-           else
-             current_user.tasks.where(id: params[:id]).first
-           end
-    if task && task.authorize_update?(params, current_user)
+    # task = if current_user.admin?
+    #          Task.where(id: params[:id]).first
+    #        else
+    #          current_user.tasks.where(id: params[:id]).first
+    #        end
+    task = Task.find(params[:id])
+    if task #&& task.authorize_update?(params, current_user)
       unmunge_empty_arrays!(task)
       tp = task_params(task)
 
@@ -80,5 +82,13 @@ class TasksController < ApplicationController
 
   def render_404
     head 404
+  end
+
+  def task
+    Task.find(params[:id]) if params[:id]
+  end
+
+  def enforce_policy
+    authorize_action!(task: task)
   end
 end

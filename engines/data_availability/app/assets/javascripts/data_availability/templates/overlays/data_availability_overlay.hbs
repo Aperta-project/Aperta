@@ -23,7 +23,7 @@
               {{#each datum in view.additionalData}}
                 <div class="dataset">
                   <p>Provide the DOI/accession number and its corresponding public repository URL.</p>
-                  {{input type="text" value=datum.url class="form-control"}}
+                  {{input type="text" name="url" value=datum.url class="form-control"}}
                 </div>
               {{/each}}
             {{/question-check}}
@@ -35,7 +35,7 @@
               {{#each datum in view.additionalData}}
                 <div class="dataset">
                   <p>Provide the public repository URL.</p>
-                  {{input type="text" value=datum.url class="form-control"}}
+                  {{input type="text" name="url" value=datum.url class="form-control"}}
                 </div>
               {{/each}}
             {{/question-check}}
@@ -57,10 +57,10 @@
                              multipleAdditionalData=true }}
               {{#each datum in view.additionalData}}
               <div class="dataset">
-                <div>{{input class="form-control" type="text" value=datum.title placeholder="Title of dataset"}}</div>
-                <div>{{input class="form-control" type="text" value=datum.description placeholder="Description of dataset"}}</div>
-                <div>{{textarea class="form-control" value=datum.reasons placeholder="Ethical / legal reasons why dataset is unavailable for public deposit"}}</div>
-                <div>{{textarea class="form-control" value=datum.contact placeholder="Contact information for the group or individual(s) responsible for providing access to this data"}}</div>
+                <div>{{input class="form-control" type="text" name="title" value=datum.title placeholder="Title of dataset"}}</div>
+                <div>{{input class="form-control" type="text" name="description" value=datum.description placeholder="Description of dataset"}}</div>
+                <div>{{textarea class="form-control" name="reasons" value=datum.reasons placeholder="Ethical / legal reasons why dataset is unavailable for public deposit"}}</div>
+                <div>{{textarea class="form-control" name="contact" value=datum.contact placeholder="Contact information for the group or individual(s) responsible for providing access to this data"}}</div>
               </div>
               {{/each}}
             {{/question-check}}
@@ -71,10 +71,10 @@
                               multipleAdditionalData=true }}
               {{#each datum in view.additionalData}}
               <div class="dataset">
-                <div>{{input class="form-control" type="text" value=datum.title placeholder="Title of dataset"}}</div>
-                <div>{{input class="form-control" type="text" value=datum.description placeholder="Description of dataset"}}</div>
-                <div>{{textarea class="form-control" value=datum.reasons placeholder="Ethical / legal reasons why dataset is unavailable for public deposit"}}</div>
-                <div>{{textarea class="form-control" value=datum.contact placeholder="Contact information for the group or individual(s) responsible for providing access to this data"}}</div>
+                <div>{{input class="form-control" type="text" name="title" value=datum.title placeholder="Title of dataset"}}</div>
+                <div>{{input class="form-control" type="text" name="description" value=datum.description placeholder="Description of dataset"}}</div>
+                <div>{{textarea class="form-control" name="reasons" value=datum.reasons placeholder="Ethical / legal reasons why dataset is unavailable for public deposit"}}</div>
+                <div>{{textarea class="form-control" name="contact" value=datum.contact placeholder="Contact information for the group or individual(s) responsible for providing access to this data"}}</div>
               </div>
               {{/each}}
             {{/question-check}}
@@ -85,9 +85,9 @@
                               multipleAdditionalData=true }}
               {{#each datum in view.additionalData}}
               <div class="dataset">
-                <div>{{input class="form-control" type="text" value=datum.title placeholder="Title of dataset"}}</div>
-                <div>{{input class="form-control" type="text" value=datum.description placeholder="Description of dataset"}}</div>
-                <div>{{textarea class="form-control" value=datum.reasons placeholder="Ethical / legal reasons why dataset is unavailable for public deposit"}}</div>
+                <div>{{input class="form-control" type="text" name="title" value=datum.title placeholder="Title of dataset"}}</div>
+                <div>{{input class="form-control" type="text" name="description" value=datum.description placeholder="Description of dataset"}}</div>
+                <div>{{textarea class="form-control" name="reasons" value=datum.reasons placeholder="Ethical / legal reasons why dataset is unavailable for public deposit"}}</div>
               </div>
               {{/each}}
             {{/question-check}}

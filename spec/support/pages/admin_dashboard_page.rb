@@ -30,7 +30,6 @@ class AdminDashboardPage < Page
   end
 
   def edit_journal(journal)
-    binding.pry
     all('.journal').detect { |j| j.text =~ /#{journal.name}/ }.hover
     all('.edit-icon').first.click
     EditJournalFragment.new(find('.journal-thumbnail-edit-form'))
@@ -49,5 +48,9 @@ class EditJournalFragment < PageFragment
 
   def description=(description)
     find('textarea').set(description)
+  end
+
+  def save
+    click_on "Save"
   end
 end

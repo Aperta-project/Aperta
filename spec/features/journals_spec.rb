@@ -23,7 +23,16 @@ feature "Journal Administration", js: true do
     scenario "shows edit form after clicking on pencil icon" do
       journal_edit_form = admin_page.edit_journal journal
       journal_edit_form.name = "Edited journal"
-      # Pending: Create a page fragment for each journal.
+      journal_edit_form.description = "Edited journal description"
+      journal_edit_form.save
+
+      expect(admin_page.journal_names).to match_array ['Edited journal', another_journal.name]
+      expect(admin_page.journal_descriptions).to match_array ['Edited journal description', another_journal.description]
+
+      admin_page.reload sync_on: 'Add new journal'
+
+      expect(admin_page.journal_names).to match_array ['Edited journal', another_journal.name]
+      expect(admin_page.journal_descriptions).to match_array ['Edited journal description', another_journal.description]
     end
   end
 end

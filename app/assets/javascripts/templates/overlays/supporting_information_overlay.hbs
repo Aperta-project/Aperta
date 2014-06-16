@@ -4,10 +4,9 @@
   <span class="secondary-button fileinput-button">
     <span>Add New Supporting Information</span>
     {{file-uploader id="file_attachment"
-                    name="supporting_information_file[attachment][]"
-                    multiple=true
+                    filePrefix="supporting-info"
                     url=uploadUrl
-                    process='uploadStarted'
+                    start='uploadStarted'
                     done='uploadFinished'
                     progress='uploadProgress'}}
   </span>

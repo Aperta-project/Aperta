@@ -21,10 +21,15 @@ feature "Journal Administration", js: true do
 
   describe "editing a journal thumbnail" do
     scenario "shows edit form after clicking on pencil icon" do
-      journal_edit_form = admin_page.edit_journal journal
+      journal_edit_form = admin_page.edit_journal journal.name
       journal_edit_form.name = "Edited journal"
       journal_edit_form.description = "Edited journal description"
       journal_edit_form.save
+
+      journal_edit_form = admin_page.edit_journal "Edited journal"
+      journal_edit_form.name = "cancel Edited journal"
+      journal_edit_form.description = "cancel Edited journal description"
+      journal_edit_form.cancel
 
       expect(admin_page.journal_names).to match_array ['Edited journal', another_journal.name]
       expect(admin_page.journal_descriptions).to match_array ['Edited journal description', another_journal.description]

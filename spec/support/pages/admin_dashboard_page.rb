@@ -29,8 +29,8 @@ class AdminDashboardPage < Page
     all('.journal-paper-count').map { |el| el.text.split(' ')[0].to_i }
   end
 
-  def edit_journal(journal)
-    all('.journal').detect { |j| j.text =~ /#{journal.name}/ }.hover
+  def edit_journal(journal_name)
+    all('.journal').detect { |j| j.text =~ /#{journal_name}/ }.hover
     all('.edit-icon').first.click
     EditJournalFragment.new(find('.journal-thumbnail-edit-form'))
   end
@@ -52,5 +52,9 @@ class EditJournalFragment < PageFragment
 
   def save
     click_on "Save"
+  end
+
+  def cancel
+    click_on "Cancel"
   end
 end

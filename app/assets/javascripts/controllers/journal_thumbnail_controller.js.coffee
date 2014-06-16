@@ -22,5 +22,6 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend
                      @set 'descriptionErrors', response.errors.description?[0]
 
     resetJournalDetails: ->
+      @get('model').rollback()
       @set 'isEditing', false
       @resetErrors()

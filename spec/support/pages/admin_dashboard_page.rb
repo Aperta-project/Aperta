@@ -18,11 +18,43 @@ class AdminDashboardPage < Page
   end
 
   def journal_names
-    all('.journal-name').map(&:text)
+    all('.journal-name').map &:text
+  end
+
+  def journal_descriptions
+    all('.journal-thumbnail-show p').map &:text
+  end
+
+  def journal_paper_counts
+    all('.journal-paper-count').map { |el| el.text.split(' ')[0].to_i }
+  end
+
+  def edit_journal(journal_name)
+    all('.journal').detect { |j| j.text =~ /#{journal_name}/ }.hover
+    all('.edit-icon').first.click
+    EditJournalFragment.new(find('.journal-thumbnail-edit-form'))
   end
 
   def visit_journal(journal)
     click_link(journal.name)
     JournalPage.new
+  end
+end
+
+class EditJournalFragment < PageFragment
+  def name=(name)
+    find('input').set(name)
+  end
+
+  def description=(description)
+    find('textarea').set(description)
+  end
+
+  def save
+    click_on "Save"
+  end
+
+  def cancel
+    click_on "Cancel"
   end
 end

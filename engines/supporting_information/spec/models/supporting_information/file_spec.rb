@@ -4,7 +4,7 @@ module SupportingInformation
   describe File do
     let(:paper) { FactoryGirl.create :paper }
     let(:file) do
-      with_aws_cassette 'supporting_info' do
+      with_aws_cassette 'supporting_info_files_controller' do
         paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
       end
     end

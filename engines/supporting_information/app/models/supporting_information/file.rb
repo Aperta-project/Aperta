@@ -11,7 +11,11 @@ module SupportingInformation
     end
 
     def alt
-      filename.split('.').first.gsub(/#{::File.extname(filename)}$/, '').humanize
+      if attachment.present?
+        filename.split('.').first.gsub(/#{::File.extname(filename)}$/, '').humanize
+      else
+        "no attachment"
+      end
     end
 
     def src

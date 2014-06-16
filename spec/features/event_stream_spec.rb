@@ -59,8 +59,7 @@ feature "Event streaming", js: true do
 
   describe "message tasks" do
     before do
-      edit_paper = EditPaperPage.visit paper
-      edit_paper.visit_task_manager
+      TaskManagerPage.visit paper
       submission_phase = paper.phases.find_by_name("Submission Data")
       @mt = submission_phase.tasks.new title: "Wicked Message Card", type: "MessageTask", body: "Hi there!", role: "user"
       @mt.participants << author
@@ -69,17 +68,10 @@ feature "Event streaming", js: true do
       expect(page).to have_css(".overlay-content")
     end
 
-    scenario "marking complete" do
-      expect(page).to have_css("#task_completed:not(:checked)")
-      @mt.completed = true
-      @mt.save
-      expect(page).to have_css("#task_completed:checked")
-    end
-
     scenario "adding new comments" do
-      @mt.comments.create body: "Hey-o", commenter_id: create(:user).id
+      @mt.comments.create_with_comment_look(@mt, {body: "Hey-o", commenter_id: create(:user).id})
       within '.message-comments' do
-        expect(page).to have_content "Hey-o"
+        expect(page).to have_css('.message-comment.unread', text: "Hey-o")
       end
     end
 

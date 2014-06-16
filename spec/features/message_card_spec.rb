@@ -16,6 +16,10 @@ feature 'Message Cards', js: true do
     FactoryGirl.create(:paper, :with_tasks, user: admin, submitted: true, journal: journal)
   end
 
+  def create_comment_with_comment_looks(task, comment_params)
+    task.comments.create_with_comment_look(task, comment_params)
+  end
+
   describe "creating a new message" do
     let(:subject_text) { 'A sample message' }
     let(:body_text) { 'Everyone add some comments to this test post.' }
@@ -102,52 +106,34 @@ feature 'Message Cards', js: true do
     end
   end
 
-  describe "user can see number of unread comments as a badge on the card" do
+  describe "unread comments" do
     let(:commenter) { albert }
     let(:participants) { [admin, albert] }
     let(:phase) { paper.phases.first }
     let!(:initial_comments) do
-      comment_count.times.map { create :comment, commenter: commenter, task: message }
+      comment_count.times.map { create_comment_with_comment_looks(message, commenter: commenter, body: "FOO") }
     end
-    let(:message) do
-      create :message_task, phase: phase, participants: participants
-    end
+    let(:message) { create :message_task, phase: phase, participants: participants }
     let(:comment_count) { 4 }
     let(:task_manager_page) { TaskManagerPage.visit paper }
 
     scenario "displays the number of unread comments as badge on message card" do
       expect(task_manager_page.message_tasks.first.unread_comments_badge).to eq comment_count
     end
-  end
 
-  describe "viewing a message's comments" do
-    let(:commenter) { admin }
-    let(:participants) { [admin, albert] }
-    let(:phase) { paper.phases.first }
-    let!(:initial_comments) do
-      comment_count.times.map { create :comment, commenter: commenter, task: message }
-    end
-    let(:message) do
-      create :message_task, phase: phase, participants: participants
-    end
-    let(:task_manager_page) { TaskManagerPage.visit paper }
+    describe "viewing a message's comments" do
 
-    context "the message has less than or equal to 5 comments" do
-      let(:comment_count) { 4 }
-      scenario "'show all comments button' is not visible. All comments are visible." do
-        task_manager_page.view_card message.title, MessageCardOverlay do |card|
-          expect(card).to have_css('.message-overlay')
-          expect(card).to have_no_css('.comment-actions.active')
-          expect(card.comments.count).to eq(initial_comments.count)
-        end
-      end
-
-      describe "unread comments are highlighted" do
-        let!(:initial_comments) do
-          comment_count.times.map { create :comment, commenter: albert, task: message }
+      context "the message has less than or equal to 5 comments" do
+        let(:comment_count) { 4 }
+        scenario "'show all comments button' is not visible. All comments are visible." do
+          task_manager_page.view_card message.title, MessageCardOverlay do |card|
+            expect(card).to have_css('.message-overlay')
+            expect(card).to have_no_css('.comment-actions.active')
+            expect(card.comments.count).to eq(initial_comments.count)
+          end
         end
 
-        scenario "seen comments are marked as read" do
+        scenario "unread comments should be marked as 'read' if the page is reloaded" do
           task_manager_page.view_card message.title, MessageCardOverlay do |card|
             expect(card.unread_comments.length).to eq(comment_count)
           end
@@ -159,27 +145,21 @@ feature 'Message Cards', js: true do
           end
         end
       end
-    end
 
-    context "the message has more than 5 comments" do
-      let(:comment_count) { 10 }
-      scenario "'show all comments button' and the most recent 5 comments are visible" do
-        task_manager_page.view_card message.title, MessageCardOverlay do |card|
-          expect(card).to have_css('.message-overlay')
-          expect(card).to have_css('.comment-actions')
-          card.verify_comment_count 5
-          expect(card.omitted_comment_count).to eq(comment_count - 5)
-          card.load_comments
-          card.verify_comment_count comment_count
-        end
-      end
-
-      describe "unread comments are highlighted" do
-        let!(:initial_comments) do
-          comment_count.times.map { create :comment, commenter: albert, task: message }
+      context "the message has more than 5 comments" do
+        let(:comment_count) { 10 }
+        scenario "'show all comments button' and the most recent 5 comments are visible" do
+          task_manager_page.view_card message.title, MessageCardOverlay do |card|
+            expect(card).to have_css('.message-overlay')
+            expect(card).to have_css('.comment-actions')
+            card.verify_comment_count 5
+            expect(card.omitted_comment_count).to eq(comment_count - 5)
+            card.load_comments
+            card.verify_comment_count comment_count
+          end
         end
 
-        scenario "seen comments are marked as read" do
+        scenario "unread comments stay highlighted even after showing all comments" do
           task_manager_page.view_card message.title, MessageCardOverlay do |card|
             expect(card.unread_comments.length).to eq(5)
             card.load_comments

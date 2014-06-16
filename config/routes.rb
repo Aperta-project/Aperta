@@ -73,7 +73,7 @@ Tahi::Application.routes.draw do
     end
   end
 
-  resources :comments, only: :create
+  resources :comments, only: [:create, :show]
 
   resources :message_tasks, only: [:create] do
     member do

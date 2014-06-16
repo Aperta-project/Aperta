@@ -43,7 +43,7 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
   # break the isPrimary check.
   extractSingle: (store, primaryType, payload, recordId, requestType) ->
     payload = @normalizePayload(primaryType, payload)
-    primaryTypeName = @primaryTypeName(primaryType)
+    primaryTypeName = @primaryTypeName(primaryType).toLowerCase()
     primaryRecord = undefined
     for prop of payload
       typeName = @typeForRoot(prop)

@@ -176,4 +176,50 @@
 
     }
   }
+
+  .add-new-journal {
+    margin-top: 23px;
+  }
+
+  .journals {
+    padding: 0;
+  }
+
+  .journal {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100px;
+    margin-top: 20px;
+
+    p { margin-top: 10px; }
+
+    a {
+      display: block;
+      width: 100%;
+      min-height: inherit;
+      text-decoration: none;
+      padding: 20px;
+      border: 1px solid $tahi-tertiary;
+      :not(.journal-name) { color: #000; }
+
+      img {
+        max-width: 125px;
+        max-height: 180px;
+        margin-right: 20px;
+      }
+
+      &:hover, &:visited, &:active {
+        & .journal-name { text-decoration: underline; }
+        border-color: $tahi-blue-light;
+      }
+    }
+
+    .journal-name {
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+      margin-right: 15px;
+    }
+  }
 }

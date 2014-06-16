@@ -29,12 +29,17 @@ class AdminDashboardPage < Page
     all('.journal-paper-count').map { |el| el.text.split(' ')[0].to_i }
   end
 
-  def edit_journal_name journal, name
-
+  def edit_journal(journal)
+    all('.journal').detect { |j| j.text =~ /#{journal.name}/ }.hover
+    all('.edit-icon').first.click
+    # EditJournalFragment.new()
   end
 
   def visit_journal(journal)
     click_link(journal.name)
     JournalPage.new
   end
+end
+
+class EditJournalFragment < PageFragment
 end

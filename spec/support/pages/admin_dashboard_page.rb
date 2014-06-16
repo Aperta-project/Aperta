@@ -37,7 +37,7 @@ class AdminDashboardPage < Page
 
   def visit_journal(journal)
     click_link(journal.name)
-    JournalPage.new('.edit-form')
+    JournalPage.new
   end
 end
 

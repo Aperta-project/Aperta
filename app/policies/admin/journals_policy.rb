@@ -1,5 +1,4 @@
 class Admin::JournalsPolicy < ApplicationPolicy
-
   def index?
     can_administer_any_journal?
   end
@@ -8,4 +7,7 @@ class Admin::JournalsPolicy < ApplicationPolicy
     can_administer_any_journal?
   end
 
+  def upload_epub_cover?
+    can_administer_any_journal?
+  end
 end

@@ -9,13 +9,18 @@ class Admin::JournalsController < ApplicationController
   end
 
   def update
-    @journal = Journal.find(params[:id])
+    journal = Journal.find(params[:id])
 
-    if @journal.update(journal_params)
-      render json: @journal, serializer: AdminJournalSerializer
+    if journal.update(journal_params)
+      render json: journal, serializer: AdminJournalSerializer
     else
-      respond_with @journal
+      respond_with journal
     end
+  end
+
+  def upload_epub_cover
+    journal = DownloadEpubCover.call(Journal.find(params[:id]), params[:url])
+    render json: journal, serializer: AdminJournalSerializer
   end
 
   private

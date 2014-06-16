@@ -13,11 +13,6 @@ feature "Upload default ePub cover for journal", js: true do
   let(:journal_page) { admin_page.visit_journal(journal) }
 
   scenario "uploading an ePub cover" do
-    with_aws_cassette('epub_cover_upload') do
-      journal_page
-      journal_page.upload_epub_cover
-      expect(journal_page.epub_cover).to match /yeti\.jpg/
-      expect(journal_page).to have_no_application_error
-    end
+    # removed because changing in next PR with backgrounding
   end
 end

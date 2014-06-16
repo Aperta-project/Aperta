@@ -11,21 +11,27 @@ describe Admin::JournalsController do
         assign_journal_role journal, admin, :admin
         sign_in admin
       end
-      it "stores the epub cover image successfully" do
-        with_aws_cassette('admin_journal_controller') do
-          patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
-        end
-        uploader = journal.reload.epub_cover
-
-        expect(uploader).to be_a EpubCoverUploader
-        expect(uploader.file.filename).to match /yeti\.jpg/
-      end
 
       it "renders status 2xx" do
         with_aws_cassette('admin_journal_controller') do
           patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
         end
         expect(response.status).to eq 200
+      end
+    end
+
+    context "uploading epub cover" do
+      before do
+        assign_journal_role journal, admin, :admin
+        sign_in admin
+      end
+
+      let(:url) { "http://someawesomeurl.com" }
+      let(:journal) { create :journal }
+      it "is successful" do
+        expect(DownloadEpubCover).to receive(:call).with(journal, url).and_return(journal)
+        put :upload_epub_cover, format: "json", id: journal.id, url: url
+        expect(response).to be_success
       end
     end
 

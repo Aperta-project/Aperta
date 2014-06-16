@@ -50,7 +50,9 @@ Tahi::Application.routes.draw do
   resources :manuscript_manager_templates
 
   namespace :admin do
-    resources :journals, only: [:index]
+    resources :journals, only: [:index] do
+      put :upload_epub_cover, on: :member
+    end
   end
 
   resources :users, only: [:show] do

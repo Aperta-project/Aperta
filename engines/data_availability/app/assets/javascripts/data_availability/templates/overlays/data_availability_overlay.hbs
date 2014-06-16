@@ -21,8 +21,10 @@
             {{#question-check ident="data_availability.public_repo_available" task=model
                               question="Public repository: DOI/accession numbers are available now"}}
               {{#each datum in view.additionalData}}
-                <p>Provide the DOI/accession number and its corresponding public repository URL.</p>
-                <div>{{input type="text" value=datum.url}}</div>
+                <div class="dataset">
+                  <p>Provide the DOI/accession number and its corresponding public repository URL.</p>
+                  {{input type="text" value=datum.url class="form-control"}}
+                </div>
               {{/each}}
             {{/question-check}}
           </li>
@@ -31,8 +33,10 @@
             {{#question-check ident="data_availability.public_repo_available_post_release" task=model
                               question="Public repository: DOI/accession numbers will be available after acceptance"}}
               {{#each datum in view.additionalData}}
-                <p>Provide the public repository URL.</p>
-                <div>{{input type="text" value=datum.url}}</div>
+                <div class="dataset">
+                  <p>Provide the public repository URL.</p>
+                  {{input type="text" value=datum.url class="form-control"}}
+                </div>
               {{/each}}
             {{/question-check}}
           </li>

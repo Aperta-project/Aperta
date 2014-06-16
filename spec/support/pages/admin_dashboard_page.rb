@@ -30,16 +30,20 @@ class AdminDashboardPage < Page
   end
 
   def edit_journal(journal)
+    binding.pry
     all('.journal').detect { |j| j.text =~ /#{journal.name}/ }.hover
     all('.edit-icon').first.click
-    # EditJournalFragment.new()
+    EditJournalFragment.new('.journal-thumbnail-edit-form')
   end
 
   def visit_journal(journal)
     click_link(journal.name)
-    JournalPage.new
+    JournalPage.new('.edit-form')
   end
 end
 
 class EditJournalFragment < PageFragment
+  def name=(name)
+    binding.pry
+  end
 end

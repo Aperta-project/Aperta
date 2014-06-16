@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Upload paper", js: true, vcr: {cassette_name: 'upload_manuscript'} do
+feature "Upload paper", js: true do
   let(:author) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal }
   let(:paper) { FactoryGirl.create :paper, :with_tasks, user: author, journal: journal }
@@ -11,6 +11,10 @@ feature "Upload paper", js: true, vcr: {cassette_name: 'upload_manuscript'} do
   end
 
   scenario "Author uploads paper in Word format" do
+    expect(DownloadManuscript).to receive(:call) do |paper, url|
+      paper.update title: "This is a Title About Turtles", body: "And this is my subtitle"
+    end
+
     edit_paper = EditPaperPage.visit paper
 
     edit_paper.view_card('Upload Manuscript').upload_word_doc

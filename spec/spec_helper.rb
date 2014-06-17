@@ -15,8 +15,13 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # NOTE: This will stop working after we move the engines into their own repository.
 Dir[Rails.root.join("engines/**/spec/support/**/*.rb")].each { |f| require f }
 
+Capybara.server_port = 31337
+
 # StreamServer needs to have the same URL as localhost for testing.
-ENV['ES_URL'] = "http://localhost:#{Capybara.server_port = 31337}"
+ENV['ES_URL'] = "http://localhost:#{Capybara.server_port}"
+
+# Fake out the s3 upload url for testing
+ENV['S3_URL'] = "http://localhost:#{Capybara.server_port}/fake_s3"
 
 Capybara.server do |app, port|
   require 'rack/handler/thin'

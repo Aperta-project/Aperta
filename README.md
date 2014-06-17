@@ -60,7 +60,23 @@ Rails still compiles assets between every test run.
 Please see the gist below for detailed instructions:
 https://gist.github.com/neo-tahi/9611549
 
-*** Configuring S3 direct uploads
+### Configuring S3 direct uploads
 
-aws s3api put-bucket-cors --bucket tahi-development --cors-configuration file://config/services/s3.cors.development.json
+You need to set the following environment variables:
+
+- `S3_URL=http://your-s3-bucket.amazonaws.com`
+- `S3_BUCKET=your-s3-bucket`
+- `AWS_ACCESS_KEY=your-aws-access-key-id`
+- `AWS_SECRET_KEY=your-aws-secret-key`
+
+Then, you need to configure your s3 bucket for CORS:
+
+1. Download the AWS cli: 
+  - Darwin: `brew install awscli`
+  - Linux: `sudo pip install awscli`
+2. Run the following command from the app's root directory:
+```
+aws s3api put-bucket-cors --bucket <your s3 bucket> --cors-configuration file://config/services/s3.cors.development.json
+```
+
 

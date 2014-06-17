@@ -1,0 +1,12 @@
+<label>{{input type="checkbox" name=ident checked=model.answer}} {{model.question}}</label>
+{{#if template}}
+  <div {{bind-attr class=":additional-data checked::hidden"}}>
+    {{yield}}
+    {{#if multipleAdditionalData}}
+      <button class="btn btn-default btn-xs" {{action 'additionalDataAction'}}>
+        <span class="glyphicon glyphicon-plus-sign"></span>
+        Add Dataset
+      </button>
+    {{/if}}
+  </div>
+{{/if}}

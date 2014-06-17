@@ -14,6 +14,7 @@ class Task < ActiveRecord::Base
 
   has_one :paper, through: :phase
   has_one :journal, through: :paper
+  has_many :questions, inverse_of: :task
 
   validates :title, :role, presence: true
 

@@ -29,6 +29,12 @@ PATH
       rails (~> 4.1.1)
 
 PATH
+  remote: engines/financial_disclosure
+  specs:
+    financial_disclosure (0.0.1)
+      rails (~> 4.1.1)
+
+PATH
   remote: engines/standard_tasks
   specs:
     standard_tasks (0.0.1)
@@ -472,6 +478,7 @@ DEPENDENCIES
   ember-source (= 1.5.0)
   factory_girl_rails
   faraday_middleware
+  financial_disclosure!
   fog
   gepub
   haml-rails

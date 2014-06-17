@@ -1,11 +1,38 @@
-<h1>Financial Disclosure</h1>
+<h1>Financial Disclosures</h1>
 
 <form>
   <fieldset>
     <ol>
       <li class="question">
-        {{question-radio ident="financial.received_funding" task=model
-                         question="Did any of the authors receive specific funding for this work?" }}
+        <div>
+          <div class="question-text">
+            Did any of the authors receive specific funding for this work?
+          </div>
+
+          {{binary-radio-button name="received-funcding" selection=receivedFunding yesAction="choseFundingReceived" noAction="choseFundingNotReceived"}}
+        </div>
+
+        {{#each funder in funders}}
+          <div class="dataset">
+            <div>
+              {{input type="text" name="name" value=funder.name class="form-control" placeholder="Funder"}}
+              {{input type="text" name="grant_number" value=funder.grant_number class="form-control" placeholder="Grant Number"}}
+              {{input type="text" name="website" value=funder.website class="form-control" placeholder="Website"}}
+            </div>
+            <div class="question-text">
+              Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?
+            </div>
+
+            {{binary-radio-button name="funder-had-influence" selection=funder.funderHadInfluence}}
+
+            {{#if funder.funderHadInfluence}}
+              <p>
+                Describe the role of any sponsors or funders in the study design, data collection and analysis, decision to publish, or preparation of the manuscript.
+                {{textarea value=funder.funderInfluenceDescription class="form-control"}}
+              </p>
+            {{/if}}
+          </div>
+        {{/each}}
       </li>
     </ol>
   </fieldset>

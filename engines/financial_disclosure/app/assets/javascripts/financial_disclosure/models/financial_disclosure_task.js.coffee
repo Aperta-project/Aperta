@@ -1,1 +1,2 @@
-ETahi.FinancialDisclosureTask = ETahi.Task.extend()
+ETahi.FinancialDisclosureTask = ETahi.Task.extend
+  funders: DS.hasMany('funder')

@@ -1,7 +1,8 @@
 ETahi.JournalThumbnailController = Ember.ObjectController.extend
   needs: ['application']
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
-  isEditing: false
+  isEditing: (-> @get 'model.isDirty').property()
+
   nameErrors: null
   descriptionErrors: null
 

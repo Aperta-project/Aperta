@@ -8,6 +8,10 @@ class Admin::JournalsController < ApplicationController
     respond_with current_user.administered_journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
 
+  def create
+    respond_with Journal.create journal_params
+  end
+
   def update
     @journal = Journal.find(params[:id])
 

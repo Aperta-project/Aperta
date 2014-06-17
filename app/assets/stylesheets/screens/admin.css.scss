@@ -242,6 +242,11 @@
       .link { margin-right: 10px; }
       .journal-name-edit { padding: 0 10px; }
 
+      img {
+        max-width: 150px;
+        max-height: 180px;
+      }
+
       .form-group.required {
         &.error {
           input, textarea { border: 1px solid red; }

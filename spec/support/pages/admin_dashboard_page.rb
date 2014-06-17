@@ -29,10 +29,15 @@ class AdminDashboardPage < Page
     all('.journal-paper-count').map { |el| el.text.split(' ')[0].to_i }
   end
 
+  def create_journal
+    click_on 'Add new journal'
+    EditJournalFragment.new(find '.journal-thumbnail-edit-form')
+  end
+
   def edit_journal(journal_name)
     all('.journal').detect { |j| j.text =~ /#{journal_name}/ }.hover
     all('.edit-icon').first.click
-    EditJournalFragment.new(find('.journal-thumbnail-edit-form'))
+    EditJournalFragment.new(find '.journal-thumbnail-edit-form')
   end
 
   def visit_journal(journal)
@@ -43,15 +48,17 @@ end
 
 class EditJournalFragment < PageFragment
   def name=(name)
-    find('input').set(name)
+    @name = name
+    find('.journal-name-edit').set name
   end
 
   def description=(description)
-    find('textarea').set(description)
+    find('.journal-description-edit').set description
   end
 
   def save
     click_on "Save"
+    synchronize_content! @name
   end
 
   def cancel

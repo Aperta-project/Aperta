@@ -8,6 +8,12 @@ feature "Upload Supporting Information", js: true do
   before do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in author
+
+    allow(SupportingInformation::DownloadSupportingInfo).to receive(:call) do |supporting_info, url|
+      supporting_info.save
+      supporting_info
+    end
+
   end
 
   scenario "Author uploads supporting information" do
@@ -15,7 +21,7 @@ feature "Upload Supporting Information", js: true do
 
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       overlay.attach_supporting_information
-      expect(overlay).to have_file 'yeti.tiff'
+      expect(overlay).to have_file 'yeti.jpg'
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end

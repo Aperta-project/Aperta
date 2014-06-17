@@ -13,14 +13,12 @@ ETahi.SupportingInformationOverlayController = ETahi.TaskController.extend
       currentUpload = @get('uploads').findBy('file', data.files[0])
       currentUpload.setProperties(dataLoaded: data.loaded, dataTotal: data.total)
 
-    uploadFinished: (data) ->
+    uploadFinished: (data, filename) ->
       uploads = @get('uploads')
-      newUpload = uploads.findBy('file', data.files[0])
+      newUpload = uploads.findBy('file.name', filename)
       uploads.removeObject newUpload
 
-      newFiles = _.map data.result.files, (file) =>
-        @store.pushPayload 'supportingInformationFile', { supportingInformationFiles: [ file ] }
-        @store.getById('supportingInformationFile', file.id)
+      @store.pushPayload('supportingInformationFile', data)
+      file = @store.getById('supportingInformationFile', data.supporting_information_file.id)
 
-      @get('paper').then (paper) ->
-        paper.get('supportingInformationFiles').pushObjects(newFiles)
+      @get('paper.supportingInformationFiles').pushObject(file)

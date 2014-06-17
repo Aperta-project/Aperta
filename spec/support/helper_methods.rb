@@ -16,4 +16,10 @@ module TahiHelperMethods
     role ||= FactoryGirl.create(:role, type, journal: journal)
     UserRole.create!(user: user, role: role)
   end
+
+  def with_aws_cassette(name)
+    VCR.use_cassette(name, :match_requests_on => [:method, VCR.request_matchers.uri_without_params(:Expires, :Signature)]) do
+      yield
+    end
+  end
 end

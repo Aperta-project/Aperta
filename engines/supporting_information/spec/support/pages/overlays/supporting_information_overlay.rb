@@ -5,7 +5,7 @@ class SupportingInformationOverlay < CardOverlay
 
   def attach_supporting_information
     session.execute_script "$('#file_attachment').css('position', 'relative')"
-    attach_file('file_attachment', Rails.root.join('spec', 'fixtures', 'yeti.tiff'), visible: false)
+    attach_file('file_attachment', Rails.root.join('spec', 'fixtures', 'yeti.jpg'), visible: false)
     session.execute_script "$('#file_attachment').css('position', 'absolute')"
   end
 

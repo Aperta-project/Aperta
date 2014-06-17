@@ -22,11 +22,15 @@ Tahi::Application.routes.draw do
   get '/flow_manager' => 'ember#index'
   get '/profile' => 'ember#index'
 
+  get '/request_policy' => 'direct_uploads#request_policy'
+
   resources :flows, only: [:index, :destroy, :create]
   resources :authors, only: [:create, :update, :destroy]
   resources :author_groups, only: [:create, :destroy]
 
-  resources :figures, only: [:destroy, :update]
+  resources :figures, only: [:destroy, :update] do
+    put :update_attachment, on: :member
+  end
 
   resources :files, as: 'supporting_information_files',
                     path: 'supporting_information_files',
@@ -46,11 +50,14 @@ Tahi::Application.routes.draw do
   resources :manuscript_manager_templates
 
   namespace :admin do
-    resources :journals, only: [:index]
+    resources :journals, only: [:index] do
+      put :upload_epub_cover, on: :member
+    end
   end
 
-  resources :users, only: [:update, :show] do
+  resources :users, only: [:show] do
     get :profile, on: :collection
+    put :update_avatar, on: :member
   end
 
   resources :papers, only: [:create, :show, :edit, :update] do
@@ -67,7 +74,7 @@ Tahi::Application.routes.draw do
     end
 
     member do
-      patch :upload
+      put :upload
       get :manage, to: 'ember#index'
       get :download
     end

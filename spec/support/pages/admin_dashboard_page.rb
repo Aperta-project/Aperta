@@ -56,6 +56,11 @@ class EditJournalFragment < PageFragment
     find('.journal-description-edit').set description
   end
 
+  def attach_cover_image(filename, journal_id)
+    all('.journal-logo-upload').first.hover
+    attach_file("journal-logo-#{journal_id}", Rails.root.join('spec', 'fixtures', filename), visible: false)
+  end
+
   def save
     click_on "Save"
     synchronize_content! @name

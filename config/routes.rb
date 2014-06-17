@@ -54,6 +54,7 @@ Tahi::Application.routes.draw do
   namespace :admin do
     resources :journals, only: [:index] do
       put :upload_epub_cover, on: :member
+      put :upload_logo, on: :member
     end
   end
 

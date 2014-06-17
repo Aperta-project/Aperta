@@ -21,10 +21,14 @@
 }
 
 #profile-avatar {
-  position: relative;
   width: 160px;
   height: 160px;
   border-radius: 5px;
+}
+
+#profile-avatar {
+  position: relative;
+
   &:hover {
     #profile-avatar-hover { display: block; }
   }
@@ -36,25 +40,24 @@
   border-radius: 5px;
 }
 
+#profile-avatar-hover {
+  @include upload-hover(rgba(0,145,0,0.5));
+}
+
 #profile-avatar-spinner {
   background-color: rgba(0,145,0,0.8);
 }
 
-#profile-avatar-spinner, #profile-avatar-hover {
-  display: none;
-  position: absolute;
-  top: 0;
+#profile-avatar-spinner,
+#profile-avatar-hover {
+  border-radius: 5px;
   width: 100%;
   height: 100%;
-  text-align: center;
-  border-radius: 5px;
 }
 
+#profile-avatar-spinner,
 #profile-avatar-hover {
-  background-color: rgba(0,145,0,0.5);
-  .secondary-button {
-    margin-top: 65px;
-  }
+  @include upload-spinner-and-hover;
 }
 
 .affiliations-form {
@@ -62,4 +65,3 @@
     margin: 15px 0;
   }
 }
-

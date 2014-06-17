@@ -13,6 +13,9 @@ describe Admin::JournalsController do
 
       it 'creates a journal' do
         post :create, admin_journal: { name: 'new journal name', description: 'new journal desc' }, format: :json
+        journal = Journal.last
+        expect(journal.name).to eq 'new journal name'
+        expect(journal.description).to eq 'new journal desc'
         expect(response.status).to eq 201
       end
     end

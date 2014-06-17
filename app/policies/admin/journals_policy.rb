@@ -3,11 +3,15 @@ class Admin::JournalsPolicy < ApplicationPolicy
     can_administer_any_journal?
   end
 
-  def update?
+  def create?
     can_administer_any_journal?
   end
 
   def upload_epub_cover?
+    can_administer_any_journal?
+  end
+
+  def update?
     can_administer_any_journal?
   end
 end

@@ -2,12 +2,13 @@ TahiNotifier.subscribe("task:created", "task:updated", "comment:*", "declaration
   action     = payload[:action]
   task_id    = payload[:task_id]
   paper_id   = payload[:paper_id]
+  meta       = payload[:meta]
 
   task = Task.find(task_id)
   serializer = task.active_model_serializer.new(task)
   EventStream.post_event(
     paper_id,
-    serializer.as_json.merge(action: action).to_json
+    serializer.as_json.merge(action: action, meta: meta).to_json
   )
 end
 

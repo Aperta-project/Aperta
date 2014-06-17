@@ -8,11 +8,27 @@ module EventStreamNotifier
     end
 
     def event_stream_payload
-      task_payload.merge!(action: action)
+      p = task_payload.merge!({action: action})
+      if has_meta?
+        p.merge!({meta: { model_name: meta_type, id: meta_id }})
+      end
+      p
     end
 
     def task_payload
       { task_id: id, paper_id: paper.id }
+    end
+
+    def has_meta?
+      false
+    end
+
+    def meta_type
+      nil
+    end
+
+    def meta_id
+      nil
     end
 
     private

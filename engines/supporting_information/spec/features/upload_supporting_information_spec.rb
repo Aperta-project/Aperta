@@ -19,7 +19,7 @@ feature "Upload Supporting Information", js: true do
   scenario "Author uploads supporting information" do
     edit_paper = EditPaperPage.visit paper
 
-    edit_paper.view_card 'Supporting Information' do |overlay|
+    edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       overlay.attach_supporting_information
       expect(overlay).to have_file 'yeti.jpg'
       overlay.mark_as_complete
@@ -29,7 +29,7 @@ feature "Upload Supporting Information", js: true do
 
   scenario "Author destroys supporting information immediately" do
     edit_paper = EditPaperPage.visit paper
-    edit_paper.view_card 'Supporting Information' do |overlay|
+    edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       overlay.attach_supporting_information
       find('.figure-thumbnail').hover
       find('.glyphicon-trash').click
@@ -40,7 +40,7 @@ feature "Upload Supporting Information", js: true do
 
   scenario "Author can edit title and caption" do
     edit_paper = EditPaperPage.visit paper
-    edit_paper.view_card 'Supporting Information' do |overlay|
+    edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       overlay.attach_supporting_information
       title = find('h2.figure-thumbnail-title')
       caption = find('div.figure-thumbnail-caption')

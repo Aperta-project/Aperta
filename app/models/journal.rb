@@ -17,6 +17,8 @@ class Journal < ActiveRecord::Base
   has_many :users, through: :user_roles
   has_many :manuscript_manager_templates, dependent: :destroy
 
+  validates_presence_of :name, message: 'Please include a journal name'
+
   after_create :setup_defaults
   before_destroy :destroy_roles
 

@@ -16,4 +16,11 @@ ETahi.FinancialDisclosureOverlayController = ETahi.TaskController.extend
 
     choseFundingNotReceived: ->
       @get('funders').forEach (funder) ->
-        funder.deleteRecord()
+        if funder.get('isNew')
+          funder.deleteRecord()
+        else
+          funder.destroyRecord()
+
+    funderDidChange: (funder) ->
+      funder.save()
+

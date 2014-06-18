@@ -1,6 +1,6 @@
-class CreateFunders < ActiveRecord::Migration
+class CreateFinancialDisclosureFunders < ActiveRecord::Migration
   def change
-    create_table :funders do |t|
+    create_table :financial_disclosure_funders do |t|
       t.string :name
       t.string :grant_number
       t.string :website
@@ -10,9 +10,12 @@ class CreateFunders < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :funded_authors do |t|
+    create_table :financial_disclosure_funded_authors do |t|
       t.references :author, index: true
       t.references :funder, index: true
     end
+
+    add_index :financial_disclosure_funded_authors, [:author_id, :funder_id], unique: true
   end
 end
+

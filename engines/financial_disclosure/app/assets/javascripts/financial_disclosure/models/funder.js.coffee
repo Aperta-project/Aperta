@@ -5,6 +5,6 @@ ETahi.Funder = DS.Model.extend
   website: a('string')
   funderHadInfluence: a('boolean')
   funderInfluenceDescription: a('string')
-  financialDisclosureTask: DS.belongsTo('financialDisclosureTask')
+  task: DS.belongsTo('financialDisclosureTask')
   authors: DS.hasMany('author')
 

@@ -5,8 +5,11 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "sprockets/railtie"
 # require "rails/test_unit/railtie"
+require 'active_job'
 
 Bundler.require(:default, Rails.env)
+
+ActiveJob::Base.queue_adapter = :sidekiq
 
 module Tahi
   class Application < Rails::Application

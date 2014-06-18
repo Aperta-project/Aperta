@@ -9,9 +9,9 @@ feature "Upload Supporting Information", js: true do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in author
 
-    allow(SupportingInformation::DownloadSupportingInfo).to receive(:call) do |supporting_info, url|
+    allow(SupportingInformation::DownloadSupportingInfo).to receive(:enqueue) do |supporting_info_id, url|
+      supporting_info = SupportingInformation::File.find(supporting_info_id)
       supporting_info.save
-      supporting_info
     end
 
   end
@@ -22,8 +22,6 @@ feature "Upload Supporting Information", js: true do
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       overlay.attach_supporting_information
       expect(overlay).to have_file 'yeti.jpg'
-      overlay.mark_as_complete
-      expect(overlay).to be_completed
     end
   end
 

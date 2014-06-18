@@ -8,7 +8,6 @@ module SupportingInformation
       supporting_info.insert_title
       supporting_info.status = "done"
       supporting_info.save!
-      supporting_info
     end
   end
 end

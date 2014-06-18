@@ -2,6 +2,11 @@ Tahi::Application.routes.draw do
   mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
   mount Declaration::Engine => '/', :as => 'declaration_engine'
 
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   if Rails.env.test?
     require_relative '../spec/support/stream_server/stream_server'
     get '/stream' => StreamServer

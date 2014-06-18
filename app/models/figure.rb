@@ -5,11 +5,6 @@ class Figure < ActiveRecord::Base
   # Why the hell is that happening?
   default_scope { order(:id) }
 
-  before_create :insert_title
-
-  def insert_title
-    self.title = "Title: #{attachment.filename}" if attachment.present?
-  end
 
   mount_uploader :attachment, AttachmentUploader
 
@@ -22,7 +17,7 @@ class Figure < ActiveRecord::Base
   end
 
   def alt
-    filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize
+    filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
   end
 
   def src

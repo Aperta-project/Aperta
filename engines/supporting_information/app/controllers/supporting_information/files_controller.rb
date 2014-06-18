@@ -4,14 +4,8 @@ module SupportingInformation
     before_action :authenticate_user!
 
     def create
-      files = Array.wrap(file_params.delete(:attachment))
-      new_files = files.map do |file|
-        paper.supporting_information_files.create!(file_params.merge(attachment: file))
-      end
-      respond_to do |f|
-        f.html { redirect_to edit_paper_path paper }
-        f.json { render json: new_files }
-      end
+      new_file = ::SupportingInformation::DownloadSupportingInfo.call(paper.supporting_information_files.new, params[:url])
+      render json: new_file, root: :supporting_information_file
     end
 
     def update

@@ -1,9 +1,14 @@
 require 'spec_helper'
 
 describe SourceUploader do
-  let(:paper)       { FactoryGirl.create(:paper) }
-  let(:manuscript)  { FactoryGirl.create(:manuscript, paper: paper) }
-  let(:uploader)    { manuscript.source }
+  let(:paper) { FactoryGirl.create(:paper) }
+  let(:manuscript) do
+    with_aws_cassette('manuscript') do
+      DownloadManuscript.call(paper, "https://tahi-development.s3.amazonaws.com/temp/about_equations.docx")
+    end
+  end
+
+  let(:uploader) { manuscript.source }
 
   describe "#store_dir" do
     it "has the correct path" do

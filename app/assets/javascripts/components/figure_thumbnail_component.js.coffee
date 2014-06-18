@@ -8,7 +8,7 @@ ETahi.FigureThumbnailComponent = Ember.Component.extend
   uploadingState: false
 
   figureUrl: (->
-    "/figures/#{@get('figure.id')}"
+    "/figures/#{@get('figure.id')}/update_attachment"
   ).property('figure.id')
 
   spinnerOpts: (->
@@ -68,7 +68,7 @@ ETahi.FigureThumbnailComponent = Ember.Component.extend
 
     figureUploaded: (data) ->
       store = @get('figure.store')
-      store.pushPayload 'figure', data.result
+      store.pushPayload 'figure', data
       @set('uploadingState', false)
 
     togglePreview: ->

@@ -6,6 +6,6 @@ class LogoUploader < CarrierWave::Uploader::Base
   end
 
   def default_url
-    "/assets/no-jounal-image.gif"
+    "/images/no-journal-image.gif"
   end
 end

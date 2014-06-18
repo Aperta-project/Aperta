@@ -1,27 +1,33 @@
 class OxgarageParser
 
   def self.parse(filename)
-    new(filename).to_hash
+    new(File.new(filename, 'rb')).to_hash
   end
 
-  def initialize(filename)
-    @filename = filename
+  def initialize(file)
+    @file = file
   end
 
   def output
-    request = RestClient::Request.new(
-          :method => :post,
-          :url => ENV['OXGARAGE_URL'],
-          params: {properties: '<conversions><conversion index="0"><property id="oxgarage.getImages">true</property><property id="oxgarage.getOnlineImages">true</property><property id="oxgarage.lang">en</property><property id="oxgarage.textOnly">false</property><property id="pl.psnc.dl.ege.tei.profileNames">sciencejournal</property></conversion><conversion index="1"><property id="oxgarage.getImages">true</property><property id="oxgarage.getOnlineImages">true</property><property id="oxgarage.lang">en</property><property id="oxgarage.textOnly">false</property><property id="pl.psnc.dl.ege.tei.profileNames">sciencejournal</property></conversion></conversions>'},
-          :payload => {
-            :multipart => true,
-            :file => File.new(@filename, 'rb')
-          })
-    @response ||= request.execute
+    return @output if @output
 
-    return @response if extract_filename(@response.headers).ends_with? 'html'
+    conn = Faraday.new do |faraday|
+      faraday.request :multipart
+      faraday.request :url_encoded
+      faraday.adapter Faraday.default_adapter
+    end
 
-    extract_document_from @response
+    params = {
+      properties: properties,
+      file: Faraday::UploadIO.new(@file, 'application/octet-stream')
+    }
+
+    response = conn.post(url, params)
+    if extract_filename(response.headers).ends_with? 'html'
+      @output = Nokogiri::HTML(response.body)
+    else
+      @output = Nokogiri::HTML(extract_document_from(response.body))
+    end
   end
 
   def extract_document_from response
@@ -31,11 +37,11 @@ class OxgarageParser
   end
 
   def title
-    Nokogiri::HTML(output).css('.stdheader + *').text
+    output.css('.stdheader + *').text
   end
 
   def body
-    body = Nokogiri::HTML(output).css('body')
+    body = output.css('body')
     body.css('.stdheader').remove
     body.css('body > *:first-child').remove
     body.css('.stdfooter').remove
@@ -49,8 +55,15 @@ class OxgarageParser
 
   private
 
+  def url
+    ENV['OXGARAGE_URL']
+  end
+
+  def properties
+    '<conversions><conversion index="0"><property id="oxgarage.getImages">true</property><property id="oxgarage.getOnlineImages">true</property><property id="oxgarage.lang">en</property><property id="oxgarage.textOnly">false</property><property id="pl.psnc.dl.ege.tei.profileNames">sciencejournal</property></conversion><conversion index="1"><property id="oxgarage.getImages">true</property><property id="oxgarage.getOnlineImages">true</property><property id="oxgarage.lang">en</property><property id="oxgarage.textOnly">false</property><property id="pl.psnc.dl.ege.tei.profileNames">sciencejournal</property></conversion></conversions>'
+  end
+
   def extract_filename response_headers
     response_headers[:content_disposition].split('filename=').last.chomp('"')
   end
-
 end

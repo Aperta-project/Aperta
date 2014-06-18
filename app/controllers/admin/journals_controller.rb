@@ -8,19 +8,28 @@ class Admin::JournalsController < ApplicationController
     respond_with current_user.administered_journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
 
-  def update
-    @journal = Journal.find(params[:id])
+  def create
+    respond_with Journal.create journal_params
+  end
 
-    if @journal.update(journal_params)
-      render json: @journal, serializer: AdminJournalSerializer
+  def update
+    journal = Journal.find(params[:id])
+
+    if journal.update(journal_params)
+      render json: journal, serializer: AdminJournalSerializer
     else
-      respond_with @journal
+      respond_with journal
     end
+  end
+
+  def upload_epub_cover
+    journal = DownloadEpubCover.call(Journal.find(params[:id]), params[:url])
+    render json: journal, serializer: AdminJournalSerializer
   end
 
   private
 
   def journal_params
-    params.require(:admin_journal).permit(:epub_cover, :epub_css, :pdf_css, :manuscript_css)
+    params.require(:admin_journal).permit(:name, :description, :epub_cover, :epub_css, :pdf_css, :manuscript_css)
   end
 end

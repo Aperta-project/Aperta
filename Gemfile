@@ -2,11 +2,17 @@ source 'https://rubygems.org'
 
 ruby "2.1.2"
 
+# Configuration
+group :development, :test do
+  gem 'dotenv-rails'
+end
+
 # Task Engines
 gem 'standard_tasks',         path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
 gem 'declaration',            path: 'engines/declaration'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
+gem 'data_availability',      path: 'engines/data_availability'
 
 # Gems
 gem 'rails', '4.1.1'
@@ -78,8 +84,6 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'pry-rescue'
-  gem 'dotenv-rails'
-  gem 'dotenv-deployment'
 end
 
 group :test do

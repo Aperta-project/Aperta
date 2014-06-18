@@ -54,7 +54,12 @@ describe EpubConverter do
 
     context 'paper with uploaded source' do
       let(:paper) { create :paper }
-      let!(:manuscript)  { FactoryGirl.create(:manuscript, paper: paper) }
+      let(:url) { "https://tahi-development.s3.amazonaws.com/temp/about_equations.docx" }
+      let!(:manuscript) do
+        with_aws_cassette('epub_converter') do
+          DownloadManuscript.call(paper, url)
+        end
+      end
 
       it "includes the source doc in the epub when requested" do
         entries = read_epub_stream(epub(include_source: true)[:stream])

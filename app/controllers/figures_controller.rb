@@ -1,29 +1,22 @@
 class FiguresController < ApplicationController
-  rescue_from ActiveRecord::RecordNotFound, with: :render_404
-
+  respond_to :json
   before_action :authenticate_user!
 
   def create
-    figures = Array.wrap(figure_params.delete(:attachment))
-
-    figures.select! {|f| Figure.acceptable_content_type? f.content_type }
-
-    new_figures = figures.map do |figure|
-      paper.figures.create!(figure_params.merge(attachment: figure))
-    end
-
-    respond_to do |f|
-      f.html { redirect_to edit_paper_path paper }
-      f.json { render json: new_figures }
-    end
+    figure = DownloadFigure.call(paper.figures.new, params[:url])
+    render json: figure
   end
 
   def update
     figure = Figure.find params[:id]
     figure.update_attributes figure_params
-    respond_to do |f|
-      f.json { render json: figure }
-    end
+
+    respond_with figure
+  end
+
+  def update_attachment
+    figure = DownloadFigure.call(Figure.find(params[:id]), params[:url])
+    render json: figure
   end
 
   def destroy

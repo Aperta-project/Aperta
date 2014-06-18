@@ -20,22 +20,6 @@ feature "Profile Page", js: true do
     expect(current_path).to eq new_user_session_path
   end
 
-  scenario "user can upload an avatar image" do
-    profile_page = ProfilePage.visit
-    profile_page.attach_image('yeti.jpg')
-    expect(profile_page.image).to eq('yeti.jpg')
-    expect(profile_page.image_size).to eq('160x160')
-    expect(profile_page).to have_no_application_error
-  end
-
-  scenario "user cannot upload an avatar image of unsupported type" do
-    profile_page = ProfilePage.visit
-    profile_page.attach_image('about_turtles.docx')
-    expect(profile_page).to have_application_error
-    expect(profile_page.image).to_not eq('about_turtles.docx')
-    expect(profile_page.image).to eq('profile-no-image.png')
-  end
-
   scenario "user can add an affiliation" do
     profile_page = ProfilePage.visit
     profile_page.add_affiliate('Yoda University')

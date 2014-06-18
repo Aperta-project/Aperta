@@ -1,20 +1,27 @@
 module FinancialDisclosure
   class FundersController < ::ApplicationController
+    before_action :authenticate_user!
+
     respond_to :json
 
     def create
-      funder = Funder.create(funder_params)
+      task = Task.find(funder_params[:task_id])
+      funder = task.funders.new(funder_params)
+      authorize_action!(funder: funder)
+      funder.save
       respond_with funder
     end
 
     def update
       funder = Funder.find(params[:id])
+      authorize_action!(funder: funder)
       funder.update_attributes(funder_params)
       respond_with funder
     end
 
     def destroy
       funder = Funder.find(params[:id])
+      authorize_action!(funder: funder)
       funder.destroy
       respond_with funder
     end

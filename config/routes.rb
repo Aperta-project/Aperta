@@ -59,6 +59,7 @@ Tahi::Application.routes.draw do
     end
   end
 
+  resources :admin_journal_users, only: :index
   resources :users, only: [:show] do
     get :profile, on: :collection
     put :update_avatar, on: :member

@@ -1,6 +1,7 @@
 Tahi::Application.routes.draw do
   mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
   mount Declaration::Engine => '/', :as => 'declaration_engine'
+  mount FinancialDisclosure::Engine => '/', as: 'financial_disclosure'
 
   if Rails.env.test?
     require_relative '../spec/support/stream_server/stream_server'

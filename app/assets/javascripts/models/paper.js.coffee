@@ -24,6 +24,13 @@ ETahi.Paper = DS.Model.extend
     @get('title') || @get('shortTitle')
   ).property('title', 'shortTitle')
 
+  authors: (->
+    reducer = (authors, group) ->
+      authors.pushObjects(group.get('authors'))
+
+    @get('authorGroups').reduce(reducer, [])
+  ).property('authorGroups.@each')
+
   allMetadataTasks: (->
     @get('tasks').filterBy('isMetadataTask')
   ).property('tasks.content.@each.isMetadataTask')

@@ -7,12 +7,12 @@ require "declaration/version"
 Gem::Specification.new do |s|
   s.name        = "declaration"
   s.version     = Declaration::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Declaration."
-  s.description = "TODO: Description of Declaration."
-  # s.license     = ""
+  s.authors     = ["Neo"]
+  s.email       = ["tahi-project@neo.com"]
+  s.homepage    = "http://www.tahi.com"
+  s.summary     = "Declaration task"
+  s.description = "Declaration task"
+  s.license     = "TBD"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile"]
   s.test_files = Dir["spec/**/*"]

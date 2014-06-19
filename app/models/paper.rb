@@ -1,4 +1,6 @@
 class Paper < ActiveRecord::Base
+  include EventStreamNotifier
+
   belongs_to :user, inverse_of: :submitted_papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
@@ -94,5 +96,10 @@ class Paper < ActiveRecord::Base
 
   def build_default_author_groups
     AuthorGroup.build_default_groups_for(self)
+  end
+
+  private
+  def notifier_payload
+    { id: id, paper_id: id }
   end
 end

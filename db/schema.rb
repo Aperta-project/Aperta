@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618182618) do
+ActiveRecord::Schema.define(version: 20140619192947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -138,27 +138,6 @@ ActiveRecord::Schema.define(version: 20140618182618) do
     t.integer  "user_id"
   end
 
-  create_table "funded_authors", force: true do |t|
-    t.integer "author_id"
-    t.integer "funder_id"
-  end
-
-  add_index "funded_authors", ["author_id"], name: "index_funded_authors_on_author_id", using: :btree
-  add_index "funded_authors", ["funder_id"], name: "index_funded_authors_on_funder_id", using: :btree
-
-  create_table "funders", force: true do |t|
-    t.string   "name"
-    t.string   "grant_number"
-    t.string   "website"
-    t.boolean  "funder_had_influence"
-    t.text     "funder_influence_description"
-    t.integer  "task_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "funders", ["task_id"], name: "index_funders_on_task_id", using: :btree
-
   create_table "journals", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -249,8 +228,8 @@ ActiveRecord::Schema.define(version: 20140618182618) do
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
   create_table "questions", force: true do |t|
-    t.string  "question"
-    t.string  "answer"
+    t.text    "question"
+    t.text    "answer"
     t.string  "ident"
     t.integer "task_id"
     t.json    "additional_data"

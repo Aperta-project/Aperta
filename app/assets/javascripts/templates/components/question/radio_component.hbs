@@ -1,4 +1,4 @@
-<div class="question-text">{{model.question}}</div>
+<div class="question-text">{{{model.question}}}</div>
 {{#if helpText}}
   <div class="help">{{{helpText}}}</div>
 {{/if}}
@@ -14,7 +14,7 @@
 </label>
 
 {{#if template}}
-  <div {{bind-attr class=":additional-data selectedYes::hidden"}}>
+  <div {{bind-attr class=":additional-data displayContent::hidden"}}>
     {{yield}}
   </div>
 {{/if}}

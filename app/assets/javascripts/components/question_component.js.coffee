@@ -1,6 +1,7 @@
 ETahi.QuestionComponent = Ember.Component.extend
   tagName: 'div'
   helpText: null
+  displayContent: false
 
   model: (->
     ident = @get('ident')
@@ -27,4 +28,3 @@ ETahi.QuestionComponent = Ember.Component.extend
 
   _saveModel: ->
     @get('model').save()
-

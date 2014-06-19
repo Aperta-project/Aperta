@@ -17,6 +17,12 @@ GIT
       railties (>= 3.1)
 
 PATH
+  remote: engines/competing_interests
+  specs:
+    competing_interests (0.0.1)
+      rails (~> 4.1.1)
+
+PATH
   remote: engines/data_availability
   specs:
     data_availability (0.0.1)
@@ -468,6 +474,7 @@ DEPENDENCIES
   chosen-rails (~> 1.1.0)
   codeclimate-test-reporter
   coffee-rails (~> 4.0.1)
+  competing_interests!
   data_availability!
   database_cleaner
   declaration!

@@ -1,6 +1,7 @@
 Tahi::Application.routes.draw do
   mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
   mount Declaration::Engine => '/', :as => 'declaration_engine'
+  mount FinancialDisclosure::Engine => '/', as: 'financial_disclosure'
 
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.admin? } do

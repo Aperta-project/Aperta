@@ -12,3 +12,9 @@
   {{view ETahi.RadioButton name=ident value="No" selection=model.answer}}
   No
 </label>
+
+{{#if template}}
+  <div {{bind-attr class=":additional-data selectedYes::hidden"}}>
+    {{yield}}
+  </div>
+{{/if}}

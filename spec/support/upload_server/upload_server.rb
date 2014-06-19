@@ -21,20 +21,11 @@ class UploadServer < Sinatra::Base
   options '/' do
   end
 
-  get '/fake_file' do
-    file_response
-  end
-
   private
 
   def xml_response
     content_type 'text/xml'
     '<PostResponse><Location>http://localhost:31337/fake_s3/fake_file</Location></PostResponse>'
-  end
-
-  def file_response
-    file = File.open(File.join(settings.root, 'public', 'yeti.tiff'))
-    send_file file
   end
 
   run! if app_file == $0

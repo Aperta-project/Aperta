@@ -15,9 +15,29 @@
         {{input placeholder="Search All Users" class="admin-search-input" value=searchQuery}}
         <button class="admin-search-button" {{action searchUsers}}><span class="glyphicon glyphicon-search"></span></button>
       </div>
-      <div class="row search-results">
-        <p class="search-default-state-text">Need to find a user?<br> Search for them here.</p>
-      </div>
+
+      {{#if adminJournalUsers}}
+        <div class="row">
+          <table class='col-md-12 admin-users'>
+            <tr>
+              <th>Username</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+            </tr>
+            {{#each user in adminJournalUsers}}
+              <tr class="user-row">
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <td>{{user.username}}</td>
+              </tr>
+            {{/each}}
+          </table>
+        </div>
+      {{else}}
+        <div class="row search-results">
+          <p class="search-default-state-text">Need to find a user?<br> Search for them here.</p>
+        </div>
+      {{/if}}
     </div>
   </div>
 </div>

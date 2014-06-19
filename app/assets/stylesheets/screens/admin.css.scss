@@ -317,7 +317,7 @@
 }
 
 .search-results {
-  margin-top: 15px;
+  margin-top: 30px;
   .search-default-state-text {
     font-size: 22px;
     font-style: italic;
@@ -360,3 +360,31 @@
   }
 }
 
+.admin-users {
+  margin-top: 30px;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  padding: 0;
+
+  th {
+    font-size: 18px;
+    font-weight: normal;
+    color: $tahi-tertiary-dark;
+  }
+
+  td {
+    font-size: 16px;
+    padding: 3px;
+  }
+
+  tr {
+    color: $tahi-blue-light;
+  }
+
+  tr.user-row {
+    &:hover {
+      color: white;
+      background: $tahi-blue-light;
+    }
+  }
+}

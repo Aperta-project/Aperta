@@ -20,7 +20,3 @@ ETahi.FinancialDisclosureOverlayController = ETahi.TaskController.extend
           funder.deleteRecord()
         else
           funder.destroyRecord()
-
-    funderDidChange: (funder) ->
-      funder.save()
-

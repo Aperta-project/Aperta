@@ -2,6 +2,16 @@
   {{input type="text" name="name" value=funder.name class="form-control" placeholder="Funder"}}
   {{input type="text" name="grant_number" value=funder.grantNumber class="form-control" placeholder="Grant Number"}}
   {{input type="text" name="website" value=funder.website class="form-control" placeholder="Website"}}
+  <div class="question-text">Authors who received funding</div>
+  {{chosen content=allAuthors
+           name="authors"
+           data-placeholder="Choose Author Name"
+           selection=fundedAuthors
+           optionValuePath="content"
+           optionLabelPath="content.fullName"
+           class="chosen-author"
+           multiple=true
+           changeAction="addFundedAuthors"}}
   </br>
   <div class="question-text">
     Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?

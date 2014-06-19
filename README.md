@@ -16,6 +16,7 @@ your components have stylesheets (`rake bower:resolve`)
 
 You will need:
 - Go with your $GOPATH environment variable set.
+- Add /usr/local/go/bin to your $PATH.
 - a cloned copy of https://github.com/stuartnelson3/golang-eventsource: 
   `$ git clone git@github.com:stuartnelson3/golang-eventsource.git`
 
@@ -23,7 +24,7 @@ From your golang-eventsource folder:
 
 Download your server dependencies
 ```
-$ for f in github.com/antage/eventsource/http github.com/martini-contrib/cors github.com/codegangsta/martini; do
+$ for f in github.com/antage/eventsource github.com/martini-contrib/cors github.com/codegangsta/martini; do
   go get $f
   done
 ```

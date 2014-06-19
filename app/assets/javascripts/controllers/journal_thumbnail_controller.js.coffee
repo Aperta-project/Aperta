@@ -3,7 +3,7 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isEditing: (-> @get 'model.isDirty').property()
   thumbnailId: (-> "journal-logo-#{@get 'model.id'}").property()
-  logoUploadUrl: (-> "/admin/journals/#{@get 'id'}/upload_logo").property()
+  logoUploadUrl: (-> "/admin/journals/#{@get 'model.id'}/upload_logo").property()
   nameErrors: null
   descriptionErrors: null
 

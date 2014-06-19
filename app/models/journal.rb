@@ -10,7 +10,8 @@ class Journal < ActiveRecord::Base
                       "StandardTasks::FigureTask",
                       "StandardTasks::AuthorsTask",
                       "SupportingInformation::Task",
-                      "DataAvailability::Task"]
+                      "DataAvailability::Task",
+                      "FinancialDisclosure::Task"]
 
   has_many :papers, inverse_of: :journal
   has_many :roles, inverse_of: :journal

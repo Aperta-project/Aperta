@@ -116,6 +116,10 @@ describe PapersController do
   end
 
   describe "POST 'upload'" do
-    pending "implementation will change when we get background workers... let's not write throwaway tests"
+    let(:url) { "http://theurl.com" }
+    it "sends enqueue to DownloadManuscript" do
+      expect(DownloadManuscript).to receive(:enqueue)
+      post :upload, id: paper.id, url: url
+    end
   end
 end

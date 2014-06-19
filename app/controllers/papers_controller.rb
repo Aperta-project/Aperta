@@ -38,7 +38,7 @@ class PapersController < ApplicationController
   end
 
   def upload
-    DownloadManuscript.call Paper.find(params[:id]), params[:url]
+    DownloadManuscript.enqueue params[:id], params[:url]
     head :no_content
   end
 

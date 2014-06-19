@@ -1,5 +1,8 @@
-class DownloadManuscript
-  def self.call paper, url
+class DownloadManuscript < ActiveJob::Base
+  queue_as :process_manuscripts
+
+  def perform paper_id, url
+    paper = Paper.find(paper_id)
     manuscript = paper.manuscript || paper.build_manuscript
 
     # TODO: we're downloading this once, then using `open` to download it again

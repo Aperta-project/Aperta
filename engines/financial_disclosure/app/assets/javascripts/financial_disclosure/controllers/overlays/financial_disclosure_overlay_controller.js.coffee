@@ -5,7 +5,7 @@ ETahi.FinancialDisclosureOverlayController = ETahi.TaskController.extend
   authors: Em.computed.alias('task.authors')
   receivedFunding: (->
     @get('funders.length') > 0
-  ).property('funders.@each, funders.[]')
+  ).property('funders.@each', 'funders.[]')
   receivedNoFunding: Em.computed.not('receivedFunding')
 
   actions:

@@ -34,6 +34,7 @@
 
   &.blue {
     border-color: $tahi-blue-light;
+    color: $tahi-blue-hover;
 
     &:focus, &:hover {
       border-color: $tahi-blue-hover;

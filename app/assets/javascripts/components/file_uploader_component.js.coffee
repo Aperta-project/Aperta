@@ -34,7 +34,7 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
         url: "/request_policy",
         type: 'GET',
         dataType: 'json',
-        data: 
+        data:
           file_prefix: @get('filePrefix')
           content_type: file.type
         success: (data) ->

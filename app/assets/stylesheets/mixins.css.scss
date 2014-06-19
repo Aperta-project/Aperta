@@ -17,3 +17,18 @@
 
   &:hover { text-decoration: none; } // override global tahi a style
 }
+
+@mixin upload-spinner-and-hover {
+  display: none;
+  position: absolute;
+  top: 0;
+  text-align: center;
+}
+
+@mixin upload-hover($background-color) {
+  background-color: $background-color;
+
+  .secondary-button {
+    margin-top: 65px;
+  }
+}

@@ -22,6 +22,11 @@ class Admin::JournalsController < ApplicationController
     end
   end
 
+  def upload_logo
+    journal = DownloadLogo.call(Journal.find(params[:id]), params[:url])
+    render json: journal, serializer: AdminJournalSerializer
+  end
+
   def upload_epub_cover
     journal = DownloadEpubCover.call(Journal.find(params[:id]), params[:url])
     render json: journal, serializer: AdminJournalSerializer

@@ -51,6 +51,7 @@ class AdminDashboardPage < Page
   end
 
   def search_results
+    synchronize_content! "Username"
     all('.admin-users .user-row').collect do |el|
       Hash[[:first_name, :last_name, :username].zip(el.all('td').collect &:text)]
     end

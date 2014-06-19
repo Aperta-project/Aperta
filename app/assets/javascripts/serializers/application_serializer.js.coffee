@@ -87,6 +87,7 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
     payload = @normalizePayload(primaryType, payload)
     # primaryTypeName = primaryType.typeKey
     primaryTypeName = @primaryTypeName(primaryType)
+    # primaryTypeName = @primaryTypeName(primaryType).toLowerCase()
     primaryArray = undefined
     for prop of payload
       typeKey = prop

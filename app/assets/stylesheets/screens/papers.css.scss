@@ -103,13 +103,28 @@ $paper-trim-color: $tahi-tertiary;
   border: #666 1px dotted;
 }
 
-main > article > div,
+.manuscript-container,
 main > aside > div {
   margin: 0 auto;
 }
 
-main > article > div {
+.manuscript-container {
   width: 700px;
+}
+
+.locked-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  text-align: center;
+  font-size: 24px;
+}
+
+.lock-message {
+  @include position(relative, 50% 0 0 0);
+  @include transform(translateY(-50%));
 }
 
 main > aside > div {

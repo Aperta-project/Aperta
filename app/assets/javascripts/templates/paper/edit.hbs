@@ -22,7 +22,10 @@
 <div id="tahi-container">
   <main>
     <article>
-      <div>
+      <div {{bind-attr class=":locked-overlay locked::hidden"}}>
+        <span class="lock-message">{{lockMessage}}</span>
+      </div>
+      <div class="manuscript-container">
         <div class="title">
           {{content-editable tagName="h2"
                              id="paper-title"

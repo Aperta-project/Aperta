@@ -38,7 +38,10 @@ class PapersController < ApplicationController
   end
 
   def upload
-    DownloadManuscript.enqueue params[:id], params[:url]
+    paper = Paper.find(params[:id])
+    manuscript = paper.manuscript || paper.build_manuscript
+    manuscript.update_attribute :status, "processing"
+    DownloadManuscript.enqueue manuscript.id, params[:url]
     head :no_content
   end
 

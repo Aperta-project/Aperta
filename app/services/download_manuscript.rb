@@ -1,15 +1,13 @@
 class DownloadManuscript < ActiveJob::Base
   queue_as :process_manuscripts
 
-  def perform paper_id, url
-    paper = Paper.find(paper_id)
-    manuscript = paper.manuscript || paper.build_manuscript
-
-    # TODO: we're downloading this once, then using `open` to download it again
-    # is there a way to reuse the same file for both?
+  def perform manuscript_id, url
+    puts "Finding manuscript #{manuscript_id}"
+    manuscript = Manuscript.find(manuscript_id)
+    puts manuscript
     manuscript.source.download!(url)
+    manuscript.status = "done"
     manuscript.save
-    paper.update OxgarageParser.new(open(manuscript.source.file.url)).to_hash
-    manuscript
+    manuscript.paper.update OxgarageParser.new(open(manuscript.source.file.url)).to_hash
   end
 end

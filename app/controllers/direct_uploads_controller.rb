@@ -15,7 +15,7 @@ class DirectUploadsController < ApplicationController
   private
 
   def url
-    "http://#{ENV['S3_BUCKET']}.s3.amazonaws.com"
+    ENV['S3_URL']
   end
 
   def request_params

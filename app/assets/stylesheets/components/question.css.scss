@@ -1,0 +1,34 @@
+.question {
+  margin-bottom: 25px;
+}
+
+.question-text {
+  font-size: 1.4em;
+  line-height: 1.2em;
+}
+
+.help:before {
+  content: ">";
+  color: $tahi-primary-hover;
+  font-size: 1.4em;
+  font-weight: 700;
+  margin-right: 0.1em;
+}
+
+.help {
+  margin: 5px 0;
+}
+
+.item {
+  margin: 5px 0;
+}
+
+label {
+  font-weight: normal;
+}
+
+.dataset {
+  padding: 30px;
+  margin: 15px 0;
+  background: rgb(194, 232, 188);
+}

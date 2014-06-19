@@ -206,6 +206,16 @@ ActiveRecord::Schema.define(version: 20140618183934) do
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
+  create_table "questions", force: true do |t|
+    t.string  "question"
+    t.string  "answer"
+    t.string  "ident"
+    t.integer "task_id"
+    t.json    "additional_data"
+  end
+
+  add_index "questions", ["task_id"], name: "index_questions_on_task_id", using: :btree
+
   create_table "rails_admin_histories", force: true do |t|
     t.text     "message"
     t.string   "username"

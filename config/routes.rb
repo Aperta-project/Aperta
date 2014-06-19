@@ -9,8 +9,10 @@ Tahi::Application.routes.draw do
 
   if Rails.env.test?
     require_relative '../spec/support/stream_server/stream_server'
+    require_relative '../spec/support/upload_server/upload_server'
     get '/stream' => StreamServer
     post '/update_stream' => StreamServer
+    mount UploadServer, at: '/fake_s3/'
   end
 
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks", registrations: "registrations" }
@@ -102,6 +104,8 @@ Tahi::Application.routes.draw do
   resources :phases, only: [:create, :update, :show, :destroy]
 
   resources :roles, only: [:create, :update, :destroy]
+
+  resources :questions, only: [:create, :update]
 
   get '/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 

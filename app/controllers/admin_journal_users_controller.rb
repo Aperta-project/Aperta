@@ -6,4 +6,3 @@ class AdminJournalUsersController < ApplicationController
     respond_with @users, each_serializer: AdminJournalUserSerializer, root: 'admin_journal_users'
   end
 end
-

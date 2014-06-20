@@ -17,6 +17,8 @@ ETahi.QuestionComponent = Ember.Component.extend
         task: task
         additionalData: [{}]
 
+      task.get('questions').pushObject(question)
+
     question
 
   ).property('task', 'ident')

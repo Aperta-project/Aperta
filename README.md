@@ -56,6 +56,14 @@ You can run the javascript specs via the command line with `rake teaspoon`.  If 
 running you can run the specs from `localhost:3000/teaspoon`.  The command line tool is more robust but the browser is slightly faster.
 Rails still compiles assets between every test run.
 
+#### Page Objects
+
+When creating fragments, you can pass the context, if you wish to have access to the page the fragment belongs to. You've to pass the context as an option to the fragment on initializing:
+
+```ruby
+EditModalFragment.new(find('tr'), context: page)
+```
+
 ### Making a new task engine
 
 Please see the gist below for detailed instructions:

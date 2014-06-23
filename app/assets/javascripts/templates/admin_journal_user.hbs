@@ -1,0 +1,22 @@
+<tr data-toggle="modal" data-target=#{{unbound modalId}} class="user-row">
+  <td>{{model.firstName}}</td>
+  <td>{{model.lastName}}</td>
+  <td>{{model.username}}</td>
+</tr>
+
+{{#actionable-modal modalId=modalId username=model.username saveAction='saveUser' cancelAction='rollbackUser' modalTitle='User Details'}}
+  <div class="row">
+    <label class="modal-field-label">Username</label>
+    <div class="modal-field">{{input class='modal-username' value=model.username}}</div>
+  </div>
+
+  <div class="row">
+    <label class="modal-field-label">First Name</label>
+    <div class="modal-field">{{input class='modal-first-name' value=model.firstName}}</div>
+  </div>
+
+  <div class="row">
+    <label class="modal-field-label">Last Name</label>
+    <div class="modal-field">{{input class='modal-last-name' value=model.lastName}}</div>
+  </div>
+{{/actionable-modal}}

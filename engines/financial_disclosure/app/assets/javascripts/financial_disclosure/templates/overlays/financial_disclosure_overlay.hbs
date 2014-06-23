@@ -13,6 +13,10 @@
     {{#each funder in funders}}
       {{render "funder" funder}}
     {{/each}}
+
+    {{#if receivedFunding}}
+      <button {{action "addFunder"}}>Add Another Funder</button>
+    {{/if}}
   </fieldset>
 </form>
 

@@ -25,14 +25,18 @@ namespace :data do
 
     desc "Bulk create journals"
     task :journals => :setup do
-      progress("journals", 7) do
+      desired_journals = 7
+
+      progress("journals", desired_journals) do
         FactoryGirl.create(:journal)
       end
     end
 
     desc "Bulk create users"
     task :users => :setup do
-      progress("users", 50) do
+      desired_users = 50
+
+      progress("users", desired_users) do
         FactoryGirl.create(:user)
       end
     end

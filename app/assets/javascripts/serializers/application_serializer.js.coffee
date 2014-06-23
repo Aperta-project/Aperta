@@ -37,13 +37,13 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
 
   # allow the sti serializers to override this easily.
   primaryTypeName: (primaryType) ->
-    primaryType.typeKey
+    primaryType.typeKey?.camelize()
 
   # This is overridden because finding a 'task' and getting back a root key of 'author_task' will
   # break the isPrimary check.
   extractSingle: (store, primaryType, payload, recordId, requestType) ->
     payload = @normalizePayload(primaryType, payload)
-    primaryTypeName = @primaryTypeName(primaryType).toLowerCase()
+    primaryTypeName = @primaryTypeName(primaryType)
     primaryRecord = undefined
     for prop of payload
       typeName = @typeForRoot(prop)
@@ -85,9 +85,7 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
 
   extractArray: (store, primaryType, payload) ->
     payload = @normalizePayload(primaryType, payload)
-    # primaryTypeName = primaryType.typeKey
     primaryTypeName = @primaryTypeName(primaryType)
-    # primaryTypeName = @primaryTypeName(primaryType).toLowerCase()
     primaryArray = undefined
     for prop of payload
       typeKey = prop

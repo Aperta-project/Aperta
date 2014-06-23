@@ -11,6 +11,6 @@ ETahi.PaperIndexRoute = ETahi.AuthorizedRoute.extend
     viewCard: (task) ->
       paper = @modelFor('paper')
       redirectParams = ['paper.index', @modelFor('paper')]
-      @controllerFor('application').set('overlayRedirect', redirectParams)
+      @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('overlayBackground', 'paper/index')
       @transitionTo('task', paper.id, task.id)

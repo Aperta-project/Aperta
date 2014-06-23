@@ -19,7 +19,7 @@ ETahi.TaskRoute = Ember.Route.extend
     taskController.set('model', model)
     @set('taskController', taskController)
 
-    if @controllerFor('application').get('overlayRedirect')
+    if Em.computed.notEmpty(@controllerFor('application').get('overlayRedirect'))
       taskController.set('onClose', 'redirect')
 
   renderTemplate: ->
@@ -31,9 +31,16 @@ ETahi.TaskRoute = Ember.Route.extend
 
   deactivate: ->
     @send('closeOverlay')
-    @controllerFor('application').setProperties(overlayRedirect: null, overlayBackground: null)
+    @controllerFor('application').setProperties(overlayRedirect: [], overlayBackground: null)
 
   actions:
     willTransition: (transition) ->
-      unless transition.targetName == @controllerFor('application').get('overlayRedirect.firstObject')
+      redirectRouteName = @controllerFor('application').get('overlayRedirect.lastObject.firstObject')
+      unless transition.targetName == redirectRouteName
         @controllerFor('application').set('cachedModel', null)
+
+    viewCard: (task) ->
+      currentTask = @modelFor('task')
+      redirectParams = ['task', currentTask.get('litePaper.id'), currentTask.id]
+      @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
+      @transitionTo('task', task.get('litePaper.id'), task.get('id'))

@@ -112,10 +112,7 @@ namespace :data do
         message_task = FactoryGirl.create(:message_task, phase: random(Phase), participants: [random(User)])
         FactoryGirl.create(:comment, task: message_task, commenter: random(User))
       end
-
-
     end
-
 
     private
 

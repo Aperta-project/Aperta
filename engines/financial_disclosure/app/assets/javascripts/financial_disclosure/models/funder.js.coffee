@@ -8,3 +8,5 @@ ETahi.Funder = DS.Model.extend
   task: DS.belongsTo('financialDisclosureTask')
   authors: DS.hasMany('author')
 
+  relationshipsToSerialize: ['authors']
+

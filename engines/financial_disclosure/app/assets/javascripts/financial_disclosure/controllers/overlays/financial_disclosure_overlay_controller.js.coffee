@@ -2,10 +2,10 @@ ETahi.FinancialDisclosureOverlayController = ETahi.TaskController.extend
   task: Em.computed.alias("model")
   funders: Em.computed.alias("task.funders")
   paper: Em.computed.alias("task.paper")
-  authors: Em.computed.alias("paper.authors")
+  authors: Em.computed.alias('task.authors')
   receivedFunding: (->
     @get('funders.length') > 0
-  ).property('funders.@each, funders.[]')
+  ).property('funders.@each', 'funders.[]')
   receivedNoFunding: Em.computed.not('receivedFunding')
 
   actions:
@@ -20,7 +20,3 @@ ETahi.FinancialDisclosureOverlayController = ETahi.TaskController.extend
           funder.deleteRecord()
         else
           funder.destroyRecord()
-
-    funderDidChange: (funder) ->
-      funder.save()
-

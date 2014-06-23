@@ -39,6 +39,11 @@ ETahi.ChosenView = Ember.Select.extend
   cleanSearchText: (option, context) ->
     option.text
 
+  warnValue: ( ->
+    if @get('multiple') && !@get('selection')
+      throw "You should use the selection option with a multiple select rather than value"
+  ).on('init')
+
   rerenderChosen: ->
     # Don't trigger Chosen update until after DOM elements have finished rendering.
     Ember.run.scheduleOnce 'afterRender', @, ->

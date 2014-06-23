@@ -1,5 +1,5 @@
 class AddStatusToManuscript < ActiveRecord::Migration
-  def change
+  def up
     add_column :manuscripts, :status, :string, default: "processing"
     Manuscript.update_all status: "done"
   end

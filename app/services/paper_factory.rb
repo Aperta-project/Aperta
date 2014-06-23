@@ -14,7 +14,7 @@ class PaperFactory
   end
 
   def apply_template
-    template.phases.each_with_index do |template_phase|
+    template.phases.each do |template_phase|
       phase = paper.phases.create!(name: template_phase['name'])
       template_phase.fetch('task_types', []).each do |task_klass|
         create_task(task_klass, phase)

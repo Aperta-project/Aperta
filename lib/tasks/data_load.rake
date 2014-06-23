@@ -11,6 +11,7 @@ namespace :data do
 
     task :setup => :environment do
       ["db:drop", "db:create", "db:schema:load"].each do |task|
+        raise "This can only be run in the performance environment" unless Rails.env.performance?
         Rake::Task[task].invoke
       end
     end
@@ -58,9 +59,9 @@ namespace :data do
     end
 
     desc "Bulk create users with editor and reviewer roles"
-    task :reviewer_and_editor_users => [:setup, :journals] do
+    task :reviewer_and_editor_users => :environment do
       journals = Journal.all
-      progress("journal reviewers & editors", 50) do
+      progress("journal reviewers & editors", 40000) do
         journals.each do |journal|
           user = FactoryGirl.create(:user)
           assign_journal_role(journals.sample, user, :editor)
@@ -70,45 +71,49 @@ namespace :data do
     end
 
     desc "Bulk create completed manuscripts"
-    task :completed_manuscripts => [:setup, :journals, :users] do
+    # task :completed_manuscripts => [:setup, :journals, :users] do
+    task :completed_manuscripts => :environment do
       journals           = Array.new(Journal.all)
       first_journal      = journals.delete(journals.first)
       remaining_journals = journals
 
-      progress("large completed manuscript", 20) do
+      progress("large completed manuscript", 20000) do
         FactoryGirl.create(:paper, :with_tasks, :completed, user: random(User), journal: first_journal)
       end
 
-      progress("typical completed manuscript", 80) do
+      progress("typical completed manuscript", 80000) do
         FactoryGirl.create(:paper, :with_tasks, :completed, user: random(User), journal: remaining_journals.sample)
       end
     end
 
     desc "Bulk create active manuscripts"
-    task :active_manuscripts => [:setup, :journals, :users] do
+    # task :active_manuscripts => [:setup, :journals, :users] do
+    task :active_manuscripts => :environment do
       journals = Array.new(Journal.all)
       first_journal = journals.delete(journals.first)
 
-      progress("one journal with 10k active manuscripts", 10) do
+      progress("one journal with 10k active manuscripts", 10000) do
         FactoryGirl.create(:paper, :with_tasks, user: random(User), journal: first_journal)
       end
 
-      progress("rest of the journals with active manuscripts", 26) do
+      progress("rest of the journals with active manuscripts", 26000) do
         FactoryGirl.create(:paper, :with_tasks, user: random(User), journal: journals.sample)
       end
     end
 
     desc "Bulk create ad hoc tasks"
-    task :ad_hoc_tasks => [:setup, :journals, :active_manuscripts] do
-      progress("ad hoc tasks", 5) do
+    # task :ad_hoc_tasks => [:setup, :journals, :active_manuscripts] do
+    task :ad_hoc_tasks => :environment do
+      progress("ad hoc tasks", 5000) do
         FactoryGirl.create(:task, phase: random(Phase))
       end
     end
 
     desc "Bulk create message tasks"
-    task :message_tasks => [:setup, :journals, :users, :active_manuscripts] do
-      progress("conversations", 10) do
-        message_task = FactoryGirl.create(:message_task, phase: random(Phase))
+    # task :message_tasks => [:setup, :journals, :users, :active_manuscripts] do
+    task :message_tasks => :environment do
+      progress("conversations", 50000) do
+        message_task = FactoryGirl.create(:message_task, phase: random(Phase), participants: [random(User)])
         FactoryGirl.create(:comment, task: message_task, commenter: random(User))
       end
 
@@ -150,7 +155,7 @@ namespace :data do
     end
 
     desc "Save file to S3"
-    task :copy_snapshot_to_s3 do
+    task :copy_snapshot_to_s3 => [:environment, :setup] do
       access_key_id = ENV['AWS_ACCESS_KEY_ID']
       secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
 
@@ -160,7 +165,7 @@ namespace :data do
     end
 
     desc "Export snapshot to Heroku"
-    task :export do
+    task :export => [:setup] do
       @heroku_exporter.export_to_heroku!
     end
 

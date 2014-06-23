@@ -1,10 +1,12 @@
+require 'SecureRandom'
+
 FactoryGirl.define do
   factory :paper do
     sequence :short_title do |n|
-      "Test Paper #{n}"
+      "Test Paper - #{n}-#{SecureRandom.hex(3)}"
     end
     sequence :title do |n|
-      "Feature Recognition from 2D Hints in Extruded Solids #{n}"
+      "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"
     end
     journal
     user

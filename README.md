@@ -61,3 +61,19 @@ Rails still compiles assets between every test run.
 
 Please see the gist below for detailed instructions:
 https://gist.github.com/neo-tahi/9611549
+
+### Load testing
+
+To wipe and restore performance data in a pristine state on tahi-performance, run the following:
+```heroku pgbackups:restore HEROKU_POSTGRESQL_CYAN_URL b001 --app tahi-performance```
+
+A fully loaded database with thousands of records can be found on S3 here:
+```/tahi-performance/tahi_performance_backup.sql.zip```
+
+This can be downloaded and loaded locally, if needed.
+
+The following rake task will create a new set of performance test data from scratch using FactoryGirl factories:
+```RAILS_ENV=performance bundle exec rake data:load:all```
+
+This will take several days to reconstruct, so you will probably want to use one of the above steps instead.
+

@@ -1,4 +1,4 @@
-class AdminJournalUsersController < ApplicationController
+class Admin::JournalUsersController < ApplicationController
   respond_to :json
 
   def index

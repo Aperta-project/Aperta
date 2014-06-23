@@ -39,37 +39,33 @@ namespace :data do
 
     desc "Bulk create admin users"
     task :journal_admin_users => [:setup, :journals] do
-      total_users_across_all_journals = 200
+      desired_users = 200
 
-      total_users_per_journal = (total_users_across_all_journals / Journal.count)
-      progress("journal admins", total_users_per_journal) do
-        Journal.all.each do |journal|
-          user = FactoryGirl.create(:user)
-          assign_journal_role(journal, user, :admin)
-        end
+      progress("journal admins", desired_users) do
+        user = FactoryGirl.create(:user)
+        assign_journal_role(Journal.all.sample, user, :admin)
       end
     end
 
     desc "Bulk create reviewer users"
     task :reviewer_users => [:setup, :journals] do
-      journals = Journal.all
-      progress("journal reviewers", 100) do
-        journals.each do |journal|
-          user = FactoryGirl.create(:user)
-          assign_journal_role(journals.sample, user, :reviewer)
-        end
+      desired_users = 100_000
+
+      progress("journal reviewers", desired_users) do
+        user = FactoryGirl.create(:user)
+        assign_journal_role(Journal.all.sample, user, :reviewer)
       end
     end
 
     desc "Bulk create users with editor and reviewer roles"
     task :reviewer_and_editor_users => :environment do
-      journals = Journal.all
-      progress("journal reviewers & editors", 40000) do
-        journals.each do |journal|
-          user = FactoryGirl.create(:user)
-          assign_journal_role(journals.sample, user, :editor)
-          assign_journal_role(journals.sample, user, :reviewer)
-        end
+      desired_users = 50_000
+
+      progress("journal reviewers & editors", desired_users) do
+        user = FactoryGirl.create(:user)
+        journal = Journal.all.sample
+        assign_journal_role(journal, user, :editor)
+        assign_journal_role(journal, user, :reviewer)
       end
     end
 
@@ -79,11 +75,13 @@ namespace :data do
       first_journal      = journals.delete(journals.first)
       remaining_journals = journals
 
-      progress("large completed manuscript", 20000) do
+      desired_papers = 20_000
+      progress("large completed manuscript", desired_papers) do
         FactoryGirl.create(:paper, :with_tasks, :completed, user: random(User), journal: first_journal)
       end
 
-      progress("typical completed manuscript", 80000) do
+      desired_papers = 80_000
+      progress("typical completed manuscript", desired_papers) do
         FactoryGirl.create(:paper, :with_tasks, :completed, user: random(User), journal: remaining_journals.sample)
       end
     end
@@ -93,25 +91,30 @@ namespace :data do
       journals = Array.new(Journal.all)
       first_journal = journals.delete(journals.first)
 
-      progress("one journal with 10k active manuscripts", 10000) do
+      desired_papers = 10_000
+      progress("one journal with 10k active manuscripts", desired_papers) do
         FactoryGirl.create(:paper, :with_tasks, user: random(User), journal: first_journal)
       end
 
-      progress("rest of the journals with active manuscripts", 26000) do
+      desired_papers = 26_000
+      progress("rest of the journals with active manuscripts", desired_papers) do
         FactoryGirl.create(:paper, :with_tasks, user: random(User), journal: journals.sample)
       end
     end
 
     desc "Bulk create ad hoc tasks"
     task :ad_hoc_tasks => [:setup, :journals, :active_manuscripts] do
-      progress("ad hoc tasks", 5000) do
+
+      desired_tasks = 5_000
+      progress("ad hoc tasks", desired_tasks) do
         FactoryGirl.create(:task, phase: random(Phase))
       end
     end
 
     desc "Bulk create message tasks"
     task :message_tasks => [:setup, :journals, :users, :active_manuscripts] do
-      progress("conversations", 50000) do
+      desired_conversations = 50_000
+      progress("conversations", desired_conversations) do
         message_task = FactoryGirl.create(:message_task, phase: random(Phase), participants: [random(User)])
         FactoryGirl.create(:comment, task: message_task, commenter: random(User))
       end
@@ -120,7 +123,6 @@ namespace :data do
     private
 
     def progress(display, count)
-      #todo: print "display"
       ProgressBar.new(display, count) do |progress|
         count.times do
           yield
@@ -132,7 +134,6 @@ namespace :data do
     def random(klass)
       klass.order("RANDOM()").first
     end
-
   end
 
   namespace :heroku do

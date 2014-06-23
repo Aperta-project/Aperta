@@ -88,7 +88,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'
-  gem "teaspoon"
+  gem "teaspoon", "~> 0.8.0"
   gem "phantomjs"
   gem 'pry-byebug'
   gem 'pry-stack_explorer'

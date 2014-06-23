@@ -20,6 +20,19 @@
   text-transform: capitalize;
 }
 
+.chosen-style-override .chosen-container-multi {
+  height: auto;
+}
+
 .chosen-style-override .chosen-container-active.chosen-with-drop .chosen-single div b {
   background-position: -18px 10px;
+}
+
+.chosen-style-override .chosen-container-multi .chosen-choices {
+  border: none;
+  background-image: none;
+}
+
+.chosen-style-override .chosen-container-active .chosen-choices {
+  box-shadow: none;
 }

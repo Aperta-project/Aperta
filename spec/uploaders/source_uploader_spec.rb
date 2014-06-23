@@ -4,7 +4,7 @@ describe SourceUploader do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:manuscript) do
     with_aws_cassette('manuscript') do
-      DownloadManuscript.call(paper, "https://tahi-development.s3.amazonaws.com/temp/about_equations.docx")
+      DownloadManuscript.enqueue(paper.id, "https://tahi-development.s3.amazonaws.com/temp/about_equations.docx")
     end
   end
 

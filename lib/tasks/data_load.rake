@@ -71,8 +71,7 @@ namespace :data do
     end
 
     desc "Bulk create completed manuscripts"
-    # task :completed_manuscripts => [:setup, :journals, :users] do
-    task :completed_manuscripts => :environment do
+    task :completed_manuscripts => [:setup, :journals, :users] do
       journals           = Array.new(Journal.all)
       first_journal      = journals.delete(journals.first)
       remaining_journals = journals
@@ -87,8 +86,7 @@ namespace :data do
     end
 
     desc "Bulk create active manuscripts"
-    # task :active_manuscripts => [:setup, :journals, :users] do
-    task :active_manuscripts => :environment do
+    task :active_manuscripts => [:setup, :journals, :users] do
       journals = Array.new(Journal.all)
       first_journal = journals.delete(journals.first)
 
@@ -102,16 +100,14 @@ namespace :data do
     end
 
     desc "Bulk create ad hoc tasks"
-    # task :ad_hoc_tasks => [:setup, :journals, :active_manuscripts] do
-    task :ad_hoc_tasks => :environment do
+    task :ad_hoc_tasks => [:setup, :journals, :active_manuscripts] do
       progress("ad hoc tasks", 5000) do
         FactoryGirl.create(:task, phase: random(Phase))
       end
     end
 
     desc "Bulk create message tasks"
-    # task :message_tasks => [:setup, :journals, :users, :active_manuscripts] do
-    task :message_tasks => :environment do
+    task :message_tasks => [:setup, :journals, :users, :active_manuscripts] do
       progress("conversations", 50000) do
         message_task = FactoryGirl.create(:message_task, phase: random(Phase), participants: [random(User)])
         FactoryGirl.create(:comment, task: message_task, commenter: random(User))

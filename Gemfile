@@ -60,6 +60,7 @@ gem 'migration_data'
 gem 'bugsnag'
 gem 'factory_girl_rails'
 gem 'progressbar'
+gem 'spring'
 gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c4574666dcfc9b577542fb595f"
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28

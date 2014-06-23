@@ -47,8 +47,8 @@ feature "Manuscript Manager", js: true do
       phase.add_phase
       new_phase = task_manager_page.phase 'New Phase'
       new_phase.remove_phase
-      expect(task_manager_page).to have_no_content 'New Phase'
       expect(task_manager_page).to have_no_application_error
+      expect(task_manager_page).to have_no_content 'New Phase'
     end
 
     scenario 'Non-empty phase' do
@@ -64,8 +64,10 @@ feature "Manuscript Manager", js: true do
     task_manager_page = paper_page.visit_task_manager
 
     phase = task_manager_page.phase 'Submission Data'
-    expect { phase.remove_card('Upload Manuscript') }.to change { phase.card_count }.by(-1)
     expect(task_manager_page).to have_no_application_error
+    expect {
+      phase.remove_card('Upload Manuscript')
+    }.to change { phase.card_count }.by(-1)
   end
 
   scenario "Admin can assign a paper to themselves" do

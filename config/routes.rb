@@ -3,6 +3,11 @@ Tahi::Application.routes.draw do
   mount Declaration::Engine => '/', :as => 'declaration_engine'
   mount FinancialDisclosure::Engine => '/', as: 'financial_disclosure'
 
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   if Rails.env.test?
     require_relative '../spec/support/stream_server/stream_server'
     require_relative '../spec/support/upload_server/upload_server'

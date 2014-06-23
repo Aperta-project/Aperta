@@ -1,6 +1,7 @@
 module SupportingInformation
   class FileSerializer < ActiveModel::Serializer
-    attributes :id, :filename, :alt, :src, :title, :caption
-    has_one :paper, embed: :ids
+    root :supporting_information_file
+    attributes :id, :filename, :alt, :src, :status, :title, :caption
+    has_one :paper, embed: :id, include: false
   end
 end

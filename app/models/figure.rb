@@ -1,4 +1,6 @@
 class Figure < ActiveRecord::Base
+  include EventStreamNotifier
+
   belongs_to :paper
 
   # paper.figures are being returned in reverse-id order
@@ -32,4 +34,9 @@ class Figure < ActiveRecord::Base
     { filename: filename, alt: alt, id: id, src: src }
   end
 
+  private
+
+  def notifier_payload
+    { id: id, paper_id: paper.id }
+  end
 end

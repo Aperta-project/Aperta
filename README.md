@@ -95,3 +95,9 @@ The following rake task will create a new set of performance test data from scra
 
 This will take several days to reconstruct, so you will probably want to use one of the above steps instead.
 
+### Subset Load testing
+
+Subset data contains about 100 users and some associated records.
+
+To wipe and restore performance data in a pristine state on tahi-performance, run the following:
+```heroku pgbackups:restore HEROKU_POSTGRESQL_CYAN_URL b002 --app tahi-performance```

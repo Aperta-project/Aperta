@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby "2.1.2"
 
 # Configuration
-group :development, :test do
+group :development, :test, :performance do
   gem 'dotenv-rails'
 end
 

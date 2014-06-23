@@ -10,13 +10,15 @@ ETahi.FinancialDisclosureOverlayController = ETahi.TaskController.extend
 
   actions:
     choseFundingReceived: ->
-      funders = @get('funders')
-      if funders.get('length') < 1
-        funders.pushObject(@store.createRecord('funder', task: @get('task')))
+      if @get('funders.length') < 1
+        @send('addFunder')
 
     choseFundingNotReceived: ->
-      @get('funders').forEach (funder) ->
+      @get('funders').toArray().forEach (funder) ->
         if funder.get('isNew')
           funder.deleteRecord()
         else
           funder.destroyRecord()
+
+    addFunder: ->
+      @get('funders').pushObject(@store.createRecord('funder', task: @get('task')))

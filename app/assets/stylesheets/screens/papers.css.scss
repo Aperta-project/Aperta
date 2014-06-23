@@ -123,7 +123,7 @@ main > aside > div {
 }
 
 .lock-message {
-  @include position(relative, 50% 0 0 0);
+  @include position(relative, 200px 0 0 0);
   @include transform(translateY(-50%));
 }
 

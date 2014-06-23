@@ -39,7 +39,10 @@ namespace :data do
 
     desc "Bulk create admin users"
     task :journal_admin_users => [:setup, :journals] do
-      progress("journal admins", 10) do
+      total_users_across_all_journals = 200
+
+      total_users_per_journal = (total_users_across_all_journals / Journal.count)
+      progress("journal admins", total_users_per_journal) do
         Journal.all.each do |journal|
           user = FactoryGirl.create(:user)
           assign_journal_role(journal, user, :admin)

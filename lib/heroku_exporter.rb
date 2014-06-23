@@ -49,7 +49,6 @@ class HerokuExporter
     end
   end
 
-
   private
 
   def create_s3_url(file)

@@ -58,8 +58,6 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
-gem 'factory_girl_rails'
-gem 'progressbar'
 gem 'spring'
 gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c4574666dcfc9b577542fb595f"
 # NOTE: Using this fork because it uses a compatible omniauth version
@@ -81,7 +79,9 @@ group :development do
   gem 'railroady'
 end
 
-group :development, :test do
+group :development, :test, :performance do
+  gem 'factory_girl_rails'
+  gem 'progressbar'
   gem 'rspec-rails', "~> 3.0.0.beta2"
   gem "rspec-its", "~> 1.0.0.pre"
   gem 'capybara', "~> 2.3.0"

@@ -1,4 +1,4 @@
-require 'SecureRandom'
+require 'securerandom'
 
 FactoryGirl.define do
   factory :paper do

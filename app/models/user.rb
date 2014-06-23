@@ -49,6 +49,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.search_users(query)
+    sanitized_query = connection.quote_string(query.downcase) + "%"
+    User.where("lower(username) LIKE '#{sanitized_query}' OR lower(first_name) LIKE '#{sanitized_query}' OR lower(last_name) LIKE '#{sanitized_query}'")
+  end
+
   private
 
   def add_flows

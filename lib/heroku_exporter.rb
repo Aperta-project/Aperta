@@ -19,22 +19,22 @@ class HerokuExporter
 
   def copy_to_s3(access_key_id, secret_access_key)
     connection = Fog::Storage.new({
-      :provider                 => 'AWS',
-      :aws_access_key_id        => access_key_id,
-      :aws_secret_access_key    => secret_access_key
+      provider: 'AWS',
+      aws_access_key_id: access_key_id,
+      aws_secret_access_key: secret_access_key
     })
 
     directory = connection.directories.new(
-      :key    => "tahi-development",
-      :public => false
+      key: "tahi-performance",
+      public: false
     )
 
     s3_file = "load_testing/#{source_file}"
 
     file = directory.files.create(
-      :key    => s3_file,
-      :body   => File.open(dest_file_path),
-      :public => true
+      key: s3_file,
+      body: File.open(dest_file_path),
+      public: true
     )
 
     create_s3_url(file)
@@ -52,12 +52,11 @@ class HerokuExporter
 
   private
 
-    def create_s3_url(file)
-      self.s3_secure_url = file.url(S3_URL_EXPIRATION_MINUTES.minutes.from_now)
-    end
+  def create_s3_url(file)
+    self.s3_secure_url = file.url(S3_URL_EXPIRATION_MINUTES.minutes.from_now)
+  end
 
-    def source_file
-      File.basename(dest_file_path)
-    end
-
+  def source_file
+    File.basename(dest_file_path)
+  end
 end

@@ -21,4 +21,16 @@ feature "Financial Disclosures", js: true do
       expect(overlay.dataset).to be_visible
     end
   end
+
+  scenario "navigate to authors card and back" do
+    edit_paper = EditPaperPage.visit paper
+
+    edit_paper.view_card 'Financial Disclosure' do |overlay|
+      overlay.received_funding.click
+      find('a', text: 'Add author').click
+      expect(page).to have_content 'Add Authors'
+      all('.overlay-close-button').first.click
+      expect(page).to have_content 'Financial Disclosures'
+    end
+  end
 end

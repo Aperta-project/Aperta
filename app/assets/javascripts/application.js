@@ -35,6 +35,8 @@
 //= require supporting_information/application
 //= require declaration/application
 //= require upload_manuscript/application
+//= require data_availability/application
+//= require financial_disclosure/application
 
 (function(context) {
   context.ETahi = Ember.Application.create({

@@ -1,0 +1,27 @@
+<div class='journal-thumbnail-edit-form clearfix'>
+  <div class="col-xs-4 journal-logo-upload">
+    {{#unless model.isNew}}
+      {{partial 'journal/logo-upload'}}
+    {{/unless}}
+    <img class="pull-left" {{bind-attr src=journal.logoUrl}} class="pull-left" />
+  </div>
+  <div class="col-xs-8">
+    <div {{bind-attr class=':form-group :required nameErrors:error'}}>
+      <div {{bind-attr class=':error-message nameErrors::hidden'}}>{{nameErrors}}</div>
+      {{input type='text'
+              value=journal.name
+              class='form-control journal-name-edit col-md-3'
+              placeholder='Journal Title'}}
+    </div>
+    <div {{bind-attr class=':form-group :required descriptionErrors:error'}}>
+      <div {{bind-attr class=':error descriptionErrors::hidden'}}>{{descriptionErrors}}</div>
+      {{textarea value=journal.description
+                 class='form-group required journal-description-edit form-control'
+                 placeholder='Journal Description'}}
+    </div>
+    <div class="journal-edit-buttons">
+      <a href='#' class="link white" {{action resetJournalDetails}}>Cancel</a>
+      <a href='#' class="secondary-button white" {{action saveJournalDetails}}>Save</a>
+    </div>
+  </div>
+</div>

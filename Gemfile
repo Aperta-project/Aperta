@@ -2,11 +2,18 @@ source 'https://rubygems.org'
 
 ruby "2.1.2"
 
+# Configuration
+group :development, :test do
+  gem 'dotenv-rails'
+end
+
 # Task Engines
 gem 'standard_tasks',         path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
 gem 'declaration',            path: 'engines/declaration'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
+gem 'data_availability',      path: 'engines/data_availability'
+gem 'financial_disclosure',   path: 'engines/financial_disclosure'
 
 # Gems
 gem 'rails', '4.1.1'
@@ -23,6 +30,12 @@ gem 'coffee-rails', '~> 4.0.1'
 gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
+
+gem 'activejob', '~> 0'
+gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
+gem 'sidekiq'
+gem 'sinatra'
+
 gem "nokogiri"
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
@@ -47,7 +60,9 @@ gem 'migration_data'
 gem 'bugsnag'
 gem 'factory_girl_rails'
 gem 'progressbar'
-gem 'activerecord-import'
+gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c4574666dcfc9b577542fb595f"
+# NOTE: Using this fork because it uses a compatible omniauth version
+# https://github.com/dlindahl/omniauth-cas/pull/28
 
 group :production, :staging do
   gem 'heroku-deflater'
@@ -77,16 +92,11 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'pry-rescue'
-  gem 'dotenv-rails'
-  gem 'dotenv-deployment'
 end
 
 group :test do
   gem "codeclimate-test-reporter", require: nil
   gem 'vcr'
   gem 'webmock'
-
-  # For testing event streaming.
-  gem 'sinatra'
   gem 'thin'
 end

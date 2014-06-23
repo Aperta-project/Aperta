@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/dandorman/omniauth-cas.git
+  revision: 83210ff52667c2c4574666dcfc9b577542fb595f
+  ref: 83210ff52667c2c4574666dcfc9b577542fb595f
+  specs:
+    omniauth-cas (1.0.4)
+      addressable (~> 2.3)
+      nokogiri (~> 1.5)
+      omniauth (~> 1.2.0)
+
+GIT
   remote: git://github.com/neo-tahi/jquery-fileupload-rails.git
   revision: 5252879d45d9da58687033e32e290a2af7457a40
   specs:
@@ -6,10 +16,30 @@ GIT
       actionpack (>= 3.1)
       railties (>= 3.1)
 
+GIT
+  remote: https://github.com/rails/activemodel-globalid
+  revision: f6518693aa77231e5f907fdc763394c4e7c00b68
+  specs:
+    activemodel-globalid (0.1.0)
+      activemodel (>= 4.1.0)
+      activesupport (>= 4.1.0)
+
+PATH
+  remote: engines/data_availability
+  specs:
+    data_availability (0.0.1)
+      rails (~> 4.1.1)
+
 PATH
   remote: engines/declaration
   specs:
     declaration (0.0.1)
+      rails (~> 4.1.1)
+
+PATH
+  remote: engines/financial_disclosure
+  specs:
+    financial_disclosure (0.0.1)
       rails (~> 4.1.1)
 
 PATH
@@ -48,6 +78,9 @@ GEM
       erubis (~> 2.7.0)
     active_model_serializers (0.8.1)
       activemodel (>= 3.0)
+    activejob (0)
+      activemodel-globalid
+      activesupport (>= 4.1.0)
     activemodel (4.1.1)
       activesupport (= 4.1.1)
       builder (~> 3.1)
@@ -55,8 +88,6 @@ GEM
       activemodel (= 4.1.1)
       activesupport (= 4.1.1)
       arel (~> 5.0.0)
-    activerecord-import (0.5.0)
-      activerecord (>= 3.0)
     activesupport (4.1.1)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
@@ -99,6 +130,8 @@ GEM
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
       json (>= 1.7)
+    celluloid (0.15.2)
+      timers (~> 1.1.0)
     childprocess (0.5.2)
       ffi (~> 1.0, >= 1.0.11)
     chosen-rails (1.1.0)
@@ -125,6 +158,7 @@ GEM
     compass-rails (1.1.7)
       compass (>= 0.12.2)
       sprockets (<= 2.11.0)
+    connection_pool (2.0.0)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     daemons (1.1.9)
@@ -333,6 +367,9 @@ GEM
     rake (10.3.1)
     rdoc (3.12.2)
       json (~> 1.4)
+    redis (3.0.7)
+    redis-namespace (1.4.1)
+      redis (~> 3.0.4)
     remotipart (1.2.1)
     rest_client (1.7.3)
       netrc (~> 0.7.7)
@@ -375,6 +412,12 @@ GEM
       rubyzip (~> 1.0)
       websocket (~> 1.0.4)
     sequel (4.5.0)
+    sidekiq (3.1.4)
+      celluloid (>= 0.15.2)
+      connection_pool (>= 2.0.0)
+      json
+      redis (>= 3.0.6)
+      redis-namespace (>= 1.3.1)
     simplecov (0.8.2)
       docile (~> 1.1.0)
       multi_json
@@ -406,6 +449,7 @@ GEM
     thread_safe (0.3.3)
     tilt (1.4.1)
     timeliness (0.3.7)
+    timers (1.1.0)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -437,7 +481,8 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  activerecord-import
+  activejob (~> 0)
+  activemodel-globalid!
   acts_as_list
   american_date
   bourbon
@@ -449,16 +494,17 @@ DEPENDENCIES
   chosen-rails (~> 1.1.0)
   codeclimate-test-reporter
   coffee-rails (~> 4.0.1)
+  data_availability!
   database_cleaner
   declaration!
   devise
-  dotenv-deployment
   dotenv-rails
   ember-data-source (~> 1.0.0.beta.7)
   ember-rails
   ember-source (= 1.5.0)
   factory_girl_rails
   faraday_middleware
+  financial_disclosure!
   fog
   gepub
   haml-rails
@@ -470,6 +516,7 @@ DEPENDENCIES
   mini_magick
   newrelic_rpm
   nokogiri
+  omniauth-cas!
   omniauth-oauth2
   ordinalize
   pdfkit
@@ -491,6 +538,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   sdoc
   selenium-webdriver
+  sidekiq
   sinatra
   standard_tasks!
   supporting_information!

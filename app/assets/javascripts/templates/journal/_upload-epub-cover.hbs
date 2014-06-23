@@ -2,6 +2,7 @@
   <div class="admin-header row">
     <div class='relative'>
       <h2 class="title col-md-5">Default ePub Cover</h2>
+        <div id="epub-cover-spinner"></div>
 
         <div class="epub-cover-image col-md-5 text-right">
           {{#if epubCoverUrl}}
@@ -14,11 +15,14 @@
       <div class='epub-cover-upload col-md-2 pull-right'>
         <span class="primary-button blue-box fileinput-button">
           Upload ePub Cover
-          {{input id="epub-cover-upload"
-                          class="js-jquery-fileupload primary-button blue-box"
-                          type="file"
-                          name="admin_journal[epub_cover]"
-                          model=model}}
+          {{file-uploader id="epub-cover-upload"
+                          class="primary-button blue-box"
+                          accept=".jpg,.jpeg"
+                          progress='epubCoverUploading'
+                          done='epubCoverUploaded'
+                          filePrefix="epub/cover"
+                          railsMethod="PUT"
+                          url=epubCoverUploadUrl}}
         </span>
       </div>
     </div>

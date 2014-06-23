@@ -11,3 +11,5 @@ ETahi.AdminJournal = DS.Model.extend
   epubCss: a('string')
   pdfCss: a('string')
   manuscriptCss: a('string')
+  description: a('string')
+  paperCount: a('number')

@@ -1,10 +1,13 @@
 ETahi.FileUploaderComponent = Ember.TextField.extend
   type: 'file'
+  name: 'file'
   multiple: false
   accept: null
+  filePrefix: null
 
   dataType: 'json'
-  method: 'PATCH'
+  method: 'POST'
+  railsMethod: 'POST'
 
   acceptedFileTypes: ( ->
     types = @get('accept').replace(/\./g, '').replace(/,/g, '|')
@@ -23,19 +26,54 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
   setupUploader:(->
     uploader = @.$()
 
-    uploader.fileupload(@getProperties('url', 'dataType', 'method', 'acceptFileTypes'))
+    params = @getProperties('dataType', 'method', 'acceptFileTypes')
+    params.dataType = 'xml'
+    params.add = (e, uploadData) =>
+      file = uploadData.files[0]
+      $.ajax
+        url: "/request_policy",
+        type: 'GET',
+        dataType: 'json',
+        data:
+          file_prefix: @get('filePrefix')
+          content_type: file.type
+        success: (data) ->
+          uploadData.url = data.url
+          uploadData.formData =
+            key: "#{data.key}/#{file.name}"
+            policy: data.policy
+            success_action_status: 201
+            'Content-Type': file.type
+            signature: data.signature
+            AWSAccessKeyId: data.access_key_id
+            acl: data.acl
+          uploadData.submit()
 
-    uploader.on 'fileuploadadd', Ember.run.bind(this, @checkFileType)
+    # No matter how dumb this looks, it is necessary.
+    that = @
+    params.success = (fileData) ->
+      filename = @files[0].name
+      location = $(fileData).find('Location').text().replace(/%2F/g, "/")
 
-    uploader.on 'fileuploadstart', (e, data) =>
-      @sendAction('start')
+      $.ajax
+        url: that.get('url')
+        dataType: 'json'
+        type: that.get('railsMethod')
+        data: {url: location}
+        success: (data) =>
+          that.sendAction('done', data, filename)
+
+    uploader.fileupload(params)
+
+    uploader.on 'fileuploadadd', (e, uploadData) =>
+      Ember.run.bind(this, @checkFileType)
+
+    uploader.on 'fileuploadsend', (e, data) =>
+      @sendAction('start', data)
 
     uploader.on 'fileuploadprogress', (e, data) =>
       @sendAction('progress', data)
 
-    uploader.on 'fileuploaddone', (e, data) =>
-      @sendAction('done', data)
-
-    uploader.on 'fileuploadprocessalways', (e, data) =>
+    uploader.on 'fileuploadprocessstart', (e, data) =>
       @sendAction('process', data)
   ).on('didInsertElement')

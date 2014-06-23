@@ -8,22 +8,26 @@ feature "Upload Supporting Information", js: true do
   before do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in author
+
+    allow(SupportingInformation::DownloadSupportingInfo).to receive(:enqueue) do |supporting_info_id, url|
+      supporting_info = SupportingInformation::File.find(supporting_info_id)
+      supporting_info.save
+    end
+
   end
 
   scenario "Author uploads supporting information" do
     edit_paper = EditPaperPage.visit paper
 
-    edit_paper.view_card 'Supporting Information' do |overlay|
+    edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       overlay.attach_supporting_information
-      expect(overlay).to have_file 'yeti.tiff'
-      overlay.mark_as_complete
-      expect(overlay).to be_completed
+      expect(overlay).to have_file 'yeti.jpg'
     end
   end
 
   scenario "Author destroys supporting information immediately" do
     edit_paper = EditPaperPage.visit paper
-    edit_paper.view_card 'Supporting Information' do |overlay|
+    edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       overlay.attach_supporting_information
       find('.figure-thumbnail').hover
       find('.glyphicon-trash').click
@@ -33,9 +37,9 @@ feature "Upload Supporting Information", js: true do
   end
 
   scenario "Author can edit title and caption" do
+    paper.supporting_information_files.create
     edit_paper = EditPaperPage.visit paper
-    edit_paper.view_card 'Supporting Information' do |overlay|
-      overlay.attach_supporting_information
+    edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       title = find('h2.figure-thumbnail-title')
       caption = find('div.figure-thumbnail-caption')
 

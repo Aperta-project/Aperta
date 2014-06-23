@@ -5,3 +5,4 @@ ETahi.Journal = DS.Model.extend
   name: a('string')
   paperTypes: a()
   taskTypes: a()
+  manuscriptCss: a('string')

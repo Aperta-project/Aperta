@@ -18,6 +18,8 @@ ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
   litePaper: DS.belongsTo('litePaper')
   cardThumbnail: DS.belongsTo('cardThumbnail', inverse: 'task')
 
+  questions: DS.hasMany('question')
+
   relationshipsToSerialize: []
 
 ETahi.PaperReviewerTask = ETahi.Task.extend

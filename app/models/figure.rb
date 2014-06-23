@@ -1,15 +1,12 @@
 class Figure < ActiveRecord::Base
+  include EventStreamNotifier
+
   belongs_to :paper
 
   # paper.figures are being returned in reverse-id order
   # Why the hell is that happening?
   default_scope { order(:id) }
 
-  before_create :insert_title
-
-  def insert_title
-    self.title = "Title: #{attachment.filename}" if attachment.present?
-  end
 
   mount_uploader :attachment, AttachmentUploader
 
@@ -22,7 +19,7 @@ class Figure < ActiveRecord::Base
   end
 
   def alt
-    filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize
+    filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
   end
 
   def src
@@ -37,4 +34,9 @@ class Figure < ActiveRecord::Base
     { filename: filename, alt: alt, id: id, src: src }
   end
 
+  private
+
+  def notifier_payload
+    { id: id, paper_id: paper.id }
+  end
 end

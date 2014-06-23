@@ -9,13 +9,17 @@ class Journal < ActiveRecord::Base
                       "StandardTasks::TechCheckTask",
                       "StandardTasks::FigureTask",
                       "StandardTasks::AuthorsTask",
-                      "SupportingInformation::Task"]
+                      "SupportingInformation::Task",
+                      "DataAvailability::Task",
+                      "FinancialDisclosure::Task"]
 
   has_many :papers, inverse_of: :journal
   has_many :roles, inverse_of: :journal
   has_many :user_roles, through: :roles
   has_many :users, through: :user_roles
   has_many :manuscript_manager_templates, dependent: :destroy
+
+  validates_presence_of :name, message: 'Please include a journal name'
 
   after_create :setup_defaults
   before_destroy :destroy_roles

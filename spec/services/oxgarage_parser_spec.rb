@@ -22,10 +22,10 @@ describe OxgarageParser, vcr: {cassette_name: 'oxgarage_parser'} do
         "<h1 class=\"title\">Title here</h1>\n<h2 class=\"subtitle\">Subtitle</h2><p>Turtles.</p><p><a name=\"_GoBack\"></a>The end.</p>"
       end
 
-      let(:document) { OxgarageParser.new filename }
+      let(:document) { OxgarageParser.new(File.new(filename, 'rb')) }
       let(:body) { document.body }
 
-      before { allow(document).to receive(:output).and_return(original_body) }
+      before { allow(document).to receive(:output).and_return(Nokogiri::HTML(original_body)) }
 
       it "doesn't contain empty <p> tags" do
         expect(body).to eq expected_body

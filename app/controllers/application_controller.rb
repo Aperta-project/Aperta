@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include Authorizations
 
-  CUSTOM_HTTP_HEADERS = ["HTTP_TAHI_AUTHORIZATION_CHECK"]
+  CUSTOM_HTTP_HEADERS = ['Tahi-Authorization-Check']
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -43,7 +43,6 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
 
-
   def authenticate_with_basic_http
     if %w(production staging).include?(Rails.env) && request.path !~ /\A\/api.*/
       authenticate_or_request_with_http_basic 'Staging' do |name, password|
@@ -67,9 +66,9 @@ class ApplicationController < ActionController::Base
   # return any custom http request headers with the response
   def add_custom_http_headers
     CUSTOM_HTTP_HEADERS.each do |header|
-      if value = request.headers[header]
-        translated_header = header.gsub(/^HTTP_/, '')
-        response.headers[translated_header] = value
+      rack_formatted_header = 'HTTP_' + header.underscore.upcase
+      if value = request.headers[rack_formatted_header]
+        response.headers[header] = value
       end
     end
   end

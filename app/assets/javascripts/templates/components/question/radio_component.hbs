@@ -1,0 +1,20 @@
+<div class="question-text">{{model.question}}</div>
+{{#if helpText}}
+  <div class="help">{{{helpText}}}</div>
+{{/if}}
+
+<label>
+  {{view ETahi.RadioButton name=ident value="Yes" selection=model.answer}}
+  Yes
+</label>
+
+<label>
+  {{view ETahi.RadioButton name=ident value="No" selection=model.answer}}
+  No
+</label>
+
+{{#if template}}
+  <div {{bind-attr class=":additional-data selectedYes::hidden"}}>
+    {{yield}}
+  </div>
+{{/if}}

@@ -5,12 +5,13 @@
     <span class="secondary-button fileinput-button">
       Select and upload a document
       {{file-uploader id="upload-files"
-                      name="upload_file"
+                      railsMethod='PUT'
                       accept='.docx'
                       start='uploadStarted'
                       progress='uploadProgress'
                       done='uploadFinished'
                       error='uploadError'
+                      filePrefix='paper/manuscript'
                       url=manuscriptUploadUrl}}
     </span>
   </div>

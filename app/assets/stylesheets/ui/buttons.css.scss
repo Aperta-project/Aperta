@@ -31,6 +31,39 @@
     color: $tahi-primary-hover;
     background-color: $tahi-secondary;
   }
+
+  &.blue {
+    border-color: $tahi-blue-light;
+    color: $tahi-blue-hover;
+
+    &:focus, &:hover {
+      border-color: $tahi-blue-hover;
+      color: #fff;
+      background-color: $tahi-blue-hover;
+    }
+  }
+
+  &.white {
+    border-color: #fff;
+    background: #fff;
+    font-weight: bold;
+
+    &:focus, &:hover {
+      border-color: $tahi-blue-hover;
+      background-color: $tahi-blue-hover;
+      color: #fff;
+    }
+  }
+}
+
+
+.link {
+  &.white {
+    color: white;
+    &:hover, &:focus {
+      color: white;
+    }
+  }
 }
 
 .upload-error-button {

@@ -21,7 +21,11 @@ module Authorizations
   end
 
   def render_forbidden
-    head :forbidden
+    if !request.xhr?
+      redirect_to root_path
+    else
+      head :forbidden
+    end
   end
 
   def find_policy(controller_class, user, args)

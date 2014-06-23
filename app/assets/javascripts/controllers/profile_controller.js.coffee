@@ -4,7 +4,7 @@ ETahi.ProfileController = Ember.ObjectController.extend
   errorText: ""
 
   avatarUploadUrl: ( ->
-    "/users/#{@get('id')}"
+    "/users/#{@get('id')}/update_avatar"
   ).property('id')
 
   avatarUploading: false
@@ -14,7 +14,7 @@ ETahi.ProfileController = Ember.ObjectController.extend
       @set('avatarUploading', true)
 
     avatarUploaded: (data) ->
-      @set('model.avatarUrl', data.result.avatar_url)
+      @set('model.avatarUrl', data.avatar_url)
       @set('avatarUploading', false)
 
     toggleAffiliationForm: ->

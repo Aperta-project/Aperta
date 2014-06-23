@@ -3,7 +3,9 @@ require 'spec_helper'
 describe Figure do
   let(:paper) { FactoryGirl.create :paper }
   let(:figure) {
-    paper.figures.create! attachment: File.open('spec/fixtures/yeti.tiff')
+    with_aws_cassette('figure') do
+      paper.figures.create! attachment: File.open('spec/fixtures/yeti.tiff')
+    end
   }
   describe "#access_details" do
     it "returns a hash with attachment src, filename, alt, and S3 URL" do
@@ -34,12 +36,6 @@ describe Figure do
       # this spec exists so that we don't duplicate that behavior
       expect(figure).to receive(:remove_attachment!)
       figure.destroy
-    end
-  end
-
-  describe "creation" do
-    it "prepends Title: " do
-      expect(figure.title).to eq("Title: yeti.tiff")
     end
   end
 end

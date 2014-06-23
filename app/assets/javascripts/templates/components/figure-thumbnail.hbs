@@ -9,10 +9,11 @@
         {{#replace-image}}
           <span>Replace Image</span>
           {{file-uploader
-              name="figure[attachment]"
               url=figureUrl
+              railsMethod="PUT"
               accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-              multiple=true
+              multiple=false
+              filePrefix='paper/figures'
               progress='figureUploading'
               done='figureUploaded'}}
         {{/replace-image}}
@@ -21,6 +22,7 @@
     </div>
   {{else}}
     <div class="figure-thumbnail-image placeholder">
+      <div class="replace-spinner"></div>
       <span class="glyphicon glyphicon-file"></span>
     </div>
   {{/if}}

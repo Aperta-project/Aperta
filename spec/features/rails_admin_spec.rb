@@ -25,9 +25,11 @@ feature "Tahi administration", js: true do
     admin_page = RailsAdminDashboardPage.visit
     journals_page = admin_page.navigate_to 'Journals'
     edit_journal_page = journals_page.edit_journal journal.id
-    edit_journal_page.upload_logo
-    journals_page = edit_journal_page.save
+    with_aws_cassette('logo_upload') do
+      edit_journal_page.upload_logo
+      journals_page = edit_journal_page.save
+    end
     journal_page = journals_page.view_journal journal.id
-    expect(journal_page.logo).to end_with 'yeti.jpg'
+    expect(journal_page.logo).to match /yeti\.jpg/
   end
 end

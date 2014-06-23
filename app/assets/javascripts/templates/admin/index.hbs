@@ -1,13 +1,43 @@
 <div id="tahi-container" class="admin-screen">
-  <h2>Journal Administration</h2>
-  <ul class='journals'>
-    {{#each journal in content}}
-      <li class='journal'>
-        {{#link-to "journal" journal}}
-          <img {{bind-attr src=journal.logoUrl}} />
-          {{journal.name}}
-        {{/link-to}}
-      </li>
-    {{/each}}
-  </ul>
+  <div class='row admin-dashboard'>
+    <div class='col-md-6'>
+      <h2 class="inline-block">Journals</h2>
+      <a class='add-new-journal secondary-button blue pull-right' href='#' {{action addNewJournal}}>Add new journal</a>
+      <ul class='journals'>
+        {{#each journal in content}}
+          {{render 'journal/thumbnail' journal}}
+        {{/each}}
+      </ul>
+    </div>
+    <div class='row col-md-4 pull-right'>
+      <h2>Users</h2>
+      <div class="row admin-search">
+        {{input placeholder="Search All Users" class="admin-search-input" value=searchQuery}}
+        <button class="admin-search-button" {{action searchUsers}}><span class="glyphicon glyphicon-search"></span></button>
+      </div>
+
+      {{#if adminJournalUsers}}
+        <div class="row">
+          <table class='col-md-12 admin-users'>
+            <tr>
+              <th>Username</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+            </tr>
+            {{#each user in adminJournalUsers}}
+              <tr class="user-row">
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <td>{{user.username}}</td>
+              </tr>
+            {{/each}}
+          </table>
+        </div>
+      {{else}}
+        <div class="row search-results">
+          <p class="search-default-state-text">Need to find a user?<br> Search for them here.</p>
+        </div>
+      {{/if}}
+    </div>
+  </div>
 </div>

@@ -1,8 +1,20 @@
 ETahi.PaperEditView = Ember.View.extend
   visualEditor: null
 
+  logoUrl: (->
+    logoUrl = @get('controller.model.journal.logoUrl')
+    if /no-journal-image/.test logoUrl
+      false
+    else
+      logoUrl
+  ).property()
+
   setBackgroundColor:(->
     $('html').addClass('matte')
+  ).on('didInsertElement')
+
+  applyManuscriptCss:(->
+    $('#paper-body').attr('style', @get('controller.model.journal.manuscriptCss'))
   ).on('didInsertElement')
 
   resetBackgroundColor:(->

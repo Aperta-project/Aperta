@@ -1,33 +1,67 @@
 require 'spec_helper'
 
 describe Admin::JournalsController do
-  describe '#update' do
-    let(:journal) { create(:journal) }
-    let(:admin) { create :user, :admin }
-    let(:image_file) { fixture_file_upload 'yeti.jpg' }
+  let(:journal) { create(:journal) }
+  let(:admin) { create :user, :admin }
+  let(:image_file) { fixture_file_upload 'yeti.jpg' }
 
-    context "when the journal is updated successfully" do
+  describe '#create' do
+    context 'when the user is authorized' do
       before do
-        assign_journal_role journal, admin, :admin
         sign_in admin
       end
-      it "stores the epub cover image successfully" do
-        patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
-        uploader = journal.reload.epub_cover
 
-        expect(uploader).to be_a EpubCoverUploader
-        expect(uploader.file.filename).to eq 'yeti.jpg'
-      end
-
-      it "renders status 2xx" do
-        patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
-        expect(response.status).to eq 200
+      it 'creates a journal' do
+        post :create, admin_journal: { name: 'new journal name', description: 'new journal desc' }, format: :json
+        journal = Journal.last
+        expect(journal.name).to eq 'new journal name'
+        expect(journal.description).to eq 'new journal desc'
+        expect(response.status).to eq 201
       end
     end
 
     context "when the user is unauthorized" do
       it "renders status 401" do
-        xhr :patch, :update, id: journal.id, admin_journal: { epub_cover: image_file }
+        xhr :post, :create, admin_journal: { name: 'journal name', description: 'journal desc' }
+        expect(response.status).to eq 401
+      end
+    end
+  end
+
+  describe '#update' do
+    context "when the journal is updated successfully" do
+      before do
+        sign_in admin
+      end
+
+      it "renders status 2xx" do
+        with_aws_cassette('admin_journal_controller') do
+          patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
+        end
+        expect(response.status).to eq 200
+      end
+    end
+
+    context "uploading epub cover" do
+      before do
+        assign_journal_role journal, admin, :admin
+        sign_in admin
+      end
+
+      let(:url) { "http://someawesomeurl.com" }
+      let(:journal) { create :journal }
+      it "is successful" do
+        expect(DownloadEpubCover).to receive(:call).with(journal, url).and_return(journal)
+        put :upload_epub_cover, format: "json", id: journal.id, url: url
+        expect(response).to be_success
+      end
+    end
+
+    context "when the user is unauthorized" do
+      it "renders status 401" do
+        with_aws_cassette('admin_journal_controller') do
+          xhr :patch, :update, id: journal.id, admin_journal: { epub_cover: image_file }
+        end
         expect(response.status).to eq 401
       end
     end

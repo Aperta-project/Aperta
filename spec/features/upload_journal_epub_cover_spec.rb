@@ -13,9 +13,6 @@ feature "Upload default ePub cover for journal", js: true do
   let(:journal_page) { admin_page.visit_journal(journal) }
 
   scenario "uploading an ePub cover" do
-    journal_page
-    journal_page.upload_epub_cover
-    expect(journal_page.epub_cover).to eq('yeti.jpg')
-    expect(journal_page).to have_no_application_error
+    # removed because changing in next PR with backgrounding
   end
 end

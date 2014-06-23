@@ -1,11 +1,19 @@
 Tahi::Application.routes.draw do
   mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
   mount Declaration::Engine => '/', :as => 'declaration_engine'
+  mount FinancialDisclosure::Engine => '/', as: 'financial_disclosure'
+
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   if Rails.env.test?
     require_relative '../spec/support/stream_server/stream_server'
+    require_relative '../spec/support/upload_server/upload_server'
     get '/stream' => StreamServer
     post '/update_stream' => StreamServer
+    mount UploadServer, at: '/fake_s3/'
   end
 
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks", registrations: "registrations" }
@@ -16,17 +24,21 @@ Tahi::Application.routes.draw do
   resources :journals, only: [:index, :show]
 
   namespace 'admin' do
-    resources :journals, only: :update
+    resources :journals, only: [:update, :create]
   end
 
   get '/flow_manager' => 'ember#index'
   get '/profile' => 'ember#index'
 
+  get '/request_policy' => 'direct_uploads#request_policy'
+
   resources :flows, only: [:index, :destroy, :create]
   resources :authors, only: [:create, :update, :destroy]
   resources :author_groups, only: [:create, :destroy]
 
-  resources :figures, only: [:destroy, :update]
+  resources :figures, only: [:destroy, :update] do
+    put :update_attachment, on: :member
+  end
 
   resources :files, as: 'supporting_information_files',
                     path: 'supporting_information_files',
@@ -46,11 +58,17 @@ Tahi::Application.routes.draw do
   resources :manuscript_manager_templates
 
   namespace :admin do
-    resources :journals, only: [:index]
+    resources :journals, only: :index do
+      put :upload_epub_cover, on: :member
+      put :upload_logo, on: :member
+    end
+
+    resources :journal_users, only: :index
   end
 
-  resources :users, only: [:update, :show] do
+  resources :users, only: [:show] do
     get :profile, on: :collection
+    put :update_avatar, on: :member
   end
 
   resources :papers, only: [:create, :show, :edit, :update] do
@@ -67,13 +85,13 @@ Tahi::Application.routes.draw do
     end
 
     member do
-      patch :upload
+      put :upload
       get :manage, to: 'ember#index'
       get :download
     end
   end
 
-  resources :comments, only: :create
+  resources :comments, only: [:create, :show]
 
   resources :message_tasks, only: [:create] do
     member do
@@ -90,6 +108,8 @@ Tahi::Application.routes.draw do
   resources :phases, only: [:create, :update, :show, :destroy]
 
   resources :roles, only: [:create, :update, :destroy]
+
+  resources :questions, only: [:create, :update]
 
   get '/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
 

@@ -2,9 +2,39 @@
   <h1>Journal Administration</h1>
 
   {{partial "journal/upload-epub-cover"}}
-  {{partial "journal/upload-epub-css"}}
-  {{partial "journal/upload-pdf-css"}}
-  {{partial "journal/upload-manuscript-css"}}
+
+  {{modal-text-area name='epub'
+                    class='epub-css'
+                    attr=epubCss
+                    action='saveAttr'
+                    resetSaveStatusAction='resetSaveStatuses'
+                    saveStatus=epubCssSaveStatus
+                    modalTitle='ePub CSS'
+                    modalButtonText='Edit ePub CSS'
+                    helperText="Enter or edit CSS to format the ePub output for this journal's papers."
+                    textAreaPlaceHolder='Type your CSS here'}}
+
+  {{modal-text-area name='pdf'
+                    class='pdf-css'
+                    attr=pdfCss
+                    action='saveAttr'
+                    resetSaveStatusAction='resetSaveStatuses'
+                    saveStatus=pdfCssSaveStatus
+                    modalTitle='PDF CSS'
+                    modalButtonText='Edit PDF CSS'
+                    helperText="Enter or edit CSS to format the PDF output for this journal's papers."
+                    textAreaPlaceHolder='Type your CSS here'}}
+
+  {{modal-text-area name='manuscript'
+                    class='manuscript-css'
+                    attr=manuscriptCss
+                    action='saveAttr'
+                    resetSaveStatusAction='resetSaveStatuses'
+                    saveStatus=manuscriptCssSaveStatus
+                    modalTitle='Manuscript CSS'
+                    modalButtonText='Edit Manuscript CSS'
+                    helperText='Enter or edit CSS to format the manuscript editor and output for this journal.'
+                    textAreaPlaceHolder='Type your CSS here'}}
 
   {{render "manuscript_manager_template/index" manuscriptManagerTemplates}}
   {{render "roles/index" roles}}

@@ -2,6 +2,8 @@
 #= require ./store
 #= require ./event_stream_actions
 #= require_tree ./mixins
+#= require ./serializers/application_serializer
+#= require_tree ./serializers
 #= require_tree ./models
 #
 #= require ./controllers/task_controller
@@ -12,6 +14,7 @@
 #= require_tree ./views
 #
 #= require_tree ./helpers
+#= require ./components/question_component
 #= require_tree ./components
 #= require_tree ./templates
 #= require_tree ./routes

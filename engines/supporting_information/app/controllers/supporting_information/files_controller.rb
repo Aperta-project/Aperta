@@ -4,14 +4,9 @@ module SupportingInformation
     before_action :authenticate_user!
 
     def create
-      files = Array.wrap(file_params.delete(:attachment))
-      new_files = files.map do |file|
-        paper.supporting_information_files.create!(file_params.merge(attachment: file))
-      end
-      respond_to do |f|
-        f.html { redirect_to edit_paper_path paper }
-        f.json { render json: new_files }
-      end
+      new_file = paper.supporting_information_files.create status: "processing"
+      ::SupportingInformation::DownloadSupportingInfo.enqueue(new_file.id, params[:url])
+      render json: new_file, root: :supporting_information_file
     end
 
     def update
@@ -47,7 +42,7 @@ module SupportingInformation
     end
 
     def paper_policy
-      @paper_policy ||= ::PaperFilter.new(params[:paper_id].presence || file_paper.id, current_user)
+      @paper_policy ||= ::PaperQuery.new(params[:paper_id].presence || file_paper.id, current_user)
     end
 
     def render_404

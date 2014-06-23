@@ -15,13 +15,12 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend
       currentUpload = @get('uploads').findBy('file', data.files[0])
       currentUpload.setProperties(dataLoaded: data.loaded, dataTotal: data.total)
 
-    uploadFinished: (data) ->
+    uploadFinished: (data, filename) ->
       uploads = @get('uploads')
-      newUpload = uploads.findBy('file', data.files[0])
+      newUpload = uploads.findBy('file.name', filename)
       uploads.removeObject newUpload
 
-      newFigures = _.map data.result.figures, (figure) =>
-        @store.pushPayload 'figure', { figures: [ figure ] }
-        @store.getById('figure', figure.id)
+      @store.pushPayload('figure', data)
+      figure = @store.getById('figure', data.figure.id)
 
-      @get('figures').pushObjects(newFigures)
+      @get('figures').pushObject(figure)

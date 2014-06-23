@@ -1,4 +1,4 @@
-ETahi.AdminAuthorizedRoute = Ember.Route.extend
+ETahi.AuthorizedRoute = Ember.Route.extend
   handleUnauthorizedRequest: (transition) ->
     transition.abort()
     @transitionTo 'index'

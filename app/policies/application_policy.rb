@@ -117,4 +117,8 @@ class ApplicationPolicy
     super_admin? || administered_journals.exists?(journal)
   end
 
+  def author_of_paper?(paper)
+    current_user.submitted_papers.where(id: paper.id).present?
+  end
+
 end

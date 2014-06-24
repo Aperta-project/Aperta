@@ -53,7 +53,7 @@ class AdminDashboardPage < Page
   def search_results
     synchronize_content! "Username"
     all('.admin-users .user-row').map do |el|
-      Hash[[:first_name, :last_name, :username].zip(el.all('td').map &:text)]
+      Hash[[:first_name, :last_name, :username].zip(UserRowInSearch.new(el).row_content.map &:text)]
     end
   end
 

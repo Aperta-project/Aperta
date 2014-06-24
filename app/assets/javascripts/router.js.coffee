@@ -16,7 +16,6 @@ ETahi.Router.map ()->
   @resource('author')
 
   @resource 'admin', ->
-    @resource 'journal_user', path: '/journal_users/:journal_id'
     @resource 'journal', path: '/journals/:journal_id', ->
       @resource 'manuscript_manager_template', path: '/manuscript_manager_templates', ->
         @route('new')

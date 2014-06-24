@@ -136,31 +136,7 @@
 
   .pdf-css,
   .epub-css,
-  .manuscript-css,
-  .admin-modal {
-
-    .modal-field-label, .modal-field {
-      margin-top: 20px;
-      margin-bottom: 10px;
-    }
-
-    .modal-field-label {
-      @extend .col-md-4;
-      font-size: 30px; 
-      text-align: right;
-    }
-
-    .modal-field {
-      @extend .col-md-8;
-      font-size: 24px;
-      input {
-        border: 1px solid $tahi-tertiary;
-        border-radius: 5px;
-        color: $tahi-blue-light;
-        padding: 5px;
-      }
-    }
-
+  .manuscript-css {
     span.save-status {
       color: $tahi-blue-light;
       vertical-align: -6px;
@@ -197,6 +173,7 @@
           margin-right: 10px;
         }
       }
+
     }
   }
 

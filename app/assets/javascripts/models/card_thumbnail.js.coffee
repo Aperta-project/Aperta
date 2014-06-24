@@ -9,3 +9,4 @@ ETahi.CardThumbnail = DS.Model.extend
   task: DS.belongsTo('task', polymorphic: true)
   flow: DS.belongsTo('flow')
   isMessage: Ember.computed.equal('taskType', 'MessageTask')
+  updatedAt: a('date')

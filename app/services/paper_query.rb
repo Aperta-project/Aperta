@@ -49,7 +49,6 @@ class PaperQuery
       first
   end
 
-# fuck it, we'll do it live
   def paper_for_sufficient_role
     paper = Paper.where(id: @paper_id).first
     if @user.roles.where(journal_id: paper.journal.id).where(can_view_all_manuscript_managers: true).present?

@@ -5,6 +5,8 @@ class ContentNotSynchronized < StandardError; end
 class PageFragment
   include RSpec::Matchers
 
+  attr_reader :element
+
   delegate :select, to: :@element
 
   def initialize element = nil
@@ -12,15 +14,15 @@ class PageFragment
   end
 
   def method_missing method, *args, &block
-    if @element.respond_to? method
-      @element.send method, *args, &block
+    if element.respond_to? method
+      element.send method, *args, &block
     else
       super
     end
   end
 
   def class_names
-    @element[:class].split(' ')
+    element[:class].split(' ')
   end
 
   def has_class_name?(name)
@@ -28,10 +30,10 @@ class PageFragment
   end
 
   def session
-    if Capybara::Session === @element
-      @element
+    if Capybara::Session === element
+      element
     else
-      @element.session
+      element.session
     end
   end
 

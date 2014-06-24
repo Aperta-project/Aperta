@@ -99,7 +99,11 @@ class EditModal < PageFragment
   end
 
   def reset_password
-    find('.reset-password').click
+    find('.reset-password-link').click
+  end
+
+  def reset_password_status
+    find('.reset-password .success').text
   end
 end
 

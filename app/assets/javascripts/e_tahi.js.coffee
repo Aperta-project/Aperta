@@ -2,6 +2,8 @@
 #= require ./store
 #= require ./event_stream_actions
 #= require_tree ./mixins
+#= require ./serializers/application_serializer
+#= require_tree ./serializers
 #= require_tree ./models
 #
 #= require ./controllers/task_controller

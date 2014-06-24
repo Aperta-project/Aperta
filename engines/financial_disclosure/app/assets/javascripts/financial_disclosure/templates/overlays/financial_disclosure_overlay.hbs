@@ -11,8 +11,12 @@
     </div>
 
     {{#each funder in funders}}
-      {{view ETahi.FunderView funder=funder}}
+      {{render "funder" funder}}
     {{/each}}
+
+    {{#if receivedFunding}}
+      <button {{action "addFunder"}}>Add Another Funder</button>
+    {{/if}}
   </fieldset>
 </form>
 

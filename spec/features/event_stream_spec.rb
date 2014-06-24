@@ -59,11 +59,11 @@ feature "Event streaming", js: true do
 
   describe "message tasks" do
     before do
-      TaskManagerPage.visit paper
       submission_phase = paper.phases.find_by_name("Submission Data")
       @mt = submission_phase.tasks.new title: "Wicked Message Card", type: "MessageTask", body: "Hi there!", role: "user"
       @mt.participants << author
       @mt.save!
+      TaskManagerPage.visit paper
       find('.card-content', text: "Wicked Message Card").click
       expect(page).to have_css(".overlay-content")
     end

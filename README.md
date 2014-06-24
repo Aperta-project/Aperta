@@ -16,6 +16,7 @@ your components have stylesheets (`rake bower:resolve`)
 
 You will need:
 - Go with your $GOPATH environment variable set.
+- Add /usr/local/go/bin to your $PATH.
 - a cloned copy of https://github.com/stuartnelson3/golang-eventsource: 
   `$ git clone git@github.com:stuartnelson3/golang-eventsource.git`
 
@@ -23,7 +24,7 @@ From your golang-eventsource folder:
 
 Download your server dependencies
 ```
-$ for f in github.com/antage/eventsource/http github.com/martini-contrib/cors github.com/codegangsta/martini; do
+$ for f in github.com/antage/eventsource github.com/martini-contrib/cors github.com/codegangsta/martini; do
   go get $f
   done
 ```
@@ -79,4 +80,24 @@ Then, you need to configure your s3 bucket for CORS:
 aws s3api put-bucket-cors --bucket <your s3 bucket> --cors-configuration file://config/services/s3.cors.development.json
 ```
 
+### Load testing
 
+To wipe and restore performance data in a pristine state on tahi-performance, run the following:
+```heroku pgbackups:restore HEROKU_POSTGRESQL_CYAN_URL b001 --app tahi-performance```
+
+A fully loaded database with thousands of records can be found on S3 here:
+```/tahi-performance/tahi_performance_backup.sql.zip```
+
+This can be downloaded and loaded locally, if needed.
+
+The following rake task will create a new set of performance test data from scratch using FactoryGirl factories:
+```RAILS_ENV=performance bundle exec rake data:load:all```
+
+This will take several days to reconstruct, so you will probably want to use one of the above steps instead.
+
+### Subset Load testing
+
+Subset data contains about 100 users and some associated records.
+
+To wipe and restore performance data in a pristine state on tahi-performance, run the following:
+```heroku pgbackups:restore HEROKU_POSTGRESQL_CYAN_URL b002 --app tahi-performance```

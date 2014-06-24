@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 20140619192947) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "caption"
+    t.string   "status",     default: "processing"
   end
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
@@ -163,6 +164,7 @@ ActiveRecord::Schema.define(version: 20140619192947) do
     t.integer  "paper_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status",     default: "processing"
   end
 
   create_table "message_participants", force: true do |t|
@@ -270,6 +272,7 @@ ActiveRecord::Schema.define(version: 20140619192947) do
     t.string   "attachment"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status",     default: "processing"
   end
 
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree

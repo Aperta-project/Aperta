@@ -1,5 +1,8 @@
 <div class='journal-thumbnail-edit-form clearfix'>
-  <div class="col-xs-4">
+  <div class="col-xs-4 journal-logo-upload">
+    {{#unless model.isNew}}
+      {{partial 'journal/logo-upload'}}
+    {{/unless}}
     <img class="pull-left" {{bind-attr src=journal.logoUrl}} class="pull-left" />
   </div>
   <div class="col-xs-8">

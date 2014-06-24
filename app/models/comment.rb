@@ -39,7 +39,7 @@ class Comment < ActiveRecord::Base
 
   private
 
-  def task_payload
+  def notifier_payload
     { task_id: task.id, paper_id: task.paper.id }
   end
 end

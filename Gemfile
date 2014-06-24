@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby "2.1.2"
 
 # Configuration
-group :development, :test do
+group :development, :test, :performance do
   gem 'dotenv-rails'
 end
 
@@ -31,6 +31,12 @@ gem 'coffee-rails', '~> 4.0.1'
 gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
+
+gem 'activejob', '~> 0'
+gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
+gem 'sidekiq'
+gem 'sinatra'
+
 gem "nokogiri"
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
@@ -53,6 +59,7 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
+gem 'spring'
 gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c4574666dcfc9b577542fb595f"
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28
@@ -71,17 +78,18 @@ group :development do
   gem 'bullet'
   gem 'license_finder'
   gem 'railroady'
-  gem 'spring'
 end
 
-group :development, :test do
+group :development, :test, :performance do
+  gem 'factory_girl_rails'
+  gem 'progressbar'
   gem 'rspec-rails', "~> 3.0.0.beta2"
   gem "rspec-its", "~> 1.0.0.pre"
   gem 'capybara', "~> 2.3.0"
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'
-  gem "teaspoon"
+  gem "teaspoon", "~> 0.8.0"
   gem "phantomjs"
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
@@ -89,12 +97,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'factory_girl_rails'
   gem "codeclimate-test-reporter", require: nil
   gem 'vcr'
   gem 'webmock'
-
-  # For testing event streaming.
-  gem 'sinatra'
   gem 'thin'
 end

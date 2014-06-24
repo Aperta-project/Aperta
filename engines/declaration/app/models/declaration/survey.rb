@@ -6,7 +6,7 @@ module Declaration
 
     private
 
-    def task_payload
+    def notifier_payload
       { task_id: declaration_task.id, paper_id: declaration_task.paper.id }
     end
   end

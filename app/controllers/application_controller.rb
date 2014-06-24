@@ -43,7 +43,6 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
 
-
   def authenticate_with_basic_http
     if %w(production staging).include?(Rails.env) && request.path !~ /\A\/api.*/
       authenticate_or_request_with_http_basic 'Staging' do |name, password|

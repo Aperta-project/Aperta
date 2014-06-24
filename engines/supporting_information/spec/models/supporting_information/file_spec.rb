@@ -27,14 +27,6 @@ module SupportingInformation
       end
     end
 
-    describe "#create" do
-      describe "callbacks" do
-        it "prepends Title: " do
-          expect(file.title).to eq("Title: yeti.tiff")
-        end
-      end
-    end
-
     describe "#access_details" do
       it "returns a hash with attachment src, filename, alt, and S3 URL" do
         expect(file.access_details).to eq(filename: 'yeti.tiff',

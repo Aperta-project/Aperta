@@ -1,0 +1,22 @@
+<h1>Financial Disclosures</h1>
+
+<form>
+  <fieldset>
+    <div class="question">
+      <div class="question-text">
+      Did any of the authors receive specific funding for this work?
+      </div>
+
+      {{binary-radio-button name="received-funding" selection=receivedFunding yesAction="choseFundingReceived" noAction="choseFundingNotReceived"}}
+    </div>
+
+    {{#each funder in funders}}
+      {{render "funder" funder}}
+    {{/each}}
+
+    {{#if receivedFunding}}
+      <button {{action "addFunder"}}>Add Another Funder</button>
+    {{/if}}
+  </fieldset>
+</form>
+

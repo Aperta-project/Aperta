@@ -39,13 +39,19 @@ ETahi.FigureThumbnailComponent = Ember.Component.extend
   focusOut: (e) -> @set('editState', false) unless @get('figure.isDirty')
 
   toggleSpinner: (->
-    if @get('uploadingState')
+    if @get('showSpinner')
       @spinnerDiv = @$('.replace-spinner')[0]
       @spinner ||= new Spinner(@get('spinnerOpts')).spin(@spinnerDiv)
       $(@spinnerDiv).show()
     else
       $(@spinnerDiv).hide()
-  ).observes('uploadingState')
+  ).observes('showSpinner').on('didInsertElement')
+
+  isProcessing: ( ->
+    @get('figure.status') == "processing"
+  ).property('figure.status')
+
+  showSpinner: Ember.computed.or('isProcessing', 'uploadingState')
 
   actions:
     saveFigure: ->

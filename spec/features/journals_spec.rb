@@ -41,6 +41,8 @@ feature "Journal Administration", js: true do
       journal_edit_form = admin_page.edit_journal journal.name
       journal_edit_form.name = "Edited journal"
       journal_edit_form.description = "Edited journal description"
+      # FIXME: Waiting on the s3 work to be done
+      # journal_edit_form.attach_cover_image 'yeti.jpg', journal.id
       journal_edit_form.save
 
       journal_edit_form = admin_page.edit_journal "Edited journal"

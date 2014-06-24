@@ -7,12 +7,12 @@ require "data_availability/version"
 Gem::Specification.new do |s|
   s.name        = "data_availability"
   s.version     = DataAvailability::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of DataAvailability."
-  s.description = "TODO: Description of DataAvailability."
-  s.license     = "MIT"
+  s.authors     = ["Tahi"]
+  s.email       = ["tahi-project@neo.com"]
+  s.homepage    = "http://www.tahi.com"
+  s.summary     = "Data availability questionnaire"
+  s.description = "Data availability questionnaire"
+  s.license     = "TBD"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]

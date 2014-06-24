@@ -30,6 +30,12 @@ gem 'coffee-rails', '~> 4.0.1'
 gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
+
+gem 'activejob', '~> 0'
+gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
+gem 'sidekiq'
+gem 'sinatra'
+
 gem "nokogiri"
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
@@ -92,8 +98,5 @@ group :test do
   gem "codeclimate-test-reporter", require: nil
   gem 'vcr'
   gem 'webmock'
-
-  # For testing event streaming.
-  gem 'sinatra'
   gem 'thin'
 end

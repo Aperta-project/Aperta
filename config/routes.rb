@@ -3,6 +3,11 @@ Tahi::Application.routes.draw do
   mount Declaration::Engine => '/', :as => 'declaration_engine'
   mount FinancialDisclosure::Engine => '/', as: 'financial_disclosure'
 
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   if Rails.env.test?
     require_relative '../spec/support/stream_server/stream_server'
     require_relative '../spec/support/upload_server/upload_server'
@@ -53,9 +58,12 @@ Tahi::Application.routes.draw do
   resources :manuscript_manager_templates
 
   namespace :admin do
-    resources :journals, only: [:index] do
+    resources :journals, only: :index do
       put :upload_epub_cover, on: :member
+      put :upload_logo, on: :member
     end
+
+    resources :journal_users, only: :index
   end
 
   resources :users, only: [:show] do

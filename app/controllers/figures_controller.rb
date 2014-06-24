@@ -3,8 +3,9 @@ class FiguresController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    figure = DownloadFigure.call(paper.figures.new, params[:url])
-    render json: figure
+    new_figure = paper.figures.create status: "processing"
+    DownloadFigure.enqueue(new_figure.id, params[:url])
+    render json: new_figure
   end
 
   def update
@@ -15,7 +16,9 @@ class FiguresController < ApplicationController
   end
 
   def update_attachment
-    figure = DownloadFigure.call(Figure.find(params[:id]), params[:url])
+    figure = Figure.find(params[:id])
+    figure.update_attribute(:status, "processing")
+    DownloadFigure.enqueue(figure.id, params[:url])
     render json: figure
   end
 

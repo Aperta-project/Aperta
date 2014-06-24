@@ -1,0 +1,13 @@
+<div class="journal-logo-spinner"></div>
+<div class="journal-logo-hover">
+  <span class="secondary-button fileinput-button blue">
+    <span>Upload New</span>
+    {{file-uploader id=thumbnailId
+                    accept=".jpg,.jpeg,.tiff,.gif,.png"
+                    progress='logoUploading'
+                    done='logoUploaded'
+                    filePrefix='journal/logo'
+                    railsMethod='PUT'
+                    url=logoUploadUrl}}
+  </span>
+</div>

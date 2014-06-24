@@ -1,0 +1,23 @@
+require 'spec_helper'
+
+module SupportingInformation
+  describe DownloadSupportingInfo do
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:file) { paper.supporting_information_files.create }
+    let(:url) { "http://tahi-development.s3.amazonaws.com/temp/bill_ted1.jpg" }
+
+    it "downloads the attachment" do
+      with_aws_cassette('supporting_info_file') do
+        DownloadSupportingInfo.enqueue(file.id, url)
+        expect(file.reload.attachment.file.path).to match(/bill_ted1\.jpg/)
+      end
+    end
+
+    it "sets the figure title" do
+      with_aws_cassette('supporting_info_file') do
+        DownloadSupportingInfo.enqueue(file.id, url)
+        expect(file.reload.title).to match(/bill_ted1\.jpg/)
+      end
+    end
+  end
+end

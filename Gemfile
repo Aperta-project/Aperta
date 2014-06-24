@@ -14,6 +14,7 @@ gem 'declaration',            path: 'engines/declaration'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 gem 'data_availability',      path: 'engines/data_availability'
 gem 'financial_disclosure',   path: 'engines/financial_disclosure'
+gem 'competing_interests',    path: 'engines/competing_interests'
 
 # Gems
 gem 'rails', '4.1.1'

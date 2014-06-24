@@ -97,6 +97,10 @@ class EditModal < PageFragment
     click_on "Cancel"
     AdminDashboardPage.new(context: context)
   end
+
+  def reset_password
+    find('.reset-password').click
+  end
 end
 
 class EditJournalFragment < PageFragment

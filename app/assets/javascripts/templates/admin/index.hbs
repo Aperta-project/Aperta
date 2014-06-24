@@ -34,10 +34,18 @@
           </table>
         </div>
       {{else}}
+        {{#if searched}}
+          <div class="row search-results">
+            <p class="search-default-state-text">No matching users found</p>
+          </div>
+        {{/if}}
+      {{/if}}
+
+      {{#unless searched}}
         <div class="row search-results">
           <p class="search-default-state-text">Need to find a user?<br> Search for them here.</p>
         </div>
-      {{/if}}
+      {{/unless}}
     </div>
   </div>
 </div>

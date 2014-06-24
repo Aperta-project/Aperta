@@ -23,6 +23,7 @@ feature "Financial Disclosures", js: true do
   end
 
   scenario "navigate to authors card and back" do
+    pending "Waiting on discussion about how to visually implement adding authors to funding sources"
     edit_paper = EditPaperPage.visit paper
 
     edit_paper.view_card 'Financial Disclosure' do |overlay|

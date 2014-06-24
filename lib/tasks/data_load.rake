@@ -19,7 +19,6 @@ namespace :data do
     desc "Bulk load all data"
     task :all => :setup do
       ["journals", "users", "journal_admin_users", "reviewer_users", "reviewer_and_editor_users", "completed_manuscripts", "active_manuscripts"].each do |task|
-      ["journals", "users", "journal_admin_users", "reviewer_users", "reviewer_and_editor_users", "completed_manuscripts"].each do |task|
         Rake::Task["data:load:" + task].invoke
       end
     end
@@ -142,7 +141,6 @@ namespace :data do
   end
 
   namespace :heroku do
-
     task :setup => :environment do
       database_name = ActiveRecord::Base.connection_config[:database]
       dest_filename = "#{database_name}_load_dump.sql"
@@ -173,6 +171,5 @@ namespace :data do
 
     desc "Snapshot, copy, and import local database to Heroku"
     task :import_snapshot => [:setup, :snapshot_local, :copy_snapshot_to_s3, :export]
-
   end
 end

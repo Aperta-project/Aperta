@@ -15,15 +15,13 @@
           multiple=true
           changeAction="addFundedAuthors"}}
     </div>
-    OR
-    <a {{action "viewCard" authorsTask}}>Add author</a>
   </div>
   </br>
   <div class="question">
     <div class="question-text">
       Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?
     </div>
-    {{binary-radio-button name="funder-had-influence" selection=funder.funderHadInfluence}}
+    {{binary-radio-button name="funder-had-influence" selection=funder.funderHadInfluence index=funder.id}}
 
     {{#if funder.funderHadInfluence}}
     <p>

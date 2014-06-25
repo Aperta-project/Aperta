@@ -21,7 +21,7 @@
     <div class="question-text">
       Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?
     </div>
-    {{binary-radio-button name="funder-had-influence" selection=funder.funderHadInfluence index=funder.id}}
+    {{binary-radio-button name=( uniqueName 'funder-had-influence' ) selection=funder.funderHadInfluence}}
 
     {{#if funder.funderHadInfluence}}
     <p>

@@ -11,7 +11,8 @@ class Journal < ActiveRecord::Base
                       "StandardTasks::AuthorsTask",
                       "SupportingInformation::Task",
                       "DataAvailability::Task",
-                      "FinancialDisclosure::Task"]
+                      "FinancialDisclosure::Task",
+                      "CompetingInterests::Task"]
 
   has_many :papers, inverse_of: :journal
   has_many :roles, inverse_of: :journal

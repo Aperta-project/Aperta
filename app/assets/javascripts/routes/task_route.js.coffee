@@ -38,9 +38,3 @@ ETahi.TaskRoute = Ember.Route.extend
       redirectRouteName = @controllerFor('application').get('overlayRedirect.lastObject.firstObject')
       unless transition.targetName == redirectRouteName
         @controllerFor('application').set('cachedModel', null)
-
-    viewCard: (task) ->
-      currentTask = @modelFor('task')
-      redirectParams = ['task', currentTask.get('litePaper.id'), currentTask.id]
-      @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @transitionTo('task', task.get('litePaper.id'), task.get('id'))

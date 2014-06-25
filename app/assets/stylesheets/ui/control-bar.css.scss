@@ -3,7 +3,6 @@
   height: $tahi-control-bar-height;
   border-bottom: 1px solid #939393;
   padding: 7px 0 5px 0;
-  color: #000;
   background: #e1e1e1;
   z-index: 2;
   width: 100%;
@@ -33,7 +32,11 @@
     float: right;
     padding-right: 0;
 
-    a { text-transform: uppercase; }
+    a {
+      color: #000000;
+      text-transform: uppercase;
+      font-weight: normal;
+    }
   }
 }
 
@@ -41,17 +44,35 @@
   position: relative;
   float: left;
   display: block;
-  margin-right: 10px;
 }
 
 .control-bar-link {
-  padding: 10px;
   line-height: 36px;
   font-weight: bold;
   text-transform: none;
   background: none;
+  display: block;
+  margin-left: 25px;
 
-  &:focus, &:hover { text-decoration: none; }
+  span {
+    padding-left: 5px;
+    vertical-align: 17px;
+    color: #444
+  }
+
+  .pdf-icon path, .epub-icon path, .manuscript-manager-icon path {
+    fill: #444;
+  }
+
+  &:focus, &:hover {
+    text-decoration: none;
+
+    span { color: $tahi-primary; }
+
+    .pdf-icon path, .epub-icon path, .manuscript-manager-icon path {
+      fill: $tahi-primary;
+    }
+  }
 }
 
 .control-bar-message {

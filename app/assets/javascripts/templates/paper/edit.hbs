@@ -10,10 +10,23 @@
       </li>
     </ul>
     <ul>
-      <li class="control-bar-item">{{directLinkTo downloadLink "Download ePub" "control-bar-link"}}</li>
-      <li class="control-bar-item">{{directLinkTo downloadLink "Download PDF" "control-bar-link" "pdf"}}</li>
+      <li class="control-bar-item">
+        {{#direct-download-link link=downloadLink class="control-bar-link"}}
+          {{partial "svg/epub-icon"}}
+        {{/direct-download-link}}
+      </li>
+      <li class="control-bar-item">
+        {{#direct-download-link link=downloadLink extension=".pdf"}}
+          {{partial "svg/pdf-icon"}}
+        {{/direct-download-link}}
+      </li>
       {{#if canViewManuscriptManager}}
-        <li class="control-bar-item">{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
+        <li class="control-bar-item">
+          {{#link-to "paper.manage" model class="control-bar-link"}}
+            {{partial "svg/manuscript-manager-icon"}}
+            <span>Manuscript Manager</span>
+          {{/link-to}}
+        </li>
       {{/if}}
     </ul>
   </div>

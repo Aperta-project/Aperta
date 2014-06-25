@@ -1,0 +1,2 @@
+module CompetingInterests
+end

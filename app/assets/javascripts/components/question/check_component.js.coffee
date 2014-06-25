@@ -1,6 +1,7 @@
 ETahi.QuestionCheckComponent = ETahi.QuestionComponent.extend
   layoutName: 'components/question/check_component'
   multipleAdditionalData: false
+  displayContent: Em.computed.alias('checked')
 
   checked: (->
     answer = @get('model.answer')
@@ -10,4 +11,3 @@ ETahi.QuestionCheckComponent = ETahi.QuestionComponent.extend
   actions:
     additionalDataAction: ()->
       @get('additionalData').pushObject({})
-

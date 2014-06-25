@@ -53,8 +53,6 @@ class PaperQuery
     paper = Paper.where(id: @paper_id).first
     if @user.roles.where(journal_id: paper.journal.id).where(can_view_all_manuscript_managers: true).present?
       paper
-    else
-      nil
     end
   end
 end

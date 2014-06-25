@@ -12,8 +12,8 @@ class MessageCardOverlay < CardOverlay
   end
 
   def has_participants?(*participants)
-    participants.each do |participant|
-      expect(page).to have_css(".participant .user-thumbnail[alt='#{participant.full_name}']")
+    participants.all? do |participant|
+      page.has_css?(".participant .user-thumbnail[alt='#{participant.full_name}']")
     end
   end
 

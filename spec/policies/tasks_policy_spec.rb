@@ -16,7 +16,7 @@ describe TasksPolicy do
     it { expect(policy.upload?).to be(true) }
   end
 
-  context "user with can_view_all_manuscript_managers" do
+  context "user with can_view_all_manuscript_managers on this journal" do
     let(:user) do
       FactoryGirl.create(
         :user,

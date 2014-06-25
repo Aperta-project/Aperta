@@ -28,8 +28,7 @@ feature "Assigns Reviewer", js: true do
     dashboard_page = DashboardPage.new
     dashboard_page.view_card 'Assign Reviewers' do |overlay|
       overlay.paper_reviewers = [albert.full_name, neil.full_name]
-      overlay.mark_as_complete
-      expect(overlay).to be_completed
+      expect(overlay).to have_reviewers(albert, neil)
     end
   end
 end

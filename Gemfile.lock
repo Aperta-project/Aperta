@@ -25,6 +25,12 @@ GIT
       activesupport (>= 4.1.0)
 
 PATH
+  remote: engines/competing_interests
+  specs:
+    competing_interests (0.0.1)
+      rails (~> 4.1.1)
+
+PATH
   remote: engines/data_availability
   specs:
     data_availability (0.0.1)
@@ -271,7 +277,7 @@ GEM
     mini_magick (3.7.0)
       subexec (~> 0.2.1)
     mini_portile (0.6.0)
-    minitest (5.3.4)
+    minitest (5.3.3)
     multi_json (1.10.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -304,6 +310,7 @@ GEM
     pg (0.17.0)
     phantomjs (1.9.7.0)
     polyglot (0.3.4)
+    progressbar (0.21.0)
     pry (0.9.12.4)
       coderay (~> 1.0)
       method_source (~> 0.8)
@@ -363,7 +370,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     raindrops (0.12.0)
-    rake (10.3.2)
+    rake (10.3.1)
     rdoc (3.12.2)
       json (~> 1.4)
     redis (3.0.7)
@@ -446,14 +453,14 @@ GEM
       eventmachine (>= 1.0.0)
       rack (>= 1.0.0)
     thor (0.19.1)
-    thread_safe (0.3.4)
+    thread_safe (0.3.3)
     tilt (1.4.1)
     timeliness (0.3.7)
     timers (1.1.0)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (1.2.1)
+    tzinfo (1.1.0)
       thread_safe (~> 0.1)
     uglifier (2.5.0)
       execjs (>= 0.3.0)
@@ -494,6 +501,7 @@ DEPENDENCIES
   chosen-rails (~> 1.1.0)
   codeclimate-test-reporter
   coffee-rails (~> 4.0.1)
+  competing_interests!
   data_availability!
   database_cleaner
   declaration!
@@ -522,6 +530,7 @@ DEPENDENCIES
   pdfkit
   pg
   phantomjs
+  progressbar
   pry-byebug
   pry-rails
   pry-rescue
@@ -542,7 +551,7 @@ DEPENDENCIES
   spring
   standard_tasks!
   supporting_information!
-  teaspoon
+  teaspoon (~> 0.8.0)
   thin
   timeliness
   uglifier (~> 2.5.0)

@@ -44,6 +44,18 @@ class AdminDashboardPage < Page
     click_link(journal.name)
     JournalPage.new
   end
+
+  def search(query)
+    find(".admin-search-input").set(query)
+    find(".admin-search-button").click
+  end
+
+  def search_results
+    synchronize_content! "Username"
+    all('.admin-users .user-row').map do |el|
+      Hash[[:first_name, :last_name, :username].zip(el.all('td').map &:text)]
+    end
+  end
 end
 
 class EditJournalFragment < PageFragment

@@ -1,4 +1,12 @@
 ETahi.AdminIndexController = Ember.ArrayController.extend
+  seached: (->
+    false
+  ).property()
+
   actions:
     addNewJournal: ->
       @store.createRecord 'adminJournal', logoUrl: "<%= asset_path('no-journal-image.gif') %>"
+
+    searchUsers: ->
+      @set 'adminJournalUsers', @store.find('AdminJournalUser', {query: @get('searchQuery')})
+      @set 'searched', true

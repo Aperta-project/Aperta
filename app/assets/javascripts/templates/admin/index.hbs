@@ -1,5 +1,5 @@
 <div id="tahi-container" class="admin-screen">
-  <div class='row'>
+  <div class='row admin-dashboard'>
     <div class='col-md-6'>
       <h2 class="inline-block">Journals</h2>
       <a class='add-new-journal secondary-button blue pull-right' href='#' {{action addNewJournal}}>Add new journal</a>
@@ -9,8 +9,43 @@
         {{/each}}
       </ul>
     </div>
-    <div class='col-md-4 pull-right'>
+    <div class='row col-md-4 pull-right'>
       <h2>Users</h2>
+      <div class="row admin-search">
+        {{input placeholder="SEARCH ALL USERS" class="admin-search-input" value=searchQuery}}
+        <button class="admin-search-button" {{action searchUsers}}><span class="glyphicon glyphicon-search"></span></button>
+      </div>
+
+      {{#if adminJournalUsers}}
+        <div class="row">
+          <table class='col-md-12 admin-users'>
+            <tr>
+              <th>Username</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+            </tr>
+            {{#each user in adminJournalUsers}}
+              <tr class="user-row">
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <td>{{user.username}}</td>
+              </tr>
+            {{/each}}
+          </table>
+        </div>
+      {{else}}
+        {{#if searched}}
+          <div class="row search-results">
+            <p class="search-default-state-text">No matching users found</p>
+          </div>
+        {{/if}}
+      {{/if}}
+
+      {{#unless searched}}
+        <div class="row search-results">
+          <p class="search-default-state-text">Need to find a user?<br> Search for them here.</p>
+        </div>
+      {{/unless}}
     </div>
   </div>
 </div>

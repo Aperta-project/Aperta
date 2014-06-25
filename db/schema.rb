@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140619184231) do
+ActiveRecord::Schema.define(version: 20140619192947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -230,8 +230,8 @@ ActiveRecord::Schema.define(version: 20140619184231) do
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
   create_table "questions", force: true do |t|
-    t.string  "question"
-    t.string  "answer"
+    t.text    "question"
+    t.text    "answer"
     t.string  "ident"
     t.integer "task_id"
     t.json    "additional_data"

@@ -11,6 +11,12 @@ class MessageCardOverlay < CardOverlay
     all('.participant .user-thumbnail').map { |e| e["alt"] }
   end
 
+  def has_participants?(*participants)
+    participants.each do |participant|
+      expect(page).to have_css(".participant .user-thumbnail[alt='#{participant.full_name}']")
+    end
+  end
+
   def subject
     find('main > h1').text
   end

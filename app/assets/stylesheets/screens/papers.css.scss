@@ -116,15 +116,10 @@ main > aside > div {
   position: absolute;
   height: 100%;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: transparent;
   z-index: 1;
   text-align: center;
   font-size: 24px;
-}
-
-.lock-message {
-  @include position(relative, 200px 0 0 0);
-  @include transform(translateY(-50%));
 }
 
 main > aside > div {
@@ -134,4 +129,27 @@ main > aside > div {
 
 #tahi-container > main > article * {
   font-family: $tahi-article-font-family;
+  .glyphicon {
+    font-family: 'Glyphicons Halflings';
+  }
+}
+
+.lock-message {
+  position: absolute;
+  top: 10px;
+  left: 180px;
+  font-size: 14px;
+  font-style: italic;
+  color: $tahi-message;
+  z-index: 1;
+}
+
+.oo-ui-toolbar-tools {
+  float: right;
+}
+
+.oo-ui-toolbar {
+  &.locked {
+    opacity: 0.5;
+  }
 }

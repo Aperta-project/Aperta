@@ -22,8 +22,11 @@
 <div id="tahi-container">
   <main>
     <article>
+      <div {{bind-attr class=":lock-message locked::hidden"}}>
+        <i class="glyphicon glyphicon-lock" ></i>
+        <span class="message">{{lockMessage}}</span>
+      </div>
       <div {{bind-attr class=":locked-overlay locked::hidden"}}>
-        <span class="lock-message">{{lockMessage}}</span>
       </div>
       <div class="manuscript-container">
         <div class="title">

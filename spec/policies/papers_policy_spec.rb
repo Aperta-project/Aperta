@@ -86,4 +86,18 @@ describe PapersPolicy do
     it { expect(policy.upload?).to be(false) }
     it { expect(policy.download?).to be(false) }
   end
+
+  context "user with can_view_all_manuscript_managers" do
+    let(:user) do
+      FactoryGirl.create(
+        :user,
+        roles: [ FactoryGirl.create(:role, :admin, journal: journal), ],
+      )
+    end
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:journal) { FactoryGirl.create(:journal, papers: [paper]) }
+
+    it { expect(policy.show?).to be(true) }
+    it { expect(policy.upload?).to be(true) }
+  end
 end

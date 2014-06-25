@@ -7,7 +7,7 @@ class TasksController < ApplicationController
 
   def update
     task = Task.find(params[:id])
-    if task #&& task.authorize_update?(params, current_user)
+    if task
       unmunge_empty_arrays!(task)
       tp = task_params(task)
 

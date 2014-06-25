@@ -2,6 +2,7 @@ ETahi.CardView = Em.View.extend(DragNDrop.Dragable, {
   templateName: 'card'
   classNames: ['card']
   classNameBindings: ['completed', 'isMessage']
+  canRemoveCard: false
 
   setupTooltip: (->
     @.$().find('.remove-card').tooltip()

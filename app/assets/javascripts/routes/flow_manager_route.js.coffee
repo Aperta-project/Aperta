@@ -21,7 +21,7 @@ ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
 
     viewCard: (paper, task) ->
       redirectParams = ['flow_manager']
-      @controllerFor('application').set('overlayRedirect', redirectParams)
+      @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('cachedModel' , @modelFor('flow_manager'))
       @controllerFor('application').set('overlayBackground', 'flow_manager')
       @transitionTo('task', paper.id, task.id)

@@ -14,7 +14,7 @@ ETahi.IndexRoute = Ember.Route.extend
   actions:
     viewCard: (task) ->
       redirectParams = ['index']
-      @controllerFor('application').set('overlayRedirect', redirectParams)
+      @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('cachedModel' , @modelFor('index'))
       @controllerFor('application').set('overlayBackground', 'index')
       @transitionTo('task', task.get('litePaper.id'), task.get('id'))

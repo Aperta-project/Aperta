@@ -43,6 +43,6 @@ ETahi.ApplicationController = Ember.Controller.extend
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')
 
-  overlayRedirect: null
+  overlayRedirect: []
 
   defaultBackground: 'overlay_background'

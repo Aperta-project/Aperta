@@ -45,7 +45,7 @@ class EpubConverter
   end
 
   # Yeah these methods that start with _ should be private
-  # Unfortunately the way the GEPUB library works uses 
+  # Unfortunately the way the GEPUB library works uses
   # instance eval so we need them to be public until
   # such time as we are angry enough to build it another way.
   #
@@ -135,7 +135,6 @@ class EpubConverter
     end
   end
 
-
   def layout_html(head, body)
     # ePub is sensitive to leading white space, therefore we need the first
     # line to start at column 0. No, `String#strip_heredoc` doesn't solve the
@@ -160,5 +159,4 @@ class EpubConverter
   def manuscript_contents
     manuscript_source.file.read
   end
-
 end

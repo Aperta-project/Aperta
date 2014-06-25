@@ -15,5 +15,4 @@ class PaperSerializer < ActiveModel::Serializer
   def status
     object.manuscript.try(:status)
   end
-
 end

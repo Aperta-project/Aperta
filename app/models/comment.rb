@@ -16,7 +16,7 @@ class Comment < ActiveRecord::Base
                        params[:commenter].id
                      end
 
-      #add the commenter as a participant if necessary
+      # add the commenter as a participant if necessary
       task.participant_ids |= [commenter_id]
 
       task.participants.each do |participant|

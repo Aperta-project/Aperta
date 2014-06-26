@@ -4,7 +4,7 @@
       <h2 class="inline-block">Journals</h2>
       <a class='add-new-journal secondary-button blue pull-right' href='#' {{action addNewJournal}}>Add new journal</a>
       <ul class='journals'>
-        {{#each journal in content}}
+        {{#each journal in arrangedContent}}
           {{render 'journal/thumbnail' journal}}
         {{/each}}
       </ul>

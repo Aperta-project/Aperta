@@ -1,4 +1,7 @@
 ETahi.AdminIndexController = Ember.ArrayController.extend
+  sortProperties: ['createdAt']
+  sortAscending: true
+
   seached: (->
     false
   ).property()

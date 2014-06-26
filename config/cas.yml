@@ -16,6 +16,14 @@ staging:
   login_url: '/login'
   service_validate_url: '/serviceValidate'
 
+performance:
+  <<: *default
+  ssl: true
+  host: 'tahi-cas-performance.herokuapp.com'
+  port: '443'
+  login_url: '/login'
+  service_validate_url: '/serviceValidate'
+
 test:
   <<: *default
   port: '8080'

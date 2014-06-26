@@ -8,6 +8,14 @@ development:
   <<: *default
   port: '8080'
 
+production:
+  <<: *default
+  ssl: true
+  host: 'register.plos.org'
+  port: '443'
+  login_url: '/cas/login'
+  service_validate_url: '/cas/serviceValidate'
+
 staging:
   <<: *default
   ssl: true

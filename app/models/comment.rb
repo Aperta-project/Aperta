@@ -10,13 +10,16 @@ class Comment < ActiveRecord::Base
   def self.create_with_comment_look(task, params)
     new_comment = new params
     if task.class.method_defined?(:participants)
-      task.participants.each do |participant|
-        if params[:commenter_id]
-          commenter_id = params[:commenter_id].to_i
-        else
-          commenter_id = params[:commenter].id
-        end
+      commenter_id = if params[:commenter_id]
+                       params[:commenter_id].to_i
+                     else
+                       params[:commenter].id
+                     end
 
+      # add the commenter as a participant if necessary
+      task.participant_ids |= [commenter_id]
+
+      task.participants.each do |participant|
         next if participant.id == commenter_id
         new_comment.comment_looks.new user_id: participant.id, comment: new_comment
       end

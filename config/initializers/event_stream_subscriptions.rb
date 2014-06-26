@@ -12,7 +12,7 @@ TahiNotifier.subscribe("task:created", "task:updated", "comment:*", "declaration
   )
 end
 
-TahiNotifier.subscribe("supportinginformation::file:*", "figure:*") do |name, start, finish, id, payload|
+TahiNotifier.subscribe("supportinginformation::file:*", "figure:*", "paper:*") do |name, start, finish, id, payload|
   action     = payload[:action]
   id         = payload[:id]
   paper_id   = payload[:paper_id]
@@ -20,7 +20,7 @@ TahiNotifier.subscribe("supportinginformation::file:*", "figure:*") do |name, st
   klass      = payload[:klass]
 
   record = klass.find(id)
-  serializer = record.active_model_serializer.new(record)
+  serializer = record.event_stream_serializer.new(record)
   EventStream.post_event(
     paper_id,
     serializer.as_json.merge(action: action, meta: meta).to_json

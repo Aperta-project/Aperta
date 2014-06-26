@@ -1,6 +1,8 @@
 ETahi.PaperEditView = Ember.View.extend
   visualEditor: null
 
+  locked: Ember.computed.alias 'controller.locked'
+
   logoUrl: (->
     logoUrl = @get('controller.model.journal.logoUrl')
     if /no-journal-image/.test logoUrl
@@ -29,6 +31,10 @@ ETahi.PaperEditView = Ember.View.extend
       unfixed: ->
         $(this).css('top', '0px')
   ).on('didInsertElement')
+
+  updateToolbarLockedState: ( ->
+    $('.oo-ui-toolbar').toggleClass('locked', @get('locked'))
+  ).observes('locked').on('init')
 
   setupStickyToolbar: ->
     $('.oo-ui-toolbar').scrollToFixed

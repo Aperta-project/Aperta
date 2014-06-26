@@ -103,13 +103,23 @@ $paper-trim-color: $tahi-tertiary;
   border: #666 1px dotted;
 }
 
-main > article > div,
+.manuscript-container,
 main > aside > div {
   margin: 0 auto;
 }
 
-main > article > div {
+.manuscript-container {
   width: 700px;
+}
+
+.locked-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  z-index: 1;
+  text-align: center;
+  font-size: 24px;
 }
 
 main > aside > div {
@@ -119,4 +129,27 @@ main > aside > div {
 
 #tahi-container > main > article * {
   font-family: $tahi-article-font-family;
+  .glyphicon {
+    font-family: 'Glyphicons Halflings';
+  }
+}
+
+.lock-message {
+  position: absolute;
+  top: 10px;
+  left: 180px;
+  font-size: 14px;
+  font-style: italic;
+  color: $tahi-message;
+  z-index: 1;
+}
+
+.oo-ui-toolbar-tools {
+  float: right;
+}
+
+.oo-ui-toolbar {
+  &.locked {
+    opacity: 0.5;
+  }
 }

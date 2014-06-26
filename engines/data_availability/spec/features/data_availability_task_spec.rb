@@ -6,7 +6,7 @@ feature "Data Availability", js: true do
   let(:paper) { FactoryGirl.create :paper, :with_tasks, user: author, journal: journal }
 
   before do
-    paper.phases.last.tasks.create!(type: "DataAvailability::Task")
+    paper.phases.last.tasks.create!(type: "DataAvailability::Task", assignee_id: author.id)
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in author
   end

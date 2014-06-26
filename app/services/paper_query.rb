@@ -9,7 +9,7 @@ class PaperQuery
   end
 
   def paper
-    paper_for_author || paper_for_site_admin || paper_for_paper_admin || paper_for_editor || paper_for_reviewer
+    paper_for_author || paper_for_site_admin || paper_for_paper_admin || paper_for_editor || paper_for_reviewer || paper_for_sufficient_role
   end
 
   def tasks_for_paper(task_ids)
@@ -47,5 +47,12 @@ class PaperQuery
       joins(:paper_roles).
       where("paper_roles.user_id = ? AND paper_roles.reviewer = ?", @user.id, true).
       first
+  end
+
+  def paper_for_sufficient_role
+    paper = Paper.where(id: @paper_id).first
+    if @user.roles.where(journal_id: paper.journal.id).where(can_view_all_manuscript_managers: true).present?
+      paper
+    end
   end
 end

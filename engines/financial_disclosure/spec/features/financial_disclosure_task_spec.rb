@@ -6,7 +6,7 @@ feature "Financial Disclosures", js: true do
   let(:paper) { FactoryGirl.create :paper, :with_tasks, user: author, journal: journal }
 
   before do
-    paper.phases.last.tasks.create!(type: "FinancialDisclosure::Task")
+    paper.phases.last.tasks.create!(type: "FinancialDisclosure::Task", assignee_id: author.id)
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in author
   end

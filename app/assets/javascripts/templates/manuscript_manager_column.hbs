@@ -3,9 +3,7 @@
 {{view ETahi.PhaseHeaderView phase=view.content}}
 
 <div class="column-content">
-  {{#each task in tasks}}
-    {{view ETahi.CardView context=task content=task canRemoveCard=true}}
-  {{/each}}
+  {{each tasks itemViewClass="ETahi.CardView"}}
 
   <a {{action 'chooseNewCardTypeOverlay' view.content}} class="secondary-button">
     Add New Card

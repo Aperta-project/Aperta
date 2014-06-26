@@ -1,4 +1,5 @@
 ETahi.PaperManageController = Ember.ObjectController.extend
+  canRemoveCard: true
   sortedPhases: ( ->
     Ember.ArrayProxy.createWithMixins(Em.SortableMixin, {
       content: @get('model.phases')

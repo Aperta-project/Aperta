@@ -53,14 +53,26 @@
   background: none;
   display: block;
   margin-left: 25px;
+  height: 40px;
 
   span {
     padding-left: 5px;
-    vertical-align: 17px;
-    color: #444
+    color: #444;
+
+    &.manuscript-manager {
+      vertical-align: 8px;
+    }
+
+    &.manuscript {
+      vertical-align: 6px;
+    }
   }
 
-  .pdf-icon path, .epub-icon path, .manuscript-manager-icon path {
+  .pdf-icon path,
+  .epub-icon path,
+  .manuscript-manager-icon path,
+  .manuscript-icon path,
+  .manuscript-icon rect {
     fill: #444;
   }
 
@@ -69,7 +81,11 @@
 
     span { color: $tahi-primary; }
 
-    .pdf-icon path, .epub-icon path, .manuscript-manager-icon path {
+    .pdf-icon path,
+    .epub-icon path,
+    .manuscript-manager-icon path,
+    .manuscript-icon path,
+    .manuscript-icon rect {
       fill: $tahi-primary;
     }
   }

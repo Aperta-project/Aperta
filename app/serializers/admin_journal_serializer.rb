@@ -10,7 +10,8 @@ class AdminJournalSerializer < ActiveModel::Serializer
              :pdf_css,
              :manuscript_css,
              :description,
-             :paper_count
+             :paper_count,
+             :created_at
   has_many :manuscript_manager_templates, include: true
   has_many :roles, embed: :ids, include: true
 

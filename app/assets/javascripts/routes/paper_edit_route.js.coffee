@@ -11,7 +11,7 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
       paper.get('tasks').then((tasks) -> resolve(paper)))
 
   afterModel: (model) ->
-    @transitionTo('paper.index', model) if model.get('submitted')
+    @replaceWith('paper.index', model) if model.get('submitted')
 
   setupController: (controller, model) ->
     controller.set('model', model)

@@ -20,12 +20,7 @@ TahiNotifier.subscribe("supportinginformation::file:*", "figure:*", "paper:*") d
   klass      = payload[:klass]
 
   record = klass.find(id)
-  if record.respond_to? :event_stream_serializer
-    serializer_class = record.event_stream_serializer
-  else
-    serializer_class = record.lite_serializer
-  end
-  serializer = serializer_class.new(record)
+  serializer = record.event_stream_serializer.new(record)
   EventStream.post_event(
     paper_id,
     serializer.as_json.merge(action: action, meta: meta).to_json

@@ -20,20 +20,20 @@ Tahi::Application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  # config.serve_static_assets = false
+  config.serve_static_assets = false
 
   # Compress JavaScripts and CSS.
-  # config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  # config.assets.compile = false
+  config.assets.compile = false
 
   # Generate digests for assets URLs.
-  # config.assets.digest = true
+  config.assets.digest = true
 
   # Version of your assets, change this if you want to expire all your assets.
-  # config.assets.version = '1.0'
+  config.assets.version = '1.0'
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
@@ -43,7 +43,7 @@ Tahi::Application.configure do
   # config.force_ssl = true
 
   # Set to :debug to see everything in the log.
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -64,7 +64,7 @@ Tahi::Application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { host: 'tahi-staging.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: 'tahi-performance.herokuapp.com' }
 
   ActionMailer::Base.smtp_settings = {
     address: 'smtp.sendgrid.net',
@@ -92,3 +92,4 @@ Tahi::Application.configure do
   config.s3_bucket = 'tahi-performance'
   config.carrierwave_storage = :fog
 end
+

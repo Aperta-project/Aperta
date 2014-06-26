@@ -18,7 +18,8 @@ gem 'competing_interests',    path: 'engines/competing_interests'
 
 # Gems
 gem 'rails', '4.1.1'
-gem 'unicorn'
+gem 'puma'
+gem 'rack-timeout'
 gem 'pg'
 gem 'bower-rails'
 gem 'ember-rails'
@@ -64,7 +65,7 @@ gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c45746
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28
 
-group :production, :staging do
+group :staging, :performance, :production do
   gem 'heroku-deflater'
   gem 'rails_12factor'
 end

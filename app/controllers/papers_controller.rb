@@ -38,15 +38,18 @@ class PapersController < ApplicationController
   end
 
   def upload
-    DownloadManuscript.call Paper.find(params[:id]), params[:url]
-    head :no_content
+    paper = Paper.find(params[:id])
+    manuscript = paper.manuscript || paper.build_manuscript
+    manuscript.update_attribute :status, "processing"
+    DownloadManuscript.enqueue manuscript.id, params[:url]
+    render json: paper
   end
 
   def download
     respond_to do |format|
       format.html do
-        epub = EpubConverter.convert paper, current_user
-        send_data epub[:stream].string, filename: epub[:file_name], disposition: 'attachment'
+        epub = EpubConverter.new paper, current_user
+        send_data epub.epub_stream.string, filename: epub.file_name, disposition: 'attachment'
       end
 
       format.pdf do

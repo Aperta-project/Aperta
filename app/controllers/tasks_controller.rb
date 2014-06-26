@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy
+  before_action :verify_admin!, except: [:show, :update]
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404

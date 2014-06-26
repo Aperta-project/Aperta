@@ -153,7 +153,9 @@ feature "Flow Manager", js: true do
         card.mark_as_complete
       end
 
-      admin_card = papers.first.card_by_title('Assign Admin')
+      my_tasks = flow_manager_page.column 'My papers'
+      papers = my_tasks.paper_profiles
+      admin_card = papers.last.card_by_title('Assign Admin')
       expect(admin_card).to be_completed
     end
 

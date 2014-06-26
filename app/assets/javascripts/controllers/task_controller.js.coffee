@@ -18,12 +18,15 @@ ETahi.TaskController = Ember.ObjectController.extend
     )
   ).on('init')
 
+  saveTheModel: ->
+    @get('model').save()
+
   actions:
     saveModel: ->
-      @get('model').save()
+      Ember.run.debounce(@, @saveTheModel, 100)
 
     closeAction: ->
       @send(@get('onClose'))
 
     redirect: ->
-      @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect'))
+      @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect').popObject())

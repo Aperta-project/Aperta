@@ -1,5 +1,6 @@
 ETahi.BinaryRadioButtonComponent = Ember.Component.extend
   selection: null
+  index: null
 
   yesValue: true
   noValue: false

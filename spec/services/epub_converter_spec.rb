@@ -20,55 +20,57 @@ describe EpubConverter do
     entries
   end
 
-  describe '#convert' do
-    def epub(include_source: false)
-      EpubConverter.convert paper, downloader, include_source
-    end
+  let(:include_source) { false }
+  let(:converter) { EpubConverter.new paper, downloader, include_source }
+  describe '#file_name' do
 
-    it 'returns a stream of data to the controller' do
-      expect(epub[:stream]).to be_a StringIO
-      expect(epub[:file_name]).to end_with '.epub'
-    end
-
+  end
+  describe '#epub_html' do
     context 'empty paper body' do
-      let(:paper) do
-        create :paper, body: nil, short_title: 'Paper with no body', user: create(:user)
-      end
+      let(:paper) { create :paper, body: nil, short_title: 'Paper with no body' }
 
       it 'returns paper body with default text' do
-        expect { epub }.to_not raise_error
+        expect(converter.epub_html).to include("The manuscript is currently empty.")
       end
+    end
+  end
+
+  describe '#epub_stream' do
+    it 'returns a stream of data' do
+      expect(converter.epub_stream.string.length).to be > 0
     end
 
     context 'paper with no uploaded source' do
       it "has no source in the epub" do
-        entries = read_epub_stream(epub[:stream])
-        expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
-      end
-
-      it "does not include a source even when requested" do
-        entries = read_epub_stream epub(include_source: true)[:stream]
+        entries = read_epub_stream(converter.epub_stream)
         expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
       end
     end
 
     context 'paper with uploaded source' do
-      let(:paper) { create :paper }
-      let(:url) { "https://tahi-development.s3.amazonaws.com/temp/about_equations.docx" }
-      let!(:manuscript) do
-        with_aws_cassette('epub_converter') do
-          DownloadManuscript.call(paper, url)
+      let(:file) { File.open(Rails.root.join("spec", "fixtures", "about_turtles.docx"), 'r') }
+
+      before do
+        paper.create_manuscript!
+        allow(converter).to receive(:manuscript_source).and_return(file)
+        allow(converter).to receive(:manuscript_contents).and_return(file.read)
+      end
+
+      context 'when source is requested' do
+        let(:include_source) { true }
+
+        it "includes the source doc in the epub" do
+          entries = read_epub_stream(converter.epub_stream)
+          expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(true)
         end
       end
 
-      it "includes the source doc in the epub when requested" do
-        entries = read_epub_stream(epub(include_source: true)[:stream])
-        expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(true)
-      end
-
-      it "does not include the source doc in the epub when not requested" do
-        entries = read_epub_stream(epub[:stream])
-        expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
+      context 'when source is not requested' do
+        let(:include_source) { false }
+        it "does not include the source doc in the epub" do
+          entries = read_epub_stream(converter.epub_stream)
+          expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
+        end
       end
     end
   end

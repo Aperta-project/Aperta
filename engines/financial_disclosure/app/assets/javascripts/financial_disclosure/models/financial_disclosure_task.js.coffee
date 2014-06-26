@@ -3,4 +3,9 @@ ETahi.FinancialDisclosureTask = ETahi.Task.extend
   authors: (->
     @get('store').all('author').filter (author) =>
       author.get('authorGroup.paper.id') == @get('litePaper.id')
-  ).property('paper')
+  ).property('litePaper')
+  authorsTask: (->
+    @get('store').all('authors-task').filter((task) =>
+      task.get('litePaper.id') == @get('litePaper.id')
+    ).get('firstObject')
+  ).property('litePaper')

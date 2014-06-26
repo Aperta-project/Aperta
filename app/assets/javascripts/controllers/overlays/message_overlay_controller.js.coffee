@@ -71,4 +71,3 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerPar
       newComment = @store.createRecord('comment', commentFields)
       newComment.save()
         .then(@_clearNewMessage.bind(@), newComment.deleteRecord)
-        .then(@send('saveNewParticipant', commenter))

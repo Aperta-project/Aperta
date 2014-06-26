@@ -21,10 +21,8 @@ ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend
     uploadError: (message) ->
       @set('uploadError', message)
 
-    uploadFinished: ->
+    uploadFinished: (data) ->
+      @store.pushPayload(data)
       @set('isUploading', false)
       @set('completed', true)
-      @get('model').save().then =>
-        @get('paper')
-          .then((paper) -> paper.reload())
-          .then(=> @send('closeAction'))
+      @get('model').save().then(=> @send('closeAction'))

@@ -10,10 +10,23 @@
       </li>
     </ul>
     <ul>
-      <li class="control-bar-item"><a href="{{unbound downloadLink}}" class="control-bar-link">Download ePub</a></li>
-      <li class="control-bar-item"><a href="{{unbound downloadLink}}.pdf" class="control-bar-link">Download PDF</a></li>
+      <li class="control-bar-item">
+        {{#direct-download-link link=downloadLink class="control-bar-link"}}
+          {{partial "svg/epub-icon"}}
+        {{/direct-download-link}}
+      </li>
+      <li class="control-bar-item">
+        {{#direct-download-link link=downloadLink extension=".pdf"}}
+          {{partial "svg/pdf-icon"}}
+        {{/direct-download-link}}
+      </li>
       {{#if isAdmin}}
-        <li class="control-bar-item">{{link-to "Manuscript Manager" "paper.manage" model class="control-bar-link"}}</li>
+        <li class="control-bar-item">
+          {{#link-to "paper.manage" model class="control-bar-link"}}
+            {{partial "svg/manuscript-manager-icon"}}
+            <span>Manuscript Manager</span>
+          {{/link-to}}
+        </li>
       {{/if}}
     </ul>
   </div>
@@ -22,7 +35,7 @@
 <div id="tahi-container">
   <main>
     <article>
-      <div>
+      <div class="manuscript-container">
         <h2 id="paper-title">
           {{title}}
         </h2>

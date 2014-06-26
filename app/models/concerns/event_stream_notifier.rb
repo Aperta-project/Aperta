@@ -15,6 +15,10 @@ module EventStreamNotifier
       p
     end
 
+    def event_stream_serializer
+      active_model_serializer
+    end
+
     def notifier_payload
       { task_id: id, paper_id: paper.id }
     end

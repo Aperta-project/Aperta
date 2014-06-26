@@ -13,6 +13,7 @@ ETahi.Paper = DS.Model.extend
   body: a('string')
   shortTitle: a('string')
   submitted: a('boolean')
+  status: a('string')
   title: a('string')
   paperType: a('string')
 

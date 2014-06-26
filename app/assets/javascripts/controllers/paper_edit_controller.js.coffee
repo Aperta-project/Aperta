@@ -16,4 +16,16 @@ ETahi.PaperEditController = ETahi.PaperController.extend
       modelBody
   ).property('model.body')
 
+  isProcessing: ( ->
+    @get('status') == "processing"
+  ).property('status')
+
+  lockMessage: ( ->
+    "Processing Manuscript"
+  ).property('status')
+
+  locked: ( ->
+    @get('isProcessing')
+  ).property('status')
+
   defaultBody: 'Type your manuscript here'

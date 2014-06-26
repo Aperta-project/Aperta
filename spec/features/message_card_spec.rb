@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 feature 'Message Cards', js: true do
-  let(:admin) { create :user, admin: true }
+  let(:admin) { create :user, admin: true, first_name: "Admin" }
   let(:journal) { create(:journal) }
-  let(:albert) { create :user }
+  let(:albert) { create :user, first_name: "Albert" }
 
   before do
+    assign_journal_role(journal, albert, :admin)
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
-    assign_journal_role(journal, albert, :admin)
   end
 
 
@@ -45,10 +45,10 @@ feature 'Message Cards', js: true do
 
   describe "commenting on an existing message" do
     let(:phase) { paper.phases.first }
-    let!(:initial_comment) { create :comment, commenter: commenter, task: message }
-    let(:message) do
+    let!(:message) do
       create :message_task, phase: phase, participants: participants
     end
+    let!(:initial_comment) { create :comment, commenter: commenter, task: message }
 
     context "blank comments" do
       let(:commenter) { admin }
@@ -99,7 +99,7 @@ feature 'Message Cards', js: true do
         task_manager_page.view_card message.title, MessageCardOverlay do |card|
           expect(card).to have_css('.message-overlay')
           card.post_message 'Hello'
-          expect(card.participants).to include(admin.full_name, albert.full_name)
+          expect(card).to have_participants(admin, albert)
           expect(card.comments.last.find('.comment-name')).to have_text(admin.full_name)
         end
       end

@@ -31,7 +31,7 @@ class FlowManagerPage < Page
     end
 
     def completed?
-      has_class_name?('card-completed')
+      has_css?('.completed-glyph')
     end
   end
 

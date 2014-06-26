@@ -18,7 +18,8 @@ gem 'competing_interests',    path: 'engines/competing_interests'
 
 # Gems
 gem 'rails', '4.1.1'
-gem 'unicorn'
+gem 'puma'
+gem 'rack-timeout'
 gem 'pg'
 gem 'bower-rails'
 gem 'ember-rails'

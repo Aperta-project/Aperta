@@ -56,7 +56,7 @@ performance:
   adapter: postgresql
   encoding: unicode
   database: tahi_performance
-  pool: 5
+  pool: 48
   username: tahi
   password:
   host: localhost
@@ -65,12 +65,12 @@ staging:
   adapter: postgresql
   encoding: unicode
   database: tahi_staging
-  pool: 5
+  pool: 48
   password:
 
 production:
   adapter: postgresql
   encoding: unicode
   database: tahi_production
-  pool: 5
+  pool: 48
   password:

@@ -6,9 +6,11 @@
   <div class="task-title">{{title}}</div>
 </div>
 
-<span {{action 'removeTask' view.content}}
-  class="glyphicon glyphicon-remove-circle remove-card"
-  data-toggle="tooltip"
-  data-placement="right"
-  title="Delete Card">
-</span>
+{{#if controller.canRemoveCard }}
+  <span {{action 'removeTask' view.content}}
+    class="glyphicon glyphicon-remove-circle remove-card"
+    data-toggle="tooltip"
+    data-placement="right"
+    title="Delete Card">
+  </span>
+{{/if}}

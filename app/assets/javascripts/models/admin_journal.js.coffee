@@ -13,3 +13,4 @@ ETahi.AdminJournal = DS.Model.extend
   manuscriptCss: a('string')
   description: a('string')
   paperCount: a('number')
+  createdAt: a('date')

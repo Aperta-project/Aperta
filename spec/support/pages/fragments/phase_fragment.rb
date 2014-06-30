@@ -36,7 +36,8 @@ class PhaseFragment < PageFragment
   def rename(new_name)
     field = find('h2')
     field.click
-    field.set(new_name)
+    reversed_name = new_name.reverse
+    field.set(reversed_name)
     sleep(0.2)
     find('.primary-button').click
     synchronize_content!(new_name)

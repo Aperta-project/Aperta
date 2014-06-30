@@ -9,7 +9,7 @@ class TasksController < ApplicationController
   def update
     task = Task.find(params[:id])
     if task
-      unmunge_empty_arrays!(task)
+      unmunge_empty_arrays!(:task, task.array_attributes)
       tp = task_params(task)
 
       task.update! tp
@@ -65,14 +65,6 @@ class TasksController < ApplicationController
     task_type = params[:task][:type]
     sanitized_params = task_params task_type.constantize.new
     TaskFactory.build_task task_type, sanitized_params, current_user
-  end
-
-  def unmunge_empty_arrays!(task)
-    task.array_attributes.each do |key|
-      if params[:task].has_key?(key) && params[:task][key].nil?
-        params[:task][key] = []
-      end
-    end
   end
 
   def render_404

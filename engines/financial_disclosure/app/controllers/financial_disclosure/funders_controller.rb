@@ -15,6 +15,7 @@ module FinancialDisclosure
     def update
       funder = Funder.find(params[:id])
       authorize_action!(funder: funder)
+      unmunge_empty_arrays!(:funder, [:author_ids])
       funder.update_attributes(funder_params)
       respond_with funder
     end
@@ -29,7 +30,14 @@ module FinancialDisclosure
     private
 
     def funder_params
-      params.require(:funder).permit(:name, :grant_number, :website, :funder_had_influence, :funder_influence_description, :task_id, author_ids: [])
+      params.require(:funder)
+      .permit(:name,
+              :grant_number,
+              :website,
+              :funder_had_influence,
+              :funder_influence_description,
+              :task_id,
+              author_ids: [])
     end
   end
 end

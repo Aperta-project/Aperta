@@ -21,6 +21,14 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up).concat %i(first_name last_name email username)
   end
 
+  def unmunge_empty_arrays!(model_key, model_attributes)
+    model_attributes.each do |key|
+      if params[model_key].has_key?(key) && params[model_key][key].nil?
+        params[model_key][key] = []
+      end
+    end
+  end
+
   private
 
   # TODO: move me to policies

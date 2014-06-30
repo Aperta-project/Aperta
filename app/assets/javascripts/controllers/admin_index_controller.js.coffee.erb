@@ -9,5 +9,7 @@ ETahi.AdminIndexController = Ember.ArrayController.extend
       @store.createRecord 'adminJournal', logoUrl: "<%= asset_path('no-journal-image.gif') %>"
 
     searchUsers: ->
-      @set('adminJournalUsers', @store.find('AdminJournalUser', {query: @get('searchQuery')}))
-      @set 'searched', true
+      @store.find('AdminJournalUser', {query: @get('searchQuery')}).then (users) =>
+        @set 'adminJournalUsers', users
+        @set 'searched', true
+

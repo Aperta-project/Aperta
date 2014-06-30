@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 20140619192947) do
     t.integer  "paper_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status",     default: "processing"
   end
 
   create_table "message_participants", force: true do |t|

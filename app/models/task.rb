@@ -17,6 +17,7 @@ class Task < ActiveRecord::Base
   has_many :questions, inverse_of: :task
 
   validates :title, :role, presence: true
+  validates :title, length: { maximum: 255 }
 
   belongs_to :assignee, class_name: 'User'
   belongs_to :phase, inverse_of: :tasks

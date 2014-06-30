@@ -3,6 +3,7 @@ ETahi.PhaseHeaderView = Em.View.extend
   classNames: ['column-header']
   classNameBindings: ['active']
   active: false
+  previousContent: null
 
   focusIn: (e)->
     @set('active', true)
@@ -14,6 +15,14 @@ ETahi.PhaseHeaderView = Em.View.extend
       Tahi.utils.resizeColumnHeaders()
     )
   ).observes('phase.name')
+
+  currentHeaderHeight: Em.computed 'phase.name', -> $(@get 'element').find('.column-title').height()
+
+  input: (e) ->
+    if @get('currentHeaderHeight') <= 58
+      @set 'previousContent', @get('phase.name')
+    else
+      @set 'phase.name', @get('previousContent')
 
   actions:
     save: ->

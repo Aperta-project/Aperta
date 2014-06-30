@@ -1,4 +1,4 @@
-ETahi.TaskController = Ember.ObjectController.extend
+ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed,
   needs: ['application']
   onClose: 'closeOverlay'
   isLoading: false
@@ -11,19 +11,8 @@ ETahi.TaskController = Ember.ObjectController.extend
 
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
 
-  addSave: ( ->
-    self = @
-    @.saveModel = ( ->
-      self.send('saveModel')
-    )
-  ).on('init')
-
-  saveTheModel: ->
-    @get('model').save()
-
   actions:
-    saveModel: ->
-      Ember.run.debounce(@, @saveTheModel, 100)
+    #saveModel is implemented in ETahi.SavesDelayed
 
     closeAction: ->
       @send(@get('onClose'))

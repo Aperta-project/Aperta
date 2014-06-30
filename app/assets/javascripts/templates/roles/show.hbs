@@ -13,9 +13,9 @@
       </div>
     {{/if}}
   </td>
-  <td><label>{{input name="role[canViewAssignedManuscriptManagers]" type="checkbox" checked=canViewAssignedManuscriptManagers}} Manuscript Manager</label></td>
-  <td><label>{{input name="role[canViewAllManuscriptManagers]" type="checkbox" checked=canViewAllManuscriptManagers}}All Manuscript Managers</label></td>
-  <td><label>{{input name="role[canAdministerJournal]" type="checkbox" checked=canAdministerJournal}}Admin</label></td>
+  <td><label>{{check-box name="role[canViewAssignedManuscriptManagers]" checked=canViewAssignedManuscriptManagers}} Manuscript Manager</label></td>
+  <td><label>{{check-box name="role[canViewAllManuscriptManagers]" checked=canViewAllManuscriptManagers}}All Manuscript Managers</label></td>
+  <td><label>{{check-box name="role[canAdministerJournal]" checked=canAdministerJournal}}Admin</label></td>
 </tr>
 <tr {{bind-attr class=":action-buttons isEditing"}}>
   <td colspan="4">

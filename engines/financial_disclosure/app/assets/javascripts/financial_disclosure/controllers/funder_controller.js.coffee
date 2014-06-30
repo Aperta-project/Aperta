@@ -1,4 +1,4 @@
-ETahi.FunderController = Ember.ObjectController.extend
+ETahi.FunderController = Ember.ObjectController.extend ETahi.SavesDelayed,
   allAuthors: Em.computed.alias('task.authors')
   fundedAuthors: Em.computed.oneWay('model.authors')
   authorsTask: Em.computed.alias('task.authorsTask')
@@ -8,5 +8,5 @@ ETahi.FunderController = Ember.ObjectController.extend
       @get('model.authors').setObjects(@get('fundedAuthors'))
 
     funderDidChange: ->
-      @get('model').save()
-
+      #saveModel is implemented in ETahi.SavesDelayed
+      @send('saveModel')

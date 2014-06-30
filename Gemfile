@@ -44,7 +44,6 @@ gem "carrierwave"
 gem "fog"
 gem "unf"
 gem 'rails_admin'
-gem "chosen-rails", "~> 1.1.0"
 gem 'newrelic_rpm'
 gem "rest_client", "~> 1.7.3"
 gem 'gepub'

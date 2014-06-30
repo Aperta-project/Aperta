@@ -1,7 +1,7 @@
 ETahi.ActionableModalComponent = Em.Component.extend
   modalId: (->
     "#{@get('username')}-modal"
-  ).property()
+  ).property('username')
 
   actions:
     perform: ->

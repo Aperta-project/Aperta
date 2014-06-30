@@ -22,7 +22,7 @@ ETahi.ContentEditableComponent = Em.Component.extend
 
   # Observers:
   valueDidChange: (->
-    @setHTMLFromValue() if @get('value') and not @get('_userIsTyping')
+    @setHTMLFromValue() if @get('value')
   ).observes('value')
 
   # DOM Events:

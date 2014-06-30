@@ -14,4 +14,4 @@ ETahi.NewCardOverlayController = Ember.Controller.extend ETahi.ControllerPartici
         @send 'closeOverlay'
         @set 'error', null
       .catch (res) =>
-        @set 'error', "Title " + res.errors.title[0]
+        @set 'error', "Title " + res.errors.title[0] if res.errors.title

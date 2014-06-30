@@ -1,11 +1,7 @@
 ETahi.AdminJournalUserController = Ember.ObjectController.extend
-  resetPasswordSuccess: (->
-    false
-  ).property()
+  resetPasswordSuccess: false
 
-  resetPasswordFailure: (->
-    false
-  ).property()
+  resetPasswordFailure: false
 
   modalId: (->
     "#{@get('id')}-#{@get('username')}"

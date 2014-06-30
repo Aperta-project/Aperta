@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   end
 
   def self.search_users(query)
-    sanitized_query = connection.quote_string(query || query.downcase) + "%"
+    sanitized_query = connection.quote_string(query && query.downcase) + "%"
     User.where("lower(username) LIKE '#{sanitized_query}' OR lower(first_name) LIKE '#{sanitized_query}' OR lower(last_name) LIKE '#{sanitized_query}'")
   end
 

@@ -29,7 +29,7 @@ class TasksController < ApplicationController
     if task.persisted?
       respond_with task, location: task_url(task)
     else
-      render status: 500
+      render json: { errors: task.errors }, status: :unprocessable_entity
     end
   end
 

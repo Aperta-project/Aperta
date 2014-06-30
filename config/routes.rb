@@ -63,7 +63,9 @@ Tahi::Application.routes.draw do
       put :upload_logo, on: :member
     end
 
-    resources :journal_users, only: :index
+    resources :journal_users, only: [:index, :update] do
+      get :reset, on: :member
+    end
   end
 
   resources :users, only: [:show] do

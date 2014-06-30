@@ -136,7 +136,49 @@
 
   .pdf-css,
   .epub-css,
-  .manuscript-css {
+  .manuscript-css,
+  .admin-modal {
+
+    .modal-field-label, .modal-field {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .reset-password {
+      margin-left: 312px;
+      margin-top: 20px;
+
+      .reset-password-link {
+        display: inline-block;
+        margin-bottom: 10px;
+      }
+
+      .success {
+        color: $tahi-primary;
+      }
+
+      .error {
+        color: $tahi-error-red;
+      }
+    }
+
+    .modal-field-label {
+      @extend .col-md-4;
+      font-size: 30px;
+      text-align: right;
+    }
+
+    .modal-field {
+      @extend .col-md-8;
+      font-size: 24px;
+      input {
+        border: 1px solid $tahi-tertiary;
+        border-radius: 5px;
+        color: $tahi-blue-light;
+        padding: 5px;
+      }
+    }
+
     span.save-status {
       color: $tahi-blue-light;
       vertical-align: -6px;
@@ -173,7 +215,6 @@
           margin-right: 10px;
         }
       }
-
     }
   }
 

@@ -9,8 +9,9 @@ class PageFragment
 
   delegate :select, to: :@element
 
-  def initialize element = nil
+  def initialize element = nil, context: nil
     @element = element || page
+    @context = context
   end
 
   def method_missing method, *args, &block
@@ -66,6 +67,7 @@ class PageFragment
   end
 
   protected
+  attr_reader :context
 
   def select_from_chosen(item_text, options={})
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first").mousedown()!)

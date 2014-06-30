@@ -53,8 +53,57 @@ class AdminDashboardPage < Page
   def search_results
     synchronize_content! "Username"
     all('.admin-users .user-row').map do |el|
-      Hash[[:first_name, :last_name, :username].zip(el.all('td').map &:text)]
+      Hash[[:first_name, :last_name, :username].zip(UserRowInSearch.new(el).row_content.map &:text)]
     end
+  end
+
+  def first_search_result
+    synchronize_content! "Username"
+    UserRowInSearch.new(all('.admin-users .user-row').first, context: page)
+  end
+end
+
+class UserRowInSearch < PageFragment
+  def row_content
+    all('td')
+  end
+
+  def edit_user_details
+    click
+    synchronize_content! "User Details"
+    EditModal.new(context.find('.admin-modal'), context: context)
+  end
+end
+
+class EditModal < PageFragment
+  def first_name=(attr)
+    find('.modal-first-name').set(attr)
+  end
+
+  def last_name=(attr)
+    find('.modal-last-name').set(attr)
+  end
+
+  def username=(attr)
+    find('.modal-username').set(attr)
+  end
+
+  def save
+    click_on "Save"
+    AdminDashboardPage.new(context: context)
+  end
+
+  def cancel
+    click_on "Cancel"
+    AdminDashboardPage.new(context: context)
+  end
+
+  def reset_password
+    find('.reset-password-link').click
+  end
+
+  def reset_password_status
+    find('.reset-password .success').text
   end
 end
 

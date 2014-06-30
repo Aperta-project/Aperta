@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 
   after_create :add_flows
 
-  validates :username, presence: true, uniqueness: { case_sensitive: false }
+  validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 255 }
 
   mount_uploader :avatar, AvatarUploader
 

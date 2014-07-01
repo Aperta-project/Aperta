@@ -3,6 +3,22 @@
 <form>
   <fieldset>
     <div class="question">
+      {{#question-radio ident="financial_disclosure.commercially_affiliated"
+        task=model
+        changeFn=saveTask
+        displayContent=true
+        question="Are you affiliated with a commercial company?"}}
+
+        {{#if view.selectedYes}}
+          <ul>
+            <li>Declare this affiliation in the Competing Interests statement</li>
+            <li>Confirm that this doesn't alter your ability to adhere to our data and materials sharing policy</li>
+            <li>Declare this affiliation below and declare level of funding applied to the author(s) salary</li>
+          </ul>
+        {{/if}}
+      {{/question-radio}}
+    </div>
+    <div class="question">
       <div class="question-text">
       Did any of the authors receive specific funding for this work?
       </div>

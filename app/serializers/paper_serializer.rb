@@ -20,6 +20,10 @@ class PaperSerializer < ActiveModel::Serializer
     object.editors.includes(:affiliations)
   end
 
+  def assignees
+    object.assignees.includes(:affiliations)
+  end
+
   def reviewers
     object.reviewers.includes(:affiliations)
   end

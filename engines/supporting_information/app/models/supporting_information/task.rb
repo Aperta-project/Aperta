@@ -8,7 +8,7 @@ module SupportingInformation
     end
 
     def assignees
-      []
+      User.none
     end
 
     def active_model_serializer

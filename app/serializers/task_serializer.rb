@@ -13,6 +13,10 @@ class TaskSerializer < ActiveModel::Serializer
     object.paper.display_title
   end
 
+  def assignees
+    object.assignees.includes(:affiliations)
+  end
+
   def lite_paper
     object.paper
   end

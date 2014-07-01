@@ -53,7 +53,8 @@ class Paper < ActiveRecord::Base
   end
 
   def assignees
-    (available_admins + [user]).uniq
+    ids = available_admins.pluck(:id) | [user_id]
+    User.where(id: ids)
   end
 
   def available_admins

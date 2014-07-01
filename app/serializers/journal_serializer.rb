@@ -5,4 +5,8 @@ class JournalSerializer < ActiveModel::Serializer
   def task_types
     Journal::VALID_TASK_TYPES
   end
+
+  def reviewers
+    object.reviewers.includes(:affiliations)
+  end
 end

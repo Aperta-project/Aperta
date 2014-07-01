@@ -69,8 +69,11 @@ ETahi.PaperEditView = Ember.View.extend
     @setupAutosave()
 
   timeoutSave: ->
+    console.log 'timeouts cleared'
     @saveVisualEditorChanges()
     @get('controller').send('savePaper')
+    Ember.run.cancel(@short)
+    Ember.run.cancel(@long)
     @short = null
     @long = null
     @keyCount = 0
@@ -81,8 +84,11 @@ ETahi.PaperEditView = Ember.View.extend
 
   setupAutosave: ->
     Ember.$(document).on 'keyup', '.ve-ui-surface, #paper-title', =>
+      @get('controller.model').set('saved', false)
+      console.log 'short set'
       @short = Ember.run.debounce(@, @timeoutSave, 1000 * 10)
       unless @long
+        console.log 'long set'
         @long = Ember.run.later(@, @timeoutSave, 1000 * 60)
       @keyCount++
       if @keyCount > 200

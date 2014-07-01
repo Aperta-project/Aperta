@@ -3,6 +3,8 @@ ETahi.ProfileController = Ember.ObjectController.extend
   hideAffiliationForm: true
   errorText: ""
 
+  affiliations: Ember.computed.alias "model.affiliationsByDate"
+
   avatarUploadUrl: ( ->
     "/users/#{@get('id')}/update_avatar"
   ).property('id')

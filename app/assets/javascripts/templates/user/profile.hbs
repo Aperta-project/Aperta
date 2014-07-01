@@ -20,7 +20,7 @@
       </div>
       <div id="profile-affiliations">
         <h4 class="secondary"><small>Affiliations:</small></h4>
-        {{#each a in model.affiliations}}
+        {{#each a in affiliations}}
           <div class="separated">
             <h4 class="compress">{{a.name}}</h4>
             <div class="glyphicon glyphicon-remove-circle remove-affiliation" {{action 'removeAffiliation' a}}></div>

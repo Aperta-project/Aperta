@@ -6,6 +6,10 @@ ETahi.Affiliation = DS.Model.extend
   startDate: a('string')
   email: a('string')
 
+  isCurrent: ( ->
+    Ember.isBlank(@get('endDate'))
+  ).property('endDate')
+
   displayEndDate: (->
     @get('endDate') || "Current"
   ).property('endDate')

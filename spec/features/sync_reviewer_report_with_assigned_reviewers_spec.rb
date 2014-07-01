@@ -46,7 +46,7 @@ feature "Sync Reviewer Report tasks with Assigned Reviewers", js: true do
   end
 
   scenario "Removing a paper reviewer should remove reviewer report task from the renamed phase" do
-    task_manager_page # perform task manager setup
+    expect(task_manager_page.tasks).to include('Reviewer Report')
 
     reviewer_report_task = paper.tasks.where(type: ReviewerReportTask).first
     new_phase = paper.phases.where("name != ?", "Get Reviews").first

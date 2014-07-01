@@ -1,10 +1,10 @@
 class FinancialDisclosureOverlay < CardOverlay
   def received_funding
-    find('label', text: "Yes").find('input[type=radio]')
+    find('#received-funding-yes')
   end
 
   def received_no_funding
-    find('label', text: "No").find('input[type=radio]')
+    find('#received-funding-no')
   end
 
   def dataset

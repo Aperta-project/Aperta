@@ -59,6 +59,13 @@
     </article>
     <aside>
       <div>
+        {{#if saving}}
+          Saving...
+        {{else}}
+          {{#if saved}}
+            All changes saved.
+          {{/if}}
+        {{/if}}
         {{#if assignedTasks}}
           <div id="paper-assigned-tasks">
             {{each assignedTasks itemViewClass="ETahi.CardView"}}

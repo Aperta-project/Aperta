@@ -33,6 +33,15 @@
 </div>
 
 <div id="tahi-container">
+  <div class="paper-status">
+  {{#if saving}}
+    Saving...
+  {{else}}
+    {{#if saved}}
+      All changes saved.
+    {{/if}}
+  {{/if}}
+  </div>
   <main>
     <article>
       <div {{bind-attr class=":lock-message locked::hidden"}}>
@@ -59,13 +68,6 @@
     </article>
     <aside>
       <div>
-        {{#if saving}}
-          Saving...
-        {{else}}
-          {{#if saved}}
-            All changes saved.
-          {{/if}}
-        {{/if}}
         {{#if assignedTasks}}
           <div id="paper-assigned-tasks">
             {{each assignedTasks itemViewClass="ETahi.CardView"}}
@@ -81,7 +83,6 @@
         {{/if}}
 
         <a {{action "submit" target="view"}} {{bind-attr class=":primary-button :wide-button allMetadataTasksCompleted::disabled-button"}} href="#">Submit</a>
-        <a {{action "save" target="view"}}   {{bind-attr class=":primary-button :wide-button editable::disabled-button"}} href="#">Save</a>
       </div>
     </aside>
   </main>

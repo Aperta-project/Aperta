@@ -82,9 +82,9 @@ ETahi.PaperEditView = Ember.View.extend
   keyCount: 0
 
   setupAutosave: ->
-    Ember.$(document).on 'keypress', '.ve-ui-surface, #paper-title', (e) =>
-      @get('controller.model').set('saved', false)
-      # TODO: use e.which to ingore certain characters (like cmd, ctrl)
+    # The timeout times and keyup counter are arbitrary. Feel free to tweak.
+    Ember.$(document).on 'keyup', '.ve-ui-surface, #paper-title', =>
+      @get('controller.model').set('saving', true)
       @short = Ember.run.debounce(@, @timeoutSave, 1000 * 10)
       unless @long
         @long = Ember.run.later(@, @timeoutSave, 1000 * 60)

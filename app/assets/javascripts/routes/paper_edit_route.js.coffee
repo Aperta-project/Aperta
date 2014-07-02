@@ -33,7 +33,6 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
 
     savePaper: ->
       return unless @modelFor('paperEdit').get('editable')
-      @modelFor('paperEdit').set("saving", true)
       @modelFor('paperEdit').set("saved", false)
       @modelFor('paperEdit').save().then (paper) ->
         paper.set("saving", false)

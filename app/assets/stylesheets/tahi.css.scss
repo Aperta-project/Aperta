@@ -63,8 +63,16 @@ textarea { resize: none; }
 #tahi-container {
   max-width: 1120px;
   margin: 0 auto;
+  position: relative;
 
   &.full-width { max-width: none; }
+
+  .paper-status {
+    position: absolute;
+    top: 8px;
+    left: 160px;
+    z-index: 1;
+  }
 
   > main {
     overflow: hidden;

@@ -6,18 +6,18 @@ ETahi.DatePickerComponent = Ember.TextField.extend
   date: null
 
   didInsertElement: ->
-    @.get('parentView').registerPicker(@)
+    Ember.tryInvoke(@get('parentView'), 'registerPicker', [@])
     @set('value', @get('date'))
     $picker = @$().datepicker(autoclose: true)
 
     $picker.on('changeDate', (event) =>
       @set('date', event.format())
-      @get('parentView').dateChanged(@)
+      Ember.tryInvoke(@get('parentView'), 'dateChanged', [@])
     )
 
     $picker.on('clearDate', (event) =>
       @set('date', null)
-      @get('parentView').dateChanged(@)
+      Ember.tryInvoke(@get('parentView'), 'dateChanged', [@])
     )
 
     @set('$picker', $picker)

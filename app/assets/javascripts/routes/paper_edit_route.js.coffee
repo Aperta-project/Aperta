@@ -30,10 +30,3 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
       return unless @modelFor('paperEdit').get('allMetadataTasksCompleted')
       @modelFor('paperEdit').save()
       @transitionTo('paper.submit')
-
-    savePaper: ->
-      return unless @modelFor('paperEdit').get('editable')
-      @modelFor('paperEdit').set("saved", false)
-      @modelFor('paperEdit').save().then (paper) ->
-        paper.set("saving", false)
-        paper.set("saved", true)

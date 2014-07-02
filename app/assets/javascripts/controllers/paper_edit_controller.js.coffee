@@ -29,3 +29,10 @@ ETahi.PaperEditController = ETahi.PaperController.extend
   ).property('status')
 
   defaultBody: 'Type your manuscript here'
+
+  actions:
+    savePaper: ->
+      return unless @get('model.editable')
+      @set("saveState", "Saving...")
+      @get('model').save().then (paper) =>
+        @set("saveState", "Saved.")

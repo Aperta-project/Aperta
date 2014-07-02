@@ -34,13 +34,7 @@
 
 <div id="tahi-container">
   <div class="paper-status">
-  {{#if saving}}
-    Saving...
-  {{else}}
-    {{#if saved}}
-      All changes saved.
-    {{/if}}
-  {{/if}}
+    {{saveState}}
   </div>
   <main>
     <article>

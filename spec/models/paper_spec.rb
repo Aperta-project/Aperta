@@ -116,12 +116,14 @@ describe Paper do
   end
 
   describe ".assignees" do
-    let(:user)  { build(:user) }
-    let(:admin_user)  { build(:user, :admin) }
+    let(:user)  { create(:user) }
+    let(:admin_user)  { create(:user, :admin) }
     let(:paper) { build(:paper, user: user) }
 
     before do
-      allow(paper).to receive(:available_admins).and_return([admin_user])
+      allow(paper).to receive(:available_admins) do
+        User.where(id: admin_user.id)
+      end
     end
 
     it "should contain both users and assignees" do

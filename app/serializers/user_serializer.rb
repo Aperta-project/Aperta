@@ -6,8 +6,4 @@ class UserSerializer < ActiveModel::Serializer
     :username,
     :email,
     :admin
-
-  def affiliations
-    object.affiliations.by_date
-  end
 end

@@ -20,7 +20,7 @@ module Declaration
     ]
 
     def assignees
-      []
+      User.none
     end
 
     private

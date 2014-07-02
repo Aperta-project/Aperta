@@ -42,6 +42,13 @@ class PageFragment
     session.has_no_css?("#application-error")
   end
 
+  def retry_stale_element
+    yield
+  rescue Selenium::WebDriver::Error::StaleElementReferenceError
+    Rails.logger.warn "Rescue stale element"
+    retry
+  end
+
   def has_application_error?
     session.has_css?("#application-error")
   end

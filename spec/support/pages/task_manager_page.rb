@@ -4,7 +4,9 @@ class TaskManagerPage < Page
 
   def phases
     expect(session).to have_css('.column h2')
-    phase_headers = session.all(:css, ".column h2").map(&:text)
+    retry_stale_element do
+      session.all(:css, ".column h2").map(&:text)
+    end
   end
 
   def phase phase_name
@@ -17,7 +19,9 @@ class TaskManagerPage < Page
   end
 
   def tasks
-    all('.card').map(&:text)
+    retry_stale_element do
+      all('.card').map(&:text)
+    end
   end
 
   def message_tasks

@@ -1,5 +1,7 @@
 ETahi.ProfileController = Ember.ObjectController.extend
   hideAffiliationForm: true
+  showAffiliationForm: Ember.computed.not 'hideAffiliationForm'
+
   errorText: ""
 
   affiliations: Ember.computed.alias "model.affiliationsByDate"
@@ -33,10 +35,9 @@ ETahi.ProfileController = Ember.ObjectController.extend
         (affiliation) =>
           affiliation.get('user.affiliations').addObject(affiliation)
           @send('toggleAffiliationForm')
-          Ember.run.scheduleOnce 'afterRender', @, ->
-            $('.datepicker').datepicker('update')
         ,
         (errorResponse) =>
+          affiliation.set('user', null)
           errors = for key, value of errorResponse.errors
             messages = for msg in value
               # TODO: Use this in the other error handlers.

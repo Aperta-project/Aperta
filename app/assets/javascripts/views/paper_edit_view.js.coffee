@@ -87,7 +87,8 @@ ETahi.PaperEditView = Ember.View.extend
     # The timeout times and keyup counter are arbitrary. Feel free to tweak.
     Ember.$(document).on 'keyup', '.ve-ui-surface, #paper-title', =>
       @get('controller').set('saveState', "Saving...")
-      @short = Ember.run.debounce(@, @timeoutSave, 1000 * 10)
+      # Check for a window timeout so we aren't waiting in testing.
+      @short = Ember.run.debounce(@, @timeoutSave, window.shortTimeout || (1000 * 10))
       unless @long
         @long = Ember.run.later(@, @timeoutSave, 1000 * 60)
       @keyCount++

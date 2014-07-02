@@ -14,12 +14,11 @@ feature "Editing paper", js: true do
 
   scenario "Author edits paper and metadata cards" do
     edit_paper = EditPaperPage.visit paper
+    page.execute_script("window.shortTimeout = 100")
     edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
     edit_paper.body = "Contrary to popular belief"
 
-    # We have to wait for the paper to auto-save itself.
-    # Yahoo.
-    sleep 12
+    sleep 1
     edit_paper = EditPaperPage.visit paper
 
     expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"

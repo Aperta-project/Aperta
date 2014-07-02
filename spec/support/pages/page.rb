@@ -43,12 +43,10 @@ class PageFragment
   end
 
   def retry_stale_element
-    begin
-      yield
-    rescue Selenium::WebDriver::Error::StaleElementReferenceError
-      Rails.logger.warn "Rescue stale element"
-      retry
-    end
+    yield
+  rescue Selenium::WebDriver::Error::StaleElementReferenceError
+    Rails.logger.warn "Rescue stale element"
+    retry
   end
 
   def has_application_error?

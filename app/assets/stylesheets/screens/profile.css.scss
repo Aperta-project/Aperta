@@ -65,3 +65,7 @@
     margin: 15px 0;
   }
 }
+
+.truncated-field {
+  @extend %truncates;
+}

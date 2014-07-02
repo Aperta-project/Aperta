@@ -1,6 +1,5 @@
 ETahi.ProfileController = Ember.ObjectController.extend
   hideAffiliationForm: true
-  showAffiliationForm: Ember.computed.not 'hideAffiliationForm'
 
   errorText: ""
 
@@ -45,4 +44,3 @@ ETahi.ProfileController = Ember.ObjectController.extend
             messages.join(", ")
           Tahi.utils.togglePropertyAfterDelay(@, 'errorText', errors.join(', '), '', 5000)
       )
-

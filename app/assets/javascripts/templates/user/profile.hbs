@@ -32,13 +32,13 @@
           <span class="glyphicon glyphicon-plus-sign"></span>
           Add new
         </a>
-        {{#if showAffiliationForm}}
+        {{#unless hideAffiliationForm}}
           <div class="affiliations-form">
             <h3>New Affiliation</h3>
             <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
             {{partial "user/affiliation_form"}}
           </div>
-        {{/if}}
+        {{/unless}}
       </div>
 
       <a href="#" id="reset-password">Reset my password</a>

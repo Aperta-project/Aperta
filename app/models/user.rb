@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   after_create :add_flows
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 255 }
-  validates :email, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
+  validates :email, format: Devise.email_regexp
 
   mount_uploader :avatar, AvatarUploader
 

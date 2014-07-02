@@ -1,9 +1,13 @@
 ETahi.PaperSubmitRoute = Ember.Route.extend
+  beforeModel: (transition) ->
+    if @modelFor('paper').get('submitted')
+      @transitionTo('application')
+
   actions:
     submitPaper: ->
       @modelFor('paper').set('submitted', true).save().then(
           (succcess) =>
-            @transitionTo('index')
+            @transitionTo('application')
           ,
           (errorResponse) =>
             errors = _.values(errorResponse.errors.base).join(' ')

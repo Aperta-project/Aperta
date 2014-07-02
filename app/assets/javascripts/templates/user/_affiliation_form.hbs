@@ -1,0 +1,23 @@
+{{type-ahead value=newAffiliation.name sourceList=institutions placeholder="Affiliation Name"}}
+<div class="form-group">
+  {{#date-picker-group}}
+    {{date-picker type='text'
+    role='startPicker'
+    date=newAffiliation.startDate
+    placeholder='Start Date'}}
+
+    {{date-picker type='text'
+    role='endPicker'
+    date=newAffiliation.endDate
+    placeholder='End Date'}}
+  {{/date-picker-group}}
+
+  {{input type='text'
+  value=newAffiliation.email
+  placeholder='Email Address'
+  class='affiliation-field form-control'}}
+</div>
+<a class="btn-link author-cancel" {{action 'toggleAffiliationForm'}}>cancel</a>
+<div class="form-group">
+  <button class="secondary-button" {{action 'commitAffiliation' newAffiliation}}>done</button>
+</div>

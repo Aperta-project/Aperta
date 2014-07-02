@@ -1,12 +1,16 @@
 {{type-ahead value=newAffiliation.name sourceList=institutions placeholder="Affiliation Name"}}
 <div class="form-group">
-  {{date-picker type='text'
-  value=newAffiliation.startDate
-  placeholder='Start Date'}}
+  {{#date-picker-group}}
+    {{date-picker type='text'
+    role='startPicker'
+    date=newAffiliation.startDate
+    placeholder='Start Date'}}
 
-  {{date-picker type='text'
-  value=newAffiliation.endDate
-  placeholder='End Date'}}
+    {{date-picker type='text'
+    role='endPicker'
+    date=newAffiliation.endDate
+    placeholder='End Date'}}
+  {{/date-picker-group}}
 
   {{input type='text'
   value=newAffiliation.email

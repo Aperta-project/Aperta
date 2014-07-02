@@ -31,26 +31,25 @@
   <div class="summary hero-unit">
     <h2>Dependencies</h2>
 
-    <p>As of May  9, 2014 10:14pm</p>
+    <p>As of July  1, 2014  5:16pm</p>
 
     <h4>
-      165 total
+      190 total
 
           </h4>
 
     <ul>
-              <li>139 MIT</li>
-              <li>6 Apache 2.0</li>
-              <li>4 BSD</li>
-              <li>3 other</li>
-              <li>3 ruby</li>
+              <li>157 MIT</li>
+              <li>7 other</li>
+              <li>5 BSD</li>
+              <li>5 TBD</li>
+              <li>5 Apache 2.0</li>
+              <li>4 ruby</li>
               <li>2 New BSD</li>
-              <li>2 LGPL</li>
               <li>2 GPLv2</li>
-              <li>1 GPLv2+</li>
               <li>1 2-clause BSDL</li>
               <li>1 ISC</li>
-              <li>1 TBD</li>
+              <li>1 LGPL-3.0</li>
           </ul>
   </div>
     <div class="dependencies">
@@ -255,6 +254,36 @@
                           <dd>simplecov</dd>
                       </dl>
               </div>
+          <div id="activejob" class="approved">
+        <h2>
+                      <a href="http://www.rubyonrails.org">activejob</a>
+                    v0
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Job framework with pluggable queues (will be part of Rails).</td>
+            <td>Declare job classes that can be run by a variety of queueing backends.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>activesupport</dd>
+                          <dd>activemodel-globalid</dd>
+                      </dl>
+              </div>
           <div id="activemodel" class="approved">
         <h2>
                       <a href="http://www.rubyonrails.org">activemodel</a>
@@ -287,11 +316,46 @@
                           <dd>actionview</dd>
                           <dd>rails</dd>
                           <dd>active_model_serializers</dd>
+                          <dd>activemodel-globalid</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>activesupport</dd>
                           <dd>builder</dd>
+                      </dl>
+              </div>
+          <div id="activemodel-globalid" class="approved">
+        <h2>
+                      <a href="http://www.rubyonrails.org">activemodel-globalid</a>
+                    v0.1.0
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Serialize models that can be found by id again (will be part of Active Model).</td>
+            <td>Serializing models to a single string makes it easy to pass references around.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>activejob</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>activesupport</dd>
+                          <dd>activemodel</dd>
                       </dl>
               </div>
           <div id="activerecord" class="approved">
@@ -375,6 +439,8 @@
                           <dd>spring</dd>
                           <dd>bullet</dd>
                           <dd>pdfkit</dd>
+                          <dd>activemodel-globalid</dd>
+                          <dd>activejob</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -418,7 +484,7 @@
           <div id="addressable" class="approved">
         <h2>
                       <a href="http://addressable.rubyforge.org/">addressable</a>
-                    v2.3.5
+                    v2.3.6
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -444,6 +510,8 @@ adds support for IRIs and URI templates.
                   <dl>
             <dt>Parents</dt>
                           <dd>launchy</dd>
+                          <dd>omniauth-cas</dd>
+                          <dd>webmock</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -644,40 +712,6 @@ database compatibility and query generation.</td>
           </tbody>
         </table>
                       </div>
-          <div id="bootstrap-sass" class="approved">
-        <h2>
-                      <a href="http://github.com/thomas-mcdonald/bootstrap-sass">bootstrap-sass</a>
-                    v3.0.2.1
-                      (default)
-                  </h2>
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Description</th>
-            <th>License</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>Twitter's Bootstrap, converted to Sass and ready to drop into Rails or Compass</td>
-            <td></td>
-            <td>
-                              <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a>
-                          </td>
-          </tr>
-          </tbody>
-        </table>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>sass-rails</dd>
-                          <dd>sass</dd>
-                          <dd>capybara</dd>
-                          <dd>tzinfo</dd>
-                          <dd>jquery-rails</dd>
-                          <dd>compass</dd>
-                      </dl>
-              </div>
           <div id="bourbon" class="approved">
         <h2>
                       <a href="https://github.com/thoughtbot/bourbon">bourbon</a>
@@ -713,6 +747,68 @@ that support only CSS3 prefixed properties.
                           <dd>sass</dd>
                           <dd>thor</dd>
                           <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="bower-rails" class="approved">
+        <h2>
+                      <a href="https://github.com/rharriso/bower-rails">bower-rails</a>
+                    v0.7.2
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Bower for Rails</td>
+            <td>Rails integration for bower.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="bugsnag" class="approved">
+        <h2>
+                      <a href="http://github.com/bugsnag/bugsnag-ruby">bugsnag</a>
+                    v2.0.2
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Ruby notifier for bugsnag.com</td>
+            <td>Ruby notifier for bugsnag.com</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>multi_json</dd>
+                          <dd>httparty</dd>
+                          <dd>rake</dd>
+                          <dd>rdoc</dd>
+                          <dd>pry</dd>
                       </dl>
               </div>
           <div id="builder" class="approved">
@@ -824,13 +920,20 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>kaminari</dd>
                           <dd>nested_form</dd>
                           <dd>rails_admin</dd>
-                          <dd>chosen-rails</dd>
                           <dd>railroady</dd>
                           <dd>codeclimate-test-reporter</dd>
                           <dd>acts_as_list</dd>
                           <dd>ember-rails</dd>
                           <dd>heroku-deflater</dd>
                           <dd>pry-byebug</dd>
+                          <dd>dotenv-deployment</dd>
+                          <dd>faraday</dd>
+                          <dd>faraday_middleware</dd>
+                          <dd>migration_data</dd>
+                          <dd>oauth2</dd>
+                          <dd>omniauth</dd>
+                          <dd>omniauth-oauth2</dd>
+                          <dd>progressbar</dd>
                       </dl>
                       </div>
           <div id="byebug" class="approved">
@@ -876,8 +979,8 @@ simple to do.  Currently the following builder objects are supported:
           <div id="capybara" class="approved">
         <h2>
                       <a href="http://github.com/jnicklas/capybara">capybara</a>
-                    v2.2.1
-                      (development, test)
+                    v2.3.0
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -899,7 +1002,6 @@ simple to do.  Currently the following builder objects are supported:
         </table>
                   <dl>
             <dt>Parents</dt>
-                          <dd>bootstrap-sass</dd>
                           <dd>license_finder</dd>
                           <dd>kaminari</dd>
                           <dd>nested_form</dd>
@@ -954,6 +1056,39 @@ simple to do.  Currently the following builder objects are supported:
                           <dd>mini_magick</dd>
                       </dl>
               </div>
+          <div id="celluloid" class="approved">
+        <h2>
+                      <a href="https://github.com/celluloid/celluloid">celluloid</a>
+                    v0.15.2
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Actor-based concurrent object framework for Ruby</td>
+            <td>Celluloid enables people to build concurrent programs out of concurrent objects just as easily as they build sequential programs out of sequential objects</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>sidekiq</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>timers</dd>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
           <div id="childprocess" class="approved">
         <h2>
                       <a href="http://github.com/jarib/childprocess">childprocess</a>
@@ -985,89 +1120,6 @@ simple to do.  Currently the following builder objects are supported:
             <dt>Children</dt>
                           <dd>rake</dd>
                           <dd>ffi</dd>
-                      </dl>
-              </div>
-          <div id="chosen-rails" class="approved">
-        <h2>
-                      <a href="https://github.com/tsechingho/chosen-rails">chosen-rails</a>
-                    v1.1.0
-                      (default)
-                  </h2>
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Description</th>
-            <th>License</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>Integrate Chosen javascript library with Rails asset pipeline</td>
-            <td>Chosen is a javascript library of select box enhancer for jQuery and Protoype. This gem integrates Chosen with Rails asset pipeline for easy of use.</td>
-            <td>
-                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
-                          </td>
-          </tr>
-          </tbody>
-        </table>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>railties</dd>
-                          <dd>coffee-rails</dd>
-                          <dd>sass-rails</dd>
-                          <dd>compass-rails</dd>
-                          <dd>bundler</dd>
-                          <dd>rails</dd>
-                          <dd>thor</dd>
-                      </dl>
-              </div>
-          <div id="chunky_png" class="approved">
-        <h2>
-                      <a href="http://wiki.github.com/wvanbergen/chunky_png">chunky_png</a>
-                    v1.3.0
-                  </h2>
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Description</th>
-            <th>License</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>Pure ruby library for read/write, chunk-level access to PNG files</td>
-            <td>    This pure Ruby library can read and write PNG images without depending on an external 
-    image library, like RMagick. It tries to be memory efficient and reasonably fast.
-    
-    It supports reading and writing all PNG variants that are defined in the specification, 
-    with one limitation: only 8-bit color depth is supported. It supports all transparency, 
-    interlacing and filtering options the PNG specifications allows. It can also read and 
-    write textual metadata from PNG files. Low-level read/write access to PNG chunks is
-    also possible.
-    
-    This library supports simple drawing on the image canvas and simple operations like
-    alpha composition and cropping. Finally, it can import from and export to RMagick for 
-    interoperability.
-    
-    Also, have a look at OilyPNG at http://github.com/wvanbergen/oily_png. OilyPNG is a 
-    drop in mixin module that implements some of the ChunkyPNG algorithms in C, which 
-    provides a massive speed boost to encoding and decoding.
-</td>
-            <td>
-                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
-                          </td>
-          </tr>
-          </tbody>
-        </table>
-                  <dl>
-            <dt>Parents</dt>
-                          <dd>compass</dd>
-                      </dl>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>rake</dd>
                       </dl>
               </div>
           <div id="codeclimate-test-reporter" class="approved">
@@ -1158,7 +1210,6 @@ simple to do.  Currently the following builder objects are supported:
                   <dl>
             <dt>Parents</dt>
                           <dd>rails_admin</dd>
-                          <dd>chosen-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1269,10 +1320,11 @@ See Examples in the rdoc documentation for examples.
                           <dd>byebug</dd>
                       </dl>
                       </div>
-          <div id="compass" class="approved">
+          <div id="competing_interests" class="approved">
         <h2>
-                      <a href="http://compass-style.org">compass</a>
-                    v0.12.5
+                      <a href="http://www.tahi.com">competing_interests</a>
+                    v0.0.1
+                      (default)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1284,30 +1336,24 @@ See Examples in the rdoc documentation for examples.
           </thead>
           <tbody>
           <tr>
-            <td>A Real Stylesheet Framework</td>
-            <td>Compass is a Sass-based Stylesheet Framework that streamlines the creation and maintenance of CSS.</td>
+            <td>Competing Interests questionnaire</td>
+            <td>Competing Interests questionnaire</td>
             <td>
-                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                              TBD
                           </td>
           </tr>
           </tbody>
         </table>
-                  <dl>
-            <dt>Parents</dt>
-                          <dd>bootstrap-sass</dd>
-                          <dd>compass-rails</dd>
-                      </dl>
                           <dl>
             <dt>Children</dt>
-                          <dd>sass</dd>
-                          <dd>chunky_png</dd>
-                          <dd>fssm</dd>
+                          <dd>rails</dd>
+                          <dd>sqlite3</dd>
                       </dl>
               </div>
-          <div id="compass-rails" class="approved">
+          <div id="connection_pool" class="approved">
         <h2>
-                      <a href="https://github.com/Compass/compass-rails">compass-rails</a>
-                    v1.1.7
+                      <a href="https://github.com/mperham/connection_pool">connection_pool</a>
+                    v2.0.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1319,8 +1365,8 @@ See Examples in the rdoc documentation for examples.
           </thead>
           <tbody>
           <tr>
-            <td>Integrate Compass into Rails 3.0 and up.</td>
-            <td>Integrate Compass into Rails 3.0 and up.</td>
+            <td>Generic connection pool for Ruby</td>
+            <td>Generic connection pool for Ruby</td>
             <td>
                               <a href="http://opensource.org/licenses/mit-license">MIT</a>
                           </td>
@@ -1329,12 +1375,44 @@ See Examples in the rdoc documentation for examples.
         </table>
                   <dl>
             <dt>Parents</dt>
-                          <dd>chosen-rails</dd>
+                          <dd>sidekiq</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
-                          <dd>compass</dd>
-                          <dd>sprockets</dd>
+                          <dd>minitest</dd>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="crack" class="approved">
+        <h2>
+                      <a href="http://github.com/jnunemaker/crack">crack</a>
+                    v0.4.2
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Really simple JSON and XML parsing, ripped from Merb and Rails.</td>
+            <td>Really simple JSON and XML parsing, ripped from Merb and Rails.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>webmock</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>safe_yaml</dd>
                       </dl>
               </div>
           <div id="daemons" class="approved">
@@ -1365,11 +1443,41 @@ See Examples in the rdoc documentation for examples.
                           <dd>thin</dd>
                       </dl>
                       </div>
+          <div id="data_availability" class="approved">
+        <h2>
+                      <a href="http://www.tahi.com">data_availability</a>
+                    v0.0.1
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Data availability questionnaire</td>
+            <td>Data availability questionnaire</td>
+            <td>
+                              TBD
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rails</dd>
+                          <dd>sqlite3</dd>
+                      </dl>
+              </div>
           <div id="database_cleaner" class="approved">
         <h2>
                       <a href="http://github.com/bmabey/database_cleaner">database_cleaner</a>
                     v1.2.0
-                      (development, test)
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1454,6 +1562,35 @@ example in a debugger where the same lines are shown many times.
                           <dl>
             <dt>Children</dt>
                           <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="declaration" class="approved">
+        <h2>
+                      <a href="http://www.tahi.com">declaration</a>
+                    v0.0.1
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Declaration task</td>
+            <td>Declaration task</td>
+            <td>
+                              TBD
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rails</dd>
                       </dl>
               </div>
           <div id="devise" class="approved">
@@ -1566,6 +1703,101 @@ We are happy to report that this issue has been resolved.</td>
                           <dd>mime-types</dd>
                       </dl>
               </div>
+          <div id="dotenv" class="approved">
+        <h2>
+                      <a href="https://github.com/bkeepers/dotenv">dotenv</a>
+                    v0.11.1
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Loads environment variables from `.env`.</td>
+            <td>Loads environment variables from `.env`.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>dotenv-rails</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>dotenv-deployment</dd>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="dotenv-deployment" class="approved">
+        <h2>
+                      <a href="https://github.com/bkeepers/dotenv-deployment">dotenv-deployment</a>
+                    v0.0.2
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Deployment concerns for dotenv</td>
+            <td></td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>dotenv</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>bundler</dd>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="dotenv-rails" class="approved">
+        <h2>
+                      <a href="https://github.com/bkeepers/dotenv">dotenv-rails</a>
+                    v0.11.1
+                      (development, test, performance)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Autoload dotenv in Rails.</td>
+            <td>Autoload dotenv in Rails.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>dotenv</dd>
+                      </dl>
+              </div>
           <div id="ember-data-source" class="approved">
         <h2>
                       <a href="https://github.com/emberjs/data">ember-data-source</a>
@@ -1637,6 +1869,7 @@ We are happy to report that this issue has been resolved.</td>
                           <dd>tzinfo</dd>
                           <dd>sprockets-rails</dd>
                           <dd>vcr</dd>
+                          <dd>webmock</dd>
                       </dl>
               </div>
           <div id="ember-source" class="approved">
@@ -1715,38 +1948,6 @@ We are happy to report that this issue has been resolved.</td>
                           <dd>actionview</dd>
                       </dl>
                       </div>
-          <div id="ethon" class="approved">
-        <h2>
-                      <a href="https://github.com/typhoeus/ethon">ethon</a>
-                    v0.7.0
-                  </h2>
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Description</th>
-            <th>License</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>Libcurl wrapper.</td>
-            <td>Very lightweight libcurl wrapper.</td>
-            <td>
-                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
-                          </td>
-          </tr>
-          </tbody>
-        </table>
-                  <dl>
-            <dt>Parents</dt>
-                          <dd>typhoeus</dd>
-                      </dl>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>ffi</dd>
-                      </dl>
-              </div>
           <div id="eventmachine" class="approved">
         <h2>
                       <a href="http://rubyeventmachine.com">eventmachine</a>
@@ -1811,6 +2012,7 @@ using TCP/IP, especially if custom protocols are required.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>fog</dd>
+                          <dd>webmock</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -1897,7 +2099,7 @@ using TCP/IP, especially if custom protocols are required.</td>
         <h2>
                       <a href="http://github.com/thoughtbot/factory_girl_rails">factory_girl_rails</a>
                     v4.4.0
-                      (test)
+                      (test, development, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -1930,6 +2132,71 @@ using TCP/IP, especially if custom protocols are required.</td>
                           <dd>rake</dd>
                       </dl>
               </div>
+          <div id="faraday" class="approved">
+        <h2>
+                      <a href="https://github.com/lostisland/faraday">faraday</a>
+                    v0.9.0
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>HTTP/REST API client library.</td>
+            <td></td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>faraday_middleware</dd>
+                          <dd>oauth2</dd>
+                          <dd>omniauth-oauth2</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>multipart-post</dd>
+                          <dd>bundler</dd>
+                      </dl>
+              </div>
+          <div id="faraday_middleware" class="approved">
+        <h2>
+                      <a href="https://github.com/lostisland/faraday_middleware">faraday_middleware</a>
+                    v0.9.1
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Various middleware for Faraday</td>
+            <td>Various middleware for Faraday</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>faraday</dd>
+                          <dd>bundler</dd>
+                      </dl>
+              </div>
           <div id="ffi" class="approved">
         <h2>
                       <a href="http://wiki.github.com/ffi/ffi">ffi</a>
@@ -1956,11 +2223,40 @@ using TCP/IP, especially if custom protocols are required.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>childprocess</dd>
-                          <dd>ethon</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="financial_disclosure" class="approved">
+        <h2>
+                      <a href="http://www.tahi.com">financial_disclosure</a>
+                    v0.0.1
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Financial disclosure questionnaire</td>
+            <td>Financial disclosure questionnaire</td>
+            <td>
+                              TBD
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rails</dd>
+                          <dd>sqlite3</dd>
                       </dl>
               </div>
           <div id="fog" class="approved">
@@ -2069,38 +2365,6 @@ using TCP/IP, especially if custom protocols are required.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>fog</dd>
-                      </dl>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>rake</dd>
-                      </dl>
-              </div>
-          <div id="fssm" class="approved">
-        <h2>
-                      <a href="https://github.com/ttilley/fssm">fssm</a>
-                    v0.2.10
-                  </h2>
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Description</th>
-            <th>License</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>File System State Monitor</td>
-            <td>The File System State Monitor keeps track of the state of any number of paths and will fire events when said state changes (create/update/delete). FSSM supports using FSEvents on MacOS, Inotify on GNU/Linux, and polling anywhere else.</td>
-            <td>
-                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
-                          </td>
-          </tr>
-          </tbody>
-        </table>
-                  <dl>
-            <dt>Parents</dt>
-                          <dd>compass</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2244,11 +2508,43 @@ but it can function as a stand-alone templating engine.
                           <dd>ember-rails</dd>
                       </dl>
                       </div>
+          <div id="hashie" class="approved">
+        <h2>
+                      <a href="https://github.com/intridea/hashie">hashie</a>
+                    v2.1.1
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Your friendly neighborhood hash library.</td>
+            <td>Hashie is a collection of classes and mixins that make hashes more powerful.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>omniauth</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
           <div id="heroku-deflater" class="approved">
         <h2>
                       <a href="http://github.com/romanbsd/heroku-deflater">heroku-deflater</a>
                     v0.5.3
-                      (production, staging)
+                      (production, staging, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2332,6 +2628,7 @@ but it can function as a stand-alone templating engine.
                   <dl>
             <dt>Parents</dt>
                           <dd>license_finder</dd>
+                          <dd>bugsnag</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -2339,6 +2636,34 @@ but it can function as a stand-alone templating engine.
                           <dd>multi_xml</dd>
                       </dl>
               </div>
+          <div id="humanize" class="approved">
+        <h2>
+                      <a href="http://github.com/radar/">humanize</a>
+                    v1.1.0
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Generates long winded string versions of numbers</td>
+            <td>Generates long winded string versions of numbers</td>
+            <td>
+                              other
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>ordinalize</dd>
+                      </dl>
+                      </div>
           <div id="i18n" class="approved">
         <h2>
                       <a href="http://github.com/svenfuchs/i18n">i18n</a>
@@ -2464,7 +2789,6 @@ but it can function as a stand-alone templating engine.
         <h2>
                       <a href="http://rubygems.org/gems/jquery-rails">jquery-rails</a>
                     v3.1.0
-                      (default)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2486,7 +2810,6 @@ but it can function as a stand-alone templating engine.
         </table>
                   <dl>
             <dt>Parents</dt>
-                          <dd>bootstrap-sass</dd>
                           <dd>rails_admin</dd>
                           <dd>ember-rails</dd>
                       </dl>
@@ -2586,8 +2909,41 @@ but it can function as a stand-alone templating engine.
                           <dd>carrierwave</dd>
                           <dd>jquery-ui-rails</dd>
                           <dd>activesupport</dd>
+                          <dd>sidekiq</dd>
                       </dl>
                       </div>
+          <div id="jwt" class="approved">
+        <h2>
+                      <a href="http://github.com/progrium/ruby-jwt">jwt</a>
+                    v0.1.13
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>JSON Web Token implementation in Ruby</td>
+            <td>JSON Web Token implementation in Ruby</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>oauth2</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>multi_json</dd>
+                      </dl>
+              </div>
           <div id="kaminari" class="approved">
         <h2>
                       <a href="https://github.com/amatsuda/kaminari">kaminari</a>
@@ -2627,42 +2983,11 @@ but it can function as a stand-alone templating engine.
                           <dd>rdoc</dd>
                       </dl>
               </div>
-          <div id="kgio" class="approved">
-        <h2>
-                      <a href="http://bogomips.org/kgio/">kgio</a>
-                    v2.8.1
-                  </h2>
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Description</th>
-            <th>License</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>kinder, gentler I/O for Ruby</td>
-            <td>kgio provides non-blocking I/O methods for Ruby without raising
-exceptions on EAGAIN and EINPROGRESS.  It is intended for use with the
-Unicorn and Rainbows! Rack servers, but may be used by other
-applications (that run on Unix-like platforms).</td>
-            <td>
-                              <a href="http://www.gnu.org/licenses/lgpl.txt">LGPL</a>
-                          </td>
-          </tr>
-          </tbody>
-        </table>
-                  <dl>
-            <dt>Parents</dt>
-                          <dd>unicorn</dd>
-                      </dl>
-                      </div>
           <div id="launchy" class="approved">
         <h2>
                       <a href="http://github.com/copiousfreetime/launchy">launchy</a>
                     v2.4.2
-                      (development, test)
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -2736,6 +3061,7 @@ applications (that run on Unix-like platforms).</td>
                           <dd>pry</dd>
                           <dd>capybara</dd>
                           <dd>rails</dd>
+                          <dd>webmock</dd>
                       </dl>
               </div>
           <div id="mail" class="approved">
@@ -2804,6 +3130,42 @@ applications (that run on Unix-like platforms).</td>
                           <dl>
             <dt>Children</dt>
                           <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="migration_data" class="approved">
+        <h2>
+                      migration_data
+                    v0.0.4
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Provides possibility to write any code in migrations safely without regression.</td>
+            <td>Sometimes we have to write some Rails code in the migrations and it's hard to
+                          keep them in working state because models wich are used there changes too often. there
+                          some techniques which help to avoid these pitfalls. For example, define model
+                          classes in the migrations or write raw SQL. But they don't help in 100% cases anyway.
+                          This gem promises to solve the problem in a simple way.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>bundler</dd>
+                          <dd>rake</dd>
+                          <dd>sqlite3</dd>
+                          <dd>rails</dd>
                       </dl>
               </div>
           <div id="mime-types" class="approved">
@@ -2927,7 +3289,7 @@ and added by the users of MIME::Types.</td>
           <div id="mini_portile" class="approved">
         <h2>
                       <a href="http://github.com/luislavena/mini_portile">mini_portile</a>
-                    v0.5.3
+                    v0.6.0
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3045,6 +3407,10 @@ extract-method refactorings still apply.</td>
                           <dd>rspec-expectations</dd>
                           <dd>newrelic_rpm</dd>
                           <dd>byebug</dd>
+                          <dd>connection_pool</dd>
+                          <dd>progressbar</dd>
+                          <dd>sidekiq</dd>
+                          <dd>webmock</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3080,6 +3446,10 @@ extract-method refactorings still apply.</td>
                           <dd>selenium-webdriver</dd>
                           <dd>fog</dd>
                           <dd>simplecov</dd>
+                          <dd>bugsnag</dd>
+                          <dd>jwt</dd>
+                          <dd>oauth2</dd>
+                          <dd>omniauth-oauth2</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3112,12 +3482,41 @@ extract-method refactorings still apply.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>httparty</dd>
+                          <dd>oauth2</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>bundler</dd>
                       </dl>
               </div>
+          <div id="multipart-post" class="approved">
+        <h2>
+                      <a href="https://github.com/nicksieger/multipart-post">multipart-post</a>
+                    v2.0.0
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>A multipart form post accessory for Net::HTTP.</td>
+            <td>Use with Net::HTTP to do multipart form posts.  IO values that have #content_type, #original_filename, and #local_path will be posted as a binary file.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>faraday</dd>
+                      </dl>
+                      </div>
           <div id="nested_form" class="approved">
         <h2>
                       <a href="http://github.com/ryanb/nested_form">nested_form</a>
@@ -3286,7 +3685,7 @@ http://github.com/newrelic/rpm/
           <div id="nokogiri" class="approved">
         <h2>
                       <a href="http://nokogiri.org">nokogiri</a>
-                    v1.6.1
+                    v1.6.2.1
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -3299,11 +3698,11 @@ http://github.com/newrelic/rpm/
           </thead>
           <tbody>
           <tr>
-            <td>Nokogiri (é¸) is an HTML, XML, SAX, and Reader parser</td>
-            <td>Nokogiri (é¸) is an HTML, XML, SAX, and Reader parser.  Among Nokogiri's
+            <td>Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser</td>
+            <td>Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser.  Among Nokogiri's
 many features is the ability to search documents via XPath or CSS3 selectors.
 
-XML is like violence - if it doesnât solve your problems, you are not using
+XML is like violence - if it doesn’t solve your problems, you are not using
 enough of it.</td>
             <td>
                               <a href="http://opensource.org/licenses/mit-license">MIT</a>
@@ -3321,6 +3720,7 @@ enough of it.</td>
                           <dd>fog</dd>
                           <dd>rack-pjax</dd>
                           <dd>gepub</dd>
+                          <dd>omniauth-cas</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3328,6 +3728,175 @@ enough of it.</td>
                           <dd>minitest</dd>
                           <dd>rake</dd>
                           <dd>rdoc</dd>
+                      </dl>
+              </div>
+          <div id="oauth2" class="approved">
+        <h2>
+                      <a href="http://github.com/intridea/oauth2">oauth2</a>
+                    v0.9.3
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>A Ruby wrapper for the OAuth 2.0 protocol.</td>
+            <td>A Ruby wrapper for the OAuth 2.0 protocol built with a similar style to the original OAuth spec.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>omniauth-oauth2</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>bundler</dd>
+                          <dd>faraday</dd>
+                          <dd>multi_json</dd>
+                          <dd>multi_xml</dd>
+                          <dd>rack</dd>
+                          <dd>jwt</dd>
+                      </dl>
+              </div>
+          <div id="omniauth" class="approved">
+        <h2>
+                      <a href="http://github.com/intridea/omniauth">omniauth</a>
+                    v1.2.1
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>A generalized Rack framework for multiple-provider authentication.</td>
+            <td>A generalized Rack framework for multiple-provider authentication.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>omniauth-cas</dd>
+                          <dd>omniauth-oauth2</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>hashie</dd>
+                          <dd>rack</dd>
+                          <dd>bundler</dd>
+                      </dl>
+              </div>
+          <div id="omniauth-cas" class="approved">
+        <h2>
+                      <a href="https://github.com/dlindahl/omniauth-cas">omniauth-cas</a>
+                    v1.0.4
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>CAS Strategy for OmniAuth</td>
+            <td>CAS Strategy for OmniAuth</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>omniauth</dd>
+                          <dd>nokogiri</dd>
+                          <dd>addressable</dd>
+                          <dd>rake</dd>
+                          <dd>webmock</dd>
+                          <dd>simplecov</dd>
+                          <dd>rack-test</dd>
+                      </dl>
+              </div>
+          <div id="omniauth-oauth2" class="approved">
+        <h2>
+                      <a href="https://github.com/intridea/omniauth-oauth2">omniauth-oauth2</a>
+                    v1.1.2
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>An abstract OAuth2 strategy for OmniAuth.</td>
+            <td>An abstract OAuth2 strategy for OmniAuth.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>faraday</dd>
+                          <dd>multi_json</dd>
+                          <dd>oauth2</dd>
+                          <dd>omniauth</dd>
+                          <dd>bundler</dd>
+                      </dl>
+              </div>
+          <div id="ordinalize" class="approved">
+        <h2>
+                      <a href="http://github.com/radar/ordinalize">ordinalize</a>
+                    v0.0.3
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Generates long winded string versions of numbers, ordinalized</td>
+            <td>Generates long winded string versions of numbers, ordinalized</td>
+            <td>
+                              other
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>humanize</dd>
                       </dl>
               </div>
           <div id="orm_adapter" class="approved">
@@ -3448,7 +4017,7 @@ A small example usage:
         <h2>
                       <a href="https://github.com/colszowka/phantomjs-gem">phantomjs</a>
                     v1.9.7.0
-                      (development, test)
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3505,6 +4074,38 @@ augments 'require' to find and load matching files.</td>
                           <dd>treetop</dd>
                       </dl>
                       </div>
+          <div id="progressbar" class="approved">
+        <h2>
+                      <a href="http://github.com/peleteiro/progressbar">progressbar</a>
+                    v0.21.0
+                      (development, test, performance)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Ruby/ProgressBar is a text progress bar library for Ruby.</td>
+            <td>Ruby/ProgressBar is a text progress bar library for Ruby. It can indicate progress with percentage, a progress bar, and estimated remaining time.</td>
+            <td>
+                              <a href="http://www.ruby-lang.org/en/LICENSE.txt">Ruby</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>bundler</dd>
+                          <dd>minitest</dd>
+                          <dd>rake</dd>
+                          <dd>simplecov</dd>
+                      </dl>
+              </div>
           <div id="pry" class="approved">
         <h2>
                       <a href="http://pry.github.com">pry</a>
@@ -3540,6 +4141,7 @@ augments 'require' to find and load matching files.</td>
                           <dd>pry-byebug</dd>
                           <dd>pry-stack_explorer</dd>
                           <dd>pry-rescue</dd>
+                          <dd>bugsnag</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3553,7 +4155,7 @@ augments 'require' to find and load matching files.</td>
         <h2>
                       <a href="https://github.com/deivid-rodriguez/pry-byebug">pry-byebug</a>
                     v1.3.2
-                      (development, test)
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3616,7 +4218,7 @@ augments 'require' to find and load matching files.</td>
         <h2>
                       <a href="https://github.com/ConradIrwin/pry-rescue">pry-rescue</a>
                     v1.4.1
-                      (development, test)
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3649,7 +4251,7 @@ augments 'require' to find and load matching files.</td>
         <h2>
                       <a href="https://github.com/pry/pry-stack_explorer">pry-stack_explorer</a>
                     v0.4.9.1
-                      (development, test)
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -3678,6 +4280,36 @@ augments 'require' to find and load matching files.</td>
                           <dd>binding_of_caller</dd>
                           <dd>pry</dd>
                           <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="puma" class="approved">
+        <h2>
+                      <a href="http://puma.io">puma</a>
+                    v2.8.2
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Puma is a simple, fast, threaded, and highly concurrent HTTP 1.1 server for Ruby/Rack applications</td>
+            <td>Puma is a simple, fast, threaded, and highly concurrent HTTP 1.1 server for Ruby/Rack applications. Puma is intended for use in both development and production environments. In order to get the best throughput, it is highly recommended that you use a  Ruby implementation with real threads like Rubinius or JRuby.</td>
+            <td>
+                              <a href="http://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29">BSD</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rack</dd>
+                          <dd>rdoc</dd>
                       </dl>
               </div>
           <div id="rack" class="approved">
@@ -3717,14 +4349,15 @@ Also see http://rack.github.com/.
                           <dd>capybara</dd>
                           <dd>warden</dd>
                           <dd>sprockets</dd>
-                          <dd>raindrops</dd>
-                          <dd>unicorn</dd>
                           <dd>selenium-webdriver</dd>
                           <dd>rack-pjax</dd>
                           <dd>heroku-deflater</dd>
                           <dd>rack-protection</dd>
                           <dd>sinatra</dd>
                           <dd>thin</dd>
+                          <dd>oauth2</dd>
+                          <dd>omniauth</dd>
+                          <dd>puma</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3830,12 +4463,38 @@ request helpers feature.</td>
                           <dd>sprockets</dd>
                           <dd>pdfkit</dd>
                           <dd>rack-protection</dd>
+                          <dd>omniauth-cas</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>rack</dd>
                       </dl>
               </div>
+          <div id="rack-timeout" class="approved">
+        <h2>
+                      <a href="http://github.com/kch/rack-timeout">rack-timeout</a>
+                    v0.0.4
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Abort requests that are taking too long</td>
+            <td>Rack middleware which aborts requests that have been running for longer than a specified timeout.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                      </div>
           <div id="railroady" class="approved">
         <h2>
                       <a href="http://github.com/preston/railroady">railroady</a>
@@ -3900,10 +4559,17 @@ request helpers feature.</td>
                           <dd>carrierwave</dd>
                           <dd>jquery-fileupload-rails</dd>
                           <dd>rails_admin</dd>
-                          <dd>chosen-rails</dd>
                           <dd>newrelic_rpm</dd>
                           <dd>standard_tasks</dd>
                           <dd>active_model_serializers</dd>
+                          <dd>competing_interests</dd>
+                          <dd>data_availability</dd>
+                          <dd>declaration</dd>
+                          <dd>financial_disclosure</dd>
+                          <dd>migration_data</dd>
+                          <dd>sidekiq</dd>
+                          <dd>supporting_information</dd>
+                          <dd>upload_manuscript</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -3922,7 +4588,7 @@ request helpers feature.</td>
         <h2>
                       <a href="https://github.com/heroku/rails_12factor">rails_12factor</a>
                     v0.0.2
-                      (production, staging)
+                      (production, staging, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -4081,7 +4747,6 @@ request helpers feature.</td>
                           <dd>jquery-fileupload-rails</dd>
                           <dd>font-awesome-rails</dd>
                           <dd>jquery-ui-rails</dd>
-                          <dd>chosen-rails</dd>
                           <dd>factory_girl_rails</dd>
                           <dd>sprockets-rails</dd>
                           <dd>ember-rails</dd>
@@ -4094,44 +4759,6 @@ request helpers feature.</td>
                           <dd>rake</dd>
                           <dd>thor</dd>
                           <dd>actionview</dd>
-                      </dl>
-              </div>
-          <div id="raindrops" class="approved">
-        <h2>
-                      <a href="http://raindrops.bogomips.org/">raindrops</a>
-                    v0.12.0
-                  </h2>
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Description</th>
-            <th>License</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>real-time stats for preforking Rack servers</td>
-            <td>Raindrops is a real-time stats toolkit to show statistics for Rack HTTP
-servers.  It is designed for preforking servers such as Rainbows! and
-Unicorn, but should support any Rack HTTP server under Ruby 2.0, 1.9,
-1.8 and Rubinius on platforms supporting POSIX shared memory.  It may
-also be used as a generic scoreboard for sharing atomic counters across
-multiple processes.</td>
-            <td>
-                              <a href="http://www.gnu.org/licenses/lgpl.txt">LGPL</a>
-                          </td>
-          </tr>
-          </tbody>
-        </table>
-                  <dl>
-            <dt>Parents</dt>
-                          <dd>unicorn</dd>
-                      </dl>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>rack</dd>
-                          <dd>unicorn</dd>
                       </dl>
               </div>
           <div id="rake" class="approved">
@@ -4218,8 +4845,6 @@ Rake has the following features:
                           <dd>kaminari</dd>
                           <dd>nested_form</dd>
                           <dd>remotipart</dd>
-                          <dd>chunky_png</dd>
-                          <dd>fssm</dd>
                           <dd>factory_girl_rails</dd>
                           <dd>railroady</dd>
                           <dd>thread_safe</dd>
@@ -4241,6 +4866,20 @@ Rake has the following features:
                           <dd>pry-stack_explorer</dd>
                           <dd>interception</dd>
                           <dd>pry-rescue</dd>
+                          <dd>bower-rails</dd>
+                          <dd>bugsnag</dd>
+                          <dd>timers</dd>
+                          <dd>celluloid</dd>
+                          <dd>connection_pool</dd>
+                          <dd>dotenv-deployment</dd>
+                          <dd>dotenv</dd>
+                          <dd>hashie</dd>
+                          <dd>migration_data</dd>
+                          <dd>omniauth-cas</dd>
+                          <dd>progressbar</dd>
+                          <dd>redis</dd>
+                          <dd>redis-namespace</dd>
+                          <dd>sidekiq</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -4299,12 +4938,87 @@ See RDoc for a description of RDoc's markup and basic use.</td>
                           <dd>rest_client</dd>
                           <dd>rake</dd>
                           <dd>pdfkit</dd>
+                          <dd>bugsnag</dd>
+                          <dd>puma</dd>
+                          <dd>webmock</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
                           <dd>json</dd>
                           <dd>minitest</dd>
                           <dd>rdoc</dd>
+                      </dl>
+              </div>
+          <div id="redis" class="approved">
+        <h2>
+                      <a href="https://github.com/redis/redis-rb">redis</a>
+                    v3.0.7
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>A Ruby client library for Redis</td>
+            <td>    A Ruby client that tries to match Redis' API one-to-one, while still
+    providing an idiomatic interface. It features thread-safety,
+    client-side sharding, pipelining, and an obsession for performance.
+</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>redis-namespace</dd>
+                          <dd>sidekiq</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
+          <div id="redis-namespace" class="approved">
+        <h2>
+                      <a href="http://github.com/resque/redis-namespace">redis-namespace</a>
+                    v1.4.1
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Namespaces Redis commands.</td>
+            <td>Adds a Redis::Namespace class which can be used to namespace calls
+to Redis. This is useful when using a single instance of Redis with
+multiple, different applications.
+</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>sidekiq</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>redis</dd>
+                          <dd>rake</dd>
                       </dl>
               </div>
           <div id="remotipart" class="approved">
@@ -4369,6 +5083,7 @@ See RDoc for a description of RDoc's markup and basic use.</td>
             <dt>Children</dt>
                           <dd>netrc</dd>
                           <dd>rdoc</dd>
+                          <dd>webmock</dd>
                       </dl>
               </div>
           <div id="rspec-collection_matchers" class="approved">
@@ -4479,7 +5194,7 @@ See RDoc for a description of RDoc's markup and basic use.</td>
         <h2>
                       rspec-its
                     v1.0.0.pre
-                      (development, test)
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -4542,7 +5257,7 @@ See RDoc for a description of RDoc's markup and basic use.</td>
         <h2>
                       <a href="http://github.com/rspec/rspec-rails">rspec-rails</a>
                     v3.0.0.beta2
-                      (development, test)
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -4566,6 +5281,7 @@ See RDoc for a description of RDoc's markup and basic use.</td>
             <dt>Parents</dt>
                           <dd>nested_form</dd>
                           <dd>standard_tasks</dd>
+                          <dd>supporting_information</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -4650,7 +5366,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
           <div id="rubyzip" class="approved">
         <h2>
                       <a href="http://github.com/rubyzip/rubyzip">rubyzip</a>
-                    v1.1.2
+                    v1.1.3
                       (default)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -4680,7 +5396,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
           <div id="safe_yaml" class="approved">
         <h2>
                       <a href="https://github.com/dtao/safe_yaml">safe_yaml</a>
-                    v1.0.1
+                    v1.0.3
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -4703,6 +5419,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                   <dl>
             <dt>Parents</dt>
                           <dd>rails_admin</dd>
+                          <dd>crack</dd>
                       </dl>
                       </div>
           <div id="sass" class="approved">
@@ -4734,11 +5451,9 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
         </table>
                   <dl>
             <dt>Parents</dt>
-                          <dd>bootstrap-sass</dd>
                           <dd>tilt</dd>
                           <dd>sprockets</dd>
                           <dd>sass-rails</dd>
-                          <dd>compass</dd>
                           <dd>simplecov-html</dd>
                           <dd>bourbon</dd>
                       </dl>
@@ -4769,10 +5484,8 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
         </table>
                   <dl>
             <dt>Parents</dt>
-                          <dd>bootstrap-sass</dd>
                           <dd>font-awesome-rails</dd>
                           <dd>rails_admin</dd>
-                          <dd>chosen-rails</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -4840,7 +5553,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
         <h2>
                       <a href="http://selenium.googlecode.com">selenium-webdriver</a>
                     v2.41.0
-                      (development, test)
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -4871,6 +5584,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                           <dd>childprocess</dd>
                           <dd>websocket</dd>
                           <dd>rack</dd>
+                          <dd>webmock</dd>
                       </dl>
               </div>
           <div id="sequel" class="approved">
@@ -4902,6 +5616,43 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                           <dd>newrelic_rpm</dd>
                       </dl>
                       </div>
+          <div id="sidekiq" class="approved">
+        <h2>
+                      <a href="http://sidekiq.org">sidekiq</a>
+                    v3.1.4
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Simple, efficient background processing for Ruby</td>
+            <td>Simple, efficient background processing for Ruby</td>
+            <td>
+                              LGPL-3.0
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>redis</dd>
+                          <dd>redis-namespace</dd>
+                          <dd>connection_pool</dd>
+                          <dd>celluloid</dd>
+                          <dd>json</dd>
+                          <dd>sinatra</dd>
+                          <dd>minitest</dd>
+                          <dd>rake</dd>
+                          <dd>rails</dd>
+                      </dl>
+              </div>
           <div id="simplecov" class="approved">
         <h2>
                       <a href="http://github.com/colszowka/simplecov">simplecov</a>
@@ -4932,6 +5683,8 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
                           <dd>phantomjs</dd>
                           <dd>active_model_serializers</dd>
                           <dd>barber</dd>
+                          <dd>omniauth-cas</dd>
+                          <dd>progressbar</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -4979,7 +5732,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
         <h2>
                       <a href="http://www.sinatrarb.com/">sinatra</a>
                     v1.4.5
-                      (test)
+                      (default)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -5003,6 +5756,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
             <dt>Parents</dt>
                           <dd>capybara</dd>
                           <dd>excon</dd>
+                          <dd>sidekiq</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -5072,7 +5826,7 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
         <h2>
                       <a href="http://github.com/rails/spring">spring</a>
                     v1.1.2
-                      (development)
+                      (default)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -5125,7 +5879,6 @@ Originally written by Daiki Ueno. Converted to a RubyGem by Geoffrey Grosenbach<
             <dt>Parents</dt>
                           <dd>sprockets-rails</dd>
                           <dd>simplecov-html</dd>
-                          <dd>compass-rails</dd>
                           <dd>sass-rails</dd>
                       </dl>
                           <dl>
@@ -5217,6 +5970,10 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                           <dd>factory_girl</dd>
                           <dd>newrelic_rpm</dd>
                           <dd>standard_tasks</dd>
+                          <dd>competing_interests</dd>
+                          <dd>data_availability</dd>
+                          <dd>financial_disclosure</dd>
+                          <dd>migration_data</dd>
                       </dl>
                           <dl>
             <dt>Children</dt>
@@ -5290,11 +6047,41 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                           <dd>rake</dd>
                       </dl>
               </div>
+          <div id="supporting_information" class="approved">
+        <h2>
+                      <a href="http://www.tahi.com">supporting_information</a>
+                    v0.0.1
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Allows users to upload supporting materials for tasks</td>
+            <td>This is a generic version of uploading materials to support figure tasks</td>
+            <td>
+                              other
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rails</dd>
+                          <dd>rspec-rails</dd>
+                      </dl>
+              </div>
           <div id="teaspoon" class="approved">
         <h2>
                       <a href="https://github.com/modeset/teaspoon">teaspoon</a>
-                    v0.7.9
-                      (development, test)
+                    v0.8.0
+                      (development, test, performance)
                   </h2>
         <table class="table table-striped table-bordered">
           <thead>
@@ -5379,7 +6166,6 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                           <dd>jquery-rails</dd>
                           <dd>license_finder</dd>
                           <dd>fog</dd>
-                          <dd>chosen-rails</dd>
                           <dd>bourbon</dd>
                       </dl>
                           <dl>
@@ -5510,6 +6296,38 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
           </tbody>
         </table>
                       </div>
+          <div id="timers" class="approved">
+        <h2>
+                      <a href="https://github.com/tarcieri/timers">timers</a>
+                    v1.1.0
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Schedule procs to run after a certain time, or at periodic intervals, using any API that accepts a timeout</td>
+            <td>Pure Ruby one-shot and periodic timers</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>celluloid</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rake</dd>
+                      </dl>
+              </div>
           <div id="treetop" class="approved">
         <h2>
                       <a href="https://github.com/cjheath/treetop">treetop</a>
@@ -5569,35 +6387,6 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
           </tbody>
         </table>
                       </div>
-          <div id="typhoeus" class="approved">
-        <h2>
-                      <a href="https://github.com/typhoeus/typhoeus">typhoeus</a>
-                    v0.6.8
-                      (test)
-                  </h2>
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Description</th>
-            <th>License</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>Parallel HTTP library on top of libcurl multi.</td>
-            <td>Like a modern code version of the mythical beast with 100 serpent heads, Typhoeus runs HTTP requests in parallel while cleanly encapsulating handling logic.</td>
-            <td>
-                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
-                          </td>
-          </tr>
-          </tbody>
-        </table>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>ethon</dd>
-                      </dl>
-              </div>
           <div id="tzinfo" class="approved">
         <h2>
                       <a href="http://tzinfo.github.io">tzinfo</a>
@@ -5624,7 +6413,6 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.</td>
                   <dl>
             <dt>Parents</dt>
                           <dd>activesupport</dd>
-                          <dd>bootstrap-sass</dd>
                           <dd>font-awesome-rails</dd>
                           <dd>kaminari</dd>
                           <dd>ember-rails</dd>
@@ -5766,45 +6554,6 @@ to Ruby/JRuby.
                           <dd>bundler</dd>
                       </dl>
               </div>
-          <div id="unicorn" class="approved">
-        <h2>
-                      <a href="http://unicorn.bogomips.org/">unicorn</a>
-                    v4.7.0
-                      (default)
-                  </h2>
-        <table class="table table-striped table-bordered">
-          <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Description</th>
-            <th>License</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>Rack HTTP server for fast clients and Unix</td>
-            <td>\Unicorn is an HTTP server for Rack applications designed to only serve
-fast clients on low-latency, high-bandwidth connections and take
-advantage of features in Unix/Unix-like kernels.  Slow clients should
-only be served by placing a reverse proxy capable of fully buffering
-both the the request and response in between \Unicorn and slow clients.</td>
-            <td>
-                              GPLv2+
-                          </td>
-          </tr>
-          </tbody>
-        </table>
-                  <dl>
-            <dt>Parents</dt>
-                          <dd>raindrops</dd>
-                      </dl>
-                          <dl>
-            <dt>Children</dt>
-                          <dd>rack</dd>
-                          <dd>kgio</dd>
-                          <dd>raindrops</dd>
-                      </dl>
-              </div>
           <div id="uniform_notifier" class="approved">
         <h2>
                       <a href="http://rubygems.org/gems/uniform_notifier">uniform_notifier</a>
@@ -5833,10 +6582,39 @@ both the the request and response in between \Unicorn and slow clients.</td>
                           <dd>bullet</dd>
                       </dl>
                       </div>
+          <div id="upload_manuscript" class="approved">
+        <h2>
+                      <a href="http://www.tahi.com">upload_manuscript</a>
+                    v0.0.1
+                      (default)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Upload a manuscript</td>
+            <td>Allows a user to upload a manuscript document for the manuscript card</td>
+            <td>
+                              other
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>rails</dd>
+                      </dl>
+              </div>
           <div id="vcr" class="approved">
         <h2>
                       <a href="https://github.com/vcr/vcr">vcr</a>
-                    v2.9.0
+                    v2.9.2
                       (test)
                   </h2>
         <table class="table table-striped table-bordered">
@@ -5892,6 +6670,47 @@ both the the request and response in between \Unicorn and slow clients.</td>
                           <dl>
             <dt>Children</dt>
                           <dd>rack</dd>
+                      </dl>
+              </div>
+          <div id="webmock" class="approved">
+        <h2>
+                      <a href="http://github.com/bblimke/webmock">webmock</a>
+                    v1.18.0
+                      (test)
+                  </h2>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Description</th>
+            <th>License</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Library for stubbing HTTP requests in Ruby.</td>
+            <td>WebMock allows stubbing HTTP requests and setting expectations on HTTP requests.</td>
+            <td>
+                              <a href="http://opensource.org/licenses/mit-license">MIT</a>
+                          </td>
+          </tr>
+          </tbody>
+        </table>
+                  <dl>
+            <dt>Parents</dt>
+                          <dd>ember-rails</dd>
+                          <dd>license_finder</dd>
+                          <dd>omniauth-cas</dd>
+                          <dd>rest_client</dd>
+                          <dd>selenium-webdriver</dd>
+                      </dl>
+                          <dl>
+            <dt>Children</dt>
+                          <dd>addressable</dd>
+                          <dd>crack</dd>
+                          <dd>excon</dd>
+                          <dd>minitest</dd>
+                          <dd>rdoc</dd>
                       </dl>
               </div>
           <div id="websocket" class="approved">

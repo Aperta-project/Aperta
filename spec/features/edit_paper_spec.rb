@@ -17,7 +17,9 @@ feature "Editing paper", js: true do
     edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
     edit_paper.body = "Contrary to popular belief"
 
-    dashboard_page = edit_paper.save
+    # We have to wait for the paper to auto-save itself.
+    # Yahoo.
+    sleep 12
     edit_paper = EditPaperPage.visit paper
 
     expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"

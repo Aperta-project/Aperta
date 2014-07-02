@@ -93,6 +93,10 @@ $template-thumbnail-side-padding: 10px;
 .manuscript-manager-template-columns {
   // override .columns to allow for larger .control-bar
   top: 121px;
+
+  .column-content {
+    overflow-y: scroll;
+  }
 }
 
 .manuscript-manager-template {

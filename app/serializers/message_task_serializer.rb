@@ -4,6 +4,10 @@ class MessageTaskSerializer < TaskSerializer
   has_many :comments, include: true
   has_many :participants, serializer: UserSerializer, include: true, root: :users
 
+  def participants
+    object.participants.includes(:affiliations)
+  end
+
   def unread_comments_count
     if (defined? current_user) && current_user
       CommentLook.where(user_id: current_user.id,

@@ -15,4 +15,16 @@ class PaperSerializer < ActiveModel::Serializer
   def status
     object.manuscript.try(:status)
   end
+
+  def editors
+    object.editors.includes(:affiliations)
+  end
+
+  def assignees
+    object.assignees.includes(:affiliations)
+  end
+
+  def reviewers
+    object.reviewers.includes(:affiliations)
+  end
 end

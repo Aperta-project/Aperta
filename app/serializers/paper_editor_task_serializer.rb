@@ -3,4 +3,8 @@ class PaperEditorTaskSerializer < TaskSerializer
 
   has_many :editors, serializer: UserSerializer, include: true, root: :users
   has_one :editor, serializer: UserSerializer, include: true, root: :users
+
+  def editors
+    object.editors.includes(:affiliations)
+  end
 end

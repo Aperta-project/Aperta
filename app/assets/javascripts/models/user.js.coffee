@@ -8,5 +8,8 @@ ETahi.User = DS.Model.extend
   username: a('string')
   name: Ember.computed.alias 'fullName'
 
+  affiliationSort: ['isCurrent:desc', 'endDate:desc', 'startDate:asc']
+  affiliationsByDate: Ember.computed.sort('affiliations', 'affiliationSort')
+
 ETahi.Assignee = ETahi.User.extend()
 ETahi.Reviewer = ETahi.User.extend()

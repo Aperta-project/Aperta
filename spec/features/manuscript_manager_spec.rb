@@ -28,12 +28,12 @@ feature "Manuscript Manager", js: true do
       # put new phases in the second and forth positions.
       task_manager_page.phase(original_phases[0]).add_phase
       task_manager_page.phase(original_phases[1]).add_phase
-      new_phases = task_manager_page.phases
+      new_phases = TaskManagerPage.new.phases
       expect(new_phases[1]).to eq("New Phase")
       expect(new_phases[3]).to eq("New Phase")
       expect(task_manager_page).to have_no_application_error
       task_manager_page.reload
-      reloaded_phases = task_manager_page.phases
+      reloaded_phases = TaskManagerPage.new.phases
       expect(reloaded_phases[1]).to eq("New Phase")
       expect(reloaded_phases[3]).to eq("New Phase")
 

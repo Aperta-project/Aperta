@@ -8,6 +8,14 @@ ETahi.BinaryRadioButtonComponent = Ember.Component.extend
   yesLabel: 'Yes'
   noLabel: 'No'
 
+  idYes: Ember.computed 'name', ->
+    "#{@get('name')}-yes"
+
+
+  idNo: Ember.computed 'name', ->
+    "#{@get('name')}-no"
+
+
   yesChecked: (->
     @get('yesValue') == @get('selection')
   ).property('selection', 'yesValue')

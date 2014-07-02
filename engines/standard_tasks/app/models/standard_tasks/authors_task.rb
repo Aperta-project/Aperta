@@ -10,7 +10,7 @@ module StandardTasks
     end
 
     def assignees
-      []
+      User.none
     end
   end
 end

@@ -2,7 +2,7 @@ ETahi.SavesDelayed = Ember.Mixin.create
   saveInFlight: false
 
   saveDelayed: ->
-    Ember.run.debounce(@, @saveModel, 100)
+    Ember.run.debounce(@, @saveModel, 200)
 
   saveModel: ->
     unless @get('saveInFlight')

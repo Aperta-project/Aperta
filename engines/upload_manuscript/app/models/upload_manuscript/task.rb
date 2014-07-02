@@ -6,7 +6,7 @@ module UploadManuscript
     role "author"
 
     def assignees
-      []
+      User.none
     end
 
     def active_model_serializer

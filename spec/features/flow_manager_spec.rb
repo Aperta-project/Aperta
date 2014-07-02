@@ -151,7 +151,7 @@ feature "Flow Manager", js: true do
       papers = my_tasks.paper_profiles
       papers.first.view_card 'Assign Admin' do |card|
         card.mark_as_complete
-        sleep 0.1
+        sleep 0.2
       end
 
       my_tasks = flow_manager_page.column 'My papers'

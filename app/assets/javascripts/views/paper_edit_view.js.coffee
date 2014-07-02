@@ -48,6 +48,8 @@ ETahi.PaperEditView = Ember.View.extend
   setupVisualEditor: (->
     ve.init.platform.setModulesUrl('/visual-editor/modules')
     @updateVisualEditor()
+    @addObserver 'controller.body', =>
+      @updateVisualEditor()
   ).on('didInsertElement')
 
   updateVisualEditor: ->

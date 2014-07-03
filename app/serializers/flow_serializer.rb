@@ -24,7 +24,9 @@ class FlowSerializer < ActiveModel::Serializer
   end
 
   def paper_admin_tasks
-    cached_tasks.where(type: "PaperAdminTask")
+    Task.joins(paper: :assigned_users)
+    .where(paper_roles: {admin: true, user_id: current_user.id},
+           type: "PaperAdminTask")
   end
 
   def unassigned_tasks

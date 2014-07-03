@@ -129,16 +129,16 @@ feature "Flow Manager", js: true do
 
   context "an admin with papers assigned to them" do
     before do
-      assign_tasks_to_user(paper1, admin, ['Assign Admin'])
-      assign_tasks_to_user(paper2, admin, ['Assign Admin'])
+      paper1.assign_admin!(admin)
+      paper2.assign_admin!(admin)
     end
 
     scenario "Your Papers" do
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
-      my_tasks = flow_manager_page.column 'My papers'
-      papers = my_tasks.paper_profiles
+      my_papers = flow_manager_page.column 'My papers'
+      papers = my_papers.paper_profiles
       expect(papers.map &:title).to match_array [paper1.title, paper2.title]
       papers.first.view # Verify that we can go to the paper's manage page from its profile.
     end
@@ -147,15 +147,15 @@ feature "Flow Manager", js: true do
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
-      my_tasks = flow_manager_page.column 'My papers'
-      papers = my_tasks.paper_profiles
+      my_papers = flow_manager_page.column 'My papers'
+      papers = my_papers.paper_profiles
       papers.first.view_card 'Assign Admin' do |card|
         card.mark_as_complete
         sleep 0.2
       end
 
-      my_tasks = flow_manager_page.column 'My papers'
-      papers = my_tasks.paper_profiles
+      my_papers = flow_manager_page.column 'My papers'
+      papers = my_papers.paper_profiles
       admin_card = papers.last.card_by_title('Assign Admin')
       expect(admin_card).to be_completed
     end
@@ -167,8 +167,8 @@ feature "Flow Manager", js: true do
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
-      my_tasks = flow_manager_page.column 'My papers'
-      expect(my_tasks.has_empty_text?).to eq(true)
+      my_papers = flow_manager_page.column 'My papers'
+      expect(my_papers.has_empty_text?).to eq(true)
     end
   end
 

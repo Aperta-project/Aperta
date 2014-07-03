@@ -85,8 +85,7 @@ class Paper < ActiveRecord::Base
   end
 
   def admin
-    role = paper_roles.where(admin: true).first
-    role.user if role
+    admins.first
   end
 
   def metadata_tasks_completed?

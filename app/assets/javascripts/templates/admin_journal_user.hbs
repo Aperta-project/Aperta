@@ -1,7 +1,7 @@
 <tr data-toggle="modal" data-target=#{{unbound modalId}} class="user-row">
-  <td>{{model.firstName}}</td>
-  <td>{{model.lastName}}</td>
-  <td>{{model.username}}</td>
+  <td class="truncated-field">{{model.firstName}}</td>
+  <td class="truncated-field">{{model.lastName}}</td>
+  <td class="truncated-field">{{model.username}}</td>
 </tr>
 
 {{#actionable-modal modalId=modalId username=model.username saveAction='saveUser' cancelAction='rollbackUser' modalTitle='User Details'}}

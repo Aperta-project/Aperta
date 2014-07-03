@@ -94,7 +94,7 @@ class EditModal < PageFragment
   end
 
   def cancel
-    click_on "Cancel"
+    find('.cancel-link').click
     AdminDashboardPage.new(context: context)
   end
 

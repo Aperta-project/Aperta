@@ -1,0 +1,22 @@
+<div class="overlay-container">
+  <header class="overlay-header">
+  </header>
+
+  <section class="overlay-content">
+    <h2>You have unsaved changes</h2>
+
+    <div class="button-row">
+      <a class="primary-button" {{action "discardChanges"}}>Discard Changes</a>
+      <a class="primary-button" {{action "cancelTransition"}}>Continue Editing</a>
+      <a class="btn close-overlay" {{action 'cancelTransition'}}>Cancel</a>
+    </div>
+
+  </section>
+
+  <footer class="overlay-footer">
+    <div class="overlay-footer-content">
+    </div>
+  </footer>
+</div>
+
+

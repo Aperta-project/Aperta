@@ -36,6 +36,22 @@ feature "Manuscript Manager Templates", js: true do
       expect(page.current_url).to match(%r{/admin/journals/\d+/manuscript_manager_templates/\d+/edit})
       expect(mmt_page).to have_no_application_error
     end
+
+    scenario "Adding a card without saving" do
+      mmt_page = ManuscriptManagerTemplatePage.visit(journal)
+      mmt_page.add_new_template
+      mmt_page.paper_type = "Test Type"
+      phase = mmt_page.find_phase 'Phase 1'
+      task_type = "ReviewerReportTask"
+      phase.new_card overlay: ChooseCardTypeOverlay, card_type: task_type
+      expect(phase).to have_card("Reviewer Report Task")
+      expect(mmt_page).to have_content("You have unsaved changes")
+
+      click_link 'Admin'
+      overlay = UnsavedChanges.find_overlay(mmt_page)
+      overlay.discard_changes
+      expect(URI.parse(page.current_url).path).to eq("/admin")
+    end
   end
 end
 

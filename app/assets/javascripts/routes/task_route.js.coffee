@@ -35,6 +35,6 @@ ETahi.TaskRoute = Ember.Route.extend
 
   actions:
     willTransition: (transition) ->
-      redirectRouteName = @controllerFor('application').get('overlayRedirect.lastObject.firstObject')
-      unless transition.targetName == redirectRouteName
+      redirectRoute = @controllerFor('application').get('overlayRedirect').popObject()
+      unless transition.targetName == redirectRoute.get('firstObject')
         @controllerFor('application').set('cachedModel', null)

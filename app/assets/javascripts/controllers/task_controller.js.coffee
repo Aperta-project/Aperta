@@ -18,4 +18,4 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed,
       @send(@get('onClose'))
 
     redirect: ->
-      @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect').popObject())
+      @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect.lastObject'))

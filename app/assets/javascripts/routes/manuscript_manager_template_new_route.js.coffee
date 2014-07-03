@@ -1,4 +1,4 @@
-ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend
+ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend(ETahi.AlertUnsavedChanges,
   controllerName: 'manuscriptManagerTemplateEdit'
 
   model: (params) ->
@@ -29,24 +29,4 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend
 
   renderTemplate: ->
     @render 'manuscript_manager_template/edit'
-
-  actions:
-    willTransition: (transition) ->
-      if @controller.get('dirty')
-        @set('attemptingTransition', transition)
-        transition.abort()
-        @render 'unsavedDataOverlay',
-          into: 'application'
-          outlet: 'overlay'
-          controller: 'unsavedDataOverlay'
-      else
-        # Bubble the `willTransition` action so that
-        # parent routes can decide whether or not to abort.
-        return true
-    discardChanges: ->
-      @controller.send('rollbackTemplate')
-      @get('attemptingTransition').retry()
-
-    cancelTransition: ->
-      @send('closeOverlay')
-
+)

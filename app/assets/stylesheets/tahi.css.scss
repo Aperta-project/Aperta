@@ -66,6 +66,14 @@ textarea { resize: none; }
 
   &.full-width { max-width: none; }
 
+  .paper-status {
+    position: relative;
+    line-height: 0px;
+    top: 20px;
+    left: 120px;
+    z-index: 1;
+  }
+
   > main {
     overflow: hidden;
     min-width: 960px;

@@ -90,11 +90,6 @@ HERE
     select.select value
   end
 
-  def save
-    click_on 'Save'
-    self
-  end
-
   def submit
     click_on "Submit"
     SubmitPaperPage.new

@@ -32,11 +32,13 @@
           <span class="glyphicon glyphicon-plus-sign"></span>
           Add new
         </a>
-        <div {{bind-attr class=":affiliations-form hideAffiliationForm:hide"}}>
-          <h3>New Affiliation</h3>
-          <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
-          {{view ETahi.AffiliationNewView newAffiliation=newAffiliation}}
-        </div>
+        {{#unless hideAffiliationForm}}
+          <div class="affiliations-form">
+            <h3>New Affiliation</h3>
+            <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
+            {{partial "user/affiliation_form"}}
+          </div>
+        {{/unless}}
       </div>
 
       <a href="#" id="reset-password">Reset my password</a>

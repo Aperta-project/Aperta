@@ -17,6 +17,7 @@
         <h2 class="column-title">{{flow.title}}</h2>
         <div class="remove-column glyphicon glyphicon-remove" {{action 'removeFlow' flow}}></div>
       </div>
+      {{progress-spinner visible=flow.isSaving}}
 
       <div class="column-content">
         <ul class="cards">

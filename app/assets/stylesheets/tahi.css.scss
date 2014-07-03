@@ -63,13 +63,13 @@ textarea { resize: none; }
 #tahi-container {
   max-width: 1120px;
   margin: 0 auto;
-  position: relative;
 
   &.full-width { max-width: none; }
 
   .paper-status {
-    position: absolute;
-    top: 10px;
+    position: relative;
+    line-height: 0px;
+    top: 20px;
     left: 120px;
     z-index: 1;
   }

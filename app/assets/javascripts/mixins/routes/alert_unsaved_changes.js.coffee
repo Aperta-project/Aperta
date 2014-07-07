@@ -13,7 +13,7 @@ ETahi.AlertUnsavedChanges = Ember.Mixin.create
         # parent routes can decide whether or not to abort.
         return true
     discardChanges: ->
-      @controller.send('rollbackTemplate')
+      @controller.send('rollback')
       @get('attemptingTransition').retry()
 
     cancelTransition: ->

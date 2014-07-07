@@ -16,21 +16,12 @@ your components have stylesheets (`rake bower:resolve`)
 ### Setting up the event server
 
 You will need:
-- Go with your $GOPATH environment variable set.
-- Add /usr/local/go/bin to your $PATH.
-- a cloned copy of https://github.com/stuartnelson3/golang-eventsource: 
-  `$ git clone git@github.com:stuartnelson3/golang-eventsource.git`
 
-From your golang-eventsource folder:
+- Go (`brew install go` is easiest) with your [$GOPATH](http://golang.org/doc/code.html#GOPATH) environment variable set. 
+- Add the go binary to your $PATH.  If you used brew it'll tell you to do this already.
+- `$ go get github.com/stuartnelson3/golang-eventsource.git` to put the event server and its dependencies in your $GOPATH
 
-Download your server dependencies
-```
-$ for f in github.com/antage/eventsource github.com/martini-contrib/cors github.com/codegangsta/martini; do
-  go get $f
-  done
-```
-
-Run your server (by default you should use Foreman as described in the section below)
+If you don't want to use Foreman as described in the section below, you can always run the event source server manually:
 `$ PORT=8080 TOKEN=token123 go run server.go`
 
 By default, the eventsource server checks every request for a token that matches against its `$TOKEN` environment variable. Tahi's default token is `token123`. To change this behavior, set the `ES_TOKEN` environment variable for tahi.

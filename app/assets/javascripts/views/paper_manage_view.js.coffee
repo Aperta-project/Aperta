@@ -1,4 +1,4 @@
 ETahi.PaperManageView = Ember.View.extend
   setupColumnHeights:(->
-    Tahi.utils.resizeColumnHeaders()
+    Ember.run.scheduleOnce('afterRender', this, Tahi.utils.resizeColumnHeaders)
   ).on('didInsertElement').observes('controller.phases.@each')

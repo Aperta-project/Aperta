@@ -31,7 +31,7 @@ feature "Sync Reviewer Report tasks with Assigned Reviewers", js: true do
       overlay.remove_all_paper_reviewers!
     end
 
-    expect(task_manager_page.tasks).to_not include('Reviewer Report')
+    expect(task_manager_page).to have_no_task('Reviewer Report')
   end
 
   scenario "Removing a paper reviewer should remove reviewer report task from the renamed phase" do
@@ -42,11 +42,11 @@ feature "Sync Reviewer Report tasks with Assigned Reviewers", js: true do
       overlay.remove_all_paper_reviewers!
     end
 
-    expect(task_manager_page.tasks).to_not include('Reviewer Report')
+    expect(task_manager_page).to have_no_task('Reviewer Report')
   end
 
   scenario "Removing a paper reviewer should remove reviewer report task from the renamed phase" do
-    expect(task_manager_page.tasks).to include('Reviewer Report')
+    expect(task_manager_page).to have_task('Reviewer Report')
 
     reviewer_report_task = paper.tasks.where(type: ReviewerReportTask).first
     new_phase = paper.phases.where("name != ?", "Get Reviews").first
@@ -56,6 +56,6 @@ feature "Sync Reviewer Report tasks with Assigned Reviewers", js: true do
       overlay.remove_all_paper_reviewers!
     end
 
-    expect(task_manager_page.tasks).to_not include('Reviewer Report')
+    expect(task_manager_page).to have_no_task('Reviewer Report')
   end
 end

@@ -2,7 +2,6 @@ class DashboardSerializer < ActiveModel::Serializer
   attribute :id
   has_one :user, embed: :id, include: true
   has_many :submissions, embed: :ids, include: true, root: :lite_papers, serializer: LitePaperSerializer
-  has_many :assigned_tasks, embed: :ids, include: true, root: :card_thumbnails, serializer: CardThumbnailSerializer
   has_many :administered_journals
 
   def id
@@ -20,11 +19,5 @@ class DashboardSerializer < ActiveModel::Serializer
   def submissions
     # all the papers i have submitted
     @submissions ||= current_user.submitted_papers
-  end
-
-  def assigned_tasks
-    # all the tasks I have been associated with
-    return @assigned_tasks if @assigned_tasks
-    @assigned_tasks = Task.assigned_to(current_user).includes(:assignee, :paper)
   end
 end

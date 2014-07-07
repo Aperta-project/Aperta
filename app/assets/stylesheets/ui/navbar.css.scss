@@ -73,6 +73,7 @@ $nav-bar-active-color: $tahi-primary;
   margin-bottom: 0;
   list-style-type: none;
   color: $nav-bar-color;
+  height: 36px;
 }
 
 .nav-bar-text,
@@ -80,6 +81,8 @@ $nav-bar-active-color: $tahi-primary;
   float: left;
   display: block;
   font-size: 14px;
+  max-width: 300px;
+  height: 100%;
 
   a {
     display: inline-block;

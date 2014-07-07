@@ -5,12 +5,8 @@ feature "Reviewer Report", js: true do
 
   let!(:reviewer) { FactoryGirl.create :user }
 
-  let!(:author) do
-    author = FactoryGirl.create :user
-  end
-
   let!(:paper) do
-    FactoryGirl.create(:paper, :with_tasks, user: author, journal: journal, submitted: true)
+    FactoryGirl.create(:paper, :with_tasks, user: reviewer, journal: journal, submitted: true)
   end
 
   before do
@@ -23,7 +19,8 @@ feature "Reviewer Report", js: true do
 
   scenario "Reviewer can write a reviewer report" do
     dashboard_page = DashboardPage.new
-    dashboard_page.view_card 'Reviewer Report' do |overlay|
+    manuscript_page = dashboard_page.view_submitted_paper paper.short_title
+    manuscript_page.view_card 'Reviewer Report' do |overlay|
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end

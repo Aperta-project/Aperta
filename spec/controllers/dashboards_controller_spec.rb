@@ -18,7 +18,7 @@ describe DashboardsController do
     it "renders the dashboard info as json" do
       do_request
       json = JSON.parse(response.body)
-      expect(json.keys).to match_array %w(dashboards lite_papers card_thumbnails users affiliations)
+      expect(json.keys).to match_array %w(dashboards lite_papers users affiliations)
     end
   end
 

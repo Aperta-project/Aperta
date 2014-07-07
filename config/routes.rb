@@ -101,7 +101,7 @@ Tahi::Application.routes.draw do
 
   resources :questions, only: [:create, :update]
 
-  get '/dashboard_info', to: 'user_info#dashboard', defaults: {format: 'json'}
+  resource :dashboards, only: :show
 
   resource :event_stream, only: :show
 

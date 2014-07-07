@@ -50,7 +50,7 @@ feature "Manuscript Manager Templates", js: true do
       click_link 'Admin'
       overlay = UnsavedChanges.find_overlay(mmt_page)
       overlay.discard_changes
-      expect(URI.parse(page.current_url).path).to eq("/admin")
+      expect(current_path).to eq("/admin")
     end
   end
 end

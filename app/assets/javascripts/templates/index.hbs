@@ -1,5 +1,5 @@
 <div id="tahi-container">
-  <h1 class="dashboard-header">Welcome, {{currentUser.fullName}}</h1>
+  <h1 class="dashboard-header truncated-field">Welcome, {{currentUser.fullName}}</h1>
 
   <main>
     <section id="dashboard-my-submissions">
@@ -7,7 +7,7 @@
       {{#if hasSubmissions}}
         <ul class="dashboard-submitted-papers">
           {{#each paper in model.submissions}}
-            <li class="dashboard-paper-title">{{link-to paper.shortTitle "paper.edit" paper.id}}</li>
+            <li class="dashboard-paper-title truncated-field">{{link-to paper.shortTitle "paper.edit" paper.id}}</li>
           {{/each}}
         </ul>
       {{else}}
@@ -21,7 +21,7 @@
       <section id="dashboard-my-tasks">
         <h2>Your Tasks</h2>
         {{#each paper in tasksByPaper}}
-          <h3 class="dashboard-paper-title">{{link-to paper.shortTitle "paper.edit" paper.id}}</h3>
+          <h3 class="dashboard-paper-title truncated-field">{{link-to paper.shortTitle "paper.edit" paper.id}}</h3>
           {{each paper.tasks itemViewClass="ETahi.CardView"}}
         {{/each}}
       </section>

@@ -5,15 +5,22 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
   sourceList: []
 
   didInsertElement: ->
+    engine = new Bloodhound
+      name: 'schools'
+      local: @get('sourceList').map (str) ->
+        {value: str}
+      datumTokenizer: (d) ->
+        Bloodhound.tokenizers.whitespace(d.value)
+      queryTokenizer: Bloodhound.tokenizers.whitespace
+      limit: 10
+
+    engine.initialize()
+
     @.$().typeahead({
       hint: true,
       highlight: true,
-      minLength: 1
-    }, {
-      name: 'schools',
-      displayKey: 'value',
-      source: @substringMatcher(@get('sourceList'))
-    })
+      minLength: 1,
+    }, {source: engine.ttAdapter(), displayKey: 'value'})
 
   substringMatcher: (strs)->
     (q, cb) ->

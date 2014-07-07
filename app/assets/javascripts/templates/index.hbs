@@ -16,15 +16,5 @@
 
       {{link-to "Create new submission" "paper_new" classNames="primary-button wide-button"}}
     </section>
-
-    {{#if hasAssignedTasks}}
-      <section id="dashboard-my-tasks">
-        <h2>Your Tasks</h2>
-        {{#each paper in tasksByPaper}}
-          <h3 class="dashboard-paper-title truncated-field">{{link-to paper.shortTitle "paper.edit" paper.id}}</h3>
-          {{each paper.tasks itemViewClass="ETahi.CardView"}}
-        {{/each}}
-      </section>
-    {{/if}}
   </main>
 </div>

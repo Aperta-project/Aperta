@@ -4,9 +4,7 @@ ETahi.IndexRoute = Ember.Route.extend
       @controllerFor('application').set('cachedModel' , null)
       cachedModel
     else
-      Ember.$.getJSON('/dashboard_info').then (data) =>
-        @store.pushPayload('dashboard', data)
-        @store.getById('dashboard', 1)
+      @store.find('dashboard').then (dashboardArray) -> dashboardArray.get 'firstObject'
 
   afterModel: (model) ->
     model.set('allCardThumbnails', @store.all('cardThumbnail'))

@@ -3,16 +3,14 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
 
   resetPasswordFailure: false
 
-  modalId: (->
-    "#{@get('id')}-#{@get('username')}"
-  ).property('username', 'id')
-
   actions:
     saveUser: ->
-      @get('model').save()
+      @get('model').save().then =>
+        @send('closeOverlay')
 
     rollbackUser: ->
       @get('model').rollback()
+      @send('closeOverlay')
 
     resetPassword: (user) ->
       $.get("/admin/journal_users/#{user.id}/reset").done(=>

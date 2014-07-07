@@ -48,7 +48,6 @@ ETahi.PaperEditView = Ember.View.extend
   setupVisualEditor: (->
     ve.init.platform.setModulesUrl('/visual-editor/modules')
     @updateVisualEditor()
-
     @addObserver 'controller.body', =>
       @updateVisualEditor()
   ).on('didInsertElement')
@@ -69,6 +68,32 @@ ETahi.PaperEditView = Ember.View.extend
     )
 
     @set('visualEditor', target)
+    @setupAutosave()
+
+  timeoutSave: ->
+    @saveVisualEditorChanges()
+    @get('controller').send('savePaper')
+    Ember.run.cancel(@short)
+    Ember.run.cancel(@long)
+    @short = null
+    @long = null
+    @keyCount = 0
+
+  short: null
+  long: null
+  keyCount: 0
+
+  setupAutosave: ->
+    # The timeout times and keyup counter are arbitrary. Feel free to tweak.
+    Ember.$(document).on 'keyup', '.ve-ui-surface, #paper-title', =>
+      @get('controller').set('saveState', "Saving...")
+      # Check for a window timeout so we aren't waiting in testing.
+      @short = Ember.run.debounce(@, @timeoutSave, window.shortTimeout || (1000 * 10))
+      unless @long
+        @long = Ember.run.later(@, @timeoutSave, 1000 * 60)
+      @keyCount++
+      if @keyCount > 200
+        @timeoutSave()
 
   saveVisualEditorChanges: ->
     documentNode = ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())

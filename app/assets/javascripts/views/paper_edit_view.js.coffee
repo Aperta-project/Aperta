@@ -70,7 +70,7 @@ ETahi.PaperEditView = Ember.View.extend
     $('#paper-body').html('').append(container)
     target = new ve.init.sa.Target(
       container,
-      ve.createDocumentFromHtml(@get('controller.body'))
+      ve.createDocumentFromHtml(@get('controller.body') || '')
     )
 
     self = @

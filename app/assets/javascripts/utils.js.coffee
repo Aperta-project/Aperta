@@ -12,16 +12,16 @@ Tahi.utils =
       @resizeColumnHeaders()
 
   resizeColumnHeaders: ->
-    $children = $('.columns .column-header')
-    return unless $children.length
+    $headers = $('.columns .column-header')
+    return unless $headers.length
 
-    $children.css('height', '')
-    heights = $children.find('h2').map ->
+    $headers.css('height', '')
+    heights = $headers.find('h2').map ->
       $(this).outerHeight()
 
     max = Math.max.apply(Math, heights)
 
-    $children.css('height', max)
+    $headers.css('height', max)
     $('.column-content').css('top', max)
 
   togglePropertyAfterDelay: (obj, prop, startVal, endVal, ms) ->

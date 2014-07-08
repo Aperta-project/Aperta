@@ -11,25 +11,17 @@ in order to proceed.  `brew install node` and then `npm install bower -g`
 - All bower dependencies are found in the `Bowerfile`
 - If you're installing new bower components you'll want to read the [rails-bower docs](https://github.com/42dev/bower-rails#rake-tasks), especially if 
 your components have stylesheets (`rake bower:resolve`)
+- You'll need redis.  `brew install redis` is the easiest way to get it.
 
 ### Setting up the event server
 
 You will need:
-- Go with your $GOPATH environment variable set.
-- Add /usr/local/go/bin to your $PATH.
-- a cloned copy of https://github.com/stuartnelson3/golang-eventsource: 
-  `$ git clone git@github.com:stuartnelson3/golang-eventsource.git`
 
-From your golang-eventsource folder:
+- Go (`brew install go` is easiest) with your [$GOPATH](http://golang.org/doc/code.html#GOPATH) environment variable set. 
+- Add the go binary to your $PATH.  If you used brew it'll tell you to do this already.
+- `$ go get github.com/stuartnelson3/golang-eventsource.git` to put the event server and its dependencies in your $GOPATH
 
-Download your server dependencies
-```
-$ for f in github.com/antage/eventsource github.com/martini-contrib/cors github.com/codegangsta/martini; do
-  go get $f
-  done
-```
-
-Run your server
+If you don't want to use Foreman as described in the section below, you can always run the event source server manually:
 `$ PORT=8080 TOKEN=token123 go run server.go`
 
 By default, the eventsource server checks every request for a token that matches against its `$TOKEN` environment variable. Tahi's default token is `token123`. To change this behavior, set the `ES_TOKEN` environment variable for tahi.
@@ -39,6 +31,10 @@ By default, tahi attempts to connect to a stream server at `http://localhost:808
 ```
 ES_URL=http://tahi-eventsource.herokuapp.com rails s
 ```
+
+### Running the server
+
+- We're using Foreman to run everything in dev.  Run `bin/fs` to start the server with the correct Procfile.
 
 ### Running specs
 

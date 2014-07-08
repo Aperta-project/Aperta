@@ -1,11 +1,14 @@
 class PDFConverter
   def self.convert(paper, downloader)
-    PDFKit.new(pdf_html paper, downloader).to_pdf
-  end
-
-  def self.pdf_html(paper, downloader)
     publishing_info_presenter = PublishingInformationPresenter.new paper, downloader
 
+    PDFKit.new(pdf_html(paper, publishing_info_presenter),
+               footer_right: publishing_info_presenter.downloader_name,
+               footer_font_name: 'Times New Roman',
+               footer_font_size: '10').to_pdf
+  end
+
+  def self.pdf_html(paper, publishing_info_presenter)
     <<-HTML
       <html>
         <head>

@@ -13,12 +13,6 @@ class PublishingInformationPresenter
         height: 100%;
         display: relative;
       }
-
-      #downloader-name {
-        position: absolute;
-        top: 85%;
-        right: 0;
-      }
     CSS
   end
 
@@ -27,7 +21,6 @@ class PublishingInformationPresenter
       #{title}
       #{journal_name}
       #{generated_at}
-      #{downloader_name}
     HTML
   end
 
@@ -44,6 +37,6 @@ class PublishingInformationPresenter
   end
 
   def downloader_name
-    "<p id='downloader-name'><em>Generated for #{downloader.full_name}</em></p>"
+    "Generated for #{downloader.full_name}"
   end
 end

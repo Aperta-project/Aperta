@@ -18,14 +18,14 @@
       margin: 0;
     }
 
-    .primary-button {
+    .button-primary {
       display: inline-block;
       position: absolute;
       right: 10px;
     }
   }
 
-  .primary-button {
+  .button-primary {
     background-color: $tahi-blue-light;
 
     &:hover {
@@ -194,7 +194,7 @@
         border-top: none;
 
         button {
-          @extend .primary-button;
+          @extend .button-primary;
           @extend .wide-button;
         }
 

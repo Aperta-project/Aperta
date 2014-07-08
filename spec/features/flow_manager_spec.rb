@@ -152,7 +152,7 @@ feature "Flow Manager", js: true do
       first_paper_title = papers.first.title
       papers.first.view_card 'Assign Admin' do |card|
         card.mark_as_complete
-        sleep 0.2
+        sleep 0.25
       end
 
       my_papers = flow_manager_page.column 'My papers'

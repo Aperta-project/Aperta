@@ -24,7 +24,8 @@ describe PDFConverter do
 
   describe ".pdf_html" do
     it "includes all necessary info and default journal stylesheet in the generated HTML" do
-      pdf_html = PDFConverter.pdf_html paper, user
+      presenter = PublishingInformationPresenter.new paper, user
+      pdf_html = PDFConverter.pdf_html paper, presenter
       expect(pdf_html).to include journal.pdf_css
       expect(pdf_html).to include paper.display_title
       expect(pdf_html).to include paper.body

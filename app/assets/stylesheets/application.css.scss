@@ -26,6 +26,7 @@
 @import 'ui/progress';
 @import 'ui/spinner';
 
+@import 'screens/admin';
 @import 'screens/dashboards';
 @import 'screens/flow_manager';
 @import "screens/manuscript_manager_template";
@@ -33,7 +34,6 @@
 @import 'screens/profile';
 @import 'screens/reviewer_report';
 @import 'screens/tasks';
-@import 'screens/admin';
 
 @import 'overlays/authors_overlay';
 @import 'overlays/choose_new_card_type_overlay';
@@ -41,6 +41,7 @@
 @import 'overlays/message_overlay';
 @import 'overlays/register_decision_overlay';
 @import 'overlays/supporting_information_overlay';
+@import 'overlays/unsaved_data_overlay';
 @import 'overlays/upload_manuscript_overlay';
 
 @import 'components/figure-thumbnail';

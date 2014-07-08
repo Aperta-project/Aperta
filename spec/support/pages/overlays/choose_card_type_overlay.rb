@@ -10,7 +10,12 @@ class ChooseCardTypeOverlay < CardOverlay
 
   def create(params)
     self.task_type = params[:card_type]
+<<<<<<< HEAD
     find('.button-primary', text: 'ADD').click
+=======
+    find('.primary-button', text: 'ADD').click
+    synchronize_no_content! "Pick the type of card to add"
+>>>>>>> master
     self
   end
 end

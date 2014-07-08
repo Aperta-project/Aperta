@@ -1,4 +1,4 @@
-ETahi.ManuscriptManagerTemplateEditRoute = Ember.Route.extend
+ETahi.ManuscriptManagerTemplateEditRoute = Ember.Route.extend(ETahi.AlertUnsavedChanges,
   model: (params) ->
     @modelFor('journal')
       .get('manuscriptManagerTemplates')
@@ -8,3 +8,4 @@ ETahi.ManuscriptManagerTemplateEditRoute = Ember.Route.extend
     controller.set('model', model)
     controller.set('journal', @modelFor('journal'))
 
+)

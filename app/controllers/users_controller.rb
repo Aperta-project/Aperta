@@ -1,10 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
-  def profile
-    render json: current_user
-  end
-
   def show
     # When ember goes to the profile page we want to reload the information
     # for the current user.  It's easiest to do this using aUser.reload() and having 

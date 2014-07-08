@@ -11,14 +11,6 @@ feature "Event streaming", js: true do
     sign_in_page.sign_in author
   end
 
-  scenario "On the dashboard page" do
-    expect(page).to have_css(".dashboard-header")
-    expect(page).to have_no_selector(".completed")
-    upload_task.completed = true
-    upload_task.save
-    expect(page).to have_css(".card-completed", count: 1)
-  end
-
   describe "manuscript manager" do
     before do
       edit_paper = EditPaperPage.visit paper

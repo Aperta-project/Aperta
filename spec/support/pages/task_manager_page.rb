@@ -24,6 +24,14 @@ class TaskManagerPage < Page
     end
   end
 
+  def has_task?(task_name)
+    expect(session).to have_css('.card', text: task_name)
+  end
+
+  def has_no_task?(task_name)
+    expect(session).to have_no_css('.card', text: task_name)
+  end
+
   def message_tasks
     synchronize_content! "Add new card"
     all('.card-message').map { |el| MessageTaskCard.new(el) }

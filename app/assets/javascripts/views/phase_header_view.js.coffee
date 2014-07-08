@@ -11,12 +11,10 @@ ETahi.PhaseHeaderView = Em.View.extend
       @set('oldPhaseName', @get('phase.name'))
 
   phaseNameDidChange: (->
-    Ember.run.schedule('afterRender' , this, ->
-      Tahi.utils.resizeColumnHeaders()
-    )
+    Ember.run.scheduleOnce('afterRender', this, Tahi.utils.resizeColumnHeaders)
   ).observes('phase.name')
 
-  currentHeaderHeight: Em.computed 'phase.name', -> $(@get 'element').find('.column-title').height()
+  currentHeaderHeight: Em.computed 'phase.name', -> @$().find('.column-title').height()
 
   input: (e) ->
     if @get('currentHeaderHeight') <= 58

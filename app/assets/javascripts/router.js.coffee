@@ -8,6 +8,9 @@ ETahi.Router.map ()->
 
   @route('task', {path: '/papers/:paper_id/tasks/:task_id'})
   @route('paper_new', { path: '/papers/new' })
+  @route('password_new', {path: '/users/password/new'})
+  @route('password_edit', {path: '/users/password/edit'})
+  @route('signup', {path: '/users/sign_up'})
   @route('signin', {path: '/users/sign_in'})
   @route('signup', {path: '/users/sign_up'})
   @route('profile', {path: '/profile'})

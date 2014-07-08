@@ -149,14 +149,14 @@ feature "Flow Manager", js: true do
 
       my_papers = flow_manager_page.column 'My papers'
       papers = my_papers.paper_profiles
+      first_paper_title = papers.first.title
       papers.first.view_card 'Assign Admin' do |card|
         card.mark_as_complete
         sleep 0.2
       end
 
       my_papers = flow_manager_page.column 'My papers'
-      papers = my_papers.paper_profiles
-      admin_card = papers.last.card_by_title('Assign Admin')
+      admin_card = my_papers.paper_profiles_for(first_paper_title).first.card_by_title('Assign Admin')
       expect(admin_card).to be_completed
     end
 

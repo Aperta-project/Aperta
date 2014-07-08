@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 255 }
   validates :email, format: Devise.email_regexp
+  validates :first_name, length: { maximum: 255 }
+  validates :last_name, length: { maximum: 255 }
 
   mount_uploader :avatar, AvatarUploader
 

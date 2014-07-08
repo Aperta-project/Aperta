@@ -5,11 +5,11 @@ ETahi.PaperEditController = ETahi.PaperController.extend
     this.get('tasks').findBy('type', 'AuthorsTask')
   ).property()
 
-  showPlaceholder: ->
-    Ember.isBlank @get('model.body')
+  showPlaceholder: Em.computed ->
+    Ember.isBlank $(@get 'model.body').text()
 
   isProcessing: ( ->
-    @get('status') == "processing"
+    @get('status') is "processing"
   ).property('status')
 
   lockMessage: ( ->

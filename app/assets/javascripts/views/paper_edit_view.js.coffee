@@ -17,7 +17,8 @@ ETahi.PaperEditView = Ember.View.extend
 
   placeholderBlur: ->
     $('.editable').on "blur", "div[contenteditable]", (e) =>
-      if Ember.isBlank @get('controller.model.body')
+      content = $(ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())).text()
+      if Ember.isBlank content
         @set('controller.showPlaceholder', true)
 
   placeholderFocus: ->

@@ -17,7 +17,7 @@
               progress='figureUploading'
               done='figureUploaded'}}
         {{/replace-image}}
-        <button class="primary-button white-button view-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in glyphicon-button"></span>View Detail</button>
+        <button class="button-primary white-button view-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in glyphicon-button"></span>View Detail</button>
       </div>
     </div>
   {{else}}
@@ -46,7 +46,7 @@
 
   <div class="figure-thumbnail-edit-actions">
     <a href="#" {{bind-attr class="editState::disabled"}} {{action 'cancelEditing'}}>cancel</a>
-    <a href="#" {{bind-attr class="editState::disabled :primary-button :btn-xs"}} {{action 'saveFigure'}}>Save</a>
+    <a href="#" {{bind-attr class="editState::button--disabled :button-primary :button--green :button--small"}} {{action 'saveFigure'}}>Save</a>
   </div>
 
   <div class="clearfix"> </div>
@@ -54,8 +54,8 @@
 
   <div class="figure-thumbnail-destroy-overlay">
     <p>This will permanently delete your image. Are you sure?</p>
-    <button class="primary-button white-button" {{action "cancelDestroyFigure"}}>Cancel</button>
-    <button class="primary-button white-button figure-delete-button" {{action "destroyFigure"}}>Delete Forever</button>
+    <button class="button-primary white-button" {{action "cancelDestroyFigure"}}>Cancel</button>
+    <button class="button-primary white-button figure-delete-button" {{action "destroyFigure"}}>Delete Forever</button>
   </div>
 </div>
 

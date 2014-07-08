@@ -34,7 +34,7 @@ class JournalPage < Page
   end
 
   def add_role
-    find('.permission-header .primary-button').click
+    find('.permission-header .button-primary').click
     RoleFragment.new(find('table.roles tbody', match: :first))
   end
 

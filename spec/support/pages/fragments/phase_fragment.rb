@@ -39,7 +39,7 @@ class PhaseFragment < PageFragment
     reversed_name = new_name.reverse
     field.set(reversed_name)
     sleep(0.2)
-    find('.primary-button').click
+    find('.column-header-update-save').click
     synchronize_content!(new_name)
   end
 end

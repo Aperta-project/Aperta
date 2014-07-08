@@ -45,7 +45,7 @@ feature "Upload Supporting Information", js: true do
 
       caption.set 'New file caption'
       title.set 'new_file_title'
-      all('a', :text => 'SAVE').last.click
+      all('a', :text => 'Save').last.click
 
       expect(title.text).to eq 'new_file_title'
       expect(caption.text).to eq 'New file caption'

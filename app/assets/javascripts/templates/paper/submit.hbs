@@ -33,7 +33,7 @@
     {{/each}}
   </table>
 
-  {{link-to 'Cancel' 'paper.edit' this class="primary-button btn-lg"}}
-  <button id="submit-paper" class="primary-button btn-lg" {{action 'submitPaper'}}>Submit</button>
+  {{link-to 'Cancel' 'paper.edit' this class="button-primary button--green"}}
+  <button id="submit-paper" class="button-primary button--green" {{action 'submitPaper'}}>Submit</button>
   <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
 </div>

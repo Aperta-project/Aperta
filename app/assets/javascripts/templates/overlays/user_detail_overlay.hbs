@@ -21,7 +21,7 @@
 
           <div class="row">
             <div class="reset-password">
-              <a href="#" class="reset-password-link secondary-button blue" {{action 'resetPassword' model}}>Reset password</a>
+              <a href="#" class="reset-password-link button-secondary button--blue" {{action 'resetPassword' model}}>Reset password</a>
               {{#if resetPasswordSuccess}}
                 <div class="success">An email with reset password instructions has been sent to the user's email address.</div>
               {{/if}}
@@ -33,8 +33,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <a class="cancel-link" {{action 'rollbackUser'}}>Cancel</a>
-          <button type="button" {{action 'saveUser'}}>Save</button>
+          <a class="button-link button--grey cancel-link" {{action "rollbackUser"}}>Cancel</a>
+          <button class="button-primary button--blue" {{action "saveUser"}}>Save</button>
         </div>
       </div>
     </div>

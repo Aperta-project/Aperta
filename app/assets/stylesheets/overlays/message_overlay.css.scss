@@ -4,7 +4,7 @@
     color: $tahi-message;
   }
 
-  .primary-button {
+  .button-primary {
     background-color: $tahi-message;
   }
 
@@ -12,7 +12,7 @@
     color: $tahi-message;
   }
 
-  .secondary-button {
+  .button-secondary {
     color: $tahi-message;
     border: 1px solid $tahi-message;
 
@@ -72,7 +72,7 @@
 .message-comment-buttons {
   width: $message-body-width;
   a { color: $tahi-message; }
-  .secondary-button { float: right; }
+  .button-secondary { float: right; }
 }
 
 .message-comments {

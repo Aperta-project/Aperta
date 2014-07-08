@@ -20,11 +20,11 @@
 @import 'ui/chosen';
 @import 'ui/columns';
 @import 'ui/control-bar';
+@import 'ui/datepicker';
 @import 'ui/navbar';
 @import 'ui/overlay';
 @import 'ui/progress';
 @import 'ui/spinner';
-@import 'ui/datepicker';
 
 @import 'screens/dashboards';
 @import 'screens/flow_manager';
@@ -34,12 +34,15 @@
 @import 'screens/reviewer_report';
 @import 'screens/tasks';
 @import 'screens/admin';
+
 @import 'overlays/authors_overlay';
 @import 'overlays/choose_new_card_type_overlay';
 @import 'overlays/figures_overlay';
 @import 'overlays/message_overlay';
 @import 'overlays/register_decision_overlay';
-@import 'overlays/upload_manuscript_overlay';
 @import 'overlays/supporting_information_overlay';
+@import 'overlays/upload_manuscript_overlay';
 
+@import 'components/figure-thumbnail';
 @import 'components/question';
+@import 'components/upload-preview';

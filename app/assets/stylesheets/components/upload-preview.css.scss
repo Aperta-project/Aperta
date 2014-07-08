@@ -1,0 +1,9 @@
+.upload-error-button {
+  color: $tahi-primary;
+  font-size: 40px;
+  line-height: 0.5;
+
+  &:hover {
+    color: $tahi-primary-hover;
+  }
+}

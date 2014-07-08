@@ -29,13 +29,13 @@ feature "Editing paper", js: true do
 
   scenario "Author completes all metadata cards" do
     edit_paper = EditPaperPage.visit paper
-    expect(edit_paper).to have_css('a.disabled-button')
+    expect(edit_paper).to have_css('a.button--disabled')
     edit_paper.cards[:metadata].each do |card|
       edit_paper.view_card card do |overlay|
         overlay.mark_as_complete
       end
     end
-    expect(edit_paper).to_not have_css('a.disabled-button')
+    expect(edit_paper).to_not have_css('a.button--disabled')
   end
 
   scenario "author placeholder text" do

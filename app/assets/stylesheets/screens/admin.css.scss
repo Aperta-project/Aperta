@@ -3,13 +3,6 @@
     margin-bottom: 50px;
   }
 
-  a {
-    color: $tahi-blue-light;
-    &:hover {
-      color: $tahi-blue-hover;
-    }
-  }
-
   .relative {
     position: relative;
   }
@@ -48,11 +41,6 @@
 
   ul.journals {
     list-style-type: none;
-  }
-
-  .blue-box {
-    background: $tahi-blue-light;
-    color: #fff;
   }
 
   table.roles {
@@ -234,6 +222,7 @@
     margin-top: 20px;
     position: relative;
     border: 1px solid $tahi-tertiary;
+
     &:hover { border-color: $tahi-blue-light; }
 
     p { margin-top: 10px; }
@@ -262,6 +251,10 @@
       padding: 0;
       display: inline-block;
       margin-right: 15px;
+      color: $tahi-blue-light;
+      &:hover {
+        color: $tahi-blue-hover;
+      }
     }
 
     .glyphicon.edit-icon {
@@ -311,7 +304,10 @@
       .journal-edit-buttons {
         text-align: right;
         margin-top: 15px;
-        a { font-size: 18px; }
+
+        .button-secondary {
+          color: $tahi-blue-hover;
+        }
       }
     }
   }

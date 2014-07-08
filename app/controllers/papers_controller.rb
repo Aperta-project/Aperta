@@ -1,6 +1,9 @@
 class PapersController < ApplicationController
+  include AttrSanitize
+
   before_action :authenticate_user!
   before_action :enforce_policy
+  before_action :sanitize_title, only: [:create, :update]
 
   layout 'ember'
 
@@ -84,5 +87,9 @@ class PapersController < ApplicationController
 
   def enforce_policy
     authorize_action!(paper: paper)
+  end
+
+  def sanitize_title
+    strip_tags!(params[:paper], :title)
   end
 end

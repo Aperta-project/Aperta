@@ -153,3 +153,9 @@ main > aside > div {
     opacity: 0.5;
   }
 }
+
+#paper-placeholder {
+  position: absolute;
+  color: $tahi-tertiary-dark;
+  font-style: italic;
+}

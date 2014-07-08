@@ -57,7 +57,10 @@
           {{authorNames}}
         </div>
 
-        <div id="paper-body" class="editable" placeholder="Type the body of your manuscript here"></div>
+        {{#if showPlaceholder}}
+          <div id="paper-placeholder">Type your manuscript here</div>
+        {{/if}}
+        <div id="paper-body" class="editable"></div>
       </div>
     </article>
     <aside>

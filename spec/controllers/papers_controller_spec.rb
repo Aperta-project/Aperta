@@ -55,9 +55,14 @@ describe PapersController do
 
   describe "POST 'create'" do
     let(:journal) { FactoryGirl.create :journal }
+    let(:new_title) { 'A full title' }
 
     subject(:do_request) do
-      post :create, { paper: { short_title: 'ABC101', journal_id: journal.id, paper_type: journal.paper_types.first }, format: :json }
+      post :create, { paper: { title: new_title,
+                               short_title: 'ABC101',
+                               journal_id: journal.id,
+                               paper_type: journal.paper_types.first },
+                               format: :json }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -68,6 +73,14 @@ describe PapersController do
       it "saves a new paper record" do
         do_request
         expect(Paper.where(short_title: 'ABC101').count).to eq(1)
+      end
+
+      context "with html tags in the title" do
+        let(:new_title) { '<div>A full html title</div>' }
+        it "gets rid of the tags" do
+          do_request
+          expect(Paper.last.title).to eq('A full html title')
+        end
       end
 
       it "returns a 201 and the paper's id in json" do
@@ -99,9 +112,9 @@ describe PapersController do
 
   describe "PUT 'update'" do
     let(:params) { {} }
-
+    let(:new_title) { 'A title' }
     subject(:do_request) do
-      put :update, { id: paper.to_param, paper: { short_title: 'ABC101' }.merge(params) }
+      put :update, { id: paper.to_param, paper: { title: new_title, short_title: 'ABC101' }.merge(params) }
     end
 
     it_behaves_like "when the user is not signed in"
@@ -111,6 +124,14 @@ describe PapersController do
       it "updates the paper" do
         do_request
         expect(paper.reload.short_title).to eq('ABC101')
+      end
+
+      context "with html tags in the title" do
+        let(:new_title) { '<div>A full html title</div>' }
+        it "gets rid of the tags" do
+          do_request
+          expect(paper.reload.title).to eq('A full html title')
+        end
       end
     end
   end

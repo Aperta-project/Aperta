@@ -89,7 +89,12 @@
 
 .figure-thumbnail-text-content {
   margin: 0 20px 40px 445px; // bottom margin to make space for .figure-thumbnail-edit-actions
+
+  &:hover .glyphicon-pencil {
+    display:inline-block;
+  }
 }
+
 
 .figure-thumbnail-title {
   margin: 3px 0 1em 0;

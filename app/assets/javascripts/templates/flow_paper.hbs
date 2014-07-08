@@ -3,7 +3,7 @@
     {{link-to litePaper.displayTitle 'paper.manage' view.litePaper.id class="paper-profile-title"}}
 
     {{#each task in view.tasks}}
-      <div {{bind-attr class=":card :flow-card task.completed:card-completed task.isMessage:card-message"}}>
+      <div {{bind-attr class=":card :flow-card task.completed:card--completed task.isMessage:card--message"}}>
         <div class="card-content" {{action 'viewCard' litePaper task}}>
           <div class="glyphicon glyphicon-ok completed-glyph"></div>
           <div class="task-title">{{task.title}}</div>

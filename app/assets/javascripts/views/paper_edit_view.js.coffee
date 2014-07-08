@@ -15,6 +15,15 @@ ETahi.PaperEditView = Ember.View.extend
     $('html').addClass('matte')
   ).on('didInsertElement')
 
+  placeholderBlur: ->
+    $('.editable').on "blur", "div[contenteditable]", (e) =>
+      if Ember.isBlank @get('controller.model.body')
+        @set('controller.showPlaceholder', true)
+
+  placeholderFocus: ->
+    $('.editable').on "focus", "div[contenteditable]", (e) =>
+      @set('controller.showPlaceholder', false)
+
   applyManuscriptCss:(->
     $('#paper-body').attr('style', @get('controller.model.journal.manuscriptCss'))
   ).on('didInsertElement')
@@ -50,6 +59,9 @@ ETahi.PaperEditView = Ember.View.extend
     @updateVisualEditor()
     @addObserver 'controller.body', =>
       @updateVisualEditor()
+
+    @placeholderFocus()
+    @placeholderBlur()
   ).on('didInsertElement')
 
   updateVisualEditor: ->
@@ -58,7 +70,7 @@ ETahi.PaperEditView = Ember.View.extend
     $('#paper-body').html('').append(container)
     target = new ve.init.sa.Target(
       container,
-      ve.createDocumentFromHtml(@get('controller.body') || '')
+      ve.createDocumentFromHtml(@get('controller.body'))
     )
 
     self = @

@@ -41,7 +41,6 @@
   width: 251px; // +1px for border
   height: 100%;
   border-right: 1px solid $tahi-tertiary;
-  padding: 0 15px;
   text-align: left;
   vertical-align: top;
   white-space: initial;
@@ -77,6 +76,7 @@
 
 .column-header {
   position: relative;
+  margin: 0 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #aaa;
 }
@@ -142,10 +142,10 @@
   top: 56px;
   right: 0;
   bottom: 0;
-  left: 15px;
-  width: 220px;
-  padding-top: 10px;
-  overflow-y: auto;
+  left: 0;
+  width: 235px;
+  padding: 10px 0 0 15px;
+  overflow: auto;
 
   > ul {
     list-style-type: none;

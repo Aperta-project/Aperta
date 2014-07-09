@@ -100,7 +100,7 @@ feature "Event streaming", js: true do
     expect(page).to have_no_selector(".completed")
     upload_task.completed = true
     upload_task.save
-    expect(page).to have_css(".card-completed", count: 1)
+    expect(page).to have_css(".card--completed", count: 1)
   end
 
 end

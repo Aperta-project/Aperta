@@ -15,15 +15,10 @@ ETahi.PaperEditView = Ember.View.extend
     $('html').addClass('matte')
   ).on('didInsertElement')
 
-  placeholderBlur: ->
-    $('.editable').on "blur", "div[contenteditable]", (e) =>
+  bindPlaceholderEvent: ->
+    $('.editable').on "keyup", "div[contenteditable]", (e) =>
       content = $(ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())).text()
-      if Ember.isBlank content
-        @set('controller.showPlaceholder', true)
-
-  placeholderFocus: ->
-    $('.editable').on "focus", "div[contenteditable]", (e) =>
-      @set('controller.showPlaceholder', false)
+      @set('controller.showPlaceholder', Ember.isBlank content)
 
   applyManuscriptCss:(->
     $('#paper-body').attr('style', @get('controller.model.journal.manuscriptCss'))
@@ -61,14 +56,16 @@ ETahi.PaperEditView = Ember.View.extend
     @addObserver 'controller.body', =>
       @updateVisualEditor()
 
-    @placeholderFocus()
-    @placeholderBlur()
+    @bindPlaceholderEvent()
   ).on('didInsertElement')
 
   updateVisualEditor: ->
     container = $('<div>')
 
     $('#paper-body').html('').append(container)
+
+    ve.debug = false # it's true by default, which adds a gray background
+                     # on initialize and update
     target = new ve.init.sa.Target(
       container,
       ve.createDocumentFromHtml(@get('controller.body') || '')

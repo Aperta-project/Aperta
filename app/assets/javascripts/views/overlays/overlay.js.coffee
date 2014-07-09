@@ -1,6 +1,6 @@
-ETahi.OverlayView = Em.View.extend
+ETahi.OverlayView = Em.View.extend ETahi.AnimateElement,
   animateIn: (->
-    Ember.run.scheduleOnce('afterRender', this, ETahi.animateOverlayIn);
+    Ember.run.scheduleOnce('afterRender', this, @animateOverlayIn)
   ).on('didInsertElement')
 
   allowBodyScrolling: (->

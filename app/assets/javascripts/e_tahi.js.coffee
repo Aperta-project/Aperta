@@ -1,4 +1,3 @@
-#= require ./element_animations
 #= require ./store
 #= require ./event_stream_actions
 #= require_tree ./mixins

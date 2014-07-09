@@ -1,4 +1,4 @@
-ETahi.ApplicationRoute = Ember.Route.extend
+ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
   setupController: (controller, model) ->
     if @getCurrentUser? && @getCurrentUser()
       authorize = (value) -> (result) -> controller.set('canViewAdminLinks', value)
@@ -8,9 +8,9 @@ ETahi.ApplicationRoute = Ember.Route.extend
 
   actions:
     loading: (transition, originRoute) ->
-      spinner = ETahi.Spinner.create()
+      spinner = @Spinner.create()
       @set('spinner', spinner)
-      this.router.one('didTransition', spinner, 'stop')
+      @router.one('didTransition', spinner, 'stop')
 
     error: (response, transition, originRoute) ->
       transition.abort()
@@ -51,7 +51,7 @@ ETahi.ApplicationRoute = Ember.Route.extend
         controller: controllerName)
 
     closeOverlay: ->
-      ETahi.animateOverlayOut().then =>
+      @animateOverlayOut().then =>
         @disconnectOutlet
           outlet: 'overlay'
           parentView: 'application'

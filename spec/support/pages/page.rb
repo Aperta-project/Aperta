@@ -55,7 +55,7 @@ class PageFragment
 
   def view_card card_name, overlay_class=nil, &block
     synchronize_content! card_name
-    session.all('.card-content', text: card_name).first.click
+    all('.card-content', text: card_name).first.click
     synchronize_content! 'CLOSE'
 
     overlay_class ||= begin

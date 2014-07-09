@@ -148,9 +148,10 @@ feature "Flow Manager", js: true do
       flow_manager_page = dashboard_page.view_flow_manager
 
       my_papers = flow_manager_page.column 'My papers'
-      papers = my_papers.paper_profiles
-      first_paper_title = papers.first.title
-      papers.first.view_card 'Assign Admin' do |card|
+      first_paper_title = paper1.title
+
+      my_papers.paper_profiles_for(first_paper_title)
+      .first.view_card 'Assign Admin' do |card|
         card.mark_as_complete
         sleep 0.25
       end

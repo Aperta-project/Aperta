@@ -118,10 +118,6 @@ ETahi.PaperEditView = Ember.View.extend
     @get('controller').send('updateDocumentBody', newBody)
 
   actions:
-    save: ->
-      @saveVisualEditorChanges()
-      @get('controller').send('savePaper')
-
     submit: ->
       @saveVisualEditorChanges()
       @get('controller').send('confirmSubmitPaper')

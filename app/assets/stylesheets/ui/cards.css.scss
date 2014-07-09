@@ -8,21 +8,11 @@
 //   <div class="remove-card"></div>
 // </div>
 //
-// .card-message   - Use if Task is message type
-// .card-completed - Use if Task is completed
+// .card--message   - Use if Task is message type
+// .card--completed - Use if Task is completed
 //
 // Styleguide Card
 
-.figure-thumbnail-text-content:hover .glyphicon-pencil {
-  display:inline-block;
-}
-
-.edit-figure-icon {
-  color: #8ecb87;
-  font-size:14px;
-  display: none;
-  margin-left: 10px;
-}
 
 .card {
   position: relative;
@@ -30,7 +20,27 @@
   margin-bottom: 8px;
 
   .tooltip { position: fixed; }
+
+  .completed-glyph {
+    position: absolute;
+    top: 15px;
+    display: none;
+    color: $tahi-primary;
+  }
 }
+
+
+.card:focus,
+.card:hover {
+  .remove-card { display: inline; }
+
+  .card-content {
+    color: #fff;
+    text-decoration: none;
+    background-color: $btn-primary-bg;
+  }
+}
+
 
 .remove-card {
   position: absolute;
@@ -38,24 +48,13 @@
   right: 5px;
   display: none;
   font-size: 14px;
-  color: #FFFFFF;
+  color: #fff;
   cursor: pointer;
 }
 
-.card:focus,
-.card:hover {
-  .remove-card { display: inline; }
-
-  .card-content {
-    color: white;
-    text-decoration: none;
-    background-color: $btn-primary-bg;
-  }
-}
 
 .card-content {
   position: relative;
-  display: block;
   border-radius: 5px;
   padding: 10px 15px;
   color: $tahi-primary-hover;
@@ -64,67 +63,53 @@
   background-color: $tahi-secondary;
   cursor: pointer;
 
-}
-
-.card {
-  .completed-glyph {
-    display: none;
-  }
-
-  .task-title {
-    display: inline-block;
-    width: 90%;
-  }
-
-  &.card-completed  {
-    .task-title {
-      margin-left: 30px;
-    }
-
-    .completed-glyph {
-      color: $tahi-primary;
-      position: absolute;
-      top: 15px;
-    }
-  }
-}
-
-// .card modifier:
-.card-message .card-content {
-  color: #3f1587;
-  background-color: $tahi-message-light;
-  .badge.unread-comments-count {
+  .badge {
     position: absolute;
     top: -5px;
     left: -5px;
     padding: 1px 5px;
-    background: red;
+    background: #d00;
   }
 }
 
-.card-message:focus .card-content,
-.card-message:hover .card-content {
-  color: white;
-  text-decoration: none;
-  background-color: $tahi-message;
-}
 
 // .card modifier:
-.card-completed .card-content {
-  color: $tahi-tertiary - #666;
-  background: $tahi-tertiary;
+.card--message {
+  .card-content {
+    color: #3f1587;
+    background-color: $tahi-message-light;
+  }
 
-  .completed-glyph {
-    display: inline;
-    margin-right: 5px;
-    color: $tahi-primary;
+  &:focus .card-content,
+  &:hover .card-content {
+    color: #fff;
+    background-color: $tahi-message;
   }
 }
 
-.card-completed:focus .card-content,
-.card-completed:hover .card-content {
-  color: white;
-  background: $tahi-tertiary - #333;
 
-  .glyphicon { color: white; }
+// .card modifier:
+.card--completed {
+  .task-title {
+    margin-left: 30px;
+  }
+
+  .card-content {
+    color: $tahi-tertiary - #666;
+    background: $tahi-tertiary;
+
+    .completed-glyph {
+      display: inline;
+      margin-right: 5px;
+      color: $tahi-primary;
+    }
+  }
+
+  &:focus .card-content,
+  &:hover .card-content {
+    color: #fff;
+    background: $tahi-tertiary - #333;
+
+    .glyphicon { color: white; }
+  }
 }

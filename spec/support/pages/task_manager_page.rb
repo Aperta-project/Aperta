@@ -34,7 +34,7 @@ class TaskManagerPage < Page
 
   def message_tasks
     synchronize_content! "Add new card"
-    all('.card-message').map { |el| MessageTaskCard.new(el) }
+    all('.card--message').map { |el| MessageTaskCard.new(el) }
   end
 
   def get_first_matching_task name

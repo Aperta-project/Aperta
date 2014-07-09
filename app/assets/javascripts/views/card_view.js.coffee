@@ -8,11 +8,11 @@ ETahi.CardView = Em.View.extend(DragNDrop.Dragable, {
   ).on('didInsertElement')
 
   completed: (->
-    if @get('content.completed') then 'card-completed' else false
+    if @get('content.completed') then 'card--completed' else false
   ).property('content.completed')
 
   isMessage: (->
-    if @get('content.isMessage') then 'card-message' else false
+    if @get('content.isMessage') then 'card--message' else false
   ).property('content.isMessage')
 
   dragStart: (e) ->

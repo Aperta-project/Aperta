@@ -33,16 +33,16 @@
   }
 }
 
-.flow-card.card-message .card-content {
+.flow-card.card--message .card-content {
   color: white;
   background-color: $tahi-message-light;
 }
 
-.flow-card.card-message:hover .card-content {
+.flow-card.card--message:hover .card-content {
   background-color: $tahi-message;
 }
 
-.flow-card.card-completed .card-content {
+.flow-card.card--completed .card-content {
   color: $tahi-tertiary - #666;
   background: $tahi-tertiary;
 
@@ -53,7 +53,7 @@
   }
 }
 
-.card-completed:hover .card-content {
+.card--completed:hover .card-content {
   color: white;
   background: $tahi-tertiary - #333;
 

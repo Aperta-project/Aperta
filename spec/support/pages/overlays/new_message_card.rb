@@ -24,11 +24,11 @@ class NewMessageCardOverlay < CardOverlay
   end
 
   def body
-    find('#task_body').text
+    find('#task-body').text
   end
 
   def body=(new_text)
-    fill_in 'task_body', with: new_text
+    fill_in 'task-body', with: new_text
   end
 
   def create(params)

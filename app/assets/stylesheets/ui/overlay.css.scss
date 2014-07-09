@@ -1,19 +1,30 @@
-/*
-  .overlay
-    .overlay-container
-      .overlay-header
-        .overlay-header-title
-      .overlay-content
-      .overlay-footer
-*/
+// Overlay
+//
+// A description goes here.
+//
+// Markup:
+// <div class="overlay">
+//   <div class="overlay-container">
+//     <div class="overlay-header">
+//       <h2 class="overlay-header-title"></h2>
+//     </div>
+//     <div class="overlay-content"></div>
+//     <div class="overlay-footer">
+//       <div class="overlay-footer-content"></div>
+//     </div>
+//   </div>
+// </div>
+//
+// Styleguide Overlay
+
 
 .overlay {
+  overflow: auto;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  overflow: auto;
   height: 100%;
   background-color: rgba(0,0,0,0.7);
   z-index: 9999;
@@ -22,11 +33,12 @@
   @extend .fadeInAndOutAnimation;
 }
 
+
 .overlay-container {
   position: relative;
   width: 1120px;
-  padding: 10px 80px;
   margin: 40px auto 0 auto;
+  padding: 10px 80px;
   background: white;
 }
 
@@ -38,6 +50,7 @@
   margin: 0;
   padding-left: 20px;
 }
+
 
 /* begin header styles ---------- */
 
@@ -56,8 +69,8 @@
 }
 
 .overlay-header .overlay-close-button {
-  bottom: 10px;
   position: absolute;
+  bottom: 10px;
 }
 
 /*
@@ -128,27 +141,4 @@
   label {
     padding-right: 25px;
   }
-}
-
-// TODO: move or rename. Seems to be spcific to overlay forms
-.form-group p {
-  margin: 15px 0;
-  font-size: 18px;
-}
-
-// Used in New Card (ad-hoc & message) overlays
-#task_body {
-  width: $message-body-width;
-  height: 150px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 5px;
-}
-
-// Used in New Card (ad-hoc & message) overlays
-#task-title-field {
-  width: 700px;
-  border-radius: 3px;
-  border: 1px solid $tahi-matte;
-  padding: 5px;
 }

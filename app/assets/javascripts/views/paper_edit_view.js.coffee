@@ -11,13 +11,17 @@ ETahi.PaperEditView = Ember.View.extend
       logoUrl
   ).property()
 
+  documentNode: ->
+    surf = @get('visualEditor').surface
+    ve.dm.converter.getDomFromModel(surf.getModel().getDocument())
+
   setBackgroundColor:(->
     $('html').addClass('matte')
   ).on('didInsertElement')
 
   placeholderBlur: ->
     $('.editable').on "blur", "div[contenteditable]", (e) =>
-      content = $(ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())).text()
+      content = $(@documentNode()).text()
       if Ember.isBlank content
         @set('controller.showPlaceholder', true)
 
@@ -109,8 +113,9 @@ ETahi.PaperEditView = Ember.View.extend
         @timeoutSave()
 
   saveVisualEditorChanges: ->
-    documentNode = ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())
-    @set('controller.body', $(documentNode).find('body').html())
+    documentNode = @documentNode()
+    newBody = $(documentNode).find('body').html()
+    @get('controller').send('updateDocumentBody', newBody)
 
   actions:
     save: ->

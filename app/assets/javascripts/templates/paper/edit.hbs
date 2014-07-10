@@ -6,13 +6,18 @@
   </div>
   <main>
     <article>
-      <div {{bind-attr class=":lock-message locked::hidden"}}>
-        <p class="message">
-          <span class="glyphicon glyphicon-lock" ></span>
+      <ul class="edit-paper list-inline">
+        <li>
+          {{start-editing-button canEdit=canEdit isEditing=isEditing}}
+        </li>
+        <li {{bind-attr class=":lock-message locked::hidden"}}>
+          <p class="message">
+          <span class="glyphicon glyphicon-lock"></span>
           {{{lockMessage}}}
-        </p>
-      </div>
-      <div {{bind-attr class=":locked-overlay locked::hidden"}}>
+          </p>
+        </li>
+      </ul>
+      <div {{bind-attr class=":locked-overlay canEdit::hidden"}}>
       </div>
       <div class="manuscript-container">
         <div class="title">

@@ -74,6 +74,11 @@ $paper-trim-color: $tahi-tertiary;
   right: 0;
 }
 
+.oo-ui-toolbar-bar {
+  height: 45px;
+  padding-top: 2px;
+}
+
 #paper-abstract { display: none; }
 
 .author-detail {
@@ -129,11 +134,15 @@ $paper-trim-color: $tahi-tertiary;
   }
 }
 
+.edit-paper {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  z-index: 10;
+}
+
 .lock-message {
   font-family: $tahi-font-family;
-  position: absolute;
-  top: 10px;
-  left: 180px;
   width: 200px;
   font-size: 12px;
   font-style: italic;
@@ -143,6 +152,19 @@ $paper-trim-color: $tahi-tertiary;
   span {
     display: inline-block;
   }
+}
+
+.start-editing-button {
+  width: 150px;
+
+  .start-editing-icon {
+    padding-right: 22px;
+  }
+}
+
+.stop-edit {
+  margin-top: -6px;
+  margin-left: -8px;
 }
 
 .user-name {

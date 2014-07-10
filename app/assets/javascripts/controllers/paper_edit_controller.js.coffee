@@ -32,6 +32,15 @@ ETahi.PaperEditController = ETahi.PaperController.extend
     !Ember.isBlank(@get('lockMessage'))
   ).property('lockMessage')
 
+  isEditing: (->
+    lockedBy = @get('lockedBy')
+    lockedBy and lockedBy is @getCurrentUser()
+  ).property('lockedBy')
+
+  canEdit: ( ->
+    !@get('locked')
+  ).property('locked')
+
   defaultBody: 'Type your manuscript here'
 
   actions:

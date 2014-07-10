@@ -44,6 +44,12 @@ ETahi.PaperEditController = ETahi.PaperController.extend
   defaultBody: 'Type your manuscript here'
 
   actions:
+    toggleEditing: ->
+      if @get('lockedBy')
+        @set('lockedBy', null)
+      else
+        @set('lockedBy', @getCurrentUser())
+
     savePaper: ->
       return unless @get('model.editable')
       @set("saveState", "Saving...")

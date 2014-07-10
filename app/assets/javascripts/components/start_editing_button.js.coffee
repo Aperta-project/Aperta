@@ -3,6 +3,9 @@ ETahi.StartEditingButtonComponent = Ember.Component.extend
   classNameBindings: ['buttonColor']
   buttonStates: null
 
+  click: ->
+    @sendAction() if @get('buttonState') != 'disabled'
+
   buttonState: (->
     if !@get('canEdit')
       'disabled'

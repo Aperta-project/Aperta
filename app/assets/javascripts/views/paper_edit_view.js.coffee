@@ -2,6 +2,7 @@ ETahi.PaperEditView = Ember.View.extend
   visualEditor: null
 
   locked: Ember.computed.alias 'controller.locked'
+  isEditing: Ember.computed.alias 'controller.isEditing'
 
   logoUrl: (->
     logoUrl = @get('controller.model.journal.logoUrl')
@@ -42,8 +43,8 @@ ETahi.PaperEditView = Ember.View.extend
   ).on('didInsertElement')
 
   updateToolbarLockedState: ( ->
-    $('.oo-ui-toolbar').toggleClass('locked', @get('locked'))
-  ).observes('locked').on('init')
+    $('.oo-ui-toolbar').toggleClass('locked', !@get('isEditing'))
+  ).observes('isEditing')
 
   setupStickyToolbar: ->
     $('.oo-ui-toolbar').scrollToFixed
@@ -80,6 +81,7 @@ ETahi.PaperEditView = Ember.View.extend
     target.on('surfaceReady', ->
       target.toolbar.disableFloatable()
       self.setupStickyToolbar()
+      self.updateToolbarLockedState()
     )
     @set('visualEditor', target)
 

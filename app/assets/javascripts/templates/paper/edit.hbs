@@ -8,7 +8,7 @@
     <article>
       <ul class="edit-paper list-inline">
         <li>
-          {{start-editing-button canEdit=canEdit isEditing=isEditing}}
+          {{start-editing-button action='toggleEditing' canEdit=canEdit isEditing=isEditing}}
         </li>
         <li {{bind-attr class=":lock-message locked::hidden"}}>
           <p class="message">
@@ -17,7 +17,7 @@
           </p>
         </li>
       </ul>
-      <div {{bind-attr class=":locked-overlay canEdit::hidden"}}>
+      <div {{bind-attr class=":locked-overlay isEditing:hidden"}}>
       </div>
       <div class="manuscript-container">
         <div class="title">

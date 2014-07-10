@@ -55,3 +55,6 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
         @disconnectOutlet
           outlet: 'overlay'
           parentView: 'application'
+
+    closeAction: ->
+      @send('closeOverlay')

@@ -62,6 +62,6 @@
 {{#if view.previewState}}
   <div class="figure-thumbnail-preview">
     <div {{action "togglePreview"}} class="figure-thumbnail-preview-close">&times;</div>
-    <img {{bind-attr src=figure.previewSrc}} {{bind-attr alt=figure.alt}}>
+    <img {{bind-attr src=figure.detailSrc}} {{bind-attr alt=figure.alt}}>
   </div>
 {{/if}}

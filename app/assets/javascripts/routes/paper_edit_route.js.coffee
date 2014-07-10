@@ -25,8 +25,3 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('overlayBackground', 'paper/edit')
       @transitionTo('task', paper.id, task.id)
-
-    confirmSubmitPaper: ->
-      return unless @modelFor('paperEdit').get('allMetadataTasksCompleted')
-      @modelFor('paperEdit').save()
-      @transitionTo('paper.submit')

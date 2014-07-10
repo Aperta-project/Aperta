@@ -11,6 +11,10 @@ ETahi.PaperEditView = Ember.View.extend
       logoUrl
   ).property()
 
+  documentNode: ->
+    surf = @get('visualEditor').surface
+    ve.dm.converter.getDomFromModel(surf.getModel().getDocument())
+
   setBackgroundColor:(->
     $('html').addClass('matte')
   ).on('didInsertElement')
@@ -57,6 +61,7 @@ ETahi.PaperEditView = Ember.View.extend
       @updateVisualEditor()
 
     @bindPlaceholderEvent()
+    @setupAutosave()
   ).on('didInsertElement')
 
   updateVisualEditor: ->
@@ -76,9 +81,11 @@ ETahi.PaperEditView = Ember.View.extend
       target.toolbar.disableFloatable()
       self.setupStickyToolbar()
     )
-
     @set('visualEditor', target)
-    @setupAutosave()
+
+  destroyVisualEditor: ( ->
+    Ember.$(document).off 'keyup.autoSave'
+  ).on('willDestroyElement')
 
   timeoutSave: ->
     @saveVisualEditorChanges()
@@ -95,7 +102,7 @@ ETahi.PaperEditView = Ember.View.extend
 
   setupAutosave: ->
     # The timeout times and keyup counter are arbitrary. Feel free to tweak.
-    Ember.$(document).on 'keyup', '.ve-ui-surface, #paper-title', =>
+    Ember.$(document).on 'keyup.autoSave', '.ve-ui-surface, #paper-title', =>
       @get('controller').set('saveState', "Saving...")
       # Check for a window timeout so we aren't waiting in testing.
       @short = Ember.run.debounce(@, @timeoutSave, window.shortTimeout || (1000 * 10))
@@ -106,14 +113,11 @@ ETahi.PaperEditView = Ember.View.extend
         @timeoutSave()
 
   saveVisualEditorChanges: ->
-    documentNode = ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())
-    @set('controller.body', $(documentNode).find('body').html())
+    documentNode = @documentNode()
+    newBody = $(documentNode).find('body').html()
+    @get('controller').send('updateDocumentBody', newBody)
 
   actions:
-    save: ->
-      @saveVisualEditorChanges()
-      @get('controller').send('savePaper')
-
     submit: ->
       @saveVisualEditorChanges()
       @get('controller').send('confirmSubmitPaper')

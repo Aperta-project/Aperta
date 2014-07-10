@@ -28,3 +28,12 @@ ETahi.PaperEditController = ETahi.PaperController.extend
       @set("saveState", "Saving...")
       @get('model').save().then (paper) =>
         @set("saveState", "Saved.")
+
+    updateDocumentBody: (documentBody) ->
+      @set('body', documentBody)
+      false
+
+    confirmSubmitPaper: ->
+      return unless @get('allMetadataTasksCompleted')
+      @get('model').save()
+      @transitionToRoute('paper.submit')

@@ -1,0 +1,33 @@
+<div class="control-bar">
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      <li id="control-bar-paper-journal-logo" class="control-bar-item">
+        {{#if journal.logoUrl}}
+          <img src="{{unbound journal.logoUrl}}">
+        {{else}}
+          <div class="paper-journal">{{unbound journal.name}}</div>
+        {{/if}}
+      </li>
+    </ul>
+    <ul>
+      <li class="control-bar-item">
+        {{#direct-download-link link=downloadLink class="control-bar-link"}}
+          {{partial "svg/epub-icon"}}
+        {{/direct-download-link}}
+      </li>
+      <li class="control-bar-item">
+        {{#direct-download-link link=downloadLink extension=".pdf"}}
+          {{partial "svg/pdf-icon"}}
+        {{/direct-download-link}}
+      </li>
+      {{#if isAdmin}}
+        <li class="control-bar-item">
+          {{#link-to "paper.manage" model class="control-bar-link"}}
+            {{partial "svg/manuscript-manager-icon"}}
+            <span class="manuscript-manager">Manuscript Manager</span>
+          {{/link-to}}
+        </li>
+      {{/if}}
+    </ul>
+  </div>
+</div>

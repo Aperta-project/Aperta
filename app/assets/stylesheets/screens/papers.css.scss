@@ -103,15 +103,6 @@ $paper-trim-color: $tahi-tertiary;
   border: #666 1px dotted;
 }
 
-.manuscript-container,
-main > aside > div {
-  margin: 0 auto;
-}
-
-.manuscript-container {
-  width: 700px;
-}
-
 .locked-overlay {
   position: absolute;
   height: 100%;
@@ -122,26 +113,43 @@ main > aside > div {
   font-size: 24px;
 }
 
-main > aside > div {
+.task-list {
+  margin: 0 auto;
   padding-top: 60px;
   width: 220px;
 }
 
-#tahi-container > main > article * {
+.manuscript-container {
   font-family: $tahi-article-font-family;
-  .glyphicon {
-    font-family: 'Glyphicons Halflings';
+  width: 700px;
+  margin: 0 auto;
+
+  #paper-title {
+    font-family: $tahi-article-font-family;
   }
 }
 
 .lock-message {
+  font-family: $tahi-font-family;
   position: absolute;
   top: 10px;
   left: 180px;
-  font-size: 14px;
+  width: 200px;
+  font-size: 12px;
   font-style: italic;
   color: $tahi-message;
   z-index: 1;
+
+  span {
+    display: inline-block;
+  }
+}
+
+.user-name {
+  @extend %truncates;
+  width: initial;
+  max-width: 95px;
+  vertical-align: bottom;
 }
 
 .oo-ui-toolbar-tools {

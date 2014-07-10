@@ -6,6 +6,7 @@ class FigureSerializer < ActiveModel::Serializer
              :status,
              :title,
              :caption,
+             :detail_src,
              :preview_src
 
   has_one :paper, embed: :id

@@ -8,6 +8,7 @@ ETahi.Figure = DS.Model.extend
   title: a('string')
   caption: a('string')
   previewSrc: a('string')
+  detailSrc: a('string')
 
   #when a figure is loaded via the event stream the paper's
   #hasMany relationship isn't automatically updated.  This

@@ -1,6 +1,7 @@
 #= require controllers/paper_controller
 ETahi.PaperEditController = ETahi.PaperController.extend
   errorText: ""
+
   addAuthorsTask: (->
     this.get('tasks').findBy('type', 'AuthorsTask')
   ).property()
@@ -8,17 +9,28 @@ ETahi.PaperEditController = ETahi.PaperController.extend
   showPlaceholder: Em.computed ->
     Ember.isBlank $(@get 'model.body').text()
 
-  isProcessing: ( ->
-    @get('status') is "processing"
+  lockMessage: ( ->
+    @get('processingMessage') || @get('userEditingMessage')
+  ).property('processingMessage', 'userEditingMessage')
+
+  processingMessage: (->
+    if @get('status') is "processing"
+      "Processing Manuscript"
+    else
+      null
   ).property('status')
 
-  lockMessage: ( ->
-    "Processing Manuscript"
-  ).property('status')
+  userEditingMessage: ( ->
+    lockedBy = @get('lockedBy')
+    if lockedBy and lockedBy isnt @getCurrentUser()
+      "<span class='user-name'>#{lockedBy.get('fullName')}</span> <span>is editing</span>"
+    else
+      null
+  ).property('lockedBy')
 
   locked: ( ->
-    @get('isProcessing')
-  ).property('status')
+    !Ember.isBlank(@get('lockMessage'))
+  ).property('lockMessage')
 
   defaultBody: 'Type your manuscript here'
 

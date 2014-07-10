@@ -4,10 +4,9 @@
     %title Tahi
     = stylesheet_link_tag "application", media: "all"
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Cabin:400,700,400italic"
-    = javascript_include_tag "application"
     = csrf_meta_tags
   %body.sessions
-    #ember-app
+    = render 'shared/navbar'
     #tahi-container{class: yield(:tahi_container_class)}
       - if flash.present?
         %p.notice= notice

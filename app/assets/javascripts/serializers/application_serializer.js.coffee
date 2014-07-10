@@ -39,10 +39,10 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
   primaryTypeName: (primaryType) ->
     primaryType.typeKey?.camelize()
 
-  # This is overridden because finding a 'task' and getting back a root key of 'author_task' will
+  # This is overridden from the RESTSerializer because finding a 'task' and getting back a root key of 'author_task' will
   # break the isPrimary check.
-  extractSingle: (store, primaryType, payload, recordId, requestType) ->
-    payload = @normalizePayload(primaryType, payload)
+  extractSingle: (store, primaryType, payload, recordId) ->
+    payload = @normalizePayload(payload)
     primaryTypeName = @primaryTypeName(primaryType)
     primaryRecord = undefined
     for prop of payload
@@ -53,7 +53,7 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
       if isPrimary and Ember.typeOf(payload[prop]) isnt "array"
         hash = payload[prop]
         hash = @normalizeType(hash)
-        typeName = @extractTypeName(prop, hash)
+        typeName = @extractTypeName(prop, hash) #custom extract
         primaryType = store.modelFor(typeName)
         primaryRecord = @normalize(primaryType, payload[prop], prop)
         continue
@@ -84,7 +84,7 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
     primaryRecord
 
   extractArray: (store, primaryType, payload) ->
-    payload = @normalizePayload(primaryType, payload)
+    payload = @normalizePayload(payload)
     primaryTypeName = @primaryTypeName(primaryType)
     primaryArray = undefined
     for prop of payload
@@ -116,7 +116,7 @@ ETahi.ApplicationSerializer = DS.ActiveModelSerializer.extend
     primaryArray
 
   pushPayload: (store, payload) ->
-    payload = @normalizePayload(null, payload)
+    payload = @normalizePayload(payload)
     for prop of payload
       typeName = @typeForRoot(prop)
 

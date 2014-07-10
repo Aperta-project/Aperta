@@ -9,6 +9,7 @@ ETahi.Paper = DS.Model.extend
   phases: DS.hasMany('phase')
   reviewers: DS.hasMany('user')
   tasks: DS.hasMany('task', {async: true, polymorphic: true})
+  lockedBy: DS.belongsTo('user')
 
   body: a('string')
   shortTitle: a('string')

@@ -4,6 +4,7 @@ class Paper < ActiveRecord::Base
   belongs_to :user, inverse_of: :submitted_papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
+  belongs_to :locked_by, class_name: User
 
   has_one :manuscript, dependent: :destroy
 

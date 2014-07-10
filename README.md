@@ -19,7 +19,7 @@ You will need:
 
 - Go (`brew install go` is easiest) with your [$GOPATH](http://golang.org/doc/code.html#GOPATH) environment variable set. 
 - Add the go binary to your $PATH.  If you used brew it'll tell you to do this already.
-- `$ go get github.com/stuartnelson3/golang-eventsource.git` to put the event server and its dependencies in your $GOPATH
+- `$ go get github.com/stuartnelson3/golang-eventsource` to put the event server and its dependencies in your $GOPATH
 
 If you don't want to use Foreman as described in the section below, you can always run the event source server manually:
 `$ PORT=8080 TOKEN=token123 go run server.go`

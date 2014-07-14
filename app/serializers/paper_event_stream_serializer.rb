@@ -12,6 +12,7 @@ class PaperEventStreamSerializer < ActiveModel::Serializer
 
   has_many :tasks, embed: :ids, polymorphic: true
   has_one :journal, embed: :ids, include: false
+  has_one :locked_by, embed: :id, include: false, root: :users
 
   def status
     object.manuscript.try(:status)

@@ -49,6 +49,7 @@ ETahi.PaperEditController = ETahi.PaperController.extend
         @set('lockedBy', null)
       else
         @set('lockedBy', @getCurrentUser())
+      @send('savePaper')
 
     savePaper: ->
       return unless @get('model.editable')

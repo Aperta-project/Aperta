@@ -71,6 +71,7 @@ class PapersController < ApplicationController
       :short_title, :title, :abstract,
       :body, :paper_type, :submitted,
       :journal_id,
+      :locked_by_id,
       authors: [:first_name, :middle_initial, :last_name, :title, :affiliation, :secondary_affiliation, :department, :email, :deceased, :corresponding_author],
       declaration_ids: [],
       reviewer_ids: [],

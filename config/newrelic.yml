@@ -217,6 +217,7 @@ test:
 production:
   <<: *default_settings
   monitor_mode: true
+  app_name: Tahi (Production)
 
 # Many applications have a staging environment which behaves
 # identically to production. Support for that environment is provided
@@ -224,9 +225,9 @@ production:
 staging:
   <<: *default_settings
   monitor_mode: true
-  # app_name: My Application (Staging)
+  app_name: Tahi (Staging)
 
 performance:
   <<: *default_settings
   monitor_mode: true
-  # app_name: My Application (Staging)
+  app_name: Tahi (Performance)

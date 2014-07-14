@@ -1,6 +1,6 @@
 ETahi.PaperNewController = Ember.ObjectController.extend
   journalDidChange: (->
-    @set('model.paperTypes', @get('model.journal.paperTypes.firstObject'))
+    @set('model.paperType', @get('model.journal.paperTypes.firstObject'))
   ).observes('model.journal')
 
   actions:

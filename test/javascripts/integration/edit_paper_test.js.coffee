@@ -249,7 +249,7 @@ test 'visiting /edit-paper: Author completes all metadata cards', ->
   visit '/papers/93412/edit'
   .then -> ok find('a:contains("Submit")').hasClass 'button--disabled'
   .then ->
-    for card in find('.card-content')
+    for card in find('#paper-metadata-tasks .card-content')
       click card
       click '#task_completed'
       click '.overlay-close-button:first'

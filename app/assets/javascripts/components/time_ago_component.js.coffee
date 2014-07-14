@@ -1,6 +1,6 @@
 ETahi.TimeAgoComponent = Ember.Component.extend
   tagName: 'span'
-  classNames: 'time-ago'
+  classNameBindings: [':time-ago', 'time::hidden']
   attributeBindings: ['title']
 
   didInsertElement: (->
@@ -12,8 +12,7 @@ ETahi.TimeAgoComponent = Ember.Component.extend
   ).property('time')
 
   displayTime: (->
-    if @get('title')
-      Ember.run.schedule('afterRender', =>
-        @$().timeago('updateFromDOM')
-      )
+    Ember.run.schedule('afterRender', =>
+      @$().timeago('updateFromDOM')
+    )
   ).observes('title')

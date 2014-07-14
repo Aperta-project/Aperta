@@ -103,6 +103,14 @@ class Paper < ActiveRecord::Base
     AuthorGroup.build_default_groups_for(self)
   end
 
+  def locked?
+    locked_by_id.present?
+  end
+
+  def locked_by?(user)
+    locked_by_id == user.id
+  end
+
   private
   def notifier_payload
     { id: id, paper_id: id }

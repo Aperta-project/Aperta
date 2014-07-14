@@ -114,16 +114,29 @@ describe PapersController do
     let(:params) { {} }
     let(:new_title) { 'A title' }
     subject(:do_request) do
-      put :update, { id: paper.to_param, paper: { title: new_title, short_title: 'ABC101' }.merge(params) }
+      put :update, { id: paper.to_param, format: :json, paper: { title: new_title, short_title: 'ABC101' }.merge(params) }
     end
 
-    it_behaves_like "when the user is not signed in"
+    it_behaves_like "an unauthenticated json request"
 
     context "when the user is signed in" do
       expect_policy_enforcement
       it "updates the paper" do
         do_request
         expect(paper.reload.short_title).to eq('ABC101')
+      end
+
+      context "when the paper is locked by another user" do
+        before do
+          other_user = create(:user)
+          paper.locked_by = other_user
+          paper.save
+        end
+        it "returns an error" do
+          do_request
+          expect(response.status).to eq(422)
+          expect(JSON.parse(response.body)["errors"]).to have_key("locked_by")
+        end
       end
 
       context "with html tags in the title" do

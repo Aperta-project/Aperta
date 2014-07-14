@@ -11,8 +11,8 @@ feature "Manuscript Manager Templates", js: true do
 
   describe "Adding phases" do
     scenario "Adding a phase" do
-      mmt_page = ManuscriptManagerTemplatePage.visit(journal)
-      mmt_page.add_new_template
+      journal_page = JournalPage.visit(journal)
+      mmt_page = journal_page.add_new_template
       expect(mmt_page.phases).to match_array ['Phase 1', 'Phase 2', 'Phase 3']
 
       phase = mmt_page.find_phase 'Phase 1'
@@ -23,8 +23,8 @@ feature "Manuscript Manager Templates", js: true do
 
   describe "Adding cards" do
     scenario "Adding a card" do
-      mmt_page = ManuscriptManagerTemplatePage.visit(journal)
-      mmt_page.add_new_template
+      journal_page = JournalPage.visit(journal)
+      mmt_page = journal_page.add_new_template
       mmt_page.paper_type = "Test Type"
       phase = mmt_page.find_phase 'Phase 1'
       task_type = "ReviewerReportTask"
@@ -38,8 +38,8 @@ feature "Manuscript Manager Templates", js: true do
     end
 
     scenario "Adding a card without saving" do
-      mmt_page = ManuscriptManagerTemplatePage.visit(journal)
-      mmt_page.add_new_template
+      journal_page = JournalPage.visit(journal)
+      mmt_page = journal_page.add_new_template
       mmt_page.paper_type = "Test Type"
       phase = mmt_page.find_phase 'Phase 1'
       task_type = "ReviewerReportTask"

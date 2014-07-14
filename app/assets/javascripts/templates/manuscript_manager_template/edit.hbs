@@ -15,11 +15,13 @@
           <span {{bind-attr class="dirty:show:hidden :alert-warning :control-bar-message"}}>You have unsaved changes!</span>
           <span {{bind-attr class="errorText:show:hidden :alert-danger :control-bar-message"}}>{{errorText}}</span>
         </li>
+        <li class="control-bar-item">
+          {{#link-to "journal" journal class="button-link button--white"}}Back to Journal edit{{/link-to}}
+        </li>
         <li class="template-edit-paper-type control-bar-item">
           {{input value=paperType placeholder="Paper Type"}}
         </li>
-        <li class="control-bar-item"><a class="btn btn-link template-cancel-button" {{action "cancelEdit" target="view"}}>Cancel</a></li>
-        <li class="control-bar-item"><a class="button-primary button--green template-save-button" {{action "saveTemplate"}}>Save</a></li>
+        <li class="control-bar-item"><a class="button-primary button--white template-save-button" {{action "saveTemplate"}}>Save</a></li>
       </ul>
     </div>
   </div>

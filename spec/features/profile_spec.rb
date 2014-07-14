@@ -50,11 +50,11 @@ feature "Profile Page", js: true do
     end
 
     it "hides the form" do
-      expect(page).to have_no_content(/new affiliation/i)
+      page.source.should_not have_selector('.affiliations-form')
     end
 
     it "clears the form" do
-      find('a', text: 'Add new').click
+      find('a', text: 'Add New Affiliation').click
       expect(page).to have_no_content(uni)
     end
   end

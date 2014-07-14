@@ -98,3 +98,12 @@ $template-thumbnail-side-padding: 10px;
 .manuscript-manager-template {
   margin-bottom: 50px;
 }
+
+.template-edit-paper-type {
+  margin-right: 2px; // override .control-bar-item
+
+  input {
+    width: 175px;
+    height: 34px;
+  }
+}

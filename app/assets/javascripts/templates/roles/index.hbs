@@ -5,14 +5,14 @@
         <th class="role-header">Roles</th>
         <th class="permission-header" colspan="3">
           Permission
-          <button class="button-primary button--light-blue" {{action "addRole"}}>
+          <button class="button-primary button--light-blue admin-header-button" {{action "addRole"}}>
             Add New Role
           </button>
         </th>
       </tr>
     </thead>
     {{#each role in model}}
-      {{render 'roles/show' role}}
+      {{render "roles/show" role}}
     {{/each}}
   </table>
 </div>

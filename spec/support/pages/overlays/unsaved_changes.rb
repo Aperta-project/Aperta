@@ -10,6 +10,6 @@ class UnsavedChanges < Page
   end
 
   def discard_changes
-    find("a", text: "DISCARD CHANGES").click
+    find("a", text: "Discard Changes").click
   end
 end

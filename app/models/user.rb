@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :message_participants, inverse_of: :participant
   has_many :comment_looks
   has_many :credentials, inverse_of: :user, dependent: :destroy
+  has_many :assigned_papers, through: :paper_roles, class_name: 'Paper', source: :paper
 
   attr_accessor :login
 
@@ -49,6 +50,15 @@ class User < ActiveRecord::Base
       Journal.all
     else
       journals.merge(Role.can_administer_journal)
+    end
+  end
+
+  def accessible_paper_ids
+    if admin?
+      Paper.all.pluck(:id)
+    else
+      admin_papers = Paper.where(journal: journals.merge(Role.can_view_all_manuscript_managers))
+      submitted_papers.pluck(:id) | assigned_papers.pluck(:id) | admin_papers.pluck(:id)
     end
   end
 

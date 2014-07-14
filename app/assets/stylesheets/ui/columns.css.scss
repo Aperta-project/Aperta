@@ -138,6 +138,7 @@
 
 
 .column-content {
+  overflow: auto;
   position: absolute;
   top: 56px;
   right: 0;
@@ -145,7 +146,7 @@
   left: 0;
   width: 235px;
   padding: 10px 0 0 15px;
-  overflow: auto;
+  white-space: normal; // IE needs this for some reason :-\
 
   > ul {
     list-style-type: none;

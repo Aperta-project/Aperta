@@ -23,10 +23,11 @@
         <ul class="cards">
           {{#each litePaper in flow.litePapers}}
             {{view ETahi.FlowPaperView flow=flow litePaper=litePaper}}
-          {{else}}
-            <div class="empty-text">{{flow.emptyText}}</div>
           {{/each}}
         </ul>
+        {{#unless flow.litePapers}}
+          <div class="empty-text">{{flow.emptyText}}</div>
+        {{/unless}}
       </div>
     </li>
   {{/each}}

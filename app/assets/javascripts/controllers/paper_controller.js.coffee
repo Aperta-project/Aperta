@@ -8,6 +8,14 @@ ETahi.PaperController = Ember.ObjectController.extend
     "/papers/#{@get('id')}/download"
   ).property('id')
 
+  logoUrl: (->
+    logoUrl = @get('model.journal.logoUrl')
+    if /no-journal-image/.test logoUrl
+      false
+    else
+      logoUrl
+  ).property()
+
   authorTasks: Ember.computed.filterBy('tasks', 'role', 'author')
 
   canViewManuscriptManager: false

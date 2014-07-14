@@ -4,14 +4,6 @@ ETahi.PaperEditView = Ember.View.extend
   locked: Ember.computed.alias 'controller.locked'
   isEditing: Ember.computed.alias 'controller.isEditing'
 
-  logoUrl: (->
-    logoUrl = @get('controller.model.journal.logoUrl')
-    if /no-journal-image/.test logoUrl
-      false
-    else
-      logoUrl
-  ).property()
-
   documentNode: ->
     surf = @get('visualEditor').surface
     ve.dm.converter.getDomFromModel(surf.getModel().getDocument())

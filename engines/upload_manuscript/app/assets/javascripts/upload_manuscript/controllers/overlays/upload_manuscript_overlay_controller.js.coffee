@@ -8,6 +8,10 @@ ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend
   uploadProgress: 0
   showProgress: true
 
+  isEditable: (->
+    !@get('paper.lockedBy') && (@get('isUserEditable') || @get('isCurrentUserAdmin'))
+  ).property('paper.lockedBy', 'isUserEditable', 'isCurrentUserAdmin')
+
   actions:
     uploadStarted: ->
       @set('isUploading', true)

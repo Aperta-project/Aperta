@@ -174,11 +174,15 @@ $paper-trim-color: $tahi-tertiary;
   vertical-align: bottom;
 }
 
+.oo-ui-toolbar {
+  background-color: #fff;
+}
+
 .oo-ui-toolbar-tools {
   float: right;
 }
 
-.oo-ui-toolbar {
+.oo-ui-toolbar-bar {
   &.locked {
     opacity: 0.5;
   }

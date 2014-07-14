@@ -43,17 +43,23 @@ ETahi.PaperEditView = Ember.View.extend
   ).on('didInsertElement')
 
   updateToolbarLockedState: ( ->
-    $('.oo-ui-toolbar').toggleClass('locked', !@get('isEditing'))
+    $('.oo-ui-toolbar-bar').toggleClass('locked', !@get('isEditing'))
   ).observes('isEditing')
 
   setupStickyToolbar: ->
+    marginTop = $('.control-bar').outerHeight()
     $('.oo-ui-toolbar').scrollToFixed
-      marginTop: $('.control-bar').outerHeight()
+      marginTop: marginTop
       unfixed: ->
         $(this).addClass('not-fixed')
       preFixed: ->
         $(this).removeClass('not-fixed')
         $(this).css('marginTop', '0')
+    $('.edit-paper').scrollToFixed
+      marginTop: marginTop + 5
+      zIndex: 1010
+      preFixed: ->
+        $(this).css('marginTop', '5')
 
   setupVisualEditor: (->
     ve.init.platform.setModulesUrl('/visual-editor/modules')

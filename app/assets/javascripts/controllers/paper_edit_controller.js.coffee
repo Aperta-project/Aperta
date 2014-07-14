@@ -9,9 +9,9 @@ ETahi.PaperEditController = ETahi.PaperController.extend
   showPlaceholder: Em.computed ->
     Ember.isBlank $(@get 'model.body').text()
 
-  lockMessage: ( ->
-    @get('processingMessage') || @get('userEditingMessage')
-  ).property('processingMessage', 'userEditingMessage')
+  statusMessage: ( ->
+    @get('processingMessage') || @get('userEditingMessage') || @get('saveState')
+  ).property('processingMessage', 'userEditingMessage', 'saveState')
 
   processingMessage: (->
     if @get('status') is "processing"
@@ -29,8 +29,8 @@ ETahi.PaperEditController = ETahi.PaperController.extend
   ).property('lockedBy')
 
   locked: ( ->
-    !Ember.isBlank(@get('lockMessage'))
-  ).property('lockMessage')
+    !Ember.isBlank(@get('processingMessage') || @get('userEditingMessage'))
+  ).property('processingMessage', 'userEditingMessage')
 
   isEditing: (->
     lockedBy = @get('lockedBy')
@@ -49,13 +49,17 @@ ETahi.PaperEditController = ETahi.PaperController.extend
         @set('lockedBy', null)
       else
         @set('lockedBy', @getCurrentUser())
-      @send('savePaper')
+      @get('model').save().then (paper) =>
+        @setProperties
+          saveState: null
+          savedAt: null
 
     savePaper: ->
       return unless @get('model.editable')
-      @set("saveState", "Saving...")
       @get('model').save().then (paper) =>
-        @set("saveState", "Saved.")
+        @setProperties
+          saveState: "Saved"
+          savedAt: new Date()
 
     updateDocumentBody: (documentBody) ->
       @set('body', documentBody)

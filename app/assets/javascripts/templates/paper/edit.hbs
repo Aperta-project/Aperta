@@ -1,19 +1,16 @@
 {{partial "paper/control-bar"}}
 
 <div id="tahi-container">
-  <div class="paper-status">
-    {{saveState}}
-  </div>
   <main>
     <article>
       <ul class="edit-paper list-inline">
         <li>
           {{start-editing-button action='toggleEditing' canEdit=canEdit isEditing=isEditing}}
         </li>
-        <li {{bind-attr class=":lock-message locked::hidden"}}>
+        <li class="lock-message">
           <p class="message">
-          <span class="glyphicon glyphicon-lock"></span>
-          {{{lockMessage}}}
+          <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
+          {{{statusMessage}}} {{time-ago time=savedAt}}
           </p>
         </li>
       </ul>

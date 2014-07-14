@@ -1,7 +1,7 @@
 ETahi.IndexRoute = Ember.Route.extend
   model: ->
-    if cachedModel =  @controllerFor('application').get('cachedModel')
-      @controllerFor('application').set('cachedModel' , null)
+    if cachedModel = @controllerFor('application').get('cachedModel')
+      @controllerFor('application').set('cachedModel', null)
       cachedModel
     else
       @store.find('dashboard').then (dashboardArray) -> dashboardArray.get 'firstObject'

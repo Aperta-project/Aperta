@@ -137,7 +137,7 @@ exports["default"] = function moduleFor(fullName, description, callbacks, delega
 
       callbacks.setup     = callbacks.setup    || function() { };
       callbacks.teardown  = callbacks.teardown || function() { };
-      Ember.onerror = null
+      
       function factory() {
         return container.lookupFactory(fullName);
       }

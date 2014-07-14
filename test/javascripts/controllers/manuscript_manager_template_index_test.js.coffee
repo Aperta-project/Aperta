@@ -1,7 +1,6 @@
-#= require test_helper
-
 moduleFor 'controller:manuscriptManagerTemplateIndex', 'ManuscriptManagerTemplateIndexController',
   setup: ->
+    setupApp()
     @phase = ETahi.TemplatePhase.create name: 'First Phase'
     task1 = ETahi.TemplateTask.create title: 'ATask', phase: @phase
     task2 = ETahi.TemplateTask.create title: 'BTask', phase: @phase
@@ -40,4 +39,3 @@ test '#destroyTemplate deletes the given template when there are more than one t
     sinon.stub(@nextTemplate, 'destroyRecord').returns(new Ember.RSVP.Promise(handler, handler))
     @ctrl.send 'destroyTemplate', @nextTemplate
     ok @nextTemplate.destroyRecord.called
-

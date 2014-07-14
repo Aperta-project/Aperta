@@ -90,7 +90,8 @@ group :development, :test, :performance do
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'
-  gem "teaspoon", "~> 0.8.0"
+  gem 'qunit-rails'
+  gem 'sinon-rails'
   gem "phantomjs"
   gem 'pry-byebug'
   gem 'pry-stack_explorer'

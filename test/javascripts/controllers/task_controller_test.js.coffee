@@ -1,9 +1,7 @@
-#= require test_helper
-
 moduleFor 'controller:task', 'TaskController',
   needs: ['controller:application']
   setup: ->
-
+    setupApp()
     @litePaper = Ember.Object.create
       submitted: true
 

@@ -1,12 +1,10 @@
-#= require test_helper
-
 testTasks = undefined
 testPhase = undefined
 newPhase = undefined
 
-
 module 'Unit: TemplatePhase',
   setup: ->
+    setupApp()
     Ember.run =>
       testPhase = ETahi.TemplatePhase.create(name: "First Phase")
       testTasks = ["A Task", "Another"].map (taskType) ->

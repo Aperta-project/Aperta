@@ -1,8 +1,7 @@
-#= require test_helper
-
 moduleFor 'route:paper', 'Unit: route/Paper',
   needs: ['model:paper', 'route:paper'],
   setup: ->
+    setupApp()
     @subject().store = find: sinon.stub()
 
 test 'the model should be paper', ->

@@ -1,8 +1,7 @@
-#= require test_helper
-
 moduleFor 'route:paperIndex', 'Unit: route/PaperIndex',
   needs: ['model:paper', 'route:paper'],
   setup: ->
+    setupApp()
     sinon.stub(@subject(), 'replaceWith')
 
 test 'transition to edit route if paper has been not submitted', ->

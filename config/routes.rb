@@ -3,6 +3,10 @@ Tahi::Application.routes.draw do
   mount Declaration::Engine => '/', :as => 'declaration_engine'
   mount FinancialDisclosure::Engine => '/', as: 'financial_disclosure'
 
+  if Rails.env.development? || Rails.env.test?
+    mount QUnit::Rails::Engine => '/qunit'
+  end
+
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'

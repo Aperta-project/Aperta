@@ -16,22 +16,19 @@ ETahi.StartEditingButtonComponent = Ember.Component.extend
         'canEdit'
   ).property('canEdit', 'isEditing')
 
-  setButtonStates: (->
-    states =
-      isEditing:
-        buttonColor: 'button--purple'
-        prompt: 'STOP WRITING'
-        iconClass: ''
-      canEdit:
-        buttonColor: 'button--green'
-        prompt: 'START WRITING'
-        iconClass: 'glyphicon-pencil'
-      disabled:
-        buttonColor: 'button--disabled'
-        prompt: 'START WRITING'
-        iconClass: 'glyphicon-pencil'
-    @set('buttonStates', states)
-  ).on('init')
+  buttonStates:
+    isEditing:
+      buttonColor: 'button--purple'
+      prompt: 'STOP WRITING'
+      iconClass: ''
+    canEdit:
+      buttonColor: 'button--green'
+      prompt: 'START WRITING'
+      iconClass: 'glyphicon-pencil'
+    disabled:
+      buttonColor: 'button--disabled'
+      prompt: 'START WRITING'
+      iconClass: 'glyphicon-pencil'
 
   buttonColor: (->
     state = @get('buttonState')

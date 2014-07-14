@@ -8,7 +8,7 @@ Teaspoon.configure do |config|
 
   # Determines where the Teaspoon routes will be mounted. Changing this to "/jasmine" would allow you to browse to
   # `http://localhost:3000/jasmine` to run your tests.
-  config.mount_at = "/teaspoon"
+  config.mount_at = '/teaspoon'
 
   # Specifies the root where Teaspoon will look for files. If you're testing an engine using a dummy application it can
   # be useful to set this to your engines root (e.g. `Teaspoon::Engine.root`).
@@ -135,10 +135,10 @@ Teaspoon.configure do |config|
   # Note: Output files can be specified by using `"junit>/path/to/output.xml"`.
   #
   # Available: dot, documentation, clean, json, junit, pride, snowday, swayze_or_oprah, tap, tap_y, teamcity
-  #config.formatters = ["dot"]
+  config.formatters = ['dot', 'tap', 'clean']
 
   # Specify if you want color output from the formatters.
-  #config.color = true
+  config.color = true
 
   # Teaspoon pipes all console[log/debug/error] to $stdout. This is useful to catch places where you've forgotten to
   # remove them, but in verbose applications this may not be desirable.
@@ -178,5 +178,4 @@ Teaspoon.configure do |config|
     #coverage.lines = nil
 
   end
-
 end

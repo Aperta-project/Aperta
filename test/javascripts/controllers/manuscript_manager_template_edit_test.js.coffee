@@ -1,7 +1,6 @@
-#= require test_helper
-
 moduleFor 'controller:manuscriptManagerTemplateEdit', 'ManuscriptManagerTemplateEditController',
   setup: ->
+    setupApp()
     @phase = ETahi.TemplatePhase.create name: 'First Phase'
     @task1 = ETahi.TemplateTask.create title: 'ATask', phase: @phase
     @task2 = ETahi.TemplateTask.create title: 'BTask', phase: @phase

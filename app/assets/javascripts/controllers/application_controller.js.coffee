@@ -1,5 +1,4 @@
 ETahi.ApplicationController = Ember.Controller.extend
-  eventSource: null
   currentUser: ( ->
     @getCurrentUser()
   ).property()
@@ -18,33 +17,6 @@ ETahi.ApplicationController = Ember.Controller.extend
   clearError:( ->
     @set('error', null)
   ).observes('currentPath')
-
-  addEventListener: (eventName) ->
-    @get('eventSource').addEventListener eventName, (msg) =>
-      esData = JSON.parse(msg.data)
-      action = esData.action
-      meta = esData.meta
-      delete esData.meta
-      delete esData.action
-      (ETahi.EventStreamActions[action]||->).call(@, esData)
-      if meta
-        ETahi.EventStreamActions["meta"].call(@, meta.model_name, meta.id)
-
-  connectToES:(->
-    return unless @get('currentUser')
-    params =
-      url: '/event_stream'
-      method: 'GET'
-      success: (data) =>
-        source = new EventSource(data.url)
-        Ember.$(window).unload -> source.close()
-        @set('eventSource', source)
-
-        data.eventNames.forEach (eventName) =>
-          @addEventListener(eventName)
-
-    Ember.$.ajax(params)
-  ).on('init')
 
   overlayBackground: Ember.computed.defaultTo('defaultBackground')
 

@@ -6,7 +6,7 @@ addons:
 services:
   - selenium
 before_script:
-  - createuser -s tahi
+  - createuser -s tahi || :
   - psql -c 'create database tahi_development;' -U postgres
   - psql -c 'create database tahi_test;' -U postgres
   - bundle --without development

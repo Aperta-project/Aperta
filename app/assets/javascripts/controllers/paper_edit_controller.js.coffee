@@ -6,9 +6,6 @@ ETahi.PaperEditController = ETahi.PaperController.extend
     this.get('tasks').findBy('type', 'AuthorsTask')
   ).property()
 
-  # showPlaceholder: Em.computed ->
-  #   Ember.isBlank $(@get 'model.body').text()
-
   showPlaceholder: ( ->
     Ember.isBlank $(@get 'model.body').text()
   ).property('model.body')

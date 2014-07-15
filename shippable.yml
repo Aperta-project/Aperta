@@ -5,6 +5,8 @@ addons:
   firefox: "23.0"
 services:
   - selenium
+env:
+  - RAILS_SECRET_TOKEN=1235
 before_script:
   - cp config/database.shippable.yml config/database.yml
   - bundle --without development

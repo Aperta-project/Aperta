@@ -135,7 +135,7 @@ describe PapersController do
         it "returns an error" do
           do_request
           expect(response.status).to eq(422)
-          expect(JSON.parse(response.body)["errors"]).to have_key("locked_by")
+          expect(JSON.parse(response.body)["errors"]).to have_key("locked_by_id")
         end
       end
 

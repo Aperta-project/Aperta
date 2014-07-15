@@ -31,7 +31,7 @@ class PapersController < ApplicationController
 
   def update
     if paper.locked? && !paper.locked_by?(current_user)
-      paper.errors.add(:locked_by, "This paper is locked for editing by #{paper.locked_by.full_name}.")
+      paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
       raise ActiveRecord::RecordInvalid, paper
     else
       paper.update(paper_params)

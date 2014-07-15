@@ -90,7 +90,7 @@ group :development, :test, :performance do
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'teaspoon', git: 'git@github.com:modeset/teaspoon.git'
+  gem 'teaspoon', github: 'modeset/teaspoon'
   gem 'qunit-rails'
   gem 'phantomjs'
   gem 'pry-byebug'

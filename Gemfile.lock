@@ -9,19 +9,19 @@ GIT
       omniauth (~> 1.2.0)
 
 GIT
+  remote: git://github.com/modeset/teaspoon.git
+  revision: a7787e5e8679741c1c8407aa2f82e16e2c4b8b1a
+  specs:
+    teaspoon (0.8.0)
+      railties (>= 3.2.5, < 5)
+
+GIT
   remote: git://github.com/neo-tahi/jquery-fileupload-rails.git
   revision: 5252879d45d9da58687033e32e290a2af7457a40
   specs:
     jquery-fileupload-rails (0.4.1)
       actionpack (>= 3.1)
       railties (>= 3.1)
-
-GIT
-  remote: git@github.com:modeset/teaspoon.git
-  revision: a7787e5e8679741c1c8407aa2f82e16e2c4b8b1a
-  specs:
-    teaspoon (0.8.0)
-      railties (>= 3.2.5, < 5)
 
 GIT
   remote: https://github.com/rails/activemodel-globalid

@@ -7,8 +7,10 @@ services:
   - selenium
 before_script:
   - createuser -s tahi
+  - psql -c 'create database tahi_development;' -U postgres
+  - psql -c 'create database tahi_test;' -U postgres
   - bundle --without development
-  - bundle exec rake db:drop db:create db:migrate
+  - bundle exec rake db:migrate
   - bundle exec rake assets:precompile
   - "export DISPLAY=:99.0"
   - "/etc/init.d/xvfb start"

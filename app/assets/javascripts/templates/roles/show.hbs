@@ -1,19 +1,18 @@
 <tr>
-  <td class="role-name">
+  <td class="admin-role-name">
     {{#if isEditing}}
       {{input name="role[name]" value=name placeholder="Role name" action="save"}}
     {{else}}
-      <div class="relative">
-        <div class="hover-target">
-          <i class="delete-button glyphicon glyphicon-trash" {{action "delete" bubbles=false}}></i>
-          <span class="name-field">{{name}}</span>
-        </div>
-      </div>
+      <i class="role-delete-button glyphicon glyphicon-trash" {{action "delete" bubbles=false}}></i>
+      <span class="name-field">{{name}}</span>
     {{/if}}
   </td>
-  <td><label>{{check-box name="role[canViewAssignedManuscriptManagers]" checked=canViewAssignedManuscriptManagers}} Manuscript Manager</label></td>
-  <td><label>{{check-box name="role[canViewAllManuscriptManagers]" checked=canViewAllManuscriptManagers}}All Manuscript Managers</label></td>
-  <td><label>{{check-box name="role[canAdministerJournal]" checked=canAdministerJournal}}Admin</label></td>
+  <td>
+    <label class="token">{{check-box name="role[canViewAssignedManuscriptManagers]" checked=canViewAssignedManuscriptManagers}} Manuscript Manager</label>
+    <label class="token">{{check-box name="role[canViewAllManuscriptManagers]" checked=canViewAllManuscriptManagers}} All Manuscript Managers</label>
+    <label class="token">{{check-box name="role[canAdministerJournal]" checked=canAdministerJournal}} Admin</label>
+    <span  class="token">+</span>
+  </td>
 </tr>
 <tr {{bind-attr class=":action-buttons isEditing"}}>
   <td colspan="4">

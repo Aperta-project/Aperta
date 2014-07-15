@@ -1,0 +1,10 @@
+.token {
+  display: inline-block;
+  border: 1px solid #97CAFD;
+  border-radius: 3px;
+  padding: 2px 6px;
+  color: $tahi-blue-hover;
+  font-size: 14px;
+  background: #D7EBFE;
+  @include user-select(none);
+}

@@ -1,10 +1,19 @@
 language: ruby
 rvm:
   - 2.1.2
+addons:
+  firefox: "23.0"
+services:
+  - selenium
 before_script:
+  - createuser -s tahi
   - bundle --without development
   - bundle exec rake db:drop db:create db:migrate
   - bundle exec rake assets:precompile
+  - "export DISPLAY=:99.0"
+  - "/etc/init.d/xvfb start"
 script:
   - bundle exec rake teaspoon
   - bundle exec rspec spec engines
+after_script:
+  - "/etc/init.d/xvfb stop"

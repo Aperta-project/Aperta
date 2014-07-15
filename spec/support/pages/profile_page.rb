@@ -32,6 +32,12 @@ class ProfilePage < Page
     all('.profile-affiliation-name').map(&:text)
   end
 
+  def has_affiliations?(*affiliations)
+    affiliations.all? do |a|
+      page.has_css? '.profile-affiliation-name', text: a
+    end
+  end
+
   def attach_image(filename)
     page.execute_script "$('#profile-avatar-hover').css('display', 'block')"
     attach_file 'profile_avatar', Rails.root.join('spec', 'fixtures', filename), visible: false

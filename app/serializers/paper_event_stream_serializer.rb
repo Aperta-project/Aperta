@@ -1,5 +1,5 @@
 class PaperEventStreamSerializer < ActiveModel::Serializer
-  attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :updated_at
+  attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :updated_at, :event_name
   root :paper
 
   %i(phases figures author_groups supporting_information_files).each do |relation|
@@ -15,5 +15,9 @@ class PaperEventStreamSerializer < ActiveModel::Serializer
 
   def status
     object.manuscript.try(:status)
+  end
+
+  def event_name
+    EventStream.name(object.id)
   end
 end

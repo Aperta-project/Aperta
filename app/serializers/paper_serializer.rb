@@ -10,7 +10,8 @@ class PaperSerializer < ActiveModel::Serializer
   end
 
   has_many :tasks, embed: :ids, polymorphic: true
-  has_one :journal, embed: :ids, include: true
+  has_one :journal, embed: :id, include: true
+  has_one :locked_by, embed: :id, include: true, root: :users
 
   def status
     object.manuscript.try(:status)

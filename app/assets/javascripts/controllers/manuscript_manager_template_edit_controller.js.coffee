@@ -36,11 +36,14 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
     rollbackPhase: (phase, oldName) ->
       phase.set('name', oldName)
 
-    saveTemplate: ->
+    saveTemplate: (transition)->
       @get('model').save().then( (template) =>
         @set('dirty', false)
         @set('errorText', '')
-        @transitionToRoute('manuscript_manager_template.edit', template)
+        if transition
+          transition.retry()
+        else
+          @transitionToRoute('manuscript_manager_template.edit', template)
       ).catch (errorResponse) =>
         if errorResponse.status == 422
           errors = _.values(errorResponse.responseJSON.errors).join(' ')

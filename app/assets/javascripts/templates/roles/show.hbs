@@ -1,14 +1,12 @@
 <tr>
   <td class="role-name">
     {{#if isEditing}}
-      {{input name="role[name]" value=name placeholder="Role name" action='save'}}
+      {{input name="role[name]" value=name placeholder="Role name" action="save"}}
     {{else}}
       <div class="relative">
         <div class="hover-target">
-          {{#unless 'model.required'}}
-            <i class='delete-button glyphicon glyphicon-trash' {{action 'delete' bubbles=false}}></i>
-          {{/unless}}
-          <span class='name-field'>{{name}}</span>
+          <i class="delete-button glyphicon glyphicon-trash" {{action "delete" bubbles=false}}></i>
+          <span class="name-field">{{name}}</span>
         </div>
       </div>
     {{/if}}
@@ -19,7 +17,7 @@
 </tr>
 <tr {{bind-attr class=":action-buttons isEditing"}}>
   <td colspan="4">
-    {{errorsOn model 'name'}}
+    {{errorsOn model "name"}}
     <button class="column-header-update-save button-primary button--blue" {{action "save" bubbles=false}}>Save</button>
     <button class="column-header-update-cancel btn-link" {{action "cancel" bubbles=false}}>cancel</button>
   </td>

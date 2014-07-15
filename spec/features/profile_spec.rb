@@ -23,7 +23,7 @@ feature "Profile Page", js: true do
   scenario "user can add an affiliation" do
     profile_page = ProfilePage.visit
     profile_page.add_affiliate('Yoda University')
-    expect(profile_page.affiliations).to include(/Yoda/)
+    expect(profile_page).to have_affiliations('Yoda University')
 
     expect(profile_page).to have_no_application_error
   end
@@ -50,11 +50,11 @@ feature "Profile Page", js: true do
     end
 
     it "hides the form" do
-      expect(page).to have_no_content(/new affiliation/i)
+      page.should have_no_css('.affiliations-form')
     end
 
     it "clears the form" do
-      find('a', text: 'Add new').click
+      find('a', text: 'Add New Affiliation').click
       expect(page).to have_no_content(uni)
     end
   end

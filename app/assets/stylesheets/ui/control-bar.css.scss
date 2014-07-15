@@ -31,12 +31,6 @@
   &:last-of-type {
     float: right;
     padding-right: 0;
-
-    a {
-      color: #000000;
-      text-transform: uppercase;
-      font-weight: normal;
-    }
   }
 }
 
@@ -47,13 +41,13 @@
 }
 
 .control-bar-link {
-  line-height: 36px;
-  font-weight: bold;
-  text-transform: none;
-  background: none;
   display: block;
-  margin-left: 25px;
   height: 40px;
+  margin-left: 25px;
+  font-weight: bold;
+  line-height: 36px;
+  text-transform: uppercase;
+  background: none;
 
   span {
     padding-left: 5px;

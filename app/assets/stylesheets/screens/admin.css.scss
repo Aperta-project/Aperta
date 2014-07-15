@@ -7,23 +7,6 @@
     position: relative;
   }
 
-  .admin-header {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    margin: 0 0 25px 0;
-    padding: 20px 0;
-
-    .title {
-      display: inline-block;
-      margin: 0;
-    }
-
-    .button-primary {
-      display: inline-block;
-      position: absolute;
-      right: 10px;
-    }
-  }
 
   .button-primary {
     background-color: $tahi-blue-light;
@@ -424,4 +407,22 @@
       background: $tahi-blue-light;
     }
   }
+}
+
+.admin-header {
+  overflow: hidden;
+  position: relative;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin: 0 0 25px 0;
+  padding: 20px 0;
+
+  .title {
+    display: inline-block;
+    margin: 0;
+  }
+}
+
+.admin-header-button {
+  float: right;
 }

@@ -1,10 +1,8 @@
 <div class="manuscript-manager-template">
   <div class="admin-header">
-    <div class='relative'>
-      <h2 class="title">Manuscript Manager Templates</h2>
-      <button class="button-primary button--light-blue" {{action "addTemplate" phase taskType}}>
-      Add New Template
-      </button>
+    <h2 class="title">Manuscript Manager Templates</h2>
+    <div class="col-md-3 pull-right">
+      <a class="button-primary button--light-blue admin-header-button" {{action "addTemplate" phase taskType}}>Add New Template</a>
     </div>
   </div>
   {{each content itemViewClass="ETahi.ManuscriptManagerTemplateThumbnailView"}}

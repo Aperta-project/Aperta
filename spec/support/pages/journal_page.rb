@@ -4,6 +4,11 @@ class JournalPage < Page
     new
   end
 
+  def add_new_template
+    find("a", text: "ADD NEW TEMPLATE").click
+    ManuscriptManagerTemplatePage.new
+  end
+
   def initialize(*args)
     super
     synchronize_content! "Manuscript Manager Templates"

@@ -1,0 +1,10 @@
+language: ruby
+rvm:
+  - 2.1.2
+before_script:
+  - bundle --without development
+  - bundle exec rake db:drop db:create db:migrate
+  - bundle exec rake assets:precompile
+script:
+  - bundle exec rake teaspoon
+  - bundle exec rspec spec engines

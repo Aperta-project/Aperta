@@ -8,5 +8,5 @@ ETahi.PaperNewController = Ember.ObjectController.extend
   actions:
     createNewPaper: ->
       @get('model').save().then (paper) =>
-        @send('didCreatePaper', paper)
+        @send('addPaperToEventStream', paper)
         @transitionToRoute('paper.edit', paper)

@@ -23,7 +23,7 @@
 //= require bootstrap-sass/dist/js/bootstrap
 //= require bootstrap-datepicker/js/bootstrap-datepicker
 //= require chosen.jquery
-//= require eventsource.min
+//= require event-source-polyfill/eventsource
 //
 //= require handlebars
 //= require ember

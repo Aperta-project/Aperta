@@ -6,8 +6,8 @@ class DashboardPage < Page
     NewSubmissionPage.new
   end
 
-  def header
-    page.find '.dashboard-header'
+  def has_welcome_message?(text)
+    has_css?('.welcome-message', text: text)
   end
 
   def sign_out

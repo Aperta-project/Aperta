@@ -1,4 +1,5 @@
 module 'Integration: EditPaper',
+  tearDown: -> ETahi.reset()
   setup: ->
     setupApp()
 

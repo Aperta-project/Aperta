@@ -1,5 +1,6 @@
 moduleFor 'route:paper', 'Unit: route/Paper',
   needs: ['model:paper', 'route:paper'],
+  tearDown: -> ETahi.reset()
   setup: ->
     setupApp()
     @subject().store = find: sinon.stub()

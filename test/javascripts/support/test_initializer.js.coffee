@@ -28,7 +28,6 @@ document.write('<style>#ember-testing-container { position: absolute; background
 @setupTestEnvironment()
 
 @setupApp = ->
-  ETahi.reset()
   @setupTestEnvironment()
 
   container = ETahi.__container__

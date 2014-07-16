@@ -5,7 +5,7 @@ class JournalPage < Page
   end
 
   def add_new_template
-    find("a", text: "ADD NEW TEMPLATE").click
+    find("button", text: "ADD NEW TEMPLATE").click
     ManuscriptManagerTemplatePage.new
   end
 
@@ -39,7 +39,7 @@ class JournalPage < Page
   end
 
   def add_role
-    find('.permission-header .button-primary').click
+    find('.admin-add-new-role-button').click
     RoleFragment.new(find('table.roles tbody', match: :first))
   end
 

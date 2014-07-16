@@ -37,4 +37,3 @@ document.write('<style>#ember-testing-container { position: absolute; background
   store = container.lookup 'store:main'
   store.find 'user', @currentUserId
   .then (currentUser) -> applicationController.set 'currentUser', currentUser
-

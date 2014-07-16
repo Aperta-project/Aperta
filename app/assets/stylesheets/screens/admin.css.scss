@@ -347,13 +347,19 @@
   }
 }
 
+.admin-users-row, .admin-section {
+  border-top: 1px solid #ddd;
+  margin: 0 0 25px 0;
+  padding: 0 0 20px 0;
+}
+
+.admin-users-row {
+  @extend .row;
+}
 
 .admin-section {
   overflow: hidden;
   position: relative;
-  border-top: 1px solid #ddd;
-  margin: 0 0 25px 0;
-  padding: 0 0 20px 0;
 }
 
 .admin-section-title {
@@ -361,7 +367,6 @@
   padding-top: 30px;
   font-size: 30px;
 }
-
 
 .admin-table {
   width: 100%;
@@ -377,7 +382,6 @@
   width: 20%;
 }
 
-
 .admin-style-setting-section {
   float: left;
   margin-right: 25px;
@@ -385,4 +389,8 @@
   a.epub-cover {
     color: $tahi-blue-light;
   }
+}
+
+.assign-role-button, .assigned-role, .add-role-input {
+  margin-top: 5px;
 }

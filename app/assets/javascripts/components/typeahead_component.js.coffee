@@ -7,7 +7,6 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
   setupSelectedListener: ->
     if @get 'suggestionSelected'
       @.$().on 'typeahead:selected', (e, item, index) =>
-        # debugger
         @sendAction 'suggestionSelected', item.value
 
   autoFocusInput: -> @.$().focus() if @get 'autoFocus'

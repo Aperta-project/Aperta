@@ -4,20 +4,20 @@
   <td class="truncated-field">{{lastName}}</td>
   <td class="truncated-field">
     {{#each roles}}
-      <span class="assigned-role label label-primary">
+      <span class="assigned-role token">
         {{this}}
-        <span class='glyphicon glyphicon-remove' {{action removeRole this}}></span>
+        <span class='remove-button' {{action removeRole this}}></span>
       </span>
     {{/each}}
     {{#if isAddingRole}}
       {{type-ahead value=roleQuery
-                   id="add-role-input"
+                   class="add-role-input"
                    autoFocus=true
                    sourceList=rolesList
                    suggestionSelected='createRole'
                    placeholder='Role Name'}}
     {{else}}
-      <span {{action addRole}} class="label label-primary assign-role-button"><span class="glyphicon glyphicon-plus"></span></span>
+      <span {{action addRole}} class="token assign-role-button">+</span>
     {{/if}}
   </td>
 </tr>

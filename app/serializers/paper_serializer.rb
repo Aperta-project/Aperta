@@ -1,5 +1,5 @@
 class PaperSerializer < ActiveModel::Serializer
-  attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status
+  attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :event_name
 
   %i(phases figures author_groups supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -27,5 +27,9 @@ class PaperSerializer < ActiveModel::Serializer
 
   def reviewers
     object.reviewers.includes(:affiliations)
+  end
+
+  def event_name
+    EventStream.name(object.id)
   end
 end

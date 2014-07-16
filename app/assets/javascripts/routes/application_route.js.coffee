@@ -58,3 +58,6 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
 
     closeAction: ->
       @send('closeOverlay')
+
+    addPaperToEventStream: (paper) ->
+      @eventStream.addEventListener(paper.get('eventName'))

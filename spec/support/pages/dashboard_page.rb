@@ -27,8 +27,9 @@ class DashboardPage < Page
     end
   end
 
-  def view_submitted_paper short_title
-    within('.dashboard-submitted-papers') { click_link short_title }
+  def view_submitted_paper paper
+    title = paper.title || paper.short_title
+    within('.dashboard-submitted-papers') { click_link title }
     EditPaperPage.new
   end
 

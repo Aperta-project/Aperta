@@ -19,7 +19,7 @@ feature "Register Decision", js: true do
 
   scenario "Editor registers a decision on the paper" do
     dashboard_page = DashboardPage.new
-    manuscript_page = dashboard_page.view_submitted_paper paper.short_title
+    manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card 'Register Decision' do |overlay|
       overlay.register_decision = "Accepted"
       overlay.decision_letter = "Accepting this because I can"

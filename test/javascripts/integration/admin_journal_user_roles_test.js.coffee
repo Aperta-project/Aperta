@@ -114,12 +114,21 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
       200, "Content-Type": "application/json", JSON.stringify adminJournalUsersResults
     ]
 
-test 'user search results field should have add role button', ->
+test 'admin adds a role for user', ->
   visit "/admin/journals/#{TahiTest.journalId}"
   fillIn '.admin-search-input', TahiTest.query
   click '.admin-search-button'
   click '.assign-role-button'
-  .then -> $('#add-role-input').typeahead('val', 'Edit')
+  .then -> $('.add-role-input').typeahead('val', 'Edit')
   .then -> click '.tt-suggestion'
-  andThen ->
-    equal $.trim(find('.assigned-role').text()), "Editor"
+  andThen -> equal $.trim(find('.assigned-role').text()), "Editor"
+
+test 'admin removes a role for user', ->
+  visit "/admin/journals/#{TahiTest.journalId}"
+  fillIn '.admin-search-input', TahiTest.query
+  click '.admin-search-button'
+  click '.assign-role-button'
+  .then -> $('.add-role-input').typeahead('val', 'Edit')
+  .then -> click '.tt-suggestion'
+  click '.remove-button'
+  andThen -> ok !exists '.assigned-role.token'

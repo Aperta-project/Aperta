@@ -16,7 +16,7 @@ class ManuscriptManagerTemplatePage < Page
   end
 
   def add_new_template
-    click_button "Add New Template"
+    click_link "Add New Template"
   end
 
   def paper_type

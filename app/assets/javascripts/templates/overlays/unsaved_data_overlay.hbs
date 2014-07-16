@@ -1,13 +1,8 @@
 <div class="overlay-container">
-
   <section class="overlay-content">
     <h2>You have unsaved changes</h2>
-
-    <div class="button-row">
-      <a class="button-primary button--green" {{action "discardChanges"}}>Discard Changes</a>
-      <a class="button-primary button--green" {{action "cancelTransition"}}>Continue Editing</a>
-      <a class="button-link button-green close-overlay" {{action 'cancelTransition'}}>Cancel</a>
-    </div>
+    <a class="button-primary button--green" {{action "saveChanges"}}>Save Changes</a>
+    <a class="button-secondary button--green" {{action "cancelTransition"}}>Continue Editing</a>
+    <a class="button-link button--grey" {{action "discardChanges"}}>Discard Changes</a>
   </section>
-
 </div>

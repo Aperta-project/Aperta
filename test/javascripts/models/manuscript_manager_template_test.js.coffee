@@ -1,10 +1,9 @@
-#= require test_helper
-
 testPhases = undefined
 testTemplate = undefined
 
 module 'Unit: ManuscriptManagerTemplate',
   setup: ->
+    setupApp()
     phase = name: 'First Phase', task_types: ['ATask', 'AnotherTask']
     template =
       name: 'A name'
@@ -15,8 +14,8 @@ module 'Unit: ManuscriptManagerTemplate',
         phases: [phase]
 
     Ember.run =>
-      testTemplate = ETahi.ManuscriptManagerTemplate.create(template)
-      testPhases = testTemplate.get('phases')
+      testTemplate = ETahi.ManuscriptManagerTemplate.create template
+      testPhases = testTemplate.get 'phases'
 
 test '#init creates phase objects for the phases in a template', ->
   equal testPhases.length, 1

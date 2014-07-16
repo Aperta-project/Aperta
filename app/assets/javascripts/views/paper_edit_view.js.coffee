@@ -2,14 +2,7 @@ ETahi.PaperEditView = Ember.View.extend
   visualEditor: null
 
   locked: Ember.computed.alias 'controller.locked'
-
-  logoUrl: (->
-    logoUrl = @get('controller.model.journal.logoUrl')
-    if /no-journal-image/.test logoUrl
-      false
-    else
-      logoUrl
-  ).property()
+  isEditing: Ember.computed.alias 'controller.isEditing'
 
   documentNode: ->
     surf = @get('visualEditor').surface
@@ -42,17 +35,23 @@ ETahi.PaperEditView = Ember.View.extend
   ).on('didInsertElement')
 
   updateToolbarLockedState: ( ->
-    $('.oo-ui-toolbar').toggleClass('locked', @get('locked'))
-  ).observes('locked').on('init')
+    $('.oo-ui-toolbar-bar').toggleClass('locked', !@get('isEditing'))
+  ).observes('isEditing')
 
   setupStickyToolbar: ->
+    marginTop = $('.control-bar').outerHeight()
     $('.oo-ui-toolbar').scrollToFixed
-      marginTop: $('.control-bar').outerHeight()
+      marginTop: marginTop
       unfixed: ->
         $(this).addClass('not-fixed')
       preFixed: ->
         $(this).removeClass('not-fixed')
         $(this).css('marginTop', '0')
+    $('.edit-paper').scrollToFixed
+      marginTop: marginTop + 5
+      zIndex: 1010
+      preFixed: ->
+        $(this).css('marginTop', '5')
 
   setupVisualEditor: (->
     ve.init.platform.setModulesUrl('/visual-editor/modules')
@@ -80,6 +79,7 @@ ETahi.PaperEditView = Ember.View.extend
     target.on('surfaceReady', ->
       target.toolbar.disableFloatable()
       self.setupStickyToolbar()
+      self.updateToolbarLockedState()
     )
     @set('visualEditor', target)
 
@@ -103,7 +103,6 @@ ETahi.PaperEditView = Ember.View.extend
   setupAutosave: ->
     # The timeout times and keyup counter are arbitrary. Feel free to tweak.
     Ember.$(document).on 'keyup.autoSave', '.ve-ui-surface, #paper-title', =>
-      @get('controller').set('saveState', "Saving...")
       # Check for a window timeout so we aren't waiting in testing.
       @short = Ember.run.debounce(@, @timeoutSave, window.shortTimeout || (1000 * 10))
       unless @long

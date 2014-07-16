@@ -1,0 +1,13 @@
+{{#if assignedTasks}}
+  <div id="paper-assigned-tasks">
+    {{each assignedTasks itemViewClass="ETahi.CardView"}}
+  </div>
+  <hr>
+{{/if}}
+
+{{#if authorTasks}}
+  <div id="paper-metadata-tasks">
+    {{each authorTasks itemViewClass="ETahi.CardView"}}
+  </div>
+  <hr>
+{{/if}}

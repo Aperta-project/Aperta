@@ -30,18 +30,16 @@ class PapersController < ApplicationController
   end
 
   def update
-    if paper.update(paper_params)
-      head 204
+    if paper.locked? && !paper.locked_by?(current_user)
+      paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
+      raise ActiveRecord::RecordInvalid, paper
     else
-      # Ember doesn't re-render the paper if there is an error.
-      # e.g. Fails to update on adding new authors, but new authors stay in
-      # memory client side even though they aren't persisted in the DB.
-      respond_with paper
+      paper.update(paper_params)
     end
+    respond_with paper
   end
 
   def upload
-    paper = Paper.find(params[:id])
     manuscript = paper.manuscript || paper.build_manuscript
     manuscript.update_attribute :status, "processing"
     DownloadManuscript.enqueue manuscript.id, params[:url]
@@ -71,6 +69,7 @@ class PapersController < ApplicationController
       :short_title, :title, :abstract,
       :body, :paper_type, :submitted,
       :journal_id,
+      :locked_by_id,
       authors: [:first_name, :middle_initial, :last_name, :title, :affiliation, :secondary_affiliation, :department, :email, :deceased, :corresponding_author],
       declaration_ids: [],
       reviewer_ids: [],
@@ -82,7 +81,7 @@ class PapersController < ApplicationController
   end
 
   def paper
-    Paper.find(params[:id]) if params[:id]
+    @paper ||= Paper.find(params[:id]) if params[:id]
   end
 
   def enforce_policy

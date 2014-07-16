@@ -7,23 +7,6 @@
     position: relative;
   }
 
-  .admin-header {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    margin: 0 0 25px 0;
-    padding: 20px 0;
-
-    .title {
-      display: inline-block;
-      margin: 0;
-    }
-
-    .button-primary {
-      display: inline-block;
-      position: absolute;
-      right: 10px;
-    }
-  }
 
   .button-primary {
     background-color: $tahi-blue-light;
@@ -43,82 +26,20 @@
     list-style-type: none;
   }
 
-  table.roles {
-    thead {
-      th {
-        font-size: 30px;
-        font-weight: normal;
-        position: relative;
-        padding: 20px 0 20px 0;
-        line-height: 33px;
-      }
-    }
-
-    .role-name {
-      .hover-target {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        .name-field {
-          margin-left: 10px;
-        }
-        &:hover {
-          .delete-button {
-            opacity: 1;
-          }
-        }
-      }
-
-      .delete-button {
-        display: inline;
-        opacity: 0;
-        width: 30px;
-        position: absolute;
-        margin-left: -30px;
-      }
-
-    }
-
-    .action-buttons {
-      display: none;
-
-      button {
-        float: right;
-      }
-
-      &.is-editing {
-        display: table-row;
-      }
-    }
-
-    tbody {
-      color: $tahi-blue-light;
-
-      td {
-        border: 0;
-      }
-    }
-
-    label {
-      font-size: 12pt;
-      font-weight: normal;
-    }
-
-    .role-name {
-      width: 50%;
-      font-size: 14pt;
-    }
+  .role-delete-button {
+    display: inline;
+    width: 30px;
   }
 
-  .pdf-css,
-  .epub-css,
-  .manuscript-css,
-  .epub-cover {
-    .title { padding: 0; }
-    .admin-header {
-      border-bottom: 0;
-      padding-top: 25px;
-      padding-bottom: 0;
+  .action-buttons {
+    display: none;
+
+    button {
+      float: right;
+    }
+
+    &.is-editing {
+      display: table-row;
     }
   }
 
@@ -423,5 +344,45 @@
       color: white;
       background: $tahi-blue-light;
     }
+  }
+}
+
+
+.admin-section {
+  overflow: hidden;
+  position: relative;
+  border-top: 1px solid #ddd;
+  margin: 0 0 25px 0;
+  padding: 0 0 20px 0;
+}
+
+.admin-section-title {
+  margin: 0 0 15px 0; // override some nonsense default
+  padding-top: 30px;
+  font-size: 30px;
+}
+
+
+.admin-table {
+  width: 100%;
+
+  th {
+    color: #797979;
+    font-size: 21px;
+    font-weight: normal;
+  }
+}
+
+.admin-role-name {
+  width: 20%;
+}
+
+
+.admin-style-setting-section {
+  float: left;
+  margin-right: 25px;
+
+  a.epub-cover {
+    color: $tahi-blue-light;
   }
 }

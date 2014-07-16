@@ -1,8 +1,7 @@
-#= require test_helper
-
 moduleFor 'controller:messageOverlay', 'MessageOverlayController',
   needs: ['controller:application']
   setup: ->
+    setupApp()
     @comment1 = Ember.Object.create body: "comment 1", createdAt: 1
     @comment2 = Ember.Object.create body: "comment 2", createdAt: 2
     @comment3 = Ember.Object.create body: "comment 3", createdAt: 3

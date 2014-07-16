@@ -11,7 +11,9 @@ class TaskManagerPage < Page
 
   def phase phase_name
     expect(page).to have_content(phase_name) # use have_content/css/stuff assertion to avoid sleeps.
-    PhaseFragment.new(all('.column').detect {|p| p.find('h2').text == phase_name })
+    retry_stale_element do
+      PhaseFragment.new(all('.column').detect {|p| p.find('h2').text == phase_name })
+    end
   end
 
   def phase_count

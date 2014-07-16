@@ -8,4 +8,7 @@ ETahi.ManuscriptManagerTemplateEditRoute = Ember.Route.extend(ETahi.AlertUnsaved
     controller.set('model', model)
     controller.set('journal', @modelFor('journal'))
 
+  actions:
+    saveChanges: ->
+      @controller.send('saveTemplate', @get('attemptingTransition'))
 )

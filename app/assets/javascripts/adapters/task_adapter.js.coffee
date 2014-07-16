@@ -1,6 +1,7 @@
 ETahi.TaskAdapter = DS.ActiveModelAdapter.extend
   pathForType: (type) ->
     'tasks'
+
 ETahi.PaperReviewerTaskAdapter = ETahi.TaskAdapter.extend()
 ETahi.PaperEditorTaskAdapter = ETahi.TaskAdapter.extend()
 ETahi.PaperAdminTaskAdapter = ETahi.TaskAdapter.extend()

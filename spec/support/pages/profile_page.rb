@@ -2,7 +2,7 @@ class ProfilePage < Page
   path :profile
 
   def full_name
-    find('#profile-name h1').text
+    find('#profile-name').text
   end
 
   def username
@@ -10,11 +10,11 @@ class ProfilePage < Page
   end
 
   def email
-    all('#profile-email h4').last.text
+    all('#profile-email h2').last.text
   end
 
   def set_affiliate name
-    find('a', text: 'Add new').click
+    find('a', text: 'Add New Affiliation').click
     fill_in("Affiliation Name", with: name)
   end
 
@@ -24,12 +24,18 @@ class ProfilePage < Page
   end
 
   def remove_affiliate(name)
-    page.find("h4", text: name).parent.find('.remove-affiliation').click
+    page.find(".profile-affiliation-name", text: name).parent.find('.remove-affiliation').click
     page.driver.browser.switch_to.alert.accept
   end
 
   def affiliations
-    find("#profile-affiliations").all('h4').map(&:text)[1..-1]
+    all('.profile-affiliation-name').map(&:text)
+  end
+
+  def has_affiliations?(*affiliations)
+    affiliations.all? do |a|
+      page.has_css? '.profile-affiliation-name', text: a
+    end
   end
 
   def attach_image(filename)

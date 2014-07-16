@@ -1,47 +1,50 @@
 <div id="tahi-container" class="user-profile">
-  <div class="row">
-    <div class="col-md-2">
-      {{view ETahi.ProfileAvatarView}}
-    </div>
 
-    <div class="col-md-10">
-      <div id="profile-name">
-        <h4 class="secondary"><small>First and last name:</small></h4>
-        <h1 class="truncated-field">{{model.fullName}}</h1>
-      </div>
-
-      <div id="profile-username">
-        <h4 class="secondary"><small>Username:</small></h4>
-        <h2 class="truncated-field">{{model.username}}</h2>
-      </div>
-      <div id="profile-email">
-        <h4 class="secondary"><small>Email:</small></h4>
-        <h4>{{model.email}}</h4>
-      </div>
-      <div id="profile-affiliations">
-        <h4 class="secondary"><small>Affiliations:</small></h4>
-        {{#each a in affiliations}}
-          <div class="separated">
-            <h4 class="compress">{{a.name}}</h4>
-            <div class="glyphicon glyphicon-remove-circle remove-affiliation" {{action 'removeAffiliation' a}}></div>
-            <div>{{a.startDate}} - {{a.displayEndDate}}</div>
-            <div>{{a.email}}</div>
-          </div>
-        {{/each}}
-        <a class="button-secondary button--grey button--small" {{action 'toggleAffiliationForm'}}>
-          <span class="glyphicon glyphicon-plus-sign"></span>
-          Add new
-        </a>
-        {{#unless hideAffiliationForm}}
-          <div class="affiliations-form">
-            <h3>New Affiliation</h3>
-            <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
-            {{partial "user/affiliation_form"}}
-          </div>
-        {{/unless}}
-      </div>
-
-      <a href="#" id="reset-password">Reset my password</a>
-    </div>
+  <div class="col-md-2">
+    {{view ETahi.ProfileAvatarView}}
   </div>
+
+  <div class="col-md-10">
+    <div class="profile-section">
+      <h4>First and last name:</h4>
+      <div id="profile-name">{{model.fullName}}</div>
+    </div>
+
+    <div id="profile-username" class="profile-section">
+      <h4>Username:</h4>
+      <h2>{{model.username}}</h2>
+    </div>
+
+    <div id="profile-email" class="profile-section">
+      <h4>Email:</h4>
+      <h2>{{model.email}}</h2>
+    </div>
+
+    <div class="profile-section">
+      <h4>Affiliations:</h4>
+      {{#each a in affiliations}}
+        <div class="profile-affiliation">
+          <div class="profile-affiliation-name">{{a.name}}</div>
+          <div class="glyphicon glyphicon-remove-circle remove-affiliation" {{action 'removeAffiliation' a}}></div>
+          <div>{{a.startDate}} - {{a.displayEndDate}}</div>
+          <div>{{a.email}}</div>
+        </div>
+      {{/each}}
+      <a class="button-secondary button--grey button--small" {{action 'toggleAffiliationForm'}}>
+        <span class="glyphicon glyphicon-plus-sign"></span>
+        Add New Affiliation
+      </a>
+      {{#unless hideAffiliationForm}}
+        <div class="affiliations-form">
+          <h3>New Affiliation</h3>
+          <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
+          {{partial "user/affiliation_form"}}
+        </div>
+      {{/unless}}
+    </div>
+
+    <br><br>
+    <a href="#" id="reset-password">Reset my password</a>
+  </div>
+
 </div>

@@ -30,6 +30,8 @@ $template-thumbnail-side-padding: 10px;
   height: 175px;
   margin-right: 10px;
   padding: 15px $template-thumbnail-side-padding;
+  color: #fff;
+  background-color: $tahi-blue-light;
 
   h3 {
     margin: 0; // override bootstrap
@@ -95,6 +97,11 @@ $template-thumbnail-side-padding: 10px;
   top: 121px;
 }
 
-.manuscript-manager-template {
-  margin-bottom: 50px;
+.template-edit-paper-type {
+  margin-right: 2px; // override .control-bar-item
+
+  input {
+    width: 175px;
+    height: 34px;
+  }
 }

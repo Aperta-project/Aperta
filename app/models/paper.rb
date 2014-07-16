@@ -4,6 +4,7 @@ class Paper < ActiveRecord::Base
   belongs_to :user, inverse_of: :submitted_papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
+  belongs_to :locked_by, class_name: User
 
   has_one :manuscript, dependent: :destroy
 
@@ -100,6 +101,14 @@ class Paper < ActiveRecord::Base
 
   def build_default_author_groups
     AuthorGroup.build_default_groups_for(self)
+  end
+
+  def locked?
+    locked_by_id.present?
+  end
+
+  def locked_by?(user)
+    locked_by_id == user.id
   end
 
   private

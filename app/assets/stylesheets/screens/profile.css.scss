@@ -1,23 +1,29 @@
-/*
-  #profile-name
-*/
+.user-profile {
+  padding-top: 60px;
+}
 
-#profile-name h1 {
+.profile-section {
+  margin: 20px 0;
+
+  h4 {
+    margin: 0;
+    color: #999;
+    font-size: 14px;
+  }
+}
+
+#profile-name {
   @include card-title;
 }
 
 #profile-username h2, #profile-email h2 {
   @include column-title;
+  @extend %truncates;
 }
 
 #reset-password {
-  @include text-link-lg;
-  display: inline-block;
   margin-top: 20px;
-}
-
-.user-profile {
-  padding-top: 60px;
+  font-size: 18px;
 }
 
 #profile-avatar {
@@ -60,12 +66,29 @@
   @include upload-spinner-and-hover;
 }
 
+.remove-affiliation {
+  position: absolute;
+  top: 2px;
+  left: -24px;
+  cursor: pointer;
+}
+
+.profile-affiliation {
+  position: relative;
+  margin: 5px 0 20px 0;
+  font-size: 18px;
+}
+
 .affiliations-form {
+  margin-top: 40px;
+  @include animation(fadeIn 200ms $ease-out-quad);
+  @include animation-fill-mode(forwards);
+
   input {
     margin: 15px 0;
   }
 }
 
-.truncated-field {
-  @extend %truncates;
+.affiliation-field {
+  width: 250px;
 }

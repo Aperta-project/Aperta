@@ -17,7 +17,6 @@
   placeholder='Email Address'
   class='affiliation-field form-control'}}
 </div>
-<a class="btn-link author-cancel" {{action 'toggleAffiliationForm'}}>cancel</a>
-<div class="form-group">
-  <button class="button-secondary" {{action 'commitAffiliation' newAffiliation}}>done</button>
-</div>
+
+<button class="button-secondary button--green" {{action 'commitAffiliation' newAffiliation}}>done</button>
+<a class="button-link author-cancel" {{action 'toggleAffiliationForm'}}>cancel</a>

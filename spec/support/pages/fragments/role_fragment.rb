@@ -13,8 +13,7 @@ class RoleFragment < PageFragment
   end
 
   def delete
-    find('.name-field').hover
-    find('.delete-button').click
+    find('.role-delete-button').click
   end
 
   def save

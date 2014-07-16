@@ -1,25 +1,19 @@
-<div class="admin-header row">
-  <div class='relative'>
-    <h2 class="title col-md-5">{{modalTitle}}</h2>
+<div class="admin-style-setting-section">
+  <span class="save-status">{{saveStatus}}</span>
+  <a class="button-primary button--light-blue" href="#" data-toggle="modal" data-target=#{{unbound modalId}}>{{modalButtonText}}</a>
+</div>
 
-    <div class='col-md-3 pull-right'>
-      <span class="save-status">{{saveStatus}}</span>
-      <a class="button-primary button--light-blue" href='#' data-toggle="modal" data-target=#{{unbound modalId}}>{{modalButtonText}}</a>
-    </div>
-
-    <div class="modal" id={{unbound modalId}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <h1>{{modalTitle}}</h1>
-            <p>{{helperText}}</p>
-            {{textarea value=attr placeholder=textAreaPlaceHolder}}
-          </div>
-          <div class="modal-footer">
-            <a data-dismiss="modal" href='#' class="button-link button--grey cancel-link" {{action resetSaveStatuses}}>Cancel</a>
-            <button type="button" class="button-primary button--light-blue" data-dismiss="modal" {{action saveAttr}}>Save</button>
-          </div>
-        </div>
+<div class="modal" id={{unbound modalId}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h1>{{modalTitle}}</h1>
+        <p>{{helperText}}</p>
+        {{textarea value=attr placeholder=textAreaPlaceHolder}}
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal" href="#" class="button-link button--grey cancel-link" {{action resetSaveStatuses}}>Cancel</a>
+        <button type="button" class="button-primary button--light-blue" data-dismiss="modal" {{action saveAttr}}>Save</button>
       </div>
     </div>
   </div>

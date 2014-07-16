@@ -29,11 +29,13 @@
   list-style-type: none;
   padding: 0;
 
-  li { margin-bottom: 10px; }
+  li { margin: 10px 0px 10px 0px; }
 }
 
 .dashboard-paper-title a {
-  color: $tahi-primary;
-  font-size: 18px;
+  font-family: $tahi-article-font-family;
+  color: $tahi-dark;
+  font-size: 20px;
   line-height: 1;
+  white-space: nowrap;
 }

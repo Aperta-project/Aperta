@@ -1,6 +1,6 @@
 ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
   beforeModel: ->
-    visualEditorScript = '/visualEditor.js'
+    visualEditorScript = '/visual-editor.js'
     unless ETahi.LazyLoaderMixin.loaded[visualEditorScript]
       $.getScript(visualEditorScript).then ->
         ETahi.LazyLoaderMixin.loaded[visualEditorScript] = true

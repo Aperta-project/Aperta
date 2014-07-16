@@ -5,9 +5,10 @@
     = stylesheet_link_tag    "application", media: "all"
     = javascript_include_tag "application"
 
-    - if Rails.env.test? # disable animations
-      = javascript_tag "$.fx.off = true"
-      = stylesheet_link_tag "test"
+    - if Rails.env.test?
+      = javascript_tag "$.fx.off = true" # disable jquery animations
+      = stylesheet_link_tag "test" # disable css animations
+      = javascript_tag "EventSource = NativeEventSource" # undo eventsource.js polyfill
 
     = csrf_meta_tags
     %meta{'name' => 'blitz', 'content' => 'mu-b3889ed7-0648789a-23e0b2b7-244f7a06'}

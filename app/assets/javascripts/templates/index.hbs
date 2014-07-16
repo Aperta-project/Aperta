@@ -7,7 +7,15 @@
       {{#if hasSubmissions}}
         <ul class="dashboard-submitted-papers">
           {{#each paper in model.submissions}}
-            <li class="dashboard-paper-title" data-toggle="tooltip" title="My Paper" data-placement="bottom">{{link-to paper.displayTitle "paper.edit" paper.id}}</li>
+            <li class="dashboard-paper-title" >
+              {{link-to paper.displayTitle
+                        "paper.edit"
+                        paper.id
+                        class="link-tooltip"
+                        data-toggle="tooltip"
+                        title="My Paper"
+                        data-placement="bottom"}}
+            </li>
           {{/each}}
         </ul>
       {{else}}

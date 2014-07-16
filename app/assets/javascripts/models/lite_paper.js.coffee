@@ -6,7 +6,7 @@ ETahi.LitePaper = DS.Model.extend
   title: a('string')
   shortTitle: a('string')
   submitted: a('boolean')
-  role: a('string')
+  roles: a()
   displayTitle: (->
     @get('title') || @get('shortTitle')
   ).property 'title', 'shortTitle'

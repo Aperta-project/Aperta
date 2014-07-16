@@ -1,6 +1,8 @@
 class Paper < ActiveRecord::Base
   include EventStreamNotifier
 
+  attr_accessor :role_descriptions
+
   belongs_to :user, inverse_of: :submitted_papers
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow

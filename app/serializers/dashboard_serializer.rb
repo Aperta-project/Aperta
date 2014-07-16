@@ -18,6 +18,8 @@ class DashboardSerializer < ActiveModel::Serializer
 
   def papers
     # all the papers i have submitted
-    @submissions ||= current_user.submitted_papers
+    ids = current_user.submitted_papers.pluck(:id) | current_user.assigned_papers.pluck(:id)
+    roles = PaperRole.where(paper_id: ids, user_id: current_user.id)
+    Paper.find(ids).includes(:paper_roles)
   end
 end

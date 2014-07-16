@@ -27,13 +27,17 @@ document.write('<style>#ember-testing-container { position: absolute; background
 
 @setupTestEnvironment()
 
-@setupApp = ->
-  @setupTestEnvironment()
+@setupApp = (options={integration:false}) ->
+  if options.integration
+    @setupTestEnvironment()
 
-  container = ETahi.__container__
-  applicationController = container.lookup('controller:application')
+    container = ETahi.__container__
+    applicationController = container.lookup('controller:application')
 
-  store = container.lookup 'store:main'
-  store.find 'user', @currentUserId
-  .then (currentUser) -> applicationController.set 'currentUser', currentUser
-
+    store = container.lookup 'store:main'
+    store.find 'user', @currentUserId
+    .then (currentUser) -> applicationController.set 'currentUser', currentUser
+  else
+    emq.globalize()
+    setResolver Ember.DefaultResolver.create namespace: ETahi
+    ETahi.setupForTesting()

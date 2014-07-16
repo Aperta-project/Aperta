@@ -10,7 +10,7 @@ feature "Account creation", js: true do
       password: 'password'
 
     expect(page.current_path).to eq(root_path)
-    expect(dashboard_page.header.text).to eq "Welcome, Albert Einstein"
+    expect(dashboard_page).to have_welcome_message("Hi, Albert")
   end
 end
 

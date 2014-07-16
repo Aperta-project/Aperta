@@ -26,7 +26,7 @@ feature "Assigns Reviewer", js: true do
 
   scenario "Editor can assign a reviewer to a paper" do
     dashboard_page = DashboardPage.new
-    manuscript_page = dashboard_page.view_submitted_paper paper.short_title
+    manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card 'Assign Reviewers' do |overlay|
       overlay.paper_reviewers = [albert.full_name, neil.full_name]
       expect(overlay).to have_reviewers(albert, neil)

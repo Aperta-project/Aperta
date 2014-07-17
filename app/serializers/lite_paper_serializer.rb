@@ -6,7 +6,7 @@ class LitePaperSerializer < ActiveModel::Serializer
   end
 
   def roles
-    object.role_descriptions
+    roles = object.role_descriptions
   end
 
 end

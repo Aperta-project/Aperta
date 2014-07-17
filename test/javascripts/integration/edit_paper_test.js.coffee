@@ -1,6 +1,7 @@
 module 'Integration: EditPaper',
+  tearDown: -> ETahi.reset()
   setup: ->
-    setupApp()
+    setupApp(integration: true)
 
     paperId = 93412
     declarationTaskId = 239493

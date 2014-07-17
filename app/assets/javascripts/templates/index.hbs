@@ -2,7 +2,7 @@
 
   <main>
     <section id="dashboard-my-submissions">
-      <h2>Hi, {{currentUser.firstName}}.  You have {{model.submissions.length}} papers.</h2>
+      <h2 class="welcome-message">Hi, {{currentUser.firstName}}.  You have {{model.submissions.length}} papers.</h2>
       {{link-to "Create new submission" "paper_new" classNames="button-secondary button--green button--wide"}}
       {{#if hasPapers}}
         <ul class="dashboard-submitted-papers">

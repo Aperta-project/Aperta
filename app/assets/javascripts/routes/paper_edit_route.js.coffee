@@ -5,7 +5,7 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
       $.getScript(visualEditorScript).then ->
         ETahi.LazyLoaderMixin.loaded[visualEditorScript] = true
 
-  model: (params) ->
+  model: ->
     paper = @modelFor('paper')
     new Ember.RSVP.Promise((resolve, reject) ->
       paper.get('tasks').then((tasks) -> resolve(paper)))
@@ -16,7 +16,7 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
   setupController: (controller, model) ->
     controller.set('model', model)
     controller.set 'authors', @store.all('author').filter (author) =>
-      author.get('authorGroup.paper') == model
+      model.get('authorGroups').indexOf(author.get('authorGroup')) > -1
 
   actions:
     viewCard: (task) ->

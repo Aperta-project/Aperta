@@ -17,6 +17,7 @@ ETahi.Paper = DS.Model.extend
   status: a('string')
   title: a('string')
   paperType: a('string')
+  eventName: a('string')
 
   editor: Ember.computed.alias('editors.firstObject')
   relationshipsToSerialize: []

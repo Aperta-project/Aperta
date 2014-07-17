@@ -3,6 +3,7 @@ testPhase = undefined
 newPhase = undefined
 
 module 'Unit: TemplatePhase',
+  tearDown: -> ETahi.reset()
   setup: ->
     setupApp()
     Ember.run =>

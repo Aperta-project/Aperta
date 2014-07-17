@@ -5,18 +5,22 @@ class PaperRole < ActiveRecord::Base
 
   validates :paper, presence: true
 
-  after_save :assign_tasks_to_editor, if: -> { user_id_changed? && editor? }
+  after_save :assign_tasks_to_editor, if: -> { user_id_changed? && role == 'editor' }
 
   def self.admins
-    where(admin: true)
+    where(role: 'admin')
+  end
+
+  def self.for_user(user)
+    where(user: user)
   end
 
   def self.editors
-    where(editor: true)
+    where(role: 'editor')
   end
 
   def self.reviewers
-    where(reviewer: true)
+    where(role: 'reviewer')
   end
 
   def self.reviewers_for(paper)
@@ -24,15 +28,7 @@ class PaperRole < ActiveRecord::Base
   end
 
   def description
-    if editor
-      "Editor"
-    elsif reviewer
-      "Reviewer"
-    elsif admin
-      "Administrator"
-    else
-      "Assignee"
-    end
+    role.capitalize
   end
 
   protected
@@ -46,5 +42,4 @@ class PaperRole < ActiveRecord::Base
             end
     query.update_all(assignee_id: user_id)
   end
-
 end

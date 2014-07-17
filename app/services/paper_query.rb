@@ -29,7 +29,7 @@ class PaperQuery
     Paper.
       where(id: @paper_id).
       joins(:paper_roles).
-      where("paper_roles.user_id = ? AND paper_roles.admin = ?", @user.id, true).
+      merge(PaperRole.admins.for_user(@user)).
       first
   end
 
@@ -37,7 +37,7 @@ class PaperQuery
     Paper.
       where(id: @paper_id).
       joins(:paper_roles).
-      where("paper_roles.user_id = ? AND paper_roles.editor = ?", @user.id, true).
+      merge(PaperRole.editors.for_user(@user)).
       first
   end
 
@@ -45,7 +45,7 @@ class PaperQuery
     Paper.
       where(id: @paper_id).
       joins(:paper_roles).
-      where("paper_roles.user_id = ? AND paper_roles.reviewer = ?", @user.id, true).
+      merge(PaperRole.reviewers.for_user(@user)).
       first
   end
 

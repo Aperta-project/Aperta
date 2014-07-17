@@ -3,6 +3,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
   setup: ->
     setupApp()
     TahiTest.journalId = 209
+    TahiTest.editorRoleId = 8
     adminJournals =
       roles: [
         id: 7
@@ -14,7 +15,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
         can_view_all_manuscript_managers: true
         journal_id: TahiTest.journalId
       ,
-        id: 8
+        id: TahiTest.editorRoleId
         kind: "editor"
         name: "Editor"
         required: true
@@ -106,20 +107,42 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
     TahiTest.query = 'User'
     adminJournalUsersResults = admin_journal_users: [adminJournalUserResponse.admin_journal_user]
 
+    TahiTest.userRoleId = 99
+    userRoleResponse =
+      user_role:
+        id: TahiTest.userRoleId
+        user_id: adminJournalUserResponse.admin_journal_user.id
+        role_id: TahiTest.editorRoleId
+
     server.respondWith 'GET', "/admin/journals", [
       200, "Content-Type": "application/json", JSON.stringify adminJournals
+    ]
+
+    server.respondWith 'GET', "/admin/journal_users?journal_id=#{TahiTest.journalId}", [
+      200, "Content-Type": "application/json", JSON.stringify adminJournalUsersResults
     ]
 
     server.respondWith 'GET', "/admin/journal_users?query=#{TahiTest.query}", [
       200, "Content-Type": "application/json", JSON.stringify adminJournalUsersResults
     ]
 
+    server.respondWith 'POST', "/user_roles", [
+      201, "Content-Type": "application/json", JSON.stringify userRoleResponse
+    ]
+
+    server.respondWith 'DELETE', "/user_roles/#{TahiTest.userRoleId}", [
+      204, "Content-Type": "application/json", JSON.stringify {}
+    ]
+
+  teardown: -> $('.add-role-input').typeahead 'val', null
+
 test 'admin adds a role for user', ->
   visit "/admin/journals/#{TahiTest.journalId}"
+  .then -> ok exists 'tr.user-row'
   fillIn '.admin-search-input', TahiTest.query
   click '.admin-search-button'
   click '.assign-role-button'
-  .then -> $('.add-role-input').typeahead('val', 'Edit')
+  .then -> $('.add-role-input').typeahead 'val', 'Edit'
   .then -> click '.tt-suggestion'
   andThen -> equal $.trim(find('.assigned-role').text()), "Editor"
 
@@ -128,7 +151,18 @@ test 'admin removes a role for user', ->
   fillIn '.admin-search-input', TahiTest.query
   click '.admin-search-button'
   click '.assign-role-button'
-  .then -> $('.add-role-input').typeahead('val', 'Edit')
+  .then -> $('.add-role-input').typeahead 'val', 'Edit'
   .then -> click '.tt-suggestion'
   click '.remove-button'
   andThen -> ok !exists '.assigned-role.token'
+
+test 'autocomplete does not give roles the user is already assigned to', ->
+  visit "/admin/journals/#{TahiTest.journalId}"
+  fillIn '.admin-search-input', TahiTest.query
+  click '.admin-search-button'
+  click '.assign-role-button'
+  .then -> $('.add-role-input').typeahead 'val', 'Edit'
+  .then -> click '.tt-suggestion'
+  click '.assign-role-button'
+  .then -> $('.add-role-input').typeahead 'val', 'Edit'
+  andThen -> ok !exists '.tt-suggestion'

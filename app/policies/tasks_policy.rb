@@ -2,11 +2,7 @@ class TasksPolicy < ApplicationPolicy
   allow_params :task
 
   def show?
-    current_user.admin? || task_owner? || has_sufficient_role?
-  end
-
-  def edit?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
   end
 
   def create?
@@ -14,15 +10,15 @@ class TasksPolicy < ApplicationPolicy
   end
 
   def update?
-    current_user.admin? || task_owner? || has_sufficient_role?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
   end
 
   def upload?
-    current_user.admin? || task_owner? || has_sufficient_role?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
   end
 
   def destroy?
-    current_user.admin? || task_owner? || has_sufficient_role?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
   end
 
   private
@@ -31,8 +27,11 @@ class TasksPolicy < ApplicationPolicy
     current_user.tasks.where(id: task.id).first
   end
 
+  def metadata_task_collaborator?
+    task.is_metadata? && PaperRole.for_user(current_user).collaborators.where(paper: task.paper).exists?
+  end
+
   def has_sufficient_role?
-    current_user.roles.where(journal_id: task.journal.id, can_view_all_manuscript_managers: true).present?
+    current_user.roles.where(journal_id: task.journal.id, can_view_all_manuscript_managers: true).exists?
   end
 end
-

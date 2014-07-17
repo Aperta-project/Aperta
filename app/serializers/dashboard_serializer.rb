@@ -22,6 +22,7 @@ class DashboardSerializer < ActiveModel::Serializer
     roles = PaperRole.where(paper_id: ids, user_id: user.id)
     papers = Paper.where(id: ids).all
 
+    # in this case N+1 queries are unavoidable without doing some grunt work ourselves..
     roles.group_by(&:paper_id).each do |paper_id, paper_roles|
       paper = papers.detect { |p| p.id == paper_id }
       paper.role_descriptions = paper_roles.map(&:description)

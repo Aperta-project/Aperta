@@ -41,7 +41,7 @@ class Journal < ActiveRecord::Base
   end
 
   def logo_url
-    logo.url if logo
+    logo.thumbnail.url if logo
   end
 
   def epub_cover_file_name

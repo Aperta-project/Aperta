@@ -28,9 +28,9 @@ describe PaperReviewerTask do
     let(:task) { PaperReviewerTask.create!(phase: phase) }
 
     it "creates reviewer paper roles only for new ids" do
-      PaperRole.create! paper: paper, reviewer: true, user: albert
+      create(:paper_role, :reviewer, paper: paper, user: albert)
       task.reviewer_ids = [neil.id.to_s]
-      expect(PaperRole.where(paper: paper, reviewer: true, user: neil)).not_to be_empty
+      expect(PaperRole.reviewers.where(paper: paper, user: neil)).not_to be_empty
     end
 
     it "creates reviewer report tasks only for new ids" do
@@ -41,16 +41,16 @@ describe PaperReviewerTask do
 
     it "deletes reviewer report tasks of the ids not specified" do
       phase = paper.phases.where(name: 'Get Reviews').first
-      PaperRole.create! paper: paper, reviewer: true, user: albert
+      create(:paper_role, :reviewer, paper: paper, user: albert)
       ReviewerReportTask.create! assignee: albert, phase: phase
       task.reviewer_ids = [neil.id.to_s]
       expect(ReviewerReportTask.where(assignee: albert, phase: phase)).to be_empty
     end
 
     it "deletes paper roles not present in the specified user_id" do
-      PaperRole.create! paper: paper, reviewer: true, user: albert
+      create(:paper_role, :reviewer, paper: paper, user: albert)
       task.reviewer_ids = [neil.id.to_s]
-      expect(PaperRole.where(paper: paper, reviewer: true, user: albert)).to be_empty
+      expect(PaperRole.reviewers.where(paper: paper, user: albert)).to be_empty
     end
 
     context "when the 'Get Reviews' phase isn't present" do
@@ -91,8 +91,8 @@ describe PaperReviewerTask do
     let (:reviewer2) { FactoryGirl.create :user }
 
     before do
-      PaperRole.create! paper: paper, reviewer: true, user: reviewer1
-      PaperRole.create! paper: paper, reviewer: true, user: reviewer2
+      create(:paper_role, :reviewer, paper: paper, user: reviewer1)
+      create(:paper_role, :reviewer, paper: paper, user: reviewer2)
     end
 
     it "returns the current reviewer IDs" do

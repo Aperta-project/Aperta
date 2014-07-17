@@ -2,6 +2,7 @@ testPhases = undefined
 testTemplate = undefined
 
 module 'Unit: ManuscriptManagerTemplate',
+  tearDown: -> ETahi.reset()
   setup: ->
     setupApp()
     phase = name: 'First Phase', task_types: ['ATask', 'AnotherTask']

@@ -1,20 +1,34 @@
 <div id="tahi-container">
-  <h1 class="dashboard-header truncated-field">Welcome, {{currentUser.fullName}}</h1>
 
   <main>
     <section id="dashboard-my-submissions">
-      <h2>Your Submissions</h2>
-      {{#if hasSubmissions}}
+      <h2 class="welcome-message">
+        Hi, {{currentUser.firstName}}.
+        {{#if model.papers.length}}
+          You have {{model.papers.length}} {{pluralize model.papers.length 'manuscript' 'manuscripts'}}.
+        {{else}}
+          You have no manuscripts.
+        {{/if}}
+      </h2>
+      {{link-to "Create new submission" "paper_new" classNames="button-secondary button--green button--wide"}}
+      {{#if hasPapers}}
         <ul class="dashboard-submitted-papers">
-          {{#each paper in model.submissions}}
-            <li class="dashboard-paper-title truncated-field">{{link-to paper.shortTitle "paper.edit" paper.id}}</li>
+          {{#each paper in model.papers}}
+            <li class="dashboard-paper-title" >
+              {{link-to paper.displayTitle
+                        "paper.edit"
+                        paper.id
+                        class="link-tooltip"
+                        data-toggle="tooltip"
+                        title=paper.roleList
+                        data-placement="bottom"}}
+            </li>
           {{/each}}
         </ul>
       {{else}}
         <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>
       {{/if}}
 
-      {{link-to "Create new submission" "paper_new" classNames="button-primary button--green button--wide"}}
     </section>
   </main>
 </div>

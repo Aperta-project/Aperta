@@ -4,6 +4,7 @@ ETahi.User = DS.Model.extend
   affiliations: DS.hasMany('affiliation')
   email: a('string')
   fullName: a('string')
+  firstName: a('string')
   avatarUrl: a('string')
   username: a('string')
   name: Ember.computed.alias 'fullName'

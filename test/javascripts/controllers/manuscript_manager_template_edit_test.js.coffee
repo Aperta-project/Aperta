@@ -1,4 +1,5 @@
 moduleFor 'controller:manuscriptManagerTemplateEdit', 'ManuscriptManagerTemplateEditController',
+  tearDown: -> ETahi.reset()
   setup: ->
     setupApp()
     @phase = ETahi.TemplatePhase.create name: 'First Phase'

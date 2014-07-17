@@ -23,6 +23,18 @@ class PaperRole < ActiveRecord::Base
     reviewers.where(paper_id: paper.id)
   end
 
+  def description
+    if editor
+      "Editor"
+    elsif reviewer
+      "Reviewer"
+    elsif admin
+      "Administrator"
+    else
+      "Assignee"
+    end
+  end
+
   protected
 
   def assign_tasks_to_editor

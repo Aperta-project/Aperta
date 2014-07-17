@@ -60,7 +60,7 @@ feature "Manuscript Manager", js: true do
 
   scenario 'Removing a task' do
     dashboard_page = DashboardPage.new
-    paper_page = dashboard_page.view_submitted_paper paper.short_title
+    paper_page = dashboard_page.view_submitted_paper paper
     task_manager_page = paper_page.visit_task_manager
 
     phase = task_manager_page.phase 'Submission Data'
@@ -72,7 +72,7 @@ feature "Manuscript Manager", js: true do
 
   scenario "Admin can assign a paper to themselves" do
     dashboard_page = DashboardPage.new
-    paper_page = dashboard_page.view_submitted_paper paper.short_title
+    paper_page = dashboard_page.view_submitted_paper paper
     task_manager_page = paper_page.visit_task_manager
 
     expect(task_manager_page).to have_content 'Assign Editor'

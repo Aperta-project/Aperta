@@ -19,7 +19,7 @@ feature "Reviewer Report", js: true do
 
   scenario "Reviewer can write a reviewer report" do
     dashboard_page = DashboardPage.new
-    manuscript_page = dashboard_page.view_submitted_paper paper.short_title
+    manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card 'Reviewer Report' do |overlay|
       overlay.mark_as_complete
       expect(overlay).to be_completed

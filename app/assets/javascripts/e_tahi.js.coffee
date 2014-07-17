@@ -1,5 +1,5 @@
 #= require ./store
-#= require ./event_stream_actions
+#= require ./services/event_stream
 #= require_tree ./mixins
 #= require ./serializers/application_serializer
 #= require_tree ./serializers

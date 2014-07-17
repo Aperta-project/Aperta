@@ -1,7 +1,6 @@
 class Paper < ActiveRecord::Base
   include EventStreamNotifier
 
-
   attr_writer :role_descriptions
   def role_descriptions
     @role_descriptions ||= []

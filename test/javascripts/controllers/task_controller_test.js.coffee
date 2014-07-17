@@ -1,6 +1,6 @@
 moduleFor 'controller:task', 'TaskController',
   needs: ['controller:application']
-  tearDown: -> ETahi.reset()
+  teardown: -> ETahi.reset()
   setup: ->
     setupApp()
     @litePaper = Ember.Object.create

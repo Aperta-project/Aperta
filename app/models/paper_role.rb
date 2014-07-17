@@ -23,6 +23,10 @@ class PaperRole < ActiveRecord::Base
     where(role: 'reviewer')
   end
 
+  def self.collaborators
+    where(role: 'collaborator')
+  end
+
   def self.reviewers_for(paper)
     reviewers.where(paper_id: paper.id)
   end

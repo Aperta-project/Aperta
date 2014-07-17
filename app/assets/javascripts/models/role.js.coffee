@@ -8,4 +8,4 @@ ETahi.Role = DS.Model.extend
   canViewAllManuscriptManagers: a('boolean')
 
   journal: DS.belongsTo('adminJournal')
-
+  userRoles: DS.hasMany('userRole')

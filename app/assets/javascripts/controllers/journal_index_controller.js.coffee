@@ -2,7 +2,10 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
   epubCssSaveStatus: ''
   pdfCssSaveStatus: ''
   manuscriptCssSaveStatus: ''
-  rolesList: Em.computed 'model.roles', -> @get('model.roles').mapProperty 'name'
+  rolesList: Em.computed 'model.roles', ->
+    @get('model.roles').map (role) ->
+      value: role.get 'name'
+      roleObj: role
 
   epubCoverUploadUrl: (->
     "/admin/journals/#{@get('model.id')}/upload_epub_cover"

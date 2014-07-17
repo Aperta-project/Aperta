@@ -2,12 +2,15 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
   needs: ['journalIndex']
   resetPasswordSuccess: false
   resetPasswordFailure: false
-  rolesList: Em.computed.alias 'controllers.journalIndex.rolesList'
+  rolesList: Em.computed 'controllers.journalIndex.model.roles.@each', 'roles.@each', ->
+    journalRoles = @get 'controllers.journalIndex.model.roles'
+    journalRoles.reject (role) => @get('roles').isAny('name', role.name) or role.get('isDirty')
+                .map (role) -> value: role.get 'name', roleObj: role
+
   roleQuery: ''
-  roles: Em.computed ->
+  roles: Em.computed 'userRoles.@each', ->
     @get('userRoles').map (userRole) ->
       Em.Object.create
-        id: userRole.get 'role.id'
         name: userRole.get 'role.name'
         userRoleId: userRole.get 'id'
 
@@ -16,18 +19,26 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
   actions:
     removeRole: (role) ->
       @store.getById 'userRole', role.userRoleId
-      .destroyRecord()
+            .destroyRecord().then =>
+              role = @get('roles').findBy 'userRoleId', role.userRoleId
+              @get('roles').removeObject role
 
-    addRole: -> @set 'isAddingRole', true
+    addRole: ->
+      @set 'isAddingRole', true
 
     createRole: (role) ->
-      @store.createRecord 'userRole',
+      userRole = @store.createRecord 'userRole',
         user: @get 'model'
         role: role
-      .save().finally =>
-        @setProperties
-          isAddingRole: false
-          roleQuery: ''
+
+      userRole.save()
+              .catch (res) =>
+                userRole.transitionTo 'created.uncommitted'
+                userRole.deleteRecord()
+              .finally =>
+                @setProperties
+                  isAddingRole: false
+                  roleQuery: ''
 
     saveUser: ->
       @get('model').save().then =>

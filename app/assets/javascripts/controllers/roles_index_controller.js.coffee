@@ -7,4 +7,5 @@ ETahi.RolesIndexController = Ember.ArrayController.extend
       role = @store.createRecord('role')
       @get('content').unshiftObject(role)
     deleteRole: (role) ->
+      # FIXME: rollback if there was an error deleting a role
       role.destroyRecord()

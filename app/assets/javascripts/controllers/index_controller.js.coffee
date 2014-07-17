@@ -3,4 +3,4 @@ ETahi.IndexController = Ember.ObjectController.extend
 
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
 
-  hasSubmissions: Ember.computed.notEmpty('model.submissions')
+  hasPapers: Ember.computed.notEmpty('model.papers')

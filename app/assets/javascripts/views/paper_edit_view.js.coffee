@@ -1,12 +1,8 @@
 ETahi.PaperEditView = Ember.View.extend
-  visualEditor: null
+  visualEditor: Ember.computed.alias('controller.visualEditor')
 
   locked: Ember.computed.alias 'controller.locked'
   isEditing: Ember.computed.alias 'controller.isEditing'
-
-  documentNode: ->
-    surf = @get('visualEditor').surface
-    ve.dm.converter.getDomFromModel(surf.getModel().getDocument())
 
   setBackgroundColor:(->
     $('html').addClass('matte')
@@ -14,8 +10,7 @@ ETahi.PaperEditView = Ember.View.extend
 
   bindPlaceholderEvent: ->
     $('.editable').on "keyup", "div[contenteditable]", (e) =>
-      content = $(ve.dm.converter.getDomFromModel(@get('visualEditor').surface.getModel().getDocument())).text()
-      @set('controller.showPlaceholder', Ember.isBlank content)
+      @set('controller.showPlaceholder', @get('visualEditor.isEmpty'))
 
   applyManuscriptCss:(->
     $('#paper-body').attr('style', @get('controller.model.journal.manuscriptCss'))
@@ -54,7 +49,6 @@ ETahi.PaperEditView = Ember.View.extend
         $(this).css('marginTop', '5')
 
   setupVisualEditor: (->
-    ve.init.platform.setModulesUrl('/visual-editor/modules')
     @updateVisualEditor()
     @addObserver 'controller.body', =>
       @updateVisualEditor()
@@ -64,24 +58,12 @@ ETahi.PaperEditView = Ember.View.extend
   ).on('didInsertElement')
 
   updateVisualEditor: ->
-    container = $('<div>')
-
-    $('#paper-body').html('').append(container)
-
-    ve.debug = false # it's true by default, which adds a gray background
-                     # on initialize and update
-    target = new ve.init.sa.Target(
-      container,
-      ve.createDocumentFromHtml(@get('controller.body') || '')
+    visualEditor = @get('visualEditor')
+    visualEditor.update($("#paper-body"), @get('controller.body'))
+    visualEditor.get('target').on('surfaceReady', =>
+      @setupStickyToolbar()
+      @updateToolbarLockedState()
     )
-
-    self = @
-    target.on('surfaceReady', ->
-      target.toolbar.disableFloatable()
-      self.setupStickyToolbar()
-      self.updateToolbarLockedState()
-    )
-    @set('visualEditor', target)
 
   destroyVisualEditor: ( ->
     Ember.$(document).off 'keyup.autoSave'
@@ -112,9 +94,7 @@ ETahi.PaperEditView = Ember.View.extend
         @timeoutSave()
 
   saveVisualEditorChanges: ->
-    documentNode = @documentNode()
-    newBody = $(documentNode).find('body').html()
-    @get('controller').send('updateDocumentBody', newBody)
+    @get('controller').send('updateDocumentBody', @get('visualEditor.bodyHtml'))
 
   actions:
     submit: ->

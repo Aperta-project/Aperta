@@ -34,6 +34,5 @@ class DashboardSerializer < ActiveModel::Serializer
     end
 
     @papers = papers
-    @papers
   end
 end

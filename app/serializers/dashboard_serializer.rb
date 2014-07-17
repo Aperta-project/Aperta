@@ -17,25 +17,22 @@ class DashboardSerializer < ActiveModel::Serializer
   end
 
   def papers
-    # all the papers i have submitted
-    unless @papers
-      ids = user.submitted_papers.pluck(:id) | user.assigned_papers.pluck(:id)
-      roles = PaperRole.where(paper_id: ids, user_id: user.id)
-      papers = Paper.where(id: ids).all
+    return @papers if @papers
+    ids = user.submitted_papers.pluck(:id) | user.assigned_papers.pluck(:id)
+    roles = PaperRole.where(paper_id: ids, user_id: user.id)
+    papers = Paper.where(id: ids).all
 
-      roles.group_by(&:paper_id).each do |paper_id, paper_roles|
-        paper = papers.detect { |p| p.id == paper_id }
-        paper.role_descriptions = paper_roles.map(&:description)
-      end
-
-      papers.each do |p|
-        if p.user_id == user.id
-          p.role_descriptions << "My Paper"
-        end
-      end
-
-      @papers = papers
+    roles.group_by(&:paper_id).each do |paper_id, paper_roles|
+      paper = papers.detect { |p| p.id == paper_id }
+      paper.role_descriptions = paper_roles.map(&:description)
     end
+
+    papers.each do |p|
+      next unless p.user_id == user.id
+      p.role_descriptions << "My Paper"
+    end
+
+    @papers = papers
     @papers
   end
 end

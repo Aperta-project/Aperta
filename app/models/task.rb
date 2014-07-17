@@ -3,6 +3,8 @@ class Task < ActiveRecord::Base
 
   cattr_accessor :metadata_types
 
+  default_scope { order("completed ASC") }
+
   after_initialize :initialize_defaults
 
   scope :completed,   -> { where(completed: true) }

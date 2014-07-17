@@ -29,12 +29,12 @@ class PapersPolicy < ApplicationPolicy
 
   %w(editor reviewer admin collaborator).each do |role|
     define_method "paper_#{role}?" do
-      paper.role_for(role: role, user: current_user).present?
+      paper.role_for(role: role, user: current_user).exists?
     end
   end
 
   def can_view_manuscript_manager?
-    current_user.roles.where(journal_id: paper.journal).where(can_view_all_manuscript_managers: true).present?
+    current_user.roles.where(journal_id: paper.journal).where(can_view_all_manuscript_managers: true).exists?
   end
 
   def author?

@@ -8,5 +8,4 @@ class LitePaperSerializer < ActiveModel::Serializer
   def roles
     roles = object.role_descriptions
   end
-
 end

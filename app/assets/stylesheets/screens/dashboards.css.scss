@@ -5,6 +5,10 @@
   font-size: 48px;
 }
 
+.welcome-message {
+  font-size: 48px;
+}
+
 #dashboard-my-submissions {
   @extend .col-xs-12;
   padding: 0;
@@ -29,14 +33,14 @@
 .dashboard-submitted-papers {
   list-style-type: none;
   padding: 0;
-  margin-top:30px;
-  li { margin: 10px 0px 10px 0px; }
+  margin-top: 30px;
+  li { margin: 15px 0px 10px 0px; }
 }
 
 .dashboard-paper-title a {
   font-family: $tahi-article-font-family;
   color: $tahi-dark;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.5;
 }
 

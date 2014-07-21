@@ -1,8 +1,7 @@
-TahiTest = {}
 module 'Integration: Admin Journal User Roles, /admin/journals/:id',
   teardown: -> ETahi.reset()
   setup: ->
-    setupApp()
+    setupApp integration: true
     TahiTest.journalId = 209
     TahiTest.editorRoleId = 8
     adminJournals =

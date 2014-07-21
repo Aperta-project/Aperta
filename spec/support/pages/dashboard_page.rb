@@ -55,4 +55,16 @@ class DashboardPage < Page
     admin_link.click
     AdminDashboardPage.new
   end
+
+  def paper_count
+    all('.dashboard-submitted-papers .dashboard-paper-title').count
+  end
+
+  def load_more_papers
+    load_more_papers_button.click
+  end
+
+  def load_more_papers_button
+    find('.load-more-papers')
+  end
 end

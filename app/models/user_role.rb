@@ -5,7 +5,7 @@ class UserRole < ActiveRecord::Base
   validates :user, presence: true
   validates :role, presence: true
 
-  validates :role_id, uniqueness: {scope: :user_id}
+  validates :role_id, uniqueness: { scope: :user_id }
 
   def self.admins
     joins(:role).merge(Role.admins)

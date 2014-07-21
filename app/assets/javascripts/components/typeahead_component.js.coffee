@@ -7,7 +7,7 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
   setupSelectedListener: ->
     if @get 'suggestionSelected'
       @.$().on 'typeahead:selected', (e, item, index) =>
-        @sendAction 'suggestionSelected', item.roleObj
+        @sendAction 'suggestionSelected', item
 
   autoFocusInput: -> @.$().focus() if @get 'autoFocus'
 
@@ -17,7 +17,7 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
       local: @get('sourceList').map (item) ->
         if Object.prototype.toString.call(item) is '[object Object]'
           value: item.value
-          roleObj: item.roleObj
+          object: item.object
         else
           value: item
       datumTokenizer: (d) -> Bloodhound.tokenizers.whitespace d.value

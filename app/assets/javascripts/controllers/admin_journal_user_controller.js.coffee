@@ -2,12 +2,13 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
   needs: ['journalIndex']
   resetPasswordSuccess: false
   resetPasswordFailure: false
+  journalRoles: Em.computed.alias 'controllers.journalIndex.model.roles'
   rolesList: Em.computed 'controllers.journalIndex.model.roles.@each', 'roles.@each', ->
-    journalRoles = @get 'controllers.journalIndex.model.roles'
-    journalRoles.reject (role) => @get('roles').isAny('name', role.get('name')) or role.get('isDirty')
-                .map (role) ->
-                  value: role.get 'name'
-                  roleObj: role
+    @get 'journalRoles'
+    .reject (role) => @get('roles').isAny('name', role.get('name')) or role.get('isDirty')
+    .map (role) ->
+      value: role.get 'name'
+      object: role
 
   roleQuery: ''
   createRoleObject: (userRole) ->
@@ -26,12 +27,12 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
               role = @get('roles').findBy 'userRoleId', role.userRoleId
               @get('roles').removeObject role
 
-    addRole: -> @set 'isAddingRole', true
+    addRoleAssignment: -> @set 'isAddingRole', true
 
-    createRole: (role) ->
+    assignRole: (params) ->
       userRole = @store.createRecord 'userRole',
         user: @get 'model'
-        role: role
+        role: params.object
 
       userRole.save()
               .then (userRole) => @get('roles').pushObject @createRoleObject(userRole)

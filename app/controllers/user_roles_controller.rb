@@ -4,7 +4,7 @@ class UserRolesController < ApplicationController
 
   def index
     render json: [UserRole.find_by(user_id: params[:user_id], role_id: params[:role_id])],
-      each_serializer: UserRoleSerializer
+           each_serializer: UserRoleSerializer
   end
 
   def create

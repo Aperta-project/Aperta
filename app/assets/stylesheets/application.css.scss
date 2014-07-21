@@ -26,11 +26,12 @@
 @import 'ui/progress';
 @import 'ui/spinner';
 @import 'ui/token';
+@import 'ui/typeahead';
 
 @import 'screens/admin';
 @import 'screens/dashboards';
 @import 'screens/flow_manager';
-@import "screens/manuscript_manager_template";
+@import 'screens/manuscript_manager_template';
 @import 'screens/papers';
 @import 'screens/profile';
 @import 'screens/reviewer_report';

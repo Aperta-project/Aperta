@@ -1093,20 +1093,20 @@ http_interactions:
       Cache-Control:
       - max-age=315576000
       Date:
-      - Tue, 10 Jun 2014 19:32:17 +0000
+      - Thu, 17 Jul 2014 21:41:23 +0000
       Authorization:
-      - AWS AKIAJHFQZ6WND52M2VDQ:lsT9p1NqoFm/RSQgHmGnXBwL/co=
+      - AWS AKIAJHFQZ6WND52M2VDQ:rRPa9pCyx/cbczkQch9IQzVSilc=
   response:
     status:
       code: 200
       message: ''
     headers:
       X-Amz-Id-2:
-      - MLI/VdXbDAzmOsyTOoBo06sLXRuTUK9VQWwupaO2oOviJZu33KbYni1O/aFw8ZK3
+      - 93AcvE/c+MMG5IVjk7a3AM60cHN1iZWxDLKweMcW5m2wEZ2covTnIND2FKg2HSO9
       X-Amz-Request-Id:
-      - D79E8A28D2A96667
+      - 25929D2A3D4E2E9B
       Date:
-      - Tue, 10 Jun 2014 19:32:16 GMT
+      - Thu, 17 Jul 2014 21:41:24 GMT
       Etag:
       - '"871aa1f271a84f92aff260bd06b6cd58"'
       Content-Length:
@@ -1117,5 +1117,72 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Tue, 10 Jun 2014 19:32:18 GMT
+  recorded_at: Thu, 17 Jul 2014 21:41:23 GMT
+- request:
+    method: put
+    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        /9j/4AAQSkZJRgABAQAAZABkAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMD
+        AwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/
+        2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM
+        DAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAAkACEDAREAAhEBAxEB/8QA
+        GwAAAgMAAwAAAAAAAAAAAAAABgcEBQgAAwn/xAAqEAACAgEEAAUEAgMAAAAA
+        AAABAgMEBQAGERIHCBMhMSJBUWEjcRQykf/EABkBAAMBAQEAAAAAAAAAAAAA
+        AAIDBAABBf/EACERAAICAQQDAQEAAAAAAAAAAAECAAMRBBIhMRNBUSKB/9oA
+        DAMBAAIRAxEAPwD35nnStC0kjBEQclieANabMoL/AIn4mlYEX+VF345IZuvA
+        /P8AWmCtoo3KDjMtcTm4sypeFkePj/ZW50BXHcNWz1JuuQpzWmie81O/WwNO
+        vj0aQGVPVfq3UEc8fP641XpkzzIdbbtGIudrV9uXduR5C5BFepy0xLk7ti4k
+        U9OwQ/MSu04aMIwjAEcTFvk9uw5W7OHxGVJUawYO7H31kdv2UeC/cSGBuY1Y
+        lQyg+3I/Y+R9tXFNy/oczzFsKsQp4mqfDTd43ptmO0ZI3kB6v0+x4GvOsTac
+        T2KbN65hBpcbM0eajGyJv8tYutxKgdAVDLXhUMzED7n6fj7/AJ1fQwCZ+Tyt
+        WhawD7AahsOqF2vNLiTcu5UNaeDmMzwdSPTRO4Kjg895OCxYAKUU+wOzMCTG
+        VIiEKOvv2He7fDvbGCpY2lk6MG19xZX1DBdqRj0ZSnB9OdI+qOerDllHYD6g
+        3KkkKt+MqY27xdOP7Cjys27GIy2YxM3crTYROnIYxv2I68/fjhvcfI9+PfRX
+        ncA0HSgoxSO3Ukuin8zXhbJuLEPnKc1avNRrOtl55EjRYQrEv2fhV6gk8sQO
+        P61RTYACjdGSaipiRYnYiE2lu3L7s23TyUu68Jk8Th7gmr1sZJFbhT2lMkrz
+        hmKgIpb0weAoYkkEaedhbI9CSjeK8H2eBCXzBb22p407N2VmMfuLblzbtpbt
+        qtkRmoYoZyVSGP05fUA78SORwwI6+2k1MoPMo1CuV/MvPJXi6tfP5epTM9qG
+        i3qWpLSyu8kxZuJhNIP5izB/5FLA8H3+Na51Iws5p6nDbm9zSWppdI+VxVXO
+        Y6andrwW6lhSksM0YkjkU/IZSCCP0daaBVby07Cxlmy9Ta2KpJdftYgqxmvW
+        sMYxGS8KERsSihSSvuBwddBI6glQe5MxXl+2Jh061NmbWroOPpjxcIX/AJ10
+        Rtf7A8KD1CylRgxtVIK0MVeCMcJHGgREH4AHsNCTnuMAA4E7dcnZ/9k=
+    headers:
+      User-Agent:
+      - fog/1.18.0
+      Content-Length:
+      - '1076'
+      Content-Type:
+      - image/jpeg
+      X-Amz-Acl:
+      - private
+      Cache-Control:
+      - max-age=315576000
+      Date:
+      - Thu, 17 Jul 2014 21:41:23 +0000
+      Authorization:
+      - AWS AKIAJHFQZ6WND52M2VDQ:2kFVzpMbOyp6gQBTOtQiZiylxzs=
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      X-Amz-Id-2:
+      - m/5FpP6xBOlMmbwtJFlUyW3mefNBrBw3MV3uAsq/QW009s6WlSKTesXBF4oPYXL5
+      X-Amz-Request-Id:
+      - 4B634F26B3AF2A42
+      Date:
+      - Thu, 17 Jul 2014 21:41:25 GMT
+      Etag:
+      - '"c4dc30e71d53e9dfe8c2d6a7f96eb416"'
+      Content-Length:
+      - '0'
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Thu, 17 Jul 2014 21:41:24 GMT
 recorded_with: VCR 2.9.2

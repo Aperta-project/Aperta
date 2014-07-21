@@ -234,60 +234,58 @@
   }
 }
 
-.admin-search {
+.admin-user-search {
+  overflow: hidden;
   width: 100%;
   margin-top: 30px;
-  .admin-search-input {
-    @include make-xs-column(10);
-    border: 1px solid $tahi-blue-light;
-    border-radius: 5px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    font-size: 18px;
+}
+
+.admin-user-search-input {
+  @include make-xs-column(10);
+  border: 1px solid $tahi-blue-light;
+  border-radius: 5px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  font-size: 18px;
+  color: $tahi-blue-light;
+  padding: 10px 10px 8px 10px;
+
+  &::-webkit-input-placeholder {
     color: $tahi-blue-light;
-    padding: 10px 10px 8px 10px;
-    &::-webkit-input-placeholder {
-      color: $tahi-blue-light;
-    }
-    &:-moz-placeholder {
-      color: $tahi-blue-light;
-    }
-    &::-moz-placeholder {
-      color: $tahi-blue-light;
-    }
-    &:-ms-input-placeholder {
-      color: $tahi-blue-light;
-    }
   }
-  .admin-search-button {
-    @include make-xs-column(2);
-    border: 1px solid $tahi-blue-light;
-    background: white;
-    border-radius: 5px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    font-size: 26px;
-    padding: 6px 0 0;
-    border-left: none;
+  &:-moz-placeholder {
+    color: $tahi-blue-light;
+  }
+  &::-moz-placeholder {
+    color: $tahi-blue-light;
+  }
+  &:-ms-input-placeholder {
     color: $tahi-blue-light;
   }
 }
 
-.search-results {
-  margin-top: 30px;
-  .search-default-state-text {
-    font-size: 22px;
-    font-style: italic;
-    color: $tahi-tertiary-dark;
-  }
+.admin-user-search-button {
+  @include make-xs-column(2);
+  border: 1px solid $tahi-blue-light;
+  background: white;
+  border-radius: 5px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  font-size: 26px;
+  padding: 6px 0 0;
+  border-left: none;
+  color: $tahi-blue-light;
+}
+
+.admin-user-search-default-state-text {
+  padding-top: 10px;
+  color: $tahi-tertiary-dark;
+  font-size: 22px;
+  font-style: italic;
 }
 
 .admin-dashboard {
   margin-top: 35px;
-  h2 {
-    margin-left: -15px;
-    margin-right: -15px;
-  }
 }
 
 .journal-logo-hover {
@@ -318,6 +316,7 @@
 }
 
 .admin-users {
+  width: 100%;
   margin-top: 30px;
   border-collapse: separate;
   border-spacing: 0 10px;
@@ -340,6 +339,8 @@
   }
 
   tr.user-row {
+    cursor: pointer;
+
     &:hover {
       color: white;
       background: $tahi-blue-light;

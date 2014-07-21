@@ -33,6 +33,8 @@ end
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
 ActiveJob::Base.logger = Rails.logger
+require 'sidekiq/testing'
+Sidekiq::Testing.inline!
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'

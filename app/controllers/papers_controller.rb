@@ -48,9 +48,8 @@ class PapersController < ApplicationController
 
   def heartbeat
     if paper.locked?
-      paper.heartbeat! # update heartbeat timestamp
-      # remove any unlock jobs for this paper
-      # schedule an unlock two minutes from now
+      paper.heartbeat
+      PaperUnlocker.enqueue(paper.id, deferred: true)
     end
     respond_with paper
   end

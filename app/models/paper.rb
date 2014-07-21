@@ -114,6 +114,10 @@ class Paper < ActiveRecord::Base
     locked_by_id.present?
   end
 
+  def unlocked?
+    !locked?
+  end
+
   def locked_by?(user)
     locked_by_id == user.id
   end
@@ -123,7 +127,7 @@ class Paper < ActiveRecord::Base
   end
 
   def unlock
-    update_attribute!(:locked_by, nil)
+    update_attribute(:locked_by, nil)
   end
 
   def heartbeat

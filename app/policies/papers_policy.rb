@@ -26,6 +26,7 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def heartbeat?
+    #TODO: only allow for person that has it locked
     current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer?
   end
 

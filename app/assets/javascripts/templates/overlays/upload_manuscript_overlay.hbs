@@ -23,13 +23,11 @@
   <span>Sorry! {{fileName}} is not of an accepted file type</span>
 {{/if}}
 
-<ul id="paper-manuscript-upload" {{bind-attr class=isUploading::hidden}}>
-  <li>
-    <div class="preview-container glyphicon glyphicon-file"></div>
-    <div {{bind-attr class=":processing isProcessing::hidden"}}>Processing...</div>
+<div id="paper-manuscript-upload" {{bind-attr class=isUploading::hidden}}>
+  <div class="preview-container glyphicon glyphicon-file"></div>
+  <div {{bind-attr class=":processing isProcessing::hidden"}}>Processing...</div>
 
-    <div {{bind-attr class=":progress showProgress::hidden"}}>
-      <div class="progress-bar" {{bind-attr style=view.progressBarStyle}}></div>
-    </div>
-  </li>
-</ul>
+  <div {{bind-attr class=":progress showProgress::hidden"}}>
+    <div class="progress-bar" {{bind-attr style=view.progressBarStyle}}></div>
+  </div>
+</div>

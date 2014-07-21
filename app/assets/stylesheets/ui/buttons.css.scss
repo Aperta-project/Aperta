@@ -86,6 +86,11 @@
     }
   }
 
+  &.button--white {
+    color: $tahi-primary;
+    background: #fff;
+  }
+
   &.button--grey {
     background-color: $tahi-grey;
 

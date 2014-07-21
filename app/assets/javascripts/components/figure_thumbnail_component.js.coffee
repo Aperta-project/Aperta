@@ -1,7 +1,5 @@
 ETahi.FigureThumbnailComponent = Ember.Component.extend
-  tagName: 'li'
-  classNames: ['figure-thumbnail']
-  classNameBindings: ['destroyState:_destroy']
+  classNameBindings: ['destroyState:_destroy', 'editState:_edit']
   destroyState: false
   previewState: false
   editState: false
@@ -34,9 +32,6 @@ ETahi.FigureThumbnailComponent = Ember.Component.extend
     $('.overlay').animate
       scrollTop: @$().offset().top + $('.overlay').scrollTop()
     , 500, 'easeInCubic'
-
-  focusIn: (e) -> @set('editState', true)
-  focusOut: (e) -> @set('editState', false) unless @get('figure.isDirty')
 
   toggleSpinner: (->
     if @get('showSpinner')
@@ -76,6 +71,9 @@ ETahi.FigureThumbnailComponent = Ember.Component.extend
       store = @get('figure.store')
       store.pushPayload 'figure', data
       @set('uploadingState', false)
+
+    toggleEditState: ->
+      @toggleProperty 'editState'
 
     togglePreview: ->
       @toggleProperty 'previewState'

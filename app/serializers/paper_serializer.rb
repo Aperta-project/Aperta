@@ -5,7 +5,7 @@ class PaperSerializer < ActiveModel::Serializer
     has_many relation, embed: :ids, include: true
   end
 
-  %i(assignees editors reviewers).each do |relation|
+  %i(assignees editors reviewers collaborators).each do |relation|
     has_many relation, embed: :ids, include: true, root: :users
   end
 
@@ -27,6 +27,10 @@ class PaperSerializer < ActiveModel::Serializer
 
   def reviewers
     object.reviewers.includes(:affiliations)
+  end
+
+  def collaborators
+    object.collaborators.includes(:affiliations)
   end
 
   def event_name

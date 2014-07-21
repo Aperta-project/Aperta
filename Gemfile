@@ -96,6 +96,7 @@ group :development, :test, :performance do
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'pry-rescue'
+  gem 'timecop'
 end
 
 group :test do

@@ -118,6 +118,18 @@ class Paper < ActiveRecord::Base
     locked_by_id == user.id
   end
 
+  def lock_by(user)
+    update_attribute(:locked_by, user)
+  end
+
+  def unlock
+    update_attribute!(:locked_by, nil)
+  end
+
+  def heartbeat
+    update_attribute(:last_heartbeat_at, Time.now)
+  end
+
   private
   def notifier_payload
     { id: id, paper_id: id }

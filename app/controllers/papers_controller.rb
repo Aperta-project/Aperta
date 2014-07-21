@@ -46,6 +46,15 @@ class PapersController < ApplicationController
     render json: paper
   end
 
+  def heartbeat
+    if paper.locked?
+      paper.heartbeat! # update heartbeat timestamp
+      # remove any unlock jobs for this paper
+      # schedule an unlock two minutes from now
+    end
+    respond_with paper
+  end
+
   def download
     respond_to do |format|
       format.html do

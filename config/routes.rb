@@ -87,6 +87,7 @@ Tahi::Application.routes.draw do
       put :upload
       get :manage, to: 'ember#index'
       get :download
+      put :heartbeat
     end
   end
 

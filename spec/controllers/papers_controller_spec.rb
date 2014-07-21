@@ -156,4 +156,29 @@ describe PapersController do
       post :upload, id: paper.id, url: url
     end
   end
+
+  describe "PUT 'heartbeat'" do
+    subject(:do_request) do
+      put :heartbeat, { id: paper.to_param, format: :json }
+    end
+    context "paper is locked" do
+      before do
+        paper.lock_by(user)
+      end
+
+      it "updates the paper timestamp" do
+        Timecop.freeze do
+          do_request
+          expect(paper.reload.last_heartbeat_at).to eq(Time.now)
+        end
+      end
+    end
+
+    context "paper is unlocked" do
+      it "does not update the timestamp" do
+        do_request
+        expect(paper.reload.last_heartbeat_at).to be_nil
+      end
+    end
+  end
 end

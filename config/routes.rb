@@ -76,6 +76,8 @@ Tahi::Application.routes.draw do
     put :update_avatar, on: :member
   end
 
+  resources :collaborations, only: [:create, :destroy]
+
   resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create
     resource :manuscript_manager, only: :show

@@ -5,11 +5,11 @@ ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
 
   availableCollaborators: Ember.computed.setDiff('allUsers', 'collaborators')
 
-  addedcollaborations: Ember.computed.setDiff('collaborations.content','initialcollaborations')
-  removedcollaborations: Ember.computed.setDiff('initialcollaborations','collaborations')
+  addedCollaborations: Ember.computed.setDiff('collaborations.content','initialCollaborations')
+  removedCollaborations: Ember.computed.setDiff('initialCollaborations','collaborations')
 
   paper: null
-  initialcollaborations: null
+  initialCollaborations: null
   collaborations: null
 
   collaborators: (->
@@ -22,9 +22,11 @@ ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
       @get('collaborations').addObject(newCollaboration)
 
     save: ->
-      @get('addedCollaborations').forEach (collaboration) =>
+      addPromises = @get('addedCollaborations').map (collaboration) =>
         collaboration.save()
 
-      @get('removedCollaborations').forEach (collaboration) ->
+      deletePromises = @get('removedCollaborations').map (collaboration) ->
         collaboration.destroyRecord()
 
+      Ember.RSVP.all(_.union(addPromises, deletePromises)).then =>
+        @send('closeOverlay')

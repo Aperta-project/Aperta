@@ -25,3 +25,11 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('overlayBackground', 'paper/edit')
       @transitionTo('task', paper.id, task.id)
+
+    addCollaborators: ->
+      paper = @modelFor('paper')
+      @controllerFor('showCollaboratorsOverlay').set('collaborators', paper.collaborators || [])
+      @render('showCollaboratorsOverlay',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'showCollaboratorsOverlay')

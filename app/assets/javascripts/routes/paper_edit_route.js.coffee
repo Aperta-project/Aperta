@@ -28,7 +28,12 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
 
     addCollaborators: ->
       paper = @modelFor('paper')
-      @controllerFor('showCollaboratorsOverlay').set('collaborators', paper.collaborators || [])
+      collaborations = paper.get('collaborations') || []
+      controller = @controllerFor('showCollaboratorsOverlay')
+      controller.setProperties
+        paper: paper
+        collaborations: collaborations
+        initialcollaborations: collaborations.map (collab) -> collab
       @render('showCollaboratorsOverlay',
         into: 'application'
         outlet: 'overlay'

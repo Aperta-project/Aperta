@@ -5,13 +5,14 @@ class PaperSerializer < ActiveModel::Serializer
     has_many relation, embed: :ids, include: true
   end
 
-  %i(assignees editors reviewers collaborators).each do |relation|
+  %i(assignees editors reviewers).each do |relation|
     has_many relation, embed: :ids, include: true, root: :users
   end
 
   has_many :tasks, embed: :ids, polymorphic: true
   has_one :journal, embed: :id, include: true
   has_one :locked_by, embed: :id, include: true, root: :users
+  has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
 
   def status
     object.manuscript.try(:status)
@@ -29,8 +30,8 @@ class PaperSerializer < ActiveModel::Serializer
     object.reviewers.includes(:affiliations)
   end
 
-  def collaborators
-    object.collaborators.includes(:affiliations)
+  def collaborations
+    object.paper_roles.collaborators
   end
 
   def event_name

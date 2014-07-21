@@ -5,8 +5,26 @@ ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
 
   availableCollaborators: Ember.computed.setDiff('allUsers', 'collaborators')
 
-  collaborators: null
+  addedcollaborations: Ember.computed.setDiff('collaborations.content','initialcollaborations')
+  removedcollaborations: Ember.computed.setDiff('initialcollaborations','collaborations')
+
+  paper: null
+  initialcollaborations: null
+  collaborations: null
+
+  collaborators: (->
+    @get('collaborations').mapBy('user')
+  ).property('collaborations.@each')
 
   actions:
     addNewCollaborator: (newCollaborator) ->
-      @get('collaborators').addObject(newCollaborator)
+      newCollaboration = @store.createRecord('collaboration', paper: @get('paper'), user: newCollaborator)
+      @get('collaborations').addObject(newCollaboration)
+
+    save: ->
+      @get('addedCollaborations').forEach (collaboration) =>
+        collaboration.save()
+
+      @get('removedCollaborations').forEach (collaboration) ->
+        collaboration.destroyRecord()
+

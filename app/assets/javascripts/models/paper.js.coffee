@@ -3,8 +3,12 @@ ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('user')
   editors: DS.hasMany('user')
   reviewers: DS.hasMany('user')
-  collaborators: DS.hasMany('user')
   editor: Ember.computed.alias('editors.firstObject')
+  collaborations: DS.hasMany('collaboration')
+
+  collaborators: (->
+    @get('collaborations').mapBy('user')
+  ).property('collaborations.@each')
 
   authorGroups: DS.hasMany('authorGroup')
   figures: DS.hasMany('figure')

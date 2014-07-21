@@ -4,3 +4,8 @@ ETahi.IndexController = Ember.ObjectController.extend
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
 
   hasPapers: Ember.computed.notEmpty('model.papers')
+
+  actions:
+    loadMorePapers: ->
+      # Em.$.get
+      debugger

@@ -5,12 +5,12 @@ module 'Integration: Dashboard',
     TahiTest.paperId = 934
     TahiTest.adminJournalId = 412
     TahiTest.adminRoleId = 98
-    TahiTest.paperCount = 12
+    TahiTest.paperCount = 15
 
     TahiTest.Factory =
-      litePaper: (n) ->
+      litePaper: (params) ->
         litePapers = []
-        for i in [1..n] by 1
+        for i in [1..params.count] by 1
           litePapers.push
             id: i
             title: "Fake Paper Long Title #{i}"
@@ -20,14 +20,16 @@ module 'Integration: Dashboard',
             roles: ['My Paper']
         litePapers
 
-    dashboardResponse =
+    TahiTest.dashboardResponse =
       users: [fakeUser.user]
       affiliations: []
-      lite_papers: TahiTest.Factory.litePaper TahiTest.paperCount
+      lite_papers: TahiTest.Factory.litePaper count: TahiTest.paperCount
       dashboards: [
         id: 1
         user_id: 1
         paper_ids: [1..TahiTest.paperCount]
+        paginate: false
+        total_paper_count: TahiTest.paperCount
         administered_journals: [
           id: TahiTest.adminJournalId
           name: "Fake Journal"
@@ -130,15 +132,33 @@ module 'Integration: Dashboard',
       ]
 
     server.respondWith 'GET', '/dashboards', [
-      200, {'Content-Type': 'application/json'}, JSON.stringify dashboardResponse
+      200, 'Content-Type': 'application/json', JSON.stringify TahiTest.dashboardResponse
     ]
 
     server.respondWith 'GET', '/admin/journals', [
-      200, {'Content-Type': 'application/json'}, JSON.stringify adminJournalsResponse
+      200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
     ]
 
 test 'There should not be a "Load More" button if there are less than 15 papers', ->
-  # ok true
   visit '/'
-  .then -> debugger; ok true
-  # andThen -> ok true
+  andThen ->
+    ok !Em.isEmpty find('.welcome-message').text().match(/You have 15 papers/)
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, TahiTest.paperCount
+    ok !exists '.load-more-papers'
+
+test 'There should be a "Load More" button if the response has paginate: true', ->
+  dashboardResponse = TahiTest.dashboardResponse
+  dashboardResponse.dashboards[0].paginate = true
+  dashboardResponse.dashboards[0].total_paper_count = 20
+  server.respondWith 'GET', '/dashboards', [
+    200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
+  ]
+  visit '/'
+  .then ->
+    ok exists '.load-more-papers'
+    ok !Em.isEmpty find('.welcome-message').text().match(/You have 20 papers/)
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 15
+  click '.load-more-papers'
+  andThen ->
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 20
+    ok !exists '.load-more-papers'

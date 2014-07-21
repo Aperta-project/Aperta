@@ -4,10 +4,10 @@
     <section id="dashboard-my-submissions">
       <h2 class="welcome-message">
         Hi, {{currentUser.firstName}}.
-        {{#if model.papers.length}}
-          You have {{model.papers.length}} {{pluralize model.papers.length 'manuscript' 'manuscripts'}}.
+        {{#if papers.length}}
+          You have {{totalPaperCount}} {{pluralize model.papers.length 'paper' 'papers'}}.
         {{else}}
-          You have no manuscripts.
+          You have no papers.
         {{/if}}
       </h2>
       {{link-to "Create new submission" "paper_new" classNames="button-secondary button--green button--wide"}}
@@ -25,6 +25,10 @@
             </li>
           {{/each}}
         </ul>
+        {{log model}}
+        {{#if paginate}}
+        <a {{action loadMorePapers}} href='#' class='button-primary button--green button--wide load-more-papers'>Load More</a>
+        {{/if }}
       {{else}}
         <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>
       {{/if}}

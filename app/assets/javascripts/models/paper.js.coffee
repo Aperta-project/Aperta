@@ -1,13 +1,16 @@
 a = DS.attr
 ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('user')
-  authorGroups: DS.hasMany('authorGroup')
   editors: DS.hasMany('user')
+  reviewers: DS.hasMany('user')
+  collaborators: DS.hasMany('user')
+  editor: Ember.computed.alias('editors.firstObject')
+
+  authorGroups: DS.hasMany('authorGroup')
   figures: DS.hasMany('figure')
   supportingInformationFiles: DS.hasMany('supportingInformationFile')
   journal: DS.belongsTo('journal')
   phases: DS.hasMany('phase')
-  reviewers: DS.hasMany('user')
   tasks: DS.hasMany('task', {async: true, polymorphic: true})
   lockedBy: DS.belongsTo('user')
 
@@ -19,7 +22,6 @@ ETahi.Paper = DS.Model.extend
   paperType: a('string')
   eventName: a('string')
 
-  editor: Ember.computed.alias('editors.firstObject')
   relationshipsToSerialize: []
 
   displayTitle: (->

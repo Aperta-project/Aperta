@@ -36,10 +36,3 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
 
     @setupSelectedListener()
     @autoFocusInput()
-
-  substringMatcher: (chars) ->
-    (query, callback) ->
-      matches = []
-      substrRegex = new RegExp query, 'i'
-      chars.forEach (char) -> matches.push value: char if substrRegex.test char
-      callback matches

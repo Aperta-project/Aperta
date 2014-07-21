@@ -15,8 +15,6 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
     @set 'adminJournalUsers', null
     @set 'placeholderText', null
 
-  seached: false
-
   journalUrl: (->
     "/admin/journals/#{@get('model.id')}"
   ).property('model.id')

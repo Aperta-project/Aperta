@@ -69,16 +69,10 @@ class Paper < ActiveRecord::Base
     journal.admins
   end
 
-  def admins
-    assigned_users.merge(PaperRole.admins)
-  end
-
-  def editors
-    assigned_users.merge(PaperRole.editors)
-  end
-
-  def reviewers
-    assigned_users.merge(PaperRole.reviewers)
+  %i(admins editors reviewers collaborators).each do |relation|
+    define_method relation do
+      assigned_users.merge(PaperRole.send(relation))
+    end
   end
 
   def display_title

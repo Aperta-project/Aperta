@@ -99,4 +99,36 @@ class JournalPage < Page
   def manuscript_css_saved?
     find('.manuscript-css span.save-status').text == "Saved"
   end
+
+  def search_user query
+    fill_in 'Admin Search Input', with: query
+    click_on 'search'
+    self
+  end
+
+  def assign_role role
+    click_on '+'
+    fill_in 'add_role', with: role.name
+    find('.tt-suggestion').click
+    self
+  end
+
+  def admin_user_roles user
+    user_result_row(user).all('.assigned-role')
+                         .map { |role_label| role_label.text }
+  end
+
+  def remove_role user, role
+    role = user_result_row(user).all('.assigned-role')
+                                .detect { |row_label| row_label.text == role.name }
+    role.hover
+    role.find('.remove-button').click
+    self
+  end
+
+  private
+
+  def user_result_row user
+    all('tr.user-row').detect { |tr| tr.all('td').first.text == user.username }
+  end
 end

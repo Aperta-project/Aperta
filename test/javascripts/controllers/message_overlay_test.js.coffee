@@ -1,6 +1,6 @@
 moduleFor 'controller:messageOverlay', 'MessageOverlayController',
   needs: ['controller:application']
-  tearDown: -> ETahi.reset()
+  teardown: -> ETahi.reset()
   setup: ->
     setupApp()
     @comment1 = Ember.Object.create body: "comment 1", createdAt: 1

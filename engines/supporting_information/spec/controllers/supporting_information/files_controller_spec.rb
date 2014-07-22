@@ -46,7 +46,7 @@ module SupportingInformation
     describe "POST 'create'" do
       let(:url) { "http://someawesomeurl.com" }
       it "creates the supporting file" do
-        expect(DownloadSupportingInfo).to receive(:enqueue)
+        expect(DownloadSupportingInfoWorker).to receive(:perform_async)
         post :create, format: "json", paper_id: paper.to_param, url: url
         expect(response.status).to eq(200)
       end

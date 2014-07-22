@@ -5,7 +5,7 @@ module SupportingInformation
 
     def create
       new_file = paper.supporting_information_files.create status: "processing"
-      ::SupportingInformation::DownloadSupportingInfo.enqueue(new_file.id, params[:url])
+      ::SupportingInformation::DownloadSupportingInfoWorker.perform_async(new_file.id, params[:url])
       render json: new_file, root: :supporting_information_file
     end
 

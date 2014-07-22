@@ -40,15 +40,16 @@ feature "Upload Supporting Information", js: true do
     paper.supporting_information_files.create
     edit_paper = EditPaperPage.visit paper
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
-      title = find('h2.figure-thumbnail-title')
-      caption = find('div.figure-thumbnail-caption')
+      find('.figure-edit-icon').click
+      title   = find('.figure-thumbnail-edit-content input[type=text]')
+      caption = find('.figure-thumbnail-edit-content textarea')
 
-      caption.set 'New file caption'
       title.set 'new_file_title'
-      all('a', :text => 'Save').last.click
+      caption.set 'New file caption'
+      find('.figure-thumbnail-edit-content .button-secondary').click
 
-      expect(title.text).to eq 'new_file_title'
-      expect(caption.text).to eq 'New file caption'
+      expect(find('.figure-thumbnail-title').text).to eq 'new_file_title'
+      expect(find('.figure-thumbnail-caption').text).to eq 'New file caption'
     end
 
     file = paper.supporting_information_files.last

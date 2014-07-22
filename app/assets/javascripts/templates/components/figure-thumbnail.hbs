@@ -1,61 +1,72 @@
-<div class="figure-thumbnail-row">
-  <span class="figure-thumbnail-destroy-icon glyphicon glyphicon-trash" {{action "confirmDestroyFigure"}}></span>
+<div class="figure-thumbnail">
+  <span class="glyphicon glyphicon-trash figure-thumbnail-destroy-icon" {{action "confirmDestroyFigure"}}></span>
 
   {{#if figure.previewSrc}}
     <div class="figure-thumbnail-image">
       <div class="replace-spinner"></div>
       <img class="preview" {{bind-attr src=figure.previewSrc}} {{bind-attr alt=figure.alt}}>
       <div class="figure-thumbnail-edit-overlay">
-        {{#replace-image}}
-          <span>Replace Image</span>
-          {{file-uploader
-              url=figureUrl
-              railsMethod="PUT"
-              accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-              multiple=false
-              filePrefix='paper/figures'
-              progress='figureUploading'
-              done='figureUploaded'}}
-        {{/replace-image}}
-        <button class="button-primary white-button view-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in glyphicon-button"></span>View Detail</button>
+        <div class="figure-thumbnail-edit-overlay-buttons">
+          {{#replace-image}}
+            <span>Replace Image</span>
+            {{file-uploader
+                url=figureUrl
+                railsMethod="PUT"
+                accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+                multiple=false
+                filePrefix="paper/figures"
+                progress="figureUploading"
+                done="figureUploaded"}}
+          {{/replace-image}}
+          <button class="button-primary button--white view-figure-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in"></span>View Detail</button>
+        </div>
       </div>
     </div>
+    <a class="figure-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original image" {{bind-attr href=figure.src}} >{{figure.filename}}</a>
   {{else}}
-    <div class="figure-thumbnail-image placeholder">
+    <div class="figure-thumbnail-image figure-thumbnail-image-placeholder">
       <div class="replace-spinner"></div>
       <span class="glyphicon glyphicon-file"></span>
     </div>
   {{/if}}
 
+  <div class="figure-thumbnail-edit-content">
+    <div class="field">
+      {{input placeholder="Enter a figure title" value=figure.title}}
+    </div>
+    <div class="field">
+      {{textarea placeholder="Enter a caption for this figure" value=figure.caption rows="5"}}
+    </div>
+
+    <div class="figure-thumbnail-edit-actions">
+      <a href="#" class="button-link button--green" {{action "cancelEditing"}}>cancel</a>
+      <a href="#" class="button-secondary button--green" {{action "saveFigure"}}>Save</a>
+    </div>
+  </div>
+
   <div class="figure-thumbnail-text-content">
-    {{content-editable tagName="h2"
-                       class="figure-thumbnail-title"
-                       value=figure.title
-                       placeholder='Figure title here'
-                       plaintext="true"
-                       preventEnterKey="true"}}
-    <span class="glyphicon glyphicon-pencil edit-icon edit-figure-icon"></span>
+    <h2 class="figure-thumbnail-title">
+      {{#if figure.title}}
+        {{figure.title}}
+      {{else}}
+        Figure title here
+      {{/if}}
+    </h2>
+    <span class="glyphicon glyphicon-pencil figure-edit-icon" {{action "toggleEditState"}}></span>
 
-    {{content-editable tagName="div"
-                       class="figure-thumbnail-caption _empty"
-                       value=figure.caption
-                       placeholder='There is no caption for this file.'
-                       plaintext="true"
-                       preventEnterKey="true"}}
+    <div class="figure-thumbnail-caption">
+      {{#if figure.caption}}
+        {{figure.caption}}
+      {{else}}
+        There is no caption for this file.
+      {{/if}}
+    </div>
   </div>
-
-  <div class="figure-thumbnail-edit-actions">
-    <a href="#" {{bind-attr class="editState::disabled"}} {{action 'cancelEditing'}}>cancel</a>
-    <a href="#" {{bind-attr class="editState::button--disabled :button-primary :button--green :button--small"}} {{action 'saveFigure'}}>Save</a>
-  </div>
-
-  <div class="clearfix"> </div>
-  <a class="figure-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original image" {{bind-attr href=figure.src}} >{{figure.filename}}</a>
 
   <div class="figure-thumbnail-destroy-overlay">
     <p>This will permanently delete your image. Are you sure?</p>
-    <button class="button-primary white-button" {{action "cancelDestroyFigure"}}>Cancel</button>
-    <button class="button-primary white-button figure-delete-button" {{action "destroyFigure"}}>Delete Forever</button>
+    <button class="button-primary button--white" {{action "cancelDestroyFigure"}}>Cancel</button>
+    <button class="button-primary button--white figure-delete-button" {{action "destroyFigure"}}>Delete Forever</button>
   </div>
 </div>
 

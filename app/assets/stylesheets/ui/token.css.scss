@@ -7,4 +7,16 @@
   font-size: 14px;
   background: #D7EBFE;
   @include user-select(none);
+
+  .remove-button {
+    @extend .glyphicon, .glyphicon-remove;
+    visibility: hidden;
+    cursor: pointer;
+  }
+
+  &:hover {
+    .remove-button {
+      visibility: visible;
+    }
+  }
 }

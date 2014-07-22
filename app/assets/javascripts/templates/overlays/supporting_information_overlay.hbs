@@ -11,13 +11,13 @@
                     progress='uploadProgress'}}
   </span>
 {{/if}}
-<ul id="paper-file-uploads">
+<div id="paper-file-uploads">
   {{#each upload in uploads}}
     {{upload-preview upload=upload}}
   {{/each}}
-</ul>
+</div>
 
-<ul class="paper-files">
+<div class="paper-figures">
   {{#if isEditable}}
     {{#each file in paper.supportingInformationFiles}}
       {{figure-thumbnail figure=file}}
@@ -27,4 +27,4 @@
       {{partial 'figure_show_only'}}
     {{/each}}
   {{/if}}
-</ul>
+</div>

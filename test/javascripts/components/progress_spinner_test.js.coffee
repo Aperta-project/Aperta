@@ -1,6 +1,6 @@
 moduleForComponent 'progress-spinner', 'Unit: components/progress-spinner',
   setup: -> setupApp()
-  tearDown: -> ETahi.reset()
+  teardown: -> ETahi.reset()
 
 test 'spins', ->
   spinner = @subject()

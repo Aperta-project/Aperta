@@ -3,6 +3,9 @@ class UserRole < ActiveRecord::Base
   belongs_to :role, inverse_of: :user_roles
 
   validates :user, presence: true
+  validates :role, presence: true
+
+  validates :role_id, uniqueness: { scope: :user_id }
 
   def self.admins
     joins(:role).merge(Role.admins)

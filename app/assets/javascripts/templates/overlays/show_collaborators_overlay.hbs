@@ -2,9 +2,13 @@
   <div id="show-collaborators">
     <h2>Who can edit this manuscript?</h2>
 
-    <ul>
-      {{#each collaborators}}
-        <li>{{fullName}} <span>{{email}}</span></li>
+    <ul class='collaborators-list'>
+      {{#each collaborator in collaborators}}
+        <li class='collaborator'>
+          <span class='delete-button glyphicon glyphicon-remove' {{action "removeCollaborator" collaborator}}></span>
+          <span class='name'>{{collaborator.fullName}}</span>
+          <span class='email'>{{collaborator.email}}</span>
+        </li>
       {{/each}}
     </ul>
 

@@ -98,8 +98,6 @@ feature "Journal Administration", js: true do
                            .admin_user_roles(user)
                            .first
         expect(role).to eq existing_role.name
-        journal_page.remove_role user, existing_role
-        expect(journal_page.admin_user_roles(user)).to be_empty
       end
     end
   end

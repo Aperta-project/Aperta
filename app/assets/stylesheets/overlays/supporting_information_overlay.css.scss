@@ -3,31 +3,3 @@
     color: $tahi-primary;
   }
 }
-.paper-files {
-  @extend .paper-figures;
-
-  .figure-thumbnail-row {
-    height: 148px;
-  }
-
-  .figure-thumbnail-text-content {
-    margin: 0 20px 40px 110px; // bottom margin to make space for .figure-thumbnail-edit-actions
-  }
-
-  .figure-thumbnail-image {
-    width: 0;
-    &.placeholder {
-      min-width: 100px;
-      min-height: 100px;
-      background: transparent;
-
-      .glyphicon {
-        font-size: 101px;
-        color: $tahi-secondary;
-        margin-left: -57px;
-        margin-top: -50px;
-      }
-    }
-  }
-}
-

@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe PaperUnlocker do
+describe PaperUnlockerWorker do
   let(:paper) { FactoryGirl.create(:paper, locked_by_id: 99) }
 
   describe "#perform" do
 
     it "will unlock paper" do
       Sidekiq::Testing.disable! do
-        PaperUnlocker.new.perform(paper.id)
+        PaperUnlockerWorker.new.perform(paper.id)
         expect(paper.reload).to be_unlocked
       end
     end
@@ -20,7 +20,7 @@ describe PaperUnlocker do
 
     it "will leave paper locked" do
       Sidekiq::Testing.disable! do
-        PaperUnlocker.new.perform(paper.id, deferred: true)
+        PaperUnlockerWorker.new.perform(paper.id, deferred: true)
         expect(paper.reload).to be_locked
       end
     end
@@ -28,7 +28,7 @@ describe PaperUnlocker do
     it "will enqueue a future unlock" do
       Sidekiq::Testing.disable! do
         expect {
-          PaperUnlocker.new.perform(paper.id, deferred: true)
+          PaperUnlockerWorker.new.perform(paper.id, deferred: true)
         }.to change {
           Sidekiq::ScheduledSet.new.size
         }.by(1)

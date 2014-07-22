@@ -24,14 +24,6 @@ GIT
       railties (>= 3.1)
 
 GIT
-  remote: git://github.com/rails/activejob.git
-  revision: 2c31b1832f440d0eb7c5db51d11630e885d0a824
-  specs:
-    activejob (4.2.0.alpha)
-      activemodel-globalid
-      activesupport (>= 4.1.0)
-
-GIT
   remote: https://github.com/rails/activemodel-globalid
   revision: 189c69988b0208d6d4760ae823043b94a84f0814
   specs:
@@ -486,7 +478,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  activejob!
   activemodel-globalid!
   acts_as_list
   american_date

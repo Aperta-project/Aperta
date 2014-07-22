@@ -6,7 +6,7 @@ class CollaborationsController < ApplicationController
 
   def create
     paper_role = PaperRole.create(collaborator_params.merge(role: 'collaborator'))
-    render status: 201, json: paper_role, serializer: CollaborationSerializer
+    respond_with paper_role, serializer: CollaborationSerializer
   end
 
   def destroy

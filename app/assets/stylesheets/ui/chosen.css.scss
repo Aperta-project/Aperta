@@ -1,4 +1,4 @@
-.chosen-style-override .chosen-container-single .chosen-single {
+.tahi-chosen-style {
   height: 40px;
   border: 1px solid $tahi-primary;
   color: $tahi-primary;
@@ -14,6 +14,19 @@
   div b {
     background-position: 0px 10px;
   }
+}
+
+@mixin tahi-chosen($text-color) {
+  @extend .tahi-chosen-style;
+  color: $text-color;
+  border: 1px solid $text-color;
+  span {
+    color: $text-color;
+  }
+}
+
+.chosen-style-override .chosen-container-single .chosen-single {
+  @include tahi-chosen($tahi-primary)
 }
 
 .chosen-container .chosen-results li {

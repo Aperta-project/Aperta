@@ -140,8 +140,8 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
 test 'admin adds a role for user', ->
   visit "/admin/journals/#{TahiTest.journalId}"
   .then -> ok exists 'tr.user-row'
-  fillIn '.admin-search-input', TahiTest.query
-  click '.admin-search-button'
+  fillIn '.admin-user-search-input', TahiTest.query
+  click '.admin-user-search-button'
   click '.assign-role-button'
   .then -> $('.add-role-input').typeahead 'val', 'Edit'
   .then -> click '.tt-suggestion'
@@ -149,8 +149,8 @@ test 'admin adds a role for user', ->
 
 test 'admin removes a role for user', ->
   visit "/admin/journals/#{TahiTest.journalId}"
-  fillIn '.admin-search-input', TahiTest.query
-  click '.admin-search-button'
+  fillIn '.admin-user-search-input', TahiTest.query
+  click '.admin-user-search-button'
   click '.assign-role-button'
   .then -> $('.add-role-input').typeahead 'val', 'Edit'
   .then -> click '.tt-suggestion'
@@ -159,8 +159,8 @@ test 'admin removes a role for user', ->
 
 test 'autocomplete does not give roles the user is already assigned to', ->
   visit "/admin/journals/#{TahiTest.journalId}"
-  fillIn '.admin-search-input', TahiTest.query
-  click '.admin-search-button'
+  fillIn '.admin-user-search-input', TahiTest.query
+  click '.admin-user-search-button'
   click '.assign-role-button'
   .then -> $('.add-role-input').typeahead 'val', 'Edit'
   .then -> click '.tt-suggestion'

@@ -1,5 +1,5 @@
-class DownloadFigure < ActiveJob::Base
-  queue_as :process_figures
+class DownloadFigureWorker
+  include Sidekiq::Worker
 
   def perform(figure_id, url)
     figure = Figure.find figure_id

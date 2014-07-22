@@ -1,5 +1,5 @@
 <div class="overlay-container show-collaborators-overlay">
-  <div id="show-collaborators">
+  <div id="show-collaborators" class='chosen-style-override'>
     <h2>Who can edit this manuscript?</h2>
 
     <ul class='collaborators-list'>
@@ -15,11 +15,12 @@
     {{chosen content=availableCollaborators
              name="collaborators"
              width="150px"
-             prompt="Add Collaborators"
-             class="participant-select"
+             class="collaborator-select"
              changeAction="addNewCollaborator"
+             prompt="Add People"
              optionValuePath="content"
-             optionLabelPath="content.fullName"}}
+             optionLabelPath="content.fullName"
+             value=selectedCollaborator}}
     <a class="cancel" {{action 'closeOverlay'}}>cancel</a>
     <button class="button-primary button--green task" {{action "save" phase}}>
       Save

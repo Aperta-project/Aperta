@@ -1,6 +1,6 @@
 ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
   allUsers: (->
-    @store.all('user') #simply getting all users for now
+    @store.find('user') #simply getting all users for now
   ).property()
 
   availableCollaborators: Ember.computed.setDiff('allUsers', 'collaborators')
@@ -8,6 +8,7 @@ ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
   addedCollaborations: Ember.computed.setDiff('collaborations.content','initialCollaborations')
   removedCollaborations: Ember.computed.setDiff('initialCollaborations','collaborations.content')
 
+  selectedCollaborator: null
   paper: null
   initialCollaborations: null
   collaborations: null
@@ -35,6 +36,7 @@ ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
       # to make sure that ember doesn't create a new record but rather uses the one we just removed here.
       collaboration.set('oldPaper', collaboration.get('paper'))
       @get('collaborations').removeObject(collaboration)
+      @set('selectedCollaborator', null)
 
     save: ->
       addPromises = @get('addedCollaborations').map (collaboration) =>

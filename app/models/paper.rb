@@ -12,6 +12,7 @@ class Paper < ActiveRecord::Base
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
   belongs_to :locked_by, class_name: User
+  belongs_to :striking_image, class_name: Figure
 
   has_one :manuscript, dependent: :destroy
 

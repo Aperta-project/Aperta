@@ -1,13 +1,13 @@
-<div class="figure-thumbnail">
-  {{#if figure.src}}
-    <img class="figure-thumbnail-image" {{action "togglePreview"}} src={{unbound figure.src}} alt={{unbound figure.alt}}>
+<div class="attachment-thumbnail">
+  {{#if attachment.src}}
+    <img class="attachment-thumbnail-image" {{action "togglePreview"}} src={{unbound attachment.src}} alt={{unbound attachment.alt}}>
   {{else}}
-    <div class="figure-thumbnail-image figure-thumbnail-image-placeholder">
+    <div class="attachment-thumbnail-image attachment-thumbnail-image-placeholder">
       <span class="glyphicon glyphicon-file"></span>
     </div>
   {{/if}}
-  <div class="figure-thumbnail-text-content">
-    <h2>{{figure.title}}</h2>
-    <div>{{figure.caption}}</div>
+  <div class="attachment-thumbnail-text-content">
+    <h2>{{attachment.title}}</h2>
+    <div>{{attachment.caption}}</div>
   </div>
 </div>

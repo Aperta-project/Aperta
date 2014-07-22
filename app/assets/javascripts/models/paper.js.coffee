@@ -3,7 +3,7 @@ ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('user')
   authorGroups: DS.hasMany('authorGroup')
   editors: DS.hasMany('user')
-  figures: DS.hasMany('figure')
+  figures: DS.hasMany('figure', inverse: 'paper')
   supportingInformationFiles: DS.hasMany('supportingInformationFile')
   journal: DS.belongsTo('journal')
   phases: DS.hasMany('phase')
@@ -18,6 +18,21 @@ ETahi.Paper = DS.Model.extend
   title: a('string')
   paperType: a('string')
   eventName: a('string')
+  strikingImageId: a('number')
+
+  # Hack hack hack.
+  # strikingImage: DS.belongsTo('paper') causes Paper relationship issues
+  strikingImage: ((key, figure, previousValue)->
+    # setter
+    if arguments.length > 1
+      newValue = if figure then figure.get('id') else figure
+      @set('strikingImageId', newValue)
+      return @
+
+    # getter
+    id = if @get('strikingImageId') then @get('strikingImageId').toString() else null
+    @get('figures').find (f)=> f.get('id') == id
+  ).property('strikingImageId')
 
   editor: Ember.computed.alias('editors.firstObject')
   relationshipsToSerialize: []

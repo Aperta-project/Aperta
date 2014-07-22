@@ -24,3 +24,7 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend
       figure = @store.getById('figure', data.figure.id)
 
       @get('figures').pushObject(figure)
+
+    changeStrikingImage: (newValue) ->
+      @get('content.paper').then (paper)->
+        paper.set('strikingImage', newValue).save()

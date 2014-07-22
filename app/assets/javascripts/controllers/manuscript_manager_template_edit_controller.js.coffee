@@ -1,10 +1,19 @@
 ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
   dirty: false
   errorText: ""
+  editMode: false
 
   sortedPhases: Ember.computed.alias 'phases'
 
   actions:
+    toggleEditMode: ->
+      @toggleProperty 'editMode'
+      return null
+
+    cancelEditMode: ->
+      @toggleProperty 'editMode'
+      @get('model').rollback()
+
     changeTaskPhase: (task, targetPhase) ->
       task.get('phase').removeTask(task)
       targetPhase.addTask(task)
@@ -37,6 +46,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       phase.set('name', oldName)
 
     saveTemplate: (transition)->
+      @toggleProperty 'editMode'
       @get('model').save().then( (template) =>
         @set('dirty', false)
         @set('errorText', '')

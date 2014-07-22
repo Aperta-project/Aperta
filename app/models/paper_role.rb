@@ -7,6 +7,8 @@ class PaperRole < ActiveRecord::Base
 
   after_save :assign_tasks_to_editor, if: -> { user_id_changed? && role == 'editor' }
 
+  validates_uniqueness_of :role, scope: [:user_id, :paper_id]
+
   def self.admins
     where(role: 'admin')
   end

@@ -38,6 +38,13 @@ ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
       @get('collaborations').removeObject(collaboration)
       @set('selectedCollaborator', null)
 
+    cancel: ->
+      collaborations = @get('collaborations')
+      # we have to remove/add the changed collaborations from their associations individually
+      @get('removedCollaborations').forEach (c) -> collaborations.addObject(c)
+      @get('addedCollaborations').forEach (c) -> collaborations.removeObject(c)
+      @send('closeOverlay')
+
     save: ->
       addPromises = @get('addedCollaborations').map (collaboration) =>
         collaboration.save()

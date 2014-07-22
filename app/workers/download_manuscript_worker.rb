@@ -1,5 +1,5 @@
-class DownloadManuscript < ActiveJob::Base
-  queue_as :process_manuscripts
+class DownloadManuscriptWorker
+  include Sidekiq::Worker
 
   def perform(manuscript_id, url)
     manuscript = Manuscript.find(manuscript_id)

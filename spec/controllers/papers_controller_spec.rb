@@ -151,8 +151,8 @@ describe PapersController do
 
   describe "POST 'upload'" do
     let(:url) { "http://theurl.com" }
-    it "sends enqueue to DownloadManuscript" do
-      expect(DownloadManuscript).to receive(:enqueue)
+    it "sends enqueue to DownloadManuscriptWorker" do
+      expect(DownloadManuscriptWorker).to receive(:perform_async)
       post :upload, id: paper.id, url: url
     end
   end

@@ -1,7 +1,7 @@
 class PaperUnlockerWorker
   include Sidekiq::Worker
 
-  sidekiq_options queue: :unlock_papers
+  sidekiq_options queue: :paper_unlocker
 
   DEFERRED_TIME = 2.minutes
 

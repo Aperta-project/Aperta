@@ -21,9 +21,11 @@
              optionValuePath="content"
              optionLabelPath="content.fullName"
              value=selectedCollaborator}}
-    <a class="cancel" {{action 'closeOverlay'}}>cancel</a>
-    <button class="button-primary button--green task" {{action "save" phase}}>
+  </div>
+  <footer class="overlay-footer">
+    <button class="button-primary button--green pull-right" {{action "save" phase}}>
       Save
     </button>
-  </div>
+    <a class="button-link button--green pull-right" {{action 'closeOverlay'}}>cancel</a>
+  </footer>
 </div>

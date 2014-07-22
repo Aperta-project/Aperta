@@ -20,7 +20,7 @@ class DashboardSerializer < ActiveModel::Serializer
     return @papers if @papers
     ids = user.submitted_papers.pluck(:id) | user.assigned_papers.pluck(:id)
     roles = PaperRole.where(paper_id: ids, user_id: user.id)
-    papers = Paper.where(id: ids).all
+    papers = Paper.where(id: ids).get_all_by_page(@options[:page_number]).all
 
     # in this case N+1 queries are unavoidable without doing some grunt work ourselves..
     roles.group_by(&:paper_id).each do |paper_id, paper_roles|

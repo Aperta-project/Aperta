@@ -26,8 +26,8 @@
           {{/each}}
         </ul>
         {{log model}}
-        {{#if paginate}}
         <a {{action loadMorePapers}} href='#' class='button-primary button--green button--wide load-more-papers'>Load More</a>
+        {{#if paginate}}
         {{/if }}
       {{else}}
         <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>

@@ -167,10 +167,10 @@ describe PapersController do
       end
 
       it "updates the paper timestamp" do
-        Timecop.freeze do
-          do_request
-          expect(paper.reload.last_heartbeat_at).to eq(Time.now)
-        end
+        old_heartbeat = 1.minute.ago
+        paper.update_attribute :last_heartbeat_at, old_heartbeat
+        do_request
+        expect(paper.reload.last_heartbeat_at).to be > old_heartbeat
       end
     end
 

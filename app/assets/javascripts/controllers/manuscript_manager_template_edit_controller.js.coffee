@@ -15,7 +15,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       return null
 
     cancelEditMode: ->
-      @toggleProperty 'editMode'
+      @set 'editMode', false
       @get('model').rollback()
 
     changeTaskPhase: (task, targetPhase) ->

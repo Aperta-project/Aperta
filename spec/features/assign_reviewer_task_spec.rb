@@ -30,6 +30,9 @@ feature "Assigns Reviewer", js: true do
     manuscript_page.view_card 'Assign Reviewers' do |overlay|
       overlay.paper_reviewers = [albert.full_name, neil.full_name]
       expect(overlay).to have_reviewers(albert, neil)
+      # the debounce in the reviewers overlay is causing a race condition between the
+      # delayed save and the database truncation during test cleanup.  This will fix it for now.
+      sleep 0.2
     end
   end
 end

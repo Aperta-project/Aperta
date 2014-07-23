@@ -34,6 +34,7 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
         paper: paper
         collaborations: collaborations
         initialCollaborations: collaborations.map (collab) -> collab
+        allUsers: @store.find('user')
       @render('showCollaboratorsOverlay',
         into: 'application'
         outlet: 'overlay'

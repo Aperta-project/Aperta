@@ -1,13 +1,10 @@
 ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
-  allUsers: (->
-    @store.find('user') #simply getting all users for now
-  ).property()
-
   availableCollaborators: Ember.computed.setDiff('allUsers', 'collaborators')
 
   addedCollaborations: Ember.computed.setDiff('collaborations.content','initialCollaborations')
   removedCollaborations: Ember.computed.setDiff('initialCollaborations','collaborations.content')
 
+  allUsers: null
   selectedCollaborator: null
   paper: null
   initialCollaborations: null

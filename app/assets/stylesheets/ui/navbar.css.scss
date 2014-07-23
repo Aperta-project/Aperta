@@ -111,6 +111,8 @@ $nav-bar-active-color: $tahi-primary;
   padding-right: 2px;
 }
 
-.nav-bar-admin-item a.active {
-  background: #87c0f9;
+.nav-bar-admin-item.nav-bar-item {
+  a.active, a:hover {
+    background: #87c0f9;
+  }
 }

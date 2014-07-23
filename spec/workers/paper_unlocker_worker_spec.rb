@@ -20,7 +20,7 @@ describe PaperUnlockerWorker do
 
     it "will leave paper locked" do
       Sidekiq::Testing.disable! do
-        PaperUnlockerWorker.new.perform(paper.id, deferred: true)
+        PaperUnlockerWorker.new.perform(paper.id, true)
         expect(paper.reload).to be_locked
       end
     end
@@ -28,7 +28,7 @@ describe PaperUnlockerWorker do
     it "will enqueue a future unlock" do
       Sidekiq::Testing.disable! do
         expect {
-          PaperUnlockerWorker.new.perform(paper.id, deferred: true)
+          PaperUnlockerWorker.new.perform(paper.id, true)
         }.to change {
           Sidekiq::ScheduledSet.new.size
         }.by(1)

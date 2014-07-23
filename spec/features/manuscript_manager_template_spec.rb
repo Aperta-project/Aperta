@@ -30,9 +30,9 @@ feature "Manuscript Manager Templates", js: true do
       task_type = "ReviewerReportTask"
       phase.new_card overlay: ChooseCardTypeOverlay, card_type: task_type
       expect(phase).to have_card("Reviewer Report Task")
-      expect(mmt_page).to have_content("You have unsaved changes")
+      expect(mmt_page).to have_content("SAVE TEMPLATE")
       mmt_page.save
-      expect(mmt_page).to have_no_content("You have unsaved changes")
+      expect(mmt_page).to have_no_content("SAVE TEMPLATE")
       expect(page.current_url).to match(%r{/admin/journals/\d+/manuscript_manager_templates/\d+/edit})
       expect(mmt_page).to have_no_application_error
     end
@@ -45,7 +45,7 @@ feature "Manuscript Manager Templates", js: true do
       task_type = "ReviewerReportTask"
       phase.new_card overlay: ChooseCardTypeOverlay, card_type: task_type
       expect(phase).to have_card("Reviewer Report Task")
-      expect(mmt_page).to have_content("You have unsaved changes")
+      expect(mmt_page).to have_content("SAVE TEMPLATE")
 
       click_link 'Admin'
       overlay = UnsavedChanges.find_overlay(mmt_page)

@@ -13,7 +13,7 @@ feature "Admin can edit user details and initiate password reset", js: true do
   end
 
   scenario "Admin saves user details" do
-    admin_page.search("bob")
+    admin_page.search "bob"
     bob = admin_page.first_search_result
     edit_modal = bob.edit_user_details
     edit_modal.first_name = "Andy"

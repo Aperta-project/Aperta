@@ -1,5 +1,5 @@
 ETahi.HeartbeatService = Em.Object.extend
-  interval: 10 * 1000
+  interval: 90 * 1000
   intervalId: null
   resource: null
   url: null

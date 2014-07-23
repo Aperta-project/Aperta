@@ -5,7 +5,7 @@ class PaperUnlockerWorker
 
   DEFERRED_TIME = 2.minutes
 
-  def perform(paper_id, deferred: false)
+  def perform(paper_id, deferred=false)
     paper = Paper.find(paper_id)
     if deferred
       clear_unlock_jobs_for(paper_id)
@@ -25,13 +25,13 @@ class PaperUnlockerWorker
 
   def clear_unlock_jobs_for(paper_id)
     scheduled_jobs.each do |job|
-      if job.args[2] == paper_id
+      if job.args.first == paper_id
         job.delete
       end
     end
   end
 
   def queue_name
-    self.class.get_sidekiq_options["queue"]
+    self.class.get_sidekiq_options["queue"].to_s
   end
 end

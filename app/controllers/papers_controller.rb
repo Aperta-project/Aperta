@@ -49,7 +49,7 @@ class PapersController < ApplicationController
   def heartbeat
     if paper.locked?
       paper.heartbeat
-      PaperUnlockerWorker.perform_async(paper.id, deferred: true)
+      PaperUnlockerWorker.perform_async(paper.id, true)
     end
     respond_with paper
   end

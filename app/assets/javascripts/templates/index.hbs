@@ -25,9 +25,10 @@
             </li>
           {{/each}}
         </ul>
-        {{log model}}
-        <a {{action loadMorePapers}} href='#' class='button-primary button--green button--wide load-more-papers'>Load More</a>
         {{#if paginate}}
+          <a {{action loadMorePapers}} href='#' class='button-primary button--green button--wide load-more-papers'>
+            Load More
+          </a>
         {{/if }}
       {{else}}
         <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>

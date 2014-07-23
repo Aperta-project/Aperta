@@ -105,9 +105,7 @@ describe Paper do
     describe ".get_all_by_page" do
       context "testing page numbers" do
         before do
-          20.times do
-            create :paper
-          end
+          20.times { FactoryGirl.create :paper }
         end
 
         context "when the page number is 1" do

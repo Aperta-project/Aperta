@@ -7,10 +7,10 @@ class AdminJournalUserSerializer < ActiveModel::Serializer
   has_many :user_roles, embed: :id, include: true
 
   def user_roles
-    if @options[:journal]
+    if @options[:journal].present?
       @options[:journal].user_roles.where(user: object)
     else
-      super
+      object.user_roles
     end
   end
 end

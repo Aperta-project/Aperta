@@ -1,3 +1,19 @@
+ETahi.Factory =
+  withOne: (modelName, attrs) ->
+
+  withMany: (modelName, attrs) ->
+
+  create: (type, attrs) ->
+    newObject = Ember.merge(ETahi.FactoryAttributes[type], attrs)
+    newObject.withOne = @withOne
+    newObject.withMany = @withMany
+
+  createLitePaper: (paper, attrs) ->
+    {short_title, title, id, submitted} = paper
+    paper_id = id
+    litePaperAttrs = {short_title, title, id, submitted, paper_id}
+    Ember.merge(litePaperAttrs, attrs)
+
 ETahi.FactoryAttributes = {}
 ETahi.FactoryAttributes.journal =
   id: 1
@@ -47,12 +63,26 @@ ETahi.FactoryAttributes.litePaper =
   short_title: "Paper"
   submitted: false
 
-ETahi.Factory =
-  create: (type, attrs) ->
-    Ember.merge(ETahi.FactoryAttributes[type], attrs)
+ETahi.FactoryAttributes.messageTask =
+  id: 1
+  title: "Message Time"
+  type: "MessageTask"
+  completed: false
+  body: null
+  paper_title: "Foo"
+  role: "author"
+  phase_id: 40
+  paper_id: 1
+  lite_paper_id: 1
+  assignee_ids: []
+  assignee_id: 1
+  participant_ids: [1]
+  comment_ids: []
 
-  createLitePaper: (paper, attrs) ->
-    {short_title, title, id, submitted} = paper
-    paper_id = id
-    litePaperAttrs = {short_title, title, id, submitted, paper_id}
-    Ember.merge(litePaperAttrs, attrs)
+ETahi.FactoryAttributes.comment =
+  id: 1
+  commenter_id: 1
+  message_task_id: 1
+  body: "A sample comment"
+  created_at: null
+  comment_look_id: null

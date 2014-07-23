@@ -3,9 +3,6 @@ module 'Integration: MessageCards',
   setup: ->
     setupApp(integration: true)
 
-    messageTaskId = 1
-    authorId = 19932347
-
     journalId = 1
     journal = ETahi.Factory.create('journal', id: journalId)
 
@@ -22,6 +19,16 @@ module 'Integration: MessageCards',
     )
 
     litePaper = ETahi.Factory.createLitePaper(paper)
+
+    messageTaskId = 1
+    messageTask = ETahi.Factory.create 'messageTask',
+      id: messageTaskId
+      title: "Message Time"
+      phase_id: 40
+      paper_id: paperId
+      lite_paper_id: paperId
+      assignee_id: fakeUser.user.id
+      participant_ids: [fakeUser.user.id]
 
     dashboard =
       users: [fakeUser.user]
@@ -44,21 +51,7 @@ module 'Integration: MessageCards',
           type: "MessageTask"
         ]
       ]
-      tasks: [
-        id: messageTaskId
-        title: "Message Time"
-        type: "MessageTask"
-        completed: false
-        body: null
-        paper_title: "Foo"
-        role: "author"
-        phase_id: 40
-        paper_id: paperId
-        lite_paper_id: paperId
-        assignee_ids: []
-        assignee_id: fakeUser.user.id
-        participant_ids: [fakeUser.user.id]
-      ]
+      tasks: [messageTask]
       lite_papers: [litePaper]
       users: [fakeUser.user]
       journals: [journal]
@@ -75,7 +68,18 @@ module 'Integration: MessageCards',
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
 
-test 'Showing a message card', ->
+test 'Showing a message card will work', ->
   expect(1)
   visit '/papers/1/tasks/1'
   .then -> equal(find('.overlay-content h1').text(), "Message Time")
+
+test 'A message card with a comment works', ->
+  commentData = ETahi.Factory.create 'comment',
+    commenter_id: fakeUser.user.id
+    message_task_id: 1
+    created_at: new Date().toISOString()
+
+  foo = pushData('comment', commentData)
+  expect(1)
+  visit('/papers/1/tasks/1')
+  andThen -> equal(find('.overlay-content h1').text(), "Message Time")

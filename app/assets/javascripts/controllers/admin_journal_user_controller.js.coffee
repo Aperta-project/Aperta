@@ -16,7 +16,7 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
       name: userRole.get 'role.name'
       userRoleId: userRole.get 'id'
 
-  roles: Em.computed -> @get('userRoles').map @createRoleObject
+  roles: Em.computed 'userRoles.@each', -> @get('userRoles').map @createRoleObject
 
   isAddingRole: false
 
@@ -35,7 +35,6 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
         role: params.object
 
       userRole.save()
-              .then (userRole) => @get('roles').pushObject @createRoleObject(userRole)
               .catch (res) =>
                 userRole.transitionTo 'created.uncommitted'
                 userRole.deleteRecord()
@@ -53,6 +52,6 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
       @send('closeOverlay')
 
     resetPassword: (user) ->
-      $.get "/admin/journal_users/#{user.id}/reset"
+      $.get "/admin/journal_users/#{user.get('id')}/reset"
       .done => @set 'resetPasswordSuccess', true
       .fail => @set 'resetPasswordFailure', true

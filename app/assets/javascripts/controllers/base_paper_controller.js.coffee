@@ -1,8 +1,8 @@
-ETahi.PaperController = Ember.ObjectController.extend
+ETahi.BasePaperController = Ember.ObjectController.extend
   needs: ['application']
 
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
-  isAdmin: Ember.computed.alias 'currentUser.admin'
+  isAdmin: Ember.computed.alias 'controllers.application.isAdmin'
 
   downloadLink: ( ->
     "/papers/#{@get('id')}/download"
@@ -28,7 +28,9 @@ ETahi.PaperController = Ember.ObjectController.extend
         'Tahi-Authorization-Check': true
       success: (data) =>
         @set('canViewManuscriptManager', true)
-  ).observes('model')
+      error: =>
+        @set('canViewManuscriptManager', false)
+  ).observes('model.id')
 
   assignedTasks: (->
     assignedTasks = @get('tasks').filterBy 'assignee', @get('currentUser')

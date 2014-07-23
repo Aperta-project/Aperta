@@ -13,6 +13,7 @@ describe PapersPolicy do
     it { expect(policy.update?).to be(true) }
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
+    it { expect(policy.heartbeat?).to be(false) }
   end
 
   context "authors" do
@@ -25,6 +26,7 @@ describe PapersPolicy do
     it { expect(policy.update?).to be(true) }
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
+    it { expect(policy.heartbeat?).to be(false) }
   end
 
   context "paper admins" do
@@ -41,6 +43,7 @@ describe PapersPolicy do
     it { expect(policy.update?).to be(true) }
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
+    it { expect(policy.heartbeat?).to be(false) }
   end
 
   context "paper editors" do
@@ -57,6 +60,7 @@ describe PapersPolicy do
     it { expect(policy.update?).to be(true) }
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
+    it { expect(policy.heartbeat?).to be(false) }
   end
 
   context "paper reviewers" do
@@ -73,6 +77,7 @@ describe PapersPolicy do
     it { expect(policy.update?).to be(true) }
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
+    it { expect(policy.heartbeat?).to be(false) }
   end
 
   context "non-associated user" do
@@ -85,6 +90,21 @@ describe PapersPolicy do
     it { expect(policy.update?).to be(false) }
     it { expect(policy.upload?).to be(false) }
     it { expect(policy.download?).to be(false) }
+    it { expect(policy.heartbeat?).to be(false) }
+  end
+
+  context "locked paper" do
+    let(:user) { FactoryGirl.build_stubbed(:user) }
+
+    context "by current user" do
+      let(:paper) { FactoryGirl.build_stubbed(:paper, locked_by_id: user.id) }
+      it { expect(policy.heartbeat?).to be(true) }
+    end
+
+    context "by another user" do
+      let(:paper) { FactoryGirl.build_stubbed(:paper, locked_by_id: 0) }
+      it { expect(policy.heartbeat?).to be(false) }
+    end
   end
 
   context "user with can_view_all_manuscript_managers on this paper's journal" do

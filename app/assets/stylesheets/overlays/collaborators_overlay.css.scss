@@ -9,6 +9,9 @@
 
   .collaborator {
     margin-bottom: 20px;
+    &:hover .delete-button {
+      opacity: 1;
+    }
   }
 
   .name {
@@ -25,5 +28,6 @@
     color: $tahi-primary;
     width: 17px;
     top: 2px;
+    opacity: 0;
   }
 }

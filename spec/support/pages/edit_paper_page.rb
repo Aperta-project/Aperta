@@ -28,6 +28,15 @@ class EditPaperPage < Page
     DashboardPage.new
   end
 
+  def show_collaborators
+    collaborators_link.click
+    AddCollaboratorsOverlay.new(find('.show-collaborators-overlay'))
+  end
+
+  def collaborators_link
+    find('.button-link', text: 'Add Collaborators')
+  end
+
   def visit_task_manager
     click_link 'Manuscript Manager'
     TaskManagerPage.new

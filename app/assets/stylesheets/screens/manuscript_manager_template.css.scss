@@ -115,15 +115,16 @@ $template-thumbnail-side-padding: 10px;
   padding-top: 36px;
   color: #fff;
   font-size: 21px;
+  cursor: pointer;
 
   .glyphicon {
-    display: none;
     margin-left: 2px;
     font-size: 16px;
+    opacity: 0.5;
   }
 
   &:hover .glyphicon {
-    display: inline;
+    opacity: 1;
   }
 }
 
@@ -139,6 +140,7 @@ $template-thumbnail-side-padding: 10px;
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1;
 
   a {
     color: #fff;

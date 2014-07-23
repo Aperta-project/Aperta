@@ -5,6 +5,10 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
   sortedPhases: Ember.computed.alias 'phases'
 
+  showSaveButton: (->
+    @get('dirty') || @get('editMode')
+  ).property('dirty', 'editMode')
+
   actions:
     toggleEditMode: ->
       @toggleProperty 'editMode'

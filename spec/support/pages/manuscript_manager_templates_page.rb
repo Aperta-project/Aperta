@@ -20,7 +20,7 @@ class ManuscriptManagerTemplatePage < Page
   end
 
   def paper_type
-    find(".template-edit-paper-type input").value
+    find(".control-bar-template-name").text
   end
 
   def paper_type=(type)

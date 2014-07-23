@@ -1,8 +1,14 @@
 $paper-trim-color: $tahi-tertiary;
 
 #control-bar-paper-journal-logo {
+  height: 71px;
+  margin-right: 20px;
+
   div { padding-top: 6px; }
-  img { height: 36px; }
+  img {
+    display: block;
+    height: 40px;
+  }
 }
 
 #control-bar-paper-short-title {

@@ -2,26 +2,40 @@
   <div class="control-bar control-bar-blue manuscript-manager-template-control-bar">
     <div class="control-bar-inner-wrapper">
       <ul>
-        <li id="control-bar-paper-journal-logo">
+        <li class="control-bar-item back-to-journal-edit">
+          {{#link-to "journal" journal}}&lt; Back to Journal edit{{/link-to}}
+        </li>
+        <li id="control-bar-paper-journal-logo" class="control-bar-item">
+          <br>
           {{#if journal.logoUrl}}
             <img src="{{unbound journal.logoUrl}}">
           {{else}}
             <div class="paper-journal">{{unbound journal.name}}</div>
           {{/if}}
         </li>
+        {{#if editMode}}
+          <li class="template-edit-paper-type control-bar-item">
+            {{input value=paperType placeholder="Paper Type"}}
+          </li>
+        {{else}}
+          <li class="control-bar-item control-bar-template-name" {{action "toggleEditMode"}}>
+            {{paperType}}
+            <span class="glyphicon glyphicon-pencil"></span>
+          </li>
+        {{/if}}
+        {{#if showSaveButton}}
+          <li class="control-bar-item template-edit-save">
+            <a class="button-primary button--white template-save-button" {{action "saveTemplate"}}>Save Template</a>
+          </li>
+          <li class="control-bar-item template-edit-cancel">
+            <a class="" {{action "cancelEditMode"}}>cancel</a>
+          </li>
+        {{/if}}
       </ul>
       <ul>
         <li class="template-edit-message control-bar-item">
-          <span {{bind-attr class="dirty:show:hidden :alert-warning :control-bar-message"}}>You have unsaved changes!</span>
           <span {{bind-attr class="errorText:show:hidden :alert-danger :control-bar-message"}}>{{errorText}}</span>
         </li>
-        <li class="control-bar-item">
-          {{#link-to "journal" journal class="button-link button--white"}}Back to Journal edit{{/link-to}}
-        </li>
-        <li class="template-edit-paper-type control-bar-item">
-          {{input value=paperType placeholder="Paper Type"}}
-        </li>
-        <li class="control-bar-item"><a class="button-primary button--white template-save-button" {{action "saveTemplate"}}>Save</a></li>
       </ul>
     </div>
   </div>

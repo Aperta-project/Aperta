@@ -99,9 +99,51 @@ $template-thumbnail-side-padding: 10px;
 
 .template-edit-paper-type {
   margin-right: 2px; // override .control-bar-item
+  padding-top: 35px;
 
   input {
     width: 175px;
     height: 34px;
+  }
+}
+
+.template-edit-save {
+  padding-top: 35px;
+}
+
+.manuscript-manager-template-control-bar .control-bar-template-name {
+  margin-right: 20px;
+  padding-top: 36px;
+  color: #fff;
+  font-size: 21px;
+  cursor: pointer;
+
+  .glyphicon {
+    margin-left: 2px;
+    font-size: 16px;
+    opacity: 0.5;
+  }
+
+  &:hover .glyphicon {
+    opacity: 1;
+  }
+}
+
+.template-edit-cancel {
+  padding-top: 48px;
+
+  a {
+    color: #fff;
+  }
+}
+
+.back-to-journal-edit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  a {
+    color: #fff;
   }
 }

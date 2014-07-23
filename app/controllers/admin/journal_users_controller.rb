@@ -3,7 +3,7 @@ class Admin::JournalUsersController < ApplicationController
 
   def index
     users = User.search_users(query: params[:query], assigned_users_in_journal_id: params[:journal_id])
-    respond_with users, each_serializer: AdminJournalUserSerializer, root: 'admin_journal_users'
+    respond_with users, each_serializer: AdminJournalUserSerializer, root: 'admin_journal_users', journal: Journal.find(params[:journal_id])
   end
 
   def update

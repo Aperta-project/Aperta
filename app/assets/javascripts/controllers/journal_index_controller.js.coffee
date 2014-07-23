@@ -7,7 +7,7 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
     "/admin/journals/#{@get('model.id')}/upload_epub_cover"
   ).property()
 
-  adminJournalUsers: Em.computed -> @store.find('AdminJournalUser', journal_id: @get('model.id'))
+  adminJournalUsers: null
 
   epubCoverUploading: false
 
@@ -30,7 +30,8 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
   actions:
     searchUsers: ->
       @resetSearch()
-      @store.find('AdminJournalUser', query: @get('searchQuery')).then (users) =>
+      @store.find 'AdminJournalUser', query: @get('searchQuery'), journal_id: @get('model.id')
+      .then (users) =>
         @set 'adminJournalUsers', users
         if Em.isEmpty @get('adminJournalUsers')
           @set 'placeholderText', "No matching users found"

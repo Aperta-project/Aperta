@@ -1,5 +1,4 @@
-module 'Integration: Dashboard',
-  teardown: -> ETahi.reset()
+module 'Integration: Dashboard - when there are more than 15 papers',
   setup: ->
     setupApp integration: true
     TahiTest.paperId = 934
@@ -152,22 +151,6 @@ module 'Integration: Dashboard',
     server.respondWith 'GET', '/lite_papers?page_number=3', [
       200, 'Content-Type': 'application/json', JSON.stringify (lite_papers: litePapersResponse.lite_papers[30..TahiTest.paperCount - 1])
     ]
-
-test 'There should not be a "Load More" button if there are less than 15 papers', ->
-  dashboardResponse = TahiTest.dashboardResponse
-  paperCount = 12
-  dashboardResponse.dashboards[0].total_paper_count = paperCount
-  dashboardResponse.dashboards[0].total_page_count = 1
-  dashboardResponse.dashboards[0].lite_papers = TahiTest.Factory.litePaper count: paperCount
-  dashboardResponse.dashboards[0].paper_ids = [1..paperCount]
-  server.respondWith 'GET', '/dashboards', [
-    200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
-  ]
-  visit '/'
-  andThen ->
-    ok !Em.isEmpty find('.welcome-message').text().match(/You have 12 papers/)
-    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, paperCount
-    ok !exists '.load-more-papers'
 
 test 'There should be a "Load More" button if we are not at the last page', ->
   visit '/'

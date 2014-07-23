@@ -1,5 +1,4 @@
 module 'Integration: Admin Journal User Roles, /admin/journals/:id',
-  teardown: -> ETahi.reset()
   setup: ->
     setupApp integration: true
     TahiTest.journalId = 209
@@ -145,8 +144,6 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
     server.respondWith 'DELETE', "/user_roles/#{TahiTest.userRoleId}", [
       204, "Content-Type": "application/json", JSON.stringify {}
     ]
-
-  teardown: -> $('.add-role-input').typeahead 'val', null
 
 test 'admin adds a role for user', ->
   visit "/admin/journals/#{TahiTest.journalId}"

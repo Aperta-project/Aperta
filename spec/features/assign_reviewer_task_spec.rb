@@ -18,7 +18,7 @@ feature "Assigns Reviewer", js: true do
     assign_journal_role(journal, editor, :editor)
     assign_journal_role(journal, albert, :reviewer)
     assign_journal_role(journal, neil, :reviewer)
-    paper_role = PaperRole.create! paper: paper, user: editor, editor: true
+    paper_role = create(:paper_role, :editor, paper: paper, user: editor)
 
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in editor

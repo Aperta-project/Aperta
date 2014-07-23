@@ -139,27 +139,6 @@ ActiveRecord::Schema.define(version: 20140717183415) do
     t.integer  "user_id"
   end
 
-  create_table "funded_authors", force: true do |t|
-    t.integer "author_id"
-    t.integer "funder_id"
-  end
-
-  add_index "funded_authors", ["author_id"], name: "index_funded_authors_on_author_id", using: :btree
-  add_index "funded_authors", ["funder_id"], name: "index_funded_authors_on_funder_id", using: :btree
-
-  create_table "funders", force: true do |t|
-    t.string   "name"
-    t.string   "grant_number"
-    t.string   "website"
-    t.boolean  "funder_had_influence"
-    t.text     "funder_influence_description"
-    t.integer  "task_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "funders", ["task_id"], name: "index_funders_on_task_id", using: :btree
-
   create_table "journals", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -299,16 +278,15 @@ ActiveRecord::Schema.define(version: 20140717183415) do
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
 
   create_table "tasks", force: true do |t|
-    t.string   "title",                                    null: false
-    t.string   "type",                    default: "Task"
+    t.string   "title",                        null: false
+    t.string   "type",        default: "Task"
     t.integer  "assignee_id"
-    t.integer  "phase_id",                                 null: false
-    t.boolean  "completed",               default: false,  null: false
+    t.integer  "phase_id",                     null: false
+    t.boolean  "completed",   default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role",                                     null: false
+    t.string   "role",                         null: false
     t.text     "body"
-    t.boolean  "commercially_affiliated"
   end
 
   add_index "tasks", ["assignee_id"], name: "index_tasks_on_assignee_id", using: :btree

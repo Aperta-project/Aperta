@@ -20,7 +20,7 @@
 <div class="paper-figures">
   {{#if isEditable}}
     {{#each file in paper.supportingInformationFiles}}
-      {{figure-thumbnail figure=file}}
+      {{attachment-thumbnail attachment=file}}
     {{/each}}
   {{else}}
     {{#each file in paper.supportingInformationFiles}}

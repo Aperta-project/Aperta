@@ -4,7 +4,7 @@ module SupportingInformation
 
     belongs_to :paper
 
-    mount_uploader :attachment, SupportingInformation::AttachmentUploader
+    mount_uploader :attachment, ::SupportingInformation::AttachmentUploader
 
     def filename
       self[:attachment]

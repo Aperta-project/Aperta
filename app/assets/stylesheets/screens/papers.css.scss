@@ -199,3 +199,28 @@ $paper-trim-color: $tahi-tertiary;
   color: $tahi-tertiary-dark;
   font-style: italic;
 }
+
+.collaborators {
+  margin-top:10px;
+
+  .add-collaborators {
+    color: $tahi-message;
+  }
+}
+
+.collaborator-status {
+  display: inline-block;
+  margin: 3px 0;
+  .circle {
+    display: inline-block;
+  }
+}
+
+.circle {
+  $circle-radius: 1em;
+  background-color: $tahi-message-light;
+  height: $circle-radius;
+  width: $circle-radius;
+  border-radius: $circle-radius / 2;
+  border: 2px solid $tahi-message;
+}

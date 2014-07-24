@@ -7,7 +7,7 @@ module JournalServices
           template: {
             phases: [{
               name: "Submission Data",
-              task_types: [Declaration::Task, StandardTasks::FigureTask, SupportingInformation::Task, StandardTasks::AuthorsTask, UploadManuscript::Task].map(&:to_s)
+              task_types: [StandardTasks::FigureTask, SupportingInformation::Task, StandardTasks::AuthorsTask, UploadManuscript::Task].map(&:to_s)
             }, {
               name: "Assign Editor",
               task_types: [PaperEditorTask, StandardTasks::TechCheckTask, PaperAdminTask].map(&:to_s)

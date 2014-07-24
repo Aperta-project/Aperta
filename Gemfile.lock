@@ -44,12 +44,6 @@ PATH
       rails (~> 4.1.1)
 
 PATH
-  remote: engines/declaration
-  specs:
-    declaration (0.0.1)
-      rails (~> 4.1.1)
-
-PATH
   remote: engines/financial_disclosure
   specs:
     financial_disclosure (0.0.1)
@@ -495,7 +489,6 @@ DEPENDENCIES
   competing_interests!
   data_availability!
   database_cleaner
-  declaration!
   devise
   dotenv-rails
   ember-data-source (~> 1.0.0.beta.8)

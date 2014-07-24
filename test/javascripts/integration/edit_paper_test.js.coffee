@@ -4,7 +4,6 @@ module 'Integration: EditPaper',
     setupApp(integration: true)
 
     paperId = 93412
-    declarationTaskId = 239493
     figureTaskId = 94139
     authorId = 19932347
 
@@ -19,16 +18,6 @@ module 'Integration: EditPaper',
         submitted: false
       ]
       card_thumbnails: [
-        id: declarationTaskId
-        task_type: "Task"
-        completed: false
-        task:
-          id: declarationTaskId
-          type: "Task"
-        title: "Enter Declarations"
-        lite_paper_id: paperId
-        assignee_id: fakeUser.user.id
-      ,
         id: figureTaskId
         task_type: "FigureTask"
         completed: false
@@ -43,7 +32,7 @@ module 'Integration: EditPaper',
         id: 1
         user_id: fakeUser.user.id
         submission_ids: [paperId]
-        assigned_task_ids: [declarationTaskId, figureTaskId]
+        assigned_task_ids: [figureTaskId]
         administered_journals: []
       ]
 
@@ -54,28 +43,11 @@ module 'Integration: EditPaper',
         position: 1
         paper_id: paperId
         tasks: [
-          id: declarationTaskId
-          type: "DeclarationTask"
-        ,
           id: figureTaskId
           type: "FigureTask"
         ]
       ]
       tasks: [
-        id: declarationTaskId
-        title: "Enter Declarations"
-        type: "Declaration::Task"
-        completed: false
-        body: null
-        paper_title: "Foo"
-        role: "author"
-        phase_id: 40
-        paper_id: paperId
-        lite_paper_id: paperId
-        assignee_ids: []
-        assignee_id: fakeUser.user.id
-        survey_ids: [31]
-      ,
         id: figureTaskId
         title: "Upload Figures"
         type: "StandardTasks::FigureTask"
@@ -98,12 +70,6 @@ module 'Integration: EditPaper',
       ]
       users: [fakeUser.user]
       affiliations: []
-      surveys: [
-        id: 31
-        question: "COMPETING INTERESTS: do the authors have any competing interests?"
-        answer: null
-        declaration_task_id: declarationTaskId
-      ]
       figures: []
       author_groups: [
         id: 41
@@ -137,7 +103,6 @@ module 'Integration: EditPaper',
           "PaperAdminTask"
           "UploadManuscript::Task"
           "PaperEditorTask"
-          "Declaration::Task"
           "PaperReviewerTask"
           "RegisterDecisionTask"
           "StandardTasks::TechCheckTask"
@@ -166,44 +131,10 @@ module 'Integration: EditPaper',
         editor_ids: []
         reviewer_ids: []
         tasks: [
-          id: declarationTaskId
-          type: "DeclarationTask"
-        ,
           id: figureTaskId
           type: "FigureTask"
         ]
         journal_id: 3
-
-    declarationTaskResponse =
-      lite_papers: [
-        id: paperId
-        title: "Foo"
-        paper_id: paperId
-        short_title: "Paper"
-        submitted: false
-      ]
-      users: [fakeUser.user]
-      affiliations: []
-      surveys: [
-        id: 31
-        question: "COMPETING INTERESTS: do the authors have any competing interests?"
-        answer: null
-        declaration_task_id: declarationTaskId
-      ]
-      task:
-        id: declarationTaskId
-        title: "Enter Declarations"
-        type: "Declaration::Task"
-        completed: false
-        body: null
-        paper_title: "Foo"
-        role: "author"
-        phase_id: 40
-        paper_id: paperId
-        lite_paper_id: paperId
-        assignee_ids: []
-        assignee_id: fakeUser.user.id
-        survey_ids: [31]
 
     figureTaskResponse =
       lite_papers: [
@@ -234,9 +165,6 @@ module 'Integration: EditPaper',
     ]
     server.respondWith 'GET', "/papers/#{paperId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
-    ]
-    server.respondWith 'GET', "/tasks/#{declarationTaskId}", [
-      200, {"Content-Type": "application/json"}, JSON.stringify declarationTaskResponse
     ]
     server.respondWith 'GET', "/tasks/#{figureTaskId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify figureTaskResponse

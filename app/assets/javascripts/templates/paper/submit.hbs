@@ -20,19 +20,6 @@
     {{/each}}
   </table>
 
-  <table id="paper-declarations" class="table">
-    <tr>
-      <th>Question</th>
-      <th>Answer</th>
-    </tr>
-    {{#each declaration in declarations}}
-      <tr>
-        <td>{{declaration.question}}</td>
-        <td>{{declaration.answer}}</td>
-      </tr>
-    {{/each}}
-  </table>
-
   {{link-to 'Cancel' 'paper.edit' this class="button-primary button--green"}}
   <button id="submit-paper" class="button-primary button--green" {{action 'submitPaper'}}>Submit</button>
   <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>

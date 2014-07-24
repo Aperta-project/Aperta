@@ -23,13 +23,13 @@ class PaperFactory
   end
 
   def create
-    paper.build_default_author_groups
-    paper.author_groups.first.authors << Author.new(to_author(author))
-    add_collaborator(paper, author)
-    if paper.valid?
-      paper.transaction do
+    Paper.transaction do
+      paper.build_default_author_groups
+      paper.author_groups.first.authors << Author.new(to_author(author))
+      if paper.valid?
         if template
           paper.save
+          add_collaborator(paper, author)
           apply_template
         else
           paper.errors.add(:paper_type, "is not valid")

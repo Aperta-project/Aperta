@@ -151,6 +151,6 @@ test 'There should not be a "Load More" button if there are less than 15 papers'
   ok true
   # visit '/'
   # andThen ->
-  #   ok !Em.isEmpty find('.welcome-message').text().match(/You have 12 papers/)
+  #   ok !Em.isEmpty find('.welcome-message').text().match(/You have 12 manuscripts/)
   #   equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 12
   #   ok !exists '.load-more-papers'

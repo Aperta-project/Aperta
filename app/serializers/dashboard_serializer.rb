@@ -9,7 +9,7 @@ class DashboardSerializer < ActiveModel::Serializer
   end
 
   def total_paper_count
-    @count ||= Paper.where(id: total_paper_ids).count
+    total_paper_ids.length
   end
 
   def total_page_count

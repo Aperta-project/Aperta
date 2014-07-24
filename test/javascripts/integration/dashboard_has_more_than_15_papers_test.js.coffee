@@ -156,7 +156,7 @@ test 'There should be a "Load More" button if we are not at the last page', ->
   visit '/'
   .then ->
     ok exists '.load-more-papers'
-    ok !Em.isEmpty find('.welcome-message').text().match(/You have 42 papers/)
+    ok !Em.isEmpty find('.welcome-message').text().match(/You have 42 manuscripts/)
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 15
   click '.load-more-papers'
   andThen ->

@@ -5,9 +5,9 @@
       <h2 class="welcome-message">
         Hi, {{currentUser.firstName}}.
         {{#if papers.length}}
-          You have {{totalPaperCount}} {{pluralize model.papers.length 'paper' 'papers'}}.
+          You have {{totalPaperCount}} {{pluralize model.papers.length 'manuscript' 'manuscripts'}}.
         {{else}}
-          You have no papers.
+          You have no manuscripts.
         {{/if}}
       </h2>
       {{link-to "Create new submission" "paper_new" classNames="button-secondary button--green button--wide"}}

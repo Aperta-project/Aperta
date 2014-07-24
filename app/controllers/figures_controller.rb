@@ -4,7 +4,7 @@ class FiguresController < ApplicationController
 
   def create
     new_figure = paper.figures.create status: "processing"
-    DownloadFigure.enqueue(new_figure.id, params[:url])
+    DownloadFigureWorker.perform_async(new_figure.id, params[:url])
     render json: new_figure
   end
 
@@ -18,7 +18,7 @@ class FiguresController < ApplicationController
   def update_attachment
     figure = Figure.find(params[:id])
     figure.update_attribute(:status, "processing")
-    DownloadFigure.enqueue(figure.id, params[:url])
+    DownloadFigureWorker.perform_async(figure.id, params[:url])
     render json: figure
   end
 

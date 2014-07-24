@@ -9,7 +9,7 @@ feature "Upload Supporting Information", js: true do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in author
 
-    allow(SupportingInformation::DownloadSupportingInfo).to receive(:enqueue) do |supporting_info_id, url|
+    allow(SupportingInformation::DownloadSupportingInfoWorker).to receive(:perform_async) do |supporting_info_id, url|
       supporting_info = SupportingInformation::File.find(supporting_info_id)
       supporting_info.save
     end

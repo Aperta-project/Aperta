@@ -54,9 +54,11 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
     toggleEditing: ->
       if @get('lockedBy')
         @set('body', @get('visualEditor.bodyHtml'))
-        @set('lockedBy', null)
+        @set('lockedBy', null) #unlock for others
+        @send('stopEditing')
       else
         @set('lockedBy', @getCurrentUser())
+        @send('startEditing')
       @get('model').save().then (paper) =>
         @setProperties
           saveState: null

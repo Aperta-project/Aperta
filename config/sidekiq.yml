@@ -1,7 +1,4 @@
 ---
 :queues:
-  - active_jobs_process_figures
-  - active_jobs_process_avatars
-  - active_jobs_process_epub_covers
-  - active_jobs_process_manuscripts
-  - active_jobs_process_supporting_infos
+  - default
+  - paper_unlocker

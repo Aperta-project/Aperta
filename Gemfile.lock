@@ -25,9 +25,9 @@ GIT
 
 GIT
   remote: https://github.com/rails/activemodel-globalid
-  revision: f6518693aa77231e5f907fdc763394c4e7c00b68
+  revision: 189c69988b0208d6d4760ae823043b94a84f0814
   specs:
-    activemodel-globalid (0.1.0)
+    activemodel-globalid (0.1.1)
       activemodel (>= 4.1.0)
       activesupport (>= 4.1.0)
 
@@ -91,9 +91,6 @@ GEM
       erubis (~> 2.7.0)
     active_model_serializers (0.8.1)
       activemodel (>= 3.0)
-    activejob (0)
-      activemodel-globalid
-      activesupport (>= 4.1.0)
     activemodel (4.1.1)
       activesupport (= 4.1.1)
       builder (~> 3.1)
@@ -480,7 +477,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  activejob (~> 0)
   activemodel-globalid!
   acts_as_list
   american_date

@@ -34,7 +34,6 @@ gem 'devise'
 gem 'bourbon'
 gem 'quiet_assets', '~> 1.0.3'
 
-gem 'activejob', '~> 0'
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'
 gem 'sinatra'

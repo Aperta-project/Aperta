@@ -1,6 +1,6 @@
 module SupportingInformation
-  class DownloadSupportingInfo < ActiveJob::Base
-    queue_as :process_supporting_infos
+  class DownloadSupportingInfoWorker
+    include Sidekiq::Worker
 
     def perform supporting_info_id, url
       supporting_info = ::SupportingInformation::File.find supporting_info_id

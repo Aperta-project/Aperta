@@ -214,6 +214,7 @@ ActiveRecord::Schema.define(version: 20140722131212) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
+    t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
   end
 

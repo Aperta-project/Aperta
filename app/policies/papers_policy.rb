@@ -25,6 +25,10 @@ class PapersPolicy < ApplicationPolicy
     current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
   end
 
+  def heartbeat?
+    paper.locked_by_id == current_user.id
+  end
+
   private
 
   PaperRole::ALL_ROLES.each do |role|

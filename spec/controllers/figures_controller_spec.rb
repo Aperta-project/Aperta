@@ -24,7 +24,7 @@ describe FiguresController do
   describe "POST 'create'" do
     let(:url) { "http://someawesomeurl.com" }
     it "causes the creation of the figure" do
-      expect(DownloadFigure).to receive(:enqueue)
+      expect(DownloadFigureWorker).to receive(:perform_async)
       post :create, format: "json", paper_id: paper.to_param, url: url
       expect(response).to be_success
     end
@@ -33,8 +33,8 @@ describe FiguresController do
   describe "PUT 'update_attachment'" do
     let(:url) { "http://someawesomeurl.com" }
     let(:figure) { paper.figures.create! }
-    it "calls DownloadFigure" do
-      expect(DownloadFigure).to receive(:enqueue).with(figure.id, url)
+    it "calls DownloadFigureWorker" do
+      expect(DownloadFigureWorker).to receive(:perform_async).with(figure.id, url)
       put :update_attachment, format: "json", id: figure.id, url: url
       expect(response).to be_success
     end

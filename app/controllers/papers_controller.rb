@@ -42,8 +42,16 @@ class PapersController < ApplicationController
   def upload
     manuscript = paper.manuscript || paper.build_manuscript
     manuscript.update_attribute :status, "processing"
-    DownloadManuscript.enqueue manuscript.id, params[:url]
+    DownloadManuscriptWorker.perform_async manuscript.id, params[:url]
     render json: paper
+  end
+
+  def heartbeat
+    if paper.locked?
+      paper.heartbeat
+      PaperUnlockerWorker.perform_async(paper.id, true)
+    end
+    respond_with paper
   end
 
   def download

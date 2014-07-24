@@ -1,11 +1,19 @@
 class DashboardSerializer < ActiveModel::Serializer
-  attribute :id
+  attributes :id, :total_paper_count, :total_page_count
   has_one :user, embed: :id, include: true
   has_many :papers, embed: :ids, include: true, root: :lite_papers, serializer: LitePaperSerializer
   has_many :administered_journals
 
   def id
     1
+  end
+
+  def total_paper_count
+    total_paper_ids.length
+  end
+
+  def total_page_count
+    (total_paper_count / Paper::PAGE_SIZE.to_f).ceil
   end
 
   def user
@@ -18,9 +26,8 @@ class DashboardSerializer < ActiveModel::Serializer
 
   def papers
     return @papers if @papers
-    ids = user.submitted_papers.pluck(:id) | user.assigned_papers.pluck(:id)
-    roles = PaperRole.where(paper_id: ids, user_id: user.id)
-    papers = Paper.where(id: ids).all
+    roles = PaperRole.where(paper_id: total_paper_ids, user_id: user.id)
+    papers = Paper.where(id: total_paper_ids).get_all_by_page(1).all
 
     # in this case N+1 queries are unavoidable without doing some grunt work ourselves..
     roles.group_by(&:paper_id).each do |paper_id, paper_roles|
@@ -34,5 +41,11 @@ class DashboardSerializer < ActiveModel::Serializer
     end
 
     @papers = papers
+  end
+
+  private
+
+  def total_paper_ids
+    @ids ||= user.submitted_papers.pluck(:id) | user.assigned_papers.pluck(:id)
   end
 end

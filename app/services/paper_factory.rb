@@ -28,8 +28,8 @@ class PaperFactory
       paper.author_groups.first.authors << Author.new(to_author(author))
       if paper.valid?
         if template
-          paper.save
           add_collaborator(paper, author)
+          paper.save
           apply_template
         else
           paper.errors.add(:paper_type, "is not valid")

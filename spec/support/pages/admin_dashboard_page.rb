@@ -46,8 +46,8 @@ class AdminDashboardPage < Page
   end
 
   def search(query)
-    find(".admin-search-input").set(query)
-    find(".admin-search-button").click
+    find(".admin-user-search-input").set(query)
+    find(".admin-user-search-button").click
   end
 
   def search_results

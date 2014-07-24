@@ -1,5 +1,11 @@
 #= require controllers/paper_controller
 ETahi.PaperEditController = ETahi.PaperController.extend
+  visualEditor: null
+
+  setupVisualEditor: (->
+    @set('visualEditor', ETahi.VisualEditorService.create())
+  ).on("init")
+
   errorText: ""
 
   addAuthorsTask: (->
@@ -47,6 +53,7 @@ ETahi.PaperEditController = ETahi.PaperController.extend
   actions:
     toggleEditing: ->
       if @get('lockedBy')
+        @set('body', @get('visualEditor.bodyHtml'))
         @set('lockedBy', null)
       else
         @set('lockedBy', @getCurrentUser())
@@ -62,8 +69,8 @@ ETahi.PaperEditController = ETahi.PaperController.extend
           saveState: "Saved"
           savedAt: new Date()
 
-    updateDocumentBody: (documentBody) ->
-      @set('body', documentBody)
+    updateDocumentBody: (content) ->
+      @set('body', content)
       false
 
     confirmSubmitPaper: ->

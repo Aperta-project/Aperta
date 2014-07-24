@@ -1,67 +1,91 @@
-<div class="figure-thumbnail-row">
-  <span class="figure-thumbnail-destroy-icon glyphicon glyphicon-trash" {{action "confirmDestroyFigure"}}></span>
+<div class="attachment-thumbnail">
+  <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" {{action "confirmDestroyAttachment"}}></span>
 
-  {{#if figure.previewSrc}}
-    <div class="figure-thumbnail-image">
+  {{#if attachment.previewSrc}}
+    <div class="attachment-thumbnail-image">
       <div class="replace-spinner"></div>
-      <img class="preview" {{bind-attr src=figure.previewSrc}} {{bind-attr alt=figure.alt}}>
-      <div class="figure-thumbnail-edit-overlay">
-        {{#replace-image}}
-          <span>Replace Image</span>
-          {{file-uploader
-              url=figureUrl
-              railsMethod="PUT"
-              accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-              multiple=false
-              filePrefix='paper/figures'
-              progress='figureUploading'
-              done='figureUploaded'}}
-        {{/replace-image}}
-        <button class="button-primary white-button view-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in glyphicon-button"></span>View Detail</button>
+      <img class="preview" {{bind-attr src=attachment.previewSrc}} {{bind-attr alt=attachment.alt}}>
+      <div class="attachment-thumbnail-edit-overlay">
+        <div class="attachment-thumbnail-edit-overlay-buttons">
+          {{#replace-image}}
+            <span>Replace Image</span>
+            {{file-uploader
+                url=attachmentUrl
+                railsMethod="PUT"
+                accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+                multiple=false
+                filePrefix="paper/figures"
+                progress="attachmentUploading"
+                done="attachmentUploaded"}}
+          {{/replace-image}}
+          <button class="button-primary button--white view-attachment-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in"></span>View Detail</button>
+        </div>
       </div>
     </div>
+    <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original image" {{bind-attr href=attachment.src}} >{{attachment.filename}}</a>
   {{else}}
-    <div class="figure-thumbnail-image placeholder">
+    <div class="attachment-thumbnail-image attachment-thumbnail-image-placeholder">
       <div class="replace-spinner"></div>
       <span class="glyphicon glyphicon-file"></span>
     </div>
   {{/if}}
 
-  <div class="figure-thumbnail-text-content">
-    {{content-editable tagName="h2"
-                       class="figure-thumbnail-title"
-                       value=figure.title
-                       placeholder='Figure title here'
-                       plaintext="true"
-                       preventEnterKey="true"}}
-    <span class="glyphicon glyphicon-pencil edit-icon edit-figure-icon"></span>
+  <div class="attachment-thumbnail-edit-content">
+    <div class="field">
+      {{input placeholder="Enter a title" value=attachment.title}}
+    </div>
+    <div class="field">
+      {{textarea placeholder="Enter a caption for this attachment" value=attachment.caption rows="5"}}
+    </div>
+    <div class="field">
+      <label>
+        {{check-box checked=attachment.isStrikingImage action="toggleStrikingImageFromCheckbox" attachment=attachment}}
+        &nbsp; This is the striking image
+      </label>
+    </div>
 
-    {{content-editable tagName="div"
-                       class="figure-thumbnail-caption _empty"
-                       value=figure.caption
-                       placeholder='There is no caption for this file.'
-                       plaintext="true"
-                       preventEnterKey="true"}}
+    <div class="attachment-thumbnail-edit-actions">
+      <a href="#" class="button-link button--green" {{action "cancelEditing"}}>cancel</a>
+      <a href="#" class="button-secondary button--green" {{action "saveAttachment"}}>Save</a>
+    </div>
   </div>
 
-  <div class="figure-thumbnail-edit-actions">
-    <a href="#" {{bind-attr class="editState::disabled"}} {{action 'cancelEditing'}}>cancel</a>
-    <a href="#" {{bind-attr class="editState::button--disabled :button-primary :button--green :button--small"}} {{action 'saveFigure'}}>Save</a>
+  <div class="attachment-thumbnail-text-content">
+    <h2 class="attachment-thumbnail-title">
+      {{#if attachment.title}}
+        {{attachment.title}}
+      {{else}}
+        Attachment title
+      {{/if}}
+    </h2>
+    <span class="glyphicon glyphicon-pencil attachment-edit-icon" {{action "toggleEditState"}}></span>
+
+    <div class="attachment-thumbnail-caption">
+      {{#if attachment.caption}}
+        {{attachment.caption}}
+      {{else}}
+        There is no caption for this file.
+      {{/if}}
+    </div>
+
+    {{#if attachment.isStrikingImage}}
+      <br>
+      <span class="glyphicon glyphicon-ok"></span>
+      &nbsp;
+      This is the striking image
+    {{/if}}
   </div>
 
-  <div class="clearfix"> </div>
-  <a class="figure-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original image" {{bind-attr href=figure.src}} >{{figure.filename}}</a>
-
-  <div class="figure-thumbnail-destroy-overlay">
+  <div class="attachment-thumbnail-destroy-overlay">
     <p>This will permanently delete your image. Are you sure?</p>
-    <button class="button-primary white-button" {{action "cancelDestroyFigure"}}>Cancel</button>
-    <button class="button-primary white-button figure-delete-button" {{action "destroyFigure"}}>Delete Forever</button>
+    <button class="button-primary button--white" {{action "cancelDestroyAttachment"}}>Cancel</button>
+    <button class="button-primary button--white attachment-delete-button" {{action "destroyAttachment"}}>Delete Forever</button>
   </div>
 </div>
 
 {{#if view.previewState}}
-  <div class="figure-thumbnail-preview">
-    <div {{action "togglePreview"}} class="figure-thumbnail-preview-close">&times;</div>
-    <img {{bind-attr src=figure.detailSrc}} {{bind-attr alt=figure.alt}}>
+  <div class="attachment-thumbnail-preview">
+    <div {{action "togglePreview"}} class="attachment-thumbnail-preview-close">&times;</div>
+    <img {{bind-attr src=attachment.detailSrc}} {{bind-attr alt=attachment.alt}}>
   </div>
 {{/if}}

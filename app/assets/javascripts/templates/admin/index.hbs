@@ -1,38 +1,34 @@
 <div id="tahi-container" class="admin-screen">
-  <div class='row admin-dashboard'>
-    <div class='col-md-6'>
-      <h2 class="inline-block">Journals</h2>
-      <a class='add-new-journal button-secondary button--blue pull-right' href='#' {{action addNewJournal}}>Add new journal</a>
-      <ul class='journals'>
+  <div class="row admin-dashboard">
+    <div class="col-md-6">
+      <a class="add-new-journal button-secondary button--blue pull-right" href="#" {{action addNewJournal}}>Add new journal</a>
+      <h2>Journals</h2>
+      <ul class="journals">
         {{#each journal in arrangedContent}}
-          {{render 'journal/thumbnail' journal}}
+          {{render "journal/thumbnail" journal}}
         {{/each}}
       </ul>
     </div>
-    <div class='col-md-4 col-md-offset-2'>
+    <div class="col-md-4 col-md-offset-2">
       <h2>Users</h2>
-      <div class="row admin-search">
-        {{input placeholder="SEARCH ALL USERS" class="admin-search-input" value=searchQuery}}
-        <button class="admin-search-button" {{action searchUsers}}><span class="glyphicon glyphicon-search"></span></button>
+      <div class="admin-user-search">
+        {{input action="searchUsers" placeholder="SEARCH ALL USERS" class="admin-user-search-input" value=searchQuery}}
+        <button class="admin-user-search-button" {{action searchUsers}}><span class="glyphicon glyphicon-search"></span></button>
       </div>
 
       {{#if adminJournalUsers}}
-        <div class="row">
-          <table class='col-md-12 admin-users'>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Username</th>
-            </tr>
-            {{#each user in adminJournalUsers}}
-              {{partial 'admin_journal_user'}}
-            {{/each}}
-          </table>
-        </div>
+        <table class="admin-users">
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+          </tr>
+          {{#each user in adminJournalUsers}}
+            {{partial "admin_journal_user"}}
+          {{/each}}
+        </table>
       {{else}}
-        <div class="row search-results">
-          <p class="search-default-state-text">{{{placeholderText}}}</p>
-        </div>
+        <p class="admin-user-search-default-state-text">{{{placeholderText}}}</p>
       {{/if}}
     </div>
   </div>

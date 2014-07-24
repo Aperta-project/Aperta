@@ -20,4 +20,4 @@ ETahi.CheckBoxComponent = Ember.Component.extend
     @set("checked", @$().prop("checked"))
 
   change: ->
-    @sendAction()
+    @sendAction('action', @)

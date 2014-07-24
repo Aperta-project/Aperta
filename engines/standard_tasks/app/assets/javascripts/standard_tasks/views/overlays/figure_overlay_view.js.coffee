@@ -3,6 +3,6 @@ ETahi.FigureOverlayView = ETahi.OverlayView.extend
   layoutName: 'layouts/overlay_layout' #TODO: include assignee here?
 
   setupTooltip: (->
-    @.$().find('.figure-original-download-link').tooltip()
+    @.$().find('.attachment-original-download-link').tooltip()
   ).on('didInsertElement')
 

@@ -1,4 +1,4 @@
-<li {{bind-attr class="error:alert"}}>
+<div {{bind-attr class=":attachment-thumbnail error:alert"}}>
   {{#if error}}
     <button type="button" class="close upload-error-button" data-dismiss="alert" aria-hidden="true">×</button>
   {{/if}}
@@ -18,4 +18,4 @@
       <div class="progress-bar" {{bind-attr style=progressBarStyle}}></div>
     {{/if}}
   </div>
-</li>
+</div>

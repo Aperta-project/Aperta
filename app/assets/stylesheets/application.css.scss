@@ -26,11 +26,12 @@
 @import 'ui/progress';
 @import 'ui/spinner';
 @import 'ui/token';
+@import 'ui/typeahead';
 
 @import 'screens/admin';
 @import 'screens/dashboards';
 @import 'screens/flow_manager';
-@import "screens/manuscript_manager_template";
+@import 'screens/manuscript_manager_template';
 @import 'screens/papers';
 @import 'screens/profile';
 @import 'screens/reviewer_report';
@@ -38,7 +39,6 @@
 
 @import 'overlays/authors_overlay';
 @import 'overlays/choose_new_card_type_overlay';
-@import 'overlays/figures_overlay';
 @import 'overlays/message_overlay';
 @import 'overlays/new_card_overlay';
 @import 'overlays/register_decision_overlay';
@@ -47,6 +47,6 @@
 @import 'overlays/upload_manuscript_overlay';
 @import 'overlays/collaborators_overlay';
 
-@import 'components/figure-thumbnail';
+@import 'components/attachment-thumbnail';
 @import 'components/question';
 @import 'components/upload-preview';

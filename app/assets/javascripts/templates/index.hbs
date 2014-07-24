@@ -2,7 +2,14 @@
 
   <main>
     <section id="dashboard-my-submissions">
-      <h2 class="welcome-message">Hi, {{currentUser.firstName}}.  You have {{model.submissions.length}} papers.</h2>
+      <h2 class="welcome-message">
+        Hi, {{currentUser.firstName}}.
+        {{#if model.papers.length}}
+          You have {{model.papers.length}} {{pluralize model.papers.length 'manuscript' 'manuscripts'}}.
+        {{else}}
+          You have no manuscripts.
+        {{/if}}
+      </h2>
       {{link-to "Create new submission" "paper_new" classNames="button-secondary button--green button--wide"}}
       {{#if hasPapers}}
         <ul class="dashboard-submitted-papers">
@@ -21,7 +28,6 @@
       {{else}}
         <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>
       {{/if}}
-
     </section>
   </main>
 </div>

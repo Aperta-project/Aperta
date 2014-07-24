@@ -1,0 +1,24 @@
+<tr class="user-row">
+  <td class="truncated-field">{{username}}</td>
+  <td class="truncated-field">{{firstName}}</td>
+  <td class="truncated-field">{{lastName}}</td>
+  <td class="truncated-field">
+    {{#each roles}}
+      <span class="assigned-role token">
+        {{name}}
+        <span class='remove-button' {{action removeRole this}}></span>
+      </span>
+    {{/each}}
+    {{#if isAddingRole}}
+      {{type-ahead value=roleQuery
+                   class="add-role-input"
+                   name='add_role'
+                   autoFocus=true
+                   sourceList=rolesList
+                   suggestionSelected='assignRole'
+                   placeholder='Role Name'}}
+    {{else}}
+      <span {{action addRoleAssignment}} class="token assign-role-button"><a href='#'>+</a></span>
+    {{/if}}
+  </td>
+</tr>

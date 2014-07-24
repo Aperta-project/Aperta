@@ -3,7 +3,7 @@ moduleForModel 'paper', 'Unit: Paper Model',
   'model:supportingInformationFile', 'model:phase', 'model:task', 'model:comment',
   'model:litePaper', 'model:authorGroup', 'model:cardThumbnail', 'model:question', 'model:collaboration']
   setup: -> setupApp()
-  tearDown: -> ETahi.reset()
+  teardown: -> ETahi.reset()
 
 test 'displayTitle displays short title if title is missing', ->
   shortTitle = 'test short title'

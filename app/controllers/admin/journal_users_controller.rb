@@ -2,8 +2,9 @@ class Admin::JournalUsersController < ApplicationController
   respond_to :json
 
   def index
-    users = User.search_users(params[:query])
-    respond_with users, each_serializer: AdminJournalUserSerializer, root: 'admin_journal_users'
+    users = User.search_users(query: params[:query], assigned_users_in_journal_id: params[:journal_id])
+    journal = Journal.find(params[:journal_id]) if params[:journal_id]
+    respond_with users, each_serializer: AdminJournalUserSerializer, root: 'admin_journal_users', journal: journal
   end
 
   def update

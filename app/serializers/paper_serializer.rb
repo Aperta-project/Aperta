@@ -13,6 +13,7 @@ class PaperSerializer < ActiveModel::Serializer
   has_one :journal, embed: :id, include: true
   has_one :locked_by, embed: :id, include: true, root: :users
   has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
+  has_one :striking_image, embed: :id, include: true, root: :figures
 
   def status
     object.manuscript.try(:status)

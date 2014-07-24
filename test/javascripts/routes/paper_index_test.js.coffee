@@ -1,6 +1,6 @@
 moduleFor 'route:paperIndex', 'Unit: route/PaperIndex',
   needs: ['model:paper', 'route:paper'],
-  tearDown: -> ETahi.reset()
+  teardown: -> ETahi.reset()
   setup: ->
     setupApp()
     sinon.stub(@subject(), 'replaceWith')

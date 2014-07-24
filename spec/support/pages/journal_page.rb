@@ -33,7 +33,7 @@ class JournalPage < Page
     thumb = mmt_thumbnail(mmt)
     thumb.hover
     thumb.find('.glyphicon-trash').click
-    find('.template-thumbnail-overlay-confirm-destroy .figure-delete-button').click
+    find('.template-thumbnail-overlay-confirm-destroy .attachment-delete-button').click
     synchronize_no_content! mmt.paper_type
     self
   end

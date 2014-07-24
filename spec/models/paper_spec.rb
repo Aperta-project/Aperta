@@ -168,7 +168,7 @@ describe Paper do
   describe "#editor" do
     let(:user) { FactoryGirl.create(:user) }
     context "when the paper has an editor" do
-      before { PaperRole.create! user: user, paper: paper, editor: true }
+      before { create(:paper_role, :editor, paper: paper, user: user) }
       specify { expect(paper.editors).to include(user) }
     end
 
@@ -197,7 +197,7 @@ describe Paper do
     let(:user) { FactoryGirl.create :user }
 
     before do
-      PaperRole.create! editor: true, user: user, paper: paper
+      create(:paper_role, :editor, paper: paper, user: user)
     end
 
     it "returns roles if the role exist for the given user and role type" do
@@ -206,7 +206,7 @@ describe Paper do
 
     context "when the role isn't found" do
       it "returns nothing" do
-        PaperRole.last.update! editor: false
+        PaperRole.last.update! role: "chuckNorris"
         expect(paper.role_for(user: user, role: 'editor')).to_not be_present
       end
     end

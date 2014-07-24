@@ -13,7 +13,7 @@
                     multiple=true}}
   </span>
 {{/if}}
-<div id="paper-figure-uploads">
+<div id="paper-attachment-uploads">
   {{#each upload in uploads}}
     {{upload-preview upload=upload}}
   {{/each}}
@@ -21,7 +21,7 @@
 
 {{#if isEditable}}
   {{#each figure in figures}}
-    {{figure-thumbnail figure=figure}}
+    {{figure-thumbnail attachment=figure action="changeStrikingImage"}}
   {{/each}}
 {{else}}
   {{#each figure in figures}}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140710153705) do
+ActiveRecord::Schema.define(version: 20140722131212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -189,32 +189,32 @@ ActiveRecord::Schema.define(version: 20140710153705) do
   create_table "paper_roles", force: true do |t|
     t.integer  "user_id"
     t.integer  "paper_id"
-    t.boolean  "editor",     default: false, null: false
-    t.boolean  "reviewer",   default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin",      default: false
+    t.string   "role"
   end
 
   add_index "paper_roles", ["paper_id"], name: "index_paper_roles_on_paper_id", using: :btree
+  add_index "paper_roles", ["role"], name: "index_paper_roles_on_role", using: :btree
   add_index "paper_roles", ["user_id", "paper_id"], name: "index_paper_roles_on_user_id_and_paper_id", using: :btree
   add_index "paper_roles", ["user_id"], name: "index_paper_roles_on_user_id", using: :btree
 
   create_table "papers", force: true do |t|
     t.string   "short_title"
     t.string   "title"
-    t.text     "body",            default: ""
-    t.text     "abstract",        default: ""
+    t.text     "body",              default: ""
+    t.text     "abstract",          default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.boolean  "submitted",       default: false, null: false
-    t.integer  "journal_id",                      null: false
+    t.boolean  "submitted",         default: false, null: false
+    t.integer  "journal_id",                        null: false
     t.string   "decision"
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
+    t.integer  "striking_image_id"
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree

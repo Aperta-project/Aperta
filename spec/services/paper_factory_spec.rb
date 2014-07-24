@@ -54,6 +54,11 @@ describe PaperFactory do
       expect { subject }.to change { Author.count }.by 1
     end
 
+    it "makes the creator a collaborator on the paper" do
+      new_paper = PaperFactory.create(paper_attrs, user)
+      expect(PaperRole.collaborators.for_user(user).where(paper: new_paper).first).to be_present
+    end
+
     it "sets the user as the first author on the paper's first author group" do
       expect(subject.author_groups.first).to eq Author.last.author_group
       expect(Author.last.first_name).to eq(user.first_name)

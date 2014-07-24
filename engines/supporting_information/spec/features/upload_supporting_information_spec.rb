@@ -29,10 +29,10 @@ feature "Upload Supporting Information", js: true do
     edit_paper = EditPaperPage.visit paper
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       overlay.attach_supporting_information
-      find('.figure-thumbnail').hover
+      find('.attachment-thumbnail').hover
       find('.glyphicon-trash').click
-      find('.figure-delete-button').click
-      expect(overlay).to_not have_selector('.figure-image')
+      find('.attachment-delete-button').click
+      expect(overlay).to_not have_selector('.attachment-image')
     end
   end
 
@@ -40,16 +40,16 @@ feature "Upload Supporting Information", js: true do
     paper.supporting_information_files.create
     edit_paper = EditPaperPage.visit paper
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
-      find('.figure-edit-icon').click
-      title   = find('.figure-thumbnail-edit-content input[type=text]')
-      caption = find('.figure-thumbnail-edit-content textarea')
+      find('.attachment-edit-icon').click
+      title   = find('.attachment-thumbnail-edit-content input[type=text]')
+      caption = find('.attachment-thumbnail-edit-content textarea')
 
       title.set 'new_file_title'
       caption.set 'New file caption'
-      find('.figure-thumbnail-edit-content .button-secondary').click
+      find('.attachment-thumbnail-edit-content .button-secondary').click
 
-      expect(find('.figure-thumbnail-title').text).to eq 'new_file_title'
-      expect(find('.figure-thumbnail-caption').text).to eq 'New file caption'
+      expect(find('.attachment-thumbnail-title').text).to eq 'new_file_title'
+      expect(find('.attachment-thumbnail-caption').text).to eq 'New file caption'
     end
 
     file = paper.supporting_information_files.last

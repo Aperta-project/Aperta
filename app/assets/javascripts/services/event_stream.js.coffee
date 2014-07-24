@@ -5,6 +5,7 @@ ETahi.EventStream = Em.Object.extend
       url: '/event_stream'
       method: 'GET'
       success: (data) =>
+        return if data.enabled == 'false'
         source = new EventSource(data.url)
         Ember.$(window).unload -> source.close()
         @set('eventSource', source)

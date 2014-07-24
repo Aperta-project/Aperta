@@ -1,4 +1,4 @@
-.figure-thumbnail {
+.attachment-thumbnail {
   overflow: hidden;
   position: relative;
   margin-top: 20px;
@@ -6,14 +6,14 @@
   padding: 10px;
 }
 
-.view-figure-detail {
+.view-attachment-detail {
   margin-right: 10px;
 
   .glyphicon { margin-right: 5px; }
 }
 
 
-.figure-edit-icon {
+.attachment-edit-icon {
   position: absolute;
   top: 6px;
   left: -40px;
@@ -27,16 +27,16 @@
   }
 }
 
-.figure-thumbnail-text-content {
+.attachment-thumbnail-text-content {
   position: relative;
   margin: 0 20px 40px 445px;
 }
 
-._edit .figure-thumbnail-text-content {
+._edit .attachment-thumbnail-text-content {
   display: none;
 }
 
-.figure-thumbnail-edit-content {
+.attachment-thumbnail-edit-content {
   // position and z-index to keep above delete icon
   position: relative;
   z-index: 1;
@@ -59,30 +59,30 @@
   }
 }
 
-._edit .figure-thumbnail-edit-content {
+._edit .attachment-thumbnail-edit-content {
   display: block;
 }
 
 
-.figure-thumbnail-edit-actions {
+.attachment-thumbnail-edit-actions {
   text-align: right;
 }
 
-.figure-thumbnail-title {
+.attachment-thumbnail-title {
   margin: 3px 0 1em 0;
   font-size: 21px;
   outline: none;
   display: inline-block;
 }
 
-.figure-thumbnail-caption {
+.attachment-thumbnail-caption {
   color: #666;
   font-size: 14px;
   font-style: italic;
   outline: none;
 }
 
-.figure-thumbnail-destroy-overlay {
+.attachment-thumbnail-destroy-overlay {
   @include position(absolute, 0px 0px 0px 0px);
   display: none;
   padding: 30px 30px 0 30px;
@@ -97,11 +97,11 @@
   }
 }
 
-._destroy .figure-thumbnail-destroy-overlay {
+._destroy .attachment-thumbnail-destroy-overlay {
   display: block;
 }
 
-.figure-thumbnail-preview {
+.attachment-thumbnail-preview {
   position: relative;
   top: -5px;
   margin-bottom: 20px;
@@ -113,7 +113,7 @@
 
   img { max-width: 100%; }
 
-  .figure-thumbnail-preview-close {
+  .attachment-thumbnail-preview-close {
     position: absolute;
     top: 0;
     right: 0;
@@ -135,7 +135,7 @@
   }
 }
 
-.figure-original-download-link {
+.attachment-original-download-link {
   clear: left;
   float: left;
   display: block;
@@ -145,7 +145,7 @@
   text-align: center;
 }
 
-.figure-thumbnail-destroy-icon {
+.attachment-thumbnail-destroy-icon {
   @include position(absolute, 0px 0px auto auto);
   padding: 14px 27px 0 0;
   color: #d4d4d4;
@@ -155,7 +155,7 @@
   &:hover { color: $tahi-primary-hover; }
 }
 
-.figure-thumbnail-image {
+.attachment-thumbnail-image {
   position: relative;
   float: left;
   width: 40%;
@@ -167,7 +167,7 @@
   }
 }
 
-.figure-thumbnail-image-placeholder {
+.attachment-thumbnail-image-placeholder {
   min-width: 400px;
   min-height: 200px;
   text-align: center;
@@ -183,19 +183,19 @@
   }
 }
 
-.figure-thumbnail-edit-overlay, .replace-spinner {
+.attachment-thumbnail-edit-overlay, .replace-spinner {
   display: none;
   @include position(absolute, 0px 0px 0px 0px);
   color: #fff;
   text-align: center;
   background-color: rgba(41, 169, 4, 0.6);
 
-  .figure-thumbnail-edit-overlay-buttons {
+  .attachment-thumbnail-edit-overlay-buttons {
     @include position(absolute, 50% 0px 0px 0px);
     margin-top: -22px;
   }
 }
 
-.figure-thumbnail-image:hover .figure-thumbnail-edit-overlay {
+.attachment-thumbnail-image:hover .attachment-thumbnail-edit-overlay {
   display: block;
 }

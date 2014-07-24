@@ -5,7 +5,7 @@ class Admin::JournalsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with current_user.administered_journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
+    respond_with current_user.administered_journals.includes(:manuscript_manager_templates), each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
 
   def create

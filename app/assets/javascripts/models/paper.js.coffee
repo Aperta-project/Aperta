@@ -1,13 +1,20 @@
 a = DS.attr
 ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('user')
-  authorGroups: DS.hasMany('authorGroup')
   editors: DS.hasMany('user')
-  figures: DS.hasMany('figure')
+  reviewers: DS.hasMany('user')
+  editor: Ember.computed.alias('editors.firstObject')
+  collaborations: DS.hasMany('collaboration')
+
+  collaborators: (->
+    @get('collaborations').mapBy('user')
+  ).property('collaborations.@each')
+
+  authorGroups: DS.hasMany('authorGroup')
+  figures: DS.hasMany('figure', inverse: 'paper')
   supportingInformationFiles: DS.hasMany('supportingInformationFile')
   journal: DS.belongsTo('journal')
   phases: DS.hasMany('phase')
-  reviewers: DS.hasMany('user')
   tasks: DS.hasMany('task', {async: true, polymorphic: true})
   lockedBy: DS.belongsTo('user')
 
@@ -18,8 +25,22 @@ ETahi.Paper = DS.Model.extend
   title: a('string')
   paperType: a('string')
   eventName: a('string')
+  strikingImageId: a('number')
 
-  editor: Ember.computed.alias('editors.firstObject')
+  # Hack hack hack.
+  # strikingImage: DS.belongsTo('paper') causes Paper relationship issues
+  strikingImage: ((key, figure, previousValue)->
+    # setter
+    if arguments.length > 1
+      newValue = if figure then figure.get('id') else figure
+      @set('strikingImageId', newValue)
+      return @
+
+    # getter
+    id = if @get('strikingImageId') then @get('strikingImageId').toString() else null
+    @get('figures').find (f)=> f.get('id') == id
+  ).property('strikingImageId')
+
   relationshipsToSerialize: []
 
   displayTitle: (->

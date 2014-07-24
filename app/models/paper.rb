@@ -16,6 +16,7 @@ class Paper < ActiveRecord::Base
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
   belongs_to :locked_by, class_name: User
+  belongs_to :striking_image, class_name: Figure
 
   has_one :manuscript, dependent: :destroy
 
@@ -64,7 +65,7 @@ class Paper < ActiveRecord::Base
   end
 
   def role_for(role:, user:)
-    paper_roles.where(role => true, user_id: user.id)
+    paper_roles.where(role: role, user_id: user.id)
   end
 
   def tasks_for_type(klass_name)
@@ -80,16 +81,10 @@ class Paper < ActiveRecord::Base
     journal.admins
   end
 
-  def admins
-    assigned_users.merge(PaperRole.admins)
-  end
-
-  def editors
-    assigned_users.merge(PaperRole.editors)
-  end
-
-  def reviewers
-    assigned_users.merge(PaperRole.reviewers)
+  %i(admins editors reviewers collaborators).each do |relation|
+    define_method relation do
+      assigned_users.merge(PaperRole.send(relation))
+    end
   end
 
   def display_title

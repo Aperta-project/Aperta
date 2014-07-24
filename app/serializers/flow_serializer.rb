@@ -25,8 +25,8 @@ class FlowSerializer < ActiveModel::Serializer
 
   def paper_admin_tasks
     Task.joins(paper: :assigned_users)
-    .where(paper_roles: {admin: true, user_id: current_user.id},
-           type: "PaperAdminTask")
+      .merge(PaperRole.admins.for_user(current_user))
+      .where(type: "PaperAdminTask")
   end
 
   def unassigned_tasks

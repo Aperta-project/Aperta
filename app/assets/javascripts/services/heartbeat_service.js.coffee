@@ -15,10 +15,10 @@ ETahi.HeartbeatService = Em.Object.extend
     @set('intervalId', setInterval(heartbeatWrapper, @get('interval')))
 
   stop: ->
-    iid = @get('intervalId')
-    if iid
-      clearInterval(iid)
-      @set('iid', null)
+    intervalId = @get('intervalId')
+    if intervalId
+      clearInterval(intervalId)
+      @set('intervalId', null)
 
   heartbeat: ->
     $.ajax

@@ -1,18 +1,39 @@
 ETahi.Factory =
-  withOne: (modelName, attrs) ->
-
-  withMany: (modelName, attrs) ->
 
   create: (type, attrs) ->
-    newObject = Ember.merge(ETahi.FactoryAttributes[type], attrs)
-    newObject.withOne = @withOne
-    newObject.withMany = @withMany
+    Ember.merge(ETahi.FactoryAttributes[type], attrs)
 
   createLitePaper: (paper, attrs) ->
     {short_title, title, id, submitted} = paper
     paper_id = id
     litePaperAttrs = {short_title, title, id, submitted, paper_id}
     Ember.merge(litePaperAttrs, attrs)
+
+  addRecordToManifest: (manifest, typeName, obj, isPrimary) ->
+    manifest.types ||= {}
+    types = manifest.types
+    typeArray = types[typeName]
+    if !typeArray
+      types[typeName] = []
+      typeArray = types[typeName]
+    typeArray.addObject(obj)
+
+    if isPrimary
+      manifest.primaryRecord = obj
+      manifest.primaryType = typeName
+    manifest
+
+  manifestToPayload: (manifest) ->
+    {primaryRecord, primaryType} = manifest
+    payload= {}
+    payload[primaryType] = primaryRecord
+    _.forEach manifest.types, (typeArray, typeName) ->
+      records = _.map(typeArray, (d) -> d)
+      if typeName == primaryType
+        records = _.reject(records, (r) -> r == primaryRecord)
+      if records.length > 0
+        payload[(typeName + "s")] = records
+    payload
 
 ETahi.FactoryAttributes = {}
 ETahi.FactoryAttributes.journal =
@@ -71,12 +92,12 @@ ETahi.FactoryAttributes.messageTask =
   body: null
   paper_title: "Foo"
   role: "author"
-  phase_id: 40
-  paper_id: 1
-  lite_paper_id: 1
+  phase_id: null
+  paper_id: null
+  lite_paper_id: null
   assignee_ids: []
-  assignee_id: 1
-  participant_ids: [1]
+  assignee_id: null
+  participant_ids: []
   comment_ids: []
 
 ETahi.FactoryAttributes.comment =

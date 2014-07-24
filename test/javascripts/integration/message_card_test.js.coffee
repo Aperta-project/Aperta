@@ -30,6 +30,15 @@ module 'Integration: MessageCards',
       assignee_id: fakeUser.user.id
       participant_ids: [fakeUser.user.id]
 
+    phase =
+      id: 40
+      name: "Submission Data"
+      position: 1
+      paper_id: paperId
+      tasks: [
+        id: messageTaskId
+        type: "MessageTask"
+      ]
     dashboard =
       users: [fakeUser.user]
       affiliations: []
@@ -40,22 +49,14 @@ module 'Integration: MessageCards',
         paper_ids: [paperId]
       ]
 
-    paperResponse =
-      phases: [
-        id: 40
-        name: "Submission Data"
-        position: 1
-        paper_id: paperId
-        tasks: [
-          id: messageTaskId
-          type: "MessageTask"
-        ]
-      ]
-      tasks: [messageTask]
-      lite_papers: [litePaper]
-      users: [fakeUser.user]
-      journals: [journal]
-      paper: paper
+    m = ETahi.Factory.addRecordToManifest({}, 'paper', paper, true)
+    m = ETahi.Factory.addRecordToManifest(m, 'lite_paper', litePaper, false)
+    m = ETahi.Factory.addRecordToManifest(m, 'task', messageTask, false)
+    m = ETahi.Factory.addRecordToManifest(m, 'phase', phase, false)
+    m = ETahi.Factory.addRecordToManifest(m, 'user', fakeUser.user, false)
+    m = ETahi.Factory.addRecordToManifest(m, 'journal', journal, false)
+    paperPayload = ETahi.Factory.manifestToPayload(m)
+    paperResponse = paperPayload
 
     server.respondWith 'GET', "/dashboards", [
       200, {"Content-Type": "application/json"}, JSON.stringify dashboard

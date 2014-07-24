@@ -1,7 +1,7 @@
 class DestroyDeclarationAndDependencies < ActiveRecord::Migration
   def up
     drop_table :declaration_surveys
-    Task.where(type: "DeclarationTask").delete_all
+    Task.where(type: "Declaration::Task").delete_all
   end
 
   def down

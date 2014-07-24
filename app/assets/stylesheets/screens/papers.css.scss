@@ -203,16 +203,22 @@ $paper-trim-color: $tahi-tertiary;
 .collaborators {
   margin-top:10px;
 
+  .tahi-tooltip-container {
+    display: inline-block;
+  }
+
   .add-collaborators {
     color: $tahi-message;
+    display: inline-block;
   }
 }
 
 .collaborator-status {
   display: inline-block;
-  margin: 3px 0;
+  margin: 3px 5px 3px 0;
   .circle {
     display: inline-block;
+    vertical-align: middle;
   }
 }
 

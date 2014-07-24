@@ -5,10 +5,12 @@
 .tahi-tooltip {
   position: absolute;
   top: 30px;
+  width: 250px;
   padding: 10px;
   background-color: #000;
   color: white;
-  left: -35%;
+  left: 50%;
+  margin-left:-125px;
   border-radius:5px;
   z-index:2;
 
@@ -16,6 +18,15 @@
     width: 50px;
     border-radius: 5px;
     vertical-align: top;
+  }
+
+  .collaborator-status {
+    margin: 0;
+  }
+
+  .circle {
+    border-color: white;
+    background-color: $tahi-message;
   }
 
   .info {
@@ -38,10 +49,11 @@
     .status {
       font-size: 11px;
       opacity: 0.4;
+      padding-left: 5px;
     }
 
     p {
-      margin: 0 0 5px;
+      margin: 0 0 2px;
     }
   }
 

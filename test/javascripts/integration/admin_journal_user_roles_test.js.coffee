@@ -45,7 +45,6 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
           "PaperAdminTask"
           "UploadManuscript::Task"
           "PaperEditorTask"
-          "Declaration::Task"
           "PaperReviewerTask"
           "RegisterDecisionTask"
           "StandardTasks::TechCheckTask"
@@ -71,7 +70,6 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
             phases: [
               name: "Submission Data"
               task_types: [
-                "Declaration::Task"
                 "StandardTasks::FigureTask"
                 "SupportingInformation::Task"
                 "StandardTasks::AuthorsTask"

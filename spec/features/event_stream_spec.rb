@@ -75,16 +75,6 @@ feature "Event streaming", js: true do
   end
 
   describe "tasks" do
-    scenario "enter declarations" do
-      edit_paper = EditPaperPage.visit paper
-      edit_paper.view_card('Enter Declarations')
-      expect(page).to have_css(".overlay-content")
-      survey = Declaration::Survey.first
-      survey.answer = "Hello!"
-      survey.save!
-      expect(all('textarea').map(&:value)).to include("Hello!")
-    end
-
     scenario "marking a task completed" do
       edit_paper = EditPaperPage.visit paper
       edit_paper.view_card('Upload Manuscript')

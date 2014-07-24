@@ -10,7 +10,6 @@ end
 # Task Engines
 gem 'standard_tasks',         path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
-gem 'declaration',            path: 'engines/declaration'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 gem 'data_availability',      path: 'engines/data_availability'
 gem 'financial_disclosure',   path: 'engines/financial_disclosure'

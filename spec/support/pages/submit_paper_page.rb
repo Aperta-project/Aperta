@@ -4,7 +4,7 @@ class SubmitPaperPage < Page
     super
   end
 
-  %w(title abstract authors declarations).each do |attr|
+  %w(title abstract authors).each do |attr|
     define_method "has_paper_#{attr}?" do
       has_selector? "#paper-#{attr}"
     end

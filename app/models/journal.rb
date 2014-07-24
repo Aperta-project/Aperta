@@ -3,7 +3,6 @@ class Journal < ActiveRecord::Base
                       "PaperAdminTask",
                       "UploadManuscript::Task",
                       "PaperEditorTask",
-                      "Declaration::Task",
                       "PaperReviewerTask",
                       "RegisterDecisionTask",
                       "StandardTasks::TechCheckTask",

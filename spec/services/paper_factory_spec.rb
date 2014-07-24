@@ -7,7 +7,7 @@ describe PaperFactory do
       template: {
         phases: [{
           name: "First Phase",
-          task_types: [PaperAdminTask.to_s, Declaration::Task.to_s]
+          task_types: [PaperAdminTask.to_s, DataAvailability::Task.to_s]
         },
         {name: "Phase With No Tasks"}
         ]
@@ -34,13 +34,13 @@ describe PaperFactory do
         paper_factory.apply_template
       }.to change { paper.tasks.count }.by(2)
 
-      expect(paper.tasks.pluck(:type)).to match_array(['PaperAdminTask', 'Declaration::Task'])
+      expect(paper.tasks.pluck(:type)).to match_array(['PaperAdminTask', 'DataAvailability::Task'])
     end
 
     it "sets assignee to tasks with role = author" do
       paper_factory.apply_template
       expect(paper.tasks.where(type: 'PaperAdminTask').first.assignee).to be_nil
-      expect(paper.tasks.where(type: 'Declaration::Task').first.assignee).to eq(user)
+      expect(paper.tasks.where(type: 'DataAvailability::Task').first.assignee).to eq(user)
     end
   end
 

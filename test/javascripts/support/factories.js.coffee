@@ -44,9 +44,16 @@ ETahi.Factory =
      _addRecordToManifest = @addRecordToManifest
      _manifestToPayload = @manifestToPayload
      manifest: {types: {}}
-     addRecord: (rootKey, attrs) ->
+
+     createRecord: (factoryType, attrs) ->
+       newRecord = Ember.merge(ETahi.FactoryAttributes[factoryType], attrs)
+       @addRecord(newRecord)
+       newRecord
+
+     addRecord: (record, options={}) ->
+       rootKey = options.rootKey || record._rootKey
        isPrimary = (rootKey == primaryTypeName)
-       @manifest = _addRecordToManifest(@manifest, rootKey, attrs, isPrimary)
+       @manifest = _addRecordToManifest(@manifest, rootKey, record, isPrimary)
        @
      toJSON: ->
        _manifestToPayload(@manifest)

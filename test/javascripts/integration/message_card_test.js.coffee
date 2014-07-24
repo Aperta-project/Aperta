@@ -7,8 +7,10 @@ module 'Integration: MessageCards',
     paperId = 1
     phaseId = 1
     messageTaskId = 1
-    journal = ETahi.Factory.create('journal', id: journalId)
-    paper = ETahi.Factory.create('paper',
+    paperPayload = ETahi.Factory.createPayload('paper')
+
+    journal = paperPayload.createRecord('journal', id: journalId)
+    paper = paperPayload.createRecord('paper',
         id: paperId
         phase_ids: [phaseId]
         assignee_ids: [fakeUser.id]
@@ -19,8 +21,7 @@ module 'Integration: MessageCards',
         journal_id: journalId
     )
 
-    litePaper = ETahi.Factory.createLitePaper(paper)
-    messageTask = ETahi.Factory.create 'messageTask',
+    messageTask = paperPayload.createRecord 'messageTask',
       id: messageTaskId
       title: "Message Time"
       phase_id: phaseId
@@ -29,7 +30,7 @@ module 'Integration: MessageCards',
       assignee_id: fakeUser.id
       participant_ids: [fakeUser.id]
 
-    phase = ETahi.Factory.create 'phase',
+    phase = paperPayload.createRecord 'phase',
       id: phaseId
       paper_id: paperId
       tasks: [
@@ -47,13 +48,10 @@ module 'Integration: MessageCards',
         paper_ids: [paperId]
       ]
 
-    paperPayload = ETahi.Factory.createPayload('paper')
-      .addRecord('paper', paper)
-      .addRecord('lite_paper', litePaper)
-      .addRecord('task', messageTask)
-      .addRecord('phase', phase)
-      .addRecord('user', fakeUser)
-      .addRecord('journal', journal)
+    litePaper = ETahi.Factory.createLitePaper(paper)
+    paperPayload.addRecord(litePaper)
+      .addRecord(fakeUser)
+
     paperResponse = paperPayload.toJSON()
     server.respondWith 'GET', "/dashboards", [
       200, {"Content-Type": "application/json"}, JSON.stringify dashboard

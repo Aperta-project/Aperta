@@ -20,7 +20,7 @@
           {{partial "svg/pdf-icon"}}
         {{/direct-download-link}}
       </li>
-      {{#if isAdmin}}
+      {{#if canViewManuscriptManager}}
         <li class="control-bar-item">
           {{#link-to "paper.manage" model class="control-bar-link"}}
             {{partial "svg/manuscript-manager-icon"}}

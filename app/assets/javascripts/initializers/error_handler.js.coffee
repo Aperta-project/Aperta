@@ -6,7 +6,8 @@ ETahi.initializer
     displayErrorMessage = (message) ->
       container.lookup('controller:application').set('error', message)
 
-    Ember.onerror = displayErrorMessage
+    unless ETahi.environment == "development"
+      Ember.onerror = displayErrorMessage
 
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       # don't blow up in case of a 403 from rails when doing authorization checks.

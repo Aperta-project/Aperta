@@ -189,14 +189,13 @@ ActiveRecord::Schema.define(version: 20140722131212) do
   create_table "paper_roles", force: true do |t|
     t.integer  "user_id"
     t.integer  "paper_id"
-    t.boolean  "editor",     default: false, null: false
-    t.boolean  "reviewer",   default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin",      default: false
+    t.string   "role"
   end
 
   add_index "paper_roles", ["paper_id"], name: "index_paper_roles_on_paper_id", using: :btree
+  add_index "paper_roles", ["role"], name: "index_paper_roles_on_role", using: :btree
   add_index "paper_roles", ["user_id", "paper_id"], name: "index_paper_roles_on_user_id_and_paper_id", using: :btree
   add_index "paper_roles", ["user_id"], name: "index_paper_roles_on_user_id", using: :btree
 

@@ -34,7 +34,7 @@ describe PapersPolicy do
     let(:paper) { FactoryGirl.create(:paper) }
 
     before do
-      PaperRole.create user: user, paper: paper, admin: true
+      create(:paper_role, :admin, user: user, paper: paper)
     end
 
     it { expect(policy.edit?).to be(true) }
@@ -51,7 +51,7 @@ describe PapersPolicy do
     let(:paper) { FactoryGirl.create(:paper) }
 
     before do
-      PaperRole.create user: user, paper: paper, editor: true
+      create(:paper_role, :editor, user: user, paper: paper)
     end
 
     it { expect(policy.edit?).to be(true) }
@@ -68,7 +68,23 @@ describe PapersPolicy do
     let(:paper) { FactoryGirl.create(:paper) }
 
     before do
-      PaperRole.create user: user, paper: paper, reviewer: true
+      create(:paper_role, :reviewer, user: user, paper: paper)
+    end
+
+    it { expect(policy.edit?).to be(true) }
+    it { expect(policy.show?).to be(true) }
+    it { expect(policy.create?).to be(true) }
+    it { expect(policy.update?).to be(true) }
+    it { expect(policy.upload?).to be(true) }
+    it { expect(policy.download?).to be(true) }
+  end
+
+  context "paper collaborators" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    before do
+      create(:paper_role, :collaborator, user: user, paper: paper)
     end
 
     it { expect(policy.edit?).to be(true) }

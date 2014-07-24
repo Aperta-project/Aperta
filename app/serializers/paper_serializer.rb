@@ -12,6 +12,7 @@ class PaperSerializer < ActiveModel::Serializer
   has_many :tasks, embed: :ids, polymorphic: true
   has_one :journal, embed: :id, include: true
   has_one :locked_by, embed: :id, include: true, root: :users
+  has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
   has_one :striking_image, embed: :id, include: true, root: :figures
 
   def status
@@ -28,6 +29,11 @@ class PaperSerializer < ActiveModel::Serializer
 
   def reviewers
     object.reviewers.includes(:affiliations)
+  end
+
+  def collaborations
+    # we want the actual join record, not a list of users
+    object.paper_roles.collaborators
   end
 
   def event_name

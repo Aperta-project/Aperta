@@ -11,7 +11,7 @@ describe ReviewerReportTask do
     let(:paper) { FactoryGirl.create :paper, :with_tasks }
     subject(:task) { FactoryGirl.create :reviewer_report_task, phase: paper.phases.first }
 
-    before { PaperRole.create!(reviewer: true, user: task.assignee, paper: paper) }
+    before { create(:paper_role, :reviewer, user: task.assignee, paper: paper) }
 
     it "destroys the reviewer's paper role" do
       expect{ task.destroy }.to change{ PaperRole.count }.by(-1)

@@ -1,5 +1,5 @@
-#= require controllers/paper_controller
-ETahi.PaperEditController = ETahi.PaperController.extend
+#= require controllers/base_paper_controller
+ETahi.PaperEditController = ETahi.BasePaperController.extend
   visualEditor: null
 
   setupVisualEditor: (->

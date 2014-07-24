@@ -12,7 +12,7 @@ feature "Register Decision", js: true do
 
   before do
     assign_journal_role(journal, editor, :editor)
-    paper_role = PaperRole.create! user: editor, paper: paper, editor: true
+    paper_role = create(:paper_role, :editor, user: editor, paper: paper)
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in editor
   end

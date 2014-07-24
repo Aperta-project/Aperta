@@ -23,16 +23,11 @@ Ember.Test.registerHelper('getStore', (app) ->
 
 # All interactions with ember are while a user is signed in
 @currentUserId = 183475
-@fakeUser =
-  affiliations: []
-  user:
-    id: @currentUserId
-    full_name: "Fake User"
-    avatar_url: "/images/profile-no-image.png"
-    username: "fakeuser"
-    email: "fakeuser@example.com"
-    admin: false
-    affiliation_ids: []
+@fakeUser = ETahi.Factory.create('user',
+  id: @currentUserId
+  full_name: "Fake User"
+  username: "fakeuser"
+  email: "fakeuser@example.com"
 
 @setupTestEnvironment = ->
   @setupMockServer()

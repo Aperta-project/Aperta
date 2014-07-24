@@ -11,7 +11,7 @@ module 'Integration: MessageCards',
     paper = ETahi.Factory.create('paper',
         id: paperId
         phase_ids: [phaseId]
-        assignee_ids: [fakeUser.user.id]
+        assignee_ids: [fakeUser.id]
         tasks: [
           id: messageTaskId
           type: "messageTask"
@@ -26,8 +26,8 @@ module 'Integration: MessageCards',
       phase_id: phaseId
       paper_id: paperId
       lite_paper_id: paperId
-      assignee_id: fakeUser.user.id
-      participant_ids: [fakeUser.user.id]
+      assignee_id: fakeUser.id
+      participant_ids: [fakeUser.id]
 
     phase = ETahi.Factory.create 'phase',
       id: phaseId
@@ -38,12 +38,12 @@ module 'Integration: MessageCards',
       ]
 
     dashboard =
-      users: [fakeUser.user]
+      users: [fakeUser]
       affiliations: []
       lite_papers: [litePaper]
       dashboards: [
         id: 1
-        user_id: fakeUser.user.id
+        user_id: fakeUser.id
         paper_ids: [paperId]
       ]
 
@@ -52,7 +52,7 @@ module 'Integration: MessageCards',
       .addRecord('lite_paper', litePaper)
       .addRecord('task', messageTask)
       .addRecord('phase', phase)
-      .addRecord('user', fakeUser.user)
+      .addRecord('user', fakeUser)
       .addRecord('journal', journal)
     paperResponse = paperPayload.toJSON()
     server.respondWith 'GET', "/dashboards", [
@@ -73,7 +73,7 @@ test 'Showing a message card will work', ->
 
 test 'A message card with a comment works', ->
   commentData = ETahi.Factory.create 'comment',
-    commenter_id: fakeUser.user.id
+    commenter_id: fakeUser.id
     message_task_id: 1
     created_at: new Date().toISOString()
 

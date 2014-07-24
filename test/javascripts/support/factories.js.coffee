@@ -35,6 +35,18 @@ ETahi.Factory =
         payload[(typeName + "s")] = records
     payload
 
+   createPayload: (primaryTypeName) ->
+     _addRecordToManifest = @addRecordToManifest
+     _manifestToPayload = @manifestToPayload
+     manifest: {types: {}}
+     addRecord: (typeName, attrs) ->
+       isPrimary = (typeName == primaryTypeName)
+       @manifest = _addRecordToManifest(@manifest, typeName, attrs, isPrimary)
+       @
+     toJSON: ->
+       _manifestToPayload(@manifest)
+
+
 ETahi.FactoryAttributes = {}
 ETahi.FactoryAttributes.journal =
   id: 1
@@ -107,3 +119,10 @@ ETahi.FactoryAttributes.comment =
   body: "A sample comment"
   created_at: null
   comment_look_id: null
+
+ETahi.FactoryAttributes.phase =
+  id: 1
+  name: "Submission Data"
+  position: 1
+  paper_id: 1
+  tasks: []

@@ -4,12 +4,13 @@ module 'Integration: MessageCards',
     setupApp(integration: true)
 
     journalId = 1
-    journal = ETahi.Factory.create('journal', id: journalId)
-
     paperId = 1
+    phaseId = 1
+    messageTaskId = 1
+    journal = ETahi.Factory.create('journal', id: journalId)
     paper = ETahi.Factory.create('paper',
         id: paperId
-        phase_ids: [40]
+        phase_ids: [phaseId]
         assignee_ids: [fakeUser.user.id]
         tasks: [
           id: messageTaskId
@@ -19,26 +20,23 @@ module 'Integration: MessageCards',
     )
 
     litePaper = ETahi.Factory.createLitePaper(paper)
-
-    messageTaskId = 1
     messageTask = ETahi.Factory.create 'messageTask',
       id: messageTaskId
       title: "Message Time"
-      phase_id: 40
+      phase_id: phaseId
       paper_id: paperId
       lite_paper_id: paperId
       assignee_id: fakeUser.user.id
       participant_ids: [fakeUser.user.id]
 
-    phase =
-      id: 40
-      name: "Submission Data"
-      position: 1
+    phase = ETahi.Factory.create 'phase',
+      id: phaseId
       paper_id: paperId
       tasks: [
         id: messageTaskId
         type: "MessageTask"
       ]
+
     dashboard =
       users: [fakeUser.user]
       affiliations: []
@@ -49,15 +47,14 @@ module 'Integration: MessageCards',
         paper_ids: [paperId]
       ]
 
-    m = ETahi.Factory.addRecordToManifest({}, 'paper', paper, true)
-    m = ETahi.Factory.addRecordToManifest(m, 'lite_paper', litePaper, false)
-    m = ETahi.Factory.addRecordToManifest(m, 'task', messageTask, false)
-    m = ETahi.Factory.addRecordToManifest(m, 'phase', phase, false)
-    m = ETahi.Factory.addRecordToManifest(m, 'user', fakeUser.user, false)
-    m = ETahi.Factory.addRecordToManifest(m, 'journal', journal, false)
-    paperPayload = ETahi.Factory.manifestToPayload(m)
-    paperResponse = paperPayload
-
+    paperPayload = ETahi.Factory.createPayload('paper')
+      .addRecord('paper', paper)
+      .addRecord('lite_paper', litePaper)
+      .addRecord('task', messageTask)
+      .addRecord('phase', phase)
+      .addRecord('user', fakeUser.user)
+      .addRecord('journal', journal)
+    paperResponse = paperPayload.toJSON()
     server.respondWith 'GET', "/dashboards", [
       200, {"Content-Type": "application/json"}, JSON.stringify dashboard
     ]

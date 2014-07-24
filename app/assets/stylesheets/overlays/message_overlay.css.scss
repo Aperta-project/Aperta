@@ -25,29 +25,8 @@
 }
 
 // Chosen overrides for message overlay:
-.message-overlay {
-  .chosen-container-single .chosen-single {
-    height: 40px;
-    border-color: $tahi-message;
-    color: $tahi-message;
-    font-size: 18px;
-    text-transform: uppercase;
-    background: #fff;
-
-    span {
-      color: $tahi-message;
-    }
-  }
-
-  .chosen-drop {
-    border: 1px solid $tahi-message;
-    border-top: none;
-  }
-
-  .chosen-results li.highlighted {
-    width: 100%;
-    background: $tahi-message;
-  }
+.message-overlay .chosen-style-override .chosen-container-single .chosen-single {
+  @include tahi-chosen($tahi-message)
 }
 
 .message-overlay {

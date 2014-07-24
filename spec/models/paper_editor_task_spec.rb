@@ -10,7 +10,7 @@ describe PaperEditorTask do
 
   describe "#paper_role" do
     let(:user) { FactoryGirl.build(:user) }
-    let!(:paper_role) { PaperRole.create! paper: paper, editor: true, user: user }
+    let!(:paper_role) { create(:paper_role, :editor, paper: paper, user: user) }
     let!(:phase) { paper.phases.first }
     let(:task) { PaperEditorTask.create!(phase: phase) }
 
@@ -18,7 +18,7 @@ describe PaperEditorTask do
       it "initializes a new editor role" do
         role = task.paper_role
         expect(role.paper).to eq paper
-        expect(role).to be_editor
+        expect(role.role).to eq('editor')
       end
     end
 
@@ -39,7 +39,7 @@ describe PaperEditorTask do
     let(:editor) { FactoryGirl.create(:user) }
 
     before do
-      PaperRole.create! paper: paper, editor: true, user: editor
+      create(:paper_role, :editor, paper: paper, user: editor)
     end
 
     it "returns the current editor's id" do

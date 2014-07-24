@@ -1,6 +1,8 @@
 class EventStream
 
   def self.post_event(id, json)
+    return unless enabled?
+
     Thread.new do
       Net::HTTP.post_form(
         URI.parse(update_url),
@@ -11,6 +13,7 @@ class EventStream
 
   def self.connection_info(ids)
     {
+      enabled: ENV["EVENT_STREAM_ENABLED"],
       url: stream_url,
       eventNames: names(ids)
     }
@@ -38,5 +41,9 @@ class EventStream
 
   def self.update_url
     url + "/update_stream"
+  end
+
+  def self.enabled?
+    ENV["EVENT_STREAM_ENABLED"] != "false"
   end
 end

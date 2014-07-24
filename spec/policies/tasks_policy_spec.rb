@@ -16,6 +16,23 @@ describe TasksPolicy do
     it { expect(policy.upload?).to be(true) }
   end
 
+  context "paper collaborator" do
+    let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
+    let(:task) { paper.tasks.metadata.first }
+    let(:user) { FactoryGirl.create(:user) }
+
+    it { expect(policy.edit?).to be(true) }
+    it { expect(policy.show?).to be(true) }
+    it { expect(policy.create?).to be(false) }
+    it { expect(policy.update?).to be(true) }
+    it { expect(policy.upload?).to be(true) }
+
+    context "on a non metadata task" do
+      let(:task) { paper.tasks.where.not(type: Task.metadata_types).first }
+      it { expect(policy.show?).to be(false) }
+    end
+  end
+
   context "user with can_view_all_manuscript_managers on this journal" do
     let(:user) do
       FactoryGirl.create(

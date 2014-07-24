@@ -17,7 +17,7 @@ describe DashboardSerializer do
 
     it "Should add role descriptions for papers the user associated to by paper_roles" do
       associated_paper = FactoryGirl.create(:paper)
-      PaperRole.create(user: user, paper: associated_paper, reviewer: true)
+      create(:paper_role, :reviewer, paper: associated_paper, user: user)
       serialized_paper = first_serialized_paper(associated_paper)
 
       expect(serialized_paper.role_descriptions).to match_array ['Reviewer']
@@ -25,7 +25,7 @@ describe DashboardSerializer do
 
     it "Can include both 'My Paper' and other roles in the description" do
       associated_paper = FactoryGirl.create(:paper, user: user)
-      PaperRole.create(user: user, paper: associated_paper, reviewer: true)
+      create(:paper_role, :reviewer, paper: associated_paper, user: user)
       serialized_paper = first_serialized_paper(associated_paper)
 
       expect(serialized_paper.role_descriptions).to match_array ['Reviewer', 'My Paper']

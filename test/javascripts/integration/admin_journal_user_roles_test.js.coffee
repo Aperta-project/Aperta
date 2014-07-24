@@ -48,8 +48,8 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
           "StandardTasks::TechCheckTask"
           "StandardTasks::FigureTask"
           "StandardTasks::AuthorsTask"
+          "StandardTasks::DataAvailabilityTask"
           "SupportingInformation::Task"
-          "DataAvailability::Task"
           "FinancialDisclosure::Task"
           "CompetingInterests::Task"
         ]

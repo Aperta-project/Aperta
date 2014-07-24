@@ -49,8 +49,8 @@ module 'Integration: Dashboard - when there are more than 15 papers',
             "StandardTasks::TechCheckTask"
             "StandardTasks::FigureTask"
             "StandardTasks::AuthorsTask"
+            "StandardTasks::DataAvailabilityTask"
             "SupportingInformation::Task"
-            "DataAvailability::Task"
             "FinancialDisclosure::Task"
             "CompetingInterests::Task"
           ]
@@ -85,8 +85,8 @@ module 'Integration: Dashboard - when there are more than 15 papers',
           'StandardTasks::TechCheckTask'
           'StandardTasks::FigureTask'
           'StandardTasks::AuthorsTask'
+          'StandardTasks::DataAvailabilityTask'
           'SupportingInformation::Task'
-          'DataAvailability::Task'
           'FinancialDisclosure::Task'
           'CompetingInterests::Task'
         ]

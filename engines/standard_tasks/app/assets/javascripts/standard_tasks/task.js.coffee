@@ -9,3 +9,6 @@ ETahi.FigureTask = ETahi.Task.extend
 
 ETahi.TechCheckTask = ETahi.Task.extend
   qualifiedType: "StandardTasks::TechCheckTask"
+
+ETahi.DataAvailabilityTask = ETahi.Task.extend
+  qualifiedType: "StandardTasks::DataAvailabilityTask"

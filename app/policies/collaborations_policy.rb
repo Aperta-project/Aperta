@@ -2,11 +2,11 @@ class CollaborationsPolicy < ApplicationPolicy
   allow_params :paper
 
   def create?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer? || paper_collaborator?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
   end
 
   def destroy?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer? || paper_collaborator?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
   end
 
   private

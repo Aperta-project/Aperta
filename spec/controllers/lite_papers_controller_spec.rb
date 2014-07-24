@@ -10,13 +10,16 @@ describe LitePapersController do
 
   describe "#index" do
     let(:paper_count) { 20 }
+
     before do
       paper_count.times { FactoryGirl.create :paper, user: user }
     end
+
     context "when there are less than 15" do
       let(:paper_count) { 10 }
+
       it "returns all papers" do
-        get :index, format: :json
+        get :index, format: :json, page_number: 1
         expect(response.status).to eq(200)
         expect(response_papers.count).to eq(paper_count)
       end
@@ -24,6 +27,7 @@ describe LitePapersController do
 
     context "when there are more than 15" do
       let(:paper_count) { 20 }
+
       context "when page 1" do
         it "returns the first page of 15 papers" do
           get :index, page_number: 1, format: :json

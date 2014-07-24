@@ -27,7 +27,7 @@ class PapersPolicy < ApplicationPolicy
 
   private
 
-  %w(editor reviewer admin collaborator).each do |role|
+  %w(PaperRole::ALL_ROLES).each do |role|
     define_method "paper_#{role}?" do
       paper.role_for(role: role, user: current_user).exists?
     end

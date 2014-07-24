@@ -1,5 +1,12 @@
 class PaperRole < ActiveRecord::Base
 
+  REVIEWER = 'reviewer'
+  EDITOR = 'editor'
+  COLLABORATOR = 'collaborator'
+  ADMIN = 'admin'
+
+  ALL_ROLES = [REVIEWER, EDITOR, COLLABORATOR, ADMIN]
+
   belongs_to :user, inverse_of: :paper_roles
   belongs_to :paper, inverse_of: :paper_roles
 
@@ -10,7 +17,7 @@ class PaperRole < ActiveRecord::Base
   validates_uniqueness_of :role, scope: [:user_id, :paper_id]
 
   def self.admins
-    where(role: 'admin')
+    where(role: ADMIN)
   end
 
   def self.for_user(user)
@@ -18,15 +25,15 @@ class PaperRole < ActiveRecord::Base
   end
 
   def self.editors
-    where(role: 'editor')
+    where(role: EDITOR)
   end
 
   def self.reviewers
-    where(role: 'reviewer')
+    where(role: REVIEWER)
   end
 
   def self.collaborators
-    where(role: 'collaborator')
+    where(role: COLLABORATOR)
   end
 
   def self.reviewers_for(paper)

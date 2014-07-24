@@ -28,7 +28,7 @@ class TasksPolicy < ApplicationPolicy
   end
 
   def metadata_task_collaborator?
-    task.is_metadata? && PaperRole.for_user(current_user).collaborators.where(paper: task.paper).exists?
+    task.is_metadata? && task.paper.collaborators.exists?(current_user)
   end
 
   def has_sufficient_role?

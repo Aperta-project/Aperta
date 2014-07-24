@@ -4,7 +4,7 @@ class CollaborationsController < ApplicationController
   respond_to :json
 
   def create
-    paper_role = PaperRole.create(collaborator_params.merge(role: 'collaborator'))
+    paper_role = PaperRole.create(collaborator_params.merge(role: PaperRole::COLLABORATOR))
     respond_with paper_role, serializer: CollaborationSerializer
   end
 

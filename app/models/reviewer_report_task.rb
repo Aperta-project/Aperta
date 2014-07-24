@@ -17,7 +17,7 @@ class ReviewerReportTask < Task
   def destroy
     self.transaction do
       if assignee.present?
-        assignee.paper_roles.where(paper: paper, reviewer: true).destroy_all
+        assignee.paper_roles.reviewers.where(paper: paper).destroy_all
       end
       super
     end

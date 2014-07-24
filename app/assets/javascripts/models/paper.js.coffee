@@ -1,13 +1,20 @@
 a = DS.attr
 ETahi.Paper = DS.Model.extend
   assignees: DS.hasMany('user')
-  authorGroups: DS.hasMany('authorGroup')
   editors: DS.hasMany('user')
+  reviewers: DS.hasMany('user')
+  editor: Ember.computed.alias('editors.firstObject')
+  collaborations: DS.hasMany('collaboration')
+
+  collaborators: (->
+    @get('collaborations').mapBy('user')
+  ).property('collaborations.@each')
+
+  authorGroups: DS.hasMany('authorGroup')
   figures: DS.hasMany('figure', inverse: 'paper')
   supportingInformationFiles: DS.hasMany('supportingInformationFile')
   journal: DS.belongsTo('journal')
   phases: DS.hasMany('phase')
-  reviewers: DS.hasMany('user')
   tasks: DS.hasMany('task', {async: true, polymorphic: true})
   lockedBy: DS.belongsTo('user')
 
@@ -34,7 +41,6 @@ ETahi.Paper = DS.Model.extend
     @get('figures').find (f)=> f.get('id') == id
   ).property('strikingImageId')
 
-  editor: Ember.computed.alias('editors.firstObject')
   relationshipsToSerialize: []
 
   displayTitle: (->

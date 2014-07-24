@@ -2,11 +2,11 @@ class PapersPolicy < ApplicationPolicy
   allow_params :paper
 
   def show?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer? || can_view_manuscript_manager?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer? || can_view_manuscript_manager?
   end
 
   def edit?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
   end
 
   def create?
@@ -14,27 +14,27 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def update?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
   end
 
   def upload?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer? || can_view_manuscript_manager?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer? || can_view_manuscript_manager?
   end
 
   def download?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
   end
 
   private
 
-  %w(editor reviewer admin).each do |role|
+  PaperRole::ALL_ROLES.each do |role|
     define_method "paper_#{role}?" do
-      paper.role_for(role: role, user: current_user).present?
+      paper.role_for(role: role, user: current_user).exists?
     end
   end
 
   def can_view_manuscript_manager?
-    current_user.roles.where(journal_id: paper.journal).where(can_view_all_manuscript_managers: true).present?
+    current_user.roles.where(journal_id: paper.journal).where(can_view_all_manuscript_managers: true).exists?
   end
 
   def author?

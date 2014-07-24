@@ -21,12 +21,12 @@ describe PaperQuery do
       end
 
       context "when the user is a reviewer on that paper" do
-        before { PaperRole.create! paper: paper, user: user, reviewer: true }
+        before { create( :paper_role, :reviewer, paper: paper, user: user) }
         specify { expect(policy.paper).to eq paper }
       end
 
       context "when the user is an editor on that paper" do
-        before { PaperRole.create! paper: paper, user: user, editor: true }
+        before { create( :paper_role, :editor, paper: paper, user: user) }
         specify { expect(policy.paper).to eq paper }
       end
     end

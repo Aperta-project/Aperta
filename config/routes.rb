@@ -72,9 +72,12 @@ Tahi::Application.routes.draw do
     end
   end
 
-  resources :users, only: [:show] do
+  resources :users, only: [:show, :index] do
     put :update_avatar, on: :member
   end
+
+  resources :collaborations, only: [:create, :destroy]
+  resources :paper_roles, only: [:show]
 
   resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create

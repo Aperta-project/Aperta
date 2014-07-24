@@ -40,6 +40,10 @@ class Task < ActiveRecord::Base
     where.not(id: task.id)
   end
 
+  def is_metadata?
+    Task.metadata_types.include?(self.class.name)
+  end
+
   def array_attributes
     []
   end

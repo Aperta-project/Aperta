@@ -2,11 +2,11 @@ class PapersPolicy < ApplicationPolicy
   allow_params :paper
 
   def show?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer? || paper_collaborator? || can_view_manuscript_manager?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer? || can_view_manuscript_manager?
   end
 
   def edit?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer? || paper_collaborator?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
   end
 
   def create?
@@ -14,15 +14,15 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def update?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer? || paper_collaborator?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
   end
 
   def upload?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer? || paper_collaborator? || can_view_manuscript_manager?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer? || can_view_manuscript_manager?
   end
 
   def download?
-    current_user.admin? || author? || paper_admin? || paper_editor? || paper_reviewer? || paper_collaborator?
+    current_user.admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
   end
 
   private

@@ -77,7 +77,7 @@ test 'A message card with a comment works', ->
     message_task_id: 1
     created_at: new Date().toISOString()
 
-  foo = pushData('comment', commentData)
+  foo = pushModel('comment', commentData)
   expect(1)
   visit('/papers/1/tasks/1')
   andThen -> equal(find('.overlay-content h1').text(), "Message Time")

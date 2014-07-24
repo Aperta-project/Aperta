@@ -1,7 +1,7 @@
 ETahi.Factory =
 
   create: (type, attrs) ->
-    Ember.merge(ETahi.FactoryAttributes[type].attributes, attrs)
+    Ember.merge(ETahi.FactoryAttributes[type], attrs)
 
   createLitePaper: (paper, attrs) ->
     {short_title, title, id, submitted} = paper
@@ -44,9 +44,9 @@ ETahi.Factory =
      _addRecordToManifest = @addRecordToManifest
      _manifestToPayload = @manifestToPayload
      manifest: {types: {}}
-     addRecord: (typeName, attrs) ->
-       isPrimary = (typeName == primaryTypeName)
-       @manifest = _addRecordToManifest(@manifest, typeName, attrs, isPrimary)
+     addRecord: (rootKey, attrs) ->
+       isPrimary = (rootKey == primaryTypeName)
+       @manifest = _addRecordToManifest(@manifest, rootKey, attrs, isPrimary)
        @
      toJSON: ->
        _manifestToPayload(@manifest)
@@ -54,102 +54,95 @@ ETahi.Factory =
 
 ETahi.FactoryAttributes = {}
 ETahi.FactoryAttributes.user =
-  rootKey: 'user'
-  attributes:
-    id: 1
-    full_name: "Fake User"
-    avatar_url: "/images/profile-no-image.png"
-    username: "fakeuser"
-    email: "fakeuser@example.com"
-    admin: false
-    affiliation_ids: []
+  _rootKey: 'user'
+  id: 1
+  full_name: "Fake User"
+  avatar_url: "/images/profile-no-image.png"
+  username: "fakeuser"
+  email: "fakeuser@example.com"
+  admin: false
+  affiliation_ids: []
 ETahi.FactoryAttributes.journal =
-  rootKey: 'journal'
-  attributes:
-    id: 1
-    name: "Fake Journal"
-    logo_url: "/images/no-journal-image.gif"
-    paper_types: ["Research"]
-    task_types: [
-      "ReviewerReportTask"
-      "PaperAdminTask"
-      "UploadManuscript::Task"
-      "PaperEditorTask"
-      "Declaration::Task"
-      "PaperReviewerTask"
-      "RegisterDecisionTask"
-      "StandardTasks::TechCheckTask"
-      "StandardTasks::FigureTask"
-      "StandardTasks::AuthorsTask"
-      "SupportingInformation::Task"
-      "DataAvailability::Task"
-      "FinancialDisclosure::Task"
-      "CompetingInterests::Task"
-    ]
-    manuscript_css: null
+  _rootKey: 'journal'
+  id: 1
+  name: "Fake Journal"
+  logo_url: "/images/no-journal-image.gif"
+  paper_types: ["Research"]
+  task_types: [
+    "ReviewerReportTask"
+    "PaperAdminTask"
+    "UploadManuscript::Task"
+    "PaperEditorTask"
+    "Declaration::Task"
+    "PaperReviewerTask"
+    "RegisterDecisionTask"
+    "StandardTasks::TechCheckTask"
+    "StandardTasks::FigureTask"
+    "StandardTasks::AuthorsTask"
+    "SupportingInformation::Task"
+    "DataAvailability::Task"
+    "FinancialDisclosure::Task"
+    "CompetingInterests::Task"
+  ]
+  manuscript_css: null
 
 ETahi.FactoryAttributes.paper =
-  rootKey: 'paper'
-  attributes:
-    id: 1
-    short_title: "Paper"
-    title: "Foo"
-    body: null
-    submitted: false
-    paper_type: "Research"
-    status: null
-    phase_ids: []
-    figure_ids: []
-    author_group_ids: []
-    supporting_information_file_ids: []
-    assignee_ids: []
-    editor_ids: []
-    reviewer_ids: []
-    tasks: []
-    journal_id: 1
+  _rootKey: 'paper'
+  id: 1
+  short_title: "Paper"
+  title: "Foo"
+  body: null
+  submitted: false
+  paper_type: "Research"
+  status: null
+  phase_ids: []
+  figure_ids: []
+  author_group_ids: []
+  supporting_information_file_ids: []
+  assignee_ids: []
+  editor_ids: []
+  reviewer_ids: []
+  tasks: []
+  journal_id: 1
 
 ETahi.FactoryAttributes.litePaper =
-  rootKey: 'lite_paper'
-  attributes:
-    id: 1
-    title: "Foo"
-    paper_id: 1
-    short_title: "Paper"
-    submitted: false
+  _rootKey: 'lite_paper'
+  id: 1
+  title: "Foo"
+  paper_id: 1
+  short_title: "Paper"
+  submitted: false
 
 ETahi.FactoryAttributes.messageTask =
-  rootKey: 'task'
-  attributes:
-    id: 1
-    title: "Message Time"
-    type: "MessageTask"
-    completed: false
-    body: null
-    paper_title: "Foo"
-    role: "author"
-    phase_id: null
-    paper_id: null
-    lite_paper_id: null
-    assignee_ids: []
-    assignee_id: null
-    participant_ids: []
-    comment_ids: []
+  _rootKey: 'task'
+  id: 1
+  title: "Message Time"
+  type: "MessageTask"
+  completed: false
+  body: null
+  paper_title: "Foo"
+  role: "author"
+  phase_id: null
+  paper_id: null
+  lite_paper_id: null
+  assignee_ids: []
+  assignee_id: null
+  participant_ids: []
+  comment_ids: []
 
 ETahi.FactoryAttributes.comment =
-  rootKey: 'comment'
-  attributes:
-    id: 1
-    commenter_id: 1
-    message_task_id: 1
-    body: "A sample comment"
-    created_at: null
-    comment_look_id: null
+  _rootKey: 'comment'
+  id: 1
+  commenter_id: 1
+  message_task_id: 1
+  body: "A sample comment"
+  created_at: null
+  comment_look_id: null
 
 ETahi.FactoryAttributes.phase =
-  rootKey: 'phase'
-  attributes:
-    id: 1
-    name: "Submission Data"
-    position: 1
-    paper_id: 1
-    tasks: []
+  _rootKey: 'phase'
+  id: 1
+  name: "Submission Data"
+  position: 1
+  paper_id: 1
+  tasks: []

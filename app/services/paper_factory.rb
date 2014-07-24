@@ -59,7 +59,7 @@ class PaperFactory
   private
 
   def add_collaborator(paper, user)
-    PaperRole.create!(paper: paper, user: user, role: 'collaborator')
+    paper.paper_roles.build(user: user, role: PaperRole::COLLABORATOR)
   end
 
   def to_author(author)

@@ -3,11 +3,32 @@ ETahi.Factory =
   create: (type, attrs) ->
     Ember.merge(ETahi.FactoryAttributes[type], attrs)
 
-  createLitePaper: (paper, attrs) ->
+  # embeds the tasks' id and type in the paper's tasks array
+  # sets paper_id on each task
+  associatePaperWithTasks: (paper, tasks) ->
+    embeddedTasks = _.map(tasks, (t) -> {id: t.id, type: t.type})
+    paper.tasks = embeddedTasks
+    _.forEach(tasks, (task) ->
+      task.paper_id = paper.id
+      task.lite_paper_id = paper.id)
+
+  # sets the phase_ids on paper, sets the paper_id on each phase
+  associatePaperWithPhases: (paper, phases) ->
+    paper.phase_ids = _.pluck(phases, 'id')
+    _.forEach(phases, (phase) -> phase.paper_id = paper.id)
+
+  # embeds the tasks' id and type in the phase's tasks array
+  # sets phase_id on each task
+  associatePhaseWithTasks: (phase, tasks) ->
+    embeddedTasks = _.map(tasks, (t) -> {id: t.id, type: t.type})
+    phase.tasks = embeddedTasks
+    _.forEach(tasks, (task) -> task.phase_id = phase.id)
+
+  createLitePaper: (paper) ->
     {short_title, title, id, submitted} = paper
     paper_id = id
-    litePaperAttrs = {short_title, title, id, submitted, paper_id}
-    Ember.merge(litePaperAttrs, attrs)
+    paperAttrs = {short_title, title, id, submitted, paper_id}
+    ETahi.Factory.create('litePaper', paperAttrs)
 
   addRecordToManifest: (manifest, typeName, obj, isPrimary) ->
     # the allRecords array allows easy modification of a given

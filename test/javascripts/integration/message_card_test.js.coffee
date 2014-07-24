@@ -7,36 +7,27 @@ module 'Integration: MessageCards',
     paperId = 1
     phaseId = 1
     messageTaskId = 1
-    paperPayload = ETahi.Factory.createPayload('paper')
+    ef = ETahi.Factory
+    paperPayload = ef.createPayload('paper')
 
     journal = paperPayload.createRecord('journal', id: journalId)
     paper = paperPayload.createRecord('paper',
         id: paperId
-        phase_ids: [phaseId]
         assignee_ids: [fakeUser.id]
-        tasks: [
-          id: messageTaskId
-          type: "messageTask"
-        ]
         journal_id: journalId
     )
 
     messageTask = paperPayload.createRecord 'messageTask',
       id: messageTaskId
       title: "Message Time"
-      phase_id: phaseId
-      paper_id: paperId
-      lite_paper_id: paperId
       assignee_id: fakeUser.id
       participant_ids: [fakeUser.id]
 
-    phase = paperPayload.createRecord 'phase',
-      id: phaseId
-      paper_id: paperId
-      tasks: [
-        id: messageTaskId
-        type: "MessageTask"
-      ]
+    phase = paperPayload.createRecord('phase', id: phaseId)
+
+    ef.associatePaperWithPhases(paper, [phase])
+    ef.associatePaperWithTasks(paper, [messageTask])
+    ef.associatePhaseWithTasks(phase, [messageTask])
 
     dashboard =
       users: [fakeUser]

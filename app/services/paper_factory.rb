@@ -23,12 +23,12 @@ class PaperFactory
   end
 
   def create
-    paper.build_default_author_groups
-    paper.author_groups.first.authors << Author.new(to_author(author))
-    add_collaborator(paper, author)
-    if paper.valid?
-      paper.transaction do
+    Paper.transaction do
+      paper.build_default_author_groups
+      paper.author_groups.first.authors << Author.new(to_author(author))
+      if paper.valid?
         if template
+          add_collaborator(paper, author)
           paper.save
           apply_template
         else
@@ -42,14 +42,13 @@ class PaperFactory
     task = nil
     begin
       task = task_klass.constantize.new(phase: phase)
+      if task.role == 'author'
+        task.assignee = author
+      end
+      task.save!
     rescue NameError => e
       Rails.logger.error "Task #{task_klass} does not exist. ManuscriptManagerTemplate will need to be updated"
     end
-
-    if task.role == 'author'
-      task.assignee = author
-    end
-    task.save!
   end
 
   def template
@@ -59,7 +58,7 @@ class PaperFactory
   private
 
   def add_collaborator(paper, user)
-    PaperRole.create!(paper: paper, user: user, role: 'collaborator')
+    paper.paper_roles.build(user: user, role: PaperRole::COLLABORATOR)
   end
 
   def to_author(author)

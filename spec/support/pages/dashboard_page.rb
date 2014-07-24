@@ -55,4 +55,20 @@ class DashboardPage < Page
     admin_link.click
     AdminDashboardPage.new
   end
+
+  def paper_count
+    all('.dashboard-submitted-papers .dashboard-paper-title').count
+  end
+
+  def total_paper_count
+    find('.welcome-message').text.match(/\d+/).to_s.to_i
+  end
+
+  def load_more_papers
+    load_more_papers_button.click
+  end
+
+  def load_more_papers_button
+    find '.load-more-papers'
+  end
 end

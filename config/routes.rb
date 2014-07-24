@@ -103,6 +103,8 @@ Tahi::Application.routes.draw do
 
   resources :phases, only: [:create, :update, :show, :destroy]
 
+  resources :lite_papers, only: :index
+
   resources :roles, only: [:create, :update, :destroy]
   resources :user_roles, only: [:index, :create, :destroy]
 

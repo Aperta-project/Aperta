@@ -101,6 +101,68 @@ describe Paper do
         expect(Paper.unpublished).to_not include published_paper
       end
     end
+
+    describe ".get_all_by_page" do
+      context "testing page numbers" do
+        before do
+          20.times { FactoryGirl.create :paper }
+        end
+
+        context "when the page number is 1" do
+          it "returns 15 papers by page number" do
+            expect(Paper.get_all_by_page(1).count).to eq(15)
+          end
+        end
+
+        context "when the page number is 2" do
+          it "returns the last 5 papers" do
+            expect(Paper.get_all_by_page(2).count).to eq(5)
+          end
+        end
+      end
+
+      describe "sorting" do
+        before do
+          3.times do
+            create :paper
+          end
+
+          dates = [500.days.ago, 1000.days.ago, 750.days.ago]
+          Paper.all.each_with_index do |paper, i|
+            paper.created_at = dates[i]
+            paper.save!
+          end
+        end
+
+        it "sorts the papers in reverse chronological order" do
+          papers = Paper.get_all_by_page(1).all
+
+          expect(papers.first.created_at).to be < papers.second.created_at
+          expect(papers.first.created_at).to be < papers.last.created_at
+          expect(papers.second.created_at).to be < papers.last.created_at
+          expect(papers.second.created_at).to be > papers.first.created_at
+        end
+      end
+
+      context "if a positive page number is given" do
+        it "raises an error" do
+          expect { Paper.get_all_by_page(10) }.not_to raise_error
+        end
+      end
+
+      context "if nil is passed in" do
+        it "assumes page number 1" do
+          expect { Paper.get_all_by_page(nil) }.not_to raise_error
+        end
+      end
+
+      context "if a negative page number or zero is given" do
+        it "raises an error" do
+          expect { Paper.get_all_by_page(-145) }.to raise_error(NegativeIntegerSuppliedError)
+          expect { Paper.get_all_by_page(0) }.to raise_error(NegativeIntegerSuppliedError)
+        end
+      end
+    end
   end
 
   describe "#editor" do

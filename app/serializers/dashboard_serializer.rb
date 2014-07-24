@@ -32,7 +32,10 @@ class DashboardSerializer < ActiveModel::Serializer
     # in this case N+1 queries are unavoidable without doing some grunt work ourselves..
     roles.group_by(&:paper_id).each do |paper_id, paper_roles|
       paper = papers.detect { |p| p.id == paper_id }
-      paper.role_descriptions = paper_roles.map(&:description)
+      #TODO: this is a temporary hack - fix with pivotal #75632076
+      if paper.present?
+        paper.role_descriptions = paper_roles.map(&:description)
+      end
     end
 
     papers.each do |p|

@@ -37,12 +37,6 @@
     <div class="field">
       {{textarea placeholder="Enter a caption for this attachment" value=attachment.caption rows="5"}}
     </div>
-    <div class="field">
-      <label>
-        {{check-box checked=attachment.isStrikingImage action="toggleStrikingImageFromCheckbox" attachment=attachment}}
-        &nbsp; This is the striking image
-      </label>
-    </div>
 
     <div class="attachment-thumbnail-edit-actions">
       <a href="#" class="button-link button--green" {{action "cancelEditing"}}>cancel</a>
@@ -67,13 +61,6 @@
         There is no caption for this file.
       {{/if}}
     </div>
-
-    {{#if attachment.isStrikingImage}}
-      <br>
-      <span class="glyphicon glyphicon-ok"></span>
-      &nbsp;
-      This is the striking image
-    {{/if}}
   </div>
 
   <div class="attachment-thumbnail-destroy-overlay">

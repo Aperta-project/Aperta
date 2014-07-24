@@ -70,6 +70,7 @@ class PapersController < ApplicationController
       :body, :paper_type, :submitted,
       :journal_id,
       :locked_by_id,
+      :striking_image_id,
       authors: [:first_name, :middle_initial, :last_name, :title, :affiliation, :secondary_affiliation, :department, :email, :deceased, :corresponding_author],
       declaration_ids: [],
       reviewer_ids: [],

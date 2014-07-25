@@ -5,5 +5,5 @@
   <p>{{journal.description}}</p>
 {{/link-to}}
 {{#if currentUser.admin}}
-  <div {{bind-attr class=":glyphicon :glyphicon-pencil :edit-icon view.isHovering::hidden"}} {{action editJournalDetails}}></div>
+  <div {{bind-attr class=":glyphicon :glyphicon-pencil :edit-icon view.isHovering::hidden"}} {{action "editJournalDetails"}}></div>
 {{/if}}

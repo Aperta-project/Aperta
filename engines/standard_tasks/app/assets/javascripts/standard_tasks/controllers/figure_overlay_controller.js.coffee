@@ -27,4 +27,4 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend
 
     changeStrikingImage: (newValue) ->
       @get('content.paper').then (paper)->
-        paper.set('strikingImage', newValue).save()
+        paper.set('strikingImageId', newValue).save()

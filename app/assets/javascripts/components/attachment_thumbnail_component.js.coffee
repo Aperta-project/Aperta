@@ -78,7 +78,3 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend
     togglePreview: ->
       @toggleProperty 'previewState'
       @scrollToView() if @get 'previewState'
-
-    toggleStrikingImageFromCheckbox: (checkbox)->
-      newValue = if checkbox.get('checked') then checkbox.get('attachment') else null
-      @sendAction('action', newValue)

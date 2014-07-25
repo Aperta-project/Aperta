@@ -19,6 +19,7 @@ ETahi.Figure = DS.Model.extend
     paperFigures.addObject(this)
   ).on('didLoad')
 
-  isStrikingImage: ( ->
-    @get('paper.strikingImage') == @
-  ).property('paper.strikingImage')
+  isStrikingImage: false
+  strikingImageDidChange: (->
+    @set 'isStrikingImage', @get('paper.strikingImageId') == @get('id')
+  ).observes('paper.strikingImageId').on('didLoad')

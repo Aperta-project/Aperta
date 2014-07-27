@@ -9,13 +9,13 @@ ETahi.Factory =
     typeIds[type] += 1
     typeIds[type]
 
-  createPhase: (paper, attrs)  ->
+  createPhase: (paper, attrs={})  ->
     newPhase = @createRecord('phase', attrs)
     @addHasMany(paper, [newPhase], {inverse: 'paper'})
     newPhase
 
-  createTask: (paper, phase, attrs) ->
-    newTask = @createRecord('task', _.merge(attrs, {lite_paper_id: paper.id}))
+  createTask: (type, paper, phase, attrs={}) ->
+    newTask = @createRecord(type, _.extend(attrs, {lite_paper_id: paper.id}))
     @addHasMany(paper, [newTask], {inverse: 'paper', embed: true})
     @addHasMany(phase, [newTask], {inverse: 'phase', embed: true})
     newTask
@@ -23,11 +23,11 @@ ETahi.Factory =
   createRecord: (type, attrs={}) ->
     if !attrs.id #make a new id if it wasn't passed in.
       newId = @getNewId(type)
-      recordAttrs = _.defaults(attrs, {id: newId})
+      recordAttrs = _.extend(attrs, {id: newId})
     else
       recordAttrs = attrs
 
-    Ember.merge(ETahi.FactoryAttributes[type], recordAttrs)
+    _.extend(ETahi.FactoryAttributes[type], recordAttrs)
 
   setForeignKey: (model, sourceModel, options={}) ->
     keyName = options.keyName || sourceModel._rootKey
@@ -47,7 +47,7 @@ ETahi.Factory =
     keyName = options.keyName || _.first(models)._rootKey
     key = keyName + "_ids"
 
-    if option.embed
+    if options.embed
       modelIds = _.map(models, (t) -> {id: t.id, type: t.type})
     else
       modelIds = _.pluck(models, "id")
@@ -136,6 +136,10 @@ ETahi.Factory =
        newRecord = ETahi.Factory.createRecord(type, attrs)
        @addRecord(newRecord)
        newRecord
+
+     addRecords: (records, options={}) ->
+       _.forEach(records, (r) => @addRecord(r, options))
+       @
 
      addRecord: (record, options={}) ->
        rootKey = options.rootKey || record._rootKey

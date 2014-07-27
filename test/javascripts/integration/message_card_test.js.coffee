@@ -22,23 +22,17 @@ module 'Integration: MessageCards',
 test 'Showing a message card will work', ->
   expect(1)
   ef = ETahi.Factory
-  recordDefs =
-    paper:
-      assignee_ids: [fakeUser.id]
-      phases: [
-        tasks: [
-          messageTask:
-            id: 1
-            title: "Message Time"
-            participant_ids: [fakeUser.id]
-        ]
-      ]
-  records = ef.createBasicPaper(recordDefs)
+  journal = ef.createRecord('journal', id: 1)
+  paper = ef.createRecord('paper', journal_id: journal.id)
+  litePaper = ef.createLitePaper(paper)
+  phase = ef.createPhase(paper)
+  messageTask = ef.createTask('messageTask', paper, phase,
+    title: "Message Time"
+    participant_ids: [fakeUser.id]
+  )
   paperPayload = ef.createPayload('paper')
-  _.forEach(records, (record) -> paperPayload.addRecord(record))
-  paperPayload.addRecord(fakeUser)
+  paperPayload.addRecords([journal, paper, litePaper, phase, messageTask, fakeUser])
 
-  {paper} = paperPayload.toJSON()
   server.respondWith 'GET', "/papers/#{paper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
   ]

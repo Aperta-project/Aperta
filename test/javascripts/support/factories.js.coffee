@@ -1,34 +1,100 @@
 ETahi.Factory =
 
-  create: (type, attrs) ->
-    Ember.merge(ETahi.FactoryAttributes[type], attrs)
+  typeIds: {}
 
-  # embeds the tasks' id and type in the paper's tasks array
-  # sets paper_id on each task
-  associatePaperWithTasks: (paper, tasks) ->
-    embeddedTasks = _.map(tasks, (t) -> {id: t.id, type: t.type})
-    paper.tasks = embeddedTasks
-    _.forEach(tasks, (task) ->
-      task.paper_id = paper.id
-      task.lite_paper_id = paper.id)
+  getNewId: (type) ->
+    typeIds = @typeIds
+    if !typeIds[type]
+      typeIds[type] = 0
+    typeIds[type] += 1
+    typeIds[type]
 
-  # sets the phase_ids on paper, sets the paper_id on each phase
-  associatePaperWithPhases: (paper, phases) ->
-    paper.phase_ids = _.pluck(phases, 'id')
-    _.forEach(phases, (phase) -> phase.paper_id = paper.id)
+  createPhase: (paper, attrs)  ->
+    newPhase = @createRecord('phase', attrs)
+    @addHasMany(paper, [newPhase], {inverse: 'paper'})
+    newPhase
 
-  # embeds the tasks' id and type in the phase's tasks array
-  # sets phase_id on each task
-  associatePhaseWithTasks: (phase, tasks) ->
-    embeddedTasks = _.map(tasks, (t) -> {id: t.id, type: t.type})
-    phase.tasks = embeddedTasks
-    _.forEach(tasks, (task) -> task.phase_id = phase.id)
+  createTask: (paper, phase, attrs) ->
+    newTask = @createRecord('task', _.merge(attrs, {lite_paper_id: paper.id}))
+    @addHasMany(paper, [newTask], {inverse: 'paper', embed: true})
+    @addHasMany(phase, [newTask], {inverse: 'phase', embed: true})
+    newTask
 
-  createLitePaper: (paper) ->
-    {short_title, title, id, submitted} = paper
-    paper_id = id
-    paperAttrs = {short_title, title, id, submitted, paper_id}
-    ETahi.Factory.create('litePaper', paperAttrs)
+  createRecord: (type, attrs={}) ->
+    if !attrs.id #make a new id if it wasn't passed in.
+      newId = @getNewId(type)
+      recordAttrs = _.defaults(attrs, {id: newId})
+    else
+      recordAttrs = attrs
+
+    Ember.merge(ETahi.FactoryAttributes[type], recordAttrs)
+
+  setForeignKey: (model, sourceModel, options={}) ->
+    keyName = options.keyName || sourceModel._rootKey
+    model[keyName + "_id"] = sourceModel.id
+    if inverseKeyName = options.inverse
+      @setForeignKey(sourceModel, model, {keyName: inverseKeyName})
+
+  addHasMany: (model, models, options) ->
+    @setHasMany(model, models, _.extend(options, {merge: true}))
+
+  mergeArrays: (model, key, values) ->
+    model[key] ||= []
+    currentValues = model[key]
+    model[key] = _.union(currentValues, values)
+
+  setHasMany: (model, models, options={}) ->
+    keyName = options.keyName || _.first(models)._rootKey
+    key = keyName + "_ids"
+
+    if option.embed
+      modelIds = _.map(models, (t) -> {id: t.id, type: t.type})
+    else
+      modelIds = _.pluck(models, "id")
+
+    if options.merge
+      @mergeArrays(model, key, modelIds)
+    else
+      model[key] = modelIds
+
+    if inverseKeyName = options.inverse
+      _.forEach models, (m) =>
+        @setForeignKey(m, model, {keyName: inverseKeyName})
+
+  addEmbeddedHasMany: (model, models, options) ->
+    @setEmbeddedHasMany(model, models, _.extend(options, {merge: true}))
+
+  setEmbeddedHasMany: (model, models, options={}) ->
+    @setHasMany(model, models, _.extend(options, {embed: true}))
+
+  createBasicPaper: (defs) ->
+    ef = ETahi.Factory
+    # create the records
+    journal = ef.createRecord('journal', defs.journal || {})
+    paper = ef.createRecord('paper', _.omit(defs.paper, 'phases') || {})
+    litePaper = ETahi.Factory.createLitePaper(paper)
+    ef.setForeignKey(paper, journal)
+
+    phasesAndTasks = _.map(defs.paper.phases, (phase) ->
+      phaseRecord = ef.createRecord('phase', _.omit(phase, 'tasks'))
+      taskRecords = _.map(phase.tasks, (task) ->
+        taskType = _.keys(task)[0]
+        taskAttrs = task[taskType]
+        ef.createRecord(taskType, taskAttrs))
+
+      #associate phases and tasks
+      ef.setEmbeddedHasMany(phaseRecord, taskRecords, {inverse: 'phase'})
+      [phaseRecord, taskRecords]
+    )
+    allTasks = _.reduce(phasesAndTasks, ((memo, [phase, tasks]) -> memo.concat(tasks)), [])
+    phases = _.map(phasesAndTasks, _.first)
+
+    # associate paper to phases and paper to tasks
+    ef.setHasMany(paper, phases, {inverse: 'paper'})
+    ef.setEmbeddedHasMany(paper, allTasks, {inverse: 'paper'})
+    _.forEach(allTasks, (task) -> task.lite_paper_id = paper.id)
+
+    [].concat(paper, litePaper, journal, phases, allTasks)
 
   addRecordToManifest: (manifest, typeName, obj, isPrimary) ->
     # the allRecords array allows easy modification of a given
@@ -66,8 +132,8 @@ ETahi.Factory =
      _manifestToPayload = @manifestToPayload
      manifest: {types: {}}
 
-     createRecord: (factoryType, attrs) ->
-       newRecord = Ember.merge(ETahi.FactoryAttributes[factoryType], attrs)
+     createRecord: (type, attrs) ->
+       newRecord = ETahi.Factory.createRecord(type, attrs)
        @addRecord(newRecord)
        newRecord
 
@@ -76,14 +142,20 @@ ETahi.Factory =
        isPrimary = (rootKey == primaryTypeName)
        @manifest = _addRecordToManifest(@manifest, rootKey, record, isPrimary)
        @
+
      toJSON: ->
        _manifestToPayload(@manifest)
 
+  createLitePaper: (paper) ->
+    {short_title, title, id, submitted} = paper
+    paper_id = id
+    paperAttrs = {short_title, title, id, submitted, paper_id}
+    ETahi.Factory.createRecord('litePaper', paperAttrs)
 
 ETahi.FactoryAttributes = {}
 ETahi.FactoryAttributes.user =
   _rootKey: 'user'
-  id: 1
+  id: null
   full_name: "Fake User"
   avatar_url: "/images/profile-no-image.png"
   username: "fakeuser"
@@ -92,7 +164,7 @@ ETahi.FactoryAttributes.user =
   affiliation_ids: []
 ETahi.FactoryAttributes.journal =
   _rootKey: 'journal'
-  id: 1
+  id: null
   name: "Fake Journal"
   logo_url: "/images/no-journal-image.gif"
   paper_types: ["Research"]
@@ -131,19 +203,19 @@ ETahi.FactoryAttributes.paper =
   editor_ids: []
   reviewer_ids: []
   tasks: []
-  journal_id: 1
+  journal_id: null
 
 ETahi.FactoryAttributes.litePaper =
   _rootKey: 'lite_paper'
-  id: 1
+  id: null
   title: "Foo"
-  paper_id: 1
+  paper_id: null
   short_title: "Paper"
   submitted: false
 
 ETahi.FactoryAttributes.messageTask =
   _rootKey: 'task'
-  id: 1
+  id: null
   title: "Message Time"
   type: "MessageTask"
   completed: false
@@ -160,17 +232,17 @@ ETahi.FactoryAttributes.messageTask =
 
 ETahi.FactoryAttributes.comment =
   _rootKey: 'comment'
-  id: 1
-  commenter_id: 1
-  message_task_id: 1
+  id: null
+  commenter_id: null
+  message_task_id: null
   body: "A sample comment"
   created_at: null
   comment_look_id: null
 
 ETahi.FactoryAttributes.phase =
   _rootKey: 'phase'
-  id: 1
+  id: null
   name: "Submission Data"
-  position: 1
-  paper_id: 1
+  position: null
+  paper_id: null
   tasks: []

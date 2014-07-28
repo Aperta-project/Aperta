@@ -34,7 +34,7 @@ class EditPaperPage < Page
   end
 
   def collaborators_link
-    find('.button-link', text: 'Add Collaborators')
+    find('a.add-collaborators')
   end
 
   def visit_task_manager

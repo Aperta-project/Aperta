@@ -38,6 +38,19 @@ ve.Range = function VeRange( from, to ) {
 /* Static Methods */
 
 /**
+ * Create a new range from a JSON serialization of a range
+ *
+ * @see ve.Range#toJSON
+ *
+ * @param {string} json JSON serialization
+ * @return {ve.Range} New range
+ */
+ve.Range.newFromJSON = function ( json ) {
+	var args = JSON.parse( json );
+	return new ve.Range( args[0], args[1] );
+};
+
+/**
  * Create a new range that's a translated version of another.
  *
  * @static
@@ -122,21 +135,21 @@ ve.Range.prototype.flip = function () {
 /**
  * Check if two ranges are equal, taking direction into account.
  *
- * @param {ve.Range} other
+ * @param {ve.Range|null} other
  * @returns {boolean}
  */
 ve.Range.prototype.equals = function ( other ) {
-	return this.from === other.from && this.to === other.to;
+	return other && this.from === other.from && this.to === other.to;
 };
 
 /**
  * Check if two ranges are equal, ignoring direction.
  *
- * @param {ve.Range} other
+ * @param {ve.Range|null} other
  * @returns {boolean}
  */
 ve.Range.prototype.equalsSelection = function ( other ) {
-	return this.end === other.end && this.start === other.start;
+	return other && this.end === other.end && this.start === other.start;
 };
 
 /**
@@ -175,4 +188,15 @@ ve.Range.prototype.isCollapsed = function () {
  */
 ve.Range.prototype.isBackwards = function () {
 	return this.from > this.to;
+};
+
+/**
+ * Serialize range to JSON
+ *
+ * @see ve.Range#newFromJSON
+ *
+ * @return {string} Serialized range
+ */
+ve.Range.prototype.toJSON = function () {
+	return JSON.stringify( [this.from, this.to] );
 };

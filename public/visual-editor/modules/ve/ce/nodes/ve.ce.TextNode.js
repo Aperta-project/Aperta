@@ -43,7 +43,7 @@ ve.ce.TextNode.whitespaceHtmlCharacters = {
  * @returns {Array} Array of rendered HTML fragments with annotations
  */
 ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
-	var i, chr, character, nextCharacter,
+	var i, chr,
 		data = this.model.getDocument().getDataFromNode( this.model ),
 		whitespaceHtmlChars = ve.ce.TextNode.whitespaceHtmlCharacters,
 		significantWhitespace = this.getModel().getParent().hasSignificantWhitespace();
@@ -58,38 +58,45 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 		}
 	}
 
+	function getChar( index, data ) {
+		if ( ve.isArray( data[index] ) ) {
+			return data[index][0];
+		} else {
+			return data[index];
+		}
+	}
+
 	if ( !significantWhitespace ) {
 		// Replace spaces with &nbsp; where needed
+		// \u00a0 == &#160; == &nbsp;
 		if ( data.length > 0 ) {
 			// Leading space
-			character = data[0];
-			if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
-				// \u00a0 == &#160; == &nbsp;
+			if ( getChar( 0, data ) === ' ' ) {
 				setChar( '\u00a0', 0, data );
 			}
 		}
 		if ( data.length > 1 ) {
 			// Trailing space
-			character = data[data.length - 1];
-			if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
+			if ( getChar( data.length - 1, data ) === ' ' ) {
 				setChar( '\u00a0', data.length - 1, data );
 			}
 		}
-	}
 
-	for ( i = 0; i < data.length; i++ ) {
-		chr = typeof data[i] === 'string' ? data[i] : data[i][0];
+		for ( i = 0; i < data.length; i++ ) {
+			chr = getChar( i, data );
 
-		if ( chr === ' ' && !significantWhitespace && data.length > 2 && i !== 0 && i !== data.length - 1 ) {
 			// Replace any sequence of 2+ spaces with an alternating pattern
-			// (space-nbsp-space-nbsp-...)
-			nextCharacter = typeof data[i + 1] === 'string' ? data[i + 1] : data[i + 1][0];
-			if ( nextCharacter === ' ' ) {
+			// (space-nbsp-space-nbsp-...).
+			// The leading and trailing space, if present, have already been converted
+			// to nbsp, so we know that i is between 1 and data.length - 2.
+			if ( chr === ' ' && getChar( i + 1, data ) === ' ' ) {
 				setChar( '\u00a0', i + 1, data );
 			}
-		}
-		if ( !significantWhitespace && chr in whitespaceHtmlChars ) {
-			setChar( whitespaceHtmlChars[chr], i, data );
+
+			// Show meaningful whitespace characters
+			if ( chr in whitespaceHtmlChars ) {
+				setChar( whitespaceHtmlChars[chr], i, data );
+			}
 		}
 	}
 	return data;

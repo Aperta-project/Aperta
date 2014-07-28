@@ -9,17 +9,17 @@
  * UserInterface history tool.
  *
  * @class
- * @extends OO.ui.Tool
+ * @extends ve.ui.Tool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.HistoryTool = function VeUiHistoryTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.call( this, toolGroup, config );
 
 	// Events
-	this.toolbar.getSurface().getModel().connect( this, { 'history': 'onUpdateState' } );
+	this.toolbar.getSurface().getModel().connect( this, { history: 'onUpdateState' } );
 
 	// Initialization
 	this.setDisabled( true );
@@ -27,19 +27,9 @@ ve.ui.HistoryTool = function VeUiHistoryTool( toolGroup, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.HistoryTool, OO.ui.Tool );
+OO.inheritClass( ve.ui.HistoryTool, ve.ui.Tool );
 
 /* Static Properties */
-
-/**
- * History action method to use.
- *
- * @abstract
- * @static
- * @property {string}
- * @inheritable
- */
-ve.ui.HistoryTool.static.method = '';
 
 /**
  * Surface model method to check state with.
@@ -54,24 +44,12 @@ ve.ui.HistoryTool.static.check = '';
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
- */
-ve.ui.HistoryTool.prototype.onSelect = function () {
-	this.toolbar.getSurface().execute( 'history', this.constructor.static.method );
-	this.setActive( false );
-};
-
-/**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @inheritdoc
  */
 ve.ui.HistoryTool.prototype.onUpdateState = function () {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+
 	this.setDisabled( !this.toolbar.getSurface().getModel()[this.constructor.static.check]() );
 };
 
@@ -80,7 +58,7 @@ ve.ui.HistoryTool.prototype.onUpdateState = function () {
  */
 ve.ui.HistoryTool.prototype.destroy = function () {
 	this.toolbar.getSurface().getModel().disconnect( this );
-	OO.ui.Tool.prototype.destroy.call( this );
+	ve.ui.HistoryTool.super.prototype.destroy.call( this );
 };
 
 /**
@@ -101,8 +79,8 @@ ve.ui.UndoHistoryTool.static.group = 'history';
 ve.ui.UndoHistoryTool.static.icon = 'undo';
 ve.ui.UndoHistoryTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-historybutton-undo-tooltip' );
-ve.ui.UndoHistoryTool.static.method = 'undo';
-ve.ui.UndoHistoryTool.static.check = 'hasPastState';
+ve.ui.UndoHistoryTool.static.check = 'canUndo';
+ve.ui.UndoHistoryTool.static.commandName = 'undo';
 ve.ui.toolFactory.register( ve.ui.UndoHistoryTool );
 
 /**
@@ -123,6 +101,6 @@ ve.ui.RedoHistoryTool.static.group = 'history';
 ve.ui.RedoHistoryTool.static.icon = 'redo';
 ve.ui.RedoHistoryTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-historybutton-redo-tooltip' );
-ve.ui.RedoHistoryTool.static.method = 'redo';
-ve.ui.RedoHistoryTool.static.check = 'hasFutureState';
+ve.ui.RedoHistoryTool.static.check = 'canRedo';
+ve.ui.RedoHistoryTool.static.commandName = 'redo';
 ve.ui.toolFactory.register( ve.ui.RedoHistoryTool );

@@ -24,6 +24,21 @@ OO.inheritClass( ve.ce.NodeFactory, OO.Factory );
 /* Methods */
 
 /**
+ * Get a plain text description of a node model.
+ *
+ * @param {ve.dm.Node} node Node to describe
+ * @returns {string} Description of the node
+ * @throws {Error} Unknown node type
+ */
+ve.ce.NodeFactory.prototype.getDescription = function ( node ) {
+	var type = node.constructor.static.name;
+	if ( type in this.registry ) {
+		return this.registry[type].static.getDescription( node );
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
  * Check if a node type splits on Enter
  *
  * @param {string} type Node type
@@ -48,6 +63,21 @@ ve.ce.NodeFactory.prototype.splitNodeOnEnter = function ( type ) {
 ve.ce.NodeFactory.prototype.isNodeFocusable = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].static.isFocusable;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Get primary command for node type.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {string|null} Primary command name
+ * @throws {Error} Unknown node type
+ */
+ve.ce.NodeFactory.prototype.getNodePrimaryCommandName = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].static.primaryCommandName;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };

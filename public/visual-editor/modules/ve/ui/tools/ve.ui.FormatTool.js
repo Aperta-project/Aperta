@@ -10,14 +10,14 @@
  *
  * @abstract
  * @class
- * @extends OO.ui.Tool
+ * @extends ve.ui.Tool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.FormatTool = function VeUiFormatTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.call( this, toolGroup, config );
 
 	// Properties
 	this.convertible = false;
@@ -25,7 +25,9 @@ ve.ui.FormatTool = function VeUiFormatTool( toolGroup, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.FormatTool, OO.ui.Tool );
+OO.inheritClass( ve.ui.FormatTool, ve.ui.Tool );
+
+/* Static Properties */
 
 /**
  * Format the tool applies.
@@ -39,31 +41,19 @@ OO.inheritClass( ve.ui.FormatTool, OO.ui.Tool );
  */
 ve.ui.FormatTool.static.format = null;
 
+ve.ui.FormatTool.static.requiresRange = true;
+
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
-ve.ui.FormatTool.prototype.onSelect = function () {
-	var format = this.constructor.static.format;
+ve.ui.FormatTool.prototype.onUpdateState = function ( fragment ) {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
-	if ( this.convertible ) {
-		this.toolbar.getSurface().execute( 'format', 'convert', format.type, format.attributes );
-	}
-};
-
-/**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes Format of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
- */
-ve.ui.FormatTool.prototype.onUpdateState = function ( nodes ) {
 	var i, len,
+		nodes = fragment.getSelectedLeafNodes(),
 		format = this.constructor.static.format,
 		all = !!nodes.length;
 
@@ -94,7 +84,8 @@ ve.ui.ParagraphFormatTool.static.name = 'paragraph';
 ve.ui.ParagraphFormatTool.static.group = 'format';
 ve.ui.ParagraphFormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-paragraph' );
-ve.ui.ParagraphFormatTool.static.format = { 'type': 'paragraph' };
+ve.ui.ParagraphFormatTool.static.format = { type: 'paragraph' };
+ve.ui.ParagraphFormatTool.static.commandName = 'paragraph';
 ve.ui.toolFactory.register( ve.ui.ParagraphFormatTool );
 
 /**
@@ -114,7 +105,8 @@ ve.ui.Heading1FormatTool.static.name = 'heading1';
 ve.ui.Heading1FormatTool.static.group = 'format';
 ve.ui.Heading1FormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading1' );
-ve.ui.Heading1FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 1 } };
+ve.ui.Heading1FormatTool.static.format = { type: 'heading', attributes: { level: 1 } };
+ve.ui.Heading1FormatTool.static.commandName = 'heading1';
 ve.ui.toolFactory.register( ve.ui.Heading1FormatTool );
 
 /**
@@ -134,7 +126,8 @@ ve.ui.Heading2FormatTool.static.name = 'heading2';
 ve.ui.Heading2FormatTool.static.group = 'format';
 ve.ui.Heading2FormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading2' );
-ve.ui.Heading2FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 2 } };
+ve.ui.Heading2FormatTool.static.format = { type: 'heading', attributes: { level: 2 } };
+ve.ui.Heading2FormatTool.static.commandName = 'heading2';
 ve.ui.toolFactory.register( ve.ui.Heading2FormatTool );
 
 /**
@@ -154,7 +147,8 @@ ve.ui.Heading3FormatTool.static.name = 'heading3';
 ve.ui.Heading3FormatTool.static.group = 'format';
 ve.ui.Heading3FormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading3' );
-ve.ui.Heading3FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 3 } };
+ve.ui.Heading3FormatTool.static.format = { type: 'heading', attributes: { level: 3 } };
+ve.ui.Heading3FormatTool.static.commandName = 'heading3';
 ve.ui.toolFactory.register( ve.ui.Heading3FormatTool );
 
 /**
@@ -174,7 +168,8 @@ ve.ui.Heading4FormatTool.static.name = 'heading4';
 ve.ui.Heading4FormatTool.static.group = 'format';
 ve.ui.Heading4FormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading4' );
-ve.ui.Heading4FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 4 } };
+ve.ui.Heading4FormatTool.static.format = { type: 'heading', attributes: { level: 4 } };
+ve.ui.Heading4FormatTool.static.commandName = 'heading4';
 ve.ui.toolFactory.register( ve.ui.Heading4FormatTool );
 
 /**
@@ -194,7 +189,8 @@ ve.ui.Heading5FormatTool.static.name = 'heading5';
 ve.ui.Heading5FormatTool.static.group = 'format';
 ve.ui.Heading5FormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading5' );
-ve.ui.Heading5FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 5 } };
+ve.ui.Heading5FormatTool.static.format = { type: 'heading', attributes: { level: 5 } };
+ve.ui.Heading5FormatTool.static.commandName = 'heading5';
 ve.ui.toolFactory.register( ve.ui.Heading5FormatTool );
 
 /**
@@ -214,7 +210,8 @@ ve.ui.Heading6FormatTool.static.name = 'heading6';
 ve.ui.Heading6FormatTool.static.group = 'format';
 ve.ui.Heading6FormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading6' );
-ve.ui.Heading6FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 6 } };
+ve.ui.Heading6FormatTool.static.format = { type: 'heading', attributes: { level: 6 } };
+ve.ui.Heading6FormatTool.static.commandName = 'heading6';
 ve.ui.toolFactory.register( ve.ui.Heading6FormatTool );
 
 /**
@@ -234,5 +231,6 @@ ve.ui.PreformattedFormatTool.static.name = 'preformatted';
 ve.ui.PreformattedFormatTool.static.group = 'format';
 ve.ui.PreformattedFormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-preformatted' );
-ve.ui.PreformattedFormatTool.static.format = { 'type': 'preformatted' };
+ve.ui.PreformattedFormatTool.static.format = { type: 'preformatted' };
+ve.ui.PreformattedFormatTool.static.commandName = 'preformatted';
 ve.ui.toolFactory.register( ve.ui.PreformattedFormatTool );

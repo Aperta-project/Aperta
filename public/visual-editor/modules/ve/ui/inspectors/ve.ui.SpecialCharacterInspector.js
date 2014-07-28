@@ -6,80 +6,39 @@
  */
 
 /**
- * Special character inspector.
+ * Inspector for inserting special characters.
  *
  * @class
- * @extends ve.ui.Inspector
+ * @extends ve.ui.InsertionInspector
  *
  * @constructor
- * @param {ve.ui.Surface} surface Surface inspector is for
+ * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( surface, config ) {
-
+ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( manager, config ) {
 	// Parent constructor
-	ve.ui.Inspector.call( this, surface, config );
+	ve.ui.InsertionInspector.call( this, manager, config );
 
 	this.characters = null;
 	this.$buttonDomList = null;
 	this.initialSelection = null;
-	this.addedChar = null;
 	this.categories = null;
 
-	// Fallback character list in case no list is found anywhere
-	this.minimalCharacterList = {
-		'accents': {
-			'à': 'à',
-			'á': 'á',
-			'â': 'â',
-			'ä': 'ä',
-			'ç': 'ç',
-			'è': 'è',
-			'é': 'é',
-			'ê': 'ê',
-			'ë': 'ë',
-			'ì': 'ì',
-			'í': 'í',
-			'î': 'î',
-			'ï': 'ï',
-			'ò': 'ò',
-			'ó': 'ó',
-			'ô': 'ô',
-			'ö': 'ö',
-			'ø': 'ø',
-			'ù': 'ù',
-			'ú': 'ú',
-			'û': 'û',
-			'ü': 'ü'
-		},
-		'symbols': {
-			'−': '−',
-			'—': '—',
-			'°': '°',
-			'″': '″',
-			'′': '′',
-			'←': '←',
-			'→': '→',
-			'·': '·',
-			'§': '§'
-		}
-	};
+	this.$element.addClass( 've-ui-specialCharacterInspector' );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SpecialCharacterInspector, ve.ui.Inspector );
+OO.inheritClass( ve.ui.SpecialCharacterInspector, ve.ui.InsertionInspector );
 
 /* Static properties */
 
 ve.ui.SpecialCharacterInspector.static.name = 'specialcharacter';
 
-ve.ui.SpecialCharacterInspector.static.icon = 'specialcharacter';
-
 ve.ui.SpecialCharacterInspector.static.title =
 	OO.ui.deferMsg( 'visualeditor-specialcharacterinspector-title' );
 
-ve.ui.SpecialCharacterInspector.static.removable = false;
+ve.ui.SpecialCharacterInspector.static.size = 'large';
 
 /* Methods */
 
@@ -90,10 +49,10 @@ ve.ui.SpecialCharacterInspector.static.removable = false;
  */
 ve.ui.SpecialCharacterInspector.prototype.initialize = function () {
 	// Parent method
-	ve.ui.Inspector.prototype.initialize.call( this );
+	ve.ui.SpecialCharacterInspector.super.prototype.initialize.call( this );
 
-	this.$spinner = this.$( '<div>' ).addClass( 've-specialchar-spinner' );
-	this.$form.append( this.$spinner );
+	this.$spinner = this.$( '<div>' ).addClass( 've-ui-specialCharacterInspector-spinner' );
+	this.form.$element.append( this.$spinner );
 };
 
 /**
@@ -102,25 +61,27 @@ ve.ui.SpecialCharacterInspector.prototype.initialize = function () {
  * @method
  * @param {Object} [data] Inspector opening data
  */
-ve.ui.SpecialCharacterInspector.prototype.setup = function ( data ) {
-	var inspector = this;
-	// Parent method
-	ve.ui.Inspector.prototype.setup.call( this, data );
+ve.ui.SpecialCharacterInspector.prototype.getSetupProcess = function ( data ) {
+	return ve.ui.SpecialCharacterInspector.super.prototype.getSetupProcess.call( this, data )
+		.next( function () {
+			// Preserve initial selection so we can collapse cursor position
+			// after we're done adding
+			this.initialSelection = this.getFragment().getRange();
 
-	// Preserve initial selection so we can collapse cursor position
-	// after we're done adding
-	this.initialSelection = this.surface.getModel().getSelection();
-
-	// Don't request the character list again if we already have it
-	if ( !this.characters ) {
-		this.$spinner.show();
-		this.fetchCharList().done( function () {
-			inspector.buildButtonList();
-		} ).always( function () {
-			inspector.$spinner.hide();
-		} );
-		// TODO: show error message on fetchCharList().fail
-	}
+			// Don't request the character list again if we already have it
+			if ( !this.characters ) {
+				this.$spinner.show();
+				this.fetchCharList()
+					.done( ve.bind( function () {
+						this.buildButtonList();
+					}, this ) )
+					// TODO: show error message on fetchCharList().fail
+					.always( ve.bind( function () {
+						// TODO: generalize push/pop pending, like we do in Dialog
+						this.$spinner.hide();
+					}, this ) );
+			}
+		}, this );
 };
 
 /**
@@ -131,7 +92,8 @@ ve.ui.SpecialCharacterInspector.prototype.setup = function ( data ) {
  * @returns {jQuery.Promise}
  */
 ve.ui.SpecialCharacterInspector.prototype.fetchCharList = function () {
-	var charsList, charsObj;
+	var charsList,
+		charsObj = {};
 
 	// Get the character list
 	charsList = ve.msg( 'visualeditor-specialcharinspector-characterlist-insert' );
@@ -140,8 +102,7 @@ ve.ui.SpecialCharacterInspector.prototype.fetchCharList = function () {
 	} catch ( err ) {
 		// There was no character list found, or the character list message is
 		// invalid json string. Force a fallback to the minimal character list
-		charsObj = this.minimalCharacterList;
-		ve.log( 've.ui.SpecialCharacterInspector: Could not parse the Special Character list; using default.');
+		ve.log( 've.ui.SpecialCharacterInspector: Could not parse the Special Character list.');
 		ve.log( err.message );
 	} finally {
 		this.characters = charsObj;
@@ -156,15 +117,15 @@ ve.ui.SpecialCharacterInspector.prototype.fetchCharList = function () {
  */
 ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
 	var category, character, characters, $categoryButtons,
-		$list = this.$( '<div>' ).addClass( 've-specialchar-list' );
+		$list = this.$( '<div>' ).addClass( 've-ui-specialCharacterInspector-list' );
 
 	for ( category in this.characters ) {
 		characters = this.characters[category];
-		$categoryButtons = $( '<div>' ).addClass( 've-specialchar-list-group' );
+		$categoryButtons = $( '<div>' ).addClass( 've-ui-specialCharacterInspector-list-group' );
 		for ( character in characters ) {
 			$categoryButtons.append(
 				$( '<div>' )
-					.addClass( 've-specialchar-list-character' )
+					.addClass( 've-ui-specialCharacterInspector-list-character' )
 					.data( 'character', characters[character] )
 					.text( character )
 			);
@@ -177,38 +138,20 @@ ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
 
 	$list.on( 'click', ve.bind( this.onListClick, this ) );
 
-	this.$form.append( $list );
+	this.form.$element.append( $list );
 };
 
 /**
  * Handle the click event on the list
  */
 ve.ui.SpecialCharacterInspector.prototype.onListClick = function ( e ) {
-	var fragment, character = $( e.target ).data( 'character' );
+	var character = $( e.target ).data( 'character' );
 
 	if ( character !== undefined ) {
-		fragment = this.surface.getModel().getFragment( null, true );
-		fragment.insertContent( character, false );
-		this.addedChar = character;
+		this.getFragment().insertContent( character, false ).collapseRangeToEnd().select();
 	}
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.SpecialCharacterInspector.prototype.teardown = function ( data ) {
-	var selection;
-	// Collapse selection after the inserted content
-	if ( this.addedChar ) {
-		selection = new ve.Range( this.initialSelection.start + this.addedChar.length );
-		this.surface.execute( 'content', 'select', selection );
-	}
-	// Reset
-	this.addedChar = null;
-	// Parent method
-	ve.ui.Inspector.prototype.teardown.call( this, data );
 };
 
 /* Registration */
 
-ve.ui.inspectorFactory.register( ve.ui.SpecialCharacterInspector );
+ve.ui.windowFactory.register( ve.ui.SpecialCharacterInspector );

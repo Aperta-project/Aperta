@@ -24,8 +24,10 @@
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
  * @param {Array} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
+ * @param {string} [lang] Language code
+ * @param {string} [dir='ltr'] Directionality (ltr/rtl)
  */
-ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace ) {
+ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir ) {
 	// Parent constructor
 	ve.Document.call( this, new ve.dm.DocumentNode() );
 
@@ -34,6 +36,9 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 		split = true,
 		doc = parentDocument || this,
 		root = this.documentNode;
+
+	this.lang = lang || 'en';
+	this.dir = dir || 'ltr';
 
 	this.documentNode.setRoot( root );
 	this.documentNode.setDocument( doc );
@@ -136,8 +141,8 @@ ve.dm.Document.static.splitData = function ( fullData ) {
 	}
 
 	return {
-		'elementData': elementData,
-		'metaData': metaData
+		elementData: elementData,
+		metaData: metaData
 	};
 };
 
@@ -236,7 +241,7 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 				// Branch or leaf node opening
 				// Create a childless node
 				node = ve.dm.nodeFactory.create(
-					this.data.getType( i ), [], this.data.getData( i )
+					this.data.getType( i ), this.data.getData( i )
 				);
 				node.setDocument( doc );
 				// Put the childless node on the current inner stack
@@ -432,7 +437,7 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 				while ( !endNode.isWrapped() ) {
 					endNode = endNode.getParent();
 				}
-				balanceClosings.push( { 'type': '/' + endNode.getType() } );
+				balanceClosings.push( { type: '/' + endNode.getType() } );
 				if ( endNode === lastNode ) {
 					break;
 				}
@@ -462,7 +467,7 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 			while ( startNode.getParent() && startNode.getParentNodeTypes() !== null ) {
 				startNode = startNode.getParent();
 				contextOpenings.push( startNode.getClonedElement() );
-				contextClosings.push( { 'type': '/' + startNode.getType() } );
+				contextClosings.push( { type: '/' + startNode.getType() } );
 			}
 		}
 
@@ -508,8 +513,8 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
  */
 ve.dm.Document.prototype.cloneFromRange = function ( range ) {
 	var data, newDoc,
-		store = this.store.clone(),
-		listRange = this.internalList.getListNode().getOuterRange();
+		store = this.getStore().clone(),
+		listRange = this.getInternalList().getListNode().getOuterRange();
 
 	data = ve.copy( this.getFullData( range, true ) );
 	if ( range.start > listRange.start || range.end < listRange.end ) {
@@ -518,7 +523,8 @@ ve.dm.Document.prototype.cloneFromRange = function ( range ) {
 	}
 	newDoc = new this.constructor(
 		new ve.dm.FlatLinearData( store, data ),
-		this.htmlDocument, undefined, this.internalList
+		this.getHtmlDocument(), undefined, this.getInternalList(), undefined,
+		this.getLang(), this.getDir()
 	);
 	// Record the length of the internal list at the time the slice was created so we can
 	// reconcile additions properly
@@ -574,7 +580,7 @@ ve.dm.Document.prototype.getFullData = function ( range, edgeMetadata ) {
 		if ( this.metadata.getData( i ) && ( edgeMetadata || ( i !== range.start && i !== range.end ) ) ) {
 			for ( j = 0, jLen = this.metadata.getData( i ).length; j < jLen; j++ ) {
 				result.push( this.metadata.getData( i )[j] );
-				result.push( { 'type': '/' + this.metadata.getData( i )[j].type } );
+				result.push( { type: '/' + this.metadata.getData( i )[j].type } );
 			}
 		}
 		if ( i < iLen ) {
@@ -590,6 +596,7 @@ ve.dm.Document.prototype.getFullData = function ( range, edgeMetadata ) {
  *
  * @method
  * @param offset
+ * @returns {ve.dm.Node} Node at offset
  */
 ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 	// FIXME duplicated from ve.ce.Document
@@ -700,8 +707,8 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
  * @method
  * @param {Array} data Snippet of linear model data to insert
  * @param {number} offset Offset in the linear model where the caller wants to insert data
- * @returns {Object} A (possibly modified) copy of data, a (possibly modified) offset
- * and a number of elements to remove
+ * @returns {Object} A (possibly modified) copy of data, a (possibly modified) offset,
+ * and a number of elements to remove and the position of the original data in the new data
  */
 ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	var
@@ -722,6 +729,10 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		// not opened in data (i.e. were already in the document) are pushed onto this stack
 		// and popped off when balanced out by an opening in data
 		closingStack = [],
+
+		// Track the position of the orignal data in the fixed up data for range adjustments
+		insertedDataOffset = 0,
+		insertedDataLength = data.length,
 
 		// Pointer to this document for private methods
 		doc = this,
@@ -908,7 +919,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 					}
 
 					// Close the parent and try one level up
-					closings.push( { 'type': '/' + parentType } );
+					closings.push( { type: '/' + parentType } );
 					if ( openingStack.length > 0 ) {
 						popped = openingStack.pop();
 						parentType = popped.type;
@@ -958,9 +969,19 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 			for ( j = 0; j < closings.length; j++ ) {
 				// writeElement() would update openingStack/closingStack, but we've already done
 				// that for closings
+				if ( i === 0 ) {
+					insertedDataOffset++;
+				} else {
+					insertedDataLength++;
+				}
 				newData.push( closings[j] );
 			}
 			for ( j = 0; j < openings.length; j++ ) {
+				if ( i === 0 ) {
+					insertedDataOffset++;
+				} else {
+					insertedDataLength++;
+				}
 				writeElement( openings[j], i );
 			}
 			writeElement( data[i], i );
@@ -1000,7 +1021,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		popped = openingStack[openingStack.length - 1];
 		// writeElement() will perform the actual pop() that removes
 		// popped from openingStack
-		writeElement( { 'type': '/' + popped.type }, i );
+		writeElement( { type: '/' + popped.type }, i );
 	}
 	// Re-open closed nodes
 	while ( closingStack.length > 0 ) {
@@ -1013,7 +1034,9 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	return {
 		offset: offset,
 		data: newData,
-		remove: remove
+		remove: remove,
+		insertedDataOffset: insertedDataOffset,
+		insertedDataLength: insertedDataLength
 	};
 };
 
@@ -1032,4 +1055,20 @@ ve.dm.Document.prototype.getCompleteHistoryLength = function () {
  */
 ve.dm.Document.prototype.getCompleteHistorySince = function ( pointer ) {
 	return this.completeHistory.slice( pointer );
+};
+
+/**
+ * Get the content language
+ * @returns {string} Language code
+ */
+ve.dm.Document.prototype.getLang = function () {
+	return this.lang;
+};
+
+/**
+ * Get the content directionality
+ * @returns {string} Directionality (ltr/rtl)
+ */
+ve.dm.Document.prototype.getDir = function () {
+	return this.dir;
 };

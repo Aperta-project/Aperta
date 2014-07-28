@@ -52,20 +52,12 @@
 
   <div class="attachment-thumbnail-text-content">
     <h2 class="attachment-thumbnail-title">
-      {{#if attachment.title}}
-        {{attachment.title}}
-      {{else}}
-        Attachment title
-      {{/if}}
+      {{display attachment.title or="Attachment title"}}
     </h2>
     <span class="glyphicon glyphicon-pencil attachment-edit-icon" {{action "toggleEditState"}}></span>
 
     <div class="attachment-thumbnail-caption">
-      {{#if attachment.caption}}
-        {{attachment.caption}}
-      {{else}}
-        There is no caption for this file.
-      {{/if}}
+      {{display attachment.caption or="There is no caption for this file."}}
     </div>
 
     {{#if attachment.isStrikingImage}}

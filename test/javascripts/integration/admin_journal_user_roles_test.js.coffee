@@ -39,19 +39,19 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
         logo_url: "https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png?AWSAccessKeyId=AKIAJHFQZ6WND52M2VDQ&Signature=l34/IdieeCkMGABO7KcBNK1n8Q4%3D&Expires=1405467848"
         paper_types: ["Research"]
         task_types: [
-          "ReviewerReportTask"
+          "FinancialDisclosure::Task"
           "PaperAdminTask"
-          "UploadManuscript::Task"
           "PaperEditorTask"
           "PaperReviewerTask"
           "RegisterDecisionTask"
-          "StandardTasks::TechCheckTask"
-          "StandardTasks::FigureTask"
+          "ReviewerReportTask"
           "StandardTasks::AuthorsTask"
+          "StandardTasks::CompetingInterestsTask"
           "StandardTasks::DataAvailabilityTask"
+          "StandardTasks::FigureTask"
+          "StandardTasks::TechCheckTask"
           "SupportingInformation::Task"
-          "FinancialDisclosure::Task"
-          "CompetingInterests::Task"
+          "UploadManuscript::Task"
         ]
         epub_cover_url: null
         epub_cover_file_name: null

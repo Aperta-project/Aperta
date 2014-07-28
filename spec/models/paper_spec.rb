@@ -206,8 +206,7 @@ describe Paper do
 
     context "when the role isn't found" do
       it "returns nothing" do
-        PaperRole.last.update! role: "chuckNorris"
-        expect(paper.role_for(user: user, role: 'editor')).to_not be_present
+        expect(paper.role_for(user: user, role: 'chucknorris')).to_not be_present
       end
     end
   end

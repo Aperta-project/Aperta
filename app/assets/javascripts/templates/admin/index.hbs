@@ -1,7 +1,7 @@
 <div id="tahi-container" class="admin-screen">
   <div class="row admin-dashboard">
     <div class="col-md-6">
-      <a class="add-new-journal button-secondary button--blue pull-right" href="#" {{action addNewJournal}}>Add new journal</a>
+      <a class="add-new-journal button-secondary button--blue pull-right" href="#" {{action "addNewJournal"}}>Add new journal</a>
       <h2>Journals</h2>
       <ul class="journals">
         {{#each journal in arrangedContent}}
@@ -13,7 +13,7 @@
       <h2>Users</h2>
       <div class="admin-user-search">
         {{input action="searchUsers" placeholder="SEARCH ALL USERS" class="admin-user-search-input" value=searchQuery}}
-        <button class="admin-user-search-button" {{action searchUsers}}><span class="glyphicon glyphicon-search"></span></button>
+        <button class="admin-user-search-button" {{action "searchUsers"}}><span class="glyphicon glyphicon-search"></span></button>
       </div>
 
       {{#if adminJournalUsers}}

@@ -5,7 +5,7 @@
       <h2 class="welcome-message">
         Hi, {{currentUser.firstName}}.
         {{#if papers.length}}
-          You have {{totalPaperCount}} {{pluralize model.papers.length 'manuscript' 'manuscripts'}}.
+          You have {{totalPaperCount}} {{pluralize model.papers.length "manuscript" "manuscripts"}}.
         {{else}}
           You have no manuscripts.
         {{/if}}
@@ -26,7 +26,7 @@
           {{/each}}
         </ul>
         {{#if paginate}}
-          <a {{action loadMorePapers}} href='#' class='button-primary button--green button--wide load-more-papers'>
+          <a {{action "loadMorePapers"}} href="#" class="button-primary button--green button--wide load-more-papers">
             Load More
           </a>
         {{/if }}

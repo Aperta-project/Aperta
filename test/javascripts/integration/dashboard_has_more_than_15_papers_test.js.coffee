@@ -39,20 +39,19 @@ module 'Integration: Dashboard - when there are more than 15 papers',
           logo_url: "https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/thumbnail_Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png?AWSAccessKeyId=AKIAJHFQZ6WND52M2VDQ&Signature=5w6R%2BYJolrrcs2Dc/ntqRy6/MyQ%3D&Expires=1405980361"
           paper_types: ["Research"]
           task_types: [
-            "ReviewerReportTask"
+            "FinancialDisclosure::Task"
             "PaperAdminTask"
-            "UploadManuscript::Task"
             "PaperEditorTask"
-            "Declaration::Task"
             "PaperReviewerTask"
             "RegisterDecisionTask"
-            "StandardTasks::TechCheckTask"
-            "StandardTasks::FigureTask"
+            "ReviewerReportTask"
             "StandardTasks::AuthorsTask"
+            "StandardTasks::CompetingInterestsTask"
             "StandardTasks::DataAvailabilityTask"
+            "StandardTasks::FigureTask"
+            "StandardTasks::TechCheckTask"
             "SupportingInformation::Task"
-            "FinancialDisclosure::Task"
-            "CompetingInterests::Task"
+            "UploadManuscript::Task"
           ]
           manuscript_css: null
         ]
@@ -75,20 +74,19 @@ module 'Integration: Dashboard - when there are more than 15 papers',
         logo_url: 'https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/thumbnail_Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png?AWSAccessKeyId=AKIAJHFQZ6WND52M2VDQ&Signature=kSWiz0HiOO0nUTMSpR/0DQp3j%2Bw%3D&Expires=1405980362'
         paper_types: ['Research']
         task_types: [
-          'ReviewerReportTask'
-          'PaperAdminTask'
-          'UploadManuscript::Task'
-          'PaperEditorTask'
-          'Declaration::Task'
-          'PaperReviewerTask'
-          'RegisterDecisionTask'
-          'StandardTasks::TechCheckTask'
-          'StandardTasks::FigureTask'
-          'StandardTasks::AuthorsTask'
-          'StandardTasks::DataAvailabilityTask'
-          'SupportingInformation::Task'
-          'FinancialDisclosure::Task'
-          'CompetingInterests::Task'
+          "FinancialDisclosure::Task"
+          "PaperAdminTask"
+          "PaperEditorTask"
+          "PaperReviewerTask"
+          "RegisterDecisionTask"
+          "ReviewerReportTask"
+          "StandardTasks::AuthorsTask"
+          "StandardTasks::CompetingInterestsTask"
+          "StandardTasks::DataAvailabilityTask"
+          "StandardTasks::FigureTask"
+          "StandardTasks::TechCheckTask"
+          "SupportingInformation::Task"
+          "UploadManuscript::Task"
         ]
         epub_cover_url: null
         epub_cover_file_name: null

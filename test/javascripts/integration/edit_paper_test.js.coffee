@@ -109,9 +109,9 @@ module 'Integration: EditPaper',
           "StandardTasks::FigureTask"
           "StandardTasks::AuthorsTask"
           "StandardTasks::DataAvailabilityTask"
+          "StandardTasks::CompetingInterestsTask"
           "SupportingInformation::Task"
           "FinancialDisclosure::Task"
-          "CompetingInterests::Task"
         ]
         manuscript_css: null
       ]

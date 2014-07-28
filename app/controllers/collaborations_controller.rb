@@ -19,12 +19,10 @@ class CollaborationsController < ApplicationController
   end
 
   def paper
-    @paper ||= begin
-                 if params[:id] # only the collaboration's id is posted to destroy
-                   PaperRole.find(params[:id]).paper
-                 elsif params[:collaboration] # during create all the params are present
-                   Paper.find(collaborator_params[:paper_id])
-                 end
+    @paper ||= if params[:id] # only the collaboration's id is posted to destroy
+                 PaperRole.find(params[:id]).paper
+               elsif params[:collaboration] # during create all the params are present
+                 Paper.find(collaborator_params[:paper_id])
                end
   end
 

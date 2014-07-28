@@ -3,6 +3,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
   errorText: ""
   editMode: false
 
+  canRemoveCard: true
   sortedPhases: Ember.computed.alias 'phases'
 
   showSaveButton: (->

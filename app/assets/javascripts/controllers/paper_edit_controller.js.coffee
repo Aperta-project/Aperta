@@ -1,6 +1,7 @@
 #= require controllers/base_paper_controller
 ETahi.PaperEditController = ETahi.BasePaperController.extend
   visualEditor: null
+  saveState: false
 
   setupVisualEditor: (->
     @set('visualEditor', ETahi.VisualEditorService.create())
@@ -17,8 +18,8 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
   ).property('model.body')
 
   statusMessage: ( ->
-    @get('processingMessage') || @get('userEditingMessage') || @get('saveState')
-  ).property('processingMessage', 'userEditingMessage', 'saveState')
+    @get('processingMessage') || @get('userEditingMessage') || @get('saveStateMessage')
+  ).property('processingMessage', 'userEditingMessage', 'saveStateMessage')
 
   processingMessage: (->
     if @get('status') is "processing"
@@ -50,26 +51,35 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
 
   defaultBody: 'Type your manuscript here'
 
+  saveStateDidChange: (->
+    if @get('saveState')
+      @setProperties
+        saveStateMessage: "Saved"
+        savedAt: new Date()
+    else
+      @setProperties
+        saveStateMessage: null
+        savedAt: null
+  ).observes('saveState')
+
   actions:
     toggleEditing: ->
-      if @get('lockedBy')
+      if @get('lockedBy') #unlocking
         @set('body', @get('visualEditor.bodyHtml'))
-        @set('lockedBy', null) #unlock for others
+        @set('lockedBy', null)
         @send('stopEditing')
-      else
+        @get('model').save().then (paper) =>
+          @set('saveState', true)
+      else #locking
         @set('lockedBy', @getCurrentUser())
-        @send('startEditing')
-      @get('model').save().then (paper) =>
-        @setProperties
-          saveState: null
-          savedAt: null
+        @get('model').save().then (paper) =>
+          @send('startEditing')
+          @set('saveState', false)
 
     savePaper: ->
       return unless @get('model.editable')
       @get('model').save().then (paper) =>
-        @setProperties
-          saveState: "Saved"
-          savedAt: new Date()
+        @set('saveState', true)
 
     updateDocumentBody: (content) ->
       @set('body', content)

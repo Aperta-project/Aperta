@@ -19,7 +19,7 @@ ETahi.TaskRoute = Ember.Route.extend
     taskController.set('model', model)
     @set('taskController', taskController)
 
-    if Em.computed.notEmpty(@controllerFor('application').get('overlayRedirect'))
+    if !Em.isEmpty(@controllerFor('application').get('overlayRedirect'))
       taskController.set('onClose', 'redirect')
 
   renderTemplate: ->
@@ -35,6 +35,8 @@ ETahi.TaskRoute = Ember.Route.extend
 
   actions:
     willTransition: (transition) ->
-      redirectRoute = @controllerFor('application').get('overlayRedirect').popObject()
-      unless transition.targetName == redirectRoute.get('firstObject')
-        @controllerFor('application').set('cachedModel', null)
+      redirectStack = @controllerFor('application').get('overlayRedirect')
+      if !Em.isEmpty(redirectStack)
+        redirectRoute = redirectStack.popObject()
+        unless transition.targetName == redirectRoute.get('firstObject')
+          @controllerFor('application').set('cachedModel', null)

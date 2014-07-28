@@ -10,3 +10,4 @@ doc/*.svg
 .env.*
 config/secrets.yml
 dump.rdb
+spring

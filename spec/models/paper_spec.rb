@@ -102,7 +102,7 @@ describe Paper do
       end
     end
 
-    describe ".get_all_by_page" do
+    describe ".paginate" do
       context "testing page numbers" do
         before do
           20.times { FactoryGirl.create :paper }
@@ -110,13 +110,13 @@ describe Paper do
 
         context "when the page number is 1" do
           it "returns 15 papers by page number" do
-            expect(Paper.get_all_by_page(1).count).to eq(15)
+            expect(Paper.paginate(1).count).to eq(15)
           end
         end
 
         context "when the page number is 2" do
           it "returns the last 5 papers" do
-            expect(Paper.get_all_by_page(2).count).to eq(5)
+            expect(Paper.paginate(2).count).to eq(5)
           end
         end
       end
@@ -135,7 +135,7 @@ describe Paper do
         end
 
         it "sorts the papers in reverse chronological order" do
-          papers = Paper.get_all_by_page(1).all
+          papers = Paper.paginate(1).all
 
           expect(papers.first.created_at).to be < papers.second.created_at
           expect(papers.first.created_at).to be < papers.last.created_at
@@ -146,20 +146,20 @@ describe Paper do
 
       context "if a positive page number is given" do
         it "raises an error" do
-          expect { Paper.get_all_by_page(10) }.not_to raise_error
+          expect { Paper.paginate(10) }.not_to raise_error
         end
       end
 
       context "if nil is passed in" do
         it "assumes page number 1" do
-          expect { Paper.get_all_by_page(nil) }.not_to raise_error
+          expect { Paper.paginate(nil) }.not_to raise_error
         end
       end
 
       context "if a negative page number or zero is given" do
         it "raises an error" do
-          expect { Paper.get_all_by_page(-145) }.to raise_error(NegativeIntegerSuppliedError)
-          expect { Paper.get_all_by_page(0) }.to raise_error(NegativeIntegerSuppliedError)
+          expect { Paper.paginate(-145) }.to raise_error(ArgumentError)
+          expect { Paper.paginate(0) }.to raise_error(ArgumentError)
         end
       end
     end
@@ -206,8 +206,7 @@ describe Paper do
 
     context "when the role isn't found" do
       it "returns nothing" do
-        PaperRole.last.update! role: "chuckNorris"
-        expect(paper.role_for(user: user, role: 'editor')).to_not be_present
+        expect(paper.role_for(user: user, role: 'chucknorris')).to_not be_present
       end
     end
   end

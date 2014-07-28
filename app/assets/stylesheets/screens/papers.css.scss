@@ -93,6 +93,8 @@ $paper-trim-color: $tahi-tertiary;
 }
 
 #tahi-container > main {
+  position: relative;
+
   > article {
     @include make-xs-column(9);
     border-right: 1px solid $paper-trim-color;
@@ -102,7 +104,11 @@ $paper-trim-color: $tahi-tertiary;
   }
 
   > aside {
-    @include make-xs-column(3);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 25%;
   }
 }
 
@@ -202,6 +208,7 @@ $paper-trim-color: $tahi-tertiary;
 
 .collaborators {
   margin-top:10px;
+  padding-left: 15px;
 
   .tahi-tooltip-container {
     display: inline-block;

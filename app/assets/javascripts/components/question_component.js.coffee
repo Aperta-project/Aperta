@@ -26,7 +26,7 @@ ETahi.QuestionComponent = Ember.Component.extend
   additionalData: Em.computed.alias('model.additionalData')
 
   change: ->
-    Ember.run.debounce(this, this._saveModel, @get('model'), 500)
+    Ember.run.debounce(this, this._saveModel, @get('model'), 200)
 
   _saveModel: (model) ->
     model.save()

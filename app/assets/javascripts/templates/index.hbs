@@ -5,7 +5,7 @@
       <h2 class="welcome-message">
         Hi, {{currentUser.firstName}}.
         {{#if papers.length}}
-          You have {{totalPaperCount}} {{pluralize model.papers.length "manuscript" "manuscripts"}}.
+          You have {{totalPaperCount}} {{pluralize totalPaperCount "manuscript" "manuscripts"}}.
         {{else}}
           You have no manuscripts.
         {{/if}}

@@ -24,5 +24,3 @@ ETahi.HeartbeatService = Em.Object.extend
     $.ajax
       url: @get('url')
       type: "PUT"
-      headers:
-        'Tahi-Heartbeat': true

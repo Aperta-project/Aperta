@@ -44,16 +44,15 @@ module 'Integration: Dashboard - when there are less than 15 papers',
             "PaperAdminTask"
             "UploadManuscript::Task"
             "PaperEditorTask"
-            "Declaration::Task"
             "PaperReviewerTask"
             "RegisterDecisionTask"
             "StandardTasks::TechCheckTask"
             "StandardTasks::FigureTask"
             "StandardTasks::AuthorsTask"
+            "StandardTasks::CompetingInterestsTask"
             "SupportingInformation::Task"
             "DataAvailability::Task"
             "FinancialDisclosure::Task"
-            "CompetingInterests::Task"
           ]
           manuscript_css: null
         ]
@@ -76,20 +75,19 @@ module 'Integration: Dashboard - when there are less than 15 papers',
         logo_url: 'https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/thumbnail_Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png?AWSAccessKeyId=AKIAJHFQZ6WND52M2VDQ&Signature=kSWiz0HiOO0nUTMSpR/0DQp3j%2Bw%3D&Expires=1405980362'
         paper_types: ['Research']
         task_types: [
-          'ReviewerReportTask'
-          'PaperAdminTask'
-          'UploadManuscript::Task'
-          'PaperEditorTask'
-          'Declaration::Task'
-          'PaperReviewerTask'
-          'RegisterDecisionTask'
-          'StandardTasks::TechCheckTask'
-          'StandardTasks::FigureTask'
-          'StandardTasks::AuthorsTask'
-          'SupportingInformation::Task'
-          'DataAvailability::Task'
-          'FinancialDisclosure::Task'
-          'CompetingInterests::Task'
+          "ReviewerReportTask"
+          "PaperAdminTask"
+          "UploadManuscript::Task"
+          "PaperEditorTask"
+          "PaperReviewerTask"
+          "RegisterDecisionTask"
+          "StandardTasks::TechCheckTask"
+          "StandardTasks::FigureTask"
+          "StandardTasks::AuthorsTask"
+          "StandardTasks::CompetingInterestsTask"
+          "SupportingInformation::Task"
+          "DataAvailability::Task"
+          "FinancialDisclosure::Task"
         ]
         epub_cover_url: null
         epub_cover_file_name: null

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include Authorizations
 
-  CUSTOM_HTTP_HEADERS = ['Tahi-Authorization-Check', 'Tahi-Heartbeat']
+  CUSTOM_HTTP_HEADERS = ['Tahi-Authorization-Check']
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

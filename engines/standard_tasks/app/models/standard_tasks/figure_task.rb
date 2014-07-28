@@ -12,9 +12,5 @@ module StandardTasks
     def assignees
       User.none
     end
-
-    def active_model_serializer
-      FigureTaskSerializer
-    end
   end
 end

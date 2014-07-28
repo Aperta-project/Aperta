@@ -6,6 +6,7 @@ class TaskSerializer < ActiveModel::Serializer
 
   has_many :assignees, embed: :ids, include: true, root: :users
   has_one :assignee, embed: :ids, include: true, root: :users
+  has_many :questions, embed: :ids, include: true
 
   self.root = :task
 

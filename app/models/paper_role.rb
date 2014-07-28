@@ -12,9 +12,10 @@ class PaperRole < ActiveRecord::Base
 
   validates :paper, presence: true
 
-  after_save :assign_tasks_to_editor, if: -> { user_id_changed? && role == 'editor' }
+  after_save :assign_tasks_to_editor, if: -> { user_id_changed? && role == EDITOR }
 
   validates_uniqueness_of :role, scope: [:user_id, :paper_id]
+  validates_inclusion_of :role, within: ALL_ROLES
 
   def self.admins
     where(role: ADMIN)

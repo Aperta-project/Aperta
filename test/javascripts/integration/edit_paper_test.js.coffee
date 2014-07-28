@@ -99,19 +99,19 @@ module 'Integration: EditPaper',
         logo_url: "/images/no-journal-image.gif"
         paper_types: ["Research"]
         task_types: [
-          "ReviewerReportTask"
+          "FinancialDisclosure::Task"
           "PaperAdminTask"
-          "UploadManuscript::Task"
           "PaperEditorTask"
           "PaperReviewerTask"
           "RegisterDecisionTask"
-          "StandardTasks::TechCheckTask"
-          "StandardTasks::FigureTask"
+          "ReviewerReportTask"
           "StandardTasks::AuthorsTask"
-          "StandardTasks::DataAvailabilityTask"
           "StandardTasks::CompetingInterestsTask"
+          "StandardTasks::DataAvailabilityTask"
+          "StandardTasks::FigureTask"
+          "StandardTasks::TechCheckTask"
           "SupportingInformation::Task"
-          "FinancialDisclosure::Task"
+          "UploadManuscript::Task"
         ]
         manuscript_css: null
       ]

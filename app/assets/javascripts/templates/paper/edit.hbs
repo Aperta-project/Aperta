@@ -37,7 +37,26 @@
     </article>
     <aside>
       <div class="collaborators">
-        <div class="button-link button--purple" {{action "addCollaborators"}}>Add Collaborators</div>
+        {{#each collaborator in collaborators}}
+          {{#tooltip-container}}
+            <div class="collaborator-status">
+              <div class="circle"></div>
+              <span class="name">{{collaborator.fullName}}</span>
+            </div>
+            {{#tooltip-content}}
+               {{userThumbnail collaborator}}
+               <div class='info'>
+                 <p class='name'>{{collaborator.fullName}}</p>
+                 <p class='roles'>Author</p>
+                 <div class="collaborator-status">
+                   <div class="circle"></div>
+                   <span class="status">online</span>
+                 </div>
+               </div>
+            {{/tooltip-content}}
+          {{/tooltip-container}}
+        {{/each}}
+        <a class="add-collaborators" {{action "addCollaborators"}}>Add New Collaborator</a>
       </div>
       <div class="task-list">
         {{partial "paper/task-list"}}

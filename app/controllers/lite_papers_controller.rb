@@ -1,7 +1,7 @@
 class LitePapersController < ApplicationController
   def index
     papers = Paper.where(id: paper_ids)
-                  .get_all_by_page(page_number)
+                  .paginate(page_number)
                   .all
 
     render json: papers, each_serializer: LitePaperSerializer

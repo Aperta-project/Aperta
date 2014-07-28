@@ -50,7 +50,7 @@ class Paper < ActiveRecord::Base
       where(published_at: nil)
     end
 
-    def get_all_by_page(page_number)
+    def paginate(page_number)
       page_number = 1 unless page_number
       raise ArgumentError if page_number <= 0
       offset_by = (page_number - 1) * PAGE_SIZE

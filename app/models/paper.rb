@@ -1,5 +1,3 @@
-class NegativeIntegerSuppliedError < StandardError; end
-
 class Paper < ActiveRecord::Base
   PAGE_SIZE = 15
 
@@ -54,7 +52,7 @@ class Paper < ActiveRecord::Base
 
     def get_all_by_page(page_number)
       page_number = 1 unless page_number
-      raise NegativeIntegerSuppliedError if page_number <= 0
+      raise ArgumentError if page_number <= 0
       offset_by = (page_number - 1) * PAGE_SIZE
       offset(offset_by).limit(PAGE_SIZE).order created_at: :asc
     end

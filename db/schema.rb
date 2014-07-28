@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724141712) do
+ActiveRecord::Schema.define(version: 20140728194603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,28 +100,6 @@ ActiveRecord::Schema.define(version: 20140724141712) do
   end
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
-
-  create_table "financial_disclosure_funded_authors", force: true do |t|
-    t.integer "author_id"
-    t.integer "funder_id"
-  end
-
-  add_index "financial_disclosure_funded_authors", ["author_id", "funder_id"], name: "funded_authors_unique_index", unique: true, using: :btree
-  add_index "financial_disclosure_funded_authors", ["author_id"], name: "index_financial_disclosure_funded_authors_on_author_id", using: :btree
-  add_index "financial_disclosure_funded_authors", ["funder_id"], name: "index_financial_disclosure_funded_authors_on_funder_id", using: :btree
-
-  create_table "financial_disclosure_funders", force: true do |t|
-    t.string   "name"
-    t.string   "grant_number"
-    t.string   "website"
-    t.boolean  "funder_had_influence"
-    t.text     "funder_influence_description"
-    t.integer  "task_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "financial_disclosure_funders", ["task_id"], name: "index_financial_disclosure_funders_on_task_id", using: :btree
 
   create_table "flows", force: true do |t|
     t.datetime "created_at"
@@ -258,6 +236,28 @@ ActiveRecord::Schema.define(version: 20140724141712) do
   end
 
   add_index "roles", ["kind"], name: "index_roles_on_kind", using: :btree
+
+  create_table "standard_tasks_funded_authors", force: true do |t|
+    t.integer "author_id"
+    t.integer "funder_id"
+  end
+
+  add_index "standard_tasks_funded_authors", ["author_id", "funder_id"], name: "funded_authors_unique_index", unique: true, using: :btree
+  add_index "standard_tasks_funded_authors", ["author_id"], name: "index_standard_tasks_funded_authors_on_author_id", using: :btree
+  add_index "standard_tasks_funded_authors", ["funder_id"], name: "index_standard_tasks_funded_authors_on_funder_id", using: :btree
+
+  create_table "standard_tasks_funders", force: true do |t|
+    t.string   "name"
+    t.string   "grant_number"
+    t.string   "website"
+    t.boolean  "funder_had_influence"
+    t.text     "funder_influence_description"
+    t.integer  "task_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "standard_tasks_funders", ["task_id"], name: "index_standard_tasks_funders_on_task_id", using: :btree
 
   create_table "supporting_information_files", force: true do |t|
     t.integer  "paper_id"

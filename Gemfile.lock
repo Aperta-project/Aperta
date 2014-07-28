@@ -32,12 +32,6 @@ GIT
       activesupport (>= 4.1.0)
 
 PATH
-  remote: engines/competing_interests
-  specs:
-    competing_interests (0.0.1)
-      rails (~> 4.1.1)
-
-PATH
   remote: engines/data_availability
   specs:
     data_availability (0.0.1)
@@ -482,7 +476,6 @@ DEPENDENCIES
   carrierwave
   codeclimate-test-reporter
   coffee-rails (~> 4.0.1)
-  competing_interests!
   data_availability!
   database_cleaner
   devise

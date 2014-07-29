@@ -17,7 +17,7 @@ ETahi.CheckBoxComponent = Ember.Component.extend
     @get("element").indeterminate = !!@get("indeterminate")
 
   _updateElementValue: ->
-    @set("value", @$().prop("checked"))
+    @set("checked", @$().prop("checked"))
 
   change: ->
     @sendAction('action', @)

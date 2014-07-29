@@ -22,10 +22,8 @@ feature "Dashboard", js: true do
         load_more_button = dashboard.load_more_papers_button
         expect(load_more_button).to be_present
         dashboard.load_more_papers
+        expect(dashboard).to have_no_css('.load-more-papers')
         expect(dashboard.paper_count).to eq paper_count
-        expect do
-          dashboard.load_more_papers_button
-        end.to raise_error Capybara::ElementNotFound
       end
     end
   end

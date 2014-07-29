@@ -11,15 +11,15 @@
         {{#if view.selectedYes}}
           <div class="dataset">
             <div class="dataset-header">Please provide the title of that submission and the corresponding author.</div>
-            {{question-textarea ident="publishing_related_questions.submitted_in_conjunction.corresponding_title"
-                                class="sub-question"
-                                task=model
-                                question="Title"}}
+            {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_title"
+                             class="sub-question"
+                             task=model
+                             question="Title"}}
             <br>
-            {{question-textarea ident="publishing_related_questions.submitted_in_conjunction.corresponding_author"
-                                class="sub-question"
-                                task=model
-                                question="Corresponding author"}}
+            {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_author"
+                             class="sub-question"
+                             task=model
+                             question="Corresponding author"}}
           </div>
         {{/if}}
       {{/question-radio}}

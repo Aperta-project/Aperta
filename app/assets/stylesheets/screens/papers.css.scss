@@ -133,7 +133,6 @@ $side-panel-widget-width: 220px;
 
 .task-list {
   margin: 0 auto;
-  padding-top: 60px;
   width: $side-panel-widget-width;
 }
 
@@ -209,15 +208,14 @@ $side-panel-widget-width: 220px;
 
 .collaborators {
   margin: 0 auto;
+  margin-top: 15px;
+  line-height: 15px;
   width: $side-panel-widget-width;
 
-  .tahi-tooltip-container {
-    display: inline-block;
-  }
-
   .add-collaborators {
-    color: $tahi-message;
-    display: inline-block;
+    margin-top: 7px;
+    color: $tahi-primary;
+    display: block;
     cursor: pointer;
   }
 }
@@ -225,7 +223,6 @@ $side-panel-widget-width: 220px;
 .collaborator-status {
   display: inline-block;
   margin: 3px 5px 3px 0;
-  cursor: pointer;
   .circle {
     display: inline-block;
     vertical-align: middle;
@@ -234,9 +231,9 @@ $side-panel-widget-width: 220px;
 
 .circle {
   $circle-radius: 0.8em;
-  background-color: $tahi-message-light;
+  background-color: $tahi-secondary;
   height: $circle-radius;
   width: $circle-radius;
   border-radius: $circle-radius / 2;
-  border: 2px solid $tahi-message;
+  border: 2px solid $tahi-primary;
 }

@@ -26,9 +26,9 @@
     </li>
     <li class="question">
       {{#question-radio ident="ethics.animal_subjects"
-        task=model
-          displayContent=true
-          question="Does this study involves vertebrate animals, embryos or tissues?"}}
+                        task=model
+                        displayContent=true
+                        question="Does this study involves vertebrate animals, embryos or tissues?"}}
 
         {{#if view.selectedYes}}
           <div class="dataset">
@@ -37,10 +37,10 @@
 
             <br>
             {{#question-radio ident="ethics.animal_subjects.ethical_approval"
-              task=model
-                displayContent=true
-                class="question"
-                question="Did they approved this research or granted a formal waiver of ethical approval?"}}
+                              task=model
+                              displayContent=true
+                              class="question"
+                              question="Did they approved this research or granted a formal waiver of ethical approval?"}}
 
                 {{#if view.selectedYes}}
                   {{question-textarea ident="ethics.animal_subjects.ethical_approval.approval_number"
@@ -49,6 +49,44 @@
                                       question="Please provide an approval number if one was obtained."}}
                 {{/if}}
             {{/question-radio}}
+
+            <br>
+            {{#question-radio ident="ethics.animal_subjects.animal_sacrifice"
+                              task=model
+                              displayContent=true
+                              class="question"
+                              question="Was anesthesia, euthanasia or any kind of animal sacrifice is part of the study?"}}
+
+                {{#if view.selectedYes}}
+                  {{question-textarea ident="ethics.animal_subjects.animal_sacrifice.method_information"
+                                      task=model
+                                      class="question sub-question"
+                                      question="Please include briefly in your statement which substances and/or methods were applied."}}
+
+                  <div class="question-info">
+                    <div class="question-info-header">Animal Research (involved vertebrate animals, embryos or tissues)</div>
+                    <p>All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, <a href="http://www.acmedsci.ac.uk/more/news/the-use-of-non-human-primates-in-research/">The use of non-human primates in research.</a> The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.</p>
+                  </div>
+                {{/if}}
+            {{/question-radio}}
+
+  <br>
+            {{#question-radio ident="ethics.animal_subjects.euthanasia"
+                              task=model
+                              displayContent=true
+                              class="question"
+                              question="Did you use anesthesia or perform euthanasia?"}}
+
+                {{#if view.selectedYes}}
+                  {{question-textarea ident="ethics.animal_subjects.animal_sacrifice.euthanasia.specifics"
+                                      task=model
+                                      class="question sub-question"
+                                      question="Please describe dates and specific use of anesthesia; please describe dates and methods of euthanasia."
+                                      }}
+
+                {{/if}}
+            {{/question-radio}}
+
           </div>
         {{/if}}
       {{/question-radio}}

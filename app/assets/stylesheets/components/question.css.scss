@@ -8,6 +8,10 @@
   line-height: 1.2em;
 }
 
+.sub-question .question-text {
+  font-size: 14px;
+}
+
 .help:before {
   content: ">";
   color: $tahi-primary-hover;

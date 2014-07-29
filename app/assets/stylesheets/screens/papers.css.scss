@@ -1,4 +1,5 @@
 $paper-trim-color: $tahi-tertiary;
+$side-panel-widget-width: 220px;
 
 #control-bar-paper-journal-logo {
   height: 71px;
@@ -133,7 +134,7 @@ $paper-trim-color: $tahi-tertiary;
 .task-list {
   margin: 0 auto;
   padding-top: 60px;
-  width: 220px;
+  width: $side-panel-widget-width;
 }
 
 .manuscript-container {
@@ -207,8 +208,8 @@ $paper-trim-color: $tahi-tertiary;
 }
 
 .collaborators {
-  margin-top:10px;
-  padding-left: 15px;
+  margin: 0 auto;
+  width: $side-panel-widget-width;
 
   .tahi-tooltip-container {
     display: inline-block;
@@ -217,12 +218,14 @@ $paper-trim-color: $tahi-tertiary;
   .add-collaborators {
     color: $tahi-message;
     display: inline-block;
+    cursor: pointer;
   }
 }
 
 .collaborator-status {
   display: inline-block;
   margin: 3px 5px 3px 0;
+  cursor: pointer;
   .circle {
     display: inline-block;
     vertical-align: middle;
@@ -230,7 +233,7 @@ $paper-trim-color: $tahi-tertiary;
 }
 
 .circle {
-  $circle-radius: 1em;
+  $circle-radius: 0.8em;
   background-color: $tahi-message-light;
   height: $circle-radius;
   width: $circle-radius;

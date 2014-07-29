@@ -27,10 +27,12 @@ class PhaseFragment < PageFragment
   end
 
   def remove_phase
-    container = find('.column-title')
-    container.hover
-    remove = find('.remove-icon')
-    remove.click
+    retry_stale_element do
+      container = find('.column-title')
+      container.hover
+      remove = find('.remove-icon')
+      remove.click
+    end
   end
 
   def rename(new_name)

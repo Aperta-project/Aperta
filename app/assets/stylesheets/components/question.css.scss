@@ -12,6 +12,11 @@
   line-height: 1.2em;
 }
 
+.dataset-header {
+  @extend .question-text;
+  margin-bottom: 10px;
+}
+
 .sub-question .question-text {
   font-size: 14px;
 }

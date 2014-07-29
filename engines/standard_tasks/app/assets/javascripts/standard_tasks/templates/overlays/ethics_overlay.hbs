@@ -91,6 +91,30 @@
         {{/if}}
       {{/question-radio}}
     </li>
+    <li class="question">
+      {{#question-radio ident="ethics.field_research"
+        task=model
+        displayContent=true
+        question="Did this study entail field research? (note, this question is commonly 'yes' for animal research papers, but it must be presented to other papers as well, e.g. paleontology)"}}
+
+        {{#if view.selectedYes}}
+          <div class="dataset">
+            {{#question-radio ident="ethics.field_research.field_permit"
+              task=model
+              displayContent=true
+              question="Did this study require a Field Permit?"}}
+
+              {{#if view.selectedYes}}
+                {{question-textarea ident="ethics.field_research.field_permit.institution_name"
+                                    task=model
+                                    class="question sub-question"
+                                    question="Please indicate the name of the institution or the relevant body that granted permission."}}
+              {{/if}}
+            {{/question-radio}}
+          </div>
+        {{/if}}
+      {{/question-radio}}
+    </li>
   </ol>
   </fieldset>
 </form>

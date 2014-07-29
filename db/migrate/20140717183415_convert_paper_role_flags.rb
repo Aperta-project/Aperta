@@ -1,3 +1,6 @@
+class PaperRole < ActiveRecord::Base
+end
+
 class ConvertPaperRoleFlags < ActiveRecord::Migration
   def up
     add_column :paper_roles, :role, :string

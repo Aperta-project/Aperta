@@ -59,7 +59,7 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
       controller.setProperties
         paper: paper
         collaborations: collaborations
-        initialCollaborations: collaborations.map (collab) -> collab
+        initialCollaborations: collaborations.slice()
         allUsers: @store.find('user')
       @render('showCollaboratorsOverlay',
         into: 'application'

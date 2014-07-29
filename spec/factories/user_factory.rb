@@ -7,10 +7,18 @@ FactoryGirl.define do
     "test-user-#{n}"
   end
 
+  sequence :last_name do |n|
+    "Smith#{n}"
+  end
+
+  sequence :first_name do |n|
+    "Henry#{n}"
+  end
+
   factory :user do
     username
-    first_name { ['Zoey', 'Albert', 'Steve'].sample }
-    last_name { ['Bob', 'Einstein', 'Windham'].sample }
+    first_name
+    last_name
     email
     password 'password'
     password_confirmation 'password'

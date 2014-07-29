@@ -11,7 +11,6 @@ end
 gem 'standard_tasks',         path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
-gem 'data_availability',      path: 'engines/data_availability'
 gem 'financial_disclosure',   path: 'engines/financial_disclosure'
 
 # Gems

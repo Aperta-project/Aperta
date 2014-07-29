@@ -9,6 +9,7 @@ class Journal < ActiveRecord::Base
     "StandardTasks::AuthorsTask",
     "StandardTasks::CompetingInterestsTask",
     "StandardTasks::DataAvailabilityTask",
+    "StandardTasks::EthicsTask",
     "StandardTasks::FigureTask",
     "StandardTasks::TechCheckTask",
     "SupportingInformation::Task",

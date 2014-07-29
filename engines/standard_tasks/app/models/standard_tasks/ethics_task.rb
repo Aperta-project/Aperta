@@ -1,12 +1,12 @@
 module StandardTasks
-  class FigureTask < Task
+  class EthicsTask < Task
     include MetadataTask
 
-    title "Upload Figures"
+    title "Add Ethics Statement"
     role "author"
 
-    def figure_access_details
-      paper.figures.map(&:access_details)
+    def active_model_serializer
+      TaskSerializer
     end
 
     def assignees
@@ -14,3 +14,4 @@ module StandardTasks
     end
   end
 end
+

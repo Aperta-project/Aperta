@@ -50,7 +50,7 @@ feature "Profile Page", js: true do
     end
 
     it "hides the form" do
-      page.should have_no_css('.affiliations-form')
+      expect(page).to have_no_css('.affiliations-form')
     end
 
     it "clears the form" do

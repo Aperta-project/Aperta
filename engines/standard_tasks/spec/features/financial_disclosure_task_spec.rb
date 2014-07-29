@@ -21,4 +21,14 @@ feature "Financial Disclosures", js: true do
       expect(overlay.dataset).to be_visible
     end
   end
+
+  scenario "adding an author" do
+    edit_paper = EditPaperPage.visit paper
+
+    edit_paper.view_card 'Financial Disclosure' do |overlay|
+      overlay.received_funding.click
+      overlay.add_author("Oscar", "Grouch")
+      expect(overlay.selected_authors).to include("Oscar Grouch")
+    end
+  end
 end

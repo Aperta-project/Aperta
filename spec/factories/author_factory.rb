@@ -7,6 +7,7 @@ FactoryGirl.define do
     title "Head Jedi"
     affiliation 'university of dagobah'
     position 1
+    author_group
     email
   end
 end

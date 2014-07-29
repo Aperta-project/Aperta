@@ -6,17 +6,33 @@
     <div class="question-text">Authors who received funding</div>
     <div class="chosen-style-override">
       {{chosen content=allAuthors
-        name="authors"
-          data-placeholder="Choose Author Name"
-          selection=fundedAuthors
-          optionValuePath="content"
-          optionLabelPath="content.fullName"
-          class="chosen-author form-control"
-          multiple=true
-          changeAction="addFundedAuthors"}}
+      name="authors"
+      data-placeholder="Choose Author Name"
+      selection=fundedAuthors
+      optionValuePath="content"
+      optionLabelPath="content.fullName"
+      class="chosen-author form-control"
+      multiple=true}}
+    </div>
+
+    <div class="add-new-funded-author">
+      {{#if addingAuthor}}
+        <div class="add-author-inline">
+          <div class="form-group form-inline">
+            {{input type="text" name="first-name" value=addingAuthor.firstName class="author-name form-control" placeholder="First Name"}}
+            {{input type="text" name="last-name" value=addingAuthor.lastName class="author-name form-control" placeholder="Last Name"}}
+            <span class="author-form-buttons">
+              <a class="button-link author-cancel" {{action "cancelAddingAuthor" bubbles=false}}>cancel</a>
+              <button class="button-primary button--green button-inline" {{action "finishAddingAuthor"}}>Add Author</button>
+            </span>
+          </div>
+        </div>
+      {{else}}
+        OR <button class="button-primary button--blue button-inline" {{action "startAddingAuthor"}}>Add Author</button>
+      {{/if}}
     </div>
   </div>
-  </br>
+
   <div class="question">
     <div class="question-text">
       Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?
@@ -24,11 +40,10 @@
     {{binary-radio-button name=( uniqueName 'funder-had-influence' ) selection=funder.funderHadInfluence}}
 
     {{#if funder.funderHadInfluence}}
-    <p>
-      Describe the role of any sponsors or funders in the study design, data collection and analysis, decision to publish, or preparation of the manuscript.
-      {{textarea value=funder.funderInfluenceDescription class="form-control"}}
-    </p>
+      <p>
+        Describe the role of any sponsors or funders in the study design, data collection and analysis, decision to publish, or preparation of the manuscript.
+        {{textarea value=funder.funderInfluenceDescription class="form-control"}}
+      </p>
     {{/if}}
   </div>
 </div>
-

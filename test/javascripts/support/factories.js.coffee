@@ -34,6 +34,7 @@ ETahi.Factory =
     model[keyName + "_id"] = sourceModel.id
     if inverseKeyName = options.inverse
       @setForeignKey(sourceModel, model, {keyName: inverseKeyName})
+    [model, sourceModel]
 
   addHasMany: (model, models, options) ->
     @setHasMany(model, models, _.extend(options, {merge: true}))
@@ -60,6 +61,7 @@ ETahi.Factory =
     if inverseKeyName = options.inverse
       _.forEach models, (m) =>
         @setForeignKey(m, model, {keyName: inverseKeyName})
+    [model, models]
 
   addEmbeddedHasMany: (model, models, options) ->
     @setEmbeddedHasMany(model, models, _.extend(options, {merge: true}))

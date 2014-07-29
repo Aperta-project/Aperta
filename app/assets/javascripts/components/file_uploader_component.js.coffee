@@ -30,6 +30,8 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
     params.dataType = 'xml'
     params.add = (e, uploadData) =>
       file = uploadData.files[0]
+
+      # make get request to setup s3 keys for actual upload
       $.ajax
         url: "/request_policy",
         type: 'GET',

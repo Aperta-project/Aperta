@@ -1,0 +1,9 @@
+<label>{{model.question}}</label>
+{{#if template}}
+  <div class="additional-data">
+    <span class="button-secondary button--green fileinput-button">
+      Select and upload a document
+      {{yield}}
+    </span>
+  </div>
+{{/if}}

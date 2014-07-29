@@ -20,6 +20,10 @@ FactoryGirl.define do
       paper.build_default_author_groups
     end
 
+    after(:create) do |paper|
+      paper.paper_roles.create!(user: paper.user, role: PaperRole::COLLABORATOR)
+    end
+
     trait(:with_tasks) do
       after(:create) do |paper|
         PaperFactory.new(paper, paper.user).apply_template

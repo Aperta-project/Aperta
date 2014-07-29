@@ -12,7 +12,7 @@ describe DashboardSerializer do
       submitted_paper = FactoryGirl.create(:paper, user: user)
       serialized_paper = first_serialized_paper(submitted_paper)
 
-      expect(serialized_paper.role_descriptions).to match_array ['My Paper']
+      expect(serialized_paper.role_descriptions).to match_array ['Collaborator', 'My Paper']
     end
 
     it "Should add role descriptions for papers the user associated to by paper_roles" do
@@ -28,7 +28,7 @@ describe DashboardSerializer do
       create(:paper_role, :reviewer, paper: associated_paper, user: user)
       serialized_paper = first_serialized_paper(associated_paper)
 
-      expect(serialized_paper.role_descriptions).to match_array ['Reviewer', 'My Paper']
+      expect(serialized_paper.role_descriptions).to match_array ['Collaborator', 'Reviewer', 'My Paper']
     end
 
     def first_serialized_paper(paper)

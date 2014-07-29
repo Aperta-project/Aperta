@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
       Paper.all.pluck(:id)
     else
       admin_papers = Paper.where(journal: journals.merge(Role.can_view_all_manuscript_managers))
-      submitted_papers.pluck(:id) | assigned_papers.pluck(:id) | admin_papers.pluck(:id)
+      assigned_papers.pluck(:id) | admin_papers.pluck(:id)
     end
   end
 

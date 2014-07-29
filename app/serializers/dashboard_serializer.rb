@@ -49,6 +49,6 @@ class DashboardSerializer < ActiveModel::Serializer
   private
 
   def total_paper_ids
-    @ids ||= user.submitted_papers.pluck(:id) | user.assigned_papers.pluck(:id)
+    @ids ||= user.assigned_papers.pluck :id
   end
 end

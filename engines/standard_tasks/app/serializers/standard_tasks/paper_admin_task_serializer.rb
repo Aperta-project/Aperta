@@ -1,9 +1,9 @@
 module StandardTasks
   class PaperAdminTaskSerializer < TaskSerializer
-     embed :ids
+    embed :ids
 
-     has_one :admin, include: true, root: :users
-     has_many :admins, include: true, root: :users
+    has_one :admin, include: true, root: :users
+    has_many :admins, include: true, root: :users
 
     def admin
       object.paper.admins.first

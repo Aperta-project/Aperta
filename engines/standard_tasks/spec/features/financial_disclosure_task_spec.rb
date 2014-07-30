@@ -16,7 +16,7 @@ feature "Financial Disclosures", js: true do
 
     edit_paper.view_card 'Financial Disclosure' do |overlay|
       expect(overlay.received_no_funding).to be_checked
-      expect(overlay).to_not have_content('.dataset')
+      expect(overlay).to_not have_content('.question-dataset')
       overlay.received_funding.click
       expect(overlay.dataset).to be_visible
     end

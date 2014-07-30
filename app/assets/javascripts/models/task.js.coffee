@@ -32,10 +32,6 @@ ETahi.PaperEditorTask = ETahi.Task.extend
   editors: DS.hasMany('user')
   editor: DS.belongsTo('user')
 
-ETahi.PaperAdminTask = ETahi.Task.extend
-  admins: DS.hasMany('user')
-  admin: DS.belongsTo('user')
-
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
   comments: DS.hasMany('comment')

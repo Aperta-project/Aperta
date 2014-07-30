@@ -72,8 +72,8 @@ feature "Flow Manager", js: true do
 
   context "PaperAdminTasks without assigned admin column placements" do
     before do
-      paper1.tasks.where(type: "PaperAdminTask").update_all(completed: false, assignee_id: nil)
-      paper2.tasks.where(type: "PaperAdminTask").update_all(completed: false, assignee_id: admin)
+      paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: nil)
+      paper2.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: admin)
       dashboard_page = DashboardPage.new
       dashboard_page.view_flow_manager
     end
@@ -105,8 +105,8 @@ feature "Flow Manager", js: true do
     end
 
     before do
-      unassigned_paper.tasks.where(type: "PaperAdminTask").update_all(completed: true, assignee_id: nil)
-      unassociated_paper.tasks.where(type: "PaperAdminTask").update_all(completed: false, assignee_id: nil)
+      unassigned_paper.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: true, assignee_id: nil)
+      unassociated_paper.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: nil)
       dashboard_page = DashboardPage.new
       dashboard_page.view_flow_manager
     end

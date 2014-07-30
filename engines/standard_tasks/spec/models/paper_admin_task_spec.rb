@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe PaperAdminTask do
+describe StandardTasks::PaperAdminTask do
   describe "defaults" do
-    subject(:task) { PaperAdminTask.new }
+    subject(:task) { StandardTasks::PaperAdminTask.new }
     specify { expect(task.title).to eq 'Assign Admin' }
     specify { expect(task.role).to eq 'admin' }
   end
@@ -10,7 +10,7 @@ describe PaperAdminTask do
   describe "updating paper admin" do
     let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
     let(:phase) { paper.phases.first }
-    let(:task)  { PaperAdminTask.create(phase: phase, assignee: bob, admin_id: bob.id) }
+    let(:task)  { StandardTasks::PaperAdminTask.create(phase: phase, assignee: bob, admin_id: bob.id) }
     let(:sally) { create :user }
     let(:bob) { create :user }
 

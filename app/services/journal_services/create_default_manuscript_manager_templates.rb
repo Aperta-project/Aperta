@@ -10,7 +10,7 @@ module JournalServices
               task_types: [StandardTasks::FigureTask, SupportingInformation::Task, StandardTasks::AuthorsTask, UploadManuscript::Task].map(&:to_s)
             }, {
               name: "Assign Editor",
-              task_types: [PaperEditorTask, StandardTasks::TechCheckTask, PaperAdminTask].map(&:to_s)
+              task_types: [PaperEditorTask, StandardTasks::TechCheckTask, StandardTasks::PaperAdminTask].map(&:to_s)
             }, {
               name: "Assign Reviewers",
               task_types: [PaperReviewerTask].map(&:to_s)

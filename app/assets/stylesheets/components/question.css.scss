@@ -12,7 +12,13 @@
   line-height: 1.2em;
 }
 
-.dataset-header {
+.question-dataset {
+  padding: 30px;
+  margin: 15px 0;
+  background: rgb(194, 232, 188);
+}
+
+.question-dataset-header {
   @extend .question-text;
   margin-bottom: 10px;
 }
@@ -39,10 +45,4 @@
 
 label {
   font-weight: normal;
-}
-
-.dataset {
-  padding: 30px;
-  margin: 15px 0;
-  background: rgb(194, 232, 188);
 }

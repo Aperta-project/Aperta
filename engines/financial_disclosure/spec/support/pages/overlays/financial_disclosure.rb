@@ -8,6 +8,6 @@ class FinancialDisclosureOverlay < CardOverlay
   end
 
   def dataset
-    find('.dataset')
+    find('.question-dataset')
   end
 end

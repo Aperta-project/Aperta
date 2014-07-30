@@ -135,18 +135,22 @@
     padding: 0;
   }
 
+  .journal-thumbnail {
+    overflow: hidden;
+    width: 250px;
+    height: 40px;
+    margin-bottom: 15px;
+  }
   .journal {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100px;
-    margin-top: 20px;
     position: relative;
+    min-height: 100px;
+    margin-top: 35px;
     border: 1px solid $tahi-tertiary;
 
-    &:hover { border-color: $tahi-blue-light; }
-
-    p { margin-top: 10px; }
+    p {
+      margin: 12px 0 0 0;
+      line-height: 120%;
+    }
 
     .journal-thumbnail-show {
       display: block;
@@ -154,11 +158,7 @@
       min-height: inherit;
       text-decoration: none;
       padding: 20px;
-      :not(.journal-name) { color: #000; }
-
-      &:hover, &:visited, &:active {
-        & .journal-name { text-decoration: underline; }
-      }
+      color: #000;
 
       img {
         max-width: 125px;
@@ -173,18 +173,26 @@
       display: inline-block;
       margin-right: 15px;
       color: $tahi-blue-light;
-      &:hover {
-        color: $tahi-blue-hover;
-      }
+      text-decoration: none;
     }
 
     .glyphicon.edit-icon {
-      color: $tahi-blue-light;
-      cursor: pointer;
-      font-size: 22px;
       position: absolute;
-      right: 15px;
-      top: 15px;
+      top: 0;
+      right: 0;
+      width: 3rem;
+      padding-top: 1.5rem;
+      color: #d4d4d4;
+      font-size: 14px;
+      cursor: pointer;
+
+      &:hover { color: $tahi-blue-light; }
+    }
+
+    .journal-paper-count {
+      float: right;
+      position: relative;
+      top: -27px;
     }
 
     .journal-thumbnail-edit-form {

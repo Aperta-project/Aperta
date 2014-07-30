@@ -1,6 +1,5 @@
 class Journal < ActiveRecord::Base
   VALID_TASK_TYPES = [
-    "FinancialDisclosure::Task",
     "PaperAdminTask",
     "PaperEditorTask",
     "PaperReviewerTask",
@@ -11,9 +10,10 @@ class Journal < ActiveRecord::Base
     "StandardTasks::DataAvailabilityTask",
     "StandardTasks::EthicsTask",
     "StandardTasks::FigureTask",
+    "StandardTasks::FinancialDisclosureTask",
     "StandardTasks::TechCheckTask",
     "SupportingInformation::Task",
-    "UploadManuscript::Task"
+    "UploadManuscript::Task",
   ]
 
   has_many :papers, inverse_of: :journal

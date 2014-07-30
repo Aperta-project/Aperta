@@ -42,3 +42,12 @@ ETahi.Paper = DS.Model.extend
   editable: (->
     !(@get('allTasksCompleted') and @get('submitted'))
   ).property('allTasksCompleted', 'submitted')
+
+  authors: (->
+    @get('authorGroups').reduce(
+      (result, group) ->
+        group.get('authors').forEach (author) ->
+          result.pushObject(author)
+        result
+      [])
+  ).property('authorGroups.@each')

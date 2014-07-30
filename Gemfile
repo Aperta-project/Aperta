@@ -73,7 +73,6 @@ group :development do
   # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
   gem 'bullet'
   gem 'license_finder'
-  gem 'railroady'
 end
 
 group :development, :test, :performance do

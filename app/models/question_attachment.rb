@@ -14,6 +14,6 @@ class QuestionAttachment < ActiveRecord::Base
   end
 
   def notifier_payload
-    { id: id, paper_id: paper.id }
+    { id: id, paper_id: question.task.paper.id }
   end
 end

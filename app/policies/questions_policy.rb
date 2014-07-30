@@ -9,4 +9,7 @@ class QuestionsPolicy < ApplicationPolicy
     super_admin? || author_of_paper?(question.task.paper)
   end
 
+  def upload?
+    super_admin? || author_of_paper?(question.task.paper)
+  end
 end

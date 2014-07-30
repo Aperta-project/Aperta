@@ -11,6 +11,7 @@ describe QuestionsPolicy do
 
     it { expect(policy.create?).to eq(true) }
     it { expect(policy.update?).to eq(true) }
+    it { expect(policy.upload?).to eq(true) }
   end
 
   context "An author" do
@@ -18,6 +19,7 @@ describe QuestionsPolicy do
 
     it { expect(policy.create?).to eq(true) }
     it { expect(policy.update?).to eq(true) }
+    it { expect(policy.upload?).to eq(true) }
   end
 
   context "some schmuck" do
@@ -25,5 +27,6 @@ describe QuestionsPolicy do
 
     it { expect(policy.create?).to eq(false) }
     it { expect(policy.update?).to eq(false) }
+    it { expect(policy.upload?).to eq(false) }
   end
 end

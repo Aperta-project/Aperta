@@ -29,3 +29,6 @@ ETahi.FunderController = Ember.ObjectController.extend ETahi.SavesDelayed,
     cancelAddingAuthor: ->
       @get('addingAuthor').deleteRecord()
       @set('addingAuthor', null)
+
+    removeFunder: ->
+      @get('model').destroyRecord()

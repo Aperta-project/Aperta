@@ -1,25 +1,18 @@
 .admin-screen {
+  .button--white {
+    color: $tahi-blue-hover;
+  }
+
+  .button-link.button--white {
+    color: #fff;
+  }
+
   h1 {
     margin-bottom: 50px;
   }
 
   .relative {
     position: relative;
-  }
-
-
-  .button-primary {
-    background-color: $tahi-blue-light;
-
-    &:hover {
-      background-color: $tahi-blue-hover;
-      color: #fff;
-    }
-
-  }
-
-  .btn-link {
-    color: $tahi-blue-light;
   }
 
   ul.journals {
@@ -139,8 +132,8 @@
     overflow: hidden;
     width: 250px;
     height: 40px;
-    margin-bottom: 15px;
   }
+
   .journal {
     position: relative;
     min-height: 100px;
@@ -159,12 +152,6 @@
       text-decoration: none;
       padding: 20px;
       color: #000;
-
-      img {
-        max-width: 125px;
-        max-height: 180px;
-        margin-right: 20px;
-      }
     }
 
     .journal-name {
@@ -192,7 +179,7 @@
     .journal-paper-count {
       float: right;
       position: relative;
-      top: -27px;
+      top: -15px;
     }
 
     .journal-thumbnail-edit-form {
@@ -201,7 +188,6 @@
       padding: 20px 20px 12px 20px;
       position: relative;
 
-      > div { padding: 0; }
       .link { margin-right: 10px; }
       .journal-name-edit { padding: 0 10px; }
 
@@ -226,17 +212,12 @@
       }
 
       .journal-description-edit {
-        margin-top: 50px;
-        height: 100px;
+        height: 10rem;
       }
 
       .journal-edit-buttons {
         text-align: right;
         margin-top: 15px;
-
-        .button-secondary {
-          color: $tahi-blue-hover;
-        }
       }
     }
   }
@@ -296,31 +277,33 @@
   margin-top: 35px;
 }
 
-.journal-logo-hover {
-  @include upload-hover(rgba(52, 123, 197, 0.5));
-}
-
 .journal-logo-spinner {
   background-color: rgba(52, 123, 197, 0.8);
 }
 
-.journal-logo-hover,
 .journal-logo-spinner {
   @include upload-spinner-and-hover;
 }
 
-.journal-logo-hover,
 .journal-logo-spinner {
   width: 150px;
   height: 180px;
 }
 
 .journal-logo-upload {
+  overflow: hidden;
   position: relative;
+  height: 40px;
+  margin-bottom: 15px;
+  line-height: 40px;
 
-  &:hover {
-    .journal-logo-hover { display: block; }
-  }
+ .journal-thumbnail { float: left; }
+}
+
+.journal-logo-upload-note {
+  color: #fff;
+  font-style: italic;
+  padding-left: 10px;
 }
 
 .admin-users {

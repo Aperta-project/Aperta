@@ -44,6 +44,10 @@ ETahi.ChosenView = Ember.Select.extend
       throw "You should use the selection option with a multiple select rather than value"
   ).on('init')
 
+  observeSelection: (->
+    @rerenderChosen()
+  ).observes('selection.@each')
+
   rerenderChosen: ->
     # Don't trigger Chosen update until after DOM elements have finished rendering.
     Ember.run.scheduleOnce 'afterRender', @, ->

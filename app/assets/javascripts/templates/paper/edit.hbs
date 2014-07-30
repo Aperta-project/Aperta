@@ -38,25 +38,13 @@
     <aside>
       <div class="collaborators">
         {{#each collaborator in collaborators}}
-          {{#tooltip-container}}
-            <div class="collaborator-status">
-              <div class="circle"></div>
-              <span class="name">{{collaborator.fullName}}</span>
-            </div>
-            {{#tooltip-content}}
-               {{userThumbnail collaborator}}
-               <div class='info'>
-                 <p class='name'>{{collaborator.fullName}}</p>
-                 <p class='roles'>Author</p>
-                 <div class="collaborator-status">
-                   <div class="circle"></div>
-                   <span class="status">online</span>
-                 </div>
-               </div>
-            {{/tooltip-content}}
-          {{/tooltip-container}}
+          <div class="collaborator-status">
+            <div class="circle"></div>
+            <span class="name">{{collaborator.fullName}}</span>
+          </div>
         {{/each}}
-        <a class="add-collaborators" {{action "addCollaborators"}}>Add New Collaborator</a>
+        <a class="add-collaborators" {{action "addCollaborators"}}>+ Add Collaborator</a>
+        <hr />
       </div>
       <div class="task-list">
         {{partial "paper/task-list"}}

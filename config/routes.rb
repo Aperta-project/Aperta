@@ -1,6 +1,6 @@
 Tahi::Application.routes.draw do
   mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
-  mount FinancialDisclosure::Engine => '/', as: 'financial_disclosure'
+  mount StandardTasks::Engine => '/', as: 'standard_tasks'
 
   if Rails.env.development? || Rails.env.test?
     mount QUnit::Rails::Engine => '/qunit'

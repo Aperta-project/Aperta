@@ -30,10 +30,6 @@
     button {
       float: right;
     }
-
-    &.is-editing {
-      display: table-row;
-    }
   }
 
   .pdf-css,
@@ -132,6 +128,7 @@
     overflow: hidden;
     width: 250px;
     height: 40px;
+    margin-bottom: 15px;
   }
 
   .journal {
@@ -167,10 +164,12 @@
       position: absolute;
       top: 0;
       right: 0;
-      width: 3rem;
+      width: 5.5rem;
       padding-top: 1.5rem;
+      padding-bottom: 2rem;
       color: #d4d4d4;
       font-size: 14px;
+      text-align: center;
       cursor: pointer;
 
       &:hover { color: $tahi-blue-light; }
@@ -179,7 +178,7 @@
     .journal-paper-count {
       float: right;
       position: relative;
-      top: -15px;
+      top: -27px;
     }
 
     .journal-thumbnail-edit-form {
@@ -190,11 +189,6 @@
 
       .link { margin-right: 10px; }
       .journal-name-edit { padding: 0 10px; }
-
-      img {
-        max-width: 150px;
-        max-height: 180px;
-      }
 
       .form-group.required {
         &.error {
@@ -286,8 +280,8 @@
 }
 
 .journal-logo-spinner {
-  width: 150px;
-  height: 180px;
+  width: 250px;
+  height: 40px;
 }
 
 .journal-logo-upload {
@@ -297,7 +291,10 @@
   margin-bottom: 15px;
   line-height: 40px;
 
- .journal-thumbnail { float: left; }
+ .journal-thumbnail {
+   float: left;
+   margin-right: 10px;
+ }
 }
 
 .journal-logo-upload-note {

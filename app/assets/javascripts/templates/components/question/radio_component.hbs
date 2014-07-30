@@ -6,7 +6,7 @@
 {{binary-radio-button name=ident selection=model.answer yesValue="Yes" noValue="No"}}
 
 {{#if template}}
-  <div {{bind-attr class=":additional-data displayContent::hidden"}}>
+  <div class="additional-data">
     {{yield}}
   </div>
 {{/if}}

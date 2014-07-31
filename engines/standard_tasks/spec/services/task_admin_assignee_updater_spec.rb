@@ -2,16 +2,16 @@ require 'spec_helper'
 
 describe StandardTasks::TaskAdminAssigneeUpdater do
 
-    let(:task)  { StandardTasks::PaperAdminTask.create!(phase: phase) }
-    let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
-    let(:phase) { paper.phases.first }
+  let(:task)  { StandardTasks::PaperAdminTask.create!(phase: phase) }
+  let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
+  let(:phase) { paper.phases.first }
 
-    let(:jim) { FactoryGirl.create(:user) }
-    let(:sally) { FactoryGirl.create(:user) }
-    let(:bob) { FactoryGirl.create(:user) }
-    let(:gus) { FactoryGirl.create(:user) }
+  let(:jim) { FactoryGirl.create(:user) }
+  let(:sally) { FactoryGirl.create(:user) }
+  let(:bob) { FactoryGirl.create(:user) }
+  let(:gus) { FactoryGirl.create(:user) }
 
-    let(:updater) { StandardTasks::TaskAdminAssigneeUpdater.new(task.reload) }
+  let(:updater) { StandardTasks::TaskAdminAssigneeUpdater.new(task.reload) }
 
 
   describe "paper admin is being changed" do

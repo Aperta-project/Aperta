@@ -11,9 +11,15 @@ class PaperEventStreamSerializer < ActiveModel::Serializer
   end
 
   has_many :tasks, embed: :ids, polymorphic: true
+  has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
   has_one :journal, embed: :ids, include: false
   has_one :locked_by, embed: :id, include: true, root: :users
   has_one :striking_image, embed: :id, include: true, root: :figures
+
+  def collaborations
+    # we want the actual join record, not a list of users
+    object.paper_roles.collaborators
+  end
 
   def status
     object.manuscript.try(:status)

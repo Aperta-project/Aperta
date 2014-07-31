@@ -17,7 +17,7 @@ describe StandardTasks::TaskAdminAssigneeUpdater do
   describe "paper admin is being changed from nobody to sally" do
 
     before(:each) do
-     task.admin_id = sally.id
+      task.admin_id = sally.id
     end
 
     it "will set the paper admin" do

@@ -11,7 +11,7 @@ feature "Reviewer Report", js: true do
 
   before do
     assign_journal_role(journal, reviewer, :reviewer)
-    paper_reviewer_task = paper.phases.where(name: 'Assign Reviewers').first.tasks.where(type: 'PaperReviewerTask').first
+    paper_reviewer_task = paper.phases.where(name: 'Assign Reviewers').first.tasks.where(type: 'StandardTasks::PaperReviewerTask').first
     paper_reviewer_task.reviewer_ids = [reviewer.id.to_s]
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in reviewer

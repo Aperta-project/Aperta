@@ -12,11 +12,11 @@ class PhaseFragment < PageFragment
   end
 
   def card_count
-    element.all('.card').count
+    find_all('.card').count
   end
 
   def has_card?(name)
-    element.all('.card').any? { |card| card.has_content? name }
+    find_all('.card').any? { |card| card.has_content? name }
   end
 
   def has_remove_icon?

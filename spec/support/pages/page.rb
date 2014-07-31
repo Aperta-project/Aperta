@@ -22,6 +22,10 @@ class PageFragment
     end
   end
 
+  def find_all *args
+    element.all *args
+  end
+
   def class_names
     element[:class].split(' ')
   end
@@ -55,7 +59,7 @@ class PageFragment
 
   def view_card card_name, overlay_class=nil, &block
     synchronize_content! card_name
-    element.all('.card-content', text: card_name).first.click
+    find_all('.card-content', text: card_name).first.click
     synchronize_content! 'CLOSE'
 
     overlay_class ||= begin

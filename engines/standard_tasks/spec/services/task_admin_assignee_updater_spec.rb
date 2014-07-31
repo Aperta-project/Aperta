@@ -2,21 +2,23 @@ require 'spec_helper'
 
 describe StandardTasks::TaskAdminAssigneeUpdater do
 
-  let(:task)  { StandardTasks::PaperAdminTask.create!(phase: phase) }
   let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
-  let(:phase) { paper.phases.first }
+  let(:task)  { paper.tasks.where(type: "StandardTasks::PaperAdminTask").first }
+  let(:phase) { task.phase }
 
   let(:jim) { FactoryGirl.create(:user) }
-  let(:sally) { FactoryGirl.create(:user) }
+  let(:sally) { FactoryGirl.create(:user, first_name: "Sally") }
   let(:bob) { FactoryGirl.create(:user) }
   let(:gus) { FactoryGirl.create(:user) }
 
   let(:updater) { StandardTasks::TaskAdminAssigneeUpdater.new(task.reload) }
 
 
-  describe "paper admin is being changed" do
+  describe "paper admin is being changed from nobody to sally" do
 
-    before(:each) { task.admin_id = sally.id }
+    before(:each) do
+     task.admin_id = sally.id
+    end
 
     it "will set the paper admin" do
       updater.update

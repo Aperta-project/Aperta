@@ -20,7 +20,11 @@ class PhaseFragment < PageFragment
   end
 
   def has_remove_icon?
-    element.all('.remove-icon', visible: false).present?
+    has_css? '.remove-icon', visible: false
+  end
+
+  def has_no_remove_icon?
+    has_no_css? '.remove-icon', visible: false
   end
 
   # add a phase AFTER this phase.

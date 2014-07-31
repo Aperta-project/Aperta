@@ -7,10 +7,10 @@ class PageFragment
 
   attr_reader :element
 
-  delegate :select, to: :@element
+  delegate :select, to: :element
 
-  def initialize element = nil, context: nil
-    @element = element || page
+  def initialize(element, context: nil)
+    @element = element
     @context = context
   end
 
@@ -20,6 +20,10 @@ class PageFragment
     else
       super
     end
+  end
+
+  def find_all(*args)
+    element.all *args
   end
 
   def class_names
@@ -55,7 +59,7 @@ class PageFragment
 
   def view_card card_name, overlay_class=nil, &block
     synchronize_content! card_name
-    all('.card-content', text: card_name).first.click
+    find_all('.card-content', text: card_name).first.click
     synchronize_content! 'CLOSE'
 
     overlay_class ||= begin
@@ -128,8 +132,8 @@ class Page < PageFragment
     end
   end
 
-  def initialize element = nil
-    super element
+  def initialize(element = nil, context: nil)
+    super(element || page, context: context)
   end
 
   def reload sync_on:nil

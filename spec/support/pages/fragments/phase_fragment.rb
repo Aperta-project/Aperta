@@ -12,11 +12,19 @@ class PhaseFragment < PageFragment
   end
 
   def card_count
-    all('.card').count
+    find_all('.card').count
   end
 
   def has_card?(name)
-    all('.card').any? { |card| card.has_content? name }
+    find_all('.card').any? { |card| card.has_content? name }
+  end
+
+  def has_remove_icon?
+    has_css? '.remove-icon', visible: false
+  end
+
+  def has_no_remove_icon?
+    has_no_css? '.remove-icon', visible: false
   end
 
   # add a phase AFTER this phase.

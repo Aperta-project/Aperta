@@ -1,7 +1,6 @@
 class AffiliationsController < ApplicationController
   def index
-    parser = InstitutionHashParser.instance.parse_names!
-    render json: parser.names, root: :institutions
+    render json: Institution.instance.names, root: :institutions
   end
 
   def create

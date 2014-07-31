@@ -1,8 +1,8 @@
 module StandardTasks
-  class EthicsTask < Task
+  class PublishingRelatedQuestionsTask < Task
     include MetadataTask
 
-    title "Add Ethics Statement"
+    title "Publishing Related Questions"
     role "author"
 
     def assignees

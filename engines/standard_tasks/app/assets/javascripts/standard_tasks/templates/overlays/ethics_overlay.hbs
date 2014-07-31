@@ -7,11 +7,10 @@
     <li class="question">
       {{#question-radio ident="ethics.human_subjects"
         task=model
-        displayContent=true
         question="Does your study involve human participants, specimens or tissue samples, or vertebrate animals, cephalopods, embryos or tissues?"}}
 
         {{#if view.selectedYes}}
-          <div class="dataset">
+          <div class="question-dataset">
             {{question-textarea ident="ethics.approving_committee" task=model
                                 question="Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research."}}
 
@@ -27,18 +26,16 @@
     <li class="question">
       {{#question-radio ident="ethics.animal_subjects"
                         task=model
-                        displayContent=true
                         question="Does this study involves vertebrate animals, embryos or tissues?"}}
 
         {{#if view.selectedYes}}
-          <div class="dataset">
+          <div class="question-dataset">
             {{question-textarea ident="ethics.animal_subjects.institution_name" task=model
                                 question="Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board"}}
 
             <br>
             {{#question-radio ident="ethics.animal_subjects.ethical_approval"
                               task=model
-                              displayContent=true
                               class="question"
                               question="Did they approved this research or granted a formal waiver of ethical approval?"}}
 
@@ -53,7 +50,6 @@
             <br>
             {{#question-radio ident="ethics.animal_subjects.animal_sacrifice"
                               task=model
-                              displayContent=true
                               class="question"
                               question="Was anesthesia, euthanasia or any kind of animal sacrifice is part of the study?"}}
 
@@ -73,7 +69,6 @@
   <br>
             {{#question-radio ident="ethics.animal_subjects.euthanasia"
                               task=model
-                              displayContent=true
                               class="question"
                               question="Did you use anesthesia or perform euthanasia?"}}
 
@@ -94,14 +89,12 @@
     <li class="question">
       {{#question-radio ident="ethics.field_research"
         task=model
-        displayContent=true
         question="Did this study entail field research? (note, this question is commonly 'yes' for animal research papers, but it must be presented to other papers as well, e.g. paleontology)"}}
 
         {{#if view.selectedYes}}
-          <div class="dataset">
+          <div class="question-dataset">
             {{#question-radio ident="ethics.field_research.field_permit"
               task=model
-              displayContent=true
               question="Did this study require a Field Permit?"}}
 
               {{#if view.selectedYes}}

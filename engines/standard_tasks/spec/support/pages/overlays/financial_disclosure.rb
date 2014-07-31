@@ -11,6 +11,10 @@ class FinancialDisclosureOverlay < CardOverlay
     find('.dataset')
   end
 
+  def remove_funder
+    dataset.click_link "remove"
+  end
+
   def add_author(first_name, last_name)
     click_button "Add Author"
     fill_in "first-name", with: first_name

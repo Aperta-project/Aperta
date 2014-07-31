@@ -12,11 +12,20 @@ class PhaseFragment < PageFragment
   end
 
   def card_count
-    all('.card').count
+    @element.all('.card').count
   end
 
   def has_card?(name)
-    all('.card').any? { |card| card.has_content? name }
+    @element.all('.card').any? { |card| card.has_content? name }
+  end
+
+  def has_remove_icon?
+    # I wasn't able to do this using just Capybara. For some reason, the root
+    # element never saw the edit or remove icon DOM, even though it's there
+    # when you `puts page.html`
+    phase_name = @element.find('h2').text
+    js = "$(_.find($('.column'), function(e) { return $(e).find('h2').text() == '#{phase_name}'; })).find('.remove-icon').size()"
+    1 == @element.session.evaluate_script(js)
   end
 
   # add a phase AFTER this phase.

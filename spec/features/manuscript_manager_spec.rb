@@ -54,7 +54,7 @@ feature "Manuscript Manager", js: true do
     scenario 'Non-empty phase' do
       task_manager_page = TaskManagerPage.visit paper
       phase = task_manager_page.phase 'Submission Data'
-      expect(phase.all('.remove-icon')).to be_empty
+      expect(phase).to_not have_remove_icon
     end
   end
 

@@ -78,9 +78,10 @@ end
 group :development, :test, :performance do
   gem 'factory_girl_rails'
   gem 'progressbar'
-  gem 'rspec-rails', "~> 3.0.0.beta2"
-  gem "rspec-its", "~> 1.0.0.pre"
-  gem 'capybara', "~> 2.3.0"
+  gem 'rspec-rails'
+  gem 'rspec-its'
+  gem 'rspec-collection_matchers'
+  gem 'capybara'
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'

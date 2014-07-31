@@ -76,7 +76,7 @@ end
 
 class UserRowInSearch < PageFragment
   def row_content
-    all('td')
+    @element.all('td')
   end
 
   def edit_user_details

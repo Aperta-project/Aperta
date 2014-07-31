@@ -35,7 +35,7 @@ module StandardTasks
     private
 
     def update_paper_admin_and_tasks
-      #TODO: eventually move callback to controller
+      # TODO: eventually move callback to controller
       TaskAdminAssigneeUpdater.new(self).update
     end
 

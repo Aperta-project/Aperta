@@ -2,6 +2,7 @@ module StandardTasks
   class PaperAdminResponder < ::UpdateResponders::Task
 
     private
+
     def status
       200
     end

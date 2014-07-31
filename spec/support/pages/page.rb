@@ -7,7 +7,7 @@ class PageFragment
 
   attr_reader :element
 
-  delegate :select, to: :@element
+  delegate :select, to: :element
 
   def initialize element = nil, context: nil
     @element = element || page
@@ -55,7 +55,7 @@ class PageFragment
 
   def view_card card_name, overlay_class=nil, &block
     synchronize_content! card_name
-    @element.all('.card-content', text: card_name).first.click
+    element.all('.card-content', text: card_name).first.click
     synchronize_content! 'CLOSE'
 
     overlay_class ||= begin

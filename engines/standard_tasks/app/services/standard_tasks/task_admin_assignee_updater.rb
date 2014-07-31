@@ -1,6 +1,5 @@
 module StandardTasks
   class TaskAdminAssigneeUpdater
-
     attr_accessor :task, :paper, :task_admin, :previous_task_admin
 
     def initialize(task)
@@ -22,6 +21,5 @@ module StandardTasks
     def related_tasks
       paper.tasks.without(task).for_admins.incomplete.assigned_to(nil, previous_task_admin)
     end
-
   end
 end

@@ -13,29 +13,20 @@
   }
 
   .preview-container {
-    @extend .col-xs-2;
-    width: 100px;
-    height: 100px;
-    padding: 0;
-  }
-
-  .preview-container > * {
-    width: 100px;
-    height: 100px;
   }
 
   .glyphicon {
-    font-size: 72px;
+    font-size: 60px;
     text-align: center;
     padding-top: 14px;
     width: 80px;
   }
 
   .progress {
-    @extend .col-xs-9;
-    padding: 0;
-    margin-bottom: 0;
-    margin-left: 60px;
-    margin-top: 40px;
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    right: 60px;
+    margin-top: -18px;
   }
 }

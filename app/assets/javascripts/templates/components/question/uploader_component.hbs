@@ -1,7 +1,7 @@
 <label>{{model.question}}</label>
 <div class="additional-data">
   <span class="button-secondary button--green fileinput-button">
-    Select and upload a document
+    Select &amp; upload
     {{file-uploader id="upload-files"
                     accept='.docx'
                     start='uploadStarted'
@@ -10,4 +10,12 @@
                     error='uploadError'
                     filePrefix='question_attachment'}}
   </span>
+  {{#if fileUpload}}
+    <div id="paper-file-uploads">
+      {{upload-preview upload=fileUpload}}
+    </div>
+  {{/if}}
+  {{#if model.questionAttachment}}
+    {{question-attachment-thumbnail attachment=model.questionAttachment}}
+  {{/if}}
 </div>

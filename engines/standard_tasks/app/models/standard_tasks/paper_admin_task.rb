@@ -21,7 +21,7 @@ module StandardTasks
     after_save :update_paper_admin_and_tasks, if: :paper_admin_changed?
 
     def tasks_for_admin
-      Task.where(role: 'admin', completed: false, phase_id: [paper.phase_ids], assignee_id: assignee_id)
+      paper.tasks.without(self).for_admins.incomplete.assigned_to(assignee)
     end
 
     def update_responder
@@ -40,7 +40,15 @@ module StandardTasks
     end
 
     def paper_admin_changed?
-      !paper.admins.exists?(id: admin_id)
+      if admin_id
+        # if the admin for this task doesn't in the paper's admins (in reality there's only going
+        # to be 1) then this admin must be a new one.
+        !paper.admins.exists?(id: admin_id)
+      else
+        # maybe we're trying to get rid of the current admin.
+        # if an admin PaperRole exists and we're setting admin_id to nil, return true.
+        paper.admins.exists?
+      end
     end
   end
 end

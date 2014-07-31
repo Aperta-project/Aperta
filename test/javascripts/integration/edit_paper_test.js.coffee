@@ -102,7 +102,7 @@ module 'Integration: EditPaper',
           "FinancialDisclosure::Task"
           "PaperAdminTask"
           "PaperEditorTask"
-          "PaperReviewerTask"
+          "StandardTasks::PaperReviewerTask"
           "RegisterDecisionTask"
           "ReviewerReportTask"
           "StandardTasks::AuthorsTask"

@@ -18,14 +18,20 @@
     </div>
     <div class="question">
       <div class="question-text">
-      Did any of the authors receive specific funding for this work?
+        Did any of the authors receive specific funding for this work?
       </div>
 
       {{binary-radio-button name="received-funding" selection=receivedFunding yesAction="choseFundingReceived" noAction="choseFundingNotReceived"}}
+
+      {{#if receivedFunding}}
+        <span>Please describe all sources of funding that have supported your work.</span>
+      {{/if}}
     </div>
 
     {{#each funder in funders}}
-      {{render "funder" funder}}
+      <div class="question-dataset">
+        {{render "funder" funder}}
+      </div>
     {{/each}}
 
     {{#if receivedFunding}}

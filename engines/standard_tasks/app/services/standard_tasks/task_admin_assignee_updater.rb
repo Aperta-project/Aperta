@@ -17,7 +17,6 @@ module StandardTasks
       end
     end
 
-
     private
 
     def related_tasks

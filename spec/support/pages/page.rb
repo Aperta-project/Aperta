@@ -22,7 +22,7 @@ class PageFragment
     end
   end
 
-  def find_all *args
+  def find_all(*args)
     element.all *args
   end
 

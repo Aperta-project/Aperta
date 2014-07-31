@@ -12,7 +12,10 @@ module StandardTasks
     def update
       paper.transaction do
         paper.assign_admin!(task_admin)
-        related_tasks.update_all(assignee_id: task_admin)
+        related_tasks.each do |task|
+          task.assignee = task_admin
+          task.save
+        end
       end
     end
 

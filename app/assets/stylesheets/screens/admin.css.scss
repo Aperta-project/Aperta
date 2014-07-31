@@ -1,6 +1,6 @@
 .admin-screen {
   .button--white {
-    color: $tahi-blue-hover;
+    color: $tahi-blue;
   }
 
   .button-link.button--white {
@@ -204,7 +204,7 @@
       }
       .form-group.required::before {
         left: -17px;
-        color: $tahi-blue-hover;
+        color: $tahi-blue;
       }
 
       .journal-description-edit {

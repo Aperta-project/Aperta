@@ -166,6 +166,7 @@
 .button-link {
   @extend .button;
   text-transform: none;
+  background: transparent;
 
   &.button--green {
     color: $tahi-primary;
@@ -182,7 +183,7 @@
     &:hover, &:focus { color: $tahi-blue-hover; }
   }
 
-  &.button--blue {
+  &.button--light-blue {
     color: $tahi-blue-light;
     &:hover, &:focus { color: $tahi-blue-light-hover; }
   }

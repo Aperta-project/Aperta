@@ -1,9 +1,11 @@
 {{#link-to "journal" journal class="journal-thumbnail-show clearfix"}}
-  <img class="pull-left" {{bind-attr src=journal.logoUrl}} />
-  <h3 class="journal-name">{{journal.name}}</h3>
+  <div class="journal-thumbnail">
+    <img {{bind-attr src=journal.logoUrl}}>
+  </div>
   <span class='journal-paper-count'>{{formatNumber journal.paperCount}} {{pluralize journal.paperCount 'article' 'articles'}}</span>
+  <h3 class="journal-name">{{journal.name}}</h3>
   <p>{{journal.description}}</p>
 {{/link-to}}
 {{#if currentUser.admin}}
-  <div {{bind-attr class=":glyphicon :glyphicon-pencil :edit-icon view.isHovering::hidden"}} {{action "editJournalDetails"}}></div>
+  <div class="glyphicon glyphicon-pencil edit-icon" {{action "editJournalDetails"}}></div>
 {{/if}}

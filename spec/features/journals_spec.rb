@@ -50,13 +50,13 @@ feature "Journal Administration", js: true do
       journal_edit_form.description = "cancel Edited journal description"
       journal_edit_form.cancel
 
-      expect(admin_page.journal_names).to match_array ['Edited journal', journal2.name]
-      expect(admin_page.journal_descriptions).to match_array ['Edited journal description', journal2.description]
+      expect(admin_page).to have_journal_names('Edited journal', journal2.name)
+      expect(admin_page).to have_journal_descriptions('Edited journal description', journal2.description)
 
       admin_page.reload sync_on: 'Add new journal'
 
-      expect(admin_page.journal_names).to match_array ['Edited journal', journal2.name]
-      expect(admin_page.journal_descriptions).to match_array ['Edited journal description', journal2.description]
+      expect(admin_page).to have_journal_names('Edited journal', journal2.name)
+      expect(admin_page).to have_journal_descriptions('Edited journal description', journal2.description)
     end
   end
 end

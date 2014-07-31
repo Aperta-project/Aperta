@@ -35,8 +35,7 @@ class AdminDashboardPage < Page
   end
 
   def edit_journal(journal_name)
-    all('.journal').detect { |j| j.text =~ /#{journal_name}/ }.hover
-    all('.edit-icon').first.click
+    find('.journal', text: journal_name).find('.edit-icon').click
     EditJournalFragment.new(find '.journal-thumbnail-edit-form')
   end
 

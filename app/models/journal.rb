@@ -10,6 +10,7 @@ class Journal < ActiveRecord::Base
     "StandardTasks::EthicsTask",
     "StandardTasks::FigureTask",
     "StandardTasks::FinancialDisclosureTask",
+    "StandardTasks::TaxonTask",
     "StandardTasks::PaperAdminTask",
     "StandardTasks::PublishingRelatedQuestionsTask",
     "StandardTasks::TechCheckTask",

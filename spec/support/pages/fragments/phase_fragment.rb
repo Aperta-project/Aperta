@@ -20,12 +20,7 @@ class PhaseFragment < PageFragment
   end
 
   def has_remove_icon?
-    # I wasn't able to do this using just Capybara. For some reason, the root
-    # element never saw the edit or remove icon DOM, even though it's there
-    # when you `puts page.html`
-    phase_name = element.find('h2').text
-    js = "$(_.find($('.column'), function(e) { return $(e).find('h2').text() == '#{phase_name}'; })).find('.remove-icon').size()"
-    1 == element.session.evaluate_script(js)
+    element.all('.remove-icon', visible: false).present?
   end
 
   # add a phase AFTER this phase.

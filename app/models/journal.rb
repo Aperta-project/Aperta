@@ -1,6 +1,5 @@
 class Journal < ActiveRecord::Base
   VALID_TASK_TYPES = [
-    "PaperAdminTask",
     "PaperEditorTask",
     "PaperReviewerTask",
     "RegisterDecisionTask",
@@ -11,6 +10,7 @@ class Journal < ActiveRecord::Base
     "StandardTasks::EthicsTask",
     "StandardTasks::FigureTask",
     "StandardTasks::FinancialDisclosureTask",
+    "StandardTasks::PaperAdminTask",
     "StandardTasks::PublishingRelatedQuestionsTask",
     "StandardTasks::TechCheckTask",
     "SupportingInformation::Task",

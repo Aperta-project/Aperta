@@ -1,3 +1,7 @@
-ETahi.QuestionUploaderComponent = ETahi.QuestionComponent.extend
-  layoutName: 'components/question/uploader_component'
+ETahi.QuestionUploaderComponent = ETahi.QuestionComponent.extend ETahi.FileUploadProgress,
+  layoutName: "components/question/uploader_component"
 
+  actions:
+    uploadFinished: (data) ->
+      @set('model.url', data)
+      @get('model').save()

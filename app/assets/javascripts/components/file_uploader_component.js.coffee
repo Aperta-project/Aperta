@@ -57,13 +57,19 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
       filename = @files[0].name
       location = $(fileData).find('Location').text().replace(/%2F/g, "/")
 
-      $.ajax
-        url: that.get('url')
-        dataType: 'json'
-        type: that.get('railsMethod')
-        data: {url: location}
-        success: (data) =>
-          that.sendAction('done', data, filename)
+      resourceUrl = that.get('url')
+      requestMethod = that.get('railsMethod')
+      if resourceUrl && requestMethod # tell rails server that upload to s3 finished
+        $.ajax
+          url: resourceUrl
+          dataType: 'json'
+          type: requestMethod
+          data: Ember.merge({url: location}, that.get('dataParams'))
+          success: (data) =>
+            that.sendAction('done', data, filename)
+      else # allow custom behavior when s3 upload is finished
+        that.sendAction('done', location, filename)
+
 
     uploader.fileupload(params)
 

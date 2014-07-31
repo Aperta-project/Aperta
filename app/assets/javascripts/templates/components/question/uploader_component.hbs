@@ -1,9 +1,13 @@
 <label>{{model.question}}</label>
-{{#if template}}
-  <div class="additional-data">
-    <span class="button-secondary button--green fileinput-button">
-      Select and upload a document
-      {{yield}}
-    </span>
-  </div>
-{{/if}}
+<div class="additional-data">
+  <span class="button-secondary button--green fileinput-button">
+    Select and upload a document
+    {{file-uploader id="upload-files"
+                    accept='.docx'
+                    start='uploadStarted'
+                    progress='uploadProgress'
+                    done='uploadFinished'
+                    error='uploadError'
+                    filePrefix='question_attachment'}}
+  </span>
+</div>

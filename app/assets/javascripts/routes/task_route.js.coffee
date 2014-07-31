@@ -1,7 +1,7 @@
 ETahi.TaskRoute = Ember.Route.extend
   model: (params) ->
     @store.find('paper', params.paper_id).then =>
-      @store.find('task', params.task_id)
+      @store.findTask(params.task_id) || @store.find('task', params.task_id)
 
   afterModel: (model) ->
     return unless model.get('type') == "AuthorsTask"

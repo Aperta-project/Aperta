@@ -27,6 +27,8 @@
   .action-buttons {
     display: none;
 
+    &.is-editing { display: table-row; }
+
     button {
       float: right;
     }

@@ -1,11 +1,14 @@
-class InstitutionHashParser
-  attr_reader :hash, :names
+require 'singleton'
 
-  def initialize(hash)
-    @hash = hash
-  end
+class InstitutionHashParser
+  include Singleton
+  attr_reader :names
 
   def parse_names!
-    @names = @hash.map {|institution| institution['name'] }
+    @names ||= affiliations.map { |institution| institution['name'] }
+  end
+
+  def affiliations
+    @hash ||= YAML.load File.read Rails.root.join("config/institutions.yml")
   end
 end

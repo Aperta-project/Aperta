@@ -9,8 +9,8 @@ class PageFragment
 
   delegate :select, to: :element
 
-  def initialize element = nil, context: nil
-    @element = element || page
+  def initialize element, context: nil
+    @element = element
     @context = context
   end
 
@@ -128,8 +128,8 @@ class Page < PageFragment
     end
   end
 
-  def initialize element = nil
-    super element
+  def initialize element = nil, context: nil
+    super(element || page, context: context)
   end
 
   def reload sync_on:nil

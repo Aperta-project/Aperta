@@ -21,6 +21,18 @@ class AdminDashboardPage < Page
     all('.journal-name').map &:text
   end
 
+  def has_journal_names?(*names)
+    names.all? do |name_text|
+      page.has_css? '.journal-name', text: name_text
+    end
+  end
+
+  def has_journal_descriptions?(*descriptions)
+    descriptions.all? do |description_text|
+      page.has_css? '.journal-thumbnail-show p', text: description_text
+    end
+  end
+
   def journal_descriptions
     all('.journal-thumbnail-show p').map &:text
   end

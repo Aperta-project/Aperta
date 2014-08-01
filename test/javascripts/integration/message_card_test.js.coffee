@@ -49,7 +49,6 @@ test 'A message card with a comment works', ->
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
   ]
 
-  expect(1)
   visit("/papers/#{paper.id}/tasks/#{task.id}")
   andThen -> equal(find('.message-comments .comment-body').text(), "My comment")
 
@@ -81,6 +80,32 @@ test 'A message card with a commentLook shows up as unread', ->
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
   ]
 
-  expect(1)
   visit("/papers/#{paper.id}/tasks/#{task.id}")
   andThen -> equal(find('.message-comment.unread .comment-body').text(), "Unread comment")
+
+test 'A message card with more than 5 comments has the show all comments button', ->
+  expect(1)
+  ef = ETahi.Factory
+  r = _.range(10)
+  comments = _.map(r, (n) ->
+   ef.createRecord('Comment',
+    commenter_id: fakeUser.id
+    message_task_id: 1
+    body: "My comment-#{n}"
+  ))
+
+  [paper, task, records...] = createPaperWithOneTask('MessageTask'
+    title: "Message Time"
+    participant_ids: [fakeUser.id]
+    comment_ids: _.pluck(comments, 'id')
+  )
+
+  ef = ETahi.Factory
+  paperPayload = ef.createPayload('paper')
+  paperPayload.addRecords(records.concat(paper, task, fakeUser, comments))
+  server.respondWith 'GET', "/papers/#{paper.id}", [
+    200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
+  ]
+
+  visit("/papers/#{paper.id}/tasks/#{task.id}")
+  andThen -> ok(find('.load-all-comments').length == 1)

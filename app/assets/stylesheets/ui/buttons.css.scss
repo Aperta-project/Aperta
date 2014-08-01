@@ -4,30 +4,39 @@
 // .button--green      - Make the button GREEN
 // .button--purple     - Make the button PURPLE
 // .button--blue       - Make the button BLUE
-// .button--light-blue - Make the button LIGHT BLUE
+// .button--blue-light - Make the button LIGHT BLUE
 // .button--grey       - Make the button GREY
 // .button--white      - Make the button WHITE
 // .button--disabled   - Style the button as disabled
 // .button--wide       - Extra padding on left and right
 // .button--small      - Less padding all around
 //
-// Styleguide Button
+// Styleguide UI.Button
 
 
-@mixin button-primary-hover($color) {
-  color: #fff;
+@mixin button-primary-modifier($color, $color-hover) {
   background-color: $color;
+
+  &:focus, &:hover {
+    color: #fff;
+    background-color: $color-hover;
+  }
 }
 
-@mixin button-secondary($color) {
+@mixin button-secondary-modifier($color, $color-hover) {
   border-color: $color;
   color: $color;
+
+  &:focus, &:hover {
+    border-color: $color-hover;
+    color: #fff;
+    background-color: $color-hover;
+  }
 }
 
-@mixin button-secondary-hover($color) {
-  border-color: $color;
-  color: #fff;
-  background-color: $color;
+@mixin button-link-modifier($color, $color-hover) {
+  color: $color;
+  &:hover, &:focus { color: $color-hover; }
 }
 
 // Meant for @extend. Does not have any colors
@@ -47,6 +56,7 @@
   cursor: pointer;
   @include user-select(none);
   -webkit-font-smoothing: antialiased;
+  @include transition(all 0.1s ease-in-out);
 
   &:hover { text-decoration: none; }
 }
@@ -55,51 +65,13 @@
 .button-primary {
   @extend .button;
   color: #fff;
+  &:hover { text-decoration: none; }
 
-  &:hover {
-    text-decoration: none;
-  }
-
-  &.button--green {
-    background-color: $tahi-primary;
-
-    &:focus, &:hover {
-      @include button-primary-hover($tahi-primary-hover);
-    }
-  }
-
-  &.button--purple {
-    background: $tahi-message;
-
-    &:focus, &:hover {
-      @include button-primary-hover($tahi-message-hover);
-    }
-  }
-
-  &.button--blue {
-    background-color: $tahi-blue;
-
-    &:focus, &:hover {
-      @include button-primary-hover($tahi-blue-hover);
-    }
-  }
-
-  &.button--light-blue {
-    background-color: $tahi-blue-light;
-
-    &:focus, &:hover {
-      @include button-primary-hover($tahi-blue-light-hover);
-    }
-  }
-
-  &.button--grey {
-    background-color: $tahi-grey;
-
-    &:focus, &:hover {
-      @include button-primary-hover($tahi-grey-hover);
-    }
-  }
-
+  &.button--green      { @include button-primary-modifier($tahi-primary, $tahi-primary-hover); }
+  &.button--purple     { @include button-primary-modifier($tahi-message, $tahi-message-hover); }
+  &.button--blue       { @include button-primary-modifier($tahi-blue, $tahi-blue-hover); }
+  &.button--blue-light { @include button-primary-modifier($tahi-blue-light, $tahi-blue-light-hover); }
+  &.button--grey       { @include button-primary-modifier($tahi-grey, $tahi-grey-hover); }
   &.button--white {
     color: $tahi-primary;
     background: #fff;
@@ -111,46 +83,11 @@
   @extend .button;
   background: #fff;
 
-  &.button--green {
-    @include button-secondary($tahi-primary);
-
-    &:focus, &:hover {
-      @include button-secondary-hover($tahi-primary-hover);
-    }
-  }
-
-  &.button--purple {
-    @include button-secondary($tahi-message);
-
-    &:focus, &:hover {
-      @include button-secondary-hover($tahi-message-hover);
-    }
-  }
-
-  &.button--grey {
-    @include button-secondary($tahi-grey);
-
-    &:focus, &:hover {
-      @include button-secondary-hover($tahi-grey-hover);
-    }
-  }
-
-  &.button--blue {
-    @include button-secondary($tahi-blue);
-
-    &:focus, &:hover {
-      @include button-secondary-hover($tahi-blue-hover);
-    }
-  }
-
-  &.button--light-blue {
-    @include button-secondary($tahi-blue-light);
-
-    &:focus, &:hover {
-      @include button-secondary-hover($tahi-blue-light-hover);
-    }
-  }
-
+  &.button--green      { @include button-secondary-modifier($tahi-primary, $tahi-primary-hover); }
+  &.button--purple     { @include button-secondary-modifier($tahi-message, $tahi-message-hover); }
+  &.button--blue       { @include button-secondary-modifier($tahi-blue, $tahi-blue-hover); }
+  &.button--blue-light { @include button-secondary-modifier($tahi-blue-light, $tahi-blue-light-hover); }
+  &.button--grey       { @include button-secondary-modifier($tahi-grey, $tahi-grey-hover); }
   &.button--white {
     border-color: #fff;
     background: #fff;
@@ -163,54 +100,36 @@
   text-transform: none;
   background: transparent;
 
-  &.button--green {
-    color: $tahi-primary;
-    &:hover, &:focus { color: $tahi-primary-hover; }
-  }
-
-  &.button--purple {
-    color: $tahi-message;
-    &:hover, &:focus { color: $tahi-message-hover; }
-  }
-
-  &.button--blue {
-    color: $tahi-blue;
-    &:hover, &:focus { color: $tahi-blue-hover; }
-  }
-
-  &.button--light-blue {
-    color: $tahi-blue-light;
-    &:hover, &:focus { color: $tahi-blue-light-hover; }
-  }
-
-  &.button--grey {
-    color: $tahi-grey;
-    &:hover, &:focus { color: $tahi-grey-hover; }
-  }
-
-  &.button--white {
-    color: #fff;
-    &:hover, &:focus { color: #fff; }
-  }
+  &.button--green      { @include button-link-modifier($tahi-primary, $tahi-primary-hover); }
+  &.button--purple     { @include button-link-modifier($tahi-message, $tahi-message-hover); }
+  &.button--blue       { @include button-link-modifier($tahi-blue, $tahi-blue-hover); }
+  &.button--blue-light { @include button-link-modifier($tahi-blue-light, $tahi-blue-light-hover); }
+  &.button--grey       { @include button-link-modifier($tahi-grey, $tahi-grey-hover); }
+  &.button--white      { @include button-link-modifier(#fff, #fff); }
 }
 
 
 // .button modifier
-// Maybe we should have a disabled state for each style/color type?
 .button--disabled {
-  cursor: default;
+  color: #eee;
   background-color: $tahi-disabled;
+  cursor: not-allowed;
 
   &:focus, &:hover {
-    color: #fff;
+    color: #eee;
     background-color: $tahi-disabled;
   }
 
+  &.button-primary,
   &.button-secondary {
-    color: #fff;
+    color: #eee;
+    border-color: $tahi-disabled;
     background-color: $tahi-disabled;
 
-    &:focus, &:hover { background-color: $tahi-disabled; }
+    &:focus, &:hover {
+      border-color: $tahi-disabled;
+      background-color: $tahi-disabled;
+    }
   }
 
   &.button-link {
@@ -225,7 +144,6 @@
 // .button modifier
 .button--small {
   padding: 1px 5px;
-  text-transform: none;
 }
 
 

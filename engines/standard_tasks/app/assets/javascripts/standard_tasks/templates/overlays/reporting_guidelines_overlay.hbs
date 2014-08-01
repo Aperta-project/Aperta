@@ -5,7 +5,7 @@
     <ol>
       <li class="question">
         <div class="question-text">
-          Authors should check the EQUATOR Network site for any reporting guidelines that apply to their study design, and ensure that any required Supporting Information (checklists, protocols, flowcharts, etc.) be included in the article submission.
+          Authors should check the <a href='http://www.equator-network.org/' target='_blank'>EQUATOR Network</a> site for any reporting guidelines that apply to their study design, and ensure that any required Supporting Information (checklists, protocols, flowcharts, etc.) be included in the article submission.
         </div>
         <div class="help">
           Select all that apply
@@ -21,12 +21,9 @@
             {{#question-check ident="reporting_guidelines.systematic_reviews"
                               task=model
                               question="Systematic Reviews"}}
-              {{#each datum in view.additionalData}}
-                <div class="question-dataset">
-                  <p>PLACEHOLDER!</p>
-                  {{input type="text" name="placeholder" placeholder="placeholder" value=datum class="form-control"}}
-                </div>
-              {{/each}}
+              <div class="question-dataset">
+                <button class='upload-checklist'>Select & Upload</button>
+              </div>
             {{/question-check}}
           </li>
 
@@ -34,12 +31,9 @@
             {{#question-check ident="reporting_guidelines.meta_analyses"
                               task=model
                               question="Meta-analyses"}}
-              {{#each datum in view.additionalData}}
-                <div class="question-dataset">
-                  <p>PLACEHOLDER</p>
-                  {{input type="text" name="placeholder" placeholder="placeholder" value=datum class="form-control"}}
-                </div>
-              {{/each}}
+              <div class="question-dataset">
+                <button class='upload-checklist'>Select & Upload</button>
+              </div>
             {{/question-check}}
           </li>
 

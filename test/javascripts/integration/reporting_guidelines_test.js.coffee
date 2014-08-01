@@ -139,6 +139,7 @@ module 'Integration: Reporting Guidelines Card',
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
 
+    #TODO: mock out questions ajax response properly.
     server.respondWith 'GET', "/questions/#{TahiTest.questionId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify questionResponse
     ]
@@ -152,4 +153,8 @@ test 'Supporting Guideline is a meta data card, contains the right questions and
     equal find('h1').text(), 'Reporting Guidelines'
   click 'input[name="reporting_guidelines.systematic_reviews"]'
   .then ->
-    ok exists find('.question-dataset')
+    ok exists find('.upload-checklist')
+    equal find('.upload-checklist').first().text(), 'Select & Upload'
+
+test 'clinical trial question is auto-checked based on answer from ethics question', ->
+  ok true

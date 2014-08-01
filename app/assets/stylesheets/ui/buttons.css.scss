@@ -1,12 +1,5 @@
-// Button
-//
-// Should work on any element type (div, span, button, a)
+// Should work on any element type: div, span, button, a, etc.
 // Base button classes: .button-primary, .button-secondary, .button-link
-//
-// Markup:
-// <div class="button-primary {$modifiers}"></div>
-// <div class="button-secondary {$modifiers}"></div>
-// <div class="button-link {$modifiers}"></div>
 //
 // .button--green      - Make the button GREEN
 // .button--purple     - Make the button PURPLE
@@ -24,6 +17,11 @@
 @mixin button-primary-hover($color) {
   color: #fff;
   background-color: $color;
+}
+
+@mixin button-secondary($color) {
+  border-color: $color;
+  color: $color;
 }
 
 @mixin button-secondary-hover($color) {
@@ -114,8 +112,7 @@
   background: #fff;
 
   &.button--green {
-    border-color: $tahi-primary;
-    color: $tahi-primary;
+    @include button-secondary($tahi-primary);
 
     &:focus, &:hover {
       @include button-secondary-hover($tahi-primary-hover);
@@ -123,8 +120,7 @@
   }
 
   &.button--purple {
-    border-color:  $tahi-message;
-    color: $tahi-message;
+    @include button-secondary($tahi-message);
 
     &:focus, &:hover {
       @include button-secondary-hover($tahi-message-hover);
@@ -132,8 +128,7 @@
   }
 
   &.button--grey {
-    border-color: #ccc;
-    color: #333;
+    @include button-secondary($tahi-grey);
 
     &:focus, &:hover {
       @include button-secondary-hover($tahi-grey-hover);
@@ -141,8 +136,7 @@
   }
 
   &.button--blue {
-    border-color: $tahi-blue-light;
-    color: $tahi-blue;
+    @include button-secondary($tahi-blue);
 
     &:focus, &:hover {
       @include button-secondary-hover($tahi-blue-hover);
@@ -150,8 +144,7 @@
   }
 
   &.button--light-blue {
-    border-color: $tahi-blue-light;
-    color: $tahi-blue-light;
+    @include button-secondary($tahi-blue-light);
 
     &:focus, &:hover {
       @include button-secondary-hover($tahi-blue-light-hover);
@@ -206,9 +199,26 @@
 // Maybe we should have a disabled state for each style/color type?
 .button--disabled {
   cursor: default;
-  background-color: #bbb;
+  background-color: $tahi-disabled;
 
-  &:focus, &:hover { background-color: #bbb; }
+  &:focus, &:hover {
+    color: #fff;
+    background-color: $tahi-disabled;
+  }
+
+  &.button-secondary {
+    color: #fff;
+    background-color: $tahi-disabled;
+
+    &:focus, &:hover { background-color: $tahi-disabled; }
+  }
+
+  &.button-link {
+    color: $tahi-disabled;
+    background: transparent;
+
+    &:focus, &:hover { color: $tahi-disabled; }
+  }
 }
 
 

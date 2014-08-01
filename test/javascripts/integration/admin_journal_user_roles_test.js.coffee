@@ -159,7 +159,7 @@ test 'admin removes a role for user', ->
   click '.admin-user-search-button'
   .then ->
     ok exists '.assigned-role.token'
-    click '.remove-button'
+    click '.token-remove'
   andThen -> ok !exists '.assigned-role.token'
 
 test 'autocomplete does not give roles the user is already assigned to', ->

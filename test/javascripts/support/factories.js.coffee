@@ -159,7 +159,7 @@ ETahi.Factory =
     ETahi.Factory.createRecord('litePaper', paperAttrs)
 
 ETahi.FactoryAttributes = {}
-ETahi.FactoryAttributes.user =
+ETahi.FactoryAttributes.User =
   _rootKey: 'user'
   id: null
   full_name: "Fake User"
@@ -168,7 +168,7 @@ ETahi.FactoryAttributes.user =
   email: "fakeuser@example.com"
   admin: false
   affiliation_ids: []
-ETahi.FactoryAttributes.journal =
+ETahi.FactoryAttributes.Journal =
   _rootKey: 'journal'
   id: null
   name: "Fake Journal"
@@ -192,7 +192,7 @@ ETahi.FactoryAttributes.journal =
   ]
   manuscript_css: null
 
-ETahi.FactoryAttributes.paper =
+ETahi.FactoryAttributes.Paper =
   _rootKey: 'paper'
   id: 1
   short_title: "Paper"
@@ -211,7 +211,7 @@ ETahi.FactoryAttributes.paper =
   tasks: []
   journal_id: null
 
-ETahi.FactoryAttributes.litePaper =
+ETahi.FactoryAttributes.LitePaper =
   _rootKey: 'lite_paper'
   id: null
   title: "Foo"
@@ -219,7 +219,7 @@ ETahi.FactoryAttributes.litePaper =
   short_title: "Paper"
   submitted: false
 
-ETahi.FactoryAttributes.messageTask =
+ETahi.FactoryAttributes.MessageTask =
   _rootKey: 'task'
   id: null
   title: "Message Time"
@@ -236,7 +236,7 @@ ETahi.FactoryAttributes.messageTask =
   participant_ids: []
   comment_ids: []
 
-ETahi.FactoryAttributes.comment =
+ETahi.FactoryAttributes.Comment =
   _rootKey: 'comment'
   id: null
   commenter_id: null
@@ -245,7 +245,7 @@ ETahi.FactoryAttributes.comment =
   created_at: null
   comment_look_id: null
 
-ETahi.FactoryAttributes.phase =
+ETahi.FactoryAttributes.Phase =
   _rootKey: 'phase'
   id: null
   name: "Submission Data"

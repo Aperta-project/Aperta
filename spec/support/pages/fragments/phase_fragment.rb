@@ -8,7 +8,7 @@ class PhaseFragment < PageFragment
   def remove_card(card_name)
     container = find('.card', text: card_name)
     container.hover
-    container.find('.remove-card').click
+    container.find('.card-remove').click
   end
 
   def card_count

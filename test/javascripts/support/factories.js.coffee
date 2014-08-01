@@ -10,7 +10,7 @@ ETahi.Factory =
     typeIds[type]
 
   createPhase: (paper, attrs={})  ->
-    newPhase = @createRecord('phase', attrs)
+    newPhase = @createRecord('Phase', attrs)
     @addHasMany(paper, [newPhase], {inverse: 'paper'})
     newPhase
 
@@ -27,7 +27,9 @@ ETahi.Factory =
     else
       recordAttrs = attrs
 
-    _.extend(ETahi.FactoryAttributes[type], recordAttrs)
+    baseAttrs = ETahi.FactoryAttributes[type]
+    throw "No factory exists for type: #{type}" unless baseAttrs
+    _.extend(baseAttrs, recordAttrs)
 
   setForeignKey: (model, sourceModel, options={}) ->
     keyName = options.keyName || sourceModel._rootKey
@@ -72,13 +74,13 @@ ETahi.Factory =
   createBasicPaper: (defs) ->
     ef = ETahi.Factory
     # create the records
-    journal = ef.createRecord('journal', defs.journal || {})
-    paper = ef.createRecord('paper', _.omit(defs.paper, 'phases') || {})
+    journal = ef.createRecord('Journal', defs.journal || {})
+    paper = ef.createRecord('Paper', _.omit(defs.paper, 'phases') || {})
     litePaper = ETahi.Factory.createLitePaper(paper)
     ef.setForeignKey(paper, journal)
 
     phasesAndTasks = _.map(defs.paper.phases, (phase) ->
-      phaseRecord = ef.createRecord('phase', _.omit(phase, 'tasks'))
+      phaseRecord = ef.createRecord('Phase', _.omit(phase, 'tasks'))
       taskRecords = _.map(phase.tasks, (task) ->
         taskType = _.keys(task)[0]
         taskAttrs = task[taskType]
@@ -156,7 +158,7 @@ ETahi.Factory =
     {short_title, title, id, submitted} = paper
     paper_id = id
     paperAttrs = {short_title, title, id, submitted, paper_id}
-    ETahi.Factory.createRecord('litePaper', paperAttrs)
+    ETahi.Factory.createRecord('LitePaper', paperAttrs)
 
 ETahi.FactoryAttributes = {}
 ETahi.FactoryAttributes.User =
@@ -244,6 +246,12 @@ ETahi.FactoryAttributes.Comment =
   body: "A sample comment"
   created_at: null
   comment_look_id: null
+
+ETahi.FactoryAttributes.CommentLook =
+  _rootKey: 'comment_look'
+  id: null
+  read_at: null
+  comment_id: null
 
 ETahi.FactoryAttributes.Phase =
   _rootKey: 'phase'

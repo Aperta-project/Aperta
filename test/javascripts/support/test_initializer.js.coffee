@@ -23,7 +23,7 @@ Ember.Test.registerHelper('getStore', (app) ->
 
 # All interactions with ember are while a user is signed in
 @currentUserId = 183475
-@fakeUser = ETahi.Factory.createRecord 'user',
+@fakeUser = ETahi.Factory.createRecord 'User',
   id: @currentUserId
   full_name: "Fake User"
   username: "fakeuser"

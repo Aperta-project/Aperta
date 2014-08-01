@@ -2,8 +2,8 @@ setupMessagePayload = (messageTaskId) ->
 
 createPaperWithOneTask = (taskType, taskAttrs) ->
   ef = ETahi.Factory
-  journal = ef.createRecord('journal', id: 1)
-  paper = ef.createRecord('paper', journal_id: journal.id)
+  journal = ef.createRecord('Journal', id: 1)
+  paper = ef.createRecord('Paper', journal_id: journal.id)
   litePaper = ef.createLitePaper(paper)
   phase = ef.createPhase(paper)
   task = ef.createTask(taskType, paper, phase, taskAttrs)
@@ -29,32 +29,15 @@ module 'Integration: MessageCards',
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
 
-test 'Showing a message card will work', ->
-  expect(1)
-  [paper, task, records...] = createPaperWithOneTask('messageTask'
-    title: "Message Time"
-    participant_ids: [fakeUser.id]
-  )
-  ef = ETahi.Factory
-  paperPayload = ef.createPayload('paper')
-  paperPayload.addRecords(records.concat(paper, task, fakeUser))
-
-  server.respondWith 'GET', "/papers/#{paper.id}", [
-    200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
-  ]
-
-  visit "/papers/#{paper.id}/tasks/#{task.id}"
-  .then -> equal(find('.overlay-content h1').text(), "Message Time")
-
 test 'A message card with a comment works', ->
   expect(1)
   ef = ETahi.Factory
-  comment = ef.createRecord('comment',
+  comment = ef.createRecord('Comment',
     commenter_id: fakeUser.id
     message_task_id: 1
     body: "My comment"
   )
-  [paper, task, records...] = createPaperWithOneTask('messageTask'
+  [paper, task, records...] = createPaperWithOneTask('MessageTask'
     title: "Message Time"
     participant_ids: [fakeUser.id]
     comment_ids: [comment.id]
@@ -69,3 +52,35 @@ test 'A message card with a comment works', ->
   expect(1)
   visit("/papers/#{paper.id}/tasks/#{task.id}")
   andThen -> equal(find('.message-comments .comment-body').text(), "My comment")
+
+test 'A message card with a commentLook shows up as unread', ->
+  expect(1)
+  ef = ETahi.Factory
+
+  server.respondWith 'PUT', /\/comment_looks\/\d+/, [
+    204, {"Content-Type": "application/json"}, JSON.stringify {}
+  ]
+
+  comment = ef.createRecord('Comment',
+    commenter_id: fakeUser.id
+    message_task_id: 1
+    body: "Unread comment"
+  )
+  commentLook = ef.createRecord('CommentLook')
+  ef.setForeignKey(comment, commentLook, {inverse: 'comment'})
+
+  [paper, task, records...] = createPaperWithOneTask('MessageTask'
+    title: "Message Time"
+    participant_ids: [fakeUser.id]
+    comment_ids: [comment.id]
+  )
+  ef = ETahi.Factory
+  paperPayload = ef.createPayload('paper')
+  paperPayload.addRecords(records.concat(paper, task, fakeUser, comment, commentLook))
+  server.respondWith 'GET', "/papers/#{paper.id}", [
+    200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
+  ]
+
+  expect(1)
+  visit("/papers/#{paper.id}/tasks/#{task.id}")
+  andThen -> equal(find('.message-comment.unread .comment-body').text(), "Unread comment")

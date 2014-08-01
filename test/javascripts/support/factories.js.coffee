@@ -29,7 +29,7 @@ ETahi.Factory =
 
     baseAttrs = ETahi.FactoryAttributes[type]
     throw "No factory exists for type: #{type}" unless baseAttrs
-    _.extend(baseAttrs, recordAttrs)
+    _.defaults(recordAttrs, baseAttrs)
 
   setForeignKey: (model, sourceModel, options={}) ->
     keyName = options.keyName || sourceModel._rootKey

@@ -14,7 +14,7 @@ class ProfilePage < Page
   end
 
   def set_affiliate name
-    find('a', text: 'Add New Affiliation').click
+    find('a', text: 'ADD NEW AFFILIATION').click
     fill_in("Affiliation Name", with: name)
   end
 

@@ -2,7 +2,7 @@ class AddAuthorsOverlay < CardOverlay
   def add_author(group_name, author)
     group = find('.author-group', text: group_name)
     within(group) do
-      find('.button-secondary', text: "Add new").click
+      find('.button-secondary', text: "ADD NEW").click
       fill_in_author_form author
       click_button 'done'
     end

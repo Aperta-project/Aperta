@@ -5,13 +5,12 @@ ETahi.initializer
     if window.currentUserId
       ETahi.deferReadiness()
       store = container.lookup('store:main')
-      Ember.run ->
-        store.find 'user', window.currentUserId
-        .then (user) ->
-          container.register('user:current', ->
-            user
-          , instantiate: false)
-          application.inject('controller', 'getCurrentUser', 'user:current')
-          application.inject('route', 'getCurrentUser', 'user:current')
-          ETahi.advanceReadiness()
-        .catch (error) -> window.location.replace('/users/sign_in')
+      store.find 'user', window.currentUserId
+      .then (user) ->
+        container.register('user:current', ->
+          user
+        , instantiate: false)
+        application.inject('controller', 'getCurrentUser', 'user:current')
+        application.inject('route', 'getCurrentUser', 'user:current')
+        ETahi.advanceReadiness()
+      .catch (error) -> window.location.replace('/users/sign_in')

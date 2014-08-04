@@ -44,7 +44,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
           "PaperEditorTask"
           "StandardTasks::PaperReviewerTask"
           "RegisterDecisionTask"
-          "ReviewerReportTask"
+          "StandardTasks::ReviewerReportTask"
           "StandardTasks::AuthorsTask"
           "StandardTasks::CompetingInterestsTask"
           "StandardTasks::DataAvailabilityTask"

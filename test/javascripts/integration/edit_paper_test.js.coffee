@@ -104,7 +104,7 @@ module 'Integration: EditPaper',
           "PaperEditorTask"
           "StandardTasks::PaperReviewerTask"
           "RegisterDecisionTask"
-          "ReviewerReportTask"
+          "StandardTasks::ReviewerReportTask"
           "StandardTasks::AuthorsTask"
           "StandardTasks::CompetingInterestsTask"
           "StandardTasks::DataAvailabilityTask"

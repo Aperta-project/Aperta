@@ -47,5 +47,3 @@ ETahi.RegisterDecisionTask = ETahi.Task.extend
     JSON.parse(@get('decisionLetters')).Revise
   ).property 'decisionLetters'
 
-ETahi.ReviewerReportTask = ETahi.Task.extend
-  paperReview: DS.belongsTo('paperReview')

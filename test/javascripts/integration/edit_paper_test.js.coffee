@@ -101,7 +101,7 @@ module 'Integration: EditPaper',
         task_types: [
           "FinancialDisclosure::Task"
           "PaperAdminTask"
-          "PaperEditorTask"
+          "StandardTasks::PaperEditorTask"
           "StandardTasks::PaperReviewerTask"
           "StandardTasks::RegisterDecisionTask"
           "ReviewerReportTask"

@@ -41,7 +41,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
         task_types: [
           "FinancialDisclosure::Task"
           "PaperAdminTask"
-          "PaperEditorTask"
+          "StandardTasks::PaperEditorTask"
           "StandardTasks::PaperReviewerTask"
           "StandardTasks::RegisterDecisionTask"
           "ReviewerReportTask"
@@ -76,7 +76,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
               ,
               name: "Assign Editor"
               task_types: [
-                "PaperEditorTask"
+                "StandardTasks::PaperEditorTask"
                 "StandardTasks::TechCheckTask"
                 "PaperAdminTask"
               ]

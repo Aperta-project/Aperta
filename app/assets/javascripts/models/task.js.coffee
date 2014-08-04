@@ -22,10 +22,6 @@ ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
 
   relationshipsToSerialize: []
 
-ETahi.PaperEditorTask = ETahi.Task.extend
-  editors: DS.hasMany('user')
-  editor: DS.belongsTo('user')
-
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
   comments: DS.hasMany('comment')

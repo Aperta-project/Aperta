@@ -10,7 +10,7 @@ module JournalServices
               task_types: [StandardTasks::FigureTask, SupportingInformation::Task, StandardTasks::AuthorsTask, UploadManuscript::Task].map(&:to_s)
             }, {
               name: "Assign Editor",
-              task_types: [PaperEditorTask, StandardTasks::TechCheckTask, StandardTasks::PaperAdminTask].map(&:to_s)
+              task_types: [StandardTasks::PaperEditorTask, StandardTasks::TechCheckTask, StandardTasks::PaperAdminTask].map(&:to_s)
             }, {
               name: "Assign Reviewers",
               task_types: [StandardTasks::PaperReviewerTask].map(&:to_s)
@@ -19,7 +19,7 @@ module JournalServices
               task_types: []
             }, {
               name: "Make Decision",
-              task_types: [RegisterDecisionTask].map(&:to_s)
+              task_types: [StandardTasks::RegisterDecisionTask].map(&:to_s)
             }]
           }
         )

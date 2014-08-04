@@ -43,8 +43,8 @@ module 'Integration: Dashboard - when there are more than 15 papers',
             "PaperAdminTask"
             "PaperEditorTask"
             "PaperReviewerTask"
-            "RegisterDecisionTask"
             "StandardTasks::ReviewerReportTask"
+            "StandardTasks::RegisterDecisionTask"
             "StandardTasks::AuthorsTask"
             "StandardTasks::CompetingInterestsTask"
             "StandardTasks::DataAvailabilityTask"
@@ -78,8 +78,8 @@ module 'Integration: Dashboard - when there are more than 15 papers',
           "PaperAdminTask"
           "PaperEditorTask"
           "PaperReviewerTask"
-          "RegisterDecisionTask"
           "StandardTasks::ReviewerReportTask"
+          "StandardTasks::RegisterDecisionTask"
           "StandardTasks::AuthorsTask"
           "StandardTasks::CompetingInterestsTask"
           "StandardTasks::DataAvailabilityTask"
@@ -124,7 +124,7 @@ module 'Integration: Dashboard - when there are more than 15 papers',
               task_types: []
             ,
               name: 'Make Decision'
-              task_types: ['RegisterDecisionTask']
+              task_types: ['StandardTasks::RegisterDecisionTask']
             ]
 
           journal_id: TahiTest.adminJournalId

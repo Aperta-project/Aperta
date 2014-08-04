@@ -41,10 +41,10 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
         task_types: [
           "FinancialDisclosure::Task"
           "PaperAdminTask"
-          "PaperEditorTask"
+          "StandardTasks::PaperEditorTask"
           "StandardTasks::PaperReviewerTask"
-          "RegisterDecisionTask"
           "StandardTasks::ReviewerReportTask"
+          "StandardTasks::RegisterDecisionTask"
           "StandardTasks::AuthorsTask"
           "StandardTasks::CompetingInterestsTask"
           "StandardTasks::DataAvailabilityTask"
@@ -76,7 +76,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
               ,
               name: "Assign Editor"
               task_types: [
-                "PaperEditorTask"
+                "StandardTasks::PaperEditorTask"
                 "StandardTasks::TechCheckTask"
                 "PaperAdminTask"
               ]
@@ -88,7 +88,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
               task_types: []
               ,
               name: "Make Decision"
-              task_types: ["RegisterDecisionTask"]
+              task_types: ["StandardTasks::RegisterDecisionTask"]
             ]
           journal_id: TahiTest.journalId
         ]

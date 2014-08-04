@@ -22,28 +22,9 @@ ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
 
   relationshipsToSerialize: []
 
-ETahi.PaperEditorTask = ETahi.Task.extend
-  editors: DS.hasMany('user')
-  editor: DS.belongsTo('user')
-
 ETahi.MessageTask = ETahi.Task.extend
   participants: DS.hasMany('user')
   comments: DS.hasMany('comment')
   unreadCommentsCount: a('number')
 
   relationshipsToSerialize: ['participants']
-
-ETahi.RegisterDecisionTask = ETahi.Task.extend
-  decisionLetters: a('string')
-  paperDecision: a('string')
-  paperDecisionLetter: a('string')
-  acceptedLetterTemplate: (->
-    JSON.parse(@get('decisionLetters')).Accepted
-  ).property 'decisionLetters'
-  rejectedLetterTemplate: (->
-    JSON.parse(@get('decisionLetters')).Rejected
-  ).property 'decisionLetters'
-  reviseLetterTemplate: (->
-    JSON.parse(@get('decisionLetters')).Revise
-  ).property 'decisionLetters'
-

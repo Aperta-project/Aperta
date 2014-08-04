@@ -42,10 +42,15 @@ module 'Integration: Dashboard - when there are less than 15 papers',
           task_types: [
             "FinancialDisclosure::Task"
             "PaperAdminTask"
-            "PaperEditorTask"
+            "StandardTasks::PaperEditorTask"
             "StandardTasks::PaperReviewerTask"
+<<<<<<< HEAD
             "RegisterDecisionTask"
             "StandardTasks::ReviewerReportTask"
+=======
+            "StandardTasks::RegisterDecisionTask"
+            "ReviewerReportTask"
+>>>>>>> master
             "StandardTasks::AuthorsTask"
             "StandardTasks::CompetingInterestsTask"
             "StandardTasks::DataAvailabilityTask"
@@ -77,10 +82,10 @@ module 'Integration: Dashboard - when there are less than 15 papers',
         task_types: [
           "FinancialDisclosure::Task"
           "PaperAdminTask"
-          "PaperEditorTask"
+          "StandardTasks::PaperEditorTask"
           "StandardTasks::PaperReviewerTask"
-          "RegisterDecisionTask"
           "StandardTasks::ReviewerReportTask"
+          "StandardTasks::RegisterDecisionTask"
           "StandardTasks::AuthorsTask"
           "StandardTasks::CompetingInterestsTask"
           "StandardTasks::DataAvailabilityTask"
@@ -113,7 +118,7 @@ module 'Integration: Dashboard - when there are less than 15 papers',
             ,
               name: 'Assign Editor'
               task_types: [
-                'PaperEditorTask'
+                'StandardTasks::PaperEditorTask'
                 'StandardTasks::TechCheckTask'
                 'PaperAdminTask'
               ]
@@ -125,7 +130,7 @@ module 'Integration: Dashboard - when there are less than 15 papers',
               task_types: []
             ,
               name: 'Make Decision'
-              task_types: ['RegisterDecisionTask']
+              task_types: ['StandardTasks::RegisterDecisionTask']
             ]
 
           journal_id: adminJournalId

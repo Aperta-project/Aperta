@@ -6,8 +6,6 @@ ETahi.TaskSerializer = ETahi.ApplicationSerializer.extend ETahi.SerializesHasMan
   primaryTypeName: (primaryType) ->
     'task'
 
-ETahi.PaperEditorTaskSerializer = ETahi.TaskSerializer.extend()
 ETahi.AuthorsTaskSerializer = ETahi.TaskSerializer.extend()
 ETahi.MessageTaskSerializer = ETahi.TaskSerializer.extend()
 ETahi.TechCheckTaskSerializer = ETahi.TaskSerializer.extend()
-ETahi.RegisterDecisionTaskSerializer = ETahi.TaskSerializer.extend()

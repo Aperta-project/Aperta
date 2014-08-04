@@ -11,7 +11,6 @@ end
 gem 'standard_tasks',         path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
-gem 'financial_disclosure',   path: 'engines/financial_disclosure'
 
 # Gems
 gem 'rails', '4.1.1'
@@ -74,15 +73,16 @@ group :development do
   # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
   gem 'bullet'
   gem 'license_finder'
-  gem 'railroady'
+  gem 'kss-rails'
 end
 
 group :development, :test, :performance do
   gem 'factory_girl_rails'
   gem 'progressbar'
-  gem 'rspec-rails', "~> 3.0.0.beta2"
-  gem "rspec-its", "~> 1.0.0.pre"
-  gem 'capybara', "~> 2.3.0"
+  gem 'rspec-rails'
+  gem 'rspec-its'
+  gem 'rspec-collection_matchers'
+  gem 'capybara'
   gem 'selenium-webdriver'
   gem 'launchy'
   gem 'database_cleaner'

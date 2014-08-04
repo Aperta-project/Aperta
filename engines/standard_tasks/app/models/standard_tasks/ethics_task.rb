@@ -5,10 +5,6 @@ module StandardTasks
     title "Add Ethics Statement"
     role "author"
 
-    def active_model_serializer
-      TaskSerializer
-    end
-
     def assignees
       User.none
     end

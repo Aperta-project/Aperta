@@ -1,8 +1,6 @@
 class AffiliationsController < ApplicationController
   def index
-    parser = InstitutionHashParser.new(institution_hash)
-    parser.parse_names!
-    render json: parser.names, root: :institutions
+    render json: Institution.instance.names, root: :institutions
   end
 
   def create
@@ -22,10 +20,6 @@ class AffiliationsController < ApplicationController
 
   def affiliation
     current_user.affiliations.find(params[:id])
-  end
-
-  def institution_hash
-    YAML.load File.read Rails.root.join("config/institutions.yml")
   end
 
   def affiliation_params

@@ -57,11 +57,11 @@ class DashboardPage < Page
   end
 
   def paper_count
-    all('.dashboard-submitted-papers .dashboard-paper-title').count
+    all('.dashboard-paper-title').count
   end
 
   def total_paper_count
-    find('.welcome-message').text.match(/\d+/).to_s.to_i
+    find('.welcome-message').text.match(/You have (\d+)/)[1].to_i
   end
 
   def load_more_papers

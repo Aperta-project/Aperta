@@ -122,7 +122,7 @@ class JournalPage < Page
     role = user_result_row(user).all('.assigned-role')
                                 .detect { |row_label| row_label.text == role.name }
     role.hover
-    role.find('.remove-button').click
+    role.find('.token-remove').click
     self
   end
 

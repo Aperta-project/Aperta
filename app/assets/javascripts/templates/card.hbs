@@ -1,16 +1,15 @@
-<div class="card-content" {{action 'viewCard' view.content}}>
-  <div class="glyphicon glyphicon-ok completed-glyph"></div>
+<div class="card-content" {{action "viewCard" view.content}}>
+  <span class="card-completed-icon"></span>
+  {{#if controller.canRemoveCard }}
+    <span {{action "removeTask" view.content}}
+      class="card-remove"
+      data-toggle="tooltip"
+      data-placement="right"
+      title="Delete Card">
+    </span>
+  {{/if}}
   {{#if unreadCommentsCount}}
     <span class="badge unread-comments-count">{{unreadCommentsCount}}</span>
   {{/if}}
-  <div class="task-title">{{title}}</div>
+  {{title}}
 </div>
-
-{{#if controller.canRemoveCard }}
-  <span {{action 'removeTask' view.content}}
-    class="glyphicon glyphicon-remove-circle remove-card"
-    data-toggle="tooltip"
-    data-placement="right"
-    title="Delete Card">
-  </span>
-{{/if}}

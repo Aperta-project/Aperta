@@ -5,7 +5,7 @@ html {
   // For HTML tag when overlays are being displayed
   &.noscroll { overflow: hidden; }
 
-  &.matte { background-color: $tahi-matte; }
+  &.matte { background-color: #ddd; }
 }
 
 body { background: transparent; } // override bootstrap

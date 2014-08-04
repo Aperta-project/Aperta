@@ -11,7 +11,7 @@
 
 @mixin text-link-lg {
   padding: 0 15px 0 0;
-  color: $btn-primary-bg;
+  color: $tahi-primary;
   font-family: $tahi-font-family;
   font-size: 18px;
 
@@ -23,14 +23,6 @@
   position: absolute;
   top: 0;
   text-align: center;
-}
-
-@mixin upload-hover($background-color) {
-  background-color: $background-color;
-
-  .button-secondary {
-    margin-top: 65px;
-  }
 }
 
 %truncates {

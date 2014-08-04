@@ -21,6 +21,18 @@ class AdminDashboardPage < Page
     all('.journal-name').map &:text
   end
 
+  def has_journal_names?(*names)
+    names.all? do |name_text|
+      page.has_css? '.journal-name', text: name_text
+    end
+  end
+
+  def has_journal_descriptions?(*descriptions)
+    descriptions.all? do |description_text|
+      page.has_css? '.journal-thumbnail-show p', text: description_text
+    end
+  end
+
   def journal_descriptions
     all('.journal-thumbnail-show p').map &:text
   end
@@ -35,8 +47,7 @@ class AdminDashboardPage < Page
   end
 
   def edit_journal(journal_name)
-    all('.journal').detect { |j| j.text =~ /#{journal_name}/ }.hover
-    all('.edit-icon').first.click
+    find('.journal', text: journal_name).find('.edit-icon').click
     EditJournalFragment.new(find '.journal-thumbnail-edit-form')
   end
 
@@ -65,7 +76,7 @@ end
 
 class UserRowInSearch < PageFragment
   def row_content
-    all('td')
+    find_all('td')
   end
 
   def edit_user_details

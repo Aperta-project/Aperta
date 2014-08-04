@@ -54,7 +54,7 @@ feature "Profile Page", js: true do
     end
 
     it "clears the form" do
-      find('a', text: 'Add New Affiliation').click
+      find('a', text: 'ADD NEW AFFILIATION').click
       expect(page).to have_no_content(uni)
     end
   end

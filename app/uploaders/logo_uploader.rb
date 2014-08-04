@@ -12,7 +12,7 @@ class LogoUploader < CarrierWave::Uploader::Base
   end
 
   version :thumbnail do
-    process resize_to_limit: [126, 36]
+    process resize_to_limit: [250, 40]
 
     def full_filename(orig_file)
       "#{version_name}_#{orig_file}"

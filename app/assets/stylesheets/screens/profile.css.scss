@@ -47,7 +47,11 @@
 }
 
 #profile-avatar-hover {
-  @include upload-hover(rgba(0,145,0,0.5));
+  background-color: rgba(0,145,0,0.5);
+
+  .button-secondary {
+    margin-top: 65px;
+  }
 }
 
 #profile-avatar-spinner {

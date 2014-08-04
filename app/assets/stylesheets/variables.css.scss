@@ -1,22 +1,33 @@
+// Green
 $tahi-primary: #39a329;
 $tahi-primary-hover: #0f7400;
+
+// Desaturated green:
 $tahi-secondary: #8ecb87;
+
+// Light, very desaturated green:
 $tahi-tertiary: #d5d8d5;
+// Middle grey:
 $tahi-tertiary-dark: #878787;
-$tahi-matte: #ddd;
-$tahi-backdrop: rgb(181,181,181);
+
+$tahi-blue: #347bc5;
+$tahi-blue-hover: #0052a8;
+
 $tahi-blue-light: #87c0f9;
-$tahi-blue-light-hover: #6D9DCD;
-$tahi-blue-hover: rgb(52, 123, 197);
+$tahi-blue-light-hover: $tahi-blue;
+
 $tahi-grey: #777;
 $tahi-grey-hover: #555;
-$tahi-error-red: #BB0000;
-$tahi-dark: #333;
 
+// Lightish grey:
+$tahi-disabled: #bbb;
+
+// Purple
 $tahi-message: #5d4aac;
+$tahi-message-hover: #351e94;
 $tahi-message-light: #9f95d0;
-$btn-primary-bg: $tahi-primary;
-$btn-primary-bg-hover: $tahi-primary-hover;
+
+$tahi-error-red: #BB0000;
 
 $tahi-font-family: 'Cabin', helvetica, sans-serif;
 $tahi-article-font-family: 'librebaskerville', times, serif;

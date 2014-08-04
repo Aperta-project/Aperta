@@ -56,16 +56,11 @@
       margin: 0 0 2px;
     }
   }
-
 }
 
-.arrow-top {
+.tahi-tooltip-arrow {
+  @include triangle(5px, #000, up);
   position: absolute;
-  left:50%;
-  top:-5px;
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid #000;
+  left: 50%;
+  top: -5px;
 }

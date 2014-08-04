@@ -31,7 +31,7 @@ class FlowManagerPage < Page
     end
 
     def completed?
-      has_css?('.completed-glyph')
+      has_css?('.card-completed-icon')
     end
   end
 
@@ -46,7 +46,7 @@ class FlowManagerPage < Page
     end
 
     def cards
-      all('.card').map { |c| CardFragment.new c }
+      find_all('.card').map { |c| CardFragment.new c }
     end
 
     def card_by_title(card_title)
@@ -56,7 +56,7 @@ class FlowManagerPage < Page
 
   class Column < PageFragment
     def paper_profiles
-      all('.paper-profile').map { |p| PaperProfile.new p }
+      find_all('.paper-profile').map { |p| PaperProfile.new p }
     end
 
     def paper_profiles_for title

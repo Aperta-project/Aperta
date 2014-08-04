@@ -41,8 +41,8 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
         task_types: [
           "FinancialDisclosure::Task"
           "PaperAdminTask"
-          "PaperEditorTask"
-          "PaperReviewerTask"
+          "StandardTasks::PaperEditorTask"
+          "StandardTasks::PaperReviewerTask"
           "RegisterDecisionTask"
           "ReviewerReportTask"
           "StandardTasks::AuthorsTask"
@@ -76,13 +76,13 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
               ,
               name: "Assign Editor"
               task_types: [
-                "PaperEditorTask"
+                "StandardTasks::PaperEditorTask"
                 "StandardTasks::TechCheckTask"
                 "PaperAdminTask"
               ]
               ,
               name: "Assign Reviewers"
-              task_types: ["PaperReviewerTask"]
+              task_types: ["StandardTasks::PaperReviewerTask"]
               ,
               name: "Get Reviews"
               task_types: []
@@ -159,7 +159,7 @@ test 'admin removes a role for user', ->
   click '.admin-user-search-button'
   .then ->
     ok exists '.assigned-role.token'
-    click '.remove-button'
+    click '.token-remove'
   andThen -> ok !exists '.assigned-role.token'
 
 test 'autocomplete does not give roles the user is already assigned to', ->

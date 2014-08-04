@@ -1,17 +1,9 @@
-// Card
-//
 // Description goes here
-//
-// Markup:
-// <div class="card {$modifiers}">
-//   <div class="card-content">...</div>
-//   <div class="remove-card"></div>
-// </div>
 //
 // .card--message   - Use if Task is message type
 // .card--completed - Use if Task is completed
 //
-// Styleguide Card
+// Styleguide UI.Card
 
 
 .card {
@@ -20,29 +12,32 @@
   margin-bottom: 8px;
 
   .tooltip { position: fixed; }
-
-  .completed-glyph {
-    position: absolute;
-    top: 15px;
-    display: none;
-    color: $tahi-primary;
-  }
 }
 
 
 .card:focus,
 .card:hover {
-  .remove-card { display: inline; }
+  .card-remove { display: inline; }
 
   .card-content {
     color: #fff;
     text-decoration: none;
-    background-color: $btn-primary-bg;
+    background-color: $tahi-primary;
   }
 }
 
 
-.remove-card {
+.card-completed-icon {
+  @extend .glyphicon, .glyphicon-ok, .completed-glyph;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  display: none;
+  color: $tahi-primary;
+}
+
+
+.card-remove {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -50,6 +45,7 @@
   font-size: 14px;
   color: #fff;
   cursor: pointer;
+  @extend .glyphicon, .glyphicon-remove-circle;
 }
 
 
@@ -90,19 +86,16 @@
 
 // .card modifier:
 .card--completed {
-  .task-title {
-    margin-left: 30px;
-  }
-
   .card-content {
+    padding-left: 45px;
     color: $tahi-tertiary - #666;
     background: $tahi-tertiary;
+  }
 
-    .completed-glyph {
-      display: inline;
-      margin-right: 5px;
-      color: $tahi-primary;
-    }
+  .card-completed-icon {
+    display: inline;
+    margin-right: 5px;
+    color: $tahi-primary;
   }
 
   &:focus .card-content,

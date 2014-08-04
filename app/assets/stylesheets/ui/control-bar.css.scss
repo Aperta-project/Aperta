@@ -1,13 +1,19 @@
+// Elements in control-bar should be in unordered lists. The ULs will align left except for the last one which will align right.
+//
+// .control-bar--blue - Make the control bar BLUE!
+//
+// Styleguide UI.ControlBar
+
 .control-bar {
-  overflow: auto;
+  overflow: hidden;
+  width: 100%;
   height: $tahi-control-bar-height;
   border-bottom: 1px solid #939393;
   padding: 7px 0 5px 0;
   background: #e1e1e1;
   z-index: 2;
-  width: 100%;
 
-  &.control-bar-blue {
+  &.control-bar--blue {
     background-color: #87c0f9;
   }
 }
@@ -18,6 +24,7 @@
   min-width: 960px;
   max-width: 1120px;
   position: relative;
+  height: 40px;
 }
 
 .control-bar ul {
@@ -62,11 +69,7 @@
     }
   }
 
-  .pdf-icon path,
-  .epub-icon path,
-  .manuscript-manager-icon path,
-  .manuscript-icon path,
-  .manuscript-icon rect {
+  svg path, svg rect {
     fill: #444;
   }
 
@@ -75,11 +78,7 @@
 
     span { color: $tahi-primary; }
 
-    .pdf-icon path,
-    .epub-icon path,
-    .manuscript-manager-icon path,
-    .manuscript-icon path,
-    .manuscript-icon rect {
+    svg path, svg rect {
       fill: $tahi-primary;
     }
   }

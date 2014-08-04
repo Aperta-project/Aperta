@@ -14,6 +14,6 @@ class LitePapersController < ApplicationController
   end
 
   def paper_ids
-    current_user.submitted_papers.pluck(:id) | current_user.assigned_papers.pluck(:id)
+    current_user.assigned_papers.pluck :id
   end
 end

@@ -8,6 +8,10 @@ namespace :data do
     Task.where(type: "UploadManuscriptTask").update_all(type: "UploadManuscript::Task")
     Task.where(type: "DataAvailability::Task").update_all(type: "StandardTasks::DataAvailabilityTask")
     Task.where(type: "CompetingInterests::Task").update_all(type: "StandardTasks::CompetingInterestsTask")
+    Task.where(type: "FinancialDisclosure::Task").update_all(type: "StandardTasks::FinancialDisclosureTask")
+    Task.where(type: "PaperAdminTask").update_all(type: "StandardTasks::PaperAdminTask")
+    Task.where(type: "PaperReviewerTask").update_all(type: "StandardTasks::PaperReviewerTask")
+    Task.where(type: "PaperEditorTask").update_all(type: "StandardTasks::PaperEditorTask")
     puts "Be sure to update the task_types inside all existing ManuscriptManagerTemplates"
   end
 
@@ -15,4 +19,12 @@ namespace :data do
     Task.where(title: "Supporting Information").update_all(title: "Supporting Info")
   end
 
+  desc "Destroy and recreate manuscript manager templates"
+  task :reset_mmts => :environment do
+    ManuscriptManagerTemplate.destroy_all
+    Rake::Task["journal:create_default_templates"].invoke
+  end
+
+  desc "Reset references to Task subclasses"
+  task :reset_task_types => [:reset_mmts, :migrate_namespacing]
 end

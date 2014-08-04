@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe RegisterDecisionTask do
+describe StandardTasks::RegisterDecisionTask do
   describe "defaults" do
-    subject(:task) { RegisterDecisionTask.new }
+    subject(:task) { StandardTasks::RegisterDecisionTask.new }
     specify { expect(task.title).to eq 'Register Decision' }
     specify { expect(task.role).to eq 'editor' }
   end
@@ -12,7 +12,7 @@ describe RegisterDecisionTask do
       FactoryGirl.create :paper, :with_tasks, title: "Crazy stubbing tests on rats"
     end
 
-    let(:task) { RegisterDecisionTask.create! phase: paper.phases.first }
+    let(:task) { StandardTasks::RegisterDecisionTask.create! phase: paper.phases.first }
 
     before do
       user = double(:last_name, last_name: 'Mazur')
@@ -88,7 +88,7 @@ describe RegisterDecisionTask do
   end
 
   describe "save and retrieve paper decision and decision letter" do
-    let(:task) { RegisterDecisionTask.new }
+    let(:task) { StandardTasks::RegisterDecisionTask.new }
     let(:paper) do
       FactoryGirl.create :paper, title: "Crazy stubbing tests on rats",
         decision: "Accepted", decision_letter: "Lorem Ipsum"

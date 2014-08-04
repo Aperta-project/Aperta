@@ -40,7 +40,7 @@
         {{#each collaborator in collaborators}}
           <div class="collaborator-status">
             <div class="circle"></div>
-            <span class="name">{{collaborator.fullName}}</span>
+            <span class="name">{{unbound collaborator.fullName}}</span>
           </div>
         {{/each}}
         <a class="add-collaborators" {{action "addCollaborators"}}>+ Add Collaborator</a>

@@ -6,6 +6,7 @@
 .question-text {
   font-size: 1.4em;
   line-height: 1.2em;
+  margin-bottom: 10px;
 }
 
 .help:before {
@@ -32,4 +33,8 @@ label {
   padding: 30px;
   margin: 15px 0;
   background: rgb(194, 232, 188);
+}
+
+.uploader-additional-info {
+  margin: 20px 0;
 }

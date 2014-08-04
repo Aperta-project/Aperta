@@ -1,0 +1,104 @@
+.auth-flash {
+  position: relative;
+  padding: 15px 20px;
+
+  span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 7px 3px 7px;
+    font-size: 24px;
+    line-height: 100%;
+    cursor: pointer;
+  }
+}
+
+.auth-flash--alert {
+  border: 1px solid #EBE4DB;
+  color: #853F59;
+  background: #F6EFE8;
+}
+
+.auth-flash--notice {
+}
+
+
+
+.auth-container {
+  overflow: hidden;
+  width: 590px;
+  margin: 0 auto;
+
+  h1 {
+    margin-top: 45px;
+    margin-bottom: 5rem;
+    font-size: 44px;
+  }
+}
+
+.auth-left {
+  float: left;
+  width: 307px;
+  border-right: 1px solid #cccccd;
+  padding-top: 15px;
+}
+
+.auth-right {
+  float: right;
+  width: 210px;
+  padding-top: 15px;
+}
+
+.auth-remember-me {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.auth-field {
+  margin-bottom: 15px;
+}
+
+.auth-field--text-input input {
+  width: 205px;
+  border: 1px solid #cccccd;
+  border-radius: 4px;
+  padding: 6px 12px;
+}
+
+.auth-3rd-party-button {
+  display: block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  background: #eee;
+
+  &:hover { color: #fff; }
+}
+
+
+.auth-orcid {
+  background: #7ab727;
+}
+
+.auth-cas {
+  background: #2B71B7;
+}
+
+.auth-linkedin {
+  background: #063d73;
+}
+
+.auth-google {
+  background: #970d0c;
+}
+
+.auth-signup {
+  text-transform: uppercase;
+}
+
+.auth-signin {
+  padding-right: 55px;
+  padding-left: 55px;
+}

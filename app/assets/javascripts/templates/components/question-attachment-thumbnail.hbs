@@ -8,12 +8,16 @@
 
   <div class="question-attachment-thumbnail-text-content">
     <h2 class="attachment-thumbnail-title">
-      {{attachment.filename}}
+      {{#if attachment.filename}}
+        {{attachment.filename}}
+      {{else}}
+        Processing...
+      {{/if}}
     </h2>
   </div>
 
   <div class="attachment-thumbnail-destroy-overlay">
-    <p>This will permanently delete your image. Are you sure?</p>
+    <p>This will permanently delete your document. Are you sure?</p>
     <button class="button-primary button--white" {{action "cancelDestroyAttachment"}}>Cancel</button>
     <button class="button-primary button--white attachment-delete-button" {{action "destroyAttachment"}}>Delete Forever</button>
   </div>

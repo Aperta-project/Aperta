@@ -97,7 +97,7 @@
 .attachment-thumbnail-destroy-overlay {
   @include position(absolute, 0px 0px 0px 0px);
   display: none;
-  padding: 30px 30px 0 30px;
+  padding: 20px 30px 0 30px;
   color: #fff;
   background-color: #29a904;
   z-index: 1; // higher index to ensure overlay stays above all other content
@@ -202,8 +202,11 @@
 .question-attachment-thumbnail-image {
   font-size: 50px;
   position: absolute;
-  top: 20px;
-  left: 40px;
+  top: 10px;
+  left: 30px;
+  height: 78px;
+  width: 66px;
+  padding: 10px;
 }
 
 .question-attachment-thumbnail-text-content {

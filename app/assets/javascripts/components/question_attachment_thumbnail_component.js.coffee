@@ -7,8 +7,8 @@ ETahi.QuestionAttachmentThumbnailComponent = Ember.Component.extend
   spinnerOpts: (->
     lines: 7 # The number of lines to draw
     length: 0 # The length of each line
-    width: 7 # The line thickness
-    radius: 7 # The radius of the inner circle
+    width: 5 # The line thickness
+    radius: 5 # The radius of the inner circle
     corners: 1 # Corner roundness (0..1)
     rotate: 0 # The rotation offset
     direction: 1 # 1: clockwise, -1: counterclockwise
@@ -19,7 +19,7 @@ ETahi.QuestionAttachmentThumbnailComponent = Ember.Component.extend
     hwaccel: false # Whether to use hardware acceleration
     className: 'spinner' # The CSS class to assign to the spinner
     zIndex: 2e9 # The z-index (defaults to 2000000000)
-    top: '50%'
+    top: '60%'
     left: '50%'
   ).property()
 

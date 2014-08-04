@@ -19,7 +19,6 @@ module StandardTasks
 
     def editor_id=(user_id)
       return unless editor_id != user_id
-      current_paper_role = paper_role
       paper_role.user_id = user_id
       paper_role.save!
     end

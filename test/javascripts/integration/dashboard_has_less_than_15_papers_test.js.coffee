@@ -44,7 +44,7 @@ module 'Integration: Dashboard - when there are less than 15 papers',
             "PaperAdminTask"
             "PaperEditorTask"
             "StandardTasks::PaperReviewerTask"
-            "RegisterDecisionTask"
+            "StandardTasks::RegisterDecisionTask"
             "ReviewerReportTask"
             "StandardTasks::AuthorsTask"
             "StandardTasks::CompetingInterestsTask"
@@ -79,7 +79,7 @@ module 'Integration: Dashboard - when there are less than 15 papers',
           "PaperAdminTask"
           "PaperEditorTask"
           "StandardTasks::PaperReviewerTask"
-          "RegisterDecisionTask"
+          "StandardTasks::RegisterDecisionTask"
           "ReviewerReportTask"
           "StandardTasks::AuthorsTask"
           "StandardTasks::CompetingInterestsTask"
@@ -125,7 +125,7 @@ module 'Integration: Dashboard - when there are less than 15 papers',
               task_types: []
             ,
               name: 'Make Decision'
-              task_types: ['RegisterDecisionTask']
+              task_types: ['StandardTasks::RegisterDecisionTask']
             ]
 
           journal_id: adminJournalId

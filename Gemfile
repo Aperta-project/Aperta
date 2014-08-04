@@ -82,6 +82,7 @@ group :development, :test, :performance do
   gem 'rspec-rails'
   gem 'rspec-its'
   gem 'rspec-collection_matchers'
+  gem 'rspec-instafail'
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'launchy'

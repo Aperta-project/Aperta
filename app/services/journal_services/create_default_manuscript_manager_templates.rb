@@ -19,7 +19,7 @@ module JournalServices
               task_types: []
             }, {
               name: "Make Decision",
-              task_types: [RegisterDecisionTask].map(&:to_s)
+              task_types: [StandardTasks::RegisterDecisionTask].map(&:to_s)
             }]
           }
         )

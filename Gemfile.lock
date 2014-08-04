@@ -353,6 +353,10 @@ GEM
     remotipart (1.2.1)
     rest_client (1.7.3)
       netrc (~> 0.7.7)
+    rspec (3.0.0)
+      rspec-core (~> 3.0.0)
+      rspec-expectations (~> 3.0.0)
+      rspec-mocks (~> 3.0.0)
     rspec-collection_matchers (1.0.0)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.0.3)
@@ -360,6 +364,8 @@ GEM
     rspec-expectations (3.0.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.0.0)
+    rspec-instafail (0.2.5)
+      rspec
     rspec-its (1.0.1)
       rspec-core (>= 2.99.0.beta1)
       rspec-expectations (>= 2.99.0.beta1)
@@ -507,6 +513,7 @@ DEPENDENCIES
   rails_admin
   rest_client (~> 1.7.3)
   rspec-collection_matchers
+  rspec-instafail
   rspec-its
   rspec-rails
   rubyzip

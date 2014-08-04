@@ -39,14 +39,13 @@ class QuestionsController < ApplicationController
   end
 
   def question
-    begin @question ||=
+    @question ||=
       if params[:id]
         Question.find(params[:id])
       elsif question_params[:task_id]
         task = Task.find(question_params[:task_id])
         task.questions.new(question_params.except(:url))
       end
-    end
   end
 
   def has_attachment?

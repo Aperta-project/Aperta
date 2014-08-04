@@ -15,7 +15,7 @@ describe QuestionsController do
 
   shared_examples_for "processing attachments" do
     it "creates an question attachment" do
-      expect { request_with_attachment }.to change{ QuestionAttachment.count }.by(1)
+      expect { request_with_attachment }.to change { QuestionAttachment.count }.by(1)
     end
 
     it "queues a download worker" do

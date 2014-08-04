@@ -64,7 +64,7 @@
 
 #paper-body {
   min-height: 500px;
-  margin-bottom: 36px;
+  padding-bottom: 36px;
 
   .ve-ce-documentNode.ve-ce-branchNode { // visual-editor override
     min-height: 500px;
@@ -94,11 +94,12 @@
   position: relative;
 
   > article {
-    @include make-xs-column(9);
+    position: relative;
+    width: 75%;
     border-right: 1px solid $tahi-tertiary;
     padding: 0;
 
-    .title { margin-top: 55px; }
+    .title { padding-top: 55px; }
   }
 
   > aside {

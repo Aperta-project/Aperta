@@ -1,8 +1,13 @@
-<div class="uploader-additional-info">
+<div class="question">
   <div class="question-text">{{model.question}}</div>
   <div class="additional-data">
     <span class="button-secondary button--green fileinput-button">
-      Select &amp; upload
+      {{#if model.questionAttachment}}
+        Replace File
+      {{else}}
+        Select &amp; upload
+      {{/if}}
+
       {{file-uploader accept='.docx'
                       start='uploadStarted'
                       progress='uploadProgress'

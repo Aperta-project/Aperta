@@ -44,13 +44,8 @@ module 'Integration: Dashboard - when there are less than 15 papers',
             "PaperAdminTask"
             "StandardTasks::PaperEditorTask"
             "StandardTasks::PaperReviewerTask"
-<<<<<<< HEAD
-            "RegisterDecisionTask"
             "StandardTasks::ReviewerReportTask"
-=======
             "StandardTasks::RegisterDecisionTask"
-            "ReviewerReportTask"
->>>>>>> master
             "StandardTasks::AuthorsTask"
             "StandardTasks::CompetingInterestsTask"
             "StandardTasks::DataAvailabilityTask"

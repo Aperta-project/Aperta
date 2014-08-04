@@ -1,9 +1,8 @@
-<label>{{model.question}}</label>
+<div class="question-text">{{model.question}}</div>
 <div class="additional-data">
   <span class="button-secondary button--green fileinput-button">
     Select &amp; upload
-    {{file-uploader id="upload-files"
-                    accept='.docx'
+    {{file-uploader accept='.docx'
                     start='uploadStarted'
                     progress='uploadProgress'
                     done='uploadFinished'

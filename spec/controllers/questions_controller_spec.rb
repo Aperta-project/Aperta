@@ -51,4 +51,14 @@ describe QuestionsController do
 
     it_behaves_like "processing attachments"
   end
+
+  describe "#destroy" do
+    let!(:question) { FactoryGirl.create(:question) }
+
+    it "responds with 204" do
+      expect {
+        put :destroy, format: :json, id: question.id
+      }.to change { Question.count }.by(-1)
+    end
+  end
 end

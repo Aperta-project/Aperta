@@ -48,7 +48,7 @@ feature "Sync Reviewer Report tasks with Assigned Reviewers", js: true do
   scenario "Removing a paper reviewer should remove reviewer report task from the renamed phase" do
     expect(task_manager_page).to have_task('Reviewer Report')
 
-    reviewer_report_task = paper.tasks.where(type: ReviewerReportTask).first
+    reviewer_report_task = paper.tasks.where(type: StandardTasks::ReviewerReportTask).first
     new_phase = paper.phases.where("name != ?", "Get Reviews").first
     reviewer_report_task.update_attribute(:phase_id, new_phase.id)
 

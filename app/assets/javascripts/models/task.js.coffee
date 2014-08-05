@@ -28,6 +28,3 @@ ETahi.MessageTask = ETahi.Task.extend
   unreadCommentsCount: a('number')
 
   relationshipsToSerialize: ['participants']
-
-ETahi.ReviewerReportTask = ETahi.Task.extend
-  paperReview: DS.belongsTo('paperReview')

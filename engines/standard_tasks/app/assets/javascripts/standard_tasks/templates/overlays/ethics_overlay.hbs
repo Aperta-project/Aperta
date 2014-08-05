@@ -22,11 +22,13 @@
 
             {{question-uploader ident="ethics.trial_protocol" task=model
                                 question="Please provide a copy of the trial protocol."
-                                updateStore='updateStore'}}
+                                updateStore='updateStore'
+                                accept=".docx,.pdf"}}
 
             {{question-uploader ident="ethics.consort_checklist" task=model
                                 question="Please provide a completed CONSORT checklist as supporting information."
-                                updateStore='updateStore'}}
+                                updateStore='updateStore'
+                                accept=".docx,.pdf"}}
           </div>
         {{/if}}
       {{/question-radio}}

@@ -1,7 +1,6 @@
 ETahi.IndexView = Ember.View.extend
   listenForPapers: (->
     @get('controller').on 'papersDidLoad', this, =>
-      console.log 'listenForPapers fired'
       Em.run.later ( => @setupTooltips() ), 150
 
     @setupTooltips()

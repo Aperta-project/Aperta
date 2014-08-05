@@ -42,7 +42,7 @@ module EventStreamNotifier
     end
 
     def klass_name
-      self.class.base_class.name.downcase
+      self.class.base_class.name.underscore
     end
 
     def action

@@ -12,7 +12,7 @@ TahiNotifier.subscribe("task:created", "task:updated", "comment:*") do |name, st
   )
 end
 
-TahiNotifier.subscribe("supportinginformation::file:*", "figure:*", "paper:*") do |name, start, finish, id, payload|
+TahiNotifier.subscribe("supporting_information/file:*", "figure:*", "paper:*", "question_attachment:*") do |name, start, finish, id, payload|
   action     = payload[:action]
   id         = payload[:id]
   paper_id   = payload[:paper_id]

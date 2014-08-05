@@ -10,7 +10,6 @@
 .question-text {
   font-size: 1.4em;
   line-height: 1.2em;
-  margin-bottom: 10px;
 }
 
 .question-dataset {
@@ -46,4 +45,10 @@
 
 label {
   font-weight: normal;
+}
+
+.dataset {
+  padding: 30px;
+  margin: 15px 0;
+  background: rgb(194, 232, 188);
 }

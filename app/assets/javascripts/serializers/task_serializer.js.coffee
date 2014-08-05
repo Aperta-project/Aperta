@@ -9,4 +9,3 @@ ETahi.TaskSerializer = ETahi.ApplicationSerializer.extend ETahi.SerializesHasMan
 ETahi.AuthorsTaskSerializer = ETahi.TaskSerializer.extend()
 ETahi.MessageTaskSerializer = ETahi.TaskSerializer.extend()
 ETahi.TechCheckTaskSerializer = ETahi.TaskSerializer.extend()
-ETahi.ReviewerReportTaskSerializer = ETahi.TaskSerializer.extend()

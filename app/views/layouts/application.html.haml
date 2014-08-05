@@ -8,7 +8,4 @@
   %body.sessions
     = render 'shared/navbar'
     #tahi-container{class: yield(:tahi_container_class)}
-      - if flash.present?
-        %p.notice= notice
-        %p.alert= alert
       = yield

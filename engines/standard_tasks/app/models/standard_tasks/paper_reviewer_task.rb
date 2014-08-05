@@ -20,10 +20,10 @@ module StandardTasks
       old_ids = reviewer_ids - user_ids
       new_ids.each do |id|
         PaperRole.reviewers_for(paper).where(user_id: id).create!
-        ReviewerReportTask.create! assignee_id: id, phase: reviewer_report_task_phase
+        StandardTasks::ReviewerReportTask.create! assignee_id: id, phase: reviewer_report_task_phase
       end
       PaperRole.reviewers_for(paper).where(user_id: old_ids).destroy_all
-      paper.tasks.where(type: ReviewerReportTask, assignee_id: old_ids).destroy_all
+      paper.tasks.where(type: StandardTasks::ReviewerReportTask, assignee_id: old_ids).destroy_all
       user_ids
     end
 

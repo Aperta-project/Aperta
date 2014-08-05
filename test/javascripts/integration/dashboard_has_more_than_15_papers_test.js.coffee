@@ -40,9 +40,10 @@ module 'Integration: Dashboard - when there are more than 15 papers',
           paper_types: ["Research"]
           task_types: [
             "FinancialDisclosure::Task"
-            "PaperAdminTask"
-            "PaperEditorTask"
-            "PaperReviewerTask"
+            "StandardTasks::PaperAdminTask"
+            "StandardTasks::PaperEditorTask"
+            "StandardTasks::PaperReviewerTask"
+            "StandardTasks::ReviewerReportTask"
             "StandardTasks::RegisterDecisionTask"
             "ReviewerReportTask"
             "StandardTasks::AuthorsTask"
@@ -75,11 +76,11 @@ module 'Integration: Dashboard - when there are more than 15 papers',
         paper_types: ['Research']
         task_types: [
           "FinancialDisclosure::Task"
-          "PaperAdminTask"
-          "PaperEditorTask"
-          "PaperReviewerTask"
+          "StandardTasks::PaperAdminTask"
+          "StandardTasks::PaperEditorTask"
+          "StandardTasks::PaperReviewerTask"
+          "StandardTasks::ReviewerReportTask"
           "StandardTasks::RegisterDecisionTask"
-          "ReviewerReportTask"
           "StandardTasks::AuthorsTask"
           "StandardTasks::CompetingInterestsTask"
           "StandardTasks::DataAvailabilityTask"
@@ -118,7 +119,7 @@ module 'Integration: Dashboard - when there are more than 15 papers',
               ]
             ,
               name: 'Assign Reviewers'
-              task_types: ['PaperReviewerTask']
+              task_types: ['StandardTasks::PaperReviewerTask']
             ,
               name: 'Get Reviews'
               task_types: []

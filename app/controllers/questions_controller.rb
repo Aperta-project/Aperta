@@ -17,11 +17,6 @@ class QuestionsController < ApplicationController
     render json: question
   end
 
-  def destroy
-    question.destroy
-    respond_with question
-  end
-
   private
 
   def question_params

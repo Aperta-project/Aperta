@@ -73,6 +73,11 @@
                     <div class="question-info-header">Animal Research (involved vertebrate animals, embryos or tissues)</div>
                     <p>All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, <a href="http://www.acmedsci.ac.uk/more/news/the-use-of-non-human-primates-in-research/">The use of non-human primates in research.</a> The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.</p>
                   </div>
+
+                  {{question-uploader ident="ethics.animal_subjects.arrive_checklist" task=model
+                                      question="Please provide a copy of the <a href='http://www.nc3rs.org.uk/page.asp?id=1357' target='_new'>ARRIVE Guidelines</a> checklist."
+                                      updateStore='updateStore'
+                                      accept=".docx,.pdf"}}
                 {{/if}}
             {{/question-radio}}
 

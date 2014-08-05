@@ -17,4 +17,4 @@ ETahi.IndexController = Ember.ObjectController.extend Ember.Evented,
       .then (litePapers) =>
         @get('model.papers').pushObjects litePapers
         @incrementProperty 'pageNumber'
-        Ember.run.later (=> @trigger('papersDidLoad')), 200
+        @trigger('papersDidLoad')

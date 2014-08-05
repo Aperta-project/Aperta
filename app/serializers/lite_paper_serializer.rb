@@ -6,6 +6,7 @@ class LitePaperSerializer < ActiveModel::Serializer
   end
 
   def roles
-    object.role_descriptions
+    roles = object.paper_roles.map(&:description)
+    roles << "My Paper" if object.user_id == current_user.id
   end
 end

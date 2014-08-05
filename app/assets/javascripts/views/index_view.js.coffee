@@ -1,4 +1,12 @@
 ETahi.IndexView = Ember.View.extend
-  setupTooltip:(->
-    $('.link-tooltip').tooltip()
+  listenForPapers: (->
+    @get('controller').on('papersDidLoad', @, @setupTooltips)
+    @setupTooltips()
   ).on('didInsertElement')
+
+  stopListeningForPapers: (->
+    @get('controller').off('papersDidLoad', @, @setupTooltips)
+  ).on('willDestroyElement')
+
+  setupTooltips: ->
+    $('.link-tooltip').tooltip().removeClass('link-tooltip')

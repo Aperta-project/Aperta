@@ -1,4 +1,4 @@
-ETahi.IndexController = Ember.ObjectController.extend
+ETahi.IndexController = Ember.ObjectController.extend Ember.Evented,
   needs: ['application']
 
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
@@ -7,8 +7,9 @@ ETahi.IndexController = Ember.ObjectController.extend
 
   pageNumber: 1
 
-  paginate: Em.computed 'totalPageCount', 'pageNumber', ->
+  paginate: (->
     @get('pageNumber') isnt @get('totalPageCount')
+  ).property('totalPageCount', 'pageNumber')
 
   actions:
     loadMorePapers: ->
@@ -16,3 +17,4 @@ ETahi.IndexController = Ember.ObjectController.extend
       .then (litePapers) =>
         @get('model.papers').pushObjects litePapers
         @incrementProperty 'pageNumber'
+        Ember.run.later (=> @trigger('papersDidLoad')), 200

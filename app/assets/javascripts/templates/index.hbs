@@ -14,7 +14,7 @@
       {{#if hasPapers}}
         <ul class="dashboard-submitted-papers">
           {{#each paper in model.papers}}
-            <li class="dashboard-paper-title" >
+            <li class="dashboard-paper-title">
               {{link-to paper.displayTitle
                         "paper.edit"
                         paper.id

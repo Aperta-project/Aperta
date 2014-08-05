@@ -1,10 +1,32 @@
 module 'Integration: Reporting Guidelines Card',
-  teardown: -> ETahi.reset()
   setup: ->
     setupApp integration: true
     TahiTest.paperId = 4245
     TahiTest.reportingGuidelinesId = 19347
     TahiTest.questionId = 553
+
+    questionResponse =
+      question:
+        id: TahiTest.questionId
+        ident: "reporting_guidelines.systematic_reviews"
+        question: "Systematic Reviews"
+        answer: "false"
+        additional_data: [{}]
+        task_id: TahiTest.reportingGuidelinesId
+        question_attachment_id: null
+      question_attachments: []
+
+    # we have to change the answer to true on click
+    questionModifiedResponse =
+      question:
+        id: TahiTest.questionId
+        ident: "reporting_guidelines.systematic_reviews"
+        question: "Systematic Reviews"
+        answer: "true"
+        additional_data: [{}]
+        task_id: TahiTest.reportingGuidelinesId
+        question_attachment_id: null
+      question_attachments: []
 
     paperResponse =
       phases: [
@@ -30,6 +52,7 @@ module 'Integration: Reporting Guidelines Card',
         lite_paper_id: TahiTest.paperId
         assignee_ids: []
         assignee_id: fakeUser.user.id
+        question_ids: [TahiTest.questionId]
       ]
       lite_papers: [
         id: TahiTest.paperId
@@ -71,6 +94,7 @@ module 'Integration: Reporting Guidelines Card',
         task_types: ["StandardTasks::ReportingGuidelinesTask"]
         manuscript_css: null
       ]
+      questions: [questionResponse.question]
       paper:
         id: TahiTest.paperId
         short_title: "Paper"
@@ -117,16 +141,6 @@ module 'Integration: Reporting Guidelines Card',
         assignee_ids: []
         assignee_id: fakeUser.user.id
 
-    questionResponse =
-      question:
-        id: TahiTest.questionId
-        ident: "reporting_guidelines.systematic_reviews"
-        question: "Systematic Reviews"
-        answer: "true"
-        additional_data: [{}]
-        task_id: TahiTest.reportingGuidelinesId
-
-
     server.respondWith 'GET', "/papers/#{TahiTest.paperId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
@@ -139,22 +153,32 @@ module 'Integration: Reporting Guidelines Card',
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
 
-    #TODO: mock out questions ajax response properly.
-    server.respondWith 'GET', "/questions/#{TahiTest.questionId}", [
-      200, {"Content-Type": "application/json"}, JSON.stringify questionResponse
+    server.respondWith 'PUT', /\/questions\/\d+/, [
+      200, {"Content-Type": "application/json"}, JSON.stringify questionModifiedResponse
     ]
 
 test 'Supporting Guideline is a meta data card, contains the right questions and sub-questions', ->
+  findQuestionLi = (questionText) ->
+    find('.question .item').filter (i, el) -> Em.$(el).find('label').text().trim() is questionText
+
   visit "/papers/#{TahiTest.paperId}/edit"
   .then -> ok exists find '.card-content:contains("Reporting Guidelines")'
+
   click '.card-content:contains("Reporting Guidelines")'
   .then ->
     equal find('.question .item').length, 6
     equal find('h1').text(), 'Reporting Guidelines'
+    questionLi = findQuestionLi 'Systematic Reviews'
+    ok exists questionLi.find('.additional-data.hidden')
+
   click 'input[name="reporting_guidelines.systematic_reviews"]'
   .then ->
-    ok exists find('.upload-checklist')
-    equal find('.upload-checklist').first().text(), 'Select & Upload'
+    questionLi = findQuestionLi 'Systematic Reviews'
+    ok !(exists questionLi.find('.additional-data.hidden'))
+    ok exists questionLi.find('.additional-data')
+    additionalDataText = questionLi.find('.additional-data').first().text().trim()
+    ok additionalDataText.indexOf('Select & upload') > -1
+    ok additionalDataText.indexOf('Provide a completed PRISMA checklist as supporting information.') > -1
 
 test 'clinical trial question is auto-checked based on answer from ethics question', ->
   ok true

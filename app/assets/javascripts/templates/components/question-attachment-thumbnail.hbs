@@ -9,7 +9,7 @@
   <div class="question-attachment-thumbnail-text-content">
     <h2 class="attachment-thumbnail-title">
       {{#if attachment.filename}}
-        {{attachment.filename}}
+        <a target="_blank" data-toggle="tooltip" data-placement="right" title="Download original" {{bind-attr href=attachment.src}} >{{attachment.filename}}</a>
       {{else}}
         Processing...
       {{/if}}

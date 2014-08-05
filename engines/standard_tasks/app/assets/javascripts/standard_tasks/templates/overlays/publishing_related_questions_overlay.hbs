@@ -3,6 +3,27 @@
   <fieldset>
     <ol>
       <li class="question">
+      {{#question-radio ident="publishing_related_questions.published_elsewhere"
+                        task=model
+                        question="Have the results, data, or figures in this manuscript been published elsewhere? Are they under consideration for publication elsewhere?"}}
+
+        {{#if view.selectedYes}}
+          <div class="question-dataset">
+            <div class="question-dataset-header">Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication.</div>
+            {{question-input ident="publishing_related_questions.published_elsewhere.taken_from_manuscripts"
+                             class="Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication."
+                             task=model
+                             question="Title"}}
+            <br>
+            {{question-uploader ident="publishing_related_questions.published_elsewhere.upload_related_work" task=model
+                                question="Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions."
+                                updateStore='updateStore'
+                                accept=".docx,.pdf"}}
+          </div>
+        {{/if}}
+      {{/question-radio}}
+      </li>
+      <li class="question">
       {{#question-radio ident="publishing_related_questions.submitted_in_conjunction"
                         task=model
                         question="Is this manuscript being submitted in conjunction with another submission?"}}

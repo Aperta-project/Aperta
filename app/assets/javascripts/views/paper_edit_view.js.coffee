@@ -10,7 +10,10 @@ ETahi.PaperEditView = Ember.View.extend
 
   bindPlaceholderEvent: ->
     $('.editable').on "keyup", "div[contenteditable]", (e) =>
-      @set('controller.showPlaceholder', @get('visualEditor.isEmpty'))
+      Ember.run.debounce(@, @updatePlaceholder, 1000)
+
+  updatePlaceholder: ->
+    @set('controller.showPlaceholder', @get('visualEditor.isEmpty'))
 
   applyManuscriptCss:(->
     $('#paper-body').attr('style', @get('controller.model.journal.manuscriptCss'))

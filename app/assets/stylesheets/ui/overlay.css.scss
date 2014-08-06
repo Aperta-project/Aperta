@@ -29,14 +29,34 @@
   opacity: 0;
 
   @extend .fadeInAndOutAnimation;
+
+  h1 {
+    font-size: 48px;
+    margin: 0 0 1em 0;
+  }
 }
 
 .overlay--fullscreen {
-  background-color: rgba(255,255,255, 0.85);
+  background-color: rgba(255,255,255, 0.95);
+
+  .overlay-close-x { display: block; }
 
   .overlay-container {
     background: transparent;
   }
+}
+
+
+.overlay-close-x {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: none;
+  width: auto !important; //bootstrap/glyphicon override
+  padding: 25px 25px 15px 15px;
+  color: $tahi-primary;
+  font-size: 42px;
+  cursor: pointer;
 }
 
 
@@ -140,11 +160,13 @@
 
   p { margin: 15px; }
 
-  h1 {
-    @include card-title;
-  }
-
   label {
     padding-right: 25px;
   }
+}
+
+
+.overlay-action-buttons {
+  padding-top: 45px;
+  text-align: right;
 }

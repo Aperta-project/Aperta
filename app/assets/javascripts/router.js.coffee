@@ -7,7 +7,6 @@ ETahi.Router.map ()->
     @route('submit')
 
   @route('task', {path: '/papers/:paper_id/tasks/:task_id'})
-  @route('paper_new', { path: '/papers/new' })
   @route('profile', {path: '/profile'})
 
   @resource('affiliation')

@@ -1,4 +1,5 @@
 <div {{bind-attr class=":overlay overlayClass"}}>
+  <span class="glyphicon glyphicon-remove overlay-close-x" {{action 'closeAction'}}></span>
   <div class="overlay-container">
 
     {{partial "overlay-header"}}

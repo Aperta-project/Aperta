@@ -1,8 +1,8 @@
 <tr class="user-row">
-  <td class="truncated-field">{{username}}</td>
-  <td class="truncated-field">{{firstName}}</td>
-  <td class="truncated-field">{{lastName}}</td>
-  <td class="truncated-field">
+  <td>{{username}}</td>
+  <td>{{firstName}}</td>
+  <td>{{lastName}}</td>
+  <td>
     {{#each roles}}
       <span class="assigned-role token token--with-remove">
         {{name}}
@@ -18,7 +18,7 @@
                    suggestionSelected="assignRole"
                    placeholder="Role Name"}}
     {{else}}
-      <span {{action "addRoleAssignment"}} class="token assign-role-button"><a href="#">+</a></span>
+      <span {{action "addRoleAssignment"}} class="token assign-role-button token--add"><span class="glyphicon glyphicon-plus"></span></span>
     {{/if}}
   </td>
 </tr>

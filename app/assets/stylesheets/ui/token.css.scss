@@ -41,3 +41,9 @@
     content: "\e014";
   }
 }
+
+.token--add {
+  cursor: pointer;
+
+  .glyphicon { font-size: 12px; }
+}

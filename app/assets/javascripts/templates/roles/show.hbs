@@ -11,7 +11,9 @@
     <label class="token">{{check-box name="role[canViewAssignedManuscriptManagers]" checked=canViewAssignedManuscriptManagers}} Manuscript Manager</label>
     <label class="token">{{check-box name="role[canViewAllManuscriptManagers]" checked=canViewAllManuscriptManagers}} All Manuscript Managers</label>
     <label class="token">{{check-box name="role[canAdministerJournal]" checked=canAdministerJournal}} Admin</label>
-    <span  class="token">+</span>
+    <span  class="token token--add">
+        <span class="glyphicon glyphicon-plus"></span>
+    </span>
   </td>
 </tr>
 <tr {{bind-attr class=":action-buttons isEditing"}}>

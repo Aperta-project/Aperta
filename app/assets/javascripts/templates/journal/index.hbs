@@ -6,8 +6,8 @@
     <h2>Users</h2>
     <div class='col-md-4'>
       <div class="row admin-user-search">
-        {{input placeholder="SEARCH ALL USERS" class="admin-user-search-input" name='Admin Search Input' value=searchQuery}}
-        <button class="admin-user-search-button" value='search' {{action "searchUsers"}}><span class="glyphicon glyphicon-search"></span></button>
+        {{input action="searchUsers" placeholder="SEARCH ALL USERS" class="admin-user-search-input" name='Admin Search Input' value=searchQuery}}
+        <button class="admin-user-search-button" {{action "searchUsers"}}><span class="glyphicon glyphicon-search"></span></button>
       </div>
     </div>
 

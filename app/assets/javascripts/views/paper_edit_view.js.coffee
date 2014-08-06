@@ -10,7 +10,13 @@ ETahi.PaperEditView = Ember.View.extend
 
   bindPlaceholderEvent: ->
     $('.editable').on "keyup", "div[contenteditable]", (e) =>
-      Ember.run.debounce(@, @updatePlaceholder, 1000)
+
+      # if we're currently showing placeholder we want it to go away
+      # when the user starts typing, without delay
+      if @get('controller.showPlaceholder')
+        @updatePlaceholder()
+      else
+        Ember.run.debounce(@, @updatePlaceholder, 1000)
 
   updatePlaceholder: ->
     @set('controller.showPlaceholder', @get('visualEditor.isEmpty'))

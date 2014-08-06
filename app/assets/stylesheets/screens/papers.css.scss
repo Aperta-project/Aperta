@@ -147,8 +147,12 @@
 .edit-paper {
   position: absolute;
   top: 5px;
-  left: 10px;
   z-index: 10;
+  padding-left: 10px;
+}
+
+.prompt {
+  text-transform: uppercase;
 }
 
 .lock-message {

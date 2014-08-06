@@ -42,14 +42,17 @@ ETahi.PaperEditView = Ember.View.extend
       preFixed: ->
         $(this).removeClass('not-fixed')
         $(this).css('marginTop', '0')
+
+  setupEditBar: ->
+    marginTop = $('.control-bar').outerHeight()
     $('.edit-paper').scrollToFixed
       marginTop: marginTop + 5
       zIndex: 1010
-      preFixed: ->
-        $(this).css('marginTop', '5')
+      dontSetWidth: true
 
   setupVisualEditor: (->
     @updateVisualEditor()
+    @setupEditBar()
     @addObserver 'controller.body', =>
       @updateVisualEditor()
 

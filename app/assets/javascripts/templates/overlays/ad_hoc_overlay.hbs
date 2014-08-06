@@ -1,2 +1,14 @@
-<h1>{{title}}</h1>
+{{#if editTitle}}
+  <div class="inline-edit-h1">
+    {{input type="text" name="title" value=title}}
+    <input type="submit" value="cancel" {{action "toggleEditTitle"}} />
+    <input type="submit" value="Save" {{action "save"}} />
+  </div>
+{{else}}
+  <h1>
+    {{title}}
+    <span class="glyphicon glyphicon-pencil edit-h1-icon"  {{action "toggleEditTitle"}}></span>
+  </h1>
+{{/if}}
+
 <p>{{body}}</p>

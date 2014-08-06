@@ -21,7 +21,9 @@
 
     .glyphicon {
       @include transform(scale(0));
-      @include transition(all 0.2s ease-in-out);
+      @include transition-property (transform);
+      @include transition-duration(0.2s);
+      @include transition-timing-function(ease-in-out);
       @include transition-delay(0.1s);
     }
   }

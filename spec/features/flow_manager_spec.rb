@@ -146,7 +146,6 @@ feature "Flow Manager", js: true do
     scenario "Completing an assign admin task" do
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
-
       my_papers = flow_manager_page.column 'My papers'
       first_paper_title = paper1.title
 

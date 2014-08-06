@@ -10,5 +10,6 @@ class LitePaperSerializer < ActiveModel::Serializer
     if defined?(current_user) && current_user && object.user_id == current_user.id
       roles << "My Paper"
     end
+    roles
   end
 end

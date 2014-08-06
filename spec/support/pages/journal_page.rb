@@ -102,12 +102,12 @@ class JournalPage < Page
 
   def search_user query
     fill_in 'Admin Search Input', with: query
-    click_on 'search'
+    find('.admin-user-search-button').click
     self
   end
 
   def assign_role role
-    click_on '+'
+    find('.assign-role-button').click
     fill_in 'add_role', with: role.name
     find('.tt-suggestion').click
     self

@@ -31,6 +31,14 @@
   @extend .fadeInAndOutAnimation;
 }
 
+.overlay--fullscreen {
+  background-color: rgba(255,255,255, 0.85);
+
+  .overlay-container {
+    background: transparent;
+  }
+}
+
 
 .overlay-container {
   position: relative;

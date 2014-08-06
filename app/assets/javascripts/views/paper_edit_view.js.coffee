@@ -45,6 +45,7 @@ ETahi.PaperEditView = Ember.View.extend
     $('.edit-paper').scrollToFixed
       marginTop: marginTop + 5
       zIndex: 1010
+      dontSetWidth: true
       preFixed: ->
         $(this).css('marginTop', '5')
 

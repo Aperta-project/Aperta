@@ -54,7 +54,7 @@ ETahi.PaperEditView = Ember.View.extend
     @updateVisualEditor()
     @setupEditBar()
     @addObserver 'controller.body', =>
-      @updateVisualEditor()
+      @updateVisualEditor() unless @get('isEditing')
 
     @bindPlaceholderEvent()
     @setupAutosave()
@@ -63,10 +63,9 @@ ETahi.PaperEditView = Ember.View.extend
   updateVisualEditor: ->
     visualEditor = @get('visualEditor')
     visualEditor.update($("#paper-body"), @get('controller.body'))
-    visualEditor.get('target').on('surfaceReady', =>
+    visualEditor.get('target').on 'surfaceReady', =>
       @setupStickyToolbar()
       @updateToolbarLockedState()
-    )
 
   destroyVisualEditor: ( ->
     Ember.$(document).off 'keyup.autoSave'

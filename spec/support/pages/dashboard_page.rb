@@ -2,7 +2,7 @@ class DashboardPage < Page
   path :root
 
   def new_submission
-    click_on "Create new submission"
+    click_on "Create New Submission"
     NewSubmissionPage.new
   end
 

@@ -2,6 +2,7 @@ ETahi.ChosenView = Ember.Select.extend
   multiple: false
   width: '200px'
   disableSearchThreshold: 0
+  disabled: false
   searchContains: true
   attributeBindings:['multiple', 'width', 'disableSearchThreshold', 'searchContains', 'data-placeholder']
   changeAction: null
@@ -9,6 +10,10 @@ ETahi.ChosenView = Ember.Select.extend
   change: ->
     action = @get('changeAction')
     @get('controller').send(action, @get('value')) if action
+
+  disabledDidChange: (->
+    @.$().attr('disabled', @get('disabled')).trigger('chosen:updated')
+  ).observes('disabled')
 
   setup: (->
     options =

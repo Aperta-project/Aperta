@@ -10,7 +10,7 @@
           You have no manuscripts.
         {{/if}}
       </h2>
-      {{link-to "Create new submission" "paper_new" classNames="button-secondary button--green button--wide"}}
+      <button class="button-secondary button--green button--wide" {{action "showNewPaperOverlay"}}>Create New Submission</button>
       {{#if hasPapers}}
         <ul class="dashboard-submitted-papers">
           {{#each paper in model.papers}}

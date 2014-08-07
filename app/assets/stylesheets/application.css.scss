@@ -43,12 +43,13 @@
 
 @import 'overlays/authors_overlay';
 @import 'overlays/choose_new_card_type_overlay';
+@import 'overlays/collaborators_overlay';
 @import 'overlays/message_overlay';
 @import 'overlays/new_card_overlay';
+@import 'overlays/paper_new_overlay';
 @import 'overlays/register_decision_overlay';
 @import 'overlays/unsaved_data_overlay';
 @import 'overlays/upload_manuscript_overlay';
-@import 'overlays/collaborators_overlay';
 
 @import 'components/attachment-thumbnail';
 @import 'components/question';

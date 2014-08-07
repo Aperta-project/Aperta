@@ -106,3 +106,34 @@
     .glyphicon { color: white; }
   }
 }
+
+h1 > .edit-h1-icon {
+  display: inline;
+}
+
+.edit-h1-icon {
+  margin-left: 10px;
+  color: #d4d4d4;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+  top: -8px;
+
+  &:hover {
+    color: $tahi-primary-hover;
+  }
+}
+
+.inline-edit-h1 {
+  border: 3px solid #C3E7BF;
+  background-color: #C3E7BF;
+  overflow: hidden;
+  padding: 2px;
+
+  input[type="text"] {
+    width: 100%;
+    font-size: 48px;
+    margin-bottom: 4px;
+    border: 0;
+  }
+}

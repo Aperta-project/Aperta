@@ -126,11 +126,15 @@ h1 > .edit-h1-icon {
 
 .inline-edit-h1 {
   width: 100%;
-  border: 2px solid $tahi-secondary;
-  background-color: $tahi-secondary;
+  border: 3px solid #C3E7BF;
+  background-color: #C3E7BF;
+  overflow: hidden;
+  padding: 2px;
 
   input[type="text"] {
     width: 100%;
     font-size: 48px;
+    margin-bottom: 4px;
+    border: 0;
   }
 }

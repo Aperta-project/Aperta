@@ -3,6 +3,7 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
 
   actions:
     toggleEditTitle: ->
+      @get('model').rollback()
       @toggleProperty('editTitle')
       return null
 

@@ -6,9 +6,13 @@ class LitePaperSerializer < ActiveModel::Serializer
   end
 
   def roles
-    roles = object.paper_roles.map(&:description)
-    if defined?(current_user) && current_user && object.user_id == current_user.id
-      roles << "My Paper"
+    roles = []
+    if defined?(current_user) && current_user
+      # rocking this in memory because eager-loading
+      roles = object.paper_roles.select { |role|
+        role.user_id == current_user.id
+      }.map(&:description)
+      roles << "My Paper" if object.user_id == current_user.id
     end
     roles
   end

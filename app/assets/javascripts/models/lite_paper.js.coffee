@@ -13,5 +13,5 @@ ETahi.LitePaper = DS.Model.extend
   ).property 'title', 'shortTitle'
 
   roleList: (->
-    @get('roles').join(', ')
+    @get('roles').sort().join(', ')
   ).property('roles.@each', 'roles.[]')

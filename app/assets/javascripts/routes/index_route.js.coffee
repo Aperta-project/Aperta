@@ -30,5 +30,9 @@ ETahi.IndexRoute = Ember.Route.extend
           controller: 'paperNewOverlay'
 
     closeAction: ->
-      @controllerFor('paperNewOverlay').get('model').destroyRecord()
+      # not sure why setting journal to null prevents explosions
+      # probably ember-data relationship craziness
+      @controllerFor('paperNewOverlay').get('model')
+                                       .set('journal', null)
+                                       .deleteRecord()
       @send('closeOverlay')

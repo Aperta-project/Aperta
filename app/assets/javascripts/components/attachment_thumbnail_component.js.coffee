@@ -53,8 +53,12 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend
       @set('editState', false)
       @get('attachment').rollback()
 
-    toggleEditState: ->
+    toggleEditState: (focusSelector)->
       @toggleProperty 'editState'
+      if focusSelector
+        Ember.run.later @, (->
+          @$(".#{focusSelector}").focus()
+        ), 150
 
     saveAttachment: ->
       @get('attachment').save()

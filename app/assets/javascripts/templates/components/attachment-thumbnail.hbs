@@ -32,10 +32,14 @@
 
   <div class="attachment-thumbnail-edit-content">
     <div class="field">
-      {{input placeholder="Enter a title" value=attachment.title}}
+      {{input placeholder="Enter a title"
+              class="attachment-title-field"
+              value=attachment.title}}
     </div>
     <div class="field">
-      {{textarea placeholder="Enter a caption for this attachment" value=attachment.caption rows="5"}}
+      {{textarea placeholder="Enter a caption for this attachment"
+                 class="attachment-caption-field"
+                 value=attachment.caption rows="5"}}
     </div>
 
     <div class="attachment-thumbnail-edit-actions">
@@ -45,12 +49,12 @@
   </div>
 
   <div class="attachment-thumbnail-text-content">
-    <h2 class="attachment-thumbnail-title">
+    <h2 class="attachment-thumbnail-title" {{action "toggleEditState" "attachment-title-field" on="doubleClick"}}>
       {{display attachment.title or="Attachment title"}}
     </h2>
     <span class="glyphicon glyphicon-pencil attachment-edit-icon" {{action "toggleEditState"}}></span>
 
-    <div class="attachment-thumbnail-caption">
+    <div class="attachment-thumbnail-caption" {{action "toggleEditState" "attachment-caption-field" on="doubleClick"}}>
       {{display attachment.caption or="There is no caption for this file."}}
     </div>
   </div>

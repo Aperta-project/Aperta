@@ -11,27 +11,29 @@ class NewAdhocCardOverlay < CardOverlay
   end
 
   def title=(new_text)
-    fill_in 'task-title-field', with: new_text
+    find('.edit-h1-icon').click
+    fill_in 'title', with: new_text
+    click_button 'Save'
   end
 
-  def body
-    find('#task-body').text
-  end
-
-  def body=(new_text)
-    fill_in 'task-body', with: new_text
-  end
+  # def body
+  #   find('#task-body').text
+  # end
+  #
+  # def body=(new_text)
+  #   fill_in 'task-body', with: new_text
+  # end
 
   def create(params)
     self.title = params[:title]
-    self.body = params[:body]
-    self.assignee = params[:assignee].full_name
-    find('a', text: 'CREATE CARD').click
+    # self.body = params[:body]
+    # self.assignee = params[:assignee].full_name
+    # find('a', text: 'CREATE CARD').click
     self
   end
 
-  def assignee=(name)
-    select_from_chosen name, class: 'select-assignee'
-  end
+  # def assignee=(name)
+  #   select_from_chosen name, class: 'select-assignee'
+  # end
 
 end

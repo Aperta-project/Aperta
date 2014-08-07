@@ -1,6 +1,6 @@
 {{#if editTitle}}
   <div class="inline-edit-h1">
-    {{input type="text" name="title" value=title}}
+    {{input type="text" name="title" class="task-title-field" value=title}}
     <input type="submit"  class="button-secondary button--green pull-right" value="Save" {{action "save"}} />
     <input type="submit" class="button-link button--green pull-right" value="cancel" {{action "toggleEditTitle"}} />
   </div>

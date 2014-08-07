@@ -1,19 +1,41 @@
 namespace :data do
 
-  desc "Migrate tasks to namespacing"
-  task :migrate_namespacing => :environment do
-    Task.where(type: "FigureTask").update_all(type: "StandardTasks::FigureTask")
-    Task.where(type: "TechCheckTask").update_all(type: "StandardTasks::TechCheckTask")
-    Task.where(type: "AuthorsTask").update_all(type: "StandardTasks::AuthorsTask")
-    Task.where(type: "UploadManuscriptTask").update_all(type: "UploadManuscript::Task")
-    Task.where(type: "DataAvailability::Task").update_all(type: "StandardTasks::DataAvailabilityTask")
-    Task.where(type: "CompetingInterests::Task").update_all(type: "StandardTasks::CompetingInterestsTask")
-    Task.where(type: "FinancialDisclosure::Task").update_all(type: "StandardTasks::FinancialDisclosureTask")
-    Task.where(type: "PaperAdminTask").update_all(type: "StandardTasks::PaperAdminTask")
-    Task.where(type: "PaperReviewerTask").update_all(type: "StandardTasks::PaperReviewerTask")
-    Task.where(type: "RegisterDecisionTask").update_all(type: "StandardTasks::RegisterDecisionTask")
-    Task.where(type: "PaperEditorTask").update_all(type: "StandardTasks::PaperEditorTask")
-    puts "Be sure to update the task_types inside all existing ManuscriptManagerTemplates"
+  desc "Create default task types for all journals"
+  task :create_task_types => :environment do
+    types = [
+      {kind: "Task",                                          default_role: nil,        default_title: "Ad-Hoc"},
+      {kind: "StandardTasks::AuthorsTask",                    default_role: "author",   default_title: "Add Authors"},
+      {kind: "StandardTasks::CompetingInterestsTask",         default_role: "author",   default_title: "Competing Interests"},
+      {kind: "StandardTasks::DataAvailabilityTask",           default_role: "author",   default_title: "Data Availability"},
+      {kind: "StandardTasks::EthicsTask",                     default_role: "author",   default_title: "Add Ethics Statement"},
+      {kind: "StandardTasks::FigureTask",                     default_role: "author",   default_title: "Upload Figures"},
+      {kind: "StandardTasks::FinancialDisclosureTask",        default_role: "author",   default_title: "Financial Disclosure"},
+      {kind: "StandardTasks::PaperAdminTask",                 default_role: "admin",    default_title: "Assign Admin"},
+      {kind: "StandardTasks::PaperEditorTask",                default_role: "admin",    default_title: "Assign Editor"},
+      {kind: "StandardTasks::PaperReviewerTask",              default_role: "editor",   default_title: "Assign Reviewers"},
+      {kind: "StandardTasks::PublishingRelatedQuestionsTask", default_role: "author",   default_title: "Publishing Related Questions"},
+      {kind: "StandardTasks::RegisterDecisionTask",           default_role: "editor",   default_title: "Register Decision"},
+      {kind: "StandardTasks::ReportingGuidelinesTask",        default_role: "author",   default_title: "Reporting Guidelines"},
+      {kind: "StandardTasks::ReviewerReportTask",             default_role: "reviewer", default_title: "Reviewer Report"},
+      {kind: "StandardTasks::TaxonTask",                      default_role: "author",   default_title: "New Taxon"},
+      {kind: "StandardTasks::TechCheckTask",                  default_role: "admin",    default_title: "Tech Check"},
+      {kind: "SupportingInformation::Task",                   default_role: "author",   default_title: "Supporting Info"},
+      {kind: "UploadManuscript::Task",                        default_role: "author",   default_title: "Upload Manuscript"},
+    ]
+
+    task_types = types.map do |attributes|
+      TaskType.where(attributes).first_or_create
+    end
+
+    Journal.all.each do |journal|
+      task_types.each do |task_type|
+        jtt = journal.journal_task_types.where(task_type_id: task_type.id).first_or_create
+        jtt.role ||= task_type.default_role
+        jtt.title ||= task_type.default_title
+        jtt.save
+        jtt
+      end
+    end
   end
 
   task :shorten_supporting_information do

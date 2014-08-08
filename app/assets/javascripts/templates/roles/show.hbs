@@ -20,6 +20,6 @@
   <td colspan="4">
     {{errorsOn model "name"}}
     <button class="column-header-update-save button-primary button--blue-light" {{action "save" bubbles=false}}>Save</button>
-    <button class="column-header-update-cancel button-link button--blue-light" {{action "cancel" bubbles=false}}>cancel</button>
+    <button class="column-header-update-cancel button-link button--blue-light" {{action "cancel" bubbles=false target="view"}}>cancel</button>
   </td>
 </tr>

@@ -3,7 +3,6 @@ ETahi.AdminJournal = DS.Model.extend
   logoUrl: a('string')
   name: a('string')
   paperTypes: a()
-  taskTypes: a()
   manuscriptManagerTemplates: a('manuscriptManagerTemplate')
   roles: DS.hasMany('role')
   epubCoverUrl: a('string')
@@ -14,3 +13,4 @@ ETahi.AdminJournal = DS.Model.extend
   description: a('string')
   paperCount: a('number')
   createdAt: a('date')
+  journalTaskTypes: DS.hasMany('journalTaskType')

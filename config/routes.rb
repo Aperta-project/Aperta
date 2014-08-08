@@ -96,11 +96,7 @@ Tahi::Application.routes.draw do
 
   resources :comments, only: [:create, :show]
 
-  resources :tasks, only: [:update, :create, :show, :destroy] do
-    collection do
-      get :task_types
-    end
-  end
+  resources :tasks, only: [:update, :create, :show, :destroy]
 
   resources :phases, only: [:create, :update, :show, :destroy]
 

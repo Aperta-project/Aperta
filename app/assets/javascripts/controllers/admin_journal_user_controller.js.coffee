@@ -1,5 +1,6 @@
 ETahi.AdminJournalUserController = Ember.ObjectController.extend
   needs: ['journalIndex']
+  overlayClass: 'overlay--fullscreen user-detail-overlay'
   resetPasswordSuccess: false
   resetPasswordFailure: false
   journalRoles: Em.computed.alias 'controllers.journalIndex.model.roles'

@@ -112,6 +112,8 @@ Tahi::Application.routes.draw do
 
   resource :event_stream, only: :show
 
+  resources :journal_task_types, only: :update
+
   get '*route' => 'ember#index'
   root 'ember#index'
 end

@@ -92,8 +92,9 @@ RSpec.configure do |config|
   config.extend TahiHelperClassMethods
 
   config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.strategy = :truncation, { except: ['task_types'] }
+    DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
+    TaskServices::CreateTaskTypes.call
   end
 
   config.include Haml::Helpers, type: :helper

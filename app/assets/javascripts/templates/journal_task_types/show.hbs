@@ -1,14 +1,14 @@
 <tr>
   <td>{{input name="title" value=title}}</td>
   <td>
-    {{chosen content=journal.roles
+    {{chosen content=availableTaskRoles
              name="roles"
              width="150px"
              class="collaborator-select"
-             changeAction="addNewCollaborator"
-             prompt="Select Role"
-             optionValuePath="content.kind"
-             optionLabelPath="content.name"
+             changeAction="updateRole"
+             prompt="No Role Assigned"
+             optionValuePath="content"
+             optionLabelPath="content"
              value=role}}
   </td>
   <td>{{taskType.kind}}</td>

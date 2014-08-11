@@ -5,12 +5,17 @@ ETahi.JournalTaskTypesShowController = Em.ObjectController.extend
   isEditing: false
   notEditing: Ember.computed.not('isEditing')
 
+  availableTaskRoles: ["admin", "author", "editor", "user", "reviewer"]
+
   setIsEditing: (->
     if @get('model.isNew')
       @set('isEditing', true)
   ).on('init')
 
   actions:
+    updateRole: ->
+      @set('isEditing', true)
+
     save: ->
       @get('model').save().then(
         => @set('isEditing', false)

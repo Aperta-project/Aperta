@@ -77,6 +77,7 @@ class Journal < ActiveRecord::Base
   def setup_defaults
     # TODO: remove these from being a callback (when we aren't using rails_admin)
     JournalServices::CreateDefaultRoles.call(self)
+    JournalServices::CreateDefaultTaskTypes.call(self)
     JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
   end
 

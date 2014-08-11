@@ -13,6 +13,7 @@ namespace :data do
     Task.where(type: "PaperReviewerTask").update_all(type: "StandardTasks::PaperReviewerTask")
     Task.where(type: "RegisterDecisionTask").update_all(type: "StandardTasks::RegisterDecisionTask")
     Task.where(type: "PaperEditorTask").update_all(type: "StandardTasks::PaperEditorTask")
+    Task.where(type: 'ReviewerReportTask').update_all(type: 'StandardTasks::ReviewerReportTask')
     puts "Be sure to update the task_types inside all existing ManuscriptManagerTemplates"
   end
 

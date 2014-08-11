@@ -1,7 +1,20 @@
 <tr>
   <td>{{input name="title" value=title}}</td>
-  <td>{{input name="role" value=role}}</td>
+  <td>
+    {{chosen content=journal.roles
+             name="roles"
+             width="150px"
+             class="collaborator-select"
+             changeAction="addNewCollaborator"
+             prompt="Select Role"
+             optionValuePath="content.kind"
+             optionLabelPath="content.name"
+             value=role}}
+  </td>
   <td>{{taskType.kind}}</td>
+  <td>
+
+  </td>
   <td>
     <div {{bind-attr class="isEditing::hidden"}}>
       <button class="column-header-update-save button-primary button--blue-light" {{action "save" bubbles=false}}>Save</button>

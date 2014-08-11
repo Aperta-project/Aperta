@@ -59,7 +59,7 @@ Tahi::Application.routes.draw do
 
   resources :affiliations, only: [:index, :create, :destroy]
 
-  resources :manuscript_manager_templates
+  resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
 
   namespace :admin do
     resources :journals, only: :index do
@@ -107,12 +107,12 @@ Tahi::Application.routes.draw do
 
   resources :questions, only: [:create, :update]
   resources :question_attachments, only: [:destroy]
+  resources :journal_task_types, only: :update
 
   resource :dashboards, only: :show
 
   resource :event_stream, only: :show
 
-  resources :journal_task_types, only: :update
 
   get '*route' => 'ember#index'
   root 'ember#index'

@@ -14,7 +14,7 @@ describe ManuscriptManagerTemplatesController do
 
   let(:admin) { create :user, :admin }
   let(:journal) { create :journal }
-  let(:mmt) { create :manuscript_manager_template, journal: journal }
+  let!(:mmt) { create :manuscript_manager_template, journal: journal }
 
   before do
     assign_journal_role journal, admin, :admin
@@ -22,9 +22,9 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe 'POST create' do
-    let(:new_params) { {paper_type: 'new type', template: { "phases" => [] }} }
+    let(:new_params) { {paper_type: 'new type', journal_id: journal.id } }
     subject(:do_request) do
-      post :create, format: 'json', journal_id: journal.id, manuscript_manager_template: new_params
+      post :create, format: 'json', manuscript_manager_template: new_params
     end
 
     it 'creates a new template and returns it as json' do
@@ -35,19 +35,8 @@ describe ManuscriptManagerTemplatesController do
     end
   end
 
-  describe "GET index" do
-    subject(:do_request) { get :index, {format: 'json', journal_id: journal.id} }
-    let!(:mmt) { create :manuscript_manager_template, journal: journal }
-
-    it "returns the json list of templates for a given journal" do
-      do_request
-      expect(JSON.parse(response.body)).to have_key('manuscript_manager_templates')
-    end
-  end
-
   describe "GET show" do
-    let!(:mmt) { create :manuscript_manager_template, journal: journal }
-    subject(:do_request) { get :show, {format: 'json', id: mmt.id, journal_id: journal.id} }
+    subject(:do_request) { get :show, {format: 'json', id: mmt.id } }
 
     it "renders the given template as json" do
       do_request
@@ -56,11 +45,10 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe "PUT update" do
-    let!(:mmt) { FactoryGirl.create :manuscript_manager_template, journal: journal }
-    let(:new_params) { {name: 'New name', paper_type: 'new type', template: {}} }
+    let(:new_params) { {name: 'New name', paper_type: 'new type', journal_id: journal.id} }
 
     subject(:do_request) do
-      put :update, {format: 'json', journal_id: journal.id, id: mmt.id,
+      put :update, {format: 'json', id: mmt.id,
                     manuscript_manager_template: new_params}
     end
 
@@ -81,21 +69,23 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe "DELETE destroy" do
-    subject(:do_request) { delete :destroy, {format: :json, id: mmt.id, journal_id: journal.id} }
+    subject(:do_request) { delete :destroy, {format: :json, id: mmt.id} }
 
     context "when a journal has one manuscript manager template" do
-      before do
-        journal.manuscript_manager_templates = [mmt]
-        do_request
-      end
-
       it "returns an error" do
+        expect(journal.manuscript_manager_templates.count).to eq 1
+        do_request
         expect(JSON.parse(response.body)).to have_key('errors')
       end
     end
 
     context "when a journal has multiple manuscript manager templates" do
+      before do
+        FactoryGirl.create(:manuscript_manager_template, journal: journal)
+      end
+
       it "returns the deleted template as JSON" do
+        expect(journal.manuscript_manager_templates.count).to be > 1
         do_request
         expect(response.status).to eq(204)
       end

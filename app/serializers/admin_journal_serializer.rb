@@ -11,7 +11,7 @@ class AdminJournalSerializer < ActiveModel::Serializer
              :description,
              :paper_count,
              :created_at
-  has_many :manuscript_manager_templates, include: true
+  has_many :manuscript_manager_templates, embed: :ids, include: true
   has_many :roles, embed: :ids, include: true
   has_many :journal_task_types, embed: :ids, include: true
 

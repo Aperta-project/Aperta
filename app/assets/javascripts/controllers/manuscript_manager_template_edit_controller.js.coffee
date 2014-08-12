@@ -18,8 +18,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
     cancelEditMode: ->
       console.log("cancelEditMode")
-      @set 'editMode', false
-      @get('model').rollback()
+      @send('rollback')
 
     changeTaskPhase: (task, targetPhase) ->
       console.log("changeTaskPhase")
@@ -67,13 +66,22 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
     saveTemplate: (transition)->
       console.log("saveTemplate")
       @set 'editMode', false
-      @get('model').save().then( (template) =>
-        @set('dirty', false)
-        @set('errorText', '')
-        if transition
-          transition.retry()
-        else
-          @transitionToRoute('manuscript_manager_template.edit', template)
+      @set('dirty', false)
+
+      @get('model').save().then( (mmt) =>
+        # taskTemplates = []
+
+        phasePromises = mmt.get('phaseTemplates').map (phaseTemplate) ->
+          # taskTemplates.pushObjects(phaseTemplate.get('taskTemplates'))
+          phaseTemplate.save()
+
+        Em.RSVP.all().then (phaseTemplates) =>
+          @set('errorText', '')
+          if transition
+            transition.retry()
+          else
+            @transitionToRoute('manuscript_manager_template.edit', mmt)
+
       ).catch (errorResponse) =>
         if errorResponse.status == 422
           errors = _.values(errorResponse.responseJSON.errors).join(' ')
@@ -83,5 +91,11 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
     rollback: ->
       console.log("rollback")
-      @get('model').rollback()
+      mmt = @get('model')
+      mmt.get('phaseTemplates').forEach (phaseTemplate) ->
+        phaseTemplate.get('taskTemplates').forEach (taskTemplate) ->
+          taskTemplate.rollback()
+        phaseTemplate.rollback()
+      mmt.rollback()
       @set('dirty', false)
+      @send('didRollBack')

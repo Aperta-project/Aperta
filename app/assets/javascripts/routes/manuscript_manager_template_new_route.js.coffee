@@ -22,6 +22,8 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend(ETahi.AlertUnsavedC
       name: "Phase 3"
       position: 2
 
+    @set('journal', journal)
+    @set('newTemplate', newTemplate)
     newTemplate
 
   setupController: (controller, model) ->
@@ -30,4 +32,9 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend(ETahi.AlertUnsavedC
 
   renderTemplate: ->
     @render 'manuscript_manager_template/edit'
+
+  actions:
+    didRollBack: ->
+      @get('journal.manuscriptManagerTemplates').removeObject(@get('newTemplate'))
+      @transitionTo('journal')
 )

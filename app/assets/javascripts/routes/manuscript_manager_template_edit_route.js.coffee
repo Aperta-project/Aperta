@@ -11,4 +11,7 @@ ETahi.ManuscriptManagerTemplateEditRoute = Ember.Route.extend(ETahi.AlertUnsaved
   actions:
     saveChanges: ->
       @controller.send('saveTemplate', @get('attemptingTransition'))
+
+    didRollBack: ->
+      # don't care
 )

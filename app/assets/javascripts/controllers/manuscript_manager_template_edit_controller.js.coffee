@@ -4,7 +4,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
   editMode: false
 
   canRemoveCard: true
-  sortedPhases: Ember.computed.alias 'phases'
+  sortedPhases: Ember.computed.alias 'phaseTemplates'
 
   showSaveButton: (->
     @get('dirty') || @get('editMode')
@@ -12,45 +12,60 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
   actions:
     toggleEditMode: ->
+      console.log("toggleEditMode")
       @toggleProperty 'editMode'
       return null
 
     cancelEditMode: ->
+      console.log("cancelEditMode")
       @set 'editMode', false
       @get('model').rollback()
 
     changeTaskPhase: (task, targetPhase) ->
+      console.log("changeTaskPhase")
       task.get('phase').removeTask(task)
       targetPhase.addTask(task)
       @set('dirty', true)
 
     addPhase: (position) ->
-      newPhase = ETahi.TemplatePhase.create name: 'New Phase'
-      @get('phases').insertAt(position, newPhase)
+      console.log("addPhase at position: " + position)
+      @get('model.phaseTemplates').forEach (phaseTemplate) ->
+        if phaseTemplate.get('position') >= position
+          phaseTemplate.incrementProperty('position')
+
+      @store.createRecord 'phaseTemplate',
+        name: 'New Phase'
+        manuscriptManagerTemplate: @get('model')
+        position: position
+
       @set('dirty', true)
 
-    removePhase: (phase) ->
-      phaseArray = @get('phases')
-      phaseArray.removeAt(phaseArray.indexOf(phase))
+    removePhase: (phaseTemplate) ->
+      console.log("WORKS! removePhase")
+      phaseTemplate.deleteRecord()
       @set('dirty', true)
 
-    addTask: (phase, taskType) ->
-      unless Ember.isBlank(taskType)
-        newTask = ETahi.TemplateTask.create type: taskType
-        phase.addTask(newTask)
+    addTask: (phaseTemplate, journalTaskType) ->
+      console.log("WORKS! addTask")
+      unless Ember.isBlank(journalTaskType)
+        newTask = @store.createRecord 'taskTemplate', journalTaskType: journalTaskType, phaseTemplate: phaseTemplate, title: journalTaskType.get('title')
         @set('dirty', true)
 
-    removeTask: (task) ->
-      task.destroy()
+    removeTask: (taskTemplate) ->
+      console.log("WORKS! removeTask")
+      taskTemplate.deleteRecord()
       @set('dirty', true)
 
     savePhase: (phase) ->
+      console.log("WORKS! savePhase")
       @set('dirty', true)
 
     rollbackPhase: (phase, oldName) ->
+      console.log("WORKS! rollbackPhase")
       phase.set('name', oldName)
 
     saveTemplate: (transition)->
+      console.log("saveTemplate")
       @set 'editMode', false
       @get('model').save().then( (template) =>
         @set('dirty', false)
@@ -67,5 +82,6 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
         Tahi.utils.togglePropertyAfterDelay(this, 'errorText', errors, '', 5000)
 
     rollback: ->
+      console.log("rollback")
       @get('model').rollback()
       @set('dirty', false)

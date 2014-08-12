@@ -1,0 +1,12 @@
+{{add-column position=nextPosition action='addPhase'}}
+
+{{view ETahi.PhaseHeaderView phase=content}}
+
+<div class="column-content">
+  {{each taskTemplates itemViewClass="ETahi.CardView"}}
+
+  <a {{action 'chooseNewCardTypeOverlay' content}} class="button-secondary button--green">
+    Add New Card
+  </a>
+</div>
+

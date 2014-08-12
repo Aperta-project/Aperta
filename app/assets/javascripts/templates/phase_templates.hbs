@@ -1,0 +1,6 @@
+{{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
+{{#each phaseTemplate in arrangedContent}}
+<div class="column">
+  {{render 'phaseTemplate' phaseTemplate}}
+</div>
+{{/each}}

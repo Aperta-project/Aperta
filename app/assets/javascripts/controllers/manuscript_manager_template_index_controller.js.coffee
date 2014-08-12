@@ -3,9 +3,11 @@ ETahi.ManuscriptManagerTemplateIndexController = Ember.ArrayController.extend
 
   actions:
     addTemplate: ->
+      console.log("addTemplate")
       @transitionToRoute('manuscript_manager_template.new')
 
     destroyTemplate: (template) ->
+      console.log("destroyTemplate")
       if @get('canDeleteTemplates')
         template.destroyRecord().then =>
           @get('model').removeObject(template)

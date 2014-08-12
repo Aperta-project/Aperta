@@ -3,4 +3,6 @@ class PhaseTemplate < ActiveRecord::Base
   has_many :task_templates, inverse_of: :phase_template
 
   validates :name, uniqueness: { scope: :manuscript_manager_template_id }
+
+  acts_as_list scope: :manuscript_manager_template
 end

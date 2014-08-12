@@ -16,16 +16,11 @@
  */
 ve.dm.Model = function VeDmModel( element ) {
 	// Properties
-	this.element = element || { 'type': this.constructor.static.name };
+	this.element = element || { type: this.constructor.static.name };
 };
 
 /* Static Properties */
 
-/**
- * @static
- * @property
- * @inheritable
- */
 ve.dm.Model.static = {};
 
 /**
@@ -129,7 +124,7 @@ ve.dm.Model.static.matchFunction = null;
  * @returns {Object|Array|null} Linear model element, or array with linear model data, or null to alienate
  */
 ve.dm.Model.static.toDataElement = function () {
-	return { 'type': this.name };
+	return { type: this.name };
 };
 
 /**
@@ -192,8 +187,8 @@ ve.dm.Model.static.enableAboutGrouping = false;
  * - a regular expression matching attributes that should be preserved
  * - an array of strings or regular expressions
  * - an object with the following keys:
- *   - 'blacklist': specification of attributes not to preserve (boolean|string|RegExp|Array)
- *   - 'whitelist': specification of attributes to preserve
+ *   - blacklist: specification of attributes not to preserve (boolean|string|RegExp|Array)
+ *   - whitelist: specification of attributes to preserve
  *
  * If only a blacklist is specified, all attributes will be preserved except the ones matching
  * the blacklist. If only a whitelist is specified, only those attributes matching the whitelist
@@ -232,7 +227,7 @@ ve.dm.Model.matchesAttributeSpec = function ( attribute, spec ) {
 			specArray = [ specArray ];
 		}
 		for ( i = 0, len = specArray.length; i < len; i++ ) {
-			if  ( matches( specArray[i] ) ) {
+			if ( matches( specArray[i] ) ) {
 				return true;
 			}
 		}
@@ -310,6 +305,18 @@ ve.dm.Model.static.removeHtmlAttribute = function ( dataElement, attribute ) {
 };
 
 /* Methods */
+
+/**
+ * Check whether this node can be inspected by a tool.
+ *
+ * The default implementation always returns true. If your node type is uninspectable in certain
+ * cases, you should override this function.
+ *
+ * @returns {boolean} Whether this node is inspectable
+ */
+ve.dm.Model.prototype.isInspectable = function () {
+	return true;
+};
 
 /**
  * Get a reference to the linear model element.

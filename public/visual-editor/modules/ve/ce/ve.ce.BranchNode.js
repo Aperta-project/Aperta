@@ -30,7 +30,7 @@ ve.ce.BranchNode = function VeCeBranchNode( model, config ) {
 	this.slugs = {};
 
 	// Events
-	this.model.connect( this, { 'splice': 'onSplice' } );
+	this.model.connect( this, { splice: 'onSplice' } );
 
 	// Initialization
 	this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
@@ -62,7 +62,7 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  */
 ve.ce.BranchNode.$inlineSlugTemplate = $( '<span>' )
 	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
-	.html('&#xFEFF;');
+	.html( '&#xFEFF;' );
 
 /**
  * Block slug template.
@@ -77,7 +77,7 @@ ve.ce.BranchNode.$blockSlugTemplate = $( '<div>' )
 	.append(
 		$( '<p>' )
 			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
-			.html('&#xFEFF;')
+			.html( '&#xFEFF;' )
 	);
 
 /* Methods */
@@ -160,18 +160,17 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		afterAnchor,
 		node,
 		parentNode,
-		firstChild,
 		removals;
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
-			args[i] = ve.ce.nodeFactory.create( args[i].getType(), args[i], { '$': this.$ } );
-			args[i].model.connect( this, { 'update': 'onModelUpdate' } );
+			args[i] = ve.ce.nodeFactory.create( args[i].getType(), args[i], { $: this.$ } );
+			args[i].model.connect( this, { update: 'onModelUpdate' } );
 		}
 	}
 	removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
-		removals[i].model.disconnect( this, { 'update': 'onModelUpdate' } );
+		removals[i].model.disconnect( this, { update: 'onModelUpdate' } );
 		removals[i].setLive( false );
 		removals[i].detach();
 		removals[i].$element.detach();
@@ -193,9 +192,8 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 			} else {
 				// DOM equivalent of this.$element.prepend( args[j].$element );
 				node = this.$element[0];
-				firstChild = node.firstChild;
 				for ( j = args[i].$element.length - 1; j >= 0; j-- ) {
-					node.insertBefore( args[i].$element[j], firstChild );
+					node.insertBefore( args[i].$element[j], node.firstChild );
 				}
 			}
 			if ( this.live !== args[i].isLive() ) {
@@ -215,7 +213,14 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
  * @method
  */
 ve.ce.BranchNode.prototype.setupSlugs = function () {
-	var key, slug, i, len, first, last, doc = this.getElementDocument();
+	var key, slug, i, len, first, last,
+		isBlock = this.canHaveChildrenNotContent(),
+		doc = this.getElementDocument();
+
+	function canContainParagraph( node ) {
+		var childTypes = node.getChildNodeTypes();
+		return childTypes === null || ve.indexOf( 'paragraph', childTypes ) !== -1;
+	}
 
 	// Remove all slugs in this branch
 	for ( key in this.slugs ) {
@@ -225,7 +230,11 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 		delete this.slugs[key];
 	}
 
-	if ( this.canHaveChildrenNotContent() ) {
+	if ( isBlock ) {
+		if ( !canContainParagraph( this ) ) {
+			// Don't put slugs in nodes which can't contain paragraphs
+			return;
+		}
 		slug = ve.ce.BranchNode.$blockSlugTemplate[0];
 	} else {
 		slug = ve.ce.BranchNode.$inlineSlugTemplate[0];
@@ -241,7 +250,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 	} else {
 		// Iterate over all children of this branch and add slugs in appropriate places
 		for ( i = 0, len = this.children.length; i < len; i++ ) {
-			// Don't put slugs after internal nodes.
+			// Don't put slugs after internal nodes
 			if ( ve.dm.nodeFactory.isNodeInternal( this.children[i].model.type ) ) {
 				continue;
 			}
@@ -294,11 +303,22 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
  *
  * @method
  * @param {boolean} live New live state
- * @fires live
  */
 ve.ce.BranchNode.prototype.setLive = function ( live ) {
 	ve.ce.Node.prototype.setLive.call( this, live );
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.children[i].setLive( live );
 	}
+};
+
+/**
+ * Release all memory.
+ */
+ve.ce.BranchNode.prototype.destroy = function () {
+	var i, len;
+	for ( i = 0, len = this.children.length; i < len; i++ ) {
+		this.children[i].destroy();
+	}
+
+	ve.ce.Node.prototype.destroy.call( this );
 };

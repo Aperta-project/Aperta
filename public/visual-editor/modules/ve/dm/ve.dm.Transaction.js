@@ -291,11 +291,16 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 		i = range.start,
 		span = i,
 		on = false,
-		insideContentNode = false;
+		insideContentNode = false,
+		handlesOwnChildrenDepth = 0;
+
 	// Iterate over all data in range, annotating where appropriate
 	while ( i < range.end ) {
 		if ( data.isElementData( i ) ) {
 			type = data.getType( i );
+			if ( ve.dm.nodeFactory.doesNodeHandleOwnChildren( type ) ) {
+				handlesOwnChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
+			}
 			if ( ve.dm.nodeFactory.isNodeContent( type ) ) {
 				if ( method === 'set' && !ve.dm.nodeFactory.canNodeTakeAnnotationType( type, annotation ) ) {
 					// Blacklisted annotations can't be set
@@ -311,6 +316,8 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 			// Text is always annotatable
 			annotatable = true;
 		}
+		// No annotations if we're inside a hanldesOwnChildren
+		annotatable = annotatable && !handlesOwnChildrenDepth;
 		if (
 			!annotatable ||
 			( insideContentNode && !data.isCloseElementData( i ) )
@@ -330,7 +337,15 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 			if ( data.isElementData( i ) ) {
 				insideContentNode = true;
 			}
-			covered = data.getAnnotationsFromOffset( i ).contains( annotation );
+			if ( method === 'set' ) {
+				// Don't re-apply matching annotation
+				covered = data.getAnnotationsFromOffset( i ).containsComparable( annotation );
+			} else {
+				// Expect comparable annotations to be removed individually otherwise
+				// we might try to remove more than one annotation per character, which
+				// a single transaction can't do.
+				covered = data.getAnnotationsFromOffset( i ).contains( annotation );
+			}
 			if ( ( covered && method === 'set' ) || ( !covered && method === 'clear' ) ) {
 				// Skip annotated content
 				if ( on ) {
@@ -379,6 +394,10 @@ ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newE
 		data = doc.metadata,
 		elements = data.getData( offset ) || [];
 
+	if ( newElements.length === 0 ) {
+		return tx; // no-op
+	}
+
 	// Retain up to element
 	tx.pushRetain( offset );
 	// Retain up to metadata element (second dimension)
@@ -421,6 +440,10 @@ ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
 	}
 
 	selection = elements.slice( range.start, range.end );
+
+	if ( selection.length === 0 ) {
+		return tx; // no-op.
+	}
 
 	// Retain up to element
 	tx.pushRetain( offset );
@@ -491,8 +514,8 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 	var i, selected, branch, branchOuterRange,
 		tx = new ve.dm.Transaction(),
 		selection = doc.selectNodes( range, 'leaves' ),
-		opening = { 'type': type },
-		closing = { 'type': '/' + type },
+		opening = { type: type },
+		closing = { type: '/' + type },
 		previousBranch,
 		previousBranchOuterRange;
 	// Add attributes to opening if needed
@@ -549,16 +572,16 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
  * valid instructions.
  *
  * Changing a paragraph to a header:
- *     Before: [ {'type': 'paragraph'}, 'a', 'b', 'c', {'type': '/paragraph'} ]
- *     newFromWrap( new ve.Range( 1, 4 ), [ {'type': 'paragraph'} ], [ {'type': 'heading', 'level': 1 } ] );
- *     After: [ {'type': 'heading', 'level': 1 }, 'a', 'b', 'c', {'type': '/heading'} ]
+ *     Before: [ {type: 'paragraph'}, 'a', 'b', 'c', {type: '/paragraph'} ]
+ *     newFromWrap( new ve.Range( 1, 4 ), [ {type: 'paragraph'} ], [ {type: 'heading', level: 1 } ] );
+ *     After: [ {type: 'heading', level: 1 }, 'a', 'b', 'c', {type: '/heading'} ]
  *
  * Changing a set of paragraphs to a list:
- *     Before: [ {'type': 'paragraph'}, 'a', {'type': '/paragraph'}, {'type':'paragraph'}, 'b', {'type':'/paragraph'} ]
- *     newFromWrap( new ve.Range( 0, 6 ), [], [ {'type': 'list' } ], [], [ {'type': 'listItem', 'attributes': {'styles': ['bullet']}} ] );
- *     After: [ {'type': 'list'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}}, {'type':'paragraph'} 'a',
- *              {'type': '/paragraph'}, {'type': '/listItem'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}},
- *              {'type': 'paragraph'}, 'b', {'type': '/paragraph'}, {'type': '/listItem'}, {'type': '/list'} ]
+ *     Before: [ {type: 'paragraph'}, 'a', {type: '/paragraph'}, {'type':'paragraph'}, 'b', {'type':'/paragraph'} ]
+ *     newFromWrap( new ve.Range( 0, 6 ), [], [ {type: 'list' } ], [], [ {type: 'listItem', attributes: {styles: ['bullet']}} ] );
+ *     After: [ {type: 'list'}, {type: 'listItem', attributes: {styles: ['bullet']}}, {'type':'paragraph'} 'a',
+ *              {type: '/paragraph'}, {type: '/listItem'}, {type: 'listItem', attributes: {styles: ['bullet']}},
+ *              {type: 'paragraph'}, 'b', {type: '/paragraph'}, {type: '/listItem'}, {type: '/list'} ]
  *
  * @param {ve.dm.Document} doc Document to generate a transaction for
  * @param {ve.Range} range Range to wrap/unwrap/replace around
@@ -577,7 +600,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 	function closingArray( openings ) {
 		var closings = [], i, len = openings.length;
 		for ( i = 0; i < len; i++ ) {
-			closings[closings.length] = { 'type': '/' + openings[len - i - 1].type };
+			closings[closings.length] = { type: '/' + openings[len - i - 1].type };
 		}
 		return closings;
 	}
@@ -674,9 +697,9 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
  *
  * This object maps operation types to objects, which map property names to reversal instructions.
  * A reversal instruction is either a string (which means the value of that property should be used)
- * or an object (which maps old values to new values). For instance, { 'from': 'to' }
+ * or an object (which maps old values to new values). For instance, { from: 'to' }
  * means that the .from property of the reversed operation should be set to the .to property of the
- * original operation, and { 'method': { 'set': 'clear' } } means that if the .method property of
+ * original operation, and { method: { set: 'clear' } } means that if the .method property of
  * the original operation was 'set', the reversed operation's .method property should be 'clear'.
  *
  * If a property's treatment isn't specified, its value is simply copied without modification.
@@ -685,15 +708,15 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
  * @type {Object.<string,Object.<string,string|Object.<string, string>>>}
  */
 ve.dm.Transaction.reversers = {
-	'annotate': { 'method': { 'set': 'clear', 'clear': 'set' } }, // swap 'set' with 'clear'
-	'attribute': { 'from': 'to', 'to': 'from' }, // swap .from with .to
-	'replace': { // swap .insert with .remove and .insertMetadata with .removeMetadata
-		'insert': 'remove',
-		'remove': 'insert',
-		'insertMetadata': 'removeMetadata',
-		'removeMetadata': 'insertMetadata'
+	annotate: { method: { set: 'clear', clear: 'set' } }, // swap 'set' with 'clear'
+	attribute: { from: 'to', to: 'from' }, // swap .from with .to
+	replace: { // swap .insert with .remove and .insertMetadata with .removeMetadata
+		insert: 'remove',
+		remove: 'insert',
+		insertMetadata: 'removeMetadata',
+		removeMetadata: 'insertMetadata'
 	},
-	'replaceMetadata': { 'insert': 'remove', 'remove': 'insert' } // swap .insert with .remove
+	replaceMetadata: { insert: 'remove', remove: 'insert' } // swap .insert with .remove
 };
 
 /* Methods */
@@ -752,10 +775,16 @@ ve.dm.Transaction.prototype.reversed = function () {
  * @returns {boolean} Transaction is no-op
  */
 ve.dm.Transaction.prototype.isNoOp = function () {
-	return (
-		this.operations.length === 0 ||
-		( this.operations.length === 1 && this.operations[0].type === 'retain' )
-	);
+	if ( this.operations.length === 0 ) {
+		return true;
+	} else if ( this.operations.length === 1 ) {
+		return this.operations[0].type === 'retain';
+	} else if ( this.operations.length === 2 ) {
+		return this.operations[0].type === 'retain' &&
+			this.operations[1].type === 'retainMetadata';
+	} else {
+		return false;
+	}
 };
 
 /**
@@ -911,12 +940,62 @@ ve.dm.Transaction.prototype.translateOffset = function ( offset, excludeInsertio
  * @method
  * @see #translateOffset
  * @param {ve.Range} range Range in the linear model before the transaction has been processed
+ * @param {boolean} [excludeInsertion] Do not grow the range to cover insertions
+ *  on the boundaries of the range.
  * @returns {ve.Range} Translated range, as it will be after processing transaction
  */
-ve.dm.Transaction.prototype.translateRange = function ( range ) {
-	var start = this.translateOffset( range.start, true ),
-		end = this.translateOffset( range.end, false );
+ve.dm.Transaction.prototype.translateRange = function ( range, excludeInsertion ) {
+	var start = this.translateOffset( range.start, !excludeInsertion ),
+		end = this.translateOffset( range.end, excludeInsertion );
 	return range.isBackwards() ? new ve.Range( end, start ) : new ve.Range( start, end );
+};
+
+/**
+ * Get the range that covers modifications made by this transaction.
+ *
+ * In the case of insertions, the range covers content the user intended to insert.
+ * It ignores wrappers added by ve.dm.Document#fixUpInsertion.
+ *
+ * The returned range is relative to the new state, after the transaction is applied. So for a
+ * simple insertion transaction, the range will cover the newly inserted data, and for a simple
+ * removal transaction it will be a zero-length range.
+ *
+ * @returns {ve.Range|null} Range covering modifications, or null for a no-op transaction
+ */
+ve.dm.Transaction.prototype.getModifiedRange = function () {
+	var i, len, op, start, end, offset = 0;
+	for ( i = 0, len = this.operations.length; i < len; i++ ) {
+		op = this.operations[i];
+		switch ( op.type ) {
+			case 'retainMetadata':
+				continue;
+
+			case 'retain':
+				offset += op.length;
+				break;
+
+			default:
+				if ( start === undefined ) {
+					// This is the first non-retain operation, set start to right before it
+					start = offset + ( op.insertedDataOffset || 0 );
+				}
+				if ( op.type === 'replace' ) {
+					offset += op.insert.length;
+				}
+				// Set end, so it'll end up being right after the last non-retain operation
+				if ( op.insertedDataLength ) {
+					end = start + op.insertedDataLength;
+				} else {
+					end = offset;
+				}
+				break;
+		}
+	}
+	if ( start === undefined || end === undefined ) {
+		// No-op transaction
+		return null;
+	}
+	return new ve.Range( start, end );
 };
 
 /**
@@ -959,8 +1038,8 @@ ve.dm.Transaction.prototype.pushRetain = function ( length ) {
 			this.operations[end].length += length;
 		} else {
 			this.operations.push( {
-				'type': 'retain',
-				'length': length
+				type: 'retain',
+				length: length
 			} );
 		}
 	}
@@ -984,8 +1063,8 @@ ve.dm.Transaction.prototype.pushRetainMetadata = function ( length ) {
 			this.operations[end].length += length;
 		} else {
 			this.operations.push( {
-				'type': 'retainMetadata',
-				'length': length
+				type: 'retainMetadata',
+				length: length
 			} );
 		}
 	}
@@ -1047,8 +1126,10 @@ ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, remo
  * @param {number} removeLength Number of data items to remove
  * @param {Array} insert Data to insert
  * @param {Array} [insertMetadata] Overwrite the metadata with this data, rather than collapsing it
+ * @param {number} [insertedDataOffset] Offset of the originally inserted data in the resulting operation data
+ * @param {number} [insertedDataLength] Length of the originally inserted data in the resulting operation data
  */
-ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, insert, insertMetadata ) {
+ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, insert, insertMetadata, insertedDataOffset, insertedDataLength ) {
 	if ( removeLength === 0 && insert.length === 0 ) {
 		// Don't push no-ops
 		return;
@@ -1118,13 +1199,17 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 	}
 
 	op = {
-		'type': 'replace',
-		'remove': remove,
-		'insert': insert
+		type: 'replace',
+		remove: remove,
+		insert: insert
 	};
 	if ( insertMetadata !== undefined ) {
 		op.removeMetadata = removeMetadata;
 		op.insertMetadata = insertMetadata;
+	}
+	if ( insertedDataOffset !== undefined ) {
+		op.insertedDataOffset = insertedDataOffset;
+		op.insertedDataLength = insertedDataLength;
 	}
 	this.operations.push( op );
 	this.lengthDifference += insert.length - remove.length;
@@ -1146,9 +1231,9 @@ ve.dm.Transaction.prototype.pushReplaceMetadata = function ( remove, insert ) {
 		return;
 	}
 	this.operations.push( {
-		'type': 'replaceMetadata',
-		'remove': remove,
-		'insert': insert
+		type: 'replaceMetadata',
+		remove: remove,
+		insert: insert
 	} );
 };
 
@@ -1162,10 +1247,10 @@ ve.dm.Transaction.prototype.pushReplaceMetadata = function ( remove, insert ) {
  */
 ve.dm.Transaction.prototype.pushReplaceElementAttribute = function ( key, from, to ) {
 	this.operations.push( {
-		'type': 'attribute',
-		'key': key,
-		'from': from,
-		'to': to
+		type: 'attribute',
+		key: key,
+		from: from,
+		to: to
 	} );
 };
 
@@ -1178,10 +1263,10 @@ ve.dm.Transaction.prototype.pushReplaceElementAttribute = function ( key, from, 
  */
 ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation ) {
 	this.operations.push( {
-		'type': 'annotate',
-		'method': method,
-		'bias': 'start',
-		'annotation': annotation
+		type: 'annotate',
+		method: method,
+		bias: 'start',
+		annotation: annotation
 	} );
 };
 
@@ -1194,10 +1279,10 @@ ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation 
  */
 ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, annotation ) {
 	this.operations.push( {
-		'type': 'annotate',
-		'method': method,
-		'bias': 'stop',
-		'annotation': annotation
+		type: 'annotate',
+		method: method,
+		bias: 'stop',
+		annotation: annotation
 	} );
 };
 
@@ -1218,7 +1303,10 @@ ve.dm.Transaction.prototype.pushInsertion = function ( doc, currentOffset, inser
 	// Retain up to insertion point, if needed
 	this.pushRetain( insertion.offset - currentOffset );
 	// Insert data
-	this.pushReplace( doc, insertion.offset, insertion.remove, insertion.data );
+	this.pushReplace(
+		doc, insertion.offset, insertion.remove, insertion.data, undefined,
+		insertion.insertedDataOffset, insertion.insertedDataLength
+	);
 	return insertion.offset + insertion.remove;
 };
 
@@ -1241,7 +1329,8 @@ ve.dm.Transaction.prototype.pushRemoval = function ( doc, currentOffset, range, 
 	// Validate range
 	if ( range.isCollapsed() ) {
 		// Empty range, nothing to remove
-		return currentOffset;
+		this.pushRetain( range.start - currentOffset );
+		return range.start;
 	}
 	// Select nodes and validate selection
 	selection = doc.selectNodes( range, 'covered' );

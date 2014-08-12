@@ -7,45 +7,15 @@
 
 .ve-ce-surface {
 	overflow: hidden;
-	font-size: 1em; /* to look more like MediaWiki use: 0.8em */;
-}
-
-.ve-ce-surface-textarea {
-	position: absolute;
-	z-index: -1;
-	opacity: 0;
-	color: white;
-	background-color: #fff;
-	border: none;
-	padding: 0;
-	margin: 0;
-	width: 1px;
-}
-
-.ve-ce-surface-textarea:focus {
-	outline: none;
-}
-
-.ve-ce-surface-cursor {
-	position: absolute;
-	background-color: #000;
-	width: 1px;
-	display: none;
-}
-
-/* @noflip */
-.ve-ce-surface-phantoms {
-	left: 0;
-	opacity: 0.75;
-	position: absolute;
-	top: 0;
+	/*
+	Remember, don't set font-size here.
+	Should be inherited from the VE target container.
+	*/
 }
 
 /* @noflip */
 .ve-ce-surface-highlights {
 	left: 0;
-	opacity: 0.5;
-	pointer-events: none;
 	position: absolute;
 	top: 0;
 }

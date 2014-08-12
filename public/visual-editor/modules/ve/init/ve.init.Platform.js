@@ -129,6 +129,66 @@ ve.init.Platform.prototype.getMediaSources = function () {
 };
 
 /**
+ * Get a list of all language codes.
+ *
+ * @method
+ * @abstract
+ * @returns {string[]} Language codes
+ */
+ve.init.Platform.prototype.getLanguageCodes = function () {
+	throw new Error( 've.init.Platform.getLanguageCodes must be overridden in subclass' );
+};
+
+/**
+ * Get a language's name from its code, in the current user language if possible.
+ *
+ * @method
+ * @abstract
+ * @param {string} code Language code
+ * @returns {string} Language name
+ */
+ve.init.Platform.prototype.getLanguageName = function () {
+	throw new Error( 've.init.Platform.getLanguageName must be overridden in subclass' );
+};
+
+/**
+ * Get a language's autonym from its code.
+ *
+ * @method
+ * @abstract
+ * @param {string} code Language code
+ * @returns {string} Language autonym
+ */
+ve.init.Platform.prototype.getLanguageAutonym = function () {
+	throw new Error( 've.init.Platform.getLanguageAutonym must be overridden in subclass' );
+};
+
+/**
+ * Get a language's direction from its code.
+ *
+ * @method
+ * @abstract
+ * @param {string} code Language code
+ * @returns {string} Language direction
+ */
+ve.init.Platform.prototype.getLanguageDirection = function () {
+	throw new Error( 've.init.Platform.getLanguageDirection must be overridden in subclass' );
+};
+
+/**
+ * Check whether we are running in Internet Explorer.
+ *
+ * HACK: This should not be needed, and it should eventually be removed. If this hasn't died
+ * in a fire by the end of September 2014, Roan has failed.
+ *
+ * @abstract
+ * @returns {boolean} Whether we are in IE
+ */
+ve.init.Platform.prototype.isInternetExplorer = function () {
+	throw new Error( 've.init.Platform.isInternetExplorer must be overridden in subclass' );
+};
+
+/**
  * Initialize the platform. The default implementation is to do nothing and return a resolved
  * promise. Subclasses should override this if they have asynchronous initialization work to do.
  *

@@ -11,30 +11,30 @@
  * @class
  * @abstract
  * @extends ve.ce.LeafNode
- * @mixins ve.ce.ProtectedNode
+ * @mixins ve.ce.FocusableNode
  * @mixins ve.ce.GeneratedContentNode
  *
  * @constructor
- * @param {ve.dm.AlienNode} model Model to observe
- * @param {Object} [config] Configuration options
+ * @param {ve.dm.AlienNode} model
+ * @param {Object} [config]
  */
-ve.ce.AlienNode = function VeCeAlienNode( model, config ) {
+ve.ce.AlienNode = function VeCeAlienNode() {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model, config );
+	ve.ce.LeafNode.apply( this, arguments );
 
 	// Mixin constructors
-	ve.ce.ProtectedNode.call( this );
+	ve.ce.FocusableNode.call( this );
 	ve.ce.GeneratedContentNode.call( this );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-alienNode' );
+	this.$highlights.addClass( 've-ce-alienNode-highlights' );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
 
-OO.mixinClass( ve.ce.AlienNode, ve.ce.ProtectedNode );
+OO.mixinClass( ve.ce.AlienNode, ve.ce.FocusableNode );
 
 OO.mixinClass( ve.ce.AlienNode, ve.ce.GeneratedContentNode );
 
@@ -42,12 +42,21 @@ OO.mixinClass( ve.ce.AlienNode, ve.ce.GeneratedContentNode );
 
 ve.ce.AlienNode.static.name = 'alien';
 
-ve.ce.AlienNode.static.$phantomTemplate = ve.ce.AlienNode.static.$phantomTemplate.clone()
-	.addClass( 've-ce-alienNode-phantom' )
-	.attr( 'title', ve.msg( 'visualeditor-aliennode-tooltip' ) );
-
 /* Methods */
 
+/**
+ * @inheritdoc
+ */
+ve.ce.AlienNode.prototype.createHighlight = function () {
+	// Mixin method
+	return ve.ce.FocusableNode.prototype.createHighlight.call( this )
+		.addClass( 've-ce-alienNode-highlight' )
+		.attr( 'title', ve.msg( 'visualeditor-aliennode-tooltip' ) );
+};
+
+/**
+ * @inheritdoc
+ */
 ve.ce.AlienNode.prototype.generateContents = function ( config )  {
 	var deferred = $.Deferred();
 	deferred.resolve( ( config && config.domElements ) || this.model.getAttribute( 'domElements' ) || [] );
@@ -61,15 +70,14 @@ ve.ce.AlienNode.prototype.generateContents = function ( config )  {
  *
  * @class
  * @extends ve.ce.AlienNode
+ *
  * @constructor
- * @param {ve.dm.AlienBlockNode} model Model to observe
+ * @param {ve.dm.AlienBlockNode} model
+ * @param {Object} [config]
  */
-ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
+ve.ce.AlienBlockNode = function VeCeAlienBlockNode() {
 	// Parent constructor
-	ve.ce.AlienNode.call( this, model );
-
-	// DOM changes
-	this.$element.addClass( 've-ce-alienBlockNode' );
+	ve.ce.AlienNode.apply( this, arguments );
 };
 
 /* Inheritance */
@@ -85,15 +93,14 @@ ve.ce.AlienBlockNode.static.name = 'alienBlock';
  *
  * @class
  * @extends ve.ce.AlienNode
+ *
  * @constructor
- * @param {ve.dm.AlienInlineNode} model Model to observe
+ * @param {ve.dm.AlienInlineNode} model
+ * @param {Object} [config]
  */
-ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
+ve.ce.AlienInlineNode = function VeCeAlienInlineNode() {
 	// Parent constructor
-	ve.ce.AlienNode.call( this, model );
-
-	// DOM changes
-	this.$element.addClass( 've-ce-alienInlineNode' );
+	ve.ce.AlienNode.apply( this, arguments );
 };
 
 /* Inheritance */

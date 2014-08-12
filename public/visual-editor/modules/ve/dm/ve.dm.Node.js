@@ -13,18 +13,18 @@
  * @mixins ve.Node
  *
  * @constructor
- * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.Node = function VeDmNode( length, element ) {
+ve.dm.Node = function VeDmNode( element ) {
 	// Parent constructor
 	ve.dm.Model.call( this, element );
-	// Mixin constructor
+
+	// Mixin constructors
 	ve.Node.call( this );
 	OO.EventEmitter.call( this );
 
 	// Properties
-	this.length = length || 0;
+	this.length = 0;
 	this.element = element;
 	this.doc = undefined;
 };
@@ -257,18 +257,6 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
 };
 
 /* Methods */
-
-/**
- * Check whether this node can be inspected by a tool.
- *
- * The default implementation always returns true. If your node type is uninspectable in certain
- * cases, you should override this function.
- *
- * @returns {boolean} Whether this node is inspectable
- */
-ve.dm.Node.prototype.isInspectable = function () {
-	return true;
-};
 
 /**
  * Get a clone of the node's document data element.

@@ -312,4 +312,4 @@ if (typeof module !== 'undefined' && module.exports) {
 /* pluralRuleParser ends here */
 mw.libs.pluralRuleParser = pluralRuleParser;
 
-} )();
+} )( mediaWiki );

@@ -25,80 +25,72 @@ OO.inheritClass( ve.ui.ToolFactory, OO.ui.ToolFactory );
 /* Methods */
 
 /**
- * Get a list of tools from a set of annotations.
+ * Get a list of tools for a fragment.
  *
- * The most specific tool will be chosen based on inheritance - mostly. The order of being added
- * also matters if the candidate classes aren't all in the same inheritance chain, and since object
- * properties aren't necessarily ordered it's not predictable what the effect of ordering will be.
- *
- * TODO: Add tracking of order of registration using an array and prioritize the most recently
- * registered candidate.
+ * The lowest compatible item in each inheritance chain will be used.
  *
  * @method
- * @param {ve.dm.AnnotationSet} annotations Annotations to be inspected
- * @returns {string[]} Symbolic names of tools that can be used to inspect annotations
+ * @param {ve.dm.SurfaceFragment} fragment Fragment to find compatible tools for
+ * @returns {Object[]} List of objects containing `tool` and `model` properties, representing each
+ *   compatible tool and the node or annotation it is compatible with
  */
-ve.ui.ToolFactory.prototype.getToolsForAnnotations = function ( annotations ) {
-	if ( annotations.isEmpty() ) {
-		return [];
-	}
-
-	var i, len, annotation, name, tool, candidateTool, candidateToolName,
-		arr = annotations.get(),
+ve.ui.ToolFactory.prototype.getToolsForFragment = function ( fragment ) {
+	var i, iLen, j, jLen, name, tools, model,
+		models = fragment.getSelectedModels(),
+		names = {},
 		matches = [];
 
-	for ( i = 0, len = arr.length; i < len; i++ ) {
-		annotation = arr[i];
-		candidateTool = null;
-		for ( name in this.registry ) {
-			tool = this.registry[name];
-			if ( tool.static.isCompatibleWith( annotation ) ) {
-				if ( !candidateTool || tool.prototype instanceof candidateTool ) {
-					candidateTool = tool;
-					candidateToolName = name;
-				}
+	// Collect tool/model pairs, unique by tool name
+	for ( i = 0, iLen = models.length; i < iLen; i++ ) {
+		model = models[i];
+		tools = this.collectCompatibleTools( model );
+		for ( j = 0, jLen = tools.length; j < jLen; j++ ) {
+			name = tools[j].static.name;
+			if ( !names[name] ) {
+				matches.push( { tool: tools[j], model: model } );
 			}
-		}
-		if ( candidateTool ) {
-			matches.push( candidateToolName );
+			names[name] = true;
 		}
 	}
+
 	return matches;
 };
 
 /**
- * Get a tool for a node.
+ * Collect the most specific compatible tools for an annotation or node.
  *
- * The most specific tool will be chosen based on inheritance - mostly. The order of being added
- * also matters if the candidate classes aren't all in the same inheritance chain, and since object
- * properties aren't necessarily ordered it's not predictable what the effect of ordering will be.
- *
- * TODO: Add tracking of order of registration using an array and prioritize the most recently
- * registered candidate.
- *
- * @method
- * @param {ve.dm.Node} node Node to be edited
- * @returns {string|undefined} Symbolic name of tool that can be used to edit node
+ * @param {ve.dm.Annotation|ve.dm.Node} model Annotation or node
+ * @returns {Function[]} List of compatible tools
  */
-ve.ui.ToolFactory.prototype.getToolForNode = function ( node ) {
-	var name, tool, candidateTool, candidateToolName;
-
-	if ( !node.isInspectable() ) {
-		return undefined;
-	}
+ve.ui.ToolFactory.prototype.collectCompatibleTools = function ( model ) {
+	var i, len, name, candidate, add,
+		candidates = [];
 
 	for ( name in this.registry ) {
-		tool = this.registry[name];
-		if ( tool.static.isCompatibleWith( node ) ) {
-			if ( !candidateTool || tool.prototype instanceof candidateTool ) {
-				candidateTool = tool;
-				candidateToolName = name;
+		candidate = this.registry[name];
+		if ( candidate.static.isCompatibleWith( model ) ) {
+			add = true;
+			for ( i = 0, len = candidates.length; i < len; i++ ) {
+				if ( candidate.prototype instanceof candidates[i] ) {
+					candidates.splice( i, 1, candidate );
+					add = false;
+					break;
+				} else if ( candidates[i].prototype instanceof candidate ) {
+					add = false;
+					break;
+				}
+			}
+			if ( add ) {
+				candidates.push( candidate );
 			}
 		}
 	}
-	return candidateToolName;
+
+	return candidates;
 };
 
 /* Initialization */
 
 ve.ui.toolFactory = new ve.ui.ToolFactory();
+
+ve.ui.toolGroupFactory = new OO.ui.ToolGroupFactory();

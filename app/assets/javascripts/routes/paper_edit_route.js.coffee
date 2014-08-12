@@ -2,7 +2,7 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
   heartbeatService: null
 
   beforeModel: ->
-    visualEditorScript = '/visual-editor.js'
+    visualEditorScript = '/visualEditor.min.js'
     unless ETahi.LazyLoaderMixin.loaded[visualEditorScript]
       $.getScript(visualEditorScript).then ->
         ETahi.LazyLoaderMixin.loaded[visualEditorScript] = true

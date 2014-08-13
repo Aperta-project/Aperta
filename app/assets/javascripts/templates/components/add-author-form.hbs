@@ -1,10 +1,13 @@
 <div class="add-author-form">
   <div class="form-group form-inline author-top">
-    <div class="form-group author-name required">
+    <div {{bind-attr class=":form-group :author-name :required newAuthor.validationErrors.firstName:error"}}>
       {{input type='text'
       value=newAuthor.firstName
       class='form-control'
       placeholder='First name'}}
+      {{#if newAuthor.validationErrors.firstName}}
+        <br>{{newAuthor.validationErrors.firstName}}
+      {{/if}}
     </div>
     <div class="form-group author-middle">
       {{input type='text'
@@ -12,40 +15,55 @@
       class='form-control'
       placeholder='MI'}}
     </div>
-    <div class="form-group author-name required">
+    <div {{bind-attr class=":form-group :author-name :required newAuthor.validationErrors.lastName:error"}}>
       {{input type='text'
       value=newAuthor.lastName
       class='form-control'
       placeholder='Last name'}}
+      {{#if newAuthor.validationErrors.lastName}}
+        <br>{{newAuthor.validationErrors.lastName}}
+      {{/if}}
     </div>
-    <div class="form-group author-half required author-bump">
+    <div {{bind-attr class=":form-group :author-half :required :author-bump newAuthor.validationErrors.email:error"}}>
       {{input type='text'
       value=newAuthor.email
       class='form-control'
       placeholder='Email'}}
+      {{#if newAuthor.validationErrors.email}}
+        <br>{{newAuthor.validationErrors.email}}
+      {{/if}}
     </div>
   </div>
   <div class="form-group form-inline">
-    <div class="form-group author-half required">
+    <div {{bind-attr class=":form-group :author-half :required newAuthor.validationErrors.title:error"}}>
       {{input type='text'
       value=newAuthor.title
       class='form-control'
       placeholder='Title'}}
+      {{#if newAuthor.validationErrors.title}}
+        <br>{{newAuthor.validationErrors.title}}
+      {{/if}}
     </div>
-    <div class="form-group author-half required author-bump">
+    <div {{bind-attr class=":form-group :author-half :author-bump :required newAuthor.validationErrors.department:error"}}>
       {{input type='text'
       value=newAuthor.department
       class='form-control'
       placeholder='Department'}}
+      {{#if newAuthor.validationErrors.department}}
+        <br>{{newAuthor.validationErrors.department}}
+      {{/if}}
     </div>
   </div>
   <div class="form-group form-inline">
-    <div class="form-group author-half required">
+    <div {{bind-attr class=":form-group :author-half :required newAuthor.validationErrors.affiliation:error"}}>
       {{type-ahead
       value=newAuthor.affiliation
       sourceList=institutions
       class='affiliation-field'
       placeholder='Affiliation'}}
+      {{#if newAuthor.validationErrors.affiliation}}
+        <br>{{newAuthor.validationErrors.affiliation}}
+      {{/if}}
     </div>
     <div class="form-group author-half author-bump">
       {{type-ahead

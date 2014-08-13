@@ -3,6 +3,11 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   showEditAuthorForm: false
   classNameBindings: ['showEditAuthorForm::edit-inactive', 'isEditable:editable']
 
+  openFormWhenInvalid: (->
+    errors = @get('author.validationErrors')
+    @set 'showEditAuthorForm', !Em.isEmpty(Em.keys(errors))
+  ).observes('author.validationErrors')
+
   attachHover: ( ->
     toggleHoverClass = (e) ->
       $(this).toggleClass('hover')

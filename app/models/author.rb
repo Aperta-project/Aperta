@@ -5,6 +5,13 @@ class Author < ActiveRecord::Base
   validates :position, presence: true
   validates :author_group, presence: true
 
-  # validates :first_name, :middle_initial, :last_name, :title, :department, presence: true
-  # validates :email, format: Devise.email_regexp
+  def mark_for_validation(*args, options)
+    self.class_eval do
+      validates *args, options
+    end
+  end
+
+  def formatted_errors
+    self.errors.to_h.merge(id: self.id)
+  end
 end

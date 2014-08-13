@@ -7,6 +7,12 @@ class PhaseTemplatesController < ApplicationController
     respond_with phase_template
   end
 
+  def update
+    phase_template = PhaseTemplate.find(params[:id])
+    phase_template.update_attributes(phase_template_params)
+    respond_with phase_template
+  end
+
   private
 
   def phase_template_params

@@ -7,6 +7,12 @@ class TaskTemplatesController < ApplicationController
     respond_with task_template
   end
 
+  def update
+    task_template = TaskTemplate.find(params[:id])
+    task_template.update_attributes(task_template_params)
+    respond_with task_template
+  end
+
   private
 
   def task_template_params

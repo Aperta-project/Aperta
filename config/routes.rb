@@ -61,6 +61,7 @@ Tahi::Application.routes.draw do
 
   resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
   resources :phase_templates
+  resources :task_templates
 
   namespace :admin do
     resources :journals, only: :index do

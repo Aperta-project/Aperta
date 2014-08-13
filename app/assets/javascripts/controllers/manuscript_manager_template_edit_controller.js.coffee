@@ -69,18 +69,19 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       @set('dirty', false)
 
       @get('model').save().then( (mmt) =>
-        # taskTemplates = []
+        taskTemplates = []
 
-        phasePromises = mmt.get('phaseTemplates').map (phaseTemplate) ->
-          # taskTemplates.pushObjects(phaseTemplate.get('taskTemplates'))
-          phaseTemplate.save()
+        phasePromises = mmt.get('phaseTemplates').invoke('save')
+        Em.RSVP.all(phasePromises).then (phaseTemplates) =>
+          promises = phaseTemplates.map (phaseTemplate) ->
+            phaseTemplate.get('taskTemplates').invoke('save')
 
-        Em.RSVP.all().then (phaseTemplates) =>
-          @set('errorText', '')
-          if transition
-            transition.retry()
-          else
-            @transitionToRoute('manuscript_manager_template.edit', mmt)
+          Em.RSVP.all(promises.compact()).then =>
+            @set('errorText', '')
+            if transition
+              transition.retry()
+            else
+              @transitionToRoute('manuscript_manager_template.edit', mmt)
 
       ).catch (errorResponse) =>
         if errorResponse.status == 422

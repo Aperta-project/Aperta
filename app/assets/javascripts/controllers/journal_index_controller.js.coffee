@@ -47,10 +47,6 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
         epubCoverFileName: journal.epub_cover_file_name
         epubCoverUploadedAt: journal.epub_cover_uploaded_at
 
-    saveAttr: (name) ->
-      @get('model').save()
-      @set("#{name}CssSaveStatus", 'Saved')
-
     resetSaveStatuses: ->
       @set('epubCssSaveStatus', '')
       @set('pdfCssSaveStatus', '')

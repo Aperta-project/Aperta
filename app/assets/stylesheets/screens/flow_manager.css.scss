@@ -53,75 +53,22 @@
   }
 }
 
-.card--completed:hover .card-content {
-  color: white;
-  background: $tahi-tertiary - #333;
-
-  .glyphicon { color: white; }
-}
-
-
-/*
-  .overlay.flow-manager.column.overlay
-    .overlay-container
-      .modal-heading
-        h2
-        .overlay-close-button
-      .modal-buttons
-*/
-
 .flow-manager-column-overlay .overlay-container {
   width: 700px;
-  height: 500px;
-  margin-top: 100px;
-  padding: 0;
-  background: #ececec;
 }
 
-.modal-heading {
-  position: relative;
-  padding: 16px;
-  background: white;
+.flow-manager-button {
+  display: block;
+  margin-bottom: 15px;
+  padding: 18px 0;
+  font-size: 30px;
+  color: #444;
+  text-transform: none;
+  border: 1px solid #d0d0d0;
 
-  h2 {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 20px;
-    color: #666;
-  }
+  &:hover { background: #e4f4e1; }
 }
 
-.modal-buttons {
-  margin: 40px auto 0;
-  width: 460px;
-
-  li { margin-bottom: 15px; }
-
-  a {
-    display: block;
-    height: 80px;
-    padding-top: 18px;
-    font-size: 30px;
-    color: #444;
-    text-transform: none;
-    border: 1px solid #d0d0d0;
-
-    &:hover { background: #e4f4e1; }
-  }
-}
-
-
-// in 'choose flow manager column' overlay
-.flow-overlay-close-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 40px;
-  color: gray;
-  font-size: 24px;
-  line-height: 58px;
-}
 
 // control bar:
 .add-column-button {

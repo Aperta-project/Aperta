@@ -22,7 +22,7 @@
   &:hover {
     .token-remove {
       visibility: visible;
-      @include transform(scale(1));
+      @extend .scaleIn;
     }
   }
 }
@@ -39,8 +39,6 @@
   text-align: center;
   visibility: hidden;
   cursor: pointer;
-  @include transform(scale(0));
-  @include transition(all 0.1s);
 
   &:before {
     content: "\e014";

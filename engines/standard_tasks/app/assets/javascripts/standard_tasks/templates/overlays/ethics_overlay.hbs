@@ -16,7 +16,7 @@
 
             <div class="question-info">
               <div class="question-info-header">Human Subject Research (involved human participants and/or tissue)</div>
-              <p>All research involving human participants must have been approved by the authors' Institutional Review Board (IRB) or an equivelant committee, and all clinical investigation must have been conducted according to the principles expressed in the <a href="http://www.wma.net/en/30publications/10policies/b3/index.html">Declaration of Helsinki.</a></p>
+              <p>All research involving human participants must have been approved by the authors' Institutional Review Board (IRB) or an equivalent committee, and all clinical investigation must have been conducted according to the principles expressed in the <a href="http://www.wma.net/en/30publications/10policies/b3/index.html">Declaration of Helsinki.</a></p>
               <p>Informed consent, written or oral, should also have been obtained from the participants.  If no consent was given, the reason must be explained (e.g. the data were analyzed anonymously) and reported.  The form of consent (written/oral), or reason for lack of consent, should be indicated in the Methods section of your manuscript.</p>
             </div>
 
@@ -36,18 +36,18 @@
     <li class="question">
       {{#question-radio ident="ethics.animal_subjects"
                         task=model
-                        question="Does this study involves vertebrate animals, embryos or tissues?"}}
+                        question="Does this study involve vertebrate animals, embryos or tissues?"}}
 
         {{#if view.selectedYes}}
           <div class="question-dataset">
             {{question-textarea ident="ethics.animal_subjects.institution_name" task=model
-                                question="Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board"}}
+                                question="Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board."}}
 
             <br>
             {{#question-radio ident="ethics.animal_subjects.ethical_approval"
                               task=model
                               class="question"
-                              question="Did they approved this research or granted a formal waiver of ethical approval?"}}
+                              question="Did they approve this research or grant a formal waiver of ethical approval?"}}
 
                 {{#if view.selectedYes}}
                   {{question-textarea ident="ethics.animal_subjects.ethical_approval.approval_number"
@@ -61,7 +61,7 @@
             {{#question-radio ident="ethics.animal_subjects.animal_sacrifice"
                               task=model
                               class="question"
-                              question="Was anesthesia, euthanasia or any kind of animal sacrifice is part of the study?"}}
+                              question="Was anesthesia, euthanasia or any kind of animal sacrifice part of the study?"}}
 
                 {{#if view.selectedYes}}
                   {{question-textarea ident="ethics.animal_subjects.animal_sacrifice.method_information"

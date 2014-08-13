@@ -114,15 +114,6 @@
 
       .modal-footer {
         border-top: none;
-
-        button {
-          @extend .button-primary;
-        }
-
-        .cancel-link {
-          text-transform: uppercase;
-          margin-right: 10px;
-        }
       }
     }
   }

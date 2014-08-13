@@ -1,3 +1,31 @@
+.questionnaire {
+  counter-reset: reviewer-form-counter;
+
+  ol > li {
+    position: relative;
+    margin-bottom: 50px;
+    &:before {
+      content: counter(reviewer-form-counter);
+      counter-increment: reviewer-form-counter;
+
+      background: $tahi-primary;
+      padding: 5px;
+      border-radius: 1000px;
+      width: 23px;
+      height: 23px;
+      display: inline-block;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      line-height: 14px;
+      position: absolute;
+      left: -30px;
+      top: 1px;
+    }
+  }
+}
+
 .question {
   margin-top: 10px;
   margin-bottom: 15px;
@@ -27,16 +55,19 @@
   font-size: 14px;
 }
 
-.help:before {
-  content: ">";
-  color: $tahi-primary-hover;
-  font-size: 1.4em;
-  font-weight: 700;
-  margin-right: 0.1em;
-}
-
-.help {
-  margin: 5px 0;
+ul.help {
+  padding-left: 0;
+  margin: 15px 0;
+  li {
+    list-style-type: none;
+    &:before {
+      content: ">";
+      color: $tahi-primary-hover;
+      font-size: 1.4em;
+      font-weight: 700;
+      margin-right: 0.1em;
+    }
+  }
 }
 
 .item {
@@ -51,4 +82,10 @@ label {
   padding: 30px;
   margin: 15px 0;
   background: rgb(194, 232, 188);
+}
+
+.yes-no-with-comments {
+  background: rgb(194, 232, 188);
+  padding: 10px;
+  border-radius: 5px;
 }

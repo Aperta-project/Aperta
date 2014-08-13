@@ -1,0 +1,32 @@
+h1 > .edit-h1-icon {
+  display: inline;
+}
+
+.edit-h1-icon {
+  margin-left: 10px;
+  color: #d4d4d4;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+  top: -8px;
+
+  &:hover {
+    color: $tahi-primary-hover;
+  }
+}
+
+.inline-edit-h1 {
+  overflow: hidden;
+  position: relative;
+  top: -14px;
+  left: -6px;
+  padding: 5px;
+  background-color: #C3E7BF;
+
+  input[type="text"] {
+    width: 100%;
+    margin-bottom: 4px;
+    border: 0;
+    font-size: 48px;
+  }
+}

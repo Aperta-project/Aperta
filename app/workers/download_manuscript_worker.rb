@@ -6,6 +6,16 @@ class DownloadManuscriptWorker
     manuscript.source.download!(url)
     manuscript.status = "done"
     manuscript.save
-    manuscript.paper.update OxgarageParser.new(open(manuscript.source.file.url)).to_hash
+
+    epub = EpubConverter.new manuscript.paper, User.first, true
+
+    response = Typhoeus.post(
+      "http://localhost:3000/convert/docx",
+      body: {
+        epub: epub.epub_stream.string
+      }
+    )
+
+    manuscript.paper.update JSON.parse(response.body).symbolize_keys!
   end
 end

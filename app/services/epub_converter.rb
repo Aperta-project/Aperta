@@ -157,6 +157,7 @@ class EpubConverter
   end
 
   def manuscript_contents
+    manuscript_source.download!(manuscript_source.url)
     manuscript_source.file.read
   end
 end

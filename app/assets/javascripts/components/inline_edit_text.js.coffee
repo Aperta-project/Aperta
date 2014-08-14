@@ -1,5 +1,8 @@
 ETahi.InlineEditTextComponent = Em.Component.extend
   editing: true
+  hasNoContent: (->
+    Em.isEmpty(@get('text'))
+  ).property('text')
 
   focusOnEdit: (->
     if @get('editing')
@@ -13,5 +16,6 @@ ETahi.InlineEditTextComponent = Em.Component.extend
       @toggleProperty 'editing'
 
     save: ->
-      @get('model').save()
-      @toggleProperty 'editing'
+      unless @get('hasNoContent')
+        @get('model').save()
+        @toggleProperty 'editing'

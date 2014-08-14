@@ -5,6 +5,6 @@
 
 <div {{bind-attr class=":inline-edit-form editing"}}>
   {{textarea name="text" value=text rows=4}}
-  <div class="button-secondary button--green pull-right" {{action "save"}}>Save</div>
+  <div {{bind-attr class=":button-secondary :button--green :pull-right hasNoContent:button--disabled"}} {{action "save"}}>Save</div>
   <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
 </div>

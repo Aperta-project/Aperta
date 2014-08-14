@@ -11,7 +11,7 @@ class DownloadManuscriptWorker
 
     response = RestClient.post(
       "http://ihat-staging.herokuapp.com/convert/docx",
-      {epub: epub.epub_stream.string, multipart: true}
+      epub: epub.epub_stream.string, multipart: true
     )
 
     manuscript.paper.update JSON.parse(response.body).symbolize_keys!

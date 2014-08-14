@@ -2,6 +2,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
   dirty: false
   errorText: ""
   editMode: false
+  journal: Em.computed.alias('model.journal')
 
   canRemoveCard: true
   sortedPhases: Ember.computed.alias 'phaseTemplates'
@@ -20,14 +21,18 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       console.log("cancelEditMode")
       @send('rollback')
 
-    changeTaskPhase: (task, targetPhase) ->
-      console.log("changeTaskPhase")
-      task.get('phase').removeTask(task)
-      targetPhase.addTask(task)
+    changeTaskPhase: (taskTemplate, targetPhaseTemplate) ->
+      console.log("WORKS! changeTaskPhase")
+      newPosition = targetPhaseTemplate.get('length')
+      taskTemplate.setProperties
+        phaseTemplate: targetPhaseTemplate
+        position: newPosition
+      taskTemplate.send('becomeDirty')
+      targetPhaseTemplate.get('taskTemplates').pushObject(taskTemplate)
       @set('dirty', true)
 
     addPhase: (position) ->
-      console.log("addPhase at position: " + position)
+      console.log("WORKS! addPhase at position: " + position)
       @get('model.phaseTemplates').forEach (phaseTemplate) ->
         if phaseTemplate.get('position') >= position
           phaseTemplate.incrementProperty('position')
@@ -64,7 +69,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       phase.set('name', oldName)
 
     saveTemplate: (transition)->
-      console.log("saveTemplate")
+      console.log("WORKS! saveTemplate")
       @set 'editMode', false
       @set('dirty', false)
 
@@ -95,8 +100,21 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       mmt = @get('model')
       mmt.get('phaseTemplates').forEach (phaseTemplate) ->
         phaseTemplate.get('taskTemplates').forEach (taskTemplate) ->
-          taskTemplate.rollback()
-        phaseTemplate.rollback()
-      mmt.rollback()
+          rollbackRecord taskTemplate, phaseTemplate.get('taskTemplates')
+          newPhaseTemplate = taskTemplate.get('phaseTemplate')
+          if newPhaseTemplate != phaseTemplate
+            phaseTemplate.get('taskTemplates').removeObject(taskTemplate)
+            newPhaseTemplate.get('taskTemplates').pushObject(taskTemplate)
+        rollbackRecord phaseTemplate, mmt.get('phaseTemplates')
+        phaseTemplate.reloadHasManys()
+      rollbackRecord mmt
       @set('dirty', false)
       @send('didRollBack')
+
+rollbackRecord = (model, parentAssociation) ->
+  if model.get('isNew')
+    if parentAssociation
+      parentAssociation.removeObject(model)
+    model.deleteRecord()
+
+  model.rollback()

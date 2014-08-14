@@ -89,7 +89,7 @@ module 'Integration: Reporting Guidelines Card',
       journals: [
         id: 3
         name: "Fake Journal"
-        logo_url: "/images/no-journal-image.gif"
+        logo_url: "/images/default-journal-logo.svg"
         paper_types: ["Research"]
         task_types: ["StandardTasks::ReportingGuidelinesTask"]
         manuscript_css: null

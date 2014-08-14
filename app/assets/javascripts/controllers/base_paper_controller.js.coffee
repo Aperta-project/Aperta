@@ -10,7 +10,7 @@ ETahi.BasePaperController = Ember.ObjectController.extend
 
   logoUrl: (->
     logoUrl = @get('model.journal.logoUrl')
-    if /no-journal-image/.test logoUrl
+    if /default-journal-logo/.test logoUrl
       false
     else
       logoUrl

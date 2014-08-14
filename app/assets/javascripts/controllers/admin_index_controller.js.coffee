@@ -8,7 +8,7 @@ ETahi.AdminIndexController = Ember.ArrayController.extend
 
   actions:
     addNewJournal: ->
-      @store.createRecord 'adminJournal', logoUrl: "<%= asset_path('no-journal-image.gif') %>", createdAt: new Date
+      @store.createRecord 'adminJournal', createdAt: new Date
 
     searchUsers: ->
       @resetSearch()

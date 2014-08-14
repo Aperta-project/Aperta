@@ -95,7 +95,7 @@ module 'Integration: EditPaper',
       journals: [
         id: 3
         name: "Fake Journal"
-        logo_url: "/images/no-journal-image.gif"
+        logo_url: "/images/default-journal-logo.svg"
         paper_types: ["Research"]
         task_types: [
           "FinancialDisclosure::Task"

@@ -6,10 +6,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
   sortedPhases: Ember.computed.alias 'phaseTemplates'
   removedTasks: null
-
-  initArrays: (->
-    @set('removedTasks', [])
-  ).on('init')
+  removedPhases: null
 
   showSaveButton: (->
     @get('dirty') || @get('editMode')
@@ -49,7 +46,6 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       @set('dirty', true)
 
     removePhase: (phaseTemplate) ->
-      console.log("WORKS! removePhase")
       phaseTemplate.deleteRecord()
       @set('dirty', true)
 
@@ -60,7 +56,6 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
         @set('dirty', true)
 
     removeTask: (taskTemplate) ->
-      @get('removedTasks').pushObject(taskTemplate)
       taskTemplate.deleteRecord()
       @set('dirty', true)
 
@@ -100,29 +95,10 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
         Tahi.utils.togglePropertyAfterDelay(this, 'errorText', errors, '', 5000)
 
     rollback: ->
-      console.log("rollback")
-      mmt = @get('model')
-      mmt.get('phaseTemplates').forEach (phaseTemplate) ->
-        phaseTemplate.get('taskTemplates').forEach (taskTemplate) ->
-          rollbackRecord taskTemplate, phaseTemplate.get('taskTemplates')
-          newPhaseTemplate = taskTemplate.get('phaseTemplate')
-          if newPhaseTemplate != phaseTemplate
-            phaseTemplate.get('taskTemplates').removeObject(taskTemplate)
-            newPhaseTemplate.get('taskTemplates').pushObject(taskTemplate)
-        rollbackRecord phaseTemplate, mmt.get('phaseTemplates')
-        phaseTemplate.reloadHasManys()
-      rollbackRecord mmt
-      debugger
-      @get('removedTasks').invoke('rollback')
-      @set('removedTasks', [])
-      @set('dirty', false)
-      @send('didRollBack')
+      @store.unloadAll('taskTemplate')
+      @store.unloadAll('phaseTemplate')
 
-rollbackRecord = (model, parentAssociation) ->
-  console.log(model.toString())
-  if model.get('isNew')
-    if parentAssociation
-      parentAssociation.removeObject(model)
-    model.deleteRecord()
+      @get('model').reload().then =>
+        @set('dirty', false)
+        @send('didRollBack')
 
-  model.rollback()

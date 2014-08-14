@@ -2,6 +2,10 @@ class TaskTemplatesController < ApplicationController
   before_filter :authenticate_user!
   respond_to :json
 
+  def show
+    respond_with TaskTemplate.find(params[:id])
+  end
+
   def create
     task_template = TaskTemplate.create(task_template_params)
     respond_with task_template

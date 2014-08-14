@@ -15,7 +15,7 @@ class CardOverlay < Page
   end
 
   def title
-    find('main > h1').text
+    find('main h1').text
   end
 
   def body

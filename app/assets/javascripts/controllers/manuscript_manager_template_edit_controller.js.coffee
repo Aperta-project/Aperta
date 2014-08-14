@@ -4,8 +4,12 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
   editMode: false
   journal: Em.computed.alias('model.journal')
 
-  canRemoveCard: true
   sortedPhases: Ember.computed.alias 'phaseTemplates'
+  removedTasks: null
+
+  initArrays: (->
+    @set('removedTasks', [])
+  ).on('init')
 
   showSaveButton: (->
     @get('dirty') || @get('editMode')
@@ -56,7 +60,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
         @set('dirty', true)
 
     removeTask: (taskTemplate) ->
-      console.log("WORKS! removeTask")
+      @get('removedTasks').pushObject(taskTemplate)
       taskTemplate.deleteRecord()
       @set('dirty', true)
 
@@ -108,10 +112,14 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
         rollbackRecord phaseTemplate, mmt.get('phaseTemplates')
         phaseTemplate.reloadHasManys()
       rollbackRecord mmt
+      debugger
+      @get('removedTasks').invoke('rollback')
+      @set('removedTasks', [])
       @set('dirty', false)
       @send('didRollBack')
 
 rollbackRecord = (model, parentAssociation) ->
+  console.log(model.toString())
   if model.get('isNew')
     if parentAssociation
       parentAssociation.removeObject(model)

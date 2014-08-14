@@ -1,2 +1,8 @@
 {{inline-edit-h1 title=title model=model}}
 <p>{{body}}</p>
+
+{{#each part in bodyParts}}
+  {{inline-edit-text text=part.value model=model}}
+{{/each}}
+
+{{view ETahi.AddStuffView}}

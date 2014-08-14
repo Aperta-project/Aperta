@@ -7,13 +7,13 @@ class NewAdhocCardOverlay < CardOverlay
   end
 
   def title
-    find('main > h1').text
+    find('main > div > h1').text
   end
 
   def title=(new_text)
-    find('.edit-h1-icon').click
+    find('.inline-edit-h1-icon').click
     fill_in 'title', with: new_text
-    click_button 'Save'
+    find('.button-secondary', text: "SAVE").click
   end
 
   # def body

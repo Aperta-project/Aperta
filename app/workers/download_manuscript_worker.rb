@@ -9,11 +9,9 @@ class DownloadManuscriptWorker
 
     epub = EpubConverter.new manuscript.paper, User.first, true
 
-    response = Typhoeus.post(
+    response = RestClient.post(
       "http://ihat-staging.herokuapp.com/convert/docx",
-      body: {
-        epub: epub.epub_stream.string
-      }
+      {epub: epub.epub_stream.string, multipart: true}
     )
 
     manuscript.paper.update JSON.parse(response.body).symbolize_keys!

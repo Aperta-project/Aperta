@@ -101,5 +101,3 @@ group :test do
   gem 'webmock'
   gem 'thin'
 end
-
-gem 'typhoeus'

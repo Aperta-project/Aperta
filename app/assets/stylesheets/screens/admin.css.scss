@@ -105,6 +105,11 @@
     width: 250px;
     height: 40px;
     margin-bottom: 15px;
+
+    img { vertical-align: top; }
+    path, rect, circle {
+      fill: $tahi-blue-light;
+    }
   }
 
   .journal {
@@ -188,6 +193,12 @@
       .journal-edit-buttons {
         text-align: right;
         margin-top: 15px;
+      }
+
+      .journal-thumbnail {
+        path, rect, circle {
+          fill: #347bc5;
+        }
       }
     }
   }

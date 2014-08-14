@@ -1,7 +1,7 @@
 ETahi.AdHocOverlayController = ETahi.TaskController.extend
-  bodyParts: []
+  newTextBlock: null
   actions:
     addTextBlock: ->
-      @bodyParts.pushObject
+      @set 'newTextBlock',
         type: "text"
         value: ""

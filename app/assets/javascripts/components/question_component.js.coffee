@@ -27,6 +27,7 @@ ETahi.QuestionComponent = Ember.Component.extend
 
   change: ->
     Ember.run.debounce(this, this._saveModel, @get('model'), 200)
+    false
 
   _saveModel: (model) ->
     model.save()

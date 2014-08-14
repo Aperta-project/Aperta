@@ -8,3 +8,22 @@ ETahi.JournalIndexRoute = Ember.Route.extend
     @fetchAdminJournalUsers model.get('id')
 
   deactivate: -> @set 'controller.adminJournalUsers', null
+
+  actions:
+    openEditOverlay: (key) ->
+      @controllerFor('adminJournalOverlay').setProperties
+        model: @modelFor('journalIndex')
+        propertyName: key
+      @render "adminJournal#{key.capitalize()}Overlay",
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'adminJournalOverlay'
+
+    editEPubCSS: ->
+      @send 'openEditOverlay', 'epubCss'
+
+    editPDFCSS: ->
+      @send 'openEditOverlay', 'pdfCss'
+
+    editManuscriptCSS: ->
+      @send 'openEditOverlay', 'manuscriptCss'

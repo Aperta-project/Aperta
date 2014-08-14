@@ -10,61 +10,45 @@
  *
  * @abstract
  * @class
- * @extends OO.ui.Tool
+ * @extends ve.ui.Tool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.IndentationTool = function VeUiIndentationTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.call( this, toolGroup, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.IndentationTool, OO.ui.Tool );
+OO.inheritClass( ve.ui.IndentationTool, ve.ui.Tool );
 
 /* Static Properties */
 
-/**
- * Indentation method the tool applies.
- *
- * @abstract
- * @static
- * @property {string}
- * @inheritable
- */
-ve.ui.IndentationTool.static.method = '';
+ve.ui.IndentationTool.static.requiresRange = true;
 
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
-ve.ui.IndentationTool.prototype.onSelect = function () {
-	this.toolbar.getSurface().execute( 'indentation', this.constructor.static.method );
-};
+ve.ui.IndentationTool.prototype.onUpdateState = function ( fragment ) {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
-/**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
- */
-ve.ui.IndentationTool.prototype.onUpdateState = function ( nodes ) {
-	var i, len,
-		any = false;
-	for ( i = 0, len = nodes.length; i < len; i++ ) {
-		if ( nodes[i].hasMatchingAncestor( 'listItem' ) ) {
-			any = true;
-			break;
+	if ( !this.isDisabled() ) {
+		var i, len,
+			nodes = fragment.getSelectedLeafNodes(),
+			any = false;
+		for ( i = 0, len = nodes.length; i < len; i++ ) {
+			if ( nodes[i].hasMatchingAncestor( 'listItem' ) ) {
+				any = true;
+				break;
+			}
 		}
+		this.setDisabled( !any );
 	}
-	this.setDisabled( !any );
 };
 
 /**
@@ -85,7 +69,7 @@ ve.ui.IncreaseIndentationTool.static.group = 'structure';
 ve.ui.IncreaseIndentationTool.static.icon = 'indent-list';
 ve.ui.IncreaseIndentationTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-indentationbutton-indent-tooltip' );
-ve.ui.IncreaseIndentationTool.static.method = 'increase';
+ve.ui.IncreaseIndentationTool.static.commandName = 'indent';
 ve.ui.toolFactory.register( ve.ui.IncreaseIndentationTool );
 
 /**
@@ -108,5 +92,5 @@ ve.ui.DecreaseIndentationTool.static.group = 'structure';
 ve.ui.DecreaseIndentationTool.static.icon = 'outdent-list';
 ve.ui.DecreaseIndentationTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-indentationbutton-outdent-tooltip' );
-ve.ui.DecreaseIndentationTool.static.method = 'decrease';
+ve.ui.DecreaseIndentationTool.static.commandName = 'outdent';
 ve.ui.toolFactory.register( ve.ui.DecreaseIndentationTool );

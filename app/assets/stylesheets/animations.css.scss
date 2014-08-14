@@ -44,6 +44,23 @@
   }
 }
 
+@include keyframes(scaleIn) {
+  0% {
+    @include transform(scale(0));
+    opacity: 0;
+  }
+
+  98% {
+    opacity: 1;
+    @include transform(scale(1.1));
+  }
+
+  100% {
+    opacity: 1;
+    @include transform(scale(1));
+  }
+}
+
 .fadeInDown {
   @include animation-name(fadeInDown);
   @include animation-duration(300ms);
@@ -55,4 +72,11 @@
   @include animation-name(fadeOutDown);
   @include animation-duration(200ms);
   @include animation-fill-mode(both);
+}
+
+.scaleIn {
+  @include animation-name(scaleIn);
+  @include animation-duration(250ms);
+  @include animation-fill-mode(both);
+  @include animation-timing-function(cubic-bezier(0.175, 0.885, 0.32, 1.275));
 }

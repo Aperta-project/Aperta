@@ -1,9 +1,9 @@
 <div class="overlay">
-  <span class="glyphicon glyphicon-remove overlay-close-x" {{action 'closeAction'}}></span>
+  <span class="glyphicon glyphicon-remove overlay-close-x" {{action "closeAction"}}></span>
   <div {{bind-attr class=":overlay-container overlayClass"}}>
     <header class="overlay-header">
       <h2 class="overlay-header-title">
-        {{#link-to 'paper.edit' paper class="overlay-paper-link"}}
+        {{#link-to "paper.edit" paper class="overlay-paper-link"}}
           {{paper.displayTitle}}
         {{/link-to}}
       </h2>
@@ -13,9 +13,9 @@
 
     <footer class="overlay-footer">
       <div class="overlay-footer-content">
-        <a class="close-overlay" {{action 'cancel'}}>Cancel</a>
+        <a class="close-overlay button-link" {{action "cancel"}}>Cancel</a>
       </div>
-      <a {{bind-attr class=":button-primary :button--green :button--disabled"}} {{action 'createCard'}}>Create card</a>
+      <a class="button-primary button--green" {{action "createCard"}}>Create card</a>
     </footer>
   </div>
 </div>

@@ -57,6 +57,7 @@
   color: $tahi-primary;
   font-size: 42px;
   cursor: pointer;
+  @extend .scaleIn;
 }
 
 

@@ -9,14 +9,14 @@
  * UserInterface clear tool.
  *
  * @class
- * @extends OO.ui.Tool
+ * @extends ve.ui.Tool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.ClearAnnotationTool = function VeUiClearAnnotationTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.call( this, toolGroup, config );
 
 	// Initialization
 	this.setDisabled( true );
@@ -24,7 +24,7 @@ ve.ui.ClearAnnotationTool = function VeUiClearAnnotationTool( toolGroup, config 
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.ClearAnnotationTool, OO.ui.Tool );
+OO.inheritClass( ve.ui.ClearAnnotationTool, ve.ui.Tool );
 
 /* Static Properties */
 
@@ -37,27 +37,22 @@ ve.ui.ClearAnnotationTool.static.icon = 'clear';
 ve.ui.ClearAnnotationTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-clearbutton-tooltip' );
 
+ve.ui.ClearAnnotationTool.static.requiresRange = true;
+
+ve.ui.ClearAnnotationTool.static.commandName = 'clear';
+
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
-ve.ui.ClearAnnotationTool.prototype.onSelect = function () {
-	this.toolbar.getSurface().execute( 'annotation', 'clearAll' );
-};
+ve.ui.ClearAnnotationTool.prototype.onUpdateState = function ( fragment ) {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
-/**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
- */
-ve.ui.ClearAnnotationTool.prototype.onUpdateState = function ( nodes, full, partial ) {
-	this.setDisabled( partial.isEmpty() );
+	if ( !this.isDisabled() ) {
+		this.setDisabled( !fragment.hasAnnotations() );
+	}
 };
 
 /* Registration */

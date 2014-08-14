@@ -1,3 +1,33 @@
+.user-detail-overlay .overlay-close-x {
+  color: $tahi-blue;
+}
+
+.user-detail-overlay .overlay-container {
+  width: 790px;
+}
+
+.modal-field-label, .modal-field {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.modal-field-label {
+  @extend .col-md-4;
+  font-size: 30px;
+  text-align: right;
+}
+
+.modal-field {
+  @extend .col-md-8;
+  font-size: 24px;
+  input {
+    border: 1px solid $tahi-tertiary;
+    border-radius: 5px;
+    color: $tahi-blue-light;
+    padding: 5px;
+  }
+}
+
 .admin-screen {
   .button--white {
     color: $tahi-blue;
@@ -35,19 +65,11 @@
     }
   }
 
-  .pdf-css,
-  .epub-css,
-  .manuscript-css,
   .admin-modal {
-
-    .modal-field-label, .modal-field {
-      margin-top: 20px;
-      margin-bottom: 10px;
-    }
-
     .reset-password {
-      margin-left: 312px;
+      margin-left: 33.33333333333333%;
       margin-top: 20px;
+      padding-left: 15px;
 
       .reset-password-link {
         display: inline-block;
@@ -63,58 +85,10 @@
       }
     }
 
-    .modal-field-label {
-      @extend .col-md-4;
-      font-size: 30px;
-      text-align: right;
-    }
-
-    .modal-field {
-      @extend .col-md-8;
-      font-size: 24px;
-      input {
-        border: 1px solid $tahi-tertiary;
-        border-radius: 5px;
-        color: $tahi-blue-light;
-        padding: 5px;
-      }
-    }
-
     span.save-status {
       color: $tahi-blue-light;
       vertical-align: -6px;
       font-style: italic;
-    }
-
-    .modal-dialog {
-      width: 1120px;
-      textarea {
-        width: 100%;
-        height: 500px;
-      }
-
-      h1 { @include card-title; }
-
-      .modal-content {
-        padding: 20px 100px;
-        box-shadow: none;
-        -webkit-box-shadow: none;
-        border-radius: 0;
-        -webkit-border-radius: 0;
-      }
-
-      .modal-footer {
-        border-top: none;
-
-        button {
-          @extend .button-primary;
-        }
-
-        .cancel-link {
-          text-transform: uppercase;
-          margin-right: 10px;
-        }
-      }
     }
   }
 
@@ -372,6 +346,8 @@
   float: left;
   margin-right: 25px;
 
+
+  .save-status,
   a.epub-cover {
     color: $tahi-blue-light;
   }
@@ -379,4 +355,20 @@
 
 .assign-role-button, .assigned-role, .add-role-input {
   margin-top: 5px;
+}
+
+
+.journal-edit-overlay {
+  .overlay-close-x {
+    color: $tahi-blue-light;
+  }
+
+  .overlay-container {
+    width: 850px;
+  }
+
+  textarea {
+    width: 100%;
+    height: 450px;
+  }
 }

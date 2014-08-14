@@ -32,9 +32,32 @@ ve.ui.ListAction.static.name = 'list';
  * @static
  * @property
  */
-ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap' ];
+ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle' ];
 
 /* Methods */
+
+/**
+ * Toggle a list around content.
+ *
+ * @method
+ * @param {string} style List style, e.g. 'number' or 'bullet'
+ */
+ve.ui.ListAction.prototype.toggle = function ( style ) {
+	var i, len,
+		nodes = this.surface.getModel().getFragment().getLeafNodes(),
+		all = !!nodes.length;
+
+	for ( i = 0, len = nodes.length; i < len; i++ ) {
+		if (
+			( len === 1 || !nodes[i].range || nodes[i].range.getLength() ) &&
+			!nodes[i].node.hasMatchingAncestor( 'list', { style: style } )
+		) {
+			all = false;
+			break;
+		}
+	}
+	this[all ? 'unwrap' : 'wrap']( style );
+};
 
 /**
  * Add a list around content.
@@ -66,12 +89,12 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 			documentModel,
 			selection.from,
 			[
-				{ 'type': 'list', 'attributes': { 'style': style } },
-				{ 'type': 'listItem' },
-				{ 'type': 'paragraph' },
-				{ 'type': '/paragraph' },
-				{ 'type': '/listItem' },
-				{ 'type': '/list' }
+				{ type: 'list', attributes: { style: style } },
+				{ type: 'listItem' },
+				{ type: 'paragraph' },
+				{ type: '/paragraph' },
+				{ type: '/listItem' },
+				{ type: '/list' }
 
 			]
 		), new ve.Range( selection.to + 3 ) );
@@ -84,7 +107,7 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 					// Change the list style
 					surfaceModel.change(
 						ve.dm.Transaction.newFromAttributeChanges(
-							documentModel, group.grandparent.getOffset(), { 'style': style }
+							documentModel, group.grandparent.getOffset(), { style: style }
 						),
 						selection
 					);
@@ -109,15 +132,16 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 					documentModel,
 					groupRange,
 					[],
-					[{ 'type': 'list', 'attributes': { 'style': style } }],
+					[{ type: 'list', attributes: { style: style } }],
 					[],
-					[{ 'type': 'listItem' }]
+					[{ type: 'listItem' }]
 				);
 				surfaceModel.change( tx, tx.translateRange( selection ) );
 			}
 		}
 	}
 	surfaceModel.breakpoint();
+	this.surface.getView().focus();
 };
 
 /**
@@ -139,6 +163,7 @@ ve.ui.ListAction.prototype.unwrap = function () {
 	} while ( node.hasMatchingAncestor( 'list' ) && this.surface.execute( 'indentation', 'decrease' ) );
 
 	surfaceModel.breakpoint();
+	this.surface.getView().focus();
 };
 
 /* Registration */

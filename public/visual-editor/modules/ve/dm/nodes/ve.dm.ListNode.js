@@ -10,13 +10,14 @@
  *
  * @class
  * @extends ve.dm.BranchNode
+ *
  * @constructor
- * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
  */
-ve.dm.ListNode = function VeDmListNode( children, element ) {
+ve.dm.ListNode = function VeDmListNode() {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, children, element );
+	ve.dm.BranchNode.apply( this, arguments );
 };
 
 /* Inheritance */
@@ -30,14 +31,14 @@ ve.dm.ListNode.static.name = 'list';
 ve.dm.ListNode.static.childNodeTypes = [ 'listItem' ];
 
 ve.dm.ListNode.static.defaultAttributes = {
-	'style': 'bullet'
+	style: 'bullet'
 };
 
 ve.dm.ListNode.static.matchTagNames = [ 'ul', 'ol' ];
 
 ve.dm.ListNode.static.toDataElement = function ( domElements ) {
 	var style = domElements[0].nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
-	return { 'type': this.name, 'attributes': { 'style': style } };
+	return { type: this.name, attributes: { style: style } };
 };
 
 ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {

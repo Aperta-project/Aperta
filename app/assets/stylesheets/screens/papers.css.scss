@@ -76,6 +76,12 @@
   top: 0;
   left: 0;
   right: 0;
+  background: none !important; // Blocks buttons as of July 28, 2014
+}
+
+// Not really sure what this is. Breaks default toolbar buttons as of July 28, 2014
+#paper-body .oo-ui-toolbar-actions {
+  display: none;
 }
 
 .oo-ui-toolbar-bar {

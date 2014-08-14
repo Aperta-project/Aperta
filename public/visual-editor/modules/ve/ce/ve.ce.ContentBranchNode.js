@@ -21,10 +21,10 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
 	ve.ce.BranchNode.call( this, model, config );
 
 	// Properties
-	this.surfaceModelState = null;
+	this.lastTransaction = null;
 
 	// Events
-	this.connect( this, { 'childUpdate': 'onChildUpdate' } );
+	this.connect( this, { childUpdate: 'onChildUpdate' } );
 };
 
 /* Inheritance */
@@ -44,6 +44,34 @@ OO.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
  */
 ve.ce.ContentBranchNode.static.splitOnEnter = true;
 
+/* Static Methods */
+
+/**
+ * Append the return value of #getRenderedContents to a DOM element.
+ *
+ * @param {HTMLElement} container DOM element
+ * @param {HTMLElement} wrapper Wrapper returned by #getRenderedContents
+ */
+ve.ce.ContentBranchNode.static.appendRenderedContents = function ( container, wrapper ) {
+	function resolveOriginals( domElement ) {
+		var i, len, child;
+		for ( i = 0, len = domElement.childNodes.length; i < len; i++ ) {
+			child = domElement.childNodes[i];
+			if ( child.veOrigNode ) {
+				domElement.replaceChild( child.veOrigNode, child );
+			} else if ( child.childNodes && child.childNodes.length ) {
+				resolveOriginals( child );
+			}
+		}
+	}
+
+	/* Resolve references to the original nodes. */
+	resolveOriginals( wrapper );
+	while ( wrapper.firstChild ) {
+		container.appendChild( wrapper.firstChild );
+	}
+};
+
 /* Methods */
 
 /**
@@ -60,14 +88,9 @@ ve.ce.ContentBranchNode.static.splitOnEnter = true;
  * @method
  */
 ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
-	var surfaceModel = this.getRoot().getSurface().getModel(),
-		surfaceModelState = surfaceModel.getDocument().getCompleteHistoryLength();
-
-	if ( transaction instanceof ve.dm.Transaction ) {
-		if ( surfaceModelState === this.surfaceModelState ) {
-			return;
-		}
-		this.surfaceModelState = surfaceModelState;
+	if ( transaction === null || transaction === this.lastTransaction ) {
+		this.lastTransaction = transaction;
+		return;
 	}
 	this.renderContents();
 };
@@ -91,11 +114,15 @@ ve.ce.ContentBranchNode.prototype.onSplice = function () {
 /**
  * Get an HTML rendering of the contents.
  *
+ * If you are actually going to append the result to a DOM, you need to
+ * do this with #appendRenderedContents, which resolves the cloned
+ * nodes returned by this function back to their originals.
+ *
  * @method
- * @returns {HTMLElement[]}
+ * @returns {HTMLElement} Wrapper containing rendered contents
  */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
-	var i, ilen, j, jlen, item, itemAnnotations, ann,
+	var i, ilen, j, jlen, item, itemAnnotations, ann, clone,
 		store = this.model.doc.getStore(),
 		annotationStack = new ve.dm.AnnotationSet( store ),
 		annotatedHtml = [],
@@ -112,7 +139,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		}
 		// Create a new DOM node and descend into it
 		ann = ve.ce.annotationFactory.create(
-			annotation.getType(), annotation, node, { '$': node.$ }
+			annotation.getType(), annotation, node, { $: node.$ }
 		).$element[0];
 		current.appendChild( ann );
 		current = ann;
@@ -154,9 +181,13 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 				current.appendChild( doc.createTextNode( buffer ) );
 				buffer = '';
 			}
-			// DOM equivalent of $( current ).append( itemHtml );
+			// DOM equivalent of $( current ).append( item.clone() );
 			for ( j = 0, jlen = item.length; j < jlen; j++ ) {
-				current.appendChild( item[j] );
+				// Append a clone so as to not relocate the original node
+				clone = item[j].cloneNode( true );
+				// Store a reference to the original node in a property
+				clone.veOrigNode = item[j];
+				current.appendChild( clone );
 			}
 		}
 	}
@@ -164,7 +195,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		current.appendChild( doc.createTextNode( buffer ) );
 		buffer = '';
 	}
-	return Array.prototype.slice.apply( wrapper.childNodes );
+	return wrapper;
 
 };
 
@@ -194,8 +225,8 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 
 	oldWrapper = this.$element[0].cloneNode( true );
 	newWrapper = this.$element[0].cloneNode( false );
-	for ( i = 0, len = rendered.length; i < len; i++ ) {
-		newWrapper.appendChild( rendered[i] );
+	while ( rendered.firstChild ) {
+		newWrapper.appendChild( rendered.firstChild );
 	}
 	oldWrapper.normalize();
 	newWrapper.normalize();
@@ -211,19 +242,17 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 		}
 	}
 
-	// Reattach child nodes with the right annotations
-	for ( i = 0, len = rendered.length; i < len; i++ ) {
-		this.$element[0].appendChild( rendered[i] );
-	}
+	// Reattach nodes
+	this.constructor.static.appendRenderedContents( this.$element[0], newWrapper );
 
 	// Add slugs
 	this.setupSlugs();
 
 	// Highlight the node in debug mode
 	if ( ve.debug ) {
-		this.$element.css( 'backgroundColor', '#F6F6F6' );
+		this.$element.css( 'backgroundColor', '#eee' );
 		setTimeout( ve.bind( function () {
 			this.$element.css( 'backgroundColor', '' );
-		}, this ), 350 );
+		}, this ), 500 );
 	}
 };

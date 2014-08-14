@@ -21,6 +21,6 @@ ETahi.RolesShowController = Em.ObjectController.extend
         @get('model').deleteRecord()
       else
         @get('model').rollback()
+
     delete: ->
       @send('deleteRole', @get('model'))
-

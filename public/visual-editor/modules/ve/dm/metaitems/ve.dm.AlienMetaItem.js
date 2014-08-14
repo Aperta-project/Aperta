@@ -26,15 +26,15 @@ OO.inheritClass( ve.dm.AlienMetaItem, ve.dm.MetaItem );
 
 ve.dm.AlienMetaItem.static.name = 'alienMeta';
 
-ve.dm.AlienMetaItem.static.matchTagNames = [ 'meta', 'link', '#comment' ];
+ve.dm.AlienMetaItem.static.matchTagNames = [ 'meta', 'link' ];
 
 ve.dm.AlienMetaItem.static.storeHtmlAttributes = false;
 
 ve.dm.AlienMetaItem.static.toDataElement = function ( domElements ) {
 	return {
-		'type': this.name,
-		'attributes': {
-			'domElements': ve.copy( domElements )
+		type: this.name,
+		attributes: {
+			domElements: ve.copy( domElements )
 		}
 	};
 };

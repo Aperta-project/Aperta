@@ -10,50 +10,21 @@
  *
  * @abstract
  * @class
- * @extends OO.ui.Tool
+ * @extends ve.ui.Tool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.InspectorTool = function VeUiInspectorTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.call( this, toolGroup, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.InspectorTool, OO.ui.Tool );
+OO.inheritClass( ve.ui.InspectorTool, ve.ui.Tool );
 
 /* Static Properties */
-
-/**
- * Symbolic name of inspector the tool opens.
- *
- * @abstract
- * @static
- * @property {string}
- * @inheritable
- */
-ve.ui.InspectorTool.static.inspector = '';
-
-/**
- * Tool remains pressed when selected.
- *
- * @static
- * @property {boolean}
- * @inheritable
- */
-ve.ui.InspectorTool.static.isSticky = true;
-
-/**
- * Configuration options for setting up inspector.
- *
- * @abstract
- * @static
- * @property {Object}
- * @inheritable
- */
-ve.ui.InspectorTool.static.config = {};
 
 /**
  * Annotation or node models this tool is related to.
@@ -66,6 +37,10 @@ ve.ui.InspectorTool.static.config = {};
  */
 ve.ui.InspectorTool.static.modelClasses = [];
 
+ve.ui.InspectorTool.static.requiresRange = true;
+
+ve.ui.InspectorTool.static.deactivateOnSelect = false;
+
 /**
  * @inheritdoc
  */
@@ -76,36 +51,23 @@ ve.ui.InspectorTool.static.isCompatibleWith = function ( model ) {
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
-ve.ui.InspectorTool.prototype.onSelect = function () {
-	this.toolbar.getSurface().execute(
-		'inspector',
-		'open',
-		this.constructor.static.inspector,
-		this.constructor.static.config
-	);
-	this.setActive( this.constructor.static.isSticky );
-};
+ve.ui.InspectorTool.prototype.onUpdateState = function ( fragment ) {
+	var i, len, models,
+		active = false;
 
-/**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
- */
-ve.ui.InspectorTool.prototype.onUpdateState = function ( nodes, full ) {
-	var toolFactory = this.toolbar.getToolFactory(),
-		tools = toolFactory.getToolsForAnnotations( full );
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
-	this.setActive(
-		// This tool is compatible with one of the annotations
-		tools.indexOf( this.constructor.static.name ) !== -1
-	);
+	models = fragment.getSelectedModels();
+	for ( i = 0, len = models.length; i < len; i++ ) {
+		if ( this.constructor.static.isCompatibleWith( models[i] ) ) {
+			active = true;
+			break;
+		}
+	}
+	this.setActive( active );
 };
 
 /**
@@ -126,8 +88,8 @@ ve.ui.LinkInspectorTool.static.group = 'meta';
 ve.ui.LinkInspectorTool.static.icon = 'link';
 ve.ui.LinkInspectorTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-annotationbutton-link-tooltip' );
-ve.ui.LinkInspectorTool.static.inspector = 'link';
 ve.ui.LinkInspectorTool.static.modelClasses = [ ve.dm.LinkAnnotation ];
+ve.ui.LinkInspectorTool.static.commandName = 'link';
 ve.ui.toolFactory.register( ve.ui.LinkInspectorTool );
 
 /**
@@ -148,6 +110,29 @@ ve.ui.InsertCharacterInspectorTool.static.group = 'insert';
 ve.ui.InsertCharacterInspectorTool.static.icon = 'special-character';
 ve.ui.InsertCharacterInspectorTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-specialcharacter-button-tooltip' );
-ve.ui.InsertCharacterInspectorTool.static.inspector = 'specialcharacter';
-ve.ui.InsertCharacterInspectorTool.static.isSticky = false;
+ve.ui.InsertCharacterInspectorTool.static.commandName = 'specialcharacter';
+ve.ui.InsertCharacterInspectorTool.static.deactivateOnSelect = true;
 ve.ui.toolFactory.register( ve.ui.InsertCharacterInspectorTool );
+
+/**
+ * UserInterface comment tool.
+ *
+ * @class
+ * @extends ve.ui.InspectorTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.CommentInspectorTool = function VeUiCommentInspectorTool( toolGroup, config ) {
+	ve.ui.InspectorTool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.CommentInspectorTool, ve.ui.InspectorTool );
+ve.ui.CommentInspectorTool.static.name = 'comment';
+ve.ui.CommentInspectorTool.static.group = 'meta';
+ve.ui.CommentInspectorTool.static.icon = 'comment';
+ve.ui.CommentInspectorTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-commentinspector-tooltip' );
+ve.ui.CommentInspectorTool.static.modelClasses = [ ve.dm.CommentNode ];
+ve.ui.CommentInspectorTool.static.commandName = 'comment';
+ve.ui.CommentInspectorTool.static.deactivateOnSelect = true;
+ve.ui.toolFactory.register( ve.ui.CommentInspectorTool );

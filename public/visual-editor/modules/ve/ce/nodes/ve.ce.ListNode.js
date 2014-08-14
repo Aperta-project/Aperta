@@ -19,7 +19,7 @@ ve.ce.ListNode = function VeCeListNode( model, config ) {
 	ve.ce.BranchNode.call( this, model, config );
 
 	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
+	this.model.connect( this, { update: 'onUpdate' } );
 };
 
 /* Inheritance */
@@ -42,7 +42,7 @@ ve.ce.ListNode.static.name = 'list';
  */
 ve.ce.ListNode.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
-		types = { 'bullet': 'ul', 'number': 'ol' };
+		types = { bullet: 'ul', number: 'ol' };
 
 	if ( !( style in types ) ) {
 		throw new Error( 'Invalid style' );
@@ -59,23 +59,6 @@ ve.ce.ListNode.prototype.getTagName = function () {
  */
 ve.ce.ListNode.prototype.onUpdate = function () {
 	this.updateTagName();
-};
-
-/**
- * Handle splice events.
- *
- * This is used to solve a rendering bug in Firefox.
- * @see ve.ce.BranchNode#onSplice
- *
- * @method
- */
-ve.ce.ListNode.prototype.onSplice = function () {
-	// Parent method
-	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
-
-	// There's a bug in Firefox where numbered lists aren't renumbered after in/outdenting
-	// list items. Force renumbering by requesting the height, which causes a reflow
-	this.$element.css( 'height' );
 };
 
 /**

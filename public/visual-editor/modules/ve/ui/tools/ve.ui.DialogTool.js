@@ -10,41 +10,21 @@
  *
  * @abstract
  * @class
- * @extends OO.ui.Tool
+ * @extends ve.ui.Tool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.DialogTool = function VeUiDialogTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.call( this, toolGroup, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.DialogTool, OO.ui.Tool );
+OO.inheritClass( ve.ui.DialogTool, ve.ui.Tool );
 
 /* Static Properties */
-
-/**
- * Symbolic name of dialog the tool opens.
- *
- * @abstract
- * @static
- * @property {string}
- * @inheritable
- */
-ve.ui.DialogTool.static.dialog = '';
-
-/**
- * Configuration options for setting up dialog.
- *
- * @abstract
- * @static
- * @property {Object}
- * @inheritable
- */
-ve.ui.DialogTool.static.config = {};
 
 /**
  * Annotation or node models this tool is related to.
@@ -67,34 +47,13 @@ ve.ui.DialogTool.static.isCompatibleWith = function ( model ) {
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
-ve.ui.DialogTool.prototype.onSelect = function () {
-	this.toolbar.getSurface().execute(
-		'dialog',
-		'open',
-		this.constructor.static.dialog,
-		this.constructor.static.config
-	);
+ve.ui.DialogTool.prototype.onUpdateState = function () {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+	// Never show the tool as active
 	this.setActive( false );
-};
-
-/**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
- */
-ve.ui.DialogTool.prototype.onUpdateState = function ( nodes ) {
-	if ( nodes.length ) {
-		this.setActive(
-			this.toolbar.getToolFactory().getToolForNode( nodes[0] ) === this.constructor
-		);
-	}
 };
 
 /**
@@ -112,7 +71,8 @@ ve.ui.CommandHelpDialogTool.static.name = 'commandHelp';
 ve.ui.CommandHelpDialogTool.static.group = 'dialog';
 ve.ui.CommandHelpDialogTool.static.icon = 'help';
 ve.ui.CommandHelpDialogTool.static.title =
-	OO.ui.deferMsg( 'visualeditor-dialogbutton-command-help-tooltip' );
-ve.ui.CommandHelpDialogTool.static.dialog = 'commandHelp';
-ve.ui.CommandHelpDialogTool.static.autoAdd = false;
+	OO.ui.deferMsg( 'visualeditor-dialog-command-help-title' );
+ve.ui.CommandHelpDialogTool.static.autoAddToCatchall = false;
+ve.ui.CommandHelpDialogTool.static.autoAddToGroup = false;
+ve.ui.CommandHelpDialogTool.static.commandName = 'commandHelp';
 ve.ui.toolFactory.register( ve.ui.CommandHelpDialogTool );

@@ -13,7 +13,7 @@
 	 */
 	var ve = {
 		// List of instances of ve.ui.Surface
-		'instances': []
+		instances: []
 	};
 
 	/* Static Methods */
@@ -157,7 +157,7 @@
 	 * @param {boolean} [recursive=false]
 	 * @param {Mixed} [target] Object that will receive the new properties
 	 * @param {Mixed...} [sources] Variadic list of objects containing properties
-	 * to be merged into the targe.
+	 * to be merged into the target.
 	 * @returns {Mixed} Modified version of first or second argument
 	 */
 	ve.extendObject = $.extend;
@@ -512,6 +512,42 @@
 	};
 
 	/**
+	 * Generate HTML attributes.
+	 *
+	 * This method copies part of `mw.html.element` from MediaWiki.
+	 *
+	 * NOTE: While the values of attributes are escaped, the names of attributes (i.e. the keys in
+	 * the attributes objects) are NOT ESCAPED. The caller is responsible for making sure these are
+	 * sane tag/attribute names and do not contain unsanitized content from an external source
+	 * (e.g. from the user or from the web).
+	 *
+	 * @param {Object} [attributes] Key-value map of attributes for the tag
+	 * @returns {string} HTML attributes
+	 */
+	ve.getHtmlAttributes = function ( attributes ) {
+		var attrName, attrValue,
+			parts = [];
+
+		if ( !ve.isPlainObject( attributes ) || ve.isEmptyObject( attributes ) ) {
+			return '';
+		}
+
+		for ( attrName in attributes ) {
+			attrValue = attributes[attrName];
+			if ( attrValue === true ) {
+				// Convert name=true to name=name
+				attrValue = attrName;
+			} else if ( attrValue === false ) {
+				// Skip name=false
+				continue;
+			}
+			parts.push( attrName + '="' + ve.escapeHtml( String( attrValue ) ) + '"' );
+		}
+
+		return parts.join( ' ' );
+	};
+
+	/**
 	 * Generate an opening HTML tag.
 	 *
 	 * This method copies part of `mw.html.element` from MediaWiki.
@@ -522,25 +558,12 @@
 	 * unsanitized content from an external source (e.g. from the user or from the web).
 	 *
 	 * @param {string} tag HTML tag name
-	 * @param {Object} attributes Key-value map of attributes for the tag
+	 * @param {Object} [attributes] Key-value map of attributes for the tag
 	 * @returns {string} Opening HTML tag
 	 */
 	ve.getOpeningHtmlTag = function ( tagName, attributes ) {
-		var html, attrName, attrValue;
-		html = '<' + tagName;
-		for ( attrName in attributes ) {
-			attrValue = attributes[attrName];
-			if ( attrValue === true ) {
-				// Convert name=true to name=name
-				attrValue = attrName;
-			} else if ( attrValue === false ) {
-				// Skip name=false
-				continue;
-			}
-			html += ' ' + attrName + '="' + ve.escapeHtml( String( attrValue ) ) + '"';
-		}
-		html += '>';
-		return html;
+		var attr = ve.getHtmlAttributes( attributes );
+		return '<' + tagName + ( attr ? ' ' + attr : '' ) + '>';
 	};
 
 	/**
@@ -596,10 +619,10 @@
 	ve.getDomElementSummary = function ( element, includeHtml ) {
 		var i,
 			summary = {
-				'type': element.nodeName.toLowerCase(),
-				'text': element.textContent,
-				'attributes': {},
-				'children': []
+				type: element.nodeName.toLowerCase(),
+				text: element.textContent,
+				attributes: {},
+				children: []
 			};
 
 		if ( includeHtml && element.nodeType === Node.ELEMENT_NODE ) {
@@ -639,44 +662,48 @@
 	};
 
 	/**
-	 * Check whether a given DOM element is of a block or inline type.
+	 * Check whether a given DOM element has a block element type.
 	 *
-	 * @param {HTMLElement} element
-	 * @returns {boolean} True if element is block, false if it is inline
+	 * @param {HTMLElement|string} element Element or element name
+	 * @returns {boolean} Element is a block element
 	 */
 	ve.isBlockElement = function ( element ) {
-		return ve.isBlockElementType( element.nodeName.toLowerCase() );
+		var elementName = typeof element === 'string' ? element : element.nodeName;
+		return ve.indexOf( elementName.toLowerCase(), ve.elementTypes.block ) !== -1;
 	};
 
 	/**
-	 * Check whether a given tag name is a block or inline tag.
+	 * Check whether a given DOM element is a void element (can't have children).
 	 *
-	 * @param {string} nodeName All-lowercase HTML tag name
-	 * @returns {boolean} True if block, false if inline
+	 * @param {HTMLElement|string} element Element or element name
+	 * @returns {boolean} Element is a void element
 	 */
-	ve.isBlockElementType = function ( nodeName ) {
-		return ve.indexOf( nodeName, ve.isBlockElementType.blockTypes ) !== -1;
+	ve.isVoidElement = function ( element ) {
+		var elementName = typeof element === 'string' ? element : element.nodeName;
+		return ve.indexOf( elementName.toLowerCase(), ve.elementTypes.void ) !== -1;
 	};
 
-	/**
-	 * Private data for #isBlockElementType.
-	 *
-	 */
-	ve.isBlockElementType.blockTypes = [
-		'div', 'p',
-		// tables
-		'table', 'tbody', 'thead', 'tfoot', 'caption', 'th', 'tr', 'td',
-		// lists
-		'ul', 'ol', 'li', 'dl', 'dt', 'dd',
-		// HTML5 heading content
-		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup',
-		// HTML5 sectioning content
-		'article', 'aside', 'body', 'nav', 'section', 'footer', 'header', 'figure',
-		'figcaption', 'fieldset', 'details', 'blockquote',
-		// other
-		'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
-		'map', 'object', 'pre', 'progress', 'video'
-	];
+	ve.elementTypes = {
+		block: [
+			'div', 'p',
+			// tables
+			'table', 'tbody', 'thead', 'tfoot', 'caption', 'th', 'tr', 'td',
+			// lists
+			'ul', 'ol', 'li', 'dl', 'dt', 'dd',
+			// HTML5 heading content
+			'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup',
+			// HTML5 sectioning content
+			'article', 'aside', 'body', 'nav', 'section', 'footer', 'header', 'figure',
+			'figcaption', 'fieldset', 'details', 'blockquote',
+			// other
+			'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
+			'map', 'object', 'pre', 'progress', 'video'
+		],
+		void: [
+			'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img',
+			'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'
+		]
+	};
 
 	/**
 	 * Create an HTMLDocument from an HTML string.
@@ -690,16 +717,27 @@
 	 * @returns {HTMLDocument} Document constructed from the HTML string
 	 */
 	ve.createDocumentFromHtml = function ( html ) {
-		// Here's how this function should look:
+		// Try using DOMParser if available. This only works in Firefox 12+ and very modern
+		// versions of other browsers (Chrome 30+, Opera 17+, IE10+)
+		var newDocument, $iframe, iframe;
+		try {
+			if ( html === '' ) {
+				// IE doesn't like empty strings
+				html = '<body></body>';
+			}
+			newDocument = new DOMParser().parseFromString( html, 'text/html' );
+			if ( newDocument ) {
+				return newDocument;
+			}
+		} catch ( e ) { }
+
+		// Here's what this fallback code should look like:
 		//
 		//     var newDocument = document.implementation.createHtmlDocument( '' );
 		//     newDocument.open();
 		//     newDocument.write( html );
 		//     newDocument.close();
 		//     return newDocument;
-		//
-		// (Or possibly something involving DOMParser.prototype.parseFromString, but that's Firefox-only
-		// for now.)
 		//
 		// Sadly, it's impossible:
 		// * On IE 9, calling open()/write() on such a document throws an "Unspecified error" (sic).
@@ -720,8 +758,8 @@
 		// object...), so we're detecting that and using the innerHTML hack described above.
 
 		// Create an invisible iframe
-		var newDocument, $iframe = $( '<iframe frameborder="0" width="0" height="0" />'),
-			iframe = $iframe.get( 0 );
+		$iframe = $( '<iframe frameborder="0" width="0" height="0" />' );
+		iframe = $iframe.get( 0 );
 		// Attach it to the document. We have to do this to get a new document out of it
 		document.documentElement.appendChild( iframe );
 		// Write the HTML to it
@@ -733,7 +771,7 @@
 		// FIXME detaching breaks access to newDocument in IE
 		iframe.parentNode.removeChild( iframe );
 
-		if ( !newDocument.documentElement || newDocument.documentElement.cloneNode() === undefined ) {
+		if ( !newDocument.documentElement || newDocument.documentElement.cloneNode( false ) === undefined ) {
 			// Surprise! The document is not a document! Only happens on Opera.
 			// (Or its nodes are not actually nodes, while the document
 			// *is* a document. This only happens when debugging with Dragonfly.)
@@ -771,7 +809,9 @@
 
 		node = doc.createElement( 'a' );
 		node.setAttribute( 'href', url );
-		return node.href;
+		// If doc.baseURI isn't set, node.href will be an empty string
+		// This is crazy, returning the original URL is better
+		return node.href || url;
 	};
 
 	/**
@@ -843,6 +883,30 @@
 	};
 
 	/**
+	 * Check if a node is contained within another node
+	 *
+	 * Similar to jQuery#contains except a list of containers can be supplied
+	 * and a boolean argument allows you to include the container in the match list
+	 *
+	 * @param {HTMLElement|HTMLElement[]} containers Container node(s) to search in
+	 * @param {HTMLElement} contained Node to find
+	 * @param {boolean} [matchContainers] Include the container(s) in the list of nodes to match, otherwise only match descendents
+	 * @returns {boolean} The node is in the list of target nodes
+	 */
+	ve.contains = function ( containers, contained, matchContainers ) {
+		var i;
+		if ( !ve.isArray( containers ) ) {
+			containers = [ containers ];
+		}
+		for ( i = containers.length - 1; i >= 0; i-- ) {
+			if ( ( matchContainers && contained === containers[i] ) || $.contains( containers[i], contained ) ) {
+				return true;
+			}
+		}
+		return false;
+	};
+
+	/**
 	 * Get the current time, measured in milliseconds since January 1, 1970 (UTC).
 	 *
 	 * On browsers that implement the Navigation Timing API, this function will produce floating-point
@@ -857,6 +921,13 @@
 		return navStart && typeof perf.now === 'function' ?
 			function () { return navStart + perf.now(); } : Date.now;
 	}() );
+
+	/**
+	 * DEPRECATED: Detect Internet Explorer
+	 *
+	 * Code still using this should be fixed to use specific feature detection.
+	 */
+	ve.isMsie = navigator.userAgent.indexOf( 'MSIE' ) !== -1;
 
 	// Expose
 	window.ve = ve;

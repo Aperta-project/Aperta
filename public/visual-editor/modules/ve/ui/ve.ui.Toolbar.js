@@ -22,7 +22,7 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	options = options || {};
 
 	// Parent constructor
-	OO.ui.Toolbar.call( this, ve.ui.toolFactory, options );
+	OO.ui.Toolbar.call( this, ve.ui.toolFactory, ve.ui.toolGroupFactory, options );
 
 	// Properties
 	this.surface = surface;
@@ -37,26 +37,31 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 		// will effectively also unbind toolbarA.windowEvents as they would share a guid.
 		// Though jQuery does not share the reference (both A and B have the correct context
 		// bound), it does unbind them. Use a regular closure instead.
-		'resize': function () {
+		resize: function () {
 			return toolbar.onWindowResize.apply( toolbar, arguments );
 		},
-		'scroll': function () {
+		scroll: function () {
 			return toolbar.onWindowScroll.apply( toolbar, arguments );
 		}
 	};
 	this.surfaceViewEvents = {
-		'keyup': function () {
+		keyup: function () {
 			return toolbar.onSurfaceViewKeyUp.apply( toolbar, arguments );
 		}
 	};
-	// default directions:
-	this.contextDirection = { 'inline': 'ltr', 'block': 'ltr' };
+	// Default directions
+	this.contextDirection = { inline: 'ltr', block: 'ltr' };
+	// The following classes can be used here:
+	// ve-ui-dir-inline-ltr
+	// ve-ui-dir-inline-rtl
+	// ve-ui-dir-block-ltr
+	// ve-ui-dir-block-rtl
 	this.$element
 		.addClass( 've-ui-dir-inline-' + this.contextDirection.inline )
 		.addClass( 've-ui-dir-block-' + this.contextDirection.block );
 	// Events
-	this.surface.getModel().connect( this, { 'contextChange': 'onContextChange' } );
-	this.surface.connect( this, { 'addCommand': 'onSurfaceAddCommand' } );
+	this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
+	this.surface.connect( this, { addCommand: 'onSurfaceAddCommand' } );
 };
 
 /* Inheritance */
@@ -67,10 +72,8 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
 
 /**
  * @event updateState
- * @see ve.dm.SurfaceFragment#getAnnotations
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @param {ve.dm.SurfaceFragment} fragment Surface fragment
+ * @param {Object} direction Context direction with 'inline' & 'block' properties
  */
 
 /**
@@ -120,7 +123,7 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 	update.offset = offset;
 
 	if ( this.floating ) {
-		update.css = { 'right': offset.right };
+		update.css = { right: offset.right };
 		this.$bar.css( update.css );
 	}
 
@@ -130,11 +133,18 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 };
 
 /**
- * Method to scroll to the cursor position while toolbar is floating on keyup only if
- * the cursor is obscured by the toolbar.
+ * Method to scroll the content editable surface to the cursor position.
+ *
+ * This is for when the cursor is obscured by a floating toolbar.
  */
 ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
-	var barHeight, scrollTo, obscured, cursorPos = this.surface.view.getSelectionRect();
+	var barHeight, scrollTo, obscured, cursorPos;
+
+	if ( !this.floating ) {
+		return;
+	}
+
+	cursorPos = this.surface.view.getSelectionRect();
 	if ( !cursorPos ) {
 		return;
 	}
@@ -144,8 +154,8 @@ ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
 	obscured = cursorPos.start.y - this.$window.scrollTop() < barHeight;
 
 	// If toolbar is floating and cursor is obscured, scroll cursor into view
-	if ( obscured && this.floating ) {
-		this.$( 'html, body' ).animate( { scrollTop: scrollTo }, 0 );
+	if ( obscured ) {
+		this.$( 'html, body' ).prop( 'scrollTop', scrollTo );
 	}
 };
 
@@ -155,39 +165,46 @@ ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
  * @fires updateState
  */
 ve.ui.Toolbar.prototype.onContextChange = function () {
-	var i, len, leafNodes, dirInline, dirBlock, fragmentAnnotation,
-		fragment = this.surface.getModel().getFragment( null, false ),
-		nodes = [];
+	this.updateToolState();
+};
 
-	leafNodes = fragment.getLeafNodes();
-	for ( i = 0, len = leafNodes.length; i < len; i++ ) {
-		if ( len === 1 || !leafNodes[i].range || leafNodes[i].range.getLength() ) {
-			nodes.push( leafNodes[i].node );
+/**
+ * Update the state of the tools
+ */
+ve.ui.Toolbar.prototype.updateToolState = function () {
+	var dirInline, dirBlock, fragmentAnnotation,
+		fragment = this.surface.getModel().getFragment( null, false );
+
+	// Update context direction for button icons UI
+	// by default, inline and block directions are the same
+	if ( !fragment.isNull() ) {
+		dirInline = dirBlock = this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() );
+
+		// 'inline' direction is different only if we are inside a language annotation
+		fragmentAnnotation = fragment.getAnnotations();
+		if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
+			dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
+		}
+
+		if ( dirInline !== this.contextDirection.inline ) {
+			// remove previous class:
+			this.$element.removeClass( 've-ui-dir-inline-rtl ve-ui-dir-inline-ltr' );
+			// The following classes can be used here:
+			// ve-ui-dir-inline-ltr
+			// ve-ui-dir-inline-rtl
+			this.$element.addClass( 've-ui-dir-inline-' + dirInline );
+			this.contextDirection.inline = dirInline;
+		}
+		if ( dirBlock !== this.contextDirection.block ) {
+			this.$element.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' );
+			// The following classes can be used here:
+			// ve-ui-dir-block-ltr
+			// ve-ui-dir-block-rtl
+			this.$element.addClass( 've-ui-dir-block-' + dirBlock );
+			this.contextDirection.block = dirBlock;
 		}
 	}
-	// Update context direction for button icons UI
-
-	// by default, inline and block directions are the same
-	dirInline = dirBlock = this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() );
-
-	// 'inline' direction is different only if we are inside a language annotation
-	fragmentAnnotation = fragment.getAnnotations();
-	if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
-		dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
-	}
-
-	if ( dirInline !== this.contextDirection.inline ) {
-		// remove previous class:
-		this.$element.removeClass( 've-ui-dir-inline-rtl ve-ui-dir-inline-ltr' );
-		this.$element.addClass( 've-ui-dir-inline-' + dirInline );
-		this.contextDirection.inline = dirInline;
-	}
-	if ( dirBlock !== this.contextDirection.block ) {
-		this.$element.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' );
-		this.$element.addClass( 've-ui-dir-block-' + dirBlock );
-		this.contextDirection.block = dirBlock;
-	}
-	this.emit( 'updateState', nodes, fragment.getAnnotations(), fragment.getAnnotations( true ) );
+	this.emit( 'updateState', fragment, this.contextDirection );
 };
 
 /**
@@ -248,9 +265,11 @@ ve.ui.Toolbar.prototype.initialize = function () {
 	// call to onWindowScroll, but users of this event (e.g toolbarTracking)
 	// need to also now the non-floating position.
 	this.emit( 'position', this.$bar, {
-		'floating': false,
-		'offset': this.elementOffset
+		floating: false,
+		offset: this.elementOffset
 	} );
+	// Initial state
+	this.updateToolState();
 
 	if ( this.floatable ) {
 		this.$window.on( this.windowEvents );
@@ -267,7 +286,7 @@ ve.ui.Toolbar.prototype.initialize = function () {
  */
 ve.ui.Toolbar.prototype.destroy = function () {
 	this.disableFloatable();
-	this.surface.getModel().disconnect( this, { 'contextChange': 'onContextChange' } );
+	this.surface.getModel().disconnect( this, { contextChange: 'onContextChange' } );
 
 	// Parent method
 	OO.ui.Toolbar.prototype.destroy.call( this );
@@ -284,8 +303,8 @@ ve.ui.Toolbar.prototype.float = function () {
 		// When switching into floating mode, set the height of the wrapper and
 		// move the bar to the same offset as the in-flow element
 		update = {
-			'css': { 'left': this.elementOffset.left, 'right': this.elementOffset.right },
-			'floating': true
+			css: { left: this.elementOffset.left, right: this.elementOffset.right },
+			floating: true
 		};
 		this.$element
 			.css( 'height', this.$element.height() )
@@ -307,10 +326,10 @@ ve.ui.Toolbar.prototype.unfloat = function () {
 		this.$element
 			.css( 'height', '' )
 			.removeClass( 've-ui-toolbar-floating' );
-		this.$bar.css( { 'left': '', 'right': '' } );
+		this.$bar.css( { left: '', right: '' } );
 		this.floating = false;
 
-		this.emit( 'position', this.$bar, { 'floating': false } );
+		this.emit( 'position', this.$bar, { floating: false } );
 	}
 };
 

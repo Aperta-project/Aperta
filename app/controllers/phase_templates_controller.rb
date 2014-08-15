@@ -13,6 +13,12 @@ class PhaseTemplatesController < ApplicationController
     respond_with phase_template
   end
 
+  def destroy
+    phase_template = PhaseTemplate.find(params[:id])
+    phase_template.destroy
+    respond_with phase_template
+  end
+
   private
 
   def phase_template_params

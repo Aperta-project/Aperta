@@ -5,35 +5,38 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
   journal: Em.computed.alias('model.journal')
 
   sortedPhases: Ember.computed.alias 'phaseTemplates'
-  removedTasks: null
-  removedPhases: null
+
+  deletedRecords: null
 
   showSaveButton: (->
     @get('dirty') || @get('editMode')
   ).property('dirty', 'editMode')
 
+  deleteRecord: (record) ->
+    deleted = @get('deletedRecords') || []
+    deleted.addObject(record)
+    record.deleteRecord()
+    @setProperties
+      deletedRecords: deleted
+      dirty: true
+
   actions:
     toggleEditMode: ->
-      console.log("toggleEditMode")
       @toggleProperty 'editMode'
       return null
 
     cancelEditMode: ->
-      console.log("cancelEditMode")
       @send('rollback')
 
     changeTaskPhase: (taskTemplate, targetPhaseTemplate) ->
-      console.log("WORKS! changeTaskPhase")
       newPosition = targetPhaseTemplate.get('length')
       taskTemplate.setProperties
         phaseTemplate: targetPhaseTemplate
         position: newPosition
-      taskTemplate.send('becomeDirty')
       targetPhaseTemplate.get('taskTemplates').pushObject(taskTemplate)
       @set('dirty', true)
 
     addPhase: (position) ->
-      console.log("WORKS! addPhase at position: " + position)
       @get('model.phaseTemplates').forEach (phaseTemplate) ->
         if phaseTemplate.get('position') >= position
           phaseTemplate.incrementProperty('position')
@@ -46,46 +49,38 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       @set('dirty', true)
 
     removePhase: (phaseTemplate) ->
-      phaseTemplate.deleteRecord()
-      @set('dirty', true)
+      @deleteRecord phaseTemplate
 
     addTask: (phaseTemplate, journalTaskType) ->
-      console.log("WORKS! addTask")
       unless Ember.isBlank(journalTaskType)
         newTask = @store.createRecord 'taskTemplate', journalTaskType: journalTaskType, phaseTemplate: phaseTemplate, title: journalTaskType.get('title')
         @set('dirty', true)
 
     removeTask: (taskTemplate) ->
-      taskTemplate.deleteRecord()
-      @set('dirty', true)
+      @deleteRecord taskTemplate
 
     savePhase: (phase) ->
-      console.log("WORKS! savePhase")
       @set('dirty', true)
-
-    rollbackPhase: (phase, oldName) ->
-      console.log("WORKS! rollbackPhase")
-      phase.set('name', oldName)
+      null
 
     saveTemplate: (transition)->
-      console.log("WORKS! saveTemplate")
       @set 'editMode', false
       @set('dirty', false)
 
       @get('model').save().then( (mmt) =>
         taskTemplates = []
 
-        phasePromises = mmt.get('phaseTemplates').invoke('save')
-        Em.RSVP.all(phasePromises).then (phaseTemplates) =>
+        Em.RSVP.all(mmt.get('phaseTemplates').invoke('save')).then (phaseTemplates) =>
           promises = phaseTemplates.map (phaseTemplate) ->
             phaseTemplate.get('taskTemplates').invoke('save')
 
           Em.RSVP.all(promises.compact()).then =>
-            @set('errorText', '')
-            if transition
-              transition.retry()
-            else
-              @transitionToRoute('manuscript_manager_template.edit', mmt)
+            Em.RSVP.all(@get('deletedRecords').invoke('save')).then =>
+              @set('errorText', '')
+              if transition
+                transition.retry()
+              else
+                @transitionToRoute('manuscript_manager_template.edit', mmt)
 
       ).catch (errorResponse) =>
         if errorResponse.status == 422
@@ -99,6 +94,8 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       @store.unloadAll('phaseTemplate')
 
       @get('model').reload().then =>
-        @set('dirty', false)
+        @setProperties
+          dirty: false
+          deletedRecords: []
         @send('didRollBack')
 

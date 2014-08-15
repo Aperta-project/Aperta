@@ -17,6 +17,12 @@ class TaskTemplatesController < ApplicationController
     respond_with task_template
   end
 
+  def destroy
+    task_template = TaskTemplate.find(params[:id])
+    task_template.destroy
+    respond_with task_template
+  end
+
   private
 
   def task_template_params

@@ -27,9 +27,8 @@ feature "Manuscript Manager Templates", js: true do
       mmt_page = journal_page.add_new_template
       mmt_page.paper_type = "Test Type"
       phase = mmt_page.find_phase 'Phase 1'
-      task_type = "StandardTasks::ReviewerReportTask"
-      phase.new_card overlay: ChooseCardTypeOverlay, card_type: task_type
-      expect(phase).to have_card("Reviewer Report Task")
+      phase.new_card overlay: ChooseCardTypeOverlay, card_type: "Reviewer Report"
+      expect(phase).to have_card("Reviewer Report")
       expect(mmt_page).to have_content("SAVE TEMPLATE")
       mmt_page.save
       expect(mmt_page).to have_no_content("SAVE TEMPLATE")
@@ -42,9 +41,8 @@ feature "Manuscript Manager Templates", js: true do
       mmt_page = journal_page.add_new_template
       mmt_page.paper_type = "Test Type"
       phase = mmt_page.find_phase 'Phase 1'
-      task_type = "StandardTasks::ReviewerReportTask"
-      phase.new_card overlay: ChooseCardTypeOverlay, card_type: task_type
-      expect(phase).to have_card("Reviewer Report Task")
+      phase.new_card overlay: ChooseCardTypeOverlay, card_type: "Reviewer Report"
+      expect(phase).to have_card("Reviewer Report")
       expect(mmt_page).to have_content("SAVE TEMPLATE")
 
       click_link 'Admin'

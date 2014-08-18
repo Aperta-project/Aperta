@@ -20,6 +20,20 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       deletedRecords: deleted
       dirty: true
 
+  successfulSave: (transition) ->
+    @reset()
+    @set('errorText', '')
+    if transition
+      transition.retry()
+    else
+      @transitionToRoute('manuscript_manager_template.edit', @get('model'))
+
+  reset: () ->
+    @setProperties
+      editMode: false
+      dirty: false
+      deletedRecords: []
+
   actions:
     toggleEditMode: ->
       @toggleProperty 'editMode'
@@ -64,9 +78,6 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       null
 
     saveTemplate: (transition)->
-      @set 'editMode', false
-      @set('dirty', false)
-
       @get('model').save().then( (mmt) =>
         taskTemplates = []
 
@@ -75,12 +86,11 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
             phaseTemplate.get('taskTemplates').invoke('save')
 
           Em.RSVP.all(promises.compact()).then =>
-            Em.RSVP.all(@get('deletedRecords').invoke('save')).then =>
-              @set('errorText', '')
-              if transition
-                transition.retry()
-              else
-                @transitionToRoute('manuscript_manager_template.edit', mmt)
+            if deletedRecords = @get('deletedRecords')
+              Em.RSVP.all(deletedRecords.invoke('save')).then =>
+                @successfulSave(transition)
+            else
+              @successfulSave(transition)
 
       ).catch (errorResponse) =>
         if errorResponse.status == 422
@@ -90,12 +100,14 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
         Tahi.utils.togglePropertyAfterDelay(this, 'errorText', errors, '', 5000)
 
     rollback: ->
-      @store.unloadAll('taskTemplate')
-      @store.unloadAll('phaseTemplate')
-
-      @get('model').reload().then =>
-        @setProperties
-          dirty: false
-          deletedRecords: []
+      if @get('model.isNew')
+        @get('model').deleteRecord()
+        @reset()
         @send('didRollBack')
+      else
+        @store.unloadAll('taskTemplate')
+        @store.unloadAll('phaseTemplate')
+        @get('model').reload().then =>
+          @reset()
+          @send('didRollBack')
 

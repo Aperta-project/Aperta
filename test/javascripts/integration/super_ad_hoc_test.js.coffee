@@ -1,8 +1,8 @@
 module 'Integration: Super AdHoc Card',
   setup: ->
     setupApp integration: true
-    TahiTest.paperId = 4245
-    TahiTest.adHocTaskId = 19347
+    TahiTest.paperId = 4243
+    TahiTest.adHocTaskId = 197
 
     paperResponse =
       phases: [
@@ -121,3 +121,4 @@ test "Adding a text block to an AdHoc Task", ->
   fillIn '.inline-edit-form textarea', "New text block, yahoo!"
   click '.task-body .inline-edit-form .button--green:contains("Save")'
   andThen -> ok Em.$.trim(find('p.inline-edit').text()).indexOf('yahoo') isnt -1
+  click '.overlay-close-button:first'

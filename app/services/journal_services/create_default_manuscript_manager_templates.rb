@@ -4,6 +4,7 @@ module JournalServices
       with_noisy_errors do
         mmt = journal.manuscript_manager_templates.create!(paper_type: 'Research')
         task_types = journal.journal_task_types.includes(:task_type)
+        raise "No task types configured for journal #{journal.id}" unless task_types.present?
 
         phase = mmt.phase_templates.create! name: "Submission Data"
         make_tasks phase, task_types, StandardTasks::FigureTask, SupportingInformation::Task, StandardTasks::AuthorsTask, UploadManuscript::Task

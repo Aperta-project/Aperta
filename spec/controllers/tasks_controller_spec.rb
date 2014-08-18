@@ -23,8 +23,7 @@ describe TasksController do
       post :create, { format: 'json', paper_id: paper.to_param, task: { assignee_id: '1',
                                                         type: 'Task',
                                                         phase_id: paper.phases.last.id,
-                                                        title: 'Verify Signatures',
-                                                        body: 'Seriously, do it!' } }
+                                                        title: 'Verify Signatures' } }
     end
 
     it_behaves_like "an unauthenticated json request"

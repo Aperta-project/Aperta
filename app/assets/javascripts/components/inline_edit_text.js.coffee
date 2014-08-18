@@ -1,5 +1,7 @@
 ETahi.InlineEditTextComponent = Em.Component.extend
   editing: false
+  isNew: false
+
   hasNoContent: (->
     Em.isEmpty(@get('bodyPart.value'))
   ).property('bodyPart.value')

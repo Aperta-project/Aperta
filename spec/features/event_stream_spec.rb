@@ -5,6 +5,7 @@ feature "Event streaming", js: true do
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, user: author, journal: journal }
   let(:upload_task) { paper.tasks_for_type(UploadManuscript::Task).first }
+  let(:text_body) { { type: "text", value: "Hi there!" } }
 
   before do
     sign_in_page = SignInPage.visit
@@ -20,7 +21,7 @@ feature "Event streaming", js: true do
     let(:submission_phase) { paper.phases.find_by_name("Submission Data") }
 
     scenario "creating a new message task" do
-      mt = submission_phase.tasks.new title: "Wicked Message Card", type: "MessageTask", body: "Hi there!", role: "user"
+      mt = submission_phase.tasks.new title: "Wicked Message Card", type: "MessageTask", body: text_body, role: "user"
       mt.participants << author
       mt.save!
 
@@ -31,7 +32,7 @@ feature "Event streaming", js: true do
     end
 
     scenario "creating a new task" do
-      submission_phase.tasks.create title: "Wicked Awesome Card", type: "Task", body: "Hi there!", role: "admin"
+      submission_phase.tasks.create title: "Wicked Awesome Card", type: "Task", body: text_body, role: "admin"
 
       phase = all('.column').detect {|p| p.find('h2').text == "Submission Data" }
       within phase do
@@ -52,7 +53,7 @@ feature "Event streaming", js: true do
   describe "message tasks" do
     before do
       submission_phase = paper.phases.find_by_name("Submission Data")
-      @mt = submission_phase.tasks.new title: "Wicked Message Card", type: "MessageTask", body: "Hi there!", role: "user"
+      @mt = submission_phase.tasks.new title: "Wicked Message Card", type: "MessageTask", body: text_body, role: "user"
       @mt.participants << author
       @mt.save!
       TaskManagerPage.visit paper
@@ -61,9 +62,9 @@ feature "Event streaming", js: true do
     end
 
     scenario "adding new comments" do
-      @mt.comments.create_with_comment_look(@mt, {body: "Hey-o", commenter_id: create(:user).id})
+      @mt.comments.create_with_comment_look(@mt, {body: "This is my comment", commenter_id: create(:user).id})
       within '.message-comments' do
-        expect(page).to have_css('.message-comment.unread', text: "Hey-o")
+        expect(page).to have_css('.message-comment.unread', text: "This is my comment")
       end
     end
 

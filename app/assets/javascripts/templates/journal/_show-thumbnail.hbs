@@ -1,6 +1,10 @@
 {{#link-to "journal" journal class="journal-thumbnail-show clearfix"}}
   <div class="journal-thumbnail">
-    <img {{bind-attr src=journal.logoUrl}}>
+    {{#if journal.logoUrl}}
+      <img {{bind-attr src=journal.logoUrl}}>
+    {{else}}
+      {{partial "svg/default-journal-logo"}}
+    {{/if}}
   </div>
   <span class='journal-paper-count'>{{formatNumber journal.paperCount}} {{pluralize journal.paperCount 'article' 'articles'}}</span>
   <h3 class="journal-name">{{journal.name}}</h3>

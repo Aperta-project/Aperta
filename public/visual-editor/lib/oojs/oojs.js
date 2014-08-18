@@ -1,16 +1,18 @@
 /*!
- * OOjs v1.0.8
+ * OOjs v1.0.11
  * https://www.mediawiki.org/wiki/OOjs
  *
  * Copyright 2011-2014 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Tue Mar 11 2014 19:27:31 GMT+0100 (CET)
+ * Date: 2014-07-23T20:15:47Z
  */
 ( function ( global ) {
 
 'use strict';
+
+/*exported toString */
 var
 	/**
 	 * Namespace for all classes, static methods and static properties.
@@ -24,30 +26,14 @@ var
 /* Class Methods */
 
 /**
- * Assert whether a value is a plain object or not.
+ * Utility to initialize a class for OO inheritance.
  *
- * @param {Mixed} obj
- * @return {boolean}
+ * Currently this just initializes an empty static object.
+ *
+ * @param {Function} fn
  */
-oo.isPlainObject = function ( obj ) {
-	// Any object or value whose internal [[Class]] property is not "[object Object]"
-	if ( toString.call( obj ) !== '[object Object]' ) {
-		return false;
-	}
-
-	// The try/catch suppresses exceptions thrown when attempting to access
-	// the "constructor" property of certain host objects suich as window.location
-	// in Firefox < 20 (https://bugzilla.mozilla.org/814622)
-	try {
-		if ( obj.constructor &&
-				!hasOwn.call( obj.constructor.prototype, 'isPrototypeOf' ) ) {
-			return false;
-		}
-	} catch ( e ) {
-		return false;
-	}
-
-	return true;
+oo.initClass = function ( fn ) {
+	fn.static = fn.static || {};
 };
 
 /**
@@ -95,7 +81,12 @@ oo.inheritClass = function ( targetFn, originFn ) {
 
 	var targetConstructor = targetFn.prototype.constructor;
 
-	targetFn.super = originFn;
+	// Using ['super'] instead of .super because 'super' is not supported
+	// by IE 8 and below (bug 63303).
+	// Provide .parent as alias for code supporting older browsers which
+	// allows people to comply with their style guide.
+	targetFn['super'] = targetFn.parent = originFn;
+
 	targetFn.prototype = Object.create( originFn.prototype, {
 		// Restore constructor property of targetFn
 		constructor: {
@@ -107,7 +98,7 @@ oo.inheritClass = function ( targetFn, originFn ) {
 	} );
 
 	// Extend static properties - always initialize both sides
-	originFn.static = originFn.static || {};
+	oo.initClass( originFn );
 	targetFn.static = Object.create( originFn.static );
 };
 
@@ -151,7 +142,7 @@ oo.mixinClass = function ( targetFn, originFn ) {
 	}
 
 	// Copy static properties - always initialize both sides
-	targetFn.static = targetFn.static || {};
+	oo.initClass( targetFn );
 	if ( originFn.static ) {
 		for ( key in originFn.static ) {
 			if ( hasOwn.call( originFn.static, key ) ) {
@@ -159,7 +150,7 @@ oo.mixinClass = function ( targetFn, originFn ) {
 			}
 		}
 	} else {
-		originFn.static = {};
+		oo.initClass( originFn );
 	}
 };
 
@@ -244,6 +235,12 @@ oo.compare = function ( a, b, asymmetrical ) {
 	}
 
 	for ( k in a ) {
+		if ( !hasOwn.call( a, k ) ) {
+			// Support es3-shim: Without this filter, comparing [] to {} will be false in ES3
+			// because the shimmed "forEach" is enumerable and shows up in Array but not Object.
+			continue;
+		}
+
 		aValue = a[k];
 		bValue = b[k];
 		aType = typeof aValue;
@@ -446,6 +443,42 @@ oo.simpleArrayIntersection = function ( a, b ) {
 oo.simpleArrayDifference = function ( a, b ) {
 	return simpleArrayCombine( a, b, false );
 };
+
+/*global hasOwn, toString */
+
+/**
+ * Assert whether a value is a plain object or not.
+ *
+ * @param {Mixed} obj
+ * @return {boolean}
+ */
+oo.isPlainObject = function ( obj ) {
+	/*jshint eqnull:true, eqeqeq:false */
+
+	// Any object or value whose internal [[Class]] property is not "[object Object]"
+	// Support IE8: Explicitly filter out DOM nodes
+	// Support IE8: Explicitly filter out Window object (needs loose comparison)
+	if ( !obj || toString.call( obj ) !== '[object Object]' || obj.nodeType || ( obj != null && obj == obj.window ) ) {
+		return false;
+	}
+
+	// The try/catch suppresses exceptions thrown when attempting to access
+	// the "constructor" property of certain host objects suich as window.location
+	// in Firefox < 20 (https://bugzilla.mozilla.org/814622)
+	try {
+		if ( obj.constructor &&
+				!hasOwn.call( obj.constructor.prototype, 'isPrototypeOf' ) ) {
+			return false;
+		}
+	} catch ( e ) {
+		return false;
+	}
+
+	return true;
+};
+
+/*global hasOwn */
+
 /**
  * @class OO.EventEmitter
  *
@@ -467,8 +500,6 @@ oo.EventEmitter = function OoEventEmitter() {
 /**
  * Add a listener to events of a specific event.
  *
- * If the callback/context are already bound to the event, they will not be bound again.
- *
  * @param {string} event Type of event to listen to
  * @param {Function} callback Function to call when event occurs
  * @param {Array} [args] Arguments to pass to listener, will be prepended to emitted arguments
@@ -477,7 +508,7 @@ oo.EventEmitter = function OoEventEmitter() {
  * @chainable
  */
 oo.EventEmitter.prototype.on = function ( event, callback, args, context ) {
-	var i, bindings, binding;
+	var bindings;
 
 	// Validate callback
 	if ( typeof callback !== 'function' ) {
@@ -487,16 +518,8 @@ oo.EventEmitter.prototype.on = function ( event, callback, args, context ) {
 	if ( arguments.length < 4 ) {
 		context = null;
 	}
-	if ( this.bindings.hasOwnProperty( event ) ) {
-		// Check for duplicate callback and context for this event
+	if ( hasOwn.call( this.bindings, event ) ) {
 		bindings = this.bindings[event];
-		i = bindings.length;
-		while ( i-- ) {
-			binding = bindings[i];
-			if ( bindings.callback === callback && bindings.context === context ) {
-				return this;
-			}
-		}
 	} else {
 		// Auto-initialize bindings list
 		bindings = this.bindings[event] = [];
@@ -518,11 +541,12 @@ oo.EventEmitter.prototype.on = function ( event, callback, args, context ) {
  * @chainable
  */
 oo.EventEmitter.prototype.once = function ( event, listener ) {
-	var eventEmitter = this;
-	return this.on( event, function listenerWrapper() {
-		eventEmitter.off( event, listenerWrapper );
-		listener.apply( eventEmitter, Array.prototype.slice.call( arguments, 0 ) );
-	} );
+	var eventEmitter = this,
+		listenerWrapper = function () {
+			eventEmitter.off( event, listenerWrapper );
+			listener.apply( eventEmitter, Array.prototype.slice.call( arguments, 0 ) );
+		};
+	return this.on( event, listenerWrapper );
 };
 
 /**
@@ -539,9 +563,7 @@ oo.EventEmitter.prototype.off = function ( event, callback, context ) {
 
 	if ( arguments.length === 1 ) {
 		// Remove all bindings for event
-		if ( event in this.bindings ) {
-			delete this.bindings[event];
-		}
+		delete this.bindings[event];
 	} else {
 		if ( typeof callback !== 'function' ) {
 			throw new Error( 'Invalid callback. Function expected.' );
@@ -671,7 +693,9 @@ oo.EventEmitter.prototype.disconnect = function ( context, methods ) {
 			bindings = this.bindings[event];
 			i = bindings.length;
 			while ( i-- ) {
-				if ( bindings[i].context === context ) {
+				// bindings[i] may have been removed by the previous step's
+				// this.off so check it still exists
+				if ( bindings[i] && bindings[i].context === context ) {
 					this.off( event, bindings[i].callback, context );
 				}
 			}
@@ -680,6 +704,7 @@ oo.EventEmitter.prototype.disconnect = function ( context, methods ) {
 
 	return this;
 };
+
 /**
  * @class OO.Registry
  * @mixins OO.EventEmitter
@@ -743,6 +768,7 @@ oo.Registry.prototype.register = function ( name, data ) {
 oo.Registry.prototype.lookup = function ( name ) {
 	return this.registry[name];
 };
+
 /**
  * @class OO.Factory
  * @extends OO.Registry
@@ -750,7 +776,7 @@ oo.Registry.prototype.lookup = function ( name ) {
  * @constructor
  */
 oo.Factory = function OoFactory() {
-	oo.Factory.super.call( this );
+	oo.Factory.parent.call( this );
 
 	// Properties
 	this.entries = [];
@@ -768,8 +794,9 @@ oo.inheritClass( oo.Factory, oo.Registry );
  * Classes must have a static `name` property to be registered.
  *
  *     function MyClass() {};
+ *     OO.initClass( MyClass );
  *     // Adds a static property to the class defining a symbolic name
- *     MyClass.static = { 'name': 'mine' };
+ *     MyClass.static.name = 'mine';
  *     // Registers class with factory, available via symbolic name 'mine'
  *     factory.register( MyClass );
  *
@@ -789,7 +816,7 @@ oo.Factory.prototype.register = function ( constructor ) {
 	}
 	this.entries.push( name );
 
-	oo.Factory.super.prototype.register.call( this, name, constructor );
+	oo.Factory.parent.prototype.register.call( this, name, constructor );
 };
 
 /**
@@ -823,10 +850,12 @@ oo.Factory.prototype.create = function ( name ) {
 	constructor.apply( obj, args );
 	return obj;
 };
+
 /*jshint node:true */
 if ( typeof module !== 'undefined' && module.exports ) {
 	module.exports = oo;
 } else {
 	global.OO = oo;
 }
+
 }( this ) );

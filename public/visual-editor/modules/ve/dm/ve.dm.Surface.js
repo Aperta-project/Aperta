@@ -21,9 +21,11 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	// Properties
 	this.documentModel = doc;
 	this.metaList = new ve.dm.MetaList( this );
-	this.selection = new ve.Range( 1, 1 );
+	this.selection = null;
+	this.selectionBefore = null;
 	this.selectedNodes = {};
 	this.newTransactions = [];
+	this.stagingStack = [];
 	this.undoStack = [];
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
@@ -34,7 +36,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.contextChangeQueued = false;
 
 	// Events
-	this.documentModel.connect( this, { 'transact': 'onDocumentTransact' } );
+	this.documentModel.connect( this, { transact: 'onDocumentTransact' } );
 };
 
 /* Inheritance */
@@ -45,12 +47,7 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 
 /**
  * @event select
- * @param {ve.Range} selection
- */
-
-/**
- * @event transact
- * @param {ve.dm.Transaction[]} transactions Transactions that have just been processed
+ * @param {ve.Range|null} selection
  */
 
 /**
@@ -61,10 +58,16 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
  * to access the selection; in most cases, you should use {ve.dm.Document#event-transact}.
  *
  * @param {ve.dm.Transaction} tx Transaction that was processed on the document
+ * @param {boolean} staged The transaction was applied in a staging state
  */
 
 /**
  * @event contextChange
+ */
+
+/**
+ * @event insertionAnnotationsChange
+ * @param {ve.dm.AnnotationSet} insertionAnnotations AnnotationSet being inserted
  */
 
 /**
@@ -77,20 +80,24 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
  * Disable changes.
  *
  * @method
+ * @fires history
  */
 ve.dm.Surface.prototype.disable = function () {
 	this.stopHistoryTracking();
 	this.enabled = false;
+	this.emit( 'history' );
 };
 
 /**
  * Enable changes.
  *
  * @method
+ * @fires history
  */
 ve.dm.Surface.prototype.enable = function () {
 	this.enabled = true;
 	this.startHistoryTracking();
+	this.emit( 'history' );
 };
 
 /**
@@ -123,21 +130,6 @@ ve.dm.Surface.prototype.stopHistoryTracking = function () {
 };
 
 /**
- * Remove all states from history.
- *
- * @method
- */
-ve.dm.Surface.prototype.purgeHistory = function () {
-	if ( !this.enabled ) {
-		return;
-	}
-	this.selection = new ve.Range( 1, 1 );
-	this.newTransactions = [];
-	this.undoStack = [];
-	this.undoIndex = 0;
-};
-
-/**
  * Get a list of all history states.
  *
  * @method
@@ -145,9 +137,154 @@ ve.dm.Surface.prototype.purgeHistory = function () {
  */
 ve.dm.Surface.prototype.getHistory = function () {
 	if ( this.newTransactions.length > 0 ) {
-		return this.undoStack.slice( 0 ).concat( [{ 'transactions': this.newTransactions.slice( 0 ) }] );
+		return this.undoStack.slice( 0 ).concat( [{ transactions: this.newTransactions.slice( 0 ) }] );
 	} else {
 		return this.undoStack.slice( 0 );
+	}
+};
+
+/**
+ * If the surface in staging mode.
+ *
+ * @returns {boolean} The surface in staging mode
+ */
+ve.dm.Surface.prototype.isStaging = function () {
+	return this.stagingStack.length > 0;
+};
+
+/**
+ * Get the staging state at the current staging stack depth
+ *
+ * @returns {Object|undefined} staging Staging state object, or undefined if not staging
+ * @returns {ve.dm.Transaction[]} staging.transactions Staging transactions
+ * @returns {boolean} staging.allowUndo Allow undo while staging
+ */
+ve.dm.Surface.prototype.getStaging = function () {
+	return this.stagingStack[this.stagingStack.length - 1];
+};
+
+/**
+ * Undo is allowed at the current staging stack depth
+ *
+ * @returns {boolean|undefined} Undo is allowed, or undefined if not staging
+ */
+ve.dm.Surface.prototype.doesStagingAllowUndo = function () {
+	var staging = this.getStaging();
+	return staging && staging.allowUndo;
+};
+
+/**
+ * Get the staging transactions at the current staging stack depth
+ *
+ * The array is returned by reference so it can be pushed to.
+ *
+ * @returns {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
+ */
+ve.dm.Surface.prototype.getStagingTransactions = function () {
+	var staging = this.getStaging();
+	return staging && staging.transactions;
+};
+
+/**
+ * Push another level of staging to the staging stack
+ *
+ * @param {boolean} [allowUndo=false] Allow undo while staging
+ * @fires history
+ */
+ve.dm.Surface.prototype.pushStaging = function ( allowUndo ) {
+	// If we're starting staging stop history tracking
+	if ( !this.isStaging() ) {
+		// Set a breakpoint to make sure newTransactions is clear
+		this.breakpoint();
+		this.stopHistoryTracking();
+		this.emit( 'history' );
+	}
+	this.stagingStack.push( { transactions: [], allowUndo: !!allowUndo } );
+};
+
+/**
+ * Pop a level of staging from the staging stack
+ *
+ * @fires history
+ * @returns {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
+ */
+ve.dm.Surface.prototype.popStaging = function () {
+	if ( !this.isStaging() ) {
+		return;
+	}
+
+	var i, transaction,
+		reverseTransactions = [],
+		staging = this.stagingStack.pop(),
+		transactions = staging.transactions;
+
+	// Not applying, so rollback transactions
+	for ( i = transactions.length - 1; i >= 0; i-- ) {
+		transaction = transactions[i].reversed();
+		reverseTransactions.push( transaction );
+	}
+	this.changeInternal( reverseTransactions, undefined, true );
+
+	if ( !this.isStaging() ) {
+		this.startHistoryTracking();
+		this.emit( 'history' );
+	}
+
+	return transactions;
+};
+
+/**
+ * Apply a level of staging from the staging stack
+ *
+ * @fires history
+ */
+ve.dm.Surface.prototype.applyStaging = function () {
+	if ( !this.isStaging() ) {
+		return;
+	}
+
+	var staging = this.stagingStack.pop(),
+		transactions = staging.transactions;
+
+	if ( this.isStaging() ) {
+		// Move transactions to the next item down in the staging stack
+		Array.prototype.push.apply( this.getStagingTransactions(), transactions );
+	} else {
+		this.truncateUndoStack();
+		// Move transactions to the undo stack
+		this.newTransactions = transactions;
+		this.breakpoint();
+	}
+
+	if ( !this.isStaging() ) {
+		this.startHistoryTracking();
+		this.emit( 'history' );
+	}
+};
+
+/**
+ * Pop the staging stack until empty
+ *
+ * @returns {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
+ */
+ve.dm.Surface.prototype.popAllStaging = function () {
+	if ( !this.isStaging() ) {
+		return;
+	}
+
+	var transactions = [];
+	while ( this.isStaging() ) {
+		ve.batchSplice( transactions, 0, 0, this.popStaging() );
+	}
+	return transactions;
+};
+
+/**
+ * Apply the staging stack until empty
+ */
+ve.dm.Surface.prototype.applyAllStaging = function () {
+	while ( this.isStaging() ) {
+		this.applyStaging();
 	}
 };
 
@@ -166,6 +303,7 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
  *
  * @method
  * @param {ve.dm.AnnotationSet|null} Insertion anotations to use or null to disable them
+ * @fires insertionAnnotationsChange
  * @fires contextChange
  */
 ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
@@ -176,7 +314,10 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 		annotations.clone() :
 		new ve.dm.AnnotationSet( this.documentModel.getStore() );
 
-	this.emit( 'contextChange' );
+	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
+	if ( !this.isStaging() ) {
+		this.emit( 'contextChange' );
+	}
 };
 
 /**
@@ -184,6 +325,7 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
  *
  * @method
  * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to add
+ * @fires insertionAnnotationsChange
  * @fires contextChange
  */
 ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
@@ -197,7 +339,11 @@ ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
 	} else {
 		throw new Error( 'Invalid annotations' );
 	}
-	this.emit( 'contextChange' );
+
+	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
+	if ( !this.isStaging() ) {
+		this.emit( 'contextChange' );
+	}
 };
 
 /**
@@ -205,6 +351,7 @@ ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
  *
  * @method
  * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to remove
+ * @fires insertionAnnotationsChange
  * @fires contextChange
  */
 ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
@@ -218,26 +365,42 @@ ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
 	} else {
 		throw new Error( 'Invalid annotations' );
 	}
-	this.emit( 'contextChange' );
+
+	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
+	if ( !this.isStaging() ) {
+		this.emit( 'contextChange' );
+	}
 };
 
 /**
- * Check if there is a state to redo.
+ * Check if redo is allowed in the current state.
  *
  * @method
- * @returns {boolean} Has a future state
+ * @returns {boolean} Redo is allowed
  */
-ve.dm.Surface.prototype.hasFutureState = function () {
-	return this.undoIndex > 0;
+ve.dm.Surface.prototype.canRedo = function () {
+	return this.undoIndex > 0 && this.enabled;
 };
 
 /**
- * Check if there is a state to undo.
+ * Check if undo is allowed in the current state.
  *
  * @method
- * @returns {boolean} Has a past state
+ * @returns {boolean} Undo is allowed
  */
-ve.dm.Surface.prototype.hasPastState = function () {
+ve.dm.Surface.prototype.canUndo = function () {
+	return this.hasBeenModified() && this.enabled && ( !this.isStaging() || this.doesStagingAllowUndo() );
+};
+
+/**
+ * Check if the surface has been modified.
+ *
+ * This only checks if there are transactions which haven't been undone.
+ *
+ * @method
+ * @returns {boolean} The surface has been modified
+ */
+ve.dm.Surface.prototype.hasBeenModified = function () {
 	return this.undoStack.length - this.undoIndex > 0 || !!this.newTransactions.length;
 };
 
@@ -330,7 +493,7 @@ ve.dm.Surface.prototype.startQueueingContextChanges = function () {
 ve.dm.Surface.prototype.emitContextChange = function () {
 	if ( this.queueingContextChanges ) {
 		this.contextChangeQueued = true;
-	} else {
+	} else if ( !this.isStaging() ) {
 		this.emit( 'contextChange' );
 	}
 };
@@ -349,7 +512,9 @@ ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
 		this.queueingContextChanges = false;
 		if ( this.contextChangeQueued ) {
 			this.contextChangeQueued = false;
-			this.emit( 'contextChange' );
+			if ( !this.isStaging() ) {
+				this.emit( 'contextChange' );
+			}
 		}
 	}
 };
@@ -357,7 +522,7 @@ ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
 /**
  * Change the selection
  *
- * @param {ve.Range} selection New selection
+ * @param {ve.Range|null} selection New selection
  *
  * @fires select
  * @fires contextChange
@@ -380,8 +545,8 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	}
 
 	// Detect if selected nodes changed
-	selectedNodes.start = this.documentModel.getNodeFromOffset( selection.start );
-	if ( selection.getLength() ) {
+	selectedNodes.start = selection ? this.documentModel.getNodeFromOffset( selection.start ) : null;
+	if ( selection && selection.getLength() ) {
 		selectedNodes.end = this.documentModel.getNodeFromOffset( selection.end );
 	}
 	if (
@@ -395,50 +560,62 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	this.selectedNodes = selectedNodes;
 	this.selection = selection;
 
-	// Figure out which annotations to use for insertions
-	if ( this.selection.isCollapsed() ) {
-		// Get annotations from the left of the cursor
-		left = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start - 1 ), -1 );
-		right = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start ) );
-	} else {
-		// Get annotations from the first character of the selection
-		left = dataModelData.getNearestContentOffset( this.selection.start );
-		right = dataModelData.getNearestContentOffset( this.selection.end );
-	}
-	if ( left === -1 ) {
-		// Document is empty, use empty set
-		insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
-	} else {
-		// Include annotations on the left that should be added to appended content, or ones that
-		// are on both the left and the right that should not
-		leftAnnotations = dataModelData.getAnnotationsFromOffset( left );
-		if ( right !== -1 ) {
-			rightAnnotations = dataModelData.getAnnotationsFromOffset( right );
-			insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
-				return annotation.constructor.static.applyToAppendedContent ||
-					rightAnnotations.containsComparable( annotation );
-			} );
+	if ( this.selection ) {
+		// Figure out which annotations to use for insertions
+		if ( this.selection.isCollapsed() ) {
+			// Get annotations from the left of the cursor
+			left = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start - 1 ), -1 );
+			right = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start ) );
 		} else {
-			insertionAnnotations = leftAnnotations;
+			// Get annotations from the first character of the selection
+			left = dataModelData.getNearestContentOffset( this.selection.start );
+			right = dataModelData.getNearestContentOffset( this.selection.end );
 		}
-	}
+		if ( left === -1 ) {
+			// Document is empty, use empty set
+			insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
+		} else {
+			// Include annotations on the left that should be added to appended content, or ones that
+			// are on both the left and the right that should not
+			leftAnnotations = dataModelData.getAnnotationsFromOffset( left );
+			if ( right !== -1 ) {
+				rightAnnotations = dataModelData.getAnnotationsFromOffset( right );
+				insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
+					return annotation.constructor.static.applyToAppendedContent ||
+						rightAnnotations.containsComparable( annotation );
+				} );
+			} else {
+				insertionAnnotations = leftAnnotations;
+			}
+		}
 
-	// Only emit an annotations change event if there's a meaningful difference
-	if (
-		!insertionAnnotations.containsAllOf( this.insertionAnnotations ) ||
-		!this.insertionAnnotations.containsAllOf( insertionAnnotations )
-	) {
-		this.setInsertionAnnotations( insertionAnnotations );
-		contextChange = true;
+		// Only emit an annotations change event if there's a meaningful difference
+		if (
+			!insertionAnnotations.containsAllOf( this.insertionAnnotations ) ||
+			!this.insertionAnnotations.containsAllOf( insertionAnnotations )
+		) {
+			this.setInsertionAnnotations( insertionAnnotations );
+			contextChange = true;
+		}
 	}
 
 	// Emit events
 	if ( !oldSelection || !oldSelection.equals( this.selection ) ) {
-		this.emit( 'select', this.selection.clone() );
+		this.emit( 'select', this.selection && this.selection.clone() );
 	}
 	if ( contextChange ) {
 		this.emitContextChange();
 	}
+};
+
+/**
+ * Place the selection at the first content offset in the document.
+ */
+ve.dm.Surface.prototype.selectFirstContentOffset = function () {
+	var firstOffset = this.getDocument().data.getNearestContentOffset( 0, 1 );
+	this.setSelection(
+		new ve.Range( firstOffset !== -1 ? firstOffset : 1 )
+	);
 };
 
 /**
@@ -462,6 +639,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions
  * @param {ve.Range} [selection] [selection]
  * @param {boolean} [skipUndoStack=false] If true, do not modify the undo stack. Used by undo/redo
+ * @fires select
  * @fires contextChange
  */
 ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
@@ -482,11 +660,15 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 		for ( i = 0, len = transactions.length; i < len; i++ ) {
 			if ( !transactions[i].isNoOp() ) {
 				if ( !skipUndoStack ) {
-					this.truncateUndoStack();
-					if ( !this.newTransactions.length ) {
-						this.selectionBefore = selectionBefore;
+					if ( this.isStaging() ) {
+						this.getStagingTransactions().push( transactions[i] );
+					} else {
+						this.truncateUndoStack();
+						if ( !this.newTransactions.length ) {
+							this.selectionBefore = selectionBefore;
+						}
+						this.newTransactions.push( transactions[i] );
 					}
-					this.newTransactions.push( transactions[i] );
 				}
 				// The .commit() call below indirectly invokes setSelection()
 				this.documentModel.commit( transactions[i] );
@@ -510,8 +692,11 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 	// If the selection changed while applying the transactions but not while applying the
 	// selection change, setSelection() won't have emitted a 'select' event. We don't want that
 	// to happen, so emit one anyway.
-	if ( !selectionBefore.equals( selectionAfter ) && selectionAfter.equals( this.selection ) ) {
-		this.emit( 'select', this.selection.clone() );
+	if (
+		( !selectionBefore || !selectionBefore.equals( selectionAfter ) ) &&
+		( selectionAfter && selectionAfter.equals( this.selection ) )
+	) {
+		this.emit( 'select', this.selection && this.selection.clone() );
 	}
 
 	if ( contextChange ) {
@@ -534,13 +719,15 @@ ve.dm.Surface.prototype.breakpoint = function () {
 	}
 	if ( this.newTransactions.length > 0 ) {
 		this.undoStack.push( {
-			'transactions': this.newTransactions,
-			'selection': this.selection.clone(),
-			'selectionBefore': this.selectionBefore.clone()
+			transactions: this.newTransactions,
+			selection: this.selection && this.selection.clone(),
+			selectionBefore: this.selectionBefore && this.selectionBefore.clone()
 		} );
 		this.newTransactions = [];
 		this.emit( 'history' );
 		return true;
+	} else if ( !this.selectionBefore && this.selection ) {
+		this.selectionBefore = this.selection.clone();
 	}
 	return false;
 };
@@ -553,8 +740,12 @@ ve.dm.Surface.prototype.breakpoint = function () {
  */
 ve.dm.Surface.prototype.undo = function () {
 	var i, item, transaction, transactions = [];
-	if ( !this.enabled || !this.hasPastState() ) {
+	if ( !this.canUndo() ) {
 		return;
+	}
+
+	if ( this.isStaging() ) {
+		this.popAllStaging();
 	}
 
 	this.breakpoint();
@@ -580,7 +771,7 @@ ve.dm.Surface.prototype.undo = function () {
  */
 ve.dm.Surface.prototype.redo = function () {
 	var item;
-	if ( !this.enabled || !this.hasFutureState() ) {
+	if ( !this.canRedo() ) {
 		return;
 	}
 
@@ -603,6 +794,8 @@ ve.dm.Surface.prototype.redo = function () {
  * @fires documentUpdate
  */
 ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
-	this.setSelection( tx.translateRange( this.selection ) );
-	this.emit( 'documentUpdate', tx );
+	if ( this.selection ) {
+		this.setSelection( tx.translateRange( this.selection ) );
+	}
+	this.emit( 'documentUpdate', tx, this.isStaging() );
 };

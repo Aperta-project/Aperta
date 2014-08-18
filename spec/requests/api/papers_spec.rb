@@ -107,6 +107,11 @@ describe Api::PapersController do
         })
     end
 
+    it "user can get ePub for a single paper" do
+      get api_paper_path(paper1.id, format: :epub), nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
+      expect(response.headers["Content-Type"]).to eq("application/epub+zip")
+    end
+
     context "when API token isn't provided" do
       it "returns a 401 not authorized status" do
         get api_papers_path(paper1.id)

@@ -20,7 +20,10 @@
   padding-left: 2.25rem;
 
   &:hover {
-    .token-remove { visibility: visible; }
+    .token-remove {
+      visibility: visible;
+      @extend .scaleIn;
+    }
   }
 }
 
@@ -30,7 +33,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
+  left: 1px;
   width: 2.15rem;
   line-height: 200%;
   text-align: center;

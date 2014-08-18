@@ -6,18 +6,18 @@
  */
 
 /**
- * Language inspector.
+ * Inspector for specifying the language of content.
  *
  * @class
  * @extends ve.ui.AnnotationInspector
  *
  * @constructor
- * @param {ve.ui.Surface} surface Surface inspector is for
+ * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageInspector = function VeUiLanguageInspector( surface, config ) {
+ve.ui.LanguageInspector = function VeUiLanguageInspector( manager, config ) {
 	// Parent constructor
-	ve.ui.AnnotationInspector.call( this, surface, config );
+	ve.ui.AnnotationInspector.call( this, manager, config );
 };
 
 /* Inheritance */
@@ -28,12 +28,8 @@ OO.inheritClass( ve.ui.LanguageInspector, ve.ui.AnnotationInspector );
 
 ve.ui.LanguageInspector.static.name = 'language';
 
-ve.ui.LanguageInspector.static.icon = 'language';
-
 ve.ui.LanguageInspector.static.title =
 	OO.ui.deferMsg( 'visualeditor-languageinspector-title' );
-
-ve.ui.LanguageInspector.static.languageInputWidget = ve.ui.LanguageInputWidget;
 
 ve.ui.LanguageInspector.static.modelClasses = [ ve.dm.LanguageAnnotation ];
 
@@ -43,32 +39,31 @@ ve.ui.LanguageInspector.static.modelClasses = [ ve.dm.LanguageAnnotation ];
  * @inheritdoc
  */
 ve.ui.LanguageInspector.prototype.getAnnotation = function () {
-	return this.languageInput.getAnnotation();
+	var lang = this.languageInput.getLang(),
+		dir = this.languageInput.getDir();
+	return ( lang || dir ?
+		new ve.dm.LanguageAnnotation( {
+			type: 'meta/language',
+			attributes: {
+				lang: lang,
+				dir: dir
+			}
+		} ) :
+		null
+	);
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.LanguageInspector.prototype.getAnnotationFromFragment = function ( fragment ) {
-	var offset = fragment.getRange( true ).start,
-		node = this.surface.getView().documentView.getNodeFromOffset( offset ),
-		attr = {};
-
-	// Set initial parameters according to parent of the DOM object.
-	// This will be called only if the annotation doesn't already exist, setting the default value
-	// as the current language/dir of the selected text.
-	if ( node ) {
-		attr.lang = node.$element.closest( '[lang]' ).attr( 'lang' );
-		attr.dir = node.$element.css( 'direction' );
-	}
-
-	if ( !attr.lang ) {
-		// This means there was no lang/dir defined anywhere. Get the default en/ltr:
-		attr.lang = 'en';
-		attr.dir = 'ltr';
-	}
-
-	return new ve.dm.LanguageAnnotation( { 'type': 'meta/language', 'attributes': attr } );
+	return new ve.dm.LanguageAnnotation( {
+		type: 'meta/language',
+		attributes: {
+			lang: fragment.getDocument().getLang(),
+			dir: fragment.getDocument().getDir()
+		}
+	} );
 };
 
 /**
@@ -76,27 +71,28 @@ ve.ui.LanguageInspector.prototype.getAnnotationFromFragment = function ( fragmen
  */
 ve.ui.LanguageInspector.prototype.initialize = function () {
 	// Parent method
-	ve.ui.AnnotationInspector.prototype.initialize.call( this );
+	ve.ui.LanguageInspector.super.prototype.initialize.call( this );
 
 	// Properties
-	this.languageInput = new this.constructor.static.languageInputWidget( {
-		'$': this.$, '$overlay': this.surface.$localOverlay
-	} );
+	this.languageInput = new ve.ui.LanguageInputWidget( { $: this.$ } );
 
 	// Initialization
-	this.$form.append( this.languageInput.$element );
+	this.form.$element.append( this.languageInput.$element );
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.LanguageInspector.prototype.setup = function ( data ) {
-	// Parent method
-	ve.ui.AnnotationInspector.prototype.setup.call( this, data );
-
-	this.languageInput.setAnnotation( this.initialAnnotation );
+ve.ui.LanguageInspector.prototype.getSetupProcess = function ( data ) {
+	return ve.ui.LanguageInspector.super.prototype.getSetupProcess.call( this, data )
+		.next( function () {
+			this.languageInput.setLangAndDir(
+				this.initialAnnotation.getAttribute( 'lang' ),
+				this.initialAnnotation.getAttribute( 'dir' )
+			);
+		}, this );
 };
 
 /* Registration */
 
-ve.ui.inspectorFactory.register( ve.ui.LanguageInspector );
+ve.ui.windowFactory.register( ve.ui.LanguageInspector );

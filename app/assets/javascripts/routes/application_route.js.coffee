@@ -23,8 +23,18 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
         outlet: 'overlay'
         controller: 'chooseNewCardTypeOverlay')
 
-    showTaskCreationOverlay: (phase) ->
-      @send('showNewCardOverlay', 'newAdHocTaskOverlay', 'Task', phase)
+    createAdhocTask: (phase) ->
+      paper = @controllerFor('paperManage').get('model')
+      newTask = @store.createRecord 'task',
+        phase: phase
+        type: 'Task'
+        paper: paper
+        title: 'New Ad-Hoc Card'
+
+      newTask.save().then =>
+        @send('viewCard', newTask)
+
+      false
 
     showMessageCreationOverlay: (phase) ->
       @send('showNewCardOverlay', 'newMessageTask', 'MessageTask', phase)

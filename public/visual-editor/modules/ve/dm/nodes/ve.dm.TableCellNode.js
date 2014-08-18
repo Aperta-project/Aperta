@@ -10,13 +10,14 @@
  *
  * @class
  * @extends ve.dm.BranchNode
+ *
  * @constructor
- * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
  */
-ve.dm.TableCellNode = function VeDmTableCellNode( children, element ) {
+ve.dm.TableCellNode = function VeDmTableCellNode() {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, children, element );
+	ve.dm.BranchNode.apply( this, arguments );
 };
 
 /* Inheritance */
@@ -30,14 +31,14 @@ ve.dm.TableCellNode.static.name = 'tableCell';
 ve.dm.TableCellNode.static.parentNodeTypes = [ 'tableRow' ];
 
 ve.dm.TableCellNode.static.defaultAttributes = {
-	'style': 'data'
+	style: 'data'
 };
 
 ve.dm.TableCellNode.static.matchTagNames = [ 'td', 'th' ];
 
 ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
 	var style = domElements[0].nodeName.toLowerCase() === 'th' ? 'header' : 'data';
-	return { 'type': this.name, 'attributes': { 'style': style } };
+	return { type: this.name, attributes: { style: style } };
 };
 
 ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {

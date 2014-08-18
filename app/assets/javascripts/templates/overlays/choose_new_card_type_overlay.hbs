@@ -3,13 +3,13 @@
     <h2>Would you like to post a task or a message?</h2>
 
     <div id="choose-card-type-buttons">
-      <button class="button-primary button--green task" {{action "showTaskCreationOverlay" phase}}>
+      <button class="button-primary button--green task" {{action "createAdhocTask" phase}}>
         New Task Card
       </button>
       <button class="button-primary button--purple" {{action "showMessageCreationOverlay" phase}}>
         New Message Card
       </button>
-      <a class="cancel" {{action 'closeOverlay'}}>cancel</a>
+      <a class="button-link button--grey cancel" {{action 'closeOverlay'}}>cancel</a>
     </div>
   </div>
 </div>

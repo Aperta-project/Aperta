@@ -10,13 +10,14 @@
  *
  * @class
  * @extends ve.dm.BranchNode
+ *
  * @constructor
- * @param {ve.dm.LeafNode[]} [children] Child nodes to attach
  * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
  */
-ve.dm.HeadingNode = function VeDmHeadingNode( children, element ) {
+ve.dm.HeadingNode = function VeDmHeadingNode() {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, children, element );
+	ve.dm.BranchNode.apply( this, arguments );
 };
 
 /* Inheritance */
@@ -30,22 +31,22 @@ ve.dm.HeadingNode.static.name = 'heading';
 ve.dm.HeadingNode.static.canContainContent = true;
 
 ve.dm.HeadingNode.static.defaultAttributes = {
-	'level': 1
+	level: 1
 };
 
 ve.dm.HeadingNode.static.matchTagNames = [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
 
 ve.dm.HeadingNode.static.toDataElement = function ( domElements ) {
 	var levels = {
-			'h1': 1,
-			'h2': 2,
-			'h3': 3,
-			'h4': 4,
-			'h5': 5,
-			'h6': 6
+			h1: 1,
+			h2: 2,
+			h3: 3,
+			h4: 4,
+			h5: 5,
+			h6: 6
 		},
 		level = levels[domElements[0].nodeName.toLowerCase()];
-	return { 'type': this.name, 'attributes': { 'level': level } };
+	return { type: this.name, attributes: { level: level } };
 };
 
 ve.dm.HeadingNode.static.toDomElements = function ( dataElement, doc ) {

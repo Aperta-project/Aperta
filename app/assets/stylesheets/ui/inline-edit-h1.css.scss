@@ -1,0 +1,41 @@
+.inline-edit-h1-icon {
+  display: inline;
+  margin-left: 10px;
+  padding: 0.75rem;
+  color: #d4d4d4;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+  top: -7px;
+
+  &:hover {
+    color: $tahi-primary-hover;
+  }
+}
+
+.inline-edit-h1-form {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  padding: 5px;
+  background-color: #C3E7BF;
+
+  &.editing {
+    display: block;
+    top: -14px;
+    left: -6px;
+
+    input[type="text"] { display: block; }
+  }
+
+  input[type="text"] {
+    display: none;
+    width: 100%;
+    margin-bottom: 4px;
+    border: 0;
+    font-size: 48px;
+    outline: none;
+  }
+}
+
+.inline-edit-h1.editing { display: none; }

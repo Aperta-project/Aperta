@@ -172,6 +172,8 @@
   float: left;
   width: 40%;
 
+  &:hover { min-height: 50px; }
+
   .preview {
     margin: auto;
     cursor: pointer;
@@ -222,7 +224,7 @@
 
   .attachment-thumbnail-edit-overlay-buttons {
     @include position(absolute, 50% 0px 0px 0px);
-    margin-top: -22px;
+    margin-top: -17px;
   }
 }
 

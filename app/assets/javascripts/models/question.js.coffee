@@ -4,6 +4,6 @@ ETahi.Question = DS.Model.extend
   question: a('string')
   answer: a('string')
   additionalData: a()
-  task: DS.belongsTo('task')
+  task: DS.belongsTo('task', polymorphic: true, inverse: 'questions')
   url: a('string')
   questionAttachment: DS.belongsTo('questionAttachment')

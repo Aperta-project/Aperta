@@ -86,6 +86,8 @@ $template-thumbnail-side-padding: 10px;
 
 .template-thumbnail:hover .template-thumbnail-edit-options {
   display: block;
+
+  .glyphicon { @extend .scaleIn; }
 }
 
 .template-thumbnail.template-thumbnail-destroy .template-thumbnail-overlay-confirm-destroy {

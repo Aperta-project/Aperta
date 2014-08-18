@@ -61,6 +61,29 @@ ve.ce.Node.static.splitOnEnter = false;
  */
 ve.ce.Node.static.isFocusable = false;
 
+/**
+ * Command to execute when Enter is pressed while this node is selected, or when the node is double-clicked.
+ *
+ * @static
+ * @property {string|null}
+ * @inheritable
+ */
+ve.ce.Node.static.primaryCommandName = null;
+
+/* Static Methods */
+
+/**
+ * Get a plain text description.
+ *
+ * @static
+ * @inheritable
+ * @param {ve.dm.Node} node Node model
+ * @returns {string} Description of node
+ */
+ve.ce.Node.static.getDescription = function () {
+	return '';
+};
+
 /* Methods */
 
 /**

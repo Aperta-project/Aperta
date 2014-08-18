@@ -275,26 +275,27 @@ ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( of
 	if ( offset < 0 || offset > this.getLength() ) {
 		throw new Error( 'offset ' + offset + ' out of bounds' );
 	}
-	var element = this.getData( offset );
+
 	// Since annotations are not stored on a closing leaf node,
 	// rewind offset by 1 to return annotations for that structure
 	if (
 		!ignoreClose &&
-		ve.isPlainObject( element ) && // structural offset
-		element.hasOwnProperty( 'type' ) && // just in case
-		element.type.charAt( 0 ) === '/' && // closing offset
-		ve.dm.nodeFactory.canNodeHaveChildren(
-			element.type.substr( 1 )
-		) === false // leaf node
+		this.isCloseElementData( offset ) &&
+		!ve.dm.nodeFactory.canNodeHaveChildren( this.getType( offset ) ) // leaf node
 	) {
 		offset = this.getRelativeContentOffset( offset, -1 );
-		element = this.getData( offset );
 	}
+
+	var element = this.getData( offset );
 
 	if ( element === undefined || typeof element === 'string' ) {
 		return [];
+	} else if ( element.annotations ) {
+		return element.annotations.slice();
+	} else if ( element[1] ) {
+		return element[1].slice();
 	} else {
-		return element.annotations || element[1] || [];
+		return [];
 	}
 };
 
@@ -439,8 +440,8 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
 			if ( right.isEmpty() ) {
 				return new ve.dm.AnnotationSet( this.getStore() );
 			}
-			// Exclude annotations that are in left but not right
-			left.removeNotInSet( right );
+			// Exclude comparable annotations that are in left but not right
+			left = left.getComparableAnnotationsFromSet( right );
 			// If we've reduced left down to nothing, just stop looking
 			if ( left.isEmpty() ) {
 				break;
@@ -448,6 +449,22 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
 		}
 	}
 	return left;
+};
+
+/**
+ * Check if the range has any annotations
+ *
+ * @method
+ * @returns {boolean} The range contains at least one annotation
+ */
+ve.dm.ElementLinearData.prototype.hasAnnotationsInRange = function ( range ) {
+	var i;
+	for ( i = range.start; i < range.end; i++ ) {
+		if ( this.getAnnotationIndexesFromOffset( i, true ).length ) {
+			return true;
+		}
+	}
+	return false;
 };
 
 /**
@@ -482,6 +499,9 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  *   valid offset in the opposite direction.
  * - If the data does not contain a single valid offset the result will be -1
  *
+ * Nodes which handle their own children are ignored. Giving a starting offset inside a
+ * handlesOwnChildren node will give unpredictable results.
+ *
  * @method
  * @param {number} offset Offset to start from
  * @param {number} distance Number of valid offsets to move
@@ -489,15 +509,16 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  * given initial argument of offset
  * @param {Mixed...} [args] Additional arguments to pass to the callback
  * @returns {number} Relative valid offset or -1 if there are no valid offsets in data
+ * @throws {Error} offset was inside a handlesOwnChildren node
  */
 ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
 	var i, direction,
-		dataOffset,
+		dataOffset, isOpen,
 		args = Array.prototype.slice.call( arguments, 3 ),
 		start = offset,
 		steps = 0,
 		turnedAround = false,
-		inHandlesOwnChildren = false;
+		handlesOwnChildrenDepth = 0;
 	// If offset is already a structural offset and distance is zero than no further work is needed,
 	// otherwise distance should be 1 so that we can get out of the invalid starting offset
 	if ( distance === 0 ) {
@@ -528,13 +549,20 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			this.isElementData( dataOffset ) &&
 			ve.dm.nodeFactory.doesNodeHandleOwnChildren( this.getType( dataOffset ) )
 		) {
-			// We have entered a node if we step right over an open, or left over a close
-			inHandlesOwnChildren =
-				( direction > 0 && this.isOpenElementData( dataOffset ) ) ||
-				( direction < 0 && this.isCloseElementData( dataOffset ) );
+			isOpen = this.isOpenElementData( dataOffset );
+			// We have entered a node if we step right over an open, or left over a close.
+			// Otherwise we have left a node
+			if ( ( direction > 0 && isOpen ) || ( direction < 0 && !isOpen ) ) {
+				handlesOwnChildrenDepth++;
+			} else {
+				handlesOwnChildrenDepth--;
+				if ( handlesOwnChildrenDepth < 0 ) {
+					throw new Error( 'offset was inside a handlesOwnChildren node' );
+				}
+			}
 		}
 		if ( callback.apply( this, [i].concat( args ) ) ) {
-			if ( !inHandlesOwnChildren ) {
+			if ( !handlesOwnChildrenDepth ) {
 				steps++;
 				offset = i;
 				if ( distance === steps ) {
@@ -559,7 +587,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			i = start;
 			distance = 1;
 			turnedAround = true;
-			inHandlesOwnChildren = false;
+			handlesOwnChildrenDepth = 0;
 		}
 		i += direction;
 	}
@@ -590,9 +618,6 @@ ve.dm.ElementLinearData.prototype.getRelativeContentOffset = function ( offset, 
  * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
  * shortest distance will be used.
  *
- * This method is a wrapper around {getRelativeOffset}, using {this.isContentOffset} as
- * the offset validation callback.
- *
  * @method
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
@@ -603,13 +628,11 @@ ve.dm.ElementLinearData.prototype.getNearestContentOffset = function ( offset, d
 		return offset;
 	}
 	if ( direction === undefined ) {
-		var left = this.getRelativeOffset( offset, -1, this.constructor.prototype.isContentOffset ),
-			right = this.getRelativeOffset( offset, 1, this.constructor.prototype.isContentOffset );
+		var left = this.getRelativeContentOffset( offset, -1 ),
+			right = this.getRelativeContentOffset( offset, 1 );
 		return offset - left < right - offset ? left : right;
 	} else {
-		return this.getRelativeOffset(
-			offset, direction > 0 ? 1 : -1, this.constructor.prototype.isContentOffset
-		);
+		return this.getRelativeContentOffset( offset, direction > 0 ? 1 : -1 );
 	}
 };
 
@@ -644,9 +667,6 @@ ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset = function ( offse
  * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
  * shortest distance will be used.
  *
- * This method is a wrapper around {getRelativeOffset}, using {this.isStructuralOffset} as
- * the offset validation callback.
- *
  * @method
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
@@ -658,17 +678,11 @@ ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset
 		return offset;
 	}
 	if ( !direction ) {
-		var left = this.getRelativeOffset(
-				offset, -1, this.constructor.prototype.isStructuralOffset, unrestricted
-			),
-			right = this.getRelativeOffset(
-				offset, 1, this.constructor.prototype.isStructuralOffset, unrestricted
-			);
+		var left = this.getRelativeStructuralOffset( offset, -1, unrestricted ),
+			right = this.getRelativeStructuralOffset( offset, 1, unrestricted );
 		return offset - left < right - offset ? left : right;
 	} else {
-		return this.getRelativeOffset(
-			offset, direction > 0 ? 1 : -1, this.constructor.prototype.isStructuralOffset, unrestricted
-		);
+		return this.getRelativeStructuralOffset( offset, direction > 0 ? 1 : -1, unrestricted );
 	}
 };
 
@@ -803,7 +817,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  *
  * @param {Object} rules Sanitization rules
  * @param {string[]} [rules.blacklist] Blacklist of model types which aren't allowed
- * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { 'heading': 'paragraph' }
+ * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { heading: 'paragraph' }
  * @param {boolean} [rules.removeHtmlAttributes] Remove all left over HTML attributes
  * @param {boolean} [rules.removeStyles] Remove HTML style attributes
  * @param {boolean} [plainText=false] Remove all formatting for plain text paste
@@ -907,8 +921,30 @@ ve.dm.ElementLinearData.prototype.cloneElements = function () {
 	var i, len, node;
 	for ( i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
-			node = ve.dm.nodeFactory.create( this.getType( i ), [], this.getData( i ) );
+			node = ve.dm.nodeFactory.create( this.getType( i ), this.getData( i ) );
 			this.data[i] = node.getClonedElement();
 		}
 	}
+};
+
+/**
+ * Counts all elements that aren't between internalList and /internalList
+ *
+ * @returns {number} Number of elements that aren't in an internalList
+ */
+ve.dm.ElementLinearData.prototype.countNonInternalElements = function () {
+	var i, l, type, internalDepth = 0, count = 0;
+	for ( i = 0, l = this.getLength(); i < l; i++ ) {
+		type = this.getType( i );
+		if ( type && ve.dm.nodeFactory.isNodeInternal( type ) ) {
+			if ( this.isOpenElementData( i ) ) {
+				internalDepth++;
+			} else {
+				internalDepth--;
+			}
+		} else if ( !internalDepth ) {
+			count++;
+		}
+	}
+	return count;
 };

@@ -8,6 +8,10 @@ class OxgarageParser
     @file = file
   end
 
+  def to_hash
+    { title: title, body: body }
+  end
+
   def output
     return @output if @output
 
@@ -47,10 +51,6 @@ class OxgarageParser
     body.css('.stdfooter').remove
     non_blank_elements = body.children.reject { |e| e.inner_text.blank? }
     Nokogiri::XML::NodeSet.new(body.document, non_blank_elements).to_html.strip
-  end
-
-  def to_hash
-    { title: title, body: body }
   end
 
   private

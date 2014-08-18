@@ -11,7 +11,7 @@
 @import 'webfonts';
 @import 'animations';
 @import 'mixins';
-@import 'visual-editor';
+@import 'visualEditor.tahi.min';
 
 @import 'tahi';
 
@@ -23,6 +23,7 @@
 @import 'ui/columns';
 @import 'ui/control-bar';
 @import 'ui/datepicker';
+@import 'ui/inline-edit-h1';
 @import 'ui/navbar';
 @import 'ui/overlay';
 @import 'ui/progress';
@@ -38,7 +39,6 @@
 @import 'screens/manuscript_manager_template';
 @import 'screens/papers';
 @import 'screens/profile';
-@import 'screens/reviewer_report';
 @import 'screens/tasks';
 
 @import 'overlays/authors_overlay';

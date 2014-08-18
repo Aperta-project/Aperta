@@ -1,12 +1,7 @@
 <div class="overlay-container">
-  <div class="modal-heading">
-    <h2>Choose a new column</h2>
-    <a href="#" class="flow-overlay-close-button" {{action 'closeOverlay'}}><span class="glyphicon glyphicon-remove"></span></a>
-  </div>
+  <h1>Choose a new column</h1>
 
-  <ul class="modal-buttons list-unstyled">
-    {{#each flow in flows}}
-      <li><a class="button-secondary btn-lg" {{action 'createFlow' flow}}>{{flow}}</a></li>
-    {{/each}}
-  </ul>
+  {{#each flow in flows}}
+    <a class="button-secondary flow-manager-button" {{action "createFlow" flow}}>{{flow}}</a>
+  {{/each}}
 </div>

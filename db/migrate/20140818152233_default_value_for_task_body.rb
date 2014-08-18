@@ -1,7 +1,7 @@
 class DefaultValueForTaskBody < ActiveRecord::Migration
   def up
     execute "ALTER TABLE tasks ALTER COLUMN body SET DEFAULT '[]'::JSON"
-    Task.where(body: nil).update_all(body: [])
+    Task.where(body: nil).update_all(body: '[]')
     change_column :tasks, :body, :json, null: false
   end
 

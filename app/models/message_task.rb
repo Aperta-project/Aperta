@@ -9,7 +9,7 @@ class MessageTask < Task
   validates :participants, length: {minimum: 1}
 
   def permitted_attributes
-    super + [:body, {participant_ids: []}]
+    super + [{participant_ids: []}]
   end
 
   def authorize_update?(params, user)

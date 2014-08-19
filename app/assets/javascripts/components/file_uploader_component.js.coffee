@@ -4,7 +4,8 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
   multiple: false
   accept: null
   filePrefix: null
-  autoUpload: true
+  uploadImmediately: true
+
 
   dataType: 'json'
   method: 'POST'
@@ -29,7 +30,8 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
 
     params = @getProperties('dataType', 'method', 'acceptFileTypes')
     params.dataType = 'xml'
-    params.autoUpload = @get('autoUpload')
+    params.autoUpload = false # since we're not overriding the uploader's add method, we need to prevent
+                              # the form from autosubmitting before the s3 stuff has gone through first.
     params.previewMaxHeight = 40
     params.previewMaxWidth = 250
 
@@ -82,7 +84,7 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
           uploadFunction = () ->
             uploadData.process().done -> uploadData.submit()
 
-          if self.get('autoUpload')
+          if self.get('uploadImmediately')
             uploadFunction()
           else
             self.sendAction('uploadReady', uploadFunction)

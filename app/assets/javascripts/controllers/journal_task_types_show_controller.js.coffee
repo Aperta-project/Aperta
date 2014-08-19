@@ -7,10 +7,10 @@ ETahi.JournalTaskTypesShowController = Em.ObjectController.extend
 
   availableTaskRoles: ["admin", "author", "editor", "user", "reviewer"]
 
-  setIsEditing: (->
-    if @get('model.isNew')
+  observeTitle: (->
+    if @get('model').changedAttributes().title
       @set('isEditing', true)
-  ).on('init')
+  ).observes('model.title')
 
   actions:
     updateRole: ->

@@ -112,13 +112,15 @@ test "Adding a text block to an AdHoc Task", ->
   .then -> ok exists find '.card-content:contains("Super Ad-Hoc")'
 
   click '.card-content:contains("Super Ad-Hoc")'
-  click '.add-stuff .glyphicon-plus'
-  click '.add-stuff-item--text'
+  click '.adhoc-content-toolbar .glyphicon-plus'
+  click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
   .then ->
-    ok exists find '.inline-edit-form textarea'
+    ok exists find '.inline-edit-form div[contenteditable]'
     ok exists find '.button--disabled:contains("Save")'
-
-  fillIn '.inline-edit-form textarea', "New text block, yahoo!"
-  click '.task-body .inline-edit-form .button--green:contains("Save")'
-  andThen -> ok Em.$.trim(find('p.inline-edit').text()).indexOf('yahoo') isnt -1
+  andThen ->
+    Em.$('.inline-edit-form div[contenteditable]')
+    .html("New contenteditable, yahoo!")
+    .trigger('keyup')
+    click '.task-body .inline-edit-form .button--green:contains("Save")'
+    ok Em.$.trim(find('p.inline-edit').text()).indexOf('yahoo') isnt -1
   click '.overlay-close-button:first'

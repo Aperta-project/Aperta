@@ -25,7 +25,7 @@ module 'Integration: Dashboard - when there are less than 15 papers',
       lite_papers: Factory.litePaper count: paperCount
 
     dashboardResponse =
-      users: [fakeUser.user]
+      users: [fakeUser]
       affiliations: []
       lite_papers: litePapersResponse.lite_papers[0..14]
       dashboards: [

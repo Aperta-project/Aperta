@@ -7,7 +7,7 @@ module 'Integration: EditPaper',
     authorId = 19932347
 
     dashboard =
-      users: [fakeUser.user]
+      users: [fakeUser]
       affiliations: []
       lite_papers: [
         id: paperId
@@ -25,11 +25,11 @@ module 'Integration: EditPaper',
           type: "FigureTask"
         title: "Upload Figures"
         lite_paper_id: paperId
-        assignee_id: fakeUser.user.id
+        assignee_id: fakeUser.id
       ]
       dashboards: [
         id: 1
-        user_id: fakeUser.user.id
+        user_id: fakeUser.id
         submission_ids: [paperId]
         assigned_task_ids: [figureTaskId]
         administered_journals: []
@@ -58,7 +58,7 @@ module 'Integration: EditPaper',
         paper_id: paperId
         lite_paper_id: paperId
         assignee_ids: []
-        assignee_id: fakeUser.user.id
+        assignee_id: fakeUser.id
       ]
       lite_papers: [
         id: paperId
@@ -67,7 +67,7 @@ module 'Integration: EditPaper',
         short_title: "Paper"
         submitted: false
       ]
-      users: [fakeUser.user]
+      users: [fakeUser]
       affiliations: []
       figures: []
       author_groups: [
@@ -126,7 +126,7 @@ module 'Integration: EditPaper',
         figure_ids: []
         author_group_ids: [41]
         supporting_information_file_ids: []
-        assignee_ids: [fakeUser.user.id]
+        assignee_ids: [fakeUser.id]
         editor_ids: []
         reviewer_ids: []
         tasks: [
@@ -143,7 +143,7 @@ module 'Integration: EditPaper',
         short_title: "Paper"
         submitted: false
       ]
-      users: [fakeUser.user]
+      users: [fakeUser]
       affiliations: []
       task:
         id: figureTaskId
@@ -157,7 +157,7 @@ module 'Integration: EditPaper',
         paper_id: paperId
         lite_paper_id: paperId
         assignee_ids: []
-        assignee_id: fakeUser.user.id
+        assignee_id: fakeUser.id
 
     server.respondWith 'GET', "/dashboards", [
       200, {"Content-Type": "application/json"}, JSON.stringify dashboard

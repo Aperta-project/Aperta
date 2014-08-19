@@ -24,7 +24,7 @@ module 'Integration: Dashboard - when there are more than 15 papers',
       lite_papers: TahiTest.Factory.litePaper count: TahiTest.paperCount
 
     TahiTest.dashboardResponse =
-      users: [fakeUser.user]
+      users: [fakeUser]
       affiliations: []
       lite_papers: litePapersResponse.lite_papers[0..14]
       dashboards: [

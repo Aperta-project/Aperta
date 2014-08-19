@@ -23,7 +23,7 @@
   @server.respondWith 'GET', "/users/#{@currentUserId}", [
     200
     'Content-Type': 'application/json'
-    JSON.stringify @fakeUser
+    JSON.stringify {user: @fakeUser}
   ]
 
 @setupMockServer = ->

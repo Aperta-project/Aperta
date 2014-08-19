@@ -220,6 +220,7 @@ ETahi.FactoryAttributes.LitePaper =
   paper_id: null
   short_title: "Paper"
   submitted: false
+  roles: [] # an array of strings
 
 ETahi.FactoryAttributes.MessageTask =
   _rootKey: 'task'

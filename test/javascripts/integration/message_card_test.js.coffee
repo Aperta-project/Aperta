@@ -1,5 +1,3 @@
-setupMessagePayload = (messageTaskId) ->
-
 createPaperWithOneTask = (taskType, taskAttrs) ->
   ef = ETahi.Factory
   journal = ef.createRecord('Journal', id: 1)
@@ -34,12 +32,12 @@ test 'A message card with more than 5 comments has the show all comments button'
   ef = ETahi.Factory
   r = _.range(10)
   comments = _.map(r, (n) ->
-   ef.createRecord('Comment',
-    commenter_id: fakeUser.id
-    message_task_id: 1
-    body: "My comment-#{n}"
-    created_at: new Date().toISOString()
-  ))
+    ef.createRecord('Comment',
+      commenter_id: fakeUser.id
+      message_task_id: 1
+      body: "My comment-#{n}"
+      created_at: new Date().toISOString()
+    ))
 
   [paper, task, records...] = createPaperWithOneTask('MessageTask'
     id: 1

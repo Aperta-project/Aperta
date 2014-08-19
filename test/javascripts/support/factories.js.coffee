@@ -121,7 +121,7 @@ ETahi.Factory =
 
   manifestToPayload: (manifest) ->
     {primaryRecord, primaryType} = manifest
-    payload= {}
+    payload = {}
     payload[primaryType] = primaryRecord
     _.forEach manifest.types, (typeArray, typeName) ->
       records = _.map(typeArray, (d) -> d)

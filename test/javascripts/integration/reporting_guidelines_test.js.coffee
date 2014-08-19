@@ -180,6 +180,3 @@ test 'Supporting Guideline is a meta data card, contains the right questions and
     additionalDataText = questionLi.find('.additional-data').first().text().trim()
     ok additionalDataText.indexOf('Select & upload') > -1
     ok additionalDataText.indexOf('Provide a completed PRISMA checklist as supporting information.') > -1
-
-test 'clinical trial question is auto-checked based on answer from ethics question', ->
-  ok true

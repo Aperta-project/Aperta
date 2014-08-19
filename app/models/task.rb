@@ -49,7 +49,7 @@ class Task < ActiveRecord::Base
   end
 
   def permitted_attributes
-    [:assignee_id, :completed, :title, :body, :phase_id]
+    [:assignee_id, :completed, :title, :phase_id, body: [:type, :value]]
   end
 
   class << self

@@ -2,8 +2,12 @@ ETahi.InlineEditTextComponent = Em.Component.extend
   editing: false
   isNew: false
 
+  hasContent: (->
+    !Em.isEmpty(@get('bodyPart.value'))
+  ).property('bodyPart.value')
+
   hasNoContent: (->
-    Em.isEmpty(@get('bodyPart.value'))
+    !@get('hasContent')
   ).property('bodyPart.value')
 
   focusOnEdit: (->
@@ -21,7 +25,7 @@ ETahi.InlineEditTextComponent = Em.Component.extend
       @toggleProperty 'editing'
 
     save: ->
-      unless @get('hasNoContent')
+      if @get('hasContent')
         if @get('isNew')
           @get('model.body').pushObject(@get('bodyPart'))
           @set('bodyPart', null)

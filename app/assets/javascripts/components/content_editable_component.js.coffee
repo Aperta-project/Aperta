@@ -4,7 +4,7 @@ ETahi.ContentEditableComponent = Em.Component.extend
   attributeBindings: ['contenteditable', 'placeholder']
 
   editable: true
-  placeholder: null
+  placeholder: ""
   plaintext: false
   preventEnterKey: false
 

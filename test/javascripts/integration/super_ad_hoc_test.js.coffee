@@ -55,3 +55,23 @@ test "Adding a text block to an AdHoc Task", ->
     click '.task-body .inline-edit-form .button--green:contains("Save")'
     ok Em.$.trim(find('p.inline-edit').text()).indexOf('yahoo') isnt -1
   click '.overlay-close-button:first'
+
+test "Adding a checkbox item to an AdHoc Task", ->
+  visit "/papers/#{ETahi.Test.currentPaper.id}/manage"
+  .then -> ok exists find '.card-content:contains("Super Ad-Hoc")'
+
+  click '.card-content:contains("Super Ad-Hoc")'
+  click '.adhoc-content-toolbar .glyphicon-plus'
+  click '.adhoc-content-toolbar .adhoc-toolbar-item--list'
+  .then ->
+    ok exists find '.inline-edit-form input[type=checkbox]:disabled'
+    ok exists find '.inline-edit-form label[contenteditable]'
+    ok exists find '.button--disabled:contains("Save")'
+  andThen ->
+    Em.$('.inline-edit-form label[contenteditable]')
+    .html("Here is a checkbox list item")
+    .trigger('keyup')
+    click '.task-body .inline-edit-form .button--green:contains("Save")'
+    ok Em.$.trim(find('p.inline-edit').text()).indexOf('checkbox list item') isnt -1
+    ok exists find '.inline-edit-form input[type=checkbox]'
+  click '.overlay-close-button:first'

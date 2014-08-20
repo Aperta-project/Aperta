@@ -1,2 +1,1 @@
-ETahi.JournalTaskTypesController = Ember.ArrayController.extend
-
+ETahi.JournalTaskTypesController = Ember.ArrayController.extend()

@@ -48,7 +48,10 @@ ETahi.Factory =
 
   setHasMany: (model, models, options={}) ->
     keyName = options.keyName || _.first(models)._rootKey
-    key = keyName + "_ids"
+    if options.embed
+      key = keyName + "s"
+    else
+      key = keyName + "_ids"
 
     if options.embed
       modelIds = _.map(models, (t) -> {id: t.id, type: t.type})
@@ -228,9 +231,26 @@ ETahi.FactoryAttributes.MessageTask =
   title: "Message Time"
   type: "MessageTask"
   completed: false
-  body: null
+  body: []
   paper_title: "Foo"
   role: "author"
+  phase_id: null
+  paper_id: null
+  lite_paper_id: null
+  assignee_ids: []
+  assignee_id: null
+  participant_ids: []
+  comment_ids: []
+
+ETahi.FactoryAttributes.Task =
+  _rootKey: 'task'
+  id: null
+  title: "AdHoc Task"
+  type: "Task"
+  completed: false
+  body: []
+  paper_title: "Foo"
+  role: "admin"
   phase_id: null
   paper_id: null
   lite_paper_id: null

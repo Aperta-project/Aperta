@@ -39,7 +39,10 @@ ETahi.BasePaperController = Ember.ObjectController.extend
     assignedTasks.filter (t)-> !authorTasks.contains(t)
   ).property('tasks.@each.assignee')
 
-  reviewerTasks: Ember.computed.filterBy('tasks', 'role', 'reviewer')
+  editorTasks: (->
+    if @get('model.editors').contains(@get('currentUser'))
+      @get('tasks').filterBy('role', 'reviewer')
+  ).property('tasks.@each.role')
 
   noAuthors: (->
     Em.isEmpty(@get('authors'))

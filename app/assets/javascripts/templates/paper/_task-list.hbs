@@ -5,6 +5,13 @@
   <hr>
 {{/if}}
 
+{{#if editorTasks}}
+  <div id="paper-editor-tasks">
+    {{each editorTasks itemViewClass="ETahi.CardView"}}
+  </div>
+  <hr>
+{{/if}}
+
 {{#if authorTasks}}
   <div id="paper-metadata-tasks">
     {{each authorTasks itemViewClass="ETahi.CardView"}}

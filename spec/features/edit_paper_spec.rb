@@ -1,51 +1,70 @@
 require 'spec_helper'
 
 feature "Editing paper", js: true do
-  let(:author) { FactoryGirl.create :user }
+  let(:user) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal }
-  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, submitted: false, short_title: 'foo bar', user: author }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, submitted: false, short_title: 'foo bar', user: user }
 
-  before do
-    make_user_paper_admin(author, paper)
+  context "As an author" do
+    before do
+      make_user_paper_admin(user, paper)
 
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author
-  end
-
-  scenario "Author edits paper and metadata cards" do
-    edit_paper = EditPaperPage.visit paper
-    page.execute_script("window.shortTimeout = 100")
-    edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
-    edit_paper.body = "Contrary to popular belief"
-
-    sleep 1
-    edit_paper = EditPaperPage.visit paper
-
-    expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"
-    expect(edit_paper.body).to eq "Contrary to popular belief"
-    expect(edit_paper.cards[:metadata]).to match_array ['Upload Manuscript', 'Add Authors', 'Upload Figures', 'Supporting Info']
-    expect(edit_paper.cards[:assigned]).to include 'Tech Check', 'Assign Admin'
-  end
-
-  scenario "Author completes all metadata cards" do
-    edit_paper = EditPaperPage.visit paper
-    expect(edit_paper).to have_css('a.button--disabled')
-    edit_paper.cards[:metadata].each do |card|
-      edit_paper.view_card card do |overlay|
-        overlay.mark_as_complete
-      end
+      sign_in_page = SignInPage.visit
+      sign_in_page.sign_in user
     end
-    expect(edit_paper).to_not have_css('a.button--disabled')
+
+    scenario "Author edits paper and metadata cards" do
+      edit_paper = EditPaperPage.visit paper
+      page.execute_script("window.shortTimeout = 100")
+      edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
+      edit_paper.body = "Contrary to popular belief"
+
+      sleep 1
+      edit_paper = EditPaperPage.visit paper
+
+      expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"
+      expect(edit_paper.body).to eq "Contrary to popular belief"
+      expect(edit_paper.cards[:metadata]).to match_array ['Upload Manuscript', 'Add Authors', 'Upload Figures', 'Supporting Info']
+      expect(edit_paper.cards[:assigned]).to include 'Tech Check', 'Assign Admin'
+    end
+
+    scenario "Author completes all metadata cards" do
+      edit_paper = EditPaperPage.visit paper
+      expect(edit_paper).to have_css('a.button--disabled')
+      edit_paper.cards[:metadata].each do |card|
+        edit_paper.view_card card do |overlay|
+          overlay.mark_as_complete
+        end
+      end
+      expect(edit_paper).to_not have_css('a.button--disabled')
+    end
+
+    scenario "author placeholder text" do
+      edit_paper = EditPaperPage.visit paper
+      expect(edit_paper.authors).to eq("Click here to add authors")
+    end
+
+    scenario "clicking the author text" do
+      edit_paper = EditPaperPage.visit paper
+      edit_paper.find("#paper-authors").click
+      expect(page).to have_content /add authors/i
+    end
   end
 
-  scenario "author placeholder text" do
-    edit_paper = EditPaperPage.visit paper
-    expect(edit_paper.authors).to eq("Click here to add authors")
-  end
+  context "As an Editor, with reviewers assigned" do
+    before do
+      make_user_paper_editor(user, paper)
 
-  scenario "clicking the author text" do
-    edit_paper = EditPaperPage.visit paper
-    edit_paper.find("#paper-authors").click
-    expect(page).to have_content /add authors/i
+      sign_in_page = SignInPage.visit
+      sign_in_page.sign_in user
+
+      phase = paper.phases.last
+      phase.tasks.create! title: "ReviewMe", role: "reviewer"
+    end
+
+    scenario "the reviewer task is displayed" do
+      edit_paper = EditPaperPage.visit paper
+      expect(edit_paper.cards[:editor]).to include('ReviewMe')
+    end
   end
 end

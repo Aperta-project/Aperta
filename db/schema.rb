@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140818152233) do
+ActiveRecord::Schema.define(version: 20140819203858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,6 +109,17 @@ ActiveRecord::Schema.define(version: 20140818152233) do
     t.integer  "user_id"
   end
 
+  create_table "journal_task_types", force: true do |t|
+    t.json    "template"
+    t.integer "task_type_id"
+    t.integer "journal_id"
+    t.string  "title"
+    t.string  "role"
+  end
+
+  add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree
+  add_index "journal_task_types", ["task_type_id"], name: "index_journal_task_types_on_task_type_id", using: :btree
+
   create_table "journals", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -123,7 +134,6 @@ ActiveRecord::Schema.define(version: 20140818152233) do
 
   create_table "manuscript_manager_templates", force: true do |t|
     t.string  "paper_type"
-    t.json    "template"
     t.integer "journal_id"
   end
 
@@ -190,6 +200,16 @@ ActiveRecord::Schema.define(version: 20140818152233) do
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
+
+  create_table "phase_templates", force: true do |t|
+    t.string   "name"
+    t.integer  "manuscript_manager_template_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "position"
+  end
+
+  add_index "phase_templates", ["manuscript_manager_template_id"], name: "index_phase_templates_on_manuscript_manager_template_id", using: :btree
 
   create_table "phases", force: true do |t|
     t.string   "name"
@@ -281,6 +301,21 @@ ActiveRecord::Schema.define(version: 20140818152233) do
   end
 
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
+
+  create_table "task_templates", force: true do |t|
+    t.integer "journal_task_type_id"
+    t.integer "phase_template_id"
+    t.json    "template"
+  end
+
+  add_index "task_templates", ["journal_task_type_id"], name: "index_task_templates_on_journal_task_type_id", using: :btree
+  add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
+
+  create_table "task_types", force: true do |t|
+    t.string "kind"
+    t.string "default_role"
+    t.string "default_title"
+  end
 
   create_table "tasks", force: true do |t|
     t.string   "title",                        null: false

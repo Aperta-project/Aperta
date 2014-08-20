@@ -1,29 +1,10 @@
 class Journal < ActiveRecord::Base
-  VALID_TASK_TYPES = [
-    "StandardTasks::ReviewerReportTask",
-    "StandardTasks::RegisterDecisionTask",
-    "StandardTasks::AuthorsTask",
-    "StandardTasks::CompetingInterestsTask",
-    "StandardTasks::DataAvailabilityTask",
-    "StandardTasks::EthicsTask",
-    "StandardTasks::FigureTask",
-    "StandardTasks::FinancialDisclosureTask",
-    "StandardTasks::PaperAdminTask",
-    "StandardTasks::PaperEditorTask",
-    "StandardTasks::PaperReviewerTask",
-    "StandardTasks::PublishingRelatedQuestionsTask",
-    "StandardTasks::ReportingGuidelinesTask",
-    "StandardTasks::TaxonTask",
-    "StandardTasks::TechCheckTask",
-    "SupportingInformation::Task",
-    "UploadManuscript::Task",
-  ]
-
   has_many :papers, inverse_of: :journal
   has_many :roles, inverse_of: :journal
   has_many :user_roles, through: :roles
   has_many :users, through: :user_roles
   has_many :manuscript_manager_templates, dependent: :destroy
+  has_many :journal_task_types, inverse_of: :journal
 
   validates_presence_of :name, message: 'Please include a journal name'
 
@@ -76,6 +57,7 @@ class Journal < ActiveRecord::Base
   def setup_defaults
     # TODO: remove these from being a callback (when we aren't using rails_admin)
     JournalServices::CreateDefaultRoles.call(self)
+    JournalServices::CreateDefaultTaskTypes.call(self)
     JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
   end
 

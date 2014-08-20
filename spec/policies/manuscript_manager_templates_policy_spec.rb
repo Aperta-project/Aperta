@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe ManuscriptManagerTemplatesPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:policy) { ManuscriptManagerTemplatesPolicy.new(current_user: user, journal: journal) }
+  let(:manuscript_manager_template) { FactoryGirl.create(:manuscript_manager_template, journal: journal) }
+  let(:policy) { ManuscriptManagerTemplatesPolicy.new(current_user: user, manuscript_manager_template: manuscript_manager_template) }
 
   context "admin" do
     let(:user) { FactoryGirl.create(:user, :admin) }
 
-    it { expect(policy.index?).to be(true) }
     it { expect(policy.show?).to be(true) }
     it { expect(policy.update?).to be(true) }
     it { expect(policy.create?).to be(true) }
@@ -17,7 +17,6 @@ describe ManuscriptManagerTemplatesPolicy do
   context "non admin who does not administer the journal" do
     let(:user) { FactoryGirl.create(:user) }
 
-    it { expect(policy.index?).to be(false) }
     it { expect(policy.show?).to be(false) }
     it { expect(policy.update?).to be(false) }
     it { expect(policy.create?).to be(false) }
@@ -31,7 +30,6 @@ describe ManuscriptManagerTemplatesPolicy do
       assign_journal_role(journal, user, :admin)
     end
 
-    it { expect(policy.index?).to be(true) }
     it { expect(policy.show?).to be(true) }
     it { expect(policy.update?).to be(true) }
     it { expect(policy.create?).to be(true) }

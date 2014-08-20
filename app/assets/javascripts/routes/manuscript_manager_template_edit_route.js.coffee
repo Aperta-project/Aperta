@@ -1,14 +1,13 @@
-ETahi.ManuscriptManagerTemplateEditRoute = Ember.Route.extend(ETahi.AlertUnsavedChanges,
+ETahi.ManuscriptManagerTemplateEditRoute = Ember.Route.extend ETahi.AlertUnsavedChanges,
   model: (params) ->
-    @modelFor('journal')
-      .get('manuscriptManagerTemplates')
-      .findBy('id', parseInt(params.template_id))
+    @store.find('manuscriptManagerTemplate', parseInt(params.template_id))
 
-  setupController: (controller, model) ->
-    controller.set('model', model)
-    controller.set('journal', @modelFor('journal'))
+  afterModel: (model) ->
+    model.reload() unless model.get('phaseTemplates.length')
 
   actions:
     saveChanges: ->
       @controller.send('saveTemplate', @get('attemptingTransition'))
-)
+
+    didRollBack: ->
+      # nothing to do here

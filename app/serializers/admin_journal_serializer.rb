@@ -3,7 +3,6 @@ class AdminJournalSerializer < ActiveModel::Serializer
              :name,
              :logo_url,
              :paper_types,
-             :task_types,
              :epub_cover_url,
              :epub_cover_file_name,
              :epub_css,
@@ -12,14 +11,12 @@ class AdminJournalSerializer < ActiveModel::Serializer
              :description,
              :paper_count,
              :created_at
-  has_many :manuscript_manager_templates, include: true
+  has_many :manuscript_manager_templates, embed: :ids, include: true
   has_many :roles, embed: :ids, include: true
+  has_many :journal_task_types, embed: :ids, include: true
 
   def paper_count
     object.papers.count
   end
 
-  def task_types
-    Journal::VALID_TASK_TYPES
-  end
 end

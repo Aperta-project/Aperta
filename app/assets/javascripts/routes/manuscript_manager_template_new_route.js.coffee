@@ -3,25 +3,25 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend(ETahi.AlertUnsavedC
 
   model: (params) ->
     journal = @modelFor('journal')
-    newTemplate = ETahi.ManuscriptManagerTemplate.create(
-      journal_id: journal.id
-      template:
-        phases: [
-          {
-            name: "Phase 1"
-            task_types: []
-          }
-          {
-            name: "Phase 2"
-            task_types: []
-          }
-          {
-            name: "Phase 3"
-            task_types: []
-          }
-        ]
+    newTemplate = @store.createRecord 'manuscriptManagerTemplate',
+      journal:   journal
+      paperType: "Research"
+
+    newTemplate.get('phaseTemplates').pushObject(
+      @store.createRecord 'phaseTemplate', name: "Phase 1", position: 0
     )
-    journal.get('manuscriptManagerTemplates').pushObject(newTemplate)
+
+    newTemplate.get('phaseTemplates').pushObject(
+      @store.createRecord 'phaseTemplate', name: "Phase 2", position: 1
+    )
+
+    newTemplate.get('phaseTemplates').pushObject(
+      @store.createRecord 'phaseTemplate', name: "Phase 3", position: 2
+    )
+
+    @set('journal', journal)
+    @set('newTemplate', newTemplate)
+    newTemplate
 
   setupController: (controller, model) ->
     controller.set('model', model)
@@ -29,4 +29,9 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend(ETahi.AlertUnsavedC
 
   renderTemplate: ->
     @render 'manuscript_manager_template/edit'
+
+  actions:
+    didRollBack: ->
+      @get('journal.manuscriptManagerTemplates').removeObject(@get('newTemplate'))
+      @transitionTo('journal')
 )

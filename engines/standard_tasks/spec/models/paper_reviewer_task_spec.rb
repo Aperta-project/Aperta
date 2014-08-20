@@ -7,10 +7,12 @@ describe StandardTasks::PaperReviewerTask do
     specify { expect(task.role).to eq 'editor' }
   end
 
-  let(:journal) do
+  let!(:journal) do
     journal = create :journal
     journal.manuscript_manager_templates.destroy_all
-    create :manuscript_manager_template, journal: journal
+    mmt = create :manuscript_manager_template, journal: journal
+    mmt.phase_templates.create! name: "Collect Info"
+    mmt.phase_templates.create! name: "Get Reviews"
     journal
   end
 
@@ -20,12 +22,8 @@ describe StandardTasks::PaperReviewerTask do
   let(:albert) { create :user, :admin }
   let(:neil) { create :user }
 
-  before do
-    paper.phases.create!(name: "Get Reviews")
-  end
-
   describe "#reviewer_ids=" do
-    let(:task) { StandardTasks::PaperReviewerTask.create!(phase: phase) }
+    let(:task) { StandardTasks::PaperReviewerTask.create!(phase: paper.phases.first) }
 
     it "creates reviewer paper roles only for new ids" do
       create(:paper_role, :reviewer, paper: paper, user: albert)

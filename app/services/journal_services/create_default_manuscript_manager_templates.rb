@@ -2,27 +2,30 @@ module JournalServices
   class CreateDefaultManuscriptManagerTemplates < BaseService
     def self.call(journal)
       with_noisy_errors do
-        journal.manuscript_manager_templates.create!(
-          paper_type: "Research",
-          template: {
-            phases: [{
-              name: "Submission Data",
-              task_types: [StandardTasks::FigureTask, SupportingInformation::Task, StandardTasks::AuthorsTask, UploadManuscript::Task].map(&:to_s)
-            }, {
-              name: "Assign Editor",
-              task_types: [StandardTasks::PaperEditorTask, StandardTasks::TechCheckTask, StandardTasks::PaperAdminTask].map(&:to_s)
-            }, {
-              name: "Assign Reviewers",
-              task_types: [StandardTasks::PaperReviewerTask].map(&:to_s)
-            }, {
-              name: "Get Reviews",
-              task_types: []
-            }, {
-              name: "Make Decision",
-              task_types: [StandardTasks::RegisterDecisionTask].map(&:to_s)
-            }]
-          }
-        )
+        mmt = journal.manuscript_manager_templates.create!(paper_type: 'Research')
+        task_types = journal.journal_task_types.includes(:task_type)
+        raise "No task types configured for journal #{journal.id}" unless task_types.present?
+
+        phase = mmt.phase_templates.create! name: "Submission Data"
+        make_tasks phase, task_types, StandardTasks::FigureTask, SupportingInformation::Task, StandardTasks::AuthorsTask, UploadManuscript::Task
+
+        phase = mmt.phase_templates.create! name: "Assign Editor"
+        make_tasks phase, task_types, StandardTasks::PaperEditorTask, StandardTasks::TechCheckTask, StandardTasks::PaperAdminTask
+
+        phase = mmt.phase_templates.create! name: "Assign Reviewers"
+        make_tasks phase, task_types, StandardTasks::PaperReviewerTask
+
+        phase = mmt.phase_templates.create! name: "Get Reviews"
+
+        phase = mmt.phase_templates.create! name: "Make Decision"
+        make_tasks phase, task_types, StandardTasks::RegisterDecisionTask
+      end
+    end
+
+    def self.make_tasks(phase, task_types, *tasks)
+      tasks.each do |kind|
+        jtt = task_types.detect { |jtt| jtt.task_type.kind == kind.to_s }
+        phase.task_templates.create! journal_task_type: jtt
       end
     end
   end

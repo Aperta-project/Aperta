@@ -14,10 +14,11 @@ class PaperFactory
   end
 
   def apply_template
-    template.phases.each do |template_phase|
-      phase = paper.phases.create!(name: template_phase['name'])
-      template_phase.fetch('task_types', []).each do |task_klass|
-        create_task(task_klass, phase)
+    template.phase_templates.each do |phase_template|
+      phase = paper.phases.create!(name: phase_template['name'])
+
+      phase_template.task_templates.each do |task_template|
+        create_task(task_template, phase)
       end
     end
   end
@@ -38,17 +39,13 @@ class PaperFactory
     end
   end
 
-  def create_task(task_klass, phase)
-    task = nil
-    begin
-      task = task_klass.constantize.new(phase: phase)
-      if task.role == 'author'
-        task.assignee = author
-      end
-      task.save!
-    rescue NameError => e
-      Rails.logger.error "Task #{task_klass} does not exist. ManuscriptManagerTemplate will need to be updated"
+  def create_task(task_template, phase)
+    task_klass = task_template.task_type.kind.constantize
+    task = task_klass.new(phase: phase, title: task_template.journal_task_type.title)
+    if task.role == 'author'
+      task.assignee = author
     end
+    task.save!
   end
 
   def template

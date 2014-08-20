@@ -1,20 +1,18 @@
 require 'spec_helper'
 
 describe PaperFactory do
+  let(:journal) { FactoryGirl.create(:journal) }
   let(:mmt) do
-    FactoryGirl.create(:manuscript_manager_template, {
-      paper_type: "Science!",
-      template: {
-        phases: [{
-          name: "First Phase",
-          task_types: [StandardTasks::PaperAdminTask.to_s, StandardTasks::DataAvailabilityTask.to_s]
-        },
-        {name: "Phase With No Tasks"}
-        ]
-      }})
+    FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
+      phase = mmt.phase_templates.create!(name: "First Phase")
+      mmt.phase_templates.create!(name: "Phase With No Tasks")
+      tasks = [StandardTasks::PaperAdminTask, StandardTasks::DataAvailabilityTask]
+      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
+      journal.manuscript_manager_templates = [mmt]
+      journal.save!
+    end
   end
 
-  let(:journal) { FactoryGirl.create(:journal, manuscript_manager_templates: [mmt]) }
   let(:user) { FactoryGirl.create :user }
 
   describe "#apply_template" do
@@ -26,7 +24,7 @@ describe PaperFactory do
         paper_factory.apply_template
       }.to change { paper.phases.count }.by(2)
 
-      expect(paper.phases.first.name).to eq(mmt.phases.first["name"])
+      expect(paper.phases.first.name).to eq(mmt.phase_templates.first.name)
     end
 
     it "reifies the tasks for the given paper from the correct MMT" do
@@ -41,6 +39,15 @@ describe PaperFactory do
       paper_factory.apply_template
       expect(paper.tasks.where(type: 'StandardTasks::PaperAdminTask').first.assignee).to be_nil
       expect(paper.tasks.where(type: 'StandardTasks::DataAvailabilityTask').first.assignee).to eq(user)
+    end
+
+    it "uses the journal-defined title" do
+      task_type = journal.journal_task_types.joins(:task_type).where('task_types.kind' => 'StandardTasks::PaperAdminTask').first
+      expect(task_type).to_not be_nil
+      custom_title = "Zeitung Administratoraufgabe"
+      task_type.update_attributes title: custom_title
+      paper_factory.apply_template
+      expect(paper.tasks.where(type: 'StandardTasks::PaperAdminTask').first.title).to eq(custom_title)
     end
   end
 

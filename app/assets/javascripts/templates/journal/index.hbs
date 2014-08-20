@@ -1,11 +1,11 @@
 <div id="tahi-container" class="admin-screen">
 
   <h1>
-    {{#if logo}}
-      <img src="{{unbound logo}}" />
-    {{else}}
-      {{name}} -
-    {{/if}}
+  {{#if logo}}
+    <img {{bind-attr src="logo"}} />
+  {{else}}
+    {{name}} -
+  {{/if}}
 
     Journal Administration
   </h1>

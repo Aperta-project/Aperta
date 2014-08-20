@@ -27,7 +27,7 @@ module 'Integration: Super AdHoc Card',
         paper_id: TahiTest.paperId
         lite_paper_id: TahiTest.paperId
         assignee_ids: []
-        assignee_id: fakeUser.user.id
+        assignee_id: fakeUser.id
         question_ids: [TahiTest.questionId]
       ]
       lite_papers: [
@@ -37,17 +37,17 @@ module 'Integration: Super AdHoc Card',
         short_title: "Paper"
         submitted: false
       ]
-      users: [fakeUser.user]
+      users: [fakeUser]
       affiliations: []
       figures: []
       author_groups: [
         id: 41
         name: "First Author"
-        author_ids: [fakeUser.user.id]
+        author_ids: [fakeUser.id]
         paper_id: TahiTest.paperId
       ]
       authors: [
-        id: fakeUser.user.id
+        id: fakeUser.id
         first_name: "Fake"
         middle_initial: null
         last_name: "User"
@@ -84,7 +84,7 @@ module 'Integration: Super AdHoc Card',
         author_group_ids: [41]
         supporting_information_file_ids: []
         reporting_guidelines_ids: []
-        assignee_ids: [fakeUser.user.id]
+        assignee_ids: [fakeUser.id]
         editor_ids: []
         reviewer_ids: []
         tasks: [

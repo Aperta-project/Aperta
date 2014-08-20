@@ -96,18 +96,3 @@ test 'With more than 15 papers, there should be a "Load More" button if we are n
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 42
     ok !exists '.load-more-papers'
 
-test "A non site-admin shouldn't be able to see the flow manager link", ->
-  visit '/'
-  .then ->
-    ok !exists ".nav-bar-item:contains(Flow Manager)"
-
-test "A site-admin shouldn't be able to see the flow manager link", ->
-  fakeUser.admin = true
-  visit '/'
-  .then ->
-    ok exists ".nav-bar-item:contains(Flow Manager)"
-
-test "A non journal-admin shouldn't be able to see the admin link", ->
-  visit '/'
-  .then ->
-    ok !exists ".nav-bar-item:contains(Admin)"

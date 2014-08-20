@@ -10,10 +10,13 @@ class TasksController < ApplicationController
     task = Task.find(params[:id])
     if task
       unmunge_empty_arrays!(:task, task.array_attributes)
-      tp = task_params(task)
+      task.assign_attributes task_params(task)
 
-      task.update! tp
+      if task.assignee_id_changed? && task.assignee_id != current_user.id
+        UserMailer.delay.assign_task(current_user, User.find(task.assignee_id), task)
+      end
 
+      task.save!
       render task.update_responder.new(task, view_context).response
     else
       head :forbidden

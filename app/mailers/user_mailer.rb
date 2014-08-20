@@ -10,6 +10,15 @@ class UserMailer < ActionMailer::Base
       subject: "You've been added as a collaborator to a paper on Tahi")
   end
 
+  def assign_task(invitor, invitee, task)
+    @task = task
+    @invitor_name = name(invitor)
+    @invitee_name = name(invitee)
+    mail(
+      to: invitee.email,
+      subject: "You've been assigned a task on Tahi")
+  end
+
   private
   def name(user)
     user.full_name.present? ? user.full_name : user.username

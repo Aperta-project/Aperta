@@ -27,6 +27,8 @@ Tahi::Application.configure do
   # number of complex assets.
   config.assets.debug = false
 
+  config.action_mailer.delivery_method = :test
+
   # defaults to local storage
   # config.carrierwave_storage = :fog
 

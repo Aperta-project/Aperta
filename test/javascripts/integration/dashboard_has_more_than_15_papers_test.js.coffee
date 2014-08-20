@@ -1,4 +1,7 @@
-module 'Integration: Dashboard - when there are more than 15 papers',
+createDashboardData = (paperCount) ->
+
+module 'Integration: Dashboard',
+  teardown: -> ETahi.reset()
   setup: ->
     setupApp integration: true
     TahiTest.paperId = 934
@@ -58,80 +61,7 @@ module 'Integration: Dashboard - when there are more than 15 papers',
         ]
       ]
 
-    adminJournalsResponse =
-      roles: [
-        id: TahiTest.adminRoleId
-        kind: 'admin'
-        name: 'Admin'
-        required: true
-        can_administer_journal: true
-        can_view_assigned_manuscript_managers: false
-        can_view_all_manuscript_managers: true
-        journal_id: 3
-      ]
-      admin_journals: [
-        id: TahiTest.adminJournalId
-        name: 'Fake Journal'
-        logo_url: 'https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/thumbnail_Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png?AWSAccessKeyId=AKIAJHFQZ6WND52M2VDQ&Signature=kSWiz0HiOO0nUTMSpR/0DQp3j%2Bw%3D&Expires=1405980362'
-        paper_types: ['Research']
-        task_types: [
-          "FinancialDisclosure::Task"
-          "StandardTasks::PaperAdminTask"
-          "StandardTasks::PaperEditorTask"
-          "StandardTasks::PaperReviewerTask"
-          "StandardTasks::ReviewerReportTask"
-          "StandardTasks::RegisterDecisionTask"
-          "StandardTasks::AuthorsTask"
-          "StandardTasks::CompetingInterestsTask"
-          "StandardTasks::DataAvailabilityTask"
-          "StandardTasks::FigureTask"
-          "StandardTasks::TechCheckTask"
-          "SupportingInformation::Task"
-          "UploadManuscript::Task"
-        ]
-        epub_cover_url: null
-        epub_cover_file_name: null
-        epub_css: null
-        pdf_css: null
-        manuscript_css: null
-        description: 'This is a fake journal'
-        paper_count: TahiTest.paperCount
-        created_at: '2014-06-16T22:23:16.320Z'
-        manuscript_manager_templates: [
-          id: 5
-          paper_type: 'Research'
-          template:
-            phases: [
-              name: 'Submission Data'
-              task_types: [
-                'Declaration::Task'
-                'StandardTasks::FigureTask'
-                'SupportingInformation::Task'
-                'StandardTasks::AuthorsTask'
-                'UploadManuscript::Task'
-              ]
-            ,
-              name: 'Assign Editor'
-              task_types: [
-                'PaperEditorTask'
-                'StandardTasks::TechCheckTask'
-                'PaperAdminTask'
-              ]
-            ,
-              name: 'Assign Reviewers'
-              task_types: ['StandardTasks::PaperReviewerTask']
-            ,
-              name: 'Get Reviews'
-              task_types: []
-            ,
-              name: 'Make Decision'
-              task_types: ['StandardTasks::RegisterDecisionTask']
-            ]
-
-          journal_id: TahiTest.adminJournalId
-        ]
-        role_ids: [TahiTest.adminRoleId]
-      ]
+    adminJournalsResponse = {}
 
     server.respondWith 'GET', '/dashboards', [
       200, 'Content-Type': 'application/json', JSON.stringify TahiTest.dashboardResponse
@@ -151,7 +81,7 @@ module 'Integration: Dashboard - when there are more than 15 papers',
       200, 'Content-Type': 'application/json', JSON.stringify (lite_papers: litePapersResponse.lite_papers[30..TahiTest.paperCount - 1])
     ]
 
-test 'There should be a "Load More" button if we are not at the last page', ->
+test 'With more than 15 papers, there should be a "Load More" button if we are not at the last page', ->
   visit '/'
   .then ->
     ok exists '.load-more-papers'
@@ -165,3 +95,4 @@ test 'There should be a "Load More" button if we are not at the last page', ->
   andThen ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 42
     ok !exists '.load-more-papers'
+

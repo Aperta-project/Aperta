@@ -1,24 +1,4 @@
 class Journal < ActiveRecord::Base
-  VALID_TASK_TYPES = [
-    "StandardTasks::ReviewerReportTask",
-    "StandardTasks::RegisterDecisionTask",
-    "StandardTasks::AuthorsTask",
-    "StandardTasks::CompetingInterestsTask",
-    "StandardTasks::DataAvailabilityTask",
-    "StandardTasks::EthicsTask",
-    "StandardTasks::FigureTask",
-    "StandardTasks::FinancialDisclosureTask",
-    "StandardTasks::PaperAdminTask",
-    "StandardTasks::PaperEditorTask",
-    "StandardTasks::PaperReviewerTask",
-    "StandardTasks::PublishingRelatedQuestionsTask",
-    "StandardTasks::ReportingGuidelinesTask",
-    "StandardTasks::TaxonTask",
-    "StandardTasks::TechCheckTask",
-    "SupportingInformation::Task",
-    "UploadManuscript::Task",
-  ]
-
   has_many :papers, inverse_of: :journal
   has_many :roles, inverse_of: :journal
   has_many :user_roles, through: :roles

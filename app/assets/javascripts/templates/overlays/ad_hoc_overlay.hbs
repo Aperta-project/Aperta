@@ -2,10 +2,13 @@
 
 <div class="task-body">
   {{#each part in body}}
-    {{inline-edit-text bodyPart=part model=model}}
+    {{inlineEdit part model}}
   {{/each}}
   {{#if newTextBlock}}
     {{inline-edit-text bodyPart=newTextBlock model=model isNew=true editing=true}}
+  {{/if}}
+  {{#if newCheckboxItem}}
+    {{inline-edit-checkbox bodyPart=newCheckboxItem model=model isNew=true editing=true}}
   {{/if}}
 </div>
 

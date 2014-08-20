@@ -1,5 +1,9 @@
-class PhaseTemplatesPolicy < ApplicationPolicy
-  require_params :phase_template
+class TaskTemplatesPolicy < ApplicationPolicy
+  require_params :task_template
+
+  def show?
+    can_administer_journal? journal
+  end
 
   def create?
     can_administer_journal? journal
@@ -16,6 +20,6 @@ class PhaseTemplatesPolicy < ApplicationPolicy
   private
 
   def journal
-    phase_template.journal
+    task_template.journal
   end
 end

@@ -4,6 +4,7 @@ class PhaseTemplatesController < ApplicationController
   respond_to :json
 
   def create
+    phase_template.save
     respond_with phase_template
   end
 

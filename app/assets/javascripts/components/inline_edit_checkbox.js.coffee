@@ -3,15 +3,11 @@ ETahi.InlineEditCheckboxComponent = Em.Component.extend
   isNew: false
   checked: true
 
-  hasNoContent: (->
-    Em.isEmpty(@get('bodyPart.value'))
+  hasContent: (->
+    !Em.isEmpty(@get('bodyPart.value'))
   ).property('bodyPart.value')
 
-  focusOnEdit: (->
-    if @get('editing')
-      Em.run.schedule 'afterRender', @, ->
-        @$('textarea').focus()
-  ).observes('editing')
+  hasNoContent: Em.computed.not('hasContent')
 
   checked: (->
     !Em.isEmpty(@get('bodyPart.answer'))
@@ -20,15 +16,15 @@ ETahi.InlineEditCheckboxComponent = Em.Component.extend
   actions:
     toggleEdit: ->
       if @get('isNew')
-        @set('bodyPart', null)
+        @sendAction('cancel', @get('bodyPart'))
       else
         @get('model').rollback()
       @toggleProperty 'editing'
 
     save: ->
-      unless @get('hasNoContent')
+      if @get('hasContent')
         if @get('isNew')
           @get('model.body').pushObject(@get('bodyPart'))
-          @set('bodyPart', null)
+          @sendAction('cancel', @get('bodyPart'))
         @get('model').save()
         @toggleProperty 'editing'

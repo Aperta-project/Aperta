@@ -6,20 +6,12 @@ ETahi.InlineEditTextComponent = Em.Component.extend
     !Em.isEmpty(@get('bodyPart.value'))
   ).property('bodyPart.value')
 
-  hasNoContent: (->
-    !@get('hasContent')
-  ).property('bodyPart.value')
-
-  focusOnEdit: (->
-    if @get('editing')
-      Em.run.schedule 'afterRender', @, ->
-        @$('textarea').focus()
-  ).observes('editing')
+  hasNoContent: Em.computed.not('hasContent')
 
   actions:
     toggleEdit: ->
       if @get('isNew')
-        @set('bodyPart', null)
+        @sendAction('cancel', @get('bodyPart'))
       else
         @get('model').rollback()
       @toggleProperty 'editing'
@@ -28,6 +20,6 @@ ETahi.InlineEditTextComponent = Em.Component.extend
       if @get('hasContent')
         if @get('isNew')
           @get('model.body').pushObject(@get('bodyPart'))
-          @set('bodyPart', null)
+          @sendAction('cancel', @get('bodyPart'))
         @get('model').save()
         @toggleProperty 'editing'

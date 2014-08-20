@@ -4,12 +4,9 @@
   {{#each part in body}}
     {{inlineEdit part model}}
   {{/each}}
-  {{#if newTextBlock}}
-    {{inline-edit-text bodyPart=newTextBlock model=model isNew=true editing=true}}
-  {{/if}}
-  {{#if newCheckboxItem}}
-    {{inline-edit-checkbox bodyPart=newCheckboxItem model=model isNew=true editing=true}}
-  {{/if}}
+  {{#each item in newBlockItems}}
+    {{inlineEdit item model isNew=true editing=true cancel="removeBlockItem"}}
+  {{/each}}
 </div>
 
 {{view ETahi.AdhocContentToolbarView}}

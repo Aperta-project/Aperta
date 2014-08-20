@@ -7,3 +7,11 @@ ETahi.JournalThumbnailView = Ember.View.extend
     else
       $(@spinnerDiv).hide()
   ).observes('controller.logoUploading')
+
+  togglePreview: (->
+    Ember.run.schedule 'afterRender', =>
+      if @get('controller.logoPreview')
+        @$('.journal-logo-preview').append(@get('controller.logoPreview'))
+      else
+        @$('.journal-logo-preview').html('')
+  ).observes('controller.logoPreview')

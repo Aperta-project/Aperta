@@ -4,7 +4,10 @@ ETahi.initializer
 
   initialize: (container, application) ->
     displayErrorMessage = (message) ->
-      container.lookup('controller:application').set('error', message)
+      applicationController = container.lookup('controller:application')
+      # these checks are purely for javascript testing
+      if !applicationController.isDestroying && !applicationController.isDestroyed
+        applicationController.set('error', message)
 
     unless ETahi.environment == "development"
       Ember.onerror = displayErrorMessage

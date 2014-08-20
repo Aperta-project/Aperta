@@ -47,14 +47,6 @@
 #paper-title {
   margin-top: 60px;
 
-  &[contenteditable] {
-    margin-top: 0;
-    padding: 5px 0;
-    // Bootstrap's default height is 33px and we add 4px for the above padding.
-    // This is required for Firefox, without which the H2 height shrinks to 0
-    // when empty.
-    min-height: 37px;
-  }
 }
 
 #paper-authors {

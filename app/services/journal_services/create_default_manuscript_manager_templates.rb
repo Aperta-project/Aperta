@@ -22,14 +22,10 @@ module JournalServices
       end
     end
 
-    def self.task_type(journal_task_types, type)
-      jtt = journal_task_types.detect { |jtt| jtt.task_type.kind == type }
-      { title: jtt.title, journal_task_type: jtt }
-    end
-
     def self.make_tasks(phase, task_types, *tasks)
       tasks.each do |kind|
-        phase.task_templates.create! task_type(task_types, kind.to_s)
+        jtt = task_types.detect { |jtt| jtt.task_type.kind == kind.to_s }
+        phase.task_templates.create! journal_task_type: jtt
       end
     end
   end

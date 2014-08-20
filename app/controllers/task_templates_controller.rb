@@ -26,6 +26,6 @@ class TaskTemplatesController < ApplicationController
   private
 
   def task_template_params
-    params.require(:task_template).permit(:title, :template, :phase_template_id, :journal_task_type_id)
+    params.require(:task_template).permit(:template, :phase_template_id, :journal_task_type_id)
   end
 end

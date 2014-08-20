@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140812140618) do
+ActiveRecord::Schema.define(version: 20140819203858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -303,7 +303,6 @@ ActiveRecord::Schema.define(version: 20140812140618) do
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
 
   create_table "task_templates", force: true do |t|
-    t.string  "title"
     t.integer "journal_task_type_id"
     t.integer "phase_template_id"
     t.json    "template"

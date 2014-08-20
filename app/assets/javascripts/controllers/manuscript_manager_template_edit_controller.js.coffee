@@ -70,7 +70,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
     addTask: (phaseTemplate, journalTaskType) ->
       unless Ember.isBlank(journalTaskType)
-        newTask = @store.createRecord 'taskTemplate', journalTaskType: journalTaskType, phaseTemplate: phaseTemplate, title: journalTaskType.get('title')
+        newTask = @store.createRecord('taskTemplate', journalTaskType: journalTaskType, phaseTemplate: phaseTemplate)
         @set('dirty', true)
 
     removeTask: (taskTemplate) ->

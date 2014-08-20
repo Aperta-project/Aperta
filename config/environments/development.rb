@@ -28,6 +28,7 @@ Tahi::Application.configure do
   config.assets.debug = false
 
   config.action_mailer.delivery_method = :test
+  ENV['DEFAULT_FROM_EMAIL'] = 'tahi-dev+no-reply@neo.com'
 
   # defaults to local storage
   # config.carrierwave_storage = :fog

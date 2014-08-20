@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: ENV['FROM']
+  default from: ENV['DEFAULT_FROM_EMAIL']
 
   def add_collaborator(invitor, invitee, paper)
     @paper = paper
@@ -7,7 +7,7 @@ class UserMailer < ActionMailer::Base
     @invitee_name = name(invitee)
     mail(
       to: invitee.email,
-      subject: "someone added you as a collaborator!")
+      subject: "You've been added as a collaborator to a paper on Tahi")
   end
 
   private

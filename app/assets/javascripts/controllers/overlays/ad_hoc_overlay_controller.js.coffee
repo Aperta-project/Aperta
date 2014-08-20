@@ -13,7 +13,7 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
       @get('newBlockItems').pushObject
         type: "checkbox",
         value: ""
-        answer: ""
+        answer: false
 
     removeBlockItem: (blockItem)->
       @get('newBlockItems').removeObject(blockItem)

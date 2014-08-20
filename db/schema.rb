@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140729192850) do
+ActiveRecord::Schema.define(version: 20140818152233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -184,8 +184,8 @@ ActiveRecord::Schema.define(version: 20140729192850) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
+    t.datetime "last_heartbeat_at"
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
@@ -291,7 +291,7 @@ ActiveRecord::Schema.define(version: 20140729192850) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "role",                         null: false
-    t.text     "body"
+    t.json     "body",        default: [],     null: false
   end
 
   add_index "tasks", ["assignee_id"], name: "index_tasks_on_assignee_id", using: :btree

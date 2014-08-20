@@ -1,4 +1,4 @@
-.add-stuff {
+.adhoc-content-toolbar {
   overflow: hidden;
   position: relative;
 
@@ -30,13 +30,13 @@
 
 
   &._animate-forward {
-    .add-stuff-item--text {
+    .adhoc-toolbar-item--text {
       @include transition-delay(0.05s);
     }
   }
 
   &._animate-backward {
-    .add-stuff-item--list {
+    .adhoc-toolbar-item--list {
       @include transition-delay(0.05s);
     }
   }

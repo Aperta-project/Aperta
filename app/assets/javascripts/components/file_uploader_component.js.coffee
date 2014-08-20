@@ -4,6 +4,8 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
   multiple: false
   accept: null
   filePrefix: null
+  uploadImmediately: true
+
 
   dataType: 'json'
   method: 'POST'
@@ -28,28 +30,10 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
 
     params = @getProperties('dataType', 'method', 'acceptFileTypes')
     params.dataType = 'xml'
-    params.add = (e, uploadData) =>
-      file = uploadData.files[0]
-
-      # make get request to setup s3 keys for actual upload
-      $.ajax
-        url: "/request_policy",
-        type: 'GET',
-        dataType: 'json',
-        data:
-          file_prefix: @get('filePrefix')
-          content_type: file.type
-        success: (data) ->
-          uploadData.url = data.url
-          uploadData.formData =
-            key: "#{data.key}/#{file.name}"
-            policy: data.policy
-            success_action_status: 201
-            'Content-Type': file.type
-            signature: data.signature
-            AWSAccessKeyId: data.access_key_id
-            acl: data.acl
-          uploadData.submit()
+    params.autoUpload = false # since we're not overriding the uploader's add method, we need to prevent
+                              # the form from autosubmitting before the s3 stuff has gone through first.
+    params.previewMaxHeight = 40
+    params.previewMaxWidth = 250
 
     # No matter how dumb this looks, it is necessary.
     that = @
@@ -75,6 +59,35 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
 
     uploader.on 'fileuploadadd', (e, uploadData) =>
       Ember.run.bind(this, @checkFileType)
+      file = uploadData.files[0]
+      self = @
+
+      # make get request to setup s3 keys for actual upload
+      $.ajax
+        url: "/request_policy",
+        type: 'GET',
+        dataType: 'json',
+        data:
+          file_prefix: @get('filePrefix')
+          content_type: file.type
+        success: (data) ->
+          uploadData.url = data.url
+          uploadData.formData =
+            key: "#{data.key}/#{file.name}"
+            policy: data.policy
+            success_action_status: 201
+            'Content-Type': file.type
+            signature: data.signature
+            AWSAccessKeyId: data.access_key_id
+            acl: data.acl
+
+          uploadFunction = () ->
+            uploadData.process().done -> uploadData.submit()
+
+          if self.get('uploadImmediately')
+            uploadFunction()
+          else
+            self.sendAction('uploadReady', uploadFunction)
 
     uploader.on 'fileuploadsend', (e, data) =>
       @sendAction('start', data)
@@ -84,4 +97,7 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
 
     uploader.on 'fileuploadprocessstart', (e, data) =>
       @sendAction('process', data)
+
+    uploader.on 'fileuploadprocessalways', (e, data) =>
+      @sendAction('processingDone', data.files[0])
   ).on('didInsertElement')

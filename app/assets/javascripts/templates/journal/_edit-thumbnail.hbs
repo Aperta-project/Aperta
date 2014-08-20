@@ -1,10 +1,14 @@
 <div class="journal-thumbnail-edit-form clearfix">
   <div class="journal-logo-upload">
     <div class="journal-thumbnail">
-      {{#if journal.logoUrl}}
-        <img {{bind-attr src=journal.logoUrl}}>
+      {{#if logoPreview}}
+        <span class="journal-logo-preview"></span>
       {{else}}
-        {{partial "svg/default-journal-logo"}}
+        {{#if journal.logoUrl}}
+          <img {{bind-attr src=journal.logoUrl}}>
+        {{else}}
+          {{partial "svg/default-journal-logo"}}
+        {{/if}}
       {{/if}}
     </div>
     {{#unless model.isNew}}

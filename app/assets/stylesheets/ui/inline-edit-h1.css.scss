@@ -1,4 +1,4 @@
-.inline-edit-h1-icon {
+.inline-edit-icon {
   display: inline;
   margin-left: 10px;
   padding: 0.75rem;
@@ -13,7 +13,7 @@
   }
 }
 
-.inline-edit-h1-form {
+.inline-edit-form {
   display: none;
   position: relative;
   overflow: hidden;
@@ -25,17 +25,20 @@
     top: -14px;
     left: -6px;
 
-    input[type="text"] { display: block; }
+    input[type="text"], textarea { display: block; }
   }
 
   input[type="text"] {
+    font-size: 48px;
+  }
+
+  input[type="text"], textarea {
     display: none;
     width: 100%;
     margin-bottom: 4px;
     border: 0;
-    font-size: 48px;
     outline: none;
   }
 }
 
-.inline-edit-h1.editing { display: none; }
+.inline-edit.editing { display: none; }

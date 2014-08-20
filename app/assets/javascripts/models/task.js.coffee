@@ -4,7 +4,7 @@ ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
   assignees: DS.hasMany('user')
   phase: DS.belongsTo('phase')
 
-  body: a('string')
+  body: a()
   completed: a('boolean')
   paperTitle: a('string')
   role: a('string')

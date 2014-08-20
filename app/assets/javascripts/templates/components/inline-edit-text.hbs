@@ -1,0 +1,10 @@
+<p {{bind-attr class=":inline-edit editing"}}>
+  {{{bodyPart.value}}}
+  <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
+</p>
+
+<div {{bind-attr class=":inline-edit-form editing"}}>
+  {{content-editable value=bodyPart.value class="editable"}}
+  <div {{bind-attr class=":button-secondary :button--green :pull-right hasNoContent:button--disabled"}} {{action "save"}}>Save</div>
+  <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
+</div>

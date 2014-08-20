@@ -1,2 +1,12 @@
 {{inline-edit-h1 title=title model=model}}
-<p>{{body}}</p>
+
+<div class="task-body">
+  {{#each part in body}}
+    {{inline-edit-text bodyPart=part model=model}}
+  {{/each}}
+  {{#if newTextBlock}}
+    {{inline-edit-text bodyPart=newTextBlock model=model isNew=true editing=true}}
+  {{/if}}
+</div>
+
+{{view ETahi.AdhocContentToolbarView}}

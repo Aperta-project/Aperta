@@ -107,6 +107,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
       else
         @store.unloadAll('taskTemplate')
         @store.unloadAll('phaseTemplate')
+        @get('model').rollback()
         @get('model').reload().then =>
           @reset()
           @send('didRollBack')

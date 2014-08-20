@@ -5,7 +5,7 @@ class CollaborationsController < ApplicationController
 
   def create
     paper_role = PaperRole.create(collaborator_params.merge(role: PaperRole::COLLABORATOR))
-    UserMailer.delay.add_collaborator(current_user, User.find(collaborator_params[:user_id]), paper)
+    UserMailer.delay.add_collaborator(current_user, User.find(collaborator_params[:user_id]), paper) if paper_role.valid?
     respond_with paper_role, serializer: CollaborationSerializer
   end
 

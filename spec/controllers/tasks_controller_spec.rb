@@ -62,7 +62,7 @@ describe TasksController do
     it "adds an email to the sidekiq queue if assignee is not current user" do
       new_assignee = FactoryGirl.create(:user)
       expect {
-        put :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { assignee_id: new_assignee.id } }
+        put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { assignee_id: new_assignee.id }
       }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
     end
 

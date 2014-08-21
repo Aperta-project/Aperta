@@ -2,9 +2,7 @@ ETahi.InlineEditTextComponent = Em.Component.extend
   editing: false
   isNew: false
 
-  hasContent: (->
-    !Em.isEmpty(@get('bodyPart.value'))
-  ).property('bodyPart.value')
+  hasContent: Em.computed.notEmpty('bodyPart.value')
 
   hasNoContent: Em.computed.not('hasContent')
 

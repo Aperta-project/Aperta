@@ -1,33 +1,22 @@
 ETahi.InlineEditTextComponent = Em.Component.extend
   editing: false
   isNew: false
+  snapshot: {}
 
-  hasContent: (->
-    !Em.isEmpty(@get('bodyPart.value'))
-  ).property('bodyPart.value')
-
-  hasNoContent: (->
-    !@get('hasContent')
-  ).property('bodyPart.value')
-
-  focusOnEdit: (->
-    if @get('editing')
-      Em.run.schedule 'afterRender', @, ->
-        @$('textarea').focus()
+  createSnapshot: (->
+    @set('snapshot', Em.copy(@get('bodyPart'), true))
   ).observes('editing')
+
+  hasContent: Em.computed.notEmpty('bodyPart.value')
+
+  hasNoContent: Em.computed.not('hasContent')
 
   actions:
     toggleEdit: ->
-      if @get('isNew')
-        @set('bodyPart', null)
-      else
-        @get('model').rollback()
+      @sendAction('cancel', @get('bodyPart'), @get('snapshot')) if @get('editing')
       @toggleProperty 'editing'
 
     save: ->
       if @get('hasContent')
-        if @get('isNew')
-          @get('model.body').pushObject(@get('bodyPart'))
-          @set('bodyPart', null)
-        @get('model').save()
+        @sendAction('save', @get('bodyPart'))
         @toggleProperty 'editing'

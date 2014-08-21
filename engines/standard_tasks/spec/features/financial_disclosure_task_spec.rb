@@ -28,7 +28,7 @@ feature "Financial Disclosures", js: true do
     edit_paper.view_card 'Financial Disclosure' do |overlay|
       overlay.received_funding.click
       overlay.add_author("Oscar", "Grouch")
-      expect(overlay.selected_authors).to include("Oscar Grouch")
+      expect(overlay).to have_selected_authors("Oscar Grouch")
     end
   end
 

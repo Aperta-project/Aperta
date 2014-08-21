@@ -28,7 +28,7 @@
     input[type="text"], textarea { display: block; }
   }
 
-  input[type="text"] {
+  &.large-edit {
     font-size: 48px;
   }
 

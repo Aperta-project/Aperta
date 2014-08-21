@@ -5,17 +5,12 @@ describe Comment do
     let(:participant) { create :user }
     let(:commenter) { create :user }
     let(:message_task) { create :message_task, participants: [commenter, participant], phase_id: 1 }
-    let(:comment) { message_task.comments.create_with_comment_look(message_task, {body: "Halo", task: message_task, commenter: commenter}) }
+    let(:comment) { message_task.comments.create_with_comment_look(message_task, {body: "Halo", task: message_task, commenter_id: commenter.id}) }
     let(:comment_look) { comment.comment_looks.first }
 
-    it 'creates comment looks for each comment and participant except commenter' do
-      expect(comment.comment_looks.count).to eq(1)
-    end
-
-    it 'adds the commenter as a participant if they are not already' do
-      message_task = create(:message_task, participants: [participant], phase_id: 1)
-      message_task.comments.create_with_comment_look(message_task, {body: "Halo", task: message_task, commenter: commenter})
-      expect(message_task.participants).to match_array([commenter, participant])
+    it 'creates a comment' do
+      expect(comment).to be_persisted
+      expect(comment.body).to eq('Halo')
     end
 
     it 'creates comment look records for each participant except commenter' do

@@ -72,7 +72,6 @@ feature 'Message Cards', js: true do
         task_manager_page.view_card message.title, MessageCardOverlay do |card|
           expect(card).to have_css('.message-overlay')
           card.post_message 'Hello'
-          expect(card.participants).to match_array(participants.map(&:full_name))
           expect(card.comments.last.find('.comment-name')).to have_text(admin.full_name)
         end
       end
@@ -92,14 +91,15 @@ feature 'Message Cards', js: true do
     end
 
     context "the user isn't a participant" do
-      let(:commenter) { albert }
+      let(:commenter) { admin }
       let(:participants) { [albert] }
-      scenario "the user becomes a participant after commenting" do
+      scenario "the user does not become a participant after commenting" do
         task_manager_page = TaskManagerPage.visit paper
         task_manager_page.view_card message.title, MessageCardOverlay do |card|
           expect(card).to have_css('.message-overlay')
           card.post_message 'Hello'
-          expect(card).to have_participants(admin, albert)
+          expect(card).to have_participants(albert)
+          expect(card).to have_no_participants(admin)
           expect(card.comments.last.find('.comment-name')).to have_text(admin.full_name)
         end
       end
@@ -111,7 +111,7 @@ feature 'Message Cards', js: true do
     let(:participants) { [admin, albert] }
     let(:phase) { paper.phases.first }
     let!(:initial_comments) do
-      comment_count.times.map { create_comment_with_comment_looks(message, commenter: commenter, body: "FOO") }
+      comment_count.times.map { create_comment_with_comment_looks(message, commenter_id: commenter.id, body: "FOO") }
     end
     let(:message) { create :message_task, phase: phase, participants: participants }
     let(:comment_count) { 4 }

@@ -30,4 +30,19 @@ describe UserMailer do
       expect(email.body).to match(/just assigned the/)
     end
   end
+
+  describe '#add_participant' do
+    let(:invitor) { FactoryGirl.create(:user) }
+    let(:invitee) { FactoryGirl.create(:user) }
+    let(:task) { FactoryGirl.create(:task) }
+    let(:email) { UserMailer.add_participant(invitor.id, invitee.id, task.id) }
+
+    it 'sends the email to the inivitees email address' do
+      expect(email.to).to include(invitee.email)
+    end
+
+    it 'tells the user they have been added as a collaborator' do
+      expect(email.body).to match(/added you to a conversation/)
+    end
+  end
 end

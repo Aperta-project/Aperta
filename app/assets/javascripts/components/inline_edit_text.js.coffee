@@ -20,3 +20,7 @@ ETahi.InlineEditTextComponent = Em.Component.extend
       if @get('hasContent')
         @sendAction('save', @get('bodyPart'))
         @toggleProperty 'editing'
+
+    deleteBlock: ->
+      @get('model.body').removeObject(@get('bodyPart'))
+

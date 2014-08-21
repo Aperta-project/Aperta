@@ -85,7 +85,7 @@ class TasksController < ApplicationController
 
   def added_participant_id(task)
     ids = params[:task][:participant_ids].map(&:to_i)
-    new_id = ids.reject{|x| task.participant_ids.include? x}.first
+    new_id = ids.reject { |x| task.participant_ids.include? x }.first
     current_user.id == new_id ? nil : new_id
   end
 end

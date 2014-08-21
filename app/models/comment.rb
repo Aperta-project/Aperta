@@ -8,24 +8,15 @@ class Comment < ActiveRecord::Base
   validates :task, :body, presence: true
 
   def self.create_with_comment_look(task, params)
-    new_comment = new params
-    if task.class.method_defined?(:participants)
-      commenter_id = if params[:commenter_id]
-                       params[:commenter_id].to_i
-                     else
-                       params[:commenter].id
-                     end
-
-      # add the commenter as a participant if necessary
-      task.participant_ids |= [commenter_id]
+    new(params).tap do |new_comment|
+      commenter_id = params[:commenter_id].to_i
 
       task.participants.each do |participant|
-        next if participant.id == commenter_id
-        new_comment.comment_looks.new user_id: participant.id, comment: new_comment
+        new_comment.comment_looks.new(user_id: participant.id) unless participant.id == commenter_id
       end
+
+      new_comment.save!
     end
-    new_comment.save!
-    new_comment
   end
 
   def meta_type

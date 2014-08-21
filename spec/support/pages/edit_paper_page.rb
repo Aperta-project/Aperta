@@ -85,7 +85,8 @@ HERE
   def cards
     {
       metadata: all('#paper-metadata-tasks .card-content').map(&:text),
-      assigned: all('#paper-assigned-tasks .card-content').map(&:text)
+      assigned: all('#paper-assigned-tasks .card-content').map(&:text),
+      editor: all('#paper-editor-tasks .card-content').map(&:text)
     }
   end
 

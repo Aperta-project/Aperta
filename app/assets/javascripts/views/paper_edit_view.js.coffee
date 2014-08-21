@@ -38,8 +38,13 @@ ETahi.PaperEditView = Ember.View.extend
         $(this).css('top', '0px')
   ).on('didInsertElement')
 
-  updateToolbarLockedState: ( ->
+  updateEditorLockedState: ( ->
     $('.oo-ui-toolbar-bar').toggleClass('locked', !@get('isEditing'))
+
+    if @get("isEditing")
+      @get("visualEditor").enable()
+    else
+      @get("visualEditor").disable()
   ).observes('isEditing')
 
   setupStickyToolbar: ->
@@ -74,7 +79,7 @@ ETahi.PaperEditView = Ember.View.extend
     visualEditor.update($("#paper-body"), @get('controller.body'))
     visualEditor.get('target').on 'surfaceReady', =>
       @setupStickyToolbar()
-      @updateToolbarLockedState()
+      @updateEditorLockedState()
 
   destroyVisualEditor: ( ->
     Ember.$(document).off 'keyup.autoSave'

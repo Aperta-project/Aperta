@@ -11,7 +11,7 @@ class TasksController < ApplicationController
     if task
       unmunge_empty_arrays!(:task, task.array_attributes)
 
-      new_participant_id = added_participant_id(task)
+      new_participant_id = added_participant_id(task) if params[:task][:participant_ids].present?
       UserMailer.delay.add_participant(current_user.id, new_participant_id, task.id) if new_participant_id
 
       task.assign_attributes task_params(task)

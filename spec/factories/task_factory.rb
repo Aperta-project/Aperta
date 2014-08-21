@@ -7,6 +7,7 @@ FactoryGirl.define do
 
   factory :message_task do
     title "a subject" # should match subject
+    participants { [FactoryGirl.create(:user)] }
     phase
   end
 

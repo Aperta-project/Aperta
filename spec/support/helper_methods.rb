@@ -11,6 +11,12 @@ module TahiHelperMethods
     paper_admin_task.save!
   end
 
+  def make_user_paper_editor(user, paper)
+    assign_journal_role(paper.journal, user, :editor)
+    editor_task = paper.tasks.where(title: 'Assign Editor').first
+    editor_task.editor_id = user.id
+  end
+
   def assign_journal_role(journal, user, type)
     role = journal.roles.where(kind: type).first
     role ||= FactoryGirl.create(:role, type, journal: journal)

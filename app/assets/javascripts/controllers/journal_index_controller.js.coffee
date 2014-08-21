@@ -15,6 +15,14 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
     @set 'adminJournalUsers', null
     @set 'placeholderText', null
 
+  logo: (->
+    logoUrl = @get("logoUrl")
+    if /no-journal-image/.test logoUrl
+      false
+    else
+      logoUrl
+  ).property('logoUrl')
+
   journalUrl: (->
     "/admin/journals/#{@get('model.id')}"
   ).property('model.id')

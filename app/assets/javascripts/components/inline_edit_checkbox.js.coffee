@@ -18,19 +18,13 @@ ETahi.InlineEditCheckboxComponent = Em.Component.extend
 
   actions:
     toggleEdit: ->
-      if @get('isNew')
-        @sendAction('cancel', @get('bodyPart'))
-      else
-        @get('model').rollback()
+      @sendAction('cancel', @get('bodyPart')) if @get('editing')
       @toggleProperty 'editing'
 
     save: ->
       if @get('hasContent')
-        if @get('isNew')
-          @get('model.body').pushObject(@get('bodyPart'))
-          @sendAction('cancel', @get('bodyPart'))
-        @get('model').save()
+        @sendAction('save', @get('bodyPart'))
         @toggleProperty 'editing'
 
     saveModel: ->
-      @get('model').save()
+      @sendAction('saveModel')

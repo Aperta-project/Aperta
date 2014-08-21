@@ -1,7 +1,7 @@
 ETahi.AdHocOverlayController = ETahi.TaskController.extend
   newBlockItems: []
-  isText: (block) ->
-    block.type == "text"
+  isNew: (item) ->
+    @get('newBlockItems').contains(item)
 
   actions:
     addTextBlock: ->
@@ -15,5 +15,14 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
         value: ""
         answer: false
 
-    removeBlockItem: (blockItem)->
-      @get('newBlockItems').removeObject(blockItem)
+    saveBlockItem: (blockItem) ->
+      if @isNew(blockItem)
+        @get('model.body').pushObject(blockItem)
+        @get('newBlockItems').removeObject(blockItem)
+      @send('saveModel')
+
+    resetBlockItem: (blockItem) ->
+      if @isNew(blockItem)
+        @get('newBlockItems').removeObject(blockItem)
+      else
+        @get('model').rollback()

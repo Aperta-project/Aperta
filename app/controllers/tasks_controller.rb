@@ -13,7 +13,7 @@ class TasksController < ApplicationController
       task.assign_attributes task_params(task)
 
       if task.assignee_id_changed? && task.assignee_id != current_user.id
-        UserMailer.delay.assign_task(current_user, User.find(task.assignee_id), task)
+        UserMailer.delay.assign_task(current_user.id, task.assignee_id, task.id)
       end
 
       task.save!

@@ -26,5 +26,8 @@ ETahi.InlineEditCheckboxComponent = Em.Component.extend
         @sendAction('save', @get('bodyPart'))
         @toggleProperty 'editing'
 
+    deleteItem: ->
+      @sendAction('delete', @get('bodyPart'))
+
     saveModel: ->
       @sendAction('saveModel')

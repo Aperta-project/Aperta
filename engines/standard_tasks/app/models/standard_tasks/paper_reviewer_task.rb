@@ -8,7 +8,7 @@ module StandardTasks
     role 'editor'
 
     def array_attributes
-      [:reviewer_ids]
+      super + [:reviewer_ids]
     end
 
     # TODO: Change this ASAP

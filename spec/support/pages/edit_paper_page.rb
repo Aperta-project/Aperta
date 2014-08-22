@@ -100,6 +100,16 @@ HERE
     select.select value
   end
 
+  def start_writing
+    find(".prompt").click
+    expect(find(".prompt").text).to eq 'STOP WRITING'
+  end
+
+  def stop_writing
+    find(".prompt").click
+    expect(find(".prompt").text).to eq 'START WRITING'
+  end
+
   def submit
     click_on "Submit"
     SubmitPaperPage.new

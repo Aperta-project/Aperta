@@ -14,7 +14,7 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
 
   afterModel: (model) ->
     if model.get('submitted')
-      @replaceWith('paper.index', model) 
+      @replaceWith('paper.index', model)
     else
       @set('heartbeatService', ETahi.HeartbeatService.create(resource: model))
       @startHeartbeat()

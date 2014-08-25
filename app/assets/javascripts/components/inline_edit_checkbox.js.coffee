@@ -1,10 +1,7 @@
-ETahi.InlineEditCheckboxComponent = Em.Component.extend
+ETahi.InlineEditCheckboxComponent = Em.Component.extend ETahi.AdhocInlineEditItem,
   editing: false
   isNew: false
-
-  hasContent: Em.computed.notEmpty('bodyPart.value')
-
-  hasNoContent: Em.computed.not('hasContent')
+  snapshot: {}
 
   checked: ((key, value, oldValue) ->
     if arguments.length > 1
@@ -17,17 +14,5 @@ ETahi.InlineEditCheckboxComponent = Em.Component.extend
   ).property('bodyPart.answer')
 
   actions:
-    toggleEdit: ->
-      @sendAction('cancel', @get('bodyPart')) if @get('editing')
-      @toggleProperty 'editing'
-
-    save: ->
-      if @get('hasContent')
-        @sendAction('save', @get('bodyPart'))
-        @toggleProperty 'editing'
-
-    deleteItem: ->
-      @sendAction('delete', @get('bodyPart'))
-
     saveModel: ->
       @sendAction('saveModel')

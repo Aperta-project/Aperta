@@ -1,4 +1,4 @@
-ETahi.IndexController = Ember.ObjectController.extend Ember.Evented,
+ETahi.IndexController = Ember.ObjectController.extend
   needs: ['application']
 
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
@@ -17,4 +17,3 @@ ETahi.IndexController = Ember.ObjectController.extend Ember.Evented,
       .then (litePapers) =>
         @get('model.papers').pushObjects litePapers
         @incrementProperty 'pageNumber'
-        @trigger('papersDidLoad')

@@ -13,20 +13,7 @@
       <button class="button-secondary button--green button--wide" {{action "showNewPaperOverlay"}}>Create New Submission</button>
       {{#if hasPapers}}
         <ul class="dashboard-submitted-papers">
-          {{#each paper in model.papers}}
-            <li class="dashboard-paper-title">
-              {{link-to paper.displayTitle
-                        "paper.edit"
-                        paper.id
-                        class="link-tooltip"
-                        data-toggle="tooltip"
-                        title=paper.roleList
-                        data-placement="bottom"}}
-              {{#if paper.unreadCommentsCount}}
-                <span class="badge unread-comments-count">{{paper.unreadCommentsCount}}</span>
-              {{/if}}
-            </li>
-          {{/each}}
+          {{each model.papers itemViewClass="ETahi.DashboardLinkView"}}
         </ul>
         {{#if paginate}}
           <a {{action "loadMorePapers"}} href="#" class="button-primary button--green button--wide load-more-papers">

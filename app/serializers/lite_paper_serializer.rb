@@ -19,8 +19,7 @@ class LitePaperSerializer < ActiveModel::Serializer
 
   def unread_comments_count
     if (defined? current_user) && current_user
-      message_tasks = object.tasks.select { |t| t.is_a? MessageTask }
-      message_tasks.reduce(0) do |sum, task|
+      object.tasks.reduce(0) do |sum, task|
         sum += CommentLook.where(user_id: current_user.id,
                                  comment_id: task.comments.pluck(:id),
                                  read_at: nil).count

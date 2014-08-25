@@ -1,6 +1,11 @@
 ETahi.InlineEditCheckboxComponent = Em.Component.extend
   editing: false
   isNew: false
+  snapshot: {}
+
+  createSnapshot: (->
+    @set('snapshot', Em.copy(@get('bodyPart'), true))
+  ).observes('editing')
 
   hasContent: Em.computed.notEmpty('bodyPart.value')
 
@@ -18,7 +23,7 @@ ETahi.InlineEditCheckboxComponent = Em.Component.extend
 
   actions:
     toggleEdit: ->
-      @sendAction('cancel', @get('bodyPart')) if @get('editing')
+      @sendAction('cancel', @get('bodyPart'), @get('snapshot')) if @get('editing')
       @toggleProperty 'editing'
 
     save: ->

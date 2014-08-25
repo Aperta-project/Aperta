@@ -10,7 +10,7 @@ class DownloadManuscriptWorker
     epub = EpubConverter.new manuscript.paper, User.first, true
 
     response = RestClient.post(
-      ENV['ITAHI_URL'] + "convert/docx",
+      ENV['IHAT_URL'] + "convert/docx",
       epub: epub.epub_stream.string,
       renderer: 'metypeset',
       multipart: true

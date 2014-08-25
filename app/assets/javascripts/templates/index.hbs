@@ -22,6 +22,9 @@
                         data-toggle="tooltip"
                         title=paper.roleList
                         data-placement="bottom"}}
+              {{#if paper.unreadCommentsCount}}
+                <span class="badge unread-comments-count">{{paper.unreadCommentsCount}}</span>
+              {{/if}}
             </li>
           {{/each}}
         </ul>

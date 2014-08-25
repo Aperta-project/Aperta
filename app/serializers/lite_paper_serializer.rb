@@ -1,5 +1,5 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :paper_id, :short_title, :submitted, :roles
+  attributes :id, :title, :paper_id, :short_title, :submitted, :roles, :unread_comments_count
 
   def paper_id
     id
@@ -15,5 +15,16 @@ class LitePaperSerializer < ActiveModel::Serializer
       roles << "My Paper" if object.user_id == current_user.id
     end
     roles
+  end
+
+  def unread_comments_count
+    if (defined? current_user) && current_user
+      message_tasks = object.tasks.select { |t| t.is_a? MessageTask }
+      message_tasks.reduce(0) do |sum, task|
+        sum += CommentLook.where(user_id: current_user.id,
+                                 comment_id: task.comments.pluck(:id),
+                                 read_at: nil).count
+      end
+    end
   end
 end

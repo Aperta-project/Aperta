@@ -1,11 +1,13 @@
-<p {{bind-attr class=":inline-edit editing"}}>
+<div {{bind-attr class=":inline-edit editing :checkbox :bodypart-display :clearfix"}}>
   <label>
     {{check-box checked=checked action='saveModel'}}
     {{{bodyPart.value}}}
   </label>
-  <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
-  <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "deleteItem"}}></span>
-</p>
+  <div class="actions">
+    <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
+    <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "deleteItem"}}></span>
+  </div>
+</div>
 
 <div {{bind-attr class=":inline-edit-form editing"}}>
   <div class="two-element-form">

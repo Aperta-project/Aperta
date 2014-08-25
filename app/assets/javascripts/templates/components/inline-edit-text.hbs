@@ -1,8 +1,12 @@
-<p {{bind-attr class=":inline-edit editing"}}>
-  {{{bodyPart.value}}}
-  <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
-  <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "deleteItem"}}></span>
-</p>
+<div {{bind-attr class=":inline-edit editing :bodypart-display :clearfix"}}>
+  <div>
+    {{{bodyPart.value}}}
+  </div>
+  <div class="actions">
+    <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
+    <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "deleteItem"}}></span>
+  </div>
+</div>
 
 <div {{bind-attr class=":inline-edit-form editing"}}>
   {{content-editable value=bodyPart.value class="editable"}}

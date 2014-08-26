@@ -46,12 +46,22 @@
 
 .bodypart-display {
   position: relative;
+  margin: 10px 0;
+
   > * {
     float: left;
   }
+
   .item-text {
-    min-height: 60px;
+    min-height: auto;
+    @include transition(min-height, 0.3s);
   }
+
+  &.confirm-delete .item-text {
+    min-height: 60px;
+    @include transition(min-height, 0.3s);
+  }
+
   .glyphicon.inline-edit-icon {
     top: 3px;
   }

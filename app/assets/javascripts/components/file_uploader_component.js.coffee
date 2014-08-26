@@ -100,4 +100,13 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
 
     uploader.on 'fileuploadprocessalways', (e, data) =>
       @sendAction('processingDone', data.files[0])
+
+    uploader.on 'fileuploadstart', (e, data) =>
+      ETahi.set 'isUploading', true
+      $(window).on 'beforeunload', ->
+        return 'You are uploading, are you sure you want to cancel?'
+
+    uploader.on 'fileuploadalways', (e, data) =>
+      ETahi.set 'isUploading', false
+      $(window).off 'beforeunload'
   ).on('didInsertElement')

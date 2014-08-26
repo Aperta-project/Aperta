@@ -8,6 +8,13 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
     @_super(model, controller)
 
   actions:
+    willTransition: (transition) ->
+      if ETahi.get('isUploading')
+        if confirm('You are uploading, are you sure you want to cancel?')
+          ETahi.set 'isUploading', false
+        else
+          transition.abort()
+
     loading: (transition, originRoute) ->
       spinner = @Spinner.create()
       @set('spinner', spinner)

@@ -11,27 +11,29 @@
         {{/if}}
       {{/if}}
     </div>
-    {{#unless model.isNew}}
-      {{partial 'journal/logo-upload'}}
-    {{/unless}}
+    {{#if model.isNew}}
+      {{partial "journal/logo-upload-new"}}
+    {{else}}
+      {{partial "journal/logo-upload"}}
+    {{/if}}
     <span class="journal-logo-upload-note">(250px x 40px)</span>
   </div>
 
-  <div {{bind-attr class=':form-group :required nameErrors:error'}}>
-    <div {{bind-attr class=':error-message nameErrors::hidden'}}>{{nameErrors}}</div>
-    {{input type='text'
+  <div {{bind-attr class=":form-group :required nameErrors:error"}}>
+    <div {{bind-attr class=":error-message nameErrors::hidden"}}>{{nameErrors}}</div>
+    {{input type="text"
             value=journal.name
-            class='form-control journal-name-edit'
-            placeholder='Journal Title'}}
+            class="form-control journal-name-edit"
+            placeholder="Journal Title"}}
   </div>
-  <div {{bind-attr class=':form-group :required descriptionErrors:error'}}>
-    <div {{bind-attr class=':error descriptionErrors::hidden'}}>{{descriptionErrors}}</div>
+  <div {{bind-attr class=":form-group :required descriptionErrors:error"}}>
+    <div {{bind-attr class=":error descriptionErrors::hidden"}}>{{descriptionErrors}}</div>
     {{textarea value=journal.description
-               class='form-group required journal-description-edit form-control'
-               placeholder='Journal Description'}}
+               class="form-group required journal-description-edit form-control"
+               placeholder="Journal Description"}}
   </div>
   <div class="journal-edit-buttons">
-    <a href='#' class="button-link button--white" {{action "resetJournalDetails"}}>Cancel</a>
-    <a href='#' class="button-secondary button--white" {{action "saveJournalDetails"}}>Save</a>
+    <a href="#" class="button-link button--white" {{action "resetJournalDetails"}}>Cancel</a>
+    <a href="#" class="button-secondary button--white" {{action "saveJournalDetails"}}>Save</a>
   </div>
 </div>

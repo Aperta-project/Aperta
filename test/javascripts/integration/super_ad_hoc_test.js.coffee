@@ -45,42 +45,41 @@ test "Adding a text block to an AdHoc Task", ->
   click '.card-content:contains("Super Ad-Hoc")'
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
-  .then ->
+  andThen ->
     ok exists find '.inline-edit-form div[contenteditable]'
     ok exists find '.button--disabled:contains("Save")'
-  andThen ->
     Em.$('.inline-edit-form div[contenteditable]')
     .html("New contenteditable, yahoo!")
     .trigger('keyup')
     click '.task-body .inline-edit-form .button--green:contains("Save")'
+  andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') isnt -1
-  andThen ->
     click '.inline-edit .glyphicon-trash'
-    ok Em.$.trim(find('.inline-edit').text()).indexOf('Are you sure?') isnt -1
   andThen ->
+    ok Em.$.trim(find('.inline-edit').text()).indexOf('Are you sure?') isnt -1
     click '.inline-edit .delete-button'
+  andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') is -1
-  click '.overlay-close-button:first'
+    click '.overlay-close-button:first'
 
 test "Adding and removing a checkbox item to an AdHoc Task", ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/manage"
-  .then -> ok exists find '.card-content:contains("Super Ad-Hoc")'
 
   click '.card-content:contains("Super Ad-Hoc")'
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--list'
-  .then ->
+  andThen ->
     ok exists find '.inline-edit-form input[type=checkbox]:disabled'
     ok exists find '.inline-edit-form label[contenteditable]'
     ok exists find '.button--disabled:contains("Save")'
-  andThen ->
     Em.$('.inline-edit-form label[contenteditable]')
     .html("Here is a checkbox list item")
     .trigger('keyup')
     click '.task-body .inline-edit-form .button--green:contains("Save")'
+  andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('checkbox list item') isnt -1
     ok exists find '.inline-edit-form input[type=checkbox]'
-  andThen ->
     click '.inline-edit .glyphicon-trash'
+  andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('checkbox list item') is -1
-  click '.overlay-close-button:first'
+    click '.overlay-close-button:first'

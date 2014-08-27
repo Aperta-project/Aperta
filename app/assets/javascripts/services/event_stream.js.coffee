@@ -21,9 +21,10 @@ ETahi.EventStream = Em.Object.extend
       meta = esData.meta
       delete esData.meta
       delete esData.action
-      (@eventStreamActions[action]||->).call(@, esData)
       if meta
         @eventStreamActions["meta"].call(@, meta.model_name, meta.id)
+      else
+        (@eventStreamActions[action]||->).call(@, esData)
 
   eventStreamActions:
     created: (esData) ->
@@ -60,7 +61,8 @@ ETahi.EventStream = Em.Object.extend
           task.triggerLater('didDelete')
 
     meta: (modelName, id) ->
-      if model = @store.getById(modelName, id)
-        model.reload()
-      else
-        store.find(modelName, id)
+      Ember.run =>
+        if model = @store.getById(modelName, id)
+          model.reload()
+        else
+          store.find(modelName, id)

@@ -45,10 +45,46 @@
 .inline-edit.editing { display: none; }
 
 .bodypart-display {
+  position: relative;
+  margin: 10px 0;
+
   > * {
     float: left;
   }
- .glyphicon.inline-edit-icon {
-   top: 0;
- }
+
+  .item-text {
+    min-height: auto;
+    @include transition(min-height, 0.3s);
+  }
+
+  &.confirm-delete .item-text {
+    min-height: 60px;
+    @include transition(min-height, 0.3s);
+  }
+
+  .glyphicon.inline-edit-icon {
+    top: 3px;
+  }
+}
+
+.bodypart-destroy-overlay {
+  @include position(absolute, 0px 0px 0px 0px);
+  padding: 0px 30px;
+  color: #fff;
+  background-color: #29a904;
+  z-index: 1; // higher index to ensure overlay stays above all other content
+
+  > * {
+    display: inline-block;
+  }
+
+  button {
+    margin-top: -10px;
+  }
+
+  p {
+    margin: 0 0 15px 0;
+    font-size: 21px;
+    font-weight: bold;
+  }
 }

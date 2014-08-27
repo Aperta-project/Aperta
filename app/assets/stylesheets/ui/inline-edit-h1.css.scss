@@ -19,11 +19,12 @@
   overflow: hidden;
   padding: 5px;
   background-color: #C3E7BF;
+  margin-top: 30px;
 
   &.editing {
     display: block;
     top: -14px;
-    left: -6px;
+    left: -4px;
 
     input[type="text"], textarea { display: block; }
   }
@@ -42,3 +43,12 @@
 }
 
 .inline-edit.editing { display: none; }
+
+.bodypart-display {
+  > * {
+    float: left;
+  }
+ .glyphicon.inline-edit-icon {
+   top: 0;
+ }
+}

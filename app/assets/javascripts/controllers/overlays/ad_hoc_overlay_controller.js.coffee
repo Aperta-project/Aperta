@@ -33,3 +33,7 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
         @get('newBlockItems').removeObject(blockItem)
       else
         @replaceBlockItem(blockItem, snapshot)
+
+    deleteBlockItem: (blockItem) ->
+      @get('model.body').removeObject(blockItem)
+      @send('saveModel')

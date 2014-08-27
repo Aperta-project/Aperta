@@ -53,10 +53,13 @@ test "Adding a text block to an AdHoc Task", ->
     .html("New contenteditable, yahoo!")
     .trigger('keyup')
     click '.task-body .inline-edit-form .button--green:contains("Save")'
-    ok Em.$.trim(find('p.inline-edit').text()).indexOf('yahoo') isnt -1
+    ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') isnt -1
+  andThen ->
+    click '.inline-edit .glyphicon-trash'
+    ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') is -1
   click '.overlay-close-button:first'
 
-test "Adding a checkbox item to an AdHoc Task", ->
+test "Adding and removing a checkbox item to an AdHoc Task", ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/manage"
   .then -> ok exists find '.card-content:contains("Super Ad-Hoc")'
 
@@ -72,6 +75,9 @@ test "Adding a checkbox item to an AdHoc Task", ->
     .html("Here is a checkbox list item")
     .trigger('keyup')
     click '.task-body .inline-edit-form .button--green:contains("Save")'
-    ok Em.$.trim(find('p.inline-edit').text()).indexOf('checkbox list item') isnt -1
+    ok Em.$.trim(find('.inline-edit').text()).indexOf('checkbox list item') isnt -1
     ok exists find '.inline-edit-form input[type=checkbox]'
+  andThen ->
+    click '.inline-edit .glyphicon-trash'
+    ok Em.$.trim(find('.inline-edit').text()).indexOf('checkbox list item') is -1
   click '.overlay-close-button:first'

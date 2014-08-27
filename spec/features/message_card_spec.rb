@@ -70,9 +70,11 @@ feature 'Message Cards', js: true do
       scenario "the user can add a commment" do
         task_manager_page = TaskManagerPage.visit paper
         task_manager_page.view_card message.title, MessageCardOverlay do |card|
-          expect(card).to have_css('.message-overlay')
-          card.post_message 'Hello'
-          expect(card.comments.last.find('.comment-name')).to have_text(admin.full_name)
+          retry_stale_element do
+            expect(card).to have_css('.message-overlay')
+            card.post_message 'Hello'
+            expect(card.comments.last.find('.comment-name')).to have_text(admin.full_name)
+          end
         end
       end
 

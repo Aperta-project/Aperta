@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def create
-    task = Task.find(params[:comment][:message_task_id])
+    task = Task.find(params[:comment][:task_id])
 
     if PaperQuery.new(task.paper, current_user).paper
       render json: task.comments.create_with_comment_look(task, new_comment_params)

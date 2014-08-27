@@ -63,4 +63,4 @@ ETahi.EventStream = Em.Object.extend
       if model = @store.getById(modelName, id)
         model.reload()
       else
-        store.find(modelName, id)
+        @store.find(modelName, id)

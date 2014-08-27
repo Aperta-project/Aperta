@@ -16,7 +16,7 @@ describe CommentsController do
       post :create, format: :json,
         comment: {commenter_id: user.id,
                   body: "My comment",
-                  message_task_id: message_task.id}
+                  task_id: message_task.id}
     end
 
     context "the user can't see the task's paper" do
@@ -35,7 +35,7 @@ describe CommentsController do
           format: :json,
           comment: {commenter_id: user.id,
                     body: "",
-                    message_task_id: message_task.id}
+                    task_id: message_task.id}
         }.to_not change { Comment.count }
       end
     end

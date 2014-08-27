@@ -16,6 +16,8 @@ class Task < ActiveRecord::Base
   has_one :paper, through: :phase
   has_one :journal, through: :paper
   has_many :questions, inverse_of: :task
+  has_many :participations, inverse_of: :task, dependent: :destroy
+  has_many :participants, through: :participations
 
   validates :title, :role, presence: true
   validates :title, length: { maximum: 255 }
@@ -50,7 +52,7 @@ class Task < ActiveRecord::Base
   end
 
   def permitted_attributes
-    [:assignee_id, :completed, :title, :phase_id, body: [:type, :value, :answer]]
+    [:assignee_id, :completed, :title, :phase_id, body: [:type, :value, :answer], participant_ids: []]
   end
 
   class << self

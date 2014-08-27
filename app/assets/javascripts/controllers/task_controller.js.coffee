@@ -19,3 +19,14 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed,
 
     redirect: ->
       @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect.lastObject'))
+
+    postComment: (body) ->
+      return unless body
+      commenter = @getCurrentUser()
+      commentFields =
+        commenter: commenter
+        task: @get('model')
+        body: body
+        createdAt: new Date()
+      newComment = @store.createRecord('comment', commentFields)
+      newComment.save()

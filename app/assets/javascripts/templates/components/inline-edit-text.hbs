@@ -7,7 +7,7 @@
     <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "confirmDeletion"}}></span>
   </div>
   {{#if confirmDelete}}
-    <div class="destroy-overlay">
+    <div class="bodypart-destroy-overlay">
       <p>This will permanently delete your item. Are you sure?</p>
       <button class="button-primary button--white" {{action "cancelDestroy"}}>Cancel</button>
       <button class="button-primary button--white delete-button" {{action "deleteItem"}}>Delete Forever</button>

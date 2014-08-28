@@ -3,7 +3,7 @@ class Comment < ActiveRecord::Base
 
   belongs_to :task
   belongs_to :commenter, class_name: 'User', inverse_of: :comments
-  has_many :comment_looks
+  has_many :comment_looks, dependent: :destroy
 
   validates :task, :body, presence: true
 

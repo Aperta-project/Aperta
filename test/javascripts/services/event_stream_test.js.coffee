@@ -10,6 +10,7 @@ sinon.stub(eventStream, "createOrUpdateTask", -> null)
 
 
 test 'action:created without a task will call pushPayload with the data', ->
+  data =
     action: 'created'
     meta: null
     foo:

@@ -10,8 +10,10 @@ class DownloadManuscriptWorker
     epub = EpubConverter.new manuscript.paper, User.first, true
 
     response = RestClient.post(
-      "http://ihat-staging.herokuapp.com/convert/docx",
-      epub: epub.epub_stream.string, multipart: true
+      ENV['IHAT_URL'] + "convert/docx",
+      epub: epub.epub_stream.string,
+      renderer: 'metypeset',
+      multipart: true
     )
 
     manuscript.paper.update JSON.parse(response.body).symbolize_keys!

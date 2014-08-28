@@ -74,6 +74,7 @@ group :development do
   gem 'bullet'
   gem 'license_finder'
   gem 'kss-rails'
+  gem 'letter_opener'
 end
 
 group :development, :test, :performance do
@@ -100,4 +101,8 @@ group :test do
   gem 'vcr'
   gem 'webmock'
   gem 'thin'
+end
+
+group :staging do
+  gem 'mail_safe'
 end

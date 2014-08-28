@@ -6,5 +6,4 @@ class MessageTaskSerializer < TaskSerializer
   def participants
     object.participants.includes(:affiliations)
   end
-
 end

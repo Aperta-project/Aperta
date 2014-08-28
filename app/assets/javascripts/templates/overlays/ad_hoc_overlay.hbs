@@ -2,11 +2,20 @@
 
 <div class="task-body">
   {{#each part in body}}
-    {{inline-edit-text bodyPart=part model=model}}
+    {{inlineEdit part
+      cancel="resetBlockItem"
+      save="saveBlockItem"
+      saveModel="saveModel"
+      delete="deleteBlockItem"}}
   {{/each}}
-  {{#if newTextBlock}}
-    {{inline-edit-text bodyPart=newTextBlock model=model isNew=true editing=true}}
-  {{/if}}
+  {{#each item in newBlockItems}}
+    {{inlineEdit item
+      isNew=true
+      editing=true
+      cancel="resetBlockItem"
+      save="saveBlockItem"
+      saveModel="saveModel"}}
+  {{/each}}
 </div>
 
 {{view ETahi.AdhocContentToolbarView}}

@@ -6,7 +6,7 @@ ETahi.Author = DS.Model.extend
   middleInitial: a('string')
   lastName: a('string')
   fullName: (->
-     "#{@get('firstName')} #{@get('middleInitial') || ''} #{@get('lastName')}"
+    [@get('firstName'), @get('middleInitial'), @get('lastName')].compact().join(' ')
   ).property('firstName', 'middleInitial', 'lastName')
 
   email: a('string')

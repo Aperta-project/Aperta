@@ -15,12 +15,13 @@ feature "Editing paper", js: true do
 
     scenario "Author edits paper and metadata cards" do
       edit_paper = EditPaperPage.visit paper
-      page.execute_script("window.shortTimeout = 100")
+      edit_paper.start_writing
       edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
       edit_paper.body = "Contrary to popular belief"
+      edit_paper.stop_writing
 
       sleep 1
-      edit_paper = EditPaperPage.visit paper
+      edit_paper.reload
 
       expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"
       expect(edit_paper).to have_body_text("Contrary to popular belief")

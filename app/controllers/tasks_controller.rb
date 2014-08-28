@@ -10,11 +10,12 @@ class TasksController < ApplicationController
     task = Task.find(params[:id])
     if task
       unmunge_empty_arrays!(:task, task.array_attributes)
-      task.assign_attributes task_params(task)
 
-      if task.assignee_id_changed? && task.assignee_id != current_user.id
-        UserMailer.delay.assign_task(current_user, User.find(task.assignee_id), task)
-      end
+      new_participant_id = added_participant_id(task) if params[:task][:participant_ids].present?
+      UserMailer.delay.add_participant(current_user.id, new_participant_id, task.id) if new_participant_id
+
+      task.assign_attributes task_params(task)
+      UserMailer.delay.assign_task(current_user.id, task.assignee_id, task.id) if assignee_changed?(task)
 
       task.save!
       render task.update_responder.new(task, view_context).response
@@ -76,5 +77,15 @@ class TasksController < ApplicationController
 
   def enforce_policy
     authorize_action!(task: task)
+  end
+
+  def assignee_changed?(task)
+    task.assignee_id_changed? && task.assignee_id != current_user.id
+  end
+
+  def added_participant_id(task)
+    ids = params[:task][:participant_ids].map(&:to_i)
+    new_id = ids.reject { |x| task.participant_ids.include? x }.first
+    current_user.id == new_id ? nil : new_id
   end
 end

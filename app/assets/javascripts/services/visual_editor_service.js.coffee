@@ -25,3 +25,9 @@ ETahi.VisualEditorService = Em.Object.extend
   isEmpty: (->
     Ember.isBlank Ember.$(@get('bodyHtml')).text()
   ).property().volatile()
+
+  enable: () ->
+    @get("target").surface.enable()
+
+  disable: () ->
+    @get("target").surface.disable()

@@ -1,26 +1,40 @@
 class UserMailer < ActionMailer::Base
-  default from: ENV['DEFAULT_FROM_EMAIL']
+  include MailerHelper
+  default from: ENV.fetch('FROM_EMAIL')
 
-  def add_collaborator(invitor, invitee, paper)
-    @paper = paper
-    @invitor_name = name(invitor)
-    @invitee_name = name(invitee)
+  def add_collaborator(invitor_id, invitee_id, paper_id)
+    @paper = Paper.find(paper_id)
+    invitor = User.find(invitor_id)
+    invitee = User.find(invitee_id)
+    @invitor_name = display_name(invitor)
+    @invitee_name = display_name(invitee)
+
     mail(
       to: invitee.email,
       subject: "You've been added as a collaborator to a paper on Tahi")
   end
 
-  def assign_task(invitor, invitee, task)
-    @task = task
-    @invitor_name = name(invitor)
-    @invitee_name = name(invitee)
+  def assign_task(invitor_id, invitee_id, task_id)
+    @task = Task.find(task_id)
+    invitor = User.find(invitor_id)
+    invitee = User.find(invitee_id)
+    @invitor_name = display_name(invitor)
+    @invitee_name = display_name(invitee)
+
     mail(
       to: invitee.email,
       subject: "You've been assigned a task on Tahi")
   end
 
-  private
-  def name(user)
-    user.full_name.present? ? user.full_name : user.username
+  def add_participant(invitor_id, invitee_id, task_id)
+    @task = Task.find(task_id)
+    invitor = User.find(invitor_id)
+    invitee = User.find(invitee_id)
+    @invitor_name = display_name(invitor)
+    @invitee_name = display_name(invitee)
+
+    mail(
+      to: invitee.email,
+      subject: "You've been added to a conversation on Tahi")
   end
 end

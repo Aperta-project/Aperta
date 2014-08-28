@@ -1,5 +1,6 @@
 class Task < ActiveRecord::Base
   include EventStreamNotifier
+  include Commentable
 
   cattr_accessor :metadata_types
 
@@ -45,11 +46,11 @@ class Task < ActiveRecord::Base
   end
 
   def array_attributes
-    []
+    [:body]
   end
 
   def permitted_attributes
-    [:assignee_id, :completed, :title, :phase_id, body: [:type, :value]]
+    [:assignee_id, :completed, :title, :phase_id, body: [:type, :value, :answer]]
   end
 
   class << self

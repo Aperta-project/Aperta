@@ -2,26 +2,16 @@ ETahi.CommentBoardComponent = Ember.Component.extend
   commentBody: ""
   commentsToShow: 5
   showingAllComments: false
-  commentSort: ['createdAt:asc']
+  commentSort: ['createdAt:desc']
   sortedComments: Ember.computed.sort('comments', 'commentSort')
-  unreadComments: []
 
   setUnreadStates: ( ->
     Ember.run =>
-      unreadComments = @get('unreadComments')
       shownComments = @get('shownComments')
-      shownComments.forEach (c) ->
-        if commentLook = c.get('commentLook')
-          # if comment is unread, make it read
-          if !unreadComments.contains(c.get('id'))
-            unreadComments.addObject(c.get('id'))
-            commentLook.set('readAt', new Date())
-            commentLook.save()
-
-      # show purple background for unread messages?
-      unreadComments.forEach (id) ->
-        if comment = shownComments.findBy('id', id)
-          comment.set('unread', true)
+      shownComments.forEach (c) =>
+        if c.isUnread()
+          c.set('unread', true)
+          c.markRead()
   ).observes('shownComments.@each').on('init')
 
   shownComments: (->
@@ -35,7 +25,7 @@ ETahi.CommentBoardComponent = Ember.Component.extend
   ).property('comments.length')
 
   omittedCommentsCount: (->
-    @get('comments.length') - 5
+    @get('comments.length') - @get("commentsToShow")
   ).property('comments.length')
 
   actions:

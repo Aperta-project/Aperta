@@ -1,6 +1,7 @@
 ETahi.AdhocInlineEditItem = Em.Mixin.create
   editing: false
   isNew: false
+  confirmDelete: false
   snapshot: {}
 
   createSnapshot: (->
@@ -21,6 +22,11 @@ ETahi.AdhocInlineEditItem = Em.Mixin.create
         @sendAction('save', @get('bodyPart'))
         @toggleProperty 'editing'
 
+    confirmDeletion: ->
+      @set('confirmDelete', true)
+
     deleteItem: ->
       @sendAction('delete', @get('bodyPart'))
 
+    cancelDestroy: ->
+      @set('confirmDelete', false)

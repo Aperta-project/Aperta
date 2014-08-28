@@ -56,6 +56,9 @@ test "Adding a text block to an AdHoc Task", ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') isnt -1
   andThen ->
     click '.inline-edit .glyphicon-trash'
+    ok Em.$.trim(find('.inline-edit').text()).indexOf('Are you sure?') isnt -1
+  andThen ->
+    click '.inline-edit .delete-button'
     ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') is -1
   click '.overlay-close-button:first'
 

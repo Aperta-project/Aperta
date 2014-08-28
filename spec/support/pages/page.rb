@@ -69,7 +69,9 @@ class PageFragment
                     end
     overlay = overlay_class.new session.find(".overlay")
     if block_given?
-      block.call overlay
+      retry_stale_element do
+        block.call overlay
+      end
       expect(overlay).to have_no_application_error
       overlay.dismiss
     else

@@ -70,6 +70,10 @@ HERE
     find('.ve-ce-documentNode').text
   end
 
+  def has_body_text?(text)
+    find('.ve-ce-documentNode').has_text?(text)
+  end
+
   def authors
     find('#paper-authors').text
   end

@@ -9,8 +9,7 @@ eventStream = ETahi.EventStream.create(init: (-> null), store: fakeStore)
 sinon.stub(eventStream, "createOrUpdateTask", -> null)
 
 
-test 'created without a task pushes the data into the store', ->
-  data =
+test 'action:created without a task will call pushPayload with the data', ->
     action: 'created'
     meta: null
     foo:
@@ -19,7 +18,7 @@ test 'created without a task pushes the data into the store', ->
   eventStream.msgResponse({data: (JSON.stringify data)})
   ok(fakeStore.pushPayload.calledWith({foo: {id: 1}}))
 
-test  'create with a task will add a new task to the store and associate it to a phase', ->
+test  'action:created with a task will call createOrUpdateTask with the action and data', ->
   data =
     action: 'created'
     meta: null
@@ -29,7 +28,7 @@ test  'create with a task will add a new task to the store and associate it to a
   eventStream.msgResponse({data: (JSON.stringify data)})
   ok(eventStream.createOrUpdateTask.calledWith('created', {task: {id: 1}}))
 
-test 'updated with a task pushes the data into the store', ->
+test 'action:updated with a task will call createOrUpdateTask with the action and data', ->
   data =
     action: 'updated'
     meta: null
@@ -39,7 +38,7 @@ test 'updated with a task pushes the data into the store', ->
   eventStream.msgResponse({data: (JSON.stringify data)})
   ok(eventStream.createOrUpdateTask.calledWith('updated', {task: {id: 1}}))
 
-test 'destroy will remove the task from the store', ->
+test 'action:destroy will try to delete the record from the store', ->
   task =
     deleteRecord: sinon.stub()
     triggerLater: -> null

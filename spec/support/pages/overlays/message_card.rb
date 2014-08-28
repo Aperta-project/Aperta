@@ -32,6 +32,16 @@ class MessageCardOverlay < CardOverlay
     all('.message-comment')
   end
 
+  def most_recent_comment
+    find('.message-comment:last-of-type')
+  end
+
+  def has_last_comment_posted_by?(user)
+    retry_stale_element do
+      most_recent_comment.find('.comment-name').has_text?(user.full_name)
+    end
+  end
+
   def post_message(new_message)
     fill_in 'comment-body', with: new_message
     click_button 'Post Message'

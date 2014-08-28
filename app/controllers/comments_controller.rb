@@ -8,7 +8,9 @@ class CommentsController < ApplicationController
     task = Task.find(params[:comment][:task_id])
 
     if PaperQuery.new(task.paper, current_user).paper
-      render json: task.comments.create_with_comment_look(task, new_comment_params)
+      comment = task.comments.create(comment_params)
+      CommentLookManager.sync(task)
+      render json: comment
     else
       head 404
     end
@@ -25,7 +27,7 @@ class CommentsController < ApplicationController
 
   private
 
-  def new_comment_params
+  def comment_params
     params.require(:comment).permit(:commenter_id, :body)
   end
 

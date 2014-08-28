@@ -3,12 +3,12 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isEditing: (-> @get 'model.isDirty').property()
   thumbnailId: (-> "journal-logo-#{@get 'model.id'}").property()
-  logoUploadUrl: (-> "/admin/journals/#{@get 'model.id'}/upload_logo").property()
+  logoUploadUrl: (-> "/admin/journals/#{@get 'model.id'}/upload_logo").property('model.id')
   nameErrors: null
   descriptionErrors: null
   logoPreview: null
   journal: null
-
+  uploadLogoFunction: null
 
   resetErrors: ->
     @setProperties
@@ -29,8 +29,7 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend
 
     saveJournalDetails: ->
       if @get('model.isNew')
-        @get('model').save().then (journal)=>
-          debugger
+        @get('model').save().then (journal) =>
           updateLogo() if updateLogo = @get('uploadLogoFunction')
       else
         # updateLogo will fire the 'logoUploaded' action from the component, thus saving the model

@@ -6,14 +6,14 @@ ETahi.Comment = DS.Model.extend
   createdAt: a('date')
   commentLook: DS.belongsTo('commentLook')
 
-  isUnread: ->
+  isUnread: (->
     if commentLook = @get('commentLook')
       Em.isEmpty(commentLook.get('readAt'))
+  ).property('commentLook')
 
-  isRead: ->
-    !@isUnread()
+  isRead: Em.computed.not('isUnread')
 
   markRead: ->
-    @get('commentLook').set('readAt', new Date())
-    @get('commentLook').save()
-
+    cl = @get('commentLook')
+    cl.set('readAt', new Date())
+    cl.save()

@@ -9,7 +9,7 @@ ETahi.CommentBoardComponent = Ember.Component.extend
     Ember.run =>
       shownComments = @get('shownComments')
       shownComments.forEach (c) =>
-        if c.isUnread()
+        if c.get('isUnread')
           c.set('unread', true)
           c.markRead()
   ).observes('shownComments.@each').on('init')

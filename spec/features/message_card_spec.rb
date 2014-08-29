@@ -72,7 +72,7 @@ feature 'Message Cards', js: true do
         task_manager_page.view_card message.title, MessageCardOverlay do |card|
           expect(card).to have_css('.message-overlay')
           card.post_message 'Hello'
-          expect(card.comments.last.find('.comment-name')).to have_text(admin.full_name)
+          expect(card).to have_last_comment_posted_by(admin)
         end
       end
 
@@ -100,7 +100,7 @@ feature 'Message Cards', js: true do
           card.post_message 'Hello'
           expect(card).to have_participants(albert)
           expect(card).to have_no_participants(admin)
-          expect(card.comments.last.find('.comment-name')).to have_text(admin.full_name)
+          expect(card).to have_last_comment_posted_by(admin)
         end
       end
     end

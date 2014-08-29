@@ -20,7 +20,7 @@ class Comment < ActiveRecord::Base
   end
 
   def meta_type
-    self.class.name
+    self.task.class.name
   end
 
   def has_meta?
@@ -28,7 +28,7 @@ class Comment < ActiveRecord::Base
   end
 
   def meta_id
-    id
+    self.task.id
   end
 
   private

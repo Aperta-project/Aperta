@@ -44,7 +44,7 @@ when 'development'
     paper = PaperFactory.create(paper_params, mike)
   end
 
-  mike.journal_roles.create(journal_id: plos_journal.id)
+  mike.roles.create(journal_id: plos_journal.id)
 
   first_names = ['Oliver', 'Charlotte', 'Jack', 'Emily', 'James', 'Ruby', 'William', 'Sophie', 'Mason', 'Olivia', 'Richard']
   last_names  = ['Smith', 'Jones', 'Taylor', 'Brown', 'Davies', 'Evans', 'Roberts', 'Johnson', 'Robinson', 'Edwards', 'Prentice']
@@ -60,8 +60,10 @@ when 'development'
       admin:       true
     )
     if u.persisted?
-      u.journal_roles.create!(journal_id: plos_journal.id)
+      u.roles.create!(journal_id: plos_journal.id, name: "Role #{i}")
       u.affiliations.create!(name: "Affiliation #{i}")
     end
   }
+  Rake::Task['data:create_task_types'].invoke
+  Rake::Task['journal:create_default_templates'].invoke
 end

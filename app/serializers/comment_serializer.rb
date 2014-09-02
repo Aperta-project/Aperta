@@ -2,7 +2,7 @@ class CommentSerializer < ActiveModel::Serializer
   attributes :id, :body, :created_at
 
   has_one :task, embed: :id, polymorphic: true
-  has_one :commenter, serializer: UserSerializer, include: true, root: :users
+  has_one :commenter, serializer: UserSerializer, include: true, root: :users, embed: :id
   has_one :comment_look, include: true, embed: :ids
 
   def comment_look

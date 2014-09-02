@@ -25,7 +25,7 @@ class Comment < ActiveRecord::Base
   end
 
   def meta_type
-    self.task.class.name
+    self.task.class.name.demodulize
   end
 
   def has_meta?

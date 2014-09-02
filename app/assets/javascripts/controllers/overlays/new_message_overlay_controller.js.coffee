@@ -6,7 +6,7 @@ ETahi.NewMessageCardOverlayController = ETahi.NewCardOverlayController.extend
   ).property('model.title')
 
   newComment: Ember.computed.alias('model.comments.firstObject')
-  hasComment: (-> 
+  hasComment: (->
     !Ember.isBlank(@get('newComment.body'))
   ).property('newComment.body')
 

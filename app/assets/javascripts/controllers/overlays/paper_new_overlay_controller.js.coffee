@@ -1,5 +1,4 @@
-ETahi.PaperNewOverlayController = Ember.ObjectController.extend ETahi.ControllerParticipants,
-  needs: ['application']
+ETahi.PaperNewOverlayController = Ember.ObjectController.extend
   overlayClass: 'overlay--fullscreen paper-new-overlay'
 
   noJournalSelected: Em.computed.not('model.journal')

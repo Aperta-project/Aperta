@@ -1,9 +1,14 @@
 ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend
+  needs: ['fileUpload']
   manuscriptUploadUrl: (->
     "/papers/#{@get('litePaper.id')}/upload"
   ).property('litePaper.id')
 
+  uploads: []
   isUploading: false
+  uploadsDidChange: (->
+    @set 'isUploading', !!this.get('uploads.length')
+  ).observes('uploads.@each')
   isProcessing: false
   uploadProgress: 0
   showProgress: true
@@ -13,10 +18,12 @@ ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend
   ).property('paper.lockedBy', 'isUserEditable', 'isCurrentUserAdmin')
 
   actions:
-    uploadStarted: ->
-      @set('isUploading', true)
+    uploadStarted: (data, fileUploadXHR) ->
+      @get('controllers.fileUpload').send('uploadStarted', data, fileUploadXHR)
+      @get('uploads').pushObject ETahi.FileUpload.create(file: data.files[0])
 
     uploadProgress: (data) ->
+      @get('controllers.fileUpload').send('uploadProgress', data)
       progress = Math.round(data.loaded * 100 / data.total)
       @set('uploadProgress', progress)
       if progress >= 100
@@ -25,8 +32,15 @@ ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend
     uploadError: (message) ->
       @set('uploadError', message)
 
-    uploadFinished: (data) ->
+    uploadFinished: (data, filename) ->
+      @get('controllers.fileUpload').send('uploadFinished', data, filename)
       @store.pushPayload(data)
-      @set('isUploading', false)
+      uploads = @get('uploads')
+      newUpload = uploads.findBy('file.name', filename)
+      uploads.removeObject newUpload
       @set('completed', true)
       @get('model').save().then(=> @send('closeAction'))
+
+    cancelUploads: ->
+      @get('controllers.fileUpload').send('cancelUploads')
+      @set('uploads', [])

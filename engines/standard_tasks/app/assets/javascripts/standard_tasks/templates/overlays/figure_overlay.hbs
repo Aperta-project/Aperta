@@ -6,10 +6,10 @@
     {{file-uploader id="figure_attachment"
                     accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
                     url=figureUploadUrl
-                    filePrefix='paper/figures'
-                    start='uploadStarted'
-                    done='uploadFinished'
-                    progress='uploadProgress'
+                    filePrefix="paper/figures"
+                    start="uploadStarted"
+                    done="uploadFinished"
+                    progress="uploadProgress"
                     multiple=true}}
   </span>
 {{/if}}
@@ -25,6 +25,6 @@
   {{/each}}
 {{else}}
   {{#each figure in figures}}
-    {{partial 'figure_show_only'}}
+    {{partial "figure_show_only"}}
   {{/each}}
 {{/if}}

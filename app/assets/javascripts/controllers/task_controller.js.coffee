@@ -18,6 +18,9 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
     redirect: ->
       @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect.lastObject'))
 
+    redirectToDashboard: ->
+      @transitionToRoute 'index'
+
     postComment: (body) ->
       return unless body
       commenter = @getCurrentUser()

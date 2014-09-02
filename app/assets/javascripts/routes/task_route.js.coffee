@@ -20,7 +20,9 @@ ETahi.TaskRoute = Ember.Route.extend
     @set('taskController', taskController)
 
     if !Em.isEmpty(@controllerFor('application').get('overlayRedirect'))
-      taskController.set('onClose', 'redirect')
+      taskController.set 'onClose', 'redirect'
+    else
+      taskController.set 'onClose', 'redirectToDashboard'
 
   renderTemplate: ->
     @render @get('baseObjectName'),
@@ -35,6 +37,14 @@ ETahi.TaskRoute = Ember.Route.extend
 
   actions:
     willTransition: (transition) ->
+      taskController = @get 'taskController'
+      if taskController.get 'isUploading'
+        if confirm 'You are uploading, are you sure you want to cancel?'
+          taskController.send 'cancelUploads'
+        else
+          transition.abort()
+          return
+
       redirectStack = @controllerFor('application').get('overlayRedirect')
       if !Em.isEmpty(redirectStack)
         redirectRoute = redirectStack.popObject()

@@ -1,4 +1,5 @@
 ETahi.ProfileController = Ember.ObjectController.extend
+  needs: ['fileUpload'],
   hideAffiliationForm: true
 
   errorText: ""
@@ -9,15 +10,30 @@ ETahi.ProfileController = Ember.ObjectController.extend
     "/users/#{@get('id')}/update_avatar"
   ).property('id')
 
-  avatarUploading: false
+  uploads: []
+  isUploading: false
+  uploadsDidChange: (->
+    @set 'isUploading', !!this.get('uploads.length')
+  ).observes('uploads.@each')
 
   actions:
-    avatarUploading: ->
-      @set('avatarUploading', true)
+    uploadStarted: (data, fileUploadXHR)->
+      @get('controllers.fileUpload').send('uploadStarted', data, fileUploadXHR)
+      @get('uploads').pushObject ETahi.FileUpload.create(file: data.files[0])
 
-    avatarUploaded: (data) ->
+    uploadProgress: (data)->
+      @get('controllers.fileUpload').send('uploadProgress', data)
+
+    uploadFinished: (data, filename) ->
+      @get('controllers.fileUpload').send('uploadFinished', data, filename)
       @set('model.avatarUrl', data.avatar_url)
-      @set('avatarUploading', false)
+      uploads = @get('uploads')
+      newUpload = uploads.findBy('file.name', filename)
+      uploads.removeObject newUpload
+
+    cancelUploads: ->
+      @get('controllers.fileUpload').send('cancelUploads')
+      @set('uploads', [])
 
     toggleAffiliationForm: ->
       @set('newAffiliation', @store.createRecord('affiliation'))

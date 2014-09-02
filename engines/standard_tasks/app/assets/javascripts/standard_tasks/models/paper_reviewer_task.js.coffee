@@ -1,4 +1,4 @@
 ETahi.PaperReviewerTask = ETahi.Task.extend
   reviewers: DS.hasMany('user')
-  relationshipsToSerialize: ['reviewers']
+  relationshipsToSerialize: ['reviewers', 'participants']
   journalReviewers: DS.hasMany('user')

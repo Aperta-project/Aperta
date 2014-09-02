@@ -8,8 +8,13 @@ class TaskSerializer < ActiveModel::Serializer
   has_one :assignee, embed: :ids, include: true, root: :users
   has_many :questions, embed: :ids, include: true
   has_many :comments, embed: :ids, include: true
+  has_many :participants, serializer: UserSerializer, embed: :ids, include: true, root: :users
 
   self.root = :task
+
+  def participants
+    object.participants.includes(:affiliations)
+  end
 
   def paper_title
     object.paper.display_title

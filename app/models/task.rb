@@ -48,7 +48,7 @@ class Task < ActiveRecord::Base
   end
 
   def array_attributes
-    [:body]
+    [:body, :participant_ids]
   end
 
   def permitted_attributes

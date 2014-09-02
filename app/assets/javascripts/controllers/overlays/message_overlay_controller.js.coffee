@@ -1,4 +1,4 @@
-ETahi.MessageOverlayController = ETahi.TaskController.extend ETahi.ControllerParticipants,
+ETahi.MessageOverlayController = ETahi.TaskController.extend
   overlayClass: 'message-overlay'
 
   setupTooltips: (->

@@ -24,7 +24,7 @@ class EventStream
   end
 
   def self.name(id)
-    Digest::MD5.hexdigest "paper_#{id}"
+    "paper_#{id}"
   end
 
   def self.token

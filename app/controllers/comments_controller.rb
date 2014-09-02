@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
     if PaperQuery.new(task.paper, current_user).paper
       comment = task.comments.create(comment_params)
       CommentLookManager.sync(task)
-      render json: comment
+      render json: comment, status: 201
     else
       head 404
     end

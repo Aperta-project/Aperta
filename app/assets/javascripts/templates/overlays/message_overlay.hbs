@@ -1,16 +1,1 @@
 <h1>{{model.title}}</h1>
-<ul class="participants">
-  {{#each p in participants}}
-    <li class="participant">{{userThumbnail p}}</li>
-  {{/each}}
-  <li class="chosen-style-override participant">
-    {{chosen content=availableParticipants
-             name="participants"
-             width="150px"
-             prompt="Add People"
-             class="participant-select"
-             changeAction="saveNewParticipant"
-             optionValuePath="content"
-             optionLabelPath="content.fullName"}}
-  </li>
-</ul>

@@ -6,6 +6,10 @@
 
     <main class="overlay-content">
       {{yield}}
+      {{participant-selector
+        currentParticipants=model.participants
+        everyone=allUsers
+        onSelect='saveNewParticipant'}}
       {{comment-board
         comments=comments
         postComment="postComment"}}

@@ -16,17 +16,16 @@ moduleForComponent 'comment-board', 'Unit: components/comment-board',
       @board.set('comments', [@comment1, @comment2, @comment3, @comment4, @comment5, @comment6, @comment7, @comment8])
 
 test '#shownComments returns the latest 5 comments in reverse order', ->
-  deepEqual @board.get('shownComments'), [ @comment4, @comment5, @comment6, @comment7, @comment8 ]
+  expectedCommentBodies = @board.get('shownComments').map (comment) -> comment.get('body')
+  deepEqual expectedCommentBodies, [ "comment 8", "comment 7", "comment 6", "comment 5", "comment 4" ]
 
 test '#showingAllComments returns false if there are more than 5 comments', ->
   ok !@board.get('showingAllComments')
 
 test '#showAllComments action should set #shownComments to #sortedComments reversed and @showAllComments to true', ->
-  ok !@board.get('showingAllComments')
-  deepEqual @board.get('shownComments'), [ @comment4, @comment5, @comment6, @comment7, @comment8 ]
+  expectedCommentBodies = @board.get('shownComments').map (comment) -> comment.get('body')
+  deepEqual expectedCommentBodies, [ "comment 8", "comment 7", "comment 6", "comment 5", "comment 4" ]
 
   @board.send 'showAllComments'
-
-  ok @board.get('showingAllComments')
-  deepEqual @board.get('shownComments'), [@comment1, @comment2, @comment3, @comment4, @comment5, @comment6, @comment7, @comment8]
-
+  expectedCommentBodies = @board.get('shownComments').map (comment) -> comment.get('body')
+  deepEqual expectedCommentBodies, [ "comment 8", "comment 7", "comment 6", "comment 5", "comment 4", "comment 3", "comment 2", "comment 1"]

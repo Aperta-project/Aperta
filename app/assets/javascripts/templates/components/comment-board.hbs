@@ -1,18 +1,3 @@
-{{#unless showingAllComments}}
-  <div class="comment-actions" {{action "showAllComments"}}>
-    <a class="load-all-comments" href="#">
-      <span class="glyphicon glyphicon-comment"></span>
-      View previous {{omittedCommentsCount}} {{pluralize omittedCommentsCount "comment" "comments"}}
-    </a>
-  </div>
-{{/unless}}
-
-<ul class="message-comments">
-  {{#each comment in shownComments}}
-    {{task-comment comment=comment}}
-  {{/each}}
-</ul>
-
 <div class="form-group">
   {{textarea classNames="new-comment" id="comment-body" value=commentBody placeholder="Type your message here"}}
 </div>
@@ -21,3 +6,18 @@
   <a href="#" {{action "clearComment"}}>Cancel</a>
   <button type="submit" class="button-secondary" {{action "postComment"}}>Post Message</button>
 </div>
+
+<ul class="message-comments">
+  {{#each comment in shownComments}}
+    {{task-comment comment=comment}}
+  {{/each}}
+</ul>
+
+{{#unless showingAllComments}}
+  <div class="comment-actions" {{action "showAllComments"}}>
+    <a class="load-all-comments" href="#">
+      <span class="glyphicon glyphicon-comment"></span>
+      View older {{omittedCommentsCount}} {{pluralize omittedCommentsCount "comment" "comments"}}
+    </a>
+  </div>
+{{/unless}}

@@ -1,24 +1,21 @@
 ETahi.CommentBoardComponent = Ember.Component.extend
+  comments: []
   commentBody: ""
   commentsToShow: 5
   showingAllComments: false
-  commentSort: ['createdAt:desc']
-  sortedComments: Ember.computed.sort('comments', 'commentSort')
 
   setUnreadStates: ( ->
     Ember.run =>
-      shownComments = @get('shownComments')
-      shownComments.forEach (c) =>
+      @get('shownComments').forEach (c) =>
         if c.get('isUnread')
           c.set('unread', true)
           c.markRead()
   ).observes('shownComments.@each').on('init')
 
   shownComments: (->
-    commentsLength =  @get('sortedComments.length')
-    comments = @get('sortedComments')
-    if @get('showingAllComments') then comments else comments.slice(commentsLength - @get("commentsToShow"))
-  ).property('sortedComments.length', 'comments.@each.commentLook', 'showingAllComments')
+    comments = @get('comments').sortBy('createdAt').reverse()
+    if @get('showingAllComments') then comments else comments.slice(0, @get("commentsToShow"))
+  ).property('comments.@each.createdAt', 'showingAllComments')
 
   showingAllComments: (->
     @get('comments.length') <= @get('commentsToShow')
@@ -30,7 +27,6 @@ ETahi.CommentBoardComponent = Ember.Component.extend
 
   actions:
     showAllComments: ->
-      @set('shownComments', @get('sortedComments'))
       @set('showingAllComments', true)
 
     postComment: ->

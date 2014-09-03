@@ -1,26 +1,32 @@
+.comment-board {
+  .button-secondary {
+    @include button-secondary-modifier($tahi-primary, $tahi-primary);
+  }
+
+  .form-group .user-thumbnail {
+    margin: 0 10px;
+  }
+}
+
 // Override default overlay styles:
 .message-overlay {
+  a, a:hover { color: $tahi-message; }
+
   .overlay-paper-link {
     color: $tahi-message;
   }
 
   .button-primary {
     @extend .button--purple;
+    color: #fff;
+  }
+
+  .button-secondary {
+    @include button-secondary-modifier($tahi-message, $tahi-message);
   }
 
   .close-overlay, .overlay-completed-checkbox label {
     color: $tahi-message;
-  }
-
-  .button-secondary {
-    color: $tahi-message;
-    border: 1px solid $tahi-message;
-
-    &:hover {
-      border: 1px solid $tahi-message;
-      color: white;
-      background: $tahi-message;
-    }
   }
 }
 
@@ -29,34 +35,42 @@
   @include tahi-chosen($tahi-message)
 }
 
-.message-overlay {
-  img.user-thumbnail { width: 40px; }
-  #participants {
-    margin-bottom: 10px;
-    > ul {
-      padding: 10px;
-      width: $message-body-width;
-      background: #f3f3f3;
-      border-top: 1px solid #ddd;
-      border-bottom: 1px solid #ddd;
-      list-style: none;
-      li {
-        display: inline-block;
-        margin-right: 10px;
-      }
+.participants, .comment-board {
+  margin: 25px 0;
+  img.user-thumbnail { width: 32px; height: 32px; }
+}
+
+#participants {
+  margin-bottom: 10px;
+  > ul {
+    padding: 10px;
+    width: $message-body-width;
+    background: #f3f3f3;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    list-style: none;
+    li {
+      display: inline-block;
+      margin-right: 10px;
     }
   }
 }
 
 .message-comment-buttons {
   width: $message-body-width;
-  a { color: $tahi-message; }
-  .button-secondary { float: right; }
+  .button-secondary, .cancel-link {
+    float: right;
+    margin-left: 15px;
+  }
+
+  .cancel-link {
+    line-height: 30px;
+  }
 }
 
 .message-comments {
   list-style-type: none;
-  margin-bottom: 30px;
+  margin-top: 30px;
   padding-left: 10px;
   .unread {
     background: #efedf7;
@@ -68,8 +82,6 @@
   width: $message-body-width;
   border-top: 1px solid #ddd;
   padding: 10px 0;
-
-  &:first-of-type { border-top: none; }
 }
 
 .comment-date,
@@ -93,14 +105,12 @@
   height: 31px;
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
-
-  a, a:hover { color: $tahi-message; }
 }
 
 .load-all-comments .glyphicon { padding-right: 20px; }
 
 .new-comment {
-  width: 700px;
+  width: 648px;
   height: 60px;
   border-radius: 5px;
   border: 1px solid #ddd;

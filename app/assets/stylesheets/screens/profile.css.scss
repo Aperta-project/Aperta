@@ -67,6 +67,7 @@
 
 #profile-avatar-spinner,
 #profile-avatar-hover {
+  display: none;
   @include upload-spinner-and-hover;
 }
 

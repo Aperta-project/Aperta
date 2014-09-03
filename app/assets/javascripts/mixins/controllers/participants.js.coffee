@@ -1,4 +1,6 @@
 ETahi.ControllerParticipants = Ember.Mixin.create
+  needs: ['application']
+  currentUser: Ember.computed.alias('controllers.application.currentUser')
   allUsers: (->
     @store.all('user') #simply getting all users for now
   ).property()

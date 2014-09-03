@@ -19,7 +19,7 @@ class EditPaperPage < Page
   path :edit_paper
 
   def initialize element = nil
-    expect(page).to have_css('#paper-title')
+    expect(page).to have_css('#paper-body', wait: 4)
     super
   end
 

@@ -2,12 +2,12 @@ FactoryGirl.define do
   factory :task do
     title "Do something awesome"
     role 'admin'
+    participants { [FactoryGirl.create(:user)] }
     phase
   end
 
   factory :message_task do
     title "a subject" # should match subject
-    participants { [FactoryGirl.create(:user)] }
     phase
   end
 

@@ -48,7 +48,7 @@ feature 'Message Cards', js: true do
     let!(:message) do
       create :message_task, phase: phase, participants: participants
     end
-    let!(:initial_comment) { create :comment, commenter: commenter, task: message }
+    let!(:initial_comment) { create :comment, :with_comment_look, commenter: commenter, task: message }
 
     context "blank comments" do
       let(:commenter) { admin }

@@ -3,6 +3,8 @@ ETahi.ControllerParticipants = Ember.Mixin.create
     @store.all('user') #simply getting all users for now
   ).property()
 
+  participants: Em.computed.alias('model.participants')
+
   actions:
     addParticipant: (newParticipant) ->
       if newParticipant

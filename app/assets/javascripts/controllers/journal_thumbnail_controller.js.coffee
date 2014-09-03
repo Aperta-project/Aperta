@@ -23,8 +23,9 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend
     @get('model').save()
                  .then(@stopEditing.bind(@))
                  .catch ({errors: {name, description}}) ->
-                   self.set 'nameErrors', name?[0]
-                   self.set 'descriptionErrors', description?[0]
+                   self.setProperties
+                     nameErrors: name?[0]
+                     descriptionErrors: description?[0]
 
   actions:
     editJournalDetails: -> @set 'isEditing', true

@@ -1,14 +1,12 @@
-ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed,
+ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.ControllerParticipants,
   needs: ['application']
   onClose: 'closeOverlay'
   isLoading: false
-
   isPaperSubmitted: Ember.computed.alias('litePaper.submitted')
   isMetadata: Ember.computed.alias('isMetadataTask')
   isMetadataAndSubmitted: Ember.computed.and('isPaperSubmitted', 'isMetadata')
   isUserEditable: Ember.computed.not('isMetadataAndSubmitted')
   isCurrentUserAdmin: Ember.computed.alias 'controllers.application.currentUser.admin'
-
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
 
   actions:
@@ -19,3 +17,14 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed,
 
     redirect: ->
       @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect.lastObject'))
+
+    postComment: (body) ->
+      return unless body
+      commenter = @getCurrentUser()
+      commentFields =
+        commenter: commenter
+        task: @get('model')
+        body: body
+        createdAt: new Date()
+      newComment = @store.createRecord('comment', commentFields)
+      newComment.save()

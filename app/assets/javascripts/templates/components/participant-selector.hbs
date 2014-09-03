@@ -1,0 +1,15 @@
+<ul class="participants">
+  {{#each p in currentParticipants}}
+    <li class="participant">{{userThumbnail p}}</li>
+  {{/each}}
+  <li class="chosen-style-override participant">
+    {{chosen content=availableParticipants
+             name="participants"
+             width="150px"
+             prompt="Add People"
+             class="participant-select"
+             changeAction="addParticipant"
+             optionValuePath="content"
+             optionLabelPath="content.fullName"}}
+  </li>
+</ul>

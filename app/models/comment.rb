@@ -3,10 +3,11 @@ class Comment < ActiveRecord::Base
 
   belongs_to :task
   belongs_to :commenter, class_name: 'User', inverse_of: :comments
-  has_many :comment_looks
+  has_many :comment_looks, dependent: :destroy
 
   validates :task, :body, presence: true
 
+  #TODO: remove this method - deprecated
   def self.create_with_comment_look(task, params)
     new(params).tap do |new_comment|
       commenter_id = params[:commenter_id].to_i
@@ -19,8 +20,12 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  def created_by?(user)
+    commenter_id == user.id
+  end
+
   def meta_type
-    self.task.class.name
+    self.task.class.name.demodulize
   end
 
   def has_meta?

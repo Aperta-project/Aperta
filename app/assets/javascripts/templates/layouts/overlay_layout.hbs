@@ -4,7 +4,13 @@
 
     {{partial "overlay-header"}}
 
-    <main class="overlay-content">{{yield}}</main>
+    <main class="overlay-content">
+      {{yield}}
+      {{comment-board
+        comments=comments
+        currentUser=currentUser
+        postComment="postComment"}}
+    </main>
     {{progress-spinner visible=isLoading}}
 
     <footer class="overlay-footer">

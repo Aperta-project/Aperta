@@ -4,7 +4,17 @@
 
     {{partial "overlay-header"}}
 
-    <main class="overlay-content">{{yield}}</main>
+    <main class="overlay-content">
+      {{yield}}
+      {{participant-selector
+        currentParticipants=model.participants
+        everyone=allUsers
+        onSelect='saveNewParticipant'}}
+      {{comment-board
+        comments=comments
+        currentUser=currentUser
+        postComment="postComment"}}
+    </main>
     {{progress-spinner visible=isLoading}}
 
     <footer class="overlay-footer">

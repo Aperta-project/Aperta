@@ -1,18 +1,18 @@
 .tahi-chosen-style {
-  height: 40px;
+  height: 34px;
   border: 1px solid $tahi-primary;
   color: $tahi-primary;
-  font-size: 18px;
+  font-size: 14px;
   text-transform: uppercase;
   background: #fff;
 
   span {
     color: $tahi-primary;
-    margin-top: 8px;
+    margin-top: 4px;
   }
 
   div b {
-    background-position: 0px 10px;
+    background-position: 0px 6px;
   }
 }
 
@@ -38,7 +38,7 @@
 }
 
 .chosen-style-override .chosen-container-active.chosen-with-drop .chosen-single div b {
-  background-position: -18px 10px;
+  background-position: -18px 6px;
 }
 
 .chosen-style-override .chosen-container-multi .chosen-choices {

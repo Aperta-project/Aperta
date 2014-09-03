@@ -5,10 +5,12 @@ class CommentsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def create
-    task = Task.find(params[:comment][:message_task_id])
+    task = Task.find(params[:comment][:task_id])
 
     if PaperQuery.new(task.paper, current_user).paper
-      render json: task.comments.create_with_comment_look(task, new_comment_params), status: 201
+      comment = task.comments.create(comment_params)
+      CommentLookManager.sync(task)
+      render json: comment, status: 201
     else
       head 404
     end
@@ -25,7 +27,7 @@ class CommentsController < ApplicationController
 
   private
 
-  def new_comment_params
+  def comment_params
     params.require(:comment).permit(:commenter_id, :body)
   end
 

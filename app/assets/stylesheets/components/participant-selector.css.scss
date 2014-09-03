@@ -1,0 +1,30 @@
+.participants {
+  margin: 25px 0;
+  padding: 10px;
+  width: 700px;
+  background: #f3f3f3;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  list-style: none;
+}
+
+.participant {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#participants {
+  margin-bottom: 10px;
+  > ul {
+    padding: 10px;
+    width: $message-body-width;
+    background: #f3f3f3;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    list-style: none;
+    li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+}

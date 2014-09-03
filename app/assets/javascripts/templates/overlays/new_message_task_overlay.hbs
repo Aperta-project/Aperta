@@ -1,18 +1,7 @@
-<ul class="participants">
-  {{#each p in model.participants}}
-    <li class="participant">
-      {{userThumbnail p}}
-    </li>
-  {{/each}}
-  <li class="chosen-style-override participant">
-    {{chosen content=availableParticipants
-       optionLabelPath="content.fullName"
-       optionValuePath="content"
-       class='participant-select'
-       changeAction='addParticipant'
-       prompt="Add people"}}
-  </li>
-</ul>
+{{participant-selector
+  currentParticipants=model.participants
+  everyone=allUsers
+  onSelect='addParticipant'}}
 
 <div class="form-group required">
   {{input id="task-title-field" value=model.title placeholder="Type a short card title here"}}

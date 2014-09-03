@@ -1,14 +1,14 @@
 module StandardTasks
   class PaperReviewerTask < ::Task
-    def permitted_attributes
-      super + [{ reviewer_ids: [] }]
-    end
-
     title 'Assign Reviewers'
     role 'editor'
 
     def array_attributes
       super + [:reviewer_ids]
+    end
+
+    def permitted_attributes
+      super + [{ reviewer_ids: [] }]
     end
 
     # TODO: Change this ASAP

@@ -34,7 +34,6 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
                               # the form from autosubmitting before the s3 stuff has gone through first.
     params.previewMaxHeight = 40
     params.previewMaxWidth = 250
-
     # No matter how dumb this looks, it is necessary.
     that = @
     params.success = (fileData) ->
@@ -49,7 +48,7 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
           dataType: 'json'
           type: requestMethod
           data: Ember.merge({url: location}, that.get('dataParams'))
-          success: (data) =>
+          success: (data) ->
             that.sendAction('done', data, filename)
       else # allow custom behavior when s3 upload is finished
         that.sendAction('done', location, filename)

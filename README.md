@@ -12,6 +12,7 @@ in order to proceed.  `brew install node` and then `npm install bower -g`
 - If you're installing new bower components you'll want to read the [rails-bower docs](https://github.com/42dev/bower-rails#rake-tasks), especially if 
 your components have stylesheets (`rake bower:resolve`)
 - You'll need redis.  `brew install redis` is the easiest way to get it.
+- Create database user for tahi `createuser -s -r tahi`
 
 ### Setting up the event server
 

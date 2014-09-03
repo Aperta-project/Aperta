@@ -29,6 +29,12 @@ Capybara.server do |app, port|
   Rack::Handler::Thin.run(app, :Port => port)
 end
 
+Capybara.register_driver :selenium do |app|
+  profile = Selenium::WebDriver::Firefox::Profile.new
+  profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.3.1-fx.xpi")
+  Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
+end
+
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)

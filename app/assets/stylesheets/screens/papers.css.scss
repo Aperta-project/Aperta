@@ -202,6 +202,8 @@
 
 #paper-placeholder {
   position: absolute;
+  top: 220px;
+  z-index: 5;
   color: $tahi-tertiary-dark;
   font-style: italic;
 }

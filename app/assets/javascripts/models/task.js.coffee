@@ -23,6 +23,3 @@ ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
   questions: DS.hasMany('question', inverse: 'task')
 
   relationshipsToSerialize: ['participants']
-
-ETahi.MessageTask = ETahi.Task.extend
-  unreadCommentsCount: a('number')

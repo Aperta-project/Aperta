@@ -15,29 +15,30 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend
       nameErrors: null
       descriptionErrors: null
 
+  stopEditing: ->
+    @setProperties(isEditing: false, uploadLogoFunction: null, logoPreview: null)
+
   saveJournal: ->
+    self = @
     @get('model').save()
-                 .then =>
-                   @setProperties(isEditing: false, uploadLogoFunction: null, logoPreview: null)
-                 .catch (response) =>
-                   @set 'nameErrors', response.errors.name?[0]
-                   @set 'descriptionErrors', response.errors.description?[0]
+                 .then(@stopEditing.bind(@))
+                 .catch ({errors: {name, description}}) ->
+                   self.set 'nameErrors', name?[0]
+                   self.set 'descriptionErrors', description?[0]
 
   actions:
     editJournalDetails: -> @set 'isEditing', true
     logoUploading: -> @set 'logoUploading', true
 
     saveJournalDetails: ->
+      updateLogo = @get('uploadLogoFunction')
       if @get('model.isNew')
         @get('model').save().then (journal) =>
-          updateLogo() if updateLogo = @get('uploadLogoFunction')
+          (updateLogo || @stopEditing).call(@)
       else
         # updateLogo will fire the 'logoUploaded' action from the component, thus saving the model
         # with the new journal logo url.
-        if updateLogo = @get('uploadLogoFunction')
-          updateLogo()
-        else
-          @saveJournal()
+        (updateLogo || @saveJournal).call(@)
 
     resetJournalDetails: ->
       @get('model').rollback()

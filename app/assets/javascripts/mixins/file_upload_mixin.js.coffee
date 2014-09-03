@@ -4,6 +4,9 @@ ETahi.FileUploadMixin = Em.Mixin.create
     @set 'isUploading', false
   ).on('init')
 
+  uploads: null
+  isUploading: null
+
   uploadsDidChange: (->
     @set 'isUploading', !!this.get('uploads.length')
   ).observes('uploads.@each')

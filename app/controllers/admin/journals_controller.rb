@@ -12,7 +12,7 @@ class Admin::JournalsController < ApplicationController
   end
 
   def create
-    respond_with Journal.create(journal_params), serializer: AdminJournalSerializer, root: 'admin_journals'
+    respond_with Journal.create(journal_params), serializer: AdminJournalSerializer, root: 'admin_journal'
   end
 
   def update

@@ -3,37 +3,43 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isEditing: (-> @get 'model.isDirty').property()
   thumbnailId: (-> "journal-logo-#{@get 'model.id'}").property()
-  logoUploadUrl: (-> "/admin/journals/#{@get 'model.id'}/upload_logo").property()
+  logoUploadUrl: (-> "/admin/journals/#{@get 'model.id'}/upload_logo").property('model.id')
   nameErrors: null
   descriptionErrors: null
   logoPreview: null
   journal: null
-
+  uploadLogoFunction: null
 
   resetErrors: ->
     @setProperties
       nameErrors: null
       descriptionErrors: null
 
+  stopEditing: ->
+    @setProperties(isEditing: false, uploadLogoFunction: null, logoPreview: null)
+
   saveJournal: ->
+    self = @
     @get('model').save()
-                 .then =>
-                   @setProperties(isEditing: false, uploadLogoFunction: null, logoPreview: null)
-                 .catch (response) =>
-                   @set 'nameErrors', response.errors.name?[0]
-                   @set 'descriptionErrors', response.errors.description?[0]
+                 .then(@stopEditing.bind(@))
+                 .catch ({errors: {name, description}}) ->
+                   self.setProperties
+                     nameErrors: name?[0]
+                     descriptionErrors: description?[0]
 
   actions:
     editJournalDetails: -> @set 'isEditing', true
     logoUploading: -> @set 'logoUploading', true
 
     saveJournalDetails: ->
-      # updateLogo will fire the 'logoUploaded' action from the component, thus saving the model
-      # with the new journal logo url.
-      if updateLogo = @get('uploadLogoFunction')
-        updateLogo()
+      updateLogo = @get('uploadLogoFunction')
+      if @get('model.isNew')
+        @get('model').save().then (journal) =>
+          (updateLogo || @stopEditing).call(@)
       else
-        @saveJournal()
+        # updateLogo will fire the 'logoUploaded' action from the component, thus saving the model
+        # with the new journal logo url.
+        (updateLogo || @saveJournal).call(@)
 
     resetJournalDetails: ->
       @get('model').rollback()

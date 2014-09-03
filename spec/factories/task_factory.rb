@@ -2,13 +2,17 @@ FactoryGirl.define do
   factory :task do
     title "Do something awesome"
     role 'admin'
-    participants { [FactoryGirl.create(:user)] }
     phase
+
+    trait :with_participant do
+      participants { [FactoryGirl.create(:user)] }
+    end
   end
 
   factory :message_task do
-    title "a subject" # should match subject
+    title "a subject"
     phase
+    participants { [FactoryGirl.create(:user)] }
   end
 
   factory :reviewer_report_task, class: 'StandardTasks::ReviewerReportTask' do

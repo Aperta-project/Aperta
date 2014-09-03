@@ -2,11 +2,10 @@
   <div class="form-group">
     {{userThumbnail currentUser}}
     {{textarea classNames="new-comment" id="comment-body" value=commentBody placeholder="Type your message here"}}
-  </div>
-
-  <div class="message-comment-buttons clearfix">
-    <button type="submit" class="button-secondary" {{action "postComment"}}>Post Message</button>
-    <a href="#" class="cancel-link" {{action "clearComment"}}>Cancel</a>
+    <div class="message-comment-buttons clearfix">
+      <button type="submit" class="button-secondary" {{action "postComment"}}>Post Message</button>
+      <a href="#" class="cancel-link" {{action "clearComment"}}>Cancel</a>
+    </div>
   </div>
 
   <ul class="message-comments">

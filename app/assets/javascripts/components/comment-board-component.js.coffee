@@ -4,6 +4,12 @@ ETahi.CommentBoardComponent = Ember.Component.extend
   commentsToShow: 5
   showingAllComments: false
 
+  setupFocus: (->
+    @$('.new-comment').on('focus', (e) =>
+      @$('.form-group').addClass('editing')
+    )
+  ).on('didInsertElement')
+
   setUnreadStates: ( ->
     Ember.run =>
       @get('shownComments').forEach (c) =>
@@ -35,3 +41,4 @@ ETahi.CommentBoardComponent = Ember.Component.extend
 
     clearComment: ->
       @set('commentBody', "")
+      @$('.form-group').removeClass('editing')

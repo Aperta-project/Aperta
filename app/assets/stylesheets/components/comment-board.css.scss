@@ -10,6 +10,19 @@ img.user-thumbnail {
     @include button-secondary-modifier($tahi-primary, $tahi-primary);
   }
 
+  .form-group {
+    &.editing {
+      .new-comment {
+        height: 60px;
+        @include transition(height 0.5s)
+      }
+
+      .message-comment-buttons {
+        display: block;
+      }
+    }
+  }
+
   .form-group .user-thumbnail {
     margin: 0 10px;
   }
@@ -18,7 +31,7 @@ img.user-thumbnail {
 .message-comments {
   list-style-type: none;
   margin-top: 30px;
-  padding-left: 10px;
+  padding-left: 0px;
   .unread {
     background: #efedf7;
     @include linear-gradient(to right,  rgba(239,237,247,0) 0%,rgba(239,237,247,0.5) 25%,rgba(239,237,247,1) 50%,rgba(239,237,247,0.5) 75%,rgba(239,237,247,0) 100%);
@@ -28,7 +41,7 @@ img.user-thumbnail {
 .message-comment {
   width: $message-body-width;
   border-top: 1px solid #ddd;
-  padding: 20px 0;
+  padding: 20px 0px 20px 10px;
 }
 
 .comment-date,
@@ -50,16 +63,32 @@ img.user-thumbnail {
   width: $message-body-width;
   padding-left: 10px;
   height: 31px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
 }
 
 .load-all-comments .glyphicon { padding-right: 20px; }
 
 .new-comment {
   width: 644px;
-  height: 60px;
+  height: 34px;
   border-radius: 5px;
   border: 1px solid #ddd;
   padding: 5px;
+  @include transition(height 0.5s)
+}
+
+.message-comment-buttons {
+  display: none;
+  width: $message-body-width;
+  margin-top: 15px;
+
+  .button-secondary, .cancel-link {
+    float: right;
+    margin-left: 15px;
+  }
+
+  .cancel-link {
+    line-height: 30px;
+  }
 }

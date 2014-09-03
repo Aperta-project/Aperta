@@ -24,15 +24,3 @@
 .message-overlay .chosen-style-override .chosen-container-single .chosen-single {
   @include tahi-chosen($tahi-message)
 }
-
-.message-comment-buttons {
-  width: $message-body-width;
-  .button-secondary, .cancel-link {
-    float: right;
-    margin-left: 15px;
-  }
-
-  .cancel-link {
-    line-height: 30px;
-  }
-}

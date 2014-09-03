@@ -1,5 +1,4 @@
-ETahi.ProfileController = Ember.ObjectController.extend
-  needs: ['fileUpload'],
+ETahi.ProfileController = Ember.ObjectController.extend(ETahi.FileUploadMixin, {
   hideAffiliationForm: true
 
   errorText: ""
@@ -10,30 +9,20 @@ ETahi.ProfileController = Ember.ObjectController.extend
     "/users/#{@get('id')}/update_avatar"
   ).property('id')
 
-  uploads: []
-  isUploading: false
-  uploadsDidChange: (->
-    @set 'isUploading', !!this.get('uploads.length')
-  ).observes('uploads.@each')
-
   actions:
     uploadStarted: (data, fileUploadXHR)->
-      @get('controllers.fileUpload').send('uploadStarted', data, fileUploadXHR)
+      @uploadStarted(data, fileUploadXHR)
       @get('uploads').pushObject ETahi.FileUpload.create(file: data.files[0])
 
     uploadProgress: (data)->
-      @get('controllers.fileUpload').send('uploadProgress', data)
+      @uploadProgress(data)
 
     uploadFinished: (data, filename) ->
-      @get('controllers.fileUpload').send('uploadFinished', data, filename)
+      @uploadFinished(data, filename)
       @set('model.avatarUrl', data.avatar_url)
-      uploads = @get('uploads')
-      newUpload = uploads.findBy('file.name', filename)
-      uploads.removeObject newUpload
 
     cancelUploads: ->
-      @get('controllers.fileUpload').send('cancelUploads')
-      @set('uploads', [])
+      @cancelUploads()
 
     toggleAffiliationForm: ->
       @set('newAffiliation', @store.createRecord('affiliation'))
@@ -60,3 +49,4 @@ ETahi.ProfileController = Ember.ObjectController.extend
             messages.join(", ")
           Tahi.utils.togglePropertyAfterDelay(@, 'errorText', errors.join(', '), '', 5000)
       )
+})

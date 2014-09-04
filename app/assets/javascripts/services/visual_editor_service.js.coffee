@@ -39,7 +39,9 @@ ETahi.VisualEditorService = Em.Object.extend
 
   enable: () ->
     @get("target").surface.enable()
-    @set('isEnabled', true)
+    @setProperties
+      isEnabled: true
+      isFocused: false
 
   disable: () ->
     @get("target").surface.disable()

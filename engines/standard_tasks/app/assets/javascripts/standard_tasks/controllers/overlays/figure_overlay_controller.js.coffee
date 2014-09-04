@@ -6,12 +6,6 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend(ETahi.FileUploadMixi
   figures: Ember.computed.alias 'paper.figures'
 
   actions:
-    uploadBegan: ->
-      @set 'isUploading', true
-
-    uploadEnded: ->
-      @set 'isUploading', false
-
     uploadStarted: (data, fileUploadXHR) ->
       @uploadStarted(data, fileUploadXHR)
 

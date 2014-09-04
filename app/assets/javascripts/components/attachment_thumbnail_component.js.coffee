@@ -1,4 +1,4 @@
-ETahi.AttachmentThumbnailComponent = Ember.Component.extend(ETahi.FileUploadMixin, {
+ETahi.AttachmentThumbnailComponent = Ember.Component.extend
   classNameBindings: ['destroyState:_destroy', 'editState:_edit']
   destroyState: false
   previewState: false
@@ -71,20 +71,14 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend(ETahi.FileUploadMixi
       this.$().fadeOut 250, => @get('attachment').destroyRecord()
 
     uploadStarted: (data, fileUploadXHR) ->
-      @uploadStarted(data, fileUploadXHR)
+      @sendAction('uploadStarted', data, fileUploadXHR)
 
     uploadProgress: (data) ->
-      @uploadProgress(data)
+      @sendAction('uploadProgress', data)
 
     uploadFinished: (data, filename) ->
-      store = @get('attachment.store')
-      store.pushPayload 'attachment', data
-      @uploadFinished(data, filename)
-
-    cancelUploads: ->
-      @cancelUploads()
+      @sendAction('uploadFinished', data, filename)
 
     togglePreview: ->
       @toggleProperty 'previewState'
       @scrollToView() if @get 'previewState'
-})

@@ -1,9 +1,8 @@
-ETahi.AttachmentThumbnailComponent = Ember.Component.extend
+ETahi.AttachmentThumbnailComponent = Ember.Component.extend(ETahi.FileUploadMixin, {
   classNameBindings: ['destroyState:_destroy', 'editState:_edit']
   destroyState: false
   previewState: false
   editState: false
-  uploadingState: false
 
   attachmentUrl: (->
     "/figures/#{@get('attachment.id')}/update_attachment"
@@ -43,10 +42,11 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend
   ).observes('showSpinner').on('didInsertElement')
 
   isProcessing: ( ->
+    console.log 'isProcessing', @get('attachment.status') == "processing"
     @get('attachment.status') == "processing"
   ).property('attachment.status')
 
-  showSpinner: Ember.computed.or('isProcessing', 'uploadingState')
+  showSpinner: Ember.computed.or('isProcessing', 'isUploading')
 
   actions:
     cancelEditing: ->
@@ -71,14 +71,21 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend
     destroyAttachment: ->
       this.$().fadeOut 250, => @get('attachment').destroyRecord()
 
-    attachmentUploading: ->
-      @set('uploadingState', true)
+    uploadStarted: (data, fileUploadXHR) ->
+      @uploadStarted(data, fileUploadXHR)
 
-    attachmentUploaded: (data) ->
+    uploadProgress: (data) ->
+      @uploadProgress(data)
+
+    uploadFinished: (data, filename) ->
       store = @get('attachment.store')
       store.pushPayload 'attachment', data
-      @set('uploadingState', false)
+      @uploadFinished(data, filename)
+
+    cancelUploads: ->
+      @cancelUploads()
 
     togglePreview: ->
       @toggleProperty 'previewState'
       @scrollToView() if @get 'previewState'
+})

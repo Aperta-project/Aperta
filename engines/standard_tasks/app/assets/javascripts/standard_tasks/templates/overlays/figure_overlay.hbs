@@ -21,7 +21,7 @@
 
 {{#if isEditable}}
   {{#each figure in figures}}
-    {{figure-thumbnail attachment=figure action="changeStrikingImage"}}
+    {{figure-thumbnail attachment=figure action="changeStrikingImage" uploadBegan="uploadBegan" uploadEnded="uploadEnded"}}
   {{/each}}
 {{else}}
   {{#each figure in figures}}

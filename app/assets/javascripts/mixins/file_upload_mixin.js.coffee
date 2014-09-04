@@ -1,18 +1,19 @@
 ETahi.FileUploadMixin = Em.Mixin.create
   _init: (->
     @set 'uploads', []
-    @set 'isUploading', false
   ).on('init')
 
   uploads: null
-  isUploading: null
 
-  uploadsDidChange: (->
-    @set 'isUploading', !!this.get('uploads.length')
-  ).observes('uploads.@each')
+  isUploading: (->
+    console.log 'isUploading', !!this.get('uploads.length')
+    !!this.get('uploads.length')
+  ).property('uploads.@each', 'uploads.[]')
 
   uploadStarted: (data, fileUploadXHR) ->
+    @get('uploads').pushObject ETahi.FileUpload.create(file: data.files[0])
     @set('fileUploadXHR', fileUploadXHR)
+    window.fileUploadXHR = @get('fileUploadXHR')
     $(window).on 'beforeunload', ->
       return 'You are uploading, are you sure you want to cancel?'
 

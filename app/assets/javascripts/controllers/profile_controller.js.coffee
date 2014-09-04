@@ -12,7 +12,6 @@ ETahi.ProfileController = Ember.ObjectController.extend(ETahi.FileUploadMixin, {
   actions:
     uploadStarted: (data, fileUploadXHR)->
       @uploadStarted(data, fileUploadXHR)
-      @get('uploads').pushObject ETahi.FileUpload.create(file: data.files[0])
 
     uploadProgress: (data)->
       @uploadProgress(data)

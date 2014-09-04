@@ -7,19 +7,6 @@ class Comment < ActiveRecord::Base
 
   validates :task, :body, presence: true
 
-  #TODO: remove this method - deprecated
-  def self.create_with_comment_look(task, params)
-    new(params).tap do |new_comment|
-      commenter_id = params[:commenter_id].to_i
-
-      task.participants.each do |participant|
-        new_comment.comment_looks.new(user_id: participant.id) unless participant.id == commenter_id
-      end
-
-      new_comment.save!
-    end
-  end
-
   def created_by?(user)
     commenter_id == user.id
   end

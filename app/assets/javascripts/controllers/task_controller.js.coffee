@@ -11,6 +11,13 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
 
   redirectStack: Ember.computed.alias 'controllers.application.overlayRedirect'
 
+  clearCachedModel: (transition) ->
+    redirectStack = @get('redirectStack')
+    if !Em.isEmpty(redirectStack)
+      redirectRoute = redirectStack.popObject()
+      unless transition.targetName == redirectRoute.get('firstObject')
+        @get('controllers.application').set('cachedModel', null)
+
   actions:
     #saveModel is implemented in ETahi.SavesDelayed
 
@@ -42,8 +49,4 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
           transition.abort()
           return
 
-      redirectStack = @get('redirectStack')
-      if !Em.isEmpty(redirectStack)
-        redirectRoute = redirectStack.popObject()
-        unless transition.targetName == redirectRoute.get('firstObject')
-          @get('controllers.application').set('cachedModel', null)
+      @clearCachedModel(transition)

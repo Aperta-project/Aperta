@@ -2,19 +2,23 @@
 
 <div class="task-body">
   {{#each part in body}}
-    {{inlineEdit part
-      cancel="resetBlockItem"
-      save="saveBlockItem"
-      saveModel="saveModel"
-      delete="deleteBlockItem"}}
+    {{#each piece in part}}
+      {{inlineEdit piece
+        cancel="resetBlockItem"
+        save="saveBlockItem"
+        saveModel="saveModel"
+        delete="deleteBlockItem"}}
+    {{/each}}
   {{/each}}
-  {{#each item in newBlockItems}}
-    {{inlineEdit item
-      isNew=true
-      editing=true
-      cancel="resetBlockItem"
-      save="saveBlockItem"
-      saveModel="saveModel"}}
+  {{#each part in newBlockItems}}
+    {{#each piece in part}}
+      {{inlineEdit piece
+        isNew=true
+        editing=true
+        cancel="resetBlockItem"
+        save="saveBlockItem"
+        saveModel="saveModel"}}
+    {{/each}}
   {{/each}}
 </div>
 

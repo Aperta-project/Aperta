@@ -12,9 +12,17 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
 
   actions:
     addTextBlock: ->
-      @get('newBlockItems').pushObject
-        type: "text"
-        value: ""
+      @get('newBlockItems').pushObject([
+          type: "text"
+          value: ""
+        ])
+
+    addChecklist: ->
+      @get('newBlockItems').pushObject([
+          type: "checkbox"
+          value: ""
+          answer: false
+        ])
 
     addCheckboxItem: ->
       @get('newBlockItems').pushObject

@@ -37,7 +37,6 @@ ETahi.VisualEditorService = Em.Object.extend
     Ember.isBlank Ember.$(@get('bodyHtml')).text()
   ).property().volatile()
 
-
   enable: () ->
     @get("target").surface.enable()
     @set('isEnabled', true)
@@ -46,3 +45,7 @@ ETahi.VisualEditorService = Em.Object.extend
     @get("target").surface.disable()
     @set('isEnabled', false)
 
+  startEditing: ->
+    if @get('isEnabled')
+      @get('target').surface.getView().focus()
+      @set('isFocused', true)

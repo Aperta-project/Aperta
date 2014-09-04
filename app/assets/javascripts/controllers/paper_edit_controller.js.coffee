@@ -63,6 +63,9 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
   ).observes('saveState')
 
   actions:
+    tryHidingPlaceholder: ->
+      @get('visualEditor').startEditing()
+
     toggleEditing: ->
       if @get('lockedBy') #unlocking
         @set('body', @get('visualEditor.bodyHtml'))

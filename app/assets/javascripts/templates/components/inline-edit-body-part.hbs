@@ -1,5 +1,7 @@
 <div {{bind-attr class=":inline-edit-body-part confirmDelete editing :clearfix"}}>
-  {{yield}}
+  <div class="pull-left">
+    {{yield}}
+  </div>
   <div class="view-actions">
     <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
     <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "confirmDeletion"}}></span>

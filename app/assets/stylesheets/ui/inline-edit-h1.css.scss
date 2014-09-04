@@ -21,7 +21,9 @@
   &.editing {
     display: block;
 
-    input[type="text"], textarea { display: block; }
+    div[contenteditable] {
+      width: 910px;
+    }
 
     &.large-edit {
       font-size: 48px;
@@ -44,6 +46,7 @@
 
   .view-actions {
     display: block;
+    margin-top: 18px;
   }
 
   .edit-actions, .add-item {
@@ -53,6 +56,7 @@
   &.editing {
     background-color: #C3E7BF;
     padding: 5px;
+    margin: 10px 0;
 
     .view-actions {
       display: none;

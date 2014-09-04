@@ -62,7 +62,8 @@ feature "Event streaming", js: true do
     end
 
     scenario "adding new comments" do
-      @mt.comments.create_with_comment_look(@mt, {body: "This is my comment", commenter_id: create(:user).id})
+      @mt.comments.create({body: "This is my comment", commenter_id: create(:user).id})
+      CommentLookManager.sync(@mt)
       within '.message-comments' do
         expect(page).to have_css('.message-comment.unread', text: "This is my comment")
       end

@@ -45,9 +45,12 @@
 .inline-edit.editing { display: none; }
 
 .inline-edit-body-part {
+  position: relative;
+
   .view-actions {
     display: block;
   }
+
   .edit-actions {
     display: none;
   }
@@ -60,6 +63,11 @@
       display: block;
     }
   }
+
+  &.confirm-delete {
+    min-height: 60px;
+    @include transition(min-height, 0.3s);
+  }
 }
 
 .bodypart-display {
@@ -70,15 +78,6 @@
     float: left;
   }
 
-  .item-text {
-    min-height: auto;
-    @include transition(min-height, 0.3s);
-  }
-
-  &.confirm-delete .item-text {
-    min-height: 60px;
-    @include transition(min-height, 0.3s);
-  }
 
   .glyphicon.inline-edit-icon {
     top: 3px;

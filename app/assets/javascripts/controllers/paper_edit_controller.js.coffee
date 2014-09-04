@@ -19,9 +19,7 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
   showPlaceholder: Em.computed 'isBodyEmpty', 'visualEditor.isCurrentlyEditing', ->
     @get('isBodyEmpty') && !@get('visualEditor.isCurrentlyEditing')
 
-  statusMessage: ( ->
-    @get('processingMessage') || @get('userEditingMessage') || @get('saveStateMessage')
-  ).property('processingMessage', 'userEditingMessage', 'saveStateMessage')
+  statusMessage: Em.computed.any 'processingMessage', 'userEditingMessage', 'saveStateMessage'
 
   processingMessage: (->
     if @get('status') is "processing"

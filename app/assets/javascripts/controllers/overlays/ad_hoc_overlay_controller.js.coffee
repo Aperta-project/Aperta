@@ -24,8 +24,8 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
           answer: false
         ])
 
-    addCheckboxItem: ->
-      @get('newBlockItems').pushObject
+    addCheckboxItem: (block) ->
+      block.pushObject
         type: "checkbox"
         value: ""
         answer: false

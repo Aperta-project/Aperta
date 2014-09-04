@@ -8,11 +8,14 @@
     <div {{bind-attr class=":button-secondary :button--green :pull-right hasNoContent:button--disabled"}} {{action "save"}}>Save</div>
     <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
   </div>
+  <div class="button-secondary button--green add-item" {{action "addItem"}}>
+    <span class="glyphicon glyphicon-plus"></span>
+  </div>
   {{#if confirmDelete}}
     <div class="bodypart-destroy-overlay">
       <p>This will permanently delete your item. Are you sure?</p>
       <button class="button-primary button--white" {{action "cancelDestroy"}}>Cancel</button>
-      <button class="button-primary button--white delete-button" {{action "deleteItem"}}>Delete Forever</button>
+      <button class="button-primary button--white delete-button" {{action "deleteBlock"}}>Delete Forever</button>
     </div>
   {{/if}}
 </div>

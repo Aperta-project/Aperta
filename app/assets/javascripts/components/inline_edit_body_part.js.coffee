@@ -30,3 +30,6 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
 
     cancelDestroy: ->
       @set('confirmDelete', false)
+
+    addItem: ->
+      @sendAction('addItem', @get('block'))

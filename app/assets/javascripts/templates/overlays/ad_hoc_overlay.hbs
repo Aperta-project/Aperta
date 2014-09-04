@@ -6,7 +6,8 @@
       block=block
       cancel="resetBlock"
       save="saveBlock"
-      delete="deleteBlock"}}
+      delete="deleteBlock"
+      addItem="addCheckboxItem"}}
       {{#each item in block}}
         {{inlineEdit item
           editing=parentView.editing
@@ -17,10 +18,11 @@
   {{#each block in newBlocks}}
     {{#inline-edit-body-part
       block=block
+      editing=true
       cancel="resetBlock"
       save="saveBlock"
       delete="deleteBlock"
-      editing=true}}
+      addItem="addCheckboxItem"}}
       {{#each item in block}}
         {{inlineEdit item
           isNew=true

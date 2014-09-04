@@ -28,7 +28,7 @@
         </div>
 
         {{#if showPlaceholder}}
-          <div id="paper-placeholder">Type your manuscript here</div>
+          <div id="paper-placeholder" {{action 'tryHidingPlaceholder'}}>Type your manuscript here</div>
         {{/if}}
         <div id="paper-body" class="editable"></div>
       </div>

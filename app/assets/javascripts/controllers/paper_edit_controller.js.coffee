@@ -9,17 +9,17 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
 
   errorText: ""
 
+  isBodyEmpty: Em.computed 'model.body', ->
+    Ember.isBlank $(@get 'model.body').text()
+
   addAuthorsTask: (->
     this.get('tasks').findBy('type', 'AuthorsTask')
   ).property()
 
-  showPlaceholder: ( ->
-    Ember.isBlank $(@get 'model.body').text()
-  ).property('model.body')
+  showPlaceholder: Em.computed 'isBodyEmpty', 'visualEditor.isCurrentlyEditing', ->
+    @get('isBodyEmpty') && !@get('visualEditor.isCurrentlyEditing')
 
-  statusMessage: ( ->
-    @get('processingMessage') || @get('userEditingMessage') || @get('saveStateMessage')
-  ).property('processingMessage', 'userEditingMessage', 'saveStateMessage')
+  statusMessage: Em.computed.any 'processingMessage', 'userEditingMessage', 'saveStateMessage'
 
   processingMessage: (->
     if @get('status') is "processing"
@@ -63,6 +63,9 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
   ).observes('saveState')
 
   actions:
+    tryHidingPlaceholder: ->
+      @get('visualEditor').startEditing()
+
     toggleEditing: ->
       if @get('lockedBy') #unlocking
         @set('body', @get('visualEditor.bodyHtml'))

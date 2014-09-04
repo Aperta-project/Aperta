@@ -2,6 +2,10 @@ ETahi.VisualEditorService = Em.Object.extend
   init: ->
     ve.init.platform.setModulesUrl('/visual-editor/modules')
 
+  isEnabled: false
+  isFocused: false
+  isCurrentlyEditing: Em.computed.and('isEnabled', 'isFocused')
+
   update: ($parent, content) ->
     container = $('<div>')
     $parent.html('').append(container)
@@ -11,8 +15,15 @@ ETahi.VisualEditorService = Em.Object.extend
       container,
       ve.createDocumentFromHtml(content || '')
     )
+    self = @
     target.on('surfaceReady', ->
       target.toolbar.disableFloatable()
+
+      surfaceView = target.surface.getView()
+      surfaceView.on 'focus', ->
+        self.set('isFocused', true)
+      surfaceView.on 'blur', ->
+        self.set('isFocused', false)
     )
     @set('target', target)
 
@@ -28,6 +39,15 @@ ETahi.VisualEditorService = Em.Object.extend
 
   enable: () ->
     @get("target").surface.enable()
+    @setProperties
+      isEnabled: true
+      isFocused: false
 
   disable: () ->
     @get("target").surface.disable()
+    @set('isEnabled', false)
+
+  startEditing: ->
+    if @get('isEnabled')
+      @get('target').surface.getView().focus()
+      @set('isFocused', true)

@@ -1,24 +1,32 @@
 {{inline-edit-h1 title=title model=model}}
 
 <div class="task-body">
-  {{#each part in body}}
-    {{#each piece in part}}
-      {{inlineEdit piece
-        cancel="resetBlockItem"
-        save="saveBlockItem"
-        saveModel="saveModel"
-        delete="deleteBlockItem"}}
-    {{/each}}
+  {{#each block in body}}
+    {{#inline-edit-body-part
+      block=block
+      cancel="resetBlock"
+      save="saveBlock"
+      delete="deleteBlock"}}
+      {{#each item in block}}
+        {{inlineEdit item
+          editing=parentView.editing
+          saveModel="saveModel"}}
+      {{/each}}
+    {{/inline-edit-body-part}}
   {{/each}}
-  {{#each part in newBlockItems}}
-    {{#each piece in part}}
-      {{inlineEdit piece
-        isNew=true
-        editing=true
-        cancel="resetBlockItem"
-        save="saveBlockItem"
-        saveModel="saveModel"}}
-    {{/each}}
+  {{#each block in newBlocks}}
+    {{#inline-edit-body-part
+      block=block
+      cancel="resetBlock"
+      save="saveBlock"
+      delete="deleteBlock"
+      editing=true}}
+      {{#each item in block}}
+        {{inlineEdit item
+          isNew=true
+          saveModel="saveModel"}}
+      {{/each}}
+    {{/inline-edit-body-part}}
   {{/each}}
 </div>
 

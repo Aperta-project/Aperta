@@ -27,22 +27,40 @@
     left: -4px;
 
     input[type="text"], textarea { display: block; }
-  }
 
-  &.large-edit {
-    font-size: 48px;
-  }
+    &.large-edit {
+      font-size: 48px;
+    }
 
-  input[type="text"], textarea {
-    display: none;
-    width: 100%;
-    margin-bottom: 4px;
-    border: 0;
-    outline: none;
+    input[type="text"], textarea {
+      display: none;
+      width: 100%;
+      margin-bottom: 4px;
+      border: 0;
+      outline: none;
+    }
   }
 }
 
 .inline-edit.editing { display: none; }
+
+.inline-edit-body-part {
+  .view-actions {
+    display: block;
+  }
+  .edit-actions {
+    display: none;
+  }
+
+  &.editing {
+    .view-actions {
+      display: none;
+    }
+    .edit-actions {
+      display: block;
+    }
+  }
+}
 
 .bodypart-display {
   position: relative;

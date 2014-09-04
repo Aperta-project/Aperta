@@ -37,16 +37,4 @@ ETahi.TaskRoute = Ember.Route.extend
 
   actions:
     willTransition: (transition) ->
-      taskController = @get 'taskController'
-      if taskController.get 'isUploading'
-        if confirm 'You are uploading, are you sure you want to cancel?'
-          taskController.send 'cancelUploads'
-        else
-          transition.abort()
-          return
-
-      redirectStack = @controllerFor('application').get('overlayRedirect')
-      if !Em.isEmpty(redirectStack)
-        redirectRoute = redirectStack.popObject()
-        unless transition.targetName == redirectRoute.get('firstObject')
-          @controllerFor('application').set('cachedModel', null)
+      @get('taskController').send('routeWillTransition', transition)

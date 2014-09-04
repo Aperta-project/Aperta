@@ -6,7 +6,6 @@ ETahi.FileUploadMixin = Em.Mixin.create
   uploads: null
 
   isUploading: (->
-    console.log 'isUploading', !!this.get('uploads.length')
     !!this.get('uploads.length')
   ).property('uploads.@each', 'uploads.[]')
 

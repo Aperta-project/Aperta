@@ -42,7 +42,6 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend(ETahi.FileUploadMixi
   ).observes('showSpinner').on('didInsertElement')
 
   isProcessing: ( ->
-    console.log 'isProcessing', @get('attachment.status') == "processing"
     @get('attachment.status') == "processing"
   ).property('attachment.status')
 

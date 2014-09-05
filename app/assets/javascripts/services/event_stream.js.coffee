@@ -29,29 +29,30 @@ ETahi.EventStream = Em.Object.extend
     # won't trigger the relationship update.
     phase.get('tasks').addObject(newTask)
 
-  fetchRecords: (action, recordsToLoad)->
-      that = @
+  findRecordInStore: (type, id) ->
+    if type == 'task'
+      @store.findTask(id)
+    else
+      @store.getById(type, id)
+
+  fetchRecords: (recordsToLoad)->
+    that = @
     Ember.run =>
       store = @store
       recordsToLoad.forEach ({type, id}) ->
-        if type == 'task'
-          existingModel = store.findTask(id)
-        else
-          existingModel = store.getById(type, id)
-
-        if existingModel
+        if existingModel = that.findRecordInStore(type, id)
           existingModel.reload()
         else
           store.find(type, id).then (newRecord) ->
-            if action == 'created' && type == 'task'
+            if type == 'task'
               that.updateTaskPhase(newRecord)
 
   eventStreamActions:
-    created: (esData) ->
-      @fetchRecords('created', esData.records_to_load)
+    created: (esData) -> # applies to new and updated records
+      @fetchRecords(esData.records_to_load)
 
-    updated: (esData) ->
-      @fetchRecords('updated', esData.records_to_load)
+    updated: (esData) -> # applies to new and updated records
+      @fetchRecords(esData.records_to_load)
 
     destroyed: (esData)->
       esData.task_ids.forEach (taskId) =>

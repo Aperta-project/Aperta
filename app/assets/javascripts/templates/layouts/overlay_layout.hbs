@@ -6,10 +6,7 @@
 
     <main class="overlay-content">
       {{yield}}
-      {{comment-board
-        comments=comments
-        currentUser=currentUser
-        postComment="postComment"}}
+      {{partial 'discussion'}}
     </main>
     {{progress-spinner visible=isLoading}}
 

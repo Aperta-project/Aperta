@@ -3,6 +3,9 @@ ETahi.initializer
   after: 'currentUser'
 
   initialize: (container, application) ->
+    logError = (error) ->
+      debugger
+
     displayErrorMessage = (message) ->
       applicationController = container.lookup('controller:application')
       # these checks are purely for javascript testing

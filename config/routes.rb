@@ -40,7 +40,7 @@ Tahi::Application.routes.draw do
   resources :authors, only: [:create, :update, :destroy]
   resources :author_groups, only: [:create, :destroy]
 
-  resources :figures, only: [:destroy, :update] do
+  resources :figures, only: [:destroy, :update, :show] do
     put :update_attachment, on: :member
   end
 

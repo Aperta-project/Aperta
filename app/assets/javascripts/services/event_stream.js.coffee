@@ -35,7 +35,7 @@ ETahi.EventStream = Em.Object.extend
           existingModel.reload()
         else
           store.find(type, id).then (newRecord) ->
-            if action == 'created' || type == 'task'
+            if action == 'created' && type == 'task'
               phase = newRecord.get("phase")
               # This is an ember bug.  A task's phase needs to be notified that the other side of
               # the hasMany relationship has changed via set.  Simply loading the updated task into the store

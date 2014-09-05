@@ -22,7 +22,15 @@ ETahi.EventStream = Em.Object.extend
     action = esData.action
     (@eventStreamActions[action] || ->).call(@, esData)
 
+  updateTaskPhase: (newTask) ->
+    phase = newTask.get("phase")
+    # This is an ember bug.  A task's phase needs to be notified that the other side of
+    # the hasMany relationship has changed via set.  Simply loading the updated task into the store
+    # won't trigger the relationship update.
+    phase.get('tasks').addObject(newTask)
+
   fetchRecords: (action, recordsToLoad)->
+      that = @
     Ember.run =>
       store = @store
       recordsToLoad.forEach ({type, id}) ->
@@ -36,11 +44,7 @@ ETahi.EventStream = Em.Object.extend
         else
           store.find(type, id).then (newRecord) ->
             if action == 'created' && type == 'task'
-              phase = newRecord.get("phase")
-              # This is an ember bug.  A task's phase needs to be notified that the other side of
-              # the hasMany relationship has changed via set.  Simply loading the updated task into the store
-              # won't trigger the relationship update.
-              phase.get('tasks').addObject(newRecord)
+              that.updateTaskPhase(newRecord)
 
   eventStreamActions:
     created: (esData) ->

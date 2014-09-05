@@ -12,3 +12,6 @@ ETahi.InlineEditCheckboxComponent = Em.Component.extend ETahi.AdhocInlineEditIte
   actions:
     saveModel: ->
       @sendAction('saveModel')
+
+    deleteItem: ->
+      @sendAction('delete', @get('bodyPart'), @get('parentView.block'))

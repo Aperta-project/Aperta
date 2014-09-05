@@ -64,9 +64,13 @@
     .edit-actions {
       display: block;
     }
-
     .add-item {
       display: inline-block;
+    }
+    .item-remove {
+      margin: 10px;
+      color: $tahi-primary;
+      @extend .glyphicon, .glyphicon-remove-circle;
     }
   }
 

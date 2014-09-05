@@ -11,6 +11,7 @@
       {{#each item in block}}
         {{inlineEdit item
           editing=parentView.editing
+          delete="deleteItem"
           saveModel="saveModel"}}
       {{/each}}
     {{/inline-edit-body-part}}
@@ -26,6 +27,7 @@
       {{#each item in block}}
         {{inlineEdit item
           isNew=true
+          delete="deleteItem"
           saveModel="saveModel"}}
       {{/each}}
     {{/inline-edit-body-part}}

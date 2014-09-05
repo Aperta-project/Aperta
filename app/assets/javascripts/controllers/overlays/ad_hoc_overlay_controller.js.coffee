@@ -43,5 +43,15 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
         @replaceBlock(block, snapshot)
 
     deleteBlock: (block) ->
-      @get('model.body').removeObject(block)
-      @send('saveModel')
+      if @isNew(block)
+        @get('newBlocks').removeObject(block)
+      else
+        @get('model.body').removeObject(block)
+        @send('saveModel')
+
+    deleteItem: (item, block) ->
+      block.removeObject(item)
+      if Ember.isEmpty(block)
+        @send('deleteBlock', block)
+      unless @isNew(block)
+        @send('saveModel')

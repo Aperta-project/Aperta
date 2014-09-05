@@ -7,10 +7,14 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
     @set('snapshot', Em.copy(@get('block'), true))
   ).observes('editing')
 
-  hasContent: true
-  # hasContent: Em.computed.notEmpty('bodyPart.value')
+  hasContent: (->
+    @get('block').any(@_isEmpty)
+  ).property('block.@each.value')
 
   hasNoContent: Em.computed.not('hasContent')
+
+  _isEmpty: (item) ->
+    item && !Ember.isEmpty(item.value)
 
   actions:
     toggleEdit: ->

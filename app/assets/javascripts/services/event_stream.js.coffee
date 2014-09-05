@@ -20,40 +20,34 @@ ETahi.EventStream = Em.Object.extend
   msgResponse: (msg) ->
     esData = JSON.parse(msg.data)
     action = esData.action
-    meta = esData.meta
-    delete esData.meta
-    delete esData.action
-    if meta
-      @eventStreamActions["meta"].call(@, meta.model_name, meta.id)
-    else
-      (@eventStreamActions[action] || ->).call(@, esData)
+    (@eventStreamActions[action] || ->).call(@, esData)
 
-  createOrUpdateTask: (action, esData) ->
-    taskId = esData.task.id
-    @store.pushPayload('task', esData)
-    task = @store.findTask(taskId)
-    if action == 'created'
-      phase = task.get("phase")
-      # This is an ember bug.  A task's phase needs to be notified that the other side of
-      # the hasMany relationship has changed via set.  Simply loading the updated task into the store
-      # won't trigger the relationship update.
-      phase.get('tasks').addObject(task)
-    task.triggerLater('didLoad')
+  fetchRecords: (action, recordsToLoad)->
+    Ember.run =>
+      store = @store
+      recordsToLoad.forEach ({type, id}) ->
+        if type == 'task'
+          existingModel = store.findTask(id)
+        else
+          existingModel = store.getById(type, id)
+
+        if existingModel
+          existingModel.reload()
+        else
+          store.find(type, id).then (newRecord) ->
+            if action == 'created' || type == 'task'
+              phase = newRecord.get("phase")
+              # This is an ember bug.  A task's phase needs to be notified that the other side of
+              # the hasMany relationship has changed via set.  Simply loading the updated task into the store
+              # won't trigger the relationship update.
+              phase.get('tasks').addObject(newRecord)
 
   eventStreamActions:
     created: (esData) ->
-      Ember.run =>
-        if esData.task
-          @createOrUpdateTask('created', esData)
-        else
-          @store.pushPayload(esData)
+      @fetchRecords('created', esData.records_to_load)
 
-    updated: (esData)->
-      Ember.run =>
-        if esData.task
-          @createOrUpdateTask('updated', esData)
-        else
-          @store.pushPayload(esData)
+    updated: (esData) ->
+      @fetchRecords('updated', esData.records_to_load)
 
     destroy: (esData)->
       esData.task_ids.forEach (taskId) =>
@@ -61,10 +55,3 @@ ETahi.EventStream = Em.Object.extend
         if task
           task.deleteRecord()
           task.triggerLater('didDelete')
-
-    meta: (modelName, id) ->
-      Ember.run =>
-        if model = @store.getById(modelName, id)
-          model.reload()
-        else
-          @store.find(modelName, id)

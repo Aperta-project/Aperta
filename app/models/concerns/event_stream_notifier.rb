@@ -8,31 +8,15 @@ module EventStreamNotifier
     end
 
     def event_stream_payload
-      p = notifier_payload.merge({ action: action, klass: self.class.base_class })
-      if has_meta?
-        p = p.merge({meta: { model_name: meta_type, id: meta_id }})
-      end
-      p
-    end
-
-    def event_stream_serializer
-      active_model_serializer
+      notifier_payload.merge({ action: action, records_to_load: records_to_load})
     end
 
     def notifier_payload
-      { task_id: id, paper_id: paper.id }
+      { id: id, paper_id: paper.id, type: klass_name }
     end
 
-    def has_meta?
-      false
-    end
-
-    def meta_type
-      nil
-    end
-
-    def meta_id
-      nil
+    def records_to_load
+      [{type: klass_name, id: id}]
     end
 
     private

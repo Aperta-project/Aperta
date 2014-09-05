@@ -37,10 +37,4 @@ class Figure < ActiveRecord::Base
   def access_details
     { filename: filename, alt: alt, id: id, src: src }
   end
-
-  private
-
-  def notifier_payload
-    { id: id, paper_id: paper.id }
-  end
 end

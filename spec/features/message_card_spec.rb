@@ -17,7 +17,8 @@ feature 'Message Cards', js: true do
   end
 
   def create_comment_with_comment_looks(task, comment_params)
-    task.comments.create_with_comment_look(task, comment_params)
+    task.comments.create(comment_params)
+    CommentLookManager.sync(task)
   end
 
   describe "creating a new message" do
@@ -80,7 +81,7 @@ feature 'Message Cards', js: true do
         task_manager_page = TaskManagerPage.visit paper
         task_manager_page.view_card message.title, MessageCardOverlay do |card|
           expect(card).to have_css('.message-overlay')
-          card.add_participants albert
+          card.add_participants(albert)
           expect(card).to have_participants(albert)
         end
         task_manager_page = TaskManagerPage.visit paper

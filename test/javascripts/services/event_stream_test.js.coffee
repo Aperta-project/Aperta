@@ -1,52 +1,41 @@
 module 'Unit: EventStream'
 
-# fakeStore =
-#   find: sinon.stub()
-#   getById: sinon.stub()
-#   pushPayload: sinon.spy()
-#
-# eventStream = ETahi.EventStream.create(init: (-> null), store: fakeStore)
-# sinon.stub(eventStream, "createOrUpdateTask", -> null)
-#
-# test 'action:created without a task will call pushPayload with the data', ->
-#   data =
-#     action: 'created'
-#     meta: null
-#     foo:
-#       id: 1
-#
-#   eventStream.msgResponse({data: (JSON.stringify data)})
-#   ok(fakeStore.pushPayload.calledWith({foo: {id: 1}}))
-#
-# test  'action:created with a task will call createOrUpdateTask with the action and data', ->
-#   data =
-#     action: 'created'
-#     meta: null
-#     task:
-#       id: 1
-#
-#   eventStream.msgResponse({data: (JSON.stringify data)})
-#   ok(eventStream.createOrUpdateTask.calledWith('created', {task: {id: 1}}))
-#
-# test 'action:updated with a task will call createOrUpdateTask with the action and data', ->
-#   data =
-#     action: 'updated'
-#     meta: null
-#     task:
-#       id: 1
-#
-#   eventStream.msgResponse({data: (JSON.stringify data)})
-#   ok(eventStream.createOrUpdateTask.calledWith('updated', {task: {id: 1}}))
+fakeStore =
+  find: sinon.stub()
+  getById: sinon.stub()
+  pushPayload: sinon.spy()
 
-test 'action:destroy will try to delete the record from the store', ->
+eventStream = ETahi.EventStream.create(init: (-> null), store: fakeStore)
+fakeFetch = sinon.stub(eventStream, 'fetchRecords')
+
+test 'action:created will call fetchRecords', ->
+  data =
+    action: 'created'
+    type: 'foo'
+    id: 1
+    records_to_load: [{type: 'bar', id: 5}]
+
+  eventStream.msgResponse({data: (JSON.stringify data)})
+  ok(fakeFetch.calledWith([{type: 'bar', id: 5}]))
+
+test 'action:updated will call fetchRecords', ->
+  data =
+    action: 'updated'
+    type: 'foo'
+    id: 1
+    records_to_load: [{type: 'bar', id: 5}]
+
+  eventStream.msgResponse({data: (JSON.stringify data)})
+  ok(fakeFetch.calledWith([{type: 'bar', id: 5}]))
+
+test 'action:destroyed will try to delete the record from the store', ->
   task =
     deleteRecord: sinon.stub()
     triggerLater: -> null
   fakeStore.findTask = () -> task
 
   data =
-    action: 'destroy'
-    meta: null
+    action: 'destroyed'
     task_ids: [1]
 
   eventStream.msgResponse({data: (JSON.stringify data)})

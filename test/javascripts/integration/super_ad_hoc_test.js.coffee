@@ -51,13 +51,13 @@ test "Adding a text block to an AdHoc Task", ->
     Em.$('.inline-edit-form div[contenteditable]')
     .html("New contenteditable, yahoo!")
     .trigger('keyup')
-    click '.task-body .inline-edit-form .button--green:contains("Save")'
+    click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') isnt -1
-    click '.inline-edit .glyphicon-trash'
+    click '.inline-edit-body-part .glyphicon-trash'
   andThen ->
-    ok Em.$.trim(find('.inline-edit').text()).indexOf('Are you sure?') isnt -1
-    click '.inline-edit .delete-button'
+    ok Em.$.trim(find('.inline-edit-body-part').text()).indexOf('Are you sure?') isnt -1
+    click '.inline-edit-body-part .delete-button'
   andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') is -1
     click '.overlay-close-button:first'
@@ -69,17 +69,20 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--list'
   andThen ->
-    ok exists find '.inline-edit-form input[type=checkbox]:disabled'
+    ok exists find '.inline-edit-form .item-remove'
     ok exists find '.inline-edit-form label[contenteditable]'
     ok exists find '.button--disabled:contains("Save")'
     Em.$('.inline-edit-form label[contenteditable]')
     .html("Here is a checkbox list item")
     .trigger('keyup')
-    click '.task-body .inline-edit-form .button--green:contains("Save")'
+    click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('checkbox list item') isnt -1
-    ok exists find '.inline-edit-form input[type=checkbox]'
-    click '.inline-edit .glyphicon-trash'
+    ok exists find '.inline-edit input[type=checkbox]'
+    click '.inline-edit-body-part .glyphicon-trash'
+  andThen ->
+    ok Em.$.trim(find('.inline-edit-body-part').text()).indexOf('Are you sure?') isnt -1
+    click '.inline-edit-body-part .delete-button'
   andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('checkbox list item') is -1
     click '.overlay-close-button:first'

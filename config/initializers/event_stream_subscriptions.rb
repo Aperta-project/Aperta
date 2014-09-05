@@ -14,6 +14,6 @@ TahiNotifier.subscribe("task:destroyed") do |name, start, finish, id, payload|
 
   EventStream.post_event(
     paper_id,
-    { action: "destroy", task_ids: [task_id] }.to_json
+    { action: "destroyed", task_ids: [task_id] }.to_json
   )
 end

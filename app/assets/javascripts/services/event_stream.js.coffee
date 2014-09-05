@@ -53,7 +53,7 @@ ETahi.EventStream = Em.Object.extend
     updated: (esData) ->
       @fetchRecords('updated', esData.records_to_load)
 
-    destroy: (esData)->
+    destroyed: (esData)->
       esData.task_ids.forEach (taskId) =>
         task = @store.findTask(taskId)
         if task

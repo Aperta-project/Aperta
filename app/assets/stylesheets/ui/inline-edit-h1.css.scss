@@ -74,6 +74,10 @@
     }
   }
 
+  &.text .add-item {
+    display: none;
+  }
+
   &.confirm-delete {
     min-height: 60px;
     @include transition(min-height, 0.3s);

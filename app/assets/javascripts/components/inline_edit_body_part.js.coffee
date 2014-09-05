@@ -13,6 +13,10 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
 
   hasNoContent: Em.computed.not('hasContent')
 
+  bodyPartType: (->
+    @get('block.firstObject.type')
+  ).property('block.@each.type')
+
   _isEmpty: (item) ->
     item && !Ember.isEmpty(item.value)
 

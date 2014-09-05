@@ -10,6 +10,10 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
     if position isnt -1
       Ember.EnumerableUtils.replace(blocks, position, 1, [otherBlock])
 
+  _pruneEmptyItems: (block) ->
+    block.reject (item) ->
+      Em.isEmpty(item.value)
+
   actions:
     addTextBlock: ->
       @get('newBlocks').pushObject([
@@ -24,16 +28,11 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
           answer: false
         ])
 
-    addCheckboxItem: (block) ->
-      block.pushObject
-        type: "checkbox"
-        value: ""
-        answer: false
-
     saveBlock: (block) ->
       if @isNew(block)
         @get('model.body').pushObject(block)
         @get('newBlocks').removeObject(block)
+      @replaceBlock(block, @_pruneEmptyItems(block))
       @send('saveModel')
 
     resetBlock: (block, snapshot) ->
@@ -48,6 +47,12 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
       else
         @get('model.body').removeObject(block)
         @send('saveModel')
+
+    addCheckboxItem: (block) ->
+      block.pushObject
+        type: "checkbox"
+        value: ""
+        answer: false
 
     deleteItem: (item, block) ->
       block.removeObject(item)

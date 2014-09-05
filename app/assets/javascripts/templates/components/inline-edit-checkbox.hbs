@@ -1,19 +1,13 @@
-<div {{bind-attr class=":inline-edit editing :checkbox :bodypart-display :clearfix"}}>
+<div {{bind-attr class=":inline-edit editing :checkbox :bodypart-display"}}>
   <label>
     {{check-box checked=checked action='saveModel'}}
     {{{bodyPart.value}}}
   </label>
-  <div class="actions">
-    <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
-    <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "deleteItem"}}></span>
-  </div>
 </div>
 
 <div {{bind-attr class=":inline-edit-form editing"}}>
   <div class="two-element-form">
-    {{check-box checked=checked disabled="disabled"}}
     {{content-editable value=bodyPart.value class="editable" tagName='label'}}
+    <span class="item-remove" {{action "deleteItem"}}>
   </div>
-  <div {{bind-attr class=":button-secondary :button--green :pull-right hasNoContent:button--disabled"}} {{action "save"}}>Save</div>
-  <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
 </div>

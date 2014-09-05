@@ -1,39 +1,62 @@
 ETahi.AdHocOverlayController = ETahi.TaskController.extend
-  newBlockItems: []
+  newBlocks: []
 
-  isNew: (item) ->
-    @get('newBlockItems').contains(item)
+  isNew: (block) ->
+    @get('newBlocks').contains(block)
 
-  replaceBlockItem: (item, otherItem) ->
-    items = @get('model.body')
-    position = items.indexOf(item)
+  replaceBlock: (block, otherBlock) ->
+    blocks = @get('model.body')
+    position = blocks.indexOf(block)
     if position isnt -1
-      Ember.EnumerableUtils.replace(items, position, 1, [otherItem])
+      Ember.EnumerableUtils.replace(blocks, position, 1, [otherBlock])
+
+  _pruneEmptyItems: (block) ->
+    block.reject (item) ->
+      Em.isEmpty(item.value)
 
   actions:
     addTextBlock: ->
-      @get('newBlockItems').pushObject
-        type: "text"
-        value: ""
+      @get('newBlocks').pushObject([
+          type: "text"
+          value: ""
+        ])
 
-    addCheckboxItem: ->
-      @get('newBlockItems').pushObject
-        type: "checkbox",
+    addChecklist: ->
+      @get('newBlocks').pushObject([
+          type: "checkbox"
+          value: ""
+          answer: false
+        ])
+
+    saveBlock: (block) ->
+      if @isNew(block)
+        @get('model.body').pushObject(block)
+        @get('newBlocks').removeObject(block)
+      @replaceBlock(block, @_pruneEmptyItems(block))
+      @send('saveModel')
+
+    resetBlock: (block, snapshot) ->
+      if @isNew(block)
+        @get('newBlocks').removeObject(block)
+      else
+        @replaceBlock(block, snapshot)
+
+    deleteBlock: (block) ->
+      if @isNew(block)
+        @get('newBlocks').removeObject(block)
+      else
+        @get('model.body').removeObject(block)
+        @send('saveModel')
+
+    addCheckboxItem: (block) ->
+      block.pushObject
+        type: "checkbox"
         value: ""
         answer: false
 
-    saveBlockItem: (blockItem) ->
-      if @isNew(blockItem)
-        @get('model.body').pushObject(blockItem)
-        @get('newBlockItems').removeObject(blockItem)
-      @send('saveModel')
-
-    resetBlockItem: (blockItem, snapshot) ->
-      if @isNew(blockItem)
-        @get('newBlockItems').removeObject(blockItem)
-      else
-        @replaceBlockItem(blockItem, snapshot)
-
-    deleteBlockItem: (blockItem) ->
-      @get('model.body').removeObject(blockItem)
-      @send('saveModel')
+    deleteItem: (item, block) ->
+      block.removeObject(item)
+      if Ember.isEmpty(block)
+        @send('deleteBlock', block)
+      unless @isNew(block)
+        @send('saveModel')

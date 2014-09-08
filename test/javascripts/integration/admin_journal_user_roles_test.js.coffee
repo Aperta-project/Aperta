@@ -36,7 +36,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
       admin_journals: [
         id: TahiTest.journalId
         name: "Test Journal of America"
-        logo_url: "https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png
+        logo_url: "https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png"
         paper_types: ["Research"]
         task_types: [
           "FinancialDisclosure::Task"

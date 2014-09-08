@@ -5,6 +5,7 @@ moduleFor 'view:paperEdit', 'Unit: paperEditView',
 
   setup: ->
     paper = Ember.Object.create
+      id: 5
       title: ''
       shortTitle: 'Does not matter'
       body: 'hello'

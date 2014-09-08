@@ -28,7 +28,7 @@ class FinancialDisclosureOverlay < CardOverlay
 
   def has_selected_authors?(*names)
     names.all? do |name|
-      page.has_css? '.chosen-container.chosen-author .search-choice', text: name
+      expect(page).to have_css('.chosen-container.chosen-author .search-choice', text: name)
     end
   end
 end

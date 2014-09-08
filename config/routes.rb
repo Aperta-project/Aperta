@@ -46,7 +46,7 @@ Tahi::Application.routes.draw do
 
   resources :files, as: 'supporting_information_files',
                     path: 'supporting_information_files',
-                    only: [:create, :destroy, :update],
+                    only: [:create, :destroy, :update, :show],
                     controller: 'supporting_information/files'
 
   resources :comment_looks, only: [:update]

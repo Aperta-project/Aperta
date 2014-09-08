@@ -58,7 +58,9 @@ class TasksController < ApplicationController
 
   def task_params(task)
     attributes = task.permitted_attributes
-    params.require(:task).permit(*attributes)
+    params.require(:task).permit(*attributes).tap do |whitelisted|
+      whitelisted[:body] = params[:task][:body] || []
+    end
   end
 
   def build_task

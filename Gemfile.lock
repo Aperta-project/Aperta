@@ -149,9 +149,7 @@ GEM
     dotenv (0.11.1)
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
-    dotenv-rails (0.11.1)
-      dotenv (= 0.11.1)
-    ember-data-source (1.0.0.beta.8)
+    ember-data-source (1.0.0.beta.9)
       ember-source
     ember-rails (0.14.1)
       active_model_serializers
@@ -162,7 +160,7 @@ GEM
       handlebars-source
       jquery-rails (>= 1.0.17)
       railties (>= 3.1)
-    ember-source (1.6.0)
+    ember-source (1.7.0)
       handlebars-source (~> 1.0)
     erubis (2.7.0)
     eventmachine (1.0.3)
@@ -479,10 +477,11 @@ DEPENDENCIES
   coffee-rails (~> 4.0.1)
   database_cleaner
   devise
-  dotenv-rails
-  ember-data-source (~> 1.0.0.beta.8)
+  dotenv
+  dotenv-deployment
+  ember-data-source (~> 1.0.0.beta.9)
   ember-rails
-  ember-source (= 1.6.0)
+  ember-source (= 1.7.0)
   factory_girl_rails
   faraday_middleware
   fog

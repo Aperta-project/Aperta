@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: put
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/paper/1/supporting_information/file/attachment/1/yeti.tiff
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/supporting_information/file/attachment/1/yeti.tiff
     body:
       encoding: ASCII-8BIT
       string: !binary |-

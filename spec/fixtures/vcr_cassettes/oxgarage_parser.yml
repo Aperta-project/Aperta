@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: http://ec2-54-193-185-100.us-west-1.compute.amazonaws.com:8080/ege-webservice/Conversions/docx:application:vnd.openxmlformats-officedocument.wordprocessingml.document/TEI:text:xml/xhtml:application:xhtml+xml/conversion
+    uri: http://oxgarage.example.com/ege-webservice/Conversions/docx:application:vnd.openxmlformats-officedocument.wordprocessingml.document/TEI:text:xml/xhtml:application:xhtml+xml/conversion
     body:
       encoding: ASCII-8BIT
       string: !binary |-

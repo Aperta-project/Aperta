@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe DownloadAvatar do
   let(:user) { FactoryGirl.create(:user) }
-  let(:url) { "https://tahi-development.s3.amazonaws.com/temp/500px-Jack_black.jpg" }
+  let(:url) { "https://tahi-test.s3.amazonaws.com/temp/500px-Jack_black.jpg" }
 
   it "downloads the attachment" do
     with_aws_cassette('avatar') do

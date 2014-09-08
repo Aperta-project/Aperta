@@ -7,7 +7,10 @@ doc/*.svg
 .DS_Store
 .zsh_rake_cache
 .env
+# ignore all .env.{environment} files ...
 .env.*
+# except .env.test
+!.env.test
 config/secrets.yml
 dump.rdb
 spring

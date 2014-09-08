@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe DownloadQuestionAttachmentWorker do
   let(:question_attachment) { FactoryGirl.create(:question_attachment) }
-  let(:url) { "http://tahi-development.s3.amazonaws.com/temp/bill_ted1.jpg" }
+  let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
 
   it "downloads the attachment" do
     with_aws_cassette('question_attachment') do

@@ -56,7 +56,7 @@ ETahi.QuestionAttachmentThumbnailComponent = Ember.Component.extend
 
     attachmentUploaded: (data) ->
       store = @get('attachment.store')
-      store.pushPayload 'attachment', data
+      store.pushPayload 'questionAttachment', data
       @set('uploadingState', false)
 
     togglePreview: ->

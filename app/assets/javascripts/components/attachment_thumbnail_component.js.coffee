@@ -5,6 +5,8 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend
   editState: false
   uploadingState: false
 
+  attachmentType: 'attachment'
+
   attachmentUrl: (->
     "/figures/#{@get('attachment.id')}/update_attachment"
   ).property('attachment.id')
@@ -76,7 +78,7 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend
 
     attachmentUploaded: (data) ->
       store = @get('attachment.store')
-      store.pushPayload 'attachment', data
+      store.pushPayload @get('attachmentType') , data
       @set('uploadingState', false)
 
     togglePreview: ->

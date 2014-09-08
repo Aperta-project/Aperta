@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://tahi-development.s3.amazonaws.com/temp/bill_ted1.jpg
+    uri: http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg
     body:
       encoding: US-ASCII
       string: ''
@@ -790,7 +790,7 @@ http_interactions:
   recorded_at: Wed, 30 Jul 2014 20:10:48 GMT
 - request:
     method: put
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/question/1/question_attachment/1/bill_ted1.jpg
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/question/1/question_attachment/1/bill_ted1.jpg
     body:
       encoding: ASCII-8BIT
       string: !binary |-

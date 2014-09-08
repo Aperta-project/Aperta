@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://tahi-development.s3.amazonaws.com/temp/500px-Jack_black.jpg
+    uri: https://tahi-test.s3.amazonaws.com/temp/500px-Jack_black.jpg
     body:
       encoding: US-ASCII
       string: ''
@@ -788,7 +788,7 @@ http_interactions:
   recorded_at: Thu, 12 Jun 2014 18:08:16 GMT
 - request:
     method: put
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/epub_cover/1/500px-Jack_black.jpg
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/epub_cover/1/500px-Jack_black.jpg
     body:
       encoding: ASCII-8BIT
       string: !binary |-

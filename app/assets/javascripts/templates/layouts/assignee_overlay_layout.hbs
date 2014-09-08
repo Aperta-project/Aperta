@@ -6,14 +6,7 @@
 
     <main class="overlay-content">
       {{yield}}
-      {{participant-selector
-        currentParticipants=model.participants
-        everyone=allUsers
-        onSelect='saveNewParticipant'}}
-      {{comment-board
-        comments=comments
-        currentUser=currentUser
-        postComment="postComment"}}
+      {{partial 'discussion'}}
     </main>
     {{progress-spinner visible=isLoading}}
 

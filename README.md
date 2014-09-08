@@ -13,6 +13,7 @@ in order to proceed.  `brew install node` and then `npm install bower -g`
 your components have stylesheets (`rake bower:resolve`)
 - You'll need redis.  `brew install redis` is the easiest way to get it.
 - Create database user for tahi `createuser -s -r tahi`
+- `cp .env-sample .env.development` and then uncomment the environment variables in `.env.development`
 
 ### Setting up the event server
 
@@ -68,7 +69,7 @@ See the wiki for making new tasks.
 
 ### Configuring S3 direct uploads
 
-You need to set the following environment variables:
+Ensure that the following environment variables are set:
 
 - `S3_URL=http://your-s3-bucket.amazonaws.com`
 - `S3_BUCKET=your-s3-bucket`

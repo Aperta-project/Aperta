@@ -9,6 +9,7 @@ describe QuestionAttachmentsPolicy do
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :admin) }
     it { expect(policy.destroy?).to be(true) }
+    it { expect(policy.show?).to be(true) }
   end
 
   context "paper collaborator" do
@@ -17,10 +18,12 @@ describe QuestionAttachmentsPolicy do
     let(:user) { FactoryGirl.create(:user) }
 
     it { expect(policy.destroy?).to be(true) }
+    it { expect(policy.show?).to be(true) }
 
     context "on a non metadata task" do
       let(:task) { paper.tasks.where.not(type: Task.metadata_types).first }
       it { expect(policy.destroy?).to be(false) }
+      it { expect(policy.show?).to be(false) }
     end
   end
 
@@ -33,12 +36,14 @@ describe QuestionAttachmentsPolicy do
     end
 
     it { expect(policy.destroy?).to be(true) }
+    it { expect(policy.show?).to be(true) }
   end
 
   context "user no role" do
     let(:user) { FactoryGirl.create(:user) }
 
     it { expect(policy.destroy?).to be(false) }
+    it { expect(policy.show?).to be(false) }
   end
 
   context "user with role on different journal" do
@@ -51,5 +56,6 @@ describe QuestionAttachmentsPolicy do
       end
 
     it { expect(policy.destroy?).to be(false) }
+    it { expect(policy.show?).to be(false) }
   end
 end

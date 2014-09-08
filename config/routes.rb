@@ -108,7 +108,7 @@ Tahi::Application.routes.draw do
   resources :user_roles, only: [:index, :create, :destroy]
 
   resources :questions, only: [:create, :update]
-  resources :question_attachments, only: [:destroy]
+  resources :question_attachments, only: [:destroy, :show]
   resources :journal_task_types, only: :update
 
   resource :dashboards, only: :show

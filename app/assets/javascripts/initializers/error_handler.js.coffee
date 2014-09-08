@@ -4,7 +4,11 @@ ETahi.initializer
 
   initialize: (container, application) ->
     logError = (error) ->
-      debugger
+      Em.$.ajax '/errors',
+        type: 'POST'
+        data:
+          stack: error.stack
+
 
     displayErrorMessage = (message) ->
       applicationController = container.lookup('controller:application')
@@ -12,8 +16,10 @@ ETahi.initializer
       if !applicationController.isDestroying && !applicationController.isDestroyed
         applicationController.set('error', message)
 
-    unless ETahi.environment == "development"
-      Ember.onerror = displayErrorMessage
+    Ember.onerror = (error) ->
+      logError(error)
+      unless ETahi.environment == 'development'
+        displayErrorMessage(error)
 
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       # don't blow up in case of a 403 from rails when doing authorization checks.

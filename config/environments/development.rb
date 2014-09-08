@@ -32,7 +32,6 @@ Tahi::Application.configure do
   # defaults to local storage
   # config.carrierwave_storage = :fog
 
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.s3_bucket = 'tahi-development'
   config.carrierwave_storage = :fog
 end

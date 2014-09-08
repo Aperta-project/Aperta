@@ -29,6 +29,7 @@ Ember.Test.registerHelper('getStore', (app) ->
   username: "fakeuser"
   email: "fakeuser@example.com"
 
+@teaspoonTesting = true
 @setupTestEnvironment = ->
   @setupMockServer()
   emq.globalize()

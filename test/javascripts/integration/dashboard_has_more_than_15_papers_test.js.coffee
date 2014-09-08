@@ -39,7 +39,7 @@ module 'Integration: Dashboard',
         administered_journals: [
           id: TahiTest.adminJournalId
           name: "Fake Journal"
-          logo_url: "https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/thumbnail_Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png
+          logo_url: "https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/thumbnail_Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png
           paper_types: ["Research"]
           task_types: [
             "FinancialDisclosure::Task"

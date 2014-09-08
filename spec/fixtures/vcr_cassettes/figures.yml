@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://tahi-development.s3.amazonaws.com/temp/bill_ted1.jpg
+    uri: http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg
     body:
       encoding: US-ASCII
       string: ''
@@ -790,7 +790,7 @@ http_interactions:
   recorded_at: Thu, 10 Jul 2014 18:51:58 GMT
 - request:
     method: put
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/bill_ted1.jpg
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/bill_ted1.jpg
     body:
       encoding: ASCII-8BIT
       string: !binary |-
@@ -1580,7 +1580,7 @@ http_interactions:
   recorded_at: Thu, 10 Jul 2014 18:52:00 GMT
 - request:
     method: put
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/detail_bill_ted1.jpg
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/detail_bill_ted1.jpg
     body:
       encoding: ASCII-8BIT
       string: !binary |-
@@ -2353,7 +2353,7 @@ http_interactions:
   recorded_at: Thu, 10 Jul 2014 18:52:00 GMT
 - request:
     method: put
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/preview_bill_ted1.jpg
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/preview_bill_ted1.jpg
     body:
       encoding: ASCII-8BIT
       string: !binary |-

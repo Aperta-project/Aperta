@@ -12,7 +12,7 @@ module Tahi
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/app/workers)
     config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
-    config.s3_bucket = :not_set
+    config.s3_bucket = ENV['S3_BUCKET']
     config.carrierwave_storage = :fog
     config.action_mailer.default_url_options = { host: ENV['DEFAULT_MAILER_URL'] }
   end

@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: put
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/yeti.jpg
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/yeti.jpg
     body:
       encoding: ASCII-8BIT
       string: !binary |-
@@ -1120,7 +1120,7 @@ http_interactions:
   recorded_at: Thu, 17 Jul 2014 21:41:23 GMT
 - request:
     method: put
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg
     body:
       encoding: ASCII-8BIT
       string: !binary |-

@@ -6,6 +6,7 @@ class TaskGenerator < Rails::Generators::Base
   def get_user_info
     @engine_name = ask("What engine are you using? (leave blank for StandardTasks):")
     @engine_name = "standard_tasks" if @engine_name.blank?
+    raise "Engine does not exist" unless engine_exists?(engine_name)
   end
 
   def generate_files
@@ -41,5 +42,9 @@ class TaskGenerator < Rails::Generators::Base
 
   def engine_class_name
     @engine_name.camelize
+  end
+
+  def engine_exists?(engine)
+    File.directory?("engines/#{engine}")
   end
 end

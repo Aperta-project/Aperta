@@ -4,7 +4,12 @@ module EventStreamNotifier
     after_commit :notify
 
     def notify
-      ActiveSupport::Notifications.instrument(namespace, event_stream_payload)
+      # don't notify for empty updates
+      if action == "updated" && previous_changes.empty?
+        logger.info "COMMIT no-up update for for #{self.class.name}:#{self.id}"
+      else
+        ActiveSupport::Notifications.instrument(namespace, event_stream_payload)
+      end
     end
 
     def event_stream_payload

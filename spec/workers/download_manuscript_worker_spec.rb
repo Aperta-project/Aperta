@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe DownloadManuscriptWorker do
   let(:paper) { FactoryGirl.create(:paper) }
-  let(:url) { "https://tahi-development.s3.amazonaws.com/temp/about_equations.docx" }
+  let(:url) { "https://tahi-test.s3.amazonaws.com/temp/about_equations.docx" }
 
   before do
     paper.create_manuscript!

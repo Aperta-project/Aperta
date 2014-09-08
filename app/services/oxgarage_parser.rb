@@ -56,7 +56,7 @@ class OxgarageParser
   private
 
   def url
-    ENV['OXGARAGE_URL']
+    ENV.fetch('OXGARAGE_URL')
   end
 
   def properties

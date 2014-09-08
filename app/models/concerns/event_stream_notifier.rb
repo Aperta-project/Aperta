@@ -26,7 +26,7 @@ module EventStreamNotifier
     end
 
     def klass_name
-      self.class.base_class.name.underscore
+      self.class.base_class.name.underscore.gsub('/', '_')
     end
 
     def action

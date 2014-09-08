@@ -1,4 +1,4 @@
-events = %W(task:created task:updated comment:* supporting_information/file:* figure:* paper:* question_attachment:*)
+events = %w(task:created task:updated comment:* supporting_information_file:* figure:* paper:* question_attachment:*)
 TahiNotifier.subscribe(*events) do |name, start, finish, id, payload|
 
   EventStream.post_event(

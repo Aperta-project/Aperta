@@ -24,7 +24,7 @@ module TahiHelperMethods
   end
 
   def with_aws_cassette(name)
-    VCR.use_cassette(name, :match_requests_on => [:method, VCR.request_matchers.uri_without_params(:Expires, :Signature)]) do
+    VCR.use_cassette(name, :match_requests_on => [:method, VCR.request_matchers.uri_without_params(:AWSAccessKeyId, :Expires, :Signature)]) do
       yield
     end
   end

@@ -6,5 +6,7 @@ ETahi.SpinnerMixin = Em.Mixin.create
         @spinnerDiv = @$(selector)[0]
         @spinner ||= new Spinner(color: color).spin(@spinnerDiv)
         $(@spinnerDiv).show()
+        $(@spinnerDiv).addClass('spinning')
       else
         $(@spinnerDiv).hide()
+        $(@spinnerDiv).removeClass('spinning')

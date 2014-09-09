@@ -1,4 +1,4 @@
-ETahi.AttachmentThumbnailComponent = Ember.Component.extend
+ETahi.AttachmentThumbnailComponent = Ember.Component.extend ETahi.SpinnerMixin,
   classNameBindings: ['destroyState:_destroy', 'editState:_edit']
   destroyState: false
   previewState: false
@@ -35,12 +35,7 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend
     , 500, 'easeInCubic'
 
   toggleSpinner: (->
-    if @get('showSpinner')
-      @spinnerDiv = @$('.replace-spinner')[0]
-      @spinner ||= new Spinner(@get('spinnerOpts')).spin(@spinnerDiv)
-      $(@spinnerDiv).show()
-    else
-      $(@spinnerDiv).hide()
+    @createSpinner('showSpinner', '.replace-spinner', @get('spinnerOpts'))
   ).observes('showSpinner').on('didInsertElement')
 
   isProcessing: ( ->

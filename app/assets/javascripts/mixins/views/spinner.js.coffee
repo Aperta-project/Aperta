@@ -1,10 +1,10 @@
 ETahi.SpinnerMixin = Em.Mixin.create
-  createSpinner: (dependentKey, selector, color) ->
+  createSpinner: (dependentKey, selector, opts) ->
     return unless @$()
     Em.run =>
       if @get(dependentKey)
         @spinnerDiv = @$(selector)[0]
-        @spinner ||= new Spinner(color: color).spin(@spinnerDiv)
+        @spinner ||= new Spinner(opts).spin(@spinnerDiv)
         $(@spinnerDiv).show()
         $(@spinnerDiv).addClass('spinning')
       else

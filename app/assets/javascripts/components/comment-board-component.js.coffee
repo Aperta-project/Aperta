@@ -7,6 +7,7 @@ ETahi.CommentBoardComponent = Ember.Component.extend
 
   clearUnread: (->
     @set('commentsDisplayedAsUnread', [])
+    @setCommentUnreadStates()
   ).on('init')
 
   setupFocus: (->
@@ -23,7 +24,7 @@ ETahi.CommentBoardComponent = Ember.Component.extend
           c.markReadBy(@get('currentUser'))
         else
           c.set('unread', false) unless @isCommentDisplayedAsUnread(c)
-  ).observes('shownComments.@each').on('init')
+  ).observes('shownComments.@each')
 
   shownComments: (->
     comments = @get('comments').sortBy('createdAt').reverse()

@@ -1,4 +1,4 @@
-ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend(ETahi.FileUploadMixin, {
+ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend ETahi.FileUploadMixin,
   manuscriptUploadUrl: (->
     "/papers/#{@get('litePaper.id')}/upload"
   ).property('litePaper.id')
@@ -27,4 +27,3 @@ ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend(ETahi.File
       @store.pushPayload(data)
       @set('completed', true)
       @get('model').save().then(=> @send('closeAction'))
-})

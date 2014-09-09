@@ -1,4 +1,4 @@
-ETahi.JournalThumbnailController = Ember.ObjectController.extend(ETahi.FileUploadMixin, {
+ETahi.JournalThumbnailController = Ember.ObjectController.extend ETahi.FileUploadMixin,
   needs: ['application']
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isEditing: (-> @get 'model.isDirty').property()
@@ -55,4 +55,3 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend(ETahi.FileUploa
 
     uploadReady: (uploadLogoFunction) ->
       @set('uploadLogoFunction', uploadLogoFunction)
-})

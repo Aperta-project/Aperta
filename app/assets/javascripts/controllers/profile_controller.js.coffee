@@ -1,4 +1,4 @@
-ETahi.ProfileController = Ember.ObjectController.extend(ETahi.FileUploadMixin, {
+ETahi.ProfileController = Ember.ObjectController.extend ETahi.FileUploadMixin,
   hideAffiliationForm: true
 
   errorText: ""
@@ -39,4 +39,3 @@ ETahi.ProfileController = Ember.ObjectController.extend(ETahi.FileUploadMixin, {
             messages.join(", ")
           Tahi.utils.togglePropertyAfterDelay(@, 'errorText', errors.join(', '), '', 5000)
       )
-})

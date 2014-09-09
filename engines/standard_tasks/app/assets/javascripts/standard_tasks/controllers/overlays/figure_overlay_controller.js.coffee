@@ -1,4 +1,4 @@
-ETahi.FigureOverlayController = ETahi.TaskController.extend(ETahi.FileUploadMixin, {
+ETahi.FigureOverlayController = ETahi.TaskController.extend ETahi.FileUploadMixin,
   figureUploadUrl: ( ->
     "/papers/#{@get('litePaper.id')}/figures"
   ).property('litePaper.id')
@@ -17,4 +17,3 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend(ETahi.FileUploadMixi
     changeStrikingImage: (newValue) ->
       @get('content.paper').then (paper)->
         paper.set('strikingImageId', newValue).save()
-})

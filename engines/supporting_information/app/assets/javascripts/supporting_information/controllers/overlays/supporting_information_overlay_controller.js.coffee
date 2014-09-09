@@ -1,4 +1,4 @@
-ETahi.SupportingInformationOverlayController = ETahi.TaskController.extend(ETahi.FileUploadMixin, {
+ETahi.SupportingInformationOverlayController = ETahi.TaskController.extend ETahi.FileUploadMixin,
   uploadUrl: (->
     "/supporting_information_files?paper_id=#{@get('litePaper.id')}"
   ).property('litePaper.id')
@@ -11,4 +11,3 @@ ETahi.SupportingInformationOverlayController = ETahi.TaskController.extend(ETahi
       file = @store.getById('supportingInformationFile', data.supporting_information_file.id)
 
       @get('paper.supportingInformationFiles').pushObject(file)
-})

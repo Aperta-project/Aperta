@@ -11,7 +11,7 @@ img.user-thumbnail {
 .comment-board {
   margin: 25px 0;
   .button-secondary {
-    @include button-secondary-modifier($tahi-primary, $tahi-primary);
+    @include button-secondary-modifier($tahi-primary, $tahi-secondary, $tahi-primary-hover);
   }
 
   .form-group {

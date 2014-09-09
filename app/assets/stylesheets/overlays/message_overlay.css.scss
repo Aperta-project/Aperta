@@ -12,7 +12,7 @@
   }
 
   button.button-secondary {
-    @include button-secondary-modifier($tahi-message, $tahi-message);
+    @include button-secondary-modifier($tahi-message, $tahi-message-light, $tahi-message-hover);
   }
 
   .close-overlay, .overlay-completed-checkbox label {

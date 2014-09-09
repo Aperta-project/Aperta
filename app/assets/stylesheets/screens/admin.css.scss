@@ -1,5 +1,9 @@
 .user-detail-overlay .overlay-close-x {
-  color: $tahi-blue;
+  color: $tahi-blue-light;
+
+  &:hover {
+    color: $tahi-blue;
+  }
 }
 
 .user-detail-overlay .overlay-container {

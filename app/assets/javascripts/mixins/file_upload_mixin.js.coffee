@@ -13,7 +13,9 @@ ETahi.FileUploadMixin = Em.Mixin.create
       return 'You are uploading, are you sure you want to cancel?'
 
   uploadProgress: (data) ->
-    console.log "noop upload progress in file upload mixin."
+    currentUpload = @get('uploads').findBy('file', data.files[0])
+    return unless currentUpload
+    currentUpload.setProperties(dataLoaded: data.loaded, dataTotal: data.total)
 
   uploadFinished: (data, filename) ->
     uploads = @get('uploads')

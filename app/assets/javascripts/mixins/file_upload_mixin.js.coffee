@@ -8,8 +8,10 @@ ETahi.FileUploadMixin = Em.Mixin.create
   isUploading: Em.computed.notEmpty 'uploads'
 
   uploadStarted: (data, fileUploadXHR) ->
-    @get('uploads').pushObject ETahi.FileUpload.create(file: data.files[0], xhr: fileUploadXHR)
-    $(window).on 'beforeunload.cancelUploads', ->
+    file = data.files[0]
+    filename = file.name
+    @get('uploads').pushObject ETahi.FileUpload.create(file: file, xhr: fileUploadXHR)
+    $(window).on "beforeunload.cancelUploads.#{filename}", ->
       return 'You are uploading, are you sure you want to cancel?'
 
   uploadProgress: (data) ->
@@ -21,7 +23,7 @@ ETahi.FileUploadMixin = Em.Mixin.create
     uploads = @get('uploads')
     newUpload = uploads.findBy('file.name', filename)
     uploads.removeObject newUpload
-    $(window).off 'beforeunload.cancelUploads'
+    $(window).off "beforeunload.cancelUploads.#{filename}"
 
   cancelUploads: ->
     @get('uploads').invoke('abort')

@@ -263,16 +263,17 @@ ETahi.FactoryAttributes.Comment =
   _rootKey: 'comment'
   id: null
   commenter_id: null
-  message_task_id: null
+  task_id: null
   body: "A sample comment"
   created_at: null
-  comment_look_id: null
+  comment_look_ids: []
 
 ETahi.FactoryAttributes.CommentLook =
   _rootKey: 'comment_look'
   id: null
   read_at: null
   comment_id: null
+  user_id: null
 
 ETahi.FactoryAttributes.Phase =
   _rootKey: 'phase'

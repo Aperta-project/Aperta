@@ -27,3 +27,16 @@ ETahi.FileUploadMixin = Em.Mixin.create
     @get('uploads').invoke('abort')
     @set('uploads', [])
     $(window).off 'beforeunload.cancelUploads'
+
+  actions:
+    uploadStarted: (data, fileUploadXHR) ->
+      @uploadStarted(data, fileUploadXHR)
+
+    uploadProgress: (data)->
+      @uploadProgress(data)
+
+    uploadFinished: (data, filename) ->
+      @uploadFinished(data, filename)
+
+    cancelUploads: ->
+      @cancelUploads()

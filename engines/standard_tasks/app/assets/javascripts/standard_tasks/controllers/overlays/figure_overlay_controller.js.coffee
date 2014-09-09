@@ -6,9 +6,6 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend(ETahi.FileUploadMixi
   figures: Ember.computed.alias 'paper.figures'
 
   actions:
-    uploadStarted: (data, fileUploadXHR) ->
-      @uploadStarted(data, fileUploadXHR)
-
     uploadProgress: (data) ->
       @uploadProgress(data)
       currentUpload = @get('uploads').findBy('file', data.files[0])
@@ -22,9 +19,6 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend(ETahi.FileUploadMixi
       figure = @store.getById('figure', data.figure.id)
 
       @get('figures').pushObject(figure)
-
-    cancelUploads: ->
-      @cancelUploads()
 
     changeStrikingImage: (newValue) ->
       @get('content.paper').then (paper)->

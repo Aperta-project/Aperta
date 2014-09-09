@@ -30,19 +30,10 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend(ETahi.FileUploa
   actions:
     editJournalDetails: -> @set 'isEditing', true
 
-    uploadStarted: (data, fileUploadXHR) ->
-      @uploadStarted(data, fileUploadXHR)
-
-    uploadProgress: (data)->
-      @uploadProgress(data)
-
     uploadFinished: (data, filename) ->
       @uploadFinished(data, filename)
       @set 'model.logoUrl', data.admin_journal.logo_url
       @saveJournal()
-
-    cancelUploads: ->
-      @cancelUploads()
 
     saveJournalDetails: ->
       updateLogo = @get('uploadLogoFunction')

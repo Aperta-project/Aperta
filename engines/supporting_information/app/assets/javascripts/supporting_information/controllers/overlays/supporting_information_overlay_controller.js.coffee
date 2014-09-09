@@ -4,9 +4,6 @@ ETahi.SupportingInformationOverlayController = ETahi.TaskController.extend(ETahi
   ).property('litePaper.id')
 
   actions:
-    uploadStarted: (data, fileUploadXHR) ->
-      @uploadStarted(data, fileUploadXHR)
-
     uploadProgress: (data) ->
       @uploadProgress(data)
       currentUpload = @get('uploads').findBy('file', data.files[0])
@@ -20,7 +17,4 @@ ETahi.SupportingInformationOverlayController = ETahi.TaskController.extend(ETahi
       file = @store.getById('supportingInformationFile', data.supporting_information_file.id)
 
       @get('paper.supportingInformationFiles').pushObject(file)
-
-    cancelUploads: ->
-      @cancelUploads()
 })

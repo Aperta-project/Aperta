@@ -12,9 +12,6 @@ ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend(ETahi.File
   ).property('paper.lockedBy', 'isUserEditable', 'isCurrentUserAdmin')
 
   actions:
-    uploadStarted: (data, fileUploadXHR) ->
-      @uploadStarted(data, fileUploadXHR)
-
     uploadProgress: (data) ->
       @uploadProgress(data)
       progress = Math.round(data.loaded * 100 / data.total)
@@ -30,7 +27,4 @@ ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend(ETahi.File
       @store.pushPayload(data)
       @set('completed', true)
       @get('model').save().then(=> @send('closeAction'))
-
-    cancelUploads: ->
-      @cancelUploads()
 })

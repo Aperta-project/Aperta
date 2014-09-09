@@ -10,18 +10,9 @@ ETahi.ProfileController = Ember.ObjectController.extend(ETahi.FileUploadMixin, {
   ).property('id')
 
   actions:
-    uploadStarted: (data, fileUploadXHR)->
-      @uploadStarted(data, fileUploadXHR)
-
-    uploadProgress: (data)->
-      @uploadProgress(data)
-
     uploadFinished: (data, filename) ->
       @uploadFinished(data, filename)
       @set('model.avatarUrl', data.avatar_url)
-
-    cancelUploads: ->
-      @cancelUploads()
 
     toggleAffiliationForm: ->
       @set('newAffiliation', @store.createRecord('affiliation'))

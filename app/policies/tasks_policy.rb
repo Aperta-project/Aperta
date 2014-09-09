@@ -1,6 +1,7 @@
 class TasksPolicy < ApplicationPolicy
   allow_params :task
 
+  #TODO: we need another rule before has_sufficient role where the user can see the mm for this task's paper.
   def show?
     current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
   end

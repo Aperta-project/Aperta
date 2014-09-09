@@ -12,7 +12,6 @@ class DownloadManuscriptWorker
     response = RestClient.post(
       ENV['IHAT_URL'] + "convert/docx",
       epub: epub.epub_stream.string,
-      renderer: 'metypeset',
       multipart: true
     )
 

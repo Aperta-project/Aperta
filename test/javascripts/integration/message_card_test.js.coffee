@@ -93,24 +93,31 @@ test 'A message card with less than 5 comments doesnt have the show all comments
 test 'A message card with a commentLook shows up as unread and updates its commentLook', ->
   expect(2)
   ef = ETahi.Factory
+  commenter = ef.createRecord 'User',
+    id: 999
+    full_name: "Confucius"
+    username: "confucius"
+    email: "confucius@example.com"
 
   comment = ef.createRecord('Comment',
-    commenter_id: fakeUser.id
-    message_task_id: 1
+    commenter_id: commenter.id
+    task_id: 1
     body: "Unread comment"
     created_at: new Date().toISOString()
   )
   commentLook = ef.createRecord('CommentLook', id: 1)
   ef.setForeignKey(comment, commentLook, {inverse: 'comment'})
+  ef.setForeignKey(fakeUser, commentLook, {inverse: 'user'})
+  comment.comment_look_ids = [commentLook.id]
 
   [paper, task, records...] = createPaperWithOneTask('MessageTask'
     title: "Message Time"
-    participant_ids: [fakeUser.id]
+    participant_ids: [commenter.id, fakeUser.id]
     comment_ids: [comment.id]
   )
-  ef = ETahi.Factory
+
   paperPayload = ef.createPayload('paper')
-  paperPayload.addRecords(records.concat(paper, task, fakeUser, comment, commentLook))
+  paperPayload.addRecords(records.concat(paper, task, fakeUser, commenter, comment, commentLook))
 
   server.respondWith 'GET', "/papers/#{paper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
@@ -155,14 +162,20 @@ test 'Showing all comments shows them.', ->
   andThen ->
     equal(find('.message-comment').length, 10, 'All messages displayed')
 
-test 'Unread comments stay unread when showing all comments', ->
-  expect(2)
+test 'Unread comments do not stay unread when showing all comments if they were already shown', ->
+  expect(3)
   ef = ETahi.Factory
+  commenter = ef.createRecord 'User',
+    id: 999
+    full_name: "Confucius"
+    username: "confucius"
+    email: "confucius@example.com"
+
   r = _.range(10)
   comments = _.map(r, (n) ->
    ef.createRecord('Comment',
-    commenter_id: fakeUser.id
-    message_task_id: 1
+    commenter_id: commenter.id
+    task_id: 1
     body: "My comment-#{n}"
     created_at: new Date().toISOString()
   ))
@@ -173,17 +186,18 @@ test 'Unread comments stay unread when showing all comments', ->
 
   commentLook = ef.createRecord('CommentLook', id: 1)
   ef.setForeignKey(recentComment, commentLook, {inverse: 'comment'})
+  ef.setForeignKey(fakeUser, commentLook, {inverse: 'user'})
+  recentComment.comment_look_ids = [commentLook.id]
 
   [paper, task, records...] = createPaperWithOneTask('MessageTask'
     id: 1
     title: "Message Time"
-    participant_ids: [fakeUser.id]
+    participant_ids: [commenter.id, fakeUser.id]
     comment_ids: _.pluck(comments, 'id')
   )
 
-  ef = ETahi.Factory
   paperPayload = ef.createPayload('paper')
-  paperPayload.addRecords(records.concat(paper, task, fakeUser, comments, commentLook))
+  paperPayload.addRecords(records.concat(paper, task, fakeUser, commenter, comments, commentLook))
 
   server.respondWith 'GET', "/papers/#{paper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
@@ -194,7 +208,9 @@ test 'Unread comments stay unread when showing all comments', ->
   ]
 
   visit("/papers/#{paper.id}/tasks/#{task.id}")
-  click(".load-all-comments")
   andThen ->
     equal(find('.message-comment.unread .comment-body').text(), 'Unread comment')
+    click(".load-all-comments")
+  andThen ->
+    equal(find('.message-comment.unread').length, 0)
     equal(find('.message-comment').length, 10, 'All messages displayed')

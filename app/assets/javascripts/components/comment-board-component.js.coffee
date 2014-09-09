@@ -10,14 +10,6 @@ ETahi.CommentBoardComponent = Ember.Component.extend
     )
   ).on('didInsertElement')
 
-  setUnreadStates: ( ->
-    Ember.run =>
-      @get('shownComments').forEach (c) =>
-        if c.get('isUnread')
-          c.set('unread', true)
-          c.markRead()
-  ).observes('shownComments.@each').on('init')
-
   shownComments: (->
     comments = @get('comments').sortBy('createdAt').reverse()
     if @get('showingAllComments') then comments else comments.slice(0, @get("commentsToShow"))

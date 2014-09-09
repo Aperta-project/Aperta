@@ -10,7 +10,7 @@
 
   <ul class="message-comments">
     {{#each comment in shownComments}}
-      {{task-comment comment=comment}}
+      {{task-comment comment=comment currentUser=currentUser}}
     {{/each}}
   </ul>
 

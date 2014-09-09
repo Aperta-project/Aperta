@@ -5,9 +5,7 @@ ETahi.FileUploadMixin = Em.Mixin.create
 
   uploads: null
 
-  isUploading: (->
-    !!this.get('uploads.length')
-  ).property('uploads.@each', 'uploads.[]')
+  isUploading: Em.computed.notEmpty 'uploads'
 
   uploadStarted: (data, fileUploadXHR) ->
     @get('uploads').pushObject ETahi.FileUpload.create(file: data.files[0], xhr: fileUploadXHR)

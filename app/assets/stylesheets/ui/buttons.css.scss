@@ -3,7 +3,7 @@
 //
 // .button--green      - Make the button GREEN
 // .button--purple     - Make the button PURPLE
-// .button--blue-light - Make the button LIGHT BLUE
+// .button--blue       - Make the button LIGHT BLUE
 // .button--grey       - Make the button GREY
 // .button--white      - Make the button WHITE
 // .button--disabled   - Style the button as disabled
@@ -68,7 +68,7 @@
 
   &.button--green      { @include button-primary-modifier($tahi-green, $tahi-green-dark); }
   &.button--purple     { @include button-primary-modifier($tahi-purple, $tahi-purple-dark); }
-  &.button--blue-light { @include button-primary-modifier($tahi-blue, $tahi-blue-dark); }
+  &.button--blue       { @include button-primary-modifier($tahi-blue, $tahi-blue-dark); }
   &.button--grey       { @include button-primary-modifier($tahi-grey, $tahi-grey-dark); }
   &.button--white {
     color: $tahi-green;
@@ -83,7 +83,7 @@
 
   &.button--green      { @include button-secondary-modifier($tahi-green, $tahi-green-light, $tahi-green-dark); }
   &.button--purple     { @include button-secondary-modifier($tahi-purple, $tahi-purple-light, $tahi-purple-dark); }
-  &.button--blue-light { @include button-secondary-modifier($tahi-blue, $tahi-blue-light, $tahi-blue-dark); }
+  &.button--blue       { @include button-secondary-modifier($tahi-blue, $tahi-blue-light, $tahi-blue-dark); }
   &.button--grey       { @include button-secondary-modifier($tahi-grey, $tahi-grey-light, $tahi-grey-dark); }
   &.button--white {
     border-color: #fff;
@@ -99,7 +99,7 @@
 
   &.button--green      { @include button-link-modifier($tahi-green, $tahi-green-dark); }
   &.button--purple     { @include button-link-modifier($tahi-purple, $tahi-purple-dark); }
-  &.button--blue-light { @include button-link-modifier($tahi-blue, $tahi-blue-dark); }
+  &.button--blue       { @include button-link-modifier($tahi-blue, $tahi-blue-dark); }
   &.button--grey       { @include button-link-modifier($tahi-grey, $tahi-grey-dark); }
   &.button--white      { @include button-link-modifier(#fff, #fff); }
 

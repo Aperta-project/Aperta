@@ -88,8 +88,8 @@
 .card--completed {
   .card-content {
     padding-left: 45px;
-    color: $tahi-tertiary - #666;
-    background: $tahi-tertiary;
+    color: $tahi-grey-light - #666;
+    background: $tahi-grey-light;
   }
 
   .card-completed-icon {
@@ -102,7 +102,7 @@
 .card--completed:hover .card-content,
 .card--completed:focus .card-content {
   color: #fff;
-  background: $tahi-tertiary - #333;
+  background: $tahi-grey-light - #333;
 
   .glyphicon { color: #fff; }
 }

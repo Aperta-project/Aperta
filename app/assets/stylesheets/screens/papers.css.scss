@@ -94,7 +94,7 @@
   > article {
     position: relative;
     width: 75%;
-    border-right: 1px solid $tahi-tertiary;
+    border-right: 1px solid $tahi-grey-light;
     padding: 0;
 
     .title { padding-top: 55px; }
@@ -204,7 +204,7 @@
   position: absolute;
   top: 220px;
   z-index: 5;
-  color: $tahi-tertiary-dark;
+  color: $tahi-grey-dark;
   font-style: italic;
 }
 

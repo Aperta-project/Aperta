@@ -6,7 +6,7 @@
 
 .paper-profile {
   margin-bottom: 10px;
-  border: 1px solid $tahi-tertiary;
+  border: 1px solid $tahi-grey-light;
 }
 
 .paper-profile-title {
@@ -43,8 +43,8 @@
 }
 
 .flow-card.card--completed .card-content {
-  color: $tahi-tertiary - #666;
-  background: $tahi-tertiary;
+  color: $tahi-grey-light - #666;
+  background: $tahi-grey-light;
 
   .completed-glyph {
     display: inline;

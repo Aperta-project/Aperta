@@ -158,7 +158,7 @@
   width: 200px;
   font-size: 12px;
   font-style: italic;
-  color: $tahi-message;
+  color: $tahi-purple;
   z-index: 1;
 
   span {
@@ -216,7 +216,7 @@
 
   .add-collaborators {
     margin-top: 7px;
-    color: $tahi-primary;
+    color: $tahi-green;
     display: block;
     cursor: pointer;
   }
@@ -233,9 +233,9 @@
 
 .circle {
   $circle-radius: 0.8em;
-  background-color: $tahi-secondary;
+  background-color: $tahi-green-light;
   height: $circle-radius;
   width: $circle-radius;
   border-radius: $circle-radius / 2;
-  border: 2px solid $tahi-primary;
+  border: 2px solid $tahi-green;
 }

@@ -11,7 +11,7 @@
     margin-bottom: 5px;
     &.current-drop-target {
       height: 90px;
-      border: 4px dashed $tahi-secondary;
+      border: 4px dashed $tahi-green-light;
     }
   }
 
@@ -48,7 +48,7 @@
     }
 
     &.edit-inactive.editable.hover {
-      background: $tahi-primary;
+      background: $tahi-green;
       opacity: 0.7;
       .author-edit {
         display: block;
@@ -65,7 +65,7 @@
   .form-group.required::before {
     left: -12px;
     top: 4px;
-    color: $tahi-primary;
+    color: $tahi-green;
     font-size: 18pt;
   }
 
@@ -107,7 +107,7 @@
 }
 
 .author-top {
-  border-bottom: 1px solid $tahi-secondary;
+  border-bottom: 1px solid $tahi-green-light;
   padding-bottom: 15px;
 }
 
@@ -121,7 +121,7 @@
 }
 
 .author-cancel, .author-cancel:hover {
-  color: $tahi-primary;
+  color: $tahi-green;
   margin-right: 10px;
 }
 

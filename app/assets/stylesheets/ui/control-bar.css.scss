@@ -76,10 +76,10 @@
   &:focus, &:hover {
     text-decoration: none;
 
-    span { color: $tahi-primary; }
+    span { color: $tahi-green; }
 
     svg path, svg rect {
-      fill: $tahi-primary;
+      fill: $tahi-green;
     }
   }
 }

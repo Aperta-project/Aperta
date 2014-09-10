@@ -9,7 +9,7 @@
   top: -7px;
 
   &:hover {
-    color: $tahi-primary-hover;
+    color: $tahi-green-dark;
   }
 }
 
@@ -70,7 +70,7 @@
     }
     .item-remove {
       margin: 10px;
-      color: $tahi-primary;
+      color: $tahi-green;
       @extend .glyphicon, .glyphicon-remove-circle;
     }
   }

@@ -9,6 +9,13 @@ ETahi.PaperManageRoute = ETahi.AuthorizedRoute.extend
         error:   (xhr, status, error) -> Ember.run(null, reject, xhr)
 
   actions:
+    chooseNewCardTypeOverlay: (phase) ->
+      @controllerFor('chooseNewCardTypeOverlay').set('phase', phase)
+      @render('chooseNewCardTypeOverlay',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'chooseNewCardTypeOverlay')
+
     viewCard: (task) ->
       paper = @modelFor('paper')
       redirectParams = ['paper.manage', @modelFor('paper')]

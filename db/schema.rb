@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20140910132617) do
     t.boolean "deceased",              default: false
     t.string  "affiliation"
     t.string  "secondary_affiliation"
+    t.integer "awesome_task_id"
   end
 
   create_table "comment_looks", force: true do |t|

@@ -16,6 +16,7 @@ class ExtractAwesomeAuthor < ActiveRecord::Migration
       t.boolean :deceased, default: false
       t.string :affiliation
       t.string :secondary_affiliation
+      t.integer :awesome_task_id
     end
   end
 end

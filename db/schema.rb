@@ -50,12 +50,12 @@ ActiveRecord::Schema.define(version: 20140910132617) do
     t.datetime "updated_at"
     t.integer  "author_group_id"
     t.integer  "position"
-    t.integer  "custom_author_id"
-    t.string   "custom_author_type"
+    t.string   "type"
+    t.integer  "actable_id"
+    t.string   "actable_type"
   end
 
   create_table "awesome_authors", force: true do |t|
-    t.integer "awesome_task_id"
     t.string  "awesome_name"
     t.string  "department"
     t.string  "title"

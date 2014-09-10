@@ -6,12 +6,10 @@ class ExtractAwesomeAuthor < ActiveRecord::Migration
     remove_column :authors, :deceased, :boolean, default: false
     remove_column :authors, :affiliation, :string
     remove_column :authors, :secondary_affiliation, :string
-
-    add_column :authors, :custom_author_id, :integer
-    add_column :authors, :custom_author_type, :string
+    add_column :authors, :actable_id, :integer
+    add_column :authors, :actable_type, :string
 
     create_table :awesome_authors do |t|
-      t.integer :awesome_task_id
       t.string :awesome_name
       t.string :department
       t.string :title

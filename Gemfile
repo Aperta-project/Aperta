@@ -14,7 +14,7 @@ gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 
 # Gems
-gem 'rails', '4.1.1'
+gem 'rails', '4.1.2'
 gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
@@ -30,6 +30,7 @@ gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
 gem 'quiet_assets', '~> 1.0.3'
+gem 'active_record-acts_as'
 
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'

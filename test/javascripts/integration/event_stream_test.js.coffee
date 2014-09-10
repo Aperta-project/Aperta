@@ -97,14 +97,14 @@ test "action:updated with a task updates the phase's tasks", ->
   Ember.run =>
     store.push('phase', id: 2, title: 'Phase 2')
     store.pushPayload('task', originalTaskPayload)
-    ok phaseHasTask(store, phaseId: 1, taskId: 10)
-    ok taskBelongsToPhase(store, phaseId: 1, taskId: 10)
+    ok phaseHasTask(store, phaseId: 1, taskId: 10), "phase should have task"
+    ok taskBelongsToPhase(store, phaseId: 1, taskId: 10), "task should belong to phase"
 
     es.msgResponse(data: JSON.stringify(data))
-    ok phaseHasTask(store, phaseId: 2, taskId: 10)
-    ok taskBelongsToPhase(store, phaseId: 2, taskId: 10)
-    ok !phaseHasTask(store, phaseId: 1, taskId: 10)
-    ok !taskBelongsToPhase(store, phaseId: 1, taskId: 10)
+    ok phaseHasTask(store, phaseId: 2, taskId: 10), "new phase should have task"
+    ok taskBelongsToPhase(store, phaseId: 2, taskId: 10), "task should belong to new phase"
+    ok !phaseHasTask(store, phaseId: 1, taskId: 10), "old phase should not have task"
+    ok !taskBelongsToPhase(store, phaseId: 1, taskId: 10), "task should not belong to old phase"
 
 test 'with meta information the event stream will ask the server for the specified model', ->
   expect(1)

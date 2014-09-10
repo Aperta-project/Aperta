@@ -5,4 +5,8 @@ class Author < ActiveRecord::Base
   acts_as_list scope: :author_group
 
   validates :author_group, presence: true
+
+  def formatted_errors
+    self.errors.to_h.merge(id: self.id)
+  end
 end

@@ -4,3 +4,4 @@ ETahi.JournalTaskType = DS.Model.extend
   role: a('string')
   journal: DS.belongsTo('journal')
   taskType: DS.belongsTo('taskType')
+  body: []

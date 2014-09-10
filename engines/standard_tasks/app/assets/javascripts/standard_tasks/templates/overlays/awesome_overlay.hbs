@@ -1,3 +1,8 @@
-<h1>Hello World!</h1>
-<p>Find my template at: engines/standard_tasks/app/assets/javascripts/standard_tasks/templates/overlays/awesome_overlay.hbs</p>
-<p>Enter JavaScript in: engines/standard_tasks/app/assets/javascripts/standard_tasks/views/overlays/awesome_overlay_view.js</p>
+<h1>Think of the most awesome person on the Earth</h1>
+<div>
+  {{add-author-form
+    newAuthor=awesomeAuthor
+    institutions=institutions
+    hideAuthorForm='hideAuthorForm'
+    saveAuthor="saveAuthor"}}
+</div>

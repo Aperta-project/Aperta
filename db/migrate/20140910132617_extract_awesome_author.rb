@@ -11,7 +11,8 @@ class ExtractAwesomeAuthor < ActiveRecord::Migration
     add_column :authors, :custom_author_type, :string
 
     create_table :awesome_authors do |t|
-      t.string :awesome_name, default: "aaron"
+      t.integer :awesome_task_id
+      t.string :awesome_name
       t.string :department
       t.string :title
       t.boolean :deceased, default: false

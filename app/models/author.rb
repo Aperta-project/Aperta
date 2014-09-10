@@ -5,6 +5,7 @@ class Author < ActiveRecord::Base
 
   validates :author_group, presence: true
 
-  # validates :first_name, :middle_initial, :last_name, :title, :department, presence: true
-  # validates :email, format: Devise.email_regexp
+  # for now, this is a simple way to bubble errors up to Author
+  accepts_nested_attributes_for :custom_author
+  validates_associated :custom_author
 end

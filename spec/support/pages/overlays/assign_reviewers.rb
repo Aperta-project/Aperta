@@ -16,8 +16,6 @@ class AssignReviewersOverlay < CardOverlay
   end
 
   def has_reviewers?(*reviewers)
-    # wait for the element
-    find_all '.reviewers-select .search-choice'
     reviewers.all? do |reviewer|
       page.has_css? '.reviewers-select .search-choice', text: reviewer.full_name
     end

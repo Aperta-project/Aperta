@@ -11,21 +11,13 @@ class Comment < ActiveRecord::Base
     commenter_id == user.id
   end
 
-  def meta_type
-    self.task.class.name.demodulize
-  end
-
-  def has_meta?
-    true
-  end
-
-  def meta_id
-    self.task.id
-  end
-
   private
 
   def notifier_payload
-    { task_id: task.id, paper_id: task.paper.id }
+    { id: task.id, paper_id: task.paper.id }
+  end
+
+  def records_to_load
+    [{type: task.class.base_class.name.underscore, id: task.id}]
   end
 end

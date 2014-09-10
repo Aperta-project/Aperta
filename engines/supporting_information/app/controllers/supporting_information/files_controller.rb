@@ -9,6 +9,11 @@ module SupportingInformation
       render json: new_file, root: :supporting_information_file
     end
 
+    def show
+      file = ::SupportingInformation::File.find params[:id]
+      render json: file
+    end
+
     def update
       file = ::SupportingInformation::File.find params[:id]
       file.update_attributes file_params

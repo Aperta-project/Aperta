@@ -40,13 +40,13 @@ Tahi::Application.routes.draw do
   resources :authors, only: [:create, :update, :destroy]
   resources :author_groups, only: [:create, :destroy]
 
-  resources :figures, only: [:destroy, :update] do
+  resources :figures, only: [:destroy, :update, :show] do
     put :update_attachment, on: :member
   end
 
   resources :files, as: 'supporting_information_files',
                     path: 'supporting_information_files',
-                    only: [:create, :destroy, :update],
+                    only: [:create, :destroy, :update, :show],
                     controller: 'supporting_information/files'
 
   resources :comment_looks, only: [:update]
@@ -108,7 +108,7 @@ Tahi::Application.routes.draw do
   resources :user_roles, only: [:index, :create, :destroy]
 
   resources :questions, only: [:create, :update]
-  resources :question_attachments, only: [:destroy]
+  resources :question_attachments, only: [:destroy, :show]
   resources :journal_task_types, only: :update
 
   resource :dashboards, only: :show

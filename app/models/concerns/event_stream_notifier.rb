@@ -4,35 +4,24 @@ module EventStreamNotifier
     after_commit :notify
 
     def notify
-      ActiveSupport::Notifications.instrument(namespace, event_stream_payload)
+      # don't notify for empty updates
+      if action == "updated" && previous_changes.empty?
+        logger.info "COMMIT no-up update for for #{self.class.name}:#{self.id}"
+      else
+        ActiveSupport::Notifications.instrument(namespace, event_stream_payload)
+      end
     end
 
     def event_stream_payload
-      p = notifier_payload.merge({ action: action, klass: self.class.base_class })
-      if has_meta?
-        p = p.merge({meta: { model_name: meta_type, id: meta_id }})
-      end
-      p
-    end
-
-    def event_stream_serializer
-      active_model_serializer
+      notifier_payload.merge({ action: action, records_to_load: records_to_load})
     end
 
     def notifier_payload
-      { task_id: id, paper_id: paper.id }
+      { id: id, paper_id: paper.id, type: klass_name }
     end
 
-    def has_meta?
-      false
-    end
-
-    def meta_type
-      nil
-    end
-
-    def meta_id
-      nil
+    def records_to_load
+      [{type: klass_name, id: id}]
     end
 
     private
@@ -42,7 +31,7 @@ module EventStreamNotifier
     end
 
     def klass_name
-      self.class.base_class.name.underscore
+      self.class.base_class.name.underscore.gsub('/', '_')
     end
 
     def action

@@ -21,7 +21,7 @@ ETahi.initializer
         applicationController.set('error', message)
 
     Ember.onerror = (error) ->
-      logError(error.stack)
+      logError(error.message + "\n" + error.stack)
       unless ETahi.environment == 'development'
         displayErrorMessage(error)
 

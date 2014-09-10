@@ -29,9 +29,5 @@ module SupportingInformation
     def insert_title
       self.title = "Title: #{attachment.filename}" if attachment.present?
     end
-
-    def notifier_payload
-      { id: id, paper_id: paper.id }
-    end
   end
 end

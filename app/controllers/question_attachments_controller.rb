@@ -8,6 +8,10 @@ class QuestionAttachmentsController < ApplicationController
     respond_with question_attachment
   end
 
+  def show
+    respond_with question_attachment
+  end
+
   private
 
   def question_attachment

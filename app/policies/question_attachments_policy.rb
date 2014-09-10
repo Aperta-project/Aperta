@@ -5,6 +5,10 @@ class QuestionAttachmentsPolicy < ApplicationPolicy
     current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
   end
 
+  def show?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
+  end
+
   private
 
   def task_owner?

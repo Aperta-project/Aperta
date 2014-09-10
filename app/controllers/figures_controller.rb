@@ -2,6 +2,11 @@ class FiguresController < ApplicationController
   respond_to :json
   before_action :authenticate_user!
 
+  def show
+    figure = Figure.find(params[:id])
+    respond_with figure
+  end
+
   def create
     new_figure = paper.figures.create status: "processing"
     DownloadFigureWorker.perform_async(new_figure.id, params[:url])

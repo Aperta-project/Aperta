@@ -1,9 +1,4 @@
-ETahi.JournalIndexView = Ember.View.extend
+ETahi.JournalIndexView = Ember.View.extend ETahi.SpinnerMixin,
   toggleSpinner: (->
-    if @get('controller.epubCoverUploading')
-      @spinnerDiv = @$('#epub-cover-spinner')[0]
-      @spinner ||= new Spinner(color: "#aaa").spin(@spinnerDiv)
-      $(@spinnerDiv).show()
-    else
-      $(@spinnerDiv).hide()
-  ).observes('controller.epubCoverUploading')
+    @createSpinner('controller.epubCoverUploading', '#epub-cover-spinner', color: '#aaa')
+  ).observes('controller.epubCoverUploading').on('didInsertElement')

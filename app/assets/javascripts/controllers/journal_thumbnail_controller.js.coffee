@@ -1,4 +1,4 @@
-ETahi.JournalThumbnailController = Ember.ObjectController.extend
+ETahi.JournalThumbnailController = Ember.ObjectController.extend ETahi.FileUploadMixin,
   needs: ['application']
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isEditing: (-> @get 'model.isDirty').property()
@@ -29,7 +29,11 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend
 
   actions:
     editJournalDetails: -> @set 'isEditing', true
-    logoUploading: -> @set 'logoUploading', true
+
+    uploadFinished: (data, filename) ->
+      @uploadFinished(data, filename)
+      @set 'model.logoUrl', data.admin_journal.logo_url
+      @saveJournal()
 
     saveJournalDetails: ->
       updateLogo = @get('uploadLogoFunction')
@@ -37,7 +41,7 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend
         @get('model').save().then (journal) =>
           (updateLogo || @stopEditing).call(@)
       else
-        # updateLogo will fire the 'logoUploaded' action from the component, thus saving the model
+        # updateLogo will fire the 'uploadFinished' action from the component, thus saving the model
         # with the new journal logo url.
         (updateLogo || @saveJournal).call(@)
 
@@ -45,11 +49,6 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend
       @get('model').rollback()
       @set 'isEditing', false
       @resetErrors()
-
-    logoUploaded: (data) ->
-      @set 'model.logoUrl', data.admin_journal.logo_url
-      @set 'logoUploading', false
-      @saveJournal()
 
     showPreview: (file) ->
       @set 'logoPreview', file.preview

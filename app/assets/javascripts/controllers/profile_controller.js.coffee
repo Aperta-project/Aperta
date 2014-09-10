@@ -1,4 +1,4 @@
-ETahi.ProfileController = Ember.ObjectController.extend
+ETahi.ProfileController = Ember.ObjectController.extend ETahi.FileUploadMixin,
   hideAffiliationForm: true
 
   errorText: ""
@@ -9,15 +9,10 @@ ETahi.ProfileController = Ember.ObjectController.extend
     "/users/#{@get('id')}/update_avatar"
   ).property('id')
 
-  avatarUploading: false
-
   actions:
-    avatarUploading: ->
-      @set('avatarUploading', true)
-
-    avatarUploaded: (data) ->
+    uploadFinished: (data, filename) ->
+      @uploadFinished(data, filename)
       @set('model.avatarUrl', data.avatar_url)
-      @set('avatarUploading', false)
 
     toggleAffiliationForm: ->
       @set('newAffiliation', @store.createRecord('affiliation'))

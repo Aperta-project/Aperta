@@ -6,3 +6,5 @@ ClassAndModuleChildren:
   Enabled: false
 LineLength:
   Enabled: false
+CoffeeScript:
+  Enabled: true

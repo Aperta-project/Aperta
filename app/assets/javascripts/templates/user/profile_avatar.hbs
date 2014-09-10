@@ -1,16 +1,17 @@
 <div id="profile-avatar">
   <img {{bind-attr src="model.avatarUrl"}}>
-  <div id="profile-avatar-spinner"></div>
   <div id="profile-avatar-hover">
     <span class="button-secondary button--green fileinput-button">
       <span>Upload New</span>
       {{file-uploader id="profile_avatar"
                       accept=".jpg,.jpeg,.tiff,.gif,.png"
-                      progress='avatarUploading'
-                      done='avatarUploaded'
-                      filePrefix='user/avatar'
-                      railsMethod='PUT'
+                      start="uploadStarted"
+                      progress="uploadProgress"
+                      done="uploadFinished"
+                      filePrefix="user/avatar"
+                      railsMethod="PUT"
                       url=avatarUploadUrl}}
     </span>
   </div>
+  <div class="profile-avatar-spinner"></div>
 </div>

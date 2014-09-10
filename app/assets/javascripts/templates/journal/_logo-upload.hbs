@@ -1,10 +1,11 @@
-<div class="journal-logo-spinner"></div>
 <span class="button-secondary fileinput-button button--blue">
   <span>Upload New</span>
   {{file-uploader id=thumbnailId
                   accept=".jpg,.jpeg,.tiff,.gif,.png"
-                  progress="logoUploading"
-                  done="logoUploaded"
+                  start="uploadStarted"
+                  done="uploadFinished"
+                  progress="uploadProgress"
+                  cancel="cancelUploads"
                   processingDone="showPreview"
                   uploadReady="uploadReady"
                   filePrefix="journal/logo"

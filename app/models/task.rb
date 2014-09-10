@@ -44,6 +44,7 @@ class Task < ActiveRecord::Base
   end
 
   def is_metadata?
+    return false unless Task.metadata_types.present?
     Task.metadata_types.include?(self.class.name)
   end
 

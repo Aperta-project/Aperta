@@ -6,9 +6,10 @@
     {{file-uploader id="file_attachment"
                     filePrefix="supporting-info"
                     url=uploadUrl
-                    start='uploadStarted'
-                    done='uploadFinished'
-                    progress='uploadProgress'}}
+                    start="uploadStarted"
+                    done="uploadFinished"
+                    cancel="cancelUploads"
+                    progress="uploadProgress"}}
   </span>
 {{/if}}
 <div id="paper-file-uploads">
@@ -24,7 +25,7 @@
     {{/each}}
   {{else}}
     {{#each file in paper.supportingInformationFiles}}
-      {{partial 'figure_show_only'}}
+      {{partial "figure_show_only"}}
     {{/each}}
   {{/if}}
 </div>

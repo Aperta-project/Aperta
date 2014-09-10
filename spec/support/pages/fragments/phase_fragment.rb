@@ -16,7 +16,7 @@ class PhaseFragment < PageFragment
   end
 
   def has_card?(name)
-    find_all('.card').any? { |card| card.has_content? name }
+    has_css? '.card', text: name
   end
 
   def has_remove_icon?

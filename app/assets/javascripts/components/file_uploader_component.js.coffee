@@ -6,7 +6,6 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
   filePrefix: null
   uploadImmediately: true
 
-
   dataType: 'json'
   method: 'POST'
   railsMethod: 'POST'
@@ -81,15 +80,13 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
             acl: data.acl
 
           uploadFunction = () ->
-            uploadData.process().done -> uploadData.submit()
+            uploadData.process().done (data)->
+              self.sendAction('start', data, uploadData.submit())
 
           if self.get('uploadImmediately')
             uploadFunction()
           else
             self.sendAction('uploadReady', uploadFunction)
-
-    uploader.on 'fileuploadsend', (e, data) =>
-      @sendAction('start', data)
 
     uploader.on 'fileuploadprogress', (e, data) =>
       @sendAction('progress', data)
@@ -99,13 +96,4 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
 
     uploader.on 'fileuploadprocessalways', (e, data) =>
       @sendAction('processingDone', data.files[0])
-
-    uploader.on 'fileuploadstart', (e, data) =>
-      ETahi.set 'isUploading', true
-      $(window).on 'beforeunload', ->
-        return 'You are uploading, are you sure you want to cancel?'
-
-    uploader.on 'fileuploadalways', (e, data) =>
-      ETahi.set 'isUploading', false
-      $(window).off 'beforeunload'
   ).on('didInsertElement')

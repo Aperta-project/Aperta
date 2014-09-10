@@ -3,11 +3,5 @@ class CommentSerializer < ActiveModel::Serializer
 
   has_one :task, embed: :id, polymorphic: true
   has_one :commenter, serializer: UserSerializer, include: true, root: :users, embed: :id
-  has_one :comment_look, include: true, embed: :ids
-
-  def comment_look
-    if (defined? current_user) && current_user
-      object.comment_looks.where(user: current_user).first
-    end
-  end
+  has_many :comment_looks, include: true, embed: :ids
 end

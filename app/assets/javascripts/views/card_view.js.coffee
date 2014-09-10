@@ -17,16 +17,17 @@ ETahi.CardView = Em.View.extend(DragNDrop.Dragable, {
 
   comments: Ember.computed.alias 'content.comments'
 
-  unreadCommentsCount: (->
-    @get('commentLooks').filter((comment)->
-      !comment.get('readAt')
-    ).length
-  ).property('commentLooks')
+  myCommentLooks: (->
+    store = @get('controller.store')
+    store.all('commentLook').filter (look) =>
+      look.get('comment.task') == @get('content') and look.get('user') == @get('controller').getCurrentUser()
+  ).property('comments.commentLooks.@each.readAt')
 
-  commentLooks: (->
-    comments = @get('comments') || []
-    comments.mapBy('commentLook').compact()
-  ).property('comments.@each.commentLook')
+  unreadCommentsCount: (->
+    @get('myCommentLooks').filter((look) ->
+      Em.isEmpty(look.get('readAt'))
+    ).length
+  ).property('myCommentLooks.@each.readAt')
 
   dragStart: (e) ->
     e.dataTransfer.setData('Text', 'TAHI!')

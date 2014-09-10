@@ -1,10 +1,18 @@
 ETahi.DashboardLinkView = Em.View.extend
   templateName: 'dashboard_link'
 
-  setupTooltips: (->
+  refreshTooltips: ->
     Ember.run.scheduleOnce 'afterRender', @, =>
       @$('.link-tooltip').tooltip('destroy').tooltip({placement: 'bottom'})
-  ).on('didInsertElement').observes('content.unreadCommentsCount')
+
+  setupTooltips: (->
+    @addObserver('content.unreadCommentsCount', @, @refreshTooltips)
+    @refreshTooltips()
+  ).on('didInsertElement')
+
+  teardownTooltips: (->
+    @removeObserver('content.unreadCommentsCount', @, @refreshTooltips)
+  ).on('willRemoveElement')
 
   badgeTitle: (->
     "#{@get('content.unreadCommentsCount')} new posts"

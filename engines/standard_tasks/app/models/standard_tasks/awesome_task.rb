@@ -4,14 +4,14 @@ module StandardTasks
     role "author"
 
     has_many :awesome_authors
-    accepts_nested_attributes_for :awesome_authors
+
+    validate :validate_authors, if: :completed?
 
     def active_model_serializer
       TaskSerializer
     end
 
-    def valid?(context=nil)
-      super(context)
+    def validate_authors
       valid_authors = true
       awesome_authors.each do |a|
         if a.invalid?
@@ -22,7 +22,5 @@ module StandardTasks
       self.errors.add(:completed, "Please check the errors above.") unless valid_authors
       self.errors.empty?
     end
-
-
   end
 end

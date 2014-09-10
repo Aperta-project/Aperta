@@ -51,17 +51,18 @@ ActiveRecord::Schema.define(version: 20140910132617) do
     t.integer  "author_group_id"
     t.integer  "position"
     t.string   "type"
+    t.string   "secondary_affiliation"
+    t.string   "affiliation"
+    t.boolean  "deceased",              default: false
+    t.boolean  "corresponding",         default: false
+    t.string   "title"
+    t.string   "department"
     t.integer  "actable_id"
     t.string   "actable_type"
   end
 
   create_table "awesome_authors", force: true do |t|
     t.string  "awesome_name"
-    t.string  "department"
-    t.string  "title"
-    t.boolean "deceased",              default: false
-    t.string  "affiliation"
-    t.string  "secondary_affiliation"
     t.integer "awesome_task_id"
   end
 

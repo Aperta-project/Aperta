@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140827200137) do
+ActiveRecord::Schema.define(version: 20140910132617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,16 +46,21 @@ ActiveRecord::Schema.define(version: 20140827200137) do
     t.string   "last_name"
     t.string   "middle_initial"
     t.string   "email"
-    t.string   "department"
-    t.string   "title"
-    t.boolean  "corresponding",         default: false, null: false
-    t.boolean  "deceased",              default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "author_group_id"
-    t.string   "affiliation"
-    t.string   "secondary_affiliation"
     t.integer  "position"
+    t.integer  "custom_author_id"
+    t.string   "custom_author_type"
+  end
+
+  create_table "awesome_authors", force: true do |t|
+    t.string  "awesome_name",          default: "aaron"
+    t.string  "department"
+    t.string  "title"
+    t.boolean "deceased",              default: false
+    t.string  "affiliation"
+    t.string  "secondary_affiliation"
   end
 
   create_table "comment_looks", force: true do |t|
@@ -184,8 +189,8 @@ ActiveRecord::Schema.define(version: 20140827200137) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
+    t.datetime "last_heartbeat_at"
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree

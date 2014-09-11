@@ -10,8 +10,8 @@ ETahi.ManuscriptManagerTemplateRoute = Ember.Route.extend
 
     addTaskType: (phaseTemplate, taskType) ->
       if taskType.get('taskType.kind') == "Task"
-        #FIXME: create a new journal task type record which is a copy of the AdHoc type
-        @controllerFor('adHocTemplateOverlay').setProperties(phaseTemplate: phaseTemplate, model: taskType)
+        adHocTemplate = @store.createRecord('journalTaskType', taskType.getProperties('title', 'journal', 'taskType'))
+        @controllerFor('adHocTemplateOverlay').setProperties(phaseTemplate: phaseTemplate, model: adHocTemplate)
         @render('adHocTemplateOverlay',
           into: 'application'
           outlet: 'overlay'

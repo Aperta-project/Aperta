@@ -54,7 +54,7 @@
   display: none;
   width: auto !important; //bootstrap/glyphicon override
   padding: 25px 25px 15px 15px;
-  color: $tahi-primary;
+  color: $tahi-green;
   font-size: 42px;
   cursor: pointer;
   @extend .scaleIn;
@@ -138,7 +138,7 @@
   float: right;
 
   label {
-    color: $tahi-primary;
+    color: $tahi-green;
     text-transform: uppercase;
   }
 

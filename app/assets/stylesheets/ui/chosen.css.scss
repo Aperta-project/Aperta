@@ -1,13 +1,13 @@
 .tahi-chosen-style {
   height: 34px;
-  border: 1px solid $tahi-primary;
-  color: $tahi-primary;
+  border: 1px solid $tahi-green;
+  color: $tahi-green;
   font-size: 14px;
   text-transform: uppercase;
   background: #fff;
 
   span {
-    color: $tahi-primary;
+    color: $tahi-green;
     margin-top: 4px;
   }
 
@@ -26,7 +26,7 @@
 }
 
 .chosen-style-override .chosen-container-single .chosen-single {
-  @include tahi-chosen($tahi-primary)
+  @include tahi-chosen($tahi-green)
 }
 
 .chosen-container .chosen-results li {

@@ -1,9 +1,9 @@
 // Override default overlay styles:
 .message-overlay {
-  a, a:hover { color: $tahi-message; }
+  a, a:hover { color: $tahi-purple; }
 
   .overlay-paper-link {
-    color: $tahi-message;
+    color: $tahi-purple;
   }
 
   .button-primary {
@@ -12,15 +12,15 @@
   }
 
   button.button-secondary {
-    @include button-secondary-modifier($tahi-message, $tahi-message);
+    @include button-secondary-modifier($tahi-purple, $tahi-purple-light, $tahi-purple-dark);
   }
 
   .close-overlay, .overlay-completed-checkbox label {
-    color: $tahi-message;
+    color: $tahi-purple;
   }
 }
 
 // Chosen overrides for message overlay:
 .message-overlay .chosen-style-override .chosen-container-single .chosen-single {
-  @include tahi-chosen($tahi-message)
+  @include tahi-chosen($tahi-purple)
 }

@@ -27,4 +27,11 @@ ETahi.ApplicationStore = DS.Store.extend
       tm.type.toString().match(/Task$/)
   ).property().volatile()
 
-
+  # in rare cases the event stream response might outrun the ajax return from the server,
+  # leading to duplicate records with the same data.  This method eliminates that exact case.
+  didSaveRecord: (record, data) ->
+    if data
+      existingRecord = @getById(record.constructor.typeKey, data.id) # 'task'
+      if record.get('isNew') && existingRecord
+        existingRecord.deleteRecord()
+    @_super(record, data)

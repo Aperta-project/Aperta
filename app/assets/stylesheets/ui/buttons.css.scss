@@ -31,6 +31,19 @@
     color: $highlight;
     background-color: $color-hover;
   }
+
+  // Knockout Style - only used for Secondary buttons
+  &.knockout {
+    border-color: $highlight;
+    color: $highlight;
+    background-color: $color-hover;
+
+    &:focus, &:hover {
+      background-color: $tahi-white;
+      border-color: $color;
+      color: $color;
+    }
+  }
 }
 
 @mixin button-link-modifier($color, $color-hover) {

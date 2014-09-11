@@ -11,4 +11,10 @@ namespace :data do
   task :shorten_supporting_information do
     Task.where(title: "Supporting Information").update_all(title: "Supporting Info")
   end
+
+  desc "Destroy and recreate manuscript manager templates"
+  task :reset_mmts => :environment do
+    ManuscriptManagerTemplate.destroy_all
+    Rake::Task["journal:create_default_templates"].invoke
+  end
 end

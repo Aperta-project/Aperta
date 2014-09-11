@@ -1,6 +1,9 @@
+interval = 500
 ETahi.EventStream = Em.Object.extend
   eventSource: null
+  messageQueue: null
   init: ->
+    @set('messageQueue', [])
     params =
       url: '/event_stream'
       method: 'GET'
@@ -13,9 +16,25 @@ ETahi.EventStream = Em.Object.extend
         data.eventNames.forEach (eventName) =>
           @addEventListener(eventName)
     Ember.$.ajax(params)
+    Ember.run.later(@, 'processMessages', [], interval)
 
   addEventListener: (eventName) ->
-    @get('eventSource').addEventListener eventName, @msgResponse.bind(@)
+    @get('eventSource').addEventListener eventName, @msgEnqueue.bind(@)
+
+  msgEnqueue: (msg) ->
+    @get('messageQueue').unshiftObject(msg)
+
+  processMessages: ->
+    unless @get('wait')
+      msg = @messageQueue.popObject()
+      if msg then @msgResponse(msg)
+    Ember.run.later(@, 'processMessages', [], interval)
+
+  pause: ->
+    @set('wait', true)
+
+  play: ->
+    @set('wait', false)
 
   msgResponse: (msg) ->
     esData = JSON.parse(msg.data)
@@ -70,8 +89,11 @@ ETahi.EventStream = Em.Object.extend
           task.triggerLater('didDelete')
 
     meta: (modelName, id) ->
+      @set('inFlightRecord', [modelName, id])
       Ember.run =>
         if model = @store.getById(modelName, id)
-          model.reload()
+          model.reload().then =>
+            @set('inFlightRecord', null)
         else
-          @store.find(modelName, id)
+          @store.find(modelName, id).then =>
+            @set('inFlightRecord', null)

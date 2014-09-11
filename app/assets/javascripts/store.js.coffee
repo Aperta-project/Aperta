@@ -1,5 +1,3 @@
-# http://emberjs.com/guides/models/using-the-store/
-
 ETahi.ApplicationStore = DS.Store.extend
   # Override the default adapter with the `DS.ActiveModelAdapter` which
   # is built to work nicely with the ActiveModel::Serializers gem.
@@ -27,11 +25,15 @@ ETahi.ApplicationStore = DS.Store.extend
       tm.type.toString().match(/Task$/)
   ).property().volatile()
 
-  # in rare cases the event stream response might outrun the ajax return from the server,
-  # leading to duplicate records with the same data.  This method eliminates that exact case.
+  # resume the event stream after saving
   didSaveRecord: (record, data) ->
-    if data
-      existingRecord = @getById(record.constructor.typeKey, data.id) # 'task'
-      if record.get('isNew') && existingRecord
-        existingRecord.deleteRecord()
     @_super(record, data)
+    es = @container.lookup('eventstream:main')
+    es.play()
+
+DS.Model.reopen
+  # before performing a save pause the event stream
+  adapterWillCommit: ->
+    es = @container.lookup('eventstream:main')
+    es.pause()
+    @send('willCommit')

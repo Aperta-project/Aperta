@@ -104,6 +104,6 @@ group :test do
   gem 'thin'
 end
 
-group :staging do
+group :staging, :performance do
   gem 'mail_safe'
 end

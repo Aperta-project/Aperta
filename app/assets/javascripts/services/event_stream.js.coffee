@@ -89,11 +89,8 @@ ETahi.EventStream = Em.Object.extend
           task.triggerLater('didDelete')
 
     meta: (modelName, id) ->
-      @set('inFlightRecord', [modelName, id])
       Ember.run =>
         if model = @store.getById(modelName, id)
-          model.reload().then =>
-            @set('inFlightRecord', null)
+          model.reload()
         else
-          @store.find(modelName, id).then =>
-            @set('inFlightRecord', null)
+          @store.find(modelName, id)

@@ -46,24 +46,23 @@ ActiveRecord::Schema.define(version: 20140910132617) do
     t.string   "last_name"
     t.string   "middle_initial"
     t.string   "email"
+    t.string   "department"
+    t.string   "title"
+    t.boolean  "corresponding",         default: false, null: false
+    t.boolean  "deceased",              default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "author_group_id"
-    t.integer  "position"
-    t.string   "type"
-    t.string   "secondary_affiliation"
     t.string   "affiliation"
-    t.boolean  "deceased",              default: false
-    t.boolean  "corresponding",         default: false
-    t.string   "title"
-    t.string   "department"
+    t.string   "secondary_affiliation"
+    t.integer  "position"
     t.integer  "actable_id"
     t.string   "actable_type"
   end
 
   create_table "awesome_authors", force: true do |t|
     t.string  "awesome_name"
-    t.integer "awesome_task_id"
+    t.integer "awesome_authors_task_id"
   end
 
   create_table "comment_looks", force: true do |t|
@@ -192,8 +191,8 @@ ActiveRecord::Schema.define(version: 20140910132617) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.integer  "striking_image_id"
     t.datetime "last_heartbeat_at"
+    t.integer  "striking_image_id"
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree

@@ -1,6 +1,6 @@
 module StandardTasks
-  class AwesomeTask < Task
-    title "Awesome Task"
+  class AwesomeAuthorsTask < Task
+    title "Awesome Authors Task"
     role "author"
 
     has_many :awesome_authors

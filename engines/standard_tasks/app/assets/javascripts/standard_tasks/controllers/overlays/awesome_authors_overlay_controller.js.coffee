@@ -1,4 +1,4 @@
-ETahi.AwesomeOverlayController = ETahi.TaskController.extend
+ETahi.AwesomeAuthorsOverlayController = ETahi.TaskController.extend
   resolvedPaper: null
 
   _setPaper: ( ->
@@ -11,7 +11,6 @@ ETahi.AwesomeOverlayController = ETahi.TaskController.extend
 
   actions:
     saveAuthor: ->
-      debugger
       @sendAction('save', @get('awesomeAuthor'))
       @set('showEditAuthorForm', false)
 

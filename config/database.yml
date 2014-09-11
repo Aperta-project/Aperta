@@ -19,7 +19,6 @@ development:
   encoding: unicode
   database: tahi_development
   pool: 5
-  username: tahi
   password:
 
   # Connect on a TCP socket. Omitted by default since the client uses a
@@ -48,7 +47,6 @@ test:
   encoding: unicode
   database: tahi_test
   pool: 5
-  username: tahi
   password:
   host: localhost
 
@@ -57,7 +55,6 @@ performance:
   encoding: unicode
   database: tahi_performance
   pool: 48
-  username: tahi
   password:
   host: localhost
 

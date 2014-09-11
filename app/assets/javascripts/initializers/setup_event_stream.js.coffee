@@ -5,5 +5,5 @@ ETahi.initializer
     if window.currentUserId && !Ember.testing
       store = container.lookup('store:main')
       es = ETahi.EventStream.extend(store: store)
-      container.register('eventstream:main', es)
+      container.register('eventstream:main', es, singleton: true)
       application.inject('route', 'eventStream', 'eventstream:main')

@@ -30,10 +30,3 @@ ETahi.ApplicationStore = DS.Store.extend
     @_super(record, data)
     es = @container.lookup('eventstream:main')
     es.play()
-
-DS.Model.reopen
-  # before performing a save pause the event stream
-  adapterWillCommit: ->
-    es = @container.lookup('eventstream:main')
-    es.pause()
-    @send('willCommit')

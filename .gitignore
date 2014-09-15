@@ -14,3 +14,4 @@ doc/*.svg
 config/secrets.yml
 dump.rdb
 spring
+doc/dependencies.*

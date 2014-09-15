@@ -7,10 +7,6 @@ module StandardTasks
 
     validate :validate_authors, if: :completed?
 
-    def active_model_serializer
-      TaskSerializer
-    end
-
     def validate_authors
       valid_authors = true
       awesome_authors.each do |a|

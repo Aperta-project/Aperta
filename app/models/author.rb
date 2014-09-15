@@ -9,4 +9,11 @@ class Author < ActiveRecord::Base
   def formatted_errors
     self.errors.to_h.merge(id: self.id)
   end
+
+  # TODO: make this a global override
+  # Because .specific returns nil if there isn't a specific one
+  def specific_with_derive
+    specific_without_derive.presence || self
+  end
+  alias_method_chain :specific, :derive
 end

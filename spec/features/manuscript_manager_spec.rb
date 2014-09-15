@@ -78,11 +78,11 @@ feature "Manuscript Manager", js: true do
     expect(task_manager_page).to have_content 'Assign Editor'
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Admin' do |overlay|
-      expect(overlay.assignee).not_to eq admin.full_name
-      overlay.assignee = admin.full_name
+      expect(overlay).to have_no_admin(admin.full_name)
+      overlay.admin = admin.full_name
       overlay.mark_as_complete
       expect(overlay).to be_completed
-      expect(overlay.assignee).to eq admin.full_name
+      expect(overlay).to have_admin(admin.full_name)
     end
 
     expect(task_manager_page).to have_no_application_error
@@ -90,7 +90,7 @@ feature "Manuscript Manager", js: true do
     needs_editor_phase = TaskManagerPage.new.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay).to_not be_completed
-      expect(overlay.assignee).to eq admin.full_name.upcase
+      expect(overlay).to have_assignee(admin.full_name)
     end
   end
 end

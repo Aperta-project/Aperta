@@ -42,7 +42,7 @@ feature "Editing paper", js: true do
 
     scenario "author placeholder text" do
       edit_paper = EditPaperPage.visit paper
-      expect(edit_paper.authors).to eq("Click here to add authors")
+      expect(edit_paper).to have_authors("Click here to add authors")
     end
 
     scenario "clicking the author text" do

@@ -23,6 +23,6 @@ feature 'Add a new card', js: true do
     card = needs_editor_phase.new_card overlay: NewAdhocCardOverlay,
       title: 'Verify Author Signatures'
 
-    expect(card.title).to eq 'Verify Author Signatures'
+    expect(card).to have_card_title('Verify Author Signatures')
   end
 end

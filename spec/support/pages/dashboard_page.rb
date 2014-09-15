@@ -1,13 +1,10 @@
 class DashboardPage < Page
   path :root
+  text_assertions :welcome_message, '.welcome-message'
 
   def new_submission
     click_on "Create New Submission"
     NewSubmissionPage.new
-  end
-
-  def has_welcome_message?(text)
-    has_css?('.welcome-message', text: text)
   end
 
   def sign_out

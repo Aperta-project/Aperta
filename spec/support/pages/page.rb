@@ -9,6 +9,17 @@ class PageFragment
 
   delegate :select, to: :element
 
+  class << self
+    def text_assertions(name, selector, block=nil)
+      define_method "has_#{name}?" do |text|
+        has_css?(selector, text: block ? block.call(text) : text)
+      end
+      define_method "has_no_#{name}?" do |text|
+        has_no_css?(selector, text: block ? block.call(text) : text)
+      end
+    end
+  end
+
   def initialize(element, context: nil)
     @element = element
     @context = context
@@ -134,15 +145,6 @@ class Page < PageFragment
       page.visit Rails.application.routes.url_helpers.send @_path, *args
       page.synchronize_content! sync_on if sync_on
       new
-    end
-
-    def text_assertions(name, selector, block=nil)
-      define_method "has_#{name}?" do |text|
-        has_css?(selector, text: block ? block.call(text) : text)
-      end
-      define_method "has_no_#{name}?" do |text|
-        has_no_css?(selector, text: block ? block.call(text) : text)
-      end
     end
   end
 

@@ -37,7 +37,7 @@ feature 'Message Cards', js: true do
 
       needs_editor_phase = task_manager_page.phase 'Assign Editor'
       needs_editor_phase.view_card subject_text, MessageCardOverlay do |card|
-        expect(card.subject).to eq subject_text
+        expect(card).to have_subject(subject_text)
         expect(card.comments.first).to have_text body_text
         expect(card.participants).to match_array [albert.full_name, admin.full_name]
       end

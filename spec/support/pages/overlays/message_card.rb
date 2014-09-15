@@ -1,4 +1,6 @@
 class MessageCardOverlay < CardOverlay
+  text_assertions :subject, "main > h1"
+
   def add_participants(*users)
     users.map(&:full_name).each do |name|
       select_from_chosen name, class: 'participant-select', skip_synchronize: true

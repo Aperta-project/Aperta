@@ -135,6 +135,15 @@ class Page < PageFragment
       page.synchronize_content! sync_on if sync_on
       new
     end
+
+    def text_assertions(name, selector, block=nil)
+      define_method "has_#{name}?" do |text|
+        has_css?(selector, text: block ? block.call(text) : text)
+      end
+      define_method "has_no_#{name}?" do |text|
+        has_no_css?(selector, text: block ? block.call(text) : text)
+      end
+    end
   end
 
   def initialize(element = nil, context: nil)

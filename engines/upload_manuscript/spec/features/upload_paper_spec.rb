@@ -21,8 +21,8 @@ feature "Upload paper", js: true do
     edit_paper.view_card('Upload Manuscript').upload_word_doc
 
     expect(page).to have_no_css('.overlay.in')
-    expect(edit_paper.title).to eq "This is a Title About Turtles"
-    expect(edit_paper.body).to match /And this is my subtitle/
+    expect(edit_paper).to have_paper_title("This is a Title About Turtles")
+    expect(edit_paper).to have_body_text("And this is my subtitle")
     expect(edit_paper.view_card 'Upload Manuscript').to be_completed
   end
 end

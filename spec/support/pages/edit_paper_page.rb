@@ -86,6 +86,10 @@ HERE
     find(:css, '#paper-title').text
   end
 
+  def has_paper_title?(title)
+    has_css?('#paper-title', text: title)
+  end
+
   def cards
     {
       metadata: all('#paper-metadata-tasks .card-content').map(&:text),

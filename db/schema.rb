@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140910132617) do
+ActiveRecord::Schema.define(version: 20140915184334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,11 +58,6 @@ ActiveRecord::Schema.define(version: 20140910132617) do
     t.integer  "position"
     t.integer  "actable_id"
     t.string   "actable_type"
-  end
-
-  create_table "awesome_authors", force: true do |t|
-    t.string  "awesome_name"
-    t.integer "awesome_authors_task_id"
   end
 
   create_table "comment_looks", force: true do |t|
@@ -191,8 +186,8 @@ ActiveRecord::Schema.define(version: 20140910132617) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
+    t.datetime "last_heartbeat_at"
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
@@ -274,6 +269,11 @@ ActiveRecord::Schema.define(version: 20140910132617) do
   end
 
   add_index "roles", ["kind"], name: "index_roles_on_kind", using: :btree
+
+  create_table "standard_tasks_awesome_authors", force: true do |t|
+    t.string  "awesome_name"
+    t.integer "awesome_authors_task_id"
+  end
 
   create_table "standard_tasks_funded_authors", force: true do |t|
     t.integer "author_id"

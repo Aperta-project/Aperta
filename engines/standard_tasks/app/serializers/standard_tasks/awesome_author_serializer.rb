@@ -13,6 +13,6 @@ module StandardTasks
       :department,
       :position,
       :awesome_name
-    has_one :author_group, embed: :id
+    has_one :awesome_authors_task, embed: :id
   end
 end

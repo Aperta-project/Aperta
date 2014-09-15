@@ -22,6 +22,8 @@ class PageFragment
     end
   end
 
+  # We could have proxied `#all` to the element,
+  # but alas, RSpec hijacks it.
   def find_all(*args)
     element.all *args
   end
@@ -59,7 +61,7 @@ class PageFragment
 
   def view_card card_name, overlay_class=nil, &block
     synchronize_content! card_name
-    find_all('.card-content', text: card_name).first.click
+    find('.card-content', text: card_name).click
     synchronize_content! 'CLOSE'
 
     overlay_class ||= begin

@@ -73,7 +73,6 @@ end
 group :development do
   # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
   gem 'bullet'
-  gem 'license_finder'
   gem 'kss-rails'
   gem 'letter_opener'
 end
@@ -104,6 +103,6 @@ group :test do
   gem 'thin'
 end
 
-group :staging do
+group :staging, :performance do
   gem 'mail_safe'
 end

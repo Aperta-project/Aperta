@@ -255,16 +255,10 @@
 }
 
 .journal-logo-spinner {
-  background-color: rgba(52, 123, 197, 0.8);
-}
-
-.journal-logo-spinner {
   @include upload-spinner-and-hover;
-}
-
-.journal-logo-spinner {
   width: 250px;
   height: 40px;
+  background-color: rgba(52, 123, 197, 0.8);
 }
 
 .journal-logo-upload {
@@ -325,7 +319,6 @@
 }
 
 .admin-section {
-  overflow: hidden;
   position: relative;
 }
 

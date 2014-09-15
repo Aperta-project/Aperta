@@ -15,8 +15,10 @@
                 accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
                 multiple=false
                 filePrefix="paper/figures"
-                progress="attachmentUploading"
-                done="attachmentUploaded"}}
+                start="uploadStarted"
+                progress="uploadProgress"
+                done="uploadFinished"
+                cancel="cancelUploads"}}
           {{/replace-image}}
           <button class="button-secondary button--green knockout view-attachment-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in"></span>View Detail</button>
         </div>

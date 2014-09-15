@@ -1,9 +1,8 @@
-ETahi.AttachmentThumbnailComponent = Ember.Component.extend
+ETahi.AttachmentThumbnailComponent = Ember.Component.extend ETahi.SpinnerMixin,
   classNameBindings: ['destroyState:_destroy', 'editState:_edit']
   destroyState: false
   previewState: false
   editState: false
-  uploadingState: false
 
   attachmentType: 'attachment'
 
@@ -36,19 +35,14 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend
     , 500, 'easeInCubic'
 
   toggleSpinner: (->
-    if @get('showSpinner')
-      @spinnerDiv = @$('.replace-spinner')[0]
-      @spinner ||= new Spinner(@get('spinnerOpts')).spin(@spinnerDiv)
-      $(@spinnerDiv).show()
-    else
-      $(@spinnerDiv).hide()
+    @createSpinner('showSpinner', '.replace-spinner', @get('spinnerOpts'))
   ).observes('showSpinner').on('didInsertElement')
 
   isProcessing: ( ->
     @get('attachment.status') == "processing"
   ).property('attachment.status')
 
-  showSpinner: Ember.computed.or('isProcessing', 'uploadingState')
+  showSpinner: Ember.computed.or('isProcessing', 'isUploading')
 
   actions:
     cancelEditing: ->
@@ -73,13 +67,14 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend
     destroyAttachment: ->
       this.$().fadeOut 250, => @get('attachment').destroyRecord()
 
-    attachmentUploading: ->
-      @set('uploadingState', true)
+    uploadStarted: (data, fileUploadXHR) ->
+      @sendAction('uploadStarted', data, fileUploadXHR)
 
-    attachmentUploaded: (data) ->
-      store = @get('attachment.store')
-      store.pushPayload @get('attachmentType') , data
-      @set('uploadingState', false)
+    uploadProgress: (data) ->
+      @sendAction('uploadProgress', data)
+
+    uploadFinished: (data, filename) ->
+      @sendAction('uploadFinished', data, filename)
 
     togglePreview: ->
       @toggleProperty 'previewState'

@@ -1,4 +1,4 @@
-ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend(ETahi.AlertUnsavedChanges,
+ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend ETahi.AlertUnsavedChanges,
   controllerName: 'manuscriptManagerTemplateEdit'
 
   model: (params) ->
@@ -34,4 +34,3 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend(ETahi.AlertUnsavedC
     didRollBack: ->
       @get('journal.manuscriptManagerTemplates').removeObject(@get('newTemplate'))
       @transitionTo('journal')
-)

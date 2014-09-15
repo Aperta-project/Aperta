@@ -1,12 +1,7 @@
-ETahi.JournalThumbnailView = Ember.View.extend
+ETahi.JournalThumbnailView = Ember.View.extend ETahi.SpinnerMixin,
   toggleSpinner: (->
-    if @get('controller.logoUploading')
-      @spinnerDiv = @$('.journal-logo-spinner')?[0]
-      @spinner ||= new Spinner(color: "#fff").spin(@spinnerDiv)
-      $(@spinnerDiv).show()
-    else
-      $(@spinnerDiv).hide()
-  ).observes('controller.logoUploading')
+    @createSpinner('controller.isUploading', '.journal-logo-spinner', color: '#fff')
+  ).observes('controller.isUploading').on('didInsertElement')
 
   togglePreview: (->
     Ember.run.schedule 'afterRender', =>

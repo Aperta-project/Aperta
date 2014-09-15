@@ -1,24 +1,13 @@
-ETahi.FigureOverlayController = ETahi.TaskController.extend
+ETahi.FigureOverlayController = ETahi.TaskController.extend ETahi.FileUploadMixin,
   figureUploadUrl: ( ->
     "/papers/#{@get('litePaper.id')}/figures"
   ).property('litePaper.id')
 
-  uploads: []
-
   figures: Ember.computed.alias 'paper.figures'
 
   actions:
-    uploadStarted: (data) ->
-      @get('uploads').pushObject ETahi.FileUpload.create(file: data.files[0])
-
-    uploadProgress: (data) ->
-      currentUpload = @get('uploads').findBy('file', data.files[0])
-      currentUpload.setProperties(dataLoaded: data.loaded, dataTotal: data.total)
-
     uploadFinished: (data, filename) ->
-      uploads = @get('uploads')
-      newUpload = uploads.findBy('file.name', filename)
-      uploads.removeObject newUpload
+      @uploadFinished(data, filename)
 
       @store.pushPayload('figure', data)
       figure = @store.getById('figure', data.figure.id)

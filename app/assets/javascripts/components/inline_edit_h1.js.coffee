@@ -1,5 +1,12 @@
 ETahi.InlineEditH1Component = Em.Component.extend
   editing: false
+  snapshot: null
+
+  createSnapshot: (->
+    @set('snapshot', Em.copy(@get('title')))
+  ).observes('editing')
+
+  hasContent: Em.computed.notEmpty('title')
 
   focusOnEdit: (->
     if @get('editing')
@@ -9,9 +16,10 @@ ETahi.InlineEditH1Component = Em.Component.extend
 
   actions:
     toggleEdit: ->
-      @get('model').rollback()
+      @sendAction('cancel', @get('snapshot')) if @get('editing')
       @toggleProperty 'editing'
 
     save: ->
-      @get('model').save()
-      @toggleProperty 'editing'
+      if @get('hasContent')
+        @sendAction('save', @get('title'))
+        @toggleProperty 'editing'

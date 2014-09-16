@@ -3,7 +3,7 @@ module StandardTasks
     title "Awesome Authors Task"
     role "author"
 
-    has_many :awesome_authors
+    has_many :awesome_authors, inverse_of: :awesome_authors_task
 
     validate :validate_authors, if: :completed?
 

@@ -157,3 +157,9 @@ textarea { resize: none; }
   padding-top: 4px;
   color: $tahi-green;
 }
+
+
+.error {
+  border: 1px solid $tahi-error-red;
+  color: $tahi-error-red;
+}

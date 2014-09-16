@@ -14,11 +14,15 @@
     </div>
   </div>
   <div class="form-group form-inline">
-    <div class="form-group author-half required">
+    <div {{bind-attr class=":form-group :author-awesome-name :required author.validationErrors.awesomeName:error"}}>
       {{input type='text'
       value=author.awesomeName
       class='form-control'
       placeholder='Your Awesome Name'}}
+      {{#if author.validationErrors.awesomeName }}
+        <br/>
+        {{ author.validationErrors.awesomeName }}
+      {{/if}}
     </div>
   </div>
   {{#if author.isNew }}

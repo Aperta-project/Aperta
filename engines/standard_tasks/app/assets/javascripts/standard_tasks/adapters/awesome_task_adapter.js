@@ -1,1 +1,1 @@
-ETahi.AwesomeTaskAdapter = ETahi.TaskAdapter.extend();
+ETahi.AwesomeAuthorsTaskAdapter = ETahi.TaskAdapter.extend();

@@ -3,39 +3,35 @@ module StandardTasks
     respond_to :json
 
     def create
-      author = AwesomeAuthor.create author_params
+      author = AwesomeAuthor.create(author_params.merge(author_group_id: default_author_group.id))
       respond_with author
     end
 
     def update
       author = AwesomeAuthor.find(params[:id])
-      author.update author_params
+      author.update(author_params)
       respond_with author
     end
 
     def destroy
       author = AwesomeAuthor.find(params[:id])
-      author.destroy
+      author.destroy if author.present?
       respond_with author
     end
 
     private
+
     def author_params
-      params.require(:author).permit(
+      params.require(:awesome_author).permit(
+        :awesome_authors_task_id,
         :first_name,
         :last_name,
-        :middle_initial,
-        :email,
-        :title,
-        :department,
-        :deceased,
-        :corresponding,
-        :affiliation,
-        :secondary_affiliation,
-        :author_group_id,
-        :position,
         :awesome_name
       )
+    end
+
+    def default_author_group
+      Task.find(author_params[:awesome_authors_task_id]).paper.author_groups.first
     end
   end
 end

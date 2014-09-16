@@ -2,13 +2,13 @@
   <div class="form-group form-inline author-top">
     <div class="form-group author-name required">
       {{input type='text'
-      value=newAuthor.firstName
+      value=author.firstName
       class='form-control'
       placeholder='First name'}}
     </div>
     <div class="form-group author-name required">
       {{input type='text'
-      value=newAuthor.lastName
+      value=author.lastName
       class='form-control'
       placeholder='Last name'}}
     </div>
@@ -16,9 +16,17 @@
   <div class="form-group form-inline">
     <div class="form-group author-half required">
       {{input type='text'
-      value=newAuthor.awesomeName
+      value=author.awesomeName
       class='form-control'
       placeholder='Your Awesome Name'}}
     </div>
   </div>
+  {{#if author.isNew }}
+    <div class="form-group">
+      <span class="pull-right author-form-buttons">
+        <a class="btn-link author-cancel" {{action 'cancelEdit' bubbles=false}}>cancel</a>
+        <button class="button-secondary" {{action "saveAuthor" author}}>done</button>
+      </span>
+    </div>
+  {{/if}}
 </div>

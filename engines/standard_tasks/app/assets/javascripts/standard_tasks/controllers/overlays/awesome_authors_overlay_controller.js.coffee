@@ -1,11 +1,13 @@
 ETahi.AwesomeAuthorsOverlayController = ETahi.TaskController.extend
-  resolvedPaper: null
 
-  _setPaper: ( ->
-    @get('paper').then (paper) =>
-      @set('resolvedPaper', paper)
-  ).observes('paper')
+  initNewAuthor: ( ->
+    author = @store.createRecord('awesomeAuthor', awesomeAuthorsTask: @get('model'))
+    @set('newAwesomeAuthor', author)
+  ).on('didSetup')
 
   actions:
-    saveAuthor: ->
-      @sendAction('save', @get('awesomeAuthor'))
+    saveAuthor: (author) ->
+      author.save().then ((newAuthor) =>
+        @initNewAuthor()),
+      ((error) => debugger)
+

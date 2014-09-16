@@ -1,4 +1,5 @@
 class AddCollaboratorsOverlay < PageFragment
+  text_assertions :collaborator, ".collaborator .name"
 
   def add_collaborators(*users)
     users.map(&:full_name).each do |name|
@@ -8,7 +9,7 @@ class AddCollaboratorsOverlay < PageFragment
 
   def has_collaborators?(*collaborators)
     collaborators.all? do |collaborator|
-      has_css?(".collaborator .name", text: collaborator.full_name)
+      has_collaborator? collaborator.full_name
     end
   end
 

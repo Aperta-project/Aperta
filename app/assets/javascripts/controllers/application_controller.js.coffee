@@ -1,4 +1,5 @@
 ETahi.ApplicationController = Ember.Controller.extend
+  delayedSave: false
   currentUser: ( ->
     @getCurrentUser()
   ).property()
@@ -23,3 +24,9 @@ ETahi.ApplicationController = Ember.Controller.extend
   overlayRedirect: []
 
   defaultBackground: 'overlay_background'
+
+  testing: ( ->
+    Ember.testing || ETahi.environment == "test"
+  ).property()
+
+  showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave')

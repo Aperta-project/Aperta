@@ -34,25 +34,18 @@ Ember.Test.registerHelper('getStore', (app) ->
   @setupMockServer()
   emq.globalize()
   setResolver Ember.DefaultResolver.create namespace: ETahi
-  Em.run ->
-    ETahi.rootElement = '#ember-testing'
-    ETahi.setupForTesting()
-    ETahi.injectTestHelpers()
+  ETahi.rootElement = '#ember-testing'
+  ETahi.setupForTesting()
+  ETahi.injectTestHelpers()
 
 @setupTestEnvironment()
 
 @setupApp = (options={integration:false}) ->
   window.TahiTest = {} # for storing test variables
   if options.integration
-    @setupTestEnvironment()
-
     container = ETahi.__container__
     applicationController = container.lookup('controller:application')
 
     store = container.lookup 'store:main'
     store.find 'user', @currentUserId
     .then (currentUser) -> applicationController.set 'currentUser', currentUser
-  else
-    emq.globalize()
-    setResolver Ember.DefaultResolver.create namespace: ETahi
-    ETahi.setupForTesting()

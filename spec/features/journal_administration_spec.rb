@@ -28,7 +28,7 @@ feature "Journal Administration", js: true do
       before { assign_journal_role(journal, user, :admin) }
 
       scenario "shows assigned journal" do
-        expect(admin_page.journal_names).to eq([journal.name])
+        expect(admin_page).to have_journal_names(journal.name)
       end
     end
 
@@ -51,7 +51,7 @@ feature "Journal Administration", js: true do
     scenario "editing a MMT" do
       mmt = journal.manuscript_manager_templates.first
       mmt_page = journal_page.visit_mmt(mmt)
-      expect(mmt_page.paper_type).to eq(mmt.paper_type)
+      expect(mmt_page).to have_paper_type(mmt.paper_type)
     end
 
     scenario "deleting a MMT" do
@@ -68,16 +68,16 @@ feature "Journal Administration", js: true do
         role = journal_page.add_role
         role.name = "whatever"
         role.save
-        expect(role.name).to eq("whatever")
+        expect(role).to have_name("whatever")
       end
 
       scenario "modifying a role" do
         role = journal_page.find_role(existing_role.name)
-        expect(role.name).to eq(existing_role.name)
+        expect(role).to have_name(existing_role.name)
         role.edit
         role.name = "a different name"
         role.save
-        expect(role.name).to eq("a different name")
+        expect(role).to have_name("a different name")
       end
 
       scenario "deleting a role" do

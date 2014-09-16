@@ -22,13 +22,7 @@ feature 'Add a new card', js: true do
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
     card = needs_editor_phase.new_card overlay: NewAdhocCardOverlay,
       title: 'Verify Author Signatures'
-      # body: 'Please remember to verify signatures of every paper author.',
-      # assignee: albert
 
-    expect(card.title).to eq 'Verify Author Signatures'
-
-    # COMING SOON....
-    # expect(card.assignee).to eq albert.full_name.upcase
-    # expect(card.body).to eq 'Please remember to verify signatures of every paper author.'
+    expect(card).to have_card_title('Verify Author Signatures')
   end
 end

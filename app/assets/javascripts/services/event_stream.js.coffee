@@ -1,6 +1,10 @@
+interval = 500
 ETahi.EventStream = Em.Object.extend
   eventSource: null
+  messageQueue: null
+  wait: false
   init: ->
+    @set('messageQueue', [])
     params =
       url: '/event_stream'
       method: 'GET'
@@ -13,9 +17,25 @@ ETahi.EventStream = Em.Object.extend
         data.eventNames.forEach (eventName) =>
           @addEventListener(eventName)
     Ember.$.ajax(params)
+    @processMessages()
 
   addEventListener: (eventName) ->
-    @get('eventSource').addEventListener eventName, @msgResponse.bind(@)
+    @get('eventSource').addEventListener eventName, @msgEnqueue.bind(@)
+
+  msgEnqueue: (msg) ->
+    @get('messageQueue').unshiftObject(msg)
+
+  processMessages: ->
+    unless @get('wait')
+      msg = @messageQueue.popObject()
+      if msg then @msgResponse(msg)
+    Ember.run.later(@, 'processMessages', [], interval)
+
+  pause: ->
+    @set('wait', true)
+
+  play: ->
+    @set('wait', false)
 
   msgResponse: (msg) ->
     esData = JSON.parse(msg.data)

@@ -17,6 +17,9 @@ class EditPaperPage < Page
   include ActionView::Helpers::JavaScriptHelper
 
   path :edit_paper
+  text_assertions :paper_title, '#paper-title'
+  text_assertions :journal, '.paper-journal'
+  text_assertions :authors, '#paper-authors'
 
   def initialize element = nil
     expect(page).to have_css('#paper-body', wait: 4)

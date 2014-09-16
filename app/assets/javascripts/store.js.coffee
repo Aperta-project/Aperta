@@ -1,5 +1,3 @@
-# http://emberjs.com/guides/models/using-the-store/
-
 ETahi.ApplicationStore = DS.Store.extend
   # Override the default adapter with the `DS.ActiveModelAdapter` which
   # is built to work nicely with the ActiveModel::Serializers gem.
@@ -27,4 +25,8 @@ ETahi.ApplicationStore = DS.Store.extend
       tm.type.toString().match(/Task$/)
   ).property().volatile()
 
-
+  # resume the event stream after saving
+  didSaveRecord: (record, data) ->
+    @_super(record, data)
+    es = @container.lookup('eventstream:main')
+    es.play()

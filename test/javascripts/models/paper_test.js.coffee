@@ -40,7 +40,8 @@ test 'Paper hasMany tasks (async)', ->
       paper
 
   paperPromise.then((paper) ->
-    deepEqual paper.get('tasks').mapBy('type'), ['MessageTask', 'TechCheckTask']
+    paper.get('tasks').then (tasks) ->
+      deepEqual tasks.mapBy('type'), ['MessageTask', 'TechCheckTask']
   ).then(start, start)
 
 
@@ -57,7 +58,8 @@ test 'allMetadata tasks filters tasks by isMetaData', ->
       paper
 
   paperPromise.then((paper) ->
-    deepEqual paper.get('allMetadataTasks').mapBy('type'), ['TechCheckTask']
+    paper.get('allMetadataTasks').then (tasks) ->
+      deepEqual tasks.mapBy('type'), ['TechCheckTask']
   ).then(start, start)
 
 test 'Paper hasMany assignees as User', ->

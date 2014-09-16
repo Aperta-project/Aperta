@@ -34,7 +34,8 @@ ETahi.Paper = DS.Model.extend
   ).property('title', 'shortTitle')
 
   allMetadataTasks: (->
-    @get('tasks').filterBy('isMetadataTask')
+    @get('tasks').then (tasks) ->
+      tasks.filterBy('isMetadataTask')
   ).property('tasks.content.@each.isMetadataTask')
 
   allMetadataTasksCompleted: ETahi.computed.all('allMetadataTasks', 'completed', true)

@@ -2,8 +2,13 @@ ETahi.initializer
   name: 'eventStream'
   after: 'currentUser'
   initialize: (container, application) ->
-    if window.currentUserId && !Ember.testing
+    if window.currentUserId
       store = container.lookup('store:main')
-      es = ETahi.EventStream.extend(store: store)
-      container.register('eventstream:main', es)
+      es = if Ember.testing # fake event stream
+        Ember.Object.extend
+          play: -> null
+          pause: -> null
+      else
+        ETahi.EventStream
+      container.register('eventstream:main', es.extend({store: store}), singleton: true)
       application.inject('route', 'eventStream', 'eventstream:main')

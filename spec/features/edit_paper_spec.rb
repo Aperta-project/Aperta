@@ -23,7 +23,7 @@ feature "Editing paper", js: true do
       sleep 1
       edit_paper.reload
 
-      expect(edit_paper.title).to eq "Lorem Ipsum Dolor Sit Amet"
+      expect(edit_paper).to have_paper_title("Lorem Ipsum Dolor Sit Amet")
       expect(edit_paper).to have_body_text("Contrary to popular belief")
       expect(edit_paper.cards[:metadata]).to match_array ['Upload Manuscript', 'Add Authors', 'Upload Figures', 'Supporting Info']
       expect(edit_paper.cards[:assigned]).to include 'Tech Check', 'Assign Admin'
@@ -42,7 +42,7 @@ feature "Editing paper", js: true do
 
     scenario "author placeholder text" do
       edit_paper = EditPaperPage.visit paper
-      expect(edit_paper.authors).to eq("Click here to add authors")
+      expect(edit_paper).to have_authors("Click here to add authors")
     end
 
     scenario "clicking the author text" do

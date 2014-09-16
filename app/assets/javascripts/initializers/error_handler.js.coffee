@@ -22,7 +22,9 @@ ETahi.initializer
 
     Ember.onerror = (error) ->
       logError(error.stack)
-      unless ETahi.environment == 'development'
+      if ETahi.environment == 'development'
+        throw error
+      else
         displayErrorMessage(error)
 
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->

@@ -1,4 +1,5 @@
 class NewAdhocCardOverlay < CardOverlay
+  text_assertions :card_title, 'main > div > h1'
 
   def self.launch(session)
     overlay = session.find('.overlay-container')
@@ -16,24 +17,8 @@ class NewAdhocCardOverlay < CardOverlay
     find('.button-secondary', text: "SAVE").click
   end
 
-  # def body
-  #   find('#task-body').text
-  # end
-  #
-  # def body=(new_text)
-  #   fill_in 'task-body', with: new_text
-  # end
-
   def create(params)
     self.title = params[:title]
-    # self.body = params[:body]
-    # self.assignee = params[:assignee].full_name
-    # find('a', text: 'CREATE CARD').click
     self
   end
-
-  # def assignee=(name)
-  #   select_from_chosen name, class: 'select-assignee'
-  # end
-
 end

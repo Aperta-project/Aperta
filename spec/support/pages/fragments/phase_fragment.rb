@@ -1,4 +1,6 @@
 class PhaseFragment < PageFragment
+  text_assertions :card, '.card'
+
   def new_card(**params)
     find('a', text: 'ADD NEW CARD').click
     new_card = params[:overlay].launch(session)
@@ -13,10 +15,6 @@ class PhaseFragment < PageFragment
 
   def card_count
     find_all('.card').count
-  end
-
-  def has_card?(name)
-    has_css? '.card', text: name
   end
 
   def has_remove_icon?

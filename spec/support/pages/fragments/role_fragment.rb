@@ -1,4 +1,5 @@
 class RoleFragment < PageFragment
+  text_assertions :name, ".name-field"
 
   def name
     find(".name-field").text

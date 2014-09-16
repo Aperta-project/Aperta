@@ -5,7 +5,6 @@
 // .button--purple     - Make the button PURPLE
 // .button--blue       - Make the button LIGHT BLUE
 // .button--grey       - Make the button GREY
-// .button--white      - Make the button WHITE
 // .button--disabled   - Style the button as disabled
 // .button--wide       - Extra padding on left and right
 // .button--small      - Less padding all around
@@ -30,6 +29,20 @@
     border-color: $highlight;
     color: $highlight;
     background-color: $color-hover;
+  }
+
+  // Knockout Style - used for Secondary buttons and button-link
+  // Styleguide UI.Button.Knockout
+  &.knockout {
+    border-color: $highlight;
+    color: $highlight;
+    background-color: $color-hover;
+
+    &:focus, &:hover {
+      background-color: $tahi-white;
+      border-color: $color;
+      color: $color;
+    }
   }
 }
 
@@ -70,10 +83,6 @@
   &.button--purple     { @include button-primary-modifier($tahi-purple, $tahi-purple-dark); }
   &.button--blue       { @include button-primary-modifier($tahi-blue, $tahi-blue-dark); }
   &.button--grey       { @include button-primary-modifier($tahi-grey, $tahi-grey-dark); }
-  &.button--white {
-    color: $tahi-green;
-    background: #fff;
-  }
 }
 
 
@@ -85,10 +94,6 @@
   &.button--purple     { @include button-secondary-modifier($tahi-purple, $tahi-purple-light, $tahi-purple-dark); }
   &.button--blue       { @include button-secondary-modifier($tahi-blue, $tahi-blue-light, $tahi-blue-dark); }
   &.button--grey       { @include button-secondary-modifier($tahi-grey, $tahi-grey-light, $tahi-grey-dark); }
-  &.button--white {
-    border-color: #fff;
-    background: #fff;
-  }
 }
 
 
@@ -101,10 +106,17 @@
   &.button--purple     { @include button-link-modifier($tahi-purple, $tahi-purple-dark); }
   &.button--blue       { @include button-link-modifier($tahi-blue, $tahi-blue-dark); }
   &.button--grey       { @include button-link-modifier($tahi-grey, $tahi-grey-dark); }
-  &.button--white      { @include button-link-modifier(#fff, #fff); }
 
   &:hover {
     text-decoration: underline;
+  }
+
+  &.knockout {
+    color: $tahi-white;
+
+    &:focus, &:hover {
+      text-decoration: underline;
+    }
   }
 }
 

@@ -1,3 +1,3 @@
 web: bundle exec puma -C config/puma.rb
 worker: bundle exec sidekiq
-event_source: go run $GOPATH/src/github.com/stuartnelson3/golang-eventsource/server.go -p=8080 -token=token123
+event_source: go run $GOPATH/src/github.com/tahi-project/golang-eventsource/server.go -p=8080 -token=token123

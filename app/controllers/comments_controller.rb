@@ -9,7 +9,6 @@ class CommentsController < ApplicationController
     task = Task.find(params[:comment][:task_id])
 
     comment = task.comments.create(comment_params)
-    CommentLookManager.sync(task)
     respond_with comment
   end
 

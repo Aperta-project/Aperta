@@ -8,13 +8,13 @@ ETahi.ManuscriptManagerTemplateNewRoute = Ember.Route.extend ETahi.AlertUnsavedC
       paperType: "Research"
 
     newTemplate.get('phaseTemplates').pushObject
-      @store.createRecord 'phaseTemplate', name: "Phase 1", position: 1
+      @store.createRecord('phaseTemplate', name: "Phase 1", position: 1)
 
     newTemplate.get('phaseTemplates').pushObject
-      @store.createRecord 'phaseTemplate', name: "Phase 2", position: 2
+      @store.createRecord('phaseTemplate', name: "Phase 2", position: 2)
 
     newTemplate.get('phaseTemplates').pushObject
-      @store.createRecord 'phaseTemplate', name: "Phase 3", position: 3
+      @store.createRecord('phaseTemplate', name: "Phase 3", position: 3)
 
     @set('journal', journal)
     @set('newTemplate', newTemplate)

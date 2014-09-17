@@ -3,7 +3,7 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend ETahi.FileUploadMixi
     "/papers/#{@get('litePaper.id')}/figures"
   ).property('litePaper.id')
 
-  figures:( ->
+  figures: ( ->
     @get('paper.figures').sortBy('createdAt').reverse()
   ).property('paper.figures.@each')
 

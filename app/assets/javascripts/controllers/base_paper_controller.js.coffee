@@ -44,10 +44,6 @@ ETahi.BasePaperController = Ember.ObjectController.extend
       @get('tasks').filterBy('role', 'reviewer')
   ).property('tasks.@each.role')
 
-  noAuthors: (->
-    Em.isEmpty(@get('authors'))
-  ).property('authors.[]')
-
   authorNames: ( ->
     authors = @get('authors').map (author) ->
       author.get('fullName')

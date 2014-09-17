@@ -23,10 +23,6 @@
                              preventEnterKey="true"}}
         </div>
 
-        <div id="paper-authors" {{bind-attr class="noAuthors:muted"}} {{action "viewCard" addAuthorsTask}}>
-          {{authorNames}}
-        </div>
-
         {{#if showPlaceholder}}
           <div id="paper-placeholder" {{action 'tryHidingPlaceholder'}}>Type your manuscript here</div>
         {{/if}}

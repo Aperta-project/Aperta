@@ -1,5 +1,5 @@
 class CommentsPolicy < ApplicationPolicy
-  allow_params :comment
+  require_params :task
 
   def show?
     current_user.admin? || task_owner? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper?
@@ -10,10 +10,6 @@ class CommentsPolicy < ApplicationPolicy
   end
 
   private
-
-  def task
-    comment.task
-  end
 
   def paper
     task.paper

@@ -21,10 +21,10 @@ module Authorizations
   end
 
   def render_forbidden
-    if !request.xhr?
-      redirect_to root_path
-    else
+    if request.xhr?
       head :forbidden
+    else
+      redirect_to root_path
     end
   end
 

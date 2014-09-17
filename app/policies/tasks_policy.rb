@@ -24,7 +24,7 @@ class TasksPolicy < ApplicationPolicy
   private
 
   def task_owner?
-    current_user.tasks.where(id: task.id).first
+    task.assignee_id == current_user.id
   end
 
   def metadata_task_collaborator?

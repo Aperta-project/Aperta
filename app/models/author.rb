@@ -6,10 +6,6 @@ class Author < ActiveRecord::Base
 
   validates :author_group, presence: true
 
-  def formatted_errors
-    self.errors.to_h.merge(id: self.id)
-  end
-
   # TODO: make this a global override
   # Because .specific returns nil if there isn't a specific one
   def specific_with_derive

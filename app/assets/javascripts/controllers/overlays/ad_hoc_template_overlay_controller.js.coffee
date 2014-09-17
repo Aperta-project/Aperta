@@ -62,5 +62,4 @@ ETahi.AdHocTemplateOverlayController = Ember.ObjectController.extend
         @send('deleteBlock', block)
 
     closeAction: ->
-      @get('model').save().then =>
-        @send('addTaskAndClose', @get('phaseTemplate'), @get('model'))
+      @send('addTaskAndClose')

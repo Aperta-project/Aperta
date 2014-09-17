@@ -6,7 +6,7 @@ ETahi.AdHocTemplateOverlayController = Ember.ObjectController.extend
     @get('newBlocks').contains(block)
 
   replaceBlock: (block, otherBlock) ->
-    blocks = @get('model.body')
+    blocks = @get('template')
     position = blocks.indexOf(block)
     if position isnt -1
       Ember.EnumerableUtils.replace(blocks, position, 1, [otherBlock])
@@ -16,6 +16,9 @@ ETahi.AdHocTemplateOverlayController = Ember.ObjectController.extend
       Em.isEmpty(item.value)
 
   actions:
+    setTitle: (title) ->
+      @set('title', title)
+
     addTextBlock: ->
       @get('newBlocks').pushObject([
           type: "text"
@@ -31,7 +34,7 @@ ETahi.AdHocTemplateOverlayController = Ember.ObjectController.extend
 
     saveBlock: (block) ->
       if @isNew(block)
-        @get('model.body').pushObject(block)
+        @get('template').pushObject(block)
         @get('newBlocks').removeObject(block)
       @replaceBlock(block, @_pruneEmptyItems(block))
 
@@ -45,7 +48,7 @@ ETahi.AdHocTemplateOverlayController = Ember.ObjectController.extend
       if @isNew(block)
         @get('newBlocks').removeObject(block)
       else
-        @get('model.body').removeObject(block)
+        @get('template').removeObject(block)
 
     addCheckboxItem: (block) ->
       block.pushObject

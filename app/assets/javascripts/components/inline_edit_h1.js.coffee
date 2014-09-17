@@ -16,10 +16,10 @@ ETahi.InlineEditH1Component = Em.Component.extend
 
   actions:
     toggleEdit: ->
-      @sendAction('cancel', @get('snapshot')) if @get('editing')
+      @sendAction('setTitle', @get('snapshot')) if @get('editing')
       @toggleProperty 'editing'
 
     save: ->
       if @get('hasContent')
-        @sendAction('save', @get('title'))
+        @sendAction('setTitle', @get('title'))
         @toggleProperty 'editing'

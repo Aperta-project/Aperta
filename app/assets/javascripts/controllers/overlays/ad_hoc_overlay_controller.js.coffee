@@ -15,11 +15,8 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
       Em.isEmpty(item.value)
 
   actions:
-    saveTitle: (title) ->
-      @set('model.title', title)
-
-    rollbackTitle: (oldTitle) ->
-      @set('model.title', oldTitle)
+    setTitle: (title) ->
+      @set('title', title)
 
     addTextBlock: ->
       @get('newBlocks').pushObject([

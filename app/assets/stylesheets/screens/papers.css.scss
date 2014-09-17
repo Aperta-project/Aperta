@@ -58,6 +58,10 @@
   min-height: 500px;
   padding-bottom: 36px;
 
+  .ve-ce-documentNode {
+    font-size: 0.95em;
+  }
+
   .ve-ce-documentNode.ve-ce-branchNode { // visual-editor override
     min-height: 500px;
   }

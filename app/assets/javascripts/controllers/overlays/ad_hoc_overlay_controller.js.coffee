@@ -17,6 +17,7 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend
   actions:
     setTitle: (title) ->
       @set('title', title)
+      @send('saveModel')
 
     addTextBlock: ->
       @get('newBlocks').pushObject([

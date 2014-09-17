@@ -34,5 +34,3 @@ test "#removeTask removes the given task from the template's phase", ->
     @ctrl.send 'removeTask', @task1
     tasks = @phase.get('taskTemplates')
     deepEqual tasks.mapBy('title'), ['BTask']
-
-

@@ -20,11 +20,7 @@ ETahi.AwesomeAuthorsOverlayController = ETahi.TaskController.extend
       @_super()
         .then () =>
           @set('validationErrors', {})
-          # @get('resolvedPaper.authorGroups').map (grp) ->
-          #   grp.get('authors').map (author) ->
-          #     author.set('validationErrors', {})
         .catch (error) =>
-          # @set('saveInFlight', false)
           errors = error.errors
           if errors.awesomeAuthors
             errors.awesomeAuthors.map (authorErrors) =>

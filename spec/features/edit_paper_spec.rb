@@ -39,17 +39,6 @@ feature "Editing paper", js: true do
       end
       expect(edit_paper).to_not have_css('a.button--disabled')
     end
-
-    scenario "author placeholder text" do
-      edit_paper = EditPaperPage.visit paper
-      expect(edit_paper).to have_authors("Click here to add authors")
-    end
-
-    scenario "clicking the author text" do
-      edit_paper = EditPaperPage.visit paper
-      edit_paper.find("#paper-authors").click
-      expect(page).to have_content /add authors/i
-    end
   end
 
   context "As an Editor, with reviewers assigned" do

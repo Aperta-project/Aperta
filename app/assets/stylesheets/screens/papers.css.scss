@@ -147,6 +147,13 @@
   }
 }
 
+.ve-toolbar-underside {
+  @include position(absolute, 0px 0px auto 0px);
+  width: 100%;
+  height: 45px;
+  background: #fff;
+}
+
 .edit-paper {
   position: absolute;
   top: 5px;

@@ -16,11 +16,6 @@ feature 'Message Cards', js: true do
     FactoryGirl.create(:paper, :with_tasks, user: admin, submitted: true, journal: journal)
   end
 
-  def create_comment_with_comment_looks(task, comment_params)
-    task.comments.create(comment_params)
-    CommentLookManager.sync(task)
-  end
-
   describe "creating a new message" do
     let(:subject_text) { 'A sample message' }
     let(:body_text) { 'Everyone add some comments to this test post.' }
@@ -49,7 +44,7 @@ feature 'Message Cards', js: true do
     let!(:message) do
       create :message_task, phase: phase, participants: participants
     end
-    let!(:initial_comment) { create :comment, :with_comment_look, commenter: commenter, task: message }
+    let!(:initial_comment) { create :comment, commenter: commenter, task: message }
 
     context "blank comments" do
       let(:commenter) { admin }
@@ -112,7 +107,7 @@ feature 'Message Cards', js: true do
     let(:participants) { [admin, albert] }
     let(:phase) { paper.phases.first }
     let!(:initial_comments) do
-      comment_count.times.map { create_comment_with_comment_looks(message, commenter_id: commenter.id, body: "FOO") }
+      comment_count.times.map { create(:comment, task: message, commenter: albert, body: "FOO") }
     end
     let(:message) { create :message_task, phase: phase, participants: participants }
     let(:comment_count) { 4 }

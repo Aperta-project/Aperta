@@ -48,7 +48,7 @@ describe CommentsPolicy do
     end
 
     before do
-     FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
+      FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
     end
 
     it { expect(policy.show?).to be(true) }

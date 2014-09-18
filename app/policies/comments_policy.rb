@@ -9,5 +9,4 @@ class CommentsPolicy < ApplicationPolicy
   def create?
     current_user.admin? || task_owner? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper?
   end
-
 end

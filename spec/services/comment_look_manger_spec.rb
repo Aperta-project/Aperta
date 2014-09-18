@@ -25,7 +25,7 @@ describe CommentLookManager do
     expect(looks.count).to eq(1)
 
     more_looks = CommentLookManager.comment_looks(comment)
-    expect(looks.count).to eq(1)
+    expect(more_looks.count).to eq(1)
   end
 
   it "doesn't make comment looks for non-participants even if they comment" do

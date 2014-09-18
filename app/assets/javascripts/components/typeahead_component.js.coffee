@@ -12,14 +12,17 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
   autoFocusInput: -> @.$().focus() if @get 'autoFocus'
 
   didInsertElement: ->
+    self = this
     engine = new Bloodhound
       name: 'schools'
       local: @get('sourceList').map (item) ->
         if Object.prototype.toString.call(item) is '[object Object]'
           value: item.value
+          subvalue: self.get('subvalue')
           object: item.object
         else
           value: item
+          subvalue: self.get('subvalue')
       datumTokenizer: (d) -> Bloodhound.tokenizers.whitespace d.value
       queryTokenizer: Bloodhound.tokenizers.whitespace
       limit: 10
@@ -33,6 +36,9 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
     ,
       source: engine.ttAdapter()
       displayKey: 'value'
+      templates:
+
+        suggestion: Handlebars.compile('<strong>{{value}}</strong>{{#if subvalue}}<br>{{subvalue}}{{/if}}')
 
     @setupSelectedListener()
     @autoFocusInput()

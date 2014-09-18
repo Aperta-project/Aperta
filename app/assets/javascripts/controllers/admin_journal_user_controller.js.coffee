@@ -12,6 +12,7 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
       object: role
 
   roleQuery: ''
+  displayThis: "Line 2"
   createRoleObject: (userRole) ->
     Em.Object.create
       name: userRole.get 'role.name'

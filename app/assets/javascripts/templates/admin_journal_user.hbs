@@ -11,12 +11,13 @@
     {{/each}}
     {{#if isAddingRole}}
       {{type-ahead value=roleQuery
+                   subvalue=displayThis
                    class="add-role-input"
                    name="add_role"
                    autoFocus=true
                    sourceList=rolesList
                    suggestionSelected="assignRole"
-                   placeholder="Role Name"}}
+                   placeholder="Role Name" }}
     {{else}}
       <span {{action "addRoleAssignment"}} class="token assign-role-button token--add"><span class="glyphicon glyphicon-plus"></span></span>
     {{/if}}

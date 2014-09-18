@@ -9,6 +9,13 @@ ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
     else
       @store.find('flow')
 
+  afterModel: ->
+    @store.find('commentLook')
+
+  setupController: (controller, model) ->
+    controller.set('model', model)
+    controller.set('commentLooks', @store.all('commentLook'))
+
   actions:
     chooseNewFlowMangerColumn: ->
       @render('chooseNewFlowManagerColumnOverlay',

@@ -3,6 +3,7 @@ class CommentLook < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :comment
+  has_one :task, through: :comment
 
   private
 

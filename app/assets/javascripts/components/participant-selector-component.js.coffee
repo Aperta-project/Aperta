@@ -5,5 +5,4 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
 
   actions:
     addParticipant: (newParticipant) ->
-      @sendAction("onSelect", newParticipant)
-
+      @sendAction("onSelect", newParticipant.object)

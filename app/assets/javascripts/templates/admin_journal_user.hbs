@@ -11,11 +11,11 @@
     {{/each}}
     {{#if isAddingRole}}
       {{type-ahead value=roleQuery
-                   subvalue=displayThis
                    class="add-role-input"
                    name="add_role"
                    autoFocus=true
                    sourceList=rolesList
+                   valueProperty="name"
                    suggestionSelected="assignRole"
                    placeholder="Role Name" }}
     {{else}}

@@ -4,25 +4,28 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
   classNames: ['form-control']
   autoFocus: false
   sourceList: []
+  clearOnSelect: false
   setupSelectedListener: ->
     if @get 'suggestionSelected'
       @.$().on 'typeahead:selected', (e, item, index) =>
+        @$().val('') if @get 'clearOnSelect'
         @sendAction 'suggestionSelected', item
 
   autoFocusInput: -> @.$().focus() if @get 'autoFocus'
 
   didInsertElement: ->
     self = this
+    subvalueProperty = @get('subvalueProperty') || "nonexistentProperty"
+    valueProperty = @get('valueProperty')
     engine = new Bloodhound
       name: 'schools'
       local: @get('sourceList').map (item) ->
         if Object.prototype.toString.call(item) is '[object Object]'
-          value: item.value
-          subvalue: self.get('subvalue')
-          object: item.object
+          value: item.get(valueProperty)
+          subvalue: item.get(subvalueProperty)
+          object: item
         else
           value: item
-          subvalue: self.get('subvalue')
       datumTokenizer: (d) -> Bloodhound.tokenizers.whitespace d.value
       queryTokenizer: Bloodhound.tokenizers.whitespace
       limit: 10

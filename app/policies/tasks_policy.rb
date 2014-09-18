@@ -1,8 +1,9 @@
 class TasksPolicy < ApplicationPolicy
   allow_params :task
+  include TaskAccessCriteria
 
   def show?
-    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal?
   end
 
   def create?
@@ -10,28 +11,14 @@ class TasksPolicy < ApplicationPolicy
   end
 
   def update?
-    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal?
   end
 
   def upload?
-    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal?
   end
 
   def destroy?
-    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
-  end
-
-  private
-
-  def task_owner?
-    task.assignee_id == current_user.id
-  end
-
-  def metadata_task_collaborator?
-    task.is_metadata? && task.paper.collaborators.exists?(current_user)
-  end
-
-  def has_sufficient_role?
-    current_user.roles.where(journal_id: task.journal.id, can_view_all_manuscript_managers: true).exists?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal?
   end
 end

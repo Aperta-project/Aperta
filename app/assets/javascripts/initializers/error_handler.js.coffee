@@ -27,6 +27,7 @@ ETahi.initializer
       else
         displayErrorMessage(error)
 
+
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       {type, url} = ajaxSettings
       {status, statusText} = jqXHR

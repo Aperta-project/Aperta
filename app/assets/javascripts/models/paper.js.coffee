@@ -51,3 +51,8 @@ ETahi.Paper = DS.Model.extend
         result
       [])
   ).property('authorGroups.@each')
+
+  awesomeAuthors: (->
+    group.get('awesomeAuthors').forEach (author) ->
+      result.pushObject(author)
+  ).property('authorGroups.@each')

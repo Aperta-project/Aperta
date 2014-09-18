@@ -1,0 +1,36 @@
+<div class="add-author-form">
+  <div class="form-group form-inline author-top">
+    <div class="form-group author-name required">
+      {{input type='text'
+      value=author.firstName
+      class='form-control'
+      placeholder='First name'}}
+    </div>
+    <div class="form-group author-name required">
+      {{input type='text'
+      value=author.lastName
+      class='form-control'
+      placeholder='Last name'}}
+    </div>
+  </div>
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":form-group :author-awesome-name :required author.validationErrors.awesomeName:error"}}>
+      {{input type='text'
+      value=author.awesomeName
+      class='form-control'
+      placeholder='Your Awesome Name'}}
+      {{#if author.validationErrors.awesomeName }}
+        <br/>
+        {{ author.validationErrors.awesomeName }}
+      {{/if}}
+    </div>
+  </div>
+  {{#if author.isNew }}
+    <div class="form-group">
+      <span class="pull-right author-form-buttons">
+        <a class="btn-link author-cancel" {{action 'cancelEdit' bubbles=false}}>cancel</a>
+        <button class="button-secondary" {{action "saveAuthor" author}}>done</button>
+      </span>
+    </div>
+  {{/if}}
+</div>

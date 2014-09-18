@@ -1,0 +1,10 @@
+<h1>Think of the most awesome person on the Earth</h1>
+<div>
+  {{#each awesomeAuthor in awesomeAuthors}}
+    {{add-awesome-author-form
+      author=awesomeAuthor
+      institutions=institutions
+      hideAuthorForm="hideAuthorForm"
+      saveAuthor="saveAuthor"}}
+  {{/each}}
+</div>

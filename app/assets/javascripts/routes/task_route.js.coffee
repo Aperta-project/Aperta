@@ -24,6 +24,8 @@ ETahi.TaskRoute = Ember.Route.extend
     else
       taskController.set 'onClose', 'redirectToDashboard'
 
+    taskController.trigger('didSetup')
+
   renderTemplate: ->
     @render @get('baseObjectName'),
       into: 'application'

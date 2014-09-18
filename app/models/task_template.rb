@@ -6,5 +6,4 @@ class TaskTemplate < ActiveRecord::Base
   has_one :journal, through: :manuscript_manager_template
 
   has_one :task_type, through: :journal_task_type
-
 end

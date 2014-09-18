@@ -480,6 +480,7 @@ DEPENDENCIES
   haml-rails
   heroku-deflater
   jquery-fileupload-rails!
+  kaminari
   kss-rails
   launchy
   letter_opener

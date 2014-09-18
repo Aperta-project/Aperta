@@ -1,8 +1,14 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :paper_id, :short_title, :submitted, :roles, :unread_comments_count
+  attributes :id, :title, :paper_id, :short_title, :submitted, :roles, :unread_comments_count, :related_at_date
 
   def paper_id
     id
+  end
+
+  def related_at_date
+    if (defined? current_user) && current_user
+      current_user.paper_roles.where(paper: object).order(created_at: :desc).pluck(:created_at).first
+    end
   end
 
   def roles

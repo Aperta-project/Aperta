@@ -14,7 +14,6 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
   autoFocusInput: -> @.$().focus() if @get 'autoFocus'
 
   didInsertElement: ->
-    self = this
     subvalueProperty = @get('subvalueProperty') || "nonexistentProperty"
     valueProperty = @get('valueProperty')
     engine = new Bloodhound
@@ -40,7 +39,6 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
       source: engine.ttAdapter()
       displayKey: 'value'
       templates:
-
         suggestion: Handlebars.compile('<strong>{{value}}</strong>{{#if subvalue}}<br>{{subvalue}}{{/if}}')
 
     @setupSelectedListener()

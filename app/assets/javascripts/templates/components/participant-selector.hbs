@@ -3,7 +3,6 @@
     <li class="participant">{{userThumbnail p}}</li>
   {{/each}}
   <li class="chosen-style-override participant">
-    {{log participantNames}}
     {{type-ahead value=""
                  class="participant-select"
                  name="add_participant"
@@ -12,7 +11,7 @@
                  subvalueProperty="username"
                  suggestionSelected="addParticipant"
                  clearOnSelect=true
-                 placeholder="Add People" }}
+                 placeholder="Add People"}}
 
   </li>
 </ul>

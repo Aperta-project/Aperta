@@ -1,15 +1,10 @@
 <li>
   <div class="paper-profile">
     {{link-to litePaper.displayTitle 'paper.manage' view.litePaper.id class="paper-profile-title"}}
-
     {{#each task in view.tasks}}
-      <div {{bind-attr class=":card :flow-card task.completed:card--completed task.isMessage:card--message"}}>
-        <div class="card-content" {{action 'viewCard' litePaper task}}>
-          <div class="card-completed-icon"></div>
-          {{task.title}}
-        </div>
-      </div>
+      {{flow-card litePaper=litePaper
+                  task=task
+                  action='viewCard'}}
     {{/each}}
-
   </div>
 </li>

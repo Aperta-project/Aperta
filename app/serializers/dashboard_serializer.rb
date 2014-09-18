@@ -8,11 +8,11 @@ class DashboardSerializer < ActiveModel::Serializer
   end
 
   def total_paper_count
-    papers.total_count
+    most_recent_paper_roles.total_count
   end
 
   def total_page_count
-    papers.total_pages
+    most_recent_paper_roles.total_pages
   end
 
   def user
@@ -20,6 +20,10 @@ class DashboardSerializer < ActiveModel::Serializer
   end
 
   def papers
-    user.assigned_papers.includes(:paper_roles).order("paper_roles.created_at DESC").page(1)
+    most_recent_paper_roles.map(&:paper)
+  end
+
+  def most_recent_paper_roles
+    PaperRole.select("paper_id, max(created_at) as max_created").group(:paper_id).for_user(user).order("max_created DESC").page(1)
   end
 end

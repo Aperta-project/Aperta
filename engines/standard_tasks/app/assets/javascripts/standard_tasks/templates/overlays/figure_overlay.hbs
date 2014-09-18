@@ -20,15 +20,13 @@
 </div>
 
 {{#if isEditable}}
-  {{#if paper}}
-    {{#each figure in figures}}
-      {{figure-thumbnail attachment=figure
-                         action="changeStrikingImage"
-                         uploadFinished="uploadFinished"
-                         uploadStarted="uploadStarted"
-                         uploadProgress="uploadProgress"}}
-    {{/each}}
-  {{/if}}
+  {{#each figure in figures}}
+    {{figure-thumbnail attachment=figure
+                       action="changeStrikingImage"
+                       uploadFinished="uploadFinished"
+                       uploadStarted="uploadStarted"
+                       uploadProgress="uploadProgress"}}
+  {{/each}}
 {{else}}
   {{#each figure in figures}}
     {{partial "figure_show_only"}}

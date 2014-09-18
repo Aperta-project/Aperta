@@ -19,8 +19,8 @@ test 'Changing phase name', ->
   adminJournalPayload = ef.createPayload()
   adminJournalPayload.addRecords(records)
   adminJournalsResponse = adminJournalPayload.toJSON()
-
   admin = ef.createRecord('User', admin: true)
+
   server.respondWith 'GET', "/admin/journals", [
     200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalsResponse)
   ]
@@ -39,3 +39,33 @@ test 'Changing phase name', ->
     .then -> Em.$(columnTitleSelect).html('Shazam!')
   andThen ->
     ok exists find 'h2.column-title:contains("Shazam!")'
+
+test 'Adding an Ad-Hoc card', ->
+  ef = ETahi.Factory
+  records = createJournalWithTaskTemplate
+    kind: "Task"
+    title: "Ad Hoc"
+  adminJournalPayload = ef.createPayload()
+  adminJournalPayload.addRecords(records)
+  adminJournalsResponse = adminJournalPayload.toJSON()
+  admin = ef.createRecord('User', admin: true)
+
+  server.respondWith 'GET', "/admin/journals", [
+    200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalsResponse)
+  ]
+
+  server.respondWith 'GET', "/users/#{admin.id}", [
+    200
+    'Content-Type': 'application/json'
+    JSON.stringify {user: admin}
+  ]
+
+  visit("/admin/journals/1/manuscript_manager_templates/1/edit")
+  click 'a.button--green:contains("Add New Card")'
+    .then -> ok exists find '.chosen-container.task-type-select'
+  pickFromChosenSingle '.task-type-select', 'Ad Hoc'
+  click '.button--green:contains("Add")'
+    .then -> ok exists find 'h1.inline-edit:contains("Ad Hoc")'
+  click '.button--green.overlay-close-button'
+  andThen ->
+    ok exists find '.column .card-content:contains("Ad Hoc")'

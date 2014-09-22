@@ -15,7 +15,7 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend ETahi.FileUploadMixi
       @store.pushPayload('figure', data)
       figure = @store.getById('figure', data.figure.id)
 
-      @get('figures').pushObject(figure)
+      @get('paper.figures').pushObject(figure)
 
     changeStrikingImage: (newValue) ->
       @get('content.paper').then (paper)->

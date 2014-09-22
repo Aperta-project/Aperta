@@ -9,7 +9,7 @@
 - Most of the javascript for the app is being handled by Bower.  You'll need to have node installed
 in order to proceed.  `brew install node` and then `npm install bower -g`
 - All bower dependencies are found in the `Bowerfile`
-- If you're installing new bower components you'll want to read the [rails-bower docs](https://github.com/42dev/bower-rails#rake-tasks), especially if 
+- If you're installing new bower components you'll want to read the [rails-bower docs](https://github.com/42dev/bower-rails#rake-tasks), especially if
 your components have stylesheets (`rake bower:resolve`)
 - You'll need redis.  `brew install redis` is the easiest way to get it.
 - Create database user for tahi `createuser -s -r tahi`
@@ -19,7 +19,7 @@ your components have stylesheets (`rake bower:resolve`)
 
 You will need:
 
-- Go (`brew install go` is easiest) with your [$GOPATH](http://golang.org/doc/code.html#GOPATH) environment variable set. 
+- Go (`brew install go` is easiest) with your [$GOPATH](http://golang.org/doc/code.html#GOPATH) environment variable set.
 - Add the go binary to your $PATH.  If you used brew it'll tell you to do this already.
 - `$ go get github.com/tahi-project/golang-eventsource` to put the event server and its dependencies in your $GOPATH
 
@@ -65,7 +65,7 @@ EditModalFragment.new(find('tr'), context: page)
 
 ### Making a new task engine
 
-See the wiki for making new tasks. 
+See the wiki for making new tasks.
 
 ### Configuring S3 direct uploads
 
@@ -75,10 +75,11 @@ Ensure that the following environment variables are set:
 - `S3_BUCKET=your-s3-bucket`
 - `AWS_ACCESS_KEY=your-aws-access-key-id`
 - `AWS_SECRET_KEY=your-aws-secret-key`
+- `AWS_REGION=us-west-1` or us-east-1, etc.
 
 Then, you need to configure your s3 bucket for CORS:
 
-1. Download the AWS cli: 
+1. Download the AWS cli:
   - Darwin: `brew install awscli`
   - Linux: `sudo pip install awscli`
 2. Run the following command from the app's root directory:

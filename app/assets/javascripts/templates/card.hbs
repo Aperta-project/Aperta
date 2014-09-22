@@ -8,8 +8,6 @@
       title="Delete Card">
     </span>
   {{/if}}
-  {{#if view.unreadCommentsCount}}
-    <span class="badge unread-comments-count">{{view.unreadCommentsCount}}</span>
-  {{/if}}
+  {{badge view.unreadCommentsCount "unread-comments-count"}}
   {{title}}
 </div>

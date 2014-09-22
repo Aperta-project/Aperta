@@ -39,7 +39,7 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
       source: engine.ttAdapter()
       displayKey: 'value'
       templates:
-        suggestion: Handlebars.compile('<strong>{{value}}</strong>{{#if subvalue}}<br>{{subvalue}}{{/if}}')
+        suggestion: Handlebars.compile('<strong>{{value}}</strong>{{#if subvalue}}<br><div class="tt-suggestion-sub-value">{{subvalue}}</div>{{/if}}')
 
     @setupSelectedListener()
     @autoFocusInput()

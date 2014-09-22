@@ -17,7 +17,7 @@ feature "Dashboard", js: true do
       scenario "only 15 papers are beamed down but total paper count is present" do
         SignInPage.visit.sign_in user
         expect(dashboard.total_paper_count).to eq paper_count
-        expect(dashboard.paper_count).to eq Paper::PAGE_SIZE
+        expect(dashboard.paper_count).to eq Paper.default_per_page
         load_more_button = dashboard.load_more_papers_button
         expect(load_more_button).to be_present
         dashboard.load_more_papers

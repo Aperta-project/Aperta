@@ -106,15 +106,16 @@ feature 'Message Cards', js: true do
     let(:commenter) { albert }
     let(:participants) { [admin, albert] }
     let(:phase) { paper.phases.first }
+    let!(:message) { create :message_task, phase: phase, participants: participants }
     let!(:initial_comments) do
       comment_count.times.map { create(:comment, task: message, commenter: albert, body: "FOO") }
     end
-    let(:message) { create :message_task, phase: phase, participants: participants }
     let(:comment_count) { 4 }
     let(:task_manager_page) { TaskManagerPage.visit paper }
 
     scenario "displays the number of unread comments as badge on message card" do
-      expect(task_manager_page.message_tasks.first.unread_comments_badge).to eq comment_count
+      foo = task_manager_page
+      expect(foo.message_tasks.first.unread_comments_badge).to eq comment_count
     end
   end
 end

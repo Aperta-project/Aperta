@@ -7,6 +7,6 @@ ETahi.FlowCardComponent = Ember.Component.extend
   commentLooks: null
   task: null
 
-  unreadCommentCount: (->
+  unreadCommentsCount: (->
     @get('commentLooks').filterBy('taskId', @get('task.id')).get('length')
   ).property('commentLooks.[]', 'commentLooks.@each.taskId', 'task.id')

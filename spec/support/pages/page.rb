@@ -103,6 +103,7 @@ class PageFragment
     synchronize_content!(item_text) unless options[:skip_synchronize]
   end
 
+
   private
 
   def synchronize_content! content

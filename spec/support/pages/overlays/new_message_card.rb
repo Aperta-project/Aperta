@@ -7,7 +7,10 @@ class NewMessageCardOverlay < CardOverlay
   end
 
   def participants=(users)
-    users.map(&:full_name).each { |name| select_from_chosen name, class: 'participant-select', skip_synchronize: true }
+    users.map(&:full_name).each do |name|
+      fill_in 'add_participant', with: name
+      find('.tt-suggestion').click
+    end
   end
 
   def participants

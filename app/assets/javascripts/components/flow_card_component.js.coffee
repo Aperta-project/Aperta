@@ -5,11 +5,13 @@ ETahi.FlowCardComponent = Ember.Component.extend DragNDrop.Dragable,
       @sendAction('action', paper, task)
 
   paper: null
-  commentLooks: null
+  commentLooks: Ember.computed.oneWay('defaultCommentLooks')
   task: null
   canRemoveCard: false
   canDragCard: false
   classes: ""
+
+  defaultCommentLooks: []
 
   unreadCommentsCount: (->
     taskId = @get('task.id')

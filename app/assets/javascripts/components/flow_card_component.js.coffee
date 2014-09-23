@@ -1,5 +1,5 @@
 ETahi.FlowCardComponent = Ember.Component.extend DragNDrop.Dragable,
-  classNameBindings: [":card", ":flow-card", "task.completed:card--completed", "task.isMessage:card--message"]
+  classNameBindings: [":card", "task.completed:card--completed", "task.isMessage:card--message", "classes"]
   actions:
     viewCard: (paper, task) ->
       @sendAction('action', paper, task)
@@ -9,6 +9,7 @@ ETahi.FlowCardComponent = Ember.Component.extend DragNDrop.Dragable,
   task: null
   canRemoveCard: false
   canDragCard: false
+  classes: ""
 
   unreadCommentsCount: (->
     @get('commentLooks').filterBy('taskId', @get('task.id')).get('length')

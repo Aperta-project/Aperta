@@ -3,15 +3,17 @@
     <li class="participant">{{userThumbnail p}}</li>
   {{/each}}
   <li class="chosen-style-override participant">
-    {{type-ahead value=""
-                 class="participant-select"
-                 name="add_participant"
-                 sourceList=availableParticipants
-                 valueProperty="fullName"
-                 subvalueProperty="username"
-                 suggestionSelected="addParticipant"
-                 clearOnSelect=true
-                 placeholder="Add People"}}
-
+    {{#if availableParticipants}}
+      {{type-ahead value=""
+                   class="participant-select"
+                   name="add_participant"
+                   sourceList=availableParticipants
+                   valueProperty="fullName"
+                   subvalueProperty="info"
+                   remoteUrl=remoteUrl
+                   suggestionSelected="addParticipant"
+                   clearOnSelect=true
+                   placeholder="Add People"}}
+    {{/if}}
   </li>
 </ul>

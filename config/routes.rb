@@ -99,6 +99,8 @@ Tahi::Application.routes.draw do
   resources :comments, only: [:create, :show]
 
   resources :tasks, only: [:update, :create, :show, :destroy]
+  get 'tasks/:id/collaborators' => 'tasks#collaborators', as: "collaborators"
+  get 'tasks/:id/non_collaborators/:query' => 'tasks#non_collaborators', as: "non_collaborators"
 
   resources :phases, only: [:create, :update, :show, :destroy]
 

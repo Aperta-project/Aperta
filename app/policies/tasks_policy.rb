@@ -21,6 +21,14 @@ class TasksPolicy < ApplicationPolicy
     current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
   end
 
+  def collaborators?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
+  end
+
+  def non_collaborators?
+    current_user.admin? || task_owner? || metadata_task_collaborator? || has_sufficient_role?
+  end
+
   private
 
   def task_owner?

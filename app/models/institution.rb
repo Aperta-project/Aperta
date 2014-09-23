@@ -4,7 +4,7 @@ class Institution
   include Singleton
 
   def names
-    @names ||= institutions.map { |institution| institution['name'] }
+    @names ||= institutions.map { |institution| { name: institution['name'] } }
   end
 
   def institutions

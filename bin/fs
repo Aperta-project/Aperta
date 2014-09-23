@@ -1,1 +1,2 @@
+bundle exec rake sunspot:solr:start > /dev/null 2>&1
 foreman start -f Procfile.local

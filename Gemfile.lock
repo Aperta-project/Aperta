@@ -274,6 +274,7 @@ GEM
     pg (0.17.0)
     phantomjs (1.9.7.1)
     polyglot (0.3.4)
+    pr_geohash (1.0.0)
     progressbar (0.21.0)
     pry (0.9.12.4)
       coderay (~> 1.0)
@@ -348,6 +349,8 @@ GEM
     remotipart (1.2.1)
     rest_client (1.7.3)
       netrc (~> 0.7.7)
+    rsolr (1.0.10)
+      builder (>= 2.1.2)
     rspec (3.0.0)
       rspec-core (~> 3.0.0)
       rspec-expectations (~> 3.0.0)
@@ -419,6 +422,14 @@ GEM
       activesupport (>= 3.0)
       sprockets (~> 2.8)
     subexec (0.2.3)
+    sunspot (2.1.1)
+      pr_geohash (~> 1.0)
+      rsolr (~> 1.0.7)
+    sunspot_rails (2.1.1)
+      nokogiri
+      rails (>= 3)
+      sunspot (= 2.1.1)
+    sunspot_solr (2.1.1)
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -520,6 +531,8 @@ DEPENDENCIES
   sinatra
   spring
   standard_tasks!
+  sunspot_rails
+  sunspot_solr
   supporting_information!
   teaspoon!
   thin

@@ -12,7 +12,10 @@ ETahi.FlowCardComponent = Ember.Component.extend DragNDrop.Dragable,
   classes: ""
 
   unreadCommentsCount: (->
-    @get('commentLooks').filterBy('taskId', @get('task.id')).get('length')
+    taskId = @get('task.id')
+    @get('commentLooks').filter((look) ->
+      look.get('taskId') == taskId && Em.isEmpty(look.get('readAt'))
+    ).get('length')
   ).property('commentLooks.[]', 'commentLooks.@each.taskId', 'task.id')
 
   setupTooltip: (->

@@ -1,7 +1,8 @@
 class AssignReviewersOverlay < CardOverlay
+  text_assertions :reviewer, '.reviewers-select .search-choice'
   def paper_reviewers=(names)
     names.each do |name|
-      select_from_chosen(name, skip_synchronize: false, class: 'reviewers-select')
+      select_from_chosen(name, skip_synchronize: true, class: 'reviewers-select')
       # When you select more than 1 new reviewer in rapid succession (like capybara),
       # the event-stream update from the first selection will return
       # before the debounced second selection has posted to the server.
@@ -17,7 +18,7 @@ class AssignReviewersOverlay < CardOverlay
 
   def has_reviewers?(*reviewers)
     reviewers.all? do |reviewer|
-      page.has_css? '.reviewers-select .search-choice', text: reviewer.full_name
+      has_reviewer? reviewer.full_name
     end
   end
 

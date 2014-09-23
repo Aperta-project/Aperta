@@ -2,46 +2,45 @@ require 'spec_helper'
 
 describe CommentsController do
   render_views
-  let(:paper) { FactoryGirl.create(:paper, :with_tasks, user: paper_user) }
+  let(:paper) { FactoryGirl.create(:paper, :with_tasks, user: user) }
   let(:phase) { paper.phases.first }
-
   let(:user) { create(:user) }
-  let(:other_user) { create(:user) }
 
-  let(:message_task) { create(:message_task, phase: phase, participants: [paper_user]) }
+  let(:message_task) { create(:message_task, phase: phase, participants: [user]) }
   before { sign_in user }
 
   describe 'POST create' do
     subject(:do_request) do
-      post :create, format: :json,
+      xhr :post, :create, format: :json,
         comment: {commenter_id: user.id,
                   body: "My comment",
                   task_id: message_task.id}
     end
 
-    context "the user can't see the task's paper" do
-      let(:paper_user) { other_user }
-      it "renders 404" do
+    context "the user isn't authorized" do
+      authorize_policy(CommentsPolicy, false)
+
+      it "renders 403" do
         do_request
-        expect(response.status).to eq(404)
+        expect(response.status).to eq(403)
       end
     end
 
-    context "the user tries to create a blank comment" do
-      let(:paper_user) { user }
-      it "doesn't work" do
-        expect {
-          post :create,
-          format: :json,
-          comment: {commenter_id: user.id,
-                    body: "",
-                    task_id: message_task.id}
-        }.to_not change { Comment.count }
-      end
-    end
+    context "the user is authorized" do
+      authorize_policy(CommentsPolicy, true)
 
-    context "the user can see the task's paper" do
-      let(:paper_user) { user }
+      context "the user tries to create a blank comment" do
+        it "doesn't work" do
+          expect {
+            xhr :post, :create,
+            format: :json,
+            comment: {commenter_id: user.id,
+                      body: "",
+                      task_id: message_task.id}
+          }.to_not change { Comment.count }
+        end
+      end
+
       it "creates a new comment" do
         do_request
         expect(Comment.last.body).to eq('My comment')
@@ -50,6 +49,7 @@ describe CommentsController do
 
       it "returns the new comment as json" do
         do_request
+        expect(response.status).to eq(201)
         json = JSON.parse(response.body)
         expect(json["comment"]["id"]).to eq(Comment.last.id)
       end

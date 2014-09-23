@@ -37,7 +37,7 @@
   display: inline-block;
   width: 251px; // +1px for border
   height: 100%;
-  border-right: 1px solid $tahi-tertiary;
+  border-right: 1px solid $tahi-grey-light;
   text-align: left;
   vertical-align: top;
   white-space: initial;
@@ -63,7 +63,7 @@
   top: -8px;
   right: 0;
   cursor: pointer;
-  color: $tahi-primary;
+  color: $tahi-green;
 }
 
 .column:hover .remove-column {
@@ -117,11 +117,11 @@
 }
 
 .btn-link.column-header-update-cancel {
-  color: $tahi-primary;
+  color: $tahi-green;
 }
 
 .column-icon {
-  color: $tahi-secondary;
+  color: $tahi-green-light;
   font-size: 14px;
   position: absolute;
   display: none;
@@ -170,7 +170,7 @@
   font-size: 10px;
   text-align: center;
   opacity: 0;
-  background-color: $tahi-secondary;
+  background-color: $tahi-green-light;
   cursor: pointer;
 
   &:hover { opacity: 1; }

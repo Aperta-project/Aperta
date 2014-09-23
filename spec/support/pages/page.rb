@@ -9,6 +9,17 @@ class PageFragment
 
   delegate :select, to: :element
 
+  class << self
+    def text_assertions(name, selector, block=nil)
+      define_method "has_#{name}?" do |text|
+        has_css?(selector, text: block ? block.call(text) : text)
+      end
+      define_method "has_no_#{name}?" do |text|
+        has_no_css?(selector, text: block ? block.call(text) : text)
+      end
+    end
+  end
+
   def initialize(element, context: nil)
     @element = element
     @context = context
@@ -74,6 +85,7 @@ class PageFragment
       retry_stale_element do
         block.call overlay
       end
+      expect(session).to have_no_css("#delayedSave", visible: false)
       expect(overlay).to have_no_application_error
       overlay.dismiss
     else
@@ -90,6 +102,7 @@ class PageFragment
     session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
     synchronize_content!(item_text) unless options[:skip_synchronize]
   end
+
 
   private
 

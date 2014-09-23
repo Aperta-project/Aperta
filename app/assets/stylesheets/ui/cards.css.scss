@@ -22,7 +22,7 @@
   .card-content {
     color: #fff;
     text-decoration: none;
-    background-color: $tahi-primary;
+    background-color: $tahi-green;
   }
 }
 
@@ -33,7 +33,7 @@
   top: 15px;
   left: 15px;
   display: none;
-  color: $tahi-primary;
+  color: $tahi-green;
 }
 
 
@@ -53,10 +53,10 @@
   position: relative;
   border-radius: 5px;
   padding: 10px 15px;
-  color: $tahi-primary-hover;
+  color: $tahi-green-dark;
   font-size: 20px;
   word-wrap: break-word;
-  background-color: $tahi-secondary;
+  background-color: $tahi-green-light;
   cursor: pointer;
 
   .badge {
@@ -73,13 +73,13 @@
 .card--message {
   .card-content {
     color: #3f1587;
-    background-color: $tahi-message-light;
+    background-color: $tahi-purple-light;
   }
 
   &:focus .card-content,
   &:hover .card-content {
     color: #fff;
-    background-color: $tahi-message;
+    background-color: $tahi-purple;
   }
 }
 
@@ -88,21 +88,21 @@
 .card--completed {
   .card-content {
     padding-left: 45px;
-    color: $tahi-tertiary - #666;
-    background: $tahi-tertiary;
+    color: $tahi-grey-light - #666;
+    background: $tahi-grey-light;
   }
 
   .card-completed-icon {
     display: inline;
     margin-right: 5px;
-    color: $tahi-primary;
+    color: $tahi-green;
   }
 }
 
 .card--completed:hover .card-content,
 .card--completed:focus .card-content {
   color: #fff;
-  background: $tahi-tertiary - #333;
+  background: $tahi-grey-light - #333;
 
   .glyphicon { color: #fff; }
 }

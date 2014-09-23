@@ -17,7 +17,4 @@ namespace :data do
     ManuscriptManagerTemplate.destroy_all
     Rake::Task["journal:create_default_templates"].invoke
   end
-
-  desc "Reset references to Task subclasses"
-  task :reset_task_types => [:reset_mmts, :migrate_namespacing]
 end

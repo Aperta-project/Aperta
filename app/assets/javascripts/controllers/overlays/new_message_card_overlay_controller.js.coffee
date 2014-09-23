@@ -20,5 +20,4 @@ ETahi.NewMessageCardOverlayController = ETahi.NewCardOverlayController.extend
           initialComment.save()
         else
           initialComment.deleteRecord()
-
-      @send('closeOverlay')
+        @send('closeOverlay')

@@ -6,7 +6,7 @@
 
 .paper-profile {
   margin-bottom: 10px;
-  border: 1px solid $tahi-tertiary;
+  border: 1px solid $tahi-grey-light;
 }
 
 .paper-profile-title {
@@ -28,28 +28,28 @@
     border-bottom: 1px solid white;
     background-color: rgb(194,232,188);
 
-    &:hover { background: $tahi-primary; }
+    &:hover { background: $tahi-green; }
     &:last-of-type { border-bottom: none; }
   }
 }
 
 .flow-card.card--message .card-content {
   color: white;
-  background-color: $tahi-message-light;
+  background-color: $tahi-purple-light;
 }
 
 .flow-card.card--message:hover .card-content {
-  background-color: $tahi-message;
+  background-color: $tahi-purple;
 }
 
 .flow-card.card--completed .card-content {
-  color: $tahi-tertiary - #666;
-  background: $tahi-tertiary;
+  color: $tahi-grey-light - #666;
+  background: $tahi-grey-light;
 
   .completed-glyph {
     display: inline;
     margin-right: 5px;
-    color: $tahi-primary;
+    color: $tahi-green;
   }
 }
 
@@ -79,11 +79,11 @@
   background: white;
 
   &:hover {
-    border-color: $tahi-primary-hover;
-    color: $tahi-primary-hover;
-    background-color: $tahi-secondary;
+    border-color: $tahi-green-dark;
+    color: $tahi-green-dark;
+    background-color: $tahi-green-light;
 
-    .glyphicon { color: $tahi-primary-hover; }
+    .glyphicon { color: $tahi-green-dark; }
   }
 
   .glyphicon {

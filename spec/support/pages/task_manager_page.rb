@@ -1,6 +1,7 @@
 class TaskManagerPage < Page
 
   path :manage_paper
+  text_assertions :task, '.card'
 
   def phases
     expect(session).to have_css('.column h2')
@@ -24,14 +25,6 @@ class TaskManagerPage < Page
     retry_stale_element do
       all('.card').map(&:text)
     end
-  end
-
-  def has_task?(task_name)
-    expect(session).to have_css('.card', text: task_name)
-  end
-
-  def has_no_task?(task_name)
-    expect(session).to have_no_css('.card', text: task_name)
   end
 
   def message_tasks

@@ -24,6 +24,6 @@ feature "Submitting a paper", js: true do
     dashboard_page = submit_paper_page.submit
     expect(dashboard_page.submitted_papers).to include paper.title
     paper_page = dashboard_page.view_submitted_paper paper
-    expect(paper_page.title).to eq paper.title
+    expect(paper_page).to have_paper_title(paper.title)
   end
 end

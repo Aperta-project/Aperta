@@ -1,5 +1,4 @@
 class Paper < ActiveRecord::Base
-  PAGE_SIZE = 15
 
   include EventStreamNotifier
 
@@ -41,13 +40,6 @@ class Paper < ActiveRecord::Base
 
     def unpublished
       where(published_at: nil)
-    end
-
-    def paginate(page_number)
-      page_number = 1 unless page_number
-      raise ArgumentError if page_number <= 0
-      offset_by = (page_number - 1) * PAGE_SIZE
-      offset(offset_by).limit(PAGE_SIZE).order created_at: :asc
     end
   end
 

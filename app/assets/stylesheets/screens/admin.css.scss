@@ -1,5 +1,9 @@
 .user-detail-overlay .overlay-close-x {
   color: $tahi-blue;
+
+  &:hover {
+    color: $tahi-blue-dark;
+  }
 }
 
 .user-detail-overlay .overlay-container {
@@ -21,22 +25,14 @@
   @extend .col-md-8;
   font-size: 24px;
   input {
-    border: 1px solid $tahi-tertiary;
+    border: 1px solid $tahi-grey-light;
     border-radius: 5px;
-    color: $tahi-blue-light;
+    color: $tahi-blue;
     padding: 5px;
   }
 }
 
 .admin-screen {
-  .button--white {
-    color: $tahi-blue;
-  }
-
-  .button-link.button--white {
-    color: #fff;
-  }
-
   h1 {
     margin-bottom: 50px;
   }
@@ -77,7 +73,7 @@
       }
 
       .success {
-        color: $tahi-primary;
+        color: $tahi-green;
       }
 
       .error {
@@ -86,7 +82,7 @@
     }
 
     span.save-status {
-      color: $tahi-blue-light;
+      color: $tahi-blue;
       vertical-align: -6px;
       font-style: italic;
     }
@@ -108,7 +104,7 @@
 
     img { vertical-align: top; }
     path, rect, circle {
-      fill: $tahi-blue-light;
+      fill: $tahi-blue;
     }
   }
 
@@ -116,7 +112,7 @@
     position: relative;
     min-height: 100px;
     margin-top: 35px;
-    border: 1px solid $tahi-tertiary;
+    border: 1px solid $tahi-grey-light;
 
     p {
       margin: 12px 0 0 0;
@@ -137,7 +133,7 @@
       padding: 0;
       display: inline-block;
       margin-right: 15px;
-      color: $tahi-blue-light;
+      color: $tahi-blue;
       text-decoration: none;
     }
 
@@ -153,7 +149,7 @@
       text-align: center;
       cursor: pointer;
 
-      &:hover { color: $tahi-blue-light; }
+      &:hover { color: $tahi-blue; }
     }
 
     .journal-paper-count {
@@ -163,8 +159,8 @@
     }
 
     .journal-thumbnail-edit-form {
-      background-color: $tahi-blue-light;
-      border-color: $tahi-blue-light;
+      background-color: $tahi-blue;
+      border-color: $tahi-blue;
       padding: 20px 20px 12px 20px;
       position: relative;
 
@@ -183,7 +179,7 @@
       }
       .form-group.required::before {
         left: -17px;
-        color: $tahi-blue;
+        color: $tahi-blue-dark;
       }
 
       .journal-description-edit {
@@ -212,31 +208,31 @@
 
 .admin-user-search-input {
   @include make-xs-column(10);
-  border: 1px solid $tahi-blue-light;
+  border: 1px solid $tahi-blue;
   border-radius: 5px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   font-size: 18px;
-  color: $tahi-blue-light;
+  color: $tahi-blue;
   padding: 10px 10px 8px 10px;
 
   &::-webkit-input-placeholder {
-    color: $tahi-blue-light;
+    color: $tahi-blue;
   }
   &:-moz-placeholder {
-    color: $tahi-blue-light;
+    color: $tahi-blue;
   }
   &::-moz-placeholder {
-    color: $tahi-blue-light;
+    color: $tahi-blue;
   }
   &:-ms-input-placeholder {
-    color: $tahi-blue-light;
+    color: $tahi-blue;
   }
 }
 
 .admin-user-search-button {
   @include make-xs-column(2);
-  border: 1px solid $tahi-blue-light;
+  border: 1px solid $tahi-blue;
   background: white;
   border-radius: 5px;
   border-top-left-radius: 0px;
@@ -244,12 +240,12 @@
   font-size: 26px;
   padding: 6px 0 0;
   border-left: none;
-  color: $tahi-blue-light;
+  color: $tahi-blue;
 }
 
 .admin-user-search-default-state-text {
   padding-top: 10px;
-  color: $tahi-tertiary-dark;
+  color: $tahi-grey-dark;
   font-size: 22px;
   font-style: italic;
 }
@@ -295,7 +291,7 @@
   th {
     font-size: 18px;
     font-weight: normal;
-    color: $tahi-tertiary-dark;
+    color: $tahi-grey-dark;
   }
 
   td {
@@ -304,7 +300,7 @@
   }
 
   tr {
-    color: $tahi-blue-light;
+    color: $tahi-blue;
   }
 
   tr.user-row {
@@ -323,7 +319,6 @@
 }
 
 .admin-section {
-  overflow: hidden;
   position: relative;
 }
 
@@ -354,7 +349,7 @@
 
   .save-status,
   a.epub-cover {
-    color: $tahi-blue-light;
+    color: $tahi-blue;
   }
 }
 
@@ -365,7 +360,7 @@
 
 .journal-edit-overlay {
   .overlay-close-x {
-    color: $tahi-blue-light;
+    color: $tahi-blue;
   }
 
   .overlay-container {

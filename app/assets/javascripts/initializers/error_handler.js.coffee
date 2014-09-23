@@ -20,9 +20,12 @@ ETahi.initializer
       if !applicationController.isDestroying && !applicationController.isDestroyed
         applicationController.set('error', message)
 
+    # The global error handler
     Ember.onerror = (error) ->
-      logError(error.stack)
-      unless ETahi.environment == 'development'
+      logError("\n" + error.message + "\n" + error.stack + "\n")
+      if ETahi.environment == 'development'
+        throw error
+      else
         displayErrorMessage(error)
 
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->

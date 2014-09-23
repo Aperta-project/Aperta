@@ -4,16 +4,13 @@ ETahi.Comment = DS.Model.extend
   task: DS.belongsTo('task', polymorphic: true)
   body: a('string')
   createdAt: a('date')
-  commentLooks: DS.hasMany('commentLook')
+  commentLook: DS.belongsTo('commentLook')
 
   isUnreadBy: (user) ->
-    if commentLook = @commentLookFor(user)
+    if commentLook = @get('commentLook')
       Em.isEmpty(commentLook.get('readAt'))
 
   markReadBy: (user) ->
-    cl = @commentLookFor(user)
+    cl = @get('commentLook')
     cl.set('readAt', new Date())
     cl.save()
-
-  commentLookFor: (user) ->
-    @get('commentLooks').findProperty('user', user)

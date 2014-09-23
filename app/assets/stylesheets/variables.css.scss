@@ -1,34 +1,24 @@
-// Green
-$tahi-primary: #39a329;
-$tahi-primary-hover: #0f7400;
+// Primary Color
+$tahi-green: #39a329;
+$tahi-green-light: #8ecb87;
+$tahi-green-dark: #0f7400;
 
-$tahi-whiteish: #fff;
+// Admin
+$tahi-blue: #87c0f9;
+$tahi-blue-light: #d6eaff;
+$tahi-blue-dark: #347bc5;
 
-// Desaturated green:
-$tahi-secondary: #8ecb87;
-
-// Light, very desaturated green:
-$tahi-tertiary: #d5d8d5;
-// Middle grey:
-$tahi-tertiary-dark: #878787;
-
-$tahi-blue: #347bc5;
-$tahi-blue-hover: #0052a8;
-
-$tahi-blue-light: #87c0f9;
-$tahi-blue-light-hover: $tahi-blue;
-
+// Misc
 $tahi-grey: #777;
-$tahi-grey-hover: #555;
+$tahi-grey-light: #d5d5d5;
+$tahi-grey-dark: #878787;
 
-// Lightish grey:
-$tahi-disabled: #bbb;
+// Messages
+$tahi-purple: #5d4aac;
+$tahi-purple-light: #9f95d0;
+$tahi-purple-dark: #351e94;
 
-// Purple
-$tahi-message: #5d4aac;
-$tahi-message-hover: #351e94;
-$tahi-message-light: #9f95d0;
-
+$tahi-white: #fff;
 $tahi-error-red: #BB0000;
 
 $tahi-font-family: 'Cabin', helvetica, sans-serif;

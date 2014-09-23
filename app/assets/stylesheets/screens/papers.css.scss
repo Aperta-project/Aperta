@@ -58,6 +58,10 @@
   min-height: 500px;
   padding-bottom: 36px;
 
+  .ve-ce-documentNode {
+    font-size: 0.95em;
+  }
+
   .ve-ce-documentNode.ve-ce-branchNode { // visual-editor override
     min-height: 500px;
   }
@@ -94,7 +98,7 @@
   > article {
     position: relative;
     width: 75%;
-    border-right: 1px solid $tahi-tertiary;
+    border-right: 1px solid $tahi-grey-light;
     padding: 0;
 
     .title { padding-top: 55px; }
@@ -129,6 +133,7 @@
 }
 
 .task-list {
+  width: 280px;
   padding: 0 30px;
 }
 
@@ -140,6 +145,13 @@
   #paper-title {
     font-family: $tahi-article-font-family;
   }
+}
+
+.ve-toolbar-underside {
+  @include position(absolute, 0px 0px auto 0px);
+  width: 100%;
+  height: 45px;
+  background: #fff;
 }
 
 .edit-paper {
@@ -158,7 +170,7 @@
   width: 200px;
   font-size: 12px;
   font-style: italic;
-  color: $tahi-message;
+  color: $tahi-purple;
   z-index: 1;
 
   span {
@@ -204,7 +216,7 @@
   position: absolute;
   top: 220px;
   z-index: 5;
-  color: $tahi-tertiary-dark;
+  color: $tahi-grey-dark;
   font-style: italic;
 }
 
@@ -216,7 +228,7 @@
 
   .add-collaborators {
     margin-top: 7px;
-    color: $tahi-primary;
+    color: $tahi-green;
     display: block;
     cursor: pointer;
   }
@@ -233,9 +245,9 @@
 
 .circle {
   $circle-radius: 0.8em;
-  background-color: $tahi-secondary;
+  background-color: $tahi-green-light;
   height: $circle-radius;
   width: $circle-radius;
   border-radius: $circle-radius / 2;
-  border: 2px solid $tahi-primary;
+  border: 2px solid $tahi-green;
 }

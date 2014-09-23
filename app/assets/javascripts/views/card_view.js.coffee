@@ -3,8 +3,17 @@ ETahi.CardView = Em.View.extend(DragNDrop.Dragable, {
   classNames: ['card']
   classNameBindings: ['completed', 'isMessage']
 
+  task: Em.computed.alias 'content'
+
+  commentLooks: Em.computed.oneWay 'defaultCommentLooks'
+  defaultCommentLooks: []
+
   setupTooltip: (->
     @.$().find('.card-remove').tooltip()
+  ).on('didInsertElement')
+
+  setCommentLooks: (->
+    @set('commentLooks', @get('controller.store').all('commentLook'))
   ).on('didInsertElement')
 
   completed: (->
@@ -15,13 +24,9 @@ ETahi.CardView = Em.View.extend(DragNDrop.Dragable, {
     if @get('content.isMessage') then 'card--message' else false
   ).property('content.isMessage')
 
-  comments: Ember.computed.alias 'content.comments'
-
   myCommentLooks: (->
-    store = @get('controller.store')
-    store.all('commentLook').filter (look) =>
-      look.get('comment.task') == @get('content') and look.get('user') == @get('controller').getCurrentUser()
-  ).property('comments.commentLooks.@each.readAt')
+    @get('commentLooks').filterBy('taskId', @get('task.id'))
+  ).property('commentLooks.[]', 'commentLooks.@each.taskId')
 
   unreadCommentsCount: (->
     @get('myCommentLooks').filter((look) ->

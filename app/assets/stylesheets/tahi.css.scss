@@ -43,11 +43,11 @@ a, button, .glyphicon, {
 }
 
 a {
-  color: $tahi-primary;
+  color: $tahi-green;
 
   &:focus, &:hover {
     text-decoration: underline;
-    color: $tahi-primary;
+    color: $tahi-green;
   }
 }
 
@@ -152,8 +152,8 @@ textarea { resize: none; }
   width: 35px;
   height: 25px;
   text-align: center;
-  border: 1px solid $tahi-primary;
+  border: 1px solid $tahi-green;
   border-radius: 5px;
   padding-top: 4px;
-  color: $tahi-primary;
+  color: $tahi-green;
 }

@@ -10,6 +10,8 @@
 
 case Rails.env
 when 'development'
+  Rake::Task['data:create_task_types'].invoke
+
   # create admin user
   mike = User.where(email: 'mikedoel@neo.com').first_or_create(
     first_name:  'Mike',
@@ -22,10 +24,7 @@ when 'development'
   mike.affiliations.first_or_create(name: "skyline")
 
   # create journal
-  plos_journal = Journal.where(name: 'PLOS Yeti').first
-  unless plos_journal
-    plos_journal = Journal.create(name: 'PLOS Yeti', logo: '')
-  end
+  plos_journal = Journal.first_or_create(name: 'PLOS Yeti', logo: '')
 
   paper = Paper.where(
     user_id: mike.id,

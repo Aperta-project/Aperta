@@ -46,16 +46,26 @@
           box-shadow: 0 5px 10px rgba(0,0,0,.2);
 }
 
+
 .tt-suggestion {
   padding: 3px 20px;
   font-size: 18px;
-  line-height: 24px;
+  line-height: 100%;
+}
+
+.tt-suggestion-sub-value {
+  margin-bottom: 3px;
+  font-size: 90%;
+  color: #999;
+}
+
+.tt-cursor .tt-suggestion-sub-value {
+  color: #fff;
 }
 
 .tt-suggestion.tt-cursor {
   color: #fff;
   background-color: #0097cf;
-
 }
 
 .tt-suggestion p {

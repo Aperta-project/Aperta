@@ -3,10 +3,8 @@
 //
 // .button--green      - Make the button GREEN
 // .button--purple     - Make the button PURPLE
-// .button--blue       - Make the button BLUE
-// .button--blue-light - Make the button LIGHT BLUE
+// .button--blue       - Make the button LIGHT BLUE
 // .button--grey       - Make the button GREY
-// .button--white      - Make the button WHITE
 // .button--disabled   - Style the button as disabled
 // .button--wide       - Extra padding on left and right
 // .button--small      - Less padding all around
@@ -23,14 +21,28 @@
   }
 }
 
-@mixin button-secondary-modifier($color, $color-hover) {
+@mixin button-secondary-modifier($color, $color-hover, $highlight) {
   border-color: $color;
   color: $color;
 
   &:focus, &:hover {
-    border-color: $color-hover;
-    color: #fff;
+    border-color: $highlight;
+    color: $highlight;
     background-color: $color-hover;
+  }
+
+  // Knockout Style - used for Secondary buttons and button-link
+  // Styleguide UI.Button.Knockout
+  &.knockout {
+    border-color: $highlight;
+    color: $highlight;
+    background-color: $color-hover;
+
+    &:focus, &:hover {
+      background-color: $tahi-white;
+      border-color: $color;
+      color: $color;
+    }
   }
 }
 
@@ -67,15 +79,10 @@
   color: #fff;
   &:hover { text-decoration: none; }
 
-  &.button--green      { @include button-primary-modifier($tahi-primary, $tahi-primary-hover); }
-  &.button--purple     { @include button-primary-modifier($tahi-message, $tahi-message-hover); }
-  &.button--blue       { @include button-primary-modifier($tahi-blue, $tahi-blue-hover); }
-  &.button--blue-light { @include button-primary-modifier($tahi-blue-light, $tahi-blue-light-hover); }
-  &.button--grey       { @include button-primary-modifier($tahi-grey, $tahi-grey-hover); }
-  &.button--white {
-    color: $tahi-primary;
-    background: #fff;
-  }
+  &.button--green      { @include button-primary-modifier($tahi-green, $tahi-green-dark); }
+  &.button--purple     { @include button-primary-modifier($tahi-purple, $tahi-purple-dark); }
+  &.button--blue       { @include button-primary-modifier($tahi-blue, $tahi-blue-dark); }
+  &.button--grey       { @include button-primary-modifier($tahi-grey, $tahi-grey-dark); }
 }
 
 
@@ -83,15 +90,10 @@
   @extend .button;
   background: #fff;
 
-  &.button--green      { @include button-secondary-modifier($tahi-primary, $tahi-primary-hover); }
-  &.button--purple     { @include button-secondary-modifier($tahi-message, $tahi-message-hover); }
-  &.button--blue       { @include button-secondary-modifier($tahi-blue, $tahi-blue-hover); }
-  &.button--blue-light { @include button-secondary-modifier($tahi-blue-light, $tahi-blue-light-hover); }
-  &.button--grey       { @include button-secondary-modifier($tahi-grey, $tahi-grey-hover); }
-  &.button--white {
-    border-color: #fff;
-    background: #fff;
-  }
+  &.button--green      { @include button-secondary-modifier($tahi-green, $tahi-green-light, $tahi-green-dark); }
+  &.button--purple     { @include button-secondary-modifier($tahi-purple, $tahi-purple-light, $tahi-purple-dark); }
+  &.button--blue       { @include button-secondary-modifier($tahi-blue, $tahi-blue-light, $tahi-blue-dark); }
+  &.button--grey       { @include button-secondary-modifier($tahi-grey, $tahi-grey-light, $tahi-grey-dark); }
 }
 
 
@@ -100,43 +102,56 @@
   text-transform: none;
   background: transparent;
 
-  &.button--green      { @include button-link-modifier($tahi-primary, $tahi-primary-hover); }
-  &.button--purple     { @include button-link-modifier($tahi-message, $tahi-message-hover); }
-  &.button--blue       { @include button-link-modifier($tahi-blue, $tahi-blue-hover); }
-  &.button--blue-light { @include button-link-modifier($tahi-blue-light, $tahi-blue-light-hover); }
-  &.button--grey       { @include button-link-modifier($tahi-grey, $tahi-grey-hover); }
-  &.button--white      { @include button-link-modifier(#fff, #fff); }
+  &.button--green      { @include button-link-modifier($tahi-green, $tahi-green-dark); }
+  &.button--purple     { @include button-link-modifier($tahi-purple, $tahi-purple-dark); }
+  &.button--blue       { @include button-link-modifier($tahi-blue, $tahi-blue-dark); }
+  &.button--grey       { @include button-link-modifier($tahi-grey, $tahi-grey-dark); }
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &.knockout {
+    color: $tahi-white;
+
+    &:focus, &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 
 // .button modifier
 .button--disabled {
   color: #eee;
-  background-color: $tahi-disabled;
+  background-color: $tahi-grey-light;
   cursor: not-allowed;
 
   &:focus, &:hover {
     color: #eee;
-    background-color: $tahi-disabled;
+    background-color: $tahi-grey-light;
   }
 
   &.button-primary,
   &.button-secondary {
     color: #eee;
-    border-color: $tahi-disabled;
-    background-color: $tahi-disabled;
+    border-color: $tahi-grey-light;
+    background-color: $tahi-grey-light;
 
     &:focus, &:hover {
-      border-color: $tahi-disabled;
-      background-color: $tahi-disabled;
+      color: #eee;
+      border-color: $tahi-grey-light;
+      background-color: $tahi-grey-light;
     }
   }
 
   &.button-link {
-    color: $tahi-disabled;
+    color: $tahi-grey-light;
     background: transparent;
-
-    &:focus, &:hover { color: $tahi-disabled; }
+    &:focus, &:hover {
+      color: $tahi-grey-light;
+      text-decoration: none;
+    }
   }
 }
 

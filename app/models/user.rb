@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   has_many :participations, inverse_of: :participant, foreign_key: 'participant_id'
   has_many :comment_looks
   has_many :credentials, inverse_of: :user, dependent: :destroy
-  has_many :assigned_papers, through: :paper_roles, class_name: 'Paper', source: :paper
+  has_many :assigned_papers, ->{ uniq }, through: :paper_roles, class_name: 'Paper', source: :paper
 
   attr_accessor :login
 

@@ -229,13 +229,6 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.2.0)
       launchy (~> 2.2)
-    license_finder (0.9.3)
-      bundler
-      httparty
-      rake
-      sequel
-      sqlite3
-      thor
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -399,7 +392,6 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0.4)
-    sequel (4.5.0)
     sidekiq (3.1.4)
       celluloid (>= 0.15.2)
       connection_pool (>= 2.0.0)
@@ -426,7 +418,6 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
-    sqlite3 (1.3.8)
     subexec (0.2.3)
     thin (1.6.2)
       daemons (>= 1.0.9)
@@ -489,10 +480,10 @@ DEPENDENCIES
   haml-rails
   heroku-deflater
   jquery-fileupload-rails!
+  kaminari
   kss-rails
   launchy
   letter_opener
-  license_finder
   mail_safe
   migration_data
   mini_magick

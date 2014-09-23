@@ -1,5 +1,9 @@
 class ProfilePage < Page
   path :profile
+  text_assertions :affiliation, '.profile-affiliation-name'
+  text_assertions :full_name, '#profile-name'
+  text_assertions :username, '#profile-username h2'
+  text_assertions :email, '#profile-email h2'
 
   def full_name
     find('#profile-name').text
@@ -34,7 +38,7 @@ class ProfilePage < Page
 
   def has_affiliations?(*affiliations)
     affiliations.all? do |a|
-      page.has_css? '.profile-affiliation-name', text: a
+      has_affiliation? a
     end
   end
 

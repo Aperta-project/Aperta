@@ -31,6 +31,8 @@ ETahi.PaperEditView = Ember.View.extend
 
   setupScrollFixing: (->
     $('.control-bar').scrollToFixed()
+    $('.ve-toolbar-underside').scrollToFixed
+      marginTop: $('.control-bar').outerHeight()
 
     $('#tahi-container > main > aside').scrollToFixed
       marginTop: $('.control-bar').outerHeight()

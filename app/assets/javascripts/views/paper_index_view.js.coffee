@@ -14,6 +14,7 @@ ETahi.PaperIndexView = Ember.View.extend
   setupScrollFixing: (->
     $('.control-bar').scrollToFixed()
     $('#tahi-container > main > aside > div').scrollToFixed
+      dontSetWidth: true
       marginTop: $('.control-bar').outerHeight(true)
       unfixed: ->
         $(this).css('top', '0px')

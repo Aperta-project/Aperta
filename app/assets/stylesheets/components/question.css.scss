@@ -8,7 +8,7 @@
       content: counter(reviewer-form-counter);
       counter-increment: reviewer-form-counter;
 
-      background: $tahi-primary;
+      background: $tahi-green;
       padding: 5px;
       border-radius: 1000px;
       width: 23px;
@@ -62,7 +62,7 @@ ul.help {
     list-style-type: none;
     &:before {
       content: ">";
-      color: $tahi-primary-hover;
+      color: $tahi-green-dark;
       font-size: 1.4em;
       font-weight: 700;
       margin-right: 0.1em;

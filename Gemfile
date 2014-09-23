@@ -30,6 +30,7 @@ gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
 gem 'quiet_assets', '~> 1.0.3'
+gem 'kaminari'
 
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'
@@ -73,7 +74,6 @@ end
 group :development do
   # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
   gem 'bullet'
-  gem 'license_finder'
   gem 'kss-rails'
   gem 'letter_opener'
 end
@@ -104,6 +104,6 @@ group :test do
   gem 'thin'
 end
 
-group :staging do
+group :staging, :performance do
   gem 'mail_safe'
 end

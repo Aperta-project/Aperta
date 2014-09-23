@@ -10,6 +10,7 @@ feature "Sync Reviewer Report tasks with Assigned Reviewers", js: true do
   before do
     assign_journal_role(journal, albert, :reviewer)
     assign_journal_role(journal, admin, :admin)
+    paper.tasks.find_by(type: "StandardTasks::PaperReviewerTask").reviewer_ids = [albert.id]
 
     page.driver.browser.manage.window.maximize
 
@@ -18,12 +19,7 @@ feature "Sync Reviewer Report tasks with Assigned Reviewers", js: true do
   end
 
   let(:task_manager_page) do
-    task_manager_page = TaskManagerPage.visit paper
-    task_manager_page.view_card 'Assign Reviewers' do |overlay|
-      overlay.paper_reviewers = [albert.full_name]
-      overlay.mark_as_complete
-    end
-    task_manager_page
+    TaskManagerPage.visit paper
   end
 
   scenario "Removing a paper reviewer should remove 'ReviewerReport' from the Get Reviews phase" do

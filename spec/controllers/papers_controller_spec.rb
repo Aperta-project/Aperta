@@ -7,7 +7,7 @@ describe PapersController do
 
   let(:submitted) { false }
   let(:paper) do
-    FactoryGirl.create(:paper, :with_tasks, submitted: submitted, user: user)
+    FactoryGirl.create(:paper, :with_tasks, submitted: submitted, user: user, body: "This is the body")
   end
 
   before { sign_in user }
@@ -124,6 +124,13 @@ describe PapersController do
       it "updates the paper" do
         do_request
         expect(paper.reload.short_title).to eq('ABC101')
+      end
+
+      it "will not update the body if it is nil" do
+        # test to check that weird ember ghost requests can't reset the body
+        new_body = nil
+        put :update, { id: paper.to_param, format: :json, paper: { body: new_body }.merge(params) }
+        expect(paper.reload.body).to_not eq(new_body)
       end
 
       context "when the paper is locked by another user" do

@@ -1,5 +1,4 @@
 <div id="tahi-container">
-
   <main>
     <section id="dashboard-my-submissions">
       <h2 class="welcome-message">
@@ -13,7 +12,7 @@
       <button class="button-secondary button--green button--wide" {{action "showNewPaperOverlay"}}>Create New Submission</button>
       {{#if hasPapers}}
         <ul class="dashboard-submitted-papers">
-          {{each model.papers itemViewClass="ETahi.DashboardLinkView"}}
+          {{each sortedPapers itemViewClass="ETahi.DashboardLinkView"}}
         </ul>
         {{#if paginate}}
           <a {{action "loadMorePapers"}} href="#" class="button-primary button--green button--wide load-more-papers">

@@ -36,29 +36,6 @@ module 'Integration: Dashboard',
         paper_ids: [1..15]
         total_paper_count: TahiTest.paperCount
         total_page_count: TahiTest.pageCount
-        administered_journals: [
-          id: TahiTest.adminJournalId
-          name: "Fake Journal"
-          logo_url: "https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/thumbnail_Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png"
-          paper_types: ["Research"]
-          task_types: [
-            "FinancialDisclosure::Task"
-            "StandardTasks::PaperAdminTask"
-            "StandardTasks::PaperEditorTask"
-            "StandardTasks::PaperReviewerTask"
-            "StandardTasks::ReviewerReportTask"
-            "StandardTasks::RegisterDecisionTask"
-            "ReviewerReportTask"
-            "StandardTasks::AuthorsTask"
-            "StandardTasks::CompetingInterestsTask"
-            "StandardTasks::DataAvailabilityTask"
-            "StandardTasks::FigureTask"
-            "StandardTasks::TechCheckTask"
-            "SupportingInformation::Task"
-            "UploadManuscript::Task"
-          ]
-          manuscript_css: null
-        ]
       ]
 
     adminJournalsResponse = {}

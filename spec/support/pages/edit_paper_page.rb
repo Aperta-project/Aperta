@@ -19,7 +19,6 @@ class EditPaperPage < Page
   path :edit_paper
   text_assertions :paper_title, '#paper-title'
   text_assertions :journal, '.paper-journal'
-  text_assertions :authors, '#paper-authors'
 
   def initialize element = nil
     expect(page).to have_css('#paper-body', wait: 4)
@@ -77,10 +76,6 @@ HERE
     find('.ve-ce-documentNode').has_text?(text)
   end
 
-  def authors
-    find('#paper-authors').text
-  end
-
   def journal
     find(:css, '.paper-journal').text
   end
@@ -109,12 +104,12 @@ HERE
 
   def start_writing
     find(".prompt").click
-    expect(find(".prompt").text).to eq 'STOP WRITING'
+    expect(self).to have_css('.prompt', text: 'STOP WRITING')
   end
 
   def stop_writing
     find(".prompt").click
-    expect(find(".prompt").text).to eq 'START WRITING'
+    expect(self).to have_css('.prompt', text: 'START WRITING')
   end
 
   def submit

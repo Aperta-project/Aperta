@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 
   include UserDevise
   searchable do
-    text :username, :first_name, :last_name
+    text :username, :first_name, :last_name, :email
     text :full_name do
       full_name
     end

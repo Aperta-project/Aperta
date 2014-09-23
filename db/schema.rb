@@ -183,8 +183,8 @@ ActiveRecord::Schema.define(version: 20140923143351) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.integer  "striking_image_id"
     t.datetime "last_heartbeat_at"
+    t.integer  "striking_image_id"
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree

@@ -25,6 +25,8 @@
 <div id="manuscript-manager">
   <div class="columns">
     {{add-column position=-1 action="addPhase" bonusClass="first-add-column"}}
-    {{each sortedPhases itemViewClass="ETahi.ManuscriptManagerColumnView"}}
+    {{#each phase in sortedPhases}}
+      {{view "ETahi.ManuscriptManagerColumnView" phase=phase}}
+    {{/each}}
   </div>
 </div>

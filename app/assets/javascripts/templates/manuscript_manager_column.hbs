@@ -1,11 +1,16 @@
 {{add-column position=view.nextPosition action='addPhase'}}
 
-{{view ETahi.PhaseHeaderView phase=view.content}}
+{{view ETahi.PhaseHeaderView phase=view.phase}}
 
 <div class="column-content">
-  {{each tasks itemViewClass="ETahi.CardView"}}
-
-  <a {{action 'chooseNewCardTypeOverlay' view.content}} class="button-secondary button--green">
+  {{#each task in phase.tasks}}
+    {{flow-card paper=paper
+                task=task
+                commentLooks=commentLooks
+                canRemoveCard=canRemoveCard
+                action='viewCard'}}
+  {{/each}}
+  <a {{action 'chooseNewCardTypeOverlay' view.phase}} class="button-secondary button--green">
     Add New Card
   </a>
 </div>

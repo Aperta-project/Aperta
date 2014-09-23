@@ -1,7 +1,7 @@
 {{inline-edit-h1 title=title setTitle="setTitle"}}
 
 <div class="task-body">
-  {{#each block in body}}
+  {{#each block in template}}
     {{#inline-edit-body-part
       block=block
       cancel="resetBlock"
@@ -10,8 +10,7 @@
       addItem="addCheckboxItem"}}
       {{#each item in block}}
         {{inlineEdit item
-          delete="deleteItem"
-          saveModel="saveModel"}}
+          delete="deleteItem"}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
@@ -26,8 +25,7 @@
       {{#each item in block}}
         {{inlineEdit item
           isNew=true
-          delete="deleteItem"
-          saveModel="saveModel"}}
+          delete="deleteItem"}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}

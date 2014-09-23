@@ -65,11 +65,6 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
     rollbackPhase: (phase, oldName) ->
       phase.set('name', oldName)
 
-    addTask: (phaseTemplate, journalTaskType) ->
-      unless Ember.isBlank(journalTaskType)
-        newTask = @store.createRecord('taskTemplate', journalTaskType: journalTaskType, phaseTemplate: phaseTemplate)
-        @set('dirty', true)
-
     removeTask: (taskTemplate) ->
       @deleteRecord taskTemplate
 

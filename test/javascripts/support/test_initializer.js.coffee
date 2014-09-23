@@ -21,6 +21,11 @@ Ember.Test.registerHelper('getStore', (app) ->
   app.__container__.lookup('store:main')
 )
 
+Ember.Test.registerAsyncHelper('pickFromChosenSingle', (app, selector, choice) ->
+  click ".chosen-container#{selector} a.chosen-single"
+  click "li.active-result:contains('#{choice}')"
+)
+
 # All interactions with ember are while a user is signed in
 @currentUserId = 1
 @fakeUser = ETahi.Factory.createRecord 'User',

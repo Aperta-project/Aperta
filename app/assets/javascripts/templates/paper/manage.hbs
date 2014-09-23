@@ -26,7 +26,25 @@
   <div class="columns">
     {{add-column position=-1 action="addPhase" bonusClass="first-add-column"}}
     {{#each phase in sortedPhases}}
-      {{view "ETahi.ManuscriptManagerColumnView" phase=phase}}
+      {{#view "ETahi.ManuscriptManagerColumnView" content=phase}}
+        {{add-column position=view.nextPosition action='addPhase'}}
+
+        {{view ETahi.PhaseHeaderView phase=phase}}
+
+        <div class="column-content">
+          {{#each task in phase.tasks}}
+            {{flow-card paper=paper
+                        task=task
+                        commentLooks=commentLooks
+                        canRemoveCard=canRemoveCard
+                        canDragCard=true
+                        action='viewCard'}}
+          {{/each}}
+          <a {{action 'chooseNewCardTypeOverlay' phase}} class="button-secondary button--green">
+            Add New Card
+          </a>
+        </div>
+      {{/view}}
     {{/each}}
   </div>
 </div>

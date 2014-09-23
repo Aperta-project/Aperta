@@ -1,4 +1,4 @@
-ETahi.FlowCardComponent = Ember.Component.extend
+ETahi.FlowCardComponent = Ember.Component.extend DragNDrop.Dragable,
   classNameBindings: [":card", ":flow-card", "task.completed:card--completed", "task.isMessage:card--message"]
   actions:
     viewCard: (paper, task) ->
@@ -21,4 +21,4 @@ ETahi.FlowCardComponent = Ember.Component.extend
   dragStart: (e) ->
     if @get('canDragCard')
       e.dataTransfer.setData('Text', 'TAHI!')
-      ETahi.set('dragItem', @get('content'))
+      ETahi.set('dragItem', @get('task'))

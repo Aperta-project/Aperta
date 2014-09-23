@@ -1,5 +1,4 @@
 ETahi.ManuscriptManagerColumnView = Em.View.extend DragNDrop.Droppable,
-  templateName: 'manuscript_manager_column'
   classNames: ['column']
 
   nextPosition: (->

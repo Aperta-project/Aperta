@@ -36,7 +36,8 @@ class PaperSerializer < ActiveModel::Serializer
     object.paper_roles.collaborators
   end
 
+  #FIXME This should not belong here
   def event_name
-    EventStream.name(object.id)
+    EventStream.parse_streams([object])
   end
 end

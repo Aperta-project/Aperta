@@ -19,6 +19,7 @@ module EventStreamNotifier
       active_model_serializer
     end
 
+    # TODO: raise unimplement error and define explictly on all models
     def notifier_payload
       { task_id: id, paper_id: paper.id }
     end

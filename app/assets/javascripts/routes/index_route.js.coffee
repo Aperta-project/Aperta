@@ -3,6 +3,10 @@ ETahi.IndexRoute = Ember.Route.extend
     @store.find 'dashboard'
     .then (dashboardArray) -> dashboardArray.get 'firstObject'
 
+  setupController: (controller, model) ->
+    controller.set('model', model)
+    controller.set('papers', @store.all('litePaper'))
+
   actions:
     didTransition: () ->
       @controllerFor('index').set 'pageNumber', 1

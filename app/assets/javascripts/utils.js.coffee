@@ -19,7 +19,13 @@ Tahi.utils =
     heights = $headers.find('h2').map ->
       $(this).outerHeight()
 
-    max = Math.max.apply(Math, heights)
+    max = null
+    try 
+      max = Math.max.apply(Math, heights)
+    catch error
+      console.log "Math error, setting height to 20"
+      console.log error
+      max = 20
 
     $headers.css('height', max)
     $('.column-content').css('top', max)

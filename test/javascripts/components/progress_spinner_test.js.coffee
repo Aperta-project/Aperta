@@ -4,6 +4,6 @@ moduleForComponent 'progress-spinner', 'Unit: components/progress-spinner',
 
 test 'spins', ->
   spinner = @subject()
-  equal spinner.state, 'preRender'
+  equal spinner._state, 'preRender'
   @append()
-  equal spinner.state, 'inDOM'
+  equal spinner._state, 'inDOM'

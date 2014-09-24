@@ -38,7 +38,8 @@ ETahi.initializer
 
       #don't blow up if blowing up blows up
       return if url == errorPath
-      msg = "Error with #{type} request to #{url}. Server returned #{status}: #{statusText}"
+      return if status == 0 && Etahi.environment == "test"
+      msg = "Error with #{type} request to #{url}. Server returned #{status}: #{statusText}.  #{thrownError}"
       logError(msg)
       if jqXHR.status == 401
         document.location.href = '/users/sign_in'

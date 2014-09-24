@@ -9,6 +9,13 @@ ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
     else
       @store.find('flow')
 
+  afterModel: ->
+    @store.find('commentLook')
+
+  setupController: (controller, model) ->
+    controller.set('model', model)
+    controller.set('commentLooks', @store.all('commentLook'))
+
   actions:
     chooseNewFlowMangerColumn: ->
       @render('chooseNewFlowManagerColumnOverlay',
@@ -19,9 +26,10 @@ ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
     removeFlow: (flow) ->
       flow.destroyRecord()
 
-    viewCard: (paper, task) ->
+    viewCard: (task) ->
+      paperId = task.get('litePaper.id')
       redirectParams = ['flow_manager']
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('cachedModel' , @modelFor('flow_manager'))
       @controllerFor('application').set('overlayBackground', 'flow_manager')
-      @transitionTo('task', paper.id, task.id)
+      @transitionTo('task', paperId, task.get('id'))

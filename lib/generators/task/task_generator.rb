@@ -46,7 +46,7 @@ class TaskGenerator < Rails::Generators::Base
 
   def standalone_task_with_engine(engine)
     return if engine_exists?(engine)
-    cmd = "rails plugin new engines/#{engine} --full —mountable —skip-test-unit"
+    cmd = "rails plugin new engines/#{engine} --full --mountable --skip-test-unit"
     puts cmd
     system cmd
   end

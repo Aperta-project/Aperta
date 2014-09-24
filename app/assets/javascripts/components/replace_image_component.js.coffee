@@ -1,3 +1,3 @@
 ETahi.ReplaceImageComponent = Ember.Component.extend
   tagName: 'button'
-  classNames: "button-primary button--white replace fileinput-button".w()
+  classNames: "button-secondary button--green knockout replace fileinput-button".w()

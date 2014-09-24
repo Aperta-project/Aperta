@@ -12,10 +12,6 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
   isBodyEmpty: Em.computed 'model.body', ->
     Ember.isBlank $(@get 'model.body').text()
 
-  addAuthorsTask: (->
-    this.get('tasks').findBy('type', 'AuthorsTask')
-  ).property()
-
   showPlaceholder: Em.computed 'isBodyEmpty', 'visualEditor.isCurrentlyEditing', ->
     @get('isBodyEmpty') && !@get('visualEditor.isCurrentlyEditing')
 

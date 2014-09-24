@@ -3,13 +3,15 @@
     <li class="participant">{{userThumbnail p}}</li>
   {{/each}}
   <li class="chosen-style-override participant">
-    {{chosen content=availableParticipants
-             name="participants"
-             width="150px"
-             prompt="Add People"
-             class="participant-select"
-             changeAction="addParticipant"
-             optionValuePath="content"
-             optionLabelPath="content.fullName"}}
+    {{type-ahead value=""
+                 class="participant-select"
+                 name="add_participant"
+                 sourceList=availableParticipants
+                 valueProperty="fullName"
+                 subvalueProperty="username"
+                 suggestionSelected="addParticipant"
+                 clearOnSelect=true
+                 placeholder="Add People"}}
+
   </li>
 </ul>

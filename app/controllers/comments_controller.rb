@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :enforce_policy
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -7,22 +8,12 @@ class CommentsController < ApplicationController
   def create
     task = Task.find(params[:comment][:task_id])
 
-    if PaperQuery.new(task.paper, current_user).paper
-      comment = task.comments.create(comment_params)
-      CommentLookManager.sync(task)
-      render json: comment, status: 201
-    else
-      head 404
-    end
+    comment = task.comments.create(comment_params)
+    respond_with comment
   end
 
   def show
-    comment = Comment.find(params[:id])
-    if PaperQuery.new(comment.task.paper, current_user).paper
-      render json: comment
-    else
-      head 404
-    end
+    respond_with Comment.find(params[:id])
   end
 
   private
@@ -33,5 +24,9 @@ class CommentsController < ApplicationController
 
   def render_404
     head 404
+  end
+
+  def enforce_policy
+    authorize_action!(task: Task.find(params[:comment][:task_id]))
   end
 end

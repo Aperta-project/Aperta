@@ -4,7 +4,7 @@ feature "Register Decision", js: true do
 
   let(:journal) { FactoryGirl.create :journal }
 
-  let!(:editor) { create :user }
+  let(:editor) { create :user }
 
   let!(:paper) do
     FactoryGirl.create(:paper, :with_tasks, user: editor, submitted: true, journal: journal)

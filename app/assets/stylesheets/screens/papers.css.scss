@@ -58,6 +58,10 @@
   min-height: 500px;
   padding-bottom: 36px;
 
+  .ve-ce-documentNode {
+    font-size: 0.95em;
+  }
+
   .ve-ce-documentNode.ve-ce-branchNode { // visual-editor override
     min-height: 500px;
   }
@@ -129,6 +133,7 @@
 }
 
 .task-list {
+  width: 280px;
   padding: 0 30px;
 }
 
@@ -140,6 +145,13 @@
   #paper-title {
     font-family: $tahi-article-font-family;
   }
+}
+
+.ve-toolbar-underside {
+  @include position(absolute, 0px 0px auto 0px);
+  width: 100%;
+  height: 45px;
+  background: #fff;
 }
 
 .edit-paper {

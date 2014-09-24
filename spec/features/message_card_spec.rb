@@ -16,11 +16,6 @@ feature 'Message Cards', js: true do
     FactoryGirl.create(:paper, :with_tasks, user: admin, submitted: true, journal: journal)
   end
 
-  def create_comment_with_comment_looks(task, comment_params)
-    task.comments.create(comment_params)
-    CommentLookManager.sync(task)
-  end
-
   describe "creating a new message" do
     let(:subject_text) { 'A sample message' }
     let(:body_text) { 'Everyone add some comments to this test post.' }
@@ -37,7 +32,7 @@ feature 'Message Cards', js: true do
 
       needs_editor_phase = task_manager_page.phase 'Assign Editor'
       needs_editor_phase.view_card subject_text, MessageCardOverlay do |card|
-        expect(card.subject).to eq subject_text
+        expect(card).to have_subject(subject_text)
         expect(card.comments.first).to have_text body_text
         expect(card.participants).to match_array [albert.full_name, admin.full_name]
       end
@@ -49,7 +44,7 @@ feature 'Message Cards', js: true do
     let!(:message) do
       create :message_task, phase: phase, participants: participants
     end
-    let!(:initial_comment) { create :comment, :with_comment_look, commenter: commenter, task: message }
+    let!(:initial_comment) { create :comment, commenter: commenter, task: message }
 
     context "blank comments" do
       let(:commenter) { admin }
@@ -111,15 +106,16 @@ feature 'Message Cards', js: true do
     let(:commenter) { albert }
     let(:participants) { [admin, albert] }
     let(:phase) { paper.phases.first }
+    let!(:message) { create :message_task, phase: phase, participants: participants }
     let!(:initial_comments) do
-      comment_count.times.map { create_comment_with_comment_looks(message, commenter_id: commenter.id, body: "FOO") }
+      comment_count.times.map { create(:comment, task: message, commenter: albert, body: "FOO") }
     end
-    let(:message) { create :message_task, phase: phase, participants: participants }
     let(:comment_count) { 4 }
     let(:task_manager_page) { TaskManagerPage.visit paper }
 
     scenario "displays the number of unread comments as badge on message card" do
-      expect(task_manager_page.message_tasks.first.unread_comments_badge).to eq comment_count
+      foo = task_manager_page
+      expect(foo.message_tasks.first.unread_comments_badge).to eq comment_count
     end
   end
 end

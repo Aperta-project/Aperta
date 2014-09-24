@@ -1,4 +1,5 @@
 class AssignReviewersOverlay < CardOverlay
+  text_assertions :reviewer, '.reviewers-select .search-choice'
   def paper_reviewers=(names)
     names.each do |name|
       select_from_chosen(name, skip_synchronize: true, class: 'reviewers-select')
@@ -17,7 +18,7 @@ class AssignReviewersOverlay < CardOverlay
 
   def has_reviewers?(*reviewers)
     reviewers.all? do |reviewer|
-      page.has_css? '.reviewers-select .search-choice', text: reviewer.full_name
+      has_reviewer? reviewer.full_name
     end
   end
 

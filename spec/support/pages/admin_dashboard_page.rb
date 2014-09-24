@@ -1,4 +1,6 @@
 class AdminDashboardPage < Page
+  text_assertions :journal_name, '.journal-name'
+
   def self.path
     "/admin"
   end
@@ -23,7 +25,7 @@ class AdminDashboardPage < Page
 
   def has_journal_names?(*names)
     names.all? do |name_text|
-      page.has_css? '.journal-name', text: name_text
+      has_journal_name? name_text
     end
   end
 

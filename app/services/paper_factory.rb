@@ -41,7 +41,12 @@ class PaperFactory
 
   def create_task(task_template, phase)
     task_klass = task_template.task_type.kind.constantize
-    task = task_klass.new(phase: phase, title: task_template.journal_task_type.title)
+    task = task_klass.new(
+      phase: phase,
+      title: task_template.title,
+      body: task_template.template,
+      role: task_template.journal_task_type.role
+    )
     if task.role == 'author'
       task.assignee = author
     end

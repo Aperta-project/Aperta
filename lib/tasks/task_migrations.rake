@@ -1,5 +1,4 @@
 namespace :data do
-
   desc "Create default task types for all journals"
   task :create_task_types => :environment do
     TaskServices::CreateTaskTypes.call
@@ -16,5 +15,11 @@ namespace :data do
   task :reset_mmts => :environment do
     ManuscriptManagerTemplate.destroy_all
     Rake::Task["journal:create_default_templates"].invoke
+  end
+
+  task :copy_task_template_title => :environment do
+    TaskTemplate.where(title: nil).find_each do |template|
+      template.update_attribute(:title, template.journal_task_type.try(:title))
+    end
   end
 end

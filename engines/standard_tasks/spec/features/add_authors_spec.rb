@@ -33,8 +33,6 @@ feature "Add contributing authors", js: true do
       overlay.mark_as_complete
       expect(overlay).to be_completed
     end
-
-    expect(edit_paper.authors).to eq "Neils B. Bohr, Nikola Tesla"
   end
 
   context "with an existing author" do

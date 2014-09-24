@@ -1,14 +1,17 @@
 ETahi.SavesDelayed = Ember.Mixin.create
-  saveInFlight: false
+  needs: ['application']
+  delayedSave: Ember.computed.alias('controllers.application.delayedSave')
 
   saveDelayed: ->
-    Ember.run.debounce(@, @saveModel, 200)
+    @set('delayedSave', true)
+    Ember.run.debounce(@, @saveModel, 500)
 
   saveModel: ->
     unless @get('saveInFlight')
       @set('saveInFlight', true)
-      @get('model').save().then =>
+      @get('model').save().finally =>
         @set('saveInFlight', false)
+        @set('delayedSave', false)
 
   actions:
     saveModel: ->

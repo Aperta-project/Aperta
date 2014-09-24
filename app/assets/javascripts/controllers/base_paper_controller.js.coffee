@@ -8,6 +8,8 @@ ETahi.BasePaperController = Ember.ObjectController.extend
     "/papers/#{@get('id')}/download"
   ).property('id')
 
+  paper: Ember.computed.alias('model')
+
   logoUrl: (->
     logoUrl = @get('model.journal.logoUrl')
     if /default-journal-logo/.test logoUrl
@@ -43,10 +45,6 @@ ETahi.BasePaperController = Ember.ObjectController.extend
     if @get('model.editors').contains(@get('currentUser'))
       @get('tasks').filterBy('role', 'reviewer')
   ).property('tasks.@each.role')
-
-  noAuthors: (->
-    Em.isEmpty(@get('authors'))
-  ).property('authors.[]')
 
   authorNames: ( ->
     authors = @get('authors').map (author) ->

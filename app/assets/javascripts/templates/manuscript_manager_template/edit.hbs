@@ -25,7 +25,7 @@
         {{/if}}
         {{#if showSaveButton}}
           <li class="control-bar-item template-edit-save">
-            <a class="button-primary button--white template-save-button" {{action "saveTemplate"}}>Save Template</a>
+            <a class="button-secondary button--blue knockout template-save-button" {{action "saveTemplate"}}>Save Template</a>
           </li>
           <li class="control-bar-item template-edit-cancel">
             <a {{action "rollback"}}>cancel</a>
@@ -43,7 +43,28 @@
   <div id="manuscript-manager">
     <div class="full-height">
       <div class="columns manuscript-manager-template-columns">
-        {{render "phaseTemplates" phaseTemplates}}
+        {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
+        {{#each phaseTemplate in sortedPhaseTemplates}}
+          {{#view "ETahi.ManuscriptManagerColumnView" content=phaseTemplate}}
+            {{add-column position=view.nextPosition action='addPhase'}}
+
+            {{view ETahi.PhaseHeaderView phase=phaseTemplate}}
+
+            <div class="column-content">
+              {{#each task in phaseTemplate.taskTemplates}}
+                {{card-preview paper=null
+                               task=task
+                               canRemoveCard=true
+                               canDragCard=true
+                               removeTask="removeTask"
+                               action=null}}
+              {{/each}}
+              <a {{action 'chooseNewCardTypeOverlay' phaseTemplate}} class="button-secondary button--green">
+                Add New Card
+              </a>
+            </div>
+          {{/view}}
+        {{/each}}
       </div>
     </div>
   </div>

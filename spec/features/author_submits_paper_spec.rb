@@ -15,7 +15,7 @@ feature "Paper Submission" do
     new_submission_page = dashboard_page.new_submission
     edit_submission_page = new_submission_page.create_submission 'This is a short title', journal: journal.name
 
-    expect(edit_submission_page.journal).to eq(journal.name)
+    expect(edit_submission_page).to have_journal(journal.name)
     dashboard_page = edit_submission_page.visit_dashboard
     expect(dashboard_page.submissions).to include 'This is a short title'
   end

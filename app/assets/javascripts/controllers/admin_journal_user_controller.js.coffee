@@ -7,9 +7,6 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
   rolesList: Em.computed 'controllers.journalIndex.model.roles.@each', 'roles.@each', ->
     @get 'journalRoles'
     .reject (role) => @get('roles').isAny('name', role.get('name')) or role.get('isDirty')
-    .map (role) ->
-      value: role.get 'name'
-      object: role
 
   roleQuery: ''
   createRoleObject: (userRole) ->

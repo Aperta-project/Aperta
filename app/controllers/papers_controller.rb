@@ -34,7 +34,9 @@ class PapersController < ApplicationController
       paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
       raise ActiveRecord::RecordInvalid, paper
     else
-      paper.update(paper_params)
+      unless paper_params.has_key?(:body) && paper_params[:body].nil? # To prevent body-disappearing issue
+        paper.update(paper_params)
+      end
     end
     respond_with paper
   end

@@ -3,8 +3,13 @@
 {{view ETahi.PhaseHeaderView phase=content}}
 
 <div class="column-content">
-  {{each taskTemplates itemViewClass="ETahi.CardView"}}
-
+  {{#each task in taskTemplates}}
+    {{flow-card paper=null
+                task=task
+                canRemoveCard=true
+                removeTask="removeTask"
+                action=null}}
+  {{/each}}
   <a {{action 'chooseNewCardTypeOverlay' content}} class="button-secondary button--green">
     Add New Card
   </a>

@@ -1,8 +1,10 @@
 ETahi.FlowCardComponent = Ember.Component.extend DragNDrop.Dragable,
   classNameBindings: [":card", "task.completed:card--completed", "task.isMessage:card--message", "classes"]
   actions:
-    viewCard: (paper, task) ->
-      @sendAction('action', paper, task)
+    viewCard: (task) ->
+      @sendAction('action', task)
+    removeTask: (task) ->
+      @sendAction('removeTask', task)
 
   paper: null
   commentLooks: Ember.computed.oneWay('defaultCommentLooks')

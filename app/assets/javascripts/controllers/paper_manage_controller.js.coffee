@@ -1,10 +1,6 @@
 ETahi.PaperManageController = Ember.ObjectController.extend
-  sortedPhases: ( ->
-    Ember.ArrayProxy.createWithMixins(Em.SortableMixin, {
-      content: @get('model.phases')
-      sortProperties: ['position']
-    })
-  ).property('model.phases.[]', 'model.phases.tasks.@each')
+  positionSort: ["position:asc"]
+  sortedPhases: Ember.computed.sort('phases', 'positionSort')
 
   updatePositions: (phase)->
     relevantPhases = @get('model.phases').filter((p)->

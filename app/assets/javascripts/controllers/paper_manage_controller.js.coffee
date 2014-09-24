@@ -20,7 +20,7 @@ ETahi.PaperManageController = Ember.ObjectController.extend
     addPhase: (position) ->
       paper = @get('model')
       phase = @store.createRecord 'phase',
-        position: position + 1
+        position: position
         name: "New Phase"
         paper: paper
       @updatePositions(phase)

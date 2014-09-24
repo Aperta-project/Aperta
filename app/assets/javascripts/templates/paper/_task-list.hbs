@@ -1,10 +1,10 @@
 {{#if assignedTasks}}
   <div id="paper-assigned-tasks">
     {{#each task in assignedTasks}}
-      {{flow-card paper=paper
-                  task=task
-                  commentLooks=commentLooks
-                  action='viewCard'}}
+      {{card-preview paper=paper
+                     task=task
+                     commentLooks=commentLooks
+                     action='viewCard'}}
     {{/each}}
   </div>
   <hr>
@@ -13,10 +13,10 @@
 {{#if editorTasks}}
   <div id="paper-editor-tasks">
     {{#each task in editorTasks}}
-      {{flow-card paper=paper
-                  task=task
-                  commentLooks=commentLooks
-                  action='viewCard'}}
+      {{card-preview paper=paper
+                     task=task
+                     commentLooks=commentLooks
+                     action='viewCard'}}
     {{/each}}
   </div>
   <hr>
@@ -25,10 +25,10 @@
 {{#if authorTasks}}
   <div id="paper-metadata-tasks">
     {{#each task in authorTasks}}
-      {{flow-card paper=paper
-                  task=task
-                  commentLooks=commentLooks
-                  action='viewCard'}}
+      {{card-preview paper=paper
+                     task=task
+                     commentLooks=commentLooks
+                     action='viewCard'}}
     {{/each}}
   </div>
   <hr>

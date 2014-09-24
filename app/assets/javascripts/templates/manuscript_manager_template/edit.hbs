@@ -52,12 +52,12 @@
 
             <div class="column-content">
               {{#each task in phaseTemplate.taskTemplates}}
-                {{flow-card paper=null
-                            task=task
-                            canRemoveCard=true
-                            canDragCard=true
-                            removeTask="removeTask"
-                            action=null}}
+                {{card-preview paper=null
+                               task=task
+                               canRemoveCard=true
+                               canDragCard=true
+                               removeTask="removeTask"
+                               action=null}}
               {{/each}}
               <a {{action 'chooseNewCardTypeOverlay' phaseTemplate}} class="button-secondary button--green">
                 Add New Card

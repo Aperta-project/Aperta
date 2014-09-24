@@ -33,13 +33,13 @@
 
         <div class="column-content">
           {{#each task in phase.tasks}}
-            {{flow-card paper=paper
-                        task=task
-                        commentLooks=commentLooks
-                        canRemoveCard=canRemoveCard
-                        removeTask="removeTask"
-                        canDragCard=true
-                        action='viewCard'}}
+            {{card-preview paper=paper
+                           task=task
+                           commentLooks=commentLooks
+                           canRemoveCard=canRemoveCard
+                           removeTask="removeTask"
+                           canDragCard=true
+                           action='viewCard'}}
           {{/each}}
           <a {{action 'chooseNewCardTypeOverlay' phase}} class="button-secondary button--green">
             Add New Card

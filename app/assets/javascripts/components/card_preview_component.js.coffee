@@ -1,4 +1,4 @@
-ETahi.FlowCardComponent = Ember.Component.extend DragNDrop.Dragable,
+ETahi.CardPreviewComponent = Ember.Component.extend DragNDrop.Dragable,
   classNameBindings: [":card", "task.completed:card--completed", "task.isMessage:card--message", "classes"]
   actions:
     viewCard: (task) ->

@@ -7,12 +7,12 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
 
     currentParticipantIds = @get('currentParticipants').mapProperty('id')
     (@get('everyone.content').reject (user) ->
-      currentParticipantIds.contains(user.id)).map (user) ->
+      currentParticipantIds.contains("" + user.id)).map (user) ->
         Ember.Object.create user
   ).property('everyone.content.[]', 'currentParticipants.@each')
 
   remoteUrl: (->
-    "/tasks/#{this.get('taskId')}/non_collaborators/%QUERY"
+    "/filtered_users/non_participants/#{@get('taskId')}/%QUERY"
   ).property()
 
   actions:

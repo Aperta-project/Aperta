@@ -8,8 +8,10 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
   setupSelectedListener: ->
     if @get 'suggestionSelected'
       @.$().on 'typeahead:selected', (e, item, index) =>
-        @$().val('') if @get 'clearOnSelect'
         @sendAction 'suggestionSelected', item
+        @$().typeahead('val', '') if @get 'clearOnSelect'
+        @get('engine').clearRemoteCache()
+        @_setup()
 
   autoFocusInput: -> @.$().focus() if @get 'autoFocus'
 
@@ -22,7 +24,16 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
     object: item
 
 
-  didInsertElement: ->
+  setData: (->
+    engine = @get('engine')
+    engine.local = @get('sourceList').map (item) =>
+      item = Ember.Object.create(item) unless item.get
+      @formattedData(item)
+
+    engine.initialize(true)
+  ).observes('sourceList.[]')
+
+  _setup: (->
     options =
       name: 'schools'
 
@@ -43,8 +54,8 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
             @formattedData(item)
 
     engine = new Bloodhound(options)
-
     engine.initialize()
+    @set('engine', engine)
 
     @.$().typeahead
       hint: true
@@ -58,3 +69,4 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
 
     @setupSelectedListener()
     @autoFocusInput()
+  ).on('didInsertElement')

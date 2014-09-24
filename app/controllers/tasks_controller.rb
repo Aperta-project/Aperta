@@ -54,52 +54,9 @@ class TasksController < ApplicationController
     end
   end
 
-  def collaborators
-    response = []
-    paper = Task.find(params[:id]).try(:paper)
-
-    if paper
-      paper.assigned_users.each do |user|
-        response << {
-          id: user.id.to_s,
-          fullName: user.full_name,
-          info: "#{user.username}, #{role_names(user, paper.id)}"
-        }
-      end
-
-      render json: response, root: false
-    else
-      render status: 404
-    end
-  end
-
-  def non_collaborators
-    response = []
-    task = Task.find(params[:id])
-
-    users = User.search do
-      fulltext params[:query]
-    end
-
-    non_participants = users.results.reject do |user|
-      task.participants.include?(user)
-    end
-
-    non_participants.each do |user|
-      response << {
-        id: user.id.to_s,
-        fullName: user.full_name,
-        info: "#{user.username}"
-      }
-    end
-    render json: response, root: false
-  end
 
   private
 
-  def role_names(user, paper_id)
-    user.paper_roles.where(paper_id: paper_id).map(&:role).join(', ')
-  end
 
   def task_params(task)
     attributes = task.permitted_attributes

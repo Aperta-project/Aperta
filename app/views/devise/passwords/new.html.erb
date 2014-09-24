@@ -1,7 +1,7 @@
 <div class="auth-container">
   <h1>Forgot your password?</h1>
 
-  <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => "auth-left" }) do |f| %>
+  <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => "auth-left", :style => "min-height: 200px;" }) do |f| %>
     <%= devise_error_messages! %>
 
     <div class="auth-field auth-field--text-input">

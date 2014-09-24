@@ -17,10 +17,11 @@
   h2 {
     overflow: hidden;
     width: 680px;
+    padding: 11px 0 0 5px;
     font-family: $tahi-article-font-family;
-    line-height: 36px;
-    white-space: nowrap;
+    font-size: 18px;
     text-overflow: ellipsis;
+    white-space: nowrap;
 
     // override from generic h2:
     margin: 0;
@@ -94,6 +95,7 @@
 
 #tahi-container > main {
   position: relative;
+  background: #fff;
 
   > article {
     position: relative;
@@ -110,7 +112,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-    width: 25%;
+    width: 280px;
   }
 }
 

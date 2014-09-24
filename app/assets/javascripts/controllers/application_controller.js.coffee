@@ -9,7 +9,6 @@ ETahi.ApplicationController = Ember.Controller.extend
   ).property('currentUser.id')
 
   isAdmin: Ember.computed.alias 'currentUser.admin'
-  username: Ember.computed.alias 'currentUser.username'
   canViewAdminLinks: false
 
   # this will get overridden by inject except in testing cases.
@@ -30,3 +29,24 @@ ETahi.ApplicationController = Ember.Controller.extend
   ).property()
 
   showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave')
+
+  navigationVisible: false
+  accountLinksVisible: false
+
+  actions:
+    toggleNavigation: ->
+      @toggleProperty 'navigationVisible'
+
+      if @get('navigationVisible')
+        $('html').addClass 'navigation-visible'
+      else
+        $('html').removeClass 'navigation-visible'
+
+    routeTo: (routeName) ->
+      @send 'toggleNavigation'
+      @set 'accountLinksVisible', false
+      @transitionToRoute routeName
+
+    toggleAccountLinks: ->
+      @toggleProperty 'accountLinksVisible'
+      return false

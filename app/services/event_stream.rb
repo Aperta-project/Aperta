@@ -1,31 +1,31 @@
 class EventStream
 
-  def self.post_event(id, type, json)
+  def self.post_event(klass, id, json)
     return unless enabled?
     Thread.new do
       Net::HTTP.post_form(
         URI.parse(update_url),
-        card: json, stream: parse_stream(type, id), token: token
+        stream: stream_name(klass, id), card: json, token: token
       )
     end
   end
 
-  def self.connection_info(streams)
+  def self.connection_info(models)
     {
       enabled: ENV["EVENT_STREAM_ENABLED"],
       url: stream_url,
-      eventNames: parse_streams(streams)
+      eventNames: stream_names(*models)
     }
   end
 
-  def self.parse_streams(models)
+  def self.stream_names(*models)
     models.map do |model|
-      parse_stream(model.class, model.id)
+      stream_name(model.class, model.id)
     end
   end
 
-  def self.parse_stream(type, id)
-    "#{type.name.underscore.downcase}_#{id}"
+  def self.stream_name(klass, id)
+    "#{klass.name.underscore.downcase}_#{id}"
   end
 
   def self.token

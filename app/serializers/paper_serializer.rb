@@ -38,6 +38,6 @@ class PaperSerializer < ActiveModel::Serializer
 
   #FIXME This should not belong here
   def event_name
-    EventStream.parse_streams([object])
+    EventStream.stream_names(object)
   end
 end

@@ -9,6 +9,6 @@ class EventStreamsController < ApplicationController
   private
 
   def streamers
-    [ current_user, Paper.find(current_user.accessible_paper_ids) ].flatten
+    [current_user, Paper.find(current_user.accessible_paper_ids)].flatten
   end
 end

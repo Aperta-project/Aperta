@@ -4,7 +4,8 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
   editMode: false
   journal: Em.computed.alias('model.journal')
 
-  sortedPhases: Ember.computed.alias 'phaseTemplates'
+  positionSort: ["position:asc"]
+  sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort')
 
   deletedRecords: null
 

@@ -2,8 +2,8 @@ ETahi.ManuscriptManagerColumnView = Em.View.extend DragNDrop.Droppable,
   classNames: ['column']
 
   nextPosition: (->
-    @get('contentIndex') + 1
-  ).property('contentIndex')
+    @get('content.position')
+  ).property('content.position')
 
   dragOver: (e) ->
     DragNDrop.draggingStarted('.column', @.$())

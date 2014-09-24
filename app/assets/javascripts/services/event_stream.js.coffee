@@ -67,6 +67,10 @@ ETahi.EventStream = Em.Object.extend
 
     task.triggerLater('didLoad')
 
+  applicationSerializer: (->
+    @store.container.lookup("serializer:application")
+  ).property()
+
   eventStreamActions:
     created: (esData) ->
       Ember.run =>
@@ -83,11 +87,16 @@ ETahi.EventStream = Em.Object.extend
           @store.pushPayload(esData)
 
     destroy: (esData)->
-      esData.task_ids.forEach (taskId) =>
-        task = @store.findTask(taskId)
-        if task
-          task.deleteRecord()
-          task.triggerLater('didDelete')
+      for key of esData
+        type = @get('applicationSerializer').typeForRoot(key)
+        esData[key].forEach (id) =>
+          if type == "task"
+            record = @store.findTask(id)
+          else
+            record = @store.getById(type, id)
+          if record
+            record.deleteRecord()
+            record.triggerLater('didDelete')
 
     meta: (modelName, id) ->
       Ember.run =>

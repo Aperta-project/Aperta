@@ -57,7 +57,7 @@ test 'action:destroy will delete the task from the store', ->
   data =
     action: 'destroy'
     meta: null
-    task_ids: [1]
+    tasks: [1]
   Ember.run =>
     store.push('task', id: 1)
     store.push('task', id: 2)

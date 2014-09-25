@@ -16,7 +16,11 @@ class DashboardSerializer < ActiveModel::Serializer
   end
 
   def user
-    @user ||= current_user
+    if (defined? current_user) && current_user
+      current_user
+    else
+      options[:user] # user has been explicitly passed into serializer
+    end
   end
 
   def papers

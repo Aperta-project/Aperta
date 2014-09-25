@@ -51,20 +51,13 @@ TahiNotifier.subscribe("paper_role:created") do |payload|
   paper_role = PaperRole.find(id)
   user_id = paper_role.user.id
   paper    = Paper.find(paper_id)
-  serializer = LitePaperSerializer.new(paper, user: User.find(user_id))
+  dashboard_serializer = DashboardSerializer.new({}, user: User.find(user_id))
 
-  # update paper collaborator list
-  EventStream.post_event(
-    Paper,
-    paper_id,
-    serializer.as_json.merge(action: action, meta: meta).to_json
-  )
-
-  # update user dashboard and serialize the LitePaper
+  # update user dashboard
   EventStream.post_event(
     User,
     user_id,
-    serializer.as_json.merge(action: action, meta: meta).to_json
+    dashboard_serializer.as_json.merge(action: action, meta: meta).to_json
   )
 
   # update user streams

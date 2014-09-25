@@ -85,7 +85,7 @@ feature "Flow Manager", js: true do
 
     it "displays unread comment count" do
       within(".column", text: "My tasks") do
-        expect(page).to have_content("1")
+        expect(page).to have_css(".badge", text: "1")
       end
     end
   end

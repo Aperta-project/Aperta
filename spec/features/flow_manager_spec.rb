@@ -71,7 +71,7 @@ feature "Flow Manager", js: true do
   end
 
 
-  context "Comment count" do
+  xcontext "Comment count" do
     before do
       paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: admin)
       task = paper1.tasks.where(type: "StandardTasks::PaperAdminTask", completed: false).first

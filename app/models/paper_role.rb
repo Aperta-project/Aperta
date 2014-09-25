@@ -41,6 +41,10 @@ class PaperRole < ActiveRecord::Base
     reviewers.where(paper_id: paper.id)
   end
 
+  def self.most_recent_for(user)
+    select("paper_id, max(created_at) as max_created").for_user(user).group(:paper_id).order("max_created DESC")
+  end
+
   def description
     role.capitalize
   end

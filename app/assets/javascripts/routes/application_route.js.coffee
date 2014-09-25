@@ -41,12 +41,12 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       if taskType == 'MessageTask'
         controllerName = 'newMessageCardOverlay'
         currentUser = @getCurrentUser()
-        newTask.get('participants').pushObject(currentUser)
-        newTask.get('comments').pushObject(@store.createRecord('comment', commenter: currentUser))
+        newTask.get('participants').addObject(currentUser)
 
       @controllerFor(controllerName).setProperties({
         model: newTask
         paper: paper
+        newComment: @store.createRecord('comment', commenter: currentUser)
       })
 
       @render(tmplName,

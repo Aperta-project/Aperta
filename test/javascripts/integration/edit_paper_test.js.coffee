@@ -32,7 +32,6 @@ module 'Integration: EditPaper',
         user_id: fakeUser.id
         submission_ids: [paperId]
         assigned_task_ids: [figureTaskId]
-        administered_journals: []
       ]
 
     paperResponse =

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.1.2"
+ruby "2.1.3"
 
 # Configuration
 group :development, :test, :performance do
@@ -30,6 +30,7 @@ gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
 gem 'quiet_assets', '~> 1.0.3'
+gem 'kaminari'
 
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'

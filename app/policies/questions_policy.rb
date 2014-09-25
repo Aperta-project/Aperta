@@ -1,15 +1,23 @@
 class QuestionsPolicy < ApplicationPolicy
   require_params :question
+  include TaskAccessCriteria
 
   def create?
-    super_admin? || author_of_paper?(question.task.paper)
+    current_user.admin? || task_owner? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper?
   end
 
   def update?
-    super_admin? || author_of_paper?(question.task.paper)
+    current_user.admin? || task_owner? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper?
   end
 
   def destroy?
-    super_admin? || author_of_paper?(question.task.paper)
+    current_user.admin? || task_owner? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper?
+  end
+
+
+  private
+
+  def task
+    question.task
   end
 end

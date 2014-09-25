@@ -5,8 +5,8 @@ ETahi.JournalTaskTypesShowController = Em.ObjectController.extend
   isEditing: false
   notEditing: Ember.computed.not('isEditing')
 
-  taskTypeSort: ['name: asc']
-  availableTaskRoles: Ember.computed.sort('journal.roles', 'taskTypeSort')
+  journalRoleSort: ['name: asc']
+  availableTaskRoles: Ember.computed.sort('journal.roles', 'journalRoleSort')
 
   observeTitle: (->
     if @get('model').changedAttributes().title

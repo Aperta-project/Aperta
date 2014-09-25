@@ -23,6 +23,7 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
     controller.set('model', model)
     controller.set 'authors', @store.all('author').filter (author) =>
       model.get('authorGroups').indexOf(author.get('authorGroup')) > -1
+    controller.set('commentLooks', @store.all('commentLook'))
 
   deactivate: ->
     @endHeartbeat()

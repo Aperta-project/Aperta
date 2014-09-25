@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each journalTaskType in model}}
+      {{#each journalTaskType in sortedTaskTypes}}
         {{render "journal_task_types/show" journalTaskType}}
       {{/each}}
     </tbody>

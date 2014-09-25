@@ -8,6 +8,8 @@ ETahi.BasePaperController = Ember.ObjectController.extend
     "/papers/#{@get('id')}/download"
   ).property('id')
 
+  paper: Ember.computed.alias('model')
+
   logoUrl: (->
     logoUrl = @get('model.journal.logoUrl')
     if /default-journal-logo/.test logoUrl

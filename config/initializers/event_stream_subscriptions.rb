@@ -1,19 +1,3 @@
-TahiNotifier.subscribe("paper_role:created") do |payload|
-  user_id  = payload[:user_id]
-  paper_id = payload[:paper_id]
-  action   = payload[:action]
-  meta     = payload[:meta]
-
-  paper    = Paper.find(paper_id)
-  serializer = LitePaperSerializer.new(paper, user: User.find(user_id))
-
-  EventStream.post_event(
-    User,
-    user_id,
-    serializer.as_json.merge(action: action, meta: meta).to_json
-  )
-end
-
 TahiNotifier.subscribe("task:created", "task:updated", "comment:*") do |payload|
   action     = payload[:action]
   task_id    = payload[:task_id]
@@ -29,7 +13,7 @@ TahiNotifier.subscribe("task:created", "task:updated", "comment:*") do |payload|
   )
 end
 
-TahiNotifier.subscribe("supporting_information/file:*", "figure:*", "paper:*", "paper_role:created", "question_attachment:*") do |payload|
+TahiNotifier.subscribe("supporting_information/file:*", "figure:*", "paper:*", "question_attachment:*") do |payload|
   action     = payload[:action]
   id         = payload[:id]
   paper_id   = payload[:paper_id]
@@ -57,6 +41,40 @@ TahiNotifier.subscribe("task:destroyed") do |payload|
   )
 end
 
+TahiNotifier.subscribe("paper_role:created") do |payload|
+  user_id  = payload[:user_id]
+  paper_id = payload[:paper_id]
+  action   = payload[:action]
+  meta     = payload[:meta]
+  id       = payload[:id]
+
+  paper_role = PaperRole.find(id)
+  user_id = paper_role.user.id
+  paper    = Paper.find(paper_id)
+  serializer = LitePaperSerializer.new(paper, user: User.find(user_id))
+
+  # update paper collaborator list
+  EventStream.post_event(
+    Paper,
+    paper_id,
+    serializer.as_json.merge(action: action, meta: meta).to_json
+  )
+
+  # update user dashboard and serialize the LitePaper
+  EventStream.post_event(
+    User,
+    user_id,
+    serializer.as_json.merge(action: action, meta: meta).to_json
+  )
+
+  # update user streams
+  EventStream.post_event(
+    User,
+    user_id,
+    { action: "update_streams" }.to_json
+  )
+end
+
 TahiNotifier.subscribe("paper_role:destroyed") do |payload|
   user_id  = payload[:user_id]
   paper_id = payload[:paper_id]
@@ -65,5 +83,11 @@ TahiNotifier.subscribe("paper_role:destroyed") do |payload|
     User,
     user_id,
     { action: "destroy", lite_papers: [paper_id] }.to_json
+  )
+
+  EventStream.post_event(
+    User,
+    user_id,
+    { action: "update_streams" }.to_json
   )
 end

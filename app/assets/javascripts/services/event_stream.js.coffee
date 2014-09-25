@@ -5,18 +5,7 @@ ETahi.EventStream = Em.Object.extend
   wait: false
   init: ->
     @set('messageQueue', [])
-    params =
-      url: '/event_stream'
-      method: 'GET'
-      success: (data) =>
-        return if data.enabled == 'false'
-        source = new EventSource(data.url)
-        Ember.$(window).unload -> source.close()
-        @set('eventSource', source)
-
-        data.eventNames.forEach (eventName) =>
-          @addEventListener(eventName)
-    Ember.$.ajax(params)
+    @resetChannels()
     @processMessages()
 
   addEventListener: (eventName) ->
@@ -36,6 +25,22 @@ ETahi.EventStream = Em.Object.extend
 
   play: ->
     @set('wait', false)
+
+  stop: ->
+    @get('eventSource').close() if @get('eventSource')
+
+  resetChannels: ->
+    @stop()
+    params =
+      url: '/event_stream'
+      method: 'GET'
+      success: (data) =>
+        return if data.enabled == 'false'
+        @set('eventSource', new EventSource(data.url))
+        Ember.$(window).unload => @stop()
+        data.eventNames.forEach (eventName) =>
+          @addEventListener(eventName)
+    Ember.$.ajax(params)
 
   msgResponse: (msg) ->
     esData = JSON.parse(msg.data)
@@ -103,3 +108,7 @@ ETahi.EventStream = Em.Object.extend
           model.reload()
         else
           @store.find(modelName, id)
+
+    update_streams: ->
+      @resetChannels()
+

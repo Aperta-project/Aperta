@@ -80,7 +80,11 @@ describe S3FormConfigurator do
     end
 
     describe "the policy object" do
-      it "has an expiration key whose value is a date-time string"
+      it "has an expiration key whose value is a date-time string" do
+        policy_json = JSON.parse(Base64.decode64(result["policy"]))
+        expect(policy_json["expiration"]).to_not be_nil
+      end
+
       describe "policy conditions" do
         it "contains the bucket"
         it "specifies the acl as public-read"

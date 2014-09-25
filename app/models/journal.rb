@@ -4,7 +4,7 @@ class Journal < ActiveRecord::Base
   has_many :user_roles, through: :roles
   has_many :users, through: :user_roles
   has_many :manuscript_manager_templates, dependent: :destroy
-  has_many :journal_task_types, inverse_of: :journal
+  has_many :journal_task_types, inverse_of: :journal, dependent: :destroy
 
   validates_presence_of :name, message: 'Please include a journal name'
 

@@ -22,6 +22,21 @@ describe QuestionsPolicy do
     it { expect(policy.destroy?).to eq(true) }
   end
 
+  context "paper reviewer" do
+    let!(:paper_role) { create(:paper_role, :reviewer, user: user, paper: paper) }
+    let(:task) { paper.tasks.metadata.first }
+    let(:user) { FactoryGirl.create(:user) }
+
+    before {
+      task.update_attribute(:assignee, user)
+      assign_journal_role(paper.journal, user, :reviewer)
+    }
+
+    it { expect(policy.create?).to eq(true) }
+    it { expect(policy.update?).to eq(true) }
+    it { expect(policy.destroy?).to eq(true) }
+  end
+
   context "some schmuck" do
     let(:user) { FactoryGirl.create(:user) }
 

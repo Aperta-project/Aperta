@@ -1,11 +1,6 @@
 ETahi.PaperManageController = Ember.ObjectController.extend
-  canRemoveCard: true
-  sortedPhases: ( ->
-    Ember.ArrayProxy.createWithMixins(Em.SortableMixin, {
-      content: @get('model.phases')
-      sortProperties: ['position']
-    })
-  ).property('model.phases.[]', 'model.phases.tasks.@each')
+  positionSort: ["position:asc"]
+  sortedPhases: Ember.computed.sort('phases', 'positionSort')
 
   updatePositions: (phase)->
     relevantPhases = @get('model.phases').filter((p)->
@@ -14,12 +9,14 @@ ETahi.PaperManageController = Ember.ObjectController.extend
 
     relevantPhases.invoke('incrementProperty', 'position')
 
+  paper: Ember.computed.alias('model')
+  canRemoveCard: true
 
   actions:
     addPhase: (position) ->
       paper = @get('model')
       phase = @store.createRecord 'phase',
-        position: position + 1
+        position: position
         name: "New Phase"
         paper: paper
       @updatePositions(phase)

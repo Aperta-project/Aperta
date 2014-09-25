@@ -27,12 +27,10 @@ test '#rollbackPhase sets the given old name on the given phase', ->
 test '#addPhase adds a phase at a specified index', ->
   Em.run =>
     @ctrl.send 'addPhase', 0
-    equal @ctrl.get('sortedPhases.firstObject.name'), 'New Phase'
+    equal @ctrl.get('sortedPhaseTemplates.firstObject.name'), 'New Phase'
 
 test "#removeTask removes the given task from the template's phase", ->
   Ember.run =>
     @ctrl.send 'removeTask', @task1
     tasks = @phase.get('taskTemplates')
     deepEqual tasks.mapBy('title'), ['BTask']
-
-

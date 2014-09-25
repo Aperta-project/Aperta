@@ -41,11 +41,10 @@ describe PaperFactory do
       expect(paper.tasks.where(type: 'StandardTasks::DataAvailabilityTask').first.assignee).to eq(user)
     end
 
-    it "uses the journal-defined title" do
-      task_type = journal.journal_task_types.joins(:task_type).where('task_types.kind' => 'StandardTasks::PaperAdminTask').first
-      expect(task_type).to_not be_nil
+    it "uses the task template's title" do
       custom_title = "Zeitung Administratoraufgabe"
-      task_type.update_attributes title: custom_title
+      template = mmt.phase_templates.first.task_templates.find_by(title: "Assign Admin")
+      template.update_attribute(:title, custom_title)
       paper_factory.apply_template
       expect(paper.tasks.where(type: 'StandardTasks::PaperAdminTask').first.title).to eq(custom_title)
     end

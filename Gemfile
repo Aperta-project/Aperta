@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.1.2"
+ruby "2.1.3"
 
 # Configuration
 group :development, :test, :performance do

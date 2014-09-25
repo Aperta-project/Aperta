@@ -3,7 +3,8 @@ class MessageCardOverlay < CardOverlay
 
   def add_participants(*users)
     users.map(&:full_name).each do |name|
-      select_from_chosen name, class: 'participant-select', skip_synchronize: true
+      fill_in 'add_participant', with: name
+      find('.tt-suggestion').click
       expect(page).to have_css ".participants [alt='#{name}']"
     end
   end
@@ -46,7 +47,7 @@ class MessageCardOverlay < CardOverlay
 
   def post_message(new_message)
     fill_in 'comment-body', with: new_message
-    click_button 'Post Message'
+    find('.button-secondary', text: "POST MESSAGE").click
     expect(page).to have_content new_message
   end
 

@@ -68,7 +68,7 @@ class JournalPage < Page
   end
 
   def epub_css_saved?
-    find('.epub-css.save-status').text == "Saved"
+    has_css?('.epub-css.save-status', text: "Saved")
   end
 
   def view_pdf_css

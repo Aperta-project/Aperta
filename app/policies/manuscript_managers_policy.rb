@@ -20,5 +20,4 @@ class ManuscriptManagersPolicy < ApplicationPolicy
     paper.tasks.assigned_to(current_user).exists? &&
     roles.merge(Role.can_view_assigned_manuscript_managers).exists?
   end
-
 end

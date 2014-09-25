@@ -8,7 +8,19 @@ ETahi.PaperManageRoute = ETahi.AuthorizedRoute.extend
         success: (json) -> Ember.run(null, resolve, json)
         error:   (xhr, status, error) -> Ember.run(null, reject, xhr)
 
+  setupController: (controller, model) ->
+    controller.set('model', model)
+    controller.set('commentLooks', @store.all('commentLook'))
+    controller.set('canRemoveCard', true)
+
   actions:
+    chooseNewCardTypeOverlay: (phase) ->
+      @controllerFor('chooseNewCardTypeOverlay').set('phase', phase)
+      @render('chooseNewCardTypeOverlay',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'chooseNewCardTypeOverlay')
+
     viewCard: (task) ->
       paper = @modelFor('paper')
       redirectParams = ['paper.manage', @modelFor('paper')]

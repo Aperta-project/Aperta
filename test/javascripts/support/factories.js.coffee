@@ -9,17 +9,6 @@ ETahi.Factory =
     typeIds[type] += 1
     typeIds[type]
 
-  createPhase: (paper, attrs={})  ->
-    newPhase = @createRecord('Phase', attrs)
-    @addHasMany(paper, [newPhase], {inverse: 'paper'})
-    newPhase
-
-  createTask: (type, paper, phase, attrs={}) ->
-    newTask = @createRecord(type, _.extend(attrs, {lite_paper_id: paper.id}))
-    @addHasMany(paper, [newTask], {inverse: 'paper', embed: true})
-    @addHasMany(phase, [newTask], {inverse: 'phase', embed: true})
-    newTask
-
   createRecord: (type, attrs={}) ->
     if !attrs.id #make a new id if it wasn't passed in.
       newId = @getNewId(type)
@@ -48,14 +37,12 @@ ETahi.Factory =
 
   setHasMany: (model, models, options={}) ->
     keyName = options.keyName || _.first(models)._rootKey
-    if options.embed
-      key = keyName + "s"
-    else
-      key = keyName + "_ids"
 
     if options.embed
+      key = keyName + "s"
       modelIds = _.map(models, (t) -> {id: t.id, type: t.type})
     else
+      key = keyName + "_ids"
       modelIds = _.pluck(models, "id")
 
     if options.merge
@@ -73,35 +60,6 @@ ETahi.Factory =
 
   setEmbeddedHasMany: (model, models, options={}) ->
     @setHasMany(model, models, _.extend(options, {embed: true}))
-
-  createBasicPaper: (defs) ->
-    ef = ETahi.Factory
-    # create the records
-    journal = ef.createRecord('Journal', defs.journal || {})
-    paper = ef.createRecord('Paper', _.omit(defs.paper, 'phases') || {})
-    litePaper = ETahi.Factory.createLitePaper(paper)
-    ef.setForeignKey(paper, journal)
-
-    phasesAndTasks = _.map(defs.paper.phases, (phase) ->
-      phaseRecord = ef.createRecord('Phase', _.omit(phase, 'tasks'))
-      taskRecords = _.map(phase.tasks, (task) ->
-        taskType = _.keys(task)[0]
-        taskAttrs = task[taskType]
-        ef.createRecord(taskType, taskAttrs))
-
-      #associate phases and tasks
-      ef.setEmbeddedHasMany(phaseRecord, taskRecords, {inverse: 'phase'})
-      [phaseRecord, taskRecords]
-    )
-    allTasks = _.reduce(phasesAndTasks, ((memo, [phase, tasks]) -> memo.concat(tasks)), [])
-    phases = _.map(phasesAndTasks, _.first)
-
-    # associate paper to phases and paper to tasks
-    ef.setHasMany(paper, phases, {inverse: 'paper'})
-    ef.setEmbeddedHasMany(paper, allTasks, {inverse: 'paper'})
-    _.forEach(allTasks, (task) -> task.lite_paper_id = paper.id)
-
-    [].concat(paper, litePaper, journal, phases, allTasks)
 
   addRecordToManifest: (manifest, typeName, obj, isPrimary) ->
     # the allRecords array allows easy modification of a given
@@ -125,7 +83,8 @@ ETahi.Factory =
   manifestToPayload: (manifest) ->
     {primaryRecord, primaryType} = manifest
     payload = {}
-    payload[primaryType] = primaryRecord
+    if primaryType && primaryRecord
+      payload[primaryType] = primaryRecord
     _.forEach manifest.types, (typeArray, typeName) ->
       records = _.map(typeArray, (d) -> d)
       if typeName == primaryType
@@ -157,11 +116,68 @@ ETahi.Factory =
      toJSON: ->
        _manifestToPayload(@manifest)
 
+  createBasicPaper: (defs) ->
+    ef = ETahi.Factory
+    # create the records
+    journal = ef.createRecord('Journal', defs.journal || {})
+    paper = ef.createRecord('Paper', _.omit(defs.paper, 'phases') || {})
+    litePaper = ETahi.Factory.createLitePaper(paper)
+    ef.setForeignKey(paper, journal)
+
+    phasesAndTasks = _.map(defs.paper.phases, (phase) ->
+      phaseRecord = ef.createRecord('Phase', _.omit(phase, 'tasks'))
+      taskRecords = _.map(phase.tasks, (task) ->
+        taskType = _.keys(task)[0]
+        taskAttrs = task[taskType]
+        ef.createRecord(taskType, taskAttrs))
+
+      #associate phases and tasks
+      ef.setEmbeddedHasMany(phaseRecord, taskRecords, {inverse: 'phase'})
+      [phaseRecord, taskRecords]
+    )
+    allTasks = _.reduce(phasesAndTasks, ((memo, [phase, tasks]) -> memo.concat(tasks)), [])
+    phases = _.map(phasesAndTasks, _.first)
+
+    # associate paper to phases and paper to tasks
+    ef.setHasMany(paper, phases, {inverse: 'paper'})
+    ef.setEmbeddedHasMany(paper, allTasks, {inverse: 'paper'})
+    _.forEach(allTasks, (task) -> task.lite_paper_id = paper.id)
+
+    [].concat(paper, litePaper, journal, phases, allTasks)
+
   createLitePaper: (paper) ->
     {short_title, title, id, submitted} = paper
     paper_id = id
     paperAttrs = {short_title, title, id, submitted, paper_id}
     ETahi.Factory.createRecord('LitePaper', paperAttrs)
+
+  createPhase: (paper, attrs={})  ->
+    newPhase = @createRecord('Phase', attrs)
+    @addHasMany(paper, [newPhase], {inverse: 'paper'})
+    newPhase
+
+  createTask: (type, paper, phase, attrs={}) ->
+    newTask = @createRecord(type, _.extend(attrs, {lite_paper_id: paper.id}))
+    @addHasMany(paper, [newTask], {inverse: 'paper', embed: true})
+    @addHasMany(phase, [newTask], {inverse: 'phase', embed: true})
+    newTask
+
+  createMMT: (journal, attrs={}) ->
+    newMMT = @createRecord('ManuscriptManagerTemplate', attrs)
+    @addHasMany(journal, [newMMT], {inverse: 'journal'})
+    newMMT
+
+  createPhaseTemplate: (mmt, attrs={}) ->
+    newPhaseTemplate = @createRecord('PhaseTemplate', attrs)
+    @addHasMany(mmt, [newPhaseTemplate], {inverse: 'manuscript_manager_template'})
+    newPhaseTemplate
+
+  createJournalTaskType: (journal, taskType) ->
+    tt = @createRecord('TaskType', kind: taskType.kind)
+    jtt = @createRecord('JournalTaskType', title: taskType.title)
+    @setForeignKey(jtt, tt)
+    @addHasMany(journal, [jtt], {inverse: 'journal'})
+    [tt, jtt]
 
 ETahi.FactoryAttributes = {}
 ETahi.FactoryAttributes.User =
@@ -173,28 +189,16 @@ ETahi.FactoryAttributes.User =
   email: "fakeuser@example.com"
   admin: false
   affiliation_ids: []
+
 ETahi.FactoryAttributes.Journal =
   _rootKey: 'journal'
   id: null
   name: "Fake Journal"
   logo_url: "/images/no-journal-image.gif"
   paper_types: ["Research"]
-  task_types: [
-    "ReviewerReportTask"
-    "PaperAdminTask"
-    "UploadManuscript::Task"
-    "PaperEditorTask"
-    "Declaration::Task"
-    "PaperReviewerTask"
-    "RegisterDecisionTask"
-    "StandardTasks::TechCheckTask"
-    "StandardTasks::FigureTask"
-    "StandardTasks::AuthorsTask"
-    "SupportingInformation::Task"
-    "DataAvailability::Task"
-    "FinancialDisclosure::Task"
-    "CompetingInterests::Task"
-  ]
+  journal_task_type_ids: []
+  manuscript_manager_template_ids: []
+  role_ids: []
   manuscript_css: null
 
 ETahi.FactoryAttributes.Paper =
@@ -282,3 +286,31 @@ ETahi.FactoryAttributes.Phase =
   position: null
   paper_id: null
   tasks: []
+
+ETahi.FactoryAttributes.ManuscriptManagerTemplate =
+  _rootKey: 'manuscript_manager_template'
+  id: null
+  paper_type: "Research"
+  phase_template_ids: []
+  journal_id: null
+
+ETahi.FactoryAttributes.PhaseTemplate =
+  _rootKey: 'phase_template'
+  id: null
+  position: 1
+  manuscript_manager_template_id: null
+  name: "Phase 1"
+  task_template_ids: []
+
+ETahi.FactoryAttributes.JournalTaskType =
+  _rootKey: 'journal_task_type'
+  id: null
+  task_type_id: null
+  title: null
+  journal_id: null
+  role: null
+
+ETahi.FactoryAttributes.TaskType =
+  _rootKey: 'task_type'
+  id: null
+  kind: "Task"

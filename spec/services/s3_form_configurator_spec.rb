@@ -2,7 +2,9 @@ require 'json'
 class S3FormConfigurator 
 
   def self.form_json(aws_key, aws_secret, s3_params)
-    {url: s3_params[:url]}.to_json
+    {url: s3_params[:url],
+     key: s3_params[:upload_path],
+     acl: "public-read"}.to_json
   end
 end
 
@@ -36,19 +38,19 @@ end
 describe S3FormConfigurator do
 
   describe "form_json" do
-    let(:result) do
-      aws_key = "foo"
-      aws_secret = "bar"
-      s3_params =
+    let(:default_s3_params) do
         {url: "testUrl",
          bucket_name: "aBucket",
          upload_root: "pending",
          upload_path: "files/pictures",
          content_type: "jpeg"}
-
+    end
+    let(:result) do
+      aws_key = "foo"
+      aws_secret = "bar"
         result = S3FormConfigurator.form_json(aws_key,
                                               aws_secret,
-                                              s3_params
+                                              default_s3_params
                                              )
         JSON.parse(result)
     end
@@ -65,15 +67,20 @@ describe S3FormConfigurator do
       expect(result["acl"]).to eq("public-read")
     end
 
-    it "contains a policy key whose value is base64 encoded object"
-    it "contains a signature whose value is base64 encoded"
+    it "generates a key that starts with the specified upload_path." do
+      key = JSON.parse(S3FormConfigurator.form_json("foo", "bar", default_s3_params))["key"]
+      expect(key).to match(/^files\/pictures/)
+    end
 
-    it "has a key that segregates files by user id and file prefix"
-    it "generates a random key each time"
+    it "generates a key that is a combination of the specified upload path and a random token" do
+      key1 = JSON.parse(S3FormConfigurator.form_json("foo", "bar", default_s3_params))["key"]
+      key2 = JSON.parse(S3FormConfigurator.form_json("foo", "bar", default_s3_params))["key"]
+
+      expect(key1).to_not eq(key2)
+    end
 
     describe "the policy object" do
       it "has an expiration key whose value is a date-time string"
-      it "has an array of conditions"
       describe "policy conditions" do
         it "contains the bucket"
         it "specifies the acl as public-read"

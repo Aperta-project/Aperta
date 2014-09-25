@@ -1,8 +1,8 @@
 require 'json'
 class S3FormConfigurator 
 
-  def self.form_json(url, aws_key, aws_secret, user_id, bucket_name)
-    {url: url}.to_json
+  def self.form_json(aws_key, aws_secret, s3_params)
+    {url: s3_params[:url]}.to_json
   end
 end
 
@@ -13,11 +13,11 @@ end
 #  acl: 'public-read' // the permissions that this file will have
 #  policy: <s3-policy> // this is a Base64 encoded JSON object with newlines and carriage returns removed.
 #  signature: <s3-signature> // this is a Base64 encoded HMAC digest generated using our aws key and the <s3-policy>
-#  key: 'some/directory/path' // this is where the file will go inside the bucket.  It should be unique.
+#  key: 'some/directory/path/<some-unique-id>' // this is where the file will go inside the bucket.  It should have a uuid or something as its directory.
 #  }
 #
 # The s3 policy should look as follows before it's Base64 encoded:
-# {expiration: 30.minutes.from_now.utc.strftime('%Y-%m-%dT%H:%M:%S.000Z'),
+# {expiration: <ISO8601-time-stamp>, //expiration should probably be 30 minutes from the current time.
 # conditions: [
 #   { bucket: <s3-bucket-name> },
 #   { acl: 'public-read' },
@@ -25,22 +25,32 @@ end
 #   ["eq", "$Content-Type", <content-type>],
 #   { success_action_status: '201' }
 # }
+# After base64 encoding the s3 policy should have newlines and carriage returns removed.
+#
+# The s3 signature can be created using OpenSSL::HMAC.digest.  The signature should take the aws secret key
+# as as its key, and the previously created policy document (already Base64 encoded and gsubbed) as its data
+# Use an OpenSSl sha1 digest as the digest for the key.
+#
+# You'll need to make some kind of service class (that'd be the easiest) that can spit out the aforementioned JSON object given a set of params.
+#
 describe S3FormConfigurator do
 
   describe "form_json" do
     let(:result) do
+      aws_key = "foo"
+      aws_secret = "bar"
       s3_params =
-         {url: "testUrl",
-          bucket_name: "aBucket",
-          upload_root: "pending",
-          upload_path: "files/pictures",
-          content_type: "jpeg"}
+        {url: "testUrl",
+         bucket_name: "aBucket",
+         upload_root: "pending",
+         upload_path: "files/pictures",
+         content_type: "jpeg"}
 
-      result = S3FormConfigurator.form_json(aws_key,
-                                            aws_secret,
-                                            s3_params
-                                           )
-      JSON.parse(result)
+        result = S3FormConfigurator.form_json(aws_key,
+                                              aws_secret,
+                                              s3_params
+                                             )
+        JSON.parse(result)
     end
 
     it "contains the specified url" do

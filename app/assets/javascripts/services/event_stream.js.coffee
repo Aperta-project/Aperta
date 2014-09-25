@@ -95,8 +95,7 @@ ETahi.EventStream = Em.Object.extend
           else
             record = @store.getById(type, id)
           if record
-            record.deleteRecord()
-            record.triggerLater('didDelete')
+            record.unloadRecord()
 
     meta: (modelName, id) ->
       Ember.run =>

@@ -19,5 +19,4 @@ ETahi.IndexController = Ember.ObjectController.extend
     loadMorePapers: ->
       @store.find 'lite_paper', page_number: (@get('pageNumber') + 1)
       .then (litePapers) =>
-        # @get('papers').pushObjects litePapers
         @incrementProperty 'pageNumber'

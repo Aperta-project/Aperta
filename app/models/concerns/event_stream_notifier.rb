@@ -20,7 +20,7 @@ module EventStreamNotifier
     end
 
     def notifier_payload
-      { task_id: id, paper_id: paper.id }
+      raise NotImplementedError
     end
 
     def has_meta?

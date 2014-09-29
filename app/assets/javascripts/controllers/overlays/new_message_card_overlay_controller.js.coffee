@@ -5,6 +5,7 @@ ETahi.NewMessageCardOverlayController = ETahi.NewCardOverlayController.extend
     Ember.isBlank(@get('model.title'))
   ).property('model.title')
 
+  newComment: Ember.computed.alias('model.comments.firstObject')
   hasComment: (->
     !Ember.isBlank(@get('newComment.body'))
   ).property('newComment.body')
@@ -14,8 +15,8 @@ ETahi.NewMessageCardOverlayController = ETahi.NewCardOverlayController.extend
       initialComment = @get('newComment')
       shouldSaveComment = @get('hasComment')
       @get('model').save().then (task) =>
+        task.get('phase.tasks').pushObject(task)
         if shouldSaveComment
-          initialComment.set('task', task)
           initialComment.save()
         else
           initialComment.deleteRecord()

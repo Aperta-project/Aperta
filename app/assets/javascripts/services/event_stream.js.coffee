@@ -79,7 +79,7 @@ ETahi.EventStream = Em.Object.extend
         else
           @store.pushPayload(esData)
 
-    destroy: (esData)->
+    destroyed: (esData)->
       for key of esData
         type = @get('applicationSerializer').typeForRoot(key)
         esData[key].forEach (id) =>

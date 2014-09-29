@@ -1,20 +1,35 @@
 {{#if assignedTasks}}
   <div id="paper-assigned-tasks">
-    {{each assignedTasks itemViewClass="ETahi.CardView"}}
+    {{#each task in assignedTasks}}
+      {{card-preview paper=paper
+                     task=task
+                     commentLooks=commentLooks
+                     action='viewCard'}}
+    {{/each}}
   </div>
   <hr>
 {{/if}}
 
 {{#if editorTasks}}
   <div id="paper-editor-tasks">
-    {{each editorTasks itemViewClass="ETahi.CardView"}}
+    {{#each task in editorTasks}}
+      {{card-preview paper=paper
+                     task=task
+                     commentLooks=commentLooks
+                     action='viewCard'}}
+    {{/each}}
   </div>
   <hr>
 {{/if}}
 
 {{#if authorTasks}}
   <div id="paper-metadata-tasks">
-    {{each authorTasks itemViewClass="ETahi.CardView"}}
+    {{#each task in authorTasks}}
+      {{card-preview paper=paper
+                     task=task
+                     commentLooks=commentLooks
+                     action='viewCard'}}
+    {{/each}}
   </div>
   <hr>
 {{/if}}

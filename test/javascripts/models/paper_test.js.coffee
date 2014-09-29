@@ -1,7 +1,9 @@
 moduleForModel 'paper', 'Unit: Paper Model',
   needs: ['model:author', 'model:user', 'model:figure', 'model:journal',
   'model:supportingInformationFile', 'model:phase', 'model:task', 'model:comment',
-  'model:litePaper', 'model:authorGroup', 'model:cardThumbnail', 'model:question', 'model:collaboration']
+  'model:litePaper', 'model:authorGroup', 'model:cardThumbnail', 'model:question',
+  'model:collaboration', 'model:affiliation', 'model:commentLook', 'model:flow', 'model:questionAttachment'
+  ]
   setup: -> setupApp()
   teardown: -> ETahi.reset()
 
@@ -38,24 +40,8 @@ test 'Paper hasMany tasks (async)', ->
       paper
 
   paperPromise.then((paper) ->
-    deepEqual paper.get('tasks').mapBy('type'), ['MessageTask', 'TechCheckTask']
-  ).then(start, start)
-
-
-test 'allMetadata tasks filters tasks by isMetaData', ->
-  stop()
-  paperPromise = Ember.run =>
-    task1 = @store().createRecord 'task', type: 'MessageTask', title: 'A message', isMetadataTask: false
-    task2 = @store().createRecord 'task', type: 'TechCheckTask', title: 'some task',isMetadataTask: true
-    paper = @store().createRecord 'paper',
-      title: 'some really long title'
-      shortTitle: 'test short title'
     paper.get('tasks').then (tasks) ->
-      tasks.pushObjects [task1, task2]
-      paper
-
-  paperPromise.then((paper) ->
-    deepEqual paper.get('allMetadataTasks').mapBy('type'), ['TechCheckTask']
+      deepEqual tasks.mapBy('type'), ['MessageTask', 'TechCheckTask']
   ).then(start, start)
 
 test 'Paper hasMany assignees as User', ->

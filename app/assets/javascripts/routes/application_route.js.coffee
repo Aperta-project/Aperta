@@ -17,13 +17,6 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       transition.abort()
       @get('spinner')?.stop()
 
-    chooseNewCardTypeOverlay: (phase) ->
-      @controllerFor('chooseNewCardTypeOverlay').set('phase', phase)
-      @render('chooseNewCardTypeOverlay',
-        into: 'application'
-        outlet: 'overlay'
-        controller: 'chooseNewCardTypeOverlay')
-
     createAdhocTask: (phase) ->
       paper = @controllerFor('paperManage').get('model')
       newTask = @store.createRecord 'task',
@@ -48,12 +41,12 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       if taskType == 'MessageTask'
         controllerName = 'newMessageCardOverlay'
         currentUser = @getCurrentUser()
-        newTask.get('participants').pushObject(currentUser)
-        newTask.get('comments').pushObject(@store.createRecord('comment', commenter: currentUser))
+        newTask.get('participants').addObject(currentUser)
 
       @controllerFor(controllerName).setProperties({
         model: newTask
         paper: paper
+        newComment: @store.createRecord('comment', commenter: currentUser)
       })
 
       @render(tmplName,

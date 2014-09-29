@@ -61,4 +61,19 @@ describe TasksPolicy do
 
     it { expect(policy.show?).to be(false) }
   end
+
+  context "user with can_view_assigned_manuscript_managers on this journal and is assigned to the paper." do
+    let(:journal_role) { FactoryGirl.create(:role, journal: journal, can_view_assigned_manuscript_managers: true) }
+    let(:user) do
+      user = FactoryGirl.create(:user)
+      user.roles << journal_role
+      user
+    end
+
+    before do
+      FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
+    end
+
+    it { expect(policy.show?).to be(true) }
+  end
 end

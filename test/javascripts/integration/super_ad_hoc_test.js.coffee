@@ -38,6 +38,17 @@ module 'Integration: Super AdHoc Card',
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
 
+test "Changing the title on an AdHoc Task", ->
+  visit "/papers/#{ETahi.Test.currentPaper.id}/manage"
+  .then -> ok exists find '.card-content:contains("Super Ad-Hoc")'
+
+  click '.card-content:contains("Super Ad-Hoc")'
+  click 'h1.inline-edit .glyphicon-pencil'
+  fillIn '.large-edit input[name=title]', 'Shazam!'
+  click '.large-edit .button--green:contains("Save")'
+  andThen ->
+    ok exists find 'h1.inline-edit:contains("Shazam!")'
+
 test "Adding a text block to an AdHoc Task", ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/manage"
   .then -> ok exists find '.card-content:contains("Super Ad-Hoc")'

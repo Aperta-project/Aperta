@@ -1,7 +1,11 @@
 ETahi.InlineEditBodyPartComponent = Em.Component.extend
   editing: false
-  snapshot: []
+  snapshot: null
   confirmDelete: false
+
+  _init: (->
+    @set('snapshot', [])
+  ).on('init')
 
   createSnapshot: (->
     @set('snapshot', Em.copy(@get('block'), true))

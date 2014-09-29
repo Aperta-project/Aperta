@@ -1,6 +1,10 @@
 class CommentLooksController < ApplicationController
   respond_to :json
 
+  def index
+    respond_with current_user.comment_looks
+  end
+
   def update
     comment_look = CommentLook.find(params[:id])
     comment_look.update comment_look_params

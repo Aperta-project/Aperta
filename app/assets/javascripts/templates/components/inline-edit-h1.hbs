@@ -4,7 +4,7 @@
 </h1>
 
 <div {{bind-attr class=":large-edit :inline-edit-form editing"}}>
-  {{input type="text" name="title" value=title action="save"}}
+  {{input type="text" name="title" value=title}}
   <div class="button-secondary button--green pull-right" {{action "save"}}>Save</div>
   <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
 </div>

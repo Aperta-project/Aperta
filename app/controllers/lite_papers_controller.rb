@@ -10,6 +10,6 @@ class LitePapersController < ApplicationController
   end
 
   def papers
-    PaperRole.select("paper_id, max(created_at) as max_created").group(:paper_id).for_user(current_user).order("max_created DESC").page(page_number).map(&:paper)
+    PaperRole.most_recent_for(current_user).page(page_number).map(&:paper)
   end
 end

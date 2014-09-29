@@ -49,7 +49,7 @@ Tahi::Application.routes.draw do
                     only: [:create, :destroy, :update],
                     controller: 'supporting_information/files'
 
-  resources :comment_looks, only: [:update]
+  resources :comment_looks, only: [:index, :update]
 
   namespace :api, defaults: { format: 'json' } do
     resources :papers, only: [:index, :show, :update]

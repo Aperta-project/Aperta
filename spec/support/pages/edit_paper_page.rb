@@ -104,12 +104,12 @@ HERE
 
   def start_writing
     find(".prompt").click
-    expect(find(".prompt").text).to eq 'STOP WRITING'
+    expect(self).to have_css('.prompt', text: 'STOP WRITING')
   end
 
   def stop_writing
     find(".prompt").click
-    expect(find(".prompt").text).to eq 'START WRITING'
+    expect(self).to have_css('.prompt', text: 'START WRITING')
   end
 
   def submit

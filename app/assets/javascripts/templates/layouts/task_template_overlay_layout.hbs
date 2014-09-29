@@ -1,0 +1,18 @@
+<div {{bind-attr class=":overlay overlayClass"}}>
+  <span class="glyphicon glyphicon-remove overlay-close-x" {{action 'closeAction'}}></span>
+  <div class="overlay-container">
+    <header class="overlay-header">
+      <div class="overlay-header-title"></div>
+      <a {{bind-attr class=":button-primary :button--green :overlay-close-button"}} {{action 'closeAction'}}>Close</a>
+    </header>
+
+    <main class="overlay-content">
+      {{yield}}
+    </main>
+
+    <footer class="overlay-footer">
+      <div class="overlay-footer-content"></div>
+      <a class="button-primary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
+    </footer>
+  </div>
+</div>

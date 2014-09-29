@@ -70,6 +70,26 @@ feature "Flow Manager", js: true do
     expect(flow_manager_page).to have_no_application_error
   end
 
+
+  xcontext "Comment count" do
+    before do
+      paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: admin)
+      task = paper1.tasks.where(type: "StandardTasks::PaperAdminTask", completed: false).first
+
+      task.participants << admin
+      task.comments << FactoryGirl.create(:comment, body: "Hi", commenter: FactoryGirl.create(:user))
+
+      dashboard_page = DashboardPage.new
+      dashboard_page.view_flow_manager
+    end
+
+    it "displays unread comment count" do
+      within(".column", text: "My tasks") do
+        expect(page).to have_css(".badge", text: "1")
+      end
+    end
+  end
+
   context "PaperAdminTasks without assigned admin column placements" do
     before do
       paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: nil)

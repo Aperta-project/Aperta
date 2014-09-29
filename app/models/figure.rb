@@ -41,6 +41,6 @@ class Figure < ActiveRecord::Base
   private
 
   def notifier_payload
-    { id: id, paper_id: paper.id }
+    { paper_id: paper.id }
   end
 end

@@ -53,7 +53,7 @@ class PaperRole < ActiveRecord::Base
   private
 
   def notifier_payload
-    { paper_id: paper.id, user_id: user.id, id: id }
+    { paper_id: paper.id, user_id: user.id }
   end
 
   protected

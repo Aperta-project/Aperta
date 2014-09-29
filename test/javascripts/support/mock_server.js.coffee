@@ -31,7 +31,9 @@
   @server = sinon.fakeServer.create()
   @server.autoRespond = true
   @server.xhr.useFilters = true
-  @server.xhr.addFilter (method, url) -> !!url.match(/visualEditor/) || !!url.match(/visual-editor/)
+  @server.xhr.addFilter (method, url) ->
+    console.log(url)
+    !!url.match(/visualEditor/) || !!url.match(/visual-editor/)
   @mockCurrentUserResponse()
   @mockAuthorizedRouteReponse()
   @mockEventStreamResponse()

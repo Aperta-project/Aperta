@@ -71,7 +71,7 @@ feature "Flow Manager", js: true do
   end
 
 
-  context "Comment count" do
+  xcontext "Comment count" do
     before do
       paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: admin)
       task = paper1.tasks.where(type: "StandardTasks::PaperAdminTask", completed: false).first
@@ -85,7 +85,7 @@ feature "Flow Manager", js: true do
 
     it "displays unread comment count" do
       within(".column", text: "My tasks") do
-        expect(page).to have_content("1")
+        expect(page).to have_css(".badge", text: "1")
       end
     end
   end

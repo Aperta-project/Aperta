@@ -1,6 +1,7 @@
 a = DS.attr
 ETahi.LitePaper = DS.Model.extend
   flow: DS.belongsTo('flow')
+  paper: DS.belongsTo('paper')
 
   title: a('string')
   shortTitle: a('string')

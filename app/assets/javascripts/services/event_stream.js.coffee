@@ -55,21 +55,9 @@ ETahi.EventStream = Em.Object.extend
 
   createOrUpdateTask: (action, esData) ->
     taskId = esData.task.id
-    if oldTask = @store.findTask(taskId)
-      oldPhase = oldTask.get('phase')
     @store.pushPayload('task', esData)
     task = @store.findTask(taskId)
-    phase = task.get("phase")
-    if action == 'created'
-      # This is an ember bug.  A task's phase needs to be notified that the other side of
-      # the hasMany relationship has changed via set.  Simply loading the updated task into the store
-      # won't trigger the relationship update.
-      phase.get('tasks').addObject(task)
-    if action == 'updated' && phase != oldPhase
-      phase.get('tasks').addObject(task)
-      oldPhase.get('tasks').removeObject(oldTask)
-      task.set('phase', phase)
-
+    # didLoad updates the task's thumbnail
     task.triggerLater('didLoad')
 
   applicationSerializer: (->

@@ -28,6 +28,6 @@ class DashboardSerializer < ActiveModel::Serializer
   end
 
   def most_recent_paper_roles
-    PaperRole.select("paper_id, max(created_at) as max_created").group(:paper_id).for_user(user).order("max_created DESC").page(1)
+    PaperRole.most_recent_for(user).page(1)
   end
 end

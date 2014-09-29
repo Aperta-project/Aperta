@@ -1,10 +1,27 @@
 require 'json'
-class S3FormConfigurator 
+require 'base64'
+require 'pry'
+
+class S3FormConfigurator
 
   def self.form_json(aws_key, aws_secret, s3_params)
-    {url: s3_params[:url],
-     key: s3_params[:upload_path],
-     acl: "public-read"}.to_json
+    {
+      url: s3_params[:url],
+      key: s3_params[:upload_path],
+      access_key_id: aws_key,
+      acl: "public-read",
+      policy: Base64.encode64({expiration: DateTime.now.to_s,
+                               conditions:
+                               [
+                                 {bucket: s3_params[:bucket_name]},
+                                 {acl: "public-read"},
+                                 ["eq", "$Content-Type", s3_params[:content_type]],
+                                 ["starts-with", "$key", "files"],
+                                 {success_action_status: '201'}
+                               ]
+                              }.to_json
+                             )
+    }.to_json
   end
 end
 
@@ -60,7 +77,7 @@ describe S3FormConfigurator do
     end
 
     it "has the aws key" do
-      expect(result["access_key_id"]).to eq("key")
+      expect(result["access_key_id"]).to eq("foo")
     end
 
     it "specifies the acl as 'public read'" do
@@ -80,17 +97,56 @@ describe S3FormConfigurator do
     end
 
     describe "the policy object" do
-      it "has an expiration key whose value is a date-time string" do
-        policy_json = JSON.parse(Base64.decode64(result["policy"]))
-        expect(policy_json["expiration"]).to_not be_nil
+      def extract_policy_json(overall_result)
+        JSON.parse(Base64.decode64(overall_result["policy"]))
       end
 
+      it "has an expiration key whose value is a date-time string" do
+        policy = extract_policy_json(result)
+        expect(DateTime.iso8601(policy["expiration"])).to_not be_nil
+      end
+
+# conditions: [
+#   { bucket: <s3-bucket-name> },
+#   { acl: 'public-read' },
+#   ["starts-with", "$key", "<key-root-path>"], //in the example shown here, this would be 'some/'
+#   ["eq", "$Content-Type", <content-type>],
+#   { success_action_status: '201' }
+# }
       describe "policy conditions" do
-        it "contains the bucket"
-        it "specifies the acl as public-read"
-        it "specifies conditions on the key"
-        it "specifies conditions the content type"
-        it "sets the status to '201' on success"
+        it "contains the bucket" do
+          s3_params = default_s3_params.merge({bucket_name: "Bucket"})
+          policy_json = extract_policy_json(JSON.parse(S3FormConfigurator.form_json("foo", "bar", s3_params)))
+          expect(policy_json["conditions"]).to include({"bucket" => "Bucket"})
+        end
+        it "specifies the acl as public-read" do
+          policy_json = extract_policy_json(JSON.parse(S3FormConfigurator.form_json("foo", "bar", default_s3_params)))
+          expect(policy_json["conditions"]).to include({"acl" => "public-read"})
+        end
+        it "specifies that the key should start with the root of the specified upload path" do
+          s3_params = default_s3_params.merge({upload_path: "some/path/"})
+          policy_json = extract_policy_json(JSON.parse(S3FormConfigurator.form_json("foo", "bar", s3_params)))
+          expect(policy_json["conditions"]).to include(["starts-with", "$key", "some/"])
+
+          s3_params = default_s3_params.merge({upload_path: "another/path/"})
+          policy_json = extract_policy_json(JSON.parse(S3FormConfigurator.form_json("foo", "bar", s3_params)))
+          expect(policy_json["conditions"]).to include(["starts-with", "$key", "another/"])
+        end
+
+        it "specifies conditions the content type" do
+          s3_params = default_s3_params.merge({content_type: "jpeg"})
+          policy_json = extract_policy_json(JSON.parse(S3FormConfigurator.form_json("foo", "bar", s3_params)))
+          expect(policy_json["conditions"]).to include(["eq", "$Content-Type", "jpeg"])
+
+          s3_params = default_s3_params.merge({content_type: "gif"})
+          policy_json = extract_policy_json(JSON.parse(S3FormConfigurator.form_json("foo", "bar", s3_params)))
+          expect(policy_json["conditions"]).to include(["eq", "$Content-Type", "gif"])
+        end
+
+        it "specifies success_action_status to be '201'" do
+          policy_json = extract_policy_json(JSON.parse(S3FormConfigurator.form_json("foo", "bar", default_s3_params)))
+          expect(policy_json["conditions"]).to include({'success_action_status' => '201'})
+        end
       end
     end
   end

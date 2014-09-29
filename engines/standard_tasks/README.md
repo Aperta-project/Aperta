@@ -22,7 +22,7 @@ After
   - `//= require standard_tasks/application`
 - Move model file over
   - In order for model file to autoload, it must be under a namespaced folder under
-  - "engines/standard\_tasks/models/standard\_tasks/foo_task.rb"
+  - `engines/standard_tasks/models/standard_tasks/foo_task.rb`
 
 Changes in root app
 -------------------

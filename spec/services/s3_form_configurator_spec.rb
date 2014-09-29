@@ -47,7 +47,7 @@ end
 # After base64 encoding the s3 policy should have newlines and carriage returns removed.
 #
 # The s3 signature can be created using OpenSSL::HMAC.digest.  The signature should take the aws secret key
-# as as its key, and the previously created policy document (already Base64 encoded and gsubbed) as its data
+# as as its key, and the previously created policy document (already Base64 encoded and gsubbed to remove \n and \r) as its data
 # Use an OpenSSl sha1 digest as the digest for the key.
 #
 # You'll need to make some kind of service class (that'd be the easiest) that can spit out the aforementioned JSON object given a set of params.
@@ -85,8 +85,13 @@ describe S3FormConfigurator do
     end
 
     it "generates a key that starts with the specified upload_path." do
-      key = JSON.parse(S3FormConfigurator.form_json("foo", "bar", default_s3_params))["key"]
+      s3_params = default_s3_params.merge({upload_path: "files/pictures/"})
+      key = JSON.parse(S3FormConfigurator.form_json("foo", "bar", s3_params))["key"]
       expect(key).to match(/^files\/pictures/)
+
+      s3_params = s3_params.merge({upload_path: "some/path/"})
+      key = JSON.parse(S3FormConfigurator.form_json("foo", "bar", s3_params))["key"]
+      expect(key).to match(/^some\/path/)
     end
 
     it "generates a key that is a combination of the specified upload path and a random token" do
@@ -99,6 +104,11 @@ describe S3FormConfigurator do
     describe "the policy object" do
       def extract_policy_json(overall_result)
         JSON.parse(Base64.decode64(overall_result["policy"]))
+      end
+
+      it "shouldn't have any newlines or carriage returns" do
+        policy_string = Base64.decode64(result["policy"])
+        expect(policy_string).not_to match(/\n|\r/)
       end
 
       it "has an expiration key whose value is a date-time string" do
@@ -153,8 +163,8 @@ describe S3FormConfigurator do
 
   # see http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-UsingHTTPPOST.html
   # policy -> hmac digest -> base64
-  def test_signature(signature, key, policy_64)
-    Base64.decode(signature)
+  def test_signature(encoded_signature, key, policy_64)
+    Base64.decode(encoded_signature)
 
     reference = OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'),
                                      key,

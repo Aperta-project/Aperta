@@ -26,7 +26,9 @@ class TaskTemplatesController < ApplicationController
   private
 
   def task_template_params
-    params.require(:task_template).permit(:template, :phase_template_id, :journal_task_type_id)
+    params.require(:task_template).permit(:title, :phase_template_id, :journal_task_type_id).tap do |whitelisted|
+      whitelisted[:template] = params[:task_template][:template] || []
+    end
   end
 
   def task_template

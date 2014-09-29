@@ -5,6 +5,9 @@ ETahi.IndexController = Ember.ObjectController.extend
 
   hasPapers: Ember.computed.notEmpty('model.papers')
 
+  relatedAtSort: ["relatedAtDate:desc"]
+  sortedPapers: Ember.computed.sort('papers', 'relatedAtSort')
+
   pageNumber: 1
 
   paginate: (->

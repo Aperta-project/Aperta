@@ -4,6 +4,4 @@ FactoryGirl.define do
       "Journal #{n}"
     end
   end
-
-  factory :journal_task_type
 end

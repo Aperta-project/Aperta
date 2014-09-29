@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.1.2"
+ruby "2.1.3"
 
 # Configuration
 group :development, :test, :performance do
@@ -21,7 +21,7 @@ gem 'pg'
 gem 'bower-rails'
 gem 'ember-rails'
 gem 'ember-source', '1.7.0'
-gem "ember-data-source", "~> 1.0.0.beta.9"
+gem "ember-data-source", "~> 1.0.0.beta.10"
 gem 'sass-rails', '~> 4.0.3'
 gem 'haml-rails'
 gem 'uglifier', '~> 2.5.0'
@@ -30,6 +30,7 @@ gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
 gem 'quiet_assets', '~> 1.0.3'
+gem 'kaminari'
 
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'

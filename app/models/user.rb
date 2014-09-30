@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :tasks, foreign_key: 'assignee_id'
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many :participations, inverse_of: :participant, foreign_key: 'participant_id'
-  has_many :comment_looks
+  has_many :comment_looks, inverse_of: :user
   has_many :credentials, inverse_of: :user, dependent: :destroy
   has_many :assigned_papers, ->{ uniq }, through: :paper_roles, class_name: 'Paper', source: :paper
 

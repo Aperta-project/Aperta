@@ -37,7 +37,7 @@ TahiNotifier.subscribe("task:destroyed") do |payload|
   EventStream.post_event(
     Paper,
     paper_id,
-    { action: "destroy", tasks: [task_id] }.to_json
+    { action: "destroyed", tasks: [task_id] }.to_json
   )
 end
 
@@ -75,7 +75,7 @@ TahiNotifier.subscribe("paper_role:destroyed") do |payload|
   EventStream.post_event(
     User,
     user_id,
-    { action: "destroy", lite_papers: [paper_id] }.to_json
+    { action: "destroyed", lite_papers: [paper_id] }.to_json
   )
 
   EventStream.post_event(

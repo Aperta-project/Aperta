@@ -66,7 +66,7 @@ test 'When user is added as a collborator on paper', ->
   visit '/'
   .then ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
-  .andThen ->
+  andThen ->
     # receives eventstream push as collaborator
     [es, store] = setupEventStream()
     data =
@@ -77,4 +77,25 @@ test 'When user is added as a collborator on paper', ->
 
     Ember.run =>
       es.msgResponse(data: JSON.stringify(data))
-      equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 3
+  andThen ->
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 3
+
+
+test 'When user is removed from collboratorating on paper', ->
+  ef = ETahi.Factory
+  [litePapers, dashboards] = createDashboardDataWithLitePaper(2)
+
+  visit '/'
+  .then ->
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
+  andThen ->
+    # receives eventstream push to remove collaboration
+    [es, store] = setupEventStream()
+    data =
+      action: "destroyed"
+      lite_papers: [1]
+
+    Ember.run =>
+      es.msgResponse(data: JSON.stringify(data))
+  andThen ->
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 1

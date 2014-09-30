@@ -9,20 +9,6 @@
   font-size: 48px;
 }
 
-#dashboard-my-submissions {
-  @extend .col-xs-12;
-  padding: 0;
-  padding-top:30px;
-  margin-bottom: 100px;
-}
-
-#dashboard-my-tasks {
-  @extend .col-md-offset-2;
-  @extend .col-xs-5;
-
-  .card { width: 220px; }
-}
-
 .dashboard-info-text {
   padding: 20px 0 10px 0;
   color: gray;

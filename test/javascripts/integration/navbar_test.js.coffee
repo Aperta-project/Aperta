@@ -40,7 +40,9 @@ test 'all users can see their username', ->
 
   visit '/'
   .then ->
-    ok $('#top-nav').text().indexOf(@fakeUser.username) isnt -1
+    click '.navigation-toggle'
+    .then ->
+      ok $('.navigation-item-account:first').text().indexOf(@fakeUser.full_name) isnt -1
 
 test '(admin=true) can see the Flow Manager link', ->
   respondUnauthorized()
@@ -48,7 +50,9 @@ test '(admin=true) can see the Flow Manager link', ->
 
   visit '/'
   .then ->
-    ok $('#top-nav').text().indexOf('Flow Manager') isnt -1
+    click '.navigation-toggle'
+    .then ->
+      ok $('.navigation').text().indexOf('Flow Manager') isnt -1
 
 test '(admin=false) cannot see the Flow Manager link', ->
   respondUnauthorized()
@@ -56,18 +60,24 @@ test '(admin=false) cannot see the Flow Manager link', ->
 
   visit '/'
   .then ->
-    ok $('#top-nav').text().indexOf('Flow Manager') is -1
+    click '.navigation-toggle'
+    .then ->
+      ok $('.navigation').text().indexOf('Flow Manager') is -1
 
 test '(200 response) can see the Admin link', ->
   respondAuthorized()
 
   visit '/'
   .then ->
-    ok $('#top-nav').text().indexOf('Admin') isnt -1
+    click '.navigation-toggle'
+    .then ->
+      ok $('.navigation').text().indexOf('Admin') isnt -1
 
 test '(403 response) cannot see the Admin link', ->
   respondUnauthorized()
 
   visit '/'
   .then ->
-    ok $('#top-nav').text().indexOf('Admin') is -1
+    click '.navigation-toggle'
+    .then ->
+      ok $('.navigation').text().indexOf('Admin') is -1

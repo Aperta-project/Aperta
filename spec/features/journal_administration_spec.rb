@@ -55,7 +55,6 @@ feature "Journal Administration", js: true do
     end
 
     scenario "deleting a MMT" do
-      mmt = journal.manuscript_manager_templates.first
       mmt_to_delete = FactoryGirl.create(:manuscript_manager_template, journal: journal)
       journal_page.delete_mmt(mmt_to_delete)
       expect(journal_page.mmt_names).to_not include(mmt_to_delete.paper_type)

@@ -15,7 +15,8 @@ feature "Profile Page", js: true do
     expect(profile_page).to have_email(admin.email)
     expect(profile_page.affiliations).to match_array admin.affiliations.to_a
 
-    find('a.dropdown-toggle').click
+    find('.navigation-toggle').click
+    find('.navigation-item-account').click
     click_on 'Sign out'
     expect(current_path).to eq new_user_session_path
   end

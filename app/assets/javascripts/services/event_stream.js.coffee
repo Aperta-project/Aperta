@@ -109,6 +109,6 @@ ETahi.EventStream = Em.Object.extend
         else
           @store.find(modelName, id)
 
-    update_streams: ->
+    updateStreams: ->
       @resetChannels()
 

@@ -64,7 +64,7 @@ TahiNotifier.subscribe("paper_role:created") do |payload|
   EventStream.post_event(
     User,
     user_id,
-    { action: "update_streams" }.to_json
+    { action: "updateStreams" }.to_json
   )
 end
 
@@ -81,6 +81,6 @@ TahiNotifier.subscribe("paper_role:destroyed") do |payload|
   EventStream.post_event(
     User,
     user_id,
-    { action: "update_streams" }.to_json
+    { action: "updateStreams" }.to_json
   )
 end

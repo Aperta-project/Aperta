@@ -124,7 +124,8 @@ class Paper < ActiveRecord::Base
   end
 
   private
+
   def notifier_payload
-    { id: id, paper_id: id }
+    { paper_id: id }
   end
 end

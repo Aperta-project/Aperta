@@ -1,13 +1,17 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :paper_id, :short_title, :submitted, :roles, :unread_comments_count, :related_at_date
+  attributes :id, :title, :short_title, :submitted, :roles, :unread_comments_count, :related_at_date
 
-  def paper_id
-    id
+  def user
+    if (defined? current_user) && current_user
+      current_user
+    else
+      options[:user] # user has been explicitly passed into serializer
+    end
   end
 
   def related_at_date
-    if (defined? current_user) && current_user
-      current_user.paper_roles.where(paper: object).order(created_at: :desc).pluck(:created_at).first
+    if user.present?
+      user.paper_roles.where(paper: object).order(created_at: :desc).pluck(:created_at).first
     end
   end
 

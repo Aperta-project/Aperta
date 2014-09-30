@@ -1,4 +1,5 @@
 class PaperRole < ActiveRecord::Base
+  include EventStreamNotifier
 
   REVIEWER = 'reviewer'
   EDITOR = 'editor'
@@ -47,6 +48,12 @@ class PaperRole < ActiveRecord::Base
 
   def description
     role.capitalize
+  end
+
+  private
+
+  def notifier_payload
+    { paper_id: paper.id, user_id: user.id }
   end
 
   protected

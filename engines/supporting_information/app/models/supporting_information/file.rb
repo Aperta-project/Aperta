@@ -30,8 +30,10 @@ module SupportingInformation
       self.title = "Title: #{attachment.filename}" if attachment.present?
     end
 
+    private
+
     def notifier_payload
-      { id: id, paper_id: paper.id }
+      { paper_id: paper.id }
     end
   end
 end

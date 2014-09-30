@@ -37,6 +37,7 @@ class PaperSerializer < ActiveModel::Serializer
   end
 
   def event_name
-    EventStream.name(object.id)
+    # used by new paper collaborators to subscribe to future paper events
+    EventStream.stream_names(object)
   end
 end

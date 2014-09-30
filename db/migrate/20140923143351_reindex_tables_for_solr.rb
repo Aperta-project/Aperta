@@ -1,5 +1,8 @@
 class ReindexTablesForSolr < ActiveRecord::Migration
   def up
-    Rake::Task["sunspot:reindex"].invoke if Rails.env.development?
+    if Rails.env.development?
+      Rake::Task["sunspot:solr:start"].invoke
+      Rake::Task["sunspot:reindex"].invoke
+    end
   end
 end

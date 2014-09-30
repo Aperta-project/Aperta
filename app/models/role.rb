@@ -3,10 +3,9 @@ class Role < ActiveRecord::Base
   ADMIN    = "admin"
   EDITOR   = "editor"
   REVIEWER = "reviewer"
-  AUTHOR   = "author"
   CUSTOM   = "custom"
 
-  REQUIRED_KINDS = [ADMIN, EDITOR, REVIEWER, AUTHOR]
+  REQUIRED_KINDS = [ADMIN, EDITOR, REVIEWER]
   KINDS = REQUIRED_KINDS + [CUSTOM]
 
   belongs_to :journal, inverse_of: :roles
@@ -29,10 +28,6 @@ class Role < ActiveRecord::Base
 
   def self.reviewers
     where(kind: REVIEWER)
-  end
-
-  def self.authors
-    where(kind: AUTHOR)
   end
 
   def required?

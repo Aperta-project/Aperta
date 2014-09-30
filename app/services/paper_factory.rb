@@ -50,10 +50,6 @@ class PaperFactory
     if task.role == 'author'
       task.assignee = author
     end
-
-    if task_template.title == 'Ad-Hoc' && task.role.nil?
-      task.role = 'Journal Admin'
-    end
     task.save!
   end
 

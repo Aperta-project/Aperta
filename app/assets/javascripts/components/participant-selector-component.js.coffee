@@ -1,6 +1,7 @@
 ETahi.ParticipantSelectorComponent = Ember.Component.extend
   everyone: []
   currentParticipants: []
+  availableParticipantsList: []
 
   availableParticipants: (->
     return [] if Em.isEmpty @get('everyone.content')
@@ -10,6 +11,11 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
       currentParticipantIds.contains("" + user.id)).map (user) ->
         Ember.Object.create user
   ).property('everyone.content.[]', 'currentParticipants.@each')
+
+  updateParticipantsList: (->
+    Ember.run =>
+      @set('availableParticipantsList', @get('availableParticipants'))
+  ).observes('availableParticipants.@each')
 
   remoteUrl: (->
     "/filtered_users/non_participants/#{@get('taskId')}/%QUERY"

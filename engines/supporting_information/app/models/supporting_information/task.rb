@@ -1,5 +1,7 @@
 module SupportingInformation
   class Task < ::Task
+    include ::MetadataTask
+
     title "Supporting Info"
     role "author"
 

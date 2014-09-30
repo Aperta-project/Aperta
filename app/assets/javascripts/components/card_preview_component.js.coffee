@@ -28,5 +28,4 @@ ETahi.CardPreviewComponent = Ember.Component.extend DragNDrop.Dragable,
 
   dragStart: (e) ->
     if @get('canDragCard')
-      e.dataTransfer.setData('Text', 'TAHI!')
       ETahi.set('dragItem', @get('task'))

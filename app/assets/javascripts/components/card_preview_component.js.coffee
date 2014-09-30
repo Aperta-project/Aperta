@@ -20,7 +20,7 @@ ETahi.CardPreviewComponent = Ember.Component.extend DragNDrop.Dragable,
     @get('commentLooks').filter((look) ->
       look.get('taskId') == taskId && Em.isEmpty(look.get('readAt'))
     ).get('length')
-  ).property('commentLooks.[]', 'commentLooks.@each.taskId', 'task.id')
+  ).property('commentLooks.[]', 'commentLooks.@each.taskId', 'task.id', 'commentLooks.@each.readAt')
 
   setupTooltip: (->
     @.$().find('.card-remove').tooltip()

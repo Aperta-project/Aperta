@@ -9,9 +9,9 @@ html.auth {
   background-attachment :fixed;
 }
 
-html.bg-1 { background-image: url(/assets/auth/bg-1.jpg); }
-html.bg-2 { background-image: url(/assets/auth/bg-2.jpg); }
-html.bg-3 { background-image: url(/assets/auth/bg-3.jpg); }
+html.bg-1 { background-image: url(image-path('auth/bg-1.jpg')); }
+html.bg-2 { background-image: url(image-path('auth/bg-2.jpg')); }
+html.bg-3 { background-image: url(image-path('auth/bg-3.jpg')); }
 
 .auth-flash {
   position: relative;

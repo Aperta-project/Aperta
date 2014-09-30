@@ -28,10 +28,10 @@ If you don't want to use Foreman as described in the section below, you can alwa
 
 By default, the eventsource server checks every request for a token that matches against its `$TOKEN` environment variable. Tahi's default token is `token123`. To change this behavior, set the `ES_TOKEN` environment variable for tahi.
 
-By default, tahi attempts to connect to a stream server at `http://localhost:8080`. To change this behavior, set the `ES_URL` environment variable for tahi. There is an event stream server up on heroku:
+By default, tahi attempts to connect to a stream server at `http://localhost:8080`. To change this behavior, set the `ES_URL` environment variable for tahi:
 
 ```
-ES_URL=http://tahi-eventsource.herokuapp.com rails s
+ES_URL=http://your-custom-event-server.example.com rails s
 ```
 
 ### Running the server
@@ -51,9 +51,7 @@ In the project directory, running `rspec` will run all unit and integration
 specs. Firefox will pop up to run integration tests.
 
 You can run the javascript specs via the command line with `rake teaspoon`.  If you have the rails server
-running you can run the specs from `localhost:3000/teaspoon`.  The command line tool is more robust but the browser is slightly faster.
-
-We use semaphore for CI.  If you don't have an account you can use `tahiprojectteam@plos.org:Habanero14screw$`
+running you can run the specs from `localhost:5000/qunit`.  The command line tool is more robust but the browser is slightly faster.
 
 #### Page Objects
 
@@ -62,10 +60,6 @@ When creating fragments, you can pass the context, if you wish to have access to
 ```ruby
 EditModalFragment.new(find('tr'), context: page)
 ```
-
-### Making a new task engine
-
-See the wiki for making new tasks.
 
 ### Configuring S3 direct uploads
 

@@ -9,3 +9,9 @@ ETahi.AdminRoute = ETahi.AuthorizedRoute.extend
         into: 'application'
         outlet: 'overlay'
         controller: 'adminJournalUser'
+
+    didTransition: ->
+      $('html').attr('screen', 'admin')
+
+    willTransition: ->
+      $('html').attr('screen', '')

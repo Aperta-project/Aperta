@@ -55,15 +55,15 @@ test 'action:destroy will delete the task from the store', ->
   [es, store] = setupEventStream()
 
   data =
-    action: 'destroy'
+    action: 'destroyed'
     meta: null
-    task_ids: [1]
+    tasks: [1]
   Ember.run =>
     store.push('task', id: 1)
     store.push('task', id: 2)
     es.msgResponse({data: (JSON.stringify data)})
-    ok store.getById('task', 1).get('isDeleted')
-    ok !store.getById('task', 2).get('isDeleted')
+    ok store.getById('task', 1) is null
+    ok exists store.getById('task', 2)
 
 test "action:created with a task updates the phase's tasks", ->
   expect(2)

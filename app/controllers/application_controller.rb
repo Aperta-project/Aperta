@@ -9,8 +9,6 @@ class ApplicationController < ActionController::Base
 
   before_bugsnag_notify :add_user_info_to_bugsnag
 
-  # http_basic_authenticate_with name: "tahi", password: "tahi3000", if: -> { %w(production staging).include? Rails.env }
-
   before_action :authenticate_with_basic_http
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_action :add_custom_http_headers
@@ -54,7 +52,7 @@ class ApplicationController < ActionController::Base
   def authenticate_with_basic_http
     if %w(production staging).include?(Rails.env) && request.path !~ /\A\/api.*/
       authenticate_or_request_with_http_basic 'Staging' do |name, password|
-        name == 'tahi' && password == 'tahi3000'
+        name == ENV["BASIC_HTTP_USER"] && password == ENV["BASIC_HTTP_PASSWORD"]
       end
     end
   end

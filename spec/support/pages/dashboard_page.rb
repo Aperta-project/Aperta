@@ -8,7 +8,8 @@ class DashboardPage < Page
   end
 
   def sign_out
-    find('a.dropdown-toggle').click
+    find('.navigation-toggle').click
+    find('.navigation-item-account').click
     click_on 'Sign out'
   end
 
@@ -36,16 +37,19 @@ class DashboardPage < Page
   end
 
   def flow_manager_link
-    find('.nav-bar-item a', text: "Flow Manager")
+    find('.navigation-toggle').click
+    find('.navigation-item', text: "FLOW MANAGER")
   end
 
   #doesn't wait for elements to appear.
   def has_no_admin_link?
-    all('.nav-bar-item a', text: 'Admin').empty?
+    find('.navigation-toggle').click
+    all('.navigation-item', text: 'ADMIN').empty?
   end
 
   def admin_link
-    find('.nav-bar-item a', text: "Admin")
+    find('.navigation-toggle').click
+    find('.navigation-item', text: "ADMIN")
   end
 
   def visit_admin

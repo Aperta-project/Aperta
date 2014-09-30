@@ -3,14 +3,6 @@ ETahi.OverlayView = Em.View.extend ETahi.AnimateElement,
     Ember.run.scheduleOnce('afterRender', this, @animateOverlayIn)
   ).on('didInsertElement')
 
-  allowBodyScrolling: (->
-    $('html').removeClass('noscroll')
-  ).on('willDestroyElement')
-
-  stopBodyScrolling: (->
-    $('html').addClass('noscroll')
-  ).on('didInsertElement')
-
   setupKeyup: (->
     $('body').on 'keyup.overlay', (e) =>
       if e.keyCode == 27 || e.which == 27

@@ -40,7 +40,7 @@ class EditPaperPage < Page
   end
 
   def visit_task_manager
-    click_link 'Manuscript Manager'
+    click_link 'Workflow'
     TaskManagerPage.new
   end
 

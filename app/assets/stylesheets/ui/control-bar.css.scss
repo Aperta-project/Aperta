@@ -1,85 +1,72 @@
 // Elements in control-bar should be in unordered lists. The ULs will align left except for the last one which will align right.
 //
-// .control-bar--blue - Make the control bar BLUE!
-//
 // Styleguide UI.ControlBar
 
 .control-bar {
   overflow: hidden;
   width: 100%;
   height: $tahi-control-bar-height;
-  border-bottom: 1px solid #939393;
+  border-bottom: 1px solid #F5F5F5;
   padding: 7px 0 5px 0;
-  background: #e1e1e1;
+  background: #fff;
   z-index: 2;
 
-  &.control-bar--blue {
-    background-color: $tahi-blue;
+  &.__fixed {
+    @include position(fixed, 0px 0px auto 0px);
   }
 }
 
 .control-bar-inner-wrapper {
   overflow: hidden;
-  margin: 0 auto;
-  min-width: 960px;
-  max-width: 1120px;
   position: relative;
-  height: 40px;
+  margin: 0 auto;
+  padding-left: 125px;
 }
 
 .control-bar ul {
   list-style-type: none;
   float: left;
-  margin-bottom: 0; // from bootstrap?
-  padding-left: 0;  // from bootstrap?
-  padding-right: 20px;
+  padding: 0 30px 0 0;
   @extend .clear-before-and-after;
 
-  &:last-of-type {
-    float: right;
-    padding-right: 0;
-  }
+  &:last-of-type { float: right; }
 }
 
 .control-bar-item {
   position: relative;
   float: left;
   display: block;
+  margin: 3px 0 0 0;
 }
 
 .control-bar-link {
   display: block;
-  height: 40px;
-  margin-left: 25px;
+  margin: 7px 0 0 25px;
+  color: $tahi-green;
   font-weight: bold;
-  line-height: 36px;
+  text-align: center;
   text-transform: uppercase;
   background: none;
 
-  span {
-    padding-left: 5px;
-    color: #444;
+  .control-bar-link-icon {
+    height: 28px;
+  }
 
-    &.manuscript-manager {
-      vertical-align: 8px;
-    }
-
-    &.manuscript {
-      vertical-align: 6px;
-    }
+  svg {
+    display: block;
+    margin: 0 auto;
   }
 
   svg path, svg rect {
-    fill: #444;
+    fill: $tahi-green;
   }
 
   &:focus, &:hover {
+    color: $tahi-green-dark;
     text-decoration: none;
 
-    span { color: $tahi-green; }
-
     svg path, svg rect {
-      fill: $tahi-green;
+      fill: $tahi-green-dark;
     }
   }
 }
@@ -87,4 +74,9 @@
 .control-bar-message {
   padding: 2px 5px;
   border-radius: 5px;
+}
+
+.manuscript-manager-icon {
+  position: relative;
+  top: 2px;
 }

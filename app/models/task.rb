@@ -80,4 +80,10 @@ class Task < ActiveRecord::Base
     self.title = self.class._default_title if title.blank?
     self.role = self.class._default_role if role.blank?
   end
+
+  private
+
+  def notifier_payload
+    { task_id: id, paper_id: paper.id }
+  end
 end

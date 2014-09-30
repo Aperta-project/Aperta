@@ -1,9 +1,10 @@
 ETahi.IndexController = Ember.ObjectController.extend
   needs: ['application']
+  papers: null
 
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
 
-  hasPapers: Ember.computed.notEmpty('model.papers')
+  hasPapers: Ember.computed.notEmpty('papers')
 
   relatedAtSort: ["relatedAtDate:desc"]
   sortedPapers: Ember.computed.sort('papers', 'relatedAtSort')
@@ -18,5 +19,4 @@ ETahi.IndexController = Ember.ObjectController.extend
     loadMorePapers: ->
       @store.find 'lite_paper', page_number: (@get('pageNumber') + 1)
       .then (litePapers) =>
-        @get('model.papers').pushObjects litePapers
         @incrementProperty 'pageNumber'

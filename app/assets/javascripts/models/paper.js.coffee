@@ -33,17 +33,15 @@ ETahi.Paper = DS.Model.extend
     @get('title') || @get('shortTitle')
   ).property('title', 'shortTitle')
 
-  allMetadataTasksCompleted: (->
-    taskArray = @get('tasks')
-    if taskArray.get('isPending')
-      false
-    else
-      taskArray.filterBy('isMetadataTask').everyProperty('completed', true)
-  ).property('tasks.content.@each.isMetadataTask','tasks.content.@each.completed', 'tasks.isPending')
+  allMetadataTasks: (->
+    @get('tasks').filterBy('isMetadataTask')
+  ).property('tasks.content.@each.isMetadataTask')
+
+  allMetadataTasksCompleted: ETahi.computed.all('allMetadataTasks', 'completed', true)
 
   editable: (->
-    !(@get('allMetadataTasksCompleted') and @get('submitted'))
-  ).property('allMetadataTasksCompleted', 'submitted')
+    !(@get('allTasksCompleted') and @get('submitted'))
+  ).property('allTasksCompleted', 'submitted')
 
   authors: (->
     @get('authorGroups').reduce(

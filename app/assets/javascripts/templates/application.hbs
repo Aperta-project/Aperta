@@ -1,33 +1,43 @@
-<header class="nav-bar">
-  <nav id="top-nav">
-    {{#link-to "index" classNames="nav-bar-home"}}
-      <strong>Tahi</strong> Dashboard
-    {{/link-to}}
-    {{#if isLoggedIn}}
-      <ul class="nav-bar-links">
-        {{#if canViewFlowManager}}
-          <li class="nav-bar-item">{{#link-to "flow_manager"}}Flow Manager{{/link-to}}</li>
-        {{/if}}
-        {{#if canViewAdminLinks}}
-          <li class="nav-bar-item nav-bar-admin-item">{{#link-to "admin"}}Admin{{/link-to}}</li>
-        {{/if}}
-        <li class="nav-bar-text nav-bar-welcome dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Welcome back, {{unbound username}}
-          </a>
-          <ul class="dropdown-menu">
-            <li>{{#link-to "profile"}}Edit My Profile{{/link-to}}</li>
-            <li><a href="/users/sign_out">Sign out</a></li>
-          </ul>
-        </li>
-      </ul>
+<div class="navigation">
+  <div class="navigation-title" {{action "toggleNavigation"}}>
+    <span class="glyphicon glyphicon-remove"></span>Tahi
+  </div>
+
+  {{#if isLoggedIn}}
+    <a href="#" class="navigation-item navigation-item-account" {{action "toggleAccountLinks"}}>
+      <img {{bind-attr src="currentUser.avatarUrl"}}>
+      {{unbound currentUser.fullName}}
+    </a>
+
+    <div {{bind-attr class=":navigation-account-links accountLinksVisible:__visible"}}>
+      <a class="navigation-item navigation-item-account" href="#" {{action "routeTo" "profile"}}>Edit My Profile</a>
+      <a class="navigation-item navigation-item-account" href="/users/sign_out">Sign out</a>
+    </div>
+
+    <a href="#" class="navigation-item" {{action "routeTo" "index"}}>Dashboard</a>
+
+    {{#if canViewFlowManager}}
+      <a href="#" class="navigation-item" {{action "routeTo" "flow_manager"}}>Flow Manager</a>
     {{/if}}
-  </nav>
-</header>
+
+    {{#if canViewAdminLinks}}
+      <a href="#" class="navigation-item navigation-item-admin" {{action "routeTo" "admin"}}>Admin</a>
+    {{/if}}
+  {{/if}}
+</div>
+
 {{#if error}}
   <div id="application-error" class="alert alert-danger alert-dismissable application-error">{{error}}</div>
 {{/if}}
-{{outlet}}
+
+<div class="main-content">
+  <div class="main-content-cover" {{action "toggleNavigation"}}></div>
+  <div class="navigation-toggle" {{action "toggleNavigation"}}>
+    {{partial "svg/hamburger"}} Tahi
+  </div>
+  {{outlet}}
+</div>
+
 {{outlet "overlay"}}
 
 {{#if showSaveStatusDiv}}

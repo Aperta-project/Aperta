@@ -5,18 +5,7 @@ ETahi.EventStream = Em.Object.extend
   wait: false
   init: ->
     @set('messageQueue', [])
-    params =
-      url: '/event_stream'
-      method: 'GET'
-      success: (data) =>
-        return if data.enabled == 'false'
-        source = new EventSource(data.url)
-        Ember.$(window).unload -> source.close()
-        @set('eventSource', source)
-
-        data.eventNames.forEach (eventName) =>
-          @addEventListener(eventName)
-    Ember.$.ajax(params)
+    @resetChannels()
     @processMessages()
 
   addEventListener: (eventName) ->
@@ -37,6 +26,22 @@ ETahi.EventStream = Em.Object.extend
   play: ->
     @set('wait', false)
 
+  stop: ->
+    @get('eventSource').close() if @get('eventSource')
+
+  resetChannels: ->
+    @stop()
+    params =
+      url: '/event_stream'
+      method: 'GET'
+      success: (data) =>
+        return if data.enabled == 'false'
+        @set('eventSource', new EventSource(data.url))
+        Ember.$(window).unload => @stop()
+        data.eventNames.forEach (eventName) =>
+          @addEventListener(eventName)
+    Ember.$.ajax(params)
+
   msgResponse: (msg) ->
     esData = JSON.parse(msg.data)
     action = esData.action
@@ -50,10 +55,26 @@ ETahi.EventStream = Em.Object.extend
 
   createOrUpdateTask: (action, esData) ->
     taskId = esData.task.id
+    if oldTask = @store.findTask(taskId)
+      oldPhase = oldTask.get('phase')
     @store.pushPayload('task', esData)
     task = @store.findTask(taskId)
-    # didLoad updates the task's thumbnail
+    phase = task.get("phase")
+    if action == 'created'
+      # This is an ember bug.  A task's phase needs to be notified that the other side of
+      # the hasMany relationship has changed via set.  Simply loading the updated task into the store
+      # won't trigger the relationship update.
+      phase.get('tasks').addObject(task)
+    if action == 'updated' && phase != oldPhase
+      phase.get('tasks').addObject(task)
+      oldPhase.get('tasks').removeObject(oldTask)
+      task.set('phase', phase)
+
     task.triggerLater('didLoad')
+
+  applicationSerializer: (->
+    @store.container.lookup("serializer:application")
+  ).property()
 
   eventStreamActions:
     created: (esData) ->
@@ -70,12 +91,16 @@ ETahi.EventStream = Em.Object.extend
         else
           @store.pushPayload(esData)
 
-    destroy: (esData)->
-      esData.task_ids.forEach (taskId) =>
-        task = @store.findTask(taskId)
-        if task
-          task.deleteRecord()
-          task.triggerLater('didDelete')
+    destroyed: (esData)->
+      for key of esData
+        type = @get('applicationSerializer').typeForRoot(key)
+        esData[key].forEach (id) =>
+          if type == "task"
+            record = @store.findTask(id)
+          else
+            record = @store.getById(type, id)
+          if record
+            record.unloadRecord()
 
     meta: (modelName, id) ->
       Ember.run =>
@@ -83,3 +108,7 @@ ETahi.EventStream = Em.Object.extend
           model.reload()
         else
           @store.find(modelName, id)
+
+    updateStreams: ->
+      @resetChannels()
+

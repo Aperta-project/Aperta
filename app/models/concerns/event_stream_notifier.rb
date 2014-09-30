@@ -8,7 +8,7 @@ module EventStreamNotifier
     end
 
     def event_stream_payload
-      p = notifier_payload.merge({ action: action, klass: self.class.base_class })
+      p = notifier_payload.merge({ action: action, klass: self.class.base_class, id: self.id })
       if has_meta?
         p = p.merge({meta: { model_name: meta_type, id: meta_id }})
       end
@@ -20,7 +20,7 @@ module EventStreamNotifier
     end
 
     def notifier_payload
-      { task_id: id, paper_id: paper.id }
+      raise NotImplementedError
     end
 
     def has_meta?

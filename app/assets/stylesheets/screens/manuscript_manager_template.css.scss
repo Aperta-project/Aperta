@@ -1,7 +1,6 @@
 .manuscript-manager-template-control-bar {
   // override to allow for Chosen select to expand
   overflow: visible;
-  height: 85px;
 
   .control-bar-inner-wrapper {
     // override to allow for Chosen select to expand
@@ -96,28 +95,30 @@ $template-thumbnail-side-padding: 10px;
 
 .manuscript-manager-template-columns {
   // override .columns to allow for larger .control-bar
-  top: 121px;
+  top: 180px;
 }
 
-.template-edit-paper-type {
-  margin-right: 2px; // override .control-bar-item
-  padding-top: 35px;
-
-  input {
-    width: 175px;
-    height: 34px;
-  }
+.edit-paper-type-field {
+  width: 330px;
+  height: 40px;
+  color: $tahi-blue;
+  font-size: 20px;
+  border: 1px solid $tahi-blue;
+  border-radius: 5px;
+  padding-left: 8px;
 }
 
-.template-edit-save {
-  padding-top: 35px;
+
+.paper-type-form {
+  position: absolute;
+  top: 85px;
+  left: 130px;
 }
 
-.manuscript-manager-template-control-bar .control-bar-template-name {
-  margin-right: 20px;
-  padding-top: 36px;
-  color: #fff;
-  font-size: 21px;
+.paper-type-name {
+  display: inline-block;
+  color: $tahi-blue;
+  font-size: 20px;
   cursor: pointer;
 
   .glyphicon {
@@ -131,21 +132,10 @@ $template-thumbnail-side-padding: 10px;
   }
 }
 
-.template-edit-cancel {
-  padding-top: 48px;
-
-  a {
-    color: #fff;
-  }
+.paper-type-save-button {
+  margin-left: 40px;
 }
 
-.back-to-journal-edit {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-
-  a {
-    color: #fff;
-  }
+.paper-type-cancel-button {
+  margin-top: 18px;
 }

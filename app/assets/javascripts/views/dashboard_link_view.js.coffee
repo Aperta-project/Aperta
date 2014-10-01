@@ -3,7 +3,8 @@ ETahi.DashboardLinkView = Em.View.extend
 
   refreshTooltips: ->
     Ember.run.scheduleOnce 'afterRender', @, =>
-      @$('.link-tooltip').tooltip('destroy').tooltip({placement: 'bottom'})
+      if @$()
+        @$('.link-tooltip').tooltip('destroy').tooltip({placement: 'bottom'})
 
   setupTooltips: (->
     @addObserver('content.unreadCommentsCount', @, @refreshTooltips)

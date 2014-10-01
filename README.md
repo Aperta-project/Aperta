@@ -9,7 +9,7 @@
 - Most of the javascript for the app is being handled by Bower.  You'll need to have node installed
 in order to proceed.  `brew install node` and then `npm install bower -g`
 - All bower dependencies are found in the `Bowerfile`
-- If you're installing new bower components you'll want to read the [rails-bower docs](https://github.com/42dev/bower-rails#rake-tasks), especially if 
+- If you're installing new bower components you'll want to read the [rails-bower docs](https://github.com/42dev/bower-rails#rake-tasks), especially if
 your components have stylesheets (`rake bower:resolve`)
 - You'll need redis.  `brew install redis` is the easiest way to get it.
 - Create database user for tahi `createuser -s -r tahi`
@@ -19,7 +19,7 @@ your components have stylesheets (`rake bower:resolve`)
 
 You will need:
 
-- Go (`brew install go` is easiest) with your [$GOPATH](http://golang.org/doc/code.html#GOPATH) environment variable set. 
+- Go (`brew install go` is easiest) with your [$GOPATH](http://golang.org/doc/code.html#GOPATH) environment variable set.
 - Add the go binary to your $PATH.  If you used brew it'll tell you to do this already.
 - `$ go get github.com/tahi-project/golang-eventsource` to put the event server and its dependencies in your $GOPATH
 
@@ -28,10 +28,10 @@ If you don't want to use Foreman as described in the section below, you can alwa
 
 By default, the eventsource server checks every request for a token that matches against its `$TOKEN` environment variable. Tahi's default token is `token123`. To change this behavior, set the `ES_TOKEN` environment variable for tahi.
 
-By default, tahi attempts to connect to a stream server at `http://localhost:8080`. To change this behavior, set the `ES_URL` environment variable for tahi. There is an event stream server up on heroku:
+By default, tahi attempts to connect to a stream server at `http://localhost:8080`. To change this behavior, set the `ES_URL` environment variable for tahi:
 
 ```
-ES_URL=http://tahi-eventsource.herokuapp.com rails s
+ES_URL=http://your-custom-event-server.example.com rails s
 ```
 
 ### Running the server
@@ -51,9 +51,7 @@ In the project directory, running `rspec` will run all unit and integration
 specs. Firefox will pop up to run integration tests.
 
 You can run the javascript specs via the command line with `rake teaspoon`.  If you have the rails server
-running you can run the specs from `localhost:3000/teaspoon`.  The command line tool is more robust but the browser is slightly faster.
-
-We use semaphore for CI.  If you don't have an account you can use `tahiprojectteam@plos.org:Habanero14screw$`
+running you can run the specs from `localhost:5000/qunit`.  The command line tool is more robust but the browser is slightly faster.
 
 #### Page Objects
 
@@ -63,10 +61,6 @@ When creating fragments, you can pass the context, if you wish to have access to
 EditModalFragment.new(find('tr'), context: page)
 ```
 
-### Making a new task engine
-
-See the wiki for making new tasks. 
-
 ### Configuring S3 direct uploads
 
 Ensure that the following environment variables are set:
@@ -75,10 +69,11 @@ Ensure that the following environment variables are set:
 - `S3_BUCKET=your-s3-bucket`
 - `AWS_ACCESS_KEY=your-aws-access-key-id`
 - `AWS_SECRET_KEY=your-aws-secret-key`
+- `AWS_REGION=us-west-1` or us-east-1, etc.
 
 Then, you need to configure your s3 bucket for CORS:
 
-1. Download the AWS cli: 
+1. Download the AWS cli:
   - Darwin: `brew install awscli`
   - Linux: `sudo pip install awscli`
 2. Run the following command from the app's root directory:

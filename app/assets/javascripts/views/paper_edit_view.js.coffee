@@ -4,9 +4,13 @@ ETahi.PaperEditView = Ember.View.extend
   locked: Ember.computed.alias 'controller.locked'
   isEditing: Ember.computed.alias 'controller.isEditing'
 
-  setBackgroundColor:(->
-    $('html').addClass('matte')
+  setBackgroundColor: (->
+    $('.main-content').addClass 'matte'
   ).on('didInsertElement')
+
+  resetBackgroundColor: (->
+    $('.main-content').removeClass 'matte'
+  ).on('willDestroyElement')
 
   bindPlaceholderEvent: ->
     $('.editable').on "keyup", "div[contenteditable]", (e) =>
@@ -25,20 +29,35 @@ ETahi.PaperEditView = Ember.View.extend
     $('#paper-body').attr('style', @get('controller.model.journal.manuscriptCss'))
   ).on('didInsertElement')
 
-  resetBackgroundColor:(->
-    $('html').removeClass('matte')
-  ).on('willDestroyElement')
-
   setupScrollFixing: (->
-    $('.control-bar').scrollToFixed()
-    $('.ve-toolbar-underside').scrollToFixed
-      marginTop: $('.control-bar').outerHeight()
+    aside       = $('aside')
+    article     = $('article')
+    mainContent = $('.main-content')
+    toolbarUnderside = $('.ve-toolbar-underside')
 
-    $('#tahi-container > main > aside').scrollToFixed
-      marginTop: $('.control-bar').outerHeight()
-      unfixed: ->
-        $(this).css('top', '0px')
+    $(window).on 'resize.paper', ->
+      articleWidth = article.width()
+      articleOffsetLeft = article.offset().left
+      mainContentOffsetLeft = mainContent.offset().left
+
+      aside.css 'left', (articleWidth + articleOffsetLeft - mainContentOffsetLeft)
+      toolbarUnderside.css 'left', (articleOffsetLeft - mainContentOffsetLeft)
+
+    toolbarUnderside.css
+      position: 'fixed'
+      top: '80px'
+      width: '839px'
+
+    aside.css
+      position: 'fixed'
+      top: '80px'
+
+    $(window).trigger 'resize.paper'
   ).on('didInsertElement')
+
+  teardownScrollFixing: (->
+    $(window).off 'resize.paper'
+  ).on('willDestroyElement')
 
   updateEditorLockedState: ( ->
     $('.oo-ui-toolbar-bar').toggleClass('locked', !@get('isEditing'))
@@ -65,6 +84,8 @@ ETahi.PaperEditView = Ember.View.extend
       marginTop: marginTop + 5
       zIndex: 1010
       dontSetWidth: true
+    $(window).scroll()
+    $(window).resize()
 
   setupVisualEditor: (->
     @updateVisualEditor()

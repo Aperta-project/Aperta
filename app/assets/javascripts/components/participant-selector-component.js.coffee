@@ -15,7 +15,7 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
   updateParticipantsList: (->
     Ember.run =>
       @set('availableParticipantsList', @get('availableParticipants'))
-  ).observes('availableParticipants.@each')
+  ).observes('availableParticipants').on('init')
 
   remoteUrl: (->
     "/filtered_users/non_participants/#{@get('taskId')}/%QUERY"

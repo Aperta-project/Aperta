@@ -9,6 +9,7 @@ feature 'Message Cards', js: true do
     assign_journal_role(journal, albert, :admin)
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
+    paper.paper_roles.build(user: albert, role: PaperRole::COLLABORATOR).save
   end
 
 

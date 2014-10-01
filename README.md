@@ -107,3 +107,8 @@ Subset data contains about 100 users and some associated records.
 
 To wipe and restore performance data in a pristine state on tahi-performance, run the following:
 ```heroku pgbackups:restore HEROKU_POSTGRESQL_CYAN_URL b002 --app tahi-performance```
+
+### Sunspot Solr Search
+
+If you are going to be using the search functionality, make sure to reindex the database while the server is running with:
+```rake sunspot:solr:reindex```

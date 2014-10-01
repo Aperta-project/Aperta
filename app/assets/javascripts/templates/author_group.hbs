@@ -1,25 +1,24 @@
-<div class="author-group">
-  <h2>{{group.name}}</h2>
-  {{view ETahi.AuthorGroupDropTargetView group=group index=0}}
-  {{#each author in sortedAuthors}}
-    {{author-view
-      isEditable=isEditable
+<h2>{{group.name}}</h2>
+
+{{#if isEditable}}
+  <a class="button-secondary button--green" {{action "toggleAuthorForm" group}}>Add a New Author</a>
+  <br><br>
+
+  {{#if showNewAuthorForm}}
+    {{add-author-form
       institutions=institutions
-      delete='removeAuthor'
-      save='saveAuthor'
-      author=author}}
-    {{view ETahi.AuthorGroupDropTargetView group=group index=author.position}}
-  {{/each}}
-  {{#if isEditable}}
-    <a class="button-secondary button--grey button--small" {{action 'toggleAuthorForm' group}}>
-      <span class="glyphicon glyphicon-plus-sign"></span>
-      Add new
-    </a>
-    <div {{bind-attr class=":author-form showNewAuthorForm"}}>
-      {{add-author-form
-        institutions=institutions
-        hideAuthorForm='toggleAuthorForm'
-        saveAuthor='saveNewAuthor'}}
-    </div>
+      hideAuthorForm="toggleAuthorForm"
+      saveAuthor="saveNewAuthor"}}
   {{/if}}
-</div>
+{{/if}}
+
+{{view ETahi.AuthorGroupDropTargetView group=group index=0}}
+{{#each author in sortedAuthors}}
+  {{author-view
+    isEditable=isEditable
+    institutions=institutions
+    delete="removeAuthor"
+    save="saveAuthor"
+    author=author}}
+  {{view ETahi.AuthorGroupDropTargetView group=group index=author.position}}
+{{/each}}

@@ -6,9 +6,9 @@
 </ul>
 
 <div class="template-thumbnail-overlay template-thumbnail-edit-options">
-  {{link-to "" "manuscript_manager_template.edit" view.content class="glyphicon glyphicon-pencil"}}
+  {{link-to "" "manuscript_manager_template.edit" view.content class="glyphicon glyphicon-pencil scaleIn"}}
   {{#if view.canDeleteTemplates}}
-    <span class="glyphicon glyphicon-trash" {{action "toggleWillDestroyTemplate" target="view"}}></span>
+    <span class="glyphicon glyphicon-trash scaleIn" {{action "toggleWillDestroyTemplate" target="view"}}></span>
   {{/if}}
 </div>
 <div class="template-thumbnail-overlay template-thumbnail-overlay-confirm-destroy">

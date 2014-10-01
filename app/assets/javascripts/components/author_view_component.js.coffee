@@ -1,14 +1,22 @@
 ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
-  tagName: 'li'
-  showEditAuthorForm: false
-  classNameBindings: ['showEditAuthorForm::edit-inactive', 'isEditable:editable']
+  classNames: ['authors-overlay-item']
+  classNameBindings: ['hoverState:__hover', 'isEditable:__editable']
 
-  attachHover: ( ->
+  editState: false
+  hoverState: false
+  deleteState: false
+
+  attachHoverEvent: (->
+    self = this
     toggleHoverClass = (e) ->
-      $(this).toggleClass('hover')
+      self.toggleProperty 'hoverState'
 
     @$().hover(toggleHoverClass, toggleHoverClass)
   ).on('didInsertElement')
+
+  teardownHoverEvent: (->
+    @$().off('mouseenter mouseleave');
+  ).on('willDestroyElement')
 
   dragStart: (e) ->
     e.dataTransfer.effectAllowed = 'move'
@@ -18,18 +26,15 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
     DragNDrop.draggingStopped('.author-drop-target')
 
   actions:
-    edit: ->
-      @set('showEditAuthorForm', true)
-
     delete: ->
-      @sendAction('delete', @get('author'))
+      @sendAction 'delete', @get('author')
 
-    showAuthorForm: ->
-      @set('showEditAuthorForm', true)
+    save: ->
+      @sendAction 'save', @get('author')
+      @set 'editState', false
 
-    hideAuthorForm: ->
-      @set('showEditAuthorForm', false)
+    toggleEditForm: ->
+      @toggleProperty 'editState'
 
-    saveAuthor: ->
-      @sendAction('save', @get('author'))
-      @set('showEditAuthorForm', false)
+    toggleDeleteConfirmation: ->
+      @toggleProperty 'deleteState'

@@ -5,23 +5,39 @@ require 'pry'
 class S3FormConfigurator
 
   def self.form_json(aws_key, aws_secret, s3_params)
+    policy64 = encoded_policy(s3_params)
     {
       url: s3_params[:url],
       key: s3_params[:upload_path],
       access_key_id: aws_key,
       acl: "public-read",
-      policy: Base64.encode64({expiration: DateTime.now.to_s,
-                               conditions:
-                               [
-                                 {bucket: s3_params[:bucket_name]},
-                                 {acl: "public-read"},
-                                 ["eq", "$Content-Type", s3_params[:content_type]],
-                                 ["starts-with", "$key", "files"],
-                                 {success_action_status: '201'}
-                               ]
-                              }.to_json
-                             )
+      policy: policy64,
+      signature: signature(aws_secret, policy64)
     }.to_json
+  end
+
+  private
+
+  def self.signature(secret, policy)
+   digest = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha1'),
+                                   secret,
+                                   policy)
+
+   Base64.encode64(digest).gsub(/\n|\r/, '')
+  end
+
+  def self.encoded_policy(s3_params)
+    Base64.encode64({expiration: DateTime.now.to_s,
+                     conditions:
+                     [
+                       {bucket: s3_params[:bucket_name]},
+                       {acl: "public-read"},
+                       ["eq", "$Content-Type", s3_params[:content_type]],
+                       ["starts-with", "$key", "files"],
+                       {success_action_status: '201'}
+                     ]
+                    }.to_json
+                   ).gsub(/\n|\r/, '')
   end
 end
 
@@ -48,7 +64,7 @@ end
 #
 # The s3 signature can be created using OpenSSL::HMAC.digest.  The signature should take the aws secret key
 # as as its key, and the previously created policy document (already Base64 encoded and gsubbed to remove \n and \r) as its data
-# Use an OpenSSl sha1 digest as the digest for the key.
+# Use an OpenSSl sha1 digest as the digest for the key. After that the signature itself should be base64 encoded.
 #
 # You'll need to make some kind of service class (that'd be the easiest) that can spit out the aforementioned JSON object given a set of params.
 #
@@ -101,13 +117,14 @@ describe S3FormConfigurator do
       expect(key1).to_not eq(key2)
     end
 
-    describe "the policy object" do
-      def extract_policy_json(overall_result)
-        JSON.parse(Base64.decode64(overall_result["policy"]))
-      end
+    def extract_policy_json(overall_result)
+      JSON.parse(Base64.decode64(overall_result["policy"]))
+    end
 
-      it "shouldn't have any newlines or carriage returns" do
-        policy_string = Base64.decode64(result["policy"])
+    describe "the policy object" do
+
+      it "shouldn't have any newlines or carriage returns after base64 encoding" do
+        policy_string = result["policy"]
         expect(policy_string).not_to match(/\n|\r/)
       end
 
@@ -159,16 +176,19 @@ describe S3FormConfigurator do
         end
       end
     end
-  end
 
-  # see http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-UsingHTTPPOST.html
-  # policy -> hmac digest -> base64
-  def test_signature(encoded_signature, key, policy_64)
-    Base64.decode(encoded_signature)
+    # see http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-UsingHTTPPOST.html
+    describe "the signature" do
 
-    reference = OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'),
-                                     key,
-                                     policy_64)
+      it "The signature should use the policy and s3 secret to create a bas64 encoded digest" do
+           result = JSON.parse(S3FormConfigurator.form_json("foo", "s3_secret", default_s3_params))
+           reference = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha1'),
+                                           "s3_secret",
+                                           result["policy"])
+           encoded_reference = Base64.encode64(reference).gsub(/\n|\r/, '')
 
+           expect(result["signature"]).to eq(encoded_reference)
+      end
+    end
   end
 end

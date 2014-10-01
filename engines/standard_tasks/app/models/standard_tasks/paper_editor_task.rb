@@ -10,7 +10,7 @@ module StandardTasks
     has_many :paper_roles, through: :paper
 
     def paper_role
-      @paper_role ||= paper_roles.editors.first_or_initialize(paper_id: paper.id)
+      paper_roles.editors.first_or_initialize(paper_id: paper.id)
     end
 
     def paper_role_attributes=(attributes)
@@ -19,8 +19,10 @@ module StandardTasks
 
     def editor_id=(user_id)
       return unless editor_id != user_id
-      paper_role.user_id = user_id
-      paper_role.save!
+      transaction do
+        paper_roles.editors.destroy_all
+        paper_roles.editors.create!(paper_id: paper.id, user_id: user_id)
+      end
     end
 
     def editor_id

@@ -46,4 +46,18 @@ describe StandardTasks::PaperEditorTask do
       expect(task.editor_id).to eq editor.id
     end
   end
+
+  describe "#editor_id=" do
+    let(:task) { StandardTasks::PaperEditorTask.create! phase: paper.phases.first }
+    let(:current_editor) { FactoryGirl.create(:user) }
+    let(:future_editor) { FactoryGirl.create(:user) }
+
+    let!(:original_paper_role) { create(:paper_role, :editor, paper: paper, user: current_editor) }
+
+    it "sets the editor id by deleting and adding paper roles (necessary for event stream)" do
+      task.editor_id = future_editor.id
+      expect(task.reload.editor_id).to eq(future_editor.id)
+      expect{ original_paper_role.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end

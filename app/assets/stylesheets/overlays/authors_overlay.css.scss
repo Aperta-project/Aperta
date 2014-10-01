@@ -28,11 +28,6 @@
   font-size: 40px;
   text-align: center;
 
-  .glyphicon {
-    margin-right: 15px;
-    cursor: pointer;
-  }
-
   .drag {
     @include position(absolute, 4px 4px auto 4px);
     border-top: 1px solid rgba(0,0,0, 0.35);
@@ -56,9 +51,30 @@
   }
 
   // vertical align icons
+  // TODO: break out?
   .actions {
-    @include position(absolute, 50% 0px auto 0px);
+    @include position(absolute, 50% 0px 0px 0px);
     margin-top: -23px;
+
+    .action {
+      @include position(absolute, 0px auto 0px auto);
+      cursor: pointer;
+      opacity: 0.85;
+
+      &:hover { opacity: 1.0; }
+    }
+
+    .action:first-of-type {
+      left: 0;
+      right: 52%;
+      text-align: right;
+    }
+
+    .action:last-of-type {
+      left: 52%;
+      right: 0;
+      text-align: left;
+    }
   }
 }
 

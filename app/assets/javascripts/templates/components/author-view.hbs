@@ -20,8 +20,12 @@
     <div class="authors-overlay-item--actions">
       <div class="drag"></div>
       <div class="actions">
-        <span class="glyphicon glyphicon-pencil scaleIn" {{action "toggleEditForm"}}></span>
-        <span class="glyphicon glyphicon-trash scaleIn" {{action "toggleDeleteConfirmation"}}></span>
+        <div class="action" {{action "toggleEditForm"}}>
+          <span class="glyphicon glyphicon-pencil scaleIn"></span>
+        </div>
+        <div class="action" {{action "toggleDeleteConfirmation"}}>
+          <span class="glyphicon glyphicon-trash scaleIn"></span>
+        </div>
       </div>
     </div>
   {{/if}}

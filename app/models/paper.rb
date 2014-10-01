@@ -14,7 +14,7 @@ class Paper < ActiveRecord::Base
   has_many :supporting_information_files, class_name: SupportingInformation::File, dependent: :destroy
   has_many :paper_roles, inverse_of: :paper, dependent: :destroy
   has_many :assigned_users, through: :paper_roles, class_name: "User", source: :user
-  has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy
+  has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
   has_many :tasks, through: :phases
   has_many :journal_roles, through: :journal
   has_many :author_groups, -> { order("id ASC") }, inverse_of: :paper, dependent: :destroy
@@ -124,7 +124,8 @@ class Paper < ActiveRecord::Base
   end
 
   private
+
   def notifier_payload
-    { id: id, paper_id: id }
+    { paper_id: id }
   end
 end

@@ -3,7 +3,7 @@ CarrierWave.configure do |config|
     :provider               => 'AWS',
     :aws_access_key_id      => ENV['AWS_ACCESS_KEY_ID'],
     :aws_secret_access_key  => ENV['AWS_SECRET_ACCESS_KEY'],
-    :region                 => 'us-west-1'
+    :region                 => ENV['AWS_REGION']
   }
   config.fog_directory  = Rails.application.config.s3_bucket
   config.fog_public     = false

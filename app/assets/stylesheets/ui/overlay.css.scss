@@ -57,6 +57,7 @@
   color: $tahi-green;
   font-size: 42px;
   cursor: pointer;
+  z-index: 1;
   @extend .scaleIn;
 }
 

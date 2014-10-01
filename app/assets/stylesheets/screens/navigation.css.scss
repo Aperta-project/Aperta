@@ -1,0 +1,95 @@
+.navigation {
+  overflow: auto;
+  @include position(absolute, 0px auto 0px -75px);
+  width: 280px;
+  background: #282828;
+  z-index: 1000;
+  @include transition(left 0.3s);
+  @include user-select(none);
+}
+
+.navigation-visible .navigation {
+  left: 0;
+}
+
+.navigation .spinner {
+  right: 15px;
+  top: 10px;
+}
+
+.navigation-title {
+  position: relative;
+  display: block;
+  margin-bottom: 35px;
+  padding: 15px 0 0 66px;
+  color: #fff;
+  font-size: 24px;
+  text-transform: uppercase;
+  cursor: pointer;
+  @include user-select(none);
+
+  &:focus, &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .glyphicon {
+    @include position(absolute, 20px auto auto 30px);
+  }
+}
+
+
+.navigation-item {
+  display: block;
+  font-size: 15px;
+  padding: 18px 30px;
+  color: #fff;
+  text-transform: uppercase;
+
+  &:hover, &:focus {
+    color: $tahi-green;
+    text-decoration: none;
+  }
+}
+
+.navigation-item-admin:hover,
+.navigation-item-admin:focus {
+  color: $tahi-blue;
+}
+
+
+.navigation-account-links {
+  display: none;
+  &.__visible {
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .navigation-item-account {
+    padding: 7px 0 7px 74px;
+    font-size: 12px;
+  }
+}
+
+.navigation-item-account {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-transform: capitalize;
+
+  img {
+    width: 32px;
+    max-height: 32px;
+    margin-right: 8px;
+    border-radius: 4px;
+  }
+}
+
+.nav-bar-welcome a {
+  padding-right: 2px;
+}
+
+.nav-bar-admin-item.nav-bar-item {
+  a.active, a:hover {
+    background: $tahi-blue;
+  }
+}

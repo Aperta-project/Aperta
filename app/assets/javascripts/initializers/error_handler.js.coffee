@@ -38,7 +38,7 @@ ETahi.initializer
 
       #don't blow up if blowing up blows up
       return if url == errorPath
-      return if status == 0 && Etahi.environment == "test"
+      return if status == 0 && ETahi.environment == "test"
       msg = "Error with #{type} request to #{url}. Server returned #{status}: #{statusText}.  #{thrownError}"
       logError(msg)
       if jqXHR.status == 401

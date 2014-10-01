@@ -1,5 +1,6 @@
 #= require controllers/base_paper_controller
 ETahi.PaperEditController = ETahi.BasePaperController.extend
+  needs: ['paperSubmitOverlay']
   visualEditor: null
   saveState: false
 
@@ -86,5 +87,7 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
 
     confirmSubmitPaper: ->
       return unless @get('allMetadataTasksCompleted')
+
       @get('model').save()
-      @transitionToRoute('paper.submit')
+      @get('controllers.paperSubmitOverlay').set 'model', @get('model')
+      @send 'showConfirmSubmitOverlay'

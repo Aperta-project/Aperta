@@ -1,0 +1,10 @@
+<div class="overlay-container">
+  <h1>You are about to submit your manuscript:</h1>
+  <h2>&ldquo;{{displayTitle}}&rdquo;</h2>
+
+  <div class="overlay-action-buttons">
+    <button class="button-primary button--green" {{action "closeAction"}}>cancel</button>
+    <button class="button-primary button--green" {{action "submit"}}>Yes, Submit My Manuscript</button>
+    <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
+  </div>
+</div>

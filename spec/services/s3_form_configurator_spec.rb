@@ -1,46 +1,5 @@
 require 'json'
 require 'base64'
-require 'pry'
-
-class S3FormConfigurator
-
-  def self.form_json(aws_key, aws_secret, s3_params)
-    policy64 = encoded_policy(s3_params)
-    {
-      url: s3_params[:url],
-      key: s3_params[:upload_path],
-      access_key_id: aws_key,
-      acl: "public-read",
-      policy: policy64,
-      signature: signature(aws_secret, policy64)
-    }.to_json
-  end
-
-  private
-
-  def self.signature(secret, policy)
-   digest = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha1'),
-                                   secret,
-                                   policy)
-
-   Base64.encode64(digest).gsub(/\n|\r/, '')
-  end
-
-  def self.encoded_policy(s3_params)
-    Base64.encode64({expiration: DateTime.now.to_s,
-                     conditions:
-                     [
-                       {bucket: s3_params[:bucket_name]},
-                       {acl: "public-read"},
-                       ["eq", "$Content-Type", s3_params[:content_type]],
-                       ["starts-with", "$key", "files"],
-                       {success_action_status: '201'}
-                     ]
-                    }.to_json
-                   ).gsub(/\n|\r/, '')
-  end
-end
-
 # To post to s3 from a web form we need to give the client some information via a JSON payload.
 # here's how it should look:
 # {url: <s3-url>
@@ -68,6 +27,13 @@ end
 #
 # You'll need to make some kind of service class (that'd be the easiest) that can spit out the aforementioned JSON object given a set of params.
 #
+
+class S3FormConfigurator
+  def self.form_json(aws_key, aws_secret, s3_params)
+    {}.to_json
+  end
+end
+
 describe S3FormConfigurator do
 
   describe "form_json" do

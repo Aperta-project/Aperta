@@ -76,7 +76,7 @@ test 'When user is added as a collborator on paper', ->
       users: [fakeUser]
 
     Ember.run =>
-      es.msgResponse(data: JSON.stringify(data))
+      es.msgResponse(data)
   andThen ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 3
 
@@ -96,6 +96,6 @@ test 'When user is removed from collboratorating on paper', ->
       lite_papers: [1]
 
     Ember.run =>
-      es.msgResponse(data: JSON.stringify(data))
+      es.msgResponse(data)
   andThen ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 1

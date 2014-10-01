@@ -3,9 +3,11 @@
   {{participant-selector
     currentParticipants=model.participants
     everyone=allUsers
+    onRemove='removeParticipant'
     onSelect='saveNewParticipant'}}
   {{comment-board
     comments=comments
     currentUser=currentUser
+    onRemove='removeParticipant'
     postComment="postComment"}}
 </div>

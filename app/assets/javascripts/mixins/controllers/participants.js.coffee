@@ -6,11 +6,13 @@ ETahi.ControllerParticipants = Ember.Mixin.create
   ).property()
 
   participants: Em.computed.alias('model.participants')
-
   actions:
     addParticipant: (newParticipant) ->
       if newParticipant
         @get('participants').pushObject(newParticipant)
+    removeParticipant: (participant) ->
+      @get('participants').removeObject(participant)
+      @send('saveModel')
     saveNewParticipant: (newParticipant) ->
       unless @get('participants').contains newParticipant
         @get('participants').pushObject(newParticipant)

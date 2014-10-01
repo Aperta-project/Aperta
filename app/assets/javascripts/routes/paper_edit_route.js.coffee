@@ -66,3 +66,9 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
         into: 'application'
         outlet: 'overlay'
         controller: 'showCollaboratorsOverlay')
+
+    showConfirmSubmitOverlay: ->
+      @render 'paperSubmitOverlay',
+        into: 'application',
+        outlet: 'overlay',
+        controller: 'paperSubmitOverlay'

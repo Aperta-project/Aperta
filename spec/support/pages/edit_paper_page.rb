@@ -114,7 +114,7 @@ HERE
 
   def submit
     click_on "Submit"
-    SubmitPaperPage.new
+    SubmitPaperOverlay.new
   end
 
   def css

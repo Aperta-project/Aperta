@@ -8,7 +8,6 @@ class CommentsController < ApplicationController
   def create
     task = Task.find(params[:comment][:task_id])
     comment = task.comments.create(comment_params)
-    mail_mentioned(comment)
 
     respond_with comment
   end
@@ -19,18 +18,6 @@ class CommentsController < ApplicationController
 
 
   private
-
-  def mail_mentioned(comment)
-    # TODO
-    # read comment body and parse out names
-    # handle duplicate names
-    # send email to each user
-    people_mentioned = [User.first] # Change me
-
-    people_mentioned.each do |mentionee|
-      UserMailer.delay.mention_collaborator(comment.task.assignee.id, mentionee.id, comment.id)
-    end
-  end
 
   def comment_params
     params.require(:comment).permit(:commenter_id, :body)

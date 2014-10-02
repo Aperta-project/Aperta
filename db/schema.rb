@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140917134933) do
+ActiveRecord::Schema.define(version: 20141002142027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,12 +34,8 @@ ActiveRecord::Schema.define(version: 20140917134933) do
     t.datetime "updated_at"
   end
 
-  create_table "author_groups", force: true do |t|
-    t.string  "name"
-    t.integer "paper_id"
+  create_table "author_paper", force: true do |t|
   end
-
-  add_index "author_groups", ["paper_id"], name: "index_author_groups_on_paper_id", using: :btree
 
   create_table "authors", force: true do |t|
     t.string   "first_name"
@@ -52,10 +48,10 @@ ActiveRecord::Schema.define(version: 20140917134933) do
     t.boolean  "deceased",              default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "author_group_id"
     t.string   "affiliation"
     t.string   "secondary_affiliation"
     t.integer  "position"
+    t.integer  "paper_id"
   end
 
   create_table "comment_looks", force: true do |t|

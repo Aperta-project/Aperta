@@ -7,12 +7,6 @@ class DashboardPage < Page
     NewSubmissionPage.new
   end
 
-  def sign_out
-    find('.navigation-toggle').click
-    find('a.navigation-item', text: 'SIGN OUT').click
-    
-  end
-
   def submissions
     within("#dashboard-my-submissions") do
       page.all('li').map &:text

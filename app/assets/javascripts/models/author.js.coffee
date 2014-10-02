@@ -1,6 +1,6 @@
 a = DS.attr
 ETahi.Author = DS.Model.extend
-  authorGroup: DS.belongsTo('authorGroup')
+  paper: DS.belongsTo('paper')
 
   firstName: a('string')
   middleInitial: a('string')

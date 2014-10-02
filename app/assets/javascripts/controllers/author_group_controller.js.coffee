@@ -35,20 +35,6 @@ ETahi.AuthorGroupController = Ember.ObjectController.extend
       @toggleProperty('showNewAuthorForm')
       false
 
-    saveNewAuthor: (newAuthor) ->
-      newAuthor.position = @get('authors.length') + 1
-      author = @store.createRecord('author', newAuthor)
-      author.set('authorGroup', @get('model'))
-      author.save().then (author) =>
-        @toggleProperty('showNewAuthorForm')
-
-    saveAuthor: (author) ->
-      author.save()
-
-    removeAuthor: (author) ->
-      author.destroyRecord().then (author) =>
-        @updateAuthorPositions(author, @get('authors'), 'remove')
-
     changeAuthorGroup: (author, newPosition) ->
       if author.get('authorGroup') == @get('model')
         @shiftAuthorPositions(author, @get('model.authors'), author.get('position'), newPosition)

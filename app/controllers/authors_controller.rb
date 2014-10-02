@@ -32,8 +32,8 @@ class AuthorsController < ApplicationController
       :corresponding,
       :affiliation,
       :secondary_affiliation,
-      :author_group_id,
-      :position
+      :position,
+      :paper_id
     )
   end
 end

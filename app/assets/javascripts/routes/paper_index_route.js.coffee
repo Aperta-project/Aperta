@@ -4,8 +4,6 @@ ETahi.PaperIndexRoute = ETahi.AuthorizedRoute.extend
 
   setupController: (controller, model) ->
     controller.set('model', model)
-    controller.set 'authors', @store.all('author').filter (author) =>
-      author.get('authorGroup.paper') == model
     controller.set('commentLooks', @store.all('commentLook'))
 
   actions:

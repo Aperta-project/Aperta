@@ -1,7 +1,26 @@
 <h1>{{title}}</h1>
 
 <div class="authors-overlay-list">
-  {{#each group in resolvedPaper.authorGroups}}
-    {{render 'author_group' group}}
+  {{#if isEditable}}
+    <a class="button-secondary button--green" {{action "toggleAuthorForm" group}}>Add a New Author</a>
+    <br><br>
+
+    {{#if showNewAuthorForm}}
+      {{add-author-form
+        institutions=institutions
+        hideAuthorForm="toggleAuthorForm"
+        saveAuthor="saveNewAuthor"}}
+    {{/if}}
+  {{/if}}
+
+  {{view ETahi.AuthorDropTargetView index=0}}
+  {{#each author in sortedAuthors}}
+    {{author-view
+      isEditable=isEditable
+      institutions=institutions
+      delete="removeAuthor"
+      save="saveAuthor"
+      author=author}}
+    {{view ETahi.AuthorDropTargetView index=author.position}}
   {{/each}}
 </div>

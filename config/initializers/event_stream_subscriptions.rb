@@ -72,15 +72,18 @@ TahiNotifier.subscribe("paper_role:destroyed") do |payload|
   user_id  = payload[:user_id]
   paper_id = payload[:paper_id]
 
-  EventStream.post_event(
-    User,
-    user_id,
-    { action: "destroyed", lite_papers: [paper_id] }.to_json
-  )
+  # only remove paper if the user has no other access to it
+  unless PaperRole.for_user(user_id).pluck(:paper_id).include?(paper_id)
+    EventStream.post_event(
+      User,
+      user_id,
+      { action: "destroyed", lite_papers: [paper_id] }.to_json
+    )
 
-  EventStream.post_event(
-    User,
-    user_id,
-    { action: "updateStreams" }.to_json
-  )
+    EventStream.post_event(
+      User,
+      user_id,
+      { action: "updateStreams" }.to_json
+    )
+  end
 end

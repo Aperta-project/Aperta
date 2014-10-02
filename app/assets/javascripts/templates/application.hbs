@@ -6,7 +6,7 @@
   {{#if isLoggedIn}}
     <a href="#" class="navigation-item navigation-item-account" {{action "toggleAccountLinks"}}>
       <img {{bind-attr src="currentUser.avatarUrl"}}>
-      {{unbound currentUser.fullName}}
+      <span>{{unbound currentUser.fullName}}</span>
     </a>
 
     <div {{bind-attr class=":navigation-account-links accountLinksVisible:__visible"}}>

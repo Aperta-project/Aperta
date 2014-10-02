@@ -30,7 +30,7 @@ test 'action:created without a task will put the payload in the store', ->
       id: 1
       body: "HEY"
   Ember.run =>
-    es.msgResponse({data: (JSON.stringify data)})
+    es.msgResponse(data)
     comment = store.getById('comment', 1)
     equal comment.get('body'), "HEY", "it puts the correct payload in the store"
 
@@ -46,7 +46,7 @@ test 'action:created will still overwrite existing models', ->
       body: "NEW"
   Ember.run =>
     store.push('comment', id: 1, body: "OLD")
-    es.msgResponse({data: (JSON.stringify data)})
+    es.msgResponse(data)
     comment = store.getById('comment', 1)
     equal comment.get('body'), "NEW", "it overrides the current state"
 
@@ -61,7 +61,7 @@ test 'action:destroy will delete the task from the store', ->
   Ember.run =>
     store.push('task', id: 1)
     store.push('task', id: 2)
-    es.msgResponse({data: (JSON.stringify data)})
+    es.msgResponse(data)
     ok store.getById('task', 1) is null
     ok exists store.getById('task', 2)
 
@@ -77,7 +77,7 @@ test "action:created with a task updates the phase's tasks", ->
 
   Ember.run =>
     store.push('phase', id: 1, title: 'A Phase')
-    es.msgResponse(data: JSON.stringify(data))
+    es.msgResponse(data)
     ok phaseHasTask(store, phaseId: 1, taskId: 10)
     ok taskBelongsToPhase(store, phaseId: 1, taskId: 10)
 
@@ -100,7 +100,7 @@ test "action:updated with a task updates the phase's tasks", ->
     ok phaseHasTask(store, phaseId: 1, taskId: 10), "phase should have task"
     ok taskBelongsToPhase(store, phaseId: 1, taskId: 10), "task should belong to phase"
 
-    es.msgResponse(data: JSON.stringify(data))
+    es.msgResponse(data)
     ok phaseHasTask(store, phaseId: 2, taskId: 10), "new phase should have task"
     ok taskBelongsToPhase(store, phaseId: 2, taskId: 10), "task should belong to new phase"
     ok !phaseHasTask(store, phaseId: 1, taskId: 10), "old phase should not have task"
@@ -123,5 +123,5 @@ test 'with meta information the event stream will ask the server for the specifi
   ]
 
   Ember.run =>
-    es.msgResponse(data: JSON.stringify(data))
+    es.msgResponse(data)
     ok(_.findWhere(server.requests, {method: "GET", url: "/comments/1"}))

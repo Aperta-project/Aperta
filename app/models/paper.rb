@@ -64,12 +64,6 @@ class Paper < ActiveRecord::Base
     journal.admins
   end
 
-  %i(admins editors reviewers collaborators).each do |relation|
-    define_method relation do
-      assigned_users.merge(PaperRole.send(relation))
-    end
-  end
-
   def display_title
     title.present? ? title : short_title
   end
@@ -121,6 +115,19 @@ class Paper < ActiveRecord::Base
 
   def heartbeat
     update_attribute(:last_heartbeat_at, Time.now)
+  end
+
+  %w(admins editors reviewers collaborators).each do |relation|
+    # paper.editors   # [user1, user2]
+    define_method relation.to_sym do
+      assigned_users.merge(PaperRole.send(relation))
+    end
+
+    # paper.editor?(user)  # true
+    define_method("#{relation.singularize}?".to_sym) do |user|
+      return false unless user.present?
+      send(relation).exists?(user)
+    end
   end
 
   private

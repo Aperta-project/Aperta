@@ -51,8 +51,7 @@ describe UserMailer do
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true }
     let(:comment) { FactoryGirl.create(:comment, task: paper.tasks.first) }
-
-    let(:email) { UserMailer.mention_collaborator(admin.id, user.id, comment.id) }
+    let(:email) { UserMailer.mention_collaborator(comment.id, user.id) }
 
     it 'sends the email to the mentioned user' do
       expect(email.to).to eq [user.email]

@@ -7,6 +7,7 @@ class Comment < ActiveRecord::Base
   has_many :participants, through: :task
 
   validates :task, :body, presence: true
+  validates_presence_of :commenter
 
   after_commit :email_mentioned
 
@@ -38,7 +39,7 @@ class Comment < ActiveRecord::Base
     people_mentioned = User.where(username: names)
 
     people_mentioned.each do |mentionee|
-      UserMailer.delay.mention_collaborator(self.task.assignee.id, mentionee.id, self.id)
+      UserMailer.delay.mention_collaborator(self.id, mentionee.id)
     end
   end
 end

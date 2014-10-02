@@ -38,10 +38,10 @@ class UserMailer < ActionMailer::Base
       subject: "You've been added to a conversation on Tahi")
   end
 
-  def mention_collaborator(commentor_id, commentee_id, comment_id)
-    @commentor = User.find(commentor_id)
-    @commentee = User.find(commentee_id)
+  def mention_collaborator(comment_id, commentee_id)
     @comment = Comment.find(comment_id)
+    @commentor = @comment.user
+    @commentee = User.find(commentee_id)
 
     mail(
       to: @commentee.email,

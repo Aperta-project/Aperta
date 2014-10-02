@@ -13,21 +13,16 @@ describe S3FormConfigurator do
 
     let(:configurator) { S3FormConfigurator.new(default_s3_params) }
 
-    let(:result) do
-      result = configurator.form_json
-      JSON.parse(result)
-    end
-
     it "contains the specified url" do
-      expect(result["url"]).to eq("testUrl")
+      expect(configurator.url).to eq("testUrl")
     end
 
     it "has the aws key" do
-      expect(result["access_key_id"]).to eq("foo")
+      expect(configurator.access_key_id).to eq("foo")
     end
 
     it "specifies the acl as 'public read'" do
-      expect(result["acl"]).to eq("public-read")
+      expect(configurator.acl).to eq("public-read")
     end
 
     it "allows default parameters to be overwritten" do
@@ -92,10 +87,10 @@ describe S3FormConfigurator do
       it "The signature should use the policy and s3 secret to create a base64 encoded digest" do
         reference = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha1'),
                                          "bar",
-                                         result["policy"])
+                                         configurator.policy)
         encoded_reference = Base64.encode64(reference).gsub(/\n|\r/, '')
 
-        expect(result["signature"]).to eq(encoded_reference)
+        expect(configurator.signature).to eq(encoded_reference)
       end
     end
   end

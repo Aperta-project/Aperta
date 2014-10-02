@@ -16,10 +16,6 @@ class S3FormConfigurator
     instance_eval &block if block_given?
   end
 
-  def form_json
-    self.to_json
-  end
-
   private
 
   def s3_policy(s3_params)

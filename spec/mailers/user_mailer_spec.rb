@@ -45,4 +45,26 @@ describe UserMailer do
       expect(email.body).to match(/added you to a conversation/)
     end
   end
+
+  describe '#mention_collaborator' do
+    let(:admin) { FactoryGirl.create(:user, admin: true) }
+    let(:user) { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true }
+    let(:comment) { FactoryGirl.create(:comment, task: paper.tasks.first) }
+
+    let(:email) { UserMailer.mention_collaborator(admin.id, user.id, comment.id) }
+
+    it 'sends the email to the mentioned user' do
+      expect(email.to).to eq [user.email]
+    end
+
+    it 'tells the user they have been mentioned' do
+      expect(email.body).to include "You've been mentioned"
+      expect(email.body).to include admin.full_name
+      expect(email.body).to include paper.title
+      expect(email.body).to include paper.tasks.first.title
+      expect(email.body).to include comment.body
+      expect(email.body).to include paper_task_url(paper.id, paper.tasks.first.id)
+    end
+  end
 end

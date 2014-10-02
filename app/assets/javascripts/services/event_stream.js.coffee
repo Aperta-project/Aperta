@@ -18,13 +18,13 @@ ETahi.EventStream = Em.Object.extend
   processMessages: ->
     unless @get('wait')
       if msg = @messageQueue.popObject()
-        msg.data = JSON.parse(msg.data)
+        msg.parsedData = JSON.parse(msg.data)
         if @shouldProcessMessage(msg)
-          @msgResponse(msg.data)
+          @msgResponse(msg.parsedData)
     Ember.run.later(@, 'processMessages', [], interval)
 
   shouldProcessMessage: (msg) ->
-    @get('eventNames').contains(msg.type) or msg.data.action == 'destroyed'
+    @get('eventNames').contains(msg.type) or msg.parsedData.action == 'destroyed'
 
   pause: ->
     @set('wait', true)

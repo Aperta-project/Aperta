@@ -4,16 +4,12 @@
   </div>
 
   {{#if isLoggedIn}}
-    <a href="#" class="navigation-item navigation-item-account" {{action "toggleAccountLinks"}}>
+    <a href="#" {{action "routeTo" "profile"}} class="navigation-item navigation-item-account">
       <img {{bind-attr src="currentUser.avatarUrl"}}>
       {{unbound currentUser.fullName}}
     </a>
 
-    <div {{bind-attr class=":navigation-account-links accountLinksVisible:__visible"}}>
-      <a class="navigation-item navigation-item-account" href="#" {{action "routeTo" "profile"}}>Edit My Profile</a>
-      <a class="navigation-item navigation-item-account" href="/users/sign_out">Sign out</a>
-    </div>
-
+    
     <a href="#" class="navigation-item" {{action "routeTo" "index"}}>Dashboard</a>
 
     {{#if canViewFlowManager}}
@@ -23,6 +19,8 @@
     {{#if canViewAdminLinks}}
       <a href="#" class="navigation-item navigation-item-admin" {{action "routeTo" "admin"}}>Admin</a>
     {{/if}}
+
+     <a class="navigation-item navigation-item-account" href="/users/sign_out"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign out</a>  
   {{/if}}
 </div>
 

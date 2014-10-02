@@ -31,7 +31,7 @@ respondUnauthorized = ->
 
 setCurrentUserAdmin = (bool) ->
   store = ETahi.__container__.lookup 'store:main'
-  store.find 'user', window.currentUserId
+  store.find 'user', currentUserId
   .then (currentUser) -> currentUser.set 'admin', bool
 
 test 'all users can see their username', ->
@@ -39,45 +39,40 @@ test 'all users can see their username', ->
   setCurrentUserAdmin(false)
 
   visit '/'
-  .then ->
-    click '.navigation-toggle'
-    .then ->
-      ok $('.navigation-item-account:first').text().indexOf(@fakeUser.full_name) isnt -1
+  click '.navigation-toggle'
+  andThen ->
+    ok exists(find ".navigation-item-account span:contains('Fake User')")
 
 test '(admin=true) can see the Flow Manager link', ->
   respondUnauthorized()
   setCurrentUserAdmin(true)
 
   visit '/'
-  .then ->
-    click '.navigation-toggle'
-    .then ->
-      ok $('.navigation').text().indexOf('Flow Manager') isnt -1
+  click '.navigation-toggle'
+  andThen ->
+    ok exists(find ".navigation:contains('Flow Manager')")
 
 test '(admin=false) cannot see the Flow Manager link', ->
   respondUnauthorized()
   setCurrentUserAdmin(false)
 
   visit '/'
-  .then ->
-    click '.navigation-toggle'
-    .then ->
-      ok $('.navigation').text().indexOf('Flow Manager') is -1
+  click '.navigation-toggle'
+  andThen ->
+    ok !exists(find ".navigation:contains('Flow Manager')")
 
 test '(200 response) can see the Admin link', ->
   respondAuthorized()
 
   visit '/'
-  .then ->
-    click '.navigation-toggle'
-    .then ->
-      ok $('.navigation').text().indexOf('Admin') isnt -1
+  click '.navigation-toggle'
+  andThen ->
+    ok exists(find ".navigation:contains('Admin')")
 
 test '(403 response) cannot see the Admin link', ->
   respondUnauthorized()
 
   visit '/'
-  .then ->
-    click '.navigation-toggle'
-    .then ->
-      ok $('.navigation').text().indexOf('Admin') is -1
+  click '.navigation-toggle'
+  andThen ->
+    ok !exists(find ".navigation:contains('Admin')")

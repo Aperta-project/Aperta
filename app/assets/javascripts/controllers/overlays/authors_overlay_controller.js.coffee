@@ -7,30 +7,12 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       @set('resolvedPaper', paper)
   ).observes('paper')
 
+  allAuthors: []
+
+  _setAllAuthors: (-> @set('allAuthors', @store.all('author'))).on('init')
+  authors: (-> @get('allAuthors').filterBy('paper', @get('resolvedPaper'))).property('resolvedPaper','allAuthors.@each.paper')
   authorSort: ['position:asc']
-  sortedAuthors: Ember.computed.sort('resolvedPaper.authors', 'authorSort')
-
-  updateAuthorPositions: (author, authorList, operation)->
-    relevantAuthors = authorList.filter (a)->
-      a != author && a.get('position') >= author.get('position')
-
-    op = {add: 'incrementProperty', remove: 'decrementProperty'}
-    relevantAuthors.invoke(op[operation], 'position')
-
-  shiftAuthorPositions: (author, authorList, oldPosition, newPosition)->
-    if oldPosition < newPosition
-      newPosition = newPosition - 1
-      relevantAuthors = authorList.filter (a)->
-        a != author && (a.get('position') > oldPosition) && (a.get('position') <= newPosition)
-      relevantAuthors.invoke('decrementProperty', 'position')
-
-    else
-      relevantAuthors = authorList.filter (a)->
-        a != author && (a.get('position') < oldPosition) && (a.get('position') >= newPosition)
-      relevantAuthors.invoke('incrementProperty', 'position')
-
-    author.set('position', newPosition)
-    author.save()
+  sortedAuthors: Ember.computed.sort('authors', 'authorSort')
 
   actions:
     toggleAuthorForm: ->
@@ -38,14 +20,14 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       false
 
     saveNewAuthor: (newAuthor) ->
-      newAuthor.position = @get('authors.length') + 1
+      @toggleProperty('showNewAuthorForm')
+      newAuthor.setPosition = 0
+      newAuthor.paper = @get 'resolvedPaper'
       author = @store.createRecord('author', newAuthor)
-      author.save().then (author) =>
-        @toggleProperty('showNewAuthorForm')
+      author.save()
 
     saveAuthor: (author) ->
       author.save()
 
     removeAuthor: (author) ->
-      author.destroyRecord().then (author) =>
-        @updateAuthorPositions(author, @get('authors'), 'remove')
+      author.destroyRecord()

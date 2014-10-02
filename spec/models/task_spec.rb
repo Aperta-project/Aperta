@@ -136,9 +136,8 @@ describe Task do
     end
 
     describe "role" do
-      it "must be present" do
-        expect(TaskWithDefaults.new.tap(&:valid?).errors_on :role).to be_empty
-        expect(TaskWithoutDefaults.new.tap(&:valid?).errors_on :role).to include "can't be blank"
+      it "defaults to admin if no role is present" do
+        expect(TaskWithoutDefaults.new.role).to eq('admin')
       end
     end
   end

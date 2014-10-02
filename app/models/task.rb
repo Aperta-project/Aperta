@@ -78,7 +78,7 @@ class Task < ActiveRecord::Base
 
   def initialize_defaults
     self.title = self.class._default_title if title.blank?
-    self.role = self.class._default_role if role.blank?
+    self.role = self.class._default_role || 'admin' if role.blank?
   end
 
   private

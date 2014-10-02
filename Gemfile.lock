@@ -431,6 +431,8 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
+    twitter-text (1.9.2)
+      unf (~> 0.1.0)
     tzinfo (1.2.1)
       thread_safe (~> 0.1)
     uglifier (2.5.0)
@@ -524,6 +526,7 @@ DEPENDENCIES
   teaspoon!
   thin
   timeliness
+  twitter-text
   uglifier (~> 2.5.0)
   unf
   upload_manuscript!

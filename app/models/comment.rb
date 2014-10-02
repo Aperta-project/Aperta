@@ -8,6 +8,8 @@ class Comment < ActiveRecord::Base
 
   validates :task, :body, presence: true
 
+  after_commit :email_mentioned
+
   def created_by?(user)
     commenter_id == user.id
   end
@@ -24,9 +26,19 @@ class Comment < ActiveRecord::Base
     self.task.id
   end
 
+
   private
 
   def notifier_payload
     { task_id: task.id, paper_id: task.paper.id }
+  end
+
+  def email_mentioned
+    names = Twitter::Extractor.extract_mentioned_screen_names(self.body).uniq - [self.commenter.username]
+    people_mentioned = User.where(username: names)
+
+    people_mentioned.each do |mentionee|
+      UserMailer.delay.mention_collaborator(self.task.assignee.id, mentionee.id, self.id)
+    end
   end
 end

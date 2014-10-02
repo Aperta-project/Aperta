@@ -1,5 +1,7 @@
+require 'spec_helper'
 require 'json'
 require 'base64'
+
 # To post to s3 from a web form we need to give the client some information via a JSON payload.
 # here's how it should look:
 # {url: <s3-url>
@@ -26,32 +28,26 @@ require 'base64'
 # Use an OpenSSl sha1 digest as the digest for the key. After that the signature itself should be base64 encoded.
 #
 # You'll need to make some kind of service class (that'd be the easiest) that can spit out the aforementioned JSON object given a set of params.
-#
 
-class S3FormConfigurator
-  def self.form_json(aws_key, aws_secret, s3_params)
-    {}.to_json
-  end
-end
 
 describe S3FormConfigurator do
-
   describe "form_json" do
     let(:default_s3_params) do
-        {url: "testUrl",
-         bucket_name: "aBucket",
-         upload_root: "pending",
-         upload_path: "files/pictures",
-         content_type: "jpeg"}
+      {url: "testUrl",
+       bucket_name: "aBucket",
+       upload_root: "pending",
+       upload_path: "files/pictures",
+       content_type: "jpeg"}
     end
+
     let(:result) do
       aws_key = "foo"
       aws_secret = "bar"
-        result = S3FormConfigurator.form_json(aws_key,
-                                              aws_secret,
-                                              default_s3_params
-                                             )
-        JSON.parse(result)
+      result = S3FormConfigurator.form_json(aws_key,
+                                            aws_secret,
+                                            default_s3_params
+                                           )
+      JSON.parse(result)
     end
 
     it "contains the specified url" do
@@ -88,7 +84,6 @@ describe S3FormConfigurator do
     end
 
     describe "the policy object" do
-
       it "shouldn't have any newlines or carriage returns after base64 encoding" do
         policy_string = result["policy"]
         expect(policy_string).not_to match(/\n|\r/)
@@ -99,23 +94,18 @@ describe S3FormConfigurator do
         expect(DateTime.iso8601(policy["expiration"])).to_not be_nil
       end
 
-# conditions: [
-#   { bucket: <s3-bucket-name> },
-#   { acl: 'public-read' },
-#   ["starts-with", "$key", "<key-root-path>"], //in the example shown here, this would be 'some/'
-#   ["eq", "$Content-Type", <content-type>],
-#   { success_action_status: '201' }
-# }
       describe "policy conditions" do
         it "contains the bucket" do
           s3_params = default_s3_params.merge({bucket_name: "Bucket"})
           policy_json = extract_policy_json(JSON.parse(S3FormConfigurator.form_json("foo", "bar", s3_params)))
           expect(policy_json["conditions"]).to include({"bucket" => "Bucket"})
         end
+
         it "specifies the acl as public-read" do
           policy_json = extract_policy_json(JSON.parse(S3FormConfigurator.form_json("foo", "bar", default_s3_params)))
           expect(policy_json["conditions"]).to include({"acl" => "public-read"})
         end
+
         it "specifies that the key should start with the root of the specified upload path" do
           s3_params = default_s3_params.merge({upload_path: "some/path/"})
           policy_json = extract_policy_json(JSON.parse(S3FormConfigurator.form_json("foo", "bar", s3_params)))
@@ -145,15 +135,14 @@ describe S3FormConfigurator do
 
     # see http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-UsingHTTPPOST.html
     describe "the signature" do
+      it "The signature should use the policy and s3 secret to create a base64 encoded digest" do
+        result = JSON.parse(S3FormConfigurator.form_json("foo", "s3_secret", default_s3_params))
+        reference = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha1'),
+                                         "s3_secret",
+                                         result["policy"])
+        encoded_reference = Base64.encode64(reference).gsub(/\n|\r/, '')
 
-      it "The signature should use the policy and s3 secret to create a bas64 encoded digest" do
-           result = JSON.parse(S3FormConfigurator.form_json("foo", "s3_secret", default_s3_params))
-           reference = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha1'),
-                                           "s3_secret",
-                                           result["policy"])
-           encoded_reference = Base64.encode64(reference).gsub(/\n|\r/, '')
-
-           expect(result["signature"]).to eq(encoded_reference)
+        expect(result["signature"]).to eq(encoded_reference)
       end
     end
   end

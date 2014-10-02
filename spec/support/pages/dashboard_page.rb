@@ -9,8 +9,8 @@ class DashboardPage < Page
 
   def sign_out
     find('.navigation-toggle').click
-    find('.navigation-item-account').click
-    click_on 'Sign out'
+    find('a.navigation-item', text: 'SIGN OUT').click
+    
   end
 
   def submissions

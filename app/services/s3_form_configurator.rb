@@ -1,27 +1,34 @@
 class S3FormConfigurator
-  def self.form_json(aws_key, aws_secret, s3_params)
-    s3_params[:access_key_id] = aws_key
-    s3_params[:acl] ||= 'public-read'
-    s3_params[:key] = s3_params[:upload_path] + SecureRandom.hex(10)
+  attr_accessor :access_key_id, :acl, :key, :policy, :signature, :url
 
-    policy = s3_policy(s3_params)
-    s3_params[:policy] = Base64.strict_encode64(policy)
+  def initialize(s3_params, &block)
+    self.acl = 'public-read'
+    self.url = s3_params[:url]
+    self.access_key_id = s3_params[:aws_key]
 
-    signature = s3_signature(s3_params[:policy], aws_secret)
-    s3_params[:signature] = Base64.strict_encode64(signature)
+    self.key = s3_params[:upload_path] + SecureRandom.hex(10)
 
-    s3_params.to_json
+    self.policy = Base64.strict_encode64(s3_policy(s3_params))
+
+    sig = s3_signature(self.policy, s3_params[:aws_secret])
+    self.signature = Base64.strict_encode64(sig)
+
+    instance_eval &block if block_given?
+  end
+
+  def form_json
+    self.to_json
   end
 
   private
 
-  def self.s3_policy(s3_params)
-    key_root_path = s3_params[:upload_path].match(/^.*?\//).to_s
+  def s3_policy(s3_params)
+    key_root_path = "#{s3_params[:upload_path].split('/').first}/"
     {
       expiration: 30.minutes.from_now,
       conditions: [
         { bucket: s3_params[:bucket_name] },
-        { acl: s3_params[:acl] },
+        { acl: self.acl },
         ["starts-with", "$key", key_root_path],
         ["eq", "$Content-Type", s3_params[:content_type]],
         { success_action_status: '201' }
@@ -29,7 +36,7 @@ class S3FormConfigurator
     }.to_json
   end
 
-  def self.s3_signature(policy, secret)
+  def s3_signature(policy, secret)
     OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new,
                          secret,
                          policy)

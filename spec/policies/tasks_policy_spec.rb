@@ -102,7 +102,6 @@ describe TasksPolicy do
         task.update_attribute(:role, 'reviewer')
       end
 
-
       it { expect(policy.edit?).to be(true) }
       it { expect(policy.show?).to be(true) }
       it { expect(policy.create?).to be(false) }

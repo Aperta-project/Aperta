@@ -27,6 +27,48 @@ describe CommentsPolicy do
     end
   end
 
+  context "task participant" do
+    let(:user) { FactoryGirl.create(:user, :admin) }
+    before do
+      FactoryGirl.create(:participation, participant: user, task: task)
+    end
+
+    it { expect(policy.show?).to be(true) }
+    it { expect(policy.create?).to be(true) }
+  end
+
+  context "allowed reviewer" do
+    %i(reviewer editor).each do |role|
+      let(:user) do
+        user = FactoryGirl.create(:user)
+        FactoryGirl.create(:paper_role, role, user: user, paper: paper)
+        user
+      end
+
+      before do
+        task.update_attribute(:role, 'reviewer')
+      end
+
+      it { expect(policy.show?).to be(true) }
+      it { expect(policy.create?).to be(true) }
+    end
+  end
+
+  context "allowed manuscript information task" do
+    let(:user) do
+      user = FactoryGirl.create(:user)
+      FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
+      user
+    end
+
+    before do
+      task.update_attribute(:role, 'author')
+    end
+
+    it { expect(policy.show?).to be(true) }
+    it { expect(policy.create?).to be(true) }
+  end
+
   context "user with can_view_all_manuscript_managers on this journal" do
     let(:user) do
       FactoryGirl.create(

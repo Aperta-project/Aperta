@@ -48,6 +48,10 @@ class Task < ActiveRecord::Base
     Task.metadata_types.include?(self.class.name)
   end
 
+  def manuscript_information_task?
+    self.role == "author"
+  end
+
   def array_attributes
     [:body, :participant_ids]
   end

@@ -118,12 +118,12 @@ class Paper < ActiveRecord::Base
   end
 
   %w(admins editors reviewers collaborators).each do |relation|
-    # paper.editors   # [user1, user2]
+    # paper.editors   # => [user1, user2]
     define_method relation.to_sym do
       assigned_users.merge(PaperRole.send(relation))
     end
 
-    # paper.editor?(user)  # true
+    # paper.editor?(user1)  # => true
     define_method("#{relation.singularize}?".to_sym) do |user|
       return false unless user.present?
       send(relation).exists?(user)

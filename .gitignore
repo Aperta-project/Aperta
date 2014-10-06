@@ -17,3 +17,5 @@ spring
 doc/dependencies.*
 solr/development/*
 solr/pids/development/*
+solr/test/*
+solr/default/*

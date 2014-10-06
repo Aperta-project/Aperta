@@ -31,6 +31,7 @@ feature 'Comment Mention Notifications', js: true do
   let(:comment_body) { page.find('#comment-body') }
 
   before do
+    Sidekiq::Extensions::DelayedMailer.clear
     paper.collaborators << user2
     paper.save
 

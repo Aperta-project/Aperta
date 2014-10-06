@@ -11,11 +11,13 @@ class TasksController < ApplicationController
     if task
       unmunge_empty_arrays!(:task, task.array_attributes)
 
-      new_participant_id = added_participant_id(task) if params[:task][:participant_ids].present?
-      UserMailer.delay.add_participant(current_user.id, new_participant_id, task.id) if new_participant_id
+      notify_new_task_participant(task)
+
+      # if task is assigned
+      # make the user a participant too
 
       task.assign_attributes task_params(task)
-      UserMailer.delay.assign_task(current_user.id, task.assignee_id, task.id) if assignee_changed?(task)
+      notify_task_assignee(task)
 
       task.save!
       render task.update_responder.new(task, view_context).response
@@ -89,5 +91,14 @@ class TasksController < ApplicationController
     ids = params[:task][:participant_ids].map(&:to_i)
     new_id = ids.reject { |x| task.participant_ids.include? x }.first
     current_user.id == new_id ? nil : new_id
+  end
+
+  def notify_new_task_participant(task)
+    new_participant_id = added_participant_id(task) if params[:task][:participant_ids].present?
+    UserMailer.delay.add_participant(current_user.id, new_participant_id, task.id) if new_participant_id
+  end
+
+  def notify_task_assignee(task)
+    UserMailer.delay.assign_task(current_user.id, task.assignee_id, task.id) if assignee_changed?(task)
   end
 end

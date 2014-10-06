@@ -20,6 +20,7 @@ ETahi.AuthorDropTargetView = Ember.View.extend DragNDrop.Droppable,
     DragNDrop.draggingStopped('.author-drop-target')
 
   drop: (e) ->
+    @get('controller').shiftAuthorPositions ETahi.get('dragItem'), @get('position')
     DragNDrop.draggingStopped('.author-drop-target')
     e.preventDefault()
     #dragItem will be the author.

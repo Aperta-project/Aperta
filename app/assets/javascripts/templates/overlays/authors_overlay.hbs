@@ -5,7 +5,7 @@
     <a class="button-secondary button--green" {{action "toggleAuthorForm" group}}>Add a New Author</a>
     <br><br>
 
-    {{#if showNewAuthorForm}}
+    {{#if newAuthorFormVisible}}
       {{add-author-form
         institutions=institutions
         hideAuthorForm="toggleAuthorForm"

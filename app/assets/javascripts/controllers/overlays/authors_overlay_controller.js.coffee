@@ -1,5 +1,5 @@
 ETahi.AuthorsOverlayController = ETahi.TaskController.extend
-  showNewAuthorForm: false
+  newAuthorFormVisible: false
   resolvedPaper: null
 
   _setPaper: ( ->
@@ -8,24 +8,38 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
   ).observes('paper')
 
   allAuthors: []
-
   _setAllAuthors: (-> @set('allAuthors', @store.all('author'))).on('init')
   authors: (-> @get('allAuthors').filterBy('paper', @get('resolvedPaper'))).property('resolvedPaper','allAuthors.@each.paper')
   authorSort: ['position:asc']
   sortedAuthors: Ember.computed.sort('authors', 'authorSort')
 
+  shiftAuthorPositions: (author, newPosition)->
+    oldPosition = author.get 'position'
+
+    if oldPosition < newPosition
+      newPosition = newPosition - 1
+      relevantAuthors = @get('authors').filter (a)->
+        a != author && (a.get('position') > oldPosition) && (a.get('position') <= newPosition)
+      relevantAuthors.invoke 'decrementProperty', 'position'
+    else
+      relevantAuthors = @get('authors').filter (a)->
+        a != author && (a.get('position') < oldPosition) && (a.get('position') >= newPosition)
+      relevantAuthors.invoke 'incrementProperty', 'position'
+
+    author.set('position', newPosition)
+    author.save()
+
   actions:
     toggleAuthorForm: ->
-      @toggleProperty('showNewAuthorForm')
+      @toggleProperty 'newAuthorFormVisible'
       false
 
-    saveNewAuthor: (newAuthor) ->
-      @toggleProperty('showNewAuthorForm')
-      newAuthor.setPosition = 0
-      newAuthor.position    = 0
-      newAuthor.paper = @get 'resolvedPaper'
-      author = @store.createRecord('author', newAuthor)
-      author.save()
+    saveNewAuthor: (newAuthorHash) ->
+      newAuthorHash.setPosition = 0
+      newAuthorHash.position    = 0
+      newAuthorHash.paper = @get 'resolvedPaper'
+      @store.createRecord('author', newAuthor).save()
+      @toggleProperty 'newAuthorFormVisible'
 
     saveAuthor: (author) ->
       author.save()

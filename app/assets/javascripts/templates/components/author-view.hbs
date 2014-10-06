@@ -1,19 +1,10 @@
 {{#unless editState}}
   <div class="authors-overlay-item--text">
     <div class="author-name">{{author.fullName}}</div>
-    <div>
-      <span>{{author.email}}</span>
-    </div>
-    <div>
-      <span>{{author.title}}</span>
-      &nbsp; &nbsp;
-      <span>{{author.department}}</span>
-    </div>
-    <div>
-      <span>{{author.affiliation}}</span>
-      &nbsp; &nbsp;
-      <span>{{author.secondaryAffiliation}}</span>
-    </div>
+    {{author.email}}<br>
+    {{author.title}} &nbsp; &nbsp; {{author.department}}
+    <br>
+    {{author.affiliation}} &nbsp; &nbsp; {{author.secondaryAffiliation}}
   </div>
 
   {{#if hoverState}}

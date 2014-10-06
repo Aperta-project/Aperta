@@ -14,7 +14,7 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   ).on('didInsertElement')
 
   teardownHoverEvent: (->
-    @$().off('mouseenter mouseleave');
+    @$().off('mouseenter mouseleave')
   ).on('willDestroyElement')
 
   dragStart: (e) ->

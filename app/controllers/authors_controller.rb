@@ -4,7 +4,7 @@ class AuthorsController < ApplicationController
 
   def create
     author = Author.create author_params
-    respond_with author
+    respond_with author, serializer: AuthorSerializer, root: 'author'
   end
 
   def update

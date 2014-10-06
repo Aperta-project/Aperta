@@ -22,6 +22,7 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
     saveNewAuthor: (newAuthor) ->
       @toggleProperty('showNewAuthorForm')
       newAuthor.setPosition = 0
+      newAuthor.position    = 0
       newAuthor.paper = @get 'resolvedPaper'
       author = @store.createRecord('author', newAuthor)
       author.save()

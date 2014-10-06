@@ -21,6 +21,7 @@ class RemoveAuthorGroups < ActiveRecord::Migration
 
   def down
     # irreversible
+    raise ActiveRecord::IrreversibleMigration, "Can't recover author groups information."
   end
 end
 

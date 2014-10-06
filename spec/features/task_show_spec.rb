@@ -54,7 +54,7 @@ feature 'Comment Mention Notifications', js: true do
     Sidekiq::Extensions::DelayedMailer.drain
     email = ActionMailer::Base.deliveries.first
 
-    expect(email.to).to eq [admin.email]
+    expect(email.to).to eq [user2.email]
     expect(email.body).to include user2.username
   end
 

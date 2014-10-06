@@ -17,20 +17,20 @@ class LitePaperSerializer < ActiveModel::Serializer
 
   def roles
     roles = []
-    if defined?(current_user) && current_user
+    if user.present?
       # rocking this in memory because eager-loading
       roles = object.paper_roles.select { |role|
-        role.user_id == current_user.id
+        role.user_id == user.id
       }.map(&:description)
-      roles << "My Paper" if object.user_id == current_user.id
+      roles << "My Paper" if object.user_id == user.id
     end
     roles
   end
 
   def unread_comments_count
-    if (defined? current_user) && current_user
+    if user.present?
       object.tasks.inject(0) do |sum, task|
-        sum + CommentLook.where(user_id: current_user.id,
+        sum + CommentLook.where(user_id: user.id,
                                 comment_id: task.comments.pluck(:id),
                                 read_at: nil).count
       end

@@ -36,3 +36,8 @@ Tahi.utils =
       Ember.run.schedule("actions", obj, 'set', prop, endVal)
     ms)
 
+  debug: (description, obj) ->
+    if ETahi.environment == 'development'
+      console.groupCollapsed(description)
+      console.log(Em.copy(obj, true))
+      console.groupEnd()

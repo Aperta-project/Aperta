@@ -167,7 +167,7 @@ textarea { resize: none; }
 .main-content {
   overflow: auto;
   @include position(absolute, 0px 0px 0px 0px);
-  @include transition(all 0.3s);
+  @include transition(all 0.1s);
   background: #fff;
   z-index: 1002;
 

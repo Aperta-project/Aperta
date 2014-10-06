@@ -168,4 +168,9 @@ class Page < PageFragment
       DashboardPage.new
     end
   end
+
+  def sign_out
+    find('.navigation-toggle').click
+    find('a.navigation-item', text: 'SIGN OUT').click
+  end
 end

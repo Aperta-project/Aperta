@@ -76,4 +76,55 @@ describe TasksPolicy do
 
     it { expect(policy.show?).to be(true) }
   end
+
+  context "task participant" do
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      FactoryGirl.create(:participation, participant: user, task: task)
+    end
+
+    it { expect(policy.edit?).to be(true) }
+    it { expect(policy.show?).to be(true) }
+    it { expect(policy.create?).to be(false) }
+    it { expect(policy.update?).to be(true) }
+    it { expect(policy.upload?).to be(true) }
+  end
+
+  context "allowed reviewer" do
+    %i(reviewer editor).each do |role|
+      let(:user) do
+        user = FactoryGirl.create(:user)
+        FactoryGirl.create(:paper_role, role, user: user, paper: paper)
+        user
+      end
+
+      before do
+        task.update_attribute(:role, 'reviewer')
+      end
+
+      it { expect(policy.edit?).to be(true) }
+      it { expect(policy.show?).to be(true) }
+      it { expect(policy.create?).to be(false) }
+      it { expect(policy.update?).to be(true) }
+      it { expect(policy.upload?).to be(true) }
+    end
+  end
+
+  context "allowed manuscript information task" do
+    let(:user) do
+      user = FactoryGirl.create(:user)
+      FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
+      user
+    end
+
+    before do
+      task.update_attribute(:role, 'author')
+    end
+
+    it { expect(policy.edit?).to be(true) }
+    it { expect(policy.show?).to be(true) }
+    it { expect(policy.create?).to be(false) }
+    it { expect(policy.update?).to be(true) }
+    it { expect(policy.upload?).to be(true) }
+  end
 end

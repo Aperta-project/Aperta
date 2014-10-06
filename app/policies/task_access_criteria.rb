@@ -26,4 +26,20 @@ module TaskAccessCriteria
     PaperRole.for_user(current_user).where(paper: paper).exists?) &&
     journal_roles.merge(Role.can_view_assigned_manuscript_managers).exists?
   end
+
+  def task_participant?
+    task.participants.exists?(current_user)
+  end
+
+  def allowed_manuscript_information_task?
+    task.manuscript_information_task? && has_paper_role?
+  end
+
+  def allowed_reviewer_task?
+    task.role == 'reviewer' && paper.role_for(role: ['editor', 'reviewer'], user: current_user).exists?
+  end
+
+  def has_paper_role?
+    paper.assigned_users.exists?(current_user)
+  end
 end

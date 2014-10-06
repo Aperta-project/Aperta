@@ -48,6 +48,10 @@ class Task < ActiveRecord::Base
     Task.metadata_types.include?(self.class.name)
   end
 
+  def manuscript_information_task?
+    self.role == "author"
+  end
+
   def array_attributes
     [:body, :participant_ids]
   end
@@ -78,7 +82,7 @@ class Task < ActiveRecord::Base
 
   def initialize_defaults
     self.title = self.class._default_title if title.blank?
-    self.role = self.class._default_role if role.blank?
+    self.role = self.class._default_role || 'admin' if role.blank?
   end
 
   private

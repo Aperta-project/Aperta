@@ -1,6 +1,7 @@
 interval = 500
 ETahi.EventStream = Em.Object.extend
   eventSource: null
+  eventNames: null
   messageQueue: null
   wait: false
   init: ->
@@ -16,9 +17,15 @@ ETahi.EventStream = Em.Object.extend
 
   processMessages: ->
     unless @get('wait')
-      msg = @messageQueue.popObject()
-      if msg then @msgResponse(msg)
+      if msg = @messageQueue.popObject()
+        msg.parsedData = JSON.parse(msg.data)
+        if @shouldProcessMessage(msg)
+          Tahi.utils.debug("Event Stream: '#{msg.parsedData.action}'", msg)
+          @msgResponse(msg.parsedData)
     Ember.run.later(@, 'processMessages', [], interval)
+
+  shouldProcessMessage: (msg) ->
+    @get('eventNames').contains(msg.type) or msg.parsedData.action == 'destroyed'
 
   pause: ->
     @set('wait', true)
@@ -30,6 +37,7 @@ ETahi.EventStream = Em.Object.extend
     @get('eventSource').close() if @get('eventSource')
 
   resetChannels: ->
+    @pause()
     @stop()
     params =
       url: '/event_stream'
@@ -38,12 +46,14 @@ ETahi.EventStream = Em.Object.extend
         return if data.enabled == 'false'
         @set('eventSource', new EventSource(data.url))
         Ember.$(window).unload => @stop()
+        @set('eventNames', data.eventNames)
+        Tahi.utils.debug("Event Stream: updated channels", data.eventNames)
         data.eventNames.forEach (eventName) =>
           @addEventListener(eventName)
+        @play()
     Ember.$.ajax(params)
 
-  msgResponse: (msg) ->
-    esData = JSON.parse(msg.data)
+  msgResponse: (esData) ->
     action = esData.action
     meta = esData.meta
     delete esData.meta
@@ -67,7 +77,7 @@ ETahi.EventStream = Em.Object.extend
       phase.get('tasks').addObject(task)
     if action == 'updated' && phase != oldPhase
       phase.get('tasks').addObject(task)
-      oldPhase.get('tasks').removeObject(oldTask)
+      oldPhase.get('tasks').removeObject(oldTask) if oldPhase
       task.set('phase', phase)
 
     task.triggerLater('didLoad')

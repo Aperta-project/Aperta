@@ -18,6 +18,7 @@ class TasksController < ApplicationController
       UserMailer.delay.assign_task(current_user.id, task.assignee_id, task.id) if assignee_changed?(task)
 
       task.save!
+      CommentLookManager.sync_task(task)
       render task.update_responder.new(task, view_context).response
     else
       head :forbidden

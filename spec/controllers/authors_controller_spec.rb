@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe AuthorsController do
   let(:user) { FactoryGirl.create(:user) }
+  let(:paper) { FactoryGirl.create(:paper) }
   before do
     sign_in user
   end
@@ -13,11 +14,10 @@ describe AuthorsController do
         last_name: "fermi",
         email: "ricky@fermi.org",
         affiliation: "Harvey Mudd",
-        author_group_id: author_group.id,
+        paper_id: paper.id,
         position: 1
       }
     end
-    let(:author_group) { FactoryGirl.create :author_group }
     let(:author) { Author.last }
 
     it "creates a new author" do
@@ -27,11 +27,6 @@ describe AuthorsController do
     it "creates the right author" do
       do_request
       expect(author.affiliation).to eq 'Harvey Mudd'
-    end
-
-    it "associates the author to the group" do
-      do_request
-      expect(author.author_group).to eq author_group
     end
   end
 
@@ -51,12 +46,8 @@ describe AuthorsController do
 
   describe "PUT #update" do
     let(:do_request) do
-      put :update, format: :json, id: author.id, author: {
-                                            secondary_affiliation: "Brisbon Uni",
-                                            author_group_id: author_group.id
-                                          }
+      put :update, format: :json, id: author.id, author: { secondary_affiliation: "Brisbon Uni" }
     end
-    let(:author_group) { FactoryGirl.create :author_group, authors: [author] }
     let(:author) { FactoryGirl.create :author }
 
     it "updates the author" do

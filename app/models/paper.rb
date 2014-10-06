@@ -88,10 +88,6 @@ class Paper < ActiveRecord::Base
     submitted_changed? && submitted
   end
 
-  def build_default_author_groups
-    AuthorGroup.build_default_groups_for(self)
-  end
-
   def locked?
     locked_by_id.present?
   end

@@ -39,5 +39,5 @@ Tahi.utils =
   debug: (description, obj) ->
     if ETahi.environment == 'development'
       console.groupCollapsed(description)
-      console.log(obj)
+      console.log(Em.copy(obj, true))
       console.groupEnd()

@@ -58,8 +58,7 @@ describe UserMailer do
     end
 
     it 'tells the user they have been mentioned' do
-      expect(email.body).to include "You've been mentioned"
-      expect(email.body).to include admin.full_name
+      expect(email.body).to include "You've been mentioned by #{comment.commenter.full_name}"
       expect(email.body).to include paper.title
       expect(email.body).to include paper.tasks.first.title
       expect(email.body).to include comment.body

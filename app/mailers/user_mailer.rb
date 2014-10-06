@@ -40,7 +40,7 @@ class UserMailer < ActionMailer::Base
 
   def mention_collaborator(comment_id, commentee_id)
     @comment = Comment.find(comment_id)
-    @commentor = @comment.user
+    @commenter = @comment.commenter
     @commentee = User.find(commentee_id)
 
     mail(

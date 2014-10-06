@@ -4,7 +4,7 @@ ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
   assignees: DS.hasMany('user')
   phase: DS.belongsTo('phase')
   comments: DS.hasMany('comment')
-  participants: DS.hasMany('user')
+  participations: DS.hasMany('participation')
 
   body: a()
   completed: a('boolean')
@@ -22,4 +22,4 @@ ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
 
   questions: DS.hasMany('question', inverse: 'task')
 
-  relationshipsToSerialize: ['participants']
+  relationshipsToSerialize: ['participations']

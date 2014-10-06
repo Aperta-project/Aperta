@@ -8,7 +8,7 @@ class TaskSerializer < ActiveModel::Serializer
   has_one :assignee, embed: :ids, include: true, root: :users
   has_many :questions, embed: :ids, include: true
   has_many :comments, embed: :ids, include: true
-  has_many :participants, serializer: UserSerializer, embed: :ids, include: true, root: :users
+  has_many :participations, embed: :ids, include: true
 
   self.root = :task
 

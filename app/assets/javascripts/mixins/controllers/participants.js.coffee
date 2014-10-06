@@ -5,13 +5,19 @@ ETahi.ControllerParticipants = Ember.Mixin.create
     @store.all('user') #simply getting all users for now
   ).property()
 
-  participants: Em.computed.alias('model.participants')
+  participations: Em.computed.alias('model.participations')
+  participants: (->
+    @get('participations').map (participation) ->
+      participation.get('user')
+  ).property('participations.@each.user')
 
   actions:
     addParticipant: (newParticipant) ->
       if newParticipant
         @get('participants').pushObject(newParticipant)
-    saveNewParticipant: (newParticipant) ->
+    saveNewParticipation: (newParticipant) ->
       unless @get('participants').contains newParticipant
-        @get('participants').pushObject(newParticipant)
-        @send('saveModel')
+        part = @store.createRecord('participation', user: newParticipant, task: @get('model'))
+        part.save()
+        # @get('participants').pushObject(newParticipant)
+        # @send('saveModel')

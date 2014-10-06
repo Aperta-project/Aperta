@@ -7,11 +7,10 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   deleteState: false
 
   attachHoverEvent: (->
-    self = this
-    toggleHoverClass = (e) ->
-      self.toggleProperty 'hoverState'
+    toggleHoverClass = (e) =>
+      @toggleProperty 'hoverState'
 
-    @$().hover(toggleHoverClass, toggleHoverClass)
+    @$().hover toggleHoverClass, toggleHoverClass
   ).on('didInsertElement')
 
   teardownHoverEvent: (->

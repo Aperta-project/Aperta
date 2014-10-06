@@ -26,7 +26,8 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
 
   actions:
     delete: ->
-      @sendAction 'delete', @get('author')
+      @$().fadeOut 250, =>
+        @sendAction 'delete', @get('author')
 
     save: ->
       @sendAction 'save', @get('author')

@@ -11,9 +11,7 @@ describe PaperUpdateWorker do
 
   describe "#perform" do
     before do
-      json = double(:json)
-      allow(json).to receive(:[]).with(:json).and_return({ body: "<h1>Hello</h1>" }.to_json)
-
+      json = { json: { body: "<h1>Hello</h1>" }.to_json }
       expect(Faraday).to receive(:get).with("#{ENV['IHAT_URL']}jobs/#{job.job_id}/download").and_return(json)
     end
 
@@ -31,11 +29,8 @@ describe PaperUpdateWorker do
 
   describe "#paper_attributes" do
     it "requests the converted JSON from IHAT" do
-      json = double(:json)
-      allow(json).to receive(:[]).with(:json).and_return({}.to_json)
-
+      json = { json: { body: "<h1>Hello</h1>" }.to_json }
       expect(Faraday).to receive(:get).with("#{ENV['IHAT_URL']}jobs/#{job.job_id}/download").and_return(json)
-
       worker.paper_attributes
     end
   end

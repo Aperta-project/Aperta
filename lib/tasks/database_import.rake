@@ -6,7 +6,12 @@ namespace :db do
         target_db_name = ActiveRecord::Base.connection.current_database
         system("curl -o #{f.path} `heroku pgbackups:url --app tahi-staging`")
         system("pg_restore --clean --no-acl --no-owner -h localhost -d #{target_db_name} #{f.path}")
-        User.all.each { |u| u.password = "password"; u.save }
+        Journal.update_all(logo: nil)
+        User.all.each do |u|
+          u.password = "password" # must be set explicitly
+          u.avatar = nil # avoid 404s for s3 urls
+          u.save
+        end
       end
     end
   end

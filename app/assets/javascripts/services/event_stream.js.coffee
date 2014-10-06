@@ -20,6 +20,7 @@ ETahi.EventStream = Em.Object.extend
       if msg = @messageQueue.popObject()
         msg.parsedData = JSON.parse(msg.data)
         if @shouldProcessMessage(msg)
+          Tahi.utils.debug("Event Stream: '#{msg.parsedData.action}'", msg)
           @msgResponse(msg.parsedData)
     Ember.run.later(@, 'processMessages', [], interval)
 
@@ -46,6 +47,7 @@ ETahi.EventStream = Em.Object.extend
         @set('eventSource', new EventSource(data.url))
         Ember.$(window).unload => @stop()
         @set('eventNames', data.eventNames)
+        Tahi.utils.debug("Event Stream: updated channels", data.eventNames)
         data.eventNames.forEach (eventName) =>
           @addEventListener(eventName)
         @play()

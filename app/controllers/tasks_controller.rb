@@ -10,13 +10,13 @@ class TasksController < ApplicationController
     task = Task.find(params[:id])
     if task
       unmunge_empty_arrays!(:task, task.array_attributes)
+      new_participant_id = added_participant_id(task) if params[:task][:participant_ids].present?
 
-      notify_new_task_participant(task)
-
-      # if task is assigned
-      # make the user a participant too
+      notify_new_task_participant(task, new_participant_id)
 
       task.assign_attributes task_params(task)
+
+      add_assignee_as_participant(task, params[:task][:assignee_id])
       notify_task_assignee(task)
 
       task.save!
@@ -93,12 +93,17 @@ class TasksController < ApplicationController
     current_user.id == new_id ? nil : new_id
   end
 
-  def notify_new_task_participant(task)
-    new_participant_id = added_participant_id(task) if params[:task][:participant_ids].present?
-    UserMailer.delay.add_participant(current_user.id, new_participant_id, task.id) if new_participant_id
+  def notify_new_task_participant(task, participant_id)
+    UserMailer.delay.add_participant(current_user.id, participant_id, task.id) if participant_id
   end
 
   def notify_task_assignee(task)
     UserMailer.delay.assign_task(current_user.id, task.assignee_id, task.id) if assignee_changed?(task)
+  end
+
+  def add_assignee_as_participant(task, assignee_id)
+    # TODO: let's not re-lookup the User, if possible
+    # Strong parameters do not allow us to assign participant_ids directly
+    task.participants << User.find(assignee_id)
   end
 end

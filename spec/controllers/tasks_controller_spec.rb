@@ -85,12 +85,22 @@ describe TasksController do
       end
     end
 
+    context "when adding an assignee to a task" do
+      let(:task) { FactoryGirl.create(:message_task) }
+      let(:new_assignee) { FactoryGirl.create(:user) }
+
+      it "updates the participants on the task" do
+        put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { assignee_id: new_assignee.id }
+        expect(task.reload.participant_ids).to include(new_assignee.id)
+      end
+    end
+
     context "when adding a participant to a message task" do
       let(:task) { FactoryGirl.create(:message_task) }
       let(:new_participant) { FactoryGirl.create(:user) }
 
       it "updates the participants on the task" do
-        put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { participant_ids: [new_participant.id] }
+        put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { assignee_id: new_participant.id }
         expect(task.reload.participant_ids).to include(new_participant.id)
       end
 

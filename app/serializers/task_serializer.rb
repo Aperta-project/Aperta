@@ -12,10 +12,6 @@ class TaskSerializer < ActiveModel::Serializer
 
   self.root = :task
 
-  def participants
-    object.participants.includes(:affiliations)
-  end
-
   def paper_title
     object.paper.display_title
   end

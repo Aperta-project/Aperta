@@ -1,32 +1,12 @@
-@mixin card-title {
-  font-size: 48px;
-  margin: 0 0 20px 0;
-}
-
-@mixin column-title {
-  margin: 0;
-  padding-bottom: 10px;
-  font-size: 27px;
-}
-
-@mixin text-link-lg {
-  padding: 0 15px 0 0;
-  color: $tahi-green;
-  font-family: $tahi-font-family;
-  font-size: 18px;
-
-  &:hover { text-decoration: none; } // override global tahi a style
-}
-
 @mixin upload-spinner-and-hover {
   position: absolute;
   top: 0;
   text-align: center;
 }
 
-%truncates {
+@mixin ellipsis {
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

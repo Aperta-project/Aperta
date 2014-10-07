@@ -6,12 +6,12 @@
     {{type-ahead value=""
                  class="participant-select"
                  name="add_participant"
-                 sourceList=availableParticipants
-                 valueProperty="fullName"
-                 subvalueProperty="username"
+                 sourceList=availableParticipantsList
+                 valueProperty="full_name"
+                 subvalueProperty="info"
+                 remoteUrl=remoteUrl
                  suggestionSelected="addParticipant"
                  clearOnSelect=true
                  placeholder="Add People"}}
-
   </li>
 </ul>

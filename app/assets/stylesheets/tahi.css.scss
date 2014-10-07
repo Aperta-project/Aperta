@@ -9,10 +9,10 @@ body       { background: transparent; } // override bootstrap
 .application-error {
   position: absolute;
   top: 50px;
-  z-index: 10000;
   right: 40%;
   text-align: center;
   min-width: 20%;
+  z-index: z($z-layer-app-error);
 }
 
 ::-webkit-scrollbar {
@@ -169,7 +169,7 @@ textarea { resize: none; }
   @include position(absolute, 0px 0px 0px 0px);
   @include transition(all 0.1s);
   background: #fff;
-  z-index: 1002;
+  z-index: z($z-layer-main-content);
 
   &.matte { background: #f5F5F5; }
 }
@@ -178,7 +178,7 @@ textarea { resize: none; }
   @include position(absolute, 0px 0px 0px 0px);
   display: none;
   background: rgba(250,250,250, 0.2);
-  z-index: 1002;
+  z-index: z($z-layer-main-content-cover);
 }
 
 .navigation-visible {
@@ -194,7 +194,7 @@ textarea { resize: none; }
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
-  z-index: 1001;
+  z-index: z($z-layer-navigation-toggle);
   @include user-select(none);
 
   svg {

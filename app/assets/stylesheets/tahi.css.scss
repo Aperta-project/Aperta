@@ -61,7 +61,18 @@ textarea { resize: none; }
 
 
 .matte #tahi-container {
-  padding-top: 80px;
+  overflow: auto;
+  @include position(absolute, 0px 0px 0px 0px);
+  max-width: 100%;
+  padding-top: 135px;
+  @include transition(padding-top 0.2s);
+
+  &.sub-nav-visible { padding-top: 175px; }
+
+  main {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
 }
 
 #tahi-container {
@@ -188,7 +199,7 @@ textarea { resize: none; }
 
 .navigation-toggle {
   @include position(fixed, 0px auto auto 0px);
-  padding: 15px 0 0 54px;
+  padding: 14px 0 0 54px;
   color: $tahi-green;
   font-size: 24px;
   font-weight: 700;
@@ -198,7 +209,7 @@ textarea { resize: none; }
   @include user-select(none);
 
   svg {
-    @include position(absolute, 15px auto auto 20px);
+    @include position(absolute, 14px auto auto 20px);
     width: 28px;
   }
 

@@ -1,16 +1,22 @@
 <div class="overlay-container show-collaborators-overlay">
-  <div id="show-collaborators" class='chosen-style-override'>
-    <h2>Who can edit this manuscript?</h2>
 
-    <ul class='collaborators-list'>
+  <div id="show-collaborators" class="chosen-style-override">
+    <h1>Who can edit this manuscript?</h1>
+
+    <ul class="collaborators-list">
       {{#each collaborator in collaborators}}
-        <li class='collaborator'>
-          <span class='delete-button glyphicon glyphicon-remove' {{action "removeCollaborator" collaborator}}></span>
-          <span class='name'>{{collaborator.fullName}}</span>
-          <span class='email'>{{collaborator.email}}</span>
+        <li class="collaborator">
+          <span class="delete-button glyphicon glyphicon-remove" {{action "removeCollaborator" collaborator}}></span>
+          <span class="name">{{collaborator.fullName}}</span>
+          <span class="email">{{collaborator.email}}</span>
         </li>
       {{/each}}
     </ul>
+
+    <div style="float: right">
+      <button class="button-primary button--green pull-right" {{action "save" phase}}>Save</button>
+      <a class="button-link button--green pull-right" {{action "cancel"}}>cancel</a>
+    </div>
 
     {{chosen content=availableCollaborators
              name="collaborators"
@@ -22,10 +28,5 @@
              optionLabelPath="content.fullName"
              value=selectedCollaborator}}
   </div>
-  <footer class="overlay-footer">
-    <button class="button-primary button--green pull-right" {{action "save" phase}}>
-      Save
-    </button>
-    <a class="button-link button--green pull-right" {{action 'cancel'}}>cancel</a>
-  </footer>
+
 </div>

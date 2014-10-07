@@ -7,20 +7,30 @@
   width: 100%;
   height: $tahi-control-bar-height;
   border-bottom: 1px solid #F5F5F5;
-  padding: 7px 0 5px 0;
+  padding: 2px 0 0 0;
   background: #fff;
   z-index: 2;
 
-  &.__fixed {
-    @include position(fixed, 0px 0px auto 0px);
-  }
+  &.__fixed { @include position(absolute, 0px 0px auto 0px); }
+  &.__sub-nav-active { height: 105px; }
 }
 
 .control-bar-inner-wrapper {
   overflow: hidden;
   position: relative;
+  height: 60px;
   margin: 0 auto;
   padding-left: 125px;
+}
+
+.control-bar-sub-items {
+  overflow: hidden;
+  height: 0;
+  @include transition(height 0.2s);
+}
+
+.__sub-nav-active .control-bar-sub-items {
+  height: 45px;
 }
 
 .control-bar ul {
@@ -37,27 +47,34 @@
   float: left;
   display: block;
   margin: 3px 0 0 0;
+  font-size: 10px;
 }
 
 .control-bar-link {
   display: block;
-  margin: 7px 0 0 25px;
+  margin: 7px 0 0 45px;
   color: $tahi-green;
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
+  cursor: pointer;
   background: none;
+  @include user-select(none);
 
-  .control-bar-link-icon {
-    height: 28px;
+  &.__with-icon {
+    margin-left: 55px;
   }
+
+  .glyphicon { font-size: 16px; }
 
   svg {
     display: block;
     margin: 0 auto;
   }
 
-  svg path, svg rect {
+  svg polygon,
+  svg path,
+  svg rect {
     fill: $tahi-green;
   }
 
@@ -65,11 +82,37 @@
     color: $tahi-green-dark;
     text-decoration: none;
 
-    svg path, svg rect {
-      fill: $tahi-green-dark;
-    }
+    svg polygon,
+    svg path,
+    svg rect { fill: $tahi-green-dark; }
   }
 }
+
+.control-bar-link-icon {
+  height: 22px;
+}
+
+.control-bar-link-text {
+  position: relative;
+}
+
+.control-bar-toggle {
+  display: block;
+  position: absolute;
+  left: -13px;
+  bottom: 1px;
+  @include transition(all 0.5s);
+
+  &.__active {
+    @include transform(rotate(135deg));
+  }
+
+  svg {
+    display: inline;
+    @include transform(scale(1.3));
+  }
+}
+
 
 .control-bar-message {
   padding: 2px 5px;

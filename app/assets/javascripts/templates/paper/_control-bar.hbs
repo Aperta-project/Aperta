@@ -1,4 +1,4 @@
-<div class="control-bar __fixed">
+<div {{bind-attr class=":control-bar :__fixed view.subNavVisible:__sub-nav-active"}}>
   <div class="control-bar-inner-wrapper">
     <ul>
       <li id="control-bar-paper-journal-logo" class="control-bar-item">
@@ -11,16 +11,22 @@
     </ul>
     <ul>
       <li class="control-bar-item">
-        {{#direct-download-link link=downloadLink}}
-          <div class="control-bar-link-icon">{{partial "svg/epub-icon"}}</div>
-          ePub
-        {{/direct-download-link}}
+        <div class="control-bar-link contributors-link __with-icon" {{action "showSubNav" "contributors" target="view"}}>
+          <div class="control-bar-link-icon"><span class="glyphicon glyphicon-user"></span></div>
+          <div class="control-bar-link-text">
+            <span {{bind-attr class=":control-bar-toggle view.contributorsVisible:__active"}}>{{partial "svg/plus"}}</span>
+            Contributors
+          </div>
+        </div>
       </li>
       <li class="control-bar-item">
-        {{#direct-download-link link=downloadLink extension=".pdf"}}
-          <div class="control-bar-link-icon">{{partial "svg/pdf-icon"}}</div>
-          PDF
-        {{/direct-download-link}}
+        <div class="control-bar-link downloads-link __with-icon" {{action "showSubNav" "downloads" target="view"}}>
+          <div class="control-bar-link-icon">{{partial "svg/downloads"}}</div>
+          <div class="control-bar-link-text">
+            <span {{bind-attr class=":control-bar-toggle view.downloadsVisible:__active"}}>{{partial "svg/plus"}}</span>
+            Downloads
+          </div>
+        </div>
       </li>
       {{#if canViewManuscriptManager}}
         <li class="control-bar-item">
@@ -31,5 +37,26 @@
         </li>
       {{/if}}
     </ul>
+  </div>
+
+  <div class="control-bar-sub-items">
+    <div {{bind-attr class=":contributors view.contributorsVisible:active"}}>
+      <a class="contributors-add" {{action "addContributors"}}>+ Add Contributors</a>
+      {{#each contributor in collaborators}}
+        <div class="contributor-status">
+          <div class="circle"></div>
+          <span class="name">{{unbound contributor.fullName}}</span>
+        </div>
+      {{/each}}
+    </div>
+
+    <div {{bind-attr class=":manuscript-download-links view.downloadsVisible:active"}}>
+      {{#direct-download-link link=downloadLink}}
+        ePub {{partial "svg/epub-icon"}}
+      {{/direct-download-link}}
+      {{#direct-download-link link=downloadLink extension=".pdf"}}
+        PDF {{partial "svg/pdf-icon"}}
+      {{/direct-download-link}}
+    </div>
   </div>
 </div>

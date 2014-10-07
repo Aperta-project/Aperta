@@ -30,13 +30,23 @@ class EditPaperPage < Page
     DashboardPage.new
   end
 
-  def show_collaborators
-    collaborators_link.click
+  def show_contributors
+    downloads_link.click
+    contributors_link.click
+    add_contributors_link.click
     AddCollaboratorsOverlay.new(find('.show-collaborators-overlay'))
   end
 
-  def collaborators_link
-    find('a.add-collaborators')
+  def contributors_link
+    find '.contributors-link'
+  end
+
+  def downloads_link
+    find '.downloads-link'
+  end
+
+  def add_contributors_link
+    find '.contributors-add'
   end
 
   def visit_task_manager

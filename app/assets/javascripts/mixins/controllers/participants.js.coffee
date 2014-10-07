@@ -8,9 +8,9 @@ ETahi.ControllerParticipants = Ember.Mixin.create
   ).property()
 
   participations: Em.computed.alias('model.participations')
+
   participants: (->
-    @get('participations').map (participation) ->
-      participation.get('participant')
+    @get('participations').mapBy('participant')
   ).property('participations.@each.participant')
 
   createParticipant: (newParticipant) ->

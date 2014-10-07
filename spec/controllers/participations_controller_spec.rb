@@ -40,8 +40,7 @@ describe ParticipationsController do
       end
 
       it "creates a new participation" do
-        do_request
-        expect(Participation.last.participant.id).to eq(user.id)
+        expect{ do_request }.to change(Participation, :count).by(1)
       end
 
       it "returns the new participation as json" do
@@ -51,6 +50,25 @@ describe ParticipationsController do
         expect(json["participation"]["id"]).to eq(Participation.last.id)
       end
       it_behaves_like "an unauthenticated json request"
+    end
+  end
+
+  context "participants" do
+    authorize_policy(ParticipationsPolicy, true)
+
+    let(:task) { FactoryGirl.create(:task) }
+    let(:new_participant) { FactoryGirl.create(:user) }
+
+    it "adds an email to the sidekiq queue if new participant is not current user" do
+      expect {
+        post :create, format: 'json', participation: { participant_id: new_participant.id, task_id: task.id }
+      }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+    end
+
+    it "does not add an email to the sidekiq queue if new participant is the current user" do
+      expect {
+        post :create, format: 'json', participation: { participant_id: user.id, task_id: task.id }
+      }.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
     end
   end
 end

@@ -22,9 +22,8 @@ describe TaskFactory::MessageTaskFactory do
       end
 
       context "with a message subject and body" do
-        it "returns a new MessageTask with a subject and participants" do
+        it "returns a new MessageTask with a subject" do
           expect(result.title).to eq(title)
-          expect(result.participants.map(&:id)).to match_array(participant_ids)
         end
 
         it "creates a new Comment for the MessageTask" do
@@ -40,13 +39,6 @@ describe TaskFactory::MessageTaskFactory do
         it "creates the MessageTask, but no comment" do
           expect(result.title).to eq(title)
           expect(result.comments.count).to eq(0)
-        end
-      end
-
-      context "with no participants" do
-        let(:participant_ids) { [] }
-        it "raises a validation error" do
-          expect {result}.to raise_error(ActiveRecord::RecordInvalid)
         end
       end
     end

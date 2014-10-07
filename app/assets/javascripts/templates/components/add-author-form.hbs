@@ -43,6 +43,7 @@
     <div class="form-group author-half required">
       {{type-ahead
       value=newAuthor.affiliation
+      valueProperty='name'
       sourceList=institutions
       class='affiliation-field'
       placeholder='Affiliation'}}
@@ -50,6 +51,7 @@
     <div class="form-group author-half author-bump">
       {{type-ahead
       value=newAuthor.secondaryAffiliation
+      valueProperty='name'
       sourceList=institutions
       class='affiliation-field'
       placeholder='Secondary Affiliation'}}

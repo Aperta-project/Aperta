@@ -8,28 +8,54 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
   setupSelectedListener: ->
     if @get 'suggestionSelected'
       @.$().on 'typeahead:selected', (e, item, index) =>
-        @$().val('') if @get 'clearOnSelect'
         @sendAction 'suggestionSelected', item
+        @$().typeahead('val', '') if @get 'clearOnSelect'
+        @get('engine').clearRemoteCache()
+        @_setup()
 
   autoFocusInput: -> @.$().focus() if @get 'autoFocus'
 
-  didInsertElement: ->
+  formattedData: (item) ->
     subvalueProperty = @get('subvalueProperty') || "nonexistentProperty"
     valueProperty = @get('valueProperty')
-    engine = new Bloodhound
+
+    value: item.get(valueProperty)
+    subvalue: item.get(subvalueProperty)
+    object: item
+
+
+  setData: (->
+    engine = @get('engine')
+    engine.local = @get('sourceList').map (item) =>
+      item = Ember.Object.create(item) unless item.get
+      @formattedData(item)
+
+    engine.initialize(true)
+  ).observes('sourceList.[]')
+
+  _setup: (->
+    options =
       name: 'schools'
-      local: @get('sourceList').map (item) ->
-        if Object.prototype.toString.call(item) is '[object Object]'
-          value: item.get(valueProperty)
-          subvalue: item.get(subvalueProperty)
-          object: item
-        else
-          value: item
+
+      local: @get('sourceList').map (item) =>
+        item = Ember.Object.create(item) unless item.get
+        @formattedData(item)
+
       datumTokenizer: (d) -> Bloodhound.tokenizers.whitespace d.value
       queryTokenizer: Bloodhound.tokenizers.whitespace
       limit: 10
 
+    if @get('remoteUrl')
+      options.remote =
+        url: @get('remoteUrl')
+        filter: (response) =>
+          response.map (item) =>
+            item = Ember.Object.create(item)
+            @formattedData(item)
+
+    engine = new Bloodhound(options)
     engine.initialize()
+    @set('engine', engine)
 
     @.$().typeahead
       hint: true
@@ -43,3 +69,4 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
 
     @setupSelectedListener()
     @autoFocusInput()
+  ).on('didInsertElement')

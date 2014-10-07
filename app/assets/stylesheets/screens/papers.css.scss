@@ -69,11 +69,11 @@
 }
 
 #paper-body .oo-ui-toolbar {
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
+  width: 839px;
   background: none !important; // Blocks buttons as of July 28, 2014
+  z-index: 1000;
 }
 
 // Not really sure what this is. Breaks default toolbar buttons as of July 28, 2014
@@ -150,16 +150,15 @@
 }
 
 .ve-toolbar-underside {
-  @include position(absolute, 0px 0px auto 0px);
-  width: 100%;
+  position: fixed;
+  width: 839px;
   height: 45px;
   background: #fff;
 }
 
 .edit-paper {
-  position: absolute;
-  top: 5px;
-  z-index: 10;
+  position: fixed;
+  z-index: 1010;
   padding-left: 10px;
 }
 

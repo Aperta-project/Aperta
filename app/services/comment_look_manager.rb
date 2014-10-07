@@ -1,6 +1,18 @@
 class CommentLookManager
-  def self.comment_look(user, comment)
-    return unless user
+  def self.sync_task(task)
+    task.comments.map do |comment|
+      sync_comment(comment)
+    end
+  end
+
+  def self.sync_comment(comment)
+    comment.task.participants.each do |user|
+      create_comment_look(user, comment)
+    end
+  end
+
+  def self.create_comment_look(user, comment)
+    return unless user.present?
 
     participation = user.participations.find_by_task_id(comment.task_id)
     if participation && comment.created_at >= participation.created_at

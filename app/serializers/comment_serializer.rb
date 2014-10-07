@@ -6,6 +6,6 @@ class CommentSerializer < ActiveModel::Serializer
   has_one :comment_look, include: true, embed: :id
 
   def comment_look
-    CommentLookManager.comment_look(scope, object)
+    object.comment_looks.find_by(user: scope)
   end
 end

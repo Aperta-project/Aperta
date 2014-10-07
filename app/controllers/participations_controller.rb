@@ -9,6 +9,9 @@ class ParticipationsController < ApplicationController
     participation = task.participations.build(participation_params)
     if participation.save
       CommentLookManager.sync_task(task)
+      if participation.participant_id != current_user.id
+        UserMailer.delay.add_participant(current_user.id, participation.participant_id, task.id)
+      end
     end
     respond_with participation
   end

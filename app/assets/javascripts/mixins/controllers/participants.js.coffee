@@ -11,11 +11,14 @@ ETahi.ControllerParticipants = Ember.Mixin.create
       participation.get('participant')
   ).property('participations.@each.participant')
 
+  createParticipant: (newParticipant) ->
+    if newParticipant and !@get('participants').contains newParticipant
+      @store.createRecord('participation', participant: newParticipant, task: @get('model'))
+
   actions:
     addParticipant: (newParticipant) ->
-      if newParticipant
-        @get('participants').pushObject(newParticipant)
+      @createParticipant(newParticipant)
+
     saveNewParticipation: (newParticipant) ->
-      unless @get('participants').contains newParticipant
-        part = @store.createRecord('participation', participant: newParticipant, task: @get('model'))
+      if part = @createParticipant(newParticipant)
         part.save()

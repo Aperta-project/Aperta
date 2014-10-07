@@ -34,7 +34,7 @@ describe User do
 
     it 'validates against blank username' do
       user = FactoryGirl.build(:user, username: '')
-      expect { user.save! }.to raise_error(ActiveRecord::RecordInvalid)
+      expect(user).to_not be_valid
       expect(user.errors.size).to eq 2
       expect(user.errors.to_a.first).to eq "Username can't be blank"
       expect(user.errors.to_a.last).to eq "Username is invalid"
@@ -42,7 +42,7 @@ describe User do
 
     it 'validates against username with dashes' do
       user = FactoryGirl.build(:user, username: 'blah-blah')
-      expect { user.save! }.to raise_error(ActiveRecord::RecordInvalid)
+      expect(user).to_not be_valid
       expect(user.errors.size).to eq 1
       expect(user.errors.first).to eq [:username, "is invalid"]
     end

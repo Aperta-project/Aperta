@@ -53,7 +53,6 @@ ETahi.PaperEditView = Ember.View.extend
 
     toolbarUnderside.css
       top: controlBarHeight
-      width: '839px'
 
     aside.css
       position: 'fixed'

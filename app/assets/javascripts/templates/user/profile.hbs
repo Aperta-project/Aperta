@@ -6,36 +6,36 @@
 
   <div class="col-md-10">
     <div class="profile-section">
-      <h4>First and last name:</h4>
-      <div id="profile-name">{{model.fullName}}</div>
+      <h1>First and last name:</h1>
+      <h2 id="profile-name">{{model.fullName}}</h2>
     </div>
 
     <div id="profile-username" class="profile-section">
-      <h4>Username:</h4>
+      <h1>Username:</h1>
       <h2>{{model.username}}</h2>
     </div>
 
     <div id="profile-email" class="profile-section">
-      <h4>Email:</h4>
+      <h1>Email:</h1>
       <h2>{{model.email}}</h2>
     </div>
 
     <div class="profile-section">
-      <h4>Affiliations:</h4>
+      <h1>Affiliations:</h1>
       {{#each a in affiliations}}
         <div class="profile-affiliation">
           <div class="profile-affiliation-name">{{a.name}}</div>
-          <div class="glyphicon glyphicon-remove-circle remove-affiliation" {{action 'removeAffiliation' a}}></div>
+          <div class="glyphicon glyphicon-remove-circle profile-remove-affiliation" {{action "removeAffiliation" a}}></div>
           <div>{{a.startDate}} - {{a.displayEndDate}}</div>
           <div>{{a.email}}</div>
         </div>
       {{/each}}
-      <a class="button-secondary button--grey button--small" {{action 'toggleAffiliationForm'}}>
+      <a class="button-secondary button--grey button--small" {{action "toggleAffiliationForm"}}>
         <span class="glyphicon glyphicon-plus-sign"></span>
         Add New Affiliation
       </a>
       {{#unless hideAffiliationForm}}
-        <div class="affiliations-form">
+        <div class="profile-affiliations-form">
           <h3>New Affiliation</h3>
           <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
           {{partial "user/affiliation_form"}}

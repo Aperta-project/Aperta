@@ -17,8 +17,9 @@ class AddAuthorsOverlay < CardOverlay
   end
 
   def delete_author(locator_text)
-    page.execute_script "$('.authors-overlay-list li').toggleClass('hover')"
-    page.execute_script "$('.authors-overlay-list li:contains(#{locator_text}) .glyphicon-trash').click()"
+    page.execute_script "$('.authors-overlay-item:contains(#{locator_text})').trigger('mouseover')"
+    page.execute_script "$('.glyphicon-trash').click()"
+    find('.button-secondary', text: "DELETE FOREVER").click
   end
 
   private

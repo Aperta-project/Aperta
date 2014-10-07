@@ -51,26 +51,10 @@ feature 'Comment Mention Notifications', js: true do
     end
 
     sleep 1 # wait for Sidekiq emails
-    expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq 1
     Sidekiq::Extensions::DelayedMailer.drain
     email = ActionMailer::Base.deliveries.first
 
     expect(email.to).to eq [user2.email]
     expect(email.body).to include user2.username
   end
-
-  # TODO
-  # scenario 'does not send an email without comment mention' do
-  #   expect(UserMailer).to_not receive(:mention_collaborator)
-  #
-  #   page.find('div.card-content', text: 'Add Authors').click
-  #
-  #   within '.comment-board' do
-  #     comment_body.click
-  #     comment_body.set "foo bar no mention"
-  #     within '.message-comment-buttons' do
-  #       click_button 'Post Message'
-  #     end
-  #   end
-  # end
 end

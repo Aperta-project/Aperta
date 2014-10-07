@@ -46,7 +46,6 @@ class MessageCardOverlay < CardOverlay
   end
 
   def post_message(new_message)
-    find("#comment-body").click
     fill_in 'comment-body', with: new_message
     find('.button-secondary', text: "POST MESSAGE").click
     expect(page).to have_content new_message

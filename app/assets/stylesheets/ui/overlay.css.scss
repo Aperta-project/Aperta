@@ -20,10 +20,10 @@
   overflow: auto;
   @include position(fixed, 0px 0px 0px 0px);
   background-color: rgba(0,0,0, 0.7);
-  z-index: 9999;
+  z-index: z($z-layer-overlay-base);
   opacity: 0;
 
-  @extend .fadeInAndOutAnimation;
+  @extend .fadeInAndOut;
 
   h1 {
     margin: 0 0 1em 0;
@@ -51,7 +51,7 @@
   color: $tahi-green;
   font-size: 42px;
   cursor: pointer;
-  z-index: 1;
+  z-index: z($z-layer-overlay-close-x);
   @extend .scaleIn;
 }
 

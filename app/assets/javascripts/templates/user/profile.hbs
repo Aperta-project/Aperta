@@ -35,7 +35,7 @@
         Add New Affiliation
       </a>
       {{#unless hideAffiliationForm}}
-        <div class="profile-affiliations-form">
+        <div class="profile-affiliations-form fadeIn">
           <h3>New Affiliation</h3>
           <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
           {{partial "user/affiliation_form"}}

@@ -74,8 +74,6 @@
 
 .profile-affiliations-form {
   margin-top: 40px;
-  @include animation(fadeIn 200ms $ease-out-quad);
-  @include animation-fill-mode(forwards);
 
   input {
     margin: 15px 0;

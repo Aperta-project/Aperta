@@ -12,10 +12,21 @@ ETahi.PaperIndexView = Ember.View.extend
   ).on('willDestroyElement')
 
   setupScrollFixing: (->
-    $('.control-bar').scrollToFixed()
-    $('#tahi-container > main > aside > div').scrollToFixed
-      dontSetWidth: true
-      marginTop: $('.control-bar').outerHeight(true)
-      unfixed: ->
-        $(this).css('top', '0px')
+    aside       = $('aside')
+    article     = $('article')
+    mainContent = $('.main-content')
+
+    $(window).off('resize.paper').on('resize.paper', ->
+      aside.css 'left', (article.width() + article.offset().left - mainContent.offset().left)
+    )
+
+    aside.css
+      position: 'fixed'
+      top: $('.control-bar').outerHeight() + 15
+
+    $(window).trigger 'resize.paper'
   ).on('didInsertElement')
+
+  teardownScrollFixing: (->
+    $(window).off 'resize.paper'
+  ).on('willDestroyElement')

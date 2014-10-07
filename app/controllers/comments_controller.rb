@@ -6,9 +6,10 @@ class CommentsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def create
-    task = Task.find(params[:comment][:task_id])
-    comment = task.comments.create(comment_params)
-
+    comment = task.comments.build(comment_params)
+    if comment.save
+      CommentLookManager.sync_comment(comment)
+    end
     respond_with comment
   end
 
@@ -19,6 +20,10 @@ class CommentsController < ApplicationController
 
   private
 
+  def task
+    @task ||= Task.find(params[:comment][:task_id])
+  end
+
   def comment_params
     params.require(:comment).permit(:commenter_id, :body)
   end
@@ -28,6 +33,6 @@ class CommentsController < ApplicationController
   end
 
   def enforce_policy
-    authorize_action!(task: Task.find(params[:comment][:task_id]))
+    authorize_action!(task: task)
   end
 end

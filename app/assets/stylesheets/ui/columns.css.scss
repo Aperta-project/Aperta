@@ -83,7 +83,9 @@
   bottom: 0;
   width: 100%;
   outline: none;
-  @include column-title;
+  margin: 0;
+  padding-bottom: 10px;
+  font-size: 27px;
 }
 
 .column-title-update-buttons {

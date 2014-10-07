@@ -9,6 +9,7 @@ feature 'Message Cards', js: true do
     assign_journal_role(journal, albert, :admin)
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
+    paper.paper_roles.build(user: albert, role: PaperRole::COLLABORATOR).save
   end
 
 
@@ -109,6 +110,7 @@ feature 'Message Cards', js: true do
     let!(:message) { create :message_task, phase: phase, participants: participants }
     let!(:initial_comments) do
       comment_count.times.map { create(:comment, task: message, commenter: albert, body: "FOO") }
+      CommentLookManager.sync_task(message)
     end
     let(:comment_count) { 4 }
     let(:task_manager_page) { TaskManagerPage.visit paper }

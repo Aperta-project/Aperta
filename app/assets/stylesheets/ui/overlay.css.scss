@@ -18,21 +18,16 @@
 
 .overlay {
   overflow: auto;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 100%;
-  background-color: rgba(0,0,0,0.7);
-  z-index: 9999;
+  @include position(fixed, 0px 0px 0px 0px);
+  background-color: rgba(0,0,0, 0.7);
+  z-index: z($z-layer-overlay-base);
   opacity: 0;
 
-  @extend .fadeInAndOutAnimation;
+  @extend .fadeInAndOut;
 
   h1 {
-    font-size: 48px;
     margin: 0 0 1em 0;
+    font-size: 48px;
   }
 }
 
@@ -48,16 +43,15 @@
 
 
 .overlay-close-x {
+  @include position(fixed, 0px 0px auto auto);
   position: fixed;
-  top: 0;
-  right: 0;
   display: none;
   width: auto !important; //bootstrap/glyphicon override
   padding: 25px 25px 15px 15px;
   color: $tahi-green;
   font-size: 42px;
   cursor: pointer;
-  z-index: 1;
+  z-index: z($z-layer-overlay-close-x);
   @extend .scaleIn;
 }
 
@@ -102,11 +96,12 @@
 }
 
 /*
-  .overlay-header
+  .overlay-header-title
     .overlay-paper-link
 */
 .overlay-paper-link {
-  @include text-link-lg;
+  font-size: 18px;
+  &:hover { text-decoration: none; } // override global tahi a style
 }
 
 /* end header styles ---------- */

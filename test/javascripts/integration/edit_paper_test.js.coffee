@@ -158,6 +158,13 @@ module 'Integration: EditPaper',
         assignee_ids: []
         assignee_id: fakeUser.id
 
+    collaborators = [
+      id: "35"
+      full_name: "Aaron Baker"
+      info: "testroles2, collaborator"
+    ]
+
+
     server.respondWith 'GET', "/dashboards", [
       200, {"Content-Type": "application/json"}, JSON.stringify dashboard
     ]
@@ -167,9 +174,14 @@ module 'Integration: EditPaper',
     server.respondWith 'GET', "/tasks/#{figureTaskId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify figureTaskResponse
     ]
-
     server.respondWith 'PUT', /\/tasks\/\d+/, [
       204, {"Content-Type": "application/json"}, JSON.stringify {}
+    ]
+    server.respondWith 'GET', "/filtered_users/collaborators/#{paperId}", [
+      200, {"Content-Type": "application/json"}, JSON.stringify collaborators
+    ]
+    server.respondWith 'GET', /\/filtered_users\/non_participants\/\d+\/\w+/, [
+      200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
 test 'visiting /edit-paper: Author completes all metadata cards', ->

@@ -1,6 +1,12 @@
 class User < ActiveRecord::Base
 
   include UserDevise
+  searchable do
+    text :username, :first_name, :last_name, :email
+    text :full_name do
+      full_name
+    end
+  end
 
   has_many :affiliations, inverse_of: :user
   has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'

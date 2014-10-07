@@ -33,24 +33,37 @@ ETahi.PaperEditView = Ember.View.extend
     aside       = $('aside')
     article     = $('article')
     mainContent = $('.main-content')
+    veToolbar   = $('.oo-ui-toolbar')
+    controlBar  = $('.control-bar')
+    editPaper   = $('.edit-paper')
+    controlBarHeight = controlBar.outerHeight()
     toolbarUnderside = $('.ve-toolbar-underside')
 
-    $(window).on 'resize.paper', ->
-      articleWidth = article.width()
-      articleOffsetLeft = article.offset().left
+    $(window).off('resize.paper').on('resize.paper', ->
+      articleWidth          = article.width()
+      controlBarHeight      = controlBar.outerHeight()
+      articleOffsetLeft     = article.offset().left
       mainContentOffsetLeft = mainContent.offset().left
 
       aside.css 'left', (articleWidth + articleOffsetLeft - mainContentOffsetLeft)
       toolbarUnderside.css 'left', (articleOffsetLeft - mainContentOffsetLeft)
+      editPaper.css 'left', (articleOffsetLeft - mainContentOffsetLeft)
+      veToolbar.css 'left', (articleOffsetLeft - mainContentOffsetLeft)
+    )
 
     toolbarUnderside.css
-      position: 'fixed'
-      top: '80px'
+      top: controlBarHeight
       width: '839px'
 
     aside.css
       position: 'fixed'
-      top: '80px'
+      top: controlBarHeight
+
+    veToolbar.css
+      top: controlBarHeight
+
+    editPaper.css
+      top: controlBarHeight + 5
 
     $(window).trigger 'resize.paper'
   ).on('didInsertElement')
@@ -68,28 +81,8 @@ ETahi.PaperEditView = Ember.View.extend
       @get("visualEditor").disable()
   ).observes('isEditing')
 
-  setupStickyToolbar: ->
-    marginTop = $('.control-bar').outerHeight()
-    $('.oo-ui-toolbar').scrollToFixed
-      marginTop: marginTop
-      unfixed: ->
-        $(this).addClass('not-fixed')
-      preFixed: ->
-        $(this).removeClass('not-fixed')
-        $(this).css('marginTop', '0')
-
-  setupEditBar: ->
-    marginTop = $('.control-bar').outerHeight()
-    $('.edit-paper').scrollToFixed
-      marginTop: marginTop + 5
-      zIndex: 1010
-      dontSetWidth: true
-    $(window).scroll()
-    $(window).resize()
-
   setupVisualEditor: (->
     @updateVisualEditor()
-    @setupEditBar()
     @addObserver 'controller.body', =>
       @updateVisualEditor() unless @get('isEditing')
 
@@ -101,7 +94,7 @@ ETahi.PaperEditView = Ember.View.extend
     visualEditor = @get('visualEditor')
     visualEditor.update($("#paper-body"), @get('controller.body'))
     visualEditor.get('target').on 'surfaceReady', =>
-      @setupStickyToolbar()
+      @setupScrollFixing()
       @updateEditorLockedState()
 
   destroyVisualEditor: ( ->

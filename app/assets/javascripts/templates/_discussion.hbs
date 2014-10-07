@@ -3,7 +3,8 @@
   {{participant-selector
     currentParticipants=participants
     everyone=allUsers
-    onSelect='saveNewParticipation'}}
+    taskId=model.id
+    onSelect="saveNewParticipant"}}
   {{comment-board
     comments=comments
     currentUser=currentUser

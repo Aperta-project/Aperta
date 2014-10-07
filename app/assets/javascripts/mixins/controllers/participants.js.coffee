@@ -2,7 +2,9 @@ ETahi.ControllerParticipants = Ember.Mixin.create
   needs: ['application']
   currentUser: Ember.computed.alias('controllers.application.currentUser')
   allUsers: (->
-    @store.all('user') #simply getting all users for now
+    paperId = @get('paper.id') || @get('litePaper.id')
+    DS.PromiseObject.create
+      promise: $.getJSON("/filtered_users/collaborators/#{paperId}")
   ).property()
 
   participations: Em.computed.alias('model.participations')
@@ -16,9 +18,7 @@ ETahi.ControllerParticipants = Ember.Mixin.create
       @store.createRecord('participation', participant: newParticipant, task: @get('model'))
 
   actions:
-    addParticipant: (newParticipant) ->
-      @createParticipant(newParticipant)
-
-    saveNewParticipation: (newParticipant) ->
-      if part = @createParticipant(newParticipant)
-        part.save()
+    saveNewParticipant: (newParticipantId) ->
+      @store.find('user', newParticipantId).then (user)=>
+        if part = @createParticipant(user)
+          part.save() unless @get('model.isNew')

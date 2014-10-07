@@ -11,8 +11,6 @@ ETahi.ControllerParticipants = Ember.Mixin.create
 
   actions:
     saveNewParticipant: (newParticipantId) ->
-      newParticipant = this.store.find 'user', newParticipantId
-      newParticipant.then (user)=>
-        unless @get('participants').contains user
-          @get('participants').pushObject(user)
-          @send('saveModel') unless @get('model.isNew')
+      @store.find('user', newParticipantId).then (user)=>
+        @get('participants').addObject(user)
+        @send('saveModel') unless @get('model.isNew')

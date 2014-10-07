@@ -11,11 +11,9 @@ class TasksController < ApplicationController
     if task
       unmunge_empty_arrays!(:task, task.array_attributes)
       new_participant_id = added_participant_id(task) if params[:task][:participant_ids].present?
-
       notify_new_task_participant(task, new_participant_id)
 
       task.assign_attributes task_params(task)
-
       add_assignee_as_participant(task, params[:task][:assignee_id])
       notify_task_assignee(task)
 
@@ -102,6 +100,7 @@ class TasksController < ApplicationController
   end
 
   def add_assignee_as_participant(task, assignee_id)
+    return if assignee_id.nil?
     # TODO: let's not re-lookup the User, if possible
     # Strong parameters do not allow us to assign participant_ids directly
     task.participants << User.find(assignee_id)

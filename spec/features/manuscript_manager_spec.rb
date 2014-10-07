@@ -77,6 +77,7 @@ feature "Manuscript Manager", js: true do
 
     expect(task_manager_page).to have_content 'Assign Editor'
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
+
     needs_editor_phase.view_card 'Assign Admin' do |overlay|
       expect(overlay).to have_no_admin(admin.full_name)
       overlay.admin = admin.full_name

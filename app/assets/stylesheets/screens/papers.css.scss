@@ -73,7 +73,7 @@
   top: 0;
   width: 839px;
   background: none !important; // Blocks buttons as of July 28, 2014
-  z-index: 1000;
+  z-index: z($z-layer-ve-toolbar);
 }
 
 // Not really sure what this is. Breaks default toolbar buttons as of July 28, 2014
@@ -158,7 +158,7 @@
 
 .edit-paper {
   position: fixed;
-  z-index: 1010;
+  z-index: z($z-layer-edit-paper);
   padding-left: 10px;
 }
 
@@ -193,7 +193,7 @@
 }
 
 .user-name {
-  @extend %truncates;
+  @include ellipsis;
   width: initial;
   max-width: 95px;
   vertical-align: bottom;

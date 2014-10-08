@@ -8,7 +8,11 @@ class Admin::JournalsController < ApplicationController
     journals = current_user.administered_journals.
       includes(:manuscript_manager_templates, {:journal_task_types => :task_type})
 
-    respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
+    if params[:authorization_check]
+      head 201
+    else
+      respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
+    end
   end
 
   def create

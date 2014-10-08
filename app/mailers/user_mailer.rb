@@ -37,4 +37,14 @@ class UserMailer < ActionMailer::Base
       to: invitee.email,
       subject: "You've been added to a conversation on Tahi")
   end
+
+  def mention_collaborator(comment_id, commentee_id)
+    @comment = Comment.find(comment_id)
+    @commenter = @comment.commenter
+    @commentee = User.find(commentee_id)
+
+    mail(
+      to: @commentee.email,
+      subject: "You've been mentioned on Tahi")
+  end
 end

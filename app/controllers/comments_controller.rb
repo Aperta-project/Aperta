@@ -17,6 +17,7 @@ class CommentsController < ApplicationController
     respond_with Comment.find(params[:id])
   end
 
+
   private
 
   def task

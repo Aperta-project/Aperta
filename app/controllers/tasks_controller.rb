@@ -12,9 +12,9 @@ class TasksController < ApplicationController
       unmunge_empty_arrays!(:task, task.array_attributes)
 
       task.assign_attributes task_params(task)
-      UserMailer.delay.assign_task(current_user.id, task.assignee_id, task.id) if assignee_changed?(task)
-
       task.save!
+      AssignmentManager.new(task, current_user).sync
+
       render task.update_responder.new(task, view_context).response
     else
       head :forbidden
@@ -76,9 +76,5 @@ class TasksController < ApplicationController
 
   def enforce_policy
     authorize_action!(task: task)
-  end
-
-  def assignee_changed?(task)
-    task.assignee_id_changed? && task.assignee_id != current_user.id
   end
 end

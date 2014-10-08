@@ -58,6 +58,13 @@ describe StandardTasks::TaskAdminAssigneeUpdater do
         expect(incomplete_tasks.map{ |t| t.reload.assignee}.uniq).to match_array([sally])
       end
 
+      it "syncs the task assignment" do
+        am = double(:assignment_manager)
+        allow(AssignmentManager).to receive(:new).and_return(am)
+        expect(am).to receive(:sync).at_least(:once)
+        updater.update
+      end
+
       it "will not change the assignee on other completed tasks" do
         updater.update
         expect(task.paper.tasks.completed.map(&:assignee)).not_to include(sally)
@@ -85,9 +92,6 @@ describe StandardTasks::TaskAdminAssigneeUpdater do
         updater.update
         expect(related_task.reload.assignee).to eq(sally)
       end
-
     end
-
   end
-
 end

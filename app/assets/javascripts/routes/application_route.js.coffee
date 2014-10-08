@@ -4,7 +4,6 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       authorize = (value) ->
         (result) ->
           controller.set('canViewAdminLinks', value)
-          controller.set('canViewFlowManager', value)
       @store.find('adminJournal').then(authorize(true), authorize(false))
 
     @_super(model, controller)

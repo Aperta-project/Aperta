@@ -102,7 +102,7 @@ Tahi::Application.routes.draw do
   end
 
   resources :comments, only: [:create, :show]
-  resources :participations, only: [:create, :show]
+  resources :participations, only: [:create, :show, :destroy]
 
   resources :tasks, only: [:update, :create, :show, :destroy]
 

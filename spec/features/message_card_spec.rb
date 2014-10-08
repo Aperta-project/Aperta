@@ -90,13 +90,14 @@ feature 'Message Cards', js: true do
         task_manager_page = TaskManagerPage.visit paper
         task_manager_page.view_card message.title, MessageCardOverlay do |card|
           card.add_participants(albert)
+          sleep(0.5) # wait for server response
           card.remove_participant(albert)
-          expect(card).to_not have_participants(albert)
+          expect(card).to have_no_participants(albert)
         end
 
         task_manager_page = TaskManagerPage.visit paper
         task_manager_page.view_card message.title, MessageCardOverlay do |card|
-          expect(card).to_not have_participants(albert)
+          expect(card).to have_no_participants(albert)
         end
 
       end

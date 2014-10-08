@@ -1,13 +1,20 @@
 {{partial "paper/control-bar"}}
 
+<div class="ve-toolbar-underside"></div>
 <div id="tahi-container">
   <main>
-    <article>
-      <div class="ve-toolbar-underside"></div>
 
+    <aside>
+      <div class="task-list">
+        {{partial "paper/task-list"}}
+        <a {{action "submit" target="view"}} {{bind-attr class=":button-primary :button--wide allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit</a>
+      </div>
+    </aside>
+
+    <article>
       <ul class="edit-paper list-inline">
         <li>
-          {{start-editing-button action='toggleEditing' canEdit=canEdit isEditing=isEditing}}
+          {{start-editing-button action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
         </li>
         <li class="lock-message">
           <p class="message">
@@ -16,37 +23,20 @@
           </p>
         </li>
       </ul>
+
       <div class="manuscript-container">
-        <div class="title">
-          {{content-editable tagName="h2"
-                             id="paper-title"
-                             placeholder="Type your manuscript title here"
-                             value=title
-                             preventEnterKey="true"}}
-        </div>
+        {{content-editable tagName="h2"
+                           id="paper-title"
+                           placeholder="Type your manuscript title here"
+                           value=title
+                           preventEnterKey="true"}}
 
         {{#if showPlaceholder}}
-          <div id="paper-placeholder" {{action 'tryHidingPlaceholder'}}>Type your manuscript here</div>
+          <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
         {{/if}}
         <div id="paper-body" class="editable"></div>
       </div>
     </article>
-    <aside>
-      <div class="collaborators">
-        {{#each collaborator in collaborators}}
-          <div class="collaborator-status">
-            <div class="circle"></div>
-            <span class="name">{{unbound collaborator.fullName}}</span>
-          </div>
-        {{/each}}
-        <a class="add-collaborators" {{action "addCollaborators"}}>+ Add Collaborator</a>
-        <hr />
-      </div>
-      <div class="task-list">
-        {{partial "paper/task-list"}}
 
-        <a {{action "submit" target="view"}} {{bind-attr class=":button-primary :button--wide allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit</a>
-      </div>
-    </aside>
   </main>
 </div>

@@ -17,24 +17,24 @@ feature "Editing paper", js: true do
 
   scenario "Adding New Collaborators" do
     edit_paper = EditPaperPage.visit paper
-    collaborators_overlay = edit_paper.show_collaborators
+    collaborators_overlay = edit_paper.show_contributors
     collaborators_overlay.add_collaborators(user)
     collaborators_overlay.save
     expect(edit_paper).to have_no_application_error
     sleep 0.2 #we can't figure out why clicking the link too quickly doesn't work.
-    collaborators_overlay = EditPaperPage.new.show_collaborators
+    collaborators_overlay = EditPaperPage.new.show_contributors
     expect(collaborators_overlay).to have_collaborators(user)
   end
 
   scenario "Removing an existing collaborator" do
     edit_paper = EditPaperPage.visit paper
-    collaborators_overlay = edit_paper.show_collaborators
+    collaborators_overlay = edit_paper.show_contributors
     expect(collaborators_overlay).to have_collaborators(collaborating_user)
     collaborators_overlay.remove_collaborators(collaborating_user, author)
     collaborators_overlay.save
     expect(edit_paper).to have_no_application_error
     sleep 0.2 #we can't figure out why clicking the link too quickly doesn't work.
-    collaborators_overlay = EditPaperPage.new.show_collaborators
+    collaborators_overlay = EditPaperPage.new.show_contributors
     expect(collaborators_overlay).to have_no_collaborators
   end
 

@@ -25,7 +25,7 @@ describe Comment do
     it "send email on multiple, messy @mention" do
       expect {
         FactoryGirl.create(:comment, body: "check this out @#{author.username} @#{commenter.username} @#{author2.username}, @someOtherHandle like whoa!", commenter: commenter )
-      }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(2)
+      }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).from(0).to(2)
 
       Sidekiq::Extensions::DelayedMailer.drain
       expect(ActionMailer::Base.deliveries.collect(&:to).flatten).to match_array [author.email, author2.email]

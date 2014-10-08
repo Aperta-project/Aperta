@@ -1,5 +1,6 @@
 module MailerHelper
   def display_name(user)
-    user.full_name.present? ? user.full_name : user.username
+    return "Someone" unless user.present?
+    user.full_name.presence || user.username
   end
 end

@@ -47,6 +47,11 @@ describe TasksController do
       expect(task.reload).to be_completed
     end
 
+    it "syncs the task assignment" do
+      expect_any_instance_of(AssignmentManager).to receive(:sync)
+      do_request
+    end
+
     it "posts an event to the event stream" do
       do_request
       task.reload
@@ -70,18 +75,6 @@ describe TasksController do
       it "updates the task" do
         do_request
         expect(task.reload).to be_completed
-      end
-
-      it "adds an email to the sidekiq queue if new assignee is not current user" do
-        expect {
-          put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { assignee_id: new_assignee.id }
-        }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
-      end
-
-      it "does not add an email to the sidekiq queue if new assignee is the current user" do
-        expect {
-          put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { assignee_id: user.id }
-        }.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
       end
     end
 

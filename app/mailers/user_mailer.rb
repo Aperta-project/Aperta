@@ -4,8 +4,8 @@ class UserMailer < ActionMailer::Base
 
   def add_collaborator(invitor_id, invitee_id, paper_id)
     @paper = Paper.find(paper_id)
-    invitor = User.find(invitor_id)
-    invitee = User.find(invitee_id)
+    invitor = User.find_by(id: invitor_id)
+    invitee = User.find_by(id: invitee_id)
     @invitor_name = display_name(invitor)
     @invitee_name = display_name(invitee)
 
@@ -16,8 +16,8 @@ class UserMailer < ActionMailer::Base
 
   def assign_task(invitor_id, invitee_id, task_id)
     @task = Task.find(task_id)
-    invitor = User.find(invitor_id)
-    invitee = User.find(invitee_id)
+    invitor = User.find_by(id: invitor_id)
+    invitee = User.find_by(id: invitee_id)
     @invitor_name = display_name(invitor)
     @invitee_name = display_name(invitee)
 
@@ -28,8 +28,8 @@ class UserMailer < ActionMailer::Base
 
   def add_participant(invitor_id, invitee_id, task_id)
     @task = Task.find(task_id)
-    invitor = User.find(invitor_id)
-    invitee = User.find(invitee_id)
+    invitor = User.find_by(id: invitor_id)
+    invitee = User.find_by(id: invitee_id)
     @invitor_name = display_name(invitor)
     @invitee_name = display_name(invitee)
 

@@ -9,8 +9,9 @@ class MessageCardOverlay < CardOverlay
     end
   end
 
-  def remove_participant(user)
-    find(:xpath, "//img[@alt='#{user.full_name}']/../a").click
+  def remove_participant(participant)
+    has_participants?(participant)
+    find(:xpath, "//img[@alt='#{participant.full_name}']/../a").click
   end
 
   def participants

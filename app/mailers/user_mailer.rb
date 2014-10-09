@@ -14,18 +14,6 @@ class UserMailer < ActionMailer::Base
       subject: "You've been added as a collaborator to a paper on Tahi")
   end
 
-  def assign_task(invitor_id, invitee_id, task_id)
-    @task = Task.find(task_id)
-    invitor = User.find_by(id: invitor_id)
-    invitee = User.find_by(id: invitee_id)
-    @invitor_name = display_name(invitor)
-    @invitee_name = display_name(invitee)
-
-    mail(
-      to: invitee.email,
-      subject: "You've been assigned a task on Tahi")
-  end
-
   def add_participant(invitor_id, invitee_id, task_id)
     @task = Task.find(task_id)
     invitor = User.find_by(id: invitor_id)

@@ -13,9 +13,11 @@ module StandardTasks
       paper.transaction do
         paper.assign_admin!(task_admin)
         related_tasks.each do |task|
-          task.assignee = task_admin
-          task.save
-          AssignmentManager.new(task, nil).sync
+          if !task.participants.include?(task_admin)
+            task.participants << task_admin
+            UserMailer.delay.add_participant(nil, task_admin.id, task.id)
+            CommentLookManager.sync_task(task)
+          end
         end
       end
     end

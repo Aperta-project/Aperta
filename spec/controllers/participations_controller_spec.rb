@@ -53,6 +53,22 @@ describe ParticipationsController do
     end
   end
 
+  describe "DELETE #destroy" do
+    authorize_policy(ParticipationsPolicy, true)
+
+    let(:do_request) do
+      delete :destroy, format: :json, id: participation.id
+    end
+
+    let!(:participation) { FactoryGirl.create :participation }
+
+    it "destroys the associated author" do
+      expect {
+        do_request
+      }.to change { Participation.count }.by -1
+    end
+  end
+
   context "participants" do
     authorize_policy(ParticipationsPolicy, true)
 

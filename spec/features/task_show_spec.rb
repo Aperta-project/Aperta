@@ -21,5 +21,4 @@ feature "Displaying task", js: true do
     expect(assign_admin_overlay).to be_completed
     expect(assign_admin_overlay).to have_no_application_error
   end
-
 end

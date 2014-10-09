@@ -1,17 +1,17 @@
 <ul class="participants">
   {{#each p in currentParticipants}}
-    <li class="participant">{{userThumbnail p}}</li>
+    <li class="participant">{{userThumbnail p}}<a href="#" {{action 'removeParticipant' p}}>x</a></li>
   {{/each}}
   <li class="chosen-style-override participant">
     {{type-ahead value=""
                  class="participant-select"
                  name="add_participant"
-                 sourceList=availableParticipants
-                 valueProperty="fullName"
-                 subvalueProperty="username"
+                 sourceList=availableParticipantsList
+                 valueProperty="full_name"
+                 subvalueProperty="info"
+                 remoteUrl=remoteUrl
                  suggestionSelected="addParticipant"
                  clearOnSelect=true
                  placeholder="Add People"}}
-
   </li>
 </ul>

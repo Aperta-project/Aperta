@@ -9,6 +9,7 @@ feature 'Message Cards', js: true do
     assign_journal_role(journal, albert, :admin)
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
+    paper.paper_roles.build(user: albert, role: PaperRole::COLLABORATOR).save
   end
 
 
@@ -84,6 +85,22 @@ feature 'Message Cards', js: true do
           expect(card).to have_participants(albert)
         end
       end
+
+      scenario "user can remove any participant" do
+        task_manager_page = TaskManagerPage.visit paper
+        task_manager_page.view_card message.title, MessageCardOverlay do |card|
+          card.add_participants(albert)
+          sleep(0.5) # wait for server response
+          card.remove_participant(albert)
+          expect(card).to have_no_participants(albert)
+        end
+
+        task_manager_page = TaskManagerPage.visit paper
+        task_manager_page.view_card message.title, MessageCardOverlay do |card|
+          expect(card).to have_no_participants(albert)
+        end
+
+      end
     end
 
     context "the user isn't a participant" do
@@ -109,6 +126,7 @@ feature 'Message Cards', js: true do
     let!(:message) { create :message_task, phase: phase, participants: participants }
     let!(:initial_comments) do
       comment_count.times.map { create(:comment, task: message, commenter: albert, body: "FOO") }
+      CommentLookManager.sync_task(message)
     end
     let(:comment_count) { 4 }
     let(:task_manager_page) { TaskManagerPage.visit paper }

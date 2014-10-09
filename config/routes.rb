@@ -36,6 +36,9 @@ Tahi::Application.routes.draw do
 
   get '/request_policy' => 'direct_uploads#request_policy'
 
+  get 'filtered_users/collaborators/:paper_id' => 'filtered_users#collaborators', as: "collaborators"
+  get 'filtered_users/non_participants/:task_id/:query' => 'filtered_users#non_participants', as: "non_participants"
+
   resources :flows, only: [:index, :destroy, :create]
   resources :authors, only: [:create, :update, :destroy]
 
@@ -80,6 +83,8 @@ Tahi::Application.routes.draw do
   resources :collaborations, only: [:create, :destroy]
   resources :paper_roles, only: [:show]
 
+  resources :ihat_jobs, only: :update
+
   resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create
     resource :manuscript_manager, only: :show
@@ -96,6 +101,7 @@ Tahi::Application.routes.draw do
   end
 
   resources :comments, only: [:create, :show]
+  resources :participations, only: [:create, :show, :destroy]
 
   resources :tasks, only: [:update, :create, :show, :destroy]
 

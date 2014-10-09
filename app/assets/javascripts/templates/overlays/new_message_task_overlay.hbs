@@ -1,7 +1,7 @@
-{{participant-selector
-  currentParticipants=model.participants
-  everyone=allUsers
-  onSelect='addParticipant'}}
+{{participant-selector currentParticipants=participants
+                       everyone=allUsers
+                       onRemove='removeParticipant'
+                       onSelect="saveNewParticipant"}}
 
 <div class="form-group required">
   {{input id="task-title-field" value=model.title placeholder="Type a short card title here"}}

@@ -15,4 +15,7 @@ config/secrets.yml
 dump.rdb
 spring
 doc/dependencies.*
-solr/development
+solr/development/*
+solr/pids/development/*
+solr/test/*
+solr/default/*

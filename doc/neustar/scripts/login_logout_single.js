@@ -12,14 +12,13 @@ selenium.type("id=user_login", "test-user-13@example.com");
 selenium.type("id=user_password", "password");
 selenium.click("name=commit");
 selenium.waitForPageToLoad(timeout);
-selenium.waitForElementPresent("link=Welcome back, test-user-13");
+selenium.waitForElementPresent("link=Welcome back, testuser13");
 test.endStep();
 
 test.beginStep("Step 2");
-selenium.click("link=Welcome back, test-user-13");
+selenium.click("link=Welcome back, testuser13");
 selenium.click("link=Sign out");
 selenium.waitForPageToLoad(timeout);
 test.endStep();
 
 test.endTransaction();
-

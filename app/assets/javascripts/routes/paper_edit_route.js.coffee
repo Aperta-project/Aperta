@@ -51,7 +51,7 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
     stopEditing: ->
       @endHeartbeat()
 
-    addCollaborators: ->
+    addContributors: ->
       paper = @modelFor('paper')
       collaborations = paper.get('collaborations') || []
       controller = @controllerFor('showCollaboratorsOverlay')

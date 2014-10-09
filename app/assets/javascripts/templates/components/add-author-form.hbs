@@ -43,15 +43,18 @@
     <div class="form-group author-half required">
       {{type-ahead
       value=newAuthor.affiliation
+      valueProperty='name'
       sourceList=institutions
+      class='profile-affiliation-field'
       class="affiliation-field"
       placeholder="Affiliation"}}
     </div>
     <div class="form-group author-half author-bump">
       {{type-ahead
       value=newAuthor.secondaryAffiliation
+      valueProperty='name'
       sourceList=institutions
-      class="affiliation-field"
+      class='profile-affiliation-field'
       placeholder="Secondary Affiliation"}}
     </div>
   </div>

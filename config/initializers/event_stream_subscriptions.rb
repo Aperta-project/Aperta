@@ -105,3 +105,26 @@ TahiNotifier.subscribe("paper_role:destroyed") do |payload|
     )
   end
 end
+
+TahiNotifier.subscribe("participation:*") do |payload|
+  action   = payload[:action]
+  id       = payload[:id]
+
+  participation = Participation.find(id)
+  user_id = participation.participant.id
+  dashboard_serializer = DashboardSerializer.new({}, user: User.find(user_id))
+
+  # update user dashboard
+  EventStream.post_event(
+    User,
+    user_id,
+    dashboard_serializer.as_json.merge(action: action).to_json
+  )
+
+  # update user streams
+  EventStream.post_event(
+    User,
+    user_id,
+    { action: "updateStreams" }.to_json
+  )
+end

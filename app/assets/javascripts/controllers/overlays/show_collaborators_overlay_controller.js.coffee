@@ -1,4 +1,6 @@
 ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
+  overlayClass: 'overlay--fullscreen'
+
   availableCollaborators: Ember.computed.setDiff('allUsers', 'collaborators')
 
   addedCollaborations: Ember.computed.setDiff('collaborations.content','initialCollaborations')

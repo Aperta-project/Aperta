@@ -18,7 +18,6 @@ Dir[Rails.root.join("engines/**/spec/support/**/*.rb")].each { |f| require f }
 
 Capybara.server_port = ENV["CAPYBARA_SERVER_PORT"]
 
-
 Capybara.server do |app, port|
   require 'rack/handler/thin'
   Rack::Handler::Thin.run(app, :Port => port)
@@ -95,6 +94,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation, { except: ['task_types'] }
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
+    DatabaseCleaner[:redis].strategy = :truncation
     TaskServices::CreateTaskTypes.call
   end
 
@@ -105,6 +105,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    Sidekiq::Extensions::DelayedMailer.jobs.clear
   end
 
   config.after(:each) do

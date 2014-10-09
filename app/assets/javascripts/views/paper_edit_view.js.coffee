@@ -3,6 +3,9 @@ ETahi.PaperEditView = Ember.View.extend
 
   locked: Ember.computed.alias 'controller.locked'
   isEditing: Ember.computed.alias 'controller.isEditing'
+  subNavVisible: false
+  downloadsVisible: false
+  contributorsVisible: false
 
   setBackgroundColor: (->
     $('.main-content').addClass 'matte'
@@ -29,36 +32,6 @@ ETahi.PaperEditView = Ember.View.extend
     $('#paper-body').attr('style', @get('controller.model.journal.manuscriptCss'))
   ).on('didInsertElement')
 
-  setupScrollFixing: (->
-    aside       = $('aside')
-    article     = $('article')
-    mainContent = $('.main-content')
-    toolbarUnderside = $('.ve-toolbar-underside')
-
-    $(window).on 'resize.paper', ->
-      articleWidth = article.width()
-      articleOffsetLeft = article.offset().left
-      mainContentOffsetLeft = mainContent.offset().left
-
-      aside.css 'left', (articleWidth + articleOffsetLeft - mainContentOffsetLeft)
-      toolbarUnderside.css 'left', (articleOffsetLeft - mainContentOffsetLeft)
-
-    toolbarUnderside.css
-      position: 'fixed'
-      top: '80px'
-      width: '839px'
-
-    aside.css
-      position: 'fixed'
-      top: '80px'
-
-    $(window).trigger 'resize.paper'
-  ).on('didInsertElement')
-
-  teardownScrollFixing: (->
-    $(window).off 'resize.paper'
-  ).on('willDestroyElement')
-
   updateEditorLockedState: ( ->
     $('.oo-ui-toolbar-bar').toggleClass('locked', !@get('isEditing'))
 
@@ -68,28 +41,17 @@ ETahi.PaperEditView = Ember.View.extend
       @get("visualEditor").disable()
   ).observes('isEditing')
 
-  setupStickyToolbar: ->
-    marginTop = $('.control-bar').outerHeight()
-    $('.oo-ui-toolbar').scrollToFixed
-      marginTop: marginTop
-      unfixed: ->
-        $(this).addClass('not-fixed')
-      preFixed: ->
-        $(this).removeClass('not-fixed')
-        $(this).css('marginTop', '0')
-
-  setupEditBar: ->
-    marginTop = $('.control-bar').outerHeight()
-    $('.edit-paper').scrollToFixed
-      marginTop: marginTop + 5
-      zIndex: 1010
-      dontSetWidth: true
-    $(window).scroll()
-    $(window).resize()
+  subNavVisibleDidChange: (->
+    if @get 'subNavVisible'
+      $('.oo-ui-toolbar').css 'top', '103px'
+      $('#tahi-container').addClass 'sub-nav-visible'
+    else
+      $('.oo-ui-toolbar').css 'top', '60px'
+      $('#tahi-container').removeClass 'sub-nav-visible'
+  ).observes('subNavVisible')
 
   setupVisualEditor: (->
     @updateVisualEditor()
-    @setupEditBar()
     @addObserver 'controller.body', =>
       @updateVisualEditor() unless @get('isEditing')
 
@@ -101,7 +63,6 @@ ETahi.PaperEditView = Ember.View.extend
     visualEditor = @get('visualEditor')
     visualEditor.update($("#paper-body"), @get('controller.body'))
     visualEditor.get('target').on 'surfaceReady', =>
-      @setupStickyToolbar()
       @updateEditorLockedState()
 
   destroyVisualEditor: ( ->
@@ -139,3 +100,24 @@ ETahi.PaperEditView = Ember.View.extend
     submit: ->
       @saveVisualEditorChanges()
       @get('controller').send('confirmSubmitPaper')
+
+    showSubNav: (sectionName)->
+      if @get('subNavVisible') and @get("#{sectionName}Visible")
+        @send 'hideSubNav'
+      else
+        @set 'subNavVisible', true
+        @send "show#{sectionName.capitalize()}"
+
+    hideSubNav: ->
+      @setProperties
+        subNavVisible: false
+        contributorsVisible: false
+        downloadsVisible: false
+
+    showContributors: ->
+      @set 'contributorsVisible', true
+      @set 'downloadsVisible', false
+
+    showDownloads: ->
+      @set 'contributorsVisible', false
+      @set 'downloadsVisible', true

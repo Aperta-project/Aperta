@@ -62,10 +62,10 @@ ETahi.ContentEditableComponent = Em.Component.extend
     @unmute()
 
   mute: ->
-    @.$().addClass('muted')
+    @.$().addClass('content-editable-muted')
 
   unmute: ->
-    @.$().removeClass('muted')
+    @.$().removeClass('content-editable-muted')
 
   setValueFromHTML: ->
     if @get('plaintext')

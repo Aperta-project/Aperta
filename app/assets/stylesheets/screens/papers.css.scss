@@ -1,5 +1,6 @@
 #control-bar-paper-journal-logo {
   height: 71px;
+  margin-top: 7px;
   margin-right: 20px;
 
   div { padding-top: 6px; }
@@ -17,7 +18,7 @@
   h2 {
     overflow: hidden;
     width: 680px;
-    padding: 11px 0 0 5px;
+    padding: 16px 0 0 5px;
     font-family: $tahi-article-font-family;
     font-size: 18px;
     text-overflow: ellipsis;
@@ -46,8 +47,8 @@
 }
 
 #paper-title {
-  margin-top: 60px;
-
+  margin-top: 50px;
+  font-family: $tahi-article-font-family;
 }
 
 #paper-authors {
@@ -69,11 +70,19 @@
 }
 
 #paper-body .oo-ui-toolbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  @include position(fixed, $tahi-control-bar-height 0px auto 0px);
+  height: 45px;
+  padding-top: 2px;
   background: none !important; // Blocks buttons as of July 28, 2014
+  z-index: z($z-layer-ve-toolbar);
+  @include transition(top 0.2s);
+}
+
+.ve-toolbar-underside {
+  @include position(absolute, $tahi-control-bar-height 0px auto 0px);
+  height: 45px;
+  background: #fff;
+  z-index: 1;
 }
 
 // Not really sure what this is. Breaks default toolbar buttons as of July 28, 2014
@@ -81,9 +90,17 @@
   display: none;
 }
 
-.oo-ui-toolbar-bar {
-  height: 45px;
+#paper-body .oo-ui-toolbar-tools {
+  float: none;
+  width: 1120px;
+  margin: 0 auto;
+}
+
+#paper-body .oo-ui-toolbar-bar {
+  height: 43px;
   padding-top: 2px;
+
+  &.locked { opacity: 0.5; }
 }
 
 #paper-abstract { display: none; }
@@ -93,35 +110,24 @@
   min-width: 100px;
 }
 
-#tahi-container > main {
-  position: relative;
+#tahi-container main {
+  overflow: hidden;
   background: #fff;
 
-  > article {
-    position: relative;
+  article {
     width: 75%;
     border-right: 1px solid $tahi-grey-light;
-    padding: 0;
-
-    .title { padding-top: 26px; }
   }
 
-  > aside {
-    overflow: auto;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 280px;
+  aside {
+    float: right;
+    width: 25%;
   }
 }
 
-.muted {
+// TODO: find this a home
+.content-editable-muted {
   color: #aaa;
-}
-
-#tahi-container > main > article table.cke_show_border > tbody > tr > td {
-  border: #666 1px dotted;
 }
 
 .locked-overlay {
@@ -136,31 +142,17 @@
 
 .task-list {
   width: 280px;
-  padding: 0 30px;
+  padding: 40px 30px 0 30px;
 }
 
 .manuscript-container {
   font-family: $tahi-article-font-family;
   width: 700px;
   margin: 0 auto;
-
-  #paper-title {
-    font-family: $tahi-article-font-family;
-  }
-}
-
-.ve-toolbar-underside {
-  @include position(absolute, 0px 0px auto 0px);
-  width: 100%;
-  height: 45px;
-  background: #fff;
 }
 
 .edit-paper {
-  position: absolute;
-  top: 5px;
-  z-index: 10;
-  padding-left: 10px;
+  padding: 40px 0 0 72px;
 }
 
 .prompt {
@@ -194,24 +186,10 @@
 }
 
 .user-name {
-  @extend %truncates;
+  @include ellipsis;
   width: initial;
   max-width: 95px;
   vertical-align: bottom;
-}
-
-.oo-ui-toolbar {
-  background-color: #fff;
-}
-
-.oo-ui-toolbar-tools {
-  float: right;
-}
-
-.oo-ui-toolbar-bar {
-  &.locked {
-    opacity: 0.5;
-  }
 }
 
 #paper-placeholder {
@@ -222,23 +200,23 @@
   font-style: italic;
 }
 
-.collaborators {
-  margin: 0 auto;
-  margin-top: 15px;
-  padding: 0 30px;
-  line-height: 15px;
+.contributors {
+  display: none;
+  padding-right: 25px;
+  text-align: right;
 
-  .add-collaborators {
-    margin-top: 7px;
-    color: $tahi-green;
-    display: block;
-    cursor: pointer;
-  }
+  &.active { display: block; }
 }
 
-.collaborator-status {
+.contributors-add {
+  margin-right: 15px;
+  color: $tahi-green;
+  cursor: pointer;
+}
+
+.contributor-status {
   display: inline-block;
-  margin: 3px 5px 3px 0;
+  margin: 3px 10px 3px 0;
   .circle {
     display: inline-block;
     vertical-align: middle;
@@ -252,4 +230,35 @@
   width: $circle-radius;
   border-radius: $circle-radius / 2;
   border: 2px solid $tahi-green;
+}
+
+.manuscript-download-links {
+  overflow: hidden;
+  display: none;
+
+  &.active { display: block; }
+
+  svg {
+    float: right;
+    display: inline;
+  }
+
+  svg path {
+    fill: $tahi-green;
+  }
+
+  a {
+    overflow: hidden;
+    float: right;
+    display: block;
+    height: 27px;
+    margin-right: 25px;
+    line-height: 27px;
+    text-decoration: none;
+
+    &:hover {
+      color: $tahi-green-dark;
+      svg path { fill: $tahi-green-dark; }
+    }
+  }
 }

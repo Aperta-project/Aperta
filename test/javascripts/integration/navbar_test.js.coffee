@@ -43,18 +43,16 @@ test 'all users can see their username', ->
   andThen ->
     ok exists(find ".navigation-item-account span:contains('Fake User')")
 
-test '(admin=true) can see the Flow Manager link', ->
-  respondUnauthorized()
-  setCurrentUserAdmin(true)
+test '(200 response) can see the Flow Manager link', ->
+  respondAuthorized()
 
   visit '/'
   click '.navigation-toggle'
   andThen ->
     ok exists(find ".navigation:contains('Flow Manager')")
 
-test '(admin=false) cannot see the Flow Manager link', ->
+test '(403 response) cannot see the Flow Manager link', ->
   respondUnauthorized()
-  setCurrentUserAdmin(false)
 
   visit '/'
   click '.navigation-toggle'

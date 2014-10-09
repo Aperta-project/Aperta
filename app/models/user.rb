@@ -1,6 +1,12 @@
 class User < ActiveRecord::Base
 
   include UserDevise
+  searchable do
+    text :username, :first_name, :last_name, :email
+    text :full_name do
+      full_name
+    end
+  end
 
   has_many :affiliations, inverse_of: :user
   has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'
@@ -21,6 +27,7 @@ class User < ActiveRecord::Base
   after_create :add_flows
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 255 }
+  validates_format_of :username, with: /^[A-Za-z\d_]+$/, multiline: true
   validates :email, format: Devise.email_regexp
   validates :first_name, length: { maximum: 255 }
   validates :last_name, length: { maximum: 255 }

@@ -1,9 +1,11 @@
 <div class="discussion">
   <h2>Discussion</h2>
   {{participant-selector
-    currentParticipants=model.participants
+    currentParticipants=participants
     everyone=allUsers
-    onSelect='saveNewParticipant'}}
+    onRemove='removeParticipant'
+    taskId=model.id
+    onSelect="saveNewParticipant"}}
   {{comment-board
     comments=comments
     currentUser=currentUser

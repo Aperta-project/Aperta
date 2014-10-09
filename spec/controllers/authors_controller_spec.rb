@@ -35,7 +35,7 @@ describe AuthorsController do
       delete :destroy, format: :json, id: author.id
     end
 
-    let!(:author) { FactoryGirl.create :author }
+    let!(:author) { FactoryGirl.create(:author, paper: paper) }
 
     it "destroys the associated author" do
       expect {
@@ -48,7 +48,8 @@ describe AuthorsController do
     let(:do_request) do
       put :update, format: :json, id: author.id, author: { secondary_affiliation: "Brisbon Uni" }
     end
-    let(:author) { FactoryGirl.create :author }
+
+    let!(:author) { FactoryGirl.create(:author, paper: paper) }
 
     it "updates the author" do
       first_name = author.first_name

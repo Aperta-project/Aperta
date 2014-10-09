@@ -1,7 +1,7 @@
 ETahi.AnimateElement = Ember.Mixin.create
   out: (selector, speed) ->
     defer = new Em.RSVP.defer()
-    $(selector).removeClass('in').addClass('out')
+    $(selector).removeClass('animation-fade-in').addClass('animation-fade-out')
 
     Em.run.later defer, (->
       defer.resolve()
@@ -12,7 +12,7 @@ ETahi.AnimateElement = Ember.Mixin.create
 
   in: (selector, speed) ->
     defer = new Em.RSVP.defer()
-    $(selector).addClass('in')
+    $(selector).addClass('animation-fade-in')
 
     Em.run.later defer, (->
       defer.resolve()

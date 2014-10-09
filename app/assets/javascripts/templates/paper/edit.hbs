@@ -12,17 +12,11 @@
     </aside>
 
     <article>
-      <ul class="edit-paper list-inline">
-        <li>
-          {{start-editing-button action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
-        </li>
-        <li class="lock-message">
-          <p class="message">
-          <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
-          {{{statusMessage}}} {{time-ago time=savedAt}}
-          </p>
-        </li>
-      </ul>
+      <div class="edit-paper">
+        {{edit-paper-button action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
+        <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
+        <span class="edit-paper-lock-message">{{{statusMessage}}} {{time-ago time=savedAt}}</span>
+      </div>
 
       <div class="manuscript-container">
         {{content-editable tagName="h2"

@@ -37,7 +37,6 @@
   list-style-type: none;
   float: left;
   padding: 0 30px 0 0;
-  @extend .clear-before-and-after;
 
   &:last-of-type { float: right; }
 }

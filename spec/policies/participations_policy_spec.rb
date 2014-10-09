@@ -20,6 +20,7 @@ describe ParticipationsPolicy do
 
     it { expect(policy.show?).to be(true) }
     it { expect(policy.create?).to be(true) }
+    it { expect(policy.destroy?).to be(true) }
 
     context "on a non metadata task" do
       let(:task) { paper.tasks.where.not(type: Task.metadata_types).first }
@@ -35,6 +36,7 @@ describe ParticipationsPolicy do
 
     it { expect(policy.show?).to be(true) }
     it { expect(policy.create?).to be(true) }
+    it { expect(policy.destroy?).to be(true) }
   end
 
   context "allowed reviewer" do
@@ -51,6 +53,7 @@ describe ParticipationsPolicy do
 
       it { expect(policy.show?).to be(true) }
       it { expect(policy.create?).to be(true) }
+    it { expect(policy.destroy?).to be(true) }
     end
   end
 
@@ -67,6 +70,7 @@ describe ParticipationsPolicy do
 
     it { expect(policy.show?).to be(true) }
     it { expect(policy.create?).to be(true) }
+    it { expect(policy.destroy?).to be(true) }
   end
 
   context "user with can_view_all_manuscript_managers on this journal" do
@@ -79,6 +83,7 @@ describe ParticipationsPolicy do
 
     it { expect(policy.show?).to be(true) }
     it { expect(policy.create?).to be(true) }
+    it { expect(policy.destroy?).to be(true) }
   end
 
   context "user with can_view_assigned_manuscript_managers on this journal and is assigned to the paper." do
@@ -95,5 +100,6 @@ describe ParticipationsPolicy do
 
     it { expect(policy.show?).to be(true) }
     it { expect(policy.create?).to be(true) }
+    it { expect(policy.destroy?).to be(true) }
   end
 end

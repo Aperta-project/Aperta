@@ -13,7 +13,21 @@ class PaperUpdateWorker
   end
 
   def paper_attributes
-    json = Faraday.get("#{ENV['IHAT_URL']}jobs/#{job_id}/download")[:json]
+    response_body = Faraday.get("#{ENV['IHAT_URL']}jobs/#{job_id}").body
+    json = JSON.parse response_body, symbolize_names: true
+    get_converted_epub = Faraday.get json[:jobs][:converted_epub_url]
+    converted_epub_file = Tempfile.new ["converted_manuscript", ".epub"]
+    converted_epub_file.binmode
+    converted_epub_file.write get_converted_epub.body
+    converted_epub_file.close
+
+    json = nil
+    Zip::File.open(converted_epub_file.path) do |file|
+      file.each do |entry|
+        json = entry.get_input_stream.read if entry.name == 'converted.json'
+      end
+    end
+
     JSON.parse json, symbolize_names: true
   end
 end

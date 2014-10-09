@@ -1,5 +1,5 @@
-ETahi.StartEditingButtonComponent = Ember.Component.extend
-  classNames: ['start-editing-button button-primary']
+ETahi.EditPaperButtonComponent = Ember.Component.extend
+  classNames: ['edit-paper-button button-primary']
   classNameBindings: ['buttonColor']
   buttonStates: null
 

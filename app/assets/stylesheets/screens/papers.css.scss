@@ -29,23 +29,6 @@
   }
 }
 
-#toolbar {
-  height: 60px;
-  width: 100%;
-
-  .cke_button_icon.cke_button__tahisave_icon {
-    display: none;
-  }
-
-  .cke_button_label.cke_button__tahisave_label {
-    display: inline;
-    padding-left: 0;
-    padding: 0 5px;
-    // text-transform: uppercase;
-    // font-weight: bold;
-  }
-}
-
 #paper-title {
   margin-top: 50px;
   font-family: $tahi-article-font-family;
@@ -105,6 +88,14 @@
 
 #paper-abstract { display: none; }
 
+#paper-placeholder {
+  position: absolute;
+  top: 191px;
+  z-index: 5;
+  color: $tahi-grey-dark;
+  font-style: italic;
+}
+
 .author-detail {
   display: inline-block;
   min-width: 100px;
@@ -125,23 +116,17 @@
   }
 }
 
-// TODO: find this a home
-.content-editable-muted {
-  color: #aaa;
-}
-
 .locked-overlay {
   position: absolute;
   height: 100%;
   width: 100%;
+  font-size: 24px;
+  text-align: center;
   background-color: transparent;
   z-index: 1;
-  text-align: center;
-  font-size: 24px;
 }
 
 .task-list {
-  width: 280px;
   padding: 40px 30px 0 30px;
 }
 
@@ -151,54 +136,37 @@
   margin: 0 auto;
 }
 
-.edit-paper {
-  padding: 40px 0 0 72px;
-}
 
-.prompt {
-  text-transform: uppercase;
-}
+// start edit-paper section
 
-.lock-message {
-  font-family: $tahi-font-family;
-  width: 200px;
-  font-size: 12px;
-  font-style: italic;
-  color: $tahi-purple;
-  z-index: 1;
-
-  span {
-    display: inline-block;
-  }
-}
-
-.start-editing-button {
-  width: 150px;
-
-  .start-editing-icon {
-    padding-right: 22px;
-  }
-}
-
-.stop-edit {
-  margin-top: -6px;
-  margin-left: -8px;
-}
-
-.user-name {
+.edit-paper              { padding: 40px 0 0 72px; }
+.edit-paper-button       { width: 150px; margin-right: 5px; }
+.edit-paper-start-icon   { padding-right: 22px; }
+.edit-paper-stop-icon    { margin: -6px 0 0 -8px; }
+.edit-paper-locked-by {
   @include ellipsis;
   width: initial;
   max-width: 95px;
   vertical-align: bottom;
 }
-
-#paper-placeholder {
-  position: absolute;
-  top: 191px;
-  z-index: 5;
-  color: $tahi-grey-dark;
+.edit-paper-lock-message {
+  width: 200px;
+  color: $tahi-purple;
+  font-family: $tahi-font-family;
+  font-size: 12px;
   font-style: italic;
+  z-index: 1;
 }
+.edit-paper .glyphicon-lock,
+.edit-paper .edit-paper-lock-message span {
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+// end edit-paper section
+
+
+// start contributors section
 
 .contributors {
   display: none;
@@ -214,23 +182,26 @@
   cursor: pointer;
 }
 
-.contributor-status {
+.contributor {
   display: inline-block;
   margin: 3px 10px 3px 0;
-  .circle {
+
+  &:before {
+    content: ' ';
+    $circle-radius: 0.8em;
     display: inline-block;
+    width: $circle-radius;
+    height: $circle-radius;
+    margin-right: 4px;
+    border: 2px solid $tahi-green;
+    border-radius: $circle-radius / 2;
     vertical-align: middle;
+    background-color: $tahi-green-light;
   }
 }
 
-.circle {
-  $circle-radius: 0.8em;
-  background-color: $tahi-green-light;
-  height: $circle-radius;
-  width: $circle-radius;
-  border-radius: $circle-radius / 2;
-  border: 2px solid $tahi-green;
-}
+// end contributors section
+
 
 .manuscript-download-links {
   overflow: hidden;

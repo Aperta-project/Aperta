@@ -23,8 +23,6 @@
   z-index: z($z-layer-overlay-base);
   opacity: 0;
 
-  @extend .fadeInAndOut;
-
   h1 {
     margin: 0 0 1em 0;
     font-size: 48px;
@@ -52,7 +50,6 @@
   font-size: 42px;
   cursor: pointer;
   z-index: z($z-layer-overlay-close-x);
-  @extend .scaleIn;
 }
 
 

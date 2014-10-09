@@ -1,12 +1,12 @@
 <div {{bind-attr class=":overlay overlayClass"}}>
-  <span class="glyphicon glyphicon-remove overlay-close-x" {{action 'closeAction'}}></span>
+  <span class="glyphicon glyphicon-remove overlay-close-x animation-scale-in" {{action "closeAction"}}></span>
   <div class="overlay-container">
 
     {{partial "overlay-header"}}
 
     <main class="overlay-content">
       {{yield}}
-      {{partial 'discussion'}}
+      {{partial "discussion"}}
     </main>
     {{progress-spinner visible=isLoading}}
 
@@ -23,7 +23,7 @@
                    optionLabelPath="content.fullName"
                    class="chosen-assignee"}}
         </div>
-        {{partial 'overlay-completed-checkbox'}}
+        {{partial "overlay-completed-checkbox"}}
       </div>
       <a class="button-primary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
     </footer>

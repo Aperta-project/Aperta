@@ -28,7 +28,7 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
   userEditingMessage: ( ->
     lockedBy = @get('lockedBy')
     if lockedBy and lockedBy isnt @getCurrentUser()
-      "<span class='user-name'>#{lockedBy.get('fullName')}</span> <span>is editing</span>"
+      "<span class='edit-paper-locked-by'>#{lockedBy.get('fullName')}</span> <span>is editing</span>"
     else
       null
   ).property('lockedBy')

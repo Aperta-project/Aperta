@@ -10,14 +10,22 @@ describe PaperUpdateWorker do
   end
 
   describe "#perform" do
+    let(:stubbed_url) { "converted_epub_url" }
+    let(:turtles_fixture) { File.open(Rails.root.join('spec', 'fixtures', 'turtles.epub'), 'r').read }
+
     before do
-      json = { json: { body: "<h1>Hello</h1>" }.to_json }
-      expect(Faraday).to receive(:get).with("#{ENV['IHAT_URL']}jobs/#{job.job_id}/download").and_return(json)
+      job_response = double(:job_response)
+      allow(job_response).to receive(:body).and_return({ jobs: { converted_epub_url: stubbed_url } }.to_json)
+      expect(Faraday).to receive(:get).with("#{ENV['IHAT_URL']}jobs/#{job.job_id}").and_return job_response
+
+      epub_response = double(:epub)
+      allow(epub_response).to receive(:body).and_return(turtles_fixture)
+      expect(Faraday).to receive(:get).with(stubbed_url).and_return(epub_response)
     end
 
     it "updates the paper" do
       worker.perform(job.job_id)
-      expect(job.paper.reload.body).to eq("<h1>Hello</h1>")
+      expect(job.paper.reload.body).to eq("<p>This is a stubbed turtle file</p>")
     end
   end
 
@@ -30,7 +38,7 @@ describe PaperUpdateWorker do
   describe "#paper_attributes" do
     it "requests the converted JSON from IHAT" do
       json = { json: { body: "<h1>Hello</h1>" }.to_json }
-      expect(Faraday).to receive(:get).with("#{ENV['IHAT_URL']}jobs/#{job.job_id}/download").and_return(json)
+      expect(Faraday).to receive(:get).with("#{ENV['IHAT_URL']}jobs/#{job.job_id}").and_return(json)
       worker.paper_attributes
     end
   end

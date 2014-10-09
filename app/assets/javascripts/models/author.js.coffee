@@ -19,4 +19,3 @@ ETahi.Author = DS.Model.extend
   corresponding: a('boolean')
   deceased: a('boolean')
   position: a('number')
-  setPosition: a('number')

@@ -35,7 +35,6 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       false
 
     saveNewAuthor: (newAuthorHash) ->
-      newAuthorHash.setPosition = 0
       newAuthorHash.position    = 0
       newAuthorHash.paper = @get 'resolvedPaper'
       @store.createRecord('author', newAuthorHash).save()

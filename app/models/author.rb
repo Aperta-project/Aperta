@@ -3,11 +3,6 @@ class Author < ActiveRecord::Base
   belongs_to :paper
   acts_as_list
 
-
-  def set_position=(position)
-    set_list_position(position) if position.present?
-  end
-
   private
 
   def notifier_payload

@@ -3,7 +3,7 @@ class PaperUpdateWorker
 
   attr_accessor :job_id
 
-  def perform(job_id:)
+  def perform(job_id)
     @job_id = job_id
     job.paper.update! paper_attributes
   end

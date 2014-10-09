@@ -1,3 +1,4 @@
+require 'epub/tempfile'
 class PaperUpdateWorker
   include Sidekiq::Worker
 
@@ -17,8 +18,11 @@ class PaperUpdateWorker
   end
 
   def convert_json
-    extract_file_from_zip file: 'converted.json',
-                          zipped_file_path: create_tempfile(parse_json(response_body)).path
+    Epub::Tempfile.create(parse_json(response_body)) { |file|
+      binding.pry
+      extract_file_from_zip file: 'converted.json',
+                            zipped_file_path: file.path
+    }
   end
 
   def response_body

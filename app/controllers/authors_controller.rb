@@ -10,16 +10,17 @@ class AuthorsController < ApplicationController
   def update
     author = Author.find(params[:id])
     author.update author_params
-    respond_with author
+    render json: author.paper.authors, each_serializer: AuthorSerializer
   end
 
   def destroy
     author = Author.find(params[:id])
     author.destroy
-    respond_with author
+    render json: author.paper.authors, each_serializer: AuthorSerializer
   end
 
   private
+
   def author_params
     params.require(:author).permit(
       :first_name,

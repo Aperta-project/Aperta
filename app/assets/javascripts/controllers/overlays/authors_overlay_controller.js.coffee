@@ -35,10 +35,10 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       false
 
     saveNewAuthor: (newAuthorHash) ->
-      newAuthorHash.position    = 0
-      newAuthorHash.paper = @get 'resolvedPaper'
+      newAuthorHash.position = 0
+      newAuthorHash.paper = @get('resolvedPaper')
       @store.createRecord('author', newAuthorHash).save()
-      @toggleProperty 'newAuthorFormVisible'
+      @toggleProperty('newAuthorFormVisible')
 
     saveAuthor: (author) ->
       author.save()

@@ -13,21 +13,37 @@ class PaperUpdateWorker
   end
 
   def paper_attributes
-    response_body = Faraday.get("#{ENV['IHAT_URL']}jobs/#{job_id}").body
-    json = JSON.parse response_body, symbolize_names: true
-    get_converted_epub = Faraday.get json[:jobs][:converted_epub_url]
+    JSON.parse convert_json, symbolize_names: true
+  end
+
+  def convert_json
+    extract_file_from_zip file: 'converted.json',
+                          zipped_file_path: create_tempfile(parse_json(response_body)).path
+  end
+
+  def response_body
+    Faraday.get("#{ENV['IHAT_URL']}jobs/#{job_id}").body
+  end
+
+  def parse_json(json)
+    JSON.parse json, symbolize_names: true
+  end
+
+  def get_converted_epub(job_response)
+    Faraday.get job_response[:jobs][:converted_epub_url]
+  end
+
+  def create_tempfile(job_response)
     converted_epub_file = Tempfile.new ["converted_manuscript", ".epub"]
     converted_epub_file.binmode
-    converted_epub_file.write get_converted_epub.body
+    converted_epub_file.write get_converted_epub(job_response).body
     converted_epub_file.close
+    converted_epub_file
+  end
 
-    json = nil
-    Zip::File.open(converted_epub_file.path) do |file|
-      file.each do |entry|
-        json = entry.get_input_stream.read if entry.name == 'converted.json'
-      end
+  def extract_file_from_zip(file:, zipped_file_path:)
+    Zip::File.open(zipped_file_path) do |file|
+      return file.glob("converted.json").first.get_input_stream.read
     end
-
-    JSON.parse json, symbolize_names: true
   end
 end

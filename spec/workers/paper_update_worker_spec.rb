@@ -16,7 +16,7 @@ describe PaperUpdateWorker do
     end
 
     it "updates the paper" do
-      worker.perform(job_id: job.job_id)
+      worker.perform(job.job_id)
       expect(job.paper.reload.body).to eq("<h1>Hello</h1>")
     end
   end

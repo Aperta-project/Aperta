@@ -17,7 +17,7 @@ class Paper < ActiveRecord::Base
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
   has_many :tasks, through: :phases
   has_many :journal_roles, through: :journal
-  has_many :authors
+  has_many :authors, -> { order 'authors.position ASC' }
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}

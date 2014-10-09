@@ -30,3 +30,4 @@ ETahi.PhaseHeaderView = Em.View.extend
     cancel: ->
       @set('active', false)
       @get('controller').send('rollbackPhase', @get('phase'), @get('oldPhaseName'))
+      Ember.run.scheduleOnce('afterRender', this, Tahi.utils.resizeColumnHeaders)

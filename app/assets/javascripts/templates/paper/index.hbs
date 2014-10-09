@@ -2,6 +2,11 @@
 
 <div id="tahi-container">
   <main>
+    <aside>
+      <div class="task-list">
+        {{partial "paper/task-list"}}
+      </div>
+    </aside>
     <article>
       <div class="manuscript-container">
         <h2 id="paper-title">
@@ -19,10 +24,5 @@
         <div id="paper-body">{{{body}}}</div>
       </div>
     </article>
-    <aside>
-      <div class="task-list">
-        {{partial "paper/task-list"}}
-      </div>
-    </aside>
   </main>
 </div>

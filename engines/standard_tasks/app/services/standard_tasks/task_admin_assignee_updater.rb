@@ -15,6 +15,7 @@ module StandardTasks
         related_tasks.each do |task|
           task.assignee = task_admin
           task.save
+          AssignmentManager.new(task, nil).sync
         end
       end
     end

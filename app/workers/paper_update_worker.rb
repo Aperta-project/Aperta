@@ -18,11 +18,12 @@ class PaperUpdateWorker
   end
 
   def convert_json
-    Epub::Tempfile.create(parse_json(response_body)) { |file|
-      binding.pry
+    epub_stream = get_converted_epub parse_json(response_body)
+
+    Epub::Tempfile.create epub_stream do |file|
       extract_file_from_zip file: 'converted.json',
                             zipped_file_path: file.path
-    }
+    end
   end
 
   def response_body
@@ -34,15 +35,7 @@ class PaperUpdateWorker
   end
 
   def get_converted_epub(job_response)
-    Faraday.get job_response[:jobs][:converted_epub_url]
-  end
-
-  def create_tempfile(job_response)
-    converted_epub_file = Tempfile.new ["converted_manuscript", ".epub"]
-    converted_epub_file.binmode
-    converted_epub_file.write get_converted_epub(job_response).body
-    converted_epub_file.close
-    converted_epub_file
+    Faraday.get(job_response[:jobs][:converted_epub_url]).body
   end
 
   def extract_file_from_zip(file:, zipped_file_path:)

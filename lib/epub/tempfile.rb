@@ -5,8 +5,12 @@ module Epub
       converted_epub_file.binmode
       converted_epub_file.write stream
       converted_epub_file.close
-      block.call(converted_epub_file)
+
+      return_value = block.call(converted_epub_file)
+
       converted_epub_file.unlink
+
+      return_value
     end
   end
 end

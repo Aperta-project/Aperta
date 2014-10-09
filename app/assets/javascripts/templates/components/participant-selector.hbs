@@ -1,6 +1,6 @@
 <ul class="participants">
   {{#each p in currentParticipants}}
-    <li class="participant">{{userThumbnail p}}</li>
+    <li class="participant">{{userThumbnail p}}<a href="#" {{action 'removeParticipant' p}}>x</a></li>
   {{/each}}
   <li class="chosen-style-override participant">
     {{type-ahead value=""

@@ -29,7 +29,7 @@ TahiNotifier.subscribe("supporting_information/file:*", "figure:*", "paper:*", "
   )
 end
 
-TahiNotifier.subscribe("author:*") do |payload|
+TahiNotifier.subscribe("author:created", "author:updated") do |payload|
   action     = payload[:action]
   id         = payload[:id]
   paper_id   = payload[:paper_id]
@@ -45,6 +45,17 @@ TahiNotifier.subscribe("author:*") do |payload|
     Paper,
     paper_id,
     authors_payload.merge(action: action, meta: meta).to_json
+  )
+end
+
+TahiNotifier.subscribe("author:destroyed") do |payload|
+  id         = payload[:id]
+  paper_id   = payload[:paper_id]
+
+  EventStream.post_event(
+    Paper,
+    paper_id,
+    { action: "destroyed", authors: [id] }.to_json
   )
 end
 

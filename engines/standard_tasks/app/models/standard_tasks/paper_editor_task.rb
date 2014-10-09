@@ -19,10 +19,7 @@ module StandardTasks
 
     def editor_id=(user_id)
       return unless editor_id != user_id
-      transaction do
-        paper_roles.editors.destroy_all
-        paper_roles.editors.create!(paper_id: paper.id, user_id: user_id)
-      end
+      TaskRoleUpdater.new(self, user_id, PaperRole::EDITOR).update
     end
 
     def editor_id

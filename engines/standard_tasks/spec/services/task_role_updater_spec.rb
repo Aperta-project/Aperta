@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StandardTasks::TaskAdminAssigneeUpdater do
+describe TaskRoleUpdater do
 
   let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
   let(:task)  { paper.tasks.where(type: "StandardTasks::PaperAdminTask").first }
@@ -11,7 +11,7 @@ describe StandardTasks::TaskAdminAssigneeUpdater do
   let(:bob) { FactoryGirl.create(:user) }
   let(:gus) { FactoryGirl.create(:user) }
 
-  let(:updater) { StandardTasks::TaskAdminAssigneeUpdater.new(task.reload) }
+  let(:updater) { TaskRoleUpdater.new(task.reload) }
 
 
   describe "paper admin is being changed from nobody to sally" do
@@ -87,7 +87,7 @@ describe StandardTasks::TaskAdminAssigneeUpdater do
       end
 
       it "will update the assignee for tasks that are assigned to the previous admin" do
-        paper.assign_admin!(bob)
+        paper.assign_role!(bob, PaperRole::ADMIN)
         related_task = Task.create!(phase: phase, assignee: bob, completed: false, role: "admin", title: "Something")
         updater.update
         expect(related_task.reload.assignee).to eq(sally)

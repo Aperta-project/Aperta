@@ -47,10 +47,10 @@ class PaperFactory
       body: task_template.template,
       role: task_template.journal_task_type.role
     )
-    if task.role == 'author'
-      task.assignee = author
-    end
     task.save!
+    if task.role == 'author'
+      task.participants << author
+    end
   end
 
   def template

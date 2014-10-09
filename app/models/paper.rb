@@ -55,6 +55,11 @@ class Paper < ActiveRecord::Base
     tasks.where(type: klass_name)
   end
 
+  def assignees
+    ids = available_admins.pluck(:id) | [user_id]
+    User.where(id: ids)
+  end
+
   def available_admins
     journal.admins
   end
@@ -63,10 +68,10 @@ class Paper < ActiveRecord::Base
     title.present? ? title : short_title
   end
 
-  def assign_admin!(user)
+  def assign_role!(user, role)
     transaction do
-      paper_roles.admins.destroy_all
-      paper_roles.admins.create!(user: user)
+      paper_roles.for_role(role).destroy_all
+      paper_roles.for_role(role).create!(user: user)
     end
   end
 

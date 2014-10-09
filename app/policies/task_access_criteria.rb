@@ -9,10 +9,6 @@ module TaskAccessCriteria
     current_user.roles.where(journal_id: task.journal.id)
   end
 
-  def task_owner?
-    task.assignee_id == current_user.id
-  end
-
   def metadata_task_collaborator?
     task.is_metadata? && task.paper.collaborators.exists?(current_user)
   end

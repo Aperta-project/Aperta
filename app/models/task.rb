@@ -23,16 +23,22 @@ class Task < ActiveRecord::Base
 
   belongs_to :phase, inverse_of: :tasks
 
+  delegate :assignees, to: :paper
+
   def self.assigned_to(*users)
-    joins(participations: :participant).where("participations.participant_id" => users.pluck(:id))
+    if users.empty?
+      Task.none
+    else
+      joins(participations: :participant).where("participations.participant_id" => users)
+    end
   end
 
   def self.unassigned
     joins("LEFT OUTER JOIN participations ON tasks.id = participations.task_id").where("participations.id" => nil)
   end
 
-  def self.for_admins
-    where(role: 'admin')
+  def self.for_role(role)
+    where(role: role)
   end
 
   def self.without(task)

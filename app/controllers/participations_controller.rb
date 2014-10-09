@@ -21,10 +21,8 @@ class ParticipationsController < ApplicationController
   end
 
   def destroy
-    if participation.present?
-      participation.destroy
-      respond_with participation
-    end
+    participation.destroy
+    respond_with participation
   end
 
   private

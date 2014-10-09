@@ -11,7 +11,6 @@ class Task < ActiveRecord::Base
   scope :completed,   -> { where(completed: true) }
   scope :metadata,    -> { where(type: metadata_types) }
   scope :incomplete,  -> { where(completed: false) }
-  scope :unassigned,  -> { where(assignee: nil) }
 
   has_one :paper, through: :phase
   has_one :journal, through: :paper
@@ -22,17 +21,14 @@ class Task < ActiveRecord::Base
   validates :title, :role, presence: true
   validates :title, length: { maximum: 255 }
 
-  belongs_to :assignee, class_name: 'User'
   belongs_to :phase, inverse_of: :tasks
 
-  delegate :assignees, to: :paper
-
   def self.assigned_to(*users)
-    #TODO: this is a stopgap until user <-> task relationship table can be established
-    assigned_tasks   = Task.where.not(type: "MessageTask").where(assignee: users).pluck(:id)
-    message_tasks    = MessageTask.joins(phase: :paper).where("papers.id" => Paper.where(user: users)).pluck(:id)
+    joins(participations: :participant).where("participations.participant_id" => users.pluck(:id))
+  end
 
-    where(id: (assigned_tasks + message_tasks))
+  def self.unassigned
+    joins("LEFT OUTER JOIN participations ON tasks.id = participations.task_id").where("participations.id" => nil)
   end
 
   def self.for_admins
@@ -57,7 +53,7 @@ class Task < ActiveRecord::Base
   end
 
   def permitted_attributes
-    [:assignee_id, :completed, :title, :phase_id]
+    [:completed, :title, :phase_id]
   end
 
   class << self

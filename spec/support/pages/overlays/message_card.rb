@@ -9,6 +9,11 @@ class MessageCardOverlay < CardOverlay
     end
   end
 
+  def remove_participant(participant)
+    has_participants?(participant)
+    find(:xpath, "//img[@alt='#{participant.full_name}']/../a").click
+  end
+
   def participants
     expect(page).to have_css '.participants'
     all('.participant .user-thumbnail').map { |e| e["alt"] }

@@ -212,7 +212,7 @@ ETahi.FactoryAttributes.Paper =
   status: null
   phase_ids: []
   figure_ids: []
-  author_group_ids: []
+  author_ids: []
   supporting_information_file_ids: []
   assignee_ids: []
   editor_ids: []

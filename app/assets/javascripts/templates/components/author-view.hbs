@@ -1,26 +1,39 @@
-<div {{bind-attr class="showEditAuthorForm:hide"}}>
-  <div>
-    <span>{{author.fullName}}</span>
-    <span>{{author.email}}</span>
+{{#unless editState}}
+  <div class="authors-overlay-item--text">
+    <div class="author-name">{{author.fullName}}</div>
+    {{author.email}}<br>
+    {{author.title}} &nbsp; &nbsp; {{author.department}}
+    <br>
+    {{author.affiliation}} &nbsp; &nbsp; {{author.secondaryAffiliation}}
   </div>
-  <div>
-    <span>{{author.title}}</span>
-    <span>{{author.department}}</span>
-  </div>
-  <div>
-    <div>{{author.affiliation}}</div>
-    <div>{{author.secondaryAffiliation}}</div>
-  </div>
-</div>
-<div {{bind-attr class=":author-form showEditAuthorForm:show-new-author-form"}}>
+
+  {{#if hoverState}}
+    <div class="authors-overlay-item--actions">
+      <div class="drag"></div>
+      <div class="actions">
+        <div class="action" {{action "toggleEditForm"}}>
+          <span class="glyphicon glyphicon-pencil scaleIn"></span>
+        </div>
+        <div class="action" {{action "toggleDeleteConfirmation"}}>
+          <span class="glyphicon glyphicon-trash scaleIn"></span>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+{{/unless}}
+
+{{#if editState}}
   {{add-author-form
     newAuthor=author
     institutions=institutions
-    hideAuthorForm='hideAuthorForm'
-    saveAuthor="saveAuthor"}}
-</div>
-<div class="author-edit" {{bind-attr class="showEditAuthorForm:hide"}}>
-  <span class="glyphicon glyphicon-resize-vertical"></span>
-  <span class="glyphicon glyphicon-pencil" {{action 'edit'}}></span>
-  <span class="glyphicon glyphicon-trash" {{action 'delete'}}></span>
-</div>
+    hideAuthorForm="toggleEditForm"
+    saveAuthor="save"}}
+{{/if}}
+
+{{#if deleteState}}
+  <div class="authors-overlay-item--delete">
+    <p>This will permanently delete the author. Are you sure?</p>
+    <button class="button-secondary button--green knockout" {{action "toggleDeleteConfirmation"}}>Cancel</button>
+    <button class="button-secondary button--green knockout" {{action "delete"}}>Delete Forever</button>
+  </div>
+{{/if}}

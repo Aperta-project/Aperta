@@ -20,10 +20,24 @@ class ParticipationsController < ApplicationController
     respond_with Participation.find(params[:id])
   end
 
+  def destroy
+    participation.destroy
+    respond_with participation
+  end
+
   private
 
   def task
-    @task ||= Task.find(params[:participation][:task_id])
+    @task ||=
+      if params[:participation].present?
+        Task.find(params[:participation][:task_id])
+      else
+        participation.task
+      end
+  end
+
+  def participation
+    @participation ||= Participation.find(params[:id])
   end
 
   def participation_params

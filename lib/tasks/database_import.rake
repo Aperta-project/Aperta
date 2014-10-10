@@ -7,9 +7,9 @@ namespace :db do
         system("curl -o #{f.path} `heroku pgbackups:url --app tahi-staging`")
         system("pg_restore --clean --no-acl --no-owner -h localhost -d #{target_db_name} #{f.path}")
         Journal.update_all(logo: nil)
+        User.update_all(avatar: nil)
         User.all.each do |u|
           u.password = "password" # must be set explicitly
-          u.avatar = nil # avoid 404s for s3 urls
           u.save
         end
       end

@@ -1,4 +1,5 @@
 ETahi.AuthorsOverlayController = ETahi.TaskController.extend
+  newAuthorFormVisible: false
   resolvedPaper: null
 
   _setPaper: ( ->
@@ -6,15 +7,30 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
       @set('resolvedPaper', paper)
   ).observes('paper')
 
-  lastAuthorGroup: Ember.computed.alias('resolvedPaper.authorGroups.lastObject')
-  canDeleteLastGroup: Ember.computed.empty('lastAuthorGroup.authors.[]')
+  allAuthors: []
+  _setAllAuthors: (-> @set('allAuthors', @store.all('author'))).on('init')
+  authors: (-> @get('allAuthors').filterBy('paper', @get('resolvedPaper'))).property('resolvedPaper','allAuthors.@each.paper')
+  authorSort: ['position:asc']
+  sortedAuthors: Ember.computed.sort('authors', 'authorSort')
+
+  shiftAuthorPositions: (author, newPosition)->
+    oldPosition = author.get 'position'
+    author.set('position', newPosition)
+    author.save()
 
   actions:
-    addAuthorGroup: ->
-      newAuthorGroup = @store.createRecord('authorGroup')
-      newAuthorGroup.set('paper', @get('resolvedPaper'))
-      newAuthorGroup.save()
+    toggleAuthorForm: ->
+      @toggleProperty 'newAuthorFormVisible'
+      false
 
-    removeAuthorGroup: ->
-      if @get('canDeleteLastGroup')
-        @get('lastAuthorGroup').destroyRecord()
+    saveNewAuthor: (newAuthorHash) ->
+      newAuthorHash.position = 0
+      newAuthorHash.paper = @get('resolvedPaper')
+      @store.createRecord('author', newAuthorHash).save()
+      @toggleProperty('newAuthorFormVisible')
+
+    saveAuthor: (author) ->
+      author.save()
+
+    removeAuthor: (author) ->
+      author.destroyRecord()

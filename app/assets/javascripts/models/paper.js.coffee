@@ -10,7 +10,7 @@ ETahi.Paper = DS.Model.extend
     @get('collaborations').mapBy('user')
   ).property('collaborations.@each')
 
-  authorGroups: DS.hasMany('authorGroup')
+  authors: DS.hasMany('author')
   figures: DS.hasMany('figure', inverse: 'paper')
   supportingInformationFiles: DS.hasMany('supportingInformationFile')
   journal: DS.belongsTo('journal')
@@ -42,12 +42,3 @@ ETahi.Paper = DS.Model.extend
   editable: (->
     !(@get('allTasksCompleted') and @get('submitted'))
   ).property('allTasksCompleted', 'submitted')
-
-  authors: (->
-    @get('authorGroups').reduce(
-      (result, group) ->
-        group.get('authors').forEach (author) ->
-          result.pushObject(author)
-        result
-      [])
-  ).property('authorGroups.@each')

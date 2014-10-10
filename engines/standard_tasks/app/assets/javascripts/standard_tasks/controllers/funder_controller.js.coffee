@@ -14,7 +14,6 @@ ETahi.FunderController = Ember.ObjectController.extend ETahi.SavesDelayed,
 
     startAddingAuthor: ->
       author = @store.createRecord('author', position: 0)
-      group.get('authors').pushObject(author)
       @set('addingAuthor', author)
 
     finishAddingAuthor: ->

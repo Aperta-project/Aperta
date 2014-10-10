@@ -1,4 +1,5 @@
-// .fadeInAndOut
+// .animation-fade-in
+// .animation-fade-out
 
 @include keyframes(fadeIn) {
   from { opacity: 0; }
@@ -10,16 +11,11 @@
   to   { opacity: 0; }
 }
 
-.fadeIn {
+.animation-fade-in {
   @include animation(fadeIn 200ms $ease-out-quad);
   @include animation-fill-mode(forwards);
 }
 
-.fadeOut {
+.animation-fade-out {
   @include animation(fadeOut 200ms $ease-out-quad);
-}
-
-.fadeInAndOut {
-  &.in  { @extend .fadeIn;  }
-  &.out { @extend .fadeOut; }
 }

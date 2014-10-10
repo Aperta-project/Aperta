@@ -43,10 +43,7 @@
     <div {{bind-attr class=":contributors view.contributorsVisible:active"}}>
       <a class="contributors-add" {{action "addContributors"}}>+ Add Contributors</a>
       {{#each contributor in collaborators}}
-        <div class="contributor-status">
-          <div class="circle"></div>
-          <span class="name">{{unbound contributor.fullName}}</span>
-        </div>
+        <div class="contributor">{{unbound contributor.fullName}}</div>
       {{/each}}
     </div>
 

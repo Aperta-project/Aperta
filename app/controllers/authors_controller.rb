@@ -3,7 +3,7 @@ class AuthorsController < ApplicationController
   respond_to :json
 
   def create
-    author = Author.create author_params
+    author = Author.create(author_params)
     render json: author.paper.authors, each_serializer: AuthorSerializer
   end
 

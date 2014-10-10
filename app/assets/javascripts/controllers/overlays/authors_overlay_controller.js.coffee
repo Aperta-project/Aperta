@@ -15,17 +15,6 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
 
   shiftAuthorPositions: (author, newPosition)->
     oldPosition = author.get 'position'
-
-    if oldPosition < newPosition
-      newPosition = newPosition - 1
-      relevantAuthors = @get('authors').filter (a)->
-        a != author && (a.get('position') > oldPosition) && (a.get('position') <= newPosition)
-      relevantAuthors.invoke 'decrementProperty', 'position'
-    else
-      relevantAuthors = @get('authors').filter (a)->
-        a != author && (a.get('position') < oldPosition) && (a.get('position') >= newPosition)
-      relevantAuthors.invoke 'incrementProperty', 'position'
-
     author.set('position', newPosition)
     author.save()
 

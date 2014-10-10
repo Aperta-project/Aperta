@@ -105,10 +105,6 @@ module StandardTasks
       paper.update(decision_letter: body)
     end
 
-    def assignees
-      journal.editors
-    end
-
     def paper_editor
       paper.editors.first
     end

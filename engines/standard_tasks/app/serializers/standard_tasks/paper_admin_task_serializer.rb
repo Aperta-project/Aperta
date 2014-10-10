@@ -8,9 +8,5 @@ module StandardTasks
     def admin
       object.paper.admins.first
     end
-
-    def admins
-      assignees
-    end
   end
 end

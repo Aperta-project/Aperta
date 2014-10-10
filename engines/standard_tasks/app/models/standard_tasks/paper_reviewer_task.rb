@@ -36,10 +36,6 @@ module StandardTasks
       journal.reviewers
     end
 
-    def assignees
-      journal.editors
-    end
-
     def reviewers
       paper.reviewers
     end

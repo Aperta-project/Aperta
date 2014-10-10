@@ -5,9 +5,6 @@ module StandardTasks
     title "Publishing Related Questions"
     role "author"
 
-    def assignees
-      User.none
-    end
   end
 end
 

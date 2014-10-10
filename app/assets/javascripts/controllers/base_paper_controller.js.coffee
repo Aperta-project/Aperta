@@ -36,11 +36,11 @@ ETahi.BasePaperController = Ember.ObjectController.extend
 
   assignedTasks: (->
     assignedTasks = @get('tasks').filter (task) =>
-      a = task.get('participations').mapBy('participant').contains(@getCurrentUser())
+      task.get('participations').mapBy('participant').contains(@getCurrentUser())
 
     authorTasks   = @get('authorTasks')
     assignedTasks.filter (t)-> !authorTasks.contains(t)
-  ).property('tasks.@each.assignee')
+  ).property('tasks.@each')
 
   editorTasks: (->
     if @get('model.editors').contains(@get('currentUser'))

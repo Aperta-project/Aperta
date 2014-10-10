@@ -39,7 +39,7 @@ gem 'sinatra'
 gem "nokogiri"
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
-gem "fog", '~> 1.24.0'
+gem "fog"
 gem "unf"
 gem 'rails_admin'
 gem 'newrelic_rpm'

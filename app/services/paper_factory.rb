@@ -25,8 +25,7 @@ class PaperFactory
 
   def create
     Paper.transaction do
-      paper.build_default_author_groups
-      paper.author_groups.first.authors << Author.new(to_author(author))
+      paper.authors << Author.new(to_author(author))
       add_collaborator(paper, author)
       if paper.valid?
         if template

@@ -69,14 +69,9 @@ module 'Integration: EditPaper',
       users: [fakeUser]
       affiliations: []
       figures: []
-      author_groups: [
-        id: 41
-        name: "First Author"
-        author_ids: [authorId]
-        paper_id: paperId
-      ]
       authors: [
         id: authorId
+        paper_id: paperId
         first_name: "Fake"
         middle_initial: null
         last_name: "User"
@@ -88,7 +83,6 @@ module 'Integration: EditPaper',
         deceased: false
         department: null
         position: 1
-        author_group_id: 41
       ]
       supporting_information_files: []
       journals: [
@@ -123,11 +117,11 @@ module 'Integration: EditPaper',
         status: null
         phase_ids: [40]
         figure_ids: []
-        author_group_ids: [41]
         supporting_information_file_ids: []
         assignee_ids: [fakeUser.id]
         editor_ids: []
         reviewer_ids: []
+        author_ids: [authorId]
         tasks: [
           id: figureTaskId
           type: "FigureTask"

@@ -34,12 +34,8 @@ ActiveRecord::Schema.define(version: 20141006160958) do
     t.datetime "updated_at"
   end
 
-  create_table "author_groups", force: true do |t|
-    t.string  "name"
-    t.integer "paper_id"
+  create_table "author_paper", force: true do |t|
   end
-
-  add_index "author_groups", ["paper_id"], name: "index_author_groups_on_paper_id", using: :btree
 
   create_table "authors", force: true do |t|
     t.string   "first_name"
@@ -52,10 +48,10 @@ ActiveRecord::Schema.define(version: 20141006160958) do
     t.boolean  "deceased",              default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "author_group_id"
     t.string   "affiliation"
     t.string   "secondary_affiliation"
     t.integer  "position"
+    t.integer  "paper_id"
   end
 
   create_table "comment_looks", force: true do |t|
@@ -192,8 +188,8 @@ ActiveRecord::Schema.define(version: 20141006160958) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.integer  "striking_image_id"
     t.datetime "last_heartbeat_at"
+    t.integer  "striking_image_id"
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree

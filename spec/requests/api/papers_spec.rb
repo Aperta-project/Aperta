@@ -1,35 +1,23 @@
 require 'spec_helper'
 
 describe Api::PapersController do
+  let!(:author) { FactoryGirl.create(:author) }
   let!(:paper1) { FactoryGirl.create(:paper, :with_tasks,
                                      short_title: "paper-2",
-                                     title: "First paper") }
+                                     title: "First paper",
+                                     authors: [author]) }
   let(:api_token) { ApiKey.generate! }
-  let(:author_group) { paper1.author_groups.first }
-  let!(:author) { FactoryGirl.create(:author, author_group: author_group) }
-
-  let(:paper_1_author_groups) do
-    [{"id" => 1, "name" => "First Author", "author_ids" => [1], "paper_id" => 1},
-     {"id" => 2, "name" => "Second Author", "author_ids" => [], "paper_id" => 1},
-     {"id" => 3, "name" => "Third Author", "author_ids" => [], "paper_id" => 1}]
-  end
-
-  let(:paper_2_author_groups) do
-    [{"id" => 4, "name" => "First Author", "author_ids" => [], "paper_id" => 2},
-     {"id" => 5, "name" => "Second Author", "author_ids" => [], "paper_id" => 2},
-     {"id" => 6, "name" => "Third Author", "author_ids" => [], "paper_id" => 2}]
-  end
 
   def paper_json_attrs(paper)
     {"id" => paper.id,
      "title" => paper.title,
      "paper_type" => paper.paper_type,
      "epub" => "http://www.example.com/api/papers/#{paper.id}.epub",
-     "author_group_ids" => paper.author_groups.pluck(:id)}
+     "author_ids" => paper.authors.collect(&:id)}
   end
 
   def author_json_attrs(author)
-     {"id" => author.id,
+    {"id" => author.id,
      "first_name" => author.first_name,
      "middle_initial" => author.middle_initial,
      "last_name" => author.last_name,
@@ -40,8 +28,8 @@ describe Api::PapersController do
      "corresponding" => author.corresponding,
      "deceased" => author.deceased,
      "department" => author.department,
-     "position" => author.position,
-     "author_group_id" => author_group.id}
+     "paper_id" => author.paper.id,
+     "position" => author.position}
   end
 
   describe "GET 'index'" do
@@ -54,10 +42,9 @@ describe Api::PapersController do
 
       expect(JSON.parse(response.body)).to eq(
         {"authors" => [author_json_attrs(author)],
-         "author_groups" => paper_1_author_groups + paper_2_author_groups,
          "papers" =>
-           [paper_json_attrs(paper1), paper_json_attrs(paper2)]
-        })
+         [paper_json_attrs(paper1), paper_json_attrs(paper2)]
+      })
     end
 
     context "when the published parameter is false" do
@@ -67,9 +54,8 @@ describe Api::PapersController do
 
         expect(JSON.parse(response.body)).to eq(
           {"authors" => [],
-           "author_groups" => paper_2_author_groups,
            "papers" => [paper_json_attrs(paper2)]
-          })
+        })
       end
     end
 
@@ -79,9 +65,8 @@ describe Api::PapersController do
         get api_papers_path(published: true), nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
         expect(JSON.parse(response.body)).to eq(
-        {"authors" => [author_json_attrs(author)],
-         "author_groups" => paper_1_author_groups,
-         "papers" => [paper_json_attrs(paper1)]
+          {"authors" => [author_json_attrs(author)],
+           "papers" => [paper_json_attrs(paper1)]
         })
       end
     end
@@ -102,9 +87,8 @@ describe Api::PapersController do
       expect(data['papers'].length).to eq 1
       expect(data).to eq(
         {"authors" => [author_json_attrs(author)],
-         "author_groups" => paper_1_author_groups,
          "papers" => [paper_json_attrs(paper1)]
-        })
+      })
     end
 
     it "user can get ePub for a single paper" do
@@ -125,8 +109,8 @@ describe Api::PapersController do
       it "updates the published_at attribute for a paper" do
         patch_params = %Q{[{ "op": "replace", "path": "/papers/0/publishedAt", "value": "2014-03-21" }]}
         patch api_paper_path(paper1.id), patch_params, 'CONTENT_TYPE' => "application/json-patch+json",
-                                                       'ACCEPT' => "application/vnd.api+json",
-                                                       authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
+          'ACCEPT' => "application/vnd.api+json",
+          authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
         expect(response.body).to_not be_nil
         expect(response.status).to eq 204
@@ -138,8 +122,8 @@ describe Api::PapersController do
       it "does not update when attribute is not whitelisted for a paper" do
         patch_params = %Q{[{ "op": "replace", "path": "/papers/0/createdAt", "value": "2014-03-21" }]}
         patch api_paper_path(paper1.id), patch_params, 'CONTENT_TYPE' => "application/json-patch+json",
-                                                       'ACCEPT' => "application/vnd.api+json",
-                                                       authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
+          'ACCEPT' => "application/vnd.api+json",
+          authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
         expect(response.status).to eq 401
         expect(paper1.reload.created_at).to_not eq "2014-03-21"
@@ -150,7 +134,7 @@ describe Api::PapersController do
       it "returns a 401 not authorized status" do
         patch_params = %Q([{ "op": "replace", "path": "/papers/0/publishedAt", "value": "2014-03-21" }])
         patch api_paper_path(paper1.id), patch_params, 'CONTENT_TYPE' => "application/json-patch+json",
-                                                       'ACCEPT' => "application/vnd.api+json"
+          'ACCEPT' => "application/vnd.api+json"
         expect(response.status).to eq(401)
       end
     end

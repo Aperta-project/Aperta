@@ -17,8 +17,7 @@ class Paper < ActiveRecord::Base
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
   has_many :tasks, through: :phases
   has_many :journal_roles, through: :journal
-  has_many :author_groups, -> { order("id ASC") }, inverse_of: :paper, dependent: :destroy
-  has_many :authors, through: :author_groups
+  has_many :authors, -> { order 'authors.position ASC' }
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
@@ -87,10 +86,6 @@ class Paper < ActiveRecord::Base
 
   def submitting?
     submitted_changed? && submitted
-  end
-
-  def build_default_author_groups
-    AuthorGroup.build_default_groups_for(self)
   end
 
   def locked?

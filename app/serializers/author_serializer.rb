@@ -10,6 +10,6 @@ class AuthorSerializer < ActiveModel::Serializer
     :corresponding,
     :deceased,
     :department,
-    :position
-  has_one :author_group, embed: :id
+    :position,
+    :paper_id
 end

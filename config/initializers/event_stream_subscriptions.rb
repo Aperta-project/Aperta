@@ -29,8 +29,37 @@ TahiNotifier.subscribe("supporting_information/file:*", "figure:*", "paper:*", "
   )
 end
 
-TahiNotifier.subscribe("task:destroyed") do |payload|
+TahiNotifier.subscribe("author:created", "author:updated") do |payload|
   action     = payload[:action]
+  id         = payload[:id]
+  paper_id   = payload[:paper_id]
+  meta       = payload[:meta]
+  klass      = payload[:klass]
+
+  record = klass.find(id)
+  serializer = record.event_stream_serializer
+  serializer.root = false
+  authors = record.paper.authors.map { |a| serializer.new(a).as_json }
+  authors_payload = {authors: authors}
+  EventStream.post_event(
+    Paper,
+    paper_id,
+    authors_payload.merge(action: action, meta: meta).to_json
+  )
+end
+
+TahiNotifier.subscribe("author:destroyed") do |payload|
+  id         = payload[:id]
+  paper_id   = payload[:paper_id]
+
+  EventStream.post_event(
+    Paper,
+    paper_id,
+    { action: "destroyed", authors: [id] }.to_json
+  )
+end
+
+TahiNotifier.subscribe("task:destroyed") do |payload|
   task_id    = payload[:task_id]
   paper_id   = payload[:paper_id]
 

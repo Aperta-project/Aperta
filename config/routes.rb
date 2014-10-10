@@ -41,7 +41,6 @@ Tahi::Application.routes.draw do
 
   resources :flows, only: [:index, :destroy, :create]
   resources :authors, only: [:create, :update, :destroy]
-  resources :author_groups, only: [:create, :destroy]
 
   resources :figures, only: [:destroy, :update] do
     put :update_attachment, on: :member
@@ -102,7 +101,7 @@ Tahi::Application.routes.draw do
   end
 
   resources :comments, only: [:create, :show]
-  resources :participations, only: [:create, :show]
+  resources :participations, only: [:create, :show, :destroy]
 
   resources :tasks, only: [:update, :create, :show, :destroy]
 

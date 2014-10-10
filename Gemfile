@@ -97,6 +97,7 @@ group :development, :test, :performance do
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'pry-rescue'
+  gem 'foreman'
   gem 'sunspot_solr'
 end
 

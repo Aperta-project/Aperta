@@ -111,19 +111,6 @@ textarea { resize: none; }
   .warning { margin-top: 10px; }
 }
 
-.clear-before-and-after {
-  &:before {
-    content: ' ';
-    display: table;
-  }
-
-  &:after {
-    clear: both;
-    content: ' ';
-    display: table;
-  }
-}
-
 .submit-error {
   margin-top: 20px;
   text-align: center;
@@ -161,16 +148,6 @@ textarea { resize: none; }
 
 .error-message {
   color: $tahi-error-red;
-}
-
-.add-remove-groups div {
-  width: 35px;
-  height: 25px;
-  text-align: center;
-  border: 1px solid $tahi-green;
-  border-radius: 5px;
-  padding-top: 4px;
-  color: $tahi-green;
 }
 
 // Main Content:

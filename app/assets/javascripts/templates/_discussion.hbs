@@ -3,6 +3,7 @@
   {{participant-selector
     currentParticipants=participants
     everyone=allUsers
+    onRemove='removeParticipant'
     taskId=model.id
     onSelect="saveNewParticipant"}}
   {{comment-board

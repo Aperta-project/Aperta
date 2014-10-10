@@ -15,7 +15,7 @@
   }
 }
 
-.scaleIn {
+.animation-scale-in {
   @include animation-name(scaleIn);
   @include animation-duration(250ms);
   @include animation-fill-mode(both);

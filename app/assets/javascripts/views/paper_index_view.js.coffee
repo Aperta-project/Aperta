@@ -1,4 +1,8 @@
 ETahi.PaperIndexView = Ember.View.extend
+  subNavVisible: false
+  downloadsVisible: false
+  contributorsVisible: false
+
   applyManuscriptCss:(->
     $('#paper-body').attr('style', @get('controller.model.journal.manuscriptCss'))
   ).on('didInsertElement')
@@ -11,22 +15,33 @@ ETahi.PaperIndexView = Ember.View.extend
     $('.main-content').removeClass 'matte'
   ).on('willDestroyElement')
 
-  setupScrollFixing: (->
-    aside       = $('aside')
-    article     = $('article')
-    mainContent = $('.main-content')
+  subNavVisibleDidChange: (->
+    if @get 'subNavVisible'
+      $('.oo-ui-toolbar').css 'top', '103px'
+      $('#tahi-container').addClass 'sub-nav-visible'
+    else
+      $('.oo-ui-toolbar').css 'top', '60px'
+      $('#tahi-container').removeClass 'sub-nav-visible'
+  ).observes('subNavVisible')
 
-    $(window).off('resize.paper').on('resize.paper', ->
-      aside.css 'left', (article.width() + article.offset().left - mainContent.offset().left)
-    )
+  actions:
+    showSubNav: (sectionName)->
+      if @get('subNavVisible') and @get("#{sectionName}Visible")
+        @send 'hideSubNav'
+      else
+        @set 'subNavVisible', true
+        @send "show#{sectionName.capitalize()}"
 
-    aside.css
-      position: 'fixed'
-      top: $('.control-bar').outerHeight() + 15
+    hideSubNav: ->
+      @setProperties
+        subNavVisible: false
+        contributorsVisible: false
+        downloadsVisible: false
 
-    $(window).trigger 'resize.paper'
-  ).on('didInsertElement')
+    showContributors: ->
+      @set 'contributorsVisible', true
+      @set 'downloadsVisible', false
 
-  teardownScrollFixing: (->
-    $(window).off 'resize.paper'
-  ).on('willDestroyElement')
+    showDownloads: ->
+      @set 'contributorsVisible', false
+      @set 'downloadsVisible', true

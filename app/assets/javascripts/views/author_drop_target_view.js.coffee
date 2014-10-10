@@ -1,8 +1,7 @@
-ETahi.AuthorGroupDropTargetView = Ember.View.extend DragNDrop.Droppable,
+ETahi.AuthorDropTargetView = Ember.View.extend DragNDrop.Droppable,
   tagName: 'div'
   classNameBindings: [':author-drop-target', 'isEditable::hidden']
 
-  authorGroup: Ember.computed.alias('controller.model')
   isEditable: Ember.computed.alias('controller.isEditable')
 
   position: ( ->
@@ -12,11 +11,8 @@ ETahi.AuthorGroupDropTargetView = Ember.View.extend DragNDrop.Droppable,
   notAdjacent: (thisPosition, dragItemPosition) ->
     thisPosition <= (dragItemPosition - 1) || thisPosition > (dragItemPosition + 1)
 
-  authorGroupsAreDifferent: ->
-    @get('authorGroup') != ETahi.get('dragItem.authorGroup')
-
   dragEnter: (e) ->
-    if @authorGroupsAreDifferent() || @notAdjacent(this.get('position'), ETahi.get('dragItem.position'))
+    if @notAdjacent(this.get('position'), ETahi.get('dragItem.position'))
       DragNDrop.draggingStarted('.author-drop-target', @.$())
       DragNDrop.cancel(e)
 
@@ -24,9 +20,9 @@ ETahi.AuthorGroupDropTargetView = Ember.View.extend DragNDrop.Droppable,
     DragNDrop.draggingStopped('.author-drop-target')
 
   drop: (e) ->
+    @get('controller').shiftAuthorPositions ETahi.get('dragItem'), @get('position')
     DragNDrop.draggingStopped('.author-drop-target')
     e.preventDefault()
     #dragItem will be the author.
-    @get('controller').send('changeAuthorGroup', ETahi.get('dragItem'), @get('position'))
     ETahi.set('dragItem', null)
     false

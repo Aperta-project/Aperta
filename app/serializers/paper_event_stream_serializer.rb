@@ -2,7 +2,7 @@ class PaperEventStreamSerializer < ActiveModel::Serializer
   attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :updated_at
   root :paper
 
-  %i(phases figures author_groups supporting_information_files).each do |relation|
+  %i(phases figures authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: false
   end
 

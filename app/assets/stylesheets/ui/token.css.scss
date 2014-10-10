@@ -22,7 +22,7 @@
   &:hover {
     .token-remove {
       visibility: visible;
-      @extend .scaleIn;
+      @extend .animation-scale-in;
     }
   }
 }

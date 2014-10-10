@@ -53,6 +53,34 @@ describe ParticipationsController do
     end
   end
 
+  describe "DELETE #destroy" do
+    authorize_policy(ParticipationsPolicy, true)
+
+    context "with a valid participation id" do
+      let(:do_request) do
+        delete :destroy, format: :json, id: participation.id
+      end
+
+      let!(:participation) { FactoryGirl.create :participation }
+
+      it "destroys the associated author" do
+        expect {
+          do_request
+        }.to change { Participation.count }.by -1
+      end
+    end
+
+    context "with an invalid participation id" do
+      let(:do_request) do
+        delete :destroy, format: :json, id: 9999
+      end
+
+      it "returns a 404" do
+        expect(do_request.status).to eq(404)
+      end
+    end
+  end
+
   context "participants" do
     authorize_policy(ParticipationsPolicy, true)
 

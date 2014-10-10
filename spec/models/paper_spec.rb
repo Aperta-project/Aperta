@@ -115,10 +115,10 @@ describe Paper do
     end
   end
 
-  describe ".assignees" do
-    let(:user)  { create(:user) }
+  describe "#assignees" do
+    let(:paper_author)  { create(:user) }
     let(:admin_user)  { create(:user, :admin) }
-    let(:paper) { build(:paper, user: user) }
+    let(:paper) { build(:paper, user: paper_author) }
 
     before do
       allow(paper).to receive(:available_admins) do
@@ -127,7 +127,7 @@ describe Paper do
     end
 
     it "should contain both users and assignees" do
-      expect(paper.assignees).to match_array([user, admin_user])
+      expect(paper.assignees).to match_array([paper_author, admin_user])
     end
   end
 

@@ -5,7 +5,13 @@ ETahi.IndexRoute = Ember.Route.extend
 
   setupController: (controller, model) ->
     controller.set('model', model)
-    controller.set('papers', @store.all('litePaper'))
+    papers = @store.filter 'litePaper', (p) ->
+      roles = p.get('roles')
+      isMyPaper = roles.indexOf('My Paper') > -1
+      iAmCollaborator = roles.indexOf('Collaborator') > -1
+      isMyPaper || iAmCollaborator
+
+    controller.set('papers', papers)
 
   actions:
     didTransition: () ->

@@ -1,7 +1,7 @@
 module Epub
   module Tempfile
-    def self.create(stream, &block)
-      tempfile = ::Tempfile.new ["converted_manuscript", ".epub"]
+    def self.create(stream, filename: SecureRandom.hex(6), delete: true, &block)
+      tempfile = ::Tempfile.new filename
       tempfile.binmode
       tempfile.write stream
       tempfile.rewind
@@ -9,7 +9,7 @@ module Epub
       return block.call(tempfile)
     ensure
       tempfile.close
-      tempfile.unlink
+      tempfile.unlink if delete
     end
   end
 end

@@ -67,22 +67,18 @@ class EpubConverter
   def _epub_cover_path
     epub_cover = paper.journal.epub_cover
     if Rails.application.config.carrierwave_storage == :fog && epub_cover.file
-      image_temp = Tempfile.new("epub_cover")
-      image_temp.binmode
-      image_temp.write RestClient.get(epub_cover.file.url)
-      image_temp.close
-      image_temp.path
+      Epub::Tempfile.create RestClient.get(epub_cover.file.url), delete: false do |file|
+        file.path
+      end
     else
       epub_cover.file.path
     end
   end
 
   def _epub_css
-    epub_css = paper.journal.epub_css
-    css_temp = Tempfile.new("epub_css")
-    css_temp.write epub_css
-    css_temp.close
-    css_temp.path
+    Epub::Tempfile.create paper.journal.epub_css, delete: false do |file|
+      file.path
+    end
   end
 
   private

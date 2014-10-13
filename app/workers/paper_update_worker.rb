@@ -19,11 +19,8 @@ class PaperUpdateWorker
 
   def convert_json
     epub_stream = get_converted_epub Epub::JSONParser.parse(response_body)
-
-    Epub::Tempfile.create epub_stream do |file|
-      extract_file_from_zip file: 'converted.json',
-                            zipped_file_path: file.path
-    end
+    Epub::Zip.extract_file_from_zip(stream: epub_stream,
+                                    filename: 'converted.json')
   end
 
   def response_body
@@ -32,11 +29,5 @@ class PaperUpdateWorker
 
   def get_converted_epub(job_response)
     Faraday.get(job_response[:jobs][:converted_epub_url]).body
-  end
-
-  def extract_file_from_zip(file:, zipped_file_path:)
-    Zip::File.open(zipped_file_path) do |file|
-      return file.glob("converted.json").first.get_input_stream.read
-    end
   end
 end

@@ -90,7 +90,7 @@
 
 #paper-placeholder {
   position: absolute;
-  top: 191px;
+  top: 315px;
   z-index: 5;
   color: $tahi-grey-dark;
   font-style: italic;
@@ -160,7 +160,6 @@
 .edit-paper .glyphicon-lock,
 .edit-paper .edit-paper-lock-message span {
   overflow: hidden;
-  vertical-align: middle;
 }
 
 // end edit-paper section

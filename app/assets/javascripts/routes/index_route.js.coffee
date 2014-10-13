@@ -23,6 +23,7 @@ ETahi.IndexRoute = Ember.Route.extend
         model = @store.createRecord 'paper',
           journal: journals.get('content.firstObject')
           paperType: journals.get('content.firstObject.paperTypes.firstObject')
+          body: ""
 
         @controllerFor('paperNewOverlay').setProperties
           model: model

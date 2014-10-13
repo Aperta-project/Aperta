@@ -71,6 +71,10 @@ class Paper < ActiveRecord::Base
     admins.first
   end
 
+  def editor
+    editors.first
+  end
+
   def metadata_tasks_completed?
     if tasks.metadata.count != tasks.metadata.completed.count
       errors.add(:base, "can't submit a paper when all of the metadata tasks aren't completed")

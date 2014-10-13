@@ -1,3 +1,3 @@
 ETahi.PaperEditorTask = ETahi.Task.extend
-  editors: DS.hasMany('user')
+  possibleEditors: DS.hasMany('user')
   editor: DS.belongsTo('user')

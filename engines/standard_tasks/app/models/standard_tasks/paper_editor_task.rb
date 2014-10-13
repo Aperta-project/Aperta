@@ -25,13 +25,5 @@ module StandardTasks
     def editor_id
       paper_role.user_id
     end
-
-    def editor
-      paper_role.user
-    end
-
-    def editors
-      journal.editors
-    end
   end
 end

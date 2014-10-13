@@ -13,7 +13,19 @@ module Authorizations
     authorize_action!
   end
 
+  def can_perform?(args={})
+    can_perform_action?(action_name, args)
+  end
+
+  def can_perform_action?(action_name, args={})
+    find_policy(self.class, current_user, args).authorized?(action_name)
+  end
+
   def authorize_action!(args={})
+    authorize_action_name!(action_name, args)
+  end
+
+  def authorize_action_name!(action_name, args={})
     policy = find_policy(self.class, current_user, args)
     unless policy.authorized?(action_name)
       raise AuthorizationError

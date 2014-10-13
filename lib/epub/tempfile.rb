@@ -1,16 +1,15 @@
 module Epub
   module Tempfile
     def self.create(stream, &block)
-      converted_epub_file = ::Tempfile.new ["converted_manuscript", ".epub"]
-      converted_epub_file.binmode
-      converted_epub_file.write stream
-      converted_epub_file.close
+      tempfile = ::Tempfile.new ["converted_manuscript", ".epub"]
+      tempfile.binmode
+      tempfile.write stream
+      tempfile.rewind
 
-      return_value = block.call(converted_epub_file)
-
-      converted_epub_file.unlink
-
-      return_value
+      return block.call(tempfile)
+    ensure
+      tempfile.close
+      tempfile.unlink
     end
   end
 end

@@ -25,10 +25,6 @@ class PapersController < ApplicationController
     respond_with PaperFactory.create(paper_params, current_user)
   end
 
-  def edit
-    render 'ember/index'
-  end
-
   def update
     if paper.locked? && !paper.locked_by?(current_user)
       paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")

@@ -14,11 +14,11 @@ class PaperUpdateWorker
   end
 
   def paper_attributes
-    JSON.parse convert_json, symbolize_names: true
+    Epub::JSONParser.parse(convert_json)
   end
 
   def convert_json
-    epub_stream = get_converted_epub parse_json(response_body)
+    epub_stream = get_converted_epub Epub::JSONParser.parse(response_body)
 
     Epub::Tempfile.create epub_stream do |file|
       extract_file_from_zip file: 'converted.json',
@@ -28,10 +28,6 @@ class PaperUpdateWorker
 
   def response_body
     Faraday.get("#{ENV['IHAT_URL']}jobs/#{job_id}").body
-  end
-
-  def parse_json(json)
-    JSON.parse json, symbolize_names: true
   end
 
   def get_converted_epub(job_response)

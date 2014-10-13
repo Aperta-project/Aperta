@@ -14,6 +14,6 @@ class ParticipationsPolicy < ApplicationPolicy
 
   def destroy?
     current_user.admin? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper? ||
-    task_owner? || allowed_manuscript_information_task? || allowed_reviewer_task? || task_participant?
+    allowed_manuscript_information_task? || allowed_reviewer_task? || task_participant?
   end
 end

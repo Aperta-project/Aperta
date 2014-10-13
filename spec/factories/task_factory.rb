@@ -16,7 +16,6 @@ FactoryGirl.define do
   end
 
   factory :reviewer_report_task, class: 'StandardTasks::ReviewerReportTask' do
-    association :assignee, factory: :user
     phase
   end
 end

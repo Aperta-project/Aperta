@@ -25,11 +25,23 @@ describe ManuscriptManagersPolicy do
     before do
       UserRole.create!(user: user, role: role)
       task = paper.tasks.first
-      task.assignee = user
+      task.participants << user
       task.save!
     end
 
     it { expect(policy.show?).to be(true) }
+  end
+
+  context "user with manuscript manager role who is not assigned to a paper task" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:journal) { FactoryGirl.create(:journal) }
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks, journal: journal) }
+    let(:role) { FactoryGirl.create(:role, journal: journal, can_view_assigned_manuscript_managers: true) }
+    before do
+      UserRole.create!(user: user, role: role)
+    end
+
+    it { expect(policy.show?).to be(false) }
   end
 
   context "user with all manuscript managers role" do

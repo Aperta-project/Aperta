@@ -67,7 +67,7 @@ class EpubConverter
   def _epub_cover_path
     epub_cover = paper.journal.epub_cover
     if Rails.application.config.carrierwave_storage == :fog && epub_cover.file
-      Epub::Tempfile.create RestClient.get(epub_cover.file.url), delete: false do |file|
+      TahiEpub::Tempfile.create RestClient.get(epub_cover.file.url), delete: false do |file|
         file.path
       end
     else
@@ -76,7 +76,7 @@ class EpubConverter
   end
 
   def _epub_css
-    Epub::Tempfile.create paper.journal.epub_css, delete: false do |file|
+    TahiEpub::Tempfile.create paper.journal.epub_css, delete: false do |file|
       file.path
     end
   end

@@ -1,4 +1,3 @@
-require 'epub/tempfile'
 class PaperUpdateWorker
   include Sidekiq::Worker
 
@@ -14,12 +13,12 @@ class PaperUpdateWorker
   end
 
   def paper_attributes
-    Epub::JSONParser.parse(convert_json)
+    TahiEpub::JSONParser.parse(convert_json)
   end
 
   def convert_json
-    epub_stream = get_converted_epub Epub::JSONParser.parse(response_body)
-    Epub::Zip.extract_file_from_zip(stream: epub_stream,
+    epub_stream = get_converted_epub TahiEpub::JSONParser.parse(response_body)
+    TahiEpub::Zip.extract_file_from_zip(stream: epub_stream,
                                     filename: 'converted.json')
   end
 

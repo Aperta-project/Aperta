@@ -29,11 +29,21 @@ class PapersController < ApplicationController
     if paper.locked? && !paper.locked_by?(current_user)
       paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
       raise ActiveRecord::RecordInvalid, paper
-    else
-      unless paper_params.has_key?(:body) && paper_params[:body].nil? # To prevent body-disappearing issue
-        paper.update(paper_params)
-      end
     end
+
+    unless togglingEditable(paper) || paper.editable?
+      paper.errors.add(:editable, "This paper is currently locked for review.")
+      raise ActiveRecord::RecordInvalid, paper
+    end
+
+    if togglingEditable(paper)
+      authorize_action_name!(:toggleEditable, paper: paper)
+    end
+
+    unless paper_params.has_key?(:body) && paper_params[:body].nil? # To prevent body-disappearing issue
+      paper.update(paper_params)
+    end
+
     respond_with paper
   end
 
@@ -96,5 +106,9 @@ class PapersController < ApplicationController
 
   def sanitize_title
     strip_tags!(params[:paper], :title)
+  end
+
+  def togglingEditable(paper)
+    paper_params[:editable] != paper.editable
   end
 end

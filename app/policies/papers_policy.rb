@@ -29,6 +29,10 @@ class PapersPolicy < ApplicationPolicy
     paper.locked_by_id == current_user.id
   end
 
+  def toggleEditable?
+    can_view_manuscript_manager?
+  end
+
   private
 
   PaperRole::ALL_ROLES.each do |role|

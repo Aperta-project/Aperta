@@ -1,6 +1,6 @@
 ETahi.PaperIndexRoute = ETahi.AuthorizedRoute.extend
   afterModel: (model) ->
-    @replaceWith('paper.edit', model) unless model.get('submitted')
+    @replaceWith('paper.edit', model) if model.get('editable')
 
   setupController: (controller, model) ->
     controller.set('model', model)

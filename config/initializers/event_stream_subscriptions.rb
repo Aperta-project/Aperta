@@ -124,12 +124,20 @@ TahiNotifier.subscribe("participation:*") do |payload|
   participation = Participation.find(id)
   user_id = participation.participant.id
   dashboard_serializer = DashboardSerializer.new({}, user: User.find(user_id))
+  participation_serializer = ParticipationSerializer.new(participation)
 
   # update user dashboard
   EventStream.post_event(
     User,
     user_id,
     dashboard_serializer.as_json.merge(action: action).to_json
+  )
+
+  # update participations
+  EventStream.post_event(
+    User,
+    user_id,
+    participation_serializer.as_json.merge(action: action).to_json
   )
 
   # update user streams

@@ -7,8 +7,8 @@ ETahi.PaperSubmitOverlayController = Ember.ObjectController.extend
 
   actions:
     submit: ->
-      @get('model').set('submitted', true).save().then(
-          (succcess) =>
+      @get('model').setProperties(submitted: true, editable: false).save().then(
+          (success) =>
             @transitionToRoute('application')
           ,
           (errorResponse) =>

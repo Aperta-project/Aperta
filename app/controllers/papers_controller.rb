@@ -77,7 +77,7 @@ class PapersController < ApplicationController
   def paper_params
     params.require(:paper).permit(
       :short_title, :title, :abstract,
-      :body, :paper_type, :submitted,
+      :body, :paper_type, :submitted, :editable,
       :journal_id,
       :locked_by_id,
       :striking_image_id,

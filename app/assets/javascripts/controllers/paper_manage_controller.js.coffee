@@ -40,3 +40,6 @@ ETahi.PaperManageController = Ember.ObjectController.extend
 
     rollbackPhase: (phase) ->
       phase.rollback()
+
+    save: ->
+      @get('model').save()

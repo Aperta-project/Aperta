@@ -23,7 +23,6 @@ class Task < ActiveRecord::Base
 
   belongs_to :phase, inverse_of: :tasks
 
-  delegate :assignees, to: :paper
 
   def self.assigned_to(*users)
     if users.empty?

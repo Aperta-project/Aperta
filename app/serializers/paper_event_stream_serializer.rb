@@ -1,3 +1,4 @@
+# TODO: change this after the other serializer stuff is all finished.
 class PaperEventStreamSerializer < ActiveModel::Serializer
   attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :updated_at
   root :paper
@@ -6,7 +7,7 @@ class PaperEventStreamSerializer < ActiveModel::Serializer
     has_many relation, embed: :ids, include: false
   end
 
-  %i(assignees editors reviewers).each do |relation|
+  %i(editors reviewers).each do |relation|
     has_many relation, embed: :ids, include: false, root: :users
   end
 

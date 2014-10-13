@@ -5,7 +5,8 @@ class PaperSerializer < ActiveModel::Serializer
     has_many relation, embed: :ids, include: true
   end
 
-  %i(assignees editors reviewers).each do |relation|
+  # these are the people that have actually been assigned to roles on the paper.
+  %i(editors reviewers).each do |relation|
     has_many relation, embed: :ids, include: true, root: :users
   end
 
@@ -21,10 +22,6 @@ class PaperSerializer < ActiveModel::Serializer
 
   def editors
     object.editors.includes(:affiliations)
-  end
-
-  def assignees
-    object.assignees.includes(:affiliations)
   end
 
   def reviewers

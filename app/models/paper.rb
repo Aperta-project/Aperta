@@ -56,15 +56,6 @@ class Paper < ActiveRecord::Base
     tasks.where(type: klass_name)
   end
 
-  def assignees
-    ids = available_admins.pluck(:id) | [user_id]
-    User.where(id: ids)
-  end
-
-  def available_admins
-    journal.admins
-  end
-
   def display_title
     title.present? ? title : short_title
   end

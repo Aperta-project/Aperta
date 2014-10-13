@@ -134,9 +134,10 @@ TahiNotifier.subscribe("participation:*") do |payload|
   )
 
   # update participations
+  paper_id = participation.task.phase.paper_id
   EventStream.post_event(
-    User,
-    user_id,
+    Paper,
+    paper_id,
     participation_serializer.as_json.merge(action: action).to_json
   )
 

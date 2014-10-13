@@ -29,15 +29,7 @@ module StandardTasks
     end
 
     def reviewer_ids
-      reviewers.pluck(:user_id)
-    end
-
-    def journal_reviewers
-      journal.reviewers
-    end
-
-    def reviewers
-      paper.reviewers
+      paper.reviewers.pluck(:user_id)
     end
 
     def update_responder

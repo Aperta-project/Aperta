@@ -24,6 +24,8 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
   validate :metadata_tasks_completed?, if: :submitting?
 
+  delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
+
   class << self
     def submitted
       where(submitted: true)

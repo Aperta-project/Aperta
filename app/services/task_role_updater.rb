@@ -1,16 +1,16 @@
 class TaskRoleUpdater
-  attr_accessor :role_task, :paper, :user, :role
+  attr_accessor :task, :paper, :user, :paper_role_name
 
-  def initialize(role_task, user_id, role)
-    @role_task = role_task
-    @paper = role_task.paper
+  def initialize(task, user_id, paper_role_name)
+    @task = task
+    @paper = task.paper
     @user = User.find(user_id)
-    @role = role
+    @paper_role_name = paper_role_name
   end
 
   def update
     paper.transaction do
-      paper.assign_role!(user, role)
+      paper.assign_role!(user, paper_role_name)
       related_tasks.each do |task|
         ParticipationFactory.create(task, user)
       end
@@ -20,6 +20,6 @@ class TaskRoleUpdater
   private
 
   def related_tasks
-    paper.tasks.without(role_task).for_role(role).incomplete
+    paper.tasks.for_role(paper_role_name).incomplete
   end
 end

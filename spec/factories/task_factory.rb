@@ -18,4 +18,8 @@ FactoryGirl.define do
   factory :reviewer_report_task, class: 'StandardTasks::ReviewerReportTask' do
     phase
   end
+
+  factory :register_decision_task, class: 'StandardTasks::RegisterDecisionTask' do
+    phase
+  end
 end

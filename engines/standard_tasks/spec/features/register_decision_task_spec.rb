@@ -2,22 +2,21 @@ require 'spec_helper'
 
 feature "Register Decision", js: true do
 
-  let(:journal) { FactoryGirl.create :journal }
-
-  let(:editor) { create :user }
-
+  let(:user) { FactoryGirl.create(:user) }
+  let(:task) { FactoryGirl.create(:register_decision_task) }
   let!(:paper) do
-    FactoryGirl.create(:paper, :with_tasks, user: editor, submitted: true, journal: journal)
+    task.paper.update_attribute(:user, user)
+    task.paper
   end
 
   before do
-    assign_journal_role(journal, editor, :editor)
-    paper_role = create(:paper_role, :editor, user: editor, paper: paper)
+    task.participants << user
+    paper.paper_roles.create!(user: user, role: PaperRole::COLLABORATOR)
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in editor
+    sign_in_page.sign_in(user)
   end
 
-  scenario "Editor registers a decision on the paper" do
+  scenario "Participant registers a decision on the paper" do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card 'Register Decision' do |overlay|

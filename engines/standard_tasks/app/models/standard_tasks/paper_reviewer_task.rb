@@ -28,15 +28,16 @@ module StandardTasks
       user_ids
     end
 
-    def reviewer_ids
-      paper.reviewers.pluck(:user_id)
-    end
 
     def update_responder
       StandardTasks::UpdateResponders::PaperReviewerTask
     end
 
     private
+
+    def reviewer_ids
+      paper.reviewers.pluck(:user_id)
+    end
 
     def reviewer_report_task_phase
       get_reviews_phase = paper.phases.where(name: 'Get Reviews').first

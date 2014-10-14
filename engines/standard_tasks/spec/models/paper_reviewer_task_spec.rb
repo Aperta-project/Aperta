@@ -82,19 +82,4 @@ describe StandardTasks::PaperReviewerTask do
       end
     end
   end
-
-  describe "#reviewer_ids" do
-    let(:task) { StandardTasks::PaperReviewerTask.create! phase: paper.phases.first }
-    let (:reviewer1) { FactoryGirl.create :user }
-    let (:reviewer2) { FactoryGirl.create :user }
-
-    before do
-      create(:paper_role, :reviewer, paper: paper, user: reviewer1)
-      create(:paper_role, :reviewer, paper: paper, user: reviewer2)
-    end
-
-    it "returns the current reviewer IDs" do
-      expect(task.reviewer_ids).to match_array [reviewer1.id, reviewer2.id]
-    end
-  end
 end

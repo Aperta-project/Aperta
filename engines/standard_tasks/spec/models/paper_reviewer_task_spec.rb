@@ -37,14 +37,6 @@ describe StandardTasks::PaperReviewerTask do
       expect(StandardTasks::ReviewerReportTask.where(phase: phase)).to be_present
     end
 
-    it "deletes reviewer report tasks of the ids not specified" do
-      phase = paper.phases.where(name: 'Get Reviews').first
-      create(:paper_role, :reviewer, paper: paper, user: albert)
-      StandardTasks::ReviewerReportTask.create!(phase: phase)
-      task.reviewer_ids = [neil.id.to_s]
-      expect(StandardTasks::ReviewerReportTask.where(phase: phase)).to be_empty
-    end
-
     it "deletes paper roles not present in the specified user_id" do
       create(:paper_role, :reviewer, paper: paper, user: albert)
       task.reviewer_ids = [neil.id.to_s]
@@ -60,24 +52,6 @@ describe StandardTasks::PaperReviewerTask do
         it "associates the ReviewerReport task from that phase" do
           task.reviewer_ids = [neil.id.to_s]
           expect(StandardTasks::ReviewerReportTask.where(phase: task.phase)).to be_present
-        end
-
-        it "deletes the ReviewerReport from that phase" do
-          task.reviewer_ids = [neil.id.to_s]
-          expect(StandardTasks::ReviewerReportTask.where(phase: task.phase)).to be_present
-          task.reviewer_ids = []
-          expect(StandardTasks::ReviewerReportTask.where(phase: task.phase)).to_not be_present
-        end
-      end
-
-      context "and the phase is changed for the ReviewerReport task" do
-        it "removes the task from that phase" do
-          task.reviewer_ids = [neil.id.to_s]
-          reviewer_report_task = StandardTasks::ReviewerReportTask.where(phase: task.phase).first
-          reviewer_report_task.update_attribute('phase_id', create(:phase, paper: paper).id)
-
-          task.reviewer_ids = []
-          expect(paper.tasks.where(type: StandardTasks::ReviewerReportTask)).to be_empty
         end
       end
     end

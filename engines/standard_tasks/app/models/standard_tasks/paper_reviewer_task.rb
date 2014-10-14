@@ -24,7 +24,6 @@ module StandardTasks
         ParticipationFactory.create(task, User.find(id))
       end
       PaperRole.reviewers_for(paper).where(user_id: old_ids).destroy_all
-      paper.tasks.where(type: StandardTasks::ReviewerReportTask).assigned_to(*old_ids).destroy_all
       user_ids
     end
 

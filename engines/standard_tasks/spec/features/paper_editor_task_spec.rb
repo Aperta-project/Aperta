@@ -23,12 +23,11 @@ feature "Assigns Editor", js: true do
 
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
-      expect(overlay.assignee).to eq 'PLEASE SELECT ASSIGNEE'
       expect(overlay).to_not be_completed
-      overlay.assignee = admin.full_name
       overlay.paper_editor = editor.full_name
       overlay.mark_as_complete
       expect(overlay).to be_completed
+      expect(overlay).to have_editor editor
     end
   end
 end

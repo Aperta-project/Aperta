@@ -14,13 +14,13 @@ feature "Tech Check", js: true do
 
     phase = paper.phases.where(name: 'Assign Editor').first
     task = phase.tasks.where(title: 'Tech Check').first
-    task.update! assignee: user
+    task.participants << user
 
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in user
   end
 
-  scenario "Journal Admin can complete the tech check card" do
+  scenario "Someone can complete the tech check card from the paper edit page" do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card 'Tech Check' do |overlay|

@@ -11,22 +11,14 @@ module StandardTasks
       super + [{ reviewer_ids: [] }]
     end
 
-    # TODO: Change this ASAP
-    # hard-coded phase name needs to go away.
-    # requires MMT changes
     def reviewer_ids=(user_ids)
-      user_ids = user_ids.map(&:to_i)
-      new_ids = user_ids - reviewer_ids
-      old_ids = reviewer_ids - user_ids
-      new_ids.each do |id|
-        PaperRole.reviewers_for(paper).where(user_id: id).create!
-        task = StandardTasks::ReviewerReportTask.create! phase: reviewer_report_task_phase
-        ParticipationFactory.create(task, User.find(id))
+      differences = Array.differences(paper.reviewers.pluck(:user_id), user_ids.map(&:to_i))
+      differences[:added].each do |id|
+        add_reviewer(User.find(id))
       end
-      PaperRole.reviewers_for(paper).where(user_id: old_ids).destroy_all
-      user_ids
+      PaperRole.reviewers_for(paper).where(user_id: differences[:removed]).destroy_all
+      differences[:added]
     end
-
 
     def update_responder
       StandardTasks::UpdateResponders::PaperReviewerTask
@@ -34,10 +26,15 @@ module StandardTasks
 
     private
 
-    def reviewer_ids
-      paper.reviewers.pluck(:user_id)
+    def add_reviewer(user)
+      transaction do
+        PaperRole.reviewers_for(paper).where(user: user).create!
+        task = StandardTasks::ReviewerReportTask.create!(phase: reviewer_report_task_phase, title: "Review by #{user.full_name}")
+        ParticipationFactory.create(task, user)
+      end
     end
 
+    # TODO: remove need for hardcoded phase name across the application
     def reviewer_report_task_phase
       get_reviews_phase = paper.phases.where(name: 'Get Reviews').first
       get_reviews_phase || phase

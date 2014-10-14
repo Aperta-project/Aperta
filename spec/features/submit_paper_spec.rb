@@ -21,7 +21,7 @@ feature "Submitting a paper", js: true do
     expect(submit_paper_overlay).to have_paper_title
 
     dashboard_page = submit_paper_overlay.submit
-    expect(dashboard_page.submitted_papers).to include paper.title
+    expect(dashboard_page).to have_submitted_paper(paper.title)
 
     paper_page = dashboard_page.view_submitted_paper paper
     expect(paper_page).to have_paper_title(paper.title)

@@ -16,7 +16,6 @@ moduleFor 'view:paperEdit', 'Unit: paperEditView',
       disable: ->
 
     controller = ETahi.__container__.lookup 'controller:paperEdit'
-    sinon.stub controller, 'toggleEditRoute'
 
     @subject().set 'controller', controller
     controller.set 'content', paper

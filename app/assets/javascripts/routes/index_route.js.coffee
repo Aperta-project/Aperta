@@ -7,8 +7,8 @@ ETahi.IndexRoute = Ember.Route.extend
     controller.set('model', model)
     papers = @store.filter 'litePaper', (p) ->
       roles = p.get('roles')
-      isMyPaper = roles.indexOf('My Paper') > -1
-      iAmCollaborator = roles.indexOf('Collaborator') > -1
+      isMyPaper = roles.contains('My Paper')
+      iAmCollaborator = roles.contains('Collaborator')
       isMyPaper || iAmCollaborator
 
     controller.set('papers', papers)

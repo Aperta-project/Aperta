@@ -34,13 +34,6 @@ ETahi.BasePaperController = Ember.ObjectController.extend
         @set('canViewManuscriptManager', false)
   ).observes('model.id')
 
-  toggleEditRoute: ( ->
-    if @get('editable')
-      @transitionToRoute('paper.edit', @get('model'))
-    else
-      @transitionToRoute('paper.index', @get('model'))
-  ).observes('editable')
-
   assignedTasks: (->
     assignedTasks = @get('tasks').filterBy 'assignee', @get('currentUser')
     authorTasks   = @get('authorTasks')

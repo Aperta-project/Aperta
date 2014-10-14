@@ -30,7 +30,7 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def toggleEditable?
-    can_view_manuscript_manager?
+    current_user.admin? || can_view_manuscript_manager?
   end
 
   private

@@ -1,4 +1,4 @@
-ETahi.PaperEditView = Ember.View.extend
+ETahi.PaperEditView = Ember.View.extend ETahi.RedirectsIfEditable,
   visualEditor: Ember.computed.alias('controller.visualEditor')
 
   locked: Ember.computed.alias 'controller.locked'

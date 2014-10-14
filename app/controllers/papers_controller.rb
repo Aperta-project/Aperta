@@ -113,6 +113,6 @@ class PapersController < ApplicationController
   end
 
   def togglingEditable(paper)
-    paper_params[:editable].presence && paper_params[:editable] != paper.editable
+    !paper_params[:editable].nil? && paper_params[:editable] != paper.editable
   end
 end

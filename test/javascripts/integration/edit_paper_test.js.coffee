@@ -113,6 +113,7 @@ module 'Integration: EditPaper',
         title: "Foo"
         body: null
         submitted: false
+        editable: true
         paper_type: "Research"
         status: null
         phase_ids: [40]

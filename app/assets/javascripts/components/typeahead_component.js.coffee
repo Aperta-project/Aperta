@@ -7,6 +7,7 @@ ETahi.TypeAheadComponent = Ember.TextField.extend
   clearOnSelect: false
   setupSelectedListener: ->
     if @get 'suggestionSelected'
+      @.$().off 'typeahead:selected'
       @.$().on 'typeahead:selected', (e, item, index) =>
         @sendAction 'suggestionSelected', item
         @$().typeahead('val', '') if @get 'clearOnSelect'

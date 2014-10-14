@@ -7,7 +7,8 @@ ETahi.ControllerParticipants = Ember.Mixin.create
       promise: $.getJSON("/filtered_users/collaborators/#{paperId}")
   ).property()
 
-  participations: Em.computed.alias('model.participations')
+  # this will get nuked eventually
+  participations: []
 
   participants: (->
     @get('participations').mapBy('participant')

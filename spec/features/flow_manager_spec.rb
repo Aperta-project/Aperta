@@ -71,13 +71,15 @@ feature "Flow Manager", js: true do
   end
 
 
-  xcontext "Comment count" do
+  context "Comment count" do
     before do
       paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false)
       task = paper1.tasks.where(type: "StandardTasks::PaperAdminTask", completed: false).first
 
       task.participants << admin
       task.comments << FactoryGirl.create(:comment, body: "Hi", commenter: FactoryGirl.create(:user))
+
+      CommentLookManager.sync_task(task)
 
       dashboard_page = DashboardPage.new
       dashboard_page.view_flow_manager

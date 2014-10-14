@@ -45,9 +45,13 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
         @store.createRecord('participation', participant: currentUser, task: newTask)
         newTask.get('comments').pushObject(@store.createRecord('comment', commenter: currentUser))
 
+      taskParticipations = @store.filter 'participation', (part) ->
+        part.get('task') == newTask
+
       @controllerFor(controllerName).setProperties({
         model: newTask
         paper: paper
+        participations: taskParticipations
       })
 
       @render(tmplName,

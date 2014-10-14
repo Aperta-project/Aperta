@@ -19,6 +19,10 @@ ETahi.TaskRoute = Ember.Route.extend
     taskController.set('model', model)
     @set('taskController', taskController)
 
+    taskParticipations = @store.filter 'participation', (part) ->
+      part.get('task') == model
+    taskController.set('participations', taskParticipations)
+
     if !Em.isEmpty(@controllerFor('application').get('overlayRedirect'))
       taskController.set 'onClose', 'redirect'
     else

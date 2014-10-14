@@ -18,8 +18,7 @@ class PaperUpdateWorker
 
   def convert_json
     epub_stream = get_converted_epub TahiEpub::JSONParser.parse(response_body)
-    TahiEpub::Zip.extract_file_from_zip(stream: epub_stream,
-                                    filename: 'converted.json')
+    TahiEpub::Zip.extract(stream: epub_stream, filename: 'converted.json')
   end
 
   def response_body

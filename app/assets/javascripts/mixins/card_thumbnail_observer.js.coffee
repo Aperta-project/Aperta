@@ -10,7 +10,6 @@ ETahi.CardThumbnailObserver = Ember.Mixin.create
     thumbnail = @store.getById('cardThumbnail', @get('id'))
     if thumbnail
       thumbnail.set('completed', @get('completed'))
-      thumbnail.set('assigneeId', @get('assignee.id'))
   ).on('didUpdate')
 
   deleteThumbnail: ( ->

@@ -8,9 +8,5 @@ module StandardTasks
     def active_model_serializer
       TaskSerializer
     end
-
-    def assignees
-      User.none
-    end
   end
 end

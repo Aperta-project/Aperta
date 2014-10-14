@@ -20,34 +20,23 @@ module StandardTasks
       old_ids = reviewer_ids - user_ids
       new_ids.each do |id|
         PaperRole.reviewers_for(paper).where(user_id: id).create!
-        StandardTasks::ReviewerReportTask.create! assignee_id: id, phase: reviewer_report_task_phase
+        task = StandardTasks::ReviewerReportTask.create! phase: reviewer_report_task_phase
+        ParticipationFactory.create(task, User.find(id))
       end
       PaperRole.reviewers_for(paper).where(user_id: old_ids).destroy_all
-      paper.tasks.where(type: StandardTasks::ReviewerReportTask, assignee_id: old_ids).destroy_all
       user_ids
     end
 
-    def reviewer_ids
-      reviewers.pluck(:user_id)
-    end
-
-    def journal_reviewers
-      journal.reviewers
-    end
-
-    def assignees
-      journal.editors
-    end
-
-    def reviewers
-      paper.reviewers
-    end
 
     def update_responder
       StandardTasks::UpdateResponders::PaperReviewerTask
     end
 
     private
+
+    def reviewer_ids
+      paper.reviewers.pluck(:user_id)
+    end
 
     def reviewer_report_task_phase
       get_reviews_phase = paper.phases.where(name: 'Get Reviews').first

@@ -16,7 +16,14 @@ FactoryGirl.define do
   end
 
   factory :reviewer_report_task, class: 'StandardTasks::ReviewerReportTask' do
-    association :assignee, factory: :user
+    phase
+  end
+
+  factory :paper_reviewer_task, class: 'StandardTasks::PaperReviewerTask' do
+    phase
+  end
+
+  factory :register_decision_task, class: 'StandardTasks::RegisterDecisionTask' do
     phase
   end
 end

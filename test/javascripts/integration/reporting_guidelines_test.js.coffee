@@ -52,7 +52,6 @@ module 'Integration: Reporting Guidelines Card',
         paper_id: TahiTest.paperId
         lite_paper_id: TahiTest.paperId
         assignee_ids: []
-        assignee_id: fakeUser.id
         question_ids: [TahiTest.questionId]
       ]
       lite_papers: [
@@ -135,7 +134,6 @@ module 'Integration: Reporting Guidelines Card',
         paper_id: TahiTest.paperId
         lite_paper_id: TahiTest.paperId
         assignee_ids: []
-        assignee_id: fakeUser.id
 
     server.respondWith 'GET', "/papers/#{TahiTest.paperId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse

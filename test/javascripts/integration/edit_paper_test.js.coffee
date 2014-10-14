@@ -25,7 +25,6 @@ module 'Integration: EditPaper',
           type: "FigureTask"
         title: "Upload Figures"
         lite_paper_id: paperId
-        assignee_id: fakeUser.id
       ]
       dashboards: [
         id: 1
@@ -150,7 +149,6 @@ module 'Integration: EditPaper',
         paper_id: paperId
         lite_paper_id: paperId
         assignee_ids: []
-        assignee_id: fakeUser.id
 
     collaborators = [
       id: "35"

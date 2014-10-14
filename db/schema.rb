@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141006160958) do
+ActiveRecord::Schema.define(version: 20141009132903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -323,18 +323,16 @@ ActiveRecord::Schema.define(version: 20141006160958) do
   end
 
   create_table "tasks", force: true do |t|
-    t.string   "title",                        null: false
-    t.string   "type",        default: "Task"
-    t.integer  "assignee_id"
-    t.integer  "phase_id",                     null: false
-    t.boolean  "completed",   default: false,  null: false
+    t.string   "title",                       null: false
+    t.string   "type",       default: "Task"
+    t.integer  "phase_id",                    null: false
+    t.boolean  "completed",  default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role",                         null: false
-    t.json     "body",        default: [],     null: false
+    t.string   "role",                        null: false
+    t.json     "body",       default: [],     null: false
   end
 
-  add_index "tasks", ["assignee_id"], name: "index_tasks_on_assignee_id", using: :btree
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
 

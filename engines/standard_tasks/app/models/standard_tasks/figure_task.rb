@@ -8,9 +8,5 @@ module StandardTasks
     def figure_access_details
       paper.figures.map(&:access_details)
     end
-
-    def assignees
-      User.none
-    end
   end
 end

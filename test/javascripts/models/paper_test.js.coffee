@@ -58,13 +58,6 @@ test 'allMetadata tasks filters tasks by isMetaData', ->
     deepEqual paper.get('allMetadataTasks').mapBy('type'), ['TechCheckTask']
   ).then(start, start)
 
-test 'Paper hasMany assignees as User', ->
-  relationships = Ember.get ETahi.Paper, 'relationships'
-  assigneeRelation = _.detect relationships.get(ETahi.User), (relationship) ->
-    relationship.name == 'assignees'
-
-  deepEqual assigneeRelation, { name: "assignees", kind: "hasMany" }
-
 test 'Paper hasMany editors as User', ->
   relationships = Ember.get ETahi.Paper, 'relationships'
   editorsRelation = _.detect relationships.get(ETahi.User), (relationship) ->

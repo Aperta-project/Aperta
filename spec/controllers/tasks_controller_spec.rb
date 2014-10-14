@@ -20,10 +20,15 @@ describe TasksController do
 
   describe "POST 'create'" do
     subject(:do_request) do
-      post :create, { format: 'json', paper_id: paper.to_param, task: { assignee_id: '1',
-                                                        type: 'Task',
-                                                        phase_id: paper.phases.last.id,
-                                                        title: 'Verify Signatures' } }
+      post :create, {
+        format: 'json',
+        paper_id: paper.to_param,
+        task: {
+          type: 'Task',
+          phase_id: paper.phases.last.id,
+          title: 'Verify Signatures'
+        }
+      }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -47,11 +52,6 @@ describe TasksController do
       expect(task.reload).to be_completed
     end
 
-    it "syncs the task assignment" do
-      expect_any_instance_of(AssignmentManager).to receive(:sync)
-      do_request
-    end
-
     it "posts an event to the event stream" do
       do_request
       task.reload
@@ -69,7 +69,7 @@ describe TasksController do
 
       before do
         user.update! admin: false
-        task.update! assignee: user
+        task.participants << user
       end
 
       it "updates the task" do

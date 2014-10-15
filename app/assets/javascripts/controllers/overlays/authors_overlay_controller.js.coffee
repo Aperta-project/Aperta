@@ -1,15 +1,9 @@
 ETahi.AuthorsOverlayController = ETahi.TaskController.extend
   newAuthorFormVisible: false
-  resolvedPaper: null
-
-  _setPaper: ( ->
-    @get('paper').then (paper) =>
-      @set('resolvedPaper', paper)
-  ).observes('paper')
 
   allAuthors: []
   _setAllAuthors: (-> @set('allAuthors', @store.all('author'))).on('init')
-  authors: (-> @get('allAuthors').filterBy('paper', @get('resolvedPaper'))).property('resolvedPaper','allAuthors.@each.paper')
+  authors: (-> @get('allAuthors').filterBy('paper', @get('paper'))).property('paper','allAuthors.@each.paper')
   authorSort: ['position:asc']
   sortedAuthors: Ember.computed.sort('authors', 'authorSort')
 
@@ -25,7 +19,7 @@ ETahi.AuthorsOverlayController = ETahi.TaskController.extend
 
     saveNewAuthor: (newAuthorHash) ->
       newAuthorHash.position = 0
-      newAuthorHash.paper = @get('resolvedPaper')
+      newAuthorHash.paper = @get('paper')
       @store.createRecord('author', newAuthorHash).save()
       @toggleProperty('newAuthorFormVisible')
 

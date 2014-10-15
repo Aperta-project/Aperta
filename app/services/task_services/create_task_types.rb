@@ -2,8 +2,7 @@ module TaskServices
   class CreateTaskTypes
     def self.call
       types = [
-        {kind: "Task",                                          default_role: nil,        default_title: "Ad-Hoc"},
-        {kind: "StandardTasks::AuthorsTask",                    default_role: "author",   default_title: "Add Authors"},
+        {kind: "PlosAuthors::PlosAuthorsTask",                  default_role: "author",   default_title: "Add Plos Author"},
         {kind: "StandardTasks::CompetingInterestsTask",         default_role: "author",   default_title: "Competing Interests"},
         {kind: "StandardTasks::DataAvailabilityTask",           default_role: "author",   default_title: "Data Availability"},
         {kind: "StandardTasks::EthicsTask",                     default_role: "author",   default_title: "Add Ethics Statement"},
@@ -19,6 +18,7 @@ module TaskServices
         {kind: "StandardTasks::TaxonTask",                      default_role: "author",   default_title: "New Taxon"},
         {kind: "StandardTasks::TechCheckTask",                  default_role: "admin",    default_title: "Tech Check"},
         {kind: "SupportingInformation::Task",                   default_role: "author",   default_title: "Supporting Info"},
+        {kind: "Task",                                          default_role: nil,        default_title: "Ad-Hoc"},
         {kind: "UploadManuscript::Task",                        default_role: "author",   default_title: "Upload Manuscript"},
       ]
 

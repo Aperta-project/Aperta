@@ -1,5 +1,5 @@
-module StandardTasks
-  class AuthorsTask < Task
+module PlosAuthors
+  class PlosAuthorsTask < Task
     include MetadataTask
 
     title "Add Authors"

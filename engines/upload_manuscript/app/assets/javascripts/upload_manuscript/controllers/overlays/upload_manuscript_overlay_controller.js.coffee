@@ -4,19 +4,25 @@ ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend ETahi.File
   ).property('litePaper.id')
 
   isProcessing: false
-  uploadProgress: 0
+
   showProgress: true
+
 
   isEditable: (->
     !@get('paper.lockedBy') && (@get('isUserEditable') || @get('isCurrentUserAdmin'))
   ).property('paper.lockedBy', 'isUserEditable', 'isCurrentUserAdmin')
 
+  progress: 0
+
+  progressBarStyle: ( ->
+    "width: #{@get('progress')}%;"
+  ).property('progress')
+
+
   actions:
     uploadProgress: (data) ->
-      @uploadProgress(data)
-      progress = Math.round(data.loaded * 100 / data.total)
-      @set('uploadProgress', progress)
-      if progress >= 100
+      @set('progress', Math.round((data.loaded / data.total) * 100))
+      if @get('progress') >= 100
         @setProperties(showProgress: false, isProcessing: true)
 
     uploadError: (message) ->

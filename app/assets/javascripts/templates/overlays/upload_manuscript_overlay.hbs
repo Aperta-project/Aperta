@@ -26,8 +26,7 @@
 <div id="paper-manuscript-upload" {{bind-attr class=isUploading::hidden}}>
   <div class="preview-container glyphicon glyphicon-file"></div>
   <div {{bind-attr class=":processing isProcessing::hidden"}}>Processing...</div>
-
   <div {{bind-attr class=":progress showProgress::hidden"}}>
-    <div class="progress-bar" {{bind-attr style=view.progressBarStyle}}></div>
+    <div class="progress-bar" {{bind-attr style=progressBarStyle}}></div>
   </div>
 </div>

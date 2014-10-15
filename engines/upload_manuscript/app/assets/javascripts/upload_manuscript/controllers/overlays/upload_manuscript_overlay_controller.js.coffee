@@ -23,7 +23,10 @@ ETahi.UploadManuscriptOverlayController = ETahi.TaskController.extend ETahi.File
     uploadProgress: (data) ->
       @set('progress', Math.round((data.loaded / data.total) * 100))
       if @get('progress') >= 100
-        @setProperties(showProgress: false, isProcessing: true)
+        setTimeout (=>
+          @setProperties(showProgress: false, isProcessing: true)
+        ), 500
+
 
     uploadError: (message) ->
       @set('uploadError', message)

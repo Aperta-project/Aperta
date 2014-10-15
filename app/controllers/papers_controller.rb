@@ -4,6 +4,7 @@ class PapersController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy
   before_action :sanitize_title, only: [:create, :update]
+  before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
   layout 'ember'
 
@@ -30,11 +31,6 @@ class PapersController < ApplicationController
   end
 
   def update
-    if paper.locked? && !paper.locked_by?(current_user)
-      paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
-      raise ActiveRecord::RecordInvalid, paper
-    end
-
     unless paper.editable?
       paper.errors.add(:editable, "This paper is currently locked for review.")
       raise ActiveRecord::RecordInvalid, paper
@@ -135,5 +131,12 @@ class PapersController < ApplicationController
 
   def sanitize_title
     strip_tags!(params[:paper], :title)
+  end
+
+  def prevent_update_on_locked!
+    if paper.locked? && !paper.locked_by?(current_user)
+      paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
+      raise ActiveRecord::RecordInvalid, paper
+    end
   end
 end

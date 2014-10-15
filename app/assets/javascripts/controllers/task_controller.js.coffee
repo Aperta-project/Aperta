@@ -2,10 +2,11 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
   needs: ['application']
   onClose: 'closeOverlay'
   isLoading: false
+  isPaperEditDisabled: Ember.computed.not('litePaper.editable')
   isPaperSubmitted: Ember.computed.alias('litePaper.submitted')
   isMetadata: Ember.computed.alias('isMetadataTask')
-  isMetadataAndSubmitted: Ember.computed.and('isPaperSubmitted', 'isMetadata')
-  isUserEditable: Ember.computed.not('isMetadataAndSubmitted')
+  isMetadataAndPaperEditDisabled: Ember.computed.and('isPaperEditDisabled', 'isMetadata')
+  isUserEditable: Ember.computed.not('isMetadataAndPaperEditDisabled')
   isCurrentUserAdmin: Ember.computed.alias 'controllers.application.currentUser.admin'
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
 

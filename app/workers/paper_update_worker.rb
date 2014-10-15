@@ -22,7 +22,7 @@ class PaperUpdateWorker
   end
 
   def response_body
-    Faraday.get("#{ENV['IHAT_URL']}jobs/#{job_id}").body
+    Faraday.get("#{ENV['IHAT_URL']}/jobs/#{job_id}").body
   end
 
   def get_converted_epub(job_response)

@@ -2,32 +2,28 @@ require 'spec_helper'
 
 feature "Assigns Reviewer", js: true do
   let(:journal) { FactoryGirl.create(:journal) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let(:task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
 
-  let(:editor) { create :user }
-
+  let(:user) { create :user }
   let!(:albert) { create :user }
-
   let!(:neil) { create :user }
 
-  let!(:paper) do
-    FactoryGirl.create :paper, :with_tasks, user: editor, submitted: true, journal: journal,
-      short_title: 'foobar', title: 'Foo Bar'
-  end
-
   before do
-    assign_journal_role(journal, editor, :editor)
+    assign_journal_role(journal, user, :editor)
     assign_journal_role(journal, albert, :reviewer)
     assign_journal_role(journal, neil, :reviewer)
-    paper_role = create(:paper_role, :editor, paper: paper, user: editor)
+    paper.paper_roles.build(user: user, role: PaperRole::COLLABORATOR)
+    task.participants << user
 
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in editor
+    sign_in_page.sign_in user
   end
 
   scenario "Editor can assign a reviewer to a paper" do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
-    manuscript_page.view_card 'Assign Reviewers' do |overlay|
+    manuscript_page.view_card task.title do |overlay|
       overlay.paper_reviewers = [albert.full_name, neil.full_name]
       expect(overlay).to have_reviewers(albert, neil)
       # the debounce in the reviewers overlay is causing a race condition between the

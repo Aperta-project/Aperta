@@ -6,7 +6,6 @@ class RegisterDecisionOverlay < CardOverlay
   def decision_letter=(body)
     synchronize_content!("Accepted")
     fill_in 'task_paper_decision_letter', with: body
-    find('label[for=assignee]').click
   end
 
   def decision_letter

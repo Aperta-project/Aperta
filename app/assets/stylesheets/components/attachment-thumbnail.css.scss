@@ -1,3 +1,10 @@
+// .attachment-thumbnail
+//   .attachment-thumbnail-image
+//   .attachment-thumbnail-edit-content
+//   .attachment-thumbnail-text-content
+//   .attachment-thumbnail-destroy-overlay
+
+
 .attachment-thumbnail {
   overflow: hidden;
   position: relative;
@@ -15,135 +22,6 @@
     left: 90px;
     top: -23px;
     margin: 0; //override .overlay-content p
-  }
-}
-
-.view-attachment-detail {
-  margin-right: 10px;
-
-  .glyphicon { margin-right: 5px; }
-}
-
-
-.attachment-edit-icon {
-  position: absolute;
-  top: 6px;
-  left: -40px;
-  margin-left: 10px;
-  color: #d4d4d4;
-  font-size: 16px;
-  cursor: pointer;
-
-  &:hover {
-    color: $tahi-green-dark;
-  }
-}
-
-.attachment-thumbnail-text-content {
-  position: relative;
-  margin: 0 20px 40px 445px;
-}
-
-._edit .attachment-thumbnail-text-content {
-  display: none;
-}
-
-.attachment-thumbnail-edit-content {
-  // position and z-index to keep above delete icon
-  position: relative;
-  z-index: 1;
-
-  display: none;
-  margin: 0 0 0 445px;
-  padding: 20px;
-  background: #C4E8BF;
-
-  input[type=text], textarea {
-    width: 100%;
-    border: 1px solid #999;
-    border-radius: 3px;
-    padding: 4px;
-    color: #555;
-  }
-
-  .field {
-    margin-bottom: 15px;
-  }
-}
-
-._edit .attachment-thumbnail-edit-content {
-  display: block;
-}
-
-
-.attachment-thumbnail-edit-actions {
-  text-align: right;
-}
-
-.attachment-thumbnail-title {
-  margin: 3px 0 1em 0;
-  font-size: 21px;
-  outline: none;
-  display: inline-block;
-}
-
-.attachment-thumbnail-caption {
-  color: #666;
-  font-size: 14px;
-  font-style: italic;
-  outline: none;
-}
-
-.attachment-thumbnail-destroy-overlay {
-  @include position(absolute, 0px 0px 0px 0px);
-  display: none;
-  padding: 20px 30px 0 30px;
-  color: #fff;
-  background-color: #29a904;
-  z-index: 1; // higher index to ensure overlay stays above all other content
-
-  p {
-    margin: 0 0 15px 0;
-    font-size: 21px;
-    font-weight: bold;
-  }
-}
-
-._destroy .attachment-thumbnail-destroy-overlay {
-  display: block;
-}
-
-.attachment-thumbnail-preview {
-  position: relative;
-  top: -5px;
-  margin-bottom: 20px;
-  border: 13px solid #000;
-  padding: 13px;
-  color: #fff;
-  text-align: center;
-  background: #fff;
-
-  img { max-width: 100%; }
-
-  .attachment-thumbnail-preview-close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0 5px 18px 15px;
-    color: #fff;
-    font-size: 68px;
-    font-weight: bold;
-    line-height: 35px;
-    background: #000;
-    cursor: pointer;
-  }
-
-  &:before {
-    content: ' ';
-    position: absolute;
-    top: -37px;
-    left: 50%;
-    @include triangle(24px, #000, up);
   }
 }
 
@@ -167,18 +45,168 @@
   &:hover { color: $tahi-green-dark; }
 }
 
+
+// start attachment-thumbnail-text-content
+
+.attachment-thumbnail-text-content {
+  position: relative;
+  margin: 0 20px 40px 445px;
+}
+
+._edit .attachment-thumbnail-text-content {
+  display: none;
+}
+
+.attachment-thumbnail-title {
+  margin: 3px 0 1em 0;
+  font-size: 21px;
+  outline: none;
+  display: inline-block;
+}
+
+.attachment-thumbnail-caption {
+  color: #666;
+  font-size: 14px;
+  font-style: italic;
+  outline: none;
+}
+
+.attachment-edit-icon {
+  position: absolute;
+  top: 6px;
+  left: -40px;
+  margin-left: 10px;
+  color: #d4d4d4;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    color: $tahi-green-dark;
+  }
+}
+
+// end attachment-thumbnail-text-content
+
+
+// start attachment-thumbnail-edit-content
+
+.attachment-thumbnail-edit-content {
+  // position and z-index to keep above delete icon
+  position: relative;
+  z-index: 1;
+
+  display: none;
+  margin: 0 0 0 445px;
+  padding: 20px;
+  background: #C4E8BF;
+
+  input[type=text], textarea {
+    width: 100%;
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 4px;
+    color: #555;
+  }
+
+  .field { margin-bottom: 15px; }
+}
+
+._edit .attachment-thumbnail-edit-content {
+  display: block;
+}
+
+.attachment-thumbnail-edit-actions {
+  text-align: right;
+}
+
+// end attachment-thumbnail-edit-content
+
+
+// start attachment-thumbnail-destroy-overlay
+
+.attachment-thumbnail-destroy-overlay {
+  @include position(absolute, 0px 0px 0px 0px);
+  display: none;
+  padding: 20px 30px 0 30px;
+  color: #fff;
+  background-color: #29a904;
+  z-index: 1; // higher index to ensure overlay stays above all other content
+
+  p {
+    margin: 0 0 15px 0;
+    font-size: 21px;
+    font-weight: bold;
+  }
+}
+
+._destroy .attachment-thumbnail-destroy-overlay {
+  display: block;
+}
+
+// end attachment-thumbnail-destroy-overlay
+
+
+// start attachment-thumbnail-preview
+
+.attachment-thumbnail-preview {
+  position: relative;
+  top: -5px;
+  margin-bottom: 20px;
+  border: 13px solid #000;
+  padding: 13px;
+  color: #fff;
+  text-align: center;
+  background: #fff;
+
+  img { max-width: 100%; }
+
+  &:before {
+    content: ' ';
+    position: absolute;
+    top: -37px;
+    left: 50%;
+    @include triangle(24px, #000, up);
+  }
+}
+
+.attachment-thumbnail-preview-close {
+  @include position(absolute, 0px 0px auto auto);
+  padding: 0 5px 18px 15px;
+  color: #fff;
+  font-size: 68px;
+  font-weight: bold;
+  line-height: 35px;
+  background: #000;
+  cursor: pointer;
+}
+
+// end attachment-thumbnail-preview
+
+
+// start attachment-thumbnail-image
+
 .attachment-thumbnail-image {
   position: relative;
   float: left;
   width: 40%;
 
-  &:hover { min-height: 50px; }
+  &:hover {
+    min-height: 50px;
 
-  .preview {
-    margin: auto;
-    cursor: pointer;
-    display: block;
+    .attachment-thumbnail-edit-overlay { display: block; }
   }
+}
+
+.attachment-thumbnail-image-preview {
+  margin: auto;
+  cursor: pointer;
+  display: block;
+}
+
+.view-attachment-detail {
+  margin-right: 10px;
+
+  .glyphicon { margin-right: 5px; }
 }
 
 .attachment-thumbnail-image-placeholder {
@@ -187,37 +215,20 @@
   text-align: center;
   background: #f6f6f6;
 
-  &:hover {
-    min-height: 200px;
-  }
+  &:hover { min-height: 200px; }
 
   .glyphicon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    @include position(absolute, 50% auto auto 50%);
     margin: -22px 0 0 -20px;
     color: $tahi-green-dark;
     font-size: 48px;
   }
 }
 
-.question-attachment {
-  background: #fff;
-}
+// end attachment-thumbnail-image
 
-.question-attachment-thumbnail-image {
-  font-size: 50px;
-  position: absolute;
-  top: 10px;
-  left: 30px;
-  height: 78px;
-  width: 66px;
-  padding: 10px;
-}
 
-.question-attachment-thumbnail-text-content {
-  margin: 25px 20px 10px 120px;
-}
+// start attachment-thumbnail-edit-overlay
 
 .attachment-thumbnail-edit-overlay, .replace-spinner {
   display: none;
@@ -225,13 +236,11 @@
   color: #fff;
   text-align: center;
   background-color: rgba(41, 169, 4, 0.6);
-
-  .attachment-thumbnail-edit-overlay-buttons {
-    @include position(absolute, 50% 0px 0px 0px);
-    margin-top: -17px;
-  }
 }
 
-.attachment-thumbnail-image:hover .attachment-thumbnail-edit-overlay {
-  display: block;
+.attachment-thumbnail-edit-overlay-buttons {
+  @include position(absolute, 50% 0px 0px 0px);
+  margin-top: -17px;
 }
+
+// end attachment-thumbnail-edit-overlay

@@ -21,7 +21,7 @@ module StandardTasks
     after_save :update_paper_admin_and_tasks, if: :paper_admin_changed?
 
     def tasks_for_admin
-      paper.tasks.without(self).for_admins.incomplete.assigned_to(assignee)
+      paper.tasks.without(self).for_role('admin').incomplete
     end
 
     def update_responder
@@ -36,7 +36,7 @@ module StandardTasks
 
     def update_paper_admin_and_tasks
       # TODO: eventually move callback to controller
-      TaskAdminAssigneeUpdater.new(self).update
+      TaskRoleUpdater.new(self, admin_id, PaperRole::ADMIN).update
     end
 
     def paper_admin_changed?

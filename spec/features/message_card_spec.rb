@@ -31,6 +31,7 @@ feature 'Message Cards', js: true do
         participants: participants,
         creator: admin
 
+      sleep 2
       needs_editor_phase = task_manager_page.phase 'Assign Editor'
       needs_editor_phase.view_card subject_text, MessageCardOverlay do |card|
         expect(card).to have_subject(subject_text)

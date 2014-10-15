@@ -13,7 +13,7 @@ class JournalAdminFlowSerializer < ActiveModel::Serializer
 
   def cached_tasks
     @cached_tasks ||= Task.joins(paper: :journal)
-      .assigned_to(current_user).includes(:paper, :assignee)
+      .assigned_to(current_user).includes(:paper, :participants)
       .where(journals: {id: current_user.roles.pluck(:journal_id).uniq })
   end
 

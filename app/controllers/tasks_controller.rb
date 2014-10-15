@@ -13,7 +13,6 @@ class TasksController < ApplicationController
 
       task.assign_attributes task_params(task)
       task.save!
-      AssignmentManager.new(task, current_user).sync
 
       render task.update_responder.new(task, view_context).response
     else

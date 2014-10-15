@@ -35,10 +35,10 @@ describe PaperFactory do
       expect(paper.tasks.pluck(:type)).to match_array(['StandardTasks::PaperAdminTask', 'StandardTasks::DataAvailabilityTask'])
     end
 
-    it "sets assignee to tasks with role = author" do
+    it "sets user as a participant on tasks with role = author" do
       paper_factory.apply_template
-      expect(paper.tasks.where(type: 'StandardTasks::PaperAdminTask').first.assignee).to be_nil
-      expect(paper.tasks.where(type: 'StandardTasks::DataAvailabilityTask').first.assignee).to eq(user)
+      expect(paper.tasks.where(type: 'StandardTasks::PaperAdminTask').first.participants).to be_empty
+      expect(paper.tasks.where(type: 'StandardTasks::DataAvailabilityTask').first.participants).to include(user)
     end
 
     it "uses the task template's title" do

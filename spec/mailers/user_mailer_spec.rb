@@ -28,23 +28,6 @@ describe UserMailer do
     end
   end
 
-  describe '#assign_task' do
-    let(:invitor) { FactoryGirl.create(:user) }
-    let(:invitee) { FactoryGirl.create(:user) }
-    let(:task) { FactoryGirl.create(:task) }
-    let(:email) { UserMailer.assign_task(invitor.id, invitee.id, task.id) }
-
-    it_behaves_like "invitor is not available"
-
-    it 'sends the email to the inivitees email address' do
-      expect(email.to).to include(invitee.email)
-    end
-
-    it 'tells the user they have been added as a collaborator' do
-      expect(email.body).to match(/just assigned the/)
-    end
-  end
-
   describe '#add_participant' do
     let(:invitor) { FactoryGirl.create(:user) }
     let(:invitee) { FactoryGirl.create(:user) }

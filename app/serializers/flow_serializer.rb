@@ -12,7 +12,7 @@ class FlowSerializer < ActiveModel::Serializer
   end
 
   def cached_tasks
-    @cached_tasks ||= Task.assigned_to(current_user).includes(:paper, :assignee)
+    @cached_tasks ||= Task.assigned_to(current_user).includes(:paper, :participants)
   end
 
   def incomplete_tasks

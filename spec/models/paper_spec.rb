@@ -115,22 +115,6 @@ describe Paper do
     end
   end
 
-  describe ".assignees" do
-    let(:user)  { create(:user) }
-    let(:admin_user)  { create(:user, :admin) }
-    let(:paper) { build(:paper, user: user) }
-
-    before do
-      allow(paper).to receive(:available_admins) do
-        User.where(id: admin_user.id)
-      end
-    end
-
-    it "should contain both users and assignees" do
-      expect(paper.assignees).to match_array([user, admin_user])
-    end
-  end
-
   describe "#role_for" do
     let(:user) { FactoryGirl.create :user }
 

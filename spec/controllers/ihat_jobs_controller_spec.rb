@@ -11,7 +11,7 @@ describe IhatJobsController, :type => :controller do
     end
 
     it "calls the PaperUpdateWorker" do
-      expect(PaperUpdateWorker).to receive(:perform_async).with(job_id: job.job_id)
+      expect(PaperUpdateWorker).to receive(:perform_async).with(job.job_id)
       put :update, id: job.job_id
     end
   end

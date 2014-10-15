@@ -1,9 +1,7 @@
 a = DS.attr
 ETahi.Paper = DS.Model.extend
-  assignees: DS.hasMany('user')
-  editors: DS.hasMany('user')
-  reviewers: DS.hasMany('user')
-  editor: Ember.computed.alias('editors.firstObject')
+  editors: DS.hasMany('user') # these are editors that have been assigned to the paper.
+  reviewers: DS.hasMany('user') # these are reviewers that have been assigned to the paper.
   collaborations: DS.hasMany('collaboration')
 
   collaborators: (->

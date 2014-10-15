@@ -24,6 +24,15 @@ GIT
       railties (>= 3.1)
 
 GIT
+  remote: git://github.com/tahi-project/tahi_epub.git
+  revision: 51e4ff148a4b4153795dc191edf5a09711566f0f
+  specs:
+    tahi_epub (0.0.1)
+      activesupport (~> 4.1)
+      fog (~> 1.24)
+      rubyzip (~> 1.1)
+
+GIT
   remote: https://github.com/rails/activemodel-globalid
   revision: 189c69988b0208d6d4760ae823043b94a84f0814
   specs:
@@ -542,6 +551,7 @@ DEPENDENCIES
   sunspot_rails
   sunspot_solr
   supporting_information!
+  tahi_epub!
   teaspoon!
   thin
   timeliness

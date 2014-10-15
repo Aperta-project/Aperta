@@ -3,6 +3,8 @@ class DownloadManuscriptWorker
   include Sidekiq::Worker
 
   def perform(manuscript_id, url, callback_url)
+    tempfile = Tempfile.new 'epub'
+
     manuscript = Manuscript.find(manuscript_id)
     manuscript.source.download!(url)
     manuscript.status = "done"
@@ -10,7 +12,6 @@ class DownloadManuscriptWorker
 
     epub = EpubConverter.new manuscript.paper, User.first, true
 
-    tempfile = Tempfile.new 'epub'
     tempfile.binmode
     tempfile.write epub.epub_stream.string
     tempfile.rewind
@@ -24,6 +25,6 @@ class DownloadManuscriptWorker
     response_attributes = TahiEpub::JSONParser.parse response.body
     IhatJob.create! paper: manuscript.paper, job_id: response_attributes[:jobs][:id]
   ensure
-    tempfile.unlink if tempfile
+    tempfile.unlink
   end
 end

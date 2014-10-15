@@ -35,21 +35,19 @@ class PapersController < ApplicationController
       raise ActiveRecord::RecordInvalid, paper
     end
 
-    unless togglingEditable(paper) || paper.editable?
+    unless paper.editable?
       paper.errors.add(:editable, "This paper is currently locked for review.")
       raise ActiveRecord::RecordInvalid, paper
     end
 
-    if togglingEditable(paper)
-      authorize_action_name!(:toggleEditable, paper: paper)
-    end
-
-    unless paper_params.has_key?(:body) && paper_params[:body].nil? # To prevent body-disappearing issue
-      paper.update(paper_params)
+    unless update_paper_params.has_key?(:body) && update_paper_params[:body].nil? # To prevent body-disappearing issue
+      paper.update(update_paper_params)
     end
 
     respond_with paper
   end
+
+  # non RESTful routes
 
   def upload
     manuscript = paper.manuscript || paper.build_manuscript
@@ -82,12 +80,39 @@ class PapersController < ApplicationController
     end
   end
 
+  def toggle_editable
+    paper.toggle!(:editable)
+    render json: paper
+  end
+
+  def submit
+    paper.update(submitted: true, editable: false)
+    render json: paper
+  end
+
   private
 
   def paper_params
     params.require(:paper).permit(
       :short_title, :title, :abstract,
       :body, :paper_type, :submitted, :editable,
+      :journal_id,
+      :locked_by_id,
+      :striking_image_id,
+      authors: [:first_name, :middle_initial, :last_name, :title, :affiliation, :secondary_affiliation, :department, :email, :deceased, :corresponding_author],
+      reviewer_ids: [],
+      phase_ids: [],
+      assignee_ids: [],
+      editor_ids: [],
+      figure_ids: []
+    )
+  end
+
+  def update_paper_params
+    # paper params excluding :submitted and :editable
+    params.require(:paper).permit(
+      :short_title, :title, :abstract,
+      :body, :paper_type,
       :journal_id,
       :locked_by_id,
       :striking_image_id,
@@ -110,9 +135,5 @@ class PapersController < ApplicationController
 
   def sanitize_title
     strip_tags!(params[:paper], :title)
-  end
-
-  def togglingEditable(paper)
-    !paper_params[:editable].nil? && paper_params[:editable] != paper.editable
   end
 end

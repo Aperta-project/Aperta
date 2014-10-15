@@ -7,11 +7,10 @@ ETahi.PaperSubmitOverlayController = Ember.ObjectController.extend
 
   actions:
     submit: ->
-      @get('model').setProperties(submitted: true, editable: false).save().then(
-          (success) =>
-            @transitionToRoute('application')
-          ,
-          (errorResponse) =>
-            errors = _.values(errorResponse.errors.base).join(' ')
-            Tahi.utils.togglePropertyAfterDelay(@, 'errorText', errors, '', 5000)
-      )
+      ETahi.RESTless.putUpdate(@get('model'), "/submit").then( =>
+          @transitionToRoute('application')
+        ,
+        (errorResponse) =>
+          errors = _.values(errorResponse.errors.base).join(' ')
+          Tahi.utils.togglePropertyAfterDelay(@, 'errorText', errors, '', 5000)
+    )

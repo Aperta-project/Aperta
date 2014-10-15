@@ -41,5 +41,5 @@ ETahi.PaperManageController = Ember.ObjectController.extend
     rollbackPhase: (phase) ->
       phase.rollback()
 
-    save: ->
-      @get('model').save()
+    toggleEditable: ->
+      ETahi.RESTless.putUpdate(@get('model'), '/toggle_editable')

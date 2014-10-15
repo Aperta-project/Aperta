@@ -66,3 +66,5 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
 
     addPaperToEventStream: (paper) ->
       @eventStream.addEventListener(paper.get('eventName'))
+
+    editableDidChange: -> null #noop, this is caught by paper.edit and paper.index

@@ -70,3 +70,6 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
         into: 'application',
         outlet: 'overlay',
         controller: 'paperSubmitOverlay'
+
+    editableDidChange: ->
+      @replaceWith('paper.index', @modelFor('paper'))

@@ -1,9 +1,6 @@
 ETahi.RedirectsIfEditable = Em.Mixin.create
   toggleEditable: ->
-    if @get('controller.model.editable')
-      @controller.transitionToRoute('paper.edit')
-    else
-      @controller.transitionToRoute('paper.index')
+    @get('controller').send('editableDidChange')
 
   setupEditableToggle: (->
     @addObserver('controller.model.editable', @, @toggleEditable)
@@ -12,4 +9,3 @@ ETahi.RedirectsIfEditable = Em.Mixin.create
   teardownEditableToggle: (->
     @removeObserver('controller.model.editable', @, @toggleEditable)
   ).on('willDestroyElement')
-

@@ -24,6 +24,6 @@ class DownloadManuscriptWorker
     response_attributes = TahiEpub::JSONParser.parse response.body
     IhatJob.create! paper: manuscript.paper, job_id: response_attributes[:jobs][:id]
   ensure
-    tempfile.unlink
+    tempfile.unlink if tempfile
   end
 end

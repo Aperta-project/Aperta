@@ -12,7 +12,7 @@ module StandardTasks
     end
 
     def reviewer_ids=(user_ids)
-      differences = Array.differences(paper.reviewers.pluck(:user_id), user_ids.map(&:to_i))
+      differences = Array.compare(paper.reviewers.pluck(:user_id), user_ids.map(&:to_i))
       differences[:added].each do |id|
         add_reviewer(User.find(id))
       end

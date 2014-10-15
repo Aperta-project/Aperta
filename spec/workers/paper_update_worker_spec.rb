@@ -34,12 +34,4 @@ describe PaperUpdateWorker do
       expect(worker.job).to eq(job)
     end
   end
-
-  # describe "#paper_attributes" do
-  #   it "requests the converted JSON from IHAT" do
-  #     json = { json: { body: "<h1>Hello</h1>" }.to_json }
-  #     expect(Faraday).to receive(:get).with("#{ENV['IHAT_URL']}/jobs/#{job.job_id}").and_return(json)
-  #     worker.paper_attributes
-  #   end
-  # end
 end

@@ -25,10 +25,11 @@ GIT
 
 GIT
   remote: git://github.com/tahi-project/tahi_epub.git
-  revision: 8b4ba86e5b828d0c6eee1b41b927da6a89099ab3
+  revision: 51e4ff148a4b4153795dc191edf5a09711566f0f
   specs:
     tahi_epub (0.0.1)
       activesupport (~> 4.1)
+      fog (~> 1.24)
       rubyzip (~> 1.1)
 
 GIT

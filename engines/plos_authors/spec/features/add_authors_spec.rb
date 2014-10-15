@@ -18,7 +18,6 @@ feature "Add contributing authors", js: true do
     edit_paper = EditPaperPage.visit paper
 
     edit_paper.view_card(task.title) do |overlay|
-      binding.pry
       overlay.add_author(first_name: 'Neils',
                          middle_initial: 'B.',
                          last_name: 'Bohr',

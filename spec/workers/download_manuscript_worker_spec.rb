@@ -8,14 +8,14 @@ describe DownloadManuscriptWorker do
     paper.create_manuscript!
   end
 
-  it "downloads the attachment" do
+  pending "downloads the attachment" do
     with_aws_cassette('manuscript') do
       DownloadManuscriptWorker.new.perform(paper.manuscript.id, url, nil)
       expect(paper.manuscript.reload.source.url).to match(%r{manuscript/source\.docx})
     end
   end
 
-  it "updates the paper title" do
+  pending "updates the paper title" do
     with_aws_cassette('manuscript') do
       DownloadManuscriptWorker.new.perform(paper.manuscript.id, url, nil)
       expect(paper.reload.title).to eq("Technical Writing Information Sheets")

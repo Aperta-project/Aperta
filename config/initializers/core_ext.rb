@@ -15,13 +15,13 @@ Hash.class_eval do
 end
 
 #
-# Calculates the differences between two arrays
+# Compares two arrays
 # examples:
-#   Array.differences( [1,2,3], [3,4,5] )
+#   Array.compare( [1,2,3], [3,4,5] )
 #   #=> {:added=>[4, 5], :common=>[3], :removed=>[1, 2]}
 #
 Array.instance_eval do
-  def differences(old, new)
+  def compare(old, new)
     { added: new - old,
       common: old & new,
       removed: old - new }

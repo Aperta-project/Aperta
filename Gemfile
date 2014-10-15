@@ -14,7 +14,7 @@ gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 
 # Gems
-gem 'rails', '4.1.1'
+gem 'rails', '4.1.6'
 gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
@@ -35,6 +35,7 @@ gem 'kaminari'
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'
 gem 'sinatra'
+gem 'active_record-acts_as'
 
 gem "nokogiri"
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'

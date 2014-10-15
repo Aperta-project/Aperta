@@ -2,8 +2,8 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
   setupController: (controller, model) ->
     if @getCurrentUser? && @getCurrentUser()
       controller.set('canViewFlowManager', @getCurrentUser().get('admin'))
-      authorize = (value) -> (result) -> controller.set('canViewAdminLinks', value)
-      Ember.$.ajax('/admin/journals/?authorization_check=true', success: authorize(true), error:authorize(false))
+      authorize = (value) -> (result) -> Ember.run -> controller.set('canViewAdminLinks', value)
+      Ember.$.ajax('/admin/journals/authorized', success: authorize(true), error:authorize(false))
 
     @_super(model, controller)
 

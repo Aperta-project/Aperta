@@ -41,7 +41,6 @@ gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
 gem "fog"
 gem "unf"
-gem 'rails_admin'
 gem 'newrelic_rpm'
 gem "rest_client", "~> 1.7.3"
 gem 'gepub'

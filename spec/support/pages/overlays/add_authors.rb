@@ -1,4 +1,4 @@
-class AddAuthorsOverlay < CardOverlay
+class AddPlosAuthorsOverlay < CardOverlay
   def add_author(author)
     find(".button-secondary", text: "ADD A NEW AUTHOR").click
     group = find('.add-author-form')

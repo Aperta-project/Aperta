@@ -45,7 +45,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
           "StandardTasks::PaperReviewerTask"
           "StandardTasks::ReviewerReportTask"
           "StandardTasks::RegisterDecisionTask"
-          "StandardTasks::AuthorsTask"
+          "PlosAuthors::PlosAuthorsTask"
           "StandardTasks::CompetingInterestsTask"
           "StandardTasks::DataAvailabilityTask"
           "StandardTasks::FigureTask"
@@ -68,9 +68,9 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
             phases: [
               name: "Submission Data"
               task_types: [
+                "PlosAuthors::PlosAuthorsTask"
                 "StandardTasks::FigureTask"
                 "SupportingInformation::Task"
-                "StandardTasks::AuthorsTask"
                 "UploadManuscript::Task"
               ]
               ,

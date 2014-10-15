@@ -2,7 +2,7 @@ module TaskServices
   class CreateTaskTypes
     def self.call
       types = [
-        {kind: "PlosAuthors::PlosAuthorsTask",                  default_role: "author",   default_title: "Add Plos Author"},
+        {kind: "PlosAuthors::PlosAuthorsTask",                  default_role: "author",   default_title: "Add Plos Authors"},
         {kind: "StandardTasks::CompetingInterestsTask",         default_role: "author",   default_title: "Competing Interests"},
         {kind: "StandardTasks::DataAvailabilityTask",           default_role: "author",   default_title: "Data Availability"},
         {kind: "StandardTasks::EthicsTask",                     default_role: "author",   default_title: "Add Ethics Statement"},
@@ -22,6 +22,7 @@ module TaskServices
         {kind: "UploadManuscript::Task",                        default_role: "author",   default_title: "Upload Manuscript"},
       ]
 
+      TaskType.destroy_all
       types.map do |attributes|
         TaskType.where(attributes).first_or_create
       end

@@ -9,23 +9,22 @@
       <span>{{unbound currentUser.fullName}}</span>
     </a>
 
-    
     <a href="#" class="navigation-item" {{action "routeTo" "index"}}>Dashboard</a>
 
-    {{#if canViewFlowManager}}
-      <a href="#" class="navigation-item" {{action "routeTo" "flow_manager"}}>Flow Manager</a>
-    {{/if}}
-
     {{#if canViewAdminLinks}}
+      <a href="#" class="navigation-item" {{action "routeTo" "flow_manager"}}>Flow Manager</a>
       <a href="#" class="navigation-item navigation-item-admin" {{action "routeTo" "admin"}}>Admin</a>
     {{/if}}
 
-     <a class="navigation-item" href="/users/sign_out"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign Out</a>  
+     <a class="navigation-item" href="/users/sign_out"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign Out</a>
   {{/if}}
 </div>
 
 {{#if error}}
-  <div id="application-error" class="alert alert-danger alert-dismissable application-error">{{error}}</div>
+  <div id="application-error" class="alert alert-danger alert-dismissable application-error">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{error}}
+  </div>
 {{/if}}
 
 <div class="main-content">

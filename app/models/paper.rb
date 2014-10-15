@@ -17,13 +17,14 @@ class Paper < ActiveRecord::Base
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
   has_many :tasks, through: :phases
   has_many :journal_roles, through: :journal
-  has_many :author_groups, -> { order("id ASC") }, inverse_of: :paper, dependent: :destroy
-  has_many :authors, through: :author_groups
+  has_many :authors, -> { order 'authors.position ASC' }
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
   validates :journal, presence: true
   validate :metadata_tasks_completed?, if: :submitting?
+
+  delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
   class << self
     def submitted
@@ -55,28 +56,23 @@ class Paper < ActiveRecord::Base
     tasks.where(type: klass_name)
   end
 
-  def assignees
-    ids = available_admins.pluck(:id) | [user_id]
-    User.where(id: ids)
-  end
-
-  def available_admins
-    journal.admins
-  end
-
   def display_title
     title.present? ? title : short_title
   end
 
-  def assign_admin!(user)
+  def assign_role!(user, role)
     transaction do
-      paper_roles.admins.destroy_all
-      paper_roles.admins.create!(user: user)
+      paper_roles.for_role(role).destroy_all
+      paper_roles.for_role(role).create!(user: user)
     end
   end
 
   def admin
     admins.first
+  end
+
+  def editor
+    editors.first
   end
 
   def metadata_tasks_completed?
@@ -87,10 +83,6 @@ class Paper < ActiveRecord::Base
 
   def submitting?
     submitted_changed? && submitted
-  end
-
-  def build_default_author_groups
-    AuthorGroup.build_default_groups_for(self)
   end
 
   def locked?

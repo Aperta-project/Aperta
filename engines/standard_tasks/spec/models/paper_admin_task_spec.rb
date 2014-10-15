@@ -14,7 +14,7 @@ describe StandardTasks::PaperAdminTask do
     let(:paper) { create(:paper, :with_tasks) }
     let!(:role) { create(:paper_role, role: 'admin', user: bob, paper: paper) } # make bob an admin for the paper
     let(:phase) { paper.phases.first }
-    let(:task)  { StandardTasks::PaperAdminTask.create(phase: phase, assignee: bob, admin_id: bob.id) }
+    let(:task)  { StandardTasks::PaperAdminTask.create(phase: phase, admin_id: bob.id) }
 
     context "when paper admin is changed" do
       it "will update paper and tasks" do

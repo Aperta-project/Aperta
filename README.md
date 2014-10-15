@@ -36,7 +36,7 @@ ES_URL=http://your-custom-event-server.example.com rails s
 
 ### Running the server
 
-- We're using Foreman to run everything in dev.  Run `bin/fs` to start the server with the correct Procfile.
+- We're using Foreman to run everything in dev.  Run `bin/foreman-start` to start the server with the correct Procfile.
 
 ### Running specs
 

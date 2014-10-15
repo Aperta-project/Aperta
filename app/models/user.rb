@@ -15,9 +15,9 @@ class User < ActiveRecord::Base
   has_many :roles, through: :user_roles
   has_many :journals, ->{ uniq }, through: :roles
   has_many :flows, inverse_of: :user, dependent: :destroy
-  has_many :tasks, foreign_key: 'assignee_id'
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many :participations, inverse_of: :participant, foreign_key: 'participant_id'
+  has_many :tasks, through: :participations
   has_many :comment_looks, inverse_of: :user
   has_many :credentials, inverse_of: :user, dependent: :destroy
   has_many :assigned_papers, ->{ uniq }, through: :paper_roles, class_name: 'Paper', source: :paper
@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   after_create :add_flows
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 255 }
+  validates_format_of :username, with: /^[A-Za-z\d_]+$/, multiline: true
   validates :email, format: Devise.email_regexp
   validates :first_name, length: { maximum: 255 }
   validates :last_name, length: { maximum: 255 }

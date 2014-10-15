@@ -17,7 +17,6 @@ FactoryGirl.define do
 
     after(:build) do |paper|
       paper.paper_type ||= paper.journal.paper_types.first
-      paper.build_default_author_groups
     end
 
     after(:create) do |paper|

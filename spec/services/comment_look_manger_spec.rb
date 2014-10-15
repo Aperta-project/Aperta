@@ -8,7 +8,7 @@ describe CommentLookManager do
     task = FactoryGirl.create(:task, participants: [participant])
     comment = FactoryGirl.create(:comment, commenter: user, task: task)
 
-    look = CommentLookManager.comment_look(participant, comment)
+    look = CommentLookManager.create_comment_look(participant, comment)
 
     expect(look).to_not be_nil
     expect(look.read_at).to be_nil
@@ -22,7 +22,7 @@ describe CommentLookManager do
     participant = FactoryGirl.create(:user)
     task.participants << participant
 
-    look = CommentLookManager.comment_look(participant, comment)
+    look = CommentLookManager.create_comment_look(participant, comment)
 
     expect(look).to be_nil
   end
@@ -33,10 +33,10 @@ describe CommentLookManager do
     task = FactoryGirl.create(:task, participants: [user])
     comment = FactoryGirl.create(:comment, commenter: user, task: task)
 
-    look = CommentLookManager.comment_look(user, comment)
+    look = CommentLookManager.create_comment_look(user, comment)
     expect(look).to_not be_nil
 
-    another_look = CommentLookManager.comment_look(user, comment)
+    another_look = CommentLookManager.create_comment_look(user, comment)
     expect(look).to eq(another_look)
   end
 
@@ -47,7 +47,7 @@ describe CommentLookManager do
     task = FactoryGirl.create(:task, participants: [participant])
     comment = FactoryGirl.create(:comment, commenter: commenter, task: task)
 
-    look = CommentLookManager.comment_look(commenter, comment)
+    look = CommentLookManager.create_comment_look(commenter, comment)
     expect(look).to be_nil
   end
 
@@ -57,7 +57,7 @@ describe CommentLookManager do
     task = FactoryGirl.create(:task, participants: [commenter])
     comment = FactoryGirl.create(:comment, commenter: commenter, task: task)
 
-    look = CommentLookManager.comment_look(commenter, comment)
+    look = CommentLookManager.create_comment_look(commenter, comment)
     expect(look.read_at).to_not be_nil
   end
 end

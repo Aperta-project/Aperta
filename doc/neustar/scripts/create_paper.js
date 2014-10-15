@@ -13,7 +13,7 @@ selenium.open("http://tahi-performance.herokuapp.com/users/sign_in");
 selenium.type("id=user_login", "test-user-13@example.com");
 selenium.type("id=user_password", "password");
 selenium.click("name=commit");
-selenium.waitForElementPresent("link=Welcome back, test-user-13");
+selenium.waitForElementPresent("link=Welcome back, testuser13");
 test.endStep();
 
 test.beginStep("Step 2 - Create Paper");

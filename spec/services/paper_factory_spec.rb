@@ -35,10 +35,10 @@ describe PaperFactory do
       expect(paper.tasks.pluck(:type)).to match_array(['StandardTasks::PaperAdminTask', 'StandardTasks::DataAvailabilityTask'])
     end
 
-    it "sets assignee to tasks with role = author" do
+    it "sets user as a participant on tasks with role = author" do
       paper_factory.apply_template
-      expect(paper.tasks.where(type: 'StandardTasks::PaperAdminTask').first.assignee).to be_nil
-      expect(paper.tasks.where(type: 'StandardTasks::DataAvailabilityTask').first.assignee).to eq(user)
+      expect(paper.tasks.where(type: 'StandardTasks::PaperAdminTask').first.participants).to be_empty
+      expect(paper.tasks.where(type: 'StandardTasks::DataAvailabilityTask').first.participants).to include(user)
     end
 
     it "uses the task template's title" do
@@ -65,11 +65,6 @@ describe PaperFactory do
       expect(PaperRole.collaborators.for_user(user).where(paper: new_paper).first).to be_present
     end
 
-    it "sets the user as the first author on the paper's first author group" do
-      expect(subject.author_groups.first).to eq Author.last.author_group
-      expect(Author.last.first_name).to eq(user.first_name)
-    end
-
     it "sets the user" do
       expect(subject.user).to eq(user)
     end
@@ -84,12 +79,6 @@ describe PaperFactory do
 
     it "saves the paper" do
       expect(subject).to be_persisted
-    end
-
-    it "creates author groups" do
-      expect {
-        subject
-      }.to change { AuthorGroup.count }.by 3
     end
 
     context "with non-existant template" do

@@ -20,10 +20,15 @@ describe TasksController do
 
   describe "POST 'create'" do
     subject(:do_request) do
-      post :create, { format: 'json', paper_id: paper.to_param, task: { assignee_id: '1',
-                                                        type: 'Task',
-                                                        phase_id: paper.phases.last.id,
-                                                        title: 'Verify Signatures' } }
+      post :create, {
+        format: 'json',
+        paper_id: paper.to_param,
+        task: {
+          type: 'Task',
+          phase_id: paper.phases.last.id,
+          title: 'Verify Signatures'
+        }
+      }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -64,49 +69,15 @@ describe TasksController do
 
       before do
         user.update! admin: false
-        task.update! assignee: user
+        task.participants << user
       end
 
       it "updates the task" do
         do_request
         expect(task.reload).to be_completed
       end
-
-      it "adds an email to the sidekiq queue if new assignee is not current user" do
-        expect {
-          put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { assignee_id: new_assignee.id }
-        }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
-      end
-
-      it "does not add an email to the sidekiq queue if new assignee is the current user" do
-        expect {
-          put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { assignee_id: user.id }
-        }.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
-      end
     end
 
-    context "when adding a participant to a message task" do
-      let(:task) { FactoryGirl.create(:message_task) }
-      let(:new_participant) { FactoryGirl.create(:user) }
-
-      it "updates the participants on the task" do
-        put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { participant_ids: [new_participant.id] }
-        expect(task.reload.participant_ids).to include(new_participant.id)
-      end
-
-      it "adds an email to the sidekiq queue if new participant is not current user" do
-        new_assignee = FactoryGirl.create(:user)
-        expect {
-          put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { participant_ids: [new_participant.id] }
-        }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
-      end
-
-      it "does not add an email to the sidekiq queue if new participant is the current user" do
-        expect {
-          put :update, format: 'json', paper_id: paper.to_param, id: task.to_param, task: { participant_ids: [user.id] }
-        }.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
-      end
-    end
 
     context "when the user is not an admin or the assignee" do
       before { user.update! admin: false }

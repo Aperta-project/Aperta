@@ -1,8 +1,10 @@
 ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
   setupController: (controller, model) ->
     if @getCurrentUser? && @getCurrentUser()
-      controller.set('canViewFlowManager', @getCurrentUser().get('admin'))
-      authorize = (value) -> (result) -> Ember.run -> controller.set('canViewAdminLinks', value)
+      authorize = (value) ->
+        (result) ->
+          Ember.run ->
+            controller.set('canViewAdminLinks', value)
       Ember.$.ajax('/admin/journals/authorized', success: authorize(true), error:authorize(false))
 
     @_super(model, controller)
@@ -41,12 +43,16 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       if taskType == 'MessageTask'
         controllerName = 'newMessageCardOverlay'
         currentUser = @getCurrentUser()
-        newTask.get('participants').pushObject(currentUser)
+        @store.createRecord('participation', participant: currentUser, task: newTask)
         newTask.get('comments').pushObject(@store.createRecord('comment', commenter: currentUser))
+
+      taskParticipations = @store.filter 'participation', (part) ->
+        part.get('task') == newTask
 
       @controllerFor(controllerName).setProperties({
         model: newTask
         paper: paper
+        participations: taskParticipations
       })
 
       @render(tmplName,

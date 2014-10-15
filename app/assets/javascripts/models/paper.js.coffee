@@ -1,16 +1,14 @@
 a = DS.attr
 ETahi.Paper = DS.Model.extend
-  assignees: DS.hasMany('user')
-  editors: DS.hasMany('user')
-  reviewers: DS.hasMany('user')
-  editor: Ember.computed.alias('editors.firstObject')
+  editors: DS.hasMany('user') # these are editors that have been assigned to the paper.
+  reviewers: DS.hasMany('user') # these are reviewers that have been assigned to the paper.
   collaborations: DS.hasMany('collaboration')
 
   collaborators: (->
     @get('collaborations').mapBy('user')
   ).property('collaborations.@each')
 
-  authorGroups: DS.hasMany('authorGroup')
+  authors: DS.hasMany('author')
   figures: DS.hasMany('figure', inverse: 'paper')
   supportingInformationFiles: DS.hasMany('supportingInformationFile')
   journal: DS.belongsTo('journal')
@@ -42,12 +40,3 @@ ETahi.Paper = DS.Model.extend
   editable: (->
     !(@get('allTasksCompleted') and @get('submitted'))
   ).property('allTasksCompleted', 'submitted')
-
-  authors: (->
-    @get('authorGroups').reduce(
-      (result, group) ->
-        group.get('authors').forEach (author) ->
-          result.pushObject(author)
-        result
-      [])
-  ).property('authorGroups.@each')

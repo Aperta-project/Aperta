@@ -51,6 +51,7 @@ gem 'pry-rails'
 gem 'pdfkit'
 gem 'mini_magick'
 gem 'timeliness'
+gem 'twitter-text'
 gem 'american_date'
 gem 'omniauth-oauth2'
 gem 'faraday_middleware'
@@ -96,6 +97,7 @@ group :development, :test, :performance do
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'pry-rescue'
+  gem 'foreman'
   gem 'sunspot_solr'
 end
 

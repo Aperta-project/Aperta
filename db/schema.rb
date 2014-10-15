@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140917134933) do
+ActiveRecord::Schema.define(version: 20141009132903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,12 +34,8 @@ ActiveRecord::Schema.define(version: 20140917134933) do
     t.datetime "updated_at"
   end
 
-  create_table "author_groups", force: true do |t|
-    t.string  "name"
-    t.integer "paper_id"
+  create_table "author_paper", force: true do |t|
   end
-
-  add_index "author_groups", ["paper_id"], name: "index_author_groups_on_paper_id", using: :btree
 
   create_table "authors", force: true do |t|
     t.string   "first_name"
@@ -52,10 +48,10 @@ ActiveRecord::Schema.define(version: 20140917134933) do
     t.boolean  "deceased",              default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "author_group_id"
     t.string   "affiliation"
     t.string   "secondary_affiliation"
     t.integer  "position"
+    t.integer  "paper_id"
   end
 
   create_table "comment_looks", force: true do |t|
@@ -108,6 +104,15 @@ ActiveRecord::Schema.define(version: 20140917134933) do
     t.string   "empty_text"
     t.integer  "user_id"
   end
+
+  create_table "ihat_jobs", force: true do |t|
+    t.integer  "paper_id"
+    t.string   "job_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ihat_jobs", ["paper_id"], name: "index_ihat_jobs_on_paper_id", using: :btree
 
   create_table "journal_task_types", force: true do |t|
     t.integer "task_type_id"
@@ -183,8 +188,8 @@ ActiveRecord::Schema.define(version: 20140917134933) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.integer  "striking_image_id"
     t.datetime "last_heartbeat_at"
+    t.integer  "striking_image_id"
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
@@ -318,18 +323,16 @@ ActiveRecord::Schema.define(version: 20140917134933) do
   end
 
   create_table "tasks", force: true do |t|
-    t.string   "title",                        null: false
-    t.string   "type",        default: "Task"
-    t.integer  "assignee_id"
-    t.integer  "phase_id",                     null: false
-    t.boolean  "completed",   default: false,  null: false
+    t.string   "title",                       null: false
+    t.string   "type",       default: "Task"
+    t.integer  "phase_id",                    null: false
+    t.boolean  "completed",  default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role",                         null: false
-    t.json     "body",        default: [],     null: false
+    t.string   "role",                        null: false
+    t.json     "body",       default: [],     null: false
   end
 
-  add_index "tasks", ["assignee_id"], name: "index_tasks_on_assignee_id", using: :btree
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
 

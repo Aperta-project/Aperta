@@ -21,8 +21,6 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
 
   setupController: (controller, model) ->
     controller.set('model', model)
-    controller.set 'authors', @store.all('author').filter (author) =>
-      model.get('authorGroups').indexOf(author.get('authorGroup')) > -1
     controller.set('commentLooks', @store.all('commentLook'))
 
   deactivate: ->
@@ -53,7 +51,7 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
     stopEditing: ->
       @endHeartbeat()
 
-    addCollaborators: ->
+    addContributors: ->
       paper = @modelFor('paper')
       collaborations = paper.get('collaborations') || []
       controller = @controllerFor('showCollaboratorsOverlay')

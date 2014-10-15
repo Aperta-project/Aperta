@@ -9,10 +9,10 @@ body       { background: transparent; } // override bootstrap
 .application-error {
   position: absolute;
   top: 50px;
-  z-index: 10000;
   right: 40%;
   text-align: center;
   min-width: 20%;
+  z-index: z($z-layer-app-error);
 }
 
 ::-webkit-scrollbar {
@@ -61,7 +61,18 @@ textarea { resize: none; }
 
 
 .matte #tahi-container {
-  padding-top: 80px;
+  overflow: auto;
+  @include position(absolute, 0px 0px 0px 0px);
+  max-width: 100%;
+  padding-top: 135px;
+  @include transition(padding-top 0.2s);
+
+  &.sub-nav-visible { padding-top: 175px; }
+
+  main {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
 }
 
 #tahi-container {
@@ -98,19 +109,6 @@ textarea { resize: none; }
   color: red;
 
   .warning { margin-top: 10px; }
-}
-
-.clear-before-and-after {
-  &:before {
-    content: ' ';
-    display: table;
-  }
-
-  &:after {
-    clear: both;
-    content: ' ';
-    display: table;
-  }
 }
 
 .submit-error {
@@ -152,16 +150,6 @@ textarea { resize: none; }
   color: $tahi-error-red;
 }
 
-.add-remove-groups div {
-  width: 35px;
-  height: 25px;
-  text-align: center;
-  border: 1px solid $tahi-green;
-  border-radius: 5px;
-  padding-top: 4px;
-  color: $tahi-green;
-}
-
 // Main Content:
 
 .main-content {
@@ -169,7 +157,7 @@ textarea { resize: none; }
   @include position(absolute, 0px 0px 0px 0px);
   @include transition(all 0.1s);
   background: #fff;
-  z-index: 1002;
+  z-index: z($z-layer-main-content);
 
   &.matte { background: #f5F5F5; }
 }
@@ -178,7 +166,7 @@ textarea { resize: none; }
   @include position(absolute, 0px 0px 0px 0px);
   display: none;
   background: rgba(250,250,250, 0.2);
-  z-index: 1002;
+  z-index: z($z-layer-main-content-cover);
 }
 
 .navigation-visible {
@@ -188,17 +176,17 @@ textarea { resize: none; }
 
 .navigation-toggle {
   @include position(fixed, 0px auto auto 0px);
-  padding: 15px 0 0 54px;
+  padding: 14px 0 0 54px;
   color: $tahi-green;
   font-size: 24px;
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
-  z-index: 1001;
+  z-index: z($z-layer-navigation-toggle);
   @include user-select(none);
 
   svg {
-    @include position(absolute, 15px auto auto 20px);
+    @include position(absolute, 14px auto auto 20px);
     width: 28px;
   }
 

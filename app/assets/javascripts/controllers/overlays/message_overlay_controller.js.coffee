@@ -4,4 +4,4 @@ ETahi.MessageOverlayController = ETahi.TaskController.extend
   setupTooltips: (->
     Ember.run.schedule 'afterRender', ->
       $('.user-thumbnail').tooltip(placement: 'bottom')
-  ).observes('model.participants.length')
+  ).observes('model.participations.length')

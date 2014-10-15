@@ -26,9 +26,30 @@ describe User do
     end
   end
 
+  describe '#username' do
+    it 'validates username' do
+      user = FactoryGirl.build(:user, username: 'mihaly')
+      expect(user.save!).to eq true
+    end
+
+    it 'validates against blank username' do
+      user = FactoryGirl.build(:user, username: '')
+      expect(user).to_not be_valid
+      expect(user.errors.size).to eq 2
+      expect(user.errors.to_a.first).to eq "Username can't be blank"
+      expect(user.errors.to_a.last).to eq "Username is invalid"
+    end
+
+    it 'validates against username with dashes' do
+      user = FactoryGirl.build(:user, username: 'blah-blah')
+      expect(user).to_not be_valid
+      expect(user.errors.size).to eq 1
+      expect(user.errors.first).to eq [:username, "is invalid"]
+    end
+  end
+
   describe "callbacks" do
     context "before_create" do
-
       it "initializes with a set of default flows" do
         user = FactoryGirl.create(:user)
         default_flow_titles = ["Up for grabs", "My tasks", "My papers", "Done"]

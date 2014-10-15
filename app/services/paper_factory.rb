@@ -25,8 +25,7 @@ class PaperFactory
 
   def create
     Paper.transaction do
-      paper.build_default_author_groups
-      paper.author_groups.first.authors << Author.new(to_author(author))
+      paper.authors << Author.new(to_author(author))
       add_collaborator(paper, author)
       if paper.valid?
         if template
@@ -47,10 +46,10 @@ class PaperFactory
       body: task_template.template,
       role: task_template.journal_task_type.role
     )
-    if task.role == 'author'
-      task.assignee = author
-    end
     task.save!
+    if task.role == 'author'
+      task.participants << author
+    end
   end
 
   def template

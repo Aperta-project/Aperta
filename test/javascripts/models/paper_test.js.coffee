@@ -1,7 +1,7 @@
 moduleForModel 'paper', 'Unit: Paper Model',
   needs: ['model:author', 'model:user', 'model:figure', 'model:journal',
-  'model:supportingInformationFile', 'model:phase', 'model:task', 'model:comment',
-  'model:litePaper', 'model:authorGroup', 'model:cardThumbnail', 'model:question', 'model:collaboration']
+  'model:supportingInformationFile', 'model:phase', 'model:task', 'model:comment', 'model:participation',
+  'model:litePaper', 'model:cardThumbnail', 'model:question', 'model:collaboration']
   setup: -> setupApp()
   teardown: -> ETahi.reset()
 
@@ -57,13 +57,6 @@ test 'allMetadata tasks filters tasks by isMetaData', ->
   paperPromise.then((paper) ->
     deepEqual paper.get('allMetadataTasks').mapBy('type'), ['TechCheckTask']
   ).then(start, start)
-
-test 'Paper hasMany assignees as User', ->
-  relationships = Ember.get ETahi.Paper, 'relationships'
-  assigneeRelation = _.detect relationships.get(ETahi.User), (relationship) ->
-    relationship.name == 'assignees'
-
-  deepEqual assigneeRelation, { name: "assignees", kind: "hasMany" }
 
 test 'Paper hasMany editors as User', ->
   relationships = Ember.get ETahi.Paper, 'relationships'

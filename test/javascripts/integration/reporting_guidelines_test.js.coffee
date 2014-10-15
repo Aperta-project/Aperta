@@ -52,7 +52,6 @@ module 'Integration: Reporting Guidelines Card',
         paper_id: TahiTest.paperId
         lite_paper_id: TahiTest.paperId
         assignee_ids: []
-        assignee_id: fakeUser.id
         question_ids: [TahiTest.questionId]
       ]
       lite_papers: [
@@ -65,14 +64,9 @@ module 'Integration: Reporting Guidelines Card',
       users: [fakeUser]
       affiliations: []
       figures: []
-      author_groups: [
-        id: 41
-        name: "First Author"
-        author_ids: [fakeUser.id]
-        paper_id: TahiTest.paperId
-      ]
       authors: [
         id: fakeUser.id
+        paper_id: TahiTest.paperId
         first_name: "Fake"
         middle_initial: null
         last_name: "User"
@@ -84,7 +78,6 @@ module 'Integration: Reporting Guidelines Card',
         deceased: false
         department: null
         position: 1
-        author_group_id: 41
       ]
       supporting_information_files: []
       journals: [
@@ -110,6 +103,7 @@ module 'Integration: Reporting Guidelines Card',
         supporting_information_file_ids: []
         reporting_guidelines_ids: []
         assignee_ids: [fakeUser.id]
+        author_ids: [fakeUser.id]
         editor_ids: []
         reviewer_ids: []
         tasks: [
@@ -140,7 +134,6 @@ module 'Integration: Reporting Guidelines Card',
         paper_id: TahiTest.paperId
         lite_paper_id: TahiTest.paperId
         assignee_ids: []
-        assignee_id: fakeUser.id
 
     server.respondWith 'GET', "/papers/#{TahiTest.paperId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse

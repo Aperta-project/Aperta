@@ -37,7 +37,7 @@ Tahi.utils =
     ms)
 
   debug: (description, obj) ->
-    if ETahi.environment == 'development'
+    if ETahi.environment == 'development' || ETahi.environment == 'test' || Ember.testing
       console.groupCollapsed(description)
       console.log(Em.copy(obj, true))
       console.groupEnd()

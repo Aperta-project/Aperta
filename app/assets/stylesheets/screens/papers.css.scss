@@ -1,5 +1,6 @@
 #control-bar-paper-journal-logo {
   height: 71px;
+  margin-top: 7px;
   margin-right: 20px;
 
   div { padding-top: 6px; }
@@ -17,7 +18,7 @@
   h2 {
     overflow: hidden;
     width: 680px;
-    padding: 11px 0 0 5px;
+    padding: 16px 0 0 5px;
     font-family: $tahi-article-font-family;
     font-size: 18px;
     text-overflow: ellipsis;
@@ -28,26 +29,9 @@
   }
 }
 
-#toolbar {
-  height: 60px;
-  width: 100%;
-
-  .cke_button_icon.cke_button__tahisave_icon {
-    display: none;
-  }
-
-  .cke_button_label.cke_button__tahisave_label {
-    display: inline;
-    padding-left: 0;
-    padding: 0 5px;
-    // text-transform: uppercase;
-    // font-weight: bold;
-  }
-}
-
 #paper-title {
-  margin-top: 60px;
-
+  margin-top: 50px;
+  font-family: $tahi-article-font-family;
 }
 
 #paper-authors {
@@ -69,11 +53,19 @@
 }
 
 #paper-body .oo-ui-toolbar {
-  position: fixed;
-  top: 0;
-  width: 839px;
+  @include position(fixed, $tahi-control-bar-height 0px auto 0px);
+  height: 45px;
+  padding-top: 2px;
   background: none !important; // Blocks buttons as of July 28, 2014
-  z-index: 1000;
+  z-index: z($z-layer-ve-toolbar);
+  @include transition(top 0.2s);
+}
+
+.ve-toolbar-underside {
+  @include position(absolute, $tahi-control-bar-height 0px auto 0px);
+  height: 45px;
+  background: #fff;
+  z-index: 1;
 }
 
 // Not really sure what this is. Breaks default toolbar buttons as of July 28, 2014
@@ -81,174 +73,162 @@
   display: none;
 }
 
-.oo-ui-toolbar-bar {
-  height: 45px;
+#paper-body .oo-ui-toolbar-tools {
+  float: none;
+  width: 1120px;
+  margin: 0 auto;
+}
+
+#paper-body .oo-ui-toolbar-bar {
+  height: 43px;
   padding-top: 2px;
+
+  &.locked { opacity: 0.5; }
 }
 
 #paper-abstract { display: none; }
+
+#paper-placeholder {
+  position: absolute;
+  top: 315px;
+  z-index: 5;
+  color: $tahi-grey-dark;
+  font-style: italic;
+}
 
 .author-detail {
   display: inline-block;
   min-width: 100px;
 }
 
-#tahi-container > main {
-  position: relative;
+#tahi-container main {
+  overflow: hidden;
   background: #fff;
 
-  > article {
-    position: relative;
+  article {
     width: 75%;
     border-right: 1px solid $tahi-grey-light;
-    padding: 0;
-
-    .title { padding-top: 26px; }
   }
 
-  > aside {
-    overflow: auto;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 280px;
+  aside {
+    float: right;
+    width: 25%;
   }
-}
-
-.muted {
-  color: #aaa;
-}
-
-#tahi-container > main > article table.cke_show_border > tbody > tr > td {
-  border: #666 1px dotted;
 }
 
 .locked-overlay {
   position: absolute;
   height: 100%;
   width: 100%;
+  font-size: 24px;
+  text-align: center;
   background-color: transparent;
   z-index: 1;
-  text-align: center;
-  font-size: 24px;
 }
 
 .task-list {
-  width: 280px;
-  padding: 0 30px;
+  padding: 40px 30px 0 30px;
 }
 
 .manuscript-container {
   font-family: $tahi-article-font-family;
   width: 700px;
   margin: 0 auto;
-
-  #paper-title {
-    font-family: $tahi-article-font-family;
-  }
 }
 
-.ve-toolbar-underside {
-  position: fixed;
-  width: 839px;
-  height: 45px;
-  background: #fff;
-}
 
-.edit-paper {
-  position: fixed;
-  z-index: 1010;
-  padding-left: 10px;
-}
+// start edit-paper section
 
-.prompt {
-  text-transform: uppercase;
-}
-
-.lock-message {
-  font-family: $tahi-font-family;
-  width: 200px;
-  font-size: 12px;
-  font-style: italic;
-  color: $tahi-purple;
-  z-index: 1;
-
-  span {
-    display: inline-block;
-  }
-}
-
-.start-editing-button {
-  width: 150px;
-
-  .start-editing-icon {
-    padding-right: 22px;
-  }
-}
-
-.stop-edit {
-  margin-top: -6px;
-  margin-left: -8px;
-}
-
-.user-name {
-  @extend %truncates;
+.edit-paper              { padding: 40px 0 0 72px; }
+.edit-paper-button       { width: 150px; margin-right: 5px; }
+.edit-paper-start-icon   { padding-right: 22px; }
+.edit-paper-stop-icon    { margin: -6px 0 0 -8px; }
+.edit-paper-locked-by {
+  @include ellipsis;
   width: initial;
   max-width: 95px;
   vertical-align: bottom;
 }
-
-.oo-ui-toolbar {
-  background-color: #fff;
-}
-
-.oo-ui-toolbar-tools {
-  float: right;
-}
-
-.oo-ui-toolbar-bar {
-  &.locked {
-    opacity: 0.5;
-  }
-}
-
-#paper-placeholder {
-  position: absolute;
-  top: 191px;
-  z-index: 5;
-  color: $tahi-grey-dark;
+.edit-paper-lock-message {
+  width: 200px;
+  color: $tahi-purple;
+  font-family: $tahi-font-family;
+  font-size: 12px;
   font-style: italic;
+  z-index: 1;
+}
+.edit-paper .glyphicon-lock,
+.edit-paper .edit-paper-lock-message span {
+  overflow: hidden;
 }
 
-.collaborators {
-  margin: 0 auto;
-  margin-top: 15px;
-  padding: 0 30px;
-  line-height: 15px;
+// end edit-paper section
 
-  .add-collaborators {
-    margin-top: 7px;
-    color: $tahi-green;
-    display: block;
-    cursor: pointer;
-  }
+
+// start contributors section
+
+.contributors {
+  display: none;
+  padding-right: 25px;
+  text-align: right;
+
+  &.active { display: block; }
 }
 
-.collaborator-status {
+.contributors-add {
+  margin-right: 15px;
+  color: $tahi-green;
+  cursor: pointer;
+}
+
+.contributor {
   display: inline-block;
-  margin: 3px 5px 3px 0;
-  .circle {
+  margin: 3px 10px 3px 0;
+
+  &:before {
+    content: ' ';
+    $circle-radius: 0.8em;
     display: inline-block;
+    width: $circle-radius;
+    height: $circle-radius;
+    margin-right: 4px;
+    border: 2px solid $tahi-green;
+    border-radius: $circle-radius / 2;
     vertical-align: middle;
+    background-color: $tahi-green-light;
   }
 }
 
-.circle {
-  $circle-radius: 0.8em;
-  background-color: $tahi-green-light;
-  height: $circle-radius;
-  width: $circle-radius;
-  border-radius: $circle-radius / 2;
-  border: 2px solid $tahi-green;
+// end contributors section
+
+
+.manuscript-download-links {
+  overflow: hidden;
+  display: none;
+
+  &.active { display: block; }
+
+  svg {
+    float: right;
+    display: inline;
+  }
+
+  svg path {
+    fill: $tahi-green;
+  }
+
+  a {
+    overflow: hidden;
+    float: right;
+    display: block;
+    height: 27px;
+    margin-right: 25px;
+    line-height: 27px;
+    text-decoration: none;
+
+    &:hover {
+      color: $tahi-green-dark;
+      svg path { fill: $tahi-green-dark; }
+    }
+  }
 }

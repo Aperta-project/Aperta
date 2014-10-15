@@ -105,17 +105,10 @@ module StandardTasks
       paper.update(decision_letter: body)
     end
 
-    def assignees
-      journal.editors
-    end
-
-    def paper_editor
-      paper.editors.first
-    end
-
     private
 
     def template_data
+      paper_editor = paper.editor
       editor_name = paper_editor.present? ? paper_editor.full_name : "***\nEditor not assigned\n***"
       { author_last_name: paper.user.last_name,
         manuscript_title: paper.title,

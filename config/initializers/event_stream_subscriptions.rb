@@ -29,8 +29,37 @@ TahiNotifier.subscribe("supporting_information/file:*", "figure:*", "paper:*", "
   )
 end
 
-TahiNotifier.subscribe("task:destroyed") do |payload|
+TahiNotifier.subscribe("author:created", "author:updated") do |payload|
   action     = payload[:action]
+  id         = payload[:id]
+  paper_id   = payload[:paper_id]
+  meta       = payload[:meta]
+  klass      = payload[:klass]
+
+  record = klass.find(id)
+  serializer = record.event_stream_serializer
+  serializer.root = false
+  authors = record.paper.authors.map { |a| serializer.new(a).as_json }
+  authors_payload = {authors: authors}
+  EventStream.post_event(
+    Paper,
+    paper_id,
+    authors_payload.merge(action: action, meta: meta).to_json
+  )
+end
+
+TahiNotifier.subscribe("author:destroyed") do |payload|
+  id         = payload[:id]
+  paper_id   = payload[:paper_id]
+
+  EventStream.post_event(
+    Paper,
+    paper_id,
+    { action: "destroyed", authors: [id] }.to_json
+  )
+end
+
+TahiNotifier.subscribe("task:destroyed") do |payload|
   task_id    = payload[:task_id]
   paper_id   = payload[:paper_id]
 
@@ -86,4 +115,36 @@ TahiNotifier.subscribe("paper_role:destroyed") do |payload|
       { action: "updateStreams" }.to_json
     )
   end
+end
+
+TahiNotifier.subscribe("participation:*") do |payload|
+  action   = payload[:action]
+  id       = payload[:id]
+
+  participation = Participation.find(id)
+  user_id = participation.participant.id
+  dashboard_serializer = DashboardSerializer.new({}, user: User.find(user_id))
+  participation_serializer = ParticipationSerializer.new(participation)
+
+  # update user dashboard
+  EventStream.post_event(
+    User,
+    user_id,
+    dashboard_serializer.as_json.merge(action: action).to_json
+  )
+
+  # update participations
+  paper_id = participation.task.phase.paper_id
+  EventStream.post_event(
+    Paper,
+    paper_id,
+    participation_serializer.as_json.merge(action: action).to_json
+  )
+
+  # update user streams
+  EventStream.post_event(
+    User,
+    user_id,
+    { action: "updateStreams" }.to_json
+  )
 end

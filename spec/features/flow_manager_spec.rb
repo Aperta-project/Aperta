@@ -30,7 +30,7 @@ feature "Flow Manager", js: true do
   end
 
   def assign_tasks_to_user(paper, user, titles)
-    paper.tasks.each { |t| t.update(assignee: user) if titles.include? t.title }
+    paper.tasks.each { |t| t.participants << user if titles.include? t.title }
   end
 
   def complete_tasks(paper, titles)
@@ -71,13 +71,15 @@ feature "Flow Manager", js: true do
   end
 
 
-  xcontext "Comment count" do
+  context "Comment count" do
     before do
-      paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: admin)
+      paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false)
       task = paper1.tasks.where(type: "StandardTasks::PaperAdminTask", completed: false).first
 
       task.participants << admin
       task.comments << FactoryGirl.create(:comment, body: "Hi", commenter: FactoryGirl.create(:user))
+
+      CommentLookManager.sync_task(task)
 
       dashboard_page = DashboardPage.new
       dashboard_page.view_flow_manager
@@ -92,8 +94,10 @@ feature "Flow Manager", js: true do
 
   context "PaperAdminTasks without assigned admin column placements" do
     before do
-      paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: nil)
-      paper2.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: admin)
+      paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false)
+      paper2.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false)
+      assign_tasks_to_user(paper2, admin, ["Assign Admin"])
+
       dashboard_page = DashboardPage.new
       dashboard_page.view_flow_manager
     end
@@ -125,8 +129,8 @@ feature "Flow Manager", js: true do
     end
 
     before do
-      unassigned_paper.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: true, assignee_id: nil)
-      unassociated_paper.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false, assignee_id: nil)
+      unassigned_paper.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: true)
+      unassociated_paper.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false)
       dashboard_page = DashboardPage.new
       dashboard_page.view_flow_manager
     end
@@ -149,8 +153,8 @@ feature "Flow Manager", js: true do
 
   context "an admin with papers assigned to them" do
     before do
-      paper1.assign_admin!(admin)
-      paper2.assign_admin!(admin)
+      paper1.assign_role!(admin, PaperRole::ADMIN)
+      paper2.assign_role!(admin, PaperRole::ADMIN)
     end
 
     scenario "Your Papers" do

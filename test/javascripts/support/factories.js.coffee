@@ -212,7 +212,7 @@ ETahi.FactoryAttributes.Paper =
   status: null
   phase_ids: []
   figure_ids: []
-  author_group_ids: []
+  author_ids: []
   supporting_information_file_ids: []
   assignee_ids: []
   editor_ids: []
@@ -242,7 +242,6 @@ ETahi.FactoryAttributes.MessageTask =
   paper_id: null
   lite_paper_id: null
   assignee_ids: []
-  assignee_id: null
   participant_ids: []
   comment_ids: []
 
@@ -259,7 +258,6 @@ ETahi.FactoryAttributes.Task =
   paper_id: null
   lite_paper_id: null
   assignee_ids: []
-  assignee_id: null
   participant_ids: []
   comment_ids: []
 

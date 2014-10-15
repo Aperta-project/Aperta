@@ -90,7 +90,6 @@ feature "Manuscript Manager", js: true do
     needs_editor_phase = TaskManagerPage.new.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay).to_not be_completed
-      expect(overlay).to have_assignee(admin.full_name)
     end
   end
 end

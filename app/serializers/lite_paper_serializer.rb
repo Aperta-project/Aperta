@@ -1,5 +1,5 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :short_title, :submitted, :roles, :unread_comments_count, :related_at_date, :editable
+  attributes :id, :title, :short_title, :submitted, :roles, :unread_comments_count, :related_at_date
 
   def user
     if (defined? current_user) && current_user

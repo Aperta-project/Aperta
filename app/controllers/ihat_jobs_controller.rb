@@ -1,4 +1,5 @@
 class IhatJobsController < ApplicationController
+  skip_before_action :authenticate_with_basic_http
   protect_from_forgery with: :null_session
 
   def update

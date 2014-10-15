@@ -1,6 +1,5 @@
 Tahi::Application.routes.draw do
   mount Kss::Engine => '/kss' if Rails.env.development?
-  mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
   mount StandardTasks::Engine => '/', as: 'standard_tasks'
 
   if Rails.env.development? || Rails.env.test?

@@ -1,11 +1,16 @@
 ETahi.RedirectsIfEditable = Em.Mixin.create
+  editable: Ember.computed.alias('controller.model.editable')
+
   toggleEditable: ->
-    @get('controller').send('editableDidChange')
+    if @get('editable') != @get('lastEditable')
+      @set('lastEditable', @get('editable'))
+      @get('controller').send('editableDidChange')
 
   setupEditableToggle: (->
-    @addObserver('controller.model.editable', @, @toggleEditable)
+    @set('lastEditable', @get('editable'))
+    @addObserver('editable', @, @toggleEditable)
   ).on('didInsertElement')
 
   teardownEditableToggle: (->
-    @removeObserver('controller.model.editable', @, @toggleEditable)
+    @removeObserver('editable', @, @toggleEditable)
   ).on('willDestroyElement')

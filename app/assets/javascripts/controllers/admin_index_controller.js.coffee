@@ -1,7 +1,4 @@
-ETahi.AdminIndexController = Ember.ArrayController.extend
-  needs: ['admin']
-  isLoading: Em.computed.alias('controllers.admin.isLoading')
-  model: Em.computed.alias('controllers.admin.model')
+ETahi.AdminIndexController = Ember.ArrayController.extend Ember.PromiseProxyMixin,
   sortProperties: ['createdAt']
   sortAscending: false
   placeholderText: "Need to find a user?<br> Search for them here."

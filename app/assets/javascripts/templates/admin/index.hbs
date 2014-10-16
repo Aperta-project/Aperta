@@ -1,16 +1,16 @@
 <div id="tahi-container" class="admin-screen">
-  {{progress-spinner visible=isLoading}}
+  {{progress-spinner visible=isPending}}
 
   <div class="row">
     <div class="col-md-6">
       <a class="add-new-journal button-primary button--blue pull-right" href="#" {{action "addNewJournal"}}>Add new journal</a>
       <h2>Journals</h2>
       <ul class="journals">
-        {{#unless isLoading}}
+        {{#if isFulfilled}}
           {{#each journal in arrangedContent}}
             {{render "journal/thumbnail" journal}}
           {{/each}}
-        {{/unless}}
+        {{/if}}
       </ul>
     </div>
     <div class="col-md-4 col-md-offset-2">

@@ -1,6 +1,8 @@
 ETahi.VisualEditorService = Em.Object.extend
   init: ->
-    ve.init.platform.setModulesUrl('/visual-editor/modules')
+    ve.init.platform.addMessagePath '/visual-editor/i18n/'
+    ve.init.platform.addMessagePath '/visual-editor/lib/oojs-ui/i18n/'
+    ve.init.platform.initialize()
 
   isEnabled: false
   isFocused: false

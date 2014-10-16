@@ -9,12 +9,14 @@ moduleFor 'view:paperEdit', 'Unit: paperEditView',
       title: ''
       shortTitle: 'Does not matter'
       body: 'hello'
+      editable: true
 
     sinon.stub(ETahi.VisualEditorService, 'create').returns
       enable: ->
       disable: ->
 
     controller = ETahi.__container__.lookup 'controller:paperEdit'
+
     @subject().set 'controller', controller
     controller.set 'content', paper
 

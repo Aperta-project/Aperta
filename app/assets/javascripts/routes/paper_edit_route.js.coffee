@@ -13,11 +13,11 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
       paper.get('tasks').then((tasks) -> resolve(paper)))
 
   afterModel: (model) ->
-    if model.get('submitted')
-      @replaceWith('paper.index', model)
-    else
+    if model.get('editable')
       @set('heartbeatService', ETahi.HeartbeatService.create(resource: model))
       @startHeartbeat()
+    else
+      @replaceWith('paper.index', model)
 
   setupController: (controller, model) ->
     controller.set('model', model)
@@ -70,3 +70,6 @@ ETahi.PaperEditRoute = ETahi.AuthorizedRoute.extend
         into: 'application',
         outlet: 'overlay',
         controller: 'paperSubmitOverlay'
+
+    editableDidChange: ->
+      @replaceWith('paper.index', @modelFor('paper'))

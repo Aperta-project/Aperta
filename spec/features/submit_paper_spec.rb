@@ -17,11 +17,12 @@ feature "Submitting a paper", js: true do
   end
 
   scenario "Author submits a paper" do
-    submit_paper_overlay = EditPaperPage.visit(paper).submit
+    foo = EditPaperPage.visit(paper)
+    submit_paper_overlay = foo.submit
     expect(submit_paper_overlay).to have_paper_title
 
     dashboard_page = submit_paper_overlay.submit
-    expect(dashboard_page.submitted_papers).to include paper.title
+    expect(dashboard_page).to have_submitted_paper(paper.title)
 
     paper_page = dashboard_page.view_submitted_paper paper
     expect(paper_page).to have_paper_title(paper.title)

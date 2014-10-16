@@ -1,4 +1,5 @@
 ETahi.PaperSubmitOverlayController = Ember.ObjectController.extend
+  needs: ['application']
   overlayClass: 'overlay--fullscreen paper-submit-overlay'
 
   displayTitle: (->
@@ -7,11 +8,11 @@ ETahi.PaperSubmitOverlayController = Ember.ObjectController.extend
 
   actions:
     submit: ->
-      @get('model').set('submitted', true).save().then(
-          (succcess) =>
-            @transitionToRoute('application')
-          ,
-          (errorResponse) =>
-            errors = _.values(errorResponse.errors.base).join(' ')
-            Tahi.utils.togglePropertyAfterDelay(@, 'errorText', errors, '', 5000)
-      )
+      ETahi.RESTless.putUpdate(@get('model'), "/submit").then( =>
+        @transitionToRoute('application')).catch ({status, model}) =>
+          message = switch status
+            when 422 then model.get('errors.messages') + " You should probably reload."
+            when 403 then "You weren't authorized to do that"
+            else "There was a problem saving.  Please reload."
+
+          @get('controllers.application').set('error', message)

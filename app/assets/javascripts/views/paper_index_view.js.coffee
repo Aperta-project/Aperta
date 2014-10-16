@@ -1,4 +1,4 @@
-ETahi.PaperIndexView = Ember.View.extend
+ETahi.PaperIndexView = Ember.View.extend ETahi.RedirectsIfEditable,
   subNavVisible: false
   downloadsVisible: false
   contributorsVisible: false

@@ -85,6 +85,10 @@
     svg path,
     svg rect { fill: $tahi-green-dark; }
   }
+
+  input[type=checkbox] {
+    margin-top: 0px;
+  }
 }
 
 .control-bar-link-icon {

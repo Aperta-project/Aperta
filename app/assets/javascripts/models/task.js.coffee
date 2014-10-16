@@ -14,7 +14,7 @@ ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
 
   isMetadataTask: false
   isMessage: Ember.computed.equal('type', 'MessageTask')
-  paper: DS.belongsTo('paper', async: true)
+  paper: DS.belongsTo('paper')
   litePaper: DS.belongsTo('litePaper')
   cardThumbnail: DS.belongsTo('cardThumbnail', inverse: 'task')
 

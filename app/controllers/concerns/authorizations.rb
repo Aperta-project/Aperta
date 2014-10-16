@@ -5,8 +5,6 @@ module Authorizations
 
   included do
     rescue_from AuthorizationError, with: :render_forbidden
-    helper_method :can_perform?
-    helper_method :can_perform_action?
   end
 
   def enforce_policy

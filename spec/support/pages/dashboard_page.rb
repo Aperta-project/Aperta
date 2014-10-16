@@ -1,6 +1,7 @@
 class DashboardPage < Page
   path :root
   text_assertions :welcome_message, '.welcome-message'
+  text_assertions :submitted_paper, '.dashboard-submitted-papers li'
 
   def new_submission
     click_on "Create New Submission"

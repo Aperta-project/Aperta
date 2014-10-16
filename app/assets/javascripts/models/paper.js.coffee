@@ -24,6 +24,7 @@ ETahi.Paper = DS.Model.extend
   paperType: a('string')
   eventName: a('string')
   strikingImageId: a('string')
+  editable: a('boolean')
 
   relationshipsToSerialize: []
 
@@ -36,7 +37,3 @@ ETahi.Paper = DS.Model.extend
   ).property('tasks.content.@each.isMetadataTask')
 
   allMetadataTasksCompleted: ETahi.computed.all('allMetadataTasks', 'completed', true)
-
-  editable: (->
-    !(@get('allTasksCompleted') and @get('submitted'))
-  ).property('allTasksCompleted', 'submitted')

@@ -4,6 +4,7 @@ class PapersController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy
   before_action :sanitize_title, only: [:create, :update]
+  before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
   layout 'ember'
 
@@ -30,16 +31,19 @@ class PapersController < ApplicationController
   end
 
   def update
-    if paper.locked? && !paper.locked_by?(current_user)
-      paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
+    unless paper.editable?
+      paper.errors.add(:editable, "This paper is currently locked for review.")
       raise ActiveRecord::RecordInvalid, paper
-    else
-      unless paper_params.has_key?(:body) && paper_params[:body].nil? # To prevent body-disappearing issue
-        paper.update(paper_params)
-      end
     end
+
+    unless update_paper_params.has_key?(:body) && update_paper_params[:body].nil? # To prevent body-disappearing issue
+      paper.update(update_paper_params)
+    end
+
     respond_with paper
   end
+
+  # non RESTful routes
 
   def upload
     manuscript = paper.manuscript || paper.build_manuscript
@@ -72,12 +76,39 @@ class PapersController < ApplicationController
     end
   end
 
+  def toggle_editable
+    paper.toggle!(:editable)
+    render json: paper
+  end
+
+  def submit
+    paper.update(submitted: true, editable: false)
+    render json: paper
+  end
+
   private
 
   def paper_params
     params.require(:paper).permit(
       :short_title, :title, :abstract,
-      :body, :paper_type, :submitted,
+      :body, :paper_type, :submitted, :editable,
+      :journal_id,
+      :locked_by_id,
+      :striking_image_id,
+      authors: [:first_name, :middle_initial, :last_name, :title, :affiliation, :secondary_affiliation, :department, :email, :deceased, :corresponding_author],
+      reviewer_ids: [],
+      phase_ids: [],
+      assignee_ids: [],
+      editor_ids: [],
+      figure_ids: []
+    )
+  end
+
+  def update_paper_params
+    # paper params excluding :submitted and :editable
+    params.require(:paper).permit(
+      :short_title, :title, :abstract,
+      :body, :paper_type,
       :journal_id,
       :locked_by_id,
       :striking_image_id,
@@ -100,5 +131,12 @@ class PapersController < ApplicationController
 
   def sanitize_title
     strip_tags!(params[:paper], :title)
+  end
+
+  def prevent_update_on_locked!
+    if paper.locked? && !paper.locked_by?(current_user)
+      paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
+      raise ActiveRecord::RecordInvalid, paper
+    end
   end
 end

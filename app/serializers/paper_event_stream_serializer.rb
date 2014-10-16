@@ -1,6 +1,6 @@
 # TODO: change this after the other serializer stuff is all finished.
 class PaperEventStreamSerializer < ActiveModel::Serializer
-  attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :updated_at
+  attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :updated_at, :editable
   root :paper
 
   %i(phases figures authors supporting_information_files).each do |relation|

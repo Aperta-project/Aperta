@@ -2,12 +2,10 @@ ETahi.HeartbeatService = Em.Object.extend
   interval: 90 * 1000
   intervalId: null
   resource: null
-  url: null
 
   init: ->
     resource = @get('resource')
     throw new Error("need to specify resource") unless resource
-    @set('url', "#{resource.path()}/heartbeat")
 
   start: ->
     @heartbeat() # immediate heartbeat
@@ -21,6 +19,4 @@ ETahi.HeartbeatService = Em.Object.extend
       @set('intervalId', null)
 
   heartbeat: ->
-    $.ajax
-      url: @get('url')
-      type: "PUT"
+    ETahi.RESTless.put(@get('resource'), "/heartbeat")

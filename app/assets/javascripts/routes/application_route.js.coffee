@@ -5,7 +5,7 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
         (result) ->
           Ember.run ->
             controller.set('canViewAdminLinks', value)
-      Ember.$.ajax('/admin/journals/authorized', success: authorize(true), error:authorize(false))
+      Ember.$.ajax('/admin/journals/authorization', success: authorize(true), error:authorize(false))
 
     @_super(model, controller)
 

@@ -11,7 +11,7 @@ class Admin::JournalsController < ApplicationController
     respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
 
-  def authorized
+  def authorization
     head 204
   end
 

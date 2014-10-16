@@ -3,7 +3,7 @@ class Admin::JournalsPolicy < ApplicationPolicy
     can_administer_any_journal?
   end
 
-  def authorized?
+  def authorization?
     index?
   end
 

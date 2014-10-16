@@ -1,4 +1,4 @@
-ETahi.AdminIndexController = Ember.ArrayController.extend
+ETahi.AdminIndexController = Ember.ArrayController.extend Ember.PromiseProxyMixin,
   sortProperties: ['createdAt']
   sortAscending: false
   placeholderText: "Need to find a user?<br> Search for them here."

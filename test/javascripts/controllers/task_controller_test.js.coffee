@@ -3,8 +3,8 @@ moduleFor 'controller:task', 'TaskController',
   teardown: -> ETahi.reset()
   setup: ->
     setupApp()
-    @litePaper = Ember.Object.create
-      submitted: true
+    @paper = Ember.Object.create
+      editable: true
 
     @currentUser = Ember.Object.create
       admin: false
@@ -12,7 +12,7 @@ moduleFor 'controller:task', 'TaskController',
     currentUser = @currentUser
     @task = Ember.Object.create
       isMetadataTask: true
-      litePaper: @litePaper
+      paper: @paper
 
     Ember.run =>
       @subject().set('model', @task)
@@ -27,16 +27,16 @@ test '#isEditable: always true when the user is an admin', ->
   Ember.run =>
     @currentUser.set('admin', true)
     @task.set('isMetadataTask', true)
-    @litePaper.set('submitted', true)
+    @paper.set('editable', false)
     equal @subject().get('isEditable'), true
 
-test '#isEditable: true when paper is not submitted and task is a metadata task', ->
+test '#isEditable: true when paper is editable and task is a metadata task', ->
   Ember.run =>
-    @litePaper.set('submitted', false)
+    @paper.set('editable', true)
     equal @subject().get('isEditable'), true
 
-test '#isEditable: false when the paper is submitted and the task is a metadata task', ->
+test '#isEditable: false when the paper is not editable and the task is a metadata task', ->
   Ember.run =>
-    @litePaper.set('submitted', true)
+    @paper.set('editable', false)
     @task.set('isMetadataTask', true)
     equal @subject().get('isEditable'), false

@@ -25,6 +25,10 @@ test 'Changing phase name', ->
     200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalsResponse)
   ]
 
+  server.respondWith 'GET', "/admin/journals/authorization", [
+    204, "Content-Type": "application/html", ""
+  ]
+
   server.respondWith 'GET', "/users/#{admin.id}", [
     200
     'Content-Type': 'application/json'
@@ -52,6 +56,10 @@ test 'Adding an Ad-Hoc card', ->
 
   server.respondWith 'GET', "/admin/journals", [
     200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalsResponse)
+  ]
+
+  server.respondWith 'GET', "/admin/journals/authorization", [
+    204, "Content-Type": "application/html", ""
   ]
 
   server.respondWith 'GET', "/users/#{admin.id}", [

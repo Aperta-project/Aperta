@@ -1,6 +1,5 @@
 Tahi::Application.routes.draw do
   mount Kss::Engine => '/kss' if Rails.env.development?
-  mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
   mount StandardTasks::Engine => '/', as: 'standard_tasks'
 
   if Rails.env.development? || Rails.env.test?
@@ -71,6 +70,9 @@ Tahi::Application.routes.draw do
       put :upload_logo, on: :member
     end
 
+    get 'journals/authorization' => 'journals#authorization'
+
+
     resources :journal_users, only: [:index, :update] do
       get :reset, on: :member
     end
@@ -97,6 +99,8 @@ Tahi::Application.routes.draw do
       get :manage, to: 'ember#index'
       get :download
       put :heartbeat
+      put :toggle_editable
+      put :submit
     end
   end
 

@@ -19,7 +19,7 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
 
   dragStart: (e) ->
     e.dataTransfer.effectAllowed = 'move'
-    ETahi.set('dragItem', @get('author'))
+    ETahi.set('dragItem', @get('plosAuthor'))
 
   dragEnd: (e) ->
     DragNDrop.draggingStopped('.author-drop-target')
@@ -27,10 +27,10 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   actions:
     delete: ->
       @$().fadeOut 250, =>
-        @sendAction 'delete', @get('author')
+        @sendAction 'delete', @get('plosAuthor')
 
     save: ->
-      @sendAction 'save', @get('author')
+      @sendAction 'save', @get('plosAuthor')
       @set 'editState', false
 
     toggleEditForm: ->

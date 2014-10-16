@@ -5,6 +5,7 @@
     = stylesheet_link_tag "application", media: "all"
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Cabin:400,700,400italic"
     = csrf_meta_tags
+    = render 'layouts/segment_io'
   %body.sessions
     #tahi-container{class: yield(:tahi_container_class)}
       = yield

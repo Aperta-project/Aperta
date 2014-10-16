@@ -112,6 +112,7 @@ module 'Integration: EditPaper',
         title: "Foo"
         body: null
         submitted: false
+        editable: true
         paper_type: "Research"
         status: null
         phase_ids: [40]
@@ -185,3 +186,12 @@ test 'visiting /edit-paper: Author completes all metadata cards', ->
       click '#task_completed'
       click '.overlay-close-button:first'
   .then -> ok !find('a:contains("Submit")').hasClass 'button--disabled'
+
+test 'on paper.edit when paper.editable changes, user transitions to paper.index', ->
+  visit '/papers/93412/edit'
+  .then ->
+    Ember.run ->
+      getStore().getById('paper', 93412).set('editable', false)
+  andThen ->
+    ok !exists find('.button-primary:contains("Submit")')
+    equal currentRouteName(), "paper.index"

@@ -123,6 +123,10 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
       200, "Content-Type": "application/json", JSON.stringify adminJournals
     ]
 
+    server.respondWith 'GET', "/admin/journals/authorization", [
+      204, "Content-Type": "application/html", ""
+    ]
+
     server.respondWith 'GET', "/admin/journal_users?journal_id=#{TahiTest.journalId}", [
       200, "Content-Type": "application/json", JSON.stringify adminJournalUserResponse
     ]
@@ -149,7 +153,7 @@ test 'admin adds a role for user', ->
   fillIn '.admin-user-search-input', TahiTest.query
   click '.admin-user-search-button'
   click '.assign-role-button'
-  .then -> $('.add-role-input').typeahead 'val', 'Edit'
+  .then -> $('.add-role-input').val('Edit').trigger('input')
   .then -> click '.tt-suggestion'
   andThen -> ok Em.$.trim(find('.assigned-role').text()).indexOf('Editor') isnt -1
 

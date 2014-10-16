@@ -1,4 +1,5 @@
 moduleFor 'controller:paperManage', 'PaperManageController',
+  needs: ['controller:application']
   teardown: -> ETahi.reset()
   setup: ->
     setupApp()

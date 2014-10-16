@@ -1,11 +1,5 @@
 ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
   newAuthorFormVisible: false
-  resolvedPaper: null
-
-  _setPaper: ( ->
-    @get('paper').then (paper) =>
-      @set('resolvedPaper', paper)
-  ).observes('paper')
 
   allAuthors: []
   _setAllAuthors: (-> @set('allAuthors', @store.all('plosAuthor'))).on('init')
@@ -26,7 +20,7 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
 
     saveNewAuthor: (newAuthorHash) ->
       newAuthorHash.position = 0
-      newAuthorHash.paper = @get('resolvedPaper')
+      newAuthorHash.paper = @get('paper')
       @store.createRecord('author', newAuthorHash).save()
       @toggleProperty('newAuthorFormVisible')
 

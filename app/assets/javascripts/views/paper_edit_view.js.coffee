@@ -1,4 +1,4 @@
-ETahi.PaperEditView = Ember.View.extend
+ETahi.PaperEditView = Ember.View.extend ETahi.RedirectsIfEditable,
   visualEditor: Ember.computed.alias('controller.visualEditor')
 
   locked: Ember.computed.alias 'controller.locked'
@@ -36,9 +36,9 @@ ETahi.PaperEditView = Ember.View.extend
     $('.oo-ui-toolbar-bar').toggleClass('locked', !@get('isEditing'))
 
     if @get("isEditing")
-      @get("visualEditor").enable()
+      @get("visualEditor")?.enable()
     else
-      @get("visualEditor").disable()
+      @get("visualEditor")?.disable()
   ).observes('isEditing')
 
   subNavVisibleDidChange: (->

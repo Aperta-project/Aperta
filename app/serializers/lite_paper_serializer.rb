@@ -29,11 +29,10 @@ class LitePaperSerializer < ActiveModel::Serializer
 
   def unread_comments_count
     if user.present?
-      object.tasks.inject(0) do |sum, task|
-        sum + CommentLook.where(user_id: user.id,
-                                comment_id: task.comments.pluck(:id),
-                                read_at: nil).count
-      end
+      CommentLook.joins(comment: [task: :paper])
+        .where("papers.id" => object.id)
+        .where('comment_looks.read_at is null')
+        .where("comment_looks.user_id" => user.id).count
     end
   end
 end

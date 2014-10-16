@@ -14,6 +14,8 @@ describe PapersPolicy do
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
     it { expect(policy.heartbeat?).to be(false) }
+    it { expect(policy.toggle_editable?).to be(true) }
+    it { expect(policy.submit?).to be(true) }
   end
 
   context "authors" do
@@ -27,6 +29,8 @@ describe PapersPolicy do
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
     it { expect(policy.heartbeat?).to be(false) }
+    it { expect(policy.toggle_editable?).to be(false) }
+    it { expect(policy.submit?).to be(true) }
   end
 
   context "paper admins" do
@@ -44,6 +48,8 @@ describe PapersPolicy do
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
     it { expect(policy.heartbeat?).to be(false) }
+    it { expect(policy.toggle_editable?).to be(false) }
+    it { expect(policy.submit?).to be(true) }
   end
 
   context "paper editors" do
@@ -61,6 +67,8 @@ describe PapersPolicy do
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
     it { expect(policy.heartbeat?).to be(false) }
+    it { expect(policy.toggle_editable?).to be(false) }
+    it { expect(policy.submit?).to be(true) }
   end
 
   context "paper reviewers" do
@@ -77,6 +85,8 @@ describe PapersPolicy do
     it { expect(policy.update?).to be(true) }
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
+    it { expect(policy.toggle_editable?).to be(false) }
+    it { expect(policy.submit?).to be(true) }
   end
 
   context "paper collaborators" do
@@ -94,6 +104,8 @@ describe PapersPolicy do
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.download?).to be(true) }
     it { expect(policy.heartbeat?).to be(false) }
+    it { expect(policy.toggle_editable?).to be(false) }
+    it { expect(policy.submit?).to be(true) }
   end
 
   context "non-associated user" do
@@ -107,6 +119,8 @@ describe PapersPolicy do
     it { expect(policy.upload?).to be(false) }
     it { expect(policy.download?).to be(false) }
     it { expect(policy.heartbeat?).to be(false) }
+    it { expect(policy.toggle_editable?).to be(false) }
+    it { expect(policy.submit?).to be(false) }
   end
 
   context "locked paper" do
@@ -135,6 +149,8 @@ describe PapersPolicy do
 
     it { expect(policy.show?).to be(true) }
     it { expect(policy.upload?).to be(true) }
+    it { expect(policy.toggle_editable?).to be(true) }
+    it { expect(policy.submit?).to be(false) }
   end
 
   context "admin on different journal" do
@@ -150,5 +166,7 @@ describe PapersPolicy do
 
     it { expect(policy.show?).to be(false) }
     it { expect(policy.upload?).to be(false) }
+    it { expect(policy.toggle_editable?).to be(false) }
+    it { expect(policy.submit?).to be(false) }
   end
 end

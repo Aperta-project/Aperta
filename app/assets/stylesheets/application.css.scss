@@ -31,6 +31,7 @@
 @import 'ui/token';
 @import 'ui/tooltip';
 @import 'ui/typeahead';
+@import 'ui/user-thumbnail';
 
 @import 'screens/admin';
 @import 'screens/auth';
@@ -54,8 +55,9 @@
 @import 'overlays/upload_manuscript_overlay';
 
 @import 'components/attachment-thumbnail';
-@import 'components/question';
-@import 'components/upload-preview';
-@import 'components/content-editable';
 @import 'components/comment-board';
+@import 'components/content-editable';
 @import 'components/participant-selector';
+@import 'components/question';
+@import 'components/question-attachment-thumbnail';
+@import 'components/upload-preview';

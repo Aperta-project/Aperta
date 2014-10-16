@@ -1,6 +1,7 @@
 class CommentLookSerializer < ActiveModel::Serializer
-  attributes :id, :read_at
-  has_one :comment, embed: :id
-  has_one :user, embed: :id
-  has_one :task, embed: :id
+  attributes :id, :read_at, :comment_id, :user_id, :task_id
+
+  def task_id
+    object.comment.task_id
+  end
 end

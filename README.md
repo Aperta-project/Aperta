@@ -87,7 +87,7 @@ To wipe and restore performance data in a pristine state on tahi-performance, ru
 ```heroku pgbackups:restore HEROKU_POSTGRESQL_CYAN_URL b001 --app tahi-performance```
 
 A fully loaded database with thousands of records can be found on S3 here:
-```/tahi-performance/tahi_performance_backup.sql.zip```
+```tahi-performance/tahi_performance_backup.sql.zip ```
 
 This can be downloaded and loaded locally, if needed.
 

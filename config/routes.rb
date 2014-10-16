@@ -62,12 +62,12 @@ Tahi::Application.routes.draw do
   resources :task_templates
 
   namespace :admin do
+    get 'journals/authorization' => 'journals#authorization'
     resources :journals, only: [:index, :show, :update, :create] do
       put :upload_epub_cover, on: :member
       put :upload_logo, on: :member
     end
 
-    get 'journals/authorization' => 'journals#authorization'
 
 
     resources :journal_users, only: [:index, :update] do

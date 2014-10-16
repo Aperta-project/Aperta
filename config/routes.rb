@@ -70,6 +70,9 @@ Tahi::Application.routes.draw do
       put :upload_logo, on: :member
     end
 
+    get 'journals/authorization' => 'journals#authorization'
+
+
     resources :journal_users, only: [:index, :update] do
       get :reset, on: :member
     end

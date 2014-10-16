@@ -11,6 +11,10 @@ class Admin::JournalsController < ApplicationController
     respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
 
+  def authorization
+    head 204
+  end
+
   def create
     respond_with Journal.create(journal_params), serializer: AdminJournalSerializer, root: 'admin_journal'
   end

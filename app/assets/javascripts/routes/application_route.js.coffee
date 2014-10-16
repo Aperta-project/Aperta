@@ -3,8 +3,13 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
     if @getCurrentUser? && @getCurrentUser()
       authorize = (value) ->
         (result) ->
-          controller.set('canViewAdminLinks', value)
-      @store.find('adminJournal').then(authorize(true), authorize(false))
+          Ember.run ->
+            controller.set('canViewAdminLinks', value)
+      Ember.$.ajax '/admin/journals/authorization',
+        headers:
+          'Tahi-Authorization-Check': true
+        success: authorize(true)
+        error:authorize(false)
 
     @_super(model, controller)
 

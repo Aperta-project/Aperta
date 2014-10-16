@@ -48,6 +48,10 @@ module 'Integration: Dashboard',
       200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
     ]
 
+    server.respondWith 'GET', "/admin/journals/authorization", [
+      204, "Content-Type": "application/html", ""
+    ]
+
     # end_index: (page number * 15) - 1
     # begin_index: end_index - 15
     server.respondWith 'GET', '/lite_papers?page_number=2', [

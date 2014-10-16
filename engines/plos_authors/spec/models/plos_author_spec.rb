@@ -15,17 +15,21 @@ describe PlosAuthors::PlosAuthor do
     end
   end
 
-  describe "validations" do
+  describe "#task_completed?" do
     let(:plos_authors_task) { PlosAuthors::PlosAuthorsTask.new }
 
-    it "will not be valid if the task is completed" do
+    it "is true when task is complete" do
       plos_authors_task.completed = true
-      expect(subject.class.new(email: nil, plos_authors_task: plos_authors_task)).to_not be_valid
+      expect(subject.class.new(plos_authors_task: plos_authors_task)).to be_task_completed
     end
 
-    it "will be valid if the task is not complete" do
+    it "is false when task is incomplete" do
       plos_authors_task.completed = false
-      expect(subject.class.new(email: nil, plos_authors_task: plos_authors_task)).to be_valid
+      expect(subject.class.new(plos_authors_task: plos_authors_task)).to_not be_task_completed
+    end
+
+    it "is false when there is no task" do
+      expect(subject.class.new(plos_authors_task: nil)).to_not be_task_completed
     end
   end
 end

@@ -5,6 +5,9 @@ module PlosAuthors
 
     belongs_to :plos_authors_task, inverse_of: :plos_authors
 
-    validates :email, presence: true, if: :task_completed?
+    validates :affiliation, :corresponding, :deceased,
+      :department, :title, :email, presence: true, if: :task_completed?
+
+    #TODO: email formatting validation
   end
 end

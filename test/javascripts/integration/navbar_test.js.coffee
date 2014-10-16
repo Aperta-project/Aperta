@@ -24,12 +24,12 @@ respondAuthorized = ->
     200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
   ]
 
-  server.respondWith 'GET', "/admin/journals/authorized", [
+  server.respondWith 'GET', "/admin/journals/authorization", [
     204, "Content-Type": "application/html", ""
   ]
 
 respondUnauthorized = ->
-  server.respondWith 'GET', '/admin/journals/authorized', [
+  server.respondWith 'GET', '/admin/journals/authorization', [
     403, 'Content-Type': 'application/html', 'Tahi-Authorization-Check': true, ""
   ]
 

@@ -51,7 +51,7 @@ module 'Integration: Dashboard',
       200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
     ]
 
-    server.respondWith 'GET', "/admin/journals/authorized", [
+    server.respondWith 'GET', "/admin/journals/authorization", [
       204, "Content-Type": "application/html", ""
     ]
 

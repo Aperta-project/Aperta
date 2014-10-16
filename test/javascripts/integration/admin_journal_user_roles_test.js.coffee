@@ -123,7 +123,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
       200, "Content-Type": "application/json", JSON.stringify adminJournals
     ]
 
-    server.respondWith 'GET', "/admin/journals/authorized", [
+    server.respondWith 'GET', "/admin/journals/authorization", [
       204, "Content-Type": "application/html", ""
     ]
 

@@ -8,8 +8,9 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
   ).observes('paper')
 
   allAuthors: []
-  _setAllAuthors: (-> @set('allAuthors', @store.all('author'))).on('init')
+  _setAllAuthors: (-> @set('allAuthors', @store.all('plosAuthor'))).on('init')
   authors: (-> @get('allAuthors').filterBy('paper', @get('resolvedPaper'))).property('resolvedPaper','allAuthors.@each.paper')
+
   authorSort: ['position:asc']
   sortedAuthors: Ember.computed.sort('plosAuthors', 'authorSort')
 
@@ -29,8 +30,8 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
       @store.createRecord('author', newAuthorHash).save()
       @toggleProperty('newAuthorFormVisible')
 
-    saveAuthor: (author) ->
-      author.save()
+    saveAuthor: (plosAuthor) ->
+      plosAuthor.save()
 
-    removeAuthor: (author) ->
-      author.destroyRecord()
+    removeAuthor: (plosAuthor) ->
+      plosAuthor.destroyRecord()

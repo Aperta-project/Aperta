@@ -1,10 +1,10 @@
 {{#unless editState}}
   <div class="authors-overlay-item--text">
-    <div class="author-name">{{author.fullName}}</div>
-    {{author.email}}<br>
-    {{author.title}} &nbsp; &nbsp; {{author.department}}
+    <div class="author-name">{{plosAuthor.fullName}}</div>
+    {{plosAuthor.email}}<br>
+    {{plosAuthor.title}} &nbsp; &nbsp; {{plosAuthor.department}}
     <br>
-    {{author.affiliation}} &nbsp; &nbsp; {{author.secondaryAffiliation}}
+    {{plosAuthor.affiliation}} &nbsp; &nbsp; {{plosAuthor.secondaryAffiliation}}
   </div>
 
   {{#if hoverState}}
@@ -24,7 +24,7 @@
 
 {{#if editState}}
   {{add-author-form
-    newAuthor=author
+    newAuthor=plosAuthor
     institutions=institutions
     hideAuthorForm="toggleEditForm"
     saveAuthor="save"}}

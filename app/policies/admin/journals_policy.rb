@@ -3,6 +3,10 @@ class Admin::JournalsPolicy < ApplicationPolicy
     can_administer_any_journal?
   end
 
+  def show?
+    can_administer_any_journal?
+  end
+
   def create?
     can_administer_any_journal?
   end

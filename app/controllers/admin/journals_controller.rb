@@ -11,6 +11,13 @@ class Admin::JournalsController < ApplicationController
     respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
 
+  def show
+    respond_to do |f|
+      f.json { render json: Journal.find(params[:id]), serializer: AdminJournalSerializer, root: 'admin_journal' }
+      f.html { render 'ember/index' , layout: 'ember'}
+    end
+  end
+
   def create
     respond_with Journal.create(journal_params), serializer: AdminJournalSerializer, root: 'admin_journal'
   end

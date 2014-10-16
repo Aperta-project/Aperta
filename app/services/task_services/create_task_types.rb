@@ -22,6 +22,7 @@ module TaskServices
         {kind: "UploadManuscript::Task",                        default_role: "author",   default_title: "Upload Manuscript"},
       ]
 
+      #TODO: This will leave orphaned 'available task types' section on admin screen
       TaskType.destroy_all
       types.map do |attributes|
         TaskType.where(attributes).first_or_create

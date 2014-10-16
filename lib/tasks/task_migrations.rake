@@ -23,7 +23,7 @@ namespace :data do
     end
   end
 
-  task :convert_authors_to_plos_authors => :environment do
-    Task.where(type: "StandardTasks::AuthorsTask").update_all(type: "PlosAuthors::PlosAuthorsTask")
+  task :convert_author_tasks => :environment do
+    Task.where(type: "StandardTasks::AuthorsTask").update_all(type: "PlosAuthors::PlosAuthorsTask", completed: false)
   end
 end

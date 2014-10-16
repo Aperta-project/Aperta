@@ -27,13 +27,15 @@ class JournalAdminFlowSerializer < ActiveModel::Serializer
 
   def paper_admin_tasks
     Task.joins(paper: [:assigned_users, :journal])
+      .includes(:paper)
       .merge(PaperRole.admins.for_user(current_user))
       .where(type: "StandardTasks::PaperAdminTask")
       .where(journals: {id: current_user.roles.pluck(:journal_id).uniq })
   end
 
   def unassigned_tasks
-    Task.joins(paper: :journal)
+    Task.joins(paper: :journal).includes(:paper)
+      .includes(:paper)
       .incomplete.unassigned
       .where(type: "StandardTasks::PaperAdminTask")
       .where(journals: {id: current_user.roles.pluck(:journal_id).uniq })

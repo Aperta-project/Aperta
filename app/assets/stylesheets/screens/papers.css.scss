@@ -147,11 +147,10 @@
   @include ellipsis;
   width: initial;
   max-width: 95px;
-  vertical-align: bottom;
 }
 .edit-paper-lock-message {
   width: 200px;
-  color: $tahi-purple;
+  color: black;
   font-family: $tahi-font-family;
   font-size: 12px;
   font-style: italic;

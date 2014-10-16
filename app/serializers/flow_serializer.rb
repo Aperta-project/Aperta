@@ -8,11 +8,11 @@ class FlowSerializer < ActiveModel::Serializer
   end
 
   def lite_papers
-    @papers ||= tasks.flat_map(&:paper).uniq
+    Paper.joins(:tasks).includes(:paper_roles).where("tasks.id" => tasks).uniq
   end
 
   def cached_tasks
-    @cached_tasks ||= Task.assigned_to(current_user).includes(:paper, :participants)
+    @cached_tasks ||= Task.assigned_to(current_user).includes(:paper)
   end
 
   def incomplete_tasks

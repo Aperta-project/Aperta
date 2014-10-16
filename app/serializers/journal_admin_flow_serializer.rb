@@ -8,12 +8,12 @@ class JournalAdminFlowSerializer < ActiveModel::Serializer
   end
 
   def lite_papers
-    @papers ||= tasks.flat_map(&:paper).uniq
+    Paper.joins(:tasks).includes(:paper_roles).where("tasks.id" => tasks).uniq
   end
 
   def cached_tasks
     @cached_tasks ||= Task.joins(paper: :journal)
-      .assigned_to(current_user).includes(:paper, :participants)
+      .assigned_to(current_user).includes(:paper)
       .where(journals: {id: current_user.roles.pluck(:journal_id).uniq })
   end
 

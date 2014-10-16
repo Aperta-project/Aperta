@@ -14,5 +14,19 @@ describe PlosAuthors::PlosAuthor do
       }.to change { Author.count }.by (-1)
     end
   end
+
+  describe "validations" do
+    let(:plos_authors_task) { PlosAuthors::PlosAuthorsTask.new }
+
+    it "will not be valid if the task is completed" do
+      plos_authors_task.completed = true
+      expect(subject.class.new(email: nil, plos_authors_task: plos_authors_task)).to_not be_valid
+    end
+
+    it "will be valid if the task is not complete" do
+      plos_authors_task.completed = false
+      expect(subject.class.new(email: nil, plos_authors_task: plos_authors_task)).to be_valid
+    end
+  end
 end
 

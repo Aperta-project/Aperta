@@ -1,4 +1,4 @@
 ETahi.PlosAuthorsTask = ETahi.Task.extend
-  authors: Ember.computed.alias('paper.authorsArray')
+  authors: DS.hasMany('plosAuthor')
   qualifiedType: "StandardTasks::PlosAuthorsTask"
   isMetadataTask: true

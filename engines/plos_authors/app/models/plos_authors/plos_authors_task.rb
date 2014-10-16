@@ -10,7 +10,7 @@ module PlosAuthors
     validate :validate_authors, if: :completed?
 
     def active_model_serializer
-      TaskSerializer
+      PlosAuthorsTaskSerializer
     end
 
     private

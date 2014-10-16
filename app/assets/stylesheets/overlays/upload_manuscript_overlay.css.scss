@@ -5,6 +5,9 @@
 #paper-manuscript-upload,
 #paper-file-uploads,
 #paper-attachment-uploads {
+  position: relative;
+  height: 100px;
+
   .processing {
     @extend .col-xs-9;
     margin-left: 70px;
@@ -17,6 +20,7 @@
     text-align: center;
     padding-top: 14px;
     width: 80px;
+    float: left;
   }
 
   .progress {
@@ -24,6 +28,5 @@
     top: 50%;
     left: 100px;
     right: 60px;
-    margin-top: -18px;
   }
 }

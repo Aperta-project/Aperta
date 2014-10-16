@@ -3,12 +3,12 @@ FactoryGirl.define do
     first_name "Luke"
     middle_initial "J"
     last_name "Skywalker"
+    email
     department "Jedis"
+    deceased true
+    corresponding true
     title "Head Jedi"
     affiliation 'university of dagobah'
     position 1
-    email
   end
 end
-
-

@@ -3,7 +3,7 @@ class PaperUpdateWorker
 
   attr_accessor :job_id
 
-  def perform(job_id:)
+  def perform(job_id)
     @job_id = job_id
     job.paper.update! paper_attributes
   end
@@ -13,7 +13,19 @@ class PaperUpdateWorker
   end
 
   def paper_attributes
-    json = Faraday.get("#{ENV['IHAT_URL']}jobs/#{job_id}/download")[:json]
-    JSON.parse json, symbolize_names: true
+    TahiEpub::JSONParser.parse(convert_json)
+  end
+
+  def convert_json
+    epub_stream = get_converted_epub TahiEpub::JSONParser.parse(response_body)
+    TahiEpub::Zip.extract(stream: epub_stream, filename: 'converted.json')
+  end
+
+  def response_body
+    Faraday.get("#{ENV['IHAT_URL']}/jobs/#{job_id}").body
+  end
+
+  def get_converted_epub(job_response)
+    Faraday.get(job_response[:jobs][:converted_epub_url]).body
   end
 end

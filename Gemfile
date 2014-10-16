@@ -41,7 +41,6 @@ gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
 gem "fog"
 gem "unf"
-gem 'rails_admin'
 gem 'newrelic_rpm'
 gem "rest_client", "~> 1.7.3"
 gem 'gepub'
@@ -60,9 +59,12 @@ gem 'migration_data'
 gem 'bugsnag'
 gem 'spring'
 gem 'sunspot_rails'
-gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c4574666dcfc9b577542fb595f"
+
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28
+gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c4574666dcfc9b577542fb595f"
+
+gem 'tahi_epub', github: 'tahi-project/tahi_epub'
 
 group :staging, :performance, :production do
   gem 'heroku-deflater'

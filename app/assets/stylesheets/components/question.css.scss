@@ -8,20 +8,17 @@
       content: counter(reviewer-form-counter);
       counter-increment: reviewer-form-counter;
 
-      background: $tahi-green;
-      padding: 5px;
-      border-radius: 1000px;
+      @include position(absolute, -1px auto auto -28px);
       width: 23px;
       height: 23px;
-      display: inline-block;
-      text-align: center;
+      border-radius: 50%;
+      padding: 5px;
       color: white;
-      font-weight: bold;
       font-size: 15px;
+      font-weight: bold;
       line-height: 14px;
-      position: absolute;
-      left: -30px;
-      top: 1px;
+      text-align: center;
+      background: $tahi-green;
     }
   }
 }
@@ -55,33 +52,18 @@
   font-size: 14px;
 }
 
-ul.help {
+.question-help {
   padding-left: 0;
   margin: 15px 0;
-  li {
-    list-style-type: none;
-    &:before {
-      content: ">";
-      color: $tahi-green-dark;
-      font-size: 1.4em;
-      font-weight: 700;
-      margin-right: 0.1em;
-    }
+  list-style-type: none;
+
+  li:before {
+    content: ">";
+    color: $tahi-green-dark;
+    font-size: 1.4em;
+    font-weight: 700;
+    margin-right: 0.1em;
   }
-}
-
-.item {
-  margin: 5px 0;
-}
-
-label {
-  font-weight: normal;
-}
-
-.dataset {
-  padding: 30px;
-  margin: 15px 0;
-  background: rgb(194, 232, 188);
 }
 
 .yes-no-with-comments {

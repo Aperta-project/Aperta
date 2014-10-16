@@ -37,6 +37,14 @@ describe StandardTasks::PaperReviewerTask do
       expect(StandardTasks::ReviewerReportTask.where(phase: phase)).to be_present
     end
 
+    it "puts the reviewer's name into the task's title" do
+      task.reviewer_ids = [neil.id.to_s]
+      phase = paper.phases.where(name: 'Get Reviews').first
+      new_task = StandardTasks::ReviewerReportTask.find_by(phase: phase)
+
+      expect(new_task.title).to eq("Review by #{neil.full_name}")
+    end
+
     it "deletes paper roles not present in the specified user_id" do
       create(:paper_role, :reviewer, paper: paper, user: albert)
       task.reviewer_ids = [neil.id.to_s]

@@ -14,7 +14,7 @@ createDashboardDataWithLitePaper = (paperCount, litePaper) ->
       title: "Fake Paper Long Title #{i}"
       short_title: "Fake Paper Short Title #{i}"
       submitted: false
-    lp.roles = []
+    lp.roles = ['Collaborator']
     lp.related_at_date = "2014-09-28T13:54:58.028Z"
     litePapers.pushObject(lp)
   litePapers.pushObject(litePaper) if litePaper
@@ -55,7 +55,36 @@ module 'Integration: Dashboard',
       204, "Content-Type": "application/html", ""
     ]
 
-test 'When user is added as a collborator on paper', ->
+test 'When user is added as a collaborator on paper', ->
+  ef = ETahi.Factory
+  lp = ef.createLitePaper
+    id: 370
+    title: "Event-streamed paper"
+    short_title: "new one"
+    submitted: false
+  lp.roles = ['Collaborator']
+  lp.related_at_date = "2014-09-29T13:54:58.028Z"
+
+  [litePapers, dashboards] = createDashboardDataWithLitePaper(2, lp)
+
+  visit '/'
+  .then ->
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
+  andThen ->
+    # receives eventstream push as collaborator
+    [es, store] = setupEventStream()
+    data =
+      action: 'created'
+      dashboard: dashboards[0]
+      lite_papers: litePapers
+      users: [fakeUser]
+
+    Ember.run =>
+      es.msgResponse(data)
+  andThen ->
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 3
+
+test 'When paper is added, only shows if user is allowed to see the paper', ->
   ef = ETahi.Factory
   lp = ef.createLitePaper
     id: 370
@@ -82,10 +111,10 @@ test 'When user is added as a collborator on paper', ->
     Ember.run =>
       es.msgResponse(data)
   andThen ->
-    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 3
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
 
 
-test 'When user is removed from collboratorating on paper', ->
+test 'When user is removed from collaborating on paper', ->
   ef = ETahi.Factory
   [litePapers, dashboards] = createDashboardDataWithLitePaper(2)
 

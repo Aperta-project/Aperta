@@ -107,3 +107,30 @@ To wipe and restore performance data in a pristine state on tahi-performance, ru
 
 If you are going to be using the search functionality, make sure to reindex the database while the server is running with:
 ```rake sunspot:solr:reindex```
+
+### Postgres Backups
+
+Backups should be run automatically every day. If you would like to run one manually run ```heroku pgbackups:capture```
+
+You can get the URL to download a backup by running ```heroku pgbackups:url```
+
+To list current backups ```heroku pgbackups```
+
+Your output should look somehting like this:
+
+```
+ID    Backup Time                Status                                Size     Database
+----  -------------------------  ------------------------------------  -------  -----------------------------------------
+b014  2014/08/27 14:56.44 +0000  Finished @ 2014/08/27 14:56.49 +0000  441.7KB  HEROKU_POSTGRESQL_ROSE_URL (DATABASE_URL)
+b015  2014/09/02 13:35.44 +0000  Finished @ 2014/09/02 13:35.48 +0000  465.2KB  HEROKU_POSTGRESQL_ROSE_URL (DATABASE_URL)
+b016  2014/09/11 14:42.05 +0000  Finished @ 2014/09/11 14:42.08 +0000  495.7KB  HEROKU_POSTGRESQL_ROSE_URL (DATABASE_URL)
+b017  2014/09/16 15:07.00 +0000  Finished @ 2014/09/16 15:07.03 +0000  515.0KB  HEROKU_POSTGRESQL_ROSE_URL (DATABASE_URL)
+b018  2014/10/01 12:41.31 +0000  Finished @ 2014/10/01 12:41.35 +0000  528.0KB  HEROKU_POSTGRESQL_ROSE_URL (DATABASE_URL)
+b019  2014/10/09 17:48.40 +0000  Finished @ 2014/10/09 17:48.49 +0000  568.5KB  HEROKU_POSTGRESQL_ROSE_URL (DATABASE_URL)
+b020  2014/10/13 13:10.26 +0000  Finished @ 2014/10/13 13:10.30 +0000  576.2KB  HEROKU_POSTGRESQL_ROSE_URL (DATABASE_URL)
+b021  2014/10/16 14:04.13 +0000  Finished @ 2014/10/16 14:04.18 +0000  593.2KB  HEROKU_POSTGRESQL_ROSE_URL (DATABASE_URL)
+```
+
+To restore to a specific backup, use the ID and Database in your list output. E.G.
+
+```heroku pgbackups:restore HEROKUPOSTGRESQL_ROSE_URL b020```

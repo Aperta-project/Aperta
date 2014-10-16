@@ -11,7 +11,7 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
   _setAllAuthors: (-> @set('allAuthors', @store.all('author'))).on('init')
   authors: (-> @get('allAuthors').filterBy('paper', @get('resolvedPaper'))).property('resolvedPaper','allAuthors.@each.paper')
   authorSort: ['position:asc']
-  sortedAuthors: Ember.computed.sort('authors', 'authorSort')
+  sortedAuthors: Ember.computed.sort('plosAuthors', 'authorSort')
 
   shiftAuthorPositions: (author, newPosition)->
     oldPosition = author.get 'position'

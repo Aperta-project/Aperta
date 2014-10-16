@@ -2,7 +2,7 @@ a = DS.attr
 ETahi.PlosAuthor = ETahi.Task.extend
   paper: DS.belongsTo('paper')
   plosAuthorsTask: DS.belongsTo('plosAuthorsTask')
-  qualifiedType: "StandardTasks::PlosAuthorsTask"
+  qualifiedType: "PlosAuthors::PlosAuthor"
 
   firstName: a('string')
   middleInitial: a('string')

@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe PlosAuthors::PlosAuthor do
+  context "validation" do
+    it "will be valid with default factory data" do
+      model = FactoryGirl.build(:plos_author)
+      expect(model).to be_valid
+    end
+  end
+
   describe "Author extensions" do
     it "extends from Author" do
       plos_author = subject.class.create(email: "someone@example.com", first_name: "Someone")

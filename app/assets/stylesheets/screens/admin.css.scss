@@ -371,10 +371,11 @@
 }
 
 .journal-admin-link {
-  margin-top: 7px;
   font-size: 24px;
 
   a {
+    display: inline-block;
+    padding: 12px 0;
     color: $tahi-blue;
   }
 }

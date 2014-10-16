@@ -16,13 +16,13 @@ test 'Changing phase name', ->
   records = createJournalWithTaskTemplate
     kind: "Task"
     title: "Ad Hoc"
-  adminJournalPayload = ef.createPayload()
+  adminJournalPayload = ef.createPayload('admin_journal')
   adminJournalPayload.addRecords(records)
-  adminJournalsResponse = adminJournalPayload.toJSON()
+  adminJournalResponse = adminJournalPayload.toJSON()
   admin = ef.createRecord('User', admin: true)
 
-  server.respondWith 'GET', "/admin/journals", [
-    200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalsResponse)
+  server.respondWith 'GET', "/admin/journals/1", [
+    200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalResponse)
   ]
 
   server.respondWith 'GET', "/admin/journals/authorization", [
@@ -49,13 +49,13 @@ test 'Adding an Ad-Hoc card', ->
   records = createJournalWithTaskTemplate
     kind: "Task"
     title: "Ad Hoc"
-  adminJournalPayload = ef.createPayload()
+  adminJournalPayload = ef.createPayload('admin_journal')
   adminJournalPayload.addRecords(records)
-  adminJournalsResponse = adminJournalPayload.toJSON()
+  adminJournalResponse = adminJournalPayload.toJSON()
   admin = ef.createRecord('User', admin: true)
 
-  server.respondWith 'GET', "/admin/journals", [
-    200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalsResponse)
+  server.respondWith 'GET', "/admin/journals/1", [
+    200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalResponse)
   ]
 
   server.respondWith 'GET', "/admin/journals/authorization", [

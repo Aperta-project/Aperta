@@ -7,10 +7,5 @@ module PlosAuthors
 
     validates :affiliation, :corresponding, :deceased,
       :department, :title, :email, presence: true, if: :task_completed?
-
-
-    def formatted_errors
-      self.errors.to_h.merge(id: self.id)
-    end
   end
 end

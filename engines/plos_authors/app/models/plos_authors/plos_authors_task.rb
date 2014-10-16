@@ -15,12 +15,13 @@ module PlosAuthors
 
     private
 
+    #TODO: refactor this
     def validate_authors
       valid_authors = true
       self.errors[:plos_authors].clear # remove generic "is invalid" messages
       plos_authors.each do |plos_author|
         if plos_author.invalid?
-          self.errors.add(:plos_authors, plos_author.formatted_errors)
+          self.errors.add(:plos_authors, plos_author.errors.to_h.merge(id: plos_author.id))
           valid_authors = false
         end
       end

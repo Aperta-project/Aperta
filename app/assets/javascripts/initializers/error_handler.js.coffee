@@ -18,7 +18,8 @@ ETahi.initializer
       applicationController = container.lookup('controller:application')
       # these checks are purely for javascript testing
       if !applicationController.isDestroying && !applicationController.isDestroyed
-        applicationController.set('error', message)
+        Ember.run ->
+          applicationController.set('error', message)
 
     # The global error handler
     Ember.onerror = (error) ->

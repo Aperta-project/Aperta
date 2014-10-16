@@ -7,6 +7,10 @@ class Admin::JournalsPolicy < ApplicationPolicy
     can_administer_any_journal?
   end
 
+  def authorization?
+    index?
+  end
+
   def create?
     can_administer_any_journal?
   end

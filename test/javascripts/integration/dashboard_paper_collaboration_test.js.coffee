@@ -51,6 +51,10 @@ module 'Integration: Dashboard',
       200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
     ]
 
+    server.respondWith 'GET', "/admin/journals/authorization", [
+      204, "Content-Type": "application/html", ""
+    ]
+
 test 'When user is added as a collaborator on paper', ->
   ef = ETahi.Factory
   lp = ef.createLitePaper

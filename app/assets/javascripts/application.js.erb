@@ -83,7 +83,7 @@
       removedItem: function(array, item, changeMeta, instanceMeta) {
         var filterIndex = instanceMeta.filteredArrayIndexes.removeItem(changeMeta.index);
 
-        if (filterIndex > -1 && filterIndex < length) {
+        if (array.length && filterIndex > -1 && filterIndex < length) {
           array.removeAt(filterIndex);
         }
 

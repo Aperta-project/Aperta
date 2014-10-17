@@ -71,7 +71,7 @@
         if (array.length < length) {
           array.insertAt(filterIndex, item);
         } else {
-          if (changeMeta.changedCount == 1) {
+          if (changeMeta.changedCount == 1 && changeMeta.index < length) {
             array.popObject();
             array.insertAt(filterIndex, item);
           }
@@ -83,7 +83,7 @@
       removedItem: function(array, item, changeMeta, instanceMeta) {
         var filterIndex = instanceMeta.filteredArrayIndexes.removeItem(changeMeta.index);
 
-        if (filterIndex > -1) {
+        if (filterIndex > -1 && filterIndex < length) {
           array.removeAt(filterIndex);
         }
 

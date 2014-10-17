@@ -5,17 +5,17 @@ module PlosAuthors
 
     def create
       plos_author = PlosAuthor.create(plos_author_params)
-      render json: PlosAuthor.for_paper(plos_author.paper)
+      render json: plos_authors_for(plos_author.paper)
     end
 
     def update
       plos_author.update(plos_author_params)
-      render json: PlosAuthor.for_paper(plos_author.paper)
+      render json: plos_authors_for(plos_author.paper)
     end
 
     def destroy
       plos_author.destroy
-      render json: PlosAuthor.for_paper(plos_author.paper)
+      render json: plos_authors_for(plos_author.paper)
     end
 
 
@@ -23,6 +23,10 @@ module PlosAuthors
 
     def plos_author
       @plos_author ||= PlosAuthor.find(params[:id])
+    end
+
+    def plos_authors_for(paper)
+      PlosAuthor.for_paper(paper).order("authors.position")
     end
 
     def plos_author_params

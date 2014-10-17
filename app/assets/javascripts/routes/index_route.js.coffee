@@ -4,15 +4,14 @@ ETahi.IndexRoute = Ember.Route.extend
     .then (dashboardArray) -> dashboardArray.get 'firstObject'
 
   setupController: (controller, model) ->
+    @store.find('commentLook') # don't wait to fulfill
     controller.set('model', model)
     papers = @store.filter 'litePaper', (p) ->
-      roles = p.get('roles')
-      isMyPaper = roles.contains('My Paper')
-      iAmCollaborator = roles.contains('Collaborator')
-      iAmReviewer = roles.contains('Reviewer')
-      isMyPaper || iAmCollaborator || iAmReviewer
+      checkRole = (role) -> p.get('roles').contains(role)
+      checkRole('My Paper') || checkRole('Collaborator') || checkRole('Reviewer')
 
     controller.set('papers', papers)
+    controller.set('unreadComments', @store.all('commentLook'))
 
   actions:
     didTransition: () ->

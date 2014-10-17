@@ -63,6 +63,6 @@ class PaperFactory
   end
 
   def to_author(author)
-    author.slice(*%w(first_name last_name email)).merge(position: 1)
+    author.slice(*%w(first_name last_name)).merge(position: 1)
   end
 end

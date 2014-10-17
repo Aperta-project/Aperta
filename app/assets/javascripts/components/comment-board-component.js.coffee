@@ -15,12 +15,6 @@ ETahi.CommentBoardComponent = Ember.Component.extend
     )
   ).on('didInsertElement')
 
-  shownComments: (->
-    comments = @get('comments')
-    lastIndex = comments.get('length')
-    if @get('showingAllComments') then comments else comments.slice(lastIndex - @get("commentsToShow"), lastIndex)
-  ).property('comments.@each.createdAt', 'showingAllComments')
-
   showingAllComments: (->
     @get('comments.length') <= @get('commentsToShow')
   ).property('comments.length')

@@ -3,8 +3,9 @@ ETahi.DashboardLinkView = Em.View.extend
 
   paperId: Ember.computed.alias('content.id')
 
-  unreadCommentsList: Ember.computed.filter 'unreadComments',
-    (c) -> c.get('paperId') == @get('paperId') && !c.get('readAt')
+  unreadCommentsList: Ember.computed 'unreadComments.@each.readAt', 'unreadComments.@each.paperId', ->
+    paperId = @get('paperId')
+    @get('unreadComments').filter (c) -> c.get('paperId') == paperId && !c.get('readAt')
 
   unreadCommentsCount: (->
     @get('unreadCommentsList.length')

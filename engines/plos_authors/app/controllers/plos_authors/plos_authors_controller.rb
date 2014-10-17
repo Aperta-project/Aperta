@@ -4,38 +4,42 @@ module PlosAuthors
     respond_to :json
 
     def create
-      author = Author.create(author_params)
-      render json: author.paper.authors, each_serializer: AuthorSerializer
+      plos_author = PlosAuthor.create(plos_author_params)
+      render json: PlosAuthor.for_paper(plos_author.paper)
     end
 
     def update
-      author = Author.find(params[:id])
-      author.update author_params
-      render json: author.paper.authors, each_serializer: AuthorSerializer
+      plos_author.update(plos_author_params)
+      render json: PlosAuthor.for_paper(plos_author.paper)
     end
 
     def destroy
-      author = Author.find(params[:id])
-      author.destroy
-      render json: author.paper.authors, each_serializer: AuthorSerializer
+      plos_author.destroy
+      render json: PlosAuthor.for_paper(plos_author.paper)
     end
+
 
     private
 
-    def author_params
-      params.require(:author).permit(
+    def plos_author
+      @plos_author ||= PlosAuthor.find(params[:id])
+    end
+
+    def plos_author_params
+      params.require(:plos_author).permit(
+        :paper_id,
+        :plos_authors_task_id,
         :first_name,
-        :last_name,
         :middle_initial,
+        :last_name,
         :email,
         :title,
         :department,
-        :deceased,
-        :corresponding,
         :affiliation,
         :secondary_affiliation,
-        :position,
-        :paper_id
+        :deceased,
+        :corresponding,
+        :position
       )
     end
   end

@@ -7,5 +7,9 @@ module PlosAuthors
 
     validates :affiliation, :corresponding, :deceased,
       :department, :title, :email, presence: true, if: :task_completed?
+
+    def self.for_paper(paper)
+      where(paper_id: paper)
+    end
   end
 end

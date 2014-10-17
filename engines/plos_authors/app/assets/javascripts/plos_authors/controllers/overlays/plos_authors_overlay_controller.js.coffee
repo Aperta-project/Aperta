@@ -19,9 +19,11 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
       false
 
     saveNewAuthor: (newAuthorHash) ->
-      newAuthorHash.position = 0
-      newAuthorHash.paper = @get('paper')
-      @store.createRecord('author', newAuthorHash).save()
+      Ember.merge newAuthorHash,
+        paper: @get('paper')
+        plosAuthorsTask: @get('model')
+        position: 0
+      @store.createRecord('plosAuthor', newAuthorHash).save()
       @toggleProperty('newAuthorFormVisible')
 
     saveAuthor: (plosAuthor) ->

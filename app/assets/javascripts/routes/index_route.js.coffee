@@ -9,7 +9,8 @@ ETahi.IndexRoute = Ember.Route.extend
       roles = p.get('roles')
       isMyPaper = roles.contains('My Paper')
       iAmCollaborator = roles.contains('Collaborator')
-      isMyPaper || iAmCollaborator
+      iAmReviewer = roles.contains('Reviewer')
+      isMyPaper || iAmCollaborator || iAmReviewer
 
     controller.set('papers', papers)
 

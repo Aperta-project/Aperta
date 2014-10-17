@@ -48,6 +48,26 @@ TahiNotifier.subscribe("author:created", "author:updated") do |payload|
   )
 end
 
+TahiNotifier.subscribe("plos_authors/plos_author:created", "plos_authors/plos_author:updated") do |payload|
+  action     = payload[:action]
+  id         = payload[:id]
+  paper_id   = payload[:paper_id]
+  meta       = payload[:meta]
+  klass      = payload[:klass]
+
+  record = klass.find(id)
+  paper = Paper.find(paper_id)
+  serializer = record.event_stream_serializer
+  serializer.root = false
+  authors = klass.for_paper(paper).map { |a| serializer.new(a).as_json }
+  authors_payload = {plos_authors: authors}
+  EventStream.post_event(
+    Paper,
+    paper_id,
+    authors_payload.merge(action: action, meta: meta).to_json
+  )
+end
+
 TahiNotifier.subscribe("author:destroyed") do |payload|
   id         = payload[:id]
   paper_id   = payload[:paper_id]

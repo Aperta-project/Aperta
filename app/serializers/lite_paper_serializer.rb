@@ -1,5 +1,5 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :short_title, :submitted, :roles, :unread_comments_count, :related_at_date
+  attributes :id, :title, :short_title, :submitted, :roles, :related_at_date
 
   def user
     if (defined? current_user) && current_user
@@ -25,14 +25,5 @@ class LitePaperSerializer < ActiveModel::Serializer
       roles << "My Paper" if object.user_id == user.id
     end
     roles
-  end
-
-  def unread_comments_count
-    if user.present?
-      CommentLook.joins(comment: [task: :paper])
-        .where("papers.id" => object.id)
-        .where('comment_looks.read_at is null')
-        .where("comment_looks.user_id" => user.id).count
-    end
   end
 end

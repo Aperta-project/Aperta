@@ -1,5 +1,5 @@
 a = DS.attr
-ETahi.PlosAuthor = ETahi.Task.extend
+ETahi.PlosAuthor = DS.Model.extend
   paper: DS.belongsTo('paper')
   plosAuthorsTask: DS.belongsTo('plosAuthorsTask')
   qualifiedType: "PlosAuthors::PlosAuthor"

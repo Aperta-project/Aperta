@@ -43,7 +43,7 @@ test 'A message card with more than 5 comments has the show all comments button'
   comments = _.map(r, (n) ->
     ef.createRecord('Comment',
       commenter_id: fakeUser.id
-      message_task_id: 1
+      task: {type: 'MessageTask', id: 1}
       body: "My comment-#{n}"
       created_at: new Date().toISOString()
     ))
@@ -74,7 +74,7 @@ test 'A message card with less than 5 comments doesnt have the show all comments
   comments = _.map(r, (n) ->
    ef.createRecord('Comment',
     commenter_id: fakeUser.id
-    message_task_id: 1
+    task: {type: 'MessageTask', id: 1}
     body: "My comment-#{n}"
     created_at: new Date().toISOString()
   ))
@@ -110,7 +110,7 @@ test 'A message card with a commentLook shows up as unread and updates its comme
 
   comment = ef.createRecord('Comment',
     commenter_id: commenter.id
-    task_id: 1
+    task: {type: 'MessageTask', id: 1}
     body: "Unread comment"
     created_at: new Date().toISOString()
   )
@@ -148,7 +148,7 @@ test 'Showing all comments shows them.', ->
   comments = _.map(r, (n) ->
    ef.createRecord('Comment',
     commenter_id: fakeUser.id
-    message_task_id: 1
+    task: {type: 'MessageTask', id: 1}
     body: "My comment-#{n}"
   ))
 
@@ -184,7 +184,7 @@ test 'Unread comments do not stay unread when showing all comments if they were 
   comments = _.map(r, (n) ->
    ef.createRecord('Comment',
     commenter_id: commenter.id
-    task_id: 1
+    task: {type: 'MessageTask', id: 1}
     body: "My comment-#{n}"
     created_at: new Date().toISOString()
   ))

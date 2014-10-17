@@ -13,6 +13,15 @@ module PlosAuthors
       PlosAuthorsTaskSerializer
     end
 
+    def convert_generic_authors!
+      transaction do
+        self.incomplete! if paper.authors.generic.any?
+        paper.authors.generic.each do |author|
+          PlosAuthor.create!(author: author, plos_authors_task: self)
+        end
+      end
+    end
+
     private
 
     #TODO: refactor this

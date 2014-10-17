@@ -6,6 +6,10 @@ class Author < ActiveRecord::Base
 
   belongs_to :paper
 
+  def self.generic
+    where(actable_id: nil, actable_type: nil)
+  end
+
   private
 
   def notifier_payload

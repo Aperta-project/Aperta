@@ -9,9 +9,15 @@
   </div>
 
   <ul class="message-comments">
-    {{#each comment in shownComments}}
-      {{task-comment comment=comment currentUser=currentUser}}
-    {{/each}}
+    {{#if showingAllComments}}
+      {{#each comment in sortedComments}}
+        {{task-comment comment=comment currentUser=currentUser}}
+      {{/each}}
+    {{else}}
+      {{#each comment in firstComments}}
+        {{task-comment comment=comment currentUser=currentUser}}
+      {{/each}}
+    {{/if}}
   </ul>
 
   {{#unless showingAllComments}}

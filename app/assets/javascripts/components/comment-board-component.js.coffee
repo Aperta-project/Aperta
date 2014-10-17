@@ -4,6 +4,11 @@ ETahi.CommentBoardComponent = Ember.Component.extend
   commentsToShow: 5
   showingAllComments: false
 
+  commentSort: ['createdAt:desc']
+  sortedComments: Ember.computed.sort('comments', 'commentSort')
+
+  firstComments: ETahi.computed.limit 'sortedComments', 5
+
   setupFocus: (->
     @$('.new-comment').on('focus', (e) =>
       @$('.form-group').addClass('editing')
@@ -11,8 +16,9 @@ ETahi.CommentBoardComponent = Ember.Component.extend
   ).on('didInsertElement')
 
   shownComments: (->
-    comments = @get('comments').sortBy('createdAt').reverse()
-    if @get('showingAllComments') then comments else comments.slice(0, @get("commentsToShow"))
+    comments = @get('comments')
+    lastIndex = comments.get('length')
+    if @get('showingAllComments') then comments else comments.slice(lastIndex - @get("commentsToShow"), lastIndex)
   ).property('comments.@each.createdAt', 'showingAllComments')
 
   showingAllComments: (->

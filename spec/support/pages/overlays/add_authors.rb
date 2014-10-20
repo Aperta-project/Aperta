@@ -11,7 +11,7 @@ class AddPlosAuthorsOverlay < CardOverlay
 
   def edit_author(locator_text, new_info)
     page.execute_script "$('.authors-overlay-item:contains(#{locator_text})').trigger('mouseover')"
-    page.execute_script "$('.glyphicon-pencil').click()"
+    page.execute_script "$('.authors-overlay-item--actions .glyphicon-pencil').click()"
     fill_in_author_form new_info
     click_button 'done'
   end

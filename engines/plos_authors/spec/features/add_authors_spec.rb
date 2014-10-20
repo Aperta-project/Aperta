@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Add contributing authors", js: true do
   let(:submitter) { FactoryGirl.create :user }
   let!(:paper) { FactoryGirl.create :paper, user: submitter }
-  let(:task) { FactoryGirl.create(:task, type: "PlosAuthors::PlosAuthorsTask", title: "Add Plos Authors", paper: paper) }
+  let(:task) { FactoryGirl.create(:plos_authors_task, title: "Add Plos Authors", paper: paper) }
 
 
   before do
@@ -30,7 +30,7 @@ feature "Add contributing authors", js: true do
   end
 
   context "with an existing author" do
-    let!(:author) { FactoryGirl.create :author, paper: paper }
+    let!(:author) { FactoryGirl.create :plos_author, paper: paper, plos_authors_task: task }
 
     scenario "editing" do
       edit_paper = EditPaperPage.visit paper

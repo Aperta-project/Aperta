@@ -14,6 +14,7 @@ your components have stylesheets (`rake bower:resolve`)
 - You'll need redis.  `brew install redis` is the easiest way to get it.
 - Create database user for tahi `createuser -s -r tahi`
 - `cp .env-sample .env.development` and then uncomment the environment variables in `.env.development`
+- copy the sample database config file.  `cp config/database.yml.sample config/database.yml` 
 
 ### Setting up the event server
 

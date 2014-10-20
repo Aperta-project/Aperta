@@ -26,16 +26,19 @@ module PlosAuthors
 
     #TODO: refactor this
     def validate_authors
-      valid_authors = true
       self.errors[:plos_authors].clear # remove generic "is invalid" messages
-      plos_authors.each do |plos_author|
+
+      errors = plos_authors.each_with_object({}) do |plos_author, errors|
         if plos_author.invalid?
-          self.errors.add(:plos_authors, plos_author.errors.to_h.merge(id: plos_author.id))
-          valid_authors = false
+          errors[plos_author.id] = plos_author.errors
         end
       end
 
-      self.errors.add(:completed, "Please check the errors above.") unless valid_authors
+      if errors.any?
+        self.errors.set(:plos_authors, errors)
+        self.errors.add(:completed, "Please check the errors above.")
+      end
+
       self.errors.empty?
     end
   end

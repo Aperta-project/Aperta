@@ -186,7 +186,8 @@ test 'Unread comments do not stay unread when showing all comments if they were 
     commenter_id: commenter.id
     task: {type: 'MessageTask', id: 1}
     body: "My comment-#{n}"
-    created_at: new Date().toISOString()
+    # These can't all be created at the exact same time
+    created_at: new Date(Date.now() + n).toISOString()
   ))
 
   #make the most recent comment unread

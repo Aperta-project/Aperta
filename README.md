@@ -63,6 +63,9 @@ EditModalFragment.new(find('tr'), context: page)
 
 ### Configuring S3 direct uploads
 
+Get access to S3 and make a new IAM user, for security reasons. Then take
+these keys and use them. (If someone has already set this up, reuse their keys).
+
 Ensure that the following environment variables are set:
 
 - `S3_URL=http://your-s3-bucket.amazonaws.com`

@@ -4,8 +4,9 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
     TahiTest.journalId = 209
     TahiTest.editorRoleId = 8
     TahiTest.reviewerRoleId = 9
-    adminJournals =
-      roles: [
+
+    journalRoles =
+      [
         id: 7
         kind: "admin"
         name: "Admin"
@@ -33,67 +34,31 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
         can_view_all_manuscript_managers: false
         journal_id: TahiTest.journalId
       ]
-      admin_journals: [
-        id: TahiTest.journalId
-        name: "Test Journal of America"
-        logo_url: "https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/3/Screen%2BShot%2B2014-06-10%2Bat%2B2.59.37%2BPM.png"
-        paper_types: ["Research"]
-        task_types: [
-          "FinancialDisclosure::Task"
-          "PaperAdminTask"
-          "StandardTasks::PaperEditorTask"
-          "StandardTasks::PaperReviewerTask"
-          "StandardTasks::ReviewerReportTask"
-          "StandardTasks::RegisterDecisionTask"
-          "PlosAuthors::PlosAuthorsTask"
-          "StandardTasks::CompetingInterestsTask"
-          "StandardTasks::DataAvailabilityTask"
-          "StandardTasks::FigureTask"
-          "StandardTasks::TechCheckTask"
-          "SupportingInformation::Task"
-          "UploadManuscript::Task"
-        ]
-        epub_cover_url: null
-        epub_cover_file_name: null
-        epub_css: null
-        pdf_css: null
-        manuscript_css: null
-        description: "This is a test journal"
-        paper_count: 3
-        created_at: "2014-06-16T22:23:16.320Z"
-        manuscript_manager_templates: [
-          id: 5
-          paper_type: "Research"
-          template:
-            phases: [
-              name: "Submission Data"
-              task_types: [
-                "PlosAuthors::PlosAuthorsTask"
-                "StandardTasks::FigureTask"
-                "SupportingInformation::Task"
-                "UploadManuscript::Task"
-              ]
-              ,
-              name: "Assign Editor"
-              task_types: [
-                "StandardTasks::PaperEditorTask"
-                "StandardTasks::TechCheckTask"
-                "PaperAdminTask"
-              ]
-              ,
-              name: "Assign Reviewers"
-              task_types: ["StandardTasks::PaperReviewerTask"]
-              ,
-              name: "Get Reviews"
-              task_types: []
-              ,
-              name: "Make Decision"
-              task_types: ["StandardTasks::RegisterDecisionTask"]
-            ]
-          journal_id: TahiTest.journalId
-        ]
-        role_ids: [7, TahiTest.editorRoleId, TahiTest.reviewerRoleId]
+
+    adminJournal =
+      id: TahiTest.journalId
+      name: "Test Journal of America"
+      logo_url: "foo"
+      paper_types: ["Research"]
+      task_types: [ "FinancialDisclosure::Task" ]
+      description: "This is a test journal"
+      paper_count: 3
+      created_at: "2014-06-16T22:23:16.320Z"
+      manuscript_manager_templates: [
+        id: 5
+        paper_type: "Research"
+        template: {}
+        journal_id: TahiTest.journalId
       ]
+      role_ids: [7, TahiTest.editorRoleId, TahiTest.reviewerRoleId]
+
+    adminJournalPayload =
+      roles: journalRoles
+      admin_journal: adminJournal
+
+    adminJournalsPayload =
+      roles: journalRoles
+      admin_journals: [adminJournal]
 
     TahiTest.userRoleId = 99
     TahiTest.adminUserId = 923
@@ -120,7 +85,11 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
     TahiTest.query = 'User'
 
     server.respondWith 'GET', "/admin/journals", [
-      200, "Content-Type": "application/json", JSON.stringify adminJournals
+      200, "Content-Type": "application/json", JSON.stringify adminJournalsPayload
+    ]
+
+    server.respondWith 'GET', "/admin/journals/#{TahiTest.journalId}", [
+      200, "Content-Type": "application/json", JSON.stringify adminJournalPayload
     ]
 
     server.respondWith 'GET', "/admin/journals/authorization", [

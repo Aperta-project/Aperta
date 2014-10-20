@@ -27,9 +27,6 @@ Tahi::Application.routes.draw do
 
   resources :journals, only: [:index, :show]
 
-  namespace 'admin' do
-    resources :journals, only: [:update, :create]
-  end
 
   get '/flow_manager' => 'ember#index'
   get '/profile' => 'ember#index'
@@ -66,12 +63,12 @@ Tahi::Application.routes.draw do
   resources :task_templates
 
   namespace :admin do
-    resources :journals, only: :index do
+    get 'journals/authorization' => 'journals#authorization'
+    resources :journals, only: [:index, :show, :update, :create] do
       put :upload_epub_cover, on: :member
       put :upload_logo, on: :member
     end
 
-    get 'journals/authorization' => 'journals#authorization'
 
 
     resources :journal_users, only: [:index, :update] do

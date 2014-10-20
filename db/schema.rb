@@ -182,8 +182,8 @@ ActiveRecord::Schema.define(version: 20141015204939) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.integer  "striking_image_id"
     t.datetime "last_heartbeat_at"
+    t.integer  "striking_image_id"
     t.boolean  "editable",          default: true
   end
 

@@ -10,6 +10,7 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
 
   redirectStack: Ember.computed.alias 'controllers.application.overlayRedirect'
+  validationErrors: {}
 
   clearCachedModel: (transition) ->
     redirectStack = @get('redirectStack')
@@ -17,6 +18,21 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
       redirectRoute = redirectStack.popObject()
       unless transition.targetName == redirectRoute.get('firstObject')
         @get('controllers.application').set('cachedModel', null)
+
+  saveModel: ->
+    @_super()
+      .then () =>
+        @set('validationErrors', {})
+      .catch (error) =>
+        @set('model.completed', false)
+        @set('validationErrors', Tahi.utils.camelizeKeys(error.errors))
+
+  associatedErrors: (model) ->
+    errorKey = model.get('constructor.typeKey').pluralize()
+    if validationErrors = @get('validationErrors')[errorKey]
+      validationErrors[model.get('id')]
+    else
+      {}
 
   actions:
     #saveModel is implemented in ETahi.SavesDelayed

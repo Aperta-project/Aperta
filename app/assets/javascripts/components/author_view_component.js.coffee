@@ -17,6 +17,10 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
     @$().off('mouseenter mouseleave')
   ).on('willDestroyElement')
 
+  errors: (->
+    @get('origContext').associatedErrors(@get('plosAuthor'))
+  ).property('origContext.validationErrors').volatile()
+
   dragStart: (e) ->
     e.dataTransfer.effectAllowed = 'move'
     ETahi.set('dragItem', @get('plosAuthor'))

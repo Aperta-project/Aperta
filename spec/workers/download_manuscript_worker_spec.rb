@@ -20,6 +20,6 @@ describe DownloadManuscriptWorker do
       with_aws_cassette('manuscript') do
         DownloadManuscriptWorker.new.perform(paper.manuscript.id, url, nil)
       end
-    }.to change{IhatJob.count}.by(1)
+    }.to change { IhatJob.count }.by(1)
   end
 end

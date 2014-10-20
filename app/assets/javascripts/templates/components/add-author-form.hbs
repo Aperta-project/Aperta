@@ -1,61 +1,77 @@
 <div class="add-author-form">
   <div class="form-group form-inline author-top">
     <div class="form-group author-name required">
-      {{input type="text"
-      value=newAuthor.firstName
-      class="form-control"
-      placeholder="First name"}}
+      {{#field-with-errors errorMessage=errors.firstName.firstObject}}
+        {{input type="text"
+        value=newAuthor.firstName
+        class="form-control"
+        placeholder="First name"}}
+      {{/field-with-errors}}
     </div>
     <div class="form-group author-middle">
-      {{input type="text"
-      value=newAuthor.middleInitial
-      class="form-control"
-      placeholder="MI"}}
+      {{#field-with-errors errorMessage=errors.middleInitial.firstObject}}
+        {{input type="text"
+        value=newAuthor.middleInitial
+        class="form-control"
+        placeholder="MI"}}
+      {{/field-with-errors}}
     </div>
     <div class="form-group author-name required">
-      {{input type="text"
-      value=newAuthor.lastName
-      class="form-control"
-      placeholder="Last name"}}
+      {{#field-with-errors errorMessage=errors.lastName.firstObject}}
+        {{input type="text"
+        value=newAuthor.lastName
+        class="form-control"
+        placeholder="Last name"}}
+      {{/field-with-errors}}
     </div>
     <div class="form-group author-half required author-bump">
-      {{input type="text"
-      value=newAuthor.email
-      class="form-control"
-      placeholder="Email"}}
+      {{#field-with-errors errorMessage=errors.email.firstObject}}
+        {{input type="text"
+        value=newAuthor.email
+        class="form-control"
+        placeholder="Email"}}
+      {{/field-with-errors}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half required">
-      {{input type="text"
-      value=newAuthor.title
-      class="form-control"
-      placeholder="Title"}}
+      {{#field-with-errors errorMessage=errors.title.firstObject}}
+        {{input type="text"
+        value=newAuthor.title
+        class="form-control"
+        placeholder="Title"}}
+      {{/field-with-errors}}
     </div>
     <div class="form-group author-half required author-bump">
-      {{input type="text"
-      value=newAuthor.department
-      class="form-control"
-      placeholder="Department"}}
+      {{#field-with-errors errorMessage=errors.department.firstObject}}
+        {{input type="text"
+        value=newAuthor.department
+        class="form-control"
+        placeholder="Department"}}
+      {{/field-with-errors}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half required">
-      {{type-ahead
-      value=newAuthor.affiliation
-      valueProperty='name'
-      sourceList=institutions
-      class='profile-affiliation-field'
-      class="affiliation-field"
-      placeholder="Affiliation"}}
+      {{#field-with-errors errorMessage=errors.affiliation.firstObject}}
+        {{type-ahead
+        value=newAuthor.affiliation
+        valueProperty='name'
+        sourceList=institutions
+        class='profile-affiliation-field'
+        class="affiliation-field"
+        placeholder="Affiliation"}}
+      {{/field-with-errors}}
     </div>
     <div class="form-group author-half author-bump">
-      {{type-ahead
-      value=newAuthor.secondaryAffiliation
-      valueProperty='name'
-      sourceList=institutions
-      class='profile-affiliation-field'
-      placeholder="Secondary Affiliation"}}
+      {{#field-with-errors errorMessage=errors.secondaryAffiliation.firstObject}}
+        {{type-ahead
+        value=newAuthor.secondaryAffiliation
+        valueProperty='name'
+        sourceList=institutions
+        class='profile-affiliation-field'
+        placeholder="Secondary Affiliation"}}
+      {{/field-with-errors}}
     </div>
   </div>
   <div class="form-group">

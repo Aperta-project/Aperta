@@ -6,6 +6,11 @@
   z-index: z($z-layer-navigation);
   @include transition(left 0.3s);
   @include user-select(none);
+
+  hr {
+    border-top: 1px solid #666;
+    margin: 40px 10% 0 10%;
+  }
 }
 
 .navigation-visible .navigation {
@@ -38,13 +43,18 @@
   }
 }
 
-
 .navigation-item {
   display: block;
   font-size: 15px;
   padding: 18px 30px;
   color: #fff;
   text-transform: uppercase;
+
+  &.navigation-item-feedback {
+    color: #999;
+    font-size: 12px;
+    text-transform: none;
+  }
 
   &:hover, &:focus {
     color: $tahi-green;

@@ -1,0 +1,17 @@
+<div class="overlay-container feedback">
+  <header class="overlay-header">
+    <h2 class="overlay-header-title">Please let us know your thoughts:</h2>
+  </header>
+  <main class="overlay-content minimal">
+    <form>
+      <br>
+      {{textarea class="remarks" name='remarks' value=remarks}}
+    </form>
+  </main>
+  <footer class="overlay-footer">
+    <div class="overlay-footer-content">
+      <a class="cancel" {{action "closeOverlay"}}>cancel</a>
+    </div>
+    <button class="button-primary button--green" {{action "submit"}}>Send Feedback</button>
+  </footer>
+</div>

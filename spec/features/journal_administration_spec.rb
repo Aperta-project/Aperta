@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Journal Administration", js: true do
-  let(:user) { create :user, :admin }
+  let(:user) { create :user, :site_admin }
   let!(:journal) { create :journal }
   let!(:another_journal) { create :journal }
 
@@ -15,7 +15,7 @@ feature "Journal Administration", js: true do
 
   describe "journal listing" do
     context "when the user is a site admin" do
-      let(:user) { create :user, :admin }
+      let(:user) { create :user, :site_admin }
 
       scenario "shows all journals" do
         journal_names = [journal, another_journal].map(&:name)

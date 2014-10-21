@@ -26,7 +26,7 @@ end
 
 shared_examples_for "when the user is not an admin" do
   before do
-    user.update_attribute :admin, false
+    user.update_attribute :site_admin, false
     do_request
   end
 

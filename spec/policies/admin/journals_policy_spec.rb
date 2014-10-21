@@ -5,7 +5,7 @@ describe Admin::JournalsPolicy do
   let(:policy) { Admin::JournalsPolicy.new(current_user: user, journal: journal) }
 
   context "admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it { expect(policy.authorization?).to be(true) }
     it { expect(policy.index?).to be(true) }

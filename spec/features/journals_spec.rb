@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Journal Administration", js: true do
-  let(:user) { create :user, :admin }
+  let(:user) { create :user, :site_admin }
   let!(:journal) { create :journal, description: 'journal 1 description' }
   let!(:journal2) { create :journal, description: 'journal 2 description' }
 

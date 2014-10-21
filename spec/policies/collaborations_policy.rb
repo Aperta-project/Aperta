@@ -4,7 +4,7 @@ describe CollaborationsPolicy do
   let(:policy) { CollaborationsPolicy.new(current_user: user, paper: paper) }
 
   context "site admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
     let(:paper) { FactoryGirl.create(:paper) }
 
     it { expect(policy.create?).to be(true) }

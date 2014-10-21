@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Manuscript Manager", js: true do
-  let(:admin) { create :user, admin: true }
+  let(:admin) { create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true, journal: journal }
 

@@ -7,7 +7,7 @@ class FakeTask < Task
 end
 
 describe TasksController do
-  let(:user) { create :user, admin: true }
+  let(:user) { create :user, :site_admin }
 
   let!(:paper) do
     FactoryGirl.create(:paper, :with_tasks, user: user)
@@ -68,7 +68,7 @@ describe TasksController do
       let(:new_assignee) { FactoryGirl.create(:user) }
 
       before do
-        user.update! admin: false
+        user.update! site_admin: false
         task.participants << user
       end
 
@@ -80,7 +80,7 @@ describe TasksController do
 
 
     context "when the user is not an admin or the assignee" do
-      before { user.update! admin: false }
+      before { user.update! site_admin: false }
 
       it "returns a 403" do
         do_request
@@ -119,7 +119,7 @@ describe TasksController do
 
   describe 'MessageTask' do
 
-    let(:user) { FactoryGirl.create :user, admin: super_admin }
+    let(:user) { FactoryGirl.create :user, site_admin: super_admin }
     let(:super_admin) { false }
     before { sign_in user }
 

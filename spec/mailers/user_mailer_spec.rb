@@ -46,7 +46,7 @@ describe UserMailer do
   end
 
   describe '#mention_collaborator' do
-    let(:admin) { FactoryGirl.create(:user, admin: true) }
+    let(:admin) { FactoryGirl.create(:user, :site_admin) }
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true }
     let(:comment) { FactoryGirl.create(:comment, task: paper.tasks.first) }

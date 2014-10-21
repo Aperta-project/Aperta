@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe JournalsController do
 
-  let(:user) { FactoryGirl.create(:user, :admin) }
+  let(:user) { create :user, :site_admin  }
   let(:journal) { FactoryGirl.create(:journal) }
 
   before { sign_in user }

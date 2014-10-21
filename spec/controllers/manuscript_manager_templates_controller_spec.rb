@@ -12,7 +12,7 @@ describe ManuscriptManagerTemplatesController do
     end
   end
 
-  let(:admin) { create :user, :admin }
+  let(:admin) { create :user, :site_admin }
   let(:journal) { create :journal }
   let(:mmt) { journal.manuscript_manager_templates.first }
 

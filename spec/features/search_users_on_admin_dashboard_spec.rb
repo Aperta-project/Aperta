@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Search Users on Admin Dashboard", js: true do
-  let(:user) { create :user, :admin, first_name: "Test", last_name: "User", username: "testuser" }
+  let(:user) { create :user, :site_admin, first_name: "Test", last_name: "User", username: "testuser" }
   let!(:journal) { create :journal }
 
   before do

@@ -21,7 +21,11 @@ class CommentsController < ApplicationController
   private
 
   def task
-    @task ||= Task.find(params[:comment][:task_id])
+    @task ||= if params[:comment]
+                Task.find(params[:comment][:task_id])
+              else
+                Comment.find(params[:id]).task
+              end
   end
 
   def comment_params

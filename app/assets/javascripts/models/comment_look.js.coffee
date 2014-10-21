@@ -4,3 +4,4 @@ ETahi.CommentLook = DS.Model.extend
   comment: DS.belongsTo('comment')
   user: DS.belongsTo('user')
   taskId: a('string')
+  paperId: a('string')

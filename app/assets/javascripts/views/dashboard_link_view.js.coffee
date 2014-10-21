@@ -1,6 +1,16 @@
 ETahi.DashboardLinkView = Em.View.extend
   templateName: 'dashboard_link'
 
+  paperId: Ember.computed.alias('content.id')
+
+  unreadCommentsList: Ember.computed 'unreadComments.@each.readAt', 'unreadComments.@each.paperId', ->
+    paperId = @get('paperId')
+    @get('unreadComments').filter (c) -> c.get('paperId') == paperId && !c.get('readAt')
+
+  unreadCommentsCount: (->
+    @get('unreadCommentsList.length')
+  ).property('unreadCommentsList.length')
+
   refreshTooltips: ->
     Ember.run.scheduleOnce 'afterRender', @, =>
       if @$()

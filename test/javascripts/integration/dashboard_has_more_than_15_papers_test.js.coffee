@@ -1,5 +1,3 @@
-createDashboardData = (paperCount) ->
-
 module 'Integration: Dashboard',
   teardown: -> ETahi.reset()
   setup: ->
@@ -42,6 +40,10 @@ module 'Integration: Dashboard',
 
     server.respondWith 'GET', '/dashboards', [
       200, 'Content-Type': 'application/json', JSON.stringify TahiTest.dashboardResponse
+    ]
+
+    server.respondWith 'GET', '/comment_looks', [
+      200, 'Content-Type': 'application/json', JSON.stringify {comment_looks: []}
     ]
 
     server.respondWith 'GET', '/admin/journals', [

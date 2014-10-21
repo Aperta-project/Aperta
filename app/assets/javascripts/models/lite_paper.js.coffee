@@ -7,7 +7,6 @@ ETahi.LitePaper = DS.Model.extend
   submitted: a('boolean')
   relatedAtDate: a('date')
   roles: a()
-  unreadCommentsCount: a('number')
 
   displayTitle: (->
     @get('title') || @get('shortTitle')

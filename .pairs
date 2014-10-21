@@ -16,7 +16,8 @@ pairs:
   jn: Jerry Nummi
   rw: Ryan Wold
   cc: Chris Camacho
-  dt: David Trejo
+  dt: David Trejo; david.trejo
+  asb: Aaron Baker; aaron.baker
 
 email:
   prefix: pair

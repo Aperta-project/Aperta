@@ -1,6 +1,7 @@
 ETahi.IndexController = Ember.ObjectController.extend
   needs: ['application']
   papers: null
+  unreadComments: [] # will be set in setupController
 
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
 

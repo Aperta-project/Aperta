@@ -15,17 +15,13 @@ moduleForComponent 'comment-board', 'Unit: components/comment-board',
       @board = @subject()
       @board.set('comments', [@comment1, @comment2, @comment3, @comment4, @comment5, @comment6, @comment7, @comment8])
 
-test '#shownComments returns the latest 5 comments in reverse order', ->
-  expectedCommentBodies = @board.get('shownComments').map (comment) -> comment.get('body')
+test '#firstComments returns the latest 5 comments in reverse order', ->
+  expectedCommentBodies = @board.get('firstComments').map (comment) -> comment.get('body')
   deepEqual expectedCommentBodies, [ "comment 8", "comment 7", "comment 6", "comment 5", "comment 4" ]
 
 test '#showingAllComments returns false if there are more than 5 comments', ->
   ok !@board.get('showingAllComments')
 
-test '#showAllComments action should set #shownComments to #sortedComments reversed and @showAllComments to true', ->
-  expectedCommentBodies = @board.get('shownComments').map (comment) -> comment.get('body')
-  deepEqual expectedCommentBodies, [ "comment 8", "comment 7", "comment 6", "comment 5", "comment 4" ]
-
+test '#showAllComments action should set @showingAllComments to true', ->
   @board.send 'showAllComments'
-  expectedCommentBodies = @board.get('shownComments').map (comment) -> comment.get('body')
-  deepEqual expectedCommentBodies, [ "comment 8", "comment 7", "comment 6", "comment 5", "comment 4", "comment 3", "comment 2", "comment 1"]
+  ok @board.get('showingAllComments')

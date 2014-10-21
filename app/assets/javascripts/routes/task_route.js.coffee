@@ -19,6 +19,10 @@ ETahi.TaskRoute = Ember.Route.extend
     taskController.set('model', model)
     @set('taskController', taskController)
 
+    taskComments = @store.filter 'comment', (part) ->
+      part.get('task') == model
+    taskController.set('comments', taskComments)
+
     taskParticipations = @store.filter 'participation', (part) ->
       part.get('task') == model
     taskController.set('participations', taskParticipations)

@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Add contributing authors", js: true do
   let(:submitter) { FactoryGirl.create :user }
   let!(:paper) { FactoryGirl.create :paper, user: submitter }
-  let(:task) { FactoryGirl.create(:plos_authors_task, title: "Add Plos Authors", paper: paper) }
+  let(:task) { FactoryGirl.create(:plos_authors_task, title: "Add Authors", paper: paper) }
 
 
   before do

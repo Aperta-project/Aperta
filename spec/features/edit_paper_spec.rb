@@ -25,7 +25,7 @@ feature "Editing paper", js: true do
 
       expect(edit_paper).to have_paper_title("Lorem Ipsum Dolor Sit Amet")
       expect(edit_paper).to have_body_text("Contrary to popular belief")
-      expect(edit_paper.cards[:metadata]).to match_array ['Upload Manuscript', 'Add Plos Authors', 'Upload Figures', 'Supporting Info']
+      expect(edit_paper.cards[:metadata]).to match_array ['Upload Manuscript', 'Add Authors', 'Upload Figures', 'Supporting Info']
       expect(edit_paper.cards[:assigned]).to include 'Tech Check', 'Assign Admin'
     end
 

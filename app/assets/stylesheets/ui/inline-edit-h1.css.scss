@@ -75,6 +75,7 @@
     }
   }
 
+  &.email .add-item,
   &.text .add-item {
     display: none;
   }
@@ -98,12 +99,27 @@
   }
 }
 
-.bodypart-destroy-overlay {
+.bodypart-last-sent {
+  color: $tahi-green;
+  font-size: 11px;
+  font-style: italic;
+}
+
+.bodypart-overlay {
   @include position(absolute, 0px 0px 0px 0px);
-  padding: 0px 30px;
-  color: #fff;
   background-color: #29a904;
   z-index: 1; // higher index to ensure overlay stays above all other content
+}
+
+.overlay-content .bodypart-overlay p {
+  margin: 0 0 15px 0;
+  color: #fff;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.bodypart-destroy-overlay {
+  padding: 0px 30px;
 
   > * {
     display: inline-block;
@@ -112,10 +128,27 @@
   button {
     margin-top: -10px;
   }
+}
+
+.bodypart-choose-receiver-overlay {
+  padding: 20px 0 0 140px;
+}
+
+.overlay-content .bodypart-email-sent-overlay {
+  .glyphicon-remove {
+    @include position(absolute, 0px 0px auto auto);
+    width: auto !important; //bootstrap/glyphicon override
+    padding: 25px;
+    color: #fff;
+    font-size: 32px;
+    cursor: pointer;
+    z-index: 1;
+  }
 
   p {
-    margin: 0 0 15px 0;
-    font-size: 21px;
-    font-weight: bold;
+    @include position(absolute, 50% 0px auto 0px);
+    margin-top: -20px;
+    font-size: 32px;
+    text-align: center;
   }
 }

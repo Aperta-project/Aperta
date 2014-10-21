@@ -2,22 +2,51 @@
   <div class="pull-left">
     {{yield}}
   </div>
+
   <div class="view-actions">
     <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
-    <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "confirmDeletion"}}></span>
+    <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "toggleConfirmDeletion"}}></span>
+    {{#if isSendable}}
+      {{#if lastSentDate}} <span class="bodypart-last-sent">Sent {{lastSentDate}}</span>{{/if}}
+      <div class="button-secondary button--green" {{action "toggleChooseReceivers"}}>Send this Email to Participants</div>
+    {{/if}}
   </div>
+
   <div class="edit-actions">
     <div {{bind-attr class=":button-secondary :button--green :pull-right hasNoContent:button--disabled"}} {{action "save"}}>Save</div>
     <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
   </div>
+
   <div class="button-secondary button--green add-item" {{action "addItem"}}>
     <span class="glyphicon glyphicon-plus"></span>
   </div>
+
   {{#if confirmDelete}}
-    <div class="bodypart-destroy-overlay">
+    <div class="bodypart-destroy-overlay bodypart-overlay">
       <p>This will permanently delete your item. Are you sure?</p>
-      <button class="button-secondary button--blue knockout" {{action "cancelDestroy"}}>Cancel</button>
-      <button class="button-secondary button--blue knockout delete-button" {{action "deleteBlock"}}>Delete Forever</button>
+      <button class="button-secondary button--green knockout" {{action "toggleConfirmDeletion"}}>Cancel</button>
+      <button class="button-secondary button--green knockout delete-button" {{action "deleteBlock"}}>Delete Forever</button>
+    </div>
+  {{/if}}
+
+  {{#if showChooseReceivers}}
+    <div class="bodypart-choose-receiver-overlay bodypart-overlay">
+      <p>Please choose who should receive this email.</p>
+      {{participant-selector currentParticipants=recipients
+                             everyone=allUsers
+                             onRemove="removeRecipient"
+                             taskId=model.id
+                             onSelect="addRecipientById"}}
+
+      <button class="button-secondary button--green knockout" {{action "toggleChooseReceivers"}}>Cancel</button>
+      <button class="button-secondary button--green knockout" {{action "sendEmail"}}>Send Email</button>
+    </div>
+  {{/if}}
+
+  {{#if emailSent}}
+    <div class="bodypart-email-sent-overlay bodypart-overlay">
+      <span class="glyphicon glyphicon-remove animation-scale-in" {{action "toggleEmailSent"}}></span>
+      <p>Your email has been sent.</p>
     </div>
   {{/if}}
 </div>

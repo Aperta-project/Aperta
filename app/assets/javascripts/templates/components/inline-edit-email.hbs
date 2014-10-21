@@ -1,0 +1,10 @@
+<div {{bind-attr class=":inline-edit editing :bodypart-display"}}>
+  <div class="item-text">
+    {{{bodyPart.value}}}
+  </div>
+</div>
+
+<div {{bind-attr class=":inline-edit-form editing"}}>
+  {{input value=bodyPart.subject placeholder="Enter a subject"}}
+  {{content-editable value=bodyPart.value class="editable"}}
+</div>

@@ -46,6 +46,19 @@ feature "Add contributing authors", js: true do
       end
     end
 
+    scenario "validation on task completion" do
+      edit_paper = EditPaperPage.visit paper
+      edit_paper.view_card(task.title) do |overlay|
+        overlay.edit_author author.first_name,
+          email: 'invalid_email_string'
+        overlay.mark_as_complete
+        expect(page).to have_css(".add-author-form")
+        within ".add-author-form" do
+          expect(page).to have_content "needs to be a valid email address"
+        end
+      end
+    end
+
     scenario "deleting" do
       edit_paper = EditPaperPage.visit paper
       edit_paper.view_card(task.title) do |overlay|

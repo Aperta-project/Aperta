@@ -9,6 +9,10 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
   recipients: []
   overlayParticipants: null
 
+  showState: (->
+    !@get('confirmDelete') && !@get('showChooseReceivers') && !@get('emailSent')
+  ).property('confirmDelete', 'showChooseReceivers', 'emailSent')
+
   _init: (->
     @set 'snapshot', []
     @set 'lastSentDate', @get('block.firstObject.sent')
@@ -65,13 +69,15 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
     sendEmail: ->
       recipientIds = @get('recipients').map (r) -> r.get('id')
       block = @get 'block.firstObject'
-      @send('save')
+      block.sent = moment().format('MMMM Do YYYY')
 
       ETahi.RESTless.put("/adhoc_email/send_message", {body: block.value, subject: block.body, recipients: recipientIds})
-      block.sent = moment().format('MMMM Do YYYY')
-      @set 'lastSentDate', block.sent
-      @toggleProperty 'showChooseReceivers'
-      @toggleProperty 'emailSent'
+      @setProperties
+        lastSentDate: block.sent
+        showChooseReceivers: false
+        emailSent: true
+
+      @send('save')
 
     addItem: ->
       @sendAction('addItem', @get('block'))

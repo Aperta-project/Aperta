@@ -1,5 +1,5 @@
 .inline-edit-icon {
-  display: inline;
+  display: inline-block;
   margin-left: 10px;
   padding: 0.75rem;
   color: #d4d4d4;
@@ -79,10 +79,35 @@
   &.text .add-item {
     display: none;
   }
+}
 
-  &.confirm-delete {
-    min-height: 60px;
-    @include transition(min-height, 0.3s);
+.inline-edit-body-part.email {
+  @include transition(padding, 0.3s);
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+
+  &.show-state {
+    padding: 50px 5px 30px 5px;
+  }
+
+  &.editing {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .view-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 10px;
+
+    .button-secondary {
+      margin-left: 15px;
+    }
+  }
+
+  .inline-edit-icon {
+    top: 2px;
   }
 }
 
@@ -100,13 +125,13 @@
 }
 
 .bodypart-last-sent {
+  margin: 0 0 0 25px;
   color: $tahi-green;
   font-size: 11px;
   font-style: italic;
 }
 
 .bodypart-overlay {
-  @include position(absolute, 0px 0px 0px 0px);
   background-color: #29a904;
   z-index: 1; // higher index to ensure overlay stays above all other content
 }
@@ -119,7 +144,7 @@
 }
 
 .bodypart-destroy-overlay {
-  padding: 0px 30px;
+  padding: 30px;
 
   > * {
     display: inline-block;
@@ -131,7 +156,7 @@
 }
 
 .bodypart-choose-receiver-overlay {
-  padding: 20px 0 0 140px;
+  padding: 20px 0 20px 140px;
 }
 
 .overlay-content .bodypart-email-sent-overlay {

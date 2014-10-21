@@ -1,4 +1,5 @@
 ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
+  layoutName: "plos_authors/components/author-view"
   classNames: ['authors-overlay-item']
   classNameBindings: ['hoverState:__hover', 'isEditable:__editable']
 

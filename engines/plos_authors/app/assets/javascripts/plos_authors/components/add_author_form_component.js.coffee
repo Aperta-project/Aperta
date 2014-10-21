@@ -1,4 +1,5 @@
 ETahi.AddAuthorFormComponent = Ember.Component.extend
+  layoutName: "plos_authors/components/add-author-form"
   tagName: 'div'
 
   setNewAuthor: ( ->

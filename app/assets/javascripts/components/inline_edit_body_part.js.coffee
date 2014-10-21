@@ -66,17 +66,16 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
     toggleEmailSent: ->
       @toggleProperty 'emailSent'
 
-    sendEmail: ->
+    sendEmail: (model) ->
       recipientIds = @get('recipients').map (r) -> r.get('id')
       block = @get 'block.firstObject'
       block.sent = moment().format('MMMM Do YYYY')
 
-      ETahi.RESTless.put("/adhoc_email/send_message", {body: block.value, subject: block.body, recipients: recipientIds})
-      @setProperties
-        lastSentDate: block.sent
-        showChooseReceivers: false
-        emailSent: true
-
+      ETahi.RESTless.put("/adhoc_email/send_message", {body: block.value, subject: block.body, recipients: recipientIds, task_id: model.id})
+      block.sent = moment().format('MMMM Do YYYY')
+      @set 'lastSentDate', block.sent
+      @toggleProperty 'showChooseReceivers'
+      @toggleProperty 'emailSent'
       @send('save')
 
     addItem: ->

@@ -7,7 +7,7 @@ module PlosAuthors
 
     has_many :plos_authors, inverse_of: :plos_authors_task
 
-    validate :validate_authors, if: :completed?
+    validates_with AssociationValidator, association: :plos_authors, fail: :set_completion_error, if: :completed?
 
     def active_model_serializer
       PlosAuthorsTaskSerializer
@@ -24,22 +24,8 @@ module PlosAuthors
 
     private
 
-    #TODO: refactor this
-    def validate_authors
-      self.errors[:plos_authors].clear # remove generic "is invalid" messages
-
-      errors = plos_authors.each_with_object({}) do |plos_author, errors|
-        if plos_author.invalid?
-          errors[plos_author.id] = plos_author.errors
-        end
-      end
-
-      if errors.any?
-        self.errors.set(:plos_authors, errors)
-        self.errors.add(:completed, "Please fix validation errors above.")
-      end
-
-      self.errors.empty?
+    def set_completion_error
+      self.errors.add(:completed, "Please fix validation errors above.")
     end
   end
 end

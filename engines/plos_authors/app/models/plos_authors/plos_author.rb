@@ -7,8 +7,7 @@ module PlosAuthors
 
     belongs_to :plos_authors_task, inverse_of: :plos_authors
 
-    validates :affiliation, :corresponding, :deceased,
-      :department, :title, :email, presence: true, if: :task_completed?
+    validates :affiliation, :department, :title, :email, presence: true, if: :task_completed?
 
     def self.for_paper(paper)
       where(paper_id: paper)

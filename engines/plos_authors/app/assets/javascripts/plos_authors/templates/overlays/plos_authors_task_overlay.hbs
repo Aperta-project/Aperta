@@ -14,13 +14,14 @@
   {{/if}}
 
   {{view ETahi.AuthorDropTargetView index=0}}
-  {{#each plosAuthor in sortedAuthors}}
+  {{#each authorWithErrors in sortedAuthorsWithErrors}}
     {{author-view
       isEditable=isEditable
       institutions=institutions
       delete="removeAuthor"
       save="saveAuthor"
-      plosAuthor=plosAuthor}}
+      plosAuthor=authorWithErrors.author
+      errors=authorWithErrors.errors}}
     {{view ETahi.AuthorDropTargetView index=plosAuthor.position}}
   {{/each}}
 </div>

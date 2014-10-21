@@ -28,11 +28,14 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
         @set('validationErrors', Tahi.utils.camelizeKeys(error.errors))
 
   associatedErrors: (model) ->
+    @validationErrorsForType(model)[model.get('id')]
+
+  clearErrors: (model) ->
+    delete @validationErrorsForType(model)[model.get('id')]
+
+  validationErrorsForType: (model) ->
     errorKey = model.get('constructor.typeKey').pluralize()
-    if validationErrors = @get('validationErrors')[errorKey]
-      validationErrors[model.get('id')]
-    else
-      {}
+    @get('validationErrors')[errorKey] || {}
 
   actions:
     #saveModel is implemented in ETahi.SavesDelayed

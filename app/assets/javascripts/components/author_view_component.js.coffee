@@ -2,9 +2,9 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   classNames: ['authors-overlay-item']
   classNameBindings: ['hoverState:__hover', 'isEditable:__editable']
 
-  editState: false
   hoverState: false
   deleteState: false
+  editState: Ember.computed.any('errors')
 
   attachHoverEvent: (->
     toggleHoverClass = (e) =>
@@ -16,10 +16,6 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   teardownHoverEvent: (->
     @$().off('mouseenter mouseleave')
   ).on('willDestroyElement')
-
-  errors: (->
-    @get('origContext').associatedErrors(@get('plosAuthor'))
-  ).property('origContext.validationErrors').volatile()
 
   dragStart: (e) ->
     e.dataTransfer.effectAllowed = 'move'

@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   end
 
   def administered_journals
-    if admin?
+    if site_admin?
       Journal.all
     else
       journals.merge(Role.can_administer_journal)
@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   end
 
   def accessible_paper_ids
-    if admin?
+    if site_admin?
       Paper.all.pluck(:id)
     else
       admin_papers = Paper.where(journal: journals.merge(Role.can_view_all_manuscript_managers))

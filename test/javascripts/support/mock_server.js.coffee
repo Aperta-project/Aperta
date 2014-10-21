@@ -6,10 +6,11 @@
   ]
 
 @mockAuthorizedRouteReponse = ->
-  @server.respondWith 'GET', '/admin/journals', [
-    403
+  @server.respondWith 'GET', '/admin/journals/authorization', [
+    204
     'Tahi-Authorization-Check': 'true'
-    JSON.stringify {}
+    'Content-Type': 'application/html'
+    ""
   ]
 
   # papers/:id/manuscript_manager
@@ -26,6 +27,13 @@
     JSON.stringify {user: @fakeUser}
   ]
 
+@mockCommentLookResponse = ->
+  @server.respondWith 'GET', "/comment_looks", [
+    200
+    'Content-Type': 'application/json'
+    JSON.stringify {}
+  ]
+
 @setupMockServer = ->
   @server.restore() if @server
   @server = sinon.fakeServer.create()
@@ -35,3 +43,4 @@
   @mockCurrentUserResponse()
   @mockAuthorizedRouteReponse()
   @mockEventStreamResponse()
+  @mockCommentLookResponse()

@@ -4,7 +4,7 @@ describe PapersPolicy do
   let(:policy) { PapersPolicy.new(current_user: user, paper: paper) }
 
   context "site admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
     let(:paper) { FactoryGirl.create(:paper) }
 
     it { expect(policy.edit?).to be(true) }
@@ -38,7 +38,7 @@ describe PapersPolicy do
     let(:paper) { FactoryGirl.create(:paper) }
 
     before do
-      create(:paper_role, :admin, user: user, paper: paper)
+      create(:paper_role, :site_admin, user: user, paper: paper)
     end
 
     it { expect(policy.edit?).to be(true) }

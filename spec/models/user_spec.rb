@@ -11,8 +11,8 @@ describe User do
 
     describe ".admins" do
       it "includes admin users only" do
-        user1.update! admin: true
-        admins = User.admins
+        user1.update! site_admin: true
+        admins = User.site_admins
         expect(admins).to include user1
         expect(admins).not_to include user2
       end

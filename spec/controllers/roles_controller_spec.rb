@@ -4,7 +4,7 @@ describe RolesController do
 
   expect_policy_enforcement
 
-  let(:admin) { FactoryGirl.create(:user, :admin) }
+  let(:admin) { create :user, :site_admin }
   let(:journal) { FactoryGirl.create(:journal) }
   let(:role) { FactoryGirl.create(:role, journal: journal) }
 

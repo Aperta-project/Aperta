@@ -10,6 +10,6 @@
   <h3 class="journal-name">{{journal.name}}</h3>
   <p>{{journal.description}}</p>
 {{/link-to}}
-{{#if currentUser.admin}}
+{{#if currentUser.siteAdmin}}
   <div class="glyphicon glyphicon-pencil edit-icon" {{action "editJournalDetails"}}></div>
 {{/if}}

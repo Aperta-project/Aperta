@@ -4,7 +4,7 @@ describe QuestionAttachmentsController do
 
   expect_policy_enforcement
 
-  let(:user) { FactoryGirl.create(:user, :admin) }
+  let(:user) { create :user, :site_admin }
 
   before do
     sign_in user

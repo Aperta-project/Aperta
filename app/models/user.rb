@@ -40,8 +40,8 @@ class User < ActiveRecord::Base
          authentication_keys: [:login],
          omniauth_providers: [:orcid, :cas]
 
-  def self.admins
-    where(admin: true)
+  def self.site_admins
+    where(site_admin: true)
   end
 
   def full_name

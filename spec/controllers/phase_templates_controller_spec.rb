@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe PhaseTemplatesController do
-  let(:user) { FactoryGirl.create(:user, :admin) }
+  let(:user) { create :user, :site_admin }
   before { sign_in user }
 
   let(:mmt) { FactoryGirl.create(:manuscript_manager_template) }

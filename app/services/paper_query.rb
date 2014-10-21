@@ -22,7 +22,7 @@ class PaperQuery
   end
 
   def paper_for_site_admin
-    Paper.where(id: @paper_id).first if @user.admin?
+    Paper.where(id: @paper_id).first if @user.site_aadmin?
   end
 
   def paper_for_paper_admin

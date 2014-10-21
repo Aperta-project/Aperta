@@ -6,7 +6,7 @@ describe ManuscriptManagerTemplatesPolicy do
   let(:policy) { ManuscriptManagerTemplatesPolicy.new(current_user: user, manuscript_manager_template: manuscript_manager_template) }
 
   context "admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it { expect(policy.show?).to be(true) }
     it { expect(policy.update?).to be(true) }

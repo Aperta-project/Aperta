@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
 
   # TODO: move me to policies
   def verify_admin!
-    return if current_user.admin?
+    return if current_user.site_admin?
 
     if request.xhr? # Ember request
       head :forbidden
@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
       username: current_user.username,
       name: current_user.full_name,
       email: current_user.email,
-      admin: current_user.admin?
+      site_admin: current_user.site_admin?
     }
   end
 

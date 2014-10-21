@@ -36,7 +36,7 @@ module PlosAuthors
 
       if errors.any?
         self.errors.set(:plos_authors, errors)
-        self.errors.add(:completed, "Please check the errors above.")
+        self.errors.add(:completed, "Please fix validation errors above.")
       end
 
       self.errors.empty?

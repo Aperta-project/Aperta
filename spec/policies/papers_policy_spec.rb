@@ -38,7 +38,7 @@ describe PapersPolicy do
     let(:paper) { FactoryGirl.create(:paper) }
 
     before do
-      create(:paper_role, :site_admin, user: user, paper: paper)
+      create(:paper_role, :admin, user: user, paper: paper)
     end
 
     it { expect(policy.edit?).to be(true) }

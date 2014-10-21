@@ -25,7 +25,7 @@ feature "Journal Administration", js: true do
 
     context "when the user is a journal admin" do
       let(:user) { create :user }
-      before { assign_journal_role(journal, user, :site_admin) }
+      before { assign_journal_role(journal, user, :admin) }
 
       scenario "shows assigned journal" do
         expect(admin_page).to have_journal_names(journal.name)

@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# You should try using bin/foreman-stop first. If that fails, you may want to use this command.
+# This will hard-terminate the processes and may result in corrupted data (PIDs may remain on disk).
 
 if [ -n "$(lsof -ti :8080)" ]
   then

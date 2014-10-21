@@ -5,9 +5,9 @@
             class="link-tooltip"
             data-toggle="tooltip"
             title=view.content.roleList}}
-  {{#if view.content.unreadCommentsCount}}
+  {{#if view.unreadCommentsCount}}
     <span class="badge link-tooltip" {{bind-attr title="view.badgeTitle"}}>
-      {{view.content.unreadCommentsCount}}
+      {{view.unreadCommentsCount}}
     </span>
   {{/if}}
 </li>

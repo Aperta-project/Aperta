@@ -16,7 +16,7 @@ class Comment < ActiveRecord::Base
   end
 
   def meta_type
-    self.task.class.name.demodulize
+    self.class.name.demodulize
   end
 
   def has_meta?
@@ -24,7 +24,7 @@ class Comment < ActiveRecord::Base
   end
 
   def meta_id
-    self.task.id
+    self.id
   end
 
 

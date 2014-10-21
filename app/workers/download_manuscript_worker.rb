@@ -3,28 +3,41 @@ class DownloadManuscriptWorker
   include Sidekiq::Worker
 
   def perform(manuscript_id, url, callback_url)
-    tempfile = Tempfile.new 'epub'
+    @manuscript_id = manuscript_id
+    @url = url
+    @callback_url = callback_url
 
-    manuscript = Manuscript.find(manuscript_id)
-    manuscript.source.download!(url)
-    manuscript.status = "done"
-    manuscript.save
+    download_manuscript_source && update_manuscript
 
-    epub = EpubConverter.new manuscript.paper, User.first, true
+    epub_stream = EpubConverter.new(manuscript.paper, User.first, true).epub_stream.string
+    TahiEpub::Tempfile.create epub_stream, delete: true do |file|
+      response_attributes = post_ihat_job(file)
+      IhatJob.create! paper: manuscript.paper, job_id: response_attributes[:jobs][:id]
+    end
+  end
 
-    tempfile.binmode
-    tempfile.write epub.epub_stream.string
-    tempfile.rewind
+  private
 
+  def post_ihat_job(file)
     response = RestClient.post(
-      "#{ENV['IHAT_URL']}/jobs", #ihat
-      epub: tempfile,
+      "#{ENV['IHAT_URL']}/jobs",
+      epub: file,
       multipart: true,
-      callback_url: callback_url
+      callback_url: @callback_url
     )
-    response_attributes = TahiEpub::JSONParser.parse response.body
-    IhatJob.create! paper: manuscript.paper, job_id: response_attributes[:jobs][:id]
-  ensure
-    tempfile.unlink
+
+    TahiEpub::JSONParser.parse response.body
+  end
+
+  def manuscript
+    @manuscript ||= Manuscript.find(@manuscript_id)
+  end
+
+  def download_manuscript_source
+    manuscript.source.download!(@url)
+  end
+
+  def update_manuscript
+    manuscript.update! status: "done"
   end
 end

@@ -5,19 +5,23 @@ camelizeKeys = (object) ->
   camelized
 
 ETahi.RESTless = Ember.Namespace.create
-  ajaxPromise: (method, path) ->
+  ajaxPromise: (method, path, data) ->
     new Ember.RSVP.Promise (resolve, reject) ->
       Ember.$.ajax
         url: path
         type: method
+        data: data
         success: resolve
         error: reject
 
-  put: (model, path) ->
-    @ajaxPromise("PUT", "#{model.path()}#{path}")
+  put: (path, data) ->
+    @ajaxPromise("PUT", path, data)
+
+  putModel: (model, path) ->
+    @put("#{model.path()}#{path}", undefined)
 
   putUpdate: (model, path) ->
-    @put(model, path).then (data) ->
+    @putModel(model, path).then (data) ->
       model.get('store').pushPayload(data)
     , (xhr) ->
         if errors = xhr.responseJSON.errors

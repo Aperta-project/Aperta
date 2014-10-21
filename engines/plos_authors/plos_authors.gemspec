@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.description = %q(Custom authors for PLOS journal.)
   s.license     = "TBD"
 
-  s.files = Dir["{assets, controllers, models, serializers}/**/*", "Rakefile", "README.rdoc"]# add license info like "MIT-LICENSE"
+  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]# add license info like "MIT-LICENSE"
 
   s.add_dependency "rails", "~> 4.1.6"
 end

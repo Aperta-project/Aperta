@@ -65,11 +65,11 @@ feature "Mail Feedback form", js: true do
         expect(page).not_to have_css('.overlay')
       end
 
-      it "submits the form when the enter key is pressed" do
+      it "submits the form when the submit button is pressed" do
         expect(find(".overlay form")).to be_truthy
 
-        find('.overlay').native.send_keys(:return)
-        expect(page).not_to have_css('.overlay', visible: true)
+        click_button 'Send Feedback'
+        expect(page).to have_css('.overlay .thanks', visible: true)
       end
 
     end

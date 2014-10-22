@@ -4,6 +4,10 @@ RSpec.describe FeedbackController, :type => :controller do
   let(:user) { FactoryGirl.create(:user) }
   before { sign_in user }
 
+  def latest_email_body
+    ActionMailer::Base.deliveries.first.body.parts.first.body
+  end
+
   describe '#create' do
     context "with valid params" do
 
@@ -25,15 +29,15 @@ RSpec.describe FeedbackController, :type => :controller do
 
       it "sends email" do
         expect(ActionMailer::Base.deliveries.size).to eq 1
-        expect(ActionMailer::Base.deliveries.first.body).to include 'some words'
+        expect(latest_email_body).to include 'some words'
       end
 
       it "includes the server environment" do
-        expect(ActionMailer::Base.deliveries.first.body).to include 'test'
+        expect(latest_email_body).to include 'test'
       end
 
       it "includes the originating url" do
-        expect(ActionMailer::Base.deliveries.first.body)
+        expect(latest_email_body)
           .to include 'http://example.lvh.me'
       end
 

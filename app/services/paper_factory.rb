@@ -25,7 +25,6 @@ class PaperFactory
 
   def create
     Paper.transaction do
-      paper.authors << Author.new(to_author(author))
       add_collaborator(paper, author)
       if paper.valid?
         if template

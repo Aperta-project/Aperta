@@ -1,25 +1,19 @@
 ETahi.ParticipantSelectorComponent = Ember.Component.extend
-  everyone: []
-  currentParticipants: []
-  availableParticipantsList: []
+  resultsTemplate: (user) ->
+    '<strong>' + user.full_name + '</strong><br><div class="tt-suggestion-sub-value">' + user.info + '</div>'
 
-  availableParticipants: (->
-    return [] if Em.isEmpty @get('everyone.content')
+  selectedTemplate: (user) =>
+    '<img src=\"' + user.avatar_url + '\" class="user-thumbnail"/>'
 
-    currentParticipantIds = @get('currentParticipants').mapProperty('id')
-    (@get('everyone.content').reject (user) ->
-      currentParticipantIds.contains("" + user.id)).map (user) ->
-        Ember.Object.create user
-  ).property('everyone.content.[]', 'currentParticipants.@each')
-
-  updateParticipantsList: (->
-    Ember.run =>
-      @set('availableParticipantsList', @get('availableParticipants'))
-  ).observes('availableParticipants').on('init')
-
-  remoteUrl: (->
-    "/filtered_users/non_participants/#{@get('taskId')}/%QUERY"
+  remoteSource: (->
+    url: "/filtered_users/non_participants/#{@get('taskId')}/"
+    dataType: "json"
+    data: (term) ->
+      query: term
+    results: (data) ->
+      results: data
   ).property()
+
 
   actions:
     addParticipant: (newParticipant) ->

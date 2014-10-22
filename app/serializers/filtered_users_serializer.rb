@@ -1,5 +1,5 @@
 class FilteredUsersSerializer < ActiveModel::Serializer
-  attributes :id, :full_name, :info
+  attributes :id, :full_name, :info, :avatar_url
 
   def info
     user = object.username

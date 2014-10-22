@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PapersController do
   let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :submitted, :decision, :decision_letter, :journal_id, {authors: [:first_name, :last_name, :affiliation, :email], reviewer_ids: [], phase_ids: [], figure_ids: [], assignee_ids: [], editor_ids: []}] }
 
-  let(:user) { create :user, admin: true }
+  let(:user) { create :user, :site_admin }
 
   let(:submitted) { false }
   let(:paper) do
@@ -93,19 +93,6 @@ describe PapersController do
       it "renders the errors for the paper if it can't be saved" do
         post :create, paper: { short_title: '' }, format: :json
         expect(response.status).to eq(422)
-      end
-
-      describe "adding authors to the paper" do
-        it "assigns an author to the paper" do
-          expect {
-            do_request
-          }.to change { Author.count }.by 1
-        end
-
-        it "assigns the right author to the paper" do
-          do_request
-          expect(Paper.last.authors.first.first_name).to eq(user.first_name)
-        end
       end
     end
   end

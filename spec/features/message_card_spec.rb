@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'Message Cards', js: true do
-  let(:admin) { create :user, admin: true, first_name: "Admin" }
+  let(:admin) { create :user, :site_admin, first_name: "Admin" }
   let(:journal) { create(:journal) }
   let(:albert) { create :user, first_name: "Albert" }
 

@@ -7,7 +7,7 @@ describe PhaseTemplatesPolicy do
   let(:policy) { PhaseTemplatesPolicy.new(current_user: user, phase_template: phase_template) }
 
   context "admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it { expect(policy.update?).to be(true) }
     it { expect(policy.create?).to be(true) }

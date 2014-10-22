@@ -8,7 +8,7 @@ describe TaskTemplatesPolicy do
   let(:policy) { TaskTemplatesPolicy.new(current_user: user, task_template: task_template) }
 
   context "admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it { expect(policy.show?).to be(true) }
     it { expect(policy.update?).to be(true) }

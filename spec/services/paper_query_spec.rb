@@ -16,7 +16,7 @@ describe PaperQuery do
       specify { expect(policy.paper).to be_nil }
 
       context "when the user is an admin" do
-        before { user.update! admin: true }
+        before { user.update! site_admin: true }
         specify { expect(policy.paper).to eq paper }
       end
 

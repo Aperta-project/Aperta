@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Profile Page", js: true do
-  let(:admin) { create :user, admin: true }
+  let(:admin) { create :user, :site_admin }
 
   before do
     sign_in_page = SignInPage.visit

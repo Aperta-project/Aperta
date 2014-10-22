@@ -7,7 +7,7 @@ Tahi::Application.routes.draw do
   end
 
   require 'sidekiq/web'
-  authenticate :user, lambda { |u| u.admin? } do
+  authenticate :user, lambda { |u| u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
 

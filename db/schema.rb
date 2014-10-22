@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141013152608) do
+ActiveRecord::Schema.define(version: 20141020235217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,8 +188,8 @@ ActiveRecord::Schema.define(version: 20141013152608) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.integer  "striking_image_id"
     t.datetime "last_heartbeat_at"
+    t.integer  "striking_image_id"
     t.boolean  "editable",          default: true
   end
 
@@ -364,7 +364,7 @@ ActiveRecord::Schema.define(version: 20141013152608) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
-    t.boolean  "admin",                  default: false, null: false
+    t.boolean  "site_admin",             default: false, null: false
     t.string   "avatar"
   end
 

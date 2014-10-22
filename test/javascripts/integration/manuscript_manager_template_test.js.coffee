@@ -19,7 +19,7 @@ test 'Changing phase name', ->
   adminJournalPayload = ef.createPayload('admin_journal')
   adminJournalPayload.addRecords(records)
   adminJournalResponse = adminJournalPayload.toJSON()
-  admin = ef.createRecord('User', admin: true)
+  admin = ef.createRecord('User', siteAdmin: true)
 
   server.respondWith 'GET', "/admin/journals/1", [
     200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalResponse)
@@ -52,7 +52,7 @@ test 'Adding an Ad-Hoc card', ->
   adminJournalPayload = ef.createPayload('admin_journal')
   adminJournalPayload.addRecords(records)
   adminJournalResponse = adminJournalPayload.toJSON()
-  admin = ef.createRecord('User', admin: true)
+  admin = ef.createRecord('User', siteAdmin: true)
 
   server.respondWith 'GET', "/admin/journals/1", [
     200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalResponse)

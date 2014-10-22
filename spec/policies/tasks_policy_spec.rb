@@ -7,7 +7,7 @@ describe TasksPolicy do
   let(:journal) { FactoryGirl.create(:journal, papers: [paper]) }
 
   context "site admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it { expect(policy.edit?).to be(true) }
     it { expect(policy.show?).to be(true) }

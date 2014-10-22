@@ -3,7 +3,7 @@ require 'spec_helper'
 describe DashboardsController do
 
   describe "GET 'show'" do
-    let(:user) { create :user, admin: false }
+    let(:user) { create :user }
     before { sign_in user }
 
     let(:do_request) { get :show }

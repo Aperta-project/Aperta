@@ -3,7 +3,7 @@ require 'spec_helper'
 describe JournalTaskTypesController do
   expect_policy_enforcement
 
-  let(:user) { FactoryGirl.create(:user, :admin) }
+  let(:user) { create :user, :site_admin }
   before { sign_in user }
 
   describe "#update" do

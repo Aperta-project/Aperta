@@ -56,10 +56,6 @@ describe PaperFactory do
       PaperFactory.create(paper_attrs, user)
     end
 
-    it "creates an author" do
-      expect { subject }.to change { Author.count }.by 1
-    end
-
     it "makes the creator a collaborator on the paper" do
       new_paper = PaperFactory.create(paper_attrs, user)
       expect(PaperRole.collaborators.for_user(user).where(paper: new_paper).first).to be_present
@@ -67,10 +63,6 @@ describe PaperFactory do
 
     it "sets the user" do
       expect(subject.user).to eq(user)
-    end
-
-    it "sets the author" do
-      expect(subject.authors.first["first_name"]).to eq(user.first_name)
     end
 
     it "applies the template" do

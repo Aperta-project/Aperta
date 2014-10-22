@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Displaying task", js: true do
-  let(:admin) { create :user, admin: true }
+  let(:admin) { create :user, :site_admin }
   let(:author) { create :user }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }

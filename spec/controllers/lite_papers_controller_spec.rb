@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe LitePapersController do
 
-  let(:user) { FactoryGirl.create(:user, :admin) }
+  let(:user) { create :user, :site_admin }
   let(:journal) { FactoryGirl.create(:journal) }
   let(:response_papers) { JSON.parse(response.body)['lite_papers'] }
 

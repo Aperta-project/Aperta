@@ -6,7 +6,7 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
   isMetadata: Ember.computed.alias('isMetadataTask')
   isMetadataAndPaperEditDisabled: Ember.computed.and('isPaperEditDisabled', 'isMetadata')
   isUserEditable: Ember.computed.not('isMetadataAndPaperEditDisabled')
-  isCurrentUserAdmin: Ember.computed.alias 'controllers.application.currentUser.admin'
+  isCurrentUserAdmin: Ember.computed.alias 'controllers.application.currentUser.siteAdmin'
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
 
   # This will get overriden in setupController

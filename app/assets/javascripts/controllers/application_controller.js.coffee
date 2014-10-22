@@ -8,7 +8,7 @@ ETahi.ApplicationController = Ember.Controller.extend
     !Ember.isBlank(@get('currentUser.id'))
   ).property('currentUser.id')
 
-  isAdmin: Ember.computed.alias 'currentUser.admin'
+  isAdmin: Ember.computed.alias 'currentUser.siteAdmin'
   canViewAdminLinks: false
 
   # this will get overridden by inject except in testing cases.

@@ -7,7 +7,7 @@ describe ParticipationsPolicy do
   let(:policy) { ParticipationsPolicy.new(current_user: user, task: task) }
 
   context "site admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it { expect(policy.show?).to be(true) }
     it { expect(policy.create?).to be(true) }
@@ -29,7 +29,7 @@ describe ParticipationsPolicy do
   end
 
   context "task participant" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
     before do
       FactoryGirl.create(:participation, participant: user, task: task)
     end

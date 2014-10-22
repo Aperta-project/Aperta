@@ -7,7 +7,7 @@ describe QuestionsPolicy do
   let(:task) { paper.phases.first.tasks.first }
 
   context "A super admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it { expect(policy.create?).to eq(true) }
     it { expect(policy.update?).to eq(true) }

@@ -2,11 +2,11 @@ require 'spec_helper'
 
 feature "Flow Manager", js: true do
   let(:admin) do
-    create :user, :admin, first_name: "Admin"
+    create :user, :site_admin, first_name: "Admin"
   end
 
   let(:author) do
-    create :user, :admin, first_name: "Author"
+    create :user, :site_admin, first_name: "Author"
   end
 
   let(:journal) { FactoryGirl.create(:journal) }

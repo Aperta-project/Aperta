@@ -4,7 +4,7 @@ describe PlosAuthors::PlosAuthorsController do
   routes { PlosAuthors::Engine.routes }
   expect_policy_enforcement
 
-  let(:user) { FactoryGirl.create(:user, :admin) }
+  let(:user) { FactoryGirl.create(:user, :site_admin) }
   let(:task) { FactoryGirl.create(:plos_authors_task, completed: false) }
   let!(:author) { FactoryGirl.create(:plos_author, plos_authors_task: task)}
 

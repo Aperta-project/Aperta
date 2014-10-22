@@ -7,7 +7,7 @@ describe PlosAuthors::PlosAuthorsPolicy do
   let(:policy) { PlosAuthors::PlosAuthorsPolicy.new(current_user: user, task: task) }
 
   context "site admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it { expect(policy.update?).to be(true) }
     it { expect(policy.create?).to be(true) }
@@ -24,7 +24,7 @@ describe PlosAuthors::PlosAuthorsPolicy do
   end
 
   context "task participant" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
     before do
       FactoryGirl.create(:participation, participant: user, task: task)
     end

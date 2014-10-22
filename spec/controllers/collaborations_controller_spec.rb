@@ -3,7 +3,7 @@ require 'sidekiq/testing'
 
 describe CollaborationsController do
   describe 'POST "create"' do
-    let(:user) { create :user, admin: false }
+    let(:user) { create :user }
 
     let(:invitee) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create(:paper, user: user) }

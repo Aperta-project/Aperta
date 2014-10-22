@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'Add a new card', js: true do
-  let(:admin) { create :user, admin: true }
+  let(:admin) { create :user, :site_admin }
 
   let(:journal) { FactoryGirl.create :journal }
   let(:paper) do

@@ -49,7 +49,7 @@ describe Task do
 
   describe "authorize_update?" do
     let(:paper) { double('paper') }
-    let(:user)  { build(:user, admin: admin) }
+    let(:user)  { build(:user, site_admin: admin) }
     let(:authorized) { task.authorize_update?(nil, user) }
     before do
       allow(task).to receive(:paper).and_return paper

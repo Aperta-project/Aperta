@@ -6,13 +6,21 @@ ETahi.Select2Component = Ember.TextField.extend
   source: []
   closeOnSelect: false
   multiSelect: false
+  initSelectionData: []
 
   setupSelectedListener: ->
     @.$().off 'select2-selecting'
     @.$().on 'select2-selecting', (e) =>
       @sendAction 'suggestionSelected', e.choice
 
+  setSelectedData: (->
+    @initSelectionData = @get('selectedData')
+    @.$().select2('val', @get('selectedData').mapProperty('id'))
+  ).observes('selectedData.[]')
+
   setup:(->
+    @setSelectedData()
+
     options                    = {}
     options.placeholder        = @get('placeholder')
     options.minimumInputLength = @get('minimumInputLength') if @get('minimumInputLength')
@@ -23,6 +31,8 @@ ETahi.Select2Component = Ember.TextField.extend
     options.data               = @get('source')
     options.closeOnSelect      = @get('closeOnSelect')
     options.ajax               = @get('remoteSource') if @get('remoteSource')
+    options.initSelection      = (el, callback) =>
+                                   callback(@initSelectionData)
 
     @.$().select2(options)
     @setupSelectedListener()

@@ -1,12 +1,10 @@
 <ul class="participants">
-  {{#each p in currentParticipants}}
-    <li class="participant">{{unbound user-thumbnail p}}<a href="#" {{action 'removeParticipant' p}}>&times;</a></li>
-  {{/each}}
   <li class="participant-selector2">
     {{select-2 value=""
               class="participant-select2"
               name="add_participant_select2"
               suggestionSelected="addParticipant"
+              selectedData=availableParticipants
               selectedTemplate=selectedTemplate
               resultsTemplate=resultsTemplate
               closeOnSelect=true

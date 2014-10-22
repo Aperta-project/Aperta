@@ -48,4 +48,4 @@ ETahi.Select2Component = Ember.TextField.extend
     @.$().select2(options)
     @setupSelectedListener()
     @setupRemovedListener()
-  ).on('didInsertElement').observes('source.[]')
+  ).on('didInsertElement')

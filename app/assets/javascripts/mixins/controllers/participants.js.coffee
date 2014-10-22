@@ -27,6 +27,6 @@ ETahi.ControllerParticipants = Ember.Mixin.create
         if part = @createParticipant(user)
           part.save() unless @get('model.isNew')
     removeParticipant: (participantId) ->
-      if part = @findParticipation(participantId)
+      if part = @findParticipation("" + participantId)
         part.deleteRecord()
         part.save() unless @get('model.isNew')

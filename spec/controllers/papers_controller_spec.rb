@@ -96,15 +96,15 @@ describe PapersController do
       end
 
       describe "adding authors to the paper" do
-        it "assigns an author to the paper" do
+        it "doesn't add any new authors to the paper" do
           expect {
             do_request
-          }.to change { Author.count }.by 1
+          }.to change { Author.count }.by 0
         end
 
         it "assigns the right author to the paper" do
           do_request
-          expect(Paper.last.authors.first.first_name).to eq(user.first_name)
+          expect(Paper.last.authors).to be_empty
         end
       end
     end

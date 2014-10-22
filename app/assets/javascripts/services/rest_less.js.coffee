@@ -1,9 +1,3 @@
-camelizeKeys = (object) ->
-  camelized = {}
-  Ember.keys(object).forEach (key) ->
-    camelized[Ember.String.camelize(key)] = object[key]
-  camelized
-
 ETahi.RESTless = Ember.Namespace.create
   ajaxPromise: (method, path, data) ->
     new Ember.RSVP.Promise (resolve, reject) ->
@@ -25,7 +19,7 @@ ETahi.RESTless = Ember.Namespace.create
       model.get('store').pushPayload(data)
     , (xhr) ->
         if errors = xhr.responseJSON.errors
-          errors = camelizeKeys(errors)
+          errors = Tahi.utils.camelizeKeys(errors)
           modelErrors = model.get('errors')
           Ember.keys(errors).forEach (key) ->
             modelErrors.add(key, errors[key])

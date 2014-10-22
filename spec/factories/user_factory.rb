@@ -22,10 +22,10 @@ FactoryGirl.define do
     email
     password 'password'
     password_confirmation 'password'
-    admin false
+    site_admin false
 
-    trait :admin do
-      admin true
+    trait :site_admin do
+      site_admin true
     end
 
     trait :orcid do

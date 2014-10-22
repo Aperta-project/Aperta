@@ -4,7 +4,7 @@ describe StandardTasks::FundersController do
   routes { StandardTasks::Engine.routes }
   expect_policy_enforcement
 
-  let(:user) { FactoryGirl.create(:user, :admin) }
+  let(:user) { FactoryGirl.create(:user, :site_admin) }
   let(:task) { FactoryGirl.create(:task, type: "StandardTasks::FinancialDisclosureTask") }
   let!(:funder) { StandardTasks::Funder.create!(name: "Starfleet", task_id: task.id) }
 

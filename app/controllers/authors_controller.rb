@@ -25,14 +25,6 @@ class AuthorsController < ApplicationController
     params.require(:author).permit(
       :first_name,
       :last_name,
-      :middle_initial,
-      :email,
-      :title,
-      :department,
-      :deceased,
-      :corresponding,
-      :affiliation,
-      :secondary_affiliation,
       :position,
       :paper_id
     )

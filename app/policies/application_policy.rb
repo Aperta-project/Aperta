@@ -95,7 +95,7 @@ class ApplicationPolicy
   private
 
   def super_admin?
-    current_user.admin?
+    current_user.site_admin?
   end
 
   def validate_params(params)

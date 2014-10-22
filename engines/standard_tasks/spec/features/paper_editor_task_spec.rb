@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Assigns Editor", js: true do
-  let(:admin) { create :user, admin: true }
+  let(:admin) { create :user, site_admin: true }
   let!(:editor) { create :user }
   let(:journal) { FactoryGirl.create :journal }
   let!(:paper) do

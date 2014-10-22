@@ -4,7 +4,7 @@ describe QuestionsController do
 
   expect_policy_enforcement
 
-  let(:user) { FactoryGirl.create(:user, :admin) }
+  let(:user) { create :user, :site_admin }
   let(:task) { FactoryGirl.create(:task) }
   let(:question) { FactoryGirl.create(:question) }
   let(:url) { "http://something" }

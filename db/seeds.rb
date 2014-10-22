@@ -8,7 +8,7 @@ when 'development'
     last_name:   'Doel',
     password:    'skyline1',
     username:    'mikedoel',
-    admin:       true
+    site_admin:       true
   )
 
   mike.affiliations.first_or_create(name: "skyline")
@@ -46,7 +46,7 @@ when 'development'
       email:       "#{first_names[i].downcase}.#{last_names[i].downcase}@example.com",
       username:    "#{first_names[i].downcase}",
       password:    "password1",
-      admin:       true
+      site_admin:       true
     )
     if u.persisted?
       u.roles.create!(journal_id: plos_journal.id, name: "Role #{i}")

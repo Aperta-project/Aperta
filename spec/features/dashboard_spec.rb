@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Dashboard", js: true do
-  let!(:user) { FactoryGirl.create :user, admin: true }
+  let!(:user) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let(:paper_count) { 1 }
   let!(:papers) do

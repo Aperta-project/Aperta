@@ -4,7 +4,7 @@ describe ManuscriptManagersController do
 
   expect_policy_enforcement
 
-  let(:user) { FactoryGirl.create(:user, :admin) }
+  let(:user) { create :user, :site_admin }
   let(:paper) { FactoryGirl.create(:paper, user: user) }
   before { sign_in user }
 

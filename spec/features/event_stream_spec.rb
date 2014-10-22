@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature "Event streaming", js: true do
-  let!(:author) { FactoryGirl.create :user, :admin }
+  let!(:author) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, user: author, journal: journal }
   let(:upload_task) { paper.tasks_for_type(UploadManuscript::Task).first }
@@ -41,11 +41,11 @@ feature "Event streaming", js: true do
     end
 
     scenario "deleting a task" do
-      submission_phase.tasks.where(title: 'Add Authors').first.destroy!
+      deleted_task = submission_phase.tasks.first.destroy!
 
       phase = all('.column').detect { |p| p.find('h2').text == "Submission Data" }
       within phase do
-        expect(page).to_not have_content "Add Authors"
+        expect(page).to_not have_content deleted_task.title
       end
     end
   end

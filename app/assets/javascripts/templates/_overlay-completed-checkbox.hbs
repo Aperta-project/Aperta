@@ -1,8 +1,10 @@
 <div class="overlay-completed-checkbox">
-  {{#if isEditable}}
-    {{check-box id="task_completed" name="task_completed" checked=completed action='saveModel'}}
-  {{else}}
-    {{check-box id="task_completed" name="task_completed" checked=completed disabled='disabled'}}
-  {{/if}}
-  <label for="task_completed">Completed</label>
+  {{#field-with-errors errorMessage=validationErrors.completed.firstObject}}
+    {{#if isEditable}}
+      {{check-box id="task_completed" name="task_completed" checked=completed action='saveModel'}}
+    {{else}}
+      {{check-box id="task_completed" name="task_completed" checked=completed disabled='disabled'}}
+    {{/if}}
+    <label for="task_completed">Completed</label>
+  {{/field-with-errors}}
 </div>

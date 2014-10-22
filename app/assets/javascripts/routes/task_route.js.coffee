@@ -4,7 +4,7 @@ ETahi.TaskRoute = Ember.Route.extend
       @store.findTask(params.task_id) || @store.find('task', params.task_id)
 
   afterModel: (model) ->
-    return unless model.get('type') == "AuthorsTask"
+    return unless model.get('type') == "PlosAuthorsTask"
     Ember.$.getJSON '/affiliations', (data)->
       model.set('institutions', data.institutions)
 

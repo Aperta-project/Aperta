@@ -6,7 +6,7 @@ describe JournalTaskTypesPolicy do
   let(:policy) { JournalTaskTypesPolicy.new(current_user: user, journal_task_type: journal_task_type) }
 
   context "admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it { expect(policy.update?).to be(true) }
   end

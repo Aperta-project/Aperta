@@ -19,7 +19,7 @@ describe StandardTasks::PaperReviewerTask do
   let(:paper) { create :paper, :with_tasks, journal: journal }
   let(:phase) { paper.phases.first }
 
-  let(:albert) { create :user, :admin }
+  let(:albert) { create :user, :site_admin }
   let(:neil) { create :user }
 
   describe "#reviewer_ids=" do

@@ -6,5 +6,5 @@ class UserSerializer < ActiveModel::Serializer
     :avatar_url,
     :username,
     :email,
-    :admin
+    :site_admin
 end

@@ -41,6 +41,12 @@ GIT
       activesupport (>= 4.1.0)
 
 PATH
+  remote: engines/plos_authors
+  specs:
+    plos_authors (0.0.2)
+      rails (~> 4.1.6)
+
+PATH
   remote: engines/standard_tasks
   specs:
     standard_tasks (0.0.1)
@@ -76,6 +82,9 @@ GEM
       erubis (~> 2.7.0)
     active_model_serializers (0.8.1)
       activemodel (>= 3.0)
+    active_record-acts_as (1.0.2)
+      activerecord (~> 4.1.2)
+      activesupport (~> 4)
     activemodel (4.1.6)
       activesupport (= 4.1.6)
       builder (~> 3.1)
@@ -271,7 +280,7 @@ GEM
     method_source (0.8.2)
     migration_data (0.0.4)
       rails (>= 4.0.0.rc1)
-    mime-types (2.4.3)
+    mime-types (2.4.1)
     mini_magick (3.7.0)
       subexec (~> 0.2.1)
     mini_portile (0.6.0)
@@ -480,6 +489,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  active_record-acts_as
   activemodel-globalid!
   acts_as_list
   american_date
@@ -522,6 +532,7 @@ DEPENDENCIES
   pdfkit
   pg
   phantomjs
+  plos_authors!
   progressbar
   pry-byebug
   pry-rails

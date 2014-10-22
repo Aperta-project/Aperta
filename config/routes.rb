@@ -1,13 +1,14 @@
 Tahi::Application.routes.draw do
   mount Kss::Engine => '/kss' if Rails.env.development?
   mount StandardTasks::Engine => '/', as: 'standard_tasks'
+  mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'
 
   if Rails.env.development? || Rails.env.test?
     mount QUnit::Rails::Engine => '/qunit'
   end
 
   require 'sidekiq/web'
-  authenticate :user, lambda { |u| u.admin? } do
+  authenticate :user, lambda { |u| u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
 

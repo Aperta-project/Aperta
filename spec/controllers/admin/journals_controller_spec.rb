@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Admin::JournalsController do
   let(:journal) { create(:journal) }
-  let(:admin) { create :user, :admin }
+  let(:admin) { create :user, :site_admin }
   let(:image_file) { fixture_file_upload 'yeti.jpg' }
 
   describe '#create' do

@@ -1,6 +1,7 @@
 Tahi::Application.routes.draw do
   mount Kss::Engine => '/kss' if Rails.env.development?
   mount StandardTasks::Engine => '/', as: 'standard_tasks'
+  mount SupportingInformation::Engine => '/', as: 'supporting_information'
 
   if Rails.env.development? || Rails.env.test?
     mount QUnit::Rails::Engine => '/qunit'
@@ -41,11 +42,6 @@ Tahi::Application.routes.draw do
   resources :figures, only: [:destroy, :update] do
     put :update_attachment, on: :member
   end
-
-  resources :files, as: 'supporting_information_files',
-                    path: 'supporting_information_files',
-                    only: [:create, :destroy, :update],
-                    controller: 'supporting_information/files'
 
   resources :comment_looks, only: [:index, :update]
 

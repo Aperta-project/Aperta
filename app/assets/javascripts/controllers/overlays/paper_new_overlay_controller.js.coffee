@@ -11,4 +11,7 @@ ETahi.PaperNewOverlayController = Ember.ObjectController.extend
     createNewPaper: ->
       @get('model').save().then (paper) =>
         @send('addPaperToEventStream', paper)
-        @transitionToRoute('paper.edit', paper)
+        # TODO: this is an ember data bug that will likely be solved after upgrading
+        # to beta 11 or later.  check back then.
+        paper.reload().then (newPaper) =>
+          @transitionToRoute('paper.edit', newPaper)

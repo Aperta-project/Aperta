@@ -9,7 +9,7 @@ Bundler.require(:default, Rails.env)
 
 module Tahi
   class Application < Rails::Application
-    config.ihat_supported_formats = Faraday.get(ENV['IHAT_URL']).body
+    config.ihat_supported_formats = Faraday.get(ENV['IHAT_URL']).body unless Rails.env.test?
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/app/workers)
     config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/

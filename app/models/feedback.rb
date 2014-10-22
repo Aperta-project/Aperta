@@ -1,9 +1,10 @@
 class Feedback < MailForm::Base
-  attribute :email_to
-  attribute :user
-  attribute :feedback
-  attribute :referrer
-  attribute :env
+  attribute :email_to,
+            :env,
+            :feedback,
+            :referrer,
+            :user
+
 
   def headers
     {

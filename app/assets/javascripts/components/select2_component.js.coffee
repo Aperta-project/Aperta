@@ -7,14 +7,22 @@ ETahi.Select2Component = Ember.TextField.extend
   closeOnSelect: false
   multiSelect: false
   initSelectionData: []
+  selectedData: []
 
   setupSelectedListener: ->
     @.$().off 'select2-selecting'
     @.$().on 'select2-selecting', (e) =>
-      @sendAction 'suggestionSelected', e.choice
+      @sendAction 'selectionSelected', e.choice
+
+  setupRemovedListener: ->
+    @.$().off 'select2-removed'
+    @.$().on 'select2-removed', (e) =>
+      @selectedData.removeObject(e.choice)
+      @sendAction 'selectionRemoved', e.choice
 
   setSelectedData: (->
-    @initSelectionData = @get('selectedData')
+    if !@.$().val()
+      @initSelectionData = @get('selectedData')
     @.$().select2('val', @get('selectedData').mapProperty('id'))
   ).observes('selectedData.[]')
 
@@ -36,4 +44,5 @@ ETahi.Select2Component = Ember.TextField.extend
 
     @.$().select2(options)
     @setupSelectedListener()
+    @setupRemovedListener()
   ).on('didInsertElement').observes('source.[]')

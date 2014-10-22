@@ -18,9 +18,4 @@ class FilteredUsersController < ApplicationController
       respond_with users.results, each_serializer: FilteredUsersSerializer, root: false
     end
   end
-
-  def participants
-    respond_with UserSearch.participants(params[:task_id]), each_serializer: FilteredUsersSerializer, root: false
-  end
-
 end

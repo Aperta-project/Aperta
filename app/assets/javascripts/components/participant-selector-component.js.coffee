@@ -1,4 +1,6 @@
 ETahi.ParticipantSelectorComponent = Ember.Component.extend
+  availableParticipantsList: []
+
   resultsTemplate: (user) ->
     '<strong>' + user.full_name + '</strong><br><div class="tt-suggestion-sub-value">' + user.info + '</div>'
 
@@ -15,9 +17,14 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
   ).property()
 
   availableParticipants: (->
-    return [] if Em.isEmpty @get('everyone.content')
+    return [] if @get('everyone.isPending')
     @get('currentParticipants')
   ).property('everyone.content.[]', 'currentParticipants.@each')
+
+  updateParticipantsList: (->
+    Ember.run =>
+      @set('availableParticipantsList', @get('availableParticipants'))
+  ).observes('availableParticipants').on('init')
 
   actions:
     addParticipant: (newParticipant) ->

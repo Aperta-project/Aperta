@@ -55,3 +55,17 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
       equal task.get('title'), 'A Message', 'the message task is in the store'
     env.store.find('authorsTask', 2).then (task) ->
       equal task.get('title'), 'Check Authors', 'the namespaced authors task is in the store'
+
+test "extractMany puts normalizes things via their 'type' attribute", ->
+  jsonHash =
+    users: [{id: '1', username: 'editorGuy'}]
+    tasks:
+      [ {id: '1', type: 'PaperEditorTask', title: 'Edit Stuff', editor_id: '1'} ]
+  # make sure the store is set up for the model, otherwise the typeKey
+  # won't be properly set for some reason and primaryTypeName will be 
+  # undefined
+  env.store.modelFor('task')
+  Ember.run ->
+    result = env.serializer.extractArray(env.store, ETahi.Task, jsonHash)
+    ok result[0].editor
+    # TODO: test that the various tasks are normalized properly.  PaperEditorTask, etc.

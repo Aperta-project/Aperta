@@ -1,6 +1,5 @@
 class ChangeAdminToSiteAdminOnUser < ActiveRecord::Migration
   def change
-    remove_column :users, :admin, :boolean, default: false
-    add_column    :users, :site_admin, :boolean, default: false
+    rename_column :users, :admin, :site_admin
   end
 end

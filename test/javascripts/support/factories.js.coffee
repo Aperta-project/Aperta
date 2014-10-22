@@ -187,7 +187,7 @@ ETahi.FactoryAttributes.User =
   avatar_url: "/images/profile-no-image.png"
   username: "fakeuser"
   email: "fakeuser@example.com"
-  admin: false
+  siteAdmin: false
   affiliation_ids: []
 
 ETahi.FactoryAttributes.Journal =

@@ -4,7 +4,7 @@ describe ManuscriptManagersPolicy do
   let(:policy) { ManuscriptManagersPolicy.new(current_user: user, paper: paper) }
 
   context "admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
     let(:paper) { FactoryGirl.create(:paper) }
 
     it { expect(policy.show?).to be(true) }

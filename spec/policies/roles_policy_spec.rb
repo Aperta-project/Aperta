@@ -5,7 +5,7 @@ describe RolesPolicy do
   let(:policy) { RolesPolicy.new(current_user: user, journal: journal) }
 
   context "admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it { expect(policy.update?).to be(true) }
     it { expect(policy.create?).to be(true) }

@@ -2,7 +2,7 @@ module MetadataTask
   extend ActiveSupport::Concern
 
   def authorize_update?(params, user)
-    if user.admin?
+    if user.site_admin?
       true
     else
       !paper.submitted?

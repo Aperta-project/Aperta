@@ -7,7 +7,7 @@ moduleFor 'controller:task', 'TaskController',
       editable: true
 
     @currentUser = Ember.Object.create
-      admin: false
+      siteAdmin: false
 
     currentUser = @currentUser
     @task = Ember.Object.create
@@ -25,7 +25,7 @@ test '#isEditable: true when the task is not a metadata task', ->
 
 test '#isEditable: always true when the user is an admin', ->
   Ember.run =>
-    @currentUser.set('admin', true)
+    @currentUser.set('siteAdmin', true)
     @task.set('isMetadataTask', true)
     @paper.set('editable', false)
     equal @subject().get('isEditable'), true

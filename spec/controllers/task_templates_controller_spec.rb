@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe TaskTemplatesController do
-  let(:user) { FactoryGirl.create(:user, :admin) }
+  let(:user) { create :user, :site_admin }
   before { sign_in user }
 
   let(:phase_template) { FactoryGirl.create(:phase_template) }

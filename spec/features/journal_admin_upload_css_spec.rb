@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'Upload default CSS on journal admin page', js: true do
-  let(:admin) { create :user, :admin }
+  let(:admin) { create :user, :site_admin }
   let!(:journal) { create :journal }
 
   before do

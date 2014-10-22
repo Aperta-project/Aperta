@@ -17,6 +17,6 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
 
   actions:
     addParticipant: (newParticipant) ->
-      @sendAction("onSelect", newParticipant.object.get('id'))
+      @sendAction("onSelect", newParticipant.id)
     removeParticipant: (participant) ->
       @sendAction("onRemove", participant)

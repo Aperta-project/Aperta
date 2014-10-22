@@ -7,6 +7,11 @@ ETahi.Select2Component = Ember.TextField.extend
   closeOnSelect: false
   multiSelect: false
 
+  setupSelectedListener: ->
+    @.$().off 'select2-selecting'
+    @.$().on 'select2-selecting', (e) =>
+      @sendAction 'suggestionSelected', e.choice
+
   setup:(->
     options                    = {}
     options.placeholder        = @get('placeholder')
@@ -20,4 +25,5 @@ ETahi.Select2Component = Ember.TextField.extend
     options.ajax               = @get('remoteSource') if @get('remoteSource')
 
     @.$().select2(options)
+    @setupSelectedListener()
   ).on('didInsertElement').observes('source.[]')

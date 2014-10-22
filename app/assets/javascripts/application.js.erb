@@ -96,6 +96,7 @@
   }
 
   ETahi.environment = "<%= Rails.env %>";
+  ETahi.supportedDownloadFormats = JSON.parse('<%= Tahi::Application.config.ihat_supported_formats %>');
 })(window);
 
 $.extend($.easing, {

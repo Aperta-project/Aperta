@@ -48,6 +48,11 @@
     </div>
 
     <div {{bind-attr class=":manuscript-download-links view.downloadsVisible:active"}}>
+      {{#each downloadType in view.supportedDownloadFormats}}
+        <a {{bind-attr href=downloadType.url}}>
+          {{partial downloadType.icon}}
+        </a>
+      {{/each}}
       {{#direct-download-link link=downloadLink}}
         ePub {{partial "svg/epub-icon"}}
       {{/direct-download-link}}

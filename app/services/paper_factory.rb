@@ -60,8 +60,4 @@ class PaperFactory
   def add_collaborator(paper, user)
     paper.paper_roles.build(user: user, role: PaperRole::COLLABORATOR)
   end
-
-  def to_author(author)
-    author.slice(*%w(first_name last_name email)).merge(position: 1)
-  end
 end

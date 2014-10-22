@@ -20,8 +20,8 @@
       institutions=institutions
       delete="removeAuthor"
       save="saveAuthor"
-      plosAuthor=authorWithErrors.author
+      plosAuthor=authorWithErrors.model
       errors=authorWithErrors.errors}}
-    {{view ETahi.AuthorDropTargetView index=authorWithErrors.author.position}}
+    {{view ETahi.AuthorDropTargetView index=authorWithErrors.model.position}}
   {{/each}}
 </div>

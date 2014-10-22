@@ -1,4 +1,4 @@
-ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.ControllerParticipants,
+ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.ControllerParticipants, ETahi.ValidatesAssociatedModels,
   needs: ['application']
   onClose: 'closeOverlay'
   isLoading: false
@@ -13,7 +13,6 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
   comments: []
 
   redirectStack: Ember.computed.alias 'controllers.application.overlayRedirect'
-  validationErrors: {}
 
   clearCachedModel: (transition) ->
     redirectStack = @get('redirectStack')
@@ -25,20 +24,10 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
   saveModel: ->
     @_super()
       .then () =>
-        @set('validationErrors', {})
+        @clearValidationErrors()
       .catch (error) =>
+        @setValidationErrors(error.errors)
         @set('model.completed', false)
-        @set('validationErrors', Tahi.utils.camelizeKeys(error.errors))
-
-  associatedErrors: (model) ->
-    @validationErrorsForType(model)[model.get('id')]
-
-  clearErrors: (model) ->
-    delete @validationErrorsForType(model)[model.get('id')]
-
-  validationErrorsForType: (model) ->
-    errorKey = model.get('constructor.typeKey').pluralize()
-    @get('validationErrors')[errorKey] || {}
 
   actions:
     #saveModel is implemented in ETahi.SavesDelayed

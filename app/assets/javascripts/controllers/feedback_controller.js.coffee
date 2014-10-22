@@ -1,4 +1,6 @@
 ETahi.FeedbackController = Ember.ObjectController.extend(
+  overlayClass: 'overlay--fullscreen feedback-overlay'
+
   setupModel: (->
     @resetModel()
     @set('model.referrer', window.location)

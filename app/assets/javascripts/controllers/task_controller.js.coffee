@@ -1,4 +1,4 @@
-ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.ControllerParticipants,
+ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.ControllerParticipants, ETahi.ValidatesAssociatedModels,
   needs: ['application']
   onClose: 'closeOverlay'
   isLoading: false
@@ -20,6 +20,14 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
       redirectRoute = redirectStack.popObject()
       unless transition.targetName == redirectRoute.get('firstObject')
         @get('controllers.application').set('cachedModel', null)
+
+  saveModel: ->
+    @_super()
+      .then () =>
+        @clearValidationErrors()
+      .catch (error) =>
+        @setValidationErrors(error.errors)
+        @set('model.completed', false)
 
   actions:
     #saveModel is implemented in ETahi.SavesDelayed

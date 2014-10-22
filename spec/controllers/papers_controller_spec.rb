@@ -94,19 +94,6 @@ describe PapersController do
         post :create, paper: { short_title: '' }, format: :json
         expect(response.status).to eq(422)
       end
-
-      describe "adding authors to the paper" do
-        it "doesn't add any new authors to the paper" do
-          expect {
-            do_request
-          }.to change { Author.count }.by 0
-        end
-
-        it "assigns the right author to the paper" do
-          do_request
-          expect(Paper.last.authors).to be_empty
-        end
-      end
     end
   end
 

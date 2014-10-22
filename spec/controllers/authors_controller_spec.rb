@@ -12,8 +12,6 @@ describe AuthorsController do
       post :create, format: :json, author: {
         first_name: "enrico",
         last_name: "fermi",
-        email: "ricky@fermi.org",
-        affiliation: "Harvey Mudd",
         paper_id: paper.id,
         position: 1
       }
@@ -22,11 +20,6 @@ describe AuthorsController do
 
     it "creates a new author" do
       expect { do_request }.to change { Author.count }.by 1
-    end
-
-    it "creates the right author" do
-      do_request
-      expect(author.affiliation).to eq 'Harvey Mudd'
     end
   end
 
@@ -46,16 +39,14 @@ describe AuthorsController do
 
   describe "PUT #update" do
     let(:do_request) do
-      put :update, format: :json, id: author.id, author: { secondary_affiliation: "Brisbon Uni" }
+      put :update, format: :json, id: author.id, author: { last_name: "Blabby"}
     end
 
     let!(:author) { FactoryGirl.create(:author, paper: paper) }
 
     it "updates the author" do
-      first_name = author.first_name
       do_request
-      expect(author.reload.secondary_affiliation).to eq "Brisbon Uni"
-      expect(author.first_name).to eq first_name
+      expect(author.reload.last_name).to eq "Blabby"
     end
   end
 end

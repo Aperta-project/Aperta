@@ -1,11 +1,11 @@
-ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.ControllerParticipants,
+ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.ControllerParticipants, ETahi.ValidatesAssociatedModels,
   needs: ['application']
   onClose: 'closeOverlay'
   isLoading: false
-  isPaperEditDisabled: Ember.computed.not('paper.editable')
   isMetadata: Ember.computed.alias('isMetadataTask')
-  isMetadataAndPaperEditDisabled: Ember.computed.and('isPaperEditDisabled', 'isMetadata')
-  isUserEditable: Ember.computed.not('isMetadataAndPaperEditDisabled')
+  isUserEditable: Ember.computed 'paper.editable', 'isMetadata', ->
+    @get('paper.editable') || !@get('isMetadata')
+
   isCurrentUserAdmin: Ember.computed.alias 'controllers.application.currentUser.siteAdmin'
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
 
@@ -20,6 +20,14 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
       redirectRoute = redirectStack.popObject()
       unless transition.targetName == redirectRoute.get('firstObject')
         @get('controllers.application').set('cachedModel', null)
+
+  saveModel: ->
+    @_super()
+      .then () =>
+        @clearValidationErrors()
+      .catch (error) =>
+        @setValidationErrors(error.errors)
+        @set('model.completed', false)
 
   actions:
     #saveModel is implemented in ETahi.SavesDelayed

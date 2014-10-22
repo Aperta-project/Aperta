@@ -48,6 +48,7 @@ TahiNotifier.subscribe("author:created", "author:updated") do |payload|
   )
 end
 
+
 TahiNotifier.subscribe("author:destroyed") do |payload|
   id         = payload[:id]
   paper_id   = payload[:paper_id]

@@ -61,6 +61,10 @@ class Task < ActiveRecord::Base
     [:completed, :title, :phase_id]
   end
 
+  def incomplete!
+    update(completed: false)
+  end
+
   class << self
     attr_reader :_default_title, :_default_role
 

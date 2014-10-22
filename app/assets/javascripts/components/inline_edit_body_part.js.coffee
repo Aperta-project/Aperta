@@ -2,26 +2,10 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
   editing: false
   snapshot: null
   confirmDelete: false
-  showChooseReceivers: false
-  emailSent: false
-  mailRecipients: []
-  lastSentDate: null
-  recipients: []
-  overlayParticipants: null
-
-  showState: (->
-    !@get('confirmDelete') && !@get('showChooseReceivers') && !@get('emailSent')
-  ).property('confirmDelete', 'showChooseReceivers', 'emailSent')
 
   _init: (->
     @set 'snapshot', []
-    @set 'lastSentDate', @get('block.firstObject.sent')
-    @initRecipients()
   ).on('init')
-
-  initRecipients: (->
-    @set('recipients', @get('overlayParticipants').copy())
-  ).observes('showChooseReceivers')
 
   createSnapshot: (->
     @set('snapshot', Em.copy(@get('block'), true))
@@ -32,14 +16,6 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
   ).property('block.@each.value')
 
   hasNoContent: Em.computed.not('hasContent')
-
-  bodyPartType: (->
-    @get('block.firstObject.type')
-  ).property('block.@each.type')
-
-  isSendable: (->
-    @get('bodyPartType') == "email"
-  ).property('bodyPartType')
 
   _isNotEmpty: (item) ->
     item && !Em.isEmpty(item.value)
@@ -60,31 +36,5 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
     toggleConfirmDeletion: ->
       @toggleProperty 'confirmDelete'
 
-    toggleChooseReceivers: ->
-      @toggleProperty 'showChooseReceivers'
-
-    toggleEmailSent: ->
-      @toggleProperty 'emailSent'
-
-    sendEmail: (model) ->
-      recipientIds = @get('recipients').map (r) -> r.get('id')
-      block = @get 'block.firstObject'
-      block.sent = moment().format('MMMM Do YYYY')
-
-      ETahi.RESTless.put("/adhoc_email/send_message", {body: block.value, subject: block.body, recipients: recipientIds, task_id: model.id})
-      block.sent = moment().format('MMMM Do YYYY')
-      @set 'lastSentDate', block.sent
-      @toggleProperty 'showChooseReceivers'
-      @toggleProperty 'emailSent'
-      @send('save')
-
     addItem: ->
       @sendAction('addItem', @get('block'))
-
-    removeRecipient: (recipient)->
-      @get('recipients').removeObject(recipient)
-
-    addRecipientById: (recipientId)->
-      store = ETahi.__container__.lookup('store:main')
-      store.find('user', recipientId).then (recipient)=>
-        @get('recipients').pushObject(recipient)

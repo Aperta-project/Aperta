@@ -1,27 +1,21 @@
 <div {{bind-attr class=":inline-edit-body-part confirmDelete editing bodyPartType showState :clearfix"}}>
-  {{#if showState}}
-    <div class="pull-left">
-      {{yield}}
-    </div>
+  <div class="pull-left">
+    {{yield}}
+  </div>
 
-    <div class="view-actions">
-      <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
-      <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "toggleConfirmDeletion"}}></span>
-      {{#if isSendable}}
-        {{#if lastSentDate}} <span class="bodypart-last-sent">Sent {{lastSentDate}}</span>{{/if}}
-        <div class="button-secondary button--green" {{action "toggleChooseReceivers"}}>Send this Email to Participants</div>
-      {{/if}}
-    </div>
+  <div class="view-actions">
+    <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
+    <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "toggleConfirmDeletion"}}></span>
+  </div>
 
-    <div class="edit-actions">
-      <div {{bind-attr class=":button-secondary :button--green :pull-right hasNoContent:button--disabled"}} {{action "save"}}>Save</div>
-      <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
-    </div>
+  <div class="edit-actions">
+    <div {{bind-attr class=":button-secondary :button--green :pull-right hasNoContent:button--disabled"}} {{action "save"}}>Save</div>
+    <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
+  </div>
 
-    <div class="button-secondary button--green add-item" {{action "addItem"}}>
-      <span class="glyphicon glyphicon-plus"></span>
-    </div>
-  {{/if}}
+  <div class="button-secondary button--green add-item" {{action "addItem"}}>
+    <span class="glyphicon glyphicon-plus"></span>
+  </div>
 
   {{#if confirmDelete}}
     <div class="bodypart-destroy-overlay bodypart-overlay">

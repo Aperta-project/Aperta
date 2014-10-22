@@ -1,6 +1,8 @@
 <div {{bind-attr class=":inline-edit editing :bodypart-display"}}>
   <div class="item-text">
     {{{bodyPart.value}}}
+    {{#if lastSentDate}} <span class="bodypart-last-sent">Sent {{lastSentDate}}</span>{{/if}}
+    <div class="button-secondary button--green" {{action "toggleChooseReceivers"}}>Send this Email to Participants</div>
   </div>
 </div>
 

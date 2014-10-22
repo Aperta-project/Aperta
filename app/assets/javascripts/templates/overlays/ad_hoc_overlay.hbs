@@ -8,11 +8,11 @@
       save="saveBlock"
       delete="deleteBlock"
       model=model
-      allUsers=allUsers
-      overlayParticipants=participants
       addItem="addCheckboxItem"}}
       {{#each item in block}}
         {{inlineEdit item
+          allUsers=allUsers
+          overlayParticipants=participants
           delete="deleteItem"
           saveModel="saveModel"}}
       {{/each}}
@@ -25,13 +25,13 @@
       cancel="resetBlock"
       save="saveBlock"
       delete="deleteBlock"
-      allUsers=allUsers
       model=model
-      overlayParticipants=participants
       addItem="addCheckboxItem"}}
       {{#each item in block}}
         {{inlineEdit item
           isNew=true
+          allUsers=allUsers.content
+          overlayParticipants=participants
           delete="deleteItem"
           saveModel="saveModel"}}
       {{/each}}

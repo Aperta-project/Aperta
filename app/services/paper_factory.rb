@@ -25,7 +25,6 @@ class PaperFactory
 
   def create
     Paper.transaction do
-      paper.authors << Author.new(to_author(author))
       add_collaborator(paper, author)
       if paper.valid?
         if template
@@ -60,9 +59,5 @@ class PaperFactory
 
   def add_collaborator(paper, user)
     paper.paper_roles.build(user: user, role: PaperRole::COLLABORATOR)
-  end
-
-  def to_author(author)
-    author.slice(*%w(first_name last_name)).merge(position: 1)
   end
 end

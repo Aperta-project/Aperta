@@ -12,4 +12,8 @@ module IhatSupportedFormats
   end
 end
 
-IhatSupportedFormats.call unless Rails.env.test?
+if Rails.env.test?
+  Tahi::Application.config.ihat_supported_formats = nil
+else
+  IhatSupportedFormats.call
+end

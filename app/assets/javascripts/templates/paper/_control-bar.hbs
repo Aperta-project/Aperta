@@ -49,9 +49,7 @@
 
     <div {{bind-attr class=":manuscript-download-links view.downloadsVisible:active"}}>
       {{#each downloadType in view.supportedDownloadFormats}}
-        <a {{bind-attr href=downloadType.url}}>
-          {{partial downloadType.icon}}
-        </a>
+        <a title="Coming soon">{{partial downloadType.icon}}</a>
       {{/each}}
       {{#direct-download-link link=downloadLink}}
         {{partial "svg/epub-icon"}}

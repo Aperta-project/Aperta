@@ -21,10 +21,7 @@ ETahi.InlineEditEmailComponent = Em.Component.extend ETahi.AdhocInlineEditItem,
       recipientIds = @get('recipients').map (r) -> r.get('id')
       bodyPart = @get 'bodyPart'
       bodyPart.sent = moment().format('MMMM Do YYYY')
-
-      ETahi.RESTless.put("/adhoc_email/send_message", {body: bodyPart.value, subject: bodyPart.body, recipients: recipientIds, task_id: model.id})
-      bodyPart.sent = moment().format('MMMM Do YYYY')
-      @set 'lastSentDate', bodyPart.sent
+      @sendAction("sendEmail", body: bodyPart.value, subject: bodyPart.body, recipients: recipientIds)
       @toggleProperty 'showChooseReceivers'
       @toggleProperty 'emailSent'
       @send('save')

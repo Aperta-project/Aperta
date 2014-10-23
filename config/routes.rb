@@ -106,10 +106,9 @@ Tahi::Application.routes.draw do
   resources :participations, only: [:create, :show, :destroy]
 
   resources :tasks, only: [:update, :create, :show, :destroy] do
-  end
-
-  resource :adhoc_email, only: [] do
-    put :send_message
+    member do
+      put :send_message
+    end
   end
 
   resources :phases, only: [:create, :update, :show, :destroy]

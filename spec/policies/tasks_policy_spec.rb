@@ -14,6 +14,7 @@ describe TasksPolicy do
     it { expect(policy.create?).to be(true) }
     it { expect(policy.update?).to be(true) }
     it { expect(policy.upload?).to be(true) }
+    it { expect(policy.send_message?).to be(true) }
   end
 
   context "paper collaborator" do
@@ -26,6 +27,7 @@ describe TasksPolicy do
     it { expect(policy.create?).to be(false) }
     it { expect(policy.update?).to be(true) }
     it { expect(policy.upload?).to be(true) }
+    it { expect(policy.send_message?).to be(true) }
 
     context "on a non metadata task" do
       let(:task) { paper.tasks.where.not(type: Task.metadata_types).first }
@@ -42,12 +44,14 @@ describe TasksPolicy do
     end
 
     it { expect(policy.show?).to be(true) }
+    it { expect(policy.send_message?).to be(true) }
   end
 
   context "user no role" do
     let(:user) { FactoryGirl.create(:user) }
 
     it { expect(policy.show?).to be(false) }
+    it { expect(policy.send_message?).to be(false) }
   end
 
   context "user with role on different journal" do
@@ -60,6 +64,7 @@ describe TasksPolicy do
       end
 
     it { expect(policy.show?).to be(false) }
+    it { expect(policy.send_message?).to be(false) }
   end
 
   context "user with can_view_assigned_manuscript_managers on this journal and is assigned to the paper." do
@@ -75,6 +80,7 @@ describe TasksPolicy do
     end
 
     it { expect(policy.show?).to be(true) }
+    it { expect(policy.send_message?).to be(true) }
   end
 
   context "task participant" do
@@ -88,6 +94,7 @@ describe TasksPolicy do
     it { expect(policy.create?).to be(false) }
     it { expect(policy.update?).to be(true) }
     it { expect(policy.upload?).to be(true) }
+    it { expect(policy.send_message?).to be(true) }
   end
 
   context "allowed reviewer" do
@@ -107,6 +114,7 @@ describe TasksPolicy do
       it { expect(policy.create?).to be(false) }
       it { expect(policy.update?).to be(true) }
       it { expect(policy.upload?).to be(true) }
+      it { expect(policy.send_message?).to be(true) }
     end
   end
 
@@ -126,5 +134,6 @@ describe TasksPolicy do
     it { expect(policy.create?).to be(false) }
     it { expect(policy.update?).to be(true) }
     it { expect(policy.upload?).to be(true) }
+    it { expect(policy.send_message?).to be(true) }
   end
 end

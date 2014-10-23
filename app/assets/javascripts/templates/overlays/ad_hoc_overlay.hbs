@@ -12,7 +12,8 @@
       {{#each item in block}}
         {{inlineEdit item allUsers participants
           delete="deleteItem"
-          saveModel="saveModel"}}
+          saveModel="saveModel"
+          sendEmail="sendEmail"}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
@@ -29,7 +30,8 @@
         {{inlineEdit item allUsers participants
           isNew=true
           delete="deleteItem"
-          saveModel="saveModel"}}
+          saveModel="saveModel"
+          sendEmail="sendEmail"}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}

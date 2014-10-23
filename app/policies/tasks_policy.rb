@@ -25,4 +25,8 @@ class TasksPolicy < ApplicationPolicy
     current_user.site_admin? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper? ||
     allowed_manuscript_information_task? || allowed_reviewer_task? || task_participant?
   end
+
+  def send_message?
+    update?
+  end
 end

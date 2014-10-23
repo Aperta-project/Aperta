@@ -42,6 +42,7 @@ describe TasksPolicy do
     end
 
     it { expect(policy.show?).to be(true) }
+    it { expect(policy.create?).to be(true) }
   end
 
   context "user no role" do
@@ -75,6 +76,7 @@ describe TasksPolicy do
     end
 
     it { expect(policy.show?).to be(true) }
+    it { expect(policy.create?).to be(true) }
   end
 
   context "task participant" do

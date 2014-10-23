@@ -117,6 +117,17 @@ describe TasksController do
     end
   end
 
+  describe "PUT 'send_message'" do
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks, user: user) }
+    let(:task) { paper.tasks.first }
+
+    subject(:do_request) { put :send_message, { id: task.id, format: "json", task: {subject: "Hello", body: "Greetings from Vulcan!", recepients: [user.id]} } }
+
+    it "adds an email to the SideKiq queue" do
+      expect { do_request }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+    end
+  end
+
   describe 'MessageTask' do
 
     let(:user) { FactoryGirl.create :user, site_admin: super_admin }

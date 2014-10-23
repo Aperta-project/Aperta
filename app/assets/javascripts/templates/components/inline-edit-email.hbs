@@ -4,6 +4,9 @@
     <div class="button-secondary button--green" {{action "toggleChooseReceivers"}}>Send this Email to Participants</div>
   </div>
   <div class="item-text">
+    <div class="item-subject">
+      Subject: {{bodyPart.subject}}
+    </div>
     {{{bodyPart.value}}}
   </div>
 </div>

@@ -70,7 +70,7 @@ class TasksController < ApplicationController
   end
 
   def task
-    Task.find(params[:id]) if params[:id]
+    @task ||= Task.find_by_id(params[:id]) || build_task
   end
 
   def enforce_policy

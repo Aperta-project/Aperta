@@ -1,6 +1,6 @@
-<div class="admin-section">
-  <h2 class="admin-section-title">Available Task Types</h2>
-  <br><br>
+<div class="overlay-container">
+  <h1>Available Task Types</h1>
+
   <table class="admin-table roles">
     <thead>
       <tr>
@@ -12,9 +12,12 @@
     </thead>
     <tbody>
       {{#each journalTaskType in sortedTaskTypes}}
-        {{render "journal_task_types/show" journalTaskType}}
+        {{render "journal_task_type" journalTaskType}}
       {{/each}}
     </tbody>
   </table>
-</div>
 
+  <div class="overlay-action-buttons">
+    <button class="button-primary button--blue button--wide" {{action "closeOverlay"}}>Done Editing</button>
+  </div>
+</div>

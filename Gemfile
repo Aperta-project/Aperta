@@ -61,7 +61,6 @@ gem 'migration_data'
 gem 'bugsnag'
 gem 'spring'
 gem 'sunspot_rails'
-gem 'momentjs-rails'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28

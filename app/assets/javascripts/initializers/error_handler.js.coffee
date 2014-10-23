@@ -22,12 +22,12 @@ ETahi.initializer
           applicationController.set('error', message)
 
     # The global error handler
-    # Ember.onerror = (error) ->
-    #   logError("\n" + error.message + "\n" + error.stack + "\n")
-    #   if ETahi.environment == 'development'
-    #     throw error
-    #   else
-    #     displayErrorMessage(error)
+    Ember.onerror = (error) ->
+      logError("\n" + error.message + "\n" + error.stack + "\n")
+      if ETahi.environment == 'development'
+        throw error
+      else
+        displayErrorMessage(error)
 
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       {type, url} = ajaxSettings

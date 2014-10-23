@@ -8,7 +8,7 @@ class TasksPolicy < ApplicationPolicy
   end
 
   def create?
-    current_user.site_admin?
+    current_user.site_admin? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper?
   end
 
   def update?

@@ -78,6 +78,11 @@ textarea { resize: none; }
   }
 }
 
+.matte.paper-submitted #tahi-container {
+  padding-top: 90px;
+  &.sub-nav-visible { padding-top: 135px; }
+}
+
 #tahi-container {
   max-width: 1120px;
   margin: 0 auto;

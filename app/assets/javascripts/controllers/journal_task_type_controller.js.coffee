@@ -4,8 +4,6 @@ ETahi.JournalTaskTypeController = Em.ObjectController.extend
   journalRoleSort: ['name: asc']
   availableTaskRoles: Ember.computed.sort('journal.roles', 'journalRoleSort')
   actions:
-    updateRole: ->
-
     save: ->
       @get('model').save().then(
       ).catch -> # ignore 422. we're displaying errors

@@ -27,6 +27,7 @@ end
 
 shared_examples_for "administrator for paper" do
   it "lets them do everything except keep the paper open" do
+    expect(policy.edit?).to be(true)
     expect(policy.show?).to be(true)
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(true)
@@ -43,6 +44,7 @@ shared_examples_for "author for paper" do
     expect(policy.show?).to be(true)
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(true)
+    expect(policy.edit?).to be(true)
     expect(policy.upload?).to be(true)
     expect(policy.download?).to be(true)
     expect(policy.heartbeat?).to be(false)
@@ -53,6 +55,7 @@ end
 
 shared_examples_for "person who cannot see a paper" do
   it "only lets them create a new paper" do
+    expect(policy.edit?).to be(false)
     expect(policy.show?).to be(false)
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(false)

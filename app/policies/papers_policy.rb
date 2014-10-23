@@ -17,6 +17,10 @@ class PapersPolicy < ApplicationPolicy
     can_view_paper?
   end
 
+  def edit?
+    can_view_paper?
+  end
+
   def download?
     can_manage_paper?
   end

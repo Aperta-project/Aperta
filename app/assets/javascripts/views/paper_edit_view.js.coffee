@@ -8,7 +8,7 @@ ETahi.PaperEditView = Ember.View.extend ETahi.RedirectsIfEditable,
   contributorsVisible: false
 
   supportedDownloadFormats: Ember.computed ->
-    if Etahi.supportedDownloadFormats
+    if ETahi.supportedDownloadFormats
       exportFormats = ETahi.supportedDownloadFormats.export_formats
       for dataType in exportFormats
         dataType.icon = "svg/#{dataType.format}-icon"

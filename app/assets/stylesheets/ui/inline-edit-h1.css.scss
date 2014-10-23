@@ -43,15 +43,24 @@
 .inline-edit.editing { display: none; }
 
 .inline-edit-body-part {
+  @include transition(min-height, 0.2s);
   position: relative;
+  border-top: 1px solid #ccc;
 
   .view-actions {
     display: block;
-    margin-top: 18px;
+    position: absolute;
+    top: 0;
+    right: 10px;;
+    margin-top: 10px;
   }
 
   .edit-actions, .add-item {
     display: none;
+  }
+
+  &.confirm-delete {
+    min-height: 150px;
   }
 
   &.editing {
@@ -82,10 +91,6 @@
 }
 
 .inline-edit-body-part.email {
-  @include transition(padding, 0.3s);
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-
   &.show-state {
     padding: 50px 5px 30px 5px;
   }
@@ -95,12 +100,15 @@
     padding-bottom: 5px;
   }
 
-  .view-actions {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: 10px;
+  .send-email {
+    @include position(absolute, 0px 70px auto auto);
+  }
 
+  .item-text {
+    padding: 47px 0 13px 0;
+  }
+
+  .view-actions {
     .button-secondary {
       margin-left: 15px;
     }
@@ -114,6 +122,7 @@
 .bodypart-display {
   position: relative;
   margin: 10px 0;
+  @include transition(min-height, 0.3s);
 
   > * {
     float: left;
@@ -122,16 +131,25 @@
   .glyphicon.inline-edit-icon {
     top: 3px;
   }
+
+  &.email {
+    min-height: 56px;
+  }
+
+  &.show-choose-receivers {
+    min-height: 200px;
+  }
 }
 
 .bodypart-last-sent {
-  margin: 0 0 0 25px;
+  margin-right: 10px;
   color: $tahi-green;
   font-size: 11px;
   font-style: italic;
 }
 
 .bodypart-overlay {
+  @include position(absolute, 0px 0px 0px 0px);
   background-color: #29a904;
   z-index: 1; // higher index to ensure overlay stays above all other content
 }

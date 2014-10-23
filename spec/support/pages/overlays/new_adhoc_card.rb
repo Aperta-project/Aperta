@@ -21,4 +21,18 @@ class NewAdhocCardOverlay < CardOverlay
     self.title = params[:title]
     self
   end
+
+  def create_email(params)
+    find('.adhoc-content-toolbar .glyphicon-plus').click
+    find(".adhoc-content-toolbar .adhoc-toolbar-item--email").click
+    expect(page).to have_css('.inline-edit-form')
+    fill_in 'Enter a subject', with: params[:subject]
+    session.execute_script(
+    <<-SCRIPT
+    $('.inline-edit-form div[contenteditable]')
+      .html("#{params[:body]}")
+      .trigger('keyup')
+    SCRIPT
+    )
+  end
 end

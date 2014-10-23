@@ -19,6 +19,7 @@ module TaskServices
         {kind: "StandardTasks::TechCheckTask",                  default_role: "admin",    default_title: "Tech Check"},
         {kind: "SupportingInformation::Task",                   default_role: "author",   default_title: "Supporting Info"},
         {kind: "Task",                                          default_role: nil,        default_title: "Ad-Hoc"},
+        {kind: "MessageTask",                                   default_role: nil,        default_title: "Message Task"},
         {kind: "UploadManuscript::Task",                        default_role: "author",   default_title: "Upload Manuscript"},
       ]
 

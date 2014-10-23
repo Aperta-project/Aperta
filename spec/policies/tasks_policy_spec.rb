@@ -49,6 +49,7 @@ describe TasksPolicy do
     let(:user) { FactoryGirl.create(:user) }
 
     it { expect(policy.show?).to be(false) }
+    it { expect(policy.create?).to be(false) }
   end
 
   context "user with role on different journal" do
@@ -61,6 +62,7 @@ describe TasksPolicy do
       end
 
     it { expect(policy.show?).to be(false) }
+    it { expect(policy.create?).to be(false) }
   end
 
   context "user with can_view_assigned_manuscript_managers on this journal and is assigned to the paper." do

@@ -132,3 +132,32 @@ test 'When user is removed from collaborating on paper', ->
       es.msgResponse(data)
   andThen ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 1
+
+test 'User can show the feedback form', ->
+  visit '/'
+  click '.navigation-toggle'
+  click '.navigation-item-feedback'
+  andThen ->
+    ok find(".overlay-footer button:contains('Send Feedback')").length
+
+test 'Hitting escape closes the feedback form', ->
+  visit '/'
+  click '.navigation-toggle'
+  click '.navigation-item-feedback'
+  keyEvent '.overlay', 'keyup', 27
+  andThen ->
+    ok !find(".overlay-footer button:contains('Send Feedback')").length
+
+test 'User can show the feedback form', ->
+  server.respondWith 'POST', "/feedback", [
+    200, "Content-Type": "application/json", JSON.stringify {}
+  ]
+
+  visit '/'
+  click '.navigation-toggle'
+  click '.navigation-item-feedback'
+  fillIn 'textarea.remarks', 'all my feedback'
+  click '.overlay-footer button'
+  andThen ->
+    ok find(".overlay .thanks").length
+    ok server.requests.findBy('url', '/feedback')

@@ -9,7 +9,7 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
   sortedAuthors: Ember.computed.sort('plosAuthors', 'authorSort')
 
   sortedAuthorsWithErrors: (->
-    @modelsWithValidationErrors(@get('sortedAuthors'))
+    @decorateWithErrors(@get('sortedAuthors'))
   ).property('sortedAuthors.@each', 'validationErrors')
 
   shiftAuthorPositions: (author, newPosition)->

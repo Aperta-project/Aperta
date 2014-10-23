@@ -77,3 +77,8 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       @eventStream.addEventListener(paper.get('eventName'))
 
     editableDidChange: -> null #noop, this is caught by paper.edit and paper.index
+
+    feedback: ->
+      @render('feedback',
+        into: 'application'
+        outlet: 'overlay')

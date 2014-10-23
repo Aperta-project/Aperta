@@ -123,6 +123,7 @@ Tahi::Application.routes.draw do
   resource :event_stream, only: :show
 
   resources :errors, only: :create
+  resources :feedback, only: :create
 
   get '*route' => 'ember#index'
   root 'ember#index'

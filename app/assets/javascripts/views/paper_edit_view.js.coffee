@@ -7,13 +7,6 @@ ETahi.PaperEditView = Ember.View.extend ETahi.RedirectsIfEditable,
   downloadsVisible: false
   contributorsVisible: false
 
-  supportedDownloadFormats: Ember.computed ->
-    if ETahi.supportedDownloadFormats
-      exportFormats = ETahi.supportedDownloadFormats.export_formats
-      for dataType in exportFormats
-        dataType.icon = "svg/#{dataType.format}-icon"
-      exportFormats
-
   setBackgroundColor: (->
     $('.main-content').addClass 'matte'
   ).on('didInsertElement')

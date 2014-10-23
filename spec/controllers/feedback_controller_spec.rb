@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe FeedbackController, :type => :controller do
+describe FeedbackController do
   let(:user) { FactoryGirl.create(:user) }
   before { sign_in user }
 

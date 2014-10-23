@@ -1,10 +1,5 @@
 require 'spec_helper'
 
-def run_shared_example(example)
-  include_examples example
-  it_behaves_like example
-end
-
 describe TasksPolicy do
 
   let(:policy) { TasksPolicy.new(current_user: user, task: task) }
@@ -15,7 +10,7 @@ describe TasksPolicy do
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    run_shared_example "administrator for task"
+    include_examples "administrator for task"
   end
 
   context "paper collaborator" do
@@ -23,12 +18,12 @@ describe TasksPolicy do
     let(:task) { paper.tasks.metadata.first }
     let(:user) { FactoryGirl.create(:user) }
 
-    run_shared_example "person who can edit but not create a task"
+    include_examples "person who can edit but not create a task"
 
     context "on a non metadata task" do
       let(:task) { paper.tasks.where.not(type: Task.metadata_types).first }
 
-      run_shared_example "person who cannot see a task"
+      include_examples "person who cannot see a task"
     end
   end
 
@@ -40,13 +35,13 @@ describe TasksPolicy do
       )
     end
 
-    run_shared_example "administrator for task"
+    include_examples "administrator for task"
   end
 
   context "user no role" do
     let(:user) { FactoryGirl.create(:user) }
 
-    run_shared_example "person who cannot see a task"
+    include_examples "person who cannot see a task"
   end
 
   context "user with role on different journal" do
@@ -58,7 +53,7 @@ describe TasksPolicy do
       )
       end
 
-    run_shared_example "person who cannot see a task"
+    include_examples "person who cannot see a task"
   end
 
   context "user with can_view_assigned_manuscript_managers on this journal and is assigned to the paper." do
@@ -73,7 +68,7 @@ describe TasksPolicy do
       FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
     end
 
-    run_shared_example "administrator for task"
+    include_examples "administrator for task"
   end
 
   context "task participant" do
@@ -82,7 +77,7 @@ describe TasksPolicy do
       FactoryGirl.create(:participation, participant: user, task: task)
     end
 
-    run_shared_example "person who can edit but not create a task"
+    include_examples "person who can edit but not create a task"
   end
 
   context "allowed reviewer" do
@@ -97,7 +92,7 @@ describe TasksPolicy do
         task.update_attribute(:role, 'reviewer')
       end
 
-      run_shared_example "person who can edit but not create a task"
+      include_examples "person who can edit but not create a task"
     end
   end
 
@@ -112,6 +107,6 @@ describe TasksPolicy do
       task.update_attribute(:role, 'author')
     end
 
-    run_shared_example "person who can edit but not create a task"
+    include_examples "person who can edit but not create a task"
   end
 end

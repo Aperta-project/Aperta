@@ -2,11 +2,7 @@ class PapersPolicy < ApplicationPolicy
   allow_params :paper
 
   def show?
-    current_user.site_admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer? || can_view_manuscript_manager?
-  end
-
-  def edit?
-    current_user.site_admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
+    can_view_paper?
   end
 
   def create?
@@ -14,15 +10,15 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def update?
-    current_user.site_admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
+    can_manage_paper?
   end
 
   def upload?
-    current_user.site_admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer? || can_view_manuscript_manager?
+    can_view_paper?
   end
 
   def download?
-    current_user.site_admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
+    can_manage_paper?
   end
 
   def heartbeat?
@@ -34,10 +30,18 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def submit?
-    update?
+    can_manage_paper?
   end
 
   private
+
+  def can_manage_paper?
+    current_user.site_admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
+  end
+
+  def can_view_paper?
+    can_manage_paper? || can_view_manuscript_manager?
+  end
 
   PaperRole::ALL_ROLES.each do |role|
     define_method "paper_#{role}?" do

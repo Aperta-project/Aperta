@@ -8,6 +8,11 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
   authorSort: ['position:asc']
   sortedAuthors: Ember.computed.sort('plosAuthors', 'authorSort')
 
+  fetchAffiliations: ( ->
+    Ember.$.getJSON '/affiliations', (data) =>
+      @set('model.institutions', data.institutions)
+  ).on('didSetupController')
+
   sortedAuthorsWithErrors: (->
     @decorateWithErrors(@get('sortedAuthors'))
   ).property('sortedAuthors.@each', 'validationErrors')

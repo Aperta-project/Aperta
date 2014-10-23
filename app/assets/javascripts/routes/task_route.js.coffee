@@ -3,10 +3,6 @@ ETahi.TaskRoute = Ember.Route.extend
     @store.find('paper', params.paper_id).then =>
       @store.findTask(params.task_id) || @store.find('task', params.task_id)
 
-  afterModel: (model) ->
-    return unless model.get('type') == "PlosAuthorsTask"
-    Ember.$.getJSON '/affiliations', (data)->
-      model.set('institutions', data.institutions)
 
   setupController: (controller, model) ->
     # FIXME: Rename AdHocTask to Task (here, in views, and in templates)
@@ -31,6 +27,8 @@ ETahi.TaskRoute = Ember.Route.extend
       taskController.set 'onClose', 'redirect'
     else
       taskController.set 'onClose', 'redirectToDashboard'
+
+    taskController.trigger('didSetupController')
 
   renderTemplate: ->
     @render @get('baseObjectName'),

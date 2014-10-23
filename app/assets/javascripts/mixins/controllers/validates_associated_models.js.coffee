@@ -17,7 +17,7 @@ ETahi.ValidatesAssociatedModels = Ember.Mixin.create
     errorKey = model.get('constructor.typeKey').pluralize()
     @get('validationErrors')[errorKey] || {}
 
-  modelsWithValidationErrors: (models) ->
+  decorateWithErrors: (models) ->
     models.map (model) =>
       Ember.Object.create
         model: model

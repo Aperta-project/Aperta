@@ -60,9 +60,9 @@ class TasksController < ApplicationController
   end
 
   def build_task
-    task_type = params[:task][:type]
-    sanitized_params = task_params task_type.constantize.new
-    TaskFactory.build_task task_type, sanitized_params, current_user
+    task_type = TaskType.find_by(kind: params[:task][:type])
+    sanitized_params = task_params(task_type.kind.constantize.new)
+    TaskFactory.build_task(task_type, sanitized_params, current_user)
   end
 
   def render_404

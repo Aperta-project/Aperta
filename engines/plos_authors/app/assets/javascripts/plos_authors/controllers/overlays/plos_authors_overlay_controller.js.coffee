@@ -28,12 +28,11 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
         plosAuthorsTask: @get('model')
         position: 0
       @store.createRecord('plosAuthor', newAuthorHash).save()
-      @toggleProperty('newAuthorFormVisible')
+      @toggleProperty 'newAuthorFormVisible'
 
     saveAuthor: (plosAuthor) ->
       @clearModelErrors(plosAuthor)
       plosAuthor.save()
-
 
     removeAuthor: (plosAuthor) ->
       plosAuthor.destroyRecord()

@@ -8,14 +8,14 @@ class NewMessageCardOverlay < CardOverlay
 
   def participants=(users)
     users.map(&:full_name).each do |name|
-      fill_in 'add_participant', with: name
-      find('.tt-suggestion').click
+      find('.select2-input').set(name)
+      find('.select2-result-label').click
     end
   end
 
   def participants
-    expect(page).to have_css '.participants'
-    all('.participant .user-thumbnail').map { |e| e["alt"] }
+    expect(page).to have_css '.select2-choices'
+    all('.select2-choices .user-thumbnail').map { |e| e["alt"] }
   end
 
   def subject

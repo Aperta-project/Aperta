@@ -9,6 +9,7 @@ ETahi.Select2Component = Ember.TextField.extend
   initSelectionData: []
   selectedData: []
   selectionInitialized: false
+  removalFlag: false
 
   setupSelectedListener: ->
     @.$().off 'select2-selecting'
@@ -18,16 +19,15 @@ ETahi.Select2Component = Ember.TextField.extend
   setupRemovedListener: ->
     @.$().off 'select2-removed'
     @.$().on 'select2-removed', (e) =>
-      @selectedData.removeObject(e.choice)
+      @removalFlag = true
       @sendAction 'selectionRemoved', e.choice
 
   setSelectedData: (->
-    # ember triggers changes on us willy nilly so we need flags to protect ourselves
-    if @get('selectedData').length && !@selectionInitialized
+    unless @removalFlag
       @initSelectionData = @get('selectedData')
       @.$().select2('val', @get('selectedData').mapProperty('id'))
-      @selectionInitialized = true
-  ).observes('selectedData.[]')
+      @removalFlag = false
+  ).observes('selectedData')
 
   setup:(->
     @setSelectedData()

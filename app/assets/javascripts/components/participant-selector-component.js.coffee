@@ -5,7 +5,9 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
     '<strong>' + user.full_name + '</strong><br><div class="tt-suggestion-sub-value">' + user.info + '</div>'
 
   selectedTemplate: (user) =>
-    '<img src=\"' + (user.avatar_url || user.get('avatarUrl')) + '\" class="user-thumbnail"/>'
+    name = (user.full_name || user.get('fullName'))
+    url  = (user.avatar_url || user.get('avatarUrl'))
+    new Handlebars.SafeString "<img alt='#{name}' class='user-thumbnail' src='#{url}' data-toggle='tooltip' title='#{name}'/>"
 
   remoteSource: (->
     url: "/filtered_users/non_participants/#{@get('taskId')}/"

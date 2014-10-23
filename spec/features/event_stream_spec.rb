@@ -69,10 +69,11 @@ feature "Event streaming", js: true do
       end
     end
 
+    #TODO selected participants
     scenario "adding new participants" do
       @mt.participants << create(:user)
       @mt.save
-      expect(page).to have_css('.participants .user-thumbnail', count: 2)
+      expect(page).to have_css('.select2-choices .user-thumbnail', count: 2)
     end
   end
 

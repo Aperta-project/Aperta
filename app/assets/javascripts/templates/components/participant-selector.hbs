@@ -1,18 +1,16 @@
-<ul class="participants">
-  <li class="participant-selector2">
-    {{select-2 value=""
-              class="participant-select2"
-              name="add_participant_select2"
-              selectionSelected="addParticipant"
-              selectionRemoved="removeParticipant"
-              selectedData=availableParticipantsList
-              selectedTemplate=selectedTemplate
-              resultsTemplate=resultsTemplate
-              closeOnSelect=true
-              multiSelect=true
-              allowClear=false
-              minimumInputLength=3
-              remoteSource=remoteSource
-              placeholder="Add People"}}
-  </li>
-</ul>
+<div class="participant-selector">
+  {{select-2 value=""
+             class="participant-select2"
+             name="add_participant"
+             selectionSelected="addParticipant"
+             selectionRemoved="removeParticipant"
+             selectedData=availableParticipantsList
+             selectedTemplate=selectedTemplate
+             resultsTemplate=resultsTemplate
+             closeOnSelect=true
+             multiSelect=true
+             allowClear=false
+             minimumInputLength=3
+             remoteSource=remoteSource
+             placeholder="Add People"}}
+</div>

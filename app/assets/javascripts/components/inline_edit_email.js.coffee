@@ -21,10 +21,10 @@ ETahi.InlineEditEmailComponent = Em.Component.extend ETahi.AdhocInlineEditItem,
       recipientIds = @get('recipients').map (r) -> r.get('id')
       bodyPart = @get 'bodyPart'
       bodyPart.sent = moment().format('MMMM Do YYYY')
-      @sendAction("sendEmail", body: bodyPart.value, subject: bodyPart.body, recipients: recipientIds)
+      @sendAction("sendEmail", body: bodyPart.value, subject: bodyPart.subject, recipients: recipientIds)
       @toggleProperty 'showChooseReceivers'
       @toggleProperty 'emailSent'
-      @send('save')
+      @get('parentView').send('save')
 
     removeRecipient: (recipient)->
       @get('recipients').removeObject(recipient)

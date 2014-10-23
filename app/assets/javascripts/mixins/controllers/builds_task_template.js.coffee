@@ -39,7 +39,9 @@ ETahi.BuildsTaskTemplate = Ember.Mixin.create
     addEmail: ->
       @get('newBlocks').pushObject([
           type: "email"
+          subject: ""
           value: ""
+          sent: ""
         ])
 
     saveBlock: (block) ->

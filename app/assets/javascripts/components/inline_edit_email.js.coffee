@@ -2,14 +2,9 @@ ETahi.InlineEditEmailComponent = Em.Component.extend ETahi.AdhocInlineEditItem,
   showChooseReceivers: false
   emailSent: false
   mailRecipients: []
-  lastSentDate: null
   recipients: []
   allUsers: null
   overlayParticipants: null
-
-  _init: (->
-    @set 'lastSentDate', @get('bodyPart.sent')
-  ).on('init')
 
   initRecipients: (->
     @set('recipients', @get('overlayParticipants').copy())

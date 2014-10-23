@@ -10,9 +10,7 @@
       model=model
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item
-          allUsers=allUsers
-          overlayParticipants=participants
+        {{inlineEdit item allUsers participants
           delete="deleteItem"
           saveModel="saveModel"}}
       {{/each}}
@@ -28,10 +26,8 @@
       model=model
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item
+        {{inlineEdit item allUsers participants
           isNew=true
-          allUsers=allUsers.content
-          overlayParticipants=participants
           delete="deleteItem"
           saveModel="saveModel"}}
       {{/each}}

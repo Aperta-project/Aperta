@@ -8,8 +8,6 @@ ETahi.Select2Component = Ember.TextField.extend
   multiSelect: false
   initSelectionData: []
   selectedData: []
-  selectionInitialized: false
-  removalFlag: false
 
   setupSelectedListener: ->
     @.$().off 'select2-selecting'
@@ -17,16 +15,12 @@ ETahi.Select2Component = Ember.TextField.extend
       @sendAction 'selectionSelected', e.choice
 
   setupRemovedListener: ->
-    @.$().off 'select2-removed'
-    @.$().on 'select2-removed', (e) =>
-      @removalFlag = true
+    @.$().off 'select2-removing'
+    @.$().on 'select2-removing', (e) =>
       @sendAction 'selectionRemoved', e.choice
 
   setSelectedData: (->
-    unless @removalFlag
-      @initSelectionData = @get('selectedData')
-      @.$().select2('val', @get('selectedData').mapProperty('id'))
-      @removalFlag = false
+    @.$().select2('val', @get('selectedData').mapProperty('id'))
   ).observes('selectedData')
 
   setup:(->
@@ -43,7 +37,7 @@ ETahi.Select2Component = Ember.TextField.extend
     options.closeOnSelect      = @get('closeOnSelect')
     options.ajax               = @get('remoteSource') if @get('remoteSource')
     options.initSelection      = (el, callback) =>
-                                   callback(@initSelectionData)
+                                   callback(_.without(@get('selectedData'), null))
 
     @.$().select2(options)
     @setupSelectedListener()

@@ -6,7 +6,6 @@ ETahi.Select2Component = Ember.TextField.extend
   source: []
   closeOnSelect: false
   multiSelect: false
-  initSelectionData: []
   selectedData: []
 
   setupSelectedListener: ->
@@ -24,8 +23,6 @@ ETahi.Select2Component = Ember.TextField.extend
   ).observes('selectedData')
 
   setup:(->
-    @setSelectedData()
-
     options                    = {}
     options.placeholder        = @get('placeholder')
     options.minimumInputLength = @get('minimumInputLength') if @get('minimumInputLength')
@@ -42,4 +39,5 @@ ETahi.Select2Component = Ember.TextField.extend
     @.$().select2(options)
     @setupSelectedListener()
     @setupRemovedListener()
+    @setSelectedData()
   ).on('didInsertElement')

@@ -1,11 +1,6 @@
 ETahi.ControllerParticipants = Ember.Mixin.create
   needs: ['application']
   currentUser: Ember.computed.alias('controllers.application.currentUser')
-  allUsers: (->
-    paperId = @get('paper.id') || @get('litePaper.id')
-    DS.PromiseObject.create
-      promise: $.getJSON("/filtered_users/collaborators/#{paperId}")
-  ).property()
 
   # this will get nuked eventually
   participations: []

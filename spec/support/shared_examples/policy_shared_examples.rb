@@ -100,3 +100,18 @@ shared_examples_for "person who cannot edit a tasks's participants" do
     expect(policy.destroy?).to be(false)
   end
 end
+
+# comments
+shared_examples_for "person who can comment on a task" do
+  it "lets them create and view comments" do
+    expect(policy.show?).to be(true)
+    expect(policy.create?).to be(true)
+  end
+end
+
+shared_examples_for "person who cannot comment on a task" do
+  it "lets them create and view comments" do
+    expect(policy.show?).to be(false)
+    expect(policy.create?).to be(false)
+  end
+end

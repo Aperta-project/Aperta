@@ -180,11 +180,11 @@ shared_examples_for "person who can administer journal roles" do
   end
 end
 
-shared_examples_for "person who cannot administer the journal" do
+shared_examples_for "person who cannot administer journal roles" do
   it "lets them do all the things" do
-    expect(policy.authorization?).to be(false)
+    expect(policy.create?).to be(false)
     expect(policy.update?).to be(false)
-    expect(policy.index?).to be(false)
+    expect(policy.destroy?).to be(false)
   end
 end
 
@@ -197,10 +197,10 @@ shared_examples_for "person who can administer the journal" do
   end
 end
 
-shared_examples_for "person who cannot administer journal roles" do
+shared_examples_for "person who cannot administer the journal" do
   it "lets them do all the things" do
-    expect(policy.create?).to be(false)
+    expect(policy.authorization?).to be(false)
     expect(policy.update?).to be(false)
-    expect(policy.destroy?).to be(false)
+    expect(policy.index?).to be(false)
   end
 end

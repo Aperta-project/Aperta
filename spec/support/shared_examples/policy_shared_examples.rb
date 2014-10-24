@@ -1,3 +1,4 @@
+# tasks
 shared_examples_for "administrator for task" do
   it "can modify everything" do
     expect(policy.show?).to be(true)
@@ -25,6 +26,7 @@ shared_examples_for "person who cannot see a task" do
   end
 end
 
+# papers
 shared_examples_for "administrator for paper" do
   it "lets them do everything except keep the paper open" do
     expect(policy.edit?).to be(true)
@@ -64,5 +66,20 @@ shared_examples_for "person who cannot see a paper" do
     expect(policy.heartbeat?).to be(false)
     expect(policy.toggle_editable?).to be(false)
     expect(policy.submit?).to be(false)
+  end
+end
+
+# collaborations
+shared_examples_for "person who can edit a paper's collaborators" do
+  it "lets them create and destroy collaborators" do
+    expect(policy.create?).to be(true)
+    expect(policy.destroy?).to be(true)
+  end
+end
+
+shared_examples_for "person who cannot edit a paper's collaborators" do
+  it "lets them create and destroy collaborators" do
+    expect(policy.create?).to be(false)
+    expect(policy.destroy?).to be(false)
   end
 end

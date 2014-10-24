@@ -42,6 +42,11 @@ class TaskManagerPage < Page
     end
     EditPaperPage.new
   end
+
+  def has_sent_email?
+    page.has_css?('.bodypart-last-sent', text: /Sent/)
+  end
+
 end
 
 class MessageTaskCard < PageFragment

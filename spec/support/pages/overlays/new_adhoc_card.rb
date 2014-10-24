@@ -34,5 +34,12 @@ class NewAdhocCardOverlay < CardOverlay
       .trigger('keyup')
     SCRIPT
     )
+    find('.button-secondary', text: "SAVE").click
+  end
+
+  def send_email
+    expect(page).to have_css('.email-send-participants')
+    page.find('.email-send-participants').click
+    page.find_button("Send Email").click
   end
 end

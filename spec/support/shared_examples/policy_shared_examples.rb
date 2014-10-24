@@ -83,3 +83,20 @@ shared_examples_for "person who cannot edit a paper's collaborators" do
     expect(policy.destroy?).to be(false)
   end
 end
+
+#participations
+shared_examples_for "person who can edit a tasks's participants" do
+  it "lets them create and destroy participants" do
+    expect(policy.show?).to be(true)
+    expect(policy.create?).to be(true)
+    expect(policy.destroy?).to be(true)
+  end
+end
+
+shared_examples_for "person who cannot edit a tasks's participants" do
+  it "lets them create and destroy participants" do
+    expect(policy.show?).to be(false)
+    expect(policy.create?).to be(false)
+    expect(policy.destroy?).to be(false)
+  end
+end

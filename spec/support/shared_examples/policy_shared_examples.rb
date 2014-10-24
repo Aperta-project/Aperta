@@ -204,3 +204,20 @@ shared_examples_for "person who cannot administer the journal" do
     expect(policy.index?).to be(false)
   end
 end
+
+# questions
+shared_examples_for "person who can manage questions" do
+  it "lets them do all the things" do
+    expect(policy.create?).to be(true)
+    expect(policy.update?).to be(true)
+    expect(policy.destroy?).to be(true)
+  end
+end
+
+shared_examples_for "person who cannot manage questions" do
+  it "lets them do all the things" do
+    expect(policy.create?).to be(false)
+    expect(policy.update?).to be(false)
+    expect(policy.destroy?).to be(false)
+  end
+end

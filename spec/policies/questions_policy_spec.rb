@@ -9,17 +9,13 @@ describe QuestionsPolicy do
   context "A super admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    it { expect(policy.create?).to eq(true) }
-    it { expect(policy.update?).to eq(true) }
-    it { expect(policy.destroy?).to eq(true) }
+    include_examples "person who can manage questions"
   end
 
   context "An author" do
     let(:user) { paper.user }
 
-    it { expect(policy.create?).to eq(true) }
-    it { expect(policy.update?).to eq(true) }
-    it { expect(policy.destroy?).to eq(true) }
+    include_examples "person who can manage questions"
   end
 
   context "paper reviewer for a reviewer task" do
@@ -27,20 +23,16 @@ describe QuestionsPolicy do
     let(:task) { paper.tasks.first }
     let(:user) { FactoryGirl.create(:user) }
 
-    before {
+    before do
       task.role = 'reviewer'
-    }
+    end
 
-    it { expect(policy.create?).to eq(true) }
-    it { expect(policy.update?).to eq(true) }
-    it { expect(policy.destroy?).to eq(true) }
+    include_examples "person who can manage questions"
   end
 
   context "some schmuck" do
     let(:user) { FactoryGirl.create(:user) }
 
-    it { expect(policy.create?).to eq(false) }
-    it { expect(policy.update?).to eq(false) }
-    it { expect(policy.destroy?).to eq(false) }
+    include_examples "person who cannot manage questions"
   end
 end

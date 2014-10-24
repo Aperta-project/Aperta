@@ -1,6 +1,7 @@
 class Phase < ActiveRecord::Base
   has_many :tasks, inverse_of: :phase, dependent: :destroy
   belongs_to :paper, inverse_of: :phases
+  has_one :journal, through: :paper
 
   acts_as_list scope: :paper
 

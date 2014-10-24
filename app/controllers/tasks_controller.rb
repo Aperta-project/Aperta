@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:create]
+  before_action :enforce_policy_on_create, only: [:create]
   before_action :verify_admin!, except: [:show, :update]
   respond_to :json
 
@@ -70,10 +71,22 @@ class TasksController < ApplicationController
   end
 
   def task
-    @task ||= Task.find_by_id(params[:id]) || build_task
+    @task ||= Task.find_by_id(params[:id])
   end
+
+  # def journal
+  #   if params[:id]
+  #     paper.try(:journal)
+  #   elsif params[:task][:paper_id]
+  #   end
+  # end
 
   def enforce_policy
     authorize_action!(task: task)
+  end
+
+  def enforce_policy_on_create
+    phase = Phase.find(params[:task][:phase_id])
+    authorize_action!(journal: phase.journal, paper: phase.paper)
   end
 end

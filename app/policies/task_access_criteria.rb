@@ -6,7 +6,11 @@ module TaskAccessCriteria
   end
 
   def journal_roles
-    current_user.roles.where(journal_id: task.journal.id)
+    if journal
+      current_user.roles.where(journal: journal)
+    else
+      current_user.roles.where(journal_id: task.journal.id)
+    end
   end
 
   def metadata_task_collaborator?

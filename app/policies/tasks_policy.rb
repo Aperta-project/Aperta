@@ -1,5 +1,5 @@
 class TasksPolicy < ApplicationPolicy
-  allow_params :task
+  allow_params :task, :journal, :paper
   include TaskAccessCriteria
 
   def show?

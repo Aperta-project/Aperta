@@ -6,7 +6,7 @@ module TaskAccessCriteria
   end
 
   def journal_roles
-    if journal
+    if self.try(:journal)
       current_user.roles.where(journal: journal)
     else
       current_user.roles.where(journal_id: task.journal.id)

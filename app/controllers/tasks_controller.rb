@@ -70,23 +70,14 @@ class TasksController < ApplicationController
     head 404
   end
 
-  def task
-    @task ||= Task.find_by_id(params[:id])
-  end
-
-  # def journal
-  #   if params[:id]
-  #     paper.try(:journal)
-  #   elsif params[:task][:paper_id]
-  #   end
-  # end
-
   def enforce_policy
-    authorize_action!(task: task)
+    authorize_action!(task: Task.find(params[:id]))
   end
 
   def enforce_policy_on_create
-    phase = Phase.find(params[:task][:phase_id])
-    authorize_action!(journal: phase.journal, paper: phase.paper)
+    task_type = params[:task][:type]
+    sanitized_params = task_params task_type.constantize.new
+
+    authorize_action!(task: Task.new(sanitized_params))
   end
 end

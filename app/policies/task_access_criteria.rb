@@ -5,16 +5,16 @@ module TaskAccessCriteria
     task.paper
   end
 
+  def journal
+    task.paper.journal
+  end
+
   def journal_roles
-    if journal
-      current_user.roles.where(journal: journal)
-    else
-      current_user.roles.where(journal_id: task.journal.id)
-    end
+    current_user.roles.where(journal: journal)
   end
 
   def metadata_task_collaborator?
-    task.is_metadata? && task.paper.collaborators.exists?(current_user)
+    task.is_metadata? && paper.collaborators.exists?(current_user)
   end
 
   def can_view_all_manuscript_managers_for_journal?

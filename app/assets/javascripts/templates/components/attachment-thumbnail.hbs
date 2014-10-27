@@ -24,13 +24,13 @@
         </div>
       </div>
     </div>
-    <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original image" {{bind-attr href=attachment.src}} >{{attachment.filename}}</a>
   {{else}}
     <div class="attachment-thumbnail-image attachment-thumbnail-image-placeholder">
       <div class="replace-spinner"></div>
       <span class="glyphicon glyphicon-file"></span>
     </div>
   {{/if}}
+    <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original image" {{bind-attr href=attachment.src}} >{{attachment.filename}}</a>
 
   <div class="attachment-thumbnail-edit-content">
     <div class="field">

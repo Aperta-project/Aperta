@@ -28,6 +28,25 @@ createDashboardDataWithLitePaper = (paperCount, litePaper) ->
     total_page_count: 1
   ]]
 
+createDashboardDataWithLitePaperRoles = (roleArray) ->
+  ef = ETahi.Factory
+  litePapers = roleArray.map (role, index) ->
+    lp = ef.createLitePaper
+      id: index + 1
+      title: "Fake Paper Long Title #{index}"
+      short_title: "Fake Paper Short Title #{index}"
+      submitted: false
+    lp.roles = [role]
+    lp.related_at_date = "2014-09-28T13:54:58.028Z"
+    lp
+  [litePapers, [
+    id: 1
+    user_id: 1
+    paper_ids: litePapers.mapBy('id')
+    total_paper_count: litePapers.length
+    total_page_count: 1
+  ]]
+
 
 module 'Integration: Dashboard',
   teardown: -> ETahi.reset()
@@ -35,6 +54,7 @@ module 'Integration: Dashboard',
     setupApp integration: true
 
     [litePapers, dashboards] = createDashboardDataWithLitePaper(2)
+
     TahiTest.dashboardResponse =
       users: [fakeUser]
       affiliations: []
@@ -55,7 +75,7 @@ module 'Integration: Dashboard',
       204, "Content-Type": "application/html", ""
     ]
 
-test 'When user is added as a collaborator on paper', ->
+test 'The dashboard updates lite papers via the event stream', ->
   ef = ETahi.Factory
   lp = ef.createLitePaper
     id: 370
@@ -71,7 +91,7 @@ test 'When user is added as a collaborator on paper', ->
   .then ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
   andThen ->
-    # receives eventstream push as collaborator
+    # send an updated dashboard with 3 papers to the user
     [es, store] = setupEventStream()
     data =
       action: 'created'
@@ -83,6 +103,23 @@ test 'When user is added as a collaborator on paper', ->
       es.msgResponse(data)
   andThen ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 3
+
+test 'The dashboard shows papers for a user if they have any role on the paper', ->
+  roles = ['Collaborator', 'Reviewer', 'Editor', 'Admin', 'My Paper', 'Circus Clown']
+  [litePapers, dashboards] = createDashboardDataWithLitePaperRoles(roles)
+  dashboardResponse =
+    users: [fakeUser]
+    affiliations: []
+    lite_papers: litePapers
+    dashboards: dashboards
+
+  server.respondWith 'GET', '/dashboards', [
+    200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
+  ]
+
+  visit '/'
+  .then ->
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 6, 'All papers with roles should be visible'
 
 test 'When paper is added, only shows if user is allowed to see the paper', ->
   ef = ETahi.Factory
@@ -132,3 +169,32 @@ test 'When user is removed from collaborating on paper', ->
       es.msgResponse(data)
   andThen ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 1
+
+test 'User can show the feedback form', ->
+  visit '/'
+  click '.navigation-toggle'
+  click '.navigation-item-feedback'
+  andThen ->
+    ok find(".overlay-footer button:contains('Send Feedback')").length
+
+test 'Hitting escape closes the feedback form', ->
+  visit '/'
+  click '.navigation-toggle'
+  click '.navigation-item-feedback'
+  keyEvent '.overlay', 'keyup', 27
+  andThen ->
+    ok !find(".overlay-footer button:contains('Send Feedback')").length
+
+test 'User can show the feedback form', ->
+  server.respondWith 'POST', "/feedback", [
+    200, "Content-Type": "application/json", JSON.stringify {}
+  ]
+
+  visit '/'
+  click '.navigation-toggle'
+  click '.navigation-item-feedback'
+  fillIn 'textarea.remarks', 'all my feedback'
+  click '.overlay-footer button'
+  andThen ->
+    ok find(".overlay .thanks").length
+    ok server.requests.findBy('url', '/feedback')

@@ -14,10 +14,11 @@ pairs:
   am: Artur Moczulski; artur.moczulski
   fw: Feifan Wang
   jn: Jerry Nummi
-  rw: Ryan Wold
+  rw: Ryan Wold; ryan.wold
   cc: Chris Camacho
   dt: David Trejo; david.trejo
   asb: Aaron Baker; aaron.baker
+  fw: Faun Winter; faun.winter
 
 email:
   prefix: pair

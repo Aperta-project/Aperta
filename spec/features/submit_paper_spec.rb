@@ -23,7 +23,7 @@ feature "Submitting a paper", js: true do
 
     dashboard_page = submit_paper_overlay.submit
     expect(dashboard_page).to have_no_application_error
-    expect(dashboard_page).to have_submitted_paper(paper.title)
+    expect(dashboard_page).to have_submission(paper.title)
 
     paper_page = dashboard_page.view_submitted_paper paper
     expect(paper_page).to have_paper_title(paper.title)

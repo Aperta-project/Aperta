@@ -7,8 +7,7 @@ ETahi.IndexRoute = Ember.Route.extend
     @store.find('commentLook') # don't wait to fulfill
     controller.set('model', model)
     papers = @store.filter 'litePaper', (p) ->
-      checkRole = (role) -> p.get('roles').contains(role)
-      checkRole('My Paper') || checkRole('Collaborator') || checkRole('Reviewer')
+      !Ember.isEmpty(p.get('roles'))
 
     controller.set('papers', papers)
     controller.set('unreadComments', @store.all('commentLook'))

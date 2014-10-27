@@ -19,15 +19,7 @@ describe Api::PapersController do
   def author_json_attrs(author)
     {"id" => author.id,
      "first_name" => author.first_name,
-     "middle_initial" => author.middle_initial,
      "last_name" => author.last_name,
-     "email" => author.email,
-     "affiliation" => author.affiliation,
-     "secondary_affiliation" => author.secondary_affiliation,
-     "title" => author.title,
-     "corresponding" => author.corresponding,
-     "deceased" => author.deceased,
-     "department" => author.department,
      "paper_id" => author.paper.id,
      "position" => author.position}
   end

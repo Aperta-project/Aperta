@@ -1,8 +1,10 @@
 window.Tahi ||= {}
 Tahi.utils =
-  toCamel: (string) ->
-    string.replace /(\-[a-z])/g, ($1) ->
-      $1.toUpperCase().replace "-", ""
+  camelizeKeys: (object) ->
+    camelized = {}
+    Ember.keys(object).forEach (key) ->
+      camelized[Ember.String.camelize(key)] = object[key]
+    camelized
 
   windowHistory: ->
     window.history

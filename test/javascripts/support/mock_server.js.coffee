@@ -31,7 +31,7 @@
   @server.respondWith 'GET', "/comment_looks", [
     200
     'Content-Type': 'application/json'
-    JSON.stringify {}
+    JSON.stringify {comment_looks: []}
   ]
 
 @setupMockServer = ->

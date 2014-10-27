@@ -22,4 +22,8 @@ namespace :data do
       template.update_attribute(:title, template.journal_task_type.try(:title))
     end
   end
+
+  task :convert_author_tasks => :environment do
+    Task.where(type: "StandardTasks::AuthorsTask").update_all(type: "PlosAuthors::PlosAuthorsTask", completed: false)
+  end
 end

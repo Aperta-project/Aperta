@@ -1,0 +1,22 @@
+<tr>
+  <td>{{input value=model.title}}</td>
+  <td>
+    {{chosen content=availableTaskRoles
+             name="roles"
+             width="150px"
+             class="collaborator-select"
+             prompt="No Role Assigned"
+             optionValuePath="content.name"
+             optionLabelPath="content.name"
+             value=role}}
+  </td>
+  <td>{{taskType.kind}}</td>
+  <td class="actions-cell">
+    <span class="animation-fade-in">
+      {{#if isDirty}}
+        <button class="button-link button--blue" {{action "cancel" bubbles=false}}>cancel</button>
+        <button class="button-primary button--blue" {{action "save" bubbles=false}}>Save</button>
+      {{/if}}
+    </span>
+  </td>
+</tr>

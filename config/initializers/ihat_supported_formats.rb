@@ -7,7 +7,7 @@ module IhatSupportedFormats
         is_json = %r{^application/json}.match(response.headers[:content_type])
         if response && is_json
           Tahi::Application.config.ihat_supported_formats =
-            JSON.parse(response.body).dump
+            JSON.dump(JSON.parse(response.body))
         else
           warn "Invalid JSON response from #{ENV['IHAT_URL']}"
         end

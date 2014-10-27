@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:create]
+  before_action :enforce_policy_on_create, only: [:create]
   before_action :verify_admin!, except: [:show, :update]
   respond_to :json
 
@@ -69,11 +70,14 @@ class TasksController < ApplicationController
     head 404
   end
 
-  def task
-    Task.find(params[:id]) if params[:id]
+  def enforce_policy
+    authorize_action!(task: Task.find(params[:id]))
   end
 
-  def enforce_policy
-    authorize_action!(task: task)
+  def enforce_policy_on_create
+    task_type = params[:task][:type]
+    sanitized_params = task_params task_type.constantize.new
+
+    authorize_action!(task: Task.new(sanitized_params))
   end
 end

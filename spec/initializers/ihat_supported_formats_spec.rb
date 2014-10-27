@@ -18,7 +18,7 @@ describe IhatSupportedFormats do
         .with(ENV['IHAT_URL'])
         .and_return(mock_json_response)
         IhatSupportedFormats.call
-        expect(Tahi::Application.config.ihat_supported_formats).to eq ""
+        expect(Tahi::Application.config.ihat_supported_formats).to eq "null"
       end
 
       context "when connection fails" do
@@ -41,7 +41,7 @@ describe IhatSupportedFormats do
             .to receive(:warn)
             .with("Invalid JSON response from http://www.google.com")
             IhatSupportedFormats.call
-            expect(Tahi::Application.config.ihat_supported_formats).to eq ""
+            expect(Tahi::Application.config.ihat_supported_formats).to eq "null"
           end
         end
       end

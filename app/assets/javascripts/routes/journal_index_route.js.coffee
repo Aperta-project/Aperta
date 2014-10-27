@@ -27,3 +27,9 @@ ETahi.JournalIndexRoute = Ember.Route.extend
 
     editManuscriptCSS: ->
       @send 'openEditOverlay', 'manuscriptCss'
+
+    editTaskTypes: ->
+      @render 'editTaskTypesOverlay',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'editTaskTypesOverlay'

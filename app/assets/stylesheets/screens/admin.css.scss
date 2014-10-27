@@ -88,10 +88,6 @@
     }
   }
 
-  .add-new-journal {
-    margin-top: 23px;
-  }
-
   .journals {
     padding: 0;
   }
@@ -367,15 +363,5 @@
   textarea {
     width: 100%;
     height: 450px;
-  }
-}
-
-.journal-admin-link {
-  font-size: 24px;
-
-  a {
-    display: inline-block;
-    padding: 12px 0;
-    color: $tahi-blue;
   }
 }

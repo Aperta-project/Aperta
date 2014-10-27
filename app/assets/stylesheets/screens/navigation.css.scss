@@ -54,10 +54,12 @@
     color: #999;
     font-size: 13px;
     text-transform: none;
+    &:hover, &:focus {
+      color: $tahi-white;
+    }
   }
 
   &:hover, &:focus {
-    color: $tahi-white;
     text-decoration: none;
   }
 }

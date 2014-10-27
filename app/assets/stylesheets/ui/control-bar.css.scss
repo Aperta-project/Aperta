@@ -54,6 +54,19 @@
   padding-right: 30px;
 }
 
+.control-bar-page-title {
+  font-size: 24px;
+
+  span, a {
+    display: inline-block;
+    padding: 12px 0;
+  }
+
+  a {
+    color: $tahi-blue;
+  }
+}
+
 .control-bar-link {
   display: block;
   margin: 0 0 0 45px;

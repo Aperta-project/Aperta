@@ -1,2 +1,0 @@
-class AuthorsTaskSerializer < TaskSerializer
-end

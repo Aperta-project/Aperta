@@ -34,6 +34,7 @@
 //= require e_tahi
 //= require_tree .
 //= require standard_tasks/application
+//= require plos_authors/application
 //= require supporting_information/application
 //= require upload_manuscript/application
 
@@ -96,6 +97,9 @@
   }
 
   ETahi.environment = "<%= Rails.env %>";
+  <% if Tahi::Application.config.ihat_supported_formats.present? %>
+    ETahi.supportedDownloadFormats = JSON.parse('<%= Tahi::Application.config.ihat_supported_formats %>');
+  <% end %>
 })(window);
 
 $.extend($.easing, {

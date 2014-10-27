@@ -15,6 +15,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 # NOTE: This will stop working after we move the engines into their own repository.
 Dir[Rails.root.join("engines/**/spec/support/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("engines/**/spec/factories/**/*.rb")].each { |f| require f }
 
 Capybara.server_port = ENV["CAPYBARA_SERVER_PORT"]
 

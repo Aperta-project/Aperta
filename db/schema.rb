@@ -40,18 +40,12 @@ ActiveRecord::Schema.define(version: 20141020235217) do
   create_table "authors", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "middle_initial"
-    t.string   "email"
-    t.string   "department"
-    t.string   "title"
-    t.boolean  "corresponding",         default: false, null: false
-    t.boolean  "deceased",              default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "affiliation"
-    t.string   "secondary_affiliation"
     t.integer  "position"
     t.integer  "paper_id"
+    t.integer  "actable_id"
+    t.string   "actable_type"
   end
 
   create_table "comment_looks", force: true do |t|
@@ -226,6 +220,20 @@ ActiveRecord::Schema.define(version: 20141020235217) do
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
+  create_table "plos_authors_plos_authors", force: true do |t|
+    t.integer  "plos_authors_task_id"
+    t.string   "middle_initial"
+    t.string   "email"
+    t.string   "department"
+    t.string   "title"
+    t.boolean  "corresponding",         default: false, null: false
+    t.boolean  "deceased",              default: false, null: false
+    t.string   "affiliation"
+    t.string   "secondary_affiliation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "question_attachments", force: true do |t|
     t.integer  "question_id"
     t.string   "attachment"
@@ -364,8 +372,8 @@ ActiveRecord::Schema.define(version: 20141020235217) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
-    t.boolean  "site_admin",             default: false, null: false
     t.string   "avatar"
+    t.boolean  "site_admin",             default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

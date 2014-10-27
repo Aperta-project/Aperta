@@ -9,6 +9,14 @@ describe IhatSupportedFormats do
                                     body: "blah",
                                     headers: {
                                       "content-type" => "text/html; charset=UTF-8" }) }
+  before(:all) do
+    @original_ihat_url = ENV['IHAT_URL']
+  end
+
+  after(:all) do
+    ENV['IHAT_URL'] = @original_ihat_url
+  end
+
   describe ".call" do
     context "when the IHAT_URL is present" do
       it "makes a request to the URL" do
@@ -23,13 +31,13 @@ describe IhatSupportedFormats do
 
       context "when connection fails" do
         it "warns unable to connect" do
-          VCR.use_cassette('ihat_404') do
-            ENV['IHAT_URL'] = "http://examplethatdoesntexistyet.com"
-            expect(Rails.logger)
-            .to receive(:warn)
-            .with("Unable to connect to http://examplethatdoesntexistyet.com")
-            IhatSupportedFormats.call
-          end
+          ENV['IHAT_URL'] = "http://examplethatdoesntexistyet.com"
+          expect(Faraday).to receive(:get).with(ENV['IHAT_URL']).and_raise(Faraday::ConnectionFailed.new("stuff"))
+
+          expect(Rails.logger)
+          .to receive(:warn)
+          .with("Unable to connect to http://examplethatdoesntexistyet.com")
+          IhatSupportedFormats.call
         end
       end
 

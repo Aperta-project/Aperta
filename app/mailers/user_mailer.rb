@@ -2,6 +2,8 @@ class UserMailer < ActionMailer::Base
   include MailerHelper
   default from: ENV.fetch('FROM_EMAIL')
 
+  after_action :prevent_delivery_to_invalid_recipient
+
   def add_collaborator(invitor_id, invitee_id, paper_id)
     @paper = Paper.find(paper_id)
     invitor = User.find_by(id: invitor_id)
@@ -10,7 +12,7 @@ class UserMailer < ActionMailer::Base
     @invitee_name = display_name(invitee)
 
     mail(
-      to: invitee.email,
+      to: invitee.try(:email),
       subject: "You've been added as a collaborator to a paper on Tahi")
   end
 
@@ -22,7 +24,7 @@ class UserMailer < ActionMailer::Base
     @invitee_name = display_name(invitee)
 
     mail(
-      to: invitee.email,
+      to: invitee.try(:email),
       subject: "You've been added to a conversation on Tahi")
   end
 
@@ -32,7 +34,8 @@ class UserMailer < ActionMailer::Base
     @commentee = User.find(commentee_id)
 
     mail(
-      to: @commentee.email,
+      to: @commentee.try(:email),
       subject: "You've been mentioned on Tahi")
   end
+
 end

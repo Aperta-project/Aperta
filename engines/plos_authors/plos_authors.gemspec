@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://www.tahi.com"
   s.summary     = %q(Custom authors for PLOS journal.)
   s.description = %q(Custom authors for PLOS journal.)
-  s.license     = "TBD"
+  s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]# add license info like "MIT-LICENSE"
 

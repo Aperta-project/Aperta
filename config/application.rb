@@ -11,6 +11,7 @@ module Tahi
   class Application < Rails::Application
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/app/workers)
+    config.assets.initialize_on_precompile = true
     config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)
     config.carrierwave_storage = :fog

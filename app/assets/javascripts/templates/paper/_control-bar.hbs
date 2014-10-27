@@ -1,4 +1,4 @@
-<div {{bind-attr class=":control-bar :__fixed view.subNavVisible:__sub-nav-active"}}>
+<div {{bind-attr class=":control-bar view.subNavVisible:__sub-nav-active"}}>
   <div class="control-bar-inner-wrapper">
     <ul>
       <li id="control-bar-paper-journal-logo" class="control-bar-item">
@@ -48,12 +48,16 @@
     </div>
 
     <div {{bind-attr class=":manuscript-download-links view.downloadsVisible:active"}}>
+      {{#each downloadType in view.supportedDownloadFormats}}
+        <a title="Coming soon">{{partial downloadType.icon}}</a>
+      {{/each}}
       {{#direct-download-link link=downloadLink}}
-        ePub {{partial "svg/epub-icon"}}
+        {{partial "svg/epub-icon"}}
       {{/direct-download-link}}
       {{#direct-download-link link=downloadLink extension=".pdf"}}
-        PDF {{partial "svg/pdf-icon"}}
+        {{partial "svg/pdf-icon"}}
       {{/direct-download-link}}
+
     </div>
   </div>
 </div>

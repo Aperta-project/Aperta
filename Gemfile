@@ -50,6 +50,7 @@ gem 'rubyzip', require: 'zip'
 gem "active_model_serializers"
 gem 'pry-rails'
 gem 'pdfkit'
+gem 'mail_form'
 gem 'mini_magick'
 gem 'timeliness'
 gem 'twitter-text'

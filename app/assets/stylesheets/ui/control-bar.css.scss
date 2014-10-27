@@ -1,16 +1,17 @@
-// Elements in control-bar should be in unordered lists. The ULs will align left except for the last one which will align right.
+// Elements in control-bar should be in unordered lists.
+// The ULs will align left except for the last one which will float right.
 //
 // Styleguide UI.ControlBar
 
 .control-bar {
   overflow: hidden;
+  @include position(fixed, 0px 0px auto 0px);
   width: 100%;
   height: $tahi-control-bar-height;
   border-bottom: 1px solid #F5F5F5;
   background: #fff;
   z-index: 2;
 
-  &.__fixed { @include position(absolute, 0px 0px auto 0px); }
   &.__sub-nav-active { height: 105px; }
 }
 

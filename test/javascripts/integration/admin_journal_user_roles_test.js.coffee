@@ -79,6 +79,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
         username: "fakeuser"
         first_name: "Fake"
         last_name: "User"
+        info: "Test String"
         user_role_ids: [TahiTest.userRoleId]
       ]
 

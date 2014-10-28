@@ -1,12 +1,13 @@
 ETahi.Select2Component = Ember.TextField.extend
   tagName: 'div'
-  classNames: ['testing-select2']
+  classNames: ['select2']
 
   autoFocus: false
   source: []
   closeOnSelect: false
   multiSelect: false
   selectedData: []
+  placeholder: ""
 
   setupSelectedListener: ->
     @.$().off 'select2-selecting'
@@ -33,11 +34,15 @@ ETahi.Select2Component = Ember.TextField.extend
     options.data               = @get('source')
     options.closeOnSelect      = @get('closeOnSelect')
     options.ajax               = @get('remoteSource') if @get('remoteSource')
-    options.initSelection      = (el, callback) =>
-                                   callback(_.without(@get('selectedData'), null))
+    options.initSelection      = (el, callback) => callback(_.without(@get('selectedData'), null))
 
     @.$().select2(options)
     @setupSelectedListener()
     @setupRemovedListener()
     @setSelectedData()
   ).on('didInsertElement')
+
+  teardown: (->
+    @.$().off 'select2-selecting'
+    @.$().off 'select2-removing'
+  ).on('willDestroyElement')

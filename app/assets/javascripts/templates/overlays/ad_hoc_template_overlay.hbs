@@ -9,7 +9,7 @@
       delete="deleteBlock"
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item
+        {{inlineEdit item allUsers participants
           delete="deleteItem"}}
       {{/each}}
     {{/inline-edit-body-part}}
@@ -23,7 +23,7 @@
       delete="deleteBlock"
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item
+      {{inlineEdit item allUsers participants
           isNew=true
           delete="deleteItem"}}
       {{/each}}

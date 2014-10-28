@@ -4,11 +4,11 @@ class CommentsPolicy < ApplicationPolicy
 
   def show?
     current_user.site_admin? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper? ||
-    allowed_manuscript_information_task? || allowed_reviewer_task? || task_participant?
+    allowed_manuscript_information_task? || metadata_task_collaborator? || allowed_reviewer_task? || task_participant?
   end
 
   def create?
     current_user.site_admin? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper? ||
-    allowed_manuscript_information_task? || allowed_reviewer_task? || task_participant?
+    allowed_manuscript_information_task? || metadata_task_collaborator? || allowed_reviewer_task? || task_participant?
   end
 end

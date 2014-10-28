@@ -110,7 +110,7 @@ shared_examples_for "person who can comment on a task" do
 end
 
 shared_examples_for "person who cannot comment on a task" do
-  it "lets them create and view comments" do
+  it "lets them do nothing" do
     expect(policy.show?).to be(false)
     expect(policy.create?).to be(false)
   end

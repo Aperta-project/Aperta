@@ -1,5 +1,5 @@
 class FilteredUsersSerializer < ActiveModel::Serializer
-  attributes :id, :full_name, :info, :avatar_url
+  attributes :id, :full_name, :username, :avatar_url, :roles
 
   def info
     user = object.username
@@ -9,8 +9,7 @@ class FilteredUsersSerializer < ActiveModel::Serializer
 
   private
 
-  def role_names
-    roles = object.paper_roles.where(paper_id: options[:paper_id])
-    roles.present? ? ", #{roles.map(&:role).join(', ')}" : ""
+  def roles
+    object.paper_roles.where(paper_id: options[:paper_id]).map(&:role)
   end
 end

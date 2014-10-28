@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 describe ParticipationsPolicy do
-  let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
-  let(:journal) { FactoryGirl.create(:journal, papers: [paper]) }
-  let(:task) { paper.tasks.first }
+  let(:journal) { FactoryGirl.create(:journal) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
+  let(:task) { create(:task, phase: phase) }
   let(:policy) { ParticipationsPolicy.new(current_user: user, task: task) }
+  let(:user) { FactoryGirl.create(:user) }
 
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
@@ -14,19 +16,22 @@ describe ParticipationsPolicy do
 
   context "paper collaborator" do
     let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
-    let(:task) { paper.tasks.metadata.first }
-    let(:user) { FactoryGirl.create(:user) }
+
+    before do
+      allow(task).to receive(:is_metadata?).and_return true
+    end
 
     include_examples "person who can edit a tasks's participants"
 
     context "on a non metadata task" do
-      let(:task) { paper.tasks.where.not(type: Task.metadata_types).first }
+      before do
+        allow(task).to receive(:is_metadata?).and_return false
+      end
       include_examples "person who cannot edit a tasks's participants"
     end
   end
 
   context "task participant" do
-    let(:user) { FactoryGirl.create(:user, :site_admin) }
     before do
       FactoryGirl.create(:participation, participant: user, task: task)
     end

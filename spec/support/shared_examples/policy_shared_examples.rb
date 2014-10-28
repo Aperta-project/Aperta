@@ -221,3 +221,16 @@ shared_examples_for "person who cannot manage questions" do
     expect(policy.destroy?).to be(false)
   end
 end
+
+# question attachments
+shared_examples_for "person who can manage question attachments" do
+  it "lets them destroy them" do
+    expect(policy.destroy?).to be(true)
+  end
+end
+
+shared_examples_for "person who cannot manage question attachments" do
+  it "doesn't let them destroy them" do
+    expect(policy.destroy?).to be(false)
+  end
+end

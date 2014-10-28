@@ -35,6 +35,7 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
   remoteSource: (->
     url: "/filtered_users/users/#{@get('paperId')}/"
     dataType: "json"
+    quietMillis: 500
     data: (term) ->
       query: term
     results: (data) =>

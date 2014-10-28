@@ -1,6 +1,4 @@
 ETahi.ParticipantSelectorComponent = Ember.Component.extend
-
-
   resultsTemplate: (user) ->
     userInfo =
       if user.roles.length

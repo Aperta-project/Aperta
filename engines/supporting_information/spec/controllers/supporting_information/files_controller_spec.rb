@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module SupportingInformation
-  describe FilesController do
+  describe FilesController, redis: true do
     let(:user) { create :user }
     let(:paper) do
       FactoryGirl.create(:paper, user: user)

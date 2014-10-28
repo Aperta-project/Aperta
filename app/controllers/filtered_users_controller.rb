@@ -7,11 +7,6 @@ class FilteredUsersController < ApplicationController
       fulltext params[:query]
     end
 
-    unless current_user.site_admin?
-      users.results.reject! do |user|
-        user.paper_roles.where(paper_id: params[:paper_id]).empty?
-      end
-    end
     respond_with users.results, each_serializer: FilteredUsersSerializer,
                                 paper_id: params[:paper_id]
   end

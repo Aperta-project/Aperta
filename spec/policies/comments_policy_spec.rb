@@ -5,8 +5,8 @@ describe CommentsPolicy do
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:task) { create(:task, phase: phase) }
-  let(:policy) { CommentsPolicy.new(current_user: user, task: task) }
   let(:user) { FactoryGirl.create(:user) }
+  let(:policy) { CommentsPolicy.new(current_user: user, task: task) }
 
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }

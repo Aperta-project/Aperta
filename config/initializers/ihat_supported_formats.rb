@@ -4,8 +4,7 @@ module IhatSupportedFormats
     if ENV['IHAT_URL'].present?
       begin
         response = Faraday.get(ENV['IHAT_URL'])
-        is_json = %r{^application/json}.match(response.headers[:content_type])
-        if response && is_json
+        if response && response.body
           Tahi::Application.config.ihat_supported_formats =
             JSON.dump(JSON.parse(response.body))
         else

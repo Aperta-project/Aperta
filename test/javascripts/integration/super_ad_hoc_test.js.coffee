@@ -112,41 +112,35 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
 
 
 test "Adding an email block to an AdHoc Task", ->
-  visit "/papers/#{ETahi.Test.currentPaper.id}/manage"
-  .then -> ok exists find '.card-content:contains("Super Ad-Hoc")'
-
-  click '.card-content:contains("Super Ad-Hoc")'
-  click '.adhoc-content-toolbar .glyphicon-plus'
-  click '.adhoc-content-toolbar .adhoc-toolbar-item--email'
-  andThen ->
-    ok exists find '.inline-edit-form input[placeholder="Enter a subject"]'
-    ok exists find '.inline-edit-form div[contenteditable]'
-    ok exists find '.button--disabled:contains("Save")'
-    fillIn '.inline-edit-form input[placeholder="Enter a subject"]', "Deep subject"
-    Em.$('.inline-edit-form div[contenteditable]')
-      .html("Awesome email body!")
-      .trigger('keyup')
-    click '.task-body .inline-edit-body-part .button--green:contains("Save")'
-  andThen ->
-    ok Em.$.trim(find('.inline-edit .item-subject').text()).indexOf('Deep') isnt -1
-    ok Em.$.trim(find('.inline-edit .item-text').text()).indexOf('Awesome') isnt -1
-
-    request = _.findWhere(server.requests, {method: "PUT", url: "/tasks/1/send_message"})
-
-test "Adding sending an email from an adhoc task", ->
-  visit "/papers/#{ETahi.Test.currentPaper.id}/manage"
-
-  click '.card-content:contains("Super Ad-Hoc")'
+  visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--email'
   fillIn '.inline-edit-form input[placeholder="Enter a subject"]', "Deep subject"
-    Em.$('.inline-edit-form div[contenteditable]')
-      .html("Awesome email body!")
-      .trigger('keyup')
+  andThen ->
+    Em.$('.inline-edit-form div[contenteditable]').html("Awesome email body!").trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
     ok Em.$.trim(find('.inline-edit .item-subject').text()).indexOf('Deep') isnt -1
     ok Em.$.trim(find('.inline-edit .item-text').text()).indexOf('Awesome') isnt -1
 
-    request = _.findWhere(server.requests, {method: "PUT", url: "/tasks/1/send_message"})
 
+test "User can add send an email from an adhoc card", ->
+  server.respondWith 'GET', "/papers/#{ETahi.Test.currentPaper.id}", [
+    200, {"Content-Type": "application/json"}, JSON.stringify ETahi.Setups.paperWithParticipant().toJSON()
+  ]
+
+  visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
+
+  click '.adhoc-content-toolbar .glyphicon-plus'
+  click '.adhoc-content-toolbar .adhoc-toolbar-item--email'
+  fillIn '.inline-edit-form input[placeholder="Enter a subject"]', "Deep subject"
+  andThen ->
+    Em.$('.inline-edit-form div[contenteditable]').html("Awesome email body!").trigger('keyup')
+    click '.task-body .inline-edit-body-part .button--green:contains("Save")'
+  click '.task-body .email-send-participants'
+
+  click('.send-email')
+
+  andThen ->
+    ok find('.bodypart-last-sent').length
+    ok _.findWhere(server.requests, {method: "PUT", url: "/tasks/1/send_message"})

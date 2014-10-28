@@ -94,6 +94,7 @@ group :development, :test, :performance do
   gem 'rspec-instafail'
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'capybara-webkit'
   gem 'launchy'
   gem 'database_cleaner'
   gem 'teaspoon', github: 'modeset/teaspoon'

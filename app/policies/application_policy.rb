@@ -80,10 +80,6 @@ class ApplicationPolicy
     false
   end
 
-  def edit?
-    update?
-  end
-
   def update?
     false
   end

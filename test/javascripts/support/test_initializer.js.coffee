@@ -26,6 +26,18 @@ Ember.Test.registerAsyncHelper('pickFromChosenSingle', (app, selector, choice) -
   click "li.active-result:contains('#{choice}')"
 )
 
+Ember.Test.registerAsyncHelper "waitForElement", (app, element) ->
+  Ember.Test.promise (resolve) ->
+    Ember.Test.adapter.asyncStart()
+    interval = setInterval(->
+      if $(element).length > 0
+        clearInterval interval
+        Ember.Test.adapter.asyncEnd()
+        Ember.run null, resolve, true
+      return
+    , 10)
+    return
+
 # All interactions with ember are while a user is signed in
 @currentUserId = 1
 @fakeUser = ETahi.Factory.createRecord 'User',

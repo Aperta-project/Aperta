@@ -29,17 +29,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # TODO: move me to policies
-  def verify_admin!
-    return if current_user.site_admin?
-
-    if request.xhr? # Ember request
-      head :forbidden
-    else
-      redirect_to(root_path, alert: "Permission denied")
-    end
-  end
-
   def render_errors(e)
     render status: 422, json: {errors: e.record.errors}
   end

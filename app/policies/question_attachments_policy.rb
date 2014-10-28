@@ -5,5 +5,4 @@ class QuestionAttachmentsPolicy < ApplicationPolicy
   def destroy?
     authorized_to_modify_task?
   end
-
 end

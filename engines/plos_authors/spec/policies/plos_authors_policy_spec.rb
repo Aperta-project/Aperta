@@ -15,15 +15,15 @@ shared_examples_for "person who cannot manage plos authors" do
     expect(policy.destroy?).to be(false)
   end
 end
+
 describe PlosAuthors::PlosAuthorsPolicy do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:journal) { paper.journal }
   let(:task) { PlosAuthors::PlosAuthorsTask.create(paper: paper) }
+  let(:user) { FactoryGirl.create(:user) }
   let(:policy) { PlosAuthors::PlosAuthorsPolicy.new(current_user: user, task: task) }
 
   context "unrelated user" do
-    let(:user) { FactoryGirl.create(:user) }
-
     include_examples "person who cannot manage plos authors"
   end
 
@@ -35,7 +35,6 @@ describe PlosAuthors::PlosAuthorsPolicy do
 
   context "paper collaborator" do
     let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
-    let(:user) { FactoryGirl.create(:user) }
 
     include_examples "person who can manage plos authors"
   end

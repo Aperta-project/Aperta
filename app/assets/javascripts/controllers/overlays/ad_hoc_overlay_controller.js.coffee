@@ -22,4 +22,3 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTempl
 
     sendEmail: (data) ->
       ETahi.RESTless.putModel(@get('model'), "/send_message", task: data)
-

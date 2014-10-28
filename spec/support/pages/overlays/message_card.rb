@@ -1,19 +1,6 @@
 class MessageCardOverlay < CardOverlay
   text_assertions :subject, "main > h1"
 
-  def add_participants(*users)
-    users.map(&:full_name).each do |name|
-      find('.select2-input').set(name)
-      find('.select2-result-label').click
-      expect(page).to have_css ".select2-choices [alt='#{name}']"
-    end
-  end
-
-  def remove_participant(participant)
-    has_participants?(participant)
-    find(:xpath, "//img[@alt='#{participant.full_name}']/../../a").click
-  end
-
   def participants
     expect(page).to have_css '.select2-choices'
     all('.select2-choices .user-thumbnail').map { |e| e["alt"] }

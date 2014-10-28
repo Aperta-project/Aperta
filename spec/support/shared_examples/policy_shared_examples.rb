@@ -118,7 +118,7 @@ end
 
 # manuscript manager templates
 shared_examples_for "person who can administer manuscript manager templates" do
-  it "lets them do all the things" do
+  it "lets them perform all CRUD actions" do
     expect(policy.show?).to be(true)
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(true)
@@ -127,7 +127,7 @@ shared_examples_for "person who can administer manuscript manager templates" do
 end
 
 shared_examples_for "person who cannot administer manuscript manager templates" do
-  it "lets them do all the things" do
+  it "doesn't let them perform any actions" do
     expect(policy.show?).to be(false)
     expect(policy.create?).to be(false)
     expect(policy.update?).to be(false)
@@ -137,7 +137,7 @@ end
 
 # phase templates
 shared_examples_for "person who can administer phase templates" do
-  it "lets them do all the things" do
+  it "lets them create, update, or destroy phase templates" do
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(true)
     expect(policy.destroy?).to be(true)
@@ -145,7 +145,7 @@ shared_examples_for "person who can administer phase templates" do
 end
 
 shared_examples_for "person who cannot administer phase templates" do
-  it "lets them do all the things" do
+  it "doesn't let them perform any actions" do
     expect(policy.create?).to be(false)
     expect(policy.update?).to be(false)
     expect(policy.destroy?).to be(false)
@@ -154,7 +154,7 @@ end
 
 # task templates
 shared_examples_for "person who can administer task templates" do
-  it "lets them do all the things" do
+  it "lets the perform all CRUD actions" do
     expect(policy.show?).to be(true)
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(true)
@@ -163,7 +163,7 @@ shared_examples_for "person who can administer task templates" do
 end
 
 shared_examples_for "person who cannot administer task templates" do
-  it "lets them do all the things" do
+  it "doesn't allow them to perform any actions" do
     expect(policy.show?).to be(false)
     expect(policy.create?).to be(false)
     expect(policy.update?).to be(false)
@@ -181,7 +181,7 @@ shared_examples_for "person who can administer journal roles" do
 end
 
 shared_examples_for "person who cannot administer journal roles" do
-  it "lets them do all the things" do
+  it "doesn't allow them to perform any actions" do
     expect(policy.create?).to be(false)
     expect(policy.update?).to be(false)
     expect(policy.destroy?).to be(false)
@@ -190,7 +190,7 @@ end
 
 # journal
 shared_examples_for "person who can administer the journal" do
-  it "lets them do all the things" do
+  it "lets them perform all the available actions" do
     expect(policy.authorization?).to be(true)
     expect(policy.update?).to be(true)
     expect(policy.index?).to be(true)
@@ -198,7 +198,7 @@ shared_examples_for "person who can administer the journal" do
 end
 
 shared_examples_for "person who cannot administer the journal" do
-  it "lets them do all the things" do
+  it "doesn't allow them to perform any actions" do
     expect(policy.authorization?).to be(false)
     expect(policy.update?).to be(false)
     expect(policy.index?).to be(false)
@@ -207,7 +207,7 @@ end
 
 # questions
 shared_examples_for "person who can manage questions" do
-  it "lets them do all the things" do
+  it "lets them perform all the available actions" do
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(true)
     expect(policy.destroy?).to be(true)
@@ -215,7 +215,7 @@ shared_examples_for "person who can manage questions" do
 end
 
 shared_examples_for "person who cannot manage questions" do
-  it "lets them do all the things" do
+  it "doesn't allow them to perform any actions" do
     expect(policy.create?).to be(false)
     expect(policy.update?).to be(false)
     expect(policy.destroy?).to be(false)

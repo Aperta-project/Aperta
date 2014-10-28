@@ -1,0 +1,17 @@
+.edit-task-types-overlay {
+  td {
+    height: 36px;
+  }
+
+  .actions-cell {
+    width: 140px;
+  }
+
+  .overlay-close-x {
+    color: $tahi-blue;
+
+    &:hover {
+      color: $tahi-blue-dark;
+    }
+  }
+}

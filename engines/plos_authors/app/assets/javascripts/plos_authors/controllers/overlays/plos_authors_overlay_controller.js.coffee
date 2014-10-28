@@ -8,8 +8,13 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
   authorSort: ['position:asc']
   sortedAuthors: Ember.computed.sort('plosAuthors', 'authorSort')
 
+  fetchAffiliations: ( ->
+    Ember.$.getJSON '/affiliations', (data) =>
+      @set('model.institutions', data.institutions)
+  ).on('didSetupController')
+
   sortedAuthorsWithErrors: (->
-    @modelsWithValidationErrors(@get('sortedAuthors'))
+    @decorateWithErrors(@get('sortedAuthors'))
   ).property('sortedAuthors.@each', 'validationErrors')
 
   shiftAuthorPositions: (author, newPosition)->
@@ -28,12 +33,11 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
         plosAuthorsTask: @get('model')
         position: 0
       @store.createRecord('plosAuthor', newAuthorHash).save()
-      @toggleProperty('newAuthorFormVisible')
+      @toggleProperty 'newAuthorFormVisible'
 
     saveAuthor: (plosAuthor) ->
       @clearModelErrors(plosAuthor)
       plosAuthor.save()
-
 
     removeAuthor: (plosAuthor) ->
       plosAuthor.destroyRecord()

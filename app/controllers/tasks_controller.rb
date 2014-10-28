@@ -61,9 +61,9 @@ class TasksController < ApplicationController
   end
 
   def build_task
-    task_type = params[:task][:type]
-    sanitized_params = task_params task_type.constantize.new
-    TaskFactory.build_task task_type, sanitized_params, current_user
+    task_type = TaskType.find_by(kind: params[:task][:type])
+    sanitized_params = task_params(task_type.kind.constantize.new)
+    TaskFactory.build_task(task_type, sanitized_params, current_user)
   end
 
   def render_404
@@ -75,7 +75,9 @@ class TasksController < ApplicationController
   end
 
   def enforce_policy_on_create
-    phase = Phase.find(params[:task][:phase_id])
-    authorize_action!(journal: phase.journal, paper: phase.paper)
+    task_type = params[:task][:type]
+    sanitized_params = task_params task_type.constantize.new
+
+    authorize_action!(task: Task.new(sanitized_params))
   end
 end

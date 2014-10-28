@@ -1,13 +1,19 @@
 module TaskAccessCriteria
   private
 
+  def paper
+    task.paper
+  end
+
+  def journal
+    task.paper.journal
+  end
+
   def journal_roles
-    self.journal ||= self.task.journal
     current_user.roles.where(journal: journal)
   end
 
   def metadata_task_collaborator?
-    self.paper ||= self.task.paper
     task.is_metadata? && paper.collaborators.exists?(current_user)
   end
 

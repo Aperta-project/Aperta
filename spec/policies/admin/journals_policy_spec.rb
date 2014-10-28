@@ -7,17 +7,13 @@ describe Admin::JournalsPolicy do
   context "admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    it { expect(policy.authorization?).to be(true) }
-    it { expect(policy.index?).to be(true) }
-    it { expect(policy.update?).to be(true) }
+    include_examples "person who can administer the journal"
   end
 
   context "non admin who does not administer the journal" do
     let(:user) { FactoryGirl.create(:user) }
 
-    it { expect(policy.authorization?).to be(false) }
-    it { expect(policy.index?).to be(false) }
-    it { expect(policy.update?).to be(false) }
+    include_examples "person who cannot administer the journal"
   end
 
   context "user who administers the journal" do
@@ -27,8 +23,6 @@ describe Admin::JournalsPolicy do
       assign_journal_role(journal, user, :admin)
     end
 
-    it { expect(policy.authorization?).to be(true) }
-    it { expect(policy.index?).to be(true) }
-    it { expect(policy.update?).to be(true) }
+    include_examples "person who can administer the journal"
   end
 end

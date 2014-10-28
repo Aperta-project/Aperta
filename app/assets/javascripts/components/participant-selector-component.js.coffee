@@ -7,12 +7,21 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
     url  = (user.avatar_url || user.get('avatarUrl'))
     new Handlebars.SafeString "<img alt='#{name}' class='user-thumbnail' src='#{url}' data-toggle='tooltip' title='#{name}'/>"
 
+  sortByCollaboration: (a, b) ->
+    if a.info.match(/\,/) && !b.info.match(/\,/)
+      -1
+    else if !a.info.match(/\,/) && b.info.match(/\,/)
+      1
+    else
+      0
+
   remoteSource: (->
     url: "/filtered_users/users/#{@get('paperId')}/"
     dataType: "json"
     data: (term) ->
       query: term
-    results: (data) ->
+    results: (data) =>
+      data.sort(@sortByCollaboration)
       results: data
   ).property()
 

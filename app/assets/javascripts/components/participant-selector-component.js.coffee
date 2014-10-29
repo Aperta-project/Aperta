@@ -7,7 +7,7 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
       @$('.select2-search-choice:first img').attr('title', tooltip + ': Owner')
       @$('.select2-search-choice img').tooltip(placement: "bottom")
       @$('.add-participant').tooltip(placement: "bottom")
-  ).on('didInsertElement')
+  ).on('didInsertElement').observes('currentParticipants.@each')
 
   resultsTemplate: (user) ->
     userInfo =

@@ -1,4 +1,5 @@
 ETahi.InlineEditEmailComponent = Em.Component.extend ETahi.AdhocInlineEditItem,
+  isSendable: true
   showChooseReceivers: false
   emailSent: false
   mailRecipients: []
@@ -18,7 +19,7 @@ ETahi.InlineEditEmailComponent = Em.Component.extend ETahi.AdhocInlineEditItem,
       @toggleProperty 'emailSent'
 
     sendEmail: ->
-      recipientIds = @get('recipients').map (r) -> r.get('id')
+      recipientIds = @get('recipients').mapBy('id')
       bodyPart = @get('bodyPart')
       bodyPart.sent = moment().format('MMMM Do YYYY')
       @sendAction("sendEmail", body: bodyPart.value, subject: bodyPart.subject, recipients: recipientIds)
@@ -30,6 +31,6 @@ ETahi.InlineEditEmailComponent = Em.Component.extend ETahi.AdhocInlineEditItem,
       @get('recipients').removeObject(recipient)
 
     addRecipientById: (recipientId)->
-      store = ETahi.__container__.lookup('store:main')
+      store = @container.lookup('store:main')
       store.find('user', recipientId).then (recipient)=>
-        @get('recipients').pushObject(recipient)
+        @get('recipients').addObject(recipient)

@@ -1,9 +1,14 @@
 ETahi.BuildsTaskTemplate = Ember.Mixin.create
   newBlocks: null
   blocks: null
+  emailSentStates: null
 
   _init: (->
     @set('newBlocks', [])
+  ).on('init')
+
+  setEmailStates:( ->
+    @set('emailSentStates', Ember.ArrayProxy.create(content: []))
   ).on('init')
 
   isNew: (block) ->

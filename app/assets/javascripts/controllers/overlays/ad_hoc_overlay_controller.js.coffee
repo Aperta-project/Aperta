@@ -1,12 +1,6 @@
 ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTemplate,
   blocks: Ember.computed.alias('body')
 
-  emailSentStates: null
-
-  setEmailStates:( ->
-    @set('emailSentStates', Ember.ArrayProxy.create(content: Ember.A()))
-  ).on('init')
-
   actions:
     setTitle: (title) ->
       @_super(title)

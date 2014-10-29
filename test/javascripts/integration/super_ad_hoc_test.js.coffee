@@ -124,8 +124,9 @@ test "User can add send an email from an adhoc card", ->
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   click '.task-body .email-send-participants'
 
-  click('.send-email')
+  click('.send-email-action')
 
   andThen ->
-    ok find('.bodypart-last-sent').length, 'The sent message should appear'
+    ok find('.bodypart-last-sent').length, 'The sent at time should appear'
+    ok find('.bodypart-email-sent-overlay').length, 'The sent confirmation should appear'
     ok _.findWhere(server.requests, {method: "PUT", url: "/tasks/1/send_message"}), "It posts to the server"

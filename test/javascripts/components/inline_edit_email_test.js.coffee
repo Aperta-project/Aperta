@@ -12,7 +12,7 @@ test '#sendEmail', ->
   mockParent = 
     send: (arg) ->
       ok arg == 'save', "sends save to the parentView"
-    emailSentStates: Ember.ArrayProxy.create(content: Em.A())
+    emailSentStates: Ember.ArrayProxy.create(content: [])
 
   component = @subject()
   component.setProperties
@@ -33,7 +33,6 @@ test 'shows itelf as sent based on emailSentStates', ->
     send: (arg) ->
       ok arg == 'save', "sends save to the parentView"
     emailSentStates: Ember.ArrayProxy.create(content: ['Greetings!'])
-
   component = @subject()
   component.setProperties
     parentView: mockParent
@@ -42,6 +41,6 @@ test 'shows itelf as sent based on emailSentStates', ->
     recipients: [Ember.Object.create(id: 5)]
     showChooseReceivers: true
 
-  ok component.get('showSentMessage')
+  ok component.get('showSentMessage'), 'It shows up when its key is in emailSentStates'
   component.send 'clearEmailSent'
-  ok !component.get('showSentMessage')
+  ok !component.get('showSentMessage'), "It doesn't show up after clearing"

@@ -7,9 +7,10 @@
       cancel="resetBlock"
       save="saveBlock"
       delete="deleteBlock"
+      emailSentStates=emailSentStates
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item allUsers participants
+        {{inlineEdit item null null
           isSendable=false
           delete="deleteItem"}}
       {{/each}}
@@ -22,9 +23,10 @@
       cancel="resetBlock"
       save="saveBlock"
       delete="deleteBlock"
+      emailSentStates=emailSentStates
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-      {{inlineEdit item allUsers participants
+      {{inlineEdit item null null
           isNew=true
           isSendable=false
           delete="deleteItem"}}

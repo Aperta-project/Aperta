@@ -1,30 +1,41 @@
 ETahi.InlineEditEmailComponent = Em.Component.extend ETahi.AdhocInlineEditItem,
   isSendable: true
   showChooseReceivers: false
-  emailSent: false
   mailRecipients: []
   recipients: []
   allUsers: null
   overlayParticipants: null
+  emailSentStates: Ember.computed.alias 'parentView.emailSentStates'
 
   initRecipients: (->
     @set('recipients', @get('overlayParticipants').copy())
   ).observes('showChooseReceivers')
 
+  keyForStates: Ember.computed.alias 'bodyPart.subject'
+
+  showSentMessage: ( ->
+    key = @get('keyForStates')
+    @get('emailSentStates').contains(key)
+  ).property('keyForStates', 'emailSentStates.@each')
+
+  setSentState: ->
+    key = @get('keyForStates')
+    @get('emailSentStates').addObject(key)
+
   actions:
     toggleChooseReceivers: ->
       @toggleProperty 'showChooseReceivers'
 
-    toggleEmailSent: ->
-      @toggleProperty 'emailSent'
+    clearEmailSent: ->
+      @get('emailSentStates').removeObject(@get('keyForStates'))
 
     sendEmail: ->
       recipientIds = @get('recipients').mapBy('id')
       bodyPart = @get('bodyPart')
       bodyPart.sent = moment().format('MMMM Do YYYY')
       @sendAction("sendEmail", body: bodyPart.value, subject: bodyPart.subject, recipients: recipientIds)
-      @toggleProperty 'showChooseReceivers'
-      @toggleProperty 'emailSent'
+      @set('showChooseReceivers', false)
+      @setSentState()
       @get('parentView').send('save')
 
     removeRecipient: (recipient)->

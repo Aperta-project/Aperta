@@ -12,12 +12,12 @@ test '#sendEmail', ->
   mockParent = 
     send: (arg) ->
       ok arg == 'save', "sends save to the parentView"
+    emailSentStates: Ember.ArrayProxy.create(content: Em.A())
 
-  containerComponent = 
   component = @subject()
-  component.set('sendEmail', 'emailMock')
-  component.set('bodyPart', {subject: "Greetings!", value: "Welcome to Vulcan!"})
   component.setProperties
+    sendEmail: 'emailMock'
+    bodyPart: {subject: "Greetings!", value: "Welcome to Vulcan!"}
     overlayParticipants: [Ember.Object.create(id: 5)]
     recipients: [Ember.Object.create(id: 5)]
     targetObject: targetObject
@@ -25,6 +25,23 @@ test '#sendEmail', ->
     showChooseReceivers: true
 
   component.send 'sendEmail'
-  ok component.get('emailSent')
-  ok !component.get('showChooseReceivers')
+  ok !component.get('showChooseReceivers'), 'turns off the receivers selector'
+  ok component.get('emailSentStates').contains('Greetings!'), 'records itself as sent to the controller'
 
+test 'shows itelf as sent based on emailSentStates', ->
+  mockParent = 
+    send: (arg) ->
+      ok arg == 'save', "sends save to the parentView"
+    emailSentStates: Ember.ArrayProxy.create(content: ['Greetings!'])
+
+  component = @subject()
+  component.setProperties
+    parentView: mockParent
+    bodyPart: {subject: "Greetings!", value: "Welcome to Vulcan!"}
+    overlayParticipants: [Ember.Object.create(id: 5)]
+    recipients: [Ember.Object.create(id: 5)]
+    showChooseReceivers: true
+
+  ok component.get('showSentMessage')
+  component.send 'clearEmailSent'
+  ok !component.get('showSentMessage')

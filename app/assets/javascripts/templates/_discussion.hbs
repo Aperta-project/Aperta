@@ -1,10 +1,5 @@
 <div class="discussion">
   <h2>Discussion</h2>
-  {{participant-selector
-    currentParticipants=participants
-    onRemove='removeParticipant'
-    paperId=model.paper.id
-    onSelect="saveNewParticipant"}}
   {{comment-board
     comments=comments
     currentUser=currentUser

@@ -1,16 +1,17 @@
-<div class="participant-selector">
-  {{select-2 value=""
-             class="participant-select2"
-             name="add_participant"
-             selectionSelected="addParticipant"
-             selectionRemoved="removeParticipant"
-             selectedData=currentParticipants
-             selectedTemplate=selectedTemplate
-             resultsTemplate=resultsTemplate
-             closeOnSelect=true
-             multiSelect=true
-             allowClear=false
-             minimumInputLength=3
-             remoteSource=remoteSource
-             placeholder="Add People"}}
-</div>
+<span class="participant-selector-label">Following:</span>
+{{select-2 value=""
+           class="participant-select2"
+           name="add_participant"
+           selectionSelected="addParticipant"
+           selectionRemoved="removeParticipant"
+           dropdownClosed="dropdownClosed"
+           selectedData=currentParticipants
+           selectedTemplate=selectedTemplate
+           resultsTemplate=resultsTemplate
+           closeOnSelect=true
+           multiSelect=true
+           allowClear=false
+           minimumInputLength=3
+           remoteSource=remoteSource
+           placeholder="Add People"}}
+<div class="add-participant" data-toggle="tooltip" title="Add Someone" {{action "activateDropdown"}}>+</div>

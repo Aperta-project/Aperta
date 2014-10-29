@@ -19,6 +19,11 @@ ETahi.Select2Component = Ember.TextField.extend
     @.$().on 'select2-removing', (e) =>
       @sendAction 'selectionRemoved', e.choice
 
+  setupClosedListener: ->
+    @.$().off 'select2-close'
+    @.$().on 'select2-close', =>
+      @sendAction 'dropdownClosed'
+
   setSelectedData: (->
     @.$().select2('val', @get('selectedData').mapProperty('id'))
   ).observes('selectedData')
@@ -39,10 +44,12 @@ ETahi.Select2Component = Ember.TextField.extend
     @.$().select2(options)
     @setupSelectedListener()
     @setupRemovedListener()
+    @setupClosedListener()
     @setSelectedData()
   ).on('didInsertElement')
 
   teardown: (->
     @.$().off 'select2-selecting'
     @.$().off 'select2-removing'
+    @.$().off 'select2-close'
   ).on('willDestroyElement')

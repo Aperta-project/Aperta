@@ -1,7 +1,6 @@
 namespace :data do
   desc "Create default task types for all journals"
   task :create_task_types => :environment do
-    TaskServices::CreateTaskTypes.call
     Journal.all.each do |journal|
       JournalServices::CreateDefaultTaskTypes.call(journal)
     end

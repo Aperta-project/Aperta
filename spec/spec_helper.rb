@@ -96,7 +96,6 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :truncation, { except: ['task_types'] }
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
     DatabaseCleaner[:redis].strategy = :truncation
-    TaskServices::CreateTaskTypes.call
   end
 
   config.include Haml::Helpers, type: :helper

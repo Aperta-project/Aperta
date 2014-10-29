@@ -45,6 +45,12 @@ class Task < ActiveRecord::Base
     where.not(id: task.id)
   end
 
+  #TODO Research how task generation and templating can be simplified
+  # https://www.pivotaltracker.com/story/show/81718250
+  def journal_task_type
+    journal.journal_task_types.find_by(kind: self.class.name)
+  end
+
   def is_metadata?
     return false unless Task.metadata_types.present?
     Task.metadata_types.include?(self.class.name)

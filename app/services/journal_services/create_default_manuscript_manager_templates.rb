@@ -3,7 +3,7 @@ module JournalServices
     def self.call(journal)
       with_noisy_errors do
         mmt = journal.manuscript_manager_templates.create!(paper_type: 'Research')
-        task_types = journal.journal_task_types.includes(:task_type)
+        task_types = journal.journal_task_types
         raise "No task types configured for journal #{journal.id}" unless task_types.present?
 
         phase = mmt.phase_templates.create! name: "Submission Data"
@@ -24,7 +24,7 @@ module JournalServices
 
     def self.make_tasks(phase, task_types, *tasks)
       tasks.each do |kind|
-        jtt = task_types.detect { |jtt| jtt.task_type.kind == kind.to_s }
+        jtt = task_types.find_by(kind: kind)
         phase.task_templates.create! title: jtt.title, journal_task_type: jtt
       end
     end

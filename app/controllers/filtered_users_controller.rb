@@ -8,6 +8,6 @@ class FilteredUsersController < ApplicationController
     end
 
     respond_with users.results, each_serializer: FilteredUsersSerializer,
-                                paper_id: params[:paper_id], root: false
+                                paper_id: params[:paper_id]
   end
 end

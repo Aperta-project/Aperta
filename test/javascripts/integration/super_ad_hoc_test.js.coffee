@@ -29,11 +29,6 @@ module 'Integration: Super AdHoc Card',
       info: "testroles2, collaborator"
     ]
 
-    server.respondWith 'GET', /\/papers\/\d+\/manuscript_manager/, [
-      200
-      'Tahi-Authorization-Check': 'true'
-      JSON.stringify {}
-    ]
     server.respondWith 'GET', "/papers/#{ETahi.Test.currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
@@ -46,15 +41,9 @@ module 'Integration: Super AdHoc Card',
     server.respondWith 'GET', /\/filtered_users\/non_participants\/\d+\/\w+/, [
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
-    server.respondWith 'PUT', /\/tasks\/\d+\/send_message/, [
-      204, {"Content-Type": "application/json"}, JSON.stringify {}
-    ]
 
 test "Changing the title on an AdHoc Task", ->
-  visit "/papers/#{ETahi.Test.currentPaper.id}/manage"
-  .then -> ok exists find '.card-content:contains("Super Ad-Hoc")'
-
-  click '.card-content:contains("Super Ad-Hoc")'
+  visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
   click 'h1.inline-edit .glyphicon-pencil'
   fillIn '.large-edit input[name=title]', 'Shazam!'
   click '.large-edit .button--green:contains("Save")'
@@ -62,15 +51,10 @@ test "Changing the title on an AdHoc Task", ->
     ok exists find 'h1.inline-edit:contains("Shazam!")'
 
 test "Adding a text block to an AdHoc Task", ->
-  visit "/papers/#{ETahi.Test.currentPaper.id}/manage"
-  .then -> ok exists find '.card-content:contains("Super Ad-Hoc")'
-
-  click '.card-content:contains("Super Ad-Hoc")'
+  visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
   andThen ->
-    ok exists find '.inline-edit-form div[contenteditable]'
-    ok exists find '.button--disabled:contains("Save")'
     Em.$('.inline-edit-form div[contenteditable]')
     .html("New contenteditable, yahoo!")
     .trigger('keyup')
@@ -86,15 +70,12 @@ test "Adding a text block to an AdHoc Task", ->
     click '.overlay-close-button:first'
 
 test "Adding and removing a checkbox item to an AdHoc Task", ->
-  visit "/papers/#{ETahi.Test.currentPaper.id}/manage"
+  visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
 
-  click '.card-content:contains("Super Ad-Hoc")'
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--list'
   andThen ->
     ok exists find '.inline-edit-form .item-remove'
-    ok exists find '.inline-edit-form label[contenteditable]'
-    ok exists find '.button--disabled:contains("Save")'
     Em.$('.inline-edit-form label[contenteditable]')
     .html("Here is a checkbox list item")
     .trigger('keyup')
@@ -129,6 +110,10 @@ test "User can add send an email from an adhoc card", ->
     200, {"Content-Type": "application/json"}, JSON.stringify ETahi.Setups.paperWithParticipant().toJSON()
   ]
 
+  server.respondWith 'PUT', /\/tasks\/\d+\/send_message/, [
+    204, {"Content-Type": "application/json"}, JSON.stringify {}
+  ]
+
   visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
 
   click '.adhoc-content-toolbar .glyphicon-plus'
@@ -142,5 +127,5 @@ test "User can add send an email from an adhoc card", ->
   click('.send-email')
 
   andThen ->
-    ok find('.bodypart-last-sent').length
-    ok _.findWhere(server.requests, {method: "PUT", url: "/tasks/1/send_message"})
+    ok find('.bodypart-last-sent').length, 'The sent message should appear'
+    ok _.findWhere(server.requests, {method: "PUT", url: "/tasks/1/send_message"}), "It posts to the server"

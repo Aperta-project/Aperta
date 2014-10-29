@@ -1,6 +1,7 @@
 moduleFor 'controller:adHocOverlay', 'AdHocOverlayController',
   needs: ['controller:application']
-  teardown: -> ETahi.reset()
+  teardown: ->
+    ETahi.RESTless.putModel.restore() # reset sinon stub
 
 test 'sendEmail calls send_message endpoint', ->
   sinon.stub(ETahi.RESTless, 'putModel')

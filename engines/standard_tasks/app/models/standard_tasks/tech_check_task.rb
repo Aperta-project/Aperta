@@ -1,7 +1,6 @@
 module StandardTasks
   class TechCheckTask < Task
-    title 'Tech Check'
-    role 'admin'
+    register_task default_title: 'Tech Check', default_role: 'admin'
 
     def active_model_serializer
       TaskSerializer

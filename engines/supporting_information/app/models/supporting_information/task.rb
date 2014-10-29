@@ -2,8 +2,7 @@ module SupportingInformation
   class Task < ::Task
     include ::MetadataTask
 
-    title "Supporting Info"
-    role "author"
+    register_task default_title: 'Supporting Info', default_role: 'author'
 
     def file_access_details
       paper.files.map(&:access_details)

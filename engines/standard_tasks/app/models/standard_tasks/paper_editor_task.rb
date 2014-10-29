@@ -4,8 +4,7 @@ module StandardTasks
       super + [:editor_id, { paper_role_attributes: [:user_id, :editor_id] }]
     end
 
-    title 'Assign Editor'
-    role 'admin'
+    register_task default_title: "Assign Editor", default_role: "admin"
 
     has_many :paper_roles, through: :paper
 

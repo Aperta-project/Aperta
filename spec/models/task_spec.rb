@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 class TaskWithDefaults < Task
-  title 'This task has a title'
-  role 'This task has a role'
+  register_task default_title: 'This task has a title', default_role: 'This task has a role'
 end
 
 class TaskWithoutDefaults < Task

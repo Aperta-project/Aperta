@@ -1,7 +1,6 @@
 module StandardTasks
   class PaperReviewerTask < ::Task
-    title 'Assign Reviewers'
-    role 'editor'
+    register_task default_title: "Assign Reviewers", default_role: "editor"
 
     def array_attributes
       super + [:reviewer_ids]

@@ -1,9 +1,7 @@
 module StandardTasks
   class EthicsTask < Task
     include MetadataTask
-
-    title "Add Ethics Statement"
-    role "author"
+    register_task default_title: "Add Ethics Statement", default_role: "author"
   end
 end
 

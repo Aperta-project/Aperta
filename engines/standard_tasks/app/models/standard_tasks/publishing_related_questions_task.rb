@@ -2,8 +2,7 @@ module StandardTasks
   class PublishingRelatedQuestionsTask < Task
     include MetadataTask
 
-    title "Publishing Related Questions"
-    role "author"
+    register_task default_title: "Publishing Related Questions", default_role: "author"
 
   end
 end

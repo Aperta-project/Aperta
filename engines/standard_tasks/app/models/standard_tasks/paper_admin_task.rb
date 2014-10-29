@@ -13,8 +13,7 @@ module StandardTasks
   end
 
   class PaperAdminTask < Task
-    title 'Assign Admin'
-    role 'admin'
+    register_task default_title: "Assign Admin", default_role: "admin"
 
     attr_accessor :admin_id
 

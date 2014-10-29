@@ -4,8 +4,7 @@ module StandardTasks
       super + [:paper_decision, :paper_decision_letter]
     end
 
-    title "Register Decision"
-    role "editor"
+    register_task default_title: "Register Decision", default_role: "editor"
 
     def accept_letter
       template = <<-TEXT.strip_heredoc

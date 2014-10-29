@@ -2,9 +2,8 @@
   <h2>Discussion</h2>
   {{participant-selector
     currentParticipants=participants
-    everyone=allUsers
     onRemove='removeParticipant'
-    taskId=model.id
+    paperId=model.paper.id
     onSelect="saveNewParticipant"}}
   {{comment-board
     comments=comments

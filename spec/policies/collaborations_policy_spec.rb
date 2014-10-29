@@ -7,16 +7,14 @@ describe CollaborationsPolicy do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
     let(:paper) { FactoryGirl.create(:paper) }
 
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can edit a paper's collaborators"
   end
 
   context "authors" do
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create(:paper, user: user) }
 
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can edit a paper's collaborators"
   end
 
   context "paper admins" do
@@ -27,8 +25,7 @@ describe CollaborationsPolicy do
       create(:paper_role, :admin, user: user, paper: paper)
     end
 
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can edit a paper's collaborators"
   end
 
   context "paper editors" do
@@ -39,8 +36,7 @@ describe CollaborationsPolicy do
       create(:paper_role, :editor, user: user, paper: paper)
     end
 
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can edit a paper's collaborators"
   end
 
   context "paper reviewers" do
@@ -51,8 +47,7 @@ describe CollaborationsPolicy do
       create(:paper_role, :reviewer, user: user, paper: paper)
     end
 
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can edit a paper's collaborators"
   end
 
   context "paper collaborators" do
@@ -63,15 +58,13 @@ describe CollaborationsPolicy do
       create(:paper_role, :collaborator, user: user, paper: paper)
     end
 
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can edit a paper's collaborators"
   end
 
   context "non-associated user" do
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create(:paper) }
 
-    it { expect(policy.create?).to be(false) }
-    it { expect(policy.destroy?).to be(false) }
+    include_examples "person who cannot edit a paper's collaborators"
   end
 end

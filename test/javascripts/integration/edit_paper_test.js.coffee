@@ -170,10 +170,7 @@ module 'Integration: EditPaper',
     server.respondWith 'PUT', /\/tasks\/\d+/, [
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
-    server.respondWith 'GET', "/filtered_users/collaborators/#{paperId}", [
-      200, {"Content-Type": "application/json"}, JSON.stringify collaborators
-    ]
-    server.respondWith 'GET', /\/filtered_users\/non_participants\/\d+\/\w+/, [
+    server.respondWith 'GET', /\/filtered_users\/users\/\d+/, [
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 

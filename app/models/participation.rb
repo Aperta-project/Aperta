@@ -10,6 +10,8 @@ class Participation < ActiveRecord::Base
   private
 
   def notifier_payload
-    {}
+    {
+      paper_id: task.paper.id
+    }
   end
 end

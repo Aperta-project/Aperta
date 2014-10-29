@@ -1,6 +1,7 @@
 Tahi::Application.routes.draw do
   mount Kss::Engine => '/kss' if Rails.env.development?
   mount StandardTasks::Engine => '/', as: 'standard_tasks'
+  mount SupportingInformation::Engine => '/', as: 'supporting_information'
   mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'
 
   if Rails.env.development? || Rails.env.test?
@@ -33,8 +34,7 @@ Tahi::Application.routes.draw do
 
   get '/request_policy' => 'direct_uploads#request_policy'
 
-  get 'filtered_users/collaborators/:paper_id' => 'filtered_users#collaborators', as: "collaborators"
-  get 'filtered_users/non_participants/:task_id/:query' => 'filtered_users#non_participants', as: "non_participants"
+  get 'filtered_users/users/:paper_id' => 'filtered_users#users', as: "filtered_users"
 
   resources :flows, only: [:index, :destroy, :create]
   resources :authors, only: [:create, :update, :destroy]
@@ -42,11 +42,6 @@ Tahi::Application.routes.draw do
   resources :figures, only: [:destroy, :update] do
     put :update_attachment, on: :member
   end
-
-  resources :files, as: 'supporting_information_files',
-                    path: 'supporting_information_files',
-                    only: [:create, :destroy, :update],
-                    controller: 'supporting_information/files'
 
   resources :comment_looks, only: [:index, :update]
 

@@ -9,6 +9,7 @@ Bundler.require(:default, Rails.env)
 
 module Tahi
   class Application < Rails::Application
+    config.eager_load = true
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/app/workers)
     config.assets.initialize_on_precompile = true

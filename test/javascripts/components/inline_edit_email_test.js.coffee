@@ -1,5 +1,4 @@
 moduleForComponent 'inline-edit-email', 'Unit: components/inline-edit-email',
-  teardown: -> ETahi.reset()
   setup: ->
     setupApp()
 

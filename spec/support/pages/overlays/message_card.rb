@@ -3,18 +3,18 @@ class MessageCardOverlay < CardOverlay
 
   def participants
     expect(page).to have_css '.select2-choices'
-    all('.select2-choices .user-thumbnail').map { |e| e["alt"] }
+    all('.select2-choices .user-thumbnail-small').map { |e| e["alt"] }
   end
 
   def has_participants?(*participants)
     participants.all? do |participant|
-      page.has_css?(".select2-choices .user-thumbnail[alt='#{participant.full_name}']")
+      page.has_css?(".select2-choices .user-thumbnail-small[alt='#{participant.full_name}']")
     end
   end
 
   def has_no_participants?(*participants)
     participants.all? do |participant|
-      page.has_no_css?(".select2-choices .user-thumbnail[alt='#{participant.full_name}']")
+      page.has_no_css?(".select2-choices .user-thumbnail-small[alt='#{participant.full_name}']")
     end
   end
 

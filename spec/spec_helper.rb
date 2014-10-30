@@ -118,6 +118,10 @@ RSpec.configure do |config|
     init_haml_helpers
   end
 
+  config.before(:context, redis: true) do
+    DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
+  end
+
   config.before(:each) do
     DatabaseCleaner.start
   end

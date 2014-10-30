@@ -24,3 +24,14 @@ ETahi.RESTless = Ember.Namespace.create
           Ember.keys(errors).forEach (key) ->
             modelErrors.add(key, errors[key])
         throw {status: xhr.status, model: model}
+
+  authorize: (controller, url, property) ->
+    authorize = (value) ->
+      (result) ->
+        Ember.run ->
+          controller.set(property, value)
+    Ember.$.ajax url,
+      headers:
+        'Tahi-Authorization-Check': true
+      success: authorize(true)
+      error:authorize(false)

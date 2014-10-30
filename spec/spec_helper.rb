@@ -124,11 +124,16 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
   end
 
-  config.before(:each) do
+  config.before(:each) do |example|
+    @current_driver = Capybara.current_driver
+    if example.metadata[:selenium].present? || ENV["SELENIUM"] == "true"
+      Capybara.current_driver = :selenium
+    end
     DatabaseCleaner.start
   end
 
   config.after(:each) do
+    Capybara.current_driver = @current_driver
     DatabaseCleaner.clean
   end
 end

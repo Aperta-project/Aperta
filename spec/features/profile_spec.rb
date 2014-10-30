@@ -33,7 +33,7 @@ feature "Profile Page", js: true do
     expect(profile_page).to have_no_application_error
   end
 
-  scenario "user can delete an affiliation" do
+  scenario "user can delete an affiliation", selenium: true do
     profile_page = ProfilePage.visit
     profile_page.add_affiliate('Yoda University')
     profile_page.remove_affiliate('Yoda University')

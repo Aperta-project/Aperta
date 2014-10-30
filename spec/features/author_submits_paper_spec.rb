@@ -8,7 +8,7 @@ feature "Paper Submission" do
     sign_in_page.sign_in author
   end
 
-  scenario "Author creates a submission", js: true do
+  scenario "Author creates a submission", js: true, selenium: true do
     journal = create :journal
 
     dashboard_page = DashboardPage.new

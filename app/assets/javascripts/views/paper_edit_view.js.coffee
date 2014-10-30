@@ -8,11 +8,11 @@ ETahi.PaperEditView = Ember.View.extend ETahi.RedirectsIfEditable,
   contributorsVisible: false
 
   setBackgroundColor: (->
-    $('.main-content').addClass 'matte'
+    $('html').addClass 'matte'
   ).on('didInsertElement')
 
   resetBackgroundColor: (->
-    $('.main-content').removeClass 'matte'
+    $('html').removeClass 'matte'
   ).on('willDestroyElement')
 
   bindPlaceholderEvent: ->

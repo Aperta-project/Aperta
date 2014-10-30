@@ -261,6 +261,22 @@ ETahi.FactoryAttributes.Task =
   participant_ids: []
   comment_ids: []
 
+ETahi.FactoryAttributes.FigureTask =
+  _rootKey: 'task'
+  id: null
+  title: "Upload Figures"
+  type: "FigureTask"
+  completed: false
+  body: []
+  paper_title: "Foo"
+  role: "admin"
+  phase_id: null
+  paper_id: null
+  lite_paper_id: null
+  assignee_ids: []
+  participant_ids: []
+  comment_ids: []
+
 ETahi.FactoryAttributes.Comment =
   _rootKey: 'comment'
   id: null

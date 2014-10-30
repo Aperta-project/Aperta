@@ -1,5 +1,8 @@
 ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTemplate,
+  needs: ['task']
   blocks: Ember.computed.alias('body')
+
+  isNew: Em.computed.alias 'controllers.task.isNew'
 
   actions:
     setTitle: (title) ->

@@ -3,8 +3,6 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
 
   setupTooltips: (->
     Em.run.schedule 'afterRender', @, ->
-      tooltip = @$('.select2-search-choice:first img').attr('title')
-      @$('.select2-search-choice:first img').attr('title', tooltip + ': Owner')
       @$('.select2-search-choice img').tooltip(placement: "bottom")
       @$('.add-participant').tooltip(placement: "bottom")
   ).on('didInsertElement').observes('currentParticipants.@each')

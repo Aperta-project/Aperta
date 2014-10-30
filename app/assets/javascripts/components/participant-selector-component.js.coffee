@@ -1,4 +1,12 @@
 ETahi.ParticipantSelectorComponent = Ember.Component.extend
+  classNames: ['participant-selector']
+
+  setupTooltips: (->
+    Em.run.schedule 'afterRender', @, ->
+      @$('.select2-search-choice img').tooltip(placement: "bottom")
+      @$('.add-participant').tooltip(placement: "bottom")
+  ).on('didInsertElement').observes('currentParticipants.@each')
+
   resultsTemplate: (user) ->
     userInfo =
       if user.roles.length
@@ -7,16 +15,16 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
         user.username
 
     '<strong>' + user.full_name +
-    '</strong><br><div class="tt-suggestion-sub-value">' +
+    '</strong><br><div class="suggestion-sub-value">' +
     userInfo + '</div>'
 
   selectedTemplate: (user) =>
     name = (user.full_name || user.get('fullName'))
     url  = (user.avatar_url || user.get('avatarUrl'))
-    new Handlebars.SafeString "<img alt='#{name}' class='user-thumbnail' src='#{url}' data-toggle='tooltip' title='#{name}'/>"
+    new Handlebars.SafeString "<img alt='#{name}' class='user-thumbnail-small' src='#{url}' data-toggle='tooltip' title='#{name}'/>"
 
   sortByCollaboration: (a, b) ->
-    # sort first by if they are collabs, then by name
+    # sort first by if they are collaborators, then by name
     # works, consider enhancing
     if a.roles.length && !b.roles.length
       -1
@@ -41,8 +49,16 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
       results: data.filtered_users
   ).property()
 
+
+
   actions:
     addParticipant: (newParticipant) ->
       @sendAction("onSelect", newParticipant.id)
     removeParticipant: (participant) ->
       @sendAction("onRemove", participant.id)
+    dropdownClosed: ->
+      $('.select2-search-field input').removeClass('active')
+      $('.add-participant').removeClass('searching')
+    activateDropdown: ->
+      $('.select2-search-field input').addClass('active').trigger('click')
+      $('.add-participant').addClass('searching')

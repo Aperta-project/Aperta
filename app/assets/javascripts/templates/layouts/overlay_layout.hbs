@@ -13,6 +13,11 @@
     <footer class="overlay-footer">
       <div class="overlay-footer-content">
         {{partial "overlay-completed-checkbox"}}
+        {{participant-selector
+          currentParticipants=participants
+          onRemove='removeParticipant'
+          paperId=model.paper.id
+          onSelect="saveNewParticipant"}}
       </div>
       <a class="button-primary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
     </footer>

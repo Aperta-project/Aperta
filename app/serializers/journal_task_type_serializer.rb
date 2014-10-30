@@ -1,4 +1,3 @@
 class JournalTaskTypeSerializer < ActiveModel::Serializer
-  attributes :id, :title, :role, :journal_id
-  has_one :task_type, embed: :id, include: true
+  attributes :id, :title, :role, :kind, :journal_id
 end

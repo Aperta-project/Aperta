@@ -91,8 +91,8 @@ class TasksController < ApplicationController
   end
 
   def enforce_policy_on_create
-    task_type = params[:task][:type]
-    sanitized_params = task_params task_type.constantize.new
+    task_type = TaskType.find_by(kind: params[:task][:type])
+    sanitized_params = task_params(task_type.kind.constantize.new)
 
     authorize_action!(task: Task.new(sanitized_params))
   end

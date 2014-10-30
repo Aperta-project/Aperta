@@ -59,7 +59,7 @@
 .ve-toolbar-underside {
   @include position(fixed, $tahi-control-bar-height 0px auto 0px);
   height: 43px;
-  background: rgba(255,255,255, 0.7);
+  background: rgba($tahi-white, 0.7);
   z-index: 1;
 }
 

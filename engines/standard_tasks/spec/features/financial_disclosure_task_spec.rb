@@ -5,7 +5,7 @@ feature "Financial Disclosures", js: true do
   let(:journal) { FactoryGirl.create :journal }
   let(:paper) { FactoryGirl.create :paper, :with_tasks, user: submitter, journal: journal }
   let(:author) { FactoryGirl.create :author, paper: paper }
-  let!(:task) { paper.phases.last.tasks.create!(type: "StandardTasks::FinancialDisclosureTask") }
+  let!(:task) { paper.phases.last.tasks.create!(type: "StandardTasks::FinancialDisclosureTask", title: "A Task", role: "admin") }
 
   before do
     sign_in_page = SignInPage.visit

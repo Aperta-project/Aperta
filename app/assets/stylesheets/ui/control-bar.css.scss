@@ -39,7 +39,11 @@
   margin: 0; // bootstrap override
   padding: 0;
 
-  &:last-of-type { float: right; }
+  &:last-of-type {
+    float: right;
+    position: absolute;
+    right: 0;
+  }
 }
 
 .control-bar-item {

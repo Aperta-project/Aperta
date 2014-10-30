@@ -2,10 +2,12 @@ require 'spec_helper'
 
 describe TasksPolicy do
 
+  let(:journal) { FactoryGirl.create(:journal) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
+  let(:task) { create(:task, phase: phase) }
   let(:policy) { TasksPolicy.new(current_user: user, task: task) }
-  let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
-  let(:task) { paper.tasks.first }
-  let(:journal) { FactoryGirl.create(:journal, papers: [paper]) }
+  let(:user) { FactoryGirl.create(:user) }
 
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
@@ -15,13 +17,17 @@ describe TasksPolicy do
 
   context "paper collaborator" do
     let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
-    let(:task) { paper.tasks.metadata.first }
-    let(:user) { FactoryGirl.create(:user) }
+
+    before do
+      allow(task).to receive(:is_metadata?).and_return true
+    end
 
     include_examples "person who can edit but not create a task"
 
     context "on a non metadata task" do
-      let(:task) { paper.tasks.where.not(type: Task.metadata_types).first }
+      before do
+        allow(task).to receive(:is_metadata?).and_return false
+      end
 
       include_examples "person who cannot see a task"
     end
@@ -39,17 +45,16 @@ describe TasksPolicy do
   end
 
   context "user no role" do
-    let(:user) { FactoryGirl.create(:user) }
 
     include_examples "person who cannot see a task"
   end
 
   context "user with role on different journal" do
-    let(:journal) { FactoryGirl.create(:journal) }
+    let(:other_journal) { FactoryGirl.create(:journal) }
     let(:user) do
       FactoryGirl.create(
         :user,
-        roles: [ FactoryGirl.create(:role, :admin, journal: journal) ],
+        roles: [ FactoryGirl.create(:role, :admin, journal: other_journal) ],
       )
       end
 
@@ -72,7 +77,6 @@ describe TasksPolicy do
   end
 
   context "task participant" do
-    let(:user) { FactoryGirl.create(:user) }
     before do
       FactoryGirl.create(:participation, participant: user, task: task)
     end

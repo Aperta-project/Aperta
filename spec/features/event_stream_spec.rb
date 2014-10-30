@@ -22,7 +22,6 @@ feature "Event streaming", js: true do
 
     scenario "creating a new message task" do
       mt = submission_phase.tasks.new title: "Wicked Message Card", type: "MessageTask", body: text_body, role: "user"
-      mt.participants << author
       mt.save!
 
       phase = all('.column').detect {|p| p.find('h2').text == "Submission Data" }
@@ -67,12 +66,6 @@ feature "Event streaming", js: true do
       within '.message-comments' do
         expect(page).to have_css('.message-comment.unread', text: "This is my comment")
       end
-    end
-
-    scenario "adding new participants" do
-      @mt.participants << create(:user)
-      @mt.save
-      expect(page).to have_css('.participants .user-thumbnail', count: 2)
     end
   end
 

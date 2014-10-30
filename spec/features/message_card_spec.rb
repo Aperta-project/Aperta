@@ -28,7 +28,6 @@ feature 'Message Cards', js: true do
       needs_editor_phase.new_card overlay: NewMessageCardOverlay,
         subject: subject_text,
         body: body_text,
-        participants: participants,
         creator: admin
 
       sleep 2
@@ -36,7 +35,6 @@ feature 'Message Cards', js: true do
       needs_editor_phase.view_card subject_text, MessageCardOverlay do |card|
         expect(card).to have_subject(subject_text)
         expect(card.comments.first).to have_text body_text
-        expect(card.participants).to match_array [albert.full_name, admin.full_name]
       end
     end
   end
@@ -72,35 +70,6 @@ feature 'Message Cards', js: true do
           card.post_message 'Hello'
           expect(card).to have_last_comment_posted_by(admin)
         end
-      end
-
-      scenario "the user can add any other user as a participant" do
-        task_manager_page = TaskManagerPage.visit paper
-        task_manager_page.view_card message.title, MessageCardOverlay do |card|
-          expect(card).to have_css('.message-overlay')
-          card.add_participants(albert)
-          expect(card).to have_participants(albert)
-        end
-        task_manager_page = TaskManagerPage.visit paper
-        task_manager_page.view_card message.title, MessageCardOverlay do |card|
-          expect(card).to have_participants(albert)
-        end
-      end
-
-      scenario "user can remove any participant" do
-        task_manager_page = TaskManagerPage.visit paper
-        task_manager_page.view_card message.title, MessageCardOverlay do |card|
-          card.add_participants(albert)
-          sleep(0.5) # wait for server response
-          card.remove_participant(albert)
-          expect(card).to have_no_participants(albert)
-        end
-
-        task_manager_page = TaskManagerPage.visit paper
-        task_manager_page.view_card message.title, MessageCardOverlay do |card|
-          expect(card).to have_no_participants(albert)
-        end
-
       end
     end
 

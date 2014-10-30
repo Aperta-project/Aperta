@@ -5,6 +5,8 @@ ETahi.PaperIndexRoute = ETahi.AuthorizedRoute.extend
   setupController: (controller, model) ->
     controller.set('model', model)
     controller.set('commentLooks', @store.all('commentLook'))
+    if @getCurrentUser? && @getCurrentUser()
+      ETahi.RESTless.authorize(controller, "/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
 
   actions:
     viewCard: (task) ->

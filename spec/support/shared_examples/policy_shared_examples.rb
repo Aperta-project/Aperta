@@ -5,6 +5,7 @@ shared_examples_for "administrator for task" do
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(true)
     expect(policy.upload?).to be(true)
+    expect(policy.send_message?).to be(true)
   end
 end
 
@@ -14,6 +15,7 @@ shared_examples_for "person who can edit but not create a task" do
     expect(policy.create?).to be(false)
     expect(policy.update?).to be(true)
     expect(policy.upload?).to be(true)
+    expect(policy.send_message?).to be(true)
   end
 end
 
@@ -23,6 +25,7 @@ shared_examples_for "person who cannot see a task" do
     expect(policy.create?).to be(false)
     expect(policy.update?).to be(false)
     expect(policy.upload?).to be(false)
+    expect(policy.send_message?).to be(false)
   end
 end
 

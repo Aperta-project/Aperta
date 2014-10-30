@@ -98,17 +98,17 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    DatabaseCleaner.strategy = :truncation, { except: ['task_types'] }
+    DatabaseCleaner[:active_record].strategy = :transaction
     DatabaseCleaner[:redis].strategy = :truncation
   end
 
   config.before(:each, js: true) do
-    DatabaseCleaner.strategy = :truncation, { except: ['task_types'] }
+    DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types'] }
     DatabaseCleaner[:redis].strategy = :truncation
   end
 
   config.before(:each, redis: true) do
-    DatabaseCleaner.strategy = :truncation, { except: ['task_types'] }
+    DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types'] }
     DatabaseCleaner[:redis].strategy = :truncation
     Sidekiq::Extensions::DelayedMailer.jobs.clear
   end
@@ -116,6 +116,10 @@ RSpec.configure do |config|
   config.include Haml::Helpers, type: :helper
   config.before(:each, type: :helper) do
     init_haml_helpers
+  end
+
+  config.before(:context, redis: true) do
+    DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
   end
 
   config.before(:each) do

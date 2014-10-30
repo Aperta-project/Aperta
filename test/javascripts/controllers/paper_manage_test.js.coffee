@@ -1,6 +1,5 @@
 moduleFor 'controller:paperManage', 'PaperManageController',
   needs: ['controller:application']
-  teardown: -> ETahi.reset()
   setup: ->
     setupApp()
     @phase1 = Ember.Object.create position: 1

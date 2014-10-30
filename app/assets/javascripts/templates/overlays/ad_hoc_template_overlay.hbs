@@ -7,9 +7,11 @@
       cancel="resetBlock"
       save="saveBlock"
       delete="deleteBlock"
+      emailSentStates=emailSentStates
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item
+        {{inlineEdit item null null
+          isSendable=false
           delete="deleteItem"}}
       {{/each}}
     {{/inline-edit-body-part}}
@@ -21,10 +23,12 @@
       cancel="resetBlock"
       save="saveBlock"
       delete="deleteBlock"
+      emailSentStates=emailSentStates
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item
+      {{inlineEdit item null null
           isNew=true
+          isSendable=false
           delete="deleteItem"}}
       {{/each}}
     {{/inline-edit-body-part}}

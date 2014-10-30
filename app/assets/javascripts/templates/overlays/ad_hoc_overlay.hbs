@@ -8,13 +8,14 @@
       save="saveBlock"
       delete="deleteBlock"
       model=model
-      emailSentStates=emailSentStates
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item allUsers participants
-          delete="deleteItem"
-          saveModel="saveModel"
-          sendEmail="sendEmail"}}
+        {{view 'inlineEdit'
+          item=item
+          allUsers=allUsers
+          overlayParticipants=participants
+          emailSentStates=emailSentStates
+          isNew=false}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
@@ -26,14 +27,14 @@
       save="saveBlock"
       delete="deleteBlock"
       model=model
-      emailSentStates=emailSentStates
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item allUsers participants
-          isNew=true
-          delete="deleteItem"
-          saveModel="saveModel"
-          sendEmail="sendEmail"}}
+        {{view 'inlineEdit'
+          item=item
+          allUsers=allUsers
+          overlayParticipants=participants
+          emailSentStates=emailSentStates
+          isNew=true}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}

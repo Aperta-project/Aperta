@@ -1,9 +1,11 @@
 html {
   overflow: -moz-scrollbars-vertical;
+
+  &.matte { background-color: #f5f5f5; }
+  &.navigation-visible { overflow: hidden; }
 }
 
-html, body { overflow: hidden; }
-body       { background: transparent; } // override bootstrap
+body { background: transparent; } // override bootstrap
 
 // top level error above overlay
 .application-error {
@@ -64,9 +66,6 @@ textarea { resize: none; }
 
 
 .matte #tahi-container {
-  overflow: auto;
-  @include position(absolute, 0px 0px 0px 0px);
-  max-width: 100%;
   padding-top: 135px;
   @include transition(padding-top 0.2s);
 
@@ -164,25 +163,14 @@ textarea { resize: none; }
 
 // Main Content:
 
-.main-content {
-  overflow: auto;
-  @include position(absolute, 0px 0px 0px 0px);
-  @include transition(all 0.1s);
-  background: #fff;
-  z-index: z($z-layer-main-content);
-
-  &.matte { background: #f5F5F5; }
-}
-
 .main-content-cover {
-  @include position(absolute, 0px 0px 0px 0px);
+  @include position(fixed, 0px 0px 0px 0px);
   display: none;
-  background: rgba(250,250,250, 0.2);
+  background: rgba(255,255,255, 0.4);
   z-index: z($z-layer-main-content-cover);
 }
 
 .navigation-visible {
-  .main-content       { @include transform(translate3d(280px, 0, 0)); }
   .main-content-cover { display: block; }
 }
 

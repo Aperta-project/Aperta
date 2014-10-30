@@ -8,11 +8,11 @@ ETahi.PaperIndexView = Ember.View.extend ETahi.RedirectsIfEditable,
   ).on('didInsertElement')
 
   setBackgroundColor: (->
-    $('.main-content').addClass 'matte paper-submitted'
+    $('html').addClass 'matte paper-submitted'
   ).on('didInsertElement')
 
   resetBackgroundColor: (->
-    $('.main-content').removeClass 'matte paper-submitted'
+    $('html').removeClass 'matte paper-submitted'
   ).on('willDestroyElement')
 
   subNavVisibleDidChange: (->

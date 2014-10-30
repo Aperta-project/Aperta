@@ -7,15 +7,21 @@ ETahi.InlineEditEmailComponent = Em.Component.extend ETahi.AdhocInlineEditItem,
   overlayParticipants: null
   emailSentStates: Ember.computed.alias 'parentView.emailSentStates'
 
+  lastSentAt: null
+
   initRecipients: (->
-    @set('recipients', @get('overlayParticipants').copy())
+    if @get('showChooseReceivers')
+      @set('recipients', @get('overlayParticipants').copy())
   ).observes('showChooseReceivers')
 
   keyForStates: Ember.computed.alias 'bodyPart.subject'
 
   showSentMessage: ( ->
-    key = @get('keyForStates')
-    @get('emailSentStates').contains(key)
+    if @get('isSendable')
+      key = @get('keyForStates')
+      @get('emailSentStates').contains(key)
+    else
+      false
   ).property('keyForStates', 'emailSentStates.@each')
 
   setSentState: ->
@@ -33,6 +39,7 @@ ETahi.InlineEditEmailComponent = Em.Component.extend ETahi.AdhocInlineEditItem,
       recipientIds = @get('recipients').mapBy('id')
       bodyPart = @get('bodyPart')
       bodyPart.sent = moment().format('MMMM Do YYYY')
+      @set('lastSentAt', bodyPart.sent)
       @sendAction("sendEmail", body: bodyPart.value, subject: bodyPart.subject, recipients: recipientIds)
       @set('showChooseReceivers', false)
       @setSentState()

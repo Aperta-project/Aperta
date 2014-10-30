@@ -105,7 +105,7 @@ test "Adding an email block to an AdHoc Task", ->
     ok Em.$.trim(find('.inline-edit .item-text').text()).indexOf('Awesome') isnt -1
 
 
-test "User can add send an email from an adhoc card", ->
+test "User can send an email from an adhoc card", ->
   server.respondWith 'GET', "/papers/#{ETahi.Test.currentPaper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify ETahi.Setups.paperWithParticipant().toJSON()
   ]

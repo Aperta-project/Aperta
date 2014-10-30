@@ -3,7 +3,7 @@
 
   <div class="view-actions">
     <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
-    <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "toggleConfirmDeletion"}}></span>
+    <span class="glyphicon glyphicon-trash inline-edit-icon" {{action "confirmDeletion"}}></span>
   </div>
 
   <div class="edit-actions">
@@ -19,7 +19,7 @@
     <div class="bodypart-destroy-overlay bodypart-overlay">
       <p>This will permanently delete your item. Are you sure?</p>
       <br>
-      <button class="button-secondary button--green knockout" {{action "toggleConfirmDeletion"}}>Cancel</button>
+      <button class="button-secondary button--green knockout" {{action "cancelDeletion"}}>Cancel</button>
       <button class="button-secondary button--green knockout delete-button" {{action "deleteBlock"}}>Delete Forever</button>
     </div>
   {{/if}}

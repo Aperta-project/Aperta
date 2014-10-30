@@ -37,8 +37,11 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
         @sendAction('save', @get('block'))
         @toggleProperty 'editing'
 
-    toggleConfirmDeletion: ->
-      @toggleProperty 'confirmDelete'
+    confirmDeletion: ->
+      @set('confirmDelete', true)
+
+    cancelDeletion: ->
+      @set('confirmDelete', false)
 
     addItem: ->
       @sendAction('addItem', @get('block'))

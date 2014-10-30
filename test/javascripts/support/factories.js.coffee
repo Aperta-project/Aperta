@@ -173,11 +173,9 @@ ETahi.Factory =
     newPhaseTemplate
 
   createJournalTaskType: (journal, taskType) ->
-    tt = @createRecord('TaskType', kind: taskType.kind)
-    jtt = @createRecord('JournalTaskType', title: taskType.title)
-    @setForeignKey(jtt, tt)
+    jtt = @createRecord('JournalTaskType', title: taskType.title, kind: taskType.kind)
     @addHasMany(journal, [jtt], {inverse: 'journal'})
-    [tt, jtt]
+    jtt
 
 ETahi.FactoryAttributes = {}
 ETahi.FactoryAttributes.User =

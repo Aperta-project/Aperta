@@ -3,8 +3,8 @@ createJournalWithTaskTemplate = (taskType) ->
   journal = ef.createRecord('Journal', id: 1, _rootKey: 'admin_journal')
   mmt = ef.createMMT(journal, id: 1)
   pt = ef.createPhaseTemplate(mmt, id: 1)
-  [tt, jtt] = ef.createJournalTaskType(journal, taskType)
-  [journal, mmt, pt, jtt, tt]
+  jtt = ef.createJournalTaskType(journal, taskType)
+  [journal, mmt, pt, jtt]
 
 module 'Integration: Manuscript Manager Templates',
   teardown: -> ETahi.reset()

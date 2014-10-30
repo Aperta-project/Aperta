@@ -1,0 +1,40 @@
+<div {{bind-attr class=":inline-edit editing :bodypart-display bodyPartType showChooseReceivers"}}>
+  {{#if isSendable}}
+    <div class="send-email">
+      {{#if bodyPart.sent}} <span class="bodypart-last-sent">Sent {{bodyPart.sent}}</span>{{/if}}
+      <div class="button-secondary button--green email-send-participants" {{action "toggleChooseReceivers"}}>Send this Email to Participants</div>
+    </div>
+  {{/if}}
+  <div class="item-text">
+    <div class="item-subject">
+      Subject: {{bodyPart.subject}}
+    </div>
+    {{{bodyPart.value}}}
+  </div>
+</div>
+
+<div {{bind-attr class=":inline-edit-form editing showChooseReceivers:hidden"}}>
+  {{input value=bodyPart.subject placeholder="Enter a subject"}}
+  {{content-editable value=bodyPart.value class="editable"}}
+</div>
+
+{{#if showChooseReceivers}}
+  <div class="bodypart-choose-receiver-overlay bodypart-overlay">
+    <p>Please choose who should receive this email.</p>
+    {{participant-selector currentParticipants=recipients
+                           everyone=allUsers
+                           onRemove="removeRecipient"
+                           taskId=model.id
+                           onSelect="addRecipientById"}}
+
+    <button class="button-secondary button--green knockout" {{action "toggleChooseReceivers"}}>Cancel</button>
+    <button class="button-secondary button--green knockout send-email-action" {{action "sendEmail" model}}>Send Email</button>
+  </div>
+{{/if}}
+
+{{#if showSentMessage}}
+  <div class="bodypart-email-sent-overlay bodypart-overlay">
+    <span class="glyphicon glyphicon-remove animation-scale-in" {{action "clearEmailSent"}}></span>
+    <p>Your email has been sent.</p>
+  </div>
+{{/if}}

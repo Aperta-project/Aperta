@@ -2,7 +2,6 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy, except: [:create]
   before_action :enforce_policy_on_create, only: [:create]
-  before_action :verify_admin!, except: [:show, :update]
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -51,12 +50,29 @@ class TasksController < ApplicationController
     end
   end
 
+  def send_message
+    AdhocMailer.delay.send_adhoc_email(
+      task_email_params[:subject],
+      task_email_params[:body],
+      task_email_params[:recipients],
+    )
+    head :ok
+  end
+
   private
 
   def task_params(task)
     attributes = task.permitted_attributes
     params.require(:task).permit(*attributes).tap do |whitelisted|
       whitelisted[:body] = params[:task][:body] || []
+    end
+  end
+
+  def task_email_params
+    params.require(:task).permit(:subject, :body, recipients: []).tap do |whitelisted|
+      whitelisted[:subject] ||= "No subject"
+      whitelisted[:body] ||= "Nothing to see here."
+      whitelisted[:recipients] ||= []
     end
   end
 

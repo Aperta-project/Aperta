@@ -32,3 +32,15 @@ feature "Signing in", js: true do
     expect(page.current_path).to eq new_user_session_path
   end
 end
+
+feature "Resetting password", js: true do
+  let!(:user) { create :user }
+  scenario "User can reset their password" do
+    SignInPage.visit
+    click_link('Forgot your password?')
+    fill_in('user_email', with: user.email)
+    click_button('Send reset password instructions')
+    expect(page).to have_content 'You will receive an email with instructions about how to reset your password in a few minutes.'
+  end
+end
+

@@ -1,5 +1,4 @@
 moduleForComponent 'comment-board', 'Unit: components/comment-board',
-  teardown: -> ETahi.reset()
   setup: ->
     setupApp()
     @comment1 = Ember.Object.create body: "comment 1", createdAt: 1

@@ -1,26 +1,31 @@
 require 'spec_helper'
 
 describe QuestionAttachmentsPolicy do
+  let(:journal) { FactoryGirl.create(:journal) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
+  let(:task) { create(:task, phase: phase) }
+  let(:user) { FactoryGirl.create(:user) }
   let(:policy) { QuestionAttachmentsPolicy.new(current_user: user, task: task) }
-  let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
-  let(:task) { paper.tasks.first }
-  let(:journal) { FactoryGirl.create(:journal, papers: [paper]) }
 
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can manage question attachments" 
   end
 
   context "paper collaborator" do
     let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
-    let(:task) { paper.tasks.metadata.first }
-    let(:user) { FactoryGirl.create(:user) }
 
-    it { expect(policy.destroy?).to be(true) }
+    before do
+      allow(task).to receive(:is_metadata?).and_return true
+    end
+    include_examples "person who can manage question attachments" 
 
     context "on a non metadata task" do
-      let(:task) { paper.tasks.where.not(type: Task.metadata_types).first }
-      it { expect(policy.destroy?).to be(false) }
+      before do
+        allow(task).to receive(:is_metadata?).and_return false
+      end
+      include_examples "person who cannot manage question attachments" 
     end
   end
 
@@ -32,24 +37,22 @@ describe QuestionAttachmentsPolicy do
       )
     end
 
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can manage question attachments" 
   end
 
   context "user no role" do
-    let(:user) { FactoryGirl.create(:user) }
-
-    it { expect(policy.destroy?).to be(false) }
+    include_examples "person who cannot manage question attachments" 
   end
 
   context "user with role on different journal" do
-    let(:journal) { FactoryGirl.create(:journal) }
+    let(:other_journal) { FactoryGirl.create(:journal) }
     let(:user) do
       FactoryGirl.create(
         :user,
-        roles: [ FactoryGirl.create(:role, :admin, journal: journal) ],
+        roles: [ FactoryGirl.create(:role, :admin, journal: other_journal) ],
       )
       end
 
-    it { expect(policy.destroy?).to be(false) }
+    include_examples "person who cannot manage question attachments" 
   end
 end

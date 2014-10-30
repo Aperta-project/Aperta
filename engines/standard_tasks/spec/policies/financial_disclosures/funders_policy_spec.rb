@@ -1,4 +1,20 @@
 require 'spec_helper'
+# questions
+shared_examples_for "person who can manage funders" do
+  it "lets them do all the things" do
+    expect(policy.create?).to be(true)
+    expect(policy.update?).to be(true)
+    expect(policy.destroy?).to be(true)
+  end
+end
+
+shared_examples_for "person who cannot manage funders" do
+  it "lets them do all the things" do
+    expect(policy.create?).to be(false)
+    expect(policy.update?).to be(false)
+    expect(policy.destroy?).to be(false)
+  end
+end
 
 describe StandardTasks::FundersPolicy do
   let(:policy) { StandardTasks::FundersPolicy.new(current_user: user, funder: funder) }
@@ -9,9 +25,7 @@ describe StandardTasks::FundersPolicy do
   context "A super admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    it { expect(policy.create?).to eq(true) }
-    it { expect(policy.update?).to eq(true) }
-    it { expect(policy.destroy?).to eq(true) }
+    include_examples "person who can manage funders"
   end
 
   context "Journal Admin" do
@@ -22,24 +36,18 @@ describe StandardTasks::FundersPolicy do
       user
     end
 
-    it { expect(policy.create?).to eq(true) }
-    it { expect(policy.update?).to eq(true) }
-    it { expect(policy.destroy?).to eq(true) }
+    include_examples "person who can manage funders"
   end
 
   context "An author" do
     let(:user) { paper.user }
 
-    it { expect(policy.create?).to eq(true) }
-    it { expect(policy.update?).to eq(true) }
-    it { expect(policy.destroy?).to eq(true) }
+    include_examples "person who can manage funders"
   end
 
   context "some schmuck" do
     let(:user) { FactoryGirl.create(:user) }
 
-    it { expect(policy.create?).to eq(false) }
-    it { expect(policy.update?).to eq(false) }
-    it { expect(policy.destroy?).to eq(false) }
+    include_examples "person who cannot manage funders"
   end
 end

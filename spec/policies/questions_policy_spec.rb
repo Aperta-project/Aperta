@@ -1,46 +1,49 @@
 require 'spec_helper'
 
 describe QuestionsPolicy do
-  let(:policy) { QuestionsPolicy.new(current_user: user, question: question) }
+  let(:journal) { FactoryGirl.create(:journal) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
+  let(:task) { create(:task, phase: phase) }
+  let(:user) { FactoryGirl.create(:user) }
   let(:question) { FactoryGirl.create(:question, task: task) }
-  let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
-  let(:task) { paper.phases.first.tasks.first }
+  let(:policy) { QuestionsPolicy.new(current_user: user, question: question) }
 
   context "A super admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    it { expect(policy.create?).to eq(true) }
-    it { expect(policy.update?).to eq(true) }
-    it { expect(policy.destroy?).to eq(true) }
+    include_examples "person who can manage questions"
   end
 
-  context "An author" do
-    let(:user) { paper.user }
+  context "paper collaborator" do
+    let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
 
-    it { expect(policy.create?).to eq(true) }
-    it { expect(policy.update?).to eq(true) }
-    it { expect(policy.destroy?).to eq(true) }
+    before do
+      allow(task).to receive(:is_metadata?).and_return true
+    end
+    include_examples "person who can manage questions"
+
+    context "on a non metadata task" do
+      before do
+        allow(task).to receive(:is_metadata?).and_return false
+      end
+      include_examples "person who cannot manage questions"
+    end
   end
 
   context "paper reviewer for a reviewer task" do
     let!(:paper_role) { create(:paper_role, :reviewer, user: user, paper: paper) }
-    let(:task) { paper.tasks.first }
-    let(:user) { FactoryGirl.create(:user) }
 
-    before {
+    before do
       task.role = 'reviewer'
-    }
+    end
 
-    it { expect(policy.create?).to eq(true) }
-    it { expect(policy.update?).to eq(true) }
-    it { expect(policy.destroy?).to eq(true) }
+    include_examples "person who can manage questions"
   end
 
   context "some schmuck" do
     let(:user) { FactoryGirl.create(:user) }
 
-    it { expect(policy.create?).to eq(false) }
-    it { expect(policy.update?).to eq(false) }
-    it { expect(policy.destroy?).to eq(false) }
+    include_examples "person who cannot manage questions"
   end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::JournalsController do
+describe Admin::JournalsController, redis: true do
   let(:journal) { create(:journal) }
   let(:admin) { create :user, :site_admin }
   let(:image_file) { fixture_file_upload 'yeti.jpg' }

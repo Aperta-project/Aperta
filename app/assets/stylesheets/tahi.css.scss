@@ -163,16 +163,6 @@ textarea { resize: none; }
 
 // Main Content:
 
-// .main-content {
-//   left: 0;
-//   @include transition(left 0.1s);
-// }
-
-// .navigation-visible .main-content {
-//   overflow: auto;
-//   @include position(absolute, 0px 0px 0px $tahi-navigation-width);
-// }
-
 .main-content-cover {
   @include position(fixed, 0px 0px 0px 0px);
   display: none;
@@ -207,11 +197,6 @@ textarea { resize: none; }
     path { fill: $tahi-green-dark; }
   }
 }
-
-// .navigation-visible .navigation-toggle {
-//   left: $tahi-navigation-width;
-//   @include transition(all 0.1s);
-// }
 
 html[screen="admin"] .navigation-toggle {
   color: $tahi-blue;

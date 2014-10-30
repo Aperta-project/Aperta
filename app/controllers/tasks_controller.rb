@@ -61,8 +61,7 @@ class TasksController < ApplicationController
   end
 
   def build_task
-    #TODO: protect random task type parameter from being constantized
-    task_klass = params[:task][:type].constantize
+    task_klass = TaskType.constantize!(params[:task][:type])
     sanitized_params = task_params(task_klass.new)
     TaskFactory.build_task(task_klass, sanitized_params, current_user)
   end

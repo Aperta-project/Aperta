@@ -98,7 +98,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    DatabaseCleaner.strategy = :truncation, { except: ['task_types'] }
+    DatabaseCleaner[:active_record].strategy = :transaction
     DatabaseCleaner[:redis].strategy = :truncation
   end
 

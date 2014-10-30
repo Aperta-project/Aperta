@@ -1,12 +1,5 @@
 require 'spec_helper'
 
-class TaskWithDefaults < Task
-  register_task default_title: 'This task has a title', default_role: 'This task has a role'
-end
-
-class TaskWithoutDefaults < Task
-end
-
 describe Task do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
 

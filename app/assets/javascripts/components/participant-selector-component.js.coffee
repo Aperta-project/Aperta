@@ -24,7 +24,7 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
     new Handlebars.SafeString "<img alt='#{name}' class='user-thumbnail-small' src='#{url}' data-toggle='tooltip' title='#{name}'/>"
 
   sortByCollaboration: (a, b) ->
-    # sort first by if they are collabs, then by name
+    # sort first by if they are collaborators, then by name
     # works, consider enhancing
     if a.roles.length && !b.roles.length
       -1

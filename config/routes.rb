@@ -100,7 +100,11 @@ Tahi::Application.routes.draw do
   resources :comments, only: [:create, :show]
   resources :participations, only: [:create, :show, :destroy]
 
-  resources :tasks, only: [:update, :create, :show, :destroy]
+  resources :tasks, only: [:update, :create, :show, :destroy] do
+    member do
+      put :send_message
+    end
+  end
 
   resources :phases, only: [:create, :update, :show, :destroy]
 

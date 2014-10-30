@@ -19,3 +19,6 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTempl
       @_super(item, block)
       unless @isNew(block)
         @send('saveModel')
+
+    sendEmail: (data) ->
+      ETahi.RESTless.putModel(@get('model'), "/send_message", task: data)

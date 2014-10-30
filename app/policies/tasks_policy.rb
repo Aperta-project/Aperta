@@ -21,4 +21,8 @@ class TasksPolicy < ApplicationPolicy
   def destroy?
     authorized_to_modify_task?
   end
+
+  def send_message?
+    authorized_to_modify_task?
+  end
 end

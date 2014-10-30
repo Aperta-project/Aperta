@@ -70,10 +70,22 @@ test 'Adding an Ad-Hoc card', ->
 
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click 'a.button--green:contains("Add New Card")'
-    .then -> ok exists find '.chosen-container.task-type-select'
   pickFromChosenSingle '.task-type-select', 'Ad Hoc'
   click '.button--green:contains("Add")'
     .then -> ok exists find 'h1.inline-edit:contains("Ad Hoc")'
-  click '.button--green.overlay-close-button'
+  click '.adhoc-content-toolbar .glyphicon-plus'
+  click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
   andThen ->
-    ok exists find '.column .card-content:contains("Ad Hoc")'
+    Em.$('.inline-edit-form div[contenteditable]')
+    .html("New contenteditable, yahoo!")
+    .trigger('keyup')
+    click '.task-body .inline-edit-body-part .button--green:contains("Save")'
+  andThen ->
+    ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') isnt -1
+    click '.inline-edit-body-part .glyphicon-trash'
+  andThen ->
+    ok Em.$.trim(find('.inline-edit-body-part').text()).indexOf('Are you sure?') isnt -1
+    click '.inline-edit-body-part .delete-button'
+  andThen ->
+    ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') is -1
+    click '.overlay-close-button:first'

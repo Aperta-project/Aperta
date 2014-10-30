@@ -19,4 +19,4 @@ ETahi.HeartbeatService = Em.Object.extend
       @set('intervalId', null)
 
   heartbeat: ->
-    ETahi.RESTless.put(@get('resource'), "/heartbeat")
+    ETahi.RESTless.putModel(@get('resource'), "/heartbeat")

@@ -107,7 +107,7 @@ GEM
       ember-source
       execjs
       handlebars-source
-    bcrypt-ruby (3.1.2)
+    bcrypt (3.1.9)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bourbon (3.1.8)
@@ -156,10 +156,11 @@ GEM
     database_cleaner (1.2.0)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
-    devise (3.2.2)
-      bcrypt-ruby (~> 3.0)
+    devise (3.4.1)
+      bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
+      responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
@@ -373,6 +374,8 @@ GEM
     redis (3.0.7)
     redis-namespace (1.4.1)
       redis (~> 3.0.4)
+    responders (1.1.1)
+      railties (>= 3.2, < 4.2)
     rest_client (1.7.3)
       netrc (~> 0.7.7)
     rsolr (1.0.10)

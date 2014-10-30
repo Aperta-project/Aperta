@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UserMailer do
+describe UserMailer, redis: true do
   shared_examples_for "invitor is not available" do
     before { expect(invitee).to receive(:id).and_return(nil) }
 

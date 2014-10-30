@@ -6,7 +6,7 @@ class FakeTask < Task
   end
 end
 
-describe TasksController do
+describe TasksController, redis: true do
   let(:user) { create :user, :site_admin }
 
   let!(:paper) do

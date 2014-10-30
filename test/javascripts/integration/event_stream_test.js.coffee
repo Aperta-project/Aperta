@@ -125,3 +125,23 @@ test 'with meta information the event stream will ask the server for the specifi
   Ember.run =>
     es.msgResponse(data)
     ok(_.findWhere(server.requests, {method: "GET", url: "/comments/1"}))
+
+test 'with meta information the event stream will send the authorization header with the request', ->
+  expect(1)
+  [es, store] = setupEventStream()
+
+  data =
+    action: 'created'
+    task:
+      id: 1
+    meta:
+      model_name: 'Comment'
+      id: 1
+
+  server.respondWith 'GET', "/comments/1", [
+    403, 'Content-Type': 'application/html', 'Tahi-Authorization-Check': true, ""
+  ]
+
+  Ember.run =>
+    es.msgResponse(data)
+    ok _.findWhere(server.requests, {method: "GET", url: "/comments/1"}).requestHeaders["Tahi-Authorization-Check"]

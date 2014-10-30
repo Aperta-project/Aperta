@@ -109,6 +109,24 @@
     float: right;
     width: 25%;
   }
+
+  .no-sidebar-submit-manuscript {
+    float: right;
+    display: none;
+  }
+
+  &.sidebar-empty {
+    max-width: 840px;
+    min-width: 840px; // override default
+
+    .no-sidebar-submit-manuscript { display: block; }
+
+    aside { display: none; }
+    article {
+      width: 100%;
+      border: none;
+    }
+  }
 }
 
 .locked-overlay {
@@ -134,7 +152,7 @@
 
 // start edit-paper section
 
-.edit-paper              { padding: 40px 0 0 72px; }
+.edit-paper              { padding: 40px 70px 0 70px; }
 .edit-paper-button       { width: 150px; margin-right: 5px; }
 .edit-paper-start-icon   { padding-right: 22px; }
 .edit-paper-stop-icon    { margin: -6px 0 0 -8px; }

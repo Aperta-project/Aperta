@@ -1,7 +1,7 @@
 {{partial "paper/control-bar"}}
 
 <div id="tahi-container">
-  <main>
+  <main {{bind-attr class="hasNoMetaDataTasks:sidebar-empty"}}>
     <aside>
       <div class="task-list">
         {{partial "paper/task-list"}}

@@ -4,7 +4,7 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
   confirmDelete: false
 
   _init: (->
-    @set('snapshot', [])
+    @set 'snapshot', []
   ).on('init')
 
   createSnapshot: (->
@@ -40,7 +40,7 @@ ETahi.InlineEditBodyPartComponent = Em.Component.extend
     confirmDeletion: ->
       @set('confirmDelete', true)
 
-    cancelDestroy: ->
+    cancelDeletion: ->
       @set('confirmDelete', false)
 
     addItem: ->

@@ -310,3 +310,9 @@ ETahi.FactoryAttributes.TaskType =
   _rootKey: 'task_type'
   id: null
   kind: "Task"
+
+ETahi.FactoryAttributes.Participation =
+  _rootKey: 'participation'
+  id: null
+  task: null
+  participant_id: null

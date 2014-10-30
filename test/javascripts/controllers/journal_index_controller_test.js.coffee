@@ -1,5 +1,4 @@
 moduleFor 'controller:journalIndex', 'JournalIndexController',
-  teardown: -> ETahi.reset()
   setup: ->
     setupApp()
 

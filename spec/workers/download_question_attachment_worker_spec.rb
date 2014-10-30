@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DownloadQuestionAttachmentWorker do
+describe DownloadQuestionAttachmentWorker, redis: true do
   let(:question_attachment) { FactoryGirl.create(:question_attachment) }
   let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
 

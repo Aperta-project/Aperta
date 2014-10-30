@@ -3,15 +3,15 @@ class QuestionsPolicy < ApplicationPolicy
   include TaskAccessCriteria
 
   def create?
-    current_user.site_admin? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper? || allowed_reviewer_task? || task_participant?
+    authorized_to_modify_task?
   end
 
   def update?
-    current_user.site_admin? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper? || allowed_reviewer_task? || task_participant?
+    authorized_to_modify_task?
   end
 
   def destroy?
-    current_user.site_admin? || metadata_task_collaborator? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper? || allowed_reviewer_task? || task_participant?
+    authorized_to_modify_task?
   end
 
   private

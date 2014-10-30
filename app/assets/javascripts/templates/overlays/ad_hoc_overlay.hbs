@@ -1,17 +1,20 @@
 {{inline-edit-h1 title=title setTitle="setTitle"}}
 
 <div class="task-body">
-  {{#each block in body}}
+  {{#each block in blocks}}
     {{#inline-edit-body-part
       block=block
       cancel="resetBlock"
       save="saveBlock"
       delete="deleteBlock"
+      model=model
+      emailSentStates=emailSentStates
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item
+        {{inlineEdit item allUsers participants
           delete="deleteItem"
-          saveModel="saveModel"}}
+          saveModel="saveModel"
+          sendEmail="sendEmail"}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
@@ -22,12 +25,15 @@
       cancel="resetBlock"
       save="saveBlock"
       delete="deleteBlock"
+      model=model
+      emailSentStates=emailSentStates
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{inlineEdit item
+        {{inlineEdit item allUsers participants
           isNew=true
           delete="deleteItem"
-          saveModel="saveModel"}}
+          saveModel="saveModel"
+          sendEmail="sendEmail"}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}

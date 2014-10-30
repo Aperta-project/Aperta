@@ -6,10 +6,13 @@
     "bootstrap-sass": "latest",
     "underscore": "latest",
     "spin.js": "latest",
+    "ScrollToFixed": "latest",
     "typeahead.js": "latest",
     "jQuery.dotdotdot": "latest",
     "jquery-timeago": "latest",
     "bootstrap-datepicker": "latest",
-    "event-source-polyfill": "latest"
+    "event-source-polyfill": "latest",
+    "moment": "latest"
+    "select2": "latest"
   }
 }

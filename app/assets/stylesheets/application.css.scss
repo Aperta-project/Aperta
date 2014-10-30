@@ -2,6 +2,7 @@
  *= require_self
  *= require jquery.fileupload-ui
  *= require chosen
+ *= require select2
  *= require standard_tasks/application
 */
 
@@ -58,7 +59,7 @@
 @import 'components/attachment-thumbnail';
 @import 'components/comment-board';
 @import 'components/content-editable';
-@import 'components/participant-selector';
 @import 'components/question';
 @import 'components/question-attachment-thumbnail';
 @import 'components/upload-preview';
+@import 'components/select2';

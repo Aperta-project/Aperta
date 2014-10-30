@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Figure do
+describe Figure, redis: true do
   let(:paper) { FactoryGirl.create :paper }
   let(:figure) {
     with_aws_cassette('figure') do

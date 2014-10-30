@@ -1,28 +1,64 @@
 ETahi.ParticipantSelectorComponent = Ember.Component.extend
-  everyone: []
-  currentParticipants: []
-  availableParticipantsList: []
+  classNames: ['participant-selector']
 
-  availableParticipants: (->
-    return [] if Em.isEmpty @get('everyone.content')
+  setupTooltips: (->
+    Em.run.schedule 'afterRender', @, ->
+      @$('.select2-search-choice img').tooltip(placement: "bottom")
+      @$('.add-participant').tooltip(placement: "bottom")
+  ).on('didInsertElement').observes('currentParticipants.@each')
 
-    currentParticipantIds = @get('currentParticipants').mapProperty('id')
-    (@get('everyone.content').reject (user) ->
-      currentParticipantIds.contains("" + user.id)).map (user) ->
-        Ember.Object.create user
-  ).property('everyone.content.[]', 'currentParticipants.@each')
+  resultsTemplate: (user) ->
+    userInfo =
+      if user.roles.length
+        "#{user.username}, #{user.roles.join(', ')}"
+      else
+        user.username
 
-  updateParticipantsList: (->
-    Ember.run =>
-      @set('availableParticipantsList', @get('availableParticipants'))
-  ).observes('availableParticipants').on('init')
+    '<strong>' + user.full_name +
+    '</strong><br><div class="suggestion-sub-value">' +
+    userInfo + '</div>'
 
-  remoteUrl: (->
-    "/filtered_users/non_participants/#{@get('taskId')}/%QUERY"
+  selectedTemplate: (user) =>
+    name = (user.full_name || user.get('fullName'))
+    url  = (user.avatar_url || user.get('avatarUrl'))
+    new Handlebars.SafeString "<img alt='#{name}' class='user-thumbnail-small' src='#{url}' data-toggle='tooltip' title='#{name}'/>"
+
+  sortByCollaboration: (a, b) ->
+    # sort first by if they are collaborators, then by name
+    # works, consider enhancing
+    if a.roles.length && !b.roles.length
+      -1
+    else if !a.roles.length && b.roles.length
+      1
+    else
+      if a.full_name < b.full_name
+        -1
+      else if a.full_name > b.full_name
+        1
+      else
+        0
+
+  remoteSource: (->
+    url: "/filtered_users/users/#{@get('paperId')}/"
+    dataType: "json"
+    quietMillis: 500
+    data: (term) ->
+      query: term
+    results: (data) =>
+      data.filtered_users.sort(@sortByCollaboration)
+      results: data.filtered_users
   ).property()
+
+
 
   actions:
     addParticipant: (newParticipant) ->
-      @sendAction("onSelect", newParticipant.object.get('id'))
+      @sendAction("onSelect", newParticipant.id)
     removeParticipant: (participant) ->
-      @sendAction("onRemove", participant)
+      @sendAction("onRemove", participant.id)
+    dropdownClosed: ->
+      $('.select2-search-field input').removeClass('active')
+      $('.add-participant').removeClass('searching')
+    activateDropdown: ->
+      $('.select2-search-field input').addClass('active').trigger('click')
+      $('.add-participant').addClass('searching')

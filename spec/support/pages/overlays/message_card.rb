@@ -1,33 +1,20 @@
 class MessageCardOverlay < CardOverlay
   text_assertions :subject, "main > h1"
 
-  def add_participants(*users)
-    users.map(&:full_name).each do |name|
-      fill_in 'add_participant', with: name
-      find('.tt-suggestion').click
-      expect(page).to have_css ".participants [alt='#{name}']"
-    end
-  end
-
-  def remove_participant(participant)
-    has_participants?(participant)
-    find(:xpath, "//img[@alt='#{participant.full_name}']/../a").click
-  end
-
   def participants
-    expect(page).to have_css '.participants'
-    all('.participant .user-thumbnail').map { |e| e["alt"] }
+    expect(page).to have_css '.select2-choices'
+    all('.select2-choices .user-thumbnail-small').map { |e| e["alt"] }
   end
 
   def has_participants?(*participants)
     participants.all? do |participant|
-      page.has_css?(".participant .user-thumbnail[alt='#{participant.full_name}']")
+      page.has_css?(".select2-choices .user-thumbnail-small[alt='#{participant.full_name}']")
     end
   end
 
   def has_no_participants?(*participants)
     participants.all? do |participant|
-      page.has_no_css?(".participant .user-thumbnail[alt='#{participant.full_name}']")
+      page.has_no_css?(".select2-choices .user-thumbnail-small[alt='#{participant.full_name}']")
     end
   end
 
@@ -52,7 +39,9 @@ class MessageCardOverlay < CardOverlay
 
   def post_message(new_message)
     fill_in 'comment-body', with: new_message
-    find('.button-secondary', text: "POST MESSAGE").click
+    within('.form-group') do
+      find('.button-secondary', text: "POST MESSAGE").click
+    end
     expect(page).to have_content new_message
   end
 

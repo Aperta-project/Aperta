@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module SupportingInformation
-  describe FilesController do
+  describe FilesController, redis: true do
     routes { ::SupportingInformation::Engine.routes }
     let(:user) { create :user }
     let(:paper) do

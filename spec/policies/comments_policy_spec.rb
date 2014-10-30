@@ -1,40 +1,41 @@
 require 'spec_helper'
 
 describe CommentsPolicy do
-  let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
-  let(:journal) { FactoryGirl.create(:journal, papers: [paper]) }
-  let(:task) { paper.tasks.first }
+  let(:journal) { FactoryGirl.create(:journal) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
+  let(:task) { create(:task, phase: phase) }
+  let(:user) { FactoryGirl.create(:user) }
   let(:policy) { CommentsPolicy.new(current_user: user, task: task) }
 
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.create?).to be(true) }
+    include_examples "person who can comment on a task"
   end
 
   context "paper collaborator" do
     let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
-    let(:task) { paper.tasks.metadata.first }
-    let(:user) { FactoryGirl.create(:user) }
 
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.create?).to be(true) }
+    before do
+      allow(task).to receive(:is_metadata?).and_return true
+    end
+    include_examples "person who can comment on a task"
 
     context "on a non metadata task" do
-      let(:task) { paper.tasks.where.not(type: Task.metadata_types).first }
-      it { expect(policy.show?).to be(false) }
+      before do
+        allow(task).to receive(:is_metadata?).and_return false
+      end
+      include_examples "person who cannot comment on a task"
     end
   end
 
   context "task participant" do
-    let(:user) { FactoryGirl.create(:user, :site_admin) }
     before do
       FactoryGirl.create(:participation, participant: user, task: task)
     end
 
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.create?).to be(true) }
+    include_examples "person who can comment on a task"
   end
 
   context "allowed reviewer" do
@@ -49,8 +50,7 @@ describe CommentsPolicy do
         task.update_attribute(:role, 'reviewer')
       end
 
-      it { expect(policy.show?).to be(true) }
-      it { expect(policy.create?).to be(true) }
+      include_examples "person who can comment on a task"
     end
   end
 
@@ -65,8 +65,7 @@ describe CommentsPolicy do
       task.update_attribute(:role, 'author')
     end
 
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.create?).to be(true) }
+    include_examples "person who can comment on a task"
   end
 
   context "user with can_view_all_manuscript_managers on this journal" do
@@ -77,8 +76,7 @@ describe CommentsPolicy do
       )
     end
 
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.create?).to be(true) }
+    include_examples "person who can comment on a task"
   end
 
   context "user with can_view_assigned_manuscript_managers on this journal and is assigned to the paper." do
@@ -93,7 +91,6 @@ describe CommentsPolicy do
       FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
     end
 
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.create?).to be(true) }
+    include_examples "person who can comment on a task"
   end
 end

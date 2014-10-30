@@ -27,7 +27,11 @@ Tahi::Application.configure do
   # number of complex assets.
   config.assets.debug = false
 
-  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method = :test
+  # use letter_opener if you want to see the emails
+  # config.action_mailer.delivery_method = :letter_opener
+  # consider switching to rails 4.1 mailer preview
+  # http://edgeguides.rubyonrails.org/4_1_release_notes.html#action-mailer-previews
 
   # defaults to local storage
   # config.carrierwave_storage = :fog

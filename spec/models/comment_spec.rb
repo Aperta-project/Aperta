@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Comment do
+describe Comment, redis: true do
 
   let(:author) { FactoryGirl.create(:user) }
   let(:author2) { FactoryGirl.create(:user) }

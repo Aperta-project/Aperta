@@ -1,17 +1,17 @@
-<ul class="participants">
-  {{#each p in currentParticipants}}
-    <li class="participant">{{unbound user-thumbnail p}}<a href="#" {{action 'removeParticipant' p}}>&times;</a></li>
-  {{/each}}
-  <li class="chosen-style-override participant">
-    {{type-ahead value=""
-                 class="participant-select"
-                 name="add_participant"
-                 sourceList=availableParticipantsList
-                 valueProperty="full_name"
-                 subvalueProperty="info"
-                 remoteUrl=remoteUrl
-                 suggestionSelected="addParticipant"
-                 clearOnSelect=true
-                 placeholder="Add People"}}
-  </li>
-</ul>
+<span class="participant-selector-label">Following:</span>
+{{select-2 value=""
+           class="participant-select2"
+           name="add_participant"
+           selectionSelected="addParticipant"
+           selectionRemoved="removeParticipant"
+           dropdownClosed="dropdownClosed"
+           selectedData=currentParticipants
+           selectedTemplate=selectedTemplate
+           resultsTemplate=resultsTemplate
+           closeOnSelect=true
+           multiSelect=true
+           allowClear=false
+           minimumInputLength=3
+           remoteSource=remoteSource
+           placeholder="Add People"}}
+<div class="add-participant" data-toggle="tooltip" title="Add Someone" {{action "activateDropdown"}}>+</div>

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DownloadEpubCover do
+describe DownloadEpubCover, redis: true do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:url) { "https://tahi-test.s3.amazonaws.com/temp/500px-Jack_black.jpg" }
 

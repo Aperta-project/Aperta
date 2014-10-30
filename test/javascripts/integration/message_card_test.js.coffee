@@ -32,9 +32,6 @@ module 'Integration: MessageCards',
     server.respondWith 'PUT', /\/tasks\/\d+/, [
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
-    server.respondWith 'GET', /\/filtered_users\/collaborators\/\d+/, [
-      200, {"Content-Type": "application/json"}, JSON.stringify collaborators
-    ]
 
 test 'A message card with more than 5 comments has the show all comments button', ->
   expect(2)

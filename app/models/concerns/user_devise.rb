@@ -9,7 +9,7 @@ module UserDevise
       if login = conditions.delete(:login)
         where(conditions).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
       else
-        where(conditions).first
+        super
       end
     end
 

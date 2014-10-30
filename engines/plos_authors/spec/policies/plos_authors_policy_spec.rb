@@ -1,26 +1,42 @@
 require 'spec_helper'
 
+shared_examples_for "person who can manage plos authors" do
+  it "allows all actions" do
+    expect(policy.update?).to be(true)
+    expect(policy.create?).to be(true)
+    expect(policy.destroy?).to be(true)
+  end
+end
+
+shared_examples_for "person who cannot manage plos authors" do
+  it "doesn't let them do anything" do
+    expect(policy.update?).to be(false)
+    expect(policy.create?).to be(false)
+    expect(policy.destroy?).to be(false)
+  end
+end
+
 describe PlosAuthors::PlosAuthorsPolicy do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:journal) { paper.journal }
   let(:task) { FactoryGirl.create(:plos_authors_task, paper: paper) }
+  let(:user) { FactoryGirl.create(:user) }
   let(:policy) { PlosAuthors::PlosAuthorsPolicy.new(current_user: user, task: task) }
+
+  context "unrelated user" do
+    include_examples "person who cannot manage plos authors"
+  end
 
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    it { expect(policy.update?).to be(true) }
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can manage plos authors"
   end
 
   context "paper collaborator" do
     let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
-    let(:user) { FactoryGirl.create(:user) }
 
-    it { expect(policy.update?).to be(true) }
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can manage plos authors"
   end
 
   context "task participant" do
@@ -29,9 +45,7 @@ describe PlosAuthors::PlosAuthorsPolicy do
       FactoryGirl.create(:participation, participant: user, task: task)
     end
 
-    it { expect(policy.update?).to be(true) }
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can manage plos authors"
   end
 
   context "allowed reviewer" do
@@ -46,9 +60,7 @@ describe PlosAuthors::PlosAuthorsPolicy do
         task.update_attribute(:role, 'reviewer')
       end
 
-      it { expect(policy.update?).to be(true) }
-      it { expect(policy.create?).to be(true) }
-      it { expect(policy.destroy?).to be(true) }
+      include_examples "person who can manage plos authors"
     end
   end
 
@@ -63,9 +75,7 @@ describe PlosAuthors::PlosAuthorsPolicy do
       task.update_attribute(:role, 'author')
     end
 
-    it { expect(policy.update?).to be(true) }
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can manage plos authors"
   end
 
   context "user with can_view_all_manuscript_managers on this journal" do
@@ -76,9 +86,7 @@ describe PlosAuthors::PlosAuthorsPolicy do
       )
     end
 
-    it { expect(policy.update?).to be(true) }
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can manage plos authors"
   end
 
   context "user with can_view_assigned_manuscript_managers on this journal and is assigned to the paper." do
@@ -93,8 +101,6 @@ describe PlosAuthors::PlosAuthorsPolicy do
       FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
     end
 
-    it { expect(policy.update?).to be(true) }
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can manage plos authors"
   end
 end

@@ -1,18 +1,22 @@
 ETahi.RESTless = Ember.Namespace.create
-  ajaxPromise: (method, path) ->
+  ajaxPromise: (method, path, data) ->
     new Ember.RSVP.Promise (resolve, reject) ->
       Ember.$.ajax
         url: path
         type: method
+        data: data
         success: resolve
         error: reject
 
-  put: (model, path) ->
-    @ajaxPromise("PUT", "#{model.path()}#{path}")
+  put: (path, data) ->
+    @ajaxPromise("PUT", path, data)
 
-  putUpdate: (model, path) ->
-    @put(model, path).then (data) ->
-      model.get('store').pushPayload(data)
+  putModel: (model, path, data) ->
+    @put("#{model.path()}#{path}", data)
+
+  putUpdate: (model, path, data) ->
+    @putModel(model, path).then (response) ->
+      model.get('store').pushPayload(response)
     , (xhr) ->
         if errors = xhr.responseJSON.errors
           errors = Tahi.utils.camelizeKeys(errors)

@@ -9,17 +9,13 @@ describe PhaseTemplatesPolicy do
   context "admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    it { expect(policy.update?).to be(true) }
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can administer phase templates"
   end
 
   context "non admin who does not administer the journal" do
     let(:user) { FactoryGirl.create(:user) }
 
-    it { expect(policy.update?).to be(false) }
-    it { expect(policy.create?).to be(false) }
-    it { expect(policy.destroy?).to be(false) }
+    include_examples "person who cannot administer phase templates"
   end
 
   context "user who administers the journal" do
@@ -29,8 +25,6 @@ describe PhaseTemplatesPolicy do
       assign_journal_role(journal, user, :admin)
     end
 
-    it { expect(policy.update?).to be(true) }
-    it { expect(policy.create?).to be(true) }
-    it { expect(policy.destroy?).to be(true) }
+    include_examples "person who can administer phase templates"
   end
 end

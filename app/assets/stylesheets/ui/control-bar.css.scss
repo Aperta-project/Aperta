@@ -39,7 +39,11 @@
   margin: 0; // bootstrap override
   padding: 0;
 
-  &:last-of-type { float: right; }
+  &:last-of-type {
+    float: right;
+    position: absolute;
+    right: 0;
+  }
 }
 
 .control-bar-item {
@@ -47,6 +51,7 @@
   float: left;
   display: block;
   font-size: 10px;
+  line-height: 20px;
 }
 
 // creates bigger click area in top right corner of screen

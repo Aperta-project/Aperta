@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module SupportingInformation
-  describe File do
+  describe File, redis: true do
     let(:paper) { FactoryGirl.create :paper }
     let(:file) do
       with_aws_cassette 'supporting_info_files_controller' do

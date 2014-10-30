@@ -1,5 +1,4 @@
 moduleForComponent 'card-preview', 'Unit: components/card-preview',
-  teardown: -> ETahi.reset()
   setup: ->
     setupApp()
     @task = Ember.Object.create id: 99

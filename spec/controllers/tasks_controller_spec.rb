@@ -1,11 +1,5 @@
 require 'spec_helper'
 
-class FakeTask < Task
-  def permitted_attributes
-    super + [{ some_attribute: [some_value: []] }]
-  end
-end
-
 describe TasksController, redis: true do
   let(:user) { create :user, :site_admin }
 

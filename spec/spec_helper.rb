@@ -94,7 +94,6 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
-    TaskServices::CreateTaskTypes.call
   end
 
   config.before(:each) do

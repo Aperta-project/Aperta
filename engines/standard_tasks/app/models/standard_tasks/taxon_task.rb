@@ -1,7 +1,6 @@
 module StandardTasks
   class TaxonTask < ::Task
-    title "New Taxon"
-    role "author"
+    register_task default_title: 'New Taxon', default_role: 'author'
 
     def active_model_serializer
       TaskSerializer

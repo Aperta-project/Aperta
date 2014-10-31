@@ -2,17 +2,11 @@ require 'spec_helper'
 
 describe StandardTasks::PaperEditorTask do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
-  describe "defaults" do
-    subject(:task) { StandardTasks::PaperEditorTask.new }
-    specify { expect(task.title).to eq 'Assign Editor' }
-    specify { expect(task.role).to eq 'admin' }
-  end
-
   describe "#paper_role" do
     let(:user) { FactoryGirl.build(:user) }
     let!(:paper_role) { create(:paper_role, :editor, paper: paper, user: user) }
     let!(:phase) { paper.phases.first }
-    let(:task) { StandardTasks::PaperEditorTask.create!(phase: phase) }
+    let(:task) { StandardTasks::PaperEditorTask.create!(phase: phase, title: "Assign Editor", role: 'admin') }
 
     context "when the role is not present" do
       it "initializes a new editor role" do
@@ -29,13 +23,13 @@ describe StandardTasks::PaperEditorTask do
         # After reloading the task can get its paper_role directly,
         # but if the record hasn't been persisted we'd need to use
         # task.phase.paper.paper_roles.where(editor: true)
-        expect(StandardTasks::PaperEditorTask.create!(phase: phase).reload.paper_role).to eq paper_role
+        expect(StandardTasks::PaperEditorTask.create!(phase: phase, title: "Assign Editor", role: 'admin').reload.paper_role).to eq paper_role
       end
     end
   end
 
   describe "#editor_id" do
-    let(:task) { StandardTasks::PaperEditorTask.create! phase: paper.phases.first }
+    let(:task) { StandardTasks::PaperEditorTask.create! phase: paper.phases.first, title: "Assign Editor", role: 'admin' }
     let(:editor) { FactoryGirl.create(:user) }
 
     before do
@@ -48,7 +42,7 @@ describe StandardTasks::PaperEditorTask do
   end
 
   describe "#editor_id=" do
-    let(:task) { StandardTasks::PaperEditorTask.create! phase: paper.phases.first }
+    let(:task) { StandardTasks::PaperEditorTask.create! phase: paper.phases.first, title: "Assign Editor", role: 'admin'}
     let(:current_editor) { FactoryGirl.create(:user) }
     let(:future_editor) { FactoryGirl.create(:user) }
 

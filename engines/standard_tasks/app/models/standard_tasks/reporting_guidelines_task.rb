@@ -1,6 +1,5 @@
 module StandardTasks
   class ReportingGuidelinesTask < ::Task
-    title "Reporting Guidelines"
-    role "author"
+    register_task default_title: "Reporting Guidelines", default_role: "author"
   end
 end

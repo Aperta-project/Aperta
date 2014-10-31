@@ -2,12 +2,6 @@ require 'spec_helper'
 
 module SupportingInformation
   describe Task do
-    describe "defaults" do
-      subject(:task) { SupportingInformation::Task.new }
-      specify { expect(task.title).to eq 'Supporting Info' }
-      specify { expect(task.role).to eq 'author' }
-    end
-
     describe "#file_access_details" do
       let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
 
@@ -18,8 +12,10 @@ module SupportingInformation
       end
 
       let(:supporting_information_task) do
-        SupportingInformation::Task.create! completed: true,
-          phase: paper.phases.first
+        ::SupportingInformation::Task.create! completed: true,
+          phase: paper.phases.first,
+          title: "Supporting Info",
+          role: "author"
       end
 
       it "returns a JSON object of access details from figures" do

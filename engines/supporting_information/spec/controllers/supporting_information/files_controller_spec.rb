@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module SupportingInformation
   describe FilesController, redis: true do
-    routes { SupportingInformation::Engine.routes }
+    routes { ::SupportingInformation::Engine.routes }
     let(:user) { create :user }
     let(:paper) do
       FactoryGirl.create(:paper, user: user)
@@ -22,7 +22,7 @@ module SupportingInformation
         it "destroys the file record" do
           expect {
             do_request
-          }.to change{SupportingInformation::File.count}.by -1
+          }.to change{::SupportingInformation::File.count}.by -1
         end
       end
 

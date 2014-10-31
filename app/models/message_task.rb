@@ -1,5 +1,5 @@
 class MessageTask < Task
-  role 'user'
+  register_task default_title: "Task", default_role: "user"
 
   def authorize_update?(params, user)
     p = PaperQuery.new paper, user

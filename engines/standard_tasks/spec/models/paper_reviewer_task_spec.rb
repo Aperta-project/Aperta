@@ -1,12 +1,6 @@
 require 'spec_helper'
 
 describe StandardTasks::PaperReviewerTask do
-  describe "defaults" do
-    subject(:task) { StandardTasks::PaperReviewerTask.new }
-    specify { expect(task.title).to eq 'Assign Reviewers' }
-    specify { expect(task.role).to eq 'editor' }
-  end
-
   let!(:journal) do
     journal = create :journal
     journal.manuscript_manager_templates.destroy_all
@@ -23,7 +17,7 @@ describe StandardTasks::PaperReviewerTask do
   let(:neil) { create :user }
 
   describe "#reviewer_ids=" do
-    let(:task) { StandardTasks::PaperReviewerTask.create!(phase: paper.phases.first) }
+    let(:task) { StandardTasks::PaperReviewerTask.create!(phase: paper.phases.first, title: "Assign Reviewers", role: "editor") }
 
     it "creates reviewer paper roles only for new ids" do
       create(:paper_role, :reviewer, paper: paper, user: albert)

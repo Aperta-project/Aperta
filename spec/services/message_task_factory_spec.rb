@@ -15,6 +15,7 @@ describe TaskFactory::MessageTaskFactory do
         { title: title,
           body: msg_body,
           participant_ids: participant_ids,
+          role: 'user',
           phase_id: phase.id }
       end
       let(:result) do

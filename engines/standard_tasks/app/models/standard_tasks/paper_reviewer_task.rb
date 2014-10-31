@@ -1,7 +1,6 @@
 module StandardTasks
   class PaperReviewerTask < ::Task
-    title 'Assign Reviewers'
-    role 'editor'
+    register_task default_title: "Assign Reviewers", default_role: "editor"
 
     def array_attributes
       super + [:reviewer_ids]
@@ -29,7 +28,9 @@ module StandardTasks
     def add_reviewer(user)
       transaction do
         PaperRole.reviewers_for(paper).where(user: user).create!
-        task = StandardTasks::ReviewerReportTask.create!(phase: reviewer_report_task_phase, title: "Review by #{user.full_name}")
+        task = StandardTasks::ReviewerReportTask.create!(phase: reviewer_report_task_phase,
+                                                         role: journal_task_type.role,
+                                                         title: "Review by #{user.full_name}")
         ParticipationFactory.create(task, user)
       end
     end

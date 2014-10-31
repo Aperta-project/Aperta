@@ -12,7 +12,7 @@ describe TaskTemplatesController do
   expect_policy_enforcement
 
   it "creates a record" do
-    post :create, format: :json, task_template: { phase_template_id: phase_template.id, journal_task_type_id: journal_task_type.id }
+    post :create, format: :json, task_template: { phase_template_id: phase_template.id, journal_task_type_id: journal_task_type.id, title: "Valid Title" }
     expect(response.status).to eq(201)
   end
 

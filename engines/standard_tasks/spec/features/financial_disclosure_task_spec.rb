@@ -1,11 +1,9 @@
 require 'spec_helper'
 
 feature "Financial Disclosures", js: true do
-  let(:submitter) { FactoryGirl.create :user }
-  let(:journal) { FactoryGirl.create :journal }
-  let(:paper) { FactoryGirl.create :paper, :with_tasks, user: submitter, journal: journal }
-  let(:author) { FactoryGirl.create :author, paper: paper }
-  let!(:task) { paper.phases.last.tasks.create!(type: "StandardTasks::FinancialDisclosureTask", title: "Financial Disclosure", role: "author") }
+  let(:submitter) { FactoryGirl.create(:user) }
+  let(:paper) { FactoryGirl.create(:paper, user: submitter) }
+  let!(:task) { FactoryGirl.create(:financial_disclosure_task, paper: paper) }
 
   before do
     sign_in_page = SignInPage.visit

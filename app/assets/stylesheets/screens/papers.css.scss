@@ -85,7 +85,8 @@
 
 #paper-placeholder {
   position: absolute;
-  top: 315px;
+  top: 56px;
+  left: 3px;
   z-index: 5;
   color: $tahi-grey-dark;
   font-style: italic;
@@ -147,6 +148,7 @@
   font-family: $tahi-article-font-family;
   width: 700px;
   margin: 0 auto;
+  position: relative;
 }
 
 

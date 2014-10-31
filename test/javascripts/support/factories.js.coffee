@@ -35,12 +35,16 @@ ETahi.Factory =
     currentValues = model[key]
     model[key] = _.union(currentValues, values)
 
+
   setHasMany: (model, models, options={}) ->
     keyName = options.keyName || _.first(models)._rootKey
 
+    deNamespace = (str) ->
+      _.last(str.split('::'))
+
     if options.embed
       key = keyName + "s"
-      modelIds = _.map(models, (t) -> {id: t.id, type: t.type})
+      modelIds = _.map(models, (t) -> {id: t.id, type: deNamespace(t.type)})
     else
       key = keyName + "_ids"
       modelIds = _.pluck(models, "id")
@@ -274,6 +278,23 @@ ETahi.FactoryAttributes.FigureTask =
   assignee_ids: []
   participant_ids: []
   comment_ids: []
+
+ETahi.FactoryAttributes.FinancialDisclosureTask = 
+  _rootKey: 'task'
+  body: []
+  comment_ids: []
+  completed: false
+  funder_ids: []
+  id: null
+  lite_paper_id: null
+  paper_id: null
+  paper_title: "Test"
+  participation_ids: []
+  phase_id: null
+  question_ids: []
+  role: "author"
+  title: "Financial Disclosure"
+  type: "StandardTasks::FinancialDisclosureTask"
 
 ETahi.FactoryAttributes.Comment =
   _rootKey: 'comment'

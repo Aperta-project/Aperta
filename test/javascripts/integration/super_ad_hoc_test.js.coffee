@@ -1,19 +1,9 @@
-createPaperWithOneTask = (taskType, taskAttrs) ->
-  ef = ETahi.Factory
-  journal = ef.createRecord('Journal', id: 1)
-  paper = ef.createRecord('Paper', journal_id: journal.id)
-  litePaper = ef.createLitePaper(paper)
-  phase = ef.createPhase(paper)
-  task = ef.createTask(taskType, paper, phase, taskAttrs)
-
-  [paper, task, journal, litePaper, phase]
-
 module 'Integration: Super AdHoc Card',
   teardown: -> ETahi.reset()
   setup: ->
     setupApp integration: true
     ef = ETahi.Factory
-    records = createPaperWithOneTask('Task'
+    records = ETahi.Setups.paperWithTask('Task'
       id: 1
       title: "Super Ad-Hoc"
     )

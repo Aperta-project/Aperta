@@ -34,3 +34,7 @@ ETahi.BasePaperController = Ember.ObjectController.extend
     if @get('model.editors').contains(@get('currentUser'))
       @get('tasks').filterBy('role', 'reviewer')
   ).property('tasks.@each.role')
+
+  hasNoMetaDataTasks: (->
+    Em.isEmpty(@get('assignedTasks')) && Em.isEmpty(@get('editorTasks')) && Em.isEmpty(@get('authorTasks'))
+  ).property('assignedTasks.@each', 'editorTasks.@each', 'authorTasks.@each')

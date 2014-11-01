@@ -1,4 +1,4 @@
-ETahi.ShowIfContentComponent = Ember.Component.extend
+ETahi.ShowIfParentComponent = Ember.Component.extend
   showContent: Em.computed.oneWay 'initialShowState'
 
   initialShowState: (->

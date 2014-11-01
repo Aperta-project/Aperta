@@ -1,4 +1,4 @@
-moduleForComponent 'show-if-content', 'Component: show-if-content'
+moduleForComponent 'show-if-parent', 'Component: show-if-parent'
 
 test 'renders based on the set parent view prop', ->
   fakeParent = Ember.Object.create 
@@ -12,6 +12,5 @@ test 'renders based on the set parent view prop', ->
   ok $component.find('p').length, 'the content is shown when the prop is true'
   Ember.run ->
     fakeParent.set('foo', false)
-  debugger
   ok !$component.find('p').length, 'setting the prop to false is correctly observed.'
 

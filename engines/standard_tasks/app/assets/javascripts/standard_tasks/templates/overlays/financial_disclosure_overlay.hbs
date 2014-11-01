@@ -7,13 +7,13 @@
         task=model
         question="Are you affiliated with a commercial company?"}}
 
-        {{#selected-yes-content}}
+        {{#show-if-parent prop='selectedYes'}}
           <ul>
             <li>Declare this affiliation in the Competing Interests statement</li>
             <li>Confirm that this doesn't alter your ability to adhere to our data and materials sharing policy</li>
             <li>Declare this affiliation below and declare level of funding applied to the author(s) salary</li>
           </ul>
-        {{/selected-yes-content}}
+        {{/show-if-parent}}
       {{/question-radio}}
     </div>
     <div class="question">

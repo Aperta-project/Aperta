@@ -160,6 +160,11 @@ ETahi.Factory =
     @addHasMany(paper, [newPhase], {inverse: 'paper'})
     newPhase
 
+  createAuthor: (paper, attrs={})  ->
+    newAuthor = @createRecord('Author', attrs)
+    @addHasMany(paper, [newAuthor], {inverse: 'paper'})
+    newAuthor
+
   createTask: (type, paper, phase, attrs={}) ->
     newTask = @createRecord(type, _.extend(attrs, {lite_paper_id: paper.id}))
     @addHasMany(paper, [newTask], {inverse: 'paper', embed: true})
@@ -202,6 +207,14 @@ ETahi.FactoryAttributes.Journal =
   manuscript_manager_template_ids: []
   role_ids: []
   manuscript_css: null
+
+ETahi.FactoryAttributes.Author =
+  _rootKey: 'author'
+  id: null
+  first_name: "Dave"
+  last_name: "Thomas"
+  paper_id: null
+  position: 1
 
 ETahi.FactoryAttributes.Paper =
   _rootKey: 'paper'
@@ -296,6 +309,16 @@ ETahi.FactoryAttributes.FinancialDisclosureTask =
   title: "Financial Disclosure"
   type: "StandardTasks::FinancialDisclosureTask"
 
+ETahi.FactoryAttributes.Funder = 
+  _rootKey: 'funder'
+  author_ids: []
+  funder_had_influence: false
+  funder_influence_description: null
+  grant_number: null
+  id: null
+  name: "Monsanto"
+  task_id: null
+  website: "www.monsanto.com"
 ETahi.FactoryAttributes.Comment =
   _rootKey: 'comment'
   id: null

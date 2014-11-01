@@ -21,7 +21,10 @@
         Did any of the authors receive specific funding for this work?
       </div>
 
-      {{binary-radio-button name="received-funding" selection=receivedFunding yesAction="choseFundingReceived" noAction="choseFundingNotReceived"}}
+      {{binary-radio-button name="received-funding"
+                            selection=receivedFunding
+                            yesAction="choseFundingReceived"
+                            noAction="choseFundingNotReceived"}}
 
       {{#if receivedFunding}}
         <span>Please describe all sources of funding that have supported your work.</span>

@@ -37,7 +37,7 @@ test "Removing an existing funder when there's only 1", ->
   records = ETahi.Setups.paperWithTask ('FinancialDisclosureTask')
   paper = records[0]
   task = records[1]
-  author = ef.createAuthor(paper, first_name: "Bob", last_name: "Dole")
+  author = ef.createAuthor(paper)
   funder = ef.createRecord('Funder', author_ids: [author.id], task_id: task.id, id: 1)
   task.funder_ids = [1]
   payload = ef.createPayload('paper')

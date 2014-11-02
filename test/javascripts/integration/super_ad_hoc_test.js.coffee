@@ -19,6 +19,10 @@ module 'Integration: Super AdHoc Card',
       info: "testroles2, collaborator"
     ]
 
+    server.respondWith 'GET', "/dashboards", [
+      200, {"Content-Type": "application/json"}, JSON.stringify {dashboards: []}
+    ]
+
     server.respondWith 'GET', "/papers/#{ETahi.Test.currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]

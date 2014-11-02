@@ -1,4 +1,5 @@
 module 'Integration: Admin Journal User Roles, /admin/journals/:id',
+  teardown: -> ETahi.reset()
   setup: ->
     setupApp integration: true
     TahiTest.journalId = 209

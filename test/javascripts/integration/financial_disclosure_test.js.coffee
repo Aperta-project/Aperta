@@ -1,5 +1,5 @@
 module 'Integration: Financial Disclosure', ->
-  teardown: (->  ETahi.reset())
+  teardown: ->  ETahi.reset()
 
 test "Viewing the card", ->
   ef = ETahi.Factory

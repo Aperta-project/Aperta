@@ -42,8 +42,7 @@ ETahi.Factory =
   setHasMany: (model, models, options={}) ->
     keyName = options.keyName || _.first(models)._rootKey
 
-    deNamespace = (str) ->
-      _.last(str.split('::'))
+    deNamespace = Tahi.utils.deNamespaceTaskType
 
     if options.embed
       key = keyName + "s"

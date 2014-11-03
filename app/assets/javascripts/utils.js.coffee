@@ -22,7 +22,7 @@ Tahi.utils =
       $(this).outerHeight()
 
     max = null
-    try 
+    try
       max = Math.max.apply(Math, heights)
     catch error
       console.log "Math error, setting height to 20"
@@ -43,3 +43,13 @@ Tahi.utils =
       console.groupCollapsed(description)
       console.log(Em.copy(obj, true))
       console.groupEnd()
+
+  deNamespaceTaskType: (typeString) ->
+    taskTypeNames = typeString.split '::'
+    if taskTypeNames[1] is 'Task'
+      taskTypeNames.join ''
+    else if taskTypeNames[0] isnt 'Task'
+      taskTypeNames[1]
+    else
+      throw "The task type: '#{typeString}' is not qualified."
+

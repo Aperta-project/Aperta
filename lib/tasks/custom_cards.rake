@@ -18,10 +18,10 @@ namespace :custom_cards do
     needle = "### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###"
     insert_after("config/routes.rb", needle, "  mount #{engine_class_name}::Engine => '/'")
 
-    needle = "//= require moment"
+    needle = "// DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE //"
     insert_after("app/assets/javascripts/application.js.erb", needle, "//= require #{engine_name}/application")
 
-    needle = "*= require standard_tasks/application"
+    needle = "### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###"
     insert_after("app/assets/stylesheets/application.css.scss", needle, " *= require #{engine_name}/application")
 
     puts "Tahi Custom Task installation Successful!"

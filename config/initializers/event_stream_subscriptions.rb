@@ -32,7 +32,6 @@ end
 TahiNotifier.subscribe("paper:*") do |payload|
   action     = payload[:action]
   id         = payload[:id]
-  paper_id   = payload[:paper_id]
   meta       = payload[:meta]
   klass      = payload[:klass]
 

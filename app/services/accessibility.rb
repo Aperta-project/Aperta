@@ -8,13 +8,13 @@ class Accessibility
   end
 
   def users
-    action.present? ? filtered_users(action) : connected_users
+    action.present? ? filtered_users : connected_users
   end
 
 
   private
 
-  def filtered_users(filter)
+  def filtered_users
     connected_users.select do |user|
       policy(user).send("#{action}?")
     end.uniq

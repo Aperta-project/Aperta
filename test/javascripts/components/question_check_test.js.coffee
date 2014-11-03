@@ -58,7 +58,7 @@ test 'it uses dataset-* components to render attributes on additonalData', ->
     url: "test url"
   fakeQuestion = Ember.Object.create
     ident: "foo"
-    save:( -> null)
+    save: -> null
     additionalData: [additionalDataItem]
     question: "Test Question"
     answer: true

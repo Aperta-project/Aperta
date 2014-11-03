@@ -16,9 +16,9 @@ ETahi.ShowIfParentComponent = Ember.Component.extend
     @set('showContent', sender.get(key))
   
   setupObserver: ( ->
-    @addObserver(@get('propName'), @, @showPropDidChange)
+    @addObserver(@get('propName'), this, @showPropDidChange)
   ).on('didInsertElement')
 
   removeObserver: ( ->
-    Ember.removeObserver(@, @get('propName'), @, @showPropDidChange)
+    Ember.removeObserver(this, @get('propName'), this, @showPropDidChange)
   ).on('willDestroyElement')

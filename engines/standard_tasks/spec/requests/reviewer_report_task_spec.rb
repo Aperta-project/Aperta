@@ -19,7 +19,7 @@ describe "Paper with a reviewer report task" do
   end
 
   it "returns the paper with the included task" do
-    get "/papers/#{paper.id}", nil, {'HTTP_ACCEPT' => "application/json"}
+    get "/papers/#{paper.id}", nil, 'HTTP_ACCEPT' => "application/json"
 
     body = JSON.parse response.body
     expect(body['paper']['tasks'].first['type']).to eq "ReviewerReportTask"

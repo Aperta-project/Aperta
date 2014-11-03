@@ -10,9 +10,9 @@ describe "Paper with a tech check task" do
     assign_journal_role(paper.journal, user, :admin)
     task.participants << user
 
-    post_via_redirect '/users/sign_in',
-                      'user[login]' => user.username,
-                      'user[password]' => 'password'
+    post '/users/sign_in',
+         'user[login]' => user.username,
+         'user[password]' => 'password'
   end
 
   it "returns the paper with the included task" do

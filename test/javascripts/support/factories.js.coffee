@@ -292,7 +292,7 @@ ETahi.FactoryAttributes.FigureTask =
   participant_ids: []
   comment_ids: []
 
-ETahi.FactoryAttributes.FinancialDisclosureTask = 
+ETahi.FactoryAttributes.FinancialDisclosureTask =
   _rootKey: 'task'
   body: []
   comment_ids: []
@@ -309,7 +309,7 @@ ETahi.FactoryAttributes.FinancialDisclosureTask =
   title: "Financial Disclosure"
   type: "StandardTasks::FinancialDisclosureTask"
 
-ETahi.FactoryAttributes.Funder = 
+ETahi.FactoryAttributes.Funder =
   _rootKey: 'funder'
   author_ids: []
   funder_had_influence: false

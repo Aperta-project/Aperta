@@ -1,7 +1,7 @@
 moduleForComponent 'show-if-parent', 'Component: show-if-parent'
 
 test 'renders based on the set parent view prop', ->
-  fakeParent = Ember.Object.create 
+  fakeParent = Ember.Object.create
     foo: true
   component = @subject(
     prop: 'foo'

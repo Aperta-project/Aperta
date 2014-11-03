@@ -13,9 +13,9 @@ describe "Paper with a reviewer report task" do
   before do
     paper.paper_roles.create!(user: reviewer, role: PaperRole::COLLABORATOR)
     task.participants << reviewer
-    post_via_redirect '/users/sign_in',
-                      'user[login]' => reviewer.username,
-                      'user[password]' => 'password'
+    post '/users/sign_in',
+         'user[login]' => reviewer.username,
+         'user[password]' => 'password'
   end
 
   it "returns the paper with the included task" do

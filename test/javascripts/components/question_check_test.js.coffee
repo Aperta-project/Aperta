@@ -18,7 +18,7 @@ moduleForComponent 'question-check', 'Component: question-check',
 test 'it renders its question', ->
   fakeQuestion = Ember.Object.create
     ident: "foo"
-    save:( -> null)
+    save: -> null
     additionalData: [{}]
     question: "Test Question"
     answer: true
@@ -33,7 +33,7 @@ test 'it renders its question', ->
 test 'with additional-datasets it renders them and a buton to add more', ->
   fakeQuestion = Ember.Object.create
     ident: "foo"
-    save:( -> null)
+    save: -> null
     additionalData: [{}, {}]
     question: "Test Question"
     answer: true

@@ -7,7 +7,6 @@ ETahi.ContentEditableComponent = Em.Component.extend
   placeholder: ""
   plaintext: false
   preventEnterKey: false
-  caretPosition: null
 
   _userIsTyping: false
 
@@ -33,8 +32,6 @@ ETahi.ContentEditableComponent = Em.Component.extend
     @removePlaceholder() if @elementHasPlaceholder()
 
   keyUp: (event) ->
-    @saveCaretPosition()
-
     if @elementIsEmpty() || @elementHasPlaceholder()
       @set('value', '')
       @setPlaceholder()
@@ -42,26 +39,9 @@ ETahi.ContentEditableComponent = Em.Component.extend
 
     @setValueFromHTML()
 
-  focusIn: ->
-    @saveCaretPosition()
-
   focusOut: ->
     @set '_userIsTyping', false
     @setPlaceholder() if @elementIsEmpty()
-
-  saveCaretPosition: ->
-    if(window.getSelection)
-      return if window.getSelection().rangeCount == 0
-      @set('caretPosition', window.getSelection().getRangeAt(0).startOffset)
-    else if(document.selection)
-      @set('caretPosition', document.selection.createRange().startOffset)
-
-  restoreCaretPosition: ->
-    range = document.createRange()
-
-    range.setStart @$()[0].childNodes[0], @get('caretPosition')
-    window.getSelection().removeAllRanges()
-    window.getSelection().addRange(range)
 
   elementIsEmpty: ->
     Em.isEmpty(@.$().text())
@@ -78,12 +58,7 @@ ETahi.ContentEditableComponent = Em.Component.extend
     @unmute()
 
   setHTMLFromValue: ->
-    if @get('caretPosition')
-      offset = @get('caretPosition')
-      @restoreCaretPosition()
-    else
-      @$().html(@get('value'))
-
+    @.$().html(@get('value'))
     @unmute()
 
   mute: ->

@@ -2,6 +2,9 @@ ETahi.Factory =
 
   typeIds: {}
 
+  resetFactoryIds: ->
+    @typeIds = {}
+
   getNewId: (type) ->
     typeIds = @typeIds
     if !typeIds[type]

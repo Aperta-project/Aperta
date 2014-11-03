@@ -11,10 +11,6 @@ namespace :custom_cards do
     puts "Installing Custom Tahi Card: #{engine_name}"
     engine_class_name = engine_name.camelize
 
-    needle = "]"
-    new_text = "        {kind: '#{engine_class_name}::#{task_class_name}Task', default_role: 'author', default_title: '#{task_class_name}'},"
-    insert_before("app/services/task_services/create_task_types.rb", needle, new_text)
-
     # Then, run the rake task
     Rake::Task["data:create_task_types"].invoke
     puts "Successfully ran `rake data:create_task_types` for #{engine_name}"

@@ -20,4 +20,14 @@ class FilteredUsersController < ApplicationController
     end
     respond_with editors.results, each_serializer: SelectableUserSerializer
   end
+
+  def admins
+    journal = Journal.find(params[:journal_id])
+    admin_ids = journal.admins.pluck(:id)
+    admins = User.search do
+      with(:id, admin_ids)
+      fulltext params[:query]
+    end
+    respond_with admins.results, each_serializer: SelectableUserSerializer
+  end
 end

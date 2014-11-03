@@ -1,10 +1,12 @@
 <h1>Assign Admin</h1>
 <label for="admin">Admin</label>
-{{chosen content=model.possibleAdmins
-         name="admin"
-         selectionBinding=model.admin
-         prompt="Please select an admin"
-         optionValuePath="content.id"
-         changeAction='saveModel'
-         optionLabelPath="content.fullName"
-         class="chosen-assignee"}}
+{{select-2-single value=""
+           class="admin-select2"
+           name="assign_admin"
+           selectionSelected="assignAdmin"
+           selectedData=admin
+           minimumInputLength=3
+           selectedTemplate=selectedTemplate
+           resultsTemplate=resultsTemplate
+           remoteSource=select2RemoteSource
+           placeholder="Please select admin"}}

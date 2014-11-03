@@ -3,7 +3,7 @@ ETahi.PaperEditorOverlayController = ETahi.TaskController.extend ETahi.Select2As
     "/filtered_users/editors/#{@get('model.paper.journal.id')}/"
 
   actions:
-    assignEditor: (select2Editor) ->
-      @store.find('user', select2Editor.id).then (user) =>
+    assignEditor: (select2User) ->
+      @store.find('user', select2User.id).then (user) =>
         @set('editor', user)
         @send('saveModel')

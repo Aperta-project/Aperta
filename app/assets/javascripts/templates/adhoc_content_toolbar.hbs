@@ -14,3 +14,15 @@
 <div class="button-secondary button--green adhoc-toolbar-item--email" {{action "addEmail"}}>
   <span class="glyphicon glyphicon-envelope"></span>
 </div>
+
+<div class="button-secondary button--green adhoc-toolbar-item--image fileinput-button">
+  <span class="glyphicon glyphicon-paperclip"></span>
+  {{file-uploader id="file_attachment"
+                  filePrefix="ad-hoc"
+                  url=imageUploadUrl
+                  accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+                  start="uploadStarted"
+                  done="uploadFinished"
+                  cancel="cancelUploads"
+                  progress="uploadProgress"}}
+</div>

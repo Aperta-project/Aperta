@@ -12,22 +12,26 @@ class FilteredUsersController < ApplicationController
   end
 
   def editors
-    journal = Journal.find(params[:journal_id])
-    editor_ids = journal.editors.pluck(:id)
-    editors = User.search do
-      with(:id, editor_ids)
-      fulltext params[:query]
-    end
-    respond_with editors.results, each_serializer: SelectableUserSerializer
+    render_selectable_users(:editors)
   end
 
   def admins
+    render_selectable_users(:admins)
+  end
+
+  def reviewers
+    render_selectable_users(:reviewers)
+  end
+
+  private
+
+  def render_selectable_users(role)
     journal = Journal.find(params[:journal_id])
-    admin_ids = journal.admins.pluck(:id)
-    admins = User.search do
-      with(:id, admin_ids)
+    ids = journal.send(role).pluck(:id)
+    users = User.search do
+      with(:id, ids)
       fulltext params[:query]
     end
-    respond_with admins.results, each_serializer: SelectableUserSerializer
+    respond_with users.results, each_serializer: SelectableUserSerializer
   end
 end

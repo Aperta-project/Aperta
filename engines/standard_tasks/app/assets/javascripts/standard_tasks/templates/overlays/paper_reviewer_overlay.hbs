@@ -1,11 +1,15 @@
 <h1>Assign Reviewers</h1>
 <label for="reviewer" >Reviewers</label>
-{{chosen content=possibleReviewers
-         multiple=true
-         selectionBinding='reviewers'
-         class="reviewers-select"
-         optionValuePath="content"
-         optionLabelPath="content.fullName"
-         data-placeholder="Select reviewers"
-         changeAction='saveModel'
-}}
+{{select-2-multiple value=""
+                    class="reviewer-select2"
+                    name="add_reviewer"
+                    selectionSelected="addReviewer"
+                    selectionRemoved="removeReviewer"
+                    selectedData=reviewers.content
+                    selectedTemplate=selectedTemplate
+                    resultsTemplate=resultsTemplate
+                    closeOnSelect=true
+                    allowClear=false
+                    minimumInputLength=3
+                    remoteSource=select2RemoteSource
+                    placeholder="Add Reviewers"}}

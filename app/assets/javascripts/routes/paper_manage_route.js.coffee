@@ -38,6 +38,6 @@ ETahi.PaperManageRoute = ETahi.AuthorizedRoute.extend
         title: 'New Ad-Hoc Card'
 
       newTask.save().then =>
-        @send('viewCard', newTask, {queryParams: {isNew: true}})
+        @send('viewCard', newTask, {queryParams: {isNewTask: true}})
 
       false

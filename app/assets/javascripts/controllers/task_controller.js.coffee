@@ -1,6 +1,6 @@
 ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.ControllerParticipants, ETahi.ValidatesAssociatedModels, Ember.Evented,
-  queryParams: ['isNew']
-  isNew: false
+  queryParams: ['isNewTask']
+  isNewTask: false
   needs: ['application']
   onClose: 'closeOverlay'
   isLoading: false

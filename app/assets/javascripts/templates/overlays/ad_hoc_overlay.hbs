@@ -1,4 +1,4 @@
-{{inline-edit-h1 title=title setTitle="setTitle" editOnOpen=isNew}}
+{{inline-edit-h1 title=title setTitle="setTitle" editOnOpen=isNewTask}}
 
 <div class="task-body">
   {{#each block in blocks}}
@@ -15,7 +15,7 @@
           allUsers=allUsers
           overlayParticipants=participants
           emailSentStates=emailSentStates
-          isNew=false}}
+          isNewTask=false}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
@@ -34,7 +34,7 @@
           allUsers=allUsers
           overlayParticipants=participants
           emailSentStates=emailSentStates
-          isNew=true}}
+          isNewTask=true}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}

@@ -32,7 +32,7 @@ ETahi.TaskRoute = Ember.Route.extend
 
   resetController: (controller, isExiting, _transition) ->
     if isExiting
-      controller.set('isNew', false)
+      controller.set('isNewTask', false)
 
   renderTemplate: ->
     @render @get('baseObjectName'),

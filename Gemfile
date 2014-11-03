@@ -15,7 +15,7 @@ gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 
 # Gems
-gem 'rails', '4.1.6'
+gem 'rails', '4.1.7'
 gem 'puma'
 gem 'rack-timeout'
 gem 'pg'

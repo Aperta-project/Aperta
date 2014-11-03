@@ -1,4 +1,4 @@
-TahiNotifier.subscribe("author:created") do |payload|
+TahiNotifier.subscribe("author:created") do |subscription_name, payload|
   action     = payload[:action]
   id         = payload[:id]
   paper_id   = payload[:paper_id]
@@ -13,7 +13,7 @@ TahiNotifier.subscribe("author:created") do |payload|
   end
 end
 
-TahiNotifier.subscribe("plos_authors/plos_author:created", "plos_authors/plos_author:updated") do |payload|
+TahiNotifier.subscribe("plos_authors/plos_author:created", "plos_authors/plos_author:updated") do |subscription_name, payload|
   action     = payload[:action]
   id         = payload[:id]
   paper_id   = payload[:paper_id]
@@ -29,17 +29,17 @@ TahiNotifier.subscribe("plos_authors/plos_author:created", "plos_authors/plos_au
   EventStream.post_event(
     Paper,
     paper_id,
-    authors_payload.merge(action: action, meta: meta).to_json
+    authors_payload.merge(action: action, meta: meta, subscription_name: subscription_name).to_json
   )
 end
 
-TahiNotifier.subscribe("plos_authors/plos_author:destroyed") do |payload|
+TahiNotifier.subscribe("plos_authors/plos_author:destroyed") do |subscription_name, payload|
   id         = payload[:id]
   paper_id   = payload[:paper_id]
 
   EventStream.post_event(
     Paper,
     paper_id,
-    { action: "destroyed", plos_authors: [id] }.to_json
+    { action: "destroyed", plos_authors: [id], subscription_name: subscription_name }.to_json
   )
 end

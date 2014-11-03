@@ -1,13 +1,3 @@
-createPaperWithOneTask = (taskType, taskAttrs) ->
-  ef = ETahi.Factory
-  journal = ef.createRecord('Journal', id: 1)
-  paper = ef.createRecord('Paper', journal_id: journal.id)
-  litePaper = ef.createLitePaper(paper)
-  phase = ef.createPhase(paper)
-  task = ef.createTask(taskType, paper, phase, taskAttrs)
-
-  [paper, task, journal, litePaper, phase]
-
 module 'Integration: MessageCards',
   teardown: -> ETahi.reset()
   setup: ->
@@ -45,7 +35,7 @@ test 'A message card with more than 5 comments has the show all comments button'
       created_at: new Date().toISOString()
     ))
 
-  [paper, task, records...] = createPaperWithOneTask('MessageTask'
+  [paper, task, records...] = ETahi.Setups.paperWithTask('MessageTask'
     id: 1
     title: "Message Time"
     participant_ids: [fakeUser.id]
@@ -76,7 +66,7 @@ test 'A message card with less than 5 comments doesnt have the show all comments
     created_at: new Date().toISOString()
   ))
 
-  [paper, task, records...] = createPaperWithOneTask('MessageTask'
+  [paper, task, records...] = ETahi.Setups.paperWithTask('MessageTask'
     id: 1
     title: "Message Time"
     participant_ids: [fakeUser.id]
@@ -116,7 +106,7 @@ test 'A message card with a commentLook shows up as unread and updates its comme
   ef.setForeignKey(fakeUser, commentLook, {inverse: 'user'})
   comment.comment_look_ids = [commentLook.id]
 
-  [paper, task, records...] = createPaperWithOneTask('MessageTask'
+  [paper, task, records...] = ETahi.Setups.paperWithTask('MessageTask'
     title: "Message Time"
     participant_ids: [commenter.id, fakeUser.id]
     comment_ids: [comment.id]
@@ -149,7 +139,7 @@ test 'Showing all comments shows them.', ->
     body: "My comment-#{n}"
   ))
 
-  [paper, task, records...] = createPaperWithOneTask('MessageTask'
+  [paper, task, records...] = ETahi.Setups.paperWithTask('MessageTask'
     id: 1
     title: "Message Time"
     participant_ids: [fakeUser.id]
@@ -196,7 +186,7 @@ test 'Unread comments do not stay unread when showing all comments if they were 
   ef.setForeignKey(fakeUser, commentLook, {inverse: 'user'})
   recentComment.comment_look_ids = [commentLook.id]
 
-  [paper, task, records...] = createPaperWithOneTask('MessageTask'
+  [paper, task, records...] = ETahi.Setups.paperWithTask('MessageTask'
     id: 1
     title: "Message Time"
     participant_ids: [commenter.id, fakeUser.id]

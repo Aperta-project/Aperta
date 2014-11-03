@@ -4,8 +4,7 @@ module StandardTasks
       super + [{paper_review_attributes: [:body, :id]}]
     end
 
-    title 'Reviewer Report'
-    role 'reviewer'
+    register_task default_title: 'Reviewer Report', default_role: 'reviewer'
 
     has_one :paper_review, foreign_key: 'task_id'
 

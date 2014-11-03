@@ -19,7 +19,7 @@ end
 describe PlosAuthors::PlosAuthorsPolicy do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:journal) { paper.journal }
-  let(:task) { PlosAuthors::PlosAuthorsTask.create(paper: paper) }
+  let(:task) { FactoryGirl.create(:plos_authors_task, paper: paper) }
   let(:user) { FactoryGirl.create(:user) }
   let(:policy) { PlosAuthors::PlosAuthorsPolicy.new(current_user: user, task: task) }
 

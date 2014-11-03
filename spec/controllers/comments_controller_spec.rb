@@ -6,7 +6,7 @@ describe CommentsController do
   let(:phase) { paper.phases.first }
   let(:user) { create(:user) }
 
-  let(:message_task) { create(:message_task, phase: phase, participants: [user]) }
+  let(:message_task) { create(:message_task, phase: phase, participants: [user], title: "Message Task", role: "admin") }
   before { sign_in user }
 
   describe 'POST create' do

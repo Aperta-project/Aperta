@@ -1,7 +1,7 @@
 module PlosAuthors
   class PlosAuthorsTask < Task
-    title "Add Authors"
-    role "author"
+
+    register_task default_title: "Add Authors", default_role: "author"
 
     include MetadataTask
 

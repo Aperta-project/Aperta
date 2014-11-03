@@ -5,7 +5,7 @@ feature "Financial Disclosures", js: true do
   let(:journal) { FactoryGirl.create :journal }
   let(:paper) { FactoryGirl.create :paper, :with_tasks, user: submitter, journal: journal }
   let(:author) { FactoryGirl.create :author, paper: paper }
-  let!(:task) { paper.phases.last.tasks.create!(type: "StandardTasks::FinancialDisclosureTask") }
+  let!(:task) { paper.phases.last.tasks.create!(type: "StandardTasks::FinancialDisclosureTask", title: "Financial Disclosure", role: "author") }
 
   before do
     sign_in_page = SignInPage.visit
@@ -15,7 +15,7 @@ feature "Financial Disclosures", js: true do
   scenario "first funder" do
     edit_paper = EditPaperPage.visit paper
 
-    edit_paper.view_card 'Financial Disclosure' do |overlay|
+    edit_paper.view_card(task.title) do |overlay|
       expect(overlay.received_no_funding).to be_checked
       expect(overlay).to_not have_content('.question-dataset')
       overlay.received_funding.click
@@ -26,7 +26,7 @@ feature "Financial Disclosures", js: true do
   scenario "adding an author" do
     edit_paper = EditPaperPage.visit paper
 
-    edit_paper.view_card 'Financial Disclosure' do |overlay|
+    edit_paper.view_card(task.title) do |overlay|
       overlay.received_funding.click
       overlay.add_author("Oscar", "Grouch")
       expect(overlay).to have_selected_authors("Oscar Grouch")
@@ -37,7 +37,7 @@ feature "Financial Disclosures", js: true do
     funder = task.funders.create!(name: "Monsanto")
 
     edit_paper = EditPaperPage.visit paper
-    edit_paper.view_card 'Financial Disclosure' do |overlay|
+    edit_paper.view_card(task.title) do |overlay|
       overlay.received_funding.click
       expect(overlay.received_funding).to be_checked
       overlay.remove_funder

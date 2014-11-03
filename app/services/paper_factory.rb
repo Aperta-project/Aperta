@@ -38,16 +38,15 @@ class PaperFactory
   end
 
   def create_task(task_template, phase)
-    task_klass = task_template.task_type.kind.constantize
-    task = task_klass.new(
-      phase: phase,
-      title: task_template.title,
-      body: task_template.template,
-      role: task_template.journal_task_type.role
-    )
-    task.save!
-    if task.role == 'author'
-      task.participants << author
+    task_klass = task_template.journal_task_type.kind.constantize
+
+    task_klass.new.tap do |task|
+      task.phase = phase
+      task.title = task_template.title
+      task.body = task_template.template
+      task.role = task_template.journal_task_type.role
+      task.participants << author if task.manuscript_information_task?
+      task.save!
     end
   end
 

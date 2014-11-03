@@ -77,9 +77,9 @@ class TasksController < ApplicationController
   end
 
   def build_task
-    task_type = TaskType.find_by(kind: params[:task][:type])
-    sanitized_params = task_params(task_type.kind.constantize.new)
-    TaskFactory.build_task(task_type, sanitized_params, current_user)
+    task_klass = TaskType.constantize!(params[:task][:type])
+    sanitized_params = task_params(task_klass.new)
+    TaskFactory.build_task(task_klass, sanitized_params, current_user)
   end
 
   def render_404
@@ -91,9 +91,8 @@ class TasksController < ApplicationController
   end
 
   def enforce_policy_on_create
-    task_type = TaskType.find_by(kind: params[:task][:type])
-    sanitized_params = task_params(task_type.kind.constantize.new)
-
+    task_klass = TaskType.constantize!(params[:task][:type])
+    sanitized_params = task_params(task_klass.new)
     authorize_action!(task: Task.new(sanitized_params))
   end
 end

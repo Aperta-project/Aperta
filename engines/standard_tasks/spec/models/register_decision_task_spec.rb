@@ -1,18 +1,12 @@
 require 'spec_helper'
 
 describe StandardTasks::RegisterDecisionTask do
-  describe "defaults" do
-    subject(:task) { StandardTasks::RegisterDecisionTask.new }
-    specify { expect(task.title).to eq 'Register Decision' }
-    specify { expect(task.role).to eq 'editor' }
-  end
-
   context "letters" do
     let(:paper) do
       FactoryGirl.create :paper, :with_tasks, title: "Crazy stubbing tests on rats"
     end
 
-    let(:task) { StandardTasks::RegisterDecisionTask.create! phase: paper.phases.first }
+    let(:task) { StandardTasks::RegisterDecisionTask.create!(title: "Register Decision", role: "editor", phase: paper.phases.first) }
 
     before do
       user = double(:last_name, last_name: 'Mazur')

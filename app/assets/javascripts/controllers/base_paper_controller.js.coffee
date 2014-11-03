@@ -22,18 +22,6 @@ ETahi.BasePaperController = Ember.ObjectController.extend
 
   canViewManuscriptManager: false
 
-  showManuscriptManagerLink: (->
-    Ember.$.ajax
-      url: "/papers/#{@get('id')}/manuscript_manager"
-      method: 'GET'
-      headers:
-        'Tahi-Authorization-Check': true
-      success: (data) =>
-        @set('canViewManuscriptManager', true)
-      error: =>
-        @set('canViewManuscriptManager', false)
-  ).observes('model.id')
-
   assignedTasks: (->
     assignedTasks = @get('tasks').filter (task) =>
       task.get('participations').mapBy('participant').contains(@getCurrentUser())
@@ -46,3 +34,7 @@ ETahi.BasePaperController = Ember.ObjectController.extend
     if @get('model.editors').contains(@get('currentUser'))
       @get('tasks').filterBy('role', 'reviewer')
   ).property('tasks.@each.role')
+
+  hasNoMetaDataTasks: (->
+    Em.isEmpty(@get('assignedTasks')) && Em.isEmpty(@get('editorTasks')) && Em.isEmpty(@get('authorTasks'))
+  ).property('assignedTasks.@each', 'editorTasks.@each', 'authorTasks.@each')

@@ -85,7 +85,8 @@
 
 #paper-placeholder {
   position: absolute;
-  top: 315px;
+  top: 56px;
+  left: 3px;
   z-index: 5;
   color: $tahi-grey-dark;
   font-style: italic;
@@ -109,6 +110,24 @@
     float: right;
     width: 25%;
   }
+
+  .no-sidebar-submit-manuscript {
+    float: right;
+    display: none;
+  }
+
+  &.sidebar-empty {
+    max-width: 840px;
+    min-width: 840px; // override default
+
+    .no-sidebar-submit-manuscript { display: block; }
+
+    aside { display: none; }
+    article {
+      width: 100%;
+      border: none;
+    }
+  }
 }
 
 .locked-overlay {
@@ -129,12 +148,13 @@
   font-family: $tahi-article-font-family;
   width: 700px;
   margin: 0 auto;
+  position: relative;
 }
 
 
 // start edit-paper section
 
-.edit-paper              { padding: 40px 0 0 72px; }
+.edit-paper              { padding: 40px 70px 0 70px; }
 .edit-paper-button       { width: 150px; margin-right: 5px; }
 .edit-paper-start-icon   { padding-right: 22px; }
 .edit-paper-stop-icon    { margin: -6px 0 0 -8px; }

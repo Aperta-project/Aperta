@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141020235217) do
+ActiveRecord::Schema.define(version: 20141028142236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20141020235217) do
     t.integer "journal_id"
     t.string  "title"
     t.string  "role"
+    t.string  "kind"
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree
@@ -324,12 +325,6 @@ ActiveRecord::Schema.define(version: 20141020235217) do
 
   add_index "task_templates", ["journal_task_type_id"], name: "index_task_templates_on_journal_task_type_id", using: :btree
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
-
-  create_table "task_types", force: true do |t|
-    t.string "kind"
-    t.string "default_role"
-    t.string "default_title"
-  end
 
   create_table "tasks", force: true do |t|
     t.string   "title",                       null: false

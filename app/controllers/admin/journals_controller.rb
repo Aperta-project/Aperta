@@ -6,7 +6,7 @@ class Admin::JournalsController < ApplicationController
 
   def index
     journals = current_user.administered_journals
-      .includes(manuscript_manager_templates: {phase_templates: {task_templates: {journal_task_type: :task_type}}})
+      .includes(manuscript_manager_templates: {phase_templates: {task_templates: :journal_task_type}})
 
     respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end

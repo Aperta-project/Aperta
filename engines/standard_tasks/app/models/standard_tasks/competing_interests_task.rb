@@ -1,6 +1,5 @@
 module StandardTasks
   class CompetingInterestsTask < ::Task
-    title "Competing Interests"
-    role "author"
+    register_task default_title: "Competing Interests", default_role: "author"
   end
 end

@@ -173,11 +173,9 @@ ETahi.Factory =
     newPhaseTemplate
 
   createJournalTaskType: (journal, taskType) ->
-    tt = @createRecord('TaskType', kind: taskType.kind)
-    jtt = @createRecord('JournalTaskType', title: taskType.title)
-    @setForeignKey(jtt, tt)
+    jtt = @createRecord('JournalTaskType', title: taskType.title, kind: taskType.kind)
     @addHasMany(journal, [jtt], {inverse: 'journal'})
-    [tt, jtt]
+    jtt
 
 ETahi.FactoryAttributes = {}
 ETahi.FactoryAttributes.User =
@@ -250,6 +248,22 @@ ETahi.FactoryAttributes.Task =
   id: null
   title: "AdHoc Task"
   type: "Task"
+  completed: false
+  body: []
+  paper_title: "Foo"
+  role: "admin"
+  phase_id: null
+  paper_id: null
+  lite_paper_id: null
+  assignee_ids: []
+  participant_ids: []
+  comment_ids: []
+
+ETahi.FactoryAttributes.FigureTask =
+  _rootKey: 'task'
+  id: null
+  title: "Upload Figures"
+  type: "FigureTask"
   completed: false
   body: []
   paper_title: "Foo"

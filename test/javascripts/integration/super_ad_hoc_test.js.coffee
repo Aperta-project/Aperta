@@ -1,19 +1,9 @@
-createPaperWithOneTask = (taskType, taskAttrs) ->
-  ef = ETahi.Factory
-  journal = ef.createRecord('Journal', id: 1)
-  paper = ef.createRecord('Paper', journal_id: journal.id)
-  litePaper = ef.createLitePaper(paper)
-  phase = ef.createPhase(paper)
-  task = ef.createTask(taskType, paper, phase, taskAttrs)
-
-  [paper, task, journal, litePaper, phase]
-
 module 'Integration: Super AdHoc Card',
   teardown: -> ETahi.reset()
   setup: ->
     setupApp integration: true
     ef = ETahi.Factory
-    records = createPaperWithOneTask('Task'
+    records = ETahi.Setups.paperWithTask('Task'
       id: 1
       title: "Super Ad-Hoc"
     )
@@ -105,7 +95,7 @@ test "Adding an email block to an AdHoc Task", ->
     ok Em.$.trim(find('.inline-edit .item-text').text()).indexOf('Awesome') isnt -1
 
 
-test "User can add send an email from an adhoc card", ->
+test "User can send an email from an adhoc card", ->
   server.respondWith 'GET', "/papers/#{ETahi.Test.currentPaper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify ETahi.Setups.paperWithParticipant().toJSON()
   ]

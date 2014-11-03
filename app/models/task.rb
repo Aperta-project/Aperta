@@ -1,12 +1,13 @@
 class Task < ActiveRecord::Base
   include EventStreamNotifier
+  include TaskTypeRegistration
   include Commentable
+
+  register_task default_title: "Ad-hoc", default_role: "user"
 
   cattr_accessor :metadata_types
 
   default_scope { order("completed ASC") }
-
-  after_initialize :initialize_defaults
 
   scope :completed,   -> { where(completed: true) }
   scope :metadata,    -> { where(type: metadata_types) }
@@ -44,6 +45,12 @@ class Task < ActiveRecord::Base
     where.not(id: task.id)
   end
 
+  #TODO Research how task generation and templating can be simplified
+  # https://www.pivotaltracker.com/story/show/81718250
+  def journal_task_type
+    journal.journal_task_types.find_by(kind: self.class.name)
+  end
+
   def is_metadata?
     return false unless Task.metadata_types.present?
     Task.metadata_types.include?(self.class.name)
@@ -65,29 +72,12 @@ class Task < ActiveRecord::Base
     update(completed: false)
   end
 
-  class << self
-    attr_reader :_default_title, :_default_role
-
-    %w(title role).each do |attr|
-      define_method attr do |default_attr|
-        instance_variable_set :"@_default_#{attr}", default_attr
-      end
-    end
-  end
-
   def update_responder
     UpdateResponders::Task
   end
 
   def authorize_update?(params, user)
     true
-  end
-
-  protected
-
-  def initialize_defaults
-    self.title = self.class._default_title if title.blank?
-    self.role = self.class._default_role || 'admin' if role.blank?
   end
 
   private

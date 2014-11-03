@@ -1,7 +1,7 @@
 <div {{bind-attr class=":inline-edit editing :bodypart-display bodyPartType showChooseReceivers"}}>
   {{#if isSendable}}
     <div class="send-email">
-      {{#if bodyPart.sent}} <span class="bodypart-last-sent">Sent {{bodyPart.sent}}</span>{{/if}}
+      {{#if lastSentAt}} <span class="bodypart-last-sent">Sent {{lastSentAt}}</span>{{/if}}
       <div class="button-secondary button--green email-send-participants" {{action "toggleChooseReceivers"}}>Send this Email to Participants</div>
     </div>
   {{/if}}

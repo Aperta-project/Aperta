@@ -1,12 +1,6 @@
 require 'spec_helper'
 
 describe StandardTasks::FigureTask do
-  describe "defaults" do
-    subject(:task) { StandardTasks::FigureTask.new }
-    specify { expect(task.title).to eq 'Upload Figures' }
-    specify { expect(task.role).to eq 'author' }
-  end
-
   describe "#figure_access_details" do
     let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
 
@@ -17,9 +11,9 @@ describe StandardTasks::FigureTask do
     end
 
     let(:figure_task) do
-      StandardTasks::FigureTask.create! title: "Paper Admin",
-        completed: true,
+      StandardTasks::FigureTask.create!  completed: true,
         role: 'admin',
+        title: "Upload Figures",
         phase: paper.phases.first
     end
 

@@ -54,5 +54,5 @@ Tahi.utils =
     else if taskTypeNames[0] isnt 'Task'
       taskTypeNames[1]
     else
-      throw "The task type: '#{typeString}' is not qualified."
+      throw new Error("The task type: '#{typeString}' is not qualified.")
 

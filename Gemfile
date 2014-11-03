@@ -23,7 +23,7 @@ gem 'bower-rails'
 gem 'ember-rails'
 gem 'ember-source', '1.7.0'
 gem "ember-data-source", "~> 1.0.0.beta.9"
-gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails', '~> 4.0.4'
 gem 'haml-rails'
 gem 'uglifier', '~> 2.5.0'
 gem 'coffee-rails', '~> 4.0.1'

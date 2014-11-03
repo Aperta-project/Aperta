@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Submitting a paper", js: true do
+feature "Submitting a paper", js: true, selenium: true do
   before do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in author

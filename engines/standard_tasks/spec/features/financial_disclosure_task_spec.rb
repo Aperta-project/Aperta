@@ -33,7 +33,7 @@ feature "Financial Disclosures", js: true do
     end
   end
 
-  scenario "removing a funder" do
+  scenario "removing a funder", selenium: true do
     funder = task.funders.create!(name: "Monsanto")
 
     edit_paper = EditPaperPage.visit paper

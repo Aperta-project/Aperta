@@ -7,7 +7,7 @@ class FilteredUsersController < ApplicationController
       fulltext params[:query]
     end
 
-    respond_with users.results, each_serializer: FilteredUsersSerializer,
+    respond_with users.results, each_serializer: FilteredUserSerializer,
                                 paper_id: params[:paper_id]
   end
 

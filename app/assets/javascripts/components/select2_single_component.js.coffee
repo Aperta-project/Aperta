@@ -1,4 +1,4 @@
-ETahi.Select2Component = Ember.TextField.extend
+ETahi.Select2SingleComponent = Ember.TextField.extend
   tagName: 'div'
   classNames: ['select2']
 
@@ -25,21 +25,21 @@ ETahi.Select2Component = Ember.TextField.extend
       @sendAction 'dropdownClosed'
 
   setSelectedData: (->
-    @.$().select2('val', @get('selectedData').mapProperty('id'))
+    @.$().select2('val', @get('selectedData'))
   ).observes('selectedData')
 
   setup:(->
     options                    = {}
+    options.multiple           = false
     options.placeholder        = @get('placeholder')
     options.minimumInputLength = @get('minimumInputLength') if @get('minimumInputLength')
     options.formatSelection    = @get('selectedTemplate') if @get('selectedTemplate')
     options.formatResult       = @get('resultsTemplate') if @get('resultsTemplate')
     options.allowClear         = @get('allowClear')
-    options.multiple           = @get('multiSelect')
     options.data               = @get('source')
     options.closeOnSelect      = @get('closeOnSelect')
     options.ajax               = @get('remoteSource') if @get('remoteSource')
-    options.initSelection      = (el, callback) => callback(_.without(@get('selectedData'), null))
+    options.initSelection      = (el, callback) => callback(@get('selectedData'))
 
     @.$().select2(options)
     @setupSelectedListener()

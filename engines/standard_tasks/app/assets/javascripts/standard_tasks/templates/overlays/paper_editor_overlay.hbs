@@ -1,9 +1,12 @@
 <h1>Assign Editor</h1>
 <label for="editor">Editor</label>
-{{chosen content=possibleEditors
-         prompt="Please select editor"
-         value=editor
-         class="editor-select"
-         changeAction="saveModel"
-         optionValuePath="content"
-         optionLabelPath="content.fullName"}}
+{{select-2-single value=""
+           class="editor-select2"
+           name="assign_editor"
+           selectionSelected="assignEditor"
+           selectedData=editor
+           minimumInputLength=3
+           selectedTemplate=selectedTemplate
+           resultsTemplate=resultsTemplate
+           remoteSource=editorSelectRemoteSource
+           placeholder="Please select editor"}}

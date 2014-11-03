@@ -34,7 +34,8 @@ Tahi::Application.routes.draw do
 
   get '/request_policy' => 'direct_uploads#request_policy'
 
-  get 'filtered_users/users/:paper_id' => 'filtered_users#users', as: "filtered_users"
+  get 'filtered_users/users/:paper_id' => 'filtered_users#users'
+  get 'filtered_users/editors/:journal_id' => 'filtered_users#editors'
 
   resources :flows, only: [:index, :destroy, :create]
   resources :authors, only: [:create, :update, :destroy]

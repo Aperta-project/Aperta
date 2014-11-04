@@ -12,6 +12,9 @@ createuser -s -r tahi || true
 brew install node
 npm install bower -g
 
+brew install go
+brew info go
+
 if ! which redis
 then
   brew install redis

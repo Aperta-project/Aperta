@@ -21,9 +21,23 @@ ETahi.PaperManageRoute = ETahi.AuthorizedRoute.extend
         outlet: 'overlay'
         controller: 'chooseNewCardTypeOverlay')
 
-    viewCard: (task) ->
+    viewCard: (task, queryParams) ->
+      queryParams || = {queryParams: {}}
       paper = @modelFor('paper')
       redirectParams = ['paper.manage', @modelFor('paper')]
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('overlayBackground', 'paper/manage')
-      @transitionTo('task', paper.id, task.id)
+      @transitionTo('task', paper.id, task.id, queryParams)
+
+    createAdhocTask: (phase) ->
+      paper = @controllerFor('paperManage').get('model')
+      newTask = @store.createRecord 'task',
+        phase: phase
+        type: 'Task'
+        paper: paper
+        title: 'New Ad-Hoc Card'
+
+      newTask.save().then =>
+        @send('viewCard', newTask, {queryParams: {isNewTask: true}})
+
+      false

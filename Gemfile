@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.1.3"
+ruby "2.1.4"
 
 # Configuration
 group :development, :test, :performance do
@@ -15,7 +15,7 @@ gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 
 # Gems
-gem 'rails', '4.1.6'
+gem 'rails', '4.1.7'
 gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
@@ -23,7 +23,7 @@ gem 'bower-rails'
 gem 'ember-rails'
 gem 'ember-source', '1.7.0'
 gem "ember-data-source", "~> 1.0.0.beta.9"
-gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails', '~> 4.0.4'
 gem 'haml-rails'
 gem 'uglifier', '~> 2.5.0'
 gem 'coffee-rails', '~> 4.0.1'
@@ -94,6 +94,7 @@ group :development, :test, :performance do
   gem 'rspec-instafail'
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'capybara-webkit'
   gem 'launchy'
   gem 'database_cleaner'
   gem 'teaspoon', github: 'modeset/teaspoon'

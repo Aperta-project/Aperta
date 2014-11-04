@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Flow Manager", js: true do
+feature "Flow Manager", js: true, selenium: true do
   let(:admin) do
     create :user, :site_admin, first_name: "Admin"
   end

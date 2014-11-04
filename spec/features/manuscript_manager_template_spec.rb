@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Manuscript Manager Templates", js: true do
+feature "Manuscript Manager Templates", js: true, selenium: true do
   let(:admin) { create :user, :site_admin }
   let(:journal) { create :journal }
 

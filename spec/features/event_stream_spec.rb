@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Event streaming", js: true do
+feature "Event streaming", js: true, selenium: true do
   let!(:author) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, user: author, journal: journal }

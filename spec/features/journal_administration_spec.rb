@@ -17,7 +17,7 @@ feature "Journal Administration", js: true do
     context "when the user is a site admin" do
       let(:user) { create :user, :site_admin }
 
-      scenario "shows all journals" do
+      scenario "shows all journals", selenium: true do
         journal_names = [journal, another_journal].map(&:name)
         expect(admin_page.journal_names).to match_array(journal_names)
       end
@@ -79,7 +79,7 @@ feature "Journal Administration", js: true do
         expect(role).to have_name("a different name")
       end
 
-      scenario "deleting a role" do
+      scenario "deleting a role", selenium: true do
         role = journal_page.find_role(existing_role.name)
         role.delete
         expect(page).to have_no_content(existing_role.name)

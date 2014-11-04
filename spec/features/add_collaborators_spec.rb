@@ -26,7 +26,7 @@ feature "Editing paper", js: true do
     expect(collaborators_overlay).to have_collaborators(user)
   end
 
-  scenario "Removing an existing collaborator" do
+  scenario "Removing an existing collaborator", selenium: true do
     edit_paper = EditPaperPage.visit paper
     collaborators_overlay = edit_paper.show_contributors
     expect(collaborators_overlay).to have_collaborators(collaborating_user)

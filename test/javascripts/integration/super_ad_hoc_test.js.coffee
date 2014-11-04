@@ -61,7 +61,6 @@ test "Adding a text block to an AdHoc Task", ->
     click '.inline-edit-body-part .delete-button'
   andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') is -1
-    click '.overlay-close-button:first'
 
 test "Adding and removing a checkbox item to an AdHoc Task", ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
@@ -83,7 +82,6 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
     click '.inline-edit-body-part .delete-button'
   andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('checkbox list item') is -1
-    click '.overlay-close-button:first'
 
 
 test "Adding an email block to an AdHoc Task", ->

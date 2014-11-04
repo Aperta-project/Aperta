@@ -32,7 +32,7 @@ feature "Add contributing authors", js: true do
   context "with an existing author" do
     let!(:author) { FactoryGirl.create :plos_author, paper: paper, plos_authors_task: task }
 
-    scenario "editing" do
+    scenario "editing", selenium: true do
       edit_paper = EditPaperPage.visit paper
       edit_paper.view_card(task.title) do |overlay|
         overlay.edit_author author.first_name,
@@ -46,7 +46,7 @@ feature "Add contributing authors", js: true do
       end
     end
 
-    scenario "validation on task completion" do
+    scenario "validation on task completion", selenium: true do
       edit_paper = EditPaperPage.visit paper
       edit_paper.view_card(task.title) do |overlay|
         overlay.edit_author author.first_name,
@@ -59,7 +59,7 @@ feature "Add contributing authors", js: true do
       end
     end
 
-    scenario "deleting" do
+    scenario "deleting", selenium: true do
       edit_paper = EditPaperPage.visit paper
       edit_paper.view_card(task.title) do |overlay|
         overlay.delete_author author.first_name

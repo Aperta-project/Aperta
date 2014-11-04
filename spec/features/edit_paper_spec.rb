@@ -13,7 +13,7 @@ feature "Editing paper", js: true do
       sign_in_page.sign_in user
     end
 
-    scenario "Author edits paper and metadata cards" do
+    scenario "Author edits paper and metadata cards", selenium: true do
       edit_paper = EditPaperPage.visit paper
       edit_paper.start_writing
       edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
@@ -29,7 +29,7 @@ feature "Editing paper", js: true do
       expect(edit_paper.cards[:assigned]).to include 'Tech Check', 'Assign Admin'
     end
 
-    scenario "Author completes all metadata cards" do
+    scenario "Author completes all metadata cards", selenium: true do
       edit_paper = EditPaperPage.visit paper
       expect(edit_paper).to have_css('a.button--disabled')
       edit_paper.cards[:metadata].each do |card|

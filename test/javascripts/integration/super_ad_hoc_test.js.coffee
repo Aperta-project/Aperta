@@ -100,10 +100,6 @@ test "Adding an email block to an AdHoc Task", ->
 
 
 test "User can send an email from an adhoc card", ->
-  server.respondWith 'GET', "/papers/#{ETahi.Test.currentPaper.id}", [
-    200, {"Content-Type": "application/json"}, JSON.stringify ETahi.Setups.paperWithParticipant().toJSON()
-  ]
-
   server.respondWith 'PUT', /\/tasks\/\d+\/send_message/, [
     204, {"Content-Type": "application/json"}, JSON.stringify {}
   ]

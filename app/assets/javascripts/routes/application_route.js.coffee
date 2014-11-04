@@ -15,19 +15,6 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       transition.abort()
       @get('spinner')?.stop()
 
-    createAdhocTask: (phase) ->
-      paper = @controllerFor('paperManage').get('model')
-      newTask = @store.createRecord 'task',
-        phase: phase
-        type: 'Task'
-        paper: paper
-        title: 'New Ad-Hoc Card'
-
-      newTask.save().then =>
-        @send('viewCard', newTask)
-
-      false
-
     showMessageCreationOverlay: (phase) ->
       @send('showNewCardOverlay', 'newMessageTask', 'MessageTask', phase)
 

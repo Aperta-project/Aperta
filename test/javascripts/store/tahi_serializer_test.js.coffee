@@ -11,13 +11,13 @@ setup: ->
   setupStore(env)
 
 test 'normalizeType denamespaces task types', ->
-   result = env.serializer.normalizeType({type: 'Foo::BarTask'})
-   equal result.qualified_type, 'Foo::BarTask', 'saves the original type as qualified_type'
-   equal result.type, 'BarTask', 'strips the namespace off the type'
+  result = env.serializer.normalizeType({type: 'Foo::BarTask'})
+  equal result.qualified_type, 'Foo::BarTask', 'saves the original type as qualified_type'
+  equal result.type, 'BarTask', 'strips the namespace off the type'
 
 test 'Combines the namespace with task if the name of the type is ::Task', ->
-   result = env.serializer.normalizeType({type: 'Foo::Task'})
-   equal result.type, 'FooTask', 'uses the namespace + the task for the name'
+  result = env.serializer.normalizeType({type: 'Foo::Task'})
+  equal result.type, 'FooTask', 'uses the namespace + the task for the name'
 
 test 'serializing a model that was originally namespaced will correctly re-namespace it', ->
   Ember.run ->
@@ -44,7 +44,7 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
        id: '1'
        tasks: [{id: '1', type: 'MessageTask'}, {id: '2', type: 'PlosAuthorsTask'}]
   # make sure the store is set up for the model, otherwise the typeKey
-  # won't be properly set for some reason and primaryTypeName will be 
+  # won't be properly set for some reason and primaryTypeName will be
   # undefined
   env.store.modelFor('task')
   env.store.modelFor('phase')
@@ -62,7 +62,7 @@ test "extractMany puts normalizes things via their 'type' attribute", ->
     tasks:
       [ {id: '1', type: 'PaperEditorTask', title: 'Edit Stuff', editor_id: '1'} ]
   # make sure the store is set up for the model, otherwise the typeKey
-  # won't be properly set for some reason and primaryTypeName will be 
+  # won't be properly set for some reason and primaryTypeName will be
   # undefined
   env.store.modelFor('task')
   Ember.run ->

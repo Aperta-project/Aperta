@@ -11,8 +11,7 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       @router.one('didTransition', spinner, 'stop')
 
     error: (response, transition, originRoute) ->
-      if Ember.testing
-        console.log response.stack
+      @logError("\n" + response.message + "\n" + response.stack + "\n")
       transition.abort()
       @get('spinner')?.stop()
 

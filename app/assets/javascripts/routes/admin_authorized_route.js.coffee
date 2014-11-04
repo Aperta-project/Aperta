@@ -5,5 +5,6 @@ ETahi.AuthorizedRoute = Ember.Route.extend
 
   actions:
     error: (response, transition) ->
+      @logError("\n" + response.message + "\n" + response.stack + "\n")
       switch response.status
         when 403 then @handleUnauthorizedRequest(transition)

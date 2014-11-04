@@ -50,7 +50,7 @@ PATH
   remote: engines/standard_tasks
   specs:
     standard_tasks (0.0.1)
-      rails (~> 4.1.0.rc1)
+      rails (~> 4.1.7)
 
 PATH
   remote: engines/supporting_information

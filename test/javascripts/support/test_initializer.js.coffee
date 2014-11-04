@@ -21,6 +21,14 @@ Ember.Test.registerHelper('getStore', (app) ->
   app.__container__.lookup('store:main')
 )
 
+Ember.Test.registerHelper('assertText', (app, selector, text) ->
+  ok Em.$.trim(find(selector).text()).indexOf(text) isnt -1, "it should have text: #{text} within #{selector}"
+)
+
+Ember.Test.registerHelper('assertNoText', (app, selector, text) ->
+  ok Em.$.trim(find(selector).text()).indexOf(text) is -1, "it should not have text: #{text} within #{selector}"
+)
+
 Ember.Test.registerAsyncHelper('pickFromChosenSingle', (app, selector, choice) ->
   click ".chosen-container#{selector} a.chosen-single"
   click "li.active-result:contains('#{choice}')"

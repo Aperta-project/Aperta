@@ -76,16 +76,17 @@ test 'Adding an Ad-Hoc card', ->
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
   andThen ->
+    ok find('h1.inline-edit').hasClass('editing'), "The title should be editable to start"
     Em.$('.inline-edit-form div[contenteditable]')
     .html("New contenteditable, yahoo!")
     .trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
-    ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') isnt -1
+    assertText('.inline-edit', 'yahoo')
     click '.inline-edit-body-part .glyphicon-trash'
   andThen ->
-    ok Em.$.trim(find('.inline-edit-body-part').text()).indexOf('Are you sure?') isnt -1
+    assertText('.inline-edit-body-part', 'Are you sure?')
     click '.inline-edit-body-part .delete-button'
   andThen ->
-    ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') is -1
+    assertNoText('.inline-edit', 'yahoo')
     click '.overlay-close-button:first'

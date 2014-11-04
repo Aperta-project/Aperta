@@ -9,4 +9,3 @@ ETahi.Funder = DS.Model.extend
   authors: DS.hasMany('author')
 
   relationshipsToSerialize: ['authors']
-

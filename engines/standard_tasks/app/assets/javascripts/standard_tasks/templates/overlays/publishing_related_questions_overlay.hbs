@@ -7,7 +7,7 @@
                         task=model
                         question="Have the results, data, or figures in this manuscript been published elsewhere? Are they under consideration for publication elsewhere?"}}
 
-        {{#if view.selectedYes}}
+        {{#show-if-parent prop='selectedYes'}}
           <div class="question-dataset">
             <div class="question-dataset-header">Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication.</div>
             {{question-input ident="publishing_related_questions.published_elsewhere.taken_from_manuscripts"
@@ -20,7 +20,7 @@
                                 updateStore='updateStore'
                                 accept=".docx,.pdf"}}
           </div>
-        {{/if}}
+        {{/show-if-parent}}
       {{/question-radio}}
       </li>
       <li class="question">
@@ -28,7 +28,7 @@
                         task=model
                         question="Is this manuscript being submitted in conjunction with another submission?"}}
 
-        {{#if view.selectedYes}}
+        {{#show-if-parent prop='selectedYes'}}
           <div class="question-dataset">
             <div class="question-dataset-header">Please provide the title of that submission and the corresponding author.</div>
             {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_title"
@@ -41,7 +41,7 @@
                              task=model
                              question="Corresponding author"}}
           </div>
-        {{/if}}
+        {{/show-if-parent}}
       {{/question-radio}}
       </li>
       <li class="question">
@@ -50,38 +50,38 @@
           {{#question-check ident="publishing_related_questions.previous_interactions.this_manuscript"
                             task=model
                             question="I have had previous interactions about this manuscript with a staff editor or Academic Editor of this journal."}}
-            {{#if view.checked}}
+            {{#show-if-parent prop='checked'}}
               <div class="question-dataset">
                 {{question-textarea ident="publishing_related_questions.previous_interactions.this_manuscript.submission_details"
                                     task=model
                                     question="Please enter manuscript number and editor name, if known"}}
               </div>
-            {{/if}}
+            {{/show-if-parent}}
           {{/question-check}}
 
           {{#question-check ident="publishing_related_questions.previous_interactions.presubmission_inquiry"
                             task=model
                             question="I submitted a presubmission inquiry for this manuscript."}}
-            {{#if view.checked}}
+            {{#show-if-parent prop='checked'}}
               <div class="question-dataset">
                 {{question-textarea ident="publishing_related_questions.previous_interactions.presubmission_inquiry.submission_details"
                                     task=model
                                     question="Please enter manuscript number and editor name, if known"}}
               </div>
-            {{/if}}
+            {{/show-if-parent}}
           {{/question-check}}
 
           {{#question-check ident="publishing_related_questions.previous_interactions.other_journal_submission"
                             task=model
                             question="This manuscript was previously submitted to a different PLOS journal as either a presubmission inquiry or a full submission."}}
 
-            {{#if view.checked}}
+            {{#show-if-parent prop='checked'}}
               <div class="question-dataset">
                 {{question-textarea ident="publishing_related_questions.previous_interactions.other_journal_submission.submission_details"
                                     task=model
                                     question="Please enter manuscript number and editor name, if known"}}
               </div>
-            {{/if}}
+            {{/show-if-parent}}
           {{/question-check}}
 
           {{question-check ident="publishing_related_questions.previous_interactions.journal_editor"

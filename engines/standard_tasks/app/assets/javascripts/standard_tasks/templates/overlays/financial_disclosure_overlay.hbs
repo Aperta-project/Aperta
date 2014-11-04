@@ -7,13 +7,13 @@
         task=model
         question="Are you affiliated with a commercial company?"}}
 
-        {{#if view.selectedYes}}
+        {{#show-if-parent prop='selectedYes'}}
           <ul>
             <li>Declare this affiliation in the Competing Interests statement</li>
             <li>Confirm that this doesn't alter your ability to adhere to our data and materials sharing policy</li>
             <li>Declare this affiliation below and declare level of funding applied to the author(s) salary</li>
           </ul>
-        {{/if}}
+        {{/show-if-parent}}
       {{/question-radio}}
     </div>
     <div class="question">
@@ -21,7 +21,10 @@
         Did any of the authors receive specific funding for this work?
       </div>
 
-      {{binary-radio-button name="received-funding" selection=receivedFunding yesAction="choseFundingReceived" noAction="choseFundingNotReceived"}}
+      {{binary-radio-button name="received-funding"
+                            selection=receivedFunding
+                            yesAction="choseFundingReceived"
+                            noAction="choseFundingNotReceived"}}
 
       {{#if receivedFunding}}
         <span>Please describe all sources of funding that have supported your work.</span>
@@ -39,4 +42,3 @@
     {{/if}}
   </fieldset>
 </form>
-

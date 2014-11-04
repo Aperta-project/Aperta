@@ -38,6 +38,7 @@ Ember.Test.registerAsyncHelper "waitForElement", (app, element) ->
     , 10)
     return
 
+QUnit.testDone(-> ETahi.Factory.resetFactoryIds())
 # All interactions with ember are while a user is signed in
 @currentUserId = 1
 @fakeUser = ETahi.Factory.createRecord 'User',

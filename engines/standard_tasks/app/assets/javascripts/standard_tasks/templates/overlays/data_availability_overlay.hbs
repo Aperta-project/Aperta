@@ -18,29 +18,27 @@
         </div>
         <ul class="list-unstyled">
           <li class="item">
-            {{#question-check ident="data_availability.public_repo_available" task=model
-                              question="Public repository: DOI/accession numbers are available now"
-                              multipleAdditionalData=true}}
-              {{#each datum in view.additionalData}}
-                <div class="question-dataset">
-                  <p>Provide the DOI/accession number and its corresponding public repository URL.</p>
-                  {{input type="text" name="accession" placeholder="DOI or accession number" value=datum.accession class="form-control"}}
-                  {{input type="text" name="url" placeholder="URL" value=datum.url class="form-control"}}
-                </div>
-              {{/each}}
+            {{#question-check ident="data_availability.public_repo_available"
+                              task=model
+                              question="Public repository: DOI/accession numbers are available now"}}
+
+              {{#additional-datasets}}
+                <p>Provide the DOI/accession number and its corresponding public repository URL.</p>
+                {{dataset-doi}}
+                {{dataset-url}}
+              {{/additional-datasets}}
             {{/question-check}}
           </li>
 
           <li class="item">
-            {{#question-check ident="data_availability.public_repo_available_post_release" task=model
-                              question="Public repository: DOI/accession numbers will be available after acceptance"
-                              multipleAdditionalData=true}}
-              {{#each datum in view.additionalData}}
-                <div class="question-dataset">
-                  <p>Provide the public repository URL.</p>
-                  {{input type="text" name="url" placeholder="URL" value=datum.url class="form-control"}}
-                </div>
-              {{/each}}
+            {{#question-check ident="data_availability.public_repo_available_post_release"
+                              task=model
+                              question="Public repository: DOI/accession numbers will be available after acceptance"}}
+
+              {{#additional-datasets}}
+                <p>Provide the public repository URL.</p>
+                {{dataset-url}}
+              {{/additional-datasets}}
             {{/question-check}}
           </li>
 
@@ -55,44 +53,41 @@
           </li>
 
           <li class="item">
-            {{#question-check ident="data_availability.on_request" task=model
-                             question="Available upon request (this option is only permitted in limited cases)"
-                             multipleAdditionalData=true }}
-              {{#each datum in view.additionalData}}
-              <div class="question-dataset">
-                <div>{{input class="form-control" type="text" name="title" value=datum.title placeholder="Title of dataset"}}</div>
-                <div>{{input class="form-control" type="text" name="description" value=datum.description placeholder="Description of dataset"}}</div>
-                <div>{{textarea class="form-control" name="reasons" value=datum.reasons placeholder="Ethical or legal reasons why dataset is unsuitable for public deposit"}}</div>
-                <div>{{textarea class="form-control" name="contact" value=datum.contact placeholder="Contact information for the group or individual(s) responsible for providing access to this data"}}</div>
-              </div>
-              {{/each}}
+            {{#question-check ident="data_availability.on_request"
+                             task=model
+                             question="Available upon request (this option is only permitted in limited cases)"}}
+
+              {{#additional-datasets}}
+                {{dataset-title}}
+                {{dataset-description}}
+                {{dataset-reasons}}
+                {{dataset-contact}}
+              {{/additional-datasets}}
             {{/question-check}}
           </li>
           <li class="item">
-            {{#question-check ident="data_availability.third_party" task=model
-                              question="Data are held by someone other than the authors and are not in a public repository"
-                              multipleAdditionalData=true }}
-              {{#each datum in view.additionalData}}
-              <div class="question-dataset">
-                <div>{{input class="form-control" type="text" name="title" value=datum.title placeholder="Title of dataset"}}</div>
-                <div>{{input class="form-control" type="text" name="description" value=datum.description placeholder="Description of dataset"}}</div>
-                <div>{{textarea class="form-control" name="reasons" value=datum.reasons placeholder="Ethical or legal reasons why dataset is unsuitable for public deposit"}}</div>
-                <div>{{textarea class="form-control" name="contact" value=datum.contact placeholder="Contact information for the group or individual(s) responsible for providing access to this data"}}</div>
-              </div>
-              {{/each}}
+            {{#question-check ident="data_availability.third_party"
+                              task=model
+                              question="Data are held by someone other than the authors and are not in a public repository"}}
+
+              {{#additional-datasets}}
+                {{dataset-title}}
+                {{dataset-description}}
+                {{dataset-reasons}}
+                {{dataset-contact}}
+              {{/additional-datasets}}
             {{/question-check}}
           </li>
           <li class="item">
-            {{#question-check ident="data_availability.unavailable" task=model
-                              question="Dataset is not available (This may be contradictory to the PLOS data policy)"
-                              multipleAdditionalData=true }}
-              {{#each datum in view.additionalData}}
-              <div class="question-dataset">
-                <div>{{input class="form-control" type="text" name="title" value=datum.title placeholder="Title of dataset"}}</div>
-                <div>{{input class="form-control" type="text" name="description" value=datum.description placeholder="Description of dataset"}}</div>
-                <div>{{textarea class="form-control" name="reasons" value=datum.reasons placeholder="Ethical or legal reasons why dataset is unavailable"}}</div>
-              </div>
-              {{/each}}
+            {{#question-check ident="data_availability.unavailable"
+                              task=model
+                              question="Dataset is not available (This may be contradictory to the PLOS data policy)"}}
+
+              {{#additional-datasets}}
+                {{dataset-title}}
+                {{dataset-description}}
+                {{dataset-reasons}}
+              {{/additional-datasets}}
             {{/question-check}}
           </li>
         </ul>

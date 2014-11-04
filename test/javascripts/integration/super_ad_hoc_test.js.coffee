@@ -19,6 +19,10 @@ module 'Integration: Super AdHoc Card',
       info: "testroles2, collaborator"
     ]
 
+    server.respondWith 'GET', "/dashboards", [
+      200, {"Content-Type": "application/json"}, JSON.stringify {dashboards: []}
+    ]
+
     server.respondWith 'GET', "/papers/#{ETahi.Test.currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
@@ -57,7 +61,6 @@ test "Adding a text block to an AdHoc Task", ->
     click '.inline-edit-body-part .delete-button'
   andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') is -1
-    click '.overlay-close-button:first'
 
 test "Adding and removing a checkbox item to an AdHoc Task", ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
@@ -79,7 +82,6 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
     click '.inline-edit-body-part .delete-button'
   andThen ->
     ok Em.$.trim(find('.inline-edit').text()).indexOf('checkbox list item') is -1
-    click '.overlay-close-button:first'
 
 
 test "Adding an email block to an AdHoc Task", ->

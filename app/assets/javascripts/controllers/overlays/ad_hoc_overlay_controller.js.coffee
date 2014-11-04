@@ -1,7 +1,9 @@
 ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTemplate,
+  needs: ['task']
   blocks: Ember.computed.alias('body')
 
   imageUploadUrl: 'URL_GOES_HERE'
+  isNewTask: Em.computed.alias 'controllers.task.isNewTask'
 
   actions:
     setTitle: (title) ->

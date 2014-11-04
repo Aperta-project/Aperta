@@ -10,7 +10,7 @@ feature "Upload paper", js: true do
     sign_in_page.sign_in author
   end
 
-  scenario "Author uploads paper in Word format" do
+  scenario "Author uploads paper in Word format", selenium: true do
     expect(DownloadManuscriptWorker).to receive(:perform_async) do |manuscript_id, url|
       paper.manuscript.update status: "done"
       paper.update title: "This is a Title About Turtles", body: "And this is my subtitle"

@@ -20,7 +20,8 @@ ETahi.EventStream = Em.Object.extend
       if msg = @messageQueue.popObject()
         msg.parsedData = JSON.parse(msg.data)
         if @shouldProcessMessage(msg)
-          Tahi.utils.debug("Event Stream: '#{msg.parsedData.action}'", msg)
+          description = "Event Stream: #{msg.parsedData.subscription_name} -> #{msg.parsedData.action}"
+          Tahi.utils.debug(description, msg)
           @msgResponse(msg.parsedData)
     Ember.run.later(@, 'processMessages', [], interval)
 
@@ -58,6 +59,7 @@ ETahi.EventStream = Em.Object.extend
     meta = esData.meta
     delete esData.meta
     delete esData.action
+    delete esData.subscription_name
     if meta
       @eventStreamActions["meta"].call(@, meta.model_name, meta.id)
     else

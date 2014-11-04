@@ -30,6 +30,8 @@ Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
 end
 
+Capybara.javascript_driver = :webkit
+
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
@@ -121,11 +123,16 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
   end
 
-  config.before(:each) do
+  config.before(:each) do |example|
+    @current_driver = Capybara.current_driver
+    if example.metadata[:selenium].present? || ENV["SELENIUM"] == "true"
+      Capybara.current_driver = :selenium
+    end
     DatabaseCleaner.start
   end
 
   config.after(:each) do
+    Capybara.current_driver = @current_driver
     DatabaseCleaner.clean
   end
 end

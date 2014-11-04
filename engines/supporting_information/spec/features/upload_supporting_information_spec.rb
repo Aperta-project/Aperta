@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Upload Supporting Information", js: true do
+feature "Upload Supporting Information", js: true, selenium: true do
   let(:author) { create :user }
   let(:journal) { create :journal }
   let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }

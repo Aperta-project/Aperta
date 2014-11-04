@@ -1,5 +1,5 @@
 ETahi.InlineEditH1Component = Em.Component.extend
-  editing: false
+  editing: Ember.computed.oneWay 'editOnOpen'
   snapshot: null
 
   createSnapshot: (->
@@ -11,8 +11,8 @@ ETahi.InlineEditH1Component = Em.Component.extend
   focusOnEdit: (->
     if @get('editing')
       Em.run.schedule 'afterRender', @, ->
-        @$('input[type=text]').focus()
-  ).observes('editing')
+        @$('input[type=text]').focus().select()
+  ).observes('editing').on('didInsertElement')
 
   actions:
     toggleEdit: ->

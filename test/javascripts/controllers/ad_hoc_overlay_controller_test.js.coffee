@@ -1,5 +1,5 @@
 moduleFor 'controller:adHocOverlay', 'AdHocOverlayController',
-  needs: ['controller:application']
+  needs: ['controller:application', 'controller:task']
   teardown: ->
     ETahi.RESTless.putModel.restore() # reset sinon stub
 

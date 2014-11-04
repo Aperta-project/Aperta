@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.1.3"
+ruby "2.1.4"
 
 # Configuration
 group :development, :test, :performance do
@@ -94,6 +94,7 @@ group :development, :test, :performance do
   gem 'rspec-instafail'
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'capybara-webkit'
   gem 'launchy'
   gem 'database_cleaner'
   gem 'teaspoon', github: 'modeset/teaspoon'

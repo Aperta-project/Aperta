@@ -76,6 +76,7 @@ test 'Adding an Ad-Hoc card', ->
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
   andThen ->
+    ok find('h1.inline-edit').hasClass('editing'), "The title should be editable to start"
     Em.$('.inline-edit-form div[contenteditable]')
     .html("New contenteditable, yahoo!")
     .trigger('keyup')

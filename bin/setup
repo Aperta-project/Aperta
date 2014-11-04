@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+set -e
+
+if ! which imagemagick
+then
+  brew install imagemagick --with-libtiff
+fi
+
+# Create the tahi postgres user
+createuser -s -r tahi || true
+
+brew install node
+npm install bower -g
+
+if ! which redis
+then
+  brew install redis
+  # TODO: complete required setup
+  brew info redis
+fi
+
+# Add binstubs to PATH in ~/.zshenv like this:
+#   export PATH=".git/safe/../../bin:$PATH"
+mkdir -p .git/safe
+
+cp .env-sample .env.development
+# TODO: Uncomment the required environment variables
+
+# Copy the sample database
+cp config/database.yml.sample config/database.yml
+
+bundle install

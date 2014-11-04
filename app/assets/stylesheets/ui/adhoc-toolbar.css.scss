@@ -31,21 +31,23 @@
 
 
   &._animate-forward {
-    .adhoc-toolbar-item--text {
-      @include transition-delay(0.05s);
-    }
+    .adhoc-toolbar-item--text  { @include transition-delay(0.05s); }
+    .adhoc-toolbar-item--email { @include transition-delay(0.10s); }
+    .adhoc-toolbar-item--image { @include transition-delay(0.15s); }
   }
 
   &._animate-backward {
-    .adhoc-toolbar-item--list {
-      @include transition-delay(0.05s);
-    }
+    .adhoc-toolbar-item--list  { @include transition-delay(0.15s); }
+    .adhoc-toolbar-item--text  { @include transition-delay(0.10s); }
+    .adhoc-toolbar-item--email { @include transition-delay(0.05s); }
   }
 
   &._active {
     .button-primary {
-      .glyphicon-plus   { display: none; }
-      .glyphicon-remove { display: inline; }
+      .glyphicon-plus {
+        top: 2px;
+        @include transform(rotate(45deg));
+      }
     }
 
     .button-secondary {

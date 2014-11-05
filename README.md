@@ -4,7 +4,14 @@
 
 ### Initial Setup
 
-- Clone the repo
+- Clone the repo, then run
+
+```console
+./bin/setup
+```
+
+Alternatively:
+
 - `brew install imagemagick --with-libtiff`
 - Most of the javascript for the app is being handled by Bower.  You'll need to
   have node installed

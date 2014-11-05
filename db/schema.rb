@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141104200055) do
+ActiveRecord::Schema.define(version: 20141105161638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,7 +40,16 @@ ActiveRecord::Schema.define(version: 20141104200055) do
     t.string   "attachable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "title"
+    t.string   "caption"
   end
+
+  create_table "author_groups", force: true do |t|
+    t.string  "name"
+    t.integer "paper_id"
+  end
+
+  add_index "author_groups", ["paper_id"], name: "index_author_groups_on_paper_id", using: :btree
 
   create_table "author_paper", force: true do |t|
   end
@@ -154,6 +163,16 @@ ActiveRecord::Schema.define(version: 20141104200055) do
     t.string   "status",     default: "processing"
   end
 
+  create_table "message_participants", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "task_id"
+    t.integer  "participant_id"
+  end
+
+  add_index "message_participants", ["participant_id"], name: "index_message_participants_on_participant_id", using: :btree
+  add_index "message_participants", ["task_id"], name: "index_message_participants_on_task_id", using: :btree
+
   create_table "paper_reviews", force: true do |t|
     t.integer  "task_id"
     t.text     "body"
@@ -191,15 +210,16 @@ ActiveRecord::Schema.define(version: 20141104200055) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
+    t.datetime "last_heartbeat_at"
     t.boolean  "editable",          default: true
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
-  create_table "participations", force: true do |t|
+  create_table "participations", id: false, force: true do |t|
+    t.integer  "id",             default: "nextval('participations_id_seq'::regclass)", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "task_id"
@@ -375,8 +395,8 @@ ActiveRecord::Schema.define(version: 20141104200055) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
-    t.boolean  "site_admin",             default: false, null: false
     t.string   "avatar"
+    t.boolean  "site_admin",             default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

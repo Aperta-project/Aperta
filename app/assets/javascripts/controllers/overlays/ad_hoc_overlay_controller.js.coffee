@@ -1,4 +1,4 @@
-ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTemplate,
+ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTemplate, ETahi.FileUploadMixin,
   needs: ['task']
   blocks: Ember.computed.alias('body')
 
@@ -29,15 +29,3 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTempl
 
     sendEmail: (data) ->
       ETahi.RESTless.putModel(@get('model'), "/send_message", task: data)
-
-    uploadStarted: ->
-      console.log 'it started'
-
-    uploadFinished: ->
-      console.log 'it finished'
-
-    cancelUploads: ->
-      console.log 'cancel dat shiz'
-
-    uploadProgress: ->
-      console.log 'upload progressed'

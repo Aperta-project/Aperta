@@ -83,6 +83,7 @@ group :development do
   gem 'bullet'
   gem 'kss-rails'
   gem 'letter_opener'
+  gem 'rubocop', require: false
 end
 
 group :development, :test, :performance do

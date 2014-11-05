@@ -9,10 +9,11 @@ ETahi.initializer
       if window.teaspoonTesting == true
         console.log("ERROR: " + msg)
       else
-        Em.$.ajax errorPath,
-          type: 'POST'
-          data:
-            message: msg
+        ETahi.RESTless.post errorPath,
+          message: msg
+
+    container.register('logError:main', logError , instantiate: false)
+    application.inject('route', 'logError', 'logError:main')
 
     displayErrorMessage = (message) ->
       applicationController = container.lookup('controller:application')

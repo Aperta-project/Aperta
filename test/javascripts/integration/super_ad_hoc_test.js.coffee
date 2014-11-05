@@ -19,6 +19,10 @@ module 'Integration: Super AdHoc Card',
       info: "testroles2, collaborator"
     ]
 
+    server.respondWith 'GET', "/dashboards", [
+      200, {"Content-Type": "application/json"}, JSON.stringify {dashboards: []}
+    ]
+
     server.respondWith 'GET', "/papers/#{ETahi.Test.currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
@@ -50,14 +54,13 @@ test "Adding a text block to an AdHoc Task", ->
     .trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
-    ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') isnt -1
+    assertText('.inline-edit', 'yahoo')
     click '.inline-edit-body-part .glyphicon-trash'
   andThen ->
-    ok Em.$.trim(find('.inline-edit-body-part').text()).indexOf('Are you sure?') isnt -1
+    assertText('.inline-edit-body-part', 'Are you sure?')
     click '.inline-edit-body-part .delete-button'
   andThen ->
-    ok Em.$.trim(find('.inline-edit').text()).indexOf('yahoo') is -1
-    click '.overlay-close-button:first'
+    assertNoText('.inline-edit', 'yahoo')
 
 test "Adding and removing a checkbox item to an AdHoc Task", ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
@@ -71,15 +74,14 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
     .trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
-    ok Em.$.trim(find('.inline-edit').text()).indexOf('checkbox list item') isnt -1
+    assertText('.inline-edit', 'checkbox list item')
     ok exists find '.inline-edit input[type=checkbox]'
     click '.inline-edit-body-part .glyphicon-trash'
   andThen ->
-    ok Em.$.trim(find('.inline-edit-body-part').text()).indexOf('Are you sure?') isnt -1
+    assertText('.inline-edit-body-part', 'Are you sure?')
     click '.inline-edit-body-part .delete-button'
   andThen ->
-    ok Em.$.trim(find('.inline-edit').text()).indexOf('checkbox list item') is -1
-    click '.overlay-close-button:first'
+    assertNoText('.inline-edit', 'checkbox list item')
 
 
 test "Adding an email block to an AdHoc Task", ->
@@ -91,8 +93,8 @@ test "Adding an email block to an AdHoc Task", ->
     Em.$('.inline-edit-form div[contenteditable]').html("Awesome email body!").trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
-    ok Em.$.trim(find('.inline-edit .item-subject').text()).indexOf('Deep') isnt -1
-    ok Em.$.trim(find('.inline-edit .item-text').text()).indexOf('Awesome') isnt -1
+    assertText('.inline-edit .item-subject', 'Deep')
+    assertText('.inline-edit .item-text', 'Awesome')
 
 
 test "User can send an email from an adhoc card", ->

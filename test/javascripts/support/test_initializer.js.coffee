@@ -21,6 +21,14 @@ Ember.Test.registerHelper('getStore', (app) ->
   app.__container__.lookup('store:main')
 )
 
+Ember.Test.registerHelper('assertText', (app, selector, text) ->
+  ok Em.$.trim(find(selector).text()).indexOf(text) isnt -1, "it should have text: #{text} within #{selector}"
+)
+
+Ember.Test.registerHelper('assertNoText', (app, selector, text) ->
+  ok Em.$.trim(find(selector).text()).indexOf(text) is -1, "it should not have text: #{text} within #{selector}"
+)
+
 Ember.Test.registerAsyncHelper('pickFromChosenSingle', (app, selector, choice) ->
   click ".chosen-container#{selector} a.chosen-single"
   click "li.active-result:contains('#{choice}')"
@@ -38,6 +46,7 @@ Ember.Test.registerAsyncHelper "waitForElement", (app, element) ->
     , 10)
     return
 
+QUnit.testDone(-> ETahi.Factory.resetFactoryIds())
 # All interactions with ember are while a user is signed in
 @currentUserId = 1
 @fakeUser = ETahi.Factory.createRecord 'User',

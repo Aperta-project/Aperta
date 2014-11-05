@@ -1,6 +1,5 @@
 ETahi.QuestionCheckComponent = ETahi.QuestionComponent.extend
   layoutName: 'components/question/check_component'
-  multipleAdditionalData: false
   displayContent: Em.computed.oneWay('checked')
 
   checked: ((key, value, oldValue) ->

@@ -11,6 +11,9 @@ ETahi.RESTless = Ember.Namespace.create
   put: (path, data) ->
     @ajaxPromise("PUT", path, data)
 
+  post: (path, data) ->
+    @ajaxPromise("POST", path, data)
+
   putModel: (model, path, data) ->
     @put("#{model.path()}#{path}", data)
 

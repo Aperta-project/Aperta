@@ -1,4 +1,5 @@
 module 'Integration: Admin Journal User Roles, /admin/journals/:id',
+  teardown: -> ETahi.reset()
   setup: ->
     setupApp integration: true
     TahiTest.journalId = 209
@@ -125,7 +126,7 @@ test 'admin adds a role for user', ->
   click '.assign-role-button'
   .then -> $('.add-role-input').val('Edit').trigger('input')
   .then -> click '.tt-suggestion'
-  andThen -> ok Em.$.trim(find('.assigned-role').text()).indexOf('Editor') isnt -1
+  andThen -> assertText('.assigned-role', 'Editor')
 
 test 'admin removes a role for user', ->
   visit "/admin/journals/#{TahiTest.journalId}"

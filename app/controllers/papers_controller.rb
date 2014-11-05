@@ -78,12 +78,14 @@ class PapersController < ApplicationController
 
   def toggle_editable
     paper.toggle!(:editable)
-    render json: paper
+    status = paper.valid? ? 200 : 422
+    render json: paper, status: status
   end
 
   def submit
     paper.update(submitted: true, editable: false)
-    render json: paper
+    status = paper.valid? ? 200 : 422
+    render json: paper, status: status
   end
 
   private

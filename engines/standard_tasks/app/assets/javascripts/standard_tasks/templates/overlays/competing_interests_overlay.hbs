@@ -8,18 +8,18 @@
                           task=model
                           question="<p>You are responsible for recognizing and disclosing on behalf of all authors any competing interest that could be perceived to bias their work, acknowledging all financial support and any other relevant financial or non-financial competing interests.</p><p>Do any authors of this manuscript have competing interests (as described in the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS Policy on Declaration and Evaluation of Competing Interests</a>)?</p>"}}
 
-          {{#if view.selectedYes}}
+          {{#show-if-parent prop='selectedYes'}}
             <div class="question-dataset">
               {{question-textarea ident="competing_interests.competing_interests" task=model
                                   question="Please provide details about any and all competing interests in the box below. Your response should begin with this statement: &quot;I have read the journal's policy and the authors of this manuscript havethe following competing interests:&quot;"}}
             </div>
-          {{/if}}
-          {{#if view.selectedNo}}
+          {{/show-if-parent}}
+          {{#show-if-parent prop='selectedNo'}}
             <div class="question-dataset">
               {{question-textarea ident="competing_interests.none" task=model
                                   question="If no authors have any competing interests to declare, please enter this statement in the box: &quot;The authors have declared that no competing interests exist.&quot;"}}
             </div>
-          {{/if}}
+          {{/show-if-parent}}
         {{/question-radio}}
       </li>
 

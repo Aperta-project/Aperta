@@ -36,7 +36,7 @@
         {{/if}}
         {{#if showSaveButton}}
           <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplate"}}>Save Template</a>
-          <a {{action "rollback"}} class="button-link button--blue paper-type-cancel-button">cancel</a>
+          <a class="button-link button--blue paper-type-cancel-button" {{action "rollback"}}>cancel</a>
         {{/if}}
       </div>
 
@@ -44,7 +44,7 @@
         {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
         {{#each phaseTemplate in sortedPhaseTemplates}}
           {{#view "ETahi.ManuscriptManagerColumnView" content=phaseTemplate}}
-            {{add-column position=view.nextPosition action='addPhase'}}
+            {{add-column position=view.nextPosition action="addPhase"}}
 
             {{view ETahi.PhaseHeaderView phase=phaseTemplate}}
 
@@ -57,7 +57,7 @@
                                removeTask="removeTask"
                                action=null}}
               {{/each}}
-              <a {{action 'chooseNewCardTypeOverlay' phaseTemplate}} class="button-secondary button--green">
+              <a {{action "chooseNewCardTypeOverlay" phaseTemplate}} class="button-secondary button--green">
                 Add New Card
               </a>
             </div>

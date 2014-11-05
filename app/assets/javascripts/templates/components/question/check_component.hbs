@@ -2,11 +2,5 @@
 {{#if template}}
   <div {{bind-attr class=":additional-data displayContent::hidden"}}>
     {{yield}}
-    {{#if multipleAdditionalData}}
-      <button class="button-secondary button--grey button--small" {{action 'additionalDataAction'}}>
-        <span class="glyphicon glyphicon-plus-sign"></span>
-        Add Dataset
-      </button>
-    {{/if}}
   </div>
 {{/if}}

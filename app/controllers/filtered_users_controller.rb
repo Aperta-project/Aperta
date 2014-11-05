@@ -3,7 +3,7 @@ class FilteredUsersController < ApplicationController
   respond_to :json
 
   def users
-    users = User.all.search do
+    users = User.search do
       fulltext params[:query]
     end
 

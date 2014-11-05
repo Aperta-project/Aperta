@@ -136,7 +136,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-  config.before(:all, solr: true) do
+  config.before(:each, solr: true) do
     Sunspot::Rails::Tester.start_original_sunspot_session
     Sunspot.session = $original_sunspot_session
     Sunspot.remove_all!

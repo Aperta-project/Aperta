@@ -121,10 +121,4 @@ class Paper < ActiveRecord::Base
       send(relation).exists?(user)
     end
   end
-
-  private
-
-  def notifier_payload
-    { paper_id: id }
-  end
 end

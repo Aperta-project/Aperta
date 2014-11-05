@@ -45,20 +45,26 @@
     list-style-type: none;
   }
 
-  .role-delete-button {
+  .role-action-button {
     display: inline;
     width: 30px;
+    margin-right: 5px;
+    color: $tahi-grey-light;
+    font-size: 18px;
     cursor: pointer;
+
+  }
+
+  .role-name-field {
+    position: relative;
+    top: -2px;
+    margin-left: 5px;
   }
 
   .action-buttons {
     display: none;
 
-    &.is-editing { display: table-row; }
-
-    button {
-      float: right;
-    }
+    button { float: right; }
   }
 
   .admin-modal {
@@ -321,24 +327,73 @@
   font-size: 30px;
 }
 
-.admin-table {
-  width: 100%;
+// START admin-roles
 
-  th {
-    color: #797979;
-    font-size: 21px;
-    font-weight: normal;
+.admin-role {
+  position: relative;
+  height: 40px;
+  margin-bottom: 10px;
+
+  &.is-editing {
+    height: auto;
+    .action-buttons { display: block; }
+    .admin-modify-flows-link { display: none; }
+  }
+
+  &.not-editing {
+    .token {
+      border-color: transparent;
+      background-color: transparent;
+    }
   }
 }
 
-.admin-role-name {
-  width: 20%;
+.admin-roles-header {
+  margin-bottom: 10px;
+  padding: 0;
+  color: #797979;
+  font-size: 21px;
+  font-weight: normal;
 }
+
+.admin-role:hover .role-action-button {
+  color: $tahi-blue;
+}
+
+.admin-role-name {
+  display: inline-block;
+  width: 20%;
+  padding-top: 3px;
+  vertical-align: top;
+
+  &.admin-roles-header { padding-top: 0; }
+}
+
+.admin-role-permissions {
+  display: inline-block;
+}
+
+.admin-modify-flows-link {
+  display: none;
+  margin-bottom: 6px;
+  padding: 10px 10px 10px 20px;
+  color: #fff;
+  font-size: 21px;
+  background: $tahi-blue;
+
+  a {
+    color: #fff;
+    text-decoration: underline;
+
+    &:hover { color: #fff; }
+  }
+}
+
+// END admin-roles
 
 .admin-style-setting-section {
   float: left;
   margin-right: 25px;
-
 
   .save-status,
   a.epub-cover {

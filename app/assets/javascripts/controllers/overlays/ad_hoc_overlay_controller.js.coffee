@@ -2,7 +2,10 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTempl
   needs: ['task']
   blocks: Ember.computed.alias('body')
 
-  imageUploadUrl: 'URL_GOES_HERE'
+  imageUploadUrl: (->
+    "/tasks/#{@get('model.id')}/attachments"
+  ).property()
+
   isNewTask: Em.computed.alias 'controllers.task.isNewTask'
 
   actions:
@@ -28,13 +31,13 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTempl
       ETahi.RESTless.putModel(@get('model'), "/send_message", task: data)
 
     uploadStarted: ->
-      alert 'it started'
+      console.log 'it started'
 
     uploadFinished: ->
-      alert 'it finished'
+      console.log 'it finished'
 
     cancelUploads: ->
-      alert 'cancel dat shiz'
+      console.log 'cancel dat shiz'
 
     uploadProgress: ->
       console.log 'upload progressed'

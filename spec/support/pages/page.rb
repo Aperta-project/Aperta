@@ -103,6 +103,11 @@ class PageFragment
     synchronize_content!(item_text) unless options[:skip_synchronize]
   end
 
+  def pick_from_select2_single(item_text,label_text, options={})
+    session.execute_script(%Q!$(".#{options[:class]}.select2-container:first input").trigger('input').val('#{item_text}').trigger('input')!)
+    find(".select2-result-label", text: label_text).click
+  end
+
 
   private
 

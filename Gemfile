@@ -112,6 +112,7 @@ group :test do
   gem 'vcr'
   gem 'webmock'
   gem 'thin'
+  gem 'sunspot-rails-tester'
 end
 
 group :staging, :performance do

@@ -50,7 +50,7 @@ describe Accessibility do
 
     context "without an action specified" do
       it "will return all connected users" do
-        expect(Accessibility.new(FakeResource.new, nil).users).to include(*users)
+        expect(Accessibility.new(FakeResource.new, nil).users).to match_array(users)
       end
     end
   end

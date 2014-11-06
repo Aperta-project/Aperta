@@ -1,11 +1,14 @@
 class AttachmentsController < ApplicationController
   def create
-    DownloadAdhocTaskAttachmentWorker.perform_async(task.id, params[:url])
-    render json: task
+    attachment = task.attachments.create
+    DownloadAdhocTaskAttachmentWorker.perform_async(attachment.id, params[:url])
+    render json: attachment
   end
 
-  def remove_attachment
-
+  def destroy
+    attachment = Attachment.find(params[:id])
+    attachment.destroy
+    head :no_content
   end
 
   private

@@ -102,7 +102,7 @@ Tahi::Application.routes.draw do
   resources :participations, only: [:create, :show, :destroy]
 
   resources :tasks, only: [:update, :create, :show, :destroy] do
-    resources :attachments, only: [:create]
+    resources :attachments, only: [:create, :destroy]
     member do
       put :send_message
     end

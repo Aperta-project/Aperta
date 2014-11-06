@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20141105161638) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "caption"
+    t.string   "status",          default: "processing"
   end
 
   create_table "author_groups", force: true do |t|

@@ -45,7 +45,8 @@
   {{/each}}
 
   {{#each attachment in model.attachments}}
-    {{adhoc-attachment-thumbnail attachment=attachment}}
+    {{adhoc-attachment-thumbnail attachment=attachment
+                                 destroyAttachment="destroyAttachment"}}
   {{/each}}
 </div>
 

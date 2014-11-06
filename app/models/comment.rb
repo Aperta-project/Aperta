@@ -30,10 +30,6 @@ class Comment < ActiveRecord::Base
 
   private
 
-  def notifier_payload
-    { task_id: task.id, paper_id: task.paper.id }
-  end
-
   def email_mentioned
     names = Twitter::Extractor.extract_mentioned_screen_names(self.body).uniq - [self.commenter.username]
     people_mentioned = User.where(username: names)

@@ -4,8 +4,7 @@ class TasksPolicy < ApplicationPolicy
   include TaskAccessCriteria
 
   def connected_users
-    #TODO: this is the same as the paper connected_users.  remove duplication.
-    [paper.user, paper.assigned_users, paper.tasks.flat_map(&:participants)].flatten.uniq
+    PapersPolicy.new(current_user: current_user, resource: task.paper).connected_users
   end
 
   def show?

@@ -31,6 +31,7 @@ Tahi::Application.routes.draw do
 
 
   get '/flow_manager' => 'ember#index'
+  get '/flows/authorization' => 'flows#authorization'
   get '/profile' => 'ember#index'
 
   get '/request_policy' => 'direct_uploads#request_policy'

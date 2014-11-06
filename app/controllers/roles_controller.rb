@@ -43,6 +43,6 @@ class RolesController < ApplicationController
 
   def role_params
     params.require(:role).permit(:name, :admin, :editor, :reviewer, :journal_id,
-      :can_administer_journal, :can_view_assigned_manuscript_managers, :can_view_all_manuscript_managers)
+      :can_administer_journal, :can_view_assigned_manuscript_managers, :can_view_all_manuscript_managers, :can_view_flow_manager)
   end
 end

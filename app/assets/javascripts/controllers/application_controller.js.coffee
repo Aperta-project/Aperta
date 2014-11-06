@@ -10,6 +10,7 @@ ETahi.ApplicationController = Ember.Controller.extend
 
   isAdmin: Ember.computed.alias 'currentUser.siteAdmin'
   canViewAdminLinks: false
+  canViewFlowManagerLink: false
 
   # this will get overridden by inject except in testing cases.
   getCurrentUser: -> null

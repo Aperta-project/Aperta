@@ -1,5 +1,5 @@
 class PapersPolicy < ApplicationPolicy
-  allow_params :paper
+  require_params :paper
 
   def connected_users
     #TODO: consolidate all of these into paper roles, to make this a very efficient query (see pivotal #81129650)

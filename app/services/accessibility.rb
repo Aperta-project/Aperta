@@ -1,5 +1,4 @@
 class Accessibility
-
   attr_accessor :resource, :action
 
   def initialize(resource, action=:show)
@@ -11,7 +10,6 @@ class Accessibility
     action.present? ? filtered_users : connected_users
   end
 
-
   private
 
   def filtered_users
@@ -21,7 +19,6 @@ class Accessibility
   end
 
   def policy(user=nil)
-    #TODO: instead of hardcoding paper:, it should send necessary policy attributes
     policy_klass.new(current_user: user, resource: resource)
   end
 

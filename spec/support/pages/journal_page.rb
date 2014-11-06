@@ -40,11 +40,11 @@ class JournalPage < Page
 
   def add_role
     find('.admin-add-new-role-button').click
-    RoleFragment.new(find('table.roles tbody', match: :first))
+    RoleFragment.new(find('.admin-role', match: :first))
   end
 
   def find_role(name)
-    RoleFragment.new(find('table.roles tbody', text: name))
+    RoleFragment.new(find('.admin-role', text: name))
   end
 
   def upload_epub_cover

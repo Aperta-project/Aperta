@@ -45,7 +45,7 @@
     list-style-type: none;
   }
 
-  .role-action-button {
+  .admin-role-action-button {
     display: inline;
     width: 30px;
     margin-right: 5px;
@@ -356,7 +356,7 @@
   font-weight: normal;
 }
 
-.admin-role:hover .role-action-button {
+.admin-role:hover .admin-role-action-button {
   color: $tahi-blue;
 }
 

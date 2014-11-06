@@ -3,9 +3,9 @@
     {{input name="role[name]" value=name placeholder="Role name" action="save"}}
   {{else}}
     {{#unless required}}
-      <i class="role-action-button role-delete-button glyphicon glyphicon-trash" {{action "delete" bubbles=false target="view"}}></i>
+      <i class="admin-role-action-button role-delete-button glyphicon glyphicon-trash" {{action "delete" bubbles=false target="view"}}></i>
     {{/unless}}
-    <i class="role-action-button glyphicon glyphicon-pencil"></i>
+    <i class="admin-role-action-button glyphicon glyphicon-pencil"></i>
     <span class="role-name-field">{{name}}</span>
   {{/if}}
 </div>

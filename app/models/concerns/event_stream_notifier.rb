@@ -19,8 +19,9 @@ module EventStreamNotifier
       active_model_serializer
     end
 
+    #TODO: can this be removed as part of the EventStream changes?
     def notifier_payload
-      raise NotImplementedError
+      {}
     end
 
     def has_meta?

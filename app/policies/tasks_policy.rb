@@ -1,6 +1,12 @@
 class TasksPolicy < ApplicationPolicy
-  allow_params :task
+  primary_resource :task
+
   include TaskAccessCriteria
+
+  def connected_users
+    #TODO: this is the same as the paper connected_users.  remove duplication.
+    [paper.user, paper.assigned_users, paper.tasks.flat_map(&:participants)].flatten.uniq
+  end
 
   def show?
     authorized_to_modify_task?

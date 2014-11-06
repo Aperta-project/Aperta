@@ -22,7 +22,7 @@ class Accessibility
 
   def policy(user=nil)
     #TODO: instead of hardcoding paper:, it should send necessary policy attributes
-    policy_klass.new(current_user: user, paper: resource)
+    policy_klass.new(current_user: user, resource: resource)
   end
 
   def connected_users

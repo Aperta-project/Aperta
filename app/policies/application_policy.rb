@@ -4,6 +4,7 @@ class ApplicationPolicy
 
   class_attribute :required_params
   class_attribute :allowed_params
+  class_attribute :primary_resource_name
 
   def self.require_params(*args)
     self.required_params ||= []
@@ -17,8 +18,15 @@ class ApplicationPolicy
     attr_accessor *args
   end
 
+  def self.primary_resource(resource_name)
+    self.primary_resource_name = resource_name
+    attr_accessor resource_name
+    alias_method :resource, resource_name
+    alias_method :resource=, "#{resource_name}="
+  end
+
   def self.permitted_params
-    self.allowed_params.to_a + self.required_params.to_a
+    self.allowed_params.to_a + self.required_params.to_a + [self.primary_resource_name, :resource]
   end
 
   def self.find_policy(controller_class, user, args={})
@@ -95,9 +103,16 @@ class ApplicationPolicy
   end
 
   def validate_params(params)
+    validate_resource(params) if self.class.primary_resource_name
     missing = (self.class.required_params - params.keys)
     if missing.any?
       raise ApplicationPolicyError, "The following required parameters were not sent #{missing}"
+    end
+  end
+
+  def validate_resource(params)
+    unless self.class.primary_resource_name.in?(params.keys) || :resource.in?(params.keys)
+      raise ApplicationPolicyError, "Please specify either :resource or :#{self.class.primary_resource_name}."
     end
   end
 

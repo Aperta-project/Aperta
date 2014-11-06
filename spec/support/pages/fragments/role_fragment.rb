@@ -1,8 +1,8 @@
 class RoleFragment < PageFragment
-  text_assertions :name, ".name-field"
+  text_assertions :name, ".role-name-field"
 
   def name
-    find(".name-field").text
+    find(".role-name-field").text
   end
 
   def name=(new_name)
@@ -10,7 +10,7 @@ class RoleFragment < PageFragment
   end
 
   def edit
-    find(".name-field").click
+    find(".role-name-field").click
   end
 
   def delete

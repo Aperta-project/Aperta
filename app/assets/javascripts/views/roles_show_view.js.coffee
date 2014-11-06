@@ -1,7 +1,8 @@
 ETahi.RolesShowView = Ember.View.extend
-  tagName: 'tbody'
+  classNameBindings: [':admin-role', 'isEditing:is-editing:not-editing']
 
   isNew: Em.computed.alias('controller.content.isNew')
+  isEditing: Em.computed.alias('controller.isEditing')
 
   _animateInIfNewRole: (->
     @$().hide().fadeIn(250) if @get('isNew')
@@ -14,11 +15,15 @@ ETahi.RolesShowView = Ember.View.extend
   ).observes('controller.isEditing')
 
   click: (e) ->
-    unless @get('controller.isEditing')
-      @get('controller').send('edit')
+    unless @get 'isEditing'
+      @set 'isEditing', true
       e.stopPropagation()
 
   actions:
+    delete: ->
+      @$().fadeOut 250, =>
+        @get('controller').send('delete')
+
     cancel: ->
       sendCancel = => @get('controller').send('cancel')
 

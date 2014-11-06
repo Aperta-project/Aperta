@@ -25,6 +25,7 @@ ETahi.initializer
     # The global error handler
     Ember.onerror = (error) ->
       logError("\n" + error.message + "\n" + error.stack + "\n")
+      Bugsnag.notifyException(error)
       if ETahi.environment == 'development'
         throw error
       else

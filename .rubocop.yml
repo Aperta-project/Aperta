@@ -1,0 +1,19 @@
+AllCops:
+  RunRailsCops: true
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+    - 'vendor/assets/**/*'
+    - 'db/schema.rb'
+Metrics/LineLength:
+  Max: 120
+Style/StringLiterals:
+  Enabled: false
+Documentation:
+  Enabled: false
+StringLiterals:
+  Enabled: false
+Blocks:
+  Enabled: false
+ClassAndModuleChildren:
+  Enabled: false

@@ -20,7 +20,7 @@ ETahi.EventStream = Em.Object.extend
       if msg = @messageQueue.popObject()
         msg.parsedData = JSON.parse(msg.data)
         if @shouldProcessMessage(msg)
-          description = "Event Stream: #{msg.parsedData.subscription_name} -> #{msg.parsedData.action}"
+          description = "Event Stream (#{msg.type}): #{msg.parsedData.subscription_name} -> #{msg.parsedData.action}"
           Tahi.utils.debug(description, msg)
           @msgResponse(msg.parsedData)
     Ember.run.later(@, 'processMessages', [], interval)

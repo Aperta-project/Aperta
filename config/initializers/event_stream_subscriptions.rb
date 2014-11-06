@@ -3,18 +3,8 @@ TahiNotifier.subscribe("paper:created", "paper:updated") do |subscription_name, 
   klass      = payload[:klass]
   id         = payload[:id]
 
-  resource = klass.find(id)
-  serializer = resource.event_stream_serializer.new(resource)
-  Accessibility.new(resource).users.each do |user|
-    EventStream.post_event(
-      User,
-      user.id,
-      serializer.as_json.merge(action: action, subscription_name: subscription_name).to_json
-    )
-  end
+  EventStream.new(action, klass, id, subscription_name).post
 end
-
-
 
 
 TahiNotifier.subscribe("task:created", "task:updated", "comment:*") do |subscription_name, payload|

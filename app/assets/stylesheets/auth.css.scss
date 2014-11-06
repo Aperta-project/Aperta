@@ -1,4 +1,14 @@
-html.auth {
+@import 'bourbon';
+@import 'variables';
+@import 'webfonts';
+@import 'mixins';
+@import 'ui/buttons';
+
+html { box-sizing: border-box; }
+*, *:before, *:after { box-sizing: inherit; }
+
+
+html {
   background-color: #ddd;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -9,9 +19,40 @@ html.auth {
   background-attachment :fixed;
 }
 
+body {
+  font-size: 14px;
+  line-height: 1.428571429;
+}
+
+body, h1, input {
+  font-family: $tahi-font-family;
+  font-weight: normal;
+}
+
 html.bg-1 { background-image: url(image-path('auth/bg-1.jpg')); }
 html.bg-2 { background-image: url(image-path('auth/bg-2.jpg')); }
 html.bg-3 { background-image: url(image-path('auth/bg-3.jpg')); }
+
+#tahi-container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 120px 0 20px 0;
+}
+
+input { font-size: 14px; }
+input:focus, textarea:focus, *[contenteditable] { outline: none; }
+
+a, button, .glyphicon, { @include transition(all 0.1s ease-in-out); }
+
+a {
+  color: $tahi-green;
+  text-decoration: none;
+
+  &:focus, &:hover {
+    text-decoration: underline;
+    color: $tahi-green;
+  }
+}
 
 .auth-flash {
   position: relative;
@@ -48,7 +89,7 @@ html.bg-3 { background-image: url(image-path('auth/bg-3.jpg')); }
 
   h1 {
     margin-top: 45px;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-size: 44px;
   }
 }
@@ -119,3 +160,4 @@ html.bg-3 { background-image: url(image-path('auth/bg-3.jpg')); }
   padding-right: 55px;
   padding-left: 55px;
 }
+

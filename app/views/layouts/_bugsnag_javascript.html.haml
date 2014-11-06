@@ -1,3 +1,6 @@
 - if ENV['BUGSNAG_JAVASCRIPT_API_KEY']
   %script{ src:"//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js",
     "data-apikey" => "#{ENV["BUGSNAG_JAVASCRIPT_API_KEY"]}" }
+  :javascript
+    Bugsnag.releaseStage = "#{Rails.env}";
+    Bugsnag.notifyReleaseStages = ["staging", "production"];

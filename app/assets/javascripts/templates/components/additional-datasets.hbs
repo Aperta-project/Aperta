@@ -1,0 +1,11 @@
+{{#each datum in parentView.additionalData}}
+  <div class="question-dataset">
+    {{#datum-definition datum=datum}}
+      {{yield}}
+    {{/datum-definition}}
+  </div>
+{{/each}}
+<button class="button-secondary button--grey button--small" {{action 'additionalDataAction'}}>
+  <span class="glyphicon glyphicon-plus-sign"></span>
+  Add Dataset
+</button>

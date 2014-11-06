@@ -7,7 +7,7 @@ describe PapersController do
 
   let(:submitted) { false }
   let(:paper) do
-    FactoryGirl.create(:paper, :with_tasks, submitted: submitted, user: user, body: "This is the body")
+    FactoryGirl.create(:paper, submitted: submitted, user: user, body: "This is the body")
   end
 
   before { sign_in user }
@@ -143,15 +143,41 @@ describe PapersController do
     end
   end
 
-  describe "POST 'upload'" do
+  describe "PUT 'upload'" do
     let(:url) { "http://theurl.com" }
     it "initiates manuscript download" do
       expect(DownloadManuscriptWorker).to receive(:perform_async)
-      post :upload, id: paper.id, url: url
+      put :upload, id: paper.id, url: url
+    end
+  end
+
+  describe "PUT 'submit'" do
+    expect_policy_enforcement
+
+    authorize_policy(PapersPolicy, true)
+    it "submits the paper" do
+      put :submit, id: paper.id, format: :json
+      expect(response.status).to eq(200)
+      expect(paper.reload.submitted).to eq true
+      expect(paper.editable).to eq false
+    end
+  end
+
+  describe "PUT 'toggle_editable'" do
+    expect_policy_enforcement
+
+    authorize_policy(PapersPolicy, true)
+    it "switches the paper's editable state" do
+      paper.update_attribute(:editable, false)
+      put :toggle_editable, id: paper.id, format: :json
+      expect(response.status).to eq(200)
+      expect(paper.reload.editable).to eq true
     end
   end
 
   describe "PUT 'heartbeat'" do
+    expect_policy_enforcement
+
     subject(:do_request) do
       put :heartbeat, { id: paper.to_param, format: :json }
     end

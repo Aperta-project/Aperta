@@ -21,7 +21,6 @@ ETahi.Setups.paperWithTask = (taskType, taskAttrs) ->
 
   [paper, task, journal, litePaper, phase]
 
-
 ETahi.Setups.addUserAsParticipant = (task, user) ->
   ef = ETahi.Factory
   participation = ef.createRecord 'Participation',

@@ -12,5 +12,5 @@ ETahi.Select2Assignees = Ember.Mixin.create
   resultsTemplate: (user) ->
     user.full_name
 
-  selectedTemplate: (user) =>
+  selectedTemplate: (user) ->
     user.full_name || user.get('fullName')

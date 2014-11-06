@@ -1,5 +1,5 @@
 ETahi.BuildsTaskTemplate = Ember.Mixin.create
-  newBlocks: null
+  newBlocks: []
   blocks: null
   emailSentStates: null
 

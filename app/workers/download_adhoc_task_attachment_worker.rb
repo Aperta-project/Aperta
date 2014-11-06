@@ -2,12 +2,11 @@ class DownloadAdhocTaskAttachmentWorker
   include Sidekiq::Worker
 
   def perform(attachment_id, url)
-    Attachment.find(attachment_id).tap do |a|
-      a.file.download! url
-      a.title = a.file.filename
-      a.status = "done"
-      a.save
-    end
+    attachment = Attachment.find(attachment_id)
+    attachment.file.download! url
+    attachment.title = attachment.file.filename
+    attachment.status = "done"
+    attachment.save
   end
 end
 

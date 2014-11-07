@@ -5,6 +5,8 @@ ETahi.CardPreviewComponent = Ember.Component.extend DragNDrop.Dragable,
       @sendAction('action', task)
     removeTask: (task) ->
       @sendAction('removeTask', task)
+    promptDelete: (task) ->
+      @sendAction('showDeleteConfirm', task)
 
   paper: null
   commentLooks: Ember.computed.oneWay('defaultCommentLooks')

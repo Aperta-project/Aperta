@@ -65,9 +65,21 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
 
     phase = task_manager_page.phase 'Submission Data'
     expect(task_manager_page).to have_no_application_error
+    before = task_manager_page.card_count
     expect {
       phase.remove_card('Upload Manuscript')
-    }.to change { phase.card_count }.by(-1)
+
+      within '.overlay' do
+        find('.overlay-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
+      end
+    }.to change {
+      task_manager_page.card_count
+    }.by(-1)
+
+    visit root_path
+    paper_page = dashboard_page.view_submitted_paper paper
+    task_manager_page = paper_page.visit_task_manager
+    expect(task_manager_page.card_count).to eq(before - 1)
   end
 
   scenario "Admin can assign a paper to themselves" do

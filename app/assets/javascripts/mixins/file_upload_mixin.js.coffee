@@ -34,7 +34,7 @@ ETahi.FileUploadMixin = Em.Mixin.create
     uploadStarted: (data, fileUploadXHR) ->
       @uploadStarted(data, fileUploadXHR)
 
-    uploadProgress: (data)->
+    uploadProgress: (data) ->
       @uploadProgress(data)
 
     uploadFinished: (data, filename) ->

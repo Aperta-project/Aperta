@@ -1,6 +1,10 @@
 {{inline-edit-h1 title=title setTitle="setTitle" editOnOpen=isNewTask}}
 
 <div class="task-body">
+  {{#each upload in uploads}}
+    {{upload-preview upload=upload}}
+  {{/each}}
+
   {{#each block in blocks}}
     {{#inline-edit-body-part
       block=block
@@ -19,6 +23,7 @@
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
+
   {{#each block in newBlocks}}
     {{#inline-edit-body-part
       block=block
@@ -37,6 +42,11 @@
           isNew=true}}
       {{/each}}
     {{/inline-edit-body-part}}
+  {{/each}}
+
+  {{#each attachment in model.attachments}}
+    {{adhoc-attachment-thumbnail attachment=attachment
+                                 destroyAttachment="destroyAttachment"}}
   {{/each}}
 </div>
 

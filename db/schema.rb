@@ -34,6 +34,17 @@ ActiveRecord::Schema.define(version: 20141106201601) do
     t.datetime "updated_at"
   end
 
+  create_table "attachments", force: true do |t|
+    t.string   "file"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "title"
+    t.string   "caption"
+    t.string   "status",          default: "processing"
+  end
+
   create_table "author_paper", force: true do |t|
   end
 

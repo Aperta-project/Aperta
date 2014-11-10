@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Assigns Editor", js: true do
+feature "Assigns Editor", js: true, solr: true do
   let(:admin) { FactoryGirl.create(:user, site_admin: true) }
   let(:editor) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper, user: admin, submitted: true) }
@@ -21,7 +21,7 @@ feature "Assigns Editor", js: true do
     needs_editor_phase = task_manager_page.phase(task.phase.name)
     needs_editor_phase.view_card(task.title) do |overlay|
       expect(overlay).to_not be_completed
-      overlay.paper_editor = editor.full_name
+      overlay.paper_editor = editor
       overlay.mark_as_complete
       expect(overlay).to be_completed
       expect(overlay).to have_editor editor

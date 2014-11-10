@@ -4,7 +4,7 @@
   width: $tahi-navigation-width;
   background: #282828;
   z-index: z($z-layer-navigation);
-  @include transition(left 0.3s);
+  @include transition(left 0.2s);
   @include user-select(none);
 
   hr {

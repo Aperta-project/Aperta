@@ -109,6 +109,10 @@ class ApplicationPolicy
     super_admin? || administered_journals.any?
   end
 
+  def can_view_flow_manager?
+    can_administer_any_journal? || current_user.can_view_flow_manager?
+  end
+
   def can_administer_journal?(journal)
     super_admin? || administered_journals.exists?(journal)
   end

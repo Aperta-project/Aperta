@@ -28,9 +28,17 @@ respondAuthorized = ->
     204, "Content-Type": "application/html", ""
   ]
 
+  server.respondWith 'GET', '/flows/authorization', [
+    204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
+  ]
+
 respondUnauthorized = ->
   server.respondWith 'GET', '/admin/journals/authorization', [
-    403, 'Content-Type': 'application/html', 'Tahi-Authorization-Check': true, ""
+    403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
+  ]
+
+  server.respondWith 'GET', '/flows/authorization', [
+    403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
 
 setCurrentUserAdmin = (bool) ->
@@ -71,6 +79,14 @@ test '(200 response) can see the Admin link', ->
   andThen ->
     ok exists(find ".navigation:contains('Admin')")
 
+test '(200 response) can see the Flow Manager link', ->
+  respondAuthorized()
+
+  visit '/'
+  click '.navigation-toggle'
+  andThen ->
+    ok exists(find ".navigation:contains('Flow Manager')")
+
 test '(403 response) cannot see the Admin link', ->
   respondUnauthorized()
 
@@ -78,3 +94,11 @@ test '(403 response) cannot see the Admin link', ->
   click '.navigation-toggle'
   andThen ->
     ok !exists(find ".navigation:contains('Admin')")
+
+test '(403 response) cannot see the Flow Manager link', ->
+  respondUnauthorized()
+
+  visit '/'
+  click '.navigation-toggle'
+  andThen ->
+    ok !exists(find ".navigation:contains('Flow Manager')")

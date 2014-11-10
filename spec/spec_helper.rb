@@ -135,4 +135,10 @@ RSpec.configure do |config|
     Capybara.current_driver = @current_driver
     DatabaseCleaner.clean
   end
+
+  config.before(:each, solr: true) do
+    Sunspot::Rails::Tester.start_original_sunspot_session
+    Sunspot.session = $original_sunspot_session
+    Sunspot.remove_all!
+  end
 end

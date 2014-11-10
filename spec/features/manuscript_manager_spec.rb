@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Manuscript Manager", js: true, selenium: true do
+feature "Manuscript Manager", js: true, selenium: true, solr: true do
   let(:admin) { create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true, journal: journal }
@@ -79,7 +79,7 @@ feature "Manuscript Manager", js: true, selenium: true do
     needs_editor_phase = task_manager_page.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Admin' do |overlay|
       expect(overlay).to have_no_admin(admin.full_name)
-      overlay.admin = admin.full_name
+      overlay.admin = admin
       overlay.mark_as_complete
       expect(overlay).to be_completed
       expect(overlay).to have_admin(admin.full_name)

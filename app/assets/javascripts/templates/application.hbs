@@ -11,8 +11,10 @@
 
     <a href="#" class="navigation-item" {{action "routeTo" "index"}}>Dashboard</a>
 
-    {{#if canViewAdminLinks}}
+    {{#if canViewFlowManagerLink}}
       <a href="#" class="navigation-item" {{action "routeTo" "flow_manager"}}>Flow Manager</a>
+    {{/if}}
+    {{#if canViewAdminLinks}}
       <a href="#" class="navigation-item navigation-item-admin" {{action "routeTo" "admin"}}>Admin</a>
     {{/if}}
 

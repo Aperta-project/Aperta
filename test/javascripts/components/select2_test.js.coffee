@@ -16,25 +16,24 @@ selectObjectFromDropdown = (object) ->
   fillInDropdown(object)
   click('.select2-result-selectable', 'body')
 
-test "User can make a selection from the dropdown", ->
+appendBasicComponent = (context) ->
   Ember.run =>
-    @component = @subject()
-    @component.setProperties
+    context.component = context.subject()
+    context.component.setProperties
       multiSelect: true
-      source: [{id: 1, text: '1'}, {id: 2, text: '2'}, {id: 3, text: '3'}]
+      source: [{id: 1, text: '1'}
+               {id: 2, text: '2'}
+               {id: 3, text: '3'}]
+  context.append()
 
-  @append()
+test "User can make a selection from the dropdown", ->
+  appendBasicComponent(this)
   selectObjectFromDropdown('1')
   andThen ->
     ok $('.select2-container').select2('val').contains("1")
 
 test "User can remove a selection from the dropdown", ->
-  Ember.run =>
-    @component = @subject()
-    @component.setProperties
-      multiSelect: true
-      source: [{id: 1, text: '1'}, {id: 2, text: '2'}, {id: 3, text: '3'}]
-  @append()
+  appendBasicComponent(this)
 
   @component.setProperties
     selectedData: [{id: 1, text: '1'}]
@@ -45,13 +44,7 @@ test "User can remove a selection from the dropdown", ->
   ok !$('.select2-container').select2('val').contains("1")
 
 test "Making a selection should trigger a callback to add the object", ->
-  Ember.run =>
-    @component = @subject()
-    @component.setProperties
-      multiSelect: true
-      source: [{id: 1, text: '1'}, {id: 2, text: '2'}, {id: 3, text: '3'}]
-
-  @append()
+  appendBasicComponent(this)
   targetObject =
     externalAction: (choice) ->
       equal choice.id, '1'
@@ -61,13 +54,7 @@ test "Making a selection should trigger a callback to add the object", ->
   selectObjectFromDropdown('1')
 
 test "Removing a selection should trigger a callback to remove the object", ->
-  Ember.run =>
-    @component = @subject()
-    @component.setProperties
-      multiSelect: true
-      source: [{id: 1, text: '1'}, {id: 2, text: '2'}, {id: 3, text: '3'}]
-
-  @append()
+  appendBasicComponent(this)
 
   @component.setProperties
     selectedData: [{id: 1, text: '1'}]
@@ -120,12 +107,7 @@ test "Event stream object added should add the object to the selected objects in
   ok $('.select2-container').select2('val').contains("4")
 
 test "Event stream object removed should remove the object from the selected objects in the dropdown", ->
-  Ember.run =>
-    @component = @subject()
-    @component.setProperties
-      multiSelect: true
-      source: [{id: 1, text: '1'}, {id: 2, text: '2'}, {id: 3, text: '3'}]
-  @append()
+  appendBasicComponent(this)
 
   @component.setProperties
     selectedData: [{id: 4, text: '4'}]

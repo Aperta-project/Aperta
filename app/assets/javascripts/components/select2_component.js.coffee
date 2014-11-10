@@ -28,6 +28,9 @@ ETahi.Select2Component = Ember.TextField.extend
     @.$().select2('val', @get('selectedData').mapProperty('id'))
   ).observes('selectedData')
 
+  initSelection: (el, callback) ->
+    callback(_.compact(@get('selectedData')))
+
   setup:(->
     options                    = {}
     options.placeholder        = @get('placeholder')
@@ -39,7 +42,7 @@ ETahi.Select2Component = Ember.TextField.extend
     options.data               = @get('source')
     options.closeOnSelect      = @get('closeOnSelect')
     options.ajax               = @get('remoteSource') if @get('remoteSource')
-    options.initSelection      = (el, callback) => callback(_.without(@get('selectedData'), null))
+    options.initSelection      = Ember.run.bind(this, @initSelection)
 
     @.$().select2(options)
     @setupSelectedListener()

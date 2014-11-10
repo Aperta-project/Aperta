@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FilteredUsersSerializer do
+describe FilteredUserSerializer do
   let(:journal) { create :journal }
   let(:paper) { create :paper, journal: journal }
   let(:collaborator) { create :user }
@@ -10,7 +10,7 @@ describe FilteredUsersSerializer do
 
   let(:serialized_data) do
     ActiveModel::ArraySerializer.new(users,
-      each_serializer: FilteredUsersSerializer,
+      each_serializer: FilteredUserSerializer,
       paper_id: paper.id).to_json
   end
 
@@ -25,7 +25,7 @@ describe FilteredUsersSerializer do
     create :paper_role, :reviewer, user: reviewer, paper: paper
     create :paper_role, :collaborator, user: collaborator, paper: paper
 
-    allow_any_instance_of(FilteredUsersSerializer).to receive(:current_user).and_return(user)
+    allow_any_instance_of(FilteredUserSerializer).to receive(:current_user).and_return(user)
   end
 
   context "user is site admin" do

@@ -1,25 +1,3 @@
-{{#view ETahi.ControlBarView classNames="manuscript-manager-template-control-bar"}}
-  <div class="control-bar-inner-wrapper">
-    <ul>
-      <li id="control-bar-paper-journal-logo" class="control-bar-item">
-        {{#if journal.logoUrl}}
-          <img src="{{unbound journal.logoUrl}}">
-        {{else}}
-          <div class="paper-journal">{{unbound journal.name}}</div>
-        {{/if}}
-      </li>
-      <li class="control-bar-item control-bar-page-title">
-        {{#link-to "journal" journal}}Journal Administration{{/link-to}}
-      </li>
-    </ul>
-    <ul>
-      <li class="template-edit-message control-bar-item">
-        <span {{bind-attr class="errorText:show:hidden :alert-danger :control-bar-message"}}>{{errorText}}</span>
-      </li>
-    </ul>
-  </div>
-{{/view}}
-
 <div id="tahi-container" class="full-width manuscript-manager-template">
   <div id="manuscript-manager">
     <div class="full-height">

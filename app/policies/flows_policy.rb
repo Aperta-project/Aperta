@@ -5,6 +5,10 @@ class FlowsPolicy < ApplicationPolicy
     can_view_flow_manager?
   end
 
+  def show?
+    can_view_flow_manager?
+  end
+
   def create?
     can_view_flow_manager?
   end

@@ -3,7 +3,12 @@ class FlowsController < ApplicationController
   before_action :enforce_policy
 
   def index
-    render json: current_user.flows, each_serializer: policy.serializer
+    flows = params[:ids].present? ? Flow.find(params[:ids]) : current_user.flows
+    render json: flows, each_serializer: policy.serializer
+  end
+
+  def show
+    respond_with Flow.find(params[:id]), serializer: policy.serializer
   end
 
   def create

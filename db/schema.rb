@@ -106,7 +106,10 @@ ActiveRecord::Schema.define(version: 20141112193333) do
     t.string   "title"
     t.string   "empty_text"
     t.integer  "user_id"
+    t.integer  "role_id"
   end
+
+  add_index "flows", ["role_id"], name: "index_flows_on_role_id", using: :btree
 
   create_table "ihat_jobs", force: true do |t|
     t.integer  "paper_id"
@@ -192,15 +195,16 @@ ActiveRecord::Schema.define(version: 20141112193333) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
+    t.datetime "last_heartbeat_at"
     t.boolean  "editable",          default: true
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
-  create_table "participations", force: true do |t|
+  create_table "participations", id: false, force: true do |t|
+    t.integer  "id",             default: "nextval('participations_id_seq'::regclass)", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "task_id"

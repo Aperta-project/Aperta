@@ -1,7 +1,7 @@
 ETahi.initializer
   name: 'reopenDSModel'
   after: 'eventStream'
-  initialize: (container, application) ->
+  initialize: ->
     DS.Model.reopen
       path: ->
         adapter = @get('store').adapterFor(this)

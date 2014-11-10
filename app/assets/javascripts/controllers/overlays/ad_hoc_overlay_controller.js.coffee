@@ -31,7 +31,7 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTempl
       ETahi.RESTless.putModel(@get('model'), "/send_message", task: data)
 
     destroyAttachment: (attachment)->
-      ETahi.RESTless.delete("/tasks/#{@get('model.id')}/attachments/#{attachment.id}")
+      attachment.destroyRecord()
 
     uploadFinished: (data, filename) ->
       @uploadFinished(data, filename)

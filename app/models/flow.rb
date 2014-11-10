@@ -1,6 +1,7 @@
 class Flow < ActiveRecord::Base
   attr_accessor :papers
   belongs_to :user, inverse_of: :flows
+  belongs_to :role, inverse_of: :flows
 
   def self.templates
     {

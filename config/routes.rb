@@ -41,7 +41,7 @@ Tahi::Application.routes.draw do
   get 'filtered_users/admins/:journal_id' => 'filtered_users#admins'
   get 'filtered_users/reviewers/:journal_id' => 'filtered_users#reviewers'
 
-  resources :flows, only: [:index, :destroy, :create]
+  resources :flows
   resources :authors, only: [:create, :update, :destroy]
 
   resources :figures, only: [:destroy, :update] do

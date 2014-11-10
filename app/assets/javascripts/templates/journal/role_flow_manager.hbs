@@ -1,5 +1,11 @@
-<ul class="columns">
-  {{#each flow in model.flows}}
+<div class="back-link">
+  {{#link-to "journal" journal class="button-link button--blue"}}&lt; Back{{/link-to}}
+  Flow Manager for {{model.name}} Role
+</div>
+<div class="flow-admin-content">
+  <ul class="columns flow-admin">
+    {{#each flow in model.flows}}
     {{partial 'flow-column'}}
-  {{/each}}
-</ul>
+    {{/each}}
+  </ul>
+</div>

@@ -6,8 +6,10 @@ ETahi.JournalRoleFlowManagerRoute = Ember.Route.extend
     model.get('flows')
 
   setupController: (controller, model) ->
-    controller.set('model', model)
-    controller.set('commentLooks', @store.all('commentLook'))
+    controller.setProperties
+      model: model
+      commentLooks: @store.all('commentLook')
+      journal: @modelFor('journal')
 
   actions:
     viewCard: (task) ->

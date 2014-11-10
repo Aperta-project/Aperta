@@ -4,6 +4,16 @@
     .card.flow-card
 */
 
+.back-link {
+  position: absolute;
+  top: 85px;
+  left: 130px;
+}
+
+.columns.flow-admin {
+  top: 150px;
+}
+
 .paper-profile {
   margin-bottom: 10px;
   border: 1px solid $tahi-grey-light;

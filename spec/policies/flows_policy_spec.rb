@@ -25,7 +25,7 @@ describe FlowsPolicy do
   end
 
   context "user is a site admin" do
-    let(:user) { FactoryGirl.create(:user, :admin) }
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     include_examples "person who can view flow manager"
   end

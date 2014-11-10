@@ -337,7 +337,7 @@
   &.is-editing {
     height: auto;
     .action-buttons { display: block; }
-    .admin-modify-flows-link { display: none; }
+    .admin-modify-flows-link { display: block; }
   }
 
   &.not-editing {

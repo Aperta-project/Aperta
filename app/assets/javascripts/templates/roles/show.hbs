@@ -31,9 +31,11 @@
     {{/if}}
   {{/if}}
 
-  <div class="admin-modify-flows-link">
-    <a href="#">Edit Flows</a>
-  </div>
+  {{#if canViewFlowManager}}
+    <div class="admin-modify-flows-link">
+      <a href="#">Edit Flows</a>
+    </div>
+  {{/if}}
 
   <div class="action-buttons">
     {{errorsOn model "name"}}

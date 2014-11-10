@@ -11,11 +11,11 @@
 
     <a href="#" class="navigation-item" {{action "routeTo" "index"}}>Dashboard</a>
 
-    {{#if canViewAdminLinks}}
-      <a href="#" class="navigation-item navigation-item-admin" {{action "routeTo" "admin"}}>Admin</a>
-    {{/if}}
     {{#if canViewFlowManagerLink}}
       <a href="#" class="navigation-item" {{action "routeTo" "flow_manager"}}>Flow Manager</a>
+    {{/if}}
+    {{#if canViewAdminLinks}}
+      <a href="#" class="navigation-item navigation-item-admin" {{action "routeTo" "admin"}}>Admin</a>
     {{/if}}
 
      <a class="navigation-item" href="/users/sign_out"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign Out</a>

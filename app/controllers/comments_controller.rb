@@ -6,10 +6,9 @@ class CommentsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def create
-    if comment.save
-      CommentLookManager.sync_comment(comment)
+    if CommentLookManager.sync_comment(comment)
+      respond_with comment
     end
-    respond_with comment
   end
 
   def show

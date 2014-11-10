@@ -1,24 +1,3 @@
-.manuscript-manager-template-control-bar {
-  // override to allow for Chosen select to expand
-  overflow: visible;
-
-  .control-bar-inner-wrapper {
-    // override to allow for Chosen select to expand
-    overflow: visible;
-  }
-
-  .button-primary {
-    border-color: #47a6fd;
-    color: #47a6fd;
-    background: #fff;
-  }
-
-  li {
-    margin-right: 10px;
-  }
-
-}
-
 $template-thumbnail-side-padding: 10px;
 
 .template-thumbnail {

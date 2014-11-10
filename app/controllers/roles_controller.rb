@@ -3,6 +3,10 @@ class RolesController < ApplicationController
   before_action :enforce_policy
   respond_to :json
 
+  def show
+    respond_with Role.find(params[:id])
+  end
+
   def create
     role.save
     respond_with role

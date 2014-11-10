@@ -52,9 +52,7 @@ class PaperRole < ActiveRecord::Base
     role.capitalize
   end
 
-  private
-
-  def notifier_payload
-    { paper_id: paper.id, user_id: user.id }
+  def event_stream_serializer(user)
+    LitePaperSerializer.new(self.paper, user: user)
   end
 end

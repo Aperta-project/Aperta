@@ -44,8 +44,8 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  def event_stream_serializer
-    PaperEventStreamSerializer
+  def event_stream_serializer(user)
+    PaperEventStreamSerializer.new(self, user: user)
   end
 
   def role_for(role:, user:)

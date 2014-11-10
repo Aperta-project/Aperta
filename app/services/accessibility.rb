@@ -14,16 +14,8 @@ class Accessibility
 
   def filtered_users
     connected_users.select do |user|
-  def self.post(event_stream_payload)
-    self.post_event(
-      User,
-      user.id,
-      event_stream_payload.payload
-    )
-  end
-
       policy(user).send("#{action}?")
-    end.uniq
+    end
   end
 
   def policy(user=nil)
@@ -31,7 +23,7 @@ class Accessibility
   end
 
   def connected_users
-    policy.connected_users
+    policy.connected_users.compact.uniq
   end
 
   def policy_klass

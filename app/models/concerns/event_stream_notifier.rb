@@ -15,8 +15,8 @@ module EventStreamNotifier
       p
     end
 
-    def event_stream_serializer
-      active_model_serializer
+    def event_stream_serializer(user)
+      active_model_serializer.new(self, user: user)
     end
 
     #TODO: can this be removed as part of the EventStream changes?

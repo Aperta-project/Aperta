@@ -1,15 +1,15 @@
 TahiNotifier.subscribe(
   "participation:created", "participation:updated",
   "comment:created", "comment:updated",
-  "task:created","task:updated",
-  "paper:created", "paper:updated") do |subscription_name, payload|
+  "task:created", "task:updated",
+  "paper:created", "paper:updated",
+  "paper_role:created", "paper_role:updated") do |subscription_name, payload|
   action     = payload[:action]
   klass      = payload[:klass]
   id         = payload[:id]
 
   EventStream.new(action, klass, id, subscription_name).post
 end
-
 
 TahiNotifier.subscribe("supporting_information/file:*", "figure:*", "question_attachment:*") do |subscription_name, payload|
   action     = payload[:action]
@@ -69,32 +69,6 @@ TahiNotifier.subscribe("task:destroyed") do |subscription_name, payload|
   )
 end
 
-TahiNotifier.subscribe("paper_role:created") do |subscription_name, payload|
-  user_id  = payload[:user_id]
-  paper_id = payload[:paper_id]
-  action   = payload[:action]
-  meta     = payload[:meta]
-  id       = payload[:id]
-
-  paper_role = PaperRole.find(id)
-  user_id = paper_role.user.id
-  paper    = Paper.find(paper_id)
-  dashboard_serializer = DashboardSerializer.new({}, user: User.find(user_id))
-
-  # update user dashboard
-  EventStream.post_event(
-    User,
-    user_id,
-    dashboard_serializer.as_json.merge(action: action, meta: meta, subscription_name: subscription_name).to_json
-  )
-
-  # update user streams
-  EventStream.post_event(
-    User,
-    user_id,
-    { action: "updateStreams", subscription_name: subscription_name }.to_json
-  )
-end
 
 TahiNotifier.subscribe("paper_role:destroyed") do |subscription_name, payload|
   user_id  = payload[:user_id]

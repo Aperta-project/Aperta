@@ -24,7 +24,7 @@ class EventStream
   end
 
   def payload_for(user)
-    serializer = resource.event_stream_serializer.new(resource, user: user)
+    serializer = resource.event_stream_serializer(user)
     serializer.as_json.merge(action: action, subscription_name: subscription_name).to_json
   end
 end

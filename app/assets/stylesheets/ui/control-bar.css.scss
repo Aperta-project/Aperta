@@ -10,7 +10,7 @@
   height: $tahi-control-bar-height;
   border-bottom: 1px solid #F5F5F5;
   background: #fff;
-  z-index: 2;
+  z-index: $z-layer-control-bar;
 
   &.__sub-nav-active { height: 105px; }
 }

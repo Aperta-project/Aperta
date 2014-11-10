@@ -24,10 +24,10 @@ class CommentsController < ApplicationController
 
   def comment
     @comment ||= if params[:id].present?
-      Comment.find(params[:id])
-    else
-      task.comments.build(comment_params)
-    end
+                   Comment.find(params[:id])
+                 else
+                   task.comments.build(comment_params)
+                 end
   end
 
   def comment_params

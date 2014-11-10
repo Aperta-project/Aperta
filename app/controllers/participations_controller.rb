@@ -6,7 +6,6 @@ class ParticipationsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def create
-    participation = task.participations.build(participation_params)
     if participation.save
       CommentLookManager.sync_task(task)
       if participation.participant_id != current_user.id
@@ -17,7 +16,7 @@ class ParticipationsController < ApplicationController
   end
 
   def show
-    respond_with Participation.find(params[:id])
+    respond_with participation
   end
 
   def destroy
@@ -28,16 +27,15 @@ class ParticipationsController < ApplicationController
   private
 
   def task
-    @task ||=
-      if params[:participation].present?
-        Task.find(params[:participation][:task_id])
-      else
-        participation.task
-      end
+    @task ||= Task.find(participation_params[:task_id])
   end
 
   def participation
-    @participation ||= Participation.find(params[:id])
+    @participation ||= if params[:id].present?
+                         Participation.find(params[:id])
+                       else
+                         participation = task.participations.build(participation_params)
+                       end
   end
 
   def participation_params
@@ -49,6 +47,6 @@ class ParticipationsController < ApplicationController
   end
 
   def enforce_policy
-    authorize_action!(task: task)
+    authorize_action!(participation: participation)
   end
 end

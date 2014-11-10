@@ -3,7 +3,8 @@ TahiNotifier.subscribe(
   "comment:created", "comment:updated",
   "task:created", "task:updated",
   "paper:created", "paper:updated",
-  "paper_role:created", "paper_role:updated") do |subscription_name, payload|
+  "paper_role:created", "paper_role:updated",
+  "author:created", "author:updated") do |subscription_name, payload|
   action     = payload[:action]
   klass      = payload[:klass]
   id         = payload[:id]
@@ -26,26 +27,6 @@ TahiNotifier.subscribe("supporting_information/file:*", "figure:*", "question_at
     serializer.as_json.merge(action: action, meta: meta, subscription_name: subscription_name).to_json
   )
 end
-
-TahiNotifier.subscribe("author:created", "author:updated") do |subscription_name, payload|
-  action     = payload[:action]
-  id         = payload[:id]
-  paper_id   = payload[:paper_id]
-  meta       = payload[:meta]
-  klass      = payload[:klass]
-
-  record = klass.find(id)
-  serializer = record.event_stream_serializer
-  serializer.root = false
-  authors = record.paper.authors.map { |a| serializer.new(a).as_json }
-  authors_payload = {authors: authors}
-  EventStream.post_event(
-    Paper,
-    paper_id,
-    authors_payload.merge(action: action, meta: meta, subscription_name: subscription_name).to_json
-  )
-end
-
 
 TahiNotifier.subscribe("author:destroyed") do |subscription_name, payload|
   id         = payload[:id]

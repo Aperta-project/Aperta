@@ -5,3 +5,4 @@ ETahi.Flow = DS.Model.extend
   tasks: DS.hasMany('cardThumbnail')
   emptyText: a('string')
   title: a('string')
+  role: DS.belongsTo('role', async: true)

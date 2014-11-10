@@ -115,7 +115,7 @@ Tahi::Application.routes.draw do
 
   resources :lite_papers, only: :index
 
-  resources :roles, only: [:create, :update, :destroy]
+  resources :roles, only: [:show, :create, :update, :destroy]
   resources :user_roles, only: [:index, :create, :destroy]
 
   resources :questions, only: [:create, :update]

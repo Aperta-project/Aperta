@@ -30,7 +30,7 @@ describe TaskFactory::MessageTaskFactory do
         it "creates a new Comment for the MessageTask" do
           expect(result.comments.count).to eq 1
           c = result.comments.first
-          expect(c.body).to eq(msg_body)
+          expect(c.body).to eq("It&#39;s a test body.")
           expect(c.commenter).to eq(user)
         end
       end

@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20141112193333) do
     t.datetime "updated_at"
     t.integer  "commenter_id"
     t.integer  "task_id"
+    t.json     "entities"
   end
 
   add_index "comments", ["commenter_id", "task_id"], name: "index_comments_on_commenter_id_and_task_id", using: :btree

@@ -237,3 +237,21 @@ shared_examples_for "person who cannot manage question attachments" do
     expect(policy.destroy?).to be(false)
   end
 end
+
+shared_examples_for "person who can view flow manager" do
+  it "allows them to perform any action" do
+    expect(policy.index?).to be(true)
+    expect(policy.create?).to be(true)
+    expect(policy.destroy?).to be(true)
+    expect(policy.authorization?).to be(true)
+  end
+end
+
+shared_examples_for "person who can not view flow manager" do
+  it "does not allow them to perform any action" do
+    expect(policy.index?).to be(false)
+    expect(policy.create?).to be(false)
+    expect(policy.destroy?).to be(false)
+    expect(policy.authorization?).to be(false)
+  end
+end

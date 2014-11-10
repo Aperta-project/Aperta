@@ -21,6 +21,10 @@ class FlowsController < ApplicationController
     end
   end
 
+  def authorization
+    head 204
+  end
+
   private
   def flow_params
     params.require(:flow).permit(:empty_text, :title)

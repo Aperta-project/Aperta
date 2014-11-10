@@ -23,7 +23,10 @@
       <div class="column-content">
         <ul class="cards">
           {{#each litePaper in flow.litePapers}}
-            {{view ETahi.FlowPaperView flow=flow litePaper=litePaper}}
+            {{flow-task-group flow=flow
+                              litePaper=litePaper
+                              commentLooks=commentLooks
+                              viewCard='viewCard'}}
           {{/each}}
         </ul>
         {{#unless flow.litePapers}}

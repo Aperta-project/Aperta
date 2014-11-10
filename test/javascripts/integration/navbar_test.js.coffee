@@ -28,16 +28,16 @@ respondAuthorized = ->
     204, "Content-Type": "application/html", ""
   ]
 
-  server.respondWith 'get', '/flows/authorization', [
+  server.respondWith 'GET', '/flows/authorization', [
     204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
 
 respondUnauthorized = ->
-  server.respondWith 'get', '/admin/journals/authorization', [
+  server.respondWith 'GET', '/admin/journals/authorization', [
     403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
 
-  server.respondWith 'get', '/flows/authorization', [
+  server.respondWith 'GET', '/flows/authorization', [
     403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
 

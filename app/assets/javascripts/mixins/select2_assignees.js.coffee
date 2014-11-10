@@ -5,7 +5,7 @@ ETahi.Select2Assignees = Ember.Mixin.create
     quietMillis: 500
     data: (term) ->
       query: term
-    results: (data) =>
+    results: (data) ->
       results: data.filtered_users
   ).property('select2RemoteUrl')
 

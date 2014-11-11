@@ -12,7 +12,13 @@ class FlowsController < ApplicationController
   end
 
   def create
-    flow = current_user.flows.create! Flow.templates[flow_params[:title].downcase]
+    flow = current_user.flows.create! flow_template
+    render json: flow
+  end
+
+  def update
+    flow = Flow.find(params[:id])
+    flow.update flow_template
     render json: flow
   end
 
@@ -32,10 +38,14 @@ class FlowsController < ApplicationController
 
   private
   def flow_params
-    params.require(:flow).permit(:empty_text, :title)
+    params.require(:flow).permit(:title)
   end
 
   def policy
     ApplicationPolicy.find_policy(self.class, current_user)
+  end
+
+  def flow_template
+    Flow.templates[flow_params[:title].downcase]
   end
 end

@@ -22,3 +22,4 @@ solr/default/*
 config/database.yml
 coverage/
 .sass-cache
+/node_modules

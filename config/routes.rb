@@ -31,7 +31,6 @@ Tahi::Application.routes.draw do
 
 
   get '/flow_manager' => 'ember#index'
-  get '/flows/authorization' => 'flows#authorization'
   get '/profile' => 'ember#index'
 
   get '/request_policy' => 'direct_uploads#request_policy'
@@ -41,7 +40,11 @@ Tahi::Application.routes.draw do
   get 'filtered_users/admins/:journal_id' => 'filtered_users#admins'
   get 'filtered_users/reviewers/:journal_id' => 'filtered_users#reviewers'
 
-  resources :flows
+  get '/user_flows/authorization' => 'user_flows#authorization'
+  resources :user_flows
+
+  resources :role_flows, only: [:show, :create, :update, :destroy]
+
   resources :authors, only: [:create, :update, :destroy]
 
   resources :figures, only: [:destroy, :update] do

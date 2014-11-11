@@ -1,4 +1,4 @@
-class FlowsPolicy < ApplicationPolicy
+class UserFlowsPolicy < ApplicationPolicy
   allow_params :flow
 
   def index?
@@ -27,7 +27,7 @@ class FlowsPolicy < ApplicationPolicy
 
   def serializer
     if super_admin?
-      FlowSerializer
+      UserFlowSerializer
     elsif can_administer_any_journal?
       JournalAdminFlowSerializer
     end

@@ -28,7 +28,7 @@ respondAuthorized = ->
     204, "Content-Type": "application/html", ""
   ]
 
-  server.respondWith 'GET', '/flows/authorization', [
+  server.respondWith 'GET', '/user_flows/authorization', [
     204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
 
@@ -37,7 +37,7 @@ respondUnauthorized = ->
     403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
 
-  server.respondWith 'GET', '/flows/authorization', [
+  server.respondWith 'GET', '/user_flows/authorization', [
     403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
 

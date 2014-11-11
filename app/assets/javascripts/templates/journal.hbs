@@ -16,6 +16,7 @@
       <li class="template-edit-message control-bar-item">
         <span {{bind-attr class="errorText:show:hidden :alert-danger :control-bar-message"}}>{{errorText}}</span>
       </li>
+      {{outlet "controlBarButtons"}}
     </ul>
   </div>
 {{/view}}

@@ -21,3 +21,4 @@ solr/test/*
 solr/default/*
 config/database.yml
 .sass-cache
+/node_modules

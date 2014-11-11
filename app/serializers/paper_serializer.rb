@@ -1,5 +1,5 @@
 class PaperSerializer < ActiveModel::Serializer
-  attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :editable
+  attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :updated_at, :editable
 
   %i(phases figures authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -10,10 +10,11 @@ class PaperSerializer < ActiveModel::Serializer
     has_many relation, embed: :ids, include: true, root: :users
   end
 
+  has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
+  has_one :lite_paper, embed: :id, include: :true, user: :scoped_user, serializer: LitePaperSerializer
   has_many :tasks, embed: :ids, polymorphic: true
   has_one :journal, embed: :id, include: true
   has_one :locked_by, embed: :id, include: true, root: :users
-  has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
   has_one :striking_image, embed: :id, include: true, root: :figures
 
   def status
@@ -31,5 +32,13 @@ class PaperSerializer < ActiveModel::Serializer
   def collaborations
     # we want the actual join record, not a list of users
     object.paper_roles.collaborators
+  end
+
+  def lite_paper
+    object
+  end
+
+  def scoped_user
+    scope.presence || options[:user]
   end
 end

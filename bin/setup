@@ -59,7 +59,7 @@ MESSAGE
   system 'mkdir -p .git/safe'
 
   puts '\n== Adding pre-commit hook =='
-  system 'ln -s ../../bin/pre-commit .git/hooks/pre-commit'
+  system 'overcommit .'
 
   puts '\n== Preparing database =='
   system 'bin/rake db:setup'

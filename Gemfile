@@ -109,7 +109,8 @@ group :development, :test, :performance do
 end
 
 group :test do
-  gem "codeclimate-test-reporter", require: nil
+  gem 'simplecov'
+  gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'
   gem 'webmock'
   gem 'thin'

@@ -20,3 +20,4 @@ solr/pids/development/*
 solr/test/*
 solr/default/*
 config/database.yml
+coverage/

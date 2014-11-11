@@ -1,14 +1,15 @@
 module TaskFactory
   def self.build_task(task_klass, task_params, user)
     role = find_role(task_klass, task_params[:phase_id])
-    task_factories[task_klass.to_s].build(task_params.merge(role: role), user)
+    task_factories(task_klass).build(task_params.merge(role: role), user)
   end
 
-  def self.task_factories
-    HashWithIndifferentAccess.new({
-      Task: AdHocTaskFactory,
-      MessageTask: MessageTaskFactory
-    })
+  def self.task_factories(task_klass)
+    if task_klass == MessageTask
+      MessageTaskFactory
+    else
+      AdHocTaskFactory
+    end
   end
 
   def self.find_role(task_klass, phase_id)

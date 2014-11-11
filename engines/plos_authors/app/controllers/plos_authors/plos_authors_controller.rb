@@ -20,7 +20,6 @@ module PlosAuthors
       render json: plos_authors_for(plos_author.paper)
     end
 
-
     private
 
     def plos_author
@@ -37,7 +36,7 @@ module PlosAuthors
     end
 
     def enforce_policy
-      authorize_action!(task: plos_author.plos_authors_task)
+      authorize_action!(plos_author: plos_author)
     end
 
     def plos_author_params

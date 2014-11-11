@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'pathname'
+require 'active_support/core_ext/object/blank'
 
 mac_os = `uname`.chomp == 'Darwin'
 fail 'This setup script is only designed for Mac OS.' unless mac_os
@@ -19,8 +20,15 @@ Dir.chdir APP_ROOT do
   system 'brew install redis'
 
   system 'brew install go'
-  unless ENV['GOPATH']
-    puts '\n== Please ensure your $GOPATH is configured correctly =='
+  if ENV['GOPATH'].blank?
+    puts <<MESSAGE
+ Error: Please ensure your $GOPATH is configured correctly and run again.
+ Add the following to your shell initialization file (.bashrc, .zshrc, etc)
+
+    export GOPATH="$HOME/go"
+    export PATH=$PATH:$GOPATH/bin
+MESSAGE
+    Kernel.exit
   end
   system 'go get github.com/tahi-project/golang-eventsource'
 

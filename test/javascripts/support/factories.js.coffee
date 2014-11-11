@@ -157,6 +157,14 @@ ETahi.Factory =
     paperAttrs = {short_title, title, id, submitted, paper_id}
     ETahi.Factory.createRecord('LitePaper', paperAttrs)
 
+  createLitePaperWithRoles: (paper, roles) ->
+    {short_title, title, id, submitted} = paper
+    paper_id = id
+    paperAttrs = {short_title, title, id, submitted, paper_id}
+    lp = ETahi.Factory.createRecord('LitePaper', paperAttrs)
+    lp.roles = roles
+    lp
+
   createPhase: (paper, attrs={})  ->
     newPhase = @createRecord('Phase', attrs)
     @addHasMany(paper, [newPhase], {inverse: 'paper'})

@@ -75,35 +75,6 @@ module 'Integration: Dashboard',
       204, "Content-Type": "application/html", ""
     ]
 
-test 'The dashboard updates lite papers via the event stream', ->
-  ef = ETahi.Factory
-  lp = ef.createLitePaper
-    id: 370
-    title: "Event-streamed paper"
-    short_title: "new one"
-    submitted: false
-  lp.roles = ['Collaborator']
-  lp.related_at_date = "2014-09-29T13:54:58.028Z"
-
-  [litePapers, dashboards] = createDashboardDataWithLitePaper(2, lp)
-
-  visit '/'
-  .then ->
-    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
-  andThen ->
-    # send an updated dashboard with 3 papers to the user
-    [es, store] = setupEventStream()
-    data =
-      action: 'created'
-      dashboard: dashboards[0]
-      lite_papers: litePapers
-      users: [fakeUser]
-
-    Ember.run =>
-      es.msgResponse(data)
-  andThen ->
-    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 3
-
 test 'The dashboard shows papers for a user if they have any role on the paper', ->
   roles = ['Collaborator', 'Reviewer', 'Editor', 'Admin', 'My Paper', 'Circus Clown']
   [litePapers, dashboards] = createDashboardDataWithLitePaperRoles(roles)
@@ -122,38 +93,26 @@ test 'The dashboard shows papers for a user if they have any role on the paper',
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 6, 'All papers with roles should be visible'
 
 test 'When paper is added, only shows if user is allowed to see the paper', ->
-  ef = ETahi.Factory
-  lp = ef.createLitePaper
-    id: 370
-    title: "Event-streamed paper"
-    short_title: "new one"
-    submitted: false
-  lp.roles = []
-  lp.related_at_date = "2014-09-29T13:54:58.028Z"
-
-  [litePapers, dashboards] = createDashboardDataWithLitePaper(2, lp)
-
   visit '/'
   .then ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
   andThen ->
-    # receives eventstream push as collaborator
+    # receives paper update with no roles
     [es, store] = setupEventStream()
-    data =
-      action: 'created'
-      dashboard: dashboards[0]
-      lite_papers: litePapers
-      users: [fakeUser]
+    ef = ETahi.Factory
+    paperPayload = ef.createPayload('paper')
+    records = ETahi.Setups.paperWithRoles(200, [])
+    paperPayload.addRecords(records.concat([fakeUser]))
+    data = Ember.merge(paperPayload.toJSON(), action: "updated")
 
     Ember.run =>
       es.msgResponse(data)
   andThen ->
-    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
+    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2, "paper with no roles does not show on dashboard"
 
 
 test 'When user is removed from collaborating on paper', ->
   ef = ETahi.Factory
-  [litePapers, dashboards] = createDashboardDataWithLitePaper(2)
 
   visit '/'
   .then ->
@@ -161,9 +120,11 @@ test 'When user is removed from collaborating on paper', ->
   andThen ->
     # receives eventstream push to remove collaboration
     [es, store] = setupEventStream()
-    data =
-      action: "destroyed"
-      lite_papers: [1]
+    ef = ETahi.Factory
+    paperPayload = ef.createPayload('paper')
+    records = ETahi.Setups.paperWithRoles(1, [])
+    paperPayload.addRecords(records.concat([fakeUser]))
+    data = Ember.merge(paperPayload.toJSON(), action: "updated")
 
     Ember.run =>
       es.msgResponse(data)

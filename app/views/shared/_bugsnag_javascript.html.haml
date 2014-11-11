@@ -7,8 +7,7 @@
 - else
   :javascript
     var Bugsnag = {}
-    Bugsnag['notify'] = function( error, label, metadata ) {
-      label = typeof label !== 'undefined' ? label : 'Uncaught Error'
-      console.log(label + ": " , error)
+    Bugsnag['notifyException'] = function( error, label, metadata ) {
+      label = typeof label !== 'undefined' ? label : 'Uncaught Error';
+      console.log(label + ": " , error);
     }
-

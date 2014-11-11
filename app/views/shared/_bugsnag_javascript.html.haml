@@ -4,3 +4,11 @@
   :javascript
     Bugsnag.releaseStage = "#{Rails.env}";
     Bugsnag.notifyReleaseStages = ["staging", "production"];
+- else
+  :javascript
+    var Bugsnag = {}
+    Bugsnag['notify'] = function( error, label, metadata ) {
+      label = typeof label !== 'undefined' ? label : 'Uncaught Error'
+      console.log(label + ": " , error)
+    }
+

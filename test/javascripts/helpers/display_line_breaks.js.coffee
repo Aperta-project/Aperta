@@ -1,4 +1,4 @@
-moduleFor 'helper:displayLineBreaks', 'Unit: Display line breaks',
+module 'helper:displayLineBreaks', 'Unit: Display line breaks',
   setup: -> setupApp()
   teardown: -> ETahi.reset()
 

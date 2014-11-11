@@ -14,21 +14,6 @@ TahiNotifier.subscribe(
   EventStream.new(action, klass, id, subscription_name).post
 end
 
-TahiNotifier.subscribe("supporting_information/file:*") do |subscription_name, payload|
-  action     = payload[:action]
-  id         = payload[:id]
-  paper_id   = payload[:paper_id]
-  meta       = payload[:meta]
-  klass      = payload[:klass]
-
-  record = klass.find(id)
-  serializer = record.event_stream_serializer.new(record)
-  EventStream.post_event(
-    Paper,
-    paper_id,
-    serializer.as_json.merge(action: action, meta: meta, subscription_name: subscription_name).to_json
-  )
-end
 
 TahiNotifier.subscribe("author:destroyed") do |subscription_name, payload|
   id         = payload[:id]

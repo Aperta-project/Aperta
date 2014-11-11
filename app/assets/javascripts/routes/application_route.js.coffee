@@ -22,9 +22,6 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       transition.abort()
       @get('spinner')?.stop()
 
-    showMessageCreationOverlay: (phase) ->
-      @send('showNewCardOverlay', 'newMessageTask', 'MessageTask', phase)
-
     showNewCardOverlay: (tmplName, taskType, phase) ->
       paper = @controllerFor('paperManage').get('model')
       newTaskParams = {phase: phase, type: taskType.replace(/^new/, ''), paper: paper}

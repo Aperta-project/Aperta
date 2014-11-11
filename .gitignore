@@ -21,3 +21,4 @@ solr/test/*
 solr/default/*
 config/database.yml
 coverage/
+.sass-cache

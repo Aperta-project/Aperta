@@ -13,6 +13,10 @@ class FlowsPolicy < ApplicationPolicy
     can_view_flow_manager?
   end
 
+  def update?
+    can_view_flow_manager?
+  end
+
   def destroy?
     can_view_flow_manager?
   end

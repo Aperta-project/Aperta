@@ -12,15 +12,18 @@ class FlowsController < ApplicationController
   end
 
   def create
-    if flow
-      flow.save!
-      render json: flow
-    else
-      head :bad_request
-    end
+    flow = current_user.flows.create! flow_template
+    render json: flow
+  end
+
+  def update
+    flow = Flow.find(params[:id])
+    flow.update flow_template
+    render json: flow
   end
 
   def destroy
+    flow = current_user.flows.where(id: params[:id]).first
     if flow
       flow.destroy
       head :no_content
@@ -34,22 +37,15 @@ class FlowsController < ApplicationController
   end
 
   private
-
-  def flow
-    @flow ||= begin
-      if params[:id].present?
-        current_user.flows.find_by(id: params[:id])
-      else
-        current_user.flows.build(Flow.templates[flow_params[:title].downcase])
-      end
-    end
-  end
-
   def flow_params
-    params.require(:flow).permit(:empty_text, :title)
+    params.require(:flow).permit(:title)
   end
 
   def policy
     ApplicationPolicy.find_policy(self.class, current_user)
+  end
+
+  def flow_template
+    Flow.templates[flow_params[:title].downcase]
   end
 end

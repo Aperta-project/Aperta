@@ -8,7 +8,8 @@ module EventStreamNotifier
     end
 
     def event_stream_payload
-      p = notifier_payload.merge({ action: action, klass: self.class.base_class, id: self.id })
+      p = { action: action, klass: self.class.base_class, id: self.id }
+      #TODO: can we remove this?
       if has_meta?
         p = p.merge({meta: { model_name: meta_type, id: meta_id }})
       end
@@ -17,11 +18,6 @@ module EventStreamNotifier
 
     def event_stream_serializer(user)
       active_model_serializer.new(self, user: user)
-    end
-
-    #TODO: can this be removed as part of the EventStream changes?
-    def notifier_payload
-      {}
     end
 
     def has_meta?

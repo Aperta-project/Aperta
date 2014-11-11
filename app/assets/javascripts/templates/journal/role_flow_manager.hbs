@@ -5,7 +5,12 @@
 <div class="flow-admin-content">
   <ul class="columns flow-admin">
     {{#each flow in model.flows}}
-    {{partial 'flow-column'}}
+      {{flow-column flow=flow
+                    litePaper=litePaper
+                    commentLooks=commentLooks
+                    editable=true
+                    saveFlow='saveFlow'
+                    viewCard='viewCard'}}
     {{/each}}
   </ul>
 </div>

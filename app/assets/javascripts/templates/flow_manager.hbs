@@ -13,6 +13,10 @@
 
 <ul class="columns">
   {{#each flow in content}}
-    {{partial 'flow-column'}}
+    {{flow-column flow=flow
+                  litePaper=litePaper
+                  commentLooks=commentLooks
+                  editable=false
+                  viewCard='viewCard'}}
   {{/each}}
 </ul>

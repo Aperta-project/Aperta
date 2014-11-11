@@ -18,3 +18,6 @@ ETahi.JournalRoleFlowManagerRoute = Ember.Route.extend
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('overlayBackground', 'journal.role_flow_manager')
       @transitionTo('task', paperId, task.get('id'))
+
+    saveFlow: (flow) ->
+      flow.save()

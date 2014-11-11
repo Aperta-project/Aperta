@@ -13,7 +13,6 @@ TahiNotifier.subscribe(
   EventStream.new(action, klass, id, subscription_name).post
 end
 
-
 TahiNotifier.subscribe(
   "author:destroyed",
   "task:destroyed",

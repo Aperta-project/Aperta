@@ -15,19 +15,15 @@ class DashboardSerializer < ActiveModel::Serializer
     most_recent_paper_roles.total_pages
   end
 
-  def user
-    if (defined? current_user) && current_user
-      current_user
-    else
-      options[:user] # user has been explicitly passed into serializer
-    end
-  end
-
   def papers
     most_recent_paper_roles.map(&:paper)
   end
 
   def most_recent_paper_roles
     PaperRole.most_recent_for(user).page(1)
+  end
+
+  def user
+    scope.presence || options[:user]
   end
 end

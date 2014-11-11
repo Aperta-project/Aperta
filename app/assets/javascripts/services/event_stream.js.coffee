@@ -104,15 +104,14 @@ ETahi.EventStream = Em.Object.extend
           @store.pushPayload(esData)
 
     destroyed: (esData)->
-      for key of esData
-        type = @get('applicationSerializer').typeForRoot(key)
-        esData[key].forEach (id) =>
-          if type == "task"
-            record = @store.findTask(id)
-          else
-            record = @store.getById(type, id)
-          if record
-            record.unloadRecord()
+      type = @get('applicationSerializer').typeForRoot(esData.type)
+      esData.ids.forEach (id) =>
+        if type == "task"
+          record = @store.findTask(id)
+        else
+          record = @store.getById(type, id)
+        if record
+          record.unloadRecord()
 
     meta: (modelName, id) ->
       Ember.run =>

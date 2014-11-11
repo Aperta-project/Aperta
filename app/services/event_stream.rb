@@ -11,12 +11,17 @@ class EventStream
 
   def post
     Accessibility.new(resource).users.each do |user|
-      EventStreamConnection.post_event(
-        User,
+      EventStreamConnection.post_user_event(
         user.id,
         payload_for(user)
       )
     end
+  end
+
+  def destroy
+    EventStreamConnection.post_system_event(
+      { action: "destroyed", type: klass.name.demodulize.underscore.pluralize, ids: [id], subscription_name: subscription_name }.to_json
+    )
   end
 
   def resource

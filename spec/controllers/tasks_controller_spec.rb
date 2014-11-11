@@ -9,7 +9,7 @@ describe TasksController, redis: true do
 
   before do
     sign_in user
-    allow(EventStreamConnection).to receive(:post_event)
+    allow(EventStreamConnection).to receive(:post_user_event)
   end
 
   describe "POST 'create'" do
@@ -50,7 +50,7 @@ describe TasksController, redis: true do
       do_request
       task.reload
       ts = TaskSerializer.new(task)
-      expect(EventStreamConnection).to have_received(:post_event).at_least(:once)
+      expect(EventStreamConnection).to have_received(:post_user_event).at_least(:once)
     end
 
     it "renders the task id and completed status as JSON" do

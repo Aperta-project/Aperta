@@ -1,5 +1,5 @@
 class PaperSerializer < ActiveModel::Serializer
-  attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :event_name, :editable
+  attributes :id, :short_title, :title, :body, :submitted, :paper_type, :status, :editable
 
   %i(phases figures authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -31,10 +31,5 @@ class PaperSerializer < ActiveModel::Serializer
   def collaborations
     # we want the actual join record, not a list of users
     object.paper_roles.collaborators
-  end
-
-  def event_name
-    # used by new paper collaborators to subscribe to future paper events
-    EventStreamConnection.stream_names(object)
   end
 end

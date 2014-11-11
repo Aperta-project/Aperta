@@ -16,7 +16,7 @@ describe EventStream do
     end
 
     it "sends a payload for the appropriate users" do
-      expect(EventStreamConnection).to receive(:post_event).exactly(2).times
+      expect(EventStreamConnection).to receive(:post_user_event).exactly(2).times
       stream.post
     end
   end

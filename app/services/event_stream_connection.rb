@@ -1,30 +1,24 @@
 class EventStreamConnection
 
-  def self.post_event(klass, id, json)
-    return unless enabled?
-    Thread.new do
-      Net::HTTP.post_form(
-        URI.parse(update_url),
-        stream: stream_name(klass, id), card: json, token: token
-      )
-    end
+  SYSTEM_CHANNEL_NAME = "system"
+
+  def self.post_user_event(id, json)
+    _post_event(channel_name(User, id), json)
   end
 
-  def self.connection_info(models)
+  def self.post_system_event(json)
+    _post_event(SYSTEM_CHANNEL_NAME, json)
+  end
+
+  def self.connection_info(user)
     {
       enabled: ENV["EVENT_STREAM_ENABLED"],
-      url: stream_url,
-      eventNames: stream_names(*models)
+      url: channel_url,
+      eventNames: [channel_name(user.class, user.id), SYSTEM_CHANNEL_NAME]
     }
   end
 
-  def self.stream_names(*models)
-    models.map do |model|
-      stream_name(model.class, model.id)
-    end
-  end
-
-  def self.stream_name(klass, id)
+  def self.channel_name(klass, id)
     "#{klass.name.underscore.downcase}_#{id}"
   end
 
@@ -36,7 +30,7 @@ class EventStreamConnection
     ENV["ES_URL"] || "http://localhost:8080"
   end
 
-  def self.stream_url
+  def self.channel_url
     url + "/stream?token=#{token}"
   end
 
@@ -46,5 +40,15 @@ class EventStreamConnection
 
   def self.enabled?
     ENV["EVENT_STREAM_ENABLED"] != "false"
+  end
+
+  def self._post_event(channel, json)
+    return unless enabled?
+    Thread.new do
+      Net::HTTP.post_form(
+        URI.parse(update_url),
+        stream: channel, card: json, token: token
+      )
+    end
   end
 end

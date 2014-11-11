@@ -19,12 +19,9 @@ TahiNotifier.subscribe("plos_authors/plos_author:created", "plos_authors/plos_au
 end
 
 TahiNotifier.subscribe("plos_authors/plos_author:destroyed") do |subscription_name, payload|
+  action     = payload[:action]
+  klass      = payload[:klass]
   id         = payload[:id]
-  paper_id   = payload[:paper_id]
 
-  EventStream.post_event(
-    Paper,
-    paper_id,
-    { action: "destroyed", plos_authors: [id], subscription_name: subscription_name }.to_json
-  )
+  EventStream.new(action, klass, id, subscription_name).destroy
 end

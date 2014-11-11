@@ -16,6 +16,7 @@ class PaperEventStreamSerializer < ActiveModel::Serializer
   has_one :journal, embed: :ids, include: false
   has_one :locked_by, embed: :id, include: true, root: :users
   has_one :striking_image, embed: :id, include: true, root: :figures
+  has_one :lite_paper, embed: :id, include: :true, user: :scoped_user, serializer: LitePaperSerializer
 
   def collaborations
     # we want the actual join record, not a list of users
@@ -24,5 +25,13 @@ class PaperEventStreamSerializer < ActiveModel::Serializer
 
   def status
     object.manuscript.try(:status)
+  end
+
+  def lite_paper
+    object
+  end
+
+  def scoped_user
+    scope.presence || options[:user]
   end
 end

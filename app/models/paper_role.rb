@@ -1,6 +1,4 @@
 class PaperRole < ActiveRecord::Base
-  include EventStreamNotifier
-
   REVIEWER = 'reviewer'
   EDITOR = 'editor'
   COLLABORATOR = 'collaborator'
@@ -9,7 +7,7 @@ class PaperRole < ActiveRecord::Base
   ALL_ROLES = [REVIEWER, EDITOR, COLLABORATOR, ADMIN]
 
   belongs_to :user, inverse_of: :paper_roles
-  belongs_to :paper, inverse_of: :paper_roles
+  belongs_to :paper, inverse_of: :paper_roles, touch: true
 
   validates :paper, presence: true
 
@@ -50,9 +48,5 @@ class PaperRole < ActiveRecord::Base
 
   def description
     role.capitalize
-  end
-
-  def event_stream_serializer(user)
-    LitePaperSerializer.new(self.paper, user: user)
   end
 end

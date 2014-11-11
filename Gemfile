@@ -84,6 +84,7 @@ group :development do
   gem 'kss-rails'
   gem 'letter_opener'
   gem 'rubocop', require: false
+  gem 'scss-lint', require: false
 end
 
 group :development, :test, :performance do

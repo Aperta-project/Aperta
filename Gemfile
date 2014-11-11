@@ -85,6 +85,7 @@ group :development do
   gem 'letter_opener'
   gem 'rubocop', require: false
   gem 'scss-lint', require: false
+  gem 'overcommit', require: false
 end
 
 group :development, :test, :performance do

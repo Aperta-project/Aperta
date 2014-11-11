@@ -15,19 +15,6 @@ class Comment < ActiveRecord::Base
     commenter_id == user.id
   end
 
-  def meta_type
-    self.class.name.demodulize
-  end
-
-  def has_meta?
-    true
-  end
-
-  def meta_id
-    self.id
-  end
-
-
   private
 
   def email_mentioned

@@ -8,28 +8,11 @@ module EventStreamNotifier
     end
 
     def event_stream_payload
-      p = { action: action, klass: self.class.base_class, id: self.id }
-      #TODO: can we remove this?
-      if has_meta?
-        p = p.merge({meta: { model_name: meta_type, id: meta_id }})
-      end
-      p
+      { action: action, klass: self.class.base_class, id: self.id }
     end
 
     def event_stream_serializer(user)
       active_model_serializer.new(self, user: user)
-    end
-
-    def has_meta?
-      false
-    end
-
-    def meta_type
-      nil
-    end
-
-    def meta_id
-      nil
     end
 
     private

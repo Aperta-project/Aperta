@@ -56,14 +56,9 @@ ETahi.EventStream = Em.Object.extend
 
   msgResponse: (esData) ->
     action = esData.action
-    meta = esData.meta
-    delete esData.meta
     delete esData.action
     delete esData.subscription_name
-    if meta
-      @eventStreamActions["meta"].call(@, meta.model_name, meta.id)
-    else
-      (@eventStreamActions[action] || ->).call(@, esData)
+    (@eventStreamActions[action] || ->).call(@, esData)
 
   createOrUpdateTask: (action, esData) ->
     taskId = esData.task.id
@@ -113,13 +108,5 @@ ETahi.EventStream = Em.Object.extend
         if record
           record.unloadRecord()
 
-    meta: (modelName, id) ->
-      Ember.run =>
-        if model = @store.getById(modelName, id)
-          model.reload()
-        else
-          @store.find(modelName, id)
-
     updateStreams: ->
       @resetChannels()
-

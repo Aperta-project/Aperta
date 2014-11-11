@@ -14,6 +14,8 @@
                  optionLabelPath="content.title"}}
         <button class="button-primary button--green" {{action "addTaskType" phase taskType}}>Add</button>
         <a class="button-link button--green cancel" {{action "closeAction"}}>cancel</a>
+      {{else}}
+        {{progress-spinner visible=true}}
       {{/if}}
   </div>
 </div>

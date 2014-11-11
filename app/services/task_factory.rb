@@ -1,7 +1,7 @@
 module TaskFactory
   def self.build_task(task_klass, task_params, user)
     role = find_role(task_klass, task_params[:phase_id])
-    task_factories(task_klass).build(task_params.merge(role: role), user)
+    task_factories(task_klass).build(task_klass, task_params.merge(role: role), user)
   end
 
   def self.task_factories(task_klass)

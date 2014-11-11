@@ -59,6 +59,9 @@ MESSAGE
   puts '\n== Marking this project"s binstubs as safe =='
   system 'mkdir -p .git/safe'
 
+  puts '\n== Adding pre-commit hook =='
+  system 'ln -s ../../bin/pre-commit .git/hooks/pre-commit'
+
   puts '\n== Preparing database =='
   system 'bin/rake db:setup'
   system 'bin/rake db:setup RAILS_ENV=test'

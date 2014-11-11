@@ -5,7 +5,8 @@ TahiNotifier.subscribe(
   "paper:created", "paper:updated",
   "paper_role:created", "paper_role:updated",
   "author:created", "author:updated",
-  "figure:created", "figure:updated") do |subscription_name, payload|
+  "figure:created", "figure:updated",
+  "question_attachment:created", "question_attachment:updated") do |subscription_name, payload|
   action     = payload[:action]
   klass      = payload[:klass]
   id         = payload[:id]
@@ -13,7 +14,7 @@ TahiNotifier.subscribe(
   EventStream.new(action, klass, id, subscription_name).post
 end
 
-TahiNotifier.subscribe("supporting_information/file:*", "question_attachment:*") do |subscription_name, payload|
+TahiNotifier.subscribe("supporting_information/file:*") do |subscription_name, payload|
   action     = payload[:action]
   id         = payload[:id]
   paper_id   = payload[:paper_id]

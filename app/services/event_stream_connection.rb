@@ -14,7 +14,7 @@ class EventStreamConnection
     {
       enabled: ENV["EVENT_STREAM_ENABLED"],
       url: channel_url,
-      eventNames: [channel_name(user.class, user.id), SYSTEM_CHANNEL_NAME]
+      channels: [channel_name(user.class, user.id), SYSTEM_CHANNEL_NAME]
     }
   end
 

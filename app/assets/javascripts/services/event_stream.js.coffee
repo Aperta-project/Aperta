@@ -1,7 +1,7 @@
 interval = 500
 ETahi.EventStream = Em.Object.extend
   eventSource: null
-  eventNames: null
+  channels: null
   messageQueue: null
   wait: false
   init: ->
@@ -26,7 +26,7 @@ ETahi.EventStream = Em.Object.extend
     Ember.run.later(@, 'processMessages', [], interval)
 
   shouldProcessMessage: (msg) ->
-    @get('eventNames').contains(msg.type) or msg.parsedData.action == 'destroyed'
+    @get('channels').contains(msg.type) or msg.parsedData.action == 'destroyed'
 
   pause: ->
     @set('wait', true)
@@ -47,9 +47,9 @@ ETahi.EventStream = Em.Object.extend
         return if data.enabled == 'false'
         @set('eventSource', new EventSource(data.url))
         Ember.$(window).unload => @stop()
-        @set('eventNames', data.eventNames)
-        Tahi.utils.debug("Event Stream: updated channels", data.eventNames)
-        data.eventNames.forEach (eventName) =>
+        @set('channels', data.channels)
+        Tahi.utils.debug("Event Stream: updated channels", data.channels)
+        data.channels.forEach (eventName) =>
           @addEventListener(eventName)
         @play()
     Ember.$.ajax(params)

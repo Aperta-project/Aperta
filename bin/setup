@@ -33,8 +33,7 @@ MESSAGE
   system 'go get github.com/tahi-project/golang-eventsource'
 
   system 'brew install node'
-  system 'npm install -g npm@latest'
-  system 'npm install -g bower'
+  system 'npm install'
 
   puts '== Installing gems =='
   system 'gem install bundler --conservative'

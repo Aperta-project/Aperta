@@ -1,7 +1,4 @@
-class Flow < ActiveRecord::Base
-  attr_accessor :papers
-  belongs_to :user, inverse_of: :flows
-  belongs_to :role, inverse_of: :flows
+module FlowTemplate
 
   def self.templates
     {
@@ -15,5 +12,12 @@ class Flow < ActiveRecord::Base
         {title:"Done", empty_text: "There is no recent activity to report."}
     }
   end
-end
 
+  def self.template(title)
+    templates.fetch(title.downcase, {title: "Invalid", empty_text: "invalid"})
+  end
+
+  def self.valid_titles
+    templates.values.map { |v| v[:title] }
+  end
+end

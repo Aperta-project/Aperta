@@ -1,7 +1,5 @@
 a = DS.attr
 ETahi.LitePaper = DS.Model.extend
-  flow: DS.belongsTo('flow')
-
   title: a('string')
   shortTitle: a('string')
   submitted: a('boolean')

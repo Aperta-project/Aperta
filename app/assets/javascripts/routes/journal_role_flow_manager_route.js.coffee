@@ -5,6 +5,12 @@ ETahi.JournalRoleFlowManagerRoute = Ember.Route.extend
   afterModel: (model) ->
     model.get('flows')
 
+  renderTemplate: ->
+    @_super()
+    @render 'role-flow-manager-buttons',
+      outlet: 'controlBarButtons'
+      template: 'journal'
+
   setupController: (controller, model) ->
     controller.setProperties
       model: model
@@ -21,3 +27,14 @@ ETahi.JournalRoleFlowManagerRoute = Ember.Route.extend
 
     saveFlow: (flow) ->
       flow.save()
+
+    removeFlow: (flow) ->
+      flow.destroyRecord()
+
+    addFlow: ->
+      flow = @store.createRecord 'roleFlow',
+        title: 'Up for grabs'
+        role: @modelFor('journal.role_flow_manager')
+      flow.save().then (flow) => # SSOT workaround
+        flow.get('role.flows').addObject(flow)
+

@@ -1,0 +1,1 @@
+class UserFlowSerializer < FlowSerializer; end

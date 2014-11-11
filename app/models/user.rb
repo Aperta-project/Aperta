@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   has_many :user_roles, inverse_of: :user
   has_many :roles, through: :user_roles
   has_many :journals, ->{ uniq }, through: :roles
-  has_many :flows, inverse_of: :user, dependent: :destroy
+  has_many :flows, class_name: 'UserFlow', inverse_of: :user, dependent: :destroy
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many :participations, inverse_of: :participant, foreign_key: 'participant_id'
   has_many :tasks, through: :participations
@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
   private
 
   def add_flows
-    [Flow.templates.values].each do |attrs|
+    [FlowTemplate.templates.values].each do |attrs|
       flows.create!(attrs)
     end
   end

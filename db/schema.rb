@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141110211337) do
+ActiveRecord::Schema.define(version: 20141111210731) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,13 +33,6 @@ ActiveRecord::Schema.define(version: 20141110211337) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "author_groups", force: true do |t|
-    t.string  "name"
-    t.integer "paper_id"
-  end
-
-  add_index "author_groups", ["paper_id"], name: "index_author_groups_on_paper_id", using: :btree
 
   create_table "author_paper", force: true do |t|
   end
@@ -98,17 +91,6 @@ ActiveRecord::Schema.define(version: 20141110211337) do
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
 
-  create_table "flows", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "title"
-    t.string   "empty_text"
-    t.integer  "user_id"
-    t.integer  "role_id"
-  end
-
-  add_index "flows", ["role_id"], name: "index_flows_on_role_id", using: :btree
-
   create_table "ihat_jobs", force: true do |t|
     t.integer  "paper_id"
     t.string   "job_id"
@@ -156,16 +138,6 @@ ActiveRecord::Schema.define(version: 20141110211337) do
     t.string   "status",     default: "processing"
   end
 
-  create_table "message_participants", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "task_id"
-    t.integer  "participant_id"
-  end
-
-  add_index "message_participants", ["participant_id"], name: "index_message_participants_on_participant_id", using: :btree
-  add_index "message_participants", ["task_id"], name: "index_message_participants_on_task_id", using: :btree
-
   create_table "paper_reviews", force: true do |t|
     t.integer  "task_id"
     t.text     "body"
@@ -203,16 +175,15 @@ ActiveRecord::Schema.define(version: 20141110211337) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.integer  "striking_image_id"
     t.datetime "last_heartbeat_at"
+    t.integer  "striking_image_id"
     t.boolean  "editable",          default: true
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
-  create_table "participations", id: false, force: true do |t|
-    t.integer  "id",             default: "nextval('participations_id_seq'::regclass)", null: false
+  create_table "participations", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "task_id"
@@ -290,6 +261,12 @@ ActiveRecord::Schema.define(version: 20141110211337) do
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
 
+  create_table "role_flows", force: true do |t|
+    t.string  "title"
+    t.string  "empty_text"
+    t.integer "role_id"
+  end
+
   create_table "roles", force: true do |t|
     t.string   "name"
     t.integer  "journal_id"
@@ -362,6 +339,14 @@ ActiveRecord::Schema.define(version: 20141110211337) do
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
 
+  create_table "user_flows", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "title"
+    t.string   "empty_text"
+    t.integer  "user_id"
+  end
+
   create_table "user_roles", force: true do |t|
     t.integer  "user_id"
     t.datetime "created_at"
@@ -389,8 +374,8 @@ ActiveRecord::Schema.define(version: 20141110211337) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
+    t.boolean  "site_admin",             default: false, null: false
     t.string   "avatar"
-    t.boolean  "site_admin",             default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

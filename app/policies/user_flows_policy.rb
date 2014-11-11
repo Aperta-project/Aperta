@@ -1,4 +1,4 @@
-class FlowsPolicy < ApplicationPolicy
+class UserFlowsPolicy < ApplicationPolicy
   def index?
     can_view_flow_manager?
   end
@@ -25,7 +25,7 @@ class FlowsPolicy < ApplicationPolicy
 
   def serializer
     if super_admin?
-      FlowSerializer
+      UserFlowSerializer
     elsif can_administer_any_journal?
       JournalAdminFlowSerializer
     end

@@ -10,4 +10,4 @@ ETahi.Role = DS.Model.extend
 
   journal: DS.belongsTo('adminJournal')
   userRoles: DS.hasMany('userRole')
-  flows: DS.hasMany('flow', async: true)
+  flows: DS.hasMany('roleFlow', async: true)

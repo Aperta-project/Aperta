@@ -22,31 +22,6 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       transition.abort()
       @get('spinner')?.stop()
 
-    showNewCardOverlay: (tmplName, taskType, phase) ->
-      paper = @controllerFor('paperManage').get('model')
-      newTaskParams = {phase: phase, type: taskType.replace(/^new/, ''), paper: paper}
-      newTask = @store.createRecord(taskType, newTaskParams)
-      controllerName = 'newCardOverlay'
-      if taskType == 'MessageTask'
-        controllerName = 'newMessageCardOverlay'
-        currentUser = @getCurrentUser()
-        @store.createRecord('participation', participant: currentUser, task: newTask)
-        newTask.get('comments').pushObject(@store.createRecord('comment', commenter: currentUser))
-
-      taskParticipations = @store.filter 'participation', (part) ->
-        part.get('task') == newTask
-
-      @controllerFor(controllerName).setProperties({
-        model: newTask
-        paper: paper
-        participations: taskParticipations
-      })
-
-      @render(tmplName,
-        into: 'application'
-        outlet: 'overlay'
-        controller: controllerName)
-
     closeOverlay: ->
       @animateOverlayOut().then =>
         @disconnectOutlet

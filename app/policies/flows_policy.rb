@@ -1,4 +1,6 @@
 class FlowsPolicy < ApplicationPolicy
+  primary_resource :flow
+
   def index?
     can_view_flow_manager?
   end

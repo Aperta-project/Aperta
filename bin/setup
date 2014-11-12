@@ -66,6 +66,6 @@ MESSAGE
   system 'bin/rake db:setup RAILS_ENV=test'
 
   puts '\n== Removing old logs and tempfiles =='
-  system 'rm -f log/*'
+  system 'rm -f log/**/*'
   system 'rm -rf tmp/cache'
 end

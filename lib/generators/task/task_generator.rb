@@ -14,7 +14,9 @@ class TaskGenerator < Rails::Generators::Base
 
   def generate_files
     template "model.rb",            "#{new_path}/app/models/#{engine_file_name}/#{file_name}_task.rb"
+    template "subscriptions.rb",    "#{new_path}/app/models/subscriptions.rb"
     template "serializer.rb",       "#{new_path}/app/serializers/#{engine_file_name}/#{file_name}_task_serializer.rb"
+    template "policy.rb",           "#{new_path}/app/policies/#{engine_file_name}/#{file_name}_tasks_policy.rb"
     template "ember/model.js",      "#{new_path}/app/assets/javascripts/#{engine_file_name}/models/#{file_name}_task.js"
     template "ember/view.js",       "#{new_path}/app/assets/javascripts/#{engine_file_name}/views/overlays/#{file_name}_overlay_view.js"
     template "ember/controller.js", "#{new_path}/app/assets/javascripts/#{engine_file_name}/controllers/overlays/#{file_name}_overlay_controller.js"

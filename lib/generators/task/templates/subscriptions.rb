@@ -8,7 +8,6 @@
 #   EventStream.new(action, klass, id, subscription_name).post
 # end
 
-
 # TahiNotifier.subscribe("mytask:destroyed") do |subscription_name, payload|
 #   action     = payload[:action]
 #   klass      = payload[:klass]

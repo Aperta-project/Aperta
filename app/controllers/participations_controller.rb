@@ -31,11 +31,13 @@ class ParticipationsController < ApplicationController
   end
 
   def participation
-    @participation ||= if params[:id].present?
-                         Participation.find(params[:id])
-                       else
-                         participation = task.participations.build(participation_params)
-                       end
+    @participation ||= begin
+      if params[:id].present?
+       Participation.find(params[:id])
+      else
+       task.participations.build(participation_params)
+      end
+    end
   end
 
   def participation_params

@@ -23,3 +23,6 @@ ETahi.FlowColumnComponent = Ember.Component.extend
       flow = @get('flow')
       flow.set('title', selectedName.text)
       @sendAction 'saveFlow', flow
+
+    removeFlow: (flow) ->
+      @sendAction 'removeFlow', flow

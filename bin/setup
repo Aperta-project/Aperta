@@ -62,8 +62,10 @@ MESSAGE
   system 'overcommit .'
 
   puts '\n== Preparing database =='
-  system 'bin/rake db:setup'
+  system 'bundle exec sunspot-solr start -p 8982'
+  system 'sleep 10; bin/rake db:setup'
   system 'bin/rake db:setup RAILS_ENV=test'
+  system 'bundle exec sunspot-solr stop'
 
   puts '\n== Removing old logs and tempfiles =='
   system 'rm -f log/**/*'

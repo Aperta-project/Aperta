@@ -1,5 +1,5 @@
 class FlowsPolicy < ApplicationPolicy
-  primary_resource :flow
+  allow_params :flow
 
   def index?
     can_view_flow_manager?

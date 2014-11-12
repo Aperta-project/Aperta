@@ -26,7 +26,7 @@ class ApplicationPolicy
   end
 
   def self.permitted_params
-    self.allowed_params.to_a + self.required_params.to_a + [self.primary_resource_name, :resource]
+    allowed_params.to_a + required_params.to_a + [primary_resource_name, :resource]
   end
 
   def self.find_policy(controller_class, user, args={})

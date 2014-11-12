@@ -33,9 +33,9 @@ class ParticipationsController < ApplicationController
   def participation
     @participation ||= begin
       if params[:id].present?
-       Participation.find(params[:id])
+        Participation.find(params[:id])
       else
-       task.participations.build(participation_params)
+        task.participations.build(participation_params)
       end
     end
   end

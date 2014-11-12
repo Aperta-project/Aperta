@@ -11,6 +11,6 @@ class Author < ActiveRecord::Base
   end
 
   def event_stream_serializer(user)
-    AuthorsSerializer.new(self.paper.authors, user: user, root: :authors)
+    AuthorsSerializer.new(paper.authors, user: user, root: :authors)
   end
 end

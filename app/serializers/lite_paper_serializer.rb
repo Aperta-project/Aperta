@@ -5,7 +5,8 @@ class LitePaperSerializer < ActiveModel::Serializer
     scoped_user.paper_roles.where(paper: object).order(created_at: :desc).pluck(:created_at).first
   end
 
-  #TODO: this method does not include a tooltip if user is related to paper by just being a task participant (see pivotal #82588944)
+  #TODO: this method does not include a tooltip if user is related to paper
+  #      by just being a task participant (see pivotal #82588944)
   def roles
     # rocking this in memory because eager-loading
     roles = object.paper_roles.select { |role|

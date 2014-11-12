@@ -4,7 +4,14 @@
 
 ### Initial Setup
 
-- Clone the repo
+- Clone the repo, then run
+
+```console
+./bin/setup
+```
+
+Alternatively:
+
 - `brew install imagemagick --with-libtiff`
 - Most of the javascript for the app is being handled by Bower.  You'll need to
   have node installed
@@ -25,7 +32,12 @@ in order to proceed.  `brew install node` and then `npm install bower -g`
 You will need:
 
 - Go (`brew install go` is easiest) with your
-  [$GOPATH](http://golang.org/doc/code.html#GOPATH) environment variable set.
+  [$GOPATH](http://golang.org/doc/code.html#GOPATH) environment variable set:
+
+```shell
+  export GOPATH="$HOME/go"
+  export PATH=$PATH:$GOPATH/bin
+```
 - Add the go binary to your $PATH.  If you used brew it'll tell you to do this
   already.
 - `$ go get github.com/tahi-project/golang-eventsource` to put the event server

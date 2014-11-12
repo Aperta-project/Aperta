@@ -1,0 +1,73 @@
+#!/usr/bin/env ruby
+require 'pathname'
+require 'active_support/core_ext/object/blank'
+
+mac_os = `uname`.chomp == 'Darwin'
+fail 'This setup script is only designed for Mac OS.' unless mac_os
+
+# path to your application root.
+APP_ROOT = Pathname.new File.expand_path('../../',  __FILE__)
+
+Dir.chdir APP_ROOT do
+  # This script is a starting point to setup your application.
+  # Add necessary setup steps to this file:
+
+  puts '== Installing dependencies =='
+
+  system 'brew install imagemagick --with-libtiff'
+  system 'brew install postgresql'
+  system 'brew install solr'
+  system 'brew install redis'
+
+  system 'brew install go'
+  if ENV['GOPATH'].blank?
+    puts <<MESSAGE
+ Error: Please ensure your $GOPATH is configured correctly and run again.
+ Add the following to your shell initialization file (.bashrc, .zshrc, etc)
+
+    export GOPATH="$HOME/go"
+    export PATH=$PATH:$GOPATH/bin
+MESSAGE
+    Kernel.exit
+  end
+  system 'go get github.com/tahi-project/golang-eventsource'
+
+  system 'brew install node'
+  system 'npm install'
+
+  puts '== Installing gems =='
+  system 'gem install bundler --conservative'
+  system 'bundle check || bundle install'
+
+  puts '\n== Creating the tahi PostgreSQL user =='
+  system 'createuser -s -r tahi'
+
+  puts '\n== Copying sample files =='
+
+  unless File.exist?('config/database.yml')
+    system 'cp config/database.yml.sample config/database.yml'
+  end
+
+  unless File.exist?('.env.development')
+    system 'cp .env-sample .env.development'
+  end
+
+  puts '\n== Add binstubs to PATH in ~/.zshenv like this: =='
+  puts 'export PATH=\".git/safe/../../bin:$PATH\"'
+
+  puts '\n== Marking this project"s binstubs as safe =='
+  system 'mkdir -p .git/safe'
+
+  puts '\n== Adding pre-commit hook =='
+  system 'overcommit .'
+
+  puts '\n== Preparing database =='
+  system 'bundle exec sunspot-solr start -p 8982'
+  system 'sleep 10; bin/rake db:setup'
+  system 'bin/rake db:setup RAILS_ENV=test'
+  system 'bundle exec sunspot-solr stop'
+
+  puts '\n== Removing old logs and tempfiles =='
+  system 'rm -f log/**/*'
+  system 'rm -rf tmp/cache'
+end

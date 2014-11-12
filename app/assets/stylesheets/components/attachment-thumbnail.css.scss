@@ -190,6 +190,8 @@
   float: left;
   width: 40%;
 
+  img { max-width: 100%; }
+
   &:hover {
     min-height: 50px;
 

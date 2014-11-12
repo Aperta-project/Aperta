@@ -23,7 +23,7 @@ class Accessibility
   end
 
   def connected_users
-    policy.connected_users.compact.uniq
+    policy.connected_users.uniq.to_a.compact
   end
 
   def policy_klass

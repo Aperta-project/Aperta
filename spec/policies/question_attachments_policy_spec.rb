@@ -4,13 +4,15 @@ describe QuestionAttachmentsPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
-  let(:task) { create(:task, phase: phase) }
+  let(:task) { FactoryGirl.create(:task, phase: phase) }
   let(:user) { FactoryGirl.create(:user) }
-  let(:policy) { QuestionAttachmentsPolicy.new(current_user: user, task: task) }
+  let(:question) { FactoryGirl.create(:question, task: task) }
+  let(:question_attachment) { FactoryGirl.create(:question_attachment, question: question) }
+  let(:policy) { QuestionAttachmentsPolicy.new(current_user: user, resource: question_attachment) }
 
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
-    include_examples "person who can manage question attachments" 
+    include_examples "person who can manage question attachments"
   end
 
   context "paper collaborator" do
@@ -19,13 +21,13 @@ describe QuestionAttachmentsPolicy do
     before do
       allow(task).to receive(:is_metadata?).and_return true
     end
-    include_examples "person who can manage question attachments" 
+    include_examples "person who can manage question attachments"
 
     context "on a non metadata task" do
       before do
         allow(task).to receive(:is_metadata?).and_return false
       end
-      include_examples "person who cannot manage question attachments" 
+      include_examples "person who cannot manage question attachments"
     end
   end
 
@@ -37,11 +39,11 @@ describe QuestionAttachmentsPolicy do
       )
     end
 
-    include_examples "person who can manage question attachments" 
+    include_examples "person who can manage question attachments"
   end
 
   context "user no role" do
-    include_examples "person who cannot manage question attachments" 
+    include_examples "person who cannot manage question attachments"
   end
 
   context "user with role on different journal" do
@@ -53,6 +55,6 @@ describe QuestionAttachmentsPolicy do
       )
       end
 
-    include_examples "person who cannot manage question attachments" 
+    include_examples "person who cannot manage question attachments"
   end
 end

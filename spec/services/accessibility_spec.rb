@@ -13,7 +13,11 @@ describe Accessibility do
     end
 
     context "without connected_users" do
-      before { class FakeResourcesPolicy < ApplicationPolicy; end }
+      before do
+        class FakeResourcesPolicy < ApplicationPolicy
+          primary_resource :fake_resource
+        end
+      end
       after  { Object.send(:remove_const, :FakeResourcesPolicy) }
 
       it "will error" do
@@ -28,6 +32,7 @@ describe Accessibility do
     before do
       class FakeResource; end
       class FakeResourcesPolicy < ApplicationPolicy
+        primary_resource :fake_resource
         def connected_users
           User.all
         end

@@ -23,11 +23,13 @@ class CommentsController < ApplicationController
   end
 
   def comment
-    @comment ||= if params[:id].present?
-                   Comment.find(params[:id])
-                 else
-                   task.comments.build(comment_params)
-                 end
+    @comment ||= begin
+      if params[:id].present?
+        Comment.find(params[:id])
+      else
+        task.comments.build(comment_params)
+      end
+    end
   end
 
   def comment_params

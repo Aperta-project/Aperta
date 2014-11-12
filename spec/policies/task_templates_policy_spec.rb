@@ -4,7 +4,7 @@ describe TaskTemplatesPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:manuscript_manager_template) { FactoryGirl.create(:manuscript_manager_template, journal: journal) }
   let(:phase_template) { FactoryGirl.create(:phase_template, manuscript_manager_template: manuscript_manager_template) }
-  let(:task_template) { FactoryGirl.create(:task_template, phase_template: phase_template, journal_task_type: journal.journal_task_types.first) }
+  let(:task_template) { FactoryGirl.build(:task_template, phase_template: phase_template, journal_task_type: journal.journal_task_types.first) }
   let(:policy) { TaskTemplatesPolicy.new(current_user: user, task_template: task_template) }
 
   context "admin" do

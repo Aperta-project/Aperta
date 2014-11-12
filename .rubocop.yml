@@ -5,15 +5,17 @@ AllCops:
     - 'test/**/*'
     - 'vendor/assets/**/*'
     - 'db/schema.rb'
-Metrics/LineLength:
-  Max: 120
-Style/StringLiterals:
-  Enabled: false
-Documentation:
-  Enabled: false
-StringLiterals:
-  Enabled: false
 Blocks:
   Enabled: false
 ClassAndModuleChildren:
+  Enabled: false
+Documentation:
+  Enabled: false
+Metrics/LineLength:
+  Max: 120
+StringLiterals:
+  Enabled: false
+Style/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+Style/StringLiterals:
   Enabled: false

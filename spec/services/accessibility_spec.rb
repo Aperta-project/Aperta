@@ -31,11 +31,14 @@ describe Accessibility do
 
     before do
       class FakeResource; end
+
       class FakeResourcesPolicy < ApplicationPolicy
         primary_resource :fake_resource
+
         def connected_users
           User.all
         end
+
         def teleport?
           current_user == User.last
         end

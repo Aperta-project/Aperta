@@ -32,5 +32,4 @@ class Accessibility
   rescue NameError
     raise ApplicationPolicy::ApplicationPolicyNotFound, "Could not find #{klass_name} for #{resource}"
   end
-
 end

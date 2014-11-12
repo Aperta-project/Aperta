@@ -20,7 +20,10 @@ class EventStream
 
   def destroy
     EventStreamConnection.post_system_event(
-      { action: "destroyed", type: klass.name.demodulize.tableize, ids: [id], subscription_name: subscription_name }.to_json
+      { action: "destroyed",
+        type: klass.name.demodulize.tableize,
+        ids: [id],
+        subscription_name: subscription_name }.to_json
     )
   end
 

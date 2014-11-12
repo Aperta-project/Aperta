@@ -1,5 +1,4 @@
 class EventStreamConnection
-
   SYSTEM_CHANNEL_NAME = "system"
 
   def self.post_user_event(id, json)

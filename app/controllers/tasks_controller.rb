@@ -94,6 +94,6 @@ class TasksController < ApplicationController
     return unless JournalTaskType.find_by!(kind: params[:task][:type])
     task_klass =  params[:task][:type].constantize
     sanitized_params = task_params(task_klass.new)
-    authorize_action!(task: Task.new(sanitized_params))
+    authorize_action!(task: task_klass.new(sanitized_params))
   end
 end

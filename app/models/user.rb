@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
   private
 
   def add_flows
-    [FlowTemplate.templates.values].each do |attrs|
+    FlowTemplate.templates.values.each do |attrs|
       flows.create!(attrs)
     end
   end

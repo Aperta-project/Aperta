@@ -16,12 +16,8 @@ class RoleFlowsController < ApplicationController
 
   def update
     flow = RoleFlow.find(params[:id])
-    flow.update flow_template
-    if flow.valid?
-      render json: flow
-    else
-      head 422
-    end
+    flow.update! flow_template
+    render json: flow
   end
 
   def destroy

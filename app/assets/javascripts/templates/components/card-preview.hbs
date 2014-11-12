@@ -3,7 +3,7 @@
   <div class="card-completed-icon"></div>
   {{task.title}}
   {{#if canRemoveCard }}
-    <span {{action "removeTask" task}}
+    <span {{action "promptDelete" task bubbles=false}}
       class="card-remove"
       data-toggle="tooltip"
       data-placement="right"

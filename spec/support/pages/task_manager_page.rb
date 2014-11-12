@@ -21,6 +21,10 @@ class TaskManagerPage < Page
     TaskManagerPage.new.phases.count
   end
 
+  def card_count
+    all(".card").size
+  end
+
   def tasks
     retry_stale_element do
       all('.card').map(&:text)

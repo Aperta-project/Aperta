@@ -13,8 +13,15 @@ class RolesController < ApplicationController
   end
 
   def update
-    role.update_attributes(role_params)
-    respond_with role
+    Role.transaction do
+      role.assign_attributes(role_params)
+      if role.can_view_flow_manager_changed?(from: false, to: true)
+        RoleFlow.create_default_flows!(role)
+      end
+      role.save!
+    end
+
+    render json: role
   end
 
   def destroy

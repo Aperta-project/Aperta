@@ -4,9 +4,9 @@ class IhatJobsController < ApplicationController
 
   include RestrictAccess
 
-  def update
-    job = IhatJob.find_by(job_id: params[:id])
-    PaperUpdateWorker.perform_async(params[:id])
-    head :ok
+  def ihat_callback
+    paper_id = params[:state][:paper_id]
+    job_id = params[:job_id]
+    PaperUpdateWorker.perform_async(paper_id, job_id)
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141028142236) do
+ActiveRecord::Schema.define(version: 20141106201601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,17 @@ ActiveRecord::Schema.define(version: 20141028142236) do
     t.string   "access_token"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "attachments", force: true do |t|
+    t.string   "file"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "title"
+    t.string   "caption"
+    t.string   "status",          default: "processing"
   end
 
   create_table "author_paper", force: true do |t|
@@ -278,6 +289,7 @@ ActiveRecord::Schema.define(version: 20141028142236) do
     t.boolean  "can_view_assigned_manuscript_managers", default: false,    null: false
     t.boolean  "can_view_all_manuscript_managers",      default: false,    null: false
     t.string   "kind",                                  default: "custom", null: false
+    t.boolean  "can_view_flow_manager",                 default: false,    null: false
   end
 
   add_index "roles", ["kind"], name: "index_roles_on_kind", using: :btree

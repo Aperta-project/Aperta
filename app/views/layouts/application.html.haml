@@ -1,11 +1,12 @@
 !!!
-%html{ class: "auth bg-#{(rand() * 3).to_i + 1}"}
+%html{ class: "bg-#{(rand() * 3).to_i + 1}"}
   %head
     %title Tahi
-    = stylesheet_link_tag "application", media: "all"
-    = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Cabin:400,700,400italic"
+    = stylesheet_link_tag "auth", media: "all"
+    = stylesheet_link_tag "//fonts.googleapis.com/css?family=Cabin:400,700,400italic"
     = csrf_meta_tags
     = render 'layouts/segment_io'
+    = render 'shared/bugsnag_javascript'
   %body.sessions
     #tahi-container{class: yield(:tahi_container_class)}
       = yield

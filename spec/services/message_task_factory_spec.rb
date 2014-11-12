@@ -19,7 +19,7 @@ describe TaskFactory::MessageTaskFactory do
           phase_id: phase.id }
       end
       let(:result) do
-        TaskFactory::MessageTaskFactory.build(msg_params, user)
+        TaskFactory::MessageTaskFactory.build(MessageTask, msg_params, user)
       end
 
       context "with a message subject and body" do

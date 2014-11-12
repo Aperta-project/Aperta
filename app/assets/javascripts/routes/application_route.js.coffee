@@ -3,6 +3,7 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
     controller.set('model', model)
     if @getCurrentUser? && @getCurrentUser()
       ETahi.RESTless.authorize(controller, '/admin/journals/authorization', 'canViewAdminLinks')
+      ETahi.RESTless.authorize(controller, '/flows/authorization', 'canViewFlowManagerLink')
 
   actions:
     loading: (transition, originRoute) ->
@@ -20,34 +21,6 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       @logError(transitionMsg + "\n" + response.message + "\n" + response.stack + "\n")
       transition.abort()
       @get('spinner')?.stop()
-
-    showMessageCreationOverlay: (phase) ->
-      @send('showNewCardOverlay', 'newMessageTask', 'MessageTask', phase)
-
-    showNewCardOverlay: (tmplName, taskType, phase) ->
-      paper = @controllerFor('paperManage').get('model')
-      newTaskParams = {phase: phase, type: taskType.replace(/^new/, ''), paper: paper}
-      newTask = @store.createRecord(taskType, newTaskParams)
-      controllerName = 'newCardOverlay'
-      if taskType == 'MessageTask'
-        controllerName = 'newMessageCardOverlay'
-        currentUser = @getCurrentUser()
-        @store.createRecord('participation', participant: currentUser, task: newTask)
-        newTask.get('comments').pushObject(@store.createRecord('comment', commenter: currentUser))
-
-      taskParticipations = @store.filter 'participation', (part) ->
-        part.get('task') == newTask
-
-      @controllerFor(controllerName).setProperties({
-        model: newTask
-        paper: paper
-        participations: taskParticipations
-      })
-
-      @render(tmplName,
-        into: 'application'
-        outlet: 'overlay'
-        controller: controllerName)
 
     closeOverlay: ->
       @animateOverlayOut().then =>

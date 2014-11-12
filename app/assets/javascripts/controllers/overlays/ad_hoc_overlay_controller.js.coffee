@@ -1,6 +1,10 @@
-ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTemplate,
+ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTemplate, ETahi.FileUploadMixin,
   needs: ['task']
   blocks: Ember.computed.alias('body')
+
+  imageUploadUrl: (->
+    "/tasks/#{@get('model.id')}/attachments"
+  ).property()
 
   isNewTask: Em.computed.alias 'controllers.task.isNewTask'
 
@@ -25,3 +29,14 @@ ETahi.AdHocOverlayController = ETahi.TaskController.extend ETahi.BuildsTaskTempl
 
     sendEmail: (data) ->
       ETahi.RESTless.putModel(@get('model'), "/send_message", task: data)
+
+    destroyAttachment: (attachment) ->
+      attachment.destroyRecord()
+
+    uploadFinished: (data, filename) ->
+      @uploadFinished(data, filename)
+
+      @store.pushPayload('attachment', data)
+      attachment = @store.getById('attachment', data.attachment.id)
+
+      @get('model.attachments').pushObject(attachment)

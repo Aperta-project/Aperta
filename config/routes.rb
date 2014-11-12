@@ -31,11 +31,15 @@ Tahi::Application.routes.draw do
 
 
   get '/flow_manager' => 'ember#index'
+  get '/flows/authorization' => 'flows#authorization'
   get '/profile' => 'ember#index'
 
   get '/request_policy' => 'direct_uploads#request_policy'
 
-  get 'filtered_users/users/:paper_id' => 'filtered_users#users', as: "filtered_users"
+  get 'filtered_users/users/:paper_id' => 'filtered_users#users'
+  get 'filtered_users/editors/:journal_id' => 'filtered_users#editors'
+  get 'filtered_users/admins/:journal_id' => 'filtered_users#admins'
+  get 'filtered_users/reviewers/:journal_id' => 'filtered_users#reviewers'
 
   resources :flows, only: [:index, :destroy, :create]
   resources :authors, only: [:create, :update, :destroy]
@@ -102,10 +106,16 @@ Tahi::Application.routes.draw do
   resources :participations, only: [:create, :show, :destroy]
 
   resources :tasks, only: [:update, :create, :show, :destroy] do
+    resources :attachments, only: [:create]
     member do
       put :send_message
     end
   end
+
+  # Ember destroys the ember models before calling buildUrl
+  # therefore it is not possible to resolve task/:task_id/attchment/:id
+  # on the client.
+  resources :attachments, only: [:destroy]
 
   resources :phases, only: [:create, :update, :show, :destroy]
 

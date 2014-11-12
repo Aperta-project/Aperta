@@ -6,6 +6,7 @@ ETahi.Role = DS.Model.extend
   required: a('boolean')
   canViewAssignedManuscriptManagers: a('boolean')
   canViewAllManuscriptManagers: a('boolean')
+  canViewFlowManager: a('boolean')
 
   journal: DS.belongsTo('adminJournal')
   userRoles: DS.hasMany('userRole')

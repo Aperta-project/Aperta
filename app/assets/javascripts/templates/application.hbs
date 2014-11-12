@@ -1,6 +1,6 @@
 <div class="navigation">
   <div class="navigation-title" {{action "toggleNavigation"}}>
-    <span class="glyphicon glyphicon-remove"></span>Tahi
+    <span class="navigation-close">&times;</span>Tahi
   </div>
 
   {{#if isLoggedIn}}
@@ -11,8 +11,10 @@
 
     <a href="#" class="navigation-item" {{action "routeTo" "index"}}>Dashboard</a>
 
-    {{#if canViewAdminLinks}}
+    {{#if canViewFlowManagerLink}}
       <a href="#" class="navigation-item" {{action "routeTo" "flow_manager"}}>Flow Manager</a>
+    {{/if}}
+    {{#if canViewAdminLinks}}
       <a href="#" class="navigation-item navigation-item-admin" {{action "routeTo" "admin"}}>Admin</a>
     {{/if}}
 

@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
 
   include UserDevise
   searchable do
+    integer :id
     text :username, :first_name, :last_name, :email
     text :full_name do
       full_name
@@ -46,6 +47,10 @@ class User < ActiveRecord::Base
 
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def can_view_flow_manager?
+    roles.can_view_flow_manager.present?
   end
 
   def auto_generate_password(length=10)

@@ -2,9 +2,9 @@
   overflow: auto;
   @include position(fixed, 0px auto 0px -280px);
   width: $tahi-navigation-width;
-  background: #282828;
+  background: rgba(30,30,30, 0.92);
   z-index: z($z-layer-navigation);
-  @include transition(left 0.3s);
+  @include transition(left 0.2s);
   @include user-select(none);
 
   hr {
@@ -37,10 +37,11 @@
     color: #fff;
     text-decoration: none;
   }
+}
 
-  .glyphicon {
-    @include position(absolute, 20px auto auto 30px);
-  }
+.navigation-close {
+  @include position(absolute, -10px auto auto 30px);
+  font-size: 54px;
 }
 
 .navigation-item {

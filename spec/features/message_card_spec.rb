@@ -17,28 +17,6 @@ feature 'Message Cards', js: true do
     FactoryGirl.create(:paper, :with_tasks, user: admin, submitted: true, journal: journal)
   end
 
-  describe "creating a new message" do
-    let(:subject_text) { 'A sample message' }
-    let(:body_text) { 'Everyone add some comments to this test post.' }
-    let(:participants) { [albert] }
-    scenario "Admin can add a new message" do
-      task_manager_page = TaskManagerPage.visit paper
-
-      needs_editor_phase = task_manager_page.phase 'Assign Editor'
-      needs_editor_phase.new_card overlay: NewMessageCardOverlay,
-        subject: subject_text,
-        body: body_text,
-        creator: admin
-
-      sleep 2
-      needs_editor_phase = task_manager_page.phase 'Assign Editor'
-      needs_editor_phase.view_card subject_text, MessageCardOverlay do |card|
-        expect(card).to have_subject(subject_text)
-        expect(card.comments.first).to have_text body_text
-      end
-    end
-  end
-
   describe "commenting on an existing message" do
     let(:phase) { paper.phases.first }
     let!(:message) do

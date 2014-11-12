@@ -18,7 +18,7 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
     '</strong><br><div class="suggestion-sub-value">' +
     userInfo + '</div>'
 
-  selectedTemplate: (user) =>
+  selectedTemplate: (user) ->
     name = (user.full_name || user.get('fullName'))
     url  = (user.avatar_url || user.get('avatarUrl'))
     new Handlebars.SafeString "<img alt='#{name}' class='user-thumbnail-small' src='#{url}' data-toggle='tooltip' title='#{name}'/>"

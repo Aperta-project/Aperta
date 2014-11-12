@@ -20,15 +20,18 @@
       </div>
 
       <div class="manuscript-container">
-        {{content-editable tagName="h2"
-                           id="paper-title"
-                           placeholder="Type your manuscript title here"
-                           value=title
-                           preventEnterKey="true"}}
+        <div class="manuscript-title-and-placeholder">
+          {{content-editable tagName="h2"
+                             id="paper-title"
+                             placeholder="Type your manuscript title here"
+                             value=title
+                             preventEnterKey="true"}}
 
-        {{#if showPlaceholder}}
-          <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
-        {{/if}}
+          {{#if showPlaceholder}}
+            <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
+          {{/if}}
+        </div>
+
         <div id="paper-body" class="editable"></div>
       </div>
     </article>

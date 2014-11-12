@@ -15,6 +15,7 @@ class Task < ActiveRecord::Base
 
   has_one :paper, through: :phase
   has_one :journal, through: :paper
+  has_many :attachments, as: :attachable
   has_many :questions, inverse_of: :task
   has_many :participations, inverse_of: :task, dependent: :destroy
   has_many :participants, through: :participations

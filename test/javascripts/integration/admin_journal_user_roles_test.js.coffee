@@ -15,6 +15,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
         can_administer_journal: true
         can_view_assigned_manuscript_managers: false
         can_view_all_manuscript_managers: true
+        can_view_flow_manager: true
         journal_id: TahiTest.journalId
       ,
         id: TahiTest.editorRoleId
@@ -24,6 +25,7 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
         can_administer_journal: false
         can_view_assigned_manuscript_managers: false
         can_view_all_manuscript_managers: false
+        can_view_flow_manager: false
         journal_id: TahiTest.journalId
       ,
         id: TahiTest.reviewerRoleId
@@ -33,6 +35,17 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
         can_administer_journal: false
         can_view_assigned_manuscript_managers: false
         can_view_all_manuscript_managers: false
+        can_view_flow_manager: false
+        journal_id: TahiTest.journalId
+      ,
+        id: TahiTest.reviewerRoleId
+        kind: "flow manager"
+        name: "Flow Manager"
+        required: true
+        can_administer_journal: false
+        can_view_assigned_manuscript_managers: false
+        can_view_all_manuscript_managers: false
+        can_view_flow_manager: true
         journal_id: TahiTest.journalId
       ]
 

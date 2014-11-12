@@ -1,25 +1,43 @@
-<tr>
-  <td class="admin-role-name">
-    {{#if isEditing}}
-      {{input name="role[name]" value=name placeholder="Role name" action="save"}}
-    {{else}}
-      <i class="role-delete-button glyphicon glyphicon-trash" {{action "delete" bubbles=false}}></i>
-      <span class="name-field">{{name}}</span>
-    {{/if}}
-  </td>
-  <td>
+<div class="admin-role-name">
+  {{#if isEditing}}
+    {{input name="role[name]" value=name placeholder="Role name" action="save"}}
+  {{else}}
+    {{#unless required}}
+      <i class="admin-role-action-button role-delete-button glyphicon glyphicon-trash" {{action "delete" bubbles=false target="view"}}></i>
+    {{/unless}}
+    <i class="admin-role-action-button glyphicon glyphicon-pencil"></i>
+    <span class="role-name-field">{{name}}</span>
+  {{/if}}
+</div>
+
+<div class="admin-role-permissions">
+  {{#if isEditing}}
     <label class="token">{{check-box name="role[canViewAssignedManuscriptManagers]" checked=canViewAssignedManuscriptManagers}} Manuscript Manager</label>
     <label class="token">{{check-box name="role[canViewAllManuscriptManagers]" checked=canViewAllManuscriptManagers}} All Manuscript Managers</label>
     <label class="token">{{check-box name="role[canAdministerJournal]" checked=canAdministerJournal}} Admin</label>
-    <span  class="token token--add">
-        <span class="glyphicon glyphicon-plus"></span>
-    </span>
-  </td>
-</tr>
-<tr {{bind-attr class=":action-buttons isEditing"}}>
-  <td colspan="4">
+    <label class="token">{{check-box name="role[canViewFlowManager]" checked=canViewFlowManager}} Flow Manager</label>
+  {{else}}
+    {{#if canViewAssignedManuscriptManagers}}
+      <label class="token">{{check-box name="role[canViewAssignedManuscriptManagers]" checked=canViewAssignedManuscriptManagers}} Manuscript Manager</label>
+    {{/if}}
+    {{#if canViewAllManuscriptManagers}}
+      <label class="token">{{check-box name="role[canViewAllManuscriptManagers]" checked=canViewAllManuscriptManagers}} All Manuscript Managers</label>
+    {{/if}}
+    {{#if canAdministerJournal}}
+      <label class="token">{{check-box name="role[canAdministerJournal]" checked=canAdministerJournal}} Admin</label>
+    {{/if}}
+    {{#if canViewFlowManager}}
+      <label class="token">{{check-box name="role[canViewFlowManager]" checked=canViewFlowManager}} Flow Manager</label>
+    {{/if}}
+  {{/if}}
+
+  <div class="admin-modify-flows-link">
+    <a href="#">Edit Flows</a>
+  </div>
+
+  <div class="action-buttons">
     {{errorsOn model "name"}}
     <button class="column-header-update-save button-primary button--blue" {{action "save" bubbles=false}}>Save</button>
     <button class="column-header-update-cancel button-link button--blue" {{action "cancel" bubbles=false target="view"}}>cancel</button>
-  </td>
-</tr>
+  </div>
+</div>

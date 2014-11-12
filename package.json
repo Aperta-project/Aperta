@@ -22,6 +22,7 @@
   "homepage": "https://github.com/Tahi-project/tahi",
   "private": true,
   "dependencies": {
+    "bower": "^1.3.12",
     "coffeelint": "^1.6.1",
     "jshint": "^2.5.10"
   }

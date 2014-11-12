@@ -20,4 +20,14 @@ describe EventStream do
       stream.post
     end
   end
+
+  describe "#destroy" do
+    let(:resource) { FactoryGirl.create(:task) }
+    let(:stream) { EventStream.new("destroyed", resource.class, resource.id, "task:destroyed") }
+
+    it "sends one destroy payload to the system channel" do
+      expect(EventStreamConnection).to receive(:post_system_event).once
+      stream.destroy
+    end
+  end
 end

@@ -24,6 +24,8 @@ class EventStream
     )
   end
 
+  private
+
   def resource
     @resource ||= klass.find(id)
   end

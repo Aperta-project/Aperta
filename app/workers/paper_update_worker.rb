@@ -3,10 +3,13 @@ class PaperUpdateWorker
 
   attr_accessor :job_id
 
-  def perform(paper_id, job_id)
-    @job_results = JSON.parse(RestClient.get("#{ENV['IHAT_URL']}/jobs/#{job_id}"))
-    paper = Paper.find(paper_id)
-    paper.update! paper_attributes
+  def perform(job_id)
+    @job_id = job_id
+    job.paper.update! paper_attributes
+  end
+
+  def job
+    IhatJob.find_by(job_id: job_id)
   end
 
   def paper_attributes
@@ -14,10 +17,15 @@ class PaperUpdateWorker
   end
 
   def convert_json
+    epub_stream = get_converted_epub TahiEpub::JSONParser.parse(response_body)
     TahiEpub::Zip.extract(stream: epub_stream, filename: 'converted.json')
   end
 
-  def epub_stream
-    Faraday.get(@job_results[:url]).body
+  def response_body
+    Faraday.get("#{ENV['IHAT_URL']}/jobs/#{job_id}").body
+  end
+
+  def get_converted_epub(job_response)
+    Faraday.get(job_response[:jobs][:converted_epub_url]).body
   end
 end

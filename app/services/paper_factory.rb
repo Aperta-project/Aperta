@@ -1,16 +1,16 @@
 class PaperFactory
-  attr_reader :paper, :author
+  attr_reader :paper, :submitter
 
-  def self.create(paper_params, author)
-    paper = author.submitted_papers.build(paper_params)
-    pf = new(paper, author)
+  def self.create(paper_params, submitter)
+    paper = submitter.submitted_papers.build(paper_params)
+    pf = new(paper, submitter)
     pf.create
     pf.paper
   end
 
-  def initialize(paper, author)
+  def initialize(paper, submitter)
     @paper = paper
-    @author = author
+    @submitter = submitter
   end
 
   def apply_template
@@ -25,7 +25,7 @@ class PaperFactory
 
   def create
     Paper.transaction do
-      add_collaborator(paper, author)
+      add_collaborator(paper, submitter)
       if paper.valid?
         if template
           paper.save
@@ -45,7 +45,7 @@ class PaperFactory
       task.title = task_template.title
       task.body = task_template.template
       task.role = task_template.journal_task_type.role
-      task.participants << author if task.manuscript_information_task?
+      task.participants << submitter if task.manuscript_information_task?
       task.save!
     end
   end

@@ -4,7 +4,7 @@ class CommentsPolicy < ApplicationPolicy
   include TaskAccessCriteria
 
   def connected_users
-    TasksPolicy.new(current_user: current_user, resource: task).connected_users
+    tasks_policy.connected_users
   end
 
   def show?
@@ -19,5 +19,9 @@ class CommentsPolicy < ApplicationPolicy
 
   def task
     comment.task
+  end
+
+  def tasks_policy
+    @tasks_policy ||= TasksPolicy.new(current_user: current_user, resource: task)
   end
 end

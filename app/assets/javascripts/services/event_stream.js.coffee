@@ -58,7 +58,7 @@ ETahi.EventStream = Em.Object.extend
     action = esData.action
     delete esData.action
     delete esData.subscription_name
-    (@eventStreamActions[action] || ->).call(@, esData)
+    (@eventStreamActions[action] || -> null).call(this, esData)
 
   createOrUpdateTask: (action, esData) ->
     taskId = esData.task.id

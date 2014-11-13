@@ -49,10 +49,10 @@ module 'Integration: adding an adhoc card',
       200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
     ]
 
-test 'user should be editing title when adhoc card is created', ->
+test 'user sees task overlay when the task is added', ->
   visit '/papers/1/manage'
   click("a:contains('Add New Card')")
   pickFromChosenSingle '.task-type-select', 'Upload Manuscript'
   click '.button--green:contains("Add")'
   andThen ->
-    ok find('#upload-files')
+    ok find('#paper-manuscript-upload').length

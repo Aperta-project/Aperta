@@ -1,0 +1,17 @@
+- if ENV['BUGSNAG_JAVASCRIPT_API_KEY']
+  %script{ src:"//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js",
+    "data-apikey" => "#{ENV["BUGSNAG_JAVASCRIPT_API_KEY"]}" }
+  :javascript
+    Bugsnag.releaseStage = "#{Rails.env}";
+    Bugsnag.notifyReleaseStages = ["staging", "production"];
+    var ErrorNotifier = {};
+    ErrorNotifier['notify'] = function( error, label, metadata ) {
+      Bugsnag.notifyException(error.message, error.stack);
+    }
+- else
+  :javascript
+    var ErrorNotifier = {}
+    ErrorNotifier['notify'] = function( error, label, metadata ) {
+      label = typeof label !== 'undefined' ? label : 'Uncaught Error';
+      console.log(label + ": " , error);
+    }

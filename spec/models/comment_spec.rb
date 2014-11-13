@@ -13,6 +13,23 @@ describe Comment, redis: true do
     end
   end
 
+  context "creating a new Comment" do
+    it "#sanitize_body" do
+      body = "hi @#{author.username}. Trying to break comment with <script>alert('bad script')</script>"
+      comment = FactoryGirl.create(:comment, body: body)
+      expected = "hi @#{author.username}. Trying to break comment with &lt;script&gt;alert(&#39;bad script&#39;)&lt;/script&gt;"
+      expect(comment.body).to eq expected
+    end
+
+    it "#set_mentions" do
+      body = "hi @#{author.username}, @#{author2.username}, and @nonexistent_user"
+      comment = FactoryGirl.create(:comment, body: body)
+      expected = {:indices=>[3, 3+('@'+author.username).length]}
+      expect(comment.entities['user_mentions'][0]).to eq expected
+      expect(comment.entities['user_mentions'].length).to eq 2
+    end
+  end
+
   context "notifications" do
     before { ActionMailer::Base.deliveries.clear }
 

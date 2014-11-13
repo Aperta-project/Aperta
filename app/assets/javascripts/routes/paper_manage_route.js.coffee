@@ -16,6 +16,10 @@ ETahi.PaperManageRoute = ETahi.AuthorizedRoute.extend
   actions:
     chooseNewCardTypeOverlay: (phase) ->
       @controllerFor('chooseNewCardTypeOverlay').set('phase', phase)
+
+      @store.find('adminJournal', phase.get('paper.journal.id')).then (adminJournal) =>
+        @controllerFor('chooseNewCardTypeOverlay').set('journalTaskTypes', adminJournal.get('journalTaskTypes'))
+
       @render('chooseNewCardTypeOverlay',
         into: 'application'
         outlet: 'overlay'
@@ -29,15 +33,22 @@ ETahi.PaperManageRoute = ETahi.AuthorizedRoute.extend
       @controllerFor('application').set('overlayBackground', 'paper/manage')
       @transitionTo('task', paper.id, task.id, queryParams)
 
-    createAdhocTask: (phase) ->
-      paper = @controllerFor('paperManage').get('model')
-      newTask = @store.createRecord 'task',
+    addTaskType: (phase, taskType) ->
+      return unless taskType
+      unNamespacedKind = Tahi.utils.deNamespaceTaskType taskType.get('kind')
+
+      @store.createRecord(unNamespacedKind,
         phase: phase
-        type: 'Task'
-        paper: paper
-        title: 'New Ad-Hoc Card'
+        role: taskType.get 'role'
+        type: taskType.get 'kind'
+        paper: @modelFor 'paper'
+        title: taskType.get 'title'
+      ).save().then (newTask) =>
+        @send 'viewCard', newTask, {queryParams: {isNewTask: true}}
 
-      newTask.save().then =>
-        @send('viewCard', newTask, {queryParams: {isNewTask: true}})
-
-      false
+    showDeleteConfirm: (task) ->
+      @controllerFor('cardDeleteOverlay').set('task', task)
+      @render('cardDeleteOverlay',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'cardDeleteOverlay')

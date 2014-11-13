@@ -12,7 +12,7 @@
     "jquery-timeago": "latest",
     "bootstrap-datepicker": "latest",
     "event-source-polyfill": "latest",
-    "moment": "latest"
+    "moment": "latest",
     "select2": "latest"
   }
 }

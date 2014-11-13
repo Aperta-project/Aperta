@@ -5,6 +5,7 @@ ETahi.Comment = DS.Model.extend
   body: a('string')
   createdAt: a('date')
   commentLook: DS.belongsTo('commentLook')
+  entities: a()
 
   isUnreadBy: (user) ->
     if commentLook = @get('commentLook')

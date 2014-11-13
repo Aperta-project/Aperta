@@ -9,6 +9,8 @@ class Comment < ActiveRecord::Base
   validates :task, :body, presence: true
   validates_presence_of :commenter
 
+  before_save :escape_body
+  before_save :set_mentions
   after_commit :email_mentioned
 
   def created_by?(user)
@@ -27,6 +29,11 @@ class Comment < ActiveRecord::Base
     self.id
   end
 
+  # TODO Security? What do you think? Also, should we do this client side too?
+  def escape_body
+    self.body = ERB::Util.html_escape(body)
+  end
+
 
   private
 
@@ -34,12 +41,27 @@ class Comment < ActiveRecord::Base
     { task_id: task.id, paper_id: task.paper.id }
   end
 
-  def email_mentioned
-    names = Twitter::Extractor.extract_mentioned_screen_names(self.body).uniq - [self.commenter.username]
-    people_mentioned = User.where(username: names)
+  def people_mentioned
+    names = Twitter::Extractor.extract_mentioned_screen_names(body).uniq - [commenter.username]
+    @people_mentioned ||= User.where(username: names)
+  end
 
+  # uses the same format as
+  # https://dev.twitter.com/overview/api/entities-in-twitter-objects#user_mentions
+  def set_mentions
+    self.entities = { user_mentions: [] }
+    people_mentioned.each do |user|
+      handle = '@' + user.username
+      first = body.index(handle)
+      last = first + handle.length
+      indices = { indices: [first, last] }
+      self.entities["user_mentions"] << indices
+    end
+  end
+
+  def email_mentioned
     people_mentioned.each do |mentionee|
-      UserMailer.delay.mention_collaborator(self.id, mentionee.id)
+      UserMailer.delay.mention_collaborator(id, mentionee.id)
     end
   end
 end

@@ -1,9 +1,11 @@
 // When sass-rails 5 hits we can use this:
 // $z-layers: (
-//   navigation: 1000,
-//   ve-toolbar: 1000,
-//   main-content-cover: 1003,
 //   navigation-toggle: 1004,
+//   paper-placeholder: 1002,
+//   control-bar: 1003,
+//   ve-toolbar: 1003,
+//   main-content-cover: 1005,
+//   navigation: 1006,
 //   overlay: (
 //     base: 1200,
 //     close-x: 100
@@ -11,10 +13,12 @@
 //   app-error: 10000
 // );
 
-$z-layer-ve-toolbar: 1000;
-$z-layer-navigation-toggle: 1001;
-$z-layer-main-content-cover: 1003;
-$z-layer-navigation: 1004;
+$z-layer-paper-placeholder: 1002;
+$z-layer-control-bar: 1003;
+$z-layer-ve-toolbar: 1003;
+$z-layer-navigation-toggle: 1004;
+$z-layer-main-content-cover: 1005;
+$z-layer-navigation: 1006;
 $z-layer-overlay-base: 1200;
 $z-layer-overlay-close-x: 100;
 $z-layer-app-error: 10000;

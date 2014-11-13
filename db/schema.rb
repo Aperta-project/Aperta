@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141111210731) do
+ActiveRecord::Schema.define(version: 20141112193333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,7 +34,15 @@ ActiveRecord::Schema.define(version: 20141111210731) do
     t.datetime "updated_at"
   end
 
-  create_table "author_paper", force: true do |t|
+  create_table "attachments", force: true do |t|
+    t.string   "file"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "title"
+    t.string   "caption"
+    t.string   "status",          default: "processing"
   end
 
   create_table "authors", force: true do |t|
@@ -65,6 +73,7 @@ ActiveRecord::Schema.define(version: 20141111210731) do
     t.datetime "updated_at"
     t.integer  "commenter_id"
     t.integer  "task_id"
+    t.json     "entities"
   end
 
   add_index "comments", ["commenter_id", "task_id"], name: "index_comments_on_commenter_id_and_task_id", using: :btree
@@ -247,19 +256,6 @@ ActiveRecord::Schema.define(version: 20141111210731) do
   end
 
   add_index "questions", ["task_id"], name: "index_questions_on_task_id", using: :btree
-
-  create_table "rails_admin_histories", force: true do |t|
-    t.text     "message"
-    t.string   "username"
-    t.integer  "item"
-    t.string   "table"
-    t.integer  "month",      limit: 2
-    t.integer  "year",       limit: 8
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
 
   create_table "role_flows", force: true do |t|
     t.string  "title"

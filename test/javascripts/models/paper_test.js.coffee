@@ -1,7 +1,7 @@
 moduleForModel 'paper', 'Unit: Paper Model',
   needs: ['model:author', 'model:user', 'model:figure', 'model:journal',
   'model:supportingInformationFile', 'model:phase', 'model:task', 'model:comment', 'model:participation',
-  'model:litePaper', 'model:cardThumbnail', 'model:question', 'model:collaboration']
+  'model:litePaper', 'model:cardThumbnail', 'model:question', 'model:collaboration', 'model:attachment']
   setup: -> setupApp()
   teardown: -> ETahi.reset()
 

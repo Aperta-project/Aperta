@@ -109,10 +109,16 @@ Tahi::Application.routes.draw do
   resources :participations, only: [:create, :show, :destroy]
 
   resources :tasks, only: [:update, :create, :show, :destroy] do
+    resources :attachments, only: [:create]
     member do
       put :send_message
     end
   end
+
+  # Ember destroys the ember models before calling buildUrl
+  # therefore it is not possible to resolve task/:task_id/attchment/:id
+  # on the client.
+  resources :attachments, only: [:destroy]
 
   resources :phases, only: [:create, :update, :show, :destroy]
 

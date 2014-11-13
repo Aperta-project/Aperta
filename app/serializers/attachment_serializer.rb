@@ -13,6 +13,6 @@ class AttachmentSerializer < ActiveModel::Serializer
   end
 
   def preview_src
-    object.file.preview.url
+    object.file.preview.url if object.is_image?
   end
 end

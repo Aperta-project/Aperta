@@ -8,11 +8,11 @@ class AdhocAttachmentUploader < CarrierWave::Uploader::Base
     "uploads/attachments/#{model.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  version :detail do
+  version :detail, if: :is_image? do
     process resize_to_limit: [986, -1]
   end
 
-  version :preview do
+  version :preview, if: :is_image? do
     process :convert_to_png, if: :needs_transcoded?
     process resize_to_limit: [475, 220]
 
@@ -23,6 +23,12 @@ class AdhocAttachmentUploader < CarrierWave::Uploader::Base
         "#{version_name}_#{orig_file}"
       end
     end
+  end
+
+  protected
+
+  def is_image?(_image)
+    model.is_image?
   end
 
   private

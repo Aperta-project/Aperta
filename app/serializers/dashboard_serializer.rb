@@ -24,6 +24,12 @@ class DashboardSerializer < ActiveModel::Serializer
   end
 
   def user
+    scoped_user
+  end
+
+  private
+
+  def scoped_user
     scope.presence || options[:user]
   end
 end

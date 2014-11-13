@@ -14,7 +14,7 @@ ETahi.AdminJournalUserController = Ember.ObjectController.extend
       name: userRole.get 'role.name'
       userRoleId: userRole.get 'id'
 
-  roles: Em.computed 'userRoles.@each', -> @get('userRoles').map @createRoleObject
+  roles: Em.computed 'userRoles.@each.id', -> @get('userRoles').map @createRoleObject
 
   isAddingRole: false
 

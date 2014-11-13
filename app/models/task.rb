@@ -80,10 +80,4 @@ class Task < ActiveRecord::Base
   def authorize_update?(params, user)
     true
   end
-
-  private
-
-  def notifier_payload
-    { task_id: id, paper_id: paper.id }
-  end
 end

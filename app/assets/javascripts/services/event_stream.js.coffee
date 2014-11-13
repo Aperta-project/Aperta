@@ -1,7 +1,7 @@
 interval = 500
 ETahi.EventStream = Em.Object.extend
   eventSource: null
-  eventNames: null
+  channels: null
   messageQueue: null
   wait: false
   init: ->
@@ -20,13 +20,13 @@ ETahi.EventStream = Em.Object.extend
       if msg = @messageQueue.popObject()
         msg.parsedData = JSON.parse(msg.data)
         if @shouldProcessMessage(msg)
-          description = "Event Stream: #{msg.parsedData.subscription_name} -> #{msg.parsedData.action}"
+          description = "Event Stream (#{msg.type}): #{msg.parsedData.subscription_name}"
           Tahi.utils.debug(description, msg)
           @msgResponse(msg.parsedData)
     Ember.run.later(@, 'processMessages', [], interval)
 
   shouldProcessMessage: (msg) ->
-    @get('eventNames').contains(msg.type) or msg.parsedData.action == 'destroyed'
+    @get('channels').contains(msg.type) or msg.parsedData.action == 'destroyed'
 
   pause: ->
     @set('wait', true)
@@ -47,23 +47,18 @@ ETahi.EventStream = Em.Object.extend
         return if data.enabled == 'false'
         @set('eventSource', new EventSource(data.url))
         Ember.$(window).unload => @stop()
-        @set('eventNames', data.eventNames)
-        Tahi.utils.debug("Event Stream: updated channels", data.eventNames)
-        data.eventNames.forEach (eventName) =>
+        @set('channels', data.channels)
+        Tahi.utils.debug("Event Stream: updated channels", data.channels)
+        data.channels.forEach (eventName) =>
           @addEventListener(eventName)
         @play()
     Ember.$.ajax(params)
 
   msgResponse: (esData) ->
     action = esData.action
-    meta = esData.meta
-    delete esData.meta
     delete esData.action
     delete esData.subscription_name
-    if meta
-      @eventStreamActions["meta"].call(@, meta.model_name, meta.id)
-    else
-      (@eventStreamActions[action] || ->).call(@, esData)
+    (@eventStreamActions[action] || -> null).call(this, esData)
 
   createOrUpdateTask: (action, esData) ->
     taskId = esData.task.id
@@ -104,23 +99,11 @@ ETahi.EventStream = Em.Object.extend
           @store.pushPayload(esData)
 
     destroyed: (esData)->
-      for key of esData
-        type = @get('applicationSerializer').typeForRoot(key)
-        esData[key].forEach (id) =>
-          if type == "task"
-            record = @store.findTask(id)
-          else
-            record = @store.getById(type, id)
-          if record
-            record.unloadRecord()
-
-    meta: (modelName, id) ->
-      Ember.run =>
-        if model = @store.getById(modelName, id)
-          model.reload()
+      type = @get('applicationSerializer').typeForRoot(esData.type)
+      esData.ids.forEach (id) =>
+        if type == "task"
+          record = @store.findTask(id)
         else
-          @store.find(modelName, id)
-
-    updateStreams: ->
-      @resetChannels()
-
+          record = @store.getById(type, id)
+        if record
+          record.unloadRecord()

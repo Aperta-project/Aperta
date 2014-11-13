@@ -7,12 +7,15 @@ class FlowsController < ApplicationController
   end
 
   def create
-    flow = current_user.flows.create! Flow.templates[flow_params[:title].downcase]
-    render json: flow
+    if flow
+      flow.save!
+      render json: flow
+    else
+      head :bad_request
+    end
   end
 
   def destroy
-    flow = current_user.flows.where(id: params[:id]).first
     if flow
       flow.destroy
       head :no_content
@@ -22,10 +25,21 @@ class FlowsController < ApplicationController
   end
 
   def authorization
-    head 204
+    head 204 # authorization check is performed against the policy
   end
 
   private
+
+  def flow
+    @flow ||= begin
+      if params[:id].present?
+        current_user.flows.find_by(id: params[:id])
+      else
+        current_user.flows.build(Flow.templates[flow_params[:title].downcase])
+      end
+    end
+  end
+
   def flow_params
     params.require(:flow).permit(:empty_text, :title)
   end

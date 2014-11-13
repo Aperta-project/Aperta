@@ -32,3 +32,10 @@ ETahi.Setups.addUserAsParticipant = (task, user) ->
   ef.mergeArrays(task, 'participant_ids', user.id)
 
   participation
+
+ETahi.Setups.paperWithRoles = (id, roles) ->
+  ef = ETahi.Factory
+  journal = ef.createRecord('Journal', id: 1)
+  paper = ef.createRecord('Paper', journal_id: journal.id, id: id)
+  litePaper = ef.createLitePaperWithRoles(paper, roles)
+  [paper, journal, litePaper]

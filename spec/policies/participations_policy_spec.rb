@@ -4,9 +4,10 @@ describe ParticipationsPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
-  let(:task) { create(:task, phase: phase) }
-  let(:policy) { ParticipationsPolicy.new(current_user: user, task: task) }
+  let(:task) { FactoryGirl.create(:task, phase: phase) }
   let(:user) { FactoryGirl.create(:user) }
+  let(:participation) { FactoryGirl.create(:participation, task: task) }
+  let(:policy) { ParticipationsPolicy.new(current_user: user, resource: participation) }
 
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }

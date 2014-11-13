@@ -17,16 +17,9 @@ class Comment < ActiveRecord::Base
     commenter_id == user.id
   end
 
-  def meta_type
-    self.class.name.demodulize
-  end
-
-  def has_meta?
-    true
-  end
-
-  def meta_id
-    self.id
+  # TODO Security? What do you think? Also, should we do this client side too?
+  def escape_body
+    self.body = ERB::Util.html_escape(body)
   end
 
   # TODO Security? What do you think? Also, should we do this client side too?

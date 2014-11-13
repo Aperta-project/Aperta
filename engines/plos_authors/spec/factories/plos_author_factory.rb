@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :plos_author, class: "PlosAuthors::PlosAuthor" do
+    plos_authors_task
     first_name "Luke"
     middle_initial "J"
     last_name "Skywalker"

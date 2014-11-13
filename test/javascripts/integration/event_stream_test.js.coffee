@@ -56,8 +56,8 @@ test 'action:destroy will delete the task from the store', ->
 
   data =
     action: 'destroyed'
-    meta: null
-    tasks: [1]
+    type: "tasks"
+    ids: [1]
   Ember.run =>
     store.push('task', id: 1)
     store.push('task', id: 2)
@@ -105,43 +105,3 @@ test "action:updated with a task updates the phase's tasks", ->
     ok taskBelongsToPhase(store, phaseId: 2, taskId: 10), "task should belong to new phase"
     ok !phaseHasTask(store, phaseId: 1, taskId: 10), "old phase should not have task"
     ok !taskBelongsToPhase(store, phaseId: 1, taskId: 10), "task should not belong to old phase"
-
-test 'with meta information the event stream will ask the server for the specified model', ->
-  expect(1)
-  [es, store] = setupEventStream()
-
-  data =
-    action: 'created'
-    task:
-      id: 1
-    meta:
-      model_name: 'Comment'
-      id: 1
-
-  server.respondWith 'GET', "/comments/1", [
-    200, {"Content-Type": "application/json"}, JSON.stringify {comment: {id: 1, body: "Engage!"}}
-  ]
-
-  Ember.run =>
-    es.msgResponse(data)
-    ok(_.findWhere(server.requests, {method: "GET", url: "/comments/1"}))
-
-test 'with meta information the event stream will send the authorization header with the request', ->
-  expect(1)
-  [es, store] = setupEventStream()
-
-  data =
-    action: 'created'
-    task:
-      id: 1
-    meta:
-      model_name: 'Comment'
-      id: 1
-
-  server.respondWith 'GET', "/comments/1", [
-    403, 'Content-Type': 'application/html', 'Tahi-Authorization-Check': true, ""
-  ]
-
-  Ember.run =>
-    es.msgResponse(data)
-    ok _.findWhere(server.requests, {method: "GET", url: "/comments/1"}).requestHeaders["Tahi-Authorization-Check"]

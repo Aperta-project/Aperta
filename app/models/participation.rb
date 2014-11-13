@@ -6,12 +6,4 @@ class Participation < ActiveRecord::Base
   belongs_to :participant, class_name: 'User', inverse_of: :participations
 
   validates :participant_id, presence: true
-
-  private
-
-  def notifier_payload
-    {
-      paper_id: task.paper.id
-    }
-  end
 end

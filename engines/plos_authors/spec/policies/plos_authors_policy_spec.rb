@@ -21,7 +21,8 @@ describe PlosAuthors::PlosAuthorsPolicy do
   let(:journal) { paper.journal }
   let(:task) { FactoryGirl.create(:plos_authors_task, paper: paper) }
   let(:user) { FactoryGirl.create(:user) }
-  let(:policy) { PlosAuthors::PlosAuthorsPolicy.new(current_user: user, task: task) }
+  let(:plos_author) { FactoryGirl.create(:plos_author, plos_authors_task: task) }
+  let(:policy) { PlosAuthors::PlosAuthorsPolicy.new(current_user: user, resource: plos_author) }
 
   context "unrelated user" do
     include_examples "person who cannot manage plos authors"

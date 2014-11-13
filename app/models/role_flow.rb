@@ -2,6 +2,8 @@ class RoleFlow < ActiveRecord::Base
   attr_accessor :papers
   belongs_to :role, inverse_of: :flows
 
+  acts_as_list scope: :role
+
   validates :title, inclusion: { in: FlowTemplate.valid_titles }
 
   def self.create_default_flows!(role)

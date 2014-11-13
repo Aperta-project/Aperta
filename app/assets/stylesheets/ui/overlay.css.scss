@@ -51,13 +51,13 @@
 
 
 .overlay-close-x {
-  @include position(fixed, 0px 0px auto auto);
-  position: fixed;
+  @include position(fixed, -10px 0px auto auto);
   display: none;
   width: auto !important; //bootstrap/glyphicon override
-  padding: 25px 25px 15px 15px;
+  padding: 0 25px 0 15px;
   color: $tahi-green;
-  font-size: 42px;
+  font-size: 90px;
+  line-height: 100%;
   cursor: pointer;
   z-index: z($z-layer-overlay-close-x);
 }
@@ -110,9 +110,9 @@
 
 /*
   .overlay-header-title
-    .overlay-paper-link
+    .overlay-header-link
 */
-.overlay-paper-link {
+.overlay-header-link {
   font-size: 18px;
   &:hover { text-decoration: none; } // override global tahi a style
 }

@@ -40,7 +40,7 @@ describe StandardTasks::FundersPolicy do
   end
 
   context "An author" do
-    let(:user) { paper.user }
+    let(:user) { paper.submitter }
 
     include_examples "person who can manage funders"
   end

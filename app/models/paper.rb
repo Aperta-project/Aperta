@@ -2,7 +2,7 @@ class Paper < ActiveRecord::Base
 
   include EventStreamNotifier
 
-  belongs_to :user, inverse_of: :submitted_papers
+  belongs_to :submitter, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
   belongs_to :locked_by, class_name: 'User'

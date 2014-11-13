@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   end
 
   has_many :affiliations, inverse_of: :user
-  has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'
+  has_many :submitted_papers, inverse_of: :submitter, class_name: 'Paper'
   has_many :paper_roles, inverse_of: :user
   has_many :user_roles, inverse_of: :user
   has_many :roles, through: :user_roles

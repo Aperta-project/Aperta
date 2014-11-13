@@ -4,7 +4,7 @@ class UserFlowsController < ApplicationController
   respond_to :json
 
   def index
-    render json: current_user.flows, each_serializer: policy_serializer
+    render json: current_user.flows, each_serializer: policy_serializer, meta: potential_user_flow_titles
   end
 
   def show
@@ -44,5 +44,9 @@ class UserFlowsController < ApplicationController
 
   def flow_template
     FlowTemplate.template(flow_params[:title])
+  end
+
+  def potential_user_flow_titles
+    {titles: RoleFlow.joins(role: :users).where(users: {id: current_user.id}).uniq.pluck(:title)}
   end
 end

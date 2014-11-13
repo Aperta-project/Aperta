@@ -20,6 +20,6 @@ class TaskTemplatesPolicy < ApplicationPolicy
   private
 
   def journal
-    task_template.journal
+    task_template.manuscript_manager_template.journal
   end
 end

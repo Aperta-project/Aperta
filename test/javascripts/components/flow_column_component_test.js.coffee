@@ -46,3 +46,9 @@ test "setFlowTitle action should send saveFlow action", ->
   component = ETahi.FlowColumnComponent.create(componentAttrs)
   component.send 'setFlowTitle', { text: "title" }
 
+test "formattedFlowTitle returns an {id: text:} object", ->
+  flow = Ember.Object.create title: "Up for grabs"
+  component = ETahi.FlowColumnComponent.create(flow: flow)
+  keys = Ember.keys(component.get('formattedFlowTitle'))
+  ok keys.contains('id')
+  ok keys.contains('text')

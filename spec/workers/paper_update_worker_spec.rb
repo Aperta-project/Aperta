@@ -10,12 +10,12 @@ describe PaperUpdateWorker do
   end
 
   describe "#perform" do
-    let(:stubbed_url) { "converted_epub_url" }
+    let(:stubbed_url) { "s3_url_example" }
     let(:turtles_fixture) { File.open(Rails.root.join('spec', 'fixtures', 'turtles.epub'), 'r').read }
 
     before do
       job_response = double(:job_response)
-      allow(job_response).to receive(:body).and_return({ jobs: { converted_epub_url: stubbed_url } }.to_json)
+      allow(job_response).to receive(:body).and_return({ jobs: { url: stubbed_url } }.to_json)
       expect(Faraday).to receive(:get).with("#{ENV['IHAT_URL']}/jobs/#{job.job_id}").and_return job_response
 
       epub_response = double(:epub)

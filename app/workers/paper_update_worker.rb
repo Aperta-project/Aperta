@@ -26,6 +26,6 @@ class PaperUpdateWorker
   end
 
   def get_converted_epub(job_response)
-    Faraday.get(job_response[:jobs][:converted_epub_url]).body
+    Faraday.get(job_response[:jobs][:url]).body
   end
 end

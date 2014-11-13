@@ -34,7 +34,7 @@
     "value": "unix"
   },
   "max_line_length": {
-    "level": "error",
+    "level": "ignore",
     "value": 130
   },
   "missing_fat_arrows": {

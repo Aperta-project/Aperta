@@ -1,5 +1,4 @@
 module FlowTemplate
-
   def self.templates
     {
       "up for grabs" =>
@@ -14,7 +13,7 @@ module FlowTemplate
   end
 
   def self.template(title)
-    templates.fetch(title.downcase, {title: "Invalid", empty_text: "invalid"})
+    templates.fetch(title.downcase, { title: "Invalid", empty_text: "invalid" })
   end
 
   def self.valid_titles

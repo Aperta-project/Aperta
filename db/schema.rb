@@ -265,6 +265,7 @@ ActiveRecord::Schema.define(version: 20141111210731) do
     t.string  "title"
     t.string  "empty_text"
     t.integer "role_id"
+    t.integer "position"
   end
 
   create_table "roles", force: true do |t|

@@ -60,3 +60,10 @@ ETahi.PaperManageRoute = ETahi.AuthorizedRoute.extend
         title: taskType.get 'title'
       ).save().then (newTask) =>
         @send 'viewCard', newTask, {queryParams: {isNewTask: true}}
+
+    showDeleteConfirm: (task) ->
+      @controllerFor('cardDeleteOverlay').set('task', task)
+      @render('cardDeleteOverlay',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'cardDeleteOverlay')

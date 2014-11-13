@@ -15,11 +15,11 @@ class JournalPage < Page
   end
 
   def mmt_names
-    all(".template-thumbnail .mmt-title").map(&:text)
+    all(".mmt-thumbnail .mmt-thumbnail-title").map(&:text)
   end
 
   def mmt_thumbnail(mmt)
-    find(".template-thumbnail", text: mmt.paper_type)
+    find(".mmt-thumbnail", text: mmt.paper_type)
   end
 
   def visit_mmt(mmt)
@@ -33,7 +33,7 @@ class JournalPage < Page
     thumb = mmt_thumbnail(mmt)
     thumb.hover
     thumb.find('.glyphicon-trash').click
-    find('.template-thumbnail-overlay-confirm-destroy .attachment-delete-button').click
+    find('.mmt-thumbnail-overlay-confirm-destroy .mmt-thumbnail-delete-button').click
     synchronize_no_content! mmt.paper_type
     self
   end

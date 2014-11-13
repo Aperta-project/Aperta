@@ -21,7 +21,7 @@
 
 $template-thumbnail-side-padding: 10px;
 
-.template-thumbnail {
+.mmt-thumbnail {
   position: relative;
   overflow: hidden;
   display: inline-block;
@@ -40,7 +40,7 @@ $template-thumbnail-side-padding: 10px;
   a { color: #fff; }
 }
 
-.template-stats {
+.mmt-thumbnail-stats {
   list-style-type: none;
   @include position(absolute, auto $template-thumbnail-side-padding 0px $template-thumbnail-side-padding);
   padding: 0;
@@ -52,7 +52,7 @@ $template-thumbnail-side-padding: 10px;
   }
 }
 
-.template-thumbnail-overlay {
+.mmt-thumbnail-overlay {
   display: none;
   @include position(absolute, 0px 0px 0px 0px);
   line-height: 160px;
@@ -70,7 +70,7 @@ $template-thumbnail-side-padding: 10px;
   }
 }
 
-.template-thumbnail-overlay-confirm-destroy {
+.mmt-thumbnail-overlay-confirm-destroy {
   padding-top: 45px;
   line-height: 1.2;
   background-color: rgb(52, 123, 197);
@@ -83,12 +83,12 @@ $template-thumbnail-side-padding: 10px;
   }
 }
 
-.template-thumbnail:hover .template-thumbnail-edit-options {
+.mmt-thumbnail:hover .mmt-thumbnail-edit-options {
   display: block;
   .glyphicon { @extend .animation-scale-in; }
 }
 
-.template-thumbnail.template-thumbnail-destroy .template-thumbnail-overlay-confirm-destroy {
+.mmt-thumbnail.mmt-thumbnail-destroy .mmt-thumbnail-overlay-confirm-destroy {
   display: block;
 }
 

@@ -2,8 +2,7 @@ class PapersPolicy < ApplicationPolicy
   primary_resource :paper
 
   def connected_users
-    #TODO: consolidate all of these into paper roles, to make this a very efficient query (see pivotal #81129650)
-    [paper.assigned_users, paper.tasks.flat_map(&:participants)].flatten
+    (paper.assigned_users + paper.participants).uniq
   end
 
   def show?

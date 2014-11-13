@@ -4,7 +4,7 @@ class Attachment < ActiveRecord::Base
 
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps}
 
-  def is_image?
+  def image?
     IMAGE_TYPES.include? file.file.extension
   end
 end

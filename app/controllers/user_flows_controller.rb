@@ -37,7 +37,7 @@ class UserFlowsController < ApplicationController
     params.require(:user_flow).permit(:title)
   end
 
-  #UserFlowsPolicy sets different serializers based on permissions
+  # UserFlowsPolicy sets different serializers based on permissions
   def policy_serializer
     ApplicationPolicy.find_policy(self.class, current_user).serializer
   end

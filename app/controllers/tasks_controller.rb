@@ -91,8 +91,9 @@ class TasksController < ApplicationController
   end
 
   def enforce_policy_on_create
+    return unless JournalTaskType.find_by!(kind: params[:task][:type])
     task_klass = TaskType.constantize!(params[:task][:type])
     sanitized_params = task_params(task_klass.new)
-    authorize_action!(task: Task.new(sanitized_params))
+    authorize_action!(task: task_klass.new(sanitized_params))
   end
 end

@@ -10,16 +10,8 @@ module PlosAuthors
     validates :affiliation, :department, :title, :email, presence: true, if: :task_completed?
     validates :email, format: { with: Devise.email_regexp, message: "needs to be a valid email address" }, if: :task_completed?
 
-
     def self.for_paper(paper)
       where(paper_id: paper)
-    end
-
-
-    private
-
-    def notifier_payload
-      { paper_id: plos_authors_task.paper.id }
     end
   end
 end

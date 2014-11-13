@@ -3,11 +3,25 @@ module 'Integration: adding an adhoc card',
   setup: ->
     setupApp integration: true
 
+    adminJournalsResponse =
+      admin_journal: {
+        id: 1
+        name: "Test Journal of America",
+        journal_task_type_ids: [1]
+      },
+      journal_task_types:[{
+        id: 1,
+        title: "Upload Manuscript",
+        role: "author",
+        kind: "UploadManuscript::Task",
+        journal_id: 1
+      }]
+
     taskPayload =
       task:
         id: 2
-        title: "New Ad-Hoc Task"
-        type: "Task"
+        title: "Upload Manuscript"
+        type: "UploadManuscript::Task"
         phase_id: 1
         paper_id: 1
         lite_paper_id: 1
@@ -27,9 +41,18 @@ module 'Integration: adding an adhoc card',
       200, {"Content-Type": "application/json"}, JSON.stringify taskPayload
     ]
 
-test 'user should be editing title when adhoc card is created', ->
+    server.respondWith 'GET', '/flows/authorization', [
+      204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
+    ]
+
+    server.respondWith 'GET', '/admin/journals/1', [
+      200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
+    ]
+
+test 'user sees task overlay when the task is added', ->
   visit '/papers/1/manage'
   click("a:contains('Add New Card')")
-  click("#choose-card-type-buttons .task")
+  pickFromChosenSingle '.task-type-select', 'Upload Manuscript'
+  click '.button--green:contains("Add")'
   andThen ->
-    ok find('.inline-edit-form').hasClass('editing')
+    ok find('#paper-manuscript-upload').length

@@ -1,5 +1,5 @@
 class CollaborationsPolicy < ApplicationPolicy
-  allow_params :paper
+  require_params :paper
 
   def create?
     current_user.site_admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?

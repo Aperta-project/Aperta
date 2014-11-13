@@ -15,6 +15,6 @@ class QuestionAttachmentsController < ApplicationController
   end
 
   def enforce_policy
-    authorize_action!(task: question_attachment.question.task)
+    authorize_action!(question_attachment: question_attachment)
   end
 end

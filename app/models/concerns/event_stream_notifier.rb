@@ -8,31 +8,11 @@ module EventStreamNotifier
     end
 
     def event_stream_payload
-      p = notifier_payload.merge({ action: action, klass: self.class.base_class, id: self.id })
-      if has_meta?
-        p = p.merge({meta: { model_name: meta_type, id: meta_id }})
-      end
-      p
+      { action: action, klass: self.class.base_class, id: id }
     end
 
-    def event_stream_serializer
-      active_model_serializer
-    end
-
-    def notifier_payload
-      raise NotImplementedError
-    end
-
-    def has_meta?
-      false
-    end
-
-    def meta_type
-      nil
-    end
-
-    def meta_id
-      nil
+    def event_stream_serializer(user)
+      active_model_serializer.new(self, user: user)
     end
 
     private

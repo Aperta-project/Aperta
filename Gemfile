@@ -84,6 +84,8 @@ group :development do
   gem 'kss-rails'
   gem 'letter_opener'
   gem 'rubocop', require: false
+  gem 'scss-lint', require: false
+  gem 'overcommit', require: false
 end
 
 group :development, :test, :performance do
@@ -109,7 +111,8 @@ group :development, :test, :performance do
 end
 
 group :test do
-  gem "codeclimate-test-reporter", require: nil
+  gem 'simplecov'
+  gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'
   gem 'webmock'
   gem 'thin'

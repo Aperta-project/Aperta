@@ -6,10 +6,4 @@ class CommentLook < ActiveRecord::Base
   has_one :task, through: :comment
   has_one :phase, through: :task
   has_one :paper, through: :phase
-
-  private
-
-  def notifier_payload
-    { task_id: comment.task.id, paper_id: comment.task.paper.id }
-  end
 end

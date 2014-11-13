@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/modeset/teaspoon.git
-  revision: a7787e5e8679741c1c8407aa2f82e16e2c4b8b1a
+  revision: 65a399887b36717bd9006a03502cec2c5d3f9790
   specs:
     teaspoon (0.8.0)
       railties (>= 3.2.5, < 5)
@@ -25,9 +25,9 @@ GIT
 
 GIT
   remote: git://github.com/tahi-project/tahi_epub.git
-  revision: 51e4ff148a4b4153795dc191edf5a09711566f0f
+  revision: 3553a9e619ead574f0a92bdfbf77397b11942ba1
   specs:
-    tahi_epub (0.0.1)
+    tahi_epub (0.0.3)
       activesupport (~> 4.1)
       fog (~> 1.24)
       rubyzip (~> 1.1)
@@ -116,18 +116,19 @@ GEM
     bourbon (3.1.8)
       sass (>= 3.2.0)
       thor
-    bower-rails (0.7.2)
-    bugsnag (2.0.2)
+    bower-rails (0.9.2)
+    bugsnag (2.5.1)
       httparty (>= 0.6, < 1.0)
       multi_json (~> 1.0)
     builder (3.2.2)
-    bullet (4.8.0)
-      activesupport
-      uniform_notifier (>= 1.4.0)
-    byebug (2.7.0)
-      columnize (~> 0.3)
+    bullet (4.14.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (>= 1.6.0)
+    byebug (3.5.1)
+      columnize (~> 0.8)
       debugger-linecache (~> 1.2)
-    capybara (2.4.1)
+      slop (~> 3.6)
+    capybara (2.4.4)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
@@ -142,7 +143,7 @@ GEM
       json (>= 1.7)
     celluloid (0.15.2)
       timers (~> 1.1.0)
-    childprocess (0.5.3)
+    childprocess (0.5.5)
       ffi (~> 1.0, >= 1.0.11)
     codeclimate-test-reporter (0.3.0)
       simplecov (>= 0.7.1, < 1.0.0)
@@ -150,16 +151,17 @@ GEM
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
-    coffee-script (2.2.0)
+    coffee-script (2.3.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.7.0)
-    columnize (0.3.6)
+    coffee-script-source (1.8.0)
+    colorize (0.7.3)
+    columnize (0.8.9)
     connection_pool (2.0.0)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     daemons (1.1.9)
-    database_cleaner (1.2.0)
+    database_cleaner (1.3.0)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
     devise (3.4.1)
@@ -170,7 +172,7 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
-    docile (1.1.3)
+    docile (1.1.5)
     dotenv (0.11.1)
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
@@ -189,8 +191,8 @@ GEM
       handlebars-source (~> 1.0)
     erubis (2.7.0)
     eventmachine (1.0.3)
-    excon (0.40.0)
-    execjs (2.0.2)
+    excon (0.41.0)
+    execjs (2.2.2)
     factory_girl (4.4.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.4.0)
@@ -200,7 +202,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.9.1)
       faraday (>= 0.7.4, < 0.10)
-    ffi (1.9.5)
+    ffi (1.9.6)
     fog (1.24.0)
       fog-brightbox
       fog-core (~> 1.23)
@@ -210,7 +212,7 @@ GEM
       fog-softlayer
       ipaddress (~> 0.5)
       nokogiri (~> 1.5, >= 1.5.11)
-    fog-brightbox (0.5.1)
+    fog-brightbox (0.6.1)
       fog-core (~> 1.22)
       fog-json
       inflecto
@@ -230,10 +232,10 @@ GEM
     fog-sakuracloud (0.1.1)
       fog-core
       fog-json
-    fog-softlayer (0.3.20)
+    fog-softlayer (0.3.24)
       fog-core
       fog-json
-    fog-xml (0.1.0)
+    fog-xml (0.1.1)
       fog-core
       nokogiri (~> 1.5, >= 1.5.11)
     foreman (0.75.0)
@@ -255,7 +257,7 @@ GEM
     heroku-deflater (0.5.3)
       rack (>= 1.4.5)
     hike (1.2.3)
-    httparty (0.12.0)
+    httparty (0.13.3)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     humanize (1.1.0)
@@ -293,8 +295,8 @@ GEM
     mime-types (2.4.3)
     mini_magick (3.7.0)
       subexec (~> 0.2.1)
-    mini_portile (0.6.0)
-    minitest (5.4.2)
+    mini_portile (0.6.1)
+    minitest (5.4.3)
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -303,8 +305,8 @@ GEM
     net-ssh (2.9.1)
     netrc (0.7.7)
     newrelic_rpm (3.9.0.229)
-    nokogiri (1.6.3.1)
-      mini_portile (= 0.6.0)
+    nokogiri (1.6.4.1)
+      mini_portile (~> 0.6.0)
     oauth2 (0.9.3)
       faraday (>= 0.8, < 0.10)
       jwt (~> 0.1.8)
@@ -322,6 +324,8 @@ GEM
     ordinalize (0.0.3)
       humanize
     orm_adapter (0.5.0)
+    overcommit (0.19.0)
+      childprocess (>= 0.5.1)
     parser (2.2.0.pre.7)
       ast (>= 1.1, < 3.0)
       slop (~> 3.4, >= 3.4.5)
@@ -331,13 +335,13 @@ GEM
     powerpack (0.0.9)
     pr_geohash (1.0.0)
     progressbar (0.21.0)
-    pry (0.9.12.4)
-      coderay (~> 1.0)
-      method_source (~> 0.8)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-byebug (1.3.2)
-      byebug (~> 2.7)
-      pry (~> 0.9.12)
+    pry-byebug (2.0.0)
+      byebug (~> 3.4)
+      pry (~> 0.10)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
     pry-rescue (1.4.1)
@@ -346,7 +350,7 @@ GEM
     pry-stack_explorer (0.4.9.1)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
-    puma (2.8.2)
+    puma (2.9.2)
       rack (>= 1.1, < 2.0)
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
@@ -395,11 +399,11 @@ GEM
       rspec-core (~> 3.0.0)
       rspec-expectations (~> 3.0.0)
       rspec-mocks (~> 3.0.0)
-    rspec-collection_matchers (1.0.0)
+    rspec-collection_matchers (1.1.2)
       rspec-expectations (>= 2.99.0.beta1)
-    rspec-core (3.0.3)
+    rspec-core (3.0.4)
       rspec-support (~> 3.0.0)
-    rspec-expectations (3.0.3)
+    rspec-expectations (3.0.4)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.0.0)
     rspec-instafail (0.2.5)
@@ -407,7 +411,7 @@ GEM
     rspec-its (1.0.1)
       rspec-core (>= 2.99.0.beta1)
       rspec-expectations (>= 2.99.0.beta1)
-    rspec-mocks (3.0.3)
+    rspec-mocks (3.0.4)
       rspec-support (~> 3.0.0)
     rspec-rails (3.0.2)
       actionpack (>= 3.0)
@@ -417,7 +421,7 @@ GEM
       rspec-expectations (~> 3.0.0)
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
-    rspec-support (3.0.3)
+    rspec-support (3.0.4)
     rubocop (0.27.0)
       astrolabe (~> 1.3)
       parser (>= 2.2.0.pre.6, < 3.0)
@@ -433,10 +437,13 @@ GEM
       sass (~> 3.2.2)
       sprockets (~> 2.8, < 2.12)
       sprockets-rails (~> 2.0)
+    scss-lint (0.7.0)
+      colorize
+      sass
     sdoc (0.3.20)
       json (>= 1.1.3)
       rdoc (~> 3.10)
-    selenium-webdriver (2.43.0)
+    selenium-webdriver (2.44.0)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
@@ -447,16 +454,16 @@ GEM
       json
       redis (>= 3.0.6)
       redis-namespace (>= 1.3.1)
-    simplecov (0.8.2)
+    simplecov (0.9.1)
       docile (~> 1.1.0)
-      multi_json
+      multi_json (~> 1.0)
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
-    slop (3.4.7)
+    slop (3.6.0)
     spring (1.1.2)
     sprockets (2.11.3)
       hike (~> 1.2)
@@ -479,10 +486,10 @@ GEM
       rails (>= 3)
       sunspot (= 2.1.1)
     sunspot_solr (2.1.1)
-    thin (1.6.2)
-      daemons (>= 1.0.9)
-      eventmachine (>= 1.0.0)
-      rack (>= 1.0.0)
+    thin (1.6.3)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0)
+      rack (~> 1.0)
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
@@ -498,7 +505,7 @@ GEM
     unf (0.1.3)
       unf_ext
     unf_ext (0.0.6)
-    uniform_notifier (1.4.0)
+    uniform_notifier (1.6.2)
     vcr (2.9.2)
     warden (1.2.3)
       rack (>= 1.0)
@@ -555,6 +562,7 @@ DEPENDENCIES
   omniauth-cas!
   omniauth-oauth2
   ordinalize
+  overcommit
   pdfkit
   pg
   phantomjs
@@ -578,9 +586,11 @@ DEPENDENCIES
   rubocop
   rubyzip
   sass-rails (~> 4.0.4)
+  scss-lint
   sdoc
   selenium-webdriver
   sidekiq
+  simplecov
   sinatra
   spring
   standard_tasks!

@@ -83,10 +83,14 @@
 
 #paper-abstract { display: none; }
 
+.manuscript-title-and-placeholder {
+  position: relative;
+}
+
 #paper-placeholder {
   position: absolute;
-  top: 56px;
   left: 3px;
+  bottom: -33px;
   color: $tahi-grey-dark;
   font-style: italic;
   z-index: $z-layer-paper-placeholder;

@@ -89,6 +89,7 @@ group :development do
   gem 'rubocop', require: false
   gem 'scss-lint', require: false
   gem 'overcommit', require: false
+  gem 'reek', require: false
 end
 
 group :development, :test, :performance do

@@ -37,3 +37,8 @@ ETahi.Paper = DS.Model.extend
   ).property('tasks.content.@each.isMetadataTask')
 
   allMetadataTasksCompleted: ETahi.computed.all('allMetadataTasks', 'completed', true)
+
+  unloadRecord: ->
+    litePaper = @store.getById('litePaper', @get('id'))
+    @store.unloadRecord(litePaper) if litePaper
+    @_super()

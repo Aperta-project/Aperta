@@ -16,44 +16,33 @@ class FlowQuery
   end
 
   def assigned_tasks
-    scope_to_journals ? assigned_tasks_for_journals : all_assigned_tasks
-  end
-
-  def all_assigned_tasks
     Task.assigned_to(user).includes(:paper)
   end
 
-  def assigned_tasks_for_journals
-    Task.joins(paper: :journal)
-      .assigned_to(user).includes(:paper)
-      .where(journals: {id: attached_journal_ids })
-  end
-
   def paper_admin_tasks_for_user
-    scope_to_journals ? paper_admin_tasks_for_journals : all_paper_admin_tasks
-  end
-
-  def all_paper_admin_tasks
     Task.joins(paper: :assigned_users)
       .includes(:paper)
       .merge(PaperRole.admins.for_user(user))
       .where(type: "StandardTasks::PaperAdminTask")
   end
 
-  def paper_admin_tasks_for_journals
-    Task.joins(paper: [:assigned_users, :journal])
-      .includes(:paper)
-      .merge(PaperRole.admins.for_user(user))
-      .where(type: "StandardTasks::PaperAdminTask")
-      .where(journals: {id: attached_journal_ids })
+  def unassigned_tasks
+    scope_to_journals ? unassigned_tasks_for_journals : all_unassigned_tasks
   end
 
-  def unassigned_tasks
+  def unassigned_tasks_for_journals
     Task.joins(paper: :journal)
       .includes(:paper)
       .incomplete.unassigned
       .where(type: "StandardTasks::PaperAdminTask")
       .where(journals: { id: attached_journal_ids })
+  end
+
+  def all_unassigned_tasks
+    Task.joins(:paper)
+      .includes(:paper)
+      .incomplete.unassigned
+      .where(type: "StandardTasks::PaperAdminTask")
   end
 
   def attached_journal_ids

@@ -65,7 +65,9 @@ gem 'sunspot_rails'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28
-gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c4574666dcfc9b577542fb595f"
+gem('omniauth-cas',
+    github: "dandorman/omniauth-cas",
+    ref: "83210ff52667c2c4574666dcfc9b577542fb595f")
 
 gem 'tahi_epub', github: 'tahi-project/tahi_epub'
 
@@ -79,7 +81,8 @@ group :doc do
 end
 
 group :development do
-  # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
+  # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs.
+  # Please add it in temporarily if you need to check for speed
   gem 'bullet'
   gem 'kss-rails'
   gem 'letter_opener'

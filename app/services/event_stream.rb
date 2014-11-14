@@ -21,7 +21,7 @@ class EventStream
     EventStreamConnection.post_system_event(
       { action: "destroyed",
         type: record.class.base_class.name.demodulize.tableize,
-        ids: [id],
+        ids: [record.id],
         subscription_name: subscription_name }.to_json
     )
   end

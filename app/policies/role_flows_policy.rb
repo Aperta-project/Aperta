@@ -1,6 +1,5 @@
-class RolesPolicy < ApplicationPolicy
-
-  require_params :journal
+class RoleFlowsPolicy < ApplicationPolicy
+  allow_params :journal
 
   def show?
     can_administer_journal?(journal)
@@ -17,5 +16,4 @@ class RolesPolicy < ApplicationPolicy
   def destroy?
     can_administer_journal?(journal)
   end
-
 end

@@ -3,7 +3,7 @@ ETahi.ChooseNewFlowManagerColumnOverlayController = Em.Controller.extend
   overlayClass: 'flow-manager-column-overlay overlay--fullscreen'
   actions:
     createFlow: (title) ->
-      flow = @store.createRecord 'flow',
+      flow = @store.createRecord 'userFlow',
         title: title
       flow.save()
       @send('closeOverlay')

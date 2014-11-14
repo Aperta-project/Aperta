@@ -3,14 +3,25 @@ class RolesController < ApplicationController
   before_action :enforce_policy
   respond_to :json
 
+  def show
+    respond_with Role.find(params[:id])
+  end
+
   def create
     role.save
     respond_with role
   end
 
   def update
-    role.update_attributes(role_params)
-    respond_with role
+    Role.transaction do
+      role.assign_attributes(role_params)
+      if role.can_view_flow_manager_changed?(from: false, to: true)
+        RoleFlow.create_default_flows!(role)
+      end
+      role.save!
+    end
+
+    render json: role
   end
 
   def destroy

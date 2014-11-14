@@ -7,7 +7,7 @@ ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
       @controllerFor('application').set('cachedModel' , null)
       cachedModel
     else
-      @store.find('flow')
+      @store.find('userFlow')
 
   afterModel: ->
     @store.find('commentLook')
@@ -17,7 +17,7 @@ ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
     controller.set('commentLooks', @store.all('commentLook'))
 
   actions:
-    chooseNewFlowMangerColumn: ->
+    chooseNewFlowManagerColumn: ->
       @render('chooseNewFlowManagerColumnOverlay',
         into: 'application'
         outlet: 'overlay'

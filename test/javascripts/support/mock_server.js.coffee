@@ -33,6 +33,10 @@
     'Content-Type': 'application/json'
     JSON.stringify {comment_looks: []}
   ]
+@mockFlowManagerAuthResponse = ->
+  @server.respondWith 'GET', '/user_flows/authorization', [
+    403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
+  ]
 
 @setupMockServer = ->
   @server.restore() if @server
@@ -44,3 +48,4 @@
   @mockAuthorizedRouteReponse()
   @mockEventStreamResponse()
   @mockCommentLookResponse()
+  @mockFlowManagerAuthResponse()

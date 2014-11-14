@@ -23,8 +23,13 @@ describe RolesController do
   describe "#update" do
     it "updates a role" do
       put(:update, id: role.id, role: { name: "Super Duper Admin" }, format: :json)
-      expect(response.status).to be(204)
+      expect(response.status).to be(200)
       expect(role.reload.name).to eq("Super Duper Admin")
+    end
+
+    it "creates new flows for the role if the can_view_flow_manager bit is being set" do
+      put(:update, id: role.id, role: { can_view_flow_manager: true }, format: :json)
+      expect(role.reload.flows.map(&:title)).to match_array(FlowTemplate.valid_titles)
     end
   end
 

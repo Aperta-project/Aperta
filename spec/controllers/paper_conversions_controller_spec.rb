@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PaperConversionsController, :type => :controller do
+describe PaperConversionsController, type: :controller do
   let(:user) { create :user, :site_admin }
 
   let(:paper) do

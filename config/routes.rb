@@ -100,6 +100,7 @@ Tahi::Application.routes.draw do
       get :manage
       get :download
       put :heartbeat
+      get :export, to: 'paper_conversions#export'
       put :toggle_editable
       put :submit
     end

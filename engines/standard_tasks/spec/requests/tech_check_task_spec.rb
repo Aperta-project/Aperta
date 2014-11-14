@@ -3,7 +3,7 @@ require 'spec_helper'
 # another shim spec.  These can probably be eliminated entirely.
 describe "Paper with a tech check task" do
   let(:user) { create :user }
-  let(:paper) { FactoryGirl.create(:paper, user: user, submitted: true) }
+  let(:paper) { FactoryGirl.create(:paper, creator: user, submitted: true) }
   let!(:task) { FactoryGirl.create(:tech_check_task, paper: paper) }
 
   before do

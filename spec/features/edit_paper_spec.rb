@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Editing paper", js: true do
   let(:user) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal }
-  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, submitted: false, short_title: 'foo bar', user: user }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, submitted: false, short_title: 'foo bar', creator: user }
 
   context "As an author" do
     before do

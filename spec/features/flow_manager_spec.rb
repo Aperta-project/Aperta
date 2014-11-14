@@ -17,7 +17,7 @@ feature "Flow Manager", js: true, selenium: true do
       title: 'Foo bar',
       submitted: true,
       journal: journal,
-      user: author)
+      creator: author)
   end
 
   let!(:paper2) do
@@ -26,7 +26,7 @@ feature "Flow Manager", js: true, selenium: true do
       title: 'Baz Qux',
       submitted: true,
       journal: journal,
-      user: author)
+      creator: author)
   end
 
   def assign_tasks_to_user(paper, user, titles)

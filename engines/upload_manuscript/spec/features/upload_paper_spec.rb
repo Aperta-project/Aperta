@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Upload paper", js: true do
   let(:author) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal }
-  let(:paper) { FactoryGirl.create :paper, :with_tasks, user: author, journal: journal }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, journal: journal }
 
   before do
     sign_in_page = SignInPage.visit

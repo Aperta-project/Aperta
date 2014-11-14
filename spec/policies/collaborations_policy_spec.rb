@@ -12,7 +12,7 @@ describe CollaborationsPolicy do
 
   context "authors" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, user: user) }
+    let(:paper) { FactoryGirl.create(:paper, creator: user) }
 
     include_examples "person who can edit a paper's collaborators"
   end

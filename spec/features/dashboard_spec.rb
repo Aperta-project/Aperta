@@ -6,7 +6,7 @@ feature "Dashboard", js: true do
   let(:paper_count) { 1 }
   let!(:papers) do
     paper_count.times do
-      FactoryGirl.create :paper, :with_tasks, journal: journal, submitted: false, user: user
+      FactoryGirl.create :paper, :with_tasks, journal: journal, submitted: false, creator: user
     end
   end
   let(:dashboard) { DashboardPage.new }

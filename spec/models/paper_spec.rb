@@ -46,7 +46,7 @@ describe Paper do
 
   describe "callbacks" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.build :paper, user: user }
+    let(:paper) { FactoryGirl.build :paper, creator: user }
 
     it "assigns all author tasks to the paper author" do
       paper.save!
@@ -62,7 +62,7 @@ describe Paper do
       it "assigns all author tasks to the paper author" do
         tasks = Task.where(role: 'author', phase_id: paper.phases.map(&:id))
         not_author = FactoryGirl.create(:user)
-        paper.update! user: not_author
+        paper.update! creator: not_author
         expect(tasks.all? { |t| t.assignee == user }).to eq true
       end
     end

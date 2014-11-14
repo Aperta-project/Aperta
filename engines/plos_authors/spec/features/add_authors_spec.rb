@@ -1,17 +1,17 @@
 require 'spec_helper'
 
 feature "Add contributing authors", js: true do
-  let(:submitter) { FactoryGirl.create :user }
-  let!(:paper) { FactoryGirl.create :paper, user: submitter }
+  let(:creator) { FactoryGirl.create :user }
+  let!(:paper) { FactoryGirl.create :paper, creator: creator }
   let(:task) { FactoryGirl.create(:plos_authors_task, title: "Add Authors", paper: paper) }
 
 
   before do
-    task.participants << submitter
-    paper.paper_roles.create(user: submitter, role: PaperRole::COLLABORATOR)
+    task.participants << creator
+    paper.paper_roles.create(user: creator, role: PaperRole::COLLABORATOR)
 
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in submitter
+    sign_in_page.sign_in creator
   end
 
   scenario "Author specifies contributing authors" do

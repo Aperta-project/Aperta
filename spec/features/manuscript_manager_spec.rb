@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Manuscript Manager", js: true, selenium: true, solr: true do
   let(:admin) { create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
-  let!(:paper) { FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true, journal: journal }
+  let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: admin, submitted: true, journal: journal }
 
   before do
     assign_journal_role(journal, admin, :admin)

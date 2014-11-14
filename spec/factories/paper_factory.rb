@@ -9,7 +9,7 @@ FactoryGirl.define do
       "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"
     end
     journal
-    submitter factory: User
+    creator factory: User
 
     trait(:completed) do
       submitted true
@@ -20,12 +20,12 @@ FactoryGirl.define do
     end
 
     after(:create) do |paper|
-      paper.paper_roles.create!(user: paper.submitter, role: PaperRole::COLLABORATOR)
+      paper.paper_roles.create!(user: paper.creator, role: PaperRole::COLLABORATOR)
     end
 
     trait(:with_tasks) do
       after(:create) do |paper|
-        PaperFactory.new(paper, paper.submitter).apply_template
+        PaperFactory.new(paper, paper.creator).apply_template
       end
     end
   end

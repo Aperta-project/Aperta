@@ -14,7 +14,7 @@ feature 'Message Cards', js: true do
 
 
   let(:paper) do
-    FactoryGirl.create(:paper, :with_tasks, user: admin, submitted: true, journal: journal)
+    FactoryGirl.create(:paper, :with_tasks, creator: admin, submitted: true, journal: journal)
   end
 
   describe "commenting on an existing message" do

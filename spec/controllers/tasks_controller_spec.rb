@@ -4,7 +4,7 @@ describe TasksController, redis: true do
   let(:user) { create :user, :site_admin }
 
   let!(:paper) do
-    FactoryGirl.create(:paper, :with_tasks, user: user)
+    FactoryGirl.create(:paper, :with_tasks, creator: user)
   end
 
   before do
@@ -89,7 +89,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET 'show'" do
-    let(:paper) { FactoryGirl.create(:paper, :with_tasks, user: user) }
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
     let(:task) { paper.tasks.first }
 
     subject(:do_request) { get :show, { id: task.id, format: format } }
@@ -112,7 +112,7 @@ describe TasksController, redis: true do
   end
 
   describe "PUT 'send_message'" do
-    let(:paper) { FactoryGirl.create(:paper, :with_tasks, user: user) }
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
     let(:task) { paper.tasks.first }
 
     subject(:do_request) { put :send_message, { id: task.id, format: "json", task: {subject: "Hello", body: "Greetings from Vulcan!", recepients: [user.id]} } }

@@ -4,7 +4,7 @@ feature "Displaying task", js: true do
   let(:admin) { create :user, :site_admin }
   let(:author) { create :user }
   let!(:journal) { FactoryGirl.create :journal }
-  let!(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }
+  let!(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, creator: author }
   let(:task) { Task.where(title: "Assign Admin").first }
 
   before do

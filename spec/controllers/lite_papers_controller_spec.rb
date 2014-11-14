@@ -12,7 +12,7 @@ describe LitePapersController do
     let(:paper_count) { 20 }
 
     before do
-      paper_count.times { FactoryGirl.create :paper, user: user }
+      paper_count.times { FactoryGirl.create :paper, creator: user }
     end
 
     context "when there are less than 15" do

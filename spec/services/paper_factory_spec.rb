@@ -61,8 +61,8 @@ describe PaperFactory do
       expect(PaperRole.collaborators.for_user(user).where(paper: new_paper).first).to be_present
     end
 
-    it "sets the user" do
-      expect(subject.user).to eq(user)
+    it "sets the creator" do
+      expect(subject.creator).to eq(user)
     end
 
     it "applies the template" do

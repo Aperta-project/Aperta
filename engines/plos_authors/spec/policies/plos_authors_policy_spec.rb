@@ -35,7 +35,7 @@ describe PlosAuthors::PlosAuthorsPolicy do
   end
 
   context "paper collaborator" do
-    let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
+    let!(:paper_role) { create(:paper_role, :collaborator, creator: user, paper: paper) }
 
     include_examples "person who can manage plos authors"
   end

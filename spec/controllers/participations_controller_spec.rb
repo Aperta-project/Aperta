@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ParticipationsController do
   render_views
-  let!(:paper) { FactoryGirl.create(:paper, :with_tasks, user: user) }
+  let!(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
   let(:phase) { paper.phases.first }
   let(:user) { create(:user) }
 

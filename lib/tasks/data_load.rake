@@ -81,12 +81,12 @@ namespace :data do
 
       desired_papers = 20_000
       progress("large completed manuscript", desired_papers) do
-        FactoryGirl.create(:paper, :with_tasks, :completed, user: random(User), journal: first_journal)
+        FactoryGirl.create(:paper, :with_tasks, :completed, creator: random(User), journal: first_journal)
       end
 
       desired_papers = 80_000
       progress("typical completed manuscript", desired_papers) do
-        FactoryGirl.create(:paper, :with_tasks, :completed, user: random(User), journal: remaining_journals.sample)
+        FactoryGirl.create(:paper, :with_tasks, :completed, creator: random(User), journal: remaining_journals.sample)
       end
     end
 
@@ -102,7 +102,7 @@ namespace :data do
 
       desired_papers = 26_000
       progress("rest of the journals with active manuscripts", desired_papers) do
-        FactoryGirl.create(:paper, :with_tasks, user: random(User), journal: journals.sample)
+        FactoryGirl.create(:paper, :with_tasks, creator: random(User), journal: journals.sample)
       end
     end
 

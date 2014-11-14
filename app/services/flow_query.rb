@@ -1,7 +1,7 @@
 class FlowQuery
   attr_reader :user, :flow_title, :scope_to_journals
 
-  def initialize(user, flow_title, scope_to_journals)
+  def initialize(user, flow_title, scope_to_journals=false)
     @user = user
     @flow_title = flow_title
     @scope_to_journals = scope_to_journals
@@ -29,7 +29,7 @@ class FlowQuery
       .where(journals: {id: attached_journal_ids })
   end
 
-  def paper_admin_tasks
+  def paper_admin_tasks_for_user
     scope_to_journals ? paper_admin_tasks_for_journals : all_paper_admin_tasks
   end
 
@@ -60,13 +60,17 @@ class FlowQuery
     @ids ||= user.roles.pluck(:journal_id).uniq 
   end
 
+  def task_includes_paper
+    Task.includes(:paper)
+  end
+
   private
 
   def flow_map
     {
       'Up for grabs' => unassigned_tasks,
+      'My papers' => paper_admin_tasks_for_user,
       'My tasks' => assigned_tasks.incomplete,
-      'My papers' => paper_admin_tasks,
       'Done' => assigned_tasks.completed
     }
   end

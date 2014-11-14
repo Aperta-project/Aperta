@@ -28,6 +28,12 @@ FactoryGirl.define do
     role "editor"
   end
 
+  factory :paper_admin_task, class: 'StandardTasks::PaperAdminTask' do
+    phase
+    title "Assign Admin"
+    role "admin"
+  end
+
   factory :register_decision_task, class: 'StandardTasks::RegisterDecisionTask' do
     phase
     title "Register Decision"

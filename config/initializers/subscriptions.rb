@@ -23,13 +23,17 @@ TahiNotifier.subscribe(
 end
 
 TahiNotifier.subscribe(
+  "paper_role:created") do |subscription_name, payload|
+  action = payload[:action]
+  record = payload[:record]
+
+  EventStream.new(action, record.paper, subscription_name).post
+end
+
+TahiNotifier.subscribe(
   "paper_role:destroyed") do |subscription_name, payload|
   action = payload[:action]
   record = payload[:record]
 
-  # only send paper destroy if this is the last connection
-  unless Accessibility.new(record.paper).users.includes?(record.user)
-    # only send this down the user channel
-    EventStream.new('destroyed', paper, subscription_name).destroy
-  end
+  EventStream.new('destroyed', record.paper, subscription_name).destroy_for(record.user)
 end

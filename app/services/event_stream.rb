@@ -10,20 +10,34 @@ class EventStream
 
   def post
     Accessibility.new(record).users.each do |user|
-      EventStreamConnection.post_user_event(
-        user.id,
-        payload_for(user)
-      )
+      channel = EventStreamConnection.channel_name(User, user.id)
+      payload = payload_for(user)
+      EventStreamConnection.post_event(channel, payload)
     end
   end
 
   def destroy
-    EventStreamConnection.post_system_event(
-      { action: "destroyed",
+    channel = EventStreamConnection::SYSTEM_CHANNEL_NAME
+    payload = {
+      action: "destroyed",
+      type: record.class.base_class.name.demodulize.tableize,
+      ids: [record.id],
+      subscription_name: subscription_name
+    }.to_json
+    EventStreamConnection.post_event(channel, payload)
+  end
+
+  def destroy_for(user)
+    if Accessibility.new(record).disconnected?(user)
+      channel = EventStreamConnection.channel_name(User, user.id)
+      payload = {
+        action: "destroyed",
         type: record.class.base_class.name.demodulize.tableize,
         ids: [record.id],
-        subscription_name: subscription_name }.to_json
-    )
+        subscription_name: subscription_name
+      }.to_json
+      EventStreamConnection.post_event(channel, payload)
+    end
   end
 
   private

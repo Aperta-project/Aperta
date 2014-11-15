@@ -7,10 +7,14 @@ describe FlowQuery do
 
   let(:paper) do
     FactoryGirl.create(:paper,
-      journal: journal,
-      user: user)
+                       journal: journal,
+                       user: user)
   end
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
+
+  def run_query(user, flow_name)
+
+  end
 
 
   describe "#tasks" do
@@ -40,30 +44,28 @@ describe FlowQuery do
       expect(FlowQuery.new(user, 'My papers').tasks).to match_array [paper_admin_task]
     end
 
-    # this is how it is now but it makes no sense to be the same for both
 
-    context "When scoped to journals the user has a role in" do
-      it "For 'Up for grabs' returns incomplete, unassigned PaperAdminTasks for journals the user has a role in." do
-        valid_task = FactoryGirl.create(:paper_admin_task, phase: phase, completed: false)
-        assign_journal_role(journal, user, :editor)
-        other_task_same_journal = FactoryGirl.create(:task, phase: phase)
+    it "For 'Up for grabs' returns incomplete, unassigned PaperAdminTasks for journals the user has a role in." do
+      valid_task = FactoryGirl.create(:paper_admin_task, phase: phase, completed: false)
+      assign_journal_role(journal, user, :editor)
+      other_task_same_journal = FactoryGirl.create(:task, phase: phase)
 
-        other_paper_admin_task = FactoryGirl.create(:paper_admin_task)
-        expect(FlowQuery.new(user, 'Up for grabs', true).tasks).to match_array [valid_task]
+      other_paper_admin_task = FactoryGirl.create(:paper_admin_task)
+      expect(FlowQuery.new(user, 'Up for grabs').tasks).to match_array [valid_task]
 
-        valid_task.update(completed: true)
-        expect(FlowQuery.new(user, 'Up for grabs', true).tasks).to be_empty
-      end
+      valid_task.update(completed: true)
+      expect(FlowQuery.new(user, 'Up for grabs').tasks).to be_empty
     end
 
-    context "When unscoped" do
+    context "When the user is a site admin" do
+      let(:site_admin) { FactoryGirl.create :user, :site_admin }
       it "For 'Up for grabs' returns incomplete, unassigned PaperAdminTasks for any journal" do
         valid_task = FactoryGirl.create(:paper_admin_task, phase: phase, completed: false)
-        assign_journal_role(journal, user, :editor)
+        assign_journal_role(journal, site_admin, :editor)
 
         other_paper_admin_task = FactoryGirl.create(:paper_admin_task)
 
-        expect(FlowQuery.new(user, 'Up for grabs').tasks).to match_array [valid_task, other_paper_admin_task]
+        expect(FlowQuery.new(site_admin, 'Up for grabs').tasks).to match_array [valid_task, other_paper_admin_task]
       end
     end
   end

@@ -1,10 +1,10 @@
 class FlowQuery
   attr_reader :user, :flow_title, :scope_to_journals
 
-  def initialize(user, flow_title, scope_to_journals=false)
+  def initialize(user, flow_title)
     @user = user
     @flow_title = flow_title
-    @scope_to_journals = scope_to_journals
+    @scope_to_journals = !user.site_admin?
   end
 
   def tasks
@@ -62,7 +62,7 @@ class FlowQuery
   end
 
   def attached_journal_ids
-    @attached_journal_ids ||= user.roles.pluck(:journal_id).uniq 
+    @attached_journal_ids ||= user.roles.pluck(:journal_id).uniq
   end
 
 end

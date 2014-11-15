@@ -144,7 +144,7 @@ feature "Flow Manager", js: true, selenium: true do
     end
 
     scenario "unassociated paper admin task should not appear in the done column" do
-      within(".column", text: "Up for grabs") do
+      within(".column", text: "Done") do
         expect(page).to have_no_content(unassociated_paper.title)
       end
     end

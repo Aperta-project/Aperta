@@ -1,4 +1,4 @@
-class FlowSerializer < ActiveModel::Serializer
+class UserFlowSerializer < ActiveModel::Serializer
   attributes :id, :title, :empty_text
   has_many :lite_papers, embed: :ids, include: true, serializer: LitePaperSerializer
   has_many :tasks, embed: :ids, include: true, root: :card_thumbnails, serializer: CardThumbnailSerializer

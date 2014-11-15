@@ -3,8 +3,4 @@ class UserFlow < ActiveRecord::Base
   belongs_to :user, inverse_of: :flows
 
   validates :title, inclusion: { in: FlowTemplate.valid_titles }
-
-  def active_model_serializer
-    FlowSerializer
-  end
 end

@@ -7,9 +7,9 @@ describe PaperConverterWorker do
 
   describe ".export" do
     it "returns job_id" do
-      VCR.use_cassette('convert_to_docx', :record => :all) do
-        x = described_class.export(paper, 'docx', user)
-        expect(x).to eq '51b0bf5c-bc48-47eb-bab7-c596cdcd954f'
+      VCR.use_cassette('convert_to_docx', record: :once) do
+        job_id = JSON.parse(described_class.export(paper, 'docx', user))['jobs']['id']
+        expect(job_id).to eq 'd5ee706f-a473-46ed-9777-3b7cd2905d08'
       end
     end
   end

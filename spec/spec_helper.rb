@@ -48,7 +48,6 @@ VCR.configure do |config|
   config.allow_http_connections_when_no_cassette = false
   config.default_cassette_options = { record: :once }
   config.configure_rspec_metadata!
-  config.ignore_localhost = true # Makes Selenium work
   config.ignore_hosts 'codeclimate.com'
 end
 
@@ -132,6 +131,9 @@ RSpec.configure do |config|
   config.before(:each) do |example|
     @current_driver = Capybara.current_driver
     if example.metadata[:selenium].present? || ENV["SELENIUM"] == "true"
+      VCR.configure do |vcr|
+        vcr.ignore_localhost = true
+      end
       Capybara.current_driver = :selenium
     end
     DatabaseCleaner.start

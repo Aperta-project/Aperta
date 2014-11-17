@@ -32,6 +32,37 @@
 
   {{render "manuscript_manager_template/index" manuscriptManagerTemplates}}
 
+  <div class="admin-section doi-form">
+    <h2 class="admin-section-title">
+      DOI
+    </h2>
+
+    <div class="admin-doi-setting-section">
+      Publisher DOI Prefix:
+      <br>
+      {{input type="text" class="doi_publisher_prefix" value=doiPublisherPrefix}}
+      <br><br>
+
+      Journal Prefix:
+      <br>
+      {{input type="text" class="doi_journal_prefix" value=doiJournalPrefix}}
+      <br><br>
+
+      Start Number:
+      <br>
+      {{input type="text" class="doi_start_number" value=doiStartNumber}}
+    </div>
+
+    <div class="alert alert-info" style="margin-top: 25px;">
+      Careful! You can only save this once.
+    </div>
+
+    <div class="admin-doi-setting-section">
+      <button class="button-primary button--blue"
+        {{action "saveDOI"}}>Save DOI</button>
+    </div>
+  </div>
+
   <div class="admin-section">
     <h2 class="admin-section-title">Style Settings</h2>
 

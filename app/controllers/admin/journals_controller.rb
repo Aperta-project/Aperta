@@ -49,6 +49,16 @@ class Admin::JournalsController < ApplicationController
   private
 
   def journal_params
-    params.require(:admin_journal).permit(:name, :description, :epub_cover, :epub_css, :pdf_css, :manuscript_css)
+    params.require(:admin_journal).permit(
+      :name,
+      :description,
+      :epub_cover,
+      :epub_css,
+      :pdf_css,
+      :manuscript_css,
+      :doi_publisher_prefix,
+      :doi_journal_prefix,
+      :doi_start_number
+    )
   end
 end

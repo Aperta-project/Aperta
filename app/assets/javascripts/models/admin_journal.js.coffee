@@ -14,3 +14,6 @@ ETahi.AdminJournal = DS.Model.extend
   paperCount: a('number')
   createdAt: a('date')
   journalTaskTypes: DS.hasMany('journalTaskType')
+  doiJournalPrefix: a('string')
+  doiPublisherPrefix: a('string')
+  doiStartNumber: a('number')

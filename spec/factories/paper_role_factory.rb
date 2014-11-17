@@ -15,5 +15,9 @@ FactoryGirl.define do
     trait(:collaborator) do
       role 'collaborator'
     end
+
+    trait(:participant) do
+      role 'participant'
+    end
   end
 end

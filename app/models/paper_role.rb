@@ -5,8 +5,9 @@ class PaperRole < ActiveRecord::Base
   EDITOR = 'editor'
   COLLABORATOR = 'collaborator'
   ADMIN = 'admin'
+  PARTICIPANT = 'participant'
 
-  ALL_ROLES = [REVIEWER, EDITOR, COLLABORATOR, ADMIN]
+  ALL_ROLES = [REVIEWER, EDITOR, COLLABORATOR, ADMIN, PARTICIPANT]
 
   belongs_to :user, inverse_of: :paper_roles
   belongs_to :paper, inverse_of: :paper_roles
@@ -34,6 +35,10 @@ class PaperRole < ActiveRecord::Base
 
   def self.collaborators
     where(role: COLLABORATOR)
+  end
+
+  def self.participants
+    where(role: PARTICIPANT)
   end
 
   def self.for_role(role)

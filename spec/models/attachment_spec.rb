@@ -5,12 +5,14 @@ describe Attachment do
     let(:attachment) { Attachment.new }
 
     it "returns true if the file is of type image" do
-      attachment.stub_chain("file.file.extension") {"jpg"}
+      file = OpenStruct.new(file: OpenStruct.new(extension: "jpg"))
+      expect(attachment).to receive(:file).twice.and_return(file)
       expect(attachment.image?).to eq(true)
     end
 
     it "returns false if the file is not of type image" do
-      attachment.stub_chain("file.file.extension") {"pdf"}
+      file = OpenStruct.new(file: OpenStruct.new(extension: "pdf"))
+      expect(attachment).to receive(:file).twice.and_return(file)
       expect(attachment.image?).to eq(false)
     end
   end

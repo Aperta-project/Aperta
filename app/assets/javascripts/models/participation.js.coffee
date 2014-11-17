@@ -1,3 +1,3 @@
 ETahi.Participation = DS.Model.extend
-  participant: DS.belongsTo('user')
+  user: DS.belongsTo('user')
   task: DS.belongsTo('task', polymorphic: true)

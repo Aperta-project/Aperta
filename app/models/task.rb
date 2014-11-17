@@ -18,7 +18,7 @@ class Task < ActiveRecord::Base
   has_many :attachments, as: :attachable
   has_many :questions, inverse_of: :task
   has_many :participations, inverse_of: :task, dependent: :destroy
-  has_many :participants, through: :participations
+  has_many :participants, through: :participations, source: :user
 
   validates :title, :role, presence: true
   validates :title, length: { maximum: 255 }
@@ -30,7 +30,7 @@ class Task < ActiveRecord::Base
     if users.empty?
       Task.none
     else
-      joins(participations: :participant).where("participations.participant_id" => users)
+      joins(participations: :user).where("participations.user_id" => users)
     end
   end
 

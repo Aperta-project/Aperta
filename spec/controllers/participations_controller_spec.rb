@@ -12,7 +12,7 @@ describe ParticipationsController do
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,
-        participation: {participant_id: user.id,
+        participation: {user_id: user.id,
                         task_id: task.id}
     end
 
@@ -33,7 +33,7 @@ describe ParticipationsController do
           expect {
             xhr :post, :create,
             format: :json,
-            participation: {participant_id: nil,
+            participation: {user_id: nil,
                             task_id: task.id}
           }.to_not change { Participation.count }
         end
@@ -89,13 +89,13 @@ describe ParticipationsController do
 
     it "adds an email to the sidekiq queue if new participant is not current user" do
       expect {
-        post :create, format: 'json', participation: { participant_id: new_participant.id, task_id: task.id }
+        post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id }
       }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
     end
 
     it "does not add an email to the sidekiq queue if new participant is the current user" do
       expect {
-        post :create, format: 'json', participation: { participant_id: user.id, task_id: task.id }
+        post :create, format: 'json', participation: { user_id: user.id, task_id: task.id }
       }.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
     end
   end

@@ -46,13 +46,6 @@ describe TasksController, redis: true do
       expect(task.reload).to be_completed
     end
 
-    it "posts an event to the event stream" do
-      do_request
-      task.reload
-      ts = TaskSerializer.new(task)
-      expect(EventStreamConnection).to have_received(:post_user_event).at_least(:once)
-    end
-
     it "renders the task id and completed status as JSON" do
       do_request
       expect(response.status).to eq(204)
@@ -139,7 +132,7 @@ describe TasksController, redis: true do
                  type: 'MessageTask',
                  phase_id: paper.phases.first.id,
                  message_body: "My body",
-                 participant_ids: [user.id]}
+                 user_ids: [user.id]}
       end
 
       context "with a paper that the user administers through a journal" do

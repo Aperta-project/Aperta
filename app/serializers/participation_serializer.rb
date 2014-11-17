@@ -1,5 +1,5 @@
 class ParticipationSerializer < ActiveModel::Serializer
   attributes :id
-  has_one :participant, serializer: UserSerializer, embed: :ids, include: true, root: :users
+  has_one :user, embed: :ids, include: true
   has_one :task, embed: :id, polymorphic: true
 end

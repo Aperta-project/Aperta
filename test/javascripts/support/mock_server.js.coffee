@@ -8,7 +8,6 @@
 @mockAuthorizedRouteReponse = ->
   @server.respondWith 'GET', '/admin/journals/authorization', [
     204
-    'Tahi-Authorization-Check': 'true'
     'Content-Type': 'application/html'
     ""
   ]
@@ -16,7 +15,7 @@
   # papers/:id/manuscript_manager
   @server.respondWith 'GET', /\/papers\/\d+\/manuscript_manager/, [
     403
-    'Tahi-Authorization-Check': 'true'
+    {}
     JSON.stringify {}
   ]
 

@@ -35,8 +35,8 @@ ETahi.initializer
       {type, url} = ajaxSettings
       {status, statusText} = jqXHR
 
-      # don't blow up in case of a 403 from rails when doing authorization checks.
-      return if jqXHR.getResponseHeader('Tahi-Authorization-Check') == 'true'
+      # don't blow up in case of a 403 from rails
+      return if status == 403
       return if status == 422 # ember data should handle these errors.
 
       #don't blow up if blowing up blows up

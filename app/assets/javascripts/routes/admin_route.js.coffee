@@ -1,8 +1,6 @@
 ETahi.AdminRoute = ETahi.AuthorizedRoute.extend
   beforeModel: ->
-    Ember.$.ajax '/admin/journals/authorization',
-      headers:
-        'Tahi-Authorization-Check': true
+    Ember.$.ajax '/admin/journals/authorization'
 
   actions:
     viewUserDetails: (user) ->

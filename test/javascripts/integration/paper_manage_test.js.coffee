@@ -15,7 +15,7 @@ module 'Integration: Paper Manage page',
     # let us see the manuscript manager
     server.respondWith 'GET', /\/papers\/\d+\/manuscript_manager/, [
       204
-      'Tahi-Authorization-Check': 'true'
+      {}
       ""
     ]
 

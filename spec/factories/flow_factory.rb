@@ -1,6 +1,9 @@
 FactoryGirl.define do
-  factory :flow do
-    user
-    sequence(:title) { |s| "Flow #{s}" }
+  factory :user_flow do
+    title 'Up for grabs'
+  end
+
+  factory :role_flow do
+    title 'Up for grabs'
   end
 end

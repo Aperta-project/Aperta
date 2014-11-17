@@ -1,9 +1,8 @@
 require 'spec_helper'
 
-describe FlowsPolicy do
+describe UserFlowsPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:flow) { FactoryGirl.create(:flow, user: user) }
-  let(:policy) { FlowsPolicy.new(current_user: user, flow: flow) }
+  let(:policy) { UserFlowsPolicy.new(current_user: user, journal: journal) }
 
   context "user has a flow manager journal role" do
     let(:user) { FactoryGirl.create(:user) }

@@ -100,14 +100,6 @@ ActiveRecord::Schema.define(version: 20141112193333) do
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
 
-  create_table "flows", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "title"
-    t.string   "empty_text"
-    t.integer  "user_id"
-  end
-
   create_table "ihat_jobs", force: true do |t|
     t.integer  "paper_id"
     t.string   "job_id"
@@ -265,6 +257,12 @@ ActiveRecord::Schema.define(version: 20141112193333) do
 
   add_index "questions", ["task_id"], name: "index_questions_on_task_id", using: :btree
 
+  create_table "role_flows", force: true do |t|
+    t.string  "title"
+    t.string  "empty_text"
+    t.integer "role_id"
+    t.integer "position"
+  end
   create_table "roles", force: true do |t|
     t.string   "name"
     t.integer  "journal_id"
@@ -336,6 +334,14 @@ ActiveRecord::Schema.define(version: 20141112193333) do
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+
+  create_table "user_flows", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "title"
+    t.string   "empty_text"
+    t.integer  "user_id"
+  end
 
   create_table "user_roles", force: true do |t|
     t.integer  "user_id"

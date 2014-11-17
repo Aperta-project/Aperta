@@ -3,7 +3,7 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
     controller.set('model', model)
     if @getCurrentUser? && @getCurrentUser()
       ETahi.RESTless.authorize(controller, '/admin/journals/authorization', 'canViewAdminLinks')
-      ETahi.RESTless.authorize(controller, '/flows/authorization', 'canViewFlowManagerLink')
+      ETahi.RESTless.authorize(controller, '/user_flows/authorization', 'canViewFlowManagerLink')
 
   actions:
     loading: (transition, originRoute) ->

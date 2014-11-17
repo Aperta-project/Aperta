@@ -1,18 +1,17 @@
-<h3 class="mmt-title">{{view.content.paperType}}</h3>
+<h3 class="mmt-thumbnail-title">{{view.content.paperType}}</h3>
 
-<ul class="template-stats">
-<li><span>{{view.content.phaseCount}}</span> Phases</li>
-<li><span>{{view.content.articleCount}}</span> Active Articles</li>
+<ul class="mmt-thumbnail-stats">
+  <li><span>{{view.phaseCount}}</span> Phases</li>
 </ul>
 
-<div class="template-thumbnail-overlay template-thumbnail-edit-options">
+<div class="mmt-thumbnail-overlay mmt-thumbnail-edit-options">
   {{link-to "" "manuscript_manager_template.edit" view.content class="glyphicon glyphicon-pencil scaleIn"}}
   {{#if view.canDeleteTemplates}}
     <span class="glyphicon glyphicon-trash scaleIn" {{action "toggleWillDestroyTemplate" target="view"}}></span>
   {{/if}}
 </div>
-<div class="template-thumbnail-overlay template-thumbnail-overlay-confirm-destroy">
+<div class="mmt-thumbnail-overlay mmt-thumbnail-overlay-confirm-destroy">
   <p>This will permanently delete your template. Are you sure?</p>
   <button class="button-secondary button--blue knockout" {{action "toggleWillDestroyTemplate" target="view"}}>Cancel</button>
-  <button class="button-secondary button--blue knockout attachment-delete-button" {{action "destroyTemplate" view.content}}>Delete</button>
+  <button class="button-secondary button--blue knockout mmt-thumbnail-delete-button" {{action "destroyTemplate" view.content}}>Delete</button>
 </div>

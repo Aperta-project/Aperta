@@ -37,21 +37,6 @@ ETahi.PaperManageRoute = ETahi.AuthorizedRoute.extend
       return unless taskType
       unNamespacedKind = Tahi.utils.deNamespaceTaskType taskType.get('kind')
 
-    showDeleteConfirm: (task) ->
-      @controllerFor('cardDeleteOverlay').set('task', task)
-      @render('cardDeleteOverlay',
-        into: 'application'
-        outlet: 'overlay'
-        controller: 'cardDeleteOverlay')
-
-    createAdhocTask: (phase) ->
-      paper = @controllerFor('paperManage').get('model')
-      newTask = @store.createRecord 'task',
-        phase: phase
-        type: 'Task'
-        paper: paper
-        title: 'New Ad-Hoc Card'
-
       @store.createRecord(unNamespacedKind,
         phase: phase
         role: taskType.get 'role'

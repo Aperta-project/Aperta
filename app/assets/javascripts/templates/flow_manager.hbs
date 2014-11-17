@@ -2,7 +2,7 @@
   <div class="control-bar-inner-wrapper">
     <ul>
       <li class="control-bar-item">
-        <div class="control-bar-link add-flow-column-button __with-icon" {{action "chooseNewFlowMangerColumn"}}>
+        <div class="control-bar-link add-flow-column-button __with-icon" {{action "chooseNewFlowManagerColumn"}}>
           <div class="control-bar-link-icon"><span class="glyphicon glyphicon-plus"></span></div>
           <div class="control-bar-link-text">Add New Column</div>
         </div>
@@ -13,23 +13,11 @@
 
 <ul class="columns">
   {{#each flow in content}}
-    <li class="column">
-      <div class="column-header">
-        <h2 class="column-title">{{flow.title}}</h2>
-        <div class="remove-column glyphicon glyphicon-remove" {{action 'removeFlow' flow}}></div>
-      </div>
-      {{progress-spinner visible=flow.isSaving}}
-
-      <div class="column-content">
-        <ul class="cards">
-          {{#each litePaper in flow.litePapers}}
-            {{view ETahi.FlowPaperView flow=flow litePaper=litePaper}}
-          {{/each}}
-        </ul>
-        {{#unless flow.litePapers}}
-          <div class="empty-text">{{flow.emptyText}}</div>
-        {{/unless}}
-      </div>
-    </li>
+    {{flow-column flow=flow
+                  litePaper=litePaper
+                  commentLooks=commentLooks
+                  editable=false
+                  removeFlow='removeFlow'
+                  viewCard='viewCard'}}
   {{/each}}
 </ul>

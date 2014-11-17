@@ -1,25 +1,3 @@
-{{#view ETahi.ControlBarView}}
-  <div class="control-bar-inner-wrapper">
-    <ul>
-      <li id="control-bar-paper-journal-logo" class="control-bar-item">
-        {{#if logo}}
-          <img {{bind-attr src="logo"}} />
-        {{else}}
-          {{name}} -
-        {{/if}}
-      </li>
-      <li class="control-bar-item control-bar-page-title">
-        <span>Journal Administration</span>
-      </li>
-    </ul>
-    <ul>
-      <li class="template-edit-message control-bar-item">
-        <span {{bind-attr class="errorText:show:hidden :alert-danger :control-bar-message"}}>{{errorText}}</span>
-      </li>
-    </ul>
-  </div>
-{{/view}}
-
 <div id="tahi-container" class="admin-screen">
   <div class="admin-users-row">
     <h2 class="admin-section-title">Users</h2>

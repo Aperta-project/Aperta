@@ -327,6 +327,27 @@
   font-size: 30px;
 }
 
+.admin-role {
+  &.is-editing {
+    .admin-modify-flows-link { display: block; }
+  }
+}
+
+.admin-modify-flows-link {
+  display: none;
+  margin-bottom: 6px;
+  padding: 10px 10px 10px 20px;
+  color: #fff;
+  font-size: 21px;
+  background: $tahi-blue;
+
+  a {
+    color: #fff;
+    text-decoration: underline;
+
+    &:hover { color: #fff; }
+  }
+}
 
 .admin-style-setting-section {
   float: left;

@@ -1,0 +1,29 @@
+<div class="column-header">
+  {{#if editable}}
+    {{select-2-single value=""
+               class="flow-title-select2"
+               name="flow_title"
+               selectionSelected="setFlowTitle"
+               selectedData=formattedFlowTitle
+               minimumInputLength=0
+               source=possibleFlowNames}}
+  {{else}}
+    <h2 class="column-title">{{flow.title}}</h2>
+  {{/if}}
+  <div class="remove-column glyphicon glyphicon-remove" {{action 'removeFlow' flow}}></div>
+</div>
+{{progress-spinner visible=flow.isSaving}}
+
+<div class="column-content">
+  <ul class="cards">
+    {{#each litePaper in flow.litePapers}}
+      {{flow-task-group flow=flow
+                        litePaper=litePaper
+                        commentLooks=commentLooks
+                        viewCard='viewCard'}}
+    {{/each}}
+  </ul>
+  {{#unless flow.litePapers}}
+    <div class="empty-text">{{flow.emptyText}}</div>
+  {{/unless}}
+</div>

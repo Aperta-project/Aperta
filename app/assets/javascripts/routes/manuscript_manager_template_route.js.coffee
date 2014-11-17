@@ -31,3 +31,10 @@ ETahi.ManuscriptManagerTemplateRoute = Ember.Route.extend
       @send('closeOverlay')
 
     viewCard: -> #no-op
+
+    showDeleteConfirm: (task) ->
+      @controllerFor('cardDeleteOverlay').set('task', task)
+      @render('cardDeleteOverlay',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'cardDeleteOverlay')

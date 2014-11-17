@@ -65,15 +65,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def accessible_paper_ids
-    if site_admin?
-      Paper.all.pluck(:id)
-    else
-      admin_papers = Paper.where(journal: journals.merge(Role.can_view_all_manuscript_managers))
-      assigned_papers.pluck(:id) | admin_papers.pluck(:id)
-    end
-  end
-
   def self.search_users(query: nil, assigned_users_in_journal_id: nil)
     if query
       sanitized_query = connection.quote_string(query.to_s.downcase) + '%'

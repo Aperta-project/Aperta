@@ -42,6 +42,6 @@ class UserFlowsController < ApplicationController
   end
 
   def potential_user_flow_titles
-    {titles: RoleFlow.joins(role: :users).where(users: {id: current_user.id}).uniq.pluck(:title)}
+    { titles: RoleFlow.joins(role: :users).where(users: { id: current_user.id }).uniq.pluck(:title) }
   end
 end

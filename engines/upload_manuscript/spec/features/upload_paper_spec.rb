@@ -12,11 +12,11 @@ feature "Upload paper", js: true do
 
   scenario "Author uploads paper in Word format", selenium: true do
     expect(DownloadManuscriptWorker).to receive(:perform_async) do |manuscript_id, url|
-      paper.manuscript.update status: "done"
-      paper.update title: "This is a Title About Turtles", body: "And this is my subtitle"
+      paper.manuscript.update(status: "done")
+      paper.update(title: "This is a Title About Turtles", body: "And this is my subtitle")
     end
 
-    edit_paper = EditPaperPage.visit paper
+    edit_paper = EditPaperPage.visit(paper)
 
     edit_paper.view_card('Upload Manuscript').upload_word_doc
 

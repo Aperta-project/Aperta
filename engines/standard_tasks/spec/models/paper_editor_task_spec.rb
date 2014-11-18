@@ -4,7 +4,7 @@ describe StandardTasks::PaperEditorTask do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
   describe "#paper_role" do
     let(:user) { FactoryGirl.build(:user) }
-    let!(:paper_role) { create(:paper_role, :editor, paper: paper, creator: user) }
+    let!(:paper_role) { create(:paper_role, :editor, paper: paper, user: user) }
     let!(:phase) { paper.phases.first }
     let(:task) { StandardTasks::PaperEditorTask.create!(phase: phase, title: "Assign Editor", role: 'admin') }
 

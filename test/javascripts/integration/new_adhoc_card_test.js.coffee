@@ -29,7 +29,7 @@ module 'Integration: adding an adhoc card',
     #let us see the manuscript manager
     server.respondWith 'GET', /\/papers\/\d+\/manuscript_manager/, [
       204
-      'Tahi-Authorization-Check': 'true'
+      {}
       ""
     ]
 

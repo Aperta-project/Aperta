@@ -37,7 +37,5 @@ ETahi.RESTless = Ember.Namespace.create
         Ember.run ->
           controller.set(property, value)
     Ember.$.ajax url,
-      headers:
-        'Tahi-Authorization-Check': true
       success: authorize(true)
       error:authorize(false)

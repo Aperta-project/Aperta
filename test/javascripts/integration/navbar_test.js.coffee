@@ -29,16 +29,16 @@ respondAuthorized = ->
   ]
 
   server.respondWith 'GET', '/user_flows/authorization', [
-    204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
+    204, 'content-type': 'application/html', ""
   ]
 
 respondUnauthorized = ->
   server.respondWith 'GET', '/admin/journals/authorization', [
-    403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
+    403, 'content-type': 'application/html', ""
   ]
 
   server.respondWith 'GET', '/user_flows/authorization', [
-    403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
+    403, 'content-type': 'application/html', ""
   ]
 
 setCurrentUserAdmin = (bool) ->

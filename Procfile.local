@@ -1,5 +1,4 @@
 web: bundle exec puma -C config/puma.rb
 worker: bundle exec sidekiq
 event_source: go run $GOPATH/src/github.com/tahi-project/golang-eventsource/server.go -p=8080 -token=token123
-redis: redis-server /usr/local/etc/redis.conf
 solr: bundle exec rake sunspot:solr:run

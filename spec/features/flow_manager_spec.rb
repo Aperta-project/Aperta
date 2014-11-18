@@ -29,6 +29,8 @@ feature "Flow Manager", js: true, selenium: true do
       user: author)
   end
 
+  let!(:role) { assign_journal_role(journal, admin, :admin) }
+
   def assign_tasks_to_user(paper, user, titles)
     paper.tasks.each { |t| t.participants << user if titles.include? t.title }
   end
@@ -38,7 +40,6 @@ feature "Flow Manager", js: true, selenium: true do
   end
 
   before do
-    @role = assign_journal_role(journal, admin, :admin)
     @old_size = page.driver.browser.manage.window.size
     page.driver.browser.manage.window.resize_to(1250,550)
     sign_in_page = SignInPage.visit
@@ -61,7 +62,7 @@ feature "Flow Manager", js: true, selenium: true do
 
   context "adding a column to the flow manager" do
     scenario "the column should appear on the page" do
-      RoleFlow.create_default_flows!(@role)
+      RoleFlow.create_default_flows!(role)
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
@@ -73,7 +74,7 @@ feature "Flow Manager", js: true, selenium: true do
     end
 
     scenario "choices are determined by the user's role flows" do
-      @role.flows.create(FlowTemplate.template("up for grabs"))
+      role.flows.create(FlowTemplate.template("up for grabs"))
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 

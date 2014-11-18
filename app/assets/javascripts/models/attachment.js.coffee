@@ -6,3 +6,4 @@ ETahi.Attachment = DS.Model.extend
   src: a('string')
   status: a('string')
   title: a('string')
+  caption: a('string')

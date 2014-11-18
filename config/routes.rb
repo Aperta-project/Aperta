@@ -118,7 +118,7 @@ Tahi::Application.routes.draw do
   # Ember destroys the ember models before calling buildUrl
   # therefore it is not possible to resolve task/:task_id/attchment/:id
   # on the client.
-  resources :attachments, only: [:destroy]
+  resources :attachments, only: [:destroy, :update]
 
   resources :phases, only: [:create, :update, :show, :destroy]
 

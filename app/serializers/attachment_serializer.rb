@@ -1,5 +1,5 @@
 class AttachmentSerializer < ActiveModel::Serializer
-  attributes :id, :title, :src, :status, :preview_src, :attachable
+  attributes :id, :title, :caption, :src, :status, :preview_src, :attachable
 
   def src
     object.file.url
@@ -13,6 +13,6 @@ class AttachmentSerializer < ActiveModel::Serializer
   end
 
   def preview_src
-    object.file.preview.url
+    object.file.preview.url if object.image?
   end
 end

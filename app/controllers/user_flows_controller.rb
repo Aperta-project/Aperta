@@ -4,11 +4,11 @@ class UserFlowsController < ApplicationController
   respond_to :json
 
   def index
-    render json: current_user.flows, each_serializer: policy_serializer
+    render json: current_user.flows, meta: potential_user_flow_titles
   end
 
   def show
-    respond_with UserFlow.find(params[:id]), serializer: policy_serializer
+    respond_with UserFlow.find(params[:id])
   end
 
   def create
@@ -37,12 +37,11 @@ class UserFlowsController < ApplicationController
     params.require(:user_flow).permit(:title)
   end
 
-  # UserFlowsPolicy sets different serializers based on permissions
-  def policy_serializer
-    ApplicationPolicy.find_policy(self.class, current_user).serializer
-  end
-
   def flow_template
     FlowTemplate.template(flow_params[:title])
+  end
+
+  def potential_user_flow_titles
+    { titles: RoleFlow.joins(role: :users).where(users: { id: current_user.id }).uniq.pluck(:title) }
   end
 end

@@ -18,10 +18,12 @@ ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
 
   actions:
     chooseNewFlowManagerColumn: ->
+      controller = @controllerFor('chooseNewFlowManagerColumnOverlay')
+      controller.set('flows' , @store.metadataFor('userFlow').titles)
       @render('chooseNewFlowManagerColumnOverlay',
         into: 'application'
         outlet: 'overlay'
-        controller: 'chooseNewFlowManagerColumnOverlay')
+        controller: controller)
 
     removeFlow: (flow) ->
       flow.destroyRecord()

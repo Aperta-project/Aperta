@@ -4,11 +4,11 @@ class UserFlowsController < ApplicationController
   respond_to :json
 
   def index
-    render json: current_user.flows, each_serializer: policy_serializer, meta: potential_user_flow_titles
+    render json: current_user.flows, meta: potential_user_flow_titles
   end
 
   def show
-    respond_with UserFlow.find(params[:id]), serializer: policy_serializer
+    respond_with UserFlow.find(params[:id])
   end
 
   def create
@@ -35,11 +35,6 @@ class UserFlowsController < ApplicationController
   private
   def flow_params
     params.require(:user_flow).permit(:title)
-  end
-
-  # UserFlowsPolicy sets different serializers based on permissions
-  def policy_serializer
-    ApplicationPolicy.find_policy(self.class, current_user).serializer
   end
 
   def flow_template

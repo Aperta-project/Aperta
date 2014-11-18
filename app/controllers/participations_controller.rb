@@ -8,8 +8,8 @@ class ParticipationsController < ApplicationController
   def create
     if participation.save
       CommentLookManager.sync_task(task)
-      if participation.participant_id != current_user.id
-        UserMailer.delay.add_participant(current_user.id, participation.participant_id, task.id)
+      if participation.user_id != current_user.id
+        UserMailer.delay.add_participant(current_user.id, participation.user_id, task.id)
       end
     end
     respond_with participation
@@ -41,7 +41,7 @@ class ParticipationsController < ApplicationController
   end
 
   def participation_params
-    params.require(:participation).permit(:task_id, :participant_id)
+    params.require(:participation).permit(:task_id, :user_id)
   end
 
   def render_404

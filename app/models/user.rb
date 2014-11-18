@@ -10,14 +10,14 @@ class User < ActiveRecord::Base
   end
 
   has_many :affiliations, inverse_of: :user
-  has_many :submitted_papers, inverse_of: :user, class_name: 'Paper'
+  has_many :submitted_papers, inverse_of: :creator, class_name: 'Paper'
   has_many :paper_roles, inverse_of: :user
   has_many :user_roles, inverse_of: :user
   has_many :roles, through: :user_roles
   has_many :journals, ->{ uniq }, through: :roles
   has_many :flows, class_name: 'UserFlow', inverse_of: :user, dependent: :destroy
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
-  has_many :participations, inverse_of: :participant, foreign_key: 'participant_id'
+  has_many :participations
   has_many :tasks, through: :participations
   has_many :comment_looks, inverse_of: :user
   has_many :credentials, inverse_of: :user, dependent: :destroy
@@ -62,15 +62,6 @@ class User < ActiveRecord::Base
       Journal.all
     else
       journals.merge(Role.can_administer_journal)
-    end
-  end
-
-  def accessible_paper_ids
-    if site_admin?
-      Paper.all.pluck(:id)
-    else
-      admin_papers = Paper.where(journal: journals.merge(Role.can_view_all_manuscript_managers))
-      assigned_papers.pluck(:id) | admin_papers.pluck(:id)
     end
   end
 

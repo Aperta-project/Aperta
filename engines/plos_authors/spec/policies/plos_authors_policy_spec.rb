@@ -43,7 +43,7 @@ describe PlosAuthors::PlosAuthorsPolicy do
   context "task participant" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
     before do
-      FactoryGirl.create(:participation, participant: user, task: task)
+      FactoryGirl.create(:participation, user: user, task: task)
     end
 
     include_examples "person who can manage plos authors"

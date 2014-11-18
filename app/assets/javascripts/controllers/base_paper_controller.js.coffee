@@ -24,7 +24,7 @@ ETahi.BasePaperController = Ember.ObjectController.extend
 
   assignedTasks: (->
     assignedTasks = @get('tasks').filter (task) =>
-      task.get('participations').mapBy('participant').contains(@getCurrentUser())
+      task.get('participations').mapBy('user').contains(@getCurrentUser())
 
     authorTasks   = @get('authorTasks')
     assignedTasks.filter (t)-> !authorTasks.contains(t)

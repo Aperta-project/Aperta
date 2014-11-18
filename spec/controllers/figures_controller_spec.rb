@@ -3,7 +3,7 @@ require 'spec_helper'
 describe FiguresController do
   let(:user) { create :user }
   let(:paper) do
-    FactoryGirl.create(:paper, user: user)
+    FactoryGirl.create(:paper, creator: user)
   end
 
   before { sign_in user }

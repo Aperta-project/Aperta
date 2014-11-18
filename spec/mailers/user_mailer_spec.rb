@@ -60,7 +60,7 @@ describe UserMailer, redis: true do
   describe '#mention_collaborator' do
     let(:admin) { FactoryGirl.create(:user, :site_admin) }
     let(:invitee) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create :paper, :with_tasks, user: admin, submitted: true }
+    let(:paper) { FactoryGirl.create :paper, :with_tasks, creator: admin, submitted: true }
     let(:comment) { FactoryGirl.create(:comment, task: paper.tasks.first) }
     let(:email) { UserMailer.mention_collaborator(comment.id, invitee.id) }
 

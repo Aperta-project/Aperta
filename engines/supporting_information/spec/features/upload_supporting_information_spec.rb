@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Upload Supporting Information", js: true, selenium: true do
   let(:author) { create :user }
   let(:journal) { create :journal }
-  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, user: author }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, creator: author }
 
   before do
     sign_in_page = SignInPage.visit

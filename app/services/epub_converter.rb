@@ -113,7 +113,7 @@ class EpubConverter
       language 'en'
       unique_identifier 'http://tahi.org/hello-world', 'B, falseookID', 'URL'
       title this.paper.title || this.paper.short_title
-      creator this.paper.user.full_name
+      creator this.paper.creator.full_name
       date Date.today.to_s
       resources(workdir: workdir) do
         file 'css/default.css' => this._epub_css

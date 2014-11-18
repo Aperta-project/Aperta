@@ -6,7 +6,7 @@ describe CollaborationsController do
     let(:user) { create :user }
 
     let(:invitee) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, user: user) }
+    let(:paper) { FactoryGirl.create(:paper, creator: user) }
 
     let(:collab_params) { { user_id: invitee.id, paper_id: paper.id }}
 

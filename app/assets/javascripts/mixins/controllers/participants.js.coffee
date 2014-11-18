@@ -6,15 +6,15 @@ ETahi.ControllerParticipants = Ember.Mixin.create
   participations: []
 
   participants: (->
-    @get('participations').mapBy('participant')
-  ).property('participations.@each.participant')
+    @get('participations').mapBy('user')
+  ).property('participations.@each.user')
 
   createParticipant: (newParticipant) ->
     if newParticipant and !@get('participants').contains newParticipant
-      @store.createRecord('participation', participant: newParticipant, task: @get('model'))
+      @store.createRecord('participation', user: newParticipant, task: @get('model'))
 
   findParticipation: (participantId) ->
-    @get('participations').findBy("participant.id", participantId)
+    @get('participations').findBy("user.id", participantId)
 
   actions:
     saveNewParticipant: (newParticipantId) ->

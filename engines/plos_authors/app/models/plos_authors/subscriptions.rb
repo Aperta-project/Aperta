@@ -1,27 +1,23 @@
 TahiNotifier.subscribe("author:created") do |subscription_name, payload|
-  klass      = payload[:klass]
-  id         = payload[:id]
+  record = payload[:record]
 
   # generic Authors may have been created in a different task, so
   # convert them to PlosAuthors
-  paper = klass.find(id).paper
-  paper.tasks_for_type("PlosAuthors::PlosAuthorsTask").each do |task|
+  record.paper.tasks_for_type("PlosAuthors::PlosAuthorsTask").each do |task|
     task.convert_generic_authors!
   end
 end
 
 TahiNotifier.subscribe("plos_authors/plos_author:created", "plos_authors/plos_author:updated") do |subscription_name, payload|
-  action     = payload[:action]
-  klass      = payload[:klass]
-  id         = payload[:id]
+  action = payload[:action]
+  record = payload[:record]
 
-  EventStream.new(action, klass, id, subscription_name).post
+  EventStream.new(action, record, subscription_name).post
 end
 
 TahiNotifier.subscribe("plos_authors/plos_author:destroyed") do |subscription_name, payload|
-  action     = payload[:action]
-  klass      = payload[:klass]
-  id         = payload[:id]
+  action = payload[:action]
+  record = payload[:record]
 
-  EventStream.new(action, klass, id, subscription_name).destroy
+  EventStream.new(action, record, subscription_name).destroy
 end

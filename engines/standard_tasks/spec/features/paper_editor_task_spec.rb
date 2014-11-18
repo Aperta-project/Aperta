@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Assigns Editor", js: true, solr: true do
   let(:admin) { FactoryGirl.create(:user, site_admin: true) }
   let(:editor) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper, user: admin, submitted: true) }
+  let(:paper) { FactoryGirl.create(:paper, creator: admin, submitted: true) }
   let!(:task) { FactoryGirl.create(:paper_editor_task, paper: paper) }
 
   before do

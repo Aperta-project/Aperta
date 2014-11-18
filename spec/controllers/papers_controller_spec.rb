@@ -7,7 +7,7 @@ describe PapersController do
 
   let(:submitted) { false }
   let(:paper) do
-    FactoryGirl.create(:paper, submitted: submitted, user: user, body: "This is the body")
+    FactoryGirl.create(:paper, submitted: submitted, creator: user, body: "This is the body")
   end
 
   before { sign_in user }

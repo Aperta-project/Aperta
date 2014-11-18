@@ -12,7 +12,7 @@ describe StandardTasks::RegisterDecisionTask do
       user = double(:last_name, last_name: 'Mazur')
       editor = double(:full_name, full_name: 'Andi Plantenberg')
       journal = double(:name, name: 'PLOS Yeti')
-      allow(paper).to receive(:user).and_return(user)
+      allow(paper).to receive(:creator).and_return(user)
       allow(paper).to receive(:editors).and_return([editor])
       allow(paper).to receive(:journal).and_return(journal)
       allow(task).to receive(:paper).and_return(paper)

@@ -4,7 +4,7 @@ describe TasksController, redis: true do
   let(:user) { create :user, :site_admin }
 
   let!(:paper) do
-    FactoryGirl.create(:paper, :with_tasks, user: user)
+    FactoryGirl.create(:paper, :with_tasks, creator: user)
   end
 
   before do
@@ -46,13 +46,6 @@ describe TasksController, redis: true do
       expect(task.reload).to be_completed
     end
 
-    it "posts an event to the event stream" do
-      do_request
-      task.reload
-      ts = TaskSerializer.new(task)
-      expect(EventStreamConnection).to have_received(:post_user_event).at_least(:once)
-    end
-
     it "renders the task id and completed status as JSON" do
       do_request
       expect(response.status).to eq(204)
@@ -89,7 +82,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET 'show'" do
-    let(:paper) { FactoryGirl.create(:paper, :with_tasks, user: user) }
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
     let(:task) { paper.tasks.first }
 
     subject(:do_request) { get :show, { id: task.id, format: format } }
@@ -112,7 +105,7 @@ describe TasksController, redis: true do
   end
 
   describe "PUT 'send_message'" do
-    let(:paper) { FactoryGirl.create(:paper, :with_tasks, user: user) }
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
     let(:task) { paper.tasks.first }
 
     subject(:do_request) { put :send_message, { id: task.id, format: "json", task: {subject: "Hello", body: "Greetings from Vulcan!", recepients: [user.id]} } }
@@ -139,7 +132,7 @@ describe TasksController, redis: true do
                  type: 'MessageTask',
                  phase_id: paper.phases.first.id,
                  message_body: "My body",
-                 participant_ids: [user.id]}
+                 user_ids: [user.id]}
       end
 
       context "with a paper that the user administers through a journal" do

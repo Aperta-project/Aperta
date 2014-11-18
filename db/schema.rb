@@ -196,11 +196,11 @@ ActiveRecord::Schema.define(version: 20141113145629) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "task_id"
-    t.integer  "participant_id"
+    t.integer  "user_id"
   end
 
-  add_index "participations", ["participant_id"], name: "index_participations_on_participant_id", using: :btree
   add_index "participations", ["task_id"], name: "index_participations_on_task_id", using: :btree
+  add_index "participations", ["user_id"], name: "index_participations_on_user_id", using: :btree
 
   create_table "phase_templates", force: true do |t|
     t.string   "name"

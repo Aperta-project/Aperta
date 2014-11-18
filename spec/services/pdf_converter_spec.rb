@@ -10,7 +10,7 @@ describe PDFConverter do
   end
 
   let(:paper) do
-    create :paper, body: paper_body, short_title: paper_title, user: create(:user), journal: journal
+    create :paper, body: paper_body, short_title: paper_title, creator: create(:user), journal: journal
   end
 
   let(:user) { create :user }

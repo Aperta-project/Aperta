@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Event streaming", js: true, selenium: true do
   let!(:author) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
-  let!(:paper) { FactoryGirl.create :paper, :with_tasks, user: author, journal: journal }
+  let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, journal: journal }
   let(:upload_task) { paper.tasks_for_type(UploadManuscript::Task).first }
   let(:text_body) { { type: "text", value: "Hi there!" } }
 
@@ -91,6 +91,52 @@ feature "Event streaming", js: true, selenium: true do
       CommentLookManager.sync_task(upload_task)
       within '.message-comments' do
         expect(page).to have_css('.message-comment.unread', text: "This is my comment")
+      end
+    end
+  end
+
+  describe "paper roles" do
+
+    let(:another_paper) { FactoryGirl.create(:paper, journal: journal) }
+
+    before do
+      DashboardPage.visit
+      another_paper.paper_roles.collaborators.create(user: author)
+    end
+
+    scenario "adding a collaborator" do
+      expect(page).to have_text(another_paper.title)
+    end
+
+    scenario "removing a collaborator" do
+      another_paper.paper_roles.collaborators.where(user: author).destroy_all
+      expect(page).to_not have_text(another_paper.title)
+    end
+  end
+
+  describe "participations" do
+
+    let(:another_paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:task) { FactoryGirl.create(:task, paper: another_paper) }
+
+    before do
+      DashboardPage.visit
+      another_paper.paper_roles.participants.create(user: author)
+    end
+
+    context "when not already associated to the paper" do
+
+      scenario "added as a participant" do
+        task.participants << author
+        expect(page).to have_text(another_paper.title)
+      end
+    end
+
+    context "when associated as a participant" do
+
+      scenario "removes last participation" do
+        another_paper.paper_roles.participants.destroy_all
+        expect(page).to_not have_text(another_paper.title)
       end
     end
   end

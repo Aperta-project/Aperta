@@ -8,7 +8,7 @@ module EventStreamNotifier
     end
 
     def event_stream_payload
-      { action: action, klass: self.class.base_class, id: id }
+      { action: action, record: self }
     end
 
     def event_stream_serializer(user)

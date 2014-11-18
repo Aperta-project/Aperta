@@ -5,7 +5,7 @@ feature "Register Decision", js: true do
   let(:user) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create(:register_decision_task) }
   let!(:paper) do
-    task.paper.update_attribute(:user, user)
+    task.paper.update_attribute(:creator, user)
     task.paper
   end
 

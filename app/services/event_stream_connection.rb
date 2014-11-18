@@ -1,14 +1,6 @@
 class EventStreamConnection
   SYSTEM_CHANNEL_NAME = "system"
 
-  def self.post_user_event(id, json)
-    _post_event(channel_name(User, id), json)
-  end
-
-  def self.post_system_event(json)
-    _post_event(SYSTEM_CHANNEL_NAME, json)
-  end
-
   def self.connection_info(user)
     {
       enabled: ENV["EVENT_STREAM_ENABLED"],
@@ -41,7 +33,7 @@ class EventStreamConnection
     ENV["EVENT_STREAM_ENABLED"] != "false"
   end
 
-  def self._post_event(channel, json)
+  def self.post_event(channel, json)
     return unless enabled?
     Thread.new do
       Net::HTTP.post_form(

@@ -10,6 +10,14 @@ class Accessibility
     action.present? ? filtered_users : connected_users
   end
 
+  def connected?(user)
+    users.include?(user)
+  end
+
+  def disconnected?(user)
+    users.exclude?(user)
+  end
+
   private
 
   def filtered_users

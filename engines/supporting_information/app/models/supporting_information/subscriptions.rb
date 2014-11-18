@@ -1,7 +1,6 @@
 TahiNotifier.subscribe("supporting_information/file:created", "supporting_information/file:updated") do |subscription_name, payload|
-  action     = payload[:action]
-  klass      = payload[:klass]
-  id         = payload[:id]
+  action = payload[:action]
+  record = payload[:record]
 
-  EventStream.new(action, klass, id, subscription_name).post
+  EventStream.new(action, record, subscription_name).post
 end

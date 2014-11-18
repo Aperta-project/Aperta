@@ -1,5 +1,4 @@
 TahiNotifier.subscribe(
-  "participation:created", "participation:updated",
   "comment:created", "comment:updated",
   "task:created", "task:updated",
   "paper:created", "paper:updated",
@@ -23,7 +22,8 @@ TahiNotifier.subscribe(
 end
 
 TahiNotifier.subscribe(
-  "paper_role:created") do |subscription_name, payload|
+  "paper_role:created",
+  "participation:created") do |subscription_name, payload|
   action = payload[:action]
   record = payload[:record]
 

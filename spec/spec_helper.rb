@@ -111,6 +111,7 @@ RSpec.configure do |config|
   config.before(:each, js: true) do
     DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types'] }
     DatabaseCleaner[:redis].strategy = :truncation
+    VCR.configure.ignore_localhost = true
   end
 
   config.before(:each, redis: true) do
@@ -131,9 +132,6 @@ RSpec.configure do |config|
   config.before(:each) do |example|
     @current_driver = Capybara.current_driver
     if example.metadata[:selenium].present? || ENV["SELENIUM"] == "true"
-      VCR.configure do |vcr|
-        vcr.ignore_localhost = true
-      end
       Capybara.current_driver = :selenium
     end
     DatabaseCleaner.start
@@ -141,6 +139,8 @@ RSpec.configure do |config|
 
   config.after(:each) do
     Capybara.current_driver = @current_driver
+    VCR.configure.ignore_localhost = false
+    Capybara.current_driver = :selenium
     DatabaseCleaner.clean
   end
 

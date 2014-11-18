@@ -2,7 +2,7 @@ class PapersPolicy < ApplicationPolicy
   primary_resource :paper
 
   def connected_users
-    (paper.assigned_users + paper.participants).uniq
+    paper.assigned_users
   end
 
   def show?

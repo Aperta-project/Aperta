@@ -24,12 +24,4 @@ class UserFlowsPolicy < ApplicationPolicy
   def authorization?
     can_view_flow_manager?
   end
-
-  def serializer
-    if super_admin?
-      UserFlowSerializer
-    elsif can_administer_any_journal?
-      JournalAdminFlowSerializer
-    end
-  end
 end

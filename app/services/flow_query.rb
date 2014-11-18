@@ -8,7 +8,7 @@ class FlowQuery
   end
 
   def tasks
-    @tasks ||= flow_map[flow_title]
+    @tasks ||= flow_map[flow_title].call
   end
 
   def lite_papers
@@ -22,10 +22,10 @@ class FlowQuery
 
   def flow_map
     {
-      'Up for grabs' => unassigned_tasks,
-      'My papers' => paper_admin_tasks_for_user,
-      'My tasks' => assigned_tasks.incomplete,
-      'Done' => assigned_tasks.completed
+      'Up for grabs' => -> { unassigned_tasks },
+      'My papers' => -> { paper_admin_tasks_for_user },
+      'My tasks' => -> { assigned_tasks.incomplete },
+      'Done' => -> { assigned_tasks.completed }
     }
   end
 

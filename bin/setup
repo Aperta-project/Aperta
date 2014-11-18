@@ -14,12 +14,20 @@ Dir.chdir APP_ROOT do
 
   puts '== Installing dependencies =='
 
-  system 'brew install imagemagick --with-libtiff'
-  system 'brew install postgresql'
-  system 'brew install solr'
-  system 'brew install redis'
+  if `brew ls --versions imagemagick`.present?
+    puts "imagemagick is already installed"
+  else
+    system "brew install imagemagick --with-libtiff"
+  end
 
-  system 'brew install go'
+  %w{ postgresql solr redis go node}.each do |package|
+    if `brew ls --versions #{package}`.present?
+      puts "#{package} is already installed"
+    else
+      system "brew install #{package}"
+    end
+  end
+
   if ENV['GOPATH'].blank?
     puts <<MESSAGE
  Error: Please ensure your $GOPATH is configured correctly and run again.
@@ -32,15 +40,18 @@ MESSAGE
   end
   system 'go get github.com/tahi-project/golang-eventsource'
 
-  system 'brew install node'
   system 'npm install'
 
   puts '== Installing gems =='
   system 'gem install bundler --conservative'
   system 'bundle check || bundle install'
 
-  puts '\n== Creating the tahi PostgreSQL user =='
-  system 'createuser -s -r tahi'
+  if `psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='tahi'"`.present?
+    puts '\n== PostgreSQL user already exists =='
+  else
+    puts '\n== Creating the tahi PostgreSQL user =='
+    system 'createuser -s -r tahi'
+  end
 
   puts '\n== Copying sample files =='
 

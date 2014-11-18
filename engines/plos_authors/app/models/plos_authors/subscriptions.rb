@@ -1,5 +1,4 @@
 TahiNotifier.subscribe("author:created") do |subscription_name, payload|
-  action = payload[:action]
   record = payload[:record]
 
   # generic Authors may have been created in a different task, so

@@ -13,7 +13,7 @@ class Paper < ActiveRecord::Base
   has_many :figures, dependent: :destroy
   has_many :supporting_information_files, class_name: 'SupportingInformation::File', dependent: :destroy
   has_many :paper_roles, inverse_of: :paper, dependent: :destroy
-  has_many :assigned_users, ->{ uniq }, through: :paper_roles, source: :user
+  has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
   has_many :tasks, through: :phases
   has_many :participants, through: :tasks

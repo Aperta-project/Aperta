@@ -25,6 +25,27 @@ class FlowManagerPage < Page
     page.has_no_content?(title)
   end
 
+  def has_available_column? title
+    find('.add-flow-column-button').click
+    within('.overlay') do
+      page.has_content?(title)
+    end
+  end
+
+  def has_no_available_column? title
+    find('.add-flow-column-button').click
+    within('.overlay') do
+      page.has_no_content?(title)
+    end
+  end
+
+  def available_column_count
+    find('.add-flow-column-button').click
+    within('.overlay') do
+      all('.flow-manager-button').count
+    end
+  end
+
   class CardFragment < PageFragment
     def title
       text

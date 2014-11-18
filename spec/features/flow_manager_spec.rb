@@ -38,8 +38,7 @@ feature "Flow Manager", js: true, selenium: true do
   end
 
   before do
-    role = assign_journal_role(journal, admin, :admin)
-    RoleFlow.create_default_flows!(role)
+    @role = assign_journal_role(journal, admin, :admin)
     @old_size = page.driver.browser.manage.window.size
     page.driver.browser.manage.window.resize_to(1250,550)
     sign_in_page = SignInPage.visit
@@ -60,16 +59,29 @@ feature "Flow Manager", js: true, selenium: true do
     expect(flow_manager_page).to have_no_application_error
   end
 
-  scenario "admin adds a column to their flow manager" do
-    dashboard_page = DashboardPage.new
-    flow_manager_page = dashboard_page.view_flow_manager
+  context "adding a column to the flow manager" do
+    scenario "the column should appear on the page" do
+      RoleFlow.create_default_flows!(@role)
+      dashboard_page = DashboardPage.new
+      flow_manager_page = dashboard_page.view_flow_manager
 
-    expect { flow_manager_page.add_column "Up for grabs" }.to change {
-      flow_manager_page.columns("Up for grabs").count
-    }.by(1)
+      expect { flow_manager_page.add_column "Up for grabs" }.to change {
+        flow_manager_page.columns("Up for grabs").count
+      }.by(1)
 
-    expect(flow_manager_page).to have_no_application_error
+      expect(flow_manager_page).to have_no_application_error
+    end
+
+    scenario "choices are determined by the user's role flows" do
+      @role.flows.create(FlowTemplate.template("up for grabs"))
+      dashboard_page = DashboardPage.new
+      flow_manager_page = dashboard_page.view_flow_manager
+
+      expect(flow_manager_page).to have_available_column("Up for grabs")
+      expect(flow_manager_page.available_column_count).to eq(1)
+    end
   end
+
 
   context "Comment count" do
     before do

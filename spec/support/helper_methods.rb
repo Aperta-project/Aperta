@@ -21,6 +21,7 @@ module TahiHelperMethods
     role = journal.roles.where(kind: type).first
     role ||= FactoryGirl.create(:role, type, journal: journal)
     UserRole.create!(user: user, role: role)
+    role
   end
 
   def with_aws_cassette(name)

@@ -38,7 +38,8 @@ feature "Flow Manager", js: true, selenium: true do
   end
 
   before do
-    assign_journal_role(journal, admin, :admin)
+    role = assign_journal_role(journal, admin, :admin)
+    RoleFlow.create_default_flows!(role)
     @old_size = page.driver.browser.manage.window.size
     page.driver.browser.manage.window.resize_to(1250,550)
     sign_in_page = SignInPage.visit
@@ -69,7 +70,6 @@ feature "Flow Manager", js: true, selenium: true do
 
     expect(flow_manager_page).to have_no_application_error
   end
-
 
   context "Comment count" do
     before do

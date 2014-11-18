@@ -8,7 +8,7 @@ describe FlowQuery do
   let(:paper) do
     FactoryGirl.create(:paper,
                        journal: journal,
-                       user: user)
+                       creator: user)
   end
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
 

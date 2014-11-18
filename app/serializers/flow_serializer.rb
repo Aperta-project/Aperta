@@ -12,7 +12,7 @@ class FlowSerializer < ActiveModel::Serializer
   end
 
   def cached_tasks
-    @cached_tasks ||= Task.assigned_to(current_user).includes(:paper)
+    @cached_tasks ||= Task.assigned_to(scoped_user).includes(:paper)
   end
 
   def incomplete_tasks
@@ -26,7 +26,7 @@ class FlowSerializer < ActiveModel::Serializer
   def paper_admin_tasks
     Task.joins(paper: :assigned_users)
       .includes(:paper)
-      .merge(PaperRole.admins.for_user(current_user))
+      .merge(PaperRole.admins.for_user(scoped_user))
       .where(type: "StandardTasks::PaperAdminTask")
   end
 
@@ -35,7 +35,7 @@ class FlowSerializer < ActiveModel::Serializer
       .includes(:paper)
       .incomplete.unassigned
       .where(type: "StandardTasks::PaperAdminTask")
-      .where(journals: {id: current_user.roles.pluck(:journal_id).uniq })
+      .where(journals: { id: scoped_user.roles.pluck(:journal_id).uniq })
   end
 
   def flow_map
@@ -45,5 +45,11 @@ class FlowSerializer < ActiveModel::Serializer
       'My papers' => paper_admin_tasks,
       'Done' => complete_tasks
     }
+  end
+
+  private
+
+  def scoped_user
+    scope.presence || options[:user]
   end
 end

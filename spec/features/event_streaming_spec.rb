@@ -60,32 +60,38 @@ feature "Event streaming", js: true, selenium: true do
       expect(page).to have_css(".overlay-content")
     end
 
-    scenario "adding new comments" do
-      @mt.comments.create({body: "This is my comment", commenter_id: create(:user).id})
-      CommentLookManager.sync_task(@mt)
+  end
+
+  describe "tasks" do
+    describe "updating completion status" do
+      scenario "on the overlay" do
+        edit_paper = EditPaperPage.visit paper
+        edit_paper.view_card('Upload Manuscript')
+        expect(page).to have_css("#task_completed:not(:checked)")
+        upload_task.completed = true
+        upload_task.save
+        expect(page).to have_css("#task_completed:checked")
+      end
+
+      scenario "on the edit paper page" do
+        EditPaperPage.visit paper
+        expect(page).to have_no_selector(".completed")
+        upload_task.completed = true
+        upload_task.save
+        expect(page).to have_css(".card--completed", count: 1)
+      end
+    end
+  end
+
+  describe "comments" do
+    scenario "adding new comment" do
+      edit_paper = EditPaperPage.visit paper
+      edit_paper.view_card('Upload Manuscript')
+      upload_task.comments.create(body: "This is my comment", commenter_id: create(:user).id)
+      CommentLookManager.sync_task(upload_task)
       within '.message-comments' do
         expect(page).to have_css('.message-comment.unread', text: "This is my comment")
       end
     end
   end
-
-  describe "tasks" do
-    scenario "marking a task completed" do
-      edit_paper = EditPaperPage.visit paper
-      edit_paper.view_card('Upload Manuscript')
-      expect(page).to have_css("#task_completed:not(:checked)")
-      upload_task.completed = true
-      upload_task.save
-      expect(page).to have_css("#task_completed:checked")
-    end
-  end
-
-  scenario "On the edit paper page" do
-    EditPaperPage.visit paper
-    expect(page).to have_no_selector(".completed")
-    upload_task.completed = true
-    upload_task.save
-    expect(page).to have_css(".card--completed", count: 1)
-  end
-
 end

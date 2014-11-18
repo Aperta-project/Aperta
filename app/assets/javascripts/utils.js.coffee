@@ -25,8 +25,6 @@ Tahi.utils =
     try
       max = Math.max.apply(Math, heights)
     catch error
-      console.log "Math error, setting height to 20"
-      console.log error
       max = 20
 
     $headers.css('height', max)

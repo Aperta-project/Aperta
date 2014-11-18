@@ -6,8 +6,11 @@ class CommentLookManager
   end
 
   def self.sync_comment(comment)
-    comment.task.participants.each do |user|
-      create_comment_look(user, comment)
+    comment.transaction do
+      comment.save!
+      comment.task.participants.each do |user|
+        create_comment_look(user, comment)
+      end
     end
   end
 

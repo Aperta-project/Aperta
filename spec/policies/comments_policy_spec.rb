@@ -4,9 +4,10 @@ describe CommentsPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
-  let(:task) { create(:task, phase: phase) }
+  let(:task) { FactoryGirl.create(:task, phase: phase) }
   let(:user) { FactoryGirl.create(:user) }
-  let(:policy) { CommentsPolicy.new(current_user: user, task: task) }
+  let(:comment) { FactoryGirl.create(:comment, task: task) }
+  let(:policy) { CommentsPolicy.new(current_user: user, resource: comment) }
 
   context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }

@@ -1,4 +1,6 @@
 class UserFlowsPolicy < ApplicationPolicy
+  allow_params :flow
+
   def index?
     can_view_flow_manager?
   end

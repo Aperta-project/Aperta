@@ -1,6 +1,11 @@
 class TasksPolicy < ApplicationPolicy
-  allow_params :task
+  primary_resource :task
+
   include TaskAccessCriteria
+
+  def connected_users
+    PapersPolicy.new(current_user: current_user, resource: task.paper).connected_users
+  end
 
   def show?
     authorized_to_modify_task?

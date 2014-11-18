@@ -23,6 +23,7 @@
   {{#each figure in figures}}
     {{figure-thumbnail attachment=figure
                        action="changeStrikingImage"
+                       saveAttachment="updateStrikingImage"
                        uploadFinished="uploadFinished"
                        uploadStarted="uploadStarted"
                        uploadProgress="uploadProgress"}}

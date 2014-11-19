@@ -1,15 +1,15 @@
 <div id="tahi-container" class="admin-screen">
   <div class="admin-users-row">
     <h2 class="admin-section-title">Users</h2>
-    <div class='col-md-4'>
+    <div class="col-md-4">
       <div class="row admin-user-search">
-        {{input action="searchUsers" placeholder="SEARCH ALL USERS" class="admin-user-search-input" name='Admin Search Input' value=searchQuery}}
+        {{input action="searchUsers" placeholder="SEARCH ALL USERS" class="admin-user-search-input" name="Admin Search Input" value=searchQuery}}
         <button class="admin-user-search-button" {{action "searchUsers"}}><span class="glyphicon glyphicon-search"></span></button>
       </div>
     </div>
 
     {{#if adminJournalUsers}}
-      <table class='col-md-12 admin-users'>
+      <table class="col-md-12 admin-users">
         <tr>
           <th>Username</th>
           <th>First Name</th>
@@ -32,35 +32,62 @@
 
   {{render "manuscript_manager_template/index" manuscriptManagerTemplates}}
 
-  <div class="admin-section doi-form">
-    <h2 class="admin-section-title">
-      DOI
-    </h2>
+  <div class="admin-section admin-doi-setting-section">
+    <h2 class="admin-section-title">Document Object Identifier</h2>
 
-    <div class="admin-doi-setting-section">
-      Publisher DOI Prefix:
-      <br>
-      {{input type="text" class="doi_publisher_prefix" value=doiPublisherPrefix}}
-      <br><br>
+    <p>This is the document identifier for this journal's articles, which appears alongside each article.</p>
 
-      Journal Prefix:
-      <br>
-      {{input type="text" class="doi_journal_prefix" value=doiJournalPrefix}}
-      <br><br>
+    <label {{bind-attr class=":col-md-3 :form-group doiEditState:required"}}>
+      <div class="admin-doi-settings-title">DOI</div>
+      {{#if doiEditState}}
+        {{input type="text"
+                class="doi_publisher_prefix"
+                value=doiPublisherPrefix
+                placeholder="DOI prefix here"}}
+      {{else}}
+        <span class="glyphicon glyphicon-pencil admin-doi-settings-edit-button" {{action "editDOI"}}></span>
+        {{doiPublisherPrefix}}
+      {{/if}}
+    </label>
 
-      Start Number:
-      <br>
-      {{input type="text" class="doi_start_number" value=doiStartNumber}}
+    <label class="col-md-3 form-group">
+      <div class="admin-doi-settings-title">Journal</div>
+      {{#if doiEditState}}
+        {{input type="text"
+                class="doi_journal_prefix"
+                value=doiJournalPrefix
+                placeholder="Journal (optional)"}}
+      {{else}}
+        {{doiJournalPrefix}}
+      {{/if}}
+    </label>
+
+    <label {{bind-attr class=":col-md-3 :form-group doiEditState:required doiStartNumberInvalid:error"}}>
+      <div class="admin-doi-settings-title">Article</div>
+      {{#if doiEditState}}
+        {{input type="text"
+                class="doi_start_number"
+                value=doiStartNumber
+                placeholder="Article Starting Number"}}
+        {{#if doiStartNumberInvalid}}
+          <div class="error-message">The Article Start Number must be an integer</div>
+        {{/if}}
+      {{else}}
+        {{doiStartNumber}}
+      {{/if}}
+    </label>
+
+    <div class="col-md-3">
+      <div class="admin-doi-settings-title">How it will look on articles:</div>
+      {{formattedDOI}}
     </div>
 
-    <div class="alert alert-info" style="margin-top: 25px;">
-      Careful! You can only save this once.
-    </div>
-
-    <div class="admin-doi-setting-section">
-      <button class="button-primary button--blue"
-        {{action "saveDOI"}}>Save DOI</button>
-    </div>
+    {{#if doiEditState}}
+      <div class="admin-doi-setting-section-actions">
+        <span class="button-link button--blue" {{action "cancelDOI"}}>cancel</span>
+        <button class="button-primary button--blue button--small" {{action "saveDOI"}}>Save</button>
+      </div>
+    {{/if}}
   </div>
 
   <div class="admin-section">

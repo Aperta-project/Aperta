@@ -30,13 +30,11 @@ describe Api::PapersController do
                                        title: "Second paper") }
 
     it "user can get a list of papers" do
-      get api_papers_path, nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
+      get api_papers_path, nil,
+        authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
-      expect(JSON.parse(response.body)).to eq(
-        {"authors" => [author_json_attrs(author)],
-         "papers" =>
-         [paper_json_attrs(paper1), paper_json_attrs(paper2)]
-      })
+      expect(JSON.parse(response.body)["authors"]).to match_array([author_json_attrs(author)])
+      expect(JSON.parse(response.body)["papers"]).to match_array([paper_json_attrs(paper1), paper_json_attrs(paper2)])
     end
 
     context "when the published parameter is false" do
@@ -44,10 +42,8 @@ describe Api::PapersController do
         paper1.update_attribute('published_at', 2.days.ago)
         get api_papers_path(published: false), nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
-        expect(JSON.parse(response.body)).to eq(
-          {"authors" => [],
-           "papers" => [paper_json_attrs(paper2)]
-        })
+        expect(JSON.parse(response.body)["authors"]).to be_empty
+        expect(JSON.parse(response.body)["papers"]).to match_array([paper_json_attrs(paper2)])
       end
     end
 
@@ -56,10 +52,8 @@ describe Api::PapersController do
         paper1.update_attribute('published_at', 2.days.ago)
         get api_papers_path(published: true), nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
-        expect(JSON.parse(response.body)).to eq(
-          {"authors" => [author_json_attrs(author)],
-           "papers" => [paper_json_attrs(paper1)]
-        })
+        expect(JSON.parse(response.body)["authors"]).to match_array([author_json_attrs(author)])
+        expect(JSON.parse(response.body)["papers"]).to match_array([paper_json_attrs(paper1)])
       end
     end
 
@@ -77,10 +71,8 @@ describe Api::PapersController do
 
       data = JSON.parse response.body
       expect(data['papers'].length).to eq 1
-      expect(data).to eq(
-        {"authors" => [author_json_attrs(author)],
-         "papers" => [paper_json_attrs(paper1)]
-      })
+      expect(data["authors"]).to match_array([author_json_attrs(author)])
+      expect(data["papers"]).to match_array([paper_json_attrs(paper1)])
     end
 
     it "user can get ePub for a single paper" do

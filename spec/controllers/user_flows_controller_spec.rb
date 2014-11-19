@@ -19,12 +19,6 @@ describe UserFlowsController do
     end
 
     let!(:flow) { FactoryGirl.create(:user_flow, user: user, title: "My tasks") }
-    let(:new_title) { "Up for grabs" }
-
-    it "updates the corresponding empty text when title changes" do
-      do_request
-      expect(flow.reload.empty_text).to eq(FlowTemplate.template(new_title)[:empty_text])
-    end
 
     context "title does not map to a template" do
       let(:new_title) { "Something that does not match" }

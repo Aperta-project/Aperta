@@ -1,15 +1,10 @@
 class UserFlowSerializer < ActiveModel::Serializer
-  attributes :id, :title, :empty_text
+  attributes :id, :title
   has_many :lite_papers, embed: :ids, include: true, serializer: LitePaperSerializer
   has_many :tasks, embed: :ids, include: true, root: :card_thumbnails, serializer: CardThumbnailSerializer
 
-  def tasks
-    query.tasks
-  end
-
-  def lite_papers
-    query.lite_papers
-  end
+  delegate :tasks, to: :query
+  delegate :lite_papers, to: :query
 
   private
 

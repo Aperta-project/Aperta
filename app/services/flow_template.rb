@@ -2,21 +2,27 @@ module FlowTemplate
   def self.templates
     {
       "up for grabs" =>
-        {title:"Up for grabs", empty_text: "Right now, there are no papers for you to grab."},
+        { title: "Up for grabs" },
       "my tasks" =>
-        {title:"My tasks", empty_text: "You don't have any tasks right now."},
+        { title: "My tasks" },
       "my papers" =>
-        {title:"My papers", empty_text: "You aren't on any papers right now."},
+        { title: "My papers" },
       "done" =>
-        {title:"Done", empty_text: "There is no recent activity to report."}
+        { title: "Done" }
     }
   end
 
   def self.template(title)
-    templates.fetch(title.downcase, { title: "Invalid", empty_text: "invalid" })
+    templates.fetch(title.downcase, invalid_template)
   end
 
   def self.valid_titles
-    templates.values.map { |v| v[:title] }
+    templates.values.map { |template| template[:title] }
+  end
+
+  private
+
+  def invalid_template
+    { title: "Invalid" }
   end
 end

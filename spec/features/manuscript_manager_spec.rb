@@ -97,8 +97,6 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
       expect(overlay).to have_admin(admin.full_name)
     end
 
-    expect(task_manager_page).to have_no_application_error
-
     needs_editor_phase = TaskManagerPage.new.phase 'Assign Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay).to_not be_completed

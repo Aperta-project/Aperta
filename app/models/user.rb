@@ -77,8 +77,8 @@ class User < ActiveRecord::Base
   private
 
   def add_flows
-    FlowTemplate.templates.values.each do |attrs|
-      flows.create!(attrs)
+    FlowQuery::FLOW_TITLES.each do |title|
+      flows.create!(title: title)
     end
   end
 end

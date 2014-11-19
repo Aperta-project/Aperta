@@ -1,5 +1,6 @@
 class FlowQuery
   attr_reader :user, :flow_title, :scope_to_journals
+  FLOW_TITLES = ['Up for grabs', 'My papers', 'My tasks', 'Done']
 
   def initialize(user, flow_title)
     @user = user

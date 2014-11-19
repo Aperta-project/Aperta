@@ -4,11 +4,11 @@ class RoleFlow < ActiveRecord::Base
 
   acts_as_list scope: :role
 
-  validates :title, inclusion: { in: FlowTemplate.valid_titles }
+  validates :title, inclusion: { in: FlowQuery::FLOW_TITLES }
 
   def self.create_default_flows!(role)
-    FlowTemplate.templates.values.each do |attrs|
-      role.flows.find_or_create_by!(attrs)
+    FlowQuery::FLOW_TITLES.each do |title|
+      role.flows.find_or_create_by!(title: title)
     end
   end
 end

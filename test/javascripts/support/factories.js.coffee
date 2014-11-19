@@ -23,6 +23,9 @@ ETahi.Factory =
     throw "No factory exists for type: #{type}" unless baseAttrs
     _.defaults(recordAttrs, baseAttrs)
 
+  createList: (numberOfRecords, type) ->
+    _(numberOfRecords).times -> @createRecord(type)
+
   setForeignKey: (model, sourceModel, options={}) ->
     keyName = options.keyName || sourceModel._rootKey
     model[keyName + "_id"] = sourceModel.id
@@ -196,6 +199,11 @@ ETahi.Factory =
     @addHasMany(journal, [jtt], {inverse: 'journal'})
     jtt
 
+  createJournalRole: (journal, roleAttrs={}) ->
+    role = @createRecord('Role', roleAttrs)
+    @addHasMany(journal, [role], {inverse: 'journal'})
+    role
+
 ETahi.FactoryAttributes = {}
 ETahi.FactoryAttributes.User =
   _rootKey: 'user'
@@ -217,6 +225,35 @@ ETahi.FactoryAttributes.Journal =
   manuscript_manager_template_ids: []
   role_ids: []
   manuscript_css: null
+  doi_publisher_prefix: null
+  doi_journal_prefix: null
+  doi_start_number: null
+
+ETahi.FactoryAttributes.AdminJournal =
+  _rootKey: 'admin_journal'
+  id: null
+  name: "Fake Journal"
+  logo_url: "/images/no-journal-image.gif"
+  paper_types: ["Research"]
+  journal_task_type_ids: []
+  manuscript_manager_template_ids: []
+  role_ids: []
+  manuscript_css: null
+  doi_publisher_prefix: null
+  doi_journal_prefix: null
+  doi_start_number: null
+
+ETahi.FactoryAttributes.Role =
+  _rootKey: 'role'
+  id: null
+  name: null
+  kind: null
+  required: true
+  can_administer_journal: false
+  can_view_assigned_manuscript_managers: false
+  can_view_all_manuscript_managers: false
+  can_view_flow_manager: false
+  journal_id: null
 
 ETahi.FactoryAttributes.Author =
   _rootKey: 'author'
@@ -329,6 +366,7 @@ ETahi.FactoryAttributes.Funder =
   name: "Monsanto"
   task_id: null
   website: "www.monsanto.com"
+
 ETahi.FactoryAttributes.Comment =
   _rootKey: 'comment'
   id: null

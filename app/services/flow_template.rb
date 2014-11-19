@@ -22,7 +22,7 @@ module FlowTemplate
 
   private
 
-  def invalid_template
+  def self.invalid_template
     { title: "Invalid" }
   end
 end

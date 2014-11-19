@@ -62,20 +62,27 @@
       {{/if}}
     </label>
 
-    <label {{bind-attr class=":col-md-3 :form-group doiEditState:required doiStartNumberInvalid:error"}}>
-      <div class="admin-doi-settings-title">Article</div>
-      {{#if doiEditState}}
-        {{input type="text"
-                class="doi_start_number"
-                value=doiStartNumber
-                placeholder="Article Starting Number"}}
-        {{#if doiStartNumberInvalid}}
-          <div class="error-message">The Article Start Number must be an integer</div>
+    {{#if doiStartNumberEditable}}
+      <label {{bind-attr class=":col-md-3 :form-group doiEditState:required doiStartNumberInvalid:error"}}>
+        <div class="admin-doi-settings-title">Article</div>
+        {{#if doiEditState}}
+          {{input type="text"
+                  class="doi_start_number"
+                  value=doiStartNumber
+                  placeholder="Article Starting Number"}}
+          {{#if doiStartNumberInvalid}}
+            <div class="error-message">The Article Start Number must be an integer</div>
+          {{/if}}
+        {{else}}
+          {{doiStartNumber}}
         {{/if}}
-      {{else}}
+      </label>
+    {{else}}
+      <div class="col-md-3">
+        <div class="admin-doi-settings-title">Article</div>
         {{doiStartNumber}}
-      {{/if}}
-    </label>
+      </div>
+    {{/if}}
 
     <div class="col-md-3">
       <div class="admin-doi-settings-title">How it will look on articles:</div>

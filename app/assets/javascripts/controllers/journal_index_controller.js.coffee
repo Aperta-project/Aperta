@@ -57,6 +57,8 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
     !$.isNumeric(@get('doiStartNumber'))
   ).property('doiStartNumber')
 
+  doiStartNumberEditable: null
+
   actions:
     searchUsers: ->
       @resetSearch()
@@ -78,9 +80,10 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
         epubCoverUploadedAt: journal.epub_cover_uploaded_at
 
     resetSaveStatuses: ->
-      @set('epubCssSaveStatus', '')
-      @set('pdfCssSaveStatus', '')
-      @set('manuscriptCssSaveStatus', '')
+      @setProperties
+        epubCssSaveStatus: ''
+        pdfCssSaveStatus: ''
+        manuscriptCssSaveStatus: ''
 
     editDOI: ->
       @set 'doiEditState', true
@@ -92,5 +95,6 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
     saveDOI: ->
       return if @get 'doiInvalid'
 
+      @set 'doiStartNumberEditable', false
       @get('model').save()
       @set 'doiEditState', false

@@ -5,9 +5,12 @@ ETahi.JournalIndexRoute = Ember.Route.extend
 
   setupController: (controller, model) ->
     @_super controller, model
+    controller.set('doiStartNumberEditable', Em.isEmpty(model.get('doiStartNumber')))
     @fetchAdminJournalUsers model.get('id')
 
-  deactivate: -> @set 'controller.adminJournalUsers', null
+  deactivate: ->
+    @set 'controller.adminJournalUsers', null
+    @set 'controller.doiEditState', false
 
   actions:
     openEditOverlay: (key) ->

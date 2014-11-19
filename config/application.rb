@@ -14,6 +14,10 @@ module Tahi
     config.autoload_paths += %W(#{config.root}/app/workers)
     config.assets.initialize_on_precompile = true
     config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
+
+    config.assets.paths << Rails.root.join('vendor', 'assets', 'stylesheets')
+    config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
+
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)
     config.carrierwave_storage = :fog
     config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL') }

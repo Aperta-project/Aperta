@@ -43,7 +43,7 @@ describe Api::PapersController do
         get api_papers_path(published: false), nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
         expect(JSON.parse(response.body)["authors"]).to be_empty
-        expect(JSON.parse(response.body)["papers"]).to match_array(paper_json_attrs(paper2))
+        expect(JSON.parse(response.body)["papers"]).to match_array([paper_json_attrs(paper2)])
       end
     end
 
@@ -53,7 +53,7 @@ describe Api::PapersController do
         get api_papers_path(published: true), nil, authorization: ActionController::HttpAuthentication::Token.encode_credentials(api_token)
 
         expect(JSON.parse(response.body)["authors"]).to match_array([author_json_attrs(author)])
-        expect(JSON.parse(response.body)["papers"]).to match_array(paper_json_attrs(paper1))
+        expect(JSON.parse(response.body)["papers"]).to match_array([paper_json_attrs(paper1)])
       end
     end
 
@@ -72,7 +72,7 @@ describe Api::PapersController do
       data = JSON.parse response.body
       expect(data['papers'].length).to eq 1
       expect(data["authors"]).to match_array([author_json_attrs(author)])
-      expect(data["papers"]).to match_array(paper_json_attrs(paper1))
+      expect(data["papers"]).to match_array([paper_json_attrs(paper1)])
     end
 
     it "user can get ePub for a single paper" do

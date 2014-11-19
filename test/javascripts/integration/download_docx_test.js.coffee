@@ -11,12 +11,11 @@ module 'Integration: Paper Docx Download',
     )
     ETahi.Test = {}
     ETahi.Test.currentPaper = records[0]
-    formats = export_formats: [
+    ETahi.supportedDownloadFormats = export_formats: [
       format: "docx"
       url: "https://tahi.example.com/export/docx"
       description: "This converts from docx to HTML"
     ]
-    ETahi.supportedDownloadFormats = JSON.parse(formats)
     paperPayload = ef.createPayload('paper')
     paperPayload.addRecords(records.concat([fakeUser]))
     paperResponse = paperPayload.toJSON()

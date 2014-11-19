@@ -8,6 +8,7 @@ FactoryGirl.define do
     sequence :title do |n|
       "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"
     end
+
     journal
     creator factory: User
 

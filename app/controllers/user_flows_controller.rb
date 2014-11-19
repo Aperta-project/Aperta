@@ -12,13 +12,13 @@ class UserFlowsController < ApplicationController
   end
 
   def create
-    flow = current_user.flows.create! flow_template
+    flow = current_user.flows.create!(title: formatted_title)
     render json: flow
   end
 
   def update
     flow = UserFlow.find(params[:id])
-    flow.update! flow_template
+    flow.update!(title: formatted_title)
     render json: flow
   end
 
@@ -37,8 +37,8 @@ class UserFlowsController < ApplicationController
     params.require(:user_flow).permit(:title)
   end
 
-  def flow_template
-    FlowTemplate.template(flow_params[:title])
+  def formatted_title
+    flow_params[:title].downcase.capitalize
   end
 
   def potential_user_flow_titles

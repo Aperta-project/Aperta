@@ -57,7 +57,26 @@ class Journal < ActiveRecord::Base
     manuscript_manager_templates.where(paper_type: paper_type).first
   end
 
+  def next_doi!
+    return if doi_start_number.blank?
+    "#{doi_publisher_prefix}/#{doi_suffix(next_doi_offset!)}"
+  end
+
   private
+
+  def doi_suffix(offset)
+    if doi_journal_prefix.present?
+      "#{doi_journal_prefix}.#{offset}"
+    else
+      offset
+    end
+  end
+
+  def next_doi_offset!
+    return if doi_start_number.blank?
+    update(doi_start_number: doi_start_number.succ)
+    doi_start_number
+  end
 
   def setup_defaults
     # TODO: remove these from being a callback (when we aren't using rails_admin)

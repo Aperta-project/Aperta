@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141117233411) do
+ActiveRecord::Schema.define(version: 20141119180742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(version: 20141117233411) do
     t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
     t.boolean  "editable",          default: true
+    t.text     "doi"
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree

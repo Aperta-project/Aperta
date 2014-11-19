@@ -47,4 +47,38 @@ describe "Journal" do
       end
     end
   end
+
+  describe ".next_doi!" do
+    describe "journals without DOI" do
+      let(:journal) { Journal.new() }
+
+      it "returns nil" do
+        expect(journal.next_doi!).to eq(nil)
+      end
+    end
+
+    describe "journal with DOI" do
+      let(:journal) do
+        Journal.new(doi_publisher_prefix: "PPREFIX",
+                    doi_journal_prefix: "JPREFIX",
+                    doi_start_number: "100001")
+
+      end
+
+      it "returns the new valid DOI" do
+        expect(journal.next_doi!).to eq("PPREFIX/JPREFIX.100002")
+      end
+
+      it "omits the journal prefix of it is not present" do
+        journal.doi_journal_prefix = nil
+        expect(journal.next_doi!).to eq("PPREFIX/100002")
+      end
+
+      it "updates the doi_start_number" do
+        journal.next_doi!
+        expect(journal.doi_start_number).to eq("100002")
+      end
+    end
+
+  end
 end

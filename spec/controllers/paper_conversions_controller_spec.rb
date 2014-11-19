@@ -13,7 +13,7 @@ describe PaperConversionsController, type: :controller do
   describe "GET #export" do
     it "returns a job_id" do
       VCR.use_cassette('convert_to_docx') do
-        get :export, id: paper.id, export_format: 'docx'
+        get :export, id: paper.id, format: 'docx'
       end
       expect(response.status).to eq(203)
       response_hash = JSON.parse(response.body)

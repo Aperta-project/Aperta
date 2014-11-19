@@ -1,7 +1,7 @@
 class PaperConversionsController < ApplicationController
   def export
     @paper = Paper.find(params[:id])
-    @export_format = params[:export_format]
+    @export_format = params[:format]
     response = PaperConverterWorker.export(@paper, @export_format, current_user)
     render json: JSON.parse(response), status: 203
   end

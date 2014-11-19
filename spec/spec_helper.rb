@@ -49,6 +49,12 @@ VCR.configure do |config|
   config.default_cassette_options = { record: :once }
   config.configure_rspec_metadata!
   config.ignore_hosts 'codeclimate.com'
+  config.ignore_request do |request|
+    uri = URI(request.uri)
+    host = uri.host
+    port = uri.port
+    (host == 'localhost' || host == '127.0.0.1') && (port == 8981 || port == 31_337 || port == 7055)
+  end
 end
 
 RSpec.configure do |config|
@@ -111,7 +117,6 @@ RSpec.configure do |config|
   config.before(:each, js: true) do
     DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types'] }
     DatabaseCleaner[:redis].strategy = :truncation
-    VCR.configure.ignore_localhost = true
   end
 
   config.before(:each, redis: true) do
@@ -139,7 +144,6 @@ RSpec.configure do |config|
 
   config.after(:each) do
     Capybara.current_driver = @current_driver
-    VCR.configure.ignore_localhost = false
     Capybara.current_driver = :selenium
     DatabaseCleaner.clean
   end

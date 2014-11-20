@@ -5,6 +5,22 @@ class FiguresPolicy < ApplicationPolicy
     papers_policy.connected_users
   end
 
+  def create?
+    papers_policy.show?
+  end
+
+  def update?
+    papers_policy.show?
+  end
+
+  def destroy?
+    papers_policy.show?
+  end
+
+  def upload_attachment?
+    papers_policy.show?
+  end
+
   def show?
     papers_policy.show?
   end

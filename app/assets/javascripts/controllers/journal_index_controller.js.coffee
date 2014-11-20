@@ -54,7 +54,7 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
   ).property('doiPublisherPrefix', 'doiStartNumber')
 
   doiStartNumberInvalid: (->
-    !$.isNumeric(@get('doiStartNumber'))
+    !$.isNumeric(@get('doiStartNumber')) && !Ember.isEmpty(@get('doiStartNumber'))
   ).property('doiStartNumber')
 
   doiStartNumberEditable: null

@@ -3,6 +3,7 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
   pdfCssSaveStatus: ''
   manuscriptCssSaveStatus: ''
   doiEditState: false
+  doiStartNumberEditable: true
 
   epubCoverUploadUrl: (->
     "/admin/journals/#{@get('model.id')}/upload_epub_cover"
@@ -42,22 +43,21 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
     else
       publisher = @get('doiPublisherPrefix')
       journal   = @get('doiJournalPrefix')
-      start     = @get('doiStartNumber')
+      start     = @get('lastDoiIssued')
 
       "#{publisher}/#{journal}#{if Em.isEmpty(journal) then '' else '.'}#{start}"
-  ).property('doiPublisherPrefix', 'doiJournalPrefix', 'doiStartNumber')
+  ).property('doiPublisherPrefix', 'doiJournalPrefix', 'lastDoiIssued')
 
   doiInvalid: (->
     Em.isEmpty(@get('doiPublisherPrefix')) ||
-    Em.isEmpty(@get('doiStartNumber')) ||
+    Em.isEmpty(@get('lastDoiIssued')) ||
     @get('doiStartNumberInvalid')
-  ).property('doiPublisherPrefix', 'doiStartNumber')
+  ).property('doiPublisherPrefix', 'lastDoiIssued')
 
   doiStartNumberInvalid: (->
-    !$.isNumeric(@get('doiStartNumber')) && !Ember.isEmpty(@get('doiStartNumber'))
-  ).property('doiStartNumber')
+    !$.isNumeric(@get('lastDoiIssued')) && !Ember.isEmpty(@get('doiStartNumber'))
+  ).property('lastDoiIssued')
 
-  doiStartNumberEditable: null
 
   actions:
     searchUsers: ->

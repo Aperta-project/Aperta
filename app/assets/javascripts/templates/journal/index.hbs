@@ -68,19 +68,19 @@
         {{#if doiEditState}}
           {{input type="text"
                   class="doi_start_number"
-                  value=doiStartNumber
+                  value=lastDoiIssued
                   placeholder="Article Starting Number"}}
           {{#if doiStartNumberInvalid}}
             <div class="error-message">The Article Start Number must be an integer</div>
           {{/if}}
         {{else}}
-          {{doiStartNumber}}
+          {{lastDoiIssued}}
         {{/if}}
       </label>
     {{else}}
       <div class="col-md-3">
         <div class="admin-doi-settings-title">Article</div>
-        {{doiStartNumber}}
+        {{lastDoiIssued}}
       </div>
     {{/if}}
 

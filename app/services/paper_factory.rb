@@ -3,7 +3,7 @@ class PaperFactory
 
   def self.create(paper_params, creator)
     paper = creator.submitted_papers.build(paper_params)
-    paper.doi = paper.journal.next_doi!
+    paper.doi = paper.journal.try(:next_doi!)
     pf = new(paper, creator)
     pf.create
     pf.paper

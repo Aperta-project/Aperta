@@ -19,6 +19,10 @@ module 'Integration: Admin Journal Test',
     adminJournalPayload = ef.createPayload('adminJournal')
     adminJournalPayload.addRecords([journal, adminRole])
 
+    stubbedAdminJournalUserResponse =
+      user_roles: []
+      admin_journal_users: []
+
     server.respondWith 'PUT', "/admin/journals/#{TahiTest.journalId}", [
       200, "Content-Type": "application/json",
       JSON.stringify adminJournalPayload.toJSON()
@@ -27,6 +31,10 @@ module 'Integration: Admin Journal Test',
     server.respondWith 'GET', "/admin/journals/#{TahiTest.journalId}", [
       200, "Content-Type": "application/json",
       JSON.stringify adminJournalPayload
+    ]
+
+    server.respondWith 'GET', "/admin/journal_users?journal_id=#{TahiTest.journalId}", [
+      200, "Content-Type": "application/json", JSON.stringify stubbedAdminJournalUserResponse
     ]
 
 test 'admin sees the complete DOI form', ->

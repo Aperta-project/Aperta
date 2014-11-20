@@ -14,7 +14,7 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def update?
-    can_manage_paper?
+    can_view_paper?
   end
 
   def upload?
@@ -26,7 +26,7 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def download?
-    can_manage_paper?
+    can_view_paper?
   end
 
   def heartbeat?
@@ -38,14 +38,10 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def submit?
-    can_manage_paper?
+    can_view_paper?
   end
 
   private
-
-  def can_manage_paper?
-    current_user.site_admin? || author? || paper_collaborator? || paper_admin? || paper_editor? || paper_reviewer?
-  end
 
   def can_view_paper?
     current_user.site_admin? || connected_users.exists?(current_user) || can_view_manuscript_manager?

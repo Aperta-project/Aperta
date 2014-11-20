@@ -41,6 +41,14 @@ describe PapersPolicy do
     include_examples "author for paper"
   end
 
+  context "paper participant" do
+    before do
+      create(:paper_role, :participant, user: user, paper: paper)
+    end
+
+    include_examples "author for paper"
+  end
+
   context "paper collaborators" do
     before do
       create(:paper_role, :collaborator, user: user, paper: paper)
@@ -79,7 +87,7 @@ describe PapersPolicy do
     it { expect(policy.show?).to be(true) }
     it { expect(policy.upload?).to be(true) }
     it { expect(policy.toggle_editable?).to be(true) }
-    it { expect(policy.submit?).to be(false) }
+    it { expect(policy.submit?).to be(true) }
   end
 
   context "admin on different journal" do

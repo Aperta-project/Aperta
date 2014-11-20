@@ -69,6 +69,10 @@ describe PaperFactory do
       expect(subject.phases.count).to eq(2)
     end
 
+    it "assigns a DOI to paper" do
+      expect(subject.doi).to_not be_nil
+    end
+
     it "saves the paper" do
       expect(subject).to be_persisted
     end

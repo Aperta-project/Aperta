@@ -11,14 +11,14 @@ describe "Journal" do
       @journal = build(:journal)
       @journal.doi_publisher_prefix = "PPREFIX"
       @journal.doi_journal_prefix = "JPREFIX"
-      @journal.doi_start_number = "100001"
+      @journal.last_doi_issued = "100001"
       @journal.save!
     end
 
     it "can save a DOI" do
       expect(@journal.doi_publisher_prefix).to eq "PPREFIX"
       expect(@journal.doi_journal_prefix).to eq "JPREFIX"
-      expect(@journal.doi_start_number).to eq "100001"
+      expect(@journal.last_doi_issued).to eq "100001"
     end
 
     describe "additional Journals" do
@@ -46,5 +46,39 @@ describe "Journal" do
         journal.save!
       end
     end
+  end
+
+  describe ".next_doi!" do
+    describe "journals without DOI" do
+      let(:journal) { Journal.new() }
+
+      it "returns nil" do
+        expect(journal.next_doi!).to eq(nil)
+      end
+    end
+
+    describe "journal with DOI" do
+      let(:journal) do
+        Journal.new(doi_publisher_prefix: "PPREFIX",
+                    doi_journal_prefix: "JPREFIX",
+                    last_doi_issued: "100001")
+
+      end
+
+      it "returns the new valid DOI" do
+        expect(journal.next_doi!).to eq("PPREFIX/JPREFIX.100002")
+      end
+
+      it "omits the journal prefix of it is not present" do
+        journal.doi_journal_prefix = nil
+        expect(journal.next_doi!).to eq("PPREFIX/100002")
+      end
+
+      it "updates the last_doi_issued" do
+        journal.next_doi!
+        expect(journal.last_doi_issued).to eq("100002")
+      end
+    end
+
   end
 end

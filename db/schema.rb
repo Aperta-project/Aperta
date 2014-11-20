@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141119144323) do
+ActiveRecord::Schema.define(version: 20141120164856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 20141119144323) do
     t.text     "description"
     t.string   "doi_publisher_prefix"
     t.string   "doi_journal_prefix"
-    t.string   "doi_start_number"
+    t.string   "last_doi_issued"
   end
 
   create_table "manuscript_manager_templates", force: true do |t|
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 20141119144323) do
     t.integer  "striking_image_id"
     t.datetime "last_heartbeat_at"
     t.boolean  "editable",          default: true
+    t.text     "doi"
   end
 
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree

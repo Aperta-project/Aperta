@@ -46,7 +46,7 @@
                 placeholder="DOI prefix here"}}
       {{else}}
         <span class="glyphicon glyphicon-pencil admin-doi-settings-edit-button" {{action "editDOI"}}></span>
-        {{doiPublisherPrefix}}
+        <span class="publisher-prefix">{{doiPublisherPrefix}}</span>
       {{/if}}
     </label>
 
@@ -58,7 +58,7 @@
                 value=doiJournalPrefix
                 placeholder="Journal (optional)"}}
       {{else}}
-        {{doiJournalPrefix}}
+        <span class="journal-prefix">{{doiJournalPrefix}}</span>
       {{/if}}
     </label>
 
@@ -67,20 +67,20 @@
         <div class="admin-doi-settings-title">Article</div>
         {{#if doiEditState}}
           {{input type="text"
-                  class="doi_start_number"
+                  class="last_doi_issued"
                   value=lastDoiIssued
                   placeholder="Article Starting Number"}}
           {{#if doiStartNumberInvalid}}
             <div class="error-message">The Article Start Number must be an integer</div>
           {{/if}}
         {{else}}
-          {{lastDoiIssued}}
+          <span class="article">{{lastDoiIssued}}</span>
         {{/if}}
       </label>
     {{else}}
       <div class="col-md-3">
         <div class="admin-doi-settings-title">Article</div>
-        {{lastDoiIssued}}
+        <span class="article">{{lastDoiIssued}}</span>
       </div>
     {{/if}}
 

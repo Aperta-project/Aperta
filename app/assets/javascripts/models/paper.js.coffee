@@ -17,6 +17,7 @@ ETahi.Paper = DS.Model.extend
   lockedBy: DS.belongsTo('user')
 
   body: a('string')
+  doi: a('string')
   shortTitle: a('string')
   submitted: a('boolean')
   status: a('string')

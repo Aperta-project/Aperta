@@ -382,7 +382,6 @@ ETahi.FactoryAttributes.ReportingGuidelinesTask =
   role: "author"
   title: "Reporting Guidelines"
   type: "StandardTasks::ReportingGuidelinesTask"
-  question_ids: []
 
 ETahi.FactoryAttributes.Comment =
   _rootKey: 'comment'

@@ -38,7 +38,7 @@ module 'Integration: Reporting Guidelines Card',
     paperPayload.addRecords(records.concat(fakeUser, questionResponse.question))
 
     taskPayload = ef.createPayload('task')
-    taskPayload.addRecords([task, litePaper]) 
+    taskPayload.addRecords([task, litePaper])
 
     server.respondWith 'GET', "/papers/#{TahiTest.paperId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()

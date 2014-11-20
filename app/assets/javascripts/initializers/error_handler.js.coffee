@@ -8,10 +8,7 @@ ETahi.initializer
     logError = (msg) ->
       if window.teaspoonTesting == true
         console.log("ERROR: " + msg)
-      else
-        ETahi.RESTless.post errorPath,
-          message: msg
-
+        
     container.register('logError:main', logError , instantiate: false)
     application.inject('route', 'logError', 'logError:main')
 

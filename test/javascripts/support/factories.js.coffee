@@ -367,6 +367,23 @@ ETahi.FactoryAttributes.Funder =
   task_id: null
   website: "www.monsanto.com"
 
+ETahi.FactoryAttributes.ReportingGuidelinesTask =
+  _rootKey: 'task'
+  body: null
+  comment_ids: []
+  completed: false
+  id: null
+  lite_paper_id: null
+  paper_id: null
+  paper_title: "Test"
+  participation_ids: []
+  phase_id: null
+  question_ids: []
+  role: "author"
+  title: "Reporting Guidelines"
+  type: "StandardTasks::ReportingGuidelinesTask"
+  question_ids: []
+
 ETahi.FactoryAttributes.Comment =
   _rootKey: 'comment'
   id: null

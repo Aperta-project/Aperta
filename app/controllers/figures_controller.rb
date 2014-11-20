@@ -1,6 +1,8 @@
 class FiguresController < ApplicationController
   respond_to :json
   before_action :authenticate_user!
+  before_action :enforce_policy, except: [:create]
+  before_action :enforce_policy_on_create, only: [:create]
 
   def create
     new_figure = paper.figures.create status: "processing"
@@ -23,30 +25,23 @@ class FiguresController < ApplicationController
   end
 
   def destroy
-    if paper_policy.paper.present?
-      paper.figures.find(params[:id]).destroy
-      head :no_content
-    else
-      head :forbidden
-    end
+    Figure.find(params[:id]).destroy
+    head :no_content
   end
 
   private
 
   def paper
-    @paper ||= begin
-      paper_policy.paper.tap do |p|
-        raise ActiveRecord::RecordNotFound unless p.present?
-      end
-    end
+    @paper ||= Paper.find(params[:paper_id])
   end
 
-  def paper_policy
-    @paper_policy ||= PaperQuery.new(params[:paper_id].presence || figure_paper.id, current_user)
+  def enforce_policy
+    authorize_action!(resource: Figure.find(params[:id]))
   end
 
-  def figure_paper
-    Figure.find(params[:id]).paper
+  def enforce_policy_on_create
+    figure = paper.figures.new
+    authorize_action!(resource: figure)
   end
 
   def figure_params
@@ -54,6 +49,6 @@ class FiguresController < ApplicationController
   end
 
   def render_404
-    return head 404
+    head 404
   end
 end

@@ -17,7 +17,7 @@ class FiguresPolicy < ApplicationPolicy
     papers_policy.show?
   end
 
-  def upload_attachment?
+  def update_attachment?
     papers_policy.show?
   end
 

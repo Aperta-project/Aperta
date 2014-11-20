@@ -78,6 +78,7 @@ describe PapersPolicy do
 
     it { expect(policy.show?).to be(true) }
     it { expect(policy.upload?).to be(true) }
+    it { expect(policy.manage?).to be(true) }
     it { expect(policy.toggle_editable?).to be(true) }
     it { expect(policy.submit?).to be(false) }
   end

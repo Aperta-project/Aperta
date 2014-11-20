@@ -36,6 +36,7 @@ shared_examples_for "administrator for paper" do
     expect(policy.show?).to be(true)
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(true)
+    expect(policy.manage?).to be(true)
     expect(policy.upload?).to be(true)
     expect(policy.download?).to be(true)
     expect(policy.heartbeat?).to be(false)
@@ -45,11 +46,12 @@ shared_examples_for "administrator for paper" do
 end
 
 shared_examples_for "author for paper" do
-  it "lets them do everything except keep the paper open and toggle edit mode" do
+  it "lets them do everything except manage, keep the paper open and toggle edit mode" do
     expect(policy.show?).to be(true)
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(true)
     expect(policy.edit?).to be(true)
+    expect(policy.manage?).to be(false)
     expect(policy.upload?).to be(true)
     expect(policy.download?).to be(true)
     expect(policy.heartbeat?).to be(false)
@@ -64,6 +66,7 @@ shared_examples_for "person who cannot see a paper" do
     expect(policy.show?).to be(false)
     expect(policy.create?).to be(true)
     expect(policy.update?).to be(false)
+    expect(policy.manage?).to be(false)
     expect(policy.upload?).to be(false)
     expect(policy.download?).to be(false)
     expect(policy.heartbeat?).to be(false)

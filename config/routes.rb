@@ -97,7 +97,7 @@ Tahi::Application.routes.draw do
 
     member do
       put :upload
-      get :manage, to: 'ember#index'
+      get :manage
       get :download
       put :heartbeat
       put :toggle_editable

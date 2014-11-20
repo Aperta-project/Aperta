@@ -58,7 +58,7 @@ class Journal < ActiveRecord::Base
   end
 
   def next_doi!
-    return if doi_start_number.blank?
+    return if last_doi_issued.blank?
     "#{doi_publisher_prefix}/#{doi_suffix(next_doi_offset!)}"
   end
 
@@ -73,9 +73,9 @@ class Journal < ActiveRecord::Base
   end
 
   def next_doi_offset!
-    return if doi_start_number.blank?
-    update(doi_start_number: doi_start_number.succ)
-    doi_start_number
+    return if last_doi_issued.blank?
+    update(last_doi_issued: last_doi_issued.succ)
+    last_doi_issued
   end
 
   def setup_defaults

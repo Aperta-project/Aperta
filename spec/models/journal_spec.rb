@@ -11,14 +11,14 @@ describe "Journal" do
       @journal = build(:journal)
       @journal.doi_publisher_prefix = "PPREFIX"
       @journal.doi_journal_prefix = "JPREFIX"
-      @journal.doi_start_number = "100001"
+      @journal.last_doi_issued = "100001"
       @journal.save!
     end
 
     it "can save a DOI" do
       expect(@journal.doi_publisher_prefix).to eq "PPREFIX"
       expect(@journal.doi_journal_prefix).to eq "JPREFIX"
-      expect(@journal.doi_start_number).to eq "100001"
+      expect(@journal.last_doi_issued).to eq "100001"
     end
 
     describe "additional Journals" do
@@ -61,7 +61,7 @@ describe "Journal" do
       let(:journal) do
         Journal.new(doi_publisher_prefix: "PPREFIX",
                     doi_journal_prefix: "JPREFIX",
-                    doi_start_number: "100001")
+                    last_doi_issued: "100001")
 
       end
 
@@ -74,9 +74,9 @@ describe "Journal" do
         expect(journal.next_doi!).to eq("PPREFIX/100002")
       end
 
-      it "updates the doi_start_number" do
+      it "updates the last_doi_issued" do
         journal.next_doi!
-        expect(journal.doi_start_number).to eq("100002")
+        expect(journal.last_doi_issued).to eq("100002")
       end
     end
 

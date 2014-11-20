@@ -12,6 +12,6 @@ FactoryGirl.define do
       |n| "PPREFIX#{n}"
     end
 
-    doi_start_number "10000"
+    last_doi_issued "10000"
   end
 end

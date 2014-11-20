@@ -44,18 +44,18 @@ test 'admin sees the complete DOI form', ->
     ok find('.admin-doi-setting-section')
     ok find('.admin-doi-setting-section .doi_publisher_prefix')
     ok find('.admin-doi-setting-section .doi_journal_prefix')
-    ok find('.admin-doi-setting-section .doi_start_number')
+    ok find('.admin-doi-setting-section .last_doi_issued')
 
-test 'admin can set DOI doi_publisher_prefix, doi_journal_prefix, doi_start_number', ->
+test 'admin can set DOI doi_publisher_prefix, doi_journal_prefix, last_doi_issued', ->
   PPREFIX = "PPREFIX"
   JPREFIX = "JPREFIX"
-  doi_start_number = "10000"
+  last_doi_issued = "10000"
   adminPage = "/admin/journals/#{TahiTest.journalId}"
   visit adminPage
   .then ->
     ok find('.admin-doi-setting-section .doi_publisher_prefix').val(PPREFIX)
     ok find('.admin-doi-setting-section .doi_journal_prefix').val(JPREFIX)
-    ok find('.admin-doi-setting-section .doi_start_number').val(doi_start_number)
+    ok find('.admin-doi-setting-section .last_doi_issued').val(last_doi_issued)
     button = find('.admin-doi-setting-section button')
     ok button
     click button
@@ -67,4 +67,4 @@ test 'admin can set DOI doi_publisher_prefix, doi_journal_prefix, doi_start_numb
   .then ->
     equal(find('.admin-doi-setting-section .doi_publisher_prefix').val(), PPREFIX)
     equal(find('.admin-doi-setting-section .doi_journal_prefix').val(), JPREFIX)
-    equal(find('.admin-doi-setting-section .doi_start_number').val(), doi_start_number)
+    equal(find('.admin-doi-setting-section .last_doi_issued').val(), last_doi_issued)

@@ -227,7 +227,7 @@ ETahi.FactoryAttributes.Journal =
   manuscript_css: null
   doi_publisher_prefix: null
   doi_journal_prefix: null
-  doi_start_number: null
+  last_doi_issued: null
 
 ETahi.FactoryAttributes.AdminJournal =
   _rootKey: 'admin_journal'
@@ -241,7 +241,7 @@ ETahi.FactoryAttributes.AdminJournal =
   manuscript_css: null
   doi_publisher_prefix: null
   doi_journal_prefix: null
-  doi_start_number: null
+  last_doi_issued: null
 
 ETahi.FactoryAttributes.Role =
   _rootKey: 'role'

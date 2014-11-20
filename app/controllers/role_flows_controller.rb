@@ -10,13 +10,13 @@ class RoleFlowsController < ApplicationController
 
   def create
     role = Role.find(flow_params[:role_id])
-    flow = role.flows.create! flow_template
+    flow = role.flows.create!(title: formatted_title)
     render json: flow
   end
 
   def update
     flow = RoleFlow.find(params[:id])
-    flow.update! flow_template
+    flow.update!(title: formatted_title)
     render json: flow
   end
 
@@ -31,6 +31,10 @@ class RoleFlowsController < ApplicationController
     params.require(:role_flow).permit(:title, :role_id)
   end
 
+  def formatted_title
+    flow_params[:title].downcase.capitalize
+  end
+
   def enforce_policy
     flow = RoleFlow.find(params[:id])
     authorize_action!(journal: flow.role.journal)
@@ -39,9 +43,5 @@ class RoleFlowsController < ApplicationController
   def enforce_policy_on_create
     role = Role.find(flow_params[:role_id])
     authorize_action!(journal: role.journal)
-  end
-
-  def flow_template
-    FlowTemplate.template(flow_params[:title])
   end
 end

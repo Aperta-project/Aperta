@@ -9,6 +9,7 @@ ETahi.FlowColumnComponent = Ember.Component.extend
   classNames: ['column']
 
   editable: false
+  emptyText: "There are no matches."
 
   formattedFlowTitle: Em.computed 'flow.title', ->
     possibleFlowNames.findBy('text', @get('flow.title'))

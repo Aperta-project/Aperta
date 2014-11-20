@@ -1,2 +1,2 @@
 #!/bin/sh
-kill $(ps aux | grep -E 'redis|sidekiq|puma|go|solr' | grep -v grep | awk '{print $2}')
+kill $(ps aux | grep -E 'sidekiq|puma|go|solr' | grep -v grep | awk '{print $2}')

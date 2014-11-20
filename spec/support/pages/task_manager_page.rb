@@ -13,7 +13,7 @@ class TaskManagerPage < Page
   def phase phase_name
     expect(page).to have_content(phase_name) # use have_content/css/stuff assertion to avoid sleeps.
     retry_stale_element do
-      PhaseFragment.new(all('.column').detect {|p| p.find('h2').text == phase_name })
+      PhaseFragment.new(all('.column').detect { |p| p.has_css?('h2', text: phase_name) })
     end
   end
 
@@ -34,10 +34,6 @@ class TaskManagerPage < Page
   def message_tasks
     synchronize_content! "Add new card"
     all('.card--message').map { |el| MessageTaskCard.new(el) }
-  end
-
-  def get_first_matching_task name
-    all('.card-content').detect { |card| card.text == name }
   end
 
   def navigate_to_edit_paper

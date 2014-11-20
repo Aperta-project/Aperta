@@ -74,7 +74,7 @@ feature "Flow Manager", js: true, selenium: true do
     end
 
     scenario "choices are determined by the user's role flows" do
-      role.flows.create(FlowTemplate.template("up for grabs"))
+      role.flows.create(title: "Up for grabs")
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 

@@ -25,6 +25,10 @@ class PapersPolicy < ApplicationPolicy
     can_view_paper?
   end
 
+  def manage?
+    current_user.site_admin? || can_view_manuscript_manager?
+  end
+
   def download?
     can_view_paper?
   end

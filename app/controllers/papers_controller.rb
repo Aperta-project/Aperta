@@ -45,6 +45,10 @@ class PapersController < ApplicationController
 
   # non RESTful routes
 
+  def manage
+    render 'ember/index'
+  end
+
   def upload
     manuscript = paper.manuscript || paper.build_manuscript
     manuscript.update_attribute :status, "processing"

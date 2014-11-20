@@ -58,7 +58,7 @@ class Admin::JournalsController < ApplicationController
       :manuscript_css,
       :doi_publisher_prefix,
       :doi_journal_prefix,
-      :doi_start_number
+      :last_doi_issued
     )
   end
 end

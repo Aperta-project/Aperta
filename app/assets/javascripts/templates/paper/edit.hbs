@@ -6,6 +6,9 @@
 
     <aside>
       <div class="task-list">
+        {{#if doi }}
+          <strong>DOI:</strong> {{doi}}
+        {{/if}}
         {{partial "paper/task-list"}}
         <a {{action "submit" target="view"}} {{bind-attr class=":button-primary :button--wide allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit</a>
       </div>

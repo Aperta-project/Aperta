@@ -2,48 +2,23 @@ module 'Integration: Flow Manager Administration',
   teardown: -> ETahi.reset()
   setup: ->
     setupApp integration: true
-    TahiTest.journalId = 209
-    TahiTest.editorRoleId = 8
-    TahiTest.reviewerRoleId = 9
+    ef = ETahi.Factory
+    journal = ef.createRecord('AdminJournal')
+    TahiTest.journalId = journal.id
 
-    journalRoles =
-      [
-        id: 7
-        kind: "admin"
-        name: "Admin"
-        required: true
-        can_administer_journal: true
-        can_view_assigned_manuscript_managers: false
-        can_view_all_manuscript_managers: true
-        can_view_flow_manager: false
-        journal_id: TahiTest.journalId
-      ]
+    adminRole = ef.createJournalRole journal,
+      name: "Admin"
+      kind: "admin"
+      can_administer_journal: true
+      can_view_assigned_manuscript_managers: false
+      can_view_all_manuscript_managers: true
+      can_view_flow_manager: false
 
-    adminJournal =
-      id: TahiTest.journalId
-      name: "Test Journal of America"
-      logo_url: "foo"
-      paper_types: ["Research"]
-      task_types: [ "FinancialDisclosure::Task" ]
-      description: "This is a test journal"
-      paper_count: 3
-      created_at: "2014-06-16T22:23:16.320Z"
-      manuscript_manager_templates: []
-      role_ids: [7]
-
-    adminJournalPayload =
-      roles: journalRoles
-      admin_journal: adminJournal
-
-    TahiTest.userRoleId = 99
-    TahiTest.adminUserId = 923
+    adminJournalPayload = ef.createPayload('adminJournal')
+    adminJournalPayload.addRecords([journal, adminRole])
 
     server.respondWith 'GET', "/admin/journals/#{TahiTest.journalId}", [
-      200, "Content-Type": "application/json", JSON.stringify adminJournalPayload
-    ]
-
-    server.respondWith 'GET', "/admin/journals/authorization", [
-      204, "Content-Type": "application/html", ""
+      200, "Content-Type": "application/json", JSON.stringify adminJournalPayload.toJSON()
     ]
 
     server.respondWith 'GET', "/admin/journals/authorization", [

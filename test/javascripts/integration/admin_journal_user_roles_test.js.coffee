@@ -2,77 +2,39 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
   teardown: -> ETahi.reset()
   setup: ->
     setupApp integration: true
-    TahiTest.journalId = 209
-    TahiTest.editorRoleId = 8
-    TahiTest.reviewerRoleId = 9
 
-    journalRoles =
-      [
-        id: 7
-        kind: "admin"
-        name: "Admin"
-        required: true
-        can_administer_journal: true
-        can_view_assigned_manuscript_managers: false
-        can_view_all_manuscript_managers: true
-        can_view_flow_manager: true
-        journal_id: TahiTest.journalId
-      ,
-        id: TahiTest.editorRoleId
-        kind: "editor"
-        name: "Editor"
-        required: true
-        can_administer_journal: false
-        can_view_assigned_manuscript_managers: false
-        can_view_all_manuscript_managers: false
-        can_view_flow_manager: false
-        journal_id: TahiTest.journalId
-      ,
-        id: TahiTest.reviewerRoleId
-        kind: "reviewer"
-        name: "Reviewer"
-        required: true
-        can_administer_journal: false
-        can_view_assigned_manuscript_managers: false
-        can_view_all_manuscript_managers: false
-        can_view_flow_manager: false
-        journal_id: TahiTest.journalId
-      ,
-        id: TahiTest.reviewerRoleId
-        kind: "flow manager"
-        name: "Flow Manager"
-        required: true
-        can_administer_journal: false
-        can_view_assigned_manuscript_managers: false
-        can_view_all_manuscript_managers: false
-        can_view_flow_manager: true
-        journal_id: TahiTest.journalId
-      ]
+    ef = ETahi.Factory
+    journal = ef.createRecord('AdminJournal')
+    TahiTest.journalId = journal.id
 
-    adminJournal =
-      id: TahiTest.journalId
-      name: "Test Journal of America"
-      logo_url: "foo"
-      paper_types: ["Research"]
-      task_types: [ "FinancialDisclosure::Task" ]
-      description: "This is a test journal"
-      paper_count: 3
-      created_at: "2014-06-16T22:23:16.320Z"
-      manuscript_manager_templates: [
-        id: 5
-        paper_type: "Research"
-        template: {}
-        journal_id: TahiTest.journalId
-      ]
-      role_ids: [7, TahiTest.editorRoleId, TahiTest.reviewerRoleId]
+    adminRole = ef.createJournalRole journal,
+      name: "Admin"
+      kind: "admin"
+      can_administer_journal: true
+      can_view_assigned_manuscript_managers: false
+      can_view_all_manuscript_managers: true
+      can_view_flow_manager: true
 
-    adminJournalPayload =
-      roles: journalRoles
-      admin_journal: adminJournal
+    editorRole = ef.createJournalRole journal,
+      name: "Editor"
+      kind: "editor"
+      can_administer_journal: false
+      can_view_assigned_manuscript_managers: false
+      can_view_all_manuscript_managers: false
+      can_view_flow_manager: false
+    TahiTest.editorRoleId = editorRole.id
 
-    adminJournalsPayload =
-      roles: journalRoles
-      admin_journals: [adminJournal]
+    reviewerRole = ef.createJournalRole journal,
+      name: "Reviewer"
+      kind: "reviewer"
+      can_administer_journal: false
+      can_view_assigned_manuscript_managers: false
+      can_view_all_manuscript_managers: false
+      can_view_flow_manager: false
+    TahiTest.reviewerRoleId = reviewerRole.id
+
+    adminJournalPayload = ef.createPayload('adminJournal')
+    adminJournalPayload.addRecords([journal, adminRole, editorRole, reviewerRole])
 
     TahiTest.userRoleId = 99
     TahiTest.adminUserId = 923
@@ -99,16 +61,8 @@ module 'Integration: Admin Journal User Roles, /admin/journals/:id',
 
     TahiTest.query = 'User'
 
-    server.respondWith 'GET', "/admin/journals", [
-      200, "Content-Type": "application/json", JSON.stringify adminJournalsPayload
-    ]
-
     server.respondWith 'GET', "/admin/journals/#{TahiTest.journalId}", [
-      200, "Content-Type": "application/json", JSON.stringify adminJournalPayload
-    ]
-
-    server.respondWith 'GET', "/admin/journals/authorization", [
-      204, "Content-Type": "application/html", ""
+      200, "Content-Type": "application/json", JSON.stringify adminJournalPayload.toJSON()
     ]
 
     server.respondWith 'GET', "/admin/journal_users?journal_id=#{TahiTest.journalId}", [

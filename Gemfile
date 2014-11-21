@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.1.4"
+ruby "2.1.5"
 
 # Configuration
 group :development, :test, :performance do
@@ -79,7 +79,8 @@ group :doc do
 end
 
 group :development do
-  # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
+  # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs.
+  # Please add it in temporarily if you need to check for speed
   gem 'bullet'
   gem 'kss-rails'
   gem 'letter_opener'

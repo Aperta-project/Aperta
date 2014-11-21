@@ -18,16 +18,16 @@
     <label class="token">{{check-box name="role[canViewFlowManager]" checked=canViewFlowManager}} Flow Manager</label>
   {{else}}
     {{#if canViewAssignedManuscriptManagers}}
-      <label class="token">{{check-box name="role[canViewAssignedManuscriptManagers]" checked=canViewAssignedManuscriptManagers}} Manuscript Manager</label>
+      <label class="token"><span class="glyphicon glyphicon-ok"></span> Manuscript Manager</label>
     {{/if}}
     {{#if canViewAllManuscriptManagers}}
-      <label class="token">{{check-box name="role[canViewAllManuscriptManagers]" checked=canViewAllManuscriptManagers}} All Manuscript Managers</label>
+      <label class="token"><span class="glyphicon glyphicon-ok"></span> All Manuscript Managers</label>
     {{/if}}
     {{#if canAdministerJournal}}
-      <label class="token">{{check-box name="role[canAdministerJournal]" checked=canAdministerJournal}} Admin</label>
+      <label class="token"><span class="glyphicon glyphicon-ok"></span> Admin</label>
     {{/if}}
     {{#if canViewFlowManager}}
-      <label class="token">{{check-box name="role[canViewFlowManager]" checked=canViewFlowManager}} Flow Manager</label>
+      <label class="token"><span class="glyphicon glyphicon-ok"></span> Flow Manager</label>
     {{/if}}
   {{/if}}
 

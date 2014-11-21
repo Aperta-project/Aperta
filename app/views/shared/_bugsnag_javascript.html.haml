@@ -12,6 +12,5 @@
   :javascript
     var ErrorNotifier = {}
     ErrorNotifier['notify'] = function( error, label, metadata ) {
-      label = typeof label !== 'undefined' ? label : 'Uncaught Error';
-      console.log(label + ": " , error);
+      throw error;
     }

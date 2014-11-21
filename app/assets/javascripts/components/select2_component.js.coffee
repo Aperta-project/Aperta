@@ -31,6 +31,10 @@ ETahi.Select2Component = Ember.TextField.extend
   initSelection: (el, callback) ->
     callback(_.compact(@get('selectedData')))
 
+  repaint: ->
+    @teardown()
+    @setup()
+
   setup:(->
     options                    = {}
     options.placeholder        = @get('placeholder')
@@ -49,10 +53,13 @@ ETahi.Select2Component = Ember.TextField.extend
     @setupRemovedListener()
     @setupClosedListener()
     @setSelectedData()
+
+    @addObserver('source', @, @repaint)
   ).on('didInsertElement')
 
   teardown: (->
     @.$().off 'select2-selecting'
     @.$().off 'select2-removing'
     @.$().off 'select2-close'
+    @removeObserver('source', @, @repaint)
   ).on('willDestroyElement')

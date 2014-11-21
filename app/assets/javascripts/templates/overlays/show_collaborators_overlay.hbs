@@ -18,15 +18,12 @@
       <a class="button-link button--green pull-right" {{action "cancel"}}>cancel</a>
     </div>
 
-    {{chosen content=availableCollaborators
-             name="collaborators"
-             width="150px"
-             class="collaborator-select"
-             changeAction="addNewCollaborator"
-             prompt="Add People"
-             optionValuePath="content"
-             optionLabelPath="content.fullName"
-             value=selectedCollaborator}}
+    {{select-2-single value=""
+                      placeholder="Add collaborator"
+                      class="collaborator-select"
+                      name="collaborators"
+                      selectionSelected="addNewCollaborator"
+                      source=formattedCollaborators}}
   </div>
 
 </div>

@@ -5,6 +5,11 @@ ETahi.Router.map ()->
     @route('edit')
     @route('manage')
 
+  # TODO how to make this more "authoritative"?
+  @resource 'paper', { path: '/papers/:publisher_prefix/:suffix'}, ->
+    @route('edit')
+    @route('manage')
+
   @route('task', {path: '/papers/:paper_id/tasks/:task_id'})
   @route('profile', {path: '/profile'})
 

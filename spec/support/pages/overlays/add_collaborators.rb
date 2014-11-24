@@ -3,7 +3,7 @@ class AddCollaboratorsOverlay < PageFragment
 
   def add_collaborators(*users)
     users.map(&:full_name).each do |name|
-      select_from_chosen name, class: 'collaborator-select', skip_synchronize: true
+      pick_from_select2_single name, name, class: 'collaborator-select'
     end
   end
 

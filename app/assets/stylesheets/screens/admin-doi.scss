@@ -1,0 +1,46 @@
+.admin-doi-setting-section {
+  overflow: hidden;
+  input { width: 90%; }
+  p { margin-bottom: 15px; }
+
+  .required:before {
+    left: 10px;
+    top: 24px;
+  }
+
+  .error.required:before { color: $tahi-error-red; }
+
+  input { border: 1px solid $tahi-grey-light; }
+  .error input { border-color: $tahi-error-red; }
+
+  .admin-section-title  {
+    margin-bottom: 5px;
+  }
+
+  // bootstrap override
+  .col-md-3 {
+    padding-right: 0;
+    padding-left: 30px;
+  }
+}
+
+.admin-doi-setting-section-actions {
+  clear: both;
+  text-align: right;
+}
+
+.admin-doi-settings-title {
+  color: $tahi-grey-dark;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.admin-doi-settings-edit-button {
+  @include position(absolute, 28px auto auto 0px);
+  padding: 0 3px;
+  color: $tahi-grey-light;
+  font-size: 15px;
+  cursor: pointer;
+
+  &:hover { color: $tahi-grey; }
+}

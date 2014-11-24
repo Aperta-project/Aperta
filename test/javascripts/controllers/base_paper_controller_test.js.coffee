@@ -1,3 +1,4 @@
+# TODO use server.respondWith
 moduleFor 'controller:basePaper', 'BasePaperController',
   needs: ['controller:application']
   setup: ->
@@ -10,9 +11,12 @@ moduleFor 'controller:basePaper', 'BasePaperController',
       title: 'test paper'
       phases: [ ]
 
-test '#export: calls the export url in Tahi', ->
-  sinon.stub(jQuery, "ajax")
+    sinon.stub(jQuery, "ajax")
 
+  teardown: ->
+    jQuery.ajax.restore()
+
+test '#export: calls the export url in Tahi', ->
   basePaperController = @subject()
   basePaperController.set('model', @paper)
   downloadType =

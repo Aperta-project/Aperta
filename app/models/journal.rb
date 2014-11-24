@@ -59,7 +59,9 @@ class Journal < ActiveRecord::Base
 
   def next_doi!
     return if last_doi_issued.blank?
-    "#{doi_publisher_prefix}/#{doi_suffix(next_doi_offset!)}"
+    transaction do
+      "#{doi_publisher_prefix}/#{doi_suffix(next_doi_offset!)}"
+    end
   end
 
   private

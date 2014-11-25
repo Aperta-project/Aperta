@@ -3,6 +3,5 @@ ETahi.TaskAdapter = DS.ActiveModelAdapter.extend
     'tasks'
 
 ETahi.AuthorsTaskAdapter = ETahi.TaskAdapter.extend()
-ETahi.MessageTaskAdapter= ETahi.TaskAdapter.extend()
 ETahi.TechCheckTaskAdapter= ETahi.TaskAdapter.extend()
 ETahi.RegisterDecisionTaskAdapter= ETahi.TaskAdapter.extend()

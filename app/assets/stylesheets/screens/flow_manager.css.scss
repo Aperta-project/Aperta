@@ -37,15 +37,6 @@
   }
 }
 
-.flow-card.card--message .card-content {
-  color: white;
-  background-color: $tahi-purple-light;
-}
-
-.flow-card.card--message:hover .card-content {
-  background-color: $tahi-purple;
-}
-
 .flow-card.card--completed .card-content {
   color: $tahi-grey-light - #666;
   background: $tahi-grey-light;

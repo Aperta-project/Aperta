@@ -36,13 +36,13 @@ test 'has a custom extractTypeName function to make things easier', ->
 test "extractSingle puts sideloaded things into the store via their 'type' attribute", ->
   jsonHash =
     tasks:
-      [ {id: '1', type: 'MessageTask', title: 'A Message'}
+      [ {id: '1', type: 'TechCheckTask', title: 'Tech Check'}
         {id: '2', type: 'Foo::PlosAuthorsTask', title: 'Check Authors'}
       ]
 
      phase:
        id: '1'
-       tasks: [{id: '1', type: 'MessageTask'}, {id: '2', type: 'PlosAuthorsTask'}]
+       tasks: [{id: '1', type: 'TechCheckTask'}, {id: '2', type: 'PlosAuthorsTask'}]
   # make sure the store is set up for the model, otherwise the typeKey
   # won't be properly set for some reason and primaryTypeName will be
   # undefined
@@ -51,8 +51,8 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
   Ember.run ->
     result = env.serializer.extractSingle(env.store, ETahi.Phase, jsonHash)
     equal env.store.getById('task', 1), null, 'no Task gets pushed into the store'
-    env.store.find('messageTask', 1).then (task) ->
-      equal task.get('title'), 'A Message', 'the message task is in the store'
+    env.store.find('techCheckTask', 1).then (task) ->
+      equal task.get('title'), 'Tech Check', 'the message task is in the store'
     env.store.find('plosAuthorsTask', 2).then (task) ->
       equal task.get('title'), 'Check Authors', 'the namespaced authors task is in the store'
 

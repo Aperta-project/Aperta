@@ -1,2 +1,0 @@
-class MessageTasksPolicy < TasksPolicy
-end

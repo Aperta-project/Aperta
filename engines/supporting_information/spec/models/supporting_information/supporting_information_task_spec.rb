@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module SupportingInformation
-  describe Task do
+  describe SupportingInformationTask do
     describe "#file_access_details" do
       let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
 
@@ -12,7 +12,7 @@ module SupportingInformation
       end
 
       let(:supporting_information_task) do
-        ::SupportingInformation::Task.create! completed: true,
+        ::SupportingInformation::SupportingInformationTask.create! completed: true,
           phase: paper.phases.first,
           title: "Supporting Info",
           role: "author"

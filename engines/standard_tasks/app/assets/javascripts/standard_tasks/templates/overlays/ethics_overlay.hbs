@@ -9,7 +9,7 @@
         task=model
         question="Does your study involve human participants, specimens or tissue samples, or vertebrate animals, cephalopods, embryos or tissues?"}}
 
-        {{#show-if-parent prop='selectedYes'}}
+        {{#show-if-parent prop="selectedYes"}}
           <div class="question-dataset">
             {{question-textarea ident="ethics.approving_committee" task=model
                                 question="Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research."}}
@@ -22,12 +22,14 @@
 
             {{question-uploader ident="ethics.trial_protocol" task=model
                                 question="Please provide a copy of the trial protocol."
-                                updateStore='updateStore'
+                                updateStore="updateStore"
+                                destroyAttachment="destroyAttachment"
                                 accept=".docx,.pdf"}}
 
             {{question-uploader ident="ethics.consort_checklist" task=model
                                 question="Please provide a completed CONSORT checklist as supporting information."
-                                updateStore='updateStore'
+                                updateStore="updateStore"
+                                destroyAttachment="destroyAttachment"
                                 accept=".docx,.pdf"}}
           </div>
         {{/show-if-parent}}
@@ -38,7 +40,7 @@
                         task=model
                         question="Does this study involve vertebrate animals, embryos or tissues?"}}
 
-        {{#show-if-parent prop='selectedYes'}}
+        {{#show-if-parent prop="selectedYes"}}
           <div class="question-dataset">
             {{question-textarea ident="ethics.animal_subjects.institution_name" task=model
                                 question="Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board."}}
@@ -49,7 +51,7 @@
                               class="question"
                               question="Did they approve this research or grant a formal waiver of ethical approval?"}}
 
-                {{#show-if-parent prop='selectedYes'}}
+                {{#show-if-parent prop="selectedYes"}}
                   {{question-textarea ident="ethics.animal_subjects.ethical_approval.approval_number"
                                       task=model
                                       class="question sub-question"
@@ -63,7 +65,7 @@
                               class="question"
                               question="Was anesthesia, euthanasia or any kind of animal sacrifice part of the study?"}}
 
-                {{#show-if-parent prop='selectedYes'}}
+                {{#show-if-parent prop="selectedYes"}}
                   {{question-textarea ident="ethics.animal_subjects.animal_sacrifice.method_information"
                                       task=model
                                       class="question sub-question"
@@ -76,7 +78,8 @@
 
                   {{question-uploader ident="ethics.animal_subjects.arrive_checklist" task=model
                                       question="Please provide a copy of the <a href='http://www.nc3rs.org.uk/page.asp?id=1357' target='_new'>ARRIVE Guidelines</a> checklist."
-                                      updateStore='updateStore'
+                                      updateStore="updateStore"
+                                      destroyAttachment="destroyAttachment"
                                       accept=".docx,.pdf"}}
                 {{/show-if-parent}}
             {{/question-radio}}
@@ -87,7 +90,7 @@
                               class="question"
                               question="Did you use anesthesia or perform euthanasia?"}}
 
-                {{#show-if-parent prop='selectedYes'}}
+                {{#show-if-parent prop="selectedYes"}}
                   {{question-textarea ident="ethics.animal_subjects.animal_sacrifice.euthanasia.specifics"
                                       task=model
                                       class="question sub-question"
@@ -106,13 +109,13 @@
         task=model
         question="Did this study entail field research? (note, this question is commonly 'yes' for animal research papers, but it must be presented to other papers as well, e.g. paleontology)"}}
 
-        {{#show-if-parent prop='selectedYes'}}
+        {{#show-if-parent prop="selectedYes"}}
           <div class="question-dataset">
             {{#question-radio ident="ethics.field_research.field_permit"
               task=model
               question="Did this study require a Field Permit?"}}
 
-              {{#show-if-parent prop='selectedYes'}}
+              {{#show-if-parent prop="selectedYes"}}
                 {{question-textarea ident="ethics.field_research.field_permit.institution_name"
                                     task=model
                                     class="question sub-question"

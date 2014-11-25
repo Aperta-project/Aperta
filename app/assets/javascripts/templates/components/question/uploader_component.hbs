@@ -9,11 +9,11 @@
       {{/if}}
 
       {{file-uploader accept=accept
-                      start='uploadStarted'
-                      progress='uploadProgress'
-                      done='uploadFinished'
-                      error='uploadError'
-                      filePrefix='question_attachment'}}
+                      start="uploadStarted"
+                      progress="uploadProgress"
+                      done="uploadFinished"
+                      error="uploadError"
+                      filePrefix="question_attachment"}}
     </span>
     {{#if fileUpload}}
       <div id="paper-file-uploads">
@@ -21,7 +21,8 @@
       </div>
     {{/if}}
     {{#if model.questionAttachment}}
-      {{question-attachment-thumbnail attachment=model.questionAttachment}}
+      {{question-attachment-thumbnail attachment=model.questionAttachment
+                                      destroyAttachment="destroyAttachment"}}
     {{/if}}
   </div>
 </div>

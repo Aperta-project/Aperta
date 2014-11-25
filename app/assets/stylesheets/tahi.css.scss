@@ -152,8 +152,10 @@ textarea { resize: none; }
   }
 }
 
-.field-with-errors input, select, textarea{
-  border: 1px solid $tahi-error-red;
+.field-with-errors {
+  input, select, textarea {
+    border: 1px solid $tahi-error-red;
+  }
 }
 
 .error-message {

@@ -101,6 +101,41 @@ describe Paper do
         expect(Paper.unpublished).to_not include published_paper
       end
     end
+
+    describe ".find_by_doi_or_id" do
+      let(:doi) { 'pumpkin/doughnut.888888' }
+      let!(:paper_with_doi) { create :paper, doi: doi }
+
+      context "when given a paper id" do
+        it "returns a paper" do
+          expect(Paper.find_by_doi_or_id(doi)).to eq paper_with_doi
+
+        end
+      end
+
+      context "when given a doi" do
+        it "returns a paper" do
+          expect(Paper.find_by_doi_or_id(paper_with_doi.id)).to eq paper_with_doi
+        end
+      end
+
+      context "when given a non-existant doi" do
+        it "raises an exception" do
+          expect {
+            Paper.find_by_doi_or_id("bogus")
+          }.to raise_error "ActiveRecord::RecordNotFound"
+        end
+      end
+
+      context "when given a non-existant ID" do
+        it "raises an exception" do
+          expect {
+            Paper.find_by_doi_or_id(233)
+          }.to raise_error "ActiveRecord::RecordNotFound"
+        end
+      end
+
+    end
   end
 
   describe "#editor" do

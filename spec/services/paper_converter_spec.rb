@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PaperConverterWorker do
+describe PaperConverter do
 
   let(:paper) { FactoryGirl.create(:paper) }
   let(:user) { FactoryGirl.create(:user) }

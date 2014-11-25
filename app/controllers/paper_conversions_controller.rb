@@ -2,12 +2,12 @@ class PaperConversionsController < ApplicationController
   def export
     @paper = Paper.find(params[:id])
     @export_format = params[:format]
-    response = PaperConverterWorker.export(@paper, @export_format, current_user)
-    render json: JSON.parse(response), status: 203
+    response = PaperConverter.export(@paper, @export_format, current_user)
+    render json: JSON.parse(response), status: :non_authoritative_information # 203
   end
 
   def status
-    job = PaperConverterWorker.check_status(params[:id])
+    job = PaperConverter.check_status(params[:id])
     render json: JSON.parse(job)
   end
 

@@ -1,4 +1,4 @@
-class PaperConverterWorker
+class PaperConverter
   def self.export(paper, format, current_user)
     epub = EpubConverter.new(paper, current_user).epub_stream
     payload = Faraday::UploadIO.new(epub, "application/epub+zip")

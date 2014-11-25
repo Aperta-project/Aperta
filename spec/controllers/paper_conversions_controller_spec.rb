@@ -3,9 +3,7 @@ require 'spec_helper'
 describe PaperConversionsController, type: :controller do
   let(:user) { create :user, :site_admin }
 
-  let(:paper) do
-    create(:paper, user: user, body: "This is the body")
-  end
+  let(:paper) { create(:paper) }
   let(:job_id) { 'd5ee706f-a473-46ed-9777-3b7cd2905d08' }
 
   before { sign_in user }

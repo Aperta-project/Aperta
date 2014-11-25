@@ -25,15 +25,15 @@ class TaskManagerPage < Page
     all(".card").size
   end
 
-  def tasks
+  def task_titles
     retry_stale_element do
       all('.card').map(&:text)
     end
   end
 
-  def message_tasks
+  def tasks
     synchronize_content! "Add new card"
-    all('.card--message').map { |el| MessageTaskCard.new(el) }
+    all('.card').map { |el| TaskCard.new(el) }
   end
 
   def navigate_to_edit_paper
@@ -44,7 +44,7 @@ class TaskManagerPage < Page
   end
 end
 
-class MessageTaskCard < PageFragment
+class TaskCard < PageFragment
   def unread_comments_badge
     find('.badge.unread-comments-count').text.to_i
   end

@@ -28,7 +28,7 @@ test 'displayTitle displays title if present', ->
 test 'Paper hasMany tasks (async)', ->
   stop()
   paperPromise = Ember.run =>
-    task1 = @store().createRecord 'task', type: 'MessageTask', title: 'A message', isMetadataTask: false
+    task1 = @store().createRecord 'task', type: 'Task', title: 'A message', isMetadataTask: false
     task2 = @store().createRecord 'task', type: 'TechCheckTask', title: 'some task',isMetadataTask: true
     paper = @store().createRecord 'paper',
       title: 'some really long title'
@@ -38,14 +38,14 @@ test 'Paper hasMany tasks (async)', ->
       paper
 
   paperPromise.then((paper) ->
-    deepEqual paper.get('tasks').mapBy('type'), ['MessageTask', 'TechCheckTask']
+    deepEqual paper.get('tasks').mapBy('type'), ['Task', 'TechCheckTask']
   ).then(start, start)
 
 
 test 'allMetadata tasks filters tasks by isMetaData', ->
   stop()
   paperPromise = Ember.run =>
-    task1 = @store().createRecord 'task', type: 'MessageTask', title: 'A message', isMetadataTask: false
+    task1 = @store().createRecord 'task', type: 'Task', title: 'A message', isMetadataTask: false
     task2 = @store().createRecord 'task', type: 'TechCheckTask', title: 'some task',isMetadataTask: true
     paper = @store().createRecord 'paper',
       title: 'some really long title'

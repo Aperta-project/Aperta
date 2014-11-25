@@ -2,6 +2,8 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
   epubCssSaveStatus: ''
   pdfCssSaveStatus: ''
   manuscriptCssSaveStatus: ''
+  doiEditState: false
+  doiStartNumberEditable: true
 
   epubCoverUploadUrl: (->
     "/admin/journals/#{@get('model.id')}/upload_epub_cover"
@@ -35,6 +37,28 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
       null
   ).property('epubCoverUploadedAt')
 
+  formattedDOI: (->
+    if @get 'doiInvalid'
+      ''
+    else
+      publisher = @get('doiPublisherPrefix')
+      journal   = @get('doiJournalPrefix')
+      start     = @get('lastDoiIssued')
+
+      "#{publisher}/#{journal}#{if Em.isEmpty(journal) then '' else '.'}#{start}"
+  ).property('doiPublisherPrefix', 'doiJournalPrefix', 'lastDoiIssued')
+
+  doiInvalid: (->
+    Em.isEmpty(@get('doiPublisherPrefix')) ||
+    Em.isEmpty(@get('lastDoiIssued')) ||
+    @get('doiStartNumberInvalid')
+  ).property('doiPublisherPrefix', 'lastDoiIssued')
+
+  doiStartNumberInvalid: (->
+    !$.isNumeric(@get('lastDoiIssued')) && !Ember.isEmpty(@get('doiStartNumber'))
+  ).property('lastDoiIssued')
+
+
   actions:
     searchUsers: ->
       @resetSearch()
@@ -56,9 +80,21 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
         epubCoverUploadedAt: journal.epub_cover_uploaded_at
 
     resetSaveStatuses: ->
-      @set('epubCssSaveStatus', '')
-      @set('pdfCssSaveStatus', '')
-      @set('manuscriptCssSaveStatus', '')
+      @setProperties
+        epubCssSaveStatus: ''
+        pdfCssSaveStatus: ''
+        manuscriptCssSaveStatus: ''
+
+    editDOI: ->
+      @set 'doiEditState', true
+
+    cancelDOI: ->
+      @get('model').rollback()
+      @set 'doiEditState', false
 
     saveDOI: ->
-      @get("model").save()
+      return if @get 'doiInvalid'
+
+      @set 'doiStartNumberEditable', false
+      @get('model').save()
+      @set 'doiEditState', false

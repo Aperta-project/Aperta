@@ -16,4 +16,4 @@ ETahi.AdminJournal = DS.Model.extend
   journalTaskTypes: DS.hasMany('journalTaskType')
   doiJournalPrefix: a('string')
   doiPublisherPrefix: a('string')
-  doiStartNumber: a('number')
+  lastDoiIssued: a('number')

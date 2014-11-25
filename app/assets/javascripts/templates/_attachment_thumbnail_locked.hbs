@@ -1,0 +1,18 @@
+<div class="attachment-thumbnail">
+  {{#if attachment.previewSrc}}
+    <div class="attachment-thumbnail-image">
+      <img class="preview" src={{unbound attachment.src}} alt={{unbound attachment.alt}}>
+    </div>
+  {{else}}
+    <div class="attachment-thumbnail-image attachment-thumbnail-image-placeholder">
+      <span class="glyphicon glyphicon-file"></span>
+    </div>
+  {{/if}}
+
+  <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original file"  href={{unbound attachment.src}} >{{unbound attachment.filename}}</a>
+
+  <div class="attachment-thumbnail-text-content">
+    <h2>{{unbound attachment.title}}</h2>
+    <div>{{unbound attachment.caption}}</div>
+  </div>
+</div>

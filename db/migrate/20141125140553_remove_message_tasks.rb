@@ -1,8 +1,8 @@
 class RemoveMessageTasks < ActiveRecord::Migration
   def up
     execute <<-SQL
-      UPDATE tasks SET type = 'Task' where type = 'MessageTask';
-      DELETE from journal_task_types where kind = 'MessageTask';
+      UPDATE tasks SET type = 'Task' WHERE type = 'MessageTask';
+      DELETE FROM journal_task_types WHERE kind = 'MessageTask';
     SQL
   end
 

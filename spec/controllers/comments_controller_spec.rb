@@ -6,7 +6,7 @@ describe CommentsController do
   let(:phase) { paper.phases.first }
   let(:user) { create(:user) }
 
-  let(:message_task) { create(:message_task, phase: phase, participants: [user], title: "Message Task", role: "admin") }
+  let(:task) { create(:task, phase: phase, participants: [user], title: "Task", role: "admin") }
   before { sign_in user }
 
   describe 'POST create' do
@@ -14,7 +14,7 @@ describe CommentsController do
       xhr :post, :create, format: :json,
         comment: {commenter_id: user.id,
                   body: "My comment",
-                  task_id: message_task.id}
+                  task_id: task.id}
     end
 
     context "the user isn't authorized" do
@@ -36,7 +36,7 @@ describe CommentsController do
             format: :json,
             comment: {commenter_id: user.id,
                       body: "",
-                      task_id: message_task.id}
+                      task_id: task.id}
           }.to_not change { Comment.count }
         end
       end

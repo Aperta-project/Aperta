@@ -144,7 +144,6 @@ RSpec.configure do |config|
 
   config.after(:each) do
     Capybara.current_driver = @current_driver
-    Capybara.current_driver = :selenium
     DatabaseCleaner.clean
   end
 

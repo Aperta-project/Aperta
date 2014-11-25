@@ -13,7 +13,7 @@ feature "Assigns Editor", js: true, solr: true do
     SignInPage.visit.sign_in admin
   end
 
-  scenario "Admin can assign an editor to a paper" do
+  scenario "Admin can assign an editor to a paper", selenium: true do
     dashboard_page = DashboardPage.new
     paper_page = dashboard_page.view_submitted_paper(paper)
     task_manager_page = paper_page.visit_task_manager

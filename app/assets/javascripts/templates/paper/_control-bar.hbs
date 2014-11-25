@@ -52,7 +52,7 @@
 
     <div {{bind-attr class=":manuscript-download-links view.downloadsVisible:active"}}>
       {{#each downloadType in view.supportedDownloadFormats}}
-      <a {{action "export" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
+        <a {{action "export" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
       {{/each}}
       {{#direct-download-link link=downloadLink}}
         {{partial "svg/epub-icon"}}

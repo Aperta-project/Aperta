@@ -43,6 +43,10 @@ class Paper < ActiveRecord::Base
     def unpublished
       where(published_at: nil)
     end
+
+    def find_by_doi_or_id(doi_or_id)
+      doi_or_id.respond_to?(:integer?) ? find_by_id!(doi_or_id) : find_by_doi!(doi_or_id)
+    end
   end
 
   def role_for(role:, user:)

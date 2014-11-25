@@ -1,10 +1,11 @@
 class RoleFlow < ActiveRecord::Base
   attr_accessor :papers
   belongs_to :role, inverse_of: :flows
+  has_one :journal, through: :role
 
   acts_as_list scope: :role
 
-  validates :title, inclusion: { in: FlowQuery::FLOW_TITLES }
+  serialize :query, Array
 
   def self.create_default_flows!(role)
     FlowQuery::FLOW_TITLES.each do |title|

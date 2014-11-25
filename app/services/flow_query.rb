@@ -1,15 +1,14 @@
 class FlowQuery
-  attr_reader :user, :flow_title, :scope_to_journals
-  FLOW_TITLES = ['Up for grabs', 'My papers', 'My tasks', 'Done']
+  attr_reader :user, :scope_to_journals
 
-  def initialize(user, flow_title)
+  def initialize(user, role_flow)
     @user = user
-    @flow_title = flow_title
+    @role_flow = role_flow
     @scope_to_journals = !user.site_admin?
   end
 
   def tasks
-    @tasks ||= flow_map[flow_title].call
+    call((role_flow.query << ":user").join("."))
   end
 
   def lite_papers
@@ -21,17 +20,12 @@ class FlowQuery
 
   private
 
-  def flow_map
-    {
-      'Up for grabs' => -> { unassigned_tasks },
-      'My papers' => -> { paper_admin_tasks_for_user },
-      'My tasks' => -> { assigned_tasks.incomplete },
-      'Done' => -> { assigned_tasks.completed }
-    }
+  def user
+    where('task.user_id' => user)
   end
 
-  def assigned_tasks
-    base_query.assigned_to(user)
+  def assigned
+    assigned_to(user)
   end
 
   def paper_admin_tasks_for_user

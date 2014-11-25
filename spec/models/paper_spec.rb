@@ -130,7 +130,7 @@ describe Paper do
       context "when given a non-existant ID" do
         it "raises an exception" do
           expect {
-            Paper.find_by_doi_or_id(233)
+            Paper.find_by_doi_or_id('233')
           }.to raise_error "ActiveRecord::RecordNotFound"
         end
       end

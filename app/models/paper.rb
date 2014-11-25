@@ -44,7 +44,7 @@ class Paper < ActiveRecord::Base
     end
 
     def find_by_doi_or_id(doi_or_id)
-      doi_or_id.respond_to?(:integer?) ? find_by_id!(doi_or_id) : find_by_doi!(doi_or_id)
+      find_by_id(doi_or_id.to_i) || find_by_doi!(doi_or_id.to_s)
     end
   end
 

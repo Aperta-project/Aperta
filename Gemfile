@@ -60,7 +60,6 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
-gem 'spring'
 gem 'sunspot_rails'
 
 # NOTE: Using this fork because it uses a compatible omniauth version

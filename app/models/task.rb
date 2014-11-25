@@ -14,6 +14,8 @@ class Task < ActiveRecord::Base
   scope :incomplete,  -> { where(completed: false) }
   scope :admin,       -> { where(type: "StandardTasks::PaperAdminTask") }
   scope :on_journals, -> { where("journals.id" => journal_ids) }
+  scope :complete,    -> { where(completed: true) }
+  scope :incomplete,  -> { where(completed: false) }
 
   has_one :paper, through: :phase
   has_one :journal, through: :paper
@@ -40,6 +42,10 @@ class Task < ActiveRecord::Base
     joins("LEFT OUTER JOIN participations ON tasks.id = participations.task_id").where("participations.id" => nil)
   end
 
+  def self.admin_for_user(user)
+    admin.joins(paper: :assigned_users).
+      merge(PaperRole.admins.for_user(user))
+  end
 
   def self.for_role(role)
     where(role: role)

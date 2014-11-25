@@ -9,10 +9,14 @@ class UserFlowSerializer < ActiveModel::Serializer
   private
 
   def query
-    @query ||= FlowQuery.new(scoped_user, object.title)
+    @query ||= FlowQuery.new(scoped_user, role_flow)
   end
 
   def scoped_user
     scope.presence || options[:user]
+  end
+
+  def role_flow
+    object.is_a?(RoleFlow) ? object : object.role_flow
   end
 end

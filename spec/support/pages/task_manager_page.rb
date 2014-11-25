@@ -25,12 +25,6 @@ class TaskManagerPage < Page
     all(".card").size
   end
 
-  def task_titles
-    retry_stale_element do
-      all('.card').map(&:text)
-    end
-  end
-
   def tasks
     synchronize_content! "Add new card"
     all('.card').map { |el| TaskCard.new(el) }

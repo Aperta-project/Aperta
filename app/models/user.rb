@@ -73,12 +73,4 @@ class User < ActiveRecord::Base
       User.joins(user_roles: :role).where('roles.journal_id = ?', assigned_users_in_journal_id).uniq
     end
   end
-
-  private
-
-  def add_flows
-    FlowQuery::FLOW_TITLES.each do |title|
-      flows.create!(title: title)
-    end
-  end
 end

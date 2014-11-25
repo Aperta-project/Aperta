@@ -12,6 +12,8 @@ class Task < ActiveRecord::Base
   scope :completed,   -> { where(completed: true) }
   scope :metadata,    -> { where(type: metadata_types) }
   scope :incomplete,  -> { where(completed: false) }
+  scope :admin,       -> { where(type: "StandardTasks::PaperAdminTask") }
+  scope :on_journals, -> { where("journals.id" => journal_ids) }
 
   has_one :paper, through: :phase
   has_one :journal, through: :paper
@@ -37,6 +39,7 @@ class Task < ActiveRecord::Base
   def self.unassigned
     joins("LEFT OUTER JOIN participations ON tasks.id = participations.task_id").where("participations.id" => nil)
   end
+
 
   def self.for_role(role)
     where(role: role)

@@ -62,7 +62,6 @@ feature "Flow Manager", js: true, selenium: true do
 
   context "adding a column to the flow manager" do
     scenario "the column should appear on the page" do
-      RoleFlow.create_default_flows!(role)
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 

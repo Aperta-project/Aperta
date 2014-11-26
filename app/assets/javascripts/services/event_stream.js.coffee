@@ -31,8 +31,6 @@ ETahi.EventStream = Em.Object.extend
         description = "Event Stream processed from #{data.subscription_name}"
         Tahi.utils.debug(description, data)
         @msgResponse(data)
-      complete:
-        @play()
     Ember.$.ajax(params)
 
   pause: ->

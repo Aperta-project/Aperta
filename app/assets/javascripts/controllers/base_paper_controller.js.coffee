@@ -41,6 +41,4 @@ ETahi.BasePaperController = Ember.ObjectController.extend
 
   actions:
     export: (downloadType) ->
-      Ember.$.ajax
-        url: "/papers/#{@get('paper.id')}/export",
-        data: {format: downloadType.format}
+      ETahi.DocumentDownloadService.initiate(@get('id'), downloadType.format)

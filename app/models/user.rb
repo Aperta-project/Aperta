@@ -25,8 +25,6 @@ class User < ActiveRecord::Base
 
   attr_accessor :login
 
-  after_create :add_flows
-
   validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 255 }
   validates_format_of :username, with: /\A[A-Za-z\d_]+\z/, multiline: true
   validates :email, format: Devise.email_regexp

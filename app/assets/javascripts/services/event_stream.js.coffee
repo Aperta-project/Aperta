@@ -18,7 +18,8 @@ ETahi.EventStream = Em.Object.extend
   processMessages: ->
     unless @get('wait')
       if msg = @messageQueue.popObject()
-        # TODO: log the request to get the payload
+        description = "Requesting event stream payload"
+        Tahi.utils.debug(description, msg)
         @processMessage(msg)
     Ember.run.later(@, 'processMessages', [], interval)
 
@@ -27,7 +28,7 @@ ETahi.EventStream = Em.Object.extend
       url: msg.data
       method: 'GET'
       success: (data) =>
-        description = "Event Stream triggered from #{data.subscription_name}"
+        description = "Event Stream processed from #{data.subscription_name}"
         Tahi.utils.debug(description, data)
         @msgResponse(data)
         @play()
@@ -53,7 +54,7 @@ ETahi.EventStream = Em.Object.extend
         @set('eventSource', new EventSource(data.url))
         Ember.$(window).unload => @stop()
         @set('channels', data.channels)
-        Tahi.utils.debug("Event Stream: updated channels", data.channels)
+        Tahi.utils.debug("Event Stream: set subscription channels", data.channels)
         data.channels.forEach (eventName) =>
           @addEventListener(eventName)
         @play()

@@ -38,3 +38,9 @@ ETahi.BasePaperController = Ember.ObjectController.extend
   hasNoMetaDataTasks: (->
     Em.isEmpty(@get('assignedTasks')) && Em.isEmpty(@get('editorTasks')) && Em.isEmpty(@get('authorTasks'))
   ).property('assignedTasks.@each', 'editorTasks.@each', 'authorTasks.@each')
+
+  actions:
+    export: (downloadType) ->
+      Ember.$.ajax
+        url: "/papers/#{@get('paper.id')}/export",
+        data: {format: downloadType.format}

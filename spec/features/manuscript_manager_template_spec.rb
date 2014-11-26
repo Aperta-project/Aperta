@@ -52,5 +52,3 @@ feature "Manuscript Manager Templates", js: true, selenium: true do
     end
   end
 end
-
-

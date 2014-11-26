@@ -99,10 +99,6 @@
     return arrayComputed(dependentKey, options);
   }
 
-  ETahi.environment = "<%= Rails.env %>";
-  <% if Tahi::Application.config.try(:ihat_supported_formats) %>
-    ETahi.supportedDownloadFormats = JSON.parse('<%= Tahi::Application.config.ihat_supported_formats %>');
-  <% end %>
 })(window);
 
 $.extend($.easing, {

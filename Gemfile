@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.1.4"
+ruby "2.1.5"
 
 # Configuration
 group :development, :test, :performance do
@@ -60,7 +60,6 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
-gem 'spring'
 gem 'sunspot_rails'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
@@ -79,12 +78,14 @@ group :doc do
 end
 
 group :development do
-  # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs. Please add it in temporarily if you need to check for speed
+  # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs.
+  # Please add it in temporarily if you need to check for speed
   gem 'bullet'
   gem 'kss-rails'
   gem 'letter_opener'
   gem 'rubocop', require: false
   gem 'scss-lint', require: false
+  gem 'haml-lint', require: false
   gem 'overcommit', require: false
   gem 'reek', require: false
 end

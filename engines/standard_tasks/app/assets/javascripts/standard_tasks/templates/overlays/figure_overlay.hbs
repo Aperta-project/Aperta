@@ -24,12 +24,13 @@
     {{figure-thumbnail attachment=figure
                        action="changeStrikingImage"
                        saveAttachment="updateStrikingImage"
+                       destroyAttachment="destroyAttachment"
                        uploadFinished="uploadFinished"
                        uploadStarted="uploadStarted"
                        uploadProgress="uploadProgress"}}
   {{/each}}
 {{else}}
-  {{#each figure in figures}}
-    {{partial "figure_show_only"}}
+  {{#each attachment in figures}}
+    {{partial "attachment_thumbnail_locked"}}
   {{/each}}
 {{/if}}

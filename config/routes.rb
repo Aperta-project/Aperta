@@ -10,7 +10,7 @@ Tahi::Application.routes.draw do
   end
 
   require 'sidekiq/web'
-  authenticate :user, lambda { |u| u.site_admin? } do
+  authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
 
@@ -28,7 +28,6 @@ Tahi::Application.routes.draw do
   end
 
   resources :journals, only: [:index, :show]
-
 
   get '/flow_manager' => 'ember#index'
   get '/profile' => 'ember#index'
@@ -75,8 +74,6 @@ Tahi::Application.routes.draw do
       put :upload_logo, on: :member
     end
 
-
-
     resources :journal_users, only: [:index, :update] do
       get :reset, on: :member
     end
@@ -103,6 +100,8 @@ Tahi::Application.routes.draw do
       get :manage
       get :download
       put :heartbeat
+      get :export, to: 'paper_conversions#export'
+      get :status, to: 'paper_conversions#status'
       put :toggle_editable
       put :submit
     end

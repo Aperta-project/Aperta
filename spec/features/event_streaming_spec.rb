@@ -4,7 +4,7 @@ feature "Event streaming", js: true, selenium: true do
   let!(:author) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, journal: journal }
-  let(:upload_task) { paper.tasks_for_type(UploadManuscript::Task).first }
+  let(:upload_task) { paper.tasks_for_type(UploadManuscript::UploadManuscriptTask).first }
   let(:text_body) { { type: "text", value: "Hi there!" } }
 
   before do
@@ -19,16 +19,6 @@ feature "Event streaming", js: true, selenium: true do
     end
 
     let(:submission_phase) { paper.phases.find_by_name("Submission Data") }
-
-    scenario "creating a new message task" do
-      mt = submission_phase.tasks.new title: "Wicked Message Card", type: "MessageTask", body: text_body, role: "user"
-      mt.save!
-
-      phase = all('.column').detect {|p| p.find('h2').text == "Submission Data" }
-      within phase do
-        expect(page).to have_content "Wicked Message Card"
-      end
-    end
 
     scenario "creating a new task" do
       submission_phase.tasks.create title: "Wicked Awesome Card", type: "Task", body: text_body, role: "admin"
@@ -47,19 +37,6 @@ feature "Event streaming", js: true, selenium: true do
         expect(page).to_not have_content deleted_task.title
       end
     end
-  end
-
-  describe "message tasks" do
-    before do
-      submission_phase = paper.phases.find_by_name("Submission Data")
-      @mt = submission_phase.tasks.new title: "Wicked Message Card", type: "MessageTask", body: text_body, role: "user"
-      @mt.participants << author
-      @mt.save!
-      TaskManagerPage.visit paper
-      find('.card-content', text: "Wicked Message Card").click
-      expect(page).to have_css(".overlay-content")
-    end
-
   end
 
   describe "tasks" do

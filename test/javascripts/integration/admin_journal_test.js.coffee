@@ -42,29 +42,18 @@ test 'admin sees the complete DOI form', ->
   visit "/admin/journals/#{TahiTest.journalId}"
   .then ->
     ok find('.admin-doi-setting-section')
-    ok find('.admin-doi-setting-section .doi_publisher_prefix')
-    ok find('.admin-doi-setting-section .doi_journal_prefix')
-    ok find('.admin-doi-setting-section .last_doi_issued')
+    ok find('.admin-doi-setting-section .publisher-prefix')
+    ok find('.admin-doi-setting-section .journal-prefix')
+    ok find('.admin-doi-setting-section .article')
 
-test 'admin can set DOI doi_publisher_prefix, doi_journal_prefix, last_doi_issued', ->
-  PPREFIX = "PPREFIX"
-  JPREFIX = "JPREFIX"
-  last_doi_issued = "10000"
+test 'saving doi info will send a put request to the admin journal controller', ->
   adminPage = "/admin/journals/#{TahiTest.journalId}"
   visit adminPage
   .then ->
-    ok find('.admin-doi-setting-section .doi_publisher_prefix').val(PPREFIX)
-    ok find('.admin-doi-setting-section .doi_journal_prefix').val(JPREFIX)
-    ok find('.admin-doi-setting-section .last_doi_issued').val(last_doi_issued)
-    button = find('.admin-doi-setting-section button')
-    ok button
-    click button
+    click('.admin-doi-settings-edit-button')
+    fillIn('.admin-doi-setting-section .doi_publisher_prefix', 'PPREFIX')
+    fillIn('.admin-doi-setting-section .doi_journal_prefix', 'JPREFIX')
+    fillIn('.admin-doi-setting-section .last_doi_issued', '10000')
+    click('.admin-doi-setting-section button')
   andThen ->
-    url = "/admin/journals/#{TahiTest.journalId}"
-    ok _.findWhere(server.requests, { method: 'PUT', url })
-
-  visit adminPage
-  .then ->
-    equal(find('.admin-doi-setting-section .doi_publisher_prefix').val(), PPREFIX)
-    equal(find('.admin-doi-setting-section .doi_journal_prefix').val(), JPREFIX)
-    equal(find('.admin-doi-setting-section .last_doi_issued').val(), last_doi_issued)
+    ok _.findWhere(server.requests, { method: 'PUT', url: adminPage })

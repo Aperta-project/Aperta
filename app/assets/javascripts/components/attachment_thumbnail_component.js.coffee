@@ -51,10 +51,6 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend ETahi.SpinnerMixin,
 
     toggleEditState: (focusSelector)->
       @toggleProperty 'editState'
-      if focusSelector
-        Ember.run.later @, (->
-          @$(".#{focusSelector}").focus()
-        ), 150
 
     saveAttachment: ->
       @get('attachment').save()
@@ -65,7 +61,8 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend ETahi.SpinnerMixin,
     confirmDestroyAttachment: -> @set 'destroyState', true
 
     destroyAttachment: ->
-      this.$().fadeOut 250, => @get('attachment').destroyRecord()
+      @$().fadeOut 250, =>
+        @sendAction 'destroyAttachment', @get('attachment')
 
     uploadStarted: (data, fileUploadXHR) ->
       @sendAction('uploadStarted', data, fileUploadXHR)

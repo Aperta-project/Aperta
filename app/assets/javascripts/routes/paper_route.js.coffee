@@ -1,10 +1,13 @@
 ETahi.PaperRoute = Ember.Route.extend
   model: (params) ->
-    if params.publisher_prefix && params.suffix
+    if params.paper_id
+      @store.find('paper', params.paper_id)
+    else if params.publisher_prefix && params.suffix
       doi = params.publisher_prefix + '/' + params.suffix
-      console.log('PaperRoute.model', doi)
-      # does a GET to e.g. /papers?doi=publisher%2Fjournal.2
-      return @store.find('paper', { doi: doi })
+      @store.find('paper', doi)
 
-    console.log('normal', params)
-    @store.find('paper', params.paper_id)
+  afterModel: (paper, transition) ->
+    if paper.id
+      doi = paper.get("doi")
+      if doi
+        @transitionTo "paper.edit", doi

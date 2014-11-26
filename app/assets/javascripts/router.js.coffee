@@ -1,17 +1,17 @@
 # For more information see: http://emberjs.com/guides/routing/
 ETahi.Router.map ()->
   @route('flow_manager')
+
+  @resource 'paper', { path: '/papers/:publisher_prefix/:suffix' }, ->
+    @route('edit')
+    @route('manage')
+
   @resource 'paper', { path: '/papers/:paper_id' }, ->
     @route('edit')
     @route('manage')
 
-  # TODO how to make this more "authoritative"?
-  @resource 'paper', { path: '/papers/:publisher_prefix/:suffix'}, ->
-    @route('edit')
-    @route('manage')
-
-  @route('task', {path: '/papers/:paper_id/tasks/:task_id'})
-  @route('profile', {path: '/profile'})
+  @route('task', { path: '/papers/:paper_id/tasks/:task_id' })
+  @route('profile', { path: '/profile' })
 
   @resource('affiliation')
   @resource('author')

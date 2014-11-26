@@ -10,14 +10,7 @@ class PapersController < ApplicationController
 
   respond_to :json
 
-  def index
-    puts "XXXXXX index", params
-    render json: paper
-  end
-
   def show
-    puts "XXXXXX show", params
-
     respond_to do |format|
       format.html do
         render 'ember/index'
@@ -135,11 +128,8 @@ class PapersController < ApplicationController
   end
 
   def paper
-    if params[:doi]
-      @paper ||= Paper.find_by_doi(params[:doi])
-    elsif params[:id]
-      @paper ||= Paper.find(params[:id])
-    end
+    doi_or_id = params[:doi] || params[:id]
+    @paper ||= Paper.find_by_doi_or_id(doi_or_id)
   end
 
   def enforce_policy

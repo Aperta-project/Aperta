@@ -19,8 +19,8 @@ class EventStream
 
   def destroy
     channel = EventStreamConnection::SYSTEM_CHANNEL_NAME
-    guid = cached_key("public", destroyed_payload)
-    EventStreamConnection.notify(channel, guid)
+    cached_key("public", destroyed_payload)
+    EventStreamConnection.post_event(channel, destroyed_payload)
   end
 
   def destroy_for(user)

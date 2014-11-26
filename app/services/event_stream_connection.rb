@@ -43,4 +43,15 @@ class EventStreamConnection
       )
     end
   end
+
+  def self.post_event(channel, json)
+    return unless enabled?
+
+    Thread.new do
+      Net::HTTP.post_form(
+        URI.parse(update_url),
+        stream: channel, card: json, token: token
+      )
+    end
+  end
 end

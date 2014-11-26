@@ -20,16 +20,22 @@ ETahi.EventStream = Em.Object.extend
       if msg = @messageQueue.popObject()
         description = "Requesting event stream payload"
         Tahi.utils.debug(description, msg)
-        @processMessage(msg)
+        if (msg.type == "system")
+          @processSystemMessage(msg)
+        else
+          @processUserMessage(msg)
     Ember.run.later(@, 'processMessages', [], interval)
 
-  processMessage: (msg) ->
+  # payload is already present
+  processSystemMessage: (msg) ->
+    @msgResponse(JSON.parse(msg.data))
+
+  # get the payload from the server
+  processUserMessage: (msg) ->
     params =
       url: msg.data
       method: 'GET'
       success: (data) =>
-        description = "Event Stream processed from #{data.subscription_name}"
-        Tahi.utils.debug(description, data)
         @msgResponse(data)
     Ember.$.ajax(params)
 
@@ -60,6 +66,8 @@ ETahi.EventStream = Em.Object.extend
     Ember.$.ajax(params)
 
   msgResponse: (esData) ->
+    description = "Event Stream processed from #{esData.subscription_name}"
+    Tahi.utils.debug(description, esData)
     action = esData.action
     delete esData.action
     delete esData.subscription_name

@@ -44,7 +44,11 @@ class Paper < ActiveRecord::Base
     end
 
     def find_by_doi_or_id(doi_or_id)
-      find_by_id(doi_or_id.to_i) || find_by_doi(doi_or_id.to_s)
+      if self.id?(doi_or_id)
+        find_by_id(doi_or_id.to_i)
+      else
+        find_by_doi(doi_or_id.to_s)
+      end
     end
   end
 
@@ -130,5 +134,9 @@ class Paper < ActiveRecord::Base
   # TODO: move this method where it belongs
   def tasks_metadata
     tasks.metadata
+  end
+
+  def self.id?(param)
+    param.to_i.to_s.length == param.to_s.length
   end
 end

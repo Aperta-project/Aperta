@@ -15,10 +15,6 @@ test 'normalizeType denamespaces task types', ->
   equal result.qualified_type, 'Foo::BarTask', 'saves the original type as qualified_type'
   equal result.type, 'BarTask', 'strips the namespace off the type'
 
-test 'Combines the namespace with task if the name of the type is ::Task', ->
-  result = env.serializer.normalizeType({type: 'Foo::Task'})
-  equal result.type, 'FooTask', 'uses the namespace + the task for the name'
-
 test 'serializing a model that was originally namespaced will correctly re-namespace it', ->
   Ember.run ->
     task = env.store.createRecord('task', qualifiedType: "Foo::BarTask")

@@ -23,7 +23,7 @@ class FlowQuery
     scope = scope.assigned_to(user) if arr.include?(:assigned)
     scope = scope.admin_for_user(user) if arr.include?(:admin)
 
-    filters = arr.reject{|key| USER_FILTERS.include?(key)}.join(".")
+    filters = arr.reject { |key| USER_FILTERS.include?(key) }.join(".")
     scope = scope.send(filters) if filters.present?
     scope
   end

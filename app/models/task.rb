@@ -39,7 +39,7 @@ class Task < ActiveRecord::Base
   end
 
   def self.unassigned
-    joins("LEFT OUTER JOIN participations ON tasks.id = participations.task_id").where("participations.id" => nil)
+    includes(:participations).where(participations: { id: nil })
   end
 
   def self.admin_for_user(user)

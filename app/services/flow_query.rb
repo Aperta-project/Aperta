@@ -37,12 +37,6 @@ class FlowQuery
 
   private
 
-  def paper_admin_tasks_for_user
-    Task.admin.
-      joins(paper: :assigned_users).
-      merge(PaperRole.admins.for_user(user))
-  end
-
   def attached_journal_ids
     @attached_journal_ids ||= user.roles.pluck(:journal_id).uniq
   end

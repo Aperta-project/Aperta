@@ -120,18 +120,14 @@ describe Paper do
       end
 
       context "when given a non-existant doi" do
-        it "raises an exception" do
-          expect {
-            Paper.find_by_doi_or_id("bogus")
-          }.to raise_error "ActiveRecord::RecordNotFound"
+        it "returns nil" do
+          expect(Paper.find_by_doi_or_id("bogus")).to eq(nil)
         end
       end
 
       context "when given a non-existant ID" do
-        it "raises an exception" do
-          expect {
-            Paper.find_by_doi_or_id('233')
-          }.to raise_error "ActiveRecord::RecordNotFound"
+        it "returns nil" do
+          expect(Paper.find_by_doi_or_id('233')).to eq(nil)
         end
       end
 

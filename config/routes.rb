@@ -85,7 +85,7 @@ Tahi::Application.routes.draw do
 
   resources :ihat_jobs, only: :update
 
-  resources :papers, only: [:index, :create, :show, :edit, :update] do
+  resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create
     resource :manuscript_manager, only: :show
     resources :tasks, only: [:update, :create, :show, :destroy] do
@@ -104,7 +104,9 @@ Tahi::Application.routes.draw do
     end
   end
 
-  # get '/papers/*/*' => 'papers#show'
+  get '/papers/:id' => 'papers#show',
+      :constraints => { id: /\w+\/\w+\.\d+/ },
+      as: :paper_with_doi
 
   resources :comments, only: [:create, :show]
   resources :participations, only: [:create, :show, :destroy]

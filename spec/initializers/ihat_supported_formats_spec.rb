@@ -12,7 +12,7 @@ describe IhatSupportedFormats do
   describe ".call" do
     context "when the IHAT_URL is present" do
       it "makes a request to the URL and sets ihat_supported_formats" do
-        ENV['IHAT_URL'] = "https://api.github.com"
+        ENV['IHAT_URL'] = "http://localhost:3000"
         VCR.use_cassette('ihat_200_json') do
           IhatSupportedFormats.call
           expect(Tahi::Application.config.ihat_supported_formats).not_to eq 'null'

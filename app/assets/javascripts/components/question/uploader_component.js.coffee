@@ -14,3 +14,5 @@ ETahi.QuestionUploaderComponent = ETahi.QuestionComponent.extend
       @get('model').save().then =>
         @set('fileUpload', null)
 
+    destroyAttachment: (attachment) ->
+      @sendAction 'destroyAttachment', attachment

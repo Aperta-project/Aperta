@@ -21,11 +21,12 @@
 <div class="paper-figures">
   {{#if isEditable}}
     {{#each file in paper.supportingInformationFiles}}
-      {{attachment-thumbnail attachment=file}}
+      {{attachment-thumbnail attachment=file
+                             destroyAttachment="destroyAttachment"}}
     {{/each}}
   {{else}}
-    {{#each file in paper.supportingInformationFiles}}
-      {{partial "figure_show_only"}}
+    {{#each attachment in paper.supportingInformationFiles}}
+      {{partial "attachment_thumbnail_locked"}}
     {{/each}}
   {{/if}}
 </div>

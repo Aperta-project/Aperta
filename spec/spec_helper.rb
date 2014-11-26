@@ -48,8 +48,13 @@ VCR.configure do |config|
   config.allow_http_connections_when_no_cassette = false
   config.default_cassette_options = { record: :once }
   config.configure_rspec_metadata!
-  config.ignore_localhost = true # Makes Selenium work
   config.ignore_hosts 'codeclimate.com'
+  config.ignore_request do |request|
+    uri = URI(request.uri)
+    host = uri.host
+    port = uri.port
+    (host == 'localhost' || host == '127.0.0.1') && (port == 8981 || port == 31_337 || port == 7055)
+  end
 end
 
 RSpec.configure do |config|

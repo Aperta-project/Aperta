@@ -22,12 +22,6 @@ class Comment < ActiveRecord::Base
     self.body = ERB::Util.html_escape(body)
   end
 
-  # TODO Security? What do you think? Also, should we do this client side too?
-  def escape_body
-    self.body = ERB::Util.html_escape(body)
-  end
-
-
   private
 
   def notifier_payload

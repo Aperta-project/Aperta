@@ -1,2 +1,0 @@
-class MessageTaskSerializer < TaskSerializer
-end

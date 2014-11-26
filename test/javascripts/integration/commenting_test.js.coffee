@@ -1,4 +1,4 @@
-module 'Integration: MessageCards',
+module 'Integration: Commenting',
   teardown: -> ETahi.reset()
   setup: ->
     setupApp(integration: true)
@@ -23,21 +23,21 @@ module 'Integration: MessageCards',
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
 
-test 'A message card with more than 5 comments has the show all comments button', ->
+test 'A card with more than 5 comments has the show all comments button', ->
   expect(2)
   ef = ETahi.Factory
   r = _.range(10)
   comments = _.map(r, (n) ->
     ef.createRecord('Comment',
       commenter_id: fakeUser.id
-      task: {type: 'MessageTask', id: 1}
+      task: {type: 'Task', id: 1}
       body: "My comment-#{n}"
       created_at: new Date().toISOString()
     ))
 
-  [paper, task, records...] = ETahi.Setups.paperWithTask('MessageTask'
+  [paper, task, records...] = ETahi.Setups.paperWithTask('Task'
     id: 1
-    title: "Message Time"
+    title: "Commenting Time"
     participant_ids: [fakeUser.id]
     comment_ids: _.pluck(comments, 'id')
   )
@@ -54,21 +54,21 @@ test 'A message card with more than 5 comments has the show all comments button'
     ok(find('.load-all-comments').length == 1)
     equal(find('.message-comment').length, 5, 'Only 5 messages displayed')
 
-test 'A message card with less than 5 comments doesnt have the show all comments button', ->
+test 'A card with less than 5 comments doesnt have the show all comments button', ->
   expect(2)
   ef = ETahi.Factory
   r = _.range(3)
   comments = _.map(r, (n) ->
    ef.createRecord('Comment',
     commenter_id: fakeUser.id
-    task: {type: 'MessageTask', id: 1}
+    task: {type: 'Task', id: 1}
     body: "My comment-#{n}"
     created_at: new Date().toISOString()
   ))
 
-  [paper, task, records...] = ETahi.Setups.paperWithTask('MessageTask'
+  [paper, task, records...] = ETahi.Setups.paperWithTask('Task'
     id: 1
-    title: "Message Time"
+    title: "Commenting Time"
     participant_ids: [fakeUser.id]
     comment_ids: _.pluck(comments, 'id')
   )
@@ -97,7 +97,7 @@ test 'A message card with a commentLook shows up as unread and updates its comme
 
   comment = ef.createRecord('Comment',
     commenter_id: commenter.id
-    task: {type: 'MessageTask', id: 1}
+    task: {type: 'Task', id: 1}
     body: "Unread comment"
     created_at: new Date().toISOString()
   )
@@ -106,8 +106,8 @@ test 'A message card with a commentLook shows up as unread and updates its comme
   ef.setForeignKey(fakeUser, commentLook, {inverse: 'user'})
   comment.comment_look_ids = [commentLook.id]
 
-  [paper, task, records...] = ETahi.Setups.paperWithTask('MessageTask'
-    title: "Message Time"
+  [paper, task, records...] = ETahi.Setups.paperWithTask('Task'
+    title: "Commenting Time"
     participant_ids: [commenter.id, fakeUser.id]
     comment_ids: [comment.id]
   )
@@ -135,13 +135,13 @@ test 'Showing all comments shows them.', ->
   comments = _.map(r, (n) ->
    ef.createRecord('Comment',
     commenter_id: fakeUser.id
-    task: {type: 'MessageTask', id: 1}
+    task: {type: 'Task', id: 1}
     body: "My comment-#{n}"
   ))
 
-  [paper, task, records...] = ETahi.Setups.paperWithTask('MessageTask'
+  [paper, task, records...] = ETahi.Setups.paperWithTask('Task'
     id: 1
-    title: "Message Time"
+    title: "Commenting Time"
     participant_ids: [fakeUser.id]
     comment_ids: _.pluck(comments, 'id')
   )
@@ -171,7 +171,7 @@ test 'Unread comments do not stay unread when showing all comments if they were 
   comments = _.map(r, (n) ->
    ef.createRecord('Comment',
     commenter_id: commenter.id
-    task: {type: 'MessageTask', id: 1}
+    task: {type: 'Task', id: 1}
     body: "My comment-#{n}"
     # These can't all be created at the exact same time
     created_at: new Date(Date.now() + n).toISOString()
@@ -186,9 +186,9 @@ test 'Unread comments do not stay unread when showing all comments if they were 
   ef.setForeignKey(fakeUser, commentLook, {inverse: 'user'})
   recentComment.comment_look_ids = [commentLook.id]
 
-  [paper, task, records...] = ETahi.Setups.paperWithTask('MessageTask'
+  [paper, task, records...] = ETahi.Setups.paperWithTask('Task'
     id: 1
-    title: "Message Time"
+    title: "Commenting Time"
     participant_ids: [commenter.id, fakeUser.id]
     comment_ids: _.pluck(comments, 'id')
   )

@@ -1,5 +1,5 @@
 module UploadManuscript
-  class Task < ::Task
+  class UploadManuscriptTask < ::Task
     include ::MetadataTask
 
     register_task default_title: 'Upload Manuscript', default_role: 'author'

@@ -22,3 +22,6 @@ ETahi.FigureOverlayController = ETahi.TaskController.extend ETahi.FileUploadMixi
 
     updateStrikingImage: ->
       @get('paper').save()
+
+    destroyAttachment: (attachment) ->
+      attachment.destroyRecord()

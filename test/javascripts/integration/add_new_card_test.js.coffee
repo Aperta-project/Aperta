@@ -1,4 +1,4 @@
-module 'Integration: adding an adhoc card',
+module 'Integration: adding a new card',
   teardown: -> ETahi.reset()
   setup: ->
     setupApp integration: true
@@ -21,7 +21,7 @@ module 'Integration: adding an adhoc card',
       task:
         id: 2
         title: "Upload Manuscript"
-        type: "UploadManuscript::Task"
+        type: "UploadManuscript::UploadManuscriptTask"
         phase_id: 1
         paper_id: 1
         lite_paper_id: 1

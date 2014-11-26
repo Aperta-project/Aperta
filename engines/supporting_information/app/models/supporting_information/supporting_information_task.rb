@@ -1,5 +1,5 @@
 module SupportingInformation
-  class Task < ::Task
+  class SupportingInformationTask < ::Task
     include ::MetadataTask
 
     register_task default_title: 'Supporting Info', default_role: 'author'

@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Paper do
   let(:paper) { FactoryGirl.build :paper }
+  let(:doi) { 'pumpkin/doughnut.888888' }
 
   describe "initialization" do
     describe "paper_type" do
@@ -102,14 +103,27 @@ describe Paper do
       end
     end
 
+    describe ".id?" do
+
+      context "when given an id" do
+        it "returns true" do
+          expect(described_class.id?(12)).to eq true
+        end
+      end
+
+      context "when given a doi" do
+        it "returns false" do
+          expect(described_class.id?(doi)).to eq false
+        end
+      end
+    end
+
     describe ".find_by_doi_or_id" do
-      let(:doi) { 'pumpkin/doughnut.888888' }
       let!(:paper_with_doi) { create :paper, doi: doi }
 
       context "when given a paper id" do
         it "returns a paper" do
           expect(Paper.find_by_doi_or_id(doi)).to eq paper_with_doi
-
         end
       end
 

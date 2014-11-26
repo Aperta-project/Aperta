@@ -128,7 +128,7 @@ class PapersController < ApplicationController
   end
 
   def paper
-    doi_or_id = params[:doi] || params[:id]
+    doi_or_id = params[:id] || params[:doi]
     @paper ||= Paper.find_by_doi_or_id(doi_or_id)
   end
 

@@ -7,7 +7,7 @@ module JournalServices
         raise "No task types configured for journal #{journal.id}" unless task_types.present?
 
         phase = mmt.phase_templates.create! name: "Submission Data"
-        make_tasks phase, task_types, StandardTasks::FigureTask, SupportingInformation::SupportingInformationTask, PlosAuthors::PlosAuthorsTask, UploadManuscript::Task
+        make_tasks phase, task_types, StandardTasks::FigureTask, SupportingInformation::SupportingInformationTask, PlosAuthors::PlosAuthorsTask, UploadManuscript::UploadManuscriptTask
 
         phase = mmt.phase_templates.create! name: "Assign Editor"
         make_tasks phase, task_types, StandardTasks::PaperEditorTask, StandardTasks::TechCheckTask, StandardTasks::PaperAdminTask

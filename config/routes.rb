@@ -41,6 +41,9 @@ Tahi::Application.routes.draw do
   get 'filtered_users/reviewers/:journal_id' => 'filtered_users#reviewers'
 
   get '/user_flows/authorization' => 'user_flows#authorization'
+
+  resources :streams, only: [:show]
+
   resources :user_flows
 
   resources :role_flows, only: [:show, :create, :update, :destroy]

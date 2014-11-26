@@ -18,15 +18,20 @@ ETahi.EventStream = Em.Object.extend
   processMessages: ->
     unless @get('wait')
       if msg = @messageQueue.popObject()
-        msg.parsedData = JSON.parse(msg.data)
-        if @shouldProcessMessage(msg)
-          description = "Event Stream (#{msg.type}): #{msg.parsedData.subscription_name}"
-          Tahi.utils.debug(description, msg)
-          @msgResponse(msg.parsedData)
+        # TODO: log the request to get the payload
+        @processMessage(msg)
     Ember.run.later(@, 'processMessages', [], interval)
 
-  shouldProcessMessage: (msg) ->
-    @get('channels').contains(msg.type) or msg.parsedData.action == 'destroyed'
+  processMessage: (msg) ->
+    params =
+      url: msg.data
+      method: 'GET'
+      success: (data) =>
+        description = "Event Stream triggered from #{data.subscription_name}"
+        Tahi.utils.debug(description, data)
+        @msgResponse(data)
+        @play()
+    Ember.$.ajax(params)
 
   pause: ->
     @set('wait', true)

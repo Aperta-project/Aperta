@@ -12,23 +12,35 @@ class EventStream
     Accessibility.new(record).users.each do |user|
       channel = EventStreamConnection.channel_name(User, user.id)
       payload = payload_for(user)
-      EventStreamConnection.post_event(channel, payload)
+      guid = cached_key(user.id, payload)
+      EventStreamConnection.notify(channel, guid)
     end
   end
 
   def destroy
     channel = EventStreamConnection::SYSTEM_CHANNEL_NAME
-    EventStreamConnection.post_event(channel, destroyed_payload)
+    guid = cached_key("public", destroyed_payload)
+    EventStreamConnection.notify(channel, guid)
   end
 
   def destroy_for(user)
     if Accessibility.new(record).disconnected?(user)
       channel = EventStreamConnection.channel_name(User, user.id)
-      EventStreamConnection.post_event(channel, destroyed_payload)
+      guid = cached_key(user.id, destroyed_payload)
+      EventStreamConnection.notify(channel, guid)
     end
   end
 
   private
+
+  def cached_key(scoped_id, payload)
+    Sidekiq.redis do |redis|
+      guid = SecureRandom.uuid
+      key = "event_stream::#{scoped_id}::#{guid}"
+      redis.set(key, payload)
+      guid
+    end
+  end
 
   def payload_for(user)
     serializer = record.event_stream_serializer(user)

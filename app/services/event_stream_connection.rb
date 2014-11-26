@@ -33,12 +33,13 @@ class EventStreamConnection
     ENV["EVENT_STREAM_ENABLED"] != "false"
   end
 
-  def self.post_event(channel, json)
+  def self.notify(channel, payload_guid)
     return unless enabled?
+
     Thread.new do
       Net::HTTP.post_form(
         URI.parse(update_url),
-        stream: channel, card: json, token: token
+        stream: channel, card: "/streams/#{payload_guid}", token: token
       )
     end
   end

@@ -9,6 +9,13 @@ GIT
       omniauth (~> 1.2.0)
 
 GIT
+  remote: git://github.com/dblock/rspec-rerun.git
+  revision: 6b20e8598a98f9b220f4bb20331c71b7ef954116
+  specs:
+    rspec-rerun (0.2.1)
+      rspec
+
+GIT
   remote: git://github.com/modeset/teaspoon.git
   revision: 65a399887b36717bd9006a03502cec2c5d3f9790
   specs:
@@ -421,6 +428,9 @@ GEM
     rspec-its (1.0.1)
       rspec-core (>= 2.99.0.beta1)
       rspec-expectations (>= 2.99.0.beta1)
+    rspec-legacy_formatters (1.0.0)
+      rspec-core (>= 3.0.0.beta2)
+      rspec-support (>= 3.0.0.beta2)
     rspec-mocks (3.0.4)
       rspec-support (~> 3.0.0)
     rspec-rails (3.0.2)
@@ -600,7 +610,9 @@ DEPENDENCIES
   rspec-collection_matchers
   rspec-instafail
   rspec-its
+  rspec-legacy_formatters
   rspec-rails
+  rspec-rerun!
   rubocop
   rubyzip
   sass-rails (~> 4.0.4)

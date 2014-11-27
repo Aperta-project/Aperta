@@ -1,6 +1,7 @@
 class PaperConverter
   def self.export(paper, format, current_user)
     epub = EpubConverter.new(paper, current_user).epub_stream
+    epub.rewind
     payload = Faraday::UploadIO.new(epub, "application/epub+zip")
     payload_body = { export_format: format, epub: payload }
     response = connection.post('/jobs', payload_body)

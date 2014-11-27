@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.github.com/
+    uri: http://localhost:3000/
     body:
       encoding: US-ASCII
       string: ''
@@ -18,55 +18,35 @@ http_interactions:
       code: 200
       message: OK
     headers:
-      Server:
-      - GitHub.com
-      Date:
-      - Tue, 28 Oct 2014 00:08:26 GMT
-      Content-Type:
-      - application/json; charset=utf-8
-      Transfer-Encoding:
-      - chunked
-      Status:
-      - 200 OK
-      X-Ratelimit-Limit:
-      - '60'
-      X-Ratelimit-Remaining:
-      - '56'
-      X-Ratelimit-Reset:
-      - '1414458355'
-      Cache-Control:
-      - public, max-age=60, s-maxage=60
-      Etag:
-      - '"ac2df149d98a36e7618793118dc0c752"'
-      Vary:
-      - Accept
-      - Accept-Encoding
-      X-Github-Media-Type:
-      - github.v3
+      X-Frame-Options:
+      - SAMEORIGIN
       X-Xss-Protection:
       - 1; mode=block
-      X-Frame-Options:
-      - deny
-      Content-Security-Policy:
-      - default-src 'none'
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Expose-Headers:
-      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
-        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
-      Access-Control-Allow-Origin:
-      - "*"
-      X-Github-Request-Id:
-      - C774489B:2E0E:5BEF3B7:544EDE7A
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubdomains; preload
       X-Content-Type-Options:
       - nosniff
-      X-Served-By:
-      - 132026e9262a0093e437f99db5f1e499
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - '"bc0b296d60879e4fbef7a2f85a5f0e6a"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - request_method=GET; path=/
+      X-Request-Id:
+      - b3606ce7-7094-4f81-8785-760fc41ae9f5
+      X-Runtime:
+      - '0.498832'
+      Connection:
+      - close
+      Server:
+      - thin 1.6.2 codename Doc Brown
     body:
       encoding: UTF-8
-      string: '{"current_user_url":"https://api.github.com/user","authorizations_url":"https://api.github.com/authorizations","code_search_url":"https://api.github.com/search/code?q={query}{&page,per_page,sort,order}","emails_url":"https://api.github.com/user/emails","emojis_url":"https://api.github.com/emojis","events_url":"https://api.github.com/events","feeds_url":"https://api.github.com/feeds","following_url":"https://api.github.com/user/following{/target}","gists_url":"https://api.github.com/gists{/gist_id}","hub_url":"https://api.github.com/hub","issue_search_url":"https://api.github.com/search/issues?q={query}{&page,per_page,sort,order}","issues_url":"https://api.github.com/issues","keys_url":"https://api.github.com/user/keys","notifications_url":"https://api.github.com/notifications","organization_repositories_url":"https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}","organization_url":"https://api.github.com/orgs/{org}","public_gists_url":"https://api.github.com/gists/public","rate_limit_url":"https://api.github.com/rate_limit","repository_url":"https://api.github.com/repos/{owner}/{repo}","repository_search_url":"https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}","current_user_repositories_url":"https://api.github.com/user/repos{?type,page,per_page,sort}","starred_url":"https://api.github.com/user/starred{/owner}{/repo}","starred_gists_url":"https://api.github.com/gists/starred","team_url":"https://api.github.com/teams","user_url":"https://api.github.com/users/{user}","user_organizations_url":"https://api.github.com/user/orgs","user_repositories_url":"https://api.github.com/users/{user}/repos{?type,page,per_page,sort}","user_search_url":"https://api.github.com/search/users?q={query}{&page,per_page,sort,order}"}'
+      string: '{"import_formats":[{"format":"docx","url":"https://tahi.example.com/import/docx","description":"This
+        converts from HTML to Office Open XML"},{"format":"odt","url":"https://tahi.example.com/import/odt","description":"This
+        converts from HTML to ODT"}],"export_formats":[{"format":"docx","url":"https://tahi.example.com/export/docx","description":"This
+        converts from docx to HTML"},{"format":"latex","url":"https://tahi.example.com/export/latex","description":"This
+        converts from latex to HTML"}]}'
     http_version: 
-  recorded_at: Tue, 28 Oct 2014 00:08:26 GMT
+  recorded_at: Wed, 26 Nov 2014 23:03:02 GMT
 recorded_with: VCR 2.9.2

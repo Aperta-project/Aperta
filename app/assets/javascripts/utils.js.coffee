@@ -6,6 +6,9 @@ Tahi.utils =
       camelized[Ember.String.camelize(key)] = object[key]
     camelized
 
+  windowLocation: (url) ->
+    window.location = url
+
   windowHistory: ->
     window.history
 

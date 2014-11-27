@@ -84,7 +84,7 @@ class JournalPage < Page
   end
 
   def pdf_css_saved?
-    find('.pdf-css.save-status').text == "Saved"
+    has_css?('.pdf-css.save-status', text: "Saved")
   end
 
   def update_manuscript_css css
@@ -100,7 +100,7 @@ class JournalPage < Page
   end
 
   def manuscript_css_saved?
-    find('.manuscript-css.save-status').text == 'Saved'
+    has_css?('.manuscript-css.save-status', text: "Saved")
   end
 
   def search_user query

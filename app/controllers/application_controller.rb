@@ -43,10 +43,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def add_user_info_to_bugsnag(notif)
+  def add_user_info_to_bugsnag(notification)
     return unless current_user.present?
 
-    notif.user = {
+    notification.user = {
       id: current_user.id,
       username: current_user.username,
       name: current_user.full_name,

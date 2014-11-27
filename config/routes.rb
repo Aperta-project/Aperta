@@ -98,7 +98,7 @@ Tahi::Application.routes.draw do
       get :download
       put :heartbeat
       get :export, to: 'paper_conversions#export'
-      get :status, to: 'paper_conversions#status'
+      get "/status/:id", to: 'paper_conversions#status'
       put :toggle_editable
       put :submit
     end

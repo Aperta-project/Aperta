@@ -91,25 +91,27 @@ group :development do
 end
 
 group :development, :test, :performance do
-  gem 'factory_girl_rails'
-  gem 'progressbar'
-  gem 'rspec-rails'
-  gem 'rspec-its'
-  gem 'rspec-collection_matchers'
-  gem 'rspec-instafail'
   gem 'capybara'
-  gem 'selenium-webdriver'
   gem 'capybara-webkit'
-  gem 'launchy'
   gem 'database_cleaner'
-  gem 'teaspoon', github: 'modeset/teaspoon'
-  gem 'qunit-rails'
-  gem 'phantomjs'
-  gem 'pry-byebug'
-  gem 'pry-stack_explorer'
-  gem 'pry-rescue'
+  gem 'factory_girl_rails'
   gem 'foreman'
+  gem 'launchy'
+  gem 'phantomjs'
+  gem 'progressbar'
+  gem 'pry-byebug'
+  gem 'pry-rescue'
+  gem 'pry-stack_explorer'
+  gem 'qunit-rails'
+  gem 'rspec-collection_matchers'
+  gem 'rspec-its'
+  gem 'rspec-instafail'
+  gem 'rspec-rails'
+  gem 'rspec-legacy_formatters'
+  gem 'rspec-rerun', github: "dblock/rspec-rerun"
+  gem 'selenium-webdriver'
   gem 'sunspot_solr'
+  gem 'teaspoon', github: 'modeset/teaspoon'
 end
 
 group :test do

@@ -19,7 +19,7 @@ feature "Manuscript CSS", js: true do
 
   context "when the paper is submitted" do
     scenario "CSS is applied when viewing a paper" do
-      paper_page = PaperPage.visit submitted_paper
+      paper_page = EditPaperPage.visit submitted_paper
       expect(paper_page.css).to match /magenta/
     end
   end

@@ -1,3 +1,3 @@
 ETahi.SupportingInformationTask = ETahi.Task.extend
-  qualifiedType: "SupportingInformation::Task"
+  qualifiedType: "SupportingInformation::SupportingInformationTask"
   isMetadataTask: true

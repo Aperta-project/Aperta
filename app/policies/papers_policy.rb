@@ -5,10 +5,6 @@ class PapersPolicy < ApplicationPolicy
     paper.assigned_users
   end
 
-  def index?
-    can_view_paper?
-  end
-
   def show?
     can_view_paper?
   end

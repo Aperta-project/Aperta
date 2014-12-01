@@ -1,7 +1,7 @@
 class FiguresController < ApplicationController
   respond_to :json
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:create]
+  before_action :enforce_policy
 
   def create
     figure.update_attributes(status: "processing")

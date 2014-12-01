@@ -42,7 +42,7 @@ staging:
   adapter: postgresql
   encoding: unicode
   database: tahi_staging
-  pool: 48
+  pool: 18
   password:
 
 production:

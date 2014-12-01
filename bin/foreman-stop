@@ -1,2 +1,7 @@
 #!/bin/sh
-kill $(ps aux | grep -E 'sidekiq|puma|go|solr' | grep -v grep | awk '{print $2}')
+RUNNING_PROCESSES=$(ps aux | grep -E 'sidekiq|puma|go|solr' | grep -v grep | awk '{print $2}')
+if [[ -n $RUNNING_PROCESSES ]]
+then
+  kill $RUNNING_PROCESSES
+fi
+

@@ -20,10 +20,4 @@ test:
     port: 8981
     log_level: WARNING
     path: /solr/test
-
-staging:
-  solr:
-    hostname: localhost
-    port: 8983
-    log_level: WARNING
-    path: /solr/staging
+    

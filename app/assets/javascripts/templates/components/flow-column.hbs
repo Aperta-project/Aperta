@@ -1,17 +1,22 @@
-<div class="column-header">
+<div {{bind-attr class=":column-header editable:active"}}>
   {{#if editable}}
-    {{select-2-single value=""
-               class="flow-title-select2"
-               name="flow_title"
-               selectionSelected="setFlowTitle"
-               selectedData=formattedFlowTitle
-               minimumInputLength=0
-               source=possibleFlowNames}}
+    {{content-editable tagName="h2"
+                       class="column-title"
+                       value=flow.title
+                       plaintext="true"
+                       preventEnterKey="true"}}
+
+    <div class="column-title-update-buttons">
+      <button class="column-header-update-cancel btn-link" {{action "cancel"}}>cancel</button>
+      <button class="column-header-update-save button-primary button--green" {{action "save"}}>Save</button>
+    </div>
   {{else}}
-    <h2 class="column-title">{{flow.title}}</h2>
+    <h2 class="column-title" {{action "toggleEdit"}}>{{flow.title}}</h2>
   {{/if}}
-  <div class="remove-column glyphicon glyphicon-remove" {{action 'removeFlow' flow}}></div>
+  <div class="edit-column-title glyphicon glyphicon-pencil" {{action "toggleEdit"}}></div>
+  <div class="remove-column glyphicon glyphicon-remove" {{action "removeFlow"}}></div>
 </div>
+
 {{progress-spinner visible=flow.isSaving}}
 
 <div class="column-content">
@@ -20,7 +25,7 @@
       {{flow-task-group flow=flow
                         litePaper=litePaper
                         commentLooks=commentLooks
-                        viewCard='viewCard'}}
+                        viewCard="viewCard"}}
     {{/each}}
   </ul>
   {{#unless flow.litePapers}}

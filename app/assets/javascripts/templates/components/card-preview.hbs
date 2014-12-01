@@ -2,7 +2,7 @@
   {{badge unreadCommentsCount "unread-comments-count"}}
   <div class="card-completed-icon"></div>
   {{task.title}}
-  {{#if canRemoveCard }}
+  {{#if canRemoveCard}}
     <span {{action "promptDelete" task bubbles=false}}
       class="card-remove"
       data-toggle="tooltip"

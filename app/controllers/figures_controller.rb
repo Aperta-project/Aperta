@@ -6,7 +6,7 @@ class FiguresController < ApplicationController
   def create
     figure.update_attributes(status: "processing")
     DownloadFigureWorker.perform_async(figure.id, params[:url])
-    render json: figure
+    respond_with figure
   end
 
   def update

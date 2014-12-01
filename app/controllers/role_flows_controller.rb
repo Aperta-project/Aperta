@@ -31,7 +31,7 @@ class RoleFlowsController < ApplicationController
 
   def role_flow
     @role_flow ||= begin
-      if(params[:id].present?)
+      if params[:id].present?
         RoleFlow.find(params[:id])
       else
         role.flows.new(flow_params)

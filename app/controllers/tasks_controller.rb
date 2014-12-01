@@ -11,7 +11,7 @@ class TasksController < ApplicationController
   def show
     respond_to do |f|
       f.json { render json: task }
-      f.html { render 'ember/index' , layout: 'ember'}
+      f.html { render 'ember/index', layout: 'ember'}
     end
   end
 
@@ -45,14 +45,13 @@ class TasksController < ApplicationController
 
   private
 
-
   def paper
     @paper ||= Paper.find(params[:paper_id])
   end
 
   def task
     @task ||= begin
-      if(params[:id].present?)
+      if params[:id].present?
         Task.find(params[:id])
       else
         task_klass = TaskType.constantize!(params[:task][:type])

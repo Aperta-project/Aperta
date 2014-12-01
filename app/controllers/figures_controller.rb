@@ -33,7 +33,7 @@ class FiguresController < ApplicationController
 
   def figure
     @figure ||= begin
-      if(params[:id].present?)
+      if params[:id].present?
         Figure.find(params[:id])
       else
         paper.figures.new

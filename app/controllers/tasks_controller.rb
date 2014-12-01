@@ -1,53 +1,37 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:create]
-  before_action :enforce_policy_on_create, only: [:create]
+  before_action :enforce_policy
+
+  before_action :unmunge_empty_arrays, only: [:update]
+
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
-  def update
-    task = Task.find(params[:id])
-    if task
-      unmunge_empty_arrays!(:task, task.array_attributes)
-
-      task.assign_attributes task_params(task)
-      task.save!
-
-      render task.update_responder.new(task, view_context).response
-    else
-      head :forbidden
+  def show
+    respond_to do |f|
+      f.json { render json: task }
+      f.html { render 'ember/index' , layout: 'ember'}
     end
   end
 
-  def index
-    respond_with Task.find(params[:ids])
-  end
-
   def create
-    task = build_task
-    if task.persisted?
+    if task.save
       respond_with task, location: task_url(task)
     else
       render json: { errors: task.errors }, status: :unprocessable_entity
     end
   end
 
-  def show
-    @task = Task.find(params[:id])
-    respond_to do |f|
-      f.json { render json: @task }
-      f.html { render 'ember/index' , layout: 'ember'}
-    end
+  def update
+    task.assign_attributes(task_params(task.class))
+    task.save!
+    render task.update_responder.new(task, view_context).response
   end
 
   def destroy
-    task_temp = Task.find(params[:id])
-    task = PaperQuery.new(task_temp.paper, current_user).tasks_for_paper(params[:id]).first
-    if task
-      task.destroy
-      respond_with task
-    end
+    task.destroy
+    respond_with task
   end
 
   def send_message
@@ -61,8 +45,28 @@ class TasksController < ApplicationController
 
   private
 
-  def task_params(task)
-    attributes = task.permitted_attributes
+
+  def paper
+    @paper ||= Paper.find(params[:paper_id])
+  end
+
+  def task
+    @task ||= begin
+      if(params[:id].present?)
+        Task.find(params[:id])
+      else
+        task_klass = TaskType.constantize!(params[:task][:type])
+        TaskFactory.build(task_klass, task_params(task_klass))
+      end
+    end
+  end
+
+  def unmunge_empty_arrays
+    unmunge_empty_arrays!(:task, task.array_attributes)
+  end
+
+  def task_params(task_klass)
+    attributes = task_klass.permitted_attributes
     params.require(:task).permit(*attributes).tap do |whitelisted|
       whitelisted[:body] = params[:task][:body] || []
     end
@@ -76,24 +80,11 @@ class TasksController < ApplicationController
     end
   end
 
-  def build_task
-    task_klass = TaskType.constantize!(params[:task][:type])
-    sanitized_params = task_params(task_klass.new)
-    TaskFactory.build_task(task_klass, sanitized_params)
-  end
-
   def render_404
     head 404
   end
 
   def enforce_policy
-    authorize_action!(task: Task.find(params[:id]))
-  end
-
-  def enforce_policy_on_create
-    return unless JournalTaskType.find_by!(kind: params[:task][:type])
-    task_klass = TaskType.constantize!(params[:task][:type])
-    sanitized_params = task_params(task_klass.new)
-    authorize_action!(task: task_klass.new(sanitized_params))
+    authorize_action!(task: task)
   end
 end

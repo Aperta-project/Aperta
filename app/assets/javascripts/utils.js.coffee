@@ -6,6 +6,9 @@ Tahi.utils =
       camelized[Ember.String.camelize(key)] = object[key]
     camelized
 
+  windowLocation: (url) ->
+    window.location = url
+
   windowHistory: ->
     window.history
 
@@ -44,13 +47,6 @@ Tahi.utils =
 
   deNamespaceTaskType: (typeString) ->
     taskTypeNames = typeString.split '::'
-
     return typeString if taskTypeNames.length is 1
-
-    if taskTypeNames[1] is 'Task'
-      taskTypeNames.join ''
-    else if taskTypeNames[0] isnt 'Task'
-      taskTypeNames[1]
-    else
-      throw new Error("The task type: '#{typeString}' is not qualified.")
-
+    return taskTypeNames[1] if taskTypeNames[0] isnt 'Task'
+    throw new Error("The task type: '#{typeString}' is not qualified.")

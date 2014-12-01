@@ -1,5 +1,4 @@
 .comment-board {
-  margin: 25px 0;
   .button-secondary {
     @include button-secondary-modifier($tahi-green, $tahi-green-light, $tahi-green-dark);
   }

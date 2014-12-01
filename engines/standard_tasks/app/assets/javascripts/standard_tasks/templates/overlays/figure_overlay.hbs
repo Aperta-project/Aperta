@@ -1,7 +1,7 @@
 <h1>{{model.title}}</h1>
 
 {{#if isEditable}}
-  <span class="button-secondary button--green fileinput-button">
+  <span class="button-primary button--green fileinput-button">
     <span>Add new Figures</span>
     {{file-uploader id="figure_attachment"
                     accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
@@ -24,12 +24,13 @@
     {{figure-thumbnail attachment=figure
                        action="changeStrikingImage"
                        saveAttachment="updateStrikingImage"
+                       destroyAttachment="destroyAttachment"
                        uploadFinished="uploadFinished"
                        uploadStarted="uploadStarted"
                        uploadProgress="uploadProgress"}}
   {{/each}}
 {{else}}
-  {{#each figure in figures}}
-    {{partial "figure_show_only"}}
+  {{#each attachment in figures}}
+    {{partial "attachment_thumbnail_locked"}}
   {{/each}}
 {{/if}}

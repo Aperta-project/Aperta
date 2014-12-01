@@ -13,14 +13,6 @@ describe SerializeIdsWithPolymorphism do
       end
     end
 
-    context "when the prefix is the task type" do
-      let(:task_type) { "SupportingInformation::Task" }
-
-      it "returns the task type with 'Task' concatenated to the end" do
-        expect(result).to eq([{ id: task[0].id, type: "SupportingInformationTask" }])
-      end
-    end
-
     context "when the prefix is a task bundle" do
       let(:task_type) { "StandardTasks::FigureTask" }
 

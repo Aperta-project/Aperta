@@ -1,6 +1,5 @@
 // Description goes here
 //
-// .card--message   - Use if Task is message type
 // .card--completed - Use if Task is completed
 //
 // Styleguide UI.Card
@@ -65,21 +64,6 @@
     left: -5px;
     padding: 1px 5px;
     background: #d00;
-  }
-}
-
-
-// .card modifier:
-.card--message {
-  .card-content {
-    color: #3f1587;
-    background-color: $tahi-purple-light;
-  }
-
-  &:focus .card-content,
-  &:hover .card-content {
-    color: #fff;
-    background-color: $tahi-purple;
   }
 }
 

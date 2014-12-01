@@ -60,7 +60,6 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
-gem 'spring'
 gem 'sunspot_rails'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
@@ -86,6 +85,7 @@ group :development do
   gem 'letter_opener'
   gem 'rubocop', require: false
   gem 'scss-lint', require: false
+  gem 'haml-lint', require: false
   gem 'overcommit', require: false
   gem 'reek', require: false
 end

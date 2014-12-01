@@ -115,12 +115,14 @@ namespace :data do
       end
     end
 
-    desc "Bulk create message tasks"
-    task :message_tasks => [:setup, :journals, :users, :active_manuscripts] do
-      desired_conversations = 50_000
-      progress("conversations", desired_conversations) do
-        message_task = FactoryGirl.create(:message_task, phase: random(Phase), participants: [random(User)])
-        FactoryGirl.create(:comment, task: message_task, commenter: random(User))
+    desc "Bulk create conversations"
+    task :conversations => [:setup, :journals, :users, :active_manuscripts, :ad_hoc_tasks] do
+      desired_comments_per = 10
+      AdHocTask.find_each do |task|
+        FactoryGirl.create(:participation, user: random(User), task: task)
+        progress("conversations", desired_comments_per) do
+          FactoryGirl.create(:comment, task: task, commenter: random(User))
+        end
       end
     end
 

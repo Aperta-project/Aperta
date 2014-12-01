@@ -1,5 +1,5 @@
 class RoleFlowsPolicy < ApplicationPolicy
-  allow_params :journal
+  primary_resource :role_flow
 
   def show?
     can_administer_journal?(journal)
@@ -15,5 +15,11 @@ class RoleFlowsPolicy < ApplicationPolicy
 
   def destroy?
     can_administer_journal?(journal)
+  end
+
+  private
+
+  def journal
+    role_flow.role.journal
   end
 end

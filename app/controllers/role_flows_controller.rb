@@ -1,32 +1,44 @@
 class RoleFlowsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:create]
-  before_action :enforce_policy_on_create, only: [:create]
+  before_action :enforce_policy
   respond_to :json
 
   def show
-    respond_with RoleFlow.find(params[:id])
+    respond_with role_flow
   end
 
   def create
-    role = Role.find(flow_params[:role_id])
-    flow = role.flows.create!(title: formatted_title)
-    render json: flow
+    role_flow.assign_attributes(title: formatted_title)
+    role_flow.save!
+    render json: role_flow
   end
 
   def update
-    flow = RoleFlow.find(params[:id])
-    flow.update!(title: formatted_title)
-    render json: flow
+    role_flow.update!(title: formatted_title)
+    render json: role_flow
   end
 
   def destroy
-    flow = RoleFlow.find(params[:id])
-    flow.destroy
-    respond_with flow
+    role_flow.destroy
+    respond_with role_flow
   end
 
   private
+
+  def role
+    @role ||= Role.find(flow_params[:role_id])
+  end
+
+  def role_flow
+    @role_flow ||= begin
+      if(params[:id].present?)
+        RoleFlow.find(params[:id])
+      else
+        role.flows.new(flow_params)
+      end
+    end
+  end
+
   def flow_params
     params.require(:role_flow).permit(:title, :role_id)
   end
@@ -36,12 +48,6 @@ class RoleFlowsController < ApplicationController
   end
 
   def enforce_policy
-    flow = RoleFlow.find(params[:id])
-    authorize_action!(journal: flow.role.journal)
-  end
-
-  def enforce_policy_on_create
-    role = Role.find(flow_params[:role_id])
-    authorize_action!(journal: role.journal)
+    authorize_action!(resource: role_flow)
   end
 end

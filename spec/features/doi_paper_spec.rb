@@ -55,7 +55,7 @@ feature "Editing paper", js: true do
         doi: "vicious/robots.8888"
       }
 
-      scenario "it retains the paper's internal id in the URL", selenium: true do
+      scenario "it retains the paper's internal id in the URL", js: true do
         within ".task-list .doi" do
           expect(page).to have_content "DOI: vicious/robots.8888"
         end

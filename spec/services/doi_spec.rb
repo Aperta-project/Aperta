@@ -75,10 +75,15 @@ describe Doi do
   end
 
   describe "#to_s" do
-    context "with a publisher_prefix and publisher suffix" do
+    context "with a publisher_prefix/journal_prefix.next_doi_id" do
       let(:journal) { create :journal }
-      xit "returns a properly-formatted doi string" do
-        expect(described_class.new(journal: journal).to_s).to eq false
+
+      it "returns a properly-formatted doi string" do
+        expected = [journal[:doi_publisher_prefix],
+                    journal[:doi_journal_prefix]].join('/') +
+                    "." +
+                    journal[:last_doi_issued].succ
+        expect(described_class.new(journal: journal).to_s).to eq expected
       end
     end
   end

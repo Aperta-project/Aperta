@@ -34,7 +34,7 @@ describe "Role" do
 
     context "without a journal" do
       it "will allow destroying a required role" do
-        role = FactoryGirl.create(:role, :admin)
+        role = FactoryGirl.create(:role, :admin, journal: nil)
         expect { role.destroy }.to change{ Role.count }.by(-1)
       end
     end

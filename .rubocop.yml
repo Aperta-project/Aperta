@@ -12,6 +12,8 @@ Blocks:
   Enabled: false
 ClassAndModuleChildren:
   Enabled: false
+Metrics/ClassLength:
+  Enabled: false
 Documentation:
   Enabled: false
 Metrics/LineLength:

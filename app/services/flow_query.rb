@@ -9,7 +9,6 @@ class FlowQuery
   end
 
   def tasks
-    arr = role_flow.query
     scope = Task.includes(:paper)
 
     unless user.site_admin?
@@ -20,11 +19,14 @@ class FlowQuery
       end
     end
 
+    arr = role_flow.query
     scope = scope.assigned_to(user) if arr.include?(:assigned)
     scope = scope.admin_for_user(user) if arr.include?(:admin)
 
-    filters = arr.reject { |key| USER_FILTERS.include?(key) }.join(".")
-    scope = scope.send(filters) if filters.present?
+    arr.reject { |key| USER_FILTERS.include?(key) }.each do |s|
+      scope = scope.send(s)
+    end
+
     scope
   end
 

@@ -34,18 +34,6 @@ test 'it forwards viewCard', ->
   component = ETahi.FlowColumnComponent.create(componentAttrs)
   component.send 'viewCard', 'test'
 
-test "setFlowTitle action should send saveFlow action", ->
-  targetObject =
-    externalAction: (flow) ->
-      equal flow.get('title'), "title"
-  componentAttrs =
-    saveFlow: 'externalAction'
-    targetObject: targetObject
-    flow: Ember.Object.create title: "Fake Title"
-
-  component = ETahi.FlowColumnComponent.create(componentAttrs)
-  component.send 'setFlowTitle', { text: "title" }
-
 test "formattedFlowTitle returns an {id: text:} object", ->
   flow = Ember.Object.create title: "Up for grabs"
   component = ETahi.FlowColumnComponent.create(flow: flow)

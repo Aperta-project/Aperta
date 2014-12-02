@@ -15,7 +15,7 @@ class FlowQuery
       if role_flow.default?
         scope = scope.on_journals(user.journals)
       else
-        scope = scope.on_journals(*role_flow.journal)
+        scope = scope.on_journals([role_flow.journal])
       end
     end
 

@@ -54,7 +54,6 @@ describe FlowQuery do
       other_task_same_journal = FactoryGirl.create(:task, phase: phase)
       other_paper_admin_task = FactoryGirl.create(:paper_admin_task)
 
-      binding.pry
       expect(FlowQuery.new(user, role_flow).tasks).to match_array [valid_task]
 
       valid_task.update(completed: true)

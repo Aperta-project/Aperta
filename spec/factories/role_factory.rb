@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :role do
     sequence(:name) { |n| "#{n.ordinalize} Role" }
+    journal
 
     trait :admin do
       kind Role::ADMIN

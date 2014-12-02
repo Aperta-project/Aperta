@@ -5,6 +5,7 @@ AllCops:
     - 'test/**/*'
     - 'vendor/assets/**/*'
     - 'db/schema.rb'
+    - 'db/migrate/*'
 Blocks:
   Enabled: false
 ClassAndModuleChildren:

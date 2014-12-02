@@ -22,4 +22,21 @@ describe Doi do
       end
     end
   end
+
+  describe "initialization" do
+    context "with a journal" do
+      let(:journal) { create :journal }
+      it "assigns a journal as @journal" do
+        expect(described_class.new(journal: journal).journal).to eq journal
+      end
+    end
+
+    context "without a journal" do
+      it "raises an exception" do
+        expect {
+          described_class.new(nil)
+        }.to raise_error ArgumentError, "missing keyword: journal"
+      end
+    end
+  end
 end

@@ -121,13 +121,13 @@ describe Paper do
     describe ".find_by_doi_or_id" do
       let!(:paper_with_doi) { create :paper, doi: doi }
 
-      context "when given a paper id" do
+      context "when given a doi" do
         it "returns a paper" do
           expect(Paper.find_by_doi_or_id(doi)).to eq paper_with_doi
         end
       end
 
-      context "when given a doi" do
+      context "when given an id" do
         it "returns a paper" do
           expect(Paper.find_by_doi_or_id(paper_with_doi.id)).to eq paper_with_doi
         end

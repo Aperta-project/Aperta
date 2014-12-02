@@ -133,13 +133,13 @@ describe Paper do
         end
       end
 
-      context "when given a non-existant doi" do
+      context "when given a non-existent doi" do
         it "returns nil" do
           expect(Paper.find_by_doi_or_id("bogus")).to eq(nil)
         end
       end
 
-      context "when given a non-existant ID" do
+      context "when given a non-existent ID" do
         it "returns nil" do
           expect(Paper.find_by_doi_or_id('233')).to eq(nil)
         end

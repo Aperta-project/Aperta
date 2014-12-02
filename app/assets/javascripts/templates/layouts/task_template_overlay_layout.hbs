@@ -3,14 +3,15 @@
   <div class="overlay-container">
     <header class="overlay-header">
       <div class="overlay-header-title"></div>
-      <a class="button-primary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
+      <a class="button-secondary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
     </header>
 
     <main class="overlay-content">{{yield}}</main>
 
     <footer class="overlay-footer">
-      <div class="overlay-footer-content"></div>
-      <a class="button-primary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
+      <div class="overlay-footer-content">
+        <a class="button-secondary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
+      </div>
     </footer>
   </div>
 </div>

@@ -43,7 +43,7 @@ GIT
 PATH
   remote: engines/plos_authors
   specs:
-    plos_authors (0.0.2)
+    plos_authors (0.0.3)
       rails (~> 4.1.6)
 
 PATH

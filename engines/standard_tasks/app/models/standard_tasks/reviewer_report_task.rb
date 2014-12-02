@@ -1,6 +1,6 @@
 module StandardTasks
   class ReviewerReportTask < Task
-    def permitted_attributes
+    def self.permitted_attributes
       super + [{paper_review_attributes: [:body, :id]}]
     end
 

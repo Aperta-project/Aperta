@@ -1,6 +1,6 @@
 module StandardTasks
   class PaperEditorTask < Task
-    def permitted_attributes
+    def self.permitted_attributes
       super + [:editor_id, { paper_role_attributes: [:user_id, :editor_id] }]
     end
 

@@ -5,7 +5,7 @@
     {{partial "overlay-header"}}
 
     <main class="overlay-content">
-      {{yield}}
+      <div class="overlay-main-work">{{yield}}</div>
       {{partial "discussion"}}
     </main>
 
@@ -18,8 +18,8 @@
                                onRemove="removeParticipant"
                                paperId=model.paper.id
                                onSelect="saveNewParticipant"}}
+        <a class="button-secondary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
       </div>
-      <a class="button-primary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
     </footer>
   </div>
 </div>

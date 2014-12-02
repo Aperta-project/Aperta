@@ -1,5 +1,6 @@
 require_relative 'production'
-# Uncomment me for debugging
-# Tahi::Application.configure do
-#   config.force_ssl = false
-# end
+if ENV["DISABLE_SSL"]
+  Tahi::Application.configure do
+    config.force_ssl = false
+  end
+end

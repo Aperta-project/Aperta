@@ -128,12 +128,7 @@ class Paper < ActiveRecord::Base
   private
 
   def uncompleted_tasks?
-    tasks_metadata.count != tasks_metadata.completed.count
-  end
-
-  # TODO: move this method where it belongs
-  def tasks_metadata
-    tasks.metadata
+    tasks.metadata.count != tasks.metadata.completed.count
   end
 
   def self.id?(param)

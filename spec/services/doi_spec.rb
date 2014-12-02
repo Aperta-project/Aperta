@@ -41,12 +41,9 @@ describe Doi do
 
   describe "method delegation" do
     context "with a journal" do
-      let(:journal) { Journal.new }
+      let!(:journal) { Journal.new }
 
       def ensure_delegated method
-        # this is here as a work around for flaky tests
-        # associated with instance_double verifying Journal#last_doi_issued
-        expect(journal.respond_to? method).to eq true
         mock_journal = instance_double(Journal, method => 123)
         expect(mock_journal).to receive(method)
         expect(

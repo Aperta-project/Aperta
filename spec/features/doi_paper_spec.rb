@@ -33,7 +33,7 @@ feature "Editing paper", js: true do
           expect(page).to_not have_css ".doi"
         end
 
-        expect(page.current_path).to eq "/papers/1/edit"
+        expect(page.current_path).to eq "/papers/#{paper.id}/edit"
       end
     end
 

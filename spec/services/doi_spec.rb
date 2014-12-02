@@ -39,4 +39,30 @@ describe Doi do
       end
     end
   end
+
+  describe "method delegation" do
+    context "with a journal" do
+      let(:journal) { create :journal }
+      describe "last_doi_issued" do
+        it "deltgates to journal" do
+          expect(journal.respond_to? :last_doi_issued).to eq true
+          journal
+          mock_journal = instance_double("Journal", :last_doi_issued => 123)
+          expect(mock_journal).to receive(:last_doi_issued)
+          expect(
+            described_class.new(journal: mock_journal).last_doi_issued
+          ).to eq 123
+        end
+      end
+    end
+  end
+
+  describe "#to_s" do
+    context "with a publisher_prefix and publisher suffix" do
+      let(:journal) { create :journal }
+      xit "returns a properly-formatted doi string" do
+        expect(described_class.new(journal: journal).to_s).to eq false
+      end
+    end
+  end
 end

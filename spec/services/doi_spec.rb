@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Doi do
-
   describe ".valid?" do
     context "with a doi" do
       let(:doi) { 'any/thing.1' }
@@ -42,16 +41,34 @@ describe Doi do
 
   describe "method delegation" do
     context "with a journal" do
-      let(:journal) { create :journal }
+      let(:journal) { Journal.new }
+
+      def ensure_delegated method
+        # this is here as a work around for flaky tests
+        # associated with instance_double verifying Journal#last_doi_issued
+        expect(journal.respond_to? method).to eq true
+        mock_journal = instance_double(Journal, method => 123)
+        expect(mock_journal).to receive(method)
+        expect(
+          described_class.new(journal: mock_journal).public_send method
+        ).to eq 123
+      end
+
       describe "last_doi_issued" do
-        it "deltgates to journal" do
-          expect(journal.respond_to? :last_doi_issued).to eq true
-          journal
-          mock_journal = instance_double("Journal", :last_doi_issued => 123)
-          expect(mock_journal).to receive(:last_doi_issued)
-          expect(
-            described_class.new(journal: mock_journal).last_doi_issued
-          ).to eq 123
+        it "delegates to journal" do
+          ensure_delegated :last_doi_issued
+        end
+
+        describe "doi_publisher_prefix" do
+          it "delegates to journal" do
+            ensure_delegated :doi_publisher_prefix
+          end
+        end
+
+        describe "doi_journal_prefix" do
+          it "delegates to journal" do
+            ensure_delegated :doi_journal_prefix
+          end
         end
       end
     end

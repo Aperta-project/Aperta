@@ -13,7 +13,7 @@ class Task < ActiveRecord::Base
   scope :metadata,    -> { where(type: metadata_types) }
   scope :incomplete,  -> { where(completed: false) }
   scope :admin,       -> { where(type: "StandardTasks::PaperAdminTask") }
-  scope :on_journals, -> { where("journals.id" => journal_ids) }
+  scope :on_journals, ->(journals) { joins(:journal).where("journals.id" => journals.collect(&:id)) }
   scope :complete,    -> { where(completed: true) }
   scope :incomplete,  -> { where(completed: false) }
 

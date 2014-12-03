@@ -22,6 +22,6 @@ class FormatsSerializer < ActiveModel::Serializer
   end
 
   def pluck_format(formats_hash)
-    formats_hash.collect { |entry| { format: entry['format'] } }
+    formats_hash.map { |entry| { format: entry['format'] } }
   end
 end

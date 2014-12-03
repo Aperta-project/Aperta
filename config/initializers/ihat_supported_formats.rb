@@ -24,9 +24,7 @@ def warn(message)
   Rails.logger.warn message
 end
 
-unless Rails.env.test?
-  IhatSupportedFormats.call
-else
+if Rails.env.test?
   json = %q{
     {
       "import_formats":[
@@ -43,4 +41,6 @@ else
     }
   }
   Tahi::Application.config.ihat_supported_formats = json
+else
+  IhatSupportedFormats.call
 end

@@ -1,8 +1,7 @@
-{{type-ahead class="profile-affiliation-field"
-             value=newAffiliation.name
-             valueProperty="name"
-             sourceList=institutions
-             placeholder="Affiliation Name"}}
+{{select-2-single value=newAffiliation.name
+                  class="profile-affiliation-field"
+                  placeholder="Affiliation Name"
+                  source=selectableInstitutions}}
 
 <div class="form-group">
   {{#date-picker-group}}

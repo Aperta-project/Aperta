@@ -109,13 +109,6 @@ class JournalPage < Page
     self
   end
 
-  def assign_role role
-    find('.assign-role-button').click
-    fill_in 'add_role', with: role.name
-    find('.tt-suggestion').click
-    self
-  end
-
   def admin_user_roles user
     user_result_row(user).all('.assigned-role')
                          .map { |role_label| role_label.text }

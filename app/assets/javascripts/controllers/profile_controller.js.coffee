@@ -9,6 +9,12 @@ ETahi.ProfileController = Ember.ObjectController.extend ETahi.FileUploadMixin,
     "/users/#{@get('id')}/update_avatar"
   ).property('id')
 
+  selectableInstitutions: (->
+    @get('institutions').map (institution) ->
+      id: institution
+      text: institution
+  ).property('institutions')
+
   actions:
     uploadFinished: (data, filename) ->
       @uploadFinished(data, filename)

@@ -3,23 +3,9 @@
   <td>{{firstName}}</td>
   <td>{{lastName}}</td>
   <td>
-    {{#each roles}}
-      <span class="assigned-role token token--with-remove">
-        {{name}}
-        <span class="token-remove" {{action "removeRole" this}}></span>
-      </span>
-    {{/each}}
-    {{#if isAddingRole}}
-      {{type-ahead value=roleQuery
-                   class="add-role-input"
-                   name="add_role"
-                   autoFocus=true
-                   sourceList=rolesList
-                   valueProperty="name"
-                   suggestionSelected="assignRole"
-                   placeholder="Role Name"}}
-    {{else}}
-      <span {{action "addRoleAssignment"}} class="token assign-role-button token--add"><span class="glyphicon glyphicon-plus"></span></span>
-    {{/if}}
+    {{user-role-selector journalRoles=selectableJournalRoles
+                         userJournalRoles=selectableUserJournalRoles
+                         selected="assignRole"
+                         removed="removeRole"}}
   </td>
 </tr>

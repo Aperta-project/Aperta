@@ -31,7 +31,6 @@ ETahi.initializer
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       {type, url} = ajaxSettings
       {status, statusText} = jqXHR
-      console.log('err', status, thrownError)
 
       # don't blow up in case of a 403 from rails
       return if status == 403

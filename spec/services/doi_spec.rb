@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe Doi do
+
+  let(:journal_doi) do
+    [journal[:doi_publisher_prefix],
+    journal[:doi_journal_prefix]].join('/') +
+    "." + journal[:last_doi_issued]
+  end
+
   describe ".valid?" do
     context "with a doi" do
       let(:doi) { 'any/thing.1' }
@@ -44,6 +51,7 @@ describe Doi do
       let!(:journal) { Journal.new }
 
       def ensure_delegated method
+        expect(journal.respond_to? method).to eq true
         mock_journal = instance_double(Journal, method => 123)
         expect(mock_journal).to receive(method)
         expect(
@@ -76,12 +84,50 @@ describe Doi do
       let(:journal) { create :journal }
 
       it "returns a properly-formatted doi string" do
-        expected = [journal[:doi_publisher_prefix],
-                    journal[:doi_journal_prefix]].join('/') +
-                    "." +
-                    journal[:last_doi_issued].succ
-        expect(described_class.new(journal: journal).to_s).to eq expected
+        expect(described_class.new(journal: journal).to_s).to eq journal_doi
       end
     end
   end
+
+  describe "#assign!" do
+    let(:journal) { create :journal }
+    let(:doi) { Doi.new(journal: journal) }
+
+    it "assigns the next available doi to the journal" do
+      last_doi_issued = journal.last_doi_issued
+      expect {
+        doi.assign!
+      }.to change(journal, :last_doi_issued)
+        .from(last_doi_issued)
+        .to(last_doi_issued.succ)
+    end
+
+    context "when assignment is successful" do
+      it "returns true" do
+        expect(doi.assign!).to eq journal_doi
+      end
+    end
+
+    context "when doi assignment fails" do
+      context "when the publisher prefix is not set" do
+        it "raises an exception" do
+          expect {
+            journal.update_attributes(doi_publisher_prefix: nil)
+            doi.assign!
+          }.to raise_error "No publisher prefix set"
+        end
+      end
+
+      context "when the journal prefix is not set" do
+        it "raises an exception" do
+          expect {
+            journal.update_attributes(doi_journal_prefix: nil)
+            doi.assign!
+          }.to raise_error "No journal prefix set"
+        end
+      end
+    end
+
+  end
+
 end

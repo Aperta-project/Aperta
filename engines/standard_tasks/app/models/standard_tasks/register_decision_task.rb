@@ -1,6 +1,6 @@
 module StandardTasks
   class RegisterDecisionTask < Task
-    def permitted_attributes
+    def self.permitted_attributes
       super + [:paper_decision, :paper_decision_letter]
     end
 

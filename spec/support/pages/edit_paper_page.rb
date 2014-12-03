@@ -21,7 +21,7 @@ class EditPaperPage < Page
   text_assertions :journal, '.paper-journal'
 
   def initialize element = nil
-    expect(page).to have_css('#paper-body', wait: 4)
+    find '.manuscript-container'
     super
   end
 

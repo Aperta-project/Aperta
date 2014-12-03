@@ -29,6 +29,13 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend ETahi.SpinnerMixin,
     left: '50%'
   ).property()
 
+  focusOnFirstInput: (->
+    if @get('editState')
+      Em.run.schedule 'afterRender', @, (->
+        @$('input[type=text]:first').focus()
+      )
+  ).observes('editState')
+
   scrollToView: ->
     $('.overlay').animate
       scrollTop: @$().offset().top + $('.overlay').scrollTop()

@@ -19,16 +19,16 @@ module StandardTasks
 
     after_save :update_paper_admin_and_tasks, if: :paper_admin_changed?
 
+    def self.permitted_attributes
+      super + [:admin_id]
+    end
+
     def tasks_for_admin
       paper.tasks.without(self).for_role('admin').incomplete
     end
 
     def update_responder
       PaperAdminResponder # TODO: Kill me please
-    end
-
-    def permitted_attributes
-      super + [:admin_id]
     end
 
     private

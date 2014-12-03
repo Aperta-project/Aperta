@@ -1,8 +1,6 @@
 class Participation < ActiveRecord::Base
   include EventStreamNotifier
 
-  self.primary_key = :id # why, oh why?
-
   belongs_to :task, inverse_of: :participations
   belongs_to :user, inverse_of: :participations
   has_one :paper, through: :task

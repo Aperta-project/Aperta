@@ -1,46 +1,78 @@
+$comments-animation-speed: 0.3s;
+
 .comment-board {
-  margin: 25px 0;
-  .button-secondary {
-    @include button-secondary-modifier($tahi-green, $tahi-green-light, $tahi-green-dark);
-  }
+  margin-bottom: 10px;
+}
 
-  .form-group {
-    &.editing {
-      .new-comment {
-        height: 60px;
-        @include transition(height 0.5s)
-      }
+/* start comment form */
 
-      .message-comment-buttons {
-        display: block;
-      }
-    }
-  }
+.comment-board .user-thumbnail { margin: 0 7px 0 10px; }
 
-  .form-group .user-thumbnail {
-    margin: 0 10px;
+.comment-board-form {
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 0;
+  @include transition(all $comments-animation-speed);
+
+  &.editing { padding-bottom: 45px; }
+}
+
+
+.new-comment-field {
+  width: 644px;
+  height: 34px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  padding: 5px;
+  @include transition(height $comments-animation-speed)
+}
+
+.comment-board-form.editing .new-comment-field {
+  height: 74px;
+}
+
+.message-comment-buttons {
+  overflow: hidden;
+  @include position(absolute, auto 0px 20px 0px);
+  @include transition(all $comments-animation-speed);
+  @include transition-delay(0.15s);
+  height: 0;
+  opacity: 0;
+
+  .button-secondary, .button-link {
+    float: right;
+    margin-left: 15px;
   }
 }
+
+.comment-board-form.editing .message-comment-buttons {
+  height: auto;
+  bottom: 0;
+  opacity: 1.0;
+}
+
+/* end comment form */
+
 
 .message-comments {
   list-style-type: none;
   margin-top: 30px;
   padding-left: 0px;
+
   .unread {
     background: #efedf7;
-    @include linear-gradient(to right,  rgba(239,237,247,0) 0%,rgba(239,237,247,0.5) 25%,rgba(239,237,247,1) 50%,rgba(239,237,247,0.5) 75%,rgba(239,237,247,0) 100%);
+    @include linear-gradient(to right, rgba(239,237,247,0) 0%,rgba(239,237,247,0.5) 25%,rgba(239,237,247,1) 50%,rgba(239,237,247,0.5) 75%,rgba(239,237,247,0) 100%);
   }
 }
 
 .message-comment {
-  width: $message-body-width;
   border-top: 1px solid #ddd;
-  padding: 20px 0px 20px 10px;
+  padding: 20px 0px 20px 0;
 }
 
 .comment-date,
 .comment-avatar {
-  margin: 0 5px;
+  margin: 0 5px 0 0;
 }
 
 .comment-avatar { width: 40px; }
@@ -48,41 +80,13 @@
 .comment-name { font-weight: bold; }
 
 .comment-body {
-  padding-top: 15px;
+  padding: 7px 0 0 10px;
   line-height: 1.3;
-  width: $message-body-width;
 }
 
 .comment-actions {
-  width: $message-body-width;
-  padding-left: 10px;
-  height: 31px;
   border-top: 1px solid #ddd;
-  padding-top: 10px;
+  padding: 10px 0 0 10px;
 }
 
 .load-all-comments .glyphicon { padding-right: 20px; }
-
-.new-comment {
-  width: 644px;
-  height: 34px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  padding: 5px;
-  @include transition(height 0.5s)
-}
-
-.message-comment-buttons {
-  display: none;
-  width: $message-body-width;
-  margin-top: 15px;
-
-  .button-secondary, .cancel-link {
-    float: right;
-    margin-left: 15px;
-  }
-
-  .cancel-link {
-    line-height: 30px;
-  }
-}

@@ -16,14 +16,5 @@ class CreatePlosAuthor < ActiveRecord::Migration
     change_table :authors do |t|
       t.actable
     end
-
-    remove_column :authors, :middle_initial, :string
-    remove_column :authors, :email, :string
-    remove_column :authors, :department, :string
-    remove_column :authors, :title, :string
-    remove_column :authors, :corresponding, :boolean, default: false, null: false
-    remove_column :authors, :deceased,  :boolean, default: false, null: false
-    remove_column :authors, :affiliation, :string
-    remove_column :authors, :secondary_affiliation, :string
   end
 end

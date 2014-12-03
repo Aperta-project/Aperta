@@ -4,7 +4,7 @@ feature "Event streaming", js: true, selenium: true do
   let!(:author) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, journal: journal }
-  let(:upload_task) { paper.tasks_for_type(UploadManuscript::Task).first }
+  let(:upload_task) { paper.tasks_for_type(UploadManuscript::UploadManuscriptTask).first }
   let(:text_body) { { type: "text", value: "Hi there!" } }
 
   before do

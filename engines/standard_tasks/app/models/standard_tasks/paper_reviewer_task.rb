@@ -1,13 +1,13 @@
 module StandardTasks
   class PaperReviewerTask < ::Task
+    def self.permitted_attributes
+      super + [{ reviewer_ids: [] }]
+    end
+
     register_task default_title: "Assign Reviewers", default_role: "editor"
 
     def array_attributes
       super + [:reviewer_ids]
-    end
-
-    def permitted_attributes
-      super + [{ reviewer_ids: [] }]
     end
 
     def reviewer_ids=(user_ids)

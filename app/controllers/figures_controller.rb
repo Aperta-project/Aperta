@@ -1,31 +1,27 @@
 class FiguresController < ApplicationController
   respond_to :json
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:create]
-  before_action :enforce_policy_on_create, only: [:create]
+  before_action :enforce_policy
 
   def create
-    new_figure = paper.figures.create status: "processing"
-    DownloadFigureWorker.perform_async(new_figure.id, params[:url])
-    render json: new_figure
+    figure.update_attributes(status: "processing")
+    DownloadFigureWorker.perform_async(figure.id, params[:url])
+    respond_with figure
   end
 
   def update
-    figure = Figure.find params[:id]
     figure.update_attributes figure_params
-
     respond_with figure
   end
 
   def update_attachment
-    figure = Figure.find(params[:id])
     figure.update_attribute(:status, "processing")
     DownloadFigureWorker.perform_async(figure.id, params[:url])
     render json: figure
   end
 
   def destroy
-    Figure.find(params[:id]).destroy
+    figure.destroy
     head :no_content
   end
 
@@ -35,12 +31,17 @@ class FiguresController < ApplicationController
     @paper ||= Paper.find(params[:paper_id])
   end
 
-  def enforce_policy
-    authorize_action!(resource: Figure.find(params[:id]))
+  def figure
+    @figure ||= begin
+      if params[:id].present?
+        Figure.find(params[:id])
+      else
+        paper.figures.new
+      end
+    end
   end
 
-  def enforce_policy_on_create
-    figure = paper.figures.new
+  def enforce_policy
     authorize_action!(resource: figure)
   end
 

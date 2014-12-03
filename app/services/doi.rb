@@ -17,7 +17,7 @@ class Doi
   end
 
   def assign!
-    require_prefixes!
+    return unless journal_has_doi?
     journal.transaction do
       journal.update! last_doi_issued: last_doi_issued.succ
     end
@@ -38,8 +38,7 @@ class Doi
     [doi_journal_prefix, last_doi_issued].join(".")
   end
 
-  def require_prefixes!
-    fail "No publisher prefix set" unless doi_publisher_prefix.present?
-    fail "No journal prefix set" unless doi_journal_prefix.present?
+  def journal_has_doi?
+    doi_publisher_prefix.present? && doi_journal_prefix.present?
   end
 end

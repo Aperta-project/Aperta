@@ -3,6 +3,7 @@ jobId = undefined
 workingReponse = undefined
 completeReponse = undefined
 statusUrl = undefined
+expectedSupportedDownloadFormats = undefined
 module 'Integration: Paper Docx Download',
   teardown: ->
     ETahi.reset()
@@ -19,11 +20,6 @@ module 'Integration: Paper Docx Download',
     )
     ETahi.Test = {}
     ETahi.Test.currentPaper = records[0]
-    ETahi.supportedDownloadFormats = export_formats: [
-      format: "docx"
-      url: "https://tahi.example.com/export/docx"
-      description: "This converts from docx to HTML"
-    ]
     paperPayload = ef.createPayload('paper')
     paperPayload.addRecords(records.concat([fakeUser]))
     paperResponse = paperPayload.toJSON()
@@ -56,6 +52,39 @@ module 'Integration: Paper Docx Download',
 
     returnResponse(completeResult)
 
+    # for the formats test
+    expectedSupportedDownloadFormats = {
+        "import_formats": [
+          {
+            "format": "docx",
+            "url": "https://tahi.example.com/import/docx",
+            "description": "This converts from HTML to Office Open XML"
+          },
+          {
+            "format": "odt",
+            "url": "https://tahi.example.com/import/odt",
+            "description": "This converts from HTML to ODT"
+          }
+        ],
+        "export_formats": [
+          {
+            "format": "docx",
+            "url": "https://tahi.example.com/export/docx",
+            "description": "This converts from docx to HTML"
+          },
+          {
+            "format": "latex",
+            "url": "https://tahi.example.com/export/latex",
+            "description": "This converts from latex to HTML"
+          }
+        ]
+      }
+    server.respondWith 'GET', '/formats', [
+      200,
+      {"Content-Type": "application/json"},
+      JSON.stringify expectedSupportedDownloadFormats
+    ]
+
 test 'show download links on control bar', ->
   called = 0
   args = undefined
@@ -75,3 +104,9 @@ test 'show download links on control bar', ->
     ok _.findWhere(server.requests, { method: 'GET', url })
     mock.restore()
 
+test 'iHat supported formats are set after page load', ->
+  visit "/papers/#{ETahi.Test.currentPaper.id}/edit"
+  andThen ->
+    deepEqual(
+      window.ETahi.supportedDownloadFormats, expectedSupportedDownloadFormats
+    )

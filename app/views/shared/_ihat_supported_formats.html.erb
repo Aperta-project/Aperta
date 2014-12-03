@@ -1,6 +1,0 @@
-<script>
-  window.ETahi.environment = "<%= Rails.env %>";
-<% if Tahi::Application.config.try(:ihat_supported_formats) %>
-  window.ETahi.supportedDownloadFormats = JSON.parse('<%= Tahi::Application.config.ihat_supported_formats.html_safe %>');
-<% end %>
-</script>

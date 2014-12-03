@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe FlowQuery do
-  let(:user) { FactoryGirl.create :user }
-
   let(:journal) { FactoryGirl.create(:journal) }
+  let(:user) { FactoryGirl.create :user }
 
   let(:paper) do
     FactoryGirl.create(:paper,
@@ -12,12 +11,11 @@ describe FlowQuery do
   end
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
 
-  def run_query(user, flow_name)
-
+  before do
+    assign_journal_role(journal, user, :editor)
   end
 
-
-  pending "#tasks" do
+  describe "#tasks" do
     it "For 'My tasks' returns incomplete tasks that the user is participating in" do
       role_flow = RoleFlow.where(title: 'My tasks', query: [:incomplete, :assigned], default: true).first_or_create
       incomplete_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [user])
@@ -28,7 +26,7 @@ describe FlowQuery do
     end
 
     it "For 'Done' returns completed tasks that the user is participating in" do
-      role_flow = RoleFlow.where(title: 'Done', query: [:complete, :assigned], default: true).first_or_create
+      role_flow = RoleFlow.where(title: 'Done', query: [:completed, :assigned], default: true).first_or_create
       incomplete_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [user])
       complete_task = FactoryGirl.create(:task, phase: phase, completed: true, participants: [user])
       unrelated_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [])
@@ -50,7 +48,6 @@ describe FlowQuery do
     it "For 'Up for grabs' returns incomplete, unassigned PaperAdminTasks for journals the user has a role in." do
       role_flow = RoleFlow.where(title: 'Up for grabs', query: [:unassigned, :incomplete, :admin], default: true).first_or_create
       valid_task = FactoryGirl.create(:paper_admin_task, phase: phase, completed: false)
-      assign_journal_role(journal, user, :editor)
       other_task_same_journal = FactoryGirl.create(:task, phase: phase)
       other_paper_admin_task = FactoryGirl.create(:paper_admin_task)
 
@@ -64,12 +61,11 @@ describe FlowQuery do
       let(:site_admin) { FactoryGirl.create :user, :site_admin }
 
       it "For 'Up for grabs' returns incomplete, unassigned PaperAdminTasks for any journal" do
+        role_flow = RoleFlow.where(title: 'Up for grabs', query: [:unassigned, :incomplete, :admin], default: true).first_or_create
         valid_task = FactoryGirl.create(:paper_admin_task, phase: phase, completed: false)
-        assign_journal_role(journal, site_admin, :editor)
-
         other_paper_admin_task = FactoryGirl.create(:paper_admin_task)
 
-        expect(FlowQuery.new(site_admin, 'Up for grabs').tasks).to match_array [valid_task, other_paper_admin_task]
+        expect(FlowQuery.new(site_admin, role_flow).tasks).to match_array [valid_task, other_paper_admin_task]
       end
     end
   end

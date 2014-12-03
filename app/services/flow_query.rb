@@ -1,7 +1,7 @@
 class FlowQuery
   attr_reader :user, :role_flow
 
-  USER_FILTERS = [:assigned, :admin]
+  USER_FILTERS = [:assigned]
 
   def initialize(user, role_flow)
     @user = user
@@ -9,7 +9,9 @@ class FlowQuery
   end
 
   def tasks
+    arr = role_flow.query
     scope = Task.includes(:paper)
+    scope = scope.assigned_to(user) if arr.include?(:assigned)
 
     unless user.site_admin?
       if role_flow.default?
@@ -18,10 +20,6 @@ class FlowQuery
         scope = scope.on_journals([role_flow.journal])
       end
     end
-
-    arr = role_flow.query
-    scope = scope.assigned_to(user) if arr.include?(:assigned)
-    scope = scope.admin_for_user(user) if arr.include?(:admin)
 
     arr.reject { |key| USER_FILTERS.include?(key) }.each do |s|
       scope = scope.send(s)

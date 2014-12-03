@@ -1,31 +1,30 @@
-<div class="comment-board">
-  <div class="form-group">
-    {{unbound user-thumbnail currentUser}}
-    {{textarea classNames="new-comment" id="comment-body" value=commentBody placeholder="Type your message here"}}
-    <div class="message-comment-buttons clearfix">
-      <button type="submit" class="button-secondary" {{action "postComment"}}>Post Message</button>
-      <a href="#" class="cancel-link" {{action "clearComment"}}>Cancel</a>
-    </div>
+<div {{bind-attr class=":comment-board-form :form-group editing"}}>
+  {{unbound user-thumbnail currentUser}}
+  {{textarea classNames="new-comment-field" value=commentBody placeholder="Type your message here"}}
+
+  <div class="message-comment-buttons">
+    <button type="submit" class="button-secondary button--green" {{action "postComment"}}>Post Message</button>
+    <a href="#" class="button-link cancel-link" {{action "clearComment"}}>Cancel</a>
   </div>
-
-  <ul class="message-comments">
-    {{#if showingAllComments}}
-      {{#each comment in sortedComments}}
-        {{task-comment comment=comment currentUser=currentUser}}
-      {{/each}}
-    {{else}}
-      {{#each comment in firstComments}}
-        {{task-comment comment=comment currentUser=currentUser}}
-      {{/each}}
-    {{/if}}
-  </ul>
-
-  {{#unless showingAllComments}}
-    <div class="comment-actions" {{action "showAllComments"}}>
-      <a class="load-all-comments" href="#">
-        <span class="glyphicon glyphicon-comment"></span>
-        View older {{omittedCommentsCount}} {{pluralize omittedCommentsCount "comment" "comments"}}
-      </a>
-    </div>
-  {{/unless}}
 </div>
+
+<ul class="message-comments">
+  {{#if showingAllComments}}
+    {{#each comment in sortedComments}}
+      {{task-comment comment=comment currentUser=currentUser}}
+    {{/each}}
+  {{else}}
+    {{#each comment in firstComments}}
+      {{task-comment comment=comment currentUser=currentUser}}
+    {{/each}}
+  {{/if}}
+</ul>
+
+{{#unless showingAllComments}}
+  <div class="comment-actions">
+    <a class="load-all-comments" href="#" {{action "showAllComments"}}>
+      <span class="glyphicon glyphicon-comment"></span>
+      View older {{omittedCommentsCount}} {{pluralize omittedCommentsCount "comment" "comments"}}
+    </a>
+  </div>
+{{/unless}}

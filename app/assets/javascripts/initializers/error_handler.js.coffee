@@ -6,8 +6,7 @@ ETahi.initializer
     errorPath = '/errors'
 
     logError = (msg) ->
-      if window.teaspoonTesting == true
-        console.log("ERROR: " + msg)
+      console.log(new Error(msg).stack)
 
     container.register('logError:main', logError , instantiate: false)
     application.inject('route', 'logError', 'logError:main')
@@ -28,9 +27,11 @@ ETahi.initializer
       else
         displayErrorMessage(error)
 
+    # TODO we should errornotify when a "real" ajax error happens!
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       {type, url} = ajaxSettings
       {status, statusText} = jqXHR
+      console.log('err', status, thrownError)
 
       # don't blow up in case of a 403 from rails
       return if status == 403

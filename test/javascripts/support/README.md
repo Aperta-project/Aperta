@@ -12,10 +12,14 @@ It's beautiful, there's no doubt. It's also hard to maintain, because:
 ## Ok, what's the alternative?
 In the `test/javascripts/support/` directory, there is a `factories` file and a
 `setups` directory. Both contain helper methods that can create JSON payloads
-for you. Let's look at `factories` first.
+for you. The idea is to assemble a JSON payload by creating and adding
+individual records to it. This payload would then be used as a mock server
+response to a request.
+
+Let's look at `factories` first.
 
 ### `factories.js.coffee`
-This is a huge file, and can be overwhelming to look through. The bottom 200 or
+This is a big file, and can be overwhelming to look through. The bottom 200 or
 so lines are all factory attributes for the different models we have in the
 app, so they can be disregarded for now.  The top-level namespace is
 ETahi.Factory, so you'll see this a lot in the updated integration tests:
@@ -53,10 +57,15 @@ The defaults for the record are the `FactoryAttributes` for that type, and can
 be overridden by the attributes passed in to `createRecord`.
 
 ##### `addRecord` and `addRecords`
-Now that you have a record, you can add it to the payload object created above:
+Now that you have a record, you can add it to a newly-created payload object.
+Putting it all together:
 
 ```coffee
+adminJournalPayload = ef.createPayload('admin_journal')
+adminJournal = ef.createRecord('AdminJournal')
+
 adminJournalPayload.addRecord(adminJournal)
+
 adminJournalPayload.toJSON()
 # => Object {admin_journal: Object}
 ```
@@ -85,8 +94,8 @@ e.g. `createTask`, `createMMT`, `createJournalTaskType` and so on. Feel free to
 add your own.
 
 ### `setups/`
-This directory currently only has one file, `paper_setups`. The idea is to add
-other setups as needed, such as `journal_setups`. The methods in the file lack
+This directory currently only has one file, `paper_setups`. Other setups may be
+added as needed, such as `journal_setups`. The methods in the file lack
 consistency, but their purpose is to do a bunch of steps that would allow you
 to create a specific kind of paper payload. You can mock a server response to
 `/papers/:id` with the result of calling `toJSON` on this object. We'll look at

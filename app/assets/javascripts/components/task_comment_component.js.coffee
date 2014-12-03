@@ -1,7 +1,6 @@
 ETahi.TaskCommentComponent = Ember.Component.extend
   tagName: 'li'
-  classNames: ['message-comment']
-  classNameBindings: ['unread']
+  classNameBindings: [':message-comment', 'unread']
 
   unread: false
   commenter: Ember.computed.alias 'comment.commenter'

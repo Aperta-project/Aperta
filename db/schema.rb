@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141126152818) do
+ActiveRecord::Schema.define(version: 20141203152127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -213,12 +213,11 @@ ActiveRecord::Schema.define(version: 20141126152818) do
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
-  create_table "participations", id: false, force: true do |t|
-    t.integer  "id",         default: "nextval('participations_id_seq'::regclass)", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "participations", force: true do |t|
     t.integer  "task_id"
     t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "participations", ["task_id"], name: "index_participations_on_task_id", using: :btree

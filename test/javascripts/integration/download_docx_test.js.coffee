@@ -53,8 +53,10 @@ module 'Integration: Paper Docx Download',
     returnResponse(completeResult)
 
     # for the formats test
-    expectedSupportedDownloadFormats =
-      {"export_formats":[{"format":"docx"},{"format":"latex"}],"import_formats":[{"format":"docx"},{"format":"odt"}]}
+    expectedSupportedDownloadFormats = {
+      "export_formats": [{ "format": "docx" }, { "format": "latex" }],
+      "import_formats": [{ "format": "docx" }, { "format": "odt" }]
+    }
 
     server.respondWith 'GET', '/formats', [
       200,
@@ -69,7 +71,8 @@ test 'show download links on control bar', ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/edit"
   andThen ->
     mock = sinon.mock(Tahi.utils)
-    mock.expects("windowLocation").withArgs("https://www.google.com").returns(true)
+    mock.expects("windowLocation").withArgs("https://www.google.com")
+      .returns(true)
 
     equal find("div.downloads-link div.control-bar-link-icon").length, 1
     ok click("div.downloads-link div.control-bar-link-icon")

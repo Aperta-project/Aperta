@@ -10,7 +10,10 @@ moduleFor 'route:paper', 'Unit: route/Paper',
     controller =
       set: (key, value) -> props[key] = value
       get: (key) -> props[key]
-    window.ETahi.supportedDownloadFormats = {"export_formats":[{"format":"docx"},{"format":"latex"}],"import_formats":[{"format":"docx"},{"format":"odt"}]}
+    window.ETahi.supportedDownloadFormats = {
+      "export_formats":[{ "format": "docx"}, { "format": "latex" }],
+      "import_formats":[{ "format": "docx"}, { "format": "odt" }]
+    }
 
 test 'the model should be paper', ->
   @subject().model paper_id: 123

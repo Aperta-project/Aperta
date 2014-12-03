@@ -44,6 +44,15 @@ describe Doi do
         }.to raise_error ArgumentError, "missing keyword: journal"
       end
     end
+
+    context "with nil argument passed as a journal" do
+      it "raises an exception" do
+        expect {
+          described_class.new(journal: nil)
+        }.to raise_error ArgumentError, "Journal is required"
+      end
+    end
+
   end
 
   describe "method delegation" do

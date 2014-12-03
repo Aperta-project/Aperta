@@ -30,7 +30,5 @@ class AddAuthorsOverlay < CardOverlay
     fill_in "Email", with: author[:email]
     fill_in "Title", with: author[:title]
     fill_in "Department", with: author[:department]
-    fill_in "Affiliation", with: author[:affiliation]
-    fill_in "Secondary Affiliation", with: author[:secondary_affiliation]
   end
 end

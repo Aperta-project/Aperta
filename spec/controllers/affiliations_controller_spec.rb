@@ -6,7 +6,7 @@ describe AffiliationsController do
 
   it "returns a list of the institution names" do
     get :index
-    institution_names = JSON.parse(response.body)['institutions'].map{|i| i['name']}
+    institution_names = JSON.parse(response.body)['institutions']
     expect(institution_names).to include('Harvard University')
   end
 

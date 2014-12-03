@@ -39,7 +39,3 @@ test 'when the paper is not being edited, update editor on body change', ->
   @subject().set('controller.body', 'foo')
 
   ok @subject().updateVisualEditor.called
-
-test 'supportedDownloadFormats: returns array with injected icon partial paths', ->
-  formats = @subject().get('supportedDownloadFormats')
-  equal formats[0].icon, 'svg/docx-icon'

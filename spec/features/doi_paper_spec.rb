@@ -1,61 +1,54 @@
 require 'spec_helper'
 
-feature "Editing paper", js: true do
+feature "Editing paper", selenium: true, js: true do
   let(:user) { FactoryGirl.create :user }
+  let(:journal) {
+    FactoryGirl.create :journal,
+    doi_publisher_prefix: nil,
+    doi_journal_prefix: nil,
+    last_doi_issued: nil
+  }
+
   context "As an author on the paper page" do
     before do
-      make_user_paper_admin(user, paper)
-
+      assign_journal_role(journal, user, :admin)
       sign_in_page = SignInPage.visit
       sign_in_page.sign_in user
-      visit edit_paper_path(paper)
     end
 
-    context "on a journal with a doi prefix set" do
-      let(:journal) {
-        FactoryGirl.create :journal,
-                           doi_publisher_prefix: nil,
-                           doi_journal_prefix: nil,
-                           last_doi_issued: nil
-      }
+    context "on a journal without a doi prefix set" do
 
-      let(:paper) {
-        FactoryGirl.create :paper,
-                           :with_tasks,
-                           journal: journal,
-                           submitted: false,
-                           short_title: 'foo bar',
-                           creator: user
-      }
-
-      scenario "it adds the DOI to the URL" do
+      scenario "it doesn't contain any doi artifacts" do
+        visit '/'
+        click_button 'Create New Submission'
+        within('.overlay-container') do |page|
+          fill_in 'paper-short-title', with: "A paper with no doi"
+          click_button 'Create'
+        end
+        wait_for_ajax
+        expect(page.current_path).to match %r{/papers/\d+/edit}
         within ".task-list" do
           expect(page).to_not have_css ".doi"
         end
-
-        expect(page.current_path).to eq "/papers/#{paper.id}/edit"
       end
     end
 
-    context "on a journal without a doi prefix set", js: true do
-      let(:journal) {
-        FactoryGirl.create :journal,
-        doi_publisher_prefix: 'vicious',
-        doi_journal_prefix: 'robots',
-        last_doi_issued: '8887'
-      }
+    context "on a journal with a doi prefix set" do
+      before do
+        journal.update_attributes(doi_publisher_prefix: 'vicious',
+                                  doi_journal_prefix: 'robots',
+                                  last_doi_issued: '8887')
+      end
 
-      let(:paper) {
-        FactoryGirl.create :paper,
-        :with_tasks,
-        journal: journal,
-        submitted: false,
-        short_title: 'foo bar',
-        creator: user,
-        doi: "vicious/robots.8888"
-      }
+      scenario "shows the doi on the page and in the URL" do
+        visit '/'
+        click_button 'Create New Submission'
+        within('.overlay-container') do |page|
+          fill_in 'paper-short-title', with: "A paper with doi"
+          click_button 'Create'
+        end
+        wait_for_ajax
 
-      scenario "it retains the paper's internal id in the URL", js: true do
         within ".task-list .doi" do
           expect(page).to have_content "DOI: vicious/robots.8888"
         end

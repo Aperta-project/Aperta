@@ -119,20 +119,16 @@ describe Doi do
 
     context "when doi assignment fails" do
       context "when the publisher prefix is not set" do
-        it "raises an exception" do
-          expect {
-            journal.update_attributes(doi_publisher_prefix: nil)
-            doi.assign!
-          }.to raise_error "No publisher prefix set"
+        it "returns nil" do
+          journal.update_attributes(doi_publisher_prefix: nil)
+          expect(doi.assign!).to eq nil
         end
       end
 
       context "when the journal prefix is not set" do
-        it "raises an exception" do
-          expect {
-            journal.update_attributes(doi_journal_prefix: nil)
-            doi.assign!
-          }.to raise_error "No journal prefix set"
+        it "returns nil" do
+          journal.update_attributes(doi_journal_prefix: nil)
+          expect(doi.assign!).to eq nil
         end
       end
     end

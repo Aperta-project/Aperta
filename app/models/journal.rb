@@ -6,12 +6,13 @@ class Journal < ActiveRecord::Base
   has_many :manuscript_manager_templates, dependent: :destroy
   has_many :journal_task_types, inverse_of: :journal, dependent: :destroy
 
-  validates_presence_of :name, message: 'Please include a journal name'
-  validates_uniqueness_of :doi_journal_prefix,
+  validates :name, presence: { message: 'Please include a journal name' }
+  validates :doi_journal_prefix, uniqueness: {
     scope: [:doi_publisher_prefix],
-    if: Proc.new { |j|
-      j.doi_journal_prefix.present? && j.doi_publisher_prefix.present?
+    if: proc { |journal|
+      journal.doi_journal_prefix.present? && journal.doi_publisher_prefix.present?
     }
+  }
 
   after_create :setup_defaults
   before_destroy :destroy_roles

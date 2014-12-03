@@ -53,32 +53,9 @@ module 'Integration: Paper Docx Download',
     returnResponse(completeResult)
 
     # for the formats test
-    expectedSupportedDownloadFormats = {
-        "import_formats": [
-          {
-            "format": "docx",
-            "url": "https://tahi.example.com/import/docx",
-            "description": "This converts from HTML to Office Open XML"
-          },
-          {
-            "format": "odt",
-            "url": "https://tahi.example.com/import/odt",
-            "description": "This converts from HTML to ODT"
-          }
-        ],
-        "export_formats": [
-          {
-            "format": "docx",
-            "url": "https://tahi.example.com/export/docx",
-            "description": "This converts from docx to HTML"
-          },
-          {
-            "format": "latex",
-            "url": "https://tahi.example.com/export/latex",
-            "description": "This converts from latex to HTML"
-          }
-        ]
-      }
+    expectedSupportedDownloadFormats =
+      {"export_formats":[{"format":"docx"},{"format":"latex"}],"import_formats":[{"format":"docx"},{"format":"odt"}]}
+
     server.respondWith 'GET', '/formats', [
       200,
       {"Content-Type": "application/json"},
@@ -107,6 +84,11 @@ test 'show download links on control bar', ->
 test 'iHat supported formats are set after page load', ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/edit"
   andThen ->
-    deepEqual(
-      window.ETahi.supportedDownloadFormats, expectedSupportedDownloadFormats
-    )
+    export_formats = window.ETahi.supportedDownloadFormats.export_formats
+    expected = expectedSupportedDownloadFormats
+    equal(export_formats[0].format, expected.export_formats[0].format)
+    equal(export_formats[1].format, expected.export_formats[1].format)
+
+    import_formats = window.ETahi.supportedDownloadFormats.import_formats
+    equal(import_formats[0].format, expected.import_formats[0].format)
+    equal(import_formats[1].format, expected.import_formats[1].format)

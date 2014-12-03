@@ -24,23 +24,4 @@ def warn(message)
   Rails.logger.warn message
 end
 
-if Rails.env.test?
-  json = %q{
-    {
-      "import_formats":[
-        {"format":"docx","url":"https://tahi.example.com/import/docx",
-        "description":"This converts from HTML to Office Open XML"},
-        {"format":"odt","url":"https://tahi.example.com/import/odt",
-        "description":"This converts from HTML to ODT"}
-      ], "export_formats":[
-        {"format":"docx","url":"https://tahi.example.com/export/docx",
-        "description":"This converts from docx to HTML"},
-        {"format":"latex","url":"https://tahi.example.com/export/latex",
-        "description":"This converts from latex to HTML"}
-      ]
-    }
-  }
-  Tahi::Application.config.ihat_supported_formats = json
-else
-  IhatSupportedFormats.call
-end
+IhatSupportedFormats.call unless Rails.env.test?

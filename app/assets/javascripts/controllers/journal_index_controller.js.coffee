@@ -105,7 +105,7 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
         role: @store.getById 'role', roleId
 
       userRole.save()
-              .catch (res) =>
+              .catch (res) ->
                 userRole.transitionTo 'created.uncommitted'
                 userRole.deleteRecord()
 

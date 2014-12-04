@@ -7,4 +7,8 @@ class Flow < ActiveRecord::Base
   acts_as_list scope: :role
 
   serialize :query, Array
+
+  def default?
+    role_id.nil?
+  end
 end

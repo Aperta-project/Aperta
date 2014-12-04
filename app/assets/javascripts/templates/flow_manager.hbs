@@ -12,12 +12,13 @@
 {{/view}}
 
 <ul class="columns">
-  {{#each flow in content}}
+  {{#each flow in model}}
     {{flow-column flow=flow
                   litePaper=litePaper
                   commentLooks=commentLooks
                   editable=false
-                  removeFlow='removeFlow'
-                  viewCard='viewCard'}}
+                  saveFlow="saveFlow"
+                  removeFlow="removeFlow"
+                  viewCard="viewCard"}}
   {{/each}}
 </ul>

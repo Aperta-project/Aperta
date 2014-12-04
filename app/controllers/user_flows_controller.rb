@@ -18,7 +18,7 @@ class UserFlowsController < ApplicationController
 
   def update
     flow = UserFlow.find(params[:id])
-    flow.update!(title: formatted_title)
+    flow.role_flow.update!(title: formatted_title)
     render json: flow
   end
 

@@ -359,8 +359,8 @@ ActiveRecord::Schema.define(version: 20141203152127) do
   create_table "user_flows", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title"
     t.integer  "user_id"
+    t.integer  "role_flow_id"
   end
 
   create_table "user_roles", force: true do |t|

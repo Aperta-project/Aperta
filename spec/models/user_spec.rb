@@ -48,16 +48,6 @@ describe User do
     end
   end
 
-  describe "callbacks" do
-    context "before_create" do
-      it "initializes with a set of default flows" do
-        user = FactoryGirl.create(:user)
-        default_flow_titles = ["Up for grabs", "My tasks", "My papers", "Done"]
-        expect(user.flows.map(&:title)).to match_array default_flow_titles
-      end
-    end
-  end
-
   describe ".new_with_session" do
     let(:personal_details) { {"personal_details" => {"given_names" => "Joe", "family_name" => "Smith"}} }
     let(:orcid_session) do

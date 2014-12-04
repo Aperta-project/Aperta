@@ -25,8 +25,6 @@ class User < ActiveRecord::Base
 
   attr_accessor :login
 
-  after_create :add_flows
-
   validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 255 }
   validates_format_of :username, with: /\A[A-Za-z\d_]+\z/, multiline: true
   validates :email, format: Devise.email_regexp
@@ -71,14 +69,6 @@ class User < ActiveRecord::Base
       User.where("lower(username) LIKE '#{sanitized_query}' OR lower(first_name) LIKE '#{sanitized_query}' OR lower(last_name) LIKE '#{sanitized_query}'")
     elsif assigned_users_in_journal_id
       User.joins(user_roles: :role).where('roles.journal_id = ?', assigned_users_in_journal_id).uniq
-    end
-  end
-
-  private
-
-  def add_flows
-    FlowQuery::FLOW_TITLES.each do |title|
-      flows.create!(title: title)
     end
   end
 end

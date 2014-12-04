@@ -1,15 +1,33 @@
 class FlowQuery
-  attr_reader :user, :flow_title, :scope_to_journals
-  FLOW_TITLES = ['Up for grabs', 'My papers', 'My tasks', 'Done']
+  attr_reader :user, :role_flow
 
-  def initialize(user, flow_title)
+  USER_FILTERS = [:assigned, :admin]
+
+  def initialize(user, role_flow)
     @user = user
-    @flow_title = flow_title
-    @scope_to_journals = !user.site_admin?
+    @role_flow = role_flow
   end
 
   def tasks
-    @tasks ||= flow_map[flow_title].call
+    scope = Task.includes(:paper)
+
+    unless user.site_admin?
+      if role_flow.default?
+        scope = scope.on_journals(user.journals)
+      else
+        scope = scope.on_journals([role_flow.journal])
+      end
+    end
+
+    arr = role_flow.query
+    scope = scope.assigned_to(user) if arr.include?(:assigned)
+    scope = scope.admin_for_user(user) if arr.include?(:admin)
+
+    arr.reject { |key| USER_FILTERS.include?(key) }.each do |s|
+      scope = scope.send(s)
+    end
+
+    scope
   end
 
   def lite_papers
@@ -20,47 +38,6 @@ class FlowQuery
   end
 
   private
-
-  def flow_map
-    {
-      'Up for grabs' => -> { unassigned_tasks },
-      'My papers' => -> { paper_admin_tasks_for_user },
-      'My tasks' => -> { assigned_tasks.incomplete },
-      'Done' => -> { assigned_tasks.completed }
-    }
-  end
-
-  def assigned_tasks
-    base_query.assigned_to(user)
-  end
-
-  def paper_admin_tasks_for_user
-    admin_tasks.
-      joins(paper: :assigned_users).
-      merge(PaperRole.admins.for_user(user))
-  end
-
-  def unassigned_tasks
-    scope_to_journals ? unassigned_tasks_for_journals : all_unassigned_tasks
-  end
-
-  def unassigned_tasks_for_journals
-    all_unassigned_tasks.
-      joins(paper: :journal).
-      where(journals: { id: attached_journal_ids })
-  end
-
-  def all_unassigned_tasks
-    admin_tasks.incomplete.unassigned
-  end
-
-  def admin_tasks
-    base_query.where(type: "StandardTasks::PaperAdminTask")
-  end
-
-  def base_query
-    Task.includes(:paper)
-  end
 
   def attached_journal_ids
     @attached_journal_ids ||= user.roles.pluck(:journal_id).uniq

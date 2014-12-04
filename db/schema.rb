@@ -282,8 +282,6 @@ ActiveRecord::Schema.define(version: 20141203152127) do
     t.string  "title"
     t.integer "role_id"
     t.integer "position"
-    t.text    "query"
-    t.boolean "default",  default: false
   end
 
   create_table "roles", force: true do |t|
@@ -363,7 +361,6 @@ ActiveRecord::Schema.define(version: 20141203152127) do
     t.datetime "updated_at"
     t.string   "title"
     t.integer  "user_id"
-    t.integer  "role_id"
   end
 
   create_table "user_roles", force: true do |t|

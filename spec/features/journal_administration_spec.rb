@@ -88,16 +88,5 @@ feature "Journal Administration", js: true do
         expect { role.name }.to raise_error(Selenium::WebDriver::Error::StaleElementReferenceError)
       end
     end
-
-    describe "assigning a role" do
-      let!(:existing_role) { FactoryGirl.create(:role, journal: journal) }
-      scenario "admin can assign and delete role for user" do
-        role = journal_page.search_user(user.username)
-                           .assign_role(existing_role)
-                           .admin_user_roles(user)
-                           .first
-        expect(role).to eq existing_role.name
-      end
-    end
   end
 end

@@ -54,23 +54,22 @@
   <div class="form-group form-inline">
     <div class="form-group author-half required">
       {{#field-with-errors errorMessage=errors.affiliation.firstObject}}
-        {{type-ahead
-        value=newAuthor.affiliation
-        valueProperty='name'
-        sourceList=institutions
-        class='profile-affiliation-field'
-        class="affiliation-field"
-        placeholder="Affiliation"}}
+        {{select-2-single
+          value=newAuthor.affiliation
+          class="affiliation-field"
+          placeholder="Affiliation"
+          selectedData=selectedAffiliation
+          source=selectableInstitutions}}
       {{/field-with-errors}}
     </div>
     <div class="form-group author-half author-bump">
       {{#field-with-errors errorMessage=errors.secondaryAffiliation.firstObject}}
-        {{type-ahead
-        value=newAuthor.secondaryAffiliation
-        valueProperty='name'
-        sourceList=institutions
-        class='profile-affiliation-field'
-        placeholder="Secondary Affiliation"}}
+        {{select-2-single
+          value=newAuthor.secondaryAffiliation
+          class="secondary-affiliation-field"
+          placeholder="Secondary Affiliation"
+          selectedData=selectedSecondaryAffiliation
+          source=selectableInstitutions}}
       {{/field-with-errors}}
     </div>
   </div>

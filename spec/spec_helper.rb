@@ -164,24 +164,3 @@ RSpec.configure do |config|
     Sunspot.remove_all!
   end
 end
-
-
-#
-# We don't have iHat runnning in test, so we stub it for all the tests.
-#
-json = %q{
-  {
-    "import_formats":[
-      {"format":"docx","url":"https://tahi.example.com/import/docx",
-      "description":"This converts from HTML to Office Open XML"},
-      {"format":"odt","url":"https://tahi.example.com/import/odt",
-      "description":"This converts from HTML to ODT"}
-    ], "export_formats":[
-      {"format":"docx","url":"https://tahi.example.com/export/docx",
-      "description":"This converts from docx to HTML"},
-      {"format":"latex","url":"https://tahi.example.com/export/latex",
-      "description":"This converts from latex to HTML"}
-    ]
-  }
-}
-Tahi::Application.config.ihat_supported_formats = json

@@ -1,10 +1,14 @@
 class FormatsSerializer < ActiveModel::Serializer
   attr_accessor :export_formats, :import_formats
   def attributes
-    {
-      export_formats: export_formats,
-      import_formats: import_formats
-    }
+    if Tahi::Application.config.ihat_supported_formats
+      {
+        export_formats: export_formats,
+        import_formats: import_formats
+      }
+    else
+      nil
+    end
   end
 
   private

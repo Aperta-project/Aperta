@@ -36,13 +36,13 @@ class Admin::JournalsController < ApplicationController
   end
 
   def upload_logo
-    journal = DownloadLogo.call(journal, params[:url])
-    render json: journal, serializer: AdminJournalSerializer
+    journal_with_logo = DownloadLogo.call(journal, params[:url])
+    render json: journal_with_logo, serializer: AdminJournalSerializer
   end
 
   def upload_epub_cover
-    journal = DownloadEpubCover.call(journal, params[:url])
-    render json: journal, serializer: AdminJournalSerializer
+    journal_with_cover = DownloadEpubCover.call(journal, params[:url])
+    render json: journal_with_cover, serializer: AdminJournalSerializer
   end
 
   private
@@ -51,7 +51,7 @@ class Admin::JournalsController < ApplicationController
     id = params[:id]
     @journal ||= begin
       if id.present?
-        UserRole.find(id)
+        Journal.find(id)
       else
         Journal.new(journal_params)
       end

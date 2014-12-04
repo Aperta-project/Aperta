@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe RoleFlowsPolicy do
-  let(:journal) { FactoryGirl.create(:journal) }
-  let(:policy) { RoleFlowsPolicy.new(current_user: user, journal: journal) }
+  let(:role_flow) { FactoryGirl.create(:role_flow) }
+  let(:journal) { role_flow.role.journal }
+  let(:policy) { RoleFlowsPolicy.new(current_user: user, role_flow: role_flow) }
 
   context "user has an admin journal role" do
     let(:user) { FactoryGirl.create(:user) }

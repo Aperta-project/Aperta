@@ -1,3 +1,5 @@
+# https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml
+
 AllCops:
   RunRailsCops: true
   Exclude:
@@ -5,9 +7,12 @@ AllCops:
     - 'test/**/*'
     - 'vendor/assets/**/*'
     - 'db/schema.rb'
+    - 'db/migrate/*'
 Blocks:
   Enabled: false
 ClassAndModuleChildren:
+  Enabled: false
+Metrics/ClassLength:
   Enabled: false
 Documentation:
   Enabled: false

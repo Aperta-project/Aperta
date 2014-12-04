@@ -1,17 +1,19 @@
 ETahi.CommentBoardComponent = Ember.Component.extend
+  classNames: ['comment-board']
+  editing: false
+
   comments: []
-  commentBody: ""
+  commentBody: ''
   commentsToShow: 5
   showingAllComments: false
 
   commentSort: ['createdAt:desc']
   sortedComments: Ember.computed.sort('comments', 'commentSort')
-
   firstComments: ETahi.computed.limit 'sortedComments', 5
 
   setupFocus: (->
-    @$('.new-comment').on('focus', (e) =>
-      @$('.form-group').addClass('editing')
+    @$('.new-comment-field').on('focus', (e) =>
+      @set 'editing', true
     )
   ).on('didInsertElement')
 
@@ -20,7 +22,7 @@ ETahi.CommentBoardComponent = Ember.Component.extend
   ).property('comments.length')
 
   omittedCommentsCount: (->
-    @get('comments.length') - @get("commentsToShow")
+    @get('comments.length') - @get('commentsToShow')
   ).property('comments.length')
 
   actions:
@@ -28,9 +30,9 @@ ETahi.CommentBoardComponent = Ember.Component.extend
       @set('showingAllComments', true)
 
     postComment: ->
-      @sendAction('postComment', @get("commentBody"))
+      @sendAction('postComment', @get('commentBody'))
       @send('clearComment')
 
     clearComment: ->
-      @set('commentBody', "")
-      @$('.form-group').removeClass('editing')
+      @set('commentBody', '')
+      @set('editing', false)

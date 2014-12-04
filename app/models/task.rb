@@ -46,6 +46,10 @@ class Task < ActiveRecord::Base
     where.not(id: task.id)
   end
 
+  def self.permitted_attributes
+    [:completed, :title, :phase_id]
+  end
+
   #TODO Research how task generation and templating can be simplified
   # https://www.pivotaltracker.com/story/show/81718250
   def journal_task_type
@@ -63,10 +67,6 @@ class Task < ActiveRecord::Base
 
   def array_attributes
     [:body]
-  end
-
-  def permitted_attributes
-    [:completed, :title, :phase_id]
   end
 
   def incomplete!

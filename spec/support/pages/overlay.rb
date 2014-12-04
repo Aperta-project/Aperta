@@ -71,10 +71,8 @@ class CardOverlay < Page
   end
 
   def post_message(new_message)
-    fill_in 'comment-body', with: new_message
-    within('.form-group') do
-      find('.button-secondary', text: "POST MESSAGE").click
-    end
+    find('.new-comment-field').set(new_message)
+    find('.comment-board-form .button-secondary', text: "POST MESSAGE").click
     expect(page).to have_content new_message
   end
 

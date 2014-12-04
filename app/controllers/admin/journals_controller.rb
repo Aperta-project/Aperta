@@ -48,11 +48,10 @@ class Admin::JournalsController < ApplicationController
   private
 
   def journal
-    id = params[:id]
     @journal ||= begin
-      if id.present?
-        Journal.find(id)
-      else
+      if params[:id].present?
+        Journal.find(params[:id])
+      elsif params[:admin_journal].present?
         Journal.new(journal_params)
       end
     end

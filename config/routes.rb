@@ -105,7 +105,7 @@ Tahi::Application.routes.draw do
   end
 
   get '/papers/:id' => 'papers#show',
-      :constraints => { id: /\w+\/\w+\.\d+/ },
+      constraints: { id: Doi::FORMAT },
       as: :paper_with_doi
 
   resources :comments, only: [:create, :show]

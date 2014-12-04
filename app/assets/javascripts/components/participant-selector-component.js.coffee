@@ -1,10 +1,10 @@
 ETahi.ParticipantSelectorComponent = Ember.Component.extend
-  classNames: ['participant-selector']
+  classNames: ['participant-selector', 'select2-multiple']
 
   setupTooltips: (->
     Em.run.schedule 'afterRender', @, ->
       @$('.select2-search-choice img').tooltip(placement: "bottom")
-      @$('.add-participant').tooltip(placement: "bottom")
+      @$('.add-participant-button').tooltip(placement: "bottom")
   ).on('didInsertElement').observes('currentParticipants.@each')
 
   resultsTemplate: (user) ->
@@ -49,8 +49,6 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
       results: data.filtered_users
   ).property()
 
-
-
   actions:
     addParticipant: (newParticipant) ->
       @sendAction("onSelect", newParticipant.id)
@@ -58,7 +56,7 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
       @sendAction("onRemove", participant.id)
     dropdownClosed: ->
       $('.select2-search-field input').removeClass('active')
-      $('.add-participant').removeClass('searching')
+      $('.add-participant-button').removeClass('searching')
     activateDropdown: ->
       $('.select2-search-field input').addClass('active').trigger('click')
-      $('.add-participant').addClass('searching')
+      $('.add-participant-button').addClass('searching')

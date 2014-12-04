@@ -118,19 +118,9 @@
     font-size: 18pt;
   }
 
-  .twitter-typeahead {
-    width: 100%;
-    &:focus {
-      border: none;
-      outline: none;
-    }
-  }
-
-  .profile-affiliation-field {
+  .affiliation-field, .secondary-affiliation-field {
     border-radius: 4px;
     width: 418px;
-
-    &.tt-hint { height: 34px; }
   }
 }
 

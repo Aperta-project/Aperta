@@ -8,7 +8,7 @@ ETahi.initializer
     logError = (msg) ->
       if window.teaspoonTesting == true
         console.log("ERROR: " + msg)
-        
+
     container.register('logError:main', logError , instantiate: false)
     application.inject('route', 'logError', 'logError:main')
 
@@ -22,7 +22,7 @@ ETahi.initializer
     # The global error handler
     Ember.onerror = (error) ->
       logError("\n" + error.message + "\n" + error.stack + "\n")
-      window.ErrorNotifier.notify(error.message, error.stack)
+      window.ErrorNotifier.notify(error, "Uncaught Ember Error")
       if ETahi.environment == 'development'
         throw error
       else

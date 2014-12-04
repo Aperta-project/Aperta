@@ -98,3 +98,16 @@ ETahi.JournalIndexController = Ember.ObjectController.extend
       @set 'doiStartNumberEditable', false
       @get('model').save()
       @set 'doiEditState', false
+
+    assignRole: (roleId, user) ->
+      userRole = @store.createRecord 'userRole',
+        user: user
+        role: @store.getById 'role', roleId
+
+      userRole.save()
+              .catch (res) ->
+                userRole.transitionTo 'created.uncommitted'
+                userRole.deleteRecord()
+
+    removeRole: (userRoleId) ->
+      @store.getById('userRole', userRoleId).destroyRecord()

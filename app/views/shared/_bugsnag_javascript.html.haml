@@ -4,13 +4,13 @@
   :javascript
     Bugsnag.releaseStage = "#{Rails.env}";
     Bugsnag.notifyReleaseStages = ["staging", "production"];
-    var ErrorNotifier = {};
-    ErrorNotifier['notify'] = function( error, label, metadata ) {
-      Bugsnag.notifyException(error.message, error.stack);
+    window.ErrorNotifier = {};
+    window.ErrorNotifier['notify'] = function(error, label) {
+      Bugsnag.notifyException(error, label);
     }
 - else
   :javascript
-    var ErrorNotifier = {}
-    ErrorNotifier['notify'] = function( error, label, metadata ) {
+    window.ErrorNotifier = {}
+    window.ErrorNotifier['notify'] = function(error, label) {
       throw error;
     }

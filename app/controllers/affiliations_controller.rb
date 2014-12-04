@@ -1,6 +1,6 @@
 class AffiliationsController < ApplicationController
   def index
-    render json: Institution.instance.names_hash, root: :institutions
+    render json: Institution.instance.names, root: :institutions
   end
 
   def create

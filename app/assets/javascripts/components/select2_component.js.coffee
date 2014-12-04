@@ -46,6 +46,7 @@ ETahi.Select2Component = Ember.TextField.extend
     options.data               = @get('source')
     options.closeOnSelect      = @get('closeOnSelect')
     options.ajax               = @get('remoteSource') if @get('remoteSource')
+    options.dropdownCssClass   = @get('dropdownClass') if @get('dropdownClass')
     options.initSelection      = Ember.run.bind(this, @initSelection)
 
     @.$().select2(options)

@@ -1,9 +1,19 @@
-if ENV['CI'] || ENV['COVERAGE']
+if ENV['CI']
   require 'simplecov'
   require "codeclimate-test-reporter"
   SimpleCov.add_filter 'vendor'
   SimpleCov.formatters = []
   SimpleCov.start CodeClimate::TestReporter.configuration.profile
+  RSpec.configure do |config|
+    config.after(:suite) do
+      CodeClimate::TestReporter::Formatter.new.format(SimpleCov.result)
+    end
+  end
+end
+
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start 'rails'
 end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'

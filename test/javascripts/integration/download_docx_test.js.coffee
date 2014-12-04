@@ -52,18 +52,6 @@ module 'Integration: Paper Docx Download',
 
     returnResponse(completeResult)
 
-    # for the formats test
-    expectedSupportedDownloadFormats = {
-      "export_formats": [{ "format": "docx" }, { "format": "latex" }],
-      "import_formats": [{ "format": "docx" }, { "format": "odt" }]
-    }
-
-    server.respondWith 'GET', '/formats', [
-      200,
-      {"Content-Type": "application/json"},
-      JSON.stringify expectedSupportedDownloadFormats
-    ]
-
 test 'show download links on control bar', ->
   called = 0
   args = undefined
@@ -87,8 +75,11 @@ test 'show download links on control bar', ->
 test 'iHat supported formats are set after page load', ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/edit"
   andThen ->
+    # Expected formats are set in mock_server.js so that other tests don't 404
+    # on /formats when someone visits the paper_edit_route or paper_index_route.
+    # The mock_server.js has a route for /formats that is always defined.
     export_formats = window.ETahi.supportedDownloadFormats.export_formats
-    expected = expectedSupportedDownloadFormats
+    expected = window.expectedSupportedDownloadFormats
     equal(export_formats[0].format, expected.export_formats[0].format)
     equal(export_formats[1].format, expected.export_formats[1].format)
 

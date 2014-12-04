@@ -1,4 +1,4 @@
-moduleFor('controller:journal-role-flow-manager', 'Unit: controller/journalRoleFlowManager')
+moduleFor('controller:journal-flow-manager', 'Unit: controller/journalFlowManager')
 
 test 'newFlowPosition puts the new flow at the highest position', ->
   eo = Ember.Object

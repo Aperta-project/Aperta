@@ -1,4 +1,4 @@
-class RoleFlow < ActiveRecord::Base
+class Flow < ActiveRecord::Base
   attr_accessor :papers
   belongs_to :role, inverse_of: :flows
   has_one :journal, through: :role

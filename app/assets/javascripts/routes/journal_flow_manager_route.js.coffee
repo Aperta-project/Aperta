@@ -1,4 +1,4 @@
-ETahi.JournalRoleFlowManagerRoute = Ember.Route.extend
+ETahi.JournalFlowManagerRoute = Ember.Route.extend
   model: (params) ->
     @store.find('role', params.role_id)
 
@@ -7,7 +7,7 @@ ETahi.JournalRoleFlowManagerRoute = Ember.Route.extend
 
   renderTemplate: ->
     @_super()
-    @render 'role-flow-manager-buttons',
+    @render 'flow-manager-buttons',
       outlet: 'controlBarButtons'
       template: 'journal'
 
@@ -20,7 +20,7 @@ ETahi.JournalRoleFlowManagerRoute = Ember.Route.extend
   actions:
     viewCard: (task) ->
       paperId = task.get('litePaper.id')
-      redirectParams = ['journal.role_flow_manager', @modelFor('journal'), @modelFor('journal.role_flow_manager')]
+      redirectParams = ['journal.flow_manager', @modelFor('journal'), @modelFor('journal.flow_manager')]
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @controllerFor('application').set('overlayBackground', 'journal.role_flow_manager')
+      @controllerFor('application').set('overlayBackground', 'journal.flow_manager')
       @transitionTo('task', paperId, task.get('id'))

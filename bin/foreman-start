@@ -1,2 +1,0 @@
-foreman-stop
-foreman start -f Procfile.local

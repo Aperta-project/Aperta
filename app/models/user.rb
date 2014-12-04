@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
   include UserDevise
-  searchable do
+  searchable ignore_attribute_changes_of: [:encrypted_password, :avatar] do
     integer :id
     text :username, :first_name, :last_name, :email
     text :full_name do

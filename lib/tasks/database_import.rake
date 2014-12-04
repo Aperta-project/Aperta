@@ -1,6 +1,6 @@
 namespace :db do
   desc "Import data from staging environment"
-  task :import => [:environment, :drop, :create]  do
+  task import: :environment  do
     Bundler.with_clean_env do
       Tempfile.create('tahi-staging-import') do |f|
         Rake::Task['sunspot:solr:start'].execute
@@ -18,4 +18,3 @@ namespace :db do
     end
   end
 end
-

@@ -24,3 +24,6 @@ Style/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
 Style/StringLiterals:
   Enabled: false
+Style/DotPosition:
+  Enabled: true
+  EnforcedStyle: trailing

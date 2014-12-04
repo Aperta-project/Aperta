@@ -1,7 +1,6 @@
-Tahi::Application.config.ihat_supported_formats = 'null'
+Tahi::Application.config.ihat_supported_formats = nil
 module IhatSupportedFormats
   def self.call
-    # TODO use ENV.fetch; is there ever a time they wouldn't want to use iHat?
     if ENV['IHAT_URL'].present?
       begin
         response = Faraday.get(ENV['IHAT_URL'])

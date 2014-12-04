@@ -6,6 +6,7 @@ ETahi.PaperRoute = Ember.Route.extend
     controller.set('model', model)
     if controller.get('supportedDownloadFormats') then return
     setFormats = (data) ->
+      if !data then return # IHAT_URL is not set in rails.
       Ember.run ->
         window.ETahi.supportedDownloadFormats = window.ETahi.supportedDownloadFormats || data
         exportFormats = data.export_formats

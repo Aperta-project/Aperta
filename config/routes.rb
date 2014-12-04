@@ -137,6 +137,8 @@ Tahi::Application.routes.draw do
   resources :errors, only: :create
   resources :feedback, only: :create
 
+  get "/formats", to: "formats#index"
+
   get '*route' => 'ember#index'
   root 'ember#index'
 end

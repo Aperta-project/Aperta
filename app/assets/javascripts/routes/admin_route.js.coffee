@@ -4,11 +4,11 @@ ETahi.AdminRoute = ETahi.AuthorizedRoute.extend
 
   actions:
     viewUserDetails: (user) ->
-      @controllerFor('adminJournalUser').set('model', user)
+      @controllerFor('userDetailOverlay').set('model', user)
       @render 'userDetailOverlay',
         into: 'application'
         outlet: 'overlay'
-        controller: 'adminJournalUser'
+        controller: 'userDetailOverlay'
 
     didTransition: ->
       $('html').attr('screen', 'admin')

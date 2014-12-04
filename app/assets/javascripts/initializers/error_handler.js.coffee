@@ -28,7 +28,6 @@ ETahi.initializer
       else
         displayErrorMessage(error)
 
-    # TODO we should errornotify when a "real" ajax error happens!
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       {type, url} = ajaxSettings
       {status, statusText} = jqXHR

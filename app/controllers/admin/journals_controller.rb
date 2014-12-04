@@ -6,15 +6,15 @@ class Admin::JournalsController < ApplicationController
 
   def index
     journals = current_user.administered_journals
-      .includes(manuscript_manager_templates: {phase_templates: {task_templates: :journal_task_type}})
+      .includes(manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type }})
 
     respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
 
   def show
     respond_to do |f|
-      f.json { render json: Journal.find(params[:id]), serializer: AdminJournalSerializer, root: 'admin_journal' }
-      f.html { render 'ember/index' , layout: 'ember'}
+      f.json { render json: journal, serializer: AdminJournalSerializer, root: 'admin_journal' }
+      f.html { render 'ember/index', layout: 'ember' }
     end
   end
 
@@ -23,12 +23,11 @@ class Admin::JournalsController < ApplicationController
   end
 
   def create
-    respond_with Journal.create(journal_params), serializer: AdminJournalSerializer, root: 'admin_journal'
+    journal.save!
+    respond_with journal, serializer: AdminJournalSerializer, root: 'admin_journal'
   end
 
   def update
-    journal = Journal.find(params[:id])
-
     if journal.update(journal_params)
       render json: journal, serializer: AdminJournalSerializer
     else
@@ -37,28 +36,39 @@ class Admin::JournalsController < ApplicationController
   end
 
   def upload_logo
-    journal = DownloadLogo.call(Journal.find(params[:id]), params[:url])
+    journal = DownloadLogo.call(journal, params[:url])
     render json: journal, serializer: AdminJournalSerializer
   end
 
   def upload_epub_cover
-    journal = DownloadEpubCover.call(Journal.find(params[:id]), params[:url])
+    journal = DownloadEpubCover.call(journal, params[:url])
     render json: journal, serializer: AdminJournalSerializer
   end
 
   private
 
+  def journal
+    id = params[:id]
+    @journal ||= begin
+      if id.present?
+        UserRole.find(id)
+      else
+        Journal.new(journal_params)
+      end
+    end
+  end
+
+  def enforce_policy
+    authorize_action!(resource: journal)
+  end
+
   def journal_params
     params.require(:admin_journal).permit(
-      :name,
-      :description,
-      :epub_cover,
-      :epub_css,
-      :pdf_css,
-      :manuscript_css,
-      :doi_publisher_prefix,
-      :doi_journal_prefix,
-      :last_doi_issued
+      :description, :doi_journal_prefix,
+      :doi_publisher_prefix, :epub_cover,
+      :epub_css, :last_doi_issued,
+      :manuscript_css, :name,
+      :pdf_css
     )
   end
 end

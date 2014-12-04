@@ -37,6 +37,19 @@
     403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
 
+# This gives the paper_index_route and paper_edit_route the iHat download info
+# they need to show all the download icons. Without this, many tests would 404
+@mockFormatsResponse = ->
+  @expectedSupportedDownloadFormats = {
+    "export_formats": [{ "format": "docx" }, { "format": "latex" }],
+    "import_formats": [{ "format": "docx" }, { "format": "odt" }]
+  }
+  server.respondWith 'GET', '/formats', [
+    200,
+    {"Content-Type": "application/json"},
+    JSON.stringify @expectedSupportedDownloadFormats
+  ]
+
 @setupMockServer = ->
   @server.restore() if @server
   @server = sinon.fakeServer.create()
@@ -48,3 +61,4 @@
   @mockEventStreamResponse()
   @mockCommentLookResponse()
   @mockFlowManagerAuthResponse()
+  @mockFormatsResponse()

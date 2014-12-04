@@ -43,12 +43,8 @@ class Paper < ActiveRecord::Base
       where(published_at: nil)
     end
 
-    def find_by_doi_or_id(doi_or_id)
-      if self.id?(doi_or_id)
-        find_by_id(doi_or_id.to_i)
-      else
-        find_by_doi(doi_or_id.to_s)
-      end
+    def find(param)
+      Doi.valid?(param) ? find_by_doi!(param) : super
     end
   end
 
@@ -129,9 +125,5 @@ class Paper < ActiveRecord::Base
 
   def uncompleted_tasks?
     tasks.metadata.count != tasks.metadata.completed.count
-  end
-
-  def self.id?(param)
-    param.to_i.to_s.length == param.to_s.length
   end
 end

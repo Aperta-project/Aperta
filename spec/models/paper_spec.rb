@@ -103,45 +103,34 @@ describe Paper do
       end
     end
 
-    describe ".id?" do
-
-      context "when given an id" do
-        it "returns true" do
-          expect(described_class.id?(12)).to eq true
-        end
-      end
-
-      context "when given a doi" do
-        it "returns false" do
-          expect(described_class.id?(doi)).to eq false
-        end
-      end
-    end
-
-    describe ".find_by_doi_or_id" do
+    describe ".find" do
       let!(:paper_with_doi) { create :paper, doi: doi }
 
       context "when given a doi" do
         it "returns a paper" do
-          expect(Paper.find_by_doi_or_id(doi)).to eq paper_with_doi
+          expect(Paper.find(doi)).to eq paper_with_doi
         end
       end
 
       context "when given an id" do
         it "returns a paper" do
-          expect(Paper.find_by_doi_or_id(paper_with_doi.id)).to eq paper_with_doi
+          expect(Paper.find(paper_with_doi.id)).to eq paper_with_doi
         end
       end
 
       context "when given a non-existent doi" do
-        it "returns nil" do
-          expect(Paper.find_by_doi_or_id("bogus")).to eq(nil)
+        it "returns raises an exception" do
+          expect {
+            Paper.find("bogus/doi.100")
+          }.to raise_error ActiveRecord::RecordNotFound
         end
       end
 
       context "when given a non-existent ID" do
-        it "returns nil" do
-          expect(Paper.find_by_doi_or_id('233')).to eq(nil)
+        it "returns raises an exception" do
+          expect {
+            Paper.find(0)
+          }.to raise_error ActiveRecord::RecordNotFound
         end
       end
 

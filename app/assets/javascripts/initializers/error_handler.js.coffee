@@ -6,7 +6,8 @@ ETahi.initializer
     errorPath = '/errors'
 
     logError = (msg) ->
-      console.log(new Error(msg).stack)
+      e = new Error(msg)
+      console.log(e.stack || e.message)
 
     container.register('logError:main', logError , instantiate: false)
     application.inject('route', 'logError', 'logError:main')

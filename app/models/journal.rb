@@ -6,12 +6,13 @@ class Journal < ActiveRecord::Base
   has_many :manuscript_manager_templates, dependent: :destroy
   has_many :journal_task_types, inverse_of: :journal, dependent: :destroy
 
-  validates_presence_of :name, message: 'Please include a journal name'
-  validates_uniqueness_of :doi_journal_prefix,
+  validates :name, presence: { message: 'Please include a journal name' }
+  validates :doi_journal_prefix, uniqueness: {
     scope: [:doi_publisher_prefix],
-    if: Proc.new { |j|
-      j.doi_journal_prefix.present? && j.doi_publisher_prefix.present?
+    if: proc { |journal|
+      journal.doi_journal_prefix.present? && journal.doi_publisher_prefix.present?
     }
+  }
 
   after_create :setup_defaults
   before_destroy :destroy_roles
@@ -57,28 +58,8 @@ class Journal < ActiveRecord::Base
     manuscript_manager_templates.where(paper_type: paper_type).first
   end
 
-  def next_doi!
-    return if last_doi_issued.blank?
-    transaction do
-      "#{doi_publisher_prefix}/#{doi_suffix(next_doi_offset!)}"
-    end
-  end
 
   private
-
-  def doi_suffix(offset)
-    if doi_journal_prefix.present?
-      "#{doi_journal_prefix}.#{offset}"
-    else
-      offset
-    end
-  end
-
-  def next_doi_offset!
-    return if last_doi_issued.blank?
-    update(last_doi_issued: last_doi_issued.succ)
-    last_doi_issued
-  end
 
   def setup_defaults
     # TODO: remove these from being a callback (when we aren't using rails_admin)

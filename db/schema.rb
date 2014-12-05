@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(version: 20141204193328) do
     t.text     "description"
     t.string   "doi_publisher_prefix"
     t.string   "doi_journal_prefix"
-    t.string   "last_doi_issued"
+    t.string   "last_doi_issued",      default: "0"
   end
 
   create_table "manuscript_manager_templates", force: true do |t|
@@ -193,6 +193,7 @@ ActiveRecord::Schema.define(version: 20141204193328) do
     t.text     "doi"
   end
 
+  add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 

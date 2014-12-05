@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Paper do
   let(:paper) { FactoryGirl.build :paper }
+  let(:doi) { 'pumpkin/doughnut.888888' }
 
   describe "initialization" do
     describe "paper_type" do
@@ -100,6 +101,39 @@ describe Paper do
         expect(Paper.unpublished).to include unpublished_paper
         expect(Paper.unpublished).to_not include published_paper
       end
+    end
+
+    describe ".find" do
+      let!(:paper_with_doi) { create :paper, doi: doi }
+
+      context "when given a doi" do
+        it "returns a paper" do
+          expect(Paper.find(doi)).to eq paper_with_doi
+        end
+      end
+
+      context "when given an id" do
+        it "returns a paper" do
+          expect(Paper.find(paper_with_doi.id)).to eq paper_with_doi
+        end
+      end
+
+      context "when given a non-existent doi" do
+        it "returns raises an exception" do
+          expect {
+            Paper.find("bogus/doi.100")
+          }.to raise_error ActiveRecord::RecordNotFound
+        end
+      end
+
+      context "when given a non-existent ID" do
+        it "returns raises an exception" do
+          expect {
+            Paper.find(0)
+          }.to raise_error ActiveRecord::RecordNotFound
+        end
+      end
+
     end
   end
 

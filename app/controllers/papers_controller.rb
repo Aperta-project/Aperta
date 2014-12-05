@@ -128,7 +128,8 @@ class PapersController < ApplicationController
   end
 
   def paper
-    @paper ||= Paper.find(params[:id]) if params[:id]
+    doi_or_id = params[:id] || params[:doi]
+    @paper ||= Paper.find(doi_or_id) if doi_or_id
   end
 
   def enforce_policy

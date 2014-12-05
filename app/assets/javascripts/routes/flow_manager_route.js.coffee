@@ -28,6 +28,9 @@ ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
     removeFlow: (flow) ->
       flow.destroyRecord()
 
+    saveFlow: (flow) ->
+      flow.save()
+
     viewCard: (task) ->
       paperId = task.get('litePaper.id')
       redirectParams = ['flow_manager']

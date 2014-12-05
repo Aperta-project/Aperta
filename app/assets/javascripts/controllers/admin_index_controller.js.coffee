@@ -1,7 +1,10 @@
 ETahi.AdminIndexController = Ember.ArrayController.extend Ember.PromiseProxyMixin,
+  needs: ['application']
   sortProperties: ['createdAt']
   sortAscending: false
   placeholderText: "Need to find a user?<br> Search for them here."
+  isCurrentUserAdmin: Ember.computed.alias 'controllers.application.currentUser.siteAdmin'
+
   resetSearch: ->
     @set 'adminJournalUsers', null
     @set 'placeholderText', null

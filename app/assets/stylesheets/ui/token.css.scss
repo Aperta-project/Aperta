@@ -40,8 +40,8 @@
   visibility: hidden;
   cursor: pointer;
 
-  &:before {
-    content: "\e014";
+  &:before { content: "\e014"; }
+  &:hover  { text-decoration: none;
   }
 }
 

@@ -1,0 +1,15 @@
+{{select-2-multiple class="add-role-input"
+                    name="add_role"
+                    dropdownClosed="dropdownClosed"
+                    selectionSelected=selected
+                    selectionRemoved=removed
+                    source=journalRoles
+                    selectedData=userJournalRoles
+                    closeOnSelect=true
+                    allowClear=false
+                    minimumInputLength=1
+                    dropdownClass="user-roles-dropdown"
+                    placeholder="Role Name"}}
+<span {{action "activateDropdown"}} class="token assign-role-button token--add">
+  <span class="glyphicon glyphicon-plus"></span>
+</span>

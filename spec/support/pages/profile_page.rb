@@ -17,29 +17,21 @@ class ProfilePage < Page
     all('#profile-email h2').last.text
   end
 
-  def set_affiliate name
+  def start_adding_affiliate
     find('a', text: 'ADD NEW AFFILIATION').click
-    fill_in("Affiliation Name", with: name)
   end
 
-  def add_affiliate(name)
-    set_affiliate name
+  def fill_in_email(email)
+    find('input[placeholder="Email Address"]').set(email)
+  end
+
+  def submit
     click_button "done"
   end
 
   def remove_affiliate(name)
     page.find(".profile-affiliation-name", text: name).parent.find('.profile-remove-affiliation').click
     page.driver.browser.switch_to.alert.accept
-  end
-
-  def affiliations
-    all('.profile-affiliation-name').map(&:text)
-  end
-
-  def has_affiliations?(*affiliations)
-    affiliations.all? do |a|
-      has_affiliation? a
-    end
   end
 
   def attach_image(filename)

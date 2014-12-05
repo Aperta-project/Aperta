@@ -1,0 +1,100 @@
+#ember-app //for select2 specifity issues
+.user-role-selector {
+  .select2-choices {
+    border: none;
+    background-image: none;
+    overflow: visible;
+    padding-right: 0;
+
+    .select2-search-choice {
+      @extend .token;
+      @extend .token--with-remove;
+      margin: 0 4px 5px 0;
+
+      &:nth-last-of-type(2) {
+        margin-right: 0;
+      }
+
+      .select2-search-choice-close {
+        @extend .token-remove;
+        color: $tahi-blue;
+        font-size: 14px;
+        background-image: none !important;
+        background: transparent;
+      }
+
+      &:hover .select2-search-choice-close {
+        display: block;
+      }
+    }
+
+    .select2-search-field {
+      width: 100% !important;
+
+      input {
+        width: 100% !important;
+        height: 30px;
+        margin: 0;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        display: none;
+
+        &.active {
+          display: block;
+        }
+      }
+    }
+  }
+
+  .add-role-input.select2-offscreen {
+    display: none;
+  }
+}
+
+.user-roles-dropdown.select2-drop-multi.select2-drop-active {
+  &.select2-drop-above {
+    border: 1px solid #ccc;
+    margin-top: -4px;
+  }
+
+  border: 1px solid #ccc;
+  box-shadow: none;
+
+  .select2-highlighted {
+    background: $tahi-blue;
+
+    .suggestion-sub-value { color: rgba(255,255,255, 0.7); }
+  }
+
+  .suggestion-sub-value {
+    margin-bottom: 3px;
+    color: #666;
+    font-size: 90%;
+  }
+
+  .select2-no-results, .select2-searching {
+    background: $tahi-white;
+  }
+}
+
+.assign-role-button {
+  @include size(25px, 30px);
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  vertical-align: top;
+  line-height: 12px;
+  border: 1px solid $tahi-blue;
+  border-radius: 3px;
+  color: $tahi-blue;
+  background: #D7EBFE;
+  font-size: 32px;
+  text-align: center;
+  cursor: pointer;
+  @include user-select(none);
+
+  &.searching {
+    display: none;
+  }
+}

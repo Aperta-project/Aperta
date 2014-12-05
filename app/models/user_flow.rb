@@ -1,6 +1,7 @@
 class UserFlow < ActiveRecord::Base
   attr_accessor :papers
   belongs_to :user, inverse_of: :flows
+  belongs_to :role_flow, inverse_of: :user_flows
 
-  validates :title, inclusion: { in: FlowQuery::FLOW_TITLES }
+  delegate :title, to: :role_flow
 end

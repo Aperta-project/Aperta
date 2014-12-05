@@ -7,7 +7,7 @@ describe Admin::JournalsPolicy do
   context "admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    include_examples "person who can administer the journal"
+    include_examples "person who can administer all journals (site admin)"
   end
 
   context "non admin who does not administer the journal" do
@@ -23,6 +23,6 @@ describe Admin::JournalsPolicy do
       assign_journal_role(journal, user, :admin)
     end
 
-    include_examples "person who can administer the journal"
+    include_examples "person who can administer the journal (journal admin)"
   end
 end

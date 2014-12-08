@@ -10,11 +10,11 @@ class Admin::JournalsPolicy < ApplicationPolicy
   end
 
   def authorization?
-    index?
+    can_administer_any_journal?
   end
 
   def create?
-    can_administer_journal?(journal)
+    super_admin?
   end
 
   def upload_logo?

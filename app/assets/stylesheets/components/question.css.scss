@@ -23,9 +23,30 @@
   }
 }
 
+.question-list {
+  list-style-type: none;
+  padding-left: 32px;
+  counter-reset: questionList;
+}
+
 .question {
+  position: relative;
   margin-top: 10px;
   margin-bottom: 15px;
+
+  &:before {
+    position: absolute;
+    top: 1px;
+    left: -30px;
+    min-width: 20px;
+    min-height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    background: $tahi-green;
+    counter-increment: questionList;
+    content: counter(questionList);
+  }
 }
 
 .question-info {
@@ -38,9 +59,11 @@
 }
 
 .question-dataset {
-  padding: 30px;
+  padding: 20px 30px;
   margin: 15px 0;
   background: rgb(194, 232, 188);
+
+  p { margin: 0 0 1rem 0; }
 }
 
 .question-dataset-header {

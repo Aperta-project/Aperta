@@ -49,7 +49,7 @@ feature "Editing paper", selenium: true, js: true do
         end
         wait_for_ajax
 
-        within ".task-list .doi" do
+        within ".task-list-doi" do
           expect(page).to have_content "DOI: vicious/robots.8888"
         end
         expect(page.current_path).to eq "/papers/vicious/robots.8888/edit"

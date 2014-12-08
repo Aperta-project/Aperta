@@ -3,7 +3,8 @@ class IhatJobsController < ApplicationController
   protect_from_forgery with: :null_session
   rescue_from ActionController::ParameterMissing, with: :render_invalid_params
 
-  include RestrictAccess
+  # removing any access check since the next pivotal card will be addressing this
+  # include RestrictAccess
 
   def update
     if job_state == "converted"

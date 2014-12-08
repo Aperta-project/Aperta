@@ -1,12 +1,13 @@
 $template-thumbnail-side-padding: 10px;
+$template-thumbnail-height: 135px;
 
 .mmt-thumbnail {
   position: relative;
   overflow: hidden;
   display: inline-block;
-  width: 200px;
-  height: 175px;
-  margin-right: 10px;
+  width: 270px;
+  height: $template-thumbnail-height;
+  margin: 0 10px 5px 0;
   padding: 15px $template-thumbnail-side-padding;
   color: #fff;
   background-color: $tahi-blue;
@@ -34,7 +35,7 @@ $template-thumbnail-side-padding: 10px;
 .mmt-thumbnail-overlay {
   display: none;
   @include position(absolute, 0px 0px 0px 0px);
-  line-height: 160px;
+  line-height: $template-thumbnail-height;
   text-align: center;
   background-color: rgba(52, 123, 197, 0.6);
   padding: 15px 12px;
@@ -49,8 +50,8 @@ $template-thumbnail-side-padding: 10px;
   }
 }
 
-.mmt-thumbnail-overlay-confirm-destroy {
-  padding-top: 45px;
+.mmt-thumbnail-overlay--confirm-destroy {
+  padding-top: 30px;
   line-height: 1.2;
   background-color: rgb(52, 123, 197);
 
@@ -62,12 +63,11 @@ $template-thumbnail-side-padding: 10px;
   }
 }
 
-.mmt-thumbnail:hover .mmt-thumbnail-edit-options {
+.mmt-thumbnail:hover .mmt-thumbnail-overlay--edit-options {
   display: block;
-  .glyphicon { @extend .animation-scale-in; }
 }
 
-.mmt-thumbnail.mmt-thumbnail-destroy .mmt-thumbnail-overlay-confirm-destroy {
+.mmt-thumbnail.mmt-thumbnail-destroy .mmt-thumbnail-overlay--confirm-destroy {
   display: block;
 }
 

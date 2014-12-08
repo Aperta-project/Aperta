@@ -42,6 +42,6 @@ class UserFlowsController < ApplicationController
       { flow_id: flow.id, title: flow.title }
     end
 
-    { flows: flows }
+    { flows: flows.uniq }
   end
 end

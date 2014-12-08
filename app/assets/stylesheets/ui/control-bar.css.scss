@@ -26,6 +26,8 @@
 .control-bar-sub-items {
   overflow: hidden;
   height: 0;
+  font-size: 12px;
+  line-height: 30px;
   @include transition(height 0.2s);
 }
 

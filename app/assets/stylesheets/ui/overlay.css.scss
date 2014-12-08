@@ -104,9 +104,11 @@
   float: left;
   width: 91.7%;
   margin: 0 0 12px 0;
+  padding-right: 100px;
+  line-height: 0.9;
 
   .manuscript-icon {
-    @include position(absolute, 11px auto auto 0px);
+    @include position(absolute, 8px auto auto 0px);
     path, rect { fill: $tahi-green; }
   }
 }

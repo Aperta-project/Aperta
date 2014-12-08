@@ -22,4 +22,5 @@
   :javascript
     window.currentUserId = #{current_user.id};
 
-= render 'shared/ihat_supported_formats'
+:javascript
+  window.ETahi.environment = "#{Rails.env}";

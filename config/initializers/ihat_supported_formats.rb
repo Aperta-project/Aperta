@@ -1,4 +1,4 @@
-Tahi::Application.config.ihat_supported_formats = 'null'
+Tahi::Application.config.ihat_supported_formats = nil
 module IhatSupportedFormats
   def self.call
     if ENV['IHAT_URL'].present?

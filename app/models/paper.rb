@@ -1,5 +1,4 @@
 class Paper < ActiveRecord::Base
-
   include EventStreamNotifier
 
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
@@ -21,7 +20,7 @@ class Paper < ActiveRecord::Base
   has_many :authors, -> { order 'authors.position ASC' }
 
   validates :paper_type, presence: true
-  validates :short_title, presence: true, uniqueness: true, length: {maximum: 50}
+  validates :short_title, presence: true, uniqueness: true, length: { maximum: 50 }
   validates :journal, presence: true
   validate :metadata_tasks_completed?, if: :submitting?
 
@@ -42,6 +41,10 @@ class Paper < ActiveRecord::Base
 
     def unpublished
       where(published_at: nil)
+    end
+
+    def find(param)
+      Doi.valid?(param) ? find_by_doi!(param) : super
     end
   end
 
@@ -73,9 +76,8 @@ class Paper < ActiveRecord::Base
   end
 
   def metadata_tasks_completed?
-    if tasks.metadata.count != tasks.metadata.completed.count
-      errors.add(:base, "can't submit a paper when all of the metadata tasks aren't completed")
-    end
+    return unless uncompleted_tasks?
+    errors.add(:base, "can't submit a paper when all of the metadata tasks aren't completed")
   end
 
   def submitting?
@@ -117,5 +119,11 @@ class Paper < ActiveRecord::Base
       return false unless user.present?
       send(relation).exists?(user)
     end
+  end
+
+  private
+
+  def uncompleted_tasks?
+    tasks.metadata.count != tasks.metadata.completed.count
   end
 end

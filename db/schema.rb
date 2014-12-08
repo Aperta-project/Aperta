@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141203152127) do
+ActiveRecord::Schema.define(version: 20141204193328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,13 +44,6 @@ ActiveRecord::Schema.define(version: 20141203152127) do
     t.string   "caption"
     t.string   "status",          default: "processing"
   end
-
-  create_table "author_groups", force: true do |t|
-    t.string  "name"
-    t.integer "paper_id"
-  end
-
-  add_index "author_groups", ["paper_id"], name: "index_author_groups_on_paper_id", using: :btree
 
   create_table "authors", force: true do |t|
     t.string   "first_name"
@@ -139,7 +132,7 @@ ActiveRecord::Schema.define(version: 20141203152127) do
     t.text     "description"
     t.string   "doi_publisher_prefix"
     t.string   "doi_journal_prefix"
-    t.string   "last_doi_issued"
+    t.string   "last_doi_issued",      default: "0"
   end
 
   create_table "manuscript_manager_templates", force: true do |t|
@@ -156,16 +149,6 @@ ActiveRecord::Schema.define(version: 20141203152127) do
     t.datetime "updated_at"
     t.string   "status",     default: "processing"
   end
-
-  create_table "message_participants", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "task_id"
-    t.integer  "participant_id"
-  end
-
-  add_index "message_participants", ["participant_id"], name: "index_message_participants_on_participant_id", using: :btree
-  add_index "message_participants", ["task_id"], name: "index_message_participants_on_task_id", using: :btree
 
   create_table "paper_reviews", force: true do |t|
     t.integer  "task_id"
@@ -210,6 +193,7 @@ ActiveRecord::Schema.define(version: 20141203152127) do
     t.text     "doi"
   end
 
+  add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
@@ -359,8 +343,8 @@ ActiveRecord::Schema.define(version: 20141203152127) do
   create_table "user_flows", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title"
     t.integer  "user_id"
+    t.integer  "role_flow_id"
   end
 
   create_table "user_roles", force: true do |t|

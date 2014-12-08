@@ -53,7 +53,7 @@ test 'all users can see their username', ->
   visit '/'
   click '.navigation-toggle'
   andThen ->
-    ok exists(find ".navigation-item-account span:contains('Fake User')")
+    ok exists(find ".navigation-item--account span:contains('Fake User')")
 
 test '(200 response) can see the Flow Manager link', ->
   respondAuthorized()

@@ -1,3 +1,3 @@
-class RoleFlowSerializer < UserFlowSerializer
+class FlowSerializer < UserFlowSerializer
   attributes :role_id, :position
 end

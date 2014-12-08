@@ -1,4 +1,4 @@
-ETahi.JournalRoleFlowManagerController = Ember.ObjectController.extend
+ETahi.JournalFlowManagerController = Ember.ObjectController.extend
   flowSort: ['position:asc']
   sortedFlows: Ember.computed.sort('model.flows', 'flowSort')
 
@@ -16,7 +16,7 @@ ETahi.JournalRoleFlowManagerController = Ember.ObjectController.extend
       flow.destroyRecord()
 
     addFlow: ->
-      flow = @store.createRecord 'roleFlow',
+      flow = @store.createRecord 'flow',
         title: 'Up for grabs'
         role: @get('model')
         position: @newFlowPosition()

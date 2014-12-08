@@ -4,7 +4,7 @@ class UserFlowsController < ApplicationController
   respond_to :json
 
   def index
-    render json: current_user.flows, meta: potential_user_flow_titles
+    render json: current_user.user_flows, meta: potential_user_flow_titles
   end
 
   def show
@@ -12,20 +12,20 @@ class UserFlowsController < ApplicationController
   end
 
   def create
-    flow = current_user.flows.create!(title: formatted_title)
-    render json: flow
+    user_flows = current_user.user_flows.create!(title: formatted_title)
+    render json: user_flows
   end
 
   def update
-    flow = UserFlow.find(params[:id])
-    flow.role_flow.update!(title: formatted_title)
-    render json: flow
+    user_flow = UserFlow.find(params[:id])
+    user_flow.flow.update!(title: formatted_title)
+    render json: user_flow
   end
 
   def destroy
-    flow = current_user.flows.find(params[:id])
-    flow.destroy
-    respond_with flow
+    user_flows = current_user.user_flows.find(params[:id])
+    user_flows.destroy
+    respond_with user_flows
   end
 
   def authorization
@@ -42,6 +42,6 @@ class UserFlowsController < ApplicationController
   end
 
   def potential_user_flow_titles
-    { titles: RoleFlow.joins(role: :users).where(users: { id: current_user.id }).uniq.pluck(:title) }
+    { titles: Flow.joins(role: :users).where(users: { id: current_user.id }).uniq.pluck(:title) }
   end
 end

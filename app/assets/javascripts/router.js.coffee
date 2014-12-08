@@ -17,7 +17,7 @@ ETahi.Router.map ()->
       @resource 'manuscript_manager_template', path: '/manuscript_manager_templates', ->
         @route('new')
         @route('edit', path: '/:template_id/edit')
-      @route('role_flow_manager', path: '/roles/:role_id/flow_manager')
+      @route('flow_manager', path: '/roles/:role_id/flow_manager')
 
 if window.history and window.history.pushState
   ETahi.Router.reopen

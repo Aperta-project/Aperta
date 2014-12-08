@@ -10,7 +10,7 @@ ETahi.Role = DS.Model.extend
 
   journal: DS.belongsTo('adminJournal')
   userRoles: DS.hasMany('userRole')
-  flows: DS.hasMany('roleFlow', async: true)
+  flows: DS.hasMany('flow', async: true)
 
   destroyRecord: ->
     @get('userRoles').invoke('unloadRecord')

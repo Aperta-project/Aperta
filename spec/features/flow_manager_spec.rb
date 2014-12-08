@@ -72,7 +72,7 @@ feature "Flow Manager", js: true, selenium: true do
       expect(flow_manager_page).to have_no_application_error
     end
 
-    scenario "choices are determined by the user's role flows" do
+    scenario "choices are determined by the user's flows" do
       role.flows.create(title: "Up for grabs")
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager

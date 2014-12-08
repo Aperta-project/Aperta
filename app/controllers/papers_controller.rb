@@ -52,7 +52,7 @@ class PapersController < ApplicationController
   def upload
     manuscript = paper.manuscript || paper.build_manuscript
     manuscript.update_attribute :status, "processing"
-    DownloadManuscriptWorker.perform_async manuscript.id, params[:url], ihat_job_url(id: ':id')
+    DownloadManuscriptWorker.perform_async(manuscript.id, params[:url], ihat_callback_url, paper_id: paper.id)
     render json: paper
   end
 

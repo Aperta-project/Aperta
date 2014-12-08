@@ -10,16 +10,8 @@ describe DownloadManuscriptWorker, redis: true do
 
   it "downloads the attachment" do
     with_aws_cassette('manuscript') do
-      DownloadManuscriptWorker.new.perform(paper.manuscript.id, url, nil)
+      DownloadManuscriptWorker.new.perform(paper.manuscript.id, url, { metadata: { paper_id: paper.id } })
       expect(paper.manuscript.reload.source.url).to match(%r{manuscript/source\.docx})
     end
-  end
-
-  it "creates an IhatJob" do
-    expect {
-      with_aws_cassette('manuscript') do
-        DownloadManuscriptWorker.new.perform(paper.manuscript.id, url, nil)
-      end
-    }.to change { IhatJob.count }.by(1)
   end
 end

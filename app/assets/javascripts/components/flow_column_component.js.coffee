@@ -33,4 +33,4 @@ ETahi.FlowColumnComponent = Ember.Component.extend
       @toggleProperty 'editing'
 
     removeFlow: ->
-      sendAction 'removeFlow', @get('flow')
+      @sendAction 'removeFlow', @get('flow')

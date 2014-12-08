@@ -4,7 +4,7 @@ class UserFlowsController < ApplicationController
   respond_to :json
 
   def index
-    render json: current_user.user_flows, meta: potential_user_flow_titles
+    respond_with current_user.user_flows, meta: potential_flows
   end
 
   def show
@@ -12,13 +12,8 @@ class UserFlowsController < ApplicationController
   end
 
   def create
-    user_flows = current_user.user_flows.create!(title: formatted_title)
-    render json: user_flows
-  end
-
-  def update
-    user_flow = UserFlow.find(params[:id])
-    user_flow.flow.update!(title: formatted_title)
+    flow = Flow.find(flow_params[:flow_id])
+    user_flow = current_user.user_flows.create(flow: flow)
     render json: user_flow
   end
 
@@ -33,15 +28,20 @@ class UserFlowsController < ApplicationController
   end
 
   private
+
   def flow_params
-    params.require(:user_flow).permit(:title)
+    params.require(:user_flow).permit(:flow_id)
   end
 
   def formatted_title
     flow_params[:title].downcase.capitalize
   end
 
-  def potential_user_flow_titles
-    { titles: Flow.joins(role: :users).where(users: { id: current_user.id }).uniq.pluck(:title) }
+  def potential_flows
+    flows = (current_user.flows + Flow.defaults).map do |flow|
+      { flow_id: flow.id, title: flow.title }
+    end
+
+    { flows: flows.uniq }
   end
 end

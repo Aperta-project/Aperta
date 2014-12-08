@@ -6,17 +6,14 @@ class CommentsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def create
-    add_user_as_participant unless current_user.tasks.include? comment.task
+    add_user_as_participant unless comment.task.participants.include? current_user
 
-    if CommentLookManager.sync_comment(comment)
-      respond_with comment
-    end
+    respond_with comment if CommentLookManager.sync_comment(comment)
   end
 
   def show
     respond_with comment
   end
-
 
   private
 

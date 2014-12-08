@@ -51,21 +51,20 @@ describe CommentsController do
         end
       end
 
-      context "the user is a participant on the card" do
-        it "creates a new comment" do
-          do_request
-          expect(Comment.last.body).to eq('My comment')
-          expect(Comment.last.commenter_id).to eq(user.id)
-        end
-
-        it "returns the new comment as json" do
-          do_request
-          expect(response.status).to eq(201)
-          json = JSON.parse(response.body)
-          expect(json["comment"]["id"]).to eq(Comment.last.id)
-        end
-        it_behaves_like "an unauthenticated json request"
+      it "creates a new comment" do
+        do_request
+        expect(Comment.last.body).to eq('My comment')
+        expect(Comment.last.commenter_id).to eq(user.id)
       end
+
+      it "returns the new comment as json" do
+        do_request
+        expect(response.status).to eq(201)
+        json = JSON.parse(response.body)
+        expect(json["comment"]["id"]).to eq(Comment.last.id)
+      end
+
+      it_behaves_like "an unauthenticated json request"
     end
   end
 end

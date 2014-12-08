@@ -3,22 +3,52 @@ require 'spec_helper'
 describe IhatJobsController, :type => :controller do
 
   describe "PUT update" do
-    subject(:job) { IhatJob.create! job_id: "blah-blah", paper: FactoryGirl.create(:paper) }
-    let(:api_token) { ApiKey.generate! }
-
     before do
-      controller.request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(api_token)
+      token = ApiKey.generate!
+      controller.request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(token)
     end
 
-    it "returns http success" do
-      put :update, id: job.job_id
-      expect(response).to be_success
+    let(:ihat_job_params) { { job: { id: 4, state: ihat_job_state, metadata: { paper_id: 123 }, url: "http://amazon.localhost/1234" } } }
+
+    context "the ihat job status is 'converted'" do
+      let(:ihat_job_state) { "converted" }
+
+      it "calls the PaperUpdateWorker" do
+        expect(PaperUpdateWorker).to receive(:perform_async).with("123", "http://amazon.localhost/1234")
+        put :update, ihat_job_params
+      end
+
+      it "returns success" do
+        allow(PaperUpdateWorker).to receive(:perform_async)
+        put :update, ihat_job_params
+        expect(response.status).to eq(200)
+      end
     end
 
-    it "calls the PaperUpdateWorker" do
-      expect(PaperUpdateWorker).to receive(:perform_async).with(job.job_id)
-      put :update, id: job.job_id
+    context "the ihat job status is not 'converted'" do
+      let(:ihat_job_state) { "errored" }
+
+      it "does not call the PaperUpdateWorker" do
+        expect(PaperUpdateWorker).to_not receive(:perform_async)
+        put :update, ihat_job_params
+      end
+
+      it "returns success" do
+        allow(PaperUpdateWorker).to receive(:perform_async)
+        put :update, ihat_job_params
+        expect(response.status).to eq(202)
+      end
     end
+
+    context "missing required parameters" do
+      let(:ihat_job_state) { "converted" }
+      let(:invalid_ihat_job_params) { { job: { id: "4", state: "converted", metadata: {} } } }
+
+      it "returns 422" do
+        put :update, invalid_ihat_job_params
+        expect(response.status).to eq(422)
+      end
+    end
+
   end
-
 end

@@ -83,7 +83,7 @@ Tahi::Application.routes.draw do
   resources :collaborations, only: [:create, :destroy]
   resources :paper_roles, only: [:show]
 
-  resources :ihat_jobs, only: :update
+  put :ihat_jobs, to: "ihat_jobs#update"
 
   resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create

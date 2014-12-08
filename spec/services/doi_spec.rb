@@ -10,9 +10,24 @@ describe Doi do
 
   describe ".valid?" do
     context "with a doi" do
-      let(:doi) { 'any/thing.1' }
+      let(:doi) { 'any.thing/thing.1' }
       it "returns true" do
         expect(described_class.valid? doi).to eq true
+        expect(described_class.valid? "10.10.1038/nphys1170").to eq true
+        expect(described_class.valid? "10.1002/0470841559.ch1").to eq true
+        expect(described_class.valid? "10.1594/PANGAEA.726855").to eq true
+        expect(described_class.valid? "10.1594/GFZ.GEOFON.gfz2009kciu").to eq true
+        expect(described_class.valid? "10.1594/PANGAEA.667386").to eq true
+        expect(described_class.valid? "10.3207/2959859860").to eq true
+        expect(described_class.valid? "10.3866/PKU.WHXB201112303").to eq true
+        expect(described_class.valid? "10.3972/water973.0145.db").to eq true
+        expect(described_class.valid? "10.7666/d.y351065").to eq true
+        expect(described_class.valid? "10.11467/isss2003.7.1_11").to eq true
+        expect(described_class.valid? "10.7875/leading.author.2.e008").to eq true
+        expect(described_class.valid? "10.1430/8105").to eq true
+        expect(described_class.valid? "10.1392/BC1.0").to eq true
+        expect(described_class.valid? "10.1000/182").to eq true
+        expect(described_class.valid? "10.1234/joe.jou.1516").to eq true
       end
     end
 
@@ -24,6 +39,7 @@ describe Doi do
 
     context "with an invalid doi" do
       it "returns false" do
+        expect(described_class.valid? "10.1000/182/12").to eq false
         expect(described_class.valid? "monkey").to eq false
       end
     end

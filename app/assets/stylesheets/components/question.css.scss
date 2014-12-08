@@ -1,28 +1,3 @@
-.questionnaire {
-  counter-reset: reviewer-form-counter;
-
-  ol > li {
-    position: relative;
-    margin-bottom: 50px;
-    &:before {
-      content: counter(reviewer-form-counter);
-      counter-increment: reviewer-form-counter;
-
-      @include position(absolute, -1px auto auto -28px);
-      width: 23px;
-      height: 23px;
-      border-radius: 50%;
-      padding: 5px;
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      line-height: 14px;
-      text-align: center;
-      background: $tahi-green;
-    }
-  }
-}
-
 .question-list {
   list-style-type: none;
   padding-left: 32px;
@@ -54,6 +29,7 @@
 }
 
 .question-text {
+  margin-bottom: 10px;
   font-size: 1.4em;
   line-height: 1.2em;
 }

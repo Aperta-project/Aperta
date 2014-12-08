@@ -13,8 +13,8 @@ class UserFlowsController < ApplicationController
 
   def create
     flow = Flow.find(flow_params[:flow_id])
-    user_flows = current_user.flows << flow
-    render json: user_flows
+    user_flow = current_user.user_flows.create(flow: flow)
+    render json: user_flow
   end
 
   def destroy

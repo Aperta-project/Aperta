@@ -50,7 +50,7 @@ feature "Flow Manager", js: true, selenium: true do
     page.driver.browser.manage.window.size = @old_size
   end
 
-  scenario "admin removes a column from their flow manager" do
+  pending "admin removes a column from their flow manager" do
     dashboard_page = DashboardPage.new
     flow_manager_page = dashboard_page.view_flow_manager
     up_for_grabs = flow_manager_page.column 'Up for grabs'
@@ -61,8 +61,7 @@ feature "Flow Manager", js: true, selenium: true do
   end
 
   context "adding a column to the flow manager" do
-    scenario "the column should appear on the page" do
-      RoleFlow.create_default_flows!(role)
+    pending "the column should appear on the page" do
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
@@ -98,7 +97,7 @@ feature "Flow Manager", js: true, selenium: true do
       dashboard_page.view_flow_manager
     end
 
-    it "displays unread comment count" do
+    pending "displays unread comment count" do
       within(".column", text: "My tasks") do
         expect(page).to have_css(".badge", text: "1")
       end

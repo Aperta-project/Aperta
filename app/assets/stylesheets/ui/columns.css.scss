@@ -57,30 +57,29 @@
 }
 
 
-.remove-column {
-  display: none;
-  position: absolute;
-  top: -8px;
-  right: 0;
-  cursor: pointer;
-  color: $tahi-green;
-}
-
-.column:hover .remove-column {
-  display: block;
-}
-
-
 .column-header {
   position: relative;
   margin: 0 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #aaa;
+
+  .glyphicon {
+    display: none;
+    position: absolute;
+    top: -8px;
+    cursor: pointer;
+    color: $tahi-green;
+  }
+
+  .remove-column     { right: 0; }
+  .edit-column-title { right: 20px; }
+}
+
+.column:hover .column-header .glyphicon {
+  display: block;
 }
 
 .column-title {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   outline: none;
   margin: 0;

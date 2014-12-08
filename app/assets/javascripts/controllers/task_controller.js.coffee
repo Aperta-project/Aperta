@@ -11,7 +11,7 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
   isCurrentUserAdmin: Ember.computed.alias 'controllers.application.currentUser.siteAdmin'
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
 
-  # This will get overriden in setupController
+  # This will get overridden in setupController
   comments: []
 
   redirectStack: Ember.computed.alias 'controllers.application.overlayRedirect'

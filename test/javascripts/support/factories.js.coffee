@@ -199,6 +199,9 @@ ETahi.Factory =
     @addHasMany(journal, [jtt], {inverse: 'journal'})
     jtt
 
+  createTaskTemplate: (journal, phase_template, jtt) ->
+    @createRecord('TaskTemplate', phase_template: phase_template)
+
   createJournalRole: (journal, roleAttrs={}) ->
     role = @createRecord('Role', roleAttrs)
     @addHasMany(journal, [role], {inverse: 'journal'})
@@ -429,6 +432,14 @@ ETahi.FactoryAttributes.JournalTaskType =
   title: null
   journal_id: null
   role: null
+
+ETahi.FactoryAttributes.TaskTemplate =
+  _rootKey: 'task_template'
+  id: null
+  template: []
+  title: "Journal Task Template"
+  phase_template_id: null
+  journal_task_type_id: null
 
 ETahi.FactoryAttributes.TaskType =
   _rootKey: 'task_type'

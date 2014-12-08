@@ -10,24 +10,15 @@ describe RoleFlowsController do
   before { sign_in user }
 
   describe "#update" do
-    subject(:do_request) do
-      put :update, {
-        format: 'json',
-        id: flow.id,
-        role_flow: {
-          title: new_title
-        }
-      }
-    end
-
     let!(:flow) { FactoryGirl.create(:role_flow, role: role, title: "My tasks") }
 
-    context "title does not map to a template" do
-      let(:new_title) { "Something that does not match" }
+    context "changes the title" do
+      let(:new_title) { "New title" }
 
-      it "returns head 422" do
-        do_request
-        expect(response.status).to eq(422)
+      it "returns head 200" do
+        put :update, { format: 'json', id: flow.id, role_flow: { title: new_title } }
+        expect(response.status).to eq(200)
+        expect(RoleFlow.find(flow.id).title).to eq(new_title)
       end
     end
   end

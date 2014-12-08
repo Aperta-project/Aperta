@@ -20,10 +20,15 @@ ETahi.FlowColumnComponent = Ember.Component.extend
     viewCard: (card) ->
       @sendAction 'viewCard', card
 
-    setFlowTitle: (selectedName) ->
-      flow = @get('flow')
-      flow.set('title', selectedName.text)
-      @sendAction 'saveFlow', flow
+    save: ->
+      @sendAction 'saveFlow', @get('flow')
 
-    removeFlow: (flow) ->
-      @sendAction 'removeFlow', flow
+    cancel: ->
+      @get('flow').rollback()
+      @send 'toggleEdit'
+
+    toggleEdit: ->
+      @toggleProperty 'editable'
+
+    removeFlow: ->
+      @sendAction 'removeFlow', @get('flow')

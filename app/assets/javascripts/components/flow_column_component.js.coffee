@@ -13,7 +13,6 @@ ETahi.FlowColumnComponent = Ember.Component.extend
   ).property()
 
   selectedTaskType: (->
-    console.log(@get('flow.query'))
     if @get('flow.query').type
       type = @get('journalTaskTypes').findBy('kind', @get('flow.query').type)
       id: type.get('kind')

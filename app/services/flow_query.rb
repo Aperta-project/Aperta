@@ -19,6 +19,7 @@ class FlowQuery
 
     scope = scope.send(query_hash[:state]) if query_hash[:state]
     scope = scope.for_role(query_hash[:role]) if query_hash[:role]
+    scope = scope.admin if query_hash[:admin]
 
     if query_hash[:type] && TaskType.types.include?(query_hash[:type])
       scope = scope.where(type: query_hash[:type])

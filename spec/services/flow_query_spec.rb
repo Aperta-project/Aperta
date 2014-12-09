@@ -29,7 +29,7 @@ describe FlowQuery do
     end
 
     it "For 'My tasks' returns incomplete tasks that the user is participating in" do
-      flow = Flow.create(title: 'My tasks', query: { incomplete: true, assigned: true })
+      flow = Flow.create(title: 'My tasks', query: { state: :incomplete, assigned: true })
       incomplete_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [user])
       complete_task = FactoryGirl.create(:task, phase: phase, completed: true, participants: [user])
       unrelated_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [])
@@ -38,7 +38,7 @@ describe FlowQuery do
     end
 
     it "For 'Done' returns completed tasks that the user is participating in" do
-      flow = Flow.create(title: 'Done', query: { completed: true, assigned: true })
+      flow = Flow.create(title: 'Done', query: { state: :completed, assigned: true })
       incomplete_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [user])
       complete_task = FactoryGirl.create(:task, phase: phase, completed: true, participants: [user])
       unrelated_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [])
@@ -58,7 +58,7 @@ describe FlowQuery do
     end
 
     it "For 'Up for grabs' returns incomplete, unassigned PaperAdminTasks for journals the user has a role in." do
-      flow = Flow.create(title: 'Up for grabs', query: { unassigned: true, incomplete: true, admin: true })
+      flow = Flow.create(title: 'Up for grabs', query: { unassigned: true, state: :incomplete, admin: true })
       valid_task = FactoryGirl.create(:paper_admin_task, phase: phase, completed: false)
       other_task_same_journal = FactoryGirl.create(:task, phase: phase)
       other_paper_admin_task = FactoryGirl.create(:paper_admin_task)
@@ -73,7 +73,7 @@ describe FlowQuery do
       let(:site_admin) { FactoryGirl.create :user, :site_admin }
 
       it "For 'Up for grabs' returns incomplete, unassigned PaperAdminTasks for any journal" do
-        flow = Flow.create(title: 'Up for grabs', query: { unassigned: true, incomplete: true, admin: true })
+        flow = Flow.create(title: 'Up for grabs', query: { unassigned: true, state: :incomplete, admin: true })
         valid_task = FactoryGirl.create(:paper_admin_task, phase: phase, completed: false)
         other_paper_admin_task = FactoryGirl.create(:paper_admin_task)
 

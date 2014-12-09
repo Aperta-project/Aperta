@@ -1,5 +1,5 @@
-class RoleFlowsPolicy < ApplicationPolicy
-  primary_resource :role_flow
+class FlowsPolicy < ApplicationPolicy
+  primary_resource :flow
 
   def show?
     can_administer_journal?(journal)
@@ -20,6 +20,6 @@ class RoleFlowsPolicy < ApplicationPolicy
   private
 
   def journal
-    role_flow.role.journal
+    flow.role.journal
   end
 end

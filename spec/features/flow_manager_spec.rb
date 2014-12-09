@@ -9,6 +9,12 @@ feature "Flow Manager", js: true, selenium: true do
     create :user, :site_admin, first_name: "Author"
   end
 
+  before do
+    flow = Flow.where(title: "Up for grabs").first_or_create
+    admin.flows << flow
+    author.flows << flow
+  end
+
   let(:journal) { FactoryGirl.create(:journal) }
 
   let!(:paper1) do
@@ -50,7 +56,7 @@ feature "Flow Manager", js: true, selenium: true do
     page.driver.browser.manage.window.size = @old_size
   end
 
-  pending "admin removes a column from their flow manager" do
+  it "admin removes a column from their flow manager" do
     dashboard_page = DashboardPage.new
     flow_manager_page = dashboard_page.view_flow_manager
     up_for_grabs = flow_manager_page.column 'Up for grabs'
@@ -61,7 +67,7 @@ feature "Flow Manager", js: true, selenium: true do
   end
 
   context "adding a column to the flow manager" do
-    pending "the column should appear on the page" do
+    it "the column should appear on the page" do
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
@@ -72,8 +78,7 @@ feature "Flow Manager", js: true, selenium: true do
       expect(flow_manager_page).to have_no_application_error
     end
 
-    scenario "choices are determined by the user's role flows" do
-      role.flows.create(title: "Up for grabs")
+    scenario "choices are determined by the user's flows" do
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
@@ -97,8 +102,8 @@ feature "Flow Manager", js: true, selenium: true do
       dashboard_page.view_flow_manager
     end
 
-    pending "displays unread comment count" do
-      within(".column", text: "My tasks") do
+    it "displays unread comment count" do
+      within(".column", text: "Up for grabs") do
         expect(page).to have_css(".badge", text: "1")
       end
     end

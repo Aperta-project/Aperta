@@ -8,6 +8,7 @@ ETahi.FlowColumnComponent = Ember.Component.extend
   tagName: 'li'
   classNames: ['column']
 
+  editing: false
   editable: false
   emptyText: "There are no matches."
 
@@ -28,7 +29,8 @@ ETahi.FlowColumnComponent = Ember.Component.extend
       @send 'toggleEdit'
 
     toggleEdit: ->
-      @toggleProperty 'editable'
+      return unless @get('editable')
+      @toggleProperty 'editing'
 
     removeFlow: ->
       @sendAction 'removeFlow', @get('flow')

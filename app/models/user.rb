@@ -15,7 +15,8 @@ class User < ActiveRecord::Base
   has_many :user_roles, inverse_of: :user
   has_many :roles, through: :user_roles
   has_many :journals, ->{ uniq }, through: :roles
-  has_many :flows, class_name: 'UserFlow', inverse_of: :user, dependent: :destroy
+  has_many :user_flows, inverse_of: :user, dependent: :destroy
+  has_many :flows, through: :user_flows
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many :participations
   has_many :tasks, through: :participations

@@ -4,7 +4,7 @@
   </div>
 
   {{#if isLoggedIn}}
-    <a href="#" {{action "routeTo" "profile"}} class="navigation-item navigation-item-account">
+    <a href="#" {{action "routeTo" "profile"}} class="navigation-item navigation-item--account">
       <img {{bind-attr src="currentUser.avatarUrl"}} class="user-thumbnail">
       <span>{{unbound currentUser.fullName}}</span>
     </a>
@@ -15,7 +15,7 @@
       <a href="#" class="navigation-item" {{action "routeTo" "flow_manager"}}>Flow Manager</a>
     {{/if}}
     {{#if canViewAdminLinks}}
-      <a href="#" class="navigation-item navigation-item-admin" {{action "routeTo" "admin"}}>Admin</a>
+      <a href="#" class="navigation-item navigation-item--admin" {{action "routeTo" "admin"}}>Admin</a>
     {{/if}}
 
      <a class="navigation-item" href="/users/sign_out"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign Out</a>

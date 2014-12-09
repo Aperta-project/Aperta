@@ -31,8 +31,8 @@ ETahi.FileUploaderComponent = Ember.TextField.extend
     params.dataType = 'xml'
     params.autoUpload = false # since we're not overriding the uploader's add method, we need to prevent
                               # the form from autosubmitting before the s3 stuff has gone through first.
-    params.previewMaxHeight = 40
-    params.previewMaxWidth = 250
+    params.previewMaxHeight = 90
+    params.previewMaxWidth = 300
     # No matter how dumb this looks, it is necessary.
     that = @
     params.success = (fileData) ->

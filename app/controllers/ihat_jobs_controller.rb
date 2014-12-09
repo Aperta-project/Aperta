@@ -3,13 +3,9 @@ class IhatJobsController < ApplicationController
   protect_from_forgery with: :null_session
   rescue_from ActionController::ParameterMissing, with: :render_invalid_params
 
-  # removing any access check since the next pivotal card will be addressing this
-  # include RestrictAccess
-
   def update
-    if job_state == "converted"
-      validate_required_params!
-      PaperUpdateWorker.perform_async(paper_id, epub_url)
+    if job.converted?
+      PaperUpdateWorker.perform_async(job.paper_id, job.epub_url)
       head :ok
     else
       head :accepted
@@ -18,26 +14,12 @@ class IhatJobsController < ApplicationController
 
   private
 
+  def job
+    @job ||= IHatJob.new(ihat_job_params)
+  end
+
   def ihat_job_params
     params.require(:job).permit(:id, :state, :url, metadata: :paper_id)
-  end
-
-  def paper_id
-    ihat_job_params[:metadata][:paper_id]
-  end
-
-  def epub_url
-    ihat_job_params[:url]
-  end
-
-  def job_state
-    ihat_job_params[:state]
-  end
-
-  def validate_required_params!
-    unless [paper_id, epub_url].all?(&:present?)
-      raise ActionController::ParameterMissing.new("iHat job id #{ihat_job_params[:id]} did not return required parameters")
-    end
   end
 
   def render_invalid_params(e)

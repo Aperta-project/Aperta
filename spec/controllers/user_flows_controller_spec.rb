@@ -8,7 +8,7 @@ describe UserFlowsController do
   before { sign_in user }
 
   describe "#index" do
-    let!(:flow) { FactoryGirl.create(:flow, title: "My tasks") }
+    let!(:flow) { FactoryGirl.create(:flow, title: "My tasks", role: nil) }
     let!(:user_flow) { FactoryGirl.create(:user_flow, user: user, flow_id: flow.id) }
 
     context "returns a list of user_flows" do

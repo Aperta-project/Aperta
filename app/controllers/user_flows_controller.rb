@@ -38,7 +38,7 @@ class UserFlowsController < ApplicationController
   end
 
   def potential_flows
-    flows = (current_user.flows + Flow.defaults).map do |flow|
+    flows = (current_user.possible_flows + Flow.defaults).map do |flow|
       { flow_id: flow.id, title: flow.title }
     end
 

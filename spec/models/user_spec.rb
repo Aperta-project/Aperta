@@ -19,6 +19,17 @@ describe User do
     end
   end
 
+  describe "#possible_flows" do
+    it "returns all flows assigned to the user's roles" do
+      role = FactoryGirl.create(:role)
+      flow = FactoryGirl.create(:flow, role: role)
+      user = FactoryGirl.create(:user)
+      user.roles << role
+
+      expect(user.possible_flows).to include(flow)
+    end
+  end
+
   describe "#full_name" do
     it "returns the user's first and last name" do
       user = User.new first_name: 'Mihaly', last_name: 'Csikszentmihalyi'

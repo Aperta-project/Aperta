@@ -10,12 +10,12 @@ class FlowQuery
 
   def tasks
     return [] if flow.query.empty?
-
-    arr = flow.query
+    query_hash = HashWithIndifferentAccess.new(flow.query)
     scope = Task.includes(:paper)
-    scope = scope.assigned_to(user) if arr.include?(:assigned)
+    scope = scope.assigned_to(user) if query_hash[:assigned]
 
-    scope = scope.where(type: arr[:type]) if arr.include?(:type)
+    # TODO verify its a possible type
+    scope = scope.where(type: query_hash[:type]) if query_hash[:type]
 
     unless user.site_admin?
       if flow.default?
@@ -25,7 +25,7 @@ class FlowQuery
       end
     end
 
-    arr.reject { |key| NON_SCOPED_FILTERS.include?(key) }.each do |s|
+    query_hash.keys.reject { |key| NON_SCOPED_FILTERS.include?(key.to_sym) }.each do |s|
       scope = scope.send(s)
     end
 

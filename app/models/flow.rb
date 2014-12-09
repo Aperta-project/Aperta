@@ -7,7 +7,7 @@ class Flow < ActiveRecord::Base
 
   acts_as_list scope: :role
 
-  serialize :query, Array
+  serialize :query, Hash
 
   scope :defaults, -> { where(role_id: nil) }
 

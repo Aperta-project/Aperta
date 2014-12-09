@@ -15,9 +15,9 @@
   {{/if}}
   {{#if editable}}
     <div class="edit-column-title glyphicon glyphicon-pencil" {{action "toggleEdit"}}></div>
-    {{select-2-single value=query.type
-                      source=typeOptions
-                      selectionSelected="save"
+    {{select-2-single source=selectableTaskTypes
+                      selectedData=selectedTaskType
+                      selectionSelected="updateQuery"
                       placeholder="Card Types"}}
   {{/if}}
   <div class="remove-column glyphicon glyphicon-remove" {{action "removeFlow"}}></div>

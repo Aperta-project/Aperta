@@ -4,7 +4,7 @@ describe CommentsController do
   render_views
   let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
   let(:phase) { paper.phases.first }
-  let(:user) { create(:user) }
+  let(:user) { create(:user, tasks: []) }
 
   let(:task) { create(:task, phase: phase, participants: [user], title: "Task", role: "admin") }
   before { sign_in user }
@@ -41,6 +41,16 @@ describe CommentsController do
         end
       end
 
+      context "the user is not a participant on the card" do
+        let(:task) { create(:task, phase: phase, participants: [], title: "Task", role: "admin") }
+
+        it "adds the user as a participant" do
+          expect(user.tasks).to_not include(task)
+          do_request
+          expect(user.reload.tasks).to include(task)
+        end
+      end
+
       it "creates a new comment" do
         do_request
         expect(Comment.last.body).to eq('My comment')
@@ -53,6 +63,7 @@ describe CommentsController do
         json = JSON.parse(response.body)
         expect(json["comment"]["id"]).to eq(Comment.last.id)
       end
+
       it_behaves_like "an unauthenticated json request"
     end
   end

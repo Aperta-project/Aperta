@@ -1,31 +1,27 @@
-.questionnaire {
-  counter-reset: reviewer-form-counter;
-
-  ol > li {
-    position: relative;
-    margin-bottom: 50px;
-    &:before {
-      content: counter(reviewer-form-counter);
-      counter-increment: reviewer-form-counter;
-
-      @include position(absolute, -1px auto auto -28px);
-      width: 23px;
-      height: 23px;
-      border-radius: 50%;
-      padding: 5px;
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      line-height: 14px;
-      text-align: center;
-      background: $tahi-green;
-    }
-  }
+.question-list {
+  list-style-type: none;
+  padding-left: 32px;
+  counter-reset: questionList;
 }
 
 .question {
+  position: relative;
   margin-top: 10px;
   margin-bottom: 15px;
+
+  &:before {
+    position: absolute;
+    top: 1px;
+    left: -30px;
+    min-width: 20px;
+    min-height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    background: $tahi-green;
+    counter-increment: questionList;
+    content: counter(questionList);
+  }
 }
 
 .question-info {
@@ -33,14 +29,17 @@
 }
 
 .question-text {
+  margin-bottom: 10px;
   font-size: 1.4em;
   line-height: 1.2em;
 }
 
 .question-dataset {
-  padding: 30px;
+  padding: 20px 30px;
   margin: 15px 0;
   background: rgb(194, 232, 188);
+
+  p { margin: 0 0 1rem 0; }
 }
 
 .question-dataset-header {

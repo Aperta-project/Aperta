@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
   include UserDevise
-  searchable do
+  searchable ignore_attribute_changes_of: [:encrypted_password, :avatar] do
     integer :id
     text :username, :first_name, :last_name, :email
     text :full_name do
@@ -39,6 +39,10 @@ class User < ActiveRecord::Base
          :omniauthable,
          authentication_keys: [:login],
          omniauth_providers: [:orcid, :cas]
+
+  def possible_flows
+    Flow.where(role_id: roles.map(&:id))
+  end
 
   def self.site_admins
     where(site_admin: true)

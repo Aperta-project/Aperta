@@ -4,13 +4,13 @@
   <li><span>{{view.phaseCount}}</span> Phases</li>
 </ul>
 
-<div class="mmt-thumbnail-overlay mmt-thumbnail-edit-options">
-  {{link-to "" "manuscript_manager_template.edit" view.content class="glyphicon glyphicon-pencil scaleIn"}}
+<div class="mmt-thumbnail-overlay mmt-thumbnail-overlay--edit-options">
+  {{link-to "" "manuscript_manager_template.edit" view.content class="glyphicon glyphicon-pencil animation-scale-in"}}
   {{#if view.canDeleteTemplates}}
-    <span class="glyphicon glyphicon-trash scaleIn" {{action "toggleWillDestroyTemplate" target="view"}}></span>
+    <span class="glyphicon glyphicon-trash animation-scale-in" {{action "toggleWillDestroyTemplate" target="view"}}></span>
   {{/if}}
 </div>
-<div class="mmt-thumbnail-overlay mmt-thumbnail-overlay-confirm-destroy">
+<div class="mmt-thumbnail-overlay mmt-thumbnail-overlay--confirm-destroy">
   <p>This will permanently delete your template. Are you sure?</p>
   <button class="button-secondary button--blue knockout" {{action "toggleWillDestroyTemplate" target="view"}}>Cancel</button>
   <button class="button-secondary button--blue knockout mmt-thumbnail-delete-button" {{action "destroyTemplate" view.content}}>Delete</button>

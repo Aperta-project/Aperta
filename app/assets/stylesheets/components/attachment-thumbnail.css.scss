@@ -11,18 +11,6 @@
   margin-top: 20px;
   border: 1px solid #d7d7d7;
   padding: 10px;
-
-  &._uploading {
-    height: 112px;
-    white-space: nowrap;
-  }
-
-  .preview-filename {
-    position: relative;
-    left: 90px;
-    top: -23px;
-    margin: 0; //override .overlay-content p
-  }
 }
 
 .attachment-original-download-link {

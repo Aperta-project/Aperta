@@ -20,6 +20,20 @@ describe Admin::JournalsController, redis: true do
       end
     end
 
+    context "when the user has insufficient permissions" do
+      let(:journal_admin) { create :user }
+      before { assign_journal_role(journal, journal_admin, :admin) }
+
+      before do
+        sign_in journal_admin
+      end
+
+      it "renders status 403" do
+        xhr :post, :create, admin_journal: { name: 'journal name', description: 'journal desc' }
+        expect(response.status).to eq 403
+      end
+    end
+
     context "when the user is unauthorized" do
       it "renders status 401" do
         xhr :post, :create, admin_journal: { name: 'journal name', description: 'journal desc' }

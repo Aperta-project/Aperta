@@ -4,25 +4,35 @@ describe Admin::JournalsPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:policy) { Admin::JournalsPolicy.new(current_user: user, journal: journal) }
 
-  context "admin" do
+  context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    include_examples "person who can administer the journal"
+    include_examples "person who can administer all journals (site admin)"
   end
 
-  context "non admin who does not administer the journal" do
+  context "non site admin" do
     let(:user) { FactoryGirl.create(:user) }
 
-    include_examples "person who cannot administer the journal"
-  end
-
-  context "user who administers the journal" do
-    let(:user) { FactoryGirl.create(:user) }
-
-    before do
-      assign_journal_role(journal, user, :admin)
+    context "who doesn't administer any journals" do
+      include_examples "person who cannot administer any journal"
     end
 
-    include_examples "person who can administer the journal"
+    context "who administers the journal" do
+      before do
+        assign_journal_role(journal, user, :admin)
+      end
+
+      include_examples "person who can administer the journal (journal admin)"
+    end
+
+    context "who administers a journal, but not this journal" do
+      let(:other_journal) { FactoryGirl.create(:journal) }
+
+      before do
+        assign_journal_role(other_journal, user, :admin)
+      end
+
+      include_examples "person who cannot administer the journal"
+    end
   end
 end

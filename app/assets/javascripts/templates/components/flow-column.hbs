@@ -2,7 +2,7 @@
   {{#if editing}}
     {{content-editable tagName="h2"
                        class="column-title"
-                       value=flow.title
+                       value=userFlow.title
                        plaintext="true"
                        preventEnterKey="true"}}
 
@@ -12,7 +12,7 @@
     </div>
   {{else}}
     <div class="column-title-wrapper">
-      <h2 class="column-title" {{action "toggleEdit"}}>{{flow.title}}</h2>
+      <h2 class="column-title" {{action "toggleEdit"}}>{{userFlow.title}}</h2>
       <div class="journal-thumbnail" style="min-height: 40px;">
         {{#if journal.logoUrl}}
           <img {{bind-attr src=journal.logoUrl}}>
@@ -28,18 +28,18 @@
   <div class="remove-column glyphicon glyphicon-remove" {{action "removeFlow"}}></div>
 </div>
 
-{{progress-spinner visible=flow.isSaving}}
+{{progress-spinner visible=userFlow.isSaving}}
 
 <div class="column-content">
   <ul class="cards">
-    {{#each litePaper in flow.litePapers}}
-      {{flow-task-group flow=flow
+    {{#each litePaper in userFlow.litePapers}}
+      {{flow-task-group flow=userFlow
                         litePaper=litePaper
                         commentLooks=commentLooks
                         viewCard="viewCard"}}
     {{/each}}
   </ul>
-  {{#unless flow.litePapers}}
+  {{#unless userFlow.litePapers}}
     <div class="empty-text">{{ emptyText }}</div>
   {{/unless}}
 </div>

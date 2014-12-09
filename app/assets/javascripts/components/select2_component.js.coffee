@@ -19,6 +19,11 @@ ETahi.Select2Component = Ember.TextField.extend
     @.$().on 'select2-removing', (e) =>
       @sendAction 'selectionRemoved', e.choice
 
+  setupClearingListener: ->
+    @.$().off 'select2-clearing'
+    @.$().on 'select2-clearing', (e) =>
+      @sendAction 'selectionCleared', e.choice
+
   setupClosedListener: ->
     @.$().off 'select2-close'
     @.$().on 'select2-close', =>
@@ -53,6 +58,7 @@ ETahi.Select2Component = Ember.TextField.extend
     @setupSelectedListener()
     @setupRemovedListener()
     @setupClosedListener()
+    @setupClearingListener()
     @setSelectedData()
 
     @addObserver('source', @, @repaint)

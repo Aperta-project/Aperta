@@ -40,7 +40,7 @@ class FlowsController < ApplicationController
   end
 
   def flow_params
-    params.require(:flow).permit(:title, :role_id, query: [:type])
+    params.require(:flow).permit(:title, :role_id, query: [:type, :state, :assigned, :role])
   end
 
   def formatted_title

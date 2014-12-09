@@ -17,8 +17,32 @@
     <div class="edit-column-title glyphicon glyphicon-pencil" {{action "toggleEdit"}}></div>
     {{select-2-single source=selectableTaskTypes
                       selectedData=selectedTaskType
-                      selectionSelected="updateQuery"
+                      selectionSelected="updateTypeQuery"
+                      selectionCleared="removeTypeQuery"
+                      allowClear=true
                       placeholder="Card Types"}}
+
+    {{select-2-single source=selectableTaskStates
+                      selectedData=selectedTaskState
+                      selectionSelected="updateStateQuery"
+                      selectionCleared="removeStateQuery"
+                      allowClear=true
+                      placeholder="Card State"}}
+
+    {{select-2-single source=selectableTaskAssignments
+                      selectedData=selectedTaskAssignment
+                      selectionSelected="updateAssignmentQuery"
+                      selectionCleared="removeAssignmentQuery"
+                      allowClear=true
+                      placeholder="User"}}
+
+    {{select-2-single source=selectableTaskRoles
+                      selectedData=selectedTaskRole
+                      selectionSelected="updateRoleQuery"
+                      selectionCleared="removeRoleQuery"
+                      allowClear=true
+                      placeholder="Paper Role"}}
+
   {{/if}}
   <div class="remove-column glyphicon glyphicon-remove" {{action "removeFlow"}}></div>
 </div>

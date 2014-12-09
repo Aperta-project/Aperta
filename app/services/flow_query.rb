@@ -1,8 +1,6 @@
 class FlowQuery
   attr_reader :user, :flow
 
-  NON_SCOPED_FILTERS = [:assigned, :type]
-
   def initialize(user, flow)
     @user = user
     @flow = flow
@@ -12,7 +10,15 @@ class FlowQuery
     return [] if flow.query.empty?
     query_hash = HashWithIndifferentAccess.new(flow.query)
     scope = Task.includes(:paper)
-    scope = scope.assigned_to(user) if query_hash[:assigned]
+
+    if query_hash[:assigned]
+      scope = scope.assigned_to(user) 
+    elsif query_hash[:assigned] == false
+      scope = scope.unassigned
+    end
+
+    scope = scope.send(query_hash[:state]) if query_hash[:state]
+    scope = scope.for_role(query_hash[:role]) if query_hash[:role]
 
     if query_hash[:type] && TaskType.types.include?(query_hash[:type])
       scope = scope.where(type: query_hash[:type])
@@ -24,10 +30,6 @@ class FlowQuery
       else
         scope = scope.on_journals([flow.journal])
       end
-    end
-
-    query_hash.keys.reject { |key| NON_SCOPED_FILTERS.include?(key.to_sym) }.each do |s|
-      scope = scope.send(s)
     end
 
     scope

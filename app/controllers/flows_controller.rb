@@ -7,7 +7,6 @@ class FlowsController < ApplicationController
     respond_with flow
   end
 
-  # TODO see if this can be simplified.
   def create
     flow.assign_attributes(title: formatted_title)
     flow.save!

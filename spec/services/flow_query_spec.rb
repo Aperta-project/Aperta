@@ -18,8 +18,14 @@ describe FlowQuery do
   describe "#tasks" do
     it "returns an empty set when query is empty" do
       flow = Flow.create(title: 'My tasks', query: {})
-      FactoryGirl.create(:task, phase: phase, completed: true, participants: [user])
       expect(FlowQuery.new(user, flow).tasks).to match_array []
+    end
+
+
+    it "returns tasks scoped to a TaskType" do
+      flow = Flow.create(title: 'My tasks', query: { type: "Task" })
+      task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [user])
+      expect(FlowQuery.new(user, flow).tasks).to match_array [task]
     end
 
     it "For 'My tasks' returns incomplete tasks that the user is participating in" do

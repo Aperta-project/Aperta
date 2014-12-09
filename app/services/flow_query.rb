@@ -14,8 +14,9 @@ class FlowQuery
     scope = Task.includes(:paper)
     scope = scope.assigned_to(user) if query_hash[:assigned]
 
-    # TODO verify its a possible type
-    scope = scope.where(type: query_hash[:type]) if query_hash[:type]
+    if query_hash[:type] && TaskType.types.include?(query_hash[:type])
+      scope = scope.where(type: query_hash[:type])
+    end
 
     unless user.site_admin?
       if flow.default?

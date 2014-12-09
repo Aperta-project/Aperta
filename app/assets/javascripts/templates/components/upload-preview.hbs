@@ -1,22 +1,19 @@
-<div {{bind-attr class=":attachment-thumbnail :_uploading error:alert"}}>
+{{#if error}}
+  <button type="button" class="close upload-error-button" data-dismiss="alert" aria-hidden="true">×</button>
+{{/if}}
+
+{{#if preview}}
+  <div class="upload-preview-image-wrapper"><img {{bind-attr src=preview}}></div>
+{{else}}
+  <div {{bind-attr class=":glyphicon error:glyphicon-exclamation-sign:glyphicon-file"}}></div>
+{{/if}}
+
+<div class="upload-preview-filename">{{filename}}</div>
+
+<div class="progress">
   {{#if error}}
-    <button type="button" class="close upload-error-button" data-dismiss="alert" aria-hidden="true">×</button>
+    <span class="upload-error-text">{{error}}</span>
+  {{else}}
+    <div class="progress-bar" {{bind-attr style=progressBarStyle}}></div>
   {{/if}}
-  <div class="preview-container">
-    {{#if preview}}
-      <img {{bind-attr src=preview}}>
-    {{else}}
-      <div {{bind-attr class=":glyphicon error:glyphicon-exclamation-sign:glyphicon-file"}}></div>
-      <p class="preview-filename">{{upload.file.name}}</p>
-    {{/if}}
-  </div>
-  <div class="progress">
-    {{#if error}}
-      <span class="upload-error-text">
-        {{error}}
-      </span>
-    {{else}}
-      <div class="progress-bar" {{bind-attr style=progressBarStyle}}></div>
-    {{/if}}
-  </div>
 </div>

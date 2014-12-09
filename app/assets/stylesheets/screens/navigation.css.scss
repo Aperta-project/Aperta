@@ -11,16 +11,17 @@
     border-top: 1px solid #666;
     margin: 40px 10% 0 10%;
   }
+
+  .spinner {
+    top: 10px;
+    right: 15px;
+  }
 }
 
-.navigation-visible .navigation {
+html.navigation-visible .navigation {
   left: 0;
 }
 
-.navigation .spinner {
-  right: 15px;
-  top: 10px;
-}
 
 .navigation-title {
   position: relative;
@@ -39,10 +40,14 @@
   }
 }
 
+
 .navigation-close {
   @include position(absolute, -10px auto auto 30px);
   font-size: 54px;
 }
+
+
+/* start Navigation items */
 
 .navigation-item {
   display: block;
@@ -51,39 +56,17 @@
   color: #fff;
   text-transform: uppercase;
 
-  &.navigation-item-feedback {
-    color: #999;
-    font-size: 13px;
-    text-transform: none;
-    &:hover, &:focus {
-      color: $tahi-white;
-    }
-  }
-
   &:hover, &:focus {
     text-decoration: none;
   }
 }
 
-.navigation-item-admin:hover,
-.navigation-item-admin:focus {
+.navigation-item--admin:hover,
+.navigation-item--admin:focus {
   color: $tahi-blue;
 }
 
-.navigation-account-links {
-  display: none;
-  &.__visible {
-    display: block;
-    margin-bottom: 12px;
-  }
-
-  .navigation-item-account {
-    padding: 7px 0 7px 74px;
-    font-size: 12px;
-  }
-}
-
-.navigation-item-account {
+.navigation-item--account {
   padding-top: 10px;
   padding-bottom: 10px;
   text-transform: capitalize;
@@ -91,12 +74,14 @@
   img { margin-right: 8px; }
 }
 
-.nav-bar-welcome a {
-  padding-right: 2px;
-}
+.navigation-item--feedback {
+  color: #999;
+  font-size: 13px;
+  text-transform: none;
 
-.nav-bar-admin-item.nav-bar-item {
-  a.active, a:hover {
-    background: $tahi-blue;
+  &:hover, &:focus {
+    color: $tahi-white;
   }
 }
+
+/* end Navigation items */

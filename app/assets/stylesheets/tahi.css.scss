@@ -172,9 +172,8 @@ textarea { resize: none; }
   z-index: z($z-layer-main-content-cover);
 }
 
-.navigation-visible {
-  .main-content-cover { display: block; }
-}
+html.navigation-visible .main-content-cover { display: block; }
+
 
 .navigation-toggle {
   @include position(fixed, 0px auto auto 0px);

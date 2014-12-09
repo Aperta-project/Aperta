@@ -1,27 +1,25 @@
 class FlowQuery
-  attr_reader :user, :role_flow
+  attr_reader :user, :flow
 
-  USER_FILTERS = [:assigned, :admin]
+  USER_FILTERS = [:assigned]
 
-  def initialize(user, role_flow)
+  def initialize(user, flow)
     @user = user
-    @role_flow = role_flow
+    @flow = flow
   end
 
   def tasks
+    arr = flow.query
     scope = Task.includes(:paper)
+    scope = scope.assigned_to(user) if arr.include?(:assigned)
 
     unless user.site_admin?
-      if role_flow.default?
+      if flow.default?
         scope = scope.on_journals(user.journals)
       else
-        scope = scope.on_journals([role_flow.journal])
+        scope = scope.on_journals([flow.journal])
       end
     end
-
-    arr = role_flow.query
-    scope = scope.assigned_to(user) if arr.include?(:assigned)
-    scope = scope.admin_for_user(user) if arr.include?(:admin)
 
     arr.reject { |key| USER_FILTERS.include?(key) }.each do |s|
       scope = scope.send(s)
@@ -33,7 +31,7 @@ class FlowQuery
   def lite_papers
     @lite_papers ||= Paper.joins(:tasks).
       includes(:paper_roles).
-      where("tasks.id" => tasks).
+      where("tasks.id" => tasks.pluck(:id)).
       uniq
   end
 

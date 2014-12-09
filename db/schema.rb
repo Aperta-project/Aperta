@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141204193328) do
+ActiveRecord::Schema.define(version: 20141208152459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,13 @@ ActiveRecord::Schema.define(version: 20141204193328) do
   end
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
+
+  create_table "flows", force: true do |t|
+    t.string  "title"
+    t.integer "role_id"
+    t.integer "position"
+    t.text    "query"
+  end
 
   create_table "ihat_jobs", force: true do |t|
     t.integer  "paper_id"
@@ -262,12 +269,6 @@ ActiveRecord::Schema.define(version: 20141204193328) do
 
   add_index "questions", ["task_id"], name: "index_questions_on_task_id", using: :btree
 
-  create_table "role_flows", force: true do |t|
-    t.string  "title"
-    t.integer "role_id"
-    t.integer "position"
-  end
-
   create_table "roles", force: true do |t|
     t.string   "name"
     t.integer  "journal_id"
@@ -344,7 +345,7 @@ ActiveRecord::Schema.define(version: 20141204193328) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.integer  "role_flow_id"
+    t.integer  "flow_id"
   end
 
   create_table "user_roles", force: true do |t|

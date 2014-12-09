@@ -1,98 +1,89 @@
 <h1>Data Availability</h1>
 
-<form>
-  <fieldset>
-    <ol>
-      <li class="question">
-        {{question-radio ident="data_availability.fully_available" task=model
-                         question="Do the authors confirm that all the data underlying the findings described in their manuscript are fully available without restriction?"
-                         helpText="<li>Please see the <a target='_blank' href='http://www.plosbiology.org/static/policies#sharing' title='PLOS Data Policy'>PLOS Data Policy</a> for details.</li>"}}
+<ol class="question-list">
+  <li class="question">
+    {{question-radio ident="data_availability.fully_available" task=model
+                     question="Do the authors confirm that all the data underlying the findings described in their manuscript are fully available without restriction?"
+                     helpText="<li>Please see the <a target='_blank' href='http://www.plosbiology.org/static/policies#sharing' title='PLOS Data Policy'>PLOS Data Policy</a> for details.</li>"}}
+  </li>
+
+  <li class="question">
+    <div class="question-text">Please provide the location of each dataset analyzed in the manuscript.</div>
+    <div class="help">Select all that apply</div>
+    <ul class="list-unstyled">
+      <li class="item">
+        {{#question-check ident="data_availability.public_repo_available"
+                          task=model
+                          question="Public repository: DOI/accession numbers are available now"}}
+
+          {{#additional-datasets}}
+            <p>Provide the DOI/accession number and its corresponding public repository URL.</p>
+            {{dataset-doi}}
+            {{dataset-url}}
+          {{/additional-datasets}}
+        {{/question-check}}
       </li>
 
-      <li class="question">
-        <div class="question-text">
-          Please provide the location of each dataset analyzed in the manuscript.
-        </div>
-        <div class="help">
-          Select all that apply
-        </div>
-        <ul class="list-unstyled">
-          <li class="item">
-            {{#question-check ident="data_availability.public_repo_available"
-                              task=model
-                              question="Public repository: DOI/accession numbers are available now"}}
+      <li class="item">
+        {{#question-check ident="data_availability.public_repo_available_post_release"
+                          task=model
+                          question="Public repository: DOI/accession numbers will be available after acceptance"}}
 
-              {{#additional-datasets}}
-                <p>Provide the DOI/accession number and its corresponding public repository URL.</p>
-                {{dataset-doi}}
-                {{dataset-url}}
-              {{/additional-datasets}}
-            {{/question-check}}
-          </li>
-
-          <li class="item">
-            {{#question-check ident="data_availability.public_repo_available_post_release"
-                              task=model
-                              question="Public repository: DOI/accession numbers will be available after acceptance"}}
-
-              {{#additional-datasets}}
-                <p>Provide the public repository URL.</p>
-                {{dataset-url}}
-              {{/additional-datasets}}
-            {{/question-check}}
-          </li>
-
-          <li class="item">
-            {{question-check ident="data_availability.supporting_info_included" task=model
-                             question="Supporting information files included with the manuscript (details handled on supporting information card)"}}
-          </li>
-
-          <li class="item">
-            {{question-check ident="data_availability.included" task=model
-                             question="All data are included within the manuscript"}}
-          </li>
-
-          <li class="item">
-            {{#question-check ident="data_availability.on_request"
-                             task=model
-                             question="Available upon request (this option is only permitted in limited cases)"}}
-
-              {{#additional-datasets}}
-                {{dataset-title}}
-                {{dataset-description}}
-                {{dataset-reasons}}
-                {{dataset-contact}}
-              {{/additional-datasets}}
-            {{/question-check}}
-          </li>
-          <li class="item">
-            {{#question-check ident="data_availability.third_party"
-                              task=model
-                              question="Data are held by someone other than the authors and are not in a public repository"}}
-
-              {{#additional-datasets}}
-                {{dataset-title}}
-                {{dataset-description}}
-                {{dataset-reasons}}
-                {{dataset-contact}}
-              {{/additional-datasets}}
-            {{/question-check}}
-          </li>
-          <li class="item">
-            {{#question-check ident="data_availability.unavailable"
-                              task=model
-                              question="Dataset is not available (This may be contradictory to the PLOS data policy)"}}
-
-              {{#additional-datasets}}
-                {{dataset-title}}
-                {{dataset-description}}
-                {{dataset-reasons}}
-              {{/additional-datasets}}
-            {{/question-check}}
-          </li>
-        </ul>
+          {{#additional-datasets}}
+            <p>Provide the public repository URL.</p>
+            {{dataset-url}}
+          {{/additional-datasets}}
+        {{/question-check}}
       </li>
-    </ol>
-  </fieldset>
-</form>
 
+      <li class="item">
+        {{question-check ident="data_availability.supporting_info_included" task=model
+                         question="Supporting information files included with the manuscript (details handled on supporting information card)"}}
+      </li>
+
+      <li class="item">
+        {{question-check ident="data_availability.included" task=model
+                         question="All data are included within the manuscript"}}
+      </li>
+
+      <li class="item">
+        {{#question-check ident="data_availability.on_request"
+                         task=model
+                         question="Available upon request (this option is only permitted in limited cases)"}}
+
+          {{#additional-datasets}}
+            {{dataset-title}}
+            {{dataset-description}}
+            {{dataset-reasons}}
+            {{dataset-contact}}
+          {{/additional-datasets}}
+        {{/question-check}}
+      </li>
+      <li class="item">
+        {{#question-check ident="data_availability.third_party"
+                          task=model
+                          question="Data are held by someone other than the authors and are not in a public repository"}}
+
+          {{#additional-datasets}}
+            {{dataset-title}}
+            {{dataset-description}}
+            {{dataset-reasons}}
+            {{dataset-contact}}
+          {{/additional-datasets}}
+        {{/question-check}}
+      </li>
+      <li class="item">
+        {{#question-check ident="data_availability.unavailable"
+                          task=model
+                          question="Dataset is not available (This may be contradictory to the PLOS data policy)"}}
+
+          {{#additional-datasets}}
+            {{dataset-title}}
+            {{dataset-description}}
+            {{dataset-reasons}}
+          {{/additional-datasets}}
+        {{/question-check}}
+      </li>
+    </ul>
+  </li>
+</ol>

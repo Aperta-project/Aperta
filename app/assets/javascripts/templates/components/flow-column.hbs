@@ -1,5 +1,5 @@
-<div {{bind-attr class=":column-header editable:active"}}>
-  {{#if editable}}
+<div {{bind-attr class=":column-header editing:active"}}>
+  {{#if editing}}
     {{content-editable tagName="h2"
                        class="column-title"
                        value=flow.title
@@ -13,7 +13,9 @@
   {{else}}
     <h2 class="column-title" {{action "toggleEdit"}}>{{flow.title}}</h2>
   {{/if}}
-  <div class="edit-column-title glyphicon glyphicon-pencil" {{action "toggleEdit"}}></div>
+  {{#if editable}}
+    <div class="edit-column-title glyphicon glyphicon-pencil" {{action "toggleEdit"}}></div>
+  {{/if}}
   <div class="remove-column glyphicon glyphicon-remove" {{action "removeFlow"}}></div>
 </div>
 

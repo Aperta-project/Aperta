@@ -1,50 +1,57 @@
 <div class="dataset">
   <a href="#" {{action "removeFunder"}} class="pull-right remove-funder-link">remove</a>
-  {{input type="text" name="name" value=funder.name class="form-control" placeholder="Funder"}}
-  {{input type="text" name="grant_number" value=funder.grantNumber class="form-control" placeholder="Grant Number"}}
-  {{input type="text" name="website" value=funder.website class="form-control" placeholder="Website"}}
-  <div class="question">
-    <div class="question-text">Authors who received funding</div>
-    <div class="chosen-style-override">
-      {{chosen content=allAuthors
-      name="authors"
-      data-placeholder="Choose Author Name"
-      selection=fundedAuthors
-      optionValuePath="content"
-      optionLabelPath="content.fullName"
-      class="chosen-author form-control"
-      multiple=true}}
-    </div>
-
-    <div class="add-new-funded-author">
-      {{#if addingAuthor}}
-        <div class="add-author-inline">
-          <div class="form-group form-inline">
-            {{input type="text" name="first-name" value=addingAuthor.firstName class="author-name form-control" placeholder="First Name"}}
-            {{input type="text" name="last-name" value=addingAuthor.lastName class="author-name form-control" placeholder="Last Name"}}
-            <span class="author-form-buttons">
-              <a class="button-link button--green author-cancel" {{action "cancelAddingAuthor" bubbles=false}}>cancel</a>
-              <button class="button-primary button--green" {{action "finishAddingAuthor"}}>Add Author</button>
-            </span>
-          </div>
-        </div>
-      {{else}}
-        OR <button class="button-primary button--green" {{action "startAddingAuthor"}}>Add Author</button>
-      {{/if}}
-    </div>
+  <div class="form-group">
+    {{input type="text" name="name" value=funder.name class="form-control" placeholder="Funder"}}
   </div>
 
-  <div class="question">
-    <div class="question-text">
-      Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?
-    </div>
-    {{binary-radio-button name=( uniqueName 'funder-had-influence' ) selection=funder.funderHadInfluence}}
+  <div class="form-group">
+    {{input type="text" name="grant_number" value=funder.grantNumber class="form-control" placeholder="Grant Number"}}
+  </div>
 
-    {{#if funder.funderHadInfluence}}
-      <p>
-        Describe the role of any sponsors or funders in the study design, data collection and analysis, decision to publish, or preparation of the manuscript.
-        {{textarea value=funder.funderInfluenceDescription class="form-control"}}
-      </p>
+  <div class="form-group">
+    {{input type="text" name="website" value=funder.website class="form-control" placeholder="Website"}}
+  </div>
+
+  <div class="question-text">Authors who received funding</div>
+  <div class="chosen-style-override">
+    {{chosen content=allAuthors
+    name="authors"
+    data-placeholder="Choose Author Name"
+    selection=fundedAuthors
+    optionValuePath="content"
+    optionLabelPath="content.fullName"
+    class="chosen-author form-control"
+    multiple=true}}
+  </div>
+
+  <div class="add-new-funded-author">
+    {{#if addingAuthor}}
+      <div class="add-author-inline">
+        <div class="form-group form-inline">
+          {{input type="text" name="first-name" value=addingAuthor.firstName class="author-name form-control" placeholder="First Name"}}
+          {{input type="text" name="last-name" value=addingAuthor.lastName class="author-name form-control" placeholder="Last Name"}}
+          <span class="author-form-buttons">
+            <a class="button-link button--green author-cancel" {{action "cancelAddingAuthor" bubbles=false}}>cancel</a>
+            <button class="button-secondary knockout button--green" {{action "finishAddingAuthor"}}>Add Author</button>
+          </span>
+        </div>
+      </div>
+    {{else}}
+      OR <button class="button-secondary knockout button--green" {{action "startAddingAuthor"}}>Add Author</button>
     {{/if}}
   </div>
+
+  <br><br>
+
+  <div class="question-text">
+    Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?
+  </div>
+  {{binary-radio-button name=( uniqueName 'funder-had-influence' ) selection=funder.funderHadInfluence}}
+
+  {{#if funder.funderHadInfluence}}
+    <p>
+      Describe the role of any sponsors or funders in the study design, data collection and analysis, decision to publish, or preparation of the manuscript.
+      {{textarea value=funder.funderInfluenceDescription class="form-control"}}
+    </p>
+  {{/if}}
 </div>

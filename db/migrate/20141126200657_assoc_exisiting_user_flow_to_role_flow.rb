@@ -1,7 +1,14 @@
 class AssocExisitingUserFlowToRoleFlow < ActiveRecord::Migration
+  class RoleFlow < ActiveRecord::Base
+    belongs_to :role, inverse_of: :role_flows
+    has_one :journal, through: :role
+    has_many :user_flows
+    serialize :query, Array
+  end
+
   class UserFlow < ActiveRecord::Base
     attr_accessor :papers
-    belongs_to :user, inverse_of: :flows
+    belongs_to :user, inverse_of: :user_flows
     belongs_to :role_flow, inverse_of: :user_flows
   end
 

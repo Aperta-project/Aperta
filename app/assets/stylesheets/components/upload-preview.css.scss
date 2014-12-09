@@ -1,3 +1,24 @@
+.upload-preview {
+  overflow: hidden;
+  position: relative;
+  height: 112px;
+  margin-top: 20px;
+  border: 1px solid #d7d7d7;
+  padding: 10px;
+  white-space: nowrap;
+}
+
+.upload-preview-filename {
+  position: absolute;
+  left: 100px;
+  top: 26px;
+}
+
+.upload-preview-image-wrapper {
+  overflow: hidden;
+  width: 75px;
+}
+
 .upload-error-button {
   color: $tahi-green;
   font-size: 40px;

@@ -4,6 +4,12 @@
   }
 }
 
+@media only screen and (min-width: 1199px) {
+  #dashboard-my-submissions {
+    padding: 0 125px;
+  }
+}
+
 
 .dashboard-header {
   margin: 40px 0;
@@ -29,8 +35,6 @@
   padding: 0;
   margin-top: 30px;
 
-  li { margin: 15px 0px 10px 0px; }
-
   .badge {
     position: relative;
     top: -6px;
@@ -39,9 +43,22 @@
   }
 }
 
+.dashboard-paper-title {
+  position: relative;
+  margin: 15px 0px 20px 0px;
+  padding-left: 25px;
+
+  svg {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    width: 13px;
+  }
+}
+
 .dashboard-paper-title a {
-  font-family: $tahi-article-font-family;
   color: #333;
+  font-family: $tahi-article-font-family;
   font-size: 18px;
   line-height: 1.5;
 }

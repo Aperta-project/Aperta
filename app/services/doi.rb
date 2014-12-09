@@ -1,5 +1,5 @@
 class Doi
-  FORMAT = /\w+\/\w+\.\d+/
+  FORMAT = %r{([\w\d\-\.]+/[^/]+)}
   attr_reader :journal
 
   delegate :last_doi_issued,
@@ -13,7 +13,8 @@ class Doi
   end
 
   def self.valid?(doi_string)
-    String(doi_string).match(FORMAT).present?
+    String(doi_string).match(FORMAT)
+    $1 == String(doi_string)
   end
 
   def assign!

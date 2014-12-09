@@ -14,11 +14,12 @@ Tahi.utils =
 
   resizeColumnHeaders: ->
     headers = $('.column-header')
-    titles  = headers.find('.column-title')
     return unless headers.length
 
-    titles.css('height', '')
-    heights = titles.map -> $(this).outerHeight()
+    wrappers = headers.find('.column-title-wrapper')
+    wrappers.css('height', '')
+    heights = wrappers.find('.column-title-wrapper').map ->
+      $(this).outerHeight()
 
     max = null
     try
@@ -26,7 +27,7 @@ Tahi.utils =
     catch error
       max = 20
 
-    titles.css 'height', max
+    wrappers.css 'height', max
     $('.column-content').css 'top', headers.first().outerHeight()
 
   togglePropertyAfterDelay: (obj, prop, startVal, endVal, ms) ->

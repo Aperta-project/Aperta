@@ -21,7 +21,7 @@ Tahi.utils =
     return unless $headers.length
 
     $headers.css('height', '')
-    heights = $headers.find('h2').map ->
+    heights = $headers.find('.column-title-wrapper').map ->
       $(this).outerHeight()
 
     max = null

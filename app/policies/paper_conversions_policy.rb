@@ -1,0 +1,2 @@
+class PaperConversionsPolicy < PapersPolicy
+end

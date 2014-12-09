@@ -12,7 +12,7 @@ class FlowQuery
     scope = Task.includes(:paper)
 
     if query_hash[:assigned]
-      scope = scope.assigned_to(user) 
+      scope = scope.assigned_to(user)
     elsif query_hash[:assigned] == false
       scope = scope.unassigned
     end

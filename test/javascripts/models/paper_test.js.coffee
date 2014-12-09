@@ -1,5 +1,6 @@
 moduleForModel 'paper', 'Unit: Paper Model',
-  needs: ['model:questionAttachment', 'model:commentLook', 'model:attachable', 'model:affiliation', 'model:author', 'model:user', 'model:figure', 'model:journal',
+  needs: ['model:author', 'model:user', 'model:figure', 'model:journal',
+  'model:questionAttachment', 'model:commentLook', 'model:attachable', 'model:affiliation',
   'model:supportingInformationFile', 'model:phase', 'model:task', 'model:comment', 'model:participation',
   'model:litePaper', 'model:cardThumbnail', 'model:question', 'model:collaboration', 'model:attachment']
   setup: -> setupApp()

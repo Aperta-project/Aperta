@@ -9,8 +9,11 @@ feature "Flow Manager", js: true, selenium: true do
     create :user, :site_admin, first_name: "Author"
   end
 
+  let!(:flow) do
+    create :flow, query: { assigned: true }
+  end
+
   before do
-    flow = Flow.where(title: "Up for grabs").first_or_create
     admin.flows << flow
     author.flows << flow
   end

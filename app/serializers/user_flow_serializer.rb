@@ -3,12 +3,12 @@ class UserFlowSerializer < ActiveModel::Serializer
   has_many :lite_papers, embed: :ids, include: true, serializer: LitePaperSerializer
   has_many :tasks, embed: :ids, include: true, root: :card_thumbnails, serializer: CardThumbnailSerializer
 
-  delegate :tasks, to: :query
-  delegate :lite_papers, to: :query
+  delegate :tasks, to: :flow_query
+  delegate :lite_papers, to: :flow_query
 
   private
 
-  def query
+  def flow_query
     @query ||= FlowQuery.new(scoped_user, flow)
   end
 

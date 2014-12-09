@@ -14,7 +14,7 @@ class FlowsController < ApplicationController
   end
 
   def update
-    flow.update!(title: formatted_title)
+    flow.update!(flow_params)
     render json: flow
   end
 
@@ -40,7 +40,7 @@ class FlowsController < ApplicationController
   end
 
   def flow_params
-    params.require(:flow).permit(:title, :role_id)
+    params.require(:flow).permit(:title, :role_id, query: [:type])
   end
 
   def formatted_title

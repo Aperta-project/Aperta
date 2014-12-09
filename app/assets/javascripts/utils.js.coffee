@@ -30,8 +30,8 @@ Tahi.utils =
     catch error
       max = 20
 
-    $headers.css('height', max)
-    $('.column-content').css('top', max)
+    $headers.css('height', max + 100)
+    $('.column-content').css('top', max + 100)
 
   togglePropertyAfterDelay: (obj, prop, startVal, endVal, ms) ->
     obj.set(prop, startVal)

@@ -16,6 +16,7 @@ ETahi.JournalFlowManagerRoute = Ember.Route.extend
       model: model
       commentLooks: @store.all('commentLook')
       journal: @modelFor('journal')
+      journalTaskTypes: @store.all('journalTaskType')
 
   actions:
     viewCard: (task) ->

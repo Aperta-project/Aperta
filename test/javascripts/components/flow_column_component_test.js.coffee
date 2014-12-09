@@ -33,10 +33,3 @@ test 'it forwards viewCard', ->
 
   component = ETahi.FlowColumnComponent.create(componentAttrs)
   component.send 'viewCard', 'test'
-
-test "formattedFlowTitle returns an {id: text:} object", ->
-  flow = Ember.Object.create title: "Up for grabs"
-  component = ETahi.FlowColumnComponent.create(flow: flow)
-  keys = Ember.keys(component.get('formattedFlowTitle'))
-  ok keys.contains('id')
-  ok keys.contains('text')

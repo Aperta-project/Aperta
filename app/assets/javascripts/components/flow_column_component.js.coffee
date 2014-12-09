@@ -1,9 +1,3 @@
-possibleFlowNames = [
-  { id: 0, text: 'Up for grabs' },
-  { id: 1, text: 'My tasks' },
-  { id: 2, text: 'My papers' },
-  { id: 3, text: 'Done' }]
-
 ETahi.FlowColumnComponent = Ember.Component.extend
   tagName: 'li'
   classNames: ['column']
@@ -12,14 +6,26 @@ ETahi.FlowColumnComponent = Ember.Component.extend
   editable: false
   emptyText: "There are no matches."
 
-  formattedFlowTitle: Em.computed 'flow.title', ->
-    possibleFlowNames.findBy('text', @get('flow.title'))
+  selectableTaskTypes: (->
+    @get('journalTaskTypes').map (type) ->
+      id: type.get('kind')
+      text: type.get('title')
+  ).property()
 
-  possibleFlowNames: possibleFlowNames
+  selectedTaskType: (->
+    if @get('flow.query').type
+      type = @get('journalTaskTypes').findBy('kind', @get('flow.query').type)
+      id: type.get('kind')
+      text: type.get('title')
+  ).property()
 
   actions:
     viewCard: (card) ->
       @sendAction 'viewCard', card
+
+    updateQuery: (query) ->
+      @get('flow').set('query', type: query.id)
+      @sendAction 'saveFlow', @get('flow')
 
     save: ->
       @sendAction 'saveFlow', @get('flow')

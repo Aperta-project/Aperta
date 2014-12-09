@@ -3,7 +3,6 @@ asset "jquery-ujs" #csrf support
 asset "bootstrap-sass"
 asset "underscore"
 asset "spin.js"
-asset "ScrollToFixed"
 asset "jQuery.dotdotdot"
 asset "jquery-timeago"
 asset "bootstrap-datepicker"

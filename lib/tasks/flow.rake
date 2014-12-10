@@ -5,6 +5,6 @@ namespace :flow do
     Flow.create(title: 'Up for grabs', query: {assigned: false, state: :incomplete})
     Flow.create(title: 'My papers', query: {admin: true})
     Flow.create(title: 'My tasks', query: {state: :incomplete, assigned: true})
-    Flow.create(title: 'Done', query: {state: :complete, assigned: true})
+    Flow.create(title: 'Done', query: {state: :completed, assigned: true})
   end
 end

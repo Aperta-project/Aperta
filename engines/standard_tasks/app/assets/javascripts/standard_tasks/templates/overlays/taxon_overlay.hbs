@@ -1,34 +1,35 @@
 <h1>New Taxon</h1>
 
 <div class="question-list">
+  <div class="question">
+    {{#question-check ident="taxon.zoological"
+                      task=model
+                      question="Does this manuscript describe a new zoological taxon name?"}}
 
-  <div class="question taxon-question">
-    {{#question-check
-      ident="taxon.zoological"
-      task=model
-      question="Does this manuscript describe a new zoological taxon name?"}}
-      <div class="dataset">
-      <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
-      {{question-check
-        ident="taxon.zoological.complies"
-        task=model
-        question="All authors comply with the Policies Regarding Submission of a new Taxon Name" }}
+      <div class="question-text">
+        <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
       </div>
-    {{/question-check}}
-  </div>
-  <div class="question taxon-question">
-    {{#question-check
-      ident="taxon.botanical"
-      task=model
-      question="Does this manuscript describe a new botantical taxon name?"}}
-      <div class="dataset">
-        <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
-        {{question-check
-          ident="taxon.botanical.complies"
-          task=model
-          question="All authors comply with the Policies Regarding Submission of a new Taxon Name" }}
-      </div>
+      {{question-check ident="taxon.zoological.complies"
+                       task=model
+                       question="All authors comply with the Policies Regarding Submission of a new Taxon Name" }}
+
     {{/question-check}}
   </div>
 
+  <br>
+
+  <div class="question">
+    {{#question-check ident="taxon.botanical"
+                      task=model
+                      question="Does this manuscript describe a new botantical taxon name?"}}
+
+      <div class="question-text">
+        <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
+      </div>
+        {{question-check ident="taxon.botanical.complies"
+                         task=model
+                         question="All authors comply with the Policies Regarding Submission of a new Taxon Name" }}
+
+    {{/question-check}}
+  </div>
 </div>

@@ -4,7 +4,7 @@ class DownloadManuscriptWorker
 
   attr_reader :download_url, :callback_url, :metadata, :manuscript
 
-  def perform(manuscript_id, download_url, callback_url, metadata={})
+  def perform(manuscript_id, download_url, callback_url, metadata)
     @download_url = download_url
     @callback_url = callback_url
     @metadata = metadata

@@ -6,6 +6,10 @@ ETahi.FlowColumnComponent = Ember.Component.extend
   editable: false
   emptyText: "There are no matches."
 
+  flowTitleDidChange: (->
+    Ember.run.schedule('afterRender', this, Tahi.utils.resizeColumnHeaders)
+  ).observes('flow.title', 'editing')
+
   # data for select2-compliant queries
 
   selectableTaskTypes: Ember.computed ->
@@ -82,10 +86,12 @@ ETahi.FlowColumnComponent = Ember.Component.extend
 
     save: ->
       @sendAction 'saveFlow', @get('flow')
+      Ember.run.schedule('afterRender', this, Tahi.utils.resizeColumnHeaders)
 
     cancel: ->
       @get('flow').rollback()
       @send 'toggleEdit'
+      Ember.run.schedule('afterRender', this, Tahi.utils.resizeColumnHeaders)
 
     toggleEdit: ->
       return unless @get('editable')

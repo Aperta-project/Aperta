@@ -3,6 +3,7 @@
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'tahi',
+    podModulePrefix: 'tahi/pods',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',

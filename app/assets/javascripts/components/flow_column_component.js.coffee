@@ -6,26 +6,79 @@ ETahi.FlowColumnComponent = Ember.Component.extend
   editable: false
   emptyText: "There are no matches."
 
-  selectableTaskTypes: (->
-    @get('journalTaskTypes').map (type) ->
-      id: type.get('kind')
-      text: type.get('title')
-  ).property()
+  # data for select2-compliant queries
 
-  selectedTaskType: (->
-    if @get('flow.query').type
-      type = @get('journalTaskTypes').findBy('kind', @get('flow.query').type)
-      id: type.get('kind')
-      text: type.get('title')
-  ).property()
+  selectableTaskTypes: Ember.computed ->
+    @selectableQueries(@get('journalTaskTypes'), 'kind', 'title')
+
+  selectedTaskType: Ember.computed ->
+    @selectedQuery(@get('selectableTaskTypes').findBy('id', @get('flow.query').type))
+
+  selectableTaskStates: Ember.computed ->
+    [{ id: "completed", text: "Completed" }, { id: "incomplete", text: "Incomplete" }]
+
+  selectedTaskState: Ember.computed ->
+    @selectedQuery(@get('selectableTaskStates').findBy('id', @get('flow.query').state))
+
+  selectableTaskAssignments: Ember.computed ->
+    [{ id: "true", text: "Me" }, { id: "false", text: "None" }]
+
+  selectedTaskAssignment: Ember.computed ->
+    @selectedQuery(@get('selectableTaskAssignments').findBy('id', @get('flow.query').assigned))
+
+  selectableTaskRoles: Ember.computed ->
+    @get('flow.taskRoles').map (role) ->
+      id: role
+      text: role.capitalize()
+
+  selectedTaskRole: Ember.computed ->
+    @selectedQuery(@get('selectableTaskRoles').findBy('id', @get('flow.query').role))
+
+  selectableQueries: (options, idKey, textKey) ->
+    options.map (option) ->
+      id: option.get(idKey)
+      text: option.get(textKey)
+
+  selectedQuery: (option) ->
+    if option
+      id: option.id
+      text: option.text
 
   actions:
     viewCard: (card) ->
       @sendAction 'viewCard', card
 
-    updateQuery: (query) ->
-      @get('flow').set('query', type: query.id)
-      @sendAction 'saveFlow', @get('flow')
+    updateTypeQuery: (query) ->
+      @get('flow.query').type = query.id
+      @send 'save'
+
+    updateStateQuery: (query) ->
+      @get('flow.query').state = query.id
+      @send 'save'
+
+    updateAssignmentQuery: (query) ->
+      @get('flow.query').assigned = query.id
+      @send 'save'
+
+    updateRoleQuery: (query) ->
+      @get('flow.query').role = query.id
+      @send 'save'
+
+    removeTypeQuery: ->
+      delete @get('flow.query').type
+      @send 'save'
+
+    removeStateQuery: ->
+      delete @get('flow.query').state
+      @send 'save'
+
+    removeAssignmentQuery: ->
+      delete @get('flow.query').assigned
+      @send 'save'
+
+    removeRoleQuery: ->
+      delete @get('flow.query').role
+      @send 'save'
 
     save: ->
       @sendAction 'saveFlow', @get('flow')

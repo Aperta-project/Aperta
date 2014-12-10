@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Journal Administration", js: true do
+feature "Journal Administration", js: true, selenium: true do
   let(:user) { create :user, :site_admin }
   let!(:journal) { create :journal }
   let!(:another_journal) { create :journal }
@@ -88,5 +88,28 @@ feature "Journal Administration", js: true do
         expect { role.name }.to raise_error(Selenium::WebDriver::Error::StaleElementReferenceError)
       end
     end
+
+    describe "on a Journal's Flow Manager" do
+      it "show Journal name as text" do
+        visit "/admin/journals/1/roles/1/flow_manager"
+        find(".control-bar-link-icon").click
+        expect(page.find(".column-title-wrapper")).to have_content journal.name
+      end
+
+      describe do
+        before do
+          VCR.use_cassette('yeti.jpg') do
+            journal.update_attributes(logo: File.open("spec/fixtures/yeti.jpg"))
+          end
+        end
+
+        it "show Journal logo" do
+          visit "/admin/journals/1/roles/1/flow_manager"
+          find(".control-bar-link-icon").click
+          expect(page.find(".column-title-wrapper")).to have_css("img")
+        end
+      end
+    end
+
   end
 end

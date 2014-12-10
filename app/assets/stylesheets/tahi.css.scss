@@ -69,17 +69,20 @@ textarea { resize: none; }
   padding-top: 135px;
   @include transition(padding-top 0.2s);
 
-  &.sub-nav-visible { padding-top: 175px; }
-
   main {
     max-width: 1120px;
     margin: 0 auto;
   }
 }
 
+html.control-bar-sub-nav-active.matte #tahi-container { padding-top: 175px; }
+
 .matte.paper-submitted #tahi-container {
   padding-top: 90px;
-  &.sub-nav-visible { padding-top: 135px; }
+}
+
+html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
+  padding-top: 135px;
 }
 
 #tahi-container {

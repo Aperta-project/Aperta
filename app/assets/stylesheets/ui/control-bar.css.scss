@@ -11,9 +11,9 @@
   border-bottom: 1px solid #F5F5F5;
   background: #fff;
   z-index: $z-layer-control-bar;
-
-  &.__sub-nav-active { height: 105px; }
 }
+
+.control-bar-sub-nav-active .control-bar { height: 105px; }
 
 .control-bar-inner-wrapper {
   overflow: hidden;
@@ -31,7 +31,7 @@
   @include transition(height 0.2s);
 }
 
-.__sub-nav-active .control-bar-sub-items {
+.control-bar-sub-nav-active .control-bar-sub-items {
   height: 45px;
 }
 

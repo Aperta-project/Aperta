@@ -3,7 +3,6 @@
   %head
     %title Tahi
     = stylesheet_link_tag    "application", media: "all"
-    = javascript_include_tag "application"
 
     - if Rails.env.test?
       = javascript_tag "$.fx.off = true" # disable jquery animations
@@ -17,10 +16,11 @@
 
   %body
     #ember-app
+    = include_ember_script_tags :tahi
 
 - if current_user
   :javascript
     window.currentUserId = #{current_user.id};
 
-:javascript
-  window.ETahi.environment = "#{Rails.env}";
+-# :javascript
+-#   window.ETahi.environment = "#{Rails.env}";

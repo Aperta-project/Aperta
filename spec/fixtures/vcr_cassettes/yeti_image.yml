@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: put
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/yeti.jpg
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/yeti.jpg
     body:
       encoding: ASCII-8BIT
       string: !binary |-
@@ -1093,20 +1093,20 @@ http_interactions:
       Cache-Control:
       - max-age=315576000
       Date:
-      - Wed, 10 Dec 2014 17:25:37 +0000
+      - Wed, 10 Dec 2014 18:49:32 +0000
       Authorization:
-      - AWS AKIAJSHIMOFVZTWTJB5A:amrQHfH9pF1hqqJx+Ww1FY/W1JI=
+      - AWS AKIAJQUEDWE2GZUOGFFQ:SAhprHtSDld+JmS+HsPYej0xuM4=
   response:
     status:
       code: 200
       message: ''
     headers:
       X-Amz-Id-2:
-      - myuPhvvm4aTQHYgNS+cJ1OpnQlqzMBURZur85Dpvtzy5kSJyVq/iYj+SYhXwws/S
+      - 01bO4dKEtYDRZp7tIU5vCnMk/NnSTN5OAjTxzuRODmbUbEBui+EoaAnhUd59fqI6
       X-Amz-Request-Id:
-      - C94E8BE4804B9EFE
+      - D14C74ED8BDF765D
       Date:
-      - Wed, 10 Dec 2014 17:25:38 GMT
+      - Wed, 10 Dec 2014 18:49:33 GMT
       Etag:
       - '"871aa1f271a84f92aff260bd06b6cd58"'
       Content-Length:
@@ -1117,10 +1117,10 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version:
-  recorded_at: Wed, 10 Dec 2014 17:25:37 GMT
+  recorded_at: Wed, 10 Dec 2014 18:49:32 GMT
 - request:
     method: put
-    uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg
     body:
       encoding: ASCII-8BIT
       string: !binary |-
@@ -1162,21 +1162,20 @@ http_interactions:
       Cache-Control:
       - max-age=315576000
       Date:
-      - Wed, 10 Dec 2014 17:25:37 +0000
+      - Wed, 10 Dec 2014 18:49:32 +0000
       Authorization:
-      - AWS AKIAJSHIMOFVZTWTJB5A:NlS51PJuGNYhDRVKgbReSH/rB4Q=
-      - AWS AKIAJHFQZ6WND52M2VDQ:dT67GqeDodxAjfs15inyGv6BD2c=
+      - AWS AKIAJQUEDWE2GZUOGFFQ:yl4LMUvVYTOIxv/zk7UfE7CQnWo=
   response:
     status:
       code: 200
       message: ''
     headers:
       X-Amz-Id-2:
-      - 6Re02kQmhea2TPUG2Cmql30HDCo8NhS0raJrgaAhZM8zH3NpXWsCQ+2ULgIPlxdq
+      - ZLoFIxq6fsXVe7Pj14N/9XbzIDd87q3j/BrIXnftFOyzWHx9+ycVsIay2C0Lm4et
       X-Amz-Request-Id:
-      - 64E62602C0ED3A4F
+      - 00E88BD35C4EC920
       Date:
-      - Wed, 10 Dec 2014 17:25:38 GMT
+      - Wed, 10 Dec 2014 18:49:33 GMT
       Etag:
       - '"8c199f5eefa30aa97312825f206d51a2"'
       Content-Length:
@@ -1187,5 +1186,5 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version:
-  recorded_at: Wed, 10 Dec 2014 17:25:38 GMT
+  recorded_at: Wed, 10 Dec 2014 18:49:33 GMT
 recorded_with: VCR 2.9.2

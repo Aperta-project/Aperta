@@ -97,16 +97,13 @@ feature "Journal Administration", js: true, selenium: true do
       end
 
       describe do
-        before do
-          VCR.use_cassette('yeti_image') do
-            journal.update_attributes(logo: File.open("spec/fixtures/yeti.jpg"))
-          end
-        end
-
         it "show Journal logo" do
-          visit "/admin/journals/1/roles/1/flow_manager"
-          find(".control-bar-link-icon").click
-          expect(page.find(".column-title-wrapper")).to have_css("img")
+          with_aws_cassette(:yeti_image) do
+            journal.update_attributes(logo: File.open("spec/fixtures/yeti.jpg"))
+            visit "/admin/journals/1/roles/1/flow_manager"
+            find(".control-bar-link-icon").click
+            expect(page.find(".column-title-wrapper")).to have_css("img")
+          end
         end
       end
     end

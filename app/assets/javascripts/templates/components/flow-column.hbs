@@ -19,6 +19,14 @@
         {{else}}
           {{journal.name}}
         {{/if}}
+
+        {{#if journalLogo}}
+          <img {{bind-attr src=journalLogo}}>
+        {{elsif journalName}}
+          {{journalName}}
+        {{else}}
+          For All Journals
+        {{/if}}
       </div>
     </div>
   {{/if}}

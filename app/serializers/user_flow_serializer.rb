@@ -1,5 +1,5 @@
 class UserFlowSerializer < ActiveModel::Serializer
-  attributes :id, :title
+  attributes :id, :title, :journal_name, :journal_logo
   has_many :lite_papers, embed: :ids, include: true, serializer: LitePaperSerializer
   has_many :tasks, embed: :ids, include: true, root: :card_thumbnails, serializer: CardThumbnailSerializer
 
@@ -18,5 +18,19 @@ class UserFlowSerializer < ActiveModel::Serializer
 
   def flow
     object.is_a?(Flow) ? object : object.flow
+  end
+
+  def journal
+    flow.journal
+  end
+
+  def journal_name
+    return unless journal
+    journal.name
+  end
+
+  def journal_logo
+    return unless journal
+    journal.logo
   end
 end

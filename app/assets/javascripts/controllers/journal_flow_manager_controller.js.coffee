@@ -7,7 +7,8 @@ ETahi.JournalFlowManagerController = Ember.ObjectController.extend
 
   actions:
     saveFlow: (flow) ->
-      flow.save()
+      flow.save().then ->
+        Ember.run.schedule('afterRender', Tahi.utils.resizeColumnHeaders)
 
     removeFlow: (flow) ->
       flow.get('role.flows').then (flows) -> # SSOT workaround

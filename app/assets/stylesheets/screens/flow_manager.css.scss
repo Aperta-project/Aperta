@@ -48,20 +48,24 @@
   }
 }
 
-.flow-manager-column-overlay .overlay-container {
-  width: 700px;
-}
+.flow-manager-column-overlay {
+  .overlay-container {
+    width: 700px;
+  }
 
-.flow-manager-button {
-  display: block;
-  margin-bottom: 15px;
-  padding: 18px 0;
-  font-size: 30px;
-  color: #444;
-  text-transform: none;
-  border: 1px solid #d0d0d0;
+  h1 {
+    text-align: center;
+  }
 
-  &:hover { background: #e4f4e1; }
+  h2 {
+    font-size: 21px;
+
+    img { display: block; }
+  }
+
+  .button-secondary {
+    margin: 0 7px 10px 0;
+  }
 }
 
 

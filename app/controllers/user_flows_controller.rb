@@ -1,6 +1,6 @@
 class UserFlowsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:potential_flows]
   respond_to :json
 
   def index
@@ -27,14 +27,15 @@ class UserFlowsController < ApplicationController
     head 204
   end
 
+  # TODO: look into serializing
   def potential_flows
-    flows = (current_user.possible_flows + Flow.defaults).map do |flow|
+    flows = (Flow.defaults + current_user.possible_flows).map do |flow|
       h = { flow_id: flow.id, title: flow.title }
-      h.merge!(journal: { name: flow.journal.name, logo: flow.journal.logo }) if flow.journal
+      h.merge!(journalName: flow.journal.name, journalLogo: flow.journal.logo.thumbnail.url) if flow.journal
       h
     end
 
-    { flows: flows.uniq }
+    respond_with({ flows: flows.uniq })
   end
 
   private

@@ -4,7 +4,7 @@ class UserFlowsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with current_user.user_flows, meta: potential_flows
+    respond_with current_user.user_flows
   end
 
   def show
@@ -27,6 +27,16 @@ class UserFlowsController < ApplicationController
     head 204
   end
 
+  def potential_flows
+    flows = (current_user.possible_flows + Flow.defaults).map do |flow|
+      h = { flow_id: flow.id, title: flow.title }
+      h.merge!(journal: { name: flow.journal.name, logo: flow.journal.logo }) if flow.journal
+      h
+    end
+
+    { flows: flows.uniq }
+  end
+
   private
 
   def flow_params
@@ -37,11 +47,4 @@ class UserFlowsController < ApplicationController
     flow_params[:title].downcase.capitalize
   end
 
-  def potential_flows
-    flows = (current_user.possible_flows + Flow.defaults).map do |flow|
-      { flow_id: flow.id, title: flow.title }
-    end
-
-    { flows: flows.uniq }
-  end
 end

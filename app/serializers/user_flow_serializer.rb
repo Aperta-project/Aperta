@@ -8,6 +8,14 @@ class UserFlowSerializer < ActiveModel::Serializer
 
   private
 
+  def journal_name
+    flow.journal.name if flow.journal
+  end
+
+  def journal_logo
+    flow.journal.logo if flow.journal
+  end
+
   def flow_query
     @query ||= FlowQuery.new(scoped_user, flow)
   end

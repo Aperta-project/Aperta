@@ -4,7 +4,10 @@ ETahi.ChooseNewFlowManagerColumnOverlayController = Em.Controller.extend
   actions:
     createFlow: (flow) ->
       flow = @store.createRecord 'userFlow',
-        title: flow.title
-        flowId: flow.flow_id
+        title: flow.title,
+        flowId: flow.flow_id,
+        journalName: flow.journalName,
+        journalLogo: flow.journalLogo,
+
       flow.save()
       @send('closeOverlay')

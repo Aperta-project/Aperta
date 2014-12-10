@@ -2,7 +2,6 @@ class MessageExpired < StandardError; end
 class InvalidPayload < StandardError; end
 
 class Verifier
-
   attr_accessor :data
 
   EXPIRATION_DATE_KEY = "_verifier_expiration_date"
@@ -17,7 +16,7 @@ class Verifier
   end
 
   def decrypt
-    decrypted.tap do |data|
+    decrypted.tap do
       validate_expiration! if expiration_date
     end
   end
@@ -42,7 +41,7 @@ class Verifier
 
   def add_expiration_date(expiration_date)
     data[EXPIRATION_DATE_KEY] = expiration_date
-  rescue IndexError => e
+  rescue IndexError
     raise InvalidPayload.new("Data to be encrypted with expiration date must be a hash")
   end
 

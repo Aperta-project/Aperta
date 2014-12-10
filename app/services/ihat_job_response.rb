@@ -1,5 +1,4 @@
 class IHatJobResponse
-
   attr_reader :epub_url, :state, :raw_metadata
 
   def initialize(params={})

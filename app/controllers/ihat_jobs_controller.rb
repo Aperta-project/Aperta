@@ -1,7 +1,7 @@
 class IhatJobsController < ApplicationController
   skip_before_action :authenticate_with_basic_http
   protect_from_forgery with: :null_session
-  rescue_from ActionController::ParameterMissing, with: :render_invalid_params
+  rescue_from ActiveSupport::MessageVerifier::InvalidSignature, with: :render_invalid_params
 
   def update
     if job.converted?
@@ -15,11 +15,11 @@ class IhatJobsController < ApplicationController
   private
 
   def job
-    @job ||= IHatJob.new(ihat_job_params)
+    @job ||= IHatJobResponse.new(ihat_job_params)
   end
 
   def ihat_job_params
-    params.require(:job).permit(:id, :state, :url, metadata: :paper_id)
+    params.require(:job).permit(:id, :state, :url, :metadata)
   end
 
   def render_invalid_params(e)

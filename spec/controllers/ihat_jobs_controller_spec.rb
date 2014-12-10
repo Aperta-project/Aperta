@@ -8,7 +8,8 @@ describe IhatJobsController, :type => :controller do
       controller.request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(token)
     end
 
-    let(:ihat_job_params) { { job: { id: 4, state: ihat_job_state, metadata: { paper_id: 123 }, url: "http://amazon.localhost/1234" } } }
+    let(:encrypted_metadata) { Verifier.new(paper_id: "123").encrypt }
+    let(:ihat_job_params) { { job: { id: 4, state: ihat_job_state, metadata: encrypted_metadata, url: "http://amazon.localhost/1234" } } }
 
     context "the ihat job status is 'converted'" do
       let(:ihat_job_state) { "converted" }

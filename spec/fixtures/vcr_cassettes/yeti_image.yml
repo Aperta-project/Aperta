@@ -1093,20 +1093,20 @@ http_interactions:
       Cache-Control:
       - max-age=315576000
       Date:
-      - Wed, 10 Dec 2014 02:52:21 +0000
+      - Wed, 10 Dec 2014 17:25:37 +0000
       Authorization:
-      - AWS AKIAJSHIMOFVZTWTJB5A:Q8fjd7ax6KQnj+8gy3f3MoIUTO8=
+      - AWS AKIAJSHIMOFVZTWTJB5A:amrQHfH9pF1hqqJx+Ww1FY/W1JI=
   response:
     status:
       code: 200
       message: ''
     headers:
       X-Amz-Id-2:
-      - rI6VUfYyHTMwp5aq8QRWJ4xbMylNVeKZaBREl5/YtJ8xGtSS4JUgxN9WEri1A8Ym
+      - myuPhvvm4aTQHYgNS+cJ1OpnQlqzMBURZur85Dpvtzy5kSJyVq/iYj+SYhXwws/S
       X-Amz-Request-Id:
-      - 732CC98E661D3523
+      - C94E8BE4804B9EFE
       Date:
-      - Wed, 10 Dec 2014 02:52:22 GMT
+      - Wed, 10 Dec 2014 17:25:38 GMT
       Etag:
       - '"871aa1f271a84f92aff260bd06b6cd58"'
       Content-Length:
@@ -1116,8 +1116,8 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
-  recorded_at: Wed, 10 Dec 2014 02:52:21 GMT
+    http_version:
+  recorded_at: Wed, 10 Dec 2014 17:25:37 GMT
 - request:
     method: put
     uri: https://tahi-development.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg
@@ -1162,20 +1162,21 @@ http_interactions:
       Cache-Control:
       - max-age=315576000
       Date:
-      - Wed, 10 Dec 2014 02:52:21 +0000
+      - Wed, 10 Dec 2014 17:25:37 +0000
       Authorization:
-      - AWS AKIAJSHIMOFVZTWTJB5A:AaFYK7UDUGQywIOij1TAoAQS+bg=
+      - AWS AKIAJSHIMOFVZTWTJB5A:NlS51PJuGNYhDRVKgbReSH/rB4Q=
+      - AWS AKIAJHFQZ6WND52M2VDQ:dT67GqeDodxAjfs15inyGv6BD2c=
   response:
     status:
       code: 200
       message: ''
     headers:
       X-Amz-Id-2:
-      - 4x3kN/LvQ6eLxKShPgFlr3Wz27mwbq6DisYIUO+Ono2nj8oXtN1dSoD2Oi8NdFTM
+      - 6Re02kQmhea2TPUG2Cmql30HDCo8NhS0raJrgaAhZM8zH3NpXWsCQ+2ULgIPlxdq
       X-Amz-Request-Id:
-      - D41BA261EE7BB90F
+      - 64E62602C0ED3A4F
       Date:
-      - Wed, 10 Dec 2014 02:52:22 GMT
+      - Wed, 10 Dec 2014 17:25:38 GMT
       Etag:
       - '"8c199f5eefa30aa97312825f206d51a2"'
       Content-Length:
@@ -1185,6 +1186,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
-  recorded_at: Wed, 10 Dec 2014 02:52:21 GMT
+    http_version:
+  recorded_at: Wed, 10 Dec 2014 17:25:38 GMT
 recorded_with: VCR 2.9.2

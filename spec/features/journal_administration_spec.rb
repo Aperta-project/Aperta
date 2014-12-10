@@ -98,7 +98,7 @@ feature "Journal Administration", js: true, selenium: true do
 
       describe do
         before do
-          VCR.use_cassette('yeti.jpg') do
+          VCR.use_cassette('yeti_image') do
             journal.update_attributes(logo: File.open("spec/fixtures/yeti.jpg"))
           end
         end

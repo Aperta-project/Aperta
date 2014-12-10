@@ -28,7 +28,7 @@ class Verifier
   private
 
   def verifier
-    @verifier ||= Rails.application.message_verifier(ENV.fetch("RAILS_SECRET_TOKEN"))
+    @verifier ||= Rails.application.message_verifier(:ihat_verifier)
   end
 
   def decrypted

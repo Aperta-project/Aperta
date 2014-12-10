@@ -56,6 +56,10 @@
   @include transition(top 0.2s);
 }
 
+html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
+  top: 103px;
+}
+
 .ve-toolbar-underside {
   @include position(fixed, $tahi-control-bar-height 0px auto 0px);
   height: 43px;

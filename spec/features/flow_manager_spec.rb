@@ -66,6 +66,29 @@ feature "Flow Manager", js: true, selenium: true do
     expect(flow_manager_page).to have_no_application_error
   end
 
+  context "column header" do
+    context "journal without logo" do
+      it "show journal name as text" do
+        visit "/flow_manager"
+        expect(page).to have_css ".column-title-wrapper"
+        within ".column-title-wrapper" do
+          expect(page).to have_content journal.name
+        end
+      end
+    end
+
+    context "journal with logo" do
+      it "show journal logo" do
+        visit "/flow_manager"
+        expect(page).to have_css ".column-title-wrapper"
+        within ".column-title-wrapper" do
+          expect(page).to have_css("img")
+          # assert the journal logo, maybe
+        end
+      end
+    end
+  end
+
   context "adding a column to the flow manager" do
     it "the column should appear on the page" do
       dashboard_page = DashboardPage.new
@@ -86,7 +109,6 @@ feature "Flow Manager", js: true, selenium: true do
       expect(flow_manager_page.available_column_count).to eq(1)
     end
   end
-
 
   context "Comment count" do
     before do

@@ -13,7 +13,7 @@ ETahi.FlowColumnComponent = Ember.Component.extend
   emptyText: "There are no matches."
 
   formattedFlowTitle: Em.computed 'flow.title', ->
-    possibleFlowNames.findBy('text', @get('flow.title'))
+    possibleFlowNames.findBy('text', @get('userFlow.title'))
 
   possibleFlowNames: possibleFlowNames
 
@@ -22,7 +22,7 @@ ETahi.FlowColumnComponent = Ember.Component.extend
       @sendAction 'viewCard', card
 
     save: ->
-      @sendAction 'saveFlow', @get('flow')
+      @sendAction 'saveFlow', @get('userFlow')
 
     cancel: ->
       @get('flow').rollback()
@@ -33,4 +33,4 @@ ETahi.FlowColumnComponent = Ember.Component.extend
       @toggleProperty 'editing'
 
     removeFlow: ->
-      @sendAction 'removeFlow', @get('flow')
+      @sendAction 'removeFlow', @get('userFlow')

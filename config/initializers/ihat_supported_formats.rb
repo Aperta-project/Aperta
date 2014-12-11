@@ -5,8 +5,13 @@ module IhatSupportedFormats
       begin
         response = Faraday.get(ENV['IHAT_URL'])
         if response && response.body
+          formats = JSON.parse(response.body)
+          formats["export_formats"] =
+            formats["export_formats"].delete_if {
+              |format| format["format"] == "latex"
+            }
           Tahi::Application.config.ihat_supported_formats =
-            JSON.dump(JSON.parse(response.body))
+            JSON.dump(formats)
         else
           warn "Invalid JSON response from #{ENV['IHAT_URL']}"
         end

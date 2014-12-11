@@ -42,8 +42,6 @@ shared_examples_for "administrator for paper" do
     expect(policy.heartbeat?).to be(false)
     expect(policy.toggle_editable?).to be(true)
     expect(policy.submit?).to be(true)
-    expect(policy.export?).to be(true)
-    expect(policy.status?).to be(true)
   end
 end
 
@@ -59,8 +57,6 @@ shared_examples_for "author for paper" do
     expect(policy.heartbeat?).to be(false)
     expect(policy.toggle_editable?).to be(false)
     expect(policy.submit?).to be(true)
-    expect(policy.export?).to be(true)
-    expect(policy.status?).to be(true)
   end
 end
 
@@ -76,8 +72,6 @@ shared_examples_for "person who cannot see a paper" do
     expect(policy.heartbeat?).to be(false)
     expect(policy.toggle_editable?).to be(false)
     expect(policy.submit?).to be(false)
-    expect(policy.export?).to be(false)
-    expect(policy.status?).to be(false)
   end
 end
 
@@ -295,5 +289,20 @@ shared_examples_for "person who can not view role flow manager" do
     expect(policy.create?).to be(false)
     expect(policy.update?).to be(false)
     expect(policy.destroy?).to be(false)
+  end
+end
+
+shared_examples_for "can export paper" do
+  it "allows them to export" do
+    expect(policy.export?).to be(true)
+    expect(policy.status?).to be(true)
+  end
+end
+
+
+shared_examples_for "cannot export paper" do
+  it "does not allow them to export" do
+    expect(policy.export?).to be(false)
+    expect(policy.status?).to be(false)
   end
 end

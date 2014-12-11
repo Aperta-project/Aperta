@@ -97,9 +97,6 @@ group :development, :test, :performance do
   gem 'rspec-its'
   gem 'rspec-collection_matchers'
   gem 'rspec-instafail'
-  gem 'capybara'
-  gem 'selenium-webdriver'
-  gem 'capybara-webkit'
   gem 'launchy'
   gem 'database_cleaner'
   gem 'teaspoon', github: 'modeset/teaspoon'
@@ -113,6 +110,9 @@ group :development, :test, :performance do
 end
 
 group :test do
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'capybara-webkit'
   gem 'simplecov'
   gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'

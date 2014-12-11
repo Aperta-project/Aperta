@@ -44,6 +44,12 @@
 .chosen-style-override .chosen-container-multi .chosen-choices {
   border: none;
   background-image: none;
+
+  li.search-field input[type="text"] {
+    height: 19px;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .chosen-style-override .chosen-container-active .chosen-choices {

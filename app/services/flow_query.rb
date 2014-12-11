@@ -7,31 +7,17 @@ class FlowQuery
   end
 
   def tasks
-    return [] if flow.query.empty?
+    return Task.none if flow.query.empty?
+
     query_hash = HashWithIndifferentAccess.new(flow.query)
-    scope = Task.includes(:paper)
+    scope = Task.all
 
-    if query_hash[:assigned]
-      scope = scope.assigned_to(user)
-    elsif query_hash[:assigned] == false
-      scope = scope.unassigned
-    end
+    scope = by_journal(scope) unless user.site_admin?
 
-    scope = scope.send(query_hash[:state]) if query_hash[:state]
-    scope = scope.for_role(query_hash[:role]) if query_hash[:role]
-    scope = scope.admin if query_hash[:admin]
-
-    if query_hash[:type] && TaskType.types.include?(query_hash[:type])
-      scope = scope.where(type: query_hash[:type])
-    end
-
-    unless user.site_admin?
-      if flow.default?
-        scope = scope.on_journals(user.journals)
-      else
-        scope = scope.on_journals([flow.journal])
-      end
-    end
+    scope = assigned(scope, query_hash[:assigned])
+    scope = state(scope, query_hash[:state])
+    scope = role(scope, query_hash[:role])
+    scope = type(scope, query_hash[:type])
 
     scope
   end
@@ -45,7 +31,32 @@ class FlowQuery
 
   private
 
-  def attached_journal_ids
-    @attached_journal_ids ||= user.roles.pluck(:journal_id).uniq
+  def state(scope, the_state)
+    the_state ? scope.send(the_state) : scope
+  end
+
+  def role(scope, the_role)
+    the_role ? scope.for_role(the_role) : scope
+  end
+
+  def assigned(scope, is_assigned)
+    if is_assigned.nil?
+      scope
+    else
+      is_assigned ? scope.assigned_to(user) : scope.unassigned
+    end
+  end
+
+  def type(scope, the_type)
+    if the_type && TaskType.types.include?(the_type)
+      scope.where(type: the_type)
+    else
+      scope
+    end
+  end
+
+  def by_journal(scope)
+    journals = flow.default? ? user.journals : [flow.journal]
+    scope.on_journals(journals)
   end
 end

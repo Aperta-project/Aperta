@@ -9,10 +9,22 @@ class Task < ActiveRecord::Base
 
   default_scope { order("completed ASC") }
 
-  scope :completed,   -> { where(completed: true) }
   scope :metadata,    -> { where(type: metadata_types) }
+
+  # Scopes based on assignment
+  scope :unassigned, -> { includes(:participations).where(participations: { id: nil }) }
+  scope :assigned_to, ->(*users) {
+    if users.empty?
+      Task.none
+    else
+      joins(participations: :user).where("participations.user_id" => users)
+    end
+  }
+
+  # Scopes based on state
+  scope :completed,   -> { where(completed: true) }
   scope :incomplete,  -> { where(completed: false) }
-  scope :admin,       -> { where(type: "StandardTasks::PaperAdminTask") }
+
 
   scope :on_journals, ->(journals) { joins(:journal).where("journals.id" => journals.map(&:id)) }
 
@@ -27,19 +39,6 @@ class Task < ActiveRecord::Base
   validates :title, length: { maximum: 255 }
 
   belongs_to :phase, inverse_of: :tasks
-
-
-  def self.assigned_to(*users)
-    if users.empty?
-      Task.none
-    else
-      joins(participations: :user).where("participations.user_id" => users)
-    end
-  end
-
-  def self.unassigned
-    includes(:participations).where(participations: { id: nil })
-  end
 
   def self.for_role(role)
     where(role: role)
@@ -74,6 +73,7 @@ class Task < ActiveRecord::Base
 
   def incomplete!
     update(completed: false)
+
   end
 
   def update_responder

@@ -107,15 +107,6 @@ ActiveRecord::Schema.define(version: 20141208152459) do
     t.text    "query"
   end
 
-  create_table "ihat_jobs", force: true do |t|
-    t.integer  "paper_id"
-    t.string   "job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "ihat_jobs", ["paper_id"], name: "index_ihat_jobs_on_paper_id", using: :btree
-
   create_table "journal_task_types", force: true do |t|
     t.integer "task_type_id"
     t.integer "journal_id"

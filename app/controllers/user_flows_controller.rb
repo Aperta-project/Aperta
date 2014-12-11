@@ -27,15 +27,8 @@ class UserFlowsController < ApplicationController
     head 204
   end
 
-  # TODO: look into serializing
   def potential_flows
-    flows = (Flow.defaults + current_user.possible_flows).map do |flow|
-      h = { flow_id: flow.id, title: flow.title }
-      h.merge!(journalName: flow.journal.name, journalLogo: flow.journal.logo.thumbnail.url) if flow.journal
-      h
-    end
-
-    respond_with({ flows: flows.uniq })
+    respond_with current_user.possible_flows, each_serializer: PotentialFlowSerializer, root: "flows"
   end
 
   private
@@ -47,5 +40,4 @@ class UserFlowsController < ApplicationController
   def formatted_title
     flow_params[:title].downcase.capitalize
   end
-
 end

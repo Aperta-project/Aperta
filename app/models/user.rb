@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
          omniauth_providers: [:orcid, :cas]
 
   def possible_flows
-    Flow.where(role_id: roles.map(&:id))
+    Flow.where("role_id IN (?) OR role_id IS NULL", role_ids)
   end
 
   def self.site_admins

@@ -73,7 +73,6 @@ class Task < ActiveRecord::Base
 
   def incomplete!
     update(completed: false)
-
   end
 
   def update_responder

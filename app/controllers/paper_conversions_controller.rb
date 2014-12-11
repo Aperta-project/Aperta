@@ -17,6 +17,6 @@ class PaperConversionsController < ApplicationController
   private
 
   def enforce_policy
-    authorize_action!(paper: @paper)
+    authorize_action!(resource: @paper)
   end
 end

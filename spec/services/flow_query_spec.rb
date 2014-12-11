@@ -147,7 +147,6 @@ describe FlowQuery do
 
     context "default scopes" do
       let(:up_for_grabs) { FactoryGirl.create(:task, phase: phase, completed: false, participants: []) }
-      let(:my_papers) { FactoryGirl.create(:paper_admin_task, phase: phase, completed: true) }
       let(:my_tasks) { FactoryGirl.create(:task, phase: phase, completed: false, participants: [user]) }
       let(:done) { FactoryGirl.create(:task, phase: phase, completed: true, participants: [user]) }
 
@@ -157,15 +156,6 @@ describe FlowQuery do
           tasks = FlowQuery.new(user, flow).tasks
 
           expect(tasks).to include(up_for_grabs)
-          expect(tasks.count).to eq(1)
-        end
-      end
-      context "My papers" do
-        it "returns tasks that are 'my papers'" do
-          flow = FactoryGirl.build(:flow, :default, query: {type: "StandardTasks::PaperAdminTask"})
-          tasks = FlowQuery.new(user, flow).tasks
-
-          expect(tasks).to include(my_papers)
           expect(tasks.count).to eq(1)
         end
       end

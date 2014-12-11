@@ -13,6 +13,7 @@ class Journal < ActiveRecord::Base
       journal.doi_journal_prefix.present? && journal.doi_publisher_prefix.present?
     }
   }
+  validate :valid_doi_format
 
   after_create :setup_defaults
   before_destroy :destroy_roles
@@ -22,6 +23,10 @@ class Journal < ActiveRecord::Base
 
   def admins
     users.merge(Role.admins)
+  end
+
+  def doi
+    Doi.new(journal: self).to_s
   end
 
   def editors
@@ -60,6 +65,11 @@ class Journal < ActiveRecord::Base
 
 
   private
+
+  def valid_doi_format
+    return true if Doi.valid?(doi)
+    errors.add(:base, "The DOI you specified is not valid.")
+  end
 
   def setup_defaults
     # TODO: remove these from being a callback (when we aren't using rails_admin)

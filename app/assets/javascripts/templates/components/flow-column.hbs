@@ -21,15 +21,7 @@
         {{#if journalName}}
           {{journalName}}
         {{else}}
-          {{#if journal.logoUrl}}
-            <img {{bind-attr src="journal.logoUrl"}}>
-          {{else}}
-            {{#if journal.name}}
-              {{journal.name}}
-            {{else}}
-              For all Journals
-            {{/if}}
-          {{/if}}
+          For all Journals
         {{/if}}
       {{/if}}
 

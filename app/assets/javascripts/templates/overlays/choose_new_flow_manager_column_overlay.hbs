@@ -11,7 +11,7 @@
     {{/if}}
 
     {{#each flow in group.flows}}
-      <div class="button-secondary button--green" {{action "createFlow" flow}}>{{flow.title}}</div>
+      <div class="button-secondary button--green flow-manager-button" {{action "createFlow" flow}}>{{flow.title}}</div>
     {{/each}}
 
     <br><br>

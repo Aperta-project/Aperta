@@ -67,6 +67,7 @@ class Journal < ActiveRecord::Base
   private
 
   def valid_doi_format
+    return true if !doi_publisher_prefix.present? && !doi_journal_prefix.present?
     return true if Doi.valid?(doi)
     errors.add(:base, "The DOI you specified is not valid.")
   end

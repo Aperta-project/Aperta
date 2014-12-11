@@ -14,7 +14,7 @@
 <ul class="columns">
   {{#each flow in model}}
     {{flow-column flow=flow
-                  litePaper=litePaper
+                  litePapers=flow.litePapers
                   commentLooks=commentLooks
                   editable=false
                   journalName=flow.journalName

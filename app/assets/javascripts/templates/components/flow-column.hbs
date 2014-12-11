@@ -66,14 +66,14 @@
 
 <div class="column-content">
   <ul class="cards">
-    {{#each litePaper in flow.litePapers}}
+    {{#each litePaper in litePapers}}
       {{flow-task-group flow=flow
                         litePaper=litePaper
                         commentLooks=commentLooks
                         viewCard="viewCard"}}
     {{/each}}
   </ul>
-  {{#unless flow.litePapers}}
+  {{#unless litePapers}}
     <div class="empty-text">{{ emptyText }}</div>
   {{/unless}}
 </div>

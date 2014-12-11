@@ -25,7 +25,7 @@ class FlowQuery
   def lite_papers
     Paper.joins(:tasks).
       includes(:paper_roles).
-      where("tasks.id" => tasks.map(&:id)).
+      where("tasks.id" => tasks.pluck(:id)).
       uniq
   end
 

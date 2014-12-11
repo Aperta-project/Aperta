@@ -31,6 +31,6 @@ class UserFlowSerializer < ActiveModel::Serializer
 
   def journal_logo
     return unless journal
-    journal.logo.url
+    journal.logo_url
   end
 end

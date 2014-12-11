@@ -72,7 +72,7 @@ feature "Flow Manager", js: true, selenium: true do
   context "column header" do
     before do
       # force relationship to satisfy a Users's user_flows payload
-      Flow.first.update_attribute(:role_id, 1)
+      flow.update(role_id: 1)
     end
 
     context "journal without logo" do

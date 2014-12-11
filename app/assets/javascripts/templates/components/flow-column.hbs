@@ -11,7 +11,22 @@
       <button class="column-header-update-save button-primary button--green" {{action "save"}}>Save</button>
     </div>
   {{else}}
-    <h2 class="column-title" {{action "toggleEdit"}}>{{flow.title}}</h2>
+    <div class="column-title-wrapper">
+      <h2 class="column-title" {{action "toggleEdit"}}>{{flow.title}}</h2>
+      <div class="journal-thumbnail" style="min-height: 40px;">
+
+      {{#if journalLogo}}
+        <img {{bind-attr src="journalLogo"}}>
+      {{else}}
+        {{#if journalName}}
+          {{journalName}}
+        {{else}}
+          For all Journals
+        {{/if}}
+      {{/if}}
+
+      </div>
+    </div>
   {{/if}}
   {{#if editable}}
     <div class="edit-column-title glyphicon glyphicon-pencil" {{action "toggleEdit"}}></div>

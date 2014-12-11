@@ -1,11 +1,11 @@
-{{view ETahi.ControlBarView}}
+{{view "control-bar"}}
 
 <div id="tahi-container">
   <section id="dashboard-my-submissions">
     <h2 class="welcome-message">
       Hi, {{currentUser.firstName}}.
       {{#if papers.length}}
-        You have {{totalPaperCount}} {{pluralize totalPaperCount "manuscript" "manuscripts"}}.
+        You have {{totalPaperCount}} {{make-plural totalPaperCount "manuscript" "manuscripts"}}.
       {{else}}
         You have no manuscripts.
       {{/if}}
@@ -14,7 +14,7 @@
     {{#if hasPapers}}
       <ul class="dashboard-submitted-papers">
         {{#each paper in sortedPapers}}
-          {{view "dashboardLink" content=paper unreadComments=unreadComments}}
+          {{view "dashboard-link" content=paper unreadComments=unreadComments}}
         {{/each}}
       </ul>
       {{#if paginate}}

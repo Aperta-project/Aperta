@@ -9,7 +9,7 @@ IndexRoute = Ember.Route.extend
     @store.find('commentLook') # don't wait to fulfill
     controller.set('model', model)
     papers = @store.filter 'litePaper', (p) ->
-      !Ember.isEmpty(p.get('roles'))
+      !Ember.isEmpty p.get('roles')
 
     controller.set('papers', papers)
     controller.set('unreadComments', @store.all('commentLook'))
@@ -31,7 +31,7 @@ IndexRoute = Ember.Route.extend
           journal: journals.get('content.firstObject')
           paperType: journals.get('content.firstObject.paperTypes.firstObject')
           editable: true
-          body: ""
+          body: ''
 
         @controllerFor('paperNewOverlay').setProperties
           model: model
@@ -41,6 +41,7 @@ IndexRoute = Ember.Route.extend
           into: 'application'
           outlet: 'overlay'
           controller: 'paperNewOverlay'
+          adasfaf
 
     closeAction: ->
       # not sure why setting journal to null prevents explosions

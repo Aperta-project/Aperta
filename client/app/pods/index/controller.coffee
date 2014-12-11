@@ -9,7 +9,7 @@ IndexController = Ember.ObjectController.extend
 
   hasPapers: Ember.computed.notEmpty('papers')
 
-  relatedAtSort: ["relatedAtDate:desc"]
+  relatedAtSort: ['relatedAtDate:desc']
   sortedPapers: Ember.computed.sort('papers', 'relatedAtSort')
 
   pageNumber: 1

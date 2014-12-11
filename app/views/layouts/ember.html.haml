@@ -16,11 +16,11 @@
 
   %body
     #ember-app
+    :javascript
+      // TODO: REMOVE
+      window.ETahi = {}
+      window.ETahi.environment = "#{Rails.env}";
+    - if current_user
+      :javascript
+        window.currentUser = #{UserSerializer.new(current_user).to_json.html_safe};
     = include_ember_script_tags :tahi
-
-- if current_user
-  :javascript
-    window.currentUserId = #{current_user.id};
-
--# :javascript
--#   window.ETahi.environment = "#{Rails.env}";

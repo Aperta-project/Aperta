@@ -70,6 +70,11 @@ feature "Flow Manager", js: true, selenium: true do
   end
 
   context "column header" do
+    before do
+      # force relationship to satisfy a Users's user_flows payload
+      Flow.first.update_attribute(:role_id, 1)
+    end
+
     context "journal without logo" do
       it "show journal name as text" do
         visit "/flow_manager"
@@ -81,12 +86,18 @@ feature "Flow Manager", js: true, selenium: true do
     end
 
     context "journal with logo" do
+      before do
+        with_aws_cassette(:yeti_image) do
+          journal.update_attributes(logo: File.open("spec/fixtures/yeti.jpg"))
+        end
+      end
+
       it "show journal logo" do
         visit "/flow_manager"
+        find(".column-header")
         expect(page).to have_css ".column-title-wrapper"
         within ".column-title-wrapper" do
           expect(page).to have_css("img")
-          # assert the journal logo, maybe
         end
       end
     end

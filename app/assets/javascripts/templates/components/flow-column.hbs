@@ -14,17 +14,25 @@
     <div class="column-title-wrapper">
       <h2 class="column-title" {{action "toggleEdit"}}>{{flow.title}}</h2>
       <div class="journal-thumbnail" style="min-height: 40px;">
-        {{#if journal.logoUrl}}
-          <img {{bind-attr src=journal.logoUrl}}>
-        {{else}}
-          {{journal.name}}
-        {{/if}}
 
-        {{#if journalLogo}}
-          <img {{bind-attr src="journalLogo"}}>
+      {{#if journalLogo}}
+        <img {{bind-attr src="journalLogo"}}>
+      {{else}}
+        {{#if journalName}}
+          {{journalName}}
         {{else}}
-          For All Journals
+          {{#if journal.logoUrl}}
+            <img {{bind-attr src="journal.logoUrl"}}>
+          {{else}}
+            {{#if journal.name}}
+              {{journal.name}}
+            {{else}}
+              For all Journals
+            {{/if}}
+          {{/if}}
         {{/if}}
+      {{/if}}
+
       </div>
     </div>
   {{/if}}

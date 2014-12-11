@@ -9,8 +9,8 @@ ETahi.PaperRoute = Ember.Route.extend
   afterModel: (paper, transition) ->
     if paper.id
       doi = paper.get("doi")
-      if doi
-        @transitionTo "paper.edit", doi
+      # if doi
+      #   @transitionTo "paper.edit", doi
 
   setupController: (controller, model) ->
     controller.set('model', model)

@@ -9,7 +9,7 @@ ETahi.CommentBoardComponent = Ember.Component.extend
 
   commentSort: ['createdAt:desc']
   sortedComments: Ember.computed.sort('comments', 'commentSort')
-  firstComments: ETahi.computed.limit 'sortedComments', 5
+  firstComments: Ember.computed.filter 'sortedComments', (comment, index) -> index < 5
 
   setupFocus: (->
     @$('.new-comment-field').on('focus', (e) =>

@@ -1,4 +1,4 @@
-ETahi.RadioButton = Ember.View.extend
+ETahi.RadioButtonComponent = Ember.Component.extend
   tagName: 'input'
   type: 'radio'
   attributeBindings: ['name', 'type', 'value', 'checked:checked:']

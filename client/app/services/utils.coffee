@@ -37,6 +37,7 @@ Utils = Ember.Namespace.create
     ms)
 
   debug: (description, obj) ->
+    # EMBERCLI TODO - use embercli ENV
     if true
       console.log('FIX Etahi.environment')
     else

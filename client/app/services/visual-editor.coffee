@@ -1,10 +1,12 @@
-ETahi.VisualEditorService = Em.Object.extend
+`import Ember from 'ember'`
+
+VisualEditorService = Ember.Object.extend
   init: ->
     ve.init.platform.setModulesUrl('/visual-editor/modules')
 
   isEnabled: false
   isFocused: false
-  isCurrentlyEditing: Em.computed.and('isEnabled', 'isFocused')
+  isCurrentlyEditing: Ember.computed.and('isEnabled', 'isFocused')
 
   update: ($parent, content) ->
     container = $('<div>')
@@ -53,3 +55,5 @@ ETahi.VisualEditorService = Em.Object.extend
     if @get('isEnabled')
       @get('target').surface.getView().focus()
       @set('isFocused', true)
+
+`export default VisualEditorService`

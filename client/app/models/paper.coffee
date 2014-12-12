@@ -11,7 +11,7 @@ Paper = DS.Model.extend
   lockedBy: DS.belongsTo('user')
   phases: DS.hasMany('phase')
   reviewers: DS.hasMany('user') # these are reviewers that have been assigned to the paper.
-  # ENGINE TODO: supportingInformationFiles: DS.hasMany('supportingInformationFile')
+  #  EMBERCLI TODO: supportingInformationFiles: DS.hasMany('supportingInformationFile')
   tasks: DS.hasMany('task', {async: true, polymorphic: true})
 
   body: a('string')

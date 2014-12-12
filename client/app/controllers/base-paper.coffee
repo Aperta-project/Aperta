@@ -1,4 +1,7 @@
-ETahi.BasePaperController = Ember.ObjectController.extend
+`import Ember from 'ember'`
+`import DocumentDownload from 'tahi/services/document-download'`
+
+BasePaperController = Ember.ObjectController.extend
   needs: ['application']
 
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
@@ -36,9 +39,11 @@ ETahi.BasePaperController = Ember.ObjectController.extend
   ).property('tasks.@each.role')
 
   hasNoMetaDataTasks: (->
-    Em.isEmpty(@get('assignedTasks')) && Em.isEmpty(@get('editorTasks')) && Em.isEmpty(@get('authorTasks'))
+    Ember.isEmpty(@get('assignedTasks')) && Ember.isEmpty(@get('editorTasks')) && Ember.isEmpty(@get('authorTasks'))
   ).property('assignedTasks.@each', 'editorTasks.@each', 'authorTasks.@each')
 
   actions:
     export: (downloadType) ->
-      ETahi.DocumentDownloadService.initiate(@get('id'), downloadType.format)
+      DocumentDownload.initiate(@get('id'), downloadType.format)
+
+`export default BasePaperController`

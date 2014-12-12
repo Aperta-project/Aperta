@@ -1,6 +1,7 @@
+`import Ember from 'ember'`
 # modified from: https://github.com/KasperTidemann/ember-contenteditable-view
 
-ETahi.ContentEditableComponent = Em.Component.extend
+ContentEditableComponent = Ember.Component.extend
   attributeBindings: ['contenteditable', 'placeholder']
 
   editable: true
@@ -76,3 +77,5 @@ ETahi.ContentEditableComponent = Em.Component.extend
   supressEnterKeyEvent: (e) ->
     if e.keyCode == 13 || e.which == 13
       e.preventDefault()
+
+`export default ContentEditableComponent`

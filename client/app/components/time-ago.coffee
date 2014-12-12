@@ -1,4 +1,6 @@
-ETahi.TimeAgoComponent = Ember.Component.extend
+`import Ember from 'ember'`
+
+TimeAgoComponent = Ember.Component.extend
   tagName: 'span'
   classNameBindings: [':time-ago', 'time::hidden']
   attributeBindings: ['title']
@@ -16,3 +18,6 @@ ETahi.TimeAgoComponent = Ember.Component.extend
       @$().timeago('updateFromDOM')
     )
   ).observes('title')
+
+
+`export default TimeAgoComponent`

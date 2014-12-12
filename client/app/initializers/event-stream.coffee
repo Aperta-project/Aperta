@@ -1,3 +1,5 @@
+`import Ember from 'ember'`
+
 EventStream =
   name: 'eventStream'
   after: 'currentUser'
@@ -9,7 +11,7 @@ EventStream =
           play: -> null
           pause: -> null
       else
-        ETahi.EventStream
+        EventStream
       container.register('eventstream:main', es.extend({store: store}), singleton: true)
       application.inject('route', 'eventStream', 'eventstream:main')
 

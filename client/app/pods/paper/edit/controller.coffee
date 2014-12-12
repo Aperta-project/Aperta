@@ -1,22 +1,25 @@
-#= require controllers/base_paper_controller
-ETahi.PaperEditController = ETahi.BasePaperController.extend
+`import Ember from 'ember'`
+`import BasePaperController from 'tahi/controllers/base-paper'` # EMBERCLI TODO - this is weird
+`import VisualEditor from 'tahi/services/visual-editor'`
+
+PaperEditController = BasePaperController.extend
   needs: ['paperSubmitOverlay']
   visualEditor: null
   saveState: false
 
   setupVisualEditor: (->
-    @set('visualEditor', ETahi.VisualEditorService.create())
+    @set('visualEditor', VisualEditor.create())
   ).on("init")
 
   errorText: ""
 
-  isBodyEmpty: Em.computed 'model.body', ->
+  isBodyEmpty: Ember.computed 'model.body', ->
     Ember.isBlank $(@get 'model.body').text()
 
-  showPlaceholder: Em.computed 'isBodyEmpty', 'visualEditor.isCurrentlyEditing', ->
+  showPlaceholder: Ember.computed 'isBodyEmpty', 'visualEditor.isCurrentlyEditing', ->
     @get('isBodyEmpty') && !@get('visualEditor.isCurrentlyEditing')
 
-  statusMessage: Em.computed.any 'processingMessage', 'userEditingMessage', 'saveStateMessage'
+  statusMessage: Ember.computed.any 'processingMessage', 'userEditingMessage', 'saveStateMessage'
 
   processingMessage: (->
     if @get('status') is "processing"
@@ -91,3 +94,5 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
       @get('model').save()
       @get('controllers.paperSubmitOverlay').set 'model', @get('model')
       @send 'showConfirmSubmitOverlay'
+
+`export default PaperEditController`

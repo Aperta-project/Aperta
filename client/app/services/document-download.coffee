@@ -1,4 +1,7 @@
-ETahi.DocumentDownloadService = Em.Namespace.create
+`import Ember from 'ember'`
+`import Utils from 'tahi/services/utils'`
+
+DocumentDownloadService = Ember.Namespace.create
   initiate: (paperId, downloadFormat) ->
     @paperId = paperId
     @downloadFormat = downloadFormat
@@ -19,7 +22,7 @@ ETahi.DocumentDownloadService = Em.Namespace.create
       success: (data) =>
         job = data['jobs']
         if job.status == "complete"
-          Tahi.utils.windowLocation job.url
+          Utils.windowLocation job.url
         else if job.status == "working"
           setTimeout (=>
             @checkJobStatus jobId
@@ -27,3 +30,4 @@ ETahi.DocumentDownloadService = Em.Namespace.create
         else
           throw new Error("Unknown conversion status #{job.status}")
 
+`export default DocumentDownloadService`

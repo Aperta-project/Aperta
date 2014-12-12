@@ -10,7 +10,7 @@ feature "Flow Manager", js: true, selenium: true do
   end
 
   let!(:flow) do
-    create :flow, title: "Up for grabs", query: { assigned: true }, role_id: nil
+    create :flow, title: "Up for grabs", assigned_query: true, role_id: nil
   end
 
   before do

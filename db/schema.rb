@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141208152459) do
+ActiveRecord::Schema.define(version: 20141212145754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "affiliations", force: true do |t|
     t.integer  "user_id"
@@ -104,7 +105,7 @@ ActiveRecord::Schema.define(version: 20141208152459) do
     t.string  "title"
     t.integer "role_id"
     t.integer "position"
-    t.text    "query"
+    t.hstore  "query"
   end
 
   create_table "journal_task_types", force: true do |t|
@@ -185,8 +186,8 @@ ActiveRecord::Schema.define(version: 20141208152459) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.integer  "striking_image_id"
     t.datetime "last_heartbeat_at"
+    t.integer  "striking_image_id"
     t.boolean  "editable",          default: true
     t.text     "doi"
   end
@@ -366,8 +367,8 @@ ActiveRecord::Schema.define(version: 20141208152459) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
+    t.boolean  "site_admin",             default: false, null: false
     t.string   "avatar"
-    t.boolean  "site_admin",             default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -1,4 +1,6 @@
-ETahi.SerializesHasMany = Ember.Mixin.create
+`import Ember from 'ember'`
+
+SerializesHasMany = Ember.Mixin.create
   relationshipMap: ->
     {
       manyToNone: true
@@ -17,5 +19,7 @@ ETahi.SerializesHasMany = Ember.Mixin.create
     idsKey = key.substr(0, key.length-1) + "_ids"
     relationshipType = record.constructor.determineRelationshipType(relationship)
     if @relationshipMap relationshipType
-      json[@toSnakeCase(idsKey)] = Em.get(record, key).mapBy("id")
+      json[@toSnakeCase(idsKey)] = Ember.get(record, key).mapBy("id")
     return
+
+`export default SerializesHasMany`

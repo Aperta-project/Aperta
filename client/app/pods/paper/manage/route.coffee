@@ -1,4 +1,7 @@
-ETahi.PaperManageRoute = ETahi.AuthorizedRoute.extend
+`import Ember from 'ember'`
+`import AuthorizedRoute from 'tahi/routes/authorized'`
+
+PaperManageRoute = AuthorizedRoute.extend
   afterModel: (paper, transition) ->
     # Ping manuscript_manager url for authorization
     promise = new Ember.RSVP.Promise (resolve, reject) ->
@@ -52,3 +55,6 @@ ETahi.PaperManageRoute = ETahi.AuthorizedRoute.extend
         into: 'application'
         outlet: 'overlay'
         controller: 'cardDeleteOverlay')
+
+
+`export default PaperManageRoute`

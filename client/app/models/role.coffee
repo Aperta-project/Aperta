@@ -1,5 +1,13 @@
+`import DS from 'ember-data'`
+
 a = DS.attr
-ETahi.Role = DS.Model.extend
+
+Role = DS.Model.extend
+
+  journal: DS.belongsTo('adminJournal')
+  userRoles: DS.hasMany('userRole')
+  flows: DS.hasMany('flow', async: true)
+
   name: a('string')
   kind: a('string')
   canAdministerJournal: a('boolean')
@@ -8,10 +16,8 @@ ETahi.Role = DS.Model.extend
   canViewAllManuscriptManagers: a('boolean')
   canViewFlowManager: a('boolean')
 
-  journal: DS.belongsTo('adminJournal')
-  userRoles: DS.hasMany('userRole')
-  flows: DS.hasMany('flow', async: true)
-
   destroyRecord: ->
     @get('userRoles').invoke('unloadRecord')
     @_super()
+
+`export default Role`

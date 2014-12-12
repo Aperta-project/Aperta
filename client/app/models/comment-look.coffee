@@ -3,6 +3,7 @@
 a = DS.attr
 
 CommentLook = DS.Model.extend
+
   comment: DS.belongsTo('comment')
   user: DS.belongsTo('user')
 

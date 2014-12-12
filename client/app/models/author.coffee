@@ -3,6 +3,7 @@
 a = DS.attr
 
 Author = DS.Model.extend
+
   paper: DS.belongsTo('paper')
 
   firstName: a('string')

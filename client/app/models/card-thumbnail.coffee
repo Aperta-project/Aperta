@@ -3,6 +3,7 @@
 a = DS.attr
 
 CardThumbnail = DS.Model.extend
+
   litePaper: DS.belongsTo('litePaper')
   task: DS.belongsTo('task', polymorphic: true)
 

@@ -3,6 +3,7 @@
 a = DS.attr
 
 Attachment = DS.Model.extend
+
   attachable: DS.belongsTo('attachable', polymorphic: true)
 
   caption: a('string')

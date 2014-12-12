@@ -1,10 +1,16 @@
+`import DS from 'ember-data'`
+
 a = DS.attr
-ETahi.AdminJournal = DS.Model.extend
+
+AdminJournal = DS.Model.extend
+
+  manuscriptManagerTemplates: DS.hasMany('manuscriptManagerTemplate')
+  roles: DS.hasMany('role')
+  journalTaskTypes: DS.hasMany('journalTaskType')
+
   logoUrl: a('string')
   name: a('string')
   paperTypes: a()
-  manuscriptManagerTemplates: DS.hasMany('manuscriptManagerTemplate')
-  roles: DS.hasMany('role')
   epubCoverUrl: a('string')
   epubCoverFileName: a('string')
   epubCss: a('string')
@@ -13,7 +19,8 @@ ETahi.AdminJournal = DS.Model.extend
   description: a('string')
   paperCount: a('number')
   createdAt: a('date')
-  journalTaskTypes: DS.hasMany('journalTaskType')
   doiJournalPrefix: a('string')
   doiPublisherPrefix: a('string')
   lastDoiIssued: a('number')
+
+`export default AdminJournal`

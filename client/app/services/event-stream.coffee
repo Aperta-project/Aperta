@@ -1,5 +1,8 @@
+`import Ember from 'ember'`
+`import Utils from 'tahi/services/utils'`
+
 interval = 500
-ETahi.EventStream = Em.Object.extend
+EventStream = Ember.Object.extend
   eventSource: null
   channels: null
   messageQueue: null
@@ -21,7 +24,7 @@ ETahi.EventStream = Em.Object.extend
         msg.parsedData = JSON.parse(msg.data)
         if @shouldProcessMessage(msg)
           description = "Event Stream (#{msg.type}): #{msg.parsedData.subscription_name}"
-          Tahi.utils.debug(description, msg)
+          Utils.debug(description, msg)
           @msgResponse(msg.parsedData)
     Ember.run.later(@, 'processMessages', [], interval)
 
@@ -48,7 +51,7 @@ ETahi.EventStream = Em.Object.extend
         @set('eventSource', new EventSource(data.url))
         Ember.$(window).unload => @stop()
         @set('channels', data.channels)
-        Tahi.utils.debug("Event Stream: updated channels", data.channels)
+        Utils.debug("Event Stream: updated channels", data.channels)
         data.channels.forEach (eventName) =>
           @addEventListener(eventName)
         @play()
@@ -107,3 +110,5 @@ ETahi.EventStream = Em.Object.extend
           record = @store.getById(type, id)
         if record
           record.unloadRecord()
+
+`export default EventStream`

@@ -1,4 +1,4 @@
-`import DS from 'ember-data`
+`import DS from 'ember-data'`
 
 Collaboration = DS.Model.extend
 

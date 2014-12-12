@@ -7,17 +7,14 @@ class FlowQuery
   end
 
   def tasks
-    return Task.none if flow.query.empty?
+    return Task.none if flow.query.nil?
 
-    query_hash = HashWithIndifferentAccess.new(flow.query)
     scope = Task.all
-
     scope = by_journal(scope) unless user.site_admin?
 
-    scope = assigned(scope, query_hash[:assigned])
-    scope = state(scope, query_hash[:state])
-    scope = role(scope, query_hash[:role])
-    scope = type(scope, query_hash[:type])
+    flow.query.keys.each do |query_scope|
+      scope = send(query_scope, scope)
+    end
 
     scope
   end
@@ -31,28 +28,20 @@ class FlowQuery
 
   private
 
-  def state(scope, the_state)
-    the_state ? scope.send(the_state) : scope
+  def state_query(scope)
+    scope.send(flow.state_query)
   end
 
-  def role(scope, the_role)
-    the_role ? scope.for_role(the_role) : scope
+  def role_query(scope)
+    scope.for_role(flow.role_query)
   end
 
-  def assigned(scope, is_assigned)
-    if is_assigned.nil?
-      scope
-    else
-      is_assigned ? scope.assigned_to(user) : scope.unassigned
-    end
+  def assigned_query(scope)
+    flow.assigned? ? scope.assigned_to(user) : scope.unassigned
   end
 
-  def type(scope, the_type)
-    if the_type && TaskType.types.include?(the_type)
-      scope.where(type: the_type)
-    else
-      scope
-    end
+  def type_query(scope)
+    scope.where(type: flow.type_query)
   end
 
   def by_journal(scope)

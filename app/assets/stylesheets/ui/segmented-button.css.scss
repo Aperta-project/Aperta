@@ -1,16 +1,10 @@
 .segmented-buttons {
-  position: relative;
-  display: inline-block;
   @include display(flex);
   @include align-items(stretch);
   @include justify-content(space-between);
 }
 
 .segmented-button {
-  position: relative;
-  float: left;
-  display: inline-block;
-  margin-left: -1px;
   border: 1px solid $tahi-green;
   padding: 2px 0;
   color: $tahi-green;
@@ -40,4 +34,6 @@
 .segmented-button--active {
   color: #fff;
   background: $tahi-green;
+
+  &:hover { text-decoration: none; }
 }

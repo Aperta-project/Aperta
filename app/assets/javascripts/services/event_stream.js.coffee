@@ -18,15 +18,26 @@ ETahi.EventStream = Em.Object.extend
   processMessages: ->
     unless @get('wait')
       if msg = @messageQueue.popObject()
-        msg.parsedData = JSON.parse(msg.data)
-        if @shouldProcessMessage(msg)
-          description = "Event Stream (#{msg.type}): #{msg.parsedData.subscription_name}"
-          Tahi.utils.debug(description, msg)
-          @msgResponse(msg.parsedData)
+        description = "Requesting event stream payload"
+        Tahi.utils.debug(description, msg)
+        if (msg.type == "system")
+          @processSystemMessage(msg)
+        else
+          @processUserMessage(msg)
     Ember.run.later(@, 'processMessages', [], interval)
 
-  shouldProcessMessage: (msg) ->
-    @get('channels').contains(msg.type) or msg.parsedData.action == 'destroyed'
+  # payload is already present
+  processSystemMessage: (msg) ->
+    @msgResponse(JSON.parse(msg.data))
+
+  # get the payload from the server
+  processUserMessage: (msg) ->
+    params =
+      url: msg.data
+      method: 'GET'
+      success: (data) =>
+        @msgResponse(data)
+    Ember.$.ajax(params)
 
   pause: ->
     @set('wait', true)
@@ -48,13 +59,15 @@ ETahi.EventStream = Em.Object.extend
         @set('eventSource', new EventSource(data.url))
         Ember.$(window).unload => @stop()
         @set('channels', data.channels)
-        Tahi.utils.debug("Event Stream: updated channels", data.channels)
+        Tahi.utils.debug("Event Stream: set subscription channels", data.channels)
         data.channels.forEach (eventName) =>
           @addEventListener(eventName)
         @play()
     Ember.$.ajax(params)
 
   msgResponse: (esData) ->
+    description = "Event Stream processed from #{esData.subscription_name}"
+    Tahi.utils.debug(description, esData)
     action = esData.action
     delete esData.action
     delete esData.subscription_name

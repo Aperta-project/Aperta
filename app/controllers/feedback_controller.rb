@@ -1,8 +1,11 @@
 class FeedbackController < ApplicationController
   def create
+    feedback = params[:feedback]
+
     Feedback.new(user: current_user,
-                 feedback: params[:feedback][:remarks],
-                 referrer: params[:feedback][:referrer]).deliver
+                 screenshots: feedback[:screenshots],
+                 feedback: feedback[:remarks],
+                 referrer: feedback[:referrer]).deliver
 
     render json: {}, status: :created
   end

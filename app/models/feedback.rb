@@ -1,6 +1,7 @@
 class Feedback < MailForm::Base
   attribute :email_to,
             :env,
+            :screenshots,
             :feedback,
             :referrer,
             :user

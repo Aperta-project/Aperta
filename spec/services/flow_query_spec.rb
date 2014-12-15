@@ -57,14 +57,6 @@ describe FlowQuery do
       let!(:assigned_task) { FactoryGirl.create(:task, participants: [user], phase: phase, completed: true) }
       let!(:unassigned_task) { FactoryGirl.create(:task, participants: [], phase: phase, completed: true) }
 
-      it "returns the original scope if assigned query is nil" do
-        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {state: :completed})
-        tasks = FlowQuery.new(user, flow).tasks
-
-        expect(tasks).to include(assigned_task)
-        expect(tasks).to include(unassigned_task)
-      end
-
       it "scopes tasks to assigned to the user if assigned query is true" do
         flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {assigned: true})
         tasks = FlowQuery.new(user, flow).tasks
@@ -72,6 +64,7 @@ describe FlowQuery do
         expect(tasks).to include(assigned_task)
         expect(tasks).to_not include(unassigned_task)
       end
+
       it "scopes tasks to unassigned if the assigned query is false" do
         flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {assigned: false})
         tasks = FlowQuery.new(user, flow).tasks
@@ -84,14 +77,6 @@ describe FlowQuery do
     context "scoping tasks by state" do
       let!(:complete) { FactoryGirl.create(:task, completed: true, phase: phase, participants: [user]) }
       let!(:incomplete) { FactoryGirl.create(:task, completed: false, phase: phase, participants: [user]) }
-
-      it "does not extend scope if the state query is nil" do
-        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {assigned: true})
-        tasks = FlowQuery.new(user, flow).tasks
-
-        expect(tasks).to include(complete)
-        expect(tasks).to include(incomplete)
-      end
 
       it "scopes tasks to completed task if the state query is complete" do
         flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {state: :completed})
@@ -113,14 +98,6 @@ describe FlowQuery do
     context "scoping tasks by role" do
       let!(:admin_task) { FactoryGirl.create(:task, phase: phase, participants: [user], role: "Admin") }
       let!(:generic_task) { FactoryGirl.create(:task, phase: phase, participants: [user]) }
-
-      it "does not extend the scope if role query is nil" do
-        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {assigned: true})
-        tasks = FlowQuery.new(user, flow).tasks
-
-        expect(tasks).to include(admin_task)
-        expect(tasks).to include(generic_task)
-      end
 
       it "it scopes tasks by role if role is given" do
         flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {role: "Admin"})

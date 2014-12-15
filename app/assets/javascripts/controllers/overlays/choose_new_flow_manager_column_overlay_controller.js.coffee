@@ -7,16 +7,15 @@ ETahi.ChooseNewFlowManagerColumnOverlayController = Em.Controller.extend
   groupedFlows: (->
     result = []
 
-    titleFromFlow = (flow) -> (flow.journal_name || 'Default Flows')
-
     @get('flows').forEach (flow) ->
-      unless result.findBy('title', titleFromFlow(flow))
+      flowJournalName = flow.journal_name || 'Default Flows'
+      unless result.findBy('title', flowJournalName)
         result.pushObject Ember.Object.create
-          title: titleFromFlow(flow)
+          title: flowJournalName
           logo: flow.journal_logo
           flows: []
 
-      result.findBy('title', titleFromFlow(flow)).get('flows').pushObject(flow)
+      result.findBy('title', flowJournalName).get('flows').pushObject(flow)
 
     return result
   ).property('flows.[]')

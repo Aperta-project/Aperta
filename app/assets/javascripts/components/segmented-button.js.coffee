@@ -1,5 +1,4 @@
 ETahi.SegmentedButtonComponent = Ember.Component.extend
-  layoutName: 'segmented-button'
   classNames: ['segmented-button']
   classNameBindings: ['active:segmented-button--active']
 

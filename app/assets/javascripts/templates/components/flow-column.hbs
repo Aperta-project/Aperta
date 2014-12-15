@@ -22,14 +22,12 @@
       {{/if}}
 
       <div class="segmented-buttons">
-        {{segmented-button text="Sort by Oldest"
-                           value="desc"
-                           activeValue=sortBy
-                           action="setSortOrder"}}
-        {{segmented-button text="Sort by Newest"
-                           value="asc"
-                           activeValue=sortBy
-                           action="setSortOrder"}}
+        {{#segmented-button value="desc"
+                            activeValue=sortBy
+                            action="setSortOrder"}}Sort by Oldest{{/segmented-button}}
+        {{#segmented-button value="asc"
+                            activeValue=sortBy
+                            action="setSortOrder"}}Sort by Newest{{/segmented-button}}
       </div>
 
       </div>

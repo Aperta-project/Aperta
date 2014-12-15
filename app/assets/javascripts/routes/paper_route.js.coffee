@@ -10,7 +10,7 @@ ETahi.PaperRoute = Ember.Route.extend
     if paper.id
       doi = paper.get("doi")
       if doi
-        @transitionTo "paper.edit", doi
+        @transitionTo transition.targetName, doi
 
   setupController: (controller, model) ->
     controller.set('model', model)

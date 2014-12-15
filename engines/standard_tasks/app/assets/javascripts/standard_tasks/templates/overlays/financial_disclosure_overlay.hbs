@@ -31,9 +31,10 @@
   {{#each funder in funders}}
     <div class="question-dataset">
       {{render "funder" funder}}
-      {{#if receivedFunding}}
-        <button class="button-secondary knockout button--green" {{action "addFunder"}}>Add Another Funder</button>
-      {{/if}}
     </div>
   {{/each}}
+
+  {{#if receivedFunding}}
+    <button class="button-secondary button--green" {{action "addFunder"}}>Add Another Funder</button>
+  {{/if}}
 </div>

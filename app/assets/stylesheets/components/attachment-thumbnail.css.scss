@@ -220,11 +220,10 @@
 // start attachment-thumbnail-edit-overlay
 
 .attachment-thumbnail-edit-overlay, .replace-spinner {
-  display: none;
   @include position(absolute, 0px 0px 0px 0px);
+  display: none;
   color: #fff;
   text-align: center;
-  background-color: rgba(41, 169, 4, 0.6);
 }
 
 .attachment-thumbnail-edit-overlay-buttons {

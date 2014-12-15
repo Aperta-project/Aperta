@@ -13,7 +13,7 @@ class Feedback < MailForm::Base
   def env
     Rails.env
   end
-  
+
   def headers
     {
       subject: 'Tahi Feedback',

@@ -3,7 +3,7 @@ class FeedbackController < ApplicationController
     feedback = params[:feedback]
 
     Feedback.new(user: current_user,
-                 screenshots: feedback[:screenshots],
+                 screenshots: feedback[:screenshots] || [],
                  feedback: feedback[:remarks],
                  referrer: feedback[:referrer]).deliver
 

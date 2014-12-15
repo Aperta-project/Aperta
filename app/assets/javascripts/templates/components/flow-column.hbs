@@ -18,12 +18,19 @@
       {{#if journalLogo}}
         <img {{bind-attr src="journalLogo"}}>
       {{else}}
-        {{#if journalName}}
-          {{journalName}}
-        {{else}}
-          For all Journals
-        {{/if}}
+        {{display journalName or="For all Journals"}}
       {{/if}}
+
+      <div class="segmented-buttons">
+        {{segmented-button text="Sort by Oldest"
+                           value="desc"
+                           activeValue=sortBy
+                           action="setSortOrder"}}
+        {{segmented-button text="Sort by Newest"
+                           value="asc"
+                           activeValue=sortBy
+                           action="setSortOrder"}}
+      </div>
 
       </div>
     </div>

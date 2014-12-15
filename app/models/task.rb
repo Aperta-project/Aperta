@@ -13,13 +13,6 @@ class Task < ActiveRecord::Base
 
   # Scopes based on assignment
   scope :unassigned, -> { includes(:participations).where(participations: { id: nil }) }
-  scope :assigned_to, ->(*users) {
-    if users.empty?
-      Task.none
-    else
-      joins(participations: :user).where("participations.user_id" => users)
-    end
-  }
 
   # Scopes based on state
   scope :completed,   -> { where(completed: true) }
@@ -50,6 +43,14 @@ class Task < ActiveRecord::Base
 
   def self.permitted_attributes
     [:completed, :title, :phase_id]
+  end
+
+  def self.assigned_to(*users)
+    if users.empty?
+      Task.none
+    else
+      joins(participations: :user).where("participations.user_id" => users)
+    end
   end
 
   #TODO Research how task generation and templating can be simplified

@@ -1,5 +1,5 @@
 `import Ember from 'ember'`
-`import AnimateElement from 'tahi/mixins/animate-element'`
+`import AnimateElement from 'tahi/mixins/routes/animate-element'`
 `import RESTless from 'tahi/services/rest-less'`
 
 ApplicationRoute = Ember.Route.extend AnimateElement,

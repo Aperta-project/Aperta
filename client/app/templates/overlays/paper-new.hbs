@@ -1,0 +1,31 @@
+<div class="overlay-container">
+  <h1>Create a New Submission</h1>
+
+  <div class="form-group">
+    {{input type="text" value=shortTitle class="form-control" placeholder="Short Title" id="paper-short-title" autofocus="autofocus"}}
+  </div>
+
+  <div class="form-group chosen-style-override">
+    {{view "chosen" content=journals
+             name="journal"
+             prompt="Choose Journal"
+             value=journal
+             optionValuePath="content"
+             optionLabelPath="content.name"
+             class="paper-new-journal-select"}}
+
+    {{view "chosen" contentBinding="journal.paperTypes"
+             name="paper_type"
+             prompt="Choose Paper Type"
+             valueBinding="paperType"
+             optionValuePath="content"
+             optionLabelPath="content"
+             disabled=noJournalSelected
+             class="paper-new-paper-type-select"}}
+  </div>
+
+  <div class="overlay-action-buttons">
+    <span class="button-link button--green" {{action "closeAction"}}>cancel</span>
+    <button type="submit" class="button-primary button--green button--wide" {{action "createNewPaper"}}>Create</button>
+  </div>
+</div>

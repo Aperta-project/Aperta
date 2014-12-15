@@ -1,7 +1,9 @@
-ETahi.PaperNewOverlayController = Ember.ObjectController.extend
+`import Ember from 'ember'`
+
+PaperNewOverlayController = Ember.ObjectController.extend
   overlayClass: 'overlay--fullscreen paper-new-overlay'
 
-  noJournalSelected: Em.computed.not('model.journal')
+  noJournalSelected: Ember.computed.not('model.journal')
 
   journalDidChange: (->
     @set('model.paperType', @get('model.journal.paperTypes.firstObject'))
@@ -15,3 +17,5 @@ ETahi.PaperNewOverlayController = Ember.ObjectController.extend
         # to beta 11 or later.  check back then.
         paper.reload().then (newPaper) =>
           @transitionToRoute('paper.edit', newPaper)
+
+`export default PaperNewOverlayController`

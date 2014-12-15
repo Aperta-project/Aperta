@@ -1,4 +1,6 @@
-ETahi.ProgressSpinnerComponent = Ember.Component.extend
+`import Ember from 'ember'`
+
+ProgressSpinnerComponent = Ember.Component.extend
   classNames: ['spinner-component']
   classNameBindings: ['visible']
   options:
@@ -44,3 +46,5 @@ ETahi.ProgressSpinnerComponent = Ember.Component.extend
   teardown: (->
     @spinner.stop()
   ).on('willDestroyElement')
+
+`export default ProgressSpinnerComponent`

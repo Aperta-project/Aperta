@@ -1,4 +1,6 @@
-ETahi.AddColumnComponent = Ember.Component.extend
+`import Ember from 'ember'`
+
+AddColumnComponent = Ember.Component.extend
   tagName: 'span'
   classNameBindings: [':add-column', 'bonusClass']
   attributeBindings: ['toggle:data-toggle', 'placement:data-placement', 'title']
@@ -9,4 +11,7 @@ ETahi.AddColumnComponent = Ember.Component.extend
   click: ->
     @sendAction('action', @get('position'))
   didInsertElement: ->
-    @.$().tooltip()
+    # EMBERCLI TODO - what is this plugin?
+    # @.$().tooltip()
+
+`export default AddColumnComponent`

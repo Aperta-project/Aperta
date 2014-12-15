@@ -7,8 +7,8 @@ ApplicationController = Ember.Controller.extend
   ).property()
 
   isLoggedIn: ( ->
-    !Ember.isBlank(@get('currentUser.id'))
-  ).property('currentUser.id')
+    !Ember.isBlank(@get('currentUser'))
+  ).property('currentUser')
 
   isAdmin: Ember.computed.alias 'currentUser.siteAdmin'
   canViewAdminLinks: false

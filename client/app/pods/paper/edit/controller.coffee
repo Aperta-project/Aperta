@@ -3,7 +3,7 @@
 `import VisualEditor from 'tahi/services/visual-editor'`
 
 PaperEditController = BasePaperController.extend
-  needs: ['paperSubmitOverlay']
+  needs: ['overlays/paperSubmit']
   visualEditor: null
   saveState: false
 

@@ -13,3 +13,5 @@ PhaseTemplate = DS.Model.extend
 
   noTasks: Ember.computed.empty('taskTemplates')
 
+`export default PhaseTemplate`
+

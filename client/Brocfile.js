@@ -18,6 +18,7 @@ var app = new EmberApp({storeConfigInMeta: false});
 // along with the exports of each module as its value.
 
 app.import('bower_components/spin.js/spin.js');
+app.import('bower_components/chosen-bower/chosen.jquery.js');
 app.import('bower_components/jquery-timeago/jquery.timeago.js');
 
 module.exports = app.toTree();

@@ -1,6 +1,7 @@
 `import Ember from 'ember'`
+`import EventStream from 'tahi/services/event-stream'`
 
-EventStream =
+EventStreamInitializer =
   name: 'eventStream'
   after: 'currentUser'
   initialize: (container, application) ->
@@ -15,4 +16,4 @@ EventStream =
       container.register('eventstream:main', es.extend({store: store}), singleton: true)
       application.inject('route', 'eventStream', 'eventstream:main')
 
-`export default EventStream`
+`export default EventStreamInitializer`

@@ -1,5 +1,6 @@
 `import Ember from 'ember'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
+`import Utils from 'tahi/services/utils'`
 
 PaperManageRoute = AuthorizedRoute.extend
   afterModel: (paper, transition) ->
@@ -18,15 +19,16 @@ PaperManageRoute = AuthorizedRoute.extend
 
   actions:
     chooseNewCardTypeOverlay: (phase) ->
-      @controllerFor('chooseNewCardTypeOverlay').set('phase', phase)
+      chooseNewCardTypeOverlay = @controllerFor('overlays/chooseNewCardType')
+      chooseNewCardTypeOverlay.set('phase', phase)
 
       @store.find('adminJournal', phase.get('paper.journal.id')).then (adminJournal) =>
-        @controllerFor('chooseNewCardTypeOverlay').set('journalTaskTypes', adminJournal.get('journalTaskTypes'))
+        chooseNewCardTypeOverlay.set('journalTaskTypes', adminJournal.get('journalTaskTypes'))
 
-      @render('chooseNewCardTypeOverlay',
+      @render('overlays/chooseNewCardType',
         into: 'application'
         outlet: 'overlay'
-        controller: 'chooseNewCardTypeOverlay')
+        controller: chooseNewCardTypeOverlay)
 
     viewCard: (task, queryParams) ->
       queryParams || = {queryParams: {}}
@@ -38,7 +40,7 @@ PaperManageRoute = AuthorizedRoute.extend
 
     addTaskType: (phase, taskType) ->
       return unless taskType
-      unNamespacedKind = Tahi.utils.deNamespaceTaskType taskType.get('kind')
+      unNamespacedKind = Utils.deNamespaceTaskType taskType.get('kind')
 
       @store.createRecord(unNamespacedKind,
         phase: phase

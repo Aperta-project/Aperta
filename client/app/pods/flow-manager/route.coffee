@@ -1,4 +1,6 @@
-ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
+`import AuthorizedRoute from 'tahi/routes/authorized'`
+
+FlowManagerRoute = AuthorizedRoute.extend
   beforeModel: (transition) ->
     @handleUnauthorizedRequest(transition) unless @getCurrentUser?
 
@@ -39,3 +41,5 @@ ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
       @controllerFor('application').set('cachedModel' , @modelFor('flow_manager'))
       @controllerFor('application').set('overlayBackground', 'flow_manager')
       @transitionTo('task', paperId, task.get('id'))
+
+`export default FlowManagerRoute`

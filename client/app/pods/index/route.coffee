@@ -33,20 +33,19 @@ IndexRoute = Ember.Route.extend
           editable: true
           body: ''
 
-        @controllerFor('paperNewOverlay').setProperties
+        @controllerFor('overlays/paperNew').setProperties
           model: model
           journals: journals
 
-        @render 'paperNewOverlay',
+        @render 'overlays/paperNew',
           into: 'application'
           outlet: 'overlay'
-          controller: 'paperNewOverlay'
-          adasfaf
+          controller: 'overlays/paperNew'
 
     closeAction: ->
       # not sure why setting journal to null prevents explosions
       # probably ember-data relationship craziness
-      @controllerFor('paperNewOverlay').get('model')
+      @controllerFor('overlays/paperNew').get('model')
         .set('journal', null)
         .deleteRecord()
       @send('closeOverlay')

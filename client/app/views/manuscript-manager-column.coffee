@@ -1,4 +1,8 @@
-ETahi.ManuscriptManagerColumnView = Em.View.extend DragNDrop.Droppable,
+`import Ember from 'ember'`
+`import DragNDrop from 'ember'`
+`import Droppable from 'tahi/mixins/views/droppable'`
+
+ManuscriptManagerColumnView = Em.View.extend Droppable,
   classNames: ['column']
 
   nextPosition: (->
@@ -17,3 +21,5 @@ ETahi.ManuscriptManagerColumnView = Em.View.extend DragNDrop.Droppable,
     @get('controller').send('changeTaskPhase', ETahi.get('dragItem'), @get('content'))
     e.preventDefault()
     false
+
+`export default ManuscriptManagerColumnView`

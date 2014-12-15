@@ -4,7 +4,11 @@ ETahi.FlowColumnComponent = Ember.Component.extend
 
   editing: false
   editable: false
-  emptyText: "There are no matches."
+  emptyText: 'There are no matches.'
+
+  tasks: ( ->
+    @get('flow.tasks')
+  ).property('flow.tasks.@each')
 
   flowTitleDidChange: (->
     Ember.run.schedule('afterRender', this, Tahi.utils.resizeColumnHeaders)

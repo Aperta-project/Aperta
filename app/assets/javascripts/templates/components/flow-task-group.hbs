@@ -1,10 +1,8 @@
 <div class="paper-profile">
-  {{link-to litePaper.displayTitle 'paper.manage' litePaper.id class="paper-profile-title"}}
-  {{#each task in tasks}}
-    {{card-preview paper=litePaper
-                   task=task
-                   commentLooks=commentLooks
-                   classes="flow-card"
-                   action='viewCard'}}
-  {{/each}}
+  {{link-to task.litePaper.displayTitle "paper.manage" task.litePaper.id class="paper-profile-title"}}
+  {{card-preview paper=task.litePaper
+                 task=task
+                 commentLooks=commentLooks
+                 classes="flow-card"
+                 action="viewCard"}}
 </div>

@@ -34,13 +34,10 @@
   </label>
 </div>
 
-<div>
-  <p class="decision-letter-description">Feel free to modify the standard decision letter. Your changes will be saved.</p>
-  {{view ETahi.TextArea
-    model=model
-    id="task_paper_decision_letter"
-    class="task_paper_decision_letter"
-    placeholder="A boilerplate decision letter will appear here"
-    action='saveModel'
-    value=paperDecisionLetter}}
-</div>
+<p class="decision-letter-description">Feel free to modify the standard decision letter. Your changes will be saved.</p>
+{{textarea focus-out="saveModel"
+           onEvent="false"
+           class="decision-letter-field"
+           placeholder="A boilerplate decision letter will appear here"
+           action="saveModel"
+           value=paperDecisionLetter}}

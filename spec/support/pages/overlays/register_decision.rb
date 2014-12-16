@@ -5,11 +5,11 @@ class RegisterDecisionOverlay < CardOverlay
 
   def decision_letter=(body)
     synchronize_content!("Accepted")
-    fill_in 'task_paper_decision_letter', with: body
+    find('.decision-letter-field').set(body)
   end
 
   def decision_letter
-    find('#task_paper_decision_letter').value
+    find('.decision-letter-field').get()
   end
 
   def accepted?

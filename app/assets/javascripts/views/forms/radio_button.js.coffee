@@ -5,7 +5,7 @@ ETahi.RadioButton = Ember.View.extend
 
   checked: (->
     @get('selection') == @get('value')
-  ).property('selection')
+  ).property('selection', 'value')
 
   change: ->
     @set('selection', @$().val())

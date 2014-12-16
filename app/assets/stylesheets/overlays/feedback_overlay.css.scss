@@ -1,0 +1,21 @@
+.overlay-container.feedback {
+  .overlay-content {
+    min-height: 220px;
+    padding: 0;
+    border: none;
+    &.thanks {
+      height: 178px;
+      font-size: 48px;
+      padding: 100px;
+      text-align: center;
+    }
+  }
+
+  .screenshot-uploader input {
+    color: transparent;
+  }
+  .glyphicon-remove:hover {
+    cursor: pointer;
+  }
+}
+

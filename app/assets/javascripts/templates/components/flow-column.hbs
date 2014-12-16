@@ -18,12 +18,17 @@
       {{#if journalLogo}}
         <img {{bind-attr src="journalLogo"}}>
       {{else}}
-        {{#if journalName}}
-          {{journalName}}
-        {{else}}
-          For all Journals
-        {{/if}}
+        {{display journalName or="For all Journals"}}
       {{/if}}
+
+      <div class="segmented-buttons">
+        {{#segmented-button value="desc"
+                            activeValue=sortBy
+                            action="setSortOrder"}}Sort by Oldest{{/segmented-button}}
+        {{#segmented-button value="asc"
+                            activeValue=sortBy
+                            action="setSortOrder"}}Sort by Newest{{/segmented-button}}
+      </div>
 
       </div>
     </div>
@@ -66,14 +71,14 @@
 
 <div class="column-content">
   <ul class="cards">
-    {{#each litePaper in litePapers}}
-      {{flow-task-group flow=flow
-                        litePaper=litePaper
+    {{#each task in tasks}}
+      {{flow-task-group task=task
                         commentLooks=commentLooks
                         viewCard="viewCard"}}
     {{/each}}
   </ul>
-  {{#unless litePapers}}
-    <div class="empty-text">{{ emptyText }}</div>
+
+  {{#unless flow.litePapers}}
+    <div class="empty-text">{{emptyText}}</div>
   {{/unless}}
 </div>

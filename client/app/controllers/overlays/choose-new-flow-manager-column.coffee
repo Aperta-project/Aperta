@@ -1,4 +1,6 @@
-ETahi.ChooseNewFlowManagerColumnOverlayController = Em.Controller.extend
+`import Ember from 'ember'`
+
+ChooseNewFlowManagerColumnOverlayController = Ember.Controller.extend
   flows: []
   overlayClass: 'flow-manager-column-overlay overlay--fullscreen'
   actions:
@@ -8,3 +10,5 @@ ETahi.ChooseNewFlowManagerColumnOverlayController = Em.Controller.extend
         flowId: flow.flow_id
       flow.save()
       @send('closeOverlay')
+
+`export default ChooseNewFlowManagerColumnOverlayController`

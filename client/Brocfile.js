@@ -19,6 +19,7 @@ var app = new EmberApp({storeConfigInMeta: false});
 
 app.import('bower_components/spin.js/spin.js');
 app.import('bower_components/chosen-bower/chosen.jquery.js');
+app.import('bower_components/select2/select2.js');
 app.import('bower_components/jquery-timeago/jquery.timeago.js');
 
 module.exports = app.toTree();

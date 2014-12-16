@@ -21,9 +21,9 @@ FlowManagerRoute = AuthorizedRoute.extend
 
   actions:
     chooseNewFlowManagerColumn: ->
-      controller = @controllerFor('chooseNewFlowManagerColumnOverlay')
+      controller = @controllerFor('overlays/chooseNewFlowManagerColumn')
       controller.set('flows' , @store.metadataFor('userFlow').flows)
-      @render('chooseNewFlowManagerColumnOverlay',
+      @render('overlays/chooseNewFlowManagerColumn',
         into: 'application'
         outlet: 'overlay'
         controller: controller)

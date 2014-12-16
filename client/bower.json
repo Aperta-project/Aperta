@@ -16,6 +16,7 @@
 
     "spin.js": "latest",
     "jquery-timeago": "latest",
-    "chosen-bower": "latest"
+    "chosen-bower": "latest",
+    "select2": "latest"
   }
 }

@@ -1,4 +1,6 @@
-ETahi.Select2Component = Ember.TextField.extend
+`import Ember from 'ember'`
+
+Select2Component = Ember.TextField.extend
   tagName: 'div'
   classNames: ['select2']
 
@@ -70,3 +72,5 @@ ETahi.Select2Component = Ember.TextField.extend
     @.$().off 'select2-close'
     @removeObserver('source', @, @repaint)
   ).on('willDestroyElement')
+
+`export default Select2Component`

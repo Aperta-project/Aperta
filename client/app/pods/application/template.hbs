@@ -4,7 +4,6 @@
   </div>
 
   {{#if isLoggedIn}}
-    HEY
     <a href="#" {{action "routeTo" "profile"}} class="navigation-item navigation-item--account">
       <img {{bind-attr src="currentUser.avatarUrl"}} class="user-thumbnail">
       <span>{{unbound currentUser.fullName}}</span>

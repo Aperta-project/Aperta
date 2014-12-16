@@ -1,10 +1,10 @@
 ETahi.FeedbackController = Ember.ObjectController.extend
   overlayClass: 'overlay--fullscreen feedback-overlay'
+  screenshots: []
 
   setupModel: (->
     @resetModel()
     @set('model.referrer', window.location)
-    @set('model.screenshots', [])
   ).on('init')
 
   actions:

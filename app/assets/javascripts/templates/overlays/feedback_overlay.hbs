@@ -5,6 +5,17 @@
   <main class="overlay-content minimal">
     <form>
       {{textarea class="remarks form-control" name='remarks' value=remarks autofocus="autofocus"}}
+
+      <ul class="uploaded-screenshots">
+        {{#each screenshot in screenshots}}
+        <li><a target="_blank" {{bind-attr href=screenshot.url}}>{{screenshot.filename}}</a></li>
+        {{/each}}
+      </ul>
+      {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png"
+                      done="uploadFinished"
+                      multiple="true"
+                      filePrefix="feedback_attachment"}}
+
     </form>
   </main>
   <footer class="overlay-footer">

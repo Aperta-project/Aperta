@@ -1,5 +1,6 @@
-ETahi.FeedbackController = Ember.ObjectController.extend(
+ETahi.FeedbackController = Ember.ObjectController.extend
   overlayClass: 'overlay--fullscreen feedback-overlay'
+  screenshots: []
 
   setupModel: (->
     @resetModel()
@@ -16,7 +17,8 @@ ETahi.FeedbackController = Ember.ObjectController.extend(
     closeAction: ->
       @send('closeOverlay')
 
+    uploadFinished: (data, filename) ->
+      @get('model.screenshots').pushObject({url: data, filename: filename})
+
   resetModel: ->
     @set('model', @store.createRecord('feedback'))
-
-)

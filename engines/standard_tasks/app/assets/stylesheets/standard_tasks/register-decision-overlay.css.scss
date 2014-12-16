@@ -1,5 +1,5 @@
 .decision-selections {
-  > .form-group {
+  .form-group {
     display: inline-block;
     &:first-child { margin-left: 10px; }
   }
@@ -11,16 +11,14 @@
     font-weight: normal;
     vertical-align: -4px;
   }
-
-  input[type=radio] { @include transform(scale(2)); }
 }
 
 .decision-letter-description { font-size: 18px; }
 
-.task_paper_decision_letter {
-  width: 640px;
-  height: 270px;
-  border: 1px solid #333;
-  border-radius: 10px;
+.decision-letter-field {
+  width: 687px;
+  height: 27rem;
+  border: 1px solid #888;
+  border-radius: 4px;
   padding: 20px;
 }

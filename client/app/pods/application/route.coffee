@@ -10,6 +10,9 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
       RESTless.authorize(controller, '/user_flows/authorization', 'canViewFlowManagerLink')
 
   actions:
+    willTransition: ->
+      @controllerFor('application').send 'hideNavigation'
+
     loading: (transition, originRoute) ->
       spinner = @Spinner.create()
       @set('spinner', spinner)

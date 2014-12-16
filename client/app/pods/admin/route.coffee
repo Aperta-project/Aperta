@@ -18,5 +18,6 @@ AdminRoute = AuthorizedRoute.extend
 
     willTransition: ->
       $('html').attr('screen', '')
+      return true
 
 `export default AdminRoute`

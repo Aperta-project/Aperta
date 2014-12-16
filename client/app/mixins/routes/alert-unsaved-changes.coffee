@@ -14,6 +14,7 @@ AlertUnsavedChanges = Ember.Mixin.create
         # Bubble the `willTransition` action so that
         # parent routes can decide whether or not to abort.
         return true
+
     discardChanges: ->
       @controller.send 'rollback'
       @get('attemptingTransition').retry()

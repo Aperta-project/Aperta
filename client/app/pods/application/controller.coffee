@@ -32,24 +32,19 @@ ApplicationController = Ember.Controller.extend
   showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave')
 
   navigationVisible: false
-  accountLinksVisible: false
+
+  toggleNavigation: (->
+    if @get('navigationVisible')
+      $('html').addClass 'navigation-visible'
+    else
+      $('html').removeClass 'navigation-visible'
+  ).observes('navigationVisible')
 
   actions:
-    toggleNavigation: ->
-      @toggleProperty 'navigationVisible'
+    showNavigation: ->
+      @set 'navigationVisible', true
 
-      if @get('navigationVisible')
-        $('html').addClass 'navigation-visible'
-      else
-        $('html').removeClass 'navigation-visible'
-
-    routeTo: (routeName) ->
-      @send 'toggleNavigation'
-      @set 'accountLinksVisible', false
-      @transitionToRoute routeName
-
-    toggleAccountLinks: ->
-      @toggleProperty 'accountLinksVisible'
-      return false
+    hideNavigation: ->
+      @set 'navigationVisible', false
 
 `export default ApplicationController`

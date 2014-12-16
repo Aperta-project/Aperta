@@ -3,7 +3,7 @@
 AuthorizedRoute = Ember.Route.extend
   handleUnauthorizedRequest: (transition) ->
     transition.abort()
-    @transitionTo 'index'
+    @transitionTo 'dashboard'
 
   actions:
     error: (response, transition) ->

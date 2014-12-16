@@ -14,9 +14,10 @@ DashboardLinkView = Ember.View.extend
   ).property('unreadCommentsList.length')
 
   refreshTooltips: ->
-    Ember.run.scheduleOnce 'afterRender', @, =>
-      if @$()
-        @$('.link-tooltip').tooltip('destroy').tooltip({placement: 'bottom'})
+    # EMBERCLI TODO - tooltips
+    # Ember.run.scheduleOnce 'afterRender', @, =>
+    #   if @$()
+    #     @$('.link-tooltip').tooltip('destroy').tooltip({placement: 'bottom'})
 
   setupTooltips: (->
     @addObserver('content.unreadCommentsCount', @, @refreshTooltips)

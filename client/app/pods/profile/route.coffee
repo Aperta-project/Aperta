@@ -19,5 +19,7 @@ ProfileRoute = Ember.Route.extend
         else
           transition.abort()
           return
+      else
+        true
 
 `export default ProfileRoute`

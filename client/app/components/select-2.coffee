@@ -36,7 +36,7 @@ Select2Component = Ember.TextField.extend
   ).observes('selectedData')
 
   initSelection: (el, callback) ->
-    callback(_.compact(@get('selectedData')))
+    callback(@get('selectedData').compact())
 
   repaint: ->
     @teardown()

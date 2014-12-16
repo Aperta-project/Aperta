@@ -11,7 +11,7 @@ ReopenDSModel =
       # before performing a save pause the event stream
       adapterWillCommit: ->
         es = container.lookup('eventstream:main')
-        # es.pause()
+        es.pause()
         @send('willCommit')
 
 `export default ReopenDSModel`

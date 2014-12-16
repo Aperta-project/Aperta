@@ -5,7 +5,7 @@
 ApplicationRoute = Ember.Route.extend AnimateElement,
   setupController: (controller, model) ->
     controller.set('model', model)
-    if @getCurrentUser? && @getCurrentUser()
+    if @currentUser
       RESTless.authorize(controller, '/admin/journals/authorization', 'canViewAdminLinks')
       RESTless.authorize(controller, '/user_flows/authorization', 'canViewFlowManagerLink')
 
@@ -18,7 +18,7 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
     error: (response, transition, originRoute) ->
       oldState = transition.router.oldState
       transitionMsg = if oldState
-        lastRoute = _.last(oldState.handlerInfos).name
+        lastRoute = oldState.handlerInfos.get('lastObject.name')
         "Error in transition from #{lastRoute} to #{transition.targetName}"
       else
         "Error in transition into #{transition.targetName}"

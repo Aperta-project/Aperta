@@ -5,7 +5,7 @@ Router = Ember.Router.extend
   location: config.locationType
 
 Router.map ->
-  @route('index', path: '/')
+  @route('dashboard', path: '/')
   @route('flow_manager')
 
   @resource 'paper', { path: '/papers/:publisher_prefix/:suffix' }, ->
@@ -24,7 +24,7 @@ Router.map ->
 
   @resource 'admin', ->
     @resource 'journal_user', path: '/journal_users/:journal_id'
-    @resource 'journal', path: '/journals/:journal_id', ->
+    @resource 'admin.journal', path: '/journals/:journal_id', ->
       @resource 'manuscript_manager_template', path: '/manuscript_manager_templates', ->
         @route('new')
         @route('edit', path: '/:template_id/edit')

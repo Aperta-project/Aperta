@@ -1,0 +1,8 @@
+{{select-2-single value=newAffiliation.name
+                  class="profile-affiliation-field"
+                  placeholder="Affiliation Name"
+                  source=selectableInstitutions}}
+
+
+<button class="button-secondary button--green" {{action 'commitAffiliation' newAffiliation}}>done</button>
+<a class="button-link author-cancel" {{action 'toggleAffiliationForm'}}>cancel</a>

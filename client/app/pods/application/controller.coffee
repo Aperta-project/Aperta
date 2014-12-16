@@ -2,20 +2,14 @@
 
 ApplicationController = Ember.Controller.extend
   delayedSave: false
-  currentUser: ( ->
-    @getCurrentUser()
-  ).property()
 
   isLoggedIn: ( ->
-    !Ember.isBlank(@get('currentUser'))
+    !Ember.isBlank(@currentUser)
   ).property('currentUser')
 
   isAdmin: Ember.computed.alias 'currentUser.siteAdmin'
   canViewAdminLinks: false
   canViewFlowManagerLink: false
-
-  # this will get overridden by inject except in testing cases.
-  getCurrentUser: -> null
 
   clearError:( ->
     @set('error', null)

@@ -5,7 +5,7 @@ EventStreamInitializer =
   name: 'eventStream'
   after: 'currentUser'
   initialize: (container, application) ->
-    if window.currentUserId
+    if window.currentUser
       store = container.lookup('store:main')
       es = if Ember.testing # fake event stream
         Ember.Object.extend

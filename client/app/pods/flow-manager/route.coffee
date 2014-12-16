@@ -2,7 +2,7 @@
 
 FlowManagerRoute = AuthorizedRoute.extend
   beforeModel: (transition) ->
-    @handleUnauthorizedRequest(transition) unless @getCurrentUser?
+    @handleUnauthorizedRequest(transition) unless @currentUser
 
   model: ->
     if cachedModel =  @controllerFor('application').get('cachedModel')

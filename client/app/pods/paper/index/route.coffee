@@ -8,7 +8,7 @@ PaperIndexRoute = AuthorizedRoute.extend
   setupController: (controller, model) ->
     controller.set('model', model)
     controller.set('commentLooks', @store.all('commentLook'))
-    if @getCurrentUser? && @getCurrentUser()
+    if @currentUser
       RESTless.authorize(controller, "/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
 
   actions:

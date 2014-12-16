@@ -28,7 +28,7 @@ PaperEditRoute = AuthorizedRoute.extend
   setupController: (controller, model) ->
     controller.set('model', model)
     controller.set('commentLooks', @store.all('commentLook'))
-    if @getCurrentUser? && @getCurrentUser()
+    if @currentUser
       RESTless.authorize(controller, "/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
 
   deactivate: ->
@@ -43,7 +43,7 @@ PaperEditRoute = AuthorizedRoute.extend
 
   isLockedByCurrentUser: ->
     lockedBy = @modelFor('paper').get('lockedBy')
-    lockedBy and lockedBy == @getCurrentUser()
+    lockedBy and lockedBy == @currentUser
 
   actions:
     viewCard: (task) ->

@@ -3,6 +3,7 @@ ErrorHandler =
   after: 'currentUser'
 
   initialize: (container, application) ->
+    return
     # EMBERCLI TODO - re-evaluate
     errorPath = '/errors'
 

@@ -1,0 +1,43 @@
+{{view "control-bar"}}
+
+<div id="tahi-container" class="admin-screen">
+  {{progress-spinner visible=isPending}}
+
+  <div class="row">
+    <div class="col-md-6">
+      {{#if isCurrentUserAdmin}}
+        <a class="add-new-journal button-primary button--blue pull-right" href="#" {{action "addNewJournal"}}>Add new journal</a>
+      {{/if}}
+      <h2>Journals</h2>
+      <ul class="journals">
+        {{#if isFulfilled}}
+          {{#each journal in arrangedContent}}
+            {{render "admin.journal.thumbnail" journal}}
+          {{/each}}
+        {{/if}}
+      </ul>
+    </div>
+    <div class="col-md-4 col-md-offset-2">
+      <h2>Users</h2>
+      <div class="admin-user-search">
+        {{input action="searchUsers" placeholder="SEARCH ALL USERS" class="admin-user-search-input" value=searchQuery}}
+        <button class="admin-user-search-button" {{action "searchUsers"}}><span class="glyphicon glyphicon-search"></span></button>
+      </div>
+
+      {{#if adminJournalUsers}}
+        <table class="admin-users">
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+          </tr>
+          {{#each user in adminJournalUsers}}
+            {{partial "admin_journal_user"}}
+          {{/each}}
+        </table>
+      {{else}}
+        <p class="admin-user-search-default-state-text">{{{placeholderText}}}</p>
+      {{/if}}
+    </div>
+  </div>
+</div>

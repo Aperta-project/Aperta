@@ -30,7 +30,7 @@ PaperEditController = BasePaperController.extend
 
   userEditingMessage: ( ->
     lockedBy = @get('lockedBy')
-    if lockedBy and lockedBy isnt @getCurrentUser()
+    if lockedBy and lockedBy isnt @currentUser
       "<span class='edit-paper-locked-by'>#{lockedBy.get('fullName')}</span> <span>is editing</span>"
     else
       null
@@ -42,7 +42,7 @@ PaperEditController = BasePaperController.extend
 
   isEditing: (->
     lockedBy = @get('lockedBy')
-    lockedBy and lockedBy is @getCurrentUser()
+    lockedBy and lockedBy is @currentUser
   ).property('lockedBy')
 
   canEdit: ( ->
@@ -74,7 +74,7 @@ PaperEditController = BasePaperController.extend
         @get('model').save().then (paper) =>
           @set('saveState', true)
       else #locking
-        @set('lockedBy', @getCurrentUser())
+        @set('lockedBy', @currentUser)
         @get('model').save().then (paper) =>
           @send('startEditing')
           @set('saveState', false)

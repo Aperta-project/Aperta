@@ -20,17 +20,11 @@ class UserFlowSerializer < ActiveModel::Serializer
     object.is_a?(Flow) ? object : object.flow
   end
 
-  def journal
-    flow.journal
-  end
-
   def journal_name
-    return unless journal
-    journal.name
+    flow.journal.try(:name)
   end
 
   def journal_logo
-    return unless journal
-    journal.logo_url
+    flow.journal.try(:logo_url)
   end
 end

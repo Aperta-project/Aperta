@@ -20,7 +20,12 @@ ETahi.FlowManagerRoute = ETahi.AuthorizedRoute.extend
   actions:
     chooseNewFlowManagerColumn: ->
       controller = @controllerFor('chooseNewFlowManagerColumnOverlay')
-      controller.set('flows' , @store.metadataFor('userFlow').flows)
+      controller.set 'isLoading', true
+
+      ETahi.RESTless.get('/user_flows/potential_flows').then (data) ->
+        controller.set 'isLoading', false
+        controller.set('flows' , data.flows)
+
       @render('chooseNewFlowManagerColumnOverlay',
         into: 'application'
         outlet: 'overlay'

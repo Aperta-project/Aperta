@@ -1,7 +1,19 @@
 <div class="overlay-container">
-  <h1>Choose a new column</h1>
+  <h1>Add New Column</h1>
 
-  {{#each flow in flows}}
-    <a class="button-secondary flow-manager-button" {{action "createFlow" flow}}>{{flow.title}}</a>
+  {{progress-spinner visible=isLoading}}
+
+  {{#each group in groupedFlows}}
+    {{#if group.logo}}
+      <img src={{unbound group.logo}} style="display:block; margin-bottom: 15px;">
+    {{else}}
+      <h2>{{group.title}}</h2>
+    {{/if}}
+
+    {{#each flow in group.flows}}
+      <div class="button-secondary button--green flow-manager-button" {{action "createFlow" flow}}>{{flow.title}}</div>
+    {{/each}}
+
+    <br><br>
   {{/each}}
 </div>

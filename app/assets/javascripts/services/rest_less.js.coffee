@@ -9,13 +9,16 @@ ETahi.RESTless = Ember.Namespace.create
         error: reject
 
   delete: (path, data) ->
-    @ajaxPromise("DELETE", path, data)
+    @ajaxPromise('DELETE', path, data)
 
   put: (path, data) ->
-    @ajaxPromise("PUT", path, data)
+    @ajaxPromise('PUT', path, data)
 
   post: (path, data) ->
-    @ajaxPromise("POST", path, data)
+    @ajaxPromise('POST', path, data)
+
+  get: (path, data) ->
+    @ajaxPromise('GET', path, data)
 
   putModel: (model, path, data) ->
     @put("#{model.path()}#{path}", data)

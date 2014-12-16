@@ -22,5 +22,4 @@ class PaperConversionsController < ApplicationController
   def paper
     @paper ||= Paper.find(params[:id])
   end
-
 end

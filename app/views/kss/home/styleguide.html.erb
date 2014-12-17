@@ -26,6 +26,29 @@
 
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 
+<script charset="utf-8">
+$(function() {
+  $('.navigation-close').click(function () {
+    $('.navigation').hide();
+  });
+  $('.navigation-toggle').click(function () {
+    $('.navigation').show();
+  });
+  $('#card-overlay').click(function () {
+    $('.doc-card-overlay').removeClass('hide');
+  });
+  $('.overlay-close-button').click(function () {
+    $('.doc-card-overlay').addClass('hide');
+  });
+  $('#system-overlay').click(function () {
+    $('.doc-system-overlay').removeClass('hide');
+  });
+  $('.overlay-close-x').click(function () {
+    $('.doc-system-overlay').addClass('hide');
+  });
+})
+</script>
+
 <div class="main-content">
   <div class="main-content-cover">
   </div>
@@ -446,7 +469,9 @@
 
 <h1>Card Overlay</h1>
 
-<div class="overlay animation-fade-in hide" data-bindattr-1576="1576">
+<a href="javascript:void(0)" id="card-overlay">Click to Show Card Overlay</a>
+
+<div class="doc-card-overlay overlay animation-fade-in hide" data-bindattr-1576="1576">
   <span class="overlay-close-x animation-scale-in" data-ember-action="1577">×</span>
   <div class="overlay-container">
 
@@ -588,7 +613,7 @@
   <h2>Discussion</h2>
   <div id="ember1606" class="ember-view comment-board">
     <div class="comment-board-form form-group" data-bindattr-1607="1607">
-      <img alt="Mike Doel" class="user-thumbnail" src="/images/profile-no-image.png" data-toggle="tooltip" title="Mike Doel">
+      <img alt="User Name" class="user-thumbnail" src="/images/profile-no-image.png" data-toggle="tooltip" title="User Name">
       <textarea id="ember1610" class="ember-view ember-text-area new-comment-field" placeholder="Type your message here">
       </textarea>
 
@@ -683,7 +708,7 @@
   <span class="participant-selector-label">Following:</span>
   <div class="select2-container select2-container-multi ember-view ember-text-field select2 participant-select2" id="s2id_ember1650">
     <ul class="select2-choices">  <li class="select2-search-choice">    <div>
-      <img alt="Mike Doel" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="Mike Doel">
+      <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
     </div>    <a href="#" class="select2-search-choice-close" tabindex="-1">
     </a>
   </li>
@@ -709,7 +734,9 @@
 
 <h1>System Overlay</h1>
 
-<div class="overlay overlay--fullscreen paper-submit-overlay animation-fade-in hide" data-bindattr-2857="2857">
+<a href="javascript:void(0)" id="system-overlay">Click to Show System Overlay</a>
+
+<div class="doc-system-overlay overlay overlay--fullscreen paper-submit-overlay animation-fade-in hide" data-bindattr-2857="2857">
   <span class="overlay-close-x animation-scale-in" data-ember-action="2858">×</span>
   <div class="overlay-container">
     <h1>
@@ -736,6 +763,179 @@
 <h1>
   Toolbar Stuff
 </h1>
+
+<!-- Plain Toolbar -->
+
+<div class="control-bar" style="position: relative; height: 150px;">
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      <li class="control-bar-item">
+        <div class="control-bar-link contributors-link __with-icon" data-ember-action="1342">
+          <div class="control-bar-link-icon">
+            <span class="glyphicon glyphicon-user">
+            </span>
+          </div>
+          <div class="control-bar-link-text">
+            <span class="control-bar-toggle" data-bindattr-1343="1343">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="6.717px" height="6.717px" viewBox="0 0 6.717 6.717" enable-background="new 0 0 6.717 6.717" xml:space="preserve">
+                <polygon points="3.858,6.717 2.858,6.717 2.858,3.859 0,3.859 0,2.859 2.858,2.859 2.858,0 3.858,0 3.858,2.859 6.717,2.859 6.717,3.859 3.858,3.859 ">
+                </polygon>
+              </svg>
+            </span>
+            Contributors
+          </div>
+        </div>
+      </li>
+      <li class="control-bar-item">
+        <div class="control-bar-link downloads-link __with-icon" data-ember-action="1344">
+          <div class="control-bar-link-icon">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="12.33px" height="16.93px" viewBox="0 0 12.33 16.93" enable-background="new 0 0 12.33 16.93" xml:space="preserve">
+              <polygon points="3.803,0 3.803,5.337 0,5.337 5.889,13.986 11.839,5.337 7.913,5.337 7.913,0 ">
+              </polygon>
+              <rect x="0.368" y="15.151" width="11.962" height="1.779">
+              </rect>
+            </svg>
+          </div>
+          <div class="control-bar-link-text">
+            <span class="control-bar-toggle" data-bindattr-1345="1345">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="6.717px" height="6.717px" viewBox="0 0 6.717 6.717" enable-background="new 0 0 6.717 6.717" xml:space="preserve">
+                <polygon points="3.858,6.717 2.858,6.717 2.858,3.859 0,3.859 0,2.859 2.858,2.859 2.858,0 3.858,0 3.858,2.859 6.717,2.859 6.717,3.859 3.858,3.859 ">
+                </polygon>
+              </svg>
+            </span>
+            Downloads
+          </div>
+        </div>
+      </li>
+      <script id="metamorph-6-start" type="text/x-placeholder">
+      </script>
+      <li class="control-bar-item">
+        <a id="ember1489" class="ember-view control-bar-link control-bar-button" href="/papers/2/manage">
+          <div class="control-bar-link-icon">
+            <svg class="manuscript-manager-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="15px" viewBox="24.802 49.047 122 86.523" enable-background="new 24.802 49.047 122 86.523" xml:space="preserve">
+              <g>
+                <path d="M45.612,90.248c0,0.994-0.806,1.8-1.8,1.8H28.561c-0.994,0-1.8-0.806-1.8-1.8v-37.29 c0-0.994,0.806-1.8,1.8-1.8h15.251c0.994,0,1.8,0.806,1.8,1.8V90.248z">
+                </path>
+                <path d="M144.798,90.248c0,0.994-0.806,1.8-1.8,1.8h-15.251c-0.994,0-1.8-0.806-1.8-1.8v-37.29 c0-0.994,0.806-1.8,1.8-1.8h15.251c0.994,0,1.8,0.806,1.8,1.8V90.248z">
+                </path>
+                <path d="M70.435,131.505c0,0.994-0.806,1.8-1.8,1.8H53.383c-0.994,0-1.8-0.806-1.8-1.8V52.96 c0-0.994,0.806-1.8,1.8-1.8h15.251c0.994,0,1.8,0.806,1.8,1.8L70.435,131.505L70.435,131.505z">
+                </path>
+                <path d="M95.257,105.388c0,0.994-0.806,1.8-1.8,1.8H78.205c-0.994,0-1.8-0.806-1.8-1.8V52.96 c0-0.994,0.806-1.8,1.8-1.8h15.251c0.994,0,1.8,0.806,1.8,1.8L95.257,105.388L95.257,105.388z">
+                </path>
+                <path d="M120.101,120.471c0,0.994-0.806,1.8-1.8,1.8H103.05c-0.994,0-1.8-0.806-1.8-1.8V52.96 c0-0.994,0.806-1.8,1.8-1.8h15.251c0.994,0,1.8,0.806,1.8,1.8C120.101,52.96,120.101,120.471,120.101,120.471z">
+                </path>
+              </g>
+            </svg>
+          </div>
+          Workflow
+        </a>
+      </li>
+      <script id="metamorph-6-end" type="text/x-placeholder">
+      </script>
+    </ul>
+  </div>
+
+
+
+</div>
+</div>
+</div>
+
+<!-- Toolbar with Contributors -->
+
+<div class="control-bar" style="position: relative; height: 150px;">
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      <li class="control-bar-item">
+        <div class="control-bar-link contributors-link __with-icon" data-ember-action="1342">
+          <div class="control-bar-link-icon">
+            <span class="glyphicon glyphicon-user">
+            </span>
+          </div>
+          <div class="control-bar-link-text">
+            <span class="control-bar-toggle" data-bindattr-1343="1343">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="6.717px" height="6.717px" viewBox="0 0 6.717 6.717" enable-background="new 0 0 6.717 6.717" xml:space="preserve">
+                <polygon points="3.858,6.717 2.858,6.717 2.858,3.859 0,3.859 0,2.859 2.858,2.859 2.858,0 3.858,0 3.858,2.859 6.717,2.859 6.717,3.859 3.858,3.859 ">
+                </polygon>
+              </svg>
+            </span>
+            Contributors
+          </div>
+        </div>
+      </li>
+      <li class="control-bar-item">
+        <div class="control-bar-link downloads-link __with-icon" data-ember-action="1344">
+          <div class="control-bar-link-icon">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="12.33px" height="16.93px" viewBox="0 0 12.33 16.93" enable-background="new 0 0 12.33 16.93" xml:space="preserve">
+              <polygon points="3.803,0 3.803,5.337 0,5.337 5.889,13.986 11.839,5.337 7.913,5.337 7.913,0 ">
+              </polygon>
+              <rect x="0.368" y="15.151" width="11.962" height="1.779">
+              </rect>
+            </svg>
+          </div>
+          <div class="control-bar-link-text">
+            <span class="control-bar-toggle" data-bindattr-1345="1345">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="6.717px" height="6.717px" viewBox="0 0 6.717 6.717" enable-background="new 0 0 6.717 6.717" xml:space="preserve">
+                <polygon points="3.858,6.717 2.858,6.717 2.858,3.859 0,3.859 0,2.859 2.858,2.859 2.858,0 3.858,0 3.858,2.859 6.717,2.859 6.717,3.859 3.858,3.859 ">
+                </polygon>
+              </svg>
+            </span>
+            Downloads
+          </div>
+        </div>
+      </li>
+
+      <li class="control-bar-item">
+        <a id="ember1489" class="ember-view control-bar-link control-bar-button" href="/papers/2/manage">
+          <div class="control-bar-link-icon">
+            <svg class="manuscript-manager-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="15px" viewBox="24.802 49.047 122 86.523" enable-background="new 24.802 49.047 122 86.523" xml:space="preserve">
+              <g>
+                <path d="M45.612,90.248c0,0.994-0.806,1.8-1.8,1.8H28.561c-0.994,0-1.8-0.806-1.8-1.8v-37.29 c0-0.994,0.806-1.8,1.8-1.8h15.251c0.994,0,1.8,0.806,1.8,1.8V90.248z">
+                </path>
+                <path d="M144.798,90.248c0,0.994-0.806,1.8-1.8,1.8h-15.251c-0.994,0-1.8-0.806-1.8-1.8v-37.29 c0-0.994,0.806-1.8,1.8-1.8h15.251c0.994,0,1.8,0.806,1.8,1.8V90.248z">
+                </path>
+                <path d="M70.435,131.505c0,0.994-0.806,1.8-1.8,1.8H53.383c-0.994,0-1.8-0.806-1.8-1.8V52.96 c0-0.994,0.806-1.8,1.8-1.8h15.251c0.994,0,1.8,0.806,1.8,1.8L70.435,131.505L70.435,131.505z">
+                </path>
+                <path d="M95.257,105.388c0,0.994-0.806,1.8-1.8,1.8H78.205c-0.994,0-1.8-0.806-1.8-1.8V52.96 c0-0.994,0.806-1.8,1.8-1.8h15.251c0.994,0,1.8,0.806,1.8,1.8L95.257,105.388L95.257,105.388z">
+                </path>
+                <path d="M120.101,120.471c0,0.994-0.806,1.8-1.8,1.8H103.05c-0.994,0-1.8-0.806-1.8-1.8V52.96 c0-0.994,0.806-1.8,1.8-1.8h15.251c0.994,0,1.8,0.806,1.8,1.8C120.101,52.96,120.101,120.471,120.101,120.471z">
+                </path>
+              </g>
+            </svg>
+          </div>
+          Workflow
+        </a>
+      </li>
+      <script id="metamorph-6-end" type="text/x-placeholder">
+      </script>
+    </ul>
+  </div>
+
+  <div class="control-bar-sub-items" style="overflow: visible;">
+    <div class="contributors active">
+    <script id="metamorph-7-start" type="text/x-placeholder">
+    </script>
+    <a class="contributors-add" data-ember-action="1349">Add Contributors</a>
+    <script id="metamorph-7-end" type="text/x-placeholder">
+    </script>
+
+    <script id="metamorph-9-start" type="text/x-placeholder">
+    </script>
+    <script id="metamorph-8-start" type="text/x-placeholder">
+    </script>
+    <div class="contributor">User Name</div>
+    <script id="metamorph-8-end" type="text/x-placeholder">
+    </script>
+    <script id="metamorph-9-end" type="text/x-placeholder">
+    </script>
+  </div>
+
+
+</div>
+</div>
+</div>
+
+<!-- Toolbar with Download links -->
 
 <div class="control-bar" style="position: relative; height: 150px;">
   <div class="control-bar-inner-wrapper">
@@ -807,69 +1007,51 @@
   </div>
 
   <div class="control-bar-sub-items" style="overflow: visible;">
-    <div class="contributors active">
-    <script id="metamorph-7-start" type="text/x-placeholder">
+    <div class="manuscript-download-links active" data-bindattr-1363="1363">
+    <script id="metamorph-10-start" type="text/x-placeholder">
     </script>
-    <a class="contributors-add" data-ember-action="1349">Add Contributors</a>
-    <script id="metamorph-7-end" type="text/x-placeholder">
+    <script id="metamorph-10-end" type="text/x-placeholder">
     </script>
+    <div id="ember1385" class="ember-view">
+      <a href="/papers/2/download" data-bindattr-1386="1386">
 
-    <script id="metamorph-9-start" type="text/x-placeholder">
-    </script>
-    <script id="metamorph-8-start" type="text/x-placeholder">
-    </script>
-    <div class="contributor">Mike Doel</div>
-    <script id="metamorph-8-end" type="text/x-placeholder">
-    </script>
-    <script id="metamorph-9-end" type="text/x-placeholder">
-    </script>
-  </div>
-
-  <div class="manuscript-download-links active" data-bindattr-1363="1363">
-  <script id="metamorph-10-start" type="text/x-placeholder">
-  </script>
-  <script id="metamorph-10-end" type="text/x-placeholder">
-  </script>
-  <div id="ember1385" class="ember-view">
-    <a href="/papers/2/download" data-bindattr-1386="1386">
-
-      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="57.926px" height="24.393px" viewBox="0 0 57.926 24.393" enable-background="new 0 0 57.926 24.393" xml:space="preserve">
-        <path display="none" fill="#464646" d="M31.979,14.494c0.773-1.516,1.652-3.224,2.356-4.939l0,0l0.278-0.677
-        c-0.919-3.497-1.47-6.304-0.978-8.118l0,0C33.768,0.287,34.316,0,34.902,0l0,0l0.357,0.005h0.066
-        c0.802-0.012,1.18,1.008,1.223,1.405l0,0c0.071,0.661-0.235,1.779-0.235,1.779l0,0c0-0.451,0.018-1.181-0.267-1.811l0,0
-        c-0.332-0.728-0.649-1.164-0.933-1.233l0,0c-0.143,0.096-0.283,0.294-0.331,0.676l0,0c-0.099,0.535-0.129,1.211-0.129,1.558l0,0
-        c0,1.231,0.242,2.854,0.718,4.528l0,0c0.09-0.259,0.168-0.508,0.231-0.741l0,0c0.098-0.368,0.718-2.805,0.718-2.805l0,0
-        c0,0-0.157,3.245-0.375,4.226l0,0C35.899,7.795,35.848,8,35.794,8.21l0,0c0.785,2.193,2.05,4.15,3.559,5.56l0,0
-        c0.595,0.556,1.346,1.005,2.058,1.413l0,0c1.552-0.222,2.983-0.327,4.175-0.314l0,0c1.583,0.021,2.744,0.255,3.215,0.718l0,0
-        c0.23,0.225,0.324,0.497,0.353,0.802l0,0c0.007,0.119-0.051,0.398-0.068,0.467l0,0c0.017-0.085,0.017-0.501-1.254-0.907l0,0
-        c-1-0.32-2.873-0.31-5.12-0.071l0,0c2.599,1.272,5.131,1.903,5.933,1.525l0,0c0.196-0.096,0.435-0.421,0.435-0.421l0,0
-        c0,0-0.141,0.643-0.243,0.803l0,0c-0.129,0.174-0.384,0.364-0.625,0.427l0,0c-1.268,0.338-4.566-0.444-7.442-2.088l0,0
-        c-2.954,0.435-6.508,1.271-9.569,2.275l0,0c-2.779,4.871-4.869,7.108-6.569,6.257l0,0l-0.625-0.314
-        c-0.254-0.146-0.293-0.499-0.234-0.787l0,0c0.198-0.97,1.414-2.431,3.856-3.888l0,0c0.263-0.16,1.434-0.778,1.434-0.778l0,0
-        c0,0-0.867,0.839-1.07,1.003l0,0c-1.949,1.597-3.388,3.607-3.352,4.387l0,0l0.007,0.068C26.303,24.111,28.787,20.741,31.979,14.494
-        M32.991,15.012c-0.533,1.005-1.054,1.935-1.536,2.79l0,0c2.662-1.115,5.527-1.829,8.254-2.336l0,0
-        c-0.367-0.253-0.722-0.521-1.057-0.804l0,0c-1.502-1.272-2.647-2.858-3.477-4.527l0,0C34.649,11.553,34.023,13.06,32.991,15.012">
+        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="57.926px" height="24.393px" viewBox="0 0 57.926 24.393" enable-background="new 0 0 57.926 24.393" xml:space="preserve">
+          <path display="none" fill="#464646" d="M31.979,14.494c0.773-1.516,1.652-3.224,2.356-4.939l0,0l0.278-0.677
+          c-0.919-3.497-1.47-6.304-0.978-8.118l0,0C33.768,0.287,34.316,0,34.902,0l0,0l0.357,0.005h0.066
+          c0.802-0.012,1.18,1.008,1.223,1.405l0,0c0.071,0.661-0.235,1.779-0.235,1.779l0,0c0-0.451,0.018-1.181-0.267-1.811l0,0
+          c-0.332-0.728-0.649-1.164-0.933-1.233l0,0c-0.143,0.096-0.283,0.294-0.331,0.676l0,0c-0.099,0.535-0.129,1.211-0.129,1.558l0,0
+          c0,1.231,0.242,2.854,0.718,4.528l0,0c0.09-0.259,0.168-0.508,0.231-0.741l0,0c0.098-0.368,0.718-2.805,0.718-2.805l0,0
+          c0,0-0.157,3.245-0.375,4.226l0,0C35.899,7.795,35.848,8,35.794,8.21l0,0c0.785,2.193,2.05,4.15,3.559,5.56l0,0
+          c0.595,0.556,1.346,1.005,2.058,1.413l0,0c1.552-0.222,2.983-0.327,4.175-0.314l0,0c1.583,0.021,2.744,0.255,3.215,0.718l0,0
+          c0.23,0.225,0.324,0.497,0.353,0.802l0,0c0.007,0.119-0.051,0.398-0.068,0.467l0,0c0.017-0.085,0.017-0.501-1.254-0.907l0,0
+          c-1-0.32-2.873-0.31-5.12-0.071l0,0c2.599,1.272,5.131,1.903,5.933,1.525l0,0c0.196-0.096,0.435-0.421,0.435-0.421l0,0
+          c0,0-0.141,0.643-0.243,0.803l0,0c-0.129,0.174-0.384,0.364-0.625,0.427l0,0c-1.268,0.338-4.566-0.444-7.442-2.088l0,0
+          c-2.954,0.435-6.508,1.271-9.569,2.275l0,0c-2.779,4.871-4.869,7.108-6.569,6.257l0,0l-0.625-0.314
+          c-0.254-0.146-0.293-0.499-0.234-0.787l0,0c0.198-0.97,1.414-2.431,3.856-3.888l0,0c0.263-0.16,1.434-0.778,1.434-0.778l0,0
+          c0,0-0.867,0.839-1.07,1.003l0,0c-1.949,1.597-3.388,3.607-3.352,4.387l0,0l0.007,0.068C26.303,24.111,28.787,20.741,31.979,14.494
+          M32.991,15.012c-0.533,1.005-1.054,1.935-1.536,2.79l0,0c2.662-1.115,5.527-1.829,8.254-2.336l0,0
+          c-0.367-0.253-0.722-0.521-1.057-0.804l0,0c-1.502-1.272-2.647-2.858-3.477-4.527l0,0C34.649,11.553,34.023,13.06,32.991,15.012">
+        </path>
+        <g display="none">
+          <path display="inline" d="M1.427,15.46v3.6h-1.65V8.56h3.24c2.28,0,3.945,0.45,3.945,3.285s-1.965,3.615-3.39,3.615H1.427z
+          M1.427,9.955v4.05h1.875c1.44,0,2.01-0.69,2.01-2.115c0-1.395-0.54-1.935-2.295-1.935H1.427z">
+        </path>
+        <path display="inline" d="M8.492,19.06V8.56h3.9c3.03,0,5.205,1.935,5.205,5.25c0,3.315-2.175,5.25-5.205,5.25H8.492z
+        M10.082,10.045v7.53h2.31c2.28,0,3.465-1.5,3.465-3.765c0-2.265-1.185-3.765-3.465-3.765H10.082z">
       </path>
-      <g display="none">
-        <path display="inline" d="M1.427,15.46v3.6h-1.65V8.56h3.24c2.28,0,3.945,0.45,3.945,3.285s-1.965,3.615-3.39,3.615H1.427z
-        M1.427,9.955v4.05h1.875c1.44,0,2.01-0.69,2.01-2.115c0-1.395-0.54-1.935-2.295-1.935H1.427z">
+      <path display="inline" d="M20.957,10.045v2.79h3.735v1.485h-3.735v4.74h-1.59V8.56h6.419v1.485H20.957z">
       </path>
-      <path display="inline" d="M8.492,19.06V8.56h3.9c3.03,0,5.205,1.935,5.205,5.25c0,3.315-2.175,5.25-5.205,5.25H8.492z
-      M10.082,10.045v7.53h2.31c2.28,0,3.465-1.5,3.465-3.765c0-2.265-1.185-3.765-3.465-3.765H10.082z">
+    </g>
+    <g>
+      <path d="M1.575,15.357c0.195,1.815,1.32,2.385,2.58,2.385c0.69,0,1.53-0.18,2.175-0.495l0.15,1.245
+      c-0.57,0.27-1.41,0.57-2.475,0.57C1.38,19.062,0,17.292,0,15.177c0-2.07,1.32-3.81,3.6-3.81c1.86,0,3.21,1.185,3.21,3.165
+      c0,0.24-0.015,0.525-0.075,0.825H1.575z M1.665,14.307H5.25c0-0.915-0.495-1.62-1.65-1.62C2.49,12.687,1.905,13.317,1.665,14.307z">
     </path>
-    <path display="inline" d="M20.957,10.045v2.79h3.735v1.485h-3.735v4.74h-1.59V8.56h6.419v1.485H20.957z">
-    </path>
-  </g>
-  <g>
-    <path d="M1.575,15.357c0.195,1.815,1.32,2.385,2.58,2.385c0.69,0,1.53-0.18,2.175-0.495l0.15,1.245
-    c-0.57,0.27-1.41,0.57-2.475,0.57C1.38,19.062,0,17.292,0,15.177c0-2.07,1.32-3.81,3.6-3.81c1.86,0,3.21,1.185,3.21,3.165
-    c0,0.24-0.015,0.525-0.075,0.825H1.575z M1.665,14.307H5.25c0-0.915-0.495-1.62-1.65-1.62C2.49,12.687,1.905,13.317,1.665,14.307z">
+    <path d="M10.162,15.312v3.6h-1.65v-10.5h3.24c2.28,0,3.945,0.45,3.945,3.285s-1.965,3.615-3.39,3.615H10.162z M10.162,9.807v4.05
+    h1.875c1.44,0,2.01-0.69,2.01-2.115c0-1.395-0.54-1.935-2.295-1.935H10.162z">
   </path>
-  <path d="M10.162,15.312v3.6h-1.65v-10.5h3.24c2.28,0,3.945,0.45,3.945,3.285s-1.965,3.615-3.39,3.615H10.162z M10.162,9.807v4.05
-  h1.875c1.44,0,2.01-0.69,2.01-2.115c0-1.395-0.54-1.935-2.295-1.935H10.162z">
-</path>
-<path d="M21.579,18.912l-0.105-0.69c-0.45,0.54-1.08,0.84-1.905,0.84c-1.935,0-2.88-1.185-2.88-3.36v-4.185h1.53v3.945
-c0,1.5,0.465,2.28,1.635,2.28c0.645,0,1.23-0.255,1.59-0.765v-5.459h1.53v7.395H21.579z">
+  <path d="M21.579,18.912l-0.105-0.69c-0.45,0.54-1.08,0.84-1.905,0.84c-1.935,0-2.88-1.185-2.88-3.36v-4.185h1.53v3.945
+  c0,1.5,0.465,2.28,1.635,2.28c0.645,0,1.23-0.255,1.59-0.765v-5.459h1.53v7.395H21.579z">
 </path>
 <path d="M26.478,18.162l-0.12,0.75h-1.38V7.662h1.53v4.5c0.57-0.615,1.395-0.795,2.1-0.795c2.175,0,3.435,1.815,3.435,3.855
 c0,2.13-1.395,3.84-3.45,3.84C27.873,19.062,27.018,18.747,26.478,18.162z M26.418,15.222c0,1.68,0.915,2.52,2.04,2.52
@@ -1300,10 +1482,10 @@ l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z">
 </h2>
 
 <div id="ember-app">
-<div class="ember-view user-role-selector select2-multiple"><div class="select2-container select2-container-multi ember-view ember-text-field select2 add-role-input" id="s2id_ember1594"><ul class="select2-choices">  <li class="select2-search-choice">    <div>Role 2</div>    <a href="#" class="select2-search-choice-close" tabindex="-1"></a></li><li class="select2-search-field">    <label for="s2id_autogen1" class="select2-offscreen"></label>    <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input select2-default" id="s2id_autogen1" placeholder="" style="width: 22px;">  </li></ul><div class="select2-drop select2-drop-multi select2-display-none user-roles-dropdown">   <ul class="select2-results">   <li class="select2-no-results">No matches found</li><li class="select2-no-results">No matches found</li></ul></div></div><div id="ember1594" class="ember-view ember-text-field select2 add-role-input select2-offscreen" placeholder="Role Name" type="text" name="add_role" tabindex="-1"></div>
-<span data-ember-action="1595" class="token assign-role-button token--add">
-  <span class="glyphicon glyphicon-plus"></span>
-</span>
+  <div class="ember-view user-role-selector select2-multiple"><div class="select2-container select2-container-multi ember-view ember-text-field select2 add-role-input" id="s2id_ember1594"><ul class="select2-choices">  <li class="select2-search-choice">    <div>Role 2</div>    <a href="#" class="select2-search-choice-close" tabindex="-1"></a></li><li class="select2-search-field">    <label for="s2id_autogen1" class="select2-offscreen"></label>    <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input select2-default" id="s2id_autogen1" placeholder="" style="width: 22px;">  </li></ul><div class="select2-drop select2-drop-multi select2-display-none user-roles-dropdown">   <ul class="select2-results">   <li class="select2-no-results">No matches found</li><li class="select2-no-results">No matches found</li></ul></div></div><div id="ember1594" class="ember-view ember-text-field select2 add-role-input select2-offscreen" placeholder="Role Name" type="text" name="add_role" tabindex="-1"></div>
+  <span data-ember-action="1595" class="token assign-role-button token--add">
+    <span class="glyphicon glyphicon-plus"></span>
+  </span>
 </div>
 </div>
 

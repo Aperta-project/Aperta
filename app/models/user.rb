@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   has_many :user_flows, inverse_of: :user, dependent: :destroy
   has_many :flows, through: :user_flows
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
-  has_many :participations
+  has_many :participations, dependent: :destroy
   has_many :tasks, through: :participations
   has_many :comment_looks, inverse_of: :user
   has_many :credentials, inverse_of: :user, dependent: :destroy

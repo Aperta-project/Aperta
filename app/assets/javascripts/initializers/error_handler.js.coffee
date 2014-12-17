@@ -12,13 +12,6 @@ ETahi.initializer
     container.register('logError:main', logError , instantiate: false)
     application.inject('route', 'logError', 'logError:main')
 
-    displayErrorMessage = (message) ->
-      applicationController = container.lookup('controller:application')
-      # these checks are purely for javascript testing
-      if !applicationController.isDestroying && !applicationController.isDestroyed
-        Ember.run ->
-          applicationController.set('error', message)
-
     # The global error handler
     Ember.onerror = (error) ->
       logError("\n" + error.message + "\n" + error.stack + "\n")
@@ -26,7 +19,7 @@ ETahi.initializer
       if ETahi.environment == 'development'
         throw error
       else
-        displayErrorMessage(error)
+        Tahi.utils.displayErrorMessage(error)
 
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       {type, url} = ajaxSettings
@@ -44,4 +37,4 @@ ETahi.initializer
       if jqXHR.status == 401
         document.location.href = '/users/sign_in'
 
-      displayErrorMessage("There was a problem with the server.  Your data may be out of sync.  Please reload.")
+      Tahi.utils.displayErrorMessage("There was a problem with the server.  Your data may be out of sync.  Please reload.")

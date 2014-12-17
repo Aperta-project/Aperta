@@ -15,3 +15,6 @@ ETahi.PaperNewOverlayController = Ember.ObjectController.extend
         # to beta 11 or later.  check back then.
         paper.reload().then (newPaper) =>
           @transitionToRoute('paper.edit', newPaper)
+      , (errors) ->
+        if error = errors.errors.shortTitle
+          Tahi.utils.displayErrorMessage "Short title " + error

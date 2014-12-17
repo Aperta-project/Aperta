@@ -1,6 +1,10 @@
 ETahi.RegisterDecisionOverlayController = ETahi.TaskController.extend
   actions:
     setDecisionTemplate: (decision) ->
-      @set('model.paperDecisionLetter', @get("model.#{decision}LetterTemplate"))
-      @set('model.paperDecision', decision)
-      @get('model').save()
+      @setProperties
+        'model.paperDecisionLetter': @get("model.#{decision}LetterTemplate")
+        'model.paperDecision': decision
+        'isSavingData': true
+
+      @get('model').save().then =>
+        @set 'isSavingData', false

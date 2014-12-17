@@ -18,7 +18,8 @@
           {{/each}}
         </ul>
         {{progress-spinner visible=isUploading}}
-        <div class="screenshot-uploader">
+        <div class="button-secondary button--green screenshot-uploader fileinput-button">
+          ATTACH FILES
           {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png"
                           start="uploadStarted"
                           done="uploadFinished"
@@ -30,8 +31,8 @@
     </main>
     <footer class="overlay-footer">
       <div class="overlay-footer-content">
-        <a class="cancel" {{action "closeOverlay"}}>cancel</a>
         <button class="button-primary button--green" {{action "submit"}}>Send Feedback</button>
+        <a class="cancel" {{action "closeOverlay"}}>cancel</a>
       </div>
     </footer>
   {{/if}}

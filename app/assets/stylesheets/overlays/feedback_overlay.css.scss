@@ -17,5 +17,28 @@
   .glyphicon-remove:hover {
     cursor: pointer;
   }
+
+  .overlay-footer {
+    .overlay-footer-content {
+      padding: 0;
+      height: 50px;
+
+      .cancel, .button-primary {
+        display: inline-block;
+      }
+
+      .button-primary {
+        float: right;
+      }
+
+      .cancel {
+        margin: 8px 20px 0 0; //sorry
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
 

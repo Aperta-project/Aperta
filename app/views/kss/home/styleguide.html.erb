@@ -22,6 +22,11 @@
 .buttons div.button--blue {
   margin-top: 10px;
 }
+
+nav.kss-nav {
+  display: none;
+}
+
 </style>
 
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -92,7 +97,6 @@ $(function() {
 
   <a href="#" class="navigation-item">Sample Nav</a>
 </div>
-
 
 <h1>
   Colors
@@ -503,229 +507,171 @@ $(function() {
       <a class="button-secondary button--green overlay-close-button" data-ember-action="1580">Close</a>
     </header>
 
-
     <main class="overlay-content">
       <div class="overlay-main-work">
         <h1>
-        <script id="metamorph-66-start" type="text/x-placeholder">
-        </script>Upload Figures<script id="metamorph-66-end" type="text/x-placeholder">
-        </script>
-      </h1>
+          Upload Figures
+        </h1>
 
-      <script id="metamorph-67-start" type="text/x-placeholder">
-      </script>
-      <span class="button-primary button--green fileinput-button">
-        <span>Add new Figures</span>
-        <input id="figure_attachment" class="ember-view ember-text-field" type="file" name="file" accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps" multiple="multiple">
-      </span>
-      <script id="metamorph-67-end" type="text/x-placeholder">
-      </script>
-      <div id="paper-attachment-uploads">
-      <script id="metamorph-68-start" type="text/x-placeholder">
-      </script>
-      <script id="metamorph-68-end" type="text/x-placeholder">
-      </script>
-    </div>
-
-    <script id="metamorph-69-start" type="text/x-placeholder">
-    </script>
-    <script id="metamorph-70-start" type="text/x-placeholder">
-    </script>
-    <script id="metamorph-81-start" type="text/x-placeholder">
-    </script>
-    <div id="ember1709" class="ember-view">
-      <div class="attachment-thumbnail">
-        <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" data-ember-action="1710">
+        <span class="button-primary button--green fileinput-button">
+          <span>Add new Figures</span>
+          <input id="figure_attachment" class="ember-view ember-text-field" type="file" name="file" accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps" multiple="multiple">
         </span>
 
-        <script id="metamorph-82-start" type="text/x-placeholder">
-        </script>
-        <div class="attachment-thumbnail-image">
-          <div class="replace-spinner">
-          </div>
-          <img class="preview" src="https://tahi-development.s3.amazonaws.com/uploads/paper/2/figure/attachment/1/preview_wassily.jpg?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=PTH4F8OQjudUw4tRdXjykFz6mQQ%3D&amp;Expires=1418776860" data-bindattr-1723="1723" alt="Wassily" data-bindattr-1724="1724">
-          <div class="attachment-thumbnail-edit-overlay">
-            <div class="attachment-thumbnail-edit-overlay-buttons">
-              <button id="ember1731" class="ember-view button-secondary button--green knockout replace fileinput-button">
-                <span>Replace Image</span>
-                <input id="ember1733" class="ember-view ember-text-field" type="file" name="file" accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps">
-              </button>
-              <button class="button-secondary button--green knockout view-attachment-detail" data-ember-action="1734">
-                <span class="glyphicon glyphicon-zoom-in">
-                </span>View Detail</button>
+        <div id="paper-attachment-uploads">
+        </div>
+
+        <div id="ember1709" class="ember-view">
+          <div class="attachment-thumbnail">
+            <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" data-ember-action="1710">
+            </span>
+
+            <div class="attachment-thumbnail-image">
+              <div class="replace-spinner">
+              </div>
+              <img class="preview" src="https://tahi-development.s3.amazonaws.com/uploads/paper/2/figure/attachment/1/preview_wassily.jpg?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=PTH4F8OQjudUw4tRdXjykFz6mQQ%3D&amp;Expires=1418776860" data-bindattr-1723="1723" alt="Wassily" data-bindattr-1724="1724">
+              <div class="attachment-thumbnail-edit-overlay">
+                <div class="attachment-thumbnail-edit-overlay-buttons">
+                  <button id="ember1731" class="ember-view button-secondary button--green knockout replace fileinput-button">
+                    <span>Replace Image</span>
+                    <input id="ember1733" class="ember-view ember-text-field" type="file" name="file" accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps">
+                  </button>
+                  <button class="button-secondary button--green knockout view-attachment-detail" data-ember-action="1734">
+                    <span class="glyphicon glyphicon-zoom-in">
+                    </span>View Detail</button>
+                  </div>
+                </div>
+              </div>
+
+              <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original file" data-bindattr-1712="1712" href="https://tahi-development.s3.amazonaws.com/uploads/paper/2/figure/attachment/1/wassily.jpg?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=cx%2BdbCVOFAxlCeLiR/JxUn6cSuc%3D&amp;Expires=1418776860">
+                wassily.jpg
+              </a>
+
+              <div class="attachment-thumbnail-text-content">
+                <h2 class="attachment-thumbnail-title" data-ember-action="1714">
+                  wassily.jpg
+                </h2>
+                <span class="glyphicon glyphicon-pencil attachment-edit-icon" data-ember-action="1715">
+                </span>
+
+                <div class="attachment-thumbnail-caption" data-ember-action="1716">
+                  There is no caption for this file.
+                </div>
+              </div>
+
+              <div class="attachment-thumbnail-destroy-overlay">
+                <p>This will permanently delete your image. Are you sure?</p>
+                <button class="button-secondary button--green knockout" data-ember-action="1718">Cancel</button>
+                <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="1719">Delete Forever</button>
               </div>
             </div>
           </div>
-          <script id="metamorph-82-end" type="text/x-placeholder">
-          </script>
-          <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original file" data-bindattr-1712="1712" href="https://tahi-development.s3.amazonaws.com/uploads/paper/2/figure/attachment/1/wassily.jpg?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=cx%2BdbCVOFAxlCeLiR/JxUn6cSuc%3D&amp;Expires=1418776860">
-          <script id="metamorph-83-start" type="text/x-placeholder">
-          </script>wassily.jpg<script id="metamorph-83-end" type="text/x-placeholder">
-          </script>
-        </a>
 
-        <script id="metamorph-84-start" type="text/x-placeholder">
-        </script>
-        <script id="metamorph-84-end" type="text/x-placeholder">
-        </script>
+        </div>
+        <div class="discussion">
+          <h2>Discussion</h2>
+          <div id="ember1606" class="ember-view comment-board">
+            <div class="comment-board-form form-group" data-bindattr-1607="1607">
+              <img alt="User Name" class="user-thumbnail" src="/images/profile-no-image.png" data-toggle="tooltip" title="User Name">
+              <textarea id="ember1610" class="ember-view ember-text-area new-comment-field" placeholder="Type your message here">
+              </textarea>
 
-        <div class="attachment-thumbnail-text-content">
-          <h2 class="attachment-thumbnail-title" data-ember-action="1714">
-          <script id="metamorph-85-start" type="text/x-placeholder">
-          </script>wassily.jpg<script id="metamorph-85-end" type="text/x-placeholder">
-          </script>
-        </h2>
-        <span class="glyphicon glyphicon-pencil attachment-edit-icon" data-ember-action="1715">
-        </span>
+              <div class="message-comment-buttons">
+                <button type="submit" class="button-secondary button--green" data-ember-action="1611">Post Message</button>
+                <a href="#" class="button-link cancel-link" data-ember-action="1612">Cancel</a>
+              </div>
+            </div>
 
-        <div class="attachment-thumbnail-caption" data-ember-action="1716">
-        <script id="metamorph-86-start" type="text/x-placeholder">
-        </script>There is no caption for this file.<script id="metamorph-86-end" type="text/x-placeholder">
-        </script>
+            <ul class="message-comments">
+
+            </ul>
+
+
+
+          </div>
+        </div>
+
+      </main>
+
+      <div id="ember1624" class="ember-view spinner-component">
+        <div class="spinner" role="progressbar" style="position: absolute; width: 0px; z-index: 2000000000; left: 50%; top: 50%;">
+          <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-0-9 0.666666666666667s linear infinite;">
+            <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(0deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
+            </div>
+          </div>
+          <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-1-9 0.666666666666667s linear infinite;">
+            <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(40deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
+            </div>
+          </div>
+          <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-2-9 0.666666666666667s linear infinite;">
+            <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(80deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
+            </div>
+          </div>
+          <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-3-9 0.666666666666667s linear infinite;">
+            <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(120deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
+            </div>
+          </div>
+          <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-4-9 0.666666666666667s linear infinite;">
+            <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(160deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
+            </div>
+          </div>
+          <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-5-9 0.666666666666667s linear infinite;">
+            <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(200deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
+            </div>
+          </div>
+          <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-6-9 0.666666666666667s linear infinite;">
+            <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(240deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
+            </div>
+          </div>
+          <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-7-9 0.666666666666667s linear infinite;">
+            <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(280deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
+            </div>
+          </div>
+          <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-8-9 0.666666666666667s linear infinite;">
+            <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(320deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
+            </div>
+          </div>
+        </div>
       </div>
 
-      <script id="metamorph-87-start" type="text/x-placeholder">
-      </script>
-      <script id="metamorph-87-end" type="text/x-placeholder">
-      </script>
-    </div>
+      <footer class="overlay-footer">
+        <div class="overlay-footer-content">
+          <div class="overlay-completed-checkbox">
+            <div id="ember1631" class="ember-view">
 
-    <div class="attachment-thumbnail-destroy-overlay">
-      <p>This will permanently delete your image. Are you sure?</p>
-      <button class="button-secondary button--green knockout" data-ember-action="1718">Cancel</button>
-      <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="1719">Delete Forever</button>
+              <input id="task_completed" class="ember-view ember-checkbox" type="checkbox" name="task_completed">
+
+              <label for="task_completed">Completed</label>
+
+              <div class="error-message">
+
+
+              </div>
+            </div>
+          </div>
+
+          <div id="ember1641" class="ember-view participant-selector select2-multiple">
+            <span class="participant-selector-label">Following:</span>
+            <div class="select2-container select2-container-multi ember-view ember-text-field select2 participant-select2" id="s2id_ember1650">
+              <ul class="select2-choices">  <li class="select2-search-choice">    <div>
+                <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
+              </div>    <a href="#" class="select2-search-choice-close" tabindex="-1">
+              </a>
+            </li>
+            <li class="select2-search-field">    <label for="s2id_autogen1" class="select2-offscreen">
+            </label>    <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input select2-default" id="s2id_autogen1" placeholder="" style="width: 22px;">  </li>
+          </ul>
+          <div class="select2-drop select2-drop-multi select2-display-none participant-dropdown">   <ul class="select2-results">   <li class="select2-no-results">No matches found</li>
+            <li class="select2-no-results">No matches found</li>
+          </ul>
+        </div>
+      </div>
+      <div id="ember1650" class="ember-view ember-text-field select2 participant-select2 select2-offscreen" placeholder="Add People" type="text" name="add_participant" tabindex="-1">
+      </div>
+      <div class="add-participant-button" data-toggle="tooltip" title="" data-ember-action="1651" data-original-title="Add Someone">+</div>
     </div>
+    <a class="button-secondary button--green overlay-close-button" data-ember-action="1652">Close</a>
   </div>
-
-  <script id="metamorph-88-start" type="text/x-placeholder">
-  </script>
-  <script id="metamorph-88-end" type="text/x-placeholder">
-  </script>
-</div>
-<script id="metamorph-81-end" type="text/x-placeholder">
-</script>
-<script id="metamorph-70-end" type="text/x-placeholder">
-</script>
-<script id="metamorph-69-end" type="text/x-placeholder">
-</script>
-</div>
-<div class="discussion">
-  <h2>Discussion</h2>
-  <div id="ember1606" class="ember-view comment-board">
-    <div class="comment-board-form form-group" data-bindattr-1607="1607">
-      <img alt="User Name" class="user-thumbnail" src="/images/profile-no-image.png" data-toggle="tooltip" title="User Name">
-      <textarea id="ember1610" class="ember-view ember-text-area new-comment-field" placeholder="Type your message here">
-      </textarea>
-
-      <div class="message-comment-buttons">
-        <button type="submit" class="button-secondary button--green" data-ember-action="1611">Post Message</button>
-        <a href="#" class="button-link cancel-link" data-ember-action="1612">Cancel</a>
-      </div>
-    </div>
-
-    <ul class="message-comments">
-    <script id="metamorph-71-start" type="text/x-placeholder">
-    </script>
-    <script id="metamorph-72-start" type="text/x-placeholder">
-    </script>
-    <script id="metamorph-72-end" type="text/x-placeholder">
-    </script>
-    <script id="metamorph-71-end" type="text/x-placeholder">
-    </script>
-  </ul>
-
-  <script id="metamorph-73-start" type="text/x-placeholder">
-  </script>
-  <script id="metamorph-73-end" type="text/x-placeholder">
-  </script>
-</div>
-</div>
-
-</main>
-
-<div id="ember1624" class="ember-view spinner-component">
-  <div class="spinner" role="progressbar" style="position: absolute; width: 0px; z-index: 2000000000; left: 50%; top: 50%;">
-    <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-0-9 0.666666666666667s linear infinite;">
-      <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(0deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
-      </div>
-    </div>
-    <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-1-9 0.666666666666667s linear infinite;">
-      <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(40deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
-      </div>
-    </div>
-    <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-2-9 0.666666666666667s linear infinite;">
-      <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(80deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
-      </div>
-    </div>
-    <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-3-9 0.666666666666667s linear infinite;">
-      <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(120deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
-      </div>
-    </div>
-    <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-4-9 0.666666666666667s linear infinite;">
-      <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(160deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
-      </div>
-    </div>
-    <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-5-9 0.666666666666667s linear infinite;">
-      <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(200deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
-      </div>
-    </div>
-    <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-6-9 0.666666666666667s linear infinite;">
-      <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(240deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
-      </div>
-    </div>
-    <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-7-9 0.666666666666667s linear infinite;">
-      <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(280deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
-      </div>
-    </div>
-    <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-8-9 0.666666666666667s linear infinite;">
-      <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(320deg) translate(12px, 0px); border-radius: 3px; background: rgb(142, 203, 135);">
-      </div>
-    </div>
-  </div>
-</div>
-
-<footer class="overlay-footer">
-  <div class="overlay-footer-content">
-    <div class="overlay-completed-checkbox">
-      <div id="ember1631" class="ember-view">
-      <script id="metamorph-74-start" type="text/x-placeholder">
-      </script>
-      <input id="task_completed" class="ember-view ember-checkbox" type="checkbox" name="task_completed">
-      <script id="metamorph-74-end" type="text/x-placeholder">
-      </script>
-      <label for="task_completed">Completed</label>
-
-      <div class="error-message">
-      <script id="metamorph-75-start" type="text/x-placeholder">
-      </script>
-      <script id="metamorph-75-end" type="text/x-placeholder">
-      </script>
-    </div>
-  </div>
-</div>
-
-<div id="ember1641" class="ember-view participant-selector select2-multiple">
-  <span class="participant-selector-label">Following:</span>
-  <div class="select2-container select2-container-multi ember-view ember-text-field select2 participant-select2" id="s2id_ember1650">
-    <ul class="select2-choices">  <li class="select2-search-choice">    <div>
-      <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
-    </div>    <a href="#" class="select2-search-choice-close" tabindex="-1">
-    </a>
-  </li>
-  <li class="select2-search-field">    <label for="s2id_autogen1" class="select2-offscreen">
-  </label>    <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input select2-default" id="s2id_autogen1" placeholder="" style="width: 22px;">  </li>
-</ul>
-<div class="select2-drop select2-drop-multi select2-display-none participant-dropdown">   <ul class="select2-results">   <li class="select2-no-results">No matches found</li>
-  <li class="select2-no-results">No matches found</li>
-</ul>
-</div>
-</div>
-<div id="ember1650" class="ember-view ember-text-field select2 participant-select2 select2-offscreen" placeholder="Add People" type="text" name="add_participant" tabindex="-1">
-</div>
-<div class="add-participant-button" data-toggle="tooltip" title="" data-ember-action="1651" data-original-title="Add Someone">+</div>
-</div>
-<a class="button-secondary button--green overlay-close-button" data-ember-action="1652">Close</a>
-</div>
 </footer>
 </div>
 </div>
@@ -807,8 +753,7 @@ $(function() {
           </div>
         </div>
       </li>
-      <script id="metamorph-6-start" type="text/x-placeholder">
-      </script>
+
       <li class="control-bar-item">
         <a id="ember1489" class="ember-view control-bar-link control-bar-button" href="/papers/2/manage">
           <div class="control-bar-link-icon">
@@ -830,16 +775,12 @@ $(function() {
           Workflow
         </a>
       </li>
-      <script id="metamorph-6-end" type="text/x-placeholder">
-      </script>
+
     </ul>
   </div>
 
+</div>
 
-
-</div>
-</div>
-</div>
 
 <!-- Toolbar with Contributors -->
 
@@ -906,34 +847,27 @@ $(function() {
           Workflow
         </a>
       </li>
-      <script id="metamorph-6-end" type="text/x-placeholder">
-      </script>
+
     </ul>
   </div>
 
   <div class="control-bar-sub-items" style="overflow: visible;">
     <div class="contributors active">
-    <script id="metamorph-7-start" type="text/x-placeholder">
-    </script>
-    <a class="contributors-add" data-ember-action="1349">Add Contributors</a>
-    <script id="metamorph-7-end" type="text/x-placeholder">
-    </script>
 
-    <script id="metamorph-9-start" type="text/x-placeholder">
-    </script>
-    <script id="metamorph-8-start" type="text/x-placeholder">
-    </script>
-    <div class="contributor">User Name</div>
-    <script id="metamorph-8-end" type="text/x-placeholder">
-    </script>
-    <script id="metamorph-9-end" type="text/x-placeholder">
-    </script>
+      <a class="contributors-add" data-ember-action="1349">Add Contributors</a>
+
+
+
+
+      <div class="contributor">User Name</div>
+
+
+    </div>
+
+
   </div>
+</div>
 
-
-</div>
-</div>
-</div>
 
 <!-- Toolbar with Download links -->
 
@@ -978,8 +912,7 @@ $(function() {
           </div>
         </div>
       </li>
-      <script id="metamorph-6-start" type="text/x-placeholder">
-      </script>
+
       <li class="control-bar-item">
         <a id="ember1489" class="ember-view control-bar-link control-bar-button" href="/papers/2/manage">
           <div class="control-bar-link-icon">
@@ -1001,103 +934,92 @@ $(function() {
           Workflow
         </a>
       </li>
-      <script id="metamorph-6-end" type="text/x-placeholder">
-      </script>
+
     </ul>
   </div>
 
   <div class="control-bar-sub-items" style="overflow: visible;">
     <div class="manuscript-download-links active" data-bindattr-1363="1363">
-    <script id="metamorph-10-start" type="text/x-placeholder">
-    </script>
-    <script id="metamorph-10-end" type="text/x-placeholder">
-    </script>
-    <div id="ember1385" class="ember-view">
-      <a href="/papers/2/download" data-bindattr-1386="1386">
 
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="57.926px" height="24.393px" viewBox="0 0 57.926 24.393" enable-background="new 0 0 57.926 24.393" xml:space="preserve">
-          <path display="none" fill="#464646" d="M31.979,14.494c0.773-1.516,1.652-3.224,2.356-4.939l0,0l0.278-0.677
-          c-0.919-3.497-1.47-6.304-0.978-8.118l0,0C33.768,0.287,34.316,0,34.902,0l0,0l0.357,0.005h0.066
-          c0.802-0.012,1.18,1.008,1.223,1.405l0,0c0.071,0.661-0.235,1.779-0.235,1.779l0,0c0-0.451,0.018-1.181-0.267-1.811l0,0
-          c-0.332-0.728-0.649-1.164-0.933-1.233l0,0c-0.143,0.096-0.283,0.294-0.331,0.676l0,0c-0.099,0.535-0.129,1.211-0.129,1.558l0,0
-          c0,1.231,0.242,2.854,0.718,4.528l0,0c0.09-0.259,0.168-0.508,0.231-0.741l0,0c0.098-0.368,0.718-2.805,0.718-2.805l0,0
-          c0,0-0.157,3.245-0.375,4.226l0,0C35.899,7.795,35.848,8,35.794,8.21l0,0c0.785,2.193,2.05,4.15,3.559,5.56l0,0
-          c0.595,0.556,1.346,1.005,2.058,1.413l0,0c1.552-0.222,2.983-0.327,4.175-0.314l0,0c1.583,0.021,2.744,0.255,3.215,0.718l0,0
-          c0.23,0.225,0.324,0.497,0.353,0.802l0,0c0.007,0.119-0.051,0.398-0.068,0.467l0,0c0.017-0.085,0.017-0.501-1.254-0.907l0,0
-          c-1-0.32-2.873-0.31-5.12-0.071l0,0c2.599,1.272,5.131,1.903,5.933,1.525l0,0c0.196-0.096,0.435-0.421,0.435-0.421l0,0
-          c0,0-0.141,0.643-0.243,0.803l0,0c-0.129,0.174-0.384,0.364-0.625,0.427l0,0c-1.268,0.338-4.566-0.444-7.442-2.088l0,0
-          c-2.954,0.435-6.508,1.271-9.569,2.275l0,0c-2.779,4.871-4.869,7.108-6.569,6.257l0,0l-0.625-0.314
-          c-0.254-0.146-0.293-0.499-0.234-0.787l0,0c0.198-0.97,1.414-2.431,3.856-3.888l0,0c0.263-0.16,1.434-0.778,1.434-0.778l0,0
-          c0,0-0.867,0.839-1.07,1.003l0,0c-1.949,1.597-3.388,3.607-3.352,4.387l0,0l0.007,0.068C26.303,24.111,28.787,20.741,31.979,14.494
-          M32.991,15.012c-0.533,1.005-1.054,1.935-1.536,2.79l0,0c2.662-1.115,5.527-1.829,8.254-2.336l0,0
-          c-0.367-0.253-0.722-0.521-1.057-0.804l0,0c-1.502-1.272-2.647-2.858-3.477-4.527l0,0C34.649,11.553,34.023,13.06,32.991,15.012">
-        </path>
-        <g display="none">
-          <path display="inline" d="M1.427,15.46v3.6h-1.65V8.56h3.24c2.28,0,3.945,0.45,3.945,3.285s-1.965,3.615-3.39,3.615H1.427z
-          M1.427,9.955v4.05h1.875c1.44,0,2.01-0.69,2.01-2.115c0-1.395-0.54-1.935-2.295-1.935H1.427z">
-        </path>
-        <path display="inline" d="M8.492,19.06V8.56h3.9c3.03,0,5.205,1.935,5.205,5.25c0,3.315-2.175,5.25-5.205,5.25H8.492z
-        M10.082,10.045v7.53h2.31c2.28,0,3.465-1.5,3.465-3.765c0-2.265-1.185-3.765-3.465-3.765H10.082z">
+
+      <div id="ember1385" class="ember-view">
+        <a href="/papers/2/download" data-bindattr-1386="1386">
+
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="57.926px" height="24.393px" viewBox="0 0 57.926 24.393" enable-background="new 0 0 57.926 24.393" xml:space="preserve">
+            <path display="none" fill="#464646" d="M31.979,14.494c0.773-1.516,1.652-3.224,2.356-4.939l0,0l0.278-0.677
+            c-0.919-3.497-1.47-6.304-0.978-8.118l0,0C33.768,0.287,34.316,0,34.902,0l0,0l0.357,0.005h0.066
+            c0.802-0.012,1.18,1.008,1.223,1.405l0,0c0.071,0.661-0.235,1.779-0.235,1.779l0,0c0-0.451,0.018-1.181-0.267-1.811l0,0
+            c-0.332-0.728-0.649-1.164-0.933-1.233l0,0c-0.143,0.096-0.283,0.294-0.331,0.676l0,0c-0.099,0.535-0.129,1.211-0.129,1.558l0,0
+            c0,1.231,0.242,2.854,0.718,4.528l0,0c0.09-0.259,0.168-0.508,0.231-0.741l0,0c0.098-0.368,0.718-2.805,0.718-2.805l0,0
+            c0,0-0.157,3.245-0.375,4.226l0,0C35.899,7.795,35.848,8,35.794,8.21l0,0c0.785,2.193,2.05,4.15,3.559,5.56l0,0
+            c0.595,0.556,1.346,1.005,2.058,1.413l0,0c1.552-0.222,2.983-0.327,4.175-0.314l0,0c1.583,0.021,2.744,0.255,3.215,0.718l0,0
+            c0.23,0.225,0.324,0.497,0.353,0.802l0,0c0.007,0.119-0.051,0.398-0.068,0.467l0,0c0.017-0.085,0.017-0.501-1.254-0.907l0,0
+            c-1-0.32-2.873-0.31-5.12-0.071l0,0c2.599,1.272,5.131,1.903,5.933,1.525l0,0c0.196-0.096,0.435-0.421,0.435-0.421l0,0
+            c0,0-0.141,0.643-0.243,0.803l0,0c-0.129,0.174-0.384,0.364-0.625,0.427l0,0c-1.268,0.338-4.566-0.444-7.442-2.088l0,0
+            c-2.954,0.435-6.508,1.271-9.569,2.275l0,0c-2.779,4.871-4.869,7.108-6.569,6.257l0,0l-0.625-0.314
+            c-0.254-0.146-0.293-0.499-0.234-0.787l0,0c0.198-0.97,1.414-2.431,3.856-3.888l0,0c0.263-0.16,1.434-0.778,1.434-0.778l0,0
+            c0,0-0.867,0.839-1.07,1.003l0,0c-1.949,1.597-3.388,3.607-3.352,4.387l0,0l0.007,0.068C26.303,24.111,28.787,20.741,31.979,14.494
+            M32.991,15.012c-0.533,1.005-1.054,1.935-1.536,2.79l0,0c2.662-1.115,5.527-1.829,8.254-2.336l0,0
+            c-0.367-0.253-0.722-0.521-1.057-0.804l0,0c-1.502-1.272-2.647-2.858-3.477-4.527l0,0C34.649,11.553,34.023,13.06,32.991,15.012"></path>
+            <g display="none">
+              <path display="inline" d="M1.427,15.46v3.6h-1.65V8.56h3.24c2.28,0,3.945,0.45,3.945,3.285s-1.965,3.615-3.39,3.615H1.427z
+              M1.427,9.955v4.05h1.875c1.44,0,2.01-0.69,2.01-2.115c0-1.395-0.54-1.935-2.295-1.935H1.427z">
+            </path>
+            <path display="inline" d="M8.492,19.06V8.56h3.9c3.03,0,5.205,1.935,5.205,5.25c0,3.315-2.175,5.25-5.205,5.25H8.492z
+            M10.082,10.045v7.53h2.31c2.28,0,3.465-1.5,3.465-3.765c0-2.265-1.185-3.765-3.465-3.765H10.082z"></path>
+            <path display="inline" d="M20.957,10.045v2.79h3.735v1.485h-3.735v4.74h-1.59V8.56h6.419v1.485H20.957z"></path>
+          </g>
+          <g>
+            <path d="M1.575,15.357c0.195,1.815,1.32,2.385,2.58,2.385c0.69,0,1.53-0.18,2.175-0.495l0.15,1.245
+            c-0.57,0.27-1.41,0.57-2.475,0.57C1.38,19.062,0,17.292,0,15.177c0-2.07,1.32-3.81,3.6-3.81c1.86,0,3.21,1.185,3.21,3.165
+            c0,0.24-0.015,0.525-0.075,0.825H1.575z M1.665,14.307H5.25c0-0.915-0.495-1.62-1.65-1.62C2.49,12.687,1.905,13.317,1.665,14.307z"></path>
+            <path d="M10.162,15.312v3.6h-1.65v-10.5h3.24c2.28,0,3.945,0.45,3.945,3.285s-1.965,3.615-3.39,3.615H10.162z M10.162,9.807v4.05
+            h1.875c1.44,0,2.01-0.69,2.01-2.115c0-1.395-0.54-1.935-2.295-1.935H10.162z"></path>
+            <path d="M21.579,18.912l-0.105-0.69c-0.45,0.54-1.08,0.84-1.905,0.84c-1.935,0-2.88-1.185-2.88-3.36v-4.185h1.53v3.945
+            c0,1.5,0.465,2.28,1.635,2.28c0.645,0,1.23-0.255,1.59-0.765v-5.459h1.53v7.395H21.579z">
+          </path>
+          <path d="M26.478,18.162l-0.12,0.75h-1.38V7.662h1.53v4.5c0.57-0.615,1.395-0.795,2.1-0.795c2.175,0,3.435,1.815,3.435,3.855
+          c0,2.13-1.395,3.84-3.45,3.84C27.873,19.062,27.018,18.747,26.478,18.162z M26.418,15.222c0,1.68,0.915,2.52,2.04,2.52
+          c1.26,0,2.025-1.095,2.025-2.52c0-1.47-0.765-2.535-2.025-2.535C27.333,12.687,26.418,13.572,26.418,15.222z"></path>
+        </g>
+        <path fill="#464646" d="M45.73,19.863l-7.665-7.666l7.665-7.665l2.555,2.555l-5.111,5.11l2.555,2.555l7.665-7.665l-6.677-6.677
+        c-0.545-0.546-1.43-0.546-1.975,0l-10.8,10.8c-0.545,0.545-0.545,1.43,0,1.975l10.8,10.799c0.546,0.546,1.43,0.546,1.975,0
+        l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z"></path>
+      </svg>
+
+
+    </a>
+  </div>
+  <div id="ember1388" class="ember-view">
+    <a href="/papers/2/download.pdf" data-bindattr-1389="1389">
+
+      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="49.376px" height="24.835px" viewBox="0 0 49.376 24.835" enable-background="new 0 0 49.376 24.835" xml:space="preserve">
+        <path fill="#464646" d="M32.202,14.494c0.773-1.516,1.652-3.224,2.356-4.939l0,0l0.278-0.677c-0.919-3.497-1.47-6.304-0.978-8.118
+        l0,0C33.991,0.287,34.539,0,35.125,0l0,0l0.357,0.005h0.066c0.802-0.012,1.18,1.008,1.223,1.405l0,0
+        c0.071,0.661-0.235,1.779-0.235,1.779l0,0c0-0.451,0.018-1.181-0.267-1.811l0,0c-0.332-0.728-0.649-1.164-0.933-1.233l0,0
+        c-0.143,0.096-0.283,0.294-0.331,0.676l0,0c-0.099,0.535-0.129,1.211-0.129,1.558l0,0c0,1.231,0.242,2.854,0.718,4.528l0,0
+        c0.09-0.259,0.168-0.508,0.231-0.741l0,0c0.098-0.368,0.718-2.805,0.718-2.805l0,0c0,0-0.157,3.245-0.375,4.226l0,0
+        C36.122,7.795,36.071,8,36.017,8.21l0,0c0.785,2.193,2.05,4.15,3.559,5.56l0,0c0.595,0.556,1.346,1.005,2.058,1.413l0,0
+        c1.552-0.222,2.983-0.327,4.175-0.314l0,0c1.583,0.021,2.744,0.255,3.215,0.718l0,0c0.23,0.225,0.324,0.497,0.353,0.802l0,0
+        c0.007,0.119-0.051,0.398-0.068,0.467l0,0c0.017-0.085,0.017-0.501-1.254-0.907l0,0c-1-0.32-2.873-0.31-5.12-0.071l0,0
+        c2.599,1.272,5.131,1.903,5.933,1.525l0,0c0.196-0.096,0.435-0.421,0.435-0.421l0,0c0,0-0.141,0.643-0.243,0.803l0,0
+        c-0.129,0.174-0.384,0.364-0.625,0.427l0,0c-1.268,0.338-4.566-0.444-7.442-2.088l0,0c-2.954,0.435-6.508,1.271-9.569,2.275l0,0
+        c-2.779,4.871-4.869,7.108-6.569,6.257l0,0l-0.625-0.314c-0.254-0.146-0.293-0.499-0.234-0.787l0,0
+        c0.198-0.97,1.414-2.431,3.856-3.888l0,0c0.263-0.16,1.434-0.778,1.434-0.778l0,0c0,0-0.867,0.839-1.07,1.003l0,0
+        c-1.949,1.597-3.388,3.607-3.352,4.387l0,0l0.007,0.068C26.526,24.111,29.01,20.741,32.202,14.494 M33.214,15.012
+        c-0.533,1.005-1.054,1.935-1.536,2.79l0,0c2.662-1.115,5.527-1.829,8.254-2.336l0,0c-0.367-0.253-0.722-0.521-1.057-0.804l0,0
+        c-1.502-1.272-2.647-2.858-3.477-4.527l0,0C34.872,11.553,34.246,13.06,33.214,15.012">
       </path>
-      <path display="inline" d="M20.957,10.045v2.79h3.735v1.485h-3.735v4.74h-1.59V8.56h6.419v1.485H20.957z">
+      <g>
+        <path d="M1.65,15.46v3.6H0V8.56h3.24c2.28,0,3.945,0.45,3.945,3.285S5.22,15.46,3.795,15.46H1.65z M1.65,9.955v4.05h1.875
+        c1.44,0,2.01-0.69,2.01-2.115c0-1.395-0.54-1.935-2.295-1.935H1.65z">
       </path>
-    </g>
-    <g>
-      <path d="M1.575,15.357c0.195,1.815,1.32,2.385,2.58,2.385c0.69,0,1.53-0.18,2.175-0.495l0.15,1.245
-      c-0.57,0.27-1.41,0.57-2.475,0.57C1.38,19.062,0,17.292,0,15.177c0-2.07,1.32-3.81,3.6-3.81c1.86,0,3.21,1.185,3.21,3.165
-      c0,0.24-0.015,0.525-0.075,0.825H1.575z M1.665,14.307H5.25c0-0.915-0.495-1.62-1.65-1.62C2.49,12.687,1.905,13.317,1.665,14.307z">
+      <path d="M8.715,19.06V8.56h3.9c3.03,0,5.205,1.935,5.205,5.25c0,3.315-2.175,5.25-5.205,5.25H8.715z M10.305,10.045v7.53h2.31
+      c2.28,0,3.465-1.5,3.465-3.765c0-2.265-1.185-3.765-3.465-3.765H10.305z">
     </path>
-    <path d="M10.162,15.312v3.6h-1.65v-10.5h3.24c2.28,0,3.945,0.45,3.945,3.285s-1.965,3.615-3.39,3.615H10.162z M10.162,9.807v4.05
-    h1.875c1.44,0,2.01-0.69,2.01-2.115c0-1.395-0.54-1.935-2.295-1.935H10.162z">
-  </path>
-  <path d="M21.579,18.912l-0.105-0.69c-0.45,0.54-1.08,0.84-1.905,0.84c-1.935,0-2.88-1.185-2.88-3.36v-4.185h1.53v3.945
-  c0,1.5,0.465,2.28,1.635,2.28c0.645,0,1.23-0.255,1.59-0.765v-5.459h1.53v7.395H21.579z">
-</path>
-<path d="M26.478,18.162l-0.12,0.75h-1.38V7.662h1.53v4.5c0.57-0.615,1.395-0.795,2.1-0.795c2.175,0,3.435,1.815,3.435,3.855
-c0,2.13-1.395,3.84-3.45,3.84C27.873,19.062,27.018,18.747,26.478,18.162z M26.418,15.222c0,1.68,0.915,2.52,2.04,2.52
-c1.26,0,2.025-1.095,2.025-2.52c0-1.47-0.765-2.535-2.025-2.535C27.333,12.687,26.418,13.572,26.418,15.222z">
-</path>
-</g>
-<path fill="#464646" d="M45.73,19.863l-7.665-7.666l7.665-7.665l2.555,2.555l-5.111,5.11l2.555,2.555l7.665-7.665l-6.677-6.677
-c-0.545-0.546-1.43-0.546-1.975,0l-10.8,10.8c-0.545,0.545-0.545,1.43,0,1.975l10.8,10.799c0.546,0.546,1.43,0.546,1.975,0
-l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z">
-</path>
-</svg>
-
-
-
-</a>
-</div>
-<div id="ember1388" class="ember-view">
-  <a href="/papers/2/download.pdf" data-bindattr-1389="1389">
-
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="49.376px" height="24.835px" viewBox="0 0 49.376 24.835" enable-background="new 0 0 49.376 24.835" xml:space="preserve">
-      <path fill="#464646" d="M32.202,14.494c0.773-1.516,1.652-3.224,2.356-4.939l0,0l0.278-0.677c-0.919-3.497-1.47-6.304-0.978-8.118
-      l0,0C33.991,0.287,34.539,0,35.125,0l0,0l0.357,0.005h0.066c0.802-0.012,1.18,1.008,1.223,1.405l0,0
-      c0.071,0.661-0.235,1.779-0.235,1.779l0,0c0-0.451,0.018-1.181-0.267-1.811l0,0c-0.332-0.728-0.649-1.164-0.933-1.233l0,0
-      c-0.143,0.096-0.283,0.294-0.331,0.676l0,0c-0.099,0.535-0.129,1.211-0.129,1.558l0,0c0,1.231,0.242,2.854,0.718,4.528l0,0
-      c0.09-0.259,0.168-0.508,0.231-0.741l0,0c0.098-0.368,0.718-2.805,0.718-2.805l0,0c0,0-0.157,3.245-0.375,4.226l0,0
-      C36.122,7.795,36.071,8,36.017,8.21l0,0c0.785,2.193,2.05,4.15,3.559,5.56l0,0c0.595,0.556,1.346,1.005,2.058,1.413l0,0
-      c1.552-0.222,2.983-0.327,4.175-0.314l0,0c1.583,0.021,2.744,0.255,3.215,0.718l0,0c0.23,0.225,0.324,0.497,0.353,0.802l0,0
-      c0.007,0.119-0.051,0.398-0.068,0.467l0,0c0.017-0.085,0.017-0.501-1.254-0.907l0,0c-1-0.32-2.873-0.31-5.12-0.071l0,0
-      c2.599,1.272,5.131,1.903,5.933,1.525l0,0c0.196-0.096,0.435-0.421,0.435-0.421l0,0c0,0-0.141,0.643-0.243,0.803l0,0
-      c-0.129,0.174-0.384,0.364-0.625,0.427l0,0c-1.268,0.338-4.566-0.444-7.442-2.088l0,0c-2.954,0.435-6.508,1.271-9.569,2.275l0,0
-      c-2.779,4.871-4.869,7.108-6.569,6.257l0,0l-0.625-0.314c-0.254-0.146-0.293-0.499-0.234-0.787l0,0
-      c0.198-0.97,1.414-2.431,3.856-3.888l0,0c0.263-0.16,1.434-0.778,1.434-0.778l0,0c0,0-0.867,0.839-1.07,1.003l0,0
-      c-1.949,1.597-3.388,3.607-3.352,4.387l0,0l0.007,0.068C26.526,24.111,29.01,20.741,32.202,14.494 M33.214,15.012
-      c-0.533,1.005-1.054,1.935-1.536,2.79l0,0c2.662-1.115,5.527-1.829,8.254-2.336l0,0c-0.367-0.253-0.722-0.521-1.057-0.804l0,0
-      c-1.502-1.272-2.647-2.858-3.477-4.527l0,0C34.872,11.553,34.246,13.06,33.214,15.012">
+    <path d="M21.18,10.045v2.79h3.735v1.485H21.18v4.74h-1.59V8.56h6.419v1.485H21.18z">
     </path>
-    <g>
-      <path d="M1.65,15.46v3.6H0V8.56h3.24c2.28,0,3.945,0.45,3.945,3.285S5.22,15.46,3.795,15.46H1.65z M1.65,9.955v4.05h1.875
-      c1.44,0,2.01-0.69,2.01-2.115c0-1.395-0.54-1.935-2.295-1.935H1.65z">
-    </path>
-    <path d="M8.715,19.06V8.56h3.9c3.03,0,5.205,1.935,5.205,5.25c0,3.315-2.175,5.25-5.205,5.25H8.715z M10.305,10.045v7.53h2.31
-    c2.28,0,3.465-1.5,3.465-3.765c0-2.265-1.185-3.765-3.465-3.765H10.305z">
-  </path>
-  <path d="M21.18,10.045v2.79h3.735v1.485H21.18v4.74h-1.59V8.56h6.419v1.485H21.18z">
-  </path>
-</g>
+  </g>
 </svg>
 
 
@@ -1149,11 +1071,25 @@ l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z">
       <br>
       <div class="button-link button--disabled button--green">Save</div>
       <br>
+
+      <h4>
+        Knockout
+      </h4>
+      <div style="background-color: purple;">
+        <div class="button-primary button--green knockout">Save</div>
+        <br>
+        <div class="button-secondary button--green knockout">Save</div>
+        <br>
+        <div class="button-link button--green knockout">Save</div>
+      </div>
+      <br>
     </div>
 
   </div>
   <div class="col-md-4">
-    Neutral
+    <h3>
+      Neutral
+    </h3>
 
     <div class="buttons">
       <div class="button-primary button--grey">Save</div>
@@ -1183,11 +1119,25 @@ l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z">
       <br>
       <div class="button-link button--disabled button--grey">Save</div>
       <br>
+
+      <h4>
+        Knockout
+      </h4>
+      <div style="background-color: purple;">
+        <div class="button-primary button--disabled button--grey knockout">Save</div>
+        <br>
+        <div class="button-secondary button--disabled button--grey knockout">Save</div>
+        <br>
+        <div class="button-link button--disabled button--grey knockout">Save</div>
+      </div>
+      <br>
     </div>
   </div>
 
   <div class="col-md-4">
-    Admin
+    <h3>
+      Admin
+    </h3>
 
     <div class="buttons">
       <div class="button-primary button--blue">Save</div>
@@ -1217,6 +1167,18 @@ l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z">
       <br>
       <div class="button-link button--disabled button--blue">Save</div>
       <br>
+
+      <h4>
+        Knockout
+      </h4>
+
+      <div style="background-color: purple;">
+        <div class="button-primary button--blue knockout">Save</div>
+        <br>
+        <div class="button-secondary button--blue knockout">Save</div>
+        <br>
+        <div class="button-link button--blue knockout">Save</div>
+      </div>
     </div>
   </div>
 </div>
@@ -1230,91 +1192,91 @@ l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z">
 <div>
   <div class="authors-overlay-list">
 
-  <script id="metamorph-56-start" type="text/x-placeholder"></script>
-  <div id="ember1701" class="ember-view"><div class="add-author-form">
-    <div class="form-group form-inline author-top">
-      <div class="form-group author-name required">
-        <div id="ember1702" class="ember-view">
-          <input id="ember1704" class="ember-view ember-text-field form-control" placeholder="First name" type="text">
 
-          <div class="error-message"><script id="metamorph-63-start" type="text/x-placeholder"></script><script id="metamorph-63-end" type="text/x-placeholder"></script></div>
+    <div id="ember1701" class="ember-view"><div class="add-author-form">
+      <div class="form-group form-inline author-top">
+        <div class="form-group author-name required">
+          <div id="ember1702" class="ember-view">
+            <input id="ember1704" class="ember-view ember-text-field form-control" placeholder="First name" type="text">
+
+            <div class="error-message"></div>
+          </div>
+        </div>
+        <div class="form-group author-middle">
+          <div id="ember1705" class="ember-view">
+            <input id="ember1707" class="ember-view ember-text-field form-control" placeholder="MI" type="text">
+
+            <div class="error-message"></div>
+          </div>
+        </div>
+        <div class="form-group author-name required">
+          <div id="ember1708" class="ember-view">
+            <input id="ember1710" class="ember-view ember-text-field form-control" placeholder="Last name" type="text">
+
+            <div class="error-message"></div>
+          </div>
+        </div>
+        <div class="form-group author-half required author-bump">
+          <div id="ember1711" class="ember-view">
+            <input id="ember1713" class="ember-view ember-text-field form-control" placeholder="Email" type="text">
+
+            <div class="error-message"></div>
+          </div>
         </div>
       </div>
-      <div class="form-group author-middle">
-        <div id="ember1705" class="ember-view">
-          <input id="ember1707" class="ember-view ember-text-field form-control" placeholder="MI" type="text">
+      <div class="form-group form-inline">
+        <div class="form-group author-half required">
+          <div id="ember1714" class="ember-view">
+            <input id="ember1716" class="ember-view ember-text-field form-control" placeholder="Title" type="text">
 
-          <div class="error-message"><script id="metamorph-64-start" type="text/x-placeholder"></script><script id="metamorph-64-end" type="text/x-placeholder"></script></div>
+            <div class="error-message"></div>
+          </div>
+        </div>
+        <div class="form-group author-half required author-bump">
+          <div id="ember1717" class="ember-view">
+            <input id="ember1719" class="ember-view ember-text-field form-control" placeholder="Department" type="text">
+
+            <div class="error-message"></div>
+          </div>
         </div>
       </div>
-      <div class="form-group author-name required">
-        <div id="ember1708" class="ember-view">
-          <input id="ember1710" class="ember-view ember-text-field form-control" placeholder="Last name" type="text">
+      <div class="form-group form-inline">
+        <div class="form-group author-half required">
+          <div id="ember1720" class="ember-view">
+            <div class="select2-container ember-view ember-text-field select2 affiliation-field" id="s2id_ember1728"><a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1">   <span class="select2-chosen" id="select2-chosen-2">Affiliation</span><abbr class="select2-search-choice-close"></abbr>   <span class="select2-arrow" role="presentation"><b role="presentation"></b></span></a><label for="s2id_autogen2" class="select2-offscreen"></label><input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-2" id="s2id_autogen2"><div class="select2-drop select2-display-none select2-with-searchbox">   <div class="select2-search">       <label for="s2id_autogen2_search" class="select2-offscreen"></label>       <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-2" id="s2id_autogen2_search" placeholder="">   </div>   <ul class="select2-results" role="listbox" id="select2-results-2">   </ul></div></div><div id="ember1728" class="ember-view ember-text-field select2 affiliation-field select2-offscreen" placeholder="Affiliation" type="text" tabindex="-1" title=""></div>
 
-          <div class="error-message"><script id="metamorph-65-start" type="text/x-placeholder"></script><script id="metamorph-65-end" type="text/x-placeholder"></script></div>
+            <div class="error-message"></div>
+          </div>
+        </div>
+        <div class="form-group author-half author-bump">
+          <div id="ember1729" class="ember-view">
+            <div class="select2-container ember-view ember-text-field select2 secondary-affiliation-field" id="s2id_ember1731"><a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1">   <span class="select2-chosen" id="select2-chosen-3">Secondary Affiliation</span><abbr class="select2-search-choice-close"></abbr>   <span class="select2-arrow" role="presentation"><b role="presentation"></b></span></a><label for="s2id_autogen3" class="select2-offscreen"></label><input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-3" id="s2id_autogen3"><div class="select2-drop select2-display-none select2-with-searchbox">   <div class="select2-search">       <label for="s2id_autogen3_search" class="select2-offscreen"></label>       <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-3" id="s2id_autogen3_search" placeholder="">   </div>   <ul class="select2-results" role="listbox" id="select2-results-3">   </ul></div></div><div id="ember1731" class="ember-view ember-text-field select2 secondary-affiliation-field select2-offscreen" placeholder="Secondary Affiliation" type="text" tabindex="-1" title=""></div>
+
+            <div class="error-message"></div>
+          </div>
         </div>
       </div>
-      <div class="form-group author-half required author-bump">
-        <div id="ember1711" class="ember-view">
-          <input id="ember1713" class="ember-view ember-text-field form-control" placeholder="Email" type="text">
-
-          <div class="error-message"><script id="metamorph-66-start" type="text/x-placeholder"></script><script id="metamorph-66-end" type="text/x-placeholder"></script></div>
-        </div>
+      <div class="form-group">
+        <label class="author-label">
+          <input id="ember1732" class="ember-view ember-checkbox" type="checkbox">
+          This is a corresponding author
+        </label>
+        <label class="author-label">
+          <input id="ember1733" class="ember-view ember-checkbox" type="checkbox">
+          This person is deceased
+        </label>
+        <span class="pull-right author-form-buttons">
+          <a class="button-link button--green author-cancel" data-ember-action="1734">cancel</a>
+          <button class="button-secondary button--green" data-ember-action="1735">done</button>
+        </span>
       </div>
-    </div>
-    <div class="form-group form-inline">
-      <div class="form-group author-half required">
-        <div id="ember1714" class="ember-view">
-          <input id="ember1716" class="ember-view ember-text-field form-control" placeholder="Title" type="text">
-
-          <div class="error-message"><script id="metamorph-67-start" type="text/x-placeholder"></script><script id="metamorph-67-end" type="text/x-placeholder"></script></div>
-        </div>
-      </div>
-      <div class="form-group author-half required author-bump">
-        <div id="ember1717" class="ember-view">
-          <input id="ember1719" class="ember-view ember-text-field form-control" placeholder="Department" type="text">
-
-          <div class="error-message"><script id="metamorph-68-start" type="text/x-placeholder"></script><script id="metamorph-68-end" type="text/x-placeholder"></script></div>
-        </div>
-      </div>
-    </div>
-    <div class="form-group form-inline">
-      <div class="form-group author-half required">
-        <div id="ember1720" class="ember-view">
-          <div class="select2-container ember-view ember-text-field select2 affiliation-field" id="s2id_ember1728"><a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1">   <span class="select2-chosen" id="select2-chosen-2">Affiliation</span><abbr class="select2-search-choice-close"></abbr>   <span class="select2-arrow" role="presentation"><b role="presentation"></b></span></a><label for="s2id_autogen2" class="select2-offscreen"></label><input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-2" id="s2id_autogen2"><div class="select2-drop select2-display-none select2-with-searchbox">   <div class="select2-search">       <label for="s2id_autogen2_search" class="select2-offscreen"></label>       <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-2" id="s2id_autogen2_search" placeholder="">   </div>   <ul class="select2-results" role="listbox" id="select2-results-2">   </ul></div></div><div id="ember1728" class="ember-view ember-text-field select2 affiliation-field select2-offscreen" placeholder="Affiliation" type="text" tabindex="-1" title=""></div>
-
-          <div class="error-message"><script id="metamorph-69-start" type="text/x-placeholder"></script><script id="metamorph-69-end" type="text/x-placeholder"></script></div>
-        </div>
-      </div>
-      <div class="form-group author-half author-bump">
-        <div id="ember1729" class="ember-view">
-          <div class="select2-container ember-view ember-text-field select2 secondary-affiliation-field" id="s2id_ember1731"><a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1">   <span class="select2-chosen" id="select2-chosen-3">Secondary Affiliation</span><abbr class="select2-search-choice-close"></abbr>   <span class="select2-arrow" role="presentation"><b role="presentation"></b></span></a><label for="s2id_autogen3" class="select2-offscreen"></label><input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-3" id="s2id_autogen3"><div class="select2-drop select2-display-none select2-with-searchbox">   <div class="select2-search">       <label for="s2id_autogen3_search" class="select2-offscreen"></label>       <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-3" id="s2id_autogen3_search" placeholder="">   </div>   <ul class="select2-results" role="listbox" id="select2-results-3">   </ul></div></div><div id="ember1731" class="ember-view ember-text-field select2 secondary-affiliation-field select2-offscreen" placeholder="Secondary Affiliation" type="text" tabindex="-1" title=""></div>
-
-          <div class="error-message"><script id="metamorph-70-start" type="text/x-placeholder"></script><script id="metamorph-70-end" type="text/x-placeholder"></script></div>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="author-label">
-        <input id="ember1732" class="ember-view ember-checkbox" type="checkbox">
-        This is a corresponding author
-      </label>
-      <label class="author-label">
-        <input id="ember1733" class="ember-view ember-checkbox" type="checkbox">
-        This person is deceased
-      </label>
-      <span class="pull-right author-form-buttons">
-        <a class="button-link button--green author-cancel" data-ember-action="1734">cancel</a>
-        <button class="button-secondary button--green" data-ember-action="1735">done</button>
-      </span>
     </div>
   </div>
-</div>
-<script id="metamorph-56-end" type="text/x-placeholder"></script>
-<script id="metamorph-55-end" type="text/x-placeholder"></script>
 
-<div id="ember1627" class="ember-view author-drop-target"></div>
-<script id="metamorph-57-start" type="text/x-placeholder"></script><script id="metamorph-57-end" type="text/x-placeholder"></script>
+
+
+  <div id="ember1627" class="ember-view author-drop-target"></div>
+
 </div>
 
 </div>
@@ -1342,7 +1304,7 @@ l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z">
 <div class="attachment-thumbnail">
   <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" data-ember-action="2556"></span>
 
-  <script id="metamorph-329-start" type="text/x-placeholder"></script>
+
   <div class="attachment-thumbnail-image">
     <div class="replace-spinner"></div>
     <img class="preview" src="https://tahi-development.s3.amazonaws.com/uploads/paper/1/figure/attachment/2/preview_wassily.jpg?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=YG2b7/VOTc5uXNlOZTIVLj1A3Y0%3D&amp;Expires=1418781638" data-bindattr-2569="2569" alt="Wassily" data-bindattr-2570="2570">
@@ -1356,29 +1318,27 @@ l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z">
       </div>
     </div>
   </div>
-  <script id="metamorph-329-end" type="text/x-placeholder"></script>
-  <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original file" data-bindattr-2558="2558" href="https://tahi-development.s3.amazonaws.com/uploads/paper/1/figure/attachment/2/wassily.jpg?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=zSpn6%2BWe4wsGhcsO2Haa6aMicjg%3D&amp;Expires=1418781638"><script id="metamorph-330-start" type="text/x-placeholder"></script>wassily.jpg<script id="metamorph-330-end" type="text/x-placeholder"></script></a>
 
-  <script id="metamorph-331-start" type="text/x-placeholder"></script><script id="metamorph-331-end" type="text/x-placeholder"></script>
+  <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original file" data-bindattr-2558="2558" href="https://tahi-development.s3.amazonaws.com/uploads/paper/1/figure/attachment/2/wassily.jpg?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=zSpn6%2BWe4wsGhcsO2Haa6aMicjg%3D&amp;Expires=1418781638"></a>
 
   <div class="attachment-thumbnail-text-content">
     <h2 class="attachment-thumbnail-title" data-ember-action="2560">
-    <script id="metamorph-332-start" type="text/x-placeholder"></script>wassily.jpg<script id="metamorph-332-end" type="text/x-placeholder"></script>
-  </h2>
-  <span class="glyphicon glyphicon-pencil attachment-edit-icon" data-ember-action="2561"></span>
 
-  <div class="attachment-thumbnail-caption" data-ember-action="2562">
-  <script id="metamorph-333-start" type="text/x-placeholder"></script>There is no caption for this file.<script id="metamorph-333-end" type="text/x-placeholder"></script>
-</div>
+    </h2>
+    <span class="glyphicon glyphicon-pencil attachment-edit-icon" data-ember-action="2561"></span>
 
-<script id="metamorph-334-start" type="text/x-placeholder"></script><script id="metamorph-334-end" type="text/x-placeholder"></script>
-</div>
+    <div class="attachment-thumbnail-caption" data-ember-action="2562">
 
-<div class="attachment-thumbnail-destroy-overlay">
-  <p>This will permanently delete your image. Are you sure?</p>
-  <button class="button-secondary button--green knockout" data-ember-action="2564">Cancel</button>
-  <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="2565">Delete Forever</button>
-</div>
+    </div>
+
+
+  </div>
+
+  <div class="attachment-thumbnail-destroy-overlay">
+    <p>This will permanently delete your image. Are you sure?</p>
+    <button class="button-secondary button--green knockout" data-ember-action="2564">Cancel</button>
+    <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="2565">Delete Forever</button>
+  </div>
 </div>
 
 <hr>
@@ -1427,46 +1387,46 @@ l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z">
 
 <ol class="question-list">
   <li class="question">
-    <div id="ember2209" class="ember-view"><div class="question-text"><script id="metamorph-232-start" type="text/x-placeholder"></script>Do you have any potential or perceived competing interests that may influence your review?<script id="metamorph-232-end" type="text/x-placeholder"></script></div>
-    <script id="metamorph-233-start" type="text/x-placeholder"></script>
-    <ul class="question-help"><script id="metamorph-234-start" type="text/x-placeholder"></script><li>Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write: <strong>"I have no competing interests."</strong></li><script id="metamorph-234-end" type="text/x-placeholder"></script></ul>
-    <script id="metamorph-233-end" type="text/x-placeholder"></script>
-    <textarea id="ember2218" class="ember-view ember-text-area form-control" name="reviewer_report.competing_interests"></textarea>
+    <div id="ember2209" class="ember-view"><div class="question-text"></div>
+
+    <ul class="question-help">
+
+      <li>Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write: <strong>"I have no competing interests."</strong></li></ul>
+
+      <textarea id="ember2218" class="ember-view ember-text-area form-control" name="reviewer_report.competing_interests"></textarea>
+    </div>
+  </li>
+
+  <li class="question">
+    <div id="ember2225" class="ember-view"><div class="question-text"></div>
+
+    <ul class="question-help"></ul>
+
+    <div class="yes-no-with-comments" data-bindattr-2229="2229">
+      <div id="ember2236" class="ember-view"><label>
+        <input id="reviewer_report.support_conclusions-yes" class="ember-view" name="reviewer_report.support_conclusions" type="radio" value="Yes">
+        Yes
+      </label>
+
+      <label>
+        <input id="reviewer_report.support_conclusions-no" class="ember-view" name="reviewer_report.support_conclusions" type="radio" value="No">
+        No
+      </label>
+    </div>
+
+
+    <div class="additional-data">
+
+      <div id="ember2247" class="ember-view"><div class="question-text"></div>
+
+      <textarea id="ember2251" class="ember-view ember-text-area form-control" name="reviewer_report.support_conclusions.explanation"></textarea>
+    </div>
+
   </div>
+
+</div>
+</div>
 </li>
-
-<li class="question">
-  <div id="ember2225" class="ember-view"><div class="question-text"><script id="metamorph-235-start" type="text/x-placeholder"></script>Is the manuscript technically sound, and do the data support the conclusions?<script id="metamorph-235-end" type="text/x-placeholder"></script></div>
-  <script id="metamorph-236-start" type="text/x-placeholder"></script>
-  <ul class="question-help"><script id="metamorph-237-start" type="text/x-placeholder"></script><li>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions.</li><li>Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes.</li><li>The conclusions must be drawn appropriately based on the data presented.</li><script id="metamorph-237-end" type="text/x-placeholder"></script></ul>
-  <script id="metamorph-236-end" type="text/x-placeholder"></script>
-  <div class="yes-no-with-comments" data-bindattr-2229="2229">
-    <div id="ember2236" class="ember-view"><label>
-      <input id="reviewer_report.support_conclusions-yes" class="ember-view" name="reviewer_report.support_conclusions" type="radio" value="Yes">
-      <script id="metamorph-238-start" type="text/x-placeholder"></script>Yes<script id="metamorph-238-end" type="text/x-placeholder"></script>
-    </label>
-
-    <label>
-      <input id="reviewer_report.support_conclusions-no" class="ember-view" name="reviewer_report.support_conclusions" type="radio" value="No">
-      <script id="metamorph-239-start" type="text/x-placeholder"></script>No<script id="metamorph-239-end" type="text/x-placeholder"></script>
-    </label>
-  </div>
-
-  <script id="metamorph-240-start" type="text/x-placeholder"></script>
-  <div class="additional-data">
-
-    <div id="ember2247" class="ember-view"><div class="question-text"><script id="metamorph-241-start" type="text/x-placeholder"></script><script id="metamorph-241-end" type="text/x-placeholder"></script></div>
-    <script id="metamorph-242-start" type="text/x-placeholder"></script><script id="metamorph-242-end" type="text/x-placeholder"></script>
-    <textarea id="ember2251" class="ember-view ember-text-area form-control" name="reviewer_report.support_conclusions.explanation"></textarea>
-  </div>
-
-</div>
-<script id="metamorph-240-end" type="text/x-placeholder"></script>
-</div>
-</div>
-</li>
-
-
 
 
 </ol>
@@ -1482,56 +1442,59 @@ l10.8-10.799c0.545-0.546,0.545-1.43,0-1.975l-1.568-1.567L45.73,19.863z">
 </h2>
 
 <div id="ember-app">
-  <div class="ember-view user-role-selector select2-multiple"><div class="select2-container select2-container-multi ember-view ember-text-field select2 add-role-input" id="s2id_ember1594"><ul class="select2-choices">  <li class="select2-search-choice">    <div>Role 2</div>    <a href="#" class="select2-search-choice-close" tabindex="-1"></a></li><li class="select2-search-field">    <label for="s2id_autogen1" class="select2-offscreen"></label>    <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input select2-default" id="s2id_autogen1" placeholder="" style="width: 22px;">  </li></ul><div class="select2-drop select2-drop-multi select2-display-none user-roles-dropdown">   <ul class="select2-results">   <li class="select2-no-results">No matches found</li><li class="select2-no-results">No matches found</li></ul></div></div><div id="ember1594" class="ember-view ember-text-field select2 add-role-input select2-offscreen" placeholder="Role Name" type="text" name="add_role" tabindex="-1"></div>
-  <span data-ember-action="1595" class="token assign-role-button token--add">
-    <span class="glyphicon glyphicon-plus"></span>
-  </span>
-</div>
-</div>
-
-<hr>
-
-
-<h1>
-  So much old stuff below
-</h1>
-
-<hr>
-<%= styleguide_block 'UI.Button' do -%>
-<div class="button-primary $modifier_class">Save</div>
-<div class="button-secondary $modifier_class">Save</div>
-<div class="button-link $modifier_class">Save</div>
-&nbsp; &nbsp; &nbsp;
-<div class="button-primary button--small $modifier_class">Save</div>
-<div class="button-secondary button--small $modifier_class">Save</div>
-<div class="button-link button--small $modifier_class">Save</div>
-&nbsp; &nbsp; &nbsp;
-<div class="button-primary button--wide $modifier_class">Save</div>
-<div class="button-secondary button--wide $modifier_class">Save</div>
-<div class="button-link button--wide $modifier_class">Save</div>
-&nbsp; &nbsp; &nbsp;
-<div class="button-primary button--disabled $modifier_class">Save</div>
-<div class="button-secondary button--disabled $modifier_class">Save</div>
-<div class="button-link button--disabled $modifier_class">Save</div>
-<% end -%>
-
-<%= styleguide_block 'UI.Button.Knockout' do -%>
-<div style="background-color: #87c0f9; padding: 10px;">
-  <div class="button-secondary button--green knockout">Action</div>
-  <div class="button-secondary button--blue knockout">Action</div>
-  <div class="button-secondary button--grey knockout">Action</div>
-  <div class="button-link knockout">Action</div>
-</div>
-<% end -%>
-
-<%= styleguide_block 'UI.Card' do -%>
-<div class="card $modifier_class">
-  <div class="card-content">
-    <span class="card-remove">
+  <div class="ember-view user-role-selector select2-multiple">
+    <div class="select2-container select2-container-multi ember-view ember-text-field select2 add-role-input" id="s2id_ember1594">
+      <ul class="select2-choices">
+        <li class="select2-search-choice">
+          <div>Role 2</div>
+          <a href="#" class="select2-search-choice-close" tabindex="-1"></a>
+        </li>
+        <li class="select2-search-field">
+          <label for="s2id_autogen1" class="select2-offscreen"></label>
+          <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input select2-default" id="s2id_autogen1" placeholder="" style="width: 22px;">
+        </li>
+      </ul>
+      <div class="select2-drop select2-drop-multi select2-display-none user-roles-dropdown">
+        <ul class="select2-results">
+          <li class="select2-no-results">No matches found
+          </li>
+          <li class="select2-no-results">No matches found
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="ember1594" class="ember-view ember-text-field select2 add-role-input select2-offscreen" placeholder="Role Name" type="text" name="add_role" tabindex="-1">
+    </div>
+    <span data-ember-action="1595" class="token assign-role-button token--add">
+      <span class="glyphicon glyphicon-plus"></span>
     </span>
-    <span class="card-completed-icon">
-    </span>
-    Register Decision Task
   </div>
 </div>
-<% end -%>
+
+
+<hr>
+
+<h1>
+  Avatars
+</h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <div id="profile-avatar">
+      <img src="/images/profile-no-image.png" data-bindattr-1612="1612">
+      <div id="profile-avatar-hover">
+        <span class="button-secondary button--green fileinput-button">
+          <span>Upload New</span>
+          <input id="profile_avatar" class="ember-view ember-text-field" type="file" name="file" accept=".jpg,.jpeg,.tiff,.gif,.png">
+        </span>
+      </div>
+      <div class="profile-avatar-spinner"></div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <img src="/images/profile-no-image.png" data-bindattr-1041="1041" class="user-thumbnail">
+  </div>
+  <div class="col-md-4">
+    <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
+  </div>
+</div>

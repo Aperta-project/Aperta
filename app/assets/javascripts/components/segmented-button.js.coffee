@@ -4,11 +4,11 @@ ETahi.SegmentedButtonComponent = Ember.Component.extend
 
   text: null
   value: null
-  activeValue: null
+  selectedValue: null
 
   active: (->
-    @get('value') == @get('activeValue')
-  ).property('activeValue', 'value')
+    @get('value') == @get('selectedValue')
+  ).property('selectedValue', 'value')
 
   click: ->
     @sendAction 'action', @get('value')

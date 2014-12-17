@@ -1,43 +1,38 @@
+<div {{bind-attr class=":register-decision-saving-cover isSavingData"}}></div>
+{{progress-spinner visible=isSavingData}}
+
 <h1>Register Decision</h1>
+
 <div class="decision-selections">
-  {{view
-    ETahi.DecisionRadioButton
-    name="decision"
-    model=model
-    selection=paperDecision
-    id="accepted_option"
-    value="accepted"}}
-  <label class="decision-label" for="accepted_option">
+  <label class="decision-label">
+    {{decision-radio-button value="accepted"
+                            action="setDecisionTemplate"
+                            selection=model.paperDecision
+                            name="decision"}}
     Accepted
   </label>
 
-  {{view
-    ETahi.DecisionRadioButton
-    name="decision"
-    model=model
-    selection=paperDecision
-    id="rejected_option"
-    value="rejected"}}
-  <label class="decision-label" for="rejected_option">
+  <label class="decision-label">
+    {{decision-radio-button value="rejected"
+                            action="setDecisionTemplate"
+                            selection=model.paperDecision
+                            name="decision"}}
     Rejected
   </label>
 
-  {{view
-    ETahi.DecisionRadioButton
-    name="decision"
-    model=model
-    selection=paperDecision
-    id="revise_option"
-    value="revise"}}
-  <label class="decision-label" for="revise_option">
+  <label class="decision-label">
+    {{decision-radio-button value="revise"
+                            action="setDecisionTemplate"
+                            selection=model.paperDecision
+                            name="decision"}}
     Revise
   </label>
 </div>
 
-<p class="decision-letter-description">Feel free to modify the standard decision letter. Your changes will be saved.</p>
+<p>Feel free to modify the standard decision letter. Your changes will be saved.</p>
+
 {{textarea focus-out="saveModel"
            onEvent="false"
            class="decision-letter-field"
            placeholder="A boilerplate decision letter will appear here"
-           action="saveModel"
            value=paperDecisionLetter}}

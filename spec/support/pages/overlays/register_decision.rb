@@ -13,6 +13,6 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def accepted?
-    find('#accepted_option:checked')
+    find('input[value="accepted"]')
   end
 end

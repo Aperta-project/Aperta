@@ -15,11 +15,13 @@
       <h2 class="column-title" {{action "toggleEdit"}}>{{flow.title}}</h2>
       <div class="journal-thumbnail" style="min-height: 40px;">
 
-      {{#if journalLogo}}
-        <img {{bind-attr src="journalLogo"}}>
-      {{else}}
-        {{display journalName or="For all Journals"}}
-      {{/if}}
+      <div class="flow-manager-column-sub-title">
+        {{#if journalLogo}}
+          <img {{bind-attr src="journalLogo"}}>
+        {{else}}
+          {{display journalName or="For all Journals"}}
+        {{/if}}
+      </div>
 
       <div class="segmented-buttons">
         {{#segmented-button value="desc"

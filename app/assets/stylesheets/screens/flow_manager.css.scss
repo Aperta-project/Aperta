@@ -68,6 +68,16 @@
   }
 }
 
+.flow-manager-column-sub-title {
+  overflow: hidden;
+  height: 40px;
+  line-height: 40px;
+
+  img {
+    display: block;
+  }
+}
+
 
 // control bar:
 .add-column-button {

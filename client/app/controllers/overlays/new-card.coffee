@@ -1,4 +1,7 @@
-ETahi.NewCardOverlayController = Ember.Controller.extend ETahi.ControllerParticipants,
+`import Ember from 'ember'`
+`import ControllerParticipants from 'tahi/mixins/controllers/controller-participants'`
+
+NewCardOverlayController = Ember.Controller.extend ControllerParticipants,
   needs: ['application']
   error: Em.computed.alias 'controllers.application.error'
   overlayClass: 'new-adhoc-overlay'
@@ -15,3 +18,5 @@ ETahi.NewCardOverlayController = Ember.Controller.extend ETahi.ControllerPartici
         @set 'error', null
       .catch (res) =>
         @set 'error', "Title " + res.errors.title[0] if res.errors.title
+
+`export default NewCardOverlayController`

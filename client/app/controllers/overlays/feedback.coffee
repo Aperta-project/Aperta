@@ -1,4 +1,6 @@
-ETahi.FeedbackController = Ember.ObjectController.extend(
+`import Ember from 'ember'`
+
+FeedbackController = Ember.ObjectController.extend
   overlayClass: 'overlay--fullscreen feedback-overlay'
 
   setupModel: (->
@@ -19,4 +21,4 @@ ETahi.FeedbackController = Ember.ObjectController.extend(
   resetModel: ->
     @set('model', @store.createRecord('feedback'))
 
-)
+`export default FeedbackController`

@@ -2,10 +2,10 @@
 
 AnimateElement = Ember.Mixin.create
   out: (selector, speed) ->
-    defer = new Em.RSVP.defer()
+    defer = new Ember.RSVP.defer()
     $(selector).removeClass('animation-fade-in').addClass('animation-fade-out')
 
-    Em.run.later defer, (->
+    Ember.run.later defer, (->
       defer.resolve()
       return
     ), speed
@@ -13,10 +13,10 @@ AnimateElement = Ember.Mixin.create
     defer.promise
 
   in: (selector, speed) ->
-    defer = new Em.RSVP.defer()
+    defer = new Ember.RSVP.defer()
     $(selector).addClass('animation-fade-in')
 
-    Em.run.later defer, (->
+    Ember.run.later defer, (->
       defer.resolve()
       return
     ), speed

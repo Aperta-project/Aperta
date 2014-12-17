@@ -1,4 +1,6 @@
-ETahi.CardDeleteOverlayController = Ember.ObjectController.extend
+`import Ember from 'ember'`
+
+CardDeleteOverlayController = Ember.ObjectController.extend
   overlayClass: 'overlay--fullscreen paper-submit-overlay'
 
   task: null
@@ -12,3 +14,5 @@ ETahi.CardDeleteOverlayController = Ember.ObjectController.extend
       @send('closeOverlay')
     removeTask: (task) ->
       @get('task').destroyRecord()
+
+`export default CardDeleteOverlayController`

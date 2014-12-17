@@ -1,4 +1,6 @@
-ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
+`import Ember from 'ember'`
+
+ShowCollaboratorsOverlayController = Ember.ObjectController.extend
   overlayClass: 'overlay--fullscreen'
 
   availableCollaborators: Ember.computed.setDiff('allUsers', 'collaborators')
@@ -59,3 +61,5 @@ ETahi.ShowCollaboratorsOverlayController = Em.ObjectController.extend
 
       Ember.RSVP.all(_.union(addPromises, deletePromises)).then =>
         @send('closeOverlay')
+
+`export default ShowCollaboratorsOverlayController`

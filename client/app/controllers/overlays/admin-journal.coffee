@@ -1,4 +1,6 @@
-ETahi.AdminJournalOverlayController = ETahi.TaskController.extend
+`import TaskController from 'tahi/pods/task/controller'`
+
+AdminJournalOverlayController = TaskController.extend
   needs: ['journalIndex']
   overlayClass: 'overlay--fullscreen journal-edit-overlay'
   propertyName: ''
@@ -9,3 +11,5 @@ ETahi.AdminJournalOverlayController = ETahi.TaskController.extend
       controller.set("#{@get('propertyName')}SaveStatus", 'Saved')
       controller.get('model').save()
       @send('closeAction')
+
+`export default AdminJournalOverlayController`

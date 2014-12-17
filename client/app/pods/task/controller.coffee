@@ -45,7 +45,7 @@ TaskController = Ember.ObjectController.extend SavesDelayed, ControllerParticipa
       @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect.lastObject'))
 
     redirectToDashboard: ->
-      @transitionToRoute 'index'
+      @transitionToRoute 'dashboard'
 
     postComment: (body) ->
       return unless body

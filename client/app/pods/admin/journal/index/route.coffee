@@ -34,9 +34,9 @@ JournalIndexRoute = Ember.Route.extend
       @send 'openEditOverlay', 'manuscriptCss'
 
     editTaskTypes: ->
-      @render 'editTaskTypesOverlay',
+      @render 'overlays/editTaskTypes',
         into: 'application'
         outlet: 'overlay'
-        controller: 'editTaskTypesOverlay'
+        controller: 'overlays/editTaskTypes'
 
 `export default JournalIndexRoute`

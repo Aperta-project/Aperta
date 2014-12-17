@@ -17,20 +17,23 @@ ApplicationStore = DS.Store.extend
 
   # find any task by id regardless of subclass
   findTask: (id) ->
-    matchingTask = _(@get('allTaskClasses')).detect (tm) -> tm.idToRecord[id]
+    matchingTask = @allTaskClasses().find (tm) -> tm.idToRecord[id]
     if matchingTask
       matchingTask.idToRecord[id]
-
-  # all task classes including subclasses
-  allTaskClasses:(->
-    _(@typeMaps).filter (tm) ->
-      tm.type.toString().match(/Task$/)
-  ).property().volatile()
 
   # resume the event stream after saving
   didSaveRecord: (record, data) ->
     @_super(record, data)
     es = @container.lookup('eventstream:main')
     es.play()
+
+  # all task classes including subclasses
+  allTaskClasses: ->
+    Ember.keys(@typeMaps).reduce((memo, key) =>
+      typeMap = @typeMaps[key]
+      if typeMap.type.toString().match(/:.*task:/)
+        memo.addObject(typeMap)
+      memo
+    , [])
 
 `export default ApplicationStore`

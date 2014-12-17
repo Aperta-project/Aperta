@@ -23,7 +23,7 @@ ApplicationController = Ember.Controller.extend
 
   overlayRedirect: []
 
-  defaultBackground: 'overlay_background'
+  defaultBackground: 'overlay-background'
 
   testing: ( ->
     Ember.testing || ETahi.environment == 'test'

@@ -1,0 +1,53 @@
+{{inline-edit-h1 title=title setTitle="setTitle" editOnOpen=isNewTask}}
+
+<div class="task-body">
+  {{#each upload in uploads}}
+    {{upload-preview upload=upload}}
+  {{/each}}
+
+  {{#each block in blocks}}
+    {{#inline-edit-body-part
+      block=block
+      cancel="resetBlock"
+      save="saveBlock"
+      delete="deleteBlock"
+      model=model
+      addItem="addCheckboxItem"}}
+      {{#each item in block}}
+        {{view 'inline-edit'
+          item=item
+          allUsers=allUsers
+          overlayParticipants=participants
+          emailSentStates=emailSentStates
+          isNew=false}}
+      {{/each}}
+    {{/inline-edit-body-part}}
+  {{/each}}
+
+  {{#each block in newBlocks}}
+    {{#inline-edit-body-part
+      block=block
+      editing=true
+      cancel="resetBlock"
+      save="saveBlock"
+      delete="deleteBlock"
+      model=model
+      addItem="addCheckboxItem"}}
+      {{#each item in block}}
+        {{view 'inline-edit'
+          item=item
+          allUsers=allUsers
+          overlayParticipants=participants
+          emailSentStates=emailSentStates
+          isNew=true}}
+      {{/each}}
+    {{/inline-edit-body-part}}
+  {{/each}}
+
+  {{#each attachment in model.attachments}}
+    {{attachment-thumbnail attachment=attachment
+                           destroyAttachment="destroyAttachment"}}
+  {{/each}}
+</div>
+
+{{view "ad-hoc-content-toolbar"}}

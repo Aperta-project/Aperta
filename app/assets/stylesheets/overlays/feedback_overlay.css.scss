@@ -1,0 +1,62 @@
+.overlay-container.feedback {
+  .overlay-content {
+    min-height: 220px;
+    padding: 0;
+    border: none;
+
+    &.thanks {
+      height: 178px;
+      font-size: 48px;
+      padding: 100px;
+      text-align: center;
+    }
+
+    .screenshot-uploader input {
+      color: transparent;
+    }
+
+    .remove-screenshot {
+      color: #d4d4d4;
+      cursor: pointer;
+
+      &:hover {
+        color: $tahi-green-dark;
+      }
+    }
+
+
+    .remarks {
+      margin-bottom: 10px;
+    }
+
+    .uploaded-screenshots {
+      list-style-type: none;
+      margin-bottom: 10px;
+      padding-left: 0;
+    }
+  }
+
+  .overlay-footer {
+    .overlay-footer-content {
+      padding: 0;
+      height: 50px;
+
+      .cancel, .button-primary {
+        display: inline-block;
+      }
+
+      .button-primary {
+        float: right;
+      }
+
+      .cancel {
+        margin: 8px 20px 0 0; //sorry
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+

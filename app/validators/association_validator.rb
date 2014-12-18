@@ -5,8 +5,12 @@ class AssociationValidator < ActiveModel::Validator
     @record = record
 
     remove_invalid_messages
-    record.errors.set(association, association_errors) if association_errors.any?
-    record.send(failure_callback) if failure_callback.present?
+
+    if association_errors.any?
+      record.errors.set(association, association_errors)
+      record.send(failure_callback) if failure_callback.present?
+    end
+
     association_errors.empty?
   end
 
@@ -27,6 +31,6 @@ class AssociationValidator < ActiveModel::Validator
   end
 
   def remove_invalid_messages
-    record.errors[association].clear # remove generic "is invalid" messages
+    record.errors[association].clear
   end
 end

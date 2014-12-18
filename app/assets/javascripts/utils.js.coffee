@@ -6,6 +6,13 @@ Tahi.utils =
       camelized[Ember.String.camelize(key)] = object[key]
     camelized
 
+  displayErrorMessage: (message) ->
+    applicationController = ETahi.__container__.lookup('controller:application')
+    # these checks are purely for javascript testing
+    if !applicationController.isDestroying && !applicationController.isDestroyed
+      Ember.run ->
+        applicationController.set('error', message)
+
   windowLocation: (url) ->
     window.location = url
 

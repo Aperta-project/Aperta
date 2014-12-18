@@ -1,9 +1,9 @@
 `import Ember from 'ember'`
 
-IndexRoute = Ember.Route.extend
+DashboardRoute = Ember.Route.extend
   model: ->
-    @store.find 'dashboard'
-    .then (dashboardArray) -> dashboardArray.get 'firstObject'
+    @store.find('dashboard').then (dashboardArray) ->
+      dashboardArray.get 'firstObject'
 
   setupController: (controller, model) ->
     @store.find('commentLook') # don't wait to fulfill
@@ -16,7 +16,8 @@ IndexRoute = Ember.Route.extend
 
   actions:
     didTransition: () ->
-      @controllerFor('index').set 'pageNumber', 1
+      @controllerFor('dashboard').set 'pageNumber', 1
+      return true
 
     viewCard: (task) ->
       redirectParams = ['index']
@@ -50,4 +51,4 @@ IndexRoute = Ember.Route.extend
         .deleteRecord()
       @send('closeOverlay')
 
-`export default IndexRoute`
+`export default DashboardRoute`

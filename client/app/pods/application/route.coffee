@@ -12,11 +12,10 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
   actions:
     willTransition: ->
       @controllerFor('application').send 'hideNavigation'
-
-    loading: (transition, originRoute) ->
       @controllerFor('application').set 'isLoading', true
-      @router.one 'didTransition', =>
-        @controllerFor('application').set 'isLoading', false
+
+    didTransition: ->
+      @controllerFor('application').set 'isLoading', false
 
     error: (response, transition, originRoute) ->
       oldState = transition.router.oldState
@@ -25,6 +24,7 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
         "Error in transition from #{lastRoute} to #{transition.targetName}"
       else
         "Error in transition into #{transition.targetName}"
+
       @logError(transitionMsg + "\n" + response.message + "\n" + response.stack + "\n")
       transition.abort()
       @controllerFor('application').set 'isLoading', false

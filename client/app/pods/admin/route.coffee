@@ -15,6 +15,7 @@ AdminRoute = AuthorizedRoute.extend
 
     didTransition: ->
       $('html').attr('screen', 'admin')
+      return true
 
     willTransition: ->
       $('html').attr('screen', '')

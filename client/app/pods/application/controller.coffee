@@ -3,6 +3,8 @@
 ApplicationController = Ember.Controller.extend
   delayedSave: false
 
+  isLoading: false
+
   isLoggedIn: ( ->
     !Ember.isBlank(@currentUser)
   ).property('currentUser')

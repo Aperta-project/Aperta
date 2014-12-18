@@ -14,9 +14,9 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
       @controllerFor('application').send 'hideNavigation'
 
     loading: (transition, originRoute) ->
-      spinner = @Spinner.create()
-      @set('spinner', spinner)
-      @router.one('didTransition', spinner, 'stop')
+      @controllerFor('application').set 'isLoading', true
+      @router.one 'didTransition', =>
+        @controllerFor('application').set 'isLoading', false
 
     error: (response, transition, originRoute) ->
       oldState = transition.router.oldState
@@ -27,7 +27,7 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
         "Error in transition into #{transition.targetName}"
       @logError(transitionMsg + "\n" + response.message + "\n" + response.stack + "\n")
       transition.abort()
-      @get('spinner')?.stop()
+      @controllerFor('application').set 'isLoading', false
 
     closeOverlay: ->
       @animateOverlayOut().then =>

@@ -48,11 +48,7 @@ AnimateElement = Ember.Mixin.create
 
     start: ( ->
       options = @get('opts')
-      if $('#top-nav').length
-        options = Ember.merge options, className: 'header-spinner'
-      else
-        options = Ember.merge options, className: 'body-spinner', lines: 20, radius: 30
-
+      options = Ember.merge options, className: 'body-spinner', lines: 20, radius: 30
       spinner = new Spinner(options).spin()
       @set 'spinner', spinner
       $('body').append spinner.el

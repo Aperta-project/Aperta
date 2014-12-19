@@ -24,7 +24,6 @@ gem 'ember-rails'
 gem 'ember-source', '1.7.0'
 gem "ember-data-source", "~> 1.0.0.beta.9"
 gem 'sass-rails', '~> 4.0.4'
-gem 'haml-rails'
 gem 'uglifier', '~> 2.5.0'
 gem 'coffee-rails', '~> 4.0.1'
 gem 'acts_as_list'
@@ -85,7 +84,6 @@ group :development do
   gem 'letter_opener'
   gem 'rubocop', require: false
   gem 'scss-lint', require: false
-  gem 'haml-lint', require: false
   gem 'overcommit', require: false
   gem 'reek', require: false
 end

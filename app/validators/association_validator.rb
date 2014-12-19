@@ -17,7 +17,7 @@ class AssociationValidator < ActiveModel::Validator
   private
 
   def association_errors
-    @association_errors ||= record.send(association).each_with_object({}) { |associated, errors|
+    record.send(association).each_with_object({}) { |associated, errors|
       errors[associated.id] = associated.errors if associated.invalid?
     }
   end

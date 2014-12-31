@@ -1,0 +1,67 @@
+db:
+  image: postgres
+  ports:
+    - "33910:5432"
+
+solr:
+  build: solr
+  ports:
+    - "53013:8983"
+
+event:
+  build: event/
+  ports:
+    - "37169:31337"
+
+redis:
+  image: redis
+  ports:
+    - "43172:6379"
+
+# IHAT Config
+
+ihatpostgres:
+  image: postgres
+  environment:
+    POSTGRES_USER: docker
+    POSTGRES_PASSWORD: docker
+    POSTGRESQL_DB: ihatdevelopment
+  ports:
+    - "5432"
+
+ihatweb:
+  build: ihat
+  environment:
+    AWS_ACCESS_KEY_ID:
+    AWS_SECRET_ACCESS_KEY:
+    DATABASE_URL: "postgres://docker:docker@ihatpostgres/ihatdevelopment"
+    OXGARAGE_URL:
+    RAILS_ENV: development
+    REDIS_URL: "redis://ihatredis:6379"
+    S3_BUCKET:
+    TAHI_TOKEN:
+  ports:
+    - "42411:8080"
+  links:
+    - ihatpostgres
+    - ihatredis
+
+ihatworker:
+  build: ihat
+  # use my_init to ensure /etc/rc.local runs
+  command: /sbin/my_init -- su app -c "cd /home/app/ihat && bundle exec sidekiq"
+  environment:
+    AWS_ACCESS_KEY_ID:
+    AWS_SECRET_ACCESS_KEY:
+    DATABASE_URL: "postgres://docker:docker@ihatpostgres/ihatdevelopment"
+    OXGARAGE_URL:
+    RAILS_ENV: development
+    REDIS_URL: "redis://ihatredis:6379"
+    S3_BUCKET:
+    TAHI_TOKEN:
+  links:
+    - ihatpostgres
+    - ihatredis
+
+ihatredis:
+  image: orchardup/redis

@@ -1,0 +1,4 @@
+#!/bin/sh
+su app -c "cd /home/app/tahi && bundle exec rake db:migrate"
+su app -c "curl -s \"http://solr:8983/solr/admin/cores?action=CREATE&name=development&instanceDir=tahi&config=solrconfig.xml&schema=schema.xml&dataDir=data\" > /dev/null"
+exit 0

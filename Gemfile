@@ -22,7 +22,7 @@ gem 'pg'
 gem 'bower-rails'
 gem 'ember-rails'
 gem 'ember-source', '1.8.1'
-gem "ember-data-source", "1.0.0.beta.12"
+gem "ember-data-source", "1.0.0.beta.14"
 gem 'sass-rails', '~> 4.0.4'
 gem 'haml-rails'
 gem 'uglifier', '~> 2.5.0'

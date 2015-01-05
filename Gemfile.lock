@@ -184,7 +184,7 @@ GEM
     dotenv (0.11.1)
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
-    ember-data-source (1.0.0.beta.12)
+    ember-data-source (1.0.0.beta.14)
       ember-source
     ember-rails (0.14.1)
       active_model_serializers
@@ -568,7 +568,7 @@ DEPENDENCIES
   devise
   dotenv
   dotenv-deployment
-  ember-data-source (= 1.0.0.beta.12)
+  ember-data-source (= 1.0.0.beta.14)
   ember-rails
   ember-source (= 1.8.1)
   factory_girl_rails

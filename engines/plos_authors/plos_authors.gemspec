@@ -16,6 +16,6 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]# add license info like "MIT-LICENSE"
 
-  s.add_dependency "rails", "~> 4.1.6"
+  s.add_dependency "rails", "~> 4.2.0"
 end
 

@@ -14,7 +14,7 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
   ).on('didSetupController')
 
   sortedAuthorsWithErrors: (->
-    @decorateWithErrors(@get('sortedAuthors'))
+    @createModelProxyObjectWithErrors(@get('sortedAuthors'))
   ).property('sortedAuthors.@each', 'validationErrors')
 
   shiftAuthorPositions: (author, newPosition)->
@@ -36,7 +36,7 @@ ETahi.PlosAuthorsOverlayController = ETahi.TaskController.extend
       @toggleProperty 'newAuthorFormVisible'
 
     saveAuthor: (plosAuthor) ->
-      @clearModelErrors(plosAuthor)
+      @clearValidationErrorsForModel(plosAuthor)
       plosAuthor.save()
 
     removeAuthor: (plosAuthor) ->

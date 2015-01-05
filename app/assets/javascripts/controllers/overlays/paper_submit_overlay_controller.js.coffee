@@ -1,10 +1,5 @@
-ETahi.PaperSubmitOverlayController = Ember.ObjectController.extend
-  needs: ['application']
+ETahi.PaperSubmitOverlayController = Ember.Controller.extend
   overlayClass: 'overlay--fullscreen paper-submit-overlay'
-
-  displayTitle: (->
-    @get('title') || @get('shortTitle')
-  ).property('title', 'shortTitle')
 
   actions:
     submit: ->
@@ -13,6 +8,6 @@ ETahi.PaperSubmitOverlayController = Ember.ObjectController.extend
           message = switch status
             when 422 then model.get('errors.messages') + " You should probably reload."
             when 403 then "You weren't authorized to do that"
-            else "There was a problem saving.  Please reload."
+            else "There was a problem saving. Please reload."
 
-          @get('controllers.application').set('error', message)
+          @flash.displayMessage 'error', message

@@ -6,7 +6,7 @@ flash = Ember.Object.extend
       text: message
       type: type
 
-  displayErrorMessagesFromRailsResponse: (response) ->
+  displayErrorMessagesFromResponse: (response) ->
     errors = (for own key, value of response.errors
       "#{key.underscore().replace('_', ' ').capitalize()} #{value}"
     )

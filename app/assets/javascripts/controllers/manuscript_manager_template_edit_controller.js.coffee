@@ -1,6 +1,5 @@
-ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
+ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend ETahi.ValidationErrorsMixin,
   dirty: false
-  errorText: ""
   editMode: false
   journal: Em.computed.alias('model.journal')
 
@@ -23,7 +22,6 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
   successfulSave: (transition) ->
     @reset()
-    @set('errorText', '')
     if transition
       transition.retry()
     else
@@ -37,6 +35,7 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
   actions:
     toggleEditMode: ->
+      @clearValidationErrors()
       @toggleProperty 'editMode'
       return null
 
@@ -88,12 +87,8 @@ ETahi.ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
             else
               @successfulSave(transition)
 
-      ).catch (errorResponse) =>
-        if errorResponse.status == 422
-          errors = _.values(errorResponse.responseJSON.errors).join(' ')
-        else
-          errors = "There was an error saving your changes. Please try again"
-        Tahi.utils.togglePropertyAfterDelay(this, 'errorText', errors, '', 5000)
+      ).catch (response) =>
+        @displayValidationErrorsFromResponse response
 
     rollback: ->
       if @get('model.isNew')

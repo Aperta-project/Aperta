@@ -1,5 +1,4 @@
 ETahi.PaperManageController = Ember.ObjectController.extend
-  needs: ['application']
   positionSort: ["position:asc"]
   sortedPhases: Ember.computed.sort('phases', 'positionSort')
 
@@ -48,4 +47,4 @@ ETahi.PaperManageController = Ember.ObjectController.extend
           when 422 then model.get('errors.messages') + " You should probably reload."
           when 403 then "You weren't authorized to do that"
           else "There was a problem saving.  Please reload."
-        @get('controllers.application').set('error', message)
+        @flash.displayMessage 'error', message

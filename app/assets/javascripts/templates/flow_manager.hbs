@@ -11,6 +11,8 @@
   </div>
 {{/view}}
 
+{{flash-messages messages=flash.messages classNames="flash-messages--below-control-bar"}}
+
 <ul class="columns">
   {{#each flow in model}}
     {{flow-column flow=flow

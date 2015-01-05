@@ -6,6 +6,13 @@ Tahi.utils =
       camelized[Ember.String.camelize(key)] = object[key]
     camelized
 
+  displayErrorMessage: (message) ->
+    applicationController = ETahi.__container__.lookup('controller:application')
+    # these checks are purely for javascript testing
+    if !applicationController.isDestroying && !applicationController.isDestroyed
+      Ember.run ->
+        applicationController.set('error', message)
+
   windowLocation: (url) ->
     window.location = url
 
@@ -14,11 +21,12 @@ Tahi.utils =
 
   resizeColumnHeaders: ->
     headers = $('.column-header')
-    titles  = headers.find('.column-title')
     return unless headers.length
 
-    titles.css('height', '')
-    heights = titles.map -> $(this).outerHeight()
+    wrappers = headers.find('.column-title-wrapper')
+    wrappers.css('height', '')
+    heights = wrappers.find('.column-title-wrapper').map ->
+      $(this).outerHeight()
 
     max = null
     try
@@ -26,7 +34,7 @@ Tahi.utils =
     catch error
       max = 20
 
-    titles.css 'height', max
+    wrappers.css 'height', max
     $('.column-content').css 'top', headers.first().outerHeight()
 
   togglePropertyAfterDelay: (obj, prop, startVal, endVal, ms) ->

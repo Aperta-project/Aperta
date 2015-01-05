@@ -4,7 +4,15 @@ ETahi.FlowColumnComponent = Ember.Component.extend
 
   editing: false
   editable: false
-  emptyText: "There are no matches."
+  emptyText: 'There are no matches.'
+
+  sortBy: 'asc'
+
+  tasksSortBy: (->
+    ["createdAt:#{@get('sortBy')}"]
+  ).property('sortBy')
+
+  tasks: Ember.computed.sort('flow.tasks', 'tasksSortBy')
 
   flowTitleDidChange: (->
     Ember.run.schedule('afterRender', this, Tahi.utils.resizeColumnHeaders)
@@ -99,3 +107,6 @@ ETahi.FlowColumnComponent = Ember.Component.extend
 
     removeFlow: ->
       @sendAction 'removeFlow', @get('flow')
+
+    setSortOrder: (value)->
+      @set 'sortBy', value

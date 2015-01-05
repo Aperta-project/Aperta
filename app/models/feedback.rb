@@ -1,6 +1,7 @@
 class Feedback < MailForm::Base
   attribute :email_to,
             :env,
+            :screenshots,
             :feedback,
             :referrer,
             :user
@@ -12,7 +13,7 @@ class Feedback < MailForm::Base
   def env
     Rails.env
   end
-  
+
   def headers
     {
       subject: 'Tahi Feedback',

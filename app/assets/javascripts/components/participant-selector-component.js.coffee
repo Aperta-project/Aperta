@@ -55,8 +55,8 @@ ETahi.ParticipantSelectorComponent = Ember.Component.extend
     removeParticipant: (participant) ->
       @sendAction("onRemove", participant.id)
     dropdownClosed: ->
-      $('.select2-search-field input').removeClass('active')
-      $('.add-participant-button').removeClass('searching')
+      @$('.select2-search-field input').removeClass('active')
+      @$('.add-participant-button').removeClass('searching')
     activateDropdown: ->
-      $('.select2-search-field input').addClass('active').trigger('click')
-      $('.add-participant-button').addClass('searching')
+      @$('.select2-search-field input').addClass('active').trigger('click')
+      @$('.add-participant-button').addClass('searching')

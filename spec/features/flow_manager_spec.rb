@@ -69,6 +69,40 @@ feature "Flow Manager", js: true, selenium: true do
     expect(flow_manager_page).to have_no_application_error
   end
 
+  context "column header" do
+    before do
+      # force relationship to satisfy a Users's user_flows payload
+      flow.update(role_id: 1)
+    end
+
+    context "journal without logo" do
+      it "show journal name as text" do
+        visit "/flow_manager"
+        expect(page).to have_css ".column-title-wrapper"
+        within ".column-title-wrapper" do
+          expect(page).to have_content journal.name
+        end
+      end
+    end
+
+    context "journal with logo" do
+      before do
+        with_aws_cassette(:yeti_image) do
+          journal.update_attributes(logo: File.open("spec/fixtures/yeti.jpg"))
+        end
+      end
+
+      it "show journal logo" do
+        visit "/flow_manager"
+        find(".column-header")
+        expect(page).to have_css ".column-title-wrapper"
+        within ".column-title-wrapper" do
+          expect(page).to have_css("img")
+        end
+      end
+    end
+  end
+
   context "adding a column to the flow manager" do
     it "the column should appear on the page" do
       dashboard_page = DashboardPage.new
@@ -89,7 +123,6 @@ feature "Flow Manager", js: true, selenium: true do
       expect(flow_manager_page.available_column_count).to eq(1)
     end
   end
-
 
   context "Comment count" do
     before do

@@ -11,7 +11,29 @@
       <button class="column-header-update-save button-primary button--green" {{action "save"}}>Save</button>
     </div>
   {{else}}
-    <h2 class="column-title" {{action "toggleEdit"}}>{{flow.title}}</h2>
+    <div class="column-title-wrapper">
+      <h2 class="column-title" {{action "toggleEdit"}}>{{flow.title}}</h2>
+      <div class="journal-thumbnail" style="min-height: 40px;">
+
+      <div class="flow-manager-column-sub-title">
+        {{#if journalLogo}}
+          <img {{bind-attr src="journalLogo"}}>
+        {{else}}
+          {{display journalName or="For all Journals"}}
+        {{/if}}
+      </div>
+
+      <div class="segmented-buttons">
+        {{#segmented-button value="desc"
+                            selectedValue=sortBy
+                            action="setSortOrder"}}Sort by Oldest{{/segmented-button}}
+        {{#segmented-button value="asc"
+                            selectedValue=sortBy
+                            action="setSortOrder"}}Sort by Newest{{/segmented-button}}
+      </div>
+
+      </div>
+    </div>
   {{/if}}
   {{#if editable}}
     <div class="edit-column-title glyphicon glyphicon-pencil" {{action "toggleEdit"}}></div>
@@ -51,14 +73,14 @@
 
 <div class="column-content">
   <ul class="cards">
-    {{#each litePaper in flow.litePapers}}
-      {{flow-task-group flow=flow
-                        litePaper=litePaper
+    {{#each task in tasks}}
+      {{flow-task-group task=task
                         commentLooks=commentLooks
                         viewCard="viewCard"}}
     {{/each}}
   </ul>
+
   {{#unless flow.litePapers}}
-    <div class="empty-text">{{ emptyText }}</div>
+    <div class="empty-text">{{emptyText}}</div>
   {{/unless}}
 </div>

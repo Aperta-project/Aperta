@@ -23,6 +23,7 @@ ETahi.ApplicationRoute = Ember.Route.extend ETahi.AnimateElement,
       @get('spinner')?.stop()
 
     closeOverlay: ->
+      @flash.clearMessages()
       @animateOverlayOut().then =>
         @disconnectOutlet
           outlet: 'overlay'

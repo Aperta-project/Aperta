@@ -15,7 +15,7 @@ class AssocExisitingUserFlowToRoleFlow < ActiveRecord::Migration
   def up
     UserFlow.all.each do |user_flow|
       role_flow = RoleFlow.find_by_title(user_flow.title)
-      user_flow.update(role_flow_id: role_flow.id)
+      user_flow.update(role_flow_id: role_flow.id) if role_flow
     end
 
     remove_column :user_flows, :title

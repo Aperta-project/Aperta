@@ -26,9 +26,11 @@
 @import 'ui/columns';
 @import 'ui/control-bar';
 @import 'ui/datepicker';
+@import 'ui/flash-message';
 @import 'ui/inline-edit-h1';
 @import 'ui/overlay';
 @import 'ui/progress';
+@import 'ui/segmented-button';
 @import 'ui/spinner';
 @import 'ui/token';
 @import 'ui/tooltip';
@@ -47,10 +49,10 @@
 @import 'overlays/choose_new_card_type_overlay';
 @import 'overlays/collaborators_overlay';
 @import 'overlays/edit_task_types_overlay';
+@import 'overlays/feedback_overlay';
 @import 'overlays/new_card_overlay';
 @import 'overlays/paper_new_overlay';
 @import 'overlays/paper_submit_overlay';
-@import 'overlays/register_decision_overlay';
 @import 'overlays/unsaved_data_overlay';
 @import 'overlays/upload_manuscript_overlay';
 

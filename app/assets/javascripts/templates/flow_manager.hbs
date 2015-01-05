@@ -11,12 +11,16 @@
   </div>
 {{/view}}
 
+{{flash-messages messages=flash.messages classNames="flash-messages--below-control-bar"}}
+
 <ul class="columns">
   {{#each flow in model}}
     {{flow-column flow=flow
-                  litePaper=litePaper
+                  litePapers=flow.litePapers
                   commentLooks=commentLooks
                   editable=false
+                  journalName=flow.journalName
+                  journalLogo=flow.journalLogo
                   saveFlow="saveFlow"
                   removeFlow="removeFlow"
                   viewCard="viewCard"}}

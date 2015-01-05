@@ -48,20 +48,34 @@
   }
 }
 
-.flow-manager-column-overlay .overlay-container {
-  width: 700px;
+.flow-manager-column-overlay {
+  .overlay-container {
+    width: 700px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 21px;
+
+    img { display: block; }
+  }
+
+  .button-secondary {
+    margin: 0 7px 10px 0;
+  }
 }
 
-.flow-manager-button {
-  display: block;
-  margin-bottom: 15px;
-  padding: 18px 0;
-  font-size: 30px;
-  color: #444;
-  text-transform: none;
-  border: 1px solid #d0d0d0;
+.flow-manager-column-sub-title {
+  overflow: hidden;
+  height: 40px;
+  line-height: 40px;
 
-  &:hover { background: #e4f4e1; }
+  img {
+    display: block;
+  }
 }
 
 

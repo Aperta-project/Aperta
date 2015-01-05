@@ -166,6 +166,10 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
   font-size: 12px;
 }
 
+.flash-messages--below-control-bar {
+  margin-top: $tahi-control-bar-height;
+}
+
 // Main Content:
 
 .main-content-cover {

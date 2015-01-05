@@ -15,17 +15,13 @@ When creating a new pull request, please paste in the following rubric. Please
     ## Pull Request Checklist
     - [ ] ask yourself: is this PR complicated enough that you should write
           integration tests?
-    - [ ] do tests pass at every commit? (to preserve ease of `git-bisect`)
     - [ ] ask yourself: do you feel that things are well abstracted?
     - [ ] do a self code review (read through `git diff` or the github UI)
     - [ ] complete all relevant todos in your code
     - [ ] self QA (make sure the app still works, along with your change)
     - [ ] get review from a team-member with knowledge of this codebase area
     - [ ] **team-member said ship it! (:ship: it)**
-    - [ ] self QA again Chrome
-    - [ ] self QA again Firefox
-    - [ ] self QA again Safari
-    - [ ] self QA again IE
+    - [ ] self QA on staging
     - [ ] do any changes need to be made to prod before a deploy? List them in
           the `deployer checklist`
     - [ ] the tests are passing for this branch on semaphore

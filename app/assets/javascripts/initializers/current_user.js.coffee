@@ -5,7 +5,6 @@ ETahi.initializer
     if window.currentUserId
       ETahi.deferReadiness()
       store = container.lookup('store:main')
-      console.log(window.currentUserId)
       store.find 'user', window.currentUserId
       .then (user) ->
         container.register('user:current', ->
@@ -15,5 +14,4 @@ ETahi.initializer
         application.inject('route', 'getCurrentUser', 'user:current')
         ETahi.advanceReadiness()
       .catch (error) ->
-        debugger
         window.location.replace('/users/sign_in')

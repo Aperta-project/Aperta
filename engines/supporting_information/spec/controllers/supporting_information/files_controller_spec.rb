@@ -12,11 +12,11 @@ module SupportingInformation
 
     describe "DELETE 'destroy'" do
       context "when authorized" do
-        subject(:do_request) { delete :destroy, id: paper.supporting_information_files.last.id, paper_id: paper.id }
-        before(:each) do
-          with_aws_cassette 'supporting_info_files_controller' do
-            paper.supporting_information_files.create! attachment: fixture_file_upload('yeti.tiff', 'image/tiff')
-          end
+        subject(:do_request) do
+          delete :destroy, id: paper.supporting_information_files.last.id, paper_id: paper.id
+        end
+        before do
+          paper.supporting_information_files.create
         end
 
         it "destroys the file record" do

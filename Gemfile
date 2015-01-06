@@ -15,7 +15,7 @@ gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 
 # Gems
-gem 'rails', '4.1.7'
+gem 'rails', '4.2.0'
 gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
@@ -47,7 +47,7 @@ gem 'newrelic_rpm'
 gem "rest_client", "~> 1.7.3"
 gem 'gepub'
 gem 'rubyzip', require: 'zip'
-gem "active_model_serializers"
+gem "active_model_serializers", "~> 0.8.3"
 gem 'pry-rails'
 gem 'pdfkit'
 gem 'mail_form'

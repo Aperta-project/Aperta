@@ -7,6 +7,7 @@ ETahi.RESTless = Ember.Namespace.create
         data: data
         success: resolve
         error: reject
+        dataType: 'json'
 
   delete: (path, data) ->
     @ajaxPromise('DELETE', path, data)

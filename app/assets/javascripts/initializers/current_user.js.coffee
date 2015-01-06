@@ -13,4 +13,5 @@ ETahi.initializer
         application.inject('controller', 'getCurrentUser', 'user:current')
         application.inject('route', 'getCurrentUser', 'user:current')
         ETahi.advanceReadiness()
-      .catch (error) -> window.location.replace('/users/sign_in')
+      .catch (error) ->
+        window.location.replace('/users/sign_in')

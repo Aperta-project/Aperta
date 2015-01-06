@@ -22,6 +22,9 @@ module Tahi
     config.carrierwave_storage = :fog
     config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL') }
 
+    # Raise an error within after_rollback & after_commit
+    config.active_record.raise_in_transactional_callbacks = true
+
     ActionMailer::Base.smtp_settings = {
       address: 'smtp.sendgrid.net',
       port: '587',

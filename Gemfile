@@ -15,7 +15,7 @@ gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 
 # Gems
-gem 'rails', '4.1.7'
+gem 'rails', '4.2.0'
 gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
@@ -23,10 +23,10 @@ gem 'bower-rails'
 gem 'ember-rails'
 gem 'ember-source', '1.8.1'
 gem "ember-data-source", "1.0.0.beta.14"
-gem 'sass-rails', '~> 4.0.4'
+gem 'sass-rails'
 gem 'haml-rails'
 gem 'uglifier', '~> 2.5.0'
-gem 'coffee-rails', '~> 4.0.1'
+gem 'coffee-rails'
 gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
@@ -47,7 +47,7 @@ gem 'newrelic_rpm'
 gem "rest_client", "~> 1.7.3"
 gem 'gepub'
 gem 'rubyzip', require: 'zip'
-gem "active_model_serializers"
+gem "active_model_serializers", "~> 0.8.3"
 gem 'pry-rails'
 gem 'pdfkit'
 gem 'mail_form'

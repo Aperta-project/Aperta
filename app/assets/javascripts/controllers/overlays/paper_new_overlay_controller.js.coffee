@@ -14,7 +14,6 @@ ETahi.PaperNewOverlayController = Ember.ObjectController.extend
         # TODO: this is an ember data bug that will likely be solved after upgrading
         # to beta 11 or later.  check back then.
         paper.reload().then (newPaper) =>
-          @transitionToRoute('paper.edit', newPaper)
-      , (errors) ->
-        if error = errors.errors.shortTitle
-          Tahi.utils.displayErrorMessage "Short title " + error
+          @transitionToRoute 'paper.edit', newPaper
+      , (response) =>
+        @flash.displayErrorMessagesFromRailsResponse response

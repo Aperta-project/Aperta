@@ -36,7 +36,7 @@ gem 'kaminari'
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'
 gem 'sinatra'
-gem 'active_record-acts_as', git: 'https://github.com/neo-tahi/active_record-acts_as'
+gem 'active_record-acts_as'
 
 gem "nokogiri"
 gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'

@@ -33,14 +33,6 @@ GIT
       rubyzip (~> 1.1)
 
 GIT
-  remote: https://github.com/neo-tahi/active_record-acts_as
-  revision: 73d02eba27f22dcbc9c99648f9dea63f1ffff7ba
-  specs:
-    active_record-acts_as (1.0.2)
-      activerecord (>= 4.1.2)
-      activesupport (~> 4)
-
-GIT
   remote: https://github.com/rails/activemodel-globalid
   revision: 189c69988b0208d6d4760ae823043b94a84f0814
   specs:
@@ -97,6 +89,9 @@ GEM
       rails-html-sanitizer (~> 1.0, >= 1.0.1)
     active_model_serializers (0.8.3)
       activemodel (>= 3.0)
+    active_record-acts_as (1.0.3)
+      activerecord (~> 4, >= 4.1.2)
+      activesupport (~> 4)
     activejob (4.2.0)
       activesupport (= 4.2.0)
       globalid (>= 0.3.0)
@@ -578,7 +573,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.8.3)
-  active_record-acts_as!
+  active_record-acts_as
   activemodel-globalid!
   acts_as_list
   american_date

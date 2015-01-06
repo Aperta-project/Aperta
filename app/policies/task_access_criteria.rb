@@ -25,7 +25,7 @@ module TaskAccessCriteria
 
   # criteria used by this mixin
   def metadata_task_collaborator?
-    task.is_metadata? && paper.collaborators.exists?(current_user)
+    task.is_metadata? && paper.collaborators.exists?(current_user.id)
   end
 
   def can_view_all_manuscript_managers_for_journal?
@@ -39,7 +39,7 @@ module TaskAccessCriteria
   end
 
   def task_participant?
-    task.participants.exists?(current_user)
+    task.participants.exists?(current_user.id)
   end
 
   def allowed_manuscript_information_task?
@@ -51,6 +51,6 @@ module TaskAccessCriteria
   end
 
   def has_paper_role?
-    paper.assigned_users.exists?(current_user)
+    paper.assigned_users.exists?(current_user.id)
   end
 end

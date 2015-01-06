@@ -2,6 +2,7 @@
   @include display(flex);
   @include align-items(stretch);
   @include justify-content(space-between);
+  @include user-select(none);
 }
 
 .segmented-button {

@@ -2,6 +2,7 @@ a = DS.attr
 ETahi.LitePaper = DS.Model.extend
   title: a('string')
   shortTitle: a('string')
+  doi: a('string')
   submitted: a('boolean')
   relatedAtDate: a('date')
   roles: a()

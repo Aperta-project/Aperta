@@ -1,16 +1,13 @@
 ETahi.PaperRoute = Ember.Route.extend
   model: (params) ->
-    if params.paper_id
+    [publisher_prefix, suffix] = params.paper_id.toString().split('/')
+    if publisher_prefix && suffix
+      doi = "#{publisher_prefix}/#{suffix}"
+      ETahi.RESTless.get("/papers/#{doi}").then (data) =>
+        @store.pushPayload('paper', data)
+        @store.all('paper').find (paper) -> paper.get('doi') == doi
+    else
       @store.find('paper', params.paper_id)
-    else if params.publisher_prefix && params.suffix
-      doi = params.publisher_prefix + '/' + params.suffix
-      @store.find('paper', doi)
-
-  afterModel: (paper, transition) ->
-    if paper.id
-      doi = paper.get("doi")
-      if doi
-        @transitionTo transition.targetName, doi
 
   setupController: (controller, model) ->
     controller.set('model', model)
@@ -28,3 +25,9 @@ ETahi.PaperRoute = Ember.Route.extend
       return setFormats(window.ETahi.supportedDownloadFormats)
 
     Em.$.getJSON('/formats', setFormats)
+
+  serialize: (model, params) ->
+    if doi = model.get('doi')
+      paper_id: doi
+    else
+      @_super(model, params)

@@ -1,5 +1,8 @@
 class Doi
-  FORMAT = %r{([\w\d\-\.]+/[^/]+)}
+  PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
+  SUFFIX_FORMAT = /[^\/]+/
+  FORMAT = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
+
   attr_reader :journal
 
   delegate :last_doi_issued,

@@ -126,8 +126,14 @@ class PapersController < ApplicationController
   end
 
   def paper
-    doi_or_id = params[:id] || params[:doi]
-    @paper ||= Paper.find(doi_or_id) if doi_or_id
+    @paper ||= begin
+      if params[:id].present?
+        Paper.find(params[:id])
+      elsif params[:publisher_prefix].present? && params[:suffix].present?
+        doi = "#{params[:publisher_prefix]}/#{params[:suffix]}"
+        Paper.find_by!(doi: doi)
+      end
+    end
   end
 
   def enforce_policy

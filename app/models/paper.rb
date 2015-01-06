@@ -42,10 +42,6 @@ class Paper < ActiveRecord::Base
     def unpublished
       where(published_at: nil)
     end
-
-    def find(param)
-      Doi.valid?(param) ? find_by_doi!(param) : super
-    end
   end
 
   def role_for(role:, user:)

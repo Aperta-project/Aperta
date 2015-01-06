@@ -117,7 +117,7 @@ class Paper < ActiveRecord::Base
     # paper.editor?(user1)  # => true
     define_method("#{relation.singularize}?".to_sym) do |user|
       return false unless user.present?
-      send(relation).exists?(user)
+      send(relation).exists?(user.id)
     end
   end
 

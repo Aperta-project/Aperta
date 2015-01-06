@@ -1,6 +1,6 @@
 ETahi.PaperRoute = Ember.Route.extend
   model: (params) ->
-    [publisher_prefix, suffix] = params.paper_id.split('/')
+    [publisher_prefix, suffix] = params.paper_id.toString().split('/')
     if publisher_prefix && suffix
       doi = "#{publisher_prefix}/#{suffix}"
       ETahi.RESTless.get("/papers/#{doi}").then (data) =>

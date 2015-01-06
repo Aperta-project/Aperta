@@ -122,13 +122,24 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
   .no-sidebar-submit-manuscript {
     float: right;
     display: none;
+    clear: right;
+  }
+
+  #no-sidebar-doi {
+    float: right;
+    display: none;
+    margin-bottom: 0;
+    margin-top: -30px;
   }
 
   &.sidebar-empty {
     max-width: 840px;
     min-width: 840px; // override default
 
-    .no-sidebar-submit-manuscript { display: block; }
+    .no-sidebar-submit-manuscript,
+    #no-sidebar-doi {
+      display: block;
+    }
 
     aside { display: none; }
     article {

@@ -25,3 +25,9 @@ ETahi.PaperRoute = Ember.Route.extend
       return setFormats(window.ETahi.supportedDownloadFormats)
 
     Em.$.getJSON('/formats', setFormats)
+
+  serialize: (model, params) ->
+    if doi = model.get('doi')
+      paper_id: doi
+    else
+      @_super(model, params)

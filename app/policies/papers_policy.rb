@@ -58,7 +58,9 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def can_view_manuscript_manager?
-    current_user.roles.where(journal_id: paper.journal).where(can_view_all_manuscript_managers: true).exists?
+    current_user.roles.where(journal_id: paper.journal).
+      where("can_view_assigned_manuscript_managers = ? OR can_view_all_manuscript_managers = ?", true, true).
+      exists?
   end
 
   def author?

@@ -91,6 +91,18 @@ describe PapersPolicy do
     it { expect(policy.submit?).to be(true) }
   end
 
+  context "user with can_view_assigned_manuscript_managers can toggle editable" do
+    let(:user) do
+      FactoryGirl.create(
+        :user,
+        roles: [ FactoryGirl.create(:role, :editor, journal: journal, can_view_assigned_manuscript_managers: true) ],
+      )
+    end
+    let(:journal) { FactoryGirl.create(:journal, papers: [paper]) }
+
+    it { expect(policy.toggle_editable?).to be(true) }
+  end
+
   context "admin on different journal" do
     let(:journal) { FactoryGirl.create(:journal) }
     let(:user) do

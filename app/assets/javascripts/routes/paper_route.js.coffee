@@ -5,7 +5,7 @@ ETahi.PaperRoute = Ember.Route.extend
       doi = "#{publisher_prefix}/#{suffix}"
       ETahi.RESTless.get("/papers/#{doi}").then (data) =>
         @store.pushPayload('paper', data)
-        @store.all('paper').find (paper) => paper.get('doi') == doi
+        @store.all('paper').find (paper) -> paper.get('doi') == doi
     else
       @store.find('paper', params.paper_id)
 

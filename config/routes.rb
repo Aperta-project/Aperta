@@ -108,8 +108,8 @@ Tahi::Application.routes.draw do
   end
 
   get '/papers/:publisher_prefix/:suffix' => 'papers#show',
-    constraints: { publisher_prefix: Doi::PUBLISHER_PREFIX_FORMAT, suffix: Doi::SUFFIX_FORMAT },
-    as: :paper_with_doi
+      constraints: { publisher_prefix: Doi::PUBLISHER_PREFIX_FORMAT, suffix: Doi::SUFFIX_FORMAT },
+      as: :paper_with_doi
 
   resources :comments, only: [:create, :show]
   resources :participations, only: [:create, :show, :destroy]

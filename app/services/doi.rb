@@ -1,7 +1,7 @@
 class Doi
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT = /[^\/]+/
-  FORMAT = %r{(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})}
+  FORMAT = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
 
   attr_reader :journal
 

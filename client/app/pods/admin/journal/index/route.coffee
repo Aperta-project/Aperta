@@ -16,13 +16,14 @@ JournalIndexRoute = Ember.Route.extend
 
   actions:
     openEditOverlay: (key) ->
-      @controllerFor('adminJournalOverlay').setProperties
+      @controllerFor('overlays/adminJournal').setProperties
         model: @modelFor('admin/journal/index')
         propertyName: key
-      @render "adminJournal#{key.capitalize()}Overlay",
+
+      @render "overlays/admin-journal-#{key.dasherize()}",
         into: 'application'
         outlet: 'overlay'
-        controller: 'adminJournalOverlay'
+        controller: 'overlays/adminJournal'
 
     editEPubCSS: ->
       @send 'openEditOverlay', 'epubCss'

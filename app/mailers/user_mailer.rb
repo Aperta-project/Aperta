@@ -28,6 +28,16 @@ class UserMailer < ActionMailer::Base
       subject: "You've been added to a conversation on Tahi")
   end
 
+  def add_reviewer(reviewer_id, paper_id)
+    @paper = Paper.find(paper_id)
+    user = User.find(reviewer_id)
+    @reviewer_name = display_name(user)
+
+    mail(
+      to: user.try(:email),
+      subject: "You've been added as a reviewer on Tahi")
+  end
+
   def mention_collaborator(comment_id, commentee_id)
     @comment = Comment.find(comment_id)
     @commenter = @comment.commenter
@@ -37,5 +47,4 @@ class UserMailer < ActionMailer::Base
       to: @commentee.try(:email),
       subject: "You've been mentioned on Tahi")
   end
-
 end

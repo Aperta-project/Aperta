@@ -1,5 +1,7 @@
+# THIS IS SORTA THE STYLEGUIDE README FOR NOW
+#
+#
 # This file is part of the Styleguide, which consists of 3 files.
-# This process should be run periodically (every 1-2 on an active project, maybe more)
 #
 # STEP 1: HARVESTING *** THIS FILE ***
 # Crawl the app and capture all pages and states necessary to generate your Styleguide. This file sticks a bunch of files in /doc/ux
@@ -9,7 +11,13 @@
 # Declare all your UI Elements (name, page, selector). This file lives at /doc/styleguide.html
 #
 # STEP 3: HYDRATION
-# This is currently `testing.rb`
+# This file is responsible for updating styleguide.html with HTML
+# from the .html files in /docs/ux, based on the declared attributes
+# This is currently `testing.rb`.
+#
+# STEP 4: UPDATING
+# This process should be run periodically
+# (every 1-2 on an active project, maybe more)
 
 require 'spec_helper'
 

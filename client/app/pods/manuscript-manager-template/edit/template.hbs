@@ -10,7 +10,7 @@
             <span class="glyphicon glyphicon-pencil"></span>
           </div>
           &nbsp;
-          {{#link-to "journal" journal class="button-link button--blue"}}&lt; Back{{/link-to}}
+          {{#link-to "admin.journal" journal class="button-link button--blue"}}&lt; Back{{/link-to}}
         {{/if}}
         {{#if showSaveButton}}
           <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplate"}}>Save Template</a>
@@ -28,14 +28,13 @@
 
             <div class="column-content">
               {{#each task in phaseTemplate.taskTemplates}}
-                {{card-preview
-                  paper=null
-                  task=task
-                  canRemoveCard=true
-                  canDragCard=true
-                  removeTask="removeTask"
-                  showDeleteConfirm="showDeleteConfirm"
-                  action=null}}
+                {{card-preview paper=null
+                               task=task
+                               canRemoveCard=true
+                               canDragCard=true
+                               removeTask="removeTask"
+                               showDeleteConfirm="showDeleteConfirm"
+                               action=null}}
               {{/each}}
               <a {{action "chooseNewCardTypeOverlay" phaseTemplate}} class="button-secondary button--green">
                 Add New Card

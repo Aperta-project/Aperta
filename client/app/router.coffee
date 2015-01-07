@@ -27,7 +27,7 @@ Router.map ->
     @resource 'admin.journal', path: '/journals/:journal_id', ->
       @resource 'manuscript_manager_template', path: '/manuscript_manager_templates', ->
         @route('new')
-        @route('edit', path: '/:template_id/edit')
+        @route('edit', path: '/:manuscript_manager_template_id/edit')
       @route('flow_manager', path: '/roles/:role_id/flow_manager')
 
 `export default Router`

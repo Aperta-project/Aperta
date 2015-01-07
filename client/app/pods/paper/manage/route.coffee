@@ -52,11 +52,11 @@ PaperManageRoute = AuthorizedRoute.extend
         @send 'viewCard', newTask, {queryParams: {isNewTask: true}}
 
     showDeleteConfirm: (task) ->
-      @controllerFor('cardDeleteOverlay').set('task', task)
-      @render('cardDeleteOverlay',
+      @controllerFor('overlays/cardDelete').set('task', task)
+      @render('overlays/cardDelete',
         into: 'application'
         outlet: 'overlay'
-        controller: 'cardDeleteOverlay')
+        controller: 'overlays/cardDelete')
 
 
 `export default PaperManageRoute`

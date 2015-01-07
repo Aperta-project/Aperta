@@ -3,13 +3,6 @@
 
 CardPreviewComponent = Ember.Component.extend Dragable,
   classNameBindings: [":card", "task.completed:card--completed", "classes"]
-  actions:
-    viewCard: (task) ->
-      @sendAction('action', task)
-    removeTask: (task) ->
-      @sendAction('removeTask', task)
-    promptDelete: (task) ->
-      @sendAction('showDeleteConfirm', task)
 
   paper: null
   commentLooks: Ember.computed.oneWay('defaultCommentLooks')
@@ -35,5 +28,13 @@ CardPreviewComponent = Ember.Component.extend Dragable,
   dragStart: (e) ->
     if @get('canDragCard')
       ETahi.set('dragItem', @get('task'))
+
+  actions:
+    viewCard: (task) ->
+      @sendAction('action', task)
+    removeTask: (task) ->
+      @sendAction('removeTask', task)
+    promptDelete: (task) ->
+      @sendAction('showDeleteConfirm', task)
 
 `export default CardPreviewComponent`

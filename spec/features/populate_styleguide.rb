@@ -1,3 +1,16 @@
+# This file is part of the Styleguide, which consists of 3 files.
+# This process should be run periodically (every 1-2 on an active project, maybe more)
+#
+# STEP 1: HARVESTING *** THIS FILE ***
+# Crawl the app and capture all pages and states necessary to generate your Styleguide. This file sticks a bunch of files in /doc/ux
+#   100% Coverage is a good goal, but probably not necessary, nor pragmatic.
+#
+# STEP 2: DECLARATION
+# Declare all your UI Elements (name, page, selector). This file lives at /doc/styleguide.html
+#
+# STEP 3: HYDRATION
+# This is currently `testing.rb`
+
 require 'spec_helper'
 
 describe "update the Styleguide", js: true, selenium: true do
@@ -70,7 +83,7 @@ end
 class Capybara::Session
   def grab(filename, selector = "")
     # TODO: refactor: move this
-    dirname = "docs/ux"
+    dirname = "doc/ux"
     FileUtils.mkdir_p(dirname)
 
     save_html("#{dirname}/#{filename}", selector)

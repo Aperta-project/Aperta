@@ -1,8 +1,10 @@
 #
-# This is the Styleguide `Hydration` File
+# This is the Styleguide `HYDRATION` File
 # It is responsible for retrieving elements from /docs/ux
 # And updating the styleguide.html
 #
+# See populate_styleguide.rb for more detail
+
 require 'nokogiri'
 require 'pry'
 

@@ -19,6 +19,7 @@ module StandardTasks
     def editor_id=(user_id)
       return unless editor_id != user_id
       TaskRoleUpdater.new(self, user_id, PaperRole::EDITOR).update
+      UserMailer.delay.assigned_editor(user_id, paper.id)
     end
 
     def editor_id

@@ -38,6 +38,16 @@ class UserMailer < ActionMailer::Base
       subject: "You've been added as a reviewer on Tahi")
   end
 
+  def assigned_editor(editor_id, paper_id)
+    @paper = Paper.find(paper_id)
+    user = User.find(editor_id)
+    @editor_name = display_name(user)
+
+    mail(
+      to: user.try(:email),
+      subject: "You've been assigned as an editor on Tahi")
+  end
+
   def mention_collaborator(comment_id, commentee_id)
     @comment = Comment.find(comment_id)
     @commenter = @comment.commenter

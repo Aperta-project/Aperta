@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "update the Styleguide", js: true, selenium: true do
 
-  let(:author) { FactoryGirl.create :user }
+  let(:admin) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create(:journal) }
   let(:role) { FactoryGirl.create(:role, journal: journal) }
   let(:name) do |e|
@@ -11,52 +11,77 @@ describe "update the Styleguide", js: true, selenium: true do
 
   before do
     sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author
+    sign_in_page.sign_in admin
   end
 
-  scenario "dashboard" do |p|
-    page.save_html(name)
+  describe "save HTML and .pngs for every page in the App" do
+    scenario "dashboard" do |p|
+      visit '/'
+      page.grab(name)
+    end
+
+    scenario "navigation" do
+      visit '/'
+      find(".navigation-toggle").click
+      find(".navigation", visible: true)
+      page.grab(name, ".navigation")
+    end
+
+    scenario "flow_manager" do
+      visit '/flow_manager'
+      find(".control-bar-link", visible: true)
+      page.grab(name)
+    end
+
+    scenario "admin" do
+      visit '/admin'
+      find(".journals", visible: true)
+      page.grab(name)
+    end
   end
 
-  scenario "navigation" do
-    find(".navigation-toggle").click
-    find(".navigation", visible: true)
-    page.save_html(name, ".navigation")
-  end
-
-  scenario "flow_manager" do
-    visit '/flow_manager'
-    find(".control-bar-link", visible: true)
-    page.save_screenshot("flow_manager.png")
-  end
-
-  scenario "admin" do
-    visit '/admin'
-    find(".journals")
-    page.save_screenshot("admin.png")
-  end
-
-  scenario "" do
-  end
-
-  scenario "" do
-  end
-
-  scenario "" do
-  end
-
-  scenario "" do
-  end
-
-  scenario "" do
-  end
-
-  scenario "" do
-  end
+  # scenario "" do
+  # end
+  #
+  # scenario "" do
+  # end
+  #
+  # scenario "" do
+  # end
+  #
+  # scenario "" do
+  # end
+  #
+  # scenario "" do
+  # end
+  #
+  # scenario "" do
+  # end
 
 end
 
+# class Capybara::ElementNotFound
+#   def initialize(opts)
+#     binding.pry
+#     super(opts)
+#   end
+# end
+
 class Capybara::Session
+  def grab(filename, selector = "")
+    # TODO: refactor: move this
+    dirname = "docs/ux"
+    FileUtils.mkdir_p(dirname)
+
+    save_html("#{dirname}/#{filename}", selector)
+    save_screenshot("#{dirname}/#{filename}.png")
+
+    p "Saving HTML and a Screenshot for", filename
+  end
+
+
+  private
+
   def save_html(filename, selector = "")
     return unless filename
 
@@ -69,8 +94,6 @@ class Capybara::Session
         f << self.html
       end
     end
-
-    save_screenshot("#{filename}.png")
   end
 end
 

@@ -1,0 +1,7 @@
+Hello <%= @recipient.full_name %>,
+
+A review of '<%= @paper.display_title %>' has been completed. Visit this link to view the Reviewer Report in Tahi:
+
+<%= "#{root_url}paper/#{@paper.id}/tasks/#{@task.id}" %>
+
+Team Tahi

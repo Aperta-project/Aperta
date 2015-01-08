@@ -11,6 +11,7 @@ require 'pry'
 
 # Clear the styleguide.html template?
 $RESET = true
+# $RESET = false
 # @styleguide_path = "doc/styleguide.html"
 @styleguide_path = "app/views/kss/home/styleguide2.html.erb"
 
@@ -31,7 +32,7 @@ def get_content(ele)
   nodes = Nokogiri::HTML(html)
 
   # Find a snippet of .html based on the text
-  selection = nodes.css(selector).to_html
+  selection = nodes.css(selector).first.to_html
 
   # Wrap the selection in a div with the class or ID
   if necessary_context
@@ -41,17 +42,16 @@ def get_content(ele)
     wrapper_div.content = selection
 
     # add the ID or class if it was specified
-    if id
-      wrapper_div[:id] = id
+    if necessary_context[0] == "#" # i'm a CSS id
+      wrapper_div[:id] = necessary_context[1..-1]
     end
 
-    if css
-      wrapper_div[:class] = css
+    if necessary_context[0] == "." # i'm a CSS css
+      wrapper_div[:class] = necessary_context[1..-1] # ignore the first character (. | #)
     end
 
-    selection = wrapper
+    selection = CGI::unescape_html wrapper_div.to_html
   end
-
 
   # return that snippet of markup
   return selection
@@ -76,11 +76,10 @@ def init
   nodes = Nokogiri::HTML(styleguide_html) { |config| config.strict }
   element_nodes = nodes.css("*[source-page-name]")
   element_nodes.each do |ele|
-    # ele.content = $RESET ? "" : get_content(ele)
     ele.content = $RESET ? warning : get_content(ele)
   end
 
-  # Write the file
+  # Write the unescaped html to file
   File.open(@styleguide_path, "w") do |f|
     f << CGI::unescape_html(nodes.to_html)
   end

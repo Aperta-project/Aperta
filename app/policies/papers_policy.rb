@@ -48,7 +48,7 @@ class PapersPolicy < ApplicationPolicy
   private
 
   def can_view_paper?
-    current_user.site_admin? || connected_users.exists?(current_user) || can_view_manuscript_manager?
+    current_user.site_admin? || connected_users.exists?(current_user.id) || can_view_manuscript_manager?
   end
 
   PaperRole::ALL_ROLES.each do |role|

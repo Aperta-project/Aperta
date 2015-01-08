@@ -96,6 +96,10 @@
     $(".kss-header").click(function(){
       $('.navigation').show();
     })
+
+    // Manually Adjust Workflow styles
+    $(".columns").css("position", "initial")
+    $(".columns").css("height", "450px")
   });
   </script>
 </head>
@@ -189,7 +193,53 @@
           </div>
         </div>
 
-        <div element-name="navigation" source-page-name="dashboard" source-page-selector=".navigation"></div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-3">
+                Primary
+                <div class="color-bar" style="background-color: #39a329;">
+                  #39a329
+                </div>
+                <div class="color-bar" style="background-color: #8ecb87;">
+                  #8ecb87
+                </div>
+                <div class="color-bar" style="background-color: #0f7400;">
+                  #0f7400
+                </div>
+              </div>
+              <div class="col-md-3">
+                Neutral
+                <div class="color-bar" style="background-color: #777;">
+                  #777
+                </div>
+                <div class="color-bar" style="background-color: #d5d5d5;">
+                  #d5d5d5
+                </div>
+                <div class="color-bar" style="background-color: #878787;">
+                  #878787
+                </div>
+                <div class="color-bar" style="background-color: #000000;">
+                  #000000
+                </div>
+              </div>
+              <div class="col-md-3">
+                Admin Primary
+                <div class="color-bar" style="background-color: #2d85de;">
+                  #2d85de
+                </div>
+                <div class="color-bar" style="background-color: #94b8e0;">
+                  #94b8e0
+                </div>
+                <div class="color-bar" style="background-color: #205e9c;">
+                  #205e9c
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div element-name="navigation" source-page-name="dashboard" source-page-selector=".navigation"><div class="alert-info">UI Goes here</div></div>
 
         <div class="row">
           <div class="col-md-6">
@@ -202,7 +252,39 @@
           </div>
         </div>
 
-        <div element-name="button" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="cabin">
+              <h1>
+                Cabin H1
+              </h1>
+              <h2>
+                Cabin H2
+              </h2>
+              <p>
+                Basic System Text
+              </p>
+              <a href="#">Link</a>
+              <br>
+              <a href="#" class="hover" style="text-decoration: underline;">Hovered Link</a>
+            </div>
+            <hr>
+            <div class="baskerville">
+              <h1>
+                Baskerville H1
+              </h1>
+              <h2>
+                Baskerville H2
+              </h2>
+              <p>
+                Manuscript Text
+              </p>
+              <a href="#">Link</a>
+              <br>
+              <a href="#" class="hover" style="text-decoration: underline;">Hovered Link</a>
+            </div>
+          </div>
+        </div>
 
         <hr>
 
@@ -212,10 +294,10 @@
 
         <div class="row">
           <div class="col-md-6">
-            <div element-name="card" source-page-name="paper_manager" source-page-selector=".card" source-page-selector-context=".column"></div>
+            <div element-name="card" source-page-name="paper_manager" source-page-selector=".card" source-page-selector-context=".column"><div class="alert-info">UI Goes here</div></div>
           </div>
           <div class="col-md-6">
-            <div element-name="card-completed" source-page-name="paper_manager" source-page-selector=".card--completed" source-page-selector-context=".column"></div>
+            <div element-name="card-completed" source-page-name="paper_manager" source-page-selector=".card--completed" source-page-selector-context=".column"><div class="alert-info">UI Goes here</div></div>
           </div>
         </div>
 
@@ -224,7 +306,7 @@
         <h2>
           Workflow
         </h2>
-        <div element-name="paper-manager" source-page-name="paper_manager" source-page-selector=".columns"></div>
+        <div element-name="paper-manager" source-page-name="paper_manager" source-page-selector=".columns"><div class="alert-info">UI Goes here</div></div>
 
         <hr>
         <div class="ui-element">
@@ -234,7 +316,7 @@
 
           <a class="toggle-link">Toggle</a>
 
-          <div element-name="card-overlay" source-page-name="paper_manager" source-page-selector=".overlay" overlay="true"></div>
+          <div element-name="card-overlay" source-page-name="paper_manager" source-page-selector=".overlay" overlay="true"><div class="alert-info">UI Goes here</div></div>
         </div>
 
         <hr>
@@ -247,7 +329,7 @@
 
           <a class="toggle-link">Toggle</a>
 
-          <div element-name="system-overlay" source-page-name="paper_manager_overlay" source-page-selector=".overlay--fullscreen" overlay="true"></div>
+          <div element-name="system-overlay" source-page-name="paper_manager_overlay" source-page-selector=".overlay--fullscreen" overlay="true"><div class="alert-info">UI Goes here</div></div>
         </div>
 
         <hr>
@@ -256,19 +338,20 @@
           Toolbar Stuff
         </h2>
 
-        <div element-name="toolbar" source-page-name="paper" source-page-selector=".control-bar"></div>
+        <h3>
+          Default
+        </h3>
+        <div element-name="toolbar" source-page-name="paper" source-page-selector=".control-bar"><div class="alert-info">UI Goes here</div></div>
 
-        <div element-name="toolbar" source-page-name="paper" source-page-selector=".control-bar"></div>
-
-        <div element-name="toolbar" source-page-name="paper" source-page-selector=".control-bar"></div>
-
-        <hr>
-
-        <h2>
+        <h3>
           Contributors
-        </h2>
+        </h3>
+        <div element-name="toolbar" source-page-name="paper" source-page-selector=".control-bar"><div class="alert-info">UI Goes here</div></div>
 
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <h3>
+          Document Download
+        </h3>
+        <div element-name="toolbar" source-page-name="paper" source-page-selector=".control-bar"><div class="alert-info">UI Goes here</div></div>
 
         <hr>
 
@@ -276,7 +359,7 @@
           Buttons
         </h2>
 
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
 
         <hr>
 
@@ -285,7 +368,7 @@
         </h2>
 
         <div class="constrain">
-          <div element-name="financial-disclosure-form" source-page-name="financial-disclosure-card" source-page-selector=".question-list"></div>
+          <div element-name="financial-disclosure-form" source-page-name="financial-disclosure-card" source-page-selector=".question-list"><div class="alert-info">UI Goes here</div></div>
         </div>
 
         <hr>
@@ -308,13 +391,13 @@
             <p>
               Large Block Level
             </p>
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
           </div>
           <div class="col-md-6">
             <p>
               Small Inline
             </p>
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
           </div>
         </div>
 
@@ -324,25 +407,25 @@
               If a block can be edited all at once, please use the large block level edit and delete icons.
             </p>
 
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
 
             <p>
               Delete should be followed by a warning/confirmation.
             </p>
 
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
 
             <p>
               Otherwise, use the smaller inline Edit and Delete icons.
             </p>
 
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
 
             <p>
               And, Delete should be followed by a warning/confirmation.
             </p>
 
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
           </div>
         </div>
 
@@ -351,7 +434,7 @@
         <h2>
           File Upload
         </h2>
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
 
         <hr>
 
@@ -359,14 +442,32 @@
           Errors
         </h2>
 
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div id="application-error" class="alert alert-danger alert-dismissable application-error" style="position: inherit;">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          WAT!!
+        </div>
+
+        <div id="application-error" class="alert alert-info alert-dismissable application-error" style="position: inherit;">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          Hey, Check this out!
+        </div>
+
+        <div id="application-error" class="alert alert-warning alert-dismissable application-error" style="position: inherit;">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          Ugh..!
+        </div>
+
+        <div id="application-error" class="alert alert-success alert-dismissable application-error" style="position: inherit;">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          YES!!
+        </div>
 
         <hr>
 
         <h2>
           Tooltips
         </h2>
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
 
         <hr>
 
@@ -374,7 +475,7 @@
           Card Things
         </h2>
 
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
 
 
         <hr>
@@ -382,7 +483,7 @@
         <h2>
           Widgets
         </h2>
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
 
 
         <hr>
@@ -390,7 +491,28 @@
         <h2>
           Avatars
         </h2>
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div id="profile-avatar">
+              <img src="/images/profile-no-image.png" data-bindattr-1612="1612">
+              <div id="profile-avatar-hover">
+                <span class="button-secondary button--green fileinput-button">
+                  <span>Upload New</span>
+                  <input id="profile_avatar" class="ember-text-field" type="file" name="file" accept=".jpg,.jpeg,.tiff,.gif,.png">
+                </span>
+              </div>
+              <div class="profile-avatar-spinner"></div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <img src="/images/profile-no-image.png" data-bindattr-1041="1041" class="user-thumbnail">
+          </div>
+          <div class="col-md-4">
+            <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
+          </div>
+        </div>
+
 
 
         <hr>
@@ -398,7 +520,7 @@
         <h2>
           Task Cards
         </h2>
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"><div class="alert-info">UI Goes here</div></div>
 
 
       </div>

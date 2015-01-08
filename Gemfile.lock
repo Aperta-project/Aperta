@@ -158,7 +158,7 @@ GEM
       timers (~> 4.0.0)
     childprocess (0.5.5)
       ffi (~> 1.0, >= 1.0.11)
-    codeclimate-test-reporter (0.3.0)
+    codeclimate-test-reporter (0.4.5)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
     coffee-rails (4.1.0)

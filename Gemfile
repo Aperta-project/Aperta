@@ -44,10 +44,10 @@ gem "carrierwave"
 gem "fog"
 gem "unf"
 gem 'newrelic_rpm'
-gem "rest_client"#, "~> 1.7.3"
+gem "rest_client"
 gem 'gepub'
 gem 'rubyzip', require: 'zip'
-gem "active_model_serializers"#, "~> 0.8.3"
+gem "active_model_serializers"
 gem 'pry-rails'
 gem 'pdfkit'
 gem 'mail_form'

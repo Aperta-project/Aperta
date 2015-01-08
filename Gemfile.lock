@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/modeset/teaspoon.git
-  revision: 65a399887b36717bd9006a03502cec2c5d3f9790
+  revision: 09641099f82098302f58fbff899845fa6b73946e
   specs:
     teaspoon (0.8.0)
       railties (>= 3.2.5, < 5)
@@ -269,10 +269,11 @@ GEM
       haml (~> 4.0)
       rubocop (>= 0.25.0)
       sysexits (~> 1.1)
-    haml-rails (0.5.3)
+    haml-rails (0.6.0)
       actionpack (>= 4.0.1)
       activesupport (>= 4.0.1)
       haml (>= 3.1, < 5.0)
+      html2haml (>= 1.0.1)
       railties (>= 4.0.1)
     handlebars-source (1.3.0)
     hashie (2.1.1)
@@ -280,6 +281,12 @@ GEM
       rack (>= 1.4.5)
     hike (1.2.3)
     hitimes (1.2.2)
+    hpricot (0.8.6)
+    html2haml (1.0.1)
+      erubis (~> 2.7.0)
+      haml (>= 4.0.0.rc.1)
+      hpricot (~> 0.8.6)
+      ruby_parser (~> 3.1.1)
     humanize (1.1.0)
     i18n (0.7.0)
     ice_nine (0.11.1)
@@ -376,7 +383,7 @@ GEM
     pry-stack_explorer (0.4.9.1)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
-    puma (2.9.2)
+    puma (2.10.2)
       rack (>= 1.1, < 2.0)
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
@@ -468,6 +475,8 @@ GEM
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.4)
     ruby-progressbar (1.7.1)
+    ruby_parser (3.1.3)
+      sexp_processor (~> 4.1)
     rubyzip (1.1.6)
     safe_yaml (1.0.4)
     sass (3.4.9)
@@ -488,6 +497,7 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
+    sexp_processor (4.4.4)
     sidekiq (3.3.0)
       celluloid (>= 0.16.0)
       connection_pool (>= 2.0.0)

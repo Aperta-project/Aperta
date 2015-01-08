@@ -22,7 +22,7 @@ namespace :custom_cards do
     insert_after("app/assets/javascripts/application.js.erb", needle, "//= require #{engine_name}/application")
 
     needle = "### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###"
-    insert_after("app/assets/stylesheets/application.css.scss", needle, " *= require #{engine_name}/application")
+    insert_after("app/assets/stylesheets/application.scss", needle, " *= require #{engine_name}/application")
 
     puts "Tahi Custom Task installation Successful!"
     puts "Also, be sure to add your new Custom Task to a Journal's Manuscript Manager Template"

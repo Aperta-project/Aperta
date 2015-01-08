@@ -57,6 +57,20 @@ describe UserMailer, redis: true do
     end
   end
 
+  describe '#assigned_editor' do
+    let(:invitee) { FactoryGirl.create(:user) }
+    let(:task) { FactoryGirl.create(:task) }
+    let(:email) { UserMailer.assigned_editor(invitee.id, task.paper.id) }
+
+    it 'sends the email to the inivitees email address' do
+      expect(email.to).to include(invitee.email)
+    end
+
+    it 'tells the user they have been added as an editor' do
+      expect(email.body).to match(/been assigned as an editor/)
+    end
+  end
+
   describe '#mention_collaborator' do
     let(:admin) { FactoryGirl.create(:user, :site_admin) }
     let(:invitee) { FactoryGirl.create(:user) }

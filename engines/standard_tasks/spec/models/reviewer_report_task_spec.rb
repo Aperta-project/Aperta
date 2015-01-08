@@ -12,7 +12,12 @@ describe StandardTasks::ReviewerReportTask do
                                               completed: false)
   }
 
-  let(:editor) { double(:editor, full_name: 'Andi Plantenberg', email: "andi+example@example.com") }
+  let(:editor) {
+    double(:editor,
+           full_name: 'Andi Plantenberg',
+           email: "andi+example@example.com",
+           id: 1)
+  }
 
   before do
     user = double(:user, last_name: 'Mazur')

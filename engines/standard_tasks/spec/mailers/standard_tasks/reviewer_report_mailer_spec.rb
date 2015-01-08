@@ -41,7 +41,7 @@ describe StandardTasks::ReviewerReportMailer do
     end
 
     it "contains link to the task" do
-      expect(email.body).to match(%r{\/paper\/#{paper.id}\/tasks\/#{task.id}})
+      expect(email.body).to match(%r{\/papers\/#{paper.id}\/tasks\/#{task.id}})
     end
 
     it "contains the paper title" do

@@ -13,7 +13,7 @@ module StandardTasks
     def send_emails
       return unless previous_changes["completed"] == [false, true]
       paper.editors.each do |editor|
-        ReviewerReportMailer.delay.notify_editor_email(task_id: self.id, recipient_id: editor.id)
+        ReviewerReportMailer.delay.notify_editor_email(task_id: id, recipient_id: editor.id)
       end
     end
   end

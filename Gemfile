@@ -25,12 +25,12 @@ gem 'ember-source', '1.8.1'
 gem "ember-data-source", "1.0.0.beta.14"
 gem 'sass-rails'
 gem 'haml-rails'
-gem 'uglifier', '~> 2.5.0'
+gem 'uglifier'
 gem 'coffee-rails'
 gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
-gem 'quiet_assets', '~> 1.0.3'
+gem 'quiet_assets'
 gem 'kaminari'
 
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
@@ -44,10 +44,10 @@ gem "carrierwave"
 gem "fog"
 gem "unf"
 gem 'newrelic_rpm'
-gem "rest_client", "~> 1.7.3"
+gem "rest_client"#, "~> 1.7.3"
 gem 'gepub'
 gem 'rubyzip', require: 'zip'
-gem "active_model_serializers", "~> 0.8.3"
+gem "active_model_serializers"#, "~> 0.8.3"
 gem 'pry-rails'
 gem 'pdfkit'
 gem 'mail_form'

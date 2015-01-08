@@ -1,4 +1,6 @@
-ETahi.TaskCommentComponent = Ember.Component.extend
+`import Ember from 'ember'`
+
+TaskCommentComponent = Ember.Component.extend
   tagName: 'li'
   classNameBindings: [':message-comment', 'unread']
 
@@ -36,3 +38,5 @@ ETahi.TaskCommentComponent = Ember.Component.extend
       regex = new RegExp("(#{mention})")
       body = body.replace(regex, '<strong>$1</strong>')
     body
+
+`export default TaskCommentComponent`

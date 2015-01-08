@@ -1,5 +1,17 @@
 require 'rails_helper'
 
+
+# The following redefines current_user to avoid the verification of partial
+# double. Have a look here:
+#
+# https://relishapp.com/rspec/rspec-mocks/v/3-0/docs/verifying-doubles/dynamic-classes
+
+class FilteredUserSerializer 
+  def current_user
+    super
+  end
+end
+
 describe FilteredUserSerializer do
   let(:journal) { create :journal }
   let(:paper) { create :paper, journal: journal }

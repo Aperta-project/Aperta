@@ -1,5 +1,10 @@
 require 'rails_helper'
 
+# Defining explicitly to override verifying partial double.
+# See here: https://relishapp.com/rspec/rspec-mocks/v/3-0/docs/verifying-doubles/dynamic-classes
+#
+def Faraday.get(arg); super; end
+
 describe PaperUpdateWorker do
   subject(:worker) { PaperUpdateWorker.new }
   let(:paper) { FactoryGirl.create :paper }

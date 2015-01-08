@@ -69,6 +69,7 @@ describe "update the Styleguide", js: true, selenium: true do
   let!(:journal) { FactoryGirl.create(:journal) }
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks, journal: journal) }
   let(:role) { FactoryGirl.create(:role, journal: journal) }
+  let!(:mmt) { FactoryGirl.create(:manuscript_manager_template, journal: journal) }
   let!(:flow) do
     create :flow, title: "Up for grabs", query: { assigned: true }, role_id: nil
   end
@@ -118,6 +119,31 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "paper" do
       visit '/papers/1/edit'
       find(".manuscript-container", visible: true)
+      page.grab(name)
+    end
+
+    scenario "paper_contributors" do
+      visit '/papers/1/edit'
+      find(".manuscript-container", visible: true)
+      find(".contributors-link").click
+      find(".contributors.active")
+      page.grab(name)
+    end
+
+    scenario "paper_download_document" do
+      visit '/papers/1/edit'
+      find(".manuscript-container", visible: true)
+      find(".downloads-link").click
+      find(".manuscript-download-links.active")
+      page.grab(name)
+    end
+
+    scenario "journal_admin" do
+      visit "/admin/journals/#{journal.id}"
+      first(".mmt-thumbnail", visible: true); sleep 3 # hacky
+      first_mmt = first(".mmt-thumbnail")
+      first_mmt.hover
+      find(".glyphicon-trash", visible: true)
       page.grab(name)
     end
 

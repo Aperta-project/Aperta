@@ -1,6 +1,7 @@
 Tahi::Application.routes.draw do
   mount Kss::Engine => '/kss' if Rails.env.development?
   get "kss/styleguide2", to: 'kss/home#styleguide2', as: :styleguide_try
+  get "kss/styleguide3", to: 'kss/home#styleguide3', as: :styleguide_try2
   mount StandardTasks::Engine => '/', as: 'standard_tasks'
   mount SupportingInformation::Engine => '/', as: 'supporting_information'
   mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'

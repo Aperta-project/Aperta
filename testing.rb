@@ -8,7 +8,7 @@ require 'cgi'
 require 'nokogiri'
 require 'pry'
 
-$RESET = true
+# $RESET = true
 # $RESET = false
 @styleguide_path = "app/views/kss/home/styleguide2.html.erb"
 
@@ -56,6 +56,8 @@ end
 def init
   # Open the File
   @styleguide_path = "app/views/kss/home/styleguide2.html.erb"
+  @populated_styleguide_path = "app/views/kss/home/styleguide3.html.erb"
+
   styleguide_html = File.open(@styleguide_path, "r").read
 
   # loop all the source-page-names and set (or reset) the content
@@ -63,11 +65,12 @@ def init
   nodes = Nokogiri::HTML(styleguide_html) { |config| config.strict }
   element_nodes = nodes.css("*[source-page-name]")
   element_nodes.each do |ele|
-    ele.content = $RESET ? "" : get_content(ele)
+    # ele.content = $RESET ? "" : get_content(ele)
+    ele.content = get_content(ele)
   end
 
   # Write the unescaped html to file
-  File.open(@styleguide_path, "w") do |f|
+  File.open(@populated_styleguide_path, "w") do |f|
     f << CGI::unescape_html(nodes.to_html)
   end
 end

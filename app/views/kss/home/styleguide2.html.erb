@@ -61,11 +61,18 @@
     max-width: 500px;
     padding-bottom: 25px;
   }
+
+  .glyphicon.large {
+    font-size: 28px;
+  }
+  .glyphicon.small {
+    font-size: 18px;
+  }
   </style>
 
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 
-  <script charset="utf-8">
+  <script>
   $(function() {
     $('.navigation-close').click(function() {
       $('.navigation').hide();
@@ -510,7 +517,6 @@
           </div>
         </div>
 
-
         <hr>
 
         <h2 id="form-patterns">
@@ -526,7 +532,7 @@
         <div class="row">
           <div class="col-md-6">
             <h2 id="edit-delete">
-              Edit/Delete??
+              Edit/Delete
             </h2>
 
             <p>
@@ -537,47 +543,70 @@
         </div>
 
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-2">
             <p>
               Large Block Level
             </p>
-            <span class="mmt-thumbnail-overlay glyphicon glyphicon-pencil"></span>
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+
+            <span class="glyphicon glyphicon-pencil large"></span>
+            <span class="glyphicon glyphicon-trash large"></span>
+
           </div>
-          <div class="col-md-6">
+          <div class="col-md-2">
             <p>
               Small Inline
             </p>
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+            <span class="glyphicon glyphicon-pencil small"></span>
+            <span class="glyphicon glyphicon-trash small"></span>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-12">
+          <h4>
+            If a block can be edited all at once, please use the large block level edit and delete icons.
+          </h4>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
             <p>
-              If a block can be edited all at once, please use the large block level edit and delete icons.
+              Natural state of block.
             </p>
-
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
-
-            <p>
-              Delete should be followed by a warning/confirmation.
-            </p>
-
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
-
-            <p>
-              Otherwise, use the smaller inline Edit and Delete icons.
-            </p>
-
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
-
-            <p>
-              And, Delete should be followed by a warning/confirmation.
-            </p>
-
-            <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+            <div element-name="admin-section" source-page-name="journal_admin" source-page-selector=".mmt-thumbnail"></div>
           </div>
+
+          <div class="col-md-4">
+            <p>
+              Upon hovering, actions are shown
+            </p>
+            <div class="show-child-mmt-thumbnail" element-name="admin-section" source-page-name="journal_admin" source-page-selector=".mmt-thumbnail"></div>
+          </div>
+
+          <div class="col-md-4">
+            <p>
+              Delete is followed by a warning/confirmation.
+            </p>
+            <div class="show-child-confirm-destroy" element-name="admin-section" source-page-name="journal_admin" source-page-selector=".mmt-thumbnail"></div>
+          </div>
+          <script>
+            // TODO consider doing it another way that is less tightly coupled to selectors.
+            $('.show-child-mmt-thumbnail .mmt-thumbnail .mmt-thumbnail-overlay--edit-options').show();
+            $('.show-child-confirm-destroy .mmt-thumbnail-overlay--confirm-destroy').show()
+          </script>
+        </div>
+
+        <div class="row">
+          <p>
+            Otherwise, use the smaller inline Edit and Delete icons.
+          </p>
+
+          <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+
+          <p>
+            And, Delete should be followed by a warning/confirmation.
+          </p>
+
+          <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
         </div>
 
         <hr>

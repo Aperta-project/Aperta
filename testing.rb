@@ -1,23 +1,16 @@
-#
 # This is the Styleguide `HYDRATION` File
-# It is responsible for retrieving elements from /doc/ux
-# And updating the styleguide.html
+# It is responsible for retrieving elements from /doc/ux .html files
+# and updating the styleguide2.html.erb
 #
-# See populate_styleguide.rb for more detail
+# See spec/features/populate_styleguide.rb for more detail
 
 require 'cgi'
 require 'nokogiri'
 require 'pry'
 
-# Clear the styleguide.html template?
 $RESET = true
 # $RESET = false
-# @styleguide_path = "doc/styleguide.html"
 @styleguide_path = "app/views/kss/home/styleguide2.html.erb"
-
-def warning
-  '<div class="alert-info">UI Goes here</div>'
-end
 
 def get_content(ele)
   # Grab arguments from the element
@@ -60,12 +53,6 @@ rescue => e
   p "Error: Could not open `#{name}` in `#{filename}` with selector `#{selector}`"
 end
 
-
-# TEMP STUFF!
-def copy
-  #  FileUtils.copy_file("/Users/ryan/workspace/tahi/app/views/kss/home/styleguide.html.erb", "/Users/ryan/workspace/tahi/app/views/kss/home/styleguide2.html.erb")
-end
-
 def init
   # Open the File
   @styleguide_path = "app/views/kss/home/styleguide2.html.erb"
@@ -76,7 +63,7 @@ def init
   nodes = Nokogiri::HTML(styleguide_html) { |config| config.strict }
   element_nodes = nodes.css("*[source-page-name]")
   element_nodes.each do |ele|
-    ele.content = $RESET ? warning : get_content(ele)
+    ele.content = $RESET ? "" : get_content(ele)
   end
 
   # Write the unescaped html to file
@@ -84,6 +71,5 @@ def init
     f << CGI::unescape_html(nodes.to_html)
   end
 end
-
 
 init

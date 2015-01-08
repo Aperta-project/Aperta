@@ -9,10 +9,10 @@
       delete="deleteBlock"
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{view 'inlineEdit'
-          item=item
-          isSendable=false
-          isNew=false}}
+        {{view "inlineEdit"
+               item=item
+               isSendable=false
+               isNew=false}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
@@ -25,13 +25,13 @@
       delete="deleteBlock"
       addItem="addCheckboxItem"}}
       {{#each item in block}}
-        {{view 'inlineEdit'
-          item=item
-          isSendable=false
-          isNew=true}}
+        {{view "inlineEdit"
+               item=item
+               isSendable=false
+               isNew=true}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
 </div>
 
-{{view "adhoc-content-toolbar"}}
+{{view "ad-hoc-content-toolbar"}}

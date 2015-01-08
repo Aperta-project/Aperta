@@ -1,4 +1,6 @@
-ETahi.RadioButtonComponent = Ember.Component.extend
+`import Ember from 'ember'`
+
+RadioButtonComponent = Ember.Component.extend
   tagName: 'input'
   type: 'radio'
   attributeBindings: ['name', 'type', 'value', 'checked:checked:']
@@ -9,3 +11,5 @@ ETahi.RadioButtonComponent = Ember.Component.extend
 
   change: ->
     @set('selection', @$().val())
+
+`export default RadioButtonComponent`

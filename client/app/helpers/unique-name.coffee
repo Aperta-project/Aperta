@@ -1,4 +1,6 @@
-Ember.Handlebars.registerHelper('uniqueName', (name)->
+`import Ember from 'ember'`
+
+UniqueName = Ember.Handlebars.makeBoundHelper (count, classString) ->
   generateUUID = ->
     d = new Date().getTime()
     'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c)->
@@ -11,4 +13,5 @@ Ember.Handlebars.registerHelper('uniqueName', (name)->
     )
 
   "#{name}-#{generateUUID()}"
-)
+
+`export default UniqueName`

@@ -3,14 +3,14 @@
     <h2>Pick the type of card to add</h2>
 
     <div id="choose-card-type-buttons">
-      {{chosen content=sortedTaskTypes
-               name="task_types"
-               width="200px"
-               prompt="Select a task type"
-               class="task-type-select"
-               value=taskType
-               optionValuePath="content"
-               optionLabelPath="content.title"}}
+      {{view "chosen" content=sortedTaskTypes
+                      name="task_types"
+                      width="200px"
+                      prompt="Select a task type"
+                      class="task-type-select"
+                      value=taskType
+                      optionValuePath="content"
+                      optionLabelPath="content.title"}}
       <button class="button-primary button--green" {{action "addTaskType" phaseTemplate taskType}}>
         Add
       </button>

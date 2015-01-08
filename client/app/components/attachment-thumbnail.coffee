@@ -1,4 +1,7 @@
-ETahi.AttachmentThumbnailComponent = Ember.Component.extend ETahi.SpinnerMixin,
+`import Ember from 'ember'`
+`import SpinnerMixin from 'tahi/mixins/views/spinner'`
+
+AttachmentThumbnailComponent = Ember.Component.extend SpinnerMixin
   classNameBindings: ['destroyState:_destroy', 'editState:_edit']
   destroyState: false
   previewState: false
@@ -83,3 +86,6 @@ ETahi.AttachmentThumbnailComponent = Ember.Component.extend ETahi.SpinnerMixin,
     togglePreview: ->
       @toggleProperty 'previewState'
       @scrollToView() if @get 'previewState'
+
+
+`export default AttachmentThumbnailComponent`

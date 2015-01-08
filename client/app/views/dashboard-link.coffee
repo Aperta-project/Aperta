@@ -33,4 +33,3 @@ DashboardLinkView = Ember.View.extend
   ).property('content.unreadCommentsCount')
 
 `export default DashboardLinkView`
-

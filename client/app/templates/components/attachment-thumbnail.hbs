@@ -55,12 +55,12 @@
 
   <div class="attachment-thumbnail-text-content">
     <h2 class="attachment-thumbnail-title" {{action "toggleEditState" on="doubleClick"}}>
-      {{display attachment.title or="Attachment title"}}
+      {{display-value attachment.title or="Attachment title"}}
     </h2>
     <span class="glyphicon glyphicon-pencil attachment-edit-icon" {{action "toggleEditState"}}></span>
 
     <div class="attachment-thumbnail-caption" {{action "toggleEditState" on="doubleClick"}}>
-      {{display attachment.caption or="There is no caption for this file."}}
+      {{display-value attachment.caption or="There is no caption for this file."}}
     </div>
   </div>
 

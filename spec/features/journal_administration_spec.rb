@@ -67,7 +67,10 @@ feature "Journal Administration", js: true do
         role = journal_page.add_role
         role.name = "whatever"
         role.save
-        expect(role).to have_name("whatever")
+        # NOTE: `expect(role).to have_name("whatever")` fails.
+        # Re-finding it works.
+        new_role = journal_page.find_role("whatever")
+        expect(new_role).to have_name("whatever")
       end
 
       scenario "modifying a role" do

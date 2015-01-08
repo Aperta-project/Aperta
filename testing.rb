@@ -69,6 +69,8 @@ def init
     ele.content = get_content(ele)
   end
 
+  nodes.css('.timestamp').first.content = Time.now.strftime("%A, %B %d, %Y, at %l:%M%P")
+
   # Write the unescaped html to file
   File.open(@populated_styleguide_path, "w") do |f|
     f << CGI::unescape_html(nodes.to_html)

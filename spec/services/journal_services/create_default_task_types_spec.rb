@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe JournalServices::CreateDefaultTaskTypes do
   let(:journal) { FactoryGirl.create(:journal) }

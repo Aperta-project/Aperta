@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature 'Upload default CSS on journal admin page', js: true do
   let(:admin) { create :user, :site_admin }

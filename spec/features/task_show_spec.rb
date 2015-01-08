@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Displaying task", js: true do
   let(:admin) { create :user, :site_admin }

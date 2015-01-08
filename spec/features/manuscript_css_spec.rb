@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Manuscript CSS", js: true do
   let(:author) { FactoryGirl.create :user }

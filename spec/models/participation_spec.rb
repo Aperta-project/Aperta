@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "Participation" do
   it "will be valid with default factory data" do

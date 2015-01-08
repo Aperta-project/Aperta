@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Event streaming", js: true, selenium: true do
   let!(:author) { FactoryGirl.create :user, :site_admin }

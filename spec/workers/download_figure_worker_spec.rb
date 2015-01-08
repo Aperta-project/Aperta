@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe DownloadFigureWorker, redis: true do
   let(:paper) { FactoryGirl.create(:paper) }

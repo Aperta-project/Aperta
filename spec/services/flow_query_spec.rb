@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe FlowQuery do
   let(:user_journal) { FactoryGirl.create(:journal) }

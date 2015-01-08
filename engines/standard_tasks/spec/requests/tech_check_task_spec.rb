@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 # another shim spec.  These can probably be eliminated entirely.
 describe "Paper with a tech check task" do

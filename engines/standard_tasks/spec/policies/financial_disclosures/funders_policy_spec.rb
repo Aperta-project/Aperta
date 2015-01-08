@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 # questions
 shared_examples_for "person who can manage funders" do
   it "lets them do all the things" do

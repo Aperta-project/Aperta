@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Api::PapersController do
   let!(:author) { FactoryGirl.create(:author) }

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe FilteredUserSerializer do
   let(:journal) { create :journal }

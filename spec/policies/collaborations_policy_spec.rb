@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe CollaborationsPolicy do
   let(:policy) { CollaborationsPolicy.new(current_user: user, paper: paper) }

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 # this test is mostly here as a temporary shim.
 # it makes sure that a signed in user will get the payload that the

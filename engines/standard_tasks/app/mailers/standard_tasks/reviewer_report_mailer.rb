@@ -4,12 +4,12 @@ module StandardTasks
 
     default from: ENV.fetch('FROM_EMAIL')
 
-    def notify_editor_email(task:, recipient:)
-      @recipient = recipient
-      @task = task
-      @paper = task.paper
+    def notify_editor_email(task_id:, recipient_id:)
+      @recipient = User.find(recipient_id)
+      @task = Task.find(task_id)
+      @paper = @task.paper
 
-      mail(to: recipient.email,
+      mail(to: @recipient.email,
            subject: "Reviewer has completed the review on Tahi")
     end
   end

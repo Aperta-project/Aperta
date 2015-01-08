@@ -17,9 +17,10 @@ describe StandardTasks::ReviewerReportMailer do
     }
 
     let(:editor) {
-      double(:editor,
-             full_name: 'Andi Plantenberg',
-             email: "andi@example.com")
+      FactoryGirl.create(:user,
+                         first_name: 'Andi',
+                         last_name: 'Plantenberg',
+                         email: 'andi@example.com')
     }
 
     before do
@@ -28,10 +29,12 @@ describe StandardTasks::ReviewerReportMailer do
       allow(paper).to receive(:creator).and_return(user)
       allow(paper).to receive(:editors).and_return([editor])
       allow(paper).to receive(:journal).and_return(journal)
-      allow(task).to receive(:paper).and_return(paper)
+
+      phase = Phase.create paper: paper
+      task.update phase: phase
     end
 
-    let(:email) { described_class.notify_editor_email(task: task, recipient: editor) }
+    let(:email) { described_class.notify_editor_email(task_id: task.id, recipient_id: editor.id) }
 
     it "sends to paper's editors" do
       expect(email.to).to eq(paper.editors.map(&:email))

@@ -24,3 +24,4 @@ coverage/
 .sass-cache
 /node_modules
 doc/ux
+app/views/kss/home/styleguide3.html.erb

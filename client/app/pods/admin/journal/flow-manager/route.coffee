@@ -1,4 +1,6 @@
-ETahi.JournalFlowManagerRoute = Ember.Route.extend
+`import Ember from 'ember'`
+
+Route = Ember.Route.extend
   model: (params) ->
     @store.find('role', params.role_id)
 
@@ -25,3 +27,6 @@ ETahi.JournalFlowManagerRoute = Ember.Route.extend
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('overlayBackground', 'journal.flow_manager')
       @transitionTo('task', paperId, task.get('id'))
+
+
+`export default Route`

@@ -75,10 +75,10 @@ PaperEditRoute = AuthorizedRoute.extend
         controller: controller)
 
     showConfirmSubmitOverlay: ->
-      @render 'paperSubmitOverlay',
+      @render 'overlays/paperSubmit',
         into: 'application',
         outlet: 'overlay',
-        controller: 'paperSubmitOverlay'
+        controller: 'overlays/paperSubmit'
 
     editableDidChange: ->
       @replaceWith('paper.index', @modelFor('paper'))

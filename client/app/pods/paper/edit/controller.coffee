@@ -92,7 +92,7 @@ PaperEditController = BasePaperController.extend
       return unless @get('allMetadataTasksCompleted')
 
       @get('model').save()
-      @get('controllers.paperSubmitOverlay').set 'model', @get('model')
+      @get('controllers.overlays/paperSubmit').set 'model', @get('model')
       @send 'showConfirmSubmitOverlay'
 
 `export default PaperEditController`

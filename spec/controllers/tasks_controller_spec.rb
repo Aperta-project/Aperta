@@ -80,7 +80,7 @@ describe TasksController, redis: true do
     end
 
     context "when the task has a notify method" do
-      it "calls the notify method" do
+      it "calls the send_emails method" do
         expect_any_instance_of(Task).to receive(:send_emails)
         do_request
       end

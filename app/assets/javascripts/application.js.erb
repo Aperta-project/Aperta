@@ -62,41 +62,6 @@
     });
   };
 
-  arrayComputed = Ember.arrayComputed;
-  ETahi.computed.limit = function (dependentKey, length) {
-    var options = {
-      initialize: function (array, changeMeta, instanceMeta) {
-        instanceMeta.filteredArrayIndexes = new Ember.SubArray();
-      },
-
-      addedItem: function(array, item, changeMeta, instanceMeta) {
-        var filterIndex = instanceMeta.filteredArrayIndexes.addItem(changeMeta.index, true);
-        if (array.length < length) {
-          array.insertAt(filterIndex, item);
-        } else {
-          if (changeMeta.changedCount == 1 && changeMeta.index < length) {
-            array.popObject();
-            array.insertAt(filterIndex, item);
-          }
-        }
-
-        return array;
-      },
-
-      removedItem: function(array, item, changeMeta, instanceMeta) {
-        var filterIndex = instanceMeta.filteredArrayIndexes.removeItem(changeMeta.index);
-
-        if (array.length && filterIndex > -1 && filterIndex < length) {
-          array.removeAt(filterIndex);
-        }
-
-        return array;
-      }
-    };
-
-    return arrayComputed(dependentKey, options);
-  }
-
 })(window);
 
 $.extend($.easing, {

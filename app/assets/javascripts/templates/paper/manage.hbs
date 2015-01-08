@@ -1,4 +1,4 @@
-{{#view ETahi.ControlBarView}}
+{{#view "control-bar"}}
   <div class="control-bar-inner-wrapper">
     <ul>
       {{#if journal.logoUrl}}
@@ -34,10 +34,10 @@
   <div class="columns">
     {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
     {{#each phase in sortedPhases}}
-      {{#view "ETahi.ManuscriptManagerColumnView" content=phase}}
+      {{#view "manuscript-manager-column" content=phase}}
         {{add-column position=view.nextPosition action='addPhase'}}
 
-        {{view ETahi.PhaseHeaderView phase=phase}}
+        {{view "phase-header" phase=phase}}
 
         <div class="column-content">
           {{#each task in phase.tasks}}

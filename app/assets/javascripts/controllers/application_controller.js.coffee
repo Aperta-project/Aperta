@@ -23,7 +23,7 @@ ETahi.ApplicationController = Ember.Controller.extend
     window.scrollTo(0,0)
   ).observes('currentPath')
 
-  overlayBackground: Ember.computed.defaultTo('defaultBackground')
+  overlayBackground: Ember.computed.oneWay('defaultBackground')
 
   overlayRedirect: []
 

@@ -15,7 +15,7 @@ ETahi.SerializesHasMany = Ember.Mixin.create
 
     key = relationship.key
     idsKey = key.substr(0, key.length-1) + "_ids"
-    relationshipType = DS.RelationshipChange.determineRelationshipType(record.constructor, relationship)
+    relationshipType = record.constructor.determineRelationshipType(relationship)
     if @relationshipMap relationshipType
       json[@toSnakeCase(idsKey)] = Em.get(record, key).mapBy("id")
     return

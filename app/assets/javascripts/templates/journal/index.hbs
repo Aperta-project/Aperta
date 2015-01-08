@@ -106,17 +106,17 @@
 
     <div class="admin-style-setting-section">
       <button class="button-primary button--blue" {{action "editEPubCSS"}}>Edit ePub CSS</button>
-      {{view ETahi.TimedMessageView class="epub-css save-status" message=epubCssSaveStatus}}
+      {{view "timed-message" class="epub-css save-status" message=epubCssSaveStatus}}
     </div>
 
     <div class="admin-style-setting-section">
       <button class="button-primary button--blue" {{action "editPDFCSS"}}>Edit PDF CSS</button>
-      {{view ETahi.TimedMessageView class="pdf-css save-status" message=pdfCssSaveStatus}}
+      {{view "timed-message" class="pdf-css save-status" message=pdfCssSaveStatus}}
     </div>
 
     <div class="admin-style-setting-section">
       <button class="button-primary button--blue" {{action "editManuscriptCSS"}}>Edit Manuscript CSS</button>
-      {{view ETahi.TimedMessageView class="manuscript-css save-status" message=manuscriptCssSaveStatus}}
+      {{view "timed-message" class="manuscript-css save-status" message=manuscriptCssSaveStatus}}
     </div>
   </div>
 </div>

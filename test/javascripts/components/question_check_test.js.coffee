@@ -77,12 +77,15 @@ test 'it uses dataset-* components to render attributes on additonalData', ->
     template: Ember.Handlebars.compile(template)
 
   $component = @append()
-  equal $component.find("textarea[name='contact']").val(), 'test contact', 'contact is a textarea'
-  ok $component.find("input[name='description'][value='test description']").length, 'description is an input'
-  ok $component.find("input[name='accession'][value='test doi']").length, 'doi is an input'
+  assertValue = (component, selector, value, message) ->
+    equal(component.find(selector).val(), value, message)
+
+  assertValue $component, "textarea[name='contact']" , 'test contact', 'contact is a textarea'
+  assertValue $component, "input[name='description']" , 'test description', 'description is an input'
+  assertValue $component, "input[name='accession']" , 'test doi', 'doi is an input'
   equal $component.find("textarea[name='reasons']").val(), 'test reasons', 'reasons is a textarea'
-  ok $component.find("input[name='title'][value='test title']").length, 'title is an input'
-  ok $component.find("input[name='url'][value='test url']").length, 'url is an input'
+  assertValue $component, "input[name='title']" , 'test title', 'title is an input'
+  assertValue $component, "input[name='url']" , 'test url', 'url is an input'
   fillIn("input[name='description']", "New description")
   fillIn("textarea[name='contact']", "New contact")
   andThen ->

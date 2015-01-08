@@ -138,7 +138,7 @@
             <a href="#buttons">Buttons</a>
           </li>
           <li>
-            <a href="#forms">Forms</a>
+            <a href="#form-patterns">Form Patterns</a>
           </li>
           <li>
             <a href="#edit-delete">Edit/Delete</a>
@@ -294,9 +294,11 @@
 
         <div class="row">
           <div class="col-md-6">
+            <h3>Not Completed</h3>
             <div element-name="card" source-page-name="paper_manager" source-page-selector=".card" source-page-selector-context=".column"></div>
           </div>
           <div class="col-md-6">
+            <h3>Completed</h3>
             <div element-name="card-completed" source-page-name="paper_manager" source-page-selector=".card--completed" source-page-selector-context=".column"></div>
           </div>
         </div>
@@ -314,7 +316,7 @@
             Card Overlay
           </h2>
 
-          <a class="toggle-link">Toggle</a>
+          <a class="toggle-link">Click to show Card Overlay</a>
 
           <div element-name="card-overlay" source-page-name="paper_manager" source-page-selector=".overlay" overlay="true"></div>
         </div>
@@ -327,7 +329,7 @@
             <!-- Seems Mis-named -->
           </h2>
 
-          <a class="toggle-link">Toggle</a>
+          <a class="toggle-link">Click to show System Overlay</a>
 
           <div element-name="system-overlay" source-page-name="paper_manager_overlay" source-page-selector=".overlay--fullscreen" overlay="true"></div>
         </div>
@@ -346,25 +348,173 @@
         <h3 id="contributors">
           Contributors
         </h3>
-        <div element-name="toolbar" source-page-name="paper" source-page-selector=".control-bar"></div>
+        <div class="control-bar-sub-nav-active">
+          <div element-name="toolbar" source-page-name="paper_contributors" source-page-selector=".control-bar"></div>
+        </div>
 
         <h3 id="download-document">
           Download Document
         </h3>
-        <div element-name="toolbar" source-page-name="paper" source-page-selector=".control-bar"></div>
+        <div class="control-bar-sub-nav-active">
+          <div element-name="toolbar" source-page-name="paper_download_document" source-page-selector=".control-bar"></div>
+        </div>
 
         <hr>
 
         <h2 id="buttons">
           Buttons
         </h2>
+        <!-- TODO make this match Andi's mockup -->
+        <div class="row">
+          <div class="col-md-4">
+            <h3>
+              Primary
+            </h3>
 
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+            <div class="buttons">
+              <div class="button-primary button--green">Save</div>
+              <br>
+              <div class="button-secondary button--green">Save</div>
+              <br>
+              <div class="button-link button--green">Save</div>
+              <br>
+
+              <div class="button-primary button--small button--green">Save</div>
+              <br>
+              <div class="button-secondary button--small button--green">Save</div>
+              <br>
+              <div class="button-link button--small button--green">Save</div>
+              <br>
+
+              <div class="button-primary button--wide button--green">Save</div>
+              <br>
+              <div class="button-secondary button--wide button--green">Save</div>
+              <br>
+              <div class="button-link button--wide button--green">Save</div>
+              <br>
+
+              <div class="button-primary button--disabled button--green">Save</div>
+              <br>
+              <div class="button-secondary button--disabled button--green">Save</div>
+              <br>
+              <div class="button-link button--disabled button--green">Save</div>
+              <br>
+
+              <h4>
+                Knockout
+              </h4>
+              <div style="background-color: #E5E5E5; text-align: center;">
+                <div class="button-primary button--green knockout">Save</div>
+                <br>
+                <div class="button-secondary button--green knockout">Save</div>
+                <br>
+                <div class="button-link button--green knockout">Save</div>
+              </div>
+              <br>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h3>
+              Neutral
+            </h3>
+
+            <div class="buttons">
+              <div class="button-primary button--grey">Save</div>
+              <br>
+              <div class="button-secondary button--grey">Save</div>
+              <br>
+              <div class="button-link button--grey">Save</div>
+              <br>
+
+              <div class="button-primary button--small button--grey">Save</div>
+              <br>
+              <div class="button-secondary button--small button--grey">Save</div>
+              <br>
+              <div class="button-link button--small button--grey">Save</div>
+              <br>
+
+              <div class="button-primary button--wide button--grey">Save</div>
+              <br>
+              <div class="button-secondary button--wide button--grey">Save</div>
+              <br>
+              <div class="button-link button--wide button--grey">Save</div>
+              <br>
+
+              <div class="button-primary button--disabled button--grey">Save</div>
+              <br>
+              <div class="button-secondary button--disabled button--grey">Save</div>
+              <br>
+              <div class="button-link button--disabled button--grey">Save</div>
+              <br>
+
+              <h4>
+                Knockout
+              </h4>
+              <div style="background-color: #E5E5E5; text-align: center;">
+                <div class="button-primary button--disabled button--grey knockout">Save</div>
+                <br>
+                <div class="button-secondary button--disabled button--grey knockout">Save</div>
+                <br>
+                <div class="button-link button--disabled button--grey knockout">Save</div>
+              </div>
+              <br>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <h3>
+              Admin
+            </h3>
+
+            <div class="buttons">
+              <div class="button-primary button--blue">Save</div>
+              <br>
+              <div class="button-secondary button--blue">Save</div>
+              <br>
+              <div class="button-link button--blue">Save</div>
+              <br>
+
+              <div class="button-primary button--small button--blue">Save</div>
+              <br>
+              <div class="button-secondary button--small button--blue">Save</div>
+              <br>
+              <div class="button-link button--small button--blue">Save</div>
+              <br>
+
+              <div class="button-primary button--wide button--blue">Save</div>
+              <br>
+              <div class="button-secondary button--wide button--blue">Save</div>
+              <br>
+              <div class="button-link button--wide button--blue">Save</div>
+              <br>
+
+              <div class="button-primary button--disabled button--blue">Save</div>
+              <br>
+              <div class="button-secondary button--disabled button--blue">Save</div>
+              <br>
+              <div class="button-link button--disabled button--blue">Save</div>
+              <br>
+
+              <h4>
+                Knockout
+              </h4>
+
+              <div style="background-color: #E5E5E5; text-align: center;">
+                <div class="button-primary button--blue knockout">Save</div>
+                <br>
+                <div class="button-secondary button--blue knockout">Save</div>
+                <br>
+                <div class="button-link button--blue knockout">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
         <hr>
 
-        <h2 id="forms">
-          Forms
+        <h2 id="form-patterns">
+          Form Patterns (in Cards)
         </h2>
 
         <div class="constrain">
@@ -391,6 +541,7 @@
             <p>
               Large Block Level
             </p>
+            <span class="mmt-thumbnail-overlay glyphicon glyphicon-pencil"></span>
             <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
           </div>
           <div class="col-md-6">

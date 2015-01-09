@@ -12,7 +12,7 @@ changes.
 ## How do I pull the app's latest HTML into the styleguide?
 Re-scraping the HTML from the app can take some time.
 ```sh
-rake styleguide
+rake styleguide:generate
 ```
 
 If you see an error when you run this, please open an issue and paste the error.

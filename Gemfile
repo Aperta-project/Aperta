@@ -24,7 +24,6 @@ gem 'ember-rails'
 gem 'ember-source', '1.8.1'
 gem "ember-data-source", "1.0.0.beta.14"
 gem 'sass-rails'
-gem 'haml-rails'
 gem 'uglifier'
 gem 'coffee-rails'
 gem 'acts_as_list'

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PaperUnlockerWorker do
   let(:paper) { FactoryGirl.create(:paper, locked_by_id: 99) }

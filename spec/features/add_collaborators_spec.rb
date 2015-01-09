@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Editing paper", js: true do
   let(:author) { FactoryGirl.create :user }

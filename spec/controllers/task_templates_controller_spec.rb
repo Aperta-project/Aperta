@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TaskTemplatesController do
   let(:user) { create :user, :site_admin }

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PlosAuthors::PlosAuthorsController do
   routes { PlosAuthors::Engine.routes }

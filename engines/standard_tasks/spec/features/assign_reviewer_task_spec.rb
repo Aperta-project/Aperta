@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Assigns Reviewer", js: true, solr: true do
   let(:journal) { FactoryGirl.create(:journal) }

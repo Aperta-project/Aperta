@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Search Users on Admin Dashboard", js: true do
   let(:user) { create :user, :site_admin, first_name: "Test", last_name: "User", username: "testuser" }

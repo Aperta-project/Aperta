@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe DownloadQuestionAttachmentWorker, redis: true do
   let(:question_attachment) { FactoryGirl.create(:question_attachment) }

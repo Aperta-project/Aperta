@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PublishingInformationPresenter do
   let(:paper) { FactoryGirl.create :paper, title: "Studies on the aftermath of revolution", published_at: 2.days.ago }

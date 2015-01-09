@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Admin::JournalsController, redis: true do
   let(:journal) { create(:journal) }

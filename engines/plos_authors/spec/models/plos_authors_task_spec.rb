@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PlosAuthors::PlosAuthorsTask do
   describe "#validate_authors" do

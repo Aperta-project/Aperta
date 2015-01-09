@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe UserMailer, redis: true do
   shared_examples_for "invitor is not available" do

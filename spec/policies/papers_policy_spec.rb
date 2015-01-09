@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PapersPolicy do
   let(:policy) { PapersPolicy.new(current_user: user, paper: paper) }

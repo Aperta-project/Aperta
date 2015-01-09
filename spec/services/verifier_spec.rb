@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 describe Verifier do
   describe "#encrypt" do

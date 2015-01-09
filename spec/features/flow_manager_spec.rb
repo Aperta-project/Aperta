@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Flow Manager", js: true, selenium: true do
   let(:admin) do

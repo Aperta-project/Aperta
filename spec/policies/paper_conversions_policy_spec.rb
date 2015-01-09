@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PaperConversionsPolicy do
   let(:policy) { described_class.new(current_user: user, paper: paper) }

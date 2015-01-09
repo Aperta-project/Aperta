@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TasksController, redis: true do
   let(:user) { create :user, :site_admin }
@@ -9,7 +9,7 @@ describe TasksController, redis: true do
 
   before do
     sign_in user
-    allow(EventStreamConnection).to receive(:post_user_event)
+    allow(EventStreamConnection).to receive(:post_event)
   end
 
   describe "POST 'create'" do

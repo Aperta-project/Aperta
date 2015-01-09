@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Add contributing authors", js: true do
   let(:creator) { FactoryGirl.create :user }

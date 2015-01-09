@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Manuscript Manager Templates", js: true, selenium: true do
   let(:admin) { create :user, :site_admin }

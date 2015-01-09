@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PaperRole do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }

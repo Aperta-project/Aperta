@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe DownloadAdhocTaskAttachmentWorker, redis: true do
   let(:attachment) { FactoryGirl.create(:attachment) }

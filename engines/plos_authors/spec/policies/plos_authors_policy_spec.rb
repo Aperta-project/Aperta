@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 shared_examples_for "person who can manage plos authors" do
   it "allows all actions" do

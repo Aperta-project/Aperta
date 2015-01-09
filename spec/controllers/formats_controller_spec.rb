@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe FormatsController, type: :controller do
   context "with supported formats" do

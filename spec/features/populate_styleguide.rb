@@ -140,7 +140,7 @@ describe "update the Styleguide", js: true, selenium: true do
 
     scenario "journal_admin" do
       visit "/admin/journals/#{journal.id}"
-      first(".mmt-thumbnail", visible: true); sleep 3 # hacky
+      has_css?(".mmt-thumbnail")
       first_mmt = first(".mmt-thumbnail")
       first_mmt.hover
       find(".glyphicon-trash", visible: true)
@@ -151,8 +151,9 @@ describe "update the Styleguide", js: true, selenium: true do
       Task.first.update(completed: true)
       visit '/papers/1/manage'
       # also include an overlay
-      first(".card .card-content", visible: true)
-      first(".card .card-content").click
+      has_css?(".card .card-content")
+      card = first(".card .card-content")
+      card.click
       first(".overlay", visible: true)
       page.grab(name)
     end
@@ -160,7 +161,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "paper_manager_overlay" do
       visit '/papers/1/manage'
       # also include an overlay
-      first(".card .card-content", visible: true); sleep 3 # hacky
+      has_css?(".card .card-content")
       card = first(".card .card-content")
       card.hover
       card.find(".card-remove").click
@@ -170,7 +171,7 @@ describe "update the Styleguide", js: true, selenium: true do
 
     scenario "financial-disclosure-card" do
       visit '/papers/1/manage'
-      first(".card .card-content", visible: true); sleep 3 # hacky
+      has_css?(".card .card-content")
       card = all(".card-content").last
       card.click
       first(".overlay--fullscreen", visible: true)

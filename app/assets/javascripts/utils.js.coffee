@@ -25,12 +25,10 @@ Tahi.utils =
 
     wrappers = headers.find('.column-title-wrapper')
     wrappers.css('height', '')
-    heights = wrappers.find('.column-title-wrapper').map ->
-      $(this).outerHeight()
 
     max = null
     try
-      max = Math.max.apply(Math, heights)
+      max = Math.max.apply(Math, wrappers.map -> $(this).outerHeight())
     catch error
       max = 20
 

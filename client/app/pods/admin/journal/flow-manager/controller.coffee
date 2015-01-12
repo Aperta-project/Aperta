@@ -1,4 +1,5 @@
 `import Ember from 'ember'`
+`import Utils from 'tahi/services/utils'`
 
 JournalFlowManagerController = Ember.ObjectController.extend
   flowSort: ['position:asc']
@@ -10,7 +11,7 @@ JournalFlowManagerController = Ember.ObjectController.extend
   actions:
     saveFlow: (flow) ->
       flow.save().then ->
-        Ember.run.schedule('afterRender', Tahi.utils.resizeColumnHeaders)
+        Ember.run.schedule('afterRender', Utils.resizeColumnHeaders)
 
     removeFlow: (flow) ->
       flow.get('role.flows').then (flows) -> # SSOT workaround

@@ -17,7 +17,7 @@
     <article>
       <div class="edit-paper">
         <a {{action "submit" target="view"}} {{bind-attr class=":no-sidebar-submit-manuscript :button-primary :button--wide allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit Manuscript</a>
-        {{edit-paper-button action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
+        {{toggle-paper-editable action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
         <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
         <span class="edit-paper-lock-message">{{{statusMessage}}} {{time-ago time=savedAt}}</span>
       </div>

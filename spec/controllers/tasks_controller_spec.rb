@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TasksController, redis: true do
   let(:user) { create :user, :site_admin }
@@ -9,7 +9,7 @@ describe TasksController, redis: true do
 
   before do
     sign_in user
-    allow(EventStreamConnection).to receive(:post_user_event)
+    allow(EventStreamConnection).to receive(:post_event)
   end
 
   describe "POST 'create'" do
@@ -65,7 +65,6 @@ describe TasksController, redis: true do
       end
     end
 
-
     context "when the user is not an admin or the assignee" do
       before { user.update! site_admin: false }
 
@@ -77,6 +76,13 @@ describe TasksController, redis: true do
       it "does not update the task" do
         do_request
         expect(task.reload).not_to be_completed
+      end
+    end
+
+    context "when the task has a notify method" do
+      it "calls the send_emails method" do
+        expect_any_instance_of(Task).to receive(:send_emails)
+        do_request
       end
     end
   end

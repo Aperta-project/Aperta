@@ -42,10 +42,6 @@ class Paper < ActiveRecord::Base
     def unpublished
       where(published_at: nil)
     end
-
-    def find(param)
-      Doi.valid?(param) ? find_by_doi!(param) : super
-    end
   end
 
   def role_for(role:, user:)
@@ -117,7 +113,7 @@ class Paper < ActiveRecord::Base
     # paper.editor?(user1)  # => true
     define_method("#{relation.singularize}?".to_sym) do |user|
       return false unless user.present?
-      send(relation).exists?(user)
+      send(relation).exists?(user.id)
     end
   end
 

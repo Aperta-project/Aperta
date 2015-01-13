@@ -1,5 +1,5 @@
 <div class="dataset">
-  <a href="#" {{action "removeFunder"}} class="pull-right remove-funder-link">remove</a>
+  <a href="#" {{action "removeFunder"}} class="remove-funder-link">remove</a>
   <div class="form-group">
     {{input type="text" name="name" value=funder.name class="form-control" placeholder="Funder"}}
   </div>
@@ -30,14 +30,14 @@
         <div class="form-group form-inline">
           {{input type="text" name="first-name" value=addingAuthor.firstName class="author-name form-control" placeholder="First Name"}}
           {{input type="text" name="last-name" value=addingAuthor.lastName class="author-name form-control" placeholder="Last Name"}}
-          <span class="author-form-buttons">
+          <div class="author-form-buttons">
             <a class="button-link button--green author-cancel" {{action "cancelAddingAuthor" bubbles=false}}>cancel</a>
             <button class="button-secondary knockout button--green" {{action "finishAddingAuthor"}}>Add Author</button>
-          </span>
+          </div>
         </div>
       </div>
     {{else}}
-      OR <button class="button-secondary knockout button--green" {{action "startAddingAuthor"}}>Add Author</button>
+      OR &nbsp; <button class="button-secondary knockout button--green" {{action "startAddingAuthor"}}>Add Author</button>
     {{/if}}
   </div>
 

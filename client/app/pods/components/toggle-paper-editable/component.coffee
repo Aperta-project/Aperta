@@ -19,7 +19,7 @@ TogglePaperEditableComponent = Ember.Component.extend
 
   buttonStates:
     isEditing:
-      buttonColor: 'button--purple'
+      buttonColor: 'button--green'
       prompt: 'stop writing'
       iconClass: ''
     canEdit:

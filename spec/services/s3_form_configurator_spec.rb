@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe S3FormConfigurator do
   describe "form_json" do

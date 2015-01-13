@@ -41,6 +41,9 @@ Tahi::Application.routes.draw do
   get 'filtered_users/reviewers/:journal_id' => 'filtered_users#reviewers'
 
   get '/user_flows/authorization' => 'user_flows#authorization'
+  namespace :user_flows do
+    get :potential_flows
+  end
   resources :user_flows
 
   resources :flows, only: [:show, :create, :update, :destroy]
@@ -84,7 +87,7 @@ Tahi::Application.routes.draw do
   resources :collaborations, only: [:create, :destroy]
   resources :paper_roles, only: [:show]
 
-  resources :ihat_jobs, only: :update
+  put :ihat_jobs, to: "ihat_jobs#update", as: :ihat_callback
 
   resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create
@@ -105,8 +108,8 @@ Tahi::Application.routes.draw do
     end
   end
 
-  get '/papers/:id' => 'papers#show',
-      constraints: { id: Doi::FORMAT },
+  get '/papers/:publisher_prefix/:suffix' => 'papers#show',
+      constraints: { publisher_prefix: Doi::PUBLISHER_PREFIX_FORMAT, suffix: Doi::SUFFIX_FORMAT },
       as: :paper_with_doi
 
   resources :comments, only: [:create, :show]

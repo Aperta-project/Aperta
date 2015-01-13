@@ -1,83 +1,160 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe FlowQuery do
-  let(:journal) { FactoryGirl.create(:journal) }
-  let(:user) { FactoryGirl.create :user }
+  let(:user_journal) { FactoryGirl.create(:journal) }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:site_admin) { FactoryGirl.create(:user, :site_admin) }
 
   let(:paper) do
     FactoryGirl.create(:paper,
-                       journal: journal,
+                       journal: user_journal,
                        creator: user)
   end
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
 
   before do
-    assign_journal_role(journal, user, :editor)
+    assign_journal_role(user_journal, user, :editor)
   end
 
   describe "#tasks" do
-    it "returns an empty set when query is empty" do
-      flow = Flow.create(title: 'My tasks', query: {})
-      expect(FlowQuery.new(user, flow).tasks).to match_array []
+    it "returns an empty relation if flow query is empty" do
+      flow = FactoryGirl.build(:flow, query: {})
+      tasks = FlowQuery.new(user, flow).tasks
+
+      expect(tasks).to match_array []
+    end
+
+    context "scoping tasks by journal" do
+      let!(:user_task) { FactoryGirl.create(:task, phase: phase, completed: true, participants: [user]) }
+      let!(:other_task) { FactoryGirl.create(:task, completed: true, participants: [user]) }
+
+      it "is not applicable to site admins" do
+        flow = FactoryGirl.build(:flow, query: {state: :completed})
+        tasks = FlowQuery.new(site_admin, flow).tasks
+
+        expect(tasks).to include(user_task)
+        expect(tasks).to include(other_task)
+      end
+
+      it "scopes the tasks to the flow's journal if the flow is not a default flow" do
+        flow = FactoryGirl.build(:flow, query: {state: :completed}, journal: user_journal)
+        tasks = FlowQuery.new(user, flow).tasks
+
+        expect(tasks).to include(user_task)
+        expect(tasks).to_not include(other_task)
+      end
+
+      it "scopes tasks to the user's journals if flow is a default flow" do
+        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {state: :completed})
+        tasks = FlowQuery.new(user, flow).tasks
+
+        expect(tasks).to include(user_task)
+        expect(tasks).to_not include(other_task)
+      end
+    end
+
+    context "scoping tasks by assigned" do
+      let!(:assigned_task) { FactoryGirl.create(:task, participants: [user], phase: phase, completed: true) }
+      let!(:unassigned_task) { FactoryGirl.create(:task, participants: [], phase: phase, completed: true) }
+
+      it "scopes tasks to assigned to the user if assigned query is true" do
+        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {assigned: true})
+        tasks = FlowQuery.new(user, flow).tasks
+
+        expect(tasks).to include(assigned_task)
+        expect(tasks).to_not include(unassigned_task)
+      end
+
+      it "scopes tasks to unassigned if the assigned query is false" do
+        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {assigned: false})
+        tasks = FlowQuery.new(user, flow).tasks
+
+        expect(tasks).to_not include(assigned_task)
+        expect(tasks).to include(unassigned_task)
+      end
+    end
+
+    context "scoping tasks by state" do
+      let!(:complete) { FactoryGirl.create(:task, completed: true, phase: phase, participants: [user]) }
+      let!(:incomplete) { FactoryGirl.create(:task, completed: false, phase: phase, participants: [user]) }
+
+      it "scopes tasks to completed task if the state query is complete" do
+        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {state: :completed})
+        tasks = FlowQuery.new(user, flow).tasks
+
+        expect(tasks).to include(complete)
+        expect(tasks).to_not include(incomplete)
+      end
+
+      it "scopes tasks to incomplete task if the state query is incomplete" do
+        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {state: :incomplete})
+        tasks = FlowQuery.new(user, flow).tasks
+
+        expect(tasks).to_not include(complete)
+        expect(tasks).to include(incomplete)
+      end
+    end
+
+    context "scoping tasks by role" do
+      let!(:admin_task) { FactoryGirl.create(:task, phase: phase, participants: [user], role: "Admin") }
+      let!(:generic_task) { FactoryGirl.create(:task, phase: phase, participants: [user]) }
+
+      it "it scopes tasks by role if role is given" do
+        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {role: "Admin"})
+        tasks = FlowQuery.new(user, flow).tasks
+
+        expect(tasks).to include(admin_task)
+        expect(tasks).to_not include(generic_task)
+      end
+    end
+
+    context "scoping tasks by type" do
+      let!(:admin_task) { FactoryGirl.create(:paper_admin_task) }
+      let!(:generic_task) { FactoryGirl.create(:task) }
+
+      it "scopes tasks by type" do
+        flow = FactoryGirl.build(:flow, :default, query: {type: "StandardTasks::PaperAdminTask"})
+        tasks = FlowQuery.new(site_admin, flow).tasks
+
+        expect(tasks).to include(admin_task)
+        expect(tasks).to_not include(generic_task)
+      end
     end
 
 
-    it "returns tasks scoped to a TaskType" do
-      flow = Flow.create(title: 'My tasks', query: { type: "Task" })
-      task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [user])
-      expect(FlowQuery.new(user, flow).tasks).to match_array [task]
-    end
+    context "default scopes" do
+      let(:up_for_grabs) { FactoryGirl.create(:task, phase: phase, completed: false, participants: []) }
+      let(:my_tasks) { FactoryGirl.create(:task, phase: phase, completed: false, participants: [user]) }
+      let(:done) { FactoryGirl.create(:task, phase: phase, completed: true, participants: [user]) }
 
-    it "For 'My tasks' returns incomplete tasks that the user is participating in" do
-      flow = Flow.create(title: 'My tasks', query: { state: :incomplete, assigned: true })
-      incomplete_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [user])
-      complete_task = FactoryGirl.create(:task, phase: phase, completed: true, participants: [user])
-      unrelated_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [])
+      context "Up for grabs" do
+        it "returns tasks that are up for grabs" do
+          flow = FactoryGirl.build(:flow, :default, query: {assigned: false, state: :incomplete})
+          tasks = FlowQuery.new(user, flow).tasks
 
-      expect(FlowQuery.new(user, flow).tasks).to match_array [incomplete_task]
-    end
+          expect(tasks).to include(up_for_grabs)
+          expect(tasks.count).to eq(1)
+        end
+      end
 
-    it "For 'Done' returns completed tasks that the user is participating in" do
-      flow = Flow.create(title: 'Done', query: { state: :completed, assigned: true })
-      incomplete_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [user])
-      complete_task = FactoryGirl.create(:task, phase: phase, completed: true, participants: [user])
-      unrelated_task = FactoryGirl.create(:task, phase: phase, completed: false, participants: [])
+      context "My tasks" do
+        it "returns tasks that are 'my tasks'" do
+          flow = FactoryGirl.build(:flow, :default, query: {state: :incomplete, assigned: true})
+          tasks = FlowQuery.new(user, flow).tasks
 
-      expect(FlowQuery.new(user, flow).tasks).to match_array [complete_task]
-    end
+          expect(tasks).to include(my_tasks)
+          expect(tasks.count).to eq(1)
+        end
+      end
 
-    it "For 'My papers' it returns PaperAdminTasks on papers in which the user has an Admin role" do
-      flow = Flow.create(title: 'My papers', query: { admin: true })
-      paper_admin_task = FactoryGirl.create(:paper_admin_task, phase: phase)
-      make_user_paper_admin(user, paper)
+      context "Done" do
+        it "returns tasks that are done" do
+          flow = FactoryGirl.build(:flow, :default, query: {state: :completed, assigned: true})
+          tasks = FlowQuery.new(user, flow).tasks
 
-      other_task_same_paper = FactoryGirl.create(:task, phase: phase)
-      paper_admin_task_other_paper = FactoryGirl.create(:paper_admin_task)
-
-      expect(FlowQuery.new(user, flow).tasks).to match_array [paper_admin_task]
-    end
-
-    it "For 'Up for grabs' returns incomplete, unassigned PaperAdminTasks for journals the user has a role in." do
-      flow = Flow.create(title: 'Up for grabs', query: { unassigned: true, state: :incomplete, admin: true })
-      valid_task = FactoryGirl.create(:paper_admin_task, phase: phase, completed: false)
-      other_task_same_journal = FactoryGirl.create(:task, phase: phase)
-      other_paper_admin_task = FactoryGirl.create(:paper_admin_task)
-
-      expect(FlowQuery.new(user, flow).tasks).to match_array [valid_task]
-
-      valid_task.update(completed: true)
-      expect(FlowQuery.new(user, flow).tasks).to be_empty
-    end
-
-    context "When the user is a site admin" do
-      let(:site_admin) { FactoryGirl.create :user, :site_admin }
-
-      it "For 'Up for grabs' returns incomplete, unassigned PaperAdminTasks for any journal" do
-        flow = Flow.create(title: 'Up for grabs', query: { unassigned: true, state: :incomplete, admin: true })
-        valid_task = FactoryGirl.create(:paper_admin_task, phase: phase, completed: false)
-        other_paper_admin_task = FactoryGirl.create(:paper_admin_task)
-
-        expect(FlowQuery.new(site_admin, flow).tasks).to match_array [valid_task, other_paper_admin_task]
+          expect(tasks).to include(done)
+          expect(tasks.count).to eq(1)
+        end
       end
     end
   end

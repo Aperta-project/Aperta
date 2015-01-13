@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe StandardTasks::PaperEditorTask do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
@@ -52,6 +52,14 @@ describe StandardTasks::PaperEditorTask do
       task.editor_id = future_editor.id
       expect(task.reload.editor_id).to eq(future_editor.id)
       expect{ original_paper_role.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "notifies new editor of with an email" do
+      mailer = double(UserMailer).as_null_object
+      allow(UserMailer).to receive(:delay).and_return(mailer)
+      task.editor_id = future_editor.id
+
+      expect(mailer).to have_received(:assigned_editor)
     end
   end
 end

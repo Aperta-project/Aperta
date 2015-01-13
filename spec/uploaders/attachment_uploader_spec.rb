@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe AttachmentUploader do
   describe "#store_dir" do

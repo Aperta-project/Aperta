@@ -1,0 +1,213 @@
+// A description goes here.
+//
+// Markup:
+// <div class="overlay">
+//   <div class="overlay-container">
+//     <div class="overlay-header">
+//       <h2 class="overlay-header-title"></h2>
+//     </div>
+//     <div class="overlay-content"></div>
+//     <div class="overlay-footer">
+//       <div class="overlay-footer-content"></div>
+//     </div>
+//   </div>
+// </div>
+//
+// Styleguide Overlay
+
+
+.overlay {
+  overflow: auto;
+  @include position(fixed, 0px 0px 0px 0px);
+  background-color: rgba(0,0,0, 0.7);
+  z-index: z($z-layer-overlay-base);
+  opacity: 0;
+
+  h1 {
+    margin: 0 0 1em 0;
+    font-size: 48px;
+  }
+
+  &.feedback-overlay {
+    h1 { margin-bottom: 0.5em; }
+  }
+
+  .discussion {
+    width: 700px;
+    margin-top: 30px;
+
+    h2 {
+      margin-bottom: 0;
+      border-top: 1px solid #dfdfdf;
+      padding: 10px 0 20px 9px;
+      font-size: 20px;
+    }
+  }
+}
+
+.overlay--fullscreen {
+  background-color: rgba(255,255,255, 0.95);
+
+  .overlay-close-x { display: block; }
+
+  .overlay-container {
+    background: transparent;
+  }
+}
+
+
+.overlay-close-x {
+  @include position(fixed, -10px 0px auto auto);
+  display: none;
+  width: auto !important; //bootstrap/glyphicon override
+  padding: 0 25px 0 15px;
+  color: $tahi-green;
+  font-size: 90px;
+  line-height: 100%;
+  cursor: pointer;
+  z-index: z($z-layer-overlay-close-x);
+}
+
+
+.overlay-container {
+  position: relative;
+  width: 1120px;
+  margin: 40px auto 0 auto;
+  padding: 10px 80px;
+  background: white;
+}
+
+
+.overlay-header,
+.overlay-footer {
+  @extend .row;
+  position: relative;
+  margin: 0;
+}
+
+
+/* begin header styles ---------- */
+
+.overlay-header {
+  padding: 50px 0 0 0;
+}
+
+.overlay-header-title {
+  position: relative;
+  float: left;
+  width: 91.7%;
+  margin: 0 0 12px 0;
+  padding-right: 100px;
+  line-height: 0.9;
+
+  .manuscript-icon {
+    @include position(absolute, 8px auto auto 0px);
+    path, rect { fill: $tahi-green; }
+  }
+}
+
+.overlay-header-title--with-icon {
+  padding-left: 24px;
+}
+
+.overlay-close-button {
+  @extend .col-xs-1;
+}
+
+.overlay-header .overlay-close-button {
+  position: absolute;
+  bottom: 10px;
+}
+
+/*
+  .overlay-header-title
+    .overlay-header-link
+*/
+.overlay-header-link {
+  font-size: 18px;
+  &:hover { text-decoration: none; } // override global tahi a style
+}
+
+/* end header styles ---------- */
+
+/* begin footer styles ---------- */
+
+.overlay-footer {
+  margin-top: 10px;
+  padding-bottom: 50px;
+}
+
+.overlay-footer-content {
+  margin-top: 5px;
+  padding-right: 10%;
+  padding-left: 0; // bootstrap .col-xs-10 override
+
+  .assignee-drop-down {
+    @extend .col-xs-9;
+    padding-left: 0; // bootstrap .col.xs.9 override
+  }
+  .cancel {
+    @extend .pull-right;
+  }
+  .overlay-close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.overlay-footer .button-primary {
+  @extend .col-xs-2;
+}
+
+.overlay-completed-checkbox {
+  @extend .col-xs-4;
+  text-align: right;
+  float: right;
+
+  label {
+    color: $tahi-green;
+    text-transform: uppercase;
+  }
+
+  input {
+    margin-right: 10px;
+    vertical-align: 2px;
+    @include transform(scale(2));
+  }
+}
+
+/* end footer styles ---------- */
+
+.overlay-content {
+  position: relative;
+  min-height: 300px;
+  margin: 0 auto;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 40px 0 10px 0;
+  font-size: 14px;
+
+  p { margin: 15px; }
+
+  label {
+    padding-right: 25px;
+  }
+}
+
+.overlay-main-work {
+  padding: 0 10px 60px 10px;
+}
+
+.overlay-container {
+  textarea.remarks {
+    width: 100%;
+    height: 178px;
+  }
+}
+
+
+.overlay-action-buttons {
+  padding-top: 45px;
+  text-align: right;
+}

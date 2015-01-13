@@ -8,11 +8,7 @@ Router.map ->
   @route('dashboard', path: '/')
   @route('flow_manager')
 
-  @resource 'paper', { path: '/papers/:publisher_prefix/:suffix' }, ->
-    @route('edit')
-    @route('manage')
-
-  @resource 'paper', { path: '/papers/:paper_id' }, ->
+  @resource 'paper', { path: '/papers/*paper_id' }, ->
     @route('edit')
     @route('manage')
 

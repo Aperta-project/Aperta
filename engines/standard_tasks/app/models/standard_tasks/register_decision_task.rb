@@ -1,5 +1,10 @@
 module StandardTasks
   class RegisterDecisionTask < Task
+
+    # TODO: move these attributes from paper to this task model (https://www.pivotaltracker.com/story/show/84690814)
+    delegate :decision, :decision=, :decision_letter, :decision_letter=, to: :paper, prefix: :paper
+    before_save { paper.save! }
+
     def self.permitted_attributes
       super + [:paper_decision, :paper_decision_letter]
     end
@@ -86,22 +91,6 @@ module StandardTasks
       TEXT
 
       template % template_data
-    end
-
-    def paper_decision
-      paper.decision
-    end
-
-    def paper_decision=(decision)
-      paper.update(decision: decision)
-    end
-
-    def paper_decision_letter
-      paper.decision_letter
-    end
-
-    def paper_decision_letter=(body)
-      paper.update(decision_letter: body)
     end
 
     private

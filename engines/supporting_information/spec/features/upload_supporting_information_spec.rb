@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Upload Supporting Information", js: true, selenium: true do
   let(:author) { create :user }

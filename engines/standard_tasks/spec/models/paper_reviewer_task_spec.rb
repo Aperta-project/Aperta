@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe StandardTasks::PaperReviewerTask do
   let!(:journal) do
@@ -37,6 +37,14 @@ describe StandardTasks::PaperReviewerTask do
       new_task = StandardTasks::ReviewerReportTask.find_by(phase: phase)
 
       expect(new_task.title).to eq("Review by #{neil.full_name}")
+    end
+
+    it "sends an 'add reviewer' notification to the user" do
+      mailer = double(UserMailer).as_null_object
+      allow(UserMailer).to receive(:delay).and_return(mailer)
+      task.reviewer_ids = [neil.id.to_s]
+
+      expect(mailer).to have_received(:add_reviewer)
     end
 
     it "deletes paper roles not present in the specified user_id" do

@@ -1,10 +1,10 @@
 class UserFlowsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:potential_flows]
   respond_to :json
 
   def index
-    respond_with current_user.user_flows, meta: potential_flows
+    respond_with current_user.user_flows
   end
 
   def show
@@ -27,6 +27,10 @@ class UserFlowsController < ApplicationController
     head 204
   end
 
+  def potential_flows
+    respond_with current_user.possible_flows, each_serializer: PotentialFlowSerializer, root: "flows"
+  end
+
   private
 
   def flow_params
@@ -35,13 +39,5 @@ class UserFlowsController < ApplicationController
 
   def formatted_title
     flow_params[:title].downcase.capitalize
-  end
-
-  def potential_flows
-    flows = (current_user.possible_flows + Flow.defaults).map do |flow|
-      { flow_id: flow.id, title: flow.title }
-    end
-
-    { flows: flows.uniq }
   end
 end

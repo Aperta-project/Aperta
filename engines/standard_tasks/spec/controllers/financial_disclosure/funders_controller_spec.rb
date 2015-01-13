@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe StandardTasks::FundersController do
   routes { StandardTasks::Engine.routes }

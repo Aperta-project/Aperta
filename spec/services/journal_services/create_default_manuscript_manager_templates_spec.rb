@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe JournalServices::CreateDefaultManuscriptManagerTemplates do
   let(:journal) { FactoryGirl.create(:journal) }

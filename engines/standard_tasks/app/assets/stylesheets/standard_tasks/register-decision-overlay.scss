@@ -1,0 +1,34 @@
+.decision-selections {
+  .form-group {
+    display: inline-block;
+    &:first-child { margin-left: 10px; }
+  }
+
+  label {
+    margin-right: 70px;
+    padding-left: 10px;
+    font-size: 24px;
+    font-weight: normal;
+    vertical-align: -4px;
+  }
+}
+
+.decision-letter-field {
+  width: 687px;
+  height: 27rem;
+  border: 1px solid #888;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.register-decision-saving-cover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+  background: rgba(255,255,255, 0.75);
+
+  &.is-saving-data { display: block; }
+}

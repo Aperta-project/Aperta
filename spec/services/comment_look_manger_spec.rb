@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe CommentLookManager do
   it "creates a comment look if the user was already a participant" do

@@ -11,7 +11,7 @@ class TasksController < ApplicationController
   def show
     respond_to do |f|
       f.json { render json: task }
-      f.html { render 'ember/index', layout: 'ember'}
+      f.html { render 'ember/index', layout: 'ember' }
     end
   end
 
@@ -26,6 +26,7 @@ class TasksController < ApplicationController
   def update
     task.assign_attributes(task_params(task.class))
     task.save!
+    task.send_emails if task.respond_to? :send_emails
     render task.update_responder.new(task, view_context).response
   end
 
@@ -38,7 +39,7 @@ class TasksController < ApplicationController
     AdhocMailer.delay.send_adhoc_email(
       task_email_params[:subject],
       task_email_params[:body],
-      task_email_params[:recipients],
+      task_email_params[:recipients]
     )
     head :ok
   end

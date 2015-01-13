@@ -1,0 +1,165 @@
+// Should work on any element type: div, span, button, a, etc.
+// Base button classes: .button-primary, .button-secondary, .button-link
+//
+// .button--green      - Make the button GREEN
+// .button--blue       - Make the button LIGHT BLUE
+// .button--grey       - Make the button GREY
+// .button--disabled   - Style the button as disabled
+// .button--wide       - Extra padding on left and right
+// .button--small      - Less padding all around
+//
+// Styleguide UI.Button
+
+
+@mixin button-primary-modifier($color, $color-hover) {
+  background-color: $color;
+
+  &:focus, &:hover {
+    color: #fff;
+    background-color: $color-hover;
+  }
+}
+
+@mixin button-secondary-modifier($color, $color-hover, $highlight) {
+  border-color: $color;
+  color: $color;
+
+  &:focus, &:hover {
+    border-color: $highlight;
+    color: $highlight;
+    background-color: $color-hover;
+  }
+
+  // Knockout Style - used for Secondary buttons and button-link
+  // Styleguide UI.Button.Knockout
+  &.knockout {
+    border-color: $highlight;
+    color: $highlight;
+    background-color: $color-hover;
+
+    &:focus, &:hover {
+      background-color: $tahi-white;
+      border-color: $color;
+      color: $color;
+    }
+  }
+}
+
+@mixin button-link-modifier($color, $color-hover) {
+  color: $color;
+  &:hover, &:focus { color: $color-hover; }
+}
+
+// Meant for @extend. Does not have any colors
+.button {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+  @include user-select(none);
+  -webkit-font-smoothing: antialiased;
+  @include transition(all 0.1s ease-in-out);
+
+  &:hover { text-decoration: none; }
+}
+
+
+.button-primary {
+  @extend .button;
+  color: #fff;
+  &:hover { text-decoration: none; }
+
+  &.button--green      { @include button-primary-modifier($tahi-green, $tahi-green-dark); }
+  &.button--blue       { @include button-primary-modifier($tahi-blue, $tahi-blue-dark); }
+  &.button--grey       { @include button-primary-modifier($tahi-grey, $tahi-grey-dark); }
+}
+
+
+.button-secondary {
+  @extend .button;
+  background: #fff;
+
+  &.button--green      { @include button-secondary-modifier($tahi-green, $tahi-green-light, $tahi-green-dark); }
+  &.button--blue       { @include button-secondary-modifier($tahi-blue, $tahi-blue-light, $tahi-blue-dark); }
+  &.button--grey       { @include button-secondary-modifier($tahi-grey, $tahi-grey-light, $tahi-grey-dark); }
+}
+
+
+.button-link {
+  @extend .button;
+  text-transform: none;
+  background: transparent;
+
+  &.button--green      { @include button-link-modifier($tahi-green, $tahi-green-dark); }
+  &.button--blue       { @include button-link-modifier($tahi-blue, $tahi-blue-dark); }
+  &.button--grey       { @include button-link-modifier($tahi-grey, $tahi-grey-dark); }
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &.knockout {
+    color: $tahi-white;
+
+    &:focus, &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+
+// .button modifier
+.button--disabled {
+  color: #eee;
+  background-color: $tahi-grey-light;
+  cursor: not-allowed;
+
+  &:focus, &:hover {
+    color: #eee;
+    background-color: $tahi-grey-light;
+  }
+
+  &.button-primary,
+  &.button-secondary {
+    color: #eee;
+    border-color: $tahi-grey-light;
+    background-color: $tahi-grey-light;
+
+    &:focus, &:hover {
+      color: #eee;
+      border-color: $tahi-grey-light;
+      background-color: $tahi-grey-light;
+    }
+  }
+
+  &.button-link {
+    color: $tahi-grey-light;
+    background: transparent;
+    &:focus, &:hover {
+      color: $tahi-grey-light;
+      text-decoration: none;
+    }
+  }
+}
+
+
+// .button modifier
+.button--small {
+  padding: 1px 5px;
+}
+
+
+// .button modifier
+.button--wide {
+  padding-left: 25px;
+  padding-right: 25px;
+}

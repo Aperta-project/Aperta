@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Assigns Editor", js: true, solr: true do
   let(:admin) { FactoryGirl.create(:user, site_admin: true) }

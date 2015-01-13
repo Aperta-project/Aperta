@@ -1,16 +1,39 @@
 <div class="overlay-container feedback">
-  <header class="overlay-header">
-    <h1 class="overlay-header-title">Please let us know your thoughts:</h1>
-  </header>
-  <main class="overlay-content minimal">
-    <form>
-      {{textarea class="remarks form-control" name='remarks' value=remarks autofocus="autofocus"}}
-    </form>
-  </main>
-  <footer class="overlay-footer">
-    <div class="overlay-footer-content">
-      <a class="cancel" {{action "closeOverlay"}}>cancel</a>
-      <button class="button-primary button--green" {{action "submit"}}>Send Feedback</button>
-    </div>
-  </footer>
+  {{#if feedbackSubmitted}}
+    <div class='overlay-content thanks'>We've got it. Thank you.</div>
+  {{else}}
+    <header class="overlay-header">
+      <h1 class="overlay-header-title">Please let us know your thoughts:</h1>
+    </header>
+    <main class="overlay-content">
+      <form>
+        {{textarea class="remarks form-control" name='remarks' value=remarks autofocus="autofocus"}}
+
+        <ul class="uploaded-screenshots">
+          {{#each screenshot in screenshots}}
+          <li>
+            <a target="_blank" href="{{unbound screenshot.url}}">{{unbound screenshot.filename}}</a>
+            <span class="glyphicon glyphicon-trash remove-screenshot" {{action "removeScreenshot" screenshot}}></span>
+          </li>
+          {{/each}}
+        </ul>
+        {{progress-spinner visible=isUploading}}
+        <div class="button-secondary button--green screenshot-uploader fileinput-button">
+          ATTACH FILES
+          {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png"
+                          start="uploadStarted"
+                          done="uploadFinished"
+                          multiple="true"
+                          filePrefix="feedback_attachment"}}
+        </div>
+
+      </form>
+    </main>
+    <footer class="overlay-footer">
+      <div class="overlay-footer-content">
+        <button class="button-primary button--green" {{action "submit"}}>Send Feedback</button>
+        <a class="cancel" {{action "closeOverlay"}}>cancel</a>
+      </div>
+    </footer>
+  {{/if}}
 </div>

@@ -15,20 +15,20 @@ gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript',      path: 'engines/upload_manuscript'
 
 # Gems
-gem 'rails', '4.1.7'
+gem 'rails', '4.2.0'
 gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
 gem 'bower-rails'
 gem 'ember-cli-rails'
-gem 'sass-rails', '~> 4.0.4'
+gem 'sass-rails'
 gem 'haml-rails'
-gem 'uglifier', '~> 2.5.0'
-gem 'coffee-rails', '~> 4.0.1'
+gem 'uglifier'
+gem 'coffee-rails'
 gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
-gem 'quiet_assets', '~> 1.0.3'
+gem 'quiet_assets'
 gem 'kaminari'
 
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
@@ -42,7 +42,7 @@ gem "carrierwave"
 gem "fog"
 gem "unf"
 gem 'newrelic_rpm'
-gem "rest_client", "~> 1.7.3"
+gem "rest_client"
 gem 'gepub'
 gem 'rubyzip', require: 'zip'
 gem "active_model_serializers"
@@ -95,9 +95,6 @@ group :development, :test, :performance do
   gem 'rspec-its'
   gem 'rspec-collection_matchers'
   gem 'rspec-instafail'
-  gem 'capybara'
-  gem 'selenium-webdriver'
-  gem 'capybara-webkit'
   gem 'launchy'
   gem 'database_cleaner'
   gem 'teaspoon', github: 'modeset/teaspoon'
@@ -111,6 +108,9 @@ group :development, :test, :performance do
 end
 
 group :test do
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'capybara-webkit'
   gem 'simplecov'
   gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'

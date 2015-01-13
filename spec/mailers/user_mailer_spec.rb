@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe UserMailer, redis: true do
   shared_examples_for "invitor is not available" do
@@ -54,6 +54,20 @@ describe UserMailer, redis: true do
 
     it 'tells the user they have been added as a collaborator' do
       expect(email.body).to match(/added you to a conversation/)
+    end
+  end
+
+  describe '#assigned_editor' do
+    let(:invitee) { FactoryGirl.create(:user) }
+    let(:task) { FactoryGirl.create(:task) }
+    let(:email) { UserMailer.assigned_editor(invitee.id, task.paper.id) }
+
+    it 'sends the email to the inivitees email address' do
+      expect(email.to).to include(invitee.email)
+    end
+
+    it 'tells the user they have been added as an editor' do
+      expect(email.body).to match(/been assigned as an editor/)
     end
   end
 

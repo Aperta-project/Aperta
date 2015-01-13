@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Editing paper", selenium: true, js: true do
   let(:user) { FactoryGirl.create :user }
@@ -53,6 +53,25 @@ feature "Editing paper", selenium: true, js: true do
           expect(page).to have_content "DOI: vicious/robots.8888"
         end
         expect(page.current_path).to eq "/papers/vicious/robots.8888/edit"
+      end
+
+      scenario "shows the doi on the page when paper is submitted or uneditable" do
+        visit '/'
+        click_button 'Create New Submission'
+        within('.overlay-container') do |page|
+          fill_in 'paper-short-title', with: "A paper with doi"
+          click_button 'Create'
+        end
+        wait_for_ajax
+
+        click_link 'Workflow'
+        uncheck 'paper-editable'
+        click_link 'Manuscript'
+
+        within ".task-list-doi" do
+          expect(page).to have_content "DOI: vicious/robots.8888"
+        end
+        expect(page.current_path).to eq "/papers/vicious/robots.8888"
       end
     end
 

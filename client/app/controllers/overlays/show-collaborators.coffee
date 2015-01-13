@@ -10,8 +10,8 @@ ShowCollaboratorsOverlayController = Ember.ObjectController.extend
       {id: collab.get('id'), text: collab.get('fullName')}
   ).property('availableCollaborators.@each')
 
-  addedCollaborations: Ember.computed.setDiff('collaborations.content','initialCollaborations')
-  removedCollaborations: Ember.computed.setDiff('initialCollaborations','collaborations.content')
+  addedCollaborations: Ember.computed.setDiff('collaborations','initialCollaborations')
+  removedCollaborations: Ember.computed.setDiff('initialCollaborations','collaborations')
 
   allUsers: null
   selectedCollaborator: null

@@ -5,6 +5,10 @@ DashboardLinkView = Ember.View.extend
 
   paperId: Ember.computed.alias('content.id')
 
+  linkIdentifier: (->
+    @get('content.doi') || @get('content.id')
+  ).property('content.id', 'content.doi')
+
   unreadCommentsList: Ember.computed 'unreadComments.@each.readAt', 'unreadComments.@each.paperId', ->
     paperId = @get('paperId')
     @get('unreadComments').filter (c) -> c.get('paperId') == paperId && !c.get('readAt')

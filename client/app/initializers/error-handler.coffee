@@ -1,3 +1,5 @@
+`import Utils from 'tahi/services/utils'`
+
 ErrorHandler =
   name: 'errorHandler'
   after: 'currentUser'
@@ -13,13 +15,6 @@ ErrorHandler =
 
     container.register('logError:main', logError , instantiate: false)
     application.inject('route', 'logError', 'logError:main')
-
-    displayErrorMessage = (message) ->
-      applicationController = container.lookup('controller:application')
-      # these checks are purely for javascript testing
-      if !applicationController.isDestroying && !applicationController.isDestroyed
-        Ember.run ->
-          applicationController.set('error', message)
 
     # The global error handler
     # Ember.onerror = (error) ->
@@ -46,6 +41,6 @@ ErrorHandler =
       if jqXHR.status == 401
         document.location.href = '/users/sign_in'
 
-      displayErrorMessage('There was a problem with the server. Your data may be out of sync. Please reload.')
+      Utils.displayErrorMessage("There was a problem with the server.  Your data may be out of sync.  Please reload.")
 
 `export default ErrorHandler`

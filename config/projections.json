@@ -56,15 +56,15 @@
     "template": "class %SPolicy < ApplicationPolicy\nend"
   },
 
-  "app/assets/stylesheets/*.css.scss": {
+  "app/assets/stylesheets/*.scss": {
     "command": "css",
   },
 
-  "app/assets/stylesheets/screens/*.css.scss": {
+  "app/assets/stylesheets/screens/*.scss": {
     "command": "cssscreen",
   },
 
-  "app/assets/stylesheets/ui/*.css.scss": {
+  "app/assets/stylesheets/ui/*.scss": {
     "command": "cssui",
   },
 }

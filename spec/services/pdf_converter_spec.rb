@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PDFConverter do
   let(:paper_title) { 'This is a Title About Turtles' }

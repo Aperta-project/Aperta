@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe FlowsPolicy do
   let(:flow) { FactoryGirl.create(:flow) }

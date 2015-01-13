@@ -3,7 +3,7 @@ class FlowManagerPage < Page
 
   def add_column title
     find('.add-flow-column-button').click
-    find('.overlay a', text: title).click
+    find('.overlay .flow-manager-button', text: title.upcase).click
   end
 
   def column title
@@ -28,7 +28,7 @@ class FlowManagerPage < Page
   def has_available_column? title
     find('.add-flow-column-button').click
     within('.overlay') do
-      page.has_content?(title)
+      page.has_content?(title.upcase)
     end
   end
 

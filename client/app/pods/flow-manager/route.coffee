@@ -1,4 +1,5 @@
 `import AuthorizedRoute from 'tahi/routes/authorized'`
+`import RESTless from 'tahi/services/rest-less'`
 
 FlowManagerRoute = AuthorizedRoute.extend
   beforeModel: (transition) ->
@@ -22,7 +23,12 @@ FlowManagerRoute = AuthorizedRoute.extend
   actions:
     chooseNewFlowManagerColumn: ->
       controller = @controllerFor('overlays/chooseNewFlowManagerColumn')
-      controller.set('flows' , @store.metadataFor('userFlow').flows)
+      controller.set 'isLoading', true
+
+      RESTless.get('/user_flows/potential_flows').then (data) ->
+        controller.set 'isLoading', false
+        controller.set('flows' , data.flows)
+
       @render('overlays/chooseNewFlowManagerColumn',
         into: 'application'
         outlet: 'overlay'

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ManuscriptManagersPolicy do
   let(:policy) { ManuscriptManagersPolicy.new(current_user: user, paper: paper) }

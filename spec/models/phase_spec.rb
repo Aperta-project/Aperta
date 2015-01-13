@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Phase do
   it "defines a DEFAULT_PHASE_NAME" do

@@ -32,6 +32,7 @@ module StandardTasks
                                                          role: journal_task_type.role,
                                                          title: "Review by #{user.full_name}")
         ParticipationFactory.create(task, user)
+        UserMailer.delay.add_reviewer(user.id, paper.id)
       end
     end
 

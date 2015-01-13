@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature 'Comments on cards', js: true do
   let(:admin) { create :user, :site_admin, first_name: "Admin" }

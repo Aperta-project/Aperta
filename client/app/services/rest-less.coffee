@@ -10,6 +10,7 @@ RESTless = Ember.Namespace.create
         data: data
         success: resolve
         error: reject
+        dataType: 'json'
 
   delete: (path, data) ->
     @ajaxPromise('DELETE', path, data)
@@ -19,6 +20,9 @@ RESTless = Ember.Namespace.create
 
   post: (path, data) ->
     @ajaxPromise('POST', path, data)
+
+  get: (path, data) ->
+    @ajaxPromise('GET', path, data)
 
   putModel: (model, path, data) ->
     @put("#{model.path()}#{path}", data)

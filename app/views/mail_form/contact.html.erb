@@ -13,3 +13,9 @@ Current Rails environment:
 Body:
 <%= @resource.feedback %>
 <br>
+
+Screenshots:
+<% @resource.screenshots.each do |screenshot| %>
+  <%= image_tag screenshot["url"] %>
+  <br>
+<% end %>

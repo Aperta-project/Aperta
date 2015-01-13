@@ -50,9 +50,7 @@ class PapersController < ApplicationController
   end
 
   def upload
-    manuscript = paper.manuscript || paper.build_manuscript
-    manuscript.update_attribute :status, "processing"
-    DownloadManuscriptWorker.perform_async manuscript.id, params[:url], ihat_job_url(id: ':id')
+    IHatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_callback_url)
     render json: paper
   end
 
@@ -128,8 +126,14 @@ class PapersController < ApplicationController
   end
 
   def paper
-    doi_or_id = params[:id] || params[:doi]
-    @paper ||= Paper.find(doi_or_id) if doi_or_id
+    @paper ||= begin
+      if params[:id].present?
+        Paper.find(params[:id])
+      elsif params[:publisher_prefix].present? && params[:suffix].present?
+        doi = "#{params[:publisher_prefix]}/#{params[:suffix]}"
+        Paper.find_by!(doi: doi)
+      end
+    end
   end
 
   def enforce_policy

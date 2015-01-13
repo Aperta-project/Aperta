@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Journal Administration", js: true do
   let(:user) { create :user, :site_admin }
@@ -67,7 +67,10 @@ feature "Journal Administration", js: true do
         role = journal_page.add_role
         role.name = "whatever"
         role.save
-        expect(role).to have_name("whatever")
+        # NOTE: `expect(role).to have_name("whatever")` fails.
+        # Re-finding it works.
+        new_role = journal_page.find_role("whatever")
+        expect(new_role).to have_name("whatever")
       end
 
       scenario "modifying a role" do
@@ -88,5 +91,25 @@ feature "Journal Administration", js: true do
         expect { role.name }.to raise_error(Selenium::WebDriver::Error::StaleElementReferenceError)
       end
     end
+
+    describe "on a Journal's Flow Manager" do
+      it "show Journal name as text" do
+        visit "/admin/journals/1/roles/1/flow_manager"
+        find(".control-bar-link-icon").click
+        expect(page.find(".column-title-wrapper")).to have_content journal.name
+      end
+
+      describe do
+        it "show Journal logo" do
+          with_aws_cassette(:yeti_image) do
+            journal.update_attributes(logo: File.open("spec/fixtures/yeti.jpg"))
+            visit "/admin/journals/1/roles/1/flow_manager"
+            find(".control-bar-link-icon").click
+            expect(page.find(".column-title-wrapper")).to have_css("img")
+          end
+        end
+      end
+    end
+
   end
 end

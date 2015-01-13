@@ -1,0 +1,154 @@
+// Elements in control-bar should be in unordered lists.
+// The ULs will align left except for the last one which will float right.
+//
+// Styleguide UI.ControlBar
+
+.control-bar {
+  overflow: hidden;
+  @include position(fixed, 0px 0px auto 0px);
+  width: 100%;
+  height: $tahi-control-bar-height;
+  border-bottom: 1px solid #F5F5F5;
+  background: #fff;
+  z-index: $z-layer-control-bar;
+}
+
+.control-bar-sub-nav-active .control-bar { height: 105px; }
+
+.control-bar-inner-wrapper {
+  overflow: hidden;
+  position: relative;
+  height: 60px;
+  margin: 0 auto;
+  padding-left: 125px;
+}
+
+.control-bar-sub-items {
+  overflow: hidden;
+  height: 0;
+  font-size: 12px;
+  line-height: 30px;
+  @include transition(height 0.2s);
+}
+
+.control-bar-sub-nav-active .control-bar-sub-items {
+  height: 45px;
+}
+
+.control-bar ul {
+  list-style-type: none;
+  float: left;
+  margin: 0; // bootstrap override
+  padding: 0;
+
+  &:last-of-type {
+    float: right;
+    position: absolute;
+    right: 0;
+  }
+}
+
+.control-bar-item {
+  position: relative;
+  float: left;
+  display: block;
+  font-size: 10px;
+  line-height: 20px;
+}
+
+// creates bigger click area in top right corner of screen
+.control-bar ul:last-of-type .control-bar-item:last-of-type .control-bar-link {
+  padding-right: 30px;
+}
+
+.control-bar-page-title {
+  font-size: 24px;
+
+  span, a {
+    display: inline-block;
+    padding: 19px 0 0 0;
+  }
+
+  a {
+    color: $tahi-blue;
+  }
+}
+
+.control-bar-link {
+  display: block;
+  margin: 0 0 0 45px;
+  padding: 11px 0;
+  color: $tahi-green;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: none;
+  @include user-select(none);
+
+  .glyphicon { font-size: 16px; }
+
+  svg {
+    display: block;
+    margin: 0 auto;
+  }
+
+  svg polygon,
+  svg path,
+  svg rect {
+    fill: $tahi-green;
+  }
+
+  &:focus, &:hover {
+    color: $tahi-green-dark;
+    text-decoration: none;
+
+    svg polygon,
+    svg path,
+    svg rect { fill: $tahi-green-dark; }
+  }
+
+  input[type=checkbox] {
+    margin-top: 0px;
+  }
+}
+
+.control-bar-link--with-icon {
+  margin-left: 55px;
+}
+
+.control-bar-link-icon {
+  height: 22px;
+}
+
+.control-bar-link-text {
+  position: relative;
+}
+
+.control-bar-toggle {
+  position: absolute;
+  left: -13px;
+  bottom: 1px;
+  display: block;
+  @include transition(all 0.5s);
+
+  svg {
+    display: inline;
+    @include transform(scale(1.3));
+  }
+}
+
+.control-bar-toggle--active {
+  @include transform(rotate(135deg));
+}
+
+
+.control-bar-message {
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+.manuscript-manager-icon {
+  position: relative;
+  top: 2px;
+}

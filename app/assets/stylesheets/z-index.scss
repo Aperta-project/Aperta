@@ -1,0 +1,54 @@
+// When sass-rails 5 hits we can use this:
+// $z-layers: (
+//   paper-placeholder: 1002,
+//   ve-toolbar: 1003,
+//   navigation-toggle: 1005,
+//   control-bar: 1004,
+//   main-content-cover: 1006,
+//   navigation: 1007,
+//   overlay: (
+//     base: 1200,
+//     close-x: 100
+//   ),
+//   app-error: 10000
+// );
+
+$z-layer-paper-placeholder: 1002;
+$z-layer-ve-toolbar: 1003;
+$z-layer-control-bar: 1004;
+$z-layer-navigation-toggle: 1005;
+$z-layer-main-content-cover: 1006;
+$z-layer-navigation: 1007;
+$z-layer-overlay-base: 1200;
+$z-layer-overlay-close-x: 100;
+$z-layer-app-error: 10000;
+
+
+@function map-has-nested-keys($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+      @return false;
+    }
+    $map: map-get($map, $key);
+  }
+
+  @return true;
+}
+
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    $map: map-get($map, $key);
+  }
+
+  @return $map;
+}
+
+@function z($layer) { @return $layer; }
+// for sass-rails 5
+// @function z($layers...) {
+//   @if not map-has-nested-keys($z-layers, $layers...) {
+//     @warn "No layer found for `#{inspect($layers...)}` in $z-layers map. Property omitted.";
+//   }
+// 
+//   @return map-deep-get($z-layers, $layers...);
+// }

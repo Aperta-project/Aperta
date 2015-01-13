@@ -1,29 +1,45 @@
 class AffiliationDateValidator < ActiveModel::Validator
+  attr_reader :record
+
   def validate(record)
-    %i{end_date start_date}.each do |attr|
-      if !valid_date_for?(record, attr)
-        record.errors[attr] << "must be a valid date"
-      end
-    end
+    @record = record
 
-    if record.end_date.present? && record.start_date.blank?
-      record.errors[:start_date] << "must be provided if end date is present"
-    end
-
-    if has_both_dates?(record) && record.end_date < record.start_date
-      record.errors[:end_date] << "must be after start date"
-    end
+    populate_end_date_start_date_errors
+    populate_start_date_error
+    populate_end_date_error
   end
 
   private
 
-  def has_both_dates?(record)
+  def populate_end_date_start_date_errors
+    %i(end_date start_date).each do |attr|
+      record.errors[attr] << "must be a valid date" if invalid_date_for?(attr)
+    end
+  end
+
+  def populate_start_date_error
+    record.errors[:start_date] << "must be provided if end date is present" if only_end_date?
+  end
+
+  def populate_end_date_error
+    record.errors[:end_date] << "must be after start date" if both_dates? && end_date_before_start_date?
+  end
+
+  def only_end_date?
+    record.end_date.present? && record.start_date.blank?
+  end
+
+  def end_date_before_start_date?
+    record.end_date < record.start_date
+  end
+
+  def both_dates?
     record.end_date.present? && record.start_date.present?
   end
 
-  def valid_date_for?(record, attribute)
+  def invalid_date_for?(attribute)
     original_date = record.read_attribute_before_type_cast(attribute)
-    return true if original_date.blank?
-    Timeliness.parse(original_date).present?
+    return false if original_date.blank?
+    Timeliness.parse(original_date).blank?
   end
 end

@@ -46,11 +46,9 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
 
   subNavVisibleDidChange: (->
     if @get 'subNavVisible'
-      $('.oo-ui-toolbar').css 'top', '103px'
-      $('#tahi-container').addClass 'sub-nav-visible'
+      $('html').addClass 'control-bar-sub-nav-active'
     else
-      $('.oo-ui-toolbar').css 'top', '60px'
-      $('#tahi-container').removeClass 'sub-nav-visible'
+      $('html').removeClass 'control-bar-sub-nav-active'
   ).observes('subNavVisible')
 
   setupVisualEditor: (->
@@ -67,6 +65,10 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
     visualEditor.update($("#paper-body"), @get('controller.body'))
     visualEditor.get('target').on 'surfaceReady', =>
       @updateEditorLockedState()
+
+  teardownControlBarSubNav: (->
+    $('html').removeClass 'control-bar-sub-nav-active'
+  ).on('willDestroyElement')
 
   destroyVisualEditor: ( ->
     Ember.$(document).off 'keyup.autoSave'

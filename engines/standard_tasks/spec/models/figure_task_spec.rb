@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe StandardTasks::FigureTask do
   describe "#figure_access_details" do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature "Upload paper", js: true, selenium: true do
   let(:author) { FactoryGirl.create :user }

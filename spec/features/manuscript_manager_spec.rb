@@ -82,6 +82,21 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
     expect(task_manager_page.card_count).to eq(before - 1)
   end
 
+  # Preventing a regression
+  scenario 'Opening an AssignReviewers task' do
+    dashboard_page = DashboardPage.new
+    paper_page = dashboard_page.view_submitted_paper paper
+    task_manager_page = paper_page.visit_task_manager
+
+    within 'body' do
+      find('.card-content', text: 'Assign Reviewer').click
+
+      expect(task_manager_page).to have_css('.overlay-content', text: 'Assign Reviewers')
+      expect(task_manager_page).to have_css('.overlay-content', text: 'Discussion')
+      expect(task_manager_page).to have_no_application_error
+    end
+  end
+
   scenario "Admin can assign a paper to themselves" do
     dashboard_page = DashboardPage.new
     paper_page = dashboard_page.view_submitted_paper paper

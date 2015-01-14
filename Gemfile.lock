@@ -41,27 +41,9 @@ GIT
       activesupport (>= 4.1.0)
 
 PATH
-  remote: engines/plos_authors
-  specs:
-    plos_authors (0.0.3)
-      rails (~> 4.2.0)
-
-PATH
   remote: engines/standard_tasks
   specs:
     standard_tasks (0.0.1)
-      rails (~> 4.2.0)
-
-PATH
-  remote: engines/supporting_information
-  specs:
-    supporting_information (0.0.1)
-      rails (~> 4.2.0)
-
-PATH
-  remote: engines/upload_manuscript
-  specs:
-    upload_manuscript (0.0.1)
       rails (~> 4.2.0)
 
 GEM
@@ -603,7 +585,6 @@ DEPENDENCIES
   pdfkit
   pg
   phantomjs
-  plos_authors!
   progressbar
   pry-byebug
   pry-rails
@@ -634,7 +615,6 @@ DEPENDENCIES
   sunspot-rails-tester
   sunspot_rails
   sunspot_solr
-  supporting_information!
   tahi_epub!
   teaspoon!
   thin
@@ -642,6 +622,5 @@ DEPENDENCIES
   twitter-text
   uglifier
   unf
-  upload_manuscript!
   vcr
   webmock

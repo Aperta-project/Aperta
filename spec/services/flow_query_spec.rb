@@ -28,28 +28,48 @@ describe FlowQuery do
       let!(:user_task) { FactoryGirl.create(:task, phase: phase, completed: true, participants: [user]) }
       let!(:other_task) { FactoryGirl.create(:task, completed: true, participants: [user]) }
 
-      it "is not applicable to site admins" do
-        flow = FactoryGirl.build(:flow, query: {state: :completed})
-        tasks = FlowQuery.new(site_admin, flow).tasks
+      context "for a site admin" do
+        context "for a default flow" do
+          it "does not scope tasks" do
+            flow = FactoryGirl.build(:flow, query: {state: :completed})
+            tasks = FlowQuery.new(site_admin, flow).tasks
 
-        expect(tasks).to include(user_task)
-        expect(tasks).to include(other_task)
+            expect(tasks).to include(user_task)
+            expect(tasks).to include(other_task)
+          end
+        end
+
+        context "for a journal-specific flow" do
+          it "scopes the tasks to the flow's journal" do
+            flow = FactoryGirl.build(:flow, query: {state: :completed}, journal: user_journal)
+            tasks = FlowQuery.new(site_admin, flow).tasks
+
+            expect(tasks).to include(user_task)
+            expect(tasks).to_not include(other_task)
+          end
+        end
       end
 
-      it "scopes the tasks to the flow's journal if the flow is not a default flow" do
-        flow = FactoryGirl.build(:flow, query: {state: :completed}, journal: user_journal)
-        tasks = FlowQuery.new(user, flow).tasks
+      context "for a non-site-admin" do
+        context "for a default flow" do
+          it "scopes tasks to the user's journals" do
+            flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {state: :completed})
+            tasks = FlowQuery.new(user, flow).tasks
 
-        expect(tasks).to include(user_task)
-        expect(tasks).to_not include(other_task)
-      end
+            expect(tasks).to include(user_task)
+            expect(tasks).to_not include(other_task)
+          end
+        end
 
-      it "scopes tasks to the user's journals if flow is a default flow" do
-        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {state: :completed})
-        tasks = FlowQuery.new(user, flow).tasks
+        context "for a journal-specific flow" do
+          it "scopes the tasks to the flow's journal" do
+            flow = FactoryGirl.build(:flow, query: {state: :completed}, journal: user_journal)
+            tasks = FlowQuery.new(user, flow).tasks
 
-        expect(tasks).to include(user_task)
-        expect(tasks).to_not include(other_task)
+            expect(tasks).to include(user_task)
+            expect(tasks).to_not include(other_task)
+          end
+        end
       end
     end
 

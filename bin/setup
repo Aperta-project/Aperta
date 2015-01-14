@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 require 'pathname'
-require 'active_support/core_ext/object/blank'
+begin
+  require 'active_support/core_ext/object/blank'
+rescue LoadError
+  fail "Please run `gem install activesupport` first"
+end
 
 mac_os = `uname`.chomp == 'Darwin'
 fail 'This setup script is only designed for Mac OS.' unless mac_os

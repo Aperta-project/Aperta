@@ -8,5 +8,3 @@ TaskAdapter = DS.ActiveModelAdapter.extend
 
 # EMBERCLI TODO - These are engines, no?
 # ETahi.AuthorsTaskAdapter = ETahi.TaskAdapter.extend()
-# ETahi.TechCheckTaskAdapter= ETahi.TaskAdapter.extend()
-# ETahi.RegisterDecisionTaskAdapter= ETahi.TaskAdapter.extend()

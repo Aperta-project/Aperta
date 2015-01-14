@@ -29,15 +29,15 @@ module 'Integration: Paper Docx Download',
     ]
 
     jobId = '232134-324-1234-1234'
-    result = { jobs: { id: "#{jobId}" } }
+    result = { job: { id: "#{jobId}" } }
     url = "/papers/#{ETahi.Test.currentPaper.id}/export?format=docx"
     server.respondWith 'GET', url, [
       200, {"Content-Type": "application/json"}, JSON.stringify result
     ]
 
     completeResult = {
-      "jobs": {
-        "status": "complete",
+      "job": {
+        "state": "converted",
         "id": "#{jobId}",
         "url": 'https://www.google.com'
       }

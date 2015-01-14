@@ -9,8 +9,7 @@ class FlowQuery
   def tasks
     return Task.none if flow.query.nil?
 
-    scope = Task.all
-    scope = by_journal(scope) unless user.site_admin?
+    scope = by_journal(Task.all)
 
     flow.query.keys.each do |query_scope|
       scope = send(query_scope, scope)
@@ -45,7 +44,7 @@ class FlowQuery
   end
 
   def by_journal(scope)
-    journals = flow.default? ? user.journals : [flow.journal]
+    journals = flow.default? ? user.accessible_journals : [flow.journal]
     scope.on_journals(journals)
   end
 end

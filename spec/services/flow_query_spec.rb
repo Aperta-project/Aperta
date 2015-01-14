@@ -31,9 +31,8 @@ describe FlowQuery do
       context "for a site admin" do
         context "for a default flow" do
           it "does not scope tasks" do
-            flow = FactoryGirl.build(:flow, query: {state: :completed})
+            flow = FactoryGirl.build(:flow, :default, query: {state: :completed})
             tasks = FlowQuery.new(site_admin, flow).tasks
-
             expect(tasks).to include(user_task)
             expect(tasks).to include(other_task)
           end

@@ -51,13 +51,13 @@ MESSAGE
   system 'bundle check || bundle install'
 
   if `psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='tahi'"`.present?
-    puts '\n== PostgreSQL user already exists =='
+    puts '== PostgreSQL user already exists =='
   else
-    puts '\n== Creating the tahi PostgreSQL user =='
+    puts '== Creating the tahi PostgreSQL user =='
     system 'createuser -s -r tahi'
   end
 
-  puts '\n== Copying sample files =='
+  puts '== Copying sample files =='
 
   unless File.exist?('config/database.yml')
     system 'cp config/database.yml.sample config/database.yml'
@@ -67,22 +67,22 @@ MESSAGE
     system 'cp .env-sample .env.development'
   end
 
-  puts '\n== Add binstubs to PATH in ~/.zshenv like this: =='
-  puts 'export PATH=\".git/safe/../../bin:$PATH\"'
+  puts '== Add binstubs to PATH in ~/.zshenv like this: =='
+  puts 'export PATH=".git/safe/../../bin:$PATH"'
 
-  puts '\n== Marking this project"s binstubs as safe =='
+  puts '== Marking this project"s binstubs as safe =='
   system 'mkdir -p .git/safe'
 
-  puts '\n== Adding pre-commit hook =='
+  puts '== Adding pre-commit hook =='
   system 'overcommit .'
 
-  puts '\n== Preparing database =='
+  puts '== Preparing database =='
   system 'bundle exec sunspot-solr start -p 8982'
   system 'sleep 10; bin/rake db:setup'
   system 'bin/rake db:setup RAILS_ENV=test'
   system 'bundle exec sunspot-solr stop'
 
-  puts '\n== Removing old logs and tempfiles =='
+  puts '== Removing old logs and tempfiles =='
   system 'rm -f log/**/*'
   system 'rm -rf tmp/cache'
 end

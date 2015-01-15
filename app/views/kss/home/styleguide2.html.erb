@@ -74,19 +74,12 @@
 
   <script>
   $(function() {
-    $('.navigation-close').click(function() {
-      $('.navigation').hide();
-    });
-    $('.navigation-toggle').click(function() {
-      $('.navigation').show();
-    });
     $("#card-overlays > a").click(function() {
       $(this).next().removeClass("hide")
     });
 
     // NEW STUFF
-    $("*[overlay]").children().hide()
-
+    $("*[overlay]").children().hide();
     $(".toggle-link").click(function() {
       $(this).parents(".ui-element").find("*[element-name]").children().show()
     })
@@ -603,7 +596,7 @@
           </script>
         </div>
 
-        <div class="row">
+        <div class="row hide">
           <p>
             Otherwise, use the smaller inline Edit and Delete icons.
           </p>
@@ -619,12 +612,10 @@
 
         <hr>
 
-        <h2 id="file-upload">
+        <h2 id="file-upload" class="hide">
           File Upload
         </h2>
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
-
-        <hr>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message" class="hide"></div>
 
         <h2 id="errors">
           Errors
@@ -652,27 +643,21 @@
 
         <hr>
 
-        <h2 id="tooltips">
+        <h2 id="tooltips" class="hide">
           Tooltips
         </h2>
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message" class="hide"></div>
 
-        <hr>
-
-        <h2 id="card-things">
+        <h2 id="card-things" class="hide">
           Card Things
         </h2>
 
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message" class="hide"></div>
 
-        <hr>
-
-        <h2 id="widgets">
+        <h2 id="widgets" class="hide">
           Widgets
         </h2>
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
-
-        <hr>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message" class="hide"></div>
 
         <h2 id="avatars">
           Avatars
@@ -701,41 +686,14 @@
 
         <hr>
 
-        <h2 id="task-cards">
+        <h2 id="task-cards" class="hide">
           Task Cards
         </h2>
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message" class="hide"></div>
 
       </div>
 
     </div>
-  </div>
-
-  <div class="navigation" style="left: 0; display: none;">
-    <div class="navigation-title">
-      <span class="navigation-close">×</span>Tahi
-    </div>
-    <a href="#" class="navigation-item">Colors</a>
-    <a href="#" class="navigation-item">Typography</a>
-    <a href="#" class="navigation-item">Cards</a>
-    <a href="#" class="navigation-item">System Overlay</a>
-    <a href="#" class="navigation-item">Navigation</a>
-    <a href="#" class="navigation-item">Buttons</a>
-    <a href="#" class="navigation-item">Forms</a>
-    <a href="#" class="navigation-item">Edit/Delete</a>
-    <a href="#" class="navigation-item">File Upload</a>
-    <a href="#" class="navigation-item">Contributors</a>
-    <a href="#" class="navigation-item">Error-handling</a>
-    <a href="#" class="navigation-item">Tooltips</a>
-    <a href="http://invisionapp.com/somewhere" class="navigation-item" target="_blank">Tahi Overview</a>
-    <hr>
-    <a href="#" class="navigation-item navigation-item--account">
-      <img src="/images/profile-no-image.png" class="user-thumbnail">
-      <span>
-        User Name
-      </span>
-    </a>
-    <a href="#" class="navigation-item">Sample Nav</a>
   </div>
 
 </body>

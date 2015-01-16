@@ -72,7 +72,7 @@ ETahi.PaperEditView = Ember.View.extend ETahi.RedirectsIfEditable,
   ).on('willDestroyElement')
 
   saveTitleChanges: (->
-    @timeoutSave();
+    @timeoutSave()
   ).on('willDestroyElement')
 
   timeoutSave: ->

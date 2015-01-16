@@ -9,7 +9,7 @@ TaskRoute = Ember.Route.extend
     # FIXME: Rename AdHocTask to Task (here, in views, and in templates)
     currentType = model.get('type')
     currentType = 'AdHocTask' if currentType == 'Task'
-    baseObjectName = (currentType || 'AdHocTask').replace('Task', 'Overlay')
+    baseObjectName = (currentType || 'AdHocTask').replace('Task', '')
     @set('baseObjectName', baseObjectName)
 
     taskController = @controllerFor("overlays/#{baseObjectName}")

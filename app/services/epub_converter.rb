@@ -115,6 +115,10 @@ class EpubConverter
       title this.paper.title || this.paper.short_title
       creator this.paper.creator.full_name
       date Date.today.to_s
+      if this.include_source && this.paper.manuscript.present?
+        this._embed_source(workdir)
+        optional_file "original_sources/source.docx" => this._path_to_source(workdir)
+      end
       resources(workdir: workdir) do
         file 'css/default.css' => this._epub_css
         cover_image 'images/cover_image.jpg' => this._epub_cover_path if this.paper.journal.epub_cover.file
@@ -122,10 +126,6 @@ class EpubConverter
           file "./#{File.basename publishing_info_path}"
           file "./#{File.basename temp_paper_path}"
           heading 'Main Content'
-          if this.include_source && this.paper.manuscript.present?
-            this._embed_source(workdir)
-            file this._path_to_source(".")
-          end
         end
       end
     end

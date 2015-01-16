@@ -63,43 +63,16 @@ EventStream = Ember.Object.extend
     delete esData.subscription_name
     (@eventStreamActions[action] || -> null).call(this, esData)
 
-  createOrUpdateTask: (action, esData) ->
-    taskId = esData.task.id
-    if oldTask = @store.findTask(taskId)
-      oldPhase = oldTask.get('phase')
-    @store.pushPayload('task', esData)
-    task = @store.findTask(taskId)
-    phase = task.get("phase")
-    if action == 'created'
-      # This is an ember bug.  A task's phase needs to be notified that the other side of
-      # the hasMany relationship has changed via set.  Simply loading the updated task into the store
-      # won't trigger the relationship update.
-      phase.get('tasks').addObject(task)
-    if action == 'updated' && phase != oldPhase
-      phase.get('tasks').addObject(task)
-      oldPhase.get('tasks').removeObject(oldTask) if oldPhase
-      task.set('phase', phase)
-
-    task.triggerLater('didLoad')
-
   applicationSerializer: (->
     @store.container.lookup("serializer:application")
   ).property()
 
   eventStreamActions:
     created: (esData) ->
-      Ember.run =>
-        if esData.task
-          @createOrUpdateTask('created', esData)
-        else
-          @store.pushPayload(esData)
+      Ember.run => @store.pushPayload(esData)
 
     updated: (esData)->
-      Ember.run =>
-        if esData.task
-          @createOrUpdateTask('updated', esData)
-        else
-          @store.pushPayload(esData)
+      Ember.run => @store.pushPayload(esData)
 
     destroyed: (esData)->
       type = @get('applicationSerializer').typeForRoot(esData.type)

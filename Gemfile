@@ -40,7 +40,7 @@ gem "fog"
 gem "unf"
 gem 'newrelic_rpm'
 gem "rest_client"
-gem 'gepub'
+gem 'gepub', "~> 0.7.0beta1"
 gem 'rubyzip', require: 'zip'
 gem "active_model_serializers"
 gem 'pdfkit'

@@ -81,11 +81,11 @@
     // NEW STUFF
     $("*[overlay]").children().hide();
     $(".toggle-link").click(function() {
-      $(this).parents(".ui-element").find("*[element-name]").children().show()
+      $(this).parents(".ui-element").find("*[element-name]").children().show();
     })
 
     $(".overlay .overlay-close-button, .overlay-close-x").click(function() {
-      $(this).parents(".ui-element").find("*[element-name]").children().hide()
+      $(this).parents(".ui-element").find("*[element-name]").children().hide();
     });
 
     // Repositions ToolBar
@@ -98,8 +98,17 @@
     })
 
     // Manually Adjust Workflow styles
-    $(".columns").css("position", "initial")
-    $(".columns").css("height", "450px")
+    $(".columns").css("position", "initial");
+    $(".columns").css("height", "450px");
+
+    // Enable the Show Source Toggle Buttons
+    $("*[data-toggle]").click(function() {
+      $($(this).attr("href")).toggle();
+    });
+
+    $("#toggle-all-source").click(function() {
+      $(".collapse").toggle();
+    });
   });
   </script>
 </head>
@@ -180,6 +189,9 @@
               Run <code>rake styleguide:generate</code> to get the latest HTML from the
               app.
             </p>
+          </div>
+          <div class="col-md-6">
+            <button id="toggle-all-source" class="btn btn-primary">Toggle All Source</button>
           </div>
         </div>
         <div class="row">
@@ -368,148 +380,85 @@
         <h2 id="buttons">
           Buttons
         </h2>
-        <!-- TODO make this match Andi's mockup -->
+
         <div class="row">
-          <div class="col-md-4">
-            <h3>
-              Primary
-            </h3>
-
-            <div class="buttons">
-              <div class="button-primary button--green">Save</div>
-              <br>
-              <div class="button-secondary button--green">Save</div>
-              <br>
-              <div class="button-link button--green">Save</div>
-              <br>
-
-              <div class="button-primary button--small button--green">Save</div>
-              <br>
-              <div class="button-secondary button--small button--green">Save</div>
-              <br>
-              <div class="button-link button--small button--green">Save</div>
-              <br>
-
-              <div class="button-primary button--wide button--green">Save</div>
-              <br>
-              <div class="button-secondary button--wide button--green">Save</div>
-              <br>
-              <div class="button-link button--wide button--green">Save</div>
-              <br>
-
-              <div class="button-primary button--disabled button--green">Save</div>
-              <br>
-              <div class="button-secondary button--disabled button--green">Save</div>
-              <br>
-              <div class="button-link button--disabled button--green">Save</div>
-              <br>
-
-              <h4>
-                Knockout
-              </h4>
-              <div style="background-color: #E5E5E5; text-align: center;">
-                <div class="button-primary button--green knockout">Save</div>
-                <br>
-                <div class="button-secondary button--green knockout">Save</div>
-                <br>
-                <div class="button-link button--green knockout">Save</div>
-              </div>
-              <br>
+          <div class="col-md-12">
+            Primary .button--green
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--green">Save</div>
+            <div class="button-secondary button--green">Save</div>
+            <div class="button-link button--green">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--small button--green">Save</div>
+            <div class="button-secondary button--small button--green">Save</div>
+            <div class="button-link button--small button--green">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--disabled button--green">Save</div>
+            <div class="button-secondary button--disabled button--green">Save</div>
+            <div class="button-link button--disabled button--green">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div style="background-color: #29a904; padding: 10px;">
+              <div class="button-primary button--green knockout">Save</div>
+              <div class="button-secondary button--green knockout">Save</div>
+              <div class="button-link button--green knockout">Save</div>
             </div>
           </div>
-          <div class="col-md-4">
-            <h3>
-              Neutral
-            </h3>
-
-            <div class="buttons">
-              <div class="button-primary button--grey">Save</div>
-              <br>
-              <div class="button-secondary button--grey">Save</div>
-              <br>
-              <div class="button-link button--grey">Save</div>
-              <br>
-
-              <div class="button-primary button--small button--grey">Save</div>
-              <br>
-              <div class="button-secondary button--small button--grey">Save</div>
-              <br>
-              <div class="button-link button--small button--grey">Save</div>
-              <br>
-
-              <div class="button-primary button--wide button--grey">Save</div>
-              <br>
-              <div class="button-secondary button--wide button--grey">Save</div>
-              <br>
-              <div class="button-link button--wide button--grey">Save</div>
-              <br>
-
-              <div class="button-primary button--disabled button--grey">Save</div>
-              <br>
-              <div class="button-secondary button--disabled button--grey">Save</div>
-              <br>
-              <div class="button-link button--disabled button--grey">Save</div>
-              <br>
-
-              <h4>
-                Knockout
-              </h4>
-              <div style="background-color: #E5E5E5; text-align: center;">
-                <div class="button-primary button--disabled button--grey knockout">Save</div>
-                <br>
-                <div class="button-secondary button--disabled button--grey knockout">Save</div>
-                <br>
-                <div class="button-link button--disabled button--grey knockout">Save</div>
-              </div>
-              <br>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            Neutral .button--grey
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--grey">Save</div>
+            <div class="button-secondary button--grey">Save</div>
+            <div class="button-link button--grey">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--small button--grey">Save</div>
+            <div class="button-secondary button--small button--grey">Save</div>
+            <div class="button-link button--small button--grey">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--disabled button--grey">Save</div>
+            <div class="button-secondary button--disabled button--grey">Save</div>
+            <div class="button-link button--disabled button--grey">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div style="background-color: #E5E5E5; padding: 10px;">
+              <div class="button-primary button--grey knockout">Save</div>
+              <div class="button-secondary button--grey knockout">Save</div>
+              <div class="button-link button--grey knockout">Save</div>
             </div>
           </div>
-
-          <div class="col-md-4">
-            <h3>
-              Admin
-            </h3>
-
-            <div class="buttons">
-              <div class="button-primary button--blue">Save</div>
-              <br>
-              <div class="button-secondary button--blue">Save</div>
-              <br>
-              <div class="button-link button--blue">Save</div>
-              <br>
-
-              <div class="button-primary button--small button--blue">Save</div>
-              <br>
-              <div class="button-secondary button--small button--blue">Save</div>
-              <br>
-              <div class="button-link button--small button--blue">Save</div>
-              <br>
-
-              <div class="button-primary button--wide button--blue">Save</div>
-              <br>
-              <div class="button-secondary button--wide button--blue">Save</div>
-              <br>
-              <div class="button-link button--wide button--blue">Save</div>
-              <br>
-
-              <div class="button-primary button--disabled button--blue">Save</div>
-              <br>
-              <div class="button-secondary button--disabled button--blue">Save</div>
-              <br>
-              <div class="button-link button--disabled button--blue">Save</div>
-              <br>
-
-              <h4>
-                Knockout
-              </h4>
-
-              <div style="background-color: #E5E5E5; text-align: center;">
-                <div class="button-primary button--blue knockout">Save</div>
-                <br>
-                <div class="button-secondary button--blue knockout">Save</div>
-                <br>
-                <div class="button-link button--blue knockout">Save</div>
-              </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            Admin .button--blue
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--blue">Save</div>
+            <div class="button-secondary button--blue">Save</div>
+            <div class="button-link button--blue">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--small button--blue">Save</div>
+            <div class="button-secondary button--small button--blue">Save</div>
+            <div class="button-link button--small button--blue">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--disabled button--blue">Save</div>
+            <div class="button-secondary button--disabled button--blue">Save</div>
+            <div class="button-link button--disabled button--blue">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div style="background-color: #2d85de; padding: 10px;">
+              <div class="button-primary button--blue knockout">Save</div>
+              <div class="button-secondary button--blue knockout">Save</div>
+              <div class="button-link button--blue knockout">Save</div>
             </div>
           </div>
         </div>
@@ -522,6 +471,160 @@
 
         <div class="constrain">
           <div element-name="financial-disclosure-form" source-page-name="financial-disclosure-card" source-page-selector=".question-list"></div>
+        </div>
+
+        <h3>
+          Form Block: Single Input
+        </h3>
+
+        <div class="constrain">
+          <div class="additional-data">
+            <div id="ember2056">
+
+              <div class="question-dataset">
+                <div id="ember2086">
+                  <div class="question-text">
+                    Please provide details about any and all competing interests in the box below. Your response should begin with this statement: "I have read the journal's policy and the authors of this manuscript havethe following competing interests:"
+                  </div>
+
+                  <textarea id="ember2090" class="ember-view ember-text-area form-control" name="competing_interests.competing_interests">          </textarea>
+                </div>
+              </div>
+            </div>
+            <div id="ember2058">
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="constrain">
+          <div class="question-dataset">
+            <div id="ember2470">
+              <div id="ember2473">
+                <div class="form-group">
+                  <input id="ember2474" class="ember-view ember-text-field form-control" placeholder="Title of dataset" type="text" name="title">
+                </div>
+              </div>
+              <div id="ember2475">
+                <div class="form-group">
+                  <input id="ember2476" class="ember-view ember-text-field form-control" placeholder="Description of dataset" type="text" name="description">
+                </div>
+              </div>
+              <div id="ember2477">
+                <div class="form-group">
+                  <textarea id="ember2478" class="ember-view ember-text-area form-control" placeholder="Ethical or legal reasons why dataset is unsuitable for public deposit" name="reasons"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="constrain">
+
+          <div class="add-author-form">
+            <div class="form-group form-inline author-top">
+              <div class="form-group author-name">
+                <div id="ember2541">
+                  <input id="ember2543" class="ember-view ember-text-field form-control" placeholder="First name" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+              <div class="form-group author-middle">
+                <div id="ember2544">
+                  <input id="ember2546" class="ember-view ember-text-field form-control" placeholder="MI" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+              <div class="form-group author-name">
+                <div id="ember2547">
+                  <input id="ember2549" class="ember-view ember-text-field form-control" placeholder="Last name" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+              <div class="form-group author-half author-bump">
+                <div id="ember2550">
+                  <input id="ember2552" class="ember-view ember-text-field form-control" placeholder="Email" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group form-inline">
+              <div class="form-group author-half">
+                <div id="ember2553">
+                  <input id="ember2555" class="ember-view ember-text-field form-control" placeholder="Title" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+              <div class="form-group author-half author-bump">
+                <div id="ember2556">
+                  <input id="ember2558" class="ember-view ember-text-field form-control" placeholder="Department" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group form-inline">
+              <div class="form-group author-half">
+                <div id="ember2559">
+                  <div class="select2-container ember-view ember-text-field select2 affiliation-field" id="s2id_ember2561">
+                    <a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1"> <span class="select2-chosen" id="select2-chosen-8">Affiliation</span><abbr class="select2-search-choice-close"></abbr>  <span class="select2-arrow" role="presentation"><b role="presentation"></b></span>
+                    </a>
+                    <label for="s2id_autogen8" class="select2-offscreen"></label>
+                    <input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-8" id="s2id_autogen8">
+                    <div class="select2-drop select2-display-none select2-with-searchbox">
+                      <div class="select2-search">
+                        <label for="s2id_autogen8_search" class="select2-offscreen"></label>
+                        <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-8" id="s2id_autogen8_search" placeholder="">
+                      </div>
+                      <ul class="select2-results" role="listbox" id="select2-results-8"></ul>
+                    </div>
+                  </div>
+                  <div id="ember2561" class="ember-view ember-text-field select2 affiliation-field select2-offscreen" placeholder="Affiliation" type="text" tabindex="-1" title=""></div>
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+              <div class="form-group author-half author-bump">
+                <div id="ember2562">
+                  <div class="select2-container ember-view ember-text-field select2 secondary-affiliation-field" id="s2id_ember2564">
+                    <a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1"> <span class="select2-chosen" id="select2-chosen-9">Secondary Affiliation</span><abbr class="select2-search-choice-close"></abbr>  <span class="select2-arrow" role="presentation"><b role="presentation"></b></span>
+                    </a>
+                    <label for="s2id_autogen9" class="select2-offscreen"></label>
+                    <input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-9" id="s2id_autogen9">
+                    <div class="select2-drop select2-display-none select2-with-searchbox">
+                      <div class="select2-search">
+                        <label for="s2id_autogen9_search" class="select2-offscreen"></label>
+                        <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-9" id="s2id_autogen9_search" placeholder="">
+                      </div>
+                      <ul class="select2-results" role="listbox" id="select2-results-9"></ul>
+                    </div>
+                  </div>
+                  <div id="ember2564" class="ember-view ember-text-field select2 secondary-affiliation-field select2-offscreen" placeholder="Secondary Affiliation" type="text" tabindex="-1" title=""></div>
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="author-label">
+                <input id="ember2565" class="ember-view ember-checkbox" type="checkbox">This is a corresponding author
+              </label>
+              <label class="author-label">
+                <input id="ember2566" class="ember-view ember-checkbox" type="checkbox">This person is deceased
+              </label>
+              <span class="pull-right author-form-buttons">
+                <a class="button-link button--green author-cancel" data-ember-action="2567">cancel</a>
+                <button class="button-secondary button--green" data-ember-action="2568">done</button>
+              </span>
+            </div>
+          </div>
+
         </div>
 
         <hr>

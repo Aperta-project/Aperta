@@ -10,7 +10,6 @@ require 'pry'
 
 # $RESET = true
 # $RESET = false
-@styleguide_path = "app/views/kss/home/styleguide2.html.erb"
 
 def get_content(ele)
   # Grab arguments from the element
@@ -39,7 +38,7 @@ def get_content(ele)
       wrapper_div[:id] = necessary_context[1..-1]
     end
 
-    if necessary_context[0] == "." # i'm a CSS css
+    if necessary_context[0] == "." # i'm a CSS class
       wrapper_div[:class] = necessary_context[1..-1] # ignore the first character (. | #)
     end
 
@@ -47,17 +46,33 @@ def get_content(ele)
   end
 
   # return that snippet of markup
-  return selection
+  return selection + in_code_block(selection)
 rescue => e
   p e.inspect
   p "Error: Could not open `#{name}` in `#{filename}` with selector `#{selector}`"
 end
 
+# Wrap the html in a toggle-able code block
+def in_code_block(html)
+  seed = "collapse-#{rand(10000).to_s}"
+
+  s = "<div class=row>"
+  s << "<div class=col-md-12>"
+  s << "<button class='btn btn-primary' data-toggle=collapse href=##{seed} aria-expanded=false aria-controls=#{seed}>Show Source</button>"
+  s << "<div class=collapse id=#{seed}>"
+  s << "<pre>#{CGI::escape_html(html)}</pre>"
+  s << "</div>"
+  s << "</div>"
+  s << "</div>"
+  s
+end
+
+# Arbitrary starting point
 def init
-  # Open the File
   @styleguide_path = "app/views/kss/home/styleguide2.html.erb"
   @populated_styleguide_path = "app/views/kss/home/styleguide3.html.erb"
 
+  # Open the File
   styleguide_html = File.open(@styleguide_path, "r").read
 
   # loop all the source-page-names and set (or reset) the content

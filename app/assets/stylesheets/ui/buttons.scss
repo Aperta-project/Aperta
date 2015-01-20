@@ -1,14 +1,25 @@
 // Should work on any element type: div, span, button, a, etc.
-// Base button classes: .button-primary, .button-secondary, .button-link
 //
 // .button--green      - Make the button GREEN
 // .button--blue       - Make the button LIGHT BLUE
 // .button--grey       - Make the button GREY
-// .button--disabled   - Style the button as disabled
-// .button--wide       - Extra padding on left and right
-// .button--small      - Less padding all around
 //
 // Styleguide UI.Button
+
+// Base button classes
+//
+// .button-primary
+// .button-secondary
+// .button-link
+// Styleguide UI.Button.Classes
+
+// Button Widths
+//
+// .button--wide       - Extra padding on left and right
+// .button--small      - Less padding all around
+// .button--disabled   - Style the button as disabled
+//
+// Styleguide UI.Button.States
 
 
 @mixin button-primary-modifier($color, $color-hover) {

@@ -1,0 +1,799 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <style media="screen">
+  /* Hide KSS Generated Code for now */
+  .styleguide-example pre,
+  .styleguide-example .styleguide-description,
+  .styleguide-example h3,
+  .styleguide-example .styleguide-element .styleguide-modifier-name {
+    display: none;
+  }
+  *[element-name] {
+    position: relative;
+  }
+  .color-bar {
+    height: 75px;
+    text-align: center;
+    color: white;
+    padding: 28px 0px 0px 0px;
+    width: 200px;
+  }
+  .baskerville * {
+    font-family: Baskerville;
+  }
+  .cabin * {
+    font-family: Cabin;
+  }
+  .hover {
+  }
+  .buttons div.button--green,
+  .buttons div.button--grey,
+  .buttons div.button--blue {
+    margin-top: 10px;
+  }
+  nav.kss-nav {
+    display: none;
+  }
+  #kss_wrapper {
+    padding: 10px;
+    padding-top: 30px;
+  }
+  .kss-wrapper {
+    display: none;
+  }
+  #card-overlays > a {
+    display: block
+  }
+  .constrain {
+    max-width: 940px;
+    margin: auto;
+  }
+  .content {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+  .row {
+    padding-bottom: 50px;
+  }
+  p.text {
+    max-width: 500px;
+    padding-bottom: 25px;
+  }
+
+  .glyphicon.large {
+    font-size: 28px;
+  }
+  .glyphicon.small {
+    font-size: 18px;
+  }
+  </style>
+
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+  <script>
+  $(function() {
+    $("#card-overlays > a").click(function() {
+      $(this).next().removeClass("hide")
+    });
+
+    // NEW STUFF
+    $("*[overlay]").children().hide();
+    $(".toggle-link").click(function() {
+      $(this).parents(".ui-element").find("*[element-name]").children().show();
+    })
+
+    $(".overlay .overlay-close-button, .overlay-close-x").click(function() {
+      $(this).parents(".ui-element").find("*[element-name]").children().hide();
+    });
+
+    // Repositions ToolBar
+    $(".control-bar").css("position", "relative");
+
+
+    // Nav
+    $(".kss-header").click(function(){
+      $('.navigation').show();
+    })
+
+    // Manually Adjust Workflow styles
+    $(".columns").css("position", "initial");
+    $(".columns").css("height", "450px");
+
+    // Enable the Show Source Toggle Buttons
+    $("*[data-toggle]").click(function() {
+      $($(this).attr("href")).toggle();
+    });
+
+    $("#toggle-all-source").click(function() {
+      $(".collapse").toggle();
+    });
+  });
+  </script>
+</head>
+<body>
+
+  <div class="row">
+    <div class="col-md-3">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix">
+        <ul class="nav bs-docs-sidenav">
+          <li>
+            <a href="#colors">Colors</a>
+          </li>
+          <li>
+            <a href="#typography">Typography</a>
+          </li>
+          <li>
+            <a href="#cards">Cards</a>
+          </li>
+          <li>
+            <a href="#workflow">Workflow</a>
+          </li>
+          <li>
+            <a href="#card-overlay">Card Overlay</a>
+          </li>
+          <li>
+            <a href="#system-overlay">System Overlay</a>
+          </li>
+          <li>
+            <a href="#toolbars">Toolbars</a>
+            <ul class="nav">
+              <li><a href="#contributors">Contributors</a></li>
+              <li><a href="#download-document">Download Document</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#buttons">Buttons</a>
+          </li>
+          <li>
+            <a href="#form-patterns">Form Patterns</a>
+          </li>
+          <li>
+            <a href="#edit-delete">Edit/Delete</a>
+          </li>
+          <li>
+            <a href="#file-upload">File Upload</a>
+          </li>
+          <li>
+            <a href="#errors">Errors</a>
+            <ul class="nav">
+              <li><a href="#page-errors">Page Errors</a></li>
+              <li><a href="#form-errors">Form Errors</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#tooltips">Tooltips</a>
+          </li>
+          <li>
+            <a href="#card-things">Card Things</a>
+          </li>
+          <li>
+            <a href="#widgets">Widgets</a>
+          </li>
+          <li>
+            <a href="#avatars">Avatars</a>
+          </li>
+          <li>
+            <a href="#task-cards">Task Cards</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-md-9">
+      <div id="styleguide">
+        <div class="row">
+          <div class="col-md-6">
+            <!-- <h2>Last updated on <span class="timestamp">TIMESTAMP</span>.</h2> -->
+            <p>
+              Run <code>rake styleguide:generate</code> to get the latest HTML from the
+              app.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <button id="toggle-all-source" class="btn btn-primary">Toggle All Source</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <h2 id="colors">
+              Colors
+            </h2>
+
+            <p>
+              Tahi's color palette is intentionally constrained.
+              There is a primary color that serves as the pop color to a grayscale palette.
+              The admin section has a different pop color
+              to easily differentiate it from the rest of the app.
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-3">
+                Primary
+                <div class="color-bar" style="background-color: #39a329;">
+                  #39a329
+                </div>
+                <div class="color-bar" style="background-color: #8ecb87;">
+                  #8ecb87
+                </div>
+                <div class="color-bar" style="background-color: #0f7400;">
+                  #0f7400
+                </div>
+              </div>
+              <div class="col-md-3">
+                Neutral
+                <div class="color-bar" style="background-color: #777;">
+                  #777
+                </div>
+                <div class="color-bar" style="background-color: #d5d5d5;">
+                  #d5d5d5
+                </div>
+                <div class="color-bar" style="background-color: #878787;">
+                  #878787
+                </div>
+                <div class="color-bar" style="background-color: #000000;">
+                  #000000
+                </div>
+              </div>
+              <div class="col-md-3">
+                Admin Primary
+                <div class="color-bar" style="background-color: #2d85de;">
+                  #2d85de
+                </div>
+                <div class="color-bar" style="background-color: #94b8e0;">
+                  #94b8e0
+                </div>
+                <div class="color-bar" style="background-color: #205e9c;">
+                  #205e9c
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div element-name="navigation" source-page-name="dashboard" source-page-selector=".navigation"></div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <h2 id="typography">
+              Typography
+            </h2>
+            <p>
+              Cabin is the typeface used throught the Tahi application. Baskerville is used only for the manuscript itself, and the expression of the manuscript's title in different places in the system.
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="cabin">
+              <h1>
+                Cabin H1
+              </h1>
+              <h2>
+                Cabin H2
+              </h2>
+              <p>
+                Basic System Text
+              </p>
+              <a href="#">Link</a>
+              <br>
+              <a href="#" class="hover" style="text-decoration: underline;">Hovered Link</a>
+            </div>
+            <hr>
+            <div class="baskerville">
+              <h1>
+                Baskerville H1
+              </h1>
+              <h2>
+                Baskerville H2
+              </h2>
+              <p>
+                Manuscript Text
+              </p>
+              <a href="#">Link</a>
+              <br>
+              <a href="#" class="hover" style="text-decoration: underline;">Hovered Link</a>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2 id="cards">
+          Cards
+        </h2>
+
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Not Completed</h3>
+            <div element-name="card" source-page-name="paper_manager" source-page-selector=".card" source-page-selector-context=".column"></div>
+          </div>
+          <div class="col-md-6">
+            <h3>Completed</h3>
+            <div element-name="card-completed" source-page-name="paper_manager" source-page-selector=".card--completed" source-page-selector-context=".column"></div>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2 id="workflow">
+          Workflow
+        </h2>
+        <div element-name="paper-manager" source-page-name="paper_manager" source-page-selector=".columns"></div>
+
+        <hr>
+        <div class="ui-element">
+          <h2 id="card-overlay">
+            Card Overlay
+          </h2>
+
+          <a class="toggle-link">Click to show Card Overlay</a>
+
+          <div element-name="card-overlay" source-page-name="paper_manager" source-page-selector=".overlay" overlay="true"></div>
+        </div>
+
+        <hr>
+
+        <div class="ui-element">
+          <h2 id="system-overlay">
+            System Overlay
+            <!-- Seems Mis-named -->
+          </h2>
+
+          <a class="toggle-link">Click to show System Overlay</a>
+
+          <div element-name="system-overlay" source-page-name="paper_manager_overlay" source-page-selector=".overlay--fullscreen" overlay="true"></div>
+        </div>
+
+        <hr>
+
+        <h2 id="toolbars">
+          Toolbars
+        </h2>
+
+        <h3 id="default">
+          Default Toolbar
+        </h3>
+        <div element-name="toolbar" source-page-name="paper" source-page-selector=".control-bar"></div>
+
+        <h3 id="contributors">
+          Contributors
+        </h3>
+        <div class="control-bar-sub-nav-active">
+          <div element-name="toolbar" source-page-name="paper_contributors" source-page-selector=".control-bar"></div>
+        </div>
+
+        <h3 id="download-document">
+          Download Document
+        </h3>
+        <div class="control-bar-sub-nav-active">
+          <div element-name="toolbar" source-page-name="paper_download_document" source-page-selector=".control-bar"></div>
+        </div>
+
+        <hr>
+
+        <h2 id="buttons">
+          Buttons
+        </h2>
+
+        <div class="row">
+          <div class="col-md-12">
+            Primary .button--green
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--green">Save</div>
+            <div class="button-secondary button--green">Save</div>
+            <div class="button-link button--green">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--small button--green">Save</div>
+            <div class="button-secondary button--small button--green">Save</div>
+            <div class="button-link button--small button--green">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--disabled button--green">Save</div>
+            <div class="button-secondary button--disabled button--green">Save</div>
+            <div class="button-link button--disabled button--green">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div style="background-color: #29a904; padding: 10px;">
+              <div class="button-primary button--green knockout">Save</div>
+              <div class="button-secondary button--green knockout">Save</div>
+              <div class="button-link button--green knockout">Save</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            Neutral .button--grey
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--grey">Save</div>
+            <div class="button-secondary button--grey">Save</div>
+            <div class="button-link button--grey">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--small button--grey">Save</div>
+            <div class="button-secondary button--small button--grey">Save</div>
+            <div class="button-link button--small button--grey">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--disabled button--grey">Save</div>
+            <div class="button-secondary button--disabled button--grey">Save</div>
+            <div class="button-link button--disabled button--grey">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div style="background-color: #E5E5E5; padding: 10px;">
+              <div class="button-primary button--grey knockout">Save</div>
+              <div class="button-secondary button--grey knockout">Save</div>
+              <div class="button-link button--grey knockout">Save</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            Admin .button--blue
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--blue">Save</div>
+            <div class="button-secondary button--blue">Save</div>
+            <div class="button-link button--blue">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--small button--blue">Save</div>
+            <div class="button-secondary button--small button--blue">Save</div>
+            <div class="button-link button--small button--blue">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div class="button-primary button--disabled button--blue">Save</div>
+            <div class="button-secondary button--disabled button--blue">Save</div>
+            <div class="button-link button--disabled button--blue">Save</div>
+          </div>
+          <div class="col-md-3">
+            <div style="background-color: #2d85de; padding: 10px;">
+              <div class="button-primary button--blue knockout">Save</div>
+              <div class="button-secondary button--blue knockout">Save</div>
+              <div class="button-link button--blue knockout">Save</div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2 id="form-patterns">
+          Form Patterns (in Cards)
+        </h2>
+
+        <div class="constrain">
+          <div element-name="financial-disclosure-form" source-page-name="financial-disclosure-card" source-page-selector=".question-list"></div>
+        </div>
+
+        <h3>
+          Form Block: Single Input
+        </h3>
+
+        <div class="constrain">
+          <div class="additional-data">
+            <div id="ember2056">
+
+              <div class="question-dataset">
+                <div id="ember2086">
+                  <div class="question-text">
+                    Please provide details about any and all competing interests in the box below. Your response should begin with this statement: "I have read the journal's policy and the authors of this manuscript havethe following competing interests:"
+                  </div>
+
+                  <textarea id="ember2090" class="ember-view ember-text-area form-control" name="competing_interests.competing_interests">          </textarea>
+                </div>
+              </div>
+            </div>
+            <div id="ember2058">
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="constrain">
+          <div class="question-dataset">
+            <div id="ember2470">
+              <div id="ember2473">
+                <div class="form-group">
+                  <input id="ember2474" class="ember-view ember-text-field form-control" placeholder="Title of dataset" type="text" name="title">
+                </div>
+              </div>
+              <div id="ember2475">
+                <div class="form-group">
+                  <input id="ember2476" class="ember-view ember-text-field form-control" placeholder="Description of dataset" type="text" name="description">
+                </div>
+              </div>
+              <div id="ember2477">
+                <div class="form-group">
+                  <textarea id="ember2478" class="ember-view ember-text-area form-control" placeholder="Ethical or legal reasons why dataset is unsuitable for public deposit" name="reasons"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="constrain">
+
+          <div class="add-author-form">
+            <div class="form-group form-inline author-top">
+              <div class="form-group author-name">
+                <div id="ember2541">
+                  <input id="ember2543" class="ember-view ember-text-field form-control" placeholder="First name" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+              <div class="form-group author-middle">
+                <div id="ember2544">
+                  <input id="ember2546" class="ember-view ember-text-field form-control" placeholder="MI" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+              <div class="form-group author-name">
+                <div id="ember2547">
+                  <input id="ember2549" class="ember-view ember-text-field form-control" placeholder="Last name" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+              <div class="form-group author-half author-bump">
+                <div id="ember2550">
+                  <input id="ember2552" class="ember-view ember-text-field form-control" placeholder="Email" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group form-inline">
+              <div class="form-group author-half">
+                <div id="ember2553">
+                  <input id="ember2555" class="ember-view ember-text-field form-control" placeholder="Title" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+              <div class="form-group author-half author-bump">
+                <div id="ember2556">
+                  <input id="ember2558" class="ember-view ember-text-field form-control" placeholder="Department" type="text">
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group form-inline">
+              <div class="form-group author-half">
+                <div id="ember2559">
+                  <div class="select2-container ember-view ember-text-field select2 affiliation-field" id="s2id_ember2561">
+                    <a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1"> <span class="select2-chosen" id="select2-chosen-8">Affiliation</span><abbr class="select2-search-choice-close"></abbr>  <span class="select2-arrow" role="presentation"><b role="presentation"></b></span>
+                    </a>
+                    <label for="s2id_autogen8" class="select2-offscreen"></label>
+                    <input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-8" id="s2id_autogen8">
+                    <div class="select2-drop select2-display-none select2-with-searchbox">
+                      <div class="select2-search">
+                        <label for="s2id_autogen8_search" class="select2-offscreen"></label>
+                        <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-8" id="s2id_autogen8_search" placeholder="">
+                      </div>
+                      <ul class="select2-results" role="listbox" id="select2-results-8"></ul>
+                    </div>
+                  </div>
+                  <div id="ember2561" class="ember-view ember-text-field select2 affiliation-field select2-offscreen" placeholder="Affiliation" type="text" tabindex="-1" title=""></div>
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+              <div class="form-group author-half author-bump">
+                <div id="ember2562">
+                  <div class="select2-container ember-view ember-text-field select2 secondary-affiliation-field" id="s2id_ember2564">
+                    <a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1"> <span class="select2-chosen" id="select2-chosen-9">Secondary Affiliation</span><abbr class="select2-search-choice-close"></abbr>  <span class="select2-arrow" role="presentation"><b role="presentation"></b></span>
+                    </a>
+                    <label for="s2id_autogen9" class="select2-offscreen"></label>
+                    <input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-9" id="s2id_autogen9">
+                    <div class="select2-drop select2-display-none select2-with-searchbox">
+                      <div class="select2-search">
+                        <label for="s2id_autogen9_search" class="select2-offscreen"></label>
+                        <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-9" id="s2id_autogen9_search" placeholder="">
+                      </div>
+                      <ul class="select2-results" role="listbox" id="select2-results-9"></ul>
+                    </div>
+                  </div>
+                  <div id="ember2564" class="ember-view ember-text-field select2 secondary-affiliation-field select2-offscreen" placeholder="Secondary Affiliation" type="text" tabindex="-1" title=""></div>
+
+                  <div class="error-message"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="author-label">
+                <input id="ember2565" class="ember-view ember-checkbox" type="checkbox">This is a corresponding author
+              </label>
+              <label class="author-label">
+                <input id="ember2566" class="ember-view ember-checkbox" type="checkbox">This person is deceased
+              </label>
+              <span class="pull-right author-form-buttons">
+                <a class="button-link button--green author-cancel" data-ember-action="2567">cancel</a>
+                <button class="button-secondary button--green" data-ember-action="2568">done</button>
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <hr>
+
+        <div class="row">
+          <div class="col-md-6">
+            <h2 id="edit-delete">
+              Edit/Delete
+            </h2>
+
+            <p>
+              The Edit and Delete icons usually appear together.
+              There are two main style; large block-level hover, and small in-line.
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2">
+            <p>
+              Large Block Level
+            </p>
+
+            <span class="glyphicon glyphicon-pencil large"></span>
+            <span class="glyphicon glyphicon-trash large"></span>
+
+          </div>
+          <div class="col-md-2">
+            <p>
+              Small Inline
+            </p>
+            <span class="glyphicon glyphicon-pencil small"></span>
+            <span class="glyphicon glyphicon-trash small"></span>
+          </div>
+        </div>
+
+        <div class="row">
+          <h4>
+            If a block can be edited all at once, please use the large block level edit and delete icons.
+          </h4>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <p>
+              Natural state of block.
+            </p>
+            <div element-name="admin-section" source-page-name="journal_admin" source-page-selector=".mmt-thumbnail"></div>
+          </div>
+
+          <div class="col-md-4">
+            <p>
+              Upon hovering, actions are shown
+            </p>
+            <div class="show-child-mmt-thumbnail" element-name="admin-section" source-page-name="journal_admin" source-page-selector=".mmt-thumbnail"></div>
+          </div>
+
+          <div class="col-md-4">
+            <p>
+              Delete is followed by a warning/confirmation.
+            </p>
+            <div class="show-child-confirm-destroy" element-name="admin-section" source-page-name="journal_admin" source-page-selector=".mmt-thumbnail"></div>
+          </div>
+          <script>
+            // TODO consider doing it another way that is less tightly coupled to selectors.
+            $('.show-child-mmt-thumbnail .mmt-thumbnail .mmt-thumbnail-overlay--edit-options').show();
+            $('.show-child-confirm-destroy .mmt-thumbnail-overlay--confirm-destroy').show()
+          </script>
+        </div>
+
+        <div class="row hide">
+          <p>
+            Otherwise, use the smaller inline Edit and Delete icons.
+          </p>
+
+          <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+
+          <p>
+            And, Delete should be followed by a warning/confirmation.
+          </p>
+
+          <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+        </div>
+
+        <hr>
+
+        <h2 id="file-upload" class="hide">
+          File Upload
+        </h2>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message" class="hide"></div>
+
+        <h2 id="errors">
+          Errors
+        </h2>
+
+        <div id="application-error" class="alert alert-danger alert-dismissable application-error" style="position: inherit;">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          WAT!!
+        </div>
+
+        <div id="application-error" class="alert alert-info alert-dismissable application-error" style="position: inherit;">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          Hey, Check this out!
+        </div>
+
+        <div id="application-error" class="alert alert-warning alert-dismissable application-error" style="position: inherit;">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          Ugh..!
+        </div>
+
+        <div id="application-error" class="alert alert-success alert-dismissable application-error" style="position: inherit;">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          YES!!
+        </div>
+
+        <hr>
+
+        <h2 id="tooltips" class="hide">
+          Tooltips
+        </h2>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message" class="hide"></div>
+
+        <h2 id="card-things" class="hide">
+          Card Things
+        </h2>
+
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message" class="hide"></div>
+
+        <h2 id="widgets" class="hide">
+          Widgets
+        </h2>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message" class="hide"></div>
+
+        <h2 id="avatars">
+          Avatars
+        </h2>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div id="profile-avatar">
+              <img src="/images/profile-no-image.png" data-bindattr-1612="1612">
+              <div id="profile-avatar-hover">
+                <span class="button-secondary button--green fileinput-button">
+                  <span>Upload New</span>
+                  <input id="profile_avatar" class="ember-text-field" type="file" name="file" accept=".jpg,.jpeg,.tiff,.gif,.png">
+                </span>
+              </div>
+              <div class="profile-avatar-spinner"></div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <img src="/images/profile-no-image.png" data-bindattr-1041="1041" class="user-thumbnail">
+          </div>
+          <div class="col-md-4">
+            <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
+          </div>
+        </div>
+
+        <hr>
+
+        <h2 id="task-cards" class="hide">
+          Task Cards
+        </h2>
+        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message" class="hide"></div>
+
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

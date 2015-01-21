@@ -37,6 +37,9 @@ module 'Integration: EditPaper',
     server.respondWith 'PUT', /\/tasks\/\d+/, [
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
+    server.respondWith 'PUT', /\/papers\/\d+/, [
+      204, {"Content-Type": "application/json"}, JSON.stringify {}
+    ]
     server.respondWith 'GET', /\/filtered_users\/users\/\d+/, [
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]

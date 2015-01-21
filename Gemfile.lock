@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/modeset/teaspoon.git
-  revision: 09641099f82098302f58fbff899845fa6b73946e
+  revision: 83440f080185d495e48dfc35420cffeb8596c7b1
   specs:
     teaspoon (0.8.0)
       railties (>= 3.2.5, < 5)
@@ -297,10 +297,10 @@ GEM
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    json (1.8.1)
+    json (1.8.2)
     jwt (0.1.13)
       multi_json (>= 1.5)
-    kaminari (0.16.1)
+    kaminari (0.16.2)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kss (0.5.0)
@@ -328,7 +328,7 @@ GEM
     mime-types (2.4.3)
     mini_magick (4.0.1)
     mini_portile (0.6.2)
-    minitest (5.5.0)
+    minitest (5.5.1)
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -392,7 +392,7 @@ GEM
     rack (1.6.0)
     rack-protection (1.5.3)
       rack
-    rack-test (0.6.2)
+    rack-test (0.6.3)
       rack (>= 1.0)
     rack-timeout (0.0.4)
     rails (4.2.0)

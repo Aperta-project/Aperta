@@ -15,8 +15,11 @@ ETahi.initializer
     # The global error handler
     Ember.onerror = (error) ->
       logError("\n" + error.message + "\n" + error.stack + "\n")
-      window.ErrorNotifier.notify(error, "Uncaught Ember Error")
+      # TODO FIX THIS
+      # window.ErrorNotifier.notify(error, "Uncaught Ember Error")
       if ETahi.environment == 'development'
+        throw error
+      else if ETahi.environment == undefined # TODO FIX THIS
         throw error
       else
         flash.displayMessage 'error', error

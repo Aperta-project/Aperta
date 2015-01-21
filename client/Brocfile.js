@@ -26,4 +26,9 @@ app.import('bower_components/underscore/underscore-min.js');
 app.import('bower_components/moment/moment.js');
 app.import('bower_components/event-source-polyfill/eventsource.js');
 
+if (app.env !== 'production') {
+  app.import('bower_components/sinon/index.js');
+  app.import('bower_components/underscore/underscore.js');
+}
+
 module.exports = app.toTree();

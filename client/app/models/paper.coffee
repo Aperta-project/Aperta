@@ -44,7 +44,7 @@ Paper = DS.Model.extend
   ).property('allMetadataTasks.@each.completed')
 
   unloadRecord: ->
-    litePaper = @store.getById('litePaper', @get('id'))
+    litePaper = @store.getById('lite-paper', @get('id'))
     @store.unloadRecord(litePaper) if litePaper
     @_super()
 

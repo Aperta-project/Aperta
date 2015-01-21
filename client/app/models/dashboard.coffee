@@ -4,7 +4,7 @@ a = DS.attr
 
 Dashboard = DS.Model.extend
 
-  papers: DS.hasMany('litePaper')
+  papers: DS.hasMany('lite-paper')
   user: DS.belongsTo('user')
 
   totalPaperCount: a('number')

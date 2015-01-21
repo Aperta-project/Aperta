@@ -4,7 +4,7 @@ a = DS.attr
 
 Question = DS.Model.extend
 
-  questionAttachment: DS.belongsTo('questionAttachment')
+  questionAttachment: DS.belongsTo('question-attachment')
   task: DS.belongsTo('task', polymorphic: true, inverse: 'questions')
 
   ident: a('string')

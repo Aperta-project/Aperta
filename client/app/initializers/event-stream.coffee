@@ -5,15 +5,14 @@ EventStreamInitializer =
   name: 'eventStream'
   after: 'currentUser'
   initialize: (container, application) ->
-    if window.currentUser
-      store = container.lookup('store:main')
-      es = if Ember.testing # fake event stream
-        Ember.Object.extend
-          play: -> null
-          pause: -> null
-      else
-        EventStream
-      container.register('eventstream:main', es.extend({store: store}), singleton: true)
-      application.inject('route', 'eventStream', 'eventstream:main')
+    es = if !container.lookup('user:current') || Ember.testing
+      Ember.Object.extend
+        play: -> null
+        pause: -> null
+    else
+      EventStream
+    store = container.lookup('store:main')
+    container.register('eventstream:main', es.extend({store: store}), singleton: true)
+    application.inject('route', 'eventStream', 'eventstream:main')
 
 `export default EventStreamInitializer`

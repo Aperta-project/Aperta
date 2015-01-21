@@ -11,7 +11,7 @@
         You have no manuscripts.
       {{/if}}
     </h2>
-    <button class="button-primary button--green button--wide" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+    <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
     {{#if hasPapers}}
       <ul class="dashboard-submitted-papers">
         {{#each paper in sortedPapers}}
@@ -19,7 +19,7 @@
         {{/each}}
       </ul>
       {{#if paginate}}
-        <a {{action "loadMorePapers"}} href="#" class="button-secondary button--green button--wide load-more-papers">
+        <a {{action "loadMorePapers"}} href="#" class="button-secondary button--green load-more-papers">
           Load More
         </a>
       {{/if }}

@@ -5,7 +5,6 @@
 // .button--blue       - Make the button LIGHT BLUE
 // .button--grey       - Make the button GREY
 // .button--disabled   - Style the button as disabled
-// .button--wide       - Extra padding on left and right
 // .button--small      - Less padding all around
 //
 // Styleguide UI.Button
@@ -151,15 +150,7 @@
   }
 }
 
-
 // .button modifier
 .button--small {
   padding: 1px 5px;
-}
-
-
-// .button modifier
-.button--wide {
-  padding-left: 25px;
-  padding-right: 25px;
 }

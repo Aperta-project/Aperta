@@ -12,56 +12,13 @@
 @import 'variables';
 @import 'z-index';
 @import 'webfonts';
-@import 'animations/animations';
 @import 'mixins';
 @import 'visualEditor.tahi.min';
 
 @import 'tahi';
 
-@import 'ui/adhoc-toolbar';
-@import 'ui/backdrop';
-@import 'ui/buttons';
-@import 'ui/cards';
-@import 'ui/chosen';
-@import 'ui/columns';
-@import 'ui/control-bar';
-@import 'ui/datepicker';
-@import 'ui/flash-message';
-@import 'ui/inline-edit-h1';
-@import 'ui/overlay';
-@import 'ui/progress';
-@import 'ui/segmented-button';
-@import 'ui/spinner';
-@import 'ui/token';
-@import 'ui/tooltip';
-@import 'ui/user-thumbnail';
-
-@import 'screens/admin';
-@import 'screens/admin-doi';
-@import 'screens/dashboards';
-@import 'screens/flow_manager';
-@import 'screens/manuscript_manager_template';
-@import 'screens/navigation';
-@import 'screens/papers';
-@import 'screens/profile';
-
-@import 'overlays/authors_overlay';
-@import 'overlays/choose_new_card_type_overlay';
-@import 'overlays/collaborators_overlay';
-@import 'overlays/edit_task_types_overlay';
-@import 'overlays/feedback_overlay';
-@import 'overlays/new_card_overlay';
-@import 'overlays/paper_new_overlay';
-@import 'overlays/paper_submit_overlay';
-@import 'overlays/unsaved_data_overlay';
-@import 'overlays/upload_manuscript_overlay';
-
-@import 'components/attachment-thumbnail';
-@import 'components/comment-board';
-@import 'components/content-editable';
-@import 'components/question';
-@import 'components/question-attachment-thumbnail';
-@import 'components/select2';
-@import 'components/select2-participant-selector';
-@import 'components/select2-user-role-selector';
-@import 'components/upload-preview';
+@import 'animations/_base';
+@import 'components/_base';
+@import 'overlays/_base';
+@import 'screens/_base';
+@import 'ui/_base';

@@ -35,7 +35,7 @@ test 'clicking the feedback button sends feedback to the backend', ->
     click '.navigation-item-feedback'
     ok exists '.overlay'
   .andThen ->
-    fillIn 'form textarea', "My feedback"
-    click '.overlay-footer button'
+    fillIn '.overlay textarea', "My feedback"
+    click '.overlay-footer .button-primary'
   .andThen ->
     ok find('.overlay .thanks')

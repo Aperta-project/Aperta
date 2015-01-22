@@ -6,12 +6,31 @@ Tahi.utils =
       camelized[Ember.String.camelize(key)] = object[key]
     camelized
 
-  displayErrorMessage: (message) ->
-    applicationController = ETahi.__container__.lookup('controller:application')
-    # these checks are purely for javascript testing
-    if !applicationController.isDestroying && !applicationController.isDestroyed
-      Ember.run ->
-        applicationController.set('error', message)
+  deepCamelizeKeys: (hash) ->
+    spelunk = (thing) ->
+      return thing if (!thing || typeof thing != 'object')
+      return thing.map(spelunk) if (Ember.isArray(thing))
+
+      Ember.keys(thing).reduce (previousValue, key) ->
+        previousValue[Ember.String.camelize(key)] = spelunk(thing[key])
+        previousValue
+      , {}
+
+    spelunk(hash)
+
+  deepJoinArrays: (hash) ->
+    spelunk = (thing) ->
+      Ember.keys(thing).forEach (key) ->
+        return thing if (!thing || typeof thing != 'object')
+        if Ember.isArray(thing[key])
+          thing[key] = thing[key].join(', ')
+        else
+          spelunk thing[key]
+
+      thing
+
+    spelunk(hash)
+
 
   windowLocation: (url) ->
     window.location = url

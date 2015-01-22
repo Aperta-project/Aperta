@@ -1,11 +1,13 @@
-ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
+ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable, ETahi.ValidationErrorsMixin,
   layoutName: "plos_authors/components/author-view"
   classNames: ['authors-overlay-item']
   classNameBindings: ['hoverState:__hover', 'isEditable:__editable']
 
   hoverState: false
   deleteState: false
-  editState: Ember.computed.any('errors')
+  editState: (->
+    !!@get('author.errors')
+  ).property('author.errors')
 
   attachHoverEvent: (->
     toggleHoverClass = (e) =>
@@ -20,7 +22,7 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
 
   dragStart: (e) ->
     e.dataTransfer.effectAllowed = 'move'
-    ETahi.set('dragItem', @get('plosAuthor'))
+    ETahi.set('dragItem', @get('author.model'))
 
   dragEnd: (e) ->
     DragNDrop.draggingStopped('.author-drop-target')
@@ -28,10 +30,10 @@ ETahi.AuthorViewComponent = Ember.Component.extend DragNDrop.Dragable,
   actions:
     delete: ->
       @$().fadeOut 250, =>
-        @sendAction 'delete', @get('plosAuthor')
+        @sendAction 'delete', @get('author.model')
 
     save: ->
-      @sendAction 'save', @get('plosAuthor')
+      @sendAction 'save', @get('author.model')
       @set 'editState', false
 
     toggleEditForm: ->

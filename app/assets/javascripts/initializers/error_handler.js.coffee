@@ -1,11 +1,11 @@
 ETahi.initializer
   name: 'errorHandler'
-  after: 'currentUser'
+  after: 'flashMessages'
 
   initialize: (container, application) ->
     errorPath = '/errors'
-
-    logError = (msg) ->
+    flash     = container.lookup('flashMessages:main')
+    logError  = (msg) ->
       e = new Error(msg)
       console.log(e.stack || e.message)
 
@@ -19,7 +19,7 @@ ETahi.initializer
       if ETahi.environment == 'development'
         throw error
       else
-        Tahi.utils.displayErrorMessage(error)
+        flash.displayMessage 'error', error
 
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       {type, url} = ajaxSettings
@@ -37,4 +37,4 @@ ETahi.initializer
       if jqXHR.status == 401
         document.location.href = '/users/sign_in'
 
-      Tahi.utils.displayErrorMessage("There was a problem with the server.  Your data may be out of sync.  Please reload.")
+      flash.displayMessage 'error', "There was a problem with the server. Your data may be out of sync. Please reload."

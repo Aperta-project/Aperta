@@ -23,28 +23,7 @@
       <h2>{{model.email}}</h2>
     </div>
 
-    <div class="profile-section">
-      <h1>Affiliations:</h1>
-      {{#each a in affiliations}}
-        <div class="profile-affiliation">
-          <div class="profile-affiliation-name">{{a.name}}</div>
-          <div class="glyphicon glyphicon-remove-circle profile-remove-affiliation" {{action "removeAffiliation" a}}></div>
-          <div>{{a.startDate}} - {{a.displayEndDate}}</div>
-          <div>{{a.email}}</div>
-        </div>
-      {{/each}}
-      <a class="button-secondary button--grey button--small" {{action "toggleAffiliationForm"}}>
-        <span class="glyphicon glyphicon-plus-sign"></span>
-        Add New Affiliation
-      </a>
-      {{#unless hideAffiliationForm}}
-        <div class="profile-affiliations-form animation-fade-in">
-          <h3>New Affiliation</h3>
-          <span {{bind-attr class="errorText:show:hidden :alert-danger :submit-error"}}>{{errorText}}</span>
-          {{partial "user/affiliation_form"}}
-        </div>
-      {{/unless}}
-    </div>
+    {{partial "user/affiliations"}}
 
     <br><br>
     <a href="#" id="reset-password">Reset my password</a>

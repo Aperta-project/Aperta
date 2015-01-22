@@ -15,10 +15,6 @@ ETahi.ApplicationController = Ember.Controller.extend
   # this will get overridden by inject except in testing cases.
   getCurrentUser: -> null
 
-  clearError:( ->
-    @set('error', null)
-  ).observes('currentPath')
-
   resetScrollPosition:( ->
     window.scrollTo(0,0)
   ).observes('currentPath')

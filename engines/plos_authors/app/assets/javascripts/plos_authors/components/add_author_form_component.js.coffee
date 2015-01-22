@@ -12,6 +12,7 @@ ETahi.AddAuthorFormComponent = Ember.Component.extend
       @set('newAuthor', {})
 
   selectableInstitutions: (->
+    return [] if Ember.isEmpty(@get('institutions'))
     @get('institutions').map (institution) ->
       id: institution
       text: institution

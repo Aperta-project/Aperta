@@ -111,13 +111,6 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
   .warning { margin-top: 10px; }
 }
 
-.submit-error {
-  margin-top: 20px;
-  text-align: center;
-  padding: 5px;
-}
-
-
 .datepicker-field {
   width: 100px;
   display: inline-block;
@@ -145,15 +138,10 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
   }
 }
 
-.field-with-errors {
+.error {
   input, select, textarea {
     border: 1px solid $tahi-error-red;
   }
-}
-
-.error-message {
-  color: $tahi-error-red;
-  font-size: 12px;
 }
 
 .flash-messages--below-control-bar {

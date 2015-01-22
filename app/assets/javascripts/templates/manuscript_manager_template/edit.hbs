@@ -4,6 +4,7 @@
       <div class="paper-type-form">
         {{#if editMode}}
           {{input value=paperType placeholder="Paper Type" class="edit-paper-type-field"}}
+          {{error-message message=validationErrors.paperType classNames="mmt-edit-error-message"}}
         {{else}}
           <div class="paper-type-name" {{action "toggleEditMode"}}>
             {{paperType}}
@@ -28,14 +29,13 @@
 
             <div class="column-content">
               {{#each task in phaseTemplate.taskTemplates}}
-                {{card-preview
-                  paper=null
-                  task=task
-                  canRemoveCard=true
-                  canDragCard=true
-                  removeTask="removeTask"
-                  showDeleteConfirm="showDeleteConfirm"
-                  action=null}}
+                {{card-preview paper=null
+                               task=task
+                               canRemoveCard=true
+                               canDragCard=true
+                               removeTask="removeTask"
+                               showDeleteConfirm="showDeleteConfirm"
+                               action=null}}
               {{/each}}
               <a {{action "chooseNewCardTypeOverlay" phaseTemplate}} class="button-secondary button--green">
                 Add New Card

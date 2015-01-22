@@ -1,4 +1,4 @@
-ETahi.FeedbackController = Ember.ObjectController.extend
+ETahi.FeedbackOverlayController = Ember.Controller.extend
   overlayClass: 'overlay--fullscreen feedback-overlay'
   feedbackSubmitted: false
   isUploading: false
@@ -8,6 +8,9 @@ ETahi.FeedbackController = Ember.ObjectController.extend
     @set('model.referrer', window.location)
     @set('model.screenshots', [])
   ).on('init')
+
+  resetModel: ->
+    @set('model', @store.createRecord('feedback'))
 
   actions:
     submit: ->
@@ -28,6 +31,3 @@ ETahi.FeedbackController = Ember.ObjectController.extend
 
     removeScreenshot: (screenshot) ->
       @get('model.screenshots').removeObject(screenshot)
-
-  resetModel: ->
-    @set('model', @store.createRecord('feedback'))

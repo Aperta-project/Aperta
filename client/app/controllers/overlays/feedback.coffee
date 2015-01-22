@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 
-FeedbackController = Ember.ObjectController.extend
+FeedbackController = Ember.Controller.extend
   overlayClass: 'overlay--fullscreen feedback-overlay'
   feedbackSubmitted: false
   isUploading: false
@@ -10,6 +10,9 @@ FeedbackController = Ember.ObjectController.extend
     @set('model.referrer', window.location)
     @set('model.screenshots', [])
   ).on('init')
+
+  resetModel: ->
+    @set('model', @store.createRecord('feedback'))
 
   actions:
     submit: ->
@@ -30,8 +33,5 @@ FeedbackController = Ember.ObjectController.extend
 
     removeScreenshot: (screenshot) ->
       @get('model.screenshots').removeObject(screenshot)
-
-  resetModel: ->
-    @set('model', @store.createRecord('feedback'))
 
 `export default FeedbackController`

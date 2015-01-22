@@ -3,13 +3,17 @@
 // Markup:
 // <div class="overlay">
 //   <div class="overlay-container">
+//
 //     <div class="overlay-header">
 //       <h2 class="overlay-header-title"></h2>
 //     </div>
+//
 //     <div class="overlay-content"></div>
+//
 //     <div class="overlay-footer">
 //       <div class="overlay-footer-content"></div>
 //     </div>
+//
 //   </div>
 // </div>
 //
@@ -76,90 +80,22 @@
 
 .overlay-header,
 .overlay-footer {
-  @extend .row;
+  overflow: hidden;
   position: relative;
   margin: 0;
 }
 
 
-/* begin header styles ---------- */
-
-.overlay-header {
-  padding: 50px 0 0 0;
-}
-
-.overlay-header-title {
-  position: relative;
-  float: left;
-  width: 91.7%;
-  margin: 0 0 12px 0;
-  padding-right: 100px;
-  line-height: 0.9;
-
-  .manuscript-icon {
-    @include position(absolute, 8px auto auto 0px);
-    path, rect { fill: $tahi-green; }
-  }
-}
-
-.overlay-header-title--with-icon {
-  padding-left: 24px;
-}
-
 .overlay-close-button {
-  @extend .col-xs-1;
-}
-
-.overlay-header .overlay-close-button {
   position: absolute;
-  bottom: 10px;
+  width: 8.333333333333332%;
 }
 
-/*
-  .overlay-header-title
-    .overlay-header-link
-*/
-.overlay-header-link {
-  font-size: 18px;
-  &:hover { text-decoration: none; } // override global tahi a style
-}
-
-/* end header styles ---------- */
-
-/* begin footer styles ---------- */
-
-.overlay-footer {
-  margin-top: 10px;
-  padding-bottom: 50px;
-}
-
-.overlay-footer-content {
-  margin-top: 5px;
-  padding-right: 10%;
-  padding-left: 0; // bootstrap .col-xs-10 override
-
-  .assignee-drop-down {
-    @extend .col-xs-9;
-    padding-left: 0; // bootstrap .col.xs.9 override
-  }
-  .cancel {
-    @extend .pull-right;
-  }
-  .overlay-close-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
-
-.overlay-footer .button-primary {
-  @extend .col-xs-2;
-}
 
 .overlay-completed-checkbox {
-  @extend .col-xs-4;
-  text-align: right;
   float: right;
+  width: 33.333333333%;
+  text-align: right;
 
   label {
     color: $tahi-green;
@@ -172,8 +108,6 @@
     @include transform(scale(2));
   }
 }
-
-/* end footer styles ---------- */
 
 .overlay-content {
   position: relative;
@@ -193,13 +127,6 @@
 
 .overlay-main-work {
   padding: 0 10px 60px 10px;
-}
-
-.overlay-container {
-  textarea.remarks {
-    width: 100%;
-    height: 178px;
-  }
 }
 
 

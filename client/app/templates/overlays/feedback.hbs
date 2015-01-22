@@ -1,38 +1,39 @@
 <div class="overlay-container feedback">
   {{#if feedbackSubmitted}}
-    <div class='overlay-content thanks'>We've got it. Thank you.</div>
+    <header class="overlay-header animation-fade-in">
+      <h1 class="overlay-header-title feedback-overlay-thanks">We've got it. Thank you.</h1>
+    </header>
   {{else}}
     <header class="overlay-header">
       <h1 class="overlay-header-title">Please let us know your thoughts:</h1>
     </header>
-    <main class="overlay-content">
-      <form>
-        {{textarea class="remarks form-control" name='remarks' value=remarks autofocus="autofocus"}}
 
-        <ul class="uploaded-screenshots">
-          {{#each screenshot in screenshots}}
-          <li>
-            <a target="_blank" href="{{unbound screenshot.url}}">{{unbound screenshot.filename}}</a>
-            <span class="glyphicon glyphicon-trash remove-screenshot" {{action "removeScreenshot" screenshot}}></span>
-          </li>
-          {{/each}}
-        </ul>
-        {{progress-spinner visible=isUploading}}
-        <div class="button-secondary button--green screenshot-uploader fileinput-button">
-          ATTACH FILES
-          {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png"
-                          start="uploadStarted"
-                          done="uploadFinished"
-                          multiple="true"
-                          filePrefix="feedback_attachment"}}
-        </div>
+    {{progress-spinner visible=isUploading}}
+    {{textarea class="form-control feedback-overlay-remarks " name="remarks" value=model.remarks autofocus="autofocus"}}
 
-      </form>
-    </main>
+    <ul class="feedback-overlay-screenshots">
+      {{#each screenshot in model.screenshots}}
+        <li class="animation-fade-in">
+          <span class="glyphicon glyphicon-trash feedback-overlay-remove-screenshot" {{action "removeScreenshot" screenshot}}></span>
+          <a target="_blank" href="{{unbound screenshot.url}}">{{unbound screenshot.filename}}</a>
+        </li>
+      {{/each}}
+    </ul>
+    <div class="button-secondary button--green feeback-overlay-screenshot-uploader fileinput-button">
+      Attach Files
+      {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png"
+                      start="uploadStarted"
+                      done="uploadFinished"
+                      multiple="true"
+                      filePrefix="feedback_attachment"}}
+    </div>
+
     <footer class="overlay-footer">
-      <div class="overlay-footer-content">
-        <button class="button-primary button--green" {{action "submit"}}>Send Feedback</button>
-        <a class="cancel" {{action "closeOverlay"}}>cancel</a>
+      <div class="overlay-footer-content feedback-overlay-footer-content">
+        <div class="overlay-action-buttons">
+          <button class="button-link button--green" {{action "closeOverlay"}}>cancel</button>
+          <button class="button-primary button--green" {{action "submit"}}>Send Feedback</button>
+        </div>
       </div>
     </footer>
   {{/if}}

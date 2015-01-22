@@ -45,7 +45,7 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
     editableDidChange: -> null #noop, this is caught by paper.edit and paper.index
 
     feedback: ->
-      @render('feedback',
+      @render('overlays/feedback',
         into: 'application'
         outlet: 'overlay')
 

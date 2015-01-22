@@ -1,17 +1,6 @@
-- # TODO REMOVE JS FROM HERE AND MOVE IT INTO ERROR_HANDLER.JS.COFFE
 - if ENV['BUGSNAG_JAVASCRIPT_API_KEY']
   %script{ src:"//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js",
     "data-apikey" => "#{ENV["BUGSNAG_JAVASCRIPT_API_KEY"]}" }
   :javascript
     Bugsnag.releaseStage = "#{Rails.env}";
     Bugsnag.notifyReleaseStages = ["staging", "production"];
-    window.ErrorNotifier = {};
-    window.ErrorNotifier['notify'] = function(error, label) {
-      Bugsnag.notifyException(error, label);
-    }
-- else
-  :javascript
-    window.ErrorNotifier = {}
-    window.ErrorNotifier['notify'] = function(error, label) {
-      throw error;
-    }

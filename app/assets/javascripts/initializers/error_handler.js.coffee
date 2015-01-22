@@ -14,13 +14,17 @@ ETahi.initializer
 
     # The global error handler
     Ember.onerror = (error) ->
-      logError("\n" + error.message + "\n" + error.stack + "\n")
-      # TODO FIX THIS
-      # window.ErrorNotifier.notify(error, "Uncaught Ember Error")
+      # TODO Check how it looks when the error happens in the app.
+      # YES can delete b/c it is not needed in qunit tests.
+      # logError("\n" + error.message + "\n" + error.stack + "\n")
+
       if ETahi.environment == 'development' || ETahi.environment == 'test'
         throw error
       else
         flash.displayMessage 'error', error
+        # TODO run the server in staging mode and see if this works correctly.
+        if Bugsnag && Bugsnag.notifyException
+          Bugsnag.notifyException(error, "Uncaught Ember Error")
 
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       {type, url} = ajaxSettings

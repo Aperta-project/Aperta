@@ -36,6 +36,7 @@
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "tahi-standard-cards": "*",
-    "tahi-plos-authors-card": "*"
+    "tahi-plos-authors-card": "*",
+    "tahi-supporting-information-card": "*"
   }
 }

@@ -79,10 +79,17 @@ describe TasksController, redis: true do
       end
     end
 
-    context "when the task has a notify method" do
+    context "when the task is a ReviewerReportTask" do
+      let!(:reviewer_task) {
+        StandardTasks::ReviewerReportTask.create!(title: "Reviewer Report",
+        role: "reviewer",
+        phase: paper.phases.first,
+        completed: false)
+      }
+
       it "calls the send_emails method" do
-        expect_any_instance_of(Task).to receive(:send_emails)
-        do_request
+        expect_any_instance_of(StandardTasks::ReviewerReportTask).to receive(:send_emails)
+        xhr :patch, :update, { format: 'json', paper_id: paper.to_param, id: reviewer_task.to_param, task: { completed: true } }
       end
     end
   end

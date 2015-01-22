@@ -4,7 +4,7 @@ Select2MultipleComponent = Select2Component.extend
   multiSelect: true
 
   setSelectedData: (->
-    @.$().select2('val', @get('selectedData').mapProperty('id'))
+    @$().select2('val', (@get('selectedData') || []).mapProperty('id'))
   ).observes('selectedData')
 
 `export default Select2MultipleComponent`

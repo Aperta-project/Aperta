@@ -52,7 +52,7 @@
   @include position(fixed, $tahi-control-bar-height 0px auto 0px);
   height: 45px;
   background: none !important; // Blocks buttons as of July 28, 2014
-  z-index: z($z-layer-ve-toolbar);
+  z-index: z('ve-toolbar');
   @include transition(top 0.2s);
 }
 
@@ -97,7 +97,7 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
   bottom: -33px;
   color: $tahi-grey-dark;
   font-style: italic;
-  z-index: $z-layer-paper-placeholder;
+  z-index: z('paper-placeholder');
 }
 
 .author-detail {

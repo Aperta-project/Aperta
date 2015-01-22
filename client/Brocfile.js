@@ -25,6 +25,7 @@ app.import('bower_components/jquery-timeago/jquery.timeago.js');
 app.import('bower_components/underscore/underscore-min.js');
 app.import('bower_components/moment/moment.js');
 app.import('bower_components/event-source-polyfill/eventsource.js');
+app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 
 if (app.env !== 'production') {
   app.import('bower_components/sinon/index.js');

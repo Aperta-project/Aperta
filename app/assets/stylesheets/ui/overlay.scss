@@ -20,16 +20,12 @@
   overflow: auto;
   @include position(fixed, 0px 0px 0px 0px);
   background-color: rgba(0,0,0, 0.7);
-  z-index: z($z-layer-overlay-base);
+  z-index: z('overlay', 'base');
   opacity: 0;
 
   h1 {
     margin: 0 0 1em 0;
     font-size: 48px;
-  }
-
-  &.feedback-overlay {
-    h1 { margin-bottom: 0.5em; }
   }
 
   .discussion {
@@ -65,7 +61,7 @@
   font-size: 90px;
   line-height: 100%;
   cursor: pointer;
-  z-index: z($z-layer-overlay-close-x);
+  z-index: z('overlay', 'close-x');
 }
 
 

@@ -5,22 +5,19 @@
     <a class="button-primary button--green" {{action "toggleAuthorForm" group}}>Add a New Author</a>
 
     {{#if newAuthorFormVisible}}
-      {{add-author-form
-        institutions=institutions
-        hideAuthorForm="toggleAuthorForm"
-        saveAuthor="saveNewAuthor"}}
+      {{add-author-form institutions=institutions
+                        hideAuthorForm="toggleAuthorForm"
+                        saveAuthor="saveNewAuthor"}}
     {{/if}}
   {{/if}}
 
   {{view ETahi.AuthorDropTargetView index=0}}
   {{#each authorWithErrors in sortedAuthorsWithErrors}}
-    {{author-view
-      isEditable=isEditable
-      institutions=institutions
-      delete="removeAuthor"
-      save="saveAuthor"
-      plosAuthor=authorWithErrors.model
-      errors=authorWithErrors.errors}}
+    {{author-view isEditable=isEditable
+                  institutions=institutions
+                  delete="removeAuthor"
+                  save="saveAuthor"
+                  author=authorWithErrors}}
     {{view ETahi.AuthorDropTargetView index=authorWithErrors.model.position}}
   {{/each}}
 </div>

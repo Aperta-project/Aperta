@@ -4,6 +4,7 @@
       <div class="paper-type-form">
         {{#if editMode}}
           {{input value=paperType placeholder="Paper Type" class="edit-paper-type-field"}}
+          {{error-message message=validationErrors.paperType classNames="mmt-edit-error-message"}}
         {{else}}
           <div class="paper-type-name" {{action "toggleEditMode"}}>
             {{paperType}}

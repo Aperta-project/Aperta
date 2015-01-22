@@ -1,9 +1,9 @@
 `import Ember from 'ember'`
 `import SavesDelayed from 'tahi/mixins/controllers/saves-delayed'`
 `import ControllerParticipants from 'tahi/mixins/controllers/controller-participants'`
-`import ValidatesAssociatedModels from 'tahi/mixins/controllers/validates-associated-models'`
+`import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-TaskController = Ember.ObjectController.extend SavesDelayed, ControllerParticipants, ValidatesAssociatedModels, Ember.Evented,
+TaskController = Ember.ObjectController.extend SavesDelayed, ControllerParticipants, ValidationErrorsMixin, Ember.Evented,
   queryParams: ['isNewTask']
   isNewTask: false
   needs: ['application']
@@ -32,9 +32,9 @@ TaskController = Ember.ObjectController.extend SavesDelayed, ControllerParticipa
     @_super()
       .then () =>
         @clearValidationErrors()
-      .catch (error) =>
-        @setValidationErrors(error.errors)
-        @set('model.completed', false)
+      .catch (response) =>
+        @displayValidationErrorsFromResponse response
+        @set 'model.completed', false
 
   actions:
 

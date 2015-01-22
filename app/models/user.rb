@@ -68,6 +68,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def accessible_journals
+    site_admin? ? Journal.all : journals
+  end
+
   def self.search_users(query: nil, assigned_users_in_journal_id: nil)
     if query
       sanitized_query = connection.quote_string(query.to_s.downcase) + '%'

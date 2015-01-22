@@ -2,14 +2,14 @@
 
 ErrorHandler =
   name: 'errorHandler'
-  after: 'currentUser'
+  after: 'flashMessages'
 
   initialize: (container, application) ->
     return
     # EMBERCLI TODO - re-evaluate
     errorPath = '/errors'
-
-    logError = (msg) ->
+    flash     = container.lookup('flashMessages:main')
+    logError  = (msg) ->
       e = new Error(msg)
       console.log(e.stack || e.message)
 
@@ -17,13 +17,13 @@ ErrorHandler =
     application.inject('route', 'logError', 'logError:main')
 
     # The global error handler
-    # Ember.onerror = (error) ->
-    #   logError('\n' + error.message + '\n' + error.stack + '\n')
-    #   window.ErrorNotifier.notify(error, 'Uncaught Ember Error')
-    #   if ETahi.environment == 'development'
-    #     throw error
-    #   else
-    #     displayErrorMessage(error)
+    Ember.onerror = (error) ->
+      logError("\n" + error.message + "\n" + error.stack + "\n")
+      window.ErrorNotifier.notify(error, "Uncaught Ember Error")
+      if ETahi.environment == 'development'
+        throw error
+      else
+        flash.displayMessage 'error', error
 
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       {type, url} = ajaxSettings
@@ -41,6 +41,6 @@ ErrorHandler =
       if jqXHR.status == 401
         document.location.href = '/users/sign_in'
 
-      Utils.displayErrorMessage("There was a problem with the server.  Your data may be out of sync.  Please reload.")
+      flash.displayMessage 'error', 'There was a problem with the server. Your data may be out of sync. Please reload.'
 
 `export default ErrorHandler`

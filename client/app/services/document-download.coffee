@@ -9,25 +9,25 @@ DocumentDownloadService = Ember.Namespace.create
       url: "/papers/#{@paperId}/export",
       data: {format: @downloadFormat}
       success: (data) =>
-        jobId = data['jobs']['id']
-        @checkJobStatus(jobId)
+        jobId = data['job']['id']
+        @checkJobState(jobId)
       error: (data) ->
         throw new Error("Could not download #{@downloadFormat}")
 
-  checkJobStatus: (jobId) ->
+  checkJobState: (jobId) ->
     status = ""
     @timeout = 2000
     Ember.$.ajax
       url: "/papers/#{@paperId}/status/#{jobId}",
       success: (data) =>
-        job = data['jobs']
-        if job.status == "complete"
+        job = data['job']
+        if job.state == "converted"
           Utils.windowLocation job.url
-        else if job.status == "working"
-          setTimeout (=>
-            @checkJobStatus jobId
-          ), @timeout
+        else if job.state == "errored"
+          alert("The download failed")
         else
-          throw new Error("Unknown conversion status #{job.status}")
+          setTimeout (=>
+            @checkJobState jobId
+          ), @timeout
 
 `export default DocumentDownloadService`

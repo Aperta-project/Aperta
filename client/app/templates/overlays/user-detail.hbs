@@ -3,17 +3,20 @@
 
     <div class="overlay-container">
       <h1>User Details</h1>
-      <div class="row">
+      <div {{bind-attr class="validationErrors.username:error"}}>
         <label class="modal-field-label" for="user-detail-username">Username</label>
-        <div class="modal-field">{{input class="modal-username" id="user-detail-username" value=model.username}}</div>
+        <div class="modal-field">
+          {{input class="modal-username" id="user-detail-username" value=model.username}}
+          {{error-message message=validationErrors.username}}
+        </div>
       </div>
 
-      <div class="row">
+      <div>
         <label class="modal-field-label" for="user-detail-first-name">First Name</label>
         <div class="modal-field">{{input class="modal-first-name" id="user-detail-first-name" value=model.firstName}}</div>
       </div>
 
-      <div class="row">
+      <div>
         <label class="modal-field-label" for="user-detail-last-name">Last Name</label>
         <div class="modal-field">{{input class="modal-last-name" id="user-detail-last-name" value=model.lastName}}</div>
       </div>
@@ -31,7 +34,7 @@
 
       <div class="overlay-action-buttons">
         <a class="button-link button--blue cancel-link" {{action "rollbackUser"}}>Cancel</a>
-        <button class="button-primary button--blue button--wide" {{action "saveUser"}}>Save</button>
+        <button class="button-primary button--blue" {{action "saveUser"}}>Save</button>
       </div>
     </div>
 

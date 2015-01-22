@@ -1,16 +1,15 @@
 `import Ember from 'ember'`
 `import FileUploadMixin from 'tahi/mixins/controllers/file-upload'`
+`import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 `import Utils from 'tahi/services/utils'`
 
-ProfileController = Ember.ObjectController.extend FileUploadMixin,
-  hideAffiliationForm: true
-
+ProfileController = Ember.ObjectController.extend FileUploadMixin, ValidationErrorsMixin,
+  showAffiliationForm: false
   errorText: ""
-
   affiliations: Ember.computed.alias "model.affiliationsByDate"
 
   avatarUploadUrl: ( ->
-    "/users/#{@get('id')}/update_avatar"
+    "/users/#{@get('model.id')}/update_avatar"
   ).property('id')
 
   selectableInstitutions: (->
@@ -22,32 +21,32 @@ ProfileController = Ember.ObjectController.extend FileUploadMixin,
   actions:
     uploadFinished: (data, filename) ->
       @uploadFinished(data, filename)
-      @set('model.avatarUrl', data.avatar_url)
+      @set 'model.avatarUrl', data.avatar_url
 
-    toggleAffiliationForm: ->
-      @set('newAffiliation', @store.createRecord('affiliation'))
-      @toggleProperty('hideAffiliationForm')
-      false
+    hideNewAffiliationForm: ->
+      @clearValidationErrors()
+      @set 'showAffiliationForm', false
+      @get('newAffiliation').deleteRecord() if @get('newAffiliation.isNew')
+
+    showNewAffiliationForm: ->
+      @set 'newAffiliation', @store.createRecord('affiliation')
+      @set 'showAffiliationForm', true
 
     removeAffiliation: (affiliation) ->
-      if confirm("Are you sure you want to destroy this affiliation?")
-        affiliation.destroyRecord()
+      affiliation.destroyRecord() if confirm('Are you sure you want to destroy this affiliation?')
 
     commitAffiliation:(affiliation) ->
-      affiliation.set('user', @get('model'))
+      affiliation.set 'user', @get('model')
+      @clearValidationErrors()
+
       affiliation.save().then(
         (affiliation) =>
           affiliation.get('user.affiliations').addObject(affiliation)
-          @send('toggleAffiliationForm')
+          @send 'hideNewAffiliationForm'
         ,
-        (errorResponse) =>
-          affiliation.set('user', null)
-          errors = for key, value of errorResponse.errors
-            messages = for msg in value
-              # TODO: Use this in the other error handlers.
-              "#{key.dasherize().capitalize().replace("-", " ")} #{value}"
-            messages.join(", ")
-          Utils.togglePropertyAfterDelay(@, 'errorText', errors.join(', '), '', 5000)
+        (response) =>
+          affiliation.set 'user', null
+          @displayValidationErrorsFromResponse response
       )
 
 `export default ProfileController`

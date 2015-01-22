@@ -15,6 +15,6 @@ PaperNewOverlayController = Ember.ObjectController.extend
         @send('addPaperToEventStream', paper)
         @transitionToRoute 'paper.edit', paper
       , (response) =>
-        @flash.displayErrorMessagesFromRailsResponse response
+        @flash.displayErrorMessagesFromResponse response
 
 `export default PaperNewOverlayController`

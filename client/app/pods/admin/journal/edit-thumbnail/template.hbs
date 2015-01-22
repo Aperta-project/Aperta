@@ -1,4 +1,5 @@
 <div class="journal-thumbnail-edit-form clearfix">
+
   <div class="journal-logo-upload">
     <div class="journal-thumbnail">
       {{#if logoPreview}}
@@ -16,21 +17,24 @@
     <div class="journal-logo-spinner"></div>
   </div>
 
-  <div {{bind-attr class=":form-group :required nameErrors:error"}}>
-    <div {{bind-attr class=":error-message nameErrors::hidden"}}>{{nameErrors}}</div>
+  <div {{bind-attr class=":form-group :required validationErrors.name:error"}}>
     {{input type="text"
             value=journal.name
             class="form-control journal-name-edit"
             placeholder="Journal Title"}}
+    {{error-message message=validationErrors.name}}
   </div>
-  <div {{bind-attr class=":form-group :required descriptionErrors:error"}}>
-    <div {{bind-attr class=":error descriptionErrors::hidden"}}>{{descriptionErrors}}</div>
+
+  <div {{bind-attr class=":form-group :required validationErrors.description:error"}}>
     {{textarea value=journal.description
                class="form-group required journal-description-edit form-control"
                placeholder="Journal Description"}}
+    {{error-message message=validationErrors.description}}
   </div>
+
   <div class="journal-edit-buttons">
     <a href="#" class="button-link knockout" {{action "resetJournalDetails"}}>Cancel</a>
     <a href="#" class="button-secondary button--blue knockout" {{action "saveJournalDetails"}}>Save</a>
   </div>
+
 </div>

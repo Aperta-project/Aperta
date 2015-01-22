@@ -1,9 +1,9 @@
 `import Ember from 'ember'`
 `import Utils from 'tahi/services/utils'`
+`import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
+ManuscriptManagerTemplateEditController = Ember.ObjectController.extend ValidationErrorsMixin,
   dirty: false
-  errorText: ""
   editMode: false
   journal: Ember.computed.alias('model.journal')
 
@@ -26,7 +26,6 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
   successfulSave: (transition) ->
     @reset()
-    @set('errorText', '')
     if transition
       transition.retry()
     else
@@ -40,6 +39,7 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
 
   actions:
     toggleEditMode: ->
+      @clearValidationErrors()
       @toggleProperty 'editMode'
       return null
 
@@ -91,12 +91,8 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend
             else
               @successfulSave(transition)
 
-      ).catch (errorResponse) =>
-        if errorResponse.status == 422
-          errors = _.values(errorResponse.responseJSON.errors).join(' ')
-        else
-          errors = "There was an error saving your changes. Please try again"
-        Utils.togglePropertyAfterDelay(this, 'errorText', errors, '', 5000)
+      ).catch (response) =>
+        @displayValidationErrorsFromResponse response
 
     rollback: ->
       if @get('model.isNew')

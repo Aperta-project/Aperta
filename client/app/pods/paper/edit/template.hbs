@@ -7,7 +7,7 @@
     <aside>
       <div class="task-list">
         {{partial "paper/task-list"}}
-        <a {{action "submit" target="view"}} {{bind-attr class=":button-primary :button--wide allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit</a>
+        <a {{action "submit" target="view"}} {{bind-attr class=":button-primary allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit</a>
       </div>
     </aside>
 
@@ -18,10 +18,10 @@
             <strong>DOI:</strong> {{doi}}
           </div>
         {{/if}}
-        <a {{action "submit" target="view"}} {{bind-attr class=":no-sidebar-submit-manuscript :button-primary :button--wide allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit Manuscript</a>
+        <a {{action "submit" target="view"}} {{bind-attr class=":no-sidebar-submit-manuscript :button-primary allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit Manuscript</a>
         {{toggle-paper-editable action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
         <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
-        <span class="edit-paper-lock-message">{{{statusMessage}}} {{time-ago time=savedAt}}</span>
+        <span class="edit-paper-lock-message">{{display statusMessage or=""}} {{time-ago time=savedAt}}</span>
       </div>
 
       <div class="manuscript-container">

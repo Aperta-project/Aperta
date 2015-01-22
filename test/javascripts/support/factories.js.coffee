@@ -20,7 +20,7 @@ ETahi.Factory =
       recordAttrs = attrs
 
     baseAttrs = ETahi.FactoryAttributes[type]
-    throw "No factory exists for type: #{type}" unless baseAttrs
+    throw new Error("No factory exists for type: #{type}") unless baseAttrs
     _.defaults(recordAttrs, baseAttrs)
 
   createList: (numberOfRecords, type) ->

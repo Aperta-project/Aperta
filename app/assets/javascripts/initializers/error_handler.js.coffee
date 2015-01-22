@@ -17,10 +17,7 @@ ETahi.initializer
       logError("\n" + error.message + "\n" + error.stack + "\n")
       # TODO FIX THIS
       # window.ErrorNotifier.notify(error, "Uncaught Ember Error")
-      if ETahi.environment == 'development'
-        throw error
-      # TODO FIX THIS. Env is not set in QUnit
-      else if ETahi.environment == undefined
+      if ETahi.environment == 'development' || ETahi.environment == 'test'
         throw error
       else
         flash.displayMessage 'error', error

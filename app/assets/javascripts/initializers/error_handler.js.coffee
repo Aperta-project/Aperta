@@ -14,15 +14,19 @@ ETahi.initializer
 
     # The global error handler
     Ember.onerror = (error) ->
-      # TODO Check how it looks when the error happens in the app.
-      # YES can delete b/c it is not needed in qunit tests.
-      # logError("\n" + error.message + "\n" + error.stack + "\n")
+      # console.log('Ember.onerror', error)
+      if ETahi.environment == 'test'
+        # if we do not print this, you can not click on the stack trace
+        # and jump to the code where the error happened.
+        console.log(error.stack)
+        # in test, this error is caught by QUnit and displayed in the UI
+        throw error
 
-      if ETahi.environment == 'development' || ETahi.environment == 'test'
+      if ETahi.environment == 'development'
+        flash.displayMessage 'error', error
         throw error
       else
         flash.displayMessage 'error', error
-        # TODO run the server in staging mode and see if this works correctly.
         if Bugsnag && Bugsnag.notifyException
           Bugsnag.notifyException(error, "Uncaught Ember Error")
 

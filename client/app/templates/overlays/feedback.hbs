@@ -9,7 +9,11 @@
     </header>
 
     {{progress-spinner visible=isUploading}}
-    {{textarea class="form-control feedback-overlay-remarks " name="remarks" value=model.remarks autofocus="autofocus"}}
+
+    {{textarea class="form-control feedback-overlay-remarks"
+               name="remarks"
+               value=model.remarks
+               autofocus="autofocus"}}
 
     <ul class="feedback-overlay-screenshots">
       {{#each screenshot in model.screenshots}}

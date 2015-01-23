@@ -1,0 +1,8 @@
+.spinner-component { display: none; }
+
+.spinner-component--visible { display: block; }
+
+.spinner-component--absolute {
+  @include position(absolute, 50% auto auto 50%);
+  margin: -10px 0 0 -10px;
+}

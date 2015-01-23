@@ -1,11 +1,6 @@
 `import Ember from 'ember'`
-`import SpinnerMixin from 'tahi/mixins/views/spinner'`
 
-JournalThumbnailView = Ember.View.extend SpinnerMixin,
-  toggleSpinner: (->
-    @createSpinner('controller.isUploading', '.journal-logo-spinner', color: '#fff')
-  ).observes('controller.isUploading').on('didInsertElement')
-
+JournalThumbnailView = Ember.View.extend
   togglePreview: (->
     Ember.run.schedule 'afterRender', =>
       if @get('controller.logoPreview')

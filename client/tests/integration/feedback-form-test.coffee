@@ -1,21 +1,34 @@
+`import Ember from 'ember'`
+`import startApp from '../helpers/start-app'`
+`import { paperWithTask } from '../helpers/setups'`
+`import setupMockServer from '../helpers/mock-server'`
+
+app = null
+server = null
+fakeUser = null
+
 module 'Integration: Feedback Form',
-  teardown: -> ETahi.reset()
+  teardown: ->
+    server.restore()
+    Ember.run(app, app.destroy)
+
   setup: ->
-    setupApp integration: true
-    TahiTest.dashboardResponse =
+    app = startApp()
+    server = setupMockServer()
+    fakeUser = window.currentUser.user
+
+    dashboardResponse =
       users: [fakeUser]
       dashboards: [
         id: 1
         user_id: 1
         paper_ids: []
-        total_paper_count: TahiTest.paperCount
-        total_page_count: TahiTest.pageCount
+        total_paper_count: 1
+        total_page_count: 1
       ]
 
-    adminJournalsResponse = {}
-
     server.respondWith 'GET', '/dashboards', [
-      200, 'Content-Type': 'application/json', JSON.stringify TahiTest.dashboardResponse
+      200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
     ]
 
     server.respondWith 'GET', "/admin/journals/authorization", [
@@ -33,7 +46,7 @@ test 'clicking the feedback button sends feedback to the backend', ->
     click '.navigation-toggle'
   .andThen ->
     click '.navigation-item-feedback'
-    ok exists '.overlay'
+    ok find('.overlay').length
   .andThen ->
     fillIn '.overlay textarea', "My feedback"
     click '.overlay-footer .button-primary'

@@ -6,6 +6,7 @@ import config from '../../config/environment';
 import asyncHelpers from './async-helpers';
 import storeHelpers from './store-helpers';
 import chosenHelpers from './chosen-helpers';
+import customAssertions from './custom-assertions';
 
 import Factory from './factory';
 

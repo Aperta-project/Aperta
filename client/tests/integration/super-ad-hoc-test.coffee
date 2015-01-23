@@ -1,17 +1,34 @@
+`import Ember from 'ember'`
+`import startApp from '../helpers/start-app'`
+`import setupMockServer from '../helpers/mock-server'`
+`import { paperWithTask } from '../helpers/setups'`
+`import Factory from '../helpers/factory'`
+
+app = null
+server = null
+fakeUser = null
+currentPaper = null
+
 module 'Integration: Super AdHoc Card',
-  teardown: -> ETahi.reset()
+
+  teardown: ->
+    server.restore()
+    Ember.run(app, app.destroy)
+
   setup: ->
-    setupApp integration: true
-    ef = ETahi.Factory
-    records = ETahi.Setups.paperWithTask('Task'
+    app = startApp()
+    server = setupMockServer()
+    fakeUser = window.currentUser.user
+
+    records = paperWithTask('Task'
       id: 1
       title: "Super Ad-Hoc"
     )
-    ETahi.Test = {}
-    ETahi.Test.currentPaper = records[0]
+    currentPaper = records[0]
 
-    paperPayload = ef.createPayload('paper')
+    paperPayload = Factory.createPayload('paper')
     paperPayload.addRecords(records.concat([fakeUser]))
+
     paperResponse = paperPayload.toJSON()
     collaborators = [
       id: "35"
@@ -23,13 +40,13 @@ module 'Integration: Super AdHoc Card',
       200, {"Content-Type": "application/json"}, JSON.stringify {dashboards: []}
     ]
 
-    server.respondWith 'GET', "/papers/#{ETahi.Test.currentPaper.id}", [
+    server.respondWith 'GET', "/papers/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
     server.respondWith 'PUT', /\/tasks\/\d+/, [
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
-    server.respondWith 'GET', "/filtered_users/collaborators/#{ETahi.Test.currentPaper.id}", [
+    server.respondWith 'GET', "/filtered_users/collaborators/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify collaborators
     ]
     server.respondWith 'GET', /\/filtered_users\/non_participants\/\d+\/\w+/, [
@@ -37,15 +54,15 @@ module 'Integration: Super AdHoc Card',
     ]
 
 test "Changing the title on an AdHoc Task", ->
-  visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
+  visit "/papers/#{currentPaper.id}/tasks/1"
   click 'h1.inline-edit .glyphicon-pencil'
   fillIn '.large-edit input[name=title]', 'Shazam!'
   click '.large-edit .button--green:contains("Save")'
   andThen ->
-    ok exists find 'h1.inline-edit:contains("Shazam!")'
+    equal(find('h1.inline-edit:contains("Shazam!")').length, 1)
 
 test "Adding a text block to an AdHoc Task", ->
-  visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
+  visit "/papers/#{currentPaper.id}/tasks/1"
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
   andThen ->
@@ -63,19 +80,19 @@ test "Adding a text block to an AdHoc Task", ->
     assertNoText('.inline-edit', 'yahoo')
 
 test "Adding and removing a checkbox item to an AdHoc Task", ->
-  visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
+  visit "/papers/#{currentPaper.id}/tasks/1"
 
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--list'
   andThen ->
-    ok exists find '.inline-edit-form .item-remove'
+    equal(find('.inline-edit-form .item-remove').length, 1)
     Em.$('.inline-edit-form label[contenteditable]')
     .html("Here is a checkbox list item")
     .trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
     assertText('.inline-edit', 'checkbox list item')
-    ok exists find '.inline-edit input[type=checkbox]'
+    equal(find('.inline-edit input[type=checkbox]').length, 1)
     click '.inline-edit-body-part .glyphicon-trash'
   andThen ->
     assertText('.inline-edit-body-part', 'Are you sure?')
@@ -83,9 +100,8 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
   andThen ->
     assertNoText('.inline-edit', 'checkbox list item')
 
-
 test "Adding an email block to an AdHoc Task", ->
-  visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
+  visit "/papers/#{currentPaper.id}/tasks/1"
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--email'
   fillIn '.inline-edit-form input[placeholder="Enter a subject"]', "Deep subject"
@@ -102,7 +118,7 @@ test "User can send an email from an adhoc card", ->
     204, {"Content-Type": "application/json"}, JSON.stringify {}
   ]
 
-  visit "/papers/#{ETahi.Test.currentPaper.id}/tasks/1"
+  visit "/papers/#{currentPaper.id}/tasks/1"
 
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--email'

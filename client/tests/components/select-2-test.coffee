@@ -1,16 +1,20 @@
 `import Ember from 'ember'`
 `import { test, moduleForComponent } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
+`import setupMockServer from '../helpers/mock-server'`
+
+server = null
 
 moduleForComponent 'select-2', 'Unit: components/select-2',
   setup: ->
     startApp()
-
-    server = sinon.fakeServer.create()
+    server = setupMockServer()
 
     server.respondWith 'GET', /filtered_objects.*/, [
       200, {"Content-Type": "application/json"}, JSON.stringify [{id: 1, text: 'Aaron'}]
     ]
+  teardown: ->
+    server.restore()
 
 fillInDropdown = (object) ->
   keyEvent('.select2-container input', 'keydown')

@@ -1,16 +1,25 @@
+`import Ember from 'ember'`
+`import startApp from '../helpers/start-app'`
+`import setupMockServer from '../helpers/mock-server'`
+`import Factory from '../helpers/factory'`
+
+app = null
+server = null
+
 module 'Integration: Navbar',
-  teardown: -> ETahi.reset()
+
+  teardown: ->
+    server.restore()
+    Ember.run(app, app.destroy)
 
   setup: ->
-    setupApp integration: true
+    app = startApp()
+    server = setupMockServer()
 
-    TahiTest.dashboardResponse =
-      dashboards: [
-        id: 1
-      ]
+    dashboardResponse = dashboards: [ id: 1 ]
 
     server.respondWith 'GET', '/dashboards', [
-      200, 'Content-Type': 'application/json', JSON.stringify TahiTest.dashboardResponse
+      200, 'Content-Type': 'application/json', JSON.stringify(dashboardResponse)
     ]
 
 respondAuthorized = ->
@@ -21,7 +30,7 @@ respondAuthorized = ->
     ]
 
   server.respondWith 'GET', '/admin/journals', [
-    200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
+    200, 'Content-Type': 'application/json', JSON.stringify(adminJournalsResponse)
   ]
 
   server.respondWith 'GET', "/admin/journals/authorization", [
@@ -42,8 +51,8 @@ respondUnauthorized = ->
   ]
 
 setCurrentUserAdmin = (bool) ->
-  store = ETahi.__container__.lookup 'store:main'
-  store.find 'user', currentUserId
+  store = getStore()
+  store.find 'user', getCurrentUser().get('id')
   .then (currentUser) -> currentUser.set 'admin', bool
 
 test 'all users can see their username', ->
@@ -53,7 +62,7 @@ test 'all users can see their username', ->
   visit '/'
   click '.navigation-toggle'
   andThen ->
-    ok exists(find ".navigation-item--account span:contains('Fake User')")
+    equal(find(".navigation-item--account span:contains('Fake User')").length, 1)
 
 test '(200 response) can see the Flow Manager link', ->
   respondAuthorized()
@@ -61,7 +70,7 @@ test '(200 response) can see the Flow Manager link', ->
   visit '/'
   click '.navigation-toggle'
   andThen ->
-    ok exists(find ".navigation:contains('Flow Manager')")
+    equal(find(".navigation:contains('Flow Manager')").length, 1)
 
 test '(403 response) cannot see the Flow Manager link', ->
   respondUnauthorized()
@@ -69,7 +78,7 @@ test '(403 response) cannot see the Flow Manager link', ->
   visit '/'
   click '.navigation-toggle'
   andThen ->
-    ok !exists(find ".navigation:contains('Flow Manager')")
+    equal(find(".navigation:contains('Flow Manager')").length, 0)
 
 test '(200 response) can see the Admin link', ->
   respondAuthorized()
@@ -77,7 +86,7 @@ test '(200 response) can see the Admin link', ->
   visit '/'
   click '.navigation-toggle'
   andThen ->
-    ok exists(find ".navigation:contains('Admin')")
+    equal(find(".navigation:contains('Admin')").length, 1)
 
 test '(200 response) can see the Flow Manager link', ->
   respondAuthorized()
@@ -85,7 +94,7 @@ test '(200 response) can see the Flow Manager link', ->
   visit '/'
   click '.navigation-toggle'
   andThen ->
-    ok exists(find ".navigation:contains('Flow Manager')")
+    equal(find(".navigation:contains('Flow Manager')").length, 1)
 
 test '(403 response) cannot see the Admin link', ->
   respondUnauthorized()
@@ -93,7 +102,7 @@ test '(403 response) cannot see the Admin link', ->
   visit '/'
   click '.navigation-toggle'
   andThen ->
-    ok !exists(find ".navigation:contains('Admin')")
+    equal(find(".navigation:contains('Admin')").length, 0)
 
 test '(403 response) cannot see the Flow Manager link', ->
   respondUnauthorized()
@@ -101,4 +110,4 @@ test '(403 response) cannot see the Flow Manager link', ->
   visit '/'
   click '.navigation-toggle'
   andThen ->
-    ok !exists(find ".navigation:contains('Flow Manager')")
+    equal(find(".navigation:contains('Flow Manager')").length, 0)

@@ -1,7 +1,21 @@
+`import Ember from 'ember'`
+`import startApp from '../helpers/start-app'`
+`import setupMockServer from '../helpers/mock-server'`
+`import { paperWithParticipant } from '../helpers/setups'`
+`import Factory from '../helpers/factory'`
+
+app = null
+server = null
+
 module 'Integration: Paper Manage page',
-  teardown: -> ETahi.reset()
+
+  teardown: ->
+    server.restore()
+    Ember.run(app, app.destroy)
+
   setup: ->
-    setupApp integration: true
+    app = startApp()
+    server = setupMockServer()
 
     taskPayload =
       task:
@@ -14,17 +28,15 @@ module 'Integration: Paper Manage page',
 
     # let us see the manuscript manager
     server.respondWith 'GET', /\/papers\/\d+\/manuscript_manager/, [
-      204
-      {}
-      ""
+      204, {}, ""
     ]
 
     server.respondWith 'GET', "/papers/1", [
-      200, {"Content-Type": "application/json"}, JSON.stringify ETahi.Setups.paperWithParticipant().toJSON()
+      200, {"Content-Type": "application/json"}, JSON.stringify(paperWithParticipant().toJSON())
     ]
 
     server.respondWith 'POST', "/tasks", [
-      200, {"Content-Type": "application/json"}, JSON.stringify taskPayload
+      200, {"Content-Type": "application/json"}, JSON.stringify(taskPayload)
     ]
 
     server.respondWith 'DELETE', "/tasks/1", [
@@ -37,10 +49,10 @@ test 'show delete confirmation overlay on deletion of a Task', ->
     $("div.card .card-remove").show()
     click("div.card .card-remove")
   andThen ->
-    ok find('h1').first().text().indexOf("You're about to delete this card forever") > 0
-    ok find('h1').last().text().indexOf("Are you sure?") > 0
-    equal find('.overlay button:contains("cancel")').length, 1
-    equal find('.overlay button:contains("Yes, Delete this Card")').length, 1
+    equal(find('h1:contains("You\'re about to delete this card forever")').length, 1)
+    equal(find('h1:contains("Are you sure?")').length, 1)
+    equal(find('.overlay button:contains("cancel")').length, 1)
+    equal(find('.overlay button:contains("Yes, Delete this Card")').length, 1)
 
 test 'click delete confirmation overlay cancel button', ->
   visit '/papers/1/manage'

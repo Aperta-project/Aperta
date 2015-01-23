@@ -1,14 +1,36 @@
-module 'Integration: Dashboard',
-  teardown: -> ETahi.reset()
-  setup: ->
-    setupApp integration: true
-    TahiTest.paperId = 934
-    TahiTest.adminJournalId = 412
-    TahiTest.adminRoleId = 98
-    TahiTest.paperCount = 42
-    TahiTest.pageCount = 3
+`import Ember from 'ember'`
+`import startApp from '../helpers/start-app'`
+`import { paperWithTask } from '../helpers/setups'`
+`import setupMockServer from '../helpers/mock-server'`
+`import Factory from '../helpers/factory'`
 
-    TahiTest.Factory =
+app = null
+server = null
+currentUserId = null
+fakeUser = null
+paperId = null
+adminJournalId = null
+adminRoleId = null
+paperCount = null
+pageCount = null
+
+module 'Integration: Dashboard',
+  teardown: ->
+    server.restore()
+    Ember.run(app, app.destroy)
+
+  setup: ->
+    app = startApp()
+    server = setupMockServer()
+    fakeUser = window.currentUser.user
+
+    paperId = 934
+    adminJournalId = 412
+    adminRoleId = 98
+    paperCount = 42
+    pageCount = 3
+
+    data =
       litePaper: (params) ->
         litePapers = []
         for i in [1..params.count] by 1
@@ -22,9 +44,9 @@ module 'Integration: Dashboard',
         litePapers
 
     litePapersResponse =
-      lite_papers: TahiTest.Factory.litePaper count: TahiTest.paperCount
+      lite_papers: data.litePaper count: paperCount
 
-    TahiTest.dashboardResponse =
+    dashboardResponse =
       users: [fakeUser]
       affiliations: []
       lite_papers: litePapersResponse.lite_papers[0..14]
@@ -32,14 +54,14 @@ module 'Integration: Dashboard',
         id: 1
         user_id: 1
         paper_ids: [1..15]
-        total_paper_count: TahiTest.paperCount
-        total_page_count: TahiTest.pageCount
+        total_paper_count: paperCount
+        total_page_count: pageCount
       ]
 
     adminJournalsResponse = {}
 
     server.respondWith 'GET', '/dashboards', [
-      200, 'Content-Type': 'application/json', JSON.stringify TahiTest.dashboardResponse
+      200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
     ]
 
     server.respondWith 'GET', '/comment_looks', [
@@ -61,21 +83,20 @@ module 'Integration: Dashboard',
     ]
 
     server.respondWith 'GET', '/lite_papers?page_number=3', [
-      200, 'Content-Type': 'application/json', JSON.stringify (lite_papers: litePapersResponse.lite_papers[30..TahiTest.paperCount - 1])
+      200, 'Content-Type': 'application/json', JSON.stringify (lite_papers: litePapersResponse.lite_papers[30..paperCount - 1])
     ]
 
 test 'With more than 15 papers, there should be a "Load More" button if we are not at the last page', ->
   visit '/'
   .then ->
-    ok exists '.load-more-papers'
+    ok find('.load-more-papers').length
     ok !Em.isEmpty find('.welcome-message').text().match(/You have 42 manuscripts/)
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 15
   click '.load-more-papers'
   andThen ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 30
-    ok exists '.load-more-papers'
+    ok find('.load-more-papers').length
   click '.load-more-papers'
   andThen ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 42
-    ok !exists '.load-more-papers'
-
+    ok !find('.load-more-papers').length

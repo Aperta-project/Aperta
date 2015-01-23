@@ -3,6 +3,14 @@ setupMockServer = ->
   server.autoRespond = true
   server.xhr.useFilters = true
   server.xhr.addFilter (method, url) -> !!url.match(/visualEditor/) || !!url.match(/visual-editor/)
+
+  server.respondWith 'GET', '/formats', [
+    200, {"Content-Type": "application/json"}, JSON.stringify({
+      "export_formats": [{ "format": "docx" }, { "format": "latex" }],
+      "import_formats": [{ "format": "docx" }, { "format": "odt" }]
+    })
+  ]
+
   server
 
 # server.respondWith 'GET', '/event_stream', [
@@ -11,11 +19,6 @@ setupMockServer = ->
 #   JSON.stringify {}
 # ]
 #
-# server.respondWith 'GET', '/admin/journals/authorization', [
-#   204
-#   'Content-Type': 'application/html'
-#   ""
-# ]
 #
 # # papers/:id/manuscript_manager
 # server.respondWith 'GET', /\/papers\/\d+\/manuscript_manager/, [
@@ -40,13 +43,5 @@ setupMockServer = ->
 #   403, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
 # ]
 #
-# server.respondWith 'GET', '/formats', [
-#   200,
-#   {"Content-Type": "application/json"},
-#   JSON.stringify({
-#     "export_formats": [{ "format": "docx" }, { "format": "latex" }],
-#     "import_formats": [{ "format": "docx" }, { "format": "odt" }]
-#   })
-# ]
 
 `export default setupMockServer`

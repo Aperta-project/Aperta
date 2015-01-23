@@ -1,36 +1,45 @@
+`import Ember from 'ember'`
+`import startApp from '../helpers/start-app'`
+`import setupMockServer from '../helpers/mock-server'`
+`import Factory from '../helpers/factory'`
+
+app = null
+server = null
+
 createJournalWithTaskTemplate = (taskType) ->
-  ef = ETahi.Factory
-  journal = ef.createRecord('Journal', id: 1, _rootKey: 'admin_journal')
-  mmt = ef.createMMT(journal, id: 1)
-  pt = ef.createPhaseTemplate(mmt, id: 1)
-  jtt = ef.createJournalTaskType(journal, taskType)
+  journal = Factory.createRecord('Journal', id: 1, _rootKey: 'admin_journal')
+  mmt = Factory.createMMT(journal, id: 1)
+  pt = Factory.createPhaseTemplate(mmt, id: 1)
+  jtt = Factory.createJournalTaskType(journal, taskType)
   [journal, mmt, pt, jtt]
 
 module 'Integration: Manuscript Manager Templates',
-  teardown: -> ETahi.reset()
+
+  teardown: ->
+    server.restore()
+    Ember.run(app, app.destroy)
+
   setup: ->
-    setupApp(integration: true)
-    ef = ETahi.Factory
+    app = startApp()
+    server = setupMockServer()
+
     records = createJournalWithTaskTemplate
       kind: "Task"
       title: "Ad Hoc"
       id: 1
 
-    adminJournalPayload = ef.createPayload('admin_journal')
+    adminJournalPayload = Factory.createPayload('admin_journal')
     adminJournalPayload.addRecords(records)
     adminJournalResponse = adminJournalPayload.toJSON()
-    admin = ef.createRecord('User', siteAdmin: true)
+    admin = Factory.createRecord('User', siteAdmin: true)
 
     # let us see the manuscript template manager
     server.respondWith 'GET', /\/flows\/authorization/, [
-      204
-      'Tahi-Authorization-Check': 'true'
-      ""
+      204, 'Tahi-Authorization-Check': 'true', ""
     ]
 
     server.respondWith 'GET', "/admin/journals/1", [
-      200, {"Content-Type": "application/json"},
-      JSON.stringify(adminJournalResponse)
+      200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalResponse)
     ]
 
     server.respondWith 'GET', "/admin/journals/authorization", [
@@ -38,9 +47,7 @@ module 'Integration: Manuscript Manager Templates',
     ]
 
     server.respondWith 'GET', "/users/#{admin.id}", [
-      200
-      'Content-Type': 'application/json'
-      JSON.stringify {user: admin}
+      200, 'Content-Type': 'application/json', JSON.stringify {user: admin}
     ]
 
     server.respondWith 'DELETE', "/task_templates/1", [
@@ -51,6 +58,7 @@ module 'Integration: Manuscript Manager Templates',
     server.respondWith 'PUT', "/manuscript_manager_templates/1", [
       200, {"Content-Type": "application/json"}, '{}'
     ]
+
     server.respondWith 'PUT', "/phase_templates/1", [
       200, {"Content-Type": "application/json"}, '{}'
     ]
@@ -75,28 +83,27 @@ module 'Integration: Manuscript Manager Templates',
     }
 
     server.respondWith 'POST', "/task_templates", [
-      200, {"Content-Type": "application/json"},
-      JSON.stringify(response)
+      200, {"Content-Type": "application/json"}, JSON.stringify(response)
     ]
 
 test 'Changing phase name', ->
   columnTitleSelect = 'h2.column-title:contains("Phase 1")'
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
-    .then -> ok exists find columnTitleSelect
+    .then -> ok find(columnTitleSelect).length
 
   click columnTitleSelect
     .then -> Em.$(columnTitleSelect).html('Shazam!')
   andThen ->
-    ok exists find 'h2.column-title:contains("Shazam!")'
+    ok find('h2.column-title:contains("Shazam!")').length
 
 test 'Adding an Ad-Hoc card', ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
-  click 'a.button--green:contains("Add New Card")'
-  pickFromChosenSingle '.task-type-select', 'Ad Hoc'
-  click '.button--green:contains("Add")'
-    .then -> ok exists find 'h1.inline-edit:contains("Ad Hoc")'
-  click '.adhoc-content-toolbar .glyphicon-plus'
-  click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
+  click('a.button--green:contains("Add New Card")')
+  pickFromChosenSingle('.task-type-select', 'Ad Hoc')
+  click('.button--green:contains("Add")')
+    .then -> ok find('h1.inline-edit:contains("Ad Hoc")').length
+  click('.adhoc-content-toolbar .glyphicon-plus')
+  click('.adhoc-content-toolbar .adhoc-toolbar-item--text')
   andThen ->
     ok(
       find('h1.inline-edit').hasClass('editing'),
@@ -105,23 +112,23 @@ test 'Adding an Ad-Hoc card', ->
     Em.$('.inline-edit-form div[contenteditable]')
     .html("New contenteditable, yahoo!")
     .trigger('keyup')
-    click '.task-body .inline-edit-body-part .button--green:contains("Save")'
+    click('.task-body .inline-edit-body-part .button--green:contains("Save")')
   andThen ->
     assertText('.inline-edit', 'yahoo')
-    click '.inline-edit-body-part .glyphicon-trash'
+    click('.inline-edit-body-part .glyphicon-trash')
   andThen ->
     assertText('.inline-edit-body-part', 'Are you sure?')
-    click '.inline-edit-body-part .delete-button'
+    click('.inline-edit-body-part .delete-button')
   andThen ->
     assertNoText('.inline-edit', 'yahoo')
-    click '.overlay-close-button:first'
+    click('.overlay-close-button:first')
 
 createCard = ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
-  click 'a.button--green:contains("Add New Card")'
-  pickFromChosenSingle '.task-type-select', 'Ad Hoc'
+  click('a.button--green:contains("Add New Card")')
+  pickFromChosenSingle('.task-type-select', 'Ad Hoc')
   click '.button--green:contains("Add")'
-    .then -> ok exists find 'h1.inline-edit:contains("Ad Hoc")'
+    .then -> ok find('h1.inline-edit:contains("Ad Hoc")').length
   andThen ->
     click '.overlay-close-button:first'
 

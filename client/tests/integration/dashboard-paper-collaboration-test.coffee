@@ -1,15 +1,25 @@
+`import Ember from 'ember'`
+`import startApp from '../helpers/start-app'`
+`import { paperWithRoles } from '../helpers/setups'`
+`import setupMockServer from '../helpers/mock-server'`
+`import Factory from '../helpers/factory'`
+`import EventStream from 'tahi/services/event-stream'`
+
+app = null
+server = null
+fakeUser = null
+
 setupEventStream = ->
-  store = ETahi.__container__.lookup "store:main"
-  es = ETahi.EventStream.create
-          store: store
-          init: ->
+  store = getStore()
+  es = EventStream.create
+    store: store
+    init: ->
   [es, store]
 
 createDashboardDataWithLitePaper = (paperCount, litePaper) ->
-  ef = ETahi.Factory
   litePapers = []
   for i in [1..paperCount] by 1
-    lp = ef.createLitePaper
+    lp = Factory.createLitePaper
       id: i
       title: "Fake Paper Long Title #{i}"
       short_title: "Fake Paper Short Title #{i}"
@@ -29,9 +39,8 @@ createDashboardDataWithLitePaper = (paperCount, litePaper) ->
   ]]
 
 createDashboardDataWithLitePaperRoles = (roleArray) ->
-  ef = ETahi.Factory
   litePapers = roleArray.map (role, index) ->
-    lp = ef.createLitePaper
+    lp = Factory.createLitePaper
       id: index + 1
       title: "Fake Paper Long Title #{index}"
       short_title: "Fake Paper Short Title #{index}"
@@ -49,13 +58,18 @@ createDashboardDataWithLitePaperRoles = (roleArray) ->
 
 
 module 'Integration: Dashboard',
-  teardown: -> ETahi.reset()
+  teardown: ->
+    server.restore()
+    Ember.run(app, app.destroy)
+
   setup: ->
-    setupApp integration: true
+    app = startApp()
+    server = setupMockServer()
+    fakeUser = window.currentUser.user
 
     [litePapers, dashboards] = createDashboardDataWithLitePaper(2)
 
-    TahiTest.dashboardResponse =
+    dashboardResponse =
       users: [fakeUser]
       affiliations: []
       lite_papers: litePapers
@@ -64,7 +78,7 @@ module 'Integration: Dashboard',
     adminJournalsResponse = {}
 
     server.respondWith 'GET', '/dashboards', [
-      200, 'Content-Type': 'application/json', JSON.stringify TahiTest.dashboardResponse
+      200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
     ]
 
     server.respondWith 'GET', '/admin/journals', [
@@ -99,9 +113,8 @@ test 'When paper is added, only shows if user is allowed to see the paper', ->
   andThen ->
     # receives paper update with no roles
     [es, store] = setupEventStream()
-    ef = ETahi.Factory
-    paperPayload = ef.createPayload('paper')
-    records = ETahi.Setups.paperWithRoles(200, [])
+    paperPayload = Factory.createPayload('paper')
+    records = paperWithRoles(200, [])
     paperPayload.addRecords(records.concat([fakeUser]))
     data = Ember.merge(paperPayload.toJSON(), action: "updated")
 
@@ -110,19 +123,15 @@ test 'When paper is added, only shows if user is allowed to see the paper', ->
   andThen ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2, "paper with no roles does not show on dashboard"
 
-
 test 'When user is removed from collaborating on paper', ->
-  ef = ETahi.Factory
-
   visit '/'
   .then ->
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
   andThen ->
     # receives eventstream push to remove collaboration
     [es, store] = setupEventStream()
-    ef = ETahi.Factory
-    paperPayload = ef.createPayload('paper')
-    records = ETahi.Setups.paperWithRoles(1, [])
+    paperPayload = Factory.createPayload('paper')
+    records = paperWithRoles(1, [])
     paperPayload.addRecords(records.concat([fakeUser]))
     data = Ember.merge(paperPayload.toJSON(), action: "updated")
 

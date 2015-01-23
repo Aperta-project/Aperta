@@ -1,8 +1,15 @@
+`import Ember from 'ember'`
+`import startApp from '../helpers/start-app'`
+`import Factory from '../helpers/factory'`
+`import EventStream from 'tahi/services/event-stream'`
+
+app = null
+
 setupEventStream = ->
-  store = ETahi.__container__.lookup "store:main"
-  es = ETahi.EventStream.create
-          store: store
-          init: ->
+  store = getStore()
+  es = EventStream.create
+    store: store
+    init: ->
   [es, store]
 
 phaseHasTask = (store, {phaseId, taskId}) ->
@@ -16,9 +23,10 @@ taskBelongsToPhase = (store, {phaseId, taskId}) ->
   task.get('phase') == phase
 
 module 'Integration: EventStream',
-  teardown: -> ETahi.reset()
+  teardown: ->
+    Ember.run(app, app.destroy)
   setup: ->
-    setupApp(integration: true)
+    app = startApp()
 
 test 'action:created without a task will put the payload in the store', ->
   expect(1)
@@ -63,7 +71,7 @@ test 'action:destroy will delete the task from the store', ->
     store.push('task', id: 2)
     es.msgResponse(data)
     ok store.getById('task', 1) is null
-    ok exists store.getById('task', 2)
+    ok store.getById('task', 2) isnt null
 
 test "action:created with a task updates the phase's tasks", ->
   expect(2)

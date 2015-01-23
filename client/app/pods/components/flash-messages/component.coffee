@@ -6,6 +6,6 @@ FlashMessagesComponent = Ember.Component.extend
 
   actions:
     removeMessage: (message) ->
-      @get('messages').removeObject message
+      @get('flash.messages').removeObject message
 
 `export default FlashMessagesComponent`

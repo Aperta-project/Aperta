@@ -1,28 +1,13 @@
-flash = Ember.Object.extend
-  messages: []
-
-  displayMessage: (type, message) ->
-    @get('messages').pushObject
-      text: message
-      type: type
-
-  displayErrorMessagesFromResponse: (response) ->
-    errors = (for own key, value of response.errors
-      "#{key.underscore().replace('_', ' ').capitalize()} #{value}"
-    )
-    errors.forEach (message) =>
-      @displayMessage 'error', message
-
-  clearMessages: ->
-    @set 'messages', []
+`import Flash from 'tahi/services/flash'`
 
 FlashMessages =
   name: 'flashMessages'
 
   initialize: (container, application) ->
-    container.register 'flashMessages:main', flash
+    container.register 'flashMessages:main', Flash
     application.inject 'route',      'flash', 'flashMessages:main'
     application.inject 'controller', 'flash', 'flashMessages:main'
+    application.inject 'component:flashMessages', 'flash', 'flashMessages:main'
 
     Ember.Route.reopen
       enter: ->

@@ -14,6 +14,7 @@ module 'Integration: Paper Manage page',
     Ember.run(app, app.destroy)
 
   setup: ->
+    Factory.resetFactoryIds()
     app = startApp()
     server = setupMockServer()
 

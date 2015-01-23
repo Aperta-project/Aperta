@@ -5,6 +5,3 @@ TaskAdapter = DS.ActiveModelAdapter.extend
     'tasks'
 
 `export default TaskAdapter`
-
-# EMBERCLI TODO - These are engines, no?
-# ETahi.AuthorsTaskAdapter = ETahi.TaskAdapter.extend()

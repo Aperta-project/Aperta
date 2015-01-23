@@ -37,7 +37,7 @@ ManuscriptManagerTemplateRoute = Ember.Route.extend
 
     showDeleteConfirm: (task) ->
       @controllerFor('overlays/cardDelete').set('task', task)
-      @render('cardDeleteOverlay',
+      @render('overlays/cardDelete',
         into: 'application'
         outlet: 'overlay'
         controller: 'overlays/cardDelete')

@@ -47,6 +47,7 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
     feedback: ->
       @render('overlays/feedback',
         into: 'application'
-        outlet: 'overlay')
+        outlet: 'overlay'
+        controller: 'overlays/feedback')
 
 `export default ApplicationRoute`

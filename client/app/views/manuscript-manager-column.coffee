@@ -1,30 +1,29 @@
 `import Ember from 'ember'`
-`import Droppable from 'tahi/mixins/droppable'`
+`import DragNDrop from 'tahi/services/drag-n-drop'`
 
-ManuscriptManagerColumnView = Em.View.extend Droppable,
+
+ManuscriptManagerColumnView = Ember.View.extend DragNDrop.DroppableMixin,
   classNames: ['column']
 
   nextPosition: (->
     @get('content.position') + 1
   ).property('content.position')
 
-  dragDidEnd: (e) ->
+  removeDragStyles: () ->
     @$().removeClass('current-drop-target')
 
   dragOver: (e) ->
     @$().addClass('current-drop-target')
-    @cancelDroppableEvent(e)
 
-  dragLeave: (e) ->
-    @dragDidEnd(e)
+  dragLeave: ->
+    @removeDragStyles()
 
-  dragEnd: (e) ->
-    @dragDidEnd(e)
+  dragEnd: ->
+    @removeDragStyles()
 
   drop: (e) ->
-    @dragDidEnd(e)
-    @get('controller').send('changeTaskPhase', ETahi.get('dragItem'), @get('content'))
-    e.preventDefault()
-    false
+    @removeDragStyles()
+    @get('controller').send 'changeTaskPhase', DragNDrop.dragItem, @get('content')
+    DragNDrop.cancel(e)
 
 `export default ManuscriptManagerColumnView`

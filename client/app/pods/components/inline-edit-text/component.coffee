@@ -3,4 +3,4 @@
 
 InlineEditTextComponent = Ember.Component.extend AdhocInlineEditItem
 
-`export default InlineEditEmailComponent`
+`export default InlineEditTextComponent`

@@ -1,6 +1,5 @@
 `import Ember from 'ember'`
-`import DragNDrop from 'ember'`
-`import Droppable from 'tahi/mixins/views/droppable'`
+`import Droppable from 'tahi/mixins/droppable'`
 
 ManuscriptManagerColumnView = Em.View.extend Droppable,
   classNames: ['column']
@@ -10,14 +9,14 @@ ManuscriptManagerColumnView = Em.View.extend Droppable,
   ).property('content.position')
 
   dragOver: (e) ->
-    DragNDrop.draggingStarted('.column', @.$())
-    DragNDrop.cancel(e)
+    @$().addClass('current-drop-target')
+    @cancelDroppableEvent(e)
 
   dragEnd: (e) ->
-    DragNDrop.draggingStopped('.column')
+    @$().removeClass('current-drop-target')
 
   drop: (e) ->
-    DragNDrop.draggingStopped('.column')
+    @$().removeClass('current-drop-target')
     @get('controller').send('changeTaskPhase', ETahi.get('dragItem'), @get('content'))
     e.preventDefault()
     false

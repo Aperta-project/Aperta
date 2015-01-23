@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
-`import Dragable from 'tahi/mixins/views/dragable'`
+`import Draggable from 'tahi/mixins/draggable'`
 
-CardPreviewComponent = Ember.Component.extend Dragable,
+CardPreviewComponent = Ember.Component.extend Draggable,
   classNameBindings: [":card", "task.completed:card--completed", "classes"]
 
   paper: null

@@ -24,6 +24,7 @@ ManuscriptManagerColumnView = Ember.View.extend DragNDrop.DroppableMixin,
   drop: (e) ->
     @removeDragStyles()
     @get('controller').send 'changeTaskPhase', DragNDrop.dragItem, @get('content')
+    DragNDrop.dragItem = null
     DragNDrop.cancel(e)
 
 `export default ManuscriptManagerColumnView`

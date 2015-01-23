@@ -41,11 +41,11 @@ test 'show download links on control bar', ->
     200, {"Content-Type": "application/json"}, JSON.stringify(paperResponse)
   ]
   server.respondWith 'GET', exportUrl, [
-    200, {"Content-Type": "application/json"}, JSON.stringify(jobs: { id: "#{jobId}" })
+    200, {"Content-Type": "application/json"}, JSON.stringify({job: { id: "#{jobId}" }})
   ]
   server.respondWith 'GET', "/papers/#{currentPaper.id}/status/#{jobId}", [
     200, {"Content-Type": "application/json"}, JSON.stringify({
-      "jobs": {
+      "job": {
         "status": "complete",
         "id": "#{jobId}",
         "url": 'https://www.google.com'

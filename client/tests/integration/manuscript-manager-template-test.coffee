@@ -128,7 +128,7 @@ createCard = ->
   click('a.button--green:contains("Add New Card")')
   pickFromChosenSingle('.task-type-select', 'Ad Hoc')
   click '.button--green:contains("Add")'
-    .then -> ok find('h1.inline-edit:contains("Ad Hoc")').length
+    .then -> ok find('h1.inline-edit:contains("Ad Hoc")').length, 'It finds teh ad hocs'
   andThen ->
     click '.overlay-close-button:first'
 
@@ -156,16 +156,15 @@ test 'click delete confirmation overlay submit button', ->
   createCard()
   andThen ->
     # first POST to /task_templates
-    click find('.paper-type-save-button:contains("Save Template")')
+    click('.paper-type-save-button:contains("Save Template")')
   andThen ->
-    equal find(".card-content").length, 1
+    equal find(".card-content").length, 1, "It finds the card content"
     $("div.card .card-remove").show()
     click("div.card .card-remove")
     # causes DELETE to /task_templates/1
     click('.overlay button:contains("Yes, Delete this Card")')
   andThen ->
-    equal find(".card-content").length, 0
+    equal find(".card-content").length, 0, "The card is gone"
   andThen ->
     search = { method: "DELETE", url: "/task_templates/1" }
-    ok _.findWhere(server.requests, search),
-      "It sends DELETE request to the server"
+    ok _.findWhere(server.requests, search), "It sends DELETE request to the server"

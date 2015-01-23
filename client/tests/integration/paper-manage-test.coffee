@@ -19,7 +19,7 @@ module 'Integration: Paper Manage page',
 
     taskPayload =
       task:
-        id: 2
+        id: 1
         title: "New Ad-Hoc Task"
         type: "Task"
         phase_id: 1
@@ -66,10 +66,11 @@ test 'click delete confirmation overlay cancel button', ->
 test 'click delete confirmation overlay submit button', ->
   visit '/papers/1/manage'
   andThen ->
-    equal find(".card-content").length, 1
+    equal(find(".card-content").length, 1, "card exists")
     $("div.card .card-remove").show()
     click("div.card .card-remove")
     click('.overlay button:contains("Yes, Delete this Card")')
   andThen ->
-    equal find(".card-content").length, 0
-    ok _.findWhere(server.requests, {method: "DELETE", url: "/tasks/1"}), "It sends DELETE request to the server"
+    equal(find(".card-content").length, 0, "card deleted")
+    req = _.findWhere(server.requests, {method: "DELETE", url: "/tasks/1"})
+    equal(req.status, 200, "It sends DELETE request to the server")

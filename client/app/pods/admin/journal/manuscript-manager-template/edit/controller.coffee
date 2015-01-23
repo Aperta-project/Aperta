@@ -29,7 +29,7 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend Validati
     if transition
       transition.retry()
     else
-      @transitionToRoute('admin/journal/manuscript-manager-template.edit', @get('model'))
+      @transitionToRoute('admin.journal.manuscript_manager_template.edit', @get('model'))
 
   reset: () ->
     @setProperties

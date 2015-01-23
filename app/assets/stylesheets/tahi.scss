@@ -147,6 +147,11 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
 .flash-messages--below-control-bar {
   margin-top: $tahi-control-bar-height;
 }
+.flash-messages--on-paper-edit-page {
+  top: $tahi-control-bar-height + $ve-toolbar-height - 2px;
+  position: absolute;
+  width: 100%
+}
 
 // Main Content:
 

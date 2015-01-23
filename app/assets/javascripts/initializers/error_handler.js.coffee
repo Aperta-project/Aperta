@@ -9,12 +9,12 @@ ETahi.initializer
       e = new Error(msg)
       console.log(e.stack || e.message)
 
+    # TODO investigate this more
     container.register('logError:main', logError , instantiate: false)
     application.inject('route', 'logError', 'logError:main')
 
     # The global error handler
     Ember.onerror = (error) ->
-      # console.log('Ember.onerror', error)
       if ETahi.environment == 'test'
         # if we do not print this, you can not click on the stack trace
         # and jump to the code where the error happened.

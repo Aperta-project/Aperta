@@ -26,7 +26,7 @@ export default {
       return cancelDragEvent(e);
     }.on('dragOver'),
 
-    drop: function(e) {
+    drop: function() {
       throw 'Implement drop';
     }
   })

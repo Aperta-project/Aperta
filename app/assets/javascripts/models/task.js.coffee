@@ -1,6 +1,6 @@
 a = DS.attr
 ETahi.Task = DS.Model.extend ETahi.CardThumbnailObserver,
-  phase: DS.belongsTo('phase', async: true)
+  phase: DS.belongsTo('phase')
   attachments: DS.hasMany('attachment')
   comments: DS.hasMany('comment')
   participations: DS.hasMany('participation')

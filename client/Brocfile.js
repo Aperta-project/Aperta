@@ -26,6 +26,7 @@ app.import('bower_components/underscore/underscore-min.js');
 app.import('bower_components/moment/moment.js');
 app.import('bower_components/event-source-polyfill/eventsource.js');
 app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
+app.import('vendor/bootstrap-tooltip/index.js');
 
 if (app.env !== 'production') {
   app.import('bower_components/sinon/index.js');

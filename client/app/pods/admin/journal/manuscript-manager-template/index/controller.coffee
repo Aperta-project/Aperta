@@ -5,7 +5,7 @@ ManuscriptManagerTemplateIndexController = Ember.ArrayController.extend
 
   actions:
     addTemplate: ->
-      @transitionToRoute('manuscript_manager_template.new')
+      @transitionToRoute('admin.journal.manuscript_manager_template.new')
 
     destroyTemplate: (template) ->
       if @get('canDeleteTemplates')

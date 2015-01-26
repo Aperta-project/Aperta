@@ -6,10 +6,10 @@ AlertUnsavedChanges = Ember.Mixin.create
       if @controller.get('dirty')
         @set 'attemptingTransition', transition
         transition.abort()
-        @render 'unsavedDataOverlay',
+        @render 'overlays/unsaved-data',
           into: 'application'
           outlet: 'overlay'
-          controller: 'unsavedDataOverlay'
+          controller: 'overlays/unsaved-data'
       else
         # Bubble the `willTransition` action so that
         # parent routes can decide whether or not to abort.

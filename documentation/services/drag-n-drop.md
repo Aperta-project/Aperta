@@ -7,9 +7,9 @@ import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
 
 export default Ember.Component.extend(DragNDrop.DraggableMixin, {
-  dragDidStart: function(e) {
+  dragStart: function(e) {
     DragNDrop.dragItem = this.get('model');
-  }.on('dragStart')
+  }
 });
 ```
 
@@ -78,6 +78,31 @@ return DragNDrop.cancel(event);
 **event (event)**
 
 *Prevent drop event from bubbling. Use as last statement and return.*
+
+
+## dragStart
+
+```
+dragStart: function(e) {
+  DragNDrop.dragItem = @get('model');
+}
+```
+
+## dragOver
+
+```
+dragStart: function(e) {
+  // apply drag styles
+}
+```
+
+## dragLeave / dragEnd
+
+```
+dragStart: function(e) {
+  // remove styles applied from `dragOver`
+}
+```
 
 ## drop
 

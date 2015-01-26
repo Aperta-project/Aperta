@@ -42,7 +42,7 @@ this.flash.clearMessages();
 
 # How it Works
 
-A singleton object is created and injected into all Routes and Controllers from an Ember Initializer as the property `flash`. When `displayMessage` is called, all we're doing is pushing to an array of messages that are displayed in the templates.
+A singleton object is created and injected into all Routes and Controllers from an Ember Initializer as the property `flash`. When `displayMessage` or `displayErrorMessagesFromResponse` is called, all we're doing is pushing to an array of messages that are displayed in the templates.
 
 
 # Methods
@@ -82,6 +82,8 @@ this.flash.displayErrorMessagesFromResponse(response);
   }
 }
 ```
+
+The array of messages will be joined into a single string, separated by comma.
 
 ## clearMessages()
 

@@ -16,10 +16,11 @@ export default Ember.Mixin.create({
   },
 
   createModelProxyObjectWithErrors: function(models) {
+    var self = this;
     return models.map(function(model) {
       return Ember.Object.create({
         model: model,
-        errors: _this.validationErrorsForModel(model)
+        errors: self.validationErrorsForModel(model)
       });
     });
   },

@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Flash from 'tahi/services/flash';
 
 export default {

@@ -15,7 +15,7 @@
     {{#if hasPapers}}
       <ul class="dashboard-submitted-papers">
         {{#each paper in sortedPapers}}
-          {{view "dashboard-link" content=paper unreadComments=unreadComments}}
+          {{dashboard-link model=paper unreadComments=unreadComments}}
         {{/each}}
       </ul>
       {{#if paginate}}

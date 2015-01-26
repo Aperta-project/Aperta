@@ -1,7 +1,6 @@
 `import Ember from 'ember'`
 `import DragNDrop from 'tahi/services/drag-n-drop'`
 
-
 ManuscriptManagerColumnView = Ember.View.extend DragNDrop.DroppableMixin,
   classNames: ['column']
 

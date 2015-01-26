@@ -1,5 +1,8 @@
 module 'Integration: EditPaper',
-  teardown: -> ETahi.reset()
+  teardown: ->
+    ETahi.reset()
+    ETahi.paperEditActionStub.restore()
+
   setup: ->
     setupApp(integration: true)
     ef = ETahi.Factory
@@ -46,13 +49,17 @@ module 'Integration: EditPaper',
 
 test 'visiting /edit-paper: Author completes all metadata cards', ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/edit"
-  .then -> ok find('a:contains("Submit")').hasClass 'button--disabled'
+  .then ->
+    ETahi.paperEditActionStub = sinon.stub(ETahi.__container__.lookup('controller:paperEdit')._actions, "savePaper")
+    ok find('a:contains("Submit")').hasClass 'button--disabled'
   .then ->
     for card in find('#paper-metadata-tasks .card-content')
       click card
       click '#task_completed'
       click '.overlay-close-button:first'
-  .then -> ok !find('a:contains("Submit")').hasClass 'button--disabled'
+  .then ->
+    ok !find('a:contains("Submit")').hasClass 'button--disabled'
+
 
 test 'on paper.edit when paper.editable changes, user transitions to paper.index', ->
   visit "/papers/#{ETahi.Test.currentPaper.id}/edit"
@@ -80,8 +87,12 @@ test 'on paper.edit when there are no metadata tasks', ->
   ]
 
   visit "/papers/#{records[0].id}/edit"
-  .then -> ok exists find('main.sidebar-empty'), "The sidebar should be hidden"
-  .then -> ok exists find('.edit-paper .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")'), "There is a submit manuscript button in the main area"
+  .then ->
+    ETahi.paperEditActionStub = sinon.stub(ETahi.__container__.lookup('controller:paperEdit')._actions, "savePaper")
+    ok exists find('main.sidebar-empty'), "The sidebar should be hidden"
+  .then ->
+    ok exists find('.edit-paper .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")'),
+      "There is a submit manuscript button in the main area"
 
 test 'on paper.index when there are no metadata tasks', ->
   expect(2)
@@ -105,4 +116,5 @@ test 'on paper.index when there are no metadata tasks', ->
       getStore().getById('paper', records[0].id).set('editable', false)
   andThen ->
     ok exists find('main.sidebar-empty'), "The sidebar should be hidden"
-    ok !exists find('.edit-paper .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")'), "There is no submit manuscript button in the main area"
+    ok !exists find('.edit-paper .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")'),
+      "There is no submit manuscript button in the main area"

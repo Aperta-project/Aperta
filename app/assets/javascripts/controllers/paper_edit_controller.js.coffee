@@ -77,7 +77,6 @@ ETahi.PaperEditController = ETahi.BasePaperController.extend
           @set('saveState', false)
 
     savePaper: ->
-      return if ETahi.environment == 'test'
       return unless @get('model.editable')
       @get('model').save().then (paper) =>
         @set('saveState', true)

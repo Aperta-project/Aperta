@@ -13,17 +13,17 @@
       {{/each}}
     </ul>
 
-    <div style="float: right">
-      <button class="button-primary button--green pull-right" {{action "save" phase}}>Save</button>
-      <a class="button-link button--green pull-right" {{action "cancel"}}>cancel</a>
-    </div>
-
     {{select-2-single value=""
                       placeholder="Add collaborator"
                       class="collaborator-select"
                       name="collaborators"
                       selectionSelected="addNewCollaborator"
                       source=formattedCollaborators}}
+  </div>
+
+  <div class="overlay-action-buttons">
+    <a class="button-link button--green" {{action "cancel"}}>cancel</a>
+    <button class="button-primary button--green" {{action "save" phase}}>Save</button>
   </div>
 
 </div>

@@ -25,9 +25,8 @@ CardPreviewComponent = Ember.Component.extend DragNDrop.DraggableMixin,
     # @.$().find('.card-remove').tooltip()
   ).on('didInsertElement')
 
-  dragDidStart: ((e) ->
+  dragStart: (e) ->
     DragNDrop.dragItem = @get('task') if @get('canDragCard')
-  ).on('dragStart')
 
   actions:
     viewCard: (task) ->

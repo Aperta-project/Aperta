@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 var cancelDragEvent = function(e) {
   e.preventDefault();
+  e.stopPropagation();
   return false;
 };
 
@@ -14,7 +15,8 @@ export default {
 
   DraggableMixin: Ember.Mixin.create({
     attributeBindings: ['draggable'],
-    draggable: true
+    draggable: true,
+    dragStart: function() { throw 'Implement dragStart'; }
   }),
 
   DroppableMixin: Ember.Mixin.create({
@@ -26,8 +28,6 @@ export default {
       return cancelDragEvent(e);
     }.on('dragOver'),
 
-    drop: function() {
-      throw 'Implement drop';
-    }
+    drop: function() { throw 'Implement drop'; }
   })
 };

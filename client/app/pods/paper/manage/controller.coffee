@@ -35,9 +35,6 @@ PaperManageController = Ember.ObjectController.extend
       phase.destroyRecord().then ->
         paper.reload()
 
-    removeTask: (task) ->
-      task.destroyRecord()
-
     savePhase: (phase) ->
       phase.save()
 

@@ -11,15 +11,33 @@ describe "update the Styleguide", js: true, selenium: true do
     create :flow, title: "Up for grabs", query: { assigned: true }, role_id: nil
   end
 
-  let!(:task) { FactoryGirl.create(:financial_disclosure_task, paper: paper) }
-
   # allows a block to retrieve its description - the it "is here description" do
   let(:name) do |e|
     e.description
   end
 
   before do
-    admin.flows << flow
+    # Create all the tasks at once
+    FactoryGirl.create(:task, paper: paper)
+    FactoryGirl.create(:plos_authors_task, paper: paper)
+    FactoryGirl.create(:competing_interests_task, paper: paper)
+    FactoryGirl.create(:data_availability_task, paper: paper)
+    FactoryGirl.create(:ethics_task, paper: paper)
+    FactoryGirl.create(:figure_task, paper: paper)
+    FactoryGirl.create(:financial_disclosure_task, paper: paper)
+    FactoryGirl.create(:paper_admin_task, paper: paper)
+    FactoryGirl.create(:paper_editor_task, paper: paper)
+    FactoryGirl.create(:paper_reviewer_task, paper: paper)
+    FactoryGirl.create(:publishing_related_questions_task, paper: paper)
+    FactoryGirl.create(:register_decision_task, paper: paper)
+    FactoryGirl.create(:reporting_guidelines_task, paper: paper)
+    FactoryGirl.create(:reviewer_report_task, paper: paper)
+    FactoryGirl.create(:taxon_task, paper: paper)
+    FactoryGirl.create(:tech_check_task, paper: paper)
+    FactoryGirl.create(:supporting_information_task, paper: paper)
+    FactoryGirl.create(:upload_manuscript_task, paper: paper)
+
+    # Do the normal stuff
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
   end
@@ -38,9 +56,15 @@ describe "update the Styleguide", js: true, selenium: true do
     end
 
     scenario "flow_manager" do
-      visit '/flow_manager'
-      find(".control-bar-link", visible: true)
-      page.grab(name)
+      before do
+        admin.flows << flow
+      end
+
+      describe "stuff" do
+        visit '/flow_manager'
+        find(".control-bar-link", visible: true)
+        page.grab(name)
+      end
     end
 
     scenario "admin" do
@@ -88,7 +112,182 @@ describe "update the Styleguide", js: true, selenium: true do
       has_css?(".card .card-content")
       card = first(".card .card-content")
       card.click
+      # grab the overlay and the underlying HTML
       first(".overlay", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_ad_hoc" do
+      Task.first.update(completed: true)
+      visit '/papers/1/manage'
+      # also include an overlay
+      has_css?(".card .card-content")
+      card = first(".card .card-content")
+      card.click
+      first(".overlay", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_plos_authors_task" do
+      Task.first.update(completed: true)
+      visit '/papers/1/manage'
+      # also include an overlay
+      has_css?(".card .card-content")
+      card = first(".card .card-content")
+      card.click
+      first(".overlay", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_competing_interests" do
+      Task.first.update(completed: true)
+      visit '/papers/1/manage'
+      # also include an overlay
+      has_css?(".card .card-content")
+      card = first(".card .card-content")
+      card.click
+      first(".overlay", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_data_availability" do
+      Task.first.update(completed: true)
+      visit '/papers/1/manage'
+      # also include an overlay
+      has_css?(".card .card-content")
+      card = first(".card .card-content")
+      card.click
+      first(".overlay", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_ethics" do
+      Task.first.update(completed: true)
+      visit '/papers/1/manage'
+      # also include an overlay
+      has_css?(".card .card-content")
+      card = first(".card .card-content")
+      card.click
+      first(".overlay", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_figure" do
+      Task.first.update(completed: true)
+      visit '/papers/1/manage'
+      # also include an overlay
+      has_css?(".card .card-content")
+      card = first(".card .card-content")
+      card.click
+      first(".overlay", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_financial_disclosure" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_paper_admin_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_paper_editor_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_paper_reviewer_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_publishing_related_questions_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_register_decision_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_reporting_guidelines_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_reviewer_report_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_taxon_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_tech_check_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_supporting_information_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
+      page.grab(name)
+    end
+
+    scenario "card_upload_manuscript_task" do
+      visit '/papers/1/manage'
+      has_css?(".card .card-content")
+      card = all(".card-content").last
+      card.click
+      first(".overlay--fullscreen", visible: true)
       page.grab(name)
     end
 
@@ -103,26 +302,14 @@ describe "update the Styleguide", js: true, selenium: true do
       page.grab(name)
     end
 
-    scenario "financial-disclosure-card" do
-      visit '/papers/1/manage'
-      has_css?(".card .card-content")
-      card = all(".card-content").last
-      card.click
-      first(".overlay--fullscreen", visible: true)
-      first(".question-text", visible: true)
-      first('input[name="financial_disclosure.commercially_affiliated"]').set(true)
-      first('input[name="received-funding"]').set(true)
-      page.grab(name)
-    end
-
   end
 
 end
 
 class Capybara::Session
   def grab(filename, selector = "")
-    # TODO: refactor: move this
     dirname = "doc/ux"
+    # dirname = "docs/ux"
     FileUtils.mkdir_p(dirname)
 
     save_html("#{dirname}/#{filename}", selector)
@@ -138,6 +325,7 @@ class Capybara::Session
     return unless filename
 
     first("body div")
+    # find a UI element instead of waiting
     sleep 2.0
     File.open("#{filename}.html", "w") do |f|
       if !selector.empty?

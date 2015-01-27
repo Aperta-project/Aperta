@@ -15,7 +15,7 @@ class IhatJobsController < ApplicationController
   private
 
   def job
-    @job ||= IHatJobResponse.new(ihat_job_params)
+    @job ||= IhatJobResponse.new(ihat_job_params)
   end
 
   def ihat_job_params

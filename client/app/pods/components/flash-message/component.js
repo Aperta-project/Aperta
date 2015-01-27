@@ -14,10 +14,9 @@ export default Ember.Component.extend({
   }.on('didInsertElement'),
 
   actions: {
-    remove: function() {
-      var self = this;
-      this.$().fadeOut(function() {
-        self.sendAction('remove', this.get('message'));
+    remove() {
+      this.$().fadeOut(()=> {
+        this.sendAction('remove', this.get('message'));
       });
     }
   }

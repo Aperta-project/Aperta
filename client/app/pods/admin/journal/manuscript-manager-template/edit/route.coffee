@@ -3,7 +3,7 @@
 
 ManuscriptManagerTemplateEditRoute = Ember.Route.extend AlertUnsavedChanges,
   model: (params) ->
-    @store.find('manuscriptManagerTemplate', parseInt(params.manuscript_manager_template_id))
+    @store.find('manuscriptManagerTemplate', params.manuscript_manager_template_id)
 
   afterModel: (model) ->
     model.reload() unless model.get('phaseTemplates.length')

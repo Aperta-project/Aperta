@@ -36,11 +36,10 @@ ManuscriptManagerTemplateRoute = Ember.Route.extend
     viewCard: -> #no-op
 
     showDeleteConfirm: (task) ->
-      @controllerFor('overlays/cardDelete').set('task', task)
       @render('overlays/cardDelete',
         into: 'application'
         outlet: 'overlay'
-        controller: 'overlays/cardDelete')
+        controller: 'overlays/card-delete'
+        model: task)
 
 `export default ManuscriptManagerTemplateRoute`
-

@@ -22,20 +22,12 @@ feature "Event streaming", js: true, selenium: true do
 
     scenario "creating a new task" do
       submission_phase.tasks.create title: "Wicked Awesome Card", type: "Task", body: text_body, role: "admin"
-
-      phase = all('.column').detect {|p| p.find('h2').text == "Submission Data" }
-      within phase do
-        expect(page).to have_content "Wicked Awesome Card"
-      end
+      expect(page).to have_content "Wicked Awesome Card"
     end
 
     scenario "deleting a task" do
       deleted_task = submission_phase.tasks.first.destroy!
-
-      phase = all('.column').detect { |p| p.find('h2').text == "Submission Data" }
-      within phase do
-        expect(page).to_not have_content deleted_task.title
-      end
+      expect(page).to_not have_content deleted_task.title
     end
   end
 

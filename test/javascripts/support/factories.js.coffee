@@ -20,7 +20,7 @@ ETahi.Factory =
       recordAttrs = attrs
 
     baseAttrs = ETahi.FactoryAttributes[type]
-    throw "No factory exists for type: #{type}" unless baseAttrs
+    throw new Error("No factory exists for type: #{type}") unless baseAttrs
     _.defaults(recordAttrs, baseAttrs)
 
   createList: (numberOfRecords, type) ->
@@ -102,28 +102,28 @@ ETahi.Factory =
         payload[(typeName + "s")] = records
     payload
 
-   createPayload: (primaryTypeName) ->
-     _addRecordToManifest = @addRecordToManifest
-     _manifestToPayload = @manifestToPayload
-     manifest: {types: {}}
+  createPayload: (primaryTypeName) ->
+    _addRecordToManifest = @addRecordToManifest
+    _manifestToPayload = @manifestToPayload
+    manifest: {types: {}}
 
-     createRecord: (type, attrs) ->
-       newRecord = ETahi.Factory.createRecord(type, attrs)
-       @addRecord(newRecord)
-       newRecord
+    createRecord: (type, attrs) ->
+      newRecord = ETahi.Factory.createRecord(type, attrs)
+      @addRecord(newRecord)
+      newRecord
 
-     addRecords: (records, options={}) ->
-       _.forEach(records, (r) => @addRecord(r, options))
-       @
+    addRecords: (records, options={}) ->
+      _.forEach(records, (r) => @addRecord(r, options))
+      @
 
-     addRecord: (record, options={}) ->
-       rootKey = options.rootKey || record._rootKey
-       isPrimary = (rootKey == primaryTypeName)
-       @manifest = _addRecordToManifest(@manifest, rootKey, record, isPrimary)
-       @
+    addRecord: (record, options={}) ->
+      rootKey = options.rootKey || record._rootKey
+      isPrimary = (rootKey == primaryTypeName)
+      @manifest = _addRecordToManifest(@manifest, rootKey, record, isPrimary)
+      @
 
-     toJSON: ->
-       _manifestToPayload(@manifest)
+    toJSON: ->
+      _manifestToPayload(@manifest)
 
   createBasicPaper: (defs) ->
     ef = ETahi.Factory

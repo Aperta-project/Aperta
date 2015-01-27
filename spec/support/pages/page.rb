@@ -170,10 +170,9 @@ class Page < PageFragment
   end
 
   def navigate_to_dashboard
-    within('.nav-bar') do
-      click_on 'Dashboard'
-      DashboardPage.new
-    end
+    find('.navigation-toggle').click
+    find('a.navigation-item', text: 'DASHBOARD').click
+    DashboardPage.new
   end
 
   def sign_out

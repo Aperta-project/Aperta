@@ -5,7 +5,7 @@ ETahi.QuestionComponent = Ember.Component.extend
 
   model: (->
     ident = @get('ident')
-    throw "you must specify an ident" unless ident
+    throw new Error("You must specify an ident, set to name attr") unless ident
 
     question = @get('task.questions').findProperty('ident', ident)
 

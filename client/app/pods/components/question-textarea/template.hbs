@@ -1,4 +1,7 @@
-<div class="question-text">{{{model.question}}}</div>
+{{#if model.question}}
+  <div class="question-text">{{{model.question}}}</div>
+{{/if}}
+
 {{#if helpText}}
   <ul class="question-help">{{{helpText}}}</ul>
 {{/if}}

@@ -3,7 +3,7 @@ class IhatJobResponse
 
   def initialize(params={})
     @state = params[:state]
-    @epub_url = params[:url]
+    @epub_url = params[:epub_url]
     @raw_metadata = params[:metadata] || {}
   end
 
@@ -15,7 +15,7 @@ class IhatJobResponse
     @metadata ||= Verifier.new(raw_metadata).decrypt
   end
 
-  def converted?
-    state == "converted"
+  def completed?
+    state == "completed"
   end
 end

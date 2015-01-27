@@ -13,7 +13,7 @@ this.set('someBoolean', true);
 ```
 
 
-# Parameters
+# Properties
 
 ## visible
 

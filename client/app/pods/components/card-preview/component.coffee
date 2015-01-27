@@ -31,8 +31,6 @@ CardPreviewComponent = Ember.Component.extend DragNDrop.DraggableMixin,
   actions:
     viewCard: (task) ->
       @sendAction('action', task)
-    removeTask: (task) ->
-      @sendAction('removeTask', task)
     promptDelete: (task) ->
       @sendAction('showDeleteConfirm', task)
 

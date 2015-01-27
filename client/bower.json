@@ -16,7 +16,7 @@
     "spin.js": "2.0.2",
     "jquery-timeago": "1.4.1",
     "chosen-bower": "1.1.0",
-    "select2": "3.5.2",
+    "select2": "3.5.1",
     "moment": "2.9.0",
     "event-source-polyfill": "0.0.3",
     "sinon": "http://sinonjs.org/releases/sinon-1.12.1.js",

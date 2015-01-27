@@ -142,6 +142,11 @@ Now we need to set things up a bit. Install your dependencies:
 bundle install
 ```
 
+You may be prompted to install various dependencies. For example:
+    - You need Ruby 2.1.5 (at least) installed.
+    - The `capybara` gem requires qt. If you're on a Mac, you can install qt4-mac using Homebrew or MacPorts.
+    - The `pg` gem requires postgres. If you've got postgres installed but pg installer isn't finding it, this may help: `bundle config build.pg --with-pg-config=/opt/local/lib/postgresql94/bin/pg_config` (but modify the path to match where your `pg_config` lives).
+
 You will next need to generate a rails secret. You can do this by
 running:
 
@@ -154,31 +159,48 @@ file.
 
 ### Docker setup
 
+Install Docker and fig:
+    - For OSX, it's good to install Docker with Boot2Docker by using the pre-built version here: https://github.com/boot2docker/osx-installer/releases/latest
+    - You can install fig this way: `sudo pip install -U fig`
+
 You are now ready to build! Run:
 
 ```
 foreman run -- sudo -E fig -f fig.dev.yml build
 ```
 
-(possibly you do not need sudo: it seems to be necessary on Ubuntu).
+(possibly you do not need sudo: it seems to be necessary on Ubuntu). The build process can easily run for an hour or more; have patience.
 
-And run it:
+If you're on a Mac and get the message `SSL error: hostname '192.168.59.103' doesn't match 'boot2docker'`, the following may work (solution from https://github.com/docker/docker-py/issues/406):
+    - Edit `/etc/hosts` and add this line: `192.168.59.103 boot2docker`
+    - `export DOCKER_HOST=tcp://boot2docker:2376`
+    - Try to build again
+
+And run it (can take 15 minutes to start up the first time; subsequent starts will be fast):
 
 ```
 foreman run -- sudo -E fig -f fig.dev.yml up
 ```
 
-In another terminal, set up the database:
+In another terminal, set up the database: (MH: Maybe need to wait for the run to finish?)
 
 ```
 foreman run bundle exec rake db:migrate
 ```
+
+Note: If on a Mac running boot2docker and you receive the message `PG::ConnectionBad: could not connect to server: Connection refused`:
+    - Open your `.env` file in an editor
+    - Find the section entitled `docker hosted services, do not edit`
+    - Change instances of `localhost` to the IP address of your boot2docker, typically `192.168.59.103`
+    - Try the db:migrate again
 
 We need to create a solr collection:
 
 ```
 curl -s "http://localhost:53013/solr/admin/cores?action=CREATE&name=development&instanceDir=tahi&config=solrconfig.xml&schema=schema.xml&dataDir=data"
 ```
+
+Note: If on a Mac running boot2docker, change `localhost` in the `curl` command above to the IP address of your boot2docker, typically `192.168.59.103`.
 
 and seed the database:
 
@@ -198,6 +220,8 @@ Now you need to initialize solr again (why?)
 ```
 curl -s "http://localhost:53013/solr/admin/cores?action=CREATE&name=development&instanceDir=tahi&config=solrconfig.xml&schema=schema.xml&dataDir=data"
 ```
+
+[MH Note: I got error `Core with name 'development' already exists.` and I'm ignoring it.]
 
 Finally:
 

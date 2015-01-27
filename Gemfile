@@ -115,7 +115,6 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'
   gem 'webmock'
-  gem 'thin'
   gem 'sunspot-rails-tester'
 end
 

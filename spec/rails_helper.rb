@@ -22,11 +22,6 @@ Dir[Rails.root.join("engines/**/spec/factories/**/*.rb")].each { |f| require f }
 
 Capybara.server_port = ENV["CAPYBARA_SERVER_PORT"]
 
-Capybara.server do |app, port|
-  require 'rack/handler/thin'
-  Rack::Handler::Thin.run(app, :Port => port)
-end
-
 Capybara.register_driver :selenium do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
   profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.3.1-fx.xpi")
@@ -100,6 +95,7 @@ RSpec.configure do |config|
   config.before(:each, js: true) do
     DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types'] }
     DatabaseCleaner[:redis].strategy = :truncation
+    page.driver.allow_url 'fonts.googleapis.com'
   end
 
   config.before(:each, redis: true) do

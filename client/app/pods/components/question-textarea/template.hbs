@@ -1,0 +1,5 @@
+<div class="question-text">{{{model.question}}}</div>
+{{#if helpText}}
+  <ul class="question-help">{{{helpText}}}</ul>
+{{/if}}
+{{textarea name=ident value=model.answer class="form-control"}}

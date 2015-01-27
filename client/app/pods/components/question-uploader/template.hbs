@@ -1,0 +1,26 @@
+<div class="question-text">{{{model.question}}}</div>
+<div class="additional-data">
+  <span class="button-secondary button--green knockout fileinput-button">
+    {{#if model.questionAttachment}}
+      Replace File
+    {{else}}
+      Select &amp; upload
+    {{/if}}
+
+    {{file-uploader accept=accept
+                    start="uploadStarted"
+                    progress="uploadProgress"
+                    done="uploadFinished"
+                    error="uploadError"
+                    filePrefix="question_attachment"}}
+  </span>
+  {{#if fileUpload}}
+    <div id="paper-file-uploads">
+      {{upload-preview upload=fileUpload}}
+    </div>
+  {{/if}}
+  {{#if model.questionAttachment}}
+    {{question-attachment-thumbnail attachment=model.questionAttachment
+                                    destroyAttachment="destroyAttachment"}}
+  {{/if}}
+</div>

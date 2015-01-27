@@ -21,8 +21,7 @@ CardPreviewComponent = Ember.Component.extend DragNDrop.DraggableMixin,
   ).property('commentLooks.[]', 'commentLooks.@each.taskId', 'task.id', 'commentLooks.@each.readAt')
 
   setupTooltip: (->
-    # EMBERCLI TODO - Where does this come from?
-    # @.$().find('.card-remove').tooltip()
+    @.$().find('.card-remove').tooltip()
   ).on('didInsertElement')
 
   dragStart: (e) ->

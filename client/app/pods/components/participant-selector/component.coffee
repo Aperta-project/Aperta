@@ -5,9 +5,8 @@ ParticipantSelectorComponent = Ember.Component.extend
 
   setupTooltips: (->
     Ember.run.schedule 'afterRender', @, ->
-      # EMBERCLI TODO - tooltip
-      # @$('.select2-search-choice img').tooltip(placement: "bottom")
-      # @$('.add-participant-button').tooltip(placement: "bottom")
+      @$('.select2-search-choice img').tooltip(placement: "bottom")
+      @$('.add-participant-button').tooltip(placement: "bottom")
   ).on('didInsertElement').observes('currentParticipants.@each')
 
   resultsTemplate: (user) ->

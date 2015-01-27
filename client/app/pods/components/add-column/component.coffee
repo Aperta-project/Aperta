@@ -12,8 +12,7 @@ AddColumnComponent = Ember.Component.extend
     @sendAction('action', @get('position'))
 
   didInsertElement: ->
-    # EMBERCLI TODO - what is this plugin?
-    # @.$().tooltip()
+    @.$().tooltip()
 
 `export default AddColumnComponent`
 

@@ -33,6 +33,6 @@ PhaseHeaderView = Ember.View.extend
     cancel: ->
       @set('active', false)
       @get('controller').send('rollbackPhase', @get('phase'), @get('oldPhaseName'))
-      Ember.run.scheduleOnce('afterRender', this, Tahi.utils.resizeColumnHeaders)
+      Ember.run.scheduleOnce('afterRender', this, Utils.resizeColumnHeaders)
 
 `export default PhaseHeaderView`

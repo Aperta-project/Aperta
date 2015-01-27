@@ -57,7 +57,7 @@ class EpubConverter
   end
 
   def _source_dir(workdir)
-    "#{workdir}/original_sources"
+    "#{workdir}/input"
   end
 
   def _path_to_source(workdir)
@@ -117,7 +117,7 @@ class EpubConverter
       date Date.today.to_s
       if this.include_source && this.paper.manuscript.present?
         this._embed_source(workdir)
-        optional_file "original_sources/source.docx" => this._path_to_source(workdir)
+        optional_file "input/source.docx" => this._path_to_source(workdir)
       end
       resources(workdir: workdir) do
         file 'css/default.css' => this._epub_css

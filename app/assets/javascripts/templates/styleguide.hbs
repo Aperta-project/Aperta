@@ -1,15 +1,9 @@
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div class="container">
 
-<div id="paper-attachment-uploads">
-  anything at all?
+  <div id="paper-attachment-uploads">
+    {{#each upload in uploads}}
+      {{upload-preview upload=upload}}
+    {{/each}}
+  </div>
 
-  {{#each upload in uploads}}
-    {{upload.id}}
-    <br>
-  {{/each}}
 </div>

@@ -112,30 +112,19 @@
   });
   </script>
 </head>
-<body>
+<body id="top-of-page">
 
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix">
         <ul class="nav bs-docs-sidenav">
-          <li>
-            <a href="#colors">Colors</a>
-          </li>
-          <li>
-            <a href="#typography">Typography</a>
-          </li>
-          <li>
-            <a href="#cards">Cards</a>
-          </li>
-          <li>
-            <a href="#workflow">Workflow</a>
-          </li>
-          <li>
-            <a href="#card-overlay">Card Overlay</a>
-          </li>
-          <li>
-            <a href="#system-overlay">System Overlay</a>
-          </li>
+          <li><h4><a href="#top-of-page">Return to Top</a></h4></li>
+          <li><a href="#colors">Colors</a></li>
+          <li><a href="#typography">Typography</a></li>
+          <li><a href="#cards">Cards</a></li>
+          <li><a href="#workflow">Workflow</a></li>
+          <li><a href="#card-overlay">Card Overlay</a></li>
+          <li><a href="#system-overlay">System Overlay</a></li>
           <li>
             <a href="#toolbars">Toolbars</a>
             <ul class="nav">
@@ -143,18 +132,10 @@
               <li><a href="#download-document">Download Document</a></li>
             </ul>
           </li>
-          <li>
-            <a href="#buttons">Buttons</a>
-          </li>
-          <li>
-            <a href="#form-patterns">Form Patterns</a>
-          </li>
-          <li>
-            <a href="#edit-delete">Edit/Delete</a>
-          </li>
-          <li>
-            <a href="#file-upload">File Upload</a>
-          </li>
+          <li><a href="#buttons">Buttons</a></li>
+          <li><a href="#form-patterns">Form Patterns</a></li>
+          <li><a href="#edit-delete">Edit/Delete</a></li>
+          <li><a href="#file-upload">File Upload</a></li>
           <li>
             <a href="#errors">Errors</a>
             <ul class="nav">
@@ -162,20 +143,32 @@
               <li><a href="#form-errors">Form Errors</a></li>
             </ul>
           </li>
-          <li>
-            <a href="#tooltips">Tooltips</a>
-          </li>
-          <li>
-            <a href="#card-things">Card Things</a>
-          </li>
-          <li>
-            <a href="#widgets">Widgets</a>
-          </li>
-          <li>
-            <a href="#avatars">Avatars</a>
-          </li>
+          <li><a href="#tooltips">Tooltips</a></li>
+          <li><a href="#card-things">Card Things</a></li>
+          <li><a href="#widgets">Widgets</a></li>
+          <li><a href="#avatars">Avatars</a></li>
           <li>
             <a href="#task-cards">Task Cards</a>
+            <ul class="nav">
+              <li><a href="#ad-hoc">Ad Hoc</a></li>
+              <li><a href="#competing-interests">Competing Interests</a></li>
+              <li><a href="#data-availability">Data Availability</a></li>
+              <li><a href="#ethics">Ethics</a></li>
+              <li><a href="#figures">Figures</a></li>
+              <li><a href="#financial-disclosure">Financial Disclosure</a></li>
+              <li><a href="#paper-admin">Paper Admin</a></li>
+              <li><a href="#paper-editor">Paper Editor</a></li>
+              <li><a href="#paper-reviewer">Paper Reviewer</a></li>
+              <li><a href="#add-author">Add Author</a></li>
+              <li><a href="#publishing-related-questions">Publishing Related Questions</a></li>
+              <li><a href="#register-decision">Register Decision</a></li>
+              <li><a href="#reporting-guidelines">Reporting Guidelines</a></li>
+              <li><a href="#reviwer-report">Reviwer Report</a></li>
+              <li><a href="#supporting-information">Supporting Information</a></li>
+              <li><a href="#taxon">Taxon</a></li>
+              <li><a href="#tech-check">Tech Check</a></li>
+              <li><a href="#upload-manuscript">Upload Manuscript</a></li>
+            </ul>
           </li>
         </ul>
       </nav>
@@ -469,63 +462,48 @@
           Form Patterns (in Cards)
         </h2>
 
-        <div class="constrain">
-          <div element-name="financial-disclosure-form" source-page-name="financial-disclosure-card" source-page-selector=".question-list"></div>
-        </div>
-
         <h3>
           Form Block: Numbered List
         </h3>
+
+        <div class="constrain">
+          <div element-name="numbered-list" source-page-name="card_ethics" source-page-selector="ol.question-list"></div>
+        </div>
+
+        <h3>
+          Form Block: Unstyled Bulleted List
+        </h3>
+
+        <div class="constrain">
+          <div element-name="bulleted-list" source-page-name="card_tech_check_task" source-page-selector="ul.numbered-list"></div>
+        </div>
+
+        <h3>
+          Form Block: Styled Bulleted List
+        </h3>
+
+        <div class="constrain">
+          <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) ul.question-help"></div>
+        </div>
 
         <h3>
           Form Block: Single Input
         </h3>
 
         <div class="constrain">
-          <div class="additional-data">
-            <div id="ember2056">
-
-              <div class="question-dataset">
-                <div id="ember2086">
-                  <div class="question-text">
-                    Please provide details about any and all competing interests in the box below. Your response should begin with this statement: "I have read the journal's policy and the authors of this manuscript havethe following competing interests:"
-                  </div>
-
-                  <textarea id="ember2090" class="ember-view ember-text-area form-control" name="competing_interests.competing_interests">          </textarea>
-                </div>
-              </div>
-            </div>
-            <div id="ember2058">
-
-            </div>
-          </div>
+          <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) div.yes-no-with-comments"></div>
         </div>
 
         <h3>
           Form Block: Multi Input
         </h3>
 
+        <div class="constrain">
+          <div element-name="full-width-multi-block-input" source-page-name="card_data_availability" source-page-selector="li.item:last .question-dataset"></div>
+        </div>
 
         <div class="constrain">
-          <div class="question-dataset">
-            <div id="ember2470">
-              <div id="ember2473">
-                <div class="form-group">
-                  <input id="ember2474" class="ember-view ember-text-field form-control" placeholder="Title of dataset" type="text" name="title">
-                </div>
-              </div>
-              <div id="ember2475">
-                <div class="form-group">
-                  <input id="ember2476" class="ember-view ember-text-field form-control" placeholder="Description of dataset" type="text" name="description">
-                </div>
-              </div>
-              <div id="ember2477">
-                <div class="form-group">
-                  <textarea id="ember2478" class="ember-view ember-text-area form-control" placeholder="Ethical or legal reasons why dataset is unsuitable for public deposit" name="reasons"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div element-name="varied-width-multi-block-input" source-page-name="card_plos_authors_task" source-page-selector=".add-author-form"></div>
         </div>
 
         <h3>
@@ -535,125 +513,6 @@
         <h3>
           Upload: In Block
         </h3>
-
-        <h3>
-          Conditional: Top of Card
-        </h3>
-
-        <h3>
-          Conditional In Block
-        </h3>
-
-        <h3>
-          Sorting Blocks: Authors
-        </h3>
-
-        <div class="constrain">
-
-          <div class="add-author-form">
-            <div class="form-group form-inline author-top">
-              <div class="form-group author-name">
-                <div id="ember2541">
-                  <input id="ember2543" class="ember-view ember-text-field form-control" placeholder="First name" type="text">
-
-                  <div class="error-message"></div>
-                </div>
-              </div>
-              <div class="form-group author-middle">
-                <div id="ember2544">
-                  <input id="ember2546" class="ember-view ember-text-field form-control" placeholder="MI" type="text">
-
-                  <div class="error-message"></div>
-                </div>
-              </div>
-              <div class="form-group author-name">
-                <div id="ember2547">
-                  <input id="ember2549" class="ember-view ember-text-field form-control" placeholder="Last name" type="text">
-
-                  <div class="error-message"></div>
-                </div>
-              </div>
-              <div class="form-group author-half author-bump">
-                <div id="ember2550">
-                  <input id="ember2552" class="ember-view ember-text-field form-control" placeholder="Email" type="text">
-
-                  <div class="error-message"></div>
-                </div>
-              </div>
-            </div>
-            <div class="form-group form-inline">
-              <div class="form-group author-half">
-                <div id="ember2553">
-                  <input id="ember2555" class="ember-view ember-text-field form-control" placeholder="Title" type="text">
-
-                  <div class="error-message"></div>
-                </div>
-              </div>
-              <div class="form-group author-half author-bump">
-                <div id="ember2556">
-                  <input id="ember2558" class="ember-view ember-text-field form-control" placeholder="Department" type="text">
-
-                  <div class="error-message"></div>
-                </div>
-              </div>
-            </div>
-            <div class="form-group form-inline">
-              <div class="form-group author-half">
-                <div id="ember2559">
-                  <div class="select2-container ember-view ember-text-field select2 affiliation-field" id="s2id_ember2561">
-                    <a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1"> <span class="select2-chosen" id="select2-chosen-8">Affiliation</span><abbr class="select2-search-choice-close"></abbr>  <span class="select2-arrow" role="presentation"><b role="presentation"></b></span>
-                    </a>
-                    <label for="s2id_autogen8" class="select2-offscreen"></label>
-                    <input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-8" id="s2id_autogen8">
-                    <div class="select2-drop select2-display-none select2-with-searchbox">
-                      <div class="select2-search">
-                        <label for="s2id_autogen8_search" class="select2-offscreen"></label>
-                        <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-8" id="s2id_autogen8_search" placeholder="">
-                      </div>
-                      <ul class="select2-results" role="listbox" id="select2-results-8"></ul>
-                    </div>
-                  </div>
-                  <div id="ember2561" class="ember-view ember-text-field select2 affiliation-field select2-offscreen" placeholder="Affiliation" type="text" tabindex="-1" title=""></div>
-
-                  <div class="error-message"></div>
-                </div>
-              </div>
-              <div class="form-group author-half author-bump">
-                <div id="ember2562">
-                  <div class="select2-container ember-view ember-text-field select2 secondary-affiliation-field" id="s2id_ember2564">
-                    <a href="javascript:void(0)" class="select2-choice select2-default" tabindex="-1"> <span class="select2-chosen" id="select2-chosen-9">Secondary Affiliation</span><abbr class="select2-search-choice-close"></abbr>  <span class="select2-arrow" role="presentation"><b role="presentation"></b></span>
-                    </a>
-                    <label for="s2id_autogen9" class="select2-offscreen"></label>
-                    <input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-9" id="s2id_autogen9">
-                    <div class="select2-drop select2-display-none select2-with-searchbox">
-                      <div class="select2-search">
-                        <label for="s2id_autogen9_search" class="select2-offscreen"></label>
-                        <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-9" id="s2id_autogen9_search" placeholder="">
-                      </div>
-                      <ul class="select2-results" role="listbox" id="select2-results-9"></ul>
-                    </div>
-                  </div>
-                  <div id="ember2564" class="ember-view ember-text-field select2 secondary-affiliation-field select2-offscreen" placeholder="Secondary Affiliation" type="text" tabindex="-1" title=""></div>
-
-                  <div class="error-message"></div>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="author-label">
-                <input id="ember2565" class="ember-view ember-checkbox" type="checkbox">This is a corresponding author
-              </label>
-              <label class="author-label">
-                <input id="ember2566" class="ember-view ember-checkbox" type="checkbox">This person is deceased
-              </label>
-              <span class="pull-right author-form-buttons">
-                <a class="button-link button--green author-cancel" data-ember-action="2567">cancel</a>
-                <button class="button-secondary button--green" data-ember-action="2568">done</button>
-              </span>
-            </div>
-          </div>
-
-        </div>
 
         <hr>
 
@@ -816,7 +675,44 @@
         <h2 id="task-cards">
           Task Cards
         </h2>
-        <div element-name="three" source-page-name="dashboard" source-page-selector=".welcome-message"></div>
+
+        <div class="constrain">
+          <div id="ad-hoc" element-name="ad-hoc-card" source-page-name="card_ad_hoc" source-page-selector=".overlay-container"></div>
+
+          <div id="competing-interests" element-name="competing-interests-card" source-page-name="card_competing_interests" source-page-selector=".overlay-container"></div>
+
+          <div id="data-availability" element-name="data-availability-card" source-page-name="card_data_availability" source-page-selector=".overlay-container"></div>
+
+          <div id="ethics" element-name="ethics-card" source-page-name="card_ethics" source-page-selector=".overlay-container"></div>
+
+          <div id="figures" element-name="figure-card" source-page-name="card_figure" source-page-selector=".overlay-container"></div>
+
+          <div id="financial-disclosure" element-name="financial-disclosure-card" source-page-name="card_financial_disclosure" source-page-selector=".overlay-container"></div>
+
+          <div id="paper-admin" element-name="paper-admin-card" source-page-name="card_paper_admin_task" source-page-selector=".overlay-container"></div>
+
+          <div id="paper-editor" element-name="paper-editor-card" source-page-name="card_paper_editor_task" source-page-selector=".overlay-container"></div>
+
+          <div id="paper-reviewer" element-name="paper-reviewer-card" source-page-name="card_paper_reviewer_task" source-page-selector=".overlay-container"></div>
+
+          <div id="add-author" element-name="add-authors-card" source-page-name="card_plos_authors_task" source-page-selector=".overlay-container"></div>
+
+          <div id="publishing-related-questions" element-name="publishing-related-questions-card" source-page-name="card_publishing_related_questions_task" source-page-selector=".overlay-container"></div>
+
+          <div id="register-decision" element-name="register-decision-card" source-page-name="card_register_decision_task" source-page-selector=".overlay-container"></div>
+
+          <div id="reporting-guidelines" element-name="reporting-guidelines-card" source-page-name="card_reporting_guidelines_task" source-page-selector=".overlay-container"></div>
+
+          <div id="reviewer-report" element-name="reviewer-report-card" source-page-name="card_reviewer_report_task" source-page-selector=".overlay-container"></div>
+
+          <div id="supporting-information" element-name="supporting-information-card" source-page-name="card_supporting_information_task" source-page-selector=".overlay-container"></div>
+
+          <div id="taxon" element-name="taxon-card" source-page-name="card_taxon_task" source-page-selector=".overlay-container"></div>
+
+          <div id="tech-check" element-name="tech-check-card" source-page-name="card_tech_check_task" source-page-selector=".overlay-container"></div>
+
+          <div id="upload-manuscript" element-name="upload-manuscript-card" source-page-name="card_upload_manuscript_task" source-page-selector=".overlay-container"></div>
+        </div>
 
       </div>
 

@@ -4,7 +4,8 @@ describe "update the Styleguide", js: true, selenium: true do
 
   let(:admin) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create(:journal) }
-  let!(:paper) { FactoryGirl.create(:paper, :with_tasks, journal: journal) }
+  let!(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let!(:paper2) { FactoryGirl.create(:paper, :with_tasks, journal: journal) }
   let(:role) { FactoryGirl.create(:role, journal: journal) }
   let!(:mmt) { FactoryGirl.create(:manuscript_manager_template, journal: journal) }
   let!(:flow) do
@@ -55,12 +56,12 @@ describe "update the Styleguide", js: true, selenium: true do
       page.grab(name, ".navigation")
     end
 
-    scenario "flow_manager" do
+    describe "flow_manager" do
       before do
         admin.flows << flow
       end
 
-      describe "stuff" do
+      scenario "stuff" do
         visit '/flow_manager'
         find(".control-bar-link", visible: true)
         page.grab(name)
@@ -107,8 +108,7 @@ describe "update the Styleguide", js: true, selenium: true do
 
     scenario "paper_manager" do
       Task.first.update(completed: true)
-      visit '/papers/1/manage'
-      # also include an overlay
+      visit '/papers/2/manage'
       has_css?(".card .card-content")
       card = first(".card .card-content")
       card.click
@@ -120,9 +120,8 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_ad_hoc" do
       Task.first.update(completed: true)
       visit '/papers/1/manage'
-      # also include an overlay
       has_css?(".card .card-content")
-      card = first(".card .card-content")
+      card = find(".card-content", text: 'Do something awesome')
       card.click
       first(".overlay", visible: true)
       page.grab(name)
@@ -133,18 +132,20 @@ describe "update the Styleguide", js: true, selenium: true do
       visit '/papers/1/manage'
       # also include an overlay
       has_css?(".card .card-content")
-      card = first(".card .card-content")
+      card = find(".card-content", text: 'Add Authors')
       card.click
       first(".overlay", visible: true)
+      find(".button-primary").click
+      find(".add-author-form", visible: true)
+
       page.grab(name)
     end
 
     scenario "card_competing_interests" do
       Task.first.update(completed: true)
       visit '/papers/1/manage'
-      # also include an overlay
       has_css?(".card .card-content")
-      card = first(".card .card-content")
+      card = find(".card-content", text: 'Competing Interests')
       card.click
       first(".overlay", visible: true)
       page.grab(name)
@@ -153,20 +154,21 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_data_availability" do
       Task.first.update(completed: true)
       visit '/papers/1/manage'
-      # also include an overlay
       has_css?(".card .card-content")
-      card = first(".card .card-content")
+      card = find(".card-content", text: 'Data Availability')
       card.click
       first(".overlay", visible: true)
+      all(".item input").last.click
+      all(".item input").last.find(".add-author-form")
       page.grab(name)
     end
 
     scenario "card_ethics" do
       Task.first.update(completed: true)
       visit '/papers/1/manage'
-      # also include an overlay
       has_css?(".card .card-content")
-      card = first(".card .card-content")
+      card = find(".card-content", text: 'Ethics')
+
       card.click
       first(".overlay", visible: true)
       page.grab(name)
@@ -175,9 +177,9 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_figure" do
       Task.first.update(completed: true)
       visit '/papers/1/manage'
-      # also include an overlay
       has_css?(".card .card-content")
-      card = first(".card .card-content")
+      card = find(".card-content", text: 'Upload Figures')
+
       card.click
       first(".overlay", visible: true)
       page.grab(name)
@@ -186,7 +188,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_financial_disclosure" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Financial Disclosure')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -195,7 +197,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_paper_admin_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Assign Admin')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -204,7 +206,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_paper_editor_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Assign Editor')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -213,7 +215,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_paper_reviewer_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Paper Reviewer')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -222,7 +224,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_publishing_related_questions_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Publishing Related Questions')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -231,7 +233,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_register_decision_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Register Decision')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -240,7 +242,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_reporting_guidelines_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Reporting Guidelines')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -249,16 +251,17 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_reviewer_report_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Reviewer Report')
       card.click
       first(".overlay--fullscreen", visible: true)
+      binding.pry
       page.grab(name)
     end
 
     scenario "card_taxon_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Taxon')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -267,7 +270,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_tech_check_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Tech Check')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -276,7 +279,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_supporting_information_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Supporting Information')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -285,7 +288,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_upload_manuscript_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = all(".card-content").last
+      card = find(".card-content", text: 'Upload Manuscript')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)
@@ -293,7 +296,6 @@ describe "update the Styleguide", js: true, selenium: true do
 
     scenario "paper_manager_overlay" do
       visit '/papers/1/manage'
-      # also include an overlay
       has_css?(".card .card-content")
       card = first(".card .card-content")
       card.hover

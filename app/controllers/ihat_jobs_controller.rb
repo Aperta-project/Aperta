@@ -4,8 +4,8 @@ class IhatJobsController < ApplicationController
   rescue_from ActiveSupport::MessageVerifier::InvalidSignature, with: :render_invalid_params
 
   def update
-    if job.completed?
-      PaperUpdateWorker.perform_async(job.paper_id, job.epub_url)
+    if job_response.completed?
+      PaperUpdateWorker.perform_async(job_response.paper_id, job_response.epub_url)
       head :ok
     else
       head :accepted
@@ -14,14 +14,15 @@ class IhatJobsController < ApplicationController
 
   private
 
-  def job
-    @job ||= IhatJobResponse.new(ihat_job_params)
+  def job_response
+    @job_response ||= IhatJobResponse.new(ihat_job_params)
   end
 
   def ihat_job_params
-    params.require(:job).permit(:id, :state, :epub_url).tap do |whitelisted|
+    params.require(:job).permit(:id, :state).tap do |whitelisted|
       whitelisted[:callback_url] = params[:job][:options][:callback_url]
       whitelisted[:metadata] = params[:job][:options][:metadata]
+      whitelisted[:outputs] = params[:job][:outputs]
     end
   end
 

@@ -2,11 +2,6 @@
  *= require_self
  *= require jquery.fileupload-ui
  *= require chosen
- *= //require plos_authors/application
- *= //require standard_tasks/application
- *= //require supporting_information/application
- *= //require upload_manuscript/application
- ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
 */
 
 @import 'bourbon';
@@ -24,3 +19,8 @@
 @import 'overlays/_base';
 @import 'screens/_base';
 @import 'ui/_base';
+
+@import 'plos_authors/application';
+@import 'standard_tasks/application';
+@import 'supporting_information/application';
+@import 'upload_manuscript/application';

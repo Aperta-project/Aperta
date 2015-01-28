@@ -1,9 +1,8 @@
 Tahi::Application.routes.draw do
   mount Kss::Engine => '/kss' if Rails.env.development?
-  # EMBERCLI TODO - support engines
-  # mount StandardTasks::Engine => '/', as: 'standard_tasks'
-  # mount SupportingInformation::Engine => '/', as: 'supporting_information'
-  # mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'
+  mount StandardTasks::Engine => '/', as: 'standard_tasks'
+  mount SupportingInformation::Engine => '/', as: 'supporting_information'
+  mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
 
   if Rails.env.development? || Rails.env.test?

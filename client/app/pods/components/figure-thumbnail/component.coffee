@@ -1,5 +1,5 @@
 `import Ember from 'ember'`
-`import AttachmentThumbnailComponent from 'tahi/components/attachment-thumbnail'`
+`import AttachmentThumbnailComponent from 'tahi/pods/components/attachment-thumbnail/component'`
 
 FigureThumbnailComponent = AttachmentThumbnailComponent.extend
   attachmentType: 'figure'

@@ -16,14 +16,6 @@ GIT
       railties (>= 3.2.5, < 5)
 
 GIT
-  remote: git://github.com/neo-tahi/jquery-fileupload-rails.git
-  revision: 5252879d45d9da58687033e32e290a2af7457a40
-  specs:
-    jquery-fileupload-rails (0.4.1)
-      actionpack (>= 3.1)
-      railties (>= 3.1)
-
-GIT
   remote: git://github.com/tahi-project/tahi_epub.git
   revision: 3553a9e619ead574f0a92bdfbf77397b11942ba1
   specs:
@@ -579,7 +571,6 @@ DEPENDENCIES
   haml-lint
   haml-rails
   heroku-deflater
-  jquery-fileupload-rails!
   kaminari
   kss-rails
   launchy

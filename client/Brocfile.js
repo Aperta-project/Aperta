@@ -26,7 +26,11 @@ app.import('bower_components/underscore/underscore-min.js');
 app.import('bower_components/moment/moment.js');
 app.import('bower_components/event-source-polyfill/eventsource.js');
 app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
+app.import('vendor/jquery.ui.widget.js');
+app.import('vendor/jquery.iframe-transport.js');
 app.import('vendor/bootstrap-tooltip/index.js');
+app.import('vendor/jquery.fileupload/jquery.fileupload.css')
+app.import('vendor/jquery.fileupload/jquery.fileupload.js');
 
 if (app.env !== 'production') {
   app.import('bower_components/sinon/index.js');

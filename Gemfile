@@ -37,7 +37,6 @@ gem 'sinatra'
 gem 'active_record-acts_as'
 
 gem "nokogiri"
-gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
 gem "fog"
 gem "unf"

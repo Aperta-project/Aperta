@@ -9,15 +9,14 @@
         <div class="attachment-thumbnail-edit-overlay-buttons">
           {{#replace-image}}
             <span>Replace Image</span>
-            {{file-uploader
-                url=attachmentUrl
-                railsMethod="PUT"
-                accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-                multiple=false
-                filePrefix="paper/figures"
-                start="uploadStarted"
-                progress="uploadProgress"
-                done="uploadFinished"}}
+            {{file-uploader url=attachmentUrl
+                            railsMethod="PUT"
+                            accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+                            multiple=false
+                            filePrefix="paper/figures"
+                            start="uploadStarted"
+                            progress="uploadProgress"
+                            done="uploadFinished"}}
           {{/replace-image}}
           <button class="button-secondary button--green knockout view-attachment-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in"></span>View Detail</button>
         </div>
@@ -25,7 +24,7 @@
     </div>
   {{else}}
     <div class="attachment-thumbnail-image attachment-thumbnail-image-placeholder">
-      <div class="replace-spinner"></div>
+      {{progress-spinner visible=true color="white"}}
       <span class="glyphicon glyphicon-file"></span>
     </div>
   {{/if}}
@@ -59,12 +58,12 @@
 
   <div class="attachment-thumbnail-text-content">
     <h2 class="attachment-thumbnail-title" {{action "toggleEditState" on="doubleClick"}}>
-      {{display attachment.title or="Attachment title"}}
+      {{display-value attachment.title or="Attachment title"}}
     </h2>
     <span class="glyphicon glyphicon-pencil attachment-edit-icon" {{action "toggleEditState"}}></span>
 
     <div class="attachment-thumbnail-caption" {{action "toggleEditState" on="doubleClick"}}>
-      {{display attachment.caption or="There is no caption for this file."}}
+      {{display-value attachment.caption or="There is no caption for this file."}}
     </div>
 
     {{#if attachment.isStrikingImage}}
@@ -88,4 +87,3 @@
     <img {{bind-attr src=attachment.detailSrc}} {{bind-attr alt=attachment.alt}}>
   </div>
 {{/if}}
-

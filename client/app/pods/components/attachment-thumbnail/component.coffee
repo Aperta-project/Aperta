@@ -22,7 +22,7 @@ AttachmentThumbnailComponent = Ember.Component.extend
   scrollToView: ->
     $('.overlay').animate
       scrollTop: @$().offset().top + $('.overlay').scrollTop()
-    , 500, 'easeInCubic'
+    , 500
 
   isProcessing: Ember.computed.equal('attachment.status', 'processing')
 
@@ -63,4 +63,3 @@ AttachmentThumbnailComponent = Ember.Component.extend
 
 
 `export default AttachmentThumbnailComponent`
-

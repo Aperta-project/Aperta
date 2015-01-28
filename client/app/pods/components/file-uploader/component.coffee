@@ -27,8 +27,6 @@ FileUploaderComponent = Ember.TextField.extend
         e.preventDefault()
 
   setupUploader:(->
-    # EMBERCLI TODO - not a bower package :(
-    return
     uploader = @.$()
 
     params = @getProperties('dataType', 'method', 'acceptFileTypes')
@@ -103,4 +101,3 @@ FileUploaderComponent = Ember.TextField.extend
   ).on('didInsertElement')
 
 `export default FileUploaderComponent`
-

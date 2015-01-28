@@ -21,8 +21,9 @@ DocumentDownloadService = Ember.Namespace.create
       url: "/papers/#{@paperId}/status/#{jobId}",
       success: (data) =>
         job = data['job']
-        if job.state == "converted"
-          Utils.windowLocation job.url
+        if job.state == "completed"
+          file = job.outputs.findBy("file_type", "docx")
+          Utils.windowLocation file.url
         else if job.state == "errored"
           alert("The download failed")
         else

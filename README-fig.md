@@ -142,10 +142,10 @@ Now we need to set things up a bit. Install your dependencies:
 bundle install
 ```
 
-You may be prompted to install various dependencies. For example:
-    - You need Ruby 2.1.5 (at least) installed.
-    - The `capybara` gem requires qt. If you're on a Mac, you can install qt4-mac using Homebrew or MacPorts.
-    - The `pg` gem requires postgres. If you've got postgres installed but pg installer isn't finding it, this may help: `bundle config build.pg --with-pg-config=/opt/local/lib/postgresql94/bin/pg_config` (but modify the path to match where your `pg_config` lives).
+This may fail at various points due to dependencies you may lack. Install what it needs and `bundle install` again.
+* You need Ruby 2.1.5 (at least) installed.
+* The `capybara` gem requires qt. If you're on a Mac, you can install qt4-mac using Homebrew or MacPorts.
+* The `pg` gem requires postgres. If you've got postgres installed but pg installer isn't finding it, this may help: `bundle config build.pg --with-pg-config=/opt/local/lib/postgresql94/bin/pg_config` (but modify the path to match where your `pg_config` lives).
 
 You will next need to generate a rails secret. You can do this by
 running:
@@ -159,9 +159,19 @@ file.
 
 ### Docker setup
 
-Install Docker and fig:
-    - For OSX, it's good to install Docker with Boot2Docker by using the pre-built version here: https://github.com/boot2docker/osx-installer/releases/latest
-    - You can install fig this way: `sudo pip install -U fig`
+Install Docker and fig. 
+
+For Linux, you can probably do this using yum and pip:
+```
+sudo yum install docker
+sudo yum install python-pip
+sudo pip install -U fig
+```
+
+For Mac OSX, it's good to install Docker with Boot2Docker:
+1. Download and install boot2docker using the pre-built version here: https://github.com/boot2docker/osx-installer/releases/latest
+2. Install Python and pip using Homebrew or MacPorts
+3. `sudo pip install -U fig`
 
 You are now ready to build! Run:
 
@@ -171,10 +181,10 @@ foreman run -- sudo -E fig -f fig.dev.yml build
 
 (possibly you do not need sudo: it seems to be necessary on Ubuntu). The build process can easily run for an hour or more; have patience.
 
-If you're on a Mac and get the message `SSL error: hostname '192.168.59.103' doesn't match 'boot2docker'`, the following may work (solution from https://github.com/docker/docker-py/issues/406):
-    - Edit `/etc/hosts` and add this line: `192.168.59.103 boot2docker`
-    - `export DOCKER_HOST=tcp://boot2docker:2376`
-    - Try to build again
+Note: If you're on a Mac and get the message "SSL error: hostname '192.168.59.103' doesn't match 'boot2docker'", the following may work (solution from https://github.com/docker/docker-py/issues/406):
+1. Edit `/etc/hosts` and add this line: `192.168.59.103 boot2docker`
+2. `export DOCKER_HOST=tcp://boot2docker:2376`
+3. Try to build again
 
 And run it (can take 15 minutes to start up the first time; subsequent starts will be fast):
 
@@ -182,17 +192,16 @@ And run it (can take 15 minutes to start up the first time; subsequent starts wi
 foreman run -- sudo -E fig -f fig.dev.yml up
 ```
 
-In another terminal, set up the database: (MH: Maybe need to wait for the run to finish?)
+In another terminal, set up the database (after 'run' above is ready):
 
 ```
 foreman run bundle exec rake db:migrate
 ```
 
-Note: If on a Mac running boot2docker and you receive the message `PG::ConnectionBad: could not connect to server: Connection refused`:
-    - Open your `.env` file in an editor
-    - Find the section entitled `docker hosted services, do not edit`
-    - Change instances of `localhost` to the IP address of your boot2docker, typically `192.168.59.103`
-    - Try the db:migrate again
+Note: If on a Mac running boot2docker and you receive the message "PG::ConnectionBad: could not connect to server: Connection refused":
+1. Find the section in your `.env` file entitled "docker hosted services, do not edit"
+2. Change instances of `localhost` to `boot2docker` if you added it to /etc/hosts above, or the IP address of your boot2docker, typically `192.168.59.103`
+3. Try the db:migrate again
 
 We need to create a solr collection:
 
@@ -200,7 +209,7 @@ We need to create a solr collection:
 curl -s "http://localhost:53013/solr/admin/cores?action=CREATE&name=development&instanceDir=tahi&config=solrconfig.xml&schema=schema.xml&dataDir=data"
 ```
 
-Note: If on a Mac running boot2docker, change `localhost` in the `curl` command above to the IP address of your boot2docker, typically `192.168.59.103`.
+Note: If on a Mac running boot2docker, change `localhost` in the `curl` command above to `boot2docker` if you added it to /etc/hosts above, or the IP address of your boot2docker, typically `192.168.59.103`
 
 and seed the database:
 
@@ -215,13 +224,11 @@ foreman run bundle exec rake api:generate_access_token
 
 Note down the key and set `TAHI_TOKEN` in your `.env` file.
 
-Now you need to initialize solr again (why?)
+Now you need to initialize solr again (why?). If you get the error "Core with name 'development' already exists" maybe you didn't need to do this after all.
 
 ```
 curl -s "http://localhost:53013/solr/admin/cores?action=CREATE&name=development&instanceDir=tahi&config=solrconfig.xml&schema=schema.xml&dataDir=data"
 ```
-
-[MH Note: I got error `Core with name 'development' already exists.` and I'm ignoring it.]
 
 Finally:
 

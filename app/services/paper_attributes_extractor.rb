@@ -14,7 +14,7 @@ class PaperAttributesExtractor
   end
 
   def extract(filename)
-    TahiEpub::Zip.extract(stream: epub_stream, filename: filename)
+    TahiEpub::Zip.extract(stream: epub_stream, filename: filename).force_encoding("UTF-8")
   rescue TahiEpub::FileNotFoundError => fnf
     nil # the filename doesn't exist in the response epub
   end

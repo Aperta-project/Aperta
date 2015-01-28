@@ -112,7 +112,6 @@ describe "update the Styleguide", js: true, selenium: true do
       has_css?(".card .card-content")
       card = first(".card .card-content")
       card.click
-      # grab the overlay and the underlying HTML
       first(".overlay", visible: true)
       page.grab(name)
     end
@@ -130,7 +129,6 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_plos_authors_task" do
       Task.first.update(completed: true)
       visit '/papers/1/manage'
-      # also include an overlay
       has_css?(".card .card-content")
       card = find(".card-content", text: 'Add Authors')
       card.click
@@ -159,7 +157,7 @@ describe "update the Styleguide", js: true, selenium: true do
       card.click
       first(".overlay", visible: true)
       all(".item input").last.click
-      all(".item input").last.find(".add-author-form")
+      find(".additional-data", visible: true)
       page.grab(name)
     end
 
@@ -254,7 +252,6 @@ describe "update the Styleguide", js: true, selenium: true do
       card = find(".card-content", text: 'Reviewer Report')
       card.click
       first(".overlay--fullscreen", visible: true)
-      binding.pry
       page.grab(name)
     end
 
@@ -311,7 +308,6 @@ end
 class Capybara::Session
   def grab(filename, selector = "")
     dirname = "doc/ux"
-    # dirname = "docs/ux"
     FileUtils.mkdir_p(dirname)
 
     save_html("#{dirname}/#{filename}", selector)
@@ -329,6 +325,7 @@ class Capybara::Session
     first("body div")
     # find a UI element instead of waiting
     sleep 2.0
+
     File.open("#{filename}.html", "w") do |f|
       if !selector.empty?
         f << Nokogiri::HTML(html).css(selector).try(:to_html)

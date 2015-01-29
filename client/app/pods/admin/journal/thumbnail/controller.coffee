@@ -1,5 +1,5 @@
 `import Ember from 'ember'`
-`import FileUploadMixin from 'tahi/mixins/controllers/file-upload'`
+`import FileUploadMixin from 'tahi/mixins/file-upload'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
 JournalThumbnailController = Ember.ObjectController.extend FileUploadMixin, ValidationErrorsMixin,

@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import TaskController from 'tahi/pods/task/controller'`
 `import BuildsTaskTemplate from 'tahi/mixins/controllers/builds-task-template'`
-`import FileUploadMixin from 'tahi/mixins/controllers/file-upload'`
+`import FileUploadMixin from 'tahi/mixins/file-upload'`
 `import RESTless from 'tahi/services/rest-less'`
 
 AdHocOverlayController = TaskController.extend BuildsTaskTemplate, FileUploadMixin,

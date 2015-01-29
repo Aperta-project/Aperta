@@ -53,7 +53,7 @@ FactoryGirl.define do
 
   factory :paper_reviewer_task, class: 'StandardTasks::PaperReviewerTask' do
     phase
-    title "Paper Reviewer"
+    title "Assign Reviewers"
     role "editor"
   end
 

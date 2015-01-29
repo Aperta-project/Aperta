@@ -20,8 +20,3 @@ ETahi.StyleguideRoute = Ember.Route.extend(
 
     controller.set('uploads', uploads)
 )
-#
-#
-# setupController: (controller, model) ->
-#   controller.set('model', model)
-#   controller.set('journal', @modelFor('journal'))

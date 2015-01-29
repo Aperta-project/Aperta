@@ -10,9 +10,19 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
       RESTless.authorize(controller, '/user_flows/authorization', 'canViewFlowManagerLink')
 
   actions:
-    willTransition: ->
-      @controllerFor('application').send 'hideNavigation'
-      @controllerFor('application').set 'isLoading', true
+    willTransition: (transition) ->
+      appController = @controllerFor('application')
+      currentRouteController = @controllerFor(appController.get('currentRouteName'))
+
+      if currentRouteController.get('isUploading')
+        if confirm 'You are uploading. Are you sure you want abort uploading?'
+          currentRouteController.send 'cancelUploads'
+        else
+          transition.abort()
+          return
+
+      appController.send 'hideNavigation'
+      appController.set 'isLoading', true
 
     didTransition: ->
       @controllerFor('application').set 'isLoading', false

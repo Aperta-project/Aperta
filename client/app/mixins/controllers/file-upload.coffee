@@ -2,7 +2,7 @@
 `import FileUpload from 'tahi/models/file-upload'`
 
 FileUploadMixin = Ember.Mixin.create
-  _init: (->
+  _initFileUpload: (->
     @set 'uploads', []
   ).on('init')
 
@@ -15,7 +15,7 @@ FileUploadMixin = Ember.Mixin.create
     filename = file.name
     @get('uploads').pushObject FileUpload.create(file: file, xhr: fileUploadXHR)
     $(window).on "beforeunload.cancelUploads.#{filename}", ->
-      return 'You are uploading, are you sure you want to cancel?'
+      return 'You are uploading, are you sure you want to abort uploading?'
 
   uploadProgress: (data) ->
     currentUpload = @get('uploads').findBy('file', data.files[0])

@@ -59,7 +59,7 @@ TaskController = Ember.ObjectController.extend SavesDelayed, ControllerParticipa
 
     routeWillTransition: (transition) ->
       if @get('isUploading')
-        if confirm 'You are uploading, are you sure you want to cancel?'
+        if confirm 'You are uploading, are you sure you want to abort uploading?'
           @send('cancelUploads')
         else
           transition.abort()

@@ -3,7 +3,7 @@ import Utils from 'tahi/services/utils';
 
 export default Ember.Mixin.create({
   // TODO: do we need this?
-  _init: (function() {
+  _initValidationErrors: (function() {
     this.clearValidationErrors();
   }).on('init'),
 

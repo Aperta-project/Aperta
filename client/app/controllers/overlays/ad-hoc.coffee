@@ -41,10 +41,10 @@ AdHocOverlayController = TaskController.extend BuildsTaskTemplate, FileUploadMix
 
     uploadFinished: (data, filename) ->
       @uploadFinished(data, filename)
-
       @store.pushPayload('attachment', data)
-      attachment = @store.getById('attachment', data.attachment.id)
 
+      # TODO: Remove when ember-data isn't borked
+      attachment = @store.getById('attachment', data.attachment.id)
       @get('model.attachments').pushObject(attachment)
 
 `export default AdHocOverlayController`

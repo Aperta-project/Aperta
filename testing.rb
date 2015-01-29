@@ -17,7 +17,6 @@ def get_content(ele)
   filename = ele['source-page-name']
   selector = ele['source-page-selector']
   necessary_context = ele['source-page-selector-context']
-  text = ele.text
 
   # Open the .html filenamee
   html = File.open("doc/ux/#{filename}.html", "r").read
@@ -54,7 +53,7 @@ end
 
 # Wrap the html in a toggle-able code block
 def in_code_block(html)
-  seed = "collapse-#{rand(10000).to_s}"
+  seed = "collapse-#{rand(10000)}"
 
   s = "<div class=row>"
   s << "<div class=col-md-12>"

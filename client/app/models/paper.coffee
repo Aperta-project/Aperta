@@ -11,7 +11,7 @@ Paper = DS.Model.extend
   lockedBy: DS.belongsTo('user')
   phases: DS.hasMany('phase')
   reviewers: DS.hasMany('user') # these are reviewers that have been assigned to the paper.
-  supportingInformationFiles: DS.hasMany('supportingInformationFile')
+  supportingInformationFiles: DS.hasMany('supporting-information-file')
   tasks: DS.hasMany('task', {async: true, polymorphic: true})
 
   body: a('string')

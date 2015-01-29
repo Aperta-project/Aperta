@@ -24,6 +24,8 @@ JournalFlowManagerController = Ember.ObjectController.extend
         title: 'Up for grabs'
         role: @get('model')
         position: @newFlowPosition()
+        query: {}
+        taskRoles: []
 
       flow.save().then (flow) -> # SSOT workaround
         flow.get('role.flows').then (flows) ->

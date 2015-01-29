@@ -10,7 +10,3 @@ TaskSerializer = ApplicationSerializer.extend SerializesHasMany,
     'task'
 
 `export default TaskSerializer`
-
-# EMBERCLI TODO - these are engines, no?
-# ETahi.AuthorsTaskSerializer = ETahi.TaskSerializer.extend()
-# ETahi.TechCheckTaskSerializer = ETahi.TaskSerializer.extend()

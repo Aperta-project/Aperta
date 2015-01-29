@@ -17,7 +17,6 @@
     :javascript
       // EMBERCLI TODO: REMOVE
       window.ETahi = {}
-      window.ETahi.environment = "#{Rails.env}";
     - if current_user
       :javascript
         window.currentUser = #{UserSerializer.new(current_user).to_json.html_safe};
@@ -26,4 +25,3 @@
     = include_ember_stylesheet_tags :tahi
     - if Rails.env.test?
       = javascript_tag "$.fx.off = true" # disable jquery animations
-      = javascript_tag "EventSource = NativeEventSource" # undo eventsource.js polyfill

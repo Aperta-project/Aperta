@@ -95,7 +95,6 @@ RSpec.configure do |config|
   config.before(:each, js: true) do
     DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types'] }
     DatabaseCleaner[:redis].strategy = :truncation
-    page.driver.allow_url 'fonts.googleapis.com'
   end
 
   config.before(:each, redis: true) do

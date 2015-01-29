@@ -2,6 +2,7 @@ class IhatJobsController < ApplicationController
   skip_before_action :authenticate_with_basic_http
   protect_from_forgery with: :null_session
   rescue_from ActiveSupport::MessageVerifier::InvalidSignature, with: :render_invalid_params
+  rescue_from ActionController::ParameterMissing, with: :render_invalid_params
 
   def update
     if job_response.completed?

@@ -1,6 +1,6 @@
 # This is the Styleguide `HYDRATION` File
 # It is responsible for retrieving elements from /doc/ux .html files
-# and updating the styleguide2.html.erb
+# and updating the styleguide_template.html.erb
 #
 # See spec/features/populate_styleguide.rb for more detail
 
@@ -68,8 +68,8 @@ end
 
 # Arbitrary starting point
 def init
-  @styleguide_path = "app/views/kss/home/styleguide2.html.erb"
-  @populated_styleguide_path = "app/views/kss/home/styleguide3.html.erb"
+  @styleguide_path = "app/views/kss/home/styleguide_template.html.erb"
+  @populated_styleguide_path = "app/views/kss/home/styleguide.html.erb"
 
   # Open the File
   styleguide_html = File.open(@styleguide_path, "r").read

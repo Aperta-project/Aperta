@@ -7,16 +7,6 @@ html {
 
 body { background: transparent; } // override bootstrap
 
-// top level error above overlay
-.application-error {
-  position: absolute;
-  top: 50px;
-  right: 40%;
-  text-align: center;
-  min-width: 20%;
-  z-index: z($z-layer-app-error);
-}
-
 ::-webkit-scrollbar {
   width: 6px;
   height: 10px;
@@ -121,13 +111,6 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
   .warning { margin-top: 10px; }
 }
 
-.submit-error {
-  margin-top: 20px;
-  text-align: center;
-  padding: 5px;
-}
-
-
 .datepicker-field {
   width: 100px;
   display: inline-block;
@@ -155,19 +138,19 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
   }
 }
 
-.field-with-errors {
+.error {
   input, select, textarea {
     border: 1px solid $tahi-error-red;
   }
 }
 
-.error-message {
-  color: $tahi-error-red;
-  font-size: 12px;
-}
-
 .flash-messages--below-control-bar {
   margin-top: $tahi-control-bar-height;
+}
+.flash-messages--on-paper-edit-page {
+  position: absolute;
+  top: $tahi-control-bar-height + $ve-toolbar-height - 2px;
+  width: 100%;
 }
 
 // Main Content:
@@ -176,7 +159,7 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
   @include position(fixed, 0px 0px 0px 0px);
   display: none;
   background: rgba(255,255,255, 0.4);
-  z-index: z($z-layer-main-content-cover);
+  z-index: z('main-content-cover');
 }
 
 html.navigation-visible .main-content-cover { display: block; }
@@ -190,7 +173,7 @@ html.navigation-visible .main-content-cover { display: block; }
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
-  z-index: z($z-layer-navigation-toggle);
+  z-index: z('navigation-toggle');
   @include user-select(none);
 
   svg {

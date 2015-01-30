@@ -26,13 +26,6 @@
   <a href="#" class="navigation-item navigation-item-feedback" {{action "feedback"}}>Give Feedback on Tahi</a>
 </div>
 
-{{#if error}}
-  <div id="application-error" class="alert alert-danger alert-dismissable application-error">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    {{error}}
-  </div>
-{{/if}}
-
 <div class="main-content">
   <div class="main-content-cover" {{action "toggleNavigation"}}></div>
   <div class="navigation-toggle" {{action "toggleNavigation"}}>

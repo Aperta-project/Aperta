@@ -7,6 +7,7 @@ expectedSupportedDownloadFormats = undefined
 module 'Integration: Paper Docx Download',
   teardown: ->
     ETahi.reset()
+    ETahi.paperEditActionStub.restore()
 
   setup: ->
     setupApp integration: true
@@ -58,6 +59,7 @@ test 'show download links on control bar', ->
   mock = undefined
   visit "/papers/#{ETahi.Test.currentPaper.id}/edit"
   andThen ->
+    ETahi.paperEditActionStub = sinon.stub(ETahi.__container__.lookup('controller:paperEdit')._actions, "savePaper")
     mock = sinon.mock(Tahi.utils)
     mock.expects("windowLocation").withArgs("https://www.google.com")
       .returns(true)
@@ -79,6 +81,7 @@ test 'iHat supported formats are set after page load', ->
     # on /formats when someone visits the paper_edit_route or paper_index_route.
     # The mock_server.js has a route for /formats that is always defined.
     export_formats = window.ETahi.supportedDownloadFormats.export_formats
+    ETahi.paperEditActionStub = sinon.stub(ETahi.__container__.lookup('controller:paperEdit')._actions, "savePaper")
     expected = window.expectedSupportedDownloadFormats
     equal(export_formats[0].format, expected.export_formats[0].format)
     equal(export_formats[1].format, expected.export_formats[1].format)

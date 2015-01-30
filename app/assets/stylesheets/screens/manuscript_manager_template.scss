@@ -73,7 +73,7 @@ $template-thumbnail-height: 135px;
 
 .manuscript-manager-template-columns {
   // override .columns to allow for larger .control-bar
-  top: 160px;
+  top: 160px !important;
 }
 
 .edit-paper-type-field {
@@ -85,6 +85,8 @@ $template-thumbnail-height: 135px;
   border-radius: 5px;
   padding-left: 8px;
 }
+
+.mmt-edit-error-message { display: inline; }
 
 
 .paper-type-form {

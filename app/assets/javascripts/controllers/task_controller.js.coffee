@@ -1,4 +1,4 @@
-ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.ControllerParticipants, ETahi.ValidatesAssociatedModels, Ember.Evented,
+ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.ControllerParticipants, ETahi.ValidationErrorsMixin, Ember.Evented,
   queryParams: ['isNewTask']
   isNewTask: false
   needs: ['application']
@@ -27,9 +27,9 @@ ETahi.TaskController = Ember.ObjectController.extend ETahi.SavesDelayed, ETahi.C
     @_super()
       .then () =>
         @clearValidationErrors()
-      .catch (error) =>
-        @setValidationErrors(error.errors)
-        @set('model.completed', false)
+      .catch (response) =>
+        @displayValidationErrorsFromResponse response
+        @set 'model.completed', false
 
   actions:
     #saveModel is implemented in ETahi.SavesDelayed

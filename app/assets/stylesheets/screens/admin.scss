@@ -69,8 +69,9 @@
 
   .admin-modal {
     .reset-password {
+      clear: both;
       margin-left: 33.33333333333333%;
-      margin-top: 20px;
+      padding-top: 20px;
       padding-left: 15px;
 
       .reset-password-link {

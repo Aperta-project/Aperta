@@ -46,7 +46,7 @@ ETahi.ChosenView = Ember.Select.extend
 
   warnValue: ( ->
     if @get('multiple') && !@get('selection')
-      throw "You should use the selection option with a multiple select rather than value"
+      throw new Error("You should use the selection option with a multiple select rather than value")
   ).on('init')
 
   observeSelection: (->

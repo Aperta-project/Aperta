@@ -1,31 +1,22 @@
-ETahi.JournalThumbnailController = Ember.ObjectController.extend ETahi.FileUploadMixin,
+ETahi.JournalThumbnailController = Ember.ObjectController.extend ETahi.FileUploadMixin, ETahi.ValidationErrorsMixin,
   needs: ['application']
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isEditing: (-> @get 'model.isDirty').property()
   thumbnailId: (-> "journal-logo-#{@get 'model.id'}").property()
   logoUploadUrl: (-> "/admin/journals/#{@get 'model.id'}/upload_logo").property('model.id')
-  nameErrors: null
-  descriptionErrors: null
   logoPreview: null
   journal: null
   uploadLogoFunction: null
-
-  resetErrors: ->
-    @setProperties
-      nameErrors: null
-      descriptionErrors: null
 
   stopEditing: ->
     @setProperties(isEditing: false, uploadLogoFunction: null, logoPreview: null)
 
   saveJournal: ->
-    self = @
     @get('model').save()
-                 .then(@stopEditing.bind(@))
-                 .catch ({errors: {name, description}}) ->
-                   self.setProperties
-                     nameErrors: name?[0]
-                     descriptionErrors: description?[0]
+                 .then =>
+                   @stopEditing()
+                 .catch (response) =>
+                   @displayValidationErrorsFromResponse response
 
   actions:
     editJournalDetails: -> @set 'isEditing', true
@@ -38,8 +29,12 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend ETahi.FileUploa
     saveJournalDetails: ->
       updateLogo = @get('uploadLogoFunction')
       if @get('model.isNew')
-        @get('model').save().then (journal) =>
-          (updateLogo || @stopEditing).call(@)
+        @get('model').save()
+                     .then (journal) =>
+                       (updateLogo || @stopEditing).call(@)
+                     .catch (response) =>
+                       @displayValidationErrorsFromResponse response
+
       else
         # updateLogo will fire the 'uploadFinished' action from the component, thus saving the model
         # with the new journal logo url.
@@ -48,7 +43,7 @@ ETahi.JournalThumbnailController = Ember.ObjectController.extend ETahi.FileUploa
     resetJournalDetails: ->
       @get('model').rollback()
       @set 'isEditing', false
-      @resetErrors()
+      @clearValidationErrors()
 
     showPreview: (file) ->
       @set 'logoPreview', file.preview

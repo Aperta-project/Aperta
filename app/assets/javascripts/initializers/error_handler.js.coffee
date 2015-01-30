@@ -1,25 +1,34 @@
 ETahi.initializer
   name: 'errorHandler'
-  after: 'currentUser'
+  after: 'flashMessages'
 
   initialize: (container, application) ->
     errorPath = '/errors'
-
-    logError = (msg) ->
+    flash     = container.lookup('flashMessages:main')
+    logError  = (msg) ->
       e = new Error(msg)
       console.log(e.stack || e.message)
 
+    # TODO investigate this more
     container.register('logError:main', logError , instantiate: false)
     application.inject('route', 'logError', 'logError:main')
 
     # The global error handler
     Ember.onerror = (error) ->
-      logError("\n" + error.message + "\n" + error.stack + "\n")
-      window.ErrorNotifier.notify(error, "Uncaught Ember Error")
+      if ETahi.environment == 'test'
+        # if we do not print this, you can not click on the stack trace
+        # and jump to the code where the error happened.
+        console.log(error.stack)
+        # in test, this error is caught by QUnit and displayed in the UI
+        throw error
+
       if ETahi.environment == 'development'
+        flash.displayMessage 'error', error
         throw error
       else
-        Tahi.utils.displayErrorMessage(error)
+        flash.displayMessage 'error', error
+        if Bugsnag && Bugsnag.notifyException
+          Bugsnag.notifyException(error, "Uncaught Ember Error")
 
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->
       {type, url} = ajaxSettings
@@ -37,4 +46,4 @@ ETahi.initializer
       if jqXHR.status == 401
         document.location.href = '/users/sign_in'
 
-      Tahi.utils.displayErrorMessage("There was a problem with the server.  Your data may be out of sync.  Please reload.")
+      flash.displayMessage 'error', "There was a problem with the server. Your data may be out of sync. Please reload."

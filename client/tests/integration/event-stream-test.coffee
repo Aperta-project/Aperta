@@ -27,6 +27,7 @@ module 'Integration: EventStream',
     Ember.run(app, app.destroy)
   setup: ->
     app = startApp()
+    1+1 # hangs if we return app. odd I know...
 
 test 'action:created without a task will put the payload in the store', ->
   expect(1)

@@ -81,7 +81,6 @@ group :development do
   # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs.
   # Please add it in temporarily if you need to check for speed
   gem 'bullet'
-  gem 'kss-rails'
   gem 'letter_opener'
   gem 'rubocop', require: false
   gem 'scss-lint', require: false
@@ -119,6 +118,10 @@ group :test do
   gem 'webmock'
   gem 'thin'
   gem 'sunspot-rails-tester'
+end
+
+group :development, :staging do
+  gem 'kss-rails'
 end
 
 group :staging, :performance do

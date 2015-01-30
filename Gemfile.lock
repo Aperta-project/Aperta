@@ -9,13 +9,6 @@ GIT
       omniauth (~> 1.2.0)
 
 GIT
-  remote: git://github.com/modeset/teaspoon.git
-  revision: 09641099f82098302f58fbff899845fa6b73946e
-  specs:
-    teaspoon (0.8.0)
-      railties (>= 3.2.5, < 5)
-
-GIT
   remote: git://github.com/tahi-project/tahi_epub.git
   revision: 3553a9e619ead574f0a92bdfbf77397b11942ba1
   specs:
@@ -336,7 +329,6 @@ GEM
       slop (~> 3.4, >= 3.4.5)
     pdfkit (0.6.2)
     pg (0.17.0)
-    phantomjs (1.9.7.1)
     powerpack (0.0.9)
     pr_geohash (1.0.0)
     procto (0.0.2)
@@ -360,8 +352,6 @@ GEM
       rack (>= 1.1, < 2.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
-    qunit-rails (0.0.7)
-      railties
     rack (1.6.0)
     rack-protection (1.5.3)
       rack
@@ -593,7 +583,6 @@ DEPENDENCIES
   overcommit
   pdfkit
   pg
-  phantomjs
   plos_authors!
   progressbar
   pry-byebug
@@ -602,7 +591,6 @@ DEPENDENCIES
   pry-stack_explorer
   puma
   quiet_assets
-  qunit-rails
   rack-timeout
   rails (= 4.2.0)
   rails_12factor
@@ -627,7 +615,6 @@ DEPENDENCIES
   sunspot_solr
   supporting_information!
   tahi_epub!
-  teaspoon!
   thin
   timeliness
   twitter-text

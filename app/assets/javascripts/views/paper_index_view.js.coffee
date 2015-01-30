@@ -19,10 +19,16 @@ ETahi.PaperIndexView = Ember.View.extend ETahi.RedirectsIfEditable,
     if @get 'subNavVisible'
       $('.oo-ui-toolbar').css 'top', '103px'
       $('#tahi-container').addClass 'sub-nav-visible'
+      $('html').addClass 'control-bar-sub-nav-active'
     else
       $('.oo-ui-toolbar').css 'top', '60px'
       $('#tahi-container').removeClass 'sub-nav-visible'
+      $('html').removeClass 'control-bar-sub-nav-active'
   ).observes('subNavVisible')
+
+  teardownControlBarSubNav: (->
+    $('html').removeClass 'control-bar-sub-nav-active'
+  ).on('willDestroyElement')
 
   actions:
     showSubNav: (sectionName)->

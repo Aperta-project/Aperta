@@ -1,12 +1,13 @@
 `import Utils from 'tahi/services/utils'`
+`import ENV from 'tahi/config/environment'`
 
 ErrorHandler =
   name: 'errorHandler'
   after: 'flashMessages'
 
   initialize: (container, application) ->
+    # EMBERCLI TODO - what is this for?
     return
-    # EMBERCLI TODO - re-evaluate
     errorPath = '/errors'
     flash     = container.lookup('flashMessages:main')
     logError  = (msg) ->
@@ -20,7 +21,7 @@ ErrorHandler =
     Ember.onerror = (error) ->
       logError("\n" + error.message + "\n" + error.stack + "\n")
       window.ErrorNotifier.notify(error, "Uncaught Ember Error")
-      if ETahi.environment == 'development'
+      if ENV.environment == 'development'
         throw error
       else
         flash.displayMessage 'error', error
@@ -33,9 +34,9 @@ ErrorHandler =
       return if status == 403
       return if status == 422 # ember data should handle these errors.
 
-      #don't blow up if blowing up blows up
+      # don't blow up if blowing up blows up
       return if url == errorPath
-      return if status == 0 && ETahi.environment == 'test'
+      return if status == 0 && ENV.environment == 'test'
       msg = "Error with #{type} request to #{url}. Server returned #{status}: #{statusText}.  #{thrownError}"
       logError(msg)
       if jqXHR.status == 401

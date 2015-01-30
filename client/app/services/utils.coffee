@@ -1,4 +1,5 @@
 `import Ember from 'ember'`
+`import ENV from 'tahi/config/environment'`
 
 Utils = Ember.Namespace.create
   camelizeKeys: (object) ->
@@ -73,14 +74,10 @@ Utils = Ember.Namespace.create
     ms)
 
   debug: (description, obj) ->
-    # EMBERCLI TODO - use embercli ENV
-    if true
-      console.log('FIX Etahi.environment')
-    else
-      if ETahi.environment == 'development' || ETahi.environment == 'test' || Ember.testing
-        console.groupCollapsed(description)
-        console.log(Em.copy(obj, true))
-        console.groupEnd()
+    if ENV.environment == 'development' || ENV.environment == 'test' || Ember.testing
+      console.groupCollapsed(description)
+      console.log(Ember.copy(obj, true))
+      console.groupEnd()
 
   deNamespaceTaskType: (typeString) ->
     taskTypeNames = typeString.split '::'

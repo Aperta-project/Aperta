@@ -1,4 +1,5 @@
 `import Ember from 'ember'`
+`import ENV from 'tahi/config/environment'`
 
 ApplicationController = Ember.Controller.extend
   delayedSave: false
@@ -28,7 +29,7 @@ ApplicationController = Ember.Controller.extend
   defaultBackground: 'overlay-background'
 
   testing: ( ->
-    Ember.testing || ETahi.environment == 'test'
+    Ember.testing || ENV.environment == 'test'
   ).property()
 
   showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave')

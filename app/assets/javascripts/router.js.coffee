@@ -20,6 +20,8 @@ ETahi.Router.map ()->
         @route('edit', path: '/:template_id/edit')
       @route('flow_manager', path: '/roles/:role_id/flow_manager')
 
+  @route('styleguide')
+
 if window.history and window.history.pushState
   ETahi.Router.reopen
     rootURL: '/'

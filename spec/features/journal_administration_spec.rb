@@ -94,8 +94,12 @@ feature "Journal Administration", js: true do
 
     describe "on a Journal's Flow Manager" do
       it "show Journal name as text" do
-        visit "/admin/journals/1/roles/1/flow_manager"
-        find(".control-bar-link-icon").click
+        click_link('Admin')
+        click_link(journal.name)
+        first(".admin-role-action-button").click
+        find("input[name='role[canViewFlowManager]']").set(true)
+        click_link("Edit Flows")
+        first(".control-bar-link-icon").click
         expect(page.find(".column-title-wrapper")).to have_content journal.name
       end
 

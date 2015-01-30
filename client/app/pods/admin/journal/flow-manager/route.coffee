@@ -17,7 +17,7 @@ Route = Ember.Route.extend
     controller.setProperties
       model: model
       commentLooks: @store.all('commentLook')
-      journal: @modelFor('journal')
+      journal: @modelFor('admin.journal')
       journalTaskTypes: @store.all('journalTaskType')
 
   actions:

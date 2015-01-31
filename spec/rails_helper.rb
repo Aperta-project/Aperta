@@ -68,7 +68,6 @@ VCR.configure do |config|
   end
 end
 
-
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = false
@@ -106,11 +105,6 @@ RSpec.configure do |config|
     DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types'] }
     DatabaseCleaner[:redis].strategy = :truncation
     Sidekiq::Extensions::DelayedMailer.jobs.clear
-  end
-
-  config.include Haml::Helpers, type: :helper
-  config.before(:each, type: :helper) do
-    init_haml_helpers
   end
 
   config.before(:context, redis: true) do

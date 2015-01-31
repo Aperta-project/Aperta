@@ -213,7 +213,7 @@ describe "update the Styleguide", js: true, selenium: true do
     scenario "card_paper_reviewer_task" do
       visit '/papers/1/manage'
       has_css?(".card .card-content")
-      card = find(".card-content", text: 'Paper Reviewer')
+      card = find(".card-content", text: 'Assign Reviewers')
       card.click
       first(".overlay--fullscreen", visible: true)
       page.grab(name)

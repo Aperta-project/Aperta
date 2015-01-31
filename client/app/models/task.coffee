@@ -8,9 +8,9 @@ Task = DS.Model.extend CardThumbnailObserver,
   cardThumbnail: DS.belongsTo('card-thumbnail', inverse: 'task')
   comments: DS.hasMany('comment')
   litePaper: DS.belongsTo('lite-paper')
-  paper: DS.belongsTo('paper')
+  paper: DS.belongsTo('paper', inverse: 'tasks')
   participations: DS.hasMany('participation')
-  phase: DS.belongsTo('phase')
+  phase: DS.belongsTo('phase', inverse: 'tasks')
   questions: DS.hasMany('question', inverse: 'task')
 
   body: a()

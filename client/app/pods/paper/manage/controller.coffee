@@ -27,10 +27,6 @@ PaperManageController = Ember.ObjectController.extend
         paper.reload()
 
     changeTaskPhase: (task, targetPhase) ->
-      # Ember-Data TODO: remove when data is updated
-      task.get('phase.tasks').removeObject(task)
-      targetPhase.get('tasks').addObject(task)
-
       task.set('phase', targetPhase)
       task.save()
 

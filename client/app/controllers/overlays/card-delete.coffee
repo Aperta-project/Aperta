@@ -9,8 +9,6 @@ CardDeleteOverlayController = Ember.Controller.extend
       @send('closeOverlay')
     removeTask: ->
       @get('model').destroyRecord().then (task) =>
-        # EMBERCLI TODO - Polymorphic destroy appears to be broken
-        task.get('phase.tasks').removeObject(task) if task.get('phase')
         @send('closeOverlay')
 
 `export default CardDeleteOverlayController`

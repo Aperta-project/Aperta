@@ -38,5 +38,8 @@
     "tahi-standard-cards": "git://github.com/Tahi-project/tahi-standard-cards.git",
     "tahi-supporting-information-card": "git://github.com/Tahi-project/tahi-supporting-information-card.git",
     "tahi-upload-manuscript-card": "git://github.com/Tahi-project/tahi-upload-manuscript-card.git"
+  },
+  "scripts": {
+    "postinstall": "./../node_modules/bower/bin/bower install"
   }
 }

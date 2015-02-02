@@ -45,7 +45,7 @@ def get_content(ele)
   end
 
   # return that snippet of markup
-  return selection + in_code_block(selection)
+  return selection
 rescue => e
   p e.inspect
   p "Error: Could not open `#{name}` in `#{filename}` with selector `#{selector}`"

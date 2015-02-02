@@ -82,7 +82,7 @@
                 </p>
               </div>
               <div class="col-md-6">
-                <button id="toggle-all-source" class="btn btn-primary">Toggle All Source</button>
+                <button id="toggle-all-source" class="btn btn-primary hide">Toggle All Source</button>
               </div>
             </div>
 
@@ -387,7 +387,11 @@
             </h3>
 
             <div class="constrain">
-              <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) div.yes-no-with-comments"></div>
+              <!--
+              This form needs an overlay context to be formatted properly..
+              But it feels too coupled at the moment.
+              -->
+              <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) div.yes-no-with-comments" source-page-selector-context=".overlay-content"></div>
             </div>
 
             <h3>

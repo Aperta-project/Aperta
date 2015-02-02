@@ -54,13 +54,15 @@
     left: 0;
     width: 13px;
   }
+
+  a {
+    display: block;
+    color: #333;
+    font-family: $tahi-article-font-family;
+    font-size: 18px;
+    line-height: 1.5;
+  }
 }
 
-.dashboard-paper-title a {
-  color: #333;
-  font-family: $tahi-article-font-family;
-  font-size: 18px;
-  line-height: 1.5;
-}
 
 .tooltip { position: fixed; }

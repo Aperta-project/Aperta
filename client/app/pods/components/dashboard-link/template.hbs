@@ -5,10 +5,10 @@
              title=model.roleList}}
     {{partial "svg/manuscript-icon"}}
     {{model.displayTitle}}
+    {{#if unreadCommentsCount}}
+      <span class="badge link-tooltip" {{bind-attr title=badgeTitle}}>
+        {{unreadCommentsCount}}
+      </span>
+    {{/if}}
   {{/link-to}}
-  {{#if unreadCommentsCount}}
-    <span class="badge link-tooltip" {{bind-attr title=badgeTitle}}>
-      {{unreadCommentsCount}}
-    </span>
-  {{/if}}
 </li>

@@ -2,6 +2,10 @@ import Ember from 'ember';
 import Utils from 'tahi/services/utils';
 
 export default Ember.Mixin.create({
+  _initValidationErrors: (function() {
+    this.set('validationErrors', {});
+  }).on('init'),
+
   prepareResponseErrors: function(errors) {
     return Utils.deepJoinArrays(Utils.deepCamelizeKeys(errors));
   },

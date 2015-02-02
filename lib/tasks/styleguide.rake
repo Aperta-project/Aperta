@@ -6,6 +6,6 @@ namespace :styleguide do
   end
 
   task watch: :environment do
-    system('nodemon --exec "ruby populate_styleguide.rb" -w app/views/kss/home/styleguide_template.html.erb populate_styleguide.rb -V')
+    system('nodemon --exec "ruby populate_styleguide.rb" -w app/views/styleguide_template.hbs populate_styleguide.rb -V')
   end
 end

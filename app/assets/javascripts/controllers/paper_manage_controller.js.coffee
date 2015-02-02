@@ -1,6 +1,6 @@
 ETahi.PaperManageController = Ember.ObjectController.extend
   positionSort: ["position:asc"]
-  sortedPhases: Ember.computed.sort('phases', 'positionSort')
+  sortedPhases: Ember.computed.sort('model.phases', 'positionSort')
 
   updatePositions: (phase)->
     relevantPhases = @get('model.phases').filter((p)->

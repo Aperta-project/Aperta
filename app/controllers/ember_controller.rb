@@ -4,4 +4,8 @@ class EmberController < ApplicationController
   def index
     #do nothing
   end
+
+  def styleguide
+    render layout: 'layouts/styleguide'
+  end
 end

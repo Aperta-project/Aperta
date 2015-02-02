@@ -17,8 +17,8 @@
   <div id="myTabContent" class="tab-content">
     <div class="tab-pane active in" id="home">
       <div class="row">
-        <div class="col-md-2">
-          <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix">
+         <div class="col-md-2">
+          <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
             <ul class="nav bs-docs-sidenav">
               <li>
                 <h4><a href="#top-of-page">UI Elements</a></h4>
@@ -75,14 +75,26 @@
         </div>
         <div class="col-md-10">
           <div id="styleguide">
-            <div class="row">
+            <div class="row hide">
               <div class="col-md-6">
                 <p>
                   Run <code>rake styleguide:generate</code> to get the latest HTML from the app.
                 </p>
               </div>
               <div class="col-md-6">
-                <button id="toggle-all-source" class="btn btn-primary hide">Toggle All Source</button>
+                <button id="toggle-all-source" class="btn btn-primary">Toggle All Source</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <h2 id="colors">
+                  Devices
+                </h2>
+
+                <p>
+                  Tahi is not a mobile web app. It is intended for desktop, laptop and sometimes tablet.
+                </p>
               </div>
             </div>
 
@@ -198,13 +210,13 @@
             </h2>
 
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <h3>Not Completed</h3>
-                <div element-name="card" source-page-name="paper_manager" source-page-selector=".card" source-page-selector-context=".column"></div>
+                {{card-preview task=taskIncomplete}}
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <h3>Completed</h3>
-                <div element-name="card-completed" source-page-name="paper_manager" source-page-selector=".card--completed" source-page-selector-context=".column"></div>
+                {{card-preview task=taskComplete}}
               </div>
             </div>
 
@@ -213,6 +225,10 @@
             <h2 id="workflow">
               Workflow
             </h2>
+
+            {{view paperManage paper=paper}}
+            {{view 'paperManage' sortedPhases=phases}}
+            {{render paperManage sortedPhases=phases}}
             <div element-name="paper-manager" source-page-name="paper_manager" source-page-selector=".columns"></div>
 
             <hr>
@@ -244,6 +260,12 @@
             <h2 id="toolbars">
               Toolbars
             </h2>
+
+            {{!-- How to modify View attributes here? --}}
+            {{!-- partial "paper/control-bar" canViewManuscriptManager=false --}}
+            {{!--partial "paper/control-bar" canViewManuscriptManager=true--}}
+            {{!--partial "paper/control-bar"--}}
+
 
             <h3 id="default">
               Default Toolbar
@@ -291,7 +313,6 @@
               </div>
               <div class="col-md-3">
                 <div style="background-color: #29a904; padding: 10px;">
-                  <div class="button-primary button--green knockout">Save</div>
                   <div class="button-secondary button--green knockout">Save</div>
                   <div class="button-link button--green knockout">Save</div>
                 </div>
@@ -318,7 +339,6 @@
               </div>
               <div class="col-md-3">
                 <div style="background-color: #E5E5E5; padding: 10px;">
-                  <div class="button-primary button--grey knockout">Save</div>
                   <div class="button-secondary button--grey knockout">Save</div>
                   <div class="button-link button--grey knockout">Save</div>
                 </div>
@@ -345,7 +365,6 @@
               </div>
               <div class="col-md-3">
                 <div style="background-color: #2d85de; padding: 10px;">
-                  <div class="button-primary button--blue knockout">Save</div>
                   <div class="button-secondary button--blue knockout">Save</div>
                   <div class="button-link button--blue knockout">Save</div>
                 </div>
@@ -362,7 +381,7 @@
               Form Block: Numbered List
             </h3>
 
-            <div class="constrain">
+            <div class="constrain overlay-content">
               <div element-name="numbered-list" source-page-name="card_ethics" source-page-selector="ol.question-list"></div>
             </div>
 
@@ -534,6 +553,7 @@
           </h3>
 
           <div class="constrain">
+
             <div class="question-dataset">
               <div id="ember1579">
                 <div class="additional-data">
@@ -541,6 +561,33 @@
                     Add File
                     <input id="ember1587" class="ember-view ember-text-field" type="file" name="file" accept=".docx,.pdf">
                   </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="question-dataset">
+              <div id="ember1579">
+                <div class="additional-data">
+                  <div id="ember1600">
+                    <div id="paper-file-uploads">
+                      <div id="ember2567" class="ember-view upload-preview _uploading" style="background-color: #fff">
+                        <div class="glyphicon glyphicon-file" data-bindattr-2570="2570"></div>
+                        <div class="upload-preview-filename">
+                          manuscript.docx
+                        </div>
+                        <div class="progress">
+                          <div class="progress-bar" style="width: 33%;" data-bindattr-2572="2572"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="question-dataset">
+              <div id="ember1579">
+                <div class="additional-data">
                   <div id="ember1600">
                     <div class="attachment-thumbnail question-attachment">
                       <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" data-ember-action="1601"></span>
@@ -582,43 +629,22 @@
                         <button class="button-secondary button--green knockout" data-ember-action="1604">Cancel</button>
                         <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="1605">Delete Forever</button>
                       </div>
+
+                      <!-- The example also had the 'Add File' button.
+                      Should that be part of the component?
+                      What about Components with Multiple UI elements anyway? Should that just be 2 Components linked? -->
+                      {{!-- upload-preview upload=upload --}}
+                      <!-- Error State: -->
+                      {{!-- Should the error be showing on the page? --}}
+                      {{!-- upload-preview upload=upload error="Bah" --}}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="question-dataset">
-              <div id="ember1579">
-                <div class="additional-data">
-                  <span class="button-secondary button--green knockout fileinput-button">
-                    Add File
-                    <input id="ember1587" class="ember-view ember-text-field" type="file" name="file" accept=".docx,.pdf">
-                  </span>
-                  <div id="ember1600">
-                    <div id="paper-file-uploads">
-                      <div id="ember2567" class="ember-view upload-preview _uploading">
-                        <div class="glyphicon glyphicon-file" data-bindattr-2570="2570"></div>
-                        <div class="upload-preview-filename">
-                          manuscript.docx
-                        </div>
-                        <div class="progress">
-                          <div class="progress-bar" style="width: 33%;" data-bindattr-2572="2572"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="constrain">
             <div class="question-dataset">
               <div class="additional-data">
-
                 <div id="ember1600">
                   <div class="attachment-thumbnail question-attachment">
                     <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" data-ember-action="1601"></span>
@@ -662,6 +688,11 @@
                 Large Block Level
               </p>
 
+              {{!-- figure-thumbnail --}}
+              {{!-- attachment-thumbnail --}}
+              {{!-- inline-edit-body-part --}}
+              {{!-- question-attachment-thumbnail --}}
+
               <span class="glyphicon glyphicon-pencil large"></span>
               <span class="glyphicon glyphicon-trash large"></span>
 
@@ -675,64 +706,56 @@
             </div>
           </div>
 
-
           <div class="constrain">
-            <div id="ember2199" class="ember-view authors-overlay-item __editable __hover" draggable="true">
-              <div class="authors-overlay-item--text">
-                <div class="author-name">
-                  Albert Einstein
-                </div>
-                al@ec2.com
-                <br>Patent Officer &nbsp; &nbsp; Patent Office
-                <br>Academy of Art University &nbsp; &nbsp;
-              </div>
+            Create<br>
+            {{add-author-form}}
 
-              <div class="authors-overlay-item--actions">
-                <div class="drag"></div>
-                <div class="actions">
-                  <div class="action" data-ember-action="2414">
-                    <span class="glyphicon glyphicon-pencil scaleIn"></span>
+            HoverState<br>
+            <!-- <div class='alert alert-warning'>
+              Hover coming soon!
+            </div> -->
+            {{!-- author-view editState=false hoverState=true author=fullAuthor --}}
+            <div class="constrain">
+              <div id="ember2199" class="ember-view authors-overlay-item __editable __hover" draggable="true">
+                <div class="authors-overlay-item--text">
+                  <div class="author-name">
+                    Albert Einstein
                   </div>
-                  <div class="action" data-ember-action="2415">
-                    <span class="glyphicon glyphicon-trash scaleIn"></span>
+                  al@ec2.com
+                  <br>Patent Officer &nbsp; &nbsp; Patent Office
+                  <br>Academy of Art University &nbsp; &nbsp;
+                </div>
+
+                <div class="authors-overlay-item--actions">
+                  <div class="drag"></div>
+                  <div class="actions">
+                    <div class="action" data-ember-action="2414">
+                      <span class="glyphicon glyphicon-pencil scaleIn"></span>
+                    </div>
+                    <div class="action" data-ember-action="2415">
+                      <span class="glyphicon glyphicon-trash scaleIn"></span>
+                    </div>
                   </div>
                 </div>
+
               </div>
 
             </div>
 
+            EditState<br>
+            {{author-view editState=true hoverState=true author=fullAuthor}}
+
+            Delete State<br>
+            {{author-view deleteState=true}}
           </div>
 
-          <div class="constrain">
-            <div id="ember2199" class="ember-view authors-overlay-item __editable" draggable="true">
-              <div class="authors-overlay-item--text">
-                <div class="author-name">
-                  Albert Einstein
-                </div>
-                al@ec2.com
-                <br>Patent Officer &nbsp; &nbsp; Patent Office
-                <br>Academy of Art University &nbsp; &nbsp;
-              </div>
-
-              <div class="authors-overlay-item--delete">
-                <p>This will permanently delete the author. Are you sure?</p>
-                <button class="button-secondary button--green knockout" data-ember-action="2380">Cancel</button>
-                <button class="button-secondary button--green knockout" data-ember-action="2381">Delete Forever</button>
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="row">
+          <div class="row hide">
             <div class="col-md-12">
               <p>
                 If a block can be edited all at once, please use the large block level edit and delete icons.
               </p>
             </div>
-          </div>
 
-          <div class="row">
             <div class="col-md-4">
               <p>
                 Natural state of block.
@@ -761,25 +784,7 @@
             Errors
           </h2>
 
-          <div id="application-error" class="alert alert-danger alert-dismissable application-error" style="position: inherit;">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            WAT!!
-          </div>
-
-          <div id="application-error" class="alert alert-info alert-dismissable application-error" style="position: inherit;">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            Hey, Check this out!
-          </div>
-
-          <div id="application-error" class="alert alert-warning alert-dismissable application-error" style="position: inherit;">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            Ugh..!
-          </div>
-
-          <div id="application-error" class="alert alert-success alert-dismissable application-error" style="position: inherit;">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            YES!!
-          </div>
+          {{flash-messages messages=flash.messages classNames="flash-messages--below-control-bar"}}
 
           <hr>
 
@@ -789,21 +794,17 @@
 
           <div class="row">
             <div class="col-md-4">
-              <div id="profile-avatar">
-                <img src="/images/profile-no-image.png" data-bindattr-1612="1612">
-                <div id="profile-avatar-hover">
-                  <span class="button-secondary button--green fileinput-button">
-                    <span>Upload New</span>
-                    <input id="profile_avatar" class="ember-text-field" type="file" name="file" accept=".jpg,.jpeg,.tiff,.gif,.png">
-                  </span>
-                </div>
-                <div class="profile-avatar-spinner"></div>
-              </div>
+              {{view "profile-avatar"}}
             </div>
             <div class="col-md-4">
+              Render `user_thumbnail.js.coffee` here,
+              or refactor that to a component.
+              It uses using Handlebars.SafeString.
               <img src="/images/profile-no-image.png" data-bindattr-1041="1041" class="user-thumbnail">
             </div>
             <div class="col-md-4">
+              This one is rendered from `participant-selector-component.js.coffee`s `selectedTemplate` function
+              using Handlebars.SafeString
               <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
             </div>
           </div>
@@ -817,7 +818,7 @@
     <div class="tab-pane" id="cards-tab">
       <div class="row">
         <div class="col-md-2">
-          <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix">
+          <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
             <ul class="nav bs-docs-sidenav">
               <li>
 

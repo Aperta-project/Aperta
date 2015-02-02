@@ -68,8 +68,8 @@ end
 
 # Arbitrary starting point
 def init
-  @styleguide_path = "app/views/kss/home/styleguide_template.html.erb"
-  @populated_styleguide_path = "app/views/kss/home/styleguide.html.erb"
+  @styleguide_path = "app/views/styleguide_template.hbs"
+  @populated_styleguide_path = "app/assets/javascripts/templates/styleguide.hbs"
 
   # Open the File
   styleguide_html = File.open(@styleguide_path, "r").read

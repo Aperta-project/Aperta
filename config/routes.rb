@@ -1,7 +1,4 @@
 Tahi::Application.routes.draw do
-  mount Kss::Engine => '/kss' if Rails.env.development? || Rails.env.staging?
-  get "kss/styleguide_template", to: 'kss/home#styleguide_template', as: :styleguide_template
-  get "kss/styleguide", to: 'kss/home#styleguide', as: :styleguide
   mount StandardTasks::Engine => '/', as: 'standard_tasks'
   mount SupportingInformation::Engine => '/', as: 'supporting_information'
   mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'
@@ -147,6 +144,8 @@ Tahi::Application.routes.draw do
   resources :feedback, only: :create
 
   get "/formats", to: "formats#index"
+
+  get "/styleguide", to: "ember#styleguide"
 
   get '*route' => 'ember#index'
   root 'ember#index'

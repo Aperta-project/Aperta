@@ -133,7 +133,6 @@ test 'A task with a commentLook shows up as unread and updates its commentLook',
 
   paperPayload = Factory.createPayload('paper')
   paperPayload.addRecords(records.concat(paper, task, fakeUser, commenter, comment, commentLook))
-  console.log paperPayload.toJSON()
   server.respondWith 'GET', "/papers/#{paper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
   ]

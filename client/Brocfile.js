@@ -22,7 +22,6 @@ app.import('bower_components/chosen-bower/chosen.jquery.js');
 app.import('bower_components/jquery-timeago/jquery.timeago.js');
 app.import('bower_components/underscore/underscore-min.js');
 app.import('bower_components/moment/moment.js');
-app.import('bower_components/event-source-polyfill/eventsource.js');
 app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 app.import('vendor/bootstrap-tooltip/index.js');
 
@@ -36,10 +35,12 @@ app.import('vendor/jquery.fileupload/jquery.fileupload.js');
 app.import('bower_components/select2/select2.js');
 app.import('bower_components/select2/select2.css');
 app.import('bower_components/select2/select2-spinner.gif', { destDir: 'assets' });
-app.import('bower_components/select2/select2.png',         { destDir: 'assets' });
-app.import('bower_components/select2/select2x2.png',       { destDir: 'assets' });
+app.import('bower_components/select2/select2.png', { destDir: 'assets' });
+app.import('bower_components/select2/select2x2.png', { destDir: 'assets' });
 
-if (app.env !== 'production') {
+if (app.env === 'production') {
+  app.import('bower_components/event-source-polyfill/eventsource.js');
+} else {
   app.import('bower_components/sinon/index.js');
   app.import('bower_components/underscore/underscore.js');
 }

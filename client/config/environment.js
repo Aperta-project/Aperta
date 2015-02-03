@@ -18,9 +18,10 @@ module.exports = function(environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
+
     contentSecurityPolicy: {
       'default-src': "'none'",
-      'script-src': "'self'",
+      'script-src': "'self' 'unsafe-eval'", // loading visualEditor via getScript
       'font-src': "'self'",
       'connect-src': "'self'",
       'img-src': "'self'",

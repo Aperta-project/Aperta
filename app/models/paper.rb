@@ -1,5 +1,5 @@
 ##
-# This class represents the paper in the system. 
+# This class represents the paper in the system.
 class Paper < ActiveRecord::Base
   include EventStreamNotifier
 
@@ -79,7 +79,7 @@ class Paper < ActiveRecord::Base
   end
 
   # Public: Find `PaperRole`s for the given role and user.
-  # 
+  #
   # role  - The role to search for.
   # user  - The user to search `PaperRole` against.
   #

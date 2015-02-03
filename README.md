@@ -183,6 +183,8 @@ E.G.
 
 ### Documentation
 
+Open the generated documentation from `doc/rdoc/index.html` in your browser.
+
 To generate documentation, run the following command from the application root:
 
 `sdoc -g --markup=tomdoc --title="Tahi Documentation" --main="README.md" -o doc/rdoc -T sdoc app/models/**/*.rb`

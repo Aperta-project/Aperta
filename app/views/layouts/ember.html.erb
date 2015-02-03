@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tahi</title>
+    <%= include_ember_stylesheet_tags :tahi %>
+    <%= stylesheet_link_tag "application", media: "all" %>
+
+    <% if Rails.env.test? %>
+      <% # disable css animations %>
+      <%= stylesheet_link_tag "test" %>
+    <% end %>
+
+    <%= csrf_meta_tags %>
+
+    <%= render "layouts/segment_io" %>
+    <%= render "shared/bugsnag_javascript" %>
+  </head>
+
+  <body>
+
+    <% if current_user %>
+      <script type="text/javascript">
+        window.currentUser = <%= UserSerializer.new(current_user).to_json.html_safe %>;
+      </script>
+    <% end %>
+
+    <%= include_ember_script_tags :tahi %>
+
+    <% if Rails.env.test? %>
+      <% # disable jquery animations %>
+      <%= javascript_tag "$.fx.off = true" %>
+    <% end %>
+
+  </body>
+</html>

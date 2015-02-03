@@ -34,6 +34,7 @@ QUnit.testDone(-> ETahi.Factory.resetFactoryIds())
   ETahi.rootElement = '#ember-testing'
   ETahi.setupForTesting()
   ETahi.injectTestHelpers()
+  window.ETahi.environment = 'test'
 
 @setupTestEnvironment()
 

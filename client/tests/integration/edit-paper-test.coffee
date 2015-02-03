@@ -58,14 +58,18 @@ module 'Integration: EditPaper',
     ]
 
 test 'visiting /edit-paper: Author completes all metadata cards', ->
-  visit "/papers/#{currentPaper.id}/edit"
-  .then -> ok find('a:contains("Submit")').hasClass 'button--disabled'
+  expect(2)
+  visit("/papers/#{currentPaper.id}/edit").then ->
+    submitButton = find('a:contains("Submit")')
+    ok(submitButton.hasClass('button--disabled'), "Submit is disabled")
   .then ->
     for card in find('#paper-metadata-tasks .card-content')
       click card
       click '#task_completed'
       click '.overlay-close-button:first'
-  .then -> ok !find('a:contains("Submit")').hasClass 'button--disabled'
+  andThen ->
+    submitButton = find('a:contains("Submit")')
+    ok(!submitButton.hasClass('button--disabled'), "Submit is enabled")
 
 test 'on paper.edit when paper.editable changes, user transitions to paper.index', ->
   visit "/papers/#{currentPaper.id}/edit"

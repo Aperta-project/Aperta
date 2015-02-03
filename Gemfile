@@ -22,7 +22,6 @@ gem 'pg'
 gem 'bower-rails'
 gem 'ember-cli-rails'
 gem 'sass-rails'
-gem 'haml-rails'
 gem 'uglifier'
 gem 'coffee-rails'
 gem 'acts_as_list'
@@ -78,11 +77,9 @@ group :development do
   # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs.
   # Please add it in temporarily if you need to check for speed
   gem 'bullet'
-  gem 'kss-rails'
   gem 'letter_opener'
   gem 'rubocop', require: false
   gem 'scss-lint', require: false
-  gem 'haml-lint', require: false
   gem 'overcommit', require: false
   gem 'reek', require: false
 end
@@ -113,6 +110,10 @@ group :test do
   gem 'webmock'
   gem 'sunspot-rails-tester'
   gem 'thin'
+end
+
+group :development, :staging do
+  gem 'kss-rails'
 end
 
 group :staging, :performance do

@@ -67,13 +67,13 @@ PaperEditController = BasePaperController.extend
       @get('visualEditor').startEditing()
 
     toggleEditing: ->
-      if @get('lockedBy') #unlocking
+      if @get('lockedBy') #unlocking -> Allowing others to edit
         @set('body', @get('visualEditor.bodyHtml'))
         @set('lockedBy', null)
         @send('stopEditing')
         @get('model').save().then (paper) =>
           @set('saveState', true)
-      else #locking
+      else #locking -> Editing Paper (locking others out)
         @set('lockedBy', @currentUser)
         @get('model').save().then (paper) =>
           @send('startEditing')

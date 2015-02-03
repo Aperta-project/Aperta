@@ -59,16 +59,13 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
   end
 
   scenario 'Removing a task' do
-    dashboard_page = DashboardPage.new
-    paper_page = dashboard_page.view_submitted_paper paper
-    task_manager_page = paper_page.visit_task_manager
+    task_manager_page = TaskManagerPage.visit paper
 
     phase = task_manager_page.phase 'Submission Data'
     expect(task_manager_page).to have_no_application_error
     before = task_manager_page.card_count
     expect {
       phase.remove_card('Upload Manuscript')
-
       within '.overlay' do
         find('.overlay-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
       end
@@ -76,7 +73,7 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
       task_manager_page.card_count
     }.by(-1)
 
-    visit root_path
+    dashboard_page = task_manager_page.navigate_to_dashboard
     paper_page = dashboard_page.view_submitted_paper paper
     task_manager_page = paper_page.visit_task_manager
     expect(task_manager_page.card_count).to eq(before - 1)
@@ -84,9 +81,7 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
 
   # Preventing a regression
   scenario 'Opening an AssignReviewers task' do
-    dashboard_page = DashboardPage.new
-    paper_page = dashboard_page.view_submitted_paper paper
-    task_manager_page = paper_page.visit_task_manager
+    task_manager_page = TaskManagerPage.visit paper
 
     within 'body' do
       find('.card-content', text: 'Assign Reviewer').click
@@ -98,9 +93,7 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
   end
 
   scenario "Admin can assign a paper to themselves" do
-    dashboard_page = DashboardPage.new
-    paper_page = dashboard_page.view_submitted_paper paper
-    task_manager_page = paper_page.visit_task_manager
+    task_manager_page = TaskManagerPage.visit paper
 
     expect(task_manager_page).to have_content 'Assign Editor'
     needs_editor_phase = task_manager_page.phase 'Assign Editor'

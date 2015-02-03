@@ -1,7 +1,10 @@
 {{partial "paper/control-bar"}}
 
+{{flash-messages messages=flash.messages classNames="flash-messages--on-paper-edit-page"}}
+
 <div class="ve-toolbar-underside"></div>
 <div id="tahi-container">
+
   <main {{bind-attr class="hasNoMetaDataTasks:sidebar-empty"}}>
 
     <aside>

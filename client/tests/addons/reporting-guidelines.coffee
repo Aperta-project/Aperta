@@ -1,5 +1,7 @@
 module 'Integration: Reporting Guidelines Card',
-  teardown: -> ETahi.reset()
+  teardown: ->
+    ETahi.reset()
+    ETahi.paperEditActionStub.restore()
   setup: ->
     setupApp integration: true
     TahiTest.questionId = 553
@@ -57,7 +59,9 @@ test 'Supporting Guideline is a meta data card, contains the right questions and
     find('.question .item').filter (i, el) -> Em.$(el).find('label').text().trim() is questionText
 
   visit "/papers/#{TahiTest.paperId}/edit"
-  .then -> ok exists find '.card-content:contains("Reporting Guidelines")'
+  .then ->
+    ok exists find '.card-content:contains("Reporting Guidelines")'
+    ETahi.paperEditActionStub = sinon.stub(ETahi.__container__.lookup('controller:paperEdit')._actions, "savePaper")
 
   click '.card-content:contains("Reporting Guidelines")'
   .then ->

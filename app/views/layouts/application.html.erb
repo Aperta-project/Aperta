@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html class="bg-<%= (rand() * 3).to_i + 1 %>">
+  <head>
+    <title>Tahi</title>
+    <%= stylesheet_link_tag "auth", media: "all" %>
+    <%- unless Rails.env.test? %>
+      <%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Cabin:400,700,400italic" %>
+    <% end %>
+    <%= csrf_meta_tags %>
+    <%= render "layouts/segment_io" %>
+    <%= render "shared/bugsnag_javascript" %>
+  </head>
+  <body class="sessions">
+    <div id="tahi-container" class="<%= yield(:tahi_container_class) %>">
+      <%= yield %>
+    </div>
+  </body>
+</html>

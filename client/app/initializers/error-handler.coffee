@@ -1,4 +1,3 @@
-`import Utils from 'tahi/services/utils'`
 `import ENV from 'tahi/config/environment'`
 
 ErrorHandler =
@@ -14,12 +13,14 @@ ErrorHandler =
     container.register('logError:main', logError , instantiate: false)
     application.inject('route', 'logError', 'logError:main')
 
-    # The global error handler
+    # The global error handler for internal ember errors
     Ember.onerror = (error) ->
-      logError('\n' + error.message + '\n' + error.stack + '\n')
-      window.ErrorNotifier.notify(error, 'Uncaught Ember Error')
-      if ENV.environment == 'development'
+      if ENV.environment == 'production'
+        if Bugsnag && Bugsnag.notifyException
+          Bugsnag.notifyException(error, "Uncaught Ember Error")
+      else
         flash.displayMessage 'error', error
+        logError('\n' + error.message + '\n' + error.stack + '\n')
         throw error
 
     # Server response error handler
@@ -33,12 +34,10 @@ ErrorHandler =
       return if status == 422
       # session invalid, redirect to sign in
       return document.location.href = '/users/sign_in' if status == 401
-      # Buh?
-      return if status == 0 && ENV.environment == 'test'
 
       msg = "Error with #{type} request to #{url}. Server returned #{status}: #{statusText}.  #{thrownError}"
       logError(msg)
       # TODO: Remove this condidition when we switch to run loop respecting http mocks
-      displayMessage('error', msg) unless Ember.testing
+      flash.displayMessage('error', msg) unless Ember.testing
 
 `export default ErrorHandler`

@@ -16,7 +16,7 @@ export default {
   DraggableMixin: Ember.Mixin.create({
     attributeBindings: ['draggable'],
     draggable: true,
-    dragStart: function() { throw 'Implement dragStart'; }
+    dragStart: function() { throw new Error("Implement dragStart"); }
   }),
 
   DroppableMixin: Ember.Mixin.create({
@@ -28,6 +28,6 @@ export default {
       return cancelDragEvent(e);
     }.on('dragOver'),
 
-    drop: function() { throw 'Implement drop'; }
+    drop: function() { throw new Error("Implement drop"); }
   })
 };

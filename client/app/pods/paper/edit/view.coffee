@@ -74,7 +74,12 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
     Ember.$(document).off 'keyup.autoSave'
   ).on('willDestroyElement')
 
+  saveTitleChanges: (->
+    @timeoutSave()
+  ).on('willDestroyElement')
+
   timeoutSave: ->
+    return if Ember.testing # TODO: make this injectable via visual editor lifecycle hooks
     @saveVisualEditorChanges()
     @get('controller').send('savePaper')
     Ember.run.cancel(@short)

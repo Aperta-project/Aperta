@@ -38,6 +38,7 @@ ErrorHandler =
 
       msg = "Error with #{type} request to #{url}. Server returned #{status}: #{statusText}.  #{thrownError}"
       logError(msg)
-      flash.displayMessage 'error', msg
+      # TODO: Remove this condidition when we switch to run loop respecting http mocks
+      displayMessage('error', msg) unless Ember.testing
 
 `export default ErrorHandler`

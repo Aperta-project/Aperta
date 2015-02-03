@@ -3,7 +3,7 @@ setupMockServer = ->
   server.autoRespond = true
   server.xhr.useFilters = true
   server.xhr.addFilter (method, url) ->
-    !!url.match(/visualEditor/) || !!url.match(/visual-editor/)
+    !!url.match(/visualEditor/)  || !!url.match(/visual-editor/)
 
   server.respondWith 'GET', '/formats', [
     200, {"Content-Type": "application/json"}, JSON.stringify({
@@ -22,15 +22,11 @@ setupMockServer = ->
     204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
   server.respondWith 'GET', "/comment_looks", [
-    200
-    'Content-Type': 'application/json'
-    JSON.stringify {comment_looks: []}
+    200, 'Content-Type': 'application/json', JSON.stringify {comment_looks: []}
   ]
   # papers/:id/manuscript_manager
   server.respondWith 'GET', /\/papers\/\d+\/manuscript_manager/, [
-    403
-    {}
-    JSON.stringify {}
+    403, {}, JSON.stringify({})
   ]
 
   server

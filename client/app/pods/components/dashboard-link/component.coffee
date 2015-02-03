@@ -30,7 +30,7 @@ DashboardLinkComponent = Ember.Component.extend
   ).on('willDestroyElement')
 
   badgeTitle: (->
-    "#{@get('model.unreadCommentsCount')} new posts"
-  ).property('model.unreadCommentsCount')
+    "#{@get('unreadCommentsCount')} new posts"
+  ).property('unreadCommentsCount')
 
 `export default DashboardLinkComponent`

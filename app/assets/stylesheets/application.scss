@@ -19,7 +19,7 @@
 @import 'screens/_base';
 @import 'ui/_base';
 
-@import 'plos_authors/application';
-@import 'standard_tasks/application';
-@import 'supporting_information/application';
-@import 'upload_manuscript/application';
+@import 'engines/plos_authors/application';
+@import 'engines/standard_tasks/application';
+@import 'engines/supporting_information/application';
+@import 'engines/upload_manuscript/application';

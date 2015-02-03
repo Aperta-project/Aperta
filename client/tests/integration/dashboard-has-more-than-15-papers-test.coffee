@@ -1,5 +1,6 @@
 `import Ember from 'ember'`
 `import startApp from '../helpers/start-app'`
+`import { test } from 'ember-qunit'`
 `import { paperWithTask } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`

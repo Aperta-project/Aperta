@@ -1,3 +1,5 @@
+##
+# This class represents the paper in the system. 
 class Paper < ActiveRecord::Base
   include EventStreamNotifier
 
@@ -27,23 +29,66 @@ class Paper < ActiveRecord::Base
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
   class << self
+    # Public: Find papers in the 'submitted' state only.
+    #
+    # Examples
+    #
+    #   Paper.submitted
+    #   # => [<#123: Paper>, <#124: Paper>]
+    #
+    # Returns an ActiveRelation.
     def submitted
       where(submitted: true)
     end
 
+    # Public: Find papers that are not in 'submitted' state.
+    #
+    # Examples
+    #
+    #   Paper.ongoing
+    #   # => [<#123: Paper>, <#124: Paper>]
+    #
+    # Returns an ActiveRelation.
     def ongoing
       where(submitted: false)
     end
 
+    # Public: Find papers that have been published.
+    #
+    # Examples
+    #
+    #   Paper.published
+    #   # => [<#123: Paper>, <#124: Paper>]
+    #
+    # Returns an ActiveRelation.
     def published
       where.not(published_at: nil)
     end
 
+    # Public: Find papers that haven't been published yet.
+    #
+    # Examples
+    #
+    #   Paper.unpublished
+    #   # => [<#123: Paper>, <#124: Paper>]
+    #
+    # Returns an ActiveRelation.
     def unpublished
       where(published_at: nil)
     end
   end
 
+  # Public: Find `PaperRole`s for the given role and user.
+  # 
+  # role  - The role to search for.
+  # user  - The user to search `PaperRole` against.
+  #
+  # Examples
+  #
+  #   Paper.role_for(role: 'editor', user: User.first)
+  #   # => [<#123: PaperRole>, <#124: PaperRole>]
+  #
+  # Returns an ActiveRelation with <tt>PaperRole</tt>s.
   def role_for(role:, user:)
     paper_roles.where(role: role, user_id: user.id)
   end

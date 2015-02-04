@@ -22,8 +22,11 @@ app.import('bower_components/chosen-bower/chosen.jquery.js');
 app.import('bower_components/jquery-timeago/jquery.timeago.js');
 app.import('bower_components/underscore/underscore-min.js');
 app.import('bower_components/moment/moment.js');
-app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 app.import('vendor/bootstrap-tooltip/index.js');
+
+// Datepicker
+app.import('bower_components/bootstrap-datepicker/css/datepicker.css');
+app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 
 // FileUpload
 app.import('vendor/jquery.ui.widget.js');

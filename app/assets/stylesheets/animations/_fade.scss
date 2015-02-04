@@ -1,0 +1,21 @@
+// .animation-fade-in
+// .animation-fade-out
+
+@include keyframes(fadeIn) {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@include keyframes(fadeOut) {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.animation-fade-in {
+  @include animation(fadeIn 200ms $ease-out-quad);
+  @include animation-fill-mode(forwards);
+}
+
+.animation-fade-out {
+  @include animation(fadeOut 200ms $ease-out-quad);
+}

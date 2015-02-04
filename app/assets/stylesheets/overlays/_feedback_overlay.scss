@@ -1,0 +1,41 @@
+.overlay.feedback-overlay h1 { margin-bottom: 0.5em; }
+
+.feedback-overlay-thanks {
+  text-align: center;
+}
+
+.feedback-overlay-remarks.form-control {
+  width: 100%;
+  height: 18rem;
+  margin-bottom: 10px;
+}
+
+.feedback-overlay-screenshots {
+  list-style-type: none;
+  margin-bottom: 10px;
+  padding-left: 0;
+
+  li { margin-bottom: 0.5rem; }
+  li:last-of-type { margin-bottom: 2rem; }
+}
+
+.feedback-overlay-remove-screenshot {
+  margin-right: 0.5rem;
+  color: #d4d4d4;
+  cursor: pointer;
+
+  &:hover {
+    color: $tahi-green-dark;
+  }
+}
+
+.feeback-overlay-screenshot-uploader input {
+  color: transparent;
+}
+
+.feedback-overlay-footer-content.overlay-footer-content {
+  padding: 0;
+
+  .button-primary { width: 16%; }
+  .button-link    { margin-right: 1rem; }
+}

@@ -1,0 +1,7 @@
+.progress {
+  @extend .progress-striped, .active;
+
+  .progress-bar {
+    @include progress-bar-variant($tahi-green);
+  }
+}

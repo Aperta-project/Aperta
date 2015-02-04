@@ -1,0 +1,121 @@
+$template-thumbnail-side-padding: 10px;
+$template-thumbnail-height: 135px;
+
+.mmt-thumbnail {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  width: 270px;
+  height: $template-thumbnail-height;
+  margin: 0 10px 5px 0;
+  padding: 15px $template-thumbnail-side-padding;
+  color: #fff;
+  background-color: $tahi-blue;
+
+  h3 {
+    margin: 0; // override bootstrap
+    font-size: 21px;
+  }
+
+  a { color: #fff; }
+}
+
+.mmt-thumbnail-stats {
+  list-style-type: none;
+  @include position(absolute, auto $template-thumbnail-side-padding 0px $template-thumbnail-side-padding);
+  padding: 0;
+  font-size: 15px;
+
+  li span {
+    margin-right: 5px;
+    font-size: 18px;
+  }
+}
+
+.mmt-thumbnail-overlay {
+  display: none;
+  @include position(absolute, 0px 0px 0px 0px);
+  line-height: $template-thumbnail-height;
+  text-align: center;
+  background-color: rgba(52, 123, 197, 0.6);
+  padding: 15px 12px;
+
+  .glyphicon {
+    margin: 0 10px;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+
+    &:hover { text-decoration: none; }
+  }
+}
+
+.mmt-thumbnail-overlay--confirm-destroy {
+  padding-top: 30px;
+  line-height: 1.2;
+  background-color: rgb(52, 123, 197);
+
+  .button-primary {
+    color: rgb(52, 123, 197);
+    background-color: #fff;
+
+    &:hover { background-color: rgba(255,255,255, 0.7); }
+  }
+}
+
+.mmt-thumbnail:hover .mmt-thumbnail-overlay--edit-options {
+  display: block;
+}
+
+.mmt-thumbnail.mmt-thumbnail-destroy .mmt-thumbnail-overlay--confirm-destroy {
+  display: block;
+}
+
+.manuscript-manager-template-columns {
+  // override .columns to allow for larger .control-bar
+  top: 160px !important;
+}
+
+.edit-paper-type-field {
+  width: 330px;
+  height: 40px;
+  color: $tahi-blue;
+  font-size: 20px;
+  border: 1px solid $tahi-blue;
+  border-radius: 5px;
+  padding-left: 8px;
+}
+
+.mmt-edit-error-message { display: inline; }
+
+
+.paper-type-form {
+  position: absolute;
+  top: 85px;
+  left: 130px;
+}
+
+.paper-type-name {
+  display: inline-block;
+  color: $tahi-blue;
+  font-size: 20px;
+  cursor: pointer;
+
+  .glyphicon {
+    margin-left: 2px;
+    font-size: 16px;
+    opacity: 0.5;
+  }
+
+  &:hover .glyphicon {
+    opacity: 1;
+  }
+}
+
+.paper-type-save-button {
+  margin-left: 40px;
+}
+
+.paper-type-cancel-button {
+  margin-top: 18px;
+}

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tahi</title>
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= javascript_include_tag "application" %>
+
+    <%= csrf_meta_tags %>
+    <%= render "shared/bugsnag_javascript" %>
+
+    <style media="screen">
+    *[element-name] {
+      position: relative;
+    }
+    .add-author-form {
+      min-width: 900px;
+    }
+    .baskerville * {
+      font-family: Baskerville;
+    }
+    .buttons div.button--green,
+    .buttons div.button--grey,
+    .buttons div.button--blue {
+      margin-top: 10px;
+    }
+    .cabin * {
+      font-family: Cabin;
+    }
+    #card-overlays > a {
+      display: block
+    }
+    #cards-tab .overlay-container {
+      max-width: 940px;
+      min-width: 900px;
+      margin: 0;
+      padding: 0;
+    }
+    #cards-tab ul.select2-choices {
+      display: none;
+    }
+    .color-bar {
+      height: 75px;
+      text-align: center;
+      color: white;
+      padding: 28px 0px 0px 0px;
+      width: 200px;
+    }
+    .column-title-update-buttons {
+      display: none !important;
+    }
+    .constrain {
+      max-width: 940px;
+      margin: auto;
+    }
+    .content {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+    .glyphicon.large {
+      font-size: 28px;
+    }
+    .glyphicon.small {
+      font-size: 18px;
+    }
+    #header {
+      margin: 20px auto;
+    }
+    .navigation-toggle {
+      display: none !important;
+    }
+    p.text {
+      max-width: 500px;
+      padding-bottom: 25px;
+    }
+    .styleguide-example pre,
+    .styleguide-example .styleguide-description,
+    .styleguide-example h3,
+    .styleguide-example .styleguide-element .styleguide-modifier-name {
+      display: none;
+    }
+    .row {
+      padding-bottom: 50px;
+    }
+    #tabs {
+      margin-bottom: 20px;
+    }
+  </style>
+
+  <script>
+    function initStyleguide () {
+      $("#card-overlays > a").click(function() {
+        $(this).next().removeClass("hide");
+      });
+
+      // Hide all the overlays to start
+      $("*[overlay]").children().hide();
+
+      $(".toggle-link").click(function() {
+        $(this).parents(".ui-element").find("*[element-name]").children().show();
+      });
+
+      $(".overlay .overlay-close-button, .overlay-close-x").click(function() {
+        $(this).parents(".ui-element").find("*[element-name]").children().hide();
+      });
+
+      // Repositions Toolbar
+      $(".control-bar").css("position", "relative");
+
+      // Manually Adjust Workflow styles
+      $(".columns").css("position", "initial");
+      $(".columns").css("height", "450px");
+
+      // Enable the Show Source Toggle Buttons
+      // $("*[data-toggle]").click(function() {
+      //   $($(this).attr("href")).toggle();
+      // });
+
+      $("#toggle-all-source").click(function() {
+        $(".collapse").toggle();
+      });
+
+      var setScrollWindow = function() {
+        $(".col-md-10").height(function() {
+          return $(window).height() - 125;
+        });
+        $(".col-md-10").css("overflow-y", "scroll");
+      }
+
+      $(window).resize(setScrollWindow());
+
+      // TODO consider doing it another way that is less tightly coupled to selectors.
+      $('.show-child-mmt-thumbnail .mmt-thumbnail .mmt-thumbnail-overlay--edit-options').show();
+      $('.show-child-confirm-destroy .mmt-thumbnail-overlay--confirm-destroy').show();
+    }
+
+    ETahi.StyleguideView = Ember.View.extend({
+      didInsertElement : function(){
+        this._super();
+        Ember.run.scheduleOnce('afterRender', this, this.afterRenderEvent);
+      },
+      afterRenderEvent : function(){
+        initStyleguide()
+      }
+    });
+  </script>
+  </head>
+
+  <body>
+    <div id="ember-app"></div>
+
+    <% if current_user %>
+      <script type="text/javascript">window.currentUserId = <%= current_user.id %>;</script>
+    <% end %>
+
+    <script type="text/javascript">window.ETahi.environment = "<%= Rails.env %>";</script>
+  </body>
+</html>

@@ -11,15 +11,15 @@
 @import 'mixins';
 @import 'visualEditor.tahi.min';
 
-@import 'tahi';
-
 @import 'animations/_base';
 @import 'components/_base';
 @import 'overlays/_base';
 @import 'screens/_base';
 @import 'ui/_base';
 
-@import 'engines/plos_authors/application';
+@import 'tahi';
+
 @import 'engines/standard_tasks/application';
 @import 'engines/supporting_information/application';
 @import 'engines/upload_manuscript/application';
+@import 'engines/plos_authors/application';

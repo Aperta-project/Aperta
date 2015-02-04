@@ -102,7 +102,7 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '>=2.45.0.dev3'
   gem 'capybara-webkit'
   gem 'simplecov'
   gem 'codeclimate-test-reporter', require: nil

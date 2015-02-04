@@ -23,10 +23,15 @@ class DownloadManuscriptWorker
   def post_ihat_job(file)
     RestClient.post(
       "#{ENV['IHAT_URL']}/jobs",
-      epub: file,
       multipart: true,
-      callback_url: callback_url,
-      metadata: metadata
+      job: {
+        input: file,
+        options: {
+          recipe_name: "docx_to_html",
+          callback_url: callback_url,
+          metadata: metadata
+        }
+      }
     )
   end
 

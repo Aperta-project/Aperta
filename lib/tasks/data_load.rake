@@ -1,30 +1,26 @@
-
-#TODO: make assign_journal_role more performant
-
 require_relative '../../spec/support/helper_methods.rb'
 require 'heroku_exporter'
 
 namespace :data do
   namespace :load do
-
     include TahiHelperMethods
 
-    task :setup => :environment do
+    task setup: :environment do
       ["db:drop", "db:create", "db:schema:load"].each do |task|
-        raise "This can only be run in the performance environment" unless Rails.env.performance?
+        fail "This can only be run in the performance environment" unless Rails.env.performance?
         Rake::Task[task].invoke
       end
     end
 
     desc "Bulk load all data"
-    task :all => :setup do
+    task all: :setup do
       ["journals", "users", "journal_admin_users", "reviewer_users", "reviewer_and_editor_users", "completed_manuscripts", "active_manuscripts"].each do |task|
         Rake::Task["data:load:" + task].invoke
       end
     end
 
     desc "Bulk create journals"
-    task :journals => :setup do
+    task journals: :setup do
       desired_journals = 7
 
       progress("journals", desired_journals) do
@@ -33,7 +29,7 @@ namespace :data do
     end
 
     desc "Bulk create users"
-    task :users => :setup do
+    task users: :setup do
       desired_users = 50
 
       progress("users", desired_users) do
@@ -42,7 +38,7 @@ namespace :data do
     end
 
     desc "Bulk create admin users"
-    task :journal_admin_users => [:setup, :journals] do
+    task journal_admin_users: [:setup, :journals] do
       desired_users = 200
 
       progress("journal admins", desired_users) do
@@ -52,7 +48,7 @@ namespace :data do
     end
 
     desc "Bulk create reviewer users"
-    task :reviewer_users => [:setup, :journals] do
+    task reviewer_users: [:setup, :journals] do
       desired_users = 100_000
 
       progress("journal reviewers", desired_users) do
@@ -62,7 +58,7 @@ namespace :data do
     end
 
     desc "Bulk create users with editor and reviewer roles"
-    task :reviewer_and_editor_users => :environment do
+    task reviewer_and_editor_users: :environment do
       desired_users = 50_000
 
       progress("journal reviewers & editors", desired_users) do
@@ -74,7 +70,7 @@ namespace :data do
     end
 
     desc "Bulk create completed manuscripts"
-    task :completed_manuscripts => [:setup, :journals, :users] do
+    task completed_manuscripts: [:setup, :journals, :users] do
       journals           = Array.new(Journal.all)
       first_journal      = journals.delete(journals.first)
       remaining_journals = journals
@@ -91,7 +87,7 @@ namespace :data do
     end
 
     desc "Bulk create active manuscripts"
-    task :active_manuscripts => [:setup, :journals, :users] do
+    task active_manuscripts: [:setup, :journals, :users] do
       journals = Array.new(Journal.all)
       first_journal = journals.delete(journals.first)
 
@@ -107,8 +103,7 @@ namespace :data do
     end
 
     desc "Bulk create ad hoc tasks"
-    task :ad_hoc_tasks => [:setup, :journals, :active_manuscripts] do
-
+    task ad_hoc_tasks: [:setup, :journals, :active_manuscripts] do
       desired_tasks = 5_000
       progress("ad hoc tasks", desired_tasks) do
         FactoryGirl.create(:task, phase: random(Phase))
@@ -116,7 +111,7 @@ namespace :data do
     end
 
     desc "Bulk create conversations"
-    task :conversations => [:setup, :journals, :users, :active_manuscripts, :ad_hoc_tasks] do
+    task conversations: [:setup, :journals, :users, :active_manuscripts, :ad_hoc_tasks] do
       desired_comments_per = 10
       AdHocTask.find_each do |task|
         FactoryGirl.create(:participation, user: random(User), task: task)
@@ -143,7 +138,7 @@ namespace :data do
   end
 
   namespace :heroku do
-    task :setup => :environment do
+    task setup: :environment do
       database_name = ActiveRecord::Base.connection_config[:database]
       dest_filename = "#{database_name}_load_dump.sql"
       dest_file_path = Rails.root.join('tmp', dest_filename)
@@ -157,7 +152,7 @@ namespace :data do
     end
 
     desc "Save file to S3"
-    task :copy_snapshot_to_s3 => [:environment, :setup] do
+    task copy_snapshot_to_s3: [:environment, :setup] do
       access_key_id = ENV['AWS_ACCESS_KEY_ID']
       secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
 
@@ -167,11 +162,32 @@ namespace :data do
     end
 
     desc "Export snapshot to Heroku"
-    task :export => [:setup] do
+    task export: [:setup] do
       @heroku_exporter.export_to_heroku!
     end
 
     desc "Snapshot, copy, and import local database to Heroku"
-    task :import_snapshot => [:setup, :snapshot_local, :copy_snapshot_to_s3, :export]
+    task import_snapshot: [:setup, :snapshot_local, :copy_snapshot_to_s3, :export]
+  end
+
+  task validate: :environment do
+    tables = ActiveRecord::Base.connection.tables
+
+    tables.each do |table|
+      begin
+        i = 0
+        model = table.singularize.camelize.constantize
+        model.find_each do |record|
+          unless record.valid?
+            i += 1
+            puts record.inspect
+          end
+        end
+
+        p "====> #{i} Issues in #{model}"
+      rescue
+        p "error on #{table}... this table probably does not correspond to a Rails model"
+      end
+    end
   end
 end

@@ -97,6 +97,7 @@
                 </p>
               </div>
             </div>
+            <hr>
 
             <div class="row">
               <div class="col-md-6">
@@ -156,6 +157,8 @@
               </div>
             </div>
 
+            <hr>
+
             <div element-name="navigation" source-page-name="dashboard" source-page-selector=".navigation"></div>
 
             <div class="row">
@@ -185,7 +188,9 @@
                   <br>
                   <a href="#" class="hover" style="text-decoration: underline;">Hovered Link</a>
                 </div>
-                <hr>
+
+                <br>
+
                 <div class="baskerville">
                   <h1>
                     Baskerville H1
@@ -231,6 +236,7 @@
             {{render paperManage sortedPhases=phases}}
             <div element-name="paper-manager" source-page-name="paper_manager" source-page-selector=".columns"></div>
 
+            <br>
             <hr>
             <div class="ui-element">
               <h2 id="card-overlay">
@@ -241,6 +247,7 @@
 
               <div element-name="card-overlay" source-page-name="paper_manager" source-page-selector=".overlay" overlay="true"></div>
             </div>
+            <br>
 
             <hr>
 
@@ -254,6 +261,7 @@
 
               <div element-name="system-overlay" source-page-name="paper_manager_overlay" source-page-selector=".overlay--fullscreen" overlay="true"></div>
             </div>
+            <br>
 
             <hr>
 
@@ -285,6 +293,7 @@
             <div class="control-bar-sub-nav-active">
               <div element-name="toolbar" source-page-name="paper_download_document" source-page-selector=".control-bar"></div>
             </div>
+            <br>
 
             <hr>
 
@@ -314,7 +323,6 @@
               <div class="col-md-3">
                 <div style="background-color: #29a904; padding: 10px;">
                   <div class="button-secondary button--green knockout">Save</div>
-                  <div class="button-link button--green knockout">Save</div>
                 </div>
               </div>
             </div>
@@ -340,7 +348,6 @@
               <div class="col-md-3">
                 <div style="background-color: #E5E5E5; padding: 10px;">
                   <div class="button-secondary button--grey knockout">Save</div>
-                  <div class="button-link button--grey knockout">Save</div>
                 </div>
               </div>
             </div>
@@ -366,7 +373,6 @@
               <div class="col-md-3">
                 <div style="background-color: #2d85de; padding: 10px;">
                   <div class="button-secondary button--blue knockout">Save</div>
-                  <div class="button-link button--blue knockout">Save</div>
                 </div>
               </div>
             </div>
@@ -376,14 +382,16 @@
             <h2 id="form-patterns">
               Form Patterns (in Cards)
             </h2>
+            <br>
 
             <h3>
               Form Block: Numbered List
             </h3>
 
-            <div class="constrain overlay-content">
+            <div class="constrain">
               <div element-name="numbered-list" source-page-name="card_ethics" source-page-selector="ol.question-list"></div>
             </div>
+            <br>
 
             <h3>
               Form Block: Unstyled Bulleted List
@@ -392,6 +400,7 @@
             <div class="constrain">
               <div element-name="bulleted-list" source-page-name="card_tech_check_task" source-page-selector="ul.numbered-list"></div>
             </div>
+            <br>
 
             <h3>
               Form Block: Styled Bulleted List
@@ -400,6 +409,7 @@
             <div class="constrain">
               <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) ul.question-help"></div>
             </div>
+            <br>
 
             <h3>
               Form Block: Single Input
@@ -410,8 +420,9 @@
               This form needs an overlay context to be formatted properly..
               But it feels too coupled at the moment.
               -->
-              <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) div.yes-no-with-comments" source-page-selector-context=".overlay-content"></div>
+              <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) div.yes-no-with-comments" source-page-selector-context=".yes-no-with-comments"></div>
             </div>
+            <br>
 
             <h3>
               Form Block: Multi Input
@@ -424,12 +435,14 @@
             <div class="constrain">
               <div element-name="varied-width-multi-block-input" source-page-name="card_plos_authors_task" source-page-selector=".add-author-form"></div>
             </div>
+            <br>
 
             <hr>
 
             <h3 id="file-upload">
               File Upload: top of card
             </h3>
+            <br>
 
             <div class="constrain">
 
@@ -452,6 +465,7 @@
                 </div>
 
               </div>
+              <br>
 
               <h4>
                 File Processing
@@ -503,6 +517,7 @@
                   <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="3067">Delete Forever</button>
                 </div>
               </div>
+              <br>
 
               <h4>
                 File Display
@@ -513,7 +528,7 @@
 
                 <div class="attachment-thumbnail-image">
                   <div class="replace-spinner"></div>
-                  <img class="preview" src="https://tahi-development.s3.amazonaws.com/uploads/paper/13/figure/attachment/7/preview_test_hiding.jpg?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=wW8LaTeguhblZcVBbmDgxhjBllU%3D&amp;Expires=1419020160" data-bindattr-1871="1871"
+                  <img class="preview" src="http://www.incrediblethings.com/wp-content/uploads/2012/03/cat-scientists-3.jpg " data-bindattr-1871="1871"
                   alt="Test hiding" data-bindattr-1872="1872">
                   <div class="attachment-thumbnail-edit-overlay">
                     <div class="attachment-thumbnail-edit-overlay-buttons">
@@ -547,6 +562,7 @@
               </div>
             </div>
           </div>
+          <br>
 
           <h3>
             Upload: in block
@@ -667,6 +683,7 @@
               </div>
             </div>
           </div>
+          <br>
 
           <hr>
 
@@ -707,10 +724,12 @@
           </div>
 
           <div class="constrain">
-            Create<br>
+            Create
+            <br>
             {{add-author-form}}
 
-            HoverState<br>
+            HoverState
+            <br><br>
             <!-- <div class='alert alert-warning'>
               Hover coming soon!
             </div> -->
@@ -742,10 +761,12 @@
 
             </div>
 
-            EditState<br>
+            EditState
+            <br><br>
             {{author-view editState=true hoverState=true author=fullAuthor}}
 
-            Delete State<br>
+            Delete State
+            <br><br>
             {{author-view deleteState=true}}
           </div>
 
@@ -797,14 +818,14 @@
               {{view "profile-avatar"}}
             </div>
             <div class="col-md-4">
-              Render `user_thumbnail.js.coffee` here,
+              <!-- Render `user_thumbnail.js.coffee` here,
               or refactor that to a component.
-              It uses using Handlebars.SafeString.
+              It uses using Handlebars.SafeString. -->
               <img src="/images/profile-no-image.png" data-bindattr-1041="1041" class="user-thumbnail">
             </div>
             <div class="col-md-4">
-              This one is rendered from `participant-selector-component.js.coffee`s `selectedTemplate` function
-              using Handlebars.SafeString
+              <!-- This one is rendered from `participant-selector-component.js.coffee`s `selectedTemplate` function
+              using Handlebars.SafeString -->
               <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
             </div>
           </div>

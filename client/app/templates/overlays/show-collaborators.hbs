@@ -3,6 +3,13 @@
   <div id="show-collaborators" class="chosen-style-override">
     <h1>Who can edit this manuscript?</h1>
 
+    {{select-2-single value=""
+                      placeholder="Add collaborator"
+                      class="collaborator-select"
+                      name="collaborators"
+                      selectionSelected="addNewCollaborator"
+                      source=formattedCollaborators}}
+
     <ul class="collaborators-list">
       {{#each collaborator in collaborators}}
         <li class="collaborator">
@@ -12,13 +19,6 @@
         </li>
       {{/each}}
     </ul>
-
-    {{select-2-single value=""
-                      placeholder="Add collaborator"
-                      class="collaborator-select"
-                      name="collaborators"
-                      selectionSelected="addNewCollaborator"
-                      source=formattedCollaborators}}
   </div>
 
   <div class="overlay-action-buttons">

@@ -1,0 +1,36 @@
+`import Ember from 'ember'`
+`import DragNDrop from 'tahi/services/drag-n-drop'`
+
+CardPreviewComponent = Ember.Component.extend DragNDrop.DraggableMixin,
+  classNameBindings: [':card', 'task.completed:card--completed', 'classes']
+
+  paper: null
+  commentLooks: Ember.computed.oneWay('defaultCommentLooks')
+  task: null
+  canRemoveCard: false
+  canDragCard: false
+  classes: ''
+
+  defaultCommentLooks: []
+
+  unreadCommentsCount: (->
+    taskId = @get('task.id')
+    @get('commentLooks').filter((look) ->
+      look.get('taskId') == taskId && Em.isEmpty(look.get('readAt'))
+    ).get('length')
+  ).property('commentLooks.[]', 'commentLooks.@each.taskId', 'task.id', 'commentLooks.@each.readAt')
+
+  setupTooltip: (->
+    @.$().find('.card-remove').tooltip()
+  ).on('didInsertElement')
+
+  dragStart: (e) ->
+    DragNDrop.dragItem = @get('task') if @get('canDragCard')
+
+  actions:
+    viewCard: (task) ->
+      @sendAction('action', task)
+    promptDelete: (task) ->
+      @sendAction('showDeleteConfirm', task)
+
+`export default CardPreviewComponent`

@@ -1,0 +1,40 @@
+{{#if doi}}
+<div class="task-list-doi"><strong>DOI:</strong> {{doi}}</div>
+{{/if}}
+
+{{#if assignedTasks}}
+  <div id="paper-assigned-tasks">
+    {{#each task in assignedTasks}}
+      {{card-preview paper=paper
+                     task=task
+                     commentLooks=commentLooks
+                     action='viewCard'}}
+    {{/each}}
+  </div>
+  <hr>
+{{/if}}
+
+{{#if editorTasks}}
+  <div id="paper-editor-tasks">
+    {{#each task in editorTasks}}
+      {{card-preview paper=paper
+                     task=task
+                     commentLooks=commentLooks
+                     action='viewCard'}}
+    {{/each}}
+  </div>
+  <hr>
+{{/if}}
+
+{{#if authorTasks}}
+  <div id="paper-metadata-tasks">
+    {{#each task in authorTasks}}
+      {{card-preview paper=paper
+                     task=task
+                     commentLooks=commentLooks
+                     action='viewCard'}}
+    {{/each}}
+  </div>
+  <hr>
+{{/if}}
+

@@ -4,10 +4,6 @@ Tahi::Application.routes.draw do
   mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
 
-  if Rails.env.development? || Rails.env.test?
-    mount QUnit::Rails::Engine => '/qunit'
-  end
-
   require 'sidekiq/web'
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'

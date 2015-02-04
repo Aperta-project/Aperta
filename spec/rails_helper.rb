@@ -21,7 +21,6 @@ Dir[Rails.root.join("engines/**/spec/support/**/*.rb")].each { |f| require f }
 Dir[Rails.root.join("engines/**/spec/factories/**/*.rb")].each { |f| require f }
 
 Capybara.server_port = ENV["CAPYBARA_SERVER_PORT"]
-
 Capybara.server do |app, port|
   require 'rack/handler/thin'
   Rack::Handler::Thin.run(app, :Port => port)
@@ -33,7 +32,7 @@ Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
 end
 
-Capybara.javascript_driver = :webkit
+Capybara.javascript_driver = :selenium
 Capybara.default_wait_time = 5
 
 # Checks for pending migrations before tests are run.
@@ -112,15 +111,10 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do |example|
-    @current_driver = Capybara.current_driver
-    if example.metadata[:selenium].present? || ENV["SELENIUM"] == "true"
-      Capybara.current_driver = :selenium
-    end
     DatabaseCleaner.start
   end
 
   config.after(:each) do
-    Capybara.current_driver = @current_driver
     DatabaseCleaner.clean
   end
 

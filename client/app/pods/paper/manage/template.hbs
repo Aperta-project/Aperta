@@ -1,0 +1,57 @@
+{{#view "control-bar"}}
+  <div class="control-bar-inner-wrapper">
+    <ul>
+      {{#if journal.logoUrl}}
+        <li id="control-bar-paper-journal-logo" class="control-bar-item">
+          <img src="{{unbound journal.logoUrl}}">
+        </li>
+      {{/if}}
+      <li id="control-bar-paper-short-title" class="control-bar-item">
+        <h2 class="tasks-paper-title">{{title}}</h2>
+      </li>
+    </ul>
+    <ul>
+      <li class="control-bar-item">
+        <label class="control-bar-link control-bar-button">
+          <div class="control-bar-link-icon"></div>
+          {{check-box name="paper-editable" checked=editable action="toggleEditable"}}
+          Editable
+        </label>
+      </li>
+      <li class="control-bar-item">
+        {{#link-to "paper.edit" model class="control-bar-link control-bar-button"}}
+          <div class="control-bar-link-icon">{{partial "svg/manuscript-icon"}}</div>
+          Manuscript
+        {{/link-to}}
+      </li>
+    </ul>
+  </div>
+{{/view}}
+
+{{flash-messages classNames="flash-messages--below-control-bar"}}
+
+<div id="manuscript-manager">
+  <div class="columns">
+    {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
+    {{#each phase in sortedPhases}}
+      {{#view "manuscript-manager-column" content=phase}}
+        {{add-column position=view.nextPosition action='addPhase'}}
+
+        {{view "phase-header" phase=phase}}
+
+        <div class="column-content">
+          {{#each task in phase.tasks}}
+            {{card-preview paper=model.paper
+                           task=task
+                           commentLooks=commentLooks
+                           canRemoveCard=canRemoveCard
+                           showDeleteConfirm="showDeleteConfirm"
+                           canDragCard=true
+                           action="viewCard"}}
+          {{/each}}
+          <a {{action "chooseNewCardTypeOverlay" phase}} class="button-secondary button--green">Add New Card</a>
+        </div>
+      {{/view}}
+    {{/each}}
+  </div>
+</div>

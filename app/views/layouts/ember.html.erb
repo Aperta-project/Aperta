@@ -2,30 +2,34 @@
 <html>
   <head>
     <title>Tahi</title>
+    <%= include_ember_stylesheet_tags :tahi %>
     <%= stylesheet_link_tag "application", media: "all" %>
-    <%= javascript_include_tag "application" %>
 
     <% if Rails.env.test? %>
-      <% # disable jquery animations %>
-      <%= javascript_tag "$.fx.off = true" %>
       <% # disable css animations %>
       <%= stylesheet_link_tag "test" %>
-      <% # undo eventsource.js polyfill %>
-      <%= javascript_tag "EventSource = NativeEventSource" %>
     <% end %>
 
     <%= csrf_meta_tags %>
+
     <%= render "layouts/segment_io" %>
     <%= render "shared/bugsnag_javascript" %>
   </head>
 
   <body>
-    <div id="ember-app"></div>
 
     <% if current_user %>
-      <script type="text/javascript">window.currentUserId = <%= current_user.id %>;</script>
+      <script type="text/javascript">
+        window.currentUser = <%= UserSerializer.new(current_user).to_json.html_safe %>;
+      </script>
     <% end %>
 
-    <script type="text/javascript">window.ETahi.environment = "<%= Rails.env %>";</script>
+    <%= include_ember_script_tags :tahi %>
+
+    <% if Rails.env.test? %>
+      <% # disable jquery animations %>
+      <%= javascript_tag "$.fx.off = true" %>
+    <% end %>
+
   </body>
 </html>

@@ -9,10 +9,10 @@ group :development, :test, :performance do
 end
 
 # Task Engines
-gem 'plos_authors',           path: 'engines/plos_authors'
-gem 'standard_tasks',         path: 'engines/standard_tasks'
+gem 'plos_authors', path: 'engines/plos_authors'
+gem 'standard_tasks', path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
-gem 'upload_manuscript',      path: 'engines/upload_manuscript'
+gem 'upload_manuscript', path: 'engines/upload_manuscript'
 
 # Gems
 gem 'rails', '4.2.0'
@@ -20,9 +20,7 @@ gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
 gem 'bower-rails'
-gem 'ember-rails'
-gem 'ember-source', '1.8.1'
-gem "ember-data-source", "1.0.0.beta.14"
+gem 'ember-cli-rails'
 gem 'sass-rails'
 gem 'uglifier'
 gem 'coffee-rails'
@@ -38,7 +36,6 @@ gem 'sinatra'
 gem 'active_record-acts_as'
 
 gem "nokogiri"
-gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
 gem "fog"
 gem "unf"
@@ -96,9 +93,6 @@ group :development, :test, :performance do
   gem 'rspec-instafail'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'teaspoon', github: 'modeset/teaspoon'
-  gem 'qunit-rails'
-  gem 'phantomjs'
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'pry-rescue'
@@ -114,8 +108,8 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'
   gem 'webmock'
-  gem 'thin'
   gem 'sunspot-rails-tester'
+  gem 'thin'
 end
 
 group :staging, :performance do

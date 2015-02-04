@@ -10,6 +10,7 @@ feature "Editing paper", selenium: true, js: true do
   }
 
   context "As an author on the paper page" do
+
     before do
       assign_journal_role(journal, user, :admin)
       sign_in_page = SignInPage.visit
@@ -27,8 +28,8 @@ feature "Editing paper", selenium: true, js: true do
         end
         wait_for_ajax
         expect(page.current_path).to match %r{/papers/\d+/edit}
-        within ".task-list" do
-          expect(page).to_not have_css ".doi"
+        within "#tahi-container" do
+          expect(page).to_not have_text("DOI:")
         end
       end
     end

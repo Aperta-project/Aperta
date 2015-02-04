@@ -1,10 +1,6 @@
 /*
  *= require_self
- *= require jquery.fileupload-ui
  *= require chosen
- *= require select2/select2
- *= require standard_tasks/application
- ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
 */
 
 @import 'bourbon';
@@ -15,10 +11,15 @@
 @import 'mixins';
 @import 'visualEditor.tahi.min';
 
+@import 'animations/base';
+@import 'components/base';
+@import 'overlays/base';
+@import 'screens/base';
+@import 'ui/base';
+
 @import 'tahi';
 
-@import 'animations/_base';
-@import 'components/_base';
-@import 'overlays/_base';
-@import 'screens/_base';
-@import 'ui/_base';
+@import 'engines/standard_tasks/application';
+@import 'engines/supporting_information/application';
+@import 'engines/upload_manuscript/application';
+@import 'engines/plos_authors/application';

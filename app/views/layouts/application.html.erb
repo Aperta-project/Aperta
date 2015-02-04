@@ -3,7 +3,9 @@
   <head>
     <title>Tahi</title>
     <%= stylesheet_link_tag "auth", media: "all" %>
-    <%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Cabin:400,700,400italic" %>
+    <%- unless Rails.env.test? %>
+      <%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Cabin:400,700,400italic" %>
+    <% end %>
     <%= csrf_meta_tags %>
     <%= render "layouts/segment_io" %>
     <%= render "shared/bugsnag_javascript" %>

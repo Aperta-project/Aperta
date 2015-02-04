@@ -15,22 +15,29 @@
 
 Alternatively:
 
-- `brew install imagemagick --with-libtiff`
-- Most of the javascript for the app is being handled by Bower.  You'll need to
-  have node installed
-in order to proceed.  `brew install node` and then `npm install bower -g`
-- All bower dependencies are found in the `Bowerfile`
-- If you're installing new bower components you'll want to read the
-  [rails-bower docs](https://github.com/42dev/bower-rails#rake-tasks),
-  especially if your components have stylesheets (`rake bower:resolve`)
-- You'll need redis.  `brew install redis` is the easiest way to get it.
-- Create database user for tahi `createuser -s -r tahi`
-- `cp .env-sample .env.development` and then uncomment the environment variables
-  in `.env.development`
-- copy the sample database config file.
-  `cp config/database.yml.sample config/database.yml`
+#### Application Dependencies
 
-### Setting up the event server
+We're assuming you have ruby and rubygems configured.
+
+- `brew install node`
+- `brew install redis`
+- `brew install imagemagick --with-libtiff`
+- `bundle install`
+
+#### Ember dependencies
+- `brew install watchman` for more performant builds. It will fall back to node if you don't do this.
+- `npm install`
+- `rake ember-cli:install_dependencies`
+
+#### Database setup
+
+We're assuming you have postgresql installed. We recommend installing it via brew via or http://postgresapp.com/
+
+- `createuser -s -r tahi`
+- `cp .env-sample .env.development` and then uncomment the environment variables in `.env.development`
+- `cp config/database.yml.sample config/database.yml`
+
+#### Event server
 
 You will need:
 
@@ -76,16 +83,23 @@ We use:
 
 - RSpec for unit and integration specs
 - Capybara and Selenium
-- Qunit and Teaspoon for JavaScript specs
-- ember-qunit for ember-specific tests.
 
 In the project directory, running `rspec` will run all unit and integration
 specs. Firefox will pop up to run integration tests.
 
-You can run the javascript specs via the command line with `rake teaspoon`.  If
-you have the rails server running you can run the specs from
-`localhost:5000/qunit`.  The command line tool is more robust but the browser is
-slightly faster.
+#### Running qunit tests from the command line
+
+You can run the javascript specs via the command line with `rake ember-cli:test`.
+
+#### Running qunit tests from the browser
+
+**IMPORTANT NOTE:**
+
+You can also run the javascript specs from the browser, however there is currently
+a limitation with ember-cli-rails (see https://github.com/rwz/ember-cli-rails/issues/18).
+As a workaround, you can `cd client` and run `ember server` and visit `localhost:4200/tests`
+
+For help writing ember tests please see the [ember-cli testing section](http://www.ember-cli.com/#testing)
 
 #### Page Objects
 

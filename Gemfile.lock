@@ -9,21 +9,6 @@ GIT
       omniauth (~> 1.2.0)
 
 GIT
-  remote: git://github.com/modeset/teaspoon.git
-  revision: 83440f080185d495e48dfc35420cffeb8596c7b1
-  specs:
-    teaspoon (0.8.0)
-      railties (>= 3.2.5, < 5)
-
-GIT
-  remote: git://github.com/neo-tahi/jquery-fileupload-rails.git
-  revision: 5252879d45d9da58687033e32e290a2af7457a40
-  specs:
-    jquery-fileupload-rails (0.4.1)
-      actionpack (>= 3.1)
-      railties (>= 3.1)
-
-GIT
   remote: git://github.com/tahi-project/tahi_epub.git
   revision: 3553a9e619ead574f0a92bdfbf77397b11942ba1
   specs:
@@ -119,10 +104,6 @@ GEM
     ast (2.0.0)
     astrolabe (1.3.0)
       parser (>= 2.2.0.pre.3, < 3.0)
-    barber (0.4.2)
-      ember-source
-      execjs
-      handlebars-source
     bcrypt (3.1.9)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
@@ -133,7 +114,7 @@ GEM
     bugsnag (2.7.1)
       multi_json (~> 1.0)
     builder (3.2.2)
-    bullet (4.14.2)
+    bullet (4.14.0)
       activesupport (>= 3.0.0)
       uniform_notifier (>= 1.6.0)
     byebug (3.5.1)
@@ -191,19 +172,9 @@ GEM
     dotenv (1.0.2)
     dotenv-deployment (0.2.0)
       dotenv (~> 1.0)
-    ember-data-source (1.0.0.beta.14)
-      ember-source
-    ember-rails (0.14.1)
-      active_model_serializers
-      barber (>= 0.4.1)
-      ember-data-source
-      ember-source
-      execjs (>= 1.2)
-      handlebars-source
-      jquery-rails (>= 1.0.17)
-      railties (>= 3.1)
-    ember-source (1.8.1)
-      handlebars-source (~> 1.0)
+    ember-cli-rails (0.1.2)
+      railties (~> 4.0)
+      sprockets-rails (~> 2.0)
     equalizer (0.0.9)
     erubis (2.7.0)
     eventmachine (1.0.3)
@@ -263,7 +234,6 @@ GEM
       rubyzip (>= 1.1.1)
     globalid (0.3.0)
       activesupport (>= 4.1.0)
-    handlebars-source (1.3.0)
     hashie (2.1.1)
     heroku-deflater (0.5.3)
       rack (>= 1.4.5)
@@ -275,14 +245,10 @@ GEM
     inflecto (0.0.2)
     interception (0.5)
     ipaddress (0.8.0)
-    jquery-rails (4.0.3)
-      rails-dom-testing (~> 1.0)
-      railties (>= 4.2.0)
-      thor (>= 0.14, < 2.0)
     json (1.8.2)
     jwt (0.1.13)
       multi_json (>= 1.5)
-    kaminari (0.16.2)
+    kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     launchy (2.4.3)
@@ -336,11 +302,11 @@ GEM
     orm_adapter (0.5.0)
     overcommit (0.21.0)
       childprocess (>= 0.5.1)
-    parser (2.2.0.2)
+    parser (2.2.0.1)
       ast (>= 1.1, < 3.0)
+      slop (~> 3.4, >= 3.4.5)
     pdfkit (0.6.2)
     pg (0.17.0)
-    phantomjs (1.9.8.0)
     powerpack (0.0.9)
     pr_geohash (1.0.0)
     procto (0.0.2)
@@ -364,8 +330,6 @@ GEM
       rack (>= 1.1, < 2.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
-    qunit-rails (0.0.7)
-      railties
     rack (1.6.0)
     rack-protection (1.5.3)
       rack
@@ -411,7 +375,7 @@ GEM
     reek (1.6.4)
       parser (~> 2.2.0.pre.7)
       rainbow (>= 1.99, < 3.0)
-      unparser (~> 0.2.2)
+      unparser (~> 0.1.16)
     responders (2.0.2)
       railties (>= 4.2.0.alpha, < 5)
     rest_client (1.7.3)
@@ -454,7 +418,7 @@ GEM
     ruby-progressbar (1.7.1)
     rubyzip (1.1.6)
     safe_yaml (1.0.4)
-    sass (3.4.10)
+    sass (3.4.9)
     sass-rails (5.0.1)
       railties (>= 4.0.0, < 5.0)
       sass (~> 3.1)
@@ -493,7 +457,7 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-rails (2.2.2)
+    sprockets-rails (2.2.4)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
@@ -529,13 +493,12 @@ GEM
       unf_ext
     unf_ext (0.0.6)
     uniform_notifier (1.6.2)
-    unparser (0.2.2)
+    unparser (0.1.16)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)
       concord (~> 0.1.5)
-      diff-lcs (~> 1.2.5)
       equalizer (~> 0.0.9)
-      parser (~> 2.2.0.2)
+      parser (~> 2.2.0.pre.7)
       procto (~> 0.0.2)
     vcr (2.9.3)
     warden (1.2.3)
@@ -569,16 +532,13 @@ DEPENDENCIES
   devise
   dotenv
   dotenv-deployment
-  ember-data-source (= 1.0.0.beta.14)
-  ember-rails
-  ember-source (= 1.8.1)
+  ember-cli-rails
   factory_girl_rails
   faraday_middleware
   fog
   foreman
   gepub
   heroku-deflater
-  jquery-fileupload-rails!
   kaminari
   launchy
   letter_opener
@@ -594,7 +554,6 @@ DEPENDENCIES
   overcommit
   pdfkit
   pg
-  phantomjs
   plos_authors!
   progressbar
   pry-byebug
@@ -603,7 +562,6 @@ DEPENDENCIES
   pry-stack_explorer
   puma
   quiet_assets
-  qunit-rails
   rack-timeout
   rails (= 4.2.0)
   rails_12factor
@@ -628,7 +586,6 @@ DEPENDENCIES
   sunspot_solr
   supporting_information!
   tahi_epub!
-  teaspoon!
   thin
   timeliness
   twitter-text

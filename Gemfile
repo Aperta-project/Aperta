@@ -112,10 +112,6 @@ group :test do
   gem 'thin'
 end
 
-group :development, :staging do
-  gem 'kss-rails'
-end
-
 group :staging, :performance do
   gem 'mail_safe'
 end

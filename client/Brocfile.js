@@ -25,7 +25,7 @@ app.import('bower_components/moment/moment.js');
 app.import('vendor/bootstrap-tooltip/index.js');
 
 // Datepicker
-app.import('bower_components/bootstrap-datepicker/css/datepicker.css');
+app.import('bower_components/bootstrap-datepicker/css/datepicker3.css');
 app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 
 // FileUpload

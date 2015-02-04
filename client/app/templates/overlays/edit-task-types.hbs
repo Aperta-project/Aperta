@@ -1,0 +1,23 @@
+<div class="overlay-container">
+  <h1>Available Task Types</h1>
+
+  <table class="admin-roles-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Role</th>
+        <th>Task Type</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each journalTaskType in sortedTaskTypes}}
+        {{render "admin/journal-task-type" journalTaskType}}
+      {{/each}}
+    </tbody>
+  </table>
+
+  <div class="overlay-action-buttons">
+    <button class="button-primary button--blue" {{action "closeOverlay"}}>Done Editing</button>
+  </div>
+</div>

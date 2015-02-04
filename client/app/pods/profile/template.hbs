@@ -1,0 +1,50 @@
+{{view "control-bar"}}
+{{flash-messages classNames="flash-messages--below-control-bar"}}
+
+<div id="tahi-container">
+
+  <div class="col-md-2">
+    <div id="profile-avatar">
+      <img {{bind-attr src="model.avatarUrl"}}>
+      <div id="profile-avatar-hover">
+        <span class="button-secondary button--green fileinput-button">
+          <span>Upload New</span>
+          {{file-uploader id="profile_avatar"
+                          accept=".jpg,.jpeg,.tiff,.gif,.png"
+                          start="uploadStarted"
+                          progress="uploadProgress"
+                          done="uploadFinished"
+                          filePrefix="user/avatar"
+                          railsMethod="PUT"
+                          url=avatarUploadUrl}}
+        </span>
+      </div>
+      <div class="profile-avatar-spinner">
+        {{progress-spinner visible=isUploading}}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-10">
+    <div class="profile-section">
+      <h1>First and last name:</h1>
+      <h2 id="profile-name">{{model.fullName}}</h2>
+    </div>
+
+    <div id="profile-username" class="profile-section">
+      <h1>Username:</h1>
+      <h2>{{model.username}}</h2>
+    </div>
+
+    <div id="profile-email" class="profile-section">
+      <h1>Email:</h1>
+      <h2>{{model.email}}</h2>
+    </div>
+
+    {{partial "profile/affiliation-form"}}
+
+    <br><br>
+    <a href="#" id="reset-password">Reset my password</a>
+  </div>
+
+</div>

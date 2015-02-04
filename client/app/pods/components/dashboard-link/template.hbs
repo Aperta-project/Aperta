@@ -1,0 +1,15 @@
+<li class="dashboard-paper-title">
+  {{#link-to "paper.edit" linkIdentifier
+             class="link-tooltip"
+             data-toggle="tooltip"
+             title=model.roleList}}
+    {{partial "svg/manuscript-icon"}}
+    {{model.displayTitle}}
+  {{/link-to}}
+
+  {{#if unreadCommentsCount}}
+    <span class="badge link-tooltip" {{bind-attr title=badgeTitle}}>
+      {{unreadCommentsCount}}
+    </span>
+  {{/if}}
+</li>

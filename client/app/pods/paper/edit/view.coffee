@@ -2,7 +2,12 @@
 `import RedirectsIfEditable from 'tahi/mixins/views/redirects-if-editable'`
 
 PaperEditView = Ember.View.extend RedirectsIfEditable,
-  visualEditor: Ember.computed.alias('controller.visualEditor')
+
+  # initialized by component helper {{visual-editor}}
+  visualEditor: null
+
+  # initialized by component helper {{visual-editor-toolbar}}
+  toolbar: null
 
   locked: Ember.computed.alias 'controller.locked'
   isEditing: Ember.computed.alias 'controller.isEditing'
@@ -62,9 +67,8 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
 
   updateVisualEditor: ->
     visualEditor = @get('visualEditor')
-    visualEditor.update($("#paper-body"), @get('controller.body'))
-    visualEditor.get('target').on 'surfaceReady', =>
-      @updateEditorLockedState()
+    visualEditor.fromHtml(@get('controller.body'))
+    @updateEditorLockedState()
 
   teardownControlBarSubNav: (->
     $('html').removeClass 'control-bar-sub-nav-active'
@@ -104,7 +108,7 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
         @timeoutSave()
 
   saveVisualEditorChanges: ->
-    @get('controller').send('updateDocumentBody', @get('visualEditor.bodyHtml'))
+    @get('controller').send('updateDocumentBody', @get('visualEditor').toHtml())
 
   actions:
     submit: ->

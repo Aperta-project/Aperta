@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 `import BasePaperController from 'tahi/controllers/base-paper'` # EMBERCLI TODO - this is weird
-`import VisualEditor from 'tahi/services/visual-editor'`
+`import VisualEditor from 'ember-cli-visualeditor/models/visual-editor'`
 
 PaperEditController = BasePaperController.extend
   needs: ['overlays/paperSubmit']
@@ -68,7 +68,7 @@ PaperEditController = BasePaperController.extend
 
     toggleEditing: ->
       if @get('lockedBy') #unlocking -> Allowing others to edit
-        @set('body', @get('visualEditor.bodyHtml'))
+        @set('body', @get('visualEditor').toHtml())
         @set('lockedBy', null)
         @send('stopEditing')
         @get('model').save().then (paper) =>

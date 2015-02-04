@@ -1,6 +1,8 @@
 /* global require, module */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+var mergeTrees = require('broccoli-merge-trees');
+var pickFiles = require('broccoli-static-compiler');
 
 var app = new EmberApp({storeConfigInMeta: false});
 
@@ -48,4 +50,9 @@ if (app.env === 'production') {
   app.import('bower_components/underscore/underscore.js');
 }
 
-module.exports = app.toTree();
+var visualEditor = pickFiles('node_modules/ember-cli-visualeditor/dist', {
+  srcDir: '/',
+  destDir: '/assets/visual-editor'
+})
+
+module.exports = mergeTrees([app.toTree(), visualEditor]);

@@ -3,15 +3,13 @@
 `import LazyLoader from 'tahi/mixins/routes/lazy-loader'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Heartbeat from 'tahi/services/heartbeat'`
+`import initializeVisualEditor from 'ember-cli-visualeditor/initializers/initialize_visual_editor'`
 
 PaperEditRoute = AuthorizedRoute.extend
   heartbeatService: null
 
   beforeModel: ->
-    visualEditorScript = '/visualEditor.min.js'
-    unless LazyLoader.loaded[visualEditorScript]
-      $.getScript(visualEditorScript).then ->
-        LazyLoader.loaded[visualEditorScript] = true
+    initializeVisualEditor("/assets/tahi");
 
   model: ->
     paper = @modelFor('paper')

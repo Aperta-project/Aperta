@@ -16,6 +16,7 @@
       {{#each item in block}}
         {{view 'inline-edit'
           item=item
+          block=block
           allUsers=allUsers
           overlayParticipants=participants
           emailSentStates=emailSentStates
@@ -36,6 +37,7 @@
       {{#each item in block}}
         {{view 'inline-edit'
           item=item
+          block=block
           allUsers=allUsers
           overlayParticipants=participants
           emailSentStates=emailSentStates

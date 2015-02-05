@@ -75,13 +75,13 @@ class PageFragment
     retry_stale_element do
       find('.card-content', text: card_name).click
     end
-    synchronize_content! 'CLOSE'
 
     overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize
                     rescue NameError
                       CardOverlay
                     end
+    expect(session).to have_css('.overlay')
     overlay = overlay_class.new session.find(".overlay")
     if block_given?
       retry_stale_element do

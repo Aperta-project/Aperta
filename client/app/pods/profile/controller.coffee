@@ -8,10 +8,6 @@ ProfileController = Ember.ObjectController.extend FileUploadMixin, ValidationErr
   errorText: ""
   affiliations: Ember.computed.alias "model.affiliationsByDate"
 
-  avatarUploadUrl: ( ->
-    "/users/#{@get('model.id')}/update_avatar"
-  ).property('id')
-
   selectableInstitutions: (->
     @get('model.institutions').map (institution) ->
       id: institution
@@ -19,10 +15,6 @@ ProfileController = Ember.ObjectController.extend FileUploadMixin, ValidationErr
   ).property('model.institutions')
 
   actions:
-    uploadFinished: (data, filename) ->
-      @uploadFinished(data, filename)
-      @set 'model.avatarUrl', data.avatar_url
-
     hideNewAffiliationForm: ->
       @clearValidationErrors()
       @set 'showAffiliationForm', false

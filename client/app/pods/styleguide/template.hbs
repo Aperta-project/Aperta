@@ -259,6 +259,7 @@
               Workflow
             </h2>
 
+            {{render 'paper/manage' paper}}
             <div element-name="paper-manager" source-page-name="paper_manager" source-page-selector=".columns"><div class="columns">
     <span id="ember1329" class="ember-view add-column first-add-column" data-toggle="tooltip" data-placement="auto right" title="" data-original-title="Add Phase"><i class="glyphicon glyphicon-plus"></i>
 </span>
@@ -1615,7 +1616,7 @@
 
                 <div class="attachment-thumbnail-image">
                   <div class="replace-spinner"></div>
-                  <img class="preview" src="/assets/cat-scientists-3.jpg" data-bindattr-1871="1871" alt="Test hiding" data-bindattr-1872="1872">
+                  <img class="preview" src="/images/cat-scientists-3.jpg" data-bindattr-1871="1871" alt="Test hiding" data-bindattr-1872="1872">
                   <div class="attachment-thumbnail-edit-overlay">
                     <div class="attachment-thumbnail-edit-overlay-buttons">
                       <button id="ember1879" class="ember-view button-secondary button--green knockout replace fileinput-button">
@@ -1960,6 +1961,7 @@
 
           <div class="row">
             <div class="col-md-4">
+              {{user-avatar user=user}}
             </div>
             <div class="col-md-4">
               <!-- Render `user_thumbnail.js.coffee` here,

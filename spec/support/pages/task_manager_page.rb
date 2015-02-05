@@ -4,7 +4,7 @@ class TaskManagerPage < Page
   text_assertions :task, '.card'
 
   def phases
-    expect(session).to have_css('.column h2')
+    expect(page).to have_css('.column h2')
     retry_stale_element do
       session.all(:css, ".column h2").map(&:text)
     end

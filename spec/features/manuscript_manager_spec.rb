@@ -25,7 +25,7 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
     scenario 'Preserving order of added phases after reload' do
       task_manager_page = TaskManagerPage.visit paper
       original_phases = task_manager_page.phases
-      # put new phases in the second and forth positions.
+      # put new phases in the second and fourth positions.
       task_manager_page.phase(original_phases[0]).add_phase
       task_manager_page.phase(original_phases[1]).add_phase
       new_phases = TaskManagerPage.new.phases

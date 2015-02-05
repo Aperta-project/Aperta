@@ -94,7 +94,6 @@
   &.button--grey       { @include button-primary-modifier($tahi-grey, $tahi-grey-dark); }
 }
 
-
 .button-secondary {
   @extend .button;
   background: #fff;
@@ -103,7 +102,6 @@
   &.button--blue       { @include button-secondary-modifier($tahi-blue, $tahi-blue-light, $tahi-blue-dark); }
   &.button--grey       { @include button-secondary-modifier($tahi-grey, $tahi-grey-light, $tahi-grey-dark); }
 }
-
 
 .button-link {
   @extend .button;
@@ -117,16 +115,7 @@
   &:hover {
     text-decoration: underline;
   }
-
-  &.knockout {
-    color: $tahi-white;
-
-    &:focus, &:hover {
-      text-decoration: underline;
-    }
-  }
 }
-
 
 // .button modifier
 .button--disabled {

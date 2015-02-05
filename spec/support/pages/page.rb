@@ -81,7 +81,6 @@ class PageFragment
                     rescue NameError
                       CardOverlay
                     end
-    expect(session).to have_css('.overlay')
     overlay = overlay_class.new session.find(".overlay")
     if block_given?
       retry_stale_element do

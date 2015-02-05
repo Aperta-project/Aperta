@@ -1,4 +1,6 @@
-ETahi.StyleguideRoute = Ember.Route.extend
+`import Ember from 'ember'`
+
+StyleguideRoute = Ember.Route.extend
 
   setupController: (controller, model) ->
     upload = {
@@ -136,3 +138,5 @@ ETahi.StyleguideRoute = Ember.Route.extend
     controller.set('phases', phases)
     controller.set('paper', paper)
     controller.set('supportedDownloadFormats', supportedDownloadFormats)
+
+`export default StyleguideRoute`

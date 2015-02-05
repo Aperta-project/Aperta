@@ -16,9 +16,6 @@ PaperEditController = BasePaperController.extend
   isBodyEmpty: Ember.computed 'model.body', ->
     Ember.isBlank $(@get 'model.body').text()
 
-  showPlaceholder: Ember.computed 'isBodyEmpty', 'visualEditor.isCurrentlyEditing', ->
-    @get('isBodyEmpty') && !@get('visualEditor.isCurrentlyEditing')
-
   statusMessage: Ember.computed.any 'processingMessage', 'userEditingMessage', 'saveStateMessage'
 
   processingMessage: (->
@@ -63,8 +60,6 @@ PaperEditController = BasePaperController.extend
   ).observes('saveState')
 
   actions:
-    tryHidingPlaceholder: ->
-      @get('visualEditor').startEditing()
 
     toggleEditing: ->
       if @get('lockedBy') #unlocking -> Allowing others to edit

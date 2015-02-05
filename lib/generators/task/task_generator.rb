@@ -74,5 +74,8 @@ class TaskGenerator < Rails::Generators::Base
     ember_cmd = "cd client && ember generate task #{ember_task_name}"
     puts ember_cmd
     system ember_cmd
+
+    puts "rake custom_cards:install[#{ember_task_name}]"
+    system "rake custom_cards:install[#{ember_task_name}]"
   end
 end

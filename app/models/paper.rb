@@ -101,13 +101,6 @@ class Paper < ActiveRecord::Base
     title.present? ? title : short_title
   end
 
-  def assign_role!(user, role)
-    transaction do
-      paper_roles.for_role(role).destroy_all
-      paper_roles.for_role(role).create!(user: user)
-    end
-  end
-
   def admin
     admins.first
   end

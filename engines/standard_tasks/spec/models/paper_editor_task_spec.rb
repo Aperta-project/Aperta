@@ -61,5 +61,11 @@ describe StandardTasks::PaperEditorTask do
 
       expect(mailer).to have_received(:assigned_editor)
     end
+
+    it "removes role if nil" do
+      task.editor_id = nil
+      expect(task.reload.editor_id).to eq(nil)
+      expect{ original_paper_role.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 end

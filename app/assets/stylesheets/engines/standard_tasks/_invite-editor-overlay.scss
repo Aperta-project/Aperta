@@ -1,0 +1,19 @@
+.invite-editor-button {
+  margin-left: 20px;
+}
+
+.invite-editor-text {
+  position: relative;
+  padding: 0 45px 0 1rem;
+  display: inline-block;
+  font-size: 18px;
+}
+
+.invite-editor-remove {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  color: #d5d5d5;
+  font-size: 18px;
+  cursor: pointer;
+}

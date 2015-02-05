@@ -126,28 +126,6 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
 
   .ve-tool-group {
     display: inline-block;
-
-    .ve-tool {
-      display: inline-block;
-      padding: 5px 10px;
-
-      .disabled {
-        opacity: 0.3;
-      }
-
-      .enabled {
-        cursor: pointer;
-        &:hover {
-          background-color: #666;
-          color: white;
-        }
-      }
-
-      .active {
-        background-color: #666;
-        color: white;
-      }
-    }
   }
 
   .ve-select {
@@ -159,6 +137,29 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
     .ve-option.disabled {
       display: none;
     }
+  }
+}
+
+.editor-toolbar .ve-tool-group .ve-tool {
+  display: inline-block;
+  padding: 5px 10px;
+
+  &.disabled {
+    opacity: 0.3;
+  }
+
+  &.enabled {
+    cursor: pointer;
+  }
+
+  &.enabled:hover {
+    background-color: #666;
+    color: white;
+  }
+
+  &.active {
+    background-color: #666;
+    color: white;
   }
 }
 

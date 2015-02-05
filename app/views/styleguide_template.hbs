@@ -231,9 +231,6 @@
               Workflow
             </h2>
 
-            {{view paperManage paper=paper}}
-            {{view 'paperManage' sortedPhases=phases}}
-            {{render paperManage sortedPhases=phases}}
             <div element-name="paper-manager" source-page-name="paper_manager" source-page-selector=".columns"></div>
 
             <br>
@@ -815,7 +812,6 @@
 
           <div class="row">
             <div class="col-md-4">
-              {{view "profile-avatar"}}
             </div>
             <div class="col-md-4">
               <!-- Render `user_thumbnail.js.coffee` here,

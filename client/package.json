@@ -40,6 +40,6 @@
     "broccoli-merge-trees": "^0.1.3",
     "ember-cli-esnext": "0.1.1",
     "ember-cli-font-awesome": "0.0.7",
-    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#8769bb7447f6aca9ca41eb158008b4676dc47926"
+    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#master"
   }
 }

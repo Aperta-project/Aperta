@@ -43,14 +43,6 @@
               </li>
               <li>
                 <a href="#toolbars">Toolbars</a>
-                <ul class="nav">
-                  <li>
-                    <a href="#contributors">Contributors</a>
-                  </li>
-                  <li>
-                    <a href="#download-document">Download Document</a>
-                  </li>
-                </ul>
               </li>
               <li>
                 <a href="#buttons">Buttons</a>
@@ -300,9 +292,6 @@
             </h2>
 
             <div class="row">
-              <div class="col-md-12">
-                Primary .button--green
-              </div>
               <div class="col-md-3">
                 <div class="button-primary button--green">Save</div>
                 <div class="button-secondary button--green">Save</div>
@@ -325,9 +314,6 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12">
-                Neutral .button--grey
-              </div>
               <div class="col-md-3">
                 <div class="button-primary button--grey">Save</div>
                 <div class="button-secondary button--grey">Save</div>
@@ -350,9 +336,6 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12">
-                Admin .button--blue
-              </div>
               <div class="col-md-3">
                 <div class="button-primary button--blue">Save</div>
                 <div class="button-secondary button--blue">Save</div>
@@ -803,7 +786,7 @@
             Errors
           </h2>
 
-          {{flash-messages messages=flash.messages classNames="flash-messages--below-control-bar"}}
+          {{flash-messages flash=flash classNames="flash-messages--below-control-bar"}}
 
           <hr>
 
@@ -871,7 +854,7 @@
                   </li>
                   <li><a href="#reporting-guidelines">Reporting Guidelines</a>
                   </li>
-                  <li><a href="#reviwer-report">Reviwer Report</a>
+                  <li><a href="#reviewer-report">Reviewer Report</a>
                   </li>
                   <li><a href="#supporting-information">Supporting Information</a>
                   </li>

@@ -11,6 +11,12 @@ class ManuscriptManagerTemplatePage < Page
     all('.column h2').map(&:text)
   end
 
+  def has_phase_names?(*phases)
+    phases.each do |p_name|
+      expect(page).to have_css('.column h2', text: p_name)
+    end
+  end
+
   def find_phase phase_name
     expect(page).to have_content(phase_name) # use have_content/css/stuff assertion to avoid sleeps.
     PhaseFragment.new(all('.column').detect {|p| p.find('h2').text == phase_name })

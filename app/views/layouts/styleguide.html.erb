@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tahi</title>
+    <%= include_ember_stylesheet_tags :tahi %>
+    <%= stylesheet_link_tag "application", media: "all" %>
+
+    <%= csrf_meta_tags %>
+
+    <%#= render "shared/bugsnag_javascript" %>
+
+    <style media="screen">
+    *[element-name] {
+      position: relative;
+    }
+    .add-author-form {
+      min-width: 900px;
+    }
+    .baskerville * {
+      font-family: Baskerville;
+    }
+    .buttons div.button--green,
+    .buttons div.button--grey,
+    .buttons div.button--blue {
+      margin-top: 10px;
+    }
+    .cabin * {
+      font-family: Cabin;
+    }
+    #card-overlays > a {
+      display: block
+    }
+    #cards-tab .overlay-container {
+      max-width: 940px;
+      min-width: 900px;
+      margin: 0;
+      padding: 0;
+    }
+    #cards-tab ul.select2-choices {
+      display: none;
+    }
+    .color-bar {
+      height: 75px;
+      text-align: center;
+      color: white;
+      padding: 28px 0px 0px 0px;
+      width: 200px;
+    }
+    .column-title-update-buttons {
+      display: none !important;
+    }
+    .constrain {
+      max-width: 940px;
+      margin: auto;
+    }
+    .content {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+    .glyphicon.large {
+      font-size: 28px;
+    }
+    .glyphicon.small {
+      font-size: 18px;
+    }
+    #header {
+      margin: 20px auto;
+    }
+    .navigation-toggle {
+      display: none !important;
+    }
+    .paper-journal {
+      display: none;
+    }
+    p.text {
+      max-width: 500px;
+      padding-bottom: 25px;
+    }
+    .styleguide-example pre,
+    .styleguide-example .styleguide-description,
+    .styleguide-example h3,
+    .styleguide-example .styleguide-element .styleguide-modifier-name {
+      display: none;
+    }
+    .row {
+      padding-bottom: 50px;
+    }
+    #tabs {
+      margin-bottom: 20px;
+    }
+    .yes-no-with-comments label,
+    .question label,
+    .form-group label {
+      margin-right: 20px;
+    }
+  </style>
+  </head>
+
+  <body>
+    <% if current_user %>
+      <script type="text/javascript">
+        window.currentUser = <%= UserSerializer.new(current_user).to_json.html_safe %>;
+      </script>
+    <% end %>
+
+    <%= include_ember_script_tags :tahi %>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <div id="ember-app"></div>
+  </body>
+</html>

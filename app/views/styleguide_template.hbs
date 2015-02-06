@@ -1,0 +1,927 @@
+<div class="container" id="top-of-page">
+
+<h1 id="header">
+  Tahi Styleguide
+</h1>
+
+<div class="bs-example bs-example-tabs">
+  <ul id="tabs" class="nav nav-tabs">
+    <li class="active">
+      <a href="#home" data-toggle="tab">Home</a>
+    </li>
+    <li class="">
+      <a href="#cards-tab" data-toggle="tab">Cards</a>
+    </li>
+  </ul>
+
+  <div id="myTabContent" class="tab-content">
+    <div class="tab-pane active in" id="home">
+      <div class="row">
+         <div class="col-md-2">
+          <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+            <ul class="nav bs-docs-sidenav">
+              <li>
+                <h4><a href="#top-of-page">UI Elements</a></h4>
+              </li>
+              <li>
+                <a href="#colors">Colors</a>
+              </li>
+              <li>
+                <a href="#typography">Typography</a>
+              </li>
+              <li>
+                <a href="#cards">Cards</a>
+              </li>
+              <li>
+                <a href="#workflow">Workflow</a>
+              </li>
+              <li>
+                <a href="#card-overlay">Card Overlay</a>
+              </li>
+              <li>
+                <a href="#system-overlay">System Overlay</a>
+              </li>
+              <li>
+                <a href="#toolbars">Toolbars</a>
+              </li>
+              <li>
+                <a href="#buttons">Buttons</a>
+              </li>
+              <li>
+                <a href="#form-patterns">Form Patterns</a>
+              </li>
+              <li>
+                <a href="#edit-delete">Edit/Delete</a>
+              </li>
+              <li>
+                <a href="#file-upload">File Upload</a>
+              </li>
+              <li>
+                <a href="#errors">Errors</a>
+              </li>
+              <li>
+                <a href="#avatars">Avatars</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="col-md-10">
+          <div id="styleguide">
+            <div class="row hide">
+              <div class="col-md-6">
+                <p>
+                  Run <code>rake styleguide:generate</code> to get the latest HTML from the app.
+                </p>
+              </div>
+              <div class="col-md-6">
+                <button id="toggle-all-source" class="btn btn-primary">Toggle All Source</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <h2 id="colors">
+                  Devices
+                </h2>
+
+                <p>
+                  Tahi is not a mobile web app. It is intended for desktop, laptop and sometimes tablet.
+                </p>
+              </div>
+            </div>
+            <hr>
+
+            <div class="row">
+              <div class="col-md-6">
+                <h2 id="colors">
+                  Colors
+                </h2>
+
+                <p>
+                  Tahi's color palette is intentionally constrained. There is a primary color that serves as the pop color to a grayscale palette. The admin section has a different pop color to easily differentiate it from the rest of the app.
+                </p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-3">
+                    Primary
+                    <div class="color-bar" style="background-color: #39a329;">
+                      #39a329
+                    </div>
+                    <div class="color-bar" style="background-color: #8ecb87;">
+                      #8ecb87
+                    </div>
+                    <div class="color-bar" style="background-color: #0f7400;">
+                      #0f7400
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    Neutral
+                    <div class="color-bar" style="background-color: #777;">
+                      #777
+                    </div>
+                    <div class="color-bar" style="background-color: #d5d5d5;">
+                      #d5d5d5
+                    </div>
+                    <div class="color-bar" style="background-color: #878787;">
+                      #878787
+                    </div>
+                    <div class="color-bar" style="background-color: #000000;">
+                      #000000
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    Admin Primary
+                    <div class="color-bar" style="background-color: #2d85de;">
+                      #2d85de
+                    </div>
+                    <div class="color-bar" style="background-color: #94b8e0;">
+                      #94b8e0
+                    </div>
+                    <div class="color-bar" style="background-color: #205e9c;">
+                      #205e9c
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <div element-name="navigation" source-page-name="dashboard" source-page-selector=".navigation"></div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <h2 id="typography">
+                  Typography
+                </h2>
+                <p>
+                  Cabin is the typeface used throught the Tahi application. Baskerville is used only for the manuscript itself, and the expression of the manuscript's title in different places in the system.
+                </p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="cabin">
+                  <h1>
+                    Cabin H1
+                  </h1>
+                  <h2>
+                    Cabin H2
+                  </h2>
+                  <p>
+                    Basic System Text
+                  </p>
+                  <a href="#">Link</a>
+                  <br>
+                  <a href="#" class="hover" style="text-decoration: underline;">Hovered Link</a>
+                </div>
+
+                <br>
+
+                <div class="baskerville">
+                  <h1>
+                    Baskerville H1
+                  </h1>
+                  <h2>
+                    Baskerville H2
+                  </h2>
+                  <p>
+                    Manuscript Text
+                  </p>
+                  <a href="#">Link</a>
+                  <br>
+                  <a href="#" class="hover" style="text-decoration: underline;">Hovered Link</a>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <h2 id="cards">
+              Cards
+            </h2>
+
+            <div class="row">
+              <div class="col-md-4">
+                <h3>Not Completed</h3>
+                {{card-preview task=taskIncomplete}}
+              </div>
+              <div class="col-md-4">
+                <h3>Completed</h3>
+                {{card-preview task=taskComplete}}
+              </div>
+            </div>
+
+            <hr>
+
+            <h2 id="workflow">
+              Workflow
+            </h2>
+
+            {{render 'paper/manage' paper}}
+            <div element-name="paper-manager" source-page-name="paper_manager" source-page-selector=".columns"></div>
+
+            <br>
+            <hr>
+            <div class="ui-element">
+              <h2 id="card-overlay">
+                Card Overlay
+              </h2>
+
+              <a class="toggle-link">Click to show Card Overlay</a>
+
+              <div element-name="card-overlay" source-page-name="paper_manager" source-page-selector=".overlay" overlay="true"></div>
+            </div>
+            <br>
+
+            <hr>
+
+            <div class="ui-element">
+              <h2 id="system-overlay">
+                System Overlay
+                <!-- Seems Mis-named -->
+              </h2>
+
+              <a class="toggle-link">Click to show System Overlay</a>
+
+              <div element-name="system-overlay" source-page-name="paper_manager_overlay" source-page-selector=".overlay--fullscreen" overlay="true"></div>
+            </div>
+            <br>
+
+            <hr>
+
+            <h2 id="toolbars">
+              Toolbars
+            </h2>
+
+            {{!-- How to modify View attributes here? --}}
+            {{!-- partial "paper/control-bar" canViewManuscriptManager=false --}}
+            {{!--partial "paper/control-bar" canViewManuscriptManager=true--}}
+            {{!--partial "paper/control-bar"--}}
+
+
+            <h3 id="default">
+              Default Toolbar
+            </h3>
+            <div element-name="toolbar" source-page-name="paper" source-page-selector=".control-bar"></div>
+
+            <h3 id="contributors">
+              Contributors
+            </h3>
+            <div class="control-bar-sub-nav-active">
+              <div element-name="toolbar" source-page-name="paper_contributors" source-page-selector=".control-bar"></div>
+            </div>
+
+            <h3 id="download-document">
+              Download Document
+            </h3>
+            <div class="control-bar-sub-nav-active">
+              <div element-name="toolbar" source-page-name="paper_download_document" source-page-selector=".control-bar"></div>
+            </div>
+            <br>
+
+            <hr>
+
+            <h2 id="buttons">
+              Buttons
+            </h2>
+
+            <div class="row">
+              <div class="col-md-3">
+                <div class="button-primary button--green">Save</div>
+                <div class="button-secondary button--green">Save</div>
+                <div class="button-link button--green">Save</div>
+              </div>
+              <div class="col-md-3">
+                <div class="button-primary button--small button--green">Save</div>
+                <div class="button-secondary button--small button--green">Save</div>
+                <div class="button-link button--small button--green">Save</div>
+              </div>
+              <div class="col-md-3">
+                <div class="button-primary button--disabled button--green">Save</div>
+                <div class="button-secondary button--disabled button--green">Save</div>
+                <div class="button-link button--disabled button--green">Save</div>
+              </div>
+              <div class="col-md-3">
+                <div style="background-color: #29a904; padding: 10px;">
+                  <div class="button-secondary button--green knockout">Save</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="button-primary button--grey">Save</div>
+                <div class="button-secondary button--grey">Save</div>
+                <div class="button-link button--grey">Save</div>
+              </div>
+              <div class="col-md-3">
+                <div class="button-primary button--small button--grey">Save</div>
+                <div class="button-secondary button--small button--grey">Save</div>
+                <div class="button-link button--small button--grey">Save</div>
+              </div>
+              <div class="col-md-3">
+                <div class="button-primary button--disabled button--grey">Save</div>
+                <div class="button-secondary button--disabled button--grey">Save</div>
+                <div class="button-link button--disabled button--grey">Save</div>
+              </div>
+              <div class="col-md-3">
+                <div style="background-color: #E5E5E5; padding: 10px;">
+                  <div class="button-secondary button--grey knockout">Save</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="button-primary button--blue">Save</div>
+                <div class="button-secondary button--blue">Save</div>
+                <div class="button-link button--blue">Save</div>
+              </div>
+              <div class="col-md-3">
+                <div class="button-primary button--small button--blue">Save</div>
+                <div class="button-secondary button--small button--blue">Save</div>
+                <div class="button-link button--small button--blue">Save</div>
+              </div>
+              <div class="col-md-3">
+                <div class="button-primary button--disabled button--blue">Save</div>
+                <div class="button-secondary button--disabled button--blue">Save</div>
+                <div class="button-link button--disabled button--blue">Save</div>
+              </div>
+              <div class="col-md-3">
+                <div style="background-color: #2d85de; padding: 10px;">
+                  <div class="button-secondary button--blue knockout">Save</div>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <h2 id="form-patterns">
+              Form Patterns (in Cards)
+            </h2>
+            <br>
+
+            <h3>
+              Form Block: Numbered List
+            </h3>
+
+            <div class="constrain">
+              <div element-name="numbered-list" source-page-name="card_ethics" source-page-selector="ol.question-list"></div>
+            </div>
+            <br>
+
+            <h3>
+              Form Block: Unstyled Bulleted List
+            </h3>
+
+            <div class="constrain">
+              <div element-name="bulleted-list" source-page-name="card_tech_check_task" source-page-selector="ul.numbered-list"></div>
+            </div>
+            <br>
+
+            <h3>
+              Form Block: Styled Bulleted List
+            </h3>
+
+            <div class="constrain">
+              <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) ul.question-help"></div>
+            </div>
+            <br>
+
+            <h3>
+              Form Block: Single Input
+            </h3>
+
+            <div class="constrain">
+              <!--
+              This form needs an overlay context to be formatted properly..
+              But it feels too coupled at the moment.
+              -->
+              <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) div.yes-no-with-comments" source-page-selector-context=".yes-no-with-comments"></div>
+            </div>
+            <br>
+
+            <h3>
+              Form Block: Multi Input
+            </h3>
+
+            <div class="constrain">
+              <div element-name="full-width-multi-block-input" source-page-name="card_data_availability" source-page-selector="li.item:last .question-dataset"></div>
+            </div>
+
+            <div class="constrain">
+              <div element-name="varied-width-multi-block-input" source-page-name="card_plos_authors_task" source-page-selector=".add-author-form"></div>
+            </div>
+            <br>
+
+            <hr>
+
+            <h3 id="file-upload">
+              File Upload: top of card
+            </h3>
+            <br>
+
+            <div class="constrain">
+
+              <h4>
+                File Upload Progress
+              </h4>
+
+              <div id="paper-attachment-uploads">
+                <div id="ember2011" class="ember-view upload-preview _uploading">
+
+                  <div class="upload-preview-image-wrapper">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIcAAABaCAYAAACSR0X7AAAgAElEQVR4Xs3dBaw8WbHH8Rnc3d3d3Vls0cVdF7cgwQMsgSAJEoIHJzgEd4fF3d3d3Z37+lPv/510NrDvPRJetpPJnek+fU7Jr+pU1Tndd3uZy1xm7xjHOMbm2Mc+9uaoRz3qZm9vb/O3v/1tPn/84x83RzjCETZHOtKRNkc84hE3hzvc4TaOf/zjH9POuSMf+cjT5s9//vPm97///ebXv/71nDv84Q+/+dGPfrT55je/ufnNb34zbc961rNuznzmM2+Od7zjTd/60LexfvnLX87Hd/cf5ShH2RzzmMec/j75yU/OGOc85zmHTvd+7nOfm/6PdrSj7eg9xznOsTnf+c439J3whCfcfP/735/+v/CFL2z+9Kc/TZ8XuMAFdn0Y/+c///nmd7/73eb4xz/+0PXb3/5287WvfW36Jpe///3vc/2kJz3p8P6Tn/xkc/SjH31z4hOfeGjS5x/+8IfNL37xi812u93c85733JznPOcZGrXDD1mgyeGe/+lA17866ueQ1w/tnkMbD38Of9P7X//61/m9BY5jHetYwwgm/vKXv0wjB8adczQ4ATi08wEYCvCdIgmKUAkbIAibQAkPYyc60Ynmun4DgL4Bwz2Ur51+EImW7373u5vvfe97cw8lAZnv2hznOMeZvr/yla8MOAHqFKc4xeaUpzzlKAJAAi1AAefFLnaxoRvo8GPcz3/+82McZzvb2ebej3/849PvSU5ykmlDWADhvp/97GcjA3wDnfsB6Ic//OHmNre5zeaAAw6YaxnTWnF401+ff6a4www4rnGNa+yxPgT96le/2lkSJgiaggkZMxTCqn1nGQDhGmC5nxKAQTuWS0nHPe5xR4AE/Y1vfGMAxJNoTxmU6379+I4W/RvffYTsHEE799Of/nQA4zxlGUNf7jH2D37wg1Huhz70oR3QtUETWigSLTxdALjkJS854AQ2IEAXUBhXn0BqDDQYE4DzlHkV8vjsZz+70dfd7na34Un7gOX72oN07TANjmtd61p7uUaCJXwMUwAhNaVgAkOUuP64npUQIAH7S4AnP/nJR5h5FsrmBSiC0PTnYxwunRIIOa+FBsrK2iiWwvqNDgBGr3MUqf1Vr3rVzQc/+MGZTrQBDiBH0zvf+c7Nj3/84zGE05/+9HMfUAMmQPNK6P3Wt741dGYggBUtARsATEtNWbyXfg466KDNaU972jlvXB/ACMR543/l7g8znuOa17zmHuJZs3mWoHPnzjelILhP3oJwtIlpQp25alG8awTqY9oCQMqmFAehU4xxCVGfphvtms7Q4bq/PhQGPKc61ak2pzvd6UaJzvNGFEzpxrjgBS843oP7d3/KMAZvYTwf94oPHDwi4xBv6EN8gweAQw9PgRdgxyOviW/9O/Dl417eY7/99tsBEi0MwDU8o/vQjsMMOHgO1svVEibi/S4ooQzfKTywEDJh5uoJyn1r69CWlfMIBMrq9dGUABzaE66Y5Ktf/eq0oXhxSRZtjBOc4ARz7xe/+MVpS9CUm/c59alPPbEIr/fpT396ACAwdR9PBvBo0S9vRuHaAyNFAQTvou13vvOdaccDABve0OqDduMCij7dy/sAp8CbDPXByM5ylrNsznjGM851QPM9gAAG3v+VBznMgGP//fdfaNnbxQIYxgTlsBDKY5UhnkK095vg8hQpiuCcL2DjNQCESwcSoNE/xQBYWREXXozhHoAEBH+5e/dSkH6cAyYBJmvVV9kUQFDWpz71qd2YLJ6nMaXpEziAheKA3zWg/Pa3vz2AA3406seYZNIU09QCPL4bvwyGcaHNOXLjMQBXFiUIFgwDuzHX8RtZJddDepQ1UIrF/q9xyqH1WfbjL13kpUevi/vbQywAUCqiCS4v4QaMEmgAQLC2gECQa7dd3FFK6noEUCKLpay8D+GXDjtn6mB5XLkxeQO0UB6AmMvRZ3z0UNqXvvSlUeTJTnayzbnOda4BmVjAhxIpGo2ULxvxO2C5n0DQhBb96++iF73oeCr86LfrxiSPvKWxeBFegwwDlkzIcZrTnGZAaPq63OUuN33lhclF+8oCZYnFYu7P+Fwjh383lV2Dr/BgDZrAEUD83V72spfdwxR3GLEEWaCoA9e0yWrcmIeg2ITvnlzvejoqMtcvKyzzoYziFspn9RT49a9/fc77GJOSKUQ/BH2GM5xhvksdAcgUYkpCC2U7f6YznWkX07hXX/rOC+FLH+4H2qZR4OS5gERAm3HoG+08lw9FZWVkY1wAdQ6w0ex+YBDkMgo1Fl4K/7yKccguWpqaDzlFo5McyK+6xKF5g3/mWf4tcFz60pfeo3wW0FwYCDBZ8FSBxDWfwFGtQruKY01HrMnB0lkIJqGWALXNEpo6CBBgcqXau5fVas99d11/ah+mCsLnvilQnFD6TZjoRiNFuB8AeQ33XfnKVx6lAQ0AaSModQAhj8BD6A9PFe5K58kgWblGhtq7rq9Xv/rV811fwOYcT6YNjwIsrhWck4P2hzyaTg4tFjm0a4ectv7XnuMiF7nI3nq+IcxuphyCTRilluXumKGA0r3qAYRJcObeYpWC18AWQAjX97yO+ETQqM+mHgoEEsp1jjJZprF5HIUufVB8QV9grkLZ1Gje51k+9rGPDTBYMnopicd685vfPH2afoxF4YLVajAEzUvwOON6Fy+AV+3ihZfS76te9aoBG8+GL0ao77JD3o0XBBR0FfRmZOtCWQW1f+YVnPuPgOPCF77wHmYQwi36lGk0F1Ko76wjl4eggFTqSUg+2gNUoGMplFe5nRCbxozroIiqroRUfYTLBrLAZQpggdqih2Ap1QEYARUf4hVjUTzAoQkNFcI+8pGP7Gitf6DDK6ABhQMo0YlPY5hWyMz4PBVgoNN9+AAESgfiV7ziFeM19Jdc3EtO+nGOh73QhS409RnTTTFcRTNyrhD5/zqtXPziF98zLxIaC2xNQToXIbnn3Oq6LJzVO5dymzIwhLGCx/VUktURvj4qpJUBFcgGuLKRAsPA1tS1DnLxQ8mN25qRaUKWQ3mXutSlxrqLaSgXDYD35S9/eYpoQARYFfG0IYPkUqpeZThPF4jca2rhqYCjSjCgGYcXMYb0mwHIatBV1Rh92gUMMvtXHuQ/4jkEpIRZEYi1sU7gwERWXySdpRNQ00xurd8FaggGrCqqFFk8QOCBrrm7aYxwc9dlUe5joaxNf86jOQCgocopRWjHCtGkBmEq0K9+WDuPQ7mtx1Ti9/fsZz/7lMLRBVjGAb6mTb8pE3++81atBWmXxxVTqKG85S1vGXqSB4Ubm2cq5tGupQI06lOtRArMC1V8W8d2AWIdBuRtSi7SzTogXU9b1bXIPln7jvdZeMvqirirbhYwEliCaBBKqS6BoALUaiBZWdZU+rsuwVcrWafFxqREAC2AHUIXoFZeb4qjOALmEVi0OGCdfVgfWbfVH6GjeyeApd9WY/HPOKTDAMVAjIkXIGPlaNEHmRmXp9UOSPyu8Oa38fH2/ve/f6anjME1/IlrjK3wxnBah2qtyzmgkAYvRjx9t+JdPJLHrbi4TknJsVguo65EsZ4V3IP2AmqezlLAgEMnGrf41BJ+BbGiXcrw0RbhOiwdI0CfDgOxpuKJIu7m09COsApH6CiPJxTu1TnFJZaKHgGefgtGKYYCyiy0cw1YCqTzLlm43yy2FFQ8woVX0MKTNFTASLjkQqgUWW2leEHWwwsBDp4p2NgJ2z1iFlOVfqprGI9XADb8t/1A4Fy6jG80mn7Of/7z76rXeC5RMG4r6tJ04+apA1Iepnix0kLewjgyOAujpt0Pf/jDk81tlyBouXdvGCsCN1il5eZbHUMuoRIQdGGkNLUFt7VnKX6IGISX6eivfRvG11cukxUQUGliK6DGMm5TAQHl5QKhuEkwClzG08e6lM8ijM2qgQE9+jXfAw8rBhbXyAPt6MoTcvGULI0uI3NOOo2flgncX1ot/mFM7tHGdEGRZKmuYlp/+9vfPsCqQMYIW8NCK9njxwfgqkU1VWYIgAZMPvpzvRV038kaX2gjq0984hMDCuBFCzoZx3nPe97N9gpXuMJetQsDJvCKWwSpM+BhyYSOcES2CloBiZALMAFjXY5FVMBwb/N5nsjvGNYHYfhN0RWAmlr8bpGvVNk5fVEcZbieW60wRQkyCAAjAIBu24A2pig8UDBeHdHJsptes04C1pdpCDjQon2bpPBPAYBCoaYs6yw8jSCUR0GHVNd6EBqqk1T7KTaKZ/SVMpe2xwe+gRj9ANVqsL/VatqWwQh4RzoE2vbGACx+AHirzlEaSCE6DrUFV27EdIMkhCqrZSwAlXBSWmDxuzyewgk6tPvOAxQ88SLN65XojV225DvBa+PAsGut/BJSsYe2TY/6JQj34hXdFMRLaq8/wahFsiwSbWTid6Bu9ZdXkQ4vGd/0oX9tuGlKNi5jKhDluk0n5Km8ro0UVo2jzULFLmTUxiZ68JsMATxjbA2KtdMZHtBQbacwoTijmM342gUm16XbaNO/j/62y7w3q7IsRXTf9jeEGLxYoZI3hnRe2kopBZkEWbGJQFoQa14l5KxRfwBRvMEiqkOwboy2iahSesyZcwOI/iijgBktrNzU4C/gqJ62u0tWgE5AYM2EwPpZtXPcqU8V0QphBFYaiQ4eAV9iINcq2ztHBu5DJ3m2hRB/+ARQ6zbaXulKV5rxjK9eg1bzvbFa09FPRT06KahGR+OSR3WWMhA0ttLeulnxDZqAl5wExoABA+2ZmThzyav3EIkJDfxtnip9zTO0DpB3KFvRKWagGxG5cyCi5OZrSq7W0Z5VbTDovlZAy+sL6vI6re+gA00FvEXZXClA5jkAoozCecILYNoIONFnBZdQKlKRQ2kwkDRPs2QyMT5azNWV+PVjztYvPsiC0MnKd1MWxVOiGop78Sw2WAqRoyQZEvoc2uILjQxJ39VV8ug8mO2NLfi5rzQYEHkndPnubzUj/eAP+NDKiwIg4NHLbkOVOgciBUgasyZKLL3MVRFCAQ4BNdXoqL0Zzc8GQFCVQ31QUpE/b4OJwFYRTL+AgAZteZCmnNJNfTX9FGxSHgWg29iEaQyKyh234YYnqcKJbuVylsp6CYhFFb8AW96OItoNVjzCAzgotQ1B8YYGYCJHwDSWoI+XwhtP0ebom9zkJjPHyxKcK4A0nljGOLwAPtHTcgKaPvOZzwy/9EF+3U+2bYfUzr2mLzFM+krWzlXr0o6MJluRylIk4bd83j5Oym5nmHPtpka8azoqDa4dospgmmtbwHOtDKZiTZ4lt5nnKV1uCZxAEZ23QrM2LWYFwGgDAMJBc+68vZ+mAgrW98EHHzxWldVU1QVeSpi5d1Xix3fxEeDho1Q7OVZbIRMeQzaj7dve9rbdMkG7xniMW9/61rtKLUADWxVi3gcgPvrRj45XUXUlX59K72Rmz2w1pQqXbUyieADgAMgAzXjQL4Oo/lKNaleuX7a07RWIlkpq3JxeFgH9joJJ39vNZI5to0vL9wZonYXVIs5hDH1hjsKrh5RWruMZzAJW8U2pNjdqPJaNYX0aS3/RXfqsD0ItzmCNprH2X7z73e/eVS+7H1/NvxXA/Ca8jKK/jApI0QNgAOV+YyRPCpWdmBrQo21BpJVh2wpZMQs3FfAwZFThzbZHsRJvk/woudgLb6997WtnXN99HICHPuPrzxj4cL76CHnhkV4zAk4CKCfmgO4KPC096wgDCKxETHiVkNdL8Ov1EAIsmAMa3zEBHMaJgNo1T2K27Md4BVf+AkyeggDQZUMO4KyD00r1+nGNAIxPWMDnOz6LgfBCqASErvZr6Kf6h7+tA5WOk40PQ8gr4KPAOSXhWXUUIPXNKygyUQTwqHwuu/9n/sejdFb84zrQl30pwwMG75CBMWgKFLPgzRqOzCtvJePSBhDaeVacByho8tsREMmJXv3W73ZB7oCjIA9hmNCh+dHRVIHpgrZSvYTEalxrWyHLatENqAhOuuQoKGzxjBdBaDUNgqk8HPDaR1paaQ52rfWRtuZVkq8EH+3oahpwj/YsmPKaTluPcC9BkQFBEVhZWYW70n2pb8WuMqwyB7wCgdjp3Oc+9yheRqJvCl/2707qjB7XpMWKUmTFwpuql3LDABqtAlmKbdOTBAJvpiIxC9qXrZ9jjGoZlR8EuPosk6m4WTzUw2fqMOKfKchd//rX3ysXh17AAIry9DKWIl3CAQQ3t9Tvt482DoxQfNlHc2DFm4JcbRFcvQLhVQjX5W+MmDddNy6GBGkVrIpfeJR2olcfcS8FARMrYqVlVuoOFtjiRT8tPuk78PpbtZKw4xeNPEebno0BxNrgi7KBAjh4ONVZ04vxrnKVqww95EuhxhCTKEyVzqraAmHBu+V/tBufAhkbWQC5v6atMk4eqrJ6KTGjq+JrXO0FngWhAtZrX/va47Vmm8J1rnOd2c9R/SK3X+BX5M86dJx7991n7aIw6ajekWXHfHs4EMYqcv+YpfhqHZRUwFbAiUGuzvhoMQcTmnPa5Ipz6ehuN3ilbF4H+Ak879CTcu3PaKsf5RqrNJFCm1Z5WnyzzILW4gznKQ0weMM8KWWaGqSe+pYducc050MmT3nKU2YqJCe08xhlj+94xzt21VbgYdDSXKAlS+BrA5R7ybI4Ca89BcCjlG3SFUAL0PFqcc9U1TLH9rrXve4eIikSgpqXylQqYK1X/apn6JBQWb5Pi0EUTagJBliqleSJCu54E/2wuDKfSt8YX7toDFNstYN1OwDBmHHFIwSXRzE+mo1JOVVT8QxkTZd4YIWE47vrxq8w5Bp+0UBOPAJ+KJHQKYWw88AUxoIriPnNKlkrgAM80LTO88IXvnC8HEUCIM/SszJPf/rTJ22V2uIHKH2qMqMRjw7yx6OxAKQKMT716T5tWtjT1nlTHP7KcraLG5kKKUvDNMJ0RkBt46+u3wIURVepcy6Cqg+0LkMZ+mixjFIpz3iEm6cp+HNfC3It2Tunfes4vjc9AZ979VMxh/WI9rnttiLkDYGr524pPqszJhdrLAKsPB1w9UPQFF2sUYCJBiumClktaAEnL4FWYOHd8CvOYAToE2NQiGv+8mCexjOmc4JVPCWPl7zkJQNGgOI1xAaVx7UDjlJQNPEG5GJqAtx1YbPsFL/kYUwgbc9I3n97wxvecDxHaWO1iOoGpWwt3LAKA4Vq966DzyL75mVKYFHQyFqARXuIrnyNGP26hxKqp7T+AmQA1vxM6IRGCOgtTSvmAQZW0OITXiiJEPDZ4xHuNwY3zeqU29vL0DTVnB+QCkwr11MCBVziEpcYayUn3glA8Ev4rlvMMpWgQ/DHC8goKFscBCxqGXghr2W6HzrbAikY1YZ8uH/prWnNsV5Vb9FQeZ5MeyRVAEvmbUoyTntPGA1ZtWqrz9Hj8lT4LLwRdoWoytGsI+AQTlNMZdyCtoSuHwKKAIM1FUApF05glNUKsH7LgPytBF6hRl8ERHEEz4odQEew+tef65RNCRbCPvCBD4ygKZsy9MEjUAQL1h4/bWgWOBb7EKwSN9oIlbLw5UMhLNH4hF1hzd6MvJj7fapnUIL9oe7j2QTCb3rTm4ZWK7IsFlhUa91Dbl7lgH4boXkagCMfoAgA+HEvuaqPGMfHlEre5MGDAY/AGRjRW0bnPK9jutP3OlidbPHAAw8cz0HBpXsVlKpsNk1Uom0PRfN/ZezAZdDK70X5+uAWEVBsog0gRlS1BsqnNFaiDaVQnPtYHkVnwVVUzdH6Mh1SQO0JFV9Al/IJjGdQYzD9UFaZEuHpU1ZRzQA9+iB4noDS0NaeF3IBIkLGu3QTr6216HPZGjGegEJNEaYoBTBehYyMJ65AO69x9atffaaa973vfZOZySSWavYYhoymqZgu8GM8gXBLEORhLMbY1ASc2rTVsvPtWaWjKrPG2V7vetfbo+TSO1bSCh5GHW4iiKyHtbZQ43o7jypi6c896xQW0a4TMEWVvmrTXJ2XAraeVAso7eIiGEqjHFmI+wmqLXxZSyVuQnOUrhOYcfBDWM4TPmABT/3wMDIOvPWOjnZ5aVPqWKzW2pTf+DEu7wPM4ocrXvGKQzNlPeEJTxhjXJ4ZGnmQp5RatmKKWx5un5jijW984+Zd73rXTJF3utOdBng8BPChtzIAGl1j/YUD5F0wTV7iE7EMntFeHQhQyjir6OprppUFofNmn5S5LkO3L9Mgrai24ysArIPJ9c6rimQUU/Rbub2UmHfAWLuSjKffav7ubSNvTAMDYLqPFffcSVMZoQOha+gR3QOAGIDCKKoiD4sz5RTQUZJpiBKtdzzykY+ctgTIonu4yti+l76WeaAlUPIaPAS6TXPihFJ8VVn9AQLgCWZlKq95zWsmdjF14FHdwzQGWDyHqQqATYk8j6mCwtePfraMX0EO/60vtTjIY5RG82Zt9aTLVsThYOsp+xZy1juHSm8prJt0avBSpfVmkjKNlrABzn219925trrpHxAglNCKJ1qOzgIFsK3doMXY632rFNL0F4BZa7u1Ss2awsq4qlPoz9TiPIukDNasGGTctjBoX18AJd4p4DUW8PXgNICa+l70oheNGzfXUy5Ld/5Zz3rWKME0ARh4vOMd7zhA4iXucIc7TJzzvOc9b8Yx/VCWdmISfVBqL6VBOzmiUR/tWckwyKtHTdxftgf0+m9aKf6jm1kqAA5KWtcqWKwOELSuXbSCStC5b0SV/mmfkgkYUFq4A0DtOlds4DoFCBLRYQwuFvBYcOdaeu/ZGuO4LvgilDxGaymEi/nA1jyLXgAABMrkvnkqli4boAAK5WHEAyy0nWZoJ/BKzuhm/ZRkPF6n1zdY0BN02ukFHAXaT3rSk2YcD2oLYinh7ne/+26vK0Xe6173GgU/8YlP3Cwx4QALraYUH/IxPchEHLxb0zb5tY5kzN5OoB0ZVttgkPjDD9kYt1S+pYupczTnAIgLTQMtQVMsQFAYUJRHc2/NdRPALPdSBmG3CbbiV1lFewkQSpgst4ofz+BwnvIqwyM899i+Tf1GN6AAG0VW+3AvRVEcPorIC5CBQNEMYMUx2rf7nNCknazz4Q9/+HiFFuCAr+IantDO+r0LDKiMjzZxDA8hflAHQaMY5mUve9mA2lRBVs985jM3r3zlKwdAgmfTxAMf+MA5B7DA0euzHvOYxwyPwOJeVi/bQRPdyHjIvZQVULTp+RiyJ0s0WsPBs3HpS3/rfR6jT3UOHTaHtr8QEjHhhqydIh06xXyBXEoqQGp6qvjUtISosoK8k7a8U2mf39UxAE9c4H6WRhkslCAKXn1Xa2i1mMdCD4vRBuBaHje+9vrFczu7CLHpkKAp2TI6L0VRQNO0qT+gMrWUvZEVJXkXGKDgRXzw0pe+dHOjG91o4ggG9573vGe8CaCLQfDmnPoGWfIA4g2Ae8ADHjAZDs+jT8by5Cc/ebcF0vQjliE7oGIcaGwVHY9VesmiVV7eBAAd5NLL79qisK51bG92s5vNfg4g4OJL83ReIEOhhOZ3BScCrbzsXBlPCqk+XzyAmCqk+g4U/jpPcW3f95eCCKt2GGI1hJTbpFx9YVA78Qdhsg7L262bAL5zvE4BG8/Rax98L4qnJMpQEmflPhWLgJDi7ne/+008QCZoqXJKYfe///2Hjve+971Tn+CBWC95OEeRvAZw4hM/shKpMH57LOIFL3jBTDsAoh5imnr84x8/8kcD+si8tw+5z3hA2EPZYpPA3tTfbrm2OrQbbz1LtDVhe+c733mvrXUY7Yn1GhB6C2Y6bO5u3YPyK2m3hgJgpoZ2arWzzD0FusCStyIkACyVavOr8ZxHA2EqCHG12lGy+51Hg7bcIxBQhnmZy+Q+TRvuQQclNR1oi9/SUQJKuL6LDWQW+pbp8DrOEz6gcNcslVJYJppucIMbbBaDG6Vp79MmX0bA87iP56Eo9Q2ZVRkUuQAtuv1Vi2G4MpnnPOc5A2Lj440BkY8YStrcVKoNHtsFvw7yM9oeGisu6QEy/LVksb3HPe4xMQfCWziiQIdGFNOiXFlC0wuBu+63+7WTVhGceMT50mRA8SmDAahWPnPPBIyxvFBFtUBDCGjDeELRP0sFWoCoxMyyHvawh802wLe+9a0DYB6gVA2NvIRzlNUzwtVsCmwphRx4F4pupxsQtWVAP6YafeH7sY997LQTV/FggkuyQ3tZGyCRmTgELaYafRgHyJ039ZiSyMn0I4YBFNmVadbxute9boChr+RAXryNMXjk9nT43W46cssL8Vo9rFZBcqb/xUVOtkJBkMaS2uWFkGKAYgQDBJauNd/nuiC4aacdX4TdUnF1jgClH4JuXMpoZ3RTWRmDqL1tf8boOZuW2tHJOgkI02KHxz3ucaNYRSe0qYgCg/sJlPfhGVgVi7rFLW4xYOL9BIGBg6B9p2i8oKOlf/M/QKpt3OpWt5r00wGsQA2kppBlFXx4bSHsDW94w3gdfBiPJaNdzGLjMe9AP8AhhuE1VE95FTwz6KZQHqJ9K6Yz/FG6dgDaFgkAJVeylO2RgXbk76AzvG0f/OAHz6smdURgkB/CNW4hzU0AZAA3Y65Sa9W4lrJTdHs/K5k7315F9xZjAElPuBEQBpsesvTm16q2GKTUXlOgXwwCBD6scKJxv+WVjyyLAHmXW97ylkO3qQBgjdemHv3JLOpDjKAQxYr0z6odlLeOY/B/3/vedyxR+ikIlY6aLhgcUOiLjBWujIdWGQnQC2abFoHUWAAOzFJqWcgznvGMAY7dY+hsa6F9Hq67vynTNfIkf7SZ4uit9Spj0ok4xfTEc+q7RUbXRu8PechD9girgFBHKR0TVURz7eud58UaxQsFOzxOu5DKAii78ntTFgIoByAJjjLLxYGgtw86jwHBHCvsPaTtMelhav234trrIwGwRxn1h47K8+b9nhVBp5qHIJAg0YWWHjCuSNb2BSaOtJgAAB+YSURBVO2rwcgwlul5St3Pfe5zN7e97W0nMCVTNImVbOEjz5RAZhRLgXjjPVoZRq8pxhTbVgF0eneH3+0LNR2RR/s4SkfJstVn33lN0yA5Gs89bdsEpEoP6Q2vU+tYmBhwlOdDut9V0XRKUayC5QNLGU0uqAWzYhSeqHq/Nr67pp8C3do2RVA0gbeY1e5tCm2PCUXJQNDRW3daJ0A/plgM2rl4K60Cvuc///kjGPN3SwHcKeVw14JcHqhKqdglZemX6ydAgqaQFv0CLU8hoDQFCSSXIH++k5P7eS2eA++8BDqNiRf0+i2zoOTir95GhH9HezjI2vjaFwO5L28DdGhxtBOPR6FX49AnTwYcZNjaSgud/qaDCUjLSKpatkq7jheqolVXIKiOag6VXftrusAsZVF8i1rtR8WIYIsiqs6xFgQSHCEYty2F+gUiqSNQacf1uqcsi/BYhrm9zS/tI2GN0k18UbIVT+AxrxMURfW+Ma+FfPaznz2pqGyH0o3FE4kHWFnb/aTPUk/pJprvc5/7TM1DGx7IUnzldQoCmvaSrPe9qH6SV1siAQL/vV2IR0EvBbcpmtwovif0BMc8abvs6dZ9EgWy0b51IikxWbT5qmxvVyldavp7reb1bgsWQbCU0npGu4faIQaVOmnBq0CwtJPro8zAgaHWULQt7TV24zuvOuk+TGIYcMQH0I5hwgKM9nZSGCZNNRgVvesbuICml7tQsLZt0xNA2jMBGJe//OXHu7E+WQL+jWcqqBBlc6+5nUcCstZq0Pryl798BA/0rM7aiFVUwm7ZvUpyT6EZiyzJldwButVlAOb1HM4Z26MHdIG3Mjay4Inw0mIa2l2nhxYMTUmmnGo8dKOfKtoBpNlBH6bM7RKZL9f++50NBq9BaU+Rf/M1ZfccCQLarc07YNY1QunJrCqi2gnoAKHqXWChGPdRZIUv9JThsDTWQbECutIu04w2QGpthqLN76y1B4xzyb3SkYJZsUUv1qsAJQ6gjII34wBJbl6aKVA1NQhuC8Ar91MGRfQeDRt7bnzjG49y0QPoKa0VaICIb7zm9gXQMhI82bCkzgI47WnhrdZektLFPPaAMBC0VUnWjo4yJjrI67SqXs0oHtr+OQunt7/97ecltYjNzbeJh3WsK6OVojEN8aV07RzTD4Gaz1g5EBQht4uq+kGFtR4EohAegLvUxsH9UXK71IopKIErrBzvHgDSl9iBUASH6xVieT++WHJbDvVrigIUrtw1iuoBbN6DcMnG/eIUSuSmm+Pdl/cznvaMgwdkUMbi+drOmIvnQQDAX/f5SyGluqY0Fm8Kc54cAcOUUZVYn35rJ5BWfAPSFiHR0vc2RdEZ2VeQLDbhRVxzv8+ssy3z44CD1ZdFUDaltCrbUjVGCQ9RXBOFEjAltSCF4dBoXtcXoCAUQKqRYLgFH1ZljAImysgjAZjxWt5vp1P9tgkIbZTBetBIgOsNQ8bWFytGC3BTCB58d94aB0ssaORhKiSVhgKmT+AnaPf26gpxB9rVSgCn7QNNh+iqvsPCC3B5FAGz0roUV9netNijDK22BkT8kzUv5YV06LzpTW86GQ1Z6TevrW3VagDwmxxbRyl0qKbUCv12mXfnJbVlES2qtZjVIwfVOHRYMKYz7Xteoh1SiGtPA6W1mbgFH8CgEAJztLbS3hFAZQ2lnNoFHlbmevUSFuXTnlDKbhUZENv/wTUXVxgTDRXaxBYUri5RAEgeMoKKXUBDqPrg9nkScuAVqpnwXmIb4FOPABgW6a970VihSVu0tXuO8q3A4tPaDcWTp+JZr3IALMrVJxmQs0wJkIwhdirWIN/qM+tqdBVQhuEwXkXMtiL0d9ZWKocTREvp/u4Ck4WYCl+IK011riX8ysIIphyCa953jtKKzCkA84Ei4BFU1UOpnr5buAMA/WDauIAEQNEOoO4tBdRn2VJ7OArk0EG4AGFMhS5prPPtNKOYpz71qdMHELXSbMppjwshkkWPPJZSUoBsp+XzAu5Wk2VEea0WKslvWSGfaeTRj370LCDqR0bVtocylJYmLBCKUWwrsGVAwK3v/lFAlWceyHRLVuRCTrPTa99UkocpI620vl1Srj2CoogEqjHCWt+vSpobQiyrbrW21HRKrvuA1CsOCB+R+iK89p42dRU1BzT3AxJaKByI9FUdpCfcCNW4agiNZTrqHwxSdFseWQcaeI9ekY1WrtybdfQlGGa9lCa2EHwCXy97M0btKBso2lOCRmN7ENq4aADiaMajeKqV4d4KpB+0td4hbRYrWdaXsVAWD96jjQXC+EKP3Wqm9wc96EETuJY96o/8xFCmpaqhjMF4VbCLMXmQAlJ6amfgdkm5JuYgKAwiGBMtlbeKiqCCyVYxDUqppbOT/uwDB4Hot11F7neUNZQJOKffvIjviGtvQhlNQBQPYJLnYN2ATeloQGtv0dMv2iibsExvbWLi0nkDFVFA0G799JffxhAUtnMdGACIgfAIeUp8AIIsiNehUNfxQIH4SS7uJeNobWqgfHInT7zwmq7h1TnTXRuj/DaF8BKCXms51lrEG/p1X/8qDe39p8uWI0yPrdICGzDgt0Aa/Wgfmm93u9vNtFKQhOlA4Gbf8yiuVSo3QEFiyMe88628ure1kKqj7cmkXIz0roxWYLVrw2/RPAW06biHbwDPZ1ewWWijdNbcS9n0z0WWyvWuLYAwPThUQ6sDEErbAPCkFE5pvaeU1VWv0CeBt2WhHWhrPlpQA55SSsGrPvQFCL2iCu0MVJoOXEDkXPUlMnUOfehvk4/Unudolx65kpdxKgH460BP/aOfLsm6zAVNeKrqvL3rXe86j0O22OYmRPi0strfYg3tS0GzUMQSbkJosa2l+pRoYMIpG6megqGW9/XTpqIyITUMrpkQKLn2BZVlOly2g5VnzYQAXLyI+yrQxSeQE1JBGu9DHmogZUAVmQgvwLflgGEZn+cwfqV8c702xWlkw0MBEP54A0Gv+3gL300taj28mjHVOvTJogNesZuCnJijKS6DY8w9QFZMmCfTD8AV87m3BTf05VlmfUUqW3m7VdjK1UXqVTkrXzvvuw7aK+A3ZhDYS+kBKE8EPKw+sDR9pVSKKTDFCDD0lpyqsRRYMa31G8oGXr9ZRhVc9LQPFVD1pVCGx1Y+fQcQY7FW8UjTBqGKOwixBauqv6XeZQ4F0vjHRxkcQYsdmlYAtL24ZNhOcmORGXrRCRwCZGkqbyKb8jgkWkzLDKIXybUw2noPb6TfXguBprLJUlVxH9oC2zoOwZNreJ2AtMWe9lPkSdpCVoDqerEEi3cdww5CIWiW3Spoc2+pUlPO2vUaC4DKKNyPQFXJ3gdaDWVdyW13O/eJrjxWWw4sdaPJ2CybZfICaFALAFTKpxiACrxtEfC/UniogsYKg2RRWb7VTMI1rjHc08NcwNrji2RUTaYiGl4rnbcLj8x6FYLHFfBefUjflA8g+O25G7IDAH8BiI7013s52sSlL+fwSuZ5+x7rrIZSrWq7PLyzV+m8ymQ3adR8VIpJ0AVVBN3mG0h1f3s43OeemPOXlbPorL99DfowFuHqX7+lUwGCcIFGnwBFGHkhQs8DccPGYX0EkUtf11VYFiG7h0C5YGAEGDQ4rJcYG41lWOQCSMBRLNCzK0BKLhUT8WFsQSX6KjoVZzHItitY1AM0vAEaYPNm1nVMA/gBYrJtacB54JKN+O66cdADwNGNR+AQV6GhxbZSWvcCx/opRPzTx/bmN7/5XtZTkAJVFWsoM1eL2SqimIfylrIx7bqBqgkAQf+rluW1GolJ/RN6764iAHMroGJofbTIBjTGRRPB6KedYL4DjTgDLZTdYwKU3FwKMM3J2jTfijMI3v0UBCR4UTMoENQH/vNaeY7ikOgqOBTbCBirGBeroC+PYYqTAreuRKb9k8Jet423dWWTB0FHnp6hpI+eKdKe58qT+6s9/qOjyrMxM6TkPuDwrGxusIyi323m0ZBgoKzYooKSzii2oA96q7gSAuZbVKoCal7tGVHAA8r2fLR4h+F2VqPLdcIu7Wq9wViYbH0HANUGCIZn0bexuOKet6F8PJpm/M3Fug4Qls4Vo1gwnlmedmU1QJXX6wFtdBmvSq30lIdR82iq0n9LEWSmsqpkD6xo6f1g/Z/cPC/lua+3CaLFuXabk1NrN2WQLVMwNjIFHtfw11JCWeH6RTBozTFslyLQLNmXTVB2tYligaqQBaEGKYXTvgpemUgCd42SCYz1EyBhcZkE0sYi/Vb7d4/flI3pnmcxbbnHQfEESelVOtFTmmicqoFA4ajW0ctqK4q1INX/sGXpvEWbiii/52UpvJfIu0+twYIX+eEdzf77gWsAxaB4pFJ6CuYtKYdMgFB/LVGQizYU2D6XdJPXLKZxD9kak8fTJxn0lCDPRHYZvL88XaV8+gAw/aCJ56hYyClM1XQp886jCWUWOgEUn4pT6wCyGCQLRlABTnUQ1wzg0If7AxFr0o4CCKipCcAIlbIJoqooJvNMLAlwWCDGAzFF8yoU3Oos4FAs4YlDKJ2r7XXQ+qJ0i12UhMayKVlDczrrRA8vQoD4sVWAF5FKiinQ5F7XLfV7poVSLfNTYBkFYLZ5CXhMXXjAq/aAnEGSA2W6ZkogY7/dX7xE0XgG2kr/5Fhlu3eWoJk+gYCc8nB0jjeAqiSQkxhweFY2xBRMlqIiCiIJv3Qs4qt4altAWJm9eby5zT2O1iIIhutnzYGsEngRd/sfjA1ovU8LWFgPd6wP5/VD2WhhERgr2zEmwAAAwakqtieFAszrvbqacvRlSgFAimAMLUZShPstqlU8qjZDyASvrc05rBnwAcd4ZOAeim0BDq/41w6YKQiY0UAnDjT6uJfMrblQLmCVgjpPwcbuUQQy0IaMyK+YC40A0JuOyA/IfPBCd8V8UyEtjqjqGNEsNne/jiVyOy396nBd0wgcTVH6ZemEUJncNeMASptmekCJwFo/0Bfhtl5BQUXjAAEobWAhxNZmeoYEMHgNIGgNKNDjmzW6Z/1iGTzrt/pFC4ftLdG3vhSqDjjggN2iZGk5Ol784hdP+Z13spGoh4Zy921sxlf/E7edZBUg8UlpLddXX+GteDefnoMl/6rZrXu1ubpyvTbiC7psrw4ZkkGPvlbIpIPtve997+Xvf6dsbdaBPoprmRzqoKk0bapn+2oTBqkW0GKY/lou14e+WCfmS4kLIgHQ/U1hMVj9grt0vWdIuWnCg36ZTvsuC0RbVMIsr0OwWY2UMa8IkNqgs03JlOF+tLZfoiJfpXX04BPdyvSmjnnb7z555ElMmwcddNBYbS+Mc48poMcw/AWMjKiHtqqpMCj30g1LL85TAAMKXsGHdysV1dY4ZK4fPJFBGV8hgGtVsdHRTr9KBbOIujxfsctWCKzt9G6EqNCKAMptRZaAJt3Zl/b67RqhVj/IlVY59ZdbywsZq7pGO67QoJ/2O1TNA5qepnMNfe3C8t19BOKaB4nQVsGnp+1Zmr4d+GFZRe/ONZWhEx9AlXuvjtK+zQJb/fAgeG2Pp37wZgc6b0PgPJ7NwbyjWEW1FtBcBwrfWbi0NisGXN8dvqdgxqdPwCJ3BkLZaCnFJc+8M17cg3ayKgjHm/ua1uilnecTc9jP0c3rBbM6KRPJ4iO05ePq+q3MUorB/C1WKbXFqGsUzQuV2ra/om1/pXsJB2OCwPL5tiJihHIdhOQ7es3pPr0ro/dnEK42rBG9rSVw8ZTnY6y8Wh4w71LtICHrRwwAhORQERCQ8Ow1Tg996EN3WyU96CRmcbB0i36AUZ0Jbe7Dl3PWWsoinHedrsgnI8UDuvHPozqfl6MD95VQVC5oXSuPqt82aum7ZZRZsm9PRZbTsnuvXjSoAbPilvEJz/fmNsJpXmv/QxkLJsz9WWp7MCtqAUubilvqLuapvN8rntaPJqCLgLlXDEoHCZRw0Vs52UZfFk7wFtTQ2lNjrLcovkXFdVzVoqSxct9kZBwLZYQJEMBO8E3RNuo87WlPm008d7nLXYb3ajeUZlxBo+DVvpSUCHwUVwANlFJrMireQR+9oUlfANyqalNHWafrPWsUADMwBuvcuiqdwU/MUYSvs/ZorN14O4/KhyvOjAksB4supzYIAWpDWASAEANShutZGObWAWnBKmKbMgikghMPoJ9WNtsbInjsUcU255hCuEnMs3AeCwB6a5A+0VYKa2wgRDswAFHeswXH1pNK/bUFWEABfvxQBJrRqE+/rZX0EhmyLH7QL4NwrtpQHtjYZIM+8jAGeim5KQPQGCgwtELc7q+yu6b0YjI6PuTKst9NKW1DoKPtgui9soVSmKYBhLXjHKFuoPTWXHKfld0xFOqLAzBEYX6XDrfE3bIxxltGrm37NmLGPQRe/aKFNudNCxTSRmb99fS6MdUylKRZn9VN9PIyPJm6C54AWMbCS7bCC4hVi8liLRffe1SiVyFUlWzbYAUm2QrZoUXgR6lA0LZCv9HOg7QpBziBmZcUq7T45jxjdjjXJi185DkK7qOvmKfticBET5UhjFkKuw4ftstriWazj4a5o8rVGhI0YhAOfcUJdUZoDZKF5YYLktxT8YyFA5pr+jcWhjFXOXuCoX3jErjDNEFxPQvbzjT9uNbCHzCxIjS7VmnYmL1VGC9AZqc3+rn0qpPcPGG5XhaBnnUxD9Ar7BX4FvdEqzF4Px+bkavBFIwDYKupbV0USFOw/t1vGuQBTJuVyHnE3pPS4yRtdSgGI7u8da/Pdo6HokOyMw4DQQ+guDceKvfPvw5tnl0XukrhClIjoB1jCc5vAlpHwiwT4z16QLhVNsUGFOda83RxSmlvC3fua32nuAM9ZUTAXFvtSokBiuBMY8DhOwsEGsKlMGVvAgSM4g+8EF5b5YzTxprmYXy1RWCd5qLL+OjkOXx6DqdncrLgpoLiNUBoC2LTef96w9QprZfFMB5G5Pne3kacUVSsc39ZCvn0PrEKf4EUb2RTldR0X0hRvWa7uLzdi/EreRdLlKr221+MGUDb9ogGqqypDSPud067cm0KoQSC1a49Fs61O9sYrAWquX5TTKmkPpsCeiBYBsDiCaiVRu0puroJhdut7bDb3HVKc551sUbZgeX7agX6pfQyL3/1T6ltSWiKLb3ELwvVP3DmdcqCygbwm3fjMdApfsEzRaFH6R6wTTl49kC4ANi6ktgJ2N0D+OTbNA0UQOM3HqvtoMvRG4nQZry2DqY/7acIZm2l+kSuOq9Q6TphENQOVfu++51Vce+VwxHme/WHwFAfCGnNoUCYongU41X5zBs4hxGCch9hFPyV3xNE8Q/QeYZEDOPgLXo3RiBv+mtTkLHXFkhobQWIb9ZfLYAS0FTKDuz4avUVDQWY6MqjlvaSDX7K0soWk5vz7QXR1lQH2GSo8lqlF1i0a3o1Zmst6K8GVV2pqTlDAlg8pW/ymal9eefUFMEMfkhwlKoWL7RGUmVNZ+5J4SzB7yp0raW4H7E9JWbwVmURjHjWQvCVb0ttub92jQMKiyLE1nHKEgIhXtYbkNBTQY/yWaI25fhoMZ+7Pzdb1lHQG7CTQ0EbetqARDkVzPDjfPUa/ZXeUnjGVhXZtTxyazbaWCRk7YFae16OxzTVVJltr4Z7C64F7+RUcJoXb5MPY2m5ovpHFdiC7+0SlM20kmVATK4QMW70aT4KMAWrKZcwgIQrb6sfplobKVtxjeIRQGh5jwovretk1WUI63J85WvXAGHt0bQDgjYgly76i+bqEMDhO7CgkVWWMpY2Fl9UJXb/lJUXPnm5dTC3XiisZpAc8wzrtQ9y1H8LaxUiyUF5vBTbu0G0MZ3oT8ymuuqv7Iv8e4eJ6Ql9galpnwGk+GK4VmMBHHBKRtBY3LL7v7Iurqt8pXAVePzNHZfNFBy61jJx+zakYea29jMiojUCimseN442zvkOLIRRLFApukUpzOmnLKbdWUXfwGe+7WmzglOKbcGpLQXqDVlQK7uAgjbCB5xWnPFajaa01Dnj4rM4rD0V/uaN270PoBSMx3VVuhqLc+4B+PZ18JReYUU+dpobR3ylMism8TI85XNP2VuJthm554YZCZCRl36NT66ONvoUU+VZmj3GWVztalebN/tkqeu5seIOglwn1CzZtT5rr1OaxOW1XN57QnmXluoJL4Io0H1NH4SHsV7fTDCU23TRDm99oI1CHRivLpNSa1vVFXharzCOdJGy0dUzLsbWjy2DANHcnHfEN4s1HVUQKy3My/hLlq1HtfsKz3kvNJfxZLGuU66YojSfp/BWw15K4zwDEGt40s2LY1rz8RimayrC+m6TdpVZ8iJLxoNfvJQV0mMr1xN3Lg/izqpsLnCtfIQCRVlM5d3mTL8Dhu8YbPrpPoM5WAIGBIg8Q2MGwIJaxDeNZWHOtXdhKncLQwCFeUKvdkAheQpjsrqsnPKMbdqjcIDT3pK5c+Z37fFBoMY8eHmIuWWDAs+mWmACPHGKNLNXLjTF6du9+vOd93BUzicnsiafgs7WT9CniOdRTXIqXvMCF4cphqFQuL6V6Hujj8zOKyUAUxaj71adGUZBrqmIjsgQT+RU8A+8E9Mtj9FNQBrCNS64yrLzJmvguLl1kaacvE/pq7+srtXN7veX5SG2xS9CrT/n2iCTBeaO0YIJQGvXdeMH3uKCnnsBDPezKH1nucY0JQCNVyd4Q4423LMxCBcIAEjbHuLWvzoE3tpX4Wl3v7NQws+to7MNPC04tp3PpiX9o73gVm1DpgUYVnCBEHDJCxCBTmENEEwtPA0w9S9K+5+zLURmqBUgWyNyHigKJ1qxdm7iFZ6jjAAxgNG7qKCbklhnXiHEu9l9Rbp5E+3aBKRt5W8Cmtx5ETIiCCnrD70A40jZBb2Eo3/C77EIim9FUntusl3dprTubY1kvQ7RMx4JqX/z5VEA87lxuGzg6N+DGp+wW2a39RAfgkBtWSuZqMLilSehtFJfBtLTcBStPsHavbTOW4oL/AGQ59IPYAIBALf5yL290IX3QJNXXaGP8oG1Xe+t0Pb8sMwHr3nVtgkk77KqkpL5v7JlKxRJmFk6RVfTT7H+GhRoUm7Fsuavgpqi4Iow+qp45v5K6KyG0qu2Jqg2vSC6haW1R2kfZnsje2rOFERwBYL4CPimEwceCM24on6CEuT1Vj8PPlFe+zVZuj7azeaFKYSNnv51qLb6atOxcQkafeRqlVYA3H9s9Bs4rNjiWV8MkydRjGu3uw1F+lEEI8vliYEdQJwXN3nhSzEeUNFhUw95GBOPjMR1hzatyDO0FkRLRrbLS1vnDcY+61L0OtiESoeO2ube3B8wCNu5BmmRDkG+8wpVDqtJIM60weL0Czg9cmDMMhzneTTj658AtW/bHoWhV78stW1xvVaBBRsjb9Pc239+BohexM+rAIUgUD/iEXRTWHM0noGDdffKBwAwNaHZrvT+K6RgXHBpDNe9G52n0Yc0lRfw/1YKMoHQtIZmVVCg8SprshIgL882z78Bk+4CEHB4T5n4BN2mMtlL8ZDfPKC/6KDnyvtA06Mg5FfGWplhHodcB5UpubUCyiqwYmVF/4hyrWdZdNjchlGHwbQBjlYgW1jSfwtv+m29pPmvFCuAlPpVEi6HBxQKNWbb/jCvT6uxvbIbqMzRrZ+0o1v/5mq0sC7ehsVSuoMVUSAvY13DdfIyxwOHPsnAX2/YESxSZBuDyAlIpZws1r/oAFKge/3rXz+AXvbxDggAiIe0R1TflE9uPFN7Uw5c3v5D0d7+Q9GmEjzqz334Jvf+CSEQAQB5mW4YElnyIPohz3SKhhYEJ27zIDXB5lIqQhFAeTEiShHbbbSuApZLVwYvYi8jIeTK7Np0rMvIrlPQug7geuklhjCjXQErwaGjbfz6JqwKYZTGzbunfZy9mc99eYJiGsv6vAQLJOiqiWIFtAGM+8mKIp0HTEUn5wCGdfpuD4e2vBNFyHzEGZSKR57Fi1rw4kVvPKM9rmQtfhHTUDh+gMmD1eTpf654jnd50d9m//33n77cV3AOpA46ED+REXACELp6dxnwAJEYpxiRvPXX73kxfpZeMFjWobNWPlkcq4GoVvJKfZx3vRQUYfqgJIozIOG6XmWwRR5tnatmUW2AYho/wBZ9u8dhTH2XvbSoBySExDUDc7RQrv4pljJKu6OB4NpQ4zkVQiqdxwsQ9B+tWaJMAZh4nLYZtsvcdgAZB8ulaNmNTdKPeMQjhibbHn3w7kX66AEW9HkZi6mi7X/G8QK6wO6/J/BOXr4vNuLZ8Nr0zYP2b0R5p7YxVrlmZLyYqb5pvMQCPaW2u/dzEEIbTlNiNf9iDorQrl1DFU0AoHiDoqp55JbXi1fresq67J2iWqvxtxp/1dC2FraSC1B5Gu15AOd8AMDfXC/rJcisSp9tlWM9wFiJGT89lddaDRC0TVEVkmCllQTO4/Cs7iMrcmT9LJdceCL3816PetSjdq+Ionz3eGepachSvCnOW3rcy9uYUhTABKVeyYBm8Y6xAU+GhVZARAN5OMiu1VweqGo2nQJEq8LaN53QXdnk6GGZw+ZxSDdQOmFWom7HEUBU7tamdYTaBQ79rC06kK0LVwGCO63fCI+w5r3qItpBewyt13EqxBmLwvJ0lJYnrCxtR1b/OoOQqj3giaIqWWvfv6wwJuGbIsQcLNYeEO0FfqYVASQ6qoKSIaWJXdBRIM+bebkbBffSFlMTIBlbVVOcoRRO9p6cE2jyNDIb//GBVxCP+E0+MhJV0aaqlh94Sd6qRw6q6LaUX9iwLs6VXOAZL/8FXyXOY6AMoesAAAAASUVORK5CYII="
+                    data-bindattr-2014="2014">
+                  </div>
+
+                  <div class="upload-preview-filename"></div>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: 75%;" data-bindattr-2016="2016"></div>
+                  </div>
+                </div>
+
+              </div>
+              <br>
+
+              <h4>
+                File Processing
+              </h4>
+
+              <div class="attachment-thumbnail">
+                <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" data-ember-action="3058"></span>
+
+                <div class="attachment-thumbnail-image attachment-thumbnail-image-placeholder">
+                  <div class="replace-spinner spinning" style="display: block;">
+                    <div class="spinner" role="progressbar" style="position: absolute; width: 0px; z-index: 2000000000; left: 50%; top: 50%;">
+                      <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-0-7 0.769230769230769s linear infinite;">
+                        <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(0deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                      </div>
+                      <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-1-7 0.769230769230769s linear infinite;">
+                        <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(51deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                      </div>
+                      <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-2-7 0.769230769230769s linear infinite;">
+                        <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(102deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                      </div>
+                      <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-3-7 0.769230769230769s linear infinite;">
+                        <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(154deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                      </div>
+                      <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-4-7 0.769230769230769s linear infinite;">
+                        <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(205deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                      </div>
+                      <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-5-7 0.769230769230769s linear infinite;">
+                        <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(257deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                      </div>
+                      <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-6-7 0.769230769230769s linear infinite;">
+                        <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(308deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="glyphicon glyphicon-file"></span>
+                </div>
+                <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original file" data-bindattr-3060="3060"></a>
+                <div class="attachment-thumbnail-text-content">
+                  <h2 class="attachment-thumbnail-title" data-ember-action="3062">
+                  </h2>
+                  <span class="glyphicon glyphicon-pencil attachment-edit-icon" data-ember-action="3063"></span>
+                  <div class="attachment-thumbnail-caption" data-ember-action="3064">
+                  </div>
+
+                </div>
+                <div class="attachment-thumbnail-destroy-overlay">
+                  <p>This will permanently delete your image. Are you sure?</p>
+                  <button class="button-secondary button--green knockout" data-ember-action="3066">Cancel</button>
+                  <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="3067">Delete Forever</button>
+                </div>
+              </div>
+              <br>
+
+              <h4>
+                File Display
+              </h4>
+
+              <div class="attachment-thumbnail">
+                <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" data-ember-action="1869"></span>
+
+                <div class="attachment-thumbnail-image">
+                  <div class="replace-spinner"></div>
+                  <img class="preview" src="/images/cat-scientists-3.jpg" data-bindattr-1871="1871"
+                  alt="Test hiding" data-bindattr-1872="1872">
+                  <div class="attachment-thumbnail-edit-overlay">
+                    <div class="attachment-thumbnail-edit-overlay-buttons">
+                      <button id="ember1879" class="ember-view button-secondary button--green knockout replace fileinput-button">
+                        <span>Replace Image</span>
+                        <input id="ember1881" class="ember-view ember-text-field" type="file" name="file" accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps">
+                      </button>
+                      <button class="button-secondary button--green knockout view-attachment-detail" data-ember-action="1882"><span class="glyphicon glyphicon-zoom-in"></span>View Detail</button>
+                    </div>
+                  </div>
+                </div>
+                <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="" href="https://tahi-development.s3.amazonaws.com/uploads/paper/13/figure/attachment/7/test_hiding.jpg?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=MY/9bLKXivvl1s8ZJSs/j3alJaA%3D&amp;Expires=1419020160"
+                data-bindattr-1883="1883" data-original-title="Download original file">
+                professor_pussycat.jpg
+              </a>
+
+              <div class="attachment-thumbnail-text-content">
+                <h2 class="attachment-thumbnail-title" data-ember-action="1885">
+                  Professor Pussycat
+                </h2>
+                <span class="glyphicon glyphicon-pencil attachment-edit-icon" data-ember-action="1886"></span>
+                <div class="attachment-thumbnail-caption" data-ember-action="1887">
+                  There is no caption for this file.
+                </div>
+              </div>
+
+              <div class="attachment-thumbnail-destroy-overlay">
+                <p>This will permanently delete your image. Are you sure?</p>
+                <button class="button-secondary button--green knockout" data-ember-action="1889">Cancel</button>
+                <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="1890">Delete Forever</button>
+              </div>
+            </div>
+          </div>
+          <br>
+
+          <h3>
+            Upload: in block
+          </h3>
+
+          <div class="constrain">
+
+            <div class="question-dataset">
+              <div id="ember1579">
+                <div class="additional-data">
+                  <span class="button-secondary button--green knockout fileinput-button">
+                    Add File
+                    <input id="ember1587" class="ember-view ember-text-field" type="file" name="file" accept=".docx,.pdf">
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="question-dataset">
+              <div id="ember1579">
+                <div class="additional-data">
+                  <div id="ember1600">
+                    <div id="paper-file-uploads">
+                      <div id="ember2567" class="ember-view upload-preview _uploading" style="background-color: #fff">
+                        <div class="glyphicon glyphicon-file" data-bindattr-2570="2570"></div>
+                        <div class="upload-preview-filename">
+                          manuscript.docx
+                        </div>
+                        <div class="progress">
+                          <div class="progress-bar" style="width: 33%;" data-bindattr-2572="2572"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="question-dataset">
+              <div id="ember1579">
+                <div class="additional-data">
+                  <div id="ember1600">
+                    <div class="attachment-thumbnail question-attachment">
+                      <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" data-ember-action="1601"></span>
+                      <div class="question-attachment-thumbnail-image">
+                        <div class="replace-spinner spinning" style="display: block;">
+                          <div class="spinner" role="progressbar" style="position: absolute; width: 0px; z-index: 2000000000; left: 50%; top: 50%;">
+                            <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-0-7 0.769230769230769s linear infinite;">
+                              <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(0deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                            </div>
+                            <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-1-7 0.769230769230769s linear infinite;">
+                              <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(51deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                            </div>
+                            <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-2-7 0.769230769230769s linear infinite;">
+                              <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(102deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                            </div>
+                            <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-3-7 0.769230769230769s linear infinite;">
+                              <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(154deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                            </div>
+                            <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-4-7 0.769230769230769s linear infinite;">
+                              <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(205deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                            </div>
+                            <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-5-7 0.769230769230769s linear infinite;">
+                              <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(257deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                            </div>
+                            <div style="position: absolute; top: -3px; opacity: 0.25; -webkit-animation: opacity-68-25-6-7 0.769230769230769s linear infinite;">
+                              <div style="position: absolute; width: 7px; height: 7px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: 0% 50%; -webkit-transform: rotate(308deg) translate(7px, 0px); border-radius: 3px; background: rgb(255, 255, 255);"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <span class="glyphicon glyphicon-file"></span>
+                      </div>
+                      <div class="question-attachment-thumbnail-text-content">
+                        <h2 class="attachment-thumbnail-title">
+                          <a target="_blank" data-toggle="tooltip" data-placement="right" title="Download original" href="https://tahi-development.s3.amazonaws.com/uploads/question/4/question_attachment/1/manuscript%2B_283_29.docx?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=HUjlR%2BJ2aGl0Ooixs4vYsyh39Qg%3D&amp;Expires=1419020825" data-bindattr-1603="1603">manuscript+_283_29.docx</a>
+                        </h2>
+                      </div>
+                      <div class="attachment-thumbnail-destroy-overlay">
+                        <p>This will permanently delete your document. Are you sure?</p>
+                        <button class="button-secondary button--green knockout" data-ember-action="1604">Cancel</button>
+                        <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="1605">Delete Forever</button>
+                      </div>
+
+                      <!-- The example also had the 'Add File' button.
+                      Should that be part of the component?
+                      What about Components with Multiple UI elements anyway? Should that just be 2 Components linked? -->
+                      {{!-- upload-preview upload=upload --}}
+                      <!-- Error State: -->
+                      {{!-- Should the error be showing on the page? --}}
+                      {{!-- upload-preview upload=upload error="Bah" --}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="question-dataset">
+              <div class="additional-data">
+                <div id="ember1600">
+                  <div class="attachment-thumbnail question-attachment">
+                    <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" data-ember-action="1601"></span>
+                    <div class="question-attachment-thumbnail-image">
+                      <div class="replace-spinner"></div>
+                      <span class="glyphicon glyphicon-file"></span>
+                    </div>
+                    <div class="question-attachment-thumbnail-text-content">
+                      <h2 class="attachment-thumbnail-title">
+                        <a target="_blank" data-toggle="tooltip" data-placement="right" title="Download original" href="https://tahi-development.s3.amazonaws.com/uploads/question/4/question_attachment/1/manuscript%2B_283_29.docx?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&amp;Signature=/Urza/PM6kbz06tCArI/sNi7r5c%3D&amp;Expires=1419021243" data-bindattr-1603="1603">manuscript+_283_29.docx</a>
+                      </h2>
+                    </div>
+                    <div class="attachment-thumbnail-destroy-overlay">
+                      <p>This will permanently delete your document. Are you sure?</p>
+                      <button class="button-secondary button--green knockout" data-ember-action="1604">Cancel</button>
+                      <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="1605">Delete Forever</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+
+          <hr>
+
+          <div class="row">
+            <div class="col-md-6">
+              <h2 id="edit-delete">
+                Edit/Delete
+              </h2>
+
+              <p>
+                The Edit and Delete icons usually appear together. There are two main style; large block-level hover, and small in-line.
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <p>
+                Large Block Level
+              </p>
+
+              {{!-- figure-thumbnail --}}
+              {{!-- attachment-thumbnail --}}
+              {{!-- inline-edit-body-part --}}
+              {{!-- question-attachment-thumbnail --}}
+
+              <span class="glyphicon glyphicon-pencil large"></span>
+              <span class="glyphicon glyphicon-trash large"></span>
+
+            </div>
+            <div class="col-md-2">
+              <p>
+                Small Inline
+              </p>
+              <span class="glyphicon glyphicon-pencil small"></span>
+              <span class="glyphicon glyphicon-trash small"></span>
+            </div>
+          </div>
+
+          <div class="constrain">
+            Create
+            <br>
+            {{add-author-form}}
+
+            HoverState
+            <br><br>
+            <!-- <div class='alert alert-warning'>
+              Hover coming soon!
+            </div> -->
+            {{!-- author-view editState=false hoverState=true author=fullAuthor --}}
+            <div class="constrain">
+              <div id="ember2199" class="ember-view authors-overlay-item __editable __hover" draggable="true">
+                <div class="authors-overlay-item--text">
+                  <div class="author-name">
+                    Albert Einstein
+                  </div>
+                  al@ec2.com
+                  <br>Patent Officer &nbsp; &nbsp; Patent Office
+                  <br>Academy of Art University &nbsp; &nbsp;
+                </div>
+
+                <div class="authors-overlay-item--actions">
+                  <div class="drag"></div>
+                  <div class="actions">
+                    <div class="action" data-ember-action="2414">
+                      <span class="glyphicon glyphicon-pencil scaleIn"></span>
+                    </div>
+                    <div class="action" data-ember-action="2415">
+                      <span class="glyphicon glyphicon-trash scaleIn"></span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            EditState
+            <br><br>
+            {{author-view editState=true hoverState=true author=fullAuthor}}
+
+            Delete State
+            <br><br>
+            {{author-view deleteState=true}}
+          </div>
+
+          <div class="row hide">
+            <div class="col-md-12">
+              <p>
+                If a block can be edited all at once, please use the large block level edit and delete icons.
+              </p>
+            </div>
+
+            <div class="col-md-4">
+              <p>
+                Natural state of block.
+              </p>
+              <div element-name="admin-section" source-page-name="journal_admin" source-page-selector=".mmt-thumbnail"></div>
+            </div>
+
+            <div class="col-md-4">
+              <p>
+                Upon hovering, actions are shown
+              </p>
+              <div class="show-child-mmt-thumbnail" element-name="admin-section" source-page-name="journal_admin" source-page-selector=".mmt-thumbnail"></div>
+            </div>
+
+            <div class="col-md-4">
+              <p>
+                Delete is followed by a warning/confirmation.
+              </p>
+              <div class="show-child-confirm-destroy" element-name="admin-section" source-page-name="journal_admin" source-page-selector=".mmt-thumbnail"></div>
+            </div>
+          </div>
+
+          <hr>
+
+          <h2 id="errors">
+            Errors
+          </h2>
+
+          {{flash-messages flash=flash classNames="flash-messages--below-control-bar"}}
+
+          <hr>
+
+          <h2 id="avatars">
+            Avatars
+          </h2>
+
+          <div class="row">
+            <div class="col-md-4">
+              {{user-avatar user=user}}
+            </div>
+            <div class="col-md-4">
+              <!-- Render `user_thumbnail.js.coffee` here,
+              or refactor that to a component.
+              It uses using Handlebars.SafeString. -->
+              <img src="/images/profile-no-image.png" data-bindattr-1041="1041" class="user-thumbnail">
+            </div>
+            <div class="col-md-4">
+              <!-- This one is rendered from `participant-selector-component.js.coffee`s `selectedTemplate` function
+              using Handlebars.SafeString -->
+              <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+    </div>
+    <div class="tab-pane" id="cards-tab">
+      <div class="row">
+        <div class="col-md-2">
+          <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+            <ul class="nav bs-docs-sidenav">
+              <li>
+
+                <ul class="nav">
+                  <li>
+                    <h4><a href="#top-of-page">Card UI Elements</a></h4>
+                  </li>
+                  <li><a href="#ad-hoc">Ad Hoc</a>
+                  </li>
+                  <li><a href="#competing-interests">Competing Interests</a>
+                  </li>
+                  <li><a href="#data-availability">Data Availability</a>
+                  </li>
+                  <li><a href="#ethics">Ethics</a>
+                  </li>
+                  <li><a href="#figures">Figures</a>
+                  </li>
+                  <li><a href="#financial-disclosure">Financial Disclosure</a>
+                  </li>
+                  <li><a href="#paper-admin">Paper Admin</a>
+                  </li>
+                  <li><a href="#paper-editor">Paper Editor</a>
+                  </li>
+                  <li><a href="#paper-reviewer">Paper Reviewer</a>
+                  </li>
+                  <li><a href="#add-author">Add Author</a>
+                  </li>
+                  <li><a href="#publishing-related-questions">Publishing Related Questions</a>
+                  </li>
+                  <li><a href="#register-decision">Register Decision</a>
+                  </li>
+                  <li><a href="#reporting-guidelines">Reporting Guidelines</a>
+                  </li>
+                  <li><a href="#reviewer-report">Reviewer Report</a>
+                  </li>
+                  <li><a href="#supporting-information">Supporting Information</a>
+                  </li>
+                  <li><a href="#taxon">Taxon</a>
+                  </li>
+                  <li><a href="#tech-check">Tech Check</a>
+                  </li>
+                  <li><a href="#upload-manuscript">Upload Manuscript</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="col-md-10">
+
+          <h2 id="task-cards">
+            Cards
+          </h2>
+
+          <div class="constrain">
+            <div id="ad-hoc" element-name="ad-hoc-card" source-page-name="card_ad_hoc" source-page-selector=".overlay-container"></div>
+
+            <div id="competing-interests" element-name="competing-interests-card" source-page-name="card_competing_interests" source-page-selector=".overlay-container"></div>
+
+            <div id="data-availability" element-name="data-availability-card" source-page-name="card_data_availability" source-page-selector=".overlay-container"></div>
+
+            <div id="ethics" element-name="ethics-card" source-page-name="card_ethics" source-page-selector=".overlay-container"></div>
+
+            <div id="figures" element-name="figure-card" source-page-name="card_figure" source-page-selector=".overlay-container"></div>
+
+            <div id="financial-disclosure" element-name="financial-disclosure-card" source-page-name="card_financial_disclosure" source-page-selector=".overlay-container"></div>
+
+            <div id="paper-admin" element-name="paper-admin-card" source-page-name="card_paper_admin_task" source-page-selector=".overlay-container"></div>
+
+            <div id="paper-editor" element-name="paper-editor-card" source-page-name="card_paper_editor_task" source-page-selector=".overlay-container"></div>
+
+            <div id="paper-reviewer" element-name="paper-reviewer-card" source-page-name="card_paper_reviewer_task" source-page-selector=".overlay-container"></div>
+
+            <div id="add-author" element-name="add-authors-card" source-page-name="card_plos_authors_task" source-page-selector=".overlay-container"></div>
+
+            <div id="publishing-related-questions" element-name="publishing-related-questions-card" source-page-name="card_publishing_related_questions_task" source-page-selector=".overlay-container"></div>
+
+            <div id="register-decision" element-name="register-decision-card" source-page-name="card_register_decision_task" source-page-selector=".overlay-container"></div>
+
+            <div id="reporting-guidelines" element-name="reporting-guidelines-card" source-page-name="card_reporting_guidelines_task" source-page-selector=".overlay-container"></div>
+
+            <div id="reviewer-report" element-name="reviewer-report-card" source-page-name="card_reviewer_report_task" source-page-selector=".overlay-container"></div>
+
+            <div id="supporting-information" element-name="supporting-information-card" source-page-name="card_supporting_information_task" source-page-selector=".overlay-container"></div>
+
+            <div id="taxon" element-name="taxon-card" source-page-name="card_taxon_task" source-page-selector=".overlay-container"></div>
+
+            <div id="tech-check" element-name="tech-check-card" source-page-name="card_tech_check_task" source-page-selector=".overlay-container"></div>
+
+            <div id="upload-manuscript" element-name="upload-manuscript-card" source-page-name="card_upload_manuscript_task" source-page-selector=".overlay-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+</div><!-- container -->

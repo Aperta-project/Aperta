@@ -1,0 +1,48 @@
+{{partial "paper/control-bar"}}
+
+{{flash-messages messages=flash.messages classNames="flash-messages--on-paper-edit-page"}}
+
+<div class="ve-toolbar-underside"></div>
+<div id="tahi-container">
+
+  <main {{bind-attr class="hasNoMetaDataTasks:sidebar-empty"}}>
+
+    <aside>
+      <div class="task-list">
+        {{partial "paper/task-list"}}
+        <a {{action "submit" target="view"}} {{bind-attr class=":button-primary allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit</a>
+      </div>
+    </aside>
+
+    <article>
+      <div class="edit-paper">
+        {{#if doi}}
+          <div id="no-sidebar-doi" class="task-list-doi">
+            <strong>DOI:</strong> {{doi}}
+          </div>
+        {{/if}}
+        <a {{action "submit" target="view"}} {{bind-attr class=":no-sidebar-submit-manuscript :button-primary allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit Manuscript</a>
+        {{toggle-paper-editable action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
+        <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
+        <span class="edit-paper-lock-message">{{display-value statusMessage or=""}} {{time-ago time=savedAt}}</span>
+      </div>
+
+      <div class="manuscript-container">
+        <div class="manuscript-title-and-placeholder">
+          {{content-editable tagName="h2"
+                             id="paper-title"
+                             placeholder="Type your manuscript title here"
+                             value=title
+                             preventEnterKey="true"}}
+
+          {{#if showPlaceholder}}
+            <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
+          {{/if}}
+        </div>
+
+        <div id="paper-body" class="editable"></div>
+      </div>
+    </article>
+
+  </main>
+</div>

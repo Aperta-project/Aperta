@@ -1,0 +1,146 @@
+<div id="tahi-container" class="admin-screen">
+  <div class="admin-users-row">
+    <h2 class="admin-section-title">Users</h2>
+    <div class="col-md-4">
+      <div class="row admin-user-search">
+        {{input action="searchUsers" placeholder="SEARCH ALL USERS" class="admin-user-search-input" name="Admin Search Input" value=searchQuery}}
+        <button class="admin-user-search-button" {{action "searchUsers"}}><span class="glyphicon glyphicon-search"></span></button>
+      </div>
+    </div>
+
+    {{#if adminJournalUsers}}
+      <table class="col-md-12 admin-users">
+        <tr>
+          <th>Username</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Roles</th>
+        </tr>
+        {{#each user in adminJournalUsers}}
+          {{render "admin/admin-journal-user" user}}
+        {{/each}}
+      </table>
+    {{/if}}
+  </div>
+
+  {{render "admin/roles" roles}}
+
+  <div class="admin-section">
+    <h2 class="admin-section-title">Available Task Types</h2>
+    <div class="button-primary button--blue" {{action "editTaskTypes"}}>Edit Task Types</div>
+  </div>
+
+  {{render "admin/journal/manuscript-manager-template/index" manuscriptManagerTemplates}}
+
+  <div class="admin-section admin-doi-setting-section hide">
+    <h2 class="admin-section-title">Document Object Identifier</h2>
+
+    <p>This is the document identifier for this journal's articles, which appears alongside each article.</p>
+
+    <label {{bind-attr class=":col-md-3 :form-group doiEditState:required"}}>
+      <div class="admin-doi-settings-title">DOI</div>
+      {{#if doiEditState}}
+        {{input type="text"
+                class="doi_publisher_prefix"
+                value=doiPublisherPrefix
+                placeholder="DOI prefix here"}}
+      {{else}}
+        <span class="glyphicon glyphicon-pencil admin-doi-settings-edit-button" {{action "editDOI"}}></span>
+        <span class="publisher-prefix">{{doiPublisherPrefix}}</span>
+      {{/if}}
+    </label>
+
+    <label class="col-md-3 form-group">
+      <div class="admin-doi-settings-title">Journal</div>
+      {{#if doiEditState}}
+        {{input type="text"
+                class="doi_journal_prefix"
+                value=doiJournalPrefix
+                placeholder="Journal (optional)"}}
+      {{else}}
+        <span class="journal-prefix">{{doiJournalPrefix}}</span>
+      {{/if}}
+    </label>
+
+    {{#if doiStartNumberEditable}}
+      <label {{bind-attr class=":col-md-3 :form-group doiEditState:required doiStartNumberInvalid:error"}}>
+        <div class="admin-doi-settings-title">Article</div>
+        {{#if doiEditState}}
+          {{input type="text"
+                  class="last_doi_issued"
+                  value=lastDoiIssued
+                  placeholder="Article Starting Number"}}
+          {{#if doiStartNumberInvalid}}
+            <div class="error-message">The Article Start Number must be an integer</div>
+          {{/if}}
+        {{else}}
+          <span class="article">{{lastDoiIssued}}</span>
+        {{/if}}
+      </label>
+    {{else}}
+      <div class="col-md-3">
+        <div class="admin-doi-settings-title">Article</div>
+        <span class="article">{{lastDoiIssued}}</span>
+      </div>
+    {{/if}}
+
+    <div class="col-md-3">
+      <div class="admin-doi-settings-title">How it will look on articles:</div>
+      {{formattedDOI}}
+    </div>
+
+    {{#if doiEditState}}
+      <div class="admin-doi-setting-section-actions">
+        <span class="button-link button--blue" {{action "cancelDOI"}}>cancel</span>
+        <button class="button-primary button--blue button--small" {{action "saveDOI"}}>Save</button>
+      </div>
+    {{/if}}
+  </div>
+
+  <div class="admin-section">
+    <h2 class="admin-section-title">Style Settings</h2>
+
+    {{progress-spinner visible=epubCoverUploading
+                       color="blue"}}
+
+    <div class="admin-style-setting-section">
+
+      <span class="epub-cover-upload">
+        <span class="button-primary button--blue fileinput-button">
+          Upload ePub Cover
+          {{file-uploader id="epub-cover-upload"
+                          class="button-primary button--blue"
+                          accept=".jpg,.jpeg"
+                          progress="epubCoverUploading"
+                          done="epubCoverUploaded"
+                          filePrefix="epub/cover"
+                          railsMethod="PUT"
+                          url=epubCoverUploadUrl}}
+        </span>
+      </span>
+      <br>
+      <span class="epub-cover-image">
+        {{#if epubCoverUrl}}
+          <a {{bind-attr href=epubCoverUrl}} class="epub-cover" target="_blank">{{epubCoverFileName}}</a>
+        {{else}}
+          <p>There is currently no default ePub cover.</p>
+        {{/if}}
+      </span>
+    </div>
+
+    <div class="admin-style-setting-section">
+      <button class="button-primary button--blue" {{action "editEPubCSS"}}>Edit ePub CSS</button>
+      {{timed-message class="epub-css save-status" message=epubCssSaveStatus}}
+    </div>
+
+    <div class="admin-style-setting-section">
+      <button class="button-primary button--blue" {{action "editPDFCSS"}}>Edit PDF CSS</button>
+      {{timed-message class="pdf-css save-status" message=pdfCssSaveStatus}}
+    </div>
+
+    <div class="admin-style-setting-section">
+      <button class="button-primary button--blue" {{action "editManuscriptCSS"}}>Edit Manuscript CSS</button>
+      {{timed-message class="manuscript-css save-status" message=manuscriptCssSaveStatus}}
+    </div>
+  </div>
+</div>

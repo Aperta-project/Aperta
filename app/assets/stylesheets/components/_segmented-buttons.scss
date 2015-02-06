@@ -1,0 +1,42 @@
+.segmented-buttons {
+  @include display(flex);
+  @include align-items(stretch);
+  @include justify-content(space-between);
+  @include user-select(none);
+}
+
+.segmented-button {
+  border: 1px solid $tahi-green;
+  border-right-width: 0;
+  padding: 2px 0;
+  color: $tahi-green;
+  font-size: 11px;
+  font-weight: 400;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: #fff;
+  cursor: default;
+  @include flex-grow(1);
+  @include transition(all 0.15s);
+
+  &:hover { text-decoration: underline; }
+
+  &:first-of-type {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+
+  &:last-of-type {
+    border-right-width: 1px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+}
+
+.segmented-button--active {
+  color: #fff;
+  background: $tahi-green;
+
+  &:hover { text-decoration: none; }
+}

@@ -1,13 +1,8 @@
 Tahi::Application.routes.draw do
-  mount Kss::Engine => '/kss' if Rails.env.development?
   mount StandardTasks::Engine => '/', as: 'standard_tasks'
   mount SupportingInformation::Engine => '/', as: 'supporting_information'
   mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
-
-  if Rails.env.development? || Rails.env.test?
-    mount QUnit::Rails::Engine => '/qunit'
-  end
 
   require 'sidekiq/web'
   authenticate :user, ->(u) { u.site_admin? } do
@@ -145,6 +140,8 @@ Tahi::Application.routes.draw do
   resources :feedback, only: :create
 
   get "/formats", to: "formats#index"
+
+  get "/styleguide", to: "ember#styleguide"
 
   get '*route' => 'ember#index'
   root 'ember#index'

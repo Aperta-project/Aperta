@@ -1,0 +1,45 @@
+<div class="navigation">
+  <div class="navigation-title" {{action "hideNavigation"}}>
+    <span class="navigation-close">&times;</span>Tahi
+  </div>
+
+  {{#if isLoggedIn}}
+    {{#link-to "profile" class="navigation-item navigation-item--account"}}
+      <img {{bind-attr src="currentUser.avatarUrl"}} class="user-thumbnail">
+      <span>{{unbound currentUser.fullName}}</span>
+    {{/link-to}}
+
+    {{link-to "Dashboard" "dashboard" class="navigation-item"}}
+
+    {{#if canViewFlowManagerLink}}
+      {{link-to "Flow Manager" "flow_manager" class="navigation-item"}}
+    {{/if}}
+    {{#if canViewAdminLinks}}
+      {{link-to "Admin" "admin" class="navigation-item navigation-item--admin"}}
+    {{/if}}
+
+     <a class="navigation-item" href="/users/sign_out"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign Out</a>
+  {{/if}}
+
+  <hr>
+
+  <a href="#" class="navigation-item navigation-item-feedback" {{action "feedback"}}>Give Feedback on Tahi</a>
+</div>
+
+<div class="main-content">
+  <div class="main-content-cover" {{action "hideNavigation"}}></div>
+  <div class="navigation-toggle" {{action "showNavigation"}}>
+    {{partial "svg/hamburger"}} Tahi
+  </div>
+  {{outlet}}
+</div>
+
+{{outlet "overlay"}}
+
+{{#if showSaveStatusDiv}}
+  <div id="delayedSave"></div>
+{{/if}}
+
+{{progress-spinner visible=isLoading
+                   color="green"
+                   size="large"}}

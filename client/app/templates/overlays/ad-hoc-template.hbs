@@ -1,0 +1,39 @@
+{{inline-edit-h1 title=title setTitle="setTitle" editOnOpen=isNewTask}}
+
+<div class="task-body">
+  {{#each block in template}}
+    {{#inline-edit-body-part
+      block=block
+      cancel="resetBlock"
+      save="saveBlock"
+      delete="deleteBlock"
+      addItem="addCheckboxItem"}}
+      {{#each item in block}}
+        {{view "inlineEdit"
+               item=item
+               isSendable=false
+               isNew=false}}
+      {{/each}}
+    {{/inline-edit-body-part}}
+  {{/each}}
+  {{#each block in newBlocks}}
+    {{#inline-edit-body-part
+      block=block
+      editing=true
+      cancel="resetBlock"
+      save="saveBlock"
+      delete="deleteBlock"
+      addItem="addCheckboxItem"}}
+      {{#each item in block}}
+        {{view "inlineEdit"
+               item=item
+               isSendable=false
+               isNew=true}}
+      {{/each}}
+    {{/inline-edit-body-part}}
+  {{/each}}
+</div>
+
+{{#reveal-adhoc-toolbar-buttons}}
+  {{partial "components/reveal-adhoc-toolbar-buttons/buttons"}}
+{{/reveal-adhoc-toolbar-buttons}}

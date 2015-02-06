@@ -9,10 +9,10 @@ group :development, :test, :performance do
 end
 
 # Task Engines
-gem 'plos_authors',           path: 'engines/plos_authors'
-gem 'standard_tasks',         path: 'engines/standard_tasks'
+gem 'plos_authors', path: 'engines/plos_authors'
+gem 'standard_tasks', path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
-gem 'upload_manuscript',      path: 'engines/upload_manuscript'
+gem 'upload_manuscript', path: 'engines/upload_manuscript'
 
 # Gems
 gem 'rails', '4.2.0'
@@ -20,11 +20,8 @@ gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
 gem 'bower-rails'
-gem 'ember-rails'
-gem 'ember-source', '1.8.1'
-gem "ember-data-source", "1.0.0.beta.14"
+gem 'ember-cli-rails'
 gem 'sass-rails'
-gem 'haml-rails'
 gem 'uglifier'
 gem 'coffee-rails'
 gem 'acts_as_list'
@@ -39,7 +36,6 @@ gem 'sinatra'
 gem 'active_record-acts_as'
 
 gem "nokogiri"
-gem "jquery-fileupload-rails", github: 'neo-tahi/jquery-fileupload-rails'
 gem "carrierwave"
 gem "fog"
 gem "unf"
@@ -81,11 +77,9 @@ group :development do
   # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs.
   # Please add it in temporarily if you need to check for speed
   gem 'bullet'
-  gem 'kss-rails'
   gem 'letter_opener'
   gem 'rubocop', require: false
   gem 'scss-lint', require: false
-  gem 'haml-lint', require: false
   gem 'overcommit', require: false
   gem 'reek', require: false
 end
@@ -99,9 +93,6 @@ group :development, :test, :performance do
   gem 'rspec-instafail'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'teaspoon', github: 'modeset/teaspoon'
-  gem 'qunit-rails'
-  gem 'phantomjs'
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'pry-rescue'
@@ -111,14 +102,14 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '>=2.45.0.dev3'
   gem 'capybara-webkit'
   gem 'simplecov'
   gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'
   gem 'webmock'
-  gem 'thin'
   gem 'sunspot-rails-tester'
+  gem 'thin'
 end
 
 group :staging, :performance do

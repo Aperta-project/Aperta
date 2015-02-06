@@ -1,0 +1,11 @@
+<div class="overlay-container">
+  <h1>You are about to submit your manuscript:</h1>
+  <h2>&ldquo;{{display-value model.title or=model.shortTitle}}&rdquo;</h2>
+
+  {{flash-messages}}
+
+  <div class="overlay-action-buttons">
+    <button class="button-primary button--green" {{action "closeAction"}}>cancel</button>
+    <button class="button-primary button--green" {{action "submit"}}>Yes, Submit My Manuscript</button>
+  </div>
+</div>

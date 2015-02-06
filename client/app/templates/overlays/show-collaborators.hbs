@@ -1,0 +1,29 @@
+<div class="overlay-container show-collaborators-overlay">
+
+  <div id="show-collaborators" class="chosen-style-override">
+    <h1>Who can edit this manuscript?</h1>
+
+    {{select-2-single value=""
+                      placeholder="Add collaborator"
+                      class="collaborator-select"
+                      name="collaborators"
+                      selectionSelected="addNewCollaborator"
+                      source=formattedCollaborators}}
+
+    <ul class="collaborators-list">
+      {{#each collaborator in collaborators}}
+        <li class="collaborator">
+          <span class="delete-button glyphicon glyphicon-remove" {{action "removeCollaborator" collaborator}}></span>
+          <span class="name">{{collaborator.fullName}}</span>
+          <span class="email">{{collaborator.email}}</span>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="overlay-action-buttons">
+    <a class="button-link button--green" {{action "cancel"}}>cancel</a>
+    <button class="button-primary button--green" {{action "save" phase}}>Save</button>
+  </div>
+
+</div>

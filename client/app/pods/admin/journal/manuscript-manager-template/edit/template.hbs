@@ -1,0 +1,47 @@
+<div id="tahi-container" class="full-width manuscript-manager-template">
+  <div id="manuscript-manager">
+    <div class="full-height">
+      <div class="paper-type-form">
+        {{#if editMode}}
+          {{input value=paperType placeholder="Paper Type" class="edit-paper-type-field"}}
+          {{error-message message=validationErrors.paperType classNames="mmt-edit-error-message"}}
+        {{else}}
+          <div class="paper-type-name" {{action "toggleEditMode"}}>
+            {{paperType}}
+            <span class="glyphicon glyphicon-pencil"></span>
+          </div>
+          &nbsp;
+          {{#link-to "admin.journal" journal class="button-link button--blue"}}&lt; Back{{/link-to}}
+        {{/if}}
+        {{#if showSaveButton}}
+          <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplate"}}>Save Template</a>
+          <a class="button-link button--blue paper-type-cancel-button" {{action "rollback"}}>cancel</a>
+        {{/if}}
+      </div>
+
+      <div class="columns manuscript-manager-template-columns">
+        {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
+        {{#each phaseTemplate in sortedPhaseTemplates}}
+          {{#view "manuscript-manager-column" content=phaseTemplate}}
+            {{add-column position=view.nextPosition action="addPhase"}}
+
+            {{view "phase-header" phase=phaseTemplate}}
+
+            <div class="column-content">
+              {{#each task in phaseTemplate.taskTemplates}}
+                {{card-preview paper=null
+                               task=task
+                               canRemoveCard=true
+                               canDragCard=true
+                               removeTask="removeTask"
+                               showDeleteConfirm="showDeleteConfirm"
+                               action=null}}
+              {{/each}}
+              <a {{action "chooseNewCardTypeOverlay" phaseTemplate}} class="button-secondary button--green">Add New Card</a>
+            </div>
+          {{/view}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>

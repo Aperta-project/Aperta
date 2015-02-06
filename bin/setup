@@ -24,7 +24,7 @@ Dir.chdir APP_ROOT do
     system "brew install imagemagick --with-libtiff"
   end
 
-  %w{ postgresql solr redis go node}.each do |package|
+  %w{ postgresql solr redis go node watchman }.each do |package|
     if `brew ls --versions #{package}`.present?
       puts "#{package} is already installed"
     else
@@ -44,11 +44,13 @@ MESSAGE
   end
   system 'go get github.com/tahi-project/golang-eventsource'
 
-  system 'npm install'
-
   puts '== Installing gems =='
   system 'gem install bundler --conservative'
   system 'bundle check || bundle install'
+
+  puts '== Installing javascript dependencies =='
+  system 'npm install'
+  system 'bundle exec rake ember-cli:install_dependencies'
 
   if `psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='tahi'"`.present?
     puts '== PostgreSQL user already exists =='

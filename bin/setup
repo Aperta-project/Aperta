@@ -6,11 +6,23 @@ rescue LoadError
   fail "Please run `gem install activesupport` first"
 end
 
-mac_os = `uname`.chomp == 'Darwin'
-fail 'This setup script is only designed for Mac OS.' unless mac_os
+$os = `uname`.chomp.downcase.intern
+unless $os == :darwin || ($os == :linux && (`which apt-get` != ""))
+  fail 'This setup script is only designed for Mac OS or Debian/Ubuntu.'
+end
 
 # path to your application root.
 APP_ROOT = Pathname.new File.expand_path('../../',  __FILE__)
+
+def run_pg(cmd)
+  case $os
+  when :linux
+    cmd = cmd.gsub("\"", "\\\"") # escape quotes
+    `sudo su postgres -c "#{cmd}"`
+  when :darwn
+    `#{cmd}`
+  end
+end
 
 Dir.chdir APP_ROOT do
   # This script is a starting point to setup your application.
@@ -18,18 +30,23 @@ Dir.chdir APP_ROOT do
 
   puts '== Installing dependencies =='
 
-  if `brew ls --versions imagemagick`.present?
-    puts "imagemagick is already installed"
-  else
-    system "brew install imagemagick --with-libtiff"
-  end
-
-  %w{ postgresql solr redis go node watchman }.each do |package|
-    if `brew ls --versions #{package}`.present?
-      puts "#{package} is already installed"
+  case $os
+  when :darwin
+    if `brew ls --versions imagemagick`.present?
+      puts "imagemagick is already installed"
     else
-      system "brew install #{package}"
+      system "brew install imagemagick --with-libtiff"
     end
+
+    %w( postgresql solr redis go node watchman ).each do |package|
+      if `brew ls --versions #{package}`.present?
+        puts "#{package} is already installed"
+      else
+        system "brew install #{package}"
+      end
+    end
+  when :linux
+    system "sudo apt-get install -y imagemagick postgresql redis-server golang nodejs "
   end
 
   if ENV['GOPATH'].blank?
@@ -52,11 +69,11 @@ MESSAGE
   system 'npm install'
   system 'bundle exec rake ember-cli:install_dependencies'
 
-  if `psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='tahi'"`.present?
+  if run_pg("psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='tahi'\"").present?
     puts '== PostgreSQL user already exists =='
   else
     puts '== Creating the tahi PostgreSQL user =='
-    system 'createuser -s -r tahi'
+    run_pg('createuser -s -r tahi')
   end
 
   puts '== Copying sample files =='

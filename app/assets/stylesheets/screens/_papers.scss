@@ -112,6 +112,10 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
   margin: 0 auto;
   cursor: default;
 
+  &.disabled {
+    opacity: 0.3;
+  }
+
   .edit-paper {
     display: inline-block;
     margin-left: 5px;

@@ -38,7 +38,7 @@ Dir.chdir APP_ROOT do
       system "brew install imagemagick --with-libtiff"
     end
 
-    %w( postgresql solr redis go node watchman ).each do |package|
+    %w( postgresql solr redis go node watchman qt ).each do |package|
       if `brew ls --versions #{package}`.present?
         puts "#{package} is already installed"
       else
@@ -46,7 +46,7 @@ Dir.chdir APP_ROOT do
       end
     end
   when :linux
-    system "sudo apt-get install -y imagemagick postgresql redis-server golang nodejs "
+    system "sudo apt-get install -y imagemagick postgresql redis-server golang nodejs qt5-default libqt5webkit5-dev"
   end
 
   if ENV['GOPATH'].blank?

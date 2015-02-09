@@ -1,5 +1,5 @@
 <div {{bind-attr class=":comment-board-form :form-group editing"}}>
-  {{unbound user-thumbnail currentUser}}
+  {{user-thumbnail user=currentUser}}
   {{textarea classNames="new-comment-field" value=commentBody placeholder="Type your message here"}}
 
   <div class="message-comment-buttons">

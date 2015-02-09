@@ -10,7 +10,7 @@ class TaskRoleUpdater
 
   def update
     paper.transaction do
-      paper.assign_role!(user, paper_role_name)
+      assign_paper_role!
       related_tasks.each do |task|
         ParticipationFactory.create(task, user)
       end
@@ -18,6 +18,11 @@ class TaskRoleUpdater
   end
 
   private
+
+  def assign_paper_role!
+    @paper.paper_roles.for_role(@paper_role_name).destroy_all
+    @paper.paper_roles.for_role(@paper_role_name).create!(user: @user)
+  end
 
   def related_tasks
     paper.tasks.for_role(paper_role_name).incomplete

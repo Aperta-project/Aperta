@@ -7,7 +7,7 @@ class Phase < ActiveRecord::Base
 
   DEFAULT_PHASE_NAMES = [
     "Submission Data",
-    "Assign Editor",
+    "Invite Editor",
     "Assign Reviewers",
     "Get Reviews",
     "Make Decision"

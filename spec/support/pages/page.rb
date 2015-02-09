@@ -75,7 +75,6 @@ class PageFragment
     retry_stale_element do
       find('.card-content', text: card_name).click
     end
-    synchronize_content! 'CLOSE'
 
     overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize

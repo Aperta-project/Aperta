@@ -9,7 +9,7 @@ module JournalServices
         phase = mmt.phase_templates.create! name: "Submission Data"
         make_tasks phase, task_types, StandardTasks::FigureTask, SupportingInformation::SupportingInformationTask, PlosAuthors::PlosAuthorsTask, UploadManuscript::UploadManuscriptTask
 
-        phase = mmt.phase_templates.create! name: "Assign Editor"
+        phase = mmt.phase_templates.create! name: "Invite Editor"
         make_tasks phase, task_types, StandardTasks::PaperEditorTask, StandardTasks::TechCheckTask, StandardTasks::PaperAdminTask
 
         phase = mmt.phase_templates.create! name: "Assign Reviewers"

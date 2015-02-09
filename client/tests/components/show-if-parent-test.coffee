@@ -1,3 +1,7 @@
+`import Ember from 'ember'`
+`import { test, moduleForComponent } from 'ember-qunit'`
+`import startApp from '../helpers/start-app'`
+
 moduleForComponent 'show-if-parent', 'Component: show-if-parent'
 
 test 'renders based on the set parent view prop', ->

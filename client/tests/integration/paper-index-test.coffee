@@ -1,18 +1,32 @@
+`import Ember from 'ember'`
+`import startApp from '../helpers/start-app'`
+`import { test } from 'ember-qunit'`
+
+`import { paperWithTask } from '../helpers/setups'`
+`import Factory from '../helpers/factory'`
+`import setupMockServer from '../helpers/mock-server'`
+
+app = null
+server = null
+fakeUser = null
+
 module 'Integration: PaperIndex',
   teardown: ->
-    ETahi.reset()
+    server.restore()
+    Ember.run(app, 'destroy')
 
   setup: ->
-    setupApp(integration: true)
+    app = startApp()
+    server = setupMockServer()
+    fakeUser = window.currentUser.user
 
 test 'on paper.index, contributors are visible', ->
-  ef = ETahi.Factory
-  records = ETahi.Setups.paperWithTask('Task'
+  records = paperWithTask('Task'
     id: 2
     role: "admin"
   )
 
-  paperPayload = ef.createPayload('paper')
+  paperPayload = Factory.createPayload('paper')
 
   paperPayload.addRecords(records.concat([fakeUser]))
   paperResponse = paperPayload.toJSON()

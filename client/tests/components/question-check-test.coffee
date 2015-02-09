@@ -1,12 +1,14 @@
+`import Ember from 'ember'`
+`import { test, moduleForComponent } from 'ember-qunit'`
+`import startApp from '../helpers/start-app'`
 # this test is mosty here to take care of the 6 nested components it uses
 # in one shot rather than splitting them up, and to make sure that changes
 # in the nested components properly propogate back up to the task.
 moduleForComponent 'question-check', 'Component: question-check',
   needs: [
-    'template:components/question/check_component'
     'component:check-box'
+    'template:components/datum-definition'
     'template:components/additional-datasets'
-    'component:datum-definition'
     'template:components/dataset-contact'
     'template:components/dataset-description'
     'template:components/dataset-doi'
@@ -14,6 +16,7 @@ moduleForComponent 'question-check', 'Component: question-check',
     'template:components/dataset-title'
     'template:components/dataset-url'
   ]
+  setup: -> startApp() # only here to inject the fillIn helper
 
 test 'it renders its question', ->
   fakeQuestion = Ember.Object.create

@@ -8,9 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "ember server",
-    "build": "ember build",
-    "test": "ember test"
+    "postinstall": "./../node_modules/bower/bin/bower install"
   },
   "repository": "",
   "engines": {
@@ -20,9 +18,9 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.0",
-    "broccoli-ember-hbs-template-compiler": "^1.6.1",
     "ember-cli": "0.1.12",
     "ember-cli-6to5": "3.0.0",
+    "ember-cli-htmlbars": "~0.6.0",
     "ember-cli-coffeescript": "~0.4.0",
     "ember-cli-content-security-policy": "0.3.0",
     "ember-cli-dependency-checker": "0.0.7",
@@ -38,8 +36,5 @@
     "tahi-standard-cards": "git://github.com/Tahi-project/tahi-standard-cards.git",
     "tahi-supporting-information-card": "git://github.com/Tahi-project/tahi-supporting-information-card.git",
     "tahi-upload-manuscript-card": "git://github.com/Tahi-project/tahi-upload-manuscript-card.git"
-  },
-  "scripts": {
-    "postinstall": "./../node_modules/bower/bin/bower install"
   }
 }

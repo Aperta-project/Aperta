@@ -134,21 +134,50 @@ class Paper < ActiveRecord::Base
     update_attribute(:locked_by, user)
   end
 
-  def unlock
+  def unlock # :nodoc:
     update_attribute(:locked_by, nil)
   end
 
-  def heartbeat
+  def heartbeat # :nodoc:
     update_attribute(:last_heartbeat_at, Time.now)
   end
 
+
   %w(admins editors reviewers collaborators).each do |relation|
-    # paper.editors   # => [user1, user2]
+    # Public: Return user records by role in the paper.
+    #
+    # Examples
+    #
+    #   editors   # => [user1, user2]
+    #
+    # Returns an Array of User records.
+    #
+    # Signature
+    #
+    #   #<role>
+    #
+    # role - A role name on the paper
     define_method relation.to_sym do
       assigned_users.merge(PaperRole.send(relation))
     end
 
-    # paper.editor?(user1)  # => true
+    # Public: Checks whether the given user belongs to the role.
+    #
+    # user - The user record
+    #
+    # Examples
+    #
+    #   editor?(user)        # => true
+    #   collaborator?(user)  # => false
+    #
+    # Returns an Array of User records.
+    #
+    # Signature
+    #
+    #   #<role>?(arg)
+    #
+    # role - A role name on the paper
+    # 
     define_method("#{relation.singularize}?".to_sym) do |user|
       return false unless user.present?
       send(relation).exists?(user.id)

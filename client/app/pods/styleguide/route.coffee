@@ -1,4 +1,6 @@
-ETahi.StyleguideRoute = Ember.Route.extend
+`import Ember from 'ember'`
+
+StyleguideRoute = Ember.Route.extend
 
   setupController: (controller, model) ->
     upload = {
@@ -60,15 +62,6 @@ ETahi.StyleguideRoute = Ember.Route.extend
       }
     }
 
-    taskIncomplete = {
-      title: "Add Author"
-    }
-
-    taskComplete = {
-      title: "Add Author"
-      completed: true
-    }
-
     flash = {
       messages: [
         {
@@ -89,34 +82,28 @@ ETahi.StyleguideRoute = Ember.Route.extend
       ]
     }
 
-    phases = [
-      {
-        name: 'Submission Data'
-        tasks: [
-          {
-            title: "Cool"
-          },
-          @taskIncomplete,
-          @taskComplete
-        ]
-      },
-      {
-        name: 'Phase 2'
-        tasks: [
-          {
-            title: "Cool"
-          },
-          @taskIncomplete,
-          @taskComplete
-        ]
-      }
-    ]
-
-    paper = {
+    paper = @store.createRecord("paper", {
       title: 'Long Paper Amazingness'
       shortTitle: 'Short Paper Title, Guh.'
-      phases: phases
-    }
+    })
+
+    taskIncomplete2 = @store.createRecord "task",
+      title: "Ethics"
+
+    phase1 = @store.createRecord 'phase',
+      name: 'Submission Data'
+      paper: paper
+
+    phase2 = @store.createRecord 'phase',
+      name: 'Phase 2'
+      paper: paper
+
+    taskIncomplete =
+      title: "Ethics"
+
+    taskComplete =
+      title: "Add Author"
+      completed: true
 
     supportedDownloadFormats = [
       {
@@ -126,13 +113,15 @@ ETahi.StyleguideRoute = Ember.Route.extend
       }
     ]
 
+    controller.set('user', user)
     controller.set('upload', upload)
     controller.set('flash', flash)
-    controller.set('model', user)
     controller.set('newAuthor', newAuthor)
     controller.set('fullAuthor', fullAuthor)
+    controller.set('phases', [phase1, phase2])
+    controller.set('paper', paper)
     controller.set('taskIncomplete', taskIncomplete)
     controller.set('taskComplete', taskComplete)
-    controller.set('phases', phases)
-    controller.set('paper', paper)
     controller.set('supportedDownloadFormats', supportedDownloadFormats)
+
+`export default StyleguideRoute`

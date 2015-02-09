@@ -45,14 +45,6 @@
               </li>
               <li>
                 <a href="#toolbars">Toolbars</a>
-                <ul class="nav">
-                  <li>
-                    <a href="#contributors">Contributors</a>
-                  </li>
-                  <li>
-                    <a href="#download-document">Download Document</a>
-                  </li>
-                </ul>
               </li>
               <li>
                 <a href="#buttons">Buttons</a>
@@ -99,6 +91,7 @@
                 </p>
               </div>
             </div>
+            <hr>
 
             <div class="row">
               <div class="col-md-6">
@@ -158,6 +151,8 @@
               </div>
             </div>
 
+            <hr>
+
             <div element-name="navigation" source-page-name="dashboard" source-page-selector=".navigation"><div class="navigation">
   <div data-ember-action="1013" class="navigation-title">
     <span class="navigation-close">×</span>Tahi
@@ -213,7 +208,9 @@
                   <br>
                   <a href="#" class="hover" style="text-decoration: underline;">Hovered Link</a>
                 </div>
-                <hr>
+
+                <br>
+
                 <div class="baskerville">
                   <h1>
                     Baskerville H1
@@ -254,9 +251,7 @@
               Workflow
             </h2>
 
-            {{view paperManage paper=paper}}
-            {{view 'paperManage' sortedPhases=phases}}
-            {{render paperManage sortedPhases=phases}}
+            {{render 'paper/manage' paper}}
             <div element-name="paper-manager" source-page-name="paper_manager" source-page-selector=".columns"><div class="columns">
     <span id="ember1329" class="ember-view add-column first-add-column" data-toggle="tooltip" data-placement="auto right" title="" data-original-title="Add Phase"><i class="glyphicon glyphicon-plus"></i>
 </span>
@@ -503,6 +498,7 @@
     
   </div></div>
 
+            <br>
             <hr>
             <div class="ui-element">
               <h2 id="card-overlay">
@@ -625,6 +621,7 @@
   </div>
 </div></div>
             </div>
+            <br>
 
             <hr>
 
@@ -658,6 +655,7 @@
 
 </div></div>
             </div>
+            <br>
 
             <hr>
 
@@ -1151,6 +1149,7 @@
   </div>
 </div></div>
             </div>
+            <br>
 
             <hr>
 
@@ -1159,9 +1158,6 @@
             </h2>
 
             <div class="row">
-              <div class="col-md-12">
-                Primary .button--green
-              </div>
               <div class="col-md-3">
                 <div class="button-primary button--green">Save</div>
                 <div class="button-secondary button--green">Save</div>
@@ -1180,14 +1176,10 @@
               <div class="col-md-3">
                 <div style="background-color: #29a904; padding: 10px;">
                   <div class="button-secondary button--green knockout">Save</div>
-                  <div class="button-link button--green knockout">Save</div>
                 </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12">
-                Neutral .button--grey
-              </div>
               <div class="col-md-3">
                 <div class="button-primary button--grey">Save</div>
                 <div class="button-secondary button--grey">Save</div>
@@ -1206,14 +1198,10 @@
               <div class="col-md-3">
                 <div style="background-color: #E5E5E5; padding: 10px;">
                   <div class="button-secondary button--grey knockout">Save</div>
-                  <div class="button-link button--grey knockout">Save</div>
                 </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12">
-                Admin .button--blue
-              </div>
               <div class="col-md-3">
                 <div class="button-primary button--blue">Save</div>
                 <div class="button-secondary button--blue">Save</div>
@@ -1232,7 +1220,6 @@
               <div class="col-md-3">
                 <div style="background-color: #2d85de; padding: 10px;">
                   <div class="button-secondary button--blue knockout">Save</div>
-                  <div class="button-link button--blue knockout">Save</div>
                 </div>
               </div>
             </div>
@@ -1242,12 +1229,13 @@
             <h2 id="form-patterns">
               Form Patterns (in Cards)
             </h2>
+            <br>
 
             <h3>
               Form Block: Numbered List
             </h3>
 
-            <div class="constrain overlay-content">
+            <div class="constrain">
               <div element-name="numbered-list" source-page-name="card_ethics" source-page-selector="ol.question-list"><ol class="question-list">
   <li class="question">
     <div id="ember2005" class="ember-view">
@@ -1340,6 +1328,7 @@
   </li>
 </ol></div>
             </div>
+            <br>
 
             <h3>
               Form Block: Unstyled Bulleted List
@@ -1352,6 +1341,7 @@
   <li>Review funding disclosure</li>
 </ul></div>
             </div>
+            <br>
 
             <h3>
               Form Block: Styled Bulleted List
@@ -1364,6 +1354,7 @@
 <li>The conclusions must be drawn appropriately based on the data presented.</li>
 </ul></div>
             </div>
+            <br>
 
             <h3>
               Form Block: Single Input
@@ -1374,7 +1365,7 @@
               This form needs an overlay context to be formatted properly..
               But it feels too coupled at the moment.
               -->
-              <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) div.yes-no-with-comments" source-page-selector-context=".overlay-content"><div class="overlay-content"><div data-bindattr-2061="2061" class="yes-no-with-comments">
+              <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) div.yes-no-with-comments" source-page-selector-context=".yes-no-with-comments"><div class="yes-no-with-comments"><div data-bindattr-2061="2061" class="yes-no-with-comments">
   <div id="ember2069" class="ember-view">
 <label>
   <input type="radio" id="reviewer_report.support_conclusions-yes" class="ember-view" name="reviewer_report.support_conclusions" value="Yes">
@@ -1400,6 +1391,7 @@
   
 </div></div></div>
             </div>
+            <br>
 
             <h3>
               Form Block: Multi Input
@@ -1515,12 +1507,14 @@
 
 </div></div>
             </div>
+            <br>
 
             <hr>
 
             <h3 id="file-upload">
               File Upload: top of card
             </h3>
+            <br>
 
             <div class="constrain">
 
@@ -1542,6 +1536,7 @@
                 </div>
 
               </div>
+              <br>
 
               <h4>
                 File Processing
@@ -1593,6 +1588,7 @@
                   <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="3067">Delete Forever</button>
                 </div>
               </div>
+              <br>
 
               <h4>
                 File Display
@@ -1603,7 +1599,7 @@
 
                 <div class="attachment-thumbnail-image">
                   <div class="replace-spinner"></div>
-                  <img class="preview" src="https://tahi-development.s3.amazonaws.com/uploads/paper/13/figure/attachment/7/preview_test_hiding.jpg?AWSAccessKeyId=AKIAJSHIMOFVZTWTJB5A&Signature=wW8LaTeguhblZcVBbmDgxhjBllU%3D&Expires=1419020160" data-bindattr-1871="1871" alt="Test hiding" data-bindattr-1872="1872">
+                  <img class="preview" src="/images/cat-scientists-3.jpg" data-bindattr-1871="1871" alt="Test hiding" data-bindattr-1872="1872">
                   <div class="attachment-thumbnail-edit-overlay">
                     <div class="attachment-thumbnail-edit-overlay-buttons">
                       <button id="ember1879" class="ember-view button-secondary button--green knockout replace fileinput-button">
@@ -1635,6 +1631,7 @@
               </div>
             </div>
           </div>
+          <br>
 
           <h3>
             Upload: in block
@@ -1755,6 +1752,7 @@
               </div>
             </div>
           </div>
+          <br>
 
           <hr>
 
@@ -1795,10 +1793,12 @@
           </div>
 
           <div class="constrain">
-            Create<br>
+            Create
+            <br>
             {{add-author-form}}
 
-            HoverState<br>
+            HoverState
+            <br><br>
             <!-- <div class='alert alert-warning'>
               Hover coming soon!
             </div> -->
@@ -1830,10 +1830,12 @@
 
             </div>
 
-            EditState<br>
+            EditState
+            <br><br>
             {{author-view editState=true hoverState=true author=fullAuthor}}
 
-            Delete State<br>
+            Delete State
+            <br><br>
             {{author-view deleteState=true}}
           </div>
 
@@ -1932,7 +1934,7 @@
             Errors
           </h2>
 
-          {{flash-messages messages=flash.messages classNames="flash-messages--below-control-bar"}}
+          {{flash-messages flash=flash classNames="flash-messages--below-control-bar"}}
 
           <hr>
 
@@ -1942,17 +1944,17 @@
 
           <div class="row">
             <div class="col-md-4">
-              {{view "profile-avatar"}}
+              {{user-avatar user=user}}
             </div>
             <div class="col-md-4">
-              Render `user_thumbnail.js.coffee` here,
+              <!-- Render `user_thumbnail.js.coffee` here,
               or refactor that to a component.
-              It uses using Handlebars.SafeString.
+              It uses using Handlebars.SafeString. -->
               <img src="/images/profile-no-image.png" data-bindattr-1041="1041" class="user-thumbnail">
             </div>
             <div class="col-md-4">
-              This one is rendered from `participant-selector-component.js.coffee`s `selectedTemplate` function
-              using Handlebars.SafeString
+              <!-- This one is rendered from `participant-selector-component.js.coffee`s `selectedTemplate` function
+              using Handlebars.SafeString -->
               <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
             </div>
           </div>
@@ -2014,7 +2016,7 @@
 <a href="#reporting-guidelines">Reporting Guidelines</a>
                   </li>
                   <li>
-<a href="#reviwer-report">Reviwer Report</a>
+<a href="#reviewer-report">Reviewer Report</a>
                   </li>
                   <li>
 <a href="#supporting-information">Supporting Information</a>

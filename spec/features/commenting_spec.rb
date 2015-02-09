@@ -55,12 +55,12 @@ feature 'Comments on cards', js: true do
     context "the user isn't a participant" do
       let(:commenter) { admin }
       let(:participants) { [albert] }
-      scenario "the user does not become a participant after commenting" do
+      scenario "the user becomes a participant after commenting" do
         task_manager_page = TaskManagerPage.visit paper
         task_manager_page.view_card ad_hoc.title, CardOverlay do |card|
           card.post_message 'Hello'
           expect(card).to have_participants(albert)
-          expect(card).to have_no_participants(admin)
+          expect(card).to have_participants(admin)
           expect(card).to have_last_comment_posted_by(admin)
         end
       end

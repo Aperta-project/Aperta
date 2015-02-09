@@ -144,6 +144,7 @@ class Paper < ActiveRecord::Base
 
 
   %w(admins editors reviewers collaborators).each do |relation|
+    # :method: <role>
     # Public: Return user records by role in the paper.
     #
     # Examples

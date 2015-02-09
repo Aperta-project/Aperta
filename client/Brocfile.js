@@ -51,9 +51,9 @@ if (app.env === 'production') {
   app.import('bower_components/underscore/underscore.js');
 }
 
-var visualEditor = pickFiles('node_modules/ember-cli-visualeditor/dist', {
+var visualEditor = pickFiles('node_modules/ember-cli-visualeditor/vendor', {
   srcDir: '/',
-  destDir: '/assets/visual-editor'
+  destDir: '/assets/ember-cli-visualeditor'
 })
 
 module.exports = mergeTrees([app.toTree(), visualEditor]);

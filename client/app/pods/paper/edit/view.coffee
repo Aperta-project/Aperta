@@ -52,8 +52,8 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
   ).on('didInsertElement')
 
   updateVisualEditor: ->
-    visualEditor = @get('visualEditor')
-    visualEditor.fromHtml(@get('controller.body'))
+    editorModel = @get('visualEditor.model')
+    editorModel.fromHtml(@get('controller.body'))
     @updateEditorLockedState()
 
   teardownControlBarSubNav: (->
@@ -94,7 +94,8 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
         @timeoutSave()
 
   saveVisualEditorChanges: ->
-    @get('controller').send('updateDocumentBody', @get('visualEditor').toHtml())
+    documentBody = @get('visualEditor.model').toHtml()
+    @get('controller').send('updateDocumentBody', documentBody)
 
   actions:
     submit: ->

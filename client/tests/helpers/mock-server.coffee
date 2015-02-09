@@ -8,8 +8,8 @@ setupMockServer = ->
   # visual editor unfortunately lives in public
   # We don't care about its JSON dependencies
   #
-  server.xhr.addFilter (method, url) -> !!url.match(/visualEditor/)
-  server.respondWith 'GET', /visual-editor/, '{}'
+  server.xhr.addFilter (method, url) -> !!url.match(/assets\/ember-cli-visualeditor\/i18n/)
+  server.respondWith 'GET', /assets\/ember-cli-visualeditor\/i18n/, '{}'
 
   server.respondWith 'GET', '/formats', [
     200, {"Content-Type": "application/json"}, JSON.stringify({

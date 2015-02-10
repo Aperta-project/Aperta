@@ -84,7 +84,7 @@ return DragNDrop.cancel(event);
 
 ```
 dragStart: function(e) {
-  DragNDrop.dragItem = @get('model');
+  DragNDrop.dragItem = this.get('model');
 }
 ```
 

@@ -12,9 +12,8 @@ In your controller or component set the message:
 
 ```
 save: function() {
-  var self = this;
-  this.get('model').save().then(function() {
-    self.set('reallyImportantMessage', 'You did good');
+  this.get('model').save().then(() => {
+    this.set('reallyImportantMessage', 'You did good');
   });
 }
 ```

@@ -1,13 +1,43 @@
 # How to Use
 
+In your template:
+
+```
+{{error-message message=validationErrors.email}}
+<label>
+  Email <input>
+</label>
+```
+
+In your Controller or Component:
+
+```
+import Ember from 'ember';
+import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
+
+SomeController = Ember.Controller.extend(ValidationErrorsMixin, {
+  actions: {
+    save: function() {
+      @get('model').save().then(() => {
+        this.clearValidationErrors();
+      }).catch((response) => {
+        this.displayValidationErrorsFromResponse(response);
+      });
+    }
+  }
+});
+```
+
 # How it Works
+
+The mixin adds a `validationErrors` property to your Object.
 
 # Methods
 
 ## displayValidationError(key, message)
 
 ```
-this.displayValidationError('error', 'Oh noes');
+this.displayValidationError('someProperty', 'Oh noes');
 ```
 
 ### Parameters
@@ -34,7 +64,7 @@ this.displayValidationErrorsFromResponse(resonse);
 *Response expected in format from Rails:*
 
 ```
-{ errors: { } }
+{ errors: { someProperty: ["is invalid", "another error"] } }
 ```
 
 ## clearValidationErrors()

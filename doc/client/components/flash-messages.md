@@ -17,11 +17,10 @@ In your route or controller from an Ember Data save:
 ```
 actions: {
   save: function() {
-    var self = this;
     this.get('model').save().then(
       function() {},
-      function(response) {
-        self.flash.displayErrorMessagesFromResponse(response);
+      (response) => {
+        this.flash.displayErrorMessagesFromResponse(response);
       }
     );
   }

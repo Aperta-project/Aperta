@@ -17,14 +17,7 @@ class TaskGenerator < Rails::Generators::Base
     template "subscriptions.rb",    "#{new_path}/app/models/#{engine_file_name}/subscriptions.rb"
     template "serializer.rb",       "#{new_path}/app/serializers/#{engine_file_name}/#{file_name}_task_serializer.rb"
     template "policy.rb",           "#{new_path}/app/policies/#{engine_file_name}/#{file_name}_tasks_policy.rb"
-    template "ember/model.js",      "#{new_path}/app/assets/javascripts/#{engine_file_name}/models/#{file_name}_task.js"
-    template "ember/view.js",       "#{new_path}/app/assets/javascripts/#{engine_file_name}/views/overlays/#{file_name}_overlay_view.js"
-    template "ember/controller.js", "#{new_path}/app/assets/javascripts/#{engine_file_name}/controllers/overlays/#{file_name}_overlay_controller.js"
-    template "ember/serializer.js", "#{new_path}/app/assets/javascripts/#{engine_file_name}/serializers/#{file_name}_task_serializer.js"
-    template "ember/adapter.js",    "#{new_path}/app/assets/javascripts/#{engine_file_name}/adapters/#{file_name}_task_adapter.js"
-    template "ember/overlay.hbs",   "#{new_path}/app/assets/javascripts/#{engine_file_name}/templates/overlays/#{file_name}_overlay.hbs"
   end
-
 
   private
 
@@ -38,6 +31,10 @@ class TaskGenerator < Rails::Generators::Base
 
   def file_name
     @task_name.underscore
+  end
+
+  def ember_task_name
+    @task_name.dasherize
   end
 
   def class_name
@@ -70,6 +67,10 @@ class TaskGenerator < Rails::Generators::Base
 
     cmd = "rails plugin new #{new_path} --full --mountable --skip-test-unit"
     puts cmd
-    system cmd
+    # system cmd
+
+    ember_cmd = "cd client && ember generate task #{ember_task_name}"
+    puts ember_cmd
+    system ember_cmd
   end
 end

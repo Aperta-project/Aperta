@@ -33,23 +33,55 @@ class Task < ActiveRecord::Base
 
   belongs_to :phase, inverse_of: :tasks
 
-  def self.for_role(role)
-    where(role: role)
-  end
+  class << self
+    # Public: Scopes the tasks with a given role
+    #
+    # role  - The String of role name.
+    #
+    # Examples
+    #
+    #   for_role('editor')
+    #   # => #<ActiveRecord::Relation [<#Task:123>]>
+    #
+    # Returns ActiveRecord::Relation with tasks.
+    def for_role(role)
+      where(role: role)
+    end
 
-  def self.without(task)
-    where.not(id: task.id)
-  end
+    # Public: Scopes the tasks without the given task
+    #
+    # task  - Task object
+    #
+    # Examples
+    #
+    #   without(<#Task:123>)
+    #   # => #<ActiveRecord::Relation [<#Task:456>]>
+    #
+    # Returns ActiveRecord::Relation with tasks.
+    def without(task)
+      where.not(id: task.id)
+    end
 
-  def self.permitted_attributes
-    [:completed, :title, :phase_id]
-  end
+    # Public: Allows tasks to specify attributes to be whitelisted in requests.
+    # Implement this class method in your Task class.
+    #
+    # Examples
+    #
+    #   def self.permitted_attributes
+    #     super << :custom_attribute
+    #   end
+    #
+    # Returns an Array of attributes.
+    def permitted_attributes
+      [:completed, :title, :phase_id]
+    end
 
-  def self.assigned_to(*users)
-    if users.empty?
-      Task.none
-    else
-      joins(participations: :user).where("participations.user_id" => users)
+    def assigned_to(*users)
+      if users.empty?
+        Task.none
+      else
+        joins(participations: :user).where("participations.user_id" => users)
+      end
     end
   end
 

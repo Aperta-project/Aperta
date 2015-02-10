@@ -97,41 +97,62 @@ class Paper < ActiveRecord::Base
     tasks.where(type: klass_name)
   end
 
+  # Public: Returns the paper title if it's present, otherwise short title is shown.
+  #
+  # Examples
+  #
+  #   display_title
+  #   # => "Studies on the effect of humans living with other humans"
+  #   # or
+  #   # => "some-short-title"
+  #
+  # Returns a String.
   def display_title
     title.present? ? title : short_title
   end
 
+  # Public: Returns one of the admins from the paper.
+  #
+  # Examples
+  #
+  #   admin
+  #   # => <#124: User>
+  #
+  # Returns a User object.
   def admin
     admins.first
   end
 
+  # Public: Returns one of the editors from the paper.
+  #
+  # Examples
+  #
+  #   editor
+  #   # => <#124: User>
+  #
+  # Returns a User object.
   def editor
     editors.first
   end
 
-  def metadata_tasks_completed?
-    return unless uncompleted_tasks?
-    errors.add(:base, "can't submit a paper when all of the metadata tasks aren't completed")
-  end
-
-  def submitting?
-    submitted_changed? && submitted
-  end
-
-  def locked?
+  def locked? # :nodoc:
     locked_by_id.present?
   end
 
-  def unlocked?
+  def unlocked? # :nodoc:
     !locked?
   end
 
-  def locked_by?(user)
+  def locked_by?(user) # :nodoc:
     locked_by_id == user.id
   end
 
-  def lock_by(user)
+  def lock_by(user) # :nodoc:
     update_attribute(:locked_by, user)
+  end
+
+  def submitting? # :nodoc:
+    submitted_changed? && submitted
   end
 
   def unlock # :nodoc:
@@ -142,6 +163,10 @@ class Paper < ActiveRecord::Base
     update_attribute(:last_heartbeat_at, Time.now)
   end
 
+  def metadata_tasks_completed? # :nodoc:
+    return unless uncompleted_tasks?
+    errors.add(:base, "can't submit a paper when all of the metadata tasks aren't completed")
+  end
 
   %w(admins editors reviewers collaborators).each do |relation|
     # :method: <role>

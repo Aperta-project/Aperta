@@ -5,6 +5,13 @@
   white-space: nowrap;
 }
 
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}
+}
+
 // CSS3 Flexible Box Model and property defaults
 
 // Custom shorthand notation for flexbox

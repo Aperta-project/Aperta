@@ -219,16 +219,7 @@
   color: $tahi-blue;
   padding: 10px 10px 8px 10px;
 
-  &::-webkit-input-placeholder {
-    color: $tahi-blue;
-  }
-  &:-moz-placeholder {
-    color: $tahi-blue;
-  }
-  &::-moz-placeholder {
-    color: $tahi-blue;
-  }
-  &:-ms-input-placeholder {
+  @include placeholder {
     color: $tahi-blue;
   }
 }

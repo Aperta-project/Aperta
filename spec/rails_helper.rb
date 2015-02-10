@@ -84,6 +84,7 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, type: :controller
   config.include FactoryGirl::Syntax::Methods
   config.include TahiHelperMethods
+  config.include RequestLoginHelpers, type: :request
   config.extend TahiHelperClassMethods
 
   config.before(:suite) do

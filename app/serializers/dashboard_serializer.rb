@@ -2,6 +2,7 @@ class DashboardSerializer < ActiveModel::Serializer
   attributes :id, :total_paper_count, :total_page_count
   has_one :user, embed: :id, include: true
   has_many :papers, embed: :ids, include: true, root: :lite_papers, serializer: LitePaperSerializer
+  has_many :invitations, embed: :ids, include: true
 
   def id
     1
@@ -25,6 +26,10 @@ class DashboardSerializer < ActiveModel::Serializer
 
   def user
     scoped_user
+  end
+
+  def invitations
+    scoped_user.invitations.pending
   end
 
   private

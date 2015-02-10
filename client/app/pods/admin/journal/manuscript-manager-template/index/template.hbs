@@ -2,5 +2,7 @@
   <h2 class="admin-section-title">Manuscript Manager Templates</h2>
   <button class="button-primary button--blue" {{action "addTemplate" phase taskType}}>Add New Template</button>
   <br><br>
-  {{each content itemViewClass="admin/journal/manuscript-manager-template/thumbnail"}}
+  {{#each mmt in model}}
+    {{view "admin/journal/manuscript-manager-template/thumbnail" content=mmt}}
+  {{/each}}
 </div>

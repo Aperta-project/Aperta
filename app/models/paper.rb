@@ -169,7 +169,8 @@ class Paper < ActiveRecord::Base
   end
 
   %w(admins editors reviewers collaborators).each do |relation|
-    # :method: <role>
+    ###
+    # :method: <roles>
     # Public: Return user records by role in the paper.
     #
     # Examples
@@ -180,13 +181,15 @@ class Paper < ActiveRecord::Base
     #
     # Signature
     #
-    #   #<role>
+    #   #<roles>
     #
     # role - A role name on the paper
     define_method relation.to_sym do
       assigned_users.merge(PaperRole.send(relation))
     end
 
+    ###
+    # :method: <role>?
     # Public: Checks whether the given user belongs to the role.
     #
     # user - The user record

@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'benchmark'
 
-describe UserFlowsController do
+describe UserFlowsController, performance: true do
 
   context "performance of 100 papers" do
     before(:all) do

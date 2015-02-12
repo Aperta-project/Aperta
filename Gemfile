@@ -104,6 +104,7 @@ group :test do
   gem 'webmock'
   gem 'sunspot-rails-tester'
   gem 'thin'
+  gem 'timecop'
 end
 
 group :staging, :performance do

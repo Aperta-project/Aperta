@@ -442,6 +442,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    timecop (0.7.1)
     timeliness (0.3.7)
     timers (4.0.1)
       hitimes
@@ -538,6 +539,7 @@ DEPENDENCIES
   supporting_information!
   tahi_epub!
   thin
+  timecop
   timeliness
   twitter-text
   uglifier

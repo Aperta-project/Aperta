@@ -5,4 +5,10 @@ Invitation = DS.Model.extend
   abstract: DS.attr('string')
   state: DS.attr('string')
 
+  reject: ->
+    @set('state', 'rejected')
+
+  accept: ->
+    @set('state', 'accepted')
+
 `export default Invitation`

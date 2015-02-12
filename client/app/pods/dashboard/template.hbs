@@ -3,14 +3,22 @@
 
 <div id="tahi-container">
   <section id="dashboard-my-submissions">
+
+    {{#if pendingInvitations.length}}
+      <h2 class="welcome-message">
+        You have {{model.invitations.length}} {{make-plural pendingInvitations.length "invitation" "invitations"}}.
+      </h2>
+      <button class="button-primary button--green" {{action "viewInvitations" pendingInvitations}}>View invitations</button>
+    {{/if}}
+
     <h2 class="welcome-message">
-      Hi, {{currentUser.firstName}}.
       {{#if papers.length}}
-        You have {{totalPaperCount}} {{make-plural totalPaperCount "manuscript" "manuscripts"}}.
+        Hi, {{currentUser.firstName}}.  You have {{totalPaperCount}} {{make-plural totalPaperCount "manuscript" "manuscripts"}}.
       {{else}}
         You have no manuscripts.
       {{/if}}
     </h2>
+
     <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
     {{#if hasPapers}}
       <ul class="dashboard-submitted-papers">

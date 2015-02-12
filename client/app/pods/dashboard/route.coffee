@@ -19,12 +19,14 @@ DashboardRoute = Ember.Route.extend
       @controllerFor('dashboard').set 'pageNumber', 1
       return true
 
-    viewCard: (task) ->
-      redirectParams = ['index']
-      @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @controllerFor('application').set('cachedModel' , @modelFor('index'))
-      @controllerFor('application').set('overlayBackground', 'index')
-      @transitionTo('task', task.get('litePaper.id'), task.get('id'))
+    rejectInvitation: (invitation) ->
+      invitation.reject()
+      invitation.save()
+
+    acceptInvitation: (invitation) ->
+      invitation.accept()
+      invitation.save().then =>
+        @store.find('dashboard')
 
     showNewPaperOverlay: () ->
       @store.find('journal').then (journals) =>
@@ -43,12 +45,12 @@ DashboardRoute = Ember.Route.extend
           outlet: 'overlay'
           controller: 'overlays/paperNew'
 
-    closeAction: ->
-      # not sure why setting journal to null prevents explosions
-      # probably ember-data relationship craziness
-      @controllerFor('overlays/paperNew').get('model')
-        .set('journal', null)
-        .deleteRecord()
-      @send('closeOverlay')
+    viewInvitations: (invitations) ->
+      @controllerFor('overlays/invitations').set('model', invitations)
+
+      @render 'overlays/invitations',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'overlays/invitations'
 
 `export default DashboardRoute`

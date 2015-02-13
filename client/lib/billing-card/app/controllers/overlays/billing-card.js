@@ -56,48 +56,56 @@ export default TaskController.extend({
   journals: [
     {
       name: 'PLOS Biology',
-      price: '2900',
-      collectionSurcharge: 1000
+      price: 2900,
+      collectionSurcharge: 1000,
+      totalPrice: 3900
     },
     {
       name: 'PLOS Medicine',
-      price: '2900',
-      collectionSurcharge: 1000
+      price: 2900,
+      collectionSurcharge: 1000,
+      totalPrice: 3900
     },
     {
       name: 'PLOS Computational Biology',
-      price: '2250',
-      collectionSurcharge: 750
+      price: 2250,
+      collectionSurcharge: 750,
+      totalPrice: 3000
     },
     {
       name: 'PLOS Genetics',
-      price: '2250',
-      collectionSurcharge: 750
+      price: 2250,
+      collectionSurcharge: 750,
+      totalPrice: 3000
     },
     {
       name: 'PLOS Neglected Tropical Diseases',
-      price: '2250',
-      collectionSurcharge: 750
+      price: 2250,
+      collectionSurcharge: 750,
+      totalPrice: 3000
     },
     {
       name: 'PLOS Pathogens',
-      price: '2250',
-      collectionSurcharge: 750
+      price: 2250,
+      collectionSurcharge: 750,
+      totalPrice: 3000
     },
     {
       name: 'PLOS ONE',
-      price: '1350',
-      collectionSurcharge: 500
+      price: 1350,
+      collectionSurcharge: 500,
+      totalPrice: 1850
     },
   ],
   responses: [
     {id: 1, text: "I will pay the full fee upon article acceptance"},
     {id: 2, text: "Institutional Account Program"},
-    {id: 3, text: "PLOS Global Participation Initiative"},
-    {id: 4, text: "PLOS Publication Fee Assistance Program"},
+    {id: 3, text: "PLOS Global Participation Initiative (GPI)"},
+    {id: 4, text: "PLOS Publication Fee Assistance Program (PFA)"},
     {id: 5, text: "I have been invited to submit to a Special Collection"}
   ],
   selectedResponse: null,
+  selectedRinggold: null,
   selfPayment: function() {
     return this.selectedResponse == 1;
   }.property("selectedResponse"),

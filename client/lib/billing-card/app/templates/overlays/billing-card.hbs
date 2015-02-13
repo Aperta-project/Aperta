@@ -172,7 +172,7 @@
       {{error-message message=null}}
       {{select-2-single value=controller.selectedResponse
                         class="affiliation-field"
-                        placeholder="Select Country"
+                        placeholder="Select One"
                         selectedData=selectedAffiliation
                         source=responses}}
     </div>
@@ -183,10 +183,6 @@
       <h3>
         Self Payment
       </h3>
-
-      <p>
-        {{input type="checkbox" name="agreeCollections" checked=agreeCollections}} I have read and agree to the Terms of Submission to PLOS Collections
-      </p>
     {{/if}}
 
     {{#if institutional}}
@@ -213,6 +209,15 @@
         for examples.
         To confirm amounts and details of funding and eligibility, contact the organization as indicated.
       </p>
+
+      <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.affiliation:error"}}>
+        {{error-message message=null}}
+        {{select-2-single value=controller.selectedRinggold
+                          class="affiliation-field"
+                          placeholder="Select an Institution"
+                          selectedData=selectedAffiliation
+                          source=ringgold}}
+      </div>
     </div>
     {{/if}}
 
@@ -233,6 +238,17 @@
         instead of the PLOS GPI. View
         <a href="#">PLOS GPI</a> for additional information.
       </p>
+
+      <div class="form-group form-inline">
+        <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
+          {{error-message message=null}}
+          {{ select-2-single value='gpiCountry'
+                          class=""
+                          placeholder="Please select your Country"
+                          selectedData='selectedAffiliation'
+                          source=countries }}
+        </div>
+      </div>
     </div>
     {{/if}}
 
@@ -260,9 +276,25 @@
       <div class="question-dataset">
         {{#question-radio ident="3" task=model question="Have you investigated if funding is available from your institution to pay the publication fee?"}}
           {{#show-if-parent prop="selectedYes"}}
-            If your co-authors' institutions will provide partial funding to publish the article, please indicate the amount they will pay toward your
-            publication fee (in USD).
-            {{input type="text" value=inviteCode class="form-control" placeholder="$"}}
+            {{#question-radio ident="4" task=model
+              question="Do your co-authors have any other sources of funding that can be used towards the publication fee?"}}
+
+              {{#show-if-parent prop="selectedYes"}}
+                Please indicate the total amount that they can pay (in USD).
+                  {{input type="text" value=coauthorSupport placeHolder="$"}}
+              {{/show-if-parent}}
+            {{/question-radio}}
+
+            {{#question-radio ident="1000"
+                              task=model
+                              question="Do you have any other sources of funding that can be used towards the publication fee?"}}
+              {{#show-if-parent prop="selectedYes"}}
+                Please indicate the total amount that they can pay (in USD).
+                {{input type="text"
+                value=otherSupport
+                placeHolder="$"}}
+              {{/show-if-parent}}
+            {{/question-radio}}
           {{/show-if-parent}}
           {{#show-if-parent prop="selectedNo"}}
             If your co-authors' institutions will not provide any funding to publish the article, please explain why.
@@ -271,25 +303,6 @@
         {{/question-radio}}
         <br>
 
-        {{#question-radio ident="4" task=model
-          question="Do your co-authors have any other sources of funding that can be used towards the publication fee?"}}
-
-          {{#show-if-parent prop="selectedYes"}}
-            Please indicate the total amount that they can pay (in USD).
-              {{input type="text" value=coauthorSupport placeHolder="$"}}
-          {{/show-if-parent}}
-        {{/question-radio}}
-
-        {{#question-radio ident="1000"
-                          task=model
-                          question="Do you have any other sources of funding that can be used towards the publication fee?"}}
-          {{#show-if-parent prop="selectedYes"}}
-            Please indicate the total amount that they can pay (in USD).
-            {{input type="text"
-            value=otherSupport
-            placeHolder="$"}}
-          {{/show-if-parent}}
-        {{/question-radio}}
       </div>
     </li>
     {{/if}}
@@ -352,6 +365,9 @@
             <th>
               Collection Surcharge
             </th>
+            <th>
+              Total
+            </th>
           </tr>
           {{#each journal in journals}}
           <tr>
@@ -363,6 +379,9 @@
             </td>
             <td>
               ${{journal.collectionSurcharge}} USD
+            </td>
+            <td>
+              ${{journal.totalPrice}} USD
             </td>
           </tr>
           {{/each}}
@@ -383,7 +402,10 @@
         <hr>
 
         <p>
-          {{input type="checkbox" name="agreeCollections" checked=agreeCollections}} I have read and agree to the Terms of Submission to PLOS Collections
+          {{input type="checkbox" name="agreeCollections" checked=agreeCollections}} I have read and agree to the
+          <a href="#">
+            Terms of Submission to PLOS Collections
+          </a>
         </p>
       </div>
     {{/if}}

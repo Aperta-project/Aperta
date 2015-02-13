@@ -1,21 +1,10 @@
 <h1>
-  Billing Information
+  Publication Fees
 </h1>
-
-<p>
-  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-  when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-</p>
-
-<h4>
-  {{ feeMessage }}
-</h4>
-
 
 <div class="add-author-form">
   <div class="form-group form-inline author-top">
-    <div {{bind-attr class=":form-group :author-name :required validationErrors.firstName:error"}}>
+    <div {{bind-attr class=":form-group :author-half :required validationErrors.firstName:error"}}>
       {{error-message message=null}}
       {{input type="text"
               value=newAuthor.firstName
@@ -23,15 +12,7 @@
               placeholder="First name"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-middle validationErrors.middleInitial:error"}}>
-      {{error-message message=null}}
-      {{input type="text"
-              value=newAuthor.middleInitial
-              class="form-control"
-              placeholder="MI"}}
-    </div>
-
-    <div {{bind-attr class=":form-group :author-name :required validationErrors.lastName:error"}}>
+    <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.lastName:error"}}>
       {{error-message message=null}}
       {{input type="text"
               value=newAuthor.lastName
@@ -102,6 +83,15 @@
 
 <div class="add-author-form">
   <div class="form-group form-inline">
+    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=newAuthor.department
+              class="form-control"
+              placeholder="Country"}}
+    </div>
+  </div>
+  <div class="form-group form-inline">
     <div {{bind-attr class=":required validationErrors.department:error"}}>
       {{error-message message=null}}
       {{input type="text"
@@ -109,8 +99,6 @@
               class="form-control"
               placeholder="Address line one"}}
     </div>
-
-
   </div>
   <div class="form-group form-inline">
     <div {{bind-attr class=":required validationErrors.department:error"}}>
@@ -121,7 +109,6 @@
               placeholder="Address line two"}}
     </div>
   </div>
-
   <div class="form-group form-inline">
     <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
       {{error-message message=null}}
@@ -131,43 +118,224 @@
               placeholder="City"}}
     </div>
 
-    <div {{bind-attr class=":required :form-group :author-name :author-bump validationErrors.department:error"}}>
+    <div {{bind-attr class=":form-group :author-name :author-bump validationErrors.department:error"}}>
       {{ select-2-single value='newAuthor.affiliation'
                       class=""
                       placeholder="--"
                       selectedData='selectedAffiliation'
                       source=states }}
     </div>
-
-
-
     <div {{bind-attr class=":required :form-group :author-name validationErrors.department:error"}}>
       {{error-message message=null}}
       {{input type="text"
               value=newAuthor.department
               class="form-control"
-              placeholder="Zip"}}
-    </div>
-
-  </div>
-  <div class="form-group form-inline">
-    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
-      {{error-message message=null}}
-      {{input type="text"
-              value=newAuthor.department
-              class="form-control"
-              placeholder="Country"}}
+              placeholder="Postal Code"}}
     </div>
   </div>
 </div>
-
 
 <hr>
 
 <h2>
   Payment Options
 </h2>
+
+<div>
+  <p>
+    To provide Open Access, PLOS uses a business model to offset expenses -
+    including those of peer review management, journal production and online hosting and archiving -
+    by charging a publication fee to the authors, institutions or funders for each article published.
+  </p>
+
+  <p>
+    Publication fees vary by journal are are payble for articles upon acceptance.
+  </p>
+
+  <ul>
+    {{#each journal in journals}}
+      <li>
+        <i>{{journal.name}}</i>
+        ${{journal.price}} USD
+      </li>
+    {{/each}}
+  </ul>
+
+  <p>
+    Since its inception, PLOS has administered and provided individual fee support.
+  </p>
+</div>
+
+<div>
+  <p>
+    Participating institutions have arrangements with PLOS to administer payment for partial or full
+    publication feeds for their institutions' authors.
+    To be eligible, authors must be a corresponding author affiliated with the
+    institution or agency in the
+    <a href="">Institutional Account Program</a>
+    (fully paid or restricted). Authors who need to requrest additional support should apply for
+    <a href="#">PLOS PFA</a>.
+  </p>
+
+  <p>
+    Authors may also be eligible for direct funding from their institution or funder,
+    which may be different from the PLOS Institutional program.
+    See additional
+    <a href="#">Open Access Funds</a>
+    for examples.
+    To confirm amounts and details of funding and eligibility, contact the organization as indicated.
+  </p>
+</div>
+
+<div>
+  <p>
+    Authors' research that is funded primarily (50% or more of the work contained within the article)
+    by an institution or organization from eligible low- and middle-income countries
+    will receive partial (group 2 countries)
+    or full (group 1 countries) fee funding paid by the PLOS Global Participation Initiative (GPI).
+    Group 2 PLOS GPI country authors who need to request additional support
+    should apply for
+    <a href="#">PLOS Publication Fee Assistance</a>
+    instead of the PLOS GPI. View
+    <a href="#">PLOS GPI</a> for additional information.
+  </p>
+</div>
+
+<div>
+  <p>
+    PLOS believes that lack of funds should not be a barrier to Open Access publication.
+    PFA is intended for authors who do not have sufficient fund
+    available to support publication fees. PLOS expects authors to exhaust all
+    alternative funding sources before applying for PFA.
+    Applications will be considered on a case-by-case basis.
+    To apply, complete the application during the submission process below.
+    A disposition is usually made within 10 business days.
+    Information about an applicant's application fee for assistance will not be disclosed to journal editors or reviewers.
+    PLOS publication decisions will continue to be based soley on editorial
+    (NOT SURE WHAT GOES HERE. TEXT WAS CUTOFF).
+  </p>
+</div>
+
 <ol class='question-list'>
+  <li class="question">
+    <h3> How would you like to pay?</h3>
+    <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.affiliation:error"}}>
+      {{error-message message=null}}
+      {{select-2-single value=controller.selectedResponse
+                        class="affiliation-field"
+                        placeholder="Please select a response"
+                        selectedData=selectedAffiliation
+                        source=responses}}
+    </div>
+
+    {{#if selfPayment}}
+      Self Payment
+    {{/if}}
+    {{#if institutional}}
+      Institutional
+    {{/if}}
+    {{#if gpi}}
+      GPI
+    {{/if}}
+    {{#if pfa}}
+      PFA
+    {{/if}}
+
+    {{#if specialCollection}}
+      To provide Open Access, PLOS uses a business model to
+      offset expenses - including those of peer review management,
+      journal production and online hosting and archiving -
+      by charging a publication fee to the authors, institutions
+      or funders for each article published.
+
+      Submissions to Special Collections are by invitation only
+      and are subject to
+      <a href="#">specific terms and charges</a>.
+
+      <p>
+        If you have not received and read the
+        PLOS Colletions Terms of Submission,
+        or have not received specific submission instructions
+        directing you to select this option,
+        please contact
+        <a href="mailto:collections@plos.org">colletions@plos.org</a>
+        before proceeding.
+      </p>
+
+      <p>
+        Papers submitted for potential inclusion in a PLOS Special
+        Collection are not eligible for the PLOS Publication Fee
+        Assistance (PFA) Program.
+      </p>
+
+      <p>
+        All papers that are submitted for inclusion in a Special
+        Collection will be charged the Article Processing Charge
+        of the relevant journal of publication plus a Collection
+        Surcharge on publication:
+      </p>
+
+      <table border="1">
+        <tr>
+          <th>
+            Journal
+          </th>
+          <th>
+            Article Processing Charge
+          </th>
+          <th>
+            Collection Surcharge
+          </th>
+        </tr>
+        {{#each journal in journals}}
+        <tr>
+          <td>
+            {{journal.name}}
+          </td>
+          <td>
+            ${{journal.price}} USD
+          </td>
+          <td>
+            ${{journal.collectionSurcharge}} USD
+          </td>
+        </tr>
+        {{/each}}
+
+      </table>
+
+      <p>
+        You or the collection funder will receive an invoice
+        detailing the charge and payment terms
+        if your paper is accepted for publication.
+      </p>
+
+      <p>
+        By checking the box below, you are acknowledging
+        that you have read and agree to the following statement:
+      </p>
+
+      <p>
+      {{input type="checkbox" name="agreeCollections" checked=agreeCollections}} I have read and agree to the Terms of Submission to PLOS Collections
+     </p>
+
+    {{/if}}
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+
+{{!--
+
+
   <li class="question">
   {{#question-radio ident="publishing_related_questions.submitted_in_conjunction"
                     task=model
@@ -320,9 +488,19 @@
         }}
     </div>
   </li>
+
+
+
+  --}}
+
+
+
+
+
+
 </ol>
-
-
+{{!--
 <h4>
   {{ feeMessage }}
 </h4>
+--}}

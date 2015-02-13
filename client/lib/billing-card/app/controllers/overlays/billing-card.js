@@ -52,5 +52,72 @@ export default TaskController.extend({
   journalName: 'PLOS One',
   feeMessage: (function(){
     return "The fee for publishing in " + this.get("journalName") + " is $" + this.get("pubFee")
-  }).property("journalName")
+  }).property("journalName"),
+  journals: [
+    {
+      name: 'PLOS Biology',
+      price: '2900',
+      collectionSurcharge: 1000
+    },
+    {
+      name: 'PLOS Medicine',
+      price: '2900',
+      collectionSurcharge: 1000
+    },
+    {
+      name: 'PLOS Computational Biology',
+      price: '2250',
+      collectionSurcharge: 750
+    },
+    {
+      name: 'PLOS Genetics',
+      price: '2250',
+      collectionSurcharge: 750
+    },
+    {
+      name: 'PLOS Neglected Tropical Diseases',
+      price: '2250',
+      collectionSurcharge: 750
+    },
+    {
+      name: 'PLOS Pathogens',
+      price: '2250',
+      collectionSurcharge: 750
+    },
+    {
+      name: 'PLOS ONE',
+      price: '1350',
+      collectionSurcharge: 500
+    },
+  ],
+  responses: [
+    {id: 1, text: "I will pay the full fee upon article acceptance"},
+    {id: 2, text: "Institutional Account Program"},
+    {id: 3, text: "PLOS Global Participation Initiative"},
+    {id: 4, text: "PLOS Publication Fee Assistance Program"},
+    {id: 5, text: "I have been invited to submit to a Special Collection"}
+  ],
+  selectedResponse: null,
+  selfPayment: function() {
+    return this.selectedResponse == 1;
+  }.property("selectedResponse"),
+  institutional: function() {
+    return this.selectedResponse == 2;
+  }.property("selectedResponse"),
+  gpi: function() {
+    return this.selectedResponse == 3;
+  }.property("selectedResponse"),
+  pfa: function() {
+    return this.selectedResponse == 4;
+  }.property("selectedResponse"),
+  specialCollection: function() {
+    return this.selectedResponse == 5;
+  }.property("selectedResponse"),
+  onSelectedOption: function() {
+    // alert(this.selectedResponse);
+  }.observes('selectedResponse'),
+  // agreeCollections: function() { return false; }.
+  agreeCollections: false
+
+
 });

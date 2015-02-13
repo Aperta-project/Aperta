@@ -13,6 +13,7 @@ module BenchmarkSuite
     end
 
     def write
+      File.open(path, "w") {} unless File.exist? path
       CSV.open(path, "a+") { |csv|
         csv << [Time.now.utc, current_sha, title, duration, unit]
       }

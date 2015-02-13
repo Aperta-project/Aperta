@@ -7,7 +7,7 @@ shared_examples "a batch of papers" do |num_papers|
   describe UserFlowsController do
     let(:path) { BenchmarkSuite.path(TEST_NAME) }
 
-    context "performance of 100 papers" do
+    context "performance of papers" do
       before(:all) do
         @bench = BenchmarkSuite::FlowManager.new num_papers: num_papers
       end
@@ -17,13 +17,12 @@ shared_examples "a batch of papers" do |num_papers|
           post user_session_path, user: {:login => @bench.site_admin.email, :password => 'password'}
         end
 
-
         it "takes time" do
           time = Benchmark.realtime { get '/user_flows.json' }
           BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                       duration: time,
                                       unit: :sec,
-                                      title: "#{num_papers}, 100%").write
+                                      title: "GET /user_flows.json, #{num_papers} papers, loading flows for journal with 100% of the papers").write
           expect(time).to be < 1.5
         end
       end
@@ -38,7 +37,7 @@ shared_examples "a batch of papers" do |num_papers|
           BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                       duration: time,
                                       unit: :sec,
-                                      title: "#{num_papers}, 80%").write
+                                      title: "GET /user_flows.json, #{num_papers} papers, loading flows for journal with 80% of the papers").write
           expect(time).to be < 1.5
         end
       end
@@ -53,7 +52,7 @@ shared_examples "a batch of papers" do |num_papers|
           BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                       duration: time,
                                       unit: :sec,
-                                      title: "#{num_papers}, 20%").write
+                                      title:  "GET /user_flows.json, #{num_papers} papers, loading flows for journal with 20% of the papers").write
           expect(time).to be < 1.5
         end
       end

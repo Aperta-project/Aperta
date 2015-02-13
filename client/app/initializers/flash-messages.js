@@ -11,16 +11,9 @@ export default {
     application.inject('component:flashMessages', 'flash', 'flashMessages:main');
 
     Ember.Route.reopen({
-      enter: function() {
-        this._super.apply(this, arguments);
-
-        var routeName = this.get('routeName');
-        var target    = this.get('router.router.activeTransition.targetName');
-
-        if (routeName !== 'loading' && routeName === target) {
-          this.flash.clearMessages();
-        }
-      }
+      _teardownFlashMessages: function() {
+        this.flash.clearMessages();
+      }.on('deactivate')
     });
   }
 };

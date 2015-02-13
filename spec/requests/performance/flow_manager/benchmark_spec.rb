@@ -7,9 +7,6 @@ shared_examples "a batch of papers" do |num_papers|
   describe UserFlowsController do
     let(:path) { BenchmarkSuite.path(TEST_NAME) }
 
-    before(:all) { VCR.turn_off! && WebMock.allow_net_connect! }
-    after(:all)  { VCR.turn_on! && WebMock.disable_net_connect! }
-
     context "performance of 100 papers" do
       before(:all) do
         @bench = BenchmarkSuite::FlowManager.new num_papers: num_papers
@@ -64,6 +61,9 @@ shared_examples "a batch of papers" do |num_papers|
 end
 
 describe "batch of papers", performance: true do
+  before(:all) { VCR.turn_off! && WebMock.allow_net_connect! }
+  after(:all)  { VCR.turn_on! && WebMock.disable_net_connect! }
+
   it_should_behave_like "a batch of papers",    1
   it_should_behave_like "a batch of papers",  5
   it_should_behave_like "a batch of papers", 10

@@ -66,7 +66,7 @@ describe "batch of papers", performance: true do
 
   it_should_behave_like "a batch of papers",    100
   it_should_behave_like "a batch of papers",  1_000
-  it_should_behave_like "a batch of papers", 10_000
+  # it_should_behave_like "a batch of papers", 10_000
 
   after(:all) do
     BenchmarkSuite::Emailer.call(TEST_NAME)

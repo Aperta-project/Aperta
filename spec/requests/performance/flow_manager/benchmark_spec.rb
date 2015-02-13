@@ -12,8 +12,6 @@ shared_examples "a batch of papers" do |num_papers|
         @bench = BenchmarkSuite::FlowManager.new num_papers: num_papers
       end
 
-      let(:time) { Benchmark.realtime { get '/user_flows.json' } }
-
       context "the user is a site admin" do
         before do
           post user_session_path, user: {:login => @bench.site_admin.email, :password => 'password'}
@@ -21,6 +19,7 @@ shared_examples "a batch of papers" do |num_papers|
 
 
         it "takes time" do
+          time = Benchmark.realtime { get '/user_flows.json' }
           BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                       duration: time,
                                       unit: :sec,
@@ -35,6 +34,7 @@ shared_examples "a batch of papers" do |num_papers|
         end
 
         it "takes time" do
+          time = Benchmark.realtime { get '/user_flows.json' }
           BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                       duration: time,
                                       unit: :sec,
@@ -49,6 +49,7 @@ shared_examples "a batch of papers" do |num_papers|
         end
 
         it "takes time" do
+          time = Benchmark.realtime { get '/user_flows.json' }
           BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                       duration: time,
                                       unit: :sec,

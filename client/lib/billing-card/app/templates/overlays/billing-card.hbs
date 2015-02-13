@@ -80,10 +80,11 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=newAuthor.department
-              class="form-control"
-              placeholder="Country"}}
+      {{ select-2-single value='newAuthor.affiliation'
+                      class=""
+                      placeholder="Please select your Country"
+                      selectedData='selectedAffiliation'
+                      source=countries }}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -116,7 +117,7 @@
     <div {{bind-attr class=":form-group :author-name :author-bump validationErrors.department:error"}}>
       {{ select-2-single value='newAuthor.affiliation'
                       class=""
-                      placeholder="--"
+                      placeholder="Select State"
                       selectedData='selectedAffiliation'
                       source=states }}
     </div>
@@ -171,7 +172,7 @@
       {{error-message message=null}}
       {{select-2-single value=controller.selectedResponse
                         class="affiliation-field"
-                        placeholder="Please select a response"
+                        placeholder="Select Country"
                         selectedData=selectedAffiliation
                         source=responses}}
     </div>

@@ -12,7 +12,7 @@ export default {
 
     Ember.Route.reopen({
       _teardownFlashMessages: function() {
-        this.flash.clearMessages();
+        this.flash.clearAllMessages();
       }.on('deactivate')
     });
   }

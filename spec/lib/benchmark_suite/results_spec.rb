@@ -9,8 +9,7 @@ describe BenchmarkSuite::Results do
   end
 
   let(:benchmark_suite) { BenchmarkSuite::Results.new(test_name: 'blah',
-                                                      number_of_papers: 12,
-                                                      description: 'blah blah blah',
+                                                      title: 'blah blah blah',
                                                       duration: 4.2,
                                                       unit: :sec) }
 
@@ -21,7 +20,7 @@ describe BenchmarkSuite::Results do
       benchmark_suite.write
 
       last_row = File.readlines(benchmark_suite.path).last
-      expect(last_row).to eq("1990-01-01 08:00:00 UTC,supercool-sha,12,blah blah blah,4.2,sec\n")
+      expect(last_row).to eq("1990-01-01 08:00:00 UTC,supercool-sha,blah blah blah,4.2,sec\n")
     end
   end
 

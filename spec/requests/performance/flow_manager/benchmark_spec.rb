@@ -6,6 +6,9 @@ TEST_NAME = "flow_manager"
 describe UserFlowsController, performance: true do
   let(:path) { BenchmarkSuite.path(TEST_NAME) }
 
+  before(:all) { VCR.turn_off! && WebMock.allow_net_connect! }
+  after(:all)  { VCR.turn_on! && WebMock.disable_net_connect! }
+
   context "performance of 100 papers" do
     before(:all) do
       @num_papers = 100
@@ -21,14 +24,14 @@ describe UserFlowsController, performance: true do
         post user_session_path, user: {:login => @bench.site_admin.email, :password => 'password'}
       end
 
-      it "#{@num_papers}, 100%" do |example|
+      it "takes time" do
         time = Benchmark.realtime {
           get '/user_flows.json'
         }
         BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                     duration: time,
                                     unit: :sec,
-                                    title: example.description).write
+                                    title: "#{@num_papers}, 100%").write
         expect(time).to be < 1.5
       end
     end
@@ -38,14 +41,14 @@ describe UserFlowsController, performance: true do
         post user_session_path, user: {:login => @bench.big_admin.email, :password => 'password'}
       end
 
-      it "#{@num_papers}, 80%" do |example|
+      it "takes time" do
         time = Benchmark.realtime {
           get '/user_flows.json'
         }
         BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                     duration: time,
                                     unit: :sec,
-                                    title: example.description).write
+                                    title: "#{@num_papers}, 80%").write
         expect(time).to be < 1.5
       end
     end
@@ -55,14 +58,14 @@ describe UserFlowsController, performance: true do
         post user_session_path, user: {:login => @bench.small_admin.email, :password => 'password'}
       end
 
-      it "#{@num_papers}, 20%" do |example|
+      it "takes time" do
         time = Benchmark.realtime {
           get '/user_flows.json'
         }
         BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                     duration: time,
                                     unit: :sec,
-                                    title: example.description).write
+                                    title: "#{@num_papers}, 20%").write
         expect(time).to be < 1.5
       end
     end
@@ -71,7 +74,7 @@ describe UserFlowsController, performance: true do
 
   context "performance of 1_000 papers" do
     before(:all) do
-      @num_papers = 1_000 # change
+      @num_papers = 1_000
       @bench = BenchmarkSuite::FlowManager.new num_papers: @num_papers
     end
 
@@ -84,14 +87,14 @@ describe UserFlowsController, performance: true do
         post user_session_path, user: {:login => @bench.site_admin.email, :password => 'password'}
       end
 
-      it "#{@num_papers}, 100%" do |example|
+      it "takes time" do
         time = Benchmark.realtime {
           get '/user_flows.json'
         }
         BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                     duration: time,
                                     unit: :sec,
-                                    title: example.description).write
+                                    title: "#{@num_papers}, 100%").write
         expect(time).to be < 1.5
       end
     end
@@ -101,14 +104,14 @@ describe UserFlowsController, performance: true do
         post user_session_path, user: {:login => @bench.big_admin.email, :password => 'password'}
       end
 
-      it "#{@num_papers}, 80%" do |example|
+      it "takes time" do
         time = Benchmark.realtime {
           get '/user_flows.json'
         }
         BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                     duration: time,
                                     unit: :sec,
-                                    title: example.description).write
+                                    title: "#{@num_papers}, 80%").write
         expect(time).to be < 1.5
       end
     end
@@ -118,14 +121,14 @@ describe UserFlowsController, performance: true do
         post user_session_path, user: {:login => @bench.small_admin.email, :password => 'password'}
       end
 
-      it "#{@num_papers}, 20%" do |example|
+      it "takes time" do
         time = Benchmark.realtime {
           get '/user_flows.json'
         }
         BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                     duration: time,
                                     unit: :sec,
-                                    title: example.description).write
+                                    title: "#{@num_papers}, 20%").write
         expect(time).to be < 1.5
       end
     end
@@ -146,14 +149,14 @@ describe UserFlowsController, performance: true do
         post user_session_path, user: {:login => @bench.site_admin.email, :password => 'password'}
       end
 
-      it "#{@num_papers}, 100%" do |example|
+      it "takes time" do
         time = Benchmark.realtime {
           get '/user_flows.json'
         }
         BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                     duration: time,
                                     unit: :sec,
-                                    title: example.description).write
+                                    title: "#{@num_papers}, 100%").write
         expect(time).to be < 1.5
       end
     end
@@ -163,14 +166,14 @@ describe UserFlowsController, performance: true do
         post user_session_path, user: {:login => @bench.big_admin.email, :password => 'password'}
       end
 
-      it "#{@num_papers}, 80%" do |example|
+      it "takes time" do
         time = Benchmark.realtime {
           get '/user_flows.json'
         }
         BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                     duration: time,
                                     unit: :sec,
-                                    title: example.description).write
+                                    title: "#{@num_papers}, 80%").write
         expect(time).to be < 1.5
       end
     end
@@ -180,14 +183,14 @@ describe UserFlowsController, performance: true do
         post user_session_path, user: {:login => @bench.small_admin.email, :password => 'password'}
       end
 
-      it "#{@num_papers}, 20%" do |example|
+      it "takes time" do
         time = Benchmark.realtime {
           get '/user_flows.json'
         }
         BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                     duration: time,
                                     unit: :sec,
-                                    title: example.description).write
+                                    title: "#{@num_papers}, 20%").write
         expect(time).to be < 1.5
       end
     end

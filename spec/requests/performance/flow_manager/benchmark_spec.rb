@@ -63,9 +63,9 @@ shared_examples "a batch of papers" do |num_papers|
   end
 end
 
-describe "batch of papers" do
-  it_should_behave_like "a batch of papers", 5
-  it_should_behave_like "a batch of papers", 1
+describe "batch of papers", performance: true do
+  it_should_behave_like "a batch of papers",    1
+  it_should_behave_like "a batch of papers",  5
   it_should_behave_like "a batch of papers", 10
 
   after(:all) do

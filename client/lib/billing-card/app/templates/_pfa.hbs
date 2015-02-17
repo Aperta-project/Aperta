@@ -1,0 +1,194 @@
+{{#if pfa}}
+<div>
+  <h3>
+    PLOS Publication Fee Assistance (PFA Program)
+  </h3>
+
+  <p>
+    PLOS believes that lack of funds should not be a barrier to Open Access publication.
+    PFA is intended for authors who do not have sufficient fund
+    available to support publication fees. PLOS expects authors to exhaust all
+    alternative funding sources before applying for PFA.
+  </p>
+
+  <ul>
+    <li>
+      Have you investigated if Open Access Funds are available from your institutional library?
+    </li>
+    <li>
+      Have you investigated if institutional discretionary funds are available to support your research publishing?
+      For example, have you asked your Dean or Department Head for funding support?
+    </li>
+    <li>
+      Have you investigated if there are discretionary funds in your co-authors’ grant to support your fee?
+    </li>
+    <li>
+      For European researchers, have you asked your librarian if article processing grants from research funders are available?
+      For example, from Research Councils UK (RCUK), the German Research Foundation (DFG) or The Netherlands Organization for Scientific Research (NWO).
+    </li>
+  </ul>
+</div>
+
+<li class="question">
+  <div class="question-dataset">
+    {{#question-radio
+        ident="3"
+        task=model
+        question="Have you investigated if funding is available from your or your co-authors' institutions to pay the publication fee?"}}
+      {{#show-if-parent prop="selectedYes"}}
+        {{#question-radio
+            ident="4"
+            task=model
+            question="Do your co-authors have any other sources of funding that can be used towards the publication fee?"}}
+          {{#show-if-parent prop="selectedYes"}}
+            Please indicate the total amount that they can pay (in USD).
+            {{input type="text" value=coauthorSupport placeHolder="$"}}
+          {{/show-if-parent}}
+        {{/question-radio}}
+
+        {{#question-radio
+            ident="1000"
+            task=model
+            question="Do you have any other sources of funding that can be used towards the publication fee?"}}
+          {{#show-if-parent prop="selectedYes"}}
+            Please indicate the total amount that they can pay (in USD).
+            {{input type="text"
+            value=otherSupport
+            placeHolder="$"}}
+          {{/show-if-parent}}
+        {{/question-radio}}
+      {{/show-if-parent}}
+      {{#show-if-parent prop="selectedNo"}}
+        If your co-authors' institutions will not provide any funding to publish the article, please explain why.
+        {{textarea value=inviteCode class="form-control"}}
+      {{/show-if-parent}}
+    {{/question-radio}}
+    <br>
+
+    {{#question-radio ident="300" task=model question="Have you investigated if institutional discretionary funds are available to support your research publishing? For example, have you asked your Dean or Department Head for funding support?"}}
+      {{#show-if-parent prop="selectedYes"}}
+        {{#question-radio ident="4" task=model
+          question="Do your co-authors have any other sources of funding that can be used towards the publication fee?"}}
+
+          {{#show-if-parent prop="selectedYes"}}
+            Please indicate the total amount that they can pay (in USD).
+              {{input type="text" value=coauthorSupport placeHolder="$"}}
+          {{/show-if-parent}}
+        {{/question-radio}}
+
+        {{#question-radio ident="1000"
+                          task=model
+                          question="Do you have any other sources of funding that can be used towards the publication fee?"}}
+          {{#show-if-parent prop="selectedYes"}}
+            Please indicate the total amount that they can pay (in USD).
+            {{input type="text"
+            value=otherSupport
+            placeHolder="$"}}
+          {{/show-if-parent}}
+        {{/question-radio}}
+      {{/show-if-parent}}
+      {{#show-if-parent prop="selectedNo"}}
+        If your co-authors' institutions will not provide any funding to publish the article, please explain why.
+        {{textarea value=inviteCode class="form-control"}}
+      {{/show-if-parent}}
+    {{/question-radio}}
+    <br>
+
+    {{#question-radio ident="400" task=model question="Have you investigated if there are discretionary funds in your co-authors' grant to support your fee?"}}
+      {{#show-if-parent prop="selectedYes"}}
+        {{#question-radio ident="4" task=model
+          question="Do your co-authors have any other sources of funding that can be used towards the publication fee?"}}
+
+          {{#show-if-parent prop="selectedYes"}}
+            Please indicate the total amount that they can pay (in USD).
+              {{input type="text" value=coauthorSupport placeHolder="$"}}
+          {{/show-if-parent}}
+        {{/question-radio}}
+
+        {{#question-radio ident="1000"
+                          task=model
+                          question="Do you have any other sources of funding that can be used towards the publication fee?"}}
+          {{#show-if-parent prop="selectedYes"}}
+            Please indicate the total amount that they can pay (in USD).
+            {{input type="text"
+            value=otherSupport
+            placeHolder="$"}}
+          {{/show-if-parent}}
+        {{/question-radio}}
+      {{/show-if-parent}}
+      {{#show-if-parent prop="selectedNo"}}
+        If your co-authors' institutions will not provide any funding to publish the article, please explain why.
+        {{textarea value=inviteCode class="form-control"}}
+      {{/show-if-parent}}
+    {{/question-radio}}
+    <br>
+
+    {{#question-radio ident="500" task=model question="For European Researchers, have you asked your librarian if article processing grants from research funders are available? For example, from Research Councils UK (RCUK), the German Research Foundation (DFG) or The Netherlands Organization for Scientific Research (NWO)."}}
+      {{#show-if-parent prop="selectedYes"}}
+        {{#question-radio ident="4" task=model
+          question="Do your co-authors have any other sources of funding that can be used towards the publication fee?"}}
+
+          {{#show-if-parent prop="selectedYes"}}
+            Please indicate the total amount that they can pay (in USD).
+              {{input type="text" value=coauthorSupport placeHolder="$"}}
+          {{/show-if-parent}}
+        {{/question-radio}}
+
+        {{#question-radio ident="1000"
+                          task=model
+                          question="Do you have any other sources of funding that can be used towards the publication fee?"}}
+          {{#show-if-parent prop="selectedYes"}}
+            Please indicate the total amount that they can pay (in USD).
+            {{input type="text"
+            value=otherSupport
+            placeHolder="$"}}
+          {{/show-if-parent}}
+        {{/question-radio}}
+      {{/show-if-parent}}
+      {{#show-if-parent prop="selectedNo"}}
+        If your co-authors' institutions will not provide any funding to publish the article, please explain why.
+        {{textarea value=inviteCode class="form-control"}}
+      {{/show-if-parent}}
+    {{/question-radio}}
+    <br>
+
+    {{#question-radio
+        ident="4444500"
+        task=model
+        question="Do you have any other sources of funding than be used towards the publication fee?"}}
+      {{#show-if-parent prop="selectedYes"}}
+        {{#question-radio ident="4" task=model
+          question="Do your co-authors have any other sources of funding that can be used towards the publication fee?"}}
+
+          {{#show-if-parent prop="selectedYes"}}
+            Please indicate the total amount that they can pay (in USD).
+              {{input type="text" value=coauthorSupport placeHolder="$"}}
+          {{/show-if-parent}}
+        {{/question-radio}}
+      {{/show-if-parent}}
+    {{/question-radio}}
+    <br>
+
+    <div>
+      Given your answers to the above questions on your funding availability,
+      what is the amount that you and your co-authors can jointly pay for publication? (Specify in USD.)
+      {{input type="text" value=coauthorSupport placeHolder="$"}}
+    </div>
+
+    {{#question-radio
+        ident="800"
+        task=model
+        question="If you would like to provide documents to assist in demonstrating your request, you will have the opportunity to do so. After PLOS has received the completed application, the confirmation email will provide direction on where to send supplemental documents. Do you intend to supply supplemental documents?"}}
+    {{/question-radio}}
+
+    <br>
+
+    <div>
+      If you wish to make additional comments to support your request, provide them below.
+      If you have no additional comments, enter "None" in the box.
+      {{textarea value=inviteCode class="form-control"}}
+    </div>
+
+  </div>
+</li>
+{{/if}}

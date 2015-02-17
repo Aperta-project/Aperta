@@ -2,11 +2,7 @@ namespace :styleguide do
   desc "Generate Live Styleguide"
   task generate: :environment  do
     system "rspec spec/features/harvest_styleguide.rb"
-    system "ruby populate_styleguide.rb"
-  end
-
-  task watch: :environment do
-    system('nodemon --exec "ruby populate_styleguide.rb" -w app/views/styleguide_template.hbs populate_styleguide.rb -V')
+    Rake::Task["styleguide:hydrate"].execute
   end
 
   task hydrate: :environment do
@@ -23,20 +19,15 @@ namespace :styleguide do
     @styleguide_path = "app/views/styleguide_template.hbs"
     @populated_styleguide_path = "client/app/pods/styleguide/template.hbs"
 
-    # Open the File
+    # Open the Styleguide Template
     styleguide_html = File.open(@styleguide_path, "r").read
 
-    # loop all the source-page-names and set (or reset) the content
-    # nodes = Nokogiri::HTML styleguide_html
+    # Loop all the source-page-names and set the content
     nodes = Nokogiri::HTML(styleguide_html) { |config| config.strict }
     element_nodes = nodes.css("*[source-page-name]")
     element_nodes.each do |ele|
-      # ele.content = $RESET ? "" : get_content(ele)
       ele.content = get_content(ele)
     end
-
-    # TODO maybe
-    # nodes.css('.timestamp').first.content = Time.now.strftime("%A, %B %d, %Y, at %l:%M%P")
 
     # Write the unescaped html to file
     File.open(@populated_styleguide_path, "w") do |f|
@@ -52,7 +43,7 @@ def get_content(ele)
   selector = ele['source-page-selector']
   necessary_context = ele['source-page-selector-context']
 
-  # Open the .html filenamee
+  # Open the .html file
   html = File.open("doc/ux/#{filename}.html", "r").read
   nodes = Nokogiri::HTML(html)
 
@@ -85,7 +76,7 @@ rescue => e
   p "Error: Could not open `#{name}` in `#{filename}` with selector `#{selector}`"
 end
 
-# Wrap the html in a toggle-able code block
+# Wrap the html in a toggleable code block
 def in_code_block(html)
   seed = "collapse-#{rand(10000)}"
 

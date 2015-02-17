@@ -1,0 +1,12 @@
+#!/bin/sh
+# Provide containerhost link to container
+# WHAT A HORRIBLE HACK
+# BUT docker refuses to do this
+# https://github.com/docker/docker/issues/10023
+CONTAINERHOSTIP=`netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}'`
+cat /etc/hosts |grep -v containerhost > /tmp/hosts
+echo "$CONTAINERHOSTIP	containerhost" >> /tmp/hosts
+cat /tmp/hosts > /etc/hosts
+
+su app -c "cd /home/app/ihat && bundle exec rake db:create db:migrate"
+exit 0

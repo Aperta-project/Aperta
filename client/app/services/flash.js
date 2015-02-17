@@ -36,7 +36,8 @@ import Ember from 'ember';
   this.flash.displayMessage('success', 'You win');
   ```
 
-  The messages will be cleared out on the next route transition or overlay close. If you need to clear them out manually:
+  The messages will be cleared out on the next route transition or overlay close.
+  If you need to clear them out manually:
 
   ```
   this.flash.clearAllMessages();
@@ -44,8 +45,10 @@ import Ember from 'ember';
 
   ## How it Works
 
-  A singleton object is created and injected into all Routes and Controllers from an Ember Initializer as the property `flash`.
-  When `displayMessage` or `displayErrorMessagesFromResponse` is called, all we're doing is pushing to an array of messages that are displayed in the templates.
+  A singleton object is created and injected into all Routes and Controllers
+  from an Ember Initializer as the property `flash`.
+  When `displayMessage` or `displayErrorMessagesFromResponse` is called, all
+  we're doing is pushing to an array of messages that are displayed in the templates.
   The `flash` object is also injected into the `flash-messages` component.
 */
 
@@ -111,7 +114,8 @@ export default Ember.Object.extend({
   },
 
   /**
-    Remove all flash messages in the application. Automatically called during route transitions and overlay close.
+    Remove all flash messages in the application.
+    Automatically called during route transitions and overlay close.
     ```
     this.flash.clearAllMessages();
     ```
@@ -124,8 +128,11 @@ export default Ember.Object.extend({
   },
 
   /**
+    Return human friendly string.
+
     @private
     @method _formatKey
+    @return {String}
   */
 
   _formatKey: function(key) {

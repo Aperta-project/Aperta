@@ -102,7 +102,7 @@ JournalIndexController = Ember.ObjectController.extend ValidationErrorsMixin,
       @get('model').save()
         .then =>
           @set 'doiEditState', false
-          @clearValidationErrors()
+          @clearAllValidationErrors()
         , (response) =>
           @displayValidationErrorsFromResponse response
 

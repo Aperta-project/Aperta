@@ -2,8 +2,23 @@ import Ember from 'ember';
 import TaskController from 'tahi/pods/task/controller';
 
 export default TaskController.extend({
-  varName2: "anything else",
-  ringgold: [
+  billingApplicant: {
+    firstName: "Albert",
+    lastName: "Einstein",
+    title: "Patent Clerk",
+    department: "Patents",
+    affiliation1: "",
+    affiliation2: "",
+    phoneNumber: "1234567890",
+    emailAddress: "al@ec2.com",
+    country: "USA",
+    address1: "123 Main St",
+    address2: "Unit 987",
+    city: "San Francisco",
+    state: "CA",
+    postalCode: "94123"
+  },
+  ringgold: [,
     { id: 123, text: "Memorial University of Newfoundland" },
     { id: 124, text: "Ryerson University" },
     { id: 125, text: "Simon Fraser University" },

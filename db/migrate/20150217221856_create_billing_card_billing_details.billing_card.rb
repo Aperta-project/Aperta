@@ -25,6 +25,22 @@ class CreateBillingCardBillingDetails < ActiveRecord::Migration
       t.text :pfa_supporting_docs
       t.text :pfa_additional_comments
 
+      # User Details
+      t.text :first_name
+      t.text :last_name
+      t.text :title
+      t.text :department
+      t.text :affiliation1
+      t.text :affiliation2
+      t.text :phone_number
+      t.text :email_address
+      t.text :address1
+      t.text :address2
+      t.text :city
+      t.text :state
+      t.text :postal_code
+      t.text :country
+
       t.timestamps null: false
     end
   end

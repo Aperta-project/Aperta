@@ -2,22 +2,7 @@ import Ember from 'ember';
 import TaskController from 'tahi/pods/task/controller';
 
 export default TaskController.extend({
-  billingApplicant: {
-    firstName: "Albert",
-    lastName: "Einstein",
-    title: "Patent Clerk",
-    department: "Patents",
-    affiliation1: "",
-    affiliation2: "",
-    phoneNumber: "1234567890",
-    emailAddress: "al@ec2.com",
-    country: "USA",
-    address1: "123 Main St",
-    address2: "Unit 987",
-    city: "San Francisco",
-    state: "CA",
-    postalCode: "94123"
-  },
+  billingDetail: {},
   ringgold: [,
     { id: 123, text: "Memorial University of Newfoundland" },
     { id: 124, text: "Ryerson University" },
@@ -139,8 +124,36 @@ export default TaskController.extend({
   onSelectedOption: function() {
     // alert(this.selectedResponse);
   }.observes('selectedResponse'),
-  // agreeCollections: function() { return false; }.
-  agreeCollections: false
+  agreeCollections: false,
+  actions: {
+    submitToDB: function() {
+      alert("I'm submitting!")
+    },
+    setBillingDetails: function() {
+      // make the ajax request
+
+      var journalId = this.get("model.paper.journal.id");
+      var paperId = this.get("model.paper.id");
+
+      // Try to find a Billing Record for this Paper, within this Journal
+      // this.set("billingDetail", this.store.find("billingCardBillingDetail"));
+
+
+      this.set("billingDetail", this.store.find("billingDetail", 5));
+      // this.set("billingDetail", {firstName: 'Bob'});
+
+      // else...
+      // Create a Record if it does not exist
+      // var billing = this.store.createRecord('billingDetail', {
+      //   journalId: journalId,
+      //   paperId: paperId,
+      //   pfa_question_1: 'hello'
+      // });
+      // billing.save()
+
+
+    }
+  }
 
 
 });

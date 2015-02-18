@@ -7,7 +7,7 @@
     <div {{bind-attr class=":form-group :author-half :required validationErrors.firstName:error"}}>
       {{error-message message=null}}
       {{input type="text"
-              value=billingApplicant.firstName
+              value=billingDetail.firstName
               class="form-control"
               placeholder="First name"}}
     </div>
@@ -15,7 +15,7 @@
     <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.lastName:error"}}>
       {{error-message message=null}}
       {{input type="text"
-              value=billingApplicant.lastName
+              value=billingDetail.lastName
               class="form-control"
               placeholder="Last name"}}
     </div>
@@ -163,3 +163,6 @@
 </ol>
 
 <hr>
+
+
+<a {{action "submitToDB"}} class="button-secondary button--green">Submit!</a>

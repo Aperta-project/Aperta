@@ -4,5 +4,9 @@ export default OverlayView.extend({
   templateName: 'overlays/billing-card',
   layoutName:   'layouts/overlay',
   cardName: 'billing-card',
-  varName: 'PLOS'
+  varName: 'PLOS',
+
+  setup: function() {
+    this.controller.send("setBillingDetails");
+  }.on('didInsertElement')
 });

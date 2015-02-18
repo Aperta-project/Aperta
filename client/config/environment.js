@@ -13,22 +13,9 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       }
     },
-
-    APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
-      "storeConfigInMeta": false,
-
-      "ember-cli-visualeditor": {
-        assetsRoot: "/assets/tahi",
-        includeAssets: false,
-        useEval: false,
-        forceUnminified: false,
-        manual: false,
-        // set this if you want to mock-out visual editor code
-        // e.g., ATM this is necessary in PhantomJS
-        useMock: false
-      }
+    APP: {},
+    "ember-cli-visualeditor": {
+      assetsRoot: "/assets/tahi"
     },
 
     contentSecurityPolicy: {
@@ -50,7 +37,7 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = true;
 
     // include unminified assets for debugging
-    ENV.APP["ember-cli-visualeditor"].forceUnminified = true;
+    ENV["ember-cli-visualeditor"].forceUnminified = true;
   }
 
   if (environment === 'test') {
@@ -66,12 +53,12 @@ module.exports = function(environment) {
 
     // here we include the assets into the vendor bundle
     // as we had troubles here with loading them lazily
-    // ENV.APP["ember-cli-visualeditor"].includeAssets = true;
+    ENV["ember-cli-visualeditor"].includeAssets = true;
     // And, we need to use a different root for served assets
-    ENV.APP["ember-cli-visualeditor"].assetsRoot = "/assets";
+    ENV["ember-cli-visualeditor"].assetsRoot = "/assets";
 
     // Override automatic loading of VE assets
-    ENV.APP["ember-cli-visualeditor"].useMock = true;
+    ENV["ember-cli-visualeditor"].useMock = true;
   }
 
   if (environment === 'production') {

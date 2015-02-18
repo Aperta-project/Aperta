@@ -1,11 +1,10 @@
 /* global require, module */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
-var mergeTrees = require('broccoli-merge-trees');
-var pickFiles = require('broccoli-static-compiler');
 
-var ENV = require('./config/environment')(process.env.EMBER_ENV);
-var app = new EmberApp(ENV.APP);
+var app = new EmberApp({
+  storeConfigInMeta: false
+});
 
 // Use `app.import` to add additional libraries to the generated
 // output files.
@@ -34,7 +33,7 @@ app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 // FileUpload
 app.import('vendor/jquery.ui.widget.js');
 app.import('vendor/jquery.iframe-transport.js');
-app.import('vendor/jquery.fileupload/jquery.fileupload.css')
+app.import('vendor/jquery.fileupload/jquery.fileupload.css');
 app.import('vendor/jquery.fileupload/jquery.fileupload.js');
 
 // Select 2
@@ -51,9 +50,4 @@ if (app.env === 'production') {
   app.import('bower_components/underscore/underscore.js');
 }
 
-var visualEditor = pickFiles('node_modules/ember-cli-visualeditor/vendor', {
-  srcDir: '/',
-  destDir: '/assets/ember-cli-visualeditor'
-})
-
-module.exports = mergeTrees([app.toTree(), visualEditor]);
+module.exports = app.toTree();

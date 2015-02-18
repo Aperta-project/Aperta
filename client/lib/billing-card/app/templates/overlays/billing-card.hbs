@@ -2,6 +2,8 @@
   Publication Fees
 </h1>
 
+{{!-- render billingDetail model.billingDetail --}}
+
 <div class="add-author-form">
   <div class="form-group form-inline author-top">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.firstName:error"}}>
@@ -24,7 +26,7 @@
     <div {{bind-attr class=":form-group :author-half :required validationErrors.title:error"}}>
       {{error-message message=null}}
       {{input type="text"
-              value=billingApplicant.title
+              value=billingDetail.title
               class="form-control"
               placeholder="Title"}}
     </div>
@@ -32,7 +34,7 @@
     <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.department:error"}}>
       {{error-message message=null}}
       {{input type="text"
-              value=billingApplicant.department
+              value=billingDetail.department
               class="form-control"
               placeholder="Department"}}
     </div>
@@ -40,7 +42,7 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.affiliation:error"}}>
       {{error-message message=null}}
-      {{select-2-single value=billingApplicant.affiliation1
+      {{select-2-single value=billingDetail.affiliation1
                         class="affiliation-field"
                         placeholder="Affiliation"
                         selectedData=selectedAffiliation
@@ -49,7 +51,7 @@
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.secondaryAffiliation:error"}}>
       {{error-message message=null}}
-      {{select-2-single value=billingApplicant.affiliation2
+      {{select-2-single value=billingDetail.affiliation2
                         class="secondary-affiliation-field"
                         placeholder="Secondary Affiliation"
                         selectedData=selectedSecondaryAffiliation
@@ -60,7 +62,7 @@
     <div {{bind-attr class=":form-group :author-half :required validationErrors.email:error"}}>
       {{error-message message=null}}
       {{input type="text"
-              value=billingApplicant.phoneNumber
+              value=billingDetail.phoneNumber
               class="form-control"
               placeholder="Phone"}}
 
@@ -68,7 +70,7 @@
     <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.email:error"}}>
       {{error-message message=null}}
       {{input type="text"
-              value=billingApplicant.emailAddress
+              value=billingDetail.emailAddress
               class="form-control"
               placeholder="Email"}}
 
@@ -91,7 +93,7 @@
     <div {{bind-attr class=":required validationErrors.department:error"}}>
       {{error-message message=null}}
       {{input type="text"
-              value=billingApplicant.address1
+              value=billingDetail.address1
               class="form-control"
               placeholder="Address line one"}}
     </div>
@@ -100,7 +102,7 @@
     <div {{bind-attr class=":required validationErrors.department:error"}}>
       {{error-message message=null}}
       {{input type="text"
-              value=billingApplicant.address2
+              value=billingDetail.address2
               class="form-control"
               placeholder="Address line two"}}
     </div>
@@ -109,13 +111,13 @@
     <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
       {{error-message message=null}}
       {{input type="text"
-              value=billingApplicant.city
+              value=billingDetail.city
               class="form-control"
               placeholder="City"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-name :author-bump validationErrors.department:error"}}>
-      {{ select-2-single value='billingApplicant.state'
+      {{ select-2-single value='billingDetail.state'
                       class=""
                       placeholder="Select State"
                       selectedData='selectedState'
@@ -124,7 +126,7 @@
     <div {{bind-attr class=":required :form-group :author-name validationErrors.department:error"}}>
       {{error-message message=null}}
       {{input type="text"
-              value=billingApplicant.postalCode
+              value=billingDetail.postalCode
               class="form-control"
               placeholder="Postal Code"}}
     </div>

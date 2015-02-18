@@ -130,17 +130,11 @@ export default TaskController.extend({
       alert("I'm submitting!")
     },
     setBillingDetails: function() {
-      // make the ajax request
-
       var journalId = this.get("model.paper.journal.id");
       var paperId = this.get("model.paper.id");
 
       // Try to find a Billing Record for this Paper, within this Journal
-      // this.set("billingDetail", this.store.find("billingCardBillingDetail"));
-
-
-      this.set("billingDetail", this.store.find("billingDetail", 5));
-      // this.set("billingDetail", {firstName: 'Bob'});
+      this.set("billingDetail", this.store.find("billingDetail", 1));
 
       // else...
       // Create a Record if it does not exist
@@ -150,8 +144,6 @@ export default TaskController.extend({
       //   pfa_question_1: 'hello'
       // });
       // billing.save()
-
-
     }
   }
 

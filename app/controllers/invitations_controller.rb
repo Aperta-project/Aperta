@@ -4,7 +4,6 @@ class InvitationsController < ApplicationController
 
   def create
     invitation = task.invitations.create(invitation_params)
-    invitation.associate_existing_user!
     render json: invitation, status: :created
   end
 

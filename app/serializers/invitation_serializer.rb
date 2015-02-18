@@ -1,5 +1,5 @@
 class InvitationSerializer < ActiveModel::Serializer
-  attributes :id, :state, :title, :abstract
+  attributes :id, :state, :title, :abstract, :email, :created_at
 
   def title
     object.paper.title

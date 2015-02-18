@@ -24,6 +24,7 @@
     "ember-cli-app-version": "0.3.1",
     "ember-cli-coffeescript": "~0.4.0",
     "ember-cli-content-security-policy": "0.3.0",
+    "ember-cli-data-factory-guy": "^0.9.1",
     "ember-cli-dependency-checker": "0.0.7",
     "ember-cli-htmlbars": "~0.6.0",
     "ember-cli-ic-ajax": "0.1.1",
@@ -36,7 +37,7 @@
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "tahi-plos-authors-card": "git://github.com/Tahi-project/tahi-plos-authors-card.git",
-    "tahi-standard-cards": "git://github.com/Tahi-project/tahi-standard-cards.git",
+    "tahi-standard-cards": "*",
     "tahi-supporting-information-card": "git://github.com/Tahi-project/tahi-supporting-information-card.git",
     "tahi-upload-manuscript-card": "git://github.com/Tahi-project/tahi-upload-manuscript-card.git"
   }

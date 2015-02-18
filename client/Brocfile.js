@@ -2,7 +2,10 @@
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-var app = new EmberApp({storeConfigInMeta: false});
+var app = new EmberApp({
+  storeConfigInMeta: false,
+  sourceMaps: { enabled: false }
+});
 
 // Use `app.import` to add additional libraries to the generated
 // output files.

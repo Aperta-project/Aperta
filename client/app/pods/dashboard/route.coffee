@@ -21,12 +21,14 @@ DashboardRoute = Ember.Route.extend
 
     rejectInvitation: (invitation) ->
       invitation.reject()
-      invitation.save()
+      invitation.save().then =>
+        @send('closeOverlay')
 
     acceptInvitation: (invitation) ->
       invitation.accept()
       invitation.save().then =>
         @store.find('dashboard')
+        @send('closeOverlay')
 
     showNewPaperOverlay: () ->
       @store.find('journal').then (journals) =>

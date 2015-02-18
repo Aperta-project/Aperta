@@ -1,6 +1,7 @@
 `import Ember from 'ember'`
+`import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-JournalIndexController = Ember.ObjectController.extend
+JournalIndexController = Ember.ObjectController.extend ValidationErrorsMixin,
   epubCssSaveStatus: ''
   pdfCssSaveStatus: ''
   manuscriptCssSaveStatus: ''
@@ -99,7 +100,11 @@ JournalIndexController = Ember.ObjectController.extend
 
       @set 'doiStartNumberEditable', false
       @get('model').save()
-      @set 'doiEditState', false
+        .then =>
+          @set 'doiEditState', false
+          @clearValidationErrors()
+        , (response) =>
+          @displayValidationErrorsFromResponse response
 
     assignRole: (roleId, user) ->
       userRole = @store.createRecord 'userRole',

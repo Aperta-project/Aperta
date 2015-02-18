@@ -53,15 +53,6 @@ module 'Integration: Admin Journal Test',
       200, "Content-Type": "application/json", JSON.stringify stubbedAdminJournalUserResponse
     ]
 
-test 'admin sees the complete DOI form', ->
-  # assert that the admin page has the 3 fields
-  visit "/admin/journals/#{journalId}"
-  .then ->
-    ok find('.admin-doi-setting-section')
-    ok find('.admin-doi-setting-section .publisher-prefix')
-    ok find('.admin-doi-setting-section .journal-prefix')
-    ok find('.admin-doi-setting-section .article')
-
 test 'saving doi info will send a put request to the admin journal controller', ->
   adminPage = "/admin/journals/#{journalId}"
   visit adminPage
@@ -73,3 +64,19 @@ test 'saving doi info will send a put request to the admin journal controller', 
     click('.admin-doi-setting-section button')
   andThen ->
     ok _.findWhere(server.requests, { method: 'PUT', url: adminPage })
+
+test 'saving invalid doi info will display an error', ->
+  server.respondWith 'PUT', "/admin/journals/#{journalId}", [
+    422, "Content-Type": "application/json", JSON.stringify {errors: {doi: ["Invalid"]}}
+  ]
+
+  adminPage = "/admin/journals/#{journalId}"
+  visit adminPage
+  .then ->
+    click('.admin-doi-settings-edit-button')
+    fillIn('.admin-doi-setting-section .doi_publisher_prefix', 'PPREFIX')
+    fillIn('.admin-doi-setting-section .doi_journal_prefix', 'a/b')
+    fillIn('.admin-doi-setting-section .last_doi_issued', '10000')
+    click('.admin-doi-setting-section button')
+  andThen ->
+    ok find('.admin-doi-setting-section .error-message').text().match(/Invalid/)

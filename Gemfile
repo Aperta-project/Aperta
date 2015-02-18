@@ -27,7 +27,6 @@ gem 'coffee-rails'
 gem 'acts_as_list'
 gem 'devise'
 gem 'bourbon'
-gem 'quiet_assets'
 gem 'kaminari'
 
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
@@ -44,7 +43,6 @@ gem "rest_client"
 gem 'gepub'
 gem 'rubyzip', require: 'zip'
 gem "active_model_serializers"
-gem 'pry-rails'
 gem 'pdfkit'
 gem 'mail_form'
 gem 'mini_magick'
@@ -75,14 +73,7 @@ group :doc do
 end
 
 group :development do
-  # gem 'rack-mini-profiler' # NOTE: this clashes with Teaspoon specs.
-  # Please add it in temporarily if you need to check for speed
-  gem 'bullet'
   gem 'letter_opener'
-  gem 'rubocop', require: false
-  gem 'scss-lint', require: false
-  gem 'overcommit', require: false
-  gem 'reek', require: false
 end
 
 group :development, :test, :performance do
@@ -97,8 +88,10 @@ group :development, :test, :performance do
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'pry-rescue'
+  gem 'pry-rails'
   gem 'foreman'
   gem 'sunspot_solr'
+  gem 'quiet_assets'
 end
 
 group :test do

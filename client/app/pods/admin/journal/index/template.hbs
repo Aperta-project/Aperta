@@ -37,6 +37,8 @@
 
     <p>This is the document identifier for this journal's articles, which appears alongside each article.</p>
 
+    {{error-message message=validationErrors.doi}}
+
     <label {{bind-attr class=":col-md-3 :form-group doiEditState:required"}}>
       <div class="admin-doi-settings-title">DOI</div>
       {{#if doiEditState}}

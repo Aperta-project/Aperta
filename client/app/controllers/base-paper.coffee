@@ -19,7 +19,7 @@ BasePaperController = Ember.ObjectController.extend
       false
     else
       logoUrl
-  ).property()
+  ).property('model.journal.logoUrl')
 
   authorTasks: Ember.computed.filterBy('tasks', 'role', 'author')
 

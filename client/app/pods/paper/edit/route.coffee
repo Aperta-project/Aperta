@@ -3,6 +3,7 @@
 `import LazyLoader from 'tahi/mixins/routes/lazy-loader'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Heartbeat from 'tahi/services/heartbeat'`
+`import Utils from 'tahi/services/utils'`
 
 PaperEditRoute = AuthorizedRoute.extend
   heartbeatService: null
@@ -58,6 +59,21 @@ PaperEditRoute = AuthorizedRoute.extend
 
     stopEditing: ->
       @endHeartbeat()
+
+    showActivityFeed: ->
+      paper = @modelFor('paper')
+      controller = @controllerFor 'overlays/activityFeed'
+      controller.set 'isLoading', true
+
+      RESTless.get("/papers/#{paper.get('id')}/activity_feed").then (data) =>
+        controller.setProperties
+          isLoading: false
+          model: Utils.deepCamelizeKeys(data.feeds)
+
+      @render 'overlays/activityFeed',
+        into: 'application',
+        outlet: 'overlay',
+        controller: controller
 
     addContributors: ->
       paper = @modelFor('paper')

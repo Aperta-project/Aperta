@@ -23,7 +23,9 @@ class PapersController < ApplicationController
   end
 
   def create
-    respond_with PaperFactory.create(paper_params, current_user)
+    @paper = PaperFactory.create(paper_params, current_user)
+    notify_paper_created! if @paper.valid?
+    respond_with @paper
   end
 
   def edit
@@ -44,6 +46,11 @@ class PapersController < ApplicationController
   end
 
   # non RESTful routes
+
+  def activity_feed
+    activity_feeds = ActivityFeed.where(feed_name: 'manuscript', subject_id: paper.id)
+    respond_with activity_feeds, each_serializer: ActivityFeedSerializer, root: 'feeds'
+  end
 
   def manage
     render 'ember/index'
@@ -149,5 +156,15 @@ class PapersController < ApplicationController
       paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
       raise ActiveRecord::RecordInvalid, paper
     end
+  end
+
+  def notify_paper_created!
+    ActivityFeed.create(
+      feed_name: 'manuscript',
+      activity_key: 'paper.create',
+      subject: paper,
+      user: current_user,
+      message: 'Paper was created'
+    )
   end
 end

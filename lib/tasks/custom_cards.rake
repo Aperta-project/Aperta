@@ -19,7 +19,14 @@ namespace :custom_cards do
     insert_after("config/routes.rb", needle, "  mount #{engine_class_name}::Engine => '/'")
 
     needle = "// DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE"
-    insert_after("app/assets/stylesheets/application.scss", needle, "@import '#{engine_name}/application';")
+    insert_after("app/assets/stylesheets/application.scss", needle, "@import '#{engine_name}/application'")
+
+    needle = "# PUT CUSTOM CARD ENGINES HERE - DO NOT REMOVE THIS LINE"
+    insert_after("Gemfile", needle, "gem '#{engine_name}', path: 'engines/#{engine_name}'")
+
+    # Run Bundler after updating the Gemfile
+    puts 'bundle'
+    system 'bundle'
 
     puts "Tahi Custom Task installation Successful!"
     puts "Also, be sure to add your new Custom Task to a Journal's Manuscript Manager Template"

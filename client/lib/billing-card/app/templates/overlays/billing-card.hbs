@@ -1,0 +1,170 @@
+<h1>
+  Publication Fees
+</h1>
+
+{{!-- render billingDetail model.billingDetail --}}
+
+<div class="add-author-form">
+  <div class="form-group form-inline author-top">
+    <div {{bind-attr class=":form-group :author-half :required validationErrors.firstName:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=billingDetail.firstName
+              class="form-control"
+              placeholder="First name"}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.lastName:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=billingDetail.lastName
+              class="form-control"
+              placeholder="Last name"}}
+    </div>
+  </div>
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":form-group :author-half :required validationErrors.title:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=billingDetail.title
+              class="form-control"
+              placeholder="Title"}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.department:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=billingDetail.department
+              class="form-control"
+              placeholder="Department"}}
+    </div>
+  </div>
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":form-group :author-half :required validationErrors.affiliation:error"}}>
+      {{error-message message=null}}
+      {{select-2-single value=billingDetail.affiliation1
+                        class="affiliation-field"
+                        placeholder="Affiliation"
+                        selectedData=selectedAffiliation
+                        source=ringgold}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.secondaryAffiliation:error"}}>
+      {{error-message message=null}}
+      {{select-2-single value=billingDetail.affiliation2
+                        class="secondary-affiliation-field"
+                        placeholder="Secondary Affiliation"
+                        selectedData=selectedSecondaryAffiliation
+                        source=ringgold}}
+    </div>
+  </div>
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":form-group :author-half :required validationErrors.email:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=billingDetail.phoneNumber
+              class="form-control"
+              placeholder="Phone"}}
+
+    </div>
+    <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.email:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=billingDetail.emailAddress
+              class="form-control"
+              placeholder="Email"}}
+
+    </div>
+  </div>
+</div>
+
+<div class="add-author-form">
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
+      {{error-message message=null}}
+      {{ select-2-single value='newAuthor.affiliation'
+                      class=""
+                      placeholder="Please select your Country"
+                      selectedData='selectedAffiliation'
+                      source=countries }}
+    </div>
+  </div>
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":required validationErrors.department:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=billingDetail.address1
+              class="form-control"
+              placeholder="Address line one"}}
+    </div>
+  </div>
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":required validationErrors.department:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=billingDetail.address2
+              class="form-control"
+              placeholder="Address line two"}}
+    </div>
+  </div>
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=billingDetail.city
+              class="form-control"
+              placeholder="City"}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-name :author-bump validationErrors.department:error"}}>
+      {{ select-2-single value='billingDetail.state'
+                      class=""
+                      placeholder="Select State"
+                      selectedData='selectedState'
+                      source=states }}
+    </div>
+    <div {{bind-attr class=":required :form-group :author-name validationErrors.department:error"}}>
+      {{error-message message=null}}
+      {{input type="text"
+              value=billingDetail.postalCode
+              class="form-control"
+              placeholder="Postal Code"}}
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2>
+  Payment Options
+</h2>
+
+{{partial "intro"}}
+
+<ol class='question-list'>
+  <li class="question">
+    <h3>
+      How would you like to pay?
+    </h3>
+
+    <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.affiliation:error"}}>
+      {{error-message message=null}}
+      {{select-2-single value=controller.selectedResponse
+                        class="affiliation-field"
+                        placeholder="Select One"
+                        selectedData=selectedAffiliation
+                        source=responses}}
+    </div>
+  </li>
+
+  {{partial 'selfPayment'}}
+  {{partial 'institutional'}}
+  {{partial 'gpi'}}
+  {{partial 'pfa'}}
+  {{partial 'specialCollection'}}
+</ol>
+
+<hr>
+
+
+<a {{action "submitToDB"}} class="button-secondary button--green">Submit!</a>

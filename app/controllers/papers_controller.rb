@@ -42,13 +42,15 @@ class PapersController < ApplicationController
       paper.update(update_paper_params)
     end
 
+    notify_paper_edited! if params[:paper][:locked_by_id].present?
+
     respond_with paper
   end
 
   # non RESTful routes
 
   def activity_feed
-    activity_feeds = ActivityFeed.where(feed_name: 'manuscript', subject_id: paper.id)
+    activity_feeds = ActivityFeed.where(feed_name: 'manuscript', subject_id: paper.id).order('created_at DESC')
     respond_with activity_feeds, each_serializer: ActivityFeedSerializer, root: 'feeds'
   end
 
@@ -165,6 +167,16 @@ class PapersController < ApplicationController
       subject: paper,
       user: current_user,
       message: 'Paper was created'
+    )
+  end
+
+  def notify_paper_edited!
+    ActivityFeed.create(
+      feed_name: 'manuscript',
+      activity_key: 'paper.edit',
+      subject: paper,
+      user: current_user,
+      message: 'Paper was edited'
     )
   end
 end

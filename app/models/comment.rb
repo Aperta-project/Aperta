@@ -24,10 +24,6 @@ class Comment < ActiveRecord::Base
 
   private
 
-  def notifier_payload
-    { task_id: task.id, paper_id: task.paper.id }
-  end
-
   def people_mentioned
     @people_mentioned ||= User.where(username: mentions_extracted_from_body)
   end

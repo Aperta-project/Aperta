@@ -101,6 +101,8 @@ module BillingCard
           # :role,
           :state,
           :title,
+          :payment_method,
+          :author_confirmation
           # :type
         )
       end

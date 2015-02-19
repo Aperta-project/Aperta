@@ -7,9 +7,15 @@ import Task from 'tahi/models/task';
 // export default BillingCardTask;
 
 export default DS.Model.extend({
+  // Tahi Card Attributes
   journalId: DS.attr('number'),
   paperId: DS.attr('number'),
 
+  // UI Attributes specific to the Card's UI
+  authorConfirmation: DS.attr('boolean'),
+  paymentMethod: DS.attr('string'),
+
+  // Attributes specific to PLOS Billing
   pfa_funding_statement: DS.attr('string'),
   pfa_question_1: DS.attr('string'),
   pfa_question_1a: DS.attr('string'),

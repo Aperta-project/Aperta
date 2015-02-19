@@ -44,7 +44,8 @@ export default TaskController.extend({
   ],
   states: [
     {id: 1, text: "CA"},
-    {id: 2, text: "NY"}
+    {id: 2, text: "NY"},
+    {id: 3, text: "WA"}
   ],
   inviteCode: '',
   endingComments: '',
@@ -98,13 +99,12 @@ export default TaskController.extend({
     },
   ],
   responses: [
-    {id: 1, text: "I will pay the full fee upon article acceptance"},
-    {id: 2, text: "Institutional Account Program"},
-    {id: 3, text: "PLOS Global Participation Initiative (GPI)"},
-    {id: 4, text: "PLOS Publication Fee Assistance Program (PFA)"},
-    {id: 5, text: "I have been invited to submit to a Special Collection"}
+    {id: 'self_payment', text: "I will pay the full fee upon article acceptance"},
+    {id: 'institutional', text: "Institutional Account Program"},
+    {id: 'gpi', text: "PLOS Global Participation Initiative (GPI)"},
+    {id: 'pfa', text: "PLOS Publication Fee Assistance Program (PFA)"},
+    {id: 'special_collection', text: "I have been invited to submit to a Special Collection"}
   ],
-  selectedResponse: null,
   selectedRinggold: null,
   selfPayment: function() {
     return this.selectedResponse == 1;
@@ -127,6 +127,8 @@ export default TaskController.extend({
   agreeCollections: false,
   actions: {
     submitToDB: function() {
+      var detail = this.get("billingDetail").content;
+      detail.save()
       alert("I'm submitting!")
     },
     setBillingDetails: function() {
@@ -135,7 +137,6 @@ export default TaskController.extend({
 
       // Try to find a Billing Record for this Paper, within this Journal
       this.set("billingDetail", this.store.find("billingDetail", 1));
-
       // else...
       // Create a Record if it does not exist
       // var billing = this.store.createRecord('billingDetail', {
@@ -145,7 +146,26 @@ export default TaskController.extend({
       // });
       // billing.save()
     }
-  }
+  },
+  selectedPayment: function() {
+    var paymentMethod = 'gpi'
+    // var paymentMethod = this.get("billingDetail.paymentMethod")
 
+    var match = this.get('responses').find(function(element, index, array) {
+      if (element.id === paymentMethod) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+
+    return {
+      id: match.id,
+      text: match.text
+    }
+
+
+    this.get('billingDetail.paymentMethod')
+  }.property("billingDetail")
 
 });

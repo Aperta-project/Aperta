@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217221856) do
+ActiveRecord::Schema.define(version: 20150218225028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,8 +87,10 @@ ActiveRecord::Schema.define(version: 20150217221856) do
     t.text     "state"
     t.text     "postal_code"
     t.text     "country"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.boolean  "author_confirmation",     default: false
+    t.string   "payment_method"
   end
 
   create_table "comment_looks", force: :cascade do |t|

@@ -82,10 +82,10 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{ select-2-single value='newAuthor.affiliation'
+      {{ select-2-single value='billingDetail.country'
                       class=""
                       placeholder="Please select your Country"
-                      selectedData='selectedAffiliation'
+                      selectedData='billingDetail.country'
                       source=countries }}
     </div>
   </div>
@@ -120,7 +120,7 @@
       {{ select-2-single value='billingDetail.state'
                       class=""
                       placeholder="Select State"
-                      selectedData='selectedState'
+                      selectedData='billingDetail.state'
                       source=states }}
     </div>
     <div {{bind-attr class=":required :form-group :author-name validationErrors.department:error"}}>
@@ -149,10 +149,10 @@
 
     <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.affiliation:error"}}>
       {{error-message message=null}}
-      {{select-2-single value=controller.selectedResponse
+      {{select-2-single value=billingDetail.paymentMethod
                         class="affiliation-field"
                         placeholder="Select One"
-                        selectedData=selectedAffiliation
+                        selectedData=selectedPayment
                         source=responses}}
     </div>
   </li>

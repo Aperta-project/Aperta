@@ -63,17 +63,15 @@ class EditPaperPage < Page
     raise NotImplementedError, "TODO: The UI on paper#edit needs to be implemented"
   end
 
+  # Note: manipulating the document is not supported thoroughly as it depends too much on the
+  # VE internals. If we really need more, we should come up with an abstracted manipulation API
+  # implemented in ember-cli-visualeditor/models/visual-editor.js.
   def body=(string)
     code = <<HERE
-     var surf = ve.instances[0].getModel();
-     var doc = surf.getDocument();
-     var l = doc.getData().length;
-     var range = new ve.Range(0, l);
-     var clearTransaction = ve.dm.Transaction.newFromRemoval(doc, range, true);
-     surf.change(clearTransaction);
-     var newData = '#{string}'.split('');
-     newTransaction = ve.dm.Transaction.newFromInsertion(doc, 0, newData);
-     surf.change(newTransaction);
+var editorController = Tahi.__container__.lookup("controller:paper/edit");
+var veModel = editorController.get("visualEditor");
+veModel.setCursor(0);
+veModel.write("#{string}");
 HERE
     page.execute_script code
   end

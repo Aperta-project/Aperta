@@ -62,7 +62,7 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
 
 .ve-toolbar-underside {
   @include position(fixed, $tahi-control-bar-height 0px auto 0px);
-  height: 43px;
+  height: 31px;
   background: rgba($tahi-white, 0.7);
   z-index: 1;
 }
@@ -103,6 +103,68 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
 .author-detail {
   display: inline-block;
   min-width: 100px;
+}
+
+.editor-toolbar {
+  background: rgba($tahi-white, 1.0);
+  float: none;
+  width: 1120px;
+  margin: 0 auto;
+  cursor: default;
+
+  &.disabled {
+    opacity: 0.3;
+  }
+
+  .edit-paper {
+    display: inline-block;
+    margin-left: 5px;
+  }
+
+  .separator {
+    width: 1px;
+    border-left: 1px solid #ccc;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .ve-tool-group {
+    display: inline-block;
+  }
+
+  .ve-select {
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: small;
+
+    .ve-option.disabled {
+      display: none;
+    }
+  }
+}
+
+.editor-toolbar .ve-tool-group .ve-tool {
+  display: inline-block;
+  padding: 5px 10px;
+
+  &.disabled {
+    opacity: 0.3;
+  }
+
+  &.enabled {
+    cursor: pointer;
+  }
+
+  &.enabled:hover {
+    background-color: #666;
+    color: white;
+  }
+
+  &.active {
+    background-color: #666;
+    color: white;
+  }
 }
 
 #tahi-container main {

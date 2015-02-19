@@ -38,26 +38,31 @@ describe Comment, redis: true do
     before { ActionMailer::Base.deliveries.clear }
     after  {clear_enqueued_jobs}
 
+    def create_comment_and_notify_mentions(options = {})
+      comment = FactoryGirl.create(:comment, options)
+      comment.notify_mentioned_people
+    end
+
     it "send email on @mention" do
-      FactoryGirl.create(:comment, body: "check this out @#{author.username}")
+      create_comment_and_notify_mentions(body: "check this out @#{author.username}")
       expect(enqueued_jobs.size).to eq 1
     end
 
     it "send email on multiple, messy @mention" do
-      FactoryGirl.create(:comment, body: "check this out @#{author.username} @#{commenter.username} @#{author2.username}, @someOtherHandle like whoa!", commenter: commenter )
+      create_comment_and_notify_mentions(body: "check this out @#{author.username} @#{commenter.username} @#{author2.username}, @someOtherHandle like whoa!", commenter: commenter)
       expect(enqueued_jobs.size).to eq 2
     end
 
-    it "send email on multiple, messy @mention, verify the emails sent" do
+    it "send email on multiple @mention to existing users" do
       perform_enqueued_jobs do
-        FactoryGirl.create(:comment, body: "check this out @#{author.username} @#{commenter.username} @#{author2.username}, @someOtherHandle like whoa!", commenter: commenter )
+        create_comment_and_notify_mentions(body: "check this out @#{author.username} @#{commenter.username} @#{author2.username}, @someOtherHandle like whoa!", commenter: commenter)
       end
       expect(ActionMailer::Base.deliveries.flat_map(&:to)).to match_array [author.email, author2.email]
     end
 
     it "does not send email without @mention" do
       expect {
-        FactoryGirl.create(:comment, body: "generic text with no mentions")
+        create_comment_and_notify_mentions(body: "generic text with no mentions")
       }.to_not change(enqueued_jobs, :size)
     end
   end

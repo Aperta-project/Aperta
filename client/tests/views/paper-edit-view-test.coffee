@@ -1,11 +1,10 @@
 `import Ember from 'ember'`
 `import { test, moduleFor } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
-`import VisualEditorService from 'tahi/services/visual-editor'`
 
 moduleFor 'view:paper/edit', 'Unit: paperEditView',
   teardown: ->
-    VisualEditorService.create.restore()
+    # VisualEditorService.create.restore()
 
   setup: ->
 
@@ -17,9 +16,9 @@ moduleFor 'view:paper/edit', 'Unit: paperEditView',
       body: 'hello'
       editable: true
 
-    sinon.stub(VisualEditorService, 'create').returns
-      enable: ->
-      disable: ->
+    # sinon.stub(VisualEditorService, 'create').returns
+    #   enable: ->
+    #   disable: ->
 
     controller = getContainer().lookup 'controller:paper.edit'
 

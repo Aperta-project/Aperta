@@ -2,7 +2,9 @@
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-var app = new EmberApp({storeConfigInMeta: false});
+var app = new EmberApp({
+  storeConfigInMeta: false
+});
 
 // Use `app.import` to add additional libraries to the generated
 // output files.
@@ -31,7 +33,7 @@ app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 // FileUpload
 app.import('vendor/jquery.ui.widget.js');
 app.import('vendor/jquery.iframe-transport.js');
-app.import('vendor/jquery.fileupload/jquery.fileupload.css')
+app.import('vendor/jquery.fileupload/jquery.fileupload.css');
 app.import('vendor/jquery.fileupload/jquery.fileupload.js');
 
 // Select 2

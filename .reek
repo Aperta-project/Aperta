@@ -1,4 +1,0 @@
-IrresponsibleModule:
-  enabled: false
-TooManyStatements:
-  enabled: false

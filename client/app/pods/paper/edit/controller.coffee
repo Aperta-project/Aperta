@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 `import BasePaperController from 'tahi/controllers/base-paper'` # EMBERCLI TODO - this is weird
-`import VisualEditor from 'tahi/services/visual-editor'`
+`import VisualEditor from 'ember-cli-visualeditor/models/visual-editor'`
 
 PaperEditController = BasePaperController.extend
   needs: ['overlays/paperSubmit']
@@ -15,9 +15,6 @@ PaperEditController = BasePaperController.extend
 
   isBodyEmpty: Ember.computed 'model.body', ->
     Ember.isBlank $(@get 'model.body').text()
-
-  showPlaceholder: Ember.computed 'isBodyEmpty', 'visualEditor.isCurrentlyEditing', ->
-    @get('isBodyEmpty') && !@get('visualEditor.isCurrentlyEditing')
 
   statusMessage: Ember.computed.any 'processingMessage', 'userEditingMessage', 'saveStateMessage'
 
@@ -63,12 +60,10 @@ PaperEditController = BasePaperController.extend
   ).observes('saveState')
 
   actions:
-    tryHidingPlaceholder: ->
-      @get('visualEditor').startEditing()
 
     toggleEditing: ->
       if @get('lockedBy') #unlocking -> Allowing others to edit
-        @set('body', @get('visualEditor.bodyHtml'))
+        @set('body', @get('visualEditor').toHtml())
         @set('lockedBy', null)
         @send('stopEditing')
         @get('model').save().then (paper) =>

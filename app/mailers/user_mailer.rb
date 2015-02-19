@@ -48,10 +48,10 @@ class UserMailer < ActionMailer::Base
       subject: "You've been assigned as an editor on Tahi")
   end
 
-  def mention_collaborator(comment_id, commentee_id)
-    @comment = Comment.find(comment_id)
+  def mention_collaborator(comment, commentee)
+    @comment = comment
     @commenter = @comment.commenter
-    @commentee = User.find(commentee_id)
+    @commentee = commentee
 
     mail(
       to: @commentee.try(:email),

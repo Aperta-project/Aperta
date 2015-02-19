@@ -24,11 +24,11 @@ describe Comment, redis: true do
     it "set the mentions with indices to entities attribute" do
       body = "hi @#{author.username}, @#{author2.username}, and @nonexistent_user"
       comment = FactoryGirl.create(:comment, body: body)
-      first_username_length = ('@'+author.username).length
+      first_username_length = "@#{author.username}".length
 
-      expected = {'screen_name' => author.username, 'indices' => [3, 3+first_username_length]}
-      expect(comment.entities['user_mentions'][0]).to eq expected
-      expect(comment.entities['user_mentions'].length).to eq 3
+      expected = { "screen_name" => author.username, "indices" => [3, 3 + first_username_length] }
+      expect(comment.entities["user_mentions"][0]).to eq expected
+      expect(comment.entities["user_mentions"].length).to eq 3
     end
   end
 
@@ -36,7 +36,7 @@ describe Comment, redis: true do
     include ActiveJob::TestHelper
 
     before { ActionMailer::Base.deliveries.clear }
-    after  {clear_enqueued_jobs}
+    after  { clear_enqueued_jobs }
 
     def create_comment_and_notify_mentions(options = {})
       comment = FactoryGirl.create(:comment, options)

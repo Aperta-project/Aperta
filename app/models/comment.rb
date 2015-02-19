@@ -32,7 +32,7 @@ class Comment < ActiveRecord::Base
   # uses the same format as
   # https://dev.twitter.com/overview/api/entities-in-twitter-objects#user_mentions
   def set_mentions
-    self.entities = {user_mentions: Twitter::Extractor.extract_mentioned_screen_names_with_indices(body)}
+    self.entities = { user_mentions: Twitter::Extractor.extract_mentioned_screen_names_with_indices(body) }
   end
 
   def people_mentioned

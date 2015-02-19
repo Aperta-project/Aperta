@@ -29,8 +29,7 @@ class Comment < ActiveRecord::Base
   end
 
   def people_mentioned
-    names = Twitter::Extractor.extract_mentioned_screen_names(body).uniq - [commenter.username]
-    @people_mentioned ||= User.where(username: names)
+    @people_mentioned ||= User.where(username: mentions_extracted_from_body)
   end
 
   # uses the same format as
@@ -50,5 +49,9 @@ class Comment < ActiveRecord::Base
     people_mentioned.each do |mentionee|
       UserMailer.mention_collaborator(self, mentionee).deliver_later
     end
+  end
+
+  def mentions_extracted_from_body
+    Twitter::Extractor.extract_mentioned_screen_names(body).uniq - [commenter.username]
   end
 end

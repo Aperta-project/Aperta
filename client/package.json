@@ -40,6 +40,6 @@
     "tahi-supporting-information-card": "git://github.com/Tahi-project/tahi-supporting-information-card.git",
     "tahi-upload-manuscript-card": "git://github.com/Tahi-project/tahi-upload-manuscript-card.git",
     "ember-cli-font-awesome": "0.0.7",
-    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#05c5e375f30e0de0144f621db6b8d73d0387aeed"
+    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#c99e24ee1cf9efcfa0c27240e8822e05a557b53a"
   }
 }

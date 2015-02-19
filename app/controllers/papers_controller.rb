@@ -165,7 +165,7 @@ class PapersController < ApplicationController
   def notify_paper_created!
     ActivityFeed.create(
       feed_name: 'manuscript',
-      activity_key: 'paper.create',
+      activity_key: 'paper.created',
       subject: paper,
       user: current_user,
       message: 'Paper was created'
@@ -175,7 +175,7 @@ class PapersController < ApplicationController
   def notify_paper_edited!
     ActivityFeed.create(
       feed_name: 'manuscript',
-      activity_key: 'paper.edit',
+      activity_key: 'paper.edited',
       subject: paper,
       user: current_user,
       message: 'Paper was edited'

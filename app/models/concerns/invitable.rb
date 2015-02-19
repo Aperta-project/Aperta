@@ -5,7 +5,7 @@ module Invitable
     has_many :invitations, inverse_of: :task, foreign_key: :task_id
   end
 
-  def invitation_accepted
+  def invitation_accepted(invitation)
     raise NotImplementedError, "the method 'invitation_accepted' must be defined in the subclass"
   end
 end

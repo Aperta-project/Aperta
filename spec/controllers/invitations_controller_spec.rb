@@ -30,35 +30,32 @@ describe InvitationsController do
     end
   end
 
-  describe "PUT /invitations/:id" do
+  describe "PUT /invitations/:id/accept" do
+    let(:task) { FactoryGirl.create(:paper_editor_task) }
+    let(:invitation) { FactoryGirl.create(:invitation, invitee: invitee, task: task) }
 
-    let(:invitation) { FactoryGirl.create(:invitation, invitee: invitee) }
-
-    it "can be accepted" do
-      put(:update, {
+    it "gives access to the user as the editor" do
+      put(:accept, {
         format: "json",
-        id: invitation.id,
-        invitation: {
-          state: 'accepted'
-        }
+        id: invitation.id
       })
-      expect(response.status).to eq(200)
-
-      data = JSON.parse(response.body).with_indifferent_access
-      expect(data[:invitations][:paper_id]).to be_present
-
+      expect(response.status).to eq(204)
       invitation.reload
       expect(invitation.state).to eq("accepted")
       expect(invitation.actor).to eq(invitee)
+      expect(task.paper.assigned_users).to include(invitee)
+      expect(task.paper.editor).to eq(invitee)
     end
+  end
 
-    it "can be rejected" do
-      put(:update, {
+  describe "PUT /invitations/:id/reject" do
+    let(:task) { FactoryGirl.create(:paper_editor_task) }
+    let(:invitation) { FactoryGirl.create(:invitation, invitee: invitee, task: task) }
+
+    it "rejects the invitation" do
+      put(:reject, {
         format: "json",
-        id: invitation.id,
-        invitation: {
-          state: 'rejected'
-        }
+        id: invitation.id
       })
       expect(response.status).to eq(204)
       invitation.reload

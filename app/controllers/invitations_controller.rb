@@ -7,8 +7,15 @@ class InvitationsController < ApplicationController
     render json: invitation, status: :created
   end
 
-  def update
-    invitation.update(invitation_params.merge!(actor_id: current_user.id))
+  def accept
+    invitation.actor = current_user
+    invitation.accept!
+    render json: nil, status: :no_content
+  end
+
+  def reject
+    invitation.actor = current_user
+    invitation.reject!
     render json: nil, status: :no_content
   end
 
@@ -16,7 +23,7 @@ class InvitationsController < ApplicationController
   private
 
   def invitation_params
-    params.require(:invitation).permit(:email, :task_id, :invitee_id, :actor_id, :state)
+    params.require(:invitation).permit(:email, :task_id, :invitee_id, :actor_id)
   end
 
   def task

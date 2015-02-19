@@ -1,4 +1,5 @@
 `import Ember from 'ember'`
+`import RESTless from 'tahi/services/rest-less'`
 
 DashboardRoute = Ember.Route.extend
   model: ->
@@ -20,15 +21,14 @@ DashboardRoute = Ember.Route.extend
       return true
 
     rejectInvitation: (invitation) ->
-      invitation.reject()
-      invitation.save().then =>
-        @send('closeOverlay')
+      RESTless.putModel(invitation, '/reject').then ->
+        invitation.reject()
 
     acceptInvitation: (invitation) ->
-      invitation.accept()
-      invitation.save().then =>
+      RESTless.putModel(invitation, '/accept').then =>
+        invitation.accept()
+        # TODO: Just send back sparse papers when litePapers are removed.
         @store.find('dashboard')
-        @send('closeOverlay')
 
     showNewPaperOverlay: () ->
       @store.find('journal').then (journals) =>

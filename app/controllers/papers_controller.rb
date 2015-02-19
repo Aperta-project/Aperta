@@ -50,7 +50,8 @@ class PapersController < ApplicationController
   # non RESTful routes
 
   def activity_feed
-    activity_feeds = ActivityFeed.where(feed_name: 'manuscript', subject_id: paper.id).order('created_at DESC')
+    # TODO: params[:name] probably needs some securitifications
+    activity_feeds = ActivityFeed.where(feed_name: params[:name], subject_id: paper.id).order('created_at DESC')
     respond_with activity_feeds, each_serializer: ActivityFeedSerializer, root: 'feeds'
   end
 
@@ -96,6 +97,7 @@ class PapersController < ApplicationController
   def submit
     paper.update(submitted: true, editable: false)
     status = paper.valid? ? 200 : 422
+    notify_paper_submitted! if paper.valid?
     render json: paper, status: status
   end
 
@@ -177,6 +179,16 @@ class PapersController < ApplicationController
       subject: paper,
       user: current_user,
       message: 'Paper was edited'
+    )
+  end
+
+  def notify_paper_submitted!
+    ActivityFeed.create(
+      feed_name: 'manuscript',
+      activity_key: 'paper.submitted',
+      subject: paper,
+      user: current_user,
+      message: 'Paper was submitted'
     )
   end
 end

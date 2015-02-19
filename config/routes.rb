@@ -98,7 +98,7 @@ Tahi::Application.routes.draw do
       get "/status/:id", to: 'paper_conversions#status'
       put :toggle_editable
       put :submit
-      get :activity_feed
+      get 'activity_feed/:name', to: 'papers#activity_feed'
     end
   end
 

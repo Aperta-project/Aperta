@@ -23,7 +23,9 @@ class PapersController < ApplicationController
   end
 
   def create
-    respond_with PaperFactory.create(paper_params, current_user)
+    @paper = PaperFactory.create(paper_params, current_user)
+    notify_paper_created! if @paper.valid?
+    respond_with @paper
   end
 
   def edit
@@ -40,10 +42,18 @@ class PapersController < ApplicationController
       paper.update(update_paper_params)
     end
 
+    notify_paper_edited! if params[:paper][:locked_by_id].present?
+
     respond_with paper
   end
 
   # non RESTful routes
+
+  def activity_feed
+    # TODO: params[:name] probably needs some securitifications
+    activity_feeds = ActivityFeed.where(feed_name: params[:name], subject_id: paper.id).order('created_at DESC')
+    respond_with activity_feeds, each_serializer: ActivityFeedSerializer, root: 'feeds'
+  end
 
   def manage
     render 'ember/index'
@@ -87,6 +97,7 @@ class PapersController < ApplicationController
   def submit
     paper.update(submitted: true, editable: false)
     status = paper.valid? ? 200 : 422
+    notify_paper_submitted! if paper.valid?
     render json: paper, status: status
   end
 
@@ -149,5 +160,35 @@ class PapersController < ApplicationController
       paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
       raise ActiveRecord::RecordInvalid, paper
     end
+  end
+
+  def notify_paper_created!
+    ActivityFeed.create(
+      feed_name: 'manuscript',
+      activity_key: 'paper.created',
+      subject: paper,
+      user: current_user,
+      message: 'Paper was created'
+    )
+  end
+
+  def notify_paper_edited!
+    ActivityFeed.create(
+      feed_name: 'manuscript',
+      activity_key: 'paper.edited',
+      subject: paper,
+      user: current_user,
+      message: 'Paper was edited'
+    )
+  end
+
+  def notify_paper_submitted!
+    ActivityFeed.create(
+      feed_name: 'manuscript',
+      activity_key: 'paper.submitted',
+      subject: paper,
+      user: current_user,
+      message: 'Paper was submitted'
+    )
   end
 end

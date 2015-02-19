@@ -222,7 +222,7 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
 }
 
 .task-list {
-  padding: 40px 30px 0 30px;
+  padding: 15px 30px 0 30px;
 }
 
 .task-list-doi {
@@ -259,6 +259,29 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
 .edit-paper .glyphicon-lock,
 .edit-paper .edit-paper-lock-message span {
   overflow: hidden;
+}
+
+.recent-activity-link {
+  position: relative;
+  height: 30px;
+  margin-top: 15px;
+  padding: 0 0 0 60px;
+  color: $tahi-green;
+  font-size: 14px;
+  line-height: 27px;
+  cursor: pointer;
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 30px;
+    width: 24px;
+    height: 24px;
+  }
+
+  path {
+    fill: $tahi-green;
+  }
 }
 
 // end edit-paper section

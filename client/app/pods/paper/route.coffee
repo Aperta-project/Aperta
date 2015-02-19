@@ -1,5 +1,6 @@
 `import Ember from 'ember'`
 `import RESTless from 'tahi/services/rest-less'`
+`import Utils from 'tahi/services/utils'`
 
 PaperRoute = Ember.Route.extend
   model: (params) ->
@@ -30,5 +31,21 @@ PaperRoute = Ember.Route.extend
       paper_id: doi
     else
       @_super(model, params)
+
+  actions:
+    showActivityFeed: (name) ->
+      paper = @modelFor('paper')
+      controller = @controllerFor 'overlays/activityFeed'
+      controller.set 'isLoading', true
+
+      RESTless.get("/papers/#{paper.get('id')}/activity_feed/#{name}").then (data) =>
+        controller.setProperties
+          isLoading: false
+          model: Utils.deepCamelizeKeys(data.feeds)
+
+      @render 'overlays/activityFeed',
+        into: 'application',
+        outlet: 'overlay',
+        controller: controller
 
 `export default PaperRoute`

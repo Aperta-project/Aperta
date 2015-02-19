@@ -31,27 +31,32 @@ describe Comment, redis: true do
   end
 
   context "notifications" do
+    include ActiveJob::TestHelper
+
     before { ActionMailer::Base.deliveries.clear }
+    after  {clear_enqueued_jobs}
 
     it "send email on @mention" do
-      expect {
-        FactoryGirl.create(:comment, body: "check this out @#{author.username}")
-      }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+      FactoryGirl.create(:comment, body: "check this out @#{author.username}")
+      expect(enqueued_jobs.size).to eq 1
     end
 
     it "send email on multiple, messy @mention" do
-      expect {
-        FactoryGirl.create(:comment, body: "check this out @#{author.username} @#{commenter.username} @#{author2.username}, @someOtherHandle like whoa!", commenter: commenter )
-      }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).from(0).to(2)
+      FactoryGirl.create(:comment, body: "check this out @#{author.username} @#{commenter.username} @#{author2.username}, @someOtherHandle like whoa!", commenter: commenter )
+      expect(enqueued_jobs.size).to eq 2
+    end
 
-      Sidekiq::Extensions::DelayedMailer.drain
-      expect(ActionMailer::Base.deliveries.collect(&:to).flatten).to match_array [author.email, author2.email]
+    it "send email on multiple, messy @mention, verify the emails sent" do
+      perform_enqueued_jobs do
+        FactoryGirl.create(:comment, body: "check this out @#{author.username} @#{commenter.username} @#{author2.username}, @someOtherHandle like whoa!", commenter: commenter )
+      end
+      expect(ActionMailer::Base.deliveries.flat_map(&:to)).to match_array [author.email, author2.email]
     end
 
     it "does not send email without @mention" do
       expect {
         FactoryGirl.create(:comment, body: "generic text with no mentions")
-      }.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
+      }.to_not change(enqueued_jobs, :size)
     end
   end
 end

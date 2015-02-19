@@ -48,7 +48,7 @@ class Comment < ActiveRecord::Base
 
   def email_mentioned
     people_mentioned.each do |mentionee|
-      UserMailer.delay.mention_collaborator(id, mentionee.id)
+      UserMailer.mention_collaborator(self, mentionee).deliver_later
     end
   end
 end

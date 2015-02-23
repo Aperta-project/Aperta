@@ -97,7 +97,7 @@ You can run the javascript specs via the command line with `rake ember-cli:test`
 
 You can also run the javascript specs from the browser, however there is currently
 a limitation with ember-cli-rails (see https://github.com/rwz/ember-cli-rails/issues/18).
-As a workaround, you can `cd client` and run `ember server` and visit `localhost:4200/tests`
+As a workaround, you can `cd client` and run `ember server --environment=test` and visit `localhost:4200/tests`
 
 For help writing ember tests please see the [ember-cli testing section](http://www.ember-cli.com/#testing)
 

@@ -1,13 +1,43 @@
 {{partial "paper/control-bar"}}
 
 {{flash-messages messages=flash.messages classNames="flash-messages--on-paper-edit-page"}}
+<div class="ve-toolbar-underside">
+    {{#visual-editor-toolbar viewName="toolbar" visualEditor=view.visualEditor classNames='editor-toolbar'}}
+      {{#ve-button-group name="history"}}
+        {{#ve-button command="undo"}}{{fa-icon "undo"}}{{/ve-button}}
+        {{#ve-button command="redo" }}{{fa-icon "repeat"}}{{/ve-button}}
+      {{/ve-button-group}}
+      <span class="separator"></span>
+      {{#ve-select name="switch-type"}}
+        {{#ve-option command="paragraph"}}Paragraph{{/ve-option}}
+        {{#ve-option command="heading1"}}Heading 1{{/ve-option}}
+        {{#ve-option command="heading2"}}Heading 2{{/ve-option}}
+        {{#ve-option command="heading3"}}Heading 3{{/ve-option}}
+        {{#ve-option command="preformatted"}}Preformatted{{/ve-option}}
+        {{#ve-option command="blockquote"}}Blockquote{{/ve-option}}
+      {{/ve-select}}
+      <span class="separator"></span>
+      {{#ve-button-group name="annotations"}}
+        {{#ve-button command="bold"}}{{fa-icon "bold"}}{{/ve-button}}
+        {{#ve-button command="italic"}}{{fa-icon "italic"}}{{/ve-button}}
+        {{#ve-button command="link"}}{{fa-icon "link"}}{{/ve-button}}
+      {{/ve-button-group}}
+      <span class="separator"></span>
+      {{#ve-button-group name="insert"}}
+        {{#ve-button command="figure"}}{{fa-icon "image"}}{{/ve-button}}
+        {{#ve-button command="insertTable"}}{{fa-icon "table"}}{{/ve-button}}
+      {{/ve-button-group}}
+    {{/visual-editor-toolbar}}
+</div>
 
-<div class="ve-toolbar-underside"></div>
 <div id="tahi-container">
 
   <main {{bind-attr class="hasNoMetaDataTasks:sidebar-empty"}}>
 
     <aside>
+      <div {{action "showActivityFeed" "manuscript"}} class="recent-activity-link">
+        {{partial "svg/heartbeat"}} Recent Activity
+      </div>
       <div class="task-list">
         {{partial "paper/task-list"}}
         <a {{action "submit" target="view"}} {{bind-attr class=":button-primary allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit</a>
@@ -40,7 +70,7 @@
           {{/if}}
         </div>
 
-        <div id="paper-body" class="editable"></div>
+        {{visual-editor id="paper-body" model=controller.visualEditor viewName='visualEditor'}}
       </div>
     </article>
 

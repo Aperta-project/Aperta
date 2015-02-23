@@ -2,7 +2,12 @@
 `import RedirectsIfEditable from 'tahi/mixins/views/redirects-if-editable'`
 
 PaperEditView = Ember.View.extend RedirectsIfEditable,
-  visualEditor: Ember.computed.alias('controller.visualEditor')
+
+  # initialized by component helper {{visual-editor}}
+  visualEditor: null
+
+  # initialized by component helper {{visual-editor-toolbar}}
+  toolbar: null
 
   locked: Ember.computed.alias 'controller.locked'
   isEditing: Ember.computed.alias 'controller.isEditing'
@@ -17,19 +22,6 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
   resetBackgroundColor: (->
     $('html').removeClass 'matte'
   ).on('willDestroyElement')
-
-  bindPlaceholderEvent: ->
-    $('.editable').on "keyup", "div[contenteditable]", (e) =>
-
-      # if we're currently showing placeholder we want it to go away
-      # when the user starts typing, without delay
-      if @get('controller.showPlaceholder')
-        @updatePlaceholder()
-      else
-        Ember.run.debounce(@, @updatePlaceholder, 1000)
-
-  updatePlaceholder: ->
-    @set('controller.showPlaceholder', @get('visualEditor.isEmpty'))
 
   applyManuscriptCss:(->
     $('#paper-body').attr('style', @get('controller.model.journal.manuscriptCss'))
@@ -56,15 +48,13 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
     @addObserver 'controller.body', =>
       @updateVisualEditor() unless @get('isEditing')
 
-    @bindPlaceholderEvent()
     @setupAutosave()
   ).on('didInsertElement')
 
   updateVisualEditor: ->
-    visualEditor = @get('visualEditor')
-    visualEditor.update($("#paper-body"), @get('controller.body'))
-    visualEditor.get('target').on 'surfaceReady', =>
-      @updateEditorLockedState()
+    editorModel = @get('visualEditor.model')
+    editorModel.fromHtml(@get('controller.body'))
+    @updateEditorLockedState()
 
   teardownControlBarSubNav: (->
     $('html').removeClass 'control-bar-sub-nav-active'
@@ -104,7 +94,8 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
         @timeoutSave()
 
   saveVisualEditorChanges: ->
-    @get('controller').send('updateDocumentBody', @get('visualEditor.bodyHtml'))
+    documentBody = @get('visualEditor.model').toHtml()
+    @get('controller').send('updateDocumentBody', documentBody)
 
   actions:
     submit: ->

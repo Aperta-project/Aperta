@@ -13,10 +13,9 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       }
     },
-
-    APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
+    APP: {},
+    'ember-cli-visualeditor': {
+      assetsRoot: '/assets/tahi'
     },
 
     contentSecurityPolicy: {
@@ -36,6 +35,9 @@ module.exports = function(environment) {
     ENV.APP.LOG_TRANSITIONS = true;
     ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
+
+    // include unminified assets for debugging
+    ENV['ember-cli-visualeditor'].forceUnminified = true;
   }
 
   if (environment === 'test') {
@@ -48,10 +50,22 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
+
+    // here we include the assets into the vendor bundle
+    // as we had troubles here with loading them lazily
+    ENV['ember-cli-visualeditor'].includeAssets = true;
+    // And, we need to use a different root for served assets
+    ENV['ember-cli-visualeditor'].assetsRoot = '/assets';
+
+    // Override automatic loading of VE assets
+    ENV['ember-cli-visualeditor'].useMock = true;
   }
 
   if (environment === 'production') {
-
+    // manage assets manually (as workaround for problems
+    // with ember-cli assets pipeline / uglify)
+    ENV['ember-cli-visualeditor'].assetsRoot = '/';
+    ENV['ember-cli-visualeditor'].manual = true;
   }
 
   return ENV;

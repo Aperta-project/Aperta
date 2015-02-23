@@ -1221,10 +1221,10 @@
             </h3>
 
             <div class="constrain">
-              <!--
+              {{!--
               This form needs an overlay context to be formatted properly..
               But it feels too coupled at the moment.
-              -->
+              --}}
               <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) div.yes-no-with-comments" source-page-selector-context=".yes-no-with-comments"><div class="yes-no-with-comments"><div class="yes-no-with-comments">
   <div id="ember1887" class="ember-view">
 <label>
@@ -1567,11 +1567,11 @@
                         <button class="button-secondary button--green knockout attachment-delete-button" data-ember-action="1605">Delete Forever</button>
                       </div>
 
-                      <!-- The example also had the 'Add File' button.
+                      {{!-- The example also had the 'Add File' button.
                       Should that be part of the component?
-                      What about Components with Multiple UI elements anyway? Should that just be 2 Components linked? -->
+                      What about Components with Multiple UI elements anyway? Should that just be 2 Components linked? --}}
                       {{!-- upload-preview upload=upload --}}
-                      <!-- Error State: -->
+                      {{!-- Error State: --}}
                       {{!-- Should the error be showing on the page? --}}
                       {{!-- upload-preview upload=upload error="Bah" --}}
                     </div>
@@ -1651,9 +1651,9 @@
 
             HoverState
             <br><br>
-            <!-- <div class='alert alert-warning'>
+            {{!-- <div class='alert alert-warning'>
               Hover coming soon!
-            </div> -->
+            </div> --}}
             {{!-- author-view editState=false hoverState=true author=fullAuthor --}}
             <div class="constrain">
               <div id="ember2199" class="ember-view authors-overlay-item __editable __hover" draggable="true">
@@ -1790,14 +1790,14 @@
               {{user-avatar user=user}}
             </div>
             <div class="col-md-4">
-              <!-- Render `user_thumbnail.js.coffee` here,
+              {{!-- Render `user_thumbnail.js.coffee` here,
               or refactor that to a component.
-              It uses using Handlebars.SafeString. -->
+              It uses using Handlebars.SafeString. --}}
               <img src="/images/profile-no-image.png" data-bindattr-1041="1041" class="user-thumbnail">
             </div>
             <div class="col-md-4">
-              <!-- This one is rendered from `participant-selector-component.js.coffee`s `selectedTemplate` function
-              using Handlebars.SafeString -->
+              {{!-- This one is rendered from `participant-selector-component.js.coffee`s `selectedTemplate` function
+              using Handlebars.SafeString --}}
               <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
             </div>
           </div>
@@ -4379,5 +4379,5 @@
 
 
 </div>
-<!-- container -->
+{{!-- container --}}
 </body></html>

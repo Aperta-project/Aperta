@@ -5,7 +5,13 @@ describe StandardTasks::PaperEditorTask do
 
   describe "#invitation_accepted" do
 
-    let!(:task) { StandardTasks::PaperEditorTask.create!(phase: paper.phases.first, title: "Assign Editor", role: 'admin') }
+    let!(:task) do
+      StandardTasks::PaperEditorTask.create!({
+        phase: paper.phases.first,
+        title: "Assign Editor",
+        role: 'admin'
+      })
+    end
     let(:invitation) { FactoryGirl.create(:invitation, task: task) }
 
     it "replaces the old editor" do

@@ -1,5 +1,4 @@
 class InvitationsController < ApplicationController
-
   before_action :authenticate_user!
 
   def create
@@ -19,7 +18,6 @@ class InvitationsController < ApplicationController
     render json: nil, status: :no_content
   end
 
-
   private
 
   def invitation_params
@@ -33,5 +31,4 @@ class InvitationsController < ApplicationController
   def invitation
     @invitation ||= Invitation.find(params[:id])
   end
-
 end

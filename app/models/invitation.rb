@@ -1,5 +1,4 @@
 class Invitation < ActiveRecord::Base
-
   include AASM
 
   belongs_to :task, inverse_of: :invitations
@@ -22,7 +21,6 @@ class Invitation < ActiveRecord::Base
     end
   end
 
-
   private
 
   def generate_code
@@ -36,5 +34,4 @@ class Invitation < ActiveRecord::Base
   def associate_existing_user
     self.invitee ||= User.find_by(email: email)
   end
-
 end

@@ -53,14 +53,6 @@ describe Doi do
       end
     end
 
-    context "without a journal" do
-      it "raises an exception" do
-        expect {
-          described_class.new(nil)
-        }.to raise_error ArgumentError, "missing keyword: journal"
-      end
-    end
-
     context "with nil argument passed as a journal" do
       it "raises an exception" do
         expect {

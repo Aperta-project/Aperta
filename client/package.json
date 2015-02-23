@@ -39,6 +39,8 @@
     "tahi-plos-authors-card": "git://github.com/Tahi-project/tahi-plos-authors-card.git",
     "tahi-standard-cards": "git://github.com/Tahi-project/tahi-standard-cards.git",
     "tahi-supporting-information-card": "git://github.com/Tahi-project/tahi-supporting-information-card.git",
-    "tahi-upload-manuscript-card": "git://github.com/Tahi-project/tahi-upload-manuscript-card.git"
+    "tahi-upload-manuscript-card": "git://github.com/Tahi-project/tahi-upload-manuscript-card.git",
+    "ember-cli-font-awesome": "0.0.7",
+    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#2fdc1e231771a8bbd597f12d38589b0bcaf62b26"
   }
 }

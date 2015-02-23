@@ -7,6 +7,13 @@ module PlosAuthors
 
     def create
       plos_author.save!
+      ActivityFeed.create(
+        feed_name: 'workflow',
+        activity_key: 'plos_author.created',
+        subject: plos_author.paper,
+        user: current_user,
+        message: "Added Author"
+      )
       render json: plos_authors_for(plos_author.paper)
     end
 

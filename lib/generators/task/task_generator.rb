@@ -71,6 +71,10 @@ class TaskGenerator < Rails::Generators::Base
     system cmd
     # might need to cleanup a few excess, non-used files
 
+    rake_cmd = "rake ember-cli:install_dependencies"
+    puts rake_cmd
+    system rake_cmd
+
     ember_cmd = "cd client && ember generate task #{ember_task_name}"
     puts ember_cmd
     system ember_cmd

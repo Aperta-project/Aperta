@@ -20,6 +20,7 @@ class Paper < ActiveRecord::Base
   has_many :participants, through: :tasks
   has_many :journal_roles, through: :journal
   has_many :authors, -> { order 'authors.position ASC' }
+  has_many :activity_feeds
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true, length: { maximum: 50 }
@@ -206,7 +207,7 @@ class Paper < ActiveRecord::Base
     #   #<role>?(arg)
     #
     # role - A role name on the paper
-    # 
+    #
     define_method("#{relation.singularize}?".to_sym) do |user|
       return false unless user.present?
       send(relation).exists?(user.id)

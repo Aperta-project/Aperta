@@ -1,0 +1,19 @@
+<div class="overlay-container">
+  <h1>Recent Activity</h1>
+
+  {{progress-spinner visible=isLoading
+                     size="large"}}
+
+  <table>
+    {{#each feed in model}}
+      <tr>
+        <td class="activity-feed-overlay-message">{{unbound feed.message}}</td>
+        <td class="activity-feed-overlay-timestamp">{{unbound feed.createdAt}}</td>
+        <td class="activity-feed-overlay-user">
+          <img src={{unbound feed.userAvatarUrl}} class="user-thumbnail">
+          {{unbound feed.userFullName}}
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+</div>

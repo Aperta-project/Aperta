@@ -33,7 +33,7 @@ app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 // FileUpload
 app.import('vendor/jquery.ui.widget.js');
 app.import('vendor/jquery.iframe-transport.js');
-app.import('vendor/jquery.fileupload/jquery.fileupload.css')
+app.import('vendor/jquery.fileupload/jquery.fileupload.css');
 app.import('vendor/jquery.fileupload/jquery.fileupload.js');
 
 // Select 2

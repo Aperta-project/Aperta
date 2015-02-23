@@ -45,6 +45,7 @@ export default Ember.Mixin.create({
     @method _initValidationErrors
   */
 
+  validationErrors: null,
   _initValidationErrors: (function() {
     this.set('validationErrors', {});
   }).on('init'),

@@ -40,7 +40,7 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
       @controllerFor('application').set 'isLoading', false
 
     closeOverlay: ->
-      @flash.clearMessages()
+      @flash.clearAllMessages()
       @animateOverlayOut().then =>
         @disconnectOutlet
           outlet: 'overlay'

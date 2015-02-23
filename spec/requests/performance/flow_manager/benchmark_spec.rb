@@ -15,9 +15,20 @@ shared_examples "a batch of papers" do |num_papers|
       context "the user is a site admin" do
         before do
           post user_session_path, user: {:login => @bench.site_admin.email, :password => 'password'}
+
+          GC.start
         end
 
         it "takes time" do
+          result = RubyProf.profile do
+            get '/user_flows.json'
+          end
+          printer = RubyProf::MultiPrinter.new(result)
+          printer.print(:path => "doc/profiles", :profile => "profile_#{num_papers}_site_admin")
+
+          p "User count: #{User.count}"
+          p "Paper count: #{Paper.count}"
+          p "Task count: #{Task.count}"
           time = Benchmark.realtime { get '/user_flows.json' }
           BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                       duration: time,
@@ -33,6 +44,14 @@ shared_examples "a batch of papers" do |num_papers|
         end
 
         it "takes time" do
+          result = RubyProf.profile do
+            get '/user_flows.json'
+          end
+          printer = RubyProf::MultiPrinter.new(result)
+          printer.print(:path => "doc/profiles", :profile => "profile_#{num_papers}_big_admin")
+          p "User count: #{User.count}"
+          p "Paper count: #{Paper.count}"
+          p "Task count: #{Task.count}"
           time = Benchmark.realtime { get '/user_flows.json' }
           BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                       duration: time,
@@ -48,6 +67,15 @@ shared_examples "a batch of papers" do |num_papers|
         end
 
         it "takes time" do
+          result = RubyProf.profile do
+            get '/user_flows.json'
+          end
+          printer = RubyProf::MultiPrinter.new(result)
+          printer.print(:path => "doc/profiles", :profile => "profile_#{num_papers}_small_admin")
+
+          p "User count: #{User.count}"
+          p "Paper count: #{Paper.count}"
+          p "Task count: #{Task.count}"
           time = Benchmark.realtime { get '/user_flows.json' }
           BenchmarkSuite::Results.new(test_name: TEST_NAME,
                                       duration: time,
@@ -61,14 +89,25 @@ shared_examples "a batch of papers" do |num_papers|
 end
 
 describe "batch of papers", performance: true do
-  before(:all) { VCR.turn_off! && WebMock.allow_net_connect! }
-  after(:all)  { VCR.turn_on! && WebMock.disable_net_connect! }
+  before(:all) {
+    VCR.turn_off! && WebMock.allow_net_connect!
+    ActiveRecord::Base.logger = nil
+  }
+
+  after(:all)  {
+    VCR.turn_on! && WebMock.disable_net_connect!
+    BenchmarkSuite::Emailer.call(TEST_NAME)
+  }
 
   it_should_behave_like "a batch of papers",    100
   it_should_behave_like "a batch of papers",  1_000
-  # it_should_behave_like "a batch of papers", 10_000
+  it_should_behave_like "a batch of papers", 10_000
 
-  after(:all) do
-    BenchmarkSuite::Emailer.call(TEST_NAME)
-  end
+  it_should_behave_like "a batch of papers",    100
+  it_should_behave_like "a batch of papers",  1_000
+  it_should_behave_like "a batch of papers", 10_000
+
+  it_should_behave_like "a batch of papers",    100
+  it_should_behave_like "a batch of papers",  1_000
+  it_should_behave_like "a batch of papers", 10_000
 end

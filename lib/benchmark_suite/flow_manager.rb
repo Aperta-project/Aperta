@@ -3,6 +3,7 @@ require 'benchmark'
 module BenchmarkSuite
   class FlowManager
     def initialize(num_papers:)
+      ActiveRecord::Base.subclasses.each(&:delete_all)
       time = Benchmark.realtime {
         create_phase_template_with_remaining_tasks
         create_papers(num_papers)
@@ -43,7 +44,9 @@ module BenchmarkSuite
     end
 
     def complete_metadata_phase_tasks
-      Task.where(phase_id: Phase.where(name: "Metadata Tasks").select(:id)).update_all(completed: true)
+      phase_ids = Phase.where(name: "Metadata Tasks").select(:id).map(&:id)
+      sleep 1
+      Task.where(phase_id: phase_ids).update_all(completed: true)
     end
 
     def site_admin

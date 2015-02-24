@@ -8,7 +8,6 @@ FactoryGirl.define do
     association(:task, factory: :task)
     association(:invitee, factory: :user)
     association(:actor, factory: :user)
-    state "pending"
   end
 
 end

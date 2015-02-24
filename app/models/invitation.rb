@@ -6,16 +6,24 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: "User", inverse_of: :invitations
   belongs_to :actor, class_name: "User", inverse_of: :invitations
 
+  after_commit :notify_invitation_invited, on: :create
+
   aasm column: :state do
-    state :pending, initial: true, before_enter: [:generate_code, :associate_existing_user]
+    state(:invited, {
+      initial: true,
+      before_enter: [:generate_code, :associate_existing_user]
+    })
     state :accepted
     state :rejected
 
-    event :accept, after: :associate_existing_user, after_commit: :notify_task do
-      transitions from: :pending, to: :accepted
+    event(:accept, {
+      after: :associate_existing_user,
+      after_commit: :notify_invitation_accepted
+    }) do
+      transitions from: :invited, to: :accepted
     end
     event :reject do
-      transitions from: :pending, to: :rejected
+      transitions from: :invited, to: :rejected
     end
   end
 
@@ -25,7 +33,11 @@ class Invitation < ActiveRecord::Base
     self.code ||= SecureRandom.hex(10)
   end
 
-  def notify_task
+  def notify_invitation_invited
+    task.invitation_invited(self)
+  end
+
+  def notify_invitation_accepted
     task.invitation_accepted(self)
   end
 

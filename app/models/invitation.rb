@@ -6,8 +6,6 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: "User", inverse_of: :invitations
   belongs_to :actor, class_name: "User", inverse_of: :invitations
 
-  scope :pending, -> { where(state: "pending") }
-
   aasm column: :state do
     state :pending, initial: true, before_enter: [:generate_code, :associate_existing_user]
     state :accepted

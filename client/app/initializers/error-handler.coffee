@@ -8,6 +8,7 @@ ErrorHandler =
     flash     = container.lookup('flashMessages:main')
     logError  = (msg) ->
       e = new Error(msg)
+      console.log(e.message) if e.message
       console.log(e.stack || e.message)
 
     container.register('logError:main', logError , instantiate: false)

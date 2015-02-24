@@ -12,7 +12,7 @@ chosenHelpers = (->
     fillIn("#{scope} .select2-container input", choice)
     keyEvent("#{scope} .select2-container input", 'keyup')
     waitForElement('.select2-result-selectable')
-    click(".select2-result-selectable")
+    click(".select2-result-selectable", 'body')
   )
 
 )()

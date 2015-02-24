@@ -9,7 +9,7 @@ describe StandardTasks::PaperEditorTask do
       StandardTasks::PaperEditorTask.create!({
         phase: paper.phases.first,
         title: "Assign Editor",
-        role: 'admin'
+        role: "admin"
       })
     end
     let(:invitation) { FactoryGirl.create(:invitation, task: task) }

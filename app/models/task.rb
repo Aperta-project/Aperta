@@ -27,10 +27,12 @@ class Task < ActiveRecord::Base
   has_many :participants, through: :participations, source: :user
   has_many :invitations, inverse_of: :task
 
+  belongs_to :phase, inverse_of: :tasks
+
+  acts_as_list scope: :phase
+
   validates :title, :role, presence: true
   validates :title, length: { maximum: 255 }
-
-  belongs_to :phase, inverse_of: :tasks
 
   class << self
     # Public: Scopes the tasks with a given role
@@ -72,7 +74,7 @@ class Task < ActiveRecord::Base
     #
     # Returns an Array of attributes.
     def permitted_attributes
-      [:completed, :title, :phase_id]
+      [:completed, :title, :phase_id, :position]
     end
 
     def assigned_to(*users)

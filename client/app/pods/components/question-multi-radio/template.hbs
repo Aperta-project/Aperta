@@ -7,7 +7,7 @@
 <div>
   {{#each option in options}}
     <label>
-      {{radio-button-action selection=model.answer name=option.id id=option.id value=option.id action='select'}}
+      {{radio-button-action selection=model.answer name=option.id value=option.id action='select'}}
       {{option.text}}
     </label>
   {{/each}}

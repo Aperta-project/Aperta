@@ -23,6 +23,8 @@ feature "Upload paper", js: true, selenium: true do
     expect(page).to have_no_css('.overlay.in')
     expect(edit_paper_page).to have_paper_title("This is a Title About Turtles")
     expect(edit_paper_page).to have_body_text("And this is my subtitle")
-    expect(edit_paper_page.view_card 'Upload Manuscript').to be_completed
+    edit_paper_page.view_card 'Upload Manuscript' do |card|
+      expect(card.completed_checkbox).to be_checked
+    end
   end
 end

@@ -1,4 +1,4 @@
-class IHatJobRequest
+class IhatJobRequest
   attr_reader :paper
 
   def initialize(paper:)

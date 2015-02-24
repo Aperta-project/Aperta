@@ -13,8 +13,8 @@ setupMockServer = ->
 
   server.respondWith 'GET', '/formats', [
     200, {"Content-Type": "application/json"}, JSON.stringify({
-      "export_formats": [{ "format": "docx" }, { "format": "latex" }],
-      "import_formats": [{ "format": "docx" }, { "format": "odt" }]
+      "export_formats": ["docx", "latex"],
+      "import_formats": ["docx", "odt"]
     })
   ]
 

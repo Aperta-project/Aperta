@@ -1,4 +1,6 @@
 class JournalPage < Page
+  text_assertions :mmt_name, ".mmt-thumbnail .mmt-thumbnail-title"
+
   def self.visit(journal)
     page.visit "/admin/journals/#{journal.id}"
     new

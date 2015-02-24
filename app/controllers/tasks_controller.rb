@@ -27,7 +27,7 @@ class TasksController < ApplicationController
 
   def update
     task.assign_attributes(task_params(task.class))
-    @task_completed = task.completed_changed? && task.completed?
+    @task_completion_change = task.completed_changed?
     task.save!
     task.send_emails if task.respond_to? :send_emails
     render task.update_responder.new(task, view_context).response
@@ -92,13 +92,15 @@ class TasksController < ApplicationController
   end
 
   def notify_task_updated!
-    if @task_completed
+    if @task_completion_change
+      action = task.completed? ? 'complete' : 'incomplete'
+      feed_name = task.is_metadata? ? 'manuscript' : 'workflow'
       ActivityFeed.create(
-        feed_name: 'manuscript',
-        activity_key: 'task.completed',
+        feed_name: feed_name,
+        activity_key: "task.#{action}",
         subject: task.paper,
         user: current_user,
-        message: "Card #{task.title}  was completed"
+        message: "#{task.title} card was marked as #{action}"
       )
     end
   end

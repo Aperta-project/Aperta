@@ -11,7 +11,7 @@ describe PaperUpdateWorker do
 
   describe "#perform" do
     let(:stubbed_url) { "s3_url_example" }
-    let(:turtles_fixture) { File.open(Rails.root.join('spec', 'fixtures', 'turtles.epub'), 'r').read }
+    let(:turtles_fixture) { File.open(Rails.root.join('spec', 'fixtures', 'turtles.epub'), 'rb').read }
 
     before do
       epub_response = double(:epub, body: turtles_fixture)
@@ -22,7 +22,7 @@ describe PaperUpdateWorker do
       worker.perform(paper.id, stubbed_url)
       paper.reload
       expect(paper.body).to eq("<p>This is a stubbed turtle file</p>")
-      expect(paper.title).to eq("About Turtles")
+      expect(paper.title).to eq("This is a title about turtles.")
     end
   end
 end

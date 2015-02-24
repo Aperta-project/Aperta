@@ -24,6 +24,10 @@ class CardOverlay < Page
     find('main > p').text
   end
 
+  def completed_checkbox
+    find(checkbox_selector)
+  end
+
   def mark_as_complete
     check "Completed"
     check "Completed" unless completed?

@@ -3,26 +3,6 @@ require 'rails_helper'
 describe Task do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
 
-  describe "default_scope" do
-    it "orders so the completed ones are below the incomplete ones" do
-      completed_task = Task.create! title: "Paper Admin",
-        completed: true,
-        role: 'admin',
-        phase: paper.phases.first
-
-      incomplete_task = Task.create! title: "Reviewer Report",
-        completed: false,
-        role: 'reviewer',
-        phase: paper.phases.first
-
-      expect(Task.all.map(&:completed).last).to eq(true)
-
-      task = Task.first
-      task.update! completed: true
-      expect(Task.first).to_not eq(task)
-    end
-  end
-
   describe ".without" do
     let!(:tasks) do
       2.times.map do

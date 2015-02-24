@@ -3,7 +3,7 @@
 {{view "phase-header" phase=phase}}
 
 <div class="column-content">
-  {{#each task in controller.model.tasks}}
+  {{#each task in sortedTasks}}
     {{card-preview paper=controller.model.paper
                    task=task
                    commentLooks=commentLooks

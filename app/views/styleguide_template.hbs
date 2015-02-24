@@ -62,6 +62,9 @@
               <li>
                 <a href="#avatars">Avatars</a>
               </li>
+              <li>
+                <a href="#activity">Activity</a>
+              </li>
             </ul>
           </nav>
         </div>
@@ -806,9 +809,28 @@
             </div>
             <div class="col-md-4">
               {{!-- This one is rendered from `participant-selector-component.js.coffee`s `selectedTemplate` function
-              using Handlebars.SafeString -}}
+              using Handlebars.SafeString --}}
               <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
             </div>
+          </div>
+
+          <hr>
+
+          <h2 id="activity">
+            Activity
+          </h2>
+
+          <div class="activity-feed-overlay">
+            <table>
+              <tr>
+                <td class="activity-feed-overlay-message">Paper created</td>
+                <td class="activity-feed-overlay-timestamp">February 23, 2015 9:53 PM</td>
+                <td class="activity-feed-overlay-user">
+                  <img src="/images/profile-no-image.png" class="user-thumbnail">
+                  Tod Rocket
+                </td>
+              </tr>
+            </table>
           </div>
 
         </div>

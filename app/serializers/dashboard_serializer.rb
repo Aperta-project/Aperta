@@ -29,7 +29,7 @@ class DashboardSerializer < ActiveModel::Serializer
   end
 
   def invitations
-    scoped_user.invitations.pending
+    scoped_user.invitations.invited
   end
 
   private

@@ -5,7 +5,7 @@ Invitation = DS.Model.extend
 
   title: DS.attr('string')
   abstract: DS.attr('string')
-  state: DS.attr('string') # accepted|rejected|pending
+  state: DS.attr('string') # invited|accepted|rejected
   email: DS.attr('string')
   createdAt: DS.attr('date')
 

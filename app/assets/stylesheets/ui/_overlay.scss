@@ -52,15 +52,16 @@
 
   .overlay-container {
     background: transparent;
+    margin-top: 0;
+    padding-top: 0;
   }
 }
 
 
 .overlay-close-x {
-  @include position(fixed, -10px 0px auto auto);
+  @include position(fixed, 0px 40px auto auto);
   display: none;
   width: auto !important; //bootstrap/glyphicon override
-  padding: 0 25px 0 15px;
   color: $tahi-green;
   font-size: 90px;
   line-height: 100%;
@@ -72,8 +73,8 @@
 .overlay-container {
   position: relative;
   width: 1120px;
-  margin: 40px auto 0 auto;
-  padding: 10px 80px;
+  margin: 0 auto;
+  padding: 0 80px;
   background: white;
 }
 
@@ -122,6 +123,14 @@
 
   label {
     padding-right: 25px;
+  }
+}
+.overlay-title-text {
+  h1 {
+    text-align: center;
+    padding-top: 150px;
+    padding-bottom: 100px;
+    margin: 0 !important;
   }
 }
 

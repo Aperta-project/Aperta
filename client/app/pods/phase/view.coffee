@@ -36,13 +36,16 @@ PhaseView = Ember.View.extend DragNDrop.DroppableMixin,
     @removeDragStyles()
     draggedTask = DragNDrop.dragItem
     @get('controller').send 'changeTaskPhase', draggedTask, @get('controller.model')
+
     draggedOverTask = @get('controller.model.tasks').findBy('id', "#{$(@get 'lastDraggedOverTask').data('task-id')}")
 
-    draggedTask.set('position', draggedOverTask.get('position'))
-    @get('controller').send('updatePositions', draggedTask)
-    draggedTask.save().then (savedTask) =>
-      savedTask.get('phase').reload()
+    if draggedOverTask? and draggedOverTask isnt draggedTask
+      draggedTask.set('position', draggedOverTask.get('position'))
+      @get('controller').send('updatePositions', draggedTask)
+      draggedTask.save()
 
+    @removeDragStyles()
+    $('.placeholder').remove()
     DragNDrop.dragItem = null
     DragNDrop.cancel(e)
 

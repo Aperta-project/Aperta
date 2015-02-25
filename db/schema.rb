@@ -359,7 +359,7 @@ ActiveRecord::Schema.define(version: 20150224224519) do
     t.datetime "updated_at"
     t.string   "role",       limit: 255,                  null: false
     t.json     "body",                   default: [],     null: false
-    t.integer  "position"
+    t.integer  "position",               default: 0
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree

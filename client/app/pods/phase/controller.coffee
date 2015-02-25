@@ -9,8 +9,8 @@ PhaseController = Ember.Controller.extend
   actions:
     updatePositions: (currentTask) ->
       relevantTasks = @get('model.tasks').filter (task) ->
-        task isnt currentTask and task.get('position') >= currentTask.get('position')
+        task isnt currentTask
 
-      relevantTasks.invoke('incrementProperty', 'position')
+      relevantTasks.invoke('reload')
 
 `export default PhaseController`

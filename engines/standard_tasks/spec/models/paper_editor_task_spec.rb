@@ -3,6 +3,23 @@ require 'rails_helper'
 describe StandardTasks::PaperEditorTask do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
 
+  describe "#invitation_invited" do
+    let!(:task) do
+      StandardTasks::PaperEditorTask.create!({
+        phase: paper.phases.first,
+        title: "Assign Editor",
+        role: "admin"
+      })
+    end
+    let(:invitation) { FactoryGirl.create(:invitation, task: task) }
+
+    it "notifies the invited editor" do
+      expect {
+        task.invitation_invited(invitation)
+      }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :length).by(1)
+    end
+  end
+
   describe "#invitation_accepted" do
 
     let!(:task) do

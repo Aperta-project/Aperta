@@ -12,6 +12,7 @@ Task = DS.Model.extend CardThumbnailObserver,
   participations: DS.hasMany('participation')
   phase: DS.belongsTo('phase', inverse: 'tasks')
   questions: DS.hasMany('question', inverse: 'task')
+  position: a('number')
 
   body: a()
   completed: a('boolean')

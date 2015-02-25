@@ -3,7 +3,7 @@
 
 PhaseView = Ember.View.extend DragNDrop.DroppableMixin,
   classNames: ['column']
-  lastDraggedOverCard: null
+  lastDraggedOverTask: null
 
   nextPosition: (->
     @get('controller.model.position') + 1
@@ -25,7 +25,7 @@ PhaseView = Ember.View.extend DragNDrop.DroppableMixin,
 
   dragLeave: (e) ->
     @removeDragStyles()
-    @set 'lastDraggedOverCard', e.target
+    @set 'lastDraggedOverTask', e.target if $(e.target).hasClass("card-content")
 
   dragEnd: (e) ->
     @removeDragStyles()
@@ -36,9 +36,12 @@ PhaseView = Ember.View.extend DragNDrop.DroppableMixin,
     @removeDragStyles()
     draggedTask = DragNDrop.dragItem
     @get('controller').send 'changeTaskPhase', draggedTask, @get('controller.model')
+    draggedOverTask = @get('controller.model.tasks').findBy('id', "#{$(@get 'lastDraggedOverTask').data('task-id')}")
 
-    draggedTask.set('position', 0)
-    .save().then (savedTask) -> savedTask.get('phase').reload()
+    draggedTask.set('position', draggedOverTask.get('position'))
+    @get('controller').send('updatePositions', draggedTask)
+    draggedTask.save().then (savedTask) =>
+      savedTask.get('phase').reload()
 
     DragNDrop.dragItem = null
     DragNDrop.cancel(e)

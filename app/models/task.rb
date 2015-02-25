@@ -7,8 +7,6 @@ class Task < ActiveRecord::Base
 
   cattr_accessor :metadata_types
 
-  default_scope { order("completed ASC") }
-
   scope :metadata,    -> { where(type: metadata_types) }
 
   # Scopes based on assignment

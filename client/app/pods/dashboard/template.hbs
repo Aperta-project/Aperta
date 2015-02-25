@@ -14,8 +14,9 @@
 
   <section id="dashboard-my-submissions" class="dashboard-section">
     <h2 class="welcome-message">
+      Hi, {{currentUser.firstName}}.
       {{#if papers.length}}
-        Hi, {{currentUser.firstName}}.  You have {{totalPaperCount}} {{make-plural totalPaperCount "manuscript" "manuscripts"}}.
+        You have {{totalPaperCount}} {{make-plural totalPaperCount "manuscript" "manuscripts"}}.
       {{else}}
         You have no manuscripts.
       {{/if}}

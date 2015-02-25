@@ -35,7 +35,7 @@ describe DashboardsController do
         invitation_json = data[:invitations].find { |i| i[:id] == invitation.id }
 
         expect(invitation_json[:id]).to eq(invitation.id)
-        expect(invitation_json[:state]).to eq("pending")
+        expect(invitation_json[:state]).to eq("invited")
         expect(invitation_json[:title]).to eq(invitation.paper.title)
         expect(invitation_json[:abstract]).to eq(invitation.paper.abstract)
       end

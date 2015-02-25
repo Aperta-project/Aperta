@@ -14,7 +14,8 @@ module TahiHelperMethods
   def make_user_paper_editor(user, paper)
     assign_journal_role(paper.journal, user, :editor)
     editor_task = paper.tasks.where(title: 'Assign Editor').first
-    editor_task.editor_id = user.id
+    paper.paper_roles.create(role: PaperRole::EDITOR, user: user)
+    paper.reload
   end
 
   def assign_journal_role(journal, user, type)

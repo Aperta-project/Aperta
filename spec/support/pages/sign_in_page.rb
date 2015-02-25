@@ -5,7 +5,7 @@ class SignInPage < Page
     fill_in "Login", with: signin_string
     fill_in "Password", with: 'password'
     click_on "Sign in"
-    synchronize_content! user.first_name
+    find(".ember-application")
     DashboardPage.new
   end
 end

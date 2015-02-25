@@ -9,7 +9,7 @@ describe InvitationsController do
 
   describe "POST /invitations" do
 
-    it "creates a pending invitation" do
+    it "creates a invited invitation" do
       post(:create, {
         format: "json",
         invitation: {
@@ -26,7 +26,7 @@ describe InvitationsController do
       expect(invitation.email).to eq(invitee.email)
       expect(invitation.code).to be_present
       expect(invitation.actor).to be_nil
-      expect(invitation.state).to eq("pending")
+      expect(invitation.state).to eq("invited")
     end
   end
 

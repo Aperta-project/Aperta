@@ -4,3 +4,5 @@ ruby:
 coffee_script:
   enabled: true
   config_file: coffeelint.json
+java_script:
+  config_file: client/.jshintrc

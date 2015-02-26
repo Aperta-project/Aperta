@@ -55,6 +55,7 @@ gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
 gem 'sunspot_rails'
+gem 'aasm'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28

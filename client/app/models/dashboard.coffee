@@ -6,6 +6,7 @@ Dashboard = DS.Model.extend
 
   papers: DS.hasMany('lite-paper')
   user: DS.belongsTo('user')
+  invitations: DS.hasMany('invitation')
 
   totalPaperCount: a('number')
   totalPageCount: a('number')

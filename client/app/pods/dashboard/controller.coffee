@@ -12,6 +12,8 @@ IndexController = Ember.ObjectController.extend
   relatedAtSort: ['relatedAtDate:desc']
   sortedPapers: Ember.computed.sort('papers', 'relatedAtSort')
 
+  invitedInvitations: Ember.computed.filterBy('invitations', 'state', 'invited')
+
   pageNumber: 1
 
   paginate: (->

@@ -25,6 +25,7 @@ class Task < ActiveRecord::Base
   has_many :questions, inverse_of: :task
   has_many :participations, inverse_of: :task, dependent: :destroy
   has_many :participants, through: :participations, source: :user
+  has_many :invitations, inverse_of: :task
 
   validates :title, :role, presence: true
   validates :title, length: { maximum: 255 }

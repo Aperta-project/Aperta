@@ -41,6 +41,12 @@ GIT
       activesupport (>= 4.1.0)
 
 PATH
+  remote: engines/billing
+  specs:
+    billing (0.0.1)
+      rails (~> 4.2.0)
+
+PATH
   remote: engines/plos_authors
   specs:
     plos_authors (0.0.3)
@@ -475,6 +481,7 @@ DEPENDENCIES
   activemodel-globalid!
   acts_as_list!
   american_date
+  billing!
   bourbon
   bower-rails
   bugsnag

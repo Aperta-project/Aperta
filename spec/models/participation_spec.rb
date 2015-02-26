@@ -15,13 +15,13 @@ describe "Participation" do
       before { FactoryGirl.create(:paper_role, :participant, paper: paper, user: user) }
 
       it "will not create another participant paper role" do
-        expect { Participation.create(task: task, user: user) }.to_not change { PaperRole.participants.count }
+        expect { Participation.create!(task: task, user: user) }.to_not change { PaperRole.participants.count }
       end
     end
 
     context "participant paper role does not exist" do
       it "will create a participant paper role" do
-        expect { Participation.create(task: task, user: user) }.to change { PaperRole.participants.count }.by(1)
+        expect { Participation.create!(task: task, user: user) }.to change { PaperRole.participants.count }.by(1)
       end
     end
   end

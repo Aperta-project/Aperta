@@ -19,9 +19,8 @@ class PaperFactory
     template.phase_templates.each do |phase_template|
       phase = paper.phases.create!(name: phase_template['name'])
 
-      phase_template.task_templates.each_with_index do |task_template, index|
-        position = index + 1
-        create_task(task_template, phase, position)
+      phase_template.task_templates.each do |task_template|
+        create_task(task_template, phase)
       end
     end
   end
@@ -40,12 +39,11 @@ class PaperFactory
     end
   end
 
-  def create_task(task_template, phase, position)
+  def create_task(task_template, phase)
     task_klass = task_template.journal_task_type.kind.constantize
 
     task_klass.new.tap do |task|
       task.phase = phase
-      task.position = position
       task.title = task_template.title
       task.body = task_template.template
       task.role = task_template.journal_task_type.role

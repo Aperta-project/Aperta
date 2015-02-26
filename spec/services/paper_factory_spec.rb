@@ -52,7 +52,6 @@ describe PaperFactory do
     it "adds correct positions to new tasks" do
       paper_factory.apply_template
       paper.phases.each do |phase|
-        p phase.tasks.pluck :position
         expect(phase.tasks.pluck(:position).uniq.count).to eq(phase.tasks.count)
       end
     end

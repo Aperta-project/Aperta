@@ -24,10 +24,14 @@
       <ul class="collaborators-list">
         {{#each collaborator in collaborators}}
           <li class="collaborator">
-            <span class="delete-button glyphicon glyphicon-trash" {{action "removeCollaborator" collaborator}}></span>
             <span class="avatar">{{user-thumbnail user=collaborator}}</span>
             <span class="name">{{collaborator.fullName}}</span>
-            <span class="email">{{collaborator.email}}</span>
+            <span class="email">{{collaborator.email}}
+              <span
+                class="delete-button glyphicon glyphicon-trash"
+                {{action "removeCollaborator" collaborator}}>
+              </span>
+            </span>
           </li>
         {{/each}}
       </ul>

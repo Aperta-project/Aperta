@@ -40,7 +40,7 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.affiliation:error"}}>
       {{error-message message=null}}
-      {{!select-2-single value=billingDetail.affiliation1
+      {{select-2-single value=affiliation1
                         class="affiliation-field"
                         placeholder="Affiliation"
                         selectedData=selectedAffiliation

@@ -59,5 +59,5 @@ test 'Viewing card', ->
   visit "/papers/#{currentPaper.id}/edit"
   click ':contains(Billing)'
   .then ->
-    equal find('h1').text().trim(), 'Publication Fees'
+    equal find('.overlay-main-work h1').text().trim(), 'Publication Fees'
     

@@ -20,7 +20,7 @@ describe BenchmarkSuite::Results do
       benchmark_suite.write
 
       last_row = File.readlines(benchmark_suite.path).last
-      expect(last_row).to eq("1990-01-01 08:00:00 UTC,supercool-sha,blah blah blah,4.2,sec\n")
+      expect(last_row).to match(/,supercool-sha,blah blah blah,4.2,sec/)
     end
   end
 

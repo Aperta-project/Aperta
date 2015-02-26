@@ -21,6 +21,6 @@ Task = DS.Model.extend CardThumbnailObserver,
   type: a('string')
   qualifiedType: a('string')
 
-  isMetadataTask: false
+  isMetadataTask: a('boolean')
 
 `export default Task`

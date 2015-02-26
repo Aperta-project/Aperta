@@ -1,9 +1,9 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe TaskSerializer do
   describe "is_metadata_task" do
     before do
-      PaperFactory.new(paper, user).create 
+      PaperFactory.new(paper, user).create
 
       allow_any_instance_of(LitePaperSerializer).to receive(:roles).and_return([])
       allow_any_instance_of(LitePaperSerializer).to receive(:related_at_date).and_return(Time.zone.now)

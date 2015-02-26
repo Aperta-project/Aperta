@@ -11,6 +11,6 @@ RadioButtonActionComponent = Ember.Component.extend
 
   change: ->
     @set('selection', @get('value'))
-    @sendAction()
+    @sendAction('action', @get('value'))
 
 `export default RadioButtonActionComponent`

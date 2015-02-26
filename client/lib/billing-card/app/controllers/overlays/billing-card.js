@@ -2,7 +2,7 @@ import Ember from 'ember';
 import TaskController from 'tahi/pods/task/controller';
 
 export default TaskController.extend({
-  billingDetail: {},
+  billingDetail: Em.computed.alias('model.billingDetail.firstObject'),
   ringgold: [,
     { id: 123, text: "Memorial University of Newfoundland" },
     { id: 124, text: "Ryerson University" },
@@ -132,11 +132,12 @@ export default TaskController.extend({
       alert("I'm submitting!")
     },
     setBillingDetails: function() {
-      var journalId = this.get("model.paper.journal.id");
-      var paperId = this.get("model.paper.id");
+      // var journalId = this.get("model.paper.journal.id");
+      // var paperId = this.get("model.paper.id");
 
       // Try to find a Billing Record for this Paper, within this Journal
-      this.set("billingDetail", this.store.find("billingDetail", 1));
+      // TODO: stop hardcoding the paper ID.
+      // this.set("billingDetail", this.store.find("billingDetail", 1));
       // else...
       // Create a Record if it does not exist
       // var billing = this.store.createRecord('billingDetail', {

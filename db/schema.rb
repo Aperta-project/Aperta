@@ -91,7 +91,10 @@ ActiveRecord::Schema.define(version: 20150218225028) do
     t.datetime "updated_at",                              null: false
     t.boolean  "author_confirmation",     default: false
     t.string   "payment_method"
+    t.integer  "billing_card_task_id"
   end
+
+  add_index "billing_card_billing_details", ["billing_card_task_id"], name: "index_billing_card_billing_details_on_billing_card_task_id", using: :btree
 
   create_table "comment_looks", force: :cascade do |t|
     t.integer  "user_id"

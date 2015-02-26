@@ -1,9 +1,10 @@
 // import DS   from 'ember-data';
 import Task from 'tahi/models/task';
 
-// BillingCardTask = Task.extend({
-//   qualifiedType: "BillingCard::BillingCardTask"
-// })
-// export default BillingCardTask;
+var BillingCardTask = Task.extend({
+  qualifiedType: "BillingCard::BillingCardTask",
+  billingDetail: DS.hasMany('billingDetail')
+})
+export default BillingCardTask;
 
-export default Task.extend({});
+// export default Task.extend({});

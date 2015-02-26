@@ -5,8 +5,4 @@ export default OverlayView.extend({
   layoutName:   'layouts/overlay',
   cardName: 'billing-card',
   varName: 'PLOS',
-
-  setup: function() {
-    this.controller.send("setBillingDetails");
-  }.on('didInsertElement')
 });

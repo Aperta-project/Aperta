@@ -4,9 +4,10 @@ module BillingCard
     # include EventStreamNotifier
 
     register_task default_title: "Billing", default_role: "author"
+    has_one :billing_detail
 
     def active_model_serializer
-      TaskSerializer
+      BillingCard::BillingCardTaskSerializer
     end
   end
 end

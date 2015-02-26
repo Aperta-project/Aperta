@@ -43,5 +43,6 @@ export default DS.Model.extend({
   city: DS.attr('string'),
   state: DS.attr('string'),
   postalCode: DS.attr('string'),
-  country: DS.attr('string')
+  country: DS.attr('string'),
+  billingCardTask: DS.belongsTo('billingCardTask')
 });

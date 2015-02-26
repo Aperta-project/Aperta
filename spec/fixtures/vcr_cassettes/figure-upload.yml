@@ -1,0 +1,191 @@
+---
+http_interactions:
+- request:
+    method: put
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/sample-image.gif
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        R0lGODdhBQAFAMIAAMzMzJaWlrGxsaqqqsXFxQAAAAAAAAAAACwAAAAABQAF
+        AAADCQi63CBDKBJUAgA7
+    headers:
+      User-Agent:
+      - fog/1.24.0
+      Content-Length:
+      - '60'
+      Content-Type:
+      - image/gif
+      X-Amz-Acl:
+      - private
+      Cache-Control:
+      - max-age=315576000
+      Date:
+      - Thu, 26 Feb 2015 15:45:18 +0000
+      Authorization:
+      - AWS ur-id:/jgEFD4IcWTkzGQGGvtML1amEc4=
+  response:
+    status:
+      code: 403
+      message: ''
+    headers:
+      X-Amz-Request-Id:
+      - '4072875534596286'
+      X-Amz-Id-2:
+      - su7l0tAqhVabb/rPwNvWej2GTnuv3lLR+Ox+2KRqL/gTEEen3VdkWAiGP7X58UOu
+      Content-Type:
+      - application/xml
+      Date:
+      - Thu, 26 Feb 2015 15:45:18 GMT
+      Connection:
+      - close
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <Error><Code>InvalidAccessKeyId</Code><Message>The AWS Access Key Id you provided does not exist in our records.</Message><AWSAccessKeyId>ur-id</AWSAccessKeyId><RequestId>4072875534596286</RequestId><HostId>su7l0tAqhVabb/rPwNvWej2GTnuv3lLR+Ox+2KRqL/gTEEen3VdkWAiGP7X58UOu</HostId></Error>
+    http_version: 
+  recorded_at: Thu, 26 Feb 2015 15:45:19 GMT
+- request:
+    method: put
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/sample-image.gif
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        R0lGODdhBQAFAMIAAMzMzJaWlrGxsaqqqsXFxQAAAAAAAAAAACwAAAAABQAF
+        AAADCQi63CBDKBJUAgA7
+    headers:
+      User-Agent:
+      - fog/1.24.0
+      Content-Length:
+      - '60'
+      Content-Type:
+      - image/gif
+      X-Amz-Acl:
+      - private
+      Cache-Control:
+      - max-age=315576000
+      Date:
+      - Thu, 26 Feb 2015 15:45:18 +0000
+      Authorization:
+      - AWS ur-id:/jgEFD4IcWTkzGQGGvtML1amEc4=
+  response:
+    status:
+      code: 403
+      message: ''
+    headers:
+      X-Amz-Request-Id:
+      - 1E902E037360C0F0
+      X-Amz-Id-2:
+      - OiO1i9Flz54qodp3D1f4DAU8UdLfCH/f0/H1d+hJnEEReeN/2YqWNgkSKzdu/5qR
+      Content-Type:
+      - application/xml
+      Date:
+      - Thu, 26 Feb 2015 15:45:19 GMT
+      Connection:
+      - close
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <Error><Code>InvalidAccessKeyId</Code><Message>The AWS Access Key Id you provided does not exist in our records.</Message><AWSAccessKeyId>ur-id</AWSAccessKeyId><RequestId>1E902E037360C0F0</RequestId><HostId>OiO1i9Flz54qodp3D1f4DAU8UdLfCH/f0/H1d+hJnEEReeN/2YqWNgkSKzdu/5qR</HostId></Error>
+    http_version: 
+  recorded_at: Thu, 26 Feb 2015 15:45:19 GMT
+- request:
+    method: put
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/sample-image.gif
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        R0lGODdhBQAFAMIAAMzMzJaWlrGxsaqqqsXFxQAAAAAAAAAAACwAAAAABQAF
+        AAADCQi63CBDKBJUAgA7
+    headers:
+      User-Agent:
+      - fog/1.24.0
+      Content-Length:
+      - '60'
+      Content-Type:
+      - image/gif
+      X-Amz-Acl:
+      - private
+      Cache-Control:
+      - max-age=315576000
+      Date:
+      - Thu, 26 Feb 2015 15:45:18 +0000
+      Authorization:
+      - AWS ur-id:/jgEFD4IcWTkzGQGGvtML1amEc4=
+  response:
+    status:
+      code: 403
+      message: ''
+    headers:
+      X-Amz-Request-Id:
+      - A4736380B0CE0939
+      X-Amz-Id-2:
+      - uSzFH49pKtvMt46+qNOMhi6VML0/3DYhZarh+qH46ltqsNf6/PBTvMtV/whJW3Hm
+      Content-Type:
+      - application/xml
+      Date:
+      - Thu, 26 Feb 2015 15:45:19 GMT
+      Connection:
+      - close
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <Error><Code>InvalidAccessKeyId</Code><Message>The AWS Access Key Id you provided does not exist in our records.</Message><AWSAccessKeyId>ur-id</AWSAccessKeyId><RequestId>A4736380B0CE0939</RequestId><HostId>uSzFH49pKtvMt46+qNOMhi6VML0/3DYhZarh+qH46ltqsNf6/PBTvMtV/whJW3Hm</HostId></Error>
+    http_version: 
+  recorded_at: Thu, 26 Feb 2015 15:45:20 GMT
+- request:
+    method: put
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/figure/attachment/1/sample-image.gif
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        R0lGODdhBQAFAMIAAMzMzJaWlrGxsaqqqsXFxQAAAAAAAAAAACwAAAAABQAF
+        AAADCQi63CBDKBJUAgA7
+    headers:
+      User-Agent:
+      - fog/1.24.0
+      Content-Length:
+      - '60'
+      Content-Type:
+      - image/gif
+      X-Amz-Acl:
+      - private
+      Cache-Control:
+      - max-age=315576000
+      Date:
+      - Thu, 26 Feb 2015 15:45:18 +0000
+      Authorization:
+      - AWS ur-id:/jgEFD4IcWTkzGQGGvtML1amEc4=
+  response:
+    status:
+      code: 403
+      message: ''
+    headers:
+      X-Amz-Request-Id:
+      - E824E59E3DC0FA22
+      X-Amz-Id-2:
+      - 7HzpibrMJOXoPihCTn8Se7Zhxdaa0C86rGF6aVjSha7W1FKOzfUOgQ2nWONXQOli
+      Content-Type:
+      - application/xml
+      Date:
+      - Thu, 26 Feb 2015 15:45:19 GMT
+      Connection:
+      - close
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <Error><Code>InvalidAccessKeyId</Code><Message>The AWS Access Key Id you provided does not exist in our records.</Message><AWSAccessKeyId>ur-id</AWSAccessKeyId><RequestId>E824E59E3DC0FA22</RequestId><HostId>7HzpibrMJOXoPihCTn8Se7Zhxdaa0C86rGF6aVjSha7W1FKOzfUOgQ2nWONXQOli</HostId></Error>
+    http_version: 
+  recorded_at: Thu, 26 Feb 2015 15:45:20 GMT
+recorded_with: VCR 2.9.3

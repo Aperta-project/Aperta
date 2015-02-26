@@ -1,17 +1,18 @@
 class PaperUpdateWorker
   include Sidekiq::Worker
 
-  attr_reader :paper
+  attr_reader :paper, :epub_stream
 
   def perform(paper_id, epub_url)
     @paper = Paper.find(paper_id)
-    sync!(epub_url)
+    @epub_stream = Faraday.get(epub_url).body
+    sync!
   end
 
-  def sync!(epub_url)
-    epub_attributes = PaperAttributesExtractor.new(epub_url).to_hash
-    paper.update!(body: epub_attributes[:body],
-                  title: epub_attributes[:title],
-                  abstract: epub_attributes[:abstract])
+  def sync!
+    paper.transaction do
+      PaperAttributesExtractor.new(epub_stream).sync!(paper)
+      FiguresExtractor.new(epub_stream).sync!(paper)
+    end
   end
 end

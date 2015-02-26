@@ -17,7 +17,7 @@ Metrics/ClassLength:
 Documentation:
   Enabled: false
 Metrics/LineLength:
-  Max: 120
+  Enabled: false
 StringLiterals:
   Enabled: false
 Style/SpaceAroundEqualsInParameterDefault:
@@ -27,3 +27,9 @@ Style/StringLiterals:
 Style/DotPosition:
   Enabled: true
   EnforcedStyle: trailing
+Style/EmptyLinesAroundBlockBody:
+  Enabled: false
+Style/EmptyLinesAroundClassBody:
+  Enabled: false
+Style/EmptyLinesAroundModuleBody:
+  Enabled: false

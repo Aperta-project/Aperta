@@ -2,7 +2,7 @@
 
 QuestionMultiRadioComponent = QuestionComponent.extend
   actions:
-     select: (arg) ->
-       this.set 'model.answer', arg
+    select: (arg) ->
+      this.set 'model.answer', arg
 
 `export default QuestionMultiRadioComponent`

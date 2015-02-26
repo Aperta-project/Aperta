@@ -21,6 +21,7 @@
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
   }
+
   li:last-of-type { margin-bottom: 2rem; }
 }
 
@@ -48,8 +49,8 @@
 }
 
 .feedback-overlay-content {
-  width: 500px;
   margin: 0 auto;
+  width: 500px
 }
 
 .overlay-container.feedback {

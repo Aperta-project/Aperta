@@ -32,20 +32,24 @@
     top: 2px;
     opacity: 1;
   }
+
   .call-to-action {
     margin-top: 0;
   }
+  
   .email {
     float: right;
     margin-top: 4px;
     transition: padding-right 0.5s ease;
+    &:hover {
+      padding-right: 20px;
+    }
   }
-  .email:hover {
-    padding-right: 20px;
-  }
+  
   .select2-drop {
     display: none;
   }
+  
   .select2-choice {
     margin-top: 2px;
   }

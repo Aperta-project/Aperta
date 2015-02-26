@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 
-RedirectsIfEditable = Em.Mixin.create
+RedirectsIfEditable = Ember.Mixin.create
   editable: Ember.computed.alias('controller.model.editable')
 
   supportedDownloadFormats:

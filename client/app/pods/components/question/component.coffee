@@ -25,7 +25,7 @@ QuestionComponent = Ember.Component.extend
 
   ).property('task', 'ident')
 
-  additionalData: Em.computed.alias('model.additionalData')
+  additionalData: Ember.computed.alias('model.additionalData')
 
   change: ->
     Ember.run.debounce(this, this._saveModel, @get('model'), 200)

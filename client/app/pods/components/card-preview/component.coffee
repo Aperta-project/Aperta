@@ -16,7 +16,7 @@ CardPreviewComponent = Ember.Component.extend DragNDrop.DraggableMixin,
   unreadCommentsCount: (->
     taskId = @get('task.id')
     @get('commentLooks').filter((look) ->
-      look.get('taskId') == taskId && Em.isEmpty(look.get('readAt'))
+      look.get('taskId') == taskId && Ember.isEmpty(look.get('readAt'))
     ).get('length')
   ).property('commentLooks.[]', 'commentLooks.@each.taskId', 'task.id', 'commentLooks.@each.readAt')
 

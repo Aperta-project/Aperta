@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 
 ShowIfParentComponent = Ember.Component.extend
-  showContent: Em.computed.oneWay 'initialShowState'
+  showContent: Ember.computed.oneWay 'initialShowState'
 
   initialShowState: (->
     prop = @get('propName')

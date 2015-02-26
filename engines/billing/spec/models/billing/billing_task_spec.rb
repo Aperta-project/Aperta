@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 module Billing
-  describe Task do
+  describe BillingTask do
     let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
     let(:billing_task) do
-      ::Billing::Task.create! completed: true,
+      ::Billing::BillingTask.create! completed: true,
         phase: paper.phases.first,
         title: "Billing",
         role: "author"

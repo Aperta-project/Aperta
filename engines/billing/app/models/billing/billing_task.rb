@@ -1,5 +1,5 @@
 module Billing
-  class Task < ::Task
+  class BillingTask < ::Task
     # uncomment the following line if you want to enable event streaming for this model
     # include EventStreamNotifier
 

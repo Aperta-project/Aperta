@@ -39,7 +39,7 @@
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "tahi-plos-authors-card": "git://github.com/Tahi-project/tahi-plos-authors-card.git",
-    "tahi-standard-cards": "git://github.com/Tahi-project/tahi-standard-cards.git#7b5e43b5c5b234f0baa56847825516b0018ce011",
+    "tahi-standard-cards": "git://github.com/Tahi-project/tahi-standard-cards.git",
     "tahi-supporting-information-card": "git://github.com/Tahi-project/tahi-supporting-information-card.git",
     "tahi-upload-manuscript-card": "git://github.com/Tahi-project/tahi-upload-manuscript-card.git"
   }

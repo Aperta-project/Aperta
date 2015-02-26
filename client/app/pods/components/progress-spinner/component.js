@@ -1,5 +1,21 @@
 import Ember from 'ember';
 
+/**
+  ## How to Use
+
+  In your template:
+
+  ```
+  {{progress-spinner visible=someBoolean}}
+  ```
+
+  In your controller or component toggle the boolean:
+
+  ```
+  this.set('someBoolean', true);
+  ```
+*/
+
 export default Ember.Component.extend({
   classNames: ['spinner-component'],
   classNameBindings: ['visible:spinner-component--visible'],
@@ -20,8 +36,32 @@ export default Ember.Component.extend({
     zIndex:    2e9
   },
 
+  /**
+    Toggles visibility
+
+    @property visible
+    @type Boolean
+    @default false
+  */
+
   visible: false,
+
+  /**
+    Color. `green` or `blue` or `white`
+
+    @property color
+    @type String
+    @default green
+  */
   color: 'green',
+
+  /**
+    Size. `small` or `large`
+
+    @property size
+    @type String
+    @default small
+  */
   size: 'small',
 
   _green: '#39a329',

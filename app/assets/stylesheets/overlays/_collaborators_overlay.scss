@@ -20,12 +20,6 @@
     padding-left: 10px;
   }
 
-  .email {
-    margin-left: 10px;
-    color: $tahi-grey;
-    font-style: italic;
-  }
-
   .delete-button {
     color: $tahi-green;
     width: 17px;
@@ -40,7 +34,11 @@
   .email {
     float: right;
     margin-top: 4px;
+    margin-left: 10px;
+    color: $tahi-grey;
+    font-style: italic;
     transition: padding-right 0.5s ease;
+
     &:hover {
       padding-right: 20px;
     }

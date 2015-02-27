@@ -19,7 +19,6 @@
 //
 // Styleguide Overlay
 
-
 .overlay {
   overflow: auto;
   @include position(fixed, 0px 0px 0px 0px);
@@ -57,6 +56,18 @@
   }
 }
 
+.overlay--fullscreen--green {
+  background-color: rgba(57,163,41, 0.95);
+  color: white;
+
+  .overlay-close-x { display: block; }
+
+  .overlay-container {
+    background: transparent;
+    margin-top: 0;
+    padding-top: 0;
+  }
+}
 
 .overlay-close-x {
   @include position(fixed, 0px 40px auto auto);
@@ -69,15 +80,19 @@
   z-index: z('overlay', 'close-x');
 }
 
-
 .overlay-container {
   position: relative;
   width: 1120px;
   margin: 40px auto 0 auto;
   padding: 10px 80px;
   background: white;
-}
 
+  .full {
+    margin-top: 0;
+    padding: 0;
+    width: 700px;
+  }
+}
 
 .overlay-header,
 .overlay-footer {
@@ -86,12 +101,10 @@
   margin: 0;
 }
 
-
 .overlay-close-button {
   position: absolute;
   width: 8.333333333333332%;
 }
-
 
 .overlay-completed-checkbox {
   float: right;
@@ -125,13 +138,11 @@
     padding-right: 25px;
   }
 }
-.overlay-title-text {
-  h1 {
-    text-align: center;
-    padding-top: 150px;
-    padding-bottom: 100px;
-    margin: 0 !important;
-  }
+.overlay-title-text > h1 {
+  margin: 0;
+  padding-bottom: 100px;
+  padding-top: 150px;
+  text-align: center;
 }
 
 .overlay-main-work {
@@ -141,12 +152,6 @@
 .overlay-action-buttons {
   padding-top: 45px;
   text-align: right;
-}
-
-.overlay-container.full {
-  width: 700px;
-  margin-top: 0;
-  padding: 0;
 }
 
 .inner-content {

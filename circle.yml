@@ -34,8 +34,11 @@ database:
 
 ## Customize test commands
 test:
+  override:
+    - bundle exec rspec --color --require rspec/instafail --format RSpec::Instafail --tag ~performance spec
+
   post:
-    - bundle exec rspec engines --format=documentation
+    - bundle exec rspec --color --require rspec/instafail --format RSpec::Instafail --tag ~performance engines
     - bundle exec rake ember-cli:test
 
 ## Customize deployment commands

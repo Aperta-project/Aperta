@@ -1,13 +1,15 @@
 .paper-submit-overlay {
   text-align: center;
 
-  .overlay-title-text h1 {
-    padding-top: 20px;
-    padding-bottom: 40px;
+  .overlay-title-text-submit h1 {
+      padding-top: 20px;
+      padding-bottom: 40px;
   }
+
   h5 {
     opacity: 0.5;
   }
+
   .submit-action-buttons {
     display: block;
     margin: auto;
@@ -22,12 +24,14 @@
     }
 
     .success-close {
-      padding-top: 100px;
+      margin-top: 100px;
     }
   }
+
   .paper-submit-icon {
     margin: 150px auto 0 auto;
   }
+
   #paper-submit-title {
     font-weight: 200;
     font-size: 1.5em;
@@ -35,5 +39,21 @@
 
   span.overlay-close-x {
     color: $tahi-white;
+  }
+
+  .delete-card-title {
+    h1 {
+      padding-bottom: 40px;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      padding-bottom: 40px;
+    }
+  }
+
+  .delete-card-action-buttons {
+    float: none;
+    text-align: inherit;
   }
 }

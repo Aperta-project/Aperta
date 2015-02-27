@@ -86,12 +86,11 @@
   margin: 40px auto 0 auto;
   padding: 10px 80px;
   background: white;
-
-  .full {
-    margin-top: 0;
-    padding: 0;
-    width: 700px;
-  }
+}
+.full {
+  margin-top: 0;
+  padding: 0;
+  width: 700px;
 }
 
 .overlay-header,
@@ -149,20 +148,16 @@
   padding: 0 10px 60px 10px;
 }
 
-.overlay-action-buttons {
-  padding-top: 45px;
-  text-align: right;
-}
-
 .inner-content {
   width: 500px;
   margin: 0 auto;
   overflow: hidden;
 }
 
-div.overlay-action-buttons {
+.overlay-action-buttons {
   padding-top: 0;
   float: right;
+  text-align: right;
 
   .button-primary.button--green{
     width: inherit;

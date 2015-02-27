@@ -38,7 +38,7 @@ BasePaperController = Ember.ObjectController.extend
       @get('tasks').filterBy('role', 'reviewer')
   ).property('tasks.@each.role')
 
-  hasNoMetaDataTasks: (->
+  isSidebarEmpty: (->
     Ember.isEmpty(@get('assignedTasks')) && Ember.isEmpty(@get('editorTasks')) && Ember.isEmpty(@get('authorTasks'))
   ).property('assignedTasks.@each', 'editorTasks.@each', 'authorTasks.@each')
 

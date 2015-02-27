@@ -19,7 +19,7 @@ class AddCollaboratorsOverlay < PageFragment
 
   def remove_collaborators(*collaborators)
     collaborators.map(&:full_name).each do |name|
-      find('.collaborator', text: name).hover
+      first('.collaborator .email').hover
       find('.delete-button').click
     end
   end

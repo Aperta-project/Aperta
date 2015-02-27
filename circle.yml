@@ -20,12 +20,10 @@ machine:
 
 ## Customize dependencies
 dependencies:
-  pre:
-    - npm install && bundle exec rake ember-cli:install_dependencies
-
   override:
     - bundle install: # note ':' here
         timeout: 180 # fail if command has no output for 3 minutes
+    - npm install && bundle exec rake ember-cli:install_dependencies
 
 ## Customize database setup
 database:

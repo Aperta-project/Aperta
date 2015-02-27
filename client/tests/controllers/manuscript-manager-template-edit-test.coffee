@@ -28,7 +28,7 @@ test '#rollbackPhase sets the given old name on the given phase', ->
   equal(phase.get('name'), "Captain Kirk")
 
 test '#addPhase adds a phase at a specified index', ->
-  Em.run =>
+  Ember.run =>
     @ctrl.send 'addPhase', 0
     equal @ctrl.get('sortedPhaseTemplates.firstObject.name'), 'New Phase'
 

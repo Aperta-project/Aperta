@@ -24,7 +24,7 @@ BuildsTaskTemplate = Ember.Mixin.create
 
   _pruneEmptyItems: (block) ->
     block.reject (item) ->
-      Em.isEmpty(item.value)
+      Ember.isEmpty(item.value)
 
   actions:
     setTitle: (title) ->

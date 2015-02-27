@@ -14,7 +14,7 @@ AttachmentThumbnailComponent = Ember.Component.extend
 
   focusOnFirstInput: (->
     if @get('editState')
-      Em.run.schedule 'afterRender', @, (->
+      Ember.run.schedule 'afterRender', @, (->
         @$('input[type=text]:first').focus()
       )
   ).observes('editState')

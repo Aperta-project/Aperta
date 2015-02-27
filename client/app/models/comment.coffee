@@ -14,7 +14,7 @@ Comment = DS.Model.extend
 
   isUnreadBy: (user) ->
     if commentLook = @get('commentLook')
-      Em.isEmpty(commentLook.get('readAt'))
+      Ember.isEmpty(commentLook.get('readAt'))
 
   markReadBy: (user) ->
     cl = @get('commentLook')

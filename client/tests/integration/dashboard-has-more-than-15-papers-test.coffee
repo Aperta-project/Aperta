@@ -91,7 +91,7 @@ test 'With more than 15 papers, there should be a "Load More" button if we are n
   visit '/'
   .then ->
     ok find('.load-more-papers').length
-    ok !Em.isEmpty find('.welcome-message').text().match(/You have 42 manuscripts/)
+    ok !Ember.isEmpty find('.welcome-message').text().match(/You have 42 manuscripts/)
     equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 15
   click '.load-more-papers'
   andThen ->

@@ -35,16 +35,8 @@ database:
 ## Customize test commands
 test:
   override:
-    - bundle exec rspec:
+    - case $CIRCLE_NODE_INDEX in 0) rake spec ;; 1) rake ember-cli:test ;; esac:
         parallel: true
-        files:
-          - spec/controllers
-          - spec/features
-          - spec/**/*.rb          # or a glob (ruby globs)
-          - engines/**/*.rb
-
-  post:
-    - bundle exec rake ember-cli:test
 
 ## Customize deployment commands
 # deployment:

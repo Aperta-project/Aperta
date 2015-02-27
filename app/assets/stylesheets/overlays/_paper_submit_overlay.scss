@@ -1,11 +1,35 @@
 .paper-submit-overlay {
   text-align: center;
 
-  h1 {
-    margin-bottom: 0.5em;
+  .overlay-title-text h1 {
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+  h5 {
+    opacity: 0.5;
+  }
+  .submit-action-buttons {
+    display: block;
+    margin: auto;
+
+    button {
+      text-align: center; // override
+      display: block;
+      margin: 40px auto 0 auto;
+      &:last-child {
+        margin-top: 20px;
+      }
+    }
+  }
+  .paper-submit-icon {
+    margin: 150px auto 0 auto;
+  }
+  #paper-submit-title {
+    font-weight: 200;
+    font-size: 1.5em;
   }
 
-  .overlay-action-buttons {
-    text-align: center; // override
+  span.overlay-close-x {
+    color: $tahi-white;
   }
 }

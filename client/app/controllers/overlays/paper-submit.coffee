@@ -2,7 +2,7 @@
 `import RESTless from 'tahi/services/rest-less'`
 
 PaperSubmitOverlayController = Ember.Controller.extend
-  overlayClass: 'overlay--fullscreen paper-submit-overlay'
+  overlayClass: 'overlay--fullscreen--green paper-submit-overlay'
 
   actions:
     submit: ->

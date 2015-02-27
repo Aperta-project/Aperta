@@ -60,4 +60,7 @@ test 'Viewing card', ->
   click ':contains(Billing)'
   .then ->
     equal find('.overlay-main-work h1').text().trim(), 'Publication Fees'
+  click '.select2-choice'
+  .then ->
+    ok Ember.$('.select2-result').length > 0
     

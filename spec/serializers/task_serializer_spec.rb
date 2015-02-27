@@ -25,6 +25,7 @@ describe TaskSerializer do
         Task.metadata_types << "Task"
         serialized = JSON.parse TaskSerializer.new(task).to_json, symbolize_names: true
         expect(serialized[:task][:is_metadata_task]).to eq(true)
+        Task.metadata_types.delete("Task")
       end
     end
   end

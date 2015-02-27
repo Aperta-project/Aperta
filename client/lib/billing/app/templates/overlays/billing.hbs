@@ -6,35 +6,31 @@
   <div class="form-group form-inline author-top">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.firstName:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=billingDetail.firstName
-              class="form-control"
-              placeholder="First name"}}
+      {{question-input ident="billing.first_name" 
+                       task=model 
+                       question='First Name'}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.lastName:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=billingDetail.lastName
-              class="form-control"
-              placeholder="Last name"}}
+      {{question-input ident="billing.last_name" 
+                       task=model 
+                       question='Last Name'}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.title:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=billingDetail.title
-              class="form-control"
-              placeholder="Title"}}
+      {{question-input ident="billing.title" 
+                       task=model 
+                       question='Title'}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=billingDetail.department
-              class="form-control"
-              placeholder="Department"}}
+      {{question-input ident="billing.department" 
+                       task=model 
+                       question='Department'}}
     </div>
   </div>
   <div class="form-group form-inline">

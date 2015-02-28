@@ -19,6 +19,7 @@
 //
 // Styleguide Overlay
 
+
 .overlay {
   overflow: auto;
   @include position(fixed, 0px 0px 0px 0px);
@@ -87,11 +88,6 @@
   padding: 10px 80px;
   background: white;
 }
-.full {
-  margin-top: 0;
-  padding: 0;
-  width: 700px;
-}
 
 .overlay-header,
 .overlay-footer {
@@ -137,29 +133,38 @@
     padding-right: 25px;
   }
 }
-.overlay-title-text > h1 {
-  margin: 0;
-  padding-bottom: 100px;
-  padding-top: 150px;
-  text-align: center;
+.overlay-title-text {
+  h1 {
+    text-align: center;
+    padding-top: 150px;
+    padding-bottom: 100px;
+    margin: 0 !important;
+  }
 }
 
 .overlay-main-work {
   padding: 0 10px 60px 10px;
 }
 
+.overlay-container.full {
+  width: 700px;
+  margin-top: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .inner-content {
   width: 500px;
   margin: 0 auto;
   overflow: hidden;
+  height: 100%
 }
 
 .overlay-action-buttons {
   padding-top: 0;
   float: right;
-  text-align: right;
 
-  .button-primary.button--green{
+  .button-primary.button--green {
     width: inherit;
   }
 }

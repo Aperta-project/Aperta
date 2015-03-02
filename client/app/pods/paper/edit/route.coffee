@@ -79,7 +79,4 @@ PaperEditRoute = AuthorizedRoute.extend
         outlet: 'overlay',
         controller: 'overlays/paperSubmit'
 
-    editableDidChange: ->
-      @replaceWith('paper.index', @modelFor('paper'))
-
 `export default PaperEditRoute`

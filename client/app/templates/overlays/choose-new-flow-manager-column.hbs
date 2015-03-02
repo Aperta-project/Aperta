@@ -1,21 +1,23 @@
 <div class="overlay-container full">
- <header class="overlay-title-text animation-fade-in">
-      <h1>Add New Column</h1>
-    </header>
+  <div class="overlay-title-text animation-fade-in">
+    <h1>Add New Column</h1>
+  </div>
 
   {{progress-spinner visible=isLoading}}
 
-  {{#each group in groupedFlows}}
-    {{#if group.logo}}
-      <img src={{unbound group.logo}} style="display:block; margin-bottom: 15px;">
-    {{else}}
-      <h2>{{group.title}}</h2>
-    {{/if}}
+  <div class="inner-content">
+    {{#each group in groupedFlows}}
+      {{#if group.logo}}
+        <img src={{unbound group.logo}} style="display:block; margin-bottom: 15px;">
+      {{else}}
+        <h2>{{group.title}}</h2>
+      {{/if}}
 
-    {{#each flow in group.flows}}
-      <div class="button-secondary button--green flow-manager-button" {{action "createFlow" flow}}>{{flow.title}}</div>
+      {{#each flow in group.flows}}
+        <div class="button-secondary button--green flow-manager-button" {{action "createFlow" flow}}>{{flow.title}}</div>
+      {{/each}}
+
+      <br><br>
     {{/each}}
-
-    <br><br>
-  {{/each}}
+  </div>
 </div>

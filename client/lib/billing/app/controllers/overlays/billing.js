@@ -2,7 +2,6 @@ import Ember from 'ember';
 import TaskController from 'tahi/pods/task/controller';
 
 export default TaskController.extend({
-  // billingDetail: Em.computed.alias('model.billingDetail.firstObject'),
   affiliation1: null,
   ringgold: [
     { id: 123, text: "Memorial University of Newfoundland" },
@@ -53,7 +52,7 @@ export default TaskController.extend({
   pubFee: 123.00,
   journalName: 'PLOS One',
   feeMessage: (function(){
-    return "The fee for publishing in " + this.get("journalName") + 
+    return "The fee for publishing in " + this.get("journalName") +
       " is $" + this.get("pubFee")
   }).property("journalName"),
   journals: [
@@ -127,29 +126,6 @@ export default TaskController.extend({
     // alert(this.selectedResponse);
   }.observes('selectedResponse'),
   agreeCollections: false,
-  actions: {
-    submitToDB: function() {
-      var detail = this.get("billingDetail").content;
-      detail.save()
-      alert("I'm submitting!")
-    },
-    setBillingDetails: function() {
-      // var journalId = this.get("model.paper.journal.id");
-      // var paperId = this.get("model.paper.id");
-
-      // Try to find a Billing Record for this Paper, within this Journal
-      // TODO: stop hardcoding the paper ID.
-      // this.set("billingDetail", this.store.find("billingDetail", 1));
-      // else...
-      // Create a Record if it does not exist
-      // var billing = this.store.createRecord('billingDetail', {
-      //   journalId: journalId,
-      //   paperId: paperId,
-      //   pfa_question_1: 'hello'
-      // });
-      // billing.save()
-    }
-  },
   selectedPayment: function() {
     var paymentMethod = 'gpi'
     // var paymentMethod = this.get("billingDetail.paymentMethod")

@@ -24,6 +24,6 @@ Factories = ->
 
   FactoryGuy.define 'invitation',
     default:
-      state: 'pending'
+      state: 'invited'
 
 `export default Factories`

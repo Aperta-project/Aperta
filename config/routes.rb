@@ -85,6 +85,7 @@ Tahi::Application.routes.draw do
   resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create
     resource :manuscript_manager, only: :show
+    resource :editor, only: :destroy
     resources :tasks, only: [:update, :create, :show, :destroy] do
       resources :comments, only: :create
     end
@@ -138,7 +139,7 @@ Tahi::Application.routes.draw do
 
   resources :errors, only: :create
   resources :feedback, only: :create
-  resources :invitations, only: [:create] do
+  resources :invitations, only: [:create, :destroy] do
     member do
       put :accept, :reject
     end

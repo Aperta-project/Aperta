@@ -23,7 +23,7 @@ describe Invitation do
   describe "#invite!" do
     it "is invited by default" do
       expect(task).to receive(:invitation_invited).with(invitation)
-      invitation.save!
+      invitation.invite!
       # DatabaseCleaner transaction strategy won't commit. Do it manually :(
       invitation.run_callbacks(:commit)
     end
@@ -31,7 +31,7 @@ describe Invitation do
 
   describe "#accept!" do
     it "sends an role invitation email" do
-      invitation.save
+      invitation.invite!
       expect(task).to receive(:invitation_accepted).with(invitation)
       invitation.accept!
     end

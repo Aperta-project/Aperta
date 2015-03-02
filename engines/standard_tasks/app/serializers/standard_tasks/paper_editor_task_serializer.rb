@@ -11,5 +11,9 @@ module StandardTasks
     def invitation
       object.invitations.last
     end
+
+    def include_invitation?
+      invitation && !invitation.accepted?
+    end
   end
 end

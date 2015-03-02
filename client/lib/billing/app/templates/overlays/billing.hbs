@@ -6,30 +6,30 @@
   <div class="form-group form-inline author-top">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.firstName:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.first_name" 
-                       task=model 
+      {{question-input ident="billing.first_name"
+                       task=model
                        question='First Name'}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.lastName:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.last_name" 
-                       task=model 
+      {{question-input ident="billing.last_name"
+                       task=model
                        question='Last Name'}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.title:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.title" 
-                       task=model 
+      {{question-input ident="billing.title"
+                       task=model
                        question='Title'}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.department" 
-                       task=model 
+      {{question-input ident="billing.department"
+                       task=model
                        question='Department'}}
     </div>
   </div>
@@ -45,7 +45,7 @@
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.secondaryAffiliation:error"}}>
       {{error-message message=null}}
-      {{!select-2-single value=billingDetail.affiliation2
+      {{select-2-single value=billing.affiliation2
                         class="secondary-affiliation-field"
                         placeholder="Secondary Affiliation"
                         selectedData=selectedSecondaryAffiliation
@@ -55,18 +55,16 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.email:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=billingDetail.phoneNumber
-              class="form-control"
-              placeholder="Phone"}}
+      {{question-input ident="billing.phone_number"
+                       task=model
+                       question="Phone"}}
 
     </div>
     <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.email:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=billingDetail.emailAddress
-              class="form-control"
-              placeholder="Email"}}
+      {{question-input ident="billing.email_address"
+                       task=model
+                       question="Email"}}
 
     </div>
   </div>
@@ -76,53 +74,49 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{!select-2-single value='billingDetail.country'
+      {{select-2-single value='billing.country'
                       class=""
                       placeholder="Please select your Country"
-                      selectedData='billingDetail.country'
+                      selectedData='billing.country'
                       source=countries }}
     </div>
   </div>
   <div class="form-group form-inline">
     <div {{bind-attr class=":required validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=billingDetail.address1
-              class="form-control"
-              placeholder="Address line one"}}
+      {{question-input ident="billing.address1"
+                       task=model
+                       question="Address line one"}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div {{bind-attr class=":required validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=billingDetail.address2
-              class="form-control"
-              placeholder="Address line two"}}
+      {{question-input ident="billing.address2"
+                       task=model
+                       question="Address line two"}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=billingDetail.city
-              class="form-control"
-              placeholder="City"}}
+      {{question-input ident="billing.city"
+                       task=model
+                       question="City"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-name :author-bump validationErrors.department:error"}}>
-      {{!select-2-single value='billingDetail.state'
+      {{select-2-single value='billing.state'
                       class=""
                       placeholder="Select State"
-                      selectedData='billingDetail.state'
+                      selectedData='billing.state'
                       source=states }}
     </div>
     <div {{bind-attr class=":required :form-group :author-name validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{input type="text"
-              value=billingDetail.postalCode
-              class="form-control"
-              placeholder="Postal Code"}}
+      {{question-input ident="billing.postal_code"
+                       task=model
+                       question="Postal Code"}}
     </div>
   </div>
 </div>
@@ -143,7 +137,7 @@
 
     <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.affiliation:error"}}>
       {{error-message message=null}}
-      {{!select-2-single value=billingDetail.paymentMethod
+      {{select-2-single value=billing.paymentMethod
                         class="affiliation-field"
                         placeholder="Select One"
                         selectedData=selectedPayment

@@ -36,19 +36,19 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.affiliation:error"}}>
       {{error-message message=null}}
-      {{select-2-single value=affiliation1
+      {{question-select ident="billing.affiliation1"
+                        task=model
+                        question="Affiliation"
                         class="affiliation-field"
-                        placeholder="Affiliation"
-                        selectedData=selectedAffiliation
                         source=ringgold}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.secondaryAffiliation:error"}}>
       {{error-message message=null}}
-      {{select-2-single value=billing.affiliation2
+      {{question-select ident="billing.affiliation2"
+                        task=model
+                        question="Secondary Affiliation"
                         class="secondary-affiliation-field"
-                        placeholder="Secondary Affiliation"
-                        selectedData=selectedSecondaryAffiliation
                         source=ringgold}}
     </div>
   </div>
@@ -74,11 +74,10 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{select-2-single value='billing.country'
-                      class=""
-                      placeholder="Please select your Country"
-                      selectedData='billing.country'
-                      source=countries }}
+      {{question-select ident="billing.country"
+                        task=model
+                        question="Please select your Country"
+                        source=countries}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -106,11 +105,10 @@
     </div>
 
     <div {{bind-attr class=":form-group :author-name :author-bump validationErrors.department:error"}}>
-      {{select-2-single value='billing.state'
-                      class=""
-                      placeholder="Select State"
-                      selectedData='billing.state'
-                      source=states }}
+      {{question-select ident="billing.state"
+                        task=model
+                        question="Select State"
+                        source=states}}
     </div>
     <div {{bind-attr class=":required :form-group :author-name validationErrors.department:error"}}>
       {{error-message message=null}}
@@ -127,7 +125,7 @@
   Payment Options
 </h2>
 
-{{!partial "intro"}}
+{{partial "intro"}}
 
 <ol class='question-list'>
   <li class="question">
@@ -137,10 +135,10 @@
 
     <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.affiliation:error"}}>
       {{error-message message=null}}
-      {{select-2-single value=billing.paymentMethod
+      {{question-select ident="billing.paymentMethod"
+                        task=model
+                        question="Select One"
                         class="affiliation-field"
-                        placeholder="Select One"
-                        selectedData=selectedPayment
                         source=responses}}
     </div>
   </li>

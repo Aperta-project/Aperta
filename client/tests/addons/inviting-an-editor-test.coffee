@@ -12,6 +12,8 @@ paper = null
 task = null
 testHelper = null
 
+setupFactories()
+
 module "Integration: inviting an editor",
 
   teardown: ->
@@ -22,7 +24,6 @@ module "Integration: inviting an editor",
   setup: ->
     app = startApp()
     testHelper = TestHelper.setup(app)
-    setupFactories()
 
     $.mockjax(url: "/admin/journals/authorization", status: 204)
     $.mockjax(url: "/user_flows/authorization", status: 204)
@@ -68,7 +69,7 @@ test "displays the email of the invitee", ->
   andThen ->
     ok(find(".overlay-main-work:contains('aaron@neo.com has been invited to be Editor on this manuscript.')"))
 
-test "can withdrawl the invitation", ->
+test "can withdraw the invitation", ->
   invitation = FactoryGuy.make("invitation", email: "foo@bar.com")
   Ember.run =>
     task.set("invitation", invitation)

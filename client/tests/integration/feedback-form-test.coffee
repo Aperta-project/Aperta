@@ -50,6 +50,6 @@ test 'clicking the feedback button sends feedback to the backend', ->
     ok find('.overlay').length
   .andThen ->
     fillIn '.overlay textarea', "My feedback"
-    click '.overlay-footer .button-primary'
+    click '.overlay-footer-content .button-primary'
   .andThen ->
     ok find('.overlay .thanks')

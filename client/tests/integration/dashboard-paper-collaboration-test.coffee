@@ -146,7 +146,7 @@ test 'User can show the feedback form', ->
   click '.navigation-toggle'
   click '.navigation-item-feedback'
   andThen ->
-    ok find(".overlay-footer .button-primary:contains('Send Feedback')").length
+    ok find(".overlay-action-buttons .button-primary:contains('Send Feedback')").length
 
 test 'Hitting escape closes the feedback form', ->
   visit '/'
@@ -154,9 +154,9 @@ test 'Hitting escape closes the feedback form', ->
   click '.navigation-item-feedback'
   keyEvent '.overlay', 'keyup', 27
   andThen ->
-    ok !find(".overlay-footer .button-primary:contains('Send Feedback')").length
+    ok !find(".overlay-footer-content .button-primary:contains('Send Feedback')").length
 
-test 'User can show the feedback form', ->
+test 'User sees a thank you message after submission', ->
   server.respondWith 'POST', "/feedback", [
     200, "Content-Type": "application/json", JSON.stringify {}
   ]
@@ -165,7 +165,7 @@ test 'User can show the feedback form', ->
   click '.navigation-toggle'
   click '.navigation-item-feedback'
   fillIn '.feedback-overlay-remarks', 'all my feedback'
-  click '.overlay-footer .button-primary'
+  click '.overlay-footer-content .button-primary'
   andThen ->
     ok find(".feedback-overlay-thanks").length
     ok server.requests.findBy('url', '/feedback')

@@ -1,12 +1,11 @@
-.choose-card-type-overlay {
-  min-height: 550px;
-
-  .button-primary {
-    margin-left: 20px;
+.choose-new-card-type-overlay {
+  .call-to-action {
+    // float: none;
+    // margin-top: 0;
+  }
+  
+  .chosen-container {
+    margin-top: 5px;
   }
 }
 
-#choose-card-type {
-  width: 550px;
-  margin: 200px auto 0;
-}

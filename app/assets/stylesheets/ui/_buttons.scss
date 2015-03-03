@@ -111,10 +111,20 @@
   &.button--green      { @include button-link-modifier($tahi-green, $tahi-green-dark); }
   &.button--blue       { @include button-link-modifier($tahi-blue, $tahi-blue-dark); }
   &.button--grey       { @include button-link-modifier($tahi-grey, $tahi-grey-dark); }
+  &.button--white       { @include button-link-modifier($tahi-white, $tahi-white); }
+
 
   &:hover {
     text-decoration: underline;
   }
+}
+
+.button-submit-paper {
+  @extend .button;
+  color: $tahi-green;
+  &:hover { text-decoration: none; }
+
+  &.button--white      { @include button-primary-modifier($tahi-white, $tahi-green-light); }
 }
 
 // .button modifier

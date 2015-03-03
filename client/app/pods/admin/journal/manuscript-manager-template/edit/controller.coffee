@@ -24,10 +24,28 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend Validati
       deletedRecords: deleted
       dirty: true
 
+  saveTemplate: (transition) ->
+    @get('model').save().then( (mmt) =>
+      taskTemplates = []
+
+      Ember.RSVP.all(mmt.get('phaseTemplates').invoke('save')).then (phaseTemplates) =>
+        promises = phaseTemplates.map (phaseTemplate) ->
+          phaseTemplate.get('taskTemplates').invoke('save')
+
+        Ember.RSVP.all(promises.compact()).then =>
+          if deletedRecords = @get('deletedRecords')
+            Ember.RSVP.all(deletedRecords.invoke('save')).then =>
+              @successfulSave(transition)
+          else
+            @successfulSave(transition)
+
+    ).catch (response) =>
+      @displayValidationErrorsFromResponse response
+  
   successfulSave: (transition) ->
     @reset()
     if transition
-      transition.retry()
+      @transitionToRoute(transition)
     else
       @transitionToRoute('admin.journal.manuscript_manager_template.edit', @get('model'))
 
@@ -76,24 +94,9 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend Validati
       @set('dirty', true)
       null
 
-    saveTemplate: (transition)->
-      @get('model').save().then( (mmt) =>
-        taskTemplates = []
-
-        Ember.RSVP.all(mmt.get('phaseTemplates').invoke('save')).then (phaseTemplates) =>
-          promises = phaseTemplates.map (phaseTemplate) ->
-            phaseTemplate.get('taskTemplates').invoke('save')
-
-          Ember.RSVP.all(promises.compact()).then =>
-            if deletedRecords = @get('deletedRecords')
-              Ember.RSVP.all(deletedRecords.invoke('save')).then =>
-                @successfulSave(transition)
-            else
-              @successfulSave(transition)
-
-      ).catch (response) =>
-        @displayValidationErrorsFromResponse response
-
+    saveTemplateOnClick: (transition) ->
+      @saveTemplate(transition)
+ 
     rollback: ->
       if @get('model.isNew')
         @get('model').deleteRecord()

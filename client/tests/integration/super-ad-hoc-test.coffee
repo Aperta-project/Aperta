@@ -67,7 +67,7 @@ test "Adding a text block to an AdHoc Task", ->
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
   andThen ->
-    Em.$('.inline-edit-form div[contenteditable]')
+    Ember.$('.inline-edit-form div[contenteditable]')
     .html("New contenteditable, yahoo!")
     .trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
@@ -87,7 +87,7 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
   click '.adhoc-content-toolbar .adhoc-toolbar-item--list'
   andThen ->
     equal(find('.inline-edit-form .item-remove').length, 1)
-    Em.$('.inline-edit-form label[contenteditable]')
+    Ember.$('.inline-edit-form label[contenteditable]')
     .html("Here is a checkbox list item")
     .trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
@@ -107,7 +107,7 @@ test "Adding an email block to an AdHoc Task", ->
   click '.adhoc-content-toolbar .adhoc-toolbar-item--email'
   fillIn '.inline-edit-form input[placeholder="Enter a subject"]', "Deep subject"
   andThen ->
-    Em.$('.inline-edit-form div[contenteditable]').html("Awesome email body!").trigger('keyup')
+    Ember.$('.inline-edit-form div[contenteditable]').html("Awesome email body!").trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
     assertText('.inline-edit .item-subject', 'Deep')
@@ -125,7 +125,7 @@ test "User can send an email from an adhoc card", ->
   click '.adhoc-content-toolbar .adhoc-toolbar-item--email'
   fillIn '.inline-edit-form input[placeholder="Enter a subject"]', "Deep subject"
   andThen ->
-    Em.$('.inline-edit-form div[contenteditable]').html("Awesome email body!").trigger('keyup')
+    Ember.$('.inline-edit-form div[contenteditable]').html("Awesome email body!").trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   click '.task-body .email-send-participants'
 

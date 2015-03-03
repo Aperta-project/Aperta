@@ -16,6 +16,7 @@ moduleForComponent 'select-2', 'Unit: components/select-2',
   teardown: ->
     server.restore()
 
+# TODO: Use pcikfromselect2 helper
 fillInDropdown = (object) ->
   keyEvent('.select2-container input', 'keydown')
   fillIn('.select2-container input', object)

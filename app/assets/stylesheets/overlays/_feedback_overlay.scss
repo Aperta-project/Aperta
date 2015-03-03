@@ -1,21 +1,23 @@
-.overlay.feedback-overlay h1 { margin-bottom: 0.5em; }
-
 .feedback-overlay-thanks {
   text-align: center;
 }
 
 .feedback-overlay-remarks.form-control {
-  width: 100%;
-  height: 18rem;
-  margin-bottom: 10px;
+  height: 20rem;
 }
 
 .feedback-overlay-screenshots {
   list-style-type: none;
-  margin-bottom: 10px;
   padding-left: 0;
+  width: 60%;
+  margin-top: 40px;
+  margin-bottom: 40px;
 
-  li { margin-bottom: 0.5rem; }
+  li {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
   li:last-of-type { margin-bottom: 2rem; }
 }
 
@@ -35,7 +37,20 @@
 
 .feedback-overlay-footer-content.overlay-footer-content {
   padding: 0;
+  float: right;
+  margin-top: 0;
 
   .button-primary { width: 16%; }
   .button-link    { margin-right: 1rem; }
+}
+
+.feedback-overlay-content {
+  margin: 0 auto;
+  width: 500px
+}
+
+.overlay-container.feedback {
+  width: 700px;
+  margin-top: 0;
+  padding: 0;
 }

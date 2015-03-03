@@ -67,7 +67,7 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
     expect {
       phase.remove_card('Upload Manuscript')
       within '.overlay' do
-        find('.overlay-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
+        find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
       end
     }.to change {
       task_manager_page.card_count

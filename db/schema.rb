@@ -122,6 +122,23 @@ ActiveRecord::Schema.define(version: 20150217151154) do
     t.text    "query"
   end
 
+  create_table "invitations", force: :cascade do |t|
+    t.string   "email"
+    t.string   "code"
+    t.integer  "task_id"
+    t.integer  "invitee_id"
+    t.integer  "actor_id"
+    t.string   "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
+  add_index "invitations", ["code"], name: "index_invitations_on_code", unique: true, using: :btree
+  add_index "invitations", ["email"], name: "index_invitations_on_email", using: :btree
+  add_index "invitations", ["invitee_id"], name: "index_invitations_on_invitee_id", using: :btree
+  add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
+
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "task_type_id"
     t.integer "journal_id"
@@ -200,8 +217,8 @@ ActiveRecord::Schema.define(version: 20150217151154) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.integer  "striking_image_id"
     t.datetime "last_heartbeat_at"
+    t.integer  "striking_image_id"
     t.boolean  "editable",                      default: true
     t.text     "doi"
   end
@@ -381,8 +398,8 @@ ActiveRecord::Schema.define(version: 20150217151154) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username",               limit: 255
+    t.boolean  "site_admin",                         default: false, null: false
     t.string   "avatar",                 limit: 255
-    t.boolean  "site_admin",                         default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

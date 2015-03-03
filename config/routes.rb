@@ -138,6 +138,11 @@ Tahi::Application.routes.draw do
 
   resources :errors, only: :create
   resources :feedback, only: :create
+  resources :invitations, only: [:create] do
+    member do
+      put :accept, :reject
+    end
+  end
 
   get "/formats", to: "formats#index"
 

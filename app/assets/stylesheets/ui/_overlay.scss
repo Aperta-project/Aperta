@@ -52,22 +52,34 @@
 
   .overlay-container {
     background: transparent;
+    margin-top: 0;
+    padding-top: 0;
   }
 }
 
+.overlay--fullscreen--green {
+  background-color: rgba(57,163,41, 0.95);
+  color: white;
+
+  .overlay-close-x { display: block; }
+
+  .overlay-container {
+    background: transparent;
+    margin-top: 0;
+    padding-top: 0;
+  }
+}
 
 .overlay-close-x {
-  @include position(fixed, -10px 0px auto auto);
+  @include position(fixed, 0px 40px auto auto);
   display: none;
   width: auto !important; //bootstrap/glyphicon override
-  padding: 0 25px 0 15px;
   color: $tahi-green;
   font-size: 90px;
   line-height: 100%;
   cursor: pointer;
   z-index: z('overlay', 'close-x');
 }
-
 
 .overlay-container {
   position: relative;
@@ -77,7 +89,6 @@
   background: white;
 }
 
-
 .overlay-header,
 .overlay-footer {
   overflow: hidden;
@@ -85,12 +96,10 @@
   margin: 0;
 }
 
-
 .overlay-close-button {
   position: absolute;
   width: 8.333333333333332%;
 }
-
 
 .overlay-completed-checkbox {
   float: right;
@@ -124,13 +133,46 @@
     padding-right: 25px;
   }
 }
+.overlay-title-text {
+  h1 {
+    text-align: center;
+    padding-top: 150px;
+    padding-bottom: 100px;
+    margin: 0 !important;
+  }
+}
 
 .overlay-main-work {
   padding: 0 10px 60px 10px;
 }
 
+.overlay-container.full {
+  width: 700px;
+  margin-top: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.inner-content {
+  width: 500px;
+  margin: 0 auto;
+  overflow: hidden;
+  height: 100%
+}
 
 .overlay-action-buttons {
-  padding-top: 45px;
-  text-align: right;
+  padding-top: 0;
+  float: right;
+
+  .button-primary.button--green {
+    width: inherit;
+  }
+}
+
+.call-to-action {
+ margin-top: 20px;
+
+  div {
+    display: inline-block;
+  }
 }

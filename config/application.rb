@@ -25,6 +25,8 @@ module Tahi
     # Raise an error within after_rollback & after_commit
     config.active_record.raise_in_transactional_callbacks = true
 
+    config.active_job.queue_adapter = :sidekiq
+
     ActionMailer::Base.smtp_settings = {
       address: 'smtp.sendgrid.net',
       port: '587',

@@ -4,9 +4,8 @@
   img { margin-right: 6px; }
 
   table {
-    max-width: 900px;
-    min-width: 550px;
     margin: 0 auto;
+    width: 700px;
   }
 }
 
@@ -14,9 +13,12 @@
   font-size: 17px;
 }
 
-.activity-feed-overlay-timestamp {
+#timestamp {
   font-size: 14px;
   white-space: nowrap;
+  padding-right: 0;
+  padding-top: 5px;
+  float: right;
 }
 
 .activity-feed-overlay-user {

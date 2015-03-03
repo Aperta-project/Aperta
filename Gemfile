@@ -55,6 +55,7 @@ gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
 gem 'sunspot_rails'
+gem 'aasm'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28
@@ -103,6 +104,7 @@ group :test do
   gem 'webmock'
   gem 'sunspot-rails-tester'
   gem 'thin'
+  gem 'timecop'
 end
 
 group :staging, :performance do

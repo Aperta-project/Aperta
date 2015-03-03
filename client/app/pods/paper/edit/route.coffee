@@ -7,6 +7,8 @@
 `import initializeVisualEditor from 'ember-cli-visualeditor/initializers/initialize_visual_editor'`
 
 PaperEditRoute = AuthorizedRoute.extend
+  fromSubmitOverlay: false
+
   heartbeatService: null
 
   beforeModel: ->
@@ -78,8 +80,12 @@ PaperEditRoute = AuthorizedRoute.extend
         into: 'application',
         outlet: 'overlay',
         controller: 'overlays/paperSubmit'
+      @set 'fromSubmitOverlay', true
 
     editableDidChange: ->
-      @replaceWith('paper.index', @modelFor('paper'))
-
+      if !@fromSubmitOverlay
+        @replaceWith('paper.index', @modelFor('paper'))
+      else
+        @set 'fromSubmitOverlay', false
+        
 `export default PaperEditRoute`

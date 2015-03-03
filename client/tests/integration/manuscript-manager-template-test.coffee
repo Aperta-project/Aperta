@@ -93,7 +93,7 @@ test 'Changing phase name', ->
     .then -> ok find(columnTitleSelect).length
 
   click columnTitleSelect
-    .then -> Em.$(columnTitleSelect).html('Shazam!')
+    .then -> Ember.$(columnTitleSelect).html('Shazam!')
   andThen ->
     ok find('h2.column-title:contains("Shazam!")').length
 
@@ -110,7 +110,7 @@ test 'Adding an Ad-Hoc card', ->
       find('h1.inline-edit').hasClass('editing'),
       "The title should be editable to start"
     )
-    Em.$('.inline-edit-form div[contenteditable]')
+    Ember.$('.inline-edit-form div[contenteditable]')
     .html("New contenteditable, yahoo!")
     .trigger('keyup')
     click('.task-body .inline-edit-body-part .button--green:contains("Save")')

@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   has_many :comment_looks, inverse_of: :user
   has_many :credentials, inverse_of: :user, dependent: :destroy
   has_many :assigned_papers, ->{ uniq }, through: :paper_roles, class_name: 'Paper', source: :paper
+  has_many :invitations, foreign_key: :invitee_id, inverse_of: :invitee
 
   attr_accessor :login
 

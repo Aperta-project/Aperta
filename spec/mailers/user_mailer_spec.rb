@@ -76,7 +76,7 @@ describe UserMailer, redis: true do
     let(:invitee) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create :paper, :with_tasks, creator: admin, submitted: true }
     let(:comment) { FactoryGirl.create(:comment, task: paper.tasks.first) }
-    let(:email) { UserMailer.mention_collaborator(comment.id, invitee.id) }
+    let(:email) { UserMailer.mention_collaborator(comment, invitee) }
 
     it_behaves_like "recipient without email address"
 

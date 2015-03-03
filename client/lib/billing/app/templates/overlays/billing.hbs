@@ -139,13 +139,14 @@
                         task=model
                         question="Select One"
                         class="affiliation-field"
+                        selectionSelected='paymentMethodSelected'
                         source=responses}}
     </div>
   </li>
 
-  {{!partial 'selfPayment'}}
-  {{!partial 'institutional'}}
-  {{!partial 'gpi'}}
+  {{partial 'self_payment'}}
+  {{partial 'institutional'}}
+  {{partial 'gpi'}}
   {{!partial 'pfa'}}
-  {{!partial 'specialCollection'}}
+  {{partial 'special_collection'}}
 </ol>

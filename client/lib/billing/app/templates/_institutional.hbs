@@ -1,0 +1,34 @@
+{{#if institutional}}
+<div>
+  <h3>
+    Institutional Fee Support
+  </h3>
+
+  <p>
+    Participating institutions have arrangements with PLOS to administer payment for partial or full
+    publication feeds for their institutions' authors.
+    To be eligible, authors must be a corresponding author affiliated with the
+    institution or agency in the
+    <a href="">Institutional Account Program</a>
+    (fully paid or restricted). Authors who need to requrest additional support should apply for
+    <a href="#">PLOS PFA</a>.
+  </p>
+
+  <p>
+    Authors may also be eligible for direct funding from their institution or funder,
+    which may be different from the PLOS Institutional program.
+    See additional
+    <a href="#">fnds</a>
+    for examples.
+    To confirm amounts and details of funding and eligibility, contact the organization as indicated.
+  </p>
+
+  <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.affiliation:error"}}>
+    {{error-message message=null}}
+    {{question-select ident="billing.selected_ringgold"
+                      task=model
+                      question="Select an Institution"
+                      source=ringgold}}
+  </div>
+</div>
+{{/if}}

@@ -108,6 +108,7 @@ export default TaskController.extend({
   ],
   selectedRinggold: null,
   selfPayment: function() {
+    debugger
     return this.selectedResponse == 1;
   }.property("selectedResponse"),
   institutional: function() {

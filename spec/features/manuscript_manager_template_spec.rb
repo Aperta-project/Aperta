@@ -42,8 +42,6 @@ feature "Manuscript Manager Templates", js: true, selenium: true do
       mmt_page.paper_type = "Test Type"
       phase = mmt_page.find_phase 'Phase 1'
       phase.new_card overlay: ChooseCardTypeOverlay, card_type: "Reviewer Report"
-      # expect(phase).to have_card("Reviewer Report")
-      # expect(mmt_page).to have_content("SAVE TEMPLATE")
 
       click_link 'Admin'
 

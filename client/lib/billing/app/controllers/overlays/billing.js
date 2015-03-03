@@ -107,25 +107,22 @@ export default TaskController.extend({
     {id: 'special_collection', text: "I have been invited to submit to a Special Collection"}
   ],
   selectedRinggold: null,
+  selectedPaymentMethod: null,
   selfPayment: function() {
-    debugger
-    return this.selectedResponse == 1;
-  }.property("selectedResponse"),
+    return this.get('selectedPaymentMethod') === 'self_payment';
+  }.property("selectedPaymentMethod"),
   institutional: function() {
-    return this.selectedResponse == 2;
-  }.property("selectedResponse"),
+    return this.get('selectedPaymentMethod') === 'institutional';
+  }.property("selectedPaymentMethod"),
   gpi: function() {
-    return this.selectedResponse == 3;
-  }.property("selectedResponse"),
+    return this.get('selectedPaymentMethod') === 'gpi';
+  }.property("selectedPaymentMethod"),
   pfa: function() {
-    return this.selectedResponse == 4;
-  }.property("selectedResponse"),
+    return this.get('selectedPaymentMethod') === 'pfa';
+  }.property("selectedPaymentMethod"),
   specialCollection: function() {
-    return this.selectedResponse == 5;
-  }.property("selectedResponse"),
-  onSelectedOption: function() {
-    // alert(this.selectedResponse);
-  }.observes('selectedResponse'),
+    return this.get('selectedPaymentMethod') === 'special_collection';
+  }.property("selectedPaymentMethod"),
   agreeCollections: false,
   selectedPayment: function() {
     var paymentMethod = 'gpi'
@@ -146,6 +143,10 @@ export default TaskController.extend({
 
 
     this.get('billingDetail.paymentMethod')
-  }.property("billingDetail")
-
+  }.property("billingDetail"),
+  actions: {
+    paymentMethodSelected: function (selection) {
+      this.set('selectedPaymentMethod', selection.id);
+    }
+  }
 });

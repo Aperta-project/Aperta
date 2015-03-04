@@ -1,4 +1,5 @@
 class Invitation < ActiveRecord::Base
+  include EventStreamNotifier
   include AASM
 
   belongs_to :task, inverse_of: :invitations

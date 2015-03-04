@@ -4,7 +4,8 @@ create_update_events = [
   "paper:created", "paper:updated",
   "author:created", "author:updated",
   "figure:created", "figure:updated",
-  "question_attachment:created", "question_attachment:updated"
+  "question_attachment:created", "question_attachment:updated",
+  "invitation:updated"
 ]
 
 TahiNotifier.subscribe(create_update_events) do |subscription_name, payload|

@@ -133,7 +133,7 @@
       How would you like to pay?
     </h3>
 
-    <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.affiliation:error"}}>
+    <div {{bind-attr class=":form-group :author-half :author-bump :required :payment-method validationErrors.affiliation:error"}}>
       {{error-message message=null}}
       {{question-select ident="billing.payment_method"
                         task=model
@@ -147,6 +147,6 @@
   {{partial 'self_payment'}}
   {{partial 'institutional'}}
   {{partial 'gpi'}}
-  {{!partial 'pfa'}}
+  {{partial 'pfa'}}
   {{partial 'special_collection'}}
 </ol>

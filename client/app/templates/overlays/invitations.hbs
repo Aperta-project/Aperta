@@ -10,7 +10,7 @@
         <h3>{{invitation.title}}</h3>
         {{#if invitation.abstract}}
           <h4>Abstract:</h4>
-          <p>{{invitation.abstract}}</p>
+          <p>{{{invitation.abstract}}}</p>
         {{/if}}
         <button class="button-secondary button--green" {{action "acceptInvitation" invitation}}> yes </button>
         <button class="button-secondary button--green" {{action "rejectInvitation" invitation}}> no </button>

@@ -113,6 +113,20 @@ StyleguideRoute = Ember.Route.extend
       }
     ]
 
+    fakeQuestion = Ember.Object.create
+      ident: "foo"
+      save: -> null
+      additionalData: [{}]
+      question: "Test Question"
+      answer: true
+    task = Ember.Object.create(questions: [fakeQuestion])
+
+    arrayOfOptions = [
+      { id: 1, text: 'Text 1'},
+      { id: 2, text: 'Text 2'},
+      { id: 3, text: 'Text 3'}
+    ]
+
     controller.set('user', user)
     controller.set('upload', upload)
     controller.set('flash', flash)
@@ -123,5 +137,7 @@ StyleguideRoute = Ember.Route.extend
     controller.set('taskIncomplete', taskIncomplete)
     controller.set('taskComplete', taskComplete)
     controller.set('supportedDownloadFormats', supportedDownloadFormats)
+    controller.set('arrayOfOptions', arrayOfOptions)
+    controller.set('task', task)
 
 `export default StyleguideRoute`

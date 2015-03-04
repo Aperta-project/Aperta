@@ -20,7 +20,8 @@ test 'normalizeType denamespaces task types', ->
 test 'serializing a model that was originally namespaced will correctly re-namespace it', ->
   Ember.run =>
     task = getStore().createRecord('task', qualifiedType: "Foo::BarTask")
-    json = subject.serialize(task)
+    snapshot = task._createSnapshot()
+    json = subject.serialize(snapshot)
     equal json.type, "Foo::BarTask"
     equal undefined, json.qualified_type, 'deletes qualified_type from the payload'
 

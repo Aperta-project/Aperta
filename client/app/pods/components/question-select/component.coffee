@@ -2,7 +2,10 @@
 
 QuestionSelectComponent = QuestionComponent.extend
   selectedData: Em.computed 'model.answer', ->
-    @get('source').findBy 'id', parseInt(@get('model.answer'))
-
+    id = parseInt(@get('model.answer')) or @get('model.answer')
+    @get('source').findBy 'id', id
+  actions:
+    selectionSelected: (selection) ->
+      @sendAction 'selectionSelected', selection
 
 `export default QuestionSelectComponent`

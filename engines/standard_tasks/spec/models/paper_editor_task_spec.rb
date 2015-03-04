@@ -11,7 +11,7 @@ describe StandardTasks::PaperEditorTask do
         role: "admin"
       })
     end
-    let(:invitation) { FactoryGirl.create(:invitation, task: task) }
+    let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
     it "notifies the invited editor" do
       expect {
@@ -29,7 +29,7 @@ describe StandardTasks::PaperEditorTask do
         role: "admin"
       })
     end
-    let(:invitation) { FactoryGirl.create(:invitation, task: task) }
+    let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
     it "replaces the old editor" do
       invitation.accept!

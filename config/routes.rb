@@ -80,7 +80,7 @@ Tahi::Application.routes.draw do
   resources :collaborations, only: [:create, :destroy]
   resources :paper_roles, only: [:show]
 
-  put :ihat_jobs, to: "ihat_jobs#update", as: :ihat_callback
+  post :ihat_jobs, to: "ihat_jobs#update", as: :ihat_callback
 
   resources :papers, only: [:create, :show, :edit, :update] do
     resources :figures, only: :create
@@ -98,6 +98,7 @@ Tahi::Application.routes.draw do
       get "/status/:id", to: 'paper_conversions#status'
       put :toggle_editable
       put :submit
+      get 'activity_feed/:name', to: 'papers#activity_feed'
     end
   end
 
@@ -137,6 +138,11 @@ Tahi::Application.routes.draw do
 
   resources :errors, only: :create
   resources :feedback, only: :create
+  resources :invitations, only: [:create] do
+    member do
+      put :accept, :reject
+    end
+  end
 
   get "/formats", to: "formats#index"
 

@@ -113,6 +113,11 @@ describe PapersController do
         expect(paper.reload.short_title).to eq('ABC101')
       end
 
+      it "creates an ActivityFeed" do
+        expect(ActivityFeed).to receive(:create).with(hash_including({subject: paper}))
+        put :update, { id: paper.to_param, format: :json, paper: { title: new_title, short_title: 'ABC101', locked_by_id: user.id }.merge(params) }
+      end
+
       it "will not update the body if it is nil" do
         # test to check that weird ember ghost requests can't reset the body
         new_body = nil

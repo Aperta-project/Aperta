@@ -39,7 +39,7 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend Validati
 
   actions:
     toggleEditMode: ->
-      @clearValidationErrors()
+      @clearAllValidationErrors()
       @toggleProperty 'editMode'
       return null
 

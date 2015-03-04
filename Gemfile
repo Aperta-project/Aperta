@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.1.5"
+ruby "2.2.0"
 
 # Configuration
 group :development, :test, :performance do
@@ -40,7 +40,7 @@ gem "fog"
 gem "unf"
 gem 'newrelic_rpm'
 gem "rest_client"
-gem 'gepub'
+gem 'gepub', "~> 0.7.0beta1"
 gem 'rubyzip', require: 'zip'
 gem "active_model_serializers"
 gem 'pdfkit'
@@ -55,6 +55,7 @@ gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
 gem 'sunspot_rails'
+gem 'aasm'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28
@@ -103,6 +104,7 @@ group :test do
   gem 'webmock'
   gem 'sunspot-rails-tester'
   gem 'thin'
+  gem 'timecop'
 end
 
 group :staging, :performance do

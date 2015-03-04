@@ -11,10 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141208152459) do
+ActiveRecord::Schema.define(version: 20150217151154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activity_feeds", force: :cascade do |t|
+    t.string   "feed_name"
+    t.integer  "subject_id"
+    t.string   "subject_type"
+    t.string   "activity_key"
+    t.string   "message"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activity_feeds", ["subject_id"], name: "index_activity_feeds_on_subject_id", using: :btree
+  add_index "activity_feeds", ["subject_type"], name: "index_activity_feeds_on_subject_type", using: :btree
+  add_index "activity_feeds", ["user_id"], name: "index_activity_feeds_on_user_id", using: :btree
 
   create_table "affiliations", force: :cascade do |t|
     t.integer  "user_id"
@@ -106,6 +121,23 @@ ActiveRecord::Schema.define(version: 20141208152459) do
     t.integer "position"
     t.text    "query"
   end
+
+  create_table "invitations", force: :cascade do |t|
+    t.string   "email"
+    t.string   "code"
+    t.integer  "task_id"
+    t.integer  "invitee_id"
+    t.integer  "actor_id"
+    t.string   "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
+  add_index "invitations", ["code"], name: "index_invitations_on_code", unique: true, using: :btree
+  add_index "invitations", ["email"], name: "index_invitations_on_email", using: :btree
+  add_index "invitations", ["invitee_id"], name: "index_invitations_on_invitee_id", using: :btree
+  add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
 
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "task_type_id"

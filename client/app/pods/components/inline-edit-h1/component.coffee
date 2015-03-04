@@ -5,7 +5,7 @@ InlineEditH1Component = Ember.Component.extend
   snapshot: null
 
   createSnapshot: (->
-    @set('snapshot', Em.copy(@get('title')))
+    @set('snapshot', Ember.copy(@get('title')))
   ).observes('editing')
 
   hasContent: Ember.computed.notEmpty('title')

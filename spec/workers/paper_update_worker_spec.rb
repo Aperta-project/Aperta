@@ -1,8 +1,5 @@
 require 'rails_helper'
 
-# Defining explicitly to override verifying partial double.
-# See here: https://relishapp.com/rspec/rspec-mocks/v/3-0/docs/verifying-doubles/dynamic-classes
-#
 def Faraday.get(arg); super; end
 
 describe PaperUpdateWorker do
@@ -11,18 +8,21 @@ describe PaperUpdateWorker do
 
   describe "#perform" do
     let(:stubbed_url) { "s3_url_example" }
-    let(:turtles_fixture) { File.open(Rails.root.join('spec', 'fixtures', 'turtles.epub'), 'r').read }
+    let(:turtles_fixture) { File.open(Rails.root.join('spec', 'fixtures', 'turtles.epub'), 'rb').read }
 
     before do
       epub_response = double(:epub, body: turtles_fixture)
       expect(Faraday).to receive(:get).with(stubbed_url).and_return(epub_response)
     end
 
-    it "updates the paper's title and body" do
+    it "requests attribute extraction" do
+      expect_any_instance_of(PaperAttributesExtractor).to receive(:sync!)
       worker.perform(paper.id, stubbed_url)
-      paper.reload
-      expect(paper.body).to eq("<p>This is a stubbed turtle file</p>")
-      expect(paper.title).to eq("About Turtles")
+    end
+
+    it "requests figure extraction" do
+      expect_any_instance_of(FiguresExtractor).to receive(:sync!)
+      worker.perform(paper.id, stubbed_url)
     end
   end
 end

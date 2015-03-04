@@ -4,6 +4,8 @@ class TasksController < ApplicationController
 
   before_action :unmunge_empty_arrays, only: [:update]
 
+  after_action :notify_task_updated!, only: [:update]
+
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -25,6 +27,7 @@ class TasksController < ApplicationController
 
   def update
     task.assign_attributes(task_params(task.class))
+    @task_completion_change = task.completed_changed?
     task.save!
     task.send_emails if task.respond_to? :send_emails
     render task.update_responder.new(task, view_context).response
@@ -86,5 +89,19 @@ class TasksController < ApplicationController
 
   def enforce_policy
     authorize_action!(task: task)
+  end
+
+  def notify_task_updated!
+    if @task_completion_change
+      action = task.completed? ? 'complete' : 'incomplete'
+      feed_name = task.is_metadata? ? 'manuscript' : 'workflow'
+      ActivityFeed.create(
+        feed_name: feed_name,
+        activity_key: "task.#{action}",
+        subject: task.paper,
+        user: current_user,
+        message: "#{task.title} card was marked as #{action}"
+      )
+    end
   end
 end

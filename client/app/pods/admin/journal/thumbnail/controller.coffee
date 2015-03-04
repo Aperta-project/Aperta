@@ -47,7 +47,7 @@ JournalThumbnailController = Ember.ObjectController.extend FileUploadMixin, Vali
     resetJournalDetails: ->
       @get('model').rollback()
       @set 'isEditing', false
-      @clearValidationErrors()
+      @clearAllValidationErrors()
 
     showPreview: (file) ->
       @set 'logoPreview', file.preview

@@ -1,13 +1,17 @@
 @media only screen and (max-width: 1199px) {
-  #dashboard-my-submissions {
+  .dashboard-section {
     padding: 0 15px;
   }
 }
 
 @media only screen and (min-width: 1199px) {
-  #dashboard-my-submissions {
+  .dashboard-section {
     padding: 0 125px;
   }
+}
+
+.dashboard-section {
+  margin-bottom: 55px;
 }
 
 

@@ -2,7 +2,10 @@
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-var app = new EmberApp({storeConfigInMeta: false});
+var app = new EmberApp({
+  storeConfigInMeta: false,
+  emberCliFontAwesome: { includeFontAwesomeAssets: false }
+});
 
 // Use `app.import` to add additional libraries to the generated
 // output files.
@@ -31,8 +34,17 @@ app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 // FileUpload
 app.import('vendor/jquery.ui.widget.js');
 app.import('vendor/jquery.iframe-transport.js');
-app.import('vendor/jquery.fileupload/jquery.fileupload.css')
+app.import('vendor/jquery.fileupload/jquery.fileupload.css');
 app.import('vendor/jquery.fileupload/jquery.fileupload.js');
+
+// // Font Awesome
+app.import('vendor/font-awesome.css');
+app.import('bower_components/font-awesome/fonts/fontawesome-webfont.eot', { destDir: 'assets/fonts' });
+app.import('bower_components/font-awesome/fonts/fontawesome-webfont.svg', { destDir: 'assets/fonts' });
+app.import('bower_components/font-awesome/fonts/fontawesome-webfont.ttf', { destDir: 'assets/fonts' });
+app.import('bower_components/font-awesome/fonts/fontawesome-webfont.woff', { destDir: 'assets/fonts' });
+app.import('bower_components/font-awesome/fonts/fontawesome-webfont.woff2', { destDir: 'assets/fonts' });
+app.import('bower_components/font-awesome/fonts/FontAwesome.otf', { destDir: 'assets/fonts' });
 
 // Select 2
 app.import('bower_components/select2/select2.js');
@@ -46,6 +58,7 @@ if (app.env === 'production') {
 } else {
   app.import('bower_components/sinon/index.js');
   app.import('bower_components/underscore/underscore.js');
+  app.import('bower_components/ember/ember-template-compiler.js');
 }
 
 module.exports = app.toTree();

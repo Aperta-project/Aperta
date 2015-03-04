@@ -1,0 +1,27 @@
+.activity-feed-overlay {
+  h1  { text-align: center; }
+  td  { padding: 0 15px 25px 0; }
+  img { margin-right: 6px; }
+
+  table {
+    margin: 0 auto;
+    width: 700px;
+  }
+}
+
+.activity-feed-overlay-message {
+  font-size: 17px;
+}
+
+#timestamp {
+  font-size: 14px;
+  white-space: nowrap;
+  padding-right: 0;
+  padding-top: 5px;
+  float: right;
+}
+
+.activity-feed-overlay-user {
+  font-weight: bold;
+  white-space: nowrap;
+}

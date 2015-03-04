@@ -1,6 +1,9 @@
 class ParticipationsController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy
+  before_action :notify_participation_created, only: :create
+  before_action :notify_participation_destroyed, only: :destroy
+
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -50,5 +53,27 @@ class ParticipationsController < ApplicationController
 
   def enforce_policy
     authorize_action!(participation: participation)
+  end
+
+  def notify_participation_created
+    if participation.valid?
+      ActivityFeed.create(
+        feed_name: 'manuscript',
+        activity_key: 'participation.created',
+        subject: participation.paper,
+        user: current_user,
+        message: "Added Contributor: #{participation.user.full_name}"
+      )
+    end
+  end
+
+  def notify_participation_destroyed
+    ActivityFeed.create(
+      feed_name: 'manuscript',
+      activity_key: 'participation.destroyed',
+      subject: participation.paper,
+      user: current_user,
+      message: "Removed Contributor: #{participation.user.full_name}"
+    )
   end
 end

@@ -1,31 +1,32 @@
 <div class="overlay-container">
-{{#if paperSubmitted}}
-<img class="paper-submit-icon" src="/images/submit-image-success.png">
-  <div class="overlay-title-text-submit animation-fade-in">
-    <h1>Congratulations</h1>
-  </div>
+  {{#if paperSubmitted}}
 
-  <h5>You've successfully submitted your paper!</h5>
- 
-  <div class="submit-action-buttons">
-    <button class="button-link button--white success-close" {{action "closeAction"}}>Close</button>
-  </div>
-</div>
+    <img class="paper-submit-icon" src="/images/submit-image-success.png">
+    <div class="overlay-title-text-submit animation-fade-in">
+      <h1>Congratulations</h1>
+    </div>
 
-{{else}}
-<img class="paper-submit-icon" src="/images/submit-image.png">
-  <div class="overlay-title-text-submit animation-fade-in">
-    <h1>Are you sure?</h1>
-  </div>
+    <h5>You've successfully submitted your paper!</h5>
 
-  <h5>You are about to submit the paper</h5>
-  <p id="paper-submit-title">{{display-value model.title}}</p> 
-  
-  {{flash-messages}}
+    <div class="submit-action-buttons">
+      <button class="button-link button--white success-close" {{action "closeAction"}}>Close</button>
+    </div>
 
-  <div class="submit-action-buttons">
-    <button class="button-submit-paper button--white" {{action "submit"}}>Yes, Submit My Manuscript</button>
-    <button class="button-link button--white" {{action "closeAction"}}>Go back and make sure</button>
-  </div>
-{{/if}}
+  {{else}}
+
+    <img class="paper-submit-icon" src="/images/submit-image.png">
+    <div class="overlay-title-text-submit animation-fade-in">
+      <h1>Are you sure?</h1>
+    </div>
+
+    <h5>You are about to submit the paper</h5>
+    <p id="paper-submit-title">{{display-value model.title}}</p>
+
+    {{flash-messages}}
+
+    <div class="submit-action-buttons">
+      <button class="button-submit-paper button--white" {{action "submit"}}>Yes, Submit My Manuscript</button>
+      <button class="button-link button--white" {{action "closeAction"}}>Go back and make sure</button>
+    </div>
+  {{/if}}
 </div>

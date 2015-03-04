@@ -16,7 +16,7 @@ ProfileController = Ember.ObjectController.extend FileUploadMixin, ValidationErr
 
   actions:
     hideNewAffiliationForm: ->
-      @clearValidationErrors()
+      @clearAllValidationErrors()
       @set 'showAffiliationForm', false
       @get('newAffiliation').deleteRecord() if @get('newAffiliation.isNew')
 
@@ -29,7 +29,7 @@ ProfileController = Ember.ObjectController.extend FileUploadMixin, ValidationErr
 
     commitAffiliation:(affiliation) ->
       affiliation.set 'user', @get('model')
-      @clearValidationErrors()
+      @clearAllValidationErrors()
 
       affiliation.save().then(
         (affiliation) =>

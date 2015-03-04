@@ -10,14 +10,14 @@ UserDetailOverlayController = Ember.ObjectController.extend ValidationErrorsMixi
     saveUser: ->
       @get('model').save()
                    .then =>
-                     @clearValidationErrors()
+                     @clearAllValidationErrors()
                      @send('closeOverlay')
                    .catch (response) =>
                      @displayValidationErrorsFromResponse response
 
     rollbackUser: ->
       @get('model').rollback()
-      @clearValidationErrors()
+      @clearAllValidationErrors()
       @send('closeOverlay')
 
     resetPassword: (user) ->

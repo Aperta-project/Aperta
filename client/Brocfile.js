@@ -58,6 +58,7 @@ if (app.env === 'production') {
 } else {
   app.import('bower_components/sinon/index.js');
   app.import('bower_components/underscore/underscore.js');
+  app.import('bower_components/ember/ember-template-compiler.js');
 }
 
 module.exports = app.toTree();

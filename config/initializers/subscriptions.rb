@@ -15,7 +15,7 @@ TahiNotifier.subscribe(create_update_events) do |subscription_name, payload|
   EventStream.new(action, record, subscription_name).post
 end
 
-TahiNotifier.subscribe("author:destroyed", "task:destroyed", "participation:destroyed", "figure:destroyed") do |subscription_name, payload|
+TahiNotifier.subscribe("author:destroyed", "task:destroyed", "participation:destroyed", "figure:destroyed", "invitation:destroyed") do |subscription_name, payload|
   action = payload[:action]
   record = payload[:record]
 

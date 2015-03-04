@@ -14,6 +14,8 @@ DashboardRoute = Ember.Route.extend
 
     controller.set('papers', papers)
     controller.set('unreadComments', @store.all('commentLook'))
+    controller.set 'invitations', @store.filter 'invitation', (invitation) =>
+      invitation.get('state') == "invited" and invitation.get("inviteeId") == @currentUser.get("id")
 
   actions:
     didTransition: () ->

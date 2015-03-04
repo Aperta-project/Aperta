@@ -5,6 +5,6 @@ InvitationsController = Ember.Controller.extend
 
   didCompleteAllInvitations: (->
     @send('closeOverlay') if Ember.isEmpty(@get('model'))
-  ).observes('model.[]')
+  ).observes('model.@each')
 
 `export default InvitationsController`

@@ -57,6 +57,9 @@
                 <a href="#file-upload">File Upload</a>
               </li>
               <li>
+                <a href="#question-components">Question Components</a>
+              </li>
+              <li>
                 <a href="#errors">Errors</a>
               </li>
               <li>
@@ -267,7 +270,7 @@
         <div class="column-content" style="top: 51px;">
             <div id="ember1142" class="ember-view card" draggable="true">
 <div class="card-content" data-ember-action="1143">
-  
+
   <div class="card-completed-icon"></div>
   Upload Figures
     <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1151" data-original-title="Delete Card">
@@ -276,7 +279,7 @@
 </div>
             <div id="ember1153" class="ember-view card" draggable="true">
 <div class="card-content" data-ember-action="1154">
-  
+
   <div class="card-completed-icon"></div>
   Supporting Info
     <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1158" data-original-title="Delete Card">
@@ -285,7 +288,7 @@
 </div>
             <div id="ember1160" class="ember-view card" draggable="true">
 <div class="card-content" data-ember-action="1161">
-  
+
   <div class="card-completed-icon"></div>
   Add Authors
     <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1165" data-original-title="Delete Card">
@@ -294,7 +297,7 @@
 </div>
             <div id="ember1167" class="ember-view card card--completed" draggable="true">
 <div class="card-content" data-ember-action="1168">
-  
+
   <div class="card-completed-icon"></div>
   Upload Manuscript
     <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1172" data-original-title="Delete Card">
@@ -323,7 +326,7 @@
         <div class="column-content" style="top: 51px;">
             <div id="ember1185" class="ember-view card" draggable="true">
 <div class="card-content" data-ember-action="1186">
-  
+
   <div class="card-completed-icon"></div>
   Assign Editor
     <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1190" data-original-title="Delete Card">
@@ -332,7 +335,7 @@
 </div>
             <div id="ember1192" class="ember-view card" draggable="true">
 <div class="card-content" data-ember-action="1193">
-  
+
   <div class="card-completed-icon"></div>
   Tech Check
     <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1197" data-original-title="Delete Card">
@@ -341,7 +344,7 @@
 </div>
             <div id="ember1199" class="ember-view card" draggable="true">
 <div class="card-content" data-ember-action="1200">
-  
+
   <div class="card-completed-icon"></div>
   Assign Admin
     <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1204" data-original-title="Delete Card">
@@ -370,7 +373,7 @@
         <div class="column-content" style="top: 51px;">
             <div id="ember1217" class="ember-view card" draggable="true">
 <div class="card-content" data-ember-action="1218">
-  
+
   <div class="card-completed-icon"></div>
   Assign Reviewers
     <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1222" data-original-title="Delete Card">
@@ -420,7 +423,7 @@
         <div class="column-content" style="top: 51px;">
             <div id="ember1247" class="ember-view card" draggable="true">
 <div class="card-content" data-ember-action="1248">
-  
+
   <div class="card-completed-icon"></div>
   Register Decision
     <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1252" data-original-title="Delete Card">
@@ -1244,7 +1247,6 @@
             <h2 id="form-patterns">
               Form Patterns (in Cards)
             </h2>
-            <br>
 
             <h3>
               Form Block: Numbered List
@@ -1271,7 +1273,7 @@
 </div>
 
     <div class="additional-data">
-      
+
 <div id="ember1897" class="ember-view"></div>
     </div>
 </div>
@@ -1296,7 +1298,7 @@
 </div>
 
     <div class="additional-data">
-      
+
 <div id="ember1909" class="ember-view"></div>
     </div>
 </div>
@@ -1321,7 +1323,7 @@
 </div>
 
     <div class="additional-data">
-      
+
 <div id="ember1921" class="ember-view"></div>
     </div>
 </div>
@@ -1913,6 +1915,25 @@
 
           <hr>
 
+          <h2 id="question-components">
+            Question Components
+          </h2>
+
+          <div>
+            <h5>
+              question-select
+            </h5>
+
+            {{question-select ident="foo"
+                              task=task
+                              question="Placeholder Text"
+                              class=""
+                              selectionSelected=''
+                              source=arrayOfOptions}}
+          </div>
+
+          <hr>
+
           <h2 id="errors">
             Errors
           </h2>
@@ -2223,7 +2244,7 @@
 </div>
 
     <div class="additional-data">
-      
+
 <div id="ember1894" class="ember-view"></div>
 <div id="ember1895" class="ember-view"></div>
     </div>
@@ -2350,7 +2371,7 @@
 <div id="ember1830" class="ember-view">
 <label><input type="checkbox" id="ember1900" class="ember-view ember-checkbox" name="data_availability.public_repo_available"> Public repository: DOI/accession numbers are available now</label>
   <div class="additional-data hidden">
-    
+
 <div id="ember1908" class="ember-view">  <div class="question-dataset">
 <div id="ember1915" class="ember-view">                  <p>Provide the DOI/accession number and its corresponding public repository URL.</p>
             <div id="ember1923" class="ember-view">
@@ -2375,7 +2396,7 @@
 <div id="ember1831" class="ember-view">
 <label><input type="checkbox" id="ember1936" class="ember-view ember-checkbox" name="data_availability.public_repo_available_post_release"> Public repository: DOI/accession numbers will be available after acceptance</label>
   <div class="additional-data hidden">
-    
+
 <div id="ember1940" class="ember-view">  <div class="question-dataset">
 <div id="ember1943" class="ember-view">                  <p>Provide the public repository URL.</p>
             <div id="ember1947" class="ember-view">
@@ -2407,7 +2428,7 @@
 <div id="ember1834" class="ember-view">
 <label><input type="checkbox" id="ember1958" class="ember-view ember-checkbox" name="data_availability.on_request"> Available upon request (this option is only permitted in limited cases)</label>
   <div class="additional-data hidden">
-    
+
 <div id="ember1962" class="ember-view">  <div class="question-dataset">
 <div id="ember1965" class="ember-view">                  <div id="ember1973" class="ember-view">
 <div class="form-group">
@@ -2440,7 +2461,7 @@
 <div id="ember1835" class="ember-view">
 <label><input type="checkbox" id="ember1996" class="ember-view ember-checkbox" name="data_availability.third_party"> Data are held by someone other than the authors and are not in a public repository</label>
   <div class="additional-data hidden">
-    
+
 <div id="ember2000" class="ember-view">  <div class="question-dataset">
 <div id="ember2003" class="ember-view">                  <div id="ember2007" class="ember-view">
 <div class="form-group">
@@ -2473,7 +2494,7 @@
 <div id="ember1836" class="ember-view">
 <label><input type="checkbox" id="ember2016" class="ember-view ember-checkbox" name="data_availability.unavailable"> Dataset is not available (This may be contradictory to the PLOS data policy)</label>
   <div class="additional-data ">
-    
+
 <div id="ember2020" class="ember-view">  <div class="question-dataset">
 <div id="ember2072" class="ember-view">                  <div id="ember2076" class="ember-view">
 <div class="form-group">
@@ -2609,7 +2630,7 @@
 </div>
 
     <div class="additional-data">
-      
+
 <div id="ember1897" class="ember-view"></div>
     </div>
 </div>
@@ -2634,7 +2655,7 @@
 </div>
 
     <div class="additional-data">
-      
+
 <div id="ember1909" class="ember-view"></div>
     </div>
 </div>
@@ -2659,7 +2680,7 @@
 </div>
 
     <div class="additional-data">
-      
+
 <div id="ember1921" class="ember-view"></div>
     </div>
 </div>
@@ -2868,7 +2889,7 @@
 </div>
 
     <div class="additional-data">
-      
+
 <div id="ember1895" class="ember-view"></div>
     </div>
 </div>
@@ -3465,7 +3486,7 @@
 </div>
 
     <div class="additional-data">
-      
+
 <div id="ember1915" class="ember-view"></div>
     </div>
 </div>
@@ -3489,7 +3510,7 @@
 </div>
 
     <div class="additional-data">
-      
+
 <div id="ember1927" class="ember-view"></div>
     </div>
 </div>
@@ -3512,7 +3533,7 @@
 <div id="ember1835" class="ember-view">
 <label><input type="checkbox" id="ember1944" class="ember-view ember-checkbox" name="publishing_related_questions.previous_interactions.other_journal_submission"> This manuscript was previously submitted to a different PLOS journal as either a presubmission inquiry or a full submission.</label>
   <div class="additional-data hidden">
-    
+
 <div id="ember1948" class="ember-view"></div>
   </div>
 </div>
@@ -4226,7 +4247,7 @@
 <div id="ember1821" class="ember-view">
 <label><input type="checkbox" id="ember1860" class="ember-view ember-checkbox" name="taxon.zoological"> Does this manuscript describe a new zoological taxon name?</label>
   <div class="additional-data hidden">
-    
+
       <div class="question-text">
         <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
       </div>
@@ -4244,7 +4265,7 @@
 <div id="ember1822" class="ember-view">
 <label><input type="checkbox" id="ember1870" class="ember-view ember-checkbox" name="taxon.botanical"> Does this manuscript describe a new botantical taxon name?</label>
   <div class="additional-data hidden">
-    
+
       <div class="question-text">
         <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
       </div>

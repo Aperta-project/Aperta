@@ -37,7 +37,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def notify_invitation_accepted
-    task.invitation_accepted(self) if task.respond_to?(:invitation_invited)
+    task.invitation_accepted(self) if task.respond_to?(:invitation_accepted)
   end
 
   def associate_existing_user

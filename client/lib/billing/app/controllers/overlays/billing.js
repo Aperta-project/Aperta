@@ -2,7 +2,6 @@ import Ember from 'ember';
 import TaskController from 'tahi/pods/task/controller';
 
 export default TaskController.extend({
-  affiliation1: null,
   ringgold: [
     { id: 1, text: "Memorial University of Newfoundland" },
     { id: 2, text: "Ryerson University" },
@@ -124,26 +123,6 @@ export default TaskController.extend({
     return this.get('selectedPaymentMethod') === 'special_collection';
   }.property("selectedPaymentMethod"),
   agreeCollections: false,
-  selectedPayment: function() {
-    var paymentMethod = 'gpi'
-    // var paymentMethod = this.get("billingDetail.paymentMethod")
-
-    var match = this.get('responses').find(function(element, index, array) {
-      if (element.id === paymentMethod) {
-        return true;
-      } else {
-        return false;
-      }
-    })
-
-    return {
-      id: match.id,
-      text: match.text
-    }
-
-
-    this.get('billingDetail.paymentMethod')
-  }.property("billingDetail"),
   actions: {
     paymentMethodSelected: function (selection) {
       this.set('selectedPaymentMethod', selection.id);

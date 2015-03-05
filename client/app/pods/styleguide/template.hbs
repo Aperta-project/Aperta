@@ -1921,6 +1921,35 @@
 
           <div>
             <h5>
+              question-input
+            </h5>
+
+            {{question-input ident="foo"
+                             task=task
+                             question="Placeholder Text"}}
+          </div>
+
+          <div>
+            <h5>
+              question-radio
+            </h5>
+
+            {{question-radio ident="foo"
+                             task=task
+                             question="Placeholder Text"}}
+          </div>
+
+          <div>
+            <h5>
+              question-textarea
+            </h5>
+
+            {{question-textarea ident="foo"
+                                task=task}}
+          </div>
+
+          <div>
+            <h5>
               question-select
             </h5>
 
@@ -1930,6 +1959,15 @@
                               class=""
                               selectionSelected=''
                               source=arrayOfOptions}}
+          </div>
+
+          <div>
+            <h5>
+              question-check
+            </h5>
+
+            {{question-check ident="foo"
+                             task=task}}
           </div>
 
           <hr>

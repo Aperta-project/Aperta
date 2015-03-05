@@ -19,10 +19,20 @@ module 'Integration: Manuscript Manager Templates',
   teardown: ->
     server.restore()
     Ember.run(app, app.destroy)
-
+    Tahi.__container__.lookup(
+      'controller:admin/journal/manuscript-manager-template/edit'
+    )._actions.saveTemplateOnClick = Tahi.saveTemplateActionFunction
+  
   setup: ->
     app = startApp()
     server = setupMockServer()
+    Tahi.saveTemplateActionFunction = Tahi.__container__.lookup(
+      'controller:admin/journal/manuscript-manager-template/edit'
+    )._actions.saveTemplateOnClick
+
+    Tahi.__container__.lookup(
+      'controller:admin/journal/manuscript-manager-template/edit'
+    )._actions.saveTemplateOnClick = -> console.log 'No Action'
 
     records = createJournalWithTaskTemplate
       kind: "Task"
@@ -64,6 +74,13 @@ module 'Integration: Manuscript Manager Templates',
       200, {"Content-Type": "application/json"}, '{}'
     ]
 
+    server.respondWith 'POST', "/manuscript_manager_templates/1", [
+      200, {"Content-Type": "application/json"}, '{}'
+    ]
+
+    server.respondWith 'POST', "/phase_templates/1", [
+      200, {"Content-Type": "application/json"}, '{}'
+    ]
     response = {
       "journal_task_types": [
         {
@@ -90,8 +107,8 @@ module 'Integration: Manuscript Manager Templates',
 test 'Changing phase name', ->
   columnTitleSelect = 'h2.column-title:contains("Phase 1")'
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
-    .then -> ok find(columnTitleSelect).length
-
+    .then ->
+      ok find(columnTitleSelect).length
   click columnTitleSelect
     .then -> Ember.$(columnTitleSelect).html('Shazam!')
   andThen ->
@@ -129,7 +146,7 @@ createCard = ->
   click('a.button--green:contains("Add New Card")')
   pickFromChosenSingle('.task-type-select', 'Ad Hoc')
   click '.button--green:contains("Add")'
-    .then -> ok find('h1.inline-edit:contains("Ad Hoc")').length, 'It finds teh ad hocs'
+    .then -> ok find('h1.inline-edit:contains("Ad Hoc")').length, 'It finds the ad hocs'
   andThen ->
     click '.overlay-close-button:first'
 
@@ -168,4 +185,4 @@ test 'click delete confirmation overlay submit button', ->
     equal find(".card-content").length, 0, "The card is gone"
   andThen ->
     search = { method: "DELETE", url: "/task_templates/1" }
-    ok _.findWhere(server.requests, search), "It sends DELETE request to the server"
+    ok _.findWhere(server.responses, search), "It sends DELETE request to the server"

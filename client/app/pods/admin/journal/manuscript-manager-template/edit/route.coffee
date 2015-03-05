@@ -1,7 +1,6 @@
 `import Ember from 'ember'`
-`import AlertUnsavedChanges from 'tahi/mixins/routes/alert-unsaved-changes'`
 
-ManuscriptManagerTemplateEditRoute = Ember.Route.extend AlertUnsavedChanges,
+ManuscriptManagerTemplateEditRoute = Ember.Route.extend
   model: (params) ->
     @store.find('manuscriptManagerTemplate', params.manuscript_manager_template_id)
 

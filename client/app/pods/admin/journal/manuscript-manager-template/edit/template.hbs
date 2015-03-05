@@ -14,7 +14,7 @@
           {{#link-to "admin.journal" journal class="button-link button--blue"}}&lt; Back{{/link-to}}
         {{/if}}
         {{#if showSaveButton}}
-          <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplate"}}>Save Template</a>
+          <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplateOnClick"}}>Save Template</a>
           <a class="button-link button--blue paper-type-cancel-button" {{action "rollback"}}>cancel</a>
         {{/if}}
       </div>

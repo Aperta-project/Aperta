@@ -3,7 +3,13 @@ class InvitationsController < ApplicationController
 
   def create
     invitation = task.invitations.create(invitation_params)
+    invitation.invite!
     render json: invitation, status: :created
+  end
+
+  def destroy
+    invitation.destroy
+    render json: nil, status: :no_content
   end
 
   def accept

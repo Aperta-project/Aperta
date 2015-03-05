@@ -6,7 +6,7 @@ module Invitable
   end
 
   def invitation_invited(_invitation)
-    raise NotImplementedError, "the method 'invitation_created' must be defined in the subclass"
+    raise NotImplementedError, "the method 'invitation_invited' must be defined in the subclass"
   end
 
   def invitation_accepted(_invitation)

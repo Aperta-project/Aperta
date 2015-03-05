@@ -30,37 +30,49 @@ describe InvitationsController do
     end
   end
 
-  describe "PUT /invitations/:id/accept" do
-    let(:task) { FactoryGirl.create(:paper_editor_task) }
-    let(:invitation) { FactoryGirl.create(:invitation, invitee: invitee, task: task) }
+  describe "DESTROY /invitations/:id" do
+    let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
-    it "gives access to the user as the editor" do
-      put(:accept, {
+    it "destroys the invitation" do
+      delete(:destroy, {
         format: "json",
         id: invitation.id
       })
+      expect(Invitation.find_by(id: invitation.id)).to be_nil
       expect(response.status).to eq(204)
-      invitation.reload
-      expect(invitation.state).to eq("accepted")
-      expect(invitation.actor).to eq(invitee)
-      expect(task.paper.assigned_users).to include(invitee)
-      expect(task.paper.editor).to eq(invitee)
     end
   end
 
-  describe "PUT /invitations/:id/reject" do
+  context "transitioning state" do
     let(:task) { FactoryGirl.create(:paper_editor_task) }
-    let(:invitation) { FactoryGirl.create(:invitation, invitee: invitee, task: task) }
+    let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
-    it "rejects the invitation" do
-      put(:reject, {
-        format: "json",
-        id: invitation.id
-      })
-      expect(response.status).to eq(204)
-      invitation.reload
-      expect(invitation.state).to eq("rejected")
-      expect(invitation.actor).to eq(invitee)
+    describe "PUT /invitations/:id/accept" do
+      it "gives access to the user as the editor" do
+        put(:accept, {
+          format: "json",
+          id: invitation.id
+        })
+        expect(response.status).to eq(204)
+        invitation.reload
+        expect(invitation.state).to eq("accepted")
+        expect(invitation.actor).to eq(invitee)
+        expect(task.paper.assigned_users).to include(invitee)
+        expect(task.paper.editor).to eq(invitee)
+      end
+    end
+
+    describe "PUT /invitations/:id/reject" do
+      it "rejects the invitation" do
+        put(:reject, {
+          format: "json",
+          id: invitation.id
+        })
+        expect(response.status).to eq(204)
+        invitation.reload
+        expect(invitation.state).to eq("rejected")
+        expect(invitation.actor).to eq(invitee)
+      end
     end
 
   end

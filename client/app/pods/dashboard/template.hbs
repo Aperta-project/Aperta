@@ -4,11 +4,11 @@
 <div id="tahi-container">
 
   <section class="dashboard-section">
-    {{#if invitedInvitations.length}}
+    {{#if invitations.length}}
       <h2 class="welcome-message">
-        You have {{invitedInvitations.length}} {{make-plural invitedInvitations.length "invitation" "invitations"}}.
+        You have {{invitations.length}} {{make-plural invitations.length "invitation" "invitations"}}.
       </h2>
-      <button class="button-primary button--green" {{action "viewInvitations" invitedInvitations}}>View invitations</button>
+      <button class="button-primary button--green" {{action "viewInvitations" invitations}}>View invitations</button>
     {{/if}}
   </section>
 

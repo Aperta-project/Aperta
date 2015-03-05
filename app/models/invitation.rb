@@ -1,4 +1,5 @@
 class Invitation < ActiveRecord::Base
+  include EventStreamNotifier
   include AASM
 
   belongs_to :task, inverse_of: :invitations
@@ -6,18 +7,21 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: "User", inverse_of: :invitations
   belongs_to :actor, class_name: "User", inverse_of: :invitations
 
-  after_commit :notify_invitation_invited, on: :create
-
   aasm column: :state do
-    state(:invited, {
-      initial: true,
-      before_enter: [:generate_code, :associate_existing_user]
-    })
+    state :pending, initial: true
+    state :invited do
+      validates :invitee, presence: true
+    end
     state :accepted
     state :rejected
 
+    event(:invite, {
+      after: [:generate_code, :associate_existing_user],
+      after_commit: :notify_invitation_invited
+    }) do
+      transitions from: :pending, to: :invited
+    end
     event(:accept, {
-      after: :associate_existing_user,
       after_commit: :notify_invitation_accepted
     }) do
       transitions from: :invited, to: :accepted
@@ -29,19 +33,19 @@ class Invitation < ActiveRecord::Base
 
   private
 
-  def generate_code
-    self.code ||= SecureRandom.hex(10)
-  end
-
   def notify_invitation_invited
-    task.invitation_invited(self)
+    task.invitation_invited(self) if task.respond_to?(:invitation_invited)
   end
 
   def notify_invitation_accepted
-    task.invitation_accepted(self)
+    task.invitation_accepted(self) if task.respond_to?(:invitation_accepted)
   end
 
   def associate_existing_user
-    self.invitee ||= User.find_by(email: email)
+    update(invitee: User.find_by(email: email))
+  end
+
+  def generate_code
+    self.code ||= SecureRandom.hex(10)
   end
 end

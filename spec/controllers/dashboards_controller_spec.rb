@@ -23,7 +23,7 @@ describe DashboardsController do
 
     context "invitations" do
 
-      let!(:invitation) { FactoryGirl.create(:invitation, invitee: user) }
+      let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: user) }
 
       it "returns required fields" do
         do_request

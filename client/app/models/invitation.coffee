@@ -8,6 +8,7 @@ Invitation = DS.Model.extend
   state: DS.attr('string') # invited|accepted|rejected
   email: DS.attr('string')
   createdAt: DS.attr('date')
+  inviteeId: DS.attr('string')
 
   reject: ->
     @set('state', 'rejected')

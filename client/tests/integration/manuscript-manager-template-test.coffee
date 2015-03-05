@@ -23,6 +23,8 @@ module 'Integration: Manuscript Manager Templates',
   setup: ->
     app = startApp()
     server = setupMockServer()
+    # TODO NEEDS SOME LOVE
+    # Couldn't successfully fo this with sinon
     Tahi.__container__.lookup(
       'controller:admin/journal/manuscript-manager-template/edit'
     )._actions.saveTemplateOnClick = -> console.log 'No Action'
@@ -67,6 +69,13 @@ module 'Integration: Manuscript Manager Templates',
       200, {"Content-Type": "application/json"}, '{}'
     ]
 
+    server.respondWith 'POST', "/manuscript_manager_templates/1", [
+      200, {"Content-Type": "application/json"}, '{}'
+    ]
+
+    server.respondWith 'POST', "/phase_templates/1", [
+      200, {"Content-Type": "application/json"}, '{}'
+    ]
     response = {
       "journal_task_types": [
         {

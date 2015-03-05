@@ -3,6 +3,12 @@ services:
 addons:
     postgresql: "9.3"
 before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
   - psql -c 'create database travis_ci_test;' -U postgres
   - cp config/database.yml.travis config/database.yml
-script: bundle exec rspec spec --format=documentation
+  - npm install && bundle exec rake ember-cli:install_dependencies
+script:
+  - bundle exec rspec spec --format=documentation
+  - bundle exec rspec engines --format=documentation
+  - bundle exec rake ember-cli:test

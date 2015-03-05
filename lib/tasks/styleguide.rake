@@ -23,7 +23,7 @@ namespace :styleguide do
     styleguide_html = File.open(@styleguide_path, "r").read
 
     # Loop all the source-page-names and set the content
-    nodes = Nokogiri::HTML(styleguide_html) { |config| config.strict }
+    nodes = Nokogiri::HTML.fragment(styleguide_html) { |config| config.strict }
     element_nodes = nodes.css("*[source-page-name]")
     element_nodes.each do |ele|
       ele.content = get_content(ele)

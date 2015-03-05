@@ -1,21 +1,27 @@
 class PaperAttributesExtractor
   attr_reader :epub_stream
 
-  def initialize(epub_url)
-    @epub_stream = Faraday.get(epub_url).body
+  def initialize(epub_stream)
+    @epub_stream = epub_stream
   end
 
-  def to_hash
-    {
-      body: extract("body"),
-      title: extract("title"),
-      abstract: extract("abstract")
+  def sync!(paper)
+    paper.update!(attributes)
+  end
+
+  def attributes
+    @attributes ||= {
+      body: extract_file("body"),
+      title: extract_file("title"),
+      abstract: extract_file("abstract")
     }
   end
 
-  def extract(filename)
+  private
+
+  def extract_file(filename)
     TahiEpub::Zip.extract(stream: epub_stream, filename: filename).force_encoding("UTF-8")
-  rescue TahiEpub::FileNotFoundError => fnf
+  rescue TahiEpub::FileNotFoundError => e
     nil # the filename doesn't exist in the response epub
   end
 end

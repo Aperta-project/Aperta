@@ -17,4 +17,3 @@ test 'renders based on the set parent view prop', ->
   Ember.run ->
     fakeParent.set('foo', false)
   ok !$component.find('p').length, 'setting the prop to false is correctly observed.'
-

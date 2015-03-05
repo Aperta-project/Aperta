@@ -31,7 +31,7 @@ TaskController = Ember.ObjectController.extend SavesDelayed, ControllerParticipa
   saveModel: ->
     @_super()
       .then () =>
-        @clearValidationErrors()
+        @clearAllValidationErrors()
       .catch (response) =>
         @displayValidationErrorsFromResponse response
         @set 'model.completed', false

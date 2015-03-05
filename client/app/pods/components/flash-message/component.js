@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+/* See app/services/flash.js for documentation */
+
 export default Ember.Component.extend({
   classNames: ['flash-message'],
   classNameBindings: ['type'],

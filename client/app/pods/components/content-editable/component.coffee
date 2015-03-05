@@ -45,7 +45,7 @@ ContentEditableComponent = Ember.Component.extend
     @setPlaceholder() if @elementIsEmpty()
 
   elementIsEmpty: ->
-    Em.isEmpty(@.$().text())
+    Ember.isEmpty(@.$().text())
 
   elementHasPlaceholder: ->
     @.$().text() == @get('placeholder')
@@ -79,4 +79,3 @@ ContentEditableComponent = Ember.Component.extend
       e.preventDefault()
 
 `export default ContentEditableComponent`
-

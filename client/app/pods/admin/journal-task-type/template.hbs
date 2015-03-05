@@ -1,6 +1,6 @@
-<tr>
-  <td>{{model.title}}</td>
-  <td>
+<div class="individual-task-type">
+  <p>{{model.title}}</p>
+  <div class="role-dropdown">
     {{view "chosen" content=availableTaskRoles
                     name="roles"
                     width="150px"
@@ -8,15 +8,7 @@
                     prompt="No Role Assigned"
                     optionValuePath="content.name"
                     optionLabelPath="content.name"
+                    changeAction='save'
                     value=role}}
-  </td>
-  <td>{{kind}}</td>
-  <td class="actions-cell">
-    <span class="animation-fade-in">
-      {{#if isDirty}}
-        <button class="button-link button--blue" {{action "cancel" bubbles=false}}>cancel</button>
-        <button class="button-primary button--blue" {{action "save" bubbles=false}}>Save</button>
-      {{/if}}
-    </span>
-  </td>
-</tr>
+  </div>
+</div>

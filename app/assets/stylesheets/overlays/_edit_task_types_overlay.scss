@@ -1,17 +1,29 @@
 .edit-task-types-overlay {
-  td {
-    height: 36px;
-  }
-
-  .actions-cell {
-    width: 140px;
-  }
-
   .overlay-close-x {
     color: $tahi-blue;
 
     &:hover {
       color: $tahi-blue-dark;
+    }
+  }
+
+  .task-headers h3 {
+    display: inline-block;
+
+    &:nth-child(2) {
+      float: right;
+    }
+  }
+
+  .individual-task-type {
+    margin-top: 20px;
+
+    p, div {
+      display: inline-block;
+    }
+    
+    .role-dropdown {
+      float: right;
     }
   }
 }

@@ -49,6 +49,11 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend Validati
     else
       @transitionToRoute('admin.journal.manuscript_manager_template.edit', @get('model'))
 
+  rollback: ->
+    if @get('model.isNew')
+      @get('model').deleteRecord()
+      @reset()
+
   reset: () ->
     @setProperties
       editMode: false
@@ -97,18 +102,18 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend Validati
     saveTemplateOnClick: (transition) ->
       if @get('dirty') || @get('editMode')
         @saveTemplate(transition)
- 
+      else
+        @send 'rollback'
+
     rollback: ->
       if @get('model.isNew')
         @get('model').deleteRecord()
         @reset()
-        @send('didRollBack')
       else
         @store.unloadAll('taskTemplate')
         @store.unloadAll('phaseTemplate')
         @get('model').rollback()
         @get('model').reload().then =>
           @reset()
-          @send('didRollBack')
 
 `export default ManuscriptManagerTemplateEditController`

@@ -49,11 +49,6 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend Validati
     else
       @transitionToRoute('admin.journal.manuscript_manager_template.edit', @get('model'))
 
-  rollback: ->
-    if @get('model.isNew')
-      @get('model').deleteRecord()
-      @reset()
-
   reset: () ->
     @setProperties
       editMode: false

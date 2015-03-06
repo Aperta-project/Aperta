@@ -45,10 +45,45 @@
   }
 }
 
+.overlay--top {
+  background-color: rgba(57, 163, 41, 0.96);
+  color: $tahi-white;
+  height: 210px;
+  
+  .overlay-close-x {
+    display: block;
+    color: $tahi-white;
+    line-height: 58%;
+  }
+
+  .navigation-toggle {
+    position: relative;
+    width: 100%;
+    color: $tahi-white;
+    pointer-events: none;
+
+    &:hover { 
+      color: $tahi-white;
+    }
+  }
+
+  .message-text {
+    clear: both;
+    max-width: 1120px;
+    margin: 20px auto 40px auto;
+
+    h1 {
+      margin-bottom: 20px;
+    }
+  }
+}
+
 .overlay--fullscreen {
   background-color: rgba(255,255,255, 0.95);
 
-  .overlay-close-x { display: block; }
+  .overlay-close-x { 
+    display: block; 
+  }
 
   .overlay-container {
     background: transparent;

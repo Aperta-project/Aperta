@@ -95,7 +95,8 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend Validati
       null
 
     saveTemplateOnClick: (transition) ->
-      @saveTemplate(transition)
+      if @get('dirty') || @get('editMode')
+        @saveTemplate(transition)
  
     rollback: ->
       if @get('model.isNew')

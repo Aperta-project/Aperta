@@ -16,6 +16,7 @@ module Tahi
     config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
 
     config.assets.paths << Rails.root.join('vendor', 'assets', 'stylesheets')
+    config.assets.paths << Rails.root.join('vendor', 'assets', 'images')
     config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
 
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)

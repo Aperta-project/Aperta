@@ -39,10 +39,6 @@ app.import('vendor/jquery.fileupload/jquery.fileupload.js');
 
 // Select 2
 app.import('bower_components/select2/select2.js');
-app.import('bower_components/select2/select2.css');
-app.import('bower_components/select2/select2-spinner.gif', { destDir: 'assets' });
-app.import('bower_components/select2/select2.png', { destDir: 'assets' });
-app.import('bower_components/select2/select2x2.png', { destDir: 'assets' });
 
 if (app.env === 'production') {
   app.import('bower_components/event-source-polyfill/eventsource.js');

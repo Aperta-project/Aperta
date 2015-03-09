@@ -95,7 +95,7 @@ class Task < ActiveRecord::Base
     Task.metadata_types.include?(self.class.name)
   end
 
-  def manuscript_information_task?
+  def submission_task?
     self.role == "author"
   end
 

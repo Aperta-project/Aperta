@@ -315,3 +315,17 @@ shared_examples_for "cannot export paper" do
     expect(policy.status?).to be(false)
   end
 end
+
+
+# invitiations
+shared_examples_for "person who is an invitee" do
+  it "allows them to perform any action" do
+    expect(policy.show?).to be(true)
+  end
+end
+
+shared_examples_for "person who is not related to task" do
+  it "does not allow them to perform any action" do
+    expect(policy.show?).to be(false)
+  end
+end

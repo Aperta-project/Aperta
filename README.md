@@ -93,11 +93,8 @@ You can run the javascript specs via the command line with `rake ember-cli:test`
 
 #### Running qunit tests from the browser
 
-**IMPORTANT NOTE:**
-
-You can also run the javascript specs from the browser, however there is currently
-a limitation with ember-cli-rails (see https://github.com/rwz/ember-cli-rails/issues/18).
-As a workaround, you can `cd client` and run `ember server --environment=test` and visit `localhost:4200/tests`
+You can also run the javascript specs from the browser. To do this, visit `http://localhost:5000/ember-tests/#{app-name}`.
+So, in our case, visit `http://localhost:5000/ember-tests/tahi`.
 
 For help writing ember tests please see the [ember-cli testing section](http://www.ember-cli.com/#testing)
 

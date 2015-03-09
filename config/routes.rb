@@ -149,6 +149,7 @@ Tahi::Application.routes.draw do
 
   get "/styleguide", to: "ember#styleguide"
 
+  mount EmberCLI::Engine => "ember-tests" if Rails.env.development?
   get '*route' => 'ember#index'
   root 'ember#index'
 end

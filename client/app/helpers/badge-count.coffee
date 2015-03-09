@@ -2,8 +2,8 @@
 
 BadgeCount = Ember.Handlebars.makeBoundHelper (count, classString) ->
   if count > 0
-    new Handlebars.SafeString("<span class='badge #{classString}'>#{count}</span>")
+    new Ember.Handlebars.SafeString("<span class='badge #{classString}'>#{count}</span>")
   else
-    new Handlebars.SafeString("")
+    new Ember.Handlebars.SafeString("")
 
 `export default BadgeCount`

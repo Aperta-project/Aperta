@@ -2,6 +2,6 @@
 
 FormattedTime = Ember.Handlebars.makeBoundHelper (time) ->
   time ||= new Date()
-  new Handlebars.SafeString $.timeago(time)
+  new Ember.Handlebars.SafeString $.timeago(time)
 
 `export default FormattedTime`

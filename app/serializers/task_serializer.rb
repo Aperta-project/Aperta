@@ -20,7 +20,7 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def is_metadata_task
-    Task.metadata_types.include? object.class.to_s
+    object.submission_task?
   end
 
   private

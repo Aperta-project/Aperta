@@ -94,7 +94,7 @@ class TasksController < ApplicationController
   def notify_task_updated!
     if @task_completion_change
       action = task.completed? ? 'complete' : 'incomplete'
-      feed_name = task.is_metadata? ? 'manuscript' : 'workflow'
+      feed_name = task.submission_task? ? 'manuscript' : 'workflow'
       ActivityFeed.create(
         feed_name: feed_name,
         activity_key: "task.#{action}",

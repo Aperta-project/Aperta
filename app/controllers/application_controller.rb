@@ -36,11 +36,12 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_with_basic_http
-    if %w(staging).include?(Rails.env) && request.path !~ /\A\/api.*/
-      unless session[:authenticated]
-        authenticate_or_request_with_http_basic 'Staging' do |name, password|
-          name == ENV["BASIC_HTTP_USER"] && password == ENV["BASIC_HTTP_PASSWORD"] && (session[:authenticated] = true)
-        end
+    return unless Rails.configuration.basic_auth_required
+    return if request.path =~ /\A\/api.*/
+
+    unless session[:authenticated]
+      authenticate_or_request_with_http_basic do |name, password|
+        name == Rails.configuration.basic_auth_user && password == Rails.configuration.basic_auth_password && (session[:authenticated] = true)
       end
     end
   end

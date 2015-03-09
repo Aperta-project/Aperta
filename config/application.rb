@@ -28,6 +28,12 @@ module Tahi
 
     config.active_job.queue_adapter = :sidekiq
 
+    config.basic_auth_required = ENV.fetch("BASIC_AUTH_REQUIRED", false)
+    if config.basic_auth_required
+      config.basic_auth_user = ENV.fetch('BASIC_HTTP_USERNAME')
+      config.basic_auth_password = ENV.fetch('BASIC_HTTP_PASSWORD')
+    end
+
     ActionMailer::Base.smtp_settings = {
       address: 'smtp.sendgrid.net',
       port: '587',

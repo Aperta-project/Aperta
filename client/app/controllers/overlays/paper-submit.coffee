@@ -17,7 +17,7 @@ PaperSubmitOverlayController = Ember.Controller.extend
           else "There was a problem saving. Please reload."
         @flash.displayMessage 'error', message
 
-    closeAction: ->
+    closeSuccessOverlay: ->
       @transitionToRoute('application')
         .then =>
           @set 'paperSubmitted', false

@@ -22,7 +22,7 @@ class EventStream
   end
 
   def destroy_for(user)
-    if Accessibility.new(record).disconnected?(user)
+    if Accessibility.new(record).disconnected?(user) && user
       channel = EventStreamConnection.channel_name(User, user.id)
       EventStreamConnection.post_event(channel, destroyed_payload)
     end

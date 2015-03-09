@@ -16,11 +16,11 @@ module UpdateResponders
     end
 
     def status
-      204
+      200
     end
 
     def content
-      nil
+      generate_json_response([@task], :tasks)
     end
 
     def generate_json_response(collection, root)

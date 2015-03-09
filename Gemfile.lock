@@ -9,6 +9,14 @@ GIT
       omniauth (~> 1.2.0)
 
 GIT
+  remote: git://github.com/swanandp/acts_as_list.git
+  revision: 84325ede9ad528acbf68a97c5070cff113ee6a17
+  ref: 84325ede9ad528acbf68a97c5070cff113ee6a17
+  specs:
+    acts_as_list (0.6.0)
+      activerecord (>= 3.0)
+
+GIT
   remote: git://github.com/tahi-project/tahi_epub.git
   revision: 3553a9e619ead574f0a92bdfbf77397b11942ba1
   specs:
@@ -93,8 +101,6 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    acts_as_list (0.6.0)
-      activerecord (>= 3.0)
     addressable (2.3.6)
     american_date (1.1.0)
     arel (6.0.0)
@@ -474,7 +480,7 @@ DEPENDENCIES
   active_model_serializers
   active_record-acts_as
   activemodel-globalid!
-  acts_as_list
+  acts_as_list!
   american_date
   bourbon
   bower-rails

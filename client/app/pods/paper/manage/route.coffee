@@ -12,11 +12,6 @@ PaperManageRoute = AuthorizedRoute.extend
         success: (json) -> Ember.run(null, resolve, json)
         error:   (xhr, status, error) -> Ember.run(null, reject, xhr)
 
-  setupController: (controller, model) ->
-    controller.set('model', model)
-    controller.set('commentLooks', @store.all('commentLook'))
-    controller.set('canRemoveCard', true)
-
   actions:
     chooseNewCardTypeOverlay: (phase) ->
       chooseNewCardTypeOverlay = @controllerFor('overlays/chooseNewCardType')

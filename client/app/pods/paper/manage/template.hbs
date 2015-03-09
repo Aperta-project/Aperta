@@ -40,24 +40,7 @@
   <div class="columns">
     {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
     {{#each phase in sortedPhases}}
-      {{#view "manuscript-manager-column" content=phase}}
-        {{add-column position=view.nextPosition action='addPhase'}}
-
-        {{view "phase-header" phase=phase}}
-
-        <div class="column-content">
-          {{#each task in phase.tasks}}
-            {{card-preview paper=model.paper
-                           task=task
-                           commentLooks=commentLooks
-                           canRemoveCard=canRemoveCard
-                           showDeleteConfirm="showDeleteConfirm"
-                           canDragCard=true
-                           action="viewCard"}}
-          {{/each}}
-          <a {{action "chooseNewCardTypeOverlay" phase}} class="button-secondary button--green">Add New Card</a>
-        </div>
-      {{/view}}
+      {{render "phase" phase}}
     {{/each}}
   </div>
 </div>

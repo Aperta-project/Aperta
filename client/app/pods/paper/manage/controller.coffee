@@ -5,7 +5,7 @@ PaperManageController = Ember.ObjectController.extend
   positionSort: ["position:asc"]
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort')
 
-  updatePositions: (phase)->
+  updatePositions: (phase) ->
     relevantPhases = @get('model.phases').filter((p)->
       p != phase && p.get('position') >= phase.get('position')
     )

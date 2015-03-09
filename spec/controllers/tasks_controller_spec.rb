@@ -48,7 +48,7 @@ describe TasksController, redis: true do
 
     it "renders the task id and completed status as JSON" do
       do_request
-      expect(response.status).to eq(204)
+      expect(response.status).to eq(200)
     end
 
     context "when the task is assigned to the user" do

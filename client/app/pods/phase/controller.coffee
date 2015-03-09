@@ -3,8 +3,10 @@
 PhaseController = Ember.Controller.extend
   commentLooks: Em.computed -> @store.all('commentLook')
   canRemoveCard: true
-  positionSort: ['position:asc']
-  sortedTasks: Ember.computed.sort 'model.tasks', 'positionSort'
+
+  sortedTasks: (->
+    @get('model.tasks').sortBy "position"
+  ).property "model.tasks.@each.position"
 
   actions:
     updatePositions: (currentTask) ->

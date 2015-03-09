@@ -1,8 +1,7 @@
 require_relative 'production'
-if ENV["DISABLE_SSL"]
-  Tahi::Application.configure do
-    config.force_ssl = false
 
-    config.basic_auth_required = true
-  end
+Tahi::Application.configure do
+  config.force_ssl = false if ENV["DISABLE_SSL"]
+
+  config.basic_auth_required = true
 end

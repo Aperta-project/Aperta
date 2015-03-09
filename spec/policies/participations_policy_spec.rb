@@ -56,20 +56,6 @@ describe ParticipationsPolicy do
     end
   end
 
-  context "allowed manuscript information task" do
-    let(:user) do
-      user = FactoryGirl.create(:user)
-      FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
-      user
-    end
-
-    before do
-      task.update_attribute(:role, 'author')
-    end
-
-    include_examples "person who can edit a tasks's participants"
-  end
-
   context "user with can_view_all_manuscript_managers on this journal" do
     let(:user) do
       FactoryGirl.create(

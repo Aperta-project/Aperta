@@ -11,7 +11,7 @@ module StandardTasks
 
       mail({
         to: invitation.email,
-        subject: "Reviewer has completed the review on Tahi"
+        subject: "You have been invited as an editor in Tahi"
       })
     end
   end

@@ -47,7 +47,7 @@ class PaperFactory
       task.title = task_template.title
       task.body = task_template.template
       task.role = task_template.journal_task_type.role
-      task.participants << creator if task.is_submission_task?
+      task.participants << creator if task.submission_task?
       task.save!
     end
   end

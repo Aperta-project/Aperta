@@ -16,7 +16,7 @@ module TaskAccessCriteria
   # authorizations used by policies
   def authorized_to_modify_task?
     current_user.site_admin? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper? ||
-    allowed_submission_task? || submission_task_collaborator? || allowed_reviewer_task? || task_participant?
+      allowed_submission_task? || submission_task_collaborator? || allowed_reviewer_task? || task_participant?
   end
 
   def authorized_to_create_task?

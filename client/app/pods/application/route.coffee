@@ -53,7 +53,7 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
             parentView: 'application'
 
     closeAction: ->
-      @send('closeOverlay', arguments)
+      @send('closeOverlay', arguments...)
 
     addPaperToEventStream: (paper) ->
       @eventStream.addEventListener(paper.get('eventName'))

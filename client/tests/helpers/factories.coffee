@@ -1,7 +1,7 @@
 `import FactoryGuy from "factory-guy"`
 
 Factories = ->
-
+  FactoryGuy.clear()
   FactoryGuy.define 'journal',
     default:
       name: "PLOS Yeti",

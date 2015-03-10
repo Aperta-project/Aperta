@@ -1,10 +1,10 @@
 .paper-new-overlay {
   .chosen-style-override .chosen-container {
-    width: 44% !important;
     margin-bottom: 20px;
+    // width: 44% !important;
+  }
 
-    &:nth-child(2) {
-      float: right;
-    }
+  .paper-new-paper-type-select {
+    float: right;
   }
 }

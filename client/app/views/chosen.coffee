@@ -2,7 +2,7 @@
 
 ChosenView = Ember.Select.extend
   multiple: false
-  width: '200px'
+  width: '44%'
   disableSearchThreshold: 0
   disabled: false
   searchContains: true

@@ -19,14 +19,14 @@ describe TasksPolicy do
     let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
 
     before do
-      allow(task).to receive(:is_metadata?).and_return true
+      allow(task).to receive(:submission_task?).and_return true
     end
 
     include_examples "person who can edit but not create a task"
 
     context "on a non metadata task" do
       before do
-        allow(task).to receive(:is_metadata?).and_return false
+        allow(task).to receive(:submission_task?).and_return false
       end
 
       include_examples "person who cannot see a task"
@@ -98,19 +98,5 @@ describe TasksPolicy do
 
       include_examples "person who can edit but not create a task"
     end
-  end
-
-  context "allowed manuscript information task" do
-    let(:user) do
-      user = FactoryGirl.create(:user)
-      FactoryGirl.create(:paper_role, :editor, user: user, paper: paper)
-      user
-    end
-
-    before do
-      task.update_attribute(:role, 'author')
-    end
-
-    include_examples "person who can edit but not create a task"
   end
 end

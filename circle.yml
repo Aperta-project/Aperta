@@ -39,12 +39,12 @@ test:
     - case $CIRCLE_NODE_INDEX in 0) rake spec ;; 1) rake ember-cli:test ;; esac:
         parallel: true
 
-## Customize deployment commands
-# deployment:
-#   staging:
-#     branch: master
-#     heroku:
-#       appname: foo-bar-123
+# Customize deployment commands
+deployment:
+  staging:
+    branch: master
+    heroku:
+      appname: tahi-staging
 
 ## Custom notifications
 # notify:

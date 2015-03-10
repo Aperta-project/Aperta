@@ -6,6 +6,18 @@ module StandardTasks
 
     register_task default_title: "Assign Reviewers", default_role: "editor"
 
+    include Invitable
+
+    def invitation_invited(invitation)
+      PaperReviewerMailer.delay.notify_invited({
+        invitation_id: invitation.id
+      })
+    end
+
+    def invitation_accepted(invitation)
+      TaskRoleUpdater.new(self, invitation.invitee_id, PaperRole::REVIEWER).update
+    end
+
     def array_attributes
       super + [:reviewer_ids]
     end

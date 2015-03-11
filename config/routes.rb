@@ -30,9 +30,9 @@ Tahi::Application.routes.draw do
   get '/request_policy' => 'direct_uploads#request_policy'
 
   get 'filtered_users/users/:paper_id' => 'filtered_users#users'
-  get 'filtered_users/editors/:journal_id' => 'filtered_users#editors'
-  get 'filtered_users/admins/:journal_id' => 'filtered_users#admins'
-  get 'filtered_users/reviewers/:journal_id' => 'filtered_users#reviewers'
+  get 'filtered_users/editors/:paper_id' => 'filtered_users#editors'
+  get 'filtered_users/admins/:paper_id' => 'filtered_users#admins'
+  get 'filtered_users/reviewers/:paper_id' => 'filtered_users#reviewers'
 
   get '/user_flows/authorization' => 'user_flows#authorization'
   namespace :user_flows do

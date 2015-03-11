@@ -27,19 +27,18 @@ feature "Register Decision", js: true, selenium: true do
     end
   end
 
-  scenario "Completed card cannot be modified" do
+  scenario "Disable inputs upon card completion" do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card 'Register Decision' do |overlay|
       overlay.register_decision = "Accepted"
       overlay.decision_letter = "Accepting this because I can"
       overlay.mark_as_complete
-      check "Completed"
       expect(overlay).to be_completed
 
-      # assert the overlay is not editable
-      overlay.register_decision = "Rejected" # should not be able to select
-      expect(find(".decision-label input[value='accepted']")[:checked]).to eq "true"
+      expect(find("#task_completed[disabled]")).to be_present
+      expect(all("input[type='radio'][disabled]").size).to eq 3
+      expect(find("textarea[disabled]")).to be_present
     end
   end
 end

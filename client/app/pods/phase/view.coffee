@@ -5,6 +5,10 @@ PhaseView = Ember.View.extend DragNDrop.DroppableMixin,
   classNames: ['column']
   lastDraggedOverTask: null
 
+  nextPosition: (->
+    @get('controller.model.position') + 1
+  ).property('controller.model.position')
+
   didInsertElement: ->
     controller = @get('controller')
     store = @get('controller.store')

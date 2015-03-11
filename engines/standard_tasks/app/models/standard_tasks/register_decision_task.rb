@@ -11,6 +11,11 @@ module StandardTasks
 
     register_task default_title: "Register Decision", default_role: "editor"
 
+    def send_emails
+      return unless previous_changes["completed"] == [false, true]
+      RegisterDecisionMailer.delay.notify_author_email(task_id: id)
+    end
+
     def accept_letter
       template = <<-TEXT.strip_heredoc
         Dear Dr. %{author_last_name},

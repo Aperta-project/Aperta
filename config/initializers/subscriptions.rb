@@ -35,3 +35,12 @@ TahiNotifier.subscribe("paper_role:destroyed") do |subscription_name, payload|
 
   EventStream.new(action, record.paper, subscription_name).destroy_for(record.user)
 end
+
+TahiNotifier.subscribe("paper::revised") do |subscription_name, payload|
+  activity = payload[:activity]
+  user     = payload[:user]
+  target   = payload[:target]
+
+  Notifications::Handler.new(activity: activity, actor: user, target: target, event: subscription_name).call
+end
+

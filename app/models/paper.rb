@@ -169,6 +169,10 @@ class Paper < ActiveRecord::Base
     errors.add(:base, "can't submit a paper when all of the metadata tasks aren't completed")
   end
 
+  def revised?
+    true # placeholder for determining if it has been revised
+  end
+
   %w(admins editors reviewers collaborators).each do |relation|
     ###
     # :method: <roles>

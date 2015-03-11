@@ -42,6 +42,9 @@ class PapersController < ApplicationController
       paper.update(update_paper_params)
     end
 
+    #TODO: for testing purposes
+    notify_paper_revised! if paper.revised?
+
     notify_paper_edited! if params[:paper][:locked_by_id].present?
 
     respond_with paper
@@ -96,8 +99,14 @@ class PapersController < ApplicationController
 
   def submit
     paper.update(submitted: true, editable: false)
-    status = paper.valid? ? 200 : 422
-    notify_paper_submitted! if paper.valid?
+    if paper.valid?
+      notify_paper_submitted!
+      # TODO: uncomment!
+      # notify_paper_revised! if paper.revised?
+      status = 200
+    else
+      status = 422
+    end
     render json: paper, status: status
   end
 
@@ -190,5 +199,16 @@ class PapersController < ApplicationController
       user: current_user,
       message: 'Paper was submitted'
     )
+  end
+
+  def notify_paper_revised!
+    activity = Activity.create(
+      feed_name: 'manuscript',
+      activity_key: 'paper.revised',
+      subject: paper,
+      user: current_user,
+      message: 'Paper was revised'
+    )
+    TahiNotifier.notify(event: "paper::revised", payload: { activity: activity, user: current_user, target: paper })
   end
 end

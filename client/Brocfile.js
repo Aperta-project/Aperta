@@ -37,6 +37,11 @@ app.import('vendor/jquery.iframe-transport.js');
 app.import('vendor/jquery.fileupload/jquery.fileupload.css');
 app.import('vendor/jquery.fileupload/jquery.fileupload.js');
 
+app.import('bower_components/jquery-ui/ui/core.js');
+app.import('bower_components/jquery-ui/ui/mouse.js');
+app.import('bower_components/jquery-ui/ui/widget.js');
+app.import('bower_components/jquery-ui/ui/sortable.js');
+
 // Select 2
 app.import('bower_components/select2/select2.js');
 

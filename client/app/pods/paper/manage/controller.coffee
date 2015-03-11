@@ -28,7 +28,6 @@ PaperManageController = Ember.ObjectController.extend
 
     changeTaskPhase: (task, targetPhase) ->
       task.set('phase', targetPhase)
-      task.save()
 
     removePhase: (phase) ->
       paper = phase.get('paper')

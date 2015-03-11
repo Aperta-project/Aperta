@@ -6,13 +6,21 @@ PhaseController = Ember.Controller.extend
 
   sortedTasks: (->
     @get('model.tasks').sortBy "position"
-  ).property "model.tasks.@each.position"
+  ).property()
 
   actions:
-    updatePositions: (currentTask) ->
-      relevantTasks = @get('model.tasks').filter (task) ->
-        task isnt currentTask
+    changePhaseForTask: (taskId, phaseId) ->
+      @beginPropertyChanges()
+      task = @get('model.tasks').filterBy("id", taskId + "")[0]
+      task.set('phase', @store.getById('phase', phaseId))
+      task.save()
+      @endPropertyChanges()
 
-      relevantTasks.invoke('reload')
+    updateSortOrder: (updatedOrder) ->
+      @beginPropertyChanges()
+      @get('model.tasks').forEach (task) ->
+        task.set('position', updatedOrder[task.get('id')])
+      @endPropertyChanges()
+      @get('model.tasks').invoke('save')
 
 `export default PhaseController`

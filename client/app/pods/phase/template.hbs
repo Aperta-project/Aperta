@@ -2,7 +2,7 @@
 
 {{view "phase-header" phase=phase}}
 
-<div class="column-content">
+<div class="column-content sortable" data-phase-id="{{unbound phase.id}}">
   {{#each task in sortedTasks}}
     {{card-preview paper=controller.model.paper
                    task=task

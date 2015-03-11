@@ -5,48 +5,26 @@ PhaseView = Ember.View.extend DragNDrop.DroppableMixin,
   classNames: ['column']
   lastDraggedOverTask: null
 
-  nextPosition: (->
-    @get('controller.model.position') + 1
-  ).property('controller.model.position')
+  didInsertElement: ->
+    controller = @get('controller')
+    store = @get('controller.store')
+    phaseId = @get('controller.model.id')
+    @$('.sortable').sortable
+      connectWith: '.sortable'
+      update: (event, ui) ->
+        updatedOrder = {}
 
-  removeDragStyles: () ->
-    @$().removeClass('current-drop-target')
+        senderPhaseId = phaseId
+        receiverPhaseId = ui.item.parent().data('phase-id') + ''
+        console.log senderPhaseId
+        console.log receiverPhaseId
 
-  dragOver: (e) ->
-    @$().addClass('current-drop-target')
+        if senderPhaseId isnt receiverPhaseId
+          controller.send('changePhaseForTask', ui.item.find('.card-content').data('id'), receiverPhaseId)
 
-    if $(e.target).hasClass("button-secondary")
-      $('.placeholder').remove()
-      $(e.target).before('<div class="card-content placeholder"></div>')
+        $(this).find('.card-content').each (index) ->
+          updatedOrder[$(this).data('id')] = index + 1
 
-    if $(e.target).hasClass('card-content') && !$(e.target).hasClass('placeholder')
-      $('.placeholder').remove()
-      $(e.target).before('<div class="card-content placeholder"></div>')
-
-  dragLeave: (e) ->
-    @removeDragStyles()
-    @set 'lastDraggedOverTask', e.target if $(e.target).hasClass("card-content")
-
-  dragEnd: (e) ->
-    @removeDragStyles()
-    $('.placeholder').remove()
-
-
-  drop: (e) ->
-    @removeDragStyles()
-    draggedTask = DragNDrop.dragItem
-    @get('controller').send 'changeTaskPhase', draggedTask, @get('controller.model')
-
-    draggedOverTask = @get('controller.model.tasks').findBy('id', "#{$(@get 'lastDraggedOverTask').data('task-id')}")
-
-    if draggedOverTask? and draggedOverTask isnt draggedTask
-      draggedTask.set('position', draggedOverTask.get('position'))
-      @get('controller').send('updatePositions', draggedTask)
-      draggedTask.save()
-
-    @removeDragStyles()
-    $('.placeholder').remove()
-    DragNDrop.dragItem = null
-    DragNDrop.cancel(e)
+        controller.send('updateSortOrder', updatedOrder)
 
 `export default PhaseView`

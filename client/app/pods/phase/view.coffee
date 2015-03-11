@@ -1,9 +1,7 @@
 `import Ember from 'ember'`
-`import DragNDrop from 'tahi/services/drag-n-drop'`
 
-PhaseView = Ember.View.extend DragNDrop.DroppableMixin,
+PhaseView = Ember.View.extend
   classNames: ['column']
-  lastDraggedOverTask: null
 
   nextPosition: (->
     @get('controller.model.position') + 1
@@ -20,8 +18,6 @@ PhaseView = Ember.View.extend DragNDrop.DroppableMixin,
 
         senderPhaseId = phaseId
         receiverPhaseId = ui.item.parent().data('phase-id') + ''
-        console.log senderPhaseId
-        console.log receiverPhaseId
 
         if senderPhaseId isnt receiverPhaseId
           controller.send('changePhaseForTask', ui.item.find('.card-content').data('id'), receiverPhaseId)

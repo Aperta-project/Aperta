@@ -1,6 +1,9 @@
 `import Ember from 'ember'`
 
 PhaseController = Ember.Controller.extend
+  needs: ['paper/manage']
+  paperManageController: Em.computed.alias 'controllers.paper/manage'
+
   commentLooks: Em.computed -> @store.all('commentLook')
   canRemoveCard: true
 
@@ -9,12 +12,24 @@ PhaseController = Ember.Controller.extend
   ).property()
 
   tasksToBeDeleted: (->
-    currentTasks = @get('model.tasks').map (t) -> t.get('id')
-    sortedTasks = @get('sortedTasks').map (t) -> t.get('id')
+    currentTaskIds = @get('model.tasks').map (task) -> task.get('id')
+    sortedTaskIds  = @get('sortedTasks').map (task) -> task.get('id')
 
-    sortedTasks.forEach (taskId) ->
-      if currentTasks.indexOf(taskId) == -1
-        $("[data-id=#{taskId}]").parent().remove()
+    newTaskAddedId = _.difference(currentTaskIds,
+                                  sortedTaskIds,
+                                  @get('paperManageController.allTaskIdsSnapshot'))[0]
+
+    allTaskIds = @get('paperManageController').allTaskIds()
+
+    if newTaskAddedId
+      @set 'sortedTasks', @get('model.tasks').sortBy('position')
+      @set 'paperManageController.allTaskIdsSnapshot', allTaskIds
+    else
+      @get('paperManageController.allTaskIdsSnapshot').forEach (taskId) ->
+        wasDeleted = allTaskIds.indexOf(taskId) == -1
+        if wasDeleted
+          $("[data-id=#{taskId}]").parent().remove()
+
   ).observes('model.tasks').on('init')
 
   actions:

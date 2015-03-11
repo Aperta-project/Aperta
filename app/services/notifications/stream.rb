@@ -1,20 +1,18 @@
 module Notifications
   class Stream
-    attr_reader :activity, :actor, :target, :event, :users
+    attr_reader :activity, :actor, :target, :event, :user
 
-    def initialize(activity:, actor:, target:, event:, users:)
+    def initialize(activity:, actor:, target:, event:, user:)
       @activity = activity
       @actor = actor
       @target = target
       @event = event
-      @users = users
+      @user = user
     end
 
     def post
-      users.each do |user|
-        channel = EventStreamConnection.channel_name(User, user.id)
-        EventStreamConnection.post_event(channel, payload.to_json)
-      end
+      channel = EventStreamConnection.channel_name(User, user.id)
+      EventStreamConnection.post_event(channel, payload.to_json)
     end
 
     private

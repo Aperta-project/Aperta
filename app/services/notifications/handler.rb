@@ -21,7 +21,9 @@ module Notifications
     end
 
     def broadcast_messages
-      Stream.new(activity: activity, actor: actor, target: target, event: event, users: users).post
+      users.each do |user|
+        Stream.new(user: user, activity: activity, actor: actor, target: target, event: event).post
+      end
     end
 
 

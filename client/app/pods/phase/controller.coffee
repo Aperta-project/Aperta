@@ -8,6 +8,15 @@ PhaseController = Ember.Controller.extend
     @get('model.tasks').sortBy "position"
   ).property()
 
+  tasksToBeDeleted: (->
+    currentTasks = @get('model.tasks').map (t) -> t.get('id')
+    sortedTasks = @get('sortedTasks').map (t) -> t.get('id')
+
+    sortedTasks.forEach (taskId) ->
+      if currentTasks.indexOf(taskId) == -1
+        $("[data-id=#{taskId}]").parent().remove()
+  ).observes('model.tasks').on('init')
+
   actions:
     changePhaseForTask: (taskId, phaseId) ->
       @beginPropertyChanges()

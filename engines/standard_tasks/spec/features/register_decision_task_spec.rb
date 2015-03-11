@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Register Decision", js: true, selenium: true do
+feature "Register Decision", js: true do
 
   let(:user) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create(:register_decision_task) }

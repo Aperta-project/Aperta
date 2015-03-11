@@ -92,13 +92,9 @@ class Task < ActiveRecord::Base
     journal.journal_task_types.find_by(kind: self.class.name)
   end
 
-  def is_metadata?
+  def submission_task?
     return false unless Task.metadata_types.present?
     Task.metadata_types.include?(self.class.name)
-  end
-
-  def manuscript_information_task?
-    self.role == "author"
   end
 
   def array_attributes

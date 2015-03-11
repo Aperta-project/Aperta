@@ -16,7 +16,7 @@ module TaskAccessCriteria
   # authorizations used by policies
   def authorized_to_modify_task?
     current_user.site_admin? || can_view_all_manuscript_managers_for_journal? || can_view_manuscript_manager_for_paper? ||
-    allowed_manuscript_information_task? || metadata_task_collaborator? || allowed_reviewer_task? || task_participant?
+      allowed_submission_task? || submission_task_collaborator? || allowed_reviewer_task? || task_participant?
   end
 
   def authorized_to_create_task?
@@ -24,8 +24,8 @@ module TaskAccessCriteria
   end
 
   # criteria used by this mixin
-  def metadata_task_collaborator?
-    task.is_metadata? && paper.collaborators.exists?(current_user.id)
+  def submission_task_collaborator?
+    task.submission_task? && paper.collaborators.exists?(current_user.id)
   end
 
   def can_view_all_manuscript_managers_for_journal?
@@ -42,8 +42,8 @@ module TaskAccessCriteria
     task.participants.exists?(current_user.id)
   end
 
-  def allowed_manuscript_information_task?
-    task.manuscript_information_task? && has_paper_role?
+  def allowed_submission_task?
+    task.submission_task? && has_paper_role?
   end
 
   def allowed_reviewer_task?

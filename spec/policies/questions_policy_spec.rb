@@ -19,13 +19,13 @@ describe QuestionsPolicy do
     let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
 
     before do
-      allow(task).to receive(:is_metadata?).and_return true
+      allow(task).to receive(:submission_task?).and_return true
     end
     include_examples "person who can manage questions"
 
     context "on a non metadata task" do
       before do
-        allow(task).to receive(:is_metadata?).and_return false
+        allow(task).to receive(:submission_task?).and_return false
       end
       include_examples "person who cannot manage questions"
     end

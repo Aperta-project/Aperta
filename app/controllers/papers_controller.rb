@@ -49,10 +49,10 @@ class PapersController < ApplicationController
 
   # non RESTful routes
 
-  def activity_feed
+  def activity
     # TODO: params[:name] probably needs some securitifications
-    activity_feeds = ActivityFeed.where(feed_name: params[:name], subject_id: paper.id).order('created_at DESC')
-    respond_with activity_feeds, each_serializer: ActivityFeedSerializer, root: 'feeds'
+    activities = Activity.where(feed_name: params[:name], subject_id: paper.id).order('created_at DESC')
+    respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 
   def manage
@@ -163,7 +163,7 @@ class PapersController < ApplicationController
   end
 
   def notify_paper_created!
-    ActivityFeed.create(
+    Activity.create(
       feed_name: 'manuscript',
       activity_key: 'paper.created',
       subject: paper,
@@ -173,7 +173,7 @@ class PapersController < ApplicationController
   end
 
   def notify_paper_edited!
-    ActivityFeed.create(
+    Activity.create(
       feed_name: 'manuscript',
       activity_key: 'paper.edited',
       subject: paper,
@@ -183,7 +183,7 @@ class PapersController < ApplicationController
   end
 
   def notify_paper_submitted!
-    ActivityFeed.create(
+    Activity.create(
       feed_name: 'manuscript',
       activity_key: 'paper.submitted',
       subject: paper,

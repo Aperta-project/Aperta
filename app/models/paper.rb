@@ -20,7 +20,7 @@ class Paper < ActiveRecord::Base
   has_many :participants, through: :tasks
   has_many :journal_roles, through: :journal
   has_many :authors, -> { order 'authors.position ASC' }
-  has_many :activity_feeds
+  has_many :activities
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true, length: { maximum: 50 }

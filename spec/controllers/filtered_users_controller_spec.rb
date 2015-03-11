@@ -19,38 +19,38 @@ describe FilteredUsersController do
   let(:user) { create :user }
   let(:journal) { FactoryGirl.create(:journal) }
   let(:role) { FactoryGirl.create(:role, :reviewer, journal: journal) }
-  let(:paper) do
-    paper = FactoryGirl.create(:paper)
-    paper.paper_roles.create!(role: PaperRole::REVIEWER, user: user)
-    paper
-  end
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
 
   before do
     assign_journal_role(journal, user, :reviewer)
     sign_in(user)
   end
 
-  describe "#reviewers /filtered_users/reviewers/:journal_id" do
-    # before do
-    #   let(:phase) { FactoryGirl.create(:phase) }
-    #   let(:task) { phase.tasks.create(type: "TestTask", title: "Test", role: "reviewer") }
-    #   let(:invitation) { FactoryGirl.build(:invitation, task: task) }
-    # end
+  describe "#reviewers /filtered_users/reviewers/:paper_id" do
     context "when a user has a pending invitation" do
-      it "does not send the user"
+      before do
+        let(:phase) { FactoryGirl.create(:phase) }
+        let(:task) { phase.tasks.create(type: "TestTask", title: "Test", role: "reviewer") }
+        let(:invitation) { FactoryGirl.build(:invitation, task: task) }
+      end
+
+      it "does not send the user" do
+
+      end
     end
 
     context "when a user does not have a pending invitation" do
       context "when the user is already a reviewer" do
+        before { make_user_paper_reviewer(user, paper) }
         it "does not send the user" do
-          get :reviewers, journal_id: journal.id, format: :json
+          get :reviewers, paper_id: paper.id, format: :json
           res_body = JSON.parse response.body
           expect(res_body["filtered_users"]).to be_empty
         end
       end
 
       it "sends the user" do
-        get :reviewers, journal_id: journal.id, format: :json
+        get :reviewers, paper_id: paper.id, format: :json
         res_body = JSON.parse response.body
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id

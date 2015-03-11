@@ -6,7 +6,7 @@
     <div class="profile-affiliation">
       <div class="profile-affiliation-name">{{a.name}}</div>
       <div class="glyphicon glyphicon-remove-circle profile-remove-affiliation" {{action "removeAffiliation" a}}></div>
-      <div>{{a.startDate}} - {{a.displayEndDate}}</div>
+      <div>{{format-date a.startDate}} - {{format-date a.displayEndDate}}</div>
       <div>{{a.email}}</div>
     </div>
   {{/each}}

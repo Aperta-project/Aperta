@@ -5,6 +5,15 @@ PaperManageController = Ember.ObjectController.extend
   positionSort: ["position:asc"]
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort')
 
+  allTaskIds: ->
+    @store.all('phase').reduce((taskIds, phase) ->
+      taskIds.concat phase.get('tasks').map (task) -> task.get('id')
+    , [])
+
+  allTaskIdsSnapshot: (->
+    @allTaskIds()
+  ).on('init').property()
+
   updatePositions: (phase) ->
     relevantPhases = @get('model.phases').filter((p)->
       p != phase && p.get('position') >= phase.get('position')
@@ -28,7 +37,6 @@ PaperManageController = Ember.ObjectController.extend
 
     changeTaskPhase: (task, targetPhase) ->
       task.set('phase', targetPhase)
-      task.save()
 
     removePhase: (phase) ->
       paper = phase.get('paper')

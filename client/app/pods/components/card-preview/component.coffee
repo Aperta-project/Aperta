@@ -1,14 +1,12 @@
 `import Ember from 'ember'`
-`import DragNDrop from 'tahi/services/drag-n-drop'`
 
-CardPreviewComponent = Ember.Component.extend DragNDrop.DraggableMixin,
+CardPreviewComponent = Ember.Component.extend
   classNameBindings: [':card', 'task.completed:card--completed', 'classes']
 
   paper: null
   commentLooks: Ember.computed.oneWay('defaultCommentLooks')
   task: null
   canRemoveCard: false
-  canDragCard: false
   classes: ''
 
   defaultCommentLooks: []
@@ -23,9 +21,6 @@ CardPreviewComponent = Ember.Component.extend DragNDrop.DraggableMixin,
   setupTooltip: (->
     @.$().find('.card-remove').tooltip()
   ).on('didInsertElement')
-
-  dragStart: (e) ->
-    DragNDrop.dragItem = @get('task') if @get('canDragCard')
 
   actions:
     viewCard: (task) ->

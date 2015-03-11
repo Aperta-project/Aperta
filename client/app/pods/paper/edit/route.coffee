@@ -1,12 +1,13 @@
 `import Ember from 'ember'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
+`import EventStreamHandler from 'tahi/mixins/routes/event-stream-handler'`
 `import LazyLoader from 'tahi/mixins/routes/lazy-loader'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Heartbeat from 'tahi/services/heartbeat'`
 `import ENV from 'tahi/config/environment'`
 `import initializeVisualEditor from 'ember-cli-visualeditor/initializers/initialize_visual_editor'`
 
-PaperEditRoute = AuthorizedRoute.extend
+PaperEditRoute = AuthorizedRoute.extend EventStreamHandler,
   fromSubmitOverlay: false
 
   heartbeatService: null
@@ -87,5 +88,12 @@ PaperEditRoute = AuthorizedRoute.extend
         @replaceWith('paper.index', @modelFor('paper'))
       else
         @set 'fromSubmitOverlay', false
-        
+
+    "es:paper::revised": (event) ->
+      revisedPaperId = event.get("target.paper")
+      # TODO: only fetch if event.created_at > paper.updated_at
+      @store.fetchById("paper", revisedPaperId).then (paper) =>
+        if @modelFor("paper").get("id") == paper.get("id")
+          @flash.displayMessage("success", "Your paper has been revised")
+
 `export default PaperEditRoute`

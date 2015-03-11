@@ -9,6 +9,8 @@ Invitation = DS.Model.extend
   email: DS.attr('string')
   createdAt: DS.attr('date')
   inviteeId: DS.attr('string')
+  inviteeFullName: DS.attr('string')
+  inviteeAvatar: DS.attr('string')
 
   reject: ->
     @set('state', 'rejected')

@@ -116,4 +116,10 @@ class Task < ActiveRecord::Base
   def authorize_update?(params, user)
     true
   end
+
+  private
+
+  def on_card_completion?
+    previous_changes["completed"] == [false, true]
+  end
 end

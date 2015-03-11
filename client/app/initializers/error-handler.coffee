@@ -14,15 +14,16 @@ ErrorHandler =
     container.register('logError:main', logError , instantiate: false)
     application.inject('route', 'logError', 'logError:main')
 
-    # The global error handler for internal ember errors
-    Ember.onerror = (error) ->
-      if ENV.environment == 'production'
-        if Bugsnag && Bugsnag.notifyException
-          Bugsnag.notifyException(error, "Uncaught Ember Error")
-      else
-        flash.displayMessage 'error', error
-        logError('\n' + error.message + '\n' + error.stack + '\n')
-        throw error
+    # do not handle errors in dev
+    if ENV.environment != 'development'
+      # The global error handler for internal ember errors
+      Ember.onerror = (error) ->
+        if ENV.environment == 'production'
+          if Bugsnag && Bugsnag.notifyException
+            Bugsnag.notifyException(error, "Uncaught Ember Error")
+        else
+          flash.displayMessage 'error', error
+          logError('\n' + error.message + '\n' + error.stack + '\n')
 
     # Server response error handler
     $(document).ajaxError (event, jqXHR, ajaxSettings, thrownError) ->

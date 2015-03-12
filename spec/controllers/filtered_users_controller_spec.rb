@@ -1,5 +1,4 @@
 require 'rails_helper'
-
 class TestTask < Task
   include TaskTypeRegistration
   include Invitable
@@ -28,22 +27,22 @@ describe FilteredUsersController do
 
   describe "#reviewers /filtered_users/reviewers/:paper_id" do
     context "when a user has a pending invitation" do
-      let(:b_paper) { FactoryGirl.create(:paper, journal: journal) }
-      let(:phase) { FactoryGirl.create(:phase) }
+      let!(:paper) { FactoryGirl.create(:paper, journal: journal) }
+      let(:phase) { paper.phases.create! }
       let(:task) do
         phase.tasks.create(type: "TestTask",
                            title: "Test",
-                           paper: b_paper,
                            role: "reviewer").extend Invitable
       end
-      let(:invitation) { FactoryGirl.build(:invitation, task: task, invitee: user) }
+      let(:invitation) { create :invitation, task: task, invitee: user }
+
       before do
         invitation.invite!
         # invitation.accept!
       end
 
       it "does not send the user" do
-        get :reviewers, paper_id: b_paper.id, format: :json
+        get :reviewers, paper_id: paper.id, format: :json
         expect(res_body["filtered_users"]).to be_empty
       end
     end

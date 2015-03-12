@@ -1,4 +1,8 @@
 module TahiHelperMethods
+  def res_body
+    JSON.parse(response.body)
+  end
+
   def user_select_hash(user)
     {id: user.id, full_name: user.full_name, avatar: user.image_url}
   end

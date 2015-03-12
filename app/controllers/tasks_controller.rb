@@ -29,6 +29,7 @@ class TasksController < ApplicationController
     task.assign_attributes(task_params(task.class))
     @task_completion_change = task.completed_changed?
     task.save!
+    task.after_update if task.respond_to? :after_update
     task.send_emails if task.respond_to? :send_emails
     render task.update_responder.new(task, view_context).response
   end

@@ -11,8 +11,18 @@ module StandardTasks
 
     register_task default_title: "Register Decision", default_role: "editor"
 
+    def after_update
+      make_paper_editable
+      # ultimately, we can call #send_emails here as well
+    end
+
+    def make_paper_editable
+      return unless on_card_completion? && paper.decision == 'revise'
+      self.paper.update! editable: true
+    end
+
     def send_emails
-      return unless previous_changes["completed"] == [false, true]
+      return unless on_card_completion?
       RegisterDecisionMailer.delay.notify_author_email(task_id: id)
     end
 

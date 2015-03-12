@@ -21,11 +21,12 @@ namespace :custom_cards do
     Bundler.with_clean_env do
       sh 'bundle install'
     end
-    Rake::Task['custom_cards:install'].invoke(engine_name)
     Bundler.with_clean_env do
       # need to do this in subshell because our ruby process doesn't
       # know about the engine yet
-      sh "rake #{engine_name}:install:migrations"
+      sh "rake custom_cards:install[#{engine_name}]"
+      migration_task = "#{engine_name}:install:migrations"
+      sh "rake #{migration_task}" if `rake -T #{migration_task}`.size > 0
     end
     if gem_type == 'path'
       Rake::Task['custom_cards:update_package_json'].invoke(File.expand_path(File.join(path, 'client')))

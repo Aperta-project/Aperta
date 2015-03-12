@@ -9,6 +9,7 @@ Invitation = DS.Model.extend
   email: DS.attr('string')
   createdAt: DS.attr('date')
   updatedAt: DS.attr('date')
+  inviteeId: DS.attr('string')
   inviteeFullName: DS.attr('string')
   inviteeAvatarUrl: DS.attr('string')
   invitee: Em.computed 'inviteeFullName', 'inviteeAvatarUrl', ->

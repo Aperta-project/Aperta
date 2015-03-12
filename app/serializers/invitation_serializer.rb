@@ -10,6 +10,7 @@ class InvitationSerializer < ActiveModel::Serializer
   end
 
   def invitee_full_name
+    return nil unless object.invitee
     "#{object.invitee.first_name} #{object.invitee.last_name}"
   end
 

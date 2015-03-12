@@ -35,10 +35,7 @@ feature "Register Decision", js: true do
       overlay.decision_letter = "Accepting this because I can"
       overlay.mark_as_complete
       expect(overlay).to be_completed
-
-      expect(find("#task_completed[disabled]")).to be_present
-      expect(all("input[type='radio'][disabled]").size).to eq 3
-      expect(find("textarea[disabled]")).to be_present
+      expect(overlay).to be_disabled
     end
   end
 end

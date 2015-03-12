@@ -15,4 +15,10 @@ class RegisterDecisionOverlay < CardOverlay
   def accepted?
     find('input[value="accepted"]')
   end
+
+  def disabled?
+    find("#task_completed[disabled]") != nil &&
+    all("input[type='radio'][disabled]").size == 3 &&
+    find("textarea[disabled]") != nil
+  end
 end

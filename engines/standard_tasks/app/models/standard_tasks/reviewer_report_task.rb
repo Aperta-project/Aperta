@@ -11,7 +11,7 @@ module StandardTasks
     accepts_nested_attributes_for :paper_review
 
     def send_emails
-      return unless previous_changes["completed"] == [false, true]
+      return unless on_card_completion?
       paper.editors.each do |editor|
         ReviewerReportMailer.delay.notify_editor_email(task_id: id,
                                                        recipient_id: editor.id)

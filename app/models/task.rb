@@ -112,4 +112,14 @@ class Task < ActiveRecord::Base
   def authorize_update?(params, user)
     true
   end
+
+  # Implement this method Cards that inherit from this Task
+  def after_update
+  end
+
+  private
+
+  def on_card_completion?
+    previous_changes["completed"] == [false, true]
+  end
 end

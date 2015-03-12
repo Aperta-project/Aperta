@@ -26,4 +26,16 @@ feature "Register Decision", js: true do
       expect(overlay).to be_completed
     end
   end
+
+  scenario "Disable inputs upon card completion" do
+    dashboard_page = DashboardPage.new
+    manuscript_page = dashboard_page.view_submitted_paper paper
+    manuscript_page.view_card 'Register Decision' do |overlay|
+      overlay.register_decision = "Accepted"
+      overlay.decision_letter = "Accepting this because I can"
+      overlay.mark_as_complete
+      expect(overlay).to be_completed
+      expect(overlay).to be_disabled
+    end
+  end
 end

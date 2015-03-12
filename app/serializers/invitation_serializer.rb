@@ -1,5 +1,5 @@
 class InvitationSerializer < ActiveModel::Serializer
-  attributes :id, :state, :title, :abstract, :email, :created_at, :invitee_id, :invitee_full_name, :invitee_avatar
+  attributes :id, :state, :title, :abstract, :email, :created_at, :updated_at, :invitee_id, :invitee_full_name, :invitee_avatar_url
 
   def title
     object.paper.title
@@ -14,7 +14,7 @@ class InvitationSerializer < ActiveModel::Serializer
     "#{object.invitee.first_name} #{object.invitee.last_name}"
   end
 
-  def invitee_avatar
+  def invitee_avatar_url
     object.invitee.avatar.url
   end
 end

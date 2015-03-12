@@ -89,11 +89,10 @@ PaperEditRoute = AuthorizedRoute.extend EventStreamHandler,
       else
         @set 'fromSubmitOverlay', false
 
-    "es:paper::revised": (event) ->
+    "es::paper::revised": (event) ->
       revisedPaperId = event.get("target.paper")
-      # TODO: only fetch if event.created_at > paper.updated_at
       @store.fetchById("paper", revisedPaperId).then (paper) =>
         if @modelFor("paper").get("id") == paper.get("id")
-          @flash.displayMessage("success", "Your paper has been revised")
+          @get("notificationManager").notify(event.get("event"))
 
 `export default PaperEditRoute`

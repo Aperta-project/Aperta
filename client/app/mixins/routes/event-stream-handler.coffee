@@ -1,9 +1,17 @@
 EventStreamHandler = Ember.Mixin.create
 
+  notificationManager: Ember.inject.service("notification-manager")
+
   replayUnhandledEvents: (->
-    eventStream = @get("eventStream")
-    @store.all("event").forEach (event) ->
-      eventStream.emitEvent(event, "afterRender")
+    actions = Ember.keys(@_actions).filter (name) -> /^es::(.+)$/.test(name)
+    notificationManager = @get('notificationManager')
+    notificationManager.setup(actions)
+    notificationManager.replayEvents()
   ).on("activate")
+
+  resetNotification: (->
+    notificationManager = @get('notificationManager')
+    notificationManager.reset()
+  ).on("deactivate")
 
 `export default EventStreamHandler`

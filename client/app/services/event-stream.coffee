@@ -72,7 +72,7 @@ EventStream = Ember.Object.extend
   emitEvent: (event, queueName="actions") ->
     Ember.run.schedule queueName, @, =>
       try
-        action = "es:#{event.get('event')}"
+        action = event.get('event')
         @router.send(action, event)
       catch e
         unhandled = e.message.match(/Nothing handled the action/)

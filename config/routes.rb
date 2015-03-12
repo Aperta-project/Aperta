@@ -145,6 +145,8 @@ Tahi::Application.routes.draw do
     end
   end
 
+  resources :user_inboxes, only: :destroy
+
   get "/formats", to: "formats#index"
 
   get "/styleguide", to: "ember#styleguide"

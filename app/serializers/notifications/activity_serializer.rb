@@ -1,8 +1,10 @@
 module Notifications
   class ActivitySerializer < ActiveModel::Serializer
-    attributes :id, :event, :target, :actor, :created_at
+    # TODO: Reassess naming of notification, event, activity
+    root :event
+    attributes :id, :name, :target, :actor, :created_at
 
-    def event
+    def name
       ["es", object.event_name].join("::")
     end
 

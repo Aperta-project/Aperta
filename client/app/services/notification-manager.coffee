@@ -13,7 +13,11 @@ NotificationManager = Ember.Service.extend
     @set("actionNames", actionNames)
 
   reset: ->
-    @setProperties(actionNames: [], actionNotification: null)
+    @set("actionNames", [])
+    @dismiss()
+
+  dismiss: ->
+    @set("actionNotification", null)
 
   replayEvents: ->
     eventStream = @get("eventStream")
@@ -28,7 +32,7 @@ NotificationManager = Ember.Service.extend
     actionNotification = @get("actionNotification")
     return [] if Ember.isEmpty(actionNotification)
     @get('store').all('event').filter (event) ->
-      event.get("event") == actionNotification
+      event.get("name") == actionNotification
   ).property('actionNotification')
 
 `export default NotificationManager`

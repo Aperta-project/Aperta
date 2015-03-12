@@ -13,6 +13,6 @@ EventNotificationComponent = Ember.Component.extend
 
     dismiss: (events) ->
       Ember.RSVP.all(events.map (e) -> e.destroyRecord()).then =>
-        @get("notificationManager").reset()
+        @get("notificationManager").dismiss()
 
 `export default EventNotificationComponent`

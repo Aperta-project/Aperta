@@ -2,8 +2,8 @@
 
 Event = DS.Model.extend
 
-  event: DS.attr('string')
-  createdAt: DS.attr('datetime')
+  name: DS.attr('string')
+  createdAt: DS.attr('date')
   actor: DS.attr()
   target: DS.attr()
 

@@ -93,6 +93,6 @@ PaperEditRoute = AuthorizedRoute.extend EventStreamHandler,
       revisedPaperId = event.get("target.paper")
       @store.fetchById("paper", revisedPaperId).then (paper) =>
         if @modelFor("paper").get("id") == paper.get("id")
-          @get("notificationManager").notify(event.get("event"))
+          @get("notificationManager").notify(event.get("name"))
 
 `export default PaperEditRoute`

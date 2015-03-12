@@ -59,9 +59,9 @@ EventStream = Ember.Object.extend
 
   msgResponse: (esData) ->
     if esData.event # minimal code to work
-      @store.pushPayload('event', { event: esData })
+      @store.pushPayload('event', esData)
       Ember.run =>
-        event = @store.getById("event", esData.id)
+        event = @store.getById("event", esData.event.id)
         @emitEvent(event)
     else # legacy event sever
       action = esData.action
@@ -72,7 +72,7 @@ EventStream = Ember.Object.extend
   emitEvent: (event, queueName="actions") ->
     Ember.run.schedule queueName, @, =>
       try
-        action = event.get('event')
+        action = event.get('name')
         @router.send(action, event)
       catch e
         unhandled = e.message.match(/Nothing handled the action/)

@@ -94,13 +94,12 @@ class TasksController < ApplicationController
   def notify_task_updated!
     if @task_completion_change
       action = task.completed? ? 'complete' : 'incomplete'
-      feed_name = task.is_metadata? ? 'manuscript' : 'workflow'
+      event_scope = task.is_metadata? ? 'paper' : 'workflow'
       Activity.create(
-        feed_name: feed_name,
-        activity_key: "task.#{action}",
-        subject: task.paper,
-        user: current_user,
-        message: "#{task.title} card was marked as #{action}"
+        event_scope: event_scope,
+        event_action: "task::#{action}",
+        target: task,
+        actor: current_user
       )
     end
   end

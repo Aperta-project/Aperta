@@ -42,9 +42,6 @@ class PapersController < ApplicationController
       paper.update(update_paper_params)
     end
 
-    #TODO: for testing purposes
-    notify_paper_revised! if paper.revised?
-
     notify_paper_edited! if params[:paper][:locked_by_id].present?
 
     respond_with paper
@@ -54,7 +51,7 @@ class PapersController < ApplicationController
 
   def activity
     # TODO: params[:name] probably needs some securitifications
-    activities = Activity.where(feed_name: params[:name], subject_id: paper.id).order('created_at DESC')
+    activities = Activity.where(event_scope: params[:name], target_id: paper.id).order('created_at DESC')
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 
@@ -173,41 +170,37 @@ class PapersController < ApplicationController
 
   def notify_paper_created!
     Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.created',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was created'
+      event_scope: 'paper',
+      event_action: 'created',
+      target: paper,
+      actor: current_user
     )
   end
 
   def notify_paper_edited!
     Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.edited',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was edited'
+      event_scope: 'paper',
+      event_action: 'edited',
+      target: paper,
+      actor: current_user
     )
   end
 
   def notify_paper_submitted!
     Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.submitted',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was submitted'
+      event_scope: 'paper',
+      event_action: 'submitted',
+      target: paper,
+      actor: current_user
     )
   end
 
   def notify_paper_revised!
     activity = Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.revised',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was revised'
+      event_scope: 'paper',
+      event_action: 'revised',
+      target: paper,
+      actor: current_user
     )
     TahiNotifier.notify(event: "paper::revised", payload: { activity: activity, user: current_user, target: paper })
   end

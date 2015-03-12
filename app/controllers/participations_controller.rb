@@ -58,22 +58,20 @@ class ParticipationsController < ApplicationController
   def notify_participation_created
     if participation.valid?
       Activity.create(
-        feed_name: 'manuscript',
-        activity_key: 'participation.created',
-        subject: participation.paper,
-        user: current_user,
-        message: "Added Contributor: #{participation.user.full_name}"
+        event_scope: 'paper',
+        event_action: 'participation::created',
+        target: participation,
+        actor: current_user
       )
     end
   end
 
   def notify_participation_destroyed
     Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'participation.destroyed',
-      subject: participation.paper,
-      user: current_user,
-      message: "Removed Contributor: #{participation.user.full_name}"
+      event_scope: 'paper',
+      event_action: 'participation::destroyed',
+      target: participation,
+      actor: current_user
     )
   end
 end

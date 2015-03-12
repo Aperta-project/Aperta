@@ -114,7 +114,7 @@ describe PapersController do
       end
 
       it "creates an Activity" do
-        expect(Activity).to receive(:create).with(hash_including({subject: paper}))
+        expect(Activity).to receive(:create).with(hash_including({target: paper})).and_call_original
         put :update, { id: paper.to_param, format: :json, paper: { title: new_title, short_title: 'ABC101', locked_by_id: user.id }.merge(params) }
       end
 

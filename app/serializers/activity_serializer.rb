@@ -1,20 +1,26 @@
 class ActivitySerializer < ActiveModel::Serializer
-  has_one :user, include: false, embed: :id
+  has_one :actor, include: false, embed: :id
 
   attributes :message,
-             :user_full_name,
-             :user_avatar_url,
+             :actor_full_name,
+             :actor_avatar_url,
              :created_at,
+             :event_name
 
-  def user_full_name
-    user.full_name
+  def actor_full_name
+    actor.full_name
   end
 
-  def user_avatar_url
-    user.avatar_url
+  def actor_avatar_url
+    actor.avatar_url
   end
 
   def created_at
     object.created_at.strftime('%B %e, %Y %l:%M %p')
+  end
+
+  #TODO move to client
+  def message
+    "Placeholder"
   end
 end

@@ -1,30 +1,21 @@
 module Notifications
   class Stream
-    attr_reader :activity, :actor, :target, :event, :user
+    attr_reader :activity, :user
 
-    def initialize(activity:, actor:, target:, event:, user:)
+    def initialize(activity:, user:)
       @activity = activity
-      @actor = actor
-      @target = target
-      @event = event
       @user = user
     end
 
     def post
       channel = EventStreamConnection.channel_name(User, user.id)
-      EventStreamConnection.post_event(channel, payload.to_json)
+      EventStreamConnection.post_event(channel, payload)
     end
 
     private
 
     def payload
-      model_name = target.class.name.demodulize.underscore
-      {
-        id: activity.id,
-        actor: { user: actor.id },
-        event: event,
-        target: { model_name.to_sym => target.id }
-      }
+      Notifications::ActivitySerializer.new(activity).to_json
     end
   end
 end

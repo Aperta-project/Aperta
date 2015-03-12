@@ -1,17 +1,20 @@
 module Notifications
   class Handler
-    attr_reader :activity, :actor, :target, :event
+    attr_reader :activity
 
-    def initialize(activity:, actor:, target:, event:)
+    def initialize(activity:)
       @activity = activity
-      @actor = actor
-      @target = target
-      @event = event
     end
 
     def call
       broadcast_messages
       update_user_inbox
+    end
+
+    def broadcast_messages
+      users.each do |user|
+        Stream.new(user: user, activity: activity).post
+      end
     end
 
     def update_user_inbox
@@ -20,17 +23,10 @@ module Notifications
       end
     end
 
-    def broadcast_messages
-      users.each do |user|
-        Stream.new(user: user, activity: activity, actor: actor, target: target, event: event).post
-      end
-    end
-
-
     private
 
     def users
-      @users ||= Accessibility.new(target).users
+      @users ||= Accessibility.new(activity.target).users
     end
   end
 end

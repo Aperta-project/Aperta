@@ -38,9 +38,7 @@ end
 
 TahiNotifier.subscribe("paper::revised") do |subscription_name, payload|
   activity = payload[:activity]
-  user     = payload[:user]
-  target   = payload[:target]
 
-  Notifications::Handler.new(activity: activity, actor: user, target: target, event: subscription_name).call
+  Notifications::Handler.new(activity: activity).call
 end
 

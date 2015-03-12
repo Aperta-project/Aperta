@@ -202,6 +202,6 @@ class PapersController < ApplicationController
       target: paper,
       actor: current_user
     )
-    TahiNotifier.notify(event: "paper::revised", payload: { activity: activity, user: current_user, target: paper })
+    TahiNotifier.notify(event: "paper::revised", payload: { activity: activity })
   end
 end

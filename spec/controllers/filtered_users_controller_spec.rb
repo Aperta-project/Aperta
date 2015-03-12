@@ -28,14 +28,23 @@ describe FilteredUsersController do
 
   describe "#reviewers /filtered_users/reviewers/:paper_id" do
     context "when a user has a pending invitation" do
+      let(:b_paper) { FactoryGirl.create(:paper, journal: journal) }
+      let(:phase) { FactoryGirl.create(:phase) }
+      let(:task) do
+        phase.tasks.create(type: "TestTask",
+                           title: "Test",
+                           paper: b_paper,
+                           role: "reviewer").extend Invitable
+      end
+      let(:invitation) { FactoryGirl.build(:invitation, task: task, invitee: user) }
       before do
-        let(:phase) { FactoryGirl.create(:phase) }
-        let(:task) { phase.tasks.create(type: "TestTask", title: "Test", role: "reviewer") }
-        let(:invitation) { FactoryGirl.build(:invitation, task: task) }
+        invitation.invite!
+        # invitation.accept!
       end
 
       it "does not send the user" do
-
+        get :reviewers, paper_id: b_paper.id, format: :json
+        expect(res_body["filtered_users"]).to be_empty
       end
     end
 
@@ -44,14 +53,12 @@ describe FilteredUsersController do
         before { make_user_paper_reviewer(user, paper) }
         it "does not send the user" do
           get :reviewers, paper_id: paper.id, format: :json
-          res_body = JSON.parse response.body
           expect(res_body["filtered_users"]).to be_empty
         end
       end
 
       it "sends the user" do
         get :reviewers, paper_id: paper.id, format: :json
-        res_body = JSON.parse response.body
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id
         expect(res_body["filtered_users"].first["email"]).to eq user.email

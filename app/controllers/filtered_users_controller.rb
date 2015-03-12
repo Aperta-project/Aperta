@@ -31,6 +31,13 @@ class FilteredUsersController < ApplicationController
     paper_reviewer_ids = paper.reviewers.pluck(:id)
     available_reviewer_ids = journal_reviewer_ids - paper_reviewer_ids
     users = User.where(id: available_reviewer_ids)
-    respond_with users, each_serializer: SelectableUserSerializer
+    # get the users without pending invitations
+    available_reviewers = users.reject do |user|
+      invs = user.invitations.select do |invitation|
+        invitation.paper == paper
+      end
+      invs.any?
+    end
+    respond_with available_reviewers, each_serializer: SelectableUserSerializer
   end
 end

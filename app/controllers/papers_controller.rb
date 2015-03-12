@@ -51,7 +51,7 @@ class PapersController < ApplicationController
 
   def activity
     # TODO: params[:name] probably needs some securitifications
-    activities = Activity.where(event_scope: params[:name], target_id: paper.id).order('created_at DESC')
+    activities = Activity.public.where(event_scope: params[:name], target: paper).order(created_at: :desc)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 
@@ -200,7 +200,8 @@ class PapersController < ApplicationController
       event_scope: 'paper',
       event_action: 'revised',
       target: paper,
-      actor: current_user
+      actor: current_user,
+      public: false
     )
     TahiNotifier.notify(event: "paper::revised", payload: { activity: activity })
   end

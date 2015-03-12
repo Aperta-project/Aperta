@@ -8,9 +8,15 @@ Invitation = DS.Model.extend
   state: DS.attr('string') # invited|accepted|rejected
   email: DS.attr('string')
   createdAt: DS.attr('date')
-  inviteeId: DS.attr('string')
+  updatedAt: DS.attr('date')
   inviteeFullName: DS.attr('string')
-  inviteeAvatar: DS.attr('string')
+  inviteeAvatarUrl: DS.attr('string')
+  invitee: Em.computed 'inviteeFullName', 'inviteeAvatarUrl', ->
+    Em.Object.create
+      avatarUrl: @get 'inviteeAvatarUrl'
+      name: @get 'inviteeFullName'
+
+  accepted: Ember.computed 'state', -> @get('state') is 'accepted'
 
   reject: ->
     @set('state', 'rejected')

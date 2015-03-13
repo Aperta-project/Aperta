@@ -41,6 +41,8 @@ class User < ActiveRecord::Base
          authentication_keys: [:login],
          omniauth_providers: [:orcid, :cas]
 
+  scope :starts_with, -> (name){ where("lower(username) LIKE '#{name}%' OR lower(first_name) LIKE '#{name}%' OR lower(last_name) LIKE '#{name}%'")}
+
   def possible_flows
     Flow.where("role_id IN (?) OR role_id IS NULL", role_ids)
   end

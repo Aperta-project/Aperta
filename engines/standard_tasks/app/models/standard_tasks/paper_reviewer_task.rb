@@ -4,7 +4,7 @@ module StandardTasks
       super + [{ reviewer_ids: [] }]
     end
 
-    register_task default_title: "Assign Reviewers", default_role: "editor"
+    register_task default_title: "Assign Reviewers", default_role: "reviewer"
 
     include Invitable
 

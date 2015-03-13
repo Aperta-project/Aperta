@@ -535,7 +535,7 @@ DEPENDENCIES
   rubyzip
   sass-rails
   sdoc
-  selenium-webdriver (>= 2.45.0.dev3)
+  selenium-webdriver
   sidekiq
   simplecov
   sinatra

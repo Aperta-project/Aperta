@@ -26,9 +26,10 @@ class FilteredUsersController < ApplicationController
   private
 
   def render_selectable_users(role)
-    paper = Paper.find(params[:paper_id])
-    ids = paper.journal.send(role).pluck(:id)
-    users = User.where id: ids
-    respond_with users, each_serializer: SelectableUserSerializer
+    respond_with paper.journal.send(role), each_serializer: SelectableUserSerializer
+  end
+
+  def paper
+    @paper ||= Paper.find(params[:paper_id])
   end
 end

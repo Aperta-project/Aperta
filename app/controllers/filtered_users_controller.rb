@@ -12,21 +12,25 @@ class FilteredUsersController < ApplicationController
   end
 
   def editors
-    render_selectable_users(:editors)
+    @users = paper.journal.editors
+    filter_and_render
   end
 
   def admins
-    render_selectable_users(:admins)
+    @users = paper.journal.admins
+    filter_and_render
   end
 
   def reviewers
-    render_selectable_users(:reviewers)
+    @users = paper.journal.reviewers
+    filter_and_render
   end
 
   private
 
-  def render_selectable_users(role)
-    respond_with paper.journal.send(role), each_serializer: SelectableUserSerializer
+  def filter_and_render
+    @users = @users.starts_with(params[:query]) if params[:query].present?
+    respond_with @users, each_serializer: SelectableUserSerializer
   end
 
   def paper

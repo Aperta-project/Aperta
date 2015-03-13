@@ -72,10 +72,6 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-group :development do
-  gem 'letter_opener'
-end
-
 group :development, :test, :performance do
   gem 'factory_girl_rails'
   gem 'progressbar'

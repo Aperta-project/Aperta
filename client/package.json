@@ -41,5 +41,11 @@
     "tahi-standard-cards": "git://github.com/Tahi-project/tahi-standard-cards.git",
     "tahi-supporting-information-card": "git://github.com/Tahi-project/tahi-supporting-information-card.git",
     "tahi-upload-manuscript-card": "git://github.com/Tahi-project/tahi-upload-manuscript-card.git"
+  },
+  "ember-addon": {
+    "paths": [
+      "lib/initial-tech-check",
+      "lib/changes-for-author"
+    ]
   }
 }

@@ -18,7 +18,7 @@ Factories = ->
 
   FactoryGuy.define 'paper-reviewer-task',
     default:
-      title: 'Assign Reviewers'
+      title: 'Invite Reviewers'
       type: 'PaperReviewerTask'
       completed: false
 

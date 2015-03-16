@@ -1,6 +1,27 @@
 `import ApplicationSerializer from 'tahi/serializers/application'`
-`import SerializesHasMany from 'tahi/mixins/serializers/serializes-has-many'`
 
-PaperSerializer = ApplicationSerializer.extend(SerializesHasMany)
+PaperSerializer = ApplicationSerializer.extend
+
+  attrs:
+    authors:
+      serialize: false
+    collaborations:
+      serialize: false
+    editors:
+      serialize: false
+    figures:
+      serialize: false
+    journal:
+      serialize: false
+    lockedBy:
+      serialize: false
+    phases:
+      serialize: false
+    reviewers:
+      serialize: false
+    supportingInformationFiles:
+      serialize: false
+    tasks:
+      serialize: false
 
 `export default PaperSerializer`

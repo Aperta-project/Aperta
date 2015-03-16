@@ -1,7 +1,6 @@
 `import ApplicationSerializer from 'tahi/serializers/application'`
-`import SerializesHasMany from 'tahi/mixins/serializers/serializes-has-many'`
 
-DashboardSerializer = ApplicationSerializer.extend SerializesHasMany,
+DashboardSerializer = ApplicationSerializer.extend
   normalizeHash:
     tasks: (hash)->
       hash.qualified_type = hash.type

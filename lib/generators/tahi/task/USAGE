@@ -1,6 +1,16 @@
 Description:
-    Generate a custom Task. You will be prompted for an engine to use. Leave blank to add to StandardTasks.
+    Generate a Tahi task in an existing Tahi plugin.
 
 Example:
-    $ rails generate task video <return>
-      What engine are you using? (leave blank for StandardTasks): <return>
+    rails generate tahi:task TASK_NAME PLUGIN_NAME
+
+    This will create:
+        engines/PLUGIN_NAME/app/models/PLUGIN_NAME/TASK_NAME_task.rb
+        engines/PLUGIN_NAME/app/serializers/PLUGIN_NAME/TASK_NAME_task_serializer.rb
+        engines/PLUGIN_NAME/app/policies/PLUGIN_NAME/TASK_NAME_tasks_policy.rb
+        engines/PLUGIN_NAME/client/app/adapters/TASK-NAME-task.js
+        engines/PLUGIN_NAME/client/app/controllers/overlays/TASK-NAME.js
+        engines/PLUGIN_NAME/client/app/models/TASK-NAME-task.js
+        engines/PLUGIN_NAME/client/app/serializers/TASK-NAME-task.js
+        engines/PLUGIN_NAME/client/app/templates/overlays/TASK-NAME.hbs
+        engines/PLUGIN_NAME/client/app/views/overlays/TASK-NAME.js

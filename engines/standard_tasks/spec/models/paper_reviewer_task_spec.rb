@@ -46,7 +46,7 @@ describe StandardTasks::PaperReviewerTask do
   end
 
   describe "#reviewer_ids=" do
-    let(:task) { StandardTasks::PaperReviewerTask.create!(phase: paper.phases.first, title: "Assign Reviewers", role: "reviewer") }
+    let(:task) { StandardTasks::PaperReviewerTask.create!(phase: paper.phases.first, title: "Invite Reviewers", role: "reviewer") }
 
     it "creates reviewer paper roles only for new ids" do
       create(:paper_role, :reviewer, paper: paper, user: albert)

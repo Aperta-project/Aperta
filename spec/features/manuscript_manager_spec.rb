@@ -80,13 +80,13 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
   end
 
   # Preventing a regression
-  scenario 'Opening an AssignReviewers task' do
+  scenario 'Opening an Invite Reviewers task' do
     task_manager_page = TaskManagerPage.visit paper
 
     within 'body' do
-      find('.card-content', text: 'Assign Reviewer').click
+      find('.card-content', text: 'Invite Reviewer').click
 
-      expect(task_manager_page).to have_css('.overlay-content', text: 'Assign Reviewers')
+      expect(task_manager_page).to have_css('.overlay-content', text: 'Invite Reviewers')
       expect(task_manager_page).to have_css('.overlay-content', text: 'Discussion')
       expect(task_manager_page).to have_no_application_error
     end

@@ -1,17 +1,8 @@
-.upload-preview {
-  overflow: hidden;
-  position: relative;
-  height: 112px;
-  margin-top: 20px;
-  border: 1px solid #d7d7d7;
-  padding: 10px;
-  white-space: nowrap;
-}
-
 .upload-preview-filename {
+  color: $tahi-white;
   position: absolute;
-  left: 100px;
-  top: 26px;
+  left: 12px;
+  top: 10px;
 }
 
 .upload-preview-image-wrapper {

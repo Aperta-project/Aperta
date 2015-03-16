@@ -1,16 +1,8 @@
 {{#if error}}
   <button type="button" class="close upload-error-button" data-dismiss="alert" aria-hidden="true">×</button>
 {{/if}}
-
-{{#if preview}}
-  <div class="upload-preview-image-wrapper"><img {{bind-attr src=preview}}></div>
-{{else}}
-  <div {{bind-attr class=":glyphicon error:glyphicon-exclamation-sign:glyphicon-file"}}></div>
-{{/if}}
-
-<div class="upload-preview-filename">{{filename}}</div>
-
 <div class="progress">
+  <div class="upload-preview-filename">Loading {{filename}}</div>
   {{#if error}}
     <span class="upload-error-text">{{error}}</span>
   {{else}}

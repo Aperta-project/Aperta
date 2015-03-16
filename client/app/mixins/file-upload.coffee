@@ -24,9 +24,13 @@ FileUploadMixin = Ember.Mixin.create
 
   uploadFinished: (data, filename) ->
     uploads = @get('uploads')
-    newUpload = uploads.findBy('file.name', filename)
-    uploads.removeObject newUpload
-    $(window).off "beforeunload.cancelUploads.#{filename}"
+    $('.upload-preview-filename').text('Upload Complete!')
+    Ember.run.later (=>
+      $('.progress').fadeOut =>
+        newUpload = uploads.findBy('file.name', filename)
+        uploads.removeObject newUpload
+        $(window).off "beforeunload.cancelUploads.#{filename}"
+    ), 2000
 
   cancelUploads: ->
     @get('uploads').invoke('abort')

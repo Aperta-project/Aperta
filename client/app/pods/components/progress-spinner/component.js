@@ -1,20 +1,20 @@
 import Ember from 'ember';
 
 /**
-  ## How to Use
-
-  In your template:
-
-  ```
-  {{progress-spinner visible=someBoolean}}
-  ```
-
-  In your controller or component toggle the boolean:
-
-  ```
-  this.set('someBoolean', true);
-  ```
-*/
+ *   ## How to Use
+ *
+ *     In your template:
+ *
+ *       ```
+ *         {{progress-spinner visible=someBoolean}}
+ *           ```
+ *
+ *             In your controller or component toggle the boolean:
+ *
+ *               ```
+ *                 this.set('someBoolean', true);
+ *                   ```
+ *                   */
 
 export default Ember.Component.extend({
   classNames: ['spinner-component'],
@@ -37,32 +37,32 @@ export default Ember.Component.extend({
   },
 
   /**
-    Toggles visibility
-
-    @property visible
-    @type Boolean
-    @default false
-  */
+   *     Toggles visibility
+   *
+   *         @property visible
+   *             @type Boolean
+   *                 @default false
+   *                   */
 
   visible: false,
 
   /**
-    Color. `green` or `blue` or `white`
-
-    @property color
-    @type String
-    @default green
-  */
-  color: 'green',
+   *     Color. `green` or `blue` or `white`
+   *
+   *         @property color
+   *             @type String
+   *                 @default green
+   *                   */
+           color: 'green',
 
   /**
-    Size. `small` or `large`
-
-    @property size
-    @type String
-    @default small
-  */
-  size: 'small',
+   *     Size. `small` or `large`
+   *
+   *         @property size
+   *             @type String
+   *                 @default small
+   *                   */
+           size: 'small',
 
   _green: '#39a329',
   _blue: '#2d85de',
@@ -80,7 +80,7 @@ export default Ember.Component.extend({
 
   setup: function() {
     var options = Ember.merge(this.get('defaultOptions'), this.get('_' + this.get('size')));
-        options = Ember.merge(options, { color:  this.get('_' + this.get('color')) });
+    options = Ember.merge(options, { color:  this.get('_' + this.get('color')) });
 
     this.set( 'spinner', (new Spinner(options).spin(this.$()[0])) );
   }.on('didInsertElement'),

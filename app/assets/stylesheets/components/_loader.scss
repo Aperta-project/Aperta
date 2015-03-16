@@ -1,4 +1,4 @@
-.spinner-component { display: none; }
+.spinner-component-circle { display: none; }
 
 @mixin size($width, $height) {
   width: $width;
@@ -33,7 +33,7 @@
   -ms-flex-pack: center;
   justify-content: center;
 }
-.spinner-component--visible { 
+.spinner-component-circle--visible { 
   @include size(100%, 100%);
   @include flex-center;
   margin-top: 60px;
@@ -48,48 +48,5 @@
     border-left: 2px solid $tahi-green-dark;
     border-right: 2px solid $tahi-green-light;
     content: '';
-    opacity: .5;
   }
 }
-    .small {
-      &:after {
-        @include size(10px, 10px);
-      }
-    }
-
-    .large {
-      @include size(40px, 40px);
-    }
-
-    .white {
-      &:after {
-        border-top: 2px solid $tahi-green-dark;
-        border-bottom: 2px solid $tahi-white;
-        border-left: 2px solid $tahi-green-dark;
-        border-right: 2px solid $tahi-white;
-      }
-    }
-
-    .blue {
-      &:after {
-        border-top: 2px solid $tahi-blue-dark;
-        border-bottom: 2px solid $tahi-blue-light;
-        border-left: 2px solid $tahi-blue-dark;
-        border-right: 2px solid $tahi-blue-light;
-      }
-    }
-
-  @include keyframes(rotate) {
-    0% {
-      transform: rotateZ(-360deg);
-    }
-    100% {
-      transform: rotateZ(0deg);
-    }
-  }
-
-.spinner-component--absolute {
-  @include position(absolute, 50% auto auto 50%);
-  margin: -10px 0 0 -10px;
-}
-

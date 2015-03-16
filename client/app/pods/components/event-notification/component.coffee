@@ -2,7 +2,7 @@
 
 EventNotificationComponent = Ember.Component.extend
 
-  notificationManager: Ember.inject.service("notification-manager")
+  notificationManager: Ember.inject.service()
   events: Ember.computed.alias("notificationManager.events")
   hasNotification: Ember.computed.notEmpty("events")
 

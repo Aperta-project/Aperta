@@ -3,8 +3,8 @@
 NotificationManager = Ember.Service.extend
 
   eventStream: Ember.inject.service("event-stream")
-  # TODO: remove this once store is a service ember 1.11
-  store: (-> Tahi.__container__.lookup("store:main")).property()
+  # TODO: remove this once store is a service ember-data#beta-16
+  store: (-> @container.lookup("store:main")).property()
 
   actionNames: []
   actionNotification: null

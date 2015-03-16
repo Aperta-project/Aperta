@@ -1,6 +1,6 @@
 EventStreamHandler = Ember.Mixin.create
 
-  notificationManager: Ember.inject.service("notification-manager")
+  notificationManager: Ember.inject.service()
 
   replayUnhandledEvents: (->
     actions = Ember.keys(@_actions).filter (name) -> /^es::(.+)$/.test(name)

@@ -6,10 +6,24 @@ describe User do
   end
 
   describe "scopes" do
-    let(:user1) { FactoryGirl.create(:user) }
-    let(:user2) { FactoryGirl.create(:user) }
+    describe ".starts_with" do
+      it "return users which username, first_name or last_name begins with a value sent" do
+        FactoryGirl.create(:user, username: 'lotus', first_name: 'Bradley', last_name: 'Ally')
+        FactoryGirl.create(:user, username: 'calvin', first_name: 'Belle', last_name: 'Christen')
+        FactoryGirl.create(:user, username: 'maximilian', first_name: 'Brody', last_name: 'Lexis')
+        FactoryGirl.create(:user, username: 'beck', first_name: 'Indigo', last_name: 'James')
+
+        results = User.starts_with('be').order("first_name")
+        expect(results.count).to eq 2
+        expect(results.first.first_name).to eq 'Belle'
+        expect(results.last.first_name).to eq 'Indigo'
+      end
+    end
 
     describe ".admins" do
+      let(:user1) { FactoryGirl.create(:user) }
+      let(:user2) { FactoryGirl.create(:user) }
+
       it "includes admin users only" do
         user1.update! site_admin: true
         admins = User.site_admins

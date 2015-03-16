@@ -34,6 +34,18 @@ GIT
       activesupport (>= 4.1.0)
 
 PATH
+  remote: engines/changes_for_author
+  specs:
+    changes_for_author (0.0.1)
+      rails (~> 4.2.0)
+
+PATH
+  remote: engines/initial_tech_check
+  specs:
+    initial_tech_check (0.0.1)
+      rails (~> 4.2.0)
+
+PATH
   remote: engines/plos_authors
   specs:
     plos_authors (0.0.3)
@@ -487,6 +499,7 @@ DEPENDENCIES
   capybara
   capybara-webkit
   carrierwave
+  changes_for_author!
   codeclimate-test-reporter
   coffee-rails
   database_cleaner
@@ -499,6 +512,7 @@ DEPENDENCIES
   foreman
   gepub (~> 0.7.0beta1)
   heroku-deflater
+  initial_tech_check!
   kaminari
   launchy
   mail_form

@@ -47,7 +47,8 @@ TypeAheadComponent = Ember.TextField.extend
 
   ).on('didInsertElement'),
 
-  willDestroyElement: ->
+  teardown: (->
     @.$().typeahead('destroy')
+  ).on('willDestroyElement')
 
 `export default TypeAheadComponent`

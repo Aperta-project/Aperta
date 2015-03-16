@@ -148,11 +148,11 @@ describe StandardTasks::RegisterDecisionTask do
 
   describe "#after_update" do
     context "when the decision is 'revise' and task is incomplete" do
-      it "does not create a new task for the author" do
+      it "does not create a new task for the paper" do
         expect {
           task.paper.decision = 'revise'
           task.save!
-        }.to_not change { Task.all.size }
+        }.to_not change { task.paper.tasks.size }
       end
     end
 

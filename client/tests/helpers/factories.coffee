@@ -16,6 +16,12 @@ Factories = ->
       position: 1
       name: "Assign Editor"
 
+  FactoryGuy.define 'paper-reviewer-task',
+    default:
+      title: 'Invite Reviewers'
+      type: 'PaperReviewerTask'
+      completed: false
+
   FactoryGuy.define 'paper-editor-task',
     default:
       title: 'Assign Editors'

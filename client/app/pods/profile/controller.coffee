@@ -2,6 +2,7 @@
 `import FileUploadMixin from 'tahi/mixins/file-upload'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 `import Utils from 'tahi/services/utils'`
+`import { formatDate } from 'tahi/helpers/format-date'`
 
 ProfileController = Ember.ObjectController.extend FileUploadMixin, ValidationErrorsMixin,
   showAffiliationForm: false

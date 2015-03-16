@@ -2,13 +2,13 @@ require 'rake'
 require 'json'
 require 'pathname'
 
-namespace :custom_cards do
+namespace :tahi do
   def relative_path(to, from)
     Pathname.new(to).relative_path_from(Pathname.new(from))
   end
 
   desc 'Install a tahi engine for a git repo or local path'
-  task :install_engine, [:path] => :environment do |_, args|
+  task :install_plugin, [:path] => :environment do |_, args|
     path = args[:path]
     needle = '# Task Engines'
     gem_type = if path.match(/^(http|git)/)
@@ -24,12 +24,12 @@ namespace :custom_cards do
     Bundler.with_clean_env do
       # need to do this in subshell because our ruby process doesn't
       # know about the engine yet
-      sh "rake custom_cards:install[#{engine_name}]"
+      sh "rake tahi:install[#{engine_name}]"
       migration_task = "#{engine_name}:install:migrations"
       sh "rake #{migration_task}" if `rake -T #{migration_task}`.size > 0
     end
     if gem_type == 'path'
-      Rake::Task['custom_cards:update_package_json'].invoke(File.expand_path(File.join(path, 'client')))
+      Rake::Task['tahi:update_package_json'].invoke(File.expand_path(File.join(path, 'client')))
     else
       # TODO: need to make this work
       puts 'I do not know how to install a git repos ember code.'
@@ -93,5 +93,4 @@ namespace :custom_cards do
       puts "updated #{filename}"
     end
   end
-
 end

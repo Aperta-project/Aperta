@@ -1,13 +1,12 @@
 require 'rails_helper'
 
 describe StandardTasks::RegisterDecisionTask do
+  let!(:paper) do
+    FactoryGirl.create :paper, :with_tasks, title: "Crazy stubbing tests on rats"
+  end
+  let!(:task) { StandardTasks::RegisterDecisionTask.create!(title: "Register Decision", role: "editor", phase: paper.phases.first) }
+
   context "letters" do
-    let(:paper) do
-      FactoryGirl.create :paper, :with_tasks, title: "Crazy stubbing tests on rats"
-    end
-
-    let(:task) { StandardTasks::RegisterDecisionTask.create!(title: "Register Decision", role: "editor", phase: paper.phases.first) }
-
     before do
       user = double(:last_name, last_name: 'Mazur')
       editor = double(:full_name, full_name: 'Andi Plantenberg')
@@ -143,6 +142,30 @@ describe StandardTasks::RegisterDecisionTask do
           task.save!
           expect(task.send_emails).to eq nil
         end
+      end
+    end
+  end
+
+  describe "#after_update" do
+    context "when the decision is 'revise' and task is incomplete" do
+      it "does not create a new task for the author" do
+        expect {
+          task.paper.decision = 'revise'
+          task.save!
+        }.to_not change { Task.all.size }
+      end
+    end
+
+    context "when the decision is 'revise' and task is completed" do
+      it "creates a new task for the author containing the decision" do
+        task.paper.decision = 'revise'
+        task.save!
+        task.update_attributes completed: true
+        please_revise_task = Task.last  # TODO: improve this
+        expect(please_revise_task.paper).to eq paper
+        expect(please_revise_task.role).to eq 'user'
+        expect(please_revise_task.title).to eq 'Please Revise'
+        expect(please_revise_task.first.first['value']).to include 'We invite you to submit a revised version of the manuscript that addresses the points below'
       end
     end
   end

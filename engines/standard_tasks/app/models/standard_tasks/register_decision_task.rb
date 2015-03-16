@@ -15,25 +15,11 @@ module StandardTasks
       make_paper_editable
       # ultimately, we can call #send_emails here as well
 
-      create_ad_hoc_revise_card
-    end
-
-    def create_ad_hoc_revise_card
-      return unless on_card_completion? && paper.decision == 'revise'
-        # something fancy
-
-      # TaskFactory.build(task_klass, task_params(task_klass))
-      # TaskFactory.build(Task, task_params(task_klass))
-      binding.pry
-      TaskFactory.build(Task, {
-        title: "Please Revise",
-        role: "user",
-        phase_id: self.phase.id,
-      })
+      create_please_revise_card!
     end
 
     def make_paper_editable
-      return unless on_card_completion? && paper.decision == 'revise'
+      return unless revise_decision?
       self.paper.update! editable: true
     end
 
@@ -125,6 +111,22 @@ module StandardTasks
     end
 
     private
+
+    def create_please_revise_card!
+      return unless revise_decision?
+
+      TaskFactory.build(Task, {
+        title: "Please Revise",
+        role: "user",
+        phase_id: self.phase.id,
+        body: [[{type: 'text', value: revise_letter}]]
+      }).save!
+    end
+
+
+    def revise_decision?
+      on_card_completion? && paper.decision == 'revise'
+    end
 
     def template_data
       paper_editor = paper.editor

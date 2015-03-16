@@ -161,11 +161,16 @@ describe StandardTasks::RegisterDecisionTask do
         task.paper.decision = 'revise'
         task.save!
         task.update_attributes completed: true
-        please_revise_task = Task.last  # TODO: improve this
+        task.after_update
+
+        please_revise_task = task.paper.tasks.select do |paper_task|
+          paper_task.title == 'Please Revise'
+        end.first
+
+        expect(please_revise_task).to_not be_nil
         expect(please_revise_task.paper).to eq paper
         expect(please_revise_task.role).to eq 'user'
-        expect(please_revise_task.title).to eq 'Please Revise'
-        expect(please_revise_task.first.first['value']).to include 'We invite you to submit a revised version of the manuscript that addresses the points below'
+        expect(please_revise_task.body.first.first['value']).to include task.revise_letter
       end
     end
   end

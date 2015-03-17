@@ -30,9 +30,7 @@ namespace :tahi do
       update_package_json(path)
     else
       engine_path = `bundle show #{engine_name}`.chomp
-      if File.directory? engine_path
-        update_package_json(engine_path)
-      end
+      update_package_json(engine_path) if File.directory? engine_path
     end
 
     # modify route
@@ -61,10 +59,10 @@ namespace :tahi do
   end
 
   # This should just use Rails::Generators or Thor's inject_into_file(:before) method
-  def insert_before filename, needle, string
+  def insert_before(filename, needle, string)
     hay = File.open(filename, "r").read
-    needleIndex = hay.index(needle)
-    updated_string = hay.insert(needleIndex, "#{string}\n")
+    needle_index = hay.index(needle)
+    updated_string = hay.insert(needle_index, "#{string}\n")
 
     File.open(filename, "w") do |f|
       f << updated_string
@@ -73,10 +71,10 @@ namespace :tahi do
   end
 
   # This should just use Rails::Generators or Thor's inject_into_file(:after) method
-  def insert_after filename, needle, string
+  def insert_after(filename, needle, string)
     hay = File.open(filename, "r").read
-    needleIndex = hay.index(needle)
-    updated_string = hay.insert(needleIndex + needle.length, "\n#{string}")
+    needle_index = hay.index(needle)
+    updated_string = hay.insert(needle_index + needle.length, "\n#{string}")
 
     File.open(filename, "w") do |f|
       f << updated_string

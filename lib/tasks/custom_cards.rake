@@ -12,7 +12,7 @@ namespace :tahi do
                else
                  'path'
                end
-    engine_name = path.split(/\//)[-1].gsub(/^tahi-/, '')
+    engine_name = path.split(/\//)[-1].gsub(/^tahi-/, '').gsub(/.git$/, '')
     insert_after('Gemfile', needle, "gem '#{engine_name}', #{gem_type}: '#{path}'")
     Bundler.with_clean_env do
       sh 'bundle install'
@@ -27,8 +27,10 @@ namespace :tahi do
     if gem_type == 'path'
       update_package_json(path)
     else
-      # TODO: need to make this work
-      puts 'I do not know how to install a git repos ember code.'
+      engine_path = `bundle show #{engine_name}`.chomp
+      if File.directory? engine_path
+        update_package_json(engine_path)
+      end
     end
   end
 

@@ -6,30 +6,16 @@ class PapersController < ApplicationController
   before_action :sanitize_title, only: [:create, :update]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
-  layout 'ember'
-
   respond_to :json
 
   def show
-    respond_to do |format|
-      format.html do
-        render 'ember/index'
-      end
-
-      format.json do
-        render json: paper
-      end
-    end
+    respond_with(paper)
   end
 
   def create
     @paper = PaperFactory.create(paper_params, current_user)
     notify_paper_created! if @paper.valid?
-    respond_with @paper
-  end
-
-  def edit
-    render 'ember/index'
+    respond_with(@paper)
   end
 
   def update
@@ -53,10 +39,6 @@ class PapersController < ApplicationController
     # TODO: params[:name] probably needs some securitifications
     activity_feeds = ActivityFeed.where(feed_name: params[:name], subject_id: paper.id).order('created_at DESC')
     respond_with activity_feeds, each_serializer: ActivityFeedSerializer, root: 'feeds'
-  end
-
-  def manage
-    render 'ember/index'
   end
 
   def upload

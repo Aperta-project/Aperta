@@ -24,9 +24,6 @@ Tahi::Application.routes.draw do
 
   resources :journals, only: [:index, :show]
 
-  get '/flow_manager' => 'ember#index'
-  get '/profile' => 'ember#index'
-
   get '/request_policy' => 'direct_uploads#request_policy'
 
   get 'filtered_users/users/:paper_id' => 'filtered_users#users'
@@ -82,7 +79,7 @@ Tahi::Application.routes.draw do
 
   post :ihat_jobs, to: "ihat_jobs#update", as: :ihat_callback
 
-  resources :papers, only: [:create, :show, :edit, :update] do
+  resources :papers, only: [:create, :show, :update] do
     resources :figures, only: :create
     resource :manuscript_manager, only: :show
     resource :editor, only: :destroy
@@ -92,7 +89,6 @@ Tahi::Application.routes.draw do
 
     member do
       put :upload
-      get :manage
       get :download
       put :heartbeat
       get :export, to: 'paper_conversions#export'
@@ -147,7 +143,7 @@ Tahi::Application.routes.draw do
 
   get "/formats", to: "formats#index"
 
-  get "/styleguide", to: "ember#styleguide"
+  get "/styleguide", to: "styleguide#index"
 
   mount EmberCLI::Engine => "ember-tests" if Rails.env.development?
   get '*route' => 'ember#index'

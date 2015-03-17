@@ -12,10 +12,7 @@ class Admin::JournalsController < ApplicationController
   end
 
   def show
-    respond_to do |f|
-      f.json { render json: journal, serializer: AdminJournalSerializer, root: 'admin_journal' }
-      f.html { render 'ember/index', layout: 'ember' }
-    end
+    respond_with(journal, serializer:AdminJournalSerializer, root: 'admin_journal')
   end
 
   def authorization
@@ -24,25 +21,22 @@ class Admin::JournalsController < ApplicationController
 
   def create
     journal.save!
-    respond_with journal, serializer: AdminJournalSerializer, root: 'admin_journal'
+    respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
   def update
-    if journal.update(journal_params)
-      render json: journal, serializer: AdminJournalSerializer
-    else
-      respond_with journal
-    end
+    journal.update(journal_params)
+    respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
   def upload_logo
     journal_with_logo = DownloadLogo.call(journal, params[:url])
-    render json: journal_with_logo, serializer: AdminJournalSerializer
+    respond_with(journal_with_logo, serializer: AdminJournalSerializer)
   end
 
   def upload_epub_cover
     journal_with_cover = DownloadEpubCover.call(journal, params[:url])
-    render json: journal_with_cover, serializer: AdminJournalSerializer
+    respond_with(journal_with_cover, serializer: AdminJournalSerializer)
   end
 
   private

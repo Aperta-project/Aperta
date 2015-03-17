@@ -36,4 +36,4 @@ class EmberAddonsInstaller
   end
 end
 
-EmberAddonsInstaller.new.add_addons_from_gems
+# EmberAddonsInstaller.new.add_addons_from_gems

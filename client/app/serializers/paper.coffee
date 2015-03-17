@@ -11,10 +11,6 @@ PaperSerializer = ApplicationSerializer.extend
       serialize: false
     figures:
       serialize: false
-    journal:
-      serialize: false
-    lockedBy:
-      serialize: false
     phases:
       serialize: false
     reviewers:

@@ -6,6 +6,7 @@ namespace :tahi do
   desc 'Install a tahi engine for a git repo or local path'
   task :install_plugin, [:path] => :environment do |_, args|
     path = args[:path]
+    fail "Please supply a git or file path!" if path.nil?
     needle = '# Task Engines'
     gem_type = if path.match(/^(http|git)/)
                  'git'

@@ -77,6 +77,16 @@ ES_URL=http://your-custom-event-server.example.com rails s
 Run `rake db:setup`. This will delete any data you already have in your
 database, and insert test users based on what you see in `db/seeds.rb`.
 
+### Sending Emails
+In development we sent emails through a simple SMTP server which catches any message sent to it to display in a web interface
+
+If you have running mailcatcher already you are ready to go, if not, please follow this instructions:
+ - install the gem `gem install mailcatcher`.
+ - run in the console `mailcatcher` to start the daemon.
+ - Go to http://localhost:1080/
+
+for more information check http://mailcatcher.me/
+
 ### Running specs
 
 We use:

@@ -1,4 +1,8 @@
 module TahiHelperMethods
+  def res_body
+    JSON.parse(response.body)
+  end
+
   def user_select_hash(user)
     {id: user.id, full_name: user.full_name, avatar: user.image_url}
   end
@@ -12,9 +16,15 @@ module TahiHelperMethods
   end
 
   def make_user_paper_editor(user, paper)
-    assign_journal_role(paper.journal, user, :editor)
-    editor_task = paper.tasks.where(title: 'Assign Editor').first
-    paper.paper_roles.create(role: PaperRole::EDITOR, user: user)
+    assign_paper_role(paper, user, PaperRole::EDITOR)
+  end
+
+  def make_user_paper_reviewer(user, paper)
+    assign_paper_role(paper, user, PaperRole::REVIEWER)
+  end
+
+  def assign_paper_role(paper, user, role)
+    paper.paper_roles.create!(role: role, user: user)
     paper.reload
   end
 

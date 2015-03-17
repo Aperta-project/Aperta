@@ -51,7 +51,7 @@ test 'show delete confirmation overlay on deletion of a Task', ->
     $("div.card .card-remove").show()
     click("div.card .card-remove")
   andThen ->
-    equal(find('h1:contains("You\'re about to delete this card forever")').length, 1)
+    equal(find('h1:contains("about to delete this card forever")').length, 1)
     equal(find('h2:contains("Are you sure?")').length, 1)
     equal(find('.overlay button:contains("cancel")').length, 1)
     equal(find('.overlay button:contains("Yes, Delete this Card")').length, 1)

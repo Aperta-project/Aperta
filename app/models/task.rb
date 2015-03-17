@@ -92,13 +92,9 @@ class Task < ActiveRecord::Base
     journal.journal_task_types.find_by(kind: self.class.name)
   end
 
-  def is_metadata?
+  def submission_task?
     return false unless Task.metadata_types.present?
     Task.metadata_types.include?(self.class.name)
-  end
-
-  def manuscript_information_task?
-    self.role == "author"
   end
 
   def array_attributes
@@ -115,5 +111,15 @@ class Task < ActiveRecord::Base
 
   def authorize_update?(params, user)
     true
+  end
+
+  # Implement this method Cards that inherit from this Task
+  def after_update
+  end
+
+  private
+
+  def on_card_completion?
+    previous_changes["completed"] == [false, true]
   end
 end

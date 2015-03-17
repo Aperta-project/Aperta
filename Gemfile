@@ -72,10 +72,6 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-group :development do
-  gem 'letter_opener'
-end
-
 group :development, :test, :performance do
   gem 'factory_girl_rails'
   gem 'progressbar'
@@ -96,7 +92,7 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'selenium-webdriver', '>=2.45.0.dev3'
+  gem 'selenium-webdriver'
   gem 'capybara-webkit'
   gem 'simplecov'
   gem 'codeclimate-test-reporter', require: nil

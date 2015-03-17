@@ -52,8 +52,8 @@ describe StandardTasks::RegisterDecisionTask do
       it "returns the letter with paper title filled in" do
         expect(task.revise_letter).to match(/Crazy stubbing tests on rats/)
       end
-
     end
+
     describe "#reject_letter" do
       it "returns the letter with the author's name filled in" do
         expect(task.reject_letter).to match(/Mazur/)
@@ -82,11 +82,19 @@ describe StandardTasks::RegisterDecisionTask do
   end
 
   describe "save and retrieve paper decision and decision letter" do
-    let(:task) { StandardTasks::RegisterDecisionTask.new }
-    let(:paper) do
-      FactoryGirl.create :paper, title: "Crazy stubbing tests on rats",
-        decision: "Accepted", decision_letter: "Lorem Ipsum"
-    end
+    let(:paper) {
+      FactoryGirl.create(:paper, :with_tasks,
+        title: "Crazy stubbing tests on rats",
+        decision: "Accepted",
+        decision_letter: "Lorem Ipsum")
+    }
+
+    let(:task) {
+      StandardTasks::RegisterDecisionTask.create(
+        title: "Register Decision",
+        role: "editor",
+        phase: paper.phases.first)
+    }
 
     before do
       allow(task).to receive(:paper).and_return(paper)
@@ -115,6 +123,26 @@ describe StandardTasks::RegisterDecisionTask do
       it "returns paper's decision" do
         task.paper_decision_letter = "Rejecting because I can"
         expect(task.paper_decision_letter).to eq("Rejecting because I can")
+      end
+    end
+
+    describe "#send_emails" do
+      context "if the task transitions to completed" do
+        it "sends emails to the paper's author" do
+          allow(StandardTasks::RegisterDecisionMailer).to receive_message_chain("delay.notify_author_email") { true }
+          task.completed = true
+          task.save!
+          expect(task.send_emails).to eq true
+        end
+      end
+
+      context "if the task is updated but not completed" do
+        it "does not send emails" do
+          StandardTasks::ReviewerReportMailer = double(:reviewer_report_mailer)
+          task.completed = false # or any other update
+          task.save!
+          expect(task.send_emails).to eq nil
+        end
       end
     end
   end

@@ -3,18 +3,18 @@ import Ember from 'ember';
 /**
  *   ## How to Use
  *
- *     In your template:
+ *   In your template:
  *
- *       ```
- *         {{progress-spinner visible=someBoolean}}
- *           ```
+ *   ```
+ *    {{progress-spinner visible=someBoolean}}
+ *   ```
  *
- *             In your controller or component toggle the boolean:
+ *   In your controller or component toggle the boolean:
  *
- *               ```
- *                 this.set('someBoolean', true);
- *                   ```
- *                   */
+ *   ```
+ *    this.set('someBoolean', true);
+ *   ```
+ **/
 
 export default Ember.Component.extend({
   classNames: ['spinner-component'],

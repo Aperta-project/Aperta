@@ -1,5 +1,6 @@
 class PapersController < ApplicationController
   include AttrSanitize
+  include ActivityNotifier
 
   before_action :authenticate_user!
   before_action :enforce_policy
@@ -24,7 +25,7 @@ class PapersController < ApplicationController
 
   def create
     @paper = PaperFactory.create(paper_params, current_user)
-    notify_paper_created! if @paper.valid?
+    notify_paper!(event_name: "paper::created", paper: @paper) if @paper.valid?
     respond_with @paper
   end
 
@@ -42,7 +43,9 @@ class PapersController < ApplicationController
       paper.update(update_paper_params)
     end
 
-    notify_paper_edited! if params[:paper][:locked_by_id].present?
+    if params[:paper][:locked_by_id].present?
+      notify_paper!(event_name: "paper::edited", paper: paper)
+    end
 
     respond_with paper
   end
@@ -51,7 +54,7 @@ class PapersController < ApplicationController
 
   def activity
     # TODO: params[:name] probably needs some securitifications
-    activities = Activity.public.where(event_scope: params[:name], target: paper).order(created_at: :desc)
+    activities = Activity.public.where(region_name: params[:name], scope: paper).order(created_at: :desc)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 
@@ -97,9 +100,9 @@ class PapersController < ApplicationController
   def submit
     paper.update(submitted: true, editable: false)
     if paper.valid?
-      notify_paper_submitted!
+      notify_paper!(event_name: "paper::created", paper: paper)
       # TODO: uncomment!
-      # notify_paper_revised! if paper.revised?
+      # notify_paper!(event_name: "paper::revised", paper: paper) if paper.revised?
       status = 200
     else
       status = 422
@@ -161,48 +164,14 @@ class PapersController < ApplicationController
     strip_tags!(params[:paper], :title)
   end
 
+  def notify_paper!(event_name:, paper:)
+    broadcast(event_name: event_name, target: paper, scope: paper, region_name: "paper")
+  end
+
   def prevent_update_on_locked!
     if paper.locked? && !paper.locked_by?(current_user)
       paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
       raise ActiveRecord::RecordInvalid, paper
     end
-  end
-
-  def notify_paper_created!
-    Activity.create(
-      event_scope: 'paper',
-      event_action: 'created',
-      target: paper,
-      actor: current_user
-    )
-  end
-
-  def notify_paper_edited!
-    Activity.create(
-      event_scope: 'paper',
-      event_action: 'edited',
-      target: paper,
-      actor: current_user
-    )
-  end
-
-  def notify_paper_submitted!
-    Activity.create(
-      event_scope: 'paper',
-      event_action: 'submitted',
-      target: paper,
-      actor: current_user
-    )
-  end
-
-  def notify_paper_revised!
-    activity = Activity.create(
-      event_scope: 'paper',
-      event_action: 'revised',
-      target: paper,
-      actor: current_user,
-      public: false
-    )
-    TahiNotifier.notify(event: "paper::revised", payload: { activity: activity })
   end
 end

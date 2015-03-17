@@ -1,10 +1,9 @@
 class TasksController < ApplicationController
+  include ActivityNotifier
+
   before_action :authenticate_user!
   before_action :enforce_policy
-
   before_action :unmunge_empty_arrays, only: [:update]
-
-  after_action :notify_task_updated!, only: [:update]
 
   respond_to :json
 
@@ -27,10 +26,10 @@ class TasksController < ApplicationController
 
   def update
     task.assign_attributes(task_params(task.class))
-    @task_completion_change = task.completed_changed?
     task.save!
     task.after_update
     task.send_emails if task.respond_to? :send_emails
+    notify_task_updated!
     render task.update_responder.new(task, view_context).response
   end
 
@@ -93,15 +92,10 @@ class TasksController < ApplicationController
   end
 
   def notify_task_updated!
-    if @task_completion_change
-      action = task.completed? ? 'complete' : 'incomplete'
-      event_scope = task.is_metadata? ? 'paper' : 'workflow'
-      Activity.create(
-        event_scope: event_scope,
-        event_action: "task::#{action}",
-        target: task,
-        actor: current_user
-      )
+    if task.previous_changes[:completed].present?
+      action = task.completed? ? 'completed' : 'uncompleted'
+      region_name = task.submission_task? ? 'paper' : 'workflow'
+      broadcast(event_name: "task::#{action}", target: task, scope: task.paper, region_name: region_name)
     end
   end
 end

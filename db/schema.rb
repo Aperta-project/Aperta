@@ -11,20 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150312184936) do
+ActiveRecord::Schema.define(version: 20150317184631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "activities", force: :cascade do |t|
-    t.string   "event_scope"
+    t.string   "region_name"
     t.integer  "target_id"
     t.string   "target_type"
-    t.string   "event_action"
+    t.string   "event_name"
     t.integer  "actor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "public",       default: true, null: false
+    t.boolean  "public",      default: true, null: false
+    t.string   "scope_type"
+    t.integer  "scope_id"
   end
 
   add_index "activities", ["actor_id"], name: "index_activities_on_actor_id", using: :btree

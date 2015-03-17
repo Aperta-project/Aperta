@@ -1,8 +1,8 @@
 class ParticipationsController < ApplicationController
+  include ActivityNotifier
+
   before_action :authenticate_user!
   before_action :enforce_policy
-  before_action :notify_participation_created, only: :create
-  before_action :notify_participation_destroyed, only: :destroy
 
   respond_to :json
 
@@ -14,6 +14,7 @@ class ParticipationsController < ApplicationController
       if participation.user_id != current_user.id
         UserMailer.delay.add_participant(current_user.id, participation.user_id, task.id)
       end
+      notify_participation!("created")
     end
     respond_with participation
   end
@@ -23,7 +24,9 @@ class ParticipationsController < ApplicationController
   end
 
   def destroy
-    participation.destroy
+    if participation.destroy
+      notify_participation!("destroyed")
+    end
     respond_with participation
   end
 
@@ -43,6 +46,11 @@ class ParticipationsController < ApplicationController
     end
   end
 
+  def notify_participation!(action)
+    region_name = participation.task.submission_task? ? 'paper' : 'workflow'
+    broadcast(event_name: "participation::#{action}", target: participation, scope: participation.task.paper, region_name: region_name)
+  end
+
   def participation_params
     params.require(:participation).permit(:task_id, :user_id)
   end
@@ -53,25 +61,5 @@ class ParticipationsController < ApplicationController
 
   def enforce_policy
     authorize_action!(participation: participation)
-  end
-
-  def notify_participation_created
-    if participation.valid?
-      Activity.create(
-        event_scope: 'paper',
-        event_action: 'participation::created',
-        target: participation,
-        actor: current_user
-      )
-    end
-  end
-
-  def notify_participation_destroyed
-    Activity.create(
-      event_scope: 'paper',
-      event_action: 'participation::destroyed',
-      target: participation,
-      actor: current_user
-    )
   end
 end

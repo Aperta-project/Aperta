@@ -20,9 +20,10 @@ namespace :tahi do
     Bundler.with_clean_env do
       # need to do this in subshell because our ruby process doesn't
       # know about the engine yet
-      sh "bundle exec rake tahi:install[#{engine_name}]"
       migration_task = "#{engine_name}:install:migrations"
       sh "bundle exec rake #{migration_task}" if `bundle exec rake -T #{migration_task}`.size > 0
+      # tahi magic installer
+      sh "bundle exec rake data:create_task_types"
     end
     if gem_type == 'path'
       update_package_json(path)
@@ -32,30 +33,14 @@ namespace :tahi do
         update_package_json(engine_path)
       end
     end
-  end
 
-  desc "Install a Custom Tahi .gem Card"
-  task :install, [:card_name] => :environment do |task, args|
-    # Append to the File
-    task_name = args["card_name"]
-    task_class_name = task_name.camelize
-
-    engine_name = task_name.underscore
-    puts "Installing Custom Tahi Card: #{engine_name}"
-    engine_class_name = engine_name.camelize
-
-    # Then, run the rake task
-    Rake::Task["data:create_task_types"].invoke
-    puts "Successfully ran `rake data:create_task_types` for #{engine_name}"
-
+    # modify route
     needle = "### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###"
-    insert_after("config/routes.rb", needle, "  mount #{engine_class_name}::Engine => '/'")
+    insert_after("config/routes.rb", needle, "  mount #{engine_name.camelize}::Engine => '/'")
 
+    # modify application.scss
     needle = "// DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE"
     insert_after("app/assets/stylesheets/application.scss", needle, "@import '#{engine_name}/application';")
-
-    puts "Tahi Custom Task installation Successful!"
-    puts "Also, be sure to add your new Custom Task to a Journal's Manuscript Manager Template"
   end
 
   def relative_path(to, from)

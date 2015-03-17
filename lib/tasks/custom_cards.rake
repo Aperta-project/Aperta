@@ -20,9 +20,9 @@ namespace :tahi do
     Bundler.with_clean_env do
       # need to do this in subshell because our ruby process doesn't
       # know about the engine yet
-      sh "rake tahi:install[#{engine_name}]"
+      sh "bundle exec rake tahi:install[#{engine_name}]"
       migration_task = "#{engine_name}:install:migrations"
-      sh "rake #{migration_task}" if `rake -T #{migration_task}`.size > 0
+      sh "bundle exec rake #{migration_task}" if `bundle exec rake -T #{migration_task}`.size > 0
     end
     if gem_type == 'path'
       update_package_json(path)

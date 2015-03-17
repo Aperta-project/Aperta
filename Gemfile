@@ -61,11 +61,7 @@ gem 'aasm'
 # https://github.com/dlindahl/omniauth-cas/pull/28
 gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c4574666dcfc9b577542fb595f"
 
-if ENV['RAILS_ENV'] == 'test'
-  gem 'tahi_epub', git: "https://#{ENV['GITHUB_OAUTH_TOKEN']}:x-oauth-basic@github.com/tahi-project/tahi_epub"
-else
-  gem 'tahi_epub', github: 'tahi-project/tahi_epub'
-end
+gem 'tahi_epub', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi_epub"
 
 group :staging, :performance, :production do
   gem 'heroku-deflater'

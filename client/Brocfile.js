@@ -31,6 +31,9 @@ app.import('vendor/bootstrap-tooltip/index.js');
 app.import('bower_components/bootstrap-datepicker/css/datepicker3.css');
 app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 
+// Typeahead
+app.import('bower_components/typeahead.js/dist/typeahead.bundle.min.js');
+
 // FileUpload
 app.import('vendor/jquery.ui.widget.js');
 app.import('vendor/jquery.iframe-transport.js');

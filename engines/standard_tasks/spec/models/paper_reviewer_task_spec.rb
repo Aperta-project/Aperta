@@ -15,9 +15,38 @@ describe StandardTasks::PaperReviewerTask do
 
   let(:albert) { create :user, :site_admin }
   let(:neil) { create :user }
+  let!(:task) do
+    StandardTasks::PaperReviewerTask.create!({
+      phase: paper.phases.first,
+      title: "Invite Reviewers",
+      role: "admin"
+    })
+  end
+
+  describe '#invitation_invited' do
+    let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
+
+    it 'notifies the invited reviewer' do
+      expect {task.invitation_invited invitation}.to change {
+        Sidekiq::Extensions::DelayedMailer.jobs.length
+      }.by 1
+    end
+  end
+
+  describe '#invitation_accepted' do
+    let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
+
+    it 'adds the reviewer to the list of reviewers' do
+      expect(paper.reviewers.count).to eq 0
+      invitation.accept!
+      expect(paper.reviewers.count).to eq 1
+      expect(paper.reload.reviewers).to include invitation.invitee
+    end
+
+  end
 
   describe "#reviewer_ids=" do
-    let(:task) { StandardTasks::PaperReviewerTask.create!(phase: paper.phases.first, title: "Assign Reviewers", role: "editor") }
+    let(:task) { StandardTasks::PaperReviewerTask.create!(phase: paper.phases.first, title: "Invite Reviewers", role: "reviewer") }
 
     it "creates reviewer paper roles only for new ids" do
       create(:paper_role, :reviewer, paper: paper, user: albert)

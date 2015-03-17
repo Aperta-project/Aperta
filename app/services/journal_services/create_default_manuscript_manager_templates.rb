@@ -12,7 +12,7 @@ module JournalServices
         phase = mmt.phase_templates.create! name: "Invite Editor"
         make_tasks phase, task_types, StandardTasks::PaperEditorTask, StandardTasks::TechCheckTask, StandardTasks::PaperAdminTask
 
-        phase = mmt.phase_templates.create! name: "Assign Reviewers"
+        phase = mmt.phase_templates.create! name: "Invite Reviewers"
         make_tasks phase, task_types, StandardTasks::PaperReviewerTask
 
         phase = mmt.phase_templates.create! name: "Get Reviews"

@@ -164,8 +164,8 @@ GEM
     diff-lcs (1.2.5)
     docile (1.1.5)
     dotenv (1.0.2)
-    dotenv-rails (1.0.2)
-      dotenv (= 1.0.2)
+    dotenv-deployment (0.3.0)
+      dotenv (~> 1.0)
     ember-cli-rails (0.1.10)
       railties (>= 3.1, < 5)
       sprockets (>= 2.0)
@@ -491,7 +491,8 @@ DEPENDENCIES
   coffee-rails
   database_cleaner
   devise
-  dotenv-rails
+  dotenv
+  dotenv-deployment
   ember-cli-rails
   factory_girl_rails
   faraday_middleware

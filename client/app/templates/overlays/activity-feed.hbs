@@ -3,8 +3,8 @@
     <h1 class="feedback-overlay-thanks">Recent Activity</h1>
   </header>
 
-  {{progress-spinner visible=isLoading
-                     size="large"}}
+  {{progress-loader visible=isLoading
+                    large=true}}
 
   <table>
     {{#each feed in model}}

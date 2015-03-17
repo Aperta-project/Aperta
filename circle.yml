@@ -40,11 +40,11 @@ test:
         parallel: true
 
 # Customize deployment commands
-deployment:
-  staging:
-    branch: master
-    heroku:
-      appname: tahi-staging
+# deployment:
+#   staging:
+#     branch: master
+#     heroku:
+#       appname: tahi-staging
 
 ## Custom notifications
 # notify:

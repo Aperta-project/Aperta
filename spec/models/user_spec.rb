@@ -78,7 +78,7 @@ describe User do
     end
   end
 
-  describe ".search" do
+  describe ".fuzzy_search" do
     it "searches by user's first_name and last_name" do
       user = create :user, first_name: 'David', last_name: 'Wang'
 

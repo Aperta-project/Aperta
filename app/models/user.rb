@@ -73,7 +73,7 @@ class User < ActiveRecord::Base
   def self.search_users(query: nil, assigned_users_in_journal_id: nil)
     if query
       sanitized_query = connection.quote_string(query.to_s.downcase) + '%'
-      User.where("lower(username) LIKE '#{sanitized_query}' OR lower(first_name) LIKE '#{sanitized_query}' OR lower(last_name) LIKE '#{sanitized_query}'")
+      User.fuzzy_search sanitized_query
     elsif assigned_users_in_journal_id
       User.joins(user_roles: :role).where('roles.journal_id = ?', assigned_users_in_journal_id).uniq
     end

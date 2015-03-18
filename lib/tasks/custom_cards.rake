@@ -26,12 +26,6 @@ namespace :tahi do
       # tahi magic installer
       sh "bundle exec rake data:create_task_types"
     end
-    if gem_type == 'path'
-      update_package_json(path)
-    else
-      engine_path = `bundle show #{engine_name}`.chomp
-      update_package_json(engine_path) if File.directory? engine_path
-    end
 
     # modify route
     needle = "### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###"
@@ -44,18 +38,6 @@ namespace :tahi do
 
   def relative_path(to, from)
     Pathname.new(to).relative_path_from(Pathname.new(from))
-  end
-
-  # Update package.json to include an ember addon at path
-  def update_package_json(path)
-    package_path = File.join(Rails.root, 'client', 'package.json')
-    client_path = File.expand_path(File.join(path, 'client'))
-    relative_client_path = relative_path(client_path, File.join(Rails.root, 'client'))
-    package = JSON.load(File.open(package_path))
-    package['ember-addon'] ||= {}
-    package['ember-addon']['paths'] ||= []
-    package['ember-addon']['paths'].push(relative_client_path)
-    File.open(package_path, 'w') << JSON.pretty_generate(package)
   end
 
   # This should just use Rails::Generators or Thor's inject_into_file(:before) method

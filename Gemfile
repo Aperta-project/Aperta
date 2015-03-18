@@ -54,7 +54,7 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
-gem 'sunspot_rails'
+gem 'textacular'
 gem 'aasm'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
@@ -86,7 +86,6 @@ group :development, :test, :performance do
   gem 'pry-rescue'
   gem 'pry-rails'
   gem 'foreman'
-  gem 'sunspot_solr'
   gem 'quiet_assets'
 end
 
@@ -98,7 +97,6 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'
   gem 'webmock'
-  gem 'sunspot-rails-tester'
   gem 'thin'
   gem 'timecop'
 end

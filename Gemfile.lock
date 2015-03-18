@@ -290,7 +290,6 @@ GEM
     orm_adapter (0.5.0)
     pdfkit (0.6.2)
     pg (0.18.1)
-    pr_geohash (1.0.0)
     progressbar (0.21.0)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -357,8 +356,6 @@ GEM
     rest-client (1.7.3)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rsolr (1.0.12)
-      builder (>= 2.1.2)
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
       rspec-expectations (~> 3.2.0)
@@ -429,17 +426,8 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
-    sunspot (2.1.1)
-      pr_geohash (~> 1.0)
-      rsolr (~> 1.0.7)
-    sunspot-rails-tester (1.0.0)
-      sunspot_rails (>= 1.2)
-      sunspot_solr (>= 1.2)
-    sunspot_rails (2.1.1)
-      nokogiri
-      rails (>= 3)
-      sunspot (= 2.1.1)
-    sunspot_solr (2.1.1)
+    textacular (3.2.1)
+      activerecord (>= 3.0, < 5.0)
     thin (1.6.3)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0)
@@ -537,11 +525,9 @@ DEPENDENCIES
   simplecov
   sinatra
   standard_tasks!
-  sunspot-rails-tester
-  sunspot_rails
-  sunspot_solr
   supporting_information!
   tahi_epub!
+  textacular
   thin
   timecop
   timeliness

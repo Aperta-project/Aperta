@@ -3,12 +3,10 @@ class FilteredUsersController < ApplicationController
   respond_to :json
 
   def users
-    users = User.search do
-      fulltext params[:query]
-    end
+    users = User.fuzzy_search params[:query]
 
-    respond_with users.results, each_serializer: FilteredUserSerializer,
-                                paper_id: params[:paper_id]
+    respond_with users, each_serializer: FilteredUserSerializer,
+                        paper_id: params[:paper_id]
   end
 
   def editors

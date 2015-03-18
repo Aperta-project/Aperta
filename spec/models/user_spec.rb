@@ -77,4 +77,35 @@ describe User do
       expect(user.password).not_to be_empty
     end
   end
+
+  describe ".search" do
+    it "searches by user's first_name and last_name" do
+      user = create :user, first_name: 'David', last_name: 'Wang'
+
+      expect(User.fuzzy_search(user.first_name).size).to eq 1
+      expect(User.fuzzy_search(user.first_name.downcase).first.id).to eq user.id
+      expect(User.fuzzy_search(user.last_name.downcase).first.id).to eq user.id
+      expect(User.fuzzy_search("#{user.first_name} #{user.last_name.downcase}").first.id).to eq user.id
+    end
+
+    it "searches by user's email" do
+      user = create :user, email: 'dwang@gmail.com'
+      expect(User.fuzzy_search(user.email).first.id).to eq user.id
+    end
+
+    it "searches by user's username" do
+      user = create :user, username: 'dwangpwn'
+      expect(User.fuzzy_search(user.username).first.id).to eq user.id
+    end
+
+    it "searches by multiple attributes at once" do
+      user = create :user, username: 'blah', first_name: 'David', last_name: 'Wang', email: 'dwang@gmail.com'
+      expect(User.fuzzy_search("#{user.first_name} #{user.username}").first.id).to eq user.id
+    end
+
+    it "searches attributes with accent marks" do
+      user = create :user, first_name: 'David', last_name: 'Wang'
+      expect(User.fuzzy_search("davïd").first.id).to eq user.id
+    end
+  end
 end

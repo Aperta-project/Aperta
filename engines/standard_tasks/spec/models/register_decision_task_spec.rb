@@ -157,20 +157,35 @@ describe StandardTasks::RegisterDecisionTask do
     end
 
     context "when the decision is 'revise' and task is completed" do
-      it "creates a new task for the author containing the decision" do
+      before do
         task.paper.decision = 'revise'
         task.save!
         task.update_attributes completed: true
         task.after_update
 
-        please_revise_task = task.paper.tasks.select do |paper_task|
+        @please_revise_task = task.paper.tasks.select do |paper_task|
           paper_task.title == 'Please Revise'
         end.first
+      end
 
-        expect(please_revise_task).to_not be_nil
-        expect(please_revise_task.paper).to eq paper
-        expect(please_revise_task.role).to eq 'user'
-        expect(please_revise_task.body.first.first['value']).to include task.revise_letter
+      it "task is not nil" do
+        expect(@please_revise_task).to_not be_nil
+      end
+
+      it "task has paper" do
+        expect(@please_revise_task.paper).to eq paper
+      end
+
+      it "task role is `user`" do
+        expect(@please_revise_task.role).to eq 'user'
+      end
+
+      it "task participants include the paper's author" do
+        expect(@please_revise_task.participants).to eq [paper.creator]
+      end
+
+      it "task body includes the revise letter" do
+        expect(@please_revise_task.body.first.first['value']).to include task.revise_letter
       end
     end
   end

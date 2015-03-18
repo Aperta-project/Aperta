@@ -115,11 +115,14 @@ module StandardTasks
     def create_please_revise_card!
       return unless revise_decision?
 
+      author = paper.creator
+
       TaskFactory.build(Task,
         title: "Please Revise",
         role: "user",
         phase_id: phase.id,
-        body: [[{type: 'text', value: revise_letter}]]
+        body: [[{type: 'text', value: revise_letter}]],
+        participants: participants << author
       ).save!
     end
 

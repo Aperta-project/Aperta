@@ -1,7 +1,14 @@
 {{#if hasNotification}}
-  <h2>{{header}}</h2>
-  <p>{{message}}</p>
-  <button {{action "dismiss" events}}>x</button>
-{{else}}
-  Nothin here, holmes
+  <div class="overlay--top messaging-overlay animation-slide-in">
+    <span class="overlay-close-x animation-scale-in" {{action "dismiss" events}}>&times;</span>
+    <div class="message-header">
+      <div class="navigation-toggle">
+        Tahi
+      </div>
+    </div>
+    <div class="message-text">
+      <h1>{{header}}</h1>
+      <h4>{{message}}</h4>
+    </div>
+  </div>
 {{/if}}

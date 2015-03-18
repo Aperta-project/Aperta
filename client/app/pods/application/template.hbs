@@ -27,6 +27,7 @@
 </div>
 
 <div class="main-content">
+  {{event-notification}}
   <div class="main-content-cover" {{action "hideNavigation"}}></div>
   <div class="navigation-toggle" {{action "showNavigation"}}>
     {{partial "svg/hamburger"}} Tahi
@@ -35,7 +36,6 @@
 </div>
 
 {{outlet "overlay"}}
-{{event-notification}}
 
 {{#if showSaveStatusDiv}}
   <div id="delayedSave"></div>

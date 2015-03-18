@@ -6,9 +6,9 @@ module Tahi
 
     def generate
       app_dir = File.join(engine_path, 'app')
-      template 'model.rb',         File.join(app_dir, 'models',      plugin, "#{name}_task.rb")
-      template 'serializer.rb',    File.join(app_dir, 'serializers', plugin, "#{name}_task_serializer.rb")
-      template 'policy.rb',        File.join(app_dir, 'policies',    plugin, "#{name}_tasks_policy.rb")
+      template 'model.rb', File.join(app_dir, 'models', plugin, "#{name}_task.rb")
+      template 'serializer.rb', File.join(app_dir, 'serializers', plugin, "#{name}_task_serializer.rb")
+      template 'policy.rb', File.join(app_dir, 'policies', plugin, "#{name}_tasks_policy.rb")
       system("cd client && ember generate tahi-task #{name} #{engine_path}")
       print_wrapped "New task #{name} generated in #{engine_path}."
       print_wrapped "Now run `rake data:create_task_types`"

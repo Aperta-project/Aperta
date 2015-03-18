@@ -10,7 +10,7 @@ module Tahi
       # might need to cleanup a few excess, non-used files
 
       client_dir = File.join(plugin_dir, 'client')
-      template 'index.js',     File.join(client_dir, 'index.js')
+      template 'index.js', File.join(client_dir, 'index.js')
       template 'package.json', File.join(client_dir, 'package.json')
     end
 

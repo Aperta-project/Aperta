@@ -1,7 +1,6 @@
 require 'ember_addons_installer'
-require 'pry'
 
-class Rails; end
+module Rails; end
 
 describe EmberAddonsInstaller do
   describe "#add_addons_from_gems" do

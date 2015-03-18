@@ -8,6 +8,4 @@ Flow = DS.Model.extend CommonFlowAttrs,
   position: DS.attr('number')
   query: DS.attr()
 
-  relationshipsToSerialize: ['role']
-
 `export default Flow`

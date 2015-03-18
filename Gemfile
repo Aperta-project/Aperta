@@ -54,7 +54,7 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
-gem 'textacular', '~> 3.2.1'
+gem 'textacular'
 gem 'aasm'
 
 # NOTE: Using this fork because it uses a compatible omniauth version

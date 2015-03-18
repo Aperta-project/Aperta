@@ -527,7 +527,7 @@ DEPENDENCIES
   standard_tasks!
   supporting_information!
   tahi_epub!
-  textacular (~> 3.2.1)
+  textacular
   thin
   timecop
   timeliness

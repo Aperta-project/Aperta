@@ -17,8 +17,8 @@ describe UserInboxesController do
       before { inbox.set([activity_1.id, activity_2.id]) }
 
       it "returns both events" do
+        expect(TahiNotifier).to receive(:notify).twice
         get(:index, format: :json, event_names: ["paper::explosion", "paper::something_happened"])
-        expect(JSON.parse(response.body)["events"].size).to eq(2)
       end
     end
 
@@ -29,8 +29,8 @@ describe UserInboxesController do
       before { inbox.set([activity_1.id, activity_2.id]) }
 
       it "returns both events collapsed into one" do
+        expect(TahiNotifier).to receive(:notify).once
         get(:index, format: :json, event_names: ["paper::explosion", "paper::something_happened"])
-        expect(JSON.parse(response.body)["events"].size).to eq(1)
       end
 
       it "destroys the older collapsed activity" do

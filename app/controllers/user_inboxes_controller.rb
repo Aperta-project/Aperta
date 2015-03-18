@@ -1,28 +1,30 @@
-# used by client when an event notification has been 'dismissed'
-#
 class UserInboxesController < ApplicationController
+  include ActivityNotifier
+
   before_action :authenticate_user!
 
   respond_to :json
 
   def index
-    unread_user_activities = current_user.unread_activities.with_event_names(user_inbox_params[:event_names])
-    latest_activities = unread_user_activities.collapsed_most_recent
-    superceded_activities = unread_user_activities.without(latest_activities)
-
-    # remove the older activities from the user inbox
-    current_user.inbox.remove(superceded_activities.pluck(:id))
-
-    # return the newest activities
-    respond_with latest_activities, each_serializer: Notifications::ActivitySerializer, root: :events
+    broadcast_activities(collapser.latest_activities)
+    collapser.discard!
+    head :no_content
   end
 
   def destroy
-    Notifications::UserInbox.new(current_user.id).remove(params[:id])
+    inbox.remove(params[:id])
     head :no_content
   end
 
   private
+
+  def collapser
+    @collapser ||= Notifications::Collapser.new(user: current_user, event_names: user_inbox_params[:event_names])
+  end
+
+  def inbox
+    @inbox ||= Notifications::UserInbox.new(current_user.id)
+  end
 
   def user_inbox_params
     params.permit(event_names: [])

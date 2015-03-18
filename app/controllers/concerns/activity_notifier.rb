@@ -13,7 +13,13 @@ module ActivityNotifier
         public: public            # true = shown in activity feed overlay, false = not shown
       )
 
-      TahiNotifier.notify(event: event_name, payload: { activity: activity })
+      broadcast_activities(activity)
+    end
+
+    def broadcast_activities(activities)
+      [activities].flatten.each do |activity|
+        TahiNotifier.notify(event: activity.event_name, payload: { activity: activity })
+      end
     end
   end
 end

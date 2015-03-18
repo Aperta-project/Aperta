@@ -73,9 +73,12 @@ class User < ActiveRecord::Base
     site_admin? ? Journal.all : journals
   end
 
-  def events
-    unread = Notifications::UserInbox.new(id).get
-    Activity.find(unread)
+  def unread_activities
+    Activity.where(id: inbox.get)
+  end
+
+  def inbox
+    @inbox ||= Notifications::UserInbox.new(id)
   end
 
   def self.search_users(query: nil, assigned_users_in_journal_id: nil)

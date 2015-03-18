@@ -1,6 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
   has_many :affiliations, include: true, embed: :ids
-  has_many :events, include: true, embed: :ids, serializer: Notifications::ActivitySerializer
 
   attributes :id,
     :full_name,

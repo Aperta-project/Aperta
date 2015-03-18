@@ -5,7 +5,7 @@ FactoryGirl.define do
     region_name "paper"
     event_name "paper::revised"
     after(:build) do |activity, _|
-      activity.target = activity.scope
+      activity.target ||= activity.scope
     end
   end
 end

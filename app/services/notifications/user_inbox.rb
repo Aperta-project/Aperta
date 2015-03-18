@@ -6,7 +6,7 @@ module Notifications
       @user_id = user_id
     end
 
-    def set(*values)
+    def set(values)
       redis.sadd(key, values)
     end
 
@@ -14,7 +14,8 @@ module Notifications
       redis.smembers(key)
     end
 
-    def remove(*values)
+    def remove(values)
+      return if values.empty?
       redis.srem(key, values)
     end
 

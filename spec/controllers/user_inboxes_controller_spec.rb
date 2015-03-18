@@ -9,9 +9,41 @@ describe UserInboxesController do
     sign_in user
   end
 
+  describe "#index" do
+    context "two unread events with different event names" do
+      let(:activity_1) { FactoryGirl.create(:activity, event_name: "paper::explosion") }
+      let(:activity_2) { FactoryGirl.create(:activity, event_name: "paper::something_happened") }
+
+      before { inbox.set([activity_1.id, activity_2.id]) }
+
+      it "returns both events" do
+        get(:index, format: :json, event_names: ["paper::explosion", "paper::something_happened"])
+        expect(JSON.parse(response.body)["events"].size).to eq(2)
+      end
+    end
+
+    context "two unread events with the same event name and target" do
+      let(:activity_1) { FactoryGirl.create(:activity, event_name: "paper::explosion") }
+      let(:activity_2) { FactoryGirl.create(:activity, target: activity_1.target, event_name: "paper::explosion") }
+
+      before { inbox.set([activity_1.id, activity_2.id]) }
+
+      it "returns both events collapsed into one" do
+        get(:index, format: :json, event_names: ["paper::explosion", "paper::something_happened"])
+        expect(JSON.parse(response.body)["events"].size).to eq(1)
+      end
+
+      it "destroys the older collapsed activity" do
+        expect {
+          get(:index, format: :json, event_names: ["paper::explosion", "paper::something_happened"])
+        }.to change{ inbox.get.size }.by(-1)
+      end
+    end
+  end
+
   describe "#destroy" do
     context "an existing activity in the inbox" do
-      before { inbox.set(33, 55) }
+      before { inbox.set([33, 55]) }
 
       it "destroys only the specified inbox record" do
         response = put(:destroy, format: :json, id: 33)
@@ -21,7 +53,7 @@ describe UserInboxesController do
     end
 
     context "a non-existing activity in the inbox" do
-      before { inbox.set(33, 55) }
+      before { inbox.set([33, 55]) }
 
       it "returns a 204" do
         response = put(:destroy, format: :json, id: 9999)

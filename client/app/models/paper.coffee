@@ -25,8 +25,6 @@ Paper = DS.Model.extend
   strikingImageId: a('string')
   editable: a('boolean')
 
-  relationshipsToSerialize: []
-
   displayTitle: (->
     @get('title') || @get('shortTitle')
   ).property('title', 'shortTitle')

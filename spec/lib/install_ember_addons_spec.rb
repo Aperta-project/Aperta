@@ -3,6 +3,7 @@ require 'ember_addons_installer'
 module Rails; end
 
 describe EmberAddonsInstaller do
+  pending do
   describe "#add_addons_from_gems" do
     context "when the file is empty" do
       let(:package_file_path) { File.expand_path '../../fixtures/package_empty.json', __FILE__ }
@@ -48,6 +49,6 @@ describe EmberAddonsInstaller do
         end
       end
     end
-
+    end # pending
   end
 end

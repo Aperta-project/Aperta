@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Assigns Reviewer", js: true, solr: true do
+feature "Assigns Reviewer", js: true do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }

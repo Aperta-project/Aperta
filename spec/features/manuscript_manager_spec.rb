@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Manuscript Manager", js: true, selenium: true, solr: true do
+feature "Manuscript Manager", js: true, selenium: true do
   let(:admin) { create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: admin, submitted: true, journal: journal }

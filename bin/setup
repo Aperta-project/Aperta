@@ -38,7 +38,7 @@ Dir.chdir APP_ROOT do
       system "brew install imagemagick --with-libtiff"
     end
 
-    %w( postgresql solr redis go node watchman qt ).each do |package|
+    %w( postgresql redis go node watchman qt ).each do |package|
       if `brew ls --versions #{package}`.present?
         puts "#{package} is already installed"
       else
@@ -96,10 +96,8 @@ MESSAGE
   system 'overcommit .'
 
   puts '== Preparing database =='
-  system 'bundle exec sunspot-solr start -p 8982'
   system 'sleep 10; bin/rake db:setup'
   system 'bin/rake db:setup RAILS_ENV=test'
-  system 'bundle exec sunspot-solr stop'
 
   puts '== Removing old logs and tempfiles =='
   system 'rm -f log/**/*'

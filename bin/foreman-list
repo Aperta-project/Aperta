@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ps aux | grep -E 'redis|sidekiq|puma|go|solr' | grep -v grep
+ps aux | grep -E 'redis|sidekiq|puma|go' | grep -v grep

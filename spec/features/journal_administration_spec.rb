@@ -54,7 +54,7 @@ feature "Journal Administration", js: true do
       expect(mmt_page).to have_paper_type(mmt.paper_type)
     end
 
-    scenario "deleting a MMT" do
+    scenario "deleting a MMT", flaky: true do
       mmt_to_delete = FactoryGirl.create(:manuscript_manager_template, journal: journal)
       journal_page.delete_mmt(mmt_to_delete)
       expect(journal_page).to have_no_mmt_name(mmt_to_delete.paper_type)

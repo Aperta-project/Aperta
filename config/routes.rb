@@ -3,6 +3,7 @@ Tahi::Application.routes.draw do
   mount SupportingInformation::Engine => '/', as: 'supporting_information'
   mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
+  mount PlosBioTechCheck::Engine => '/'
 
   require 'sidekiq/web'
   authenticate :user, ->(u) { u.site_admin? } do

@@ -36,7 +36,7 @@ database:
 ## Customize test commands
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) rake spec ;; 1) rake ember-cli:test ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) bundle exec rspec . --tag ~flaky ;; 1) rake ember-cli:test ;; 2) bundle exec rspec . --tag @flaky ;; esac:
         parallel: true
 
 # Customize deployment commands

@@ -1,6 +1,6 @@
 class PapersController < ApplicationController
   include AttrSanitize
-  include ActivityNotifier
+  include Notifications::ActivityBroadcaster
 
   before_action :authenticate_user!
   before_action :enforce_policy

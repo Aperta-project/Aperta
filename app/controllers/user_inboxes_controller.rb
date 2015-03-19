@@ -1,5 +1,5 @@
 class UserInboxesController < ApplicationController
-  include ActivityNotifier
+  include Notifications::ActivityBroadcaster
 
   before_action :authenticate_user!
 

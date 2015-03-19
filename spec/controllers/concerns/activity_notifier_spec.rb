@@ -1,10 +1,10 @@
 require "rails_helper"
 
-describe ActivityNotifier do
+describe Notifications::ActivityBroadcaster do
 
   before do
     class FakeModel
-      include ActivityNotifier
+      include Notifications::ActivityBroadcaster
     end
   end
 

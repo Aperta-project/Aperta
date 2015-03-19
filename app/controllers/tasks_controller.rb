@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  include ActivityNotifier
+  include Notifications::ActivityBroadcaster
 
   before_action :authenticate_user!
   before_action :enforce_policy

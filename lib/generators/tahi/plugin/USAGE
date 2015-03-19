@@ -1,0 +1,34 @@
+Description:
+    Generate a Tahi plugin.
+
+Example:
+    rails generate tahi:task PLUGIN_NAME [PATH]
+
+    If PATH is not specified, engines/PLUGIN_NAME will be used.
+
+    This will create:
+        engines/PLUGIN_NAME/README.rdoc
+        engines/PLUGIN_NAME/Rakefile
+        engines/PLUGIN_NAME/PLUGIN_NAME.gemspec
+        engines/PLUGIN_NAME/MIT-LICENSE
+        engines/PLUGIN_NAME/.gitignore
+        engines/PLUGIN_NAME/Gemfile
+        engines/PLUGIN_NAME/app
+        engines/PLUGIN_NAME/app/controllers/PLUGIN_NAME/application_controller.rb
+        engines/PLUGIN_NAME/app/helpers/PLUGIN_NAME/application_helper.rb
+        engines/PLUGIN_NAME/app/mailers
+        engines/PLUGIN_NAME/app/models
+        engines/PLUGIN_NAME/app/views/layouts/PLUGIN_NAME/application.html.erb
+        engines/PLUGIN_NAME/app/assets/images/PLUGIN_NAME
+        engines/PLUGIN_NAME/app/assets/images/PLUGIN_NAME/.keep
+        engines/PLUGIN_NAME/config/routes.rb
+        engines/PLUGIN_NAME/lib/PLUGIN_NAME.rb
+        engines/PLUGIN_NAME/lib/tasks/PLUGIN_NAME_tasks.rake
+        engines/PLUGIN_NAME/lib/PLUGIN_NAME/version.rb
+        engines/PLUGIN_NAME/lib/PLUGIN_NAME/engine.rb
+        engines/PLUGIN_NAME/app/assets/stylesheets/PLUGIN_NAME/application.css
+        engines/PLUGIN_NAME/app/assets/javascripts/PLUGIN_NAME/application.js
+        engines/PLUGIN_NAME/bin
+        engines/PLUGIN_NAME/bin/rails
+        engines/PLUGIN_NAME/client/index.js
+        engines/PLUGIN_NAME/client/package.json

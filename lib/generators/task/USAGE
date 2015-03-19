@@ -1,6 +1,0 @@
-Description:
-    Generate a custom Task. You will be prompted for an engine to use. Leave blank to add to StandardTasks.
-
-Example:
-    $ rails generate task video <return>
-      What engine are you using? (leave blank for StandardTasks): <return>

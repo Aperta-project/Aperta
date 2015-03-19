@@ -31,11 +31,11 @@ class EmberAddonsInstaller
   end
 
   def tahi_gem_matcher
-    /\A(tahi-|plos_)/
+    /\A(tahi-|plos_|assess)/
   end
 
   def tahi_path_matcher
-    /(tahi-|plos_)/
+    /(tahi-|plos_|assess)/
   end
 
   def tahi_gem_paths

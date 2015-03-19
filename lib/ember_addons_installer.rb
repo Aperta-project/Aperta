@@ -18,8 +18,8 @@ class EmberAddonsInstaller
   private
 
   def append_addon_paths_to_package
-    remove_existing_tahi_addons
     package['ember-addon'] ||= {}
+    remove_existing_tahi_addons
     addon_paths = package['ember-addon']['paths'] ||= []
 
     tahi_gem_paths.each do |tahi_gem_path|

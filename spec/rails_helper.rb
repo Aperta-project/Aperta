@@ -1,3 +1,5 @@
+require 'tahi_helper_methods'
+
 if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.start 'rails'

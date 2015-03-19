@@ -1,4 +1,4 @@
-require_relative '../../spec/support/helper_methods.rb'
+require 'tahi_helper_methods'
 require 'heroku_exporter'
 
 namespace :data do

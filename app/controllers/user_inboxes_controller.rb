@@ -19,7 +19,7 @@ class UserInboxesController < ApplicationController
   private
 
   def collapser
-    @collapser ||= Notifications::Collapser.new(user: current_user, event_names: user_inbox_params[:event_names])
+    @collapser ||= Notifications::Collapser.new(inbox: inbox, event_names: user_inbox_params[:event_names])
   end
 
   def inbox

@@ -7,7 +7,7 @@ describe Notifications::Collapser do
   context "two unread events with different event names" do
     let(:activity_1) { FactoryGirl.create(:activity, event_name: "paper::explosion") }
     let(:activity_2) { FactoryGirl.create(:activity, event_name: "paper::something_happened") }
-    let(:collapser) { Notifications::Collapser.new(user: user, event_names: ["paper::explosion", "paper::something_happened"]) }
+    let(:collapser) { Notifications::Collapser.new(inbox: inbox, event_names: ["paper::explosion", "paper::something_happened"]) }
 
     before { inbox.set([activity_1.id, activity_2.id]) }
 
@@ -34,7 +34,7 @@ describe Notifications::Collapser do
   context "two unread events with the same event name and target" do
     let(:activity_1) { FactoryGirl.create(:activity, event_name: "paper::explosion", created_at: 5.minutes.ago) }
     let(:activity_2) { FactoryGirl.create(:activity, target: activity_1.target, event_name: "paper::explosion", created_at: Time.now) }
-    let(:collapser) { Notifications::Collapser.new(user: user, event_names: ["paper::explosion"]) }
+    let(:collapser) { Notifications::Collapser.new(inbox: inbox, event_names: ["paper::explosion"]) }
 
     before { inbox.set([activity_1.id, activity_2.id]) }
 
@@ -60,7 +60,7 @@ describe Notifications::Collapser do
   context "two unread events with the same event name and different targets" do
     let(:activity_1) { FactoryGirl.create(:activity, event_name: "paper::explosion", created_at: 5.minutes.ago) }
     let(:activity_2) { FactoryGirl.create(:activity, event_name: "paper::explosion", created_at: Time.now) }
-    let(:collapser) { Notifications::Collapser.new(user: user, event_names: ["paper::explosion"]) }
+    let(:collapser) { Notifications::Collapser.new(inbox: inbox, event_names: ["paper::explosion"]) }
 
     before { inbox.set([activity_1.id, activity_2.id]) }
 

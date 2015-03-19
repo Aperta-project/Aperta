@@ -1,9 +1,9 @@
 module Notifications
   class Collapser
-    attr_reader :user, :event_names
+    attr_reader :inbox, :event_names
 
-    def initialize(user:, event_names:)
-      @user = user
+    def initialize(inbox:, event_names:)
+      @inbox = inbox
       @event_names = [event_names].flatten
     end
 
@@ -26,10 +26,6 @@ module Notifications
     # undissmissed activities for given event_names
     def unread_activities
       @activities ||= Activity.where(id: inbox.get).with_event_names(event_names)
-    end
-
-    def inbox
-      @inbox ||= Notifications::UserInbox.new(user.id)
     end
   end
 end

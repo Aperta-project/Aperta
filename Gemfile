@@ -13,8 +13,7 @@ gem 'plos_authors', path: 'engines/plos_authors'
 gem 'standard_tasks', path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript', path: 'engines/upload_manuscript'
-# gem 'initial_tech_check', path: 'engines/initial_tech_check'
-# gem 'changes_for_author', path: 'engines/changes_for_author'
+gem 'plos_bio_tech_check', path: '../plos_bio_tech_check'
 
 # Gems
 gem 'rails', '4.2.0'

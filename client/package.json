@@ -44,8 +44,8 @@
   },
   "ember-addon": {
     "paths": [
-      "lib/initial-tech-check",
-      "lib/changes-for-author"
+      "../engines/plos_authors/client",
+      "../../plos_bio_tech_check/client"
     ]
   }
 }

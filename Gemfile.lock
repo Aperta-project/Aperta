@@ -34,6 +34,12 @@ GIT
       activesupport (>= 4.1.0)
 
 PATH
+  remote: ../plos_bio_tech_check
+  specs:
+    plos_bio_tech_check (0.0.1)
+      rails (~> 4.2.0)
+
+PATH
   remote: engines/plos_authors
   specs:
     plos_authors (0.0.3)
@@ -501,6 +507,7 @@ DEPENDENCIES
   pdfkit
   pg
   plos_authors!
+  plos_bio_tech_check!
   progressbar
   pry-byebug
   pry-rails

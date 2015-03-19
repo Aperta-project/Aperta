@@ -80,7 +80,7 @@ feature "Manuscript Manager", js: true, selenium: true do
   end
 
   # Preventing a regression
-  scenario 'Opening an Invite Reviewers task' do
+  scenario 'Opening an Invite Reviewers task', flaky: true do
     task_manager_page = TaskManagerPage.visit paper
 
     within 'body' do

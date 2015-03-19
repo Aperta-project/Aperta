@@ -45,6 +45,19 @@ app.import('bower_components/jquery-ui/ui/sortable.js');
 // Select 2
 app.import('bower_components/select2/select2.js');
 
+// lodash
+app.import('bower_components/lodash/lodash.js');
+
+// bootstrap
+app.import('bower_components/bootstrap/dist/js/bootstrap.js');
+app.import('bower_components/bootstrap/dist/css/bootstrap.min.css');
+app.import('bower_components/bootstrap/dist/css/bootstrap-theme.min.css');
+app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot');
+app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg');
+app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf');
+app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff');
+app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2');
+
 if (app.env === 'production') {
   app.import('bower_components/event-source-polyfill/eventsource.js');
 } else {

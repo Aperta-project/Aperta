@@ -1,5 +1,3 @@
-.loader-component-circle { display: none; }
-
 @mixin size($width, $height) {
   width: $width;
   height: $height;
@@ -38,7 +36,7 @@
   -ms-flex-pack: center;
   justify-content: center;
 }
-.loader-component-circle--visible { 
+.loader-component-circle { 
   @include size(100%, 100%);
   @include flex-center;
   margin-top: 60px;
@@ -48,7 +46,7 @@
     @include size(30px, 30px);
     @include border-radius(100%);
     @include color-way($tahi-green-dark, $tahi-green-light);
-    position: abosolute;
+    position: absolute;
     content: '';
   }
 }

@@ -9,5 +9,11 @@
     top: 30%;
     right: 35%;
   }
+  .loader-component-circle {
+    &:after {
+      top: 22%;
+      right: 48%;
+    } 
+  }
 }
 

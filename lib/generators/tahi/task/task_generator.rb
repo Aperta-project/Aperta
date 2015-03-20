@@ -5,7 +5,6 @@ module Tahi
     argument :plugin, type: :string, required: true
 
     def generate
-      app_dir = File.join(engine_path, 'app')
       template 'model.rb', File.join(app_dir, 'models', plugin, "#{name}_task.rb")
       template 'serializer.rb', File.join(app_dir, 'serializers', plugin, "#{name}_task_serializer.rb")
       template 'policy.rb', File.join(app_dir, 'policies', plugin, "#{name}_tasks_policy.rb")
@@ -16,12 +15,16 @@ module Tahi
 
     private
 
+    def app_dir
+      app_dir = File.join(engine_path, 'app')
+    end
+
     def engine_path
       @engine_path ||= begin
-        spec = Bundler.load.specs.find { |s| s.name == plugin }
-        fail Exception, "Could not find gem '#{plugin}' in the current bundle." unless spec
-        spec.full_gem_path
-      end
+                         spec = Bundler.load.specs.detect { |s| s.name == plugin }
+                         raise Exception, "Could not find gem '#{plugin}' in the current bundle." unless spec
+                         spec.full_gem_path
+                       end
     end
   end
 end

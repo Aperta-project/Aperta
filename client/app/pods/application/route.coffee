@@ -28,16 +28,16 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
         @disconnectOutlet
           outlet: 'overlay'
           parentView: 'application'
-    
-    loading: (transition, originRoute) ->
-      # debugger
-      console.log 'transition: ', transition
-      console.log 'origin: ', originRoute
+
+    loading: ->
+      # double render "solution" is referenced here:
+      # https://github.com/emberjs/ember.js/pull/10431/files
+      @render()
       @render('overlays/loading',
         into: 'application'
         outlet: 'overlay'
-        controller: 'overlays/loading')
-      true
+        controller: 'overlays/loading'
+      )
 
     error: (response, transition, originRoute) ->
       oldState = transition.router.oldState

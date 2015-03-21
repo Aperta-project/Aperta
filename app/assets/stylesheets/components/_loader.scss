@@ -62,6 +62,6 @@
 }
 .white {
   &:after {
-    @include color-way($tahi-blue-light, $tahi-white);
+    @include color-way($tahi-grey-light, $tahi-white);
   }
 }

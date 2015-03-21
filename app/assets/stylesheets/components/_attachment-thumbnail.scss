@@ -207,9 +207,14 @@
   &:hover { min-height: 200px; }
 
   .progress-text {
-    margin-top: 15px;
+    margin-top: 100px;
   }
-
+  
+  .loader-component-circle {
+    &:after {
+      left: 45%;
+    }
+  }
 }
 
 // end attachment-thumbnail-image

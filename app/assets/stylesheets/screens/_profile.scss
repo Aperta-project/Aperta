@@ -45,8 +45,15 @@
   }
 }
 
+.profile-avatar-spinner {
+  .loader-component-circle {
+    &:after {
+      right: 40%;
+    }
+  }
+}
 
-.profile-avatar-spinner.spinning,
+.profile-avatar-spinner,
 #profile-avatar-hover {
   @include position(absolute, 0px 0px 0px 0px);
   border-radius: 5px;

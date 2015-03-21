@@ -14,10 +14,12 @@
     </div>
     {{partial "admin/journal/logo-upload"}}
     <span class="journal-logo-upload-note">(250px x 40px)</span>
-    <div class="journal-logo-spinner">
-      {{progress-loader visible=isUploading
-                        white=true}}
-    </div>
+    {{#if isUploading}}
+      <div class="journal-logo-spinner">
+        {{progress-loader visible=isUploading
+                          white=true}}
+      </div>
+    {{/if}}
   </div>
 
   <div {{bind-attr class=":form-group :required validationErrors.name:error"}}>

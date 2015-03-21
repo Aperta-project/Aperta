@@ -46,6 +46,12 @@
 
   .edit-icon   { right: 10px; }
   .remove-icon { right: 30px; cursor: pointer; }
+
+  .loader-component-circle {
+    &:after {
+      right: 44%;
+    }
+  }
 }
 
 .column.current-drop-target {

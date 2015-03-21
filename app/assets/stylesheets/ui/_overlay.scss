@@ -55,6 +55,14 @@
     margin-top: 0;
     padding-top: 0;
   }
+
+  .loader-component-circle {
+    margin-top: 0;
+
+    &:after {
+      right: 46%;
+    }
+  }
 }
 
 .overlay--fullscreen--green {

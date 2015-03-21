@@ -26,7 +26,7 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
     didTransition: ->
       @animateOverlayOut().then =>
         @disconnectOutlet
-          outlet: 'overlay'
+          outlet: 'loading-overlay'
           parentView: 'application'
 
     loading: ->
@@ -35,7 +35,7 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
       @render()
       @render('overlays/loading',
         into: 'application'
-        outlet: 'overlay'
+        outlet: 'loading-overlay'
         controller: 'overlays/loading'
       )
 

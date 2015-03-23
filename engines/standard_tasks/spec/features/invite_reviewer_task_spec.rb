@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Assigns Reviewer", js: true do
+feature "Invite Reviewer", js: true do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
@@ -20,7 +20,7 @@ feature "Assigns Reviewer", js: true do
     sign_in_page.sign_in user
   end
 
-  scenario "Editor can assign a reviewer to a paper" do
+  scenario "Editor can invite a reviewer to a paper" do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card task.title do |overlay|

@@ -1,14 +1,19 @@
 class InviteReviewersOverlay < CardOverlay
-  text_assertions :reviewer, '.reviewer-select2 .select2-search-choice'
+  text_assertions :reviewer, '.invitee-full-name'
   def paper_reviewers=(reviewers)
     reviewers.each do |reviewer|
       session.has_no_css?('#delayedSave', visible: false)
-      pick_from_select2_single(reviewer.username, reviewer.full_name, class: 'reviewer-select2')
+      pick_from_select2_single(reviewer.username, reviewer.email, class: 'reviewer-select2')
+      if find('.select2-chosen').text == reviewer.email
+        find('.invite-reviewer-button').click
+      else
+        raise 'Did not find any matching reviewers'
+      end
     end
   end
 
   def paper_reviewers
-    all('.reviewer-select2 .select2-search-choice').map &:text
+    all('.invitee-full-name').map &:text
   end
 
   def has_reviewers?(*reviewers)

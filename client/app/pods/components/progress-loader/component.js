@@ -23,4 +23,4 @@ export default Ember.Component.extend({
     'white:white', 
     'large:large'
   ]
-})
+});

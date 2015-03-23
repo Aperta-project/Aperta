@@ -34,15 +34,19 @@
     {{#question-radio
         ident="billing.pfa_question_1"
         task=model
-        question="Have you investigated if funding is available from you or your co-authors' institutions to pay the publication fee?"}}
+        question="Have you investigated if funding is available from your co-authors' institutions to pay the publication fee?"
+        yesLabel="Partial"
+        noLabel="None"}}
       {{#show-if-parent prop="selectedYes"}}
-        Please indicate the total amount that they can pay (in USD).
+        If your coauthors' institutions will provide partial funding
+        to publish the article, indicate the amount they will pay towards
+        your publication fee (in USD).
         {{question-input ident="billing.pfa_question_1b"
                          task=model
                          question='$'}}
       {{/show-if-parent}}
       {{#show-if-parent prop="selectedNo"}}
-        If your co-authors' institutions will not provide any funding to publish the article, please explain why.
+        If your co-authors' institutions will not provide any funding to publish the article, indicate why.
         {{question-textarea ident="billing.pfa_question_1a"
                             task=model}}
       {{/show-if-parent}}
@@ -52,7 +56,9 @@
     {{#question-radio
         ident="billing.pfa_question_2"
         task=model
-        question="Have you investigated if funding is available from your institution to pay the publication fee?"}}
+        question="Have you investigated if funding is available from your institution to pay the publication fee?"
+        yesLabel="Partial"
+        noLabel="None"}}
       {{#show-if-parent prop="selectedYes"}}
         If your institution will provide partial funding to publish the article, indicate the amount it will pay toward your publication fee (in USD).
         {{question-input ident="billing.pfa_question_2b"

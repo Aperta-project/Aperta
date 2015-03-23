@@ -1,4 +1,4 @@
-module <%= engine_class_name %>
+module <%= @plugin.camelize %>
   class <%= class_name %>TaskSerializer < ::TaskSerializer
   end
 end

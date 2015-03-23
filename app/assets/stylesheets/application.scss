@@ -3,24 +3,25 @@
  *= require chosen
 */
 
-@import 'bourbon';
-@import './bootstrap';
-@import 'variables';
-@import 'z-index';
-@import 'webfonts';
-@import 'mixins';
+@import "bourbon";
+@import "./bootstrap";
+@import "variables";
+@import "z-index";
+@import "webfonts";
+@import "mixins";
 
-@import 'animations/base';
-@import 'components/base';
-@import 'overlays/base';
-@import 'screens/base';
-@import 'ui/base';
+@import "animations/base";
+@import "components/base";
+@import "overlays/base";
+@import "screens/base";
+@import "ui/base";
 
-@import 'tahi';
+@import "tahi";
 
-@import 'engines/standard_tasks/application';
-@import 'engines/supporting_information/application';
-@import 'engines/upload_manuscript/application';
-@import 'engines/plos_authors/application';
+@import "engines/standard_tasks/application";
+@import "engines/supporting_information/application";
+@import "engines/upload_manuscript/application";
+@import "engines/plos_authors/application";
 
 // DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE
+@import "plos_bio_tech_check/application";

@@ -1,10 +1,7 @@
-require 'tahi_helper_methods'
 require 'heroku_exporter'
 
 namespace :data do
   namespace :load do
-    include TahiHelperMethods
-
     task setup: :environment do
       ["db:drop", "db:create", "db:schema:load"].each do |task|
         fail "This can only be run in the performance environment" unless Rails.env.performance?
@@ -190,4 +187,11 @@ namespace :data do
       end
     end
   end
+end
+
+def assign_journal_role(journal, user, type)
+  role = journal.roles.where(kind: type).first
+  role ||= FactoryGirl.create(:role, type, journal: journal)
+  UserRole.create!(user: user, role: role)
+  role
 end

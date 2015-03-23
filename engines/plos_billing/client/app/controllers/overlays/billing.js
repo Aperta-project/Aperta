@@ -52,7 +52,7 @@ export default TaskController.extend({
   journalName: "PLOS One",
   feeMessage: (function(){
     return "The fee for publishing in " + this.get("journalName") +
-      " is $" + this.get("pubFee")
+      " is $" + this.get("pubFee");
   }).property("journalName"),
   journals: [
     {

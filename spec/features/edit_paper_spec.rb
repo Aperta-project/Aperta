@@ -37,7 +37,7 @@ feature "Editing paper", js: true do
           overlay.mark_as_complete
         end
       end
-      expect(edit_paper).to_not have_css('a.button--disabled')
+      expect(edit_paper).to_not have_css('a.button--disabled', text: "Submit")
     end
   end
 

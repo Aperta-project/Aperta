@@ -39,15 +39,21 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
       transition.abort()
       @controllerFor('application').set 'isLoading', false
 
-    closeOverlay: ->
+    closeOverlay: (overlayType) ->
       @flash.clearAllMessages()
-      @animateOverlayOut().then =>
-        @disconnectOutlet
-          outlet: 'overlay'
-          parentView: 'application'
+      if overlayType is 'message'
+        @animateOverlaySlideOut().then =>
+          @disconnectOutlet
+            outlet: 'overlay'
+            parentView: 'application'
+      else
+        @animateOverlayFadeOut().then =>
+          @disconnectOutlet
+            outlet: 'overlay'
+            parentView: 'application'
 
     closeAction: ->
-      @send('closeOverlay')
+      @send('closeOverlay', arguments...)
 
     addPaperToEventStream: (paper) ->
       @eventStream.addEventListener(paper.get('eventName'))

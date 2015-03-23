@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 
 AnimateElement = Ember.Mixin.create
-  out: (selector, speed) ->
+  fadeOut: (selector, speed) ->
     defer = new Ember.RSVP.defer()
     $(selector).removeClass('animation-fade-in').addClass('animation-fade-out')
 
@@ -12,7 +12,7 @@ AnimateElement = Ember.Mixin.create
 
     defer.promise
 
-  in: (selector, speed) ->
+  fadeIn: (selector, speed) ->
     defer = new Ember.RSVP.defer()
     $(selector).addClass('animation-fade-in')
 
@@ -23,7 +23,32 @@ AnimateElement = Ember.Mixin.create
 
     defer.promise
 
-  animateOverlayIn: -> @in '.overlay', 330
-  animateOverlayOut: -> @out '.overlay', 230
+  slideIn: (selector, speed) ->
+    defer = new Ember.RSVP.defer()
+    $(selector).addClass('animation-slide-in')
+
+    Ember.run.later defer, (->
+      defer.resolve()
+      return
+    ), speed
+
+    defer.promise
+
+  slideOut: (selector, speed) ->
+    defer = new Ember.RSVP.defer()
+    $(selector).addClass('animation-slide-out')
+
+    Ember.run.later defer, (->
+      defer.resolve()
+      return
+    ), speed
+
+    defer.promise
+    
+  animateOverlayFadeIn: -> @fadeIn '.overlay', 330
+  animateOverlayFadeOut: -> @fadeOut '.overlay', 230
+
+  animateOverlaySlideIn: -> @slideIn '.overlay', 330
+  animateOverlaySlideOut: -> @slideOut '.overlay', 230
 
 `export default AnimateElement`

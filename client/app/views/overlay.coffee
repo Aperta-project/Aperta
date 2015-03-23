@@ -3,7 +3,11 @@
 
 OverlayView = Ember.View.extend AnimateElement,
   animateIn: (->
-    Ember.run.scheduleOnce('afterRender', this, @animateOverlayIn)
+    if @renderedName is 'overlays.messaging'
+      animateAction = @animateOverlaySlideIn
+    else
+      animateAction = @animateOverlayFadeIn
+    Ember.run.scheduleOnce('afterRender', this, animateAction)
   ).on('didInsertElement')
 
   setupKeyup: (->

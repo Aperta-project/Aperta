@@ -4,7 +4,7 @@ Tahi::Application.routes.draw do
   mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
   mount PlosBioTechCheck::Engine => '/'
-  mount Billing::Engine => '/'
+  mount PlosBilling::Engine => '/'
 
   require 'sidekiq/web'
   authenticate :user, ->(u) { u.site_admin? } do

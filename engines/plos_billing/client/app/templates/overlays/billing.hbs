@@ -6,14 +6,14 @@
   <div class="form-group form-inline author-top">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.firstName:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.first_name"
+      {{question-input ident="plos_billing.first_name"
                        task=model
                        question='First Name'}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.lastName:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.last_name"
+      {{question-input ident="plos_billing.last_name"
                        task=model
                        question='Last Name'}}
     </div>
@@ -21,14 +21,14 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.title:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.title"
+      {{question-input ident="plos_billing.title"
                        task=model
                        question='Title'}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.department"
+      {{question-input ident="plos_billing.department"
                        task=model
                        question='Department'}}
     </div>
@@ -36,7 +36,7 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.affiliation:error"}}>
       {{error-message message=null}}
-      {{question-select ident="billing.affiliation1"
+      {{question-select ident="plos_billing.affiliation1"
                         task=model
                         question="Affiliation"
                         class="affiliation-field"
@@ -45,7 +45,7 @@
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.secondaryAffiliation:error"}}>
       {{error-message message=null}}
-      {{question-select ident="billing.affiliation2"
+      {{question-select ident="plos_billing.affiliation2"
                         task=model
                         question="Secondary Affiliation"
                         class="secondary-affiliation-field"
@@ -55,14 +55,14 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.email:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.phone_number"
+      {{question-input ident="plos_billing.phone_number"
                        task=model
                        question="Phone"}}
 
     </div>
     <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.email:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.email_address"
+      {{question-input ident="plos_billing.email_address"
                        task=model
                        question="Email"}}
 
@@ -74,7 +74,7 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{question-select ident="billing.country"
+      {{question-select ident="plos_billing.country"
                         task=model
                         question="Please select your Country"
                         source=countries}}
@@ -83,7 +83,7 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":required validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.address1"
+      {{question-input ident="plos_billing.address1"
                        task=model
                        question="Address line one"}}
     </div>
@@ -91,7 +91,7 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":required validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.address2"
+      {{question-input ident="plos_billing.address2"
                        task=model
                        question="Address line two"}}
     </div>
@@ -99,20 +99,20 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.city"
+      {{question-input ident="plos_billing.city"
                        task=model
                        question="City"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-name :author-bump validationErrors.department:error"}}>
-      {{question-select ident="billing.state"
+      {{question-select ident="plos_billing.state"
                         task=model
                         question="Select State"
                         source=states}}
     </div>
     <div {{bind-attr class=":required :form-group :author-name validationErrors.department:error"}}>
       {{error-message message=null}}
-      {{question-input ident="billing.postal_code"
+      {{question-input ident="plos_billing.postal_code"
                        task=model
                        question="Postal Code"}}
     </div>
@@ -135,7 +135,7 @@
 
     <div {{bind-attr class=":form-group :author-half :author-bump :required :payment-method validationErrors.affiliation:error"}}>
       {{error-message message=null}}
-      {{question-select ident="billing.payment_method"
+      {{question-select ident="plos_billing.payment_method"
                         task=model
                         question="Select One"
                         class="affiliation-field"

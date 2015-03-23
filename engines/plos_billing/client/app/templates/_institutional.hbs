@@ -25,7 +25,7 @@
 
   <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.affiliation:error"}}>
     {{error-message message=null}}
-    {{question-select ident="billing.selected_ringgold"
+    {{question-select ident="plos_billing.selected_ringgold"
                       task=model
                       question="Select an Institution"
                       source=ringgold}}

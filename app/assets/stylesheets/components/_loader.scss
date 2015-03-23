@@ -13,12 +13,14 @@
   -moz-border-radius: $radius;
   border-radius: $radius;
 }
+
 @mixin color-way($dark, $light) {
   border-top: 2px solid $dark;
   border-bottom: 2px solid $light;
   border-left: 2px solid $dark;
   border-right: 2px solid $light;
 }
+
 @mixin flex-center() {
   display: -webkit-box;
   display: -webkit-flex;
@@ -36,6 +38,7 @@
   -ms-flex-pack: center;
   justify-content: center;
 }
+
 .loader-component-circle { 
   @include size(100%, 100%);
   @include flex-center;
@@ -46,20 +49,23 @@
     @include size(30px, 30px);
     @include border-radius(100%);
     @include color-way($tahi-green-dark, $tahi-green-light);
-    position: absolute;
     content: '';
+    position: absolute;
   }
 }
+
 .large {
   &:after {
     @include size(50px, 50px);
   }
 }
+
 .blue {
   &:after {
     @include color-way($tahi-blue-dark, $tahi-blue-light);
   }
 }
+
 .white {
   &:after {
     @include color-way($tahi-grey-light, $tahi-white);

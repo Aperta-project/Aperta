@@ -22,10 +22,22 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
           return
 
       appController.send 'hideNavigation'
-      appController.set 'isLoading', true
 
     didTransition: ->
-      @controllerFor('application').set 'isLoading', false
+      @animateOverlayOut().then =>
+        @disconnectOutlet
+          outlet: 'loading-overlay'
+          parentView: 'application'
+
+    loading: ->
+      # double render "solution" is referenced here:
+      # https://github.com/emberjs/ember.js/pull/10431/files
+      @render()
+      @render('overlays/loading',
+        into: 'application'
+        outlet: 'loading-overlay'
+        controller: 'overlays/loading'
+      )
 
     error: (response, transition, originRoute) ->
       oldState = transition.router.oldState

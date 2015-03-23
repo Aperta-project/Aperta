@@ -2,10 +2,10 @@
   <header class="overlay-title-text animation-fade-in">
     <h1 class="feedback-overlay-thanks">Recent Activity</h1>
   </header>
-
-  {{progress-spinner visible=isLoading
-                     size="large"}}
-
+  {{#if isLoading}}
+    {{progress-loader visible=true
+                      large=true}}
+  {{/if}}
   <table>
     {{#each feed in model}}
       <tr>

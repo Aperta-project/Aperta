@@ -1,7 +1,9 @@
 .progress {
-  @extend .progress-striped, .active;
-
+  margin-top: 40px;
+  height: 40px;
+  position: relative;
+  width: 100%;
   .progress-bar {
-    @include progress-bar-variant($tahi-green);
+    background-color: $tahi-green;
   }
 }

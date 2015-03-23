@@ -206,11 +206,14 @@
 
   &:hover { min-height: 200px; }
 
-  .glyphicon {
-    @include position(absolute, 50% auto auto 50%);
-    margin: -22px 0 0 -20px;
-    color: $tahi-green-dark;
-    font-size: 48px;
+  .progress-text {
+    margin-top: 100px;
+  }
+  
+  .loader-component-circle {
+    &:after {
+      left: 45%;
+    }
   }
 }
 

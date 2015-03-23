@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 
 UploadPreviewComponent = Ember.Component.extend
-  classNameBindings: [':upload-preview', ':_uploading', 'error:alert']
+  classNameBindings: [':_uploading', 'error:alert']
   file: Ember.computed.alias('upload.file')
   filename: Ember.computed.alias('file.name')
 

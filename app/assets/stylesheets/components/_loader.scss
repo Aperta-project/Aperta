@@ -1,0 +1,73 @@
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin display($position) {
+  display: block;
+  position: $position;
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin color-way($dark, $light) {
+  border-top: 2px solid $dark;
+  border-bottom: 2px solid $light;
+  border-left: 2px solid $dark;
+  border-right: 2px solid $light;
+}
+
+@mixin flex-center() {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.loader-component-circle { 
+  @include size(100%, 100%);
+  @include flex-center;
+  margin-top: 60px;
+
+  &:after {
+    @include animation(rotate 2s linear infinite);
+    @include size(30px, 30px);
+    @include border-radius(100%);
+    @include color-way($tahi-green-dark, $tahi-green-light);
+    content: '';
+    position: absolute;
+  }
+}
+
+.large {
+  &:after {
+    @include size(50px, 50px);
+  }
+}
+
+.blue {
+  &:after {
+    @include color-way($tahi-blue-dark, $tahi-blue-light);
+  }
+}
+
+.white {
+  &:after {
+    @include color-way($tahi-grey-light, $tahi-white);
+  }
+}

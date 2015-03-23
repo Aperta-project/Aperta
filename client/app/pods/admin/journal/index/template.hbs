@@ -101,13 +101,15 @@
 
   <div class="admin-section">
     <h2 class="admin-section-title">Style Settings</h2>
-
-    {{progress-spinner visible=epubCoverUploading
-                       color="blue"}}
-
     <div class="admin-style-setting-section">
 
       <span class="epub-cover-upload">
+        {{#if epubCoverUploading}}
+          <div class="loader-container">
+            {{progress-loader visible=epubCoverUploading
+                              white=true}}
+          </div>
+        {{/if}}
         <span class="button-primary button--blue fileinput-button">
           Upload ePub Cover
           {{file-uploader id="epub-cover-upload"

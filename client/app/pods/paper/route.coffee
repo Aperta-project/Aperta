@@ -33,6 +33,21 @@ PaperRoute = Ember.Route.extend
       @_super(model, params)
 
   actions:
+    addContributors: ->
+      paper = @modelFor('paper')
+      collaborations = paper.get('collaborations') || []
+      controller = @controllerFor('overlays/showCollaborators')
+      controller.setProperties
+        paper: paper
+        collaborations: collaborations
+        initialCollaborations: collaborations.slice()
+        allUsers: @store.find('user')
+
+      @render('overlays/showCollaborators',
+        into: 'application'
+        outlet: 'overlay'
+        controller: controller)
+
     showActivityFeed: (name) ->
       paper = @modelFor('paper')
       controller = @controllerFor 'overlays/activityFeed'

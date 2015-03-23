@@ -47,6 +47,12 @@ PATH
       rails (~> 4.2.0)
 
 PATH
+  remote: engines/plos_billing
+  specs:
+    plos_billing (0.0.1)
+      rails (~> 4.2.0)
+
+PATH
   remote: engines/standard_tasks
   specs:
     standard_tasks (0.0.1)
@@ -508,6 +514,7 @@ DEPENDENCIES
   pdfkit
   pg
   plos_authors!
+  plos_billing!
   plos_bio_tech_check!
   progressbar
   pry-byebug

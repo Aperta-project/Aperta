@@ -41,6 +41,7 @@
   "ember-addon": {
     "paths": [
       "../engines/plos_authors/client",
+      "../engines/plos_billing/client",
       "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/plos_bio_tech_check-6b0487ab978a/client"
     ]
   }

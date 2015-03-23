@@ -1,0 +1,104 @@
+{{#if specialCollection}}
+  <div>
+    <h3>
+      Invitation to a Special Collection
+    </h3>
+
+    <h5>
+      Author confirmation
+    </h5>
+
+    <p>
+      To provide Open Access, PLOS uses a business model to
+      offset expenses - including those of peer review management,
+      journal production and online hosting and archiving -
+      by charging a publication fee to the authors, institutions
+      or funders for each article published.
+    </p>
+
+    <p>
+      Submissions to Special Collections are by invitation only
+      and are subject to
+      <a href="#">specific terms and charges</a>.
+    </p>
+
+    <p>
+      If you have not received and read the
+      PLOS Colletions Terms of Submission,
+      or have not received specific submission instructions
+      directing you to select this option,
+      please contact
+      <a href="mailto:collections@plos.org">colletions@plos.org</a>
+      before proceeding.
+    </p>
+
+    <p>
+      Papers submitted for potential inclusion in a PLOS Special
+      Collection are not eligible for the PLOS Publication Fee
+      Assistance (PFA) Program.
+    </p>
+
+    <p>
+      All papers that are submitted for inclusion in a Special
+      Collection will be charged the Article Processing Charge
+      of the relevant journal of publication plus a Collection
+      Surcharge on publication:
+    </p>
+
+    <table border="1">
+      <tr>
+        <th>
+          Journal
+        </th>
+        <th>
+          Article Processing Charge
+        </th>
+        <th>
+          Collection Surcharge
+        </th>
+        <th>
+          Total
+        </th>
+      </tr>
+      {{#each journal in journals}}
+      <tr>
+        <td>
+          {{journal.name}}
+        </td>
+        <td>
+          ${{journal.price}} USD
+        </td>
+        <td>
+          ${{journal.collectionSurcharge}} USD
+        </td>
+        <td>
+          ${{journal.totalPrice}} USD
+        </td>
+      </tr>
+      {{/each}}
+
+    </table>
+
+    <p>
+      You or the collection funder will receive an invoice
+      detailing the charge and payment terms
+      if your paper is accepted for publication.
+    </p>
+
+    <p>
+      By checking the box below, you are acknowledging
+      that you have read and agree to the following statement:
+    </p>
+
+    <hr>
+
+    <p>
+      {{question-check ident="plos_billing.agree_collections"
+                       task=model}}
+      I have read and agree to the
+      <a href="#">
+        Terms of Submission to PLOS Collections
+      </a>
+    </p>
+  </div>
+{{/if}}

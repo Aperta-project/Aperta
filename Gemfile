@@ -14,6 +14,7 @@ gem 'standard_tasks', path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
 gem 'upload_manuscript', path: 'engines/upload_manuscript'
 gem 'plos_bio_tech_check', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check"
+gem 'plos_billing', path: 'engines/plos_billing'
 
 # Gems
 gem 'rails', '4.2.0'

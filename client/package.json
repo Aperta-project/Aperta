@@ -7,9 +7,6 @@
     "doc": "doc",
     "test": "tests"
   },
-  "scripts": {
-    "postinstall": "bower install"
-  },
   "repository": "",
   "engines": {
     "node": ">= 0.10.0"

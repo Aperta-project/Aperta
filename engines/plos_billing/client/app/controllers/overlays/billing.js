@@ -1,5 +1,5 @@
-import Ember from 'ember';
-import TaskController from 'tahi/pods/task/controller';
+import Ember from "ember";
+import TaskController from "tahi/pods/task/controller";
 
 export default TaskController.extend({
   ringgold: [
@@ -46,86 +46,86 @@ export default TaskController.extend({
     {id: 2, text: "NY"},
     {id: 3, text: "WA"}
   ],
-  inviteCode: '',
-  endingComments: '',
+  inviteCode: "",
+  endingComments: "",
   pubFee: 123.00,
-  journalName: 'PLOS One',
+  journalName: "PLOS One",
   feeMessage: (function(){
     return "The fee for publishing in " + this.get("journalName") +
       " is $" + this.get("pubFee")
   }).property("journalName"),
   journals: [
     {
-      name: 'PLOS Biology',
+      name: "PLOS Biology",
       price: 2900,
       collectionSurcharge: 1000,
       totalPrice: 3900
     },
     {
-      name: 'PLOS Medicine',
+      name: "PLOS Medicine",
       price: 2900,
       collectionSurcharge: 1000,
       totalPrice: 3900
     },
     {
-      name: 'PLOS Computational Biology',
+      name: "PLOS Computational Biology",
       price: 2250,
       collectionSurcharge: 750,
       totalPrice: 3000
     },
     {
-      name: 'PLOS Genetics',
+      name: "PLOS Genetics",
       price: 2250,
       collectionSurcharge: 750,
       totalPrice: 3000
     },
     {
-      name: 'PLOS Neglected Tropical Diseases',
+      name: "PLOS Neglected Tropical Diseases",
       price: 2250,
       collectionSurcharge: 750,
       totalPrice: 3000
     },
     {
-      name: 'PLOS Pathogens',
+      name: "PLOS Pathogens",
       price: 2250,
       collectionSurcharge: 750,
       totalPrice: 3000
     },
     {
-      name: 'PLOS ONE',
+      name: "PLOS ONE",
       price: 1350,
       collectionSurcharge: 500,
       totalPrice: 1850
     },
   ],
   responses: [
-    {id: 'self_payment', text: "I will pay the full fee upon article acceptance"},
-    {id: 'institutional', text: "Institutional Account Program"},
-    {id: 'gpi', text: "PLOS Global Participation Initiative (GPI)"},
-    {id: 'pfa', text: "PLOS Publication Fee Assistance Program (PFA)"},
-    {id: 'special_collection', text: "I have been invited to submit to a Special Collection"}
+    {id: "self_payment", text: "I will pay the full fee upon article acceptance"},
+    {id: "institutional", text: "Institutional Account Program"},
+    {id: "gpi", text: "PLOS Global Participation Initiative (GPI)"},
+    {id: "pfa", text: "PLOS Publication Fee Assistance Program (PFA)"},
+    {id: "special_collection", text: "I have been invited to submit to a Special Collection"}
   ],
   selectedRinggold: null,
   selectedPaymentMethod: null,
   selfPayment: function() {
-    return this.get('selectedPaymentMethod') === 'self_payment';
+    return this.get("selectedPaymentMethod") === "self_payment";
   }.property("selectedPaymentMethod"),
   institutional: function() {
-    return this.get('selectedPaymentMethod') === 'institutional';
+    return this.get("selectedPaymentMethod") === "institutional";
   }.property("selectedPaymentMethod"),
   gpi: function() {
-    return this.get('selectedPaymentMethod') === 'gpi';
+    return this.get("selectedPaymentMethod") === "gpi";
   }.property("selectedPaymentMethod"),
   pfa: function() {
-    return this.get('selectedPaymentMethod') === 'pfa';
+    return this.get("selectedPaymentMethod") === "pfa";
   }.property("selectedPaymentMethod"),
   specialCollection: function() {
-    return this.get('selectedPaymentMethod') === 'special_collection';
+    return this.get("selectedPaymentMethod") === "special_collection";
   }.property("selectedPaymentMethod"),
   agreeCollections: false,
   actions: {
     paymentMethodSelected: function (selection) {
-      this.set('selectedPaymentMethod', selection.id);
+      this.set("selectedPaymentMethod", selection.id);
     }
   }
 });

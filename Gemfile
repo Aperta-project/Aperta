@@ -12,7 +12,7 @@ end
 gem 'plos_authors', path: 'engines/plos_authors'
 gem 'standard_tasks', path: 'engines/standard_tasks'
 gem 'supporting_information', path: 'engines/supporting_information'
-gem 'upload_manuscript', path: 'engines/upload_manuscript'
+gem 'tahi_upload_manuscript', path: 'engines/tahi_upload_manuscript'
 gem 'plos_bio_tech_check', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check"
 gem 'plos_billing', path: 'engines/plos_billing'
 

@@ -54,13 +54,22 @@
   }
 }
 
+@include keyframes(rotate) {
+  0% {
+    transform: rotateZ(-360deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}
+
 .large {
   &:after {
     @include size(50px, 50px);
   }
 }
 
-.blue {
+.admin {
   &:after {
     @include color-way($tahi-blue-dark, $tahi-blue-light);
   }

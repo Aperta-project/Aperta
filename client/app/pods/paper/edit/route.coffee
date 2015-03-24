@@ -60,21 +60,6 @@ PaperEditRoute = AuthorizedRoute.extend
     stopEditing: ->
       @endHeartbeat()
 
-    addContributors: ->
-      paper = @modelFor('paper')
-      collaborations = paper.get('collaborations') || []
-      controller = @controllerFor('overlays/showCollaborators')
-      controller.setProperties
-        paper: paper
-        collaborations: collaborations
-        initialCollaborations: collaborations.slice()
-        allUsers: @store.find('user')
-
-      @render('overlays/showCollaborators',
-        into: 'application'
-        outlet: 'overlay'
-        controller: controller)
-
     showConfirmSubmitOverlay: ->
       @render 'overlays/paperSubmit',
         into: 'application',

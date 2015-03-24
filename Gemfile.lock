@@ -24,15 +24,6 @@ GIT
       rails (~> 4.2.0)
 
 GIT
-  remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi_epub
-  revision: 6df8cbc6ed8c46bc5ee9ece707216b1af40b94ea
-  specs:
-    tahi_epub (0.0.3)
-      activesupport (~> 4.1)
-      fog (~> 1.24)
-      rubyzip (~> 1.1)
-
-GIT
   remote: https://github.com/rails/activemodel-globalid
   revision: 189c69988b0208d6d4760ae823043b94a84f0814
   specs:
@@ -540,7 +531,6 @@ DEPENDENCIES
   sinatra
   standard_tasks!
   supporting_information!
-  tahi_epub!
   textacular
   thin
   timecop

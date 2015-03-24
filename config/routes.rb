@@ -1,5 +1,5 @@
 Tahi::Application.routes.draw do
-  mount StandardTasks::Engine => '/', as: 'standard_tasks'
+  mount TahiStandardTasks::Engine => '/', as: 'standard_tasks'
   mount SupportingInformation::Engine => '/', as: 'supporting_information'
   mount PlosAuthors::Engine => '/', as: 'plos_custom_authors'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###

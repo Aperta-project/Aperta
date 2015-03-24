@@ -53,15 +53,15 @@ PATH
       rails (~> 4.2.0)
 
 PATH
-  remote: engines/standard_tasks
-  specs:
-    standard_tasks (0.0.1)
-      rails (~> 4.2.0)
-
-PATH
   remote: engines/supporting_information
   specs:
     supporting_information (0.0.1)
+      rails (~> 4.2.0)
+
+PATH
+  remote: engines/tahi_standard_tasks
+  specs:
+    tahi_standard_tasks (0.0.1)
       rails (~> 4.2.0)
 
 PATH
@@ -537,10 +537,10 @@ DEPENDENCIES
   sidekiq
   simplecov
   sinatra
-  standard_tasks!
   supporting_information!
   tahi_epub!
   tahi_upload_manuscript!
+  tahi_standard_tasks!
   textacular
   thin
   timecop

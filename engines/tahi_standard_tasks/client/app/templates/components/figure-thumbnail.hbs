@@ -24,8 +24,11 @@
     </div>
   {{else}}
     <div class="attachment-thumbnail-image attachment-thumbnail-image-placeholder">
-      {{progress-spinner visible=true color="white"}}
-      <span class="glyphicon glyphicon-file"></span>
+      {{progress-loader visible=true}}
+      <div class="progress-text">
+        <h3>Figure Processing</h3>
+        <h4>but you can continue working!</h4>
+      </div>
     </div>
   {{/if}}
   <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original file" {{bind-attr href=attachment.src}} >{{attachment.filename}}</a>

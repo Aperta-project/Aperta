@@ -22,7 +22,7 @@ module StandardTasks
 
       mail({
         to: invitation.email,
-        subject: 'test'
+        subject: 'Your invitation to be a reviewer has been recinded'
       })
     end
   end

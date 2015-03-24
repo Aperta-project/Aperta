@@ -1,0 +1,8 @@
+`import DS from 'ember-data'`
+`import Task from 'tahi/models/task'`
+
+PaperEditorTask = Task.extend
+  editor: DS.belongsTo('user')
+  invitation: DS.belongsTo('invitation')
+
+`export default PaperEditorTask`

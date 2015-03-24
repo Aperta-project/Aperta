@@ -3,20 +3,15 @@ import TaskController from 'tahi/pods/task/controller';
 
 export default TaskController.extend({
   newAuthorFormVisible: false,
-  allAuthors: [],
-
-  _setAllAuthors: (function() {
-    return this.set('allAuthors', this.store.all('plosAuthor'));
-  }).on('init'),
 
   authors: (function() {
-    return this.get('allAuthors').filterBy('paper', this.get('paper'));
-  }).property('allAuthors.@each.paper'),
+    return this.get('model.plosAuthors').filterBy('paper', this.get('paper'));
+  }).property('model.plosAuthors.@each.paper'),
 
   authorSort: ['position:asc'],
-  sortedAuthors: Ember.computed.sort('allAuthors', 'authorSort'),
+  sortedAuthors: Ember.computed.sort('model.plosAuthors', 'authorSort'),
   fetchAffiliations: function() {
-    var self = this;
+    let self = this;
 
     Ember.$.getJSON('/affiliations', function(data) {
       self.set('model.institutions', data.institutions);

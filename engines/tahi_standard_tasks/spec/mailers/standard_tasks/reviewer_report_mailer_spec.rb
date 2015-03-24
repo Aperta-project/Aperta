@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe StandardTasks::ReviewerReportMailer do
+describe TahiStandardTasks::ReviewerReportMailer do
   describe ".notify_editor_email" do
     let(:paper) {
       FactoryGirl.create(:paper,
@@ -12,7 +12,7 @@ describe StandardTasks::ReviewerReportMailer do
       FactoryGirl.create(:task,
                          title: "Reviewer Report",
                          role: 'reviewer',
-                         type: "StandardTasks::ReviewerReportTask",
+                         type: "TahiStandardTasks::ReviewerReportTask",
                          completed: true)
     }
 

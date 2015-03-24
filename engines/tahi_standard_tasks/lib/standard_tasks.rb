@@ -1,4 +1,4 @@
-require "standard_tasks/engine"
+require "tahi_standard_tasks/engine"
 
-module StandardTasks
+module TahiStandardTasks
 end

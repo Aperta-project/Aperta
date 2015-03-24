@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-describe StandardTasks::FundersController do
-  routes { StandardTasks::Engine.routes }
+describe TahiStandardTasks::FundersController do
+  routes { TahiStandardTasks::Engine.routes }
   expect_policy_enforcement
 
   let(:user) { FactoryGirl.create(:user, :site_admin) }
-  let(:task) { FactoryGirl.create(:task, type: "StandardTasks::FinancialDisclosureTask") }
-  let!(:funder) { StandardTasks::Funder.create!(name: "Starfleet", task_id: task.id) }
+  let(:task) { FactoryGirl.create(:task, type: "TahiStandardTasks::FinancialDisclosureTask") }
+  let!(:funder) { TahiStandardTasks::Funder.create!(name: "Starfleet", task_id: task.id) }
 
   before do
     sign_in user
@@ -16,7 +16,7 @@ describe StandardTasks::FundersController do
     it "creates a funder" do
       expect do
         post :create, format: :json, funder: { task_id: task.id, name: "Batelle" }
-      end.to change { StandardTasks::Funder.count }.by(1)
+      end.to change { TahiStandardTasks::Funder.count }.by(1)
       expect(response).to be_success
     end
   end
@@ -33,7 +33,7 @@ describe StandardTasks::FundersController do
     it "eliminates the funder" do
       expect do
         delete :destroy, format: :json, id: funder.id
-      end.to change { StandardTasks::Funder.count }.by(-1)
+      end.to change { TahiStandardTasks::Funder.count }.by(-1)
       expect(response).to be_success
     end
   end

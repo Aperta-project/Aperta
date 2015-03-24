@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class PaperReviewerMailer < ActionMailer::Base
     include Rails.application.routes.url_helpers
 

@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class PaperEditorTask < Task
     register_task default_title: "Assign Editor", default_role: "admin"
 

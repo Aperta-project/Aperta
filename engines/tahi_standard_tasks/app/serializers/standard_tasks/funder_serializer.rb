@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class FunderSerializer < ActiveModel::Serializer
     attributes :id, :name, :grant_number, :website,
                :funder_had_influence, :funder_influence_description

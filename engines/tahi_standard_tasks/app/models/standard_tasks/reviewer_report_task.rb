@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class ReviewerReportTask < Task
     def self.permitted_attributes
       super + [{ paper_review_attributes: [:body, :id] }]

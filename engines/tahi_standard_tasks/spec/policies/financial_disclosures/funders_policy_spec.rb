@@ -16,11 +16,11 @@ shared_examples_for "person who cannot manage funders" do
   end
 end
 
-describe StandardTasks::FundersPolicy do
-  let(:policy) { StandardTasks::FundersPolicy.new(current_user: user, funder: funder) }
+describe TahiStandardTasks::FundersPolicy do
+  let(:policy) { TahiStandardTasks::FundersPolicy.new(current_user: user, funder: funder) }
   let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
   let(:task) { paper.phases.first.tasks.first }
-  let(:funder) { StandardTasks::Funder.new(task: task) }
+  let(:funder) { TahiStandardTasks::Funder.new(task: task) }
 
   context "A super admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }

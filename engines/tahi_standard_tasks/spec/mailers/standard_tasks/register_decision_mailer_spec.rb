@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe StandardTasks::RegisterDecisionMailer do
+describe TahiStandardTasks::RegisterDecisionMailer do
 
   let(:paper) {
     FactoryGirl.create(:paper,
@@ -13,7 +13,7 @@ describe StandardTasks::RegisterDecisionMailer do
     FactoryGirl.create(:task,
                        title: "Register Decision Report",
                        role: 'reviewer',
-                       type: "StandardTasks::RegisterDecisionTask",
+                       type: "TahiStandardTasks::RegisterDecisionTask",
                        paper: paper,
                        completed: true)
   }

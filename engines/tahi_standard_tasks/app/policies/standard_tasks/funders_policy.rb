@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class FundersPolicy < ::ApplicationPolicy
     require_params :funder
 

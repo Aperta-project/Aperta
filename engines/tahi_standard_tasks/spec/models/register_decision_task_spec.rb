@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-describe StandardTasks::RegisterDecisionTask do
+describe TahiStandardTasks::RegisterDecisionTask do
   let!(:paper) do
     FactoryGirl.create :paper, :with_tasks, title: "Crazy stubbing tests on rats"
   end
-  let!(:task) { StandardTasks::RegisterDecisionTask.create!(title: "Register Decision", role: "editor", phase: paper.phases.first) }
+  let!(:task) { TahiStandardTasks::RegisterDecisionTask.create!(title: "Register Decision", role: "editor", phase: paper.phases.first) }
 
   context "letters" do
     before do
@@ -89,7 +89,7 @@ describe StandardTasks::RegisterDecisionTask do
     }
 
     let(:task) {
-      StandardTasks::RegisterDecisionTask.create(
+      TahiStandardTasks::RegisterDecisionTask.create(
         title: "Register Decision",
         role: "editor",
         phase: paper.phases.first)
@@ -128,7 +128,7 @@ describe StandardTasks::RegisterDecisionTask do
     describe "#send_emails" do
       context "if the task transitions to completed" do
         it "sends emails to the paper's author" do
-          allow(StandardTasks::RegisterDecisionMailer).to receive_message_chain("delay.notify_author_email") { true }
+          allow(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain("delay.notify_author_email") { true }
           task.completed = true
           task.save!
           expect(task.send_emails).to eq true
@@ -137,7 +137,7 @@ describe StandardTasks::RegisterDecisionTask do
 
       context "if the task is updated but not completed" do
         it "does not send emails" do
-          StandardTasks::ReviewerReportMailer = double(:reviewer_report_mailer)
+          TahiStandardTasks::ReviewerReportMailer = double(:reviewer_report_mailer)
           task.completed = false # or any other update
           task.save!
           expect(task.send_emails).to eq nil

@@ -27,7 +27,7 @@ After
 Changes in root app
 -------------------
 - In `phase.rb`, change the task name for task creation command under #initialize_defaults
-  - Example: changing `FooTask.new` to `StandardTasks::FooTask.new`
+  - Example: changing `FooTask.new` to `TahiStandardTasks::FooTask.new`
 - Define a method "active_model_serializer" on the model to return the corresponding Serializer
 
 Specs

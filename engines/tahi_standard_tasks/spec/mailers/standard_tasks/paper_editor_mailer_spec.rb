@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe StandardTasks::PaperEditorMailer do
+describe TahiStandardTasks::PaperEditorMailer do
 
   let(:invitation) { FactoryGirl.create(:invitation) }
 

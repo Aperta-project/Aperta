@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class TechCheckTask < Task
     register_task default_title: 'Tech Check', default_role: 'admin'
 

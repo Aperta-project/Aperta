@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe StandardTasks::FigureTask do
+describe TahiStandardTasks::FigureTask do
   describe "#figure_access_details" do
     let(:paper) { FactoryGirl.create(:paper) }
     let!(:task) { FactoryGirl.create(:figure_task, paper: paper) }

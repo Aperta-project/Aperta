@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class PaperAdminResponder < ::UpdateResponders::Task
 
     private

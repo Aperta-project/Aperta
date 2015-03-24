@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class PaperReviewerTask < ::Task
     def self.permitted_attributes
       super + [{ reviewer_ids: [] }]
@@ -38,7 +38,7 @@ module StandardTasks
     end
 
     def update_responder
-      StandardTasks::UpdateResponders::PaperReviewerTask
+      TahiStandardTasks::UpdateResponders::PaperReviewerTask
     end
 
     private
@@ -46,7 +46,7 @@ module StandardTasks
     def add_reviewer(user)
       transaction do
         PaperRole.reviewers_for(paper).where(user: user).create!
-        task = StandardTasks::ReviewerReportTask.create!(phase: reviewer_report_task_phase,
+        task = TahiStandardTasks::ReviewerReportTask.create!(phase: reviewer_report_task_phase,
                                                          role: journal_task_type.role,
                                                          title: "Review by #{user.full_name}")
         ParticipationFactory.create(task, user)

@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class RegisterDecisionTask < Task
 
     # TODO: move these attributes from paper to this task model (https://www.pivotaltracker.com/story/show/84690814)

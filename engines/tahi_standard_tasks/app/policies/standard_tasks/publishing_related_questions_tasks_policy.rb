@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class PublishingRelatedQuestionsTasksPolicy < ::TasksPolicy
   end
 end

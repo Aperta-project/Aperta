@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class TaxonTask < ::Task
     register_task default_title: 'New Taxon', default_role: 'author'
 

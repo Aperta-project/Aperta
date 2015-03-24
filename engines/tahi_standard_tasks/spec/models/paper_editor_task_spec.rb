@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-describe StandardTasks::PaperEditorTask do
+describe TahiStandardTasks::PaperEditorTask do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
 
   describe "#invitation_invited" do
     let!(:task) do
-      StandardTasks::PaperEditorTask.create!({
+      TahiStandardTasks::PaperEditorTask.create!({
         phase: paper.phases.first,
         title: "Assign Editor",
         role: "admin"
@@ -23,7 +23,7 @@ describe StandardTasks::PaperEditorTask do
   describe "#invitation_accepted" do
 
     let!(:task) do
-      StandardTasks::PaperEditorTask.create!({
+      TahiStandardTasks::PaperEditorTask.create!({
         phase: paper.phases.first,
         title: "Assign Editor",
         role: "admin"

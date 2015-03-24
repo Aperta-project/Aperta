@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class TaxonTasksPolicy < ::TasksPolicy
   end
 end

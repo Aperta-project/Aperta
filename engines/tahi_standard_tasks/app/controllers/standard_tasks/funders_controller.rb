@@ -1,4 +1,4 @@
-module StandardTasks
+module TahiStandardTasks
   class FundersController < ::ApplicationController
     before_action :authenticate_user!
 

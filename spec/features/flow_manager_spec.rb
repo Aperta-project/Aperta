@@ -126,8 +126,8 @@ feature "Flow Manager", js: true, selenium: true do
 
   context "Comment count" do
     before do
-      paper1.tasks.where(type: "StandardTasks::PaperAdminTask").update_all(completed: false)
-      task = paper1.tasks.where(type: "StandardTasks::PaperAdminTask", completed: false).first
+      paper1.tasks.where(type: "TahiStandardTasks::PaperAdminTask").update_all(completed: false)
+      task = paper1.tasks.where(type: "TahiStandardTasks::PaperAdminTask", completed: false).first
 
       task.participants << admin
       task.comments << FactoryGirl.create(:comment, body: "Hi", commenter: FactoryGirl.create(:user))

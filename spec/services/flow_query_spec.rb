@@ -139,7 +139,7 @@ describe FlowQuery do
       let!(:generic_task) { FactoryGirl.create(:task) }
 
       it "scopes tasks by type" do
-        flow = FactoryGirl.build(:flow, :default, query: {type: "StandardTasks::PaperAdminTask"})
+        flow = FactoryGirl.build(:flow, :default, query: {type: "TahiStandardTasks::PaperAdminTask"})
         tasks = FlowQuery.new(site_admin, flow).tasks
 
         expect(tasks).to include(admin_task)

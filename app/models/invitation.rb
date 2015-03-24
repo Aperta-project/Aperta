@@ -26,7 +26,9 @@ class Invitation < ActiveRecord::Base
     }) do
       transitions from: :invited, to: :accepted
     end
-    event :reject do
+    event(:reject, {
+      after_commit: :notify_invitation_rejected
+    }) do
       transitions from: :invited, to: :rejected
     end
   end
@@ -39,6 +41,10 @@ class Invitation < ActiveRecord::Base
 
   def notify_invitation_accepted
     task.invitation_accepted(self) if task.respond_to?(:invitation_accepted)
+  end
+
+  def notify_invitation_rejected
+    task.invitation_rejected(self) if task.respond_to?(:invitation_rejected)
   end
 
   def associate_existing_user

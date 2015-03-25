@@ -4,15 +4,16 @@ ruby "2.2.0"
 
 # Configuration
 group :development, :test, :performance do
-  gem 'dotenv'
-  gem 'dotenv-deployment'
+  gem 'dotenv-rails'
 end
 
 # Task Engines
 gem 'plos_authors', path: 'engines/plos_authors'
-gem 'standard_tasks', path: 'engines/standard_tasks'
-gem 'supporting_information', path: 'engines/supporting_information'
-gem 'upload_manuscript', path: 'engines/upload_manuscript'
+gem 'tahi_standard_tasks', path: 'engines/tahi_standard_tasks'
+gem 'tahi_supporting_information', path: 'engines/tahi_supporting_information'
+gem 'tahi_upload_manuscript', path: 'engines/tahi_upload_manuscript'
+gem 'plos_bio_tech_check', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check"
+gem 'plos_billing', path: 'engines/plos_billing'
 
 # Gems
 gem 'rails', '4.2.0'
@@ -54,7 +55,7 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
-gem 'sunspot_rails'
+gem 'textacular'
 gem 'aasm'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
@@ -86,7 +87,6 @@ group :development, :test, :performance do
   gem 'pry-rescue'
   gem 'pry-rails'
   gem 'foreman'
-  gem 'sunspot_solr'
   gem 'quiet_assets'
 end
 
@@ -98,7 +98,6 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'
   gem 'webmock'
-  gem 'sunspot-rails-tester'
   gem 'thin'
   gem 'timecop'
 end

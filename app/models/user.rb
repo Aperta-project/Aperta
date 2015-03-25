@@ -1,13 +1,10 @@
+require 'textacular/searchable'
+
 class User < ActiveRecord::Base
 
   include UserDevise
-  searchable ignore_attribute_changes_of: [:encrypted_password, :avatar] do
-    integer :id
-    text :username, :first_name, :last_name, :email
-    text :full_name do
-      full_name
-    end
-  end
+
+  extend Searchable :first_name, :last_name, :email, :username
 
   has_many :affiliations, inverse_of: :user
   has_many :submitted_papers, inverse_of: :creator, class_name: 'Paper'
@@ -76,7 +73,7 @@ class User < ActiveRecord::Base
   def self.search_users(query: nil, assigned_users_in_journal_id: nil)
     if query
       sanitized_query = connection.quote_string(query.to_s.downcase) + '%'
-      User.where("lower(username) LIKE '#{sanitized_query}' OR lower(first_name) LIKE '#{sanitized_query}' OR lower(last_name) LIKE '#{sanitized_query}'")
+      User.fuzzy_search sanitized_query
     elsif assigned_users_in_journal_id
       User.joins(user_roles: :role).where('roles.journal_id = ?', assigned_users_in_journal_id).uniq
     end

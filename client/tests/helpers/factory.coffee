@@ -328,6 +328,22 @@ FactoryAttributes.Task =
   participant_ids: []
   comment_ids: []
 
+FactoryAttributes.BillingTask =
+  _rootKey: 'task'
+  id: null
+  title: "Billing"
+  type: "BillingTask"
+  completed: false
+  body: []
+  paper_title: "Foo"
+  role: "admin"
+  phase_id: null
+  paper_id: null
+  lite_paper_id: null
+  assignee_ids: []
+  participant_ids: []
+  comment_ids: []
+
 FactoryAttributes.FigureTask =
   _rootKey: 'task'
   id: null

@@ -10,6 +10,12 @@ FileUploadMixin = Ember.Mixin.create
 
   isUploading: Ember.computed.notEmpty 'uploads'
 
+  unloadUploads: (data, filename) ->
+    uploads = @get('uploads')
+    newUpload = uploads.findBy('file.name', filename)
+    uploads.removeObject newUpload
+    $(window).off "beforeunload.cancelUploads.#{filename}"
+
   uploadStarted: (data, fileUploadXHR) ->
     file = data.files[0]
     filename = file.name
@@ -23,10 +29,14 @@ FileUploadMixin = Ember.Mixin.create
     currentUpload.setProperties(dataLoaded: data.loaded, dataTotal: data.total)
 
   uploadFinished: (data, filename) ->
-    uploads = @get('uploads')
-    newUpload = uploads.findBy('file.name', filename)
-    uploads.removeObject newUpload
-    $(window).off "beforeunload.cancelUploads.#{filename}"
+    if @get('figures') || @get('figures') == []
+      $('.upload-preview-filename').text('Upload Complete!')
+      Ember.run.later (=>
+        $('.progress').fadeOut =>
+          @unloadUploads(data, filename)
+      ), 2000
+    else
+      @unloadUploads(data, filename)
 
   cancelUploads: ->
     @get('uploads').invoke('abort')

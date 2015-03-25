@@ -250,6 +250,10 @@
   width: 250px;
   height: 40px;
   background-color: rgba(52,123,197, 0.8);
+
+  .loader-component-circle {
+    margin-top: 5px;
+  }
 }
 
 .journal-logo-upload {
@@ -311,6 +315,11 @@
 
 .admin-section {
   position: relative;
+
+
+  &:last-child {
+    margin-bottom: 50px;
+  }
 }
 
 .admin-section-title {
@@ -329,7 +338,22 @@
   }
 }
 
-
+.loader-container {
+  .loader-component-circle {
+    margin-top: 0;
+      &:after {
+        margin-top: 2px;
+        z-index: 1200;
+        left: 68px;
+      }
+  }
+  height: 34px;
+  position: absolute;
+  width: 166px;
+  background-color: rgba(34,92,156, 0.8);
+  z-index: 1300;
+  border-radius: 5px;
+}
 .journal-edit-overlay {
   .overlay-close-x {
     color: $tahi-blue;

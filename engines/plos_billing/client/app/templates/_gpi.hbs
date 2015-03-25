@@ -1,0 +1,32 @@
+{{#if gpi}}
+<div>
+  <h3>
+    PLOS  GLobal Participation Initiative (Low- and Middle-Income Country Assistance)
+  </h3>
+
+  <p>
+    Authors' research that is funded primarily (50% or more of the work contained within the article)
+    by an institution or organization from eligible low- and middle-income countries
+    will receive partial
+    (<a href="http://www.plos.org/group-two-countries" target="_blank">group 2 countries</a>)
+    or full
+    (<a href="http://www.plos.org/group-one-countries" target="_blank">group 1 countries</a>)
+    fee funding paid by the PLOS Global Participation Initiative (GPI).
+    Group 2 PLOS GPI country authors who need to request additional support
+    should apply for
+    <a href="#">PLOS Publication Fee Assistance</a>
+    instead of the PLOS GPI. View
+    <a href="#">PLOS GPI</a> for additional information.
+  </p>
+
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
+      {{error-message message=null}}
+      {{question-select ident="plos_billing.gpi_country"
+                        task=model
+                        question="Please select your Country"
+                        source=countries}}
+    </div>
+  </div>
+</div>
+{{/if}}

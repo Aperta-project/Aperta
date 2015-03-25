@@ -55,6 +55,7 @@ module 'Integration: Reporting Guidelines Card',
     ]
 
 test 'Supporting Guideline is a meta data card, contains the right questions and sub-questions', ->
+  ok false
   findQuestionLi = (questionText) ->
     find('.question .item').filter (i, el) -> Ember.$(el).find('label').text().trim() is questionText
 

@@ -6,7 +6,9 @@
     <div class="profile-affiliation">
       <div class="profile-affiliation-name">{{affiliation.name}}</div>
       <div class="glyphicon glyphicon-remove-circle profile-remove-affiliation" {{action "removeAffiliation" affiliation}}></div>
-      <div>{{formatDate affiliation.startDate}} - {{formatDate affiliation.displayEndDate}}</div>
+      <div>
+        {{format-date affiliation.startDate}} - {{#if affiliation.isCurrent}} Current {{else}} {{format-date affiliation.endDate}} {{/if}}
+      </div>
       <div>{{affiliation.email}}</div>
     </div>
   {{/each}}

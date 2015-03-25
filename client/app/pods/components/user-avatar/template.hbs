@@ -13,7 +13,10 @@
                       url=avatarUploadUrl}}
     </span>
   </div>
-  <div class="profile-avatar-spinner">
-    {{progress-spinner visible=isUploading}}
-  </div>
+  {{#if isUploading}}
+    <div class="profile-avatar-spinner">
+      {{progress-loader visible=isUploading
+                        white=true}}
+    </div>
+  {{/if}}
 </div>

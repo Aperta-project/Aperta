@@ -6,7 +6,7 @@ describe PaperFactory do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
       phase = mmt.phase_templates.create!(name: "First Phase")
       mmt.phase_templates.create!(name: "Phase With No Tasks")
-      tasks = [StandardTasks::PaperAdminTask, StandardTasks::DataAvailabilityTask]
+      tasks = [TahiStandardTasks::PaperAdminTask, TahiStandardTasks::DataAvailabilityTask]
       JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
       journal.manuscript_manager_templates = [mmt]
       journal.save!
@@ -32,13 +32,13 @@ describe PaperFactory do
         paper_factory.apply_template
       }.to change { paper.tasks.count }.by(2)
 
-      expect(paper.tasks.pluck(:type)).to match_array(['StandardTasks::PaperAdminTask', 'StandardTasks::DataAvailabilityTask'])
+      expect(paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::PaperAdminTask', 'TahiStandardTasks::DataAvailabilityTask'])
     end
 
     it "sets user as a participant on tasks with role = author" do
       paper_factory.apply_template
-      expect(paper.tasks.where(type: 'StandardTasks::PaperAdminTask').first.participants).to be_empty
-      expect(paper.tasks.where(type: 'StandardTasks::DataAvailabilityTask').first.participants).to include(user)
+      expect(paper.tasks.where(type: 'TahiStandardTasks::PaperAdminTask').first.participants).to be_empty
+      expect(paper.tasks.where(type: 'TahiStandardTasks::DataAvailabilityTask').first.participants).to include(user)
     end
 
     it "uses the task template's title" do
@@ -46,7 +46,7 @@ describe PaperFactory do
       template = mmt.phase_templates.first.task_templates.find_by(title: "Assign Admin")
       template.update_attribute(:title, custom_title)
       paper_factory.apply_template
-      expect(paper.tasks.where(type: 'StandardTasks::PaperAdminTask').first.title).to eq(custom_title)
+      expect(paper.tasks.where(type: 'TahiStandardTasks::PaperAdminTask').first.title).to eq(custom_title)
     end
 
     it "adds correct positions to new tasks" do

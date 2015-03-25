@@ -65,7 +65,9 @@
   <div class="remove-column glyphicon glyphicon-remove" {{action "removeFlow"}}></div>
 </div>
 
-{{progress-spinner visible=flow.isSaving}}
+{{#unless flow.isLoaded}}
+  {{progress-loader visible=true}}
+{{/unless}}
 
 <div class="column-content">
   <ul class="cards">

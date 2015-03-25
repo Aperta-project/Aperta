@@ -7,9 +7,6 @@
     "doc": "doc",
     "test": "tests"
   },
-  "scripts": {
-    "postinstall": "bower install"
-  },
   "repository": "",
   "engines": {
     "node": ">= 0.10.0"
@@ -33,13 +30,19 @@
     "ember-cli-rails-addon": "0.0.11",
     "ember-cli-uglify": "1.0.1",
     "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#2fdc1e231771a8bbd597f12d38589b0bcaf62b26",
-    "ember-data": "1.0.0-beta.15",
+    "ember-data": "1.0.0-beta.16.1",
     "ember-export-application-global": "^1.0.2",
     "express": "^4.8.5",
-    "glob": "^4.0.5",
-    "tahi-plos-authors-card": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-plos-authors-card.git#93b0149021637b3a916c846659ccb3b1e9036d36",
-    "tahi-standard-cards": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-standard-cards.git#22f819a84d9c66f54cfa534599e2871410d7135c",
-    "tahi-supporting-information-card": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-supporting-information-card.git",
-    "tahi-upload-manuscript-card": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-upload-manuscript-card.git"
+    "glob": "^4.0.5"
+  },
+  "ember-addon": {
+    "paths": [
+      "../engines/tahi_supporting_information/client",
+      "../engines/plos_authors/client",
+      "../engines/plos_billing/client",
+      "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/plos_bio_tech_check-6b0487ab978a/client",
+      "../engines/tahi_upload_manuscript/client",
+      "../engines/tahi_standard_tasks/client"
+    ]
   }
 }

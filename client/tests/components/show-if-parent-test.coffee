@@ -12,7 +12,7 @@ test 'renders based on the set parent view prop', ->
     parentView: fakeParent
     template: Ember.Handlebars.compile("<p>Shown</p>")
   )
-  $component = this.append()
+  $component = this.render()
   ok $component.find('p').length, 'the content is shown when the prop is true'
   Ember.run ->
     fakeParent.set('foo', false)

@@ -11,10 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150317184631) do
+ActiveRecord::Schema.define(version: 20150325175514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_trgm"
+  enable_extension "unaccent"
 
   create_table "activities", force: :cascade do |t|
     t.string   "region_name"
@@ -309,19 +311,19 @@ ActiveRecord::Schema.define(version: 20150317184631) do
 
   add_index "roles", ["kind"], name: "index_roles_on_kind", using: :btree
 
-  create_table "standard_tasks_funded_authors", force: :cascade do |t|
+  create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
     t.integer "author_id"
     t.integer "funder_id"
   end
 
-  add_index "standard_tasks_funded_authors", ["author_id", "funder_id"], name: "funded_authors_unique_index", unique: true, using: :btree
-  add_index "standard_tasks_funded_authors", ["author_id"], name: "index_standard_tasks_funded_authors_on_author_id", using: :btree
-  add_index "standard_tasks_funded_authors", ["funder_id"], name: "index_standard_tasks_funded_authors_on_funder_id", using: :btree
+  add_index "tahi_standard_tasks_funded_authors", ["author_id", "funder_id"], name: "funded_authors_unique_index", unique: true, using: :btree
+  add_index "tahi_standard_tasks_funded_authors", ["author_id"], name: "index_tahi_standard_tasks_funded_authors_on_author_id", using: :btree
+  add_index "tahi_standard_tasks_funded_authors", ["funder_id"], name: "index_tahi_standard_tasks_funded_authors_on_funder_id", using: :btree
 
-  create_table "standard_tasks_funders", force: :cascade do |t|
-    t.string   "name"
-    t.string   "grant_number"
-    t.string   "website"
+  create_table "tahi_standard_tasks_funders", force: :cascade do |t|
+    t.string   "name",                         limit: 255
+    t.string   "grant_number",                 limit: 255
+    t.string   "website",                      limit: 255
     t.boolean  "funder_had_influence"
     t.text     "funder_influence_description"
     t.integer  "task_id"
@@ -329,9 +331,9 @@ ActiveRecord::Schema.define(version: 20150317184631) do
     t.datetime "updated_at"
   end
 
-  add_index "standard_tasks_funders", ["task_id"], name: "index_standard_tasks_funders_on_task_id", using: :btree
+  add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
 
-  create_table "supporting_information_files", force: :cascade do |t|
+  create_table "tahi_supporting_information_files", force: :cascade do |t|
     t.integer  "paper_id"
     t.string   "title"
     t.string   "caption"
@@ -341,7 +343,7 @@ ActiveRecord::Schema.define(version: 20150317184631) do
     t.string   "status",     default: "processing"
   end
 
-  add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
+  add_index "tahi_supporting_information_files", ["paper_id"], name: "index_tahi_supporting_information_files_on_paper_id", using: :btree
 
   create_table "task_templates", force: :cascade do |t|
     t.integer "journal_task_type_id"

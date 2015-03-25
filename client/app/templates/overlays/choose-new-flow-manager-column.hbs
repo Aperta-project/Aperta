@@ -2,8 +2,10 @@
   <div class="overlay-title-text animation-fade-in">
     <h1>Add New Column</h1>
   </div>
-
-  {{progress-spinner visible=isLoading}}
+  {{#if isLoading}}
+    {{progress-loader visible=isLoading
+                      large=true}}
+  {{/if}}
 
   <div class="inner-content">
     {{#each group in groupedFlows}}

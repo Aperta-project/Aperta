@@ -1,0 +1,34 @@
+<h1>Invite Editor</h1>
+
+<div class="invite-editor-text">
+  {{#if showEditorSelect}}
+    <label for="editor">Email</label>
+    {{select-2-single value=""
+               class="editor-select2"
+               name="invite_editor"
+               selectionSelected="didSelectEditor"
+               selectedData=model.editor
+               minimumInputLength=0
+               selectedTemplate=selectedTemplate
+               resultsTemplate=resultsTemplate
+               remoteSource=select2RemoteSource
+               placeholder="Please select editor"}}
+    <button class="button-primary button--green invite-editor-button" {{action "inviteEditor"}}>Invite</button>
+  {{else}}
+    {{#if model.editor}}
+      {{user-thumbnail user=editor classNames="testing"}}
+      {{model.editor.name}}&nbsp;is now the Editor.
+      <div class="glyphicon glyphicon-trash invite-editor-remove" {{action "removeEditor"}}></div>
+    {{else}}
+      {{#if hasRejectedInvitation}}
+        <p>{{invitation.email}} has declined this invitation.</p>
+        <button {{action "destroyInvitation"}}  class="button-primary button--green">Invite new editor</button>
+      {{/if}}
+
+      {{#if hasInvitedInvitation}}
+        <p>{{invitation.email}} has been invited to be Editor on this manuscript.</p>
+        <button {{action "destroyInvitation"}}  class="button-primary button--green">Withdraw invitation</button>
+      {{/if}}
+    {{/if}}
+  {{/if}}
+</div>

@@ -41,9 +41,7 @@
 
   <div class="control-bar-sub-items">
     <div {{bind-attr class=":contributors view.contributorsVisible:active"}}>
-      {{#unless model.submitted}}
-        <a class="contributors-add" {{action "addContributors"}}>Add Contributors</a>
-      {{/unless}}
+      <a class="contributors-add" {{action "addContributors"}}>Add Contributors</a>
 
       {{#each contributor in collaborators}}
         <div class="contributor">{{unbound contributor.fullName}}</div>

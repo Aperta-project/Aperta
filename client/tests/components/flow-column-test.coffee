@@ -7,7 +7,7 @@ moduleForComponent 'flow-column', 'Unit: components/flow-column',
     'helper:display-value'
     'component:segmented-button'
     'component:segmented-buttons'
-    'component:progress-spinner'
+    'component:progress-loader'
     'component:flow-task-group'
     'component:select-2-single'
   ]
@@ -18,7 +18,7 @@ appendBasicComponent = (context, attrs) ->
   Ember.run =>
     context.component = context.subject()
     context.component.setProperties(attrs)
-  context.append()
+  context.render()
 
 test "clicking the X should send 'removeFlow'", ->
   targetObject =

@@ -17,6 +17,13 @@ GIT
       activerecord (>= 3.0)
 
 GIT
+  remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
+  revision: 6b0487ab978ada05dfc07e6647d9c89a90796b7c
+  specs:
+    plos_bio_tech_check (0.0.1)
+      rails (~> 4.2.0)
+
+GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi_epub
   revision: 6df8cbc6ed8c46bc5ee9ece707216b1af40b94ea
   specs:
@@ -40,21 +47,27 @@ PATH
       rails (~> 4.2.0)
 
 PATH
-  remote: engines/standard_tasks
+  remote: engines/plos_billing
   specs:
-    standard_tasks (0.0.1)
+    plos_billing (0.0.1)
       rails (~> 4.2.0)
 
 PATH
-  remote: engines/supporting_information
+  remote: engines/tahi_standard_tasks
   specs:
-    supporting_information (0.0.1)
+    tahi_standard_tasks (0.0.1)
       rails (~> 4.2.0)
 
 PATH
-  remote: engines/upload_manuscript
+  remote: engines/tahi_supporting_information
   specs:
-    upload_manuscript (0.0.1)
+    tahi_supporting_information (0.0.1)
+      rails (~> 4.2.0)
+
+PATH
+  remote: engines/tahi_upload_manuscript
+  specs:
+    tahi_upload_manuscript (0.0.1)
       rails (~> 4.2.0)
 
 GEM
@@ -163,16 +176,16 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    dotenv (1.0.2)
-    dotenv-deployment (0.3.0)
-      dotenv (~> 1.0)
-    ember-cli-rails (0.1.10)
+    dotenv (2.0.0)
+    dotenv-rails (2.0.0)
+      dotenv (= 2.0.0)
+    ember-cli-rails (0.1.11)
       railties (>= 3.1, < 5)
       sprockets (>= 2.0)
     erubis (2.7.0)
     eventmachine (1.0.7)
     excon (0.41.0)
-    execjs (2.2.2)
+    execjs (2.4.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.5.0)
@@ -218,8 +231,7 @@ GEM
     fog-xml (0.1.1)
       fog-core
       nokogiri (~> 1.5, >= 1.5.11)
-    foreman (0.77.0)
-      dotenv (~> 1.0.2)
+    foreman (0.78.0)
       thor (~> 0.19.1)
     formatador (0.2.5)
     gepub (0.7.0beta1)
@@ -268,7 +280,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     netrc (0.10.3)
-    newrelic_rpm (3.10.0.279)
+    newrelic_rpm (3.11.0.283)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     oauth2 (0.9.3)
@@ -290,7 +302,6 @@ GEM
     orm_adapter (0.5.0)
     pdfkit (0.6.2)
     pg (0.18.1)
-    pr_geohash (1.0.0)
     progressbar (0.21.0)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -330,7 +341,7 @@ GEM
       sprockets-rails
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
-    rails-dom-testing (1.0.5)
+    rails-dom-testing (1.0.6)
       activesupport (>= 4.2.0.beta, < 5.0)
       nokogiri (~> 1.6.0)
       rails-deprecated_sanitizer (>= 1.0.1)
@@ -357,8 +368,6 @@ GEM
     rest-client (1.7.3)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rsolr (1.0.12)
-      builder (>= 2.1.2)
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
       rspec-expectations (~> 3.2.0)
@@ -429,17 +438,8 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
-    sunspot (2.1.1)
-      pr_geohash (~> 1.0)
-      rsolr (~> 1.0.7)
-    sunspot-rails-tester (1.0.0)
-      sunspot_rails (>= 1.2)
-      sunspot_solr (>= 1.2)
-    sunspot_rails (2.1.1)
-      nokogiri
-      rails (>= 3)
-      sunspot (= 2.1.1)
-    sunspot_solr (2.1.1)
+    textacular (3.2.1)
+      activerecord (>= 3.0, < 5.0)
     thin (1.6.3)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0)
@@ -455,7 +455,7 @@ GEM
       unf (~> 0.1.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (2.7.0)
+    uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     unf (0.1.4)
@@ -491,8 +491,7 @@ DEPENDENCIES
   coffee-rails
   database_cleaner
   devise
-  dotenv
-  dotenv-deployment
+  dotenv-rails
   ember-cli-rails
   factory_girl_rails
   faraday_middleware
@@ -514,6 +513,8 @@ DEPENDENCIES
   pdfkit
   pg
   plos_authors!
+  plos_billing!
+  plos_bio_tech_check!
   progressbar
   pry-byebug
   pry-rails
@@ -536,18 +537,16 @@ DEPENDENCIES
   sidekiq
   simplecov
   sinatra
-  standard_tasks!
-  sunspot-rails-tester
-  sunspot_rails
-  sunspot_solr
-  supporting_information!
   tahi_epub!
+  tahi_standard_tasks!
+  tahi_supporting_information!
+  tahi_upload_manuscript!
+  textacular
   thin
   timecop
   timeliness
   twitter-text
   uglifier
   unf
-  upload_manuscript!
   vcr
   webmock

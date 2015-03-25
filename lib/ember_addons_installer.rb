@@ -18,8 +18,8 @@ class EmberAddonsInstaller
   private
 
   def append_addon_paths_to_package
-    remove_existing_tahi_addons
     package['ember-addon'] ||= {}
+    remove_existing_tahi_addons
     addon_paths = package['ember-addon']['paths'] ||= []
 
     tahi_gem_paths.each do |tahi_gem_path|
@@ -31,11 +31,11 @@ class EmberAddonsInstaller
   end
 
   def tahi_gem_matcher
-    /\A(tahi-|plos_)/
+    /\A(tahi_|tahi-|plos_|assess)/
   end
 
   def tahi_path_matcher
-    /(tahi-|plos_)/
+    /(tahi_|tahi-|plos_|assess)/
   end
 
   def tahi_gem_paths

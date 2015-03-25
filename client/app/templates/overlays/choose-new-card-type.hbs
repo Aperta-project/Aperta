@@ -20,7 +20,8 @@
         <button class="button-link button--green cancel" {{action "closeAction"}}>cancel</button>
       </div>
       {{else}}
-        {{progress-spinner visible=true}}
+        {{progress-loader visible=true
+                          large=true}}
       {{/if}}
     </div>
   </div>

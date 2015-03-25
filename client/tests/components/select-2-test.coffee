@@ -34,7 +34,7 @@ appendBasicComponent = (context) ->
       source: [{id: 1, text: '1'}
                {id: 2, text: '2'}
                {id: 3, text: '3'}]
-  context.append()
+  context.render()
 
 test "User can make a selection from the dropdown", ->
   appendBasicComponent(this)
@@ -91,7 +91,7 @@ test "Typing more than 3 letters with a remote url should make a call to said re
         results: (data) ->
           results: data
 
-  @append()
+  @render()
 
   keyEvent('.select2-container input', 'keydown')
   fillIn('.select2-container input', 'Aaron')
@@ -107,7 +107,7 @@ test "Event stream object added should add the object to the selected objects in
     @component.setProperties
       multiSelect: true
       source: [{id: 1, text: '1'}, {id: 2, text: '2'}, {id: 3, text: '3'}]
-  @append()
+  @render()
 
   ok !$('.select2-container').select2('val').contains("4")
 

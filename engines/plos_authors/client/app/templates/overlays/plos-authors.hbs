@@ -1,0 +1,27 @@
+<h1>{{title}}</h1>
+
+<div class="authors-overlay-list">
+  {{#if isEditable}}
+    <a class="button-primary button--green" {{action "toggleAuthorForm" group}}>Add a New Author</a>
+
+    {{#if newAuthorFormVisible}}
+      {{add-author-form
+        institutions=institutions
+        hideAuthorForm="toggleAuthorForm"
+        saveAuthor="saveNewAuthor"}}
+    {{/if}}
+  {{/if}}
+
+  {{view "author-drop-target" index=0}}
+
+  {{#each authorWithErrors in sortedAuthorsWithErrors}}
+    {{author-view
+      isEditable=isEditable
+      institutions=institutions
+      delete="removeAuthor"
+      save="saveAuthor"
+      plosAuthor=authorWithErrors.model
+      errors=authorWithErrors.errors}}
+    {{view "author-drop-target" index=authorWithErrors.model.position}}
+  {{/each}}
+</div>

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Manuscript Manager", js: true, selenium: true, solr: true do
+feature "Manuscript Manager", js: true, selenium: true do
   let(:admin) { create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: admin, submitted: true, journal: journal }
@@ -80,7 +80,7 @@ feature "Manuscript Manager", js: true, selenium: true, solr: true do
   end
 
   # Preventing a regression
-  scenario 'Opening an Invite Reviewers task' do
+  scenario 'Opening an Invite Reviewers task', flaky: true do
     task_manager_page = TaskManagerPage.visit paper
 
     within 'body' do

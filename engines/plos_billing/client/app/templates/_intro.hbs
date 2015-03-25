@@ -1,0 +1,24 @@
+<div>
+  <p>
+    To provide Open Access, PLOS uses a business model to offset expenses -
+    including those of peer review management, journal production and online hosting and archiving -
+    by charging a publication fee to the authors, institutions or funders for each article published.
+  </p>
+
+  <p>
+    Publication fees vary by journal and are payable for articles upon acceptance.
+  </p>
+
+  <ul>
+    {{#each journal in journals}}
+      <li>
+        <i>{{journal.name}}</i>
+        ${{journal.price}} USD
+      </li>
+    {{/each}}
+  </ul>
+
+  <p>
+    Since its inception, PLOS has administered and provided individual fee support.
+  </p>
+</div>

@@ -20,6 +20,6 @@ describe "Paper with a tech check task" do
 
     body = JSON.parse response.body
     expect(body['paper']['tasks'].first['type']).to eq "TechCheckTask"
-    expect(body['tasks'].first['type']).to eq "StandardTasks::TechCheckTask"
+    expect(body['tasks'].first['type']).to eq "TahiStandardTasks::TechCheckTask"
   end
 end

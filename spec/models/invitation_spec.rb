@@ -13,6 +13,10 @@ class TestTask < Task
   def invitation_accepted(_invitation)
     "accepted"
   end
+
+  def invitation_rejected(_invitation)
+    "rejected"
+  end
 end
 
 describe Invitation do
@@ -34,6 +38,14 @@ describe Invitation do
       invitation.invite!
       expect(task).to receive(:invitation_accepted).with(invitation)
       invitation.accept!
+    end
+  end
+
+  describe "#reject!" do
+    it "calls the the invitation rejection callback" do
+      invitation.invite!
+      expect(task).to receive(:invitation_rejected).with(invitation)
+      invitation.reject!
     end
   end
 end

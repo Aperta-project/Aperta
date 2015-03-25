@@ -23,26 +23,35 @@ describe StandardTasks::PaperReviewerTask do
     })
   end
 
-  describe '#invitation_invited' do
+  describe "#invitation_invited" do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
-    it 'notifies the invited reviewer' do
+    it "notifies the invited reviewer" do
       expect {task.invitation_invited invitation}.to change {
         Sidekiq::Extensions::DelayedMailer.jobs.length
       }.by 1
     end
   end
 
-  describe '#invitation_accepted' do
+  describe "#invitation_accepted" do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
-    it 'adds the reviewer to the list of reviewers' do
+    it "adds the reviewer to the list of reviewers" do
       expect(paper.reviewers.count).to eq 0
       invitation.accept!
       expect(paper.reviewers.count).to eq 1
       expect(paper.reload.reviewers).to include invitation.invitee
     end
+  end
 
+  describe "#invitation_rejected" do
+    let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
+
+    it "sends an email to the invitee about the rejection" do
+      expect { task.invitation_rejected invitation }.to change {
+        Sidekiq::Extensions::DelayedMailer.jobs.length
+      }.by 1
+    end
   end
 
   describe "#reviewer_ids=" do

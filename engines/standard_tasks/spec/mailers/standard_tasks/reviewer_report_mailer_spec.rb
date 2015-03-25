@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe StandardTasks::ReviewerReportMailer do
   describe ".notify_editor_email" do

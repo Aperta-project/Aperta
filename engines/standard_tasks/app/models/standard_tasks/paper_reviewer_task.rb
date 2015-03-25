@@ -18,6 +18,12 @@ module StandardTasks
       TaskRoleUpdater.new(self, invitation.invitee_id, PaperRole::REVIEWER).update
     end
 
+    def invitation_rejected(invitation)
+      PaperReviewerMailer.delay.notify_rejection({
+        invitation_id: invitation.id
+      })
+    end
+
     def array_attributes
       super + [:reviewer_ids]
     end

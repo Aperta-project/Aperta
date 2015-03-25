@@ -16,8 +16,4 @@ Affiliation = DS.Model.extend
     Ember.isBlank @get('endDate')
   ).property('endDate')
 
-  displayEndDate: (->
-    @get('endDate') || 'Current'
-  ).property('endDate')
-
 `export default Affiliation`

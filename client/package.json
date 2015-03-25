@@ -33,11 +33,11 @@
     "ember-data": "1.0.0-beta.15",
     "ember-export-application-global": "^1.0.2",
     "express": "^4.8.5",
-    "glob": "^4.0.5",
-    "tahi-supporting-information-card": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-supporting-information-card.git"
+    "glob": "^4.0.5"
   },
   "ember-addon": {
     "paths": [
+      "../engines/tahi_supporting_information/client",
       "../engines/plos_authors/client",
       "../engines/plos_billing/client",
       "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/plos_bio_tech_check-6b0487ab978a/client",

@@ -4,8 +4,7 @@ ruby "2.2.0"
 
 # Configuration
 group :development, :test, :performance do
-  gem 'dotenv'
-  gem 'dotenv-deployment'
+  gem 'dotenv-rails'
 end
 
 # Task Engines

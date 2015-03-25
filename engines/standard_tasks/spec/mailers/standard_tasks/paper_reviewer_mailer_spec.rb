@@ -26,6 +26,6 @@ describe StandardTasks::PaperReviewerMailer do
 
   describe ".notify_rejection" do
     let(:email) { described_class.notify_rejection invitation_id: invitation.id }
-    it_behaves_like 'an invitation notification email', email_identifier_word: 'recinded'
+    it_behaves_like 'an invitation notification email', email_identifier_word: 'rescinded'
   end
 end

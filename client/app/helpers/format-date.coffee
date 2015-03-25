@@ -1,6 +1,9 @@
 `import Ember from "ember"`
 
-FormatDateHelper = Ember.Handlebars.makeBoundHelper (date, options) ->
-  moment(date).format(options.hash.format || "LL")
+formatDate = (date, options) ->
+  dateObj = moment(date)
+  return date unless dateObj.isValid()
+  dateObj.format(options.hash.format || "LL")
 
-`export default FormatDateHelper`
+`export { formatDate }`
+`export default Ember.Handlebars.makeBoundHelper(formatDate)`

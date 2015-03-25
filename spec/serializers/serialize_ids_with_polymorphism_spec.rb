@@ -14,7 +14,7 @@ describe SerializeIdsWithPolymorphism do
     end
 
     context "when the prefix is a task bundle" do
-      let(:task_type) { "StandardTasks::FigureTask" }
+      let(:task_type) { "TahiStandardTasks::FigureTask" }
 
       it "returns the last part of the task type" do
         expect(result).to eq([{ id: task[0].id, type: "FigureTask" }])

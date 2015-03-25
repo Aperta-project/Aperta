@@ -12,4 +12,8 @@ module Invitable
   def invitation_accepted(_invitation)
     raise NotImplementedError, "the method 'invitation_accepted' must be defined in the subclass"
   end
+
+  def accept_allowed?(_invitation)
+    true
+  end
 end

@@ -34,7 +34,7 @@ describe FilteredUsersController do
                            title: "Test",
                            role: "reviewer").extend Invitable
       end
-      let(:invitation) { create :invitation, task: task, invitee: user }
+      let(:invitation) { create :invitation, task: task, email: user.email }
 
       before do
         invitation.invite!

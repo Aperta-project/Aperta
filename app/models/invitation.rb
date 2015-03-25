@@ -7,13 +7,15 @@ class Invitation < ActiveRecord::Base
   belongs_to :invitee, class_name: "User", inverse_of: :invitations
   belongs_to :actor, class_name: "User", inverse_of: :invitations
 
-  aasm column: :state do
+  aasm column: :state, :whiny_transitions => false do
     state :pending, initial: true
     state :invited do
       validates :invitee, presence: true
     end
     state :accepted
     state :rejected
+    state :willing
+    state :closed
 
     event(:invite, {
       after: [:generate_code, :associate_existing_user],
@@ -24,10 +26,14 @@ class Invitation < ActiveRecord::Base
     event(:accept, {
       after_commit: :notify_invitation_accepted
     }) do
-      transitions from: :invited, to: :accepted
+      transitions from: :invited, to: :accepted, guard: :accept_allowed?
+      transitions from: :closed, to: :willing
     end
     event :reject do
-      transitions from: :invited, to: :rejected
+      transitions from: [:invited, :closed], to: :rejected
+    end
+    event :close do
+      transitions from: :invited, to: :closed
     end
   end
 
@@ -39,6 +45,10 @@ class Invitation < ActiveRecord::Base
 
   def notify_invitation_accepted
     task.invitation_accepted(self) if task.respond_to?(:invitation_accepted)
+  end
+
+  def accept_allowed?
+     task.respond_to?(:accept_allowed?) ? task.accept_allowed?(self) : true
   end
 
   def associate_existing_user

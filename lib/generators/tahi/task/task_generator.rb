@@ -16,7 +16,7 @@ module Tahi
     private
 
     def app_dir
-      app_dir = File.join(engine_path, 'app')
+      File.join(engine_path, 'app')
     end
 
     def engine_path

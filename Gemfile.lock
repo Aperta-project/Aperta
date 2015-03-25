@@ -65,9 +65,9 @@ PATH
       rails (~> 4.2.0)
 
 PATH
-  remote: engines/upload_manuscript
+  remote: engines/tahi_upload_manuscript
   specs:
-    upload_manuscript (0.0.1)
+    tahi_upload_manuscript (0.0.1)
       rails (~> 4.2.0)
 
 GEM
@@ -541,6 +541,7 @@ DEPENDENCIES
   standard_tasks!
   supporting_information!
   tahi_epub!
+  tahi_upload_manuscript!
   textacular
   thin
   timecop
@@ -548,6 +549,5 @@ DEPENDENCIES
   twitter-text
   uglifier
   unf
-  upload_manuscript!
   vcr
   webmock

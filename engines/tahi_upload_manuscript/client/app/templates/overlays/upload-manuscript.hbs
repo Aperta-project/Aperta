@@ -1,0 +1,37 @@
+<h1>{{model.title}}</h1>
+{{#if isEditable}}
+  <h2>You may upload a manuscript at any time.</h2>
+  <div id="upload-file-wrapper">
+    <span class="button-primary button--green fileinput-button">
+      Select and upload a document
+      {{file-uploader id="upload-files"
+                      railsMethod='PUT'
+                      accept='.docx'
+                      start='uploadStarted'
+                      progress='uploadProgress'
+                      done='uploadFinished'
+                      error='uploadError'
+                      filePrefix='paper/manuscript'
+                      url=manuscriptUploadUrl}}
+    </span>
+  </div>
+  {{else}}
+  <p>Currently, Uploading a Manuscript is disabled</p>
+{{/if}}
+
+{{#if uploadError}}
+  <span>Sorry! {{fileName}} is not of an accepted file type</span>
+{{/if}}
+
+<div id="paper-manuscript-upload" {{bind-attr class="isUploading::hidden"}}>
+  <div class="preview-container glyphicon glyphicon-file"></div>
+  <div {{bind-attr class=":processing isProcessing::hidden"}}>
+    {{progress-spinner visible=true
+                       color="green"
+                       size="small"}}
+    Processing...
+  </div>
+  <div {{bind-attr class=":progress showProgress::hidden"}}>
+    <div class="progress-bar" {{bind-attr style=progressBarStyle}}></div>
+  </div>
+</div>

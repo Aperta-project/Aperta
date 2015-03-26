@@ -1,0 +1,43 @@
+@include keyframes(fadeIn) {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.autosave {
+  position: absolute;
+  right: 24.25%;
+  
+  .loader-component-circle {
+    &:after {
+      top: 2px;
+      // right: 108%;
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  .save-message {
+    position: absolute;
+    top: 2px;
+    right: -87px;
+    width: 80px;
+    @include animation(fadeIn 200ms ease-in-out);
+
+    p {
+      margin-left: 5px;
+      display: inline-block;
+      position: relative;
+      transform: translateY(-10%);
+      color: $tahi-blue;
+    }
+  }
+}
+i.fa-check-circle {
+  margin-top: -3px;
+  margin-left: -28px;
+  font-size: 1.6em;
+  &:before {
+    color: $tahi-blue;
+  }
+}
+
+

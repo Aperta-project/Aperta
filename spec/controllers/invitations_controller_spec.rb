@@ -1,9 +1,15 @@
 require "rails_helper"
 
+class TestTask < Task
+  include TaskTypeRegistration
+  include Invitable
+  register_task default_title: "Test Task", default_role: "user"
+end
+
 describe InvitationsController do
 
   let(:invitee) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create(:task) }
+  let(:task) { FactoryGirl.create(:task, type: "TestTask") }
 
   before { sign_in(invitee) }
 

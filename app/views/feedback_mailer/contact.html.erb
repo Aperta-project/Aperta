@@ -13,3 +13,13 @@ Current Rails environment:
 Body:
 <%= @feedback[:remarks] %>
 <br>
+
+<% if @feedback[:screenshots] %>
+
+  Screenshots:
+  <% @feedback[:screenshots].each do |screenshot| %>
+    <%= image_tag screenshot[:url], alt: screenshot[:filename] %>
+    <br>
+  <% end %>
+
+<% end %>

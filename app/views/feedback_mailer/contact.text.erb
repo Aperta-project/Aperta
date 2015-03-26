@@ -9,3 +9,10 @@ Current Rails environment:
 
 Body:
 <%= @feedback[:remarks] %>
+
+<% if @feedback[:screenshots] %>
+  Screenshots:
+  <% @feedback[:screenshots].each do |screenshot| %>
+    <%= link_to screenshot[:filename], screenshot[:url], target: :blank %>
+  <% end %>
+<% end %>

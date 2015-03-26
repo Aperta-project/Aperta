@@ -4,43 +4,31 @@ describe FeedbackController do
   let(:user) { FactoryGirl.create(:user) }
   before { sign_in user }
 
-  def latest_email_body
-    ActionMailer::Base.deliveries.first.body.parts.first.body
-  end
-
   describe '#create' do
+
     context "with valid params" do
+      include ActiveJob::TestHelper
 
-      before do
-        ActionMailer::Base.deliveries.clear
-        expect(ActionMailer::Base.deliveries.size).to eq 0
-
-        post :create, {
-          feedback: {
-            remarks: 'some words',
-            referrer: 'http://example.lvh.me'
-          }
-        }
-      end
+      before { ActionMailer::Base.deliveries.clear }
+      after  { clear_enqueued_jobs }
 
       it 'responds with 201' do
+        post :create, feedback: {remarks: 'foo', referrer: 'http://example.com'}
         expect(response.status).to eq 201
       end
 
-      it "sends email" do
+      it "send email with enviroment, feedback test and referrer" do
+        perform_enqueued_jobs do
+          post :create, feedback: {remarks: 'foo', referrer: 'http://example.com'}
+        end
+
+        body = ActionMailer::Base.deliveries.first.body.parts.first.body
+
         expect(ActionMailer::Base.deliveries.size).to eq 1
-        expect(latest_email_body).to include 'some words'
+        expect(body).to include 'foo'
+        expect(body).to include 'http://example.com'
+        expect(body).to include 'test'
       end
-
-      it "includes the server environment" do
-        expect(latest_email_body).to include 'test'
-      end
-
-      it "includes the originating url" do
-        expect(latest_email_body)
-          .to include 'http://example.lvh.me'
-      end
-
     end
   end
 

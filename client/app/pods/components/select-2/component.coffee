@@ -56,6 +56,8 @@ Select2Component = Ember.TextField.extend
     options.ajax               = @get('remoteSource') if @get('remoteSource')
     options.dropdownCssClass   = @get('dropdownClass') if @get('dropdownClass')
     options.initSelection      = Ember.run.bind(this, @initSelection)
+    options.minimumResultsForSearch = @get('minimumResultsForSearch') || 10
+    options.width = @get('width') || 'resolve'
 
     @.$().select2(options)
     @setupSelectedListener()

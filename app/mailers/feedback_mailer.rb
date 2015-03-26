@@ -6,7 +6,7 @@ class FeedbackMailer < ActionMailer::Base
 
     mail(
       from: user.email,
-      to: ENV['ADMIN_EMAIL'],
+      to: Rails.configuration.admin_email,
       subject: "Tahi Feedback")
   end
 end

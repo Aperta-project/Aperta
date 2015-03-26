@@ -22,9 +22,8 @@ describe FeedbackController do
           post :create, feedback: {remarks: 'foo', referrer: 'http://example.com'}
         end
 
-        body = ActionMailer::Base.deliveries.first.body.parts.first.body
-
         expect(ActionMailer::Base.deliveries.size).to eq 1
+        body = ActionMailer::Base.deliveries.first.body.parts.first.body
         expect(body).to include 'foo'
         expect(body).to include 'http://example.com'
         expect(body).to include 'test'

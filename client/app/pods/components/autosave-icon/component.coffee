@@ -9,7 +9,6 @@ AutoSaveIconComponent = Ember.Component.extend
 
   startShowingLoader:(->
     @set 'isLoaderShowing', true
-    debugger
     Ember.run.later (=>
       @showLoader()
       @showCheckMark()
@@ -25,7 +24,6 @@ AutoSaveIconComponent = Ember.Component.extend
 
   showCheckMark: ->
     Ember.run.later (=>
-      debugger
       $('.save-message').fadeOut =>
         @set('isCheckMarkShowing', false)
     ), 1000

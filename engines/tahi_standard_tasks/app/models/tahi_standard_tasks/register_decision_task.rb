@@ -12,14 +12,13 @@ module TahiStandardTasks
     register_task default_title: "Register Decision", default_role: "editor"
 
     def after_update
-      make_paper_editable
+      make_paper_editable if revise_decision?
       # ultimately, we can call #send_emails here as well
 
       create_please_revise_card!
     end
 
     def make_paper_editable
-      return unless revise_decision?
       self.paper.update! editable: true
     end
 

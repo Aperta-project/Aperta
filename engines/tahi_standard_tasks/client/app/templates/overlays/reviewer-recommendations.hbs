@@ -1,7 +1,68 @@
 <h1>Reviewer Recommendations</h1>
 <p>Use the fields below to give us contact information for each suggested reviewer, and please provide specific reasons for your suggestion in the "Reason" box for each person. Please note that the editorial office may not use your suggestions, but your help is appreciated and may speed up the selection of appropriate reviewers.</p>
 
-<ol class="question-list">
-  <li class="question">
-  </li>
-</ol>
+<div class="add-author-form">
+  <div class="form-group form-inline author-top">
+    <div {{bind-attr class=":form-group :author-name :required"}}>
+      {{question-input ident="reviewer_recommendations.suggest_reviewer.first_name"
+                       question="First name"
+                       task=model}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-middle"}}>
+      {{question-input ident="reviewer_recommendations.suggest_reviewer.middle_name"
+                       question="Middle name"
+                       task=model}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-name :required"}}>
+      {{question-input ident="reviewer_recommendations.suggest_reviewer.last_name"
+                       question="Last name"
+                       task=model}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-half :required :author-bump"}}>
+      {{question-input ident="reviewer_recommendations.suggest_reviewer.email"
+                       question="Email"
+                       task=model}}
+    </div>
+  </div>
+
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":form-group :author-half"}}>
+      {{question-input ident="reviewer_recommendations.suggest_reviewer.title"
+                       question="Title"
+                       task=model}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-half :author-bump"}}>
+      {{question-input ident="reviewer_recommendations.suggest_reviewer.department"
+                       question="Department"
+                       task=model}}
+    </div>
+  </div>
+
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":form-group :author-half :required validationErrors.affiliation:error"}}>
+      {{question-select ident="plos_billing.affiliation"
+                        task=model
+                        question="Affiliation"
+                        class="affiliation-field"
+                        source=model.institutions}}
+      {{!select-2-single value=newAuthor.affiliation
+                        class="affiliation-field"
+                        placeholder="Affiliation"
+                        selectedData=selectedAffiliation
+                        source=selectableInstitutions}}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <span class="pull-right author-form-buttons">
+      <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>
+      <button class="button-secondary button--green knockout" {{action "saveNewAuthor"}}>done</button>
+    </span>
+  </div>
+
+</div>
+

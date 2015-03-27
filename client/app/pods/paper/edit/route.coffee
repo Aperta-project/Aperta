@@ -47,6 +47,16 @@ PaperEditRoute = AuthorizedRoute.extend
     lockedBy = @modelFor('paper').get('lockedBy')
     lockedBy and lockedBy == @currentUser
 
+  closeOverlay: ->
+    controller = @controllerFor('paper.edit')
+    editor = controller.get('editor')
+    @disconnectOutlet
+      outlet: 'overlay'
+      parentView: 'application'
+    controller.set('hasOverlay', false)
+    controller.connectEditor()
+    editor.unfreeze()
+
   actions:
     viewCard: (task) ->
       paper = @modelFor('paper')
@@ -75,9 +85,36 @@ PaperEditRoute = AuthorizedRoute.extend
         @set 'fromSubmitOverlay', false
 
     openFigures: ->
-      console.log('TODO: open figures')
+      controller = @controllerFor('paper.edit')
+      editor = controller.get('editor')
+      editor.freeze();
+      # do not handle model changes while overlay is open
+      controller.disconnectEditor()
+      controller.set('hasOverlay', true)
+      @render 'paper/edit/figures',
+        into: 'application'
+        outlet: 'overlay'
+        controller: 'paper/edit/figures'
+        model: @modelFor('paper.edit')
 
     openTables: ->
       console.log('TODO: open tables')
+
+    insertFigure: (figureId) ->
+      editor = @controllerFor('paper.edit').get('editor')
+      # NOTE: we need to provide the full HTML representation right away
+      @closeOverlay()
+      figure = @modelFor('paper.edit').get('figures').findBy('id', figureId)
+      if figure
+        editor.getSurfaceView().execute('figure', 'insert', figure.toHtml())
+      else
+        console.error('No figure with id', figureId)
+
+    closeOverlay: ->
+      @closeOverlay()
+
+    destroyAttachment: (attachment) ->
+      @modelFor('paper').get('figures').removeObject(attachment)
+      attachment.destroyRecord()
 
 `export default PaperEditRoute`

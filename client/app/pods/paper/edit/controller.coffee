@@ -1,5 +1,7 @@
 `import Ember from 'ember'`
 `import BasePaperController from 'tahi/controllers/base-paper'` # EMBERCLI TODO - this is weird
+`import TahiEditorExtensions from 'tahi-editor-extensions/index'`
+`import FigureCollectionAdapter from './adapters/ve-figure-collection-adapter'`
 
 PaperEditController = BasePaperController.extend
 
@@ -12,8 +14,13 @@ PaperEditController = BasePaperController.extend
   # used to recover a selection when returning from another context (such as figures)
   lastEditorState: null
 
-  saveState: false
+  figuresAdapter: null
 
+  saveState: false
+  isSaving: false
+
+  # set to true when opening an editor overlay (figures, tables)
+  hasOverlay: false
 
   errorText: ""
 
@@ -65,19 +72,45 @@ PaperEditController = BasePaperController.extend
 
   # called by ember-cli-visualeditor/components/visual-editor (see template for hook)
   setupEditor: ( (editor) ->
+    FigureNodeIndex = require('tahi-editor-extensions/figures/model/figure-label-generator')['default']
+    self = @
+
+    # register extensions
+    editor.registerExtensions(TahiEditorExtensions)
+    editor.registerExtension(
+      afterDocumentCreated: (documentModel) ->
+        figuresIndex = documentModel.getIndex('figure-nodes')
+        figureLabelGenerator = new FigureNodeIndex(figuresIndex)
+        documentModel.addService('figure-labels', figureLabelGenerator)
+    )
 
     doc = editor.getDocument()
     paper = this.get('model')
+
+    figuresAdapter = FigureCollectionAdapter.create(
+      controller: @
+      paper: paper
+      doc: doc
+    ).connect()
 
     # load the document
     editor.fromHtml(paper.get('body'))
 
     @set('editor', editor)
+    @set('figuresAdapter', figuresAdapter)
+    editor.removeSelection()
   )
+
+  updateToolbar: (newState) ->
+    toolbar = @get('toolbar')
+    if toolbar
+      toolbar.updateState(newState)
+      @set('lastEditorState', newState)
 
   startEditing: ->
     @set('lockedBy', @currentUser)
     @get('model').save().then (paper) =>
+      @connectEditor()
       @send('startEditing')
       @set('saveState', false)
 
@@ -85,10 +118,19 @@ PaperEditController = BasePaperController.extend
     @set('model.body', @get('editor').toHtml())
     @set('lockedBy', null)
     @send('stopEditing')
+    @disconnectEditor()
     @get('model').save().then (paper) =>
       @set('saveState', true)
 
   # enables handlers for document changes (saving) and selection changes (toolbar)
+  connectEditor: ->
+    @get('editor').connect @,
+      "document-change": @onDocumentChange
+      "state-changed": @updateToolbar
+
+  disconnectEditor: ->
+    @get('editor').disconnect @
+
   savePaper: ->
     return unless @get('model.editable')
     editor = @get('editor')
@@ -107,6 +149,20 @@ PaperEditController = BasePaperController.extend
     @set('isSaving', true)
     Ember.run.debounce(@, @savePaper, 2000)
 
+  onDocumentChange: ->
+    doc = @get('editor').getDocument()
+    # HACK: in certain moments we need to inhibit saving
+    # e.g., when updating a figure URL, the server provides a new figure URL
+    # leading to an unfinite loop of updates.
+    # See paper/edit/ve-figure-adapter
+    unless @get('inhibitSave')
+      @set('saveState', false)
+      @savePaperDebounced()
+
+  willDestroy: ( ->
+    @_super()
+    @get('figuresAdapter').dispose()
+  )
 
   actions:
     toggleEditing: ->

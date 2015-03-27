@@ -118,6 +118,7 @@ article.manuscript {
   overflow-y:scroll;
   padding-bottom: 40px;
   margin-bottom: 40px;
+  font-family: $tahi-article-font-family;
 }
 
 // title contenteditable
@@ -126,26 +127,48 @@ article.manuscript {
 
 .manuscript-title-and-placeholder {
   background: $tahi-white;
-  padding: 50px 40px 50px;
+  padding: 50px 50px 20px;
 }
 
 #paper-title {
   margin-bottom: 0px;
+  font-family: $tahi-article-font-family;
 }
 
 
 article.manuscript .ve-ui-surface {
   background: white;
   padding: 30px 40px;
-  min-height: 100%;
+  min-height: 600px;
+}
+
+article.manuscript.read-only {
+  cursor: default;
+}
+
+article.manuscript .ve-ui-surface .ve-ce-documentNode {
+  font-size: 0.95em;
+  padding-left: 10px;
+  min-height: 600px;
 }
 
 // TODO: _contenteditable.scss is a bit too optimistic
 //       affecting all contenteditables
 
+.ve-ui-surface div[contenteditable=true] {
+  min-height: initial;
+  margin-bottom: initial;
+  background-color: initial;
+  padding: initial;
+}
+
 .ve-ui-surface .ve-ce-documentNode {
   padding: 0px;
   margin: 0px;
+}
+
+.ve-ui-surface .ve-ce-documentNode[contenteditable=false] {
+  cursor: default;
 }
 
 // start edit-paper section
@@ -499,6 +522,10 @@ article.manuscript .ve-ui-surface {
   line-height: 34px;
 }
 
+.figure-item .text-property-view {
+  display: inline;
+}
+
 .figure-item .caption .placeholder {
   background: transparent !important;
   font-size: 18px;
@@ -522,4 +549,47 @@ article.manuscript .ve-ui-surface {
 
 .figure-item-detailed-view {
   margin-top: 40px;
+}
+
+/* recylced */
+
+.author-detail {
+  display: inline-block;
+  min-width: 100px;
+}
+
+#manuscript-editor {
+
+  &.sidebar-empty {
+
+    max-width: 840px;
+    min-width: 840px; // override default
+
+    .no-sidebar-submit-manuscript,
+    #no-sidebar-doi {
+      display: block;
+    }
+
+    aside { display: none; }
+    article {
+      width: 100%;
+      border: none;
+    }
+  }
+}
+
+#tahi-container main .broken-image {
+  height: 200px;
+  width: 300px;
+  background-image: url(/images/cat-scientists-3.jpg);
+}
+
+.locked-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+  text-align: center;
+  background-color: transparent;
+  z-index: 1;
 }

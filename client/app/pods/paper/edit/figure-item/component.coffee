@@ -39,6 +39,14 @@ FigureItemComponent = AttachmentThumbnailComponent.extend
     console.log('Setting up editor for figure item in figures overlay...');
     # register extensions
     editor.registerExtensions(TahiEditorExtensions)
+    editor.registerExtension(
+      afterDocumentCreated: (documentModel) ->
+        documentModel.addService('main-document',
+          get: ->
+            return @get('manuscriptEditor').getDocument()
+        )
+    )
+
     figure = @get('figure');
     html = [
       '<div data-type="form" data-name="figure">',

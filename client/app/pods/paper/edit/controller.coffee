@@ -82,6 +82,10 @@ PaperEditController = BasePaperController.extend
         figuresIndex = documentModel.getIndex('figure-nodes')
         figureLabelGenerator = new FigureNodeIndex(figuresIndex)
         documentModel.addService('figure-labels', figureLabelGenerator)
+        documentModel.addService('main-document',
+          get: ->
+            return documentModel
+        )
     )
 
     doc = editor.getDocument()

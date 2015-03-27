@@ -150,7 +150,7 @@ PaperEditController = BasePaperController.extend
     manuscriptHtml = editor.toHtml()
     paper.set('body', manuscriptHtml)
     if paper.get('isDirty')
-      console.log('Saving paper...')
+      # console.log('Saving paper...')
       paper.save().then (paper) =>
         @set('saveState', true)
         @set('isSaving', false)

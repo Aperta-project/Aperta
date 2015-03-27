@@ -11,6 +11,8 @@ VEFigureItemAdapter = Ember.Object.extend
   propertyNodes: null
   cachedValues: null
 
+  observedProperties: ['title', 'caption']
+
   registerBindings: ( ->
     figure = @get('figure')
     node = @get('node')
@@ -38,19 +40,23 @@ VEFigureItemAdapter = Ember.Object.extend
     # only title and caption can be changed via 'VisualEditor'
     # The image is handled emberly
     figure = @get('figure')
-    @propertyNodes.title.connect(@,
-      "change": @propertyEdited
-    )
-    @propertyNodes.caption.connect(@,
-      "change": @propertyEdited
-    )
+    for propertyName in @observedProperties
+      @propertyNodes[propertyName].connect @,
+        "change": @propertyEdited
     return @
 
   disconnect: ->
     figure = @get('figure')
-    @propertyNodes.title.disconnect @
-    @propertyNodes.caption.disconnect @
+    for propertyName in @observedProperties
+      @propertyNodes[propertyName].disconnect @
     return @
+
+  loadFromModel: ->
+    figure = @get('figure')
+    console.log('##### loading data from figure', figure.get('id'))
+    for propertyName in @observedProperties
+      console.log('##### %s: %s', propertyName, figure.get(propertyName))
+      @updatePropertyNode propertyName, figure.get(propertyName)
 
   propertyEdited: (propertyName, newValue) ->
     figure = @get('figure')

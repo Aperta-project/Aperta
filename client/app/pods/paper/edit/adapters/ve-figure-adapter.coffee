@@ -8,6 +8,7 @@ VEFigureAdapter = Ember.Object.extend
   propertyNodes: null
   cachedValues: null
   observedProperties: [ 'title', 'caption', 'src' ]
+  editableProperties: [ 'title', 'caption' ]
 
   init: ->
     @_super()
@@ -36,23 +37,19 @@ VEFigureAdapter = Ember.Object.extend
 
   loadFromModel: ->
     figure = @get('figure')
-    console.log('##### loading data from figure', figure.get('id'))
+    # console.log('loading data from figure', figure.get('id'))
     for propertyName in @observedProperties
-      console.log('##### %s: %s', propertyName, figure.get(propertyName))
+      # console.log('    %s: %s', propertyName, figure.get(propertyName))
       @updatePropertyNode propertyName, figure.get(propertyName)
 
   connect: ->
     figure = @get('figure')
     # console.log('connecting figure %s with node %s', figure.get('id'), @get('node').getId())
     # Note: ATM only title and caption can be edited from within the manuscript editor
-    if @propertyNodes.title
-      @propertyNodes.title.connect(@,
+    for propertyName in @editableProperties
+      @propertyNodes[propertyName].connect @,
         "change": @propertyEdited
-      )
-    if @propertyNodes.caption
-      @propertyNodes.caption.connect(@,
-        "change": @propertyEdited
-      )
+
     for propertyName in @observedProperties
       figure.addObserver(propertyName, @, @modelChanged)
 
@@ -60,12 +57,8 @@ VEFigureAdapter = Ember.Object.extend
 
   disconnect: ->
     figure = @get('figure')
-    # console.log('disconnecting figure %s', figure.get('id'))
-    if @propertyNodes.title
-      @propertyNodes.title.disconnect @
-    if @propertyNodes.caption
-      @propertyNodes.caption.disconnect @
     for propertyName in @observedProperties
+      @propertyNodes[propertyName].disconnect @
       figure.removeObserver(propertyName, @, @modelChanged)
     return @
 
@@ -76,7 +69,7 @@ VEFigureAdapter = Ember.Object.extend
     figure = @get('figure')
     oldValue = figure.get(propertyName)
     if oldValue != newValue
-      console.log('FigureAdapter.propertyEdited', propertyName, newValue)
+      # console.log('FigureAdapter.propertyEdited', propertyName, newValue)
       @cachedValues[propertyName] = newValue
       figure.set(propertyName, newValue)
       figure.saveDebounced()
@@ -101,7 +94,6 @@ VEFigureAdapter = Ember.Object.extend
     editor.breakpoint()
 
   modelChanged: (figure, propertyName) ->
-    console.log('------------------------')
     controller = @get('controller')
     # Note: we allow model updates only if the manuscript is not edited.
     # Either if editing is turned off, or if the user is in an editor overlay
@@ -111,11 +103,8 @@ VEFigureAdapter = Ember.Object.extend
     oldValue = @cachedValues[propertyName]
     newValue = figure.get(propertyName)
     if oldValue != newValue
-      console.log('Model of figure %s has changed for property %s', figure.get('id'), propertyName)
+      # console.log('Model of figure %s has changed for property %s', figure.get('id'), propertyName)
       @updatePropertyNode(propertyName, newValue)
       @cachedValues[propertyName] = newValue
-      # not unlikely that the update has made the editor's selection invalid
-      # so we remove it in any case
-      # controller.get('editor').removeSelection()
 
 `export default VEFigureAdapter`

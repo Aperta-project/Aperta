@@ -31,7 +31,7 @@ Figure = DS.Model.extend
   ).observes('paper.strikingImageId').on('didLoad')
 
   saveDebounced: ->
-    console.log('Saving figure...')
+    # console.log('Saving figure...')
     Ember.run.debounce(@, @save, 2000);
 
   toHtml: ->

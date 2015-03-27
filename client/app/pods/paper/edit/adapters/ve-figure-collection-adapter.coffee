@@ -54,7 +54,6 @@ FiguresCollectionAdapter = Ember.Object.extend
       adapter.disconnect()
 
   didInsertFigure: (figureNode) ->
-    console.log('##### NEW FIGURE')
     id = figureNode.getId()
     figureModel = @get('figures')[id]
     if figureModel

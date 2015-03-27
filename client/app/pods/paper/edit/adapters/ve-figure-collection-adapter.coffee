@@ -42,6 +42,11 @@ FiguresCollectionAdapter = Ember.Object.extend
     doc.getIndex('figure-nodes').disconnect @
     return @
 
+  loadFromModel: ->
+    for adapter in @figureAdapters
+      adapter.loadFromModel()
+    false
+
   dispose: ->
     @disconnect()
     @figureAdapters = []
@@ -49,6 +54,7 @@ FiguresCollectionAdapter = Ember.Object.extend
       adapter.disconnect()
 
   didInsertFigure: (figureNode) ->
+    console.log('##### NEW FIGURE')
     id = figureNode.getId()
     figureModel = @get('figures')[id]
     if figureModel
@@ -61,9 +67,9 @@ FiguresCollectionAdapter = Ember.Object.extend
       # Note: we must delay connecting the adapter
       # as it will initially manipulate the node
       # which is not allowed during creation of the node
-      window.setTimeout( ( ->
-        figureAdapter.connect()
-      ), 0 )
+      # window.setTimeout( ( ->
+      figureAdapter.connect()
+      # ), 0 )
     else
       console.log('No figure model found for id', id)
 

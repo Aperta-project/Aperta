@@ -34,6 +34,13 @@ VEFigureAdapter = Ember.Object.extend
       caption: figure.get('caption')
       src: figure.get('src')
 
+  loadFromModel: ->
+    figure = @get('figure')
+    console.log('##### loading data from figure', figure.get('id'))
+    for propertyName in @observedProperties
+      console.log('##### %s: %s', propertyName, figure.get(propertyName))
+      @updatePropertyNode propertyName, figure.get(propertyName)
+
   connect: ->
     figure = @get('figure')
     # console.log('connecting figure %s with node %s', figure.get('id'), @get('node').getId())

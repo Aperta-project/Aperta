@@ -107,6 +107,18 @@ PaperEditController = BasePaperController.extend
       toolbar.updateState(newState)
       @set('lastEditorState', newState)
 
+  updateFigures: ->
+    editor = @get('editor')
+    # we need to allow model changes
+    modelWasEnabled = editor.isModelEnabled();
+    unless modelWasEnabled
+      editor.enableModel()
+
+    @get('figuresAdapter').loadFromModel();
+
+    unless modelWasEnabled
+      editor.disableModel()
+
   startEditing: ->
     @set('lockedBy', @currentUser)
     @get('model').save().then (paper) =>

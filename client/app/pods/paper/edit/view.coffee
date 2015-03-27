@@ -43,6 +43,10 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
   ).observes('isEditing')
 
   disableEditingInitially: (->
+    # HACK: unfortunately we have to wait for the UI
+    # to be able to use the adapter to manipulate the VE model
+    @get('controller').updateFigures()
+
     @set('controller.lockedBy', null)
   ).on('didInsertElement')
 

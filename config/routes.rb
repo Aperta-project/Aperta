@@ -137,7 +137,7 @@ Tahi::Application.routes.draw do
 
   resource :dashboards, only: :show
 
-  resource :event_stream, only: :show
+  resource :event_stream, only: [:new, :show]
 
   resources :errors, only: :create
   resources :feedback, only: :create

@@ -1,0 +1,13 @@
+<%= javascript_include_tag "http://js.pusherapp.com/2.2/pusher.min.js" %>
+<%= javascript_tag do %>
+  Pusher.host    = "localhost"
+  Pusher.ws_port = "8080"
+  Pusher.protocol = 7
+  Pusher.log = function(data) {
+    console.log('\t\t', data);
+  };
+  var pusher = new Pusher('<%= Pusher.key %>');
+  pusher.bind('pusher:error', function(data) { Pusher.log(data['message']) })
+  var myChannel = pusher.subscribe('chandu');
+  myChannel.bind('an-event', Pusher.log);
+<% end %>

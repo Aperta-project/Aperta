@@ -45,17 +45,23 @@ Select2Component = Ember.TextField.extend
 
   setup:(->
     options                    = {}
-    options.placeholder        = @get('placeholder')
-    options.minimumInputLength = @get('minimumInputLength') if @get('minimumInputLength')
     options.formatSelection    = @get('selectedTemplate') if @get('selectedTemplate')
     options.formatResult       = @get('resultsTemplate') if @get('resultsTemplate')
-    options.allowClear         = @get('allowClear')
     options.multiple           = @get('multiSelect')
     options.data               = @get('source')
-    options.closeOnSelect      = @get('closeOnSelect')
     options.ajax               = @get('remoteSource') if @get('remoteSource')
     options.dropdownCssClass   = @get('dropdownClass') if @get('dropdownClass')
     options.initSelection      = Ember.run.bind(this, @initSelection)
+
+    # just pass these through to select2
+    passThroughOptions = [
+      'allowClear'
+      'closeOnSelect'
+      'minimumInputLength',
+      'minimumResultsForSearch'
+      'placeholder',
+      'width']
+    options[opt] = @get(opt) for opt in passThroughOptions when @get(opt)
 
     @.$().select2(options)
     @setupSelectedListener()

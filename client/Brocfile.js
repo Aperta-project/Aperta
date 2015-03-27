@@ -58,6 +58,8 @@ app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.t
 app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff');
 app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2');
 
+app.import('bower_components/jQuery.dotdotdot/src/js/jquery.dotdotdot.min.js');
+
 if (app.env === 'production') {
   app.import('bower_components/event-source-polyfill/eventsource.js');
 } else {

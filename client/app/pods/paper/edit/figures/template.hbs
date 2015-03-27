@@ -42,10 +42,12 @@
 {{/visual-editor-toolbar}}
 
 <div class="figures-body container-fluid">
-  {{!
-    This view gets re-rendered after each update via EventSource.
-    TODO: Try to find a way to invalidate in a more clever way.
-  }}
+  <div id="paper-attachment-uploads">
+    {{#each upload in uploads}}
+      {{upload-preview upload=upload}}
+    {{/each}}
+  </div>
+
   {{#each figure in figures}}
     {{paper/edit/figure-item
            attachment=figure

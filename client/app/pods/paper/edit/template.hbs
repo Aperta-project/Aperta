@@ -70,7 +70,10 @@
           {{/if}}
         </div>
 
-        {{visual-editor id="paper-body" model=controller.visualEditor viewName='visualEditor'}}
+        {{visual-editor
+          viewName="editor"
+          initializerContext=controller
+          initializer=controller.setupEditor}}
       </div>
     </article>
 

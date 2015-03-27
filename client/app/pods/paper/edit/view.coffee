@@ -3,9 +3,6 @@
 
 PaperEditView = Ember.View.extend RedirectsIfEditable,
 
-  # initialized by component helper {{visual-editor}}
-  visualEditor: null
-
   # initialized by component helper {{visual-editor-toolbar}}
   toolbar: null
 
@@ -31,9 +28,9 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
     $('.oo-ui-toolbar-bar').toggleClass('locked', !@get('isEditing'))
 
     if @get("isEditing")
-      @get("visualEditor")?.enable()
+      @get("controller.editor")?.enable()
     else
-      @get("visualEditor")?.disable()
+      @get("controller.editor")?.disable()
   ).observes('isEditing')
 
   subNavVisibleDidChange: (->
@@ -52,8 +49,8 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
   ).on('didInsertElement')
 
   updateVisualEditor: ->
-    editorModel = @get('visualEditor.model')
-    editorModel.fromHtml(@get('controller.body'))
+    editor = @get('controller.editor')
+    editor.fromHtml(@get('controller.body'))
     @updateEditorLockedState()
 
   teardownControlBarSubNav: (->
@@ -94,7 +91,7 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
         @timeoutSave()
 
   saveVisualEditorChanges: ->
-    documentBody = @get('visualEditor.model').toHtml()
+    documentBody = @get('controller.editor').toHtml()
     @get('controller').send('updateDocumentBody', documentBody)
 
   actions:

@@ -12,7 +12,8 @@ PaperEditRoute = AuthorizedRoute.extend
   heartbeatService: null
 
   beforeModel: ->
-    initializeVisualEditor(ENV)
+    initializeVisualEditor(ENV).catch( (err) ->
+      Ember.Logger.error(err) )
 
   model: ->
     paper = @modelFor('paper')

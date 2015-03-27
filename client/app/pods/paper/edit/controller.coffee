@@ -1,15 +1,19 @@
 `import Ember from 'ember'`
 `import BasePaperController from 'tahi/controllers/base-paper'` # EMBERCLI TODO - this is weird
-`import VisualEditor from 'ember-cli-visualeditor/models/visual-editor'`
 
 PaperEditController = BasePaperController.extend
+
   needs: ['overlays/paperSubmit']
-  visualEditor: null
+
+  # initialized in @setupEditor
+  editor: null
+  # initialized by paper/edit/view
+  toolbar: null
+  # used to recover a selection when returning from another context (such as figures)
+  lastEditorState: null
+
   saveState: false
 
-  setupVisualEditor: (->
-    @set('visualEditor', VisualEditor.create())
-  ).on("init")
 
   errorText: ""
 
@@ -59,20 +63,40 @@ PaperEditController = BasePaperController.extend
         savedAt: null
   ).observes('saveState')
 
-  actions:
+  # called by ember-cli-visualeditor/components/visual-editor (see template for hook)
+  setupEditor: ( (editor) ->
 
+    doc = editor.getDocument()
+    paper = this.get('model')
+
+    # load the document
+    editor.fromHtml(paper.get('body'))
+
+    @set('editor', editor)
+  )
+
+  startEditing: ->
+    @set('lockedBy', @currentUser)
+    @get('model').save().then (paper) =>
+      @send('startEditing')
+      @set('saveState', false)
+
+  stopEditing: ->
+    @set('model.body', @get('editor').toHtml())
+    @set('lockedBy', null)
+    @send('stopEditing')
+    @get('model').save().then (paper) =>
+      @set('saveState', true)
+
+  # enables handlers for document changes (saving) and selection changes (toolbar)
+
+
+  actions:
     toggleEditing: ->
       if @get('lockedBy') #unlocking -> Allowing others to edit
-        @set('body', @get('visualEditor').toHtml())
-        @set('lockedBy', null)
-        @send('stopEditing')
-        @get('model').save().then (paper) =>
-          @set('saveState', true)
+        @stopEditing()
       else #locking -> Editing Paper (locking others out)
-        @set('lockedBy', @currentUser)
-        @get('model').save().then (paper) =>
-          @send('startEditing')
-          @set('saveState', false)
+        @startEditing()
 
     savePaper: ->
       return unless @get('model.editable')
@@ -85,9 +109,9 @@ PaperEditController = BasePaperController.extend
 
     confirmSubmitPaper: ->
       return unless @get('allMetadataTasksCompleted')
-
       @get('model').save()
       @get('controllers.overlays/paperSubmit').set 'model', @get('model')
       @send 'showConfirmSubmitOverlay'
+
 
 `export default PaperEditController`

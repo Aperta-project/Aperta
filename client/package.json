@@ -29,7 +29,7 @@
     "ember-cli-qunit": "0.3.9",
     "ember-cli-rails-addon": "0.0.11",
     "ember-cli-uglify": "1.0.1",
-    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#9115ad1811125b540a4d30103f819b0bca7a3d90",
+    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#5012b70804c367a93587504e00bfb3fb9ebe83b8",
     "ember-data": "1.0.0-beta.16.1",
     "ember-export-application-global": "^1.0.2",
     "express": "^4.8.5",

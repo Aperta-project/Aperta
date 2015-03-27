@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require "bundler"
+require "dotenv"
+require "pry"
+
+
+Bundler.with_clean_env do
+  Dotenv.load(".env.#{ENV.fetch("RAILS_ENV")}")
+  Dir.chdir("../tahi-slanger") do
+    exec("bin/slanger --app_key #{ENV.fetch("EVENT_STREAM_KEY")} --secret #{ENV.fetch("EVENT_STREAM_SECRET")} -v")
+  end
+end

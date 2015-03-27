@@ -3,12 +3,12 @@
 </div>
 
 <h1>Register Decision</h1>
-
+{{latestDecision}}
 <div class="decision-selections">
   <label class="decision-label">
     {{decision-radio-button value="accepted"
                             action="setDecisionTemplate"
-                            selection=model.paperDecision
+                            selection=latestDecision.verdict
                             disabled=model.completed
                             name="decision"}}
     Accepted
@@ -17,7 +17,7 @@
   <label class="decision-label">
     {{decision-radio-button value="rejected"
                             action="setDecisionTemplate"
-                            selection=model.paperDecision
+                            selection=latestDecision.verdict
                             disabled=model.completed
                             name="decision"}}
     Rejected
@@ -26,7 +26,7 @@
   <label class="decision-label">
     {{decision-radio-button value="revise"
                             action="setDecisionTemplate"
-                            selection=model.paperDecision
+                            selection=latestDecision.verdict
                             disabled=model.completed
                             name="decision"}}
     Revise
@@ -35,9 +35,19 @@
 
 <p>Feel free to modify the standard decision letter. Your changes will be saved.</p>
 
-{{textarea focus-out="saveModel"
+{{textarea focus-out="saveLatestDecision"
            onEvent="false"
            class="decision-letter-field"
            placeholder="A boilerplate decision letter will appear here"
            disabled=model.completed
-           value=paperDecisionLetter}}
+           value=latestDecision.letter}}
+
+<div class="previous-decisions">
+  {{#each previousDecisions as |decision|}}
+    <div class="decision">
+      <span class="revision-number">{{decision.revisionNumber}}</span>
+      <span class="verdict">{{decision.verdict}}</span>
+      <span class="letter">{{decision.letter}}</span>
+    </div>
+  {{/each}}
+</div>

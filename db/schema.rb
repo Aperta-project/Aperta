@@ -109,11 +109,12 @@ ActiveRecord::Schema.define(version: 20150401180824) do
     t.integer  "paper_id"
     t.integer  "revision_number", default: 0
     t.text     "letter"
-    t.string   "decision"
+    t.string   "verdict"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "decisions", ["paper_id", "revision_number"], name: "index_decisions_on_paper_id_and_revision_number", unique: true, using: :btree
   add_index "decisions", ["paper_id"], name: "index_decisions_on_paper_id", using: :btree
 
   create_table "figures", force: :cascade do |t|
@@ -437,5 +438,4 @@ ActiveRecord::Schema.define(version: 20150401180824) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
-  add_foreign_key "decisions", "papers"
 end

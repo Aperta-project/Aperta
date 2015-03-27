@@ -138,5 +138,11 @@ describe Paper do
       expect(paper.latest_decision.letter).to eq("Decision 2")
       expect(paper.latest_decision.revision_number).to eq(2)
     end
+
+    it "doesn't call first if there are no decisions" do
+      paper = FactoryGirl.create :paper
+
+      expect(paper.latest_decision).to be_nil
+    end
   end
 end

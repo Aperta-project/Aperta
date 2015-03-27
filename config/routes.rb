@@ -41,6 +41,9 @@ Tahi::Application.routes.draw do
   namespace :user_flows do
     get :potential_flows
   end
+
+  resources :decisions, only: [:create, :update]
+
   resources :user_flows
 
   resources :flows, only: [:show, :create, :update, :destroy]

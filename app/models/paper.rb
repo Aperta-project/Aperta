@@ -100,7 +100,11 @@ class Paper < ActiveRecord::Base
   end
 
   def latest_decision
-    decisions.order("created_at DESC").limit(1).try(:first)
+    decisions.order("created_at DESC").limit(1).first
+  end
+
+  def previous_decisions
+    decisions.order("created_at DESC").offset(1)
   end
 
   # Public: Returns the paper title if it's present, otherwise short title is shown.

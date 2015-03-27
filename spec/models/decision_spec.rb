@@ -20,15 +20,17 @@ describe Decision do
     expect(newest_decision.revision_number).to eq 2
   end
 
-  it "does not create multiple records with the same revision number for the paper" do
-    decision = paper.decisions.create!
+  it "returns the correct revision number even if a revision number is provided while creating" do
+    invalid_decision = paper.decisions.create! revision_number: 0
+    expect(invalid_decision.revision_number).to eq 1
+  end
 
-    # Nothing is raised here,
-    # because we reassign revision_number on Decision.before_save
-    duplicate_decision = paper.decisions.create!({
-      revision_number: 0
-    })
+  it "makes sure that the revision number is always unique" do
+    invalid_decision = paper.decisions.create! # 1
+    expect {
+      invalid_decision.update_attribute :revision_number, 0
+    }.to raise_error
 
-    expect(duplicate_decision.revision_number).to eq 2
+    expect(invalid_decision.revision_number).to_not eq(1)
   end
 end

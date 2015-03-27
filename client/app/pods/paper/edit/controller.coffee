@@ -89,6 +89,23 @@ PaperEditController = BasePaperController.extend
       @set('saveState', true)
 
   # enables handlers for document changes (saving) and selection changes (toolbar)
+  savePaper: ->
+    return unless @get('model.editable')
+    editor = @get('editor')
+    paper = @get('model')
+    manuscriptHtml = editor.toHtml()
+    paper.set('body', manuscriptHtml)
+    if paper.get('isDirty')
+      console.log('Saving paper...')
+      paper.save().then (paper) =>
+        @set('saveState', true)
+        @set('isSaving', false)
+    else
+      @set('isSaving', false)
+
+  savePaperDebounced: ->
+    @set('isSaving', true)
+    Ember.run.debounce(@, @savePaper, 2000)
 
 
   actions:
@@ -99,9 +116,7 @@ PaperEditController = BasePaperController.extend
         @startEditing()
 
     savePaper: ->
-      return unless @get('model.editable')
-      @get('model').save().then (paper) =>
-        @set('saveState', true)
+      @savePaperDebounced()
 
     updateDocumentBody: (content) ->
       @set('body', content)

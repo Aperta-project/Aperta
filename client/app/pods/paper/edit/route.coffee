@@ -73,5 +73,11 @@ PaperEditRoute = AuthorizedRoute.extend
         @replaceWith('paper.index', @modelFor('paper'))
       else
         @set 'fromSubmitOverlay', false
-        
+
+    openFigures: ->
+      console.log('TODO: open figures')
+
+    openTables: ->
+      console.log('TODO: open tables')
+
 `export default PaperEditRoute`

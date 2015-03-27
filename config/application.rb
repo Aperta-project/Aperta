@@ -22,6 +22,7 @@ module Tahi
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)
     config.carrierwave_storage = :fog
     config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL') }
+    config.admin_email = ENV.fetch('ADMIN_EMAIL')
 
     # Raise an error within after_rollback & after_commit
     config.active_record.raise_in_transactional_callbacks = true

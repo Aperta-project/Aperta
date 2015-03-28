@@ -37,13 +37,17 @@ FigureItemComponent = AttachmentThumbnailComponent.extend
 
   setupEditor: ( (editor) ->
     console.log('Setting up editor for figure item in figures overlay...');
+    manuscriptEditor = @get('manuscriptEditor');
     # register extensions
     editor.registerExtensions(TahiEditorExtensions)
     editor.registerExtension(
       afterDocumentCreated: (documentModel) ->
         documentModel.addService('main-document',
           get: ->
-            return @get('manuscriptEditor').getDocument()
+            return manuscriptEditor.getDocument()
+        )
+        documentModel.addService('figure-labels',
+          manuscriptEditor.getDocument().getService('figure-labels')
         )
     )
 

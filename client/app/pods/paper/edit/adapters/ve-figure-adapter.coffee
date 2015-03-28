@@ -41,6 +41,7 @@ VEFigureAdapter = Ember.Object.extend
     for propertyName in @observedProperties
       # console.log('    %s: %s', propertyName, figure.get(propertyName))
       @updatePropertyNode propertyName, figure.get(propertyName)
+    false
 
   connect: ->
     figure = @get('figure')

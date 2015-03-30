@@ -7,7 +7,7 @@
     console.log('\t\t', data);
   };
   var pusher = new Pusher('<%= Pusher.key %>', {authEndpoint: "/event_stream/auth"});
-  pusher.bind('pusher:error', function(data) { Pusher.log(data['message']) })
+  pusher.bind('pusher:error', function(data) { Pusher.log(data['message']) });
   var myChannel = pusher.subscribe('private-user_1-paper_3');
   myChannel.bind('an-event', Pusher.log);
 <% end %>

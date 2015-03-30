@@ -8,6 +8,22 @@ create_update_events = [
   "invitation:updated"
 ]
 
+
+
+TahiNotifier.subscribe("task::updated") do |subscription_name, payload|
+  action = payload[:action]
+  record = payload[:record]
+  channel_name_models = { paper: 13, task: 44 }
+
+
+
+  channel = "private-user_4-paper_#{record.paper.id}"
+  channel = "private-user_4-paper_33-task_13"
+  channel_suffix = "paper_33-task_13"
+
+  EventStream.new(action, record, subscription_name).post
+end
+
 TahiNotifier.subscribe(create_update_events) do |subscription_name, payload|
   action = payload[:action]
   record = payload[:record]

@@ -34,4 +34,11 @@ class EventStreamConnection
   def self.enabled?
     ENV["EVENT_STREAM_ENABLED"] != "false"
   end
+
+  # TODO: only send to users that have "presence"
+  # TODO: exclude specific sockets
+  def self.post_event(channel_name:, action:, payload:)
+    Pusher.trigger(channel_name, action, payload)
+  end
+
 end

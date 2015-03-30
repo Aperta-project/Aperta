@@ -4,17 +4,32 @@ FinancialDisclosureOverlayController = TaskController.extend
   task: Em.computed.alias("model")
   funders: Em.computed.alias("task.funders")
   paper: Em.computed.alias("task.paper")
-  receivedFunding: (->
-    @get('funders.length') > 0
-  ).property('funders.@each', 'funders.[]')
-  receivedNoFunding: Em.computed.not('receivedFunding')
+
+  # ye olde tri-state boolean (explicit No selection)
+  receivedFunding: null
+
+  numFundersObserver: (->
+    # No explicitly chosen, bail
+    return if @get('receivedFunding') == false
+
+    if @get('funders.length') > 0
+      # definitely funders, choose Yes
+      @set("receivedFunding", true)
+    else
+      # require explicit selection of No
+      @set("receivedFunding", null)
+  ).observes('funders.@each')
 
   actions:
     choseFundingReceived: ->
+      # explicitly choose Yes
+      @set('receivedFunding', true)
       if @get('funders.length') < 1
         @send('addFunder')
 
     choseFundingNotReceived: ->
+      # explicitly choose No
+      @set('receivedFunding', false)
       @get('funders').toArray().forEach (funder) ->
         if funder.get('isNew')
           funder.deleteRecord()

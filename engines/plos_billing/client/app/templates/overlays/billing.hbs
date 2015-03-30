@@ -68,18 +68,6 @@
 
     </div>
   </div>
-</div>
-
-<div class="add-author-form">
-  <div class="form-group form-inline">
-    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
-      {{error-message message=null}}
-      {{question-select ident="plos_billing.country"
-                        task=model
-                        question="Please select your Country"
-                        source=countries}}
-    </div>
-  </div>
   <div class="form-group form-inline">
     <div {{bind-attr class=":required validationErrors.department:error"}}>
       {{error-message message=null}}
@@ -115,6 +103,15 @@
       {{question-input ident="plos_billing.postal_code"
                        task=model
                        question="Postal Code"}}
+    </div>
+  </div>
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
+      {{error-message message=null}}
+      {{question-select ident="plos_billing.country"
+                        task=model
+                        question="Please select your Country"
+                        source=countries}}
     </div>
   </div>
 </div>

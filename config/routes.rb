@@ -137,7 +137,9 @@ Tahi::Application.routes.draw do
 
   resource :dashboards, only: :show
 
-  resource :event_stream, only: [:new, :show]
+  resource :event_stream, only: [:new, :show] do
+    post :auth
+  end
 
   resources :errors, only: :create
   resources :feedback, only: :create

@@ -42,68 +42,19 @@
   <li class="question">
     {{#question-radio ident="ethics.animal_subjects"
                       task=model
-                      question="Does this study involve vertebrate animals, embryos or tissues?"}}
+                      question="Does your study involve Animal Research (vertebrate animals, embryos or tissues)?"}}
 
       {{#show-if-parent prop="selectedYes"}}
+        <div class="question-info">
+          <p>All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, "The use of non-human primates in research." The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.</p>
+          <p>If anesthesia, euthanasia or any kind of animal sacrifice is part of the study, please include briefly in your statement which substances and/or methods were applied.</p>
+          <p>Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board, and indicate whether they approved this research or granted a formal waiver of ethical approval. Also include an approval number if one was obtained.</p>
+        </div>
+
         <div class="question-dataset">
-          {{question-textarea ident="ethics.animal_subjects.institution_name"
+          {{question-textarea ident="ethics.animal_subjects.field_permit"
                               task=model
-                              question="Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board."}}
-
-          <br>
-          {{#question-radio ident="ethics.animal_subjects.ethical_approval"
-                            task=model
-                            question="Did they approve this research or grant a formal waiver of ethical approval?"}}
-
-              {{#show-if-parent prop="selectedYes"}}
-                {{question-textarea ident="ethics.animal_subjects.ethical_approval.approval_number"
-                                    task=model
-                                    class="sub-question"
-                                    question="Please provide an approval number if one was obtained."}}
-              {{/show-if-parent}}
-          {{/question-radio}}
-
-          <br>
-
-          {{#question-radio ident="ethics.animal_subjects.animal_sacrifice"
-                            task=model
-                            question="Was anesthesia, euthanasia or any kind of animal sacrifice part of the study?"}}
-
-              {{#show-if-parent prop="selectedYes"}}
-                {{question-textarea ident="ethics.animal_subjects.animal_sacrifice.method_information"
-                                    task=model
-                                    class="sub-question"
-                                    question="Please include briefly in your statement which substances and/or methods were applied."}}
-
-                <div class="question-info">
-                  <div class="question-info-header">Animal Research (involved vertebrate animals, embryos or tissues)</div>
-                  <p>All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, <a href="http://www.acmedsci.ac.uk/more/news/the-use-of-non-human-primates-in-research/">The use of non-human primates in research.</a> The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.</p>
-                </div>
-
-                {{question-uploader ident="ethics.animal_subjects.arrive_checklist"
-                                    task=model
-                                    question="Please provide a copy of the <a href='http://www.nc3rs.org.uk/page.asp?id=1357' target='_new'>ARRIVE Guidelines</a> checklist."
-                                    updateStore="updateStore"
-                                    destroyAttachment="destroyAttachment"
-                                    accept=".docx,.pdf"}}
-              {{/show-if-parent}}
-          {{/question-radio}}
-
-          <br>
-
-          {{#question-radio ident="ethics.animal_subjects.euthanasia"
-                            task=model
-                            question="Did you use anesthesia or perform euthanasia?"}}
-
-              {{#show-if-parent prop="selectedYes"}}
-                {{question-textarea ident="ethics.animal_subjects.animal_sacrifice.euthanasia.specifics"
-                                    task=model
-                                    class="sub-question"
-                                    question="Please describe dates and specific use of anesthesia; please describe dates and methods of euthanasia."}}
-
-              {{/show-if-parent}}
-          {{/question-radio}}
-
+                              question="Please indicate the name of the institution or the relevant body that granted permission."}}
         </div>
       {{/show-if-parent}}
     {{/question-radio}}

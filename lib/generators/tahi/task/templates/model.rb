@@ -6,7 +6,7 @@ module <%= @plugin.camelize %>
     register_task default_title: "<%= class_name %> Task", default_role: "author"
 
     def active_model_serializer
-      TaskSerializer
+      <%= class_name %>TaskSerializer
     end
   end
 end

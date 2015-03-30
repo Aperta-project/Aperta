@@ -5,8 +5,10 @@ FinancialDisclosureOverlayController = TaskController.extend
   funders: Em.computed.alias("task.funders")
   paper: Em.computed.alias("task.paper")
 
-  # ye olde tri-state boolean (explicit No selection)
+  # ye olde tri-state boolean (explicit selection)
   receivedFunding: null
+  explicitNo: Ember.computed.equal('receivedFunding', false)
+  explicitYes: Ember.computed.equal('receivedFunding', true)
 
   numFundersObserver: (->
     # No explicitly chosen, bail

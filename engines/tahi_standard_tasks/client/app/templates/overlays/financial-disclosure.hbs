@@ -25,5 +25,23 @@
 
   {{#if receivedFunding}}
     <button class="button-secondary button--green" {{action "addFunder"}}>Add Another Funder</button>
+
+    <hr>
+
+    <p>
+      Please note that if your manuscript is accepted, this statement will be published.
+      Your Financial Disclosure Statement will appear as:
+    </p>
+
+    {{#each funder in funders}}
+      <p>
+        This work was supported by <a {{bind-attr href=funder.website}}><strong>{{display-value funder.name or="[funder name]"}}</strong></a>
+        (<strong>{{display-value funder.grantNumber or="[funder grant number]"}}</strong>).
+        {{#if funder.funderHadInfluence}}
+          {{funder.funderInfluenceDescription}}.
+        {{/if}}
+      </p>
+    {{/each}}
+
   {{/if}}
 </div>

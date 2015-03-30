@@ -131,6 +131,10 @@ Tahi::Application.routes.draw do
       resources :jobs, only: [:create]
     end
 
+    resource :event_stream, only: [:show] do
+      post :auth
+    end
+
     # s3 request policy
     #
     namespace :s3 do

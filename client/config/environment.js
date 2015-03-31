@@ -23,7 +23,7 @@ module.exports = function(environment) {
       'default-src': "'none'",
       'script-src': "'self' 'unsafe-eval'", // loading visualEditor via getScript
       'font-src': "'self'",
-      'connect-src': "'self' http://localhost:8081",
+      'connect-src': "'self'",
       'img-src': "'self'",
       'style-src': "'self' 'unsafe-inline'", // Allow inline styles
       'media-src': "'self'"

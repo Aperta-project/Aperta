@@ -73,8 +73,6 @@ PaperEditController = BasePaperController.extend
   # called by ember-cli-visualeditor/components/visual-editor (see template for hook)
   setupEditor: ( (editor) ->
     FigureNodeIndex = require('tahi-editor-extensions/figures/model/figure-label-generator')['default']
-    self = @
-
     # register extensions
     editor.registerExtensions(TahiEditorExtensions)
     editor.registerExtension(
@@ -87,10 +85,8 @@ PaperEditController = BasePaperController.extend
             return documentModel
         )
     )
-
     doc = editor.getDocument()
     paper = this.get('model')
-
     figuresAdapter = FigureCollectionAdapter.create(
       controller: @
       paper: paper
@@ -154,7 +150,6 @@ PaperEditController = BasePaperController.extend
     manuscriptHtml = editor.toHtml()
     paper.set('body', manuscriptHtml)
     if paper.get('isDirty')
-      # console.log('Saving paper...')
       paper.save().then (paper) =>
         @set('saveState', true)
         @set('isSaving', false)

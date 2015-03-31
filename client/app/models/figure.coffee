@@ -35,12 +35,12 @@ Figure = DS.Model.extend
     Ember.run.debounce(@, @save, 2000);
 
   toHtml: ->
-    return [
-      '<figure itemscope data-id="', @get('id'),'">',
-        '<h1 itemprop="title">', @get('title'), '</h1>',
-        '<img src="', @get('src'), '">',
-        '<figcaption>', @get('caption'), '</figcaption>',
-      '</figure>'
-    ].join('')
+    """
+    <figure itemscope data-id="#{@get('id')}">
+      <h1 itemprop="title">#{@get('title')}</h1>
+      <img src="#{@get('src')}">
+      <figcaption>#{@get('caption')}</figcaption>
+    </figure>
+    """
 
 `export default Figure`

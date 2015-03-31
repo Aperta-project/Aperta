@@ -45,9 +45,6 @@ app.import('bower_components/jquery-ui/ui/sortable.js');
 // Select 2
 app.import('bower_components/select2/select2.js');
 
-// lodash
-app.import('bower_components/lodash/lodash.js');
-
 // bootstrap
 app.import('bower_components/bootstrap/dist/js/bootstrap.js');
 app.import('bower_components/bootstrap/dist/css/bootstrap.min.css');

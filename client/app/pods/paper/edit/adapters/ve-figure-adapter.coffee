@@ -37,15 +37,12 @@ VEFigureAdapter = Ember.Object.extend
 
   loadFromModel: ->
     figure = @get('figure')
-    # console.log('loading data from figure', figure.get('id'))
     for propertyName in @observedProperties
-      # console.log('    %s: %s', propertyName, figure.get(propertyName))
       @updatePropertyNode propertyName, figure.get(propertyName)
     false
 
   connect: ->
     figure = @get('figure')
-    # console.log('connecting figure %s with node %s', figure.get('id'), @get('node').getId())
     # Note: ATM only title and caption can be edited from within the manuscript editor
     for propertyName in @editableProperties
       @propertyNodes[propertyName].connect @,
@@ -70,7 +67,6 @@ VEFigureAdapter = Ember.Object.extend
     figure = @get('figure')
     oldValue = figure.get(propertyName)
     if oldValue != newValue
-      # console.log('FigureAdapter.propertyEdited', propertyName, newValue)
       @cachedValues[propertyName] = newValue
       figure.set(propertyName, newValue)
       figure.saveDebounced()
@@ -104,7 +100,6 @@ VEFigureAdapter = Ember.Object.extend
     oldValue = @cachedValues[propertyName]
     newValue = figure.get(propertyName)
     if oldValue != newValue
-      # console.log('Model of figure %s has changed for property %s', figure.get('id'), propertyName)
       @updatePropertyNode(propertyName, newValue)
       @cachedValues[propertyName] = newValue
 

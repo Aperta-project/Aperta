@@ -36,7 +36,6 @@ FigureItemComponent = AttachmentThumbnailComponent.extend
   isSaving: false
 
   setupEditor: ( (editor) ->
-    console.log('Setting up editor for figure item in figures overlay...');
     manuscriptEditor = @get('manuscriptEditor');
     # register extensions
     editor.registerExtensions(TahiEditorExtensions)
@@ -52,16 +51,19 @@ FigureItemComponent = AttachmentThumbnailComponent.extend
     )
 
     figure = @get('figure');
-    html = [
-      '<div data-type="form" data-name="figure">',
-        '<div data-type="form-entry" data-name="title" class="figure-title">',
-          '<span data-type="text-input" data-name="title" class="figure-title" data-placeholder="Enter title here">', figure.get('title'), '</span>',
-        '</div>',
-        '<div data-type="form-entry" data-name="title" class="figure-caption">',
-          '<span data-type="text-input" data-name="caption"  class="figure-caption" data-placeholder="Enter caption here">', figure.get('caption'), '</span>',
-        '</div>',
-      '</div>'
-    ].join('')
+    html =
+      """
+      <div data-type="form" data-name="figure">
+        <div data-type="form-entry" data-name="title" class="figure-title">
+          <span data-type="text-input" data-name="title" class="figure-title"
+                data-placeholder="Enter title here">#{figure.get('title')}</span>
+        </div>
+        <div data-type="form-entry" data-name="title" class="figure-caption">
+          <span data-type="text-input" data-name="caption" class="figure-caption"
+                data-placeholder="Enter caption here">#{figure.get('caption')}</span>
+        </div>
+      </div>
+      """
     editor.fromHtml(html)
 
     # TODO: would be nice to have a more convenient find API (like selectors in DOM)
@@ -123,9 +125,8 @@ FigureItemComponent = AttachmentThumbnailComponent.extend
     @sendAction('updateToolbar', newState)
 
   saveFigure: ->
-    self = @
-    @get('figure').save().then(->
-      self.set('isSaving', false)
+    @get('figure').save().then(=>
+      @set('isSaving', false)
     )
 
   saveFigureDebounced: ->

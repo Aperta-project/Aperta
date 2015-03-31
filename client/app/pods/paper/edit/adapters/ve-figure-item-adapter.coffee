@@ -53,9 +53,7 @@ VEFigureItemAdapter = Ember.Object.extend
 
   loadFromModel: ->
     figure = @get('figure')
-    console.log('##### loading data from figure', figure.get('id'))
     for propertyName in @observedProperties
-      console.log('##### %s: %s', propertyName, figure.get(propertyName))
       @updatePropertyNode propertyName, figure.get(propertyName)
 
   propertyEdited: (propertyName, newValue) ->
@@ -64,7 +62,6 @@ VEFigureItemAdapter = Ember.Object.extend
     if oldValue != newValue
       @cachedValues[propertyName] = newValue
       figure.set(propertyName, newValue)
-      # console.log('FigureItemAdapter: updated %s. saving...', propertyName)
       @get('component').send('saveFigure')
 
   # Note: model changes are not handled here

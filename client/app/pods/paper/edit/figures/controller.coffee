@@ -29,7 +29,6 @@ EditFiguresController = Ember.Controller.extend FileUploadMixin,
 
     updateToolbar: (newState)->
       toolbar = @get('toolbar');
-      console.log('Updating toolbar', newState, toolbar, newState.hasSelection());
       if toolbar
         lastState = @get('lastState')
         if not lastState or newState.hasSelection() or lastState.editor == newState.editor

@@ -26,10 +26,12 @@
             <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
           {{/if}}
         </div>
-        {{visual-editor
-          viewName="editor"
-          initializerContext=controller
-          initializer=controller.setupEditor}}
+        <div id="paper-body">
+          {{visual-editor
+            viewName="editor"
+            initializerContext=controller
+            initializer=controller.setupEditor}}
+        </div>
       </article>
     </main>
 

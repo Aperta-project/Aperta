@@ -98,7 +98,7 @@ PaperEditRoute = AuthorizedRoute.extend
         model: @modelFor('paper.edit')
 
     openTables: ->
-      console.log('TODO: open tables')
+      # TODO
 
     insertFigure: (figureId) ->
       editor = @controllerFor('paper.edit').get('editor')

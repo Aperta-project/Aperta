@@ -33,7 +33,7 @@
 #paper-editor {
   @include position(fixed, $tahi-control-bar-height 0px 0px 0px);
   min-width: 1050px;
-  background: white;
+  background: $tahi-white;
 }
 
 html.control-bar-sub-nav-active #paper-editor {
@@ -57,7 +57,7 @@ html.control-bar-sub-nav-active #paper-editor {
 
 
 #paper-editor .editor {
-  background: #F5F5F5;
+  background: $tahi-grey-xlight;
   position:absolute;
   top:0px;
   right:300px;
@@ -69,7 +69,7 @@ html.control-bar-sub-nav-active #paper-editor {
   width: 100%;
   background: $tahi-white;
   padding: 5px 20px;
-  border-bottom: 1px solid #F5F5F5;
+  border-bottom: 1px solid $tahi-grey-xlight;
   z-index: 1;  // higher index to ensure toolbar stays over side-bar
 }
 
@@ -137,7 +137,7 @@ article.manuscript {
 
 
 article.manuscript .ve-ui-surface {
-  background: white;
+  background: $tahi-white;
   padding: 30px 40px;
   min-height: 600px;
 }
@@ -388,13 +388,13 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 }
 
 .figure-item .edit-button.active {
-  background-color: green;
+  background-color: $tahi-green;
   color: #fff;
 }
 
 .figure-item .edit-button.active:hover {
   background-color: #ccc;
-  border-color: green;
+  border-color: $tahi-green;
 }
 
 
@@ -426,7 +426,7 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 }
 
 .figure-item.unplaced .figure-label {
-  color: red;
+  color: $tahi-error-red;
 }
 
 .figure-item-header .first-button-group {
@@ -439,7 +439,7 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 
 .figure-item.saving .saving-spinner {
   visibility:initial;
-  color: #green;
+  color: $tahi-green;
 }
 
 .figure-item .insert-into-manuscript {

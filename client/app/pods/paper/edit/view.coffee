@@ -33,7 +33,6 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
   ).on('didInsertElement')
 
   updateEditorLockedState: ( ->
-    # console.log('PaperEditView.isEditing:', @get('isEditing'), @get('editor'))
     editor = @get("controller.editor")
     if editor
       if @get("isEditing")

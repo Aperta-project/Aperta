@@ -5,6 +5,8 @@ module TahiStandardTasks
 
     register_task default_title: "Reviewer Recommendations", default_role: "author"
 
+    has_many :reviewer_recommendations
+
     def active_model_serializer
       ReviewerRecommendationsTaskSerializer
     end

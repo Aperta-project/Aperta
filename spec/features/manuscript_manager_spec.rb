@@ -92,7 +92,7 @@ feature "Manuscript Manager", js: true, selenium: true do
     end
   end
 
-  scenario "Admin can assign a paper to themselves" do
+  scenario "Admin can assign a paper to themselves", flaky: true do
     task_manager_page = TaskManagerPage.visit paper
 
     needs_editor_phase = task_manager_page.phase 'Invite Editor'

@@ -107,7 +107,7 @@ html.control-bar-sub-nav-active #paper-editor {
 }
 
 article.manuscript {
-  background: #efefef;
+  background: $tahi-grey-xlight;
   position: absolute;
   top: 0px;
   left: 0px;
@@ -220,8 +220,42 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   }
 }
 
-// end edit-paper section
+.author-detail {
+  display: inline-block;
+  min-width: 100px;
+}
 
+#manuscript-editor {
+
+  &.sidebar-empty {
+
+    max-width: 840px;
+    min-width: 840px; // override default
+
+    .no-sidebar-submit-manuscript,
+    #no-sidebar-doi {
+      display: block;
+    }
+
+    aside { display: none; }
+    article {
+      width: 100%;
+      border: none;
+    }
+  }
+}
+
+.locked-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+  text-align: center;
+  background-color: transparent;
+  z-index: 1;
+}
+
+// end edit-paper section
 
 // start contributors section
 
@@ -290,7 +324,7 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   }
 }
 
-/* figures overlay section */
+// figures overlay section
 
 .figures-overlay {
   display: block;
@@ -309,7 +343,7 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   height: 60px;
   color: $tahi-green;
   padding: 0px 15px;
-  border-bottom: solid 1px #eee;
+  border-bottom: solid 1px $tahi-grey-xlight;
 }
 
 .figures-header .overlay-title {
@@ -319,19 +353,16 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   padding: 15px 10px;
 }
 
-.figures-body {
-}
-
 .figures-overlay .figures-toolbar {
   display: inline-block;
   width: 100%;
   padding: 5px 20px;
-  border-bottom: solid 1px #eee;
+  border-bottom: solid 1px $tahi-grey-xlight;
 }
 
 .figures-overlay .close-overlay {
   display: inline;
-  color: #39a329;
+  color: $tahi-green;
   cursor: pointer;
 }
 
@@ -345,7 +376,7 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 
 .figure-item {
   position: relative;
-  border: solid 1px #ccc;
+  border: solid 1px $tahi-grey-light;
   border-radius: 2px;
   margin-bottom: 10px;
   padding: 10px 20px;
@@ -372,28 +403,28 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 }
 
 .figure-item .btn.enabled {
-  color: #999;
+  color: $tahi-grey-dark;
 }
 
 .figure-item a.btn.enabled:hover {
-  color: #666;
+  color: $tahi-grey;
 }
 
 .figure-item .btn.active {
-  color: #000;
+  color: $tahi-black;
 }
 
 .figure-item .btn.active:hover {
-  color: #666;
+  color: $tahi-grey;
 }
 
 .figure-item .edit-button.active {
   background-color: $tahi-green;
-  color: #fff;
+  color: $tahi-white;
 }
 
 .figure-item .edit-button.active:hover {
-  background-color: #ccc;
+  background-color: $tahi-grey-light;
   border-color: $tahi-green;
 }
 
@@ -553,47 +584,4 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 
 .figure-item-detailed-view {
   margin-top: 40px;
-}
-
-/* recylced */
-
-.author-detail {
-  display: inline-block;
-  min-width: 100px;
-}
-
-#manuscript-editor {
-
-  &.sidebar-empty {
-
-    max-width: 840px;
-    min-width: 840px; // override default
-
-    .no-sidebar-submit-manuscript,
-    #no-sidebar-doi {
-      display: block;
-    }
-
-    aside { display: none; }
-    article {
-      width: 100%;
-      border: none;
-    }
-  }
-}
-
-#tahi-container main .broken-image {
-  height: 200px;
-  width: 300px;
-  background-image: url(/images/cat-scientists-3.jpg);
-}
-
-.locked-overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  font-size: 24px;
-  text-align: center;
-  background-color: transparent;
-  z-index: 1;
 }

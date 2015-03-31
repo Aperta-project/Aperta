@@ -21,6 +21,8 @@ BasePaperController = Ember.ObjectController.extend
       logoUrl
   ).property('model.journal.logoUrl')
 
+  taskSorting: ['phase.position', 'position']
+
   authorTasks: Ember.computed.filterBy('tasks', 'role', 'author')
 
   canViewManuscriptManager: false
@@ -32,6 +34,12 @@ BasePaperController = Ember.ObjectController.extend
     authorTasks   = @get('authorTasks')
     assignedTasks.filter (t)-> !authorTasks.contains(t)
   ).property('tasks.@each')
+
+  sortedAuthorTasks: Ember.computed.sort('authorTasks', 'taskSorting')
+
+  sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting')
+
+  sortedEditorTasks: Ember.computed.sort('editorTasks', 'taskSorting')
 
   editorTasks: (->
     if @get('model.editors').contains(@get('currentUser'))

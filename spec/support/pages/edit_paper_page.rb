@@ -21,7 +21,7 @@ class EditPaperPage < Page
   text_assertions :journal, '.paper-journal'
 
   def initialize element = nil
-    find '.manuscript-container'
+    find 'article.manuscript'
     super
   end
 

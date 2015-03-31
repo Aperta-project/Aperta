@@ -4,13 +4,15 @@ module TahiStandardTasks
     respond_to :json
 
     def create
+      reviewer_recommendation = ReviewerRecommendation.create! reviewer_recommendation_params
+      render json: reviewer_recommendation
     end
 
     private
 
     def reviewer_recommendation_params
       params.require(:reviewer_recommendation).permit(
-        # :reviewer_recommendation_task_id,
+        :reviewer_recommendations_task_id,
         :first_name,
         :middle_initial,
         :last_name,

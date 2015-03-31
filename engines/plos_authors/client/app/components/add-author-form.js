@@ -2,6 +2,13 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   layoutName: 'components/add-author-form',
+  authorContributionOptions: [
+    "Conceived and designed the experiments",
+    "Performed the experiments",
+    "Analyzed the data",
+    "Contributed reagents/materials/analysis tools",
+    "Contributed to the writing of the manuscript"
+  ],
 
   setNewAuthor: function() {
     if (!this.get('newAuthor')) {
@@ -47,6 +54,19 @@ export default Ember.Component.extend({
     saveNewAuthor: function() {
       this.sendAction('saveAuthor', this.get('newAuthor'));
       this.clearNewAuthor();
+    },
+
+    addContribution: function(name) {
+      this.get("newAuthor.contributions").addObject(name);
+    },
+
+    removeContribution: function(name) {
+      this.get("newAuthor.contributions").removeObject(name);
+    },
+
+    resolveContributions: function(newContributions, unmatchedContributions) {
+      this.get("newAuthor.contributions").removeObjects(unmatchedContributions);
+      this.get("newAuthor.contributions").addObjects(newContributions);
     }
   }
 });

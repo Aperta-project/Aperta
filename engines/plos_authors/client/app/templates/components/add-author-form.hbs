@@ -89,4 +89,16 @@
     </span>
   </div>
 
+  <div class="form-group">
+    {{#each contribution in authorContributionOptions}}
+      {{author-contribution-checkbox name=contribution
+                                     currentContributions=newAuthor.contributions
+                                     checked="addContribution"
+                                     unchecked="removeContribution"}}
+    {{/each}}
+    {{author-contribution-other-checkbox availableContributions=authorContributionOptions
+                                         currentContributions=newAuthor.contributions
+                                         changed="resolveContributions"}}
+  </div>
+
 </div>

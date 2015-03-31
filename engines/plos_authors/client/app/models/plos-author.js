@@ -19,6 +19,7 @@ export default DS.Model.extend({
   corresponding: a('boolean'),
   deceased: a('boolean'),
   position: a('number'),
+  contributions: a(),
 
   fullName: function() {
     return [this.get('firstName'), this.get('middleInitial'), this.get('lastName')].compact().join(' ');

@@ -8,7 +8,8 @@ module PlosAuthors
       :title,
       :corresponding,
       :deceased,
-      :department
+      :department,
+      :contributions
 
     has_one :plos_authors_task, embed: :id
 

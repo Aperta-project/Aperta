@@ -60,7 +60,8 @@ module PlosAuthors
         :secondary_affiliation,
         :deceased,
         :corresponding,
-        :position
+        :position,
+        contributions: []
       )
     end
   end

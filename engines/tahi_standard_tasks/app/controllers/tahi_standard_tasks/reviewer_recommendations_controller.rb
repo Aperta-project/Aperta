@@ -5,7 +5,7 @@ module TahiStandardTasks
 
     def create
       reviewer_recommendation = ReviewerRecommendation.create! reviewer_recommendation_params
-      render json: reviewer_recommendation
+      render json: reviewer_recommendation, status: :created
     end
 
     private

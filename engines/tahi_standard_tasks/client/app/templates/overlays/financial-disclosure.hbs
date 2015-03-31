@@ -36,7 +36,7 @@
     {{#each funder in funders}}
       <p>
         This work was supported by <a {{bind-attr href=funder.website}}><strong>{{display-value funder.name or="[funder name]"}}</strong></a>
-        (<strong>{{display-value funder.grantNumber or="[funder grant number]"}}</strong>).
+        (grant number <strong>{{display-value funder.grantNumber or="[funder grant number]"}}</strong>).
         {{#if funder.funderHadInfluence}}
           {{funder.funderInfluenceDescription}}.
         {{else}}

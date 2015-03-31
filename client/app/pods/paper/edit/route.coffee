@@ -63,6 +63,19 @@ PaperEditRoute = AuthorizedRoute.extend
     lockedBy = @modelFor('paper').get('lockedBy')
     lockedBy and lockedBy == @currentUser
 
+  openOverlay: (overlay) ->
+    controller = @controllerFor(@get('editorLookup'))
+    editor = controller.get('editor')
+    editor.freeze();
+    # do not handle model changes while overlay is open
+    controller.disconnectEditor()
+    controller.set('hasOverlay', true)
+    @render overlay,
+      into: 'application'
+      outlet: 'overlay'
+      controller: overlay
+      model: @modelFor('paper.edit')
+
   closeOverlay: ->
     controller = @controllerFor(@get('editorLookup'))
 
@@ -104,24 +117,12 @@ PaperEditRoute = AuthorizedRoute.extend
         @set 'fromSubmitOverlay', false
 
     openFigures: ->
-      controller = @controllerFor(@get('editorLookup'))
-      editor = controller.get('editor')
-      editor.freeze()
-      # do not handle model changes while overlay is open
-      controller.disconnectEditor()
-      controller.set('hasOverlay', true)
-
       figureController = @controllerFor('paper/edit/figures')
       figureController.set('manuscriptEditor', controller.get('editor'))
-
-      @render 'paper/edit/figures',
-        into: 'application'
-        outlet: 'overlay'
-        controller: figureController
-        model: @modelFor('paper.edit')
+      @openOverlay('paper/edit/figures')
 
     openTables: ->
-      # TODO
+      @openOverlay('paper/edit/tables')
 
     insertFigure: (figureId) ->
       editor = @controllerFor(@get('editorLookup')).get('editor')
@@ -130,6 +131,16 @@ PaperEditRoute = AuthorizedRoute.extend
       figure = @modelFor('paper.edit').get('figures').findBy('id', figureId)
       if figure
         editor.getSurfaceView().execute('figure', 'insert', figure.toHtml())
+      else
+        console.error('No figure with id', figureId)
+
+    insertTable: (tableId) ->
+      editor = @controllerFor('paper.edit').get('editor')
+      # NOTE: we need to provide the full HTML representation right away
+      @closeOverlay()
+      table = @modelFor('paper.edit').get('tables').findBy('id', tableId)
+      if table
+        editor.getSurfaceView().execute('figure', 'insert', table.toHtml())
       else
         console.error('No figure with id', figureId)
 

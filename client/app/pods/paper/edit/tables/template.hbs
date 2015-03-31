@@ -1,0 +1,43 @@
+<div class="figures-header">
+  <div class="overlay-title">Tables</div>
+  <div class="btn-group pull-right">
+    <a href="#" class="btn fa-2x" {{action "closeOverlay"}}>{{fa-icon 'times'}}</a>
+  </div>
+</div>
+{{#visual-editor-toolbar viewName="toolbar" classNames='figures-toolbar editor-toolbar'}}
+  <span class="button-primary button--green fileinput-button">
+    <span>Add Table</span>
+  </span>
+  <span class="separator"></span>
+  {{#ve-button-group name="history" classNames="btn-group"}}
+    {{#ve-button command="undo" classNames="btn"}}{{fa-icon "undo"}}{{/ve-button}}
+    {{#ve-button command="redo" classNames="btn"}}{{fa-icon "repeat"}}{{/ve-button}}
+  {{/ve-button-group}}
+  <span class="separator"></span>
+  {{#ve-button-group name="annotations" classNames="btn-group"}}
+    {{#ve-button command="bold" classNames="btn"}}{{fa-icon "bold"}}{{/ve-button}}
+    {{#ve-button command="italic" classNames="btn"}}{{fa-icon "italic"}}{{/ve-button}}
+    {{#ve-button command="link" classNames="btn"}}{{fa-icon "link"}}{{/ve-button}}
+  {{/ve-button-group}}
+  <span class="separator"></span>
+  {{#ve-dropdown name="reference" label="Cite"}}
+    {{#ve-item command="citeFigure"}}
+      {{fa-icon "image"}}<span class="ve-label">Figure</span>
+    {{/ve-item}}
+    {{#ve-item command="citeTable"}}
+      {{fa-icon "table"}}<span class="ve-label">Table</span>
+    {{/ve-item}}
+    {{#ve-item command="citeReference"}}
+      {{fa-icon "book"}}<span class="ve-label">Reference</span>
+    {{/ve-item}}
+  {{/ve-dropdown}}
+{{/visual-editor-toolbar}}
+
+<div class="figures-body container-fluid">
+  {{#each table in tables}}
+    {{paper/edit/table-item
+           manuscriptEditor=manuscriptEditor
+           updateToolbar="updateToolbar"
+           insertTable="insertTable"}}
+  {{/each}}
+</div>

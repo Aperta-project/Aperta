@@ -6,7 +6,7 @@ EditFiguresController = Ember.Controller.extend FileUploadMixin,
   paper: Ember.computed.alias('model')
 
   # intitialized via template
-  toolar: null
+  toolbar: null
 
   needs: ['paper/edit']
   manuscriptEditor: Ember.computed.alias('controllers.paper/edit.editor')

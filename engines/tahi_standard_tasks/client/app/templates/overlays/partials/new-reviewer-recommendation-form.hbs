@@ -1,0 +1,81 @@
+<div class="add-author-form">
+  <div class="form-group form-inline author-top">
+    <div {{bind-attr class=":form-group :author-name :required validationErrors.firstName:error"}}>
+      {{!error-message message=validationErrors.firstName}}
+      {{input type="text"
+              value=newRecommendation.firstName
+              class="form-control"
+              placeholder="First name"}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-middle validationErrors.middleInitial:error"}}>
+      {{!error-message message=validationErrors.middleInitial}}
+      {{input type="text"
+              value=newRecommendation.middleInitial
+              class="form-control"
+              placeholder="MI"}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-name :required validationErrors.lastName:error"}}>
+      {{!error-message message=validationErrors.lastName}}
+      {{input type="text"
+              value=newRecommendation.lastName
+              class="form-control"
+              placeholder="Last name"}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.email:error"}}>
+      {{!error-message message=validationErrors.email}}
+      {{input type="text"
+              value=newRecommendation.email
+              class="form-control"
+              placeholder="Email"}}
+
+    </div>
+  </div>
+
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":form-group :author-half validationErrors.title:error"}}>
+      {{!error-message message=validationErrors.title}}
+      {{input type="text"
+              value=newRecommendation.title
+              class="form-control"
+              placeholder="Title"}}
+    </div>
+
+    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.department:error"}}>
+      {{!error-message message=validationErrors.department}}
+      {{input type="text"
+              value=newRecommendation.department
+              class="form-control"
+              placeholder="Department"}}
+    </div>
+  </div>
+
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":form-group :author-half validationErrors.affiliation:error"}}>
+      {{!error-message message=validationErrors.affiliation}}
+      {{select-2-single value=newRecommendation.affiliation
+                        class="affiliation-field"
+                        placeholder="Affiliation"
+                        selectedData=selectedAffiliation
+                        source=model.institutions}}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="question-text">Are you recommending or opposing this reviewer?</div>
+    {{binary-radio-button name="recommend-or-oppose"
+                          selection=newRecommendation.recommendOrOppose
+                          yesLabel="Recommend"
+                          yesValue="recommend"
+                          noLabel="Oppose"
+                          noValue="oppose"}}
+
+    <span class="pull-right author-form-buttons">
+      <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>
+      <button class="button-secondary button--green knockout" {{action "saveNewRecommendation"}}>done</button>
+    </span>
+  </div>
+
+</div>

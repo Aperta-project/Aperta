@@ -13,6 +13,7 @@ export default DS.Model.extend({
   department: a('string'),
   affiliation: a('string'),
   recommendOrOppose: a('string'),
+  reviewerRecommendationsTask: DS.belongsTo('reviewerRecommendationsTask'),
 
   fullName: function() {
     return [this.get('firstName'), this.get('middleInitial'), this.get('lastName')].compact().join(' ');

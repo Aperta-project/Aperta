@@ -12,6 +12,8 @@
   {{#if isEditable}}
     <a class="button-primary button--green" {{action "toggleAuthorForm" group}}>Add a New Author</a>
 
+    {{error-message message=validationErrors.corresponding}}
+
     {{#if newAuthorFormVisible}}
       {{add-author-form
         institutions=institutions

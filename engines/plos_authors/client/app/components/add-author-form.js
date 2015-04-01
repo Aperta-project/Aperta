@@ -12,13 +12,13 @@ export default Ember.Component.extend({
 
   setNewAuthor: function() {
     if (!this.get("newAuthor")) {
-      this.set("newAuthor", {});
+      this.set("newAuthor", {contributions: []});
     }
   }.on("init"),
 
   clearNewAuthor: function() {
     if (Ember.typeOf(this.get("newAuthor")) === "object") {
-      this.set("newAuthor", {});
+      this.set("newAuthor", {contributons: []});
     }
   },
 

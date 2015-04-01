@@ -28,12 +28,12 @@ BasePaperController = Ember.Controller.extend
   canViewManuscriptManager: false
 
   assignedTasks: (->
-    assignedTasks = @get('tasks').filter (task) =>
+    assignedTasks = @get('model.tasks').filter (task) =>
       task.get('participations').mapBy('user').contains(@currentUser)
 
     authorTasks   = @get('authorTasks')
     assignedTasks.filter (t)-> !authorTasks.contains(t)
-  ).property('tasks.@each')
+  ).property('model.tasks.@each')
 
   sortedAuthorTasks: Ember.computed.sort('authorTasks', 'taskSorting')
 

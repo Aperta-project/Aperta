@@ -5,13 +5,13 @@
   <li class="question">
     {{#question-radio ident="ethics.human_subjects"
       task=model
-      question="Does your study involve human participants, specimens or tissue samples, or vertebrate animals, cephalopods, embryos or tissues?"}}
+      question="Does your study involve Human Subject Research (human participants and/or tissue)?"}}
 
       {{#show-if-parent prop="selectedYes"}}
         <div class="question-dataset">
           {{question-textarea ident="ethics.human_subjects.participants"
                               task=model
-                              question="Does your study involve Human Subject Research (human participants and/or tissue)?"}}
+                              question="Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research."}}
 
           <div class="question-info">
             <div class="question-info-header">Human Subject Research (involved human participants and/or tissue)</div>

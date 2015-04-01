@@ -30,7 +30,6 @@
     {{fa-icon "table"}}
   </a>
 {{/ve-button-group}}
-<span class="separator"></span>
 {{#ve-dropdown name="reference" label="Cite" classNames="btn-group"}}
   {{#ve-item command="figureReference"}}
     {{fa-icon "image"}}<span class="ve-label">Figure</span>
@@ -42,8 +41,16 @@
     {{fa-icon "book"}}<span class="ve-label">Reference</span>
   {{/ve-item}}
 {{/ve-dropdown}}
-<div class="ve-tool-group pull-right">
+{{#if isSidebarEmpty}}
+<span class="separator"></span>
+<div class="ve-toolgroup btn-group">
+  <a {{action "submit" target="view"}}
+     {{bind-attr class=":no-sidebar-submit-manuscript :button-primary allMetadataTasksCompleted:button--green:button--disabled"}}
+     href="#">Submit Manuscript</a>
   <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
+</div>
+{{/if}}
+<div class="ve-tool-group pull-right">
   <span {{bind-attr class=":saving-spinner isSaving::hidden"}}>
     <i class="fa fa-spinner fa-spin"></i>
   </span>

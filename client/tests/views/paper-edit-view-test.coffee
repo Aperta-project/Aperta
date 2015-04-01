@@ -3,8 +3,6 @@
 `import startApp from '../helpers/start-app'`
 
 moduleFor 'view:paper/edit', 'Unit: paperEditView',
-  teardown: ->
-    # VisualEditorService.create.restore()
 
   setup: ->
 
@@ -16,30 +14,26 @@ moduleFor 'view:paper/edit', 'Unit: paperEditView',
       body: 'hello'
       editable: true
 
-    # sinon.stub(VisualEditorService, 'create').returns
-    #   enable: ->
-    #   disable: ->
-
     controller = getContainer().lookup 'controller:paper.edit'
 
     @subject().set 'controller', controller
     controller.set 'content', paper
 
-    sinon.stub @subject(), 'updateVisualEditor'
-    @subject().setupVisualEditor()
+    sinon.stub @subject(), 'updateEditor'
+    @subject().setupEditor()
 
 test 'when the paper is being edited, do not update editor on body change', ->
   @subject().set('isEditing', true)
 
-  @subject().updateVisualEditor.reset()
+  @subject().updateEditor.reset()
   @subject().set('controller.body', 'foo')
 
-  ok !@subject().updateVisualEditor.called
+  ok !@subject().updateEditor.called
 
 test 'when the paper is not being edited, update editor on body change', ->
   @subject().set('isEditing', false)
 
-  @subject().updateVisualEditor.reset()
+  @subject().updateEditor.reset()
   @subject().set('controller.body', 'foo')
 
-  ok @subject().updateVisualEditor.called
+  ok @subject().updateEditor.called

@@ -32,7 +32,7 @@
 
 #paper-editor {
   @include position(fixed, $tahi-control-bar-height 0px 0px 0px);
-  min-width: 1050px;
+  min-width: $tahi-paper-width;
   background: $tahi-white;
 }
 
@@ -59,8 +59,8 @@ html.control-bar-sub-nav-active #paper-editor {
 #paper-editor .editor {
   background: $tahi-grey-xlight;
   position:absolute;
-  top:0px;
-  right:300px;
+  top: 0px;
+  right: 300px;
   left: 0px;
   bottom: 0px;
 }
@@ -225,22 +225,43 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   min-width: 100px;
 }
 
-#manuscript-editor {
+#paper-editor {
 
   &.sidebar-empty {
 
-    max-width: 840px;
-    min-width: 840px; // override default
-
-    .no-sidebar-submit-manuscript,
     #no-sidebar-doi {
       display: block;
     }
 
     aside { display: none; }
+
+    .editor {
+      right: 0px;
+    }
+
+    .editor-toolbar {
+      width: 100%;
+
+      .ve-toolbar {
+        width: $tahi-paper-width;
+        margin: 0px auto;
+      }
+    }
+
     article {
       width: 100%;
-      border: none;
+      padding-left: 0px;
+      padding-right: 0px;
+
+      .manuscript-title-and-placeholder {
+        width: $tahi-paper-width;
+        margin: 0px auto;
+      }
+
+      #paper-body {
+        width: $tahi-paper-width;
+        margin: 0px auto;
+      }
     }
   }
 }

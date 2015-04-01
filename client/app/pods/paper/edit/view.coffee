@@ -3,6 +3,8 @@
 
 PaperEditView = Ember.View.extend RedirectsIfEditable,
 
+  classNames: ["edit-paper"]
+
   # initialized by component helper {{visual-editor}}
   editor: null
 

@@ -28,6 +28,12 @@ Factories = ->
       type: 'PaperEditorTask'
       completed: false
 
+  FactoryGuy.define 'reviewer-recommendations-task',
+    default:
+      title: 'Reviewer Recommendations'
+      type: 'ReviewerRecommendationsTask'
+      completed: false
+
   FactoryGuy.define 'invitation',
     default:
       state: 'invited'

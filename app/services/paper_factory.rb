@@ -27,7 +27,6 @@ class PaperFactory
   end
 
   def create
-    Rails.logger.warn ">> PaperFactory##{__method__}"
     Paper.transaction do
       add_collaborator(paper, creator)
       if paper.valid?

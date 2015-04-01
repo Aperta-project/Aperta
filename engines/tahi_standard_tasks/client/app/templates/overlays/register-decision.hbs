@@ -46,12 +46,33 @@
            disabled=model.completed
            value=latestDecision.letter}}
 
+{{#if previousDecisions}}
+  <hr>
+
+  <h3>
+    Reviews
+  </h3>
+{{/if}}
+
 <div class="previous-decisions">
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
   {{#each previousDecisions as |decision|}}
-    <div class="decision">
-      <span class="revision-number">{{decision.revisionNumber}}</span>
-      <span class="verdict">{{decision.verdict}}</span>
-      <span class="letter">{{decision.letter}}</span>
+    <div class="panel panel-default decision">
+      <div class="panel-heading" role="tab" id="decision-{{unbound decision.id}}" >
+        <h4 class="panel-title">
+          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{unbound decision.id}}" aria-expanded="false" aria-controls="collapse-{{unbound decision.id}}">
+            Revision
+            <span class="revision-number">{{decision.revisionNumber}}</span> -
+            <span class="verdict">{{decision.verdict}}</span>
+          </a>
+        </h4>
+      </div>
+      <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
+        <div class="panel-body">
+          <span class="letter">{{decision.letter}}</span>
+        </div>
+      </div>
     </div>
   {{/each}}
+  </div>
 </div>

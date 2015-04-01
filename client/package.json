@@ -29,7 +29,7 @@
     "ember-cli-qunit": "0.3.9",
     "ember-cli-rails-addon": "0.0.11",
     "ember-cli-uglify": "1.0.1",
-    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#2c596d061e44917e13142ba2e95583315f48e873",
+    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#93ecc4024f6717091ce950d05b179b3e2995c18a",
     "ember-data": "1.0.0-beta.16.1",
     "tahi-editor-extensions": "substance/tahi-editor-extensions#1b5005f0d9cf88464bb13e9cd58ad9d7dbbb4e4c",
     "ember-export-application-global": "^1.0.2",

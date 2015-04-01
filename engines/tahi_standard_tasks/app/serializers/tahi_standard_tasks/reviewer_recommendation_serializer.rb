@@ -8,7 +8,7 @@ module TahiStandardTasks
                :title,
                :department,
                :affiliation,
-               :recommend_or_oppose
-
+               :recommend_or_oppose,
+               :reason
   end
 end

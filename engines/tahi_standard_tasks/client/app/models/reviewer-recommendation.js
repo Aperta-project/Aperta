@@ -13,6 +13,7 @@ export default DS.Model.extend({
   department: a('string'),
   affiliation: a('string'),
   recommendOrOppose: a('string'),
+  reason: a('string'),
   reviewerRecommendationsTask: DS.belongsTo('reviewerRecommendationsTask'),
 
   fullName: function() {

@@ -6,7 +6,7 @@ RegisterDecisionOverlayController = TaskController.extend
   ).property('model.completed')
 
   latestDecision: (->
-    @get('model.decisions.firstObject')
+    @get('model.decisions.firstObject') || @store.createRecord 'decision', paper: @get('model.paper')
   ).property('model.decisions.@each')
 
   previousDecisions: (->
@@ -30,10 +30,9 @@ RegisterDecisionOverlayController = TaskController.extend
         @set 'isSavingData', false
 
     setDecisionTemplate: (decision) ->
-      @setProperties
-        'model.paperDecisionLetter': @get("model.#{decision}LetterTemplate")
-        'model.paperDecision': decision
-        'isSavingData': true
+      @set("isSavingData", true)
+      @get("latestDecision").set "verdict", decision
+      @get("latestDecision").set "letter", @get("model.#{decision}LetterTemplate")
 
       @get('latestDecision').save().then =>
         @set 'isSavingData', false

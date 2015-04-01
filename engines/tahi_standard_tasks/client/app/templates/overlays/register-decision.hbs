@@ -2,8 +2,10 @@
   {{progress-spinner visible=true}}
 </div>
 
-<h1>Register Decision</h1>
-{{latestDecision}}
+<h1>
+  Register Decision
+</h1>
+
 <div class="decision-selections">
   <label class="decision-label">
     {{decision-radio-button value="accepted"
@@ -33,7 +35,9 @@
   </label>
 </div>
 
-<p>Feel free to modify the standard decision letter. Your changes will be saved.</p>
+<p>
+  Feel free to modify the standard decision letter. Your changes will be saved.
+</p>
 
 {{textarea focus-out="saveLatestDecision"
            onEvent="false"

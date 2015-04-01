@@ -143,6 +143,11 @@ PaperEditController = BasePaperController.extend
   disconnectEditor: ->
     @get('editor').disconnect @
 
+  updateEditor: ->
+    editor = @get('editor')
+    if editor
+      editor.fromHtml(@get('paper.body'))
+
   savePaper: ->
     return unless @get('model.editable')
     editor = @get('editor')
@@ -170,10 +175,8 @@ PaperEditController = BasePaperController.extend
       @set('saveState', false)
       @savePaperDebounced()
 
-  onBodyChange: ( ->
-    editor = @get('editor')
-    if editor and not @get('isEditing')
-      editor.fromHtml(@get('paper.body'))
+  whenPaperBodyChanges: (->
+    @updateEditor() unless @get('isEditing')
   ).observes('body')
 
   willDestroy: ( ->

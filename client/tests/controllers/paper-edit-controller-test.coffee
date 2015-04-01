@@ -2,10 +2,10 @@
 `import { test, moduleFor } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
 
-moduleFor 'view:paper/edit', 'Unit: paperEditView',
+moduleFor 'controller:paper/edit', 'Unit: paperEditController',
+  needs: ['controller:application', 'controller:overlays/paperSubmit']
 
   setup: ->
-
     startApp()
     paper = Ember.Object.create
       id: 5
@@ -13,27 +13,24 @@ moduleFor 'view:paper/edit', 'Unit: paperEditView',
       shortTitle: 'Does not matter'
       body: 'hello'
       editable: true
+    @editor =
+      fromHtml: sinon.stub()
 
-    controller = getContainer().lookup 'controller:paper.edit'
-
-    @subject().set 'controller', controller
-    controller.set 'content', paper
-
-    sinon.stub @subject(), 'updateEditor'
-    @subject().setupEditor()
+    @subject().set 'content', paper
+    @subject().set 'editor', @editor
 
 test 'when the paper is being edited, do not update editor on body change', ->
   @subject().set('isEditing', true)
 
-  @subject().updateEditor.reset()
-  @subject().set('controller.body', 'foo')
+  @editor.fromHtml.reset()
+  @subject().set('body', 'foo')
 
-  ok !@subject().updateEditor.called
+  ok !@editor.fromHtml.called
 
 test 'when the paper is not being edited, update editor on body change', ->
   @subject().set('isEditing', false)
 
-  @subject().updateEditor.reset()
-  @subject().set('controller.body', 'foo')
+  @editor.fromHtml.reset()
+  @subject().set('body', 'foo')
 
-  ok @subject().updateEditor.called
+  ok @editor.fromHtml.called

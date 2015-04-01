@@ -62,7 +62,9 @@ module PlosAuthors
         :corresponding,
         :position,
         contributions: []
-      )
+      ).tap do |whitelisted|
+        whitelisted[:contributions] ||= []
+      end
     end
   end
 end

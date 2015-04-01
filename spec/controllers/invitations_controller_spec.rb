@@ -39,13 +39,16 @@ describe InvitationsController do
   describe "DESTROY /invitations/:id" do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
-    it "destroys the invitation" do
+    it "rejects the invitation" do
       delete(:destroy, {
         format: "json",
         id: invitation.id
       })
-      expect(Invitation.find_by(id: invitation.id)).to be_nil
       expect(response.status).to eq(204)
+      invitation.reload
+      expect(invitation.state).to eq("rejected")
+      expect(invitation.actor).to eq(invitee)
+      expect(Invitation.find_by id: invitation.id).to_not be_nil
     end
   end
 
@@ -67,19 +70,5 @@ describe InvitationsController do
         expect(task.paper.editor).to eq(invitee)
       end
     end
-
-    describe "PUT /invitations/:id/reject" do
-      it "rejects the invitation" do
-        put(:reject, {
-          format: "json",
-          id: invitation.id
-        })
-        expect(response.status).to eq(204)
-        invitation.reload
-        expect(invitation.state).to eq("rejected")
-        expect(invitation.actor).to eq(invitee)
-      end
-    end
-
   end
 end

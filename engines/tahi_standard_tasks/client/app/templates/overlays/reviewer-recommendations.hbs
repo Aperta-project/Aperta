@@ -1,9 +1,22 @@
 <h1>Reviewer Recommendations</h1>
 <p>Use the fields below to give us contact information for each suggested reviewer, and please provide specific reasons for your suggestion in the "Reason" box for each person. Please note that the editorial office may not use your suggestions, but your help is appreciated and may speed up the selection of appropriate reviewers.</p>
 
-
 {{#if showNewReviewerForm}}
 {{partial 'overlays/partials/new-reviewer-recommendation-form'}}
 {{else}}
 <a class="button-primary button--green" {{action "toggleReviewerForm"}}>New Reviewer Recommendation</a>
 {{/if}}
+
+{{#each reviewerRecommendations as |reviewerRecommendation|}}
+  <div class="authors-overlay-item--text">
+    <div class="author-name">{{reviewerRecommendation.fullName}}</div>
+    {{reviewerRecommendation.email}}<br>
+    {{reviewerRecommendation.title}} &nbsp; &nbsp; {{reviewerRecommendation.department}}
+    <br>
+    {{reviewerRecommendation.affiliation}}
+    <div class="reviewer-recommendation-decision">
+      {{reviewerRecommendation.recommendOrOppose}}
+    </div>
+    {{reviewerRecommendation.reason}}
+  </div>
+{{/each}}

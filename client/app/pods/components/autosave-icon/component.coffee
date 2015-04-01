@@ -8,11 +8,12 @@ AutoSaveIconComponent = Ember.Component.extend
   isCheckMarkShowing: false
 
   startShowingLoader:(->
-    @set 'isLoaderShowing', true
-    Ember.run.later (=>
-      @showLoader()
-      @showCheckMark()
-    ), 1500
+    if @get 'role.role'
+      @set 'isLoaderShowing', true
+      Ember.run.later (=>
+        @showLoader()
+        @showCheckMark()
+      ), 1500
   ).observes('role.isSaving')
 
   showLoader: ->

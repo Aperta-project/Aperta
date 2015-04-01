@@ -35,8 +35,16 @@
 
     {{#each funder in funders}}
       <p>
-        This work was supported by <a {{bind-attr href=funder.website}}><strong>{{display-value funder.name or="[funder name]"}}</strong></a>
+        This work was supported by
+
+        {{#if funder.formattedWebsite}}
+          <a {{bind-attr href=funder.formattedWebsite}} target="_blank"><strong>{{display-value funder.name or="[funder name]"}}</strong></a>
+        {{else}}
+          <strong>{{display-value funder.name or="[funder name]"}}</strong>
+        {{/if}}
+
         (grant number <strong>{{display-value funder.grantNumber or="[funder grant number]"}}</strong>).
+
         {{#if funder.funderHadInfluence}}
           {{funder.funderInfluenceDescription}}.
         {{else}}

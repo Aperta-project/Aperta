@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Ember from "ember";
 
 export default Ember.Component.extend({
-  layoutName: 'components/add-author-form',
+  layoutName: "components/add-author-form",
   authorContributionOptions: [
     "Conceived and designed the experiments",
     "Performed the experiments",
@@ -11,48 +11,48 @@ export default Ember.Component.extend({
   ],
 
   setNewAuthor: function() {
-    if (!this.get('newAuthor')) {
-      this.set('newAuthor', {});
+    if (!this.get("newAuthor")) {
+      this.set("newAuthor", {});
     }
-  }.on('init'),
+  }.on("init"),
 
   clearNewAuthor: function() {
-    if (Ember.typeOf(this.get('newAuthor')) === 'object') {
-      this.set('newAuthor', {});
+    if (Ember.typeOf(this.get("newAuthor")) === "object") {
+      this.set("newAuthor", {});
     }
   },
 
   selectableInstitutions: function() {
-    return (this.get('institutions') || []).map(function(institution) {
+    return (this.get("institutions") || []).map(function(institution) {
       return {
         id: institution,
         text: institution
       };
     });
-  }.property('institutions'),
+  }.property("institutions"),
 
   selectedAffiliation: function() {
     return {
-      id: this.get('newAuthor.affiliation'),
-      text: this.get('newAuthor.affiliation')
+      id: this.get("newAuthor.affiliation"),
+      text: this.get("newAuthor.affiliation")
     };
-  }.property('newAuthor'),
+  }.property("newAuthor"),
 
   selectedSecondaryAffiliation: function() {
     return {
-      id: this.get('newAuthor.secondaryAffiliation'),
-      text: this.get('newAuthor.secondaryAffiliation')
+      id: this.get("newAuthor.secondaryAffiliation"),
+      text: this.get("newAuthor.secondaryAffiliation")
     };
-  }.property('newAuthor'),
+  }.property("newAuthor"),
 
   actions: {
     cancelEdit: function() {
       this.clearNewAuthor();
-      this.sendAction('hideAuthorForm');
+      this.sendAction("hideAuthorForm");
     },
 
     saveNewAuthor: function() {
-      this.sendAction('saveAuthor', this.get('newAuthor'));
+      this.sendAction("saveAuthor", this.get("newAuthor"));
       this.clearNewAuthor();
     },
 

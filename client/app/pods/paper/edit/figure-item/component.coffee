@@ -56,11 +56,11 @@ FigureItemComponent = AttachmentThumbnailComponent.extend
       <div data-type="form" data-name="figure">
         <div data-type="form-entry" data-name="title" class="figure-title">
           <span data-type="text-input" data-name="title" class="figure-title"
-                data-placeholder="Enter title here">#{figure.get('title')}</span>
+                data-placeholder="Enter title here">#{figure.get('title') || ""}</span>
         </div>
         <div data-type="form-entry" data-name="title" class="figure-caption">
           <span data-type="text-input" data-name="caption" class="figure-caption"
-                data-placeholder="Enter caption here">#{figure.get('caption')}</span>
+                data-placeholder="Enter caption here">#{figure.get('caption') || ""}</span>
         </div>
       </div>
       """

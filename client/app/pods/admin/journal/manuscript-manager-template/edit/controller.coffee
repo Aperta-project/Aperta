@@ -2,7 +2,7 @@
 `import Utils from 'tahi/services/utils'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-ManuscriptManagerTemplateEditController = Ember.ObjectController.extend ValidationErrorsMixin,
+ManuscriptManagerTemplateEditController = Ember.Controller.extend ValidationErrorsMixin,
   dirty: false
   editMode: false
   journal: Ember.computed.alias('model.journal')

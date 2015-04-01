@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-UserDetailOverlayController = Ember.ObjectController.extend ValidationErrorsMixin,
+UserDetailOverlayController = Ember.Controller.extend ValidationErrorsMixin,
   overlayClass: 'overlay--fullscreen user-detail-overlay'
   resetPasswordSuccess: false
   resetPasswordFailure: false

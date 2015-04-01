@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import BuildsTaskTemplate from 'tahi/mixins/controllers/builds-task-template'`
 
-AdHocTemplateOverlayController = Ember.ObjectController.extend BuildsTaskTemplate,
+AdHocTemplateOverlayController = Ember.Controller.extend BuildsTaskTemplate,
   isNewTask: false
   blocks: Ember.computed.alias('template')
   phaseTemplate: null

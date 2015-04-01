@@ -3,7 +3,7 @@
 `import ControllerParticipants from 'tahi/mixins/controllers/controller-participants'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-TaskController = Ember.ObjectController.extend SavesDelayed, ControllerParticipants, ValidationErrorsMixin, Ember.Evented,
+TaskController = Ember.Controller.extend SavesDelayed, ControllerParticipants, ValidationErrorsMixin, Ember.Evented,
   queryParams: ['isNewTask']
   isNewTask: false
   needs: ['application']

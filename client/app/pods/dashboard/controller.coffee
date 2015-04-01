@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 
-IndexController = Ember.ObjectController.extend
+IndexController = Ember.Controller.extend
   needs: ['application']
   papers: null
   unreadComments: [] # will be set in setupController

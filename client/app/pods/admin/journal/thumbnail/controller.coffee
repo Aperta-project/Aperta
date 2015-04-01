@@ -2,7 +2,7 @@
 `import FileUploadMixin from 'tahi/mixins/file-upload'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-JournalThumbnailController = Ember.ObjectController.extend FileUploadMixin, ValidationErrorsMixin,
+JournalThumbnailController = Ember.Controller.extend FileUploadMixin, ValidationErrorsMixin,
   needs: ['application']
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isEditing: (-> @get 'model.isDirty').property()

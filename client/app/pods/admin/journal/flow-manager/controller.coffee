@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import Utils from 'tahi/services/utils'`
 
-JournalFlowManagerController = Ember.ObjectController.extend
+JournalFlowManagerController = Ember.Controller.extend
   flowSort: ['position:asc']
   sortedFlows: Ember.computed.sort('model.flows', 'flowSort')
 

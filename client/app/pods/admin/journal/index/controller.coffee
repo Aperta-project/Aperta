@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-JournalIndexController = Ember.ObjectController.extend ValidationErrorsMixin,
+JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
   epubCssSaveStatus: ''
   pdfCssSaveStatus: ''
   manuscriptCssSaveStatus: ''

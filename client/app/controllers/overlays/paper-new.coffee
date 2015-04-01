@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 
-PaperNewOverlayController = Ember.ObjectController.extend
+PaperNewOverlayController = Ember.Controller.extend
   overlayClass: 'overlay--fullscreen paper-new-overlay'
 
   noJournalSelected: Ember.computed.not('model.journal')

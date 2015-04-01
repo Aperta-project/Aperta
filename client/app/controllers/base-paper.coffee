@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import DocumentDownload from 'tahi/services/document-download'`
 
-BasePaperController = Ember.ObjectController.extend
+BasePaperController = Ember.Controller.extend
   needs: ['application']
 
   currentUser: Ember.computed.alias 'controllers.application.currentUser'

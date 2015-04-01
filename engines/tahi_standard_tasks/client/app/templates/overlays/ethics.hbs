@@ -30,15 +30,19 @@
 
       {{#show-if-parent prop="selectedYes"}}
         <div class="question-info">
-          <p>All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, "The use of non-human primates in research." The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.</p>
+          <p>All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, "<a href="http://www.acmedsci.ac.uk/more/news/the-use-of-non-human-primates-in-research/" target="_blank">The use of non-human primates in research.</a>" The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.</p>
           <p>If anesthesia, euthanasia or any kind of animal sacrifice is part of the study, please include briefly in your statement which substances and/or methods were applied.</p>
           <p>Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board, and indicate whether they approved this research or granted a formal waiver of ethical approval. Also include an approval number if one was obtained.</p>
+          <p>
+            <strong>Field Permit</strong>
+            <div>Please indicate the name of the institution or the relevant body that granted permission.</div>
+          </p>
         </div>
 
         <div class="question-dataset">
           {{question-textarea ident="ethics.animal_subjects.field_permit"
                               task=model
-                              question="Please indicate the name of the institution or the relevant body that granted permission."}}
+                              question="Please enter your statement below:"}}
         </div>
       {{/show-if-parent}}
     {{/question-radio}}

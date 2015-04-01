@@ -58,15 +58,6 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
       $('html').removeClass 'control-bar-sub-nav-active'
   ).observes('subNavVisible')
 
-  setupEditor: (->
-    @updateEditor()
-    @addObserver 'controller.body', =>
-      @updateEditor() unless @get('isEditing')
-  ).on('didInsertElement')
-
-  updateEditor: ->
-    @updateEditorLockedState()
-
   teardownControlBarSubNav: (->
     $('html').removeClass 'control-bar-sub-nav-active'
   ).on('willDestroyElement')

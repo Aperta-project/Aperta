@@ -170,6 +170,12 @@ PaperEditController = BasePaperController.extend
       @set('saveState', false)
       @savePaperDebounced()
 
+  onBodyChange: ( ->
+    editor = @get('editor')
+    if editor and not @get('isEditing')
+      editor.fromHtml(@get('paper.body'))
+  ).observes('body')
+
   willDestroy: ( ->
     @_super()
     @get('figuresAdapter').dispose()

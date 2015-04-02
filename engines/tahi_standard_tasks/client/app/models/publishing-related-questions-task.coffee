@@ -1,6 +1,6 @@
 `import Task from 'tahi/models/task'`
 
 PublishingRelatedQuestionsTask = Task.extend
-  qualifiedType: "StandardTasks::PublishingRelatedQuestionsTask"
+  qualifiedType: "TahiStandardTasks::PublishingRelatedQuestionsTask"
 
 `export default PublishingRelatedQuestionsTask`

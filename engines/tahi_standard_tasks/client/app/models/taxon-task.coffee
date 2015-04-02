@@ -1,6 +1,6 @@
 `import Task from 'tahi/models/task'`
 
 TaxonTask = Task.extend
-  qualifiedType: "StandardTasks::TaxonTask"
+  qualifiedType: "TahiStandardTasks::TaxonTask"
 
 `export default TaxonTask`

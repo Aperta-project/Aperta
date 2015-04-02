@@ -1,6 +1,6 @@
 `import Task from 'tahi/models/task'`
 
 TechCheckTask = Task.extend
-  qualifiedType: "StandardTasks::TechCheckTask"
+  qualifiedType: "TahiStandardTasks::TechCheckTask"
 
 `export default TechCheckTask`

@@ -1,6 +1,6 @@
 `import Task from 'tahi/models/task'`
 
 EthicsTask = Task.extend
-  qualifiedType: "StandardTasks::EthicsTask"
+  qualifiedType: "TahiStandardTasks::EthicsTask"
 
 `export default EthicsTask`

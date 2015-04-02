@@ -6,6 +6,7 @@ class Invitation < ActiveRecord::Base
   has_one :paper, through: :task
   belongs_to :invitee, class_name: "User", inverse_of: :invitations
   belongs_to :actor, class_name: "User", inverse_of: :invitations
+  after_destroy :invitation_rescinded
 
   aasm column: :state do
     state :pending, initial: true
@@ -34,6 +35,10 @@ class Invitation < ActiveRecord::Base
   end
 
   private
+
+  def invitation_rescinded
+    task.invitation_rescinded(paper_id: paper.id, invitee_id: invitee.id)
+  end
 
   def notify_invitation_invited
     task.invitation_invited(self)

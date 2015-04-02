@@ -24,8 +24,8 @@ describe TahiStandardTasks::PaperReviewerMailer do
     it_behaves_like 'an invitation notification email', email_identifier_word: 'assigned'
   end
 
-  describe ".notify_rejection" do
-    let(:email) { described_class.notify_rejection invitation_id: invitation.id }
+  describe ".notify_rescission" do
+    let(:email) { described_class.notify_rescission paper_id: invitation.paper.id, invitee_id: invitation.invitee.id }
     it_behaves_like 'an invitation notification email', email_identifier_word: 'rescinded'
   end
 end

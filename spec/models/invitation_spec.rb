@@ -17,12 +17,23 @@ class TestTask < Task
   def invitation_rejected(_invitation)
     "rejected"
   end
+
+  def invitation_rescinded(paper_id:, invitee_id:)
+    "rescinded"
+  end
 end
 
 describe Invitation do
   let(:phase) { FactoryGirl.create(:phase) }
   let(:task) { phase.tasks.create(type: "TestTask", title: "Test", role: "user") }
   let(:invitation) { FactoryGirl.build(:invitation, task: task) }
+
+  describe '#destroy' do
+    it "calls #after_destroy hook" do
+      expect(task).to receive(:invitation_rescinded).with paper_id: invitation.paper.id, invitee_id: invitation.invitee.id
+      invitation.destroy!
+    end
+  end
 
   describe "#invite!" do
     it "is invited by default" do

@@ -19,9 +19,9 @@
   </div>
 
   <div class='invitees'>
-  {{#if nonRejectedInvitations}}
+  {{#if model.invitations}}
   <table class='invitees-table'>
-    {{#each nonRejectedInvitations as |invitation|}}
+    {{#each model.invitations as |invitation|}}
     <tr>
       <td><span>{{user-thumbnail user=invitation.invitee classNames="invitee-thumbnail"}}</span></td>
       <td><span class='invitee-full-name'>{{invitation.inviteeFullName}}</span> has been invited</td>

@@ -3,10 +3,12 @@ class Decision < ActiveRecord::Base
 
   before_validation :increment_revision_number
 
+  default_scope -> { order('revision_number DESC') }
+
   validates :revision_number, uniqueness: { scope: :paper_id }
 
   def self.latest
-    order("revision_number DESC").first
+    first
   end
 
   def increment_revision_number

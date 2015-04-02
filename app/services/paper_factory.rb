@@ -7,7 +7,6 @@ class PaperFactory
     paper.doi = Doi.new(journal: journal).assign! if journal
     pf = new(paper, creator)
     pf.create
-    pf.paper.create_decision!
     pf.paper
   end
 
@@ -32,6 +31,7 @@ class PaperFactory
       if paper.valid?
         if template
           paper.save
+          paper.create_decision!
           apply_template
         else
           paper.errors.add(:paper_type, "is not valid")

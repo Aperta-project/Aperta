@@ -18,7 +18,7 @@ shared_examples_for 'an invitation notification email' do |email_identifier_word
   specify { expect(email.body).to match(/#{email_identifier_word}/) }
 end
 
-describe StandardTasks::PaperReviewerMailer do
+describe TahiStandardTasks::PaperReviewerMailer do
   describe ".notify_invited" do
     let(:email) { described_class.notify_invited invitation_id: invitation.id }
     it_behaves_like 'an invitation notification email', email_identifier_word: 'assigned'

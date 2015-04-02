@@ -7,6 +7,7 @@ module TahiStandardTasks
     def notify_author_email(task_id:)
       @task = Task.find(task_id)
       @paper = @task.paper
+      @decision = @paper.decisions.latest
       @recipient = User.find(@paper.user_id)
 
       mail(to: @recipient.email,

@@ -15,12 +15,8 @@ module TahiStandardTasks
       if revise_decision?
         create_please_revise_card!
         make_paper_editable!
-        paper.create_decision!
         self.update! completed:false
-      end
-
-      if on_card_completion?
-        send_emails
+        paper.create_decision!
       end
     end
 
@@ -29,6 +25,7 @@ module TahiStandardTasks
     end
 
     def send_emails
+      return unless on_card_completion?
       RegisterDecisionMailer.delay.notify_author_email(task_id: id)
     end
 

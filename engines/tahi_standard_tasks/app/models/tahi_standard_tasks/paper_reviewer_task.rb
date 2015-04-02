@@ -21,7 +21,7 @@ module TahiStandardTasks
     def invitation_rejected(invitation)
     end
 
-    def invitation_rescinded(paper_id: , invitee_id:)
+    def invitation_rescinded(paper_id:, invitee_id:)
       PaperReviewerMailer.delay.notify_rescission paper_id: paper_id, invitee_id: invitee_id
     end
 

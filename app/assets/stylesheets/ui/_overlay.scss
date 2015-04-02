@@ -188,3 +188,36 @@
 .apostrophe {
   font-family: 'Times New Roman', serif;
 }
+
+textarea.ember-text-area {
+  height: 70px;
+}
+
+.form-control {
+  width: 100%;
+}
+
+.tall-text-field {
+  height: 50px;
+  padding-top: 25px;
+}
+
+textarea.tall-textarea {
+  height: 90px;
+  padding-top: 25px;
+}
+
+.text-field-title {
+  position: absolute;
+  padding-top: 3px;
+  padding-left: 3px;
+  margin-top: 1px;
+  margin-left: 10px;
+  color: #ccc;
+  width: 69%;
+  background: #fff;
+}
+
+.constrained-form-width {
+  width: 800px;
+}

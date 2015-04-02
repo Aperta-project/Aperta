@@ -104,7 +104,6 @@
   p { margin-left: 0; }
 }
 
-
 .author-drop-target {
   height: 5px;
   margin-bottom: 5px;
@@ -115,18 +114,10 @@
   }
 }
 
-
 .add-author-form {
   margin: 15px 0;
   padding: 30px;
-  background: rgb(194, 232, 188);
-
-  .form-group.required::before {
-    left: -12px;
-    top: 4px;
-    color: $tahi-green;
-    font-size: 18pt;
-  }
+  background: rgba(213, 213, 213, 0.8);
 
   .affiliation-field, .secondary-affiliation-field {
     border-radius: 4px;
@@ -136,10 +127,14 @@
   .author-contributions {
     margin-bottom: 40px;
   }
+
+  .text-field-title {
+    background: none;
+    width: initial;
+  }
 }
 
 .authors-overlay-item .add-author-form { margin: 0; }
-
 
 .author-half {
   width: 418px;

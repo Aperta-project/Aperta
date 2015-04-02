@@ -28,15 +28,17 @@
     {{#show-if-parent prop="selectedYes"}}
       <div class="question-dataset">
         <div class="question-dataset-header">Please provide the title of that submission and the corresponding author.</div>
+        <span class="text-field-title">Title</span>
         {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_title"
                          class="sub-question"
                          task=model
-                         question="Title"}}
+                         question="Impressive Paper Title"}}
         <br>
+        <span class="text-field-title">Corresponding Author</span>
         {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_author"
                          class="sub-question"
                          task=model
-                         question="Corresponding author"}}
+                         question="Sir Issac Newton"}}
       </div>
     {{/show-if-parent}}
   {{/question-radio}}

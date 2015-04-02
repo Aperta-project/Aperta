@@ -1,60 +1,66 @@
 <div class="add-author-form">
 
   <div class="form-group form-inline author-top">
-    <div {{bind-attr class=":form-group :author-name :required validationErrors.firstName:error"}}>
+    <div {{bind-attr class=":form-group :author-name validationErrors.firstName:error"}}>
       {{error-message message=validationErrors.firstName}}
+      <span class="text-field-title">First Name</span>
       {{input type="text"
               value=newAuthor.firstName
-              class="form-control"
-              placeholder="First name"}}
+              class="form-control tall-text-field"
+              placeholder="Jane"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-middle validationErrors.middleInitial:error"}}>
       {{error-message message=validationErrors.middleInitial}}
+      <span class="text-field-title">MI</span>
       {{input type="text"
               value=newAuthor.middleInitial
-              class="form-control"
-              placeholder="MI"}}
+              class="form-control tall-text-field"
+              placeholder="M"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-name :required validationErrors.lastName:error"}}>
+    <div {{bind-attr class=":form-group :author-name validationErrors.lastName:error"}}>
       {{error-message message=validationErrors.lastName}}
+      <span class="text-field-title">Last Name</span>
       {{input type="text"
               value=newAuthor.lastName
-              class="form-control"
-              placeholder="Last name"}}
+              class="form-control tall-text-field"
+              placeholder="Goodall"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.email:error"}}>
+    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.email:error"}}>
       {{error-message message=validationErrors.email}}
+      <span class="text-field-title">Email</span>
       {{input type="text"
               value=newAuthor.email
-              class="form-control"
-              placeholder="Email"}}
+              class="form-control tall-text-field"
+              placeholder="jane.goodall@science.com"}}
 
     </div>
   </div>
 
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half :required validationErrors.title:error"}}>
+    <div {{bind-attr class=":form-group :author-half validationErrors.title:error"}}>
       {{error-message message=validationErrors.title}}
+      <span class="text-field-title">Title</span>
       {{input type="text"
               value=newAuthor.title
-              class="form-control"
-              placeholder="Title"}}
+              class="form-control tall-text-field"
+              placeholder="World's Foremost Expert on Chimpanzees"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.department:error"}}>
+    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.department:error"}}>
       {{error-message message=validationErrors.department}}
+      <span class="text-field-title">Department</span>
       {{input type="text"
               value=newAuthor.department
-              class="form-control"
-              placeholder="Department"}}
+              class="form-control tall-text-field"
+              placeholder="Primatology"}}
     </div>
   </div>
 
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half :required validationErrors.affiliation:error"}}>
+    <div {{bind-attr class=":form-group :author-half validationErrors.affiliation:error"}}>
       {{error-message message=validationErrors.affiliation}}
       {{select-2-single value=newAuthor.affiliation
                         class="affiliation-field"
@@ -67,7 +73,7 @@
       {{error-message message=validationErrors.secondaryAffiliation}}
       {{select-2-single value=newAuthor.secondaryAffiliation
                         class="secondary-affiliation-field"
-                        placeholder="Secondary Affiliation"
+                        placeholder="Secondary Affiliation (optional)"
                         selectedData=selectedSecondaryAffiliation
                         source=selectableInstitutions}}
     </div>

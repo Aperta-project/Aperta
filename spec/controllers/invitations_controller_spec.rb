@@ -39,16 +39,14 @@ describe InvitationsController do
   describe "DESTROY /invitations/:id" do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
-    it "rejects the invitation" do
+    it "deletes the invitation queues up email job" do
       delete(:destroy, {
         format: "json",
         id: invitation.id
       })
-      expect(response.status).to eq(204)
-      invitation.reload
-      expect(invitation.state).to eq("rejected")
-      expect(invitation.actor).to eq(invitee)
-      expect(Invitation.find_by id: invitation.id).to_not be_nil
+      expect(response.status).to eq 204
+      expect(Invitation.find_by id: invitation.id).to be_nil
+      expect(Sidekiq::Extensions::DelayedMailer.jobs.length).to eq 1
     end
   end
 
@@ -57,7 +55,7 @@ describe InvitationsController do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
     describe "PUT /invitations/:id/accept" do
-      it "gives access to the user as the editor" do
+     it "gives access to the user as the editor" do
         put(:accept, {
           format: "json",
           id: invitation.id
@@ -70,5 +68,19 @@ describe InvitationsController do
         expect(task.paper.editor).to eq(invitee)
       end
     end
+
+    describe "PUT /invitations/:id/reject" do
+      it "rejects the invitation" do
+        put(:reject, {
+          format: "json",
+          id: invitation.id
+        })
+        expect(response.status).to eq(204)
+        invitation.reload
+        expect(invitation.state).to eq("rejected")
+        expect(invitation.actor).to eq(invitee)
+      end
+    end
+
   end
 end

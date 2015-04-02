@@ -8,8 +8,6 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
   selectedReviewer: null
   resultsTemplate: (user) -> user.email
   selectedTemplate: (user) -> user.email
-  nonRejectedInvitations: Em.computed.filter 'model.invitations', (invitation, index, array) ->
-    invitation.get('state') isnt 'rejected'
 
   actions:
     destroyInvitation: (invitation) -> invitation.destroyRecord()

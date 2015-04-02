@@ -24,9 +24,9 @@ class AddAuthorsOverlay < CardOverlay
 
   private
   def fill_in_author_form(author)
-    fill_in "First name", with: author[:first_name]
+    fill_in "First Name", with: author[:first_name]
     fill_in "MI", with: author[:middle_initial]
-    fill_in "Last name", with: author[:last_name]
+    fill_in "Last Name", with: author[:last_name]
     fill_in "Email", with: author[:email]
     fill_in "Title", with: author[:title]
     fill_in "Department", with: author[:department]

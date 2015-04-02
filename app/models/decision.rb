@@ -4,7 +4,6 @@ class Decision < ActiveRecord::Base
   before_validation :increment_revision_number
 
   validates :revision_number, uniqueness: { scope: :paper_id }
-  validates :verdict, presence: true
 
   def self.latest
     order("revision_number DESC").first

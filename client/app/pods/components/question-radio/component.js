@@ -5,6 +5,9 @@ export default QuestionComponent.extend({
   displayContent: Ember.computed.oneWay("selectedYes"),
   yesLabel: "Yes",
   noLabel: "No",
+  noValue: "No",
   selectedYes: Ember.computed.equal("model.answer", "Yes"),
-  selectedNo:  Ember.computed.equal("model.answer", "No")
+  selectedNo: function() {
+    return Ember.isEqual(this.get("model.answer"), this.get("noValue"));
+  }.property("model.answer", "noValue")
 });

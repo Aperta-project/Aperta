@@ -28,6 +28,18 @@ Factories = ->
       type: 'PaperEditorTask'
       completed: false
 
+  FactoryGuy.define 'plos-authors-task',
+    default:
+      title: 'Add Authors'
+      type: 'PlosAuthorsTask'
+      completed: false
+
+  FactoryGuy.define 'reviewer-recommendations-task',
+    default:
+      title: 'Reviewer Recommendations'
+      type: 'ReviewerRecommendationsTask'
+      completed: false
+
   FactoryGuy.define 'invitation',
     default:
       state: 'invited'

@@ -2,20 +2,6 @@
 
 <div class="question-list">
   <div class="question">
-    {{#question-radio ident="financial_disclosure.commercially_affiliated"
-      task=model
-      question="Are you affiliated with a commercial company?"}}
-
-      {{#show-if-parent prop='selectedYes'}}
-        <ul>
-          <li>Declare this affiliation in the Competing Interests statement</li>
-          <li>Confirm that this doesn't alter your ability to adhere to our data and materials sharing policy</li>
-          <li>Declare this affiliation below and declare level of funding applied to the author(s) salary</li>
-        </ul>
-      {{/show-if-parent}}
-    {{/question-radio}}
-  </div>
-  <div class="question">
     <div class="question-text">Did any of the authors receive specific funding for this work?</div>
 
     {{binary-radio-button name="received-funding"
@@ -23,8 +9,11 @@
                           yesAction="choseFundingReceived"
                           noAction="choseFundingNotReceived"}}
 
-    {{#if receivedFunding}}
+    {{#if explicitYes}}
       <span>Please describe all sources of funding that have supported your work.</span>
+    {{/if}}
+    {{#if explicitNo}}
+      <span>Your Financial Disclosure Statement will appear as: The author(s) received no specific funding for this work.</span>
     {{/if}}
   </div>
 
@@ -36,5 +25,33 @@
 
   {{#if receivedFunding}}
     <button class="button-secondary button--green" {{action "addFunder"}}>Add Another Funder</button>
+
+    <hr>
+
+    <p>
+      Please note that if your manuscript is accepted, this statement will be published.
+      Your Financial Disclosure Statement will appear as:
+    </p>
+
+    {{#each funder in funders}}
+      <p>
+        This work was supported by
+
+        {{#if funder.formattedWebsite}}
+          <a {{bind-attr href=funder.formattedWebsite}} target="_blank"><strong>{{display-value funder.name or="[funder name]"}}</strong></a>
+        {{else}}
+          <strong>{{display-value funder.name or="[funder name]"}}</strong>
+        {{/if}}
+
+        (grant number <strong>{{display-value funder.grantNumber or="[funder grant number]"}}</strong>).
+
+        {{#if funder.funderHadInfluence}}
+          {{funder.funderInfluenceDescription}}.
+        {{else}}
+          The funder had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.
+        {{/if}}
+      </p>
+    {{/each}}
+
   {{/if}}
 </div>

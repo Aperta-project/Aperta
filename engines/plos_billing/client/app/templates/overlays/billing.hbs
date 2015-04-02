@@ -2,6 +2,10 @@
   Publication Fees
 </h1>
 
+<h3>
+  Enter Payee Details
+</h3>
+
 <div class="add-author-form">
   <div class="form-group form-inline author-top">
     <div {{bind-attr class=":form-group :author-half :required validationErrors.firstName:error"}}>
@@ -68,18 +72,6 @@
 
     </div>
   </div>
-</div>
-
-<div class="add-author-form">
-  <div class="form-group form-inline">
-    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
-      {{error-message message=null}}
-      {{question-select ident="plos_billing.country"
-                        task=model
-                        question="Please select your Country"
-                        source=countries}}
-    </div>
-  </div>
   <div class="form-group form-inline">
     <div {{bind-attr class=":required validationErrors.department:error"}}>
       {{error-message message=null}}
@@ -117,6 +109,15 @@
                        question="Postal Code"}}
     </div>
   </div>
+  <div class="form-group form-inline">
+    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
+      {{error-message message=null}}
+      {{question-select ident="plos_billing.country"
+                        task=model
+                        question="Please select your Country"
+                        source=countries}}
+    </div>
+  </div>
 </div>
 
 <hr>
@@ -140,7 +141,8 @@
                         question="Select One"
                         class="affiliation-field"
                         selectionSelected='paymentMethodSelected'
-                        source=responses}}
+                        source=responses
+                        width="resolve"}}
     </div>
   </li>
 

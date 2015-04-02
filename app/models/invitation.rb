@@ -2,7 +2,7 @@ class Invitation < ActiveRecord::Base
   include EventStreamNotifier
   include AASM
 
-  belongs_to :task, inverse_of: :invitations
+  belongs_to :task
   has_one :paper, through: :task
   belongs_to :invitee, class_name: "User", inverse_of: :invitations
   belongs_to :actor, class_name: "User", inverse_of: :invitations
@@ -36,15 +36,15 @@ class Invitation < ActiveRecord::Base
   private
 
   def notify_invitation_invited
-    task.invitation_invited(self) if task.respond_to?(:invitation_invited)
+    task.invitation_invited(self)
   end
 
   def notify_invitation_accepted
-    task.invitation_accepted(self) if task.respond_to?(:invitation_accepted)
+    task.invitation_accepted(self)
   end
 
   def notify_invitation_rejected
-    task.invitation_rejected(self) if task.respond_to?(:invitation_rejected)
+    task.invitation_rejected(self)
   end
 
   def associate_existing_user

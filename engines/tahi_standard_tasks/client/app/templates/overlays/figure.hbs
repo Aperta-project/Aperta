@@ -1,5 +1,18 @@
 <h1>{{model.title}}</h1>
 
+<p>
+  Please confirm that your figures comply with our guidelines for preparation and have not been
+  inappropriately manipulated. For information on image manipulation, please see our
+  <a href="http://www.plos.org/figureguidelines/#manipulation" target="_blank">general guidance</a>
+  notes on image manipulation.
+</p>
+
+{{question-check ident="figures.complies"
+                 task=model
+                 question="Yes - I confirm our figures comply with the guidelines."}}
+
+<hr>
+
 {{#if isEditable}}
   <span class="button-primary button--green fileinput-button">
     <span>Add new Figures</span>
@@ -13,6 +26,7 @@
                     multiple=true}}
   </span>
 {{/if}}
+
 <div id="paper-attachment-uploads">
   {{#each upload in uploads}}
     {{upload-preview upload=upload}}

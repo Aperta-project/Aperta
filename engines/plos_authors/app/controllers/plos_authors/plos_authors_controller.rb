@@ -60,8 +60,11 @@ module PlosAuthors
         :secondary_affiliation,
         :deceased,
         :corresponding,
-        :position
-      )
+        :position,
+        contributions: []
+      ).tap do |whitelisted|
+        whitelisted[:contributions] ||= []
+      end
     end
   end
 end

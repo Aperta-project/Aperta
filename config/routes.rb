@@ -144,9 +144,7 @@ Tahi::Application.routes.draw do
   resources :errors, only: :create
   resources :feedback, only: :create
   resources :invitations, only: [:create, :destroy] do
-    member do
-      put :accept, :reject
-    end
+    member { put :accept }
   end
 
   resources :user_inboxes, only: [:index, :destroy]

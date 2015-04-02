@@ -1,12 +1,14 @@
 class FeedbackController < ApplicationController
+  before_action :authenticate_user!
+
   def create
-    feedback = params[:feedback]
-
-    Feedback.new(user: current_user,
-                 screenshots: feedback[:screenshots] || [],
-                 feedback: feedback[:remarks],
-                 referrer: feedback[:referrer]).deliver
-
+    FeedbackMailer.contact(current_user, feedback_params).deliver_later
     render json: {}, status: :created
+  end
+
+  private
+
+  def feedback_params
+    params.require(:feedback).permit(:remarks, :referrer, screenshots: [:url, :filename])
   end
 end

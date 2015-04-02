@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150325175514) do
+ActiveRecord::Schema.define(version: 20150401180824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -273,6 +273,7 @@ ActiveRecord::Schema.define(version: 20150325175514) do
     t.string   "secondary_affiliation"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "contributions"
   end
 
   create_table "question_attachments", force: :cascade do |t|
@@ -321,9 +322,9 @@ ActiveRecord::Schema.define(version: 20150325175514) do
   add_index "tahi_standard_tasks_funded_authors", ["funder_id"], name: "index_tahi_standard_tasks_funded_authors_on_funder_id", using: :btree
 
   create_table "tahi_standard_tasks_funders", force: :cascade do |t|
-    t.string   "name",                         limit: 255
-    t.string   "grant_number",                 limit: 255
-    t.string   "website",                      limit: 255
+    t.string   "name"
+    t.string   "grant_number"
+    t.string   "website"
     t.boolean  "funder_had_influence"
     t.text     "funder_influence_description"
     t.integer  "task_id"
@@ -332,6 +333,21 @@ ActiveRecord::Schema.define(version: 20150325175514) do
   end
 
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
+
+  create_table "tahi_standard_tasks_reviewer_recommendations", force: :cascade do |t|
+    t.integer  "reviewer_recommendations_task_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "middle_initial"
+    t.string   "email",                            null: false
+    t.string   "department"
+    t.string   "title"
+    t.string   "affiliation"
+    t.string   "recommend_or_oppose",              null: false
+    t.text     "reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "tahi_supporting_information_files", force: :cascade do |t|
     t.integer  "paper_id"

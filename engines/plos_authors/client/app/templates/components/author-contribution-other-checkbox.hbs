@@ -1,0 +1,7 @@
+<label class="author-label">
+  {{check-box checked=isSelected action="update"}}
+  Other
+</label>
+{{#if isSelected}}
+  {{input class="form-control" placeholder="Please specify" value=textValue action="textUpdate" on="focus-out"}}
+{{/if}}

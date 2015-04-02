@@ -30,33 +30,33 @@
   }
 }
 
-#paper-editor {
+#paper-container {
   @include position(fixed, $tahi-control-bar-height 0px 0px 0px);
   min-width: $tahi-paper-width;
   background: $tahi-white;
 }
 
-html.control-bar-sub-nav-active #paper-editor {
+html.control-bar-sub-nav-active #paper-container {
   top: 103px;
 }
 
-#paper-editor .sidebar {
+#paper-container .sidebar {
   position: absolute;
   right: 0px;
   width: 300px;
   background: $tahi-white;
 }
 
-#paper-editor .task-list {
+#paper-container .task-list {
   padding: 15px 30px 0 30px;
 }
 
-#paper-editor .task-list-doi {
+#paper-container .task-list-doi {
   margin-bottom: 10px;
 }
 
 
-#paper-editor .editor {
+#paper-container .manuscript-container {
   background: $tahi-grey-xlight;
   position:absolute;
   top: 0px;
@@ -90,7 +90,7 @@ html.control-bar-sub-nav-active #paper-editor {
 }
 
 
-#paper-editor main {
+#paper-container main {
   height: 100%;
   width: 100%;
   position: relative;
@@ -98,7 +98,7 @@ html.control-bar-sub-nav-active #paper-editor {
   margin-bottom: 40px;
 }
 
-#paper-editor main .flash-messages {
+#paper-container main .flash-messages {
   position: absolute;
   top: 5px;
   left: 0px;
@@ -135,10 +135,9 @@ article.manuscript {
   font-family: $tahi-article-font-family;
 }
 
-
-article.manuscript .ve-ui-surface {
+#paper-body {
   background: $tahi-white;
-  padding: 30px 40px;
+  padding: 30px 50px;
   min-height: 600px;
 }
 
@@ -148,8 +147,9 @@ article.manuscript.read-only {
 
 article.manuscript .ve-ui-surface .ve-ce-documentNode {
   font-size: 0.95em;
-  padding-left: 10px;
   min-height: 600px;
+  // HACK: without padding the cursor is not visible
+  padding-left: 1px;
 }
 
 // TODO: _contenteditable.scss is a bit too optimistic
@@ -225,7 +225,7 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   min-width: 100px;
 }
 
-#paper-editor {
+#paper-container {
 
   &.sidebar-empty {
 
@@ -235,7 +235,7 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 
     aside { display: none; }
 
-    .editor {
+    .manuscript-container {
       right: 0px;
     }
 
@@ -343,6 +343,13 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
       svg path { fill: $tahi-green-dark; }
     }
   }
+}
+
+// figures
+
+article.manuscript figure {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 // figures overlay section

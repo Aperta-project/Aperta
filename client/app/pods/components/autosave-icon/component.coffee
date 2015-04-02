@@ -1,20 +1,22 @@
 `import Ember from 'ember'`
 
 AutoSaveIconComponent = Ember.Component.extend
-  didInsertElement: (role) ->
-    @get 'role.isSaving'
+  didInsertElement: (journalTask) ->
+    @get 'journalTask.isSaving'
   
   isLoaderShowing: false
   isCheckMarkShowing: false
 
   startShowingLoader:(->
-    if @get 'role.role'
+    # Check journalTask.role in case the role is not in the 'availableTaskRoles.'
+    # If it isn't, the value is null and should not fire the loader event
+    if @get 'journalTask.role'
       @set 'isLoaderShowing', true
       Ember.run.later (=>
         @showLoader()
         @showCheckMark()
       ), 1500
-  ).observes('role.isSaving')
+  ).observes('journalTask.isSaving')
 
   showLoader: ->
     @set('isCheckMarkShowing', true)

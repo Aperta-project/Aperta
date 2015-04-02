@@ -20,12 +20,9 @@ DashboardRoute = Ember.Route.extend
   actions:
     didTransition: () ->
       @controllerFor('dashboard').set 'pageNumber', 1
-      return true
+      true
 
-    rejectInvitation: (invitation) ->
-      RESTless.putModel(invitation, '/reject').then ->
-        invitation.reject()
-
+    rejectInvitation: (invitation) -> invitation.destroyRecord()
     acceptInvitation: (invitation) ->
       RESTless.putModel(invitation, '/accept').then =>
         invitation.accept()

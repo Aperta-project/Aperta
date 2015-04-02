@@ -200,6 +200,10 @@ textarea.ember-text-area {
 .tall-text-field {
   height: 50px;
   padding-top: 25px;
+
+  @include placeholder {
+    color: $tahi-grey-light;
+  }
 }
 
 textarea.tall-textarea {
@@ -208,14 +212,14 @@ textarea.tall-textarea {
 }
 
 .text-field-title {
-  position: absolute;
-  padding-top: 3px;
-  padding-left: 3px;
-  margin-top: 1px;
+  background: $tahi-white;
+  color: $tahi-grey;
   margin-left: 10px;
-  color: #ccc;
+  margin-top: 1px;
+  padding-left: 3px;
+  padding-top: 3px;
+  position: absolute;
   width: 69%;
-  background: #fff;
 }
 
 .constrained-form-width {

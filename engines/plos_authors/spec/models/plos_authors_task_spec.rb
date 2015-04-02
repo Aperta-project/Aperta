@@ -8,7 +8,6 @@ describe PlosAuthors::PlosAuthorsTask do
 
     it "validates individual plos authors" do
       expect(task).to_not be_valid
-      expect(task.errors[:plos_authors].size).to eq(1)
       expect(task.errors[:plos_authors][invalid_author.id].messages).to be_present
     end
   end

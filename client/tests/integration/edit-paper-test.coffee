@@ -98,7 +98,7 @@ test 'on paper.edit when there are no metadata tasks', ->
 
   visit("/papers/#{currentPaper.id}/edit")
     .then ->
-      ok(find('main.sidebar-empty').length, "The sidebar should be hidden")
+      ok(find('#paper-editor.sidebar-empty').length, "The sidebar should be hidden")
     .then ->
       msg = "There is a submit manuscript button in the main area"
       ok(find('.edit-paper .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)

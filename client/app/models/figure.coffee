@@ -5,6 +5,7 @@ a = DS.attr
 Figure = DS.Model.extend
   paper: DS.belongsTo('paper')
 
+  # TODO: do we want to persist the generated label?
   alt: a('string')
   filename: a('string')
   src: a('string')
@@ -28,5 +29,18 @@ Figure = DS.Model.extend
   strikingImageDidChange: (->
     @set 'isStrikingImage', @get('paper.strikingImageId') == @get('id')
   ).observes('paper.strikingImageId').on('didLoad')
+
+  saveDebounced: ->
+    # console.log('Saving figure...')
+    Ember.run.debounce(@, @save, 2000);
+
+  toHtml: ->
+    """
+    <figure itemscope data-id="#{@get('id')}">
+      <h1 itemprop="title">#{@get('title')}</h1>
+      <img src="#{@get('src')}">
+      <figcaption>#{@get('caption')}</figcaption>
+    </figure>
+    """
 
 `export default Figure`

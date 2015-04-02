@@ -1,63 +1,20 @@
 {{partial "paper/control-bar"}}
 
-{{flash-messages messages=flash.messages classNames="flash-messages--on-paper-edit-page"}}
-<div class="ve-toolbar-underside">
-    {{#visual-editor-toolbar viewName="toolbar" visualEditor=view.visualEditor classNames='editor-toolbar'}}
-      {{#ve-button-group name="history"}}
-        {{#ve-button command="undo"}}{{fa-icon "undo"}}{{/ve-button}}
-        {{#ve-button command="redo" }}{{fa-icon "repeat"}}{{/ve-button}}
-      {{/ve-button-group}}
-      <span class="separator"></span>
-      {{#ve-select name="switch-type"}}
-        {{#ve-option command="paragraph"}}Paragraph{{/ve-option}}
-        {{#ve-option command="heading1"}}Heading 1{{/ve-option}}
-        {{#ve-option command="heading2"}}Heading 2{{/ve-option}}
-        {{#ve-option command="heading3"}}Heading 3{{/ve-option}}
-        {{#ve-option command="preformatted"}}Preformatted{{/ve-option}}
-        {{#ve-option command="blockquote"}}Blockquote{{/ve-option}}
-      {{/ve-select}}
-      <span class="separator"></span>
-      {{#ve-button-group name="annotations"}}
-        {{#ve-button command="bold"}}{{fa-icon "bold"}}{{/ve-button}}
-        {{#ve-button command="italic"}}{{fa-icon "italic"}}{{/ve-button}}
-        {{#ve-button command="link"}}{{fa-icon "link"}}{{/ve-button}}
-      {{/ve-button-group}}
-      <span class="separator"></span>
-      {{#ve-button-group name="insert"}}
-        {{#ve-button command="figure"}}{{fa-icon "image"}}{{/ve-button}}
-        {{#ve-button command="insertTable"}}{{fa-icon "table"}}{{/ve-button}}
-      {{/ve-button-group}}
-    {{/visual-editor-toolbar}}
-</div>
+<div id="paper-editor" {{bind-attr class="isSidebarEmpty:sidebar-empty"}}>
 
-<div id="tahi-container">
+  {{partial "paper/sidebar"}}
 
-  <main {{bind-attr class="isSidebarEmpty:sidebar-empty"}}>
+  <div class="editor">
 
-    <aside>
-      <div {{action "showActivityFeed" "manuscript"}} class="recent-activity-link">
-        {{partial "svg/heartbeat"}} Recent Activity
-      </div>
-      <div class="task-list">
-        {{partial "paper/task-list"}}
-        <a {{action "submit" target="view"}} {{bind-attr class=":button-primary allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit</a>
-      </div>
-    </aside>
+    <div class="editor-toolbar">
+      {{partial "paper/edit/toolbar"}}
+    </div>
 
-    <article>
-      <div class="edit-paper">
-        {{#if doi}}
-          <div id="no-sidebar-doi" class="task-list-doi">
-            <strong>DOI:</strong> {{doi}}
-          </div>
-        {{/if}}
-        <a {{action "submit" target="view"}} {{bind-attr class=":no-sidebar-submit-manuscript :button-primary allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit Manuscript</a>
-        {{toggle-paper-editable action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
-        <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
-        <span class="edit-paper-lock-message">{{display-value statusMessage or=""}} {{time-ago time=savedAt}}</span>
-      </div>
+    <main>
 
-      <div class="manuscript-container">
+      {{flash-messages classNames="flash-messages-paper-editor"}}
+
+      <article {{ bind-attr class=":manuscript isEditing:editing:read-only"}}>
         <div class="manuscript-title-and-placeholder">
           {{content-editable tagName="h2"
                              id="paper-title"
@@ -69,10 +26,15 @@
             <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
           {{/if}}
         </div>
+        <div id="paper-body">
+          {{visual-editor
+            viewName="editor"
+            initializerContext=controller
+            initializer=controller.setupEditor}}
+        </div>
+      </article>
+    </main>
 
-        {{visual-editor id="paper-body" model=controller.visualEditor viewName='visualEditor'}}
-      </div>
-    </article>
+  </div>
 
-  </main>
 </div>

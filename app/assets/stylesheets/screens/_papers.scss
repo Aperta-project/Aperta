@@ -30,212 +30,146 @@
   }
 }
 
-#paper-title {
-  margin-top: 50px;
-  font-family: $tahi-article-font-family;
+#paper-editor {
+  @include position(fixed, $tahi-control-bar-height 0px 0px 0px);
+  min-width: $tahi-paper-width;
+  background: $tahi-white;
 }
 
-#paper-body {
-  min-height: 500px;
-  padding-bottom: 36px;
-
-  .ve-ce-documentNode {
-    font-size: 0.95em;
-  }
-
-  .ve-ce-documentNode.ve-ce-branchNode { // visual-editor override
-    min-height: 500px;
-  }
-}
-
-#paper-body .oo-ui-toolbar {
-  @include position(fixed, $tahi-control-bar-height 0px auto 0px);
-  height: 45px;
-  background: none !important; // Blocks buttons as of July 28, 2014
-  z-index: z('ve-toolbar');
-  @include transition(top 0.2s);
-}
-
-html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
+html.control-bar-sub-nav-active #paper-editor {
   top: 103px;
 }
 
-.ve-toolbar-underside {
-  @include position(fixed, $tahi-control-bar-height 0px auto 0px);
-  height: 31px;
-  background: rgba($tahi-white, 0.7);
-  z-index: 1;
-}
-
-// Not really sure what this is. Breaks default toolbar buttons as of July 28, 2014
-#paper-body .oo-ui-toolbar-actions {
-  display: none;
-}
-
-#paper-body .oo-ui-toolbar-tools {
-  float: none;
-  width: 1120px;
-  margin: 0 auto;
-}
-
-#paper-body .oo-ui-toolbar-bar {
-  height: 43px;
-  padding-top: 2px;
-
-  &.locked { opacity: 0.5; }
-}
-
-#paper-abstract { display: none; }
-
-.manuscript-title-and-placeholder {
-  position: relative;
-}
-
-#paper-placeholder {
+#paper-editor .sidebar {
   position: absolute;
-  left: 3px;
-  bottom: -33px;
-  color: $tahi-grey-dark;
-  font-style: italic;
-  z-index: z('paper-placeholder');
+  right: 0px;
+  width: 300px;
+  background: $tahi-white;
 }
 
-.author-detail {
-  display: inline-block;
-  min-width: 100px;
-}
-
-.editor-toolbar {
-  background: rgba($tahi-white, 1.0);
-  float: none;
-  width: 1120px;
-  margin: 0 auto;
-  cursor: default;
-
-  &.disabled {
-    opacity: 0.3;
-  }
-
-  .edit-paper {
-    display: inline-block;
-    margin-left: 5px;
-  }
-
-  .separator {
-    width: 1px;
-    border-left: 1px solid #ccc;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-
-  .ve-tool-group {
-    display: inline-block;
-  }
-
-  .ve-select {
-    padding: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    font-size: small;
-
-    .ve-option.disabled {
-      display: none;
-    }
-  }
-}
-
-.editor-toolbar .ve-tool-group .ve-tool {
-  display: inline-block;
-  padding: 5px 10px;
-
-  &.disabled {
-    opacity: 0.3;
-  }
-
-  &.enabled {
-    cursor: pointer;
-  }
-
-  &.enabled:hover {
-    background-color: #666;
-    color: white;
-  }
-
-  &.active {
-    background-color: #666;
-    color: white;
-  }
-}
-
-#tahi-container main {
-  overflow: hidden;
-  background: #fff;
-
-  article {
-    width: 75%;
-    border-right: 1px solid $tahi-grey-light;
-  }
-
-  aside {
-    float: right;
-    width: 25%;
-  }
-
-  .no-sidebar-submit-manuscript {
-    float: right;
-    display: none;
-    clear: right;
-  }
-
-  #no-sidebar-doi {
-    float: right;
-    display: none;
-    margin-bottom: 0;
-    margin-top: -30px;
-  }
-
-  &.sidebar-empty {
-    max-width: 840px;
-    min-width: 840px; // override default
-
-    .no-sidebar-submit-manuscript,
-    #no-sidebar-doi {
-      display: block;
-    }
-
-    aside { display: none; }
-    article {
-      width: 100%;
-      border: none;
-    }
-  }
-}
-
-.locked-overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  font-size: 24px;
-  text-align: center;
-  background-color: transparent;
-  z-index: 1;
-}
-
-.task-list {
+#paper-editor .task-list {
   padding: 15px 30px 0 30px;
 }
 
-.task-list-doi {
+#paper-editor .task-list-doi {
   margin-bottom: 10px;
 }
 
-.manuscript-container {
-  font-family: $tahi-article-font-family;
-  width: 700px;
-  margin: 0 auto;
-  position: relative;
+
+#paper-editor .editor {
+  background: $tahi-grey-xlight;
+  position:absolute;
+  top: 0px;
+  right: 300px;
+  left: 0px;
+  bottom: 0px;
 }
 
+.editor-toolbar {
+  width: 100%;
+  background: $tahi-white;
+  padding: 5px 20px;
+  border-bottom: 1px solid $tahi-grey-xlight;
+  z-index: 1;  // higher index to ensure toolbar stays over side-bar
+}
+
+// HACK: something makes this button change height of 1px when toggled
+.edit-paper-button {
+  height: 34px;
+}
+
+.editor-toolbar .saving-spinner {
+  color: $tahi-black;
+  line-height: 30px;
+  -webkit-animation: spin 500ms linear infinite;
+  animation: spin 500ms linear infinite;
+}
+
+.editor-toolbar .saving-spinner.hidden {
+  visibility: hidden;
+}
+
+
+#paper-editor main {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+}
+
+#paper-editor main .flash-messages {
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  right: 0px;
+  z-index: 1
+}
+
+article.manuscript {
+  background: $tahi-grey-xlight;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  padding: 20px 20px 40px 20px;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+  font-family: $tahi-article-font-family;
+}
+
+// title contenteditable
+// HACK: this is not the final solution. We will use our 'structure' extension
+//  to have that within the editing area
+
+.manuscript-title-and-placeholder {
+  background: $tahi-white;
+  padding: 50px 50px 20px;
+}
+
+#paper-title {
+  margin-bottom: 0px;
+  font-family: $tahi-article-font-family;
+}
+
+
+article.manuscript .ve-ui-surface {
+  background: $tahi-white;
+  padding: 30px 40px;
+  min-height: 600px;
+}
+
+article.manuscript.read-only {
+  cursor: default;
+}
+
+article.manuscript .ve-ui-surface .ve-ce-documentNode {
+  font-size: 0.95em;
+  padding-left: 10px;
+  min-height: 600px;
+}
+
+// TODO: _contenteditable.scss is a bit too optimistic
+//       affecting all contenteditables
+
+.ve-ui-surface div[contenteditable=true] {
+  min-height: initial;
+  margin-bottom: initial;
+  background-color: initial;
+  padding: initial;
+}
+
+.ve-ui-surface .ve-ce-documentNode {
+  padding: 0px;
+  margin: 0px;
+}
+
+.ve-ui-surface .ve-ce-documentNode[contenteditable=false] {
+  cursor: default;
+}
 
 // start edit-paper section
 
@@ -248,6 +182,7 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
   width: initial;
   max-width: 95px;
 }
+
 .edit-paper-lock-message {
   width: 200px;
   color: $tahi-black;
@@ -255,6 +190,7 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
   font-size: 12px;
   font-style: italic;
   z-index: 1;
+  line-height: 30px;
 }
 .edit-paper .glyphicon-lock,
 .edit-paper .edit-paper-lock-message span {
@@ -284,8 +220,63 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
   }
 }
 
-// end edit-paper section
+.author-detail {
+  display: inline-block;
+  min-width: 100px;
+}
 
+#paper-editor {
+
+  &.sidebar-empty {
+
+    #no-sidebar-doi {
+      display: block;
+    }
+
+    aside { display: none; }
+
+    .editor {
+      right: 0px;
+    }
+
+    .editor-toolbar {
+      width: 100%;
+
+      .ve-toolbar {
+        width: $tahi-paper-width;
+        margin: 0px auto;
+      }
+    }
+
+    article {
+      width: 100%;
+      padding-left: 0px;
+      padding-right: 0px;
+
+      .manuscript-title-and-placeholder {
+        width: $tahi-paper-width;
+        margin: 0px auto;
+      }
+
+      #paper-body {
+        width: $tahi-paper-width;
+        margin: 0px auto;
+      }
+    }
+  }
+}
+
+.locked-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+  text-align: center;
+  background-color: transparent;
+  z-index: 1;
+}
+
+// end edit-paper section
 
 // start contributors section
 
@@ -323,7 +314,6 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
 
 // end contributors section
 
-
 .manuscript-download-links {
   overflow: hidden;
   display: none;
@@ -355,8 +345,264 @@ html.control-bar-sub-nav-active #paper-body .oo-ui-toolbar {
   }
 }
 
-.placeholder {
-  background: #aaa !important;
-  margin-bottom: 8px;
-  height: 48px;
+// figures overlay section
+
+.figures-overlay {
+  display: block;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 1100;
+  background: $tahi-white;
+  padding-bottom: 20px;
+}
+
+.figures-overlay .figures-header {
+  width: 100%;
+  height: 60px;
+  color: $tahi-green;
+  padding: 0px 15px;
+  border-bottom: solid 1px $tahi-grey-xlight;
+}
+
+.figures-header .overlay-title {
+  display: inline-block;
+  line-height: 30px;
+  font-size: 24px;
+  padding: 15px 10px;
+}
+
+.figures-overlay .figures-toolbar {
+  display: inline-block;
+  width: 100%;
+  padding: 5px 20px;
+  border-bottom: solid 1px $tahi-grey-xlight;
+}
+
+.figures-overlay .close-overlay {
+  display: inline;
+  color: $tahi-green;
+  cursor: pointer;
+}
+
+.figures-overlay .figures-body {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 10px 20px;
+  padding-bottom: 100px;
+}
+
+.figure-item {
+  position: relative;
+  border: solid 1px $tahi-grey-light;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+}
+
+.figure-item *[contenteditable] {
+  min-height: initial;
+  margin-bottom: initial;
+}
+
+.figure-item .attachment-thumbnail-image {
+  float: left;
+  width: 30%;
+  text-align: center;
+  z-index: 1;
+}
+
+.figure-item .attachment-thumbnail-image img {
+  width: 100%;
+}
+
+.figure-item .btn:not(.enabled) {
+  visibility: hidden;
+}
+
+.figure-item .btn.enabled {
+  color: $tahi-grey-dark;
+}
+
+.figure-item a.btn.enabled:hover {
+  color: $tahi-grey;
+}
+
+.figure-item .btn.active {
+  color: $tahi-black;
+}
+
+.figure-item .btn.active:hover {
+  color: $tahi-grey;
+}
+
+.figure-item .edit-button.active {
+  background-color: $tahi-green;
+  color: $tahi-white;
+}
+
+.figure-item .edit-button.active:hover {
+  background-color: $tahi-grey-light;
+  border-color: $tahi-green;
+}
+
+
+.figure-item .figure-item-detailed-view {
+  position: relative;
+  top: 0px;
+  margin-bottom: 0px;
+}
+
+.figure-item-header {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 70%;
+  z-index: 1;
+}
+
+.figure-item-header-inner {
+  line-height: 40px;
+  padding-left: 50px;
+}
+
+.figure-item .figure-label {
+  margin: 10px 0px;
+  padding: 2px 5px;
+  font-size: 16px;
+  font-style: italic;
+  color: $tahi-green;
+}
+
+.figure-item.unplaced .figure-label {
+  color: $tahi-error-red;
+}
+
+.figure-item-header .first-button-group {
+  margin-left: 20px;
+}
+
+.figure-item-header .saving-spinner {
+  visibility: hidden;
+}
+
+.figure-item.saving .saving-spinner {
+  visibility:initial;
+  color: $tahi-green;
+}
+
+.figure-item .insert-into-manuscript {
+  padding-right: 30px;
+}
+
+.figure-item .insert-into-manuscript i.second {
+  position: relative;
+  left: -10px;
+}
+
+.figure-item-footer {
+  position: absolute;
+  bottom: 10px;
+  right: 0px;
+  width: 70%;
+}
+
+.figure-item-footer-inner {
+  padding: 0px 50px;
+}
+
+.figure-item-editor .ve-ce-surface {
+  padding: 40px;
+  max-width: 700px;
+}
+
+.figure-item-editor .ve-ce-branchNode-slug {
+  display: none;
+}
+
+.figure-item-editor .ve-ce-branchNode-slug.text-property-slug {
+  display: block;
+}
+
+.figure-item-editor label {
+  font-weight: bold;
+  margin: 0px;
+  padding: 0px;
+  min-width: 100px;
+}
+
+.figure-item-editor .figure-title {
+  font-size: 21px;
+}
+
+.figure-item-editor .form-entry-view.figure-caption {
+  margin-top: 10px;
+  font-size: 16px;
+  white-space: pre-wrap;
+}
+
+.figure-item-editor .form-entry-view.figure-caption .text-input-view {
+  min-width: 10px;
+  min-height: 20px;
+}
+
+.figure-item-editor .ve-ui-surface:after {
+  display: none;
+}
+
+.figure-item-editor .ve-ce-documentNode {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+.figure-item-editor .form-view {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+.figure-item-editor .form-entry-view {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+.figure-item-editor .text-input-view {
+  min-height: initial;
+}
+
+.figure-item .title .placeholder {
+  background: transparent !important;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.figure-item .text-property-view {
+  display: inline;
+}
+
+.figure-item .caption .placeholder {
+  background: transparent !important;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.figure-item .striking-image-checkbox {
+  vertical-align: center;
+}
+
+.figure-item .striking-image-checkbox input {
+  width: 15px;
+  height: 15px;
+}
+
+.figure-item .striking-image-checkbox label {
+  font-size: 18px;
+  font-weight: normal;
+  margin-left: 10px;
+}
+
+.figure-item-detailed-view {
+  margin-top: 40px;
 }

@@ -98,10 +98,10 @@ test 'on paper.edit when there are no metadata tasks', ->
 
   visit("/papers/#{currentPaper.id}/edit")
     .then ->
-      ok(find('#paper-editor.sidebar-empty').length, "The sidebar should be hidden")
+      ok(find('#paper-container.sidebar-empty').length, "The sidebar should be hidden")
     .then ->
       msg = "There is a submit manuscript button in the main area"
-      ok(find('.edit-paper .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)
+      ok(find('.manuscript-container .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)
 
 test 'on paper.index when there are no metadata tasks', ->
   expect(2)
@@ -124,6 +124,6 @@ test 'on paper.index when there are no metadata tasks', ->
     Ember.run ->
       getStore().getById('paper', currentPaper.id).set('editable', false)
   andThen ->
-    ok find('main.sidebar-empty').length, "The sidebar should be hidden"
+    ok find('#paper-container.sidebar-empty').length, "The sidebar should be hidden"
     msg = "There is no submit manuscript button in the main area"
-    ok !find('.edit-paper .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg
+    ok !find('.manuscript-container .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg

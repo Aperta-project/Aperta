@@ -6,39 +6,51 @@
   Enter Payee Details
 </h3>
 
-<div class="add-author-form">
+<div class="add-author-form billing-card">
   <div class="form-group form-inline author-top">
-    <div {{bind-attr class=":form-group :author-half :required validationErrors.firstName:error"}}>
-      {{error-message message=null}}
+    <div {{bind-attr class=":form-group :author-half validationErrors.firstName:error"}}>
+      <span class="text-field-title">
+        First Name
+        {{error-message message=null}}
+      </span>
       {{question-input ident="plos_billing.first_name"
                        task=model
-                       question='First Name'}}
+                       question='Jane'}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.lastName:error"}}>
-      {{error-message message=null}}
+    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.lastName:error"}}>
+      <span class="text-field-title">
+        Last Name
+        {{error-message message=null}}
+      </span>
       {{question-input ident="plos_billing.last_name"
                        task=model
-                       question='Last Name'}}
+                       question='Goodall'}}
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half :required validationErrors.title:error"}}>
-      {{error-message message=null}}
+    <div {{bind-attr class=":form-group :author-half validationErrors.title:error"}}>
+      <span class="text-field-title">
+        Title
+        {{error-message message=null}}
+      </span>
       {{question-input ident="plos_billing.title"
                        task=model
-                       question='Title'}}
+                       question="World's Foremost Expert on Chimpanzees"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.department:error"}}>
-      {{error-message message=null}}
+    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.department:error"}}>
+      <span class="text-field-title">
+        Department
+        {{error-message message=null}}
+      </span>
       {{question-input ident="plos_billing.department"
                        task=model
-                       question='Department'}}
+                       question='Primatology'}}
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half :required validationErrors.affiliation:error"}}>
+    <div {{bind-attr class=":form-group :author-half validationErrors.affiliation:error"}}>
       {{error-message message=null}}
       {{question-select ident="plos_billing.affiliation1"
                         task=model
@@ -51,49 +63,64 @@
       {{error-message message=null}}
       {{question-select ident="plos_billing.affiliation2"
                         task=model
-                        question="Secondary Affiliation"
+                        question="Secondary Affiliation (optional)"
                         class="secondary-affiliation-field"
                         source=ringgold}}
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half :required validationErrors.email:error"}}>
-      {{error-message message=null}}
+    <div {{bind-attr class=":form-group :author-half validationErrors.email:error"}}>
+      <span class="text-field-title">
+        Phone
+        {{error-message message=null}}
+      </span>
       {{question-input ident="plos_billing.phone_number"
                        task=model
-                       question="Phone"}}
+                       question="415-555-5555"}}
 
     </div>
-    <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.email:error"}}>
-      {{error-message message=null}}
+    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.email:error"}}>
+      <span class="text-field-title">
+        Email
+        {{error-message message=null}}
+      </span>
       {{question-input ident="plos_billing.email_address"
                        task=model
-                       question="Email"}}
+                       question="jane.goodll@science.com"}}
 
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":required validationErrors.department:error"}}>
-      {{error-message message=null}}
+    <div {{bind-attr class="validationErrors.department:error"}}>
+      <span class="text-field-title">
+        Address Line 1 (optional)
+        {{error-message message=null}}
+      </span>
       {{question-input ident="plos_billing.address1"
                        task=model
-                       question="Address line one"}}
+                       question="1581 Le Roy Ave"}}
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":required validationErrors.department:error"}}>
-      {{error-message message=null}}
+    <div {{bind-attr class="validationErrors.department:error"}}>
+      <span class="text-field-title">
+        Address Line 2 (optional)
+        {{error-message message=null}}
+      </span>
       {{question-input ident="plos_billing.address2"
                        task=model
-                       question="Address line two"}}
+                       question="Suite 3"}}
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
-      {{error-message message=null}}
+    <div {{bind-attr class=":form-group :author-half validationErrors.department:error"}}>
+      <span class="text-field-title">
+        City
+        {{error-message message=null}}
+      </span>
       {{question-input ident="plos_billing.city"
                        task=model
-                       question="City"}}
+                       question="Berkley"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-name :author-bump validationErrors.department:error"}}>
@@ -102,15 +129,18 @@
                         question="Select State"
                         source=states}}
     </div>
-    <div {{bind-attr class=":required :form-group :author-name validationErrors.department:error"}}>
-      {{error-message message=null}}
+    <div {{bind-attr class=":form-group :author-name validationErrors.department:error"}}>
+      <span class="text-field-title">
+        Postal Code
+        {{error-message message=null}}
+      </span>
       {{question-input ident="plos_billing.postal_code"
                        task=model
-                       question="Postal Code"}}
+                       question="94708"}}
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
+    <div {{bind-attr class=":form-group :author-half validationErrors.department:error"}}>
       {{error-message message=null}}
       {{question-select ident="plos_billing.country"
                         task=model
@@ -134,7 +164,7 @@
       How would you like to pay?
     </h3>
 
-    <div {{bind-attr class=":form-group :author-half :author-bump :required :payment-method validationErrors.affiliation:error"}}>
+    <div {{bind-attr class=":form-group :author-half :author-bump :payment-method validationErrors.affiliation:error"}}>
       {{error-message message=null}}
       {{question-select ident="plos_billing.payment_method"
                         task=model

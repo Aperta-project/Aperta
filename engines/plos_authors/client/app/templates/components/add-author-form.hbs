@@ -2,60 +2,78 @@
 
   <div class="form-group form-inline author-top">
     <div {{bind-attr class=":form-group :author-name validationErrors.firstName:error"}}>
-      {{error-message message=validationErrors.firstName}}
-      <span class="text-field-title">First Name</span>
+      <span class="text-field-title">
+        First Name
+        {{error-message message=validationErrors.firstName}}
+      </span>
       {{input type="text"
               value=newAuthor.firstName
               class="form-control tall-text-field"
-              placeholder="Jane"}}
+              placeholder="Jane"
+              id="first-name"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-middle validationErrors.middleInitial:error"}}>
-      {{error-message message=validationErrors.middleInitial}}
-      <span class="text-field-title">MI</span>
+      <span class="text-field-title">
+        MI
+        {{error-message message=validationErrors.middleInitial}}
+      </span>
       {{input type="text"
               value=newAuthor.middleInitial
               class="form-control tall-text-field"
-              placeholder="M"}}
+              placeholder="M"
+              id="mi"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-name validationErrors.lastName:error"}}>
-      {{error-message message=validationErrors.lastName}}
-      <span class="text-field-title">Last Name</span>
+      <span class="text-field-title">
+        Last Name
+        {{error-message message=validationErrors.lastName}}
+      </span>
       {{input type="text"
               value=newAuthor.lastName
               class="form-control tall-text-field"
-              placeholder="Goodall"}}
+              placeholder="Goodall"
+              id="last-name"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.email:error"}}>
-      {{error-message message=validationErrors.email}}
-      <span class="text-field-title">Email</span>
+      <span class="text-field-title">
+        Email 
+        {{error-message message=validationErrors.email}}
+      </span>
       {{input type="text"
               value=newAuthor.email
               class="form-control tall-text-field"
-              placeholder="jane.goodall@science.com"}}
+              placeholder="jane.goodall@science.com"
+              id="email"}}
 
     </div>
   </div>
 
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half validationErrors.title:error"}}>
-      {{error-message message=validationErrors.title}}
-      <span class="text-field-title">Title</span>
+      <span class="text-field-title">
+        Title
+        {{error-message message=validationErrors.title}}
+      </span>
       {{input type="text"
               value=newAuthor.title
               class="form-control tall-text-field"
-              placeholder="World's Foremost Expert on Chimpanzees"}}
+              placeholder="World's Foremost Expert on Chimpanzees"
+              id="title"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.department:error"}}>
-      {{error-message message=validationErrors.department}}
-      <span class="text-field-title">Department</span>
+      <span class="text-field-title">
+        Department
+        {{error-message message=validationErrors.department}}
+      </span>
       {{input type="text"
               value=newAuthor.department
               class="form-control tall-text-field"
-              placeholder="Primatology"}}
+              placeholder="Primatology"
+              id="department"}}
     </div>
   </div>
 

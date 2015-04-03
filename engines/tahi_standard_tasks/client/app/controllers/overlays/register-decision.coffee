@@ -13,6 +13,12 @@ RegisterDecisionOverlayController = TaskController.extend
     @get('model.decisions').sortBy('revisionNumber').reverse()[1..-1]
   ).property('model.decisions.@each')
 
+  # implicit computed state based on .verdict
+  finalDecision: (->
+    @get("latestDecision.verdict") == "accepted" ||
+    @get("latestDecision.verdict") == "rejected"
+  ).property("latestDecision")
+
   saveModel: ->
     @_super()
       .then () =>

@@ -1,5 +1,5 @@
 class CardOverlay < Page
-  path :paper_task
+  path :root
 
   def dismiss
     session.all('.overlay .overlay-close-button').first.click

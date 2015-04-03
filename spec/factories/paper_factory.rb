@@ -30,5 +30,15 @@ FactoryGirl.define do
     after(:create) do |paper|
       paper.paper_roles.create!(user: paper.creator, role: PaperRole::COLLABORATOR)
     end
+
+    factory :paper_with_phases do
+      transient do
+        phases_count 1
+      end
+
+      after(:create) do |paper, evaluator|
+        create_list(:phase, evaluator.phases_count, paper: paper)
+      end
+    end
   end
 end

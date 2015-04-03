@@ -3,7 +3,7 @@ class Decision < ActiveRecord::Base
 
   before_validation :increment_revision_number
 
-  default_scope -> { order('revision_number DESC') }
+  default_scope { order('revision_number DESC') }
 
   validates :revision_number, uniqueness: { scope: :paper_id }
 

@@ -16,7 +16,7 @@ module.exports = function(environment) {
     APP: {},
 
     'ember-cli-visualeditor': {
-      assetsRoot: '/assets/tahi'
+      assetsRoot: '/'
     },
 
     contentSecurityPolicy: {
@@ -49,11 +49,13 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
 
-    // And, we need to use a different root for served assets
     ENV['ember-cli-visualeditor'].assetsRoot = '/assets';
   }
 
   if (environment === 'production') {
+    // manage assets manually (as workaround for problems
+    // with ember-cli assets pipeline / uglify)
+    //ENV['ember-cli-visualeditor'].assetsRoot = '/';
   }
 
   return ENV;

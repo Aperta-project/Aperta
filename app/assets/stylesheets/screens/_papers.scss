@@ -350,6 +350,10 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 article.manuscript figure {
   margin-top: 20px;
   margin-bottom: 20px;
+
+  img {
+    max-width: 600px;
+  }
 }
 
 // figures overlay section

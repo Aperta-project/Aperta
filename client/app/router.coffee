@@ -11,6 +11,7 @@ Router.map ->
   @resource 'paper', { path: '/papers/*paper_id' }, ->
     @route('edit')
     @route('manage')
+    @route('latex')
 
   @route('task', { path: '/papers/:paper_id/tasks/:task_id' })
   @route('profile', { path: '/profile' })

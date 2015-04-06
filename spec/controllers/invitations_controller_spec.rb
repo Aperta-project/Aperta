@@ -1,9 +1,19 @@
 require "rails_helper"
 
+class TestMailer < ActionMailer::Base
+  def notify_rescission paper_id:, invitee_id:
+    mail to: 'test@g.com', subject: 'test email'
+  end
+end
+
 class TestTask < Task
   include TaskTypeRegistration
   include Invitable
   register_task default_title: "Test Task", default_role: "user"
+
+  def invitation_rescinded paper_id:, invitee_id:
+    TestMailer.delay.notify_rescission paper_id: paper_id, invitee_id: invitee_id
+  end
 end
 
 describe InvitationsController do
@@ -36,7 +46,7 @@ describe InvitationsController do
     end
   end
 
-  describe "DESTROY /invitations/:id" do
+  describe "DELETE /invitations/:id" do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
     it "deletes the invitation queues up email job" do

@@ -31,8 +31,9 @@
 }
 
 #paper-container {
-  @include position(fixed, $tahi-control-bar-height 0px 0px 0px);
-  min-width: $tahi-paper-width;
+  @include position(relative, $tahi-control-bar-height+$ve-toolbar-height 0px 0px 0px);
+  max-width: $tahi-paper-width;
+  margin: 0 auto;
   background: $tahi-white;
 }
 
@@ -41,9 +42,8 @@ html.control-bar-sub-nav-active #paper-container {
 }
 
 #paper-container .sidebar {
-  position: absolute;
-  right: 0px;
-  width: 300px;
+  float: right;
+  width: 25%;
   background: $tahi-white;
 }
 
@@ -57,12 +57,9 @@ html.control-bar-sub-nav-active #paper-container {
 
 
 #paper-container .manuscript-container {
+  position: relative;
   background: $tahi-grey-xlight;
-  position:absolute;
-  top: 0px;
-  right: 300px;
-  left: 0px;
-  bottom: 0px;
+  width: 75%;
 }
 
 .editor-toolbar {
@@ -94,8 +91,6 @@ html.control-bar-sub-nav-active #paper-container {
   height: 100%;
   width: 100%;
   position: relative;
-  padding-bottom: 40px;
-  margin-bottom: 40px;
 }
 
 #paper-container main .flash-messages {
@@ -108,17 +103,9 @@ html.control-bar-sub-nav-active #paper-container {
 
 article.manuscript {
   background: $tahi-grey-xlight;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  padding: 20px 20px 40px 20px;
   overflow-x:hidden;
-  overflow-y:scroll;
-  padding-bottom: 40px;
-  margin-bottom: 40px;
   font-family: $tahi-article-font-family;
+  border-right: 1px solid $tahi-grey-light;
 }
 
 // title contenteditable
@@ -173,7 +160,6 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 
 // start edit-paper section
 
-.edit-paper              { padding: 40px 70px 0 70px; }
 .edit-paper-button       { width: 150px; margin-right: 5px; }
 .edit-paper-start-icon   { padding-right: 22px; }
 .edit-paper-stop-icon    { margin: -6px 0 0 -8px; }
@@ -225,6 +211,18 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   min-width: 100px;
 }
 
+.edit-paper {
+  .editor-toolbar {
+    position: fixed;
+    top: 60px;
+    max-width: $tahi-paper-width;
+
+    .ve-toolbar {
+      margin: 0px auto;
+    }
+  }
+}
+
 #paper-container {
 
   &.sidebar-empty {
@@ -235,17 +233,12 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 
     aside { display: none; }
 
-    .manuscript-container {
-      right: 0px;
+    .manuscript {
+      border-right: none;
     }
 
-    .editor-toolbar {
+    .manuscript-container {
       width: 100%;
-
-      .ve-toolbar {
-        width: $tahi-paper-width;
-        margin: 0px auto;
-      }
     }
 
     article {
@@ -350,6 +343,10 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 article.manuscript figure {
   margin-top: 20px;
   margin-bottom: 20px;
+
+  img {
+    max-width: 600px;
+  }
 }
 
 // figures overlay section

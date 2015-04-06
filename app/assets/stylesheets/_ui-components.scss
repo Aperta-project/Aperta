@@ -9,6 +9,7 @@
   &.tall-text-field {
     height: 50px;
     padding-top: 25px;
+    width: 100%;
 
     @include placeholder {
       color: $tahi-grey-light;

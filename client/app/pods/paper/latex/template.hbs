@@ -1,0 +1,56 @@
+{{partial "paper/control-bar"}}
+
+<div id="paper-container" {{bind-attr class="isSidebarEmpty:sidebar-empty"}}>
+
+  {{partial "paper/sidebar"}}
+
+  <div class="manuscript-container">
+
+    <div class="editor-toolbar">
+      <div class="ve-toolgroup btn-group">
+        {{toggle-paper-editable action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
+      </div>
+      {{#if isSidebarEmpty}}
+        <div class="ve-toolgroup btn-group">
+          <a {{action "submit" target="view"}}
+             {{bind-attr class=":no-sidebar-submit-manuscript :button-primary allMetadataTasksCompleted:button--green:button--disabled"}}
+             href="#">Submit Manuscript</a>
+          <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
+        </div>
+      {{/if}}
+      <div class="ve-tool-group pull-right">
+        <span {{bind-attr class=":saving-spinner isSaving::hidden"}}>
+          <i class="fa fa-spinner fa-spin"></i>
+        </span>
+        <span class="edit-paper-lock-message">
+          {{display-value statusMessage or=""}}
+          {{time-ago time=savedAt}}
+        </span>
+      </div>
+    </div>
+
+    <main>
+
+      {{flash-messages classNames="flash-messages-paper-editor"}}
+
+      <article {{ bind-attr class=":manuscript isEditing:editing:read-only"}}>
+        <div class="manuscript-title-and-placeholder">
+          {{content-editable tagName="h2"
+                             id="paper-title"
+                             placeholder="Type your manuscript title here"
+                             value=title
+                             preventEnterKey="true"}}
+
+          {{#if showPlaceholder}}
+            <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
+          {{/if}}
+        </div>
+        <div id="paper-body">
+          {{ textarea value=model.body }}
+        </div>
+      </article>
+    </main>
+
+  </div>
+
+</div>

@@ -6,3 +6,5 @@ coffee_script:
   config_file: coffeelint.json
 java_script:
   config_file: client/.jshintrc
+scss:
+  enabled: false

@@ -1,0 +1,30 @@
+// Form Element UI Components
+
+.form-control {
+  &.tall-textarea {
+    height: 90px;
+    padding-top: 25px;
+  }
+
+  &.tall-text-field {
+    height: 50px;
+    padding-top: 25px;
+
+    @include placeholder {
+      color: $tahi-grey-light;
+    }
+  }
+}
+
+// Should be placed within form-group div and above the input element
+.text-field-title {
+  background: $tahi-white;
+  color: $tahi-grey;
+  margin-left: 10px;
+  margin-top: 1px;
+  padding-left: 3px;
+  padding-top: 3px;
+  position: absolute;
+  width: 69%;
+}
+

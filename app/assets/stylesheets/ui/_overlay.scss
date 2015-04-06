@@ -189,39 +189,6 @@
   font-family: 'Times New Roman', serif;
 }
 
-textarea.form-control {
-  height: 70px;
-}
-
-.form-control {
-  width: 100%;
-}
-
-.tall-text-field {
-  height: 50px;
-  padding-top: 25px;
-
-  @include placeholder {
-    color: $tahi-grey-light;
-  }
-}
-
-textarea.tall-textarea {
-  height: 90px;
-  padding-top: 25px;
-}
-
-.text-field-title {
-  background: $tahi-white;
-  color: $tahi-grey;
-  margin-left: 10px;
-  margin-top: 1px;
-  padding-left: 3px;
-  padding-top: 3px;
-  position: absolute;
-  width: 69%;
-}
-
 .constrained-form-width {
   width: 800px;
 }

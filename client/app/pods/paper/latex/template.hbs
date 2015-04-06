@@ -46,7 +46,13 @@
           {{/if}}
         </div>
         <div id="paper-body">
-          {{ textarea value=model.body }}
+          {{ textarea class="latex-editor" value=model.body }}
+        </div>
+
+        <div id="rendered-latex">
+          {{#if body}}
+            <img {{bind-attr src="renderedLatexUrl"}} />
+          {{/if}}
         </div>
       </article>
     </main>

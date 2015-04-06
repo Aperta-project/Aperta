@@ -1,6 +1,7 @@
 class Api::PapersController < ApplicationController
   include RestrictAccess
   protect_from_forgery except: :update
+  skip_before_action :restrict_access, only: [:fake_render_latex]
 
   def index
     @papers = filtered_papers
@@ -34,6 +35,11 @@ class Api::PapersController < ApplicationController
     else
       head :unauthorized
     end
+  end
+
+  def fake_render_latex
+    puts params
+    render json: { latex_image_url: "http://placekitten.com/g/200/#{300 + rand(50)}" }
   end
 
   private

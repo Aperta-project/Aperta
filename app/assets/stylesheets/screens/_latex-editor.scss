@@ -1,0 +1,14 @@
+#paper-body {
+  .latex-editor {
+    width: 100%;
+    min-height: 600px;
+    border: none;
+  }
+}
+
+#rendered-latex {
+  img {
+    width: 200px;
+    min-height: 300px;
+  }
+}

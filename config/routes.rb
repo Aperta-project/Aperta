@@ -53,7 +53,9 @@ Tahi::Application.routes.draw do
   resources :comment_looks, only: [:index, :update]
 
   namespace :api, defaults: { format: 'json' } do
-    resources :papers, only: [:index, :show, :update]
+    resources :papers, only: [:index, :show, :update] do
+      post '/fake_render_latex', to: 'papers#fake_render_latex'
+    end
     resources :users, only: [:show]
     resources :journals, only: [:index]
   end

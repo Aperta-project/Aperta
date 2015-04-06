@@ -31,9 +31,10 @@
 }
 
 #paper-container {
-  @include position(fixed, $tahi-control-bar-height 0px 0px 0px);
+  @include position(absolute, $tahi-control-bar-height+$ve-toolbar-height 0px 0px 0px);
   min-width: $tahi-paper-width;
   background: $tahi-white;
+  overflow-y: scroll;
 }
 
 html.control-bar-sub-nav-active #paper-container {
@@ -42,6 +43,7 @@ html.control-bar-sub-nav-active #paper-container {
 
 #paper-container .sidebar {
   position: absolute;
+  top: 0px;
   right: 0px;
   width: 300px;
   background: $tahi-white;
@@ -94,8 +96,6 @@ html.control-bar-sub-nav-active #paper-container {
   height: 100%;
   width: 100%;
   position: relative;
-  padding-bottom: 40px;
-  margin-bottom: 40px;
 }
 
 #paper-container main .flash-messages {
@@ -108,16 +108,8 @@ html.control-bar-sub-nav-active #paper-container {
 
 article.manuscript {
   background: $tahi-grey-xlight;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
   padding: 20px 20px 40px 20px;
   overflow-x:hidden;
-  overflow-y:scroll;
-  padding-bottom: 40px;
-  margin-bottom: 40px;
   font-family: $tahi-article-font-family;
 }
 
@@ -173,7 +165,6 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 
 // start edit-paper section
 
-.edit-paper              { padding: 40px 70px 0 70px; }
 .edit-paper-button       { width: 150px; margin-right: 5px; }
 .edit-paper-start-icon   { padding-right: 22px; }
 .edit-paper-stop-icon    { margin: -6px 0 0 -8px; }
@@ -225,6 +216,17 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   min-width: 100px;
 }
 
+.edit-paper {
+  .editor-toolbar {
+    position: fixed;
+    top: 60px;
+
+    .ve-toolbar {
+      margin: 0px auto;
+    }
+  }
+}
+
 #paper-container {
 
   &.sidebar-empty {
@@ -237,15 +239,6 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 
     .manuscript-container {
       right: 0px;
-    }
-
-    .editor-toolbar {
-      width: 100%;
-
-      .ve-toolbar {
-        width: $tahi-paper-width;
-        margin: 0px auto;
-      }
     }
 
     article {

@@ -147,4 +147,15 @@
       {{timed-message class="manuscript-css save-status" message=manuscriptCssSaveStatus}}
     </div>
   </div>
+
+  <div class="admin-section">
+
+    {{!-- TODO: consider renaming this.  This whole page is really Journal
+          Settings, not just this section.    --}}
+    <h2 class="admin-section-title">Journal Settings</h2>
+    <div class="admin-style-setting-section">
+      <button class="button-primary button--blue" {{action "editEditorInviteEmailTemplate"}}>Edit Email Template for Editor Invitation</button>
+      {{timed-message class="editor-invite-email-template save-status" message=editorInviteEmailTemplateSaveStatus}}
+    </div>
+  </div>
 </div>

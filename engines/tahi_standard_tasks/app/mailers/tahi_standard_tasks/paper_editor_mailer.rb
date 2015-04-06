@@ -4,10 +4,12 @@ module TahiStandardTasks
 
     default from: ENV.fetch('FROM_EMAIL')
 
-    def notify_invited(invitation_id:)
+    def notify_invited(invitation_id:, journal_id:)
       invitation = Invitation.find(invitation_id)
+      journal = Journal.find(journal_id)
       @invitee = invitation.invitee
       @paper = invitation.paper
+      @email_body = journal.editor_invite_email_template
 
       mail({
         to: invitation.email,

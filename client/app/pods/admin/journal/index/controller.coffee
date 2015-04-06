@@ -5,6 +5,7 @@ JournalIndexController = Ember.ObjectController.extend ValidationErrorsMixin,
   epubCssSaveStatus: ''
   pdfCssSaveStatus: ''
   manuscriptCssSaveStatus: ''
+  editorInviteEmailTemplateSaveStatus: ''
   doiEditState: false
   doiStartNumberEditable: true
 
@@ -87,6 +88,7 @@ JournalIndexController = Ember.ObjectController.extend ValidationErrorsMixin,
         epubCssSaveStatus: ''
         pdfCssSaveStatus: ''
         manuscriptCssSaveStatus: ''
+        editorInviteEmailTemplateSaveStatus: ''
 
     editDOI: ->
       @set 'doiEditState', true

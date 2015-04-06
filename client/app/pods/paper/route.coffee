@@ -1,10 +1,14 @@
 `import Ember from 'ember'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Utils from 'tahi/services/utils'`
+`import { Bindings } from 'ember-pusher/bindings'`
 
-PaperRoute = Ember.Route.extend
+PaperRoute = Ember.Route.extend Bindings,
   model: (params) ->
     @store.fetchById('paper', params.paper_id)
+
+  afterModel: (model, transition) ->
+    @get('pusher.connection').subscribe("private-user_1-paper_3")
 
   setupController: (controller, model) ->
     controller.set('model', model)

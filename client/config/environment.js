@@ -13,7 +13,19 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       }
     },
-    APP: {},
+    APP: {
+      PUSHER_OPTS: {
+        key: '765ec374ae0a69f4ce44',
+        connection: {
+          authEndpoint: "/event_stream/auth"
+        },
+        hostOptions: {
+          PUSHER_HOST: "localhost",
+          PUSHER_WS_PORT: "8080",
+          PUSHER_PROTOCOL: 7
+        }
+      }
+    },
     'ember-cli-visualeditor': {
       assetsRoot: '/assets/tahi'
     },
@@ -38,6 +50,7 @@ module.exports = function(environment) {
 
     // include unminified assets for debugging
     ENV['ember-cli-visualeditor'].forceUnminified = true;
+
   }
 
   if (environment === 'test') {

@@ -1,6 +1,5 @@
 `import Ember from 'ember'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
-`import LazyLoader from 'tahi/mixins/routes/lazy-loader'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Heartbeat from 'tahi/services/heartbeat'`
 `import ENV from 'tahi/config/environment'`
@@ -87,7 +86,7 @@ PaperEditRoute = AuthorizedRoute.extend
     openFigures: ->
       controller = @controllerFor('paper.edit')
       editor = controller.get('editor')
-      editor.freeze();
+      editor.freeze()
       # do not handle model changes while overlay is open
       controller.disconnectEditor()
       controller.set('hasOverlay', true)

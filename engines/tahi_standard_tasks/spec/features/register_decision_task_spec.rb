@@ -35,13 +35,16 @@ feature "Register Decision", js: true do
       overlay.decision_letter = "Accepting this because I can"
       overlay.mark_as_complete
       expect(overlay).to be_completed
+      expect(overlay.find(".alert-info").text).to eq("A final Decision of accepted has been registered.")
       expect(overlay).to be_disabled
     end
   end
 
   scenario "User checks previous decision history" do
-    paper.decisions.create! verdict: "revise",
-                            letter: "Please revise the manuscript"
+    paper.decisions.first.update! verdict: "revise",
+                                  letter: "Please revise the manuscript"
+    paper.create_decision!
+    paper.reload
 
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
@@ -49,7 +52,7 @@ feature "Register Decision", js: true do
     manuscript_page.view_card 'Register Decision' do |overlay|
       expect(overlay.previous_decisions).to_not be_empty
       expect(overlay.previous_decisions.first.revision_number).to eq("0")
-      expect(overlay.previous_decisions.first.verdict).to eq("revise")
+      overlay.find("#accordion h4.panel-title a").click # open Accordion
       expect(overlay.previous_decisions.first.letter).to eq("Please revise the manuscript")
     end
   end

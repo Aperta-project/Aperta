@@ -41,10 +41,6 @@ class DecisionComponent
     el.find('.revision-number').text
   end
 
-  def verdict
-    el.find('.verdict').text
-  end
-
   def letter
     el.find('.letter').text
   end

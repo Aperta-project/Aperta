@@ -31,10 +31,10 @@
 }
 
 #paper-container {
-  @include position(absolute, $tahi-control-bar-height+$ve-toolbar-height 0px 0px 0px);
-  min-width: $tahi-paper-width;
+  @include position(relative, $tahi-control-bar-height+$ve-toolbar-height 0px 0px 0px);
+  max-width: $tahi-paper-width;
+  margin: 0 auto;
   background: $tahi-white;
-  overflow-y: scroll;
 }
 
 html.control-bar-sub-nav-active #paper-container {
@@ -42,10 +42,8 @@ html.control-bar-sub-nav-active #paper-container {
 }
 
 #paper-container .sidebar {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  width: 300px;
+  float: right;
+  width: 25%;
   background: $tahi-white;
 }
 
@@ -59,12 +57,9 @@ html.control-bar-sub-nav-active #paper-container {
 
 
 #paper-container .manuscript-container {
+  position: relative;
   background: $tahi-grey-xlight;
-  position:absolute;
-  top: 0px;
-  right: 300px;
-  left: 0px;
-  bottom: 0px;
+  width: 75%;
 }
 
 .editor-toolbar {
@@ -108,9 +103,9 @@ html.control-bar-sub-nav-active #paper-container {
 
 article.manuscript {
   background: $tahi-grey-xlight;
-  padding: 20px 20px 40px 20px;
   overflow-x:hidden;
   font-family: $tahi-article-font-family;
+  border-right: 1px solid #d5d5d5;
 }
 
 // title contenteditable
@@ -220,6 +215,7 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   .editor-toolbar {
     position: fixed;
     top: 60px;
+    max-width: $tahi-paper-width;
 
     .ve-toolbar {
       margin: 0px auto;

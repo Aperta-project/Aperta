@@ -2,16 +2,23 @@ require 'rails_helper'
 
 feature "Manuscript Manager Templates", js: true, selenium: true do
   let(:admin) { create :user, :site_admin }
-  let(:journal) { create :journal }
+  let!(:journal) { create :journal }
 
   before do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
+
+    within ".navigation" do
+      click_link "Admin"
+    end
+    within ".journal" do
+      click_link journal.name
+    end
   end
 
   describe "Adding phases" do
     scenario "Adding a phase" do
-      journal_page = JournalPage.visit(journal)
+      journal_page = JournalPage.new
       mmt_page = journal_page.add_new_template
       expect(mmt_page).to have_phase_names('Phase 1', 'Phase 2', 'Phase 3')
 
@@ -23,7 +30,7 @@ feature "Manuscript Manager Templates", js: true, selenium: true do
 
   describe "Adding cards" do
     scenario "Adding a card" do
-      journal_page = JournalPage.visit(journal)
+      journal_page = JournalPage.new
       mmt_page = journal_page.add_new_template
       mmt_page.paper_type = "Test Type"
       phase = mmt_page.find_phase 'Phase 1'
@@ -37,7 +44,7 @@ feature "Manuscript Manager Templates", js: true, selenium: true do
     end
 
     scenario "Adding a card without saving" do
-      journal_page = JournalPage.visit(journal)
+      journal_page = JournalPage.new
       mmt_page = journal_page.add_new_template
       mmt_page.paper_type = "Test Type"
       phase = mmt_page.find_phase 'Phase 1'

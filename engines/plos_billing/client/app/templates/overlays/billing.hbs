@@ -6,7 +6,7 @@
   Enter Payee Details
 </h3>
 
-<div class="add-author-form billing-card">
+<div class="add-author-form">
   <div class="form-group form-inline author-top">
     <div {{bind-attr class=":form-group :author-half validationErrors.firstName:error"}}>
       <span class="text-field-title">
@@ -15,7 +15,8 @@
       </span>
       {{question-input ident="plos_billing.first_name"
                        task=model
-                       question='Jane'}}
+                       question='First Name'
+                       placeholderText='Jane'}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.lastName:error"}}>
@@ -25,7 +26,8 @@
       </span>
       {{question-input ident="plos_billing.last_name"
                        task=model
-                       question='Goodall'}}
+                       question='Last Name'
+                       placeholderText='Goodall'}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -36,7 +38,8 @@
       </span>
       {{question-input ident="plos_billing.title"
                        task=model
-                       question="World's Foremost Expert on Chimpanzees"}}
+                       question='Title'
+                       placeholderText="World's Foremost Expert on Chimpanzees"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.department:error"}}>
@@ -46,7 +49,8 @@
       </span>
       {{question-input ident="plos_billing.department"
                        task=model
-                       question='Primatology'}}
+                       question='Department'
+                       placeholderText='Primatology'}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -56,14 +60,16 @@
                         task=model
                         question="Affiliation"
                         class="affiliation-field"
-                        source=ringgold}}
+                        source=ringgold
+                        placeholderText='Affiliation'}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.secondaryAffiliation:error"}}>
       {{error-message message=null}}
       {{question-select ident="plos_billing.affiliation2"
                         task=model
-                        question="Secondary Affiliation (optional)"
+                        question='Secondary Affiliation'
+                        placeholderText="Secondary Affiliation (optional)"
                         class="secondary-affiliation-field"
                         source=ringgold}}
     </div>
@@ -76,7 +82,8 @@
       </span>
       {{question-input ident="plos_billing.phone_number"
                        task=model
-                       question="415-555-5555"}}
+                       question='Phone'
+                       placeholderText="415-555-5555"}}
 
     </div>
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.email:error"}}>
@@ -86,7 +93,8 @@
       </span>
       {{question-input ident="plos_billing.email_address"
                        task=model
-                       question="jane.goodll@science.com"}}
+                       question='Email'
+                       placeholderText="jane.goodll@science.com"}}
 
     </div>
   </div>
@@ -98,7 +106,8 @@
       </span>
       {{question-input ident="plos_billing.address1"
                        task=model
-                       question="1581 Le Roy Ave"}}
+                       question='Address line one'
+                       placeholderText="1581 Le Roy Ave"}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -109,7 +118,8 @@
       </span>
       {{question-input ident="plos_billing.address2"
                        task=model
-                       question="Suite 3"}}
+                       question='Address line two'
+                       placeholderText="Suite 3"}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -120,7 +130,8 @@
       </span>
       {{question-input ident="plos_billing.city"
                        task=model
-                       question="Berkley"}}
+                       question='City'
+                       placeholderText="Berkeley"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-name :author-bump validationErrors.department:error"}}>
@@ -136,7 +147,8 @@
       </span>
       {{question-input ident="plos_billing.postal_code"
                        task=model
-                       question="94708"}}
+                       question='Postal Code'
+                       placeholderText="94708"}}
     </div>
   </div>
   <div class="form-group form-inline">

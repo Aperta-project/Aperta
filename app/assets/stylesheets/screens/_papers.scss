@@ -105,7 +105,7 @@ article.manuscript {
   background: $tahi-grey-xlight;
   overflow-x:hidden;
   font-family: $tahi-article-font-family;
-  border-right: 1px solid #d5d5d5;
+  border-right: 1px solid $tahi-grey-light;
 }
 
 // title contenteditable
@@ -233,8 +233,12 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 
     aside { display: none; }
 
+    .manuscript {
+      border-right: none;
+    }
+
     .manuscript-container {
-      right: 0px;
+      width: 100%;
     }
 
     article {

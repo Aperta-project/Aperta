@@ -11,7 +11,7 @@ class PapersController < ApplicationController
   def show
     eager_loaded_models = [
       :figures, :authors, :supporting_information_files, :paper_roles, :journal, :locked_by, :striking_image,
-      phases: { tasks: [:questions, :attachments, :participations, :comments]}
+      phases: { tasks: [:questions, :attachments, :participations, :comments] }
     ]
     paper = Paper.includes(eager_loaded_models).find(params[:id])
     respond_with(paper)

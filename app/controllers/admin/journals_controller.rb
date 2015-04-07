@@ -12,7 +12,7 @@ class Admin::JournalsController < ApplicationController
   end
 
   def show
-    respond_with(journal, serializer:AdminJournalSerializer, root: 'admin_journal')
+    respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
   def authorization

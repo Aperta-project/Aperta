@@ -1,15 +1,19 @@
 <div class="dataset">
-  <a href="#" {{action "removeFunder"}} class="remove-funder-link">remove</a>
+  <h4 class="block-title">FUNDER</h4>
+  <span {{action "removeFunder"}} class="remove-funder glyphicon glyphicon-trash small"></span>
   <div class="form-group">
-    {{input type="text" name="name" value=funder.name class="form-control" placeholder="Funder"}}
+    <span class="text-field-title">Funder</span>
+    {{input type="text" name="name" value=funder.name class="form-control tall-text-field" placeholder="Funder Name"}}
   </div>
 
   <div class="form-group">
-    {{input type="text" name="grant_number" value=funder.grantNumber class="form-control" placeholder="Grant Number"}}
+    <span class="text-field-title">Grant Number</span>
+    {{input type="text" name="grant_number" value=funder.grantNumber class="form-control tall-text-field" placeholder="502-686353647"}}
   </div>
 
   <div class="form-group">
-    {{input type="text" name="website" value=funder.website class="form-control" placeholder="Website"}}
+    <span class="text-field-title">Website</span>
+    {{input type="text" name="website" value=funder.website class="form-control tall-text-field" placeholder="www.funder.org"}}
   </div>
 
   <div class="question-text">
@@ -19,9 +23,13 @@
   {{binary-radio-button name=uniqueName selection=funder.funderHadInfluence}}
 
   {{#if funder.funderHadInfluence}}
-    <p>
-      Describe the role of any sponsors or funders in the study design, data collection and analysis, decision to publish, or preparation of the manuscript.
-      {{textarea value=funder.funderInfluenceDescription class="form-control"}}
+    <p class="question-text">
+      Describe the role of any sponsors or funders in the study design, data collection and analysis, 
+      decision to publish, or preparation of the manuscript.
     </p>
+    <div class="form-group">
+      <span class="text-field-title">Role of sponsors or funders</span>
+      {{textarea value=funder.funderInfluenceDescription class="form-control tall-textarea" placeholder="Description"}}
+    </div> 
   {{/if}}
 </div>

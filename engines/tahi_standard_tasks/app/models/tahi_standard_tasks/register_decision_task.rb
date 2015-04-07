@@ -15,10 +15,12 @@ module TahiStandardTasks
       send_email
 
       if revise_decision?
-        create_please_revise_card!
-        make_paper_editable!
-        self.update! completed: false
-        paper.create_decision!
+        transaction do
+          create_please_revise_card!
+          make_paper_editable!
+          paper.create_decision!
+          update! completed: false
+        end
       end
     end
 

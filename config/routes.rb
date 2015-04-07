@@ -7,6 +7,7 @@ Tahi::Application.routes.draw do
   mount TahiSupportingInformation::Engine => '/', as: 'tahi_supporting_information'
 
   require 'sidekiq/web'
+  require 'sidetiq/web'
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end

@@ -18,10 +18,10 @@ describe TahiStandardTasks::RegisterDecisionMailer do
   }
 
   let(:decision) {
-    paper.decisions.create!({
+    paper.decisions.create!(
       letter: "Here's body text of a Decision Letter",
       verdict: "accepted"
-    })
+    )
   }
 
   let(:email) {

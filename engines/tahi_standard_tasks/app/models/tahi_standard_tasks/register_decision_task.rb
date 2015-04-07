@@ -126,7 +126,7 @@ module TahiStandardTasks
     private
 
     def broadcast_paper_revised_event
-      ActiveSupport::Notifications.instrument 'paper.revised', { paper_id: paper.id }
+      ActiveSupport::Notifications.instrument 'paper.revised', paper_id: paper.id
     end
 
     def create_please_revise_card!
@@ -136,7 +136,7 @@ module TahiStandardTasks
                         title: "Please Revise",
                         role: "user",
                         phase_id: phase.id,
-                        body: [[{type: 'text', value: revise_letter}]],
+                        body: [[{ type: 'text', value: revise_letter }]],
                         participants: participants << author
                        ).save!
     end

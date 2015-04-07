@@ -125,7 +125,11 @@ Tahi::Application.routes.draw do
 
     # ihat endpoints
     #
-    post :ihat_jobs, to: "ihat_jobs#update", as: :ihat_callback
+    namespace :ihat do
+      resources :jobs, only: [] do
+        post :callback, on: :collection
+      end
+    end
   end
   # epub/pdf download formats
   #

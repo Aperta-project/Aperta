@@ -132,7 +132,7 @@ describe Paper do
       3.times do |i|
         paper.decisions.create! letter: "Decision #{i}"
       end
-      expect(paper.latest_decision.letter).to eq("Decision 3")
+      expect(paper.latest_decision.letter).to eq("Decision 2")
       expect(paper.latest_decision.revision_number).to eq(3)
     end
   end

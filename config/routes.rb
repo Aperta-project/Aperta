@@ -39,7 +39,6 @@ Tahi::Application.routes.draw do
   #
   constraints format: :json do
     resources :journals, only: [:index, :show]
-    get "/request_policy" => "direct_uploads#request_policy"
     resources :filtered_users do
       collection do
         get "users/:paper_id", to: "filtered_users#users"
@@ -129,6 +128,12 @@ Tahi::Application.routes.draw do
       resources :jobs, only: [] do
         post :callback, on: :collection
       end
+    end
+
+    # s3 request policy
+    #
+    namespace :s3 do
+      resource :request_policy, only: [:show]
     end
   end
   # epub/pdf download formats

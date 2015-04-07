@@ -12,6 +12,8 @@ module TahiStandardTasks
     register_task default_title: "Register Decision", default_role: "editor"
 
     def after_update
+      send_email
+
       if revise_decision?
         create_please_revise_card!
         make_paper_editable!
@@ -24,9 +26,15 @@ module TahiStandardTasks
       self.paper.update! editable: true
     end
 
+    # no-op
     def send_emails
+    end
+
+    def send_email
       return unless on_card_completion?
-      RegisterDecisionMailer.delay.notify_author_email(task_id: id)
+
+      latest_decision = paper.decisions.latest
+      RegisterDecisionMailer.delay.notify_author_email(decision_id: latest_decision.id)
     end
 
     def accept_letter

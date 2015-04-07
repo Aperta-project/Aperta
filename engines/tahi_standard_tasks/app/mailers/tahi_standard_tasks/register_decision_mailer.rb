@@ -4,10 +4,9 @@ module TahiStandardTasks
 
     default from: ENV.fetch('FROM_EMAIL')
 
-    def notify_author_email(task_id:)
-      @task = Task.find(task_id)
-      @paper = @task.paper
-      @decision = @paper.decisions.latest
+    def notify_author_email(decision_id:)
+      @decision = Decision.find(decision_id)
+      @paper = @decision.paper
       @recipient = User.find(@paper.user_id)
 
       mail(to: @recipient.email,

@@ -125,29 +125,19 @@ describe TahiStandardTasks::RegisterDecisionTask do
       end
     end
 
-    describe "#send_emails" do
+    describe "#send_email" do
       context "if the task transitions to completed" do
         it "sends emails to the paper's author" do
           allow(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain("delay.notify_author_email") { true }
           task.completed = true
           task.save!
-          expect(task.send_emails).to eq true
-        end
-      end
-
-      context "if the task is updated but not completed" do
-        it "does not send emails" do
-          TahiStandardTasks::ReviewerReportMailer = double(:reviewer_report_mailer)
-          task.completed = false # or any other update
-          task.save!
-          expect(task.send_emails).to eq nil
+          expect(task.send_email).to eq true
         end
       end
     end
   end
 
   describe "#after_update" do
-
     before do
       allow_any_instance_of(TahiStandardTasks::RegisterDecisionTask).to receive(:revise_decision?).and_return(true)
     end

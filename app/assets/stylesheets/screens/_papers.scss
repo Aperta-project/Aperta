@@ -358,7 +358,7 @@ article.manuscript figure {
   left: 0px;
   right: 0px;
   bottom: 0px;
-  z-index: 1100;
+  z-index: z('figures-overlay');
   background: $tahi-white;
   padding-bottom: 20px;
 }

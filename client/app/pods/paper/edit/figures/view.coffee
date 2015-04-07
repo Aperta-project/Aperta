@@ -11,11 +11,11 @@ EditFiguresView = Ember.View.extend
   ).observes('toolbar')
 
   showOverlay: ( ->
-    $('body').addClass('modal-open');
+    $('body').addClass('modal-open')
   ).on('didInsertElement')
 
   hideOverlay: ( ->
-    $('body').removeClass('modal-open');
+    $('body').removeClass('modal-open')
   ).on('willDestroyElement')
 
 

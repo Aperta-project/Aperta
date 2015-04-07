@@ -29,7 +29,6 @@ class RegisterDecisionOverlay < CardOverlay
   end
 end
 
-
 class DecisionComponent
   attr_reader :el
 

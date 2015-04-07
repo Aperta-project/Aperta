@@ -16,7 +16,8 @@ feature "Upload paper", js: true, selenium: true do
       paper.update(title: "This is a Title About Turtles", body: "And this is my subtitle")
     end
 
-    edit_paper_page = EditPaperPage.visit(paper.reload)
+    click_link paper.reload.title
+    edit_paper_page = EditPaperPage.new
 
     edit_paper_page.view_card('Upload Manuscript').upload_word_doc
 

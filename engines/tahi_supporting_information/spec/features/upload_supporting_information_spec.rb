@@ -14,31 +14,19 @@ feature "Upload Supporting Information", js: true, selenium: true do
       supporting_info.save
     end
 
+    click_link paper.title
   end
 
   scenario "Author uploads supporting information" do
-    edit_paper = EditPaperPage.visit paper
+    edit_paper = EditPaperPage.new
 
+    # upload file
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       overlay.attach_supporting_information
       expect(overlay).to have_file 'yeti.jpg'
     end
-  end
 
-  scenario "Author destroys supporting information immediately" do
-    edit_paper = EditPaperPage.visit paper
-    edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
-      overlay.attach_supporting_information
-      find('.attachment-thumbnail').hover
-      find('.glyphicon-trash').click
-      find('.attachment-delete-button').click
-      expect(overlay).to_not have_selector('.attachment-image')
-    end
-  end
-
-  scenario "Author can edit title and caption" do
-    paper.supporting_information_files.create
-    edit_paper = EditPaperPage.visit paper
+    # edit file
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       find('.attachment-edit-icon').click
       title   = find('.attachment-thumbnail-edit-content input[type=text]')
@@ -55,5 +43,13 @@ feature "Upload Supporting Information", js: true, selenium: true do
     file = paper.supporting_information_files.last
     expect(file.title).to eq 'new_file_title'
     expect(file.caption).to eq 'New file caption'
+
+    # delete file
+    edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
+      find('.attachment-thumbnail').hover
+      find('.glyphicon-trash').click
+      find('.attachment-delete-button').click
+      expect(overlay).to_not have_selector('.attachment-image')
+    end
   end
 end

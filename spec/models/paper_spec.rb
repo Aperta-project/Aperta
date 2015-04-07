@@ -129,7 +129,7 @@ describe Paper do
 
   describe "#latest_decision" do
     it "returns the most recent decision for the paper" do
-      (1..3).each do |i|
+      3.times do |i|
         paper.decisions.create! letter: "Decision #{i}"
       end
       expect(paper.latest_decision.letter).to eq("Decision 3")

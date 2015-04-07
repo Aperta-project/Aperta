@@ -3,6 +3,6 @@ import Task from 'tahi/models/task';
 
 export default Task.extend({
   plosAuthors: DS.hasMany('plosAuthor'),
-  qualifiedType: 'StandardTasks::PlosAuthorsTask',
+  qualifiedType: 'TahiStandardTasks::PlosAuthorsTask',
   isMetadataTask: true
 });

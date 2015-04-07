@@ -36,7 +36,8 @@ module TahiHelperMethods
   end
 
   def with_aws_cassette(name)
-    VCR.use_cassette(name, match_requests_on: [:method, VCR.request_matchers.uri_without_params(:AWSAccessKeyId, :Expires, :Signature)], record: :new_episodes) do
+    ignored_attributes = ["X-Amz-Algorithm", "X-Amz-Credential", "X-Amz-Date", "X-Amz-Expires", "X-Amz-Signature", "X-Amz-SignedHeaders"]
+    VCR.use_cassette(name, match_requests_on: [:method, VCR.request_matchers.uri_without_params(*ignored_attributes)], record: :new_episodes) do
       yield
     end
   end

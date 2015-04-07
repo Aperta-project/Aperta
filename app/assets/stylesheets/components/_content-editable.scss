@@ -1,4 +1,4 @@
-h2[contenteditable] {
+h2[contenteditable=true] {
   margin-top: 0;
   padding: 5px 0;
   // Bootstrap's default height is 33px and we add 4px for the above padding.
@@ -7,7 +7,7 @@ h2[contenteditable] {
   min-height: 37px;
 }
 
-label[contenteditable], div[contenteditable] {
+label[contenteditable=true], div[contenteditable=true] {
   background-color: $tahi-white;
   padding: 5px;
 }
@@ -27,7 +27,7 @@ label[contenteditable], div[contenteditable] {
   }
 }
 
-div[contenteditable] {
+div[contenteditable=true] {
   min-height: 100px;
   margin-bottom: 10px;
 }

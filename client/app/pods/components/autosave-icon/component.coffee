@@ -1,28 +1,29 @@
 `import Ember from 'ember'`
 
 AutoSaveIconComponent = Ember.Component.extend
-  didInsertElement: (role) ->
-    @get 'role.isSaving'
+  didInsertElement: (journalTask) ->
+    @get 'journalTask.isSaving'
   
   isLoaderShowing: false
   isCheckMarkShowing: false
 
   startShowingLoader:(->
-    @set 'isLoaderShowing', true
-    Ember.run.later (=>
-      @showLoader()
-      @showCheckMark()
-    ), 1500
-  ).observes('role.isSaving')
+    if @get 'journalTask.isSaving'
+      @set 'isLoaderShowing', true
+      Ember.run.later (=>
+        @hideLoader()
+        @hideCheckMark()
+      ), 1500
+  ).observes('journalTask.isSaving')
 
-  showLoader: ->
+  hideLoader: ->
     @set('isCheckMarkShowing', true)
     $('.loader-component-circle--visible').fadeOut =>
       Ember.run.later (=>
         @set('isLoaderShowing', false)
       ), 500
 
-  showCheckMark: ->
+  hideCheckMark: ->
     Ember.run.later (=>
       $('.save-message').fadeOut =>
         @set('isCheckMarkShowing', false)

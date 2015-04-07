@@ -28,12 +28,6 @@ describe Paper do
         expect(dup_paper).to_not be_valid
         expect(dup_paper).to have(1).errors_on(:short_title)
       end
-
-      it "must be less than 50 characters" do
-        paper = FactoryGirl.build(:paper, short_title: 'Longer than 50 characters is not an awesome short title coz short titles should be short, stupid!')
-        expect(paper).to_not be_valid
-        expect(paper).to have(1).errors_on(:short_title)
-      end
     end
 
     describe "journal" do

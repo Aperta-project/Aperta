@@ -41,14 +41,9 @@
                              value=title
                              preventEnterKey="true"}}
 
-          {{#if showPlaceholder}}
-            <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
-          {{/if}}
         </div>
         <div class="double-pane-editor">
-          <div id="paper-body" class="double-pane left-pane">
-            {{ textarea class="latex-editor" value=model.body }}
-          </div>
+          {{ace-editor value=model.body id="paper-body" class="double-pane left-pane"}}
 
           <div id="rendered-latex" class="double-pane right-pane">
             {{#if body}}

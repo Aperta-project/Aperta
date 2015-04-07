@@ -10,6 +10,8 @@ class TestTask < Task
   end
 end
 
+class TestTasksPolicy < TasksPolicy; end
+
 describe InvitationsController do
 
   let(:invitee) { FactoryGirl.create(:user) }

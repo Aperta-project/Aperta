@@ -1,6 +1,6 @@
 {{partial "paper/control-bar"}}
 
-<div id="paper-container" {{bind-attr class="isSidebarEmpty:sidebar-empty"}}>
+<div id="paper-container" {{bind-attr class="isSidebarEmpty:sidebar-empty :paper-container-latex"}}>
 
   {{partial "paper/sidebar"}}
 
@@ -45,14 +45,16 @@
             <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
           {{/if}}
         </div>
-        <div id="paper-body">
-          {{ textarea class="latex-editor" value=model.body }}
-        </div>
+        <div class="double-pane-editor">
+          <div id="paper-body" class="double-pane left-pane">
+            {{ textarea class="latex-editor" value=model.body }}
+          </div>
 
-        <div id="rendered-latex">
-          {{#if body}}
-            <img {{bind-attr src="renderedLatexUrl"}} />
-          {{/if}}
+          <div id="rendered-latex" class="double-pane right-pane">
+            {{#if body}}
+              <img {{bind-attr src="renderedLatexUrl"}} />
+            {{/if}}
+          </div>
         </div>
       </article>
     </main>

@@ -1,6 +1,6 @@
 class RegisterDecisionOverlay < CardOverlay
   def previous_decisions
-    all('div.decision').collect { |decision_div|
+    all('div.decision').map { |decision_div|
       DecisionComponent.new(decision_div)
     }
   end

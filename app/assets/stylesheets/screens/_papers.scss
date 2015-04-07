@@ -33,7 +33,7 @@
 #paper-container {
   @include position(relative, $tahi-control-bar-height+$ve-toolbar-height 0px 0px 0px);
   max-width: $tahi-paper-width;
-  margin: 0 auto;
+  margin: 20px auto;
   background: $tahi-white;
 }
 
@@ -215,9 +215,9 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   .editor-toolbar {
     position: fixed;
     top: 60px;
-    max-width: $tahi-paper-width;
 
     .ve-toolbar {
+      max-width: $tahi-paper-width;
       margin: 0px auto;
     }
   }

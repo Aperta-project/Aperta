@@ -101,7 +101,7 @@ test 'on paper.edit when there are no metadata tasks', ->
       ok(find('#paper-container.sidebar-empty').length, "The sidebar should be hidden")
     .then ->
       msg = "There is a submit manuscript button in the main area"
-      ok(find('#paper-container .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)
+      ok(find('.no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)
 
 test 'on paper.index when there are no metadata tasks', ->
   expect(2)

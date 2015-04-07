@@ -44,7 +44,7 @@ describe InvitationsController do
   describe "DELETE /invitations/:id" do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
-    it "deletes the invitation" do
+    it "deletes the invitation queues up email job", redis: true do
       delete(:destroy, {
         format: "json",
         id: invitation.id

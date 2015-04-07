@@ -1,27 +1,25 @@
 {{partial "paper/control-bar"}}
 
-<div id="tahi-container">
-  <main {{bind-attr class="isSidebarEmpty:sidebar-empty"}}>
-    <aside>
-      <div {{action "showActivity" "manuscript"}} class="recent-activity-link">
-        {{partial "svg/heartbeat"}} Recent Activity
-      </div>
-      <div class="task-list">
-        {{partial "paper/task-list"}}
-      </div>
-    </aside>
-    <article>
-      <div class="manuscript-container">
-        <h2 id="paper-title">
-          {{title}}
+<div id="paper-container" {{bind-attr class="isSidebarEmpty:sidebar-empty"}}>
+
+  <aside class="sidebar">
+    <div {{action "showActivityFeed" "manuscript"}} class="recent-activity-link">
+      {{partial "svg/heartbeat"}} Recent Activity
+    </div>
+    <div class="task-list">
+      {{partial "paper/task-list"}}
+    </div>
+  </aside>
+
+  <div class="manuscript-container">
+    <main>
+      <article class="manuscript read-only">
+        <h2 id="paper-title" class="manuscript-title-and-placeholder">
+          {{{title}}}
         </h2>
-
-        <div id="paper-abstract" contenteditable="true" placeholder="Type your abstract here">
-          {{abstract}}
-        </div>
-
         <div id="paper-body">{{{body}}}</div>
-      </div>
-    </article>
-  </main>
+      </article>
+    </main>
+  </div>
+
 </div>

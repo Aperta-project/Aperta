@@ -1,0 +1,15 @@
+<p>
+  This work was supported by
+
+  {{#if funder.formattedWebsite}}
+    <a {{bind-attr href=funder.formattedWebsite}} target="_blank"><strong>{{display-value funder.name or="[funder name]"}}</strong></a>
+  {{~else~}}
+    <strong>{{display-value funder.name or="[funder name]"}}</strong>
+  {{~/if~}}
+
+  {{#if funder.grantNumber}}
+    (grant number <strong>{{funder.grantNumber}}</strong>)
+  {{~/if~}}.
+
+  {{view.funderInflunce}}
+</p>

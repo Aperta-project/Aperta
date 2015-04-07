@@ -7,13 +7,18 @@ class InvitationsController < ApplicationController
     render json: invitation, status: :created
   end
 
+  def destroy
+    invitation.destroy
+    render json: nil, status: :no_content
+  end
+
   def accept
     invitation.actor = current_user
     invitation.accept!
     render json: nil, status: :no_content
   end
 
-  def destroy
+  def reject
     invitation.actor = current_user
     invitation.reject!
     render json: nil, status: :no_content

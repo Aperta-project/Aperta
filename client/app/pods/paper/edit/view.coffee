@@ -3,17 +3,24 @@
 
 PaperEditView = Ember.View.extend RedirectsIfEditable,
 
+  classNames: ["edit-paper"]
+
   # initialized by component helper {{visual-editor}}
-  visualEditor: null
+  editor: null
 
   # initialized by component helper {{visual-editor-toolbar}}
   toolbar: null
 
   locked: Ember.computed.alias 'controller.locked'
   isEditing: Ember.computed.alias 'controller.isEditing'
+
   subNavVisible: false
   downloadsVisible: false
   contributorsVisible: false
+
+  propagateToolbar: ( ->
+    @set('controller.toolbar', @get('toolbar'))
+  ).observes('toolbar')
 
   setBackgroundColor: (->
     $('html').addClass 'matte'
@@ -28,39 +35,36 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
   ).on('didInsertElement')
 
   updateEditorLockedState: ( ->
-    $('.oo-ui-toolbar-bar').toggleClass('locked', !@get('isEditing'))
-
-    if @get("isEditing")
-      @get("visualEditor")?.enable()
-    else
-      @get("visualEditor")?.disable()
+    editor = @get("controller.editor")
+    if editor
+      if @get("isEditing")
+        editor.enable()
+      else
+        editor.disable()
   ).observes('isEditing')
+
+  disableEditingInitially: (->
+    # HACK: unfortunately we have to wait for the UI
+    # to be able to use the adapter to manipulate the VE model
+    @get('controller').updateFigures()
+
+    @set('controller.lockedBy', null)
+  ).on('didInsertElement')
 
   subNavVisibleDidChange: (->
     if @get 'subNavVisible'
+      $('.editor-toolbar').css 'top', '103px'
       $('html').addClass 'control-bar-sub-nav-active'
     else
+      $('.editor-toolbar').css 'top', '60px'
       $('html').removeClass 'control-bar-sub-nav-active'
   ).observes('subNavVisible')
-
-  setupVisualEditor: (->
-    @updateVisualEditor()
-    @addObserver 'controller.body', =>
-      @updateVisualEditor() unless @get('isEditing')
-
-    @setupAutosave()
-  ).on('didInsertElement')
-
-  updateVisualEditor: ->
-    editorModel = @get('visualEditor.model')
-    editorModel.fromHtml(@get('controller.body'))
-    @updateEditorLockedState()
 
   teardownControlBarSubNav: (->
     $('html').removeClass 'control-bar-sub-nav-active'
   ).on('willDestroyElement')
 
-  destroyVisualEditor: ( ->
+  destroyEditor: ( ->
     Ember.$(document).off 'keyup.autoSave'
   ).on('willDestroyElement')
 
@@ -70,7 +74,7 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
 
   timeoutSave: ->
     return if Ember.testing # TODO: make this injectable via visual editor lifecycle hooks
-    @saveVisualEditorChanges()
+    @saveEditorChanges()
     @get('controller').send('savePaper')
     Ember.run.cancel(@short)
     Ember.run.cancel(@long)
@@ -82,24 +86,13 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
   long: null
   keyCount: 0
 
-  setupAutosave: ->
-    # The timeout times and keyup counter are arbitrary. Feel free to tweak.
-    Ember.$(document).on 'keyup.autoSave', '.ve-ui-surface, #paper-title', =>
-      # Check for a window timeout so we aren't waiting in testing.
-      @short = Ember.run.debounce(@, @timeoutSave, window.shortTimeout || (1000 * 10))
-      unless @long
-        @long = Ember.run.later(@, @timeoutSave, 1000 * 60)
-      @keyCount++
-      if @keyCount > 200
-        @timeoutSave()
-
-  saveVisualEditorChanges: ->
-    documentBody = @get('visualEditor.model').toHtml()
+  saveEditorChanges: ->
+    documentBody = @get('editor').toHtml()
     @get('controller').send('updateDocumentBody', documentBody)
 
   actions:
     submit: ->
-      @saveVisualEditorChanges()
+      @saveEditorChanges()
       @get('controller').send('confirmSubmitPaper')
 
     showSubNav: (sectionName)->

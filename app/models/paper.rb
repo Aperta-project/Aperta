@@ -23,7 +23,7 @@ class Paper < ActiveRecord::Base
   has_many :activities
 
   validates :paper_type, presence: true
-  validates :short_title, presence: true, uniqueness: true, length: { maximum: 50 }
+  validates :short_title, presence: true, uniqueness: true
   validates :journal, presence: true
   validate :metadata_tasks_completed?, if: :submitting?
 

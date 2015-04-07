@@ -28,7 +28,7 @@ feature "Editing paper", selenium: true, js: true do
         end
         wait_for_ajax
         expect(page.current_path).to match %r{/papers/\d+/edit}
-        within "#tahi-container" do
+        within "#paper-container" do
           expect(page).to_not have_text("DOI:")
         end
       end

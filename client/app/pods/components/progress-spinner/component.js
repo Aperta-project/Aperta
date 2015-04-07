@@ -37,32 +37,32 @@ export default Ember.Component.extend({
   },
 
   /**
-   *     Toggles visibility
+   *  Toggles visibility
    *
-   *         @property visible
-   *             @type Boolean
-   *                 @default false
-   *                   */
+   *  @property visible
+   *  @type Boolean
+   *  @default false
+   **/
 
   visible: false,
 
   /**
-   *     Color. `green` or `blue` or `white`
+   *  Color. `green` or `blue` or `white`
    *
-   *         @property color
-   *             @type String
-   *                 @default green
-   *                   */
-           color: 'green',
+   *  @property color
+   *  @type String
+   *  @default green
+   **/
+   color: 'green',
 
   /**
-   *     Size. `small` or `large`
+   *  Size. `small` or `large`
    *
-   *         @property size
-   *             @type String
-   *                 @default small
-   *                   */
-           size: 'small',
+   *  @property size
+   *  @type String
+   *  @default small
+   **/
+   size: 'small',
 
   _green: '#39a329',
   _blue: '#2d85de',

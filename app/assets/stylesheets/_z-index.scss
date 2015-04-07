@@ -6,10 +6,13 @@ $z-layers: (
   main-content-cover: 1006,
   navigation:         1007,
   event-notification: 1008,
+  figures-overlay:    1100,
   overlay: (
     base: 1200,
     close-x: 100
-  )
+  ),
+  loader-component-circle: 1201,
+  loading-container:  1300
 );
 
 @function map-has-nested-keys($map, $keys...) {

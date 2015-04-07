@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Paper do
-  let(:paper) { FactoryGirl.build :paper }
+  let(:paper) { FactoryGirl.create :paper }
   let(:doi) { 'pumpkin/doughnut.888888' }
 
   describe "initialization" do
@@ -36,7 +36,6 @@ describe Paper do
         expect(paper).to_not be_valid
       end
     end
-
   end
 
   describe "callbacks" do
@@ -130,19 +129,19 @@ describe Paper do
 
   describe "#latest_decision" do
     it "returns the most recent decision for the paper" do
-      paper = FactoryGirl.create :paper
-      3.times do |i|
+      (1..3).each do |i|
         paper.decisions.create! letter: "Decision #{i}"
       end
-
-      expect(paper.latest_decision.letter).to eq("Decision 2")
-      expect(paper.latest_decision.revision_number).to eq(2)
+      expect(paper.latest_decision.letter).to eq("Decision 3")
+      expect(paper.latest_decision.revision_number).to eq(3)
     end
+  end
 
-    it "doesn't call first if there are no decisions" do
-      paper = FactoryGirl.create :paper
-
-      expect(paper.latest_decision).to be_nil
+  describe "#create_decision!" do
+    it "creates a blank decision on Paper" do
+      expect {
+        paper.create_decision!
+      }.to change { paper.decisions.count }.by 1
     end
   end
 end

@@ -6,6 +6,7 @@ describe DecisionsController do
   let(:paper) { FactoryGirl.create(:paper, creator: user) }
 
   before do
+    paper.decisions.destroy_all # force remove Paper's Decisions for testing
     sign_in user
   end
 

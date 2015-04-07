@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe Decision do
   let(:paper) { FactoryGirl.create :paper }
-
-  let!(:decision) { paper.decisions.create! }
+  let!(:decision) { paper.decisions.first }
 
   it "the first decision always has 0 revision number" do
     expect(decision.revision_number).to eq(0)

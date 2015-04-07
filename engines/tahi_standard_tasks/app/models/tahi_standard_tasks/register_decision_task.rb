@@ -21,6 +21,8 @@ module TahiStandardTasks
           paper.create_decision!
           update! completed: false
         end
+
+        broadcast_paper_revised_event
       end
     end
 
@@ -123,16 +125,20 @@ module TahiStandardTasks
 
     private
 
+    def broadcast_paper_revised_event
+      ActiveSupport::Notifications.instrument 'paper.revised', { paper_id: paper.id }
+    end
+
     def create_please_revise_card!
       author = paper.creator
 
       TaskFactory.build(Task,
-        title: "Please Revise",
-        role: "user",
-        phase_id: phase.id,
-        body: [[{type: 'text', value: revise_letter}]],
-        participants: participants << author
-      ).save!
+                        title: "Please Revise",
+                        role: "user",
+                        phase_id: phase.id,
+                        body: [[{type: 'text', value: revise_letter}]],
+                        participants: participants << author
+                       ).save!
     end
 
     def revise_decision?

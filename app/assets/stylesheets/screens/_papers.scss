@@ -35,15 +35,20 @@
   max-width: $tahi-paper-width;
   margin: 0 auto;
   background: $tahi-white;
+
+  &.paper-container-latex {
+    max-width: none;
+  }
 }
 
 html.control-bar-sub-nav-active #paper-container {
   top: 103px;
 }
 
+$sidebar-width: 280px;
 #paper-container .sidebar {
   float: right;
-  width: 25%;
+  width: $sidebar-width;
   background: $tahi-white;
 }
 
@@ -60,6 +65,21 @@ html.control-bar-sub-nav-active #paper-container {
   position: relative;
   background: $tahi-grey-xlight;
   width: 75%;
+}
+
+#paper-container.paper-container-latex .manuscript-container {
+  width: calc(100% - #{$sidebar-width});
+}
+
+#paper-container .double-pane-editor {
+  @include display(flex);
+}
+
+#paper-container .double-pane {
+  // width: 50%;
+  // float: left;
+  // min-height: 400px;
+
 }
 
 .editor-toolbar {

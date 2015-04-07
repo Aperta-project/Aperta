@@ -7,7 +7,9 @@
 
 .loader-component-circle {
   @include size(100%, 100%);
-  @include flex-center;
+  @include display(flex);
+  @include box-align(center);
+  @include justify-content(center);
   margin-top: 60px;
 
   &:after {

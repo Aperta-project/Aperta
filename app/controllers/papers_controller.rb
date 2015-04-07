@@ -61,7 +61,7 @@ class PapersController < ApplicationController
 
   def download
     respond_to do |format|
-      format.html do
+      format.epub do
         epub = EpubConverter.new paper, current_user
         send_data epub.epub_stream.string, filename: epub.file_name, disposition: 'attachment'
       end

@@ -53,8 +53,10 @@ PaperEditView = Ember.View.extend RedirectsIfEditable,
 
   subNavVisibleDidChange: (->
     if @get 'subNavVisible'
+      $('.editor-toolbar').css 'top', '103px'
       $('html').addClass 'control-bar-sub-nav-active'
     else
+      $('.editor-toolbar').css 'top', '60px'
       $('html').removeClass 'control-bar-sub-nav-active'
   ).observes('subNavVisible')
 

@@ -407,25 +407,24 @@ ve.ce.veRangeFromSelection = function ( selection ) {
  *
  * @constructor
  * @param {ve.ce.RangeState|null} old Previous range state
- * @param {jQuery} $surfaceElement The CE Surface $element
- * @param {ve.ce.DocumentNode} docNode The current document node
+ * @param {ve.ce.DocumentNode} documentNode Document node
  * @param {boolean} selectionOnly The caller promises the content has not changed from old
  */
-ve.ce.RangeState = function VeCeRangeState( old, $surfaceElement, docNode, selectionOnly ) {
+ve.ce.RangeState = function VeCeRangeState( old, documentNode, selectionOnly ) {
 	/**
 	 * @property {boolean} branchNodeChanged Whether the CE branch node changed
 	 */
-	this.branchNodeChanged = null;
+	this.branchNodeChanged = false;
 
 	/**
 	 * @property {boolean} selectionChanged Whether the DOM range changed
 	 */
-	this.selectionChanged = null;
+	this.selectionChanged = false;
 
 	/**
 	 * @property {boolean} contentChanged Whether the content changed
 	 */
-	this.contentChanged = null;
+	this.contentChanged = false;
 
 	/**
 	 * @property {ve.Range|null} veRange The current selection range
@@ -438,21 +437,52 @@ ve.ce.RangeState = function VeCeRangeState( old, $surfaceElement, docNode, selec
 	this.node = null;
 
 	/**
-	 * @property {string} text Plain text of current branch node
+	 * @property {string|null} text Plain text of current branch node
 	 */
 	this.text = null;
 
 	/**
-	 * @property {string} DOM Hash of current branch node
+	 * @property {string|null} DOM Hash of current branch node
 	 */
 	this.hash = null;
 
-	this.saveState( old, $surfaceElement, docNode, selectionOnly );
+	this.saveState( old, documentNode, selectionOnly );
 };
 
 /* Inheritance */
 
 OO.initClass( ve.ce.RangeState );
+
+/* Static methods */
+
+/**
+ * Create a plain selection object equivalent to no selection
+ *
+ * @return {Object} Plain selection object
+ */
+ve.ce.RangeState.static.createNullSelection = function () {
+	return {
+		focusNode: null,
+		focusOffset: 0,
+		anchorNode: null,
+		anchorOffset: 0
+	};
+};
+
+/**
+ * Compare two plain selection objects, checking that all values are equal
+ * and all nodes are reference-equal.
+ *
+ * @param {Object} a First plain selection object
+ * @param {Object} b First plain selection object
+ * @return {boolean} Selections are identical
+ */
+ve.ce.RangeState.static.compareSelections = function ( a, b ) {
+	return a.focusNode === b.focusNode &&
+		a.focusOffset === b.focusOffset &&
+		a.anchorNode === b.anchorNode &&
+		a.anchorOffset === b.anchorOffset;
+};
 
 /* Methods */
 
@@ -460,52 +490,44 @@ OO.initClass( ve.ce.RangeState );
  * Saves a snapshot of the current range state
  * @method
  * @param {ve.ce.RangeState|null} old Previous range state
- * @param {jQuery} $surfaceElement The CE Surface $element
- * @param {ve.ce.DocumentNode} docNode The current document node
+ * @param {ve.ce.DocumentNode} documentNode Document node
  * @param {boolean} selectionOnly The caller promises the content has not changed from old
  */
-ve.ce.RangeState.prototype.saveState = function ( old, $surfaceElement, docNode, selectionOnly ) {
-	var $node, selection, anchorNodeChanged;
+ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOnly ) {
+	var $node, selection, anchorNodeChanged,
+		oldSelection = old ? old.misleadingSelection : this.constructor.static.createNullSelection(),
+		nativeSelection = documentNode.getElementDocument().getSelection();
 
-	// Freeze selection out of live object.
-	selection = ( function ( liveSelection ) {
-		return {
-			focusNode: liveSelection.focusNode,
-			focusOffset: liveSelection.focusOffset,
-			anchorNode: liveSelection.anchorNode,
-			anchorOffset: liveSelection.anchorOffset
-		};
-	}( docNode.getElementDocument().getSelection() ) );
-
-	// Use a blank selection if the selection is outside this surface
-	// (or if the selection is inside another surface inside this one)
 	if (
-		selection.rangeCount && $(
-			selection.getRangeAt( 0 ).commonAncestorContainer
-		).closest( '.ve-ce-surface' )[0] !== $surfaceElement[0]
+		nativeSelection.rangeCount &&
+		OO.ui.contains( documentNode.$element[0], nativeSelection.anchorNode, true )
 	) {
+		// Freeze selection out of live object.
 		selection = {
-			focusNode: null,
-			focusOffset: null,
-			anchorNode: null,
-			anchorOffset: null
+			focusNode: nativeSelection.focusNode,
+			focusOffset: nativeSelection.focusOffset,
+			anchorNode: nativeSelection.anchorNode,
+			anchorOffset: nativeSelection.anchorOffset
 		};
+	} else {
+		// Use a blank selection if the selection is outside the document
+		selection = this.constructor.static.createNullSelection();
 	}
 
 	// Get new range information
-	if ( old && !old.compareSelection( selection ) ) {
+	if ( this.constructor.static.compareSelections( oldSelection, selection ) ) {
 		// No change; use old values for speed
 		this.selectionChanged = false;
-		this.veRange = old.veRange;
+		this.veRange = old && old.veRange;
 	} else {
 		this.selectionChanged = true;
 		this.veRange = ve.ce.veRangeFromSelection( selection );
 	}
 
-	anchorNodeChanged = !old || old.compareAnchorNode( selection );
+	anchorNodeChanged = oldSelection.anchorNode !== selection.anchorNode;
 
 	if ( !anchorNodeChanged ) {
-		this.node = old.node;
+		this.node = old && old.node;
 	} else {
 		$node = $( selection.anchorNode ).closest( '.ve-ce-branchNode' );
 		if ( $node.length === 0 ) {
@@ -513,20 +535,20 @@ ve.ce.RangeState.prototype.saveState = function ( old, $surfaceElement, docNode,
 		} else {
 			this.node = $node.data( 'view' );
 			// Check this node belongs to our document
-			if ( this.node && this.node.root !== docNode ) {
+			if ( this.node && this.node.root !== documentNode ) {
 				this.node = null;
 				this.veRange = null;
 			}
 		}
 	}
 
-	this.branchNodeChanged = ( !old || this.node !== old.node );
+	this.branchNodeChanged = ( old && old.node ) !== this.node;
 
 	// Compute text/hash, for change comparison
 	if ( selectionOnly && !anchorNodeChanged ) {
 		this.text = old.text;
 		this.hash = old.hash;
-	} else if ( this.node === null ) {
+	} else if ( !this.node ) {
 		this.text = null;
 		this.hash = null;
 	} else {
@@ -535,50 +557,17 @@ ve.ce.RangeState.prototype.saveState = function ( old, $surfaceElement, docNode,
 	}
 
 	// Only set contentChanged if we're still in the same branch node
-	this.contentChanged = (
+	this.contentChanged =
 		!selectionOnly &&
-		old &&
-		old.node === this.node && (
-			old.hash === null ||
-			old.text === null ||
-			old.hash !== this.hash ||
-			old.text !== this.text
-		)
-	);
+		!this.branchNodeChanged && (
+			( old && old.hash ) !== this.hash ||
+			( old && old.text ) !== this.text
+		);
 
 	// Save selection for future comparisons. (But it is not properly frozen, because the nodes
 	// are live and mutable, and therefore the offsets may come to point to places that are
 	// misleadingly different from when the selection was saved).
 	this.misleadingSelection = selection;
-};
-
-/**
- * Compare a selection object for changes from the snapshotted state.
- *
- * The meaning of "changes" is slightly misleading, because the offsets were taken
- * at two different instants, between which content outside of the selection may
- * have changed. This can in theory cause false negatives (unnoticed changes).
- *
- * @param {Object} selection Selection to compare
- * @returns {boolean} Whether there is a change
- */
-ve.ce.RangeState.prototype.compareSelection = function ( selection ) {
-	return (
-		this.misleadingSelection.focusNode !== selection.focusNode ||
-		this.misleadingSelection.focusOffset !== selection.focusOffset ||
-		this.misleadingSelection.anchorNode !== selection.anchorNode ||
-		this.misleadingSelection.anchorOffset !== selection.anchorOffset
-	);
-};
-
-/**
- * Compare a selection object for a change of anchor node from the snapshotted state.
- *
- * @param {Object} selection Selection to compare
- * @returns {boolean} Whether the anchor node has changed
- */
-ve.ce.RangeState.prototype.compareAnchorNode = function ( selection ) {
-	return this.misleadingSelection.anchorNode !== selection.anchorNode;
 };
 
 /*!
@@ -905,7 +894,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				model = $item.data( 'view' ).model;
 				// DM nodes can render as multiple elements in the view, so check
 				// we haven't already counted it.
-				if ( ve.indexOf( model, countedNodes ) === -1 ) {
+				if ( countedNodes.indexOf( model ) === -1 ) {
 					length = model.getOuterLength();
 					countedNodes.push( model );
 					if ( offset >= startOffset && offset < startOffset + length ) {
@@ -1054,14 +1043,15 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
  * @inheritable
  */
 ve.ce.View.static.renderHtmlAttributes = function ( attribute ) {
-	return ve.indexOf( attribute, [
+	var attributes = [
 		'abbr', 'about', 'align', 'alt', 'axis', 'bgcolor', 'border', 'cellpadding', 'cellspacing',
 		'char', 'charoff', 'cite', 'class', 'clear', 'color', 'colspan', 'datatype', 'datetime',
 		'dir', 'face', 'frame', 'headers', 'height', 'href', 'id', 'itemid', 'itemprop', 'itemref',
 		'itemscope', 'itemtype', 'lang', 'noshade', 'nowrap', 'property', 'rbspan', 'rel',
 		'resource', 'rev', 'rowspan', 'rules', 'scope', 'size', 'span', 'src', 'start', 'style',
 		'summary', 'title', 'type', 'typeof', 'valign', 'value', 'width'
-	] ) !== -1;
+	];
+	return attributes.indexOf( attribute ) !== -1;
 };
 
 /* Methods */
@@ -1161,6 +1151,15 @@ ve.ce.View.prototype.getResolvedAttribute = function ( key ) {
 	return doc && typeof plainValue === 'string' ? ve.resolveUrl( plainValue, doc ) : plainValue;
 };
 
+/**
+ * Release all memory.
+ */
+ve.ce.View.prototype.destroy = function () {
+	this.disconnect( this );
+	this.model.disconnect( this );
+	this.model = null;
+};
+
 /*!
  * VisualEditor ContentEditable Annotation class.
  *
@@ -1238,6 +1237,16 @@ ve.ce.Annotation.prototype.getParentNode = function () {
 /** */
 ve.ce.Annotation.prototype.getModelHtmlDocument = function () {
 	return this.parentNode && this.parentNode.getModelHtmlDocument();
+};
+
+/**
+ * Release all memory.
+ */
+ve.ce.Annotation.prototype.destroy = function () {
+	this.parentNode = null;
+
+	// Parent method
+	ve.ce.View.prototype.destroy.call( this );
 };
 
 /*!
@@ -1405,6 +1414,13 @@ ve.ce.Node.prototype.handlesOwnChildren = function () {
 /**
  * @inheritdoc ve.Node
  */
+ve.ce.Node.prototype.shouldIgnoreChildren = function () {
+	return this.model.shouldIgnoreChildren();
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
 ve.ce.Node.prototype.getLength = function () {
 	return this.model.getLength();
 };
@@ -1437,7 +1453,11 @@ ve.ce.Node.prototype.splitOnEnter = function () {
  */
 ve.ce.Node.prototype.destroy = function () {
 	this.parent = null;
-	this.model.disconnect( this );
+	this.root = null;
+	this.doc = null;
+
+	// Parent method
+	ve.ce.View.prototype.destroy.call( this );
 };
 
 /** */
@@ -1496,25 +1516,27 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
 /**
  * Inline slug template.
  *
- * TODO: Make iframe safe
- *
  * @static
  * @property {HTMLElement}
  */
-ve.ce.BranchNode.inlineSlugTemplate = $( '<span>' )
-	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
-	.append(
-		$( '<img>' )
-			.prop( 'src', ve.ce.minImgDataUri )
-			.css( { width: '0', height: '0' } )
+ve.ce.BranchNode.inlineSlugTemplate = ( function () {
+	var $img = $( '<img>' )
 			.addClass( 've-ce-chimera' )
-	)
-	.get( 0 );
+			.css( { width: '0', height: '0' } ),
+		$span = $( '<span>' )
+			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
+			.append( $img );
+
+	// Firefox misbehaves if we don't set an src: https://bugzilla.mozilla.org/show_bug.cgi?id=989012
+	// But setting an src in Chrome is very slow, so only set it in Firefox
+	if ( $.client.profile().layout === 'gecko' ) {
+		$img.prop( 'src', ve.ce.minImgDataUri );
+	}
+	return $span.get( 0 );
+}() );
 
 /**
  * Inline slug template for input debugging.
- *
- * TODO: Make iframe safe
  *
  * @static
  * @property {HTMLElement}
@@ -1531,15 +1553,11 @@ ve.ce.BranchNode.inputDebugInlineSlugTemplate = $( '<span>' )
 /**
  * Block slug template.
  *
- * TODO: Make iframe safe
- *
  * @static
  * @property {HTMLElement}
  */
 ve.ce.BranchNode.blockSlugTemplate = $( '<div>' )
 	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
-	// TODO: work around ce=false IE9 bug
-	.prop( 'contentEditable', 'false' )
 	.get( 0 );
 
 /* Methods */
@@ -1668,7 +1686,27 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		}
 	}
 
-	this.setupSlugs();
+	this.setupBlockSlugs();
+};
+
+/**
+ * Setup block slugs
+ */
+ve.ce.BranchNode.prototype.setupBlockSlugs = function () {
+	// Only proceed if we are in a non-content node
+	if ( this.canHaveChildrenNotContent() ) {
+		this.setupSlugs( true );
+	}
+};
+
+/**
+ * Setup inline slugs
+ */
+ve.ce.BranchNode.prototype.setupInlineSlugs = function () {
+	// Only proceed if we are in a content node
+	if ( !this.canHaveChildrenNotContent() ) {
+		this.setupSlugs( false );
+	}
 };
 
 /**
@@ -1676,11 +1714,10 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
  *
  * Existing slugs will be removed before new ones are added.
  *
- * @method
+ * @param {boolean} isBlock Set up block slugs, otherwise setup inline slugs
  */
-ve.ce.BranchNode.prototype.setupSlugs = function () {
+ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
 	var i, slugTemplate, slugNode, child, slugButton,
-		isBlock = this.canHaveChildrenNotContent(),
 		doc = this.getElementDocument();
 
 	// Remove all slugs in this branch
@@ -1736,7 +1773,7 @@ ve.ce.BranchNode.prototype.onSlugClick = function ( slugNode ) {
  *
  * @method
  * @param {number} offset Offset to get slug at
- * @returns {HTMLElement}
+ * @returns {HTMLElement|null}
  */
 ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 	var i,
@@ -1804,9 +1841,13 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
 	this.rendered = false;
 	this.unicornAnnotations = null;
 	this.unicorns = null;
+	this.onClickHandler = this.onClick.bind( this );
 
 	// Events
 	this.connect( this, { childUpdate: 'onChildUpdate' } );
+	// Some browsers allow clicking links inside contenteditable, such as in iOS Safari when the
+	// keyboard is closed
+	this.$element.on( 'click', this.onClickHandler );
 };
 
 /* Inheritance */
@@ -1857,6 +1898,22 @@ ve.ce.ContentBranchNode.static.appendRenderedContents = function ( container, wr
 /* Methods */
 
 /**
+ * Handle click events.
+ *
+ * @param {jQuery.Event} e Click event
+ */
+ve.ce.ContentBranchNode.prototype.onClick = function ( e ) {
+	if (
+		// Only block clicks on links
+		( e.target !== this.$element[0] && e.target.nodeName.toUpperCase() === 'A' ) &&
+		// Don't prevent a modified click, which in some browsers deliberately opens the link
+		( !e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey )
+	) {
+		e.preventDefault();
+	}
+};
+
+/**
  * Handle splice events.
  *
  * Rendering is only done once per transaction. If a paragraph has multiple nodes in it then it's
@@ -1905,7 +1962,7 @@ ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
 };
 
 /** @inheritdoc */
-ve.ce.ContentBranchNode.prototype.setupSlugs = function () {
+ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
 	// Respect render lock
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
@@ -1913,7 +1970,7 @@ ve.ce.ContentBranchNode.prototype.setupSlugs = function () {
 	) {
 		return;
 	}
-	ve.ce.BranchNode.prototype.setupSlugs.apply( this, arguments );
+	ve.ce.BranchNode.prototype.setupBlockSlugs.apply( this, arguments );
 };
 
 /**
@@ -2168,7 +2225,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	this.hasCursor = null;
 
 	// Add slugs
-	this.setupSlugs();
+	this.setupInlineSlugs();
 
 	// Highlight the node in debug mode
 	if ( ve.debug ) {
@@ -2193,6 +2250,13 @@ ve.ce.ContentBranchNode.prototype.onTeardown = function () {
 	ve.ce.BranchNode.prototype.onTeardown.call( this );
 
 	ceSurface.setNotUnicorning( this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.ContentBranchNode.prototype.destroy = function () {
+	this.$element.off( 'click', this.onClickHandler );
 };
 
 /*!
@@ -2383,18 +2447,26 @@ ve.ce.AlignableNode.prototype.updateAttributeClasses = function () {
  *
  * @constructor
  * @param {jQuery} [$focusable=this.$element] Primary element user is focusing on
+ * @param {Object} [config] Configuration options
+ * @cfg {string[]} [classes] CSS classes to be added to the highlight container
  */
-ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
+ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
+	config = config || {};
+
 	// Properties
 	this.focused = false;
 	this.highlighted = false;
-	this.isSetup = false;
+	this.isFocusableSetup = false;
 	this.$highlights = this.$( '<div>' ).addClass( 've-ce-focusableNode-highlights' );
 	this.$focusable = $focusable || this.$element;
-	this.surface = null;
+	this.focusableSurface = null;
 	this.rects = null;
 	this.boundingRect = null;
 	this.startAndEndRects = null;
+
+	if ( Array.isArray( config.classes ) ) {
+		this.$highlights.addClass( config.classes.join( ' ' ) );
+	}
 
 	// DOM changes
 	this.$element
@@ -2456,11 +2528,11 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
  */
 ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 	// Exit if already setup or not attached
-	if ( this.isSetup || !this.root ) {
+	if ( this.isFocusableSetup || !this.root ) {
 		return;
 	}
 
-	this.surface = this.getRoot().getSurface();
+	this.focusableSurface = this.root.getSurface();
 
 	// DOM changes (duplicated from constructor in case this.$element is replaced)
 	this.$element
@@ -2482,7 +2554,7 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 		} );
 	}
 
-	this.isSetup = true;
+	this.isFocusableSetup = true;
 };
 
 /**
@@ -2492,7 +2564,7 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
  */
 ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
 	// Exit if not setup or not attached
-	if ( !this.isSetup || !this.root ) {
+	if ( !this.isFocusableSetup || !this.root ) {
 		return;
 	}
 
@@ -2508,8 +2580,8 @@ ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
 		.removeClass( 've-ce-focusableNode' )
 		.removeProp( 'contentEditable' );
 
-	this.isSetup = false;
-	this.surface = null;
+	this.focusableSurface = null;
+	this.isFocusableSetup = false;
 };
 
 /**
@@ -2520,7 +2592,7 @@ ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
  */
 ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 	var range,
-		surfaceModel = this.surface.getModel(),
+		surfaceModel = this.focusableSurface.getModel(),
 		selection = surfaceModel.getSelection(),
 		nodeRange = this.model.getOuterRange();
 
@@ -2564,7 +2636,7 @@ ve.ce.FocusableNode.prototype.executeCommand = function () {
 	}
 	var command = ve.ui.commandRegistry.getCommandForNode( this );
 	if ( command ) {
-		command.execute( this.surface.getSurface() );
+		command.execute( this.focusableSurface.getSurface() );
 	}
 };
 
@@ -2575,9 +2647,9 @@ ve.ce.FocusableNode.prototype.executeCommand = function () {
  * @param {jQuery.Event} e Drag start event
  */
 ve.ce.FocusableNode.prototype.onFocusableDragStart = function () {
-	if ( this.surface ) {
+	if ( this.focusableSurface ) {
 		// Allow dragging this node in the surface
-		this.surface.startRelocation( this );
+		this.focusableSurface.startRelocation( this );
 	}
 	this.$highlights.addClass( 've-ce-focusableNode-highlights-relocating' );
 };
@@ -2593,8 +2665,8 @@ ve.ce.FocusableNode.prototype.onFocusableDragStart = function () {
 ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
 	// endRelocation is usually triggered by onDocumentDrop in the surface, but if it isn't
 	// trigger it here instead
-	if ( this.surface ) {
-		this.surface.endRelocation();
+	if ( this.focusableSurface ) {
+		this.focusableSurface.endRelocation();
 	}
 	this.$highlights.removeClass( 've-ce-focusableNode-highlights-relocating' );
 };
@@ -2663,10 +2735,10 @@ ve.ce.FocusableNode.prototype.onFocusableResizeEnd = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableRerender = function () {
-	if ( this.focused ) {
+	if ( this.focused && this.focusableSurface ) {
 		this.redrawHighlights();
 		// reposition menu
-		this.surface.getSurface().getContext().updateDimensions( true );
+		this.focusableSurface.getSurface().getContext().updateDimensions( true );
 	}
 };
 
@@ -2696,8 +2768,8 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 			this.emit( 'focus' );
 			this.$element.addClass( 've-ce-focusableNode-focused' );
 			this.createHighlights();
-			this.surface.appendHighlights( this.$highlights, this.focused );
-			this.surface.$element.off( '.ve-ce-focusableNode' );
+			this.focusableSurface.appendHighlights( this.$highlights, this.focused );
+			this.focusableSurface.$element.off( '.ve-ce-focusableNode' );
 		} else {
 			this.emit( 'blur' );
 			this.$element.removeClass( 've-ce-focusableNode-focused' );
@@ -2725,16 +2797,16 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 
 	this.positionHighlights();
 
-	this.surface.appendHighlights( this.$highlights, this.focused );
+	this.focusableSurface.appendHighlights( this.$highlights, this.focused );
 
 	// Events
 	if ( !this.focused ) {
-		this.surface.$element.on( {
+		this.focusableSurface.$element.on( {
 			'mousemove.ve-ce-focusableNode': this.onSurfaceMouseMove.bind( this ),
 			'mouseout.ve-ce-focusableNode': this.onSurfaceMouseOut.bind( this )
 		} );
 	}
-	this.surface.connect( this, { position: 'positionHighlights' } );
+	this.focusableSurface.connect( this, { position: 'positionHighlights' } );
 };
 
 /**
@@ -2747,8 +2819,8 @@ ve.ce.FocusableNode.prototype.clearHighlights = function () {
 		return;
 	}
 	this.$highlights.remove().empty();
-	this.surface.$element.off( '.ve-ce-focusableNode' );
-	this.surface.disconnect( this, { position: 'positionHighlights' } );
+	this.focusableSurface.$element.off( '.ve-ce-focusableNode' );
+	this.focusableSurface.disconnect( this, { position: 'positionHighlights' } );
 	this.highlighted = false;
 	this.boundingRect = null;
 };
@@ -2767,11 +2839,11 @@ ve.ce.FocusableNode.prototype.redrawHighlights = function () {
  * Calculate position of highlights
  */
 ve.ce.FocusableNode.prototype.calculateHighlights = function () {
-	var i, l, $set,
+	var i, l, $set, columnCount, columnWidth,
 		rects = [],
 		filteredRects = [],
 		webkitColumns = 'webkitColumnCount' in document.createElement( 'div' ).style,
-		surfaceOffset = this.surface.getSurface().getBoundingClientRect();
+		surfaceOffset = this.focusableSurface.getSurface().getBoundingClientRect();
 
 	function contains( rect1, rect2 ) {
 		return rect2.left >= rect1.left &&
@@ -2788,27 +2860,28 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 			return;
 		}
 
-		if (
-			webkitColumns &&
-			( $el.css( '-webkit-column-count' ) || $el.css( '-webkit-column-size' ) )
-		) {
-			// Chrome incorrectly measures children of nodes with columns [1], let's
-			// just ignore them rather than render a possibly bizarre highlight. They
-			// will usually not be positioned, because Chrome also doesn't position
-			// them correctly [2] and so people avoid doing it.
-			//
-			// Of course there are other ways to render a node outside the bounding
-			// box of its parent, like negative margin. We do not handle these cases,
-			// and the highlight may not correctly cover the entire node if that
-			// happens. This can't be worked around without implementing CSS
-			// layouting logic ourselves, which is not worth it.
-			//
-			// [1] http://code.google.com/p/chromium/issues/detail?id=391271
-			// [2] https://code.google.com/p/chromium/issues/detail?id=291616
+		if ( webkitColumns ) {
+			columnCount = $el.css( '-webkit-column-count' );
+			columnWidth = $el.css( '-webkit-column-width' );
+			if ( ( columnCount && columnCount !== 'auto' ) || ( columnWidth && columnWidth !== 'auto' ) ) {
+				// Chrome incorrectly measures children of nodes with columns [1], let's
+				// just ignore them rather than render a possibly bizarre highlight. They
+				// will usually not be positioned, because Chrome also doesn't position
+				// them correctly [2] and so people avoid doing it.
+				//
+				// Of course there are other ways to render a node outside the bounding
+				// box of its parent, like negative margin. We do not handle these cases,
+				// and the highlight may not correctly cover the entire node if that
+				// happens. This can't be worked around without implementing CSS
+				// layouting logic ourselves, which is not worth it.
+				//
+				// [1] https://code.google.com/p/chromium/issues/detail?id=391271
+				// [2] https://code.google.com/p/chromium/issues/detail?id=291616
 
-			// jQuery keeps nodes in its collections in document order, so the
-			// children have not been processed yet and can be safely removed.
-			$set = $set.not( $el.find( '*' ) );
+				// jQuery keeps nodes in its collections in document order, so the
+				// children have not been processed yet and can be safely removed.
+				$set = $set.not( $el.find( '*' ) );
+			}
 		}
 
 		clientRects = el.getClientRects();
@@ -2965,10 +3038,10 @@ ve.ce.FocusableNode.prototype.getStartAndEndRects = function () {
  * @constructor
  * @param {jQuery} [$resizable=this.$element] Resizable DOM element
  * @param {Object} [config] Configuration options
- * @param {number|null} [config.snapToGrid=10] Snap to a grid of size X when the shift key is held. Null disables.
- * @param {boolean} [config.outline=false] Resize using an outline of the element only, don't live preview.
- * @param {boolean} [config.showSizeLabel=true] Show a label with the current dimensions while resizing
- * @param {boolean} [config.showScaleLabel=true] Show a label with the current scale while resizing
+ * @cfg {number|null} [snapToGrid=10] Snap to a grid of size X when the shift key is held. Null disables.
+ * @cfg {boolean} [outline=false] Resize using an outline of the element only, don't live preview.
+ * @cfg {boolean} [showSizeLabel=true] Show a label with the current dimensions while resizing
+ * @cfg {boolean} [showScaleLabel=true] Show a label with the current scale while resizing
  */
 ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	config = config || {};
@@ -2988,11 +3061,13 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		this.$sizeLabel = this.$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
 	}
 	this.resizableOffset = null;
+	this.resizableSurface = null;
 
 	// Events
 	this.connect( this, {
 		focus: 'onResizableFocus',
 		blur: 'onResizableBlur',
+		setup: 'onResizableSetup',
 		teardown: 'onResizableTeardown',
 		resizing: 'onResizableResizing',
 		resizeEnd: 'onResizableFocus',
@@ -3049,7 +3124,7 @@ OO.initClass( ve.ce.ResizableNode );
 ve.ce.ResizableNode.prototype.getResizableOffset = function () {
 	if ( !this.resizableOffset ) {
 		this.resizableOffset = OO.ui.Element.static.getRelativePosition(
-			this.$resizable, this.getRoot().getSurface().getSurface().$element
+			this.$resizable, this.resizableSurface.getSurface().$element
 		);
 	}
 	return this.resizableOffset;
@@ -3161,11 +3236,9 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
-	var surface = this.getRoot().getSurface();
-
-	this.$resizeHandles.appendTo( surface.getSurface().$controls );
+	this.$resizeHandles.appendTo( this.resizableSurface.getSurface().$controls );
 	if ( this.$sizeLabel ) {
-		this.$sizeLabel.appendTo( surface.getSurface().$controls );
+		this.$sizeLabel.appendTo( this.resizableSurface.getSurface().$controls );
 	}
 
 	// Call getScalable to pre-fetch the extended data
@@ -3193,7 +3266,7 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 			this.onResizeHandlesCornerMouseDown.bind( this )
 		);
 
-	surface.connect( this, { position: 'setResizableHandlesSizeAndPosition' } );
+	this.resizableSurface.connect( this, { position: 'setResizableHandlesSizeAndPosition' } );
 
 };
 
@@ -3204,18 +3277,16 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
  */
 ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 	// Node may have already been torn down, e.g. after delete
-	if ( !this.getRoot() ) {
+	if ( !this.root ) {
 		return;
 	}
-
-	var surface = this.getRoot().getSurface();
 
 	this.$resizeHandles.detach();
 	if ( this.$sizeLabel ) {
 		this.$sizeLabel.detach();
 	}
 
-	surface.disconnect( this, { position: 'setResizableHandlesSizeAndPosition' } );
+	this.resizableSurface.disconnect( this, { position: 'setResizableHandlesSizeAndPosition' } );
 
 };
 
@@ -3242,12 +3313,34 @@ ve.ce.ResizableNode.prototype.onResizableAlign = function ( align ) {
 };
 
 /**
+ * Handle setup event.
+ *
+ * @method
+ */
+ve.ce.ResizableNode.prototype.onResizableSetup = function () {
+	// Exit if already setup or not attached
+	if ( this.isResizableSetup || !this.root ) {
+		return;
+	}
+
+	this.resizableSurface = this.root.getSurface();
+	this.isResizableSetup = true;
+};
+
+/**
  * Handle teardown event.
  *
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableTeardown = function () {
+	// Exit if not setup or not attached
+	if ( !this.isResizableSetup || !this.root ) {
+		return;
+	}
+
 	this.onResizableBlur();
+	this.resizableSurface = null;
+	this.isResizableSetup = false;
 };
 
 /**
@@ -3459,7 +3552,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 		offset = this.model.getOffset(),
 		width = this.$resizeHandles.outerWidth(),
 		height = this.$resizeHandles.outerHeight(),
-		surfaceModel = this.getRoot().getSurface().getModel(),
+		surfaceModel = this.resizableSurface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection();
 
@@ -3565,13 +3658,14 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 		this.$highlightsFocused, this.$highlightsBlurred
 	);
 	this.$findResults = this.$( '<div>' );
-	this.$dropMarker = this.$( '<div>' ).addClass( 've-ce-focusableNode-dropMarker' );
+	this.$dropMarker = this.$( '<div>' ).addClass( 've-ce-surface-dropMarker oo-ui-element-hidden' );
 	this.$lastDropTarget = null;
 	this.lastDropPosition = null;
 	this.$pasteTarget = this.$( '<div>' );
 	this.pasting = false;
 	this.copying = false;
 	this.pasteSpecial = false;
+	this.focusedBlockSlug = null;
 	this.focusedNode = null;
 	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
@@ -3662,7 +3756,9 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	} );
 
 	// Initialization
-	this.$element.addClass( 've-ce-surface' );
+	// Add 'notranslate' class to prevent Chrome's translate feature from
+	// completely messing up the CE DOM (T59124)
+	this.$element.addClass( 've-ce-surface notranslate' );
 	this.$highlights.addClass( 've-ce-surface-highlights' );
 	this.$highlightsFocused.addClass( 've-ce-surface-highlights-focused' );
 	this.$highlightsBlurred.addClass( 've-ce-surface-highlights-blurred' );
@@ -3675,6 +3771,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 		} );
 
 	// Add elements to the DOM
+	this.$highlights.append( this.$dropMarker );
 	this.$element.append( this.$documentNode, this.$pasteTarget );
 	this.surface.$blockers.append( this.$highlights );
 	this.surface.$selections.append( this.$deactivatedSelection );
@@ -3756,23 +3853,18 @@ ve.ce.Surface.static.unsafeAttributes = [
  * When pasting, browsers normalize HTML to varying degrees.
  * This hash creates a comparable string for validating clipboard contents.
  *
- * @param {Node[]} nodes Clipboard HTML nodes
+ * @param {jQuery} $elements Clipboard HTML
+ * @param {Object} [beforePasteData] Paste information, including leftText and rightText to strip
  * @returns {string} Hash
  */
-ve.ce.Surface.static.getClipboardHash = function ( nodes ) {
-	var i, l, node, hash = '';
-	// Collect text contents, or just node name for content-less nodes.
-	for ( i = 0, l = nodes.length; i < l; i++ ) {
-		node = nodes[i];
-		// Only use node types which are know to copy (e.g. not comment nodes)
-		if ( node.nodeType === Node.TEXT_NODE ) {
-			hash += node.textContent;
-		} else if ( node.nodeType === Node.ELEMENT_NODE ) {
-			hash += '<' + node.nodeName + '>' + this.getClipboardHash( node.childNodes );
-		}
-	}
-	// Whitespace may be added/removed, so strip it all
-	return hash.replace( /\s/gm, '' );
+ve.ce.Surface.static.getClipboardHash = function ( $elements, beforePasteData ) {
+	beforePasteData = beforePasteData || {};
+	return $elements.text().slice(
+		beforePasteData.leftText ? beforePasteData.leftText.length : 0,
+		beforePasteData.rightText ? -beforePasteData.rightText.length : undefined
+	)
+	// Whitespace may be modified (e.g. ' ' to '&nbsp;'), so strip it all
+	.replace( /\s/gm, '' );
 };
 
 /* Methods */
@@ -4045,11 +4137,15 @@ ve.ce.Surface.prototype.getSelectionBoundingRect = function ( selection ) {
  */
 ve.ce.Surface.prototype.initialize = function () {
 	this.documentView.getDocumentNode().setLive( true );
-	// Turn off native object editing. This must be tried after the surface has been added to DOM.
-	try {
-		this.$document[0].execCommand( 'enableObjectResizing', false, false );
-		this.$document[0].execCommand( 'enableInlineTableEditing', false, false );
-	} catch ( e ) { /* Silently ignore */ }
+	if ( $.client.profile().layout === 'gecko' ) {
+		// Turn off native object editing. This must be tried after the surface has been added to DOM.
+		// This is only needed in Gecko. In other engines, these properties are off by default,
+		// and turning them off again is expensive; see https://phabricator.wikimedia.org/T89928
+		try {
+			this.$document[0].execCommand( 'enableObjectResizing', false, false );
+			this.$document[0].execCommand( 'enableInlineTableEditing', false, false );
+		} catch ( e ) { /* Silently ignore */ }
+	}
 };
 
 /**
@@ -4286,6 +4382,7 @@ ve.ce.Surface.prototype.isFocused = function () {
  * @param {jQuery.Event} e Mouse down event
  */
 ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
+	var newFragment;
 	if ( e.which !== 1 ) {
 		return;
 	}
@@ -4307,7 +4404,23 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		// Browser default behaviour for triple click won't behave as we want
 		e.preventDefault();
 
-		this.getModel().getFragment().expandLinearSelection( 'closest', ve.dm.BranchNode ).adjustLinearSelection( 1, -1 ).select();
+		newFragment = this.getModel().getFragment()
+			// After double-clicking in an inline slug, we'll get a selection like
+			// <p><span><img />|</span></p><p>|Foo</p>. This selection spans a CBN boundary,
+			// so we can't expand to the nearest CBN. To handle this case and other possible
+			// cases where the selection spans a CBN boundary, collapse the selection before
+			// expanding it. If the selection is entirely within the same CBN as it should be,
+			// this won't change the result.
+			.collapseToStart()
+			// Cover the CBN we're in
+			.expandLinearSelection( 'closest', ve.dm.ContentBranchNode )
+			// ...but that covered the entire CBN, we only want the contents
+			.adjustLinearSelection( 1, -1 );
+		// If something weird happened (e.g. no CBN found), newFragment will be null.
+		// Don't select it in that case, because that'll blur the surface.
+		if ( !newFragment.isNull() ) {
+			newFragment.select();
+		}
 	}
 };
 
@@ -4439,7 +4552,8 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 	if ( !this.relocatingNode ) {
 		return;
 	}
-	var $target, $dropTarget, node, dropPosition, nodeType, inHandlesOwnChildren;
+	var $target, $dropTarget, node, dropPosition, targetPosition, top, left,
+		nodeType, inIgnoreChildren;
 
 	if ( !this.relocatingNode.isContent() ) {
 		e.preventDefault();
@@ -4452,15 +4566,15 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 				node = node.parent;
 			}
 			if ( node.parent ) {
-				inHandlesOwnChildren = false;
+				inIgnoreChildren = false;
 				node.parent.traverseUpstream( function ( n ) {
-					if ( n.handlesOwnChildren() ) {
-						inHandlesOwnChildren = true;
+					if ( n.shouldIgnoreChildren() ) {
+						inIgnoreChildren = true;
 						return false;
 					}
 				} );
 			}
-			if ( node.parent && !inHandlesOwnChildren ) {
+			if ( node.parent && !inIgnoreChildren ) {
 				$dropTarget = node.$element;
 				dropPosition = e.originalEvent.pageY - $dropTarget.offset().top > $dropTarget.outerHeight() / 2 ? 'bottom' : 'top';
 			} else {
@@ -4471,18 +4585,26 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 		if ( this.$lastDropTarget && (
 			!this.$lastDropTarget.is( $dropTarget ) || dropPosition !== this.lastDropPosition
 		) ) {
-			this.$dropMarker.detach();
+			this.$dropMarker.addClass( 'oo-ui-element-hidden' );
 			$dropTarget = null;
 		}
 		if ( $dropTarget && (
 			!$dropTarget.is( this.$lastDropTarget ) || dropPosition !== this.lastDropPosition
 		) ) {
-			this.$dropMarker.width( $dropTarget.width() );
-			if ( dropPosition === 'top' ) {
-				this.$dropMarker.insertBefore( $dropTarget );
-			} else {
-				this.$dropMarker.insertAfter( $dropTarget );
+			targetPosition = $dropTarget.position();
+			// Go beyond margins as they can overlap
+			top = targetPosition.top + parseFloat( $dropTarget.css( 'margin-top' ) );
+			left = targetPosition.left + parseFloat( $dropTarget.css( 'margin-left' ) );
+			if ( dropPosition === 'bottom' ) {
+				top += $dropTarget.outerHeight();
 			}
+			this.$dropMarker
+				.css( {
+					top: top,
+					left: left
+				} )
+				.width( $dropTarget.outerWidth() )
+				.removeClass( 'oo-ui-element-hidden' );
 		}
 		if ( $dropTarget !== undefined ) {
 			this.$lastDropTarget = $dropTarget;
@@ -4716,8 +4838,8 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  * @param {jQuery.Event} e keydown event
  */
 ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
-	var direction, focusableNode, startOffset, endOffset, offsetDiff,
-		range, fixupCursorForUnicorn, matrix,
+	var direction, focusableNode, startOffset, endOffset, offsetDiff, dmFocus, dmSelection,
+		ceNode, range, fixupCursorForUnicorn, matrix,
 		surface = this,
 		isArrow = (
 			e.keyCode === OO.ui.Keys.UP ||
@@ -4754,7 +4876,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		} else {
 			focusNode = node;
 		}
-		return $( focusNode ).closest( '.ve-ce-focusableNode, .ve-ce-tableNode' ).data( 'view' ) || null;
+		return $( focusNode ).closest( '.ve-ce-focusableNode, .ve-ce-tableNode:not(.ve-ce-tableNode-editing)' ).data( 'view' ) || null;
 	}
 
 	/**
@@ -4777,6 +4899,31 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 				surface.misleadingCursorStartSelection.focusOffset
 			)
 		) || null;
+	}
+
+	if (
+		( e.keyCode === OO.ui.Keys.BACKSPACE || e.keyCode === OO.ui.Keys.DELETE ) &&
+		this.nativeSelection.focusNode &&
+		this.nativeSelection.focusNode.nodeType === Node.ELEMENT_NODE &&
+		!this.nativeSelection.focusNode.classList.contains( 've-ce-branchNode-inlineSlug' )
+	) {
+		// In a non-slug element. Sync the DM, then see if we need a slug.
+		this.incRenderLock();
+		try {
+			this.surfaceObserver.pollOnce();
+		} finally {
+			this.decRenderLock();
+		}
+
+		dmSelection = surface.model.getSelection();
+		if ( dmSelection instanceof ve.dm.LinearSelection ) {
+			dmFocus = dmSelection.getRange().end;
+			ceNode = this.documentView.getBranchNodeFromOffset( dmFocus );
+			if ( ceNode && ceNode.getModel().hasSlugAtOffset( dmFocus ) ) {
+				ceNode.setupBlockSlugs();
+			}
+		}
+		return;
 	}
 
 	if ( e !== this.cursorEvent ) {
@@ -5008,6 +5155,8 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		htmlDoc = this.getModel().getDocument().getHtmlDocument(),
 		clipboardData = e.originalEvent.clipboardData;
 
+	this.$pasteTarget.empty();
+
 	if ( selection instanceof ve.dm.LinearSelection ||
 		( selection instanceof ve.dm.TableSelection && selection.isSingleCell() )
 	) {
@@ -5017,8 +5166,6 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	}
 
 	slice = this.model.documentModel.cloneSliceFromRange( range );
-
-	this.$pasteTarget.empty();
 
 	pasteData = slice.data.clone();
 
@@ -5124,20 +5271,23 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 	if ( this.pasting ) {
 		return false;
 	}
+	this.beforePaste( e );
 	this.surfaceObserver.disable();
 	this.pasting = true;
-	this.beforePaste( e );
 	setTimeout( function () {
-		if ( !e.isDefaultPrevented() ) {
-			surface.afterPaste( e );
-		}
-		surface.surfaceObserver.clear();
-		surface.surfaceObserver.enable();
+		try {
+			if ( !e.isDefaultPrevented() ) {
+				surface.afterPaste( e );
+			}
+		} finally {
+			surface.surfaceObserver.clear();
+			surface.surfaceObserver.enable();
 
-		// Allow pasting again
-		surface.pasting = false;
-		surface.pasteSpecial = false;
-		surface.beforePasteData = null;
+			// Allow pasting again
+			surface.pasting = false;
+			surface.pasteSpecial = false;
+			surface.beforePasteData = null;
+		}
 	} );
 };
 
@@ -5267,7 +5417,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  * @param {jQuery.Event} e Paste event
  */
 ve.ce.Surface.prototype.afterPaste = function () {
-	var clipboardKey, clipboardId, clipboardIndex, range,
+	var clipboardKey, clipboardId, clipboardIndex, clipboardHash, range,
 		$elements, parts, pasteData, slice, tx, internalListRange,
 		data, doc, htmlDoc, $images, i,
 		context, left, right, contextRange,
@@ -5291,11 +5441,21 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		return;
 	}
 
-	// Remove the pasteProtect class. See #onCopy.
-	this.$pasteTarget.find( 'span' ).removeClass( 've-pasteProtect' );
-
 	// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
 	this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
+
+	// Remove the pasteProtect class (see #onCopy) and unwrap empty spans.
+	this.$pasteTarget.find( 'span' ).each( function () {
+		var $this = $( this );
+		$this.removeClass( 've-pasteProtect' );
+		if ( $this.attr( 'class' ) === '' ) {
+			$this.removeAttr( 'class' );
+		}
+		// Unwrap empty spans
+		if ( !this.attributes.length ) {
+			$this.replaceWith( this.childNodes );
+		}
+	} );
 
 	// Restore attributes. See #onCopy.
 	this.$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
@@ -5327,11 +5487,12 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				}
 				return true;
 			} );
+			clipboardHash = this.constructor.static.getClipboardHash( $elements );
 		} else {
 			// HTML in pasteTarget my get wrapped, so use the recursive $.find to look for the clipboard key
 			clipboardKey = this.$pasteTarget.find( 'span[data-ve-clipboard-key]' ).data( 've-clipboard-key' );
-			// $elements is used by getClipboardHash so generate it too
-			$elements = this.$pasteTarget.contents();
+			// Pass beforePasteData so context gets stripped
+			clipboardHash = this.constructor.static.getClipboardHash( this.$pasteTarget, beforePasteData );
 		}
 	}
 
@@ -5348,8 +5509,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			// equal to the hash of the pasted HTML to assert that the HTML
 			// hasn't been modified in another editor before being pasted back.
 			if ( beforePasteData.custom ||
-				this.clipboard[clipboardIndex].hash ===
-					this.constructor.static.getClipboardHash( $elements.toArray() )
+				this.clipboard[clipboardIndex].hash === clipboardHash
 			) {
 				slice = this.clipboard[clipboardIndex].slice;
 			}
@@ -5455,7 +5615,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			if ( importRules.all ) {
 				data.sanitize( importRules.all );
 			}
-		} else if ( importRules.all || this.pasteSpecial ) {
+		} else {
 			data.sanitize( importRules.all || {}, this.pasteSpecial );
 		}
 		data.remapInternalListKeys( this.model.getDocument().getInternalList() );
@@ -5492,6 +5652,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			// Remove matching context from the right
 			right = internalListRange.start;
 			while (
+				right > 0 &&
 				context.getLength() &&
 				ve.dm.ElementLinearData.static.compareElements(
 					data.getData( right - 1 ),
@@ -5502,7 +5663,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				context.splice( context.getLength() - 1, 1 );
 			}
 			// HACK: Strip trailing linebreaks probably introduced by Chrome bug
-			while ( data.getType( right - 1 ) === 'break' ) {
+			while ( right > 0 && data.getType( right - 1 ) === 'break' ) {
 				right--;
 			}
 			contextRange = new ve.Range( left, right );
@@ -5653,13 +5814,31 @@ ve.ce.Surface.prototype.onDocumentInput = function () {
  * @see ve.dm.Surface#method-change
  */
 ve.ce.Surface.prototype.onModelSelect = function () {
-	var focusedNode,
+	var focusedNode, blockSlug,
 		selection = this.getModel().getSelection();
 
 	this.cursorDirectionality = null;
 	this.contentBranchNodeChanged = false;
 
 	if ( selection instanceof ve.dm.LinearSelection ) {
+		blockSlug = this.findBlockSlug( selection.getRange() );
+		if ( blockSlug !== this.focusedBlockSlug ) {
+			if ( this.focusedBlockSlug ) {
+				this.focusedBlockSlug.classList.remove(
+					've-ce-branchNode-blockSlug-focused'
+				);
+				this.focusedBlockSlug = null;
+			}
+
+			if ( blockSlug ) {
+				blockSlug.classList.add( 've-ce-branchNode-blockSlug-focused' );
+				this.focusedBlockSlug = blockSlug;
+				this.$pasteTarget.text( '☢' );
+				ve.selectElement( this.$pasteTarget[0] );
+				this.$pasteTarget[0].focus();
+			}
+		}
+
 		focusedNode = this.findFocusedNode( selection.getRange() );
 
 		// If focus has changed, update nodes and this.focusedNode
@@ -5675,9 +5854,11 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 				// If dragging, we already have a native selection, so don't mess with it
 				if ( !this.dragging ) {
 					// As FF won't fire a copy event with nothing selected, make
-					// a dummy selection of one space in the pasteTarget.
+					// a dummy selection of one character in the pasteTarget.
+					// Previously this was a single space but this isn't selected programmatically
+					// properly, and in Safari results in a collapsed selection.
 					// onCopy will ignore this native selection and use the DM selection
-					this.$pasteTarget.text( ' ' );
+					this.$pasteTarget.text( '☢' );
 					ve.selectElement( this.$pasteTarget[0] );
 					this.$pasteTarget[0].focus();
 					// Since the selection is no longer in the documentNode, clear the SurfaceObserver's
@@ -5685,11 +5866,13 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 					// in exactly the same place where it was before, the observer won't consider that a change.
 					this.surfaceObserver.clear();
 				}
+				// If the node is outside the view, scroll to it
+				OO.ui.Element.static.scrollIntoView( this.focusedNode.$element.get( 0 ) );
 			}
 		}
 	} else {
 		if ( selection instanceof ve.dm.TableSelection ) {
-			this.$pasteTarget.text( ' ' );
+			this.$pasteTarget.text( '☢' );
 			ve.selectElement( this.$pasteTarget[0] );
 			this.$pasteTarget[0].focus();
 		}
@@ -5728,6 +5911,18 @@ ve.ce.Surface.prototype.getFocusedNode = function ( range ) {
 		return this.focusedNode;
 	}
 	return this.findFocusedNode( range );
+};
+
+/**
+ * Find the block slug a given range is in.
+ * @param {ve.Range} range Range to check
+ * @return {HTMLElement|null} Slug, or null if no slug or if range is not collapsed
+ */
+ve.ce.Surface.prototype.findBlockSlug = function ( range ) {
+	if ( !range.isCollapsed() ) {
+		return null;
+	}
+	return this.documentView.getDocumentNode().getSlugAtOffset( range.end );
 };
 
 /**
@@ -5824,6 +6019,9 @@ ve.ce.Surface.prototype.onSurfaceObserverBranchNodeChange = function ( oldBranch
 	if ( oldBranchNode instanceof ve.ce.ContentBranchNode ) {
 		oldBranchNode.renderContents();
 	}
+	// Re-apply selection in case the branch node change left us at an invalid offset
+	// e.g. in the document node.
+	this.showSelection( this.getModel().getSelection() );
 };
 
 /**
@@ -6154,7 +6352,7 @@ ve.ce.Surface.prototype.endRelocation = function () {
 		this.emit( 'relocationEnd', this.relocatingNode );
 		this.relocatingNode = null;
 		if ( this.$lastDropTarget ) {
-			this.$dropMarker.detach();
+			this.$dropMarker.addClass( 'oo-ui-element-hidden' );
 			this.$lastDropTarget = null;
 			this.lastDropPosition = null;
 		}
@@ -6288,6 +6486,33 @@ ve.ce.Surface.prototype.handleLinearArrowKey = function ( e ) {
 	this.surfaceObserver.pollOnce();
 
 	upOrDown = e.keyCode === OO.ui.Keys.UP || e.keyCode === OO.ui.Keys.DOWN;
+
+	if ( this.focusedBlockSlug ) {
+		// Block level selection, so directionality is just css directionality
+		if ( upOrDown ) {
+			direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1;
+		} else {
+			directionality = $( this.focusedBlockSlug ).css( 'direction' );
+			/*jshint bitwise:false */
+			if ( e.keyCode === OO.ui.Keys.LEFT ^ directionality === 'rtl' ) {
+				// leftarrow in ltr, or rightarrow in rtl
+				direction = -1;
+			} else {
+				// leftarrow in rtl, or rightarrow in ltr
+				direction = 1;
+			}
+		}
+		range = this.model.getDocument().getRelativeRange(
+			range,
+			direction,
+			'character',
+			e.shiftKey,
+			this.getActiveTableNode() ? this.getActiveTableNode().getEditingRange() : null
+		);
+		this.model.setLinearSelection( range );
+		e.preventDefault();
+		return;
+	}
 
 	if ( this.focusedNode ) {
 		if ( upOrDown ) {
@@ -6750,6 +6975,7 @@ ve.ce.Surface.prototype.handleTableEnter = function ( e ) {
  */
 ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
 	var docLength, startNode, tableEditingRange,
+		documentModelSelectedNodes, i, node, nodeOuterRange, matrix,
 		direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
 		unit = ( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 		offset = 0,
@@ -6779,6 +7005,27 @@ ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
 		if ( tableEditingRange && !tableEditingRange.containsRange( rangeToRemove ) ) {
 			return true;
 		}
+
+		// Prevent backspacing/deleting over table cells, select the cell instead
+		documentModelSelectedNodes = documentModel.selectNodes( rangeToRemove, 'siblings' );
+		for ( i = 0; i < documentModelSelectedNodes.length; i++ ) {
+			node = documentModelSelectedNodes[ i ].node;
+			nodeOuterRange = documentModelSelectedNodes[ i ].nodeOuterRange;
+			if ( node instanceof ve.dm.TableNode ) {
+				if ( rangeToRemove.containsOffset( nodeOuterRange.start ) ) {
+					this.getModel().setSelection( new ve.dm.TableSelection(
+						documentModel, nodeOuterRange, 0, 0
+					) );
+				} else {
+					matrix = node.getMatrix();
+					this.getModel().setSelection( new ve.dm.TableSelection(
+						documentModel, nodeOuterRange, matrix.getColCount() - 1, matrix.getRowCount() - 1
+					) );
+				}
+				return true;
+			}
+		}
+
 		offset = rangeToRemove.start;
 		docLength = data.getLength();
 		if ( offset < docLength ) {
@@ -6799,7 +7046,7 @@ ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
 		}
 	}
 
-	this.getModel().getLinearFragment( rangeToRemove ).delete( direction );
+	this.getModel().getLinearFragment( rangeToRemove, true ).delete( direction ).select();
 	// Rerender selection even if it didn't change
 	// TODO: is any of this necessary?
 	this.focus();
@@ -6905,11 +7152,15 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 		return;
 	}
 
-	if ( !( selection instanceof ve.dm.LinearSelection ) || this.focusedNode ) {
+	if (
+		!( selection instanceof ve.dm.LinearSelection ) ||
+		this.focusedNode ||
+		this.focusedBlockSlug
+	) {
 		return;
 	}
 
-	var endRange, oldRange,
+	var endRange, oldRange, $node,
 		range = selection.getRange(),
 		rangeSelection = this.getRangeSelection( range ),
 		nativeRange = this.getElementDocument().createRange();
@@ -6952,6 +7203,10 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 	// Also set focus after range to prevent scrolling to top
 	if ( !OO.ui.contains( this.getElementDocument().activeElement, rangeSelection.start.node, true ) ) {
 		$( rangeSelection.start.node ).closest( '[contenteditable=true]' ).focus();
+	} else {
+		$node = $( rangeSelection.start.node ).closest( '*' );
+		// Scroll the node into view
+		OO.ui.Element.static.scrollIntoView( $node.get( 0 ) );
 	}
 };
 
@@ -7454,7 +7709,6 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 	oldState = this.rangeState;
 	newState = new ve.ce.RangeState(
 		oldState,
-		this.surface.$element,
 		this.documentView.getDocumentNode(),
 		selectionOnly
 	);
@@ -7688,8 +7942,9 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 
 	if ( this.live ) {
 		this.emit( 'setup' );
-		this.afterRender();
 	}
+
+	this.afterRender();
 };
 
 /**
@@ -7807,13 +8062,22 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
 };
 
 /**
- * Called when the has failed to generate new content.
+ * Called when the GeneratedContentNode has failed to generate new content.
  *
  * @method
  */
 ve.ce.GeneratedContentNode.prototype.failGenerating = function () {
 	this.$element.removeClass( 've-ce-generatedContentNode-generating' );
 	this.generatingPromise = null;
+};
+
+/**
+ * Check whether this GeneratedContentNode is currently generating new content.
+ *
+ * @return {boolean} Whether we're generating
+ */
+ve.ce.GeneratedContentNode.prototype.isGenerating = function () {
+	return !!this.generatingPromise;
 };
 
 /**
@@ -7834,6 +8098,26 @@ ve.ce.GeneratedContentNode.prototype.getResizableElement = function () {
 	return this.$element;
 };
 
+/**
+ * Check if the rendering is visible
+ *
+ * @return {boolean} The rendering is visible
+ */
+ve.ce.GeneratedContentNode.prototype.isVisible = function () {
+	if ( this.$element.text().trim() !== '' ) {
+		return true;
+	}
+	var visible = false;
+	this.$element.each( function () {
+		var $this = $( this );
+		if ( $this.width() >= 8 && $this.height() >= 8 ) {
+			visible = true;
+			return false;
+		}
+	} );
+	return visible;
+};
+
 /*!
  * VisualEditor ContentEditable AlienNode, AlienBlockNode and AlienInlineNode classes.
  *
@@ -7847,7 +8131,6 @@ ve.ce.GeneratedContentNode.prototype.getResizableElement = function () {
  * @abstract
  * @extends ve.ce.LeafNode
  * @mixins ve.ce.FocusableNode
- * @mixins ve.ce.GeneratedContentNode
  *
  * @constructor
  * @param {ve.dm.AlienNode} model
@@ -7857,12 +8140,13 @@ ve.ce.AlienNode = function VeCeAlienNode() {
 	// Parent constructor
 	ve.ce.AlienNode.super.apply( this, arguments );
 
-	// Mixin constructors
-	ve.ce.FocusableNode.call( this );
-	ve.ce.GeneratedContentNode.call( this );
-
 	// DOM changes
-	this.$highlights.addClass( 've-ce-alienNode-highlights' );
+	this.$element = $( ve.copyDomElements( this.model.getOriginalDomElements(), document ) );
+
+	// Mixin constructors
+	ve.ce.FocusableNode.call( this, this.$element, {
+		classes: [ 've-ce-alienNode-highlights' ]
+	} );
 };
 
 /* Inheritance */
@@ -7870,8 +8154,6 @@ ve.ce.AlienNode = function VeCeAlienNode() {
 OO.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
 
 OO.mixinClass( ve.ce.AlienNode, ve.ce.FocusableNode );
-
-OO.mixinClass( ve.ce.AlienNode, ve.ce.GeneratedContentNode );
 
 /* Static Properties */
 
@@ -7882,20 +8164,8 @@ ve.ce.AlienNode.static.name = 'alien';
 /**
  * @inheritdoc
  */
-ve.ce.AlienNode.prototype.createHighlight = function () {
-	// Mixin method
-	return ve.ce.FocusableNode.prototype.createHighlight.call( this )
-		.addClass( 've-ce-alienNode-highlight' )
-		.prop( 'title', ve.msg( 'visualeditor-aliennode-tooltip' ) );
-};
-
-/**
- * @inheritdoc
- */
-ve.ce.AlienNode.prototype.generateContents = function ( config ) {
-	var deferred = $.Deferred();
-	deferred.resolve( ( config && config.domElements ) || this.model.getAttribute( 'domElements' ) || [] );
-	return deferred.promise();
+ve.ce.AlienNode.static.getDescription = function () {
+	return ve.msg( 'visualeditor-aliennode-tooltip' );
 };
 
 /* Concrete subclasses */
@@ -7948,7 +8218,6 @@ ve.ce.AlienInlineNode.static.name = 'alienInline';
 
 /* Registration */
 
-ve.ce.nodeFactory.register( ve.ce.AlienNode );
 ve.ce.nodeFactory.register( ve.ce.AlienBlockNode );
 ve.ce.nodeFactory.register( ve.ce.AlienInlineNode );
 
@@ -8729,12 +8998,17 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 		// ve-ce-tableCellNode-data
 		// ve-ce-tableCellNode-header
 		.addClass( 've-ce-tableCellNode ve-ce-tableCellNode-' + this.model.getAttribute( 'style' ) );
+
+	// Set attributes (keep in sync with #onSetup)
 	if ( rowspan > 1 ) {
 		this.$element.attr( 'rowspan', rowspan );
 	}
 	if ( colspan > 1 ) {
 		this.$element.attr( 'colspan', colspan );
 	}
+
+	// Add tooltip
+	this.$element.attr( 'title', ve.msg( 'visualeditor-tablecell-tooltip' ) );
 
 	// Events
 	this.model.connect( this, {
@@ -8791,6 +9065,24 @@ ve.ce.TableCellNode.prototype.setEditing = function ( enable ) {
  */
 ve.ce.TableCellNode.prototype.onUpdate = function () {
 	this.updateTagName();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.TableCellNode.prototype.onSetup = function () {
+	// Parent method
+	ve.ce.TableCellNode.super.prototype.onSetup.call( this );
+
+	var rowspan = this.model.getRowspan(),
+		colspan = this.model.getColspan();
+	// Set attributes (duplicated from constructor in case this.$element is replaced)
+	if ( rowspan > 1 ) {
+		this.$element.attr( 'rowspan', rowspan );
+	}
+	if ( colspan > 1 ) {
+		this.$element.attr( 'colspan', colspan );
+	}
 };
 
 /**
@@ -9848,20 +10140,12 @@ ve.ce.LinkAnnotation = function VeCeLinkAnnotation() {
 	// Parent constructor
 	ve.ce.LinkAnnotation.super.apply( this, arguments );
 
-	// DOM changes
+	// Initialization
 	this.$element
 		.addClass( 've-ce-linkAnnotation' )
 		.prop( {
 			href: ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ),
 			title: this.constructor.static.getDescription( this.model )
-		} )
-		// Some browsers will try to let links do their thing
-		// (e.g. iOS Safari when the keyboard is closed)
-		.on( 'click', function ( e ) {
-			// Don't prevent a modified click which in some browsers deliberately opens the link
-			if ( !e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey ) {
-				e.preventDefault();
-			}
 		} );
 };
 
@@ -10198,6 +10482,44 @@ ve.ce.DefinitionAnnotation.static.tagName = 'dfn';
 /* Registration */
 
 ve.ce.annotationFactory.register( ve.ce.DefinitionAnnotation );
+
+/*!
+ * VisualEditor ContentEditable FontAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * ContentEditable font annotation.
+ *
+ * @class
+ * @extends ve.ce.TextStyleAnnotation
+ * @constructor
+ * @param {ve.dm.FontAnnotation} model Model to observe
+ * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
+ * @param {Object} [config] Configuration options
+ */
+ve.ce.FontAnnotation = function VeCeFontAnnotation() {
+	// Parent constructor
+	ve.ce.FontAnnotation.super.apply( this, arguments );
+
+	// DOM changes
+	this.$element.addClass( 've-ce-fontAnnotation' );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.ce.FontAnnotation, ve.ce.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.ce.FontAnnotation.static.name = 'textStyle/font';
+
+ve.ce.FontAnnotation.static.tagName = 'font';
+
+/* Registration */
+
+ve.ce.annotationFactory.register( ve.ce.FontAnnotation );
 
 /*!
  * VisualEditor ContentEditable HighlightAnnotation class.
@@ -10716,7 +11038,7 @@ ve.ui.Surface = function VeUiSurface( surfaceModel, config ) {
 
 	this.view = new ve.ce.Surface( this.model, this, { $: this.$ } );
 	this.dialogs = this.createDialogWindowManager();
-	this.importRules = config.importRules || {};
+	this.importRules = config.importRules || { external: { blacklist: [] }, all: null };
 	this.enabled = true;
 	this.context = this.createContext();
 	this.progresses = [];
@@ -10725,7 +11047,7 @@ ve.ui.Surface = function VeUiSurface( surfaceModel, config ) {
 	this.debugBar = null;
 
 	this.toolbarHeight = 0;
-	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( {
+	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( this, {
 		$: this.$,
 		factory: ve.ui.windowFactory,
 		modal: false
@@ -11143,7 +11465,10 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.updateDimensionsDebounced = ve.debounce( this.updateDimensions.bind( this ) );
 
 	// Events
-	this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
+	this.surface.getModel().connect( this, {
+		contextChange: 'onContextChange',
+		documentUpdate: 'onDocumentUpdate'
+	} );
 	this.inspectors.connect( this, { opening: 'onInspectorOpening' } );
 
 	// Initialization
@@ -11205,6 +11530,17 @@ ve.ui.Context.prototype.onContextChange = function () {
 	}
 	// Purge related items cache
 	this.relatedSources = null;
+};
+
+/**
+ * Handle document update event.
+ */
+ve.ui.Context.prototype.onDocumentUpdate = function () {
+	// Only mind this event if the menu is visible
+	if ( this.isVisible() && !this.isEmpty() ) {
+		// Reuse the debounced context change hanlder
+		this.onContextChange();
+	}
 };
 
 /**
@@ -11327,16 +11663,16 @@ ve.ui.Context.prototype.isInspectable = function () {
 };
 
 /**
- * Check if current content is inspectable.
+ * Check if the context menu for current content is embeddable.
  *
- * @return {boolean} Content is inspectable
+ * @return {boolean} Context menu is embeddable
  */
 ve.ui.Context.prototype.isEmbeddable = function () {
 	var i, len,
 		sources = this.getRelatedSources();
 
 	for ( i = 0, len = sources.length; i < len; i++ ) {
-		if ( !sources[i].embedable ) {
+		if ( !sources[i].embeddable ) {
 			return false;
 		}
 	}
@@ -11354,19 +11690,21 @@ ve.ui.Context.prototype.isEmbeddable = function () {
  *   and the model the item or tool is compatible with
  */
 ve.ui.Context.prototype.getRelatedSources = function () {
-	var i, len, toolClass, items, tools, models,
-		selectedModels = this.surface.getModel().getFragment().getSelectedModels();
+	var i, len, toolClass, items, tools, models, selectedModels;
 
 	if ( !this.relatedSources ) {
 		this.relatedSources = [];
 		if ( this.surface.getModel().getSelection() instanceof ve.dm.LinearSelection ) {
+			selectedModels = this.surface.getModel().getFragment().getSelectedModels();
 			models = [];
 			items = ve.ui.contextItemFactory.getRelatedItems( selectedModels );
 			for ( i = 0, len = items.length; i < len; i++ ) {
-				models.push( items[i].model );
+				if ( ve.ui.contextItemFactory.isExclusive( items[i].name ) ) {
+					models.push( items[i].model );
+				}
 				this.relatedSources.push( {
 					type: 'item',
-					embedable: ve.ui.contextItemFactory.isEmbeddable( items[i].name ),
+					embeddable: ve.ui.contextItemFactory.isEmbeddable( items[i].name ),
 					name: items[i].name,
 					model: items[i].model
 				} );
@@ -11377,7 +11715,7 @@ ve.ui.Context.prototype.getRelatedSources = function () {
 					toolClass = ve.ui.toolFactory.lookup( tools[i].name );
 					this.relatedSources.push( {
 						type: 'tool',
-						embedable: !toolClass ||
+						embeddable: !toolClass ||
 							!( toolClass.prototype instanceof ve.ui.InspectorTool ),
 						name: tools[i].name,
 						model: tools[i].model
@@ -11668,6 +12006,7 @@ ve.ui.ContextItem = function ( context, model, config ) {
 		flags: [ 'progressive' ],
 		classes: [ 've-ui-contextItem-editButton' ]
 	} );
+	this.fragment = null;
 
 	// Events
 	this.editButton.connect( this, { click: 'onEditButtonClick' } );
@@ -11708,6 +12047,15 @@ OO.mixinClass( ve.ui.ContextItem, OO.ui.PendingElement );
 ve.ui.ContextItem.static.editable = true;
 
 ve.ui.ContextItem.static.embeddable = true;
+
+/**
+ * Whether this item exclusively handles any model class
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.ui.ContextItem.static.exclusive = true;
 
 ve.ui.ContextItem.static.commandName = null;
 
@@ -11767,6 +12115,18 @@ ve.ui.ContextItem.prototype.isEditable = function () {
  */
 ve.ui.ContextItem.prototype.getCommand = function () {
 	return ve.ui.commandRegistry.lookup( this.constructor.static.commandName );
+};
+
+/**
+ * Get a surface fragment covering the related model item
+ *
+ * @return {ve.dm.SurfaceFragment} Surface fragment
+ */
+ve.ui.ContextItem.prototype.getFragment = function () {
+	if ( !this.fragment ) {
+		this.fragment = this.context.getSurface().getModel().getLinearFragment( this.model.getOuterRange() );
+	}
+	return this.fragment;
 };
 
 /**
@@ -11871,9 +12231,99 @@ ve.ui.ContextItemFactory.prototype.isEmbeddable = function ( name ) {
 	throw new Error( 'Unrecognized symbolic name: ' + name );
 };
 
+/**
+ * Check if an item is exclusive.
+ *
+ * @param {string} name Symbolic item name
+ * @return {boolean} Item is exclusive
+ */
+ve.ui.ContextItemFactory.prototype.isExclusive = function ( name ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, name ) ) {
+		return !!this.registry[name].static.exclusive;
+	}
+	throw new Error( 'Unrecognized symbolic name: ' + name );
+};
+
 /* Initialization */
 
 ve.ui.contextItemFactory = new ve.ui.ContextItemFactory();
+
+/*!
+ * VisualEditor Alignable class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Context item for an alignable node.
+ *
+ * @extends ve.ui.ContextItem
+ *
+ * @param {ve.ui.Context} context Context item is in
+ * @param {ve.dm.Model} model Model item is related to
+ * @param {Object} config Configuration options
+ */
+ve.ui.AlignableContextItem = function VeAlignable( context, model, config ) {
+	// Parent constructor
+	ve.ui.AlignableContextItem.super.call( this, context, model, config );
+
+	var align = model.getAttribute( 'align' );
+
+	this.align = new ve.ui.AlignWidget( {
+		dir: this.context.getSurface().getDir()
+	} );
+	if ( align ) {
+		this.align.selectItem( this.align.getItemFromData( align ) );
+	}
+	this.align.connect( this, { choose: 'onAlignChoose' } );
+
+	// Initialization
+	this.$element.addClass( 've-ui-alignableContextItem' );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.ui.AlignableContextItem, ve.ui.ContextItem );
+
+/* Static Properties */
+
+ve.ui.AlignableContextItem.static.name = 'alignable';
+
+ve.ui.AlignableContextItem.static.icon = 'align-float-left';
+
+ve.ui.AlignableContextItem.static.label = OO.ui.deferMsg( 'visualeditor-alignablecontextitem-title' );
+
+ve.ui.AlignableContextItem.static.editable = false;
+
+ve.ui.AlignableContextItem.static.exclusive = false;
+
+ve.ui.AlignableContextItem.static.isCompatibleWith = function ( model ) {
+	return model instanceof ve.dm.Node && model.isAlignable();
+};
+
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.ui.AlignableContextItem.prototype.renderBody = function () {
+	this.$body.empty().append( this.align.$element );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.AlignableContextItem.prototype.renderDescription = function () {
+	this.$description.empty().append( this.align.$element );
+};
+
+ve.ui.AlignableContextItem.prototype.onAlignChoose = function ( item ) {
+	this.getFragment().changeAttributes( { align: item.getData() } );
+};
+
+/* Registration */
+
+ve.ui.contextItemFactory.register( ve.ui.AlignableContextItem );
 
 /*!
  * VisualEditor CommentContextItem class.
@@ -12196,10 +12646,8 @@ ve.ui.TableContext.prototype.populateMenu = function () {
  * @param {ve.ui.ContextOptionWidget} item Chosen item
  */
 ve.ui.TableContext.prototype.onContextItemChoose = function ( item ) {
-	if ( item ) {
-		item.getCommand().execute( this.surface );
-		this.toggle( false );
-	}
+	item.getCommand().execute( this.surface );
+	this.toggle( false );
 };
 
 /**
@@ -12359,7 +12807,7 @@ ve.ui.Tool.prototype.getCommand = function () {
  * @extends OO.ui.Toolbar
  *
  * @constructor
- * @param {Object} [options] Configuration options
+ * @param {Object} [config] Configuration options
  * @cfg {boolean} [floatable] Toolbar floats when scrolled off the page
  */
 ve.ui.Toolbar = function VeUiToolbar( config ) {
@@ -12371,13 +12819,12 @@ ve.ui.Toolbar = function VeUiToolbar( config ) {
 	// Properties
 	this.floating = false;
 	this.floatable = !!config.floatable;
-	this.$window = null;
+	this.$window = this.$( this.getElementWindow() );
 	this.elementOffset = null;
 	this.windowEvents = {
 		// Must use Function#bind (or a closure) instead of direct reference
 		// because we need a unique function references for each Toolbar instance
 		// to avoid $window.off() from unbinding other toolbars' event handlers.
-		resize: this.onWindowResize.bind( this ),
 		scroll: this.onWindowScroll.bind( this )
 	};
 	// Default directions
@@ -12444,13 +12891,13 @@ ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
 	}
 	// FIXME should use .static.getCommandName(), but we have tools that aren't ve.ui.Tool subclasses :(
 	commandName = tool.static.commandName;
-	return !commandName || ve.indexOf( commandName, this.getCommands() ) !== -1;
+	return !commandName || this.getCommands().indexOf( commandName ) !== -1;
 };
 
 /**
- * Handle window resize events while toolbar floating is enabled.
+ * Handle window scroll events.
  *
- * @param {jQuery.Event} e Window resize event
+ * @param {jQuery.Event} e Window scroll event
  */
 ve.ui.Toolbar.prototype.onWindowScroll = function () {
 	var scrollTop = this.$window.scrollTop();
@@ -12463,14 +12910,15 @@ ve.ui.Toolbar.prototype.onWindowScroll = function () {
 };
 
 /**
- * Handle window resize events while toolbar floating is enabled.
+ * @inheritdoc
  *
- * Toolbar will stick to the top of the screen unless it would be over or under the last visible
+ * While toolbar floating is enabled,
+ * the toolbar will stick to the top of the screen unless it would be over or under the last visible
  * branch node in the root of the document being edited, at which point it will stop just above it.
- *
- * @param {jQuery.Event} e Window scroll event
  */
 ve.ui.Toolbar.prototype.onWindowResize = function () {
+	ve.ui.Toolbar.super.prototype.onWindowResize.call( this );
+
 	// Update offsets after resize (see #float)
 	this.calculateOffset();
 
@@ -12595,16 +13043,13 @@ ve.ui.Toolbar.prototype.getSurface = function () {
 };
 
 /**
- * Sets up handles and preloads required information for the toolbar to work.
- * This must be called immediately after it is attached to a visible document.
+ * @inheritdoc
  */
 ve.ui.Toolbar.prototype.initialize = function () {
 	// Parent method
 	OO.ui.Toolbar.prototype.initialize.call( this );
 
-	// Properties
-	this.$window = this.$( this.getElementWindow() );
-	this.calculateOffset();
+	// #calculateOffset was called by parent method via #onWindowResize
 
 	if ( this.floatable ) {
 		this.$window.on( this.windowEvents );
@@ -12628,9 +13073,6 @@ ve.ui.Toolbar.prototype.detach = function () {
 	this.unfloat();
 
 	// Events
-	if ( this.$window ) {
-		this.$window.off( this.windowEvents );
-	}
 	if ( this.getSurface() ) {
 		this.getSurface().getModel().disconnect( this );
 		this.getSurface().getToolbarDialogs().disconnect( this );
@@ -12647,6 +13089,11 @@ ve.ui.Toolbar.prototype.detach = function () {
 ve.ui.Toolbar.prototype.destroy = function () {
 	// Parent method
 	OO.ui.Toolbar.prototype.destroy.call( this );
+
+	// Events
+	if ( this.$window ) {
+		this.$window.off( this.windowEvents );
+	}
 
 	// Detach surface last, because tool destructors need getSurface()
 	this.detach();
@@ -12831,7 +13278,7 @@ ve.ui.Command.prototype.execute = function ( surface ) {
  */
 ve.ui.Command.prototype.isExecutable = function ( fragment ) {
 	return !this.supportedSelections ||
-		ve.indexOf( fragment.getSelection().constructor.static.name, this.supportedSelections ) !== -1;
+		this.supportedSelections.indexOf( fragment.getSelection().constructor.static.name ) !== -1;
 };
 
 /**
@@ -14477,6 +14924,9 @@ ve.ui.WindowManager = function VeUiWindowManager( config ) {
 
 	// Properties
 	this.overlay = config.overlay || null;
+
+	this.$element
+		.addClass( 've-ui-dir-block-' + this.getDir() );
 };
 
 /* Inheritance */
@@ -14484,6 +14934,14 @@ ve.ui.WindowManager = function VeUiWindowManager( config ) {
 OO.inheritClass( ve.ui.WindowManager, OO.ui.WindowManager );
 
 /* Methods */
+
+/**
+ * Get directionality
+ * @return {string} UI directionality
+ */
+ve.ui.WindowManager.prototype.getDir = function () {
+	return $( 'body' ).css( 'direction' );
+};
 
 /**
  * Get overlay for menus.
@@ -14494,12 +14952,58 @@ ve.ui.WindowManager.prototype.getOverlay = function () {
 	return this.overlay;
 };
 
-/**
- * @inheritdoc
+/*!
+ * VisualEditor UserInterface SurfaceWindowManager class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
-ve.ui.WindowManager.prototype.getReadyDelay = function () {
-	// HACK: Really this should be measured by OOjs UI so it can vary by theme
-	return 250;
+
+/**
+ * Window manager for desktop inspectors.
+ *
+ * @class
+ * @extends ve.ui.WindowManager
+ *
+ * @constructor
+ * @param {ve.ui.Surface} Surface this belongs to
+ * @param {Object} [config] Configuration options
+ * @cfg {ve.ui.Overlay} [overlay] Overlay to use for menus
+ */
+ve.ui.SurfaceWindowManager = function VeUiSurfaceWindowManager( surface, config ) {
+	// Properties
+	// Set up surface before calling the parent so we can request
+	// specific surface-related details from within the constructor.
+	this.surface = surface;
+
+	// Parent constructor
+	ve.ui.SurfaceWindowManager.super.call( this, config );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.ui.SurfaceWindowManager, ve.ui.WindowManager );
+
+/* Methods */
+
+/**
+ * Override the window manager's directionality method to get the
+ * directionality from the surface. The surface sometimes does not
+ * have a directionality set; fallback to direction from the document.
+ * @return {string} UI directionality
+ */
+ve.ui.SurfaceWindowManager.prototype.getDir = function () {
+	return this.surface.getDir() ||
+		// Fallback to parent method
+		ve.ui.SurfaceWindowManager.super.prototype.getDir.call( this );
+};
+
+/**
+ * Get surface.
+ *
+ * @return {ve.ui.Surface} Surface this belongs to
+ */
+ve.ui.SurfaceWindowManager.prototype.getSurface = function () {
+	return this.surface;
 };
 
 /*!
@@ -14610,7 +15114,7 @@ ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 		existingAnnotations = insertionAnnotations.getAnnotationsByName( annotation.name );
 		if ( existingAnnotations.isEmpty() ) {
 			removesAnnotations = insertionAnnotations.filter( function ( annotation ) {
-				return ve.indexOf( annotation.name, removes ) !== -1;
+				return removes.indexOf( annotation.name ) !== -1;
 			} );
 			surfaceModel.removeInsertionAnnotations( removesAnnotations );
 			surfaceModel.addInsertionAnnotations( annotation );
@@ -16183,7 +16687,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	}
 
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
-	if ( windowType === 'toolbar' ) {
+	if ( windowType === 'toolbar' || windowType === 'inspector' ) {
 		data = ve.extendObject( data, { surface: surface } );
 		// TODO: Make auto-close a window manager setting
 		autoClosePromise = windowManager.closeWindow( windowManager.getCurrentWindow() );
@@ -17691,8 +18195,9 @@ ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 			var inspector = this;
 			if ( !this.characters ) {
 				this.$spinner.show();
-				this.fetchCharList()
-					.done( function () {
+				ve.init.platform.fetchSpecialCharList()
+					.done( function ( specialChars ) {
+						inspector.characters = specialChars;
 						inspector.buildButtonList();
 					} )
 					// TODO: show error message on fetchCharList().fail
@@ -17744,40 +18249,19 @@ ve.ui.SpecialCharacterDialog.prototype.onContextChange = function () {
 };
 
 /**
- * Fetch the special character list object
- *
- * Returns a promise which resolves when this.characters has been populated
- *
- * @returns {jQuery.Promise}
- */
-ve.ui.SpecialCharacterDialog.prototype.fetchCharList = function () {
-	var charsList,
-		charsObj = {};
-
-	// Get the character list
-	charsList = ve.msg( 'visualeditor-specialcharinspector-characterlist-insert' );
-	try {
-		charsObj = JSON.parse( charsList );
-	} catch ( err ) {
-		// There was no character list found, or the character list message is
-		// invalid json string. Force a fallback to the minimal character list
-		ve.log( 've.ui.SpecialCharacterDialog: Could not parse the Special Character list.');
-		ve.log( err.message );
-	} finally {
-		this.characters = charsObj;
-	}
-
-	// This implementation always resolves instantly
-	return $.Deferred().resolve().promise();
-};
-
-/**
  * Builds the button DOM list based on the character list
  */
 ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
-	var category;
+	var category,
+		// HACK: When displaying this inside a dialog, menu would tend to be wider than content
+		isInsideDialog = !!this.manager.$element.closest( '.oo-ui-dialog' ).length;
 
-	this.bookletLayout = new OO.ui.BookletLayout( { $: this.$, outlined: true, continuous: true } );
+	this.bookletLayout = new OO.ui.BookletLayout( {
+		$: this.$,
+		outlined: true,
+		menuSize: isInsideDialog ? '10em' : '18em',
+		continuous: true
+	} );
 	this.pages = [];
 	for ( category in this.characters ) {
 		this.pages.push(
@@ -18195,20 +18679,21 @@ ve.ui.dataTransferHandlerFactory.register( ve.ui.HTMLFileTransferHandler );
  * Window manager for toolbar dialogs.
  *
  * @class
- * @extends ve.ui.WindowManager
+ * @extends ve.ui.SurfaceWindowManager
  *
  * @constructor
+ * @param {ve.ui.Surface} Surface this belongs to
  * @param {Object} [config] Configuration options
  * @cfg {ve.ui.Overlay} [overlay] Overlay to use for menus
  */
-ve.ui.ToolbarDialogWindowManager = function VeUiToolbarDialogWindowManager( config ) {
+ve.ui.ToolbarDialogWindowManager = function VeUiToolbarDialogWindowManager( surface, config ) {
 	// Parent constructor
-	ve.ui.ToolbarDialogWindowManager.super.call( this, config );
+	ve.ui.ToolbarDialogWindowManager.super.call( this, surface, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.ToolbarDialogWindowManager, ve.ui.WindowManager );
+OO.inheritClass( ve.ui.ToolbarDialogWindowManager, ve.ui.SurfaceWindowManager );
 
 /* Static Properties */
 
@@ -18368,7 +18853,7 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
 	for ( i = 0, iLen = this.languageResultWidgets.length; i < iLen; i++ ) {
 		languageResult = this.languageResultWidgets[i];
 		data = languageResult.getData();
-		if ( ve.indexOf( data.code, availableLanguages ) !== -1 ) {
+		if ( availableLanguages.indexOf( data.code ) !== -1 ) {
 			this.filteredLanguageResultWidgets.push( languageResult );
 		}
 	}
@@ -18568,16 +19053,18 @@ ve.ui.LanguageSearchDialog.prototype.initialize = function () {
 
 	this.searchWidget = new this.constructor.static.languageSearchWidget( {
 		$: this.$
-	} ).on( 'select', this.onSearchWidgetSelect.bind( this ) );
+	} );
+	this.searchWidget.getResults().connect( this, { choose: 'onSearchResultsChoose' } );
 	this.$body.append( this.searchWidget.$element );
 };
 
 /**
  * Handle the search widget being selected
  *
- * @param {Object} data Data from the selected option widget
+ * @param {ve.ui.LanguageResultWidget} item Chosen item
  */
-ve.ui.LanguageSearchDialog.prototype.onSearchWidgetSelect = function ( data ) {
+ve.ui.LanguageSearchDialog.prototype.onSearchResultsChoose = function ( item ) {
+	var data = item.getData();
 	this.close( {
 		action: 'apply',
 		lang: data.code,
@@ -18872,6 +19359,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	// Initialization
 	this.surface.$element.addClass( 've-ui-surfaceWidget-surface' );
 	this.toolbar.$element.addClass( 've-ui-surfaceWidget-toolbar' );
+	this.toolbar.$bar.append( this.surface.getToolbarDialogs().$element );
 	this.$element
 		.addClass( 've-ui-surfaceWidget' )
 		.append( this.toolbar.$element, this.surface.$element );
@@ -19013,7 +19501,7 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
 				// If URL is external, flip to LTR. Otherwise, set back to RTL
 				widget.setRTL( !isExt );
 			}
-			widget.setValue( widget.$input.val() );
+			widget.setValue( widget.$input.val(), true );
 		} );
 	}
 };
@@ -19025,8 +19513,9 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
  *
  * @method
  * @param {string} value New value
+ * @param {boolean} [fromInput] Value was generated from input element
  */
-ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
+ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value, fromInput ) {
 	// Keep annotation in sync with value
 	value = this.cleanUpValue( value );
 	if ( value === '' ) {
@@ -19035,9 +19524,9 @@ ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
 		this.setAnnotation( new ve.dm.LinkAnnotation( {
 			type: 'link',
 			attributes: {
-				href: value
+				href: value.trim()
 			}
-		} ) );
+		} ), fromInput );
 	}
 
 	// Parent method
@@ -19051,15 +19540,20 @@ ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
  *
  * @method
  * @param {ve.dm.LinkAnnotation} annotation Link annotation
+ * @param {boolean} [fromInput] Annotation was generated from input element value
  * @chainable
  */
-ve.ui.LinkTargetInputWidget.prototype.setAnnotation = function ( annotation ) {
+ve.ui.LinkTargetInputWidget.prototype.setAnnotation = function ( annotation, fromInput ) {
 	this.annotation = annotation;
 
-	// Parent method
-	OO.ui.TextInputWidget.prototype.setValue.call(
-		this, this.getTargetFromAnnotation( annotation )
-	);
+	// If this method was triggered by the user typing into the input, don't update
+	// the input element to avoid the cursor jumping as the user types
+	if ( !fromInput ) {
+		// Parent method
+		OO.ui.TextInputWidget.prototype.setValue.call(
+			this, this.getTargetFromAnnotation( annotation )
+		);
+	}
 
 	return this;
 };
@@ -19702,7 +20196,7 @@ ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
  * @fires changeSizeType
  */
 ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
-	var selectedType = item && item.getData(),
+	var selectedType = item.getData(),
 		wasDefault = this.scalable.isDefault();
 
 	this.scalable.toggleDefault( selectedType === 'default' );
@@ -20432,6 +20926,7 @@ ve.ui.MoreTextStyleTool = function VeUiMoreTextStyleTool( toolGroup, config ) {
 	OO.ui.ToolGroupTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.MoreTextStyleTool, OO.ui.ToolGroupTool );
+ve.ui.MoreTextStyleTool.static.autoAddToCatchall = false;
 ve.ui.MoreTextStyleTool.static.name = 'moreTextStyle';
 ve.ui.MoreTextStyleTool.static.group = 'textStyleExpansion';
 ve.ui.MoreTextStyleTool.static.title =
@@ -20599,6 +21094,15 @@ OO.inheritClass( ve.ui.ToolbarDialogTool, ve.ui.DialogTool );
 
 ve.ui.ToolbarDialogTool.static.deactivateOnSelect = false;
 
+/**
+ * Name of the associated window
+ *
+ * The tool will display as active only if this window is open
+ *
+ * @static
+ * @property {string}
+ * @inheritable
+ */
 ve.ui.ToolbarDialogTool.static.activeWindow = null;
 
 /* Methods */
@@ -20609,7 +21113,8 @@ ve.ui.ToolbarDialogTool.static.activeWindow = null;
 ve.ui.ToolbarDialogTool.prototype.onUpdateState = function () {
 	// Parent method
 	ve.ui.ToolbarDialogTool.super.prototype.onUpdateState.apply( this, arguments );
-	// Never show the tool as active
+
+	// Show the tool as active if its associated window is open
 	var currentWindow = this.toolbar.getSurface().getToolbarDialogs().currentWindow;
 	this.setActive( currentWindow && currentWindow.constructor.static.name === this.constructor.static.activeWindow );
 };
@@ -20691,6 +21196,8 @@ ve.ui.FormatTool = function VeUiFormatTool( toolGroup, config ) {
 OO.inheritClass( ve.ui.FormatTool, ve.ui.Tool );
 
 /* Static Properties */
+
+ve.ui.FormatTool.static.deactivateOnSelect = false;
 
 /**
  * Format the tool applies.
@@ -21611,11 +22118,12 @@ ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.ac
 /**
  * Handle form submit events.
  *
- * @param {jQuery.Event} e Submit event
+ * Executes the 'done' action when the user presses enter in the form.
+ *
+ * @method
  */
-ve.ui.FragmentInspector.prototype.onFormSubmit = function ( e ) {
-	this.close( { action: 'done' } );
-	e.preventDefault();
+ve.ui.FragmentInspector.prototype.onFormSubmit = function () {
+	this.executeAction( 'done' );
 };
 
 /**
@@ -21897,6 +22405,8 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
 			var expandedFragment, trimmedFragment, initialCoveringAnnotation,
+				inspector = this,
+				annotationSet, annotations,
 				fragment = this.getFragment(),
 				surfaceModel = fragment.getSurface(),
 				annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
@@ -21912,19 +22422,36 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 					// Expand to nearest word
 					expandedFragment = fragment.expandLinearSelection( 'word' );
 					fragment = expandedFragment;
+
+					// TODO: We should review how getMatchingAnnotation works in light of the fact
+					// that in the case of a collapsed range, the method falls back to retrieving
+					// insertion annotations.
+
+					// Check if we're inside a relevant annotation and if so, define it
+					annotationSet = fragment.document.data.getAnnotationsFromRange( fragment.selection.range );
+					annotations = annotationSet.filter( function ( existingAnnotation ) {
+						return ve.isInstanceOfAny( existingAnnotation, inspector.constructor.static.modelClasses );
+					} );
+					if ( annotations.getLength() > 0 ) {
+						// We're in the middle of an annotation, let's make sure we expand
+						// our selection to include the entire existing annotation
+						annotation = annotations.get( 0 );
+					}
 				} else {
 					// Trim whitespace
 					trimmedFragment = fragment.trimLinearSelection();
 					fragment = trimmedFragment;
 				}
-				if ( !fragment.getSelection().isCollapsed() ) {
+
+				if ( !fragment.getSelection().isCollapsed() && !annotation ) {
 					// Create annotation from selection
 					annotation = this.getAnnotationFromFragment( fragment );
 					if ( annotation ) {
 						fragment.annotateContent( 'set', annotation );
 					}
 				}
-			} else {
+			}
+			if ( annotation ) {
 				// Expand range to cover annotation
 				expandedFragment = fragment.expandLinearSelection( 'annotation', annotation );
 				fragment = expandedFragment;
@@ -21949,6 +22476,8 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 				this.initialAnnotationIsCovering = true;
 			}
 
+			this.fragment = fragment;
+
 			// Set the mode - this was done already in FragmentInspector but now that we may have
 			// changed what the fragment is covering we need to run it again
 			this.actions.setMode( this.getMode() );
@@ -21968,17 +22497,24 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				replace = false,
 				annotation = this.getAnnotation(),
 				remove = this.shouldRemoveAnnotation() || data.action === 'remove',
-				surfaceModel = this.getFragment().getSurface(),
+				surfaceModel = this.fragment.getSurface(),
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
-				selection = this.getFragment().getSelection();
+				selection = this.fragment.getSelection();
 
-			if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+			if (
+				!( selection instanceof ve.dm.LinearSelection ) ||
+				( remove && selection.getRange().isCollapsed() )
+			) {
+				// Since we pushStaging on SetupProcess we need to make sure
+				// all terminations pop
+				surfaceModel.popStaging();
 				return;
 			}
 
 			if ( !remove ) {
 				if ( this.initialSelection.isCollapsed() ) {
 					if ( data.action !== 'done' ) {
+						surfaceModel.popStaging();
 						return;
 					}
 					insertText = true;
@@ -22544,7 +23080,10 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 	ve.ui.LanguageInspector.super.prototype.initialize.call( this );
 
 	// Properties
-	this.languageInput = new ve.ui.LanguageInputWidget( { $: this.$ } );
+	this.languageInput = new ve.ui.LanguageInputWidget( {
+		$: this.$,
+		dialogManager: this.manager.getSurface().getDialogs()
+	} );
 
 	// Initialization
 	this.form.$element.append( this.languageInput.$element );
@@ -22659,7 +23198,7 @@ ve.ui.DesktopSurface.prototype.createContext = function () {
  * @inheritdoc
  */
 ve.ui.DesktopSurface.prototype.createDialogWindowManager = function () {
-	return new ve.ui.WindowManager( { factory: ve.ui.windowFactory } );
+	return new ve.ui.SurfaceWindowManager( this, { factory: ve.ui.windowFactory } );
 };
 
 /*!
@@ -22788,7 +23327,7 @@ ve.ui.DesktopContext.prototype.onPosition = function () {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.createInspectorWindowManager = function () {
-	return new ve.ui.DesktopInspectorWindowManager( {
+	return new ve.ui.DesktopInspectorWindowManager( this.surface, {
 		$: this.$,
 		factory: ve.ui.windowFactory,
 		overlay: this.surface.getLocalOverlay(),
@@ -22968,20 +23507,21 @@ ve.ui.DesktopContext.prototype.destroy = function () {
  * Window manager for desktop inspectors.
  *
  * @class
- * @extends ve.ui.WindowManager
+ * @extends ve.ui.SurfaceWindowManager
  *
  * @constructor
+ * @param {ve.ui.Surface} Surface this belongs to
  * @param {Object} [config] Configuration options
  * @cfg {ve.ui.Overlay} [overlay] Overlay to use for menus
  */
-ve.ui.DesktopInspectorWindowManager = function VeUiDesktopInspectorWindowManager( config ) {
+ve.ui.DesktopInspectorWindowManager = function VeUiDesktopInspectorWindowManager( surface, config ) {
 	// Parent constructor
-	ve.ui.DesktopInspectorWindowManager.super.call( this, config );
+	ve.ui.DesktopInspectorWindowManager.super.call( this, surface, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.DesktopInspectorWindowManager, ve.ui.WindowManager );
+OO.inheritClass( ve.ui.DesktopInspectorWindowManager, ve.ui.SurfaceWindowManager );
 
 /* Static Properties */
 
@@ -23003,34 +23543,4 @@ ve.ui.DesktopInspectorWindowManager.static.sizes = {
 		width: '100%',
 		height: '100%'
 	}
-};
-
-/* Methods */
-
-/**
- * @inheritdoc
- */
-ve.ui.DesktopInspectorWindowManager.prototype.getSetupDelay = function () {
-	return 0;
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.DesktopInspectorWindowManager.prototype.getReadyDelay = function () {
-	return 0;
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.DesktopInspectorWindowManager.prototype.getHoldDelay = function () {
-	return 0;
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.DesktopInspectorWindowManager.prototype.getTeardownDelay = function () {
-	return 0;
 };

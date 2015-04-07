@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-    <g id="check">
-        <path d="M7.105 13.473l1.422-1.423 1.901 1.902 4.81-6.952 1.657 1.148-6.26 8.852z"/>
-    </g>
+    <path d="M16.5 13.1l-8.9 8.9c-.8-.8-.8-2 0-2.8l6.1-6.1-6-6.1c-.8-.8-.8-2 0-2.8l8.8 8.9z" id="path108"/>
 </svg>

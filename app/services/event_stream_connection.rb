@@ -1,45 +1,44 @@
 class EventStreamConnection
-  SYSTEM_CHANNEL_NAME = "system"
+  attr_reader :user
 
-  def self.connection_info(user)
+  def initialize(user)
+    @user = user
+  end
+
+  def as_json(options={})
     {
-      enabled: ENV["EVENT_STREAM_ENABLED"],
-      url: channel_url,
-      channels: [channel_name(user.class, user.id), SYSTEM_CHANNEL_NAME]
+      enabled: self.class.enabled?,
+      host: ENV["EVENT_STREAM_HOST"],
+      port: ENV["EVENT_STREAM_PORT"],
+      key: Pusher.key,
+      channels: default_channels
     }
   end
 
-  def self.channel_name(klass, id)
-    "#{klass.name.underscore.downcase}_#{id}"
+  def authorized?(user:, channel_name:)
+    channel = ChannelNameParser.new(channel_name: channel_name)
+    return true if channel.public?
+    return false unless Paper.exists?(channel.get(:paper))
+    return false unless user.id.to_s == channel.get(:user)
+    Accessibility.new(Paper.find(channel.get(:paper))).users.include?(user)
   end
 
-  def self.token
-    ENV["ES_TOKEN"] || 'token123'
+  def authenticate(channel_name:, socket_id:)
+    Pusher[channel_name].authenticate(socket_id)
   end
 
-  def self.url
-    ENV["ES_URL"] || "http://localhost:8080"
-  end
-
-  def self.channel_url
-    url + "/stream?token=#{token}"
-  end
-
-  def self.update_url
-    url + "/update_stream"
+  def default_channels
+    ["system", "private-user-#{user.id}"]
   end
 
   def self.enabled?
     ENV["EVENT_STREAM_ENABLED"] != "false"
   end
 
-  def self.post_event(channel, json)
-    return unless enabled?
-    Thread.new do
-      Net::HTTP.post_form(
-        URI.parse(update_url),
-        stream: channel, card: json, token: token
-      )
-    end
+  # TODO: only send to users that have "presence"
+  # TODO: exclude specific sockets
+  def self.post_event(channel_name:, action:, payload:)
+    Pusher.trigger(channel_name, action, payload)
   end
+
 end

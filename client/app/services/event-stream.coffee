@@ -58,10 +58,25 @@ EventStream = Ember.Object.extend
     Ember.$.ajax(params)
 
   msgResponse: (esData) ->
-    action = esData.action
-    delete esData.action
-    delete esData.subscription_name
-    (@eventStreamActions[action] || -> null).call(this, esData)
+    if esData.event # minimal code to work
+      @store.pushPayload('event', esData)
+      Ember.run =>
+        event = @store.getById("event", esData.event.id)
+        @emitEvent(event)
+    else # legacy event sever
+      action = esData.action
+      delete esData.action
+      delete esData.subscription_name
+      (@eventStreamActions[action] || -> null).call(this, esData)
+
+  emitEvent: (event, queueName="actions") ->
+    Ember.run.schedule queueName, @, =>
+      try
+        action = event.get('name')
+        @router.send(action, event)
+      catch e
+        unhandled = e.message.match(/Nothing handled the action/)
+        throw e unless unhandled
 
   applicationSerializer: (->
     @store.container.lookup("serializer:application")

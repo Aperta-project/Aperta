@@ -101,7 +101,7 @@ Tahi::Application.routes.draw do
       get "/status/:id", to: 'paper_conversions#status'
       put :toggle_editable
       put :submit
-      get 'activity_feed/:name', to: 'papers#activity_feed'
+      get 'activity/:name', to: 'papers#activity'
     end
   end
 
@@ -137,7 +137,9 @@ Tahi::Application.routes.draw do
 
   resource :dashboards, only: :show
 
-  resource :event_stream, only: :show
+  resource :event_stream, only: [:new, :show] do
+    post :auth
+  end
 
   resources :errors, only: :create
   resources :feedback, only: :create
@@ -146,6 +148,8 @@ Tahi::Application.routes.draw do
       put :accept, :reject
     end
   end
+
+  resources :user_inboxes, only: [:index, :destroy]
 
   get "/formats", to: "formats#index"
 

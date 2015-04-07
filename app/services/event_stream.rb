@@ -10,9 +10,11 @@ class EventStream
 
   def post
     Accessibility.new(record).users.each do |user|
-      channel = EventStreamConnection.channel_name(User, user.id)
-      payload = payload_for(user)
-      EventStreamConnection.post_event(channel, payload)
+      EventStreamConnection.post_event(
+        channel_name: resource_channel_name(user, record),
+        action: subscription_name,
+        payload: payload_for(user)
+      )
     end
   end
 
@@ -29,6 +31,12 @@ class EventStream
   end
 
   private
+
+  def resource_channel_name(user, record)
+    resource = record.event_stream_channel_resource
+    resource_klass_name = resource.class.name.underscore
+    "private-user_#{user.id}-#{resource_klass_name}_#{resource.id}"
+  end
 
   def payload_for(user)
     serializer = record.event_stream_serializer(user)

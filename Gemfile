@@ -56,6 +56,7 @@ gem 'migration_data'
 gem 'bugsnag'
 gem 'textacular'
 gem 'aasm'
+gem 'pusher'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28

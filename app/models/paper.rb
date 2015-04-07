@@ -20,7 +20,7 @@ class Paper < ActiveRecord::Base
   has_many :participants, through: :tasks
   has_many :journal_roles, through: :journal
   has_many :authors, -> { order 'authors.position ASC' }
-  has_many :activity_feeds
+  has_many :activities
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true
@@ -169,6 +169,10 @@ class Paper < ActiveRecord::Base
     errors.add(:base, "can't submit a paper when all of the metadata tasks aren't completed")
   end
 
+  def revised?
+    true # placeholder for determining if it has been revised
+  end
+
   %w(admins editors reviewers collaborators).each do |relation|
     ###
     # :method: <roles>
@@ -214,9 +218,14 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  def event_stream_channel_resource
+    self
+  end
+
   private
 
   def uncompleted_tasks?
     tasks.metadata.count != tasks.metadata.completed.count
   end
+
 end

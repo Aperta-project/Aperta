@@ -116,6 +116,10 @@ class Task < ActiveRecord::Base
   def after_update
   end
 
+  def event_stream_channel_resource
+    self.paper
+  end
+
   private
 
   def on_card_completion?

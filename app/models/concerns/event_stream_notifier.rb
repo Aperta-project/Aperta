@@ -4,7 +4,7 @@ module EventStreamNotifier
     after_commit :notify
 
     def notify
-      ActiveSupport::Notifications.instrument(namespace, event_stream_payload)
+      TahiNotifier.notify(event: namespace, payload: event_stream_payload)
     end
 
     def event_stream_payload
@@ -15,8 +15,13 @@ module EventStreamNotifier
       active_model_serializer.new(self, user: user)
     end
 
+    def event_stream_channel_resource
+      raise NotImplementedError
+    end
+
     private
 
+    # TODO: should we make this double colon?
     def namespace
       "#{klass_name}:#{action}"
     end

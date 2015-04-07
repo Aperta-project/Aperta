@@ -1,14 +1,15 @@
 {{partial "paper/control-bar"}}
 
 <div id="paper-container" {{bind-attr class="isSidebarEmpty:sidebar-empty"}}>
+  <div class="editor-toolbar">
+    {{partial "paper/edit/toolbar"}}
+  </div>
+
 
   {{partial "paper/sidebar"}}
 
   <div class="manuscript-container">
 
-    <div class="editor-toolbar">
-      {{partial "paper/edit/toolbar"}}
-    </div>
 
     <main>
 

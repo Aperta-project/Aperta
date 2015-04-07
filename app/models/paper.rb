@@ -108,7 +108,7 @@ class Paper < ActiveRecord::Base
   end
 
   def create_decision!
-    self.decisions.create!
+    decisions.create!
   end
 
   # Public: Returns the paper title if it's present, otherwise short title is shown.

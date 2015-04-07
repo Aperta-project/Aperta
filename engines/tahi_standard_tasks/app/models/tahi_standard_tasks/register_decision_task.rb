@@ -15,7 +15,7 @@ module TahiStandardTasks
       if revise_decision?
         create_please_revise_card!
         make_paper_editable!
-        self.update! completed:false
+        self.update! completed: false
         paper.create_decision!
       end
     end

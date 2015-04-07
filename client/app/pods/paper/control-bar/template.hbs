@@ -43,7 +43,7 @@
     <div {{bind-attr class=":contributors view.contributorsVisible:active"}}>
       <a class="contributors-add" {{action "addContributors"}}>Add Contributors</a>
 
-      {{#each contributor in collaborators}}
+      {{#each contributor in model.collaborators}}
         <div class="contributor">{{unbound contributor.fullName}}</div>
       {{/each}}
     </div>

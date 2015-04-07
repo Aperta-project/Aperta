@@ -2,10 +2,10 @@
   <div class="control-bar-inner-wrapper">
     <ul>
       <li id="control-bar-paper-journal-logo" class="control-bar-item">
-        {{#if logoUrl}}
+        {{#if model.logoUrl}}
           <img src="{{unbound journal.logoUrl}}">
         {{else}}
-          <div class="paper-journal">{{unbound name}}</div>
+          <div class="paper-journal">{{unbound model.name}}</div>
         {{/if}}
       </li>
       <li class="control-bar-item control-bar-page-title">
@@ -13,9 +13,6 @@
       </li>
     </ul>
     <ul>
-      <li class="template-edit-message control-bar-item">
-        <span {{bind-attr class="errorText:show:hidden :alert-danger :control-bar-message"}}>{{errorText}}</span>
-      </li>
       {{outlet "controlBarButtons"}}
     </ul>
   </div>

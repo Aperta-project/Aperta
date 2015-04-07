@@ -1,4 +1,4 @@
-module Users
+module TahiDevise
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     def orcid
       oauthorize(:orcid)

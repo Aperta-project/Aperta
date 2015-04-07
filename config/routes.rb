@@ -134,16 +134,6 @@ Tahi::Application.routes.draw do
   end
 
 
-  # External API
-  # TODO: Define or deprecate
-  #
-  namespace :api, defaults: { format: :json } do
-    resources :papers, only: [:index, :show, :update]
-    resources :users, only: [:show]
-    resources :journals, only: [:index]
-  end
-
-
   # Fall through to ember app
   #
   get "*route" => "ember#index"

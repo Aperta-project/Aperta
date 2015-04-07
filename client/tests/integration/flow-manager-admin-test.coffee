@@ -56,3 +56,14 @@ test 'Flow manager edit link should show up on a role with permission in edit mo
   click('input[name="role[canViewFlowManager]"]')
   andThen ->
     ok find('a:contains("Edit Flows")').length
+
+test "Admin can add a new column in a role's flow-manager", ->
+  visit "/admin/journals/#{journal.id}"
+  click '.admin-role-action-button'
+  click 'input[name="role[canViewFlowManager]"]'
+  click 'a:contains("Edit Flows")'
+  andThen ->
+    ok find('.back-link').text().match /Flow Manager/
+    ok find '.control-bar-link-text:contains("Add New Column")'
+  # click '.add-flow-column-button'
+

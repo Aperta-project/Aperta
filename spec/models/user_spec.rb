@@ -59,6 +59,30 @@ describe User do
     end
   end
 
+  describe '#invitations_from_latest_revision' do
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      paper = FactoryGirl.create :paper
+      paper.create_decision!
+    end
+
+    it 'returns invitations from the latest revision cycle' do
+      phase = FactoryGirl.create :phase
+      decision = phase.paper.create_decision!
+      task = FactoryGirl.create :invitable_task, phase: phase
+      inv1 = FactoryGirl.create :invitation, task: task, invitee: user, decision: decision
+      inv2 = FactoryGirl.create :invitation, task: task, invitee: user, decision: decision
+      inv1.invite!
+      inv2.invite!
+      expect(user.invitations_from_latest_revision).to match_array [inv1, inv2]
+      phase.paper.create_decision!
+      inv3 = FactoryGirl.create :invitation, task: task, invitee: user
+      FactoryGirl.create :invitation, task: task, invitee: user
+      inv3.invite!
+      expect(user.invitations_from_latest_revision).to match_array [inv3]
+    end
+  end
+
   describe ".new_with_session" do
     let(:personal_details) { {"personal_details" => {"given_names" => "Joe", "family_name" => "Smith"}} }
     let(:orcid_session) do

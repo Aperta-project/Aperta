@@ -20,8 +20,8 @@ when 'development'
   User.where(email: 'editor@example.com').first_or_create do |user|
     user.first_name = 'Editor'
     user.last_name = 'User'
-    user.password =   'password'
-    user.username ='editor'
+    user.password = 'password'
+    user.username = 'editor'
     user.affiliations.first_or_initialize(name: "PLOS")
     user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::EDITOR))
   end

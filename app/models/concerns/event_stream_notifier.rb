@@ -15,10 +15,6 @@ module EventStreamNotifier
       active_model_serializer.new(self, user: user)
     end
 
-    def event_stream_channel_resource
-      raise NotImplementedError
-    end
-
     private
 
     # TODO: should we make this double colon?

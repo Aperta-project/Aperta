@@ -231,10 +231,6 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  def event_stream_channel_resource
-    self
-  end
-
   private
 
   def uncompleted_tasks?

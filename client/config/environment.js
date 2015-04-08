@@ -14,19 +14,7 @@ module.exports = function(environment) {
       }
     },
 
-    APP: {
-      PUSHER_OPTS: {
-        key: '765ec374ae0a69f4ce44',
-        connection: {
-          authEndpoint: "/event_stream/auth"
-        },
-        hostOptions: {
-          PUSHER_HOST: "localhost",
-          PUSHER_WS_PORT: "8080",
-          PUSHER_PROTOCOL: 7
-        }
-      }
-    },
+    APP: {},
 
     'ember-cli-visualeditor': {
       assetsRoot: '/'

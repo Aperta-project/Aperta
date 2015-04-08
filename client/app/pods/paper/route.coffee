@@ -1,9 +1,8 @@
 `import Ember from 'ember'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Utils from 'tahi/services/utils'`
-`import { Bindings } from 'ember-pusher/bindings'`
 
-PaperRoute = Ember.Route.extend Bindings,
+PaperRoute = Ember.Route.extend
   model: (params) ->
     [publisher_prefix, suffix] = params.paper_id.toString().split('/')
     if publisher_prefix && suffix
@@ -13,9 +12,6 @@ PaperRoute = Ember.Route.extend Bindings,
         @store.all('paper').find (paper) -> paper.get('doi') == doi
     else
       @store.find('paper', params.paper_id)
-
-  afterModel: (model, transition) ->
-    @get('pusher.connection').subscribe("private-user_1-paper_3")
 
   setupController: (controller, model) ->
     controller.set('model', model)

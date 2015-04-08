@@ -9,5 +9,7 @@ Decision = DS.Model.extend
   invitations: DS.hasMany("invitation")
   revisionHumanNumber: Em.computed 'revisionNumber', ->
     @get('revisionNumber') + 1
+  createdAt: DS.attr("date")
+}
 
 `export default Decision`

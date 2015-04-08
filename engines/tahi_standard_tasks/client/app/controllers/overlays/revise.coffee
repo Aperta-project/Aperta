@@ -1,39 +1,17 @@
 `import TaskController from 'tahi/pods/task/controller'`
 
 ReviseOverlayController = TaskController.extend
-  # isEditable: (->
-  #   !@get("model.completed")
-  # ).property('model.completed')
-
+  # offset by 1, since the first Decision should be an empty decision,
+  # unless the paper's lifecycle is complete
   latestDecision: (->
-    debugger
-    @get('model.paper.decisions.firstObject')
-  ).property('model.paper.decisions.@each')
+    @get('model.decisions').sortBy('revisionNumber').reverse()[1]
+  ).property('model.decisions.@each')
 
-  # previousDecisions: (->
-  #   @get('model.decisions').sortBy('revisionNumber').reverse()[1..-1]
-  # ).property('model.decisions.@each')
-  #
-  # finalDecision: (->
-  #   @get("latestDecision.verdict") is "accepted" or @get("latestDecision.verdict") is "rejected"
-  # ).property("latestDecision")
-  #
-  # saveModel: ->
-  #   @_super()
-  #     .then () =>
-  #       @send("saveLatestDecision")
-  #
-  # actions:
-  #   saveLatestDecision: ->
-  #     @get('latestDecision').save().then =>
-  #       @set 'isSavingData', false
-  #
-  #   setDecisionTemplate: (decision) ->
-  #     @set "isSavingData", true
-  #     @get("latestDecision").set "verdict", decision
-  #     @get("latestDecision").set "letter", @get("model.#{decision}LetterTemplate")
-  #
-  #     @send("saveLatestDecision")
-
-
+  # offset by 2
+  # skip the 1st empty Decision
+  # latestDecision shows the last Decision that was left
+  # so, start on Decision offset 2
+  previousDecisions: (->
+    @get('model.decisions').sortBy('revisionNumber').reverse()[2..-1]
+  ).property('model.decisions.@each')
 `export default ReviseOverlayController`

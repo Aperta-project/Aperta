@@ -82,7 +82,7 @@ Utils = Ember.Namespace.create
   deNamespaceTaskType: (typeString) ->
     taskTypeNames = typeString.split '::'
     return typeString if taskTypeNames.length is 1
-    return taskTypeNames[1] if taskTypeNames[0] isnt 'Task'
+    return taskTypeNames[taskTypeNames.length - 1] if taskTypeNames[0] isnt 'Task'
     throw new Error("The task type: '#{typeString}' is not qualified.")
 
 `export default Utils`

@@ -6,9 +6,8 @@ class UserInboxesController < ApplicationController
   respond_to :json
 
   def index
-    broadcast_activities(collapser.latest_activities)
     collapser.discard!
-    head :no_content
+    render json: collapser.latest_activities
   end
 
   def destroy

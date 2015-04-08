@@ -28,7 +28,9 @@ end
 
 Capybara.register_driver :selenium do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
-  profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.3.1-fx.xpi")
+  if ENV['EMBER_DEBUG']
+    profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.3.1-fx.xpi")
+  end
   Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
 end
 

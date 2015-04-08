@@ -47,7 +47,7 @@ class PapersController < ApplicationController
   end
 
   def upload
-    IhatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_callback_url)
+    IhatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_jobs_url)
     render json: paper
   end
 

@@ -15,12 +15,10 @@ describe PapersController do
   describe "GET download" do
     expect_policy_enforcement
 
-    subject(:do_request) { get :download, id: paper.to_param }
-
     it "sends file back" do
       allow(controller).to receive(:render).and_return(nothing: true)
       expect(controller).to receive(:send_data)
-      get :download, id: paper.id
+      get :download, id: paper.id, format: :epub
     end
 
     it "sends a pdf file back if there's a pdf extension" do

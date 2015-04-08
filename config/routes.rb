@@ -128,9 +128,7 @@ Tahi::Application.routes.draw do
     # ihat endpoints
     #
     namespace :ihat do
-      resources :jobs, only: [] do
-        post :callback, on: :collection
-      end
+      resources :jobs, only: [:create]
     end
 
     # s3 request policy

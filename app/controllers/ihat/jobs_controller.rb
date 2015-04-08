@@ -5,7 +5,7 @@ module Ihat
     rescue_from ActiveSupport::MessageVerifier::InvalidSignature, with: :render_invalid_params
     rescue_from ActionController::ParameterMissing, with: :render_invalid_params
 
-    def update
+    def create
       if job_response.completed?
         PaperUpdateWorker.perform_async(job_response.paper_id, job_response.epub_url)
         head :ok

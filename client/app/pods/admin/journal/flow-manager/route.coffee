@@ -1,12 +1,7 @@
 `import Ember from 'ember'`
 
 Route = Ember.Route.extend
-  model: (params) ->
-    @store.find('role', params.role_id)
-
-  afterModel: (model) ->
-    model.get('flows')
-
+  model: (params) -> @store.find 'role', params.role_id
   renderTemplate: ->
     @_super()
     @render 'flow-manager-buttons',

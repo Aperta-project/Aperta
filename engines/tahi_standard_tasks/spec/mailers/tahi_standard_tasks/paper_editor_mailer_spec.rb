@@ -5,7 +5,7 @@ describe TahiStandardTasks::PaperEditorMailer do
   let(:invitation) { FactoryGirl.create(:invitation) }
   let(:journal) { FactoryGirl.create(:journal) }
 
-  let(:email) { described_class.notify_invited(invitation_id:invitation.id, journal_id:journal.id) }
+  let(:email) { described_class.notify_invited(invitation_id: invitation.id, journal_id: journal.id) }
 
   describe "#notify_invited" do
     it "sends email to the invitations email" do

@@ -27,9 +27,8 @@ class TasksController < ApplicationController
   def update
     task.assign_attributes(task_params(task.class))
     task.save!
+    task.send_emails if task.respond_to?(:send_emails)
     task.after_update
-    task.send_emails if task.respond_to? :send_emails
-    notify_task_updated!
     render task.update_responder.new(task, view_context).response
   end
 

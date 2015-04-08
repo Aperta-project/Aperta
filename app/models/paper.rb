@@ -21,6 +21,7 @@ class Paper < ActiveRecord::Base
   has_many :journal_roles, through: :journal
   has_many :authors, -> { order 'authors.position ASC' }
   has_many :activities
+  has_many :decisions, -> { order 'revision_number DESC' }
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true
@@ -96,6 +97,18 @@ class Paper < ActiveRecord::Base
 
   def tasks_for_type(klass_name)
     tasks.where(type: klass_name)
+  end
+
+  def latest_decision
+    decisions.order("created_at DESC").limit(1).first
+  end
+
+  def previous_decisions
+    decisions.order("created_at DESC").offset(1)
+  end
+
+  def create_decision!
+    decisions.create!
   end
 
   # Public: Returns the paper title if it's present, otherwise short title is shown.

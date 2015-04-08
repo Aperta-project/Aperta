@@ -107,6 +107,18 @@ ActiveRecord::Schema.define(version: 20150401180824) do
 
   add_index "credentials", ["uid", "provider"], name: "index_credentials_on_uid_and_provider", using: :btree
 
+  create_table "decisions", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.integer  "revision_number", default: 0
+    t.text     "letter"
+    t.string   "verdict"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "decisions", ["paper_id", "revision_number"], name: "index_decisions_on_paper_id_and_revision_number", unique: true, using: :btree
+  add_index "decisions", ["paper_id"], name: "index_decisions_on_paper_id", using: :btree
+
   create_table "figures", force: :cascade do |t|
     t.string   "attachment"
     t.integer  "paper_id"

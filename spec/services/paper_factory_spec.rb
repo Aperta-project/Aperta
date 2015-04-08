@@ -72,6 +72,10 @@ describe PaperFactory do
       expect(subject.creator).to eq(user)
     end
 
+    it "creates a Decision" do
+      expect(subject.decisions.length).to eq 1
+    end
+
     it "applies the template" do
       expect(subject.phases.count).to eq(2)
     end

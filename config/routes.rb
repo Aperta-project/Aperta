@@ -7,6 +7,7 @@ Tahi::Application.routes.draw do
   mount TahiSupportingInformation::Engine => '/', as: 'tahi_supporting_information'
 
   require 'sidekiq/web'
+  require 'sidetiq/web'
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
@@ -40,6 +41,9 @@ Tahi::Application.routes.draw do
   namespace :user_flows do
     get :potential_flows
   end
+
+  resources :decisions, only: [:create, :update]
+
   resources :user_flows
 
   resources :flows, only: [:show, :create, :update, :destroy]

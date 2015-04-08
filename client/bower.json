@@ -24,7 +24,7 @@
     "ember-data-factory-guy": "0.9.10",
     "font-awesome": "~4.3.0",
     "jquery-ui": "~1.11.3",
-    "ember-pusher": "0.1.0"
+    "ember-pusher": "0.1.0",
     "bootstrap": "~3.3.2",
     "jQuery.dotdotdot": "~1.7.2"
   },

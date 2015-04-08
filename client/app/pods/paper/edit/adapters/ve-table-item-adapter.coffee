@@ -1,66 +1,66 @@
 `import Ember from 'ember'`
 
-VEFigureItemAdapter = Ember.Object.extend
+VETableItemAdapter = Ember.Object.extend
 
-  figure: null
+  table: null
   component: null
 
-  # instance of 'tahi-editor-extensions/form/form-node'
-  # which conains two form-entries for 'title' and 'caption'
+  # instance of 'tahi-editor-extensions/figures/figure'
   node: null
   propertyNodes: null
   cachedValues: null
 
-  observedProperties: ['title', 'caption']
+  observedProperties: ['title', 'caption', 'tableHtml']
 
   registerBindings: ( ->
-    figure = @get('figure')
+    table = @get('table')
     node = @get('node')
     titleNode = null
     captionNode = null
+    tableNode = null
     node.traverse( (node) ->
-      if node.type == 'textInput' and node.getPropertyName() == 'title'
+      if node.type == 'figureTitle'
         titleNode = node
+      else if node.type == 'figureTable'
+        tableNode = node
       else if node.type == 'textInput' and node.getPropertyName() == 'caption'
         captionNode = node
     )
-    if not titleNode or not captionNode
-      console.error('Could not find title and caption node...')
+    if not titleNode or not tableNode or not captionNode
+      console.error('Could not find nodes.')
 
     @propertyNodes =
       title: titleNode
+      tableHtml: tableNode
       caption: captionNode
     @cachedValues =
-      title: figure.get('title')
-      caption: figure.get('caption')
+      title: table.get('title')
+      tableHtml: table.get('tableHtml')
+      caption: table.get('caption')
   ).on('init')
 
 
   connect: ->
     # only title and caption can be changed via 'VisualEditor'
     # The image is handled emberly
-    figure = @get('figure')
+    table = @get('table')
     for propertyName in @observedProperties
       @propertyNodes[propertyName].connect @,
         "change": @propertyEdited
     return @
 
   disconnect: ->
-    figure = @get('figure')
+    table = @get('table')
     for propertyName in @observedProperties
       @propertyNodes[propertyName].disconnect @
     return @
 
   propertyEdited: (propertyName, newValue) ->
-    figure = @get('figure')
-    oldValue = figure.get(propertyName)
+    table = @get('table')
+    oldValue = table.get(propertyName)
     if oldValue != newValue
       @cachedValues[propertyName] = newValue
-      figure.set(propertyName, newValue)
-      @get('component').send('saveFigure')
+      table.set(propertyName, newValue)
+      @get('component').send('saveTable')
 
-  # Note: model changes are not handled here
-  #   as this dialog can only be opened when editing the paper, thus the paper is locked
-  #   TODO: is it so, that figures are also locked then?
-
-`export default VEFigureItemAdapter`
+`export default VETableItemAdapter`

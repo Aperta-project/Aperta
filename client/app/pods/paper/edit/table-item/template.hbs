@@ -1,0 +1,35 @@
+<div {{bind-attr class=":table-item :figure-item :row hasPlacement::unplaced isEditing:editing: isSaving:saving:"}}>
+
+  <div class="figure-item-header">
+    <div class="figure-item-header-inner">
+      <span class="figure-label">{{#if hasPlacement}} {{unbound label}} {{else}} Not in manuscript {{/if}}
+      </span>
+      <div class="ve-tool-group first-button-group">
+          <a href="#" {{bind-attr class=":btn :insert-into-manuscript hasManuscriptSelection:enabled:disabled"}} {{action "insertTable"}} >
+            <i class="fa fa-arrow-right fa-lg"></i>
+            <i class="fa fa-file-picture-o fa-lg second"></i>
+            Insert into Manuscript
+          </a>
+      </div>
+      <div class="ve-tool-group pull-right">
+          <span class="saving-spinner btn enabled">
+            <i class="fa fa-spinner fa-spin"></i>
+          </span>
+          <a href="#" class="btn enabled" {{action "confirmDestroyAttachment"}}>
+            <i class="fa fa-trash fa-2x"></i>
+          </a>
+      </div>
+    </div>
+  </div>
+
+  {{visual-editor classNames="figure-item-editor"
+      initializerContext=controller
+      initializer=controller.setupEditor}}
+
+  <div class="attachment-thumbnail-destroy-overlay">
+    <p>This will permanently delete your table. Are you sure?</p>
+    <button class="button-secondary button--green knockout" {{action "cancelDestroyTable"}}>Cancel</button>
+    <button class="button-secondary button--green knockout attachment-delete-button" {{action "destroyTable"}}>Delete Forever</button>
+  </div>
+
+</div>

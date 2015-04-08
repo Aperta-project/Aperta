@@ -5,7 +5,7 @@
   </div>
 </div>
 {{#visual-editor-toolbar viewName="toolbar" classNames='figures-toolbar editor-toolbar'}}
-  <span class="button-primary button--green fileinput-button">
+  <span class="button-primary button--green" {{action "addTable"}}>
     <span>Add Table</span>
   </span>
   <span class="separator"></span>
@@ -36,6 +36,7 @@
 <div class="figures-body container-fluid">
   {{#each table in tables}}
     {{paper/edit/table-item
+           table=table
            manuscriptEditor=manuscriptEditor
            updateToolbar="updateToolbar"
            insertTable="insertTable"}}

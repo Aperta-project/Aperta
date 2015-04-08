@@ -63,22 +63,21 @@ PaperEditRoute = AuthorizedRoute.extend
     lockedBy = @modelFor('paper').get('lockedBy')
     lockedBy and lockedBy == @currentUser
 
-  openOverlay: (overlay) ->
+  openOverlay: (overlayName) ->
     controller = @controllerFor(@get('editorLookup'))
     editor = controller.get('editor')
     editor.freeze();
     # do not handle model changes while overlay is open
     controller.disconnectEditor()
     controller.set('hasOverlay', true)
-    @render overlay,
+    @render overlayName,
       into: 'application'
       outlet: 'overlay'
-      controller: overlay
+      controller: overlayName
       model: @modelFor('paper.edit')
 
   closeOverlay: ->
     controller = @controllerFor(@get('editorLookup'))
-
     @disconnectOutlet
       outlet: 'overlay'
       parentView: 'application'

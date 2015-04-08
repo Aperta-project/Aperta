@@ -32,6 +32,7 @@ app.import('vendor/jquery.fileupload/jquery.fileupload.js');
 app.import('bower_components/select2/select2.js');
 
 // Bootstrap
+// (css is imported Rails side)
 app.import('bower_components/bootstrap/js/collapse.js');
 app.import('bower_components/bootstrap/js/dropdown.js');
 app.import('bower_components/bootstrap/js/tooltip.js');

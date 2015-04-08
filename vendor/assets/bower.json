@@ -1,13 +1,6 @@
 {
   "name": "dsl-generated dependencies",
   "dependencies": {
-    "jquery": "latest",
-    "jquery-ujs": "latest",
-    "bootstrap-sass": "latest",
-    "spin.js": "latest",
-    "jquery-timeago": "latest",
-    "event-source-polyfill": "latest",
-    "moment": "latest",
-    "select2": "latest"
+    "bootstrap-sass": "latest"
   }
 }

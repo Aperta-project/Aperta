@@ -54,7 +54,6 @@ when 'development'
   end
 
   # Create Paper for Admin
-
   unless Paper.where(short_title: "The great scientific paper of 2015").present?
     PaperFactory.create(
       {
@@ -63,7 +62,7 @@ when 'development'
         title:       "The most scrumtrulescent scientific paper of 2015.",
         abstract:    "We've discovered the rain in Spain tends to stay in the plain",
         body:        "The quick man bear pig jumped over the fox",
-        paper_type:  "editable"
+        paper_type:  "Research"
       },
       admin
     ).save!

@@ -23,12 +23,23 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_valid_plos_author) do
+      after(:create) do |paper|
+        FactoryGirl.create(
+          :plos_author,
+          paper: paper,
+          plos_authors_task: paper.tasks.find_by(type: "PlosAuthors::PlosAuthorsTask")
+        )
+      end
+    end
+
     after(:build) do |paper|
       paper.paper_type ||= paper.journal.paper_types.first
     end
 
     after(:create) do |paper|
       paper.paper_roles.create!(user: paper.creator, role: PaperRole::COLLABORATOR)
+      paper.create_decision!
     end
   end
 end

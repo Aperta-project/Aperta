@@ -8,24 +8,22 @@ AutoSaveIconComponent = Ember.Component.extend
   isCheckMarkShowing: false
 
   startShowingLoader:(->
-    # Check journalTask.role in case the role is not in the 'availableTaskRoles.'
-    # If it isn't, the value is null and should not fire the loader event
-    if @get 'journalTask.role'
+    if @get 'journalTask.isSaving'
       @set 'isLoaderShowing', true
       Ember.run.later (=>
-        @showLoader()
-        @showCheckMark()
+        @hideLoader()
+        @hideCheckMark()
       ), 1500
   ).observes('journalTask.isSaving')
 
-  showLoader: ->
+  hideLoader: ->
     @set('isCheckMarkShowing', true)
     $('.loader-component-circle--visible').fadeOut =>
       Ember.run.later (=>
         @set('isLoaderShowing', false)
       ), 500
 
-  showCheckMark: ->
+  hideCheckMark: ->
     Ember.run.later (=>
       $('.save-message').fadeOut =>
         @set('isCheckMarkShowing', false)

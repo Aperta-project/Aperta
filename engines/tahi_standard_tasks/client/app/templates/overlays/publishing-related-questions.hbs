@@ -8,9 +8,12 @@
 
     {{#show-if-parent prop="selectedYes"}}
       <div class="question-dataset">
+        Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication.
         {{question-input ident="publishing_related_questions.published_elsewhere.taken_from_manuscripts"
                          question="Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication."
-                         task=model}}
+                         task=model
+                         label="Results, data or figures"
+                         placeholderText="Figure 1.2 - contains new data points"}}
         <br>
         {{question-uploader ident="publishing_related_questions.published_elsewhere.upload_related_work" task=model
                             question="Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions."
@@ -31,12 +34,17 @@
         {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_title"
                          class="sub-question"
                          task=model
-                         question="Title"}}
+                         question="Title"
+                         label="Title"
+                         placeholderText="Submission Title"}}
+                         
         <br>
         {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_author"
                          class="sub-question"
                          task=model
-                         question="Corresponding author"}}
+                         question="Corresponding author"
+                         label="Corresponding Author"
+                         placeholderText="Corresponding Author Name"}}
       </div>
     {{/show-if-parent}}
   {{/question-radio}}
@@ -86,9 +94,12 @@
                        question="One or more of the authors (including myself) currently serve, or have previously served, as an Academic Editor or Guest Editor for this journal."}}
   </li>
   <li class="question">
+    If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.
     {{question-input ident="publishing_related_questions.intended_collection"
                       task=model
-                      question="If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter."}}
+                      question="If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter."
+                      label="Name of PLOS Collection"
+                      placeholderText="Collection Name"}}
 
   </li>
   <li class="question">

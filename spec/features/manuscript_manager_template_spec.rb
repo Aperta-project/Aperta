@@ -10,7 +10,7 @@ feature "Manuscript Manager Templates", js: true, selenium: true do
   end
 
   describe "Adding phases" do
-    scenario "Adding a phase" do
+    scenario "Adding a phase", flaky: true do
       journal_page = JournalPage.visit(journal)
       mmt_page = journal_page.add_new_template
       expect(mmt_page).to have_phase_names('Phase 1', 'Phase 2', 'Phase 3')

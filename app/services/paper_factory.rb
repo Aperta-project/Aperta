@@ -31,6 +31,7 @@ class PaperFactory
       if paper.valid?
         if template
           paper.save
+          paper.create_decision!
           apply_template
         else
           paper.errors.add(:paper_type, "is not valid")

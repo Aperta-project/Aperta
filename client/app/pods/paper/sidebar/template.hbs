@@ -1,0 +1,9 @@
+<aside class="sidebar">
+  <div {{action "showActivityFeed" "manuscript"}} class="recent-activity-link">
+    {{partial "svg/heartbeat"}} Recent Activity
+  </div>
+  <div class="task-list">
+    {{partial "paper/task-list"}}
+    <a {{action "submit" target="view"}} {{bind-attr class=":button-primary allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit</a>
+  </div>
+</aside>

@@ -21,7 +21,7 @@ class EditPaperPage < Page
   text_assertions :journal, '.paper-journal'
 
   def initialize element = nil
-    find '.manuscript-container'
+    find 'article.manuscript'
     super
   end
 
@@ -69,9 +69,9 @@ class EditPaperPage < Page
   def body=(string)
     code = <<HERE
 var editorController = Tahi.__container__.lookup("controller:paper/edit");
-var veModel = editorController.get("visualEditor");
-veModel.setCursor(0);
-veModel.write("#{string}");
+var editor = editorController.get("editor");
+editor.setCursor(0);
+editor.write("#{string}");
 HERE
     page.execute_script code
   end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Paper do
-  let(:paper) { FactoryGirl.build :paper }
+  let(:paper) { FactoryGirl.create :paper }
   let(:doi) { 'pumpkin/doughnut.888888' }
 
   describe "initialization" do
@@ -28,12 +28,6 @@ describe Paper do
         expect(dup_paper).to_not be_valid
         expect(dup_paper).to have(1).errors_on(:short_title)
       end
-
-      it "must be less than 50 characters" do
-        paper = FactoryGirl.build(:paper, short_title: 'Longer than 50 characters is not an awesome short title coz short titles should be short, stupid!')
-        expect(paper).to_not be_valid
-        expect(paper).to have(1).errors_on(:short_title)
-      end
     end
 
     describe "journal" do
@@ -42,7 +36,6 @@ describe Paper do
         expect(paper).to_not be_valid
       end
     end
-
   end
 
   describe "callbacks" do
@@ -131,6 +124,24 @@ describe Paper do
       it "returns nothing" do
         expect(paper.role_for(user: user, role: 'chucknorris')).to_not be_present
       end
+    end
+  end
+
+  describe "#latest_decision" do
+    it "returns the most recent decision for the paper" do
+      3.times do |i|
+        paper.decisions.create! letter: "Decision #{i}"
+      end
+      expect(paper.latest_decision.letter).to eq("Decision 2")
+      expect(paper.latest_decision.revision_number).to eq(3)
+    end
+  end
+
+  describe "#create_decision!" do
+    it "creates a blank decision on Paper" do
+      expect {
+        paper.create_decision!
+      }.to change { paper.decisions.count }.by 1
     end
   end
 end

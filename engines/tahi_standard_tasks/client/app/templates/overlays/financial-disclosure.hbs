@@ -18,7 +18,7 @@
   </div>
 
   {{#each funder in funders}}
-    <div class="question-dataset">
+    <div class="question-dataset constrained-form-width">
       {{render "funder" funder}}
     </div>
   {{/each}}
@@ -34,24 +34,7 @@
     </p>
 
     {{#each funder in funders}}
-      <p>
-        This work was supported by
-
-        {{#if funder.formattedWebsite}}
-          <a {{bind-attr href=funder.formattedWebsite}} target="_blank"><strong>{{display-value funder.name or="[funder name]"}}</strong></a>
-        {{else}}
-          <strong>{{display-value funder.name or="[funder name]"}}</strong>
-        {{/if}}
-
-        (grant number <strong>{{display-value funder.grantNumber or="[funder grant number]"}}</strong>).
-
-        {{#if funder.funderHadInfluence}}
-          {{funder.funderInfluenceDescription}}.
-        {{else}}
-          The funder had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.
-        {{/if}}
-      </p>
+      {{view "funder-influence-statement" funder=funder}}
     {{/each}}
-
   {{/if}}
 </div>

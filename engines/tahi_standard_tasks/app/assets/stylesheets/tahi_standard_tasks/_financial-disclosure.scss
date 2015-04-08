@@ -1,16 +1,19 @@
-.add-author-inline {
-  margin: 20px 0 0 0;
-}
+.remove-funder {
+  cursor: pointer;
+  float: right;
+  margin: 13px 5px 10px 0;
 
-.add-new-funded-author {
-  margin: 10px 0;
-
-  .button-primary {
-    margin: 0px 10px;
+  &:before {
+    font-size: 1.2em;
   }
 }
 
-.remove-funder-link {
-  float: right;
-  margin: -11px 0 10px 0px;
+.block-title {
+  display: inline-block;
+  margin-bottom: 22px;
+}
+
+p.question-text {
+  font-size: 1.2em;
+  margin-left: 0;
 }

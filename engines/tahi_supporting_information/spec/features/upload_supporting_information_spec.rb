@@ -27,6 +27,8 @@ feature "Upload Supporting Information", js: true, selenium: true do
     end
 
     # edit file
+    paper.supporting_information_files.create
+    visit page.current_url
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       find('.attachment-edit-icon').click
       title   = find('.attachment-thumbnail-edit-content input[type=text]')

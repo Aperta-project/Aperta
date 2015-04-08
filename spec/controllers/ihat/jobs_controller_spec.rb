@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe IhatJobsController, :type => :controller do
+describe Ihat::JobsController, :type => :controller do
 
   describe "POST update" do
     before do

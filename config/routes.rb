@@ -54,6 +54,8 @@ Tahi::Application.routes.draw do
     put :update_attachment, on: :member
   end
 
+  resources :tables, only: [:create, :update, :destroy]
+
   resources :comment_looks, only: [:index, :update]
 
   namespace :api, defaults: { format: 'json' } do

@@ -132,13 +132,14 @@ module TahiStandardTasks
     def create_please_revise_card!
       author = paper.creator
 
-      TaskFactory.build(Task,
-                        title: "Please Revise",
+      TaskFactory.build(TahiStandardTasks::ReviseTask,
+                        title: "Revise Manuscript",
                         role: "user",
                         phase_id: phase.id,
                         body: [[{ type: 'text', value: revise_letter }]],
                         participants: participants << author
                        ).save!
+
     end
 
     def revise_decision?

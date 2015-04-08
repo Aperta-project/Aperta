@@ -34,6 +34,7 @@ Tahi::Application.routes.draw do
   devise_scope :user do
     get "users/sign_out" => "devise/sessions#destroy"
   end
+
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => "/sidekiq"
   end
@@ -58,6 +59,7 @@ Tahi::Application.routes.draw do
     resources :figures, only: [:destroy, :update] do
       put :update_attachment, on: :member
     end
+    resources :tables, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
         get "admins/:paper_id", to: "filtered_users#admins"

@@ -380,6 +380,45 @@ ve.dm.Model.prototype.getHashObject = function () {
 };
 
 /*!
+ * VisualEditor DataModel ModelFactory class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel meta item factory.
+ *
+ * @class
+ * @abstract
+ * @extends OO.Factory
+ * @constructor
+ */
+ve.dm.ModelFactory = function VeDmModelFactory() {
+	// Parent constructor
+	ve.dm.ModelFactory.super.call( this );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.ModelFactory, OO.Factory );
+
+/* Methods */
+
+/**
+ * Create a new item from a model element
+ *
+ * @param {Object} element Model element
+ * @returns {ve.dm.Model} Model constructed from element
+ * @throws {Error} Element must have a .type property
+ */
+ve.dm.ModelFactory.prototype.createFromElement = function ( element ) {
+	if ( element && element.type ) {
+		return this.create( element.type, element );
+	}
+	throw new Error( 'Element must have a .type property' );
+};
+
+/*!
  * VisualEditor ModelRegistry class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
@@ -584,7 +623,7 @@ ve.dm.Model.prototype.getHashObject = function () {
 				matches = [],
 				models = reg.modelsWithTypeRegExps[ +withFunc ];
 			for ( i = 0; i < models.length; i++ ) {
-				if ( excludeTypes && ve.indexOf( models[i], excludeTypes ) !== -1 ) {
+				if ( excludeTypes && excludeTypes.indexOf( models[i] ) !== -1 ) {
 					continue;
 				}
 				types = reg.registry[models[i]].static.getMatchRdfaTypes();
@@ -594,7 +633,7 @@ ve.dm.Model.prototype.getHashObject = function () {
 						type.match( types[j] ) &&
 						(
 							( tag === '' && reg.registry[models[i]].static.matchTagNames === null ) ||
-							ve.indexOf( tag, reg.registry[models[i]].static.matchTagNames ) !== -1
+							( reg.registry[models[i]].static.matchTagNames || [] ).indexOf( tag ) !== -1
 						)
 					) {
 						matches.push( models[i] );
@@ -841,17 +880,17 @@ ve.dm.Model.prototype.getHashObject = function () {
  * DataModel node factory.
  *
  * @class
- * @extends OO.Factory
+ * @extends ve.dm.ModelFactory
  * @constructor
  */
 ve.dm.NodeFactory = function VeDmNodeFactory() {
 	// Parent constructor
-	OO.Factory.call( this );
+	ve.dm.NodeFactory.super.call( this );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.NodeFactory, OO.Factory );
+OO.inheritClass( ve.dm.NodeFactory, ve.dm.ModelFactory );
 
 /* Methods */
 
@@ -1073,6 +1112,21 @@ ve.dm.NodeFactory.prototype.doesNodeHandleOwnChildren = function ( type ) {
 };
 
 /**
+ * Check if the node's children should be ignored.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {boolean} Whether the node's children should be ignored
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.shouldIgnoreChildren = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[type].static.ignoreChildren;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
  * Check if the node is internal.
  *
  * @method
@@ -1101,17 +1155,17 @@ ve.dm.nodeFactory = new ve.dm.NodeFactory();
  * DataModel annotation factory.
  *
  * @class
- * @extends OO.Factory
+ * @extends ve.dm.ModelFactory
  * @constructor
  */
 ve.dm.AnnotationFactory = function VeDmAnnotationFactory() {
 	// Parent constructor
-	OO.Factory.call( this );
+	ve.dm.AnnotationFactory.super.call( this );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.AnnotationFactory, OO.Factory );
+OO.inheritClass( ve.dm.AnnotationFactory, ve.dm.ModelFactory );
 
 /* Initialization */
 
@@ -1288,7 +1342,7 @@ ve.dm.AnnotationSet.prototype.contains = function ( annotation ) {
  * @returns {boolean} There is an annotation in the set with this store index
  */
 ve.dm.AnnotationSet.prototype.containsIndex = function ( storeIndex ) {
-	return ve.indexOf( storeIndex, this.getIndexes() ) !== -1;
+	return this.getIndexes().indexOf( storeIndex ) !== -1;
 };
 
 /**
@@ -1303,7 +1357,7 @@ ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
 		setIndexes = set.getIndexes(),
 		thisIndexes = this.getIndexes();
 	for ( i = 0, length = setIndexes.length; i < length; i++ ) {
-		if ( ve.indexOf( setIndexes[i], thisIndexes ) !== -1 ) {
+		if ( thisIndexes.indexOf( setIndexes[i] ) !== -1 ) {
 			return true;
 		}
 	}
@@ -1322,7 +1376,7 @@ ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
 		setIndexes = set.getIndexes(),
 		thisIndexes = this.getIndexes();
 	for ( i = 0, length = setIndexes.length; i < length; i++ ) {
-		if ( ve.indexOf( setIndexes[i], thisIndexes ) === -1 ) {
+		if ( thisIndexes.indexOf( setIndexes[i] ) === -1 ) {
 			return false;
 		}
 	}
@@ -1348,7 +1402,7 @@ ve.dm.AnnotationSet.prototype.offsetOf = function ( annotation ) {
  * @returns {number} Offset of annotation in the set, or -1 if annotation is not in the set.
  */
 ve.dm.AnnotationSet.prototype.offsetOfIndex = function ( storeIndex ) {
-	return ve.indexOf( storeIndex, this.getIndexes() );
+	return this.getIndexes().indexOf( storeIndex );
 };
 
 /**
@@ -1685,17 +1739,17 @@ ve.dm.AnnotationSet.prototype.intersectWith = function ( set ) {
  * DataModel meta item factory.
  *
  * @class
- * @extends OO.Factory
+ * @extends ve.dm.ModelFactory
  * @constructor
  */
 ve.dm.MetaItemFactory = function VeDmMetaItemFactory() {
 	// Parent constructor
-	OO.Factory.call( this );
+	ve.dm.MetaItemFactory.super.call( this );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.MetaItemFactory, OO.Factory );
+OO.inheritClass( ve.dm.MetaItemFactory, ve.dm.ModelFactory );
 
 /* Methods */
 
@@ -1712,19 +1766,6 @@ ve.dm.MetaItemFactory.prototype.getGroup = function ( type ) {
 		return this.registry[type].static.group;
 	}
 	throw new Error( 'Unknown item type: ' + type );
-};
-
-/**
- * Create a new item from a metadata element
- * @param {Object} element Metadata element
- * @returns {ve.dm.MetaItem} MetaItem constructed from element
- * @throws {Error} Element must have a .type property
- */
-ve.dm.MetaItemFactory.prototype.createFromElement = function ( element ) {
-	if ( element && element.type ) {
-		return this.create( element.type, element );
-	}
-	throw new Error( 'Element must have a .type property' );
 };
 
 /* Initialization */
@@ -1826,10 +1867,7 @@ ve.dm.ClassAttributeNode.static.getClassAttrFromAttributes = function ( attribut
 	// If no meaningful change in classes, preserve order
 	if (
 		attributes.originalClasses &&
-		ve.compare(
-			$.unique( attributes.originalClasses.trim().split( /\s+/ ) ).sort(),
-			$.unique( classNames ).sort()
-		)
+		ve.compareClassLists( attributes.originalClasses, classNames )
 	) {
 		return attributes.originalClasses;
 	} else if ( classNames.length > 0 ) {
@@ -3072,6 +3110,16 @@ OO.mixinClass( ve.dm.Node, OO.EventEmitter );
 ve.dm.Node.static.handlesOwnChildren = false;
 
 /**
+ * Whether this node's children should be ignored. If true, this node will be treated as a leaf
+ * node even if it has children. Often used in combination with handlesOwnChildren.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.ignoreChildren = false;
+
+/**
  * Whether this node type is internal. Internal node types are ignored by the converter.
  *
  * @static
@@ -3429,6 +3477,13 @@ ve.dm.Node.prototype.handlesOwnChildren = function () {
 };
 
 /**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.shouldIgnoreChildren = function () {
+	return this.constructor.static.ignoreChildren;
+};
+
+/**
  * Check if the node has an ancestor with matching type and attribute values.
  *
  * @method
@@ -3742,7 +3797,7 @@ ve.dm.BranchNode.prototype.splice = function () {
 	}
 
 	this.adjustLength( diff, true );
-	this.setupSlugs();
+	this.setupBlockSlugs();
 	this.emit.apply( this, ['splice'].concat( args ) );
 
 	return removals;
@@ -3751,7 +3806,7 @@ ve.dm.BranchNode.prototype.splice = function () {
 /**
  * Setup a sparse array of booleans indicating where to place slugs
  */
-ve.dm.BranchNode.prototype.setupSlugs = function () {
+ve.dm.BranchNode.prototype.setupBlockSlugs = function () {
 	var i, len,
 		isBlock = this.canHaveChildrenNotContent();
 
@@ -3817,6 +3872,36 @@ ve.dm.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
 	}
 	return false;
 };
+
+/*!
+ * VisualEditor DataModel ContentBranchNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel content branch node.
+ *
+ * @class
+ * @abstract
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.ContentBranchNode = function VeDmContentBranchNode() {
+	// Parent constructor
+	ve.dm.ContentBranchNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.ContentBranchNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.ContentBranchNode.static.canContainContent = true;
 
 /*!
  * VisualEditor DataModel LeafNode class.
@@ -3953,6 +4038,19 @@ ve.dm.Annotation.static.removes = [];
  */
 ve.dm.Annotation.static.toDomElements = function () {
 	throw new Error( 've.dm.Annotation subclass must implement toDomElements' );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.Annotation.static.getHashObject = function ( dataElement ) {
+	return {
+		type: dataElement.type,
+		attributes: dataElement.attributes,
+		// For uniqueness we are only concerned with the first node
+		originalDomElements: dataElement.originalDomElements &&
+			dataElement.originalDomElements[0].cloneNode( false ).outerHTML
+	};
 };
 
 /* Methods */
@@ -4339,7 +4437,7 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
  * @returns {number} Position within the key ordering for that group
  */
 ve.dm.InternalList.prototype.getIndexPosition = function ( groupName, index ) {
-	return ve.indexOf( index, this.nodes[groupName].indexOrder );
+	return this.nodes[groupName].indexOrder.indexOf( index );
 };
 
 /**
@@ -4400,7 +4498,7 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 			group.firstNodes[index] = node;
 		}
 	}
-	if ( ve.indexOf( index, group.indexOrder ) === -1 ) {
+	if ( group.indexOrder.indexOf( index ) === -1 ) {
 		group.indexOrder.push( index );
 	}
 	this.markGroupAsChanged( groupName );
@@ -4411,7 +4509,7 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
  * @param {string} groupName Name of group which has changed
  */
 ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
-	if ( ve.indexOf( groupName, this.groupsChanged ) === -1 ) {
+	if ( this.groupsChanged.indexOf( groupName ) === -1 ) {
 		this.groupsChanged.push( groupName );
 	}
 };
@@ -4459,7 +4557,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
 	if ( keyedNodes.length === 0 ) {
 		delete group.keyedNodes[key];
 		delete group.firstNodes[index];
-		j = ve.indexOf( index, group.indexOrder );
+		j = group.indexOrder.indexOf( index );
 		group.indexOrder.splice( j, 1 );
 	}
 	this.markGroupAsChanged( groupName );
@@ -5362,7 +5460,7 @@ ve.dm.TableMatrix.prototype.lookupCell = function ( cellNode ) {
 		matrix = this.getMatrix(),
 		rowNodes = this.getRowNodes();
 
-	row = ve.indexOf( cellNode.getParent(), rowNodes );
+	row = rowNodes.indexOf( cellNode.getParent() );
 	if ( row < 0 ) {
 		return null;
 	}
@@ -5497,13 +5595,16 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	this.document = doc;
 	this.transaction = transaction;
 	this.operations = transaction.getOperations();
+	this.modificationQueue = [];
+	this.rollbackQueue = [];
 	this.synchronizer = new ve.dm.DocumentSynchronizer( doc, transaction );
 	// Linear model offset that we're currently at. Operations in the transaction are ordered, so
 	// the cursor only ever moves forward.
 	this.cursor = 0;
 	this.metadataCursor = 0;
-	// Adjustment used to convert between linear model offsets in the original linear model and
-	// in the half-updated linear model.
+	// Adjustment that needs to be added to linear model offsets in the original linear model
+	// to get offsets in the half-updated linear model. This is needed when queueing modifications
+	// after other modifications that will cause offsets to shift.
 	this.adjustment = 0;
 	// Set and clear are sets of annotations which should be added or removed to content being
 	// inserted or retained.
@@ -5512,6 +5613,9 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 };
 
 /* Static members */
+
+/* See ve.dm.TransactionProcessor.modifiers */
+ve.dm.TransactionProcessor.modifiers = {};
 
 /* See ve.dm.TransactionProcessor.processors */
 ve.dm.TransactionProcessor.processors = {};
@@ -5543,17 +5647,6 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
 };
 
 /**
- * Advance the main data cursor.
- *
- * @method
- * @param {number} increment Number of positions to increment the cursor by
- */
-ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
-	this.cursor += increment;
-	this.metadataCursor = 0;
-};
-
-/**
  * Process all operations.
  *
  * When all operations are done being processed, the document will be synchronized.
@@ -5564,19 +5657,99 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
 ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler ) {
 	var op;
 
+	// First process each operation to gather modifications in the modification queue.
+	// If an exception occurs during this stage, we don't need to do anything to recover,
+	// because no modifications were made yet.
+	this.operationIndex = 0;
 	// This loop is factored this way to allow operations to be skipped over or executed
 	// from within other operations
-	this.operationIndex = 0;
 	while ( ( op = this.nextOperation() ) ) {
 		this.executeOperation( op );
 	}
-	if ( presynchronizeHandler ) {
-		presynchronizeHandler();
-	}
-	this.synchronizer.synchronize( this.transaction );
 
-	// Mark the transaction as committed or rolled back, as appropriate
+	// Apply the queued modifications
+	try {
+		this.applyModifications();
+	} catch ( e ) {
+		// Restore the linear model to its original state
+		this.rollbackModifications();
+		// Rethrow the exception
+		throw e;
+	}
+	// Mark the transaction as committed
 	this.transaction.markAsApplied();
+
+	// Synchronize the node tree for the modifications we just made
+	try {
+		if ( presynchronizeHandler ) {
+			presynchronizeHandler();
+		}
+		this.synchronizer.synchronize( this.transaction );
+	} catch ( e ) {
+		// Restore the linear model to its original state
+		this.rollbackModifications();
+		// The synchronizer may have left the tree in some sort of weird half-baked state,
+		// so rebuild it from scratch
+		this.document.rebuildTree();
+		// Rethrow the exception
+		throw e;
+	}
+
+};
+
+/**
+ * Queue a modification.
+ *
+ * For available method names, see ve.dm.ElementLinearData and ve.dm.MetaLinearData.
+ *
+ * @param {Object} modification Object describing the modification
+ * @param {string} modification.type Name of a method in ve.dm.TransactionProcessor.modifiers
+ * @param {Array} [modification.args] Arguments to pass to this method
+ * @throws {Error} Unrecognized modification type
+ */
+ve.dm.TransactionProcessor.prototype.queueModification = function ( modification ) {
+	if ( typeof ve.dm.TransactionProcessor.modifiers[modification.type] !== 'function' ) {
+		throw new Error( 'Unrecognized modification type ' + modification.type );
+	}
+	this.modificationQueue.push( modification );
+};
+
+/**
+ * Apply all modifications queued through #queueModification, and add their rollback functions
+ * to this.rollbackQueue.
+ */
+ve.dm.TransactionProcessor.prototype.applyModifications = function () {
+	var i, len, modifier, modifications = this.modificationQueue;
+	this.modificationQueue = [];
+	for ( i = 0, len = modifications.length; i < len; i++ ) {
+		modifier = ve.dm.TransactionProcessor.modifiers[modifications[i].type];
+		// Add to the beginning of rollbackQueue, because the most recent change needs to
+		// be undone first
+		this.rollbackQueue.unshift( modifier.apply( this, modifications[i].args || [] ) );
+	}
+};
+
+/**
+ * Roll back all modifications that have been applied so far. This invokes the callbacks returned
+ * by the modifier functions.
+ */
+ve.dm.TransactionProcessor.prototype.rollbackModifications = function () {
+	var i, len, rollbacks = this.rollbackQueue;
+	this.rollbackQueue = [];
+	for ( i = 0, len = rollbacks.length; i < len; i++ ) {
+		rollbacks[i]();
+	}
+};
+
+/**
+ * Advance the main data cursor.
+ *
+ * @method
+ * @param {number} increment Number of positions to increment the cursor by
+ */
+ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
+	this.cursor += increment;
+	this.metadataCursor = 0;
 };
 
 /**
@@ -5605,10 +5778,8 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		}
 	}
 
-	var isElement, annotations, i, iLen, j, jlen, range, selection,
-		dataQueue = [],
-		metadataQueue = [],
-		nodeFactory = this.document.getNodeFactory();
+	var isElement, annotations, i, j, jlen,
+			nodeFactory = this.document.getNodeFactory();
 	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
 		return;
 	}
@@ -5627,9 +5798,9 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		annotations = this.document.data.getAnnotationsFromOffset( i );
 		setAndClear( annotations, this.set, this.clear );
 		// Store annotation indexes in linear model
-		dataQueue.push( {
-			offset: i,
-			annotations: annotations
+		this.queueModification( {
+			type: 'annotateData',
+			args: [ i + this.adjustment, annotations ]
 		} );
 	}
 	// Set/clear annotations on metadata, but not on the edges of the range
@@ -5637,40 +5808,113 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		for ( j = 0, jlen = this.document.metadata.getDataLength( i ); j < jlen; j++ ) {
 			annotations = this.document.metadata.getAnnotationsFromOffsetAndIndex( i, j );
 			setAndClear( annotations, this.set, this.clear );
-			metadataQueue.push( {
-				offset: i,
-				index: j,
-				annotations: annotations
+			this.queueModification( {
+				type: 'annotateMetadata',
+				args: [ i + this.adjustment, j, annotations ]
 			} );
 		}
 	}
 	// Notify the synchronizer
 	if ( this.cursor < to ) {
-		range = new ve.Range( this.cursor, to );
-		selection = this.document.selectNodes(
-			new ve.Range(
-				this.cursor - this.adjustment,
-				to - this.adjustment
-			),
-			'leaves'
-		);
-		this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
+		this.synchronizer.pushAnnotation( new ve.Range( this.cursor + this.adjustment, to + this.adjustment ) );
 	}
-	// Ensure document modification happens last so that exceptions
-	// don't leave the operation partially applied
-	for ( i = 0, iLen = dataQueue.length; i < iLen; i++ ) {
-		this.document.data.setAnnotationsAtOffset(
-			dataQueue[i].offset,
-			dataQueue[i].annotations
-		);
-	}
-	for ( i = 0, iLen = metadataQueue.length; i < iLen; i++ ) {
-		this.document.metadata.setAnnotationsAtOffsetAndIndex(
-			metadataQueue[i].offset,
-			metadataQueue[i].index,
-			metadataQueue[i].annotations
-		);
-	}
+};
+
+/**
+ * Modifier methods.
+ *
+ * Each method executes a specific type of linear model modification and returns a function that
+ * undoes the modification, in case we need to recover the previous linear model state.
+ * Methods are called in the context of a transaction processor, so they work similar to normal
+ * methods on the object.
+ *
+ * @class ve.dm.TransactionProcessor.modifiers
+ * @singleton
+ */
+
+/**
+ * Splice data into / out of the data or metadata array.
+ * @param {string} type 'data' or 'metadata'
+ * @param {number} offset Offset to remove/insert at
+ * @param {number} remove Number of elements to remove
+ * @param {Array} [insert] Elements to insert
+ * @return {Function} Function that undoes the modification
+ */
+ve.dm.TransactionProcessor.modifiers.splice = function ( type, offset, remove, insert ) {
+	insert = insert || [];
+	var data = type === 'metadata' ? this.document.metadata : this.document.data,
+		removed = data.batchSplice( offset, remove, insert );
+	return function () {
+		data.batchSplice( offset, insert.length, removed );
+	};
+};
+
+/**
+ * Splice metadata into / out of the metadata array at a given offset.
+ *
+ * @param {number} offset Offset whose metadata array to modify
+ * @param {number} index Index in that offset's metadata array to remove/insert at
+ * @param {number} remove Number of elements to remove
+ * @param {Array} [insert] Elements to insert
+ * @return {Function} Function that undoes the modification
+ */
+ve.dm.TransactionProcessor.modifiers.spliceMetadataAtOffset = function ( offset, index, remove, insert ) {
+	insert = insert || [];
+	var metadata = this.document.metadata,
+		removed = metadata.spliceMetadataAtOffset( offset, index, remove, insert );
+	return function () {
+		metadata.spliceMetadataAtOffset( offset, index, insert.length, removed );
+	};
+};
+
+/**
+ * Set annotations at a given data offset.
+ *
+ * @param {number} offset Offset in data array
+ * @param {ve.dm.AnnotationSet} annotations New set of annotations; overwrites old set
+ * @return {Function} Function that undoes the modification
+ */
+ve.dm.TransactionProcessor.modifiers.annotateData = function ( offset, annotations ) {
+	var data = this.document.data,
+		oldAnnotations = data.getAnnotationsFromOffset( offset );
+	data.setAnnotationsAtOffset( offset, annotations );
+	return function () {
+		data.setAnnotationsAtOffset( offset, oldAnnotations );
+	};
+};
+
+/**
+ * Set annotations at a given metadata offset and index.
+ *
+ * @param {number} offset Offset to annotate at
+ * @param {number} index Index in that offset's metadata array
+ * @param {ve.dm.AnnotationSet} annotations New set of annotations; overwrites old set
+ * @return {Function} Function that undoes the modification
+ */
+ve.dm.TransactionProcessor.modifiers.annotateMetadata = function ( offset, index, annotations ) {
+	var metadata = this.document.metadata,
+		oldAnnotations = metadata.getAnnotationsFromOffsetAndIndex( offset, index );
+	metadata.setAnnotationsAtOffsetAndIndex( offset, index, annotations );
+	return function () {
+		metadata.setAnnotationsAtOffsetAndIndex( offset, index, oldAnnotations );
+	};
+};
+
+/**
+ * Set an attribute at a given offset.
+ * @param {number} offset Offset in data array
+ * @param {string} key Attribute name
+ * @param {Mixed} value New attribute value
+ * @return {Function} Function that undoes the modification
+ */
+ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, value ) {
+	var data = this.document.data,
+		item = data.getData( offset ),
+		oldValue = item.attributes && item.attributes[key];
+	data.setAttributeAtOffset( offset, key, value );
+	return function () {
+		data.setAttributeAtOffset( offset, key, oldValue );
+	};
 };
 
 /**
@@ -5730,7 +5974,7 @@ ve.dm.TransactionProcessor.processors.retainMetadata = function ( op ) {
  * @throws {Error} Invalid annotation method
  */
 ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
-	var target;
+	var target, annotation;
 	if ( op.method === 'set' ) {
 		target = this.set;
 	} else if ( op.method === 'clear' ) {
@@ -5738,10 +5982,11 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 	} else {
 		throw new Error( 'Invalid annotation method ' + op.method );
 	}
+	annotation = this.document.getStore().value( op.index );
 	if ( op.bias === 'start' ) {
-		target.push( op.annotation );
+		target.push( annotation );
 	} else {
-		target.remove( op.annotation );
+		target.remove( annotation );
 	}
 	// Tree sync is done by applyAnnotations()
 };
@@ -5763,30 +6008,19 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
  * @param {Mixed} op.to New attribute value, or undefined to unset
  */
 ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
-	var element = this.document.data.getData( this.cursor ),
-		to = op.to,
-		from = op.from;
-	if ( element.type === undefined ) {
+	if ( !this.document.data.isElementData( this.cursor ) ) {
 		throw new Error( 'Invalid element error, cannot set attributes on non-element data' );
 	}
-	if ( to === undefined ) {
-		// Clear
-		if ( element.attributes ) {
-			delete element.attributes[op.key];
-		}
-	} else {
-		// Automatically initialize attributes object
-		if ( !element.attributes ) {
-			element.attributes = {};
-		}
-		// Set
-		element.attributes[op.key] = to;
-	}
+	this.queueModification( {
+		type: 'setAttribute',
+		args: [ this.cursor + this.adjustment, op.key, op.to ]
+	} );
 
 	this.synchronizer.pushAttributeChange(
 		this.document.getDocumentNode().getNodeFromOffset( this.cursor + 1 ),
 		op.key,
-		from, to
+		op.from,
+		op.to
 	);
 };
 
@@ -5837,19 +6071,36 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 	if ( removeIsContent && insertIsContent ) {
 		// Content replacement
 		// Update the linear model
-		this.document.data.batchSplice( this.cursor, remove.length, insert );
+		this.queueModification( {
+			type: 'splice',
+			args: [ 'data', this.cursor + this.adjustment, remove.length, insert ]
+		} );
 		// Keep the meta linear model in sync
 		if ( removeMetadata !== undefined ) {
-			this.document.metadata.batchSplice( this.cursor, removeMetadata.length, insertMetadata );
+			this.queueModification( {
+				type: 'splice',
+				args: [
+					'metadata',
+					this.cursor + this.adjustment,
+					removeMetadata.length,
+					insertMetadata
+				]
+			} );
 		} else {
-			this.document.metadata.batchSplice( this.cursor, remove.length, new Array( insert.length ) );
+			this.queueModification( {
+				type: 'splice',
+				args: [
+					'metadata',
+					this.cursor + this.adjustment,
+					remove.length, new Array( insert.length )
+				]
+			} );
 		}
-		this.applyAnnotations( this.cursor + insert.length );
 		// Get the node containing the replaced content
 		selection = this.document.selectNodes(
 			new ve.Range(
-				this.cursor - this.adjustment,
-				this.cursor - this.adjustment + remove.length
+				this.cursor,
+				this.cursor + remove.length
 			),
 			'leaves'
 		);
@@ -5881,8 +6132,9 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 					range.end + this.adjustment + insert.length - remove.length )
 			);
 		}
+
 		// Advance the cursor
-		this.advanceCursor( insert.length );
+		this.advanceCursor( remove.length );
 		this.adjustment += insert.length - remove.length;
 	} else {
 		// Structural replacement
@@ -5898,25 +6150,45 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				opRemoveMetadata = operation.removeMetadata;
 				opInsertMetadata = operation.insertMetadata;
 				// Update the linear model
-				this.document.data.batchSplice( this.cursor, opRemove.length, opInsert );
+				this.queueModification( {
+					type: 'splice',
+					args: [ 'data', this.cursor + this.adjustment, opRemove.length, opInsert ]
+				} );
 				// Keep the meta linear model in sync
 				if ( opRemoveMetadata !== undefined ) {
-					this.document.metadata.batchSplice( this.cursor, opRemoveMetadata.length, opInsertMetadata );
+					this.queueModification( {
+						type: 'splice',
+						args: [
+							'metadata',
+							this.cursor + this.adjustment,
+							opRemoveMetadata.length,
+							opInsertMetadata
+						]
+					} );
 				} else {
-					this.document.metadata.batchSplice( this.cursor, opRemove.length, new Array( opInsert.length ) );
+					this.queueModification( {
+						type: 'splice',
+						args: [
+							'metadata',
+							this.cursor + this.adjustment,
+							opRemove.length,
+							new Array( opInsert.length )
+						]
+					} );
 				}
 				affectedRanges.push( new ve.Range(
-					this.cursor - this.adjustment,
-					this.cursor - this.adjustment + opRemove.length
+					this.cursor,
+					this.cursor + opRemove.length
 				) );
 				prevCursor = this.cursor;
-				this.advanceCursor( opInsert.length );
+				this.advanceCursor( opRemove.length );
+
 				// Paint the removed selection, figure out which nodes were
 				// covered, and add their ranges to the affected ranges list
 				if ( opRemove.length > 0 ) {
 					selection = this.document.selectNodes( new ve.Range(
-						prevCursor - this.adjustment,
-						prevCursor + opRemove.length - this.adjustment
+						prevCursor,
+						prevCursor + opRemove.length
 					), 'siblings' );
 					for ( i = 0; i < selection.length; i++ ) {
 						affectedRanges.push( selection[i].nodeOuterRange );
@@ -5985,6 +6257,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				throw new Error( 'Unbalanced set of replace operations found' );
 			}
 		}
+
 		// From all the affected ranges we have gathered, compute a range that covers all
 		// of them, and rebuild that
 		coveringRange = ve.Range.static.newCoveringRange( affectedRanges );
@@ -6009,11 +6282,11 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
  * @param {Array} op.insert Metadata to insert
  */
 ve.dm.TransactionProcessor.processors.replaceMetadata = function ( op ) {
-	var remove = op.remove,
-		insert = op.insert;
-
-	this.document.spliceMetadata( this.cursor, this.metadataCursor, remove.length, insert );
-	this.metadataCursor += insert.length;
+	this.queueModification( {
+		type: 'spliceMetadataAtOffset',
+		args: [ this.cursor + this.adjustment, this.metadataCursor, op.remove.length, op.insert ]
+	} );
+	this.metadataCursor += op.insert.length;
 };
 
 /*!
@@ -6028,10 +6301,10 @@ ve.dm.TransactionProcessor.processors.replaceMetadata = function ( op ) {
  * @class
  * @constructor
  */
-ve.dm.Transaction = function VeDmTransaction() {
+ve.dm.Transaction = function VeDmTransaction( doc ) {
 	this.operations = [];
-	this.lengthDifference = 0;
 	this.applied = false;
+	this.doc = doc;
 };
 
 /* Static Methods */
@@ -6049,7 +6322,7 @@ ve.dm.Transaction = function VeDmTransaction() {
  */
 ve.dm.Transaction.newFromReplacement = function ( doc, range, data, removeMetadata ) {
 	var endOffset,
-		tx = new ve.dm.Transaction();
+		tx = new ve.dm.Transaction( doc );
 	endOffset = tx.pushRemoval( doc, 0, range, removeMetadata );
 	endOffset = tx.pushInsertion( doc, endOffset, endOffset, data );
 	tx.pushFinalRetain( doc, endOffset );
@@ -6067,7 +6340,7 @@ ve.dm.Transaction.newFromReplacement = function ( doc, range, data, removeMetada
  * @returns {ve.dm.Transaction} Transaction that inserts data
  */
 ve.dm.Transaction.newFromInsertion = function ( doc, offset, data ) {
-	var tx = new ve.dm.Transaction(),
+	var tx = new ve.dm.Transaction( doc ),
 		endOffset = tx.pushInsertion( doc, 0, offset, data );
 	// Retain to end of document, if needed (for completeness)
 	tx.pushFinalRetain( doc, endOffset );
@@ -6100,7 +6373,7 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, data ) {
  * @throws {Error} Invalid range
  */
 ve.dm.Transaction.newFromRemoval = function ( doc, range, removeMetadata ) {
-	var tx = new ve.dm.Transaction(),
+	var tx = new ve.dm.Transaction( doc ),
 		endOffset = tx.pushRemoval( doc, 0, range, removeMetadata );
 	// Retain to end of document, if needed (for completeness)
 	tx.pushFinalRetain( doc, endOffset );
@@ -6201,7 +6474,7 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
 		listMetadata = listMetadata.concat( newDoc.getMetadata( listMerge.newItemRanges[i], true ) );
 	}
 
-	tx = new ve.dm.Transaction();
+	tx = new ve.dm.Transaction( doc );
 
 	if ( offset <= listNodeRange.start ) {
 		// offset is before listNodeRange
@@ -6278,9 +6551,7 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
  * @throws {Error} Cannot set attributes on closing element
  */
 ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
-	var key,
-		oldValue,
-		tx = new ve.dm.Transaction(),
+	var tx = new ve.dm.Transaction( doc ),
 		data = doc.getData();
 	// Verify element exists at offset
 	if ( data[offset].type === undefined ) {
@@ -6292,13 +6563,8 @@ ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
 	}
 	// Retain up to element
 	tx.pushRetain( offset );
-	// Change attribute
-	for ( key in attr ) {
-		oldValue = 'attributes' in data[offset] ? data[offset].attributes[key] : undefined;
-		if ( oldValue !== attr[key] ) {
-			tx.pushReplaceElementAttribute( key, oldValue, attr[key] );
-		}
-	}
+	// Change attributes
+	tx.pushAttributeChanges( attr, data[offset].attributes || {} );
 	// Retain to end of document
 	tx.pushFinalRetain( doc, offset );
 	return tx;
@@ -6319,21 +6585,22 @@ ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
  */
 ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation ) {
 	var covered, type, annotatable,
-		tx = new ve.dm.Transaction(),
+		tx = new ve.dm.Transaction( doc ),
 		data = doc.data,
+		index = doc.getStore().index( annotation ),
 		i = range.start,
 		span = i,
 		on = false,
 		insideContentNode = false,
-		handlesOwnChildrenDepth = 0,
+		ignoreChildrenDepth = 0,
 		nodeFactory = doc.getNodeFactory();
 
 	// Iterate over all data in range, annotating where appropriate
 	while ( i < range.end ) {
 		if ( data.isElementData( i ) ) {
 			type = data.getType( i );
-			if ( nodeFactory.doesNodeHandleOwnChildren( type ) ) {
-				handlesOwnChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
+			if ( nodeFactory.shouldIgnoreChildren( type ) ) {
+				ignoreChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
 			}
 			if ( nodeFactory.isNodeContent( type ) ) {
 				if ( method === 'set' && !nodeFactory.canNodeTakeAnnotationType( type, annotation ) ) {
@@ -6350,8 +6617,8 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 			// Text is always annotatable
 			annotatable = true;
 		}
-		// No annotations if we're inside a handlesOwnChildren
-		annotatable = annotatable && !handlesOwnChildrenDepth;
+		// No annotations if we're inside an ignoreChildren node
+		annotatable = annotatable && !ignoreChildrenDepth;
 		if (
 			!annotatable ||
 			( insideContentNode && !data.isCloseElementData( i ) )
@@ -6359,7 +6626,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 			// Structural element opening or closing, or entering a content node
 			if ( on ) {
 				tx.pushRetain( span );
-				tx.pushStopAnnotating( method, annotation );
+				tx.pushStopAnnotating( method, index );
 				span = 0;
 				on = false;
 			}
@@ -6384,7 +6651,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 				// Skip annotated content
 				if ( on ) {
 					tx.pushRetain( span );
-					tx.pushStopAnnotating( method, annotation );
+					tx.pushStopAnnotating( method, index );
 					span = 0;
 					on = false;
 				}
@@ -6392,7 +6659,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 				// Cover non-annotated content
 				if ( !on ) {
 					tx.pushRetain( span );
-					tx.pushStartAnnotating( method, annotation );
+					tx.pushStartAnnotating( method, index );
 					span = 0;
 					on = true;
 				}
@@ -6406,7 +6673,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 	}
 	tx.pushRetain( span );
 	if ( on ) {
-		tx.pushStopAnnotating( method, annotation );
+		tx.pushStopAnnotating( method, index );
 	}
 	tx.pushFinalRetain( doc, range.end );
 	return tx;
@@ -6424,7 +6691,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
  * @returns {ve.dm.Transaction} Transaction that inserts the metadata elements
  */
 ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newElements ) {
-	var tx = new ve.dm.Transaction(),
+	var tx = new ve.dm.Transaction( doc ),
 		data = doc.metadata,
 		elements = data.getData( offset ) || [];
 
@@ -6461,7 +6728,7 @@ ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newE
  */
 ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
 	var selection,
-		tx = new ve.dm.Transaction(),
+		tx = new ve.dm.Transaction( doc ),
 		data = doc.metadata,
 		elements = data.getData( offset ) || [];
 
@@ -6508,7 +6775,7 @@ ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
  */
 ve.dm.Transaction.newFromMetadataElementReplacement = function ( doc, offset, index, newElement ) {
 	var oldElement,
-		tx = new ve.dm.Transaction(),
+		tx = new ve.dm.Transaction( doc ),
 		data = doc.getMetadata(),
 		elements = data[offset] || [];
 
@@ -6546,7 +6813,7 @@ ve.dm.Transaction.newFromMetadataElementReplacement = function ( doc, offset, in
  */
 ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, attr ) {
 	var i, selected, branch, branchOuterRange,
-		tx = new ve.dm.Transaction(),
+		tx = new ve.dm.Transaction( doc ),
 		selection = doc.selectNodes( range, 'leaves' ),
 		opening = { type: type },
 		closing = { type: '/' + type },
@@ -6563,8 +6830,9 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 		selected = selection[i];
 		branch = selected.node.isContent() ? selected.node.getParent() : selected.node;
 		if ( branch.canContainContent() ) {
-			// Skip branches that are already of the target type and have identical attributes
-			if ( branch.getType() === type && ve.compare( branch.getAttributes(), attr ) ) {
+			// Skip branches that are already of the target type and have all attributes in attr
+			// set already.
+			if ( branch.getType() === type && ve.compare( attr, branch.getAttributes(), true ) ) {
 				continue;
 			}
 			branchOuterRange = branch.getOuterRange();
@@ -6572,16 +6840,25 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 			if ( branch === previousBranch ) {
 				continue;
 			}
+
 			// Retain up to this branch, considering where the previous one left off
 			tx.pushRetain(
 				branchOuterRange.start - ( previousBranch ? previousBranchOuterRange.end : 0 )
 			);
-			// Replace the opening
-			tx.pushReplace( doc, branchOuterRange.start, 1, [ ve.copy( opening ) ] );
-			// Retain the contents
-			tx.pushRetain( branch.getLength() );
-			// Replace the closing
-			tx.pushReplace( doc, branchOuterRange.end - 1, 1, [ ve.copy( closing ) ] );
+			if ( branch.getType() === type ) {
+				// Same type, different attributes, so we only need an attribute change
+				tx.pushAttributeChanges( attr, branch.getAttributes() );
+				// Retain the branch, including its opening and closing
+				tx.pushRetain( branch.getOuterLength() );
+			} else {
+				// Types differ, so we need to replace the opening and closing
+				// Replace the opening
+				tx.pushReplace( doc, branchOuterRange.start, 1, [ ve.copy( opening ) ] );
+				// Retain the contents
+				tx.pushRetain( branch.getLength() );
+				// Replace the closing
+				tx.pushReplace( doc, branchOuterRange.end - 1, 1, [ ve.copy( closing ) ] );
+			}
 			// Remember this branch and its range for next time
 			previousBranch = branch;
 			previousBranchOuterRange = branchOuterRange;
@@ -6627,7 +6904,7 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
  */
 ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
 	var i, j, unwrapOuterData, startOffset, unwrapEachData, closingUnwrapEach, closingWrapEach,
-		tx = new ve.dm.Transaction(),
+		tx = new ve.dm.Transaction( doc ),
 		depth = 0;
 
 	// Function to generate arrays of closing elements in reverse order
@@ -6769,7 +7046,6 @@ ve.dm.Transaction.reversers = {
 ve.dm.Transaction.prototype.clone = function () {
 	var tx = new this.constructor();
 	tx.operations = ve.copy( this.operations );
-	tx.lengthDifference = this.lengthDifference;
 	return tx;
 };
 
@@ -6797,7 +7073,6 @@ ve.dm.Transaction.prototype.reversed = function () {
 		}
 		tx.operations.push( newOp );
 	}
-	tx.lengthDifference = -this.lengthDifference;
 	return tx;
 };
 
@@ -6831,6 +7106,16 @@ ve.dm.Transaction.prototype.isNoOp = function () {
  */
 ve.dm.Transaction.prototype.getOperations = function () {
 	return this.operations;
+};
+
+/**
+ * Get the document the transaction was created for.
+ *
+ * @method
+ * @returns {ve.dm.Document} Document
+ */
+ve.dm.Transaction.prototype.getDocument = function () {
+	return this.doc;
 };
 
 /**
@@ -6877,16 +7162,6 @@ ve.dm.Transaction.prototype.hasElementAttributeOperations = function () {
  */
 ve.dm.Transaction.prototype.hasAnnotationOperations = function () {
 	return this.hasOperationWithType( 'annotate' );
-};
-
-/**
- * Get the difference in content length the transaction will cause if applied.
- *
- * @method
- * @returns {number} Difference in content length
- */
-ve.dm.Transaction.prototype.getLengthDifference = function () {
-	return this.lengthDifference;
 };
 
 /**
@@ -7175,7 +7450,6 @@ ve.dm.Transaction.prototype.pushReplaceInternal = function ( remove, insert, rem
 		op.insertedDataLength = insertedDataLength;
 	}
 	this.operations.push( op );
-	this.lengthDifference += insert.length - remove.length;
 };
 
 /**
@@ -7264,7 +7538,6 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 		!( mergedMetadata.length > 0 && insertMetadata !== undefined && !isInsertEmpty )
 	) {
 		lastOp = this.operations.pop();
-		this.lengthDifference -= lastOp.insert.length - lastOp.remove.length;
 		this.pushReplace(
 			doc,
 			offset - lastOp.remove.length,
@@ -7292,7 +7565,6 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 		( insertMetadata === undefined || extraMetadata )
 	) {
 		lastOp = this.operations.pop();
-		this.lengthDifference -= lastOp.insert.length - lastOp.remove.length;
 		this.pushReplace(
 			doc,
 			offset - lastOp.remove.length,
@@ -7353,18 +7625,33 @@ ve.dm.Transaction.prototype.pushReplaceElementAttribute = function ( key, from, 
 };
 
 /**
+ * Add a series of element attribute change operations.
+ *
+ * @param {Object} changes Object mapping attribute names to new values
+ * @param {Object} oldAttrs Object mapping attribute names to old values
+ */
+ve.dm.Transaction.prototype.pushAttributeChanges = function ( changes, oldAttrs ) {
+	var key;
+	for ( key in changes ) {
+		if ( oldAttrs[key] !== changes[key] ) {
+			this.pushReplaceElementAttribute( key, oldAttrs[key], changes[key] );
+		}
+	}
+};
+
+/**
  * Add a start annotating operation.
  *
  * @method
  * @param {string} method Method to use, either "set" or "clear"
- * @param {Object} annotation Annotation object to start setting or clearing from content data
+ * @param {Object} index Store index of annotation object to start setting or clearing from content data
  */
-ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation ) {
+ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, index ) {
 	this.operations.push( {
 		type: 'annotate',
 		method: method,
 		bias: 'start',
-		annotation: annotation
+		index: index
 	} );
 };
 
@@ -7373,14 +7660,14 @@ ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation 
  *
  * @method
  * @param {string} method Method to use, either "set" or "clear"
- * @param {Object} annotation Annotation object to stop setting or clearing from content data
+ * @param {Object} index Store index of annotation object to stop setting or clearing from content data
  */
-ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, annotation ) {
+ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, index ) {
 	this.operations.push( {
 		type: 'annotate',
 		method: method,
 		bias: 'stop',
-		annotation: annotation
+		index: index
 	} );
 };
 
@@ -7446,9 +7733,17 @@ ve.dm.Transaction.prototype.pushRemoval = function ( doc, currentOffset, range, 
 			removeEnd = last.nodeOuterRange.end;
 		} else {
 			// Either the first node or the last node is partially covered, so remove
-			// the selected content
-			removeStart = ( first.range || first.nodeRange ).start;
-			removeEnd = ( last.range || last.nodeRange ).end;
+			// the selected content. The other node might be fully covered, in which case
+			// we remove its contents (nodeRange). For fully covered content nodes, we must
+			// remove the entire node (nodeOuterRange).
+			removeStart = (
+				first.range ||
+				( first.node.isContent() ? first.nodeOuterRange : first.nodeRange )
+			).start;
+			removeEnd = (
+				last.range ||
+				( last.node.isContent() ? last.nodeOuterRange : last.nodeRange )
+			).end;
 		}
 		this.pushRetain( removeStart - currentOffset );
 		this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
@@ -7696,637 +7991,6 @@ ve.dm.Selection.prototype.equals = function () {
 /* Factory */
 
 ve.dm.selectionFactory = new OO.Factory();
-
-/*!
- * VisualEditor Text Selection class.
- *
- * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
- */
-
-/**
- * @class
- * @extends ve.dm.Selection
- * @constructor
- * @param {ve.dm.Document} doc Document
- * @param {ve.Range} range Range
- */
-ve.dm.LinearSelection = function VeDmLinearSelection( doc, range ) {
-	// Parent constructor
-	ve.dm.LinearSelection.super.call( this, doc );
-
-	this.range = range;
-};
-
-/* Inheritance */
-
-OO.inheritClass( ve.dm.LinearSelection, ve.dm.Selection );
-
-/* Static Properties */
-
-ve.dm.LinearSelection.static.name = 'linear';
-
-/* Static Methods */
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.static.newFromHash = function ( doc, hash ) {
-	return new ve.dm.LinearSelection( doc, ve.Range.static.newFromHash( hash.range ) );
-};
-
-/* Methods */
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.prototype.toJSON = function () {
-	return {
-		type: this.constructor.static.name,
-		range: this.range
-	};
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.prototype.getDescription = function () {
-	return 'Linear: ' + this.range.from + ' - ' + this.range.to;
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.prototype.clone = function () {
-	return new this.constructor( this.getDocument(), this.getRange() );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.prototype.collapseToStart = function () {
-	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().start ) );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.prototype.collapseToEnd = function () {
-	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().end ) );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.prototype.collapseToFrom = function () {
-	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().from ) );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.prototype.collapseToTo = function () {
-	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().to ) );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.prototype.isCollapsed = function () {
-	return this.getRange().isCollapsed();
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.Selection.prototype.translateByTransaction = function ( tx, excludeInsertion ) {
-	return new this.constructor( this.getDocument(), tx.translateRange( this.getRange(), excludeInsertion ) );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.prototype.getRanges = function () {
-	return [this.range];
-};
-
-/**
- * Get the range for this selection
- *
- * @returns {ve.Range} Range
- */
-ve.dm.LinearSelection.prototype.getRange = function () {
-	return this.range;
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.LinearSelection.prototype.equals = function ( other ) {
-	return other instanceof ve.dm.LinearSelection &&
-		this.getDocument() === other.getDocument() &&
-		this.getRange().equals( other.getRange() );
-};
-
-/* Registration */
-
-ve.dm.selectionFactory.register( ve.dm.LinearSelection );
-
-/*!
- * VisualEditor Null Selection class.
- *
- * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
- */
-
-/**
- * @class
- * @extends ve.dm.Selection
- * @constructor
- */
-ve.dm.NullSelection = function VeDmNullSelection( doc ) {
-	// Parent constructor
-	ve.dm.NullSelection.super.call( this, doc );
-};
-
-/* Inheritance */
-
-OO.inheritClass( ve.dm.NullSelection, ve.dm.Selection );
-
-/* Static Properties */
-
-ve.dm.NullSelection.static.name = 'null';
-
-/* Static Methods */
-
-/**
- * @inheritdoc
- */
-ve.dm.NullSelection.static.newFromHash = function ( doc ) {
-	return new ve.dm.NullSelection( doc );
-};
-
-/* Methods */
-
-/**
- * @inheritdoc
- */
-ve.dm.NullSelection.prototype.toJSON = function () {
-	return {
-		type: this.constructor.static.name
-	};
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.NullSelection.prototype.getDescription = function () {
-	return 'Null';
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.NullSelection.prototype.clone = function () {
-	return new this.constructor( this.getDocument() );
-};
-
-ve.dm.NullSelection.prototype.collapseToStart = ve.dm.NullSelection.prototype.clone;
-
-ve.dm.NullSelection.prototype.collapseToEnd = ve.dm.NullSelection.prototype.clone;
-
-ve.dm.NullSelection.prototype.collapseToFrom = ve.dm.NullSelection.prototype.clone;
-
-ve.dm.NullSelection.prototype.collapseToTo = ve.dm.NullSelection.prototype.clone;
-
-/**
- * @inheritdoc
- */
-ve.dm.NullSelection.prototype.isCollapsed = function () {
-	return true;
-};
-
-ve.dm.NullSelection.prototype.translateByTransaction = ve.dm.NullSelection.prototype.clone;
-
-/**
- * @inheritdoc
- */
-ve.dm.NullSelection.prototype.getRanges = function () {
-	return [];
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.NullSelection.prototype.equals = function ( other ) {
-	return other instanceof ve.dm.NullSelection &&
-		this.getDocument() === other.getDocument();
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.NullSelection.prototype.isNull = function () {
-	return true;
-};
-
-/* Registration */
-
-ve.dm.selectionFactory.register( ve.dm.NullSelection );
-
-/*!
- * VisualEditor Table Selection class.
- *
- * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
- */
-
-/**
- * @class
- * @extends ve.dm.Selection
- * @constructor
- * @param {ve.dm.Document} doc Document model
- * @param {ve.Range} tableRange Table range
- * @param {number} fromCol Starting column
- * @param {number} fromRow Starting row
- * @param {number} [toCol] End column
- * @param {number} [toRow] End row
- * @param {boolean} [expand] Expand the selection to include merged cells
- */
-ve.dm.TableSelection = function VeDmTableSelection( doc, tableRange, fromCol, fromRow, toCol, toRow, expand ) {
-	// Parent constructor
-	ve.dm.TableSelection.super.call( this, doc );
-
-	this.tableRange = tableRange;
-	this.tableNode = null;
-
-	toCol = toCol === undefined ? fromCol : toCol;
-	toRow = toRow === undefined ? fromRow : toRow;
-
-	this.fromCol = fromCol;
-	this.fromRow = fromRow;
-	this.toCol = toCol;
-	this.toRow = toRow;
-	this.startCol = fromCol < toCol ? fromCol : toCol;
-	this.startRow = fromRow < toRow ? fromRow : toRow;
-	this.endCol = fromCol < toCol ? toCol : fromCol;
-	this.endRow = fromRow < toRow ? toRow : fromRow;
-	this.intendedFromCol = this.fromCol;
-	this.intendedFromRow = this.fromRow;
-	this.intendedToCol = this.toCol;
-	this.intendedToRow = this.toRow;
-
-	if ( expand ) {
-		this.expand();
-	}
-};
-
-/* Inheritance */
-
-OO.inheritClass( ve.dm.TableSelection, ve.dm.Selection );
-
-/* Static Properties */
-
-ve.dm.TableSelection.static.name = 'table';
-
-/* Static Methods */
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.static.newFromHash = function ( doc, hash ) {
-	return new ve.dm.TableSelection(
-		doc,
-		ve.Range.static.newFromHash( hash.tableRange ),
-		hash.fromCol,
-		hash.fromRow,
-		hash.toCol,
-		hash.toRow
-	);
-};
-
-/* Methods */
-
-/**
- * Expand the selection to cover all merged cells
- *
- * @private
- */
-ve.dm.TableSelection.prototype.expand = function () {
-	var cell, i,
-		lastCellCount = 0,
-		startCol = Infinity,
-		startRow = Infinity,
-		endCol = -Infinity,
-		endRow = -Infinity,
-		colBackwards = this.fromCol > this.toCol,
-		rowBackwards = this.fromRow > this.toRow,
-		cells = this.getMatrixCells();
-
-	while ( cells.length > lastCellCount ) {
-		for ( i = 0; i < cells.length; i++ ) {
-			cell = cells[i];
-			startCol = Math.min( startCol, cell.col );
-			startRow = Math.min( startRow, cell.row );
-			endCol = Math.max( endCol, cell.col + cell.node.getColspan() - 1 );
-			endRow = Math.max( endRow, cell.row + cell.node.getRowspan() - 1 );
-		}
-		this.startCol = startCol;
-		this.startRow = startRow;
-		this.endCol = endCol;
-		this.endRow = endRow;
-		this.fromCol = colBackwards ? endCol : startCol;
-		this.fromRow = rowBackwards ? endRow : startRow;
-		this.toCol = colBackwards ? startCol : endCol;
-		this.toRow = rowBackwards ? startRow : endRow;
-
-		lastCellCount = cells.length;
-		cells = this.getMatrixCells();
-	}
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.clone = function () {
-	return new this.constructor( this.getDocument(), this.tableRange, this.fromCol, this.fromRow, this.toCol, this.toRow );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.toJSON = function () {
-	return {
-		type: this.constructor.static.name,
-		tableRange: this.tableRange,
-		fromCol: this.fromCol,
-		fromRow: this.fromRow,
-		toCol: this.toCol,
-		toRow: this.toRow
-	};
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.getDescription = function () {
-	return (
-		'Table: ' +
-		this.tableRange.from + ' - ' + this.tableRange.to +
-		', ' +
-		'c' + this.fromCol + ' r' + this.fromRow +
-		' - ' +
-		'c' + this.toCol + ' r' + this.toRow
-	);
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.collapseToStart = function () {
-	return new this.constructor( this.getDocument(), this.tableRange, this.startCol, this.startRow, this.startCol, this.startRow );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.collapseToEnd = function () {
-	return new this.constructor( this.getDocument(), this.tableRange, this.endCol, this.endRow, this.endCol, this.endRow );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.collapseToFrom = function () {
-	return new this.constructor( this.getDocument(), this.tableRange, this.fromCol, this.fromRow, this.fromCol, this.fromRow );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.collapseToTo = function () {
-	return new this.constructor( this.getDocument(), this.tableRange, this.toCol, this.toRow, this.toCol, this.toRow );
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.getRanges = function () {
-	var i, l, ranges = [],
-		cells = this.getMatrixCells();
-	for ( i = 0, l = cells.length; i < l; i++ ) {
-		ranges.push( cells[i].node.getRange() );
-	}
-	return ranges;
-};
-
-/**
- * Get outer ranges of the selected cells
- *
- * @return {ve.Range[]} Outer ranges
- */
-ve.dm.TableSelection.prototype.getOuterRanges = function () {
-	var i, l, ranges = [],
-		cells = this.getMatrixCells();
-	for ( i = 0, l = cells.length; i < l; i++ ) {
-		ranges.push( cells[i].node.getOuterRange() );
-	}
-	return ranges;
-};
-
-/**
- * Retrieves all cells (no placeholders) within a given selection.
- *
- * @param {boolean} [includePlaceholders] Include placeholders in result
- * @returns {ve.dm.TableMatrixCell[]} List of table cells
- */
-ve.dm.TableSelection.prototype.getMatrixCells = function ( includePlaceholders ) {
-	var row, col, cell,
-		matrix = this.getTableNode().getMatrix(),
-		cells = [],
-		visited = {};
-
-	for ( row = this.startRow; row <= this.endRow; row++ ) {
-		for ( col = this.startCol; col <= this.endCol; col++ ) {
-			cell = matrix.getCell( row, col );
-			if ( !cell ) {
-				continue;
-			}
-			if ( !includePlaceholders && cell.isPlaceholder() ) {
-				cell = cell.owner;
-			}
-			if ( !visited[cell.key] ) {
-				cells.push( cell );
-				visited[cell.key] = true;
-			}
-		}
-	}
-	return cells;
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.isCollapsed = function () {
-	return false;
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.translateByTransaction = function ( tx, excludeInsertion ) {
-	var newRange = tx.translateRange( this.tableRange, excludeInsertion );
-
-	if ( newRange.isCollapsed() ) {
-		return new ve.dm.NullSelection( this.getDocument() );
-	}
-	return new this.constructor(
-		this.getDocument(), newRange,
-		this.fromCol, this.fromRow, this.toCol, this.toRow
-	);
-};
-
-/**
- * Check if the selection spans a single cell
- * @return {boolean} The selection spans a single cell
- */
-ve.dm.TableSelection.prototype.isSingleCell = function () {
-	if (
-		// Quick check for single non-merged cell
-		( this.fromRow === this.toRow && this.fromCol === this.toCol ) ||
-		// Check for a merged single cell by ignoring placeholders
-		this.getMatrixCells().length === 1
-	) {
-		return true;
-	}
-};
-
-/**
- * Get the selection's table node
- *
- * @return {ve.dm.TableNode} Table node
- */
-ve.dm.TableSelection.prototype.getTableNode = function () {
-	if ( !this.tableNode ) {
-		this.tableNode = this.getDocument().getBranchNodeFromOffset( this.tableRange.start + 1 );
-	}
-	return this.tableNode;
-};
-
-/**
- * Clone this selection with adjusted row and column positions
- *
- * Placeholder cells are skipped over so this method can be used for cursoring.
- *
- * @param {number} fromColOffset Starting column offset
- * @param {number} fromRowOffset Starting row offset
- * @param {number} [toColOffset] End column offset
- * @param {number} [toRowOffset] End row offset
- * @return {ve.dm.TableSelection} Adjusted selection
- */
-ve.dm.TableSelection.prototype.newFromAdjustment = function ( fromColOffset, fromRowOffset, toColOffset, toRowOffset ) {
-	var fromCell, toCell,
-		matrix = this.getTableNode().getMatrix();
-
-	if ( toColOffset === undefined ) {
-		toColOffset = fromColOffset;
-	}
-
-	if ( toRowOffset === undefined ) {
-		toRowOffset = fromRowOffset;
-	}
-
-	function adjust( mode, cell, offset ) {
-		var nextCell,
-			col = cell.col,
-			row = cell.row,
-			dir = offset > 0 ? 1 : -1;
-
-		while ( offset !== 0 ) {
-			if ( mode === 'col' ) {
-				col += dir;
-				if ( col >= matrix.getColCount( row ) || col < 0 ) {
-					// Out of bounds
-					break;
-				}
-			} else {
-				row += dir;
-				if ( row >= matrix.getRowCount() || row < 0 ) {
-					// Out of bounds
-					break;
-				}
-			}
-			nextCell = matrix.getCell( row, col );
-			// Skip if same as current cell (i.e. merged cells), or null
-			if ( !nextCell || nextCell.equals( cell ) ) {
-				continue;
-			}
-			offset -= dir;
-			cell = nextCell;
-		}
-		return cell;
-	}
-
-	fromCell = matrix.getCell( this.intendedFromRow, this.intendedFromCol );
-	if ( fromColOffset ) {
-		fromCell = adjust( 'col', fromCell, fromColOffset );
-	}
-	if ( fromRowOffset ) {
-		fromCell = adjust( 'row', fromCell, fromRowOffset );
-	}
-
-	toCell = matrix.getCell( this.intendedToRow, this.intendedToCol );
-	if ( toColOffset ) {
-		toCell = adjust( 'col', toCell, toColOffset );
-	}
-	if ( toRowOffset ) {
-		toCell = adjust( 'row', toCell, toRowOffset );
-	}
-
-	return new this.constructor(
-		this.getDocument(),
-		this.tableRange,
-		fromCell.col,
-		fromCell.row,
-		toCell.col,
-		toCell.row,
-		true
-	);
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.TableSelection.prototype.equals = function ( other ) {
-	return other instanceof ve.dm.TableSelection &&
-		this.getDocument() === other.getDocument() &&
-		this.tableRange.equals( other.tableRange ) &&
-		this.fromCol === other.fromCol &&
-		this.fromRow === other.fromRow &&
-		this.toCol === other.toCol &&
-		this.toRow === other.toRow;
-};
-
-/**
- * Check if the table selection covers one or more full rows
- *
- * @return {boolean} The table selection covers one or more full rows
- */
-ve.dm.TableSelection.prototype.isFullRow = function () {
-	var matrix = this.getTableNode().getMatrix();
-	return this.endCol - this.startCol === matrix.getColCount() - 1;
-};
-
-/**
- * Check if the table selection covers one or more full columns
- *
- * @return {boolean} The table selection covers one or more full columns
- */
-ve.dm.TableSelection.prototype.isFullCol = function () {
-	var matrix = this.getTableNode().getMatrix();
-	return this.endRow - this.startRow === matrix.getRowCount() - 1;
-};
-
-/* Registration */
-
-ve.dm.selectionFactory.register( ve.dm.TableSelection );
 
 /*!
  * VisualEditor DataModel Surface class.
@@ -9589,12 +9253,12 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type )
 		case 'word':
 			if ( !oldRange.isCollapsed() ) {
 				newRange = ve.Range.static.newCoveringRange( [
-					this.document.data.getNearestWordRange( oldRange.start ),
-					this.document.data.getNearestWordRange( oldRange.end )
+					this.document.data.getWordRange( oldRange.start ),
+					this.document.data.getWordRange( oldRange.end )
 				], oldRange.isBackwards() );
 			} else {
 				// optimisation for zero-length ranges
-				newRange = this.document.data.getNearestWordRange( oldRange.start );
+				newRange = this.document.data.getWordRange( oldRange.start );
 			}
 			break;
 		case 'annotation':
@@ -9627,8 +9291,13 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type )
 			break;
 		case 'closest':
 			// Grow range to cover closest common ancestor node of given type
-			node = this.document.selectNodes( oldRange, 'siblings' )[0].node;
-			parent = node.getParent();
+			nodes = this.document.selectNodes( oldRange, 'siblings' );
+			// If the range covered the entire node check that node
+			if ( nodes[0].nodeRange.equalsSelection( oldRange ) && nodes[0].node instanceof type ) {
+				newRange = nodes[0].nodeOuterRange;
+				break;
+			}
+			parent = nodes[0].node.getParent();
 			while ( parent && !( parent instanceof type ) ) {
 				node = parent;
 				parent = parent.getParent();
@@ -10083,7 +9752,6 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
 		return this;
 	}
-
 	var rangeAfterRemove,
 		tx, startNode, endNode, endNodeData, nodeToDelete, isResilient, root,
 		rangeToRemove = this.getSelection( true ).getRange();
@@ -10165,7 +9833,6 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 				}
 			}
 		}
-		rangeAfterRemove = new ve.Range( rangeAfterRemove.start );
 	}
 
 	// insert an empty paragraph if the document is empty after all
@@ -10182,13 +9849,14 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 	}
 
 	// rangeAfterRemove is now guaranteed to be collapsed so make sure that it is a content offset
-	if ( !this.document.data.isContentOffset( rangeAfterRemove.start ) ) {
-		rangeAfterRemove = this.document.getRelativeRange(
-			rangeAfterRemove,
+	rangeAfterRemove = new ve.Range(
+		this.document.data.getNearestContentOffset(
+			rangeAfterRemove.start,
 			// If undefined (e.g. cut), default to backwards movement
 			directionAfterDelete || -1
-		);
-	}
+		)
+	);
+
 	this.change( [], new ve.dm.LinearSelection( this.getDocument(), rangeAfterRemove ) );
 
 	return this;
@@ -10574,7 +10242,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	// Find start split point, if required
 	startSplitNode = nodes[0].node;
 	startOffset = startSplitNode.getOuterRange().start;
-	while ( allowedParents !== null && ve.indexOf( startSplitNode.getParent().type, allowedParents ) === -1 ) {
+	while ( allowedParents !== null && allowedParents.indexOf( startSplitNode.getParent().type ) === -1 ) {
 		if ( startSplitNode.getParent().indexOf( startSplitNode ) > 0 ) {
 			startSplitRequired = true;
 		}
@@ -10590,7 +10258,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	// Find end split point, if required
 	endSplitNode = nodes[nodes.length - 1].node;
 	endOffset = endSplitNode.getOuterRange().end;
-	while ( allowedParents !== null && ve.indexOf( endSplitNode.getParent().type, allowedParents ) === -1 ) {
+	while ( allowedParents !== null && allowedParents.indexOf( endSplitNode.getParent().type ) === -1 ) {
 		if ( endSplitNode.getParent().indexOf( endSplitNode ) < endSplitNode.getParent().getChildren().length - 1 ) {
 			endSplitRequired = true;
 		}
@@ -10922,9 +10590,7 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 			if ( this.data.isOpenElementData( i ) ) {
 				// Branch or leaf node opening
 				// Create a childless node
-				node = nodeFactory.create(
-					this.data.getType( i ), this.data.getData( i )
-				);
+				node = nodeFactory.createFromElement( this.data.getData( i ) );
 				node.setDocument( doc );
 				// Put the childless node on the current inner stack
 				currentStack.push( node );
@@ -10933,23 +10599,31 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 					parentStack = currentStack;
 					currentStack = [];
 					nodeStack.push( currentStack );
+					currentNode = node;
+				} else {
+					// Assert that the next element is a closing element for this node,
+					// and skip over it.
+					if (
+						!this.data.isCloseElementData( i + 1 ) ||
+						this.data.getType( i + 1 ) !== this.data.getType( i )
+					) {
+						throw new Error( 'Opening element for node that cannot have children must be followed by closing element' );
+					}
+					i++;
 				}
-				currentNode = node;
 			} else {
 				// Branch or leaf node closing
-				if ( nodeFactory.canNodeHaveChildren( currentNode.getType() ) ) {
-					// Pop this node's inner stack from the outer stack. It'll have all of the
-					// node's child nodes fully constructed
-					children = nodeStack.pop();
-					currentStack = parentStack;
-					parentStack = nodeStack[nodeStack.length - 2];
-					if ( !parentStack ) {
-						// This can only happen if we got unbalanced data
-						throw new Error( 'Unbalanced input passed to document' );
-					}
-					// Attach the children to the node
-					ve.batchSplice( currentNode, 0, 0, children );
+				// Pop this node's inner stack from the outer stack. It'll have all of the
+				// node's child nodes fully constructed
+				children = nodeStack.pop();
+				currentStack = parentStack;
+				parentStack = nodeStack[nodeStack.length - 2];
+				if ( !parentStack ) {
+					// This can only happen if we got unbalanced data
+					throw new Error( 'Unbalanced input passed to document' );
 				}
+				// Attach the children to the node
+				ve.batchSplice( currentNode, 0, 0, children );
 				currentNode = parentStack[parentStack.length - 1];
 			}
 		}
@@ -11219,29 +10893,6 @@ ve.dm.Document.prototype.cloneFromRange = function ( range ) {
 	newDoc.origDoc = this;
 	newDoc.origInternalListLength = this.internalList.getItemNodeCount();
 	return newDoc;
-};
-
-/**
- * Splice metadata into and/or out of the linear model.
- *
- * `this.metadata` will be updated accordingly.
- *
- * @method
- * @see ve#batchSplice
- * @param offset
- * @param index
- * @param remove
- * @param insert
- * @returns {Array}
- */
-ve.dm.Document.prototype.spliceMetadata = function ( offset, index, remove, insert ) {
-	var elements = this.metadata.getData( offset );
-	if ( !elements ) {
-		elements = [];
-		this.metadata.setData( offset, elements );
-	}
-	insert = insert || [];
-	return ve.batchSplice( elements, index, remove, insert );
 };
 
 /**
@@ -11543,6 +11194,20 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
 };
 
 /**
+ * Rebuild the entire node tree from linear model data.
+ */
+ve.dm.Document.prototype.rebuildTree = function () {
+	var documentNode = this.getDocumentNode();
+	this.rebuildNodes(
+		documentNode,
+		0,
+		documentNode.getChildren().length,
+		0,
+		this.data.getLength()
+	);
+};
+
+/**
  * Fix up data so it can safely be inserted into the document data at an offset.
  *
  * TODO: this function needs more work but it seems to work, mostly
@@ -11730,7 +11395,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 			do {
 				allowedParents = nodeFactory.getParentNodeTypes( childType );
 				parentsOK = allowedParents === null ||
-					ve.indexOf( parentType, allowedParents ) !== -1;
+					allowedParents.indexOf( parentType ) !== -1;
 				if ( !parentsOK ) {
 					// We can't have this as the parent
 					if ( allowedParents.length === 0 ) {
@@ -11748,7 +11413,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 			do {
 				allowedChildren = nodeFactory.getChildNodeTypes( parentType );
 				childrenOK = allowedChildren === null ||
-					ve.indexOf( childType, allowedChildren ) !== -1;
+					allowedChildren.indexOf( childType ) !== -1;
 				// Also check if we're trying to insert structure into a node that has to contain
 				// content
 				childrenOK = childrenOK && !(
@@ -11772,17 +11437,17 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 						// The opening was on openingStack, so we're closing a node that was opened
 						// within data. Don't track that on closingStack
 					} else {
+						if ( !parentNode.getParent() ) {
+							throw new Error( 'Cannot insert ' + childType + ' even ' +
+								' after closing all containing nodes ' +
+								'(at index ' + i + ')' );
+						}
 						// openingStack is empty, so we're closing a node that was already in the
 						// document. This means we have to reopen it later, so track this on
 						// closingStack
 						closingStack.push( parentNode );
 						reopenElements.push( parentNode.getClonedElement() );
 						parentNode = parentNode.getParent();
-						if ( !parentNode ) {
-							throw new Error( 'Cannot insert ' + childType + ' even ' +
-								' after closing all containing nodes ' +
-								'(at index ' + i + ')' );
-						}
 						parentType = parentNode.getType();
 					}
 				}
@@ -13083,7 +12748,7 @@ ve.dm.Converter.prototype.isValidChildNodeType = function ( nodeType ) {
 		return null;
 	}
 	childTypes = this.nodeFactory.getChildNodeTypes( context.branchType );
-	return ( childTypes === null || ve.indexOf( nodeType, childTypes ) !== -1 );
+	return ( childTypes === null || childTypes.indexOf( nodeType ) !== -1 );
 };
 
 /**
@@ -13168,6 +12833,7 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
 	if ( !Array.isArray( dataElements ) ) {
 		dataElements = [ dataElements ];
 	}
+	dataElements[0].originalDomElements = domElements;
 	return dataElements;
 };
 
@@ -13461,13 +13127,9 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					modelClass = this.modelRegistry.lookup( childDataElements[0].type );
 				}
 
-				if ( childDataElements && childDataElements[0] ) {
-					childDataElements[0].originalDomElements = childNodes;
-				}
-
 				// Now take the appropriate action based on that
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
-					annotation = this.annotationFactory.create( modelName, childDataElements[0] );
+					annotation = this.annotationFactory.createFromElement( childDataElements[0] );
 					// Start wrapping if needed
 					if ( !context.inWrapper && !context.expectingContent ) {
 						startWrapping();
@@ -13891,7 +13553,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, 
  * @throws Unbalanced data: looking for closing /type
  */
 ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, innerWhitespace ) {
-	var text, i, j, isStart, annotations, dataElement, dataElementOrSlice,
+	var text, i, j, isStart, annotations, dataElement, dataElementOrSlice, oldLastOuterPost,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, isContentNode, sibling,
 		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
 		dataLen = data.length,
@@ -14107,6 +13769,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				}
 				// Process whitespace
 				// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
+				oldLastOuterPost = parentDomElement.lastOuterPost;
 				if (
 					!isContentNode &&
 					domElement.veInternal &&
@@ -14219,11 +13882,19 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 					}
 				}
 				if ( doUnwrap ) {
-					while ( domElement.firstChild ) {
-						parentDomElement.insertBefore(
-							domElement.firstChild,
-							domElement
-						);
+					if ( domElement.childNodes.length ) {
+						// If domElement has children, append them to parentDomElement
+						while ( domElement.firstChild ) {
+							parentDomElement.insertBefore(
+								domElement.firstChild,
+								domElement
+							);
+						}
+					} else {
+						// If domElement has no children, it's as if it was never there at all,
+						// so set lastOuterPost back to what it was, except that we need to
+						// change undefined to '' , since undefined means there were no children.
+						parentDomElement.lastOuterPost = oldLastOuterPost || '';
 					}
 					parentDomElement.removeChild( domElement );
 				}
@@ -14352,6 +14023,633 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 ve.dm.converter = new ve.dm.Converter( ve.dm.modelRegistry, ve.dm.nodeFactory, ve.dm.annotationFactory, ve.dm.metaItemFactory );
 
 /*!
+ * VisualEditor Linear Selection class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * @class
+ * @extends ve.dm.Selection
+ * @constructor
+ * @param {ve.dm.Document} doc Document
+ * @param {ve.Range} range Range
+ */
+ve.dm.LinearSelection = function VeDmLinearSelection( doc, range ) {
+	// Parent constructor
+	ve.dm.LinearSelection.super.call( this, doc );
+
+	this.range = range;
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.LinearSelection, ve.dm.Selection );
+
+/* Static Properties */
+
+ve.dm.LinearSelection.static.name = 'linear';
+
+/* Static Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.static.newFromHash = function ( doc, hash ) {
+	return new ve.dm.LinearSelection( doc, ve.Range.static.newFromHash( hash.range ) );
+};
+
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.toJSON = function () {
+	return {
+		type: this.constructor.static.name,
+		range: this.range
+	};
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.getDescription = function () {
+	return 'Linear: ' + this.range.from + ' - ' + this.range.to;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.clone = function () {
+	return new this.constructor( this.getDocument(), this.getRange() );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.collapseToStart = function () {
+	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().start ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.collapseToEnd = function () {
+	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().end ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.collapseToFrom = function () {
+	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().from ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.collapseToTo = function () {
+	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().to ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.isCollapsed = function () {
+	return this.getRange().isCollapsed();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.Selection.prototype.translateByTransaction = function ( tx, excludeInsertion ) {
+	return new this.constructor( this.getDocument(), tx.translateRange( this.getRange(), excludeInsertion ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.getRanges = function () {
+	return [this.range];
+};
+
+/**
+ * Get the range for this selection
+ *
+ * @returns {ve.Range} Range
+ */
+ve.dm.LinearSelection.prototype.getRange = function () {
+	return this.range;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.equals = function ( other ) {
+	return other instanceof ve.dm.LinearSelection &&
+		this.getDocument() === other.getDocument() &&
+		this.getRange().equals( other.getRange() );
+};
+
+/* Registration */
+
+ve.dm.selectionFactory.register( ve.dm.LinearSelection );
+
+/*!
+ * VisualEditor Null Selection class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * @class
+ * @extends ve.dm.Selection
+ * @constructor
+ */
+ve.dm.NullSelection = function VeDmNullSelection( doc ) {
+	// Parent constructor
+	ve.dm.NullSelection.super.call( this, doc );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.NullSelection, ve.dm.Selection );
+
+/* Static Properties */
+
+ve.dm.NullSelection.static.name = 'null';
+
+/* Static Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.static.newFromHash = function ( doc ) {
+	return new ve.dm.NullSelection( doc );
+};
+
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.toJSON = function () {
+	return {
+		type: this.constructor.static.name
+	};
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.getDescription = function () {
+	return 'Null';
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.clone = function () {
+	return new this.constructor( this.getDocument() );
+};
+
+ve.dm.NullSelection.prototype.collapseToStart = ve.dm.NullSelection.prototype.clone;
+
+ve.dm.NullSelection.prototype.collapseToEnd = ve.dm.NullSelection.prototype.clone;
+
+ve.dm.NullSelection.prototype.collapseToFrom = ve.dm.NullSelection.prototype.clone;
+
+ve.dm.NullSelection.prototype.collapseToTo = ve.dm.NullSelection.prototype.clone;
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.isCollapsed = function () {
+	return true;
+};
+
+ve.dm.NullSelection.prototype.translateByTransaction = ve.dm.NullSelection.prototype.clone;
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.getRanges = function () {
+	return [];
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.equals = function ( other ) {
+	return other instanceof ve.dm.NullSelection &&
+		this.getDocument() === other.getDocument();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.isNull = function () {
+	return true;
+};
+
+/* Registration */
+
+ve.dm.selectionFactory.register( ve.dm.NullSelection );
+
+/*!
+ * VisualEditor Table Selection class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * @class
+ * @extends ve.dm.Selection
+ * @constructor
+ * @param {ve.dm.Document} doc Document model
+ * @param {ve.Range} tableRange Table range
+ * @param {number} fromCol Starting column
+ * @param {number} fromRow Starting row
+ * @param {number} [toCol] End column
+ * @param {number} [toRow] End row
+ * @param {boolean} [expand] Expand the selection to include merged cells
+ */
+ve.dm.TableSelection = function VeDmTableSelection( doc, tableRange, fromCol, fromRow, toCol, toRow, expand ) {
+	// Parent constructor
+	ve.dm.TableSelection.super.call( this, doc );
+
+	this.tableRange = tableRange;
+	this.tableNode = null;
+
+	toCol = toCol === undefined ? fromCol : toCol;
+	toRow = toRow === undefined ? fromRow : toRow;
+
+	this.fromCol = fromCol;
+	this.fromRow = fromRow;
+	this.toCol = toCol;
+	this.toRow = toRow;
+	this.startCol = fromCol < toCol ? fromCol : toCol;
+	this.startRow = fromRow < toRow ? fromRow : toRow;
+	this.endCol = fromCol < toCol ? toCol : fromCol;
+	this.endRow = fromRow < toRow ? toRow : fromRow;
+	this.intendedFromCol = this.fromCol;
+	this.intendedFromRow = this.fromRow;
+	this.intendedToCol = this.toCol;
+	this.intendedToRow = this.toRow;
+
+	if ( expand ) {
+		this.expand();
+	}
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.TableSelection, ve.dm.Selection );
+
+/* Static Properties */
+
+ve.dm.TableSelection.static.name = 'table';
+
+/* Static Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.static.newFromHash = function ( doc, hash ) {
+	return new ve.dm.TableSelection(
+		doc,
+		ve.Range.static.newFromHash( hash.tableRange ),
+		hash.fromCol,
+		hash.fromRow,
+		hash.toCol,
+		hash.toRow
+	);
+};
+
+/* Methods */
+
+/**
+ * Expand the selection to cover all merged cells
+ *
+ * @private
+ */
+ve.dm.TableSelection.prototype.expand = function () {
+	var cell, i,
+		lastCellCount = 0,
+		startCol = Infinity,
+		startRow = Infinity,
+		endCol = -Infinity,
+		endRow = -Infinity,
+		colBackwards = this.fromCol > this.toCol,
+		rowBackwards = this.fromRow > this.toRow,
+		cells = this.getMatrixCells();
+
+	while ( cells.length > lastCellCount ) {
+		for ( i = 0; i < cells.length; i++ ) {
+			cell = cells[i];
+			startCol = Math.min( startCol, cell.col );
+			startRow = Math.min( startRow, cell.row );
+			endCol = Math.max( endCol, cell.col + cell.node.getColspan() - 1 );
+			endRow = Math.max( endRow, cell.row + cell.node.getRowspan() - 1 );
+		}
+		this.startCol = startCol;
+		this.startRow = startRow;
+		this.endCol = endCol;
+		this.endRow = endRow;
+		this.fromCol = colBackwards ? endCol : startCol;
+		this.fromRow = rowBackwards ? endRow : startRow;
+		this.toCol = colBackwards ? startCol : endCol;
+		this.toRow = rowBackwards ? startRow : endRow;
+
+		lastCellCount = cells.length;
+		cells = this.getMatrixCells();
+	}
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.clone = function () {
+	return new this.constructor( this.getDocument(), this.tableRange, this.fromCol, this.fromRow, this.toCol, this.toRow );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.toJSON = function () {
+	return {
+		type: this.constructor.static.name,
+		tableRange: this.tableRange,
+		fromCol: this.fromCol,
+		fromRow: this.fromRow,
+		toCol: this.toCol,
+		toRow: this.toRow
+	};
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.getDescription = function () {
+	return (
+		'Table: ' +
+		this.tableRange.from + ' - ' + this.tableRange.to +
+		', ' +
+		'c' + this.fromCol + ' r' + this.fromRow +
+		' - ' +
+		'c' + this.toCol + ' r' + this.toRow
+	);
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.collapseToStart = function () {
+	return new this.constructor( this.getDocument(), this.tableRange, this.startCol, this.startRow, this.startCol, this.startRow );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.collapseToEnd = function () {
+	return new this.constructor( this.getDocument(), this.tableRange, this.endCol, this.endRow, this.endCol, this.endRow );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.collapseToFrom = function () {
+	return new this.constructor( this.getDocument(), this.tableRange, this.fromCol, this.fromRow, this.fromCol, this.fromRow );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.collapseToTo = function () {
+	return new this.constructor( this.getDocument(), this.tableRange, this.toCol, this.toRow, this.toCol, this.toRow );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.getRanges = function () {
+	var i, l, ranges = [],
+		cells = this.getMatrixCells();
+	for ( i = 0, l = cells.length; i < l; i++ ) {
+		ranges.push( cells[i].node.getRange() );
+	}
+	return ranges;
+};
+
+/**
+ * Get outer ranges of the selected cells
+ *
+ * @return {ve.Range[]} Outer ranges
+ */
+ve.dm.TableSelection.prototype.getOuterRanges = function () {
+	var i, l, ranges = [],
+		cells = this.getMatrixCells();
+	for ( i = 0, l = cells.length; i < l; i++ ) {
+		ranges.push( cells[i].node.getOuterRange() );
+	}
+	return ranges;
+};
+
+/**
+ * Retrieves all cells (no placeholders) within a given selection.
+ *
+ * @param {boolean} [includePlaceholders] Include placeholders in result
+ * @returns {ve.dm.TableMatrixCell[]} List of table cells
+ */
+ve.dm.TableSelection.prototype.getMatrixCells = function ( includePlaceholders ) {
+	var row, col, cell,
+		matrix = this.getTableNode().getMatrix(),
+		cells = [],
+		visited = {};
+
+	for ( row = this.startRow; row <= this.endRow; row++ ) {
+		for ( col = this.startCol; col <= this.endCol; col++ ) {
+			cell = matrix.getCell( row, col );
+			if ( !cell ) {
+				continue;
+			}
+			if ( !includePlaceholders && cell.isPlaceholder() ) {
+				cell = cell.owner;
+			}
+			if ( !visited[cell.key] ) {
+				cells.push( cell );
+				visited[cell.key] = true;
+			}
+		}
+	}
+	return cells;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.isCollapsed = function () {
+	return false;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.translateByTransaction = function ( tx, excludeInsertion ) {
+	var newRange = tx.translateRange( this.tableRange, excludeInsertion );
+
+	if ( newRange.isCollapsed() ) {
+		return new ve.dm.NullSelection( this.getDocument() );
+	}
+	return new this.constructor(
+		this.getDocument(), newRange,
+		this.fromCol, this.fromRow, this.toCol, this.toRow
+	);
+};
+
+/**
+ * Check if the selection spans a single cell
+ * @return {boolean} The selection spans a single cell
+ */
+ve.dm.TableSelection.prototype.isSingleCell = function () {
+	// Quick check for single non-merged cell
+	return ( this.fromRow === this.toRow && this.fromCol === this.toCol ) ||
+		// Check for a merged single cell by ignoring placeholders
+		this.getMatrixCells().length === 1;
+};
+
+/**
+ * Get the selection's table node
+ *
+ * @return {ve.dm.TableNode} Table node
+ */
+ve.dm.TableSelection.prototype.getTableNode = function () {
+	if ( !this.tableNode ) {
+		this.tableNode = this.getDocument().getBranchNodeFromOffset( this.tableRange.start + 1 );
+	}
+	return this.tableNode;
+};
+
+/**
+ * Clone this selection with adjusted row and column positions
+ *
+ * Placeholder cells are skipped over so this method can be used for cursoring.
+ *
+ * @param {number} fromColOffset Starting column offset
+ * @param {number} fromRowOffset Starting row offset
+ * @param {number} [toColOffset] End column offset
+ * @param {number} [toRowOffset] End row offset
+ * @return {ve.dm.TableSelection} Adjusted selection
+ */
+ve.dm.TableSelection.prototype.newFromAdjustment = function ( fromColOffset, fromRowOffset, toColOffset, toRowOffset ) {
+	var fromCell, toCell,
+		matrix = this.getTableNode().getMatrix();
+
+	if ( toColOffset === undefined ) {
+		toColOffset = fromColOffset;
+	}
+
+	if ( toRowOffset === undefined ) {
+		toRowOffset = fromRowOffset;
+	}
+
+	function adjust( mode, cell, offset ) {
+		var nextCell,
+			col = cell.col,
+			row = cell.row,
+			dir = offset > 0 ? 1 : -1;
+
+		while ( offset !== 0 ) {
+			if ( mode === 'col' ) {
+				col += dir;
+				if ( col >= matrix.getColCount( row ) || col < 0 ) {
+					// Out of bounds
+					break;
+				}
+			} else {
+				row += dir;
+				if ( row >= matrix.getRowCount() || row < 0 ) {
+					// Out of bounds
+					break;
+				}
+			}
+			nextCell = matrix.getCell( row, col );
+			// Skip if same as current cell (i.e. merged cells), or null
+			if ( !nextCell || nextCell.equals( cell ) ) {
+				continue;
+			}
+			offset -= dir;
+			cell = nextCell;
+		}
+		return cell;
+	}
+
+	fromCell = matrix.getCell( this.intendedFromRow, this.intendedFromCol );
+	if ( fromColOffset ) {
+		fromCell = adjust( 'col', fromCell, fromColOffset );
+	}
+	if ( fromRowOffset ) {
+		fromCell = adjust( 'row', fromCell, fromRowOffset );
+	}
+
+	toCell = matrix.getCell( this.intendedToRow, this.intendedToCol );
+	if ( toColOffset ) {
+		toCell = adjust( 'col', toCell, toColOffset );
+	}
+	if ( toRowOffset ) {
+		toCell = adjust( 'row', toCell, toRowOffset );
+	}
+
+	return new this.constructor(
+		this.getDocument(),
+		this.tableRange,
+		fromCell.col,
+		fromCell.row,
+		toCell.col,
+		toCell.row,
+		true
+	);
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.equals = function ( other ) {
+	return other instanceof ve.dm.TableSelection &&
+		this.getDocument() === other.getDocument() &&
+		this.tableRange.equals( other.tableRange ) &&
+		this.fromCol === other.fromCol &&
+		this.fromRow === other.fromRow &&
+		this.toCol === other.toCol &&
+		this.toRow === other.toRow;
+};
+
+/**
+ * Check if the table selection covers one or more full rows
+ *
+ * @return {boolean} The table selection covers one or more full rows
+ */
+ve.dm.TableSelection.prototype.isFullRow = function () {
+	var matrix = this.getTableNode().getMatrix();
+	return this.endCol - this.startCol === matrix.getColCount() - 1;
+};
+
+/**
+ * Check if the table selection covers one or more full columns
+ *
+ * @return {boolean} The table selection covers one or more full columns
+ */
+ve.dm.TableSelection.prototype.isFullCol = function () {
+	var matrix = this.getTableNode().getMatrix();
+	return this.endRow - this.startRow === matrix.getRowCount() - 1;
+};
+
+/* Registration */
+
+ve.dm.selectionFactory.register( ve.dm.TableSelection );
+
+/*!
  * VisualEditor FlatLinearData classes.
  *
  * Class containing Flat linear data and an index-value store.
@@ -14465,6 +14763,16 @@ ve.dm.ElementLinearData = function VeDmElementLinearData( store, data, nodeFacto
 /* Inheritance */
 
 OO.inheritClass( ve.dm.ElementLinearData, ve.dm.FlatLinearData );
+
+/* Static Members */
+
+ve.dm.ElementLinearData.static.startWordRegExp = new RegExp(
+	'^(' + unicodeJS.characterclass.patterns.word + ')'
+);
+
+ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
+	'(' + unicodeJS.characterclass.patterns.word + ')$'
+);
 
 /* Static Methods */
 
@@ -14810,6 +15118,33 @@ ve.dm.ElementLinearData.prototype.setAnnotationIndexesAtOffset = function ( offs
 };
 
 /**
+ * Set or unset an attribute at a specified offset.
+ *
+ * @param {number} offset Offset to set/unset attribute at
+ * @param {string} key Attribute name
+ * @param {Mixed} value Value to set, or undefined to unset
+ */
+ve.dm.ElementLinearData.prototype.setAttributeAtOffset = function ( offset, key, value ) {
+	var item = this.getData( offset );
+	if ( !this.isElementData( offset ) ) {
+		return;
+	}
+	if ( value === undefined ) {
+		// Clear
+		if ( item.attributes ) {
+			delete item.attributes[key];
+		}
+	} else {
+		// Automatically initialize attributes object
+		if ( !item.attributes ) {
+			item.attributes = {};
+		}
+		// Set
+		item.attributes[key] = value;
+	}
+};
+
+/**
  * Get character data at a specified offset
  *
  * @param {number} offset Offset to get character data from
@@ -14992,8 +15327,9 @@ ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) 
  *   valid offset in the opposite direction.
  * - If the data does not contain a single valid offset the result will be -1
  *
- * Nodes which handle their own children are ignored. Giving a starting offset inside a
- * handlesOwnChildren node will give unpredictable results.
+ * Nodes that want their children to be ignored (see ve.dm.Node#static-ignoreChildren) are not
+ * descended into. Giving a starting offset inside an ignoreChildren node will give unpredictable
+ * results.
  *
  * @method
  * @param {number} offset Offset to start from
@@ -15002,7 +15338,7 @@ ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) 
  * given initial argument of offset
  * @param {Mixed...} [args] Additional arguments to pass to the callback
  * @returns {number} Relative valid offset or -1 if there are no valid offsets in data
- * @throws {Error} offset was inside a handlesOwnChildren node
+ * @throws {Error} offset was inside an ignoreChildren node
  */
 ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
 	var i, direction,
@@ -15011,7 +15347,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 		start = offset,
 		steps = 0,
 		turnedAround = false,
-		handlesOwnChildrenDepth = 0;
+		ignoreChildrenDepth = 0;
 	// If offset is already a structural offset and distance is zero than no further work is needed,
 	// otherwise distance should be 1 so that we can get out of the invalid starting offset
 	if ( distance === 0 ) {
@@ -15034,28 +15370,28 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 	offset = -1;
 	// Iteration
 	while ( i >= 0 && i <= this.getLength() ) {
-		// Detect when the search for a valid offset enters a node which handles its own
-		// children, and don't return an offset inside such a node. This clearly won't work
+		// Detect when the search for a valid offset enters a node whose children should be
+		// ignored, and don't return an offset inside such a node. This clearly won't work
 		// if you start inside such a node, but you shouldn't be doing that to being with
 		dataOffset = i + ( direction > 0 ? -1 : 0 );
 		if (
 			this.isElementData( dataOffset ) &&
-			this.nodeFactory.doesNodeHandleOwnChildren( this.getType( dataOffset ) )
+			this.nodeFactory.shouldIgnoreChildren( this.getType( dataOffset ) )
 		) {
 			isOpen = this.isOpenElementData( dataOffset );
 			// We have entered a node if we step right over an open, or left over a close.
 			// Otherwise we have left a node
 			if ( ( direction > 0 && isOpen ) || ( direction < 0 && !isOpen ) ) {
-				handlesOwnChildrenDepth++;
+				ignoreChildrenDepth++;
 			} else {
-				handlesOwnChildrenDepth--;
-				if ( handlesOwnChildrenDepth < 0 ) {
-					throw new Error( 'offset was inside a handlesOwnChildren node' );
+				ignoreChildrenDepth--;
+				if ( ignoreChildrenDepth < 0 ) {
+					throw new Error( 'offset was inside an ignoreChildren node' );
 				}
 			}
 		}
 		if ( callback.apply( this, [i].concat( args ) ) ) {
-			if ( !handlesOwnChildrenDepth ) {
+			if ( !ignoreChildrenDepth ) {
 				steps++;
 				offset = i;
 				if ( distance === steps ) {
@@ -15080,7 +15416,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			i = start;
 			distance = 1;
 			turnedAround = true;
-			handlesOwnChildrenDepth = 0;
+			ignoreChildrenDepth = 0;
 		}
 		i += direction;
 	}
@@ -15180,38 +15516,58 @@ ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset
 };
 
 /**
- * Get the nearest word boundaries as a range.
+ * Get the range of the word at offset (else a collapsed range)
  *
- * The offset will first be moved to the nearest content offset if it's not at one already.
- * Elements are always word boundaries.
+ * First, if the offset is not a content offset then it will be moved to the nearest one.
+ * Then, if the offset is inside a word, it will be expanded to that word;
+ * else if the offset is at the end of a word, it will be expanded to that word;
+ * else if the offset is at the start of a word, it will be expanded to that word;
+ * else the offset is not adjacent to any word and is returned as a collapsed range.
  *
  * @method
- * @param {number} offset Offset to start from
- * @returns {ve.Range} Range around nearest word boundaries
+ * @param {number} offset Offset to start from; must not be inside a surrogate pair
+ * @returns {ve.Range} Boundaries of the adjacent word (else offset as collapsed range)
  */
-ve.dm.ElementLinearData.prototype.getNearestWordRange = function ( offset ) {
-	var offsetLeft, offsetRight,
-		dataString = new ve.dm.DataString( this.getData() );
+ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
+	var dataString = new ve.dm.DataString( this.getData() );
 
 	offset = this.getNearestContentOffset( offset );
 
-	// If the cursor offset is a break (i.e. the start/end of word) we should
-	// check one position either side to see if there is a non-break
-	// and if so, move the offset accordingly
 	if ( unicodeJS.wordbreak.isBreak( dataString, offset ) ) {
-		if ( !unicodeJS.wordbreak.isBreak( dataString, offset + 1 ) ) {
-			offset++;
-		} else if ( !unicodeJS.wordbreak.isBreak( dataString, offset - 1 ) ) {
-			offset--;
+		// The cursor offset is not inside a word. See if there is an adjacent word
+		// codepoint (checking two chars to allow surrogate pairs). If so, expand in that
+		// direction only (preferring backwards if there are word codepoints on both
+		// sides).
+
+		if ( this.constructor.static.endWordRegExp.exec(
+			( dataString.read( offset - 2 ) || ' ' ) +
+			( dataString.read( offset - 1 ) || ' ' )
+		) ) {
+			// Cursor is immediately after a word codepoint: expand backwards
+			return new ve.Range(
+				unicodeJS.wordbreak.prevBreakOffset( dataString, offset ),
+				offset
+			);
+		} else if ( this.constructor.static.startWordRegExp.exec(
+			( dataString.read( offset ) || ' ' ) +
+			( dataString.read( offset + 1 ) || ' ' )
+		) ) {
+			// Cursor is immediately before a word codepoint: expand forwards
+			return new ve.Range(
+				offset,
+				unicodeJS.wordbreak.nextBreakOffset( dataString, offset )
+			);
 		} else {
+			// Cursor is not adjacent to a word codepoint: do not expand
 			return new ve.Range( offset );
 		}
+	} else {
+		// Cursor is inside a word: expand both backwards and forwards
+		return new ve.Range(
+			unicodeJS.wordbreak.prevBreakOffset( dataString, offset ),
+			unicodeJS.wordbreak.nextBreakOffset( dataString, offset )
+		);
 	}
-
-	offsetRight = unicodeJS.wordbreak.nextBreakOffset( dataString, offset );
-	offsetLeft = unicodeJS.wordbreak.prevBreakOffset( dataString, offset );
-
-	return new ve.Range( offsetLeft, offsetRight );
 };
 
 /**
@@ -15220,12 +15576,14 @@ ve.dm.ElementLinearData.prototype.getNearestWordRange = function ( offset ) {
  * Currently this is just all annotations still in use.
  *
  * @method
- * @param {ve.Range} range Range to get store values for
+ * @param {ve.Range} [range] Optional range to get store values for
  * @returns {Object} Object containing all store values, indexed by store index
  */
-ve.dm.ElementLinearData.prototype.getUsedStoreValuesFromRange = function ( range ) {
+ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
 	var i, index, indexes, j,
 		valueStore = {};
+
+	range = range || new ve.Range( 0, this.data.length );
 
 	for ( i = range.start; i < range.end; i++ ) {
 		// Annotations
@@ -15329,7 +15687,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 
 		// Create annotation set to remove from blacklist
 		setToRemove = allAnnotations.filter( function ( annotation ) {
-			return ve.indexOf( annotation.name, rules.blacklist ) !== -1 || (
+			return ( rules.blacklist && rules.blacklist.indexOf( annotation.name ) !== -1 ) || (
 					// If original DOM element references are being removed, remove spans
 					annotation.name === 'textStyle/span' && rules.removeOriginalDomElements
 				);
@@ -15353,7 +15711,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 			}
 			// Remove blacklisted nodes
 			if (
-				ve.indexOf( type, rules.blacklist ) !== -1 ||
+				( rules.blacklist && rules.blacklist.indexOf( type ) !== -1 ) ||
 				( plainText && type !== 'paragraph' && type !== 'internalList' )
 			) {
 				this.splice( i, 1 );
@@ -15550,6 +15908,27 @@ ve.dm.MetaLinearData.prototype.getTotalDataLength = function () {
 };
 
 /**
+ * Splice into the metadata array at a specific offset.
+ *
+ * @method
+ * @see ve#batchSplice
+ * @param offset {number} Splice into the metadata array for this offset
+ * @param index {number} Index in the metadata array to insert/remove at
+ * @param remove {number} Number of items to remove
+ * @param insert {Array} Items to insert
+ * @returns {Array} Removed items
+ */
+ve.dm.MetaLinearData.prototype.spliceMetadataAtOffset = function ( offset, index, remove, insert ) {
+	var items = this.getData( offset );
+	if ( !items ) {
+		items = [];
+		this.setData( offset, items );
+	}
+	insert = insert || [];
+	return ve.batchSplice( items, index, remove, insert );
+};
+
+/**
  * Get annotations' store indexes covered by an offset and index.
  *
  * @method
@@ -15645,7 +16024,6 @@ ve.dm.GeneratedContentNode.static.storeGeneratedContents = function ( dataElemen
  * @abstract
  * @extends ve.dm.LeafNode
  * @mixins ve.dm.FocusableNode
- * @mixins ve.dm.GeneratedContentNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -15655,7 +16033,6 @@ ve.dm.AlienNode = function VeDmAlienNode() {
 	ve.dm.AlienNode.super.apply( this, arguments );
 
 	// Mixin constructors
-	ve.dm.GeneratedContentNode.call( this );
 	ve.dm.FocusableNode.call( this );
 };
 
@@ -15664,8 +16041,6 @@ ve.dm.AlienNode = function VeDmAlienNode() {
 OO.inheritClass( ve.dm.AlienNode, ve.dm.LeafNode );
 
 OO.mixinClass( ve.dm.AlienNode, ve.dm.FocusableNode );
-
-OO.mixinClass( ve.dm.AlienNode, ve.dm.GeneratedContentNode );
 
 /* Static members */
 
@@ -15681,28 +16056,11 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 	var isInline = this.isHybridInline( domElements, converter ),
 		type = isInline ? 'alienInline' : 'alienBlock';
 
-	return {
-		type: type,
-		attributes: {
-			domElements: ve.copy( domElements )
-		}
-	};
+	return { type: type };
 };
 
 ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc ) {
-	return ve.copyDomElements( dataElement.attributes.domElements, doc );
-};
-
-ve.dm.AlienNode.static.getHashObject = function ( dataElement ) {
-	var parentResult = ve.dm.LeafNode.static.getHashObject( dataElement );
-	if ( parentResult.attributes && parentResult.attributes.domElements ) {
-		// If present, replace domElements with a DOM summary
-		parentResult.attributes = ve.copy( parentResult.attributes );
-		parentResult.attributes.domElements = ve.copy(
-			parentResult.attributes.domElements, ve.convertDomElements
-		);
-	}
-	return parentResult;
+	return ve.copyDomElements( dataElement.originalDomElements, doc );
 };
 
 /* Concrete subclasses */
@@ -15747,7 +16105,6 @@ ve.dm.AlienInlineNode.static.isContent = true;
 
 /* Registration */
 
-ve.dm.modelRegistry.register( ve.dm.AlienNode );
 ve.dm.modelRegistry.register( ve.dm.AlienBlockNode );
 ve.dm.modelRegistry.register( ve.dm.AlienInlineNode );
 
@@ -16033,7 +16390,7 @@ ve.dm.modelRegistry.register( ve.dm.DocumentNode );
  * DataModel heading node.
  *
  * @class
- * @extends ve.dm.BranchNode
+ * @extends ve.dm.ContentBranchNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -16046,7 +16403,7 @@ ve.dm.HeadingNode = function VeDmHeadingNode() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.HeadingNode, ve.dm.BranchNode );
+OO.inheritClass( ve.dm.HeadingNode, ve.dm.ContentBranchNode );
 
 /* Static Properties */
 
@@ -16113,7 +16470,7 @@ ve.dm.InternalItemNode.static.name = 'internalItem';
 
 ve.dm.InternalItemNode.static.matchTagNames = [];
 
-ve.dm.InternalItemNode.static.handlesOwnChildren = true;
+ve.dm.InternalItemNode.static.ignoreChildren = true;
 
 ve.dm.InternalItemNode.static.isInternal = true;
 
@@ -16264,7 +16621,7 @@ ve.dm.modelRegistry.register( ve.dm.ListNode );
  * DataModel paragraph node.
  *
  * @class
- * @extends ve.dm.BranchNode
+ * @extends ve.dm.ContentBranchNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -16277,7 +16634,7 @@ ve.dm.ParagraphNode = function VeDmParagraphNode() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.ParagraphNode, ve.dm.BranchNode );
+OO.inheritClass( ve.dm.ParagraphNode, ve.dm.ContentBranchNode );
 
 /* Static Properties */
 
@@ -16301,7 +16658,7 @@ ve.dm.modelRegistry.register( ve.dm.ParagraphNode );
  * DataModel preformatted node.
  *
  * @class
- * @extends ve.dm.BranchNode
+ * @extends ve.dm.ContentBranchNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -16314,7 +16671,7 @@ ve.dm.PreformattedNode = function VeDmPreformattedNode() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.PreformattedNode, ve.dm.BranchNode );
+OO.inheritClass( ve.dm.PreformattedNode, ve.dm.ContentBranchNode );
 
 /* Static Properties */
 
@@ -17095,10 +17452,13 @@ OO.mixinClass( ve.dm.BlockImageNode, ve.dm.AlignableNode );
 ve.dm.BlockImageNode.static.name = 'blockImage';
 
 ve.dm.BlockImageNode.static.preserveHtmlAttributes = function ( attribute ) {
-	return ve.indexOf( attribute, [ 'src', 'width', 'height', 'href' ] ) === -1;
+	var attributes = [ 'src', 'width', 'height', 'href' ];
+	return attributes.indexOf( attribute ) === -1;
 };
 
 ve.dm.BlockImageNode.static.handlesOwnChildren = true;
+
+ve.dm.BlockImageNode.static.ignoreChildren = true;
 
 ve.dm.BlockImageNode.static.childNodeTypes = [ 'imageCaption' ];
 
@@ -17528,6 +17888,15 @@ ve.dm.LinkAnnotation.prototype.getComparableObject = function () {
 	};
 };
 
+/**
+ * @inheritdoc
+ */
+ve.dm.LinkAnnotation.prototype.getComparableHtmlAttributes = function () {
+	var comparableAttributes = ve.dm.LinkAnnotation.super.prototype.getComparableHtmlAttributes.call( this );
+	delete comparableAttributes.href;
+	return comparableAttributes;
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.LinkAnnotation );
@@ -17834,6 +18203,41 @@ ve.dm.DefinitionAnnotation.static.matchTagNames = [ 'dfn' ];
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.DefinitionAnnotation );
+
+/*!
+ * VisualEditor DataModel FontAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel font annotation.
+ *
+ * Represents `<font>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.FontAnnotation = function VeDmFontAnnotation() {
+	// Parent constructor
+	ve.dm.FontAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.FontAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.FontAnnotation.static.name = 'textStyle/font';
+
+ve.dm.FontAnnotation.static.matchTagNames = [ 'font' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.FontAnnotation );
 
 /*!
  * VisualEditor DataModel HighlightAnnotation class.
@@ -18255,17 +18659,8 @@ ve.dm.AlienMetaItem.static.matchTagNames = [ 'meta', 'link' ];
 
 ve.dm.AlienMetaItem.static.preserveHtmlAttributes = false;
 
-ve.dm.AlienMetaItem.static.toDataElement = function ( domElements ) {
-	return {
-		type: this.name,
-		attributes: {
-			domElements: ve.copy( domElements )
-		}
-	};
-};
-
 ve.dm.AlienMetaItem.static.toDomElements = function ( dataElement, doc ) {
-	return ve.copyDomElements( dataElement.attributes.domElements, doc );
+	return ve.copyDomElements( dataElement.originalDomElements, doc );
 };
 
 /* Registration */

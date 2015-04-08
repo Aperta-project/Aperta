@@ -2,13 +2,23 @@
   {{progress-spinner visible=true}}
 </div>
 
-<h1>Register Decision</h1>
+<h1>
+  Register Decision
+</h1>
+
+{{#if model.completed}}
+  {{#if finalDecision}}
+  <div class="alert alert-info">
+    A final Decision of {{latestDecision.verdict}} has been registered.
+  </div>
+  {{/if}}
+{{/if}}
 
 <div class="decision-selections">
   <label class="decision-label">
     {{decision-radio-button value="accepted"
                             action="setDecisionTemplate"
-                            selection=model.paperDecision
+                            selection=latestDecision.verdict
                             disabled=model.completed
                             name="decision"}}
     Accepted
@@ -17,7 +27,7 @@
   <label class="decision-label">
     {{decision-radio-button value="rejected"
                             action="setDecisionTemplate"
-                            selection=model.paperDecision
+                            selection=latestDecision.verdict
                             disabled=model.completed
                             name="decision"}}
     Rejected
@@ -26,18 +36,52 @@
   <label class="decision-label">
     {{decision-radio-button value="revise"
                             action="setDecisionTemplate"
-                            selection=model.paperDecision
+                            selection=latestDecision.verdict
                             disabled=model.completed
                             name="decision"}}
     Revise
   </label>
 </div>
 
-<p>Feel free to modify the standard decision letter. Your changes will be saved.</p>
+<p>
+  Feel free to modify the standard decision letter. Your changes will be saved.
+</p>
 
-{{textarea focus-out="saveModel"
+{{textarea focus-out="saveLatestDecision"
            onEvent="false"
            class="decision-letter-field"
            placeholder="A boilerplate decision letter will appear here"
            disabled=model.completed
-           value=paperDecisionLetter}}
+           value=latestDecision.letter}}
+
+{{#if previousDecisions}}
+  <hr>
+
+  <h3>
+    Decision History
+  </h3>
+{{/if}}
+
+<div class="previous-decisions">
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  {{#each previousDecisions as |decision|}}
+    <div class="panel panel-default decision">
+      <div class="panel-heading" role="tab" id="decision-{{unbound decision.id}}" >
+        <h4 class="panel-title">
+          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{unbound decision.id}}" aria-expanded="false" aria-controls="collapse-{{unbound decision.id}}">
+            Revision
+            <span class="revision-number">{{decision.revisionNumber}}</span>
+          </a>
+        </h4>
+      </div>
+      <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
+        <div class="panel-body">
+          <span class="letter">
+            {{decision.letter}}
+          </span>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+  </div>
+</div>

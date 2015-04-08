@@ -10,6 +10,8 @@ class TestTask < Task
   end
 end
 
+class TestTasksPolicy < TasksPolicy; end
+
 describe InvitationsController do
 
   let(:invitee) { FactoryGirl.create(:user) }
@@ -41,10 +43,10 @@ describe InvitationsController do
     end
   end
 
-  describe "DELETE /invitations/:id" do
+  describe "DELETE /invitations/:id", redis: true do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
-    it "deletes the invitation" do
+    it "deletes the invitation queues up email job", redis: true do
       delete(:destroy, {
         format: "json",
         id: invitation.id

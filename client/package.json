@@ -31,7 +31,7 @@
     "ember-cli-uglify": "1.0.1",
     "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#93ecc4024f6717091ce950d05b179b3e2995c18a",
     "ember-data": "1.0.0-beta.16.1",
-    "tahi-editor-extensions": "substance/tahi-editor-extensions#63fe3b54045f3f92b85b4cd4dd5b0c19c9186d4f",
+    "tahi-editor-extensions": "substance/tahi-editor-extensions#65ece4182b98ae610548b286cd5419f2fceb5cdf",
     "ember-export-application-global": "^1.0.2",
     "express": "^4.8.5",
     "glob": "^4.0.5"

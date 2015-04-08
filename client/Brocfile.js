@@ -25,6 +25,7 @@ app.import('bower_components/chosen-bower/chosen.jquery.js');
 app.import('bower_components/jquery-timeago/jquery.timeago.js');
 app.import('bower_components/underscore/underscore-min.js');
 app.import('bower_components/moment/moment.js');
+app.import('bower_components/jQuery.dotdotdot/src/js/jquery.dotdotdot.min.js');
 app.import('vendor/bootstrap-tooltip/index.js');
 
 // Datepicker
@@ -47,17 +48,8 @@ app.import('bower_components/jquery-ui/ui/sortable.js');
 // Select 2
 app.import('bower_components/select2/select2.js');
 
-// bootstrap
+// Bootstrap
 app.import('bower_components/bootstrap/dist/js/bootstrap.js');
-app.import('bower_components/bootstrap/dist/css/bootstrap.min.css');
-app.import('bower_components/bootstrap/dist/css/bootstrap-theme.min.css');
-app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot');
-app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg');
-app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf');
-app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff');
-app.import('bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2');
-
-app.import('bower_components/jQuery.dotdotdot/src/js/jquery.dotdotdot.min.js');
 
 if (app.env === 'production') {
   app.import('bower_components/event-source-polyfill/eventsource.js');

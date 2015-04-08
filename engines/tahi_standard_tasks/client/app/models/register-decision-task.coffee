@@ -4,6 +4,7 @@
 a = DS.attr
 
 RegisterDecisionTask = Task.extend
+  decisions: DS.hasMany("decision")
 
   decisionLetters: a('string')
   paperDecision: a('string')

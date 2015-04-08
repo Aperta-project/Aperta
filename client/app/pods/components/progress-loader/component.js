@@ -18,9 +18,9 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNames: ['loader-component-circle'],
   classNameBindings: [
-    'visible:loader-component-circle--visible', 
-    'admin:admin', 
-    'white:white', 
+    'visible:loader-component-circle--visible',
+    'admin:admin',
+    'white:white',
     'large:large'
   ]
 });

@@ -11,9 +11,13 @@
   border-bottom: 1px solid #F5F5F5;
   background: #fff;
   z-index: z('control-bar');
+  @include transition(height 0.2s ease-in-out);
 }
 
-.control-bar-sub-nav-active .control-bar { height: 105px; }
+.control-bar-sub-nav-active .control-bar {
+  @include transition(height 0.2s ease-in-out);
+  height: 105px;
+}
 
 .control-bar-inner-wrapper {
   overflow: hidden;

@@ -5,8 +5,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
   let(:paper) {
     FactoryGirl.create(:paper,
                        title: "Paper Title",
-                       short_title: "Short Paper Title",
-                       decision_letter: "Here's body text of a Decision Letter")
+                       short_title: "Short Paper Title")
   }
 
   let(:task) {
@@ -18,8 +17,15 @@ describe TahiStandardTasks::RegisterDecisionMailer do
                        completed: true)
   }
 
+  let(:decision) {
+    paper.decisions.create!(
+      letter: "Here's body text of a Decision Letter",
+      verdict: "accepted"
+    )
+  }
+
   let(:email) {
-    described_class.notify_author_email(task_id: task.id)
+    described_class.notify_author_email(decision_id: decision.id)
   }
 
   describe "#notify_author_email" do
@@ -32,7 +38,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
     end
 
     it "email body is paper.decision_letter" do
-      expect(email.body.raw_source).to eq paper.decision_letter + "\n"
+      expect(email.body.raw_source).to eq decision.letter + "\n"
     end
   end
 end

@@ -12,7 +12,6 @@ feature 'Comments on cards', js: true do
     paper.paper_roles.build(user: albert, role: PaperRole::COLLABORATOR).save
   end
 
-
   let(:paper) do
     paper = FactoryGirl.create(:paper, creator: admin, submitted: true, journal: journal)
     paper.phases.create(name: "First Phase")
@@ -29,7 +28,8 @@ feature 'Comments on cards', js: true do
     context "blank comments" do
       let(:commenter) { admin }
       let(:participants) { [admin] }
-      scenario "user can't add any" do
+
+      scenario "user can't add any", flaky: true do
         task_manager_page = TaskManagerPage.visit paper
         task_manager_page.view_card ad_hoc.title, CardOverlay do |card|
           card.post_message 'Hello'

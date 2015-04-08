@@ -2547,14 +2547,332 @@
 } ( jQuery ) );
 
 /*!
- * OOjs v1.1.5 optimised for jQuery
+ * jQuery Client v1.0.0
+ * https://www.mediawiki.org/wiki/JQuery_Client
+ *
+ * Copyright 2010-2015 jquery-client maintainers and other contributors.
+ * Released under the MIT license
+ * http://jquery-client.mit-license.org
+ */
+
+/**
+ * User-agent detection
+ *
+ * @class jQuery.client
+ * @singleton
+ */
+( function ( $ ) {
+
+	/**
+	 * @private
+	 * @property {Object} profileCache Keyed by userAgent string,
+	 * value is the parsed $.client.profile object for that user agent.
+	 */
+	var profileCache = {};
+
+	$.client = {
+
+		/**
+		 * Get an object containing information about the client.
+		 *
+		 * @param {Object} [nav] An object with a 'userAgent' and 'platform' property.
+		 *  Defaults to the global `navigator` object.
+		 * @return {Object} The resulting client object will be in the following format:
+		 *
+		 *     {
+		 *         'name': 'firefox',
+		 *         'layout': 'gecko',
+		 *         'layoutVersion': 20101026,
+		 *         'platform': 'linux'
+		 *         'version': '3.5.1',
+		 *         'versionBase': '3',
+		 *         'versionNumber': 3.5,
+		 *     }
+		 */
+		profile: function ( nav ) {
+			/*jshint boss:true */
+
+			if ( nav === undefined ) {
+				nav = window.navigator;
+			}
+
+			// Use the cached version if possible
+			if ( profileCache[ nav.userAgent + '|' + nav.platform ] !== undefined ) {
+				return profileCache[ nav.userAgent + '|' + nav.platform ];
+			}
+
+			var
+				versionNumber,
+				key = nav.userAgent + '|' + nav.platform,
+
+				// Configuration
+
+				// Name of browsers or layout engines we don't recognize
+				uk = 'unknown',
+				// Generic version digit
+				x = 'x',
+				// Strings found in user agent strings that need to be conformed
+				wildUserAgents = ['Opera', 'Navigator', 'Minefield', 'KHTML', 'Chrome', 'PLAYSTATION 3', 'Iceweasel'],
+				// Translations for conforming user agent strings
+				userAgentTranslations = [
+					// Tons of browsers lie about being something they are not
+					[/(Firefox|MSIE|KHTML,?\slike\sGecko|Konqueror)/, ''],
+					// Chrome lives in the shadow of Safari still
+					['Chrome Safari', 'Chrome'],
+					// KHTML is the layout engine not the browser - LIES!
+					['KHTML', 'Konqueror'],
+					// Firefox nightly builds
+					['Minefield', 'Firefox'],
+					// This helps keep different versions consistent
+					['Navigator', 'Netscape'],
+					// This prevents version extraction issues, otherwise translation would happen later
+					['PLAYSTATION 3', 'PS3']
+				],
+				// Strings which precede a version number in a user agent string - combined and used as
+				// match 1 in version detection
+				versionPrefixes = [
+					'camino', 'chrome', 'firefox', 'iceweasel', 'netscape', 'netscape6', 'opera', 'version', 'konqueror',
+					'lynx', 'msie', 'safari', 'ps3', 'android'
+				],
+				// Used as matches 2, 3 and 4 in version extraction - 3 is used as actual version number
+				versionSuffix = '(\\/|\\;?\\s|)([a-z0-9\\.\\+]*?)(\\;|dev|rel|\\)|\\s|$)',
+				// Names of known browsers
+				names = [
+					'camino', 'chrome', 'firefox', 'iceweasel', 'netscape', 'konqueror', 'lynx', 'msie', 'opera',
+					'safari', 'ipod', 'iphone', 'blackberry', 'ps3', 'rekonq', 'android'
+				],
+				// Tanslations for conforming browser names
+				nameTranslations = [],
+				// Names of known layout engines
+				layouts = ['gecko', 'konqueror', 'msie', 'trident', 'edge', 'opera', 'webkit'],
+				// Translations for conforming layout names
+				layoutTranslations = [ ['konqueror', 'khtml'], ['msie', 'trident'], ['opera', 'presto'] ],
+				// Names of supported layout engines for version number
+				layoutVersions = ['applewebkit', 'gecko', 'trident', 'edge'],
+				// Names of known operating systems
+				platforms = ['win', 'wow64', 'mac', 'linux', 'sunos', 'solaris', 'iphone'],
+				// Translations for conforming operating system names
+				platformTranslations = [ ['sunos', 'solaris'], ['wow64', 'win'] ],
+
+				/**
+				 * Performs multiple replacements on a string
+				 * @ignore
+				 */
+				translate = function ( source, translations ) {
+					var i;
+					for ( i = 0; i < translations.length; i++ ) {
+						source = source.replace( translations[i][0], translations[i][1] );
+					}
+					return source;
+				},
+
+				// Pre-processing
+
+				ua = nav.userAgent,
+				match,
+				name = uk,
+				layout = uk,
+				layoutversion = uk,
+				platform = uk,
+				version = x;
+
+			if ( match = new RegExp( '(' + wildUserAgents.join( '|' ) + ')' ).exec( ua ) ) {
+				// Takes a userAgent string and translates given text into something we can more easily work with
+				ua = translate( ua, userAgentTranslations );
+			}
+			// Everything will be in lowercase from now on
+			ua = ua.toLowerCase();
+
+			// Extraction
+
+			if ( match = new RegExp( '(' + names.join( '|' ) + ')' ).exec( ua ) ) {
+				name = translate( match[1], nameTranslations );
+			}
+			if ( match = new RegExp( '(' + layouts.join( '|' ) + ')' ).exec( ua ) ) {
+				layout = translate( match[1], layoutTranslations );
+			}
+			if ( match = new RegExp( '(' + layoutVersions.join( '|' ) + ')\\\/(\\d+)').exec( ua ) ) {
+				layoutversion = parseInt( match[2], 10 );
+			}
+			if ( match = new RegExp( '(' + platforms.join( '|' ) + ')' ).exec( nav.platform.toLowerCase() ) ) {
+				platform = translate( match[1], platformTranslations );
+			}
+			if ( match = new RegExp( '(' + versionPrefixes.join( '|' ) + ')' + versionSuffix ).exec( ua ) ) {
+				version = match[3];
+			}
+
+			// Edge Cases -- did I mention about how user agent string lie?
+
+			// Decode Safari's crazy 400+ version numbers
+			if ( name === 'safari' && version > 400 ) {
+				version = '2.0';
+			}
+			// Expose Opera 10's lies about being Opera 9.8
+			if ( name === 'opera' && version >= 9.8 ) {
+				match = ua.match( /\bversion\/([0-9\.]*)/ );
+				if ( match && match[1] ) {
+					version = match[1];
+				} else {
+					version = '10';
+				}
+			}
+			// And Opera 15's lies about being Chrome
+			if ( name === 'chrome' && ( match = ua.match( /\bopr\/([0-9\.]*)/ ) ) ) {
+				if ( match[1] ) {
+					name = 'opera';
+					version = match[1];
+				}
+			}
+			// And IE 11's lies about being not being IE
+			if ( layout === 'trident' && layoutversion >= 7 && ( match = ua.match( /\brv[ :\/]([0-9\.]*)/ ) ) ) {
+				if ( match[1] ) {
+					name = 'msie';
+					version = match[1];
+				}
+			}
+			// And IE 12's different lies about not being IE
+			if ( name === 'chrome' && ( match = ua.match( /\bedge\/([0-9\.]*)/ ) ) ) {
+				name = 'msie';
+				version = match[1];
+				layout = 'edge';
+				layoutversion = parseInt( match[1], 10 );
+			}
+			// And Amazon Silk's lies about being Android on mobile or Safari on desktop
+			if ( match = ua.match( /\bsilk\/([0-9.\-_]*)/ ) ) {
+				if ( match[1] ) {
+					name = 'silk';
+					version = match[1];
+				}
+			}
+
+			versionNumber = parseFloat( version, 10 ) || 0.0;
+
+			// Caching
+
+			return profileCache[ key  ] = {
+				name: name,
+				layout: layout,
+				layoutVersion: layoutversion,
+				platform: platform,
+				version: version,
+				versionBase: ( version !== x ? Math.floor( versionNumber ).toString() : x ),
+				versionNumber: versionNumber
+			};
+		},
+
+		/**
+		 * Checks the current browser against a support map object.
+		 *
+		 * Version numbers passed as numeric values will be compared like numbers (1.2 > 1.11).
+		 * Version numbers passed as string values will be compared using a simple component-wise
+		 * algorithm, similar to PHP's version_compare ('1.2' < '1.11').
+		 *
+		 * A browser map is in the following format:
+		 *
+		 *     {
+		 *         // Multiple rules with configurable operators
+		 *         'msie': [['>=', 7], ['!=', 9]],
+		 *         // Match no versions
+		 *         'iphone': false,
+		 *         // Match any version
+		 *         'android': null
+		 *     }
+		 *
+		 * It can optionally be split into ltr/rtl sections:
+		 *
+		 *     {
+		 *         'ltr': {
+		 *             'android': null,
+		 *             'iphone': false
+		 *         },
+		 *         'rtl': {
+		 *             'android': false,
+		 *             // rules are not inherited from ltr
+		 *             'iphone': false
+		 *         }
+		 *     }
+		 *
+		 * @param {Object} map Browser support map
+		 * @param {Object} [profile] A client-profile object
+		 * @param {boolean} [exactMatchOnly=false] Only return true if the browser is matched, otherwise
+		 * returns true if the browser is not found.
+		 *
+		 * @return {boolean} The current browser is in the support map
+		 */
+		test: function ( map, profile, exactMatchOnly ) {
+			/*jshint evil:true */
+
+			var conditions, dir, i, op, val, j, pieceVersion, pieceVal, compare;
+			profile = $.isPlainObject( profile ) ? profile : $.client.profile();
+			if ( map.ltr && map.rtl ) {
+				dir = $( 'body' ).is( '.rtl' ) ? 'rtl' : 'ltr';
+				map = map[dir];
+			}
+			// Check over each browser condition to determine if we are running in a compatible client
+			if ( typeof map !== 'object' || map[profile.name] === undefined ) {
+				// Not found, return true if exactMatchOnly not set, false otherwise
+				return !exactMatchOnly;
+			}
+			conditions = map[profile.name];
+			if ( conditions === false ) {
+				// Match no versions
+				return false;
+			}
+			if ( conditions === null ) {
+				// Match all versions
+				return true;
+			}
+			for ( i = 0; i < conditions.length; i++ ) {
+				op = conditions[i][0];
+				val = conditions[i][1];
+				if ( typeof val === 'string' ) {
+					// Perform a component-wise comparison of versions, similar to PHP's version_compare
+					// but simpler. '1.11' is larger than '1.2'.
+					pieceVersion = profile.version.toString().split( '.' );
+					pieceVal = val.split( '.' );
+					// Extend with zeroes to equal length
+					while ( pieceVersion.length < pieceVal.length ) {
+						pieceVersion.push( '0' );
+					}
+					while ( pieceVal.length < pieceVersion.length ) {
+						pieceVal.push( '0' );
+					}
+					// Compare components
+					compare = 0;
+					for ( j = 0; j < pieceVersion.length; j++ ) {
+						if ( Number( pieceVersion[j] ) < Number( pieceVal[j] ) ) {
+							compare = -1;
+							break;
+						} else if ( Number( pieceVersion[j] ) > Number( pieceVal[j] ) ) {
+							compare = 1;
+							break;
+						}
+					}
+					// compare will be -1, 0 or 1, depending on comparison result
+					if ( !( eval( String( compare + op + '0' ) ) ) ) {
+						return false;
+					}
+				} else if ( typeof val === 'number' ) {
+					if ( !( eval( 'profile.versionNumber' + op + val ) ) ) {
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+	};
+}( jQuery ) );
+
+/*!
+ * OOjs v1.1.6 optimised for jQuery
  * https://www.mediawiki.org/wiki/OOjs
  *
  * Copyright 2011-2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-02-26T01:51:06Z
+ * Date: 2015-03-19T00:42:55Z
  */
 ( function ( global ) {
 
@@ -2981,6 +3299,21 @@ oo.getHash.keySortReplacer = function ( key, val ) {
 	} else {
 		return val;
 	}
+};
+
+/**
+ * Get the unique values of an array, removing duplicates
+ *
+ * @param {Array} arr Array
+ * @return {Array} Unique values in array
+ */
+oo.unique = function ( arr ) {
+	return arr.reduce( function ( result, current ) {
+		if ( result.indexOf( current ) === -1 ) {
+			result.push( current );
+		}
+		return result;
+	}, [] );
 };
 
 /**
@@ -3494,14 +3827,14 @@ if ( typeof module !== 'undefined' && module.exports ) {
 }( this ) );
 
 /*!
- * OOjs UI v0.9.0
+ * OOjs UI v0.9.7
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-03-04T23:55:34Z
+ * Date: 2015-04-03T21:01:28Z
  */
 ( function ( OO ) {
 
@@ -3815,66 +4148,74 @@ OO.ui.PendingElement.prototype.popPending = function () {
 };
 
 /**
- * ActionSets manage the behavior of the {@link OO.ui.ActionWidget Action widgets} that comprise them.
+ * ActionSets manage the behavior of the {@link OO.ui.ActionWidget action widgets} that comprise them.
  * Actions can be made available for specific contexts (modes) and circumstances
- * (abilities). Please see the [OOjs UI documentation on MediaWiki][1] for more information.
+ * (abilities). Action sets are primarily used with {@link OO.ui.Dialog Dialogs}.
+ *
+ * ActionSets contain two types of actions:
+ *
+ * - Special: Special actions are the first visible actions with special flags, such as 'safe' and 'primary', the default special flags. Additional special flags can be configured in subclasses with the static #specialFlags property.
+ * - Other: Other actions include all non-special visible actions.
+ *
+ * Please see the [OOjs UI documentation on MediaWiki][1] for more information.
  *
  *     @example
  *     // Example: An action set used in a process dialog
- *     function ProcessDialog( config ) {
- *         ProcessDialog.super.call( this, config );
+ *     function MyProcessDialog( config ) {
+ *         MyProcessDialog.super.call( this, config );
  *     }
- *     OO.inheritClass( ProcessDialog, OO.ui.ProcessDialog );
- *     ProcessDialog.static.title = 'An action set in a process dialog';
+ *     OO.inheritClass( MyProcessDialog, OO.ui.ProcessDialog );
+ *     MyProcessDialog.static.title = 'An action set in a process dialog';
  *     // An action set that uses modes ('edit' and 'help' mode, in this example).
- *     ProcessDialog.static.actions = [
- *        { action: 'continue', modes: 'edit', label: 'Continue', flags: [ 'primary', 'constructive' ] },
- *        { action: 'help', modes: 'edit', label: 'Help' },
- *        { modes: 'edit', label: 'Cancel', flags: 'safe' },
- *        { action: 'back', modes: 'help', label: 'Back', flags: 'safe' }
+ *     MyProcessDialog.static.actions = [
+ *         { action: 'continue', modes: 'edit', label: 'Continue', flags: [ 'primary', 'constructive' ] },
+ *         { action: 'help', modes: 'edit', label: 'Help' },
+ *         { modes: 'edit', label: 'Cancel', flags: 'safe' },
+ *         { action: 'back', modes: 'help', label: 'Back', flags: 'safe' }
  *     ];
  *
- *     ProcessDialog.prototype.initialize = function () {
- *         ProcessDialog.super.prototype.initialize.apply( this, arguments );
+ *     MyProcessDialog.prototype.initialize = function () {
+ *         MyProcessDialog.super.prototype.initialize.apply( this, arguments );
  *         this.panel1 = new OO.ui.PanelLayout( { padded: true, expanded: false } );
- *         this.panel1.$element.append( '<p>This dialog uses an action set (continue, help, cancel, back) configured with modes. This is edit mode. Click \'help\' to see help mode. </p>' );
+ *         this.panel1.$element.append( '<p>This dialog uses an action set (continue, help, cancel, back) configured with modes. This is edit mode. Click \'help\' to see help mode.</p>' );
  *         this.panel2 = new OO.ui.PanelLayout( { padded: true, expanded: false } );
- *         this.panel2.$element.append( '<p>This is help mode. Only the \'back\' action widget is configured to be visible here. Click \'back\' to return to \'edit\' mode</p>' );
- *         this.stackLayout= new OO.ui.StackLayout( {
+ *         this.panel2.$element.append( '<p>This is help mode. Only the \'back\' action widget is configured to be visible here. Click \'back\' to return to \'edit\' mode.</p>' );
+ *         this.stackLayout = new OO.ui.StackLayout( {
  *             items: [ this.panel1, this.panel2 ]
- *         });
+ *         } );
  *         this.$body.append( this.stackLayout.$element );
  *     };
- *     ProcessDialog.prototype.getSetupProcess = function ( data ) {
- *         return ProcessDialog.super.prototype.getSetupProcess.call( this, data )
- *         .next( function () {
- *         this.actions.setMode('edit');
- *         }, this );
+ *     MyProcessDialog.prototype.getSetupProcess = function ( data ) {
+ *         return MyProcessDialog.super.prototype.getSetupProcess.call( this, data )
+ *             .next( function () {
+ *                 this.actions.setMode( 'edit' );
+ *             }, this );
  *     };
- *     ProcessDialog.prototype.getActionProcess = function ( action ) {
+ *     MyProcessDialog.prototype.getActionProcess = function ( action ) {
  *         if ( action === 'help' ) {
  *             this.actions.setMode( 'help' );
  *             this.stackLayout.setItem( this.panel2 );
- *             } else if ( action === 'back' ) {
+ *         } else if ( action === 'back' ) {
  *             this.actions.setMode( 'edit' );
  *             this.stackLayout.setItem( this.panel1 );
- *             } else if ( action === 'continue' ) {
+ *         } else if ( action === 'continue' ) {
  *             var dialog = this;
  *             return new OO.ui.Process( function () {
  *                 dialog.close();
  *             } );
  *         }
- *         return ProcessDialog.super.prototype.getActionProcess.call( this, action );
+ *         return MyProcessDialog.super.prototype.getActionProcess.call( this, action );
  *     };
- *     ProcessDialog.prototype.getBodyHeight = function () {
+ *     MyProcessDialog.prototype.getBodyHeight = function () {
  *         return this.panel1.$element.outerHeight( true );
  *     };
  *     var windowManager = new OO.ui.WindowManager();
  *     $( 'body' ).append( windowManager.$element );
- *     var processDialog = new ProcessDialog({
- *        size: 'medium'});
- *     windowManager.addWindows( [ processDialog ] );
- *     windowManager.openWindow( processDialog );
+ *     var dialog = new MyProcessDialog( {
+ *         size: 'medium'
+ *     } );
+ *     windowManager.addWindows( [ dialog ] );
+ *     windowManager.openWindow( dialog );
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Windows/Process_Dialogs#Action_sets
  *
@@ -3931,26 +4272,43 @@ OO.ui.ActionSet.static.specialFlags = [ 'safe', 'primary' ];
 
 /**
  * @event click
+ *
+ * A 'click' event is emitted when an action is clicked.
+ *
  * @param {OO.ui.ActionWidget} action Action that was clicked
  */
 
 /**
  * @event resize
+ *
+ * A 'resize' event is emitted when an action widget is resized.
+ *
  * @param {OO.ui.ActionWidget} action Action that was resized
  */
 
 /**
  * @event add
+ *
+ * An 'add' event is emitted when actions are {@link #method-add added} to the action set.
+ *
  * @param {OO.ui.ActionWidget[]} added Actions added
  */
 
 /**
  * @event remove
+ *
+ * A 'remove' event is emitted when actions are {@link #method-remove removed}
+ *  or {@link #clear cleared}.
+ *
  * @param {OO.ui.ActionWidget[]} added Actions removed
  */
 
 /**
  * @event change
+ *
+ * A 'change' event is emitted when actions are {@link #method-add added}, {@link #clear cleared},
+ * or {@link #method-remove removed} from the action set or when the {@link #setMode mode} is changed.
+ *
  */
 
 /* Methods */
@@ -3971,7 +4329,7 @@ OO.ui.ActionSet.prototype.onActionChange = function () {
 };
 
 /**
- * Check if a action is one of the special actions.
+ * Check if an action is one of the special actions.
  *
  * @param {OO.ui.ActionWidget} action Action to check
  * @return {boolean} Action is special
@@ -3989,15 +4347,16 @@ OO.ui.ActionSet.prototype.isSpecial = function ( action ) {
 };
 
 /**
- * Get actions.
+ * Get action widgets based on the specified filter: ‘actions’, ‘flags’, ‘modes’, ‘visible’,
+ *  or ‘disabled’.
  *
  * @param {Object} [filters] Filters to use, omit to get all actions
- * @param {string|string[]} [filters.actions] Actions that actions must have
- * @param {string|string[]} [filters.flags] Flags that actions must have
- * @param {string|string[]} [filters.modes] Modes that actions must have
- * @param {boolean} [filters.visible] Actions must be visible
- * @param {boolean} [filters.disabled] Actions must be disabled
- * @return {OO.ui.ActionWidget[]} Actions matching all criteria
+ * @param {string|string[]} [filters.actions] Actions that action widgets must have
+ * @param {string|string[]} [filters.flags] Flags that action widgets must have (e.g., 'safe')
+ * @param {string|string[]} [filters.modes] Modes that action widgets must have
+ * @param {boolean} [filters.visible] Action widgets must be visible
+ * @param {boolean} [filters.disabled] Action widgets must be disabled
+ * @return {OO.ui.ActionWidget[]} Action widgets matching all criteria
  */
 OO.ui.ActionSet.prototype.get = function ( filters ) {
 	var i, len, list, category, actions, index, match, matches;
@@ -4049,12 +4408,12 @@ OO.ui.ActionSet.prototype.get = function ( filters ) {
 };
 
 /**
- * Get special actions.
+ * Get 'special' actions.
  *
- * Special actions are the first visible actions with special flags, such as 'safe' and 'primary'.
- * Special flags can be configured by changing #static-specialFlags in a subclass.
+ * Special actions are the first visible action widgets with special flags, such as 'safe' and 'primary'.
+ * Special flags can be configured in subclasses by changing the static #specialFlags property.
  *
- * @return {OO.ui.ActionWidget|null} Safe action
+ * @return {OO.ui.ActionWidget[]|null} 'Special' action widgets.
  */
 OO.ui.ActionSet.prototype.getSpecial = function () {
 	this.organize();
@@ -4062,11 +4421,11 @@ OO.ui.ActionSet.prototype.getSpecial = function () {
 };
 
 /**
- * Get other actions.
+ * Get 'other' actions.
  *
- * Other actions include all non-special visible actions.
+ * Other actions include all non-special visible action widgets.
  *
- * @return {OO.ui.ActionWidget[]} Other actions
+ * @return {OO.ui.ActionWidget[]} 'Other' action widgets
  */
 OO.ui.ActionSet.prototype.getOthers = function () {
 	this.organize();
@@ -4074,12 +4433,11 @@ OO.ui.ActionSet.prototype.getOthers = function () {
 };
 
 /**
- * Toggle actions based on their modes.
+ * Set the mode  (e.g., ‘edit’ or ‘view’). Only {@link OO.ui.ActionWidget#modes actions} configured
+ * to be available in the specified mode will be made visible. All other actions will be hidden.
  *
- * Unlike calling toggle on actions with matching flags, this will enforce mutually exclusive
- * visibility; matching actions will be shown, non-matching actions will be hidden.
- *
- * @param {string} mode Mode actions must have
+ * @param {string} mode The mode. Only actions configured to be available in the specified
+ *  mode will be made visible.
  * @chainable
  * @fires toggle
  * @fires change
@@ -4101,12 +4459,14 @@ OO.ui.ActionSet.prototype.setMode = function ( mode ) {
 };
 
 /**
- * Change which actions are able to be performed.
+ * Set the abilities of the specified actions.
  *
- * Actions with matching actions will be disabled/enabled. Other actions will not be changed.
+ * Action widgets that are configured with the specified actions will be enabled
+ * or disabled based on the boolean values specified in the `actions`
+ * parameter.
  *
- * @param {Object.<string,boolean>} actions List of abilities, keyed by action name, values
- *   indicate actions are able to be performed
+ * @param {Object.<string,boolean>} actions A list keyed by action name with boolean
+ *  values that indicate whether or not the action should be enabled.
  * @chainable
  */
 OO.ui.ActionSet.prototype.setAbilities = function ( actions ) {
@@ -4127,9 +4487,9 @@ OO.ui.ActionSet.prototype.setAbilities = function ( actions ) {
  * Executes a function once per action.
  *
  * When making changes to multiple actions, use this method instead of iterating over the actions
- * manually to defer emitting a change event until after all actions have been changed.
+ * manually to defer emitting a #change event until after all actions have been changed.
  *
- * @param {Object|null} actions Filters to use for which actions to iterate over; see #get
+ * @param {Object|null} actions Filters to use to determine which actions to iterate over; see #get
  * @param {Function} callback Callback to run for each action; callback is invoked with three
  *   arguments: the action, the action's index, the list of actions being iterated over
  * @chainable
@@ -4147,9 +4507,9 @@ OO.ui.ActionSet.prototype.forEach = function ( filter, callback ) {
 };
 
 /**
- * Add actions.
+ * Add action widgets to the action set.
  *
- * @param {OO.ui.ActionWidget[]} actions Actions to add
+ * @param {OO.ui.ActionWidget[]} actions Action widgets to add
  * @chainable
  * @fires add
  * @fires change
@@ -4176,9 +4536,11 @@ OO.ui.ActionSet.prototype.add = function ( actions ) {
 };
 
 /**
- * Remove actions.
+ * Remove action widgets from the set.
  *
- * @param {OO.ui.ActionWidget[]} actions Actions to remove
+ * To remove all actions, you may wish to use the #clear method instead.
+ *
+ * @param {OO.ui.ActionWidget[]} actions Action widgets to remove
  * @chainable
  * @fires remove
  * @fires change
@@ -4204,7 +4566,9 @@ OO.ui.ActionSet.prototype.remove = function ( actions ) {
 };
 
 /**
- * Remove all actions.
+ * Remove all action widets from the set.
+ *
+ * To remove only specified actions, use the {@link #method-remove remove} method instead.
  *
  * @chainable
  * @fires remove
@@ -5038,7 +5402,11 @@ OO.ui.Element.prototype.scrollElementIntoView = function ( config ) {
 };
 
 /**
- * Container for elements.
+ * Layouts are containers for elements and are used to arrange other widgets of arbitrary type in a way
+ * that is centrally controlled and can be updated dynamically. Layouts can be, and usually are, combined.
+ * See {@link OO.ui.FieldsetLayout FieldsetLayout}, {@link OO.ui.FieldLayout FieldLayout}, {@link OO.ui.FormLayout FormLayout},
+ * {@link OO.ui.PanelLayout PanelLayout}, {@link OO.ui.StackLayout StackLayout}, {@link OO.ui.PageLayout PageLayout},
+ * and {@link OO.ui.BookletLayout BookletLayout} for more information and examples.
  *
  * @abstract
  * @class
@@ -5079,7 +5447,8 @@ OO.mixinClass( OO.ui.Layout, OO.EventEmitter );
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [disabled=false] Disable
+ * @cfg {boolean} [disabled=false] Disable the widget. Disabled widgets cannot be used and their
+ *  appearance reflects this state.
  */
 OO.ui.Widget = function OoUiWidget( config ) {
 	// Initialize config
@@ -5109,11 +5478,17 @@ OO.mixinClass( OO.ui.Widget, OO.EventEmitter );
 
 /**
  * @event disable
+ *
+ * A 'disable' event is emitted when a widget is disabled.
+ *
  * @param {boolean} disabled Widget is disabled
  */
 
 /**
  * @event toggle
+ *
+ * A 'toggle' event is emitted when the visibility of the widget changes.
+ *
  * @param {boolean} visible Widget is visible
  */
 
@@ -5122,16 +5497,16 @@ OO.mixinClass( OO.ui.Widget, OO.EventEmitter );
 /**
  * Check if the widget is disabled.
  *
- * @return {boolean} Button is disabled
+ * @return {boolean} Widget is disabled
  */
 OO.ui.Widget.prototype.isDisabled = function () {
 	return this.disabled;
 };
 
 /**
- * Set the disabled state of the widget.
+ * Set the 'disabled' state of the widget.
  *
- * This should probably change the widgets' appearance and prevent it from being used.
+ * When a widget is disabled, it cannot be used and its appearance is updated to reflect this state.
  *
  * @param {boolean} disabled Disable widget
  * @chainable
@@ -5205,8 +5580,8 @@ OO.ui.Widget.prototype.updateDisabled = function () {
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string} [size] Symbolic name of dialog size, `small`, `medium`, `large`, `larger` or
- *  `full`; omit to use #static-size
+ * @cfg {string} [size] Symbolic name of the dialog size: `small`, `medium`, `large`, `larger` or
+ *  `full`.  If omitted, the value of the {@link #static-size static size} property will be used.
  */
 OO.ui.Window = function OoUiWindow( config ) {
 	// Configuration initialization
@@ -5253,9 +5628,9 @@ OO.mixinClass( OO.ui.Window, OO.EventEmitter );
 /* Static Properties */
 
 /**
- * Symbolic name of size.
+ * Symbolic name of the window size: `small`, `medium`, `large`, `larger` or `full`.
  *
- * Size is used if no size is configured during construction.
+ * The static size is used if no #size is configured during construction.
  *
  * @static
  * @inheritable
@@ -5268,6 +5643,7 @@ OO.ui.Window.static.size = 'medium';
 /**
  * Handle mouse down events.
  *
+ * @private
  * @param {jQuery.Event} e Mouse down event
  */
 OO.ui.Window.prototype.onMouseDown = function ( e ) {
@@ -5278,7 +5654,7 @@ OO.ui.Window.prototype.onMouseDown = function ( e ) {
 };
 
 /**
- * Check if window has been initialized.
+ * Check if the window has been initialized.
  *
  * Initialization occurs when a window is added to a manager.
  *
@@ -5289,7 +5665,7 @@ OO.ui.Window.prototype.isInitialized = function () {
 };
 
 /**
- * Check if window is visible.
+ * Check if the window is visible.
  *
  * @return {boolean} Window is visible
  */
@@ -5298,9 +5674,10 @@ OO.ui.Window.prototype.isVisible = function () {
 };
 
 /**
- * Check if window is opening.
+ * Check if the window is opening.
  *
- * This is a wrapper around OO.ui.WindowManager#isOpening.
+ * This method is a wrapper around the window manager's {@link OO.ui.WindowManager#isOpening isOpening}
+ * method.
  *
  * @return {boolean} Window is opening
  */
@@ -5309,9 +5686,9 @@ OO.ui.Window.prototype.isOpening = function () {
 };
 
 /**
- * Check if window is closing.
+ * Check if the window is closing.
  *
- * This is a wrapper around OO.ui.WindowManager#isClosing.
+ * This method is a wrapper around the window manager's {@link OO.ui.WindowManager#isClosing isClosing} method.
  *
  * @return {boolean} Window is closing
  */
@@ -5320,9 +5697,9 @@ OO.ui.Window.prototype.isClosing = function () {
 };
 
 /**
- * Check if window is opened.
+ * Check if the window is opened.
  *
- * This is a wrapper around OO.ui.WindowManager#isOpened.
+ * This method is a wrapper around the window manager's {@link OO.ui.WindowManager#isOpened isOpened} method.
  *
  * @return {boolean} Window is opened
  */
@@ -5333,6 +5710,9 @@ OO.ui.Window.prototype.isOpened = function () {
 /**
  * Get the window manager.
  *
+ * All windows must be attached to a window manager, which is used to open
+ * and close the window and control its presentation.
+ *
  * @return {OO.ui.WindowManager} Manager of window
  */
 OO.ui.Window.prototype.getManager = function () {
@@ -5340,9 +5720,9 @@ OO.ui.Window.prototype.getManager = function () {
 };
 
 /**
- * Get the window size.
+ * Get the symbolic name of the window size (e.g., `small` or `medium`).
  *
- * @return {string} Symbolic size name, e.g. `small`, `medium`, `large`, `larger`, `full`
+ * @return {string} Symbolic name of the size: `small`, `medium`, `large`, `larger`, `full`
  */
 OO.ui.Window.prototype.getSize = function () {
 	return this.size;
@@ -5372,9 +5752,16 @@ OO.ui.Window.prototype.withoutSizeTransitions = function ( callback ) {
 };
 
 /**
- * Get the height of the dialog contents.
+ * Get the height of the full window contents (i.e., the window head, body and foot together).
  *
- * @return {number} Content height
+ * What consistitutes the head, body, and foot varies depending on the window type.
+ * A {@link OO.ui.MessageDialog message dialog} displays a title and message in its body,
+ * and any actions in the foot. A {@link OO.ui.ProcessDialog process dialog} displays a title
+ * and special actions in the head, and dialog content in the body.
+ *
+ * To get just the height of the dialog body, use the #getBodyHeight method.
+ *
+ * @return {number} The height of the window contents (the dialog head, body and foot) in pixels
  */
 OO.ui.Window.prototype.getContentHeight = function () {
 	var bodyHeight,
@@ -5404,34 +5791,42 @@ OO.ui.Window.prototype.getContentHeight = function () {
 };
 
 /**
- * Get the height of the dialog contents.
+ * Get the height of the window body.
  *
- * When this function is called, the dialog will temporarily have been resized
+ * To get the height of the full window contents (the window body, head, and foot together),
+ * use #getContentHeight.
+ *
+ * When this function is called, the window will temporarily have been resized
  * to height=1px, so .scrollHeight measurements can be taken accurately.
  *
- * @return {number} Height of content
+ * @return {number} Height of the window body in pixels
  */
 OO.ui.Window.prototype.getBodyHeight = function () {
 	return this.$body[ 0 ].scrollHeight;
 };
 
 /**
- * Get the directionality of the frame
+ * Get the directionality of the frame (right-to-left or left-to-right).
  *
- * @return {string} Directionality, 'ltr' or 'rtl'
+ * @return {string} Directionality: `'ltr'` or `'rtl'`
  */
 OO.ui.Window.prototype.getDir = function () {
 	return this.dir;
 };
 
 /**
- * Get a process for setting up a window for use.
+ * Get the 'setup' process.
  *
- * Each time the window is opened this process will set it up for use in a particular context, based
- * on the `data` argument.
+ * The setup process is used to set up a window for use in a particular context,
+ * based on the `data` argument. This method is called during the opening phase of the window’s
+ * lifecycle.
  *
- * When you override this method, you can add additional setup steps to the process the parent
- * method provides using the 'first' and 'next' methods.
+ * Override this method to add additional steps to the ‘setup’ process the parent method provides
+ * using the {@link OO.ui.Process#first first} and {@link OO.ui.Process#next next} methods
+ * of OO.ui.Process.
+ *
+ * To add window content that persists between openings, you may wish to use the #initialize method
+ * instead.
  *
  * @abstract
  * @param {Object} [data] Window opening data
@@ -5442,30 +5837,34 @@ OO.ui.Window.prototype.getSetupProcess = function () {
 };
 
 /**
- * Get a process for readying a window for use.
+ * Get the ‘ready’ process.
  *
- * Each time the window is open and setup, this process will ready it up for use in a particular
- * context, based on the `data` argument.
+ * The ready process is used to ready a window for use in a particular
+ * context, based on the `data` argument. This method is called during the opening phase of
+ * the window’s lifecycle, after the window has been {@link #getSetupProcess setup}.
  *
- * When you override this method, you can add additional setup steps to the process the parent
- * method provides using the 'first' and 'next' methods.
+ * Override this method to add additional steps to the ‘ready’ process the parent method
+ * provides using the {@link OO.ui.Process#first first} and {@link OO.ui.Process#next next}
+ * methods of OO.ui.Process.
  *
  * @abstract
  * @param {Object} [data] Window opening data
- * @return {OO.ui.Process} Setup process
+ * @return {OO.ui.Process} Ready process
  */
 OO.ui.Window.prototype.getReadyProcess = function () {
 	return new OO.ui.Process();
 };
 
 /**
- * Get a process for holding a window from use.
+ * Get the 'hold' process.
  *
- * Each time the window is closed, this process will hold it from use in a particular context, based
- * on the `data` argument.
+ * The hold proccess is used to keep a window from being used in a particular context,
+ * based on the `data` argument. This method is called during the closing phase of the window’s
+ * lifecycle.
  *
- * When you override this method, you can add additional setup steps to the process the parent
- * method provides using the 'first' and 'next' methods.
+ * Override this method to add additional steps to the 'hold' process the parent method provides
+ * using the {@link OO.ui.Process#first first} and {@link OO.ui.Process#next next} methods
+ * of OO.ui.Process.
  *
  * @abstract
  * @param {Object} [data] Window closing data
@@ -5476,13 +5875,15 @@ OO.ui.Window.prototype.getHoldProcess = function () {
 };
 
 /**
- * Get a process for tearing down a window after use.
+ * Get the ‘teardown’ process.
  *
- * Each time the window is closed this process will tear it down and do something with the user's
- * interactions within the window, based on the `data` argument.
+ * The teardown process is used to teardown a window after use. During teardown,
+ * user interactions within the window are conveyed and the window is closed, based on the `data`
+ * argument. This method is called during the closing phase of the window’s lifecycle.
  *
- * When you override this method, you can add additional teardown steps to the process the parent
- * method provides using the 'first' and 'next' methods.
+ * Override this method to add additional steps to the ‘teardown’ process the parent method provides
+ * using the {@link OO.ui.Process#first first} and {@link OO.ui.Process#next next} methods
+ * of OO.ui.Process.
  *
  * @abstract
  * @param {Object} [data] Window closing data
@@ -5498,7 +5899,7 @@ OO.ui.Window.prototype.getTeardownProcess = function () {
  * This will cause the window to initialize. Calling it more than once will cause an error.
  *
  * @param {OO.ui.WindowManager} manager Manager for this window
- * @throws {Error} If called more than once
+ * @throws {Error} An error is thrown if the method is called more than once
  * @chainable
  */
 OO.ui.Window.prototype.setManager = function ( manager ) {
@@ -5513,9 +5914,10 @@ OO.ui.Window.prototype.setManager = function ( manager ) {
 };
 
 /**
- * Set the window size.
+ * Set the window size by symbolic name (e.g., 'small' or 'medium')
  *
- * @param {string} size Symbolic size name, e.g. 'small', 'medium', 'large', 'full'
+ * @param {string} size Symbolic name of size: `small`, `medium`, `large`, `larger` or
+ *  `full`
  * @chainable
  */
 OO.ui.Window.prototype.setSize = function ( size ) {
@@ -5527,7 +5929,7 @@ OO.ui.Window.prototype.setSize = function ( size ) {
 /**
  * Update the window size.
  *
- * @throws {Error} If not attached to a manager
+ * @throws {Error} An error is thrown if the window is not attached to a window manager
  * @chainable
  */
 OO.ui.Window.prototype.updateSize = function () {
@@ -5541,9 +5943,10 @@ OO.ui.Window.prototype.updateSize = function () {
 };
 
 /**
- * Set window dimensions.
+ * Set window dimensions. This method is called by the {@link OO.ui.WindowManager window manager}
+ * when the window is opening. In general, setDimensions should not be called directly.
  *
- * Properties are applied to the frame container.
+ * To set the size of the window, use the #setSize method.
  *
  * @param {Object} dim CSS dimension properties
  * @param {string|number} [dim.width] Width
@@ -5586,11 +5989,12 @@ OO.ui.Window.prototype.setDimensions = function ( dim ) {
 /**
  * Initialize window contents.
  *
- * The first time the window is opened, #initialize is called so that changes to the window that
- * will persist between openings can be made. See #getSetupProcess for a way to make changes each
- * time the window opens.
+ * Before the window is opened for the first time, #initialize is called so that content that
+ * persists between openings can be added to the window.
  *
- * @throws {Error} If not attached to a manager
+ * To set up a window with new content each time the window opens, use #getSetupProcess.
+ *
+ * @throws {Error} An error is thrown if the window is not attached to a window manager
  * @chainable
  */
 OO.ui.Window.prototype.initialize = function () {
@@ -5618,15 +6022,18 @@ OO.ui.Window.prototype.initialize = function () {
 };
 
 /**
- * Open window.
+ * Open the window.
  *
- * This is a wrapper around calling {@link OO.ui.WindowManager#openWindow} on the window manager.
- * To do something each time the window opens, use #getSetupProcess or #getReadyProcess.
+ * This method is a wrapper around a call to the window manager’s {@link OO.ui.WindowManager#openWindow openWindow}
+ * method, which returns a promise resolved when the window is done opening.
+ *
+ * To customize the window each time it opens, use #getSetupProcess or #getReadyProcess.
  *
  * @param {Object} [data] Window opening data
- * @return {jQuery.Promise} Promise resolved when window is opened; when the promise is resolved the
- *   first argument will be a promise which will be resolved when the window begins closing
- * @throws {Error} If not attached to a manager
+ * @return {jQuery.Promise} Promise resolved with a value when the window is opened, or rejected
+ *  if the window fails to open. When the promise is resolved successfully, the first argument of the
+ *  value is a new promise, which is resolved when the window begins closing.
+ * @throws {Error} An error is thrown if the window is not attached to a window manager
  */
 OO.ui.Window.prototype.open = function ( data ) {
 	if ( !this.manager ) {
@@ -5637,14 +6044,19 @@ OO.ui.Window.prototype.open = function ( data ) {
 };
 
 /**
- * Close window.
+ * Close the window.
  *
- * This is a wrapper around calling OO.ui.WindowManager#closeWindow on the window manager.
- * To do something each time the window closes, use #getHoldProcess or #getTeardownProcess.
+ * This method is a wrapper around a call to the window
+ * manager’s {@link OO.ui.WindowManager#closeWindow closeWindow} method,
+ * which returns a closing promise resolved when the window is done closing.
+ *
+ * The window's #getHoldProcess and #getTeardownProcess methods are called during the closing
+ * phase of the window’s lifecycle and can be used to specify closing behavior each time
+ * the window closes.
  *
  * @param {Object} [data] Window closing data
  * @return {jQuery.Promise} Promise resolved when window is closed
- * @throws {Error} If not attached to a manager
+ * @throws {Error} An error is thrown if the window is not attached to a window manager
  */
 OO.ui.Window.prototype.close = function ( data ) {
 	if ( !this.manager ) {
@@ -5833,6 +6245,11 @@ OO.mixinClass( OO.ui.Dialog, OO.ui.PendingElement );
 /**
  * Symbolic name of dialog.
  *
+ * The dialog class must have a symbolic name in order to be registered with OO.Factory.
+ * Please see the [OOjs UI documentation on MediaWiki] [3] for more information.
+ *
+ * [3]: https://www.mediawiki.org/wiki/OOjs_UI/Windows/Window_managers
+ *
  * @abstract
  * @static
  * @inheritable
@@ -5841,26 +6258,35 @@ OO.mixinClass( OO.ui.Dialog, OO.ui.PendingElement );
 OO.ui.Dialog.static.name = '';
 
 /**
- * Dialog title.
+ * The dialog title.
+ *
+ * The title can be specified as a plaintext string, a {@link OO.ui.LabelElement Label} node, or a function
+ * that will produce a Label node or string. The title can also be specified with data passed to the
+ * constructor (see #getSetupProcess). In this case, the static value will be overriden.
  *
  * @abstract
  * @static
  * @inheritable
- * @property {jQuery|string|Function} Label nodes, text or a function that returns nodes or text
+ * @property {jQuery|string|Function}
  */
 OO.ui.Dialog.static.title = '';
 
 /**
- * List of OO.ui.ActionWidget configuration options.
+ * An array of configured {@link OO.ui.ActionWidget action widgets}.
+ *
+ * Actions can also be specified with data passed to the constructor (see #getSetupProcess). In this case, the static
+ * value will be overriden.
+ *
+ * [2]: https://www.mediawiki.org/wiki/OOjs_UI/Windows/Process_Dialogs#Action_sets
  *
  * @static
- * inheritable
+ * @inheritable
  * @property {Object[]}
  */
 OO.ui.Dialog.static.actions = [];
 
 /**
- * Close dialog when the escape key is pressed.
+ * Close the dialog when the 'Esc' key is pressed.
  *
  * @static
  * @abstract
@@ -5874,6 +6300,7 @@ OO.ui.Dialog.static.escapable = true;
 /**
  * Handle frame document key down events.
  *
+ * @private
  * @param {jQuery.Event} e Key down event
  */
 OO.ui.Dialog.prototype.onDocumentKeyDown = function ( e ) {
@@ -5887,6 +6314,7 @@ OO.ui.Dialog.prototype.onDocumentKeyDown = function ( e ) {
 /**
  * Handle action resized events.
  *
+ * @private
  * @param {OO.ui.ActionWidget} action Action that was resized
  */
 OO.ui.Dialog.prototype.onActionResize = function () {
@@ -5896,6 +6324,7 @@ OO.ui.Dialog.prototype.onActionResize = function () {
 /**
  * Handle action click events.
  *
+ * @private
  * @param {OO.ui.ActionWidget} action Action that was clicked
  */
 OO.ui.Dialog.prototype.onActionClick = function ( action ) {
@@ -5906,6 +6335,8 @@ OO.ui.Dialog.prototype.onActionClick = function ( action ) {
 
 /**
  * Handle actions change event.
+ *
+ * @private
  */
 OO.ui.Dialog.prototype.onActionsChange = function () {
 	this.detachActions();
@@ -5915,7 +6346,7 @@ OO.ui.Dialog.prototype.onActionsChange = function () {
 };
 
 /**
- * Get set of actions.
+ * Get the set of actions used by the dialog.
  *
  * @return {OO.ui.ActionSet}
  */
@@ -5926,8 +6357,9 @@ OO.ui.Dialog.prototype.getActions = function () {
 /**
  * Get a process for taking action.
  *
- * When you override this method, you can add additional accept steps to the process the parent
- * method provides using the 'first' and 'next' methods.
+ * When you override this method, you can create a new OO.ui.Process and return it, or add additional
+ * accept steps to the process the parent method provides using the {@link OO.ui.Process#first 'first'}
+ * and {@link OO.ui.Process#next 'next'} methods of OO.ui.Process.
  *
  * @abstract
  * @param {string} [action] Symbolic name of action
@@ -5948,9 +6380,10 @@ OO.ui.Dialog.prototype.getActionProcess = function ( action ) {
  * @inheritdoc
  *
  * @param {Object} [data] Dialog opening data
- * @param {jQuery|string|Function|null} [data.title] Dialog title, omit to use #static-title
- * @param {Object[]} [data.actions] List of OO.ui.ActionWidget configuration options for each
- *   action item, omit to use #static-actions
+ * @param {jQuery|string|Function|null} [data.title] Dialog title, omit to use
+ *  the {@link #static-title static title}
+ * @param {Object[]} [data.actions] List of configuration options for each
+ *   {@link OO.ui.ActionWidget action widget}, omit to use {@link #static-actions static actions}.
  */
 OO.ui.Dialog.prototype.getSetupProcess = function ( data ) {
 	data = data || {};
@@ -5958,20 +6391,13 @@ OO.ui.Dialog.prototype.getSetupProcess = function ( data ) {
 	// Parent method
 	return OO.ui.Dialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var i, len,
-				items = [],
-				config = this.constructor.static,
+			var config = this.constructor.static,
 				actions = data.actions !== undefined ? data.actions : config.actions;
 
 			this.title.setLabel(
 				data.title !== undefined ? data.title : this.constructor.static.title
 			);
-			for ( i = 0, len = actions.length; i < len; i++ ) {
-				items.push(
-					new OO.ui.ActionWidget( actions[ i ] )
-				);
-			}
-			this.actions.add( items );
+			this.actions.add( this.getActionWidgets( actions ) );
 
 			if ( this.constructor.static.escapable ) {
 				this.$document.on( 'keydown', this.onDocumentKeyDownHandler );
@@ -6011,7 +6437,25 @@ OO.ui.Dialog.prototype.initialize = function () {
 };
 
 /**
+ * Get action widgets from a list of configs
+ *
+ * @param {Object[]} actions Action widget configs
+ * @return {OO.ui.ActionWidget[]} Action widgets
+ */
+OO.ui.Dialog.prototype.getActionWidgets = function ( actions ) {
+	var i, len, widgets = [];
+	for ( i = 0, len = actions.length; i < len; i++ ) {
+		widgets.push(
+			new OO.ui.ActionWidget( actions[ i ] )
+		);
+	}
+	return widgets;
+};
+
+/**
  * Attach action actions.
+ *
+ * @protected
  */
 OO.ui.Dialog.prototype.attachActions = function () {
 	// Remember the list of potentially attached actions
@@ -6021,6 +6465,7 @@ OO.ui.Dialog.prototype.attachActions = function () {
 /**
  * Detach action actions.
  *
+ * @protected
  * @chainable
  */
 OO.ui.Dialog.prototype.detachActions = function () {
@@ -6098,6 +6543,8 @@ OO.ui.Dialog.prototype.executeAction = function ( action ) {
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {OO.Factory} [factory] Window factory to use for automatic instantiation
+ *  Note that window classes that are instantiated with a factory must have
+ *  a {@link OO.ui.Dialog#static-name static name} property that specifies a symbolic name.
  * @cfg {boolean} [modal=true] Prevent interaction outside the dialog
  */
 OO.ui.WindowManager = function OoUiWindowManager( config ) {
@@ -6140,34 +6587,30 @@ OO.mixinClass( OO.ui.WindowManager, OO.EventEmitter );
 /* Events */
 
 /**
- * Window is opening.
- *
- * Fired when the window begins to be opened.
+ * An 'opening' event is emitted when the window begins to be opened.
  *
  * @event opening
  * @param {OO.ui.Window} win Window that's being opened
- * @param {jQuery.Promise} opening Promise resolved when window is opened; when the promise is
- *   resolved the first argument will be a promise which will be resolved when the window begins
- *   closing, the second argument will be the opening data; progress notifications will be fired on
- *   the promise for `setup` and `ready` when those processes are completed respectively.
+ * @param {jQuery.Promise} opening An `opening` promise resolved with a value when the window is opened successfully.
+ *  When the `opening` promise is resolved, the first argument of the value is an 'opened' promise, the second argument
+ *  is the opening data. The `opening` promise emits `setup` and `ready` notifications when those processes are complete.
  * @param {Object} data Window opening data
  */
 
 /**
- * Window is closing.
- *
- * Fired when the window begins to be closed.
+ * A 'closing' event is emitted when the window begins to be closed.
  *
  * @event closing
  * @param {OO.ui.Window} win Window that's being closed
- * @param {jQuery.Promise} opening Promise resolved when window is closed; when the promise
- *   is resolved the first argument will be a the closing data; progress notifications will be fired
- *   on the promise for `hold` and `teardown` when those processes are completed respectively.
+ * @param {jQuery.Promise} closing A `closing` promise is resolved with a value when the window
+ *  is closed successfully. The promise emits `hold` and `teardown` notifications when those
+ *  processes are complete. When the `closing` promise is resolved, the first argument of its value
+ *  is the closing data.
  * @param {Object} data Window closing data
  */
 
 /**
- * Window was resized.
+ * A 'resize' event is emitted when a window is resized.
  *
  * @event resize
  * @param {OO.ui.Window} win Window that was resized
@@ -6176,7 +6619,7 @@ OO.mixinClass( OO.ui.WindowManager, OO.EventEmitter );
 /* Static Properties */
 
 /**
- * Map of symbolic size names and CSS properties.
+ * Map of the symbolic name of each window size and its CSS properties.
  *
  * @static
  * @inheritable
@@ -6203,9 +6646,9 @@ OO.ui.WindowManager.static.sizes = {
 };
 
 /**
- * Symbolic name of default size.
+ * Symbolic name of the default window size.
  *
- * Default size is used if the window's requested size is not recognized.
+ * The default size is used if the window's requested size is not recognized.
  *
  * @static
  * @inheritable
@@ -6218,6 +6661,7 @@ OO.ui.WindowManager.static.defaultSize = 'medium';
 /**
  * Handle window resize events.
  *
+ * @private
  * @param {jQuery.Event} e Window resize event
  */
 OO.ui.WindowManager.prototype.onWindowResize = function () {
@@ -6228,6 +6672,7 @@ OO.ui.WindowManager.prototype.onWindowResize = function () {
 /**
  * Handle window resize events.
  *
+ * @private
  * @param {jQuery.Event} e Window resize event
  */
 OO.ui.WindowManager.prototype.afterWindowResize = function () {
@@ -6282,7 +6727,7 @@ OO.ui.WindowManager.prototype.hasWindow = function ( win ) {
 };
 
 /**
- * Get the number of milliseconds to wait between beginning opening and executing setup process.
+ * Get the number of milliseconds to wait after opening begins before executing the ‘setup’ process.
  *
  * @param {OO.ui.Window} win Window being opened
  * @param {Object} [data] Window opening data
@@ -6293,7 +6738,7 @@ OO.ui.WindowManager.prototype.getSetupDelay = function () {
 };
 
 /**
- * Get the number of milliseconds to wait between finishing setup and executing ready process.
+ * Get the number of milliseconds to wait after setup has finished before executing the ‘ready’ process.
  *
  * @param {OO.ui.Window} win Window being opened
  * @param {Object} [data] Window opening data
@@ -6304,7 +6749,7 @@ OO.ui.WindowManager.prototype.getReadyDelay = function () {
 };
 
 /**
- * Get the number of milliseconds to wait between beginning closing and executing hold process.
+ * Get the number of milliseconds to wait after closing has begun before executing the 'hold' process.
  *
  * @param {OO.ui.Window} win Window being closed
  * @param {Object} [data] Window closing data
@@ -6315,7 +6760,8 @@ OO.ui.WindowManager.prototype.getHoldDelay = function () {
 };
 
 /**
- * Get the number of milliseconds to wait between finishing hold and executing teardown process.
+ * Get the number of milliseconds to wait after the ‘hold’ process has finished before
+ * executing the ‘teardown’ process.
  *
  * @param {OO.ui.Window} win Window being closed
  * @param {Object} [data] Window closing data
@@ -6326,14 +6772,17 @@ OO.ui.WindowManager.prototype.getTeardownDelay = function () {
 };
 
 /**
- * Get managed window by symbolic name.
+ * Get a window by its symbolic name.
  *
- * If window is not yet instantiated, it will be instantiated and added automatically.
+ * If the window is not yet instantiated and its symbolic name is recognized by a factory, it will be
+ * instantiated and added to the window manager automatically. Please see the [OOjs UI documentation on MediaWiki][3]
+ * for more information about using factories.
+ * [3]: https://www.mediawiki.org/wiki/OOjs_UI/Windows/Window_managers
  *
- * @param {string} name Symbolic window name
+ * @param {string} name Symbolic name of the window
  * @return {jQuery.Promise} Promise resolved with matching window, or rejected with an OO.ui.Error
- * @throws {Error} If the symbolic name is unrecognized by the factory
- * @throws {Error} If the symbolic name unrecognized as a managed window
+ * @throws {Error} An error is thrown if the symbolic name is not recognized by the factory.
+ * @throws {Error} An error is thrown if the named window is not recognized as a managed window.
  */
 OO.ui.WindowManager.prototype.getWindow = function ( name ) {
 	var deferred = $.Deferred(),
@@ -6376,8 +6825,8 @@ OO.ui.WindowManager.prototype.getCurrentWindow = function () {
  *
  * @param {OO.ui.Window|string} win Window object or symbolic name of window to open
  * @param {Object} [data] Window opening data
- * @return {jQuery.Promise} Promise resolved when window is done opening; see {@link #event-opening}
- *   for more details about the `opening` promise
+ * @return {jQuery.Promise} An `opening` promise resolved when the window is done opening.
+ *  See {@link #event-opening 'opening' event}  for more information about `opening` promises.
  * @fires opening
  */
 OO.ui.WindowManager.prototype.openWindow = function ( win, data ) {
@@ -6441,9 +6890,9 @@ OO.ui.WindowManager.prototype.openWindow = function ( win, data ) {
  *
  * @param {OO.ui.Window|string} win Window object or symbolic name of window to close
  * @param {Object} [data] Window closing data
- * @return {jQuery.Promise} Promise resolved when window is done closing; see {@link #event-closing}
- *   for more details about the `closing` promise
- * @throws {Error} If no window by that name is being managed
+ * @return {jQuery.Promise} A `closing` promise resolved when the window is done closing.
+ *  See {@link #event-closing 'closing' event} for more information about closing promises.
+ * @throws {Error} An error is thrown if the window is not managed by the window manager.
  * @fires closing
  */
 OO.ui.WindowManager.prototype.closeWindow = function ( win, data ) {
@@ -6509,11 +6958,16 @@ OO.ui.WindowManager.prototype.closeWindow = function ( win, data ) {
 };
 
 /**
- * Add windows.
+ * Add windows to the window manager.
  *
- * @param {Object.<string,OO.ui.Window>|OO.ui.Window[]} windows Windows to add
- * @throws {Error} If one of the windows being added without an explicit symbolic name does not have
- *   a statically configured symbolic name
+ * Windows can be added by reference, symbolic name, or explicitly defined symbolic names.
+ * See the [OOjs ui documentation on MediaWiki] [2] for examples.
+ * [2]: https://www.mediawiki.org/wiki/OOjs_UI/Windows/Window_managers
+ *
+ * @param {Object.<string,OO.ui.Window>|OO.ui.Window[]} windows An array of window objects specified
+ *  by reference, symbolic name, or explicitly defined symbolic names.
+ * @throws {Error} An error is thrown if a window is added by symbolic name, but has neither an
+ *  explicit nor a statically configured symbolic name.
  */
 OO.ui.WindowManager.prototype.addWindows = function ( windows ) {
 	var i, len, win, name, list;
@@ -6542,13 +6996,15 @@ OO.ui.WindowManager.prototype.addWindows = function ( windows ) {
 };
 
 /**
- * Remove windows.
+ * Remove the specified windows from the windows manager.
  *
- * Windows will be closed before they are removed.
+ * Windows will be closed before they are removed. If you wish to remove all windows, you may wish to use
+ * the #clearWindows method instead. If you no longer need the window manager and want to ensure that it no
+ * longer listens to events, use the #destroy method.
  *
  * @param {string[]} names Symbolic names of windows to remove
  * @return {jQuery.Promise} Promise resolved when window is closed and removed
- * @throws {Error} If windows being removed are not being managed
+ * @throws {Error} An error is thrown if the named windows are not managed by the window manager.
  */
 OO.ui.WindowManager.prototype.removeWindows = function ( names ) {
 	var i, len, win, name, cleanupWindow,
@@ -6573,9 +7029,11 @@ OO.ui.WindowManager.prototype.removeWindows = function ( names ) {
 };
 
 /**
- * Remove all windows.
+ * Remove all windows from the window manager.
  *
- * Windows will be closed before they are removed.
+ * Windows will be closed before they are removed. Note that the window manager, though not in use, will still
+ * listen to events. If the window manager will not be used again, you may wish to use the #destroy method instead.
+ * To remove just a subset of windows, use the #removeWindows method.
  *
  * @return {jQuery.Promise} Promise resolved when all windows are closed and removed
  */
@@ -6584,7 +7042,7 @@ OO.ui.WindowManager.prototype.clearWindows = function () {
 };
 
 /**
- * Set dialog size.
+ * Set dialog size. In general, this method should not be called directly.
  *
  * Fullscreen mode will be used if the dialog is too wide to fit in the screen.
  *
@@ -6619,15 +7077,17 @@ OO.ui.WindowManager.prototype.updateWindowSize = function ( win ) {
 /**
  * Bind or unbind global events for scrolling.
  *
+ * @private
  * @param {boolean} [on] Bind global events
  * @chainable
  */
 OO.ui.WindowManager.prototype.toggleGlobalEvents = function ( on ) {
 	on = on === undefined ? !!this.globalEvents : !!on;
 
-	var $body = $( this.getElementDocument().body ),
-		// We could have multiple window managers open to only modify
-		// the body class at the bottom of the stack
+	var scrollWidth, bodyMargin,
+		$body = $( this.getElementDocument().body ),
+		// We could have multiple window managers open so only modify
+		// the body css at the bottom of the stack
 		stackDepth = $body.data( 'windowManagerGlobalEvents' ) || 0 ;
 
 	if ( on ) {
@@ -6637,7 +7097,12 @@ OO.ui.WindowManager.prototype.toggleGlobalEvents = function ( on ) {
 				'orientationchange resize': this.onWindowResizeHandler
 			} );
 			if ( stackDepth === 0 ) {
-				$body.css( 'overflow', 'hidden' );
+				scrollWidth = window.innerWidth - document.documentElement.clientWidth;
+				bodyMargin = parseFloat( $body.css( 'margin-right' ) ) || 0;
+				$body.css( {
+					overflow: 'hidden',
+					'margin-right': bodyMargin + scrollWidth
+				} );
 			}
 			stackDepth++;
 			this.globalEvents = true;
@@ -6649,7 +7114,10 @@ OO.ui.WindowManager.prototype.toggleGlobalEvents = function ( on ) {
 		} );
 		stackDepth--;
 		if ( stackDepth === 0 ) {
-			$( this.getElementDocument().body ).css( 'overflow', '' );
+			$body.css( {
+				overflow: '',
+				'margin-right': ''
+			} );
 		}
 		this.globalEvents = false;
 	}
@@ -6661,6 +7129,7 @@ OO.ui.WindowManager.prototype.toggleGlobalEvents = function ( on ) {
 /**
  * Toggle screen reader visibility of content other than the window manager.
  *
+ * @private
  * @param {boolean} [isolate] Make only the window manager visible to screen readers
  * @chainable
  */
@@ -6685,7 +7154,11 @@ OO.ui.WindowManager.prototype.toggleAriaIsolation = function ( isolate ) {
 };
 
 /**
- * Destroy window manager.
+ * Destroy the window manager.
+ *
+ * Destroying the window manager ensures that it will no longer listen to events. If you would like to
+ * continue using the window manager, but wish to remove all windows from it, use the #clearWindows method
+ * instead.
  */
 OO.ui.WindowManager.prototype.destroy = function () {
 	this.toggleGlobalEvents( false );
@@ -6794,19 +7267,27 @@ OO.ui.HtmlSnippet.prototype.toString = function () {
 };
 
 /**
- * A list of functions, called in sequence.
+ * A Process is a list of steps that are called in sequence. The step can be a number, a jQuery promise,
+ * or a function:
  *
- * If a function added to a process returns boolean false the process will stop; if it returns an
- * object with a `promise` method the process will use the promise to either continue to the next
- * step when the promise is resolved or stop when the promise is rejected.
+ * - **number**: the process will wait for the specified number of milliseconds before proceeding.
+ * - **promise**: the process will continue to the next step when the promise is successfully resolved
+ *  or stop if the promise is rejected.
+ * - **function**: the process will execute the function. The process will stop if the function returns
+ *  either a boolean `false` or a promise that is rejected; if the function returns a number, the process
+ *  will wait for that number of milliseconds before proceeding.
+ *
+ * If the process fails, an {@link OO.ui.Error error} is generated. Depending on how the error is
+ * configured, users can dismiss the error and try the process again, or not. If a process is stopped,
+ * its remaining steps will not be performed.
  *
  * @class
  *
  * @constructor
- * @param {number|jQuery.Promise|Function} step Time to wait, promise to wait for or function to
- *   call, see #createStep for more information
- * @param {Object} [context=null] Context to call the step function in, ignored if step is a number
- *   or a promise
+ * @param {number|jQuery.Promise|Function} step Number of miliseconds to wait before proceeding, promise
+ *  that must be resolved before proceeding, or a function to execute. See #createStep for more information. see #createStep for more information
+ * @param {Object} [context=null] Execution context of the function. The context is ignored if the step is
+ *  a number or promise.
  * @return {Object} Step object, with `callback` and `context` properties
  */
 OO.ui.Process = function ( step, context ) {
@@ -6828,9 +7309,9 @@ OO.initClass( OO.ui.Process );
 /**
  * Start the process.
  *
- * @return {jQuery.Promise} Promise that is resolved when all steps have completed or rejected when
- *   any of the steps return boolean false or a promise which gets rejected; upon stopping the
- *   process, the remaining steps will not be taken
+ * @return {jQuery.Promise} Promise that is resolved when all steps have successfully completed.
+ *  If any of the steps return a promise that is rejected or a boolean false, this promise is rejected
+ *  and any remaining steps are not performed.
  */
 OO.ui.Process.prototype.execute = function () {
 	var i, len, promise;
@@ -6898,16 +7379,16 @@ OO.ui.Process.prototype.execute = function () {
  * @private
  * @param {number|jQuery.Promise|Function} step
  *
- * - Number of milliseconds to wait; or
- * - Promise to wait to be resolved; or
+ * - Number of milliseconds to wait before proceeding
+ * - Promise that must be resolved before proceeding
  * - Function to execute
- *   - If it returns boolean false the process will stop
- *   - If it returns an object with a `promise` method the process will use the promise to either
- *     continue to the next step when the promise is resolved or stop when the promise is rejected
- *   - If it returns a number, the process will wait for that number of milliseconds before
- *     proceeding
- * @param {Object} [context=null] Context to call the step function in, ignored if step is a number
- *   or a promise
+ *   - If the function returns a boolean false the process will stop
+ *   - If the function returns a promise, the process will continue to the next
+ *     step when the promise is resolved or stop if the promise is rejected
+ *   - If the function returns a number, the process will wait for that number of
+ *     milliseconds before proceeding
+ * @param {Object} [context=null] Execution context of the function. The context is
+ *  ignored if the step is a number or promise.
  * @return {Object} Step object, with `callback` and `context` properties
  */
 OO.ui.Process.prototype.createStep = function ( step, context ) {
@@ -7170,20 +7651,20 @@ OO.ui.Theme.prototype.updateElementClasses = function ( element ) {
  *     // TabIndexedElement is mixed into the ButtonWidget class
  *     // to provide a tabIndex property.
  *     var button1 = new OO.ui.ButtonWidget( {
- *         label : 'fourth',
- *         tabIndex : 4
+ *         label: 'fourth',
+ *         tabIndex: 4
  *     } );
  *     var button2 = new OO.ui.ButtonWidget( {
- *         label : 'second',
- *         tabIndex : 2
+ *         label: 'second',
+ *         tabIndex: 2
  *     } );
  *     var button3 = new OO.ui.ButtonWidget( {
- *         label : 'third',
- *         tabIndex : 3
+ *         label: 'third',
+ *         tabIndex: 3
  *     } );
  *     var button4 = new OO.ui.ButtonWidget( {
- *         label : 'first',
- *         tabIndex : 1
+ *         label: 'first',
+ *         tabIndex: 1
  *     } );
  *     $( 'body' ).append( button1.$element, button2.$element, button3.$element, button4.$element );
  *
@@ -7192,9 +7673,12 @@ OO.ui.Theme.prototype.updateElementClasses = function ( element ) {
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$tabIndexed] tabIndexed node, assigned to #$tabIndexed, omit to use #$element
- * @cfg {number|null} [tabIndex=0] Tab index value. Use 0 to use default ordering, use -1 to
- *  prevent tab focusing, use null to suppress the `tabindex` attribute.
+ * @cfg {jQuery} [$tabIndexed] The element that should use the tabindex functionality. By default,
+ *  the functionality is applied to the element created by the class ($element). If a different element is specified, the tabindex
+ *  functionality will be applied to it instead.
+ * @cfg {number|null} [tabIndex=0] Number that specifies the element’s position in the tab-navigation
+ *  order (e.g., 1 for the first focusable element). Use 0 to use the default navigation order; use -1
+ *  to remove the element from the tab-navigation flow.
  */
 OO.ui.TabIndexedElement = function OoUiTabIndexedElement( config ) {
 	// Configuration initialization
@@ -7219,11 +7703,13 @@ OO.initClass( OO.ui.TabIndexedElement );
 /* Methods */
 
 /**
- * Set the element with `tabindex` attribute.
+ * Set the element that should use the tabindex functionality.
  *
- * If an element is already set, it will be cleaned up before setting up the new element.
+ * This method is used to retarget a tabindex mixin so that its functionality applies
+ * to the specified element. If an element is currently using the functionality, the mixin’s
+ * effect on that element is removed before the new element is set up.
  *
- * @param {jQuery} $tabIndexed Element to set tab index on
+ * @param {jQuery} $tabIndexed Element that should use the tabindex functionality
  * @chainable
  */
 OO.ui.TabIndexedElement.prototype.setTabIndexedElement = function ( $tabIndexed ) {
@@ -7237,9 +7723,9 @@ OO.ui.TabIndexedElement.prototype.setTabIndexedElement = function ( $tabIndexed 
 };
 
 /**
- * Set tab index value.
+ * Set the value of the tabindex.
  *
- * @param {number|null} tabIndex Tab index value or null for no tab index
+ * @param {number|null} tabIndex Tabindex value, or `null` for no tabindex
  * @chainable
  */
 OO.ui.TabIndexedElement.prototype.setTabIndex = function ( tabIndex ) {
@@ -7257,6 +7743,7 @@ OO.ui.TabIndexedElement.prototype.setTabIndex = function ( tabIndex ) {
  * Update the `tabindex` attribute, in case of changes to tab index or
  * disabled state.
  *
+ * @private
  * @chainable
  */
 OO.ui.TabIndexedElement.prototype.updateTabIndex = function () {
@@ -7286,9 +7773,9 @@ OO.ui.TabIndexedElement.prototype.onDisable = function () {
 };
 
 /**
- * Get tab index value.
+ * Get the value of the tabindex.
  *
- * @return {number|null} Tab index value
+ * @return {number|null} Tabindex value
  */
 OO.ui.TabIndexedElement.prototype.getTabIndex = function () {
 	return this.tabIndex;
@@ -7305,8 +7792,9 @@ OO.ui.TabIndexedElement.prototype.getTabIndex = function () {
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$button] Button node, assigned to #$button, omit to use a generated `<a>`
- * @cfg {boolean} [framed=true] Render button with a frame
+ * @cfg {jQuery} [$button] The button element created by the class.
+ *  If this configuration is omitted, the button element will use a generated `<a>`.
+ * @cfg {boolean} [framed=true] Render the button with a frame
  * @cfg {string} [accessKey] Button's access key
  */
 OO.ui.ButtonElement = function OoUiButtonElement( config ) {
@@ -7314,7 +7802,7 @@ OO.ui.ButtonElement = function OoUiButtonElement( config ) {
 	config = config || {};
 
 	// Properties
-	this.$button = config.$button || $( '<a>' );
+	this.$button = null;
 	this.framed = null;
 	this.accessKey = null;
 	this.active = false;
@@ -7329,7 +7817,7 @@ OO.ui.ButtonElement = function OoUiButtonElement( config ) {
 	this.$element.addClass( 'oo-ui-buttonElement' );
 	this.toggleFramed( config.framed === undefined || config.framed );
 	this.setAccessKey( config.accessKey );
-	this.setButtonElement( this.$button );
+	this.setButtonElement( config.$button || $( '<a>' ) );
 };
 
 /* Setup */
@@ -7341,6 +7829,11 @@ OO.initClass( OO.ui.ButtonElement );
 /**
  * Cancel mouse down events.
  *
+ * This property is usually set to `true` to prevent the focus from changing when the button is clicked.
+ * Classes such as {@link OO.ui.DraggableElement DraggableElement} and {@link OO.ui.ButtonOptionWidget ButtonOptionWidget}
+ * use a value of `false` so that dragging behavior is possible and mousedown events can be handled by a
+ * parent widget.
+ *
  * @static
  * @inheritable
  * @property {boolean}
@@ -7350,6 +7843,8 @@ OO.ui.ButtonElement.static.cancelButtonMouseDownEvents = true;
 /* Events */
 
 /**
+ * A 'click' event is emitted when the button element is clicked.
+ *
  * @event click
  */
 
@@ -7358,7 +7853,9 @@ OO.ui.ButtonElement.static.cancelButtonMouseDownEvents = true;
 /**
  * Set the button element.
  *
- * If an element is already set, it will be cleaned up before setting up the new element.
+ * This method is used to retarget a button mixin so that its functionality applies to
+ * the specified button element instead of the one created by the class. If a button element
+ * is already set, the method will remove the mixin’s effect on that element.
  *
  * @param {jQuery} $button Element to use as button
  */
@@ -7476,8 +7973,8 @@ OO.ui.ButtonElement.prototype.onKeyUp = function ( e ) {
 OO.ui.ButtonElement.prototype.onKeyPress = function ( e ) {
 	if ( !this.isDisabled() && ( e.which === OO.ui.Keys.SPACE || e.which === OO.ui.Keys.ENTER ) ) {
 		this.emit( 'click' );
+		return false;
 	}
-	return false;
 };
 
 /**
@@ -7490,7 +7987,7 @@ OO.ui.ButtonElement.prototype.isFramed = function () {
 };
 
 /**
- * Toggle frame.
+ * Render the button with or without a frame. Omit the `framed` parameter to toggle the button frame on and off.
  *
  * @param {boolean} [framed] Make button framed, omit to toggle
  * @chainable
@@ -7509,7 +8006,7 @@ OO.ui.ButtonElement.prototype.toggleFramed = function ( framed ) {
 };
 
 /**
- * Set access key.
+ * Set the button's access key.
  *
  * @param {string} accessKey Button's access key, use empty string to remove
  * @chainable
@@ -7532,7 +8029,11 @@ OO.ui.ButtonElement.prototype.setAccessKey = function ( accessKey ) {
 };
 
 /**
- * Set active state.
+ * Set the button to its 'active' state.
+ *
+ * The active state occurs when a {@link OO.ui.ButtonOptionWidget ButtonOptionWidget} or
+ * a {@link OO.ui.ToggleButtonWidget ToggleButtonWidget} is pressed. This method does nothing
+ * for other button types.
  *
  * @param {boolean} [value] Make button active
  * @chainable
@@ -7555,7 +8056,8 @@ OO.ui.ButtonElement.prototype.setActive = function ( value ) {
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$group] Container node, assigned to #$group, omit to use a generated `<div>`
+ * @cfg {jQuery} [$group] The container element created by the class. If this configuration
+ *  is omitted, the group element will use a generated `<div>`.
  */
 OO.ui.GroupElement = function OoUiGroupElement( config ) {
 	// Configuration initialization
@@ -7589,7 +8091,7 @@ OO.ui.GroupElement.prototype.setGroupElement = function ( $group ) {
 };
 
 /**
- * Check if there are no items.
+ * Check if a group contains no items.
  *
  * @return {boolean} Group is empty
  */
@@ -7598,9 +8100,13 @@ OO.ui.GroupElement.prototype.isEmpty = function () {
 };
 
 /**
- * Get items.
+ * Get all items in the group.
  *
- * @return {OO.ui.Element[]} Items
+ * The method returns an array of item references (e.g., [button1, button2, button3]) and is useful
+ * when synchronizing groups of items, or whenever the references are required (e.g., when removing items
+ * from a group).
+ *
+ * @return {OO.ui.Element[]} An array of items.
  */
 OO.ui.GroupElement.prototype.getItems = function () {
 	return this.items.slice( 0 );
@@ -7609,7 +8115,8 @@ OO.ui.GroupElement.prototype.getItems = function () {
 /**
  * Get an item by its data.
  *
- * Data is compared by a hash of its value. Only the first item with matching data will be returned.
+ * Only the first item with matching data will be returned. To return all matching items,
+ * use the #getItemsFromData method.
  *
  * @param {Object} data Item data to search for
  * @return {OO.ui.Element|null} Item with equivalent data, `null` if none exists
@@ -7631,7 +8138,7 @@ OO.ui.GroupElement.prototype.getItemFromData = function ( data ) {
 /**
  * Get items by their data.
  *
- * Data is compared by a hash of its value. All items with matching data will be returned.
+ * All items with matching data will be returned. To return only the first match, use the #getItemFromData method instead.
  *
  * @param {Object} data Item data to search for
  * @return {OO.ui.Element[]} Items with equivalent data
@@ -7652,15 +8159,18 @@ OO.ui.GroupElement.prototype.getItemsFromData = function ( data ) {
 };
 
 /**
- * Add an aggregate item event.
+ * Aggregate the events emitted by the group.
  *
- * Aggregated events are listened to on each item and then emitted by the group under a new name,
- * and with an additional leading parameter containing the item that emitted the original event.
- * Other arguments that were emitted from the original event are passed through.
+ * When events are aggregated, the group will listen to all contained items for the event,
+ * and then emit the event under a new name. The new event will contain an additional leading
+ * parameter containing the item that emitted the original event. Other arguments emitted from
+ * the original event are passed through.
  *
- * @param {Object.<string,string|null>} events Aggregate events emitted by group, keyed by item
- *   event, use null value to remove aggregation
- * @throws {Error} If aggregation already exists
+ * @param {Object.<string,string|null>} events An object keyed by the name of the event that should be
+ *  aggregated  (e.g., ‘click’) and the value of the new name to use (e.g., ‘groupClick’).
+ *  A `null` value will remove aggregated events.
+
+ * @throws {Error} An error is thrown if aggregation already exists.
  */
 OO.ui.GroupElement.prototype.aggregate = function ( events ) {
 	var i, len, item, add, remove, itemEvent, groupEvent;
@@ -7705,12 +8215,13 @@ OO.ui.GroupElement.prototype.aggregate = function ( events ) {
 };
 
 /**
- * Add items.
+ * Add items to the group.
  *
- * Adding an existing item will move it.
+ * Items will be added to the end of the group array unless the optional `index` parameter specifies
+ * a different insertion point. Adding an existing item will move it to the end of the array or the point specified by the `index`.
  *
- * @param {OO.ui.Element[]} items Items
- * @param {number} [index] Index to insert items at
+ * @param {OO.ui.Element[]} items An array of items to add to the group
+ * @param {number} [index] Index of the insertion point
  * @chainable
  */
 OO.ui.GroupElement.prototype.addItems = function ( items, index ) {
@@ -7756,11 +8267,12 @@ OO.ui.GroupElement.prototype.addItems = function ( items, index ) {
 };
 
 /**
- * Remove items.
+ * Remove the specified items from a group.
  *
- * Items will be detached, not removed, so they can be used later.
+ * Removed items are detached (not removed) from the DOM so that they may be reused.
+ * To remove all items from a group, you may wish to use the #clearItems method instead.
  *
- * @param {OO.ui.Element[]} items Items to remove
+ * @param {OO.ui.Element[]} items An array of items to remove
  * @chainable
  */
 OO.ui.GroupElement.prototype.removeItems = function ( items ) {
@@ -7791,9 +8303,10 @@ OO.ui.GroupElement.prototype.removeItems = function ( items ) {
 };
 
 /**
- * Clear all items.
+ * Clear all items from the group.
  *
- * Items will be detached, not removed, so they can be used later.
+ * Cleared items are detached from the DOM, not removed, so that they may be reused.
+ * To remove only a subset of items from a group, use the #removeItems method.
  *
  * @chainable
  */
@@ -7971,11 +8484,14 @@ OO.ui.DraggableElement.prototype.getIndex = function () {
  *
  * @abstract
  * @class
+ * @mixins OO.ui.GroupElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$group] Container node, assigned to #$group, omit to use a generated `<div>`
- * @cfg {string} [orientation] Item orientation, 'horizontal' or 'vertical'. Defaults to 'vertical'
+ * @cfg {string} [orientation] Item orientation: 'horizontal' or 'vertical'. The orientation
+ *  should match the layout of the items. Items displayed in a single row
+ *  or in several rows should use horizontal orientation. The vertical orientation should only be
+ *  used when the items are displayed in a single column. Defaults to 'vertical'
  */
 OO.ui.DraggableGroupElement = function OoUiDraggableGroupElement( config ) {
 	// Configuration initialization
@@ -8026,6 +8542,8 @@ OO.mixinClass( OO.ui.DraggableGroupElement, OO.ui.GroupElement );
 /* Events */
 
 /**
+ * A 'reorder' event is emitted when the order of items in the group changes.
+ *
  * @event reorder
  * @param {OO.ui.DraggableElement} item Reordered item
  * @param {number} [newIndex] New index for the item
@@ -8035,6 +8553,8 @@ OO.mixinClass( OO.ui.DraggableGroupElement, OO.ui.GroupElement );
 
 /**
  * Respond to item drag start event
+ *
+ * @private
  * @param {OO.ui.DraggableElement} item Dragged item
  */
 OO.ui.DraggableGroupElement.prototype.onItemDragStart = function ( item ) {
@@ -8063,6 +8583,8 @@ OO.ui.DraggableGroupElement.prototype.onItemDragStart = function ( item ) {
 
 /**
  * Respond to item drag end event
+ *
+ * @private
  */
 OO.ui.DraggableGroupElement.prototype.onItemDragEnd = function () {
 	this.unsetDragItem();
@@ -8071,6 +8593,8 @@ OO.ui.DraggableGroupElement.prototype.onItemDragEnd = function () {
 
 /**
  * Handle drop event and switch the order of the items accordingly
+ *
+ * @private
  * @param {OO.ui.DraggableElement} item Dropped item
  * @fires reorder
  */
@@ -8095,6 +8619,8 @@ OO.ui.DraggableGroupElement.prototype.onItemDrop = function ( item ) {
 
 /**
  * Handle dragleave event.
+ *
+ * @private
  */
 OO.ui.DraggableGroupElement.prototype.onDragLeave = function () {
 	// This means the item was dragged outside the widget
@@ -8105,6 +8631,8 @@ OO.ui.DraggableGroupElement.prototype.onDragLeave = function () {
 
 /**
  * Respond to dragover event
+ *
+ * @private
  * @param {jQuery.Event} event Event details
  */
 OO.ui.DraggableGroupElement.prototype.onDragOver = function ( e ) {
@@ -8176,6 +8704,7 @@ OO.ui.DraggableGroupElement.prototype.onDragOver = function ( e ) {
 
 /**
  * Set a dragged item
+ *
  * @param {OO.ui.DraggableElement} item Dragged item
  */
 OO.ui.DraggableGroupElement.prototype.setDragItem = function ( item ) {
@@ -8193,15 +8722,17 @@ OO.ui.DraggableGroupElement.prototype.unsetDragItem = function () {
 };
 
 /**
- * Get the current dragged item
- * @return {OO.ui.DraggableElement|null} item Dragged item or null if no item is dragged
+ * Get the item that is currently being dragged.
+ *
+ * @return {OO.ui.DraggableElement|null} The currently dragged item, or `null` if no item is being dragged
  */
 OO.ui.DraggableGroupElement.prototype.getDragItem = function () {
 	return this.dragItem;
 };
 
 /**
- * Check if there's an item being dragged.
+ * Check if an item in the group is currently being dragged.
+ *
  * @return {Boolean} Item is being dragged
  */
 OO.ui.DraggableGroupElement.prototype.isDragging = function () {
@@ -8491,9 +9022,9 @@ OO.ui.IndicatorElement.prototype.setIndicatorElement = function ( $indicator ) {
 };
 
 /**
- * Set indicator name.
+ * Set the indicator by its symbolic name: ‘alert’, ‘down’, ‘next’, ‘previous’, ‘required’, ‘up’. Use `null` to remove the indicator.
  *
- * @param {string|null} indicator Symbolic name of indicator to use or null for no indicator
+ * @param {string|null} indicator Symbolic name of indicator, or `null` for no indicator
  * @chainable
  */
 OO.ui.IndicatorElement.prototype.setIndicator = function ( indicator ) {
@@ -8518,10 +9049,12 @@ OO.ui.IndicatorElement.prototype.setIndicator = function ( indicator ) {
 };
 
 /**
- * Set indicator title.
+ * Set the indicator title.
  *
- * @param {string|Function|null} indicator Indicator title text, a function that returns text or
- *   null for no indicator title
+ * The title is displayed when a user moves the mouse over the indicator.
+ *
+ * @param {string|Function|null} indicator Indicator title text, a function that returns text, or
+ *   `null` for no indicator title
  * @chainable
  */
 OO.ui.IndicatorElement.prototype.setIndicatorTitle = function ( indicatorTitle ) {
@@ -8544,7 +9077,7 @@ OO.ui.IndicatorElement.prototype.setIndicatorTitle = function ( indicatorTitle )
 };
 
 /**
- * Get indicator name.
+ * Get the symbolic name of the indicator (e.g., ‘alert’ or  ‘down’).
  *
  * @return {string} Symbolic name of indicator
  */
@@ -8553,7 +9086,9 @@ OO.ui.IndicatorElement.prototype.getIndicator = function () {
 };
 
 /**
- * Get indicator title.
+ * Get the indicator title.
+ *
+ * The title is displayed when a user moves the mouse over the indicator.
  *
  * @return {string} Indicator title text
  */
@@ -8715,19 +9250,28 @@ OO.ui.LabelElement.prototype.setLabelContent = function ( label ) {
 };
 
 /**
- * Mixin that adds a menu showing suggested values for a OO.ui.TextInputWidget.
+ * LookupElement is a mixin that creates a {@link OO.ui.TextInputMenuSelectWidget menu} of suggested values for
+ * a {@link OO.ui.TextInputWidget text input widget}. Suggested values are based on the characters the user types
+ * into the text input field and, in general, the menu is only displayed when the user types. If a suggested value is chosen
+ * from the lookup menu, that value becomes the value of the input field.
  *
- * Subclasses that set the value of #lookupInput from #onLookupMenuItemChoose should
- * be aware that this will cause new suggestions to be looked up for the new value. If this is
- * not desired, disable lookups with #setLookupsDisabled, then set the value, then re-enable lookups.
+ * Note that a new menu of suggested items is displayed when a value is chosen from the lookup menu. If this is
+ * not the desired behavior, disable lookup menus with the #setLookupsDisabled method, then set the value, then
+ * re-enable lookups.
+ *
+ * See the [OOjs UI demos][1] for an example.
+ *
+ * [1]: https://tools.wmflabs.org/oojs-ui/oojs-ui/demos/index.html#widgets-apex-vector-ltr
  *
  * @class
  * @abstract
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$overlay] Overlay for dropdown; defaults to relative positioning
- * @cfg {jQuery} [$container=this.$element] Element to render menu under
+ * @cfg {jQuery} [$overlay] Overlay for the lookup menu; defaults to relative positioning
+ * @cfg {jQuery} [$container=this.$element] The container element. The lookup menu is rendered beneath the specified element.
+ * @cfg {boolean} [allowSuggestionsWhenEmpty=false] Request and display a lookup menu when the text input is empty.
+ *  By default, the lookup menu is not generated and displayed until the user begins to type.
  */
 OO.ui.LookupElement = function OoUiLookupElement( config ) {
 	// Configuration initialization
@@ -8740,6 +9284,9 @@ OO.ui.LookupElement = function OoUiLookupElement( config ) {
 		input: this,
 		$container: config.$container
 	} );
+
+	this.allowSuggestionsWhenEmpty = config.allowSuggestionsWhenEmpty || false;
+
 	this.lookupCache = {};
 	this.lookupQuery = null;
 	this.lookupRequest = null;
@@ -8769,6 +9316,7 @@ OO.ui.LookupElement = function OoUiLookupElement( config ) {
 /**
  * Handle input focus event.
  *
+ * @protected
  * @param {jQuery.Event} e Input focus event
  */
 OO.ui.LookupElement.prototype.onLookupInputFocus = function () {
@@ -8779,6 +9327,7 @@ OO.ui.LookupElement.prototype.onLookupInputFocus = function () {
 /**
  * Handle input blur event.
  *
+ * @protected
  * @param {jQuery.Event} e Input blur event
  */
 OO.ui.LookupElement.prototype.onLookupInputBlur = function () {
@@ -8789,6 +9338,7 @@ OO.ui.LookupElement.prototype.onLookupInputBlur = function () {
 /**
  * Handle input mouse down event.
  *
+ * @protected
  * @param {jQuery.Event} e Input mouse down event
  */
 OO.ui.LookupElement.prototype.onLookupInputMouseDown = function () {
@@ -8804,6 +9354,7 @@ OO.ui.LookupElement.prototype.onLookupInputMouseDown = function () {
 /**
  * Handle input change event.
  *
+ * @protected
  * @param {string} value New input value
  */
 OO.ui.LookupElement.prototype.onLookupInputChange = function () {
@@ -8815,6 +9366,7 @@ OO.ui.LookupElement.prototype.onLookupInputChange = function () {
 /**
  * Handle the lookup menu being shown/hidden.
  *
+ * @protected
  * @param {boolean} visible Whether the lookup menu is now visible.
  */
 OO.ui.LookupElement.prototype.onLookupMenuToggle = function ( visible ) {
@@ -8830,17 +9382,17 @@ OO.ui.LookupElement.prototype.onLookupMenuToggle = function ( visible ) {
 /**
  * Handle menu item 'choose' event, updating the text input value to the value of the clicked item.
  *
- * @param {OO.ui.MenuOptionWidget|null} item Selected item
+ * @protected
+ * @param {OO.ui.MenuOptionWidget} item Selected item
  */
 OO.ui.LookupElement.prototype.onLookupMenuItemChoose = function ( item ) {
-	if ( item ) {
-		this.setValue( item.getData() );
-	}
+	this.setValue( item.getData() );
 };
 
 /**
  * Get lookup menu.
  *
+ * @private
  * @return {OO.ui.TextInputMenuSelectWidget}
  */
 OO.ui.LookupElement.prototype.getLookupMenu = function () {
@@ -8861,6 +9413,7 @@ OO.ui.LookupElement.prototype.setLookupsDisabled = function ( disabled ) {
 /**
  * Open the menu. If there are no entries in the menu, this does nothing.
  *
+ * @private
  * @chainable
  */
 OO.ui.LookupElement.prototype.openLookupMenu = function () {
@@ -8873,6 +9426,7 @@ OO.ui.LookupElement.prototype.openLookupMenu = function () {
 /**
  * Close the menu, empty it, and abort any pending request.
  *
+ * @private
  * @chainable
  */
 OO.ui.LookupElement.prototype.closeLookupMenu = function () {
@@ -8888,6 +9442,7 @@ OO.ui.LookupElement.prototype.closeLookupMenu = function () {
  *
  * If lookups have been disabled with #setLookupsDisabled, this function does nothing.
  *
+ * @private
  * @chainable
  */
 OO.ui.LookupElement.prototype.populateLookupMenu = function () {
@@ -8898,8 +9453,8 @@ OO.ui.LookupElement.prototype.populateLookupMenu = function () {
 		return;
 	}
 
-	// If the input is empty, clear the menu
-	if ( value === '' ) {
+	// If the input is empty, clear the menu, unless suggestions when empty are allowed.
+	if ( !this.allowSuggestionsWhenEmpty && value === '' ) {
 		this.closeLookupMenu();
 	// Skip population if there is already a request pending for the current value
 	} else if ( value !== this.lookupQuery ) {
@@ -8926,6 +9481,7 @@ OO.ui.LookupElement.prototype.populateLookupMenu = function () {
 /**
  * Select and highlight the first selectable item in the menu.
  *
+ * @private
  * @chainable
  */
 OO.ui.LookupElement.prototype.initializeLookupMenuSelection = function () {
@@ -8938,6 +9494,7 @@ OO.ui.LookupElement.prototype.initializeLookupMenuSelection = function () {
 /**
  * Get lookup menu items for the current query.
  *
+ * @private
  * @return {jQuery.Promise} Promise object which will be passed menu items as the first argument of
  *   the done event. If the request was aborted to make way for a subsequent request, this promise
  *   will not be rejected: it will remain pending forever.
@@ -8965,13 +9522,13 @@ OO.ui.LookupElement.prototype.getLookupMenuItems = function () {
 				// for that request.
 				widget.popPending();
 			} )
-			.done( function ( data ) {
+			.done( function ( response ) {
 				// If this is an old request (and aborting it somehow caused it to still succeed),
 				// ignore its success completely
 				if ( ourRequest === widget.lookupRequest ) {
 					widget.lookupQuery = null;
 					widget.lookupRequest = null;
-					widget.lookupCache[ value ] = widget.getLookupCacheDataFromResponse( data );
+					widget.lookupCache[ value ] = widget.getLookupCacheDataFromResponse( response );
 					deferred.resolve( widget.getLookupMenuOptionsFromData( widget.lookupCache[ value ] ) );
 				}
 			} )
@@ -8990,6 +9547,8 @@ OO.ui.LookupElement.prototype.getLookupMenuItems = function () {
 
 /**
  * Abort the currently pending lookup request, if any.
+ *
+ * @private
  */
 OO.ui.LookupElement.prototype.abortLookupRequest = function () {
 	var oldRequest = this.lookupRequest;
@@ -9005,6 +9564,7 @@ OO.ui.LookupElement.prototype.abortLookupRequest = function () {
 /**
  * Get a new request object of the current lookup query value.
  *
+ * @protected
  * @abstract
  * @return {jQuery.Promise} jQuery AJAX object, or promise object with an .abort() method
  */
@@ -9019,8 +9579,9 @@ OO.ui.LookupElement.prototype.getLookupRequest = function () {
  * The return value of this function will be cached, and any further queries for the given value
  * will use the cache rather than doing API requests.
  *
+ * @protected
  * @abstract
- * @param {Mixed} data Response from server
+ * @param {Mixed} response Response from server
  * @return {Mixed} Cached result data
  */
 OO.ui.LookupElement.prototype.getLookupCacheDataFromResponse = function () {
@@ -9032,6 +9593,7 @@ OO.ui.LookupElement.prototype.getLookupCacheDataFromResponse = function () {
  * Get a list of menu option widgets from the (possibly cached) data returned by
  * #getLookupCacheDataFromResponse.
  *
+ * @protected
  * @abstract
  * @param {Mixed} data Cached result data, usually an array
  * @return {OO.ui.MenuOptionWidget[]} Menu items
@@ -9091,6 +9653,24 @@ OO.ui.PopupElement.prototype.getPopup = function () {
  * - **destructive**: Destructive styling is applied to convey that the widget will remove something.
  * - **constructive**: Constructive styling is applied to convey that the widget will create something.
  *
+ * The flags affect the appearance of the buttons:
+ *
+ *     @example
+ *     // FlaggedElement is mixed into ButtonWidget to provide styling flags
+ *     var button1 = new OO.ui.ButtonWidget( {
+ *         label: 'Constructive',
+ *         flags: 'constructive'
+ *     } );
+ *     var button2 = new OO.ui.ButtonWidget( {
+ *         label: 'Destructive',
+ *         flags: 'destructive'
+ *     } );
+ *     var button3 = new OO.ui.ButtonWidget( {
+ *         label: 'Progressive',
+ *         flags: 'progressive'
+ *     } );
+ *     $( 'body' ).append( button1.$element, button2.$element, button3.$element );
+ *
  * {@link OO.ui.ActionWidget ActionWidgets}, which are a special kind of button that execute an action, use these flags: **primary** and **safe**.
  * Please see the [OOjs UI documentation on MediaWiki] [1] for more information.
  *
@@ -9104,7 +9684,9 @@ OO.ui.PopupElement.prototype.getPopup = function () {
  * @cfg {string|string[]} [flags] The name or names of the flags (e.g., 'constructive' or 'primary') to apply.
  *  Please see the [OOjs UI documentation on MediaWiki] [2] for more information about available flags.
  *  [2]: https://www.mediawiki.org/wiki/OOjs_UI/Elements/Flagged
- * @cfg {jQuery} [$flagged] Flagged node, assigned to $flagged, omit to use $element
+ * @cfg {jQuery} [$flagged] The flagged element. By default,
+ *  the flagged functionality is applied to the element created by the class ($element).
+ *  If a different element is specified, the flagged functionality will be applied to it instead.
  */
 OO.ui.FlaggedElement = function OoUiFlaggedElement( config ) {
 	// Configuration initialization
@@ -9136,9 +9718,10 @@ OO.ui.FlaggedElement = function OoUiFlaggedElement( config ) {
 /**
  * Set the flagged element.
  *
- * If an element is already set, it will be cleaned up before setting up the new element.
+ * This method is used to retarget a flagged mixin so that its functionality applies to the specified element.
+ * If an element is already set, the method will remove the mixin’s effect on that element.
  *
- * @param {jQuery} $flagged Element to add flags to
+ * @param {jQuery} $flagged Element that should be flagged
  */
 OO.ui.FlaggedElement.prototype.setFlaggedElement = function ( $flagged ) {
 	var classNames = Object.keys( this.flags ).map( function ( flag ) {
@@ -9153,10 +9736,10 @@ OO.ui.FlaggedElement.prototype.setFlaggedElement = function ( $flagged ) {
 };
 
 /**
- * Check if a flag is set.
+ * Check if the specified flag is set.
  *
  * @param {string} flag Name of flag
- * @return {boolean} Has flag
+ * @return {boolean} The flag is set
  */
 OO.ui.FlaggedElement.prototype.hasFlag = function ( flag ) {
 	return flag in this.flags;
@@ -9203,8 +9786,9 @@ OO.ui.FlaggedElement.prototype.clearFlags = function () {
 /**
  * Add one or more flags.
  *
- * @param {string|string[]|Object.<string, boolean>} flags One or more flags to add, or an object
- *  keyed by flag name containing boolean set/remove instructions.
+ * @param {string|string[]|Object.<string, boolean>} flags A flag name, an array of flag names,
+ *  or an object keyed by flag name with a boolean value that indicates whether the flag should
+ *  be added (`true`) or removed (`false`).
  * @chainable
  * @fires flag
  */
@@ -9275,8 +9859,8 @@ OO.ui.FlaggedElement.prototype.setFlags = function ( flags ) {
  *     // TitledElement provides a 'title' attribute to the
  *     // ButtonWidget class
  *     var button = new OO.ui.ButtonWidget( {
- *         label : 'Button with Title',
- *         title : 'I am a button'
+ *         label: 'Button with Title',
+ *         title: 'I am a button'
  *     } );
  *     $( 'body' ).append( button.$element );
  *
@@ -9289,7 +9873,7 @@ OO.ui.FlaggedElement.prototype.setFlags = function ( flags ) {
  *  If this config is omitted, the title functionality is applied to $element, the
  *  element created by the class.
  * @cfg {string|Function} [title] The title text or a function that returns text. If
- *  this config is omitted, the value of the static `title` property is used.
+ *  this config is omitted, the value of the {@link #static-title static title} property is used.
  */
 OO.ui.TitledElement = function OoUiTitledElement( config ) {
 	// Configuration initialization
@@ -9325,9 +9909,10 @@ OO.ui.TitledElement.static.title = null;
 /**
  * Set the titled element.
  *
- * If an element is already set, it will be cleaned up before setting up the new element.
+ * This method is used to retarget a titledElement mixin so that its functionality applies to the specified element.
+ * If an element is already set, the mixin’s effect on that element is removed before the new element is set up.
  *
- * @param {jQuery} $titled Element to set title on
+ * @param {jQuery} $titled Element that should use the 'titled' functionality
  */
 OO.ui.TitledElement.prototype.setTitledElement = function ( $titled ) {
 	if ( this.$titled ) {
@@ -9343,7 +9928,7 @@ OO.ui.TitledElement.prototype.setTitledElement = function ( $titled ) {
 /**
  * Set title.
  *
- * @param {string|Function|null} title Title text, a function that returns text or null for no title
+ * @param {string|Function|null} title Title text, a function that returns text, or `null` for no title
  * @chainable
  */
 OO.ui.TitledElement.prototype.setTitle = function ( title ) {
@@ -9886,11 +10471,12 @@ OO.ui.Toolbar = function OoUiToolbar( toolFactory, toolGroupFactory, config ) {
 	this.$bar = $( '<div>' );
 	this.$actions = $( '<div>' );
 	this.initialized = false;
+	this.onWindowResizeHandler = this.onWindowResize.bind( this );
 
 	// Events
 	this.$element
 		.add( this.$bar ).add( this.$group ).add( this.$actions )
-		.on( 'mousedown touchstart', this.onPointerDown.bind( this ) );
+		.on( 'mousedown', this.onPointerDown.bind( this ) );
 
 	// Initialization
 	this.$group.addClass( 'oo-ui-toolbar-tools' );
@@ -9946,11 +10532,27 @@ OO.ui.Toolbar.prototype.onPointerDown = function ( e ) {
 };
 
 /**
+ * Handle window resize event.
+ *
+ * @private
+ * @param {jQuery.Event} e Window resize event
+ */
+OO.ui.Toolbar.prototype.onWindowResize = function () {
+	this.$element.toggleClass(
+		'oo-ui-toolbar-narrow',
+		this.$bar.width() <= this.narrowThreshold
+	);
+};
+
+/**
  * Sets up handles and preloads required information for the toolbar to work.
  * This must be called after it is attached to a visible document and before doing anything else.
  */
 OO.ui.Toolbar.prototype.initialize = function () {
 	this.initialized = true;
+	this.narrowThreshold = this.$group.width() + this.$actions.width();
+	$( this.getElementWindow() ).on( 'resize', this.onWindowResizeHandler );
+	this.onWindowResize();
 };
 
 /**
@@ -10017,6 +10619,7 @@ OO.ui.Toolbar.prototype.reset = function () {
  * Call this whenever you are done using a toolbar.
  */
 OO.ui.Toolbar.prototype.destroy = function () {
+	$( this.getElementWindow() ).off( 'resize', this.onWindowResizeHandler );
 	this.reset();
 	this.$element.remove();
 };
@@ -10112,8 +10715,8 @@ OO.ui.ToolGroup = function OoUiToolGroup( toolbar, config ) {
 
 	// Events
 	this.$element.on( {
-		'mousedown touchstart': this.onPointerDown.bind( this ),
-		'mouseup touchend': this.onPointerUp.bind( this ),
+		mousedown: this.onPointerDown.bind( this ),
+		mouseup: this.onPointerUp.bind( this ),
 		mouseover: this.onMouseOver.bind( this ),
 		mouseout: this.onMouseOut.bind( this )
 	} );
@@ -10203,8 +10806,7 @@ OO.ui.ToolGroup.prototype.updateDisabled = function () {
  * @param {jQuery.Event} e Mouse down event
  */
 OO.ui.ToolGroup.prototype.onPointerDown = function ( e ) {
-	// e.which is 0 for touch events, 1 for left mouse button
-	if ( !this.isDisabled() && e.which <= 1 ) {
+	if ( !this.isDisabled() && e.which === 1 ) {
 		this.pressed = this.getTargetTool( e );
 		if ( this.pressed ) {
 			this.pressed.setActive( true );
@@ -10236,8 +10838,7 @@ OO.ui.ToolGroup.prototype.onCapturedMouseUp = function ( e ) {
 OO.ui.ToolGroup.prototype.onPointerUp = function ( e ) {
 	var tool = this.getTargetTool( e );
 
-	// e.which is 0 for touch events, 1 for left mouse button
-	if ( !this.isDisabled() && e.which <= 1 && this.pressed && this.pressed === tool ) {
+	if ( !this.isDisabled() && e.which === 1 && this.pressed && this.pressed === tool ) {
 		this.pressed.onSelect();
 	}
 
@@ -10392,11 +10993,39 @@ OO.ui.ToolGroup.prototype.destroy = function () {
 };
 
 /**
- * Dialog for showing a message.
+ * MessageDialogs display a confirmation or alert message. By default, the rendered dialog box
+ * consists of a header that contains the dialog title, a body with the message, and a footer that
+ * contains any {@link OO.ui.ActionWidget action widgets}. The MessageDialog class is the only type
+ * of {@link OO.ui.Dialog dialog} that is usually instantiated directly.
  *
- * User interface:
- * - Registers two actions by default (safe and primary).
- * - Renders action widgets in the footer.
+ * There are two basic types of message dialogs, confirmation and alert:
+ *
+ * - **confirmation**: the dialog title describes what a progressive action will do and the message provides
+ *  more details about the consequences.
+ * - **alert**: the dialog title describes which event occurred and the message provides more information
+ *  about why the event occurred.
+ *
+ * The MessageDialog class specifies two actions: ‘accept’, the primary
+ * action (e.g., ‘ok’) and ‘reject,’ the safe action (e.g., ‘cancel’). Both will close the window,
+ * passing along the selected action.
+ *
+ * For more information and examples, please see the [OOjs UI documentation on MediaWiki][1].
+ *
+ *     @example
+ *     // Example: Creating and opening a message dialog window.
+ *     var messageDialog = new OO.ui.MessageDialog();
+ *
+ *     // Create and append a window manager.
+ *     var windowManager = new OO.ui.WindowManager();
+ *     $( 'body' ).append( windowManager.$element );
+ *     windowManager.addWindows( [ messageDialog ] );
+ *     // Open the window.
+ *     windowManager.openWindow( messageDialog, {
+ *         title: 'Basic message dialog',
+ *         message: 'This is the message'
+ *     } );
+ *
+ * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Windows/Message_Dialogs
  *
  * @class
  * @extends OO.ui.Dialog
@@ -10430,21 +11059,23 @@ OO.ui.MessageDialog.static.verbose = false;
 /**
  * Dialog title.
  *
- * A confirmation dialog's title should describe what the progressive action will do. An alert
- * dialog's title should describe what event occurred.
+ * The title of a confirmation dialog describes what a progressive action will do. The
+ * title of an alert dialog describes which event occurred.
  *
  * @static
- * inheritable
+ * @inheritable
  * @property {jQuery|string|Function|null}
  */
 OO.ui.MessageDialog.static.title = null;
 
 /**
- * A confirmation dialog's message should describe the consequences of the progressive action. An
- * alert dialog's message should describe why the event occurred.
+ * The message displayed in the dialog body.
+ *
+ * A confirmation message describes the consequences of a progressive action. An alert
+ * message describes why an event occurred.
  *
  * @static
- * inheritable
+ * @inheritable
  * @property {jQuery|string|Function|null}
  */
 OO.ui.MessageDialog.static.message = null;
@@ -10480,6 +11111,8 @@ OO.ui.MessageDialog.prototype.onActionResize = function ( action ) {
 
 /**
  * Handle window resized events.
+ *
+ * @private
  */
 OO.ui.MessageDialog.prototype.onResize = function () {
 	var dialog = this;
@@ -10493,6 +11126,8 @@ OO.ui.MessageDialog.prototype.onResize = function () {
 /**
  * Toggle action layout between vertical and horizontal.
  *
+ *
+ * @private
  * @param {boolean} [value] Layout actions vertically, omit to toggle
  * @chainable
  */
@@ -10656,6 +11291,8 @@ OO.ui.MessageDialog.prototype.attachActions = function () {
  * Fit action actions into columns or rows.
  *
  * Columns will be used if all labels can fit without overflow, otherwise rows will be used.
+ *
+ * @private
  */
 OO.ui.MessageDialog.prototype.fitActions = function () {
 	var i, len, action,
@@ -10682,23 +11319,57 @@ OO.ui.MessageDialog.prototype.fitActions = function () {
 };
 
 /**
- * Navigation dialog window.
+ * ProcessDialog windows encapsulate a {@link OO.ui.Process process} and all of the code necessary
+ * to complete it. If the process terminates with an error, a customizable {@link OO.ui.Error error
+ * interface} alerts users to the trouble, permitting the user to dismiss the error and try again when
+ * relevant. The ProcessDialog class is always extended and customized with the actions and content
+ * required for each process.
  *
- * Logic:
- * - Show and hide errors.
- * - Retry an action.
+ * The process dialog box consists of a header that visually represents the ‘working’ state of long
+ * processes with an animation. The header contains the dialog title as well as
+ * two {@link OO.ui.ActionWidget action widgets}:  a ‘safe’ action on the left (e.g., ‘Cancel’) and
+ * a ‘primary’ action on the right (e.g., ‘Done’).
  *
- * User interface:
- * - Renders header with dialog title and one action widget on either side
- *   (a 'safe' button on the left, and a 'primary' button on the right, both of
- *   which close the dialog).
- * - Displays any action widgets in the footer (none by default).
- * - Ability to dismiss errors.
+ * Like other windows, the process dialog is managed by a {@link OO.ui.WindowManager window manager}.
+ * Please see the [OOjs UI documentation on MediaWiki][1] for more information and examples.
  *
- * Subclass responsibilities:
- * - Register a 'safe' action.
- * - Register a 'primary' action.
- * - Add content to the dialog.
+ *     @example
+ *     // Example: Creating and opening a process dialog window.
+ *     function MyProcessDialog( config ) {
+ *         MyProcessDialog.super.call( this, config );
+ *     }
+ *     OO.inheritClass( MyProcessDialog, OO.ui.ProcessDialog );
+ *
+ *     MyProcessDialog.static.title = 'Process dialog';
+ *     MyProcessDialog.static.actions = [
+ *         { action: 'save', label: 'Done', flags: 'primary' },
+ *         { label: 'Cancel', flags: 'safe' }
+ *     ];
+ *
+ *     MyProcessDialog.prototype.initialize = function () {
+ *         MyProcessDialog.super.prototype.initialize.apply( this, arguments );
+ *         this.content = new OO.ui.PanelLayout( { $: this.$, padded: true, expanded: false } );
+ *         this.content.$element.append( '<p>This is a process dialog window. The header contains the title and two buttons: \'Cancel\' (a safe action) on the left and \'Done\' (a primary action)  on the right.</p>' );
+ *         this.$body.append( this.content.$element );
+ *     };
+ *     MyProcessDialog.prototype.getActionProcess = function ( action ) {
+ *         var dialog = this;
+ *         if ( action ) {
+ *             return new OO.ui.Process( function () {
+ *                 dialog.close( { action: action } );
+ *             } );
+ *         }
+ *         return MyProcessDialog.super.prototype.getActionProcess.call( this, action );
+ *     };
+ *
+ *     var windowManager = new OO.ui.WindowManager();
+ *     $( 'body' ).append( windowManager.$element );
+ *
+ *     var dialog = new MyProcessDialog();
+ *     windowManager.addWindows( [ dialog ] );
+ *     windowManager.openWindow( dialog );
+ *
+ * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Windows/Process_Dialogs
  *
  * @abstract
  * @class
@@ -10725,6 +11396,8 @@ OO.inheritClass( OO.ui.ProcessDialog, OO.ui.Dialog );
  * Handle dismiss button click events.
  *
  * Hides errors.
+ *
+ * @private
  */
 OO.ui.ProcessDialog.prototype.onDismissErrorButtonClick = function () {
 	this.hideErrors();
@@ -10734,6 +11407,8 @@ OO.ui.ProcessDialog.prototype.onDismissErrorButtonClick = function () {
  * Handle retry button click events.
  *
  * Hides errors and then tries again.
+ *
+ * @private
  */
 OO.ui.ProcessDialog.prototype.onRetryButtonClick = function () {
 	this.hideErrors();
@@ -10801,6 +11476,19 @@ OO.ui.ProcessDialog.prototype.initialize = function () {
 /**
  * @inheritdoc
  */
+OO.ui.ProcessDialog.prototype.getActionWidgets = function ( actions ) {
+	var i, len, widgets = [];
+	for ( i = 0, len = actions.length; i < len; i++ ) {
+		widgets.push(
+			new OO.ui.ActionWidget( $.extend( { framed: true }, actions[ i ] ) )
+		);
+	}
+	return widgets;
+};
+
+/**
+ * @inheritdoc
+ */
 OO.ui.ProcessDialog.prototype.attachActions = function () {
 	var i, len, other, special, others;
 
@@ -10811,16 +11499,13 @@ OO.ui.ProcessDialog.prototype.attachActions = function () {
 	others = this.actions.getOthers();
 	if ( special.primary ) {
 		this.$primaryActions.append( special.primary.$element );
-		special.primary.toggleFramed( true );
 	}
 	for ( i = 0, len = others.length; i < len; i++ ) {
 		other = others[ i ];
 		this.$otherActions.append( other.$element );
-		other.toggleFramed( true );
 	}
 	if ( special.safe ) {
 		this.$safeActions.append( special.safe.$element );
-		special.safe.toggleFramed( true );
 	}
 
 	this.fitLabel();
@@ -10831,13 +11516,17 @@ OO.ui.ProcessDialog.prototype.attachActions = function () {
  * @inheritdoc
  */
 OO.ui.ProcessDialog.prototype.executeAction = function ( action ) {
-	OO.ui.ProcessDialog.super.prototype.executeAction.call( this, action )
-		.fail( this.showErrors.bind( this ) );
+	var process = this;
+	return OO.ui.ProcessDialog.super.prototype.executeAction.call( this, action )
+		.fail( function ( errors ) {
+			process.showErrors( errors || [] );
+		} );
 };
 
 /**
  * Fit label between actions.
  *
+ * @private
  * @chainable
  */
 OO.ui.ProcessDialog.prototype.fitLabel = function () {
@@ -10853,7 +11542,8 @@ OO.ui.ProcessDialog.prototype.fitLabel = function () {
 /**
  * Handle errors that occurred during accept or reject processes.
  *
- * @param {OO.ui.Error[]} errors Errors to be handled
+ * @private
+ * @param {OO.ui.Error[]|OO.ui.Error} errors Errors to be handled
  */
 OO.ui.ProcessDialog.prototype.showErrors = function ( errors ) {
 	var i, len, $item, actions,
@@ -10861,6 +11551,10 @@ OO.ui.ProcessDialog.prototype.showErrors = function ( errors ) {
 		abilities = {},
 		recoverable = true,
 		warning = false;
+
+	if ( errors instanceof OO.ui.Error ) {
+		errors = [ errors ];
+	}
 
 	for ( i = 0, len = errors.length; i < len; i++ ) {
 		if ( !errors[ i ].isRecoverable() ) {
@@ -10898,6 +11592,8 @@ OO.ui.ProcessDialog.prototype.showErrors = function ( errors ) {
 
 /**
  * Hide errors.
+ *
+ * @private
  */
 OO.ui.ProcessDialog.prototype.hideErrors = function () {
 	this.$errors.addClass( 'oo-ui-element-hidden' );
@@ -10946,8 +11642,9 @@ OO.ui.ProcessDialog.prototype.getTeardownProcess = function ( data ) {
  * @constructor
  * @param {OO.ui.Widget} fieldWidget Field widget
  * @param {Object} [config] Configuration options
- * @cfg {string} [align='left'] Alignment mode, either 'left', 'right', 'top' or 'inline'
- * @cfg {string} [help] Explanatory text shown as a '?' icon.
+ * @cfg {string} [align='left'] Alignment of the label: 'left', 'right', 'top' or 'inline'
+ * @cfg {string} [help] Help text. When help text is specified, a help icon will appear
+ *  in the upper-right corner of the rendered field.
  */
 OO.ui.FieldLayout = function OoUiFieldLayout( fieldWidget, config ) {
 	// Allow passing positional parameters inside the config object
@@ -11018,6 +11715,7 @@ OO.mixinClass( OO.ui.FieldLayout, OO.ui.LabelElement );
 /**
  * Handle field disable events.
  *
+ * @private
  * @param {boolean} value Field is disabled
  */
 OO.ui.FieldLayout.prototype.onFieldDisable = function ( value ) {
@@ -11027,6 +11725,7 @@ OO.ui.FieldLayout.prototype.onFieldDisable = function ( value ) {
 /**
  * Handle label mouse click events.
  *
+ * @private
  * @param {jQuery.Event} e Mouse click event
  */
 OO.ui.FieldLayout.prototype.onLabelClick = function () {
@@ -11035,7 +11734,7 @@ OO.ui.FieldLayout.prototype.onLabelClick = function () {
 };
 
 /**
- * Get the field.
+ * Get the widget contained by the field.
  *
  * @return {OO.ui.Widget} Field widget
  */
@@ -11078,7 +11777,43 @@ OO.ui.FieldLayout.prototype.setAlignment = function ( value ) {
 };
 
 /**
- * Layout made of a field, a button, and an optional label.
+ * ActionFieldLayouts are used with OO.ui.FieldsetLayout. The layout consists of a field-widget, a button,
+ * and an optional label and/or help text. The field-widget (e.g., a {@link OO.ui.TextInputWidget TextInputWidget}),
+ * is required and is specified before any optional configuration settings.
+ *
+ * Labels can be aligned in one of four ways:
+ *
+ * - **left**: The label is placed before the field-widget and aligned with the left margin.
+ *   A left-alignment is used for forms with many fields.
+ * - **right**: The label is placed before the field-widget and aligned to the right margin.
+ *   A right-alignment is used for long but familiar forms which users tab through,
+ *   verifying the current field with a quick glance at the label.
+ * - **top**: The label is placed above the field-widget. A top-alignment is used for brief forms
+ *   that users fill out from top to bottom.
+ * - **inline**: The label is placed after the field-widget and aligned to the left.
+ *   An inline-alignment is best used with checkboxes or radio buttons.
+ *
+ * Help text is accessed via a help icon that appears in the upper right corner of the rendered field layout when help
+ * text is specified.
+ *
+ *     @example
+ *     // Example of an ActionFieldLayout
+ *     var actionFieldLayout = new OO.ui.ActionFieldLayout(
+ *         new OO.ui.TextInputWidget( {
+ *             placeholder: 'Field widget'
+ *         } ),
+ *         new OO.ui.ButtonWidget( {
+ *             label: 'Button'
+ *         } ),
+ *         {
+ *             label: 'An ActionFieldLayout. This label is aligned top',
+ *             align: 'top',
+ *             help: 'This is help text'
+ *         }
+ *     );
+ *
+ *     $( 'body' ).append( actionFieldLayout.$element );
+ *
  *
  * @class
  * @extends OO.ui.FieldLayout
@@ -11087,8 +11822,9 @@ OO.ui.FieldLayout.prototype.setAlignment = function ( value ) {
  * @param {OO.ui.Widget} fieldWidget Field widget
  * @param {OO.ui.ButtonWidget} buttonWidget Button widget
  * @param {Object} [config] Configuration options
- * @cfg {string} [align='left'] Alignment mode, either 'left', 'right', 'top' or 'inline'
- * @cfg {string} [help] Explanatory text shown as a '?' icon.
+ * @cfg {string} [align='left'] Alignment of the label: 'left', 'right', 'top' or 'inline'
+ * @cfg {string} [help] Help text. When help text is specified, a help icon will appear in the
+ *  upper-right corner of the rendered field.
  */
 OO.ui.ActionFieldLayout = function OoUiActionFieldLayout( fieldWidget, buttonWidget, config ) {
 	// Allow passing positional parameters inside the config object
@@ -11123,9 +11859,36 @@ OO.ui.ActionFieldLayout = function OoUiActionFieldLayout( fieldWidget, buttonWid
 OO.inheritClass( OO.ui.ActionFieldLayout, OO.ui.FieldLayout );
 
 /**
- * Layout made of a fieldset and optional legend.
+ * FieldsetLayouts are composed of one or more {@link OO.ui.FieldLayout FieldLayouts},
+ * which each contain an individual widget and, optionally, a label. Each Fieldset can be
+ * configured with a label as well. For more information and examples,
+ * please see the [OOjs UI documentation on MediaWiki][1].
  *
- * Just add OO.ui.FieldLayout items.
+ *     @example
+ *     // Example of a fieldset layout
+ *     var input1 = new OO.ui.TextInputWidget( {
+ *         placeholder: 'A text input field'
+ *     } );
+ *
+ *     var input2 = new OO.ui.TextInputWidget( {
+ *         placeholder: 'A text input field'
+ *     } );
+ *
+ *     var fieldset = new OO.ui.FieldsetLayout( {
+ *         label: 'Example of a fieldset layout'
+ *     } );
+ *
+ *     fieldset.addItems( [
+ *         new OO.ui.FieldLayout( input1, {
+ *             label: 'Field One'
+ *         } ),
+ *         new OO.ui.FieldLayout( input2, {
+ *             label: 'Field Two'
+ *         } )
+ *     ] );
+ *     $( 'body' ).append( fieldset.$element );
+ *
+ * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Layouts/Fields_and_Fieldsets
  *
  * @class
  * @extends OO.ui.Layout
@@ -11135,7 +11898,7 @@ OO.inheritClass( OO.ui.ActionFieldLayout, OO.ui.FieldLayout );
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {OO.ui.FieldLayout[]} [items] Items to add
+ * @cfg {OO.ui.FieldLayout[]} [items] An array of fields to add to the fieldset. See OO.ui.FieldLayout for more information about fields.
  */
 OO.ui.FieldsetLayout = function OoUiFieldsetLayout( config ) {
 	// Configuration initialization
@@ -11183,7 +11946,43 @@ OO.mixinClass( OO.ui.FieldsetLayout, OO.ui.LabelElement );
 OO.mixinClass( OO.ui.FieldsetLayout, OO.ui.GroupElement );
 
 /**
- * Layout with an HTML form.
+ * FormLayouts are used to wrap {@link OO.ui.FieldsetLayout FieldsetLayouts} when you intend to use browser-based
+ * form submission for the fields instead of handling them in JavaScript. Form layouts can be configured with an
+ * HTML form action, an encoding type, and a method using the #action, #enctype, and #method configs, respectively.
+ *
+ *     @example
+ *     // Example of a form layout that wraps a fieldset layout
+ *     var input1 = new OO.ui.TextInputWidget( {
+ *         placeholder: 'Username'
+ *     } );
+ *     var input2 = new OO.ui.TextInputWidget( {
+ *         placeholder: 'Password',
+ *         type: 'password'
+ *     } );
+ *     var submit = new OO.ui.ButtonInputWidget( {
+ *         label: 'Submit'
+ *     } );
+ *
+ *     var fieldset = new OO.ui.FieldsetLayout( {
+ *         label: 'A form layout'
+ *     } );
+ *     fieldset.addItems( [
+ *         new OO.ui.FieldLayout( input1, {
+ *             label: 'Username',
+ *             align: 'top'
+ *         } ),
+ *         new OO.ui.FieldLayout( input2, {
+ *             label: 'Password',
+ *             align: 'top'
+ *         } ),
+ *         new OO.ui.FieldLayout( submit )
+ *     ] );
+ *     var form = new OO.ui.FormLayout( {
+ *         items: [ fieldset ],
+ *         action: '/api/formhandler',
+ *         method: 'get'
+ *     } )
+ *     $( 'body' ).append( form.$element );
  *
  * @class
  * @extends OO.ui.Layout
@@ -11194,7 +11993,7 @@ OO.mixinClass( OO.ui.FieldsetLayout, OO.ui.GroupElement );
  * @cfg {string} [method] HTML form `method` attribute
  * @cfg {string} [action] HTML form `action` attribute
  * @cfg {string} [enctype] HTML form `enctype` attribute
- * @cfg {OO.ui.FieldsetLayout[]} [items] Items to add
+ * @cfg {OO.ui.FieldsetLayout[]} [items] Fieldset layouts to add to the form layout.
  */
 OO.ui.FormLayout = function OoUiFormLayout( config ) {
 	// Configuration initialization
@@ -11230,6 +12029,8 @@ OO.mixinClass( OO.ui.FormLayout, OO.ui.GroupElement );
 /* Events */
 
 /**
+ * A 'submit' event is emitted when the form is submitted.
+ *
  * @event submit
  */
 
@@ -11242,6 +12043,7 @@ OO.ui.FormLayout.static.tagName = 'form';
 /**
  * Handle form submit events.
  *
+ * @private
  * @param {jQuery.Event} e Submit event
  * @fires submit
  */
@@ -11263,8 +12065,7 @@ OO.ui.FormLayout.prototype.onFormSubmit = function () {
  * @param {Object} [config] Configuration options
  * @cfg {number|string} [menuSize='18em'] Size of menu in pixels or any CSS unit
  * @cfg {boolean} [showMenu=true] Show menu
- * @cfg {string} [position='before'] Position of menu, either `top`, `after`, `bottom` or `before`
- * @cfg {boolean} [collapse] Collapse the menu out of view
+ * @cfg {string} [menuPosition='before'] Position of menu: `top`, `after`, `bottom` or `before`
  */
 OO.ui.MenuLayout = function OoUiMenuLayout( config ) {
 	var positions = this.constructor.static.menuPositions;
@@ -11446,7 +12247,44 @@ OO.ui.MenuLayout.prototype.getMenuPosition = function () {
 };
 
 /**
- * Layout containing a series of pages.
+ * BookletLayouts contain {@link OO.ui.PageLayout page layouts} as well as
+ * an {@link OO.ui.OutlineSelectWidget outline} that allows users to easily navigate
+ * through the pages and select which one to display. By default, only one page is
+ * displayed at a time and the outline is hidden. When a user navigates to a new page,
+ * the booklet layout automatically focuses on the first focusable element, unless the
+ * default setting is changed. Optionally, booklets can be configured to show
+ * {@link OO.ui.OutlineControlsWidget controls} for adding, moving, and removing items.
+ *
+ *     @example
+ *     // Example of a BookletLayout that contains two PageLayouts.
+ *
+ *     function PageOneLayout( name, config ) {
+ *         PageOneLayout.super.call( this, name, config );
+ *         this.$element.append( '<p>First page</p><p>(This booklet has an outline, displayed on the left)</p>' );
+ *     }
+ *     OO.inheritClass( PageOneLayout, OO.ui.PageLayout );
+ *     PageOneLayout.prototype.setupOutlineItem = function () {
+ *         this.outlineItem.setLabel( 'Page One' );
+ *     };
+ *
+ *     function PageTwoLayout( name, config ) {
+ *         PageTwoLayout.super.call( this, name, config );
+ *         this.$element.append( '<p>Second page</p>' );
+ *     }
+ *     OO.inheritClass( PageTwoLayout, OO.ui.PageLayout );
+ *     PageTwoLayout.prototype.setupOutlineItem = function () {
+ *         this.outlineItem.setLabel( 'Page Two' );
+ *     };
+ *
+ *     var page1 = new PageOneLayout( 'one' ),
+ *         page2 = new PageTwoLayout( 'two' );
+ *
+ *     var booklet = new OO.ui.BookletLayout( {
+ *         outlined: true
+ *     } );
+ *
+ *     booklet.addPages ( [ page1, page2 ] );
+ *     $( 'body' ).append( booklet.$element );
  *
  * @class
  * @extends OO.ui.MenuLayout
@@ -11454,8 +12292,8 @@ OO.ui.MenuLayout.prototype.getMenuPosition = function () {
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [continuous=false] Show all pages, one after another
- * @cfg {boolean} [autoFocus=true] Focus on the first focusable element when changing to a page
- * @cfg {boolean} [outlined=false] Show an outline
+ * @cfg {boolean} [autoFocus=true] Focus on the first focusable element when a new page is displayed.
+ * @cfg {boolean} [outlined=false] Show the outline. The outline is used to navigate through the pages of the booklet.
  * @cfg {boolean} [editable=false] Show controls for adding, removing and reordering pages
  */
 OO.ui.BookletLayout = function OoUiBookletLayout( config ) {
@@ -11521,17 +12359,23 @@ OO.inheritClass( OO.ui.BookletLayout, OO.ui.MenuLayout );
 /* Events */
 
 /**
+ * A 'set' event is emitted when a page is {@link #setPage set} to be displayed by the booklet layout.
  * @event set
  * @param {OO.ui.PageLayout} page Current page
  */
 
 /**
+ * An 'add' event is emitted when pages are {@link #addPages added} to the booklet layout.
+ *
  * @event add
  * @param {OO.ui.PageLayout[]} page Added pages
  * @param {number} index Index pages were added at
  */
 
 /**
+ * A 'remove' event is emitted when pages are {@link #clearPages cleared} or
+ * {@link #removePages removed} from the booklet.
+ *
  * @event remove
  * @param {OO.ui.PageLayout[]} pages Removed pages
  */
@@ -11541,6 +12385,7 @@ OO.inheritClass( OO.ui.BookletLayout, OO.ui.MenuLayout );
 /**
  * Handle stack layout focus.
  *
+ * @private
  * @param {jQuery.Event} e Focusin event
  */
 OO.ui.BookletLayout.prototype.onStackLayoutFocus = function ( e ) {
@@ -11560,6 +12405,7 @@ OO.ui.BookletLayout.prototype.onStackLayoutFocus = function ( e ) {
 /**
  * Handle stack layout set events.
  *
+ * @private
  * @param {OO.ui.PanelLayout|null} page The page panel that is now the current panel
  */
 OO.ui.BookletLayout.prototype.onStackLayoutSet = function ( page ) {
@@ -11600,6 +12446,7 @@ OO.ui.BookletLayout.prototype.focus = function () {
 /**
  * Handle outline widget select events.
  *
+ * @private
  * @param {OO.ui.OptionWidget|null} item Selected item
  */
 OO.ui.BookletLayout.prototype.onOutlineSelectWidgetSelect = function ( item ) {
@@ -11611,7 +12458,7 @@ OO.ui.BookletLayout.prototype.onOutlineSelectWidgetSelect = function ( item ) {
 /**
  * Check if booklet has an outline.
  *
- * @return {boolean}
+ * @return {boolean} Booklet has an outline
  */
 OO.ui.BookletLayout.prototype.isOutlined = function () {
 	return this.outlined;
@@ -11620,7 +12467,7 @@ OO.ui.BookletLayout.prototype.isOutlined = function () {
 /**
  * Check if booklet has editing controls.
  *
- * @return {boolean}
+ * @return {boolean} Booklet is editable
  */
 OO.ui.BookletLayout.prototype.isEditable = function () {
 	return this.editable;
@@ -11629,7 +12476,7 @@ OO.ui.BookletLayout.prototype.isEditable = function () {
 /**
  * Check if booklet has a visible outline.
  *
- * @return {boolean}
+ * @return {boolean} Outline is visible
  */
 OO.ui.BookletLayout.prototype.isOutlineVisible = function () {
 	return this.outlined && this.outlineVisible;
@@ -11652,10 +12499,10 @@ OO.ui.BookletLayout.prototype.toggleOutline = function ( show ) {
 };
 
 /**
- * Get the outline widget.
+ * Get the page closest to the specified page.
  *
- * @param {OO.ui.PageLayout} page Page to be selected
- * @return {OO.ui.PageLayout|null} Closest page to another
+ * @param {OO.ui.PageLayout} page Page to use as a reference point
+ * @return {OO.ui.PageLayout|null} Page closest to the specified page
  */
 OO.ui.BookletLayout.prototype.getClosestPage = function ( page ) {
 	var next, prev, level,
@@ -11688,14 +12535,18 @@ OO.ui.BookletLayout.prototype.getClosestPage = function ( page ) {
 /**
  * Get the outline widget.
  *
- * @return {OO.ui.OutlineSelectWidget|null} Outline widget, or null if booklet has no outline
+ * If the booklet is not outlined, the method will return `null`.
+ *
+ * @return {OO.ui.OutlineSelectWidget|null} Outline widget, or null if the booklet is not outlined
  */
 OO.ui.BookletLayout.prototype.getOutline = function () {
 	return this.outlineSelectWidget;
 };
 
 /**
- * Get the outline controls widget. If the outline is not editable, null is returned.
+ * Get the outline controls widget.
+ *
+ * If the outline is not editable, the method will return `null`.
  *
  * @return {OO.ui.OutlineControlsWidget|null} The outline controls widget.
  */
@@ -11704,7 +12555,7 @@ OO.ui.BookletLayout.prototype.getOutlineControls = function () {
 };
 
 /**
- * Get a page by name.
+ * Get a page by its symbolic name.
  *
  * @param {string} name Symbolic name of page
  * @return {OO.ui.PageLayout|undefined} Page, if found
@@ -11714,7 +12565,7 @@ OO.ui.BookletLayout.prototype.getPage = function ( name ) {
 };
 
 /**
- * Get the current page
+ * Get the current page.
  *
  * @return {OO.ui.PageLayout|undefined} Current page, if found
  */
@@ -11724,22 +12575,22 @@ OO.ui.BookletLayout.prototype.getCurrentPage = function () {
 };
 
 /**
- * Get the current page name.
+ * Get the symbolic name of the current page.
  *
- * @return {string|null} Current page name
+ * @return {string|null} Symbolic name of the current page
  */
 OO.ui.BookletLayout.prototype.getCurrentPageName = function () {
 	return this.currentPageName;
 };
 
 /**
- * Add a page to the layout.
+ * Add pages to the booklet layout
  *
  * When pages are added with the same names as existing pages, the existing pages will be
  * automatically removed before the new pages are added.
  *
  * @param {OO.ui.PageLayout[]} pages Pages to add
- * @param {number} index Index to insert pages after
+ * @param {number} index Index of the insertion point
  * @fires add
  * @chainable
  */
@@ -11790,8 +12641,11 @@ OO.ui.BookletLayout.prototype.addPages = function ( pages, index ) {
 };
 
 /**
- * Remove a page from the layout.
+ * Remove the specified pages from the booklet layout.
  *
+ * To remove all pages from the booklet, you may wish to use the #clearPages method instead.
+ *
+ * @param {OO.ui.PageLayout[]} pages An array of pages to remove
  * @fires remove
  * @chainable
  */
@@ -11819,7 +12673,9 @@ OO.ui.BookletLayout.prototype.removePages = function ( pages ) {
 };
 
 /**
- * Clear all pages from the layout.
+ * Clear all pages from the booklet layout.
+ *
+ * To remove only a subset of pages from the booklet, use the #removePages method.
  *
  * @fires remove
  * @chainable
@@ -11844,7 +12700,7 @@ OO.ui.BookletLayout.prototype.clearPages = function () {
 };
 
 /**
- * Set the current page by name.
+ * Set the current page by symbolic name.
  *
  * @fires set
  * @param {string} name Symbolic name of page
@@ -11896,7 +12752,18 @@ OO.ui.BookletLayout.prototype.selectFirstSelectablePage = function () {
 };
 
 /**
- * Layout that expands to cover the entire area of its parent, with optional scrolling and padding.
+ * PanelLayouts expand to cover the entire area of their parent. They can be configured with scrolling, padding,
+ * and a frame, and are often used together with {@link OO.ui.StackLayout StackLayouts}.
+ *
+ *     @example
+ *     // Example of a panel layout
+ *     var panel = new OO.ui.PanelLayout( {
+ *         expanded: false,
+ *         framed: true,
+ *         padded: true,
+ *         $content: $( '<p>A panel layout with padding and a frame.</p>' )
+ *     } );
+ *     $( 'body' ).append( panel.$element );
  *
  * @class
  * @extends OO.ui.Layout
@@ -11904,15 +12771,17 @@ OO.ui.BookletLayout.prototype.selectFirstSelectablePage = function () {
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [scrollable=false] Allow vertical scrolling
- * @cfg {boolean} [padded=false] Pad the content from the edges
- * @cfg {boolean} [expanded=true] Expand size to fill the entire parent element
+ * @cfg {boolean} [padded=false] Add padding between the content and the edges of the panel.
+ * @cfg {boolean} [expanded=true] Expand the panel to fill the entire parent element.
+ * @cfg {boolean} [framed=false] Render the panel with a frame to visually separate it from outside content.
  */
 OO.ui.PanelLayout = function OoUiPanelLayout( config ) {
 	// Configuration initialization
 	config = $.extend( {
 		scrollable: false,
 		padded: false,
-		expanded: true
+		expanded: true,
+		framed: false
 	}, config );
 
 	// Parent constructor
@@ -11929,6 +12798,9 @@ OO.ui.PanelLayout = function OoUiPanelLayout( config ) {
 	if ( config.expanded ) {
 		this.$element.addClass( 'oo-ui-panelLayout-expanded' );
 	}
+	if ( config.framed ) {
+		this.$element.addClass( 'oo-ui-panelLayout-framed' );
+	}
 };
 
 /* Setup */
@@ -11936,7 +12808,13 @@ OO.ui.PanelLayout = function OoUiPanelLayout( config ) {
 OO.inheritClass( OO.ui.PanelLayout, OO.ui.Layout );
 
 /**
- * Page within an booklet layout.
+ * PageLayouts are used within {@link OO.ui.BookletLayout booklet layouts} to create pages that users can select and display
+ * from the booklet's optional {@link OO.ui.OutlineSelectWidget outline} navigation. Pages are usually not instantiated directly,
+ * rather extended to include the required content and functionality.
+ *
+ * Each page must have a unique symbolic name, which is passed to the constructor. In addition, the page's outline
+ * item is customized (with a label, outline level, etc.) using the #setupOutlineItem method. See
+ * {@link OO.ui.BookletLayout BookletLayout} for an example.
  *
  * @class
  * @extends OO.ui.PanelLayout
@@ -11974,6 +12852,9 @@ OO.inheritClass( OO.ui.PageLayout, OO.ui.PanelLayout );
 /* Events */
 
 /**
+ * An 'active' event is emitted when the page becomes active. Pages become active when they are
+ * shown in a booklet layout that is configured to display only one page at a time.
+ *
  * @event active
  * @param {boolean} active Page is active
  */
@@ -11981,7 +12862,7 @@ OO.inheritClass( OO.ui.PageLayout, OO.ui.PanelLayout );
 /* Methods */
 
 /**
- * Get page name.
+ * Get the symbolic name of the page.
  *
  * @return {string} Symbolic name of page
  */
@@ -11992,6 +12873,9 @@ OO.ui.PageLayout.prototype.getName = function () {
 /**
  * Check if page is active.
  *
+ * Pages become active when they are shown in a {@link OO.ui.BookletLayout booklet layout} that is configured to display
+ * only one page at a time. Additional CSS is applied to the page's outline item to reflect the active state.
+ *
  * @return {boolean} Page is active
  */
 OO.ui.PageLayout.prototype.isActive = function () {
@@ -12001,21 +12885,23 @@ OO.ui.PageLayout.prototype.isActive = function () {
 /**
  * Get outline item.
  *
- * @return {OO.ui.OutlineOptionWidget|null} Outline item widget
+ * The outline item allows users to access the page from the booklet's outline
+ * navigation. The outline item itself can be customized (with a label, level, etc.) using the #setupOutlineItem method.
+ *
+ * @return {OO.ui.OutlineOptionWidget|null} Outline option widget
  */
 OO.ui.PageLayout.prototype.getOutlineItem = function () {
 	return this.outlineItem;
 };
 
 /**
- * Set outline item.
+ * Set or unset the outline item.
  *
- * @localdoc Subclasses should override #setupOutlineItem instead of this method to adjust the
- *   outline item as desired; this method is called for setting (with an object) and unsetting
- *   (with null) and overriding methods would have to check the value of `outlineItem` to avoid
- *   operating on null instead of an OO.ui.OutlineOptionWidget object.
+ * Specify an {@link OO.ui.OutlineOptionWidget outline option} to set it,
+ * or `null` to clear the outline item. To customize the outline item itself (e.g., to set a label or outline
+ * level), use #setupOutlineItem instead of this method.
  *
- * @param {OO.ui.OutlineOptionWidget|null} outlineItem Outline item widget, null to clear
+ * @param {OO.ui.OutlineOptionWidget|null} outlineItem Outline option widget, null to clear
  * @chainable
  */
 OO.ui.PageLayout.prototype.setOutlineItem = function ( outlineItem ) {
@@ -12027,11 +12913,13 @@ OO.ui.PageLayout.prototype.setOutlineItem = function ( outlineItem ) {
 };
 
 /**
- * Setup outline item.
+ * Set up the outline item.
  *
- * @localdoc Subclasses should override this method to adjust the outline item as desired.
+ * Use this method to customize the outline item (e.g., to add a label or outline level). To set or unset
+ * the outline item itself (with an {@link OO.ui.OutlineOptionWidget outline option} or `null`), use
+ * the #setOutlineItem method instead.
  *
- * @param {OO.ui.OutlineOptionWidget} outlineItem Outline item widget to setup
+ * @param {OO.ui.OutlineOptionWidget} outlineItem Outline option widget to set up
  * @chainable
  */
 OO.ui.PageLayout.prototype.setupOutlineItem = function () {
@@ -12039,9 +12927,13 @@ OO.ui.PageLayout.prototype.setupOutlineItem = function () {
 };
 
 /**
- * Set page active state.
+ * Set the page to its 'active' state.
  *
- * @param {boolean} Page is active
+ * Pages become active when they are shown in a booklet layout that is configured to display only one page at a time. Additional
+ * CSS is applied to the outline item to reflect the page's active state. Outside of the booklet
+ * context, setting the active state on a page does nothing.
+ *
+ * @param {boolean} value Page is active
  * @fires active
  */
 OO.ui.PageLayout.prototype.setActive = function ( active ) {
@@ -12055,7 +12947,28 @@ OO.ui.PageLayout.prototype.setActive = function ( active ) {
 };
 
 /**
- * Layout containing a series of mutually exclusive pages.
+ * StackLayouts contain a series of {@link OO.ui.PanelLayout panel layouts}. By default, only one panel is displayed
+ * at a time, though the stack layout can also be configured to show all contained panels, one after another,
+ * by setting the #continuous option to 'true'.
+ *
+ *     @example
+ *     // A stack layout with two panels, configured to be displayed continously
+ *     var myStack = new OO.ui.StackLayout( {
+ *         items: [
+ *             new OO.ui.PanelLayout( {
+ *                 $content: $( '<p>Panel One</p>' ),
+ *                 padded: true,
+ *                 framed: true
+ *             } ),
+ *             new OO.ui.PanelLayout( {
+ *                 $content: $( '<p>Panel Two</p>' ),
+ *                 padded: true,
+ *                 framed: true
+ *             } )
+ *         ],
+ *         continuous: true
+ *     } );
+ *     $( 'body' ).append( myStack.$element );
  *
  * @class
  * @extends OO.ui.PanelLayout
@@ -12063,8 +12976,8 @@ OO.ui.PageLayout.prototype.setActive = function ( active ) {
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [continuous=false] Show all pages, one after another
- * @cfg {OO.ui.Layout[]} [items] Layouts to add
+ * @cfg {boolean} [continuous=false] Show all panels, one after another. By default, only one panel is displayed at a time.
+ * @cfg {OO.ui.Layout[]} [items] Panel layouts to add to the stack layout.
  */
 OO.ui.StackLayout = function OoUiStackLayout( config ) {
 	// Configuration initialization
@@ -12098,14 +13011,17 @@ OO.mixinClass( OO.ui.StackLayout, OO.ui.GroupElement );
 /* Events */
 
 /**
+ * A 'set' event is emitted when panels are {@link #addItems added}, {@link #removeItems removed},
+ * {@link #clearItems cleared} or {@link #setItem displayed}.
+ *
  * @event set
- * @param {OO.ui.Layout|null} item Current item or null if there is no longer a layout shown
+ * @param {OO.ui.Layout|null} item Current panel or `null` if no panel is shown
  */
 
 /* Methods */
 
 /**
- * Get the current item.
+ * Get the current panel.
  *
  * @return {OO.ui.Layout|null}
  */
@@ -12131,12 +13047,14 @@ OO.ui.StackLayout.prototype.unsetCurrentItem = function () {
 };
 
 /**
- * Add items.
+ * Add panel layouts to the stack layout.
  *
- * Adding an existing item (by value) will move it.
+ * Panels will be added to the end of the stack layout array unless the optional index parameter specifies a different
+ * insertion point. Adding a panel that is already in the stack will move it to the end of the array or the point specified
+ * by the index.
  *
- * @param {OO.ui.Layout[]} items Items to add
- * @param {number} [index] Index to insert items after
+ * @param {OO.ui.Layout[]} items Panels to add
+ * @param {number} [index] Index of the insertion point
  * @chainable
  */
 OO.ui.StackLayout.prototype.addItems = function ( items, index ) {
@@ -12154,11 +13072,12 @@ OO.ui.StackLayout.prototype.addItems = function ( items, index ) {
 };
 
 /**
- * Remove items.
+ * Remove the specified panels from the stack layout.
  *
- * Items will be detached, not removed, so they can be used later.
+ * Removed panels are detached from the DOM, not removed, so that they may be reused. To remove all panels,
+ * you may wish to use the #clearItems method instead.
  *
- * @param {OO.ui.Layout[]} items Items to remove
+ * @param {OO.ui.Layout[]} items Panels to remove
  * @chainable
  * @fires set
  */
@@ -12178,9 +13097,10 @@ OO.ui.StackLayout.prototype.removeItems = function ( items ) {
 };
 
 /**
- * Clear all items.
+ * Clear all panels from the stack layout.
  *
- * Items will be detached, not removed, so they can be used later.
+ * Cleared panels are detached from the DOM, not removed, so that they may be reused. To remove only
+ * a subset of panels, use the #removeItems method.
  *
  * @chainable
  * @fires set
@@ -12193,14 +13113,11 @@ OO.ui.StackLayout.prototype.clearItems = function () {
 };
 
 /**
- * Show item.
+ * Show the specified panel.
  *
- * Any currently shown item will be hidden.
+ * If another panel is currently displayed, it will be hidden.
  *
- * FIXME: If the passed item to show has not been added in the items list, then
- * this method drops it and unsets the current item.
- *
- * @param {OO.ui.Layout} item Item to show
+ * @param {OO.ui.Layout} item Panel to show
  * @chainable
  * @fires set
  */
@@ -12225,6 +13142,7 @@ OO.ui.StackLayout.prototype.setItem = function ( item ) {
  * Ensure all items are hidden except for the selected one.
  * This method does nothing when the stack is continuous.
  *
+ * @private
  * @param {OO.ui.Layout[]} items Item list iterate over
  * @param {OO.ui.Layout} [selectedItem] Selected item to show
  */
@@ -12324,8 +13242,8 @@ OO.ui.PopupToolGroup = function OoUiPopupToolGroup( toolbar, config ) {
 
 	// Events
 	this.$handle.on( {
-		'mousedown touchstart': this.onHandlePointerDown.bind( this ),
-		'mouseup touchend': this.onHandlePointerUp.bind( this )
+		mousedown: this.onHandlePointerDown.bind( this ),
+		mouseup: this.onHandlePointerUp.bind( this )
 	} );
 
 	// Initialization
@@ -12390,10 +13308,8 @@ OO.ui.PopupToolGroup.prototype.onBlur = function ( e ) {
  * @inheritdoc
  */
 OO.ui.PopupToolGroup.prototype.onPointerUp = function ( e ) {
-	// e.which is 0 for touch events, 1 for left mouse button
 	// Only close toolgroup when a tool was actually selected
-	// FIXME: this duplicates logic from the parent class
-	if ( !this.isDisabled() && e.which <= 1 && this.pressed && this.pressed === this.getTargetTool( e ) ) {
+	if ( !this.isDisabled() && e.which === 1 && this.pressed && this.pressed === this.getTargetTool( e ) ) {
 		this.setActive( false );
 	}
 	return OO.ui.PopupToolGroup.super.prototype.onPointerUp.call( this, e );
@@ -12414,8 +13330,7 @@ OO.ui.PopupToolGroup.prototype.onHandlePointerUp = function () {
  * @param {jQuery.Event} e Mouse down event
  */
 OO.ui.PopupToolGroup.prototype.onHandlePointerDown = function ( e ) {
-	// e.which is 0 for touch events, 1 for left mouse button
-	if ( !this.isDisabled() && e.which <= 1 ) {
+	if ( !this.isDisabled() && e.which === 1 ) {
 		this.setActive( !this.active );
 	}
 	return false;
@@ -12892,9 +13807,9 @@ OO.ui.ItemWidget.prototype.setElementGroup = function ( group ) {
 };
 
 /**
- * Set of controls for an OO.ui.OutlineSelectWidget.
- *
+ * OutlineControlsWidget is a set of controls for an {@link OO.ui.OutlineSelectWidget outline select widget}.
  * Controls include moving items up and down, removing items, and adding different kinds of items.
+ * ####Currently, this class is only used by {@link OO.ui.BookletLayout BookletLayouts}.####
  *
  * @class
  * @extends OO.ui.Widget
@@ -12904,6 +13819,9 @@ OO.ui.ItemWidget.prototype.setElementGroup = function ( group ) {
  * @constructor
  * @param {OO.ui.OutlineSelectWidget} outline Outline to control
  * @param {Object} [config] Configuration options
+ * @cfg {Object} [abilities] List of abilties
+ * @cfg {boolean} [abilities.move=true] Allow moving movable items
+ * @cfg {boolean} [abilities.remove=true] Allow removing removable items
  */
 OO.ui.OutlineControlsWidget = function OoUiOutlineControlsWidget( outline, config ) {
 	// Allow passing positional parameters inside the config object
@@ -12940,6 +13858,7 @@ OO.ui.OutlineControlsWidget = function OoUiOutlineControlsWidget( outline, confi
 		icon: 'remove',
 		title: OO.ui.msg( 'ooui-outline-control-remove' )
 	} );
+	this.abilities = { move: true, remove: true };
 
 	// Events
 	outline.connect( this, {
@@ -12958,6 +13877,7 @@ OO.ui.OutlineControlsWidget = function OoUiOutlineControlsWidget( outline, confi
 		.addClass( 'oo-ui-outlineControlsWidget-movers' )
 		.append( this.removeButton.$element, this.upButton.$element, this.downButton.$element );
 	this.$element.append( this.$icon, this.$group, this.$movers );
+	this.setAbilities( config.abilities || {} );
 };
 
 /* Setup */
@@ -12980,14 +13900,35 @@ OO.mixinClass( OO.ui.OutlineControlsWidget, OO.ui.IconElement );
 /* Methods */
 
 /**
+ * Set abilities.
+ *
+ * @param {Object} abilities List of abilties
+ * @param {boolean} [abilities.move] Allow moving movable items
+ * @param {boolean} [abilities.remove] Allow removing removable items
+ */
+OO.ui.OutlineControlsWidget.prototype.setAbilities = function ( abilities ) {
+	var ability;
+
+	for ( ability in this.abilities ) {
+		if ( abilities[ability] !== undefined ) {
+			this.abilities[ability] = !!abilities[ability];
+		}
+	}
+
+	this.onOutlineChange();
+};
+
+/**
+ *
+ * @private
  * Handle outline change events.
  */
 OO.ui.OutlineControlsWidget.prototype.onOutlineChange = function () {
 	var i, len, firstMovable, lastMovable,
 		items = this.outline.getItems(),
 		selectedItem = this.outline.getSelectedItem(),
-		movable = selectedItem && selectedItem.isMovable(),
-		removable = selectedItem && selectedItem.isRemovable();
+		movable = this.abilities.move && selectedItem && selectedItem.isMovable(),
+		removable = this.abilities.remove && selectedItem && selectedItem.isRemovable();
 
 	if ( movable ) {
 		i = -1;
@@ -13083,21 +14024,21 @@ OO.ui.ToggleWidget.prototype.setValue = function ( value ) {
  *     @example
  *     // Example: A ButtonGroupWidget with two buttons
  *     var button1 = new OO.ui.PopupButtonWidget( {
- *         label : 'Select a category',
- *         icon : 'menu',
- *         popup : {
+ *         label: 'Select a category',
+ *         icon: 'menu',
+ *         popup: {
  *             $content: $( '<p>List of categories...</p>' ),
  *             padded: true,
  *             align: 'left'
  *         }
  *     } );
  *     var button2 = new OO.ui.ButtonWidget( {
- *         label : 'Add item'
+ *         label: 'Add item'
  *     });
  *     var buttonGroup = new OO.ui.ButtonGroupWidget( {
  *         items: [button1, button2]
  *     } );
- *     $('body').append(buttonGroup.$element);
+ *     $( 'body' ).append( buttonGroup.$element );
  *
  * @class
  * @extends OO.ui.Widget
@@ -13140,9 +14081,9 @@ OO.mixinClass( OO.ui.ButtonGroupWidget, OO.ui.GroupElement );
  *     @example
  *     // A button widget
  *     var button = new OO.ui.ButtonWidget( {
- *         label : 'Button with Icon',
- *         icon : 'remove',
- *         iconTitle : 'Remove'
+ *         label: 'Button with Icon',
+ *         icon: 'remove',
+ *         iconTitle: 'Remove'
  *     } );
  *     $( 'body' ).append( button.$element );
  *
@@ -13348,7 +14289,10 @@ OO.ui.ButtonWidget.prototype.setNoFollow = function ( noFollow ) {
 /**
  * An ActionWidget is a {@link OO.ui.ButtonWidget button widget} that executes an action.
  * Action widgets are used with OO.ui.ActionSet, which manages the behavior and availability
- * of the actions. Please see the [OOjs UI documentation on MediaWiki] [1] for more information
+ * of the actions.
+ *
+ * Both actions and action sets are primarily used with {@link OO.ui.Dialog Dialogs}.
+ * Please see the [OOjs UI documentation on MediaWiki] [1] for more information
  * and examples.
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Windows/Process_Dialogs#Action_sets
@@ -13359,9 +14303,11 @@ OO.ui.ButtonWidget.prototype.setNoFollow = function ( noFollow ) {
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string} [action] Symbolic action name
- * @cfg {string[]} [modes] Symbolic mode names
- * @cfg {boolean} [framed=false] Render button with a frame
+ * @cfg {string} [action] Symbolic name of the action (e.g., ‘continue’ or ‘cancel’).
+ * @cfg {string[]} [modes] Symbolic names of the modes (e.g., ‘edit’ or ‘read’) in which the action
+ *  should be made available. See the action set's {@link OO.ui.ActionSet#setMode setMode} method
+ *  for more information about setting modes.
+ * @cfg {boolean} [framed=false] Render the action button with a frame
  */
 OO.ui.ActionWidget = function OoUiActionWidget( config ) {
 	// Configuration initialization
@@ -13391,23 +14337,25 @@ OO.mixinClass( OO.ui.ActionWidget, OO.ui.PendingElement );
 /* Events */
 
 /**
+ * A resize event is emitted when the size of the widget changes.
+ *
  * @event resize
  */
 
 /* Methods */
 
 /**
- * Check if action is available in a certain mode.
+ * Check if the action is configured to be available in the specified `mode`.
  *
  * @param {string} mode Name of mode
- * @return {boolean} Has mode
+ * @return {boolean} The action is configured with the mode
  */
 OO.ui.ActionWidget.prototype.hasMode = function ( mode ) {
 	return this.modes.indexOf( mode ) !== -1;
 };
 
 /**
- * Get symbolic action name.
+ * Get the symbolic name of the action (e.g., ‘continue’ or ‘cancel’).
  *
  * @return {string}
  */
@@ -13416,9 +14364,13 @@ OO.ui.ActionWidget.prototype.getAction = function () {
 };
 
 /**
- * Get symbolic action name.
+ * Get the symbolic name of the mode or modes for which the action is configured to be available.
  *
- * @return {string}
+ * The current mode is set with the action set's {@link OO.ui.ActionSet#setMode setMode} method.
+ * Only actions that are configured to be avaiable in the current mode will be visible. All other actions
+ * are hidden.
+ *
+ * @return {string[]}
  */
 OO.ui.ActionWidget.prototype.getModes = function () {
 	return this.modes.slice();
@@ -13427,6 +14379,7 @@ OO.ui.ActionWidget.prototype.getModes = function () {
 /**
  * Emit a resize event if the size has changed.
  *
+ * @private
  * @chainable
  */
 OO.ui.ActionWidget.prototype.propagateResize = function () {
@@ -13491,7 +14444,7 @@ OO.ui.ActionWidget.prototype.clearFlags = function () {
 };
 
 /**
- * Toggle visibility of button.
+ * Toggle the visibility of the action button.
  *
  * @param {boolean} [show] Show button, omit to toggle visibility
  * @chainable
@@ -13649,7 +14602,7 @@ OO.ui.ToggleButtonWidget.prototype.setValue = function ( value ) {
  *
  *     @example
  *     // Example: A DropdownWidget with a menu that contains three options
- *     var dropDown=new OO.ui.DropdownWidget( {
+ *     var dropDown = new OO.ui.DropdownWidget( {
  *         label: 'Dropdown menu: Select a menu option',
  *         menu: {
  *             items: [
@@ -13669,7 +14622,7 @@ OO.ui.ToggleButtonWidget.prototype.setValue = function ( value ) {
  *         }
  *     } );
  *
- *     $('body').append(dropDown.$element);
+ *     $( 'body' ).append( dropDown.$element );
  *
  * For more information, please see the [OOjs UI documentation on MediaWiki] [1].
  *
@@ -13788,8 +14741,8 @@ OO.ui.DropdownWidget.prototype.onClick = function ( e ) {
 OO.ui.DropdownWidget.prototype.onKeyPress = function ( e ) {
 	if ( !this.isDisabled() && ( e.which === OO.ui.Keys.SPACE || e.which === OO.ui.Keys.ENTER ) ) {
 		this.menu.toggle();
+		return false;
 	}
-	return false;
 };
 
 /**
@@ -13799,15 +14752,15 @@ OO.ui.DropdownWidget.prototype.onKeyPress = function ( e ) {
  *
  *     @example
  *     // An icon widget with a label
- *     var myIcon = new OO.ui.IconWidget({
+ *     var myIcon = new OO.ui.IconWidget( {
  *         icon: 'help',
  *         iconTitle: 'Help'
- *      });
+ *      } );
  *      // Create a label.
- *      var iconLabel = new OO.ui.LabelWidget({
+ *      var iconLabel = new OO.ui.LabelWidget( {
  *          label: 'Help'
- *      });
- *      $('body').append(myIcon.$element, iconLabel.$element);
+ *      } );
+ *      $( 'body' ).append( myIcon.$element, iconLabel.$element );
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Icons,_Indicators,_and_Labels#Icons
  *
@@ -13815,6 +14768,7 @@ OO.ui.DropdownWidget.prototype.onKeyPress = function ( e ) {
  * @extends OO.ui.Widget
  * @mixins OO.ui.IconElement
  * @mixins OO.ui.TitledElement
+ * @mixins OO.ui.FlaggedElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -13829,6 +14783,7 @@ OO.ui.IconWidget = function OoUiIconWidget( config ) {
 	// Mixin constructors
 	OO.ui.IconElement.call( this, $.extend( {}, config, { $icon: this.$element } ) );
 	OO.ui.TitledElement.call( this, $.extend( {}, config, { $titled: this.$element } ) );
+	OO.ui.FlaggedElement.call( this, $.extend( {}, config, { $flagged: this.$element } ) );
 
 	// Initialization
 	this.$element.addClass( 'oo-ui-iconWidget' );
@@ -13839,6 +14794,7 @@ OO.ui.IconWidget = function OoUiIconWidget( config ) {
 OO.inheritClass( OO.ui.IconWidget, OO.ui.Widget );
 OO.mixinClass( OO.ui.IconWidget, OO.ui.IconElement );
 OO.mixinClass( OO.ui.IconWidget, OO.ui.TitledElement );
+OO.mixinClass( OO.ui.IconWidget, OO.ui.FlaggedElement );
 
 /* Static Properties */
 
@@ -13853,12 +14809,12 @@ OO.ui.IconWidget.static.tagName = 'span';
  *     // Example of an indicator widget
  *     var indicator1 = new OO.ui.IndicatorWidget( {
  *         indicator: 'alert'
- *     });
+ *     } );
  *
  *     // Create a fieldset layout to add a label
- *     var fieldset = new OO.ui.FieldsetLayout( );
+ *     var fieldset = new OO.ui.FieldsetLayout();
  *     fieldset.addItems( [
- *         new OO.ui.FieldLayout( indicator1, {label: 'An alert indicator:'} )
+ *         new OO.ui.FieldLayout( indicator1, { label: 'An alert indicator:' } )
  *     ] );
  *     $( 'body' ).append( fieldset.$element );
  *
@@ -13913,9 +14869,10 @@ OO.ui.IndicatorWidget.static.tagName = 'span';
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string} [name=''] HTML input name
- * @cfg {string} [value=''] Input value
- * @cfg {Function} [inputFilter] Filter function to apply to the input. Takes a string argument and returns a string.
+ * @cfg {string} [name=''] The value of the input’s HTML `name` attribute.
+ * @cfg {string} [value=''] The value of the input.
+ * @cfg {Function} [inputFilter] The name of an input filter function. Input filters modify the value of an input
+ *  before it is accepted.
  */
 OO.ui.InputWidget = function OoUiInputWidget( config ) {
 	// Configuration initialization
@@ -13954,6 +14911,9 @@ OO.mixinClass( OO.ui.InputWidget, OO.ui.TabIndexedElement );
 
 /**
  * @event change
+ *
+ * A change event is emitted when the value of the input changes.
+ *
  * @param {string} value
  */
 
@@ -13976,6 +14936,7 @@ OO.ui.InputWidget.prototype.getInputElement = function () {
 /**
  * Handle potentially value-changing events.
  *
+ * @private
  * @param {jQuery.Event} e Key down, mouse up, cut, paste, change, input, or select event
  */
 OO.ui.InputWidget.prototype.onEdit = function () {
@@ -14004,9 +14965,10 @@ OO.ui.InputWidget.prototype.getValue = function () {
 };
 
 /**
- * Sets the direction of the current input, either RTL or LTR
+ * Set the direction of the input, either RTL (right-to-left) or LTR (left-to-right).
  *
  * @param {boolean} isRTL
+ * Direction is right-to-left
  */
 OO.ui.InputWidget.prototype.setRTL = function ( isRTL ) {
 	this.$input.prop( 'dir', isRTL ? 'rtl' : 'ltr' );
@@ -14053,7 +15015,9 @@ OO.ui.InputWidget.prototype.cleanUpValue = function ( value ) {
 };
 
 /**
- * Simulate the behavior of clicking on a label bound to this input.
+ * Simulate the behavior of clicking on a label bound to this input. This method is only called by
+ * {@link OO.ui.LabelWidget LabelWidget} and {@link OO.ui.FieldLayout FieldLayout}. It should not be
+ * called directly.
  */
 OO.ui.InputWidget.prototype.simulateLabelClick = function () {
 	if ( !this.isDisabled() ) {
@@ -14126,11 +15090,11 @@ OO.ui.InputWidget.prototype.blur = function () {
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string} [type='button'] HTML tag `type` attribute, may be 'button', 'submit' or 'reset'
- * @cfg {boolean} [useInputTag=false] Whether to use `<input/>` rather than `<button/>`. Only useful
- *  if you need IE 6 support in a form with multiple buttons. If you use this option, icons and
- *  indicators will not be displayed, it won't be possible to have a non-plaintext label, and it
- *  won't be possible to set a value (which will internally become identical to the label).
+ * @cfg {string} [type='button'] The value of the HTML `'type'` attribute: 'button', 'submit' or 'reset'.
+ * @cfg {boolean} [useInputTag=false] Use an `<input/>` tag instead of a `<button/>` tag, the default.
+ *  Widgets configured to be an `<input/>` do not support {@link #icon icons} and {@link #indicator indicators},
+ *  non-plaintext {@link #label labels}, or {@link #value values}. In general, useInputTag should only
+ *  be set to `true` when there’s need to support IE6 in a form with multiple buttons.
  */
 OO.ui.ButtonInputWidget = function OoUiButtonInputWidget( config ) {
 	// Configuration initialization
@@ -14181,10 +15145,10 @@ OO.ui.ButtonInputWidget.prototype.getInputElement = function ( config ) {
 /**
  * Set label value.
  *
- * Overridden to support setting the 'value' of `<input/>` elements.
+ * If #useInputTag is `true`, the label is set as the `value` of the `<input/>` tag.
  *
- * @param {jQuery|string|Function|null} label Label nodes; text; a function that returns nodes or
- *  text; or null for no label
+ * @param {jQuery|string|Function|null} label Label nodes, text, a function that returns nodes or
+ *  text, or `null` for no label
  * @chainable
  */
 OO.ui.ButtonInputWidget.prototype.setLabel = function ( label ) {
@@ -14209,7 +15173,8 @@ OO.ui.ButtonInputWidget.prototype.setLabel = function ( label ) {
 /**
  * Set the value of the input.
  *
- * Overridden to disable for `<input/>` elements, which have value identical to the label.
+ * This method is disabled for button inputs configured as {@link #useInputTag <input/> tags}, as
+ * they do not support {@link #value values}.
  *
  * @param {string} value New value
  * @chainable
@@ -14229,13 +15194,13 @@ OO.ui.ButtonInputWidget.prototype.setValue = function ( value ) {
  *
  *     @example
  *     // An example of selected, unselected, and disabled checkbox inputs
- *     var checkbox1=new OO.ui.CheckboxInputWidget({
+ *     var checkbox1=new OO.ui.CheckboxInputWidget( {
  *          value: 'a',
  *          selected: true
- *     });
- *     var checkbox2=new OO.ui.CheckboxInputWidget({
+ *     } );
+ *     var checkbox2=new OO.ui.CheckboxInputWidget( {
  *         value: 'b'
- *     });
+ *     } );
  *     var checkbox3=new OO.ui.CheckboxInputWidget( {
  *         value:'c',
  *         disabled: true
@@ -14245,9 +15210,9 @@ OO.ui.ButtonInputWidget.prototype.setValue = function ( value ) {
  *         label: 'Checkboxes'
  *     } );
  *     fieldset.addItems( [
- *         new OO.ui.FieldLayout( checkbox1, {label : 'Selected checkbox', align : 'inline'}),
- *         new OO.ui.FieldLayout( checkbox2, {label : 'Unselected checkbox', align : 'inline'}),
- *         new OO.ui.FieldLayout( checkbox3, {label : 'Disabled checkbox', align : 'inline'}),
+ *         new OO.ui.FieldLayout( checkbox1, { label: 'Selected checkbox', align: 'inline' } ),
+ *         new OO.ui.FieldLayout( checkbox2, { label: 'Unselected checkbox', align: 'inline' } ),
+ *         new OO.ui.FieldLayout( checkbox3, { label: 'Disabled checkbox', align: 'inline' } ),
  *     ] );
  *     $( 'body' ).append( fieldset.$element );
  *
@@ -14338,7 +15303,7 @@ OO.ui.CheckboxInputWidget.prototype.isSelected = function () {
  *
  *     @example
  *     // Example: A DropdownInputWidget with three options
- *     var dropDown=new OO.ui.DropdownInputWidget( {
+ *     var dropDown = new OO.ui.DropdownInputWidget( {
  *         label: 'Dropdown menu: Select a menu option',
  *         options: [
  *             { data: 'a', label: 'First' } ,
@@ -14346,7 +15311,7 @@ OO.ui.CheckboxInputWidget.prototype.isSelected = function () {
  *             { data: 'c', label: 'Third' }
  *         ]
  *     } );
- *     $('body').append(dropDown.$element);
+ *     $( 'body' ).append( dropDown.$element );
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Inputs
  *
@@ -14479,15 +15444,15 @@ OO.ui.DropdownInputWidget.prototype.blur = function () {
  *
  *     @example
  *     // An example of selected, unselected, and disabled radio inputs
- *     var radio1=new OO.ui.RadioInputWidget({
+ *     var radio1 = new OO.ui.RadioInputWidget( {
  *         value: 'a',
  *         selected: true
- *     });
- *     var radio2=new OO.ui.RadioInputWidget({
+ *     } );
+ *     var radio2 = new OO.ui.RadioInputWidget( {
  *         value: 'b'
- *     });
- *     var radio3=new OO.ui.RadioInputWidget( {
- *         value:'c',
+ *     } );
+ *     var radio3 = new OO.ui.RadioInputWidget( {
+ *         value: 'c',
  *         disabled: true
  *     } );
  *     // Create a fieldset layout with fields for each radio button.
@@ -14495,9 +15460,9 @@ OO.ui.DropdownInputWidget.prototype.blur = function () {
  *         label: 'Radio inputs'
  *     } );
  *     fieldset.addItems( [
- *         new OO.ui.FieldLayout( radio1, {label : 'Selected', align : 'inline'}),
- *         new OO.ui.FieldLayout( radio2, {label : 'Unselected', align : 'inline'}),
- *         new OO.ui.FieldLayout( radio3, {label : 'Disabled', align : 'inline'}),
+ *         new OO.ui.FieldLayout( radio1, { label: 'Selected', align: 'inline' } ),
+ *         new OO.ui.FieldLayout( radio2, { label: 'Unselected', align: 'inline' } ),
+ *         new OO.ui.FieldLayout( radio3, { label: 'Disabled', align: 'inline' } ),
  *     ] );
  *     $( 'body' ).append( fieldset.$element );
  *
@@ -14574,10 +15539,10 @@ OO.ui.RadioInputWidget.prototype.isSelected = function () {
  *
  *     @example
  *     // Example of a text input widget
- *     var textInput=new OO.ui.TextInputWidget( {
+ *     var textInput = new OO.ui.TextInputWidget( {
  *         value: 'Text input'
  *     } )
- *     $('body').append(textInput.$element);
+ *     $( 'body' ).append( textInput.$element );
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Inputs
  *
@@ -14648,7 +15613,9 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 		keypress: this.onKeyPress.bind( this ),
 		blur: this.setValidityFlag.bind( this )
 	} );
-	this.$element.on( 'DOMNodeInsertedIntoDocument', this.onElementAttach.bind( this ) );
+	this.$input.one( {
+		focus: this.onElementAttach.bind( this )
+	} );
 	this.$icon.on( 'mousedown', this.onIconMouseDown.bind( this ) );
 	this.$indicator.on( 'mousedown', this.onIndicatorMouseDown.bind( this ) );
 	this.on( 'labelChange', this.updatePosition.bind( this ) );
@@ -14669,6 +15636,9 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	}
 	if ( config.required ) {
 		this.$input.attr( 'required', 'true' );
+	}
+	if ( this.label || config.autosize ) {
+		this.installParentChangeDetector();
 	}
 };
 
@@ -14794,6 +15764,75 @@ OO.ui.TextInputWidget.prototype.setReadOnly = function ( state ) {
 	this.readOnly = !!state;
 	this.$input.prop( 'readOnly', this.readOnly );
 	return this;
+};
+
+/**
+ * Support function for making #onElementAttach work across browsers.
+ *
+ * This whole function could be replaced with one line of code using the DOMNodeInsertedIntoDocument
+ * event, but it's not supported by Firefox and allegedly deprecated, so we only use it as fallback.
+ *
+ * Due to MutationObserver performance woes, #onElementAttach is only somewhat reliably called the
+ * first time that the element gets attached to the documented.
+ */
+OO.ui.TextInputWidget.prototype.installParentChangeDetector = function () {
+	var mutationObserver, onRemove, topmostNode, fakeParentNode,
+		MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver,
+		widget = this;
+
+	if ( MutationObserver ) {
+		// The new way. If only it wasn't so ugly.
+
+		if ( this.$element.closest( 'html' ).length ) {
+			// Widget is attached already, do nothing. This breaks the functionality of this function when
+			// the widget is detached and reattached. Alas, doing this correctly with MutationObserver
+			// would require observation of the whole document, which would hurt performance of other,
+			// more important code.
+			return;
+		}
+
+		// Find topmost node in the tree
+		topmostNode = this.$element[0];
+		while ( topmostNode.parentNode ) {
+			topmostNode = topmostNode.parentNode;
+		}
+
+		// We have no way to detect the $element being attached somewhere without observing the entire
+		// DOM with subtree modifications, which would hurt performance. So we cheat: we hook to the
+		// parent node of $element, and instead detect when $element is removed from it (and thus
+		// probably attached somewhere else). If there is no parent, we create a "fake" one. If it
+		// doesn't get attached, we end up back here and create the parent.
+
+		mutationObserver = new MutationObserver( function ( mutations ) {
+			var i, j, removedNodes;
+			for ( i = 0; i < mutations.length; i++ ) {
+				removedNodes = mutations[ i ].removedNodes;
+				for ( j = 0; j < removedNodes.length; j++ ) {
+					if ( removedNodes[ j ] === topmostNode ) {
+						setTimeout( onRemove, 0 );
+						return;
+					}
+				}
+			}
+		} );
+
+		onRemove = function () {
+			// If the node was attached somewhere else, report it
+			if ( widget.$element.closest( 'html' ).length ) {
+				widget.onElementAttach();
+			}
+			mutationObserver.disconnect();
+			widget.installParentChangeDetector();
+		};
+
+		// Create a fake parent and observe it
+		fakeParentNode = $( '<div>' ).append( this.$element )[0];
+		mutationObserver.observe( fakeParentNode, { childList: true } );
+	} else {
+		// Using the DOMNodeInsertedIntoDocument event is much nicer and less magical, and works for
+		// detachment and reattachment, but it's not supported by Firefox and allegedly deprecated.
+		this.$element.on( 'DOMNodeInsertedIntoDocument', this.onElementAttach.bind( this ) );
+	}
 };
 
 /**
@@ -15013,30 +16052,35 @@ OO.ui.TextInputWidget.prototype.positionLabel = function () {
  *
  *     @example
  *     // Example: A ComboBoxWidget.
- *     var comboBox=new OO.ui.ComboBoxWidget( {
+ *     var comboBox = new OO.ui.ComboBoxWidget( {
  *         label: 'ComboBoxWidget',
  *         input: { value: 'Option One' },
  *         menu: {
  *             items: [
  *                 new OO.ui.MenuOptionWidget( {
  *                     data: 'Option 1',
- *                     label: 'Option One' } ),
+ *                     label: 'Option One'
+ *                 } ),
  *                 new OO.ui.MenuOptionWidget( {
  *                     data: 'Option 2',
- *                     label: 'Option Two' } ),
+ *                     label: 'Option Two'
+ *                 } ),
  *                 new OO.ui.MenuOptionWidget( {
  *                     data: 'Option 3',
- *                     label: 'Option Three'} ),
+ *                     label: 'Option Three'
+ *                 } ),
  *                 new OO.ui.MenuOptionWidget( {
  *                     data: 'Option 4',
- *                     label: 'Option Four' } ),
+ *                     label: 'Option Four'
+ *                 } ),
  *                 new OO.ui.MenuOptionWidget( {
  *                     data: 'Option 5',
- *                     label: 'Option Five' } )
+ *                     label: 'Option Five'
+ *                 } )
  *             ]
  *         }
  *     } );
- *     $('body').append(comboBox.$element);
+ *     $( 'body' ).append( comboBox.$element );
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Selects_and_Options#Menu_selects_and_options
  *
@@ -15169,8 +16213,8 @@ OO.ui.ComboBoxWidget.prototype.onKeyPress = function ( e ) {
 	if ( !this.isDisabled() && ( e.which === OO.ui.Keys.SPACE || e.which === OO.ui.Keys.ENTER ) ) {
 		this.menu.toggle();
 		this.input.$input[ 0 ].focus();
+		return false;
 	}
-	return false;
 };
 
 /**
@@ -15191,9 +16235,7 @@ OO.ui.ComboBoxWidget.prototype.onInputEnter = function () {
  * @param {OO.ui.OptionWidget} item Chosen item
  */
 OO.ui.ComboBoxWidget.prototype.onMenuChoose = function ( item ) {
-	if ( item ) {
-		this.input.setValue( item.getData() );
-	}
+	this.input.setValue( item.getData() );
 };
 
 /**
@@ -15242,14 +16284,14 @@ OO.ui.ComboBoxWidget.prototype.setDisabled = function ( disabled ) {
  *
  *     @example
  *     // Examples of LabelWidgets
- *     var label1 = new OO.ui.LabelWidget({
+ *     var label1 = new OO.ui.LabelWidget( {
  *         label: 'plaintext label'
- *     });
- *     var label2 = new OO.ui.LabelWidget({
- *         label: $( '<a href="default.html">jQuery label</a>'  )
- *     });
+ *     } );
+ *     var label2 = new OO.ui.LabelWidget( {
+ *         label: $( '<a href="default.html">jQuery label</a>' )
+ *     } );
  *     // Create a fieldset layout with fields for each example
- *     var fieldset = new OO.ui.FieldsetLayout( );
+ *     var fieldset = new OO.ui.FieldsetLayout();
  *     fieldset.addItems( [
  *         new OO.ui.FieldLayout( label1 ),
  *         new OO.ui.FieldLayout( label2 )
@@ -15499,7 +16541,7 @@ OO.ui.OptionWidget.prototype.setPressed = function ( state ) {
  *
  *     @example
  *     // Decorated options in a select widget
- *     var select=new OO.ui.SelectWidget( {
+ *     var select = new OO.ui.SelectWidget( {
  *         items: [
  *             new OO.ui.DecoratedOptionWidget( {
  *                 data: 'a',
@@ -15513,7 +16555,7 @@ OO.ui.OptionWidget.prototype.setPressed = function ( state ) {
  *             } )
  *         ]
  *     } );
- *     $('body').append(select.$element);
+ *     $( 'body' ).append( select.$element );
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Selects_and_Options
  *
@@ -15709,7 +16751,36 @@ OO.inheritClass( OO.ui.MenuOptionWidget, OO.ui.DecoratedOptionWidget );
 OO.ui.MenuOptionWidget.static.scrollIntoViewOnSelect = true;
 
 /**
- * Section to group one or more items in a OO.ui.MenuSelectWidget.
+ * MenuSectionOptionWidgets are used inside {@link OO.ui.MenuSelectWidget menu select widgets} to group one or more related
+ * {@link OO.ui.MenuOptionWidget menu options}. MenuSectionOptionWidgets cannot be highlighted or selected.
+ *
+ *     @example
+ *     var myDropdown = new OO.ui.DropdownWidget( {
+ *         menu: {
+ *             items: [
+ *                 new OO.ui.MenuSectionOptionWidget( {
+ *                     label: 'Dogs'
+ *                 } ),
+ *                 new OO.ui.MenuOptionWidget( {
+ *                     data: 'corgi',
+ *                     label: 'Welsh Corgi'
+ *                 } ),
+ *                 new OO.ui.MenuOptionWidget( {
+ *                     data: 'poodle',
+ *                     label: 'Standard Poodle'
+ *                 } ),
+ *                 new OO.ui.MenuSectionOptionWidget( {
+ *                     label: 'Cats'
+ *                 } ),
+ *                 new OO.ui.MenuOptionWidget( {
+ *                     data: 'lion',
+ *                     label: 'Lion'
+ *                 } )
+ *             ]
+ *         }
+ *     } );
+ *     $( 'body' ).append( myDropdown.$element );
+ *
  *
  * @class
  * @extends OO.ui.DecoratedOptionWidget
@@ -15736,7 +16807,11 @@ OO.ui.MenuSectionOptionWidget.static.selectable = false;
 OO.ui.MenuSectionOptionWidget.static.highlightable = false;
 
 /**
- * Items for an OO.ui.OutlineSelectWidget.
+ * OutlineOptionWidget is an item in an {@link OO.ui.OutlineSelectWidget OutlineSelectWidget}.
+ *
+ * Currently, this class is only used by {@link OO.ui.BookletLayout booklet layouts}, which contain
+ * {@link OO.ui.PageLayout page layouts}. See {@link OO.ui.BookletLayout BookletLayout}
+ * for an example.
  *
  * @class
  * @extends OO.ui.DecoratedOptionWidget
@@ -15744,7 +16819,7 @@ OO.ui.MenuSectionOptionWidget.static.highlightable = false;
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {number} [level] Indentation level
- * @cfg {boolean} [movable] Allow modification from outline controls
+ * @cfg {boolean} [movable] Allow modification from {@link OO.ui.OutlineControlsWidget outline controls}.
  */
 OO.ui.OutlineOptionWidget = function OoUiOutlineOptionWidget( config ) {
 	// Configuration initialization
@@ -15782,7 +16857,7 @@ OO.ui.OutlineOptionWidget.static.levels = 3;
 /**
  * Check if item is movable.
  *
- * Movability is used by outline controls.
+ * Movability is used by {@link OO.ui.OutlineControlsWidget outline controls}.
  *
  * @return {boolean} Item is movable
  */
@@ -15793,7 +16868,7 @@ OO.ui.OutlineOptionWidget.prototype.isMovable = function () {
 /**
  * Check if item is removable.
  *
- * Removability is used by outline controls.
+ * Removability is used by {@link OO.ui.OutlineControlsWidget outline controls}.
  *
  * @return {boolean} Item is removable
  */
@@ -15813,7 +16888,7 @@ OO.ui.OutlineOptionWidget.prototype.getLevel = function () {
 /**
  * Set movability.
  *
- * Movability is used by outline controls.
+ * Movability is used by {@link OO.ui.OutlineControlsWidget outline controls}.
  *
  * @param {boolean} movable Item is movable
  * @chainable
@@ -15827,7 +16902,7 @@ OO.ui.OutlineOptionWidget.prototype.setMovable = function ( movable ) {
 /**
  * Set removability.
  *
- * Removability is used by outline controls.
+ * Removability is used by {@link OO.ui.OutlineControlsWidget outline controls}.
  *
  * @param {boolean} movable Item is removable
  * @chainable
@@ -15869,15 +16944,15 @@ OO.ui.OutlineOptionWidget.prototype.setLevel = function ( level ) {
  *
  *     @example
  *     // A popup widget.
- *     var popup=new OO.ui.PopupWidget({
+ *     var popup = new OO.ui.PopupWidget( {
  *         $content: $( '<p>Hi there!</p>' ),
  *         padded: true,
  *         width: 300
  *     } );
  *
- *     $('body').append(popup.$element);
+ *     $( 'body' ).append( popup.$element );
  *     // To display the popup, toggle the visibility to 'true'.
- *     popup.toggle(true);
+ *     popup.toggle( true );
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Popups
  *
@@ -16234,18 +17309,16 @@ OO.ui.PopupWidget.prototype.updateDimensions = function ( transition ) {
  *
  *     @example
  *     // Examples of determinate and indeterminate progress bars.
- *     var progressBar1=new OO.ui.ProgressBarWidget( {
+ *     var progressBar1 = new OO.ui.ProgressBarWidget( {
  *         progress: 33
  *     } );
+ *     var progressBar2 = new OO.ui.ProgressBarWidget();
  *
- *     var progressBar2=new OO.ui.ProgressBarWidget( {
- *         progress: false
- *     } );
  *     // Create a FieldsetLayout to layout progress bars
  *     var fieldset = new OO.ui.FieldsetLayout;
  *     fieldset.addItems( [
- *        new OO.ui.FieldLayout( progressBar1, {label : 'Determinate', align : 'top'}),
- *        new OO.ui.FieldLayout( progressBar2, {label : 'Indeterminate', align : 'top'})
+ *        new OO.ui.FieldLayout( progressBar1, {label: 'Determinate', align: 'top'}),
+ *        new OO.ui.FieldLayout( progressBar2, {label: 'Indeterminate', align: 'top'})
  *     ] );
  *     $( 'body' ).append( fieldset.$element );
  *
@@ -16320,10 +17393,16 @@ OO.ui.ProgressBarWidget.prototype.setProgress = function ( progress ) {
 };
 
 /**
- * Search widget.
+ * SearchWidgets combine a {@link OO.ui.TextInputWidget text input field}, where users can type a search query,
+ * and a {@link OO.ui.TextInputMenuSelectWidget menu} of search results, which is displayed beneath the query
+ * field. Unlike {@link OO.ui.LookupElement lookup menus}, search result menus are always visible to the user.
+ * Users can choose an item from the menu or type a query into the text field to search for a matching result item.
+ * In general, search widgets are used inside a separate {@link OO.ui.Dialog dialog} window.
  *
- * Search widgets combine a query input, placed above, and a results selection widget, placed below.
- * Results are cleared and populated each time the query is changed.
+ * Each time the query is changed, the search result menu is cleared and repopulated. Please see
+ * the [OOjs UI demos][1] for an example.
+ *
+ * [1]: https://tools.wmflabs.org/oojs-ui/oojs-ui/demos/#dialogs-mediawiki-vector-ltr
  *
  * @class
  * @extends OO.ui.Widget
@@ -16380,12 +17459,22 @@ OO.inheritClass( OO.ui.SearchWidget, OO.ui.Widget );
 /* Events */
 
 /**
+ * A 'highlight' event is emitted when an item is highlighted. The highlight indicates which
+ * item will be selected. When a user mouses over a menu item, it is highlighted. If a search
+ * string is typed into the query field instead, the first menu item that matches the query
+ * will be highlighted.
+
  * @event highlight
+ * @deprecated Connect straight to getResults() events instead
  * @param {Object|null} item Item data or null if no item is highlighted
  */
 
 /**
+ * A 'select' event is emitted when an item is selected. A menu item is selected when it is clicked,
+ * or when a user types a search query, a menu result is highlighted, and the user presses enter.
+ *
  * @event select
+ * @deprecated Connect straight to getResults() events instead
  * @param {Object|null} item Item data or null if no item is selected
  */
 
@@ -16394,6 +17483,7 @@ OO.inheritClass( OO.ui.SearchWidget, OO.ui.Widget );
 /**
  * Handle query key down events.
  *
+ * @private
  * @param {jQuery.Event} e Key down event
  */
 OO.ui.SearchWidget.prototype.onQueryKeydown = function ( e ) {
@@ -16416,6 +17506,7 @@ OO.ui.SearchWidget.prototype.onQueryKeydown = function ( e ) {
  *
  * Clears existing results. Subclasses should repopulate items according to new query.
  *
+ * @private
  * @param {string} value New value
  */
 OO.ui.SearchWidget.prototype.onQueryChange = function () {
@@ -16428,6 +17519,7 @@ OO.ui.SearchWidget.prototype.onQueryChange = function () {
  *
  * Selects highlighted item.
  *
+ * @private
  * @param {string} value New value
  */
 OO.ui.SearchWidget.prototype.onQueryEnter = function () {
@@ -16438,6 +17530,8 @@ OO.ui.SearchWidget.prototype.onQueryEnter = function () {
 /**
  * Handle select widget highlight events.
  *
+ * @private
+ * @deprecated Connect straight to getResults() events instead
  * @param {OO.ui.OptionWidget} item Highlighted item
  * @fires highlight
  */
@@ -16448,6 +17542,8 @@ OO.ui.SearchWidget.prototype.onResultsHighlight = function ( item ) {
 /**
  * Handle select widget select events.
  *
+ * @private
+ * @deprecated Connect straight to getResults() events instead
  * @param {OO.ui.OptionWidget} item Selected item
  * @fires select
  */
@@ -16465,9 +17561,9 @@ OO.ui.SearchWidget.prototype.getQuery = function () {
 };
 
 /**
- * Get the results list.
+ * Get the search results menu.
  *
- * @return {OO.ui.SelectWidget} Select list
+ * @return {OO.ui.SelectWidget} Menu of search results
  */
 OO.ui.SearchWidget.prototype.getResults = function () {
 	return this.results;
@@ -16484,7 +17580,7 @@ OO.ui.SearchWidget.prototype.getResults = function () {
  *
  *     @example
  *     // Example of a select widget with three options
- *     var select=new OO.ui.SelectWidget( {
+ *     var select = new OO.ui.SelectWidget( {
  *         items: [
  *             new OO.ui.OptionWidget( {
  *                 data: 'a',
@@ -16497,10 +17593,10 @@ OO.ui.SearchWidget.prototype.getResults = function () {
  *             new OO.ui.OptionWidget( {
  *                 data: 'c',
  *                 label: 'Option Three',
- *             } ),
+ *             } )
  *         ]
  *     } );
- *     $('body').append(select.$element);
+ *     $( 'body' ).append( select.$element );
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Selects_and_Options
  *
@@ -16586,7 +17682,7 @@ OO.mixinClass( OO.ui.SelectWidget, OO.ui.GroupWidget );
 /**
  * @event choose
  * A `choose` event is emitted when an item is chosen with the #chooseItem method.
- * @param {OO.ui.OptionWidget|null} item Chosen item
+ * @param {OO.ui.OptionWidget} item Chosen item
  */
 
 /**
@@ -17103,25 +18199,25 @@ OO.ui.SelectWidget.prototype.clearItems = function () {
  *     var option1 = new OO.ui.ButtonOptionWidget( {
  *         data: 1,
  *         label: 'Option 1',
- *         title:'Button option 1'
+ *         title: 'Button option 1'
  *     } );
  *
  *     var option2 = new OO.ui.ButtonOptionWidget( {
  *         data: 2,
  *         label: 'Option 2',
- *         title:'Button option 2'
+ *         title: 'Button option 2'
  *     } );
  *
  *     var option3 = new OO.ui.ButtonOptionWidget( {
  *         data: 3,
  *         label: 'Option 3',
- *         title:'Button option 3'
+ *         title: 'Button option 3'
  *     } );
  *
  *     var buttonSelect=new OO.ui.ButtonSelectWidget( {
- *         items: [option1, option2, option3]
+ *         items: [ option1, option2, option3 ]
  *     } );
- *     $('body').append(buttonSelect.$element);
+ *     $( 'body' ).append( buttonSelect.$element );
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Selects_and_Options
  *
@@ -17173,13 +18269,13 @@ OO.mixinClass( OO.ui.ButtonSelectWidget, OO.ui.TabIndexedElement );
  *     } );
  *
  *     var radioSelect=new OO.ui.RadioSelectWidget( {
- *         items: [option1, option2]
+ *         items: [ option1, option2 ]
  *      } );
  *
  *     // Select 'option 1' using the RadioSelectWidget's selectItem() method.
  *     radioSelect.selectItem( option1 );
  *
- *     $('body').append(radioSelect.$element);
+ *     $( 'body' ).append( radioSelect.$element );
  *
  * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Selects_and_Options
 
@@ -17215,9 +18311,10 @@ OO.mixinClass( OO.ui.RadioSelectWidget, OO.ui.TabIndexedElement );
 
 /**
  * MenuSelectWidget is a {@link OO.ui.SelectWidget select widget} that contains options and
- * is used together with OO.ui.MenuOptionWidget. See {@link OO.ui.DropdownWidget DropdownWidget} and
- * {@link OO.ui.ComboBoxWidget ComboBoxWidget} for examples of interfaces that contain menus.
- * MenuSelectWidgets themselves are not designed to be instantiated directly, rather subclassed
+ * is used together with OO.ui.MenuOptionWidget. It is designed be used as part of another widget.
+ * See {@link OO.ui.DropdownWidget DropdownWidget}, {@link OO.ui.ComboBoxWidget ComboBoxWidget},
+ * and {@link OO.ui.LookupElement LookupElement} for examples of widgets that contain menus.
+ * MenuSelectWidgets themselves are not instantiated directly, rather subclassed
  * and customized to be opened, closed, and displayed as needed.
  *
  * By default, menus are clipped to the visible viewport and are not visible when a user presses the
@@ -17239,9 +18336,12 @@ OO.mixinClass( OO.ui.RadioSelectWidget, OO.ui.TabIndexedElement );
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {OO.ui.TextInputWidget} [input] Input to bind keyboard handlers to
- * @cfg {OO.ui.Widget} [widget] Widget to bind mouse handlers to
- * @cfg {boolean} [autoHide=true] Hide the menu when the mouse is pressed outside the menu
+ * @cfg {OO.ui.TextInputWidget} [input] Text input used to implement option highlighting for menu items that match
+ *  the text the user types. This config is used by {@link OO.ui.ComboBoxWidget ComboBoxWidget}
+ *  and {@link OO.ui.LookupElement LookupElement}
+ * @cfg {OO.ui.Widget} [widget] Widget associated with the menu’s active state. If the user clicks the mouse
+ *  anywhere on the page outside of this widget, the menu is hidden.
+ * @cfg {boolean} [autoHide=true] Hide the menu when the mouse is pressed outside the menu.
  */
 OO.ui.MenuSelectWidget = function OoUiMenuSelectWidget( config ) {
 	// Configuration initialization
@@ -17353,8 +18453,10 @@ OO.ui.MenuSelectWidget.prototype.unbindKeyDownListener = function () {
 /**
  * Choose an item.
  *
- * This will close the menu, unlike #selectItem which only changes selection.
+ * When a user chooses an item, the menu is closed.
  *
+ * Note that ‘choose’ should never be modified programmatically. A user can choose an option with the keyboard
+ * or mouse and it becomes selected. To select an item programmatically, use the #selectItem method.
  * @param {OO.ui.OptionWidget} item Item to choose
  * @chainable
  */
@@ -17463,10 +18565,10 @@ OO.ui.MenuSelectWidget.prototype.toggle = function ( visible ) {
 };
 
 /**
- * Menu for a text input widget.
- *
- * This menu is specially designed to be positioned beneath a text input widget. The menu's position
- * is automatically calculated and maintained when the menu is toggled or the window is resized.
+ * TextInputMenuSelectWidget is a menu that is specially designed to be positioned beneath
+ * a {@link OO.ui.TextInputWidget text input} field. The menu's position is automatically
+ * calculated and maintained when the menu is toggled or the window is resized.
+ * See OO.ui.ComboBoxWidget for an example of a widget that uses this class.
  *
  * @class
  * @extends OO.ui.MenuSelectWidget
@@ -17507,6 +18609,7 @@ OO.inheritClass( OO.ui.TextInputMenuSelectWidget, OO.ui.MenuSelectWidget );
 /**
  * Handle window resize event.
  *
+ * @private
  * @param {jQuery.Event} e Window resize event
  */
 OO.ui.TextInputMenuSelectWidget.prototype.onWindowResize = function () {
@@ -17546,6 +18649,7 @@ OO.ui.TextInputMenuSelectWidget.prototype.toggle = function ( visible ) {
 /**
  * Position the menu.
  *
+ * @private
  * @chainable
  */
 OO.ui.TextInputMenuSelectWidget.prototype.position = function () {
@@ -17565,9 +18669,10 @@ OO.ui.TextInputMenuSelectWidget.prototype.position = function () {
 };
 
 /**
- * Structured list of items.
+ * OutlineSelectWidget is a structured list that contains {@link OO.ui.OutlineOptionWidget outline options}
+ * A set of controls can be provided with an {@link OO.ui.OutlineControlsWidget outline controls} widget.
  *
- * Use with OO.ui.OutlineOptionWidget.
+ * ####Currently, this class is only used by {@link OO.ui.BookletLayout BookletLayouts}.####
  *
  * @class
  * @extends OO.ui.SelectWidget
@@ -17605,10 +18710,8 @@ OO.mixinClass( OO.ui.OutlineSelectWidget, OO.ui.TabIndexedElement );
  *
  *     @example
  *     // Toggle switches in the 'off' and 'on' position.
- *     var toggleSwitch1 = new OO.ui.ToggleSwitchWidget({
- *         value: false
- *      } );
- *     var toggleSwitch2 = new OO.ui.ToggleSwitchWidget({
+ *     var toggleSwitch1 = new OO.ui.ToggleSwitchWidget();
+ *     var toggleSwitch2 = new OO.ui.ToggleSwitchWidget( {
  *         value: true
  *     } );
  *
@@ -17617,8 +18720,8 @@ OO.mixinClass( OO.ui.OutlineSelectWidget, OO.ui.TabIndexedElement );
  *        label: 'Toggle switches'
  *     } );
  *     fieldset.addItems( [
- *         new OO.ui.FieldLayout( toggleSwitch1, {label : 'Off', align : 'top'}),
- *         new OO.ui.FieldLayout( toggleSwitch2, {label : 'On', align : 'top'})
+ *         new OO.ui.FieldLayout( toggleSwitch1, { label: 'Off', align: 'top' } ),
+ *         new OO.ui.FieldLayout( toggleSwitch2, { label: 'On', align: 'top' } )
  *     ] );
  *     $( 'body' ).append( fieldset.$element );
  *
@@ -17692,21 +18795,21 @@ OO.ui.ToggleSwitchWidget.prototype.onClick = function ( e ) {
 OO.ui.ToggleSwitchWidget.prototype.onKeyPress = function ( e ) {
 	if ( !this.isDisabled() && ( e.which === OO.ui.Keys.SPACE || e.which === OO.ui.Keys.ENTER ) ) {
 		this.setValue( !this.value );
+		return false;
 	}
-	return false;
 };
 
 }( OO ) );
 
 /*!
- * OOjs UI v0.9.0
+ * OOjs UI v0.9.7
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-03-04T23:55:34Z
+ * Date: 2015-04-03T21:01:28Z
  */
 /**
  * @class
@@ -17728,14 +18831,14 @@ OO.inheritClass( OO.ui.ApexTheme, OO.ui.Theme );
 OO.ui.theme = new OO.ui.ApexTheme();
 
 /*!
- * UnicodeJS v0.1.3
+ * UnicodeJS v0.1.4
  * https://www.mediawiki.org/wiki/UnicodeJS
  *
  * Copyright 2013-2015 UnicodeJS Team and other contributors.
  * Released under the MIT license
  * http://unicodejs.mit-license.org/
  *
- * Date: 2015-02-05T02:13:05Z
+ * Date: 2015-03-18T22:07:43Z
  */
 /*!
  * UnicodeJS namespace
@@ -18326,8 +19429,10 @@ unicodeJS.wordbreakproperties = {
 	};
 
 	/**
-	 * Evaluates if the specified position within some text is a word boundary.
-	 * @param {unicodeJS.TextString} string Text string
+	 * Evaluates whether a position within some text is a word boundary.
+	 *
+	 * The text object elements may be code units, codepoints or clusters.
+	 * @param {Object} TextString-like object with read( pos ) returning string|null
 	 * @param {number} pos Character position
 	 * @return {boolean} Is the position a word boundary
 	 */
@@ -18337,6 +19442,14 @@ unicodeJS.wordbreakproperties = {
 		// WB2: ÷ eot
 		if ( string.read( pos - 1 ) === null || string.read( pos ) === null ) {
 			return true;
+		}
+
+		// Do not break inside surrogate pair
+		if (
+			string.read( pos - 1 ).match( /[\uD800-\uDBFF]/ ) &&
+			string.read( pos ).match( /[\uDC00-\uDFFF]/ )
+		) {
+			return false;
 		}
 
 		// get some context
@@ -18700,13 +19813,6 @@ ve.getObjectValues = OO.getObjectValues;
 
 /**
  * @method
- * @until ES5: Object#keys
- * @inheritdoc Object#keys
- */
-ve.getObjectKeys = Object.keys;
-
-/**
- * @method
  * @inheritdoc OO#compare
  */
 ve.compare = OO.compare;
@@ -18748,6 +19854,30 @@ ve.isEqualDomElements = function ( domElements1, domElements2 ) {
 		}
 	}
 	return true;
+};
+
+/**
+ * Compare two class lists, either whitespace separated strings or arrays
+ *
+ * Class lists are equivalent if they contain the same members,
+ * excluding duplicates and ignoring order.
+ *
+ * @param {string[]|string} classList1 First class list
+ * @param {string[]|string} classList2 Second class list
+ * @return {boolean} Class lists are equivalent
+ */
+ve.compareClassLists = function ( classList1, classList2 ) {
+	var removeEmpty = function ( c ) {
+		return c !== '';
+	};
+
+	classList1 = Array.isArray( classList1 ) ? classList1 : classList1.trim().split( /\s+/ );
+	classList2 = Array.isArray( classList2 ) ? classList2 : classList2.trim().split( /\s+/ );
+
+	classList1 = classList1.filter( removeEmpty );
+	classList2 = classList2.filter( removeEmpty );
+
+	return ve.compare( OO.unique( classList1 ).sort(), OO.unique( classList2 ).sort() );
 };
 
 /**
@@ -19306,7 +20436,7 @@ ve.convertDomElements = function ( value ) {
  */
 ve.isBlockElement = function ( element ) {
 	var elementName = typeof element === 'string' ? element : element.nodeName;
-	return ve.indexOf( elementName.toLowerCase(), ve.elementTypes.block ) !== -1;
+	return ve.elementTypes.block.indexOf( elementName.toLowerCase() ) !== -1;
 };
 
 /**
@@ -19317,7 +20447,7 @@ ve.isBlockElement = function ( element ) {
  */
 ve.isVoidElement = function ( element ) {
 	var elementName = typeof element === 'string' ? element : element.nodeName;
-	return ve.indexOf( elementName.toLowerCase(), ve.elementTypes.void ) !== -1;
+	return ve.elementTypes.void.indexOf( elementName.toLowerCase() ) !== -1;
 };
 
 ve.elementTypes = {
@@ -19442,6 +20572,40 @@ ve.resolveUrl = function ( url, base ) {
 };
 
 /**
+ * Check if a string is a valid URI component.
+ *
+ * A URI component is considered invalid if decodeURIComponent() throws an exception.
+ *
+ * @param {string} s String to test
+ * @return {boolean} decodeURIComponent( s ) did not throw an exception
+ * @see #safeDecodeURIComponent
+ */
+ve.isUriComponentValid = function ( s ) {
+	try {
+		decodeURIComponent( s );
+	} catch ( e ) {
+		return false;
+	}
+	return true;
+};
+
+/**
+ * Safe version of decodeURIComponent() that doesn't throw exceptions.
+ *
+ * If the native decodeURIComponent() call threw an exception, the original string
+ * will be returned
+ * @param {string} s String to decode
+ * @return {string} Decoded string, or same string if decoding failed
+ * @see #isUriComponentValid
+ */
+ve.safeDecodeURIComponent = function ( s ) {
+	try {
+		s = decodeURIComponent( s );
+	} catch ( e ) {}
+	return s;
+};
+
+/**
  * Get the actual inner HTML of a DOM node.
  *
  * In most browsers, .innerHTML is broken and eats newlines in `<pre>` elements, see
@@ -19548,7 +20712,9 @@ ve.transformStyleAttributes = function ( html, unmask ) {
 			'bgcolor', // IE normalizes '#FFDEAD' to '#ffdead'
 			'color', // IE normalizes 'Red' to 'red'
 			'width', // IE normalizes '240px' to '240'
-			'height' // Same as width
+			'height', // Same as width
+			'rowspan', // IE and Firefox normalize rowspan="02" to rowspan="2"
+			'colspan' // Same as rowspan
 		];
 
 	// Parse the HTML into an XML DOM
@@ -20068,11 +21234,7 @@ OO.mixinClass( ve.init.Platform, OO.EventEmitter );
  * @returns {string} Client platform string
  */
 ve.init.Platform.static.getSystemPlatform = function () {
-	var platforms = ['win', 'mac', 'linux', 'sunos', 'solaris', 'iphone'],
-		match = new RegExp( '(' + platforms.join( '|' ) + ')' ).exec( window.navigator.platform.toLowerCase() );
-	if ( match ) {
-		return match[1];
-	}
+	return $.client.profile().platform;
 };
 
 /**
@@ -20087,7 +21249,7 @@ ve.init.Platform.static.getSystemPlatform = function () {
  * @returns {boolean} Whether we are in IE
  */
 ve.init.Platform.static.isInternetExplorer = function () {
-	return navigator.userAgent.indexOf( 'Trident' ) !== -1 || navigator.userAgent.indexOf( 'Edge' ) !== -1;
+	return $.client.profile().name === 'msie';
 };
 
 /* Methods */
@@ -20264,6 +21426,31 @@ ve.init.Platform.prototype.getInitializedPromise = function () {
 	return this.initialized;
 };
 
+/**
+ * Fetch the special character list object
+ *
+ * Returns a promise which resolves with the character list
+ *
+ * @returns {jQuery.Promise}
+ */
+ve.init.Platform.prototype.fetchSpecialCharList = function () {
+	var charsObj = {};
+
+	try {
+		charsObj = JSON.parse(
+			ve.msg( 'visualeditor-specialcharinspector-characterlist-insert' )
+		);
+	} catch ( err ) {
+		// There was no character list found, or the character list message is
+		// invalid json string. Force a fallback to the minimal character list
+		ve.log( 've.init.Platform: Could not parse the Special Character list.');
+		ve.log( err.message );
+	}
+
+	// This implementation always resolves instantly
+	return $.Deferred().resolve( charsObj ).promise();
+};
+
 /*!
  * VisualEditor Initialization Target class.
  *
@@ -20416,7 +21603,7 @@ ve.init.Target.static.importRules = {
 		blacklist: [
 			// Annotations
 			// TODO: allow spans
-			'textStyle/span',
+			'textStyle/span', 'textStyle/font',
 			// Nodes
 			'alienInline', 'alienBlock', 'comment'
 		]
@@ -20599,8 +21786,8 @@ ve.init.Target.prototype.attachToolbar = function () {
  * @class
  *
  * @constructor
- * @param {number} from Starting offset
- * @param {number} [to=from] Ending offset
+ * @param {number} from Anchor offset
+ * @param {number} [to=from] Focus offset
  */
 ve.Range = function VeRange( from, to ) {
 	this.from = from || 0;
@@ -20911,7 +22098,7 @@ ve.Node.prototype.getParentNodeTypes = function () {
  */
 ve.Node.prototype.isAllowedChildNodeType = function ( type ) {
 	var childTypes = this.getChildNodeTypes();
-	return childTypes === null || ve.indexOf( type, childTypes ) !== -1;
+	return childTypes === null || childTypes.indexOf( type ) !== -1;
 };
 
 /**
@@ -20922,7 +22109,7 @@ ve.Node.prototype.isAllowedChildNodeType = function ( type ) {
  */
 ve.Node.prototype.isAllowedParentNodeType = function ( type ) {
 	var parentTypes = this.getParentNodeTypes();
-	return parentTypes === null || ve.indexOf( type, parentTypes ) !== -1;
+	return parentTypes === null || parentTypes.indexOf( type ) !== -1;
 };
 
 /**
@@ -21035,6 +22222,17 @@ ve.Node.prototype.hasSignificantWhitespace = function () {
  */
 ve.Node.prototype.handlesOwnChildren = function () {
 	throw new Error( 've.Node.handlesOwnChildren must be overridden in subclass' );
+};
+
+/**
+ * Check if the node's children should be ignored.
+ *
+ * @method
+ * @abstract
+ * @returns {boolean} Node's children should be ignored
+ */
+ve.Node.prototype.shouldIgnoreChildren = function () {
+	throw new Error( 've.Node.ignoreChildren must be overridden in subclass' );
 };
 
 /**
@@ -21242,6 +22440,31 @@ ve.BranchNode = function VeBranchNode( children ) {
 	this.children = Array.isArray( children ) ? children : [];
 };
 
+/* Setup */
+
+OO.initClass( ve.BranchNode );
+
+/* Static Methods */
+
+/**
+ * Traverse a branch node depth-first.
+ *
+ * @param {ve.BranchNode} node Branch node to traverse
+ * @param {Function} callback Callback to execute for each traversed node
+ * @param {ve.Node} callback.node Node being traversed
+ */
+ve.BranchNode.static.traverse = function ( node, callback ) {
+	var i, len,
+		children = node.getChildren();
+
+	for ( i = 0, len = children.length; i < len; i++ ) {
+		callback.call( this, children[i] );
+		if ( children[i] instanceof ve.ce.BranchNode ) {
+			this.traverse( children[i], callback );
+		}
+	}
+};
+
 /* Methods */
 
 /**
@@ -21272,7 +22495,7 @@ ve.BranchNode.prototype.getChildren = function () {
  * @returns {number} Index of child node or -1 if node was not found
  */
 ve.BranchNode.prototype.indexOf = function ( node ) {
-	return ve.indexOf( node, this.children );
+	return this.children.indexOf( node );
 };
 
 /**
@@ -21537,7 +22760,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		// Is there an unwrapped node right after this node?
 		isNextUnwrapped = nextNode ? !nextNode.isWrapped() : false;
 		// Is this node an empty non-content branch node?
-		isEmptyBranch = ( node.getLength() === 0 || node.handlesOwnChildren() ) &&
+		isEmptyBranch = ( node.getLength() === 0 || node.shouldIgnoreChildren() ) &&
 			!node.isContent() && !node.canContainContent();
 		// Is the start between prevNode's closing and node or between the parent's opening and node?
 		startBetween = ( isWrapped ? start === left - 1 : start === left ) && !isPrevUnwrapped;
@@ -21598,7 +22821,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			if ( ( mode === 'leaves' ||
 					( mode === 'covered' && endInside ) ||
 					( mode === 'branches' && node.canHaveChildrenNotContent() ) ) &&
-				node.children && node.children.length && !node.handlesOwnChildren()
+				node.children && node.children.length && !node.shouldIgnoreChildren()
 			) {
 				// Descend into node
 				currentFrame = {
@@ -22596,11 +23819,14 @@ OO.ui.msg = ve.init.platform.getMessage.bind( ve.init.platform );
  *
  * @constructor
  * @param {string} [surfaceType] Type of surface to use, 'desktop' or 'mobile'
+ * @param {Object} [config] Configuration options.  Will override default config
  * @throws {Error} Unknown surfaceType
  */
-ve.init.sa.Target = function VeInitSaTarget( surfaceType ) {
+ve.init.sa.Target = function VeInitSaTarget( surfaceType, config ) {
+	config = $.extend( { shadow: true, actions: true, floatable: true }, config );
+
 	// Parent constructor
-	ve.init.Target.call( this, { shadow: true, actions: true, floatable: true } );
+	ve.init.Target.call( this, config );
 
 	this.surfaceType = surfaceType || this.constructor.static.defaultSurfaceType;
 	this.actions = null;
@@ -22629,6 +23855,15 @@ OO.inheritClass( ve.init.sa.Target, ve.init.Target );
 /* Static properties */
 
 ve.init.sa.Target.static.defaultSurfaceType = 'desktop';
+
+ve.init.sa.Target.static.actionGroups = [
+	{
+		type: 'list',
+		icon: 'menu',
+		title: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
+		include: [ 'findAndReplace', 'commandHelp' ]
+	}
+];
 
 /* Methods */
 
@@ -22674,14 +23909,7 @@ ve.init.sa.Target.prototype.setupToolbar = function ( surface ) {
 	}
 	this.getToolbar().initialize();
 
-	this.actions.setup( [
-		{
-			type: 'list',
-			icon: 'menu',
-			title: ve.msg( 'visualeditor-pagemenu-tooltip' ),
-			include: [ 'findAndReplace', 'commandHelp' ]
-		}
-	], this.getSurface() );
+	this.actions.setup( this.constructor.static.actionGroups, this.getSurface() );
 
 	// HACK: On mobile place the context inside toolbar.$bar which floats
 	if ( this.surfaceType === 'mobile' ) {

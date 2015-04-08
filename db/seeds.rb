@@ -7,60 +7,50 @@ when 'development'
 
   # Create Users
   # These Users should match Personas, by convention
-  admin = User.where(email: 'admin@example.com').first_or_create(
-    first_name: 'Admin',
-    last_name:  'User',
-    password:   'password',
-    username:   'admin',
-    site_admin: true
-  )
-  if admin.new_record?
-    admin.affiliations.first_or_create(name: "PLOS")
-    admin.roles.create!(journal_id: plos_journal.id, name: "Role admin", kind: Role::ADMIN)
+  admin = User.where(email: 'admin@example.com').first_or_create do |user|
+    user.first_name = 'Admin'
+    user.last_name = 'User'
+    user.password = 'password'
+    user.username = 'admin'
+    user.site_admin = true
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.user_roles.first_or_initialize(role: plos_journal.roles.find_by(kind: Role::ADMIN))
   end
 
-  editor = User.where(email: 'editor@example.com').first_or_create(
-    first_name: 'Editor',
-    last_name:  'User',
-    password:   'password',
-    username:   'editor'
-  )
-  if admin.new_record?
-    editor.affiliations.first_or_create(name: "PLOS")
-    editor.roles.create!(journal_id: plos_journal.id, name: "Role editor", kind: Role::EDITOR)
+  User.where(email: 'editor@example.com').first_or_create do |user|
+    user.first_name = 'Editor'
+    user.last_name = 'User'
+    user.password = 'password'
+    user.username = 'editor'
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::EDITOR))
   end
 
-  reviewer = User.where(email: 'reviewer@example.com').first_or_create(
-    first_name: 'Reviewer',
-    last_name:  'User',
-    password:   'password',
-    username:   'reviewer'
-  )
-  if reviewer.new_record?
-    reviewer.affiliations.first_or_create(name: "PLOS")
-    reviewer.roles.create!(journal_id: plos_journal.id, name: "Role reviewer", kind: Role::REVIEWER)
+  User.where(email: 'reviewer@example.com').first_or_create do |user|
+    user.first_name = 'Reviewer'
+    user.last_name = 'User'
+    user.password = 'password'
+    user.username = 'reviewer'
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::REVIEWER))
   end
 
-  flow_manager = User.where(email: 'flow_manager@example.com').first_or_create(
-    first_name: 'FlowManager',
-    last_name:  'User',
-    password:   'password',
-    username:   'flow_manager'
-  )
-  if flow_manager.new_record?
-    flow_manager.affiliations.first_or_create(name: "PLOS")
-    flow_manager.roles.create!(journal_id: plos_journal.id, name: "Role flow_manager", kind: Role::FLOW_MANAGER)
+  User.where(email: 'flow_manager@example.com').first_or_create do |user|
+    user.first_name = 'FlowManager'
+    user.last_name = 'User'
+    user.password = 'password'
+    user.username = 'flow_manager'
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.roles.new(journal_id: plos_journal.id, name: "Role flow_manager", kind: Role::FLOW_MANAGER)
   end
 
-  author = User.where(email: 'author@example.com').first_or_create(
-    first_name: 'Author',
-    last_name:  'User',
-    password:   'password',
-    username:   'author'
-  )
-  if author.new_record?
-    author.affiliations.first_or_create(name: "PLOS")
-    author.roles.create!(journal_id: plos_journal.id, name: "Role author")
+  User.where(email: 'author@example.com').first_or_create do |user|
+    user.first_name = 'Author'
+    user.last_name = 'User'
+    user.password = 'password'
+    user.username = 'author'
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.roles.new(journal_id: plos_journal.id, name: "Role author")
   end
 
   # Create Paper for Admin
@@ -99,15 +89,13 @@ when 'development'
     last_name = name[1]
 
     email = "#{first_name.downcase}.#{last_name.downcase}@example.com"
-    u = User.where(email: email).first_or_create(
-      first_name: first_name,
-      last_name:  last_name,
-      username:   "#{first_name.downcase}",
-      password:   "password"
-    )
-    if u.new_record?
-      u.roles.create!(journal_id: plos_journal.id, name: "Role #{i}")
-      u.affiliations.create!(name: "Affiliation #{i}")
+    User.where(email: email).first_or_create do |user|
+      user.first_name = first_name
+      user.last_name = last_name
+      user.username = "#{first_name.downcase}"
+      user.password = "password"
+      user.roles.new(journal_id: plos_journal.id, name: "Role #{i}")
+      user.affiliations.new(name: "Affiliation #{i}")
     end
   }
 

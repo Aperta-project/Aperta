@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
 
   protected
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up).concat %i(first_name last_name email username)
   end

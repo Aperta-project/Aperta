@@ -12,101 +12,72 @@ feature "Event streaming", js: true, selenium: true do
     sign_in_page.sign_in author
   end
 
-  describe "manuscript manager" do
+  context "on the workflow page" do
     before do
-      edit_paper = EditPaperPage.visit paper
-      edit_paper.visit_task_manager
+      click_link(paper.title)
+      edit_paper = EditPaperPage.new
+      click_link("Workflow")
     end
 
     let(:submission_phase) { paper.phases.find_by_name("Submission Data") }
 
-    scenario "creating a new task" do
+    scenario "managing tasks" do
+      # create
       submission_phase.tasks.create title: "Wicked Awesome Card", type: "Task", body: text_body, role: "admin"
       expect(page).to have_content "Wicked Awesome Card"
-    end
 
-    scenario "deleting a task" do
+      # destroy
       deleted_task = submission_phase.tasks.first.destroy!
       expect(page).to_not have_content deleted_task.title
     end
   end
 
-  describe "tasks" do
+  context "on the edit paper page" do
+    before do
+      click_link(paper.title)
+    end
+
     describe "updating completion status" do
       scenario "on the overlay" do
-        edit_paper = EditPaperPage.visit paper
+        # completion of tasks
+        edit_paper = EditPaperPage.new
         edit_paper.view_card('Upload Manuscript')
         expect(page).to have_css("#task_completed:not(:checked)")
         upload_task.completed = true
         upload_task.save
         expect(page).to have_css("#task_completed:checked")
-      end
-
-      scenario "on the edit paper page" do
-        EditPaperPage.visit paper
-        expect(page).to have_no_selector(".completed")
-        upload_task.completed = true
-        upload_task.save
         expect(page).to have_css(".card--completed", count: 1)
+
+        # commenting on a task
+        upload_task.comments.create(body: "This is my comment", commenter_id: create(:user).id)
+        CommentLookManager.sync_task(upload_task)
+        within '.message-comments' do
+          expect(page).to have_css('.message-comment.unread', text: "This is my comment")
+        end
       end
     end
   end
 
-  describe "comments" do
-    scenario "adding new comment" do
-      edit_paper = EditPaperPage.visit paper
-      edit_paper.view_card('Upload Manuscript')
-      upload_task.comments.create(body: "This is my comment", commenter_id: create(:user).id)
-      CommentLookManager.sync_task(upload_task)
-      within '.message-comments' do
-        expect(page).to have_css('.message-comment.unread', text: "This is my comment")
-      end
-    end
-  end
+  context "on the dashboard page" do
+    let!(:collaborator_paper) { FactoryGirl.create(:paper, journal: journal) }
+    let!(:participant_paper) { FactoryGirl.create(:paper, journal: journal) }
 
-  describe "paper roles" do
+    scenario "access to papers" do
+      # added as a collaborator
+      collaborator_paper.paper_roles.collaborators.create(user: author)
+      expect(page).to have_text(collaborator_paper.title)
 
-    let(:another_paper) { FactoryGirl.create(:paper, journal: journal) }
+      # removed as a collaborator
+      collaborator_paper.paper_roles.collaborators.where(user: author).destroy_all
+      expect(page).to_not have_text(collaborator_paper.title)
 
-    before do
-      DashboardPage.visit
-      another_paper.paper_roles.collaborators.create(user: author)
-    end
+      # added as a participant
+      participant_paper.paper_roles.participants.create(user: author)
+      expect(page).to have_text(participant_paper.title)
 
-    scenario "adding a collaborator" do
-      expect(page).to have_text(another_paper.title)
-    end
-
-    scenario "removing a collaborator" do
-      another_paper.paper_roles.collaborators.where(user: author).destroy_all
-      expect(page).to_not have_text(another_paper.title)
-    end
-  end
-
-  describe "participations" do
-
-    let(:another_paper) { FactoryGirl.create(:paper, journal: journal) }
-    let(:task) { FactoryGirl.create(:task, paper: another_paper) }
-
-    before do
-      DashboardPage.visit
-      another_paper.paper_roles.participants.create(user: author)
-    end
-
-    context "when not already associated to the paper" do
-
-      scenario "added as a participant" do
-        task.participants << author
-        expect(page).to have_text(another_paper.title)
-      end
-    end
-
-    context "when associated as a participant" do
-
-      scenario "removes last participation" do
-        another_paper.paper_roles.participants.destroy_all
-        expect(page).to_not have_text(another_paper.title)
-      end
+      # removed as a participant
+      participant_paper.paper_roles.participants.destroy_all
+      expect(page).to_not have_text(participant_paper.title)
     end
   end
 end

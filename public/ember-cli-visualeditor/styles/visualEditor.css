@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.9.0
+ * OOjs UI v0.9.7
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-03-04T23:55:44Z
+ * Date: 2015-04-03T21:01:34Z
  */
 .oo-ui-progressBarWidget-slide-frames from {
 	margin-left: -40%;
@@ -70,6 +70,7 @@
 	display: inline-block;
 	vertical-align: middle;
 	font: inherit;
+	white-space: nowrap;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	   -moz-user-select: none;
@@ -115,10 +116,10 @@
 .oo-ui-buttonElement > .oo-ui-buttonElement-button {
 	color: #333333;
 }
-.oo-ui-buttonElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
+.oo-ui-buttonElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
 	margin-left: 0;
 }
-.oo-ui-buttonElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
+.oo-ui-buttonElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
 	width: 0.9375em;
 	height: 0.9375em;
 	margin: 0.46875em;
@@ -560,35 +561,35 @@
 	top: 0;
 	right: 0;
 }
-.oo-ui-menuLayout-after .oo-ui-menuLayout-menu {
-	top: 0;
-	right: 0;
-	bottom: 0;
-}
-.oo-ui-menuLayout-bottom .oo-ui-menuLayout-menu {
-	right: 0;
-	bottom: 0;
-	left: 0;
-}
-.oo-ui-menuLayout-before .oo-ui-menuLayout-menu {
-	bottom: 0;
-	left: 0;
-	top: 0;
-}
 .oo-ui-menuLayout-top .oo-ui-menuLayout-content {
 	right: 0 !important;
 	bottom: 0 !important;
 	left: 0 !important;
+}
+.oo-ui-menuLayout-after .oo-ui-menuLayout-menu {
+	top: 0;
+	right: 0;
+	bottom: 0;
 }
 .oo-ui-menuLayout-after .oo-ui-menuLayout-content {
 	bottom: 0 !important;
 	left: 0 !important;
 	top: 0 !important;
 }
+.oo-ui-menuLayout-bottom .oo-ui-menuLayout-menu {
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
 .oo-ui-menuLayout-bottom .oo-ui-menuLayout-content {
 	left: 0 !important;
 	top: 0 !important;
 	right: 0 !important;
+}
+.oo-ui-menuLayout-before .oo-ui-menuLayout-menu {
+	bottom: 0;
+	left: 0;
+	top: 0;
 }
 .oo-ui-menuLayout-before .oo-ui-menuLayout-content {
 	top: 0 !important;
@@ -610,6 +611,10 @@
 }
 .oo-ui-panelLayout-padded {
 	padding: 1.25em;
+}
+.oo-ui-panelLayout-framed {
+	border-radius: 0.5em;
+	box-shadow: 0 0.25em 1em rgba(0, 0, 0, 0.25);
 }
 .oo-ui-stackLayout-continuous > .oo-ui-panelLayout {
 	display: block;
@@ -666,6 +671,9 @@
 .oo-ui-toolGroup .oo-ui-tool-link .oo-ui-iconElement-icon {
 	background-position: center center;
 	background-repeat: no-repeat;
+}
+.oo-ui-toolbar-narrow .oo-ui-toolGroup + .oo-ui-toolGroup {
+	margin-left: 0;
 }
 .oo-ui-toolGroup.oo-ui-widget-enabled:hover {
 	border-color: rgba(0, 0, 0, 0.1);
@@ -805,36 +813,60 @@
 .oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-accel:not(:empty) {
 	padding-left: 3em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup {
+	min-width: 1.5em;
+}
 .oo-ui-popupToolGroup.oo-ui-iconElement {
 	min-width: 2.5em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-iconElement {
+	min-width: 2em;
+}
 .oo-ui-popupToolGroup.oo-ui-indicatorElement.oo-ui-iconElement {
 	min-width: 3.5em;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-indicatorElement.oo-ui-iconElement {
+	min-width: 3em;
 }
 .oo-ui-popupToolGroup.oo-ui-labelElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
 	line-height: 2.6em;
 	font-size: 0.8em;
 	margin: 0 1em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-labelElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
+	margin: 0 0.5em;
+}
 .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-iconElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
 	margin-left: 3em;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-iconElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
+	margin-left: 2.5em;
 }
 .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-indicatorElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
 	margin-right: 2.25em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-indicatorElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
+	margin-right: 1.75em;
+}
 .oo-ui-popupToolGroup-handle .oo-ui-indicatorElement-indicator {
-	top: 0;
-	right: 0;
 	width: 0.75em;
 	height: 0.75em;
 	margin: 0.625em;
+	top: 0;
+	right: 0;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup-handle .oo-ui-indicatorElement-indicator {
+	right: -0.25em;
 }
 .oo-ui-popupToolGroup-handle .oo-ui-iconElement-icon {
-	top: 0;
-	left: 0.25em;
 	width: 1.5em;
 	height: 1.5em;
 	margin: 0.25em;
+	top: 0;
+	left: 0.25em;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup-handle .oo-ui-iconElement-icon {
+	left: 0;
 }
 .oo-ui-popupToolGroup-header {
 	line-height: 2.6em;
@@ -959,6 +991,9 @@
 .oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
 	min-width: 8em;
 }
+.oo-ui-toolbar-narrow .oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
+	min-width: 6.5em;
+}
 .oo-ui-menuToolGroup .oo-ui-toolGroup-tools {
 	padding: 0.25em 0 0.25em 0;
 }
@@ -1005,6 +1040,13 @@
 }
 .oo-ui-toolbar-tools {
 	display: inline;
+	white-space: nowrap;
+}
+.oo-ui-toolbar-narrow .oo-ui-toolbar-tools {
+	white-space: normal;
+}
+.oo-ui-toolbar-tools .oo-ui-tool {
+	white-space: normal;
 }
 .oo-ui-toolbar-tools,
 .oo-ui-toolbar-actions,
@@ -1097,21 +1139,22 @@
 	background-repeat: no-repeat;
 	background-position: center center;
 }
-.oo-ui-decoratedOptionWidget .oo-ui-iconElement-icon,
-.oo-ui-decoratedOptionWidget .oo-ui-indicatorElement-indicator {
+.oo-ui-decoratedOptionWidget.oo-ui-iconElement .oo-ui-iconElement-icon,
+.oo-ui-decoratedOptionWidget.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
 	top: 0;
 	height: 100%;
 }
-.oo-ui-decoratedOptionWidget .oo-ui-indicatorElement-indicator {
-	width: 0.9375em;
-}
-.oo-ui-decoratedOptionWidget .oo-ui-iconElement-icon {
+.oo-ui-decoratedOptionWidget.oo-ui-iconElement .oo-ui-iconElement-icon {
 	width: 1.875em;
 	left: 0.5em;
 }
-.oo-ui-decoratedOptionWidget .oo-ui-indicatorElement-indicator {
+.oo-ui-decoratedOptionWidget.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
 	width: 0.9375em;
 	right: 0.5em;
+}
+.oo-ui-decoratedOptionWidget.oo-ui-widget-disabled .oo-ui-iconElement-icon,
+.oo-ui-decoratedOptionWidget.oo-ui-widget-disabled .oo-ui-indicatorElement-indicator {
+	opacity: 0.2;
 }
 .oo-ui-buttonSelectWidget {
 	display: inline-block;
@@ -1540,8 +1583,8 @@
 .oo-ui-dropdownInputWidget select {
 	height: 2.5em;
 	padding: 0.5em;
-	font-size: 1em;
-	font-family: sans-serif;
+	font-size: inherit;
+	font-family: inherit;
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 0.25em;
 }
@@ -1617,8 +1660,8 @@
 .oo-ui-textInputWidget input,
 .oo-ui-textInputWidget textarea {
 	padding: 0.5em;
-	font-size: 1em;
-	font-family: sans-serif;
+	font-size: inherit;
+	font-family: inherit;
 	background-color: #ffffff;
 	color: black;
 	border: 1px solid #cccccc;
@@ -1966,7 +2009,9 @@
 	line-height: 0;
 }
 .oo-ui-window {
-	line-height: 1em;
+	background-color: transparent;
+	background-image: none;
+	font-size: 0.8em;
 }
 .oo-ui-window-frame {
 	-webkit-box-sizing: border-box;
@@ -1994,13 +2039,6 @@
 	top: 0;
 	/* @noflip */
 	left: 0;
-}
-.oo-ui-window,
-.oo-ui-window-isolated {
-	background-color: transparent;
-	background-image: none;
-	font-family: sans-serif;
-	font-size: 0.8em;
 }
 .oo-ui-dialog-content > .oo-ui-window-head,
 .oo-ui-dialog-content > .oo-ui-window-body,
@@ -2362,6 +2400,9 @@
 	box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
 }
 
+.oo-ui-icon-circle {
+	background-image: /* @embed */ url(themes/apex/images/icons/circle.svg);
+}
 .oo-ui-icon-add {
 	background-image: /* @embed */ url(themes/apex/images/icons/add.svg);
 }
@@ -2389,20 +2430,17 @@
 .oo-ui-icon-comment {
 	background-image: /* @embed */ url(themes/apex/images/icons/comment.svg);
 }
+.oo-ui-icon-ellipsis {
+	background-image: /* @embed */ url(themes/apex/images/icons/ellipsis.svg);
+}
 .oo-ui-icon-expand {
 	background-image: /* @embed */ url(themes/apex/images/icons/expand.svg);
 }
 .oo-ui-icon-help {
-	background-image: /* @embed */ url(themes/apex/images/icons/help.svg);
+	background-image: /* @embed */ url(themes/apex/images/icons/help-ltr.svg);
 }
 .oo-ui-icon-info {
 	background-image: /* @embed */ url(themes/apex/images/icons/info.svg);
-}
-.oo-ui-icon-link {
-	background-image: /* @embed */ url(themes/apex/images/icons/link.svg);
-}
-.oo-ui-icon-lock {
-	background-image: /* @embed */ url(themes/apex/images/icons/lock.svg);
 }
 .oo-ui-icon-menu {
 	background-image: /* @embed */ url(themes/apex/images/icons/menu.svg);
@@ -2437,6 +2475,7 @@
 .oo-ui-icon-window {
 	background-image: /* @embed */ url(themes/apex/images/icons/window.svg);
 }
+
 .oo-ui-indicator-alert {
 	background-image: /* @embed */ url(themes/apex/images/indicators/alert.svg);
 }
@@ -2455,8 +2494,9 @@
 .oo-ui-indicator-required {
 	background-image: /* @embed */ url(themes/apex/images/indicators/required.svg);
 }
+
 .oo-ui-texture-pending {
-	background-image: /* @embed */ url(themes/apex/images/textures/pending.svg);
+	background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
 }
 .oo-ui-texture-transparency {
 	background-image: /* @embed */ url(themes/apex/images/textures/transparency.svg);
@@ -2470,7 +2510,7 @@
  * Released under the MIT license
  * http://ve.mit-license.org
  *
- * Date: 2015-03-26T01:58:25Z
+ * Date: 2015-04-07T16:19:06Z
  */
 /*!
  * VisualEditor ContentEditable FocusableNode styles.
@@ -2509,13 +2549,6 @@
 }
 /*csslint vendor-prefix: true, compatible-vendor-prefixes:true */
 
-.ve-ce-focusableNode-dropMarker {
-	height: 1px;
-	background: #999;
-	pointer-events: none;
-	position: absolute;
-}
-
 .ve-ce-focusableNode-highlight {
 	background: #6da9f7;
 	box-shadow: inset 0 0 0 1px #4C76ac;
@@ -2538,7 +2571,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ce-alienNode-highlight {
+.ve-ce-alienNode-highlights .ve-ce-focusableNode-highlight {
 	background-color: #95d14f;
 	background-image: -ms-repeating-linear-gradient(-45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -webkit-repeating-linear-gradient(-45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px );
@@ -2548,7 +2581,7 @@
 	cursor: not-allowed;
 }
 
-.ve-ce-surface-highlights-focused .ve-ce-alienNode-highlight {
+.ve-ce-surface-highlights-focused .ve-ce-alienNode-highlights .ve-ce-focusableNode-highlight {
 	background-image: -ms-repeating-linear-gradient(-45deg, #6da9f7 0px, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -webkit-repeating-linear-gradient(-45deg, #6da9f7 0px, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -moz-repeating-linear-gradient(-45deg, #6da9f7 0px, #6da9f7 5px, #95d14f 5px, #95d14f 10px);
@@ -2574,7 +2607,8 @@
 	transition: opacity 200ms ease-out;
 }
 
-.ve-ce-branchNode-blockSlug:hover {
+.ve-ce-branchNode-blockSlug:hover,
+.ve-ce-branchNode-blockSlug.ve-ce-branchNode-blockSlug-focused {
 	opacity: 1;
 }
 
@@ -2614,6 +2648,7 @@
 .ve-ce-branchNode-blockSlug > .oo-ui-buttonWidget > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
 	width: 0.95em;
 	height: 0.95em;
+	background-size: auto;
 }
 
 /* Pre-formatted node styling */
@@ -3017,6 +3052,13 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 	left: 0;
 }
 
+.ve-ce-surface-dropMarker {
+	height: 1px;
+	background: #999;
+	pointer-events: none;
+	position: absolute;
+}
+
 .ve-ce-surface-paste {
 	position: fixed;
 	top: 1em; /* Hack: Stop the viewport scrolling when the paste target is typed into */
@@ -3029,6 +3071,12 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 
 .ve-ce-surface-paste * {
 	height: 1px !important;
+}
+
+/* Prevent IE from wrapping link text in <u> and <font color> tags */
+.ve-init-target-ie .ve-ce-surface-paste a {
+	text-decoration: underline !important;
+	color: #0066cc;
 }
 
 /* MediaWiki PHP Parser does not wrap text inside image captions in <p> but we do (cause we have to).
@@ -3087,6 +3135,15 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 	bottom: 0;
 	left: 0;
 	right: 0;
+}
+
+/* Override ProcessDialog styles */
+.ve-ui-toolbarDialog .oo-ui-window-head {
+	height: 0;
+}
+
+.ve-ui-toolbarDialog .oo-ui-window-body {
+	top: 0;
 }
 
 /* TODO: fix this upstream */
@@ -3614,11 +3671,35 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 }
 
 .ve-ui-contextItem-body {
-	padding: 0 1em 0.5em 1em;
+	max-height: 15em;
+	overflow: auto;
+}
+
+.ve-ui-contextItem-body:not(:empty) {
+	padding: 0 1em 1em 1em;
 }
 
 .ve-ui-contextItem + .ve-ui-contextItem {
 	border-top: 1px solid #eee;
+}
+
+/*!
+ * VisualEditor UserInterface AlignableContextItem styles.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-alignableContextItem .ve-ui-contextItem-body {
+	text-align: center;
+}
+
+.ve-ui-alignableContextItem .ve-ui-contextItem-info {
+	vertical-align: middle;
+}
+
+.ve-ui-alignableContextItem .ve-ui-contextItem-description {
+	line-height: 1em;
+	padding-top: 0.2em;
 }
 
 /*!
@@ -3634,7 +3715,7 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 	max-height: 10em;
 	font-family: 'Courier New', 'Courier', monospace;
 	white-space: pre-wrap;
-	line-height: 1em;
+	line-height: 1.25em;
 	color: #555;
 }
 
@@ -3683,7 +3764,7 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 
 .ve-ui-overlay {
 	font-family: sans-serif;
-	line-height: 1.5em;
+	line-height: 1em;
 	font-size: 1em;
 	position: absolute;
 	top: 0;
@@ -3758,6 +3839,7 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	cursor: pointer;
+	margin: 0;
 }
 
 .ve-ui-tableContext-colContext .ve-ui-tableContext-indicator {

@@ -2,8 +2,15 @@ require 'rails_helper'
 
 feature "Upload paper", js: true, selenium: true do
   let(:author) { FactoryGirl.create :user }
-  let(:journal) { FactoryGirl.create :journal }
-  let(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, journal: journal }
+  let(:paper) do
+    FactoryGirl.create :paper_with_task,
+      creator: author,
+      task_params: {
+        title: "Upload Manuscript",
+        type: "TahiUploadManuscript::UploadManuscriptTask",
+        role: "author"
+      }
+  end
 
   before do
     sign_in_page = SignInPage.visit
@@ -16,8 +23,8 @@ feature "Upload paper", js: true, selenium: true do
       paper.update(title: "This is a Title About Turtles", body: "And this is my subtitle")
     end
 
-    edit_paper_page = EditPaperPage.visit(paper.reload)
-
+    click_link paper.reload.title
+    edit_paper_page = EditPaperPage.new
     edit_paper_page.view_card('Upload Manuscript').upload_word_doc
 
     expect(page).to have_no_css('.overlay.in')

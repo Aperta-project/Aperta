@@ -10,8 +10,10 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_with_basic_http
   before_filter :configure_permitted_parameters, if: :devise_controller?
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   protected
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up).concat %i(first_name last_name email username)
   end
@@ -28,6 +30,10 @@ class ApplicationController < ActionController::Base
 
   def render_errors(e)
     render status: 422, json: {errors: e.record.errors}
+  end
+
+  def render_404
+    head 404
   end
 
   # customize devise signout path

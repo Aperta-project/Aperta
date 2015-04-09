@@ -15,12 +15,10 @@ describe PapersController do
   describe "GET download" do
     expect_policy_enforcement
 
-    subject(:do_request) { get :download, id: paper.to_param }
-
     it "sends file back" do
       allow(controller).to receive(:render).and_return(nothing: true)
       expect(controller).to receive(:send_data)
-      get :download, id: paper.id
+      get :download, id: paper.id, format: :epub
     end
 
     it "sends a pdf file back if there's a pdf extension" do
@@ -33,24 +31,9 @@ describe PapersController do
 
   describe "GET 'show'" do
     let(:submitted) { true }
-    subject(:do_request) { get :show, id: paper.to_param }
-
-    it_behaves_like "when the user is not signed in"
+    subject(:do_request) { get :show, id: paper.to_param, format: :json }
 
     it { should be_success }
-  end
-
-  describe "GET 'edit'" do
-    subject(:do_request) { get :edit, id: paper.to_param }
-
-    it_behaves_like "when the user is not signed in"
-
-    context "when the user is signed in" do
-      expect_policy_enforcement
-
-      it { should be_success }
-      it { should render_template "ember/index" }
-    end
   end
 
   describe "POST 'create'" do
@@ -152,7 +135,7 @@ describe PapersController do
     let(:url) { "http://theurl.com" }
     it "initiates manuscript download" do
       expect(DownloadManuscriptWorker).to receive(:perform_async)
-      put :upload, id: paper.id, url: url
+      put :upload, id: paper.id, url: url, format: :json
     end
   end
 

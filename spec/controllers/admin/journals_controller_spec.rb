@@ -50,9 +50,9 @@ describe Admin::JournalsController, redis: true do
 
       it "renders status 2xx" do
         with_aws_cassette('admin_journal_controller') do
-          patch :update, id: journal.id, admin_journal: { epub_cover: image_file }
+          patch :update, id: journal.id, admin_journal: { epub_cover: image_file }, format: :json
         end
-        expect(response.status).to eq 200
+        expect(response.status).to eq 204
       end
     end
 

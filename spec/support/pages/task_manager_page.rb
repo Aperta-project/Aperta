@@ -1,6 +1,6 @@
 class TaskManagerPage < Page
 
-  path :manage_paper
+  path :root
   text_assertions :task, '.card'
 
   def phases

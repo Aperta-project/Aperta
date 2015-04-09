@@ -1,5 +1,5 @@
 class ProfilePage < Page
-  path :profile
+  path :root
   text_assertions :affiliation, '.profile-affiliation-name'
   text_assertions :full_name, '#profile-name'
   text_assertions :username, '#profile-username h2'

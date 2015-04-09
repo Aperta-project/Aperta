@@ -7,21 +7,14 @@ class TasksController < ApplicationController
 
   respond_to :json
 
-  rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def show
-    respond_to do |f|
-      f.json { render json: task }
-      f.html { render 'ember/index', layout: 'ember' }
-    end
+    respond_with(task)
   end
 
   def create
-    if task.save
-      respond_with task, location: task_url(task)
-    else
-      render json: { errors: task.errors }, status: :unprocessable_entity
-    end
+    task.save
+    respond_with(task)
   end
 
   def update
@@ -34,7 +27,7 @@ class TasksController < ApplicationController
 
   def destroy
     task.destroy
-    respond_with task
+    respond_with(task)
   end
 
   def send_message
@@ -80,10 +73,6 @@ class TasksController < ApplicationController
       whitelisted[:body] ||= "Nothing to see here."
       whitelisted[:recipients] ||= []
     end
-  end
-
-  def render_404
-    head 404
   end
 
   def enforce_policy

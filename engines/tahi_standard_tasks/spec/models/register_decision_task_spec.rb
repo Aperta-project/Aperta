@@ -178,6 +178,19 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(event_subscriber).to eq :called
       end
 
+      it "paper revise event is broadcasted" do
+        event_subscriber = :not_called
+        event_payload = []
+        TahiNotifier.subscribe 'paper.revised' do |_, payload|
+          event_subscriber = :called
+          event_payload = payload
+        end
+
+        task.after_update
+        expect(event_subscriber).to eq :called
+        expect(event_payload[:paper_id]).to eq(paper.id)
+      end
+
       it "task is not nil" do
         expect(please_revise_task).to_not be_nil
       end

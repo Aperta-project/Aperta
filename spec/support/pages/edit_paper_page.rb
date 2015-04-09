@@ -16,7 +16,7 @@ end
 class EditPaperPage < Page
   include ActionView::Helpers::JavaScriptHelper
 
-  path :edit_paper
+  path :root
   text_assertions :paper_title, '#paper-title'
   text_assertions :journal, '.paper-journal'
 

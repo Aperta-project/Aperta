@@ -23,7 +23,7 @@ Tahi::Application.routes.draw do
   end
 
 
-  # Devise Authentication
+  # Authentication
   #
   devise_for :users, controllers: {
     omniauth_callbacks: "tahi_devise/omniauth_callbacks",

@@ -1,5 +1,5 @@
 module S3
-  class RequestPolicyController < ApplicationController
+  class RequestPoliciesController < ApplicationController
     before_action :authenticate_user!
 
     def show

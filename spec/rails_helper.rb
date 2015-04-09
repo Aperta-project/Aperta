@@ -16,9 +16,11 @@ require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-# NOTE: This will stop working after we move the engines into their own repository.
-Dir[Rails.root.join("engines/**/spec/support/**/*.rb")].each { |f| require f }
-Dir[Rails.root.join("engines/**/spec/factories/**/*.rb")].each { |f| require f }
+# Load support & factories for installed Tahi plugins
+TahiPlugin.plugins.each do |gem|
+  Dir[File.join(gem.full_gem_path, 'spec', 'support', '**', '*.rb')].each { |f| require f }
+  Dir[File.join(gem.full_gem_path, 'spec', 'factories', '**', '*.rb')].each { |f| require f }
+end
 
 Capybara.server_port = ENV["CAPYBARA_SERVER_PORT"]
 Capybara.server do |app, port|

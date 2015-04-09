@@ -10,6 +10,8 @@ Question = DS.Model.extend
   ident: a('string')
   question: a('string')
   answer: a('string')
+  createdAt: a('date')
+  updatedAt: a('date')
   additionalData: a()
   url: a('string')
 

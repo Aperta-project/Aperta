@@ -43,7 +43,10 @@
 
         </div>
         <div class="double-pane-editor">
-          {{ace-editor value=model.body id="paper-body" class="double-pane left-pane"}}
+          <div id="paper-body" class="double-pane left-pane">
+            {{code-mirror-editor value=model.body
+                                 mode="stex"}}
+          </div>
 
           <div id="rendered-latex" class="double-pane right-pane">
             {{#if body}}

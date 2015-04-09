@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module TahiSupportingInformation
+module TahiStandardTasks
   describe SupportingInformationTask do
     describe "#file_access_details" do
       let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
@@ -12,7 +12,7 @@ module TahiSupportingInformation
       end
 
       let(:supporting_information_task) do
-        ::TahiSupportingInformation::SupportingInformationTask.create! completed: true,
+        ::TahiStandardTasks::SupportingInformationTask.create! completed: true,
           phase: paper.phases.first,
           title: "Supporting Info",
           role: "author"

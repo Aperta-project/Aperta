@@ -4,6 +4,10 @@ class InviteReviewersOverlay < CardOverlay
   end
 
   def active_invitations
-    all '.invitees-table .active-invitations .invitation'
+    all '.invitees .active-invitations .invitation'
+  end
+
+  def expired_invitations
+    all '.invitees .expired-invitations .invitation'
   end
 end

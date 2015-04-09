@@ -1,10 +1,10 @@
 module Notifications
   class Collapser
-    attr_reader :inbox, :event_names
+    attr_reader :inbox, :activity_resource
 
-    def initialize(inbox:, event_names:)
+    def initialize(inbox:, activity_resource: nil)
       @inbox = inbox
-      @event_names = [event_names].flatten
+      @activity_resource = activity_resource
     end
 
     # discard any undismissed notifications from the user's inbox
@@ -23,9 +23,9 @@ module Notifications
       unread_activities.where.not(id: latest_activities.flat_map(&:id))
     end
 
-    # undissmissed activities for given event_names
+    # undissmissed activities for given event_names for a given active_resource scope
     def unread_activities
-      @activities ||= Activity.where(id: inbox.get).with_event_names(event_names)
+      @activities ||= Activity.where(id: inbox.get).for_target(activity_resource)
     end
   end
 end

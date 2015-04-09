@@ -89,13 +89,6 @@ Tahi::Application.routes.draw do
   post :ihat_jobs, to: "ihat_jobs#update", as: :ihat_callback
 
   resources :papers, only: [:create, :show, :edit, :update] do
-    resources :figures, only: :create
-    resource :manuscript_manager, only: :show
-    resource :editor, only: :destroy
-    resources :tasks, only: [:update, :create, :show, :destroy] do
-      resources :comments, only: :create
-    end
-
     member do
       put :upload
       get :manage
@@ -107,6 +100,14 @@ Tahi::Application.routes.draw do
       put :submit
       get 'activity/:name', to: 'papers#activity'
     end
+
+    resources :figures, only: :create
+    resource :manuscript_manager, only: :show
+    resource :editor, only: :destroy
+    resources :tasks, only: [:update, :create, :show, :destroy] do
+      resources :comments, only: :create
+    end
+    resources :user_inboxes, only: [:index, :destroy]
   end
 
   get '/papers/:publisher_prefix/:suffix' => 'papers#show',
@@ -152,8 +153,6 @@ Tahi::Application.routes.draw do
       put :accept, :reject
     end
   end
-
-  resources :user_inboxes, only: [:index, :destroy]
 
   get "/formats", to: "formats#index"
 

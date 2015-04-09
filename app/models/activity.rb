@@ -17,6 +17,11 @@ class Activity < ActiveRecord::Base
     where(event_name: event_names)
   end
 
+  def self.for_target(target)
+    return where(nil) unless target
+    where(target: target)
+  end
+
   def self.without(activities)
     where.not(id: activities.flat_map(&:id))
   end

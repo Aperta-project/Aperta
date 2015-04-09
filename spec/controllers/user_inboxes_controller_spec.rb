@@ -4,6 +4,7 @@ describe UserInboxesController do
 
   let(:user) { create :user }
   let(:inbox) { Notifications::UserInbox.new(user.id) }
+  let(:paper) { FactoryGirl.create(:paper) }
 
   before do
     sign_in user
@@ -16,21 +17,21 @@ describe UserInboxesController do
     end
 
     it "returns a 200" do
-      response = get(:index, format: :json)
+      response = get(:index, paper_id: paper.id, format: :json)
       expect(response.status).to eq(200)
     end
 
     it "returns the latest activities in the user's inbox" do
       expect(collapser).to receive(:latest_activities)
 
-      response = get(:index, format: :json)
+      response = get(:index, paper_id: paper.id, format: :json)
       expect(JSON.parse(response.body)["user_inboxes"]).to match_array(["fake_activity"])
     end
 
     it "discards older activities" do
       expect(collapser).to receive(:discard!)
 
-      get(:index, format: :json)
+      get(:index, paper_id: paper.id, format: :json)
     end
   end
 
@@ -39,7 +40,7 @@ describe UserInboxesController do
       before { inbox.set([33, 55]) }
 
       it "destroys only the specified inbox record" do
-        response = put(:destroy, format: :json, id: 33)
+        response = put(:destroy, paper_id: paper.id, format: :json, id: 33)
         expect(inbox.get).to eq(["55"])
         expect(response.status).to eq(204)
       end
@@ -49,7 +50,7 @@ describe UserInboxesController do
       before { inbox.set([33, 55]) }
 
       it "returns a 204" do
-        response = put(:destroy, format: :json, id: 9999)
+        response = put(:destroy, paper_id: paper.id, format: :json, id: 9999)
         expect(response.status).to eq(204)
       end
     end

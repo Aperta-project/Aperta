@@ -17,8 +17,12 @@ class UserInboxesController < ApplicationController
 
   private
 
+  def paper
+    @paper ||= Paper.find(id: params[:paper_id])
+  end
+
   def collapser
-    @collapser ||= Notifications::Collapser.new(inbox: inbox, event_names: user_inbox_params[:event_names])
+    @collapser ||= Notifications::Collapser.new(inbox: inbox, activity_resource: paper)
   end
 
   def inbox

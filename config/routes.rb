@@ -83,8 +83,6 @@ Tahi::Application.routes.draw do
         resources :comments, only: :create
       end
       member do
-        get "/:publisher_prefix/:suffix" => "papers#show",
-            constraints: { publisher_prefix: Doi::PUBLISHER_PREFIX_FORMAT, suffix: Doi::SUFFIX_FORMAT }
         get "/status/:id", to: "paper_conversions#status"
         get "activity_feed/:name", to: "papers#activity_feed"
         get :export, to: "paper_conversions#export"
@@ -93,6 +91,9 @@ Tahi::Application.routes.draw do
         put :toggle_editable
         put :upload
       end
+      get "/:publisher_prefix/:suffix" => "papers#show",
+          constraints: { publisher_prefix: Doi::PUBLISHER_PREFIX_FORMAT, suffix: Doi::SUFFIX_FORMAT },
+          on: :collection
     end
     resources :participations, only: [:create, :show, :destroy]
     resources :phase_templates

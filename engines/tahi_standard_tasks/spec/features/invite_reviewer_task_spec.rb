@@ -25,30 +25,30 @@ feature "Invite Reviewer", js: true do
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card task.title do |overlay|
       overlay.paper_reviewers = [albert]
-      has_no_css?('#delayedSave', visible: false)
+      has_no_css? '#delayedSave', visible: false
       expect(overlay).to have_no_application_error
-      expect(overlay).to have_reviewers(albert)
+      expect(overlay).to have_reviewers albert
       # the debounce in the reviewers overlay is causing a race condition between the
       # delayed save and the database truncation during test cleanup.  This will fix it for now.
     end
   end
 
   scenario "displays invitations from the latest round of revisions" do
-    decision = paper.create_decision!
-    (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
-    (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
-
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card task.title do |overlay|
+      overlay.paper_reviewers = [neil, albert]
       expect(overlay.active_invitations.count).to eq 2
     end
-    decision = paper.create_decision!
-    (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
+
+    paper.create_decision!
+
     page.visit current_path
     manuscript_page.view_card task.title do |overlay|
-      # expect(overlay.active_invitations.count).to eq 1
-      expect(overlay.total_invitations.count).to eq 3
+      overlay.paper_reviewers = [neil, albert]
+      expect(overlay.active_invitations.count).to eq 2
+      expect(overlay.expired_invitations.count).to eq 2
+      expect(overlay.total_invitations.count).to eq 4
     end
 
   end

@@ -26,20 +26,30 @@ describe FilteredUsersController do
   end
 
   describe "#reviewers /filtered_users/reviewers/:paper_id" do
-    context "when a user has a pending invitation" do
-      let!(:paper) { FactoryGirl.create(:paper, journal: journal) }
-      let(:phase) { paper.phases.create! }
-      let(:task) do
-        phase.tasks.create(type: "TestTask",
-                           title: "Test",
-                           role: "reviewer").extend Invitable
-      end
-      let(:invitation) { create :invitation, task: task, invitee: user }
+    let!(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:phase) { paper.phases.create! }
+    let(:task) do
+      phase.tasks.create(type: "TestTask",
+                         title: "Test",
+                         role: "reviewer").extend Invitable
+    end
+    let(:invitation) { create :invitation, task: task, invitee: user }
 
-      before do
+    context "when a user has any invitation for expired revision cycles" do
+      it "sends the user after a new round of revision cycle starts" do
+        get :reviewers, paper_id: paper.id, format: :json
+        expect(res_body["filtered_users"].count).to eq 1
+        expect(res_body["filtered_users"].first["id"]).to eq user.id
         invitation.invite!
-        # invitation.accept!
+        paper.create_decision!
+        get :reviewers, paper_id: paper.id, format: :json
+        expect(res_body["filtered_users"].count).to eq 1
+        expect(res_body["filtered_users"].first["id"]).to eq user.id
       end
+    end
+
+    context "when a user has a pending invitation for the latest revision cycle" do
+      before { invitation.invite! }
 
       it "does not send the user" do
         get :reviewers, paper_id: paper.id, format: :json

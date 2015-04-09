@@ -7,5 +7,7 @@ Decision = DS.Model.extend
   paper: DS.belongsTo("paper")
   isLatest: DS.attr("boolean")
   invitations: DS.hasMany("invitation")
+  revisionHumanNumber: Em.computed 'revisionNumber', ->
+    @get('revisionNumber') + 1
 
 `export default Decision`

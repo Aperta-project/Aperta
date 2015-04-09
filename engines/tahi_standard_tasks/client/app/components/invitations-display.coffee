@@ -5,8 +5,8 @@ InvitationsDisplay = Ember.Component.extend
   layout: layout
   tagName: 'table'
   classNames: ['invitees']
-  latestDecision: Ember.computed 'decisions.@each.isLatest', ->
-    @get('decisions').findBy 'isLatest', true
+  previousDecisions: Em.computed 'latestDecision', ->
+    @get('decisions').without @get('latestDecision')
 
   actions:
     destroyInvitation: (invitation) ->

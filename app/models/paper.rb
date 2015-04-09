@@ -22,6 +22,7 @@ class Paper < ActiveRecord::Base
   has_many :authors, -> { order 'authors.position ASC' }
   has_many :activity_feeds
   has_many :decisions, -> { order 'revision_number DESC' }
+  has_many :tables, inverse_of: :paper
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true

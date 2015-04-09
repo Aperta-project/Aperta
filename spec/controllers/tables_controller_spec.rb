@@ -14,6 +14,11 @@ describe TablesController do
         post :create, paper_id: paper.id, table: table_attributes, format: :json
       }.to change{ paper.tables.reload.count }.by(1)
     end
+
+    it "returns a 404 if paper_id is not sent" do
+      post :create, table: table_attributes, format: :json
+      expect(response.status).to eq(404)
+    end
   end
 
   describe "#update" do

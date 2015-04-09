@@ -5,9 +5,9 @@ class UserInboxesController < ApplicationController
 
   respond_to :json
 
-  def index
+  def show
     collapser.discard!
-    render json: collapser.latest_activities
+    render json: collapser.latest_activities, root: :events
   end
 
   def destroy
@@ -18,7 +18,7 @@ class UserInboxesController < ApplicationController
   private
 
   def paper
-    @paper ||= Paper.find(id: params[:paper_id])
+    @paper ||= Paper.find(params[:paper_id])
   end
 
   def collapser

@@ -4,12 +4,12 @@
 moduleForComponent 'event-notification', 'Unit: components/event-notification'
 
 test '#hasNotification returns false if no events exist', ->
-  fakeNotificationManager = Ember.Object.create(events: [])
+  fakeNotificationManager = Ember.Object.create(currentEvent: [])
   component = @subject(notificationManager: fakeNotificationManager)
-  ok !component.get('hasNotification')
+  ok !component.get('shouldDisplayNotification')
 
 test '#hasNotification returns true if events exist', ->
-  event = Ember.Object.create(name: "Some Event", actor: { user: 1 }, target: { paper: 201 })
-  fakeNotificationManager = Ember.Object.create(events: [event])
+  event = Ember.Object.create(eventName: "Some Event")
+  fakeNotificationManager = Ember.Object.create(currentEvent: event)
   component = @subject(notificationManager: fakeNotificationManager)
-  ok component.get('hasNotification')
+  ok component.get('shouldDisplayNotification')

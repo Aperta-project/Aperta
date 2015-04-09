@@ -1,5 +1,5 @@
 class PaperSerializer < ActiveModel::Serializer
-  attributes :id, :short_title, :title, :doi, :body, :submitted, :paper_type, :status, :updated_at, :editable
+  attributes :id, :short_title, :title, :doi, :body, :submitted, :paper_type, :status, :updated_at, :editable, :links
 
   %i(phases figures authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -36,6 +36,10 @@ class PaperSerializer < ActiveModel::Serializer
 
   def lite_paper
     object
+  end
+
+  def links
+    { events: paper_user_inbox_path(object) }
   end
 
   def scoped_user

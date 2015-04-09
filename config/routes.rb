@@ -82,7 +82,7 @@ Tahi::Application.routes.draw do
       resources :tasks, only: [:update, :create, :show, :destroy] do
         resources :comments, only: :create
       end
-      resources :user_inboxes, only: [:index, :destroy]
+      resource :user_inbox, only: [:show]
       member do
         get "/:publisher_prefix/:suffix" => "papers#show",
             constraints: { publisher_prefix: Doi::PUBLISHER_PREFIX_FORMAT, suffix: Doi::SUFFIX_FORMAT }
@@ -113,6 +113,7 @@ Tahi::Application.routes.draw do
       get :authorization, on: :collection
       get :potential_flows, on: :collection
     end
+    resources :user_inboxes, only: [:destroy]
     resources :user_roles, only: [:index, :create, :destroy]
 
     # Internal Admin API

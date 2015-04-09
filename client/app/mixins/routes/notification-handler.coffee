@@ -7,8 +7,10 @@ NotificationHandler = Ember.Mixin.create
     notificationEvents = @get("notificationEvents")
 
     @modelFor("paper").get("events").then (events) =>
-      event = events.first (events) => notificationEvents.contains(event.get("name"))
-      notificationManager.notify(event)
+      if events.length
+        event = events.find (e) =>
+          notificationEvents.contains(e.get("eventName"))
+        notificationManager.notify(event) if event
   ).on("activate")
 
   resetNotification: (->

@@ -13,6 +13,7 @@ Paper = DS.Model.extend
   reviewers: DS.hasMany('user') # these are reviewers that have been assigned to the paper.
   supportingInformationFiles: DS.hasMany('supporting-information-file')
   tasks: DS.hasMany('task', {async: true, polymorphic: true})
+  events: DS.hasMany('event', { async: true })
 
   body: a('string')
   doi: a('string')

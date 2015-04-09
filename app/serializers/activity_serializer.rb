@@ -1,7 +1,8 @@
 class ActivitySerializer < ActiveModel::Serializer
   has_one :actor, include: false, embed: :id
 
-  attributes :event_name,
+  attributes :id,
+             :event_name,
              :message,
              :actor_full_name,
              :actor_avatar_url,

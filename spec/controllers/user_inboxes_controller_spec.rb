@@ -10,28 +10,28 @@ describe UserInboxesController do
     sign_in user
   end
 
-  describe "#index" do
+  describe "#show" do
     let(:collapser) { double(:discard! => true, latest_activities: ["fake_activity"]) }
     before do
       allow(controller).to receive(:collapser).and_return(collapser)
     end
 
     it "returns a 200" do
-      response = get(:index, paper_id: paper.id, format: :json)
+      response = get(:show, paper_id: paper.id, format: :json)
       expect(response.status).to eq(200)
     end
 
     it "returns the latest activities in the user's inbox" do
       expect(collapser).to receive(:latest_activities)
 
-      response = get(:index, paper_id: paper.id, format: :json)
-      expect(JSON.parse(response.body)["user_inboxes"]).to match_array(["fake_activity"])
+      response = get(:show, paper_id: paper.id, format: :json)
+      expect(JSON.parse(response.body)["events"]).to match_array(["fake_activity"])
     end
 
     it "discards older activities" do
       expect(collapser).to receive(:discard!)
 
-      get(:index, paper_id: paper.id, format: :json)
+      get(:show, paper_id: paper.id, format: :json)
     end
   end
 

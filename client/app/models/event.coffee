@@ -2,7 +2,7 @@
 
 Event = DS.Model.extend
 
-  name: DS.attr('string')
+  eventName: DS.attr('string')
   createdAt: DS.attr('date')
 
 `export default Event`

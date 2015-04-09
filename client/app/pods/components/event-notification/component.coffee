@@ -7,11 +7,13 @@ EventNotificationComponent = Ember.Component.extend
   shouldDisplayNotification: Ember.computed.notEmpty("currentEvent")
 
   header: (->
-    notificationCopyFor[@get("currentEvent.name")].header
+    return unless @get("currentEvent")
+    @notificationCopy[@get("currentEvent.eventName")].header
   ).property("currentEvent")
 
   message: (->
-    notificationCopy[@get("currentEvent.name")].message
+    return unless @get("currentEvent")
+    @notificationCopy[@get("currentEvent.eventName")].message
   ).property("currentEvent")
 
   # TODO This should go elsewhere, but for now there's

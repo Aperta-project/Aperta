@@ -94,10 +94,8 @@ We use:
 - RSpec for unit and integration specs
 - Capybara and Selenium
 
-In the project directory, running `rake spec` will run all unit and
-integration specs *and* will also run all installed Tahi plugin specs.
-Firefox will pop up to run integration tests. Note that running
-`rspec` will *not* run Tahi plugin spec.
+In the project directory, running `rspec` will run all unit and integration
+specs. Firefox will pop up to run integration tests.
 
 #### Running qunit tests from the command line
 

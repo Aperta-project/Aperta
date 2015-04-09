@@ -1,0 +1,32 @@
+<h1>{{model.title}}</h1>
+
+{{#if isEditable}}
+  <span class="button-primary button--green fileinput-button">
+    <span>Add New Supporting Information</span>
+    {{file-uploader id="file_attachment"
+                    filePrefix="supporting-info"
+                    url=uploadUrl
+                    start="uploadStarted"
+                    done="uploadFinished"
+                    cancel="cancelUploads"
+                    progress="uploadProgress"}}
+  </span>
+{{/if}}
+<div id="paper-file-uploads">
+  {{#each upload in uploads}}
+    {{upload-preview upload=upload}}
+  {{/each}}
+</div>
+
+<div class="paper-figures">
+  {{#if isEditable}}
+    {{#each file in paper.supportingInformationFiles}}
+      {{attachment-thumbnail attachment=file
+                             destroyAttachment="destroyAttachment"}}
+    {{/each}}
+  {{else}}
+    {{#each attachment in paper.supportingInformationFiles}}
+      {{partial "attachment_thumbnail_locked"}}
+    {{/each}}
+  {{/if}}
+</div>

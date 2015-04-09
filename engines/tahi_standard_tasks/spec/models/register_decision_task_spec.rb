@@ -186,9 +186,8 @@ describe TahiStandardTasks::RegisterDecisionTask do
           event_payload = payload
         end
 
-        task.after_update
+        task.after_update(actor: user)
         expect(event_subscriber).to eq :called
-        expect(event_payload[:paper_id]).to eq(paper.id)
       end
 
       it "task is not nil" do

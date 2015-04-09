@@ -15,7 +15,7 @@ describe PlosAuthors::PlosAuthorsController do
   describe "#create" do
     it "creates a plos author" do
       expect do
-        post :create, format: :json, plos_author: { email: "spock@starwars.com" }
+        post :create, format: :json, plos_author: { email: "spock@starwars.com", plos_authors_task_id: task.id, paper_id: task.paper.id}
       end.to change { PlosAuthors::PlosAuthor.count }.by(1)
       expect(response).to be_success
     end

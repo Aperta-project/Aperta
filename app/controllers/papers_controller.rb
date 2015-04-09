@@ -20,7 +20,7 @@ class PapersController < ApplicationController
 
   def create
     @paper = PaperFactory.create(paper_params, current_user)
-    notify_paper_created! if @paper.valid?
+    notify_paper!(event_name: "paper::created", paper: paper)
     respond_with(@paper)
   end
 
@@ -152,6 +152,7 @@ class PapersController < ApplicationController
   end
 
   def notify_paper!(event_name:, paper:)
+    return unless paper.valid?
     broadcast(event_name: event_name, target: paper, scope: paper, region_name: "paper")
   end
 

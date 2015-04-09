@@ -3,6 +3,8 @@ class TablesController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy
 
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+
   def create
     table.update_attributes(table_params)
     respond_with table

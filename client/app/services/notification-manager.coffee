@@ -2,29 +2,17 @@
 
 NotificationManager = Ember.Service.extend
 
-  # events for paper
-  events: []
-  # defined on the route
-  registeredNotifications: []
-  # displays a green banner
-  currentNotification: null
+  currentEvent: null
 
-  setup: (registeredNotifications, events) ->
-    @setProperties
-      registeredNotifications: registeredNotifications
-      events: events
-
-  teardown: ->
-    @setProperties
-      events: []
-      registeredNotifications: []
-      currentNotification: null
-
-  notify: ->
-    if Ember.isEmpty(@get("currentNotification"))
-      @set("currentNotification", @get("events").firstObject().get("name"))
+  notify: (event) ->
+    if Ember.isEmpty(@get("currentEvent"))
+      @set("currentEvent", event)
 
   dismiss: ->
-    events.
+    @get("currentEvent").destroyRecord()
+    @reset()
+
+  reset: ->
+    @set("currentEvent", null)
 
 `export default NotificationManager`

@@ -3,15 +3,28 @@
 EventNotificationComponent = Ember.Component.extend
 
   notificationManager: Ember.inject.service()
-  events: Ember.computed.alias("notificationManager.events")
-  hasNotification: Ember.computed.notEmpty("events")
+  currentEvent: Ember.computed.alias("notificationManager.currentEvent")
+  shouldDisplayNotification: Ember.computed.notEmpty("currentEvent")
 
-  header: "A new version of the manuscript is now available. Take a look below"
-  message: "some smaller message that will roll up at some point"
+  header: (->
+    notificationCopyFor[@get("currentEvent.name")].header
+  ).property("currentEvent")
+
+  message: (->
+    notificationCopy[@get("currentEvent.name")].message
+  ).property("currentEvent")
+
+  # TODO This should go elsewhere, but for now there's
+  # only one instance...
+  notificationCopy:
+    "paper.revised":
+      header: "Yo dawg, your paper was revised"
+      message: "Here's a message and stuff about it"
 
   actions:
 
     dismiss: (events) ->
       @get("notificationManager").dismiss()
+
 
 `export default EventNotificationComponent`

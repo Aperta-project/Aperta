@@ -18,12 +18,11 @@ describe Attachment do
   end
 
   describe "#after_destroy" do
-    let(:attachment) { Attachment.create(attachable_id: 1, attachable_type: 'Task')}
-
     #This after_destroy will enable people to show a "last saved" timestamp on cards,
     #even when an attachment is deleted because it touches the last_updated column of a card.
     it "updates the last_updated date" do
       task = create(:task)
+      attachment = Attachment.create(attachable: task)
       attachment.destroy
       expect(task.reload.updated_at).to be > (task.reload.created_at)
     end

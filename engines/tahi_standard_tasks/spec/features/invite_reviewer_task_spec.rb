@@ -41,13 +41,14 @@ feature "Invite Reviewer", js: true do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card task.title do |overlay|
-      expect(overlay.invitations.count).to eq 2
+      expect(overlay.active_invitations.count).to eq 2
     end
     decision = paper.create_decision!
     (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
     page.visit current_path
     manuscript_page.view_card task.title do |overlay|
-      expect(overlay.invitations.count).to eq 1
+      # expect(overlay.active_invitations.count).to eq 1
+      expect(overlay.total_invitations.count).to eq 3
     end
 
   end

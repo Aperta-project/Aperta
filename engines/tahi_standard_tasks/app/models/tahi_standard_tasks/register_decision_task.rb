@@ -16,7 +16,7 @@ module TahiStandardTasks
 
       if revise_decision?
         transaction do
-          create_please_revise_card!
+          find_or_create_please_revise_card!
           make_paper_editable!
           paper.create_decision!
           update! completed: false
@@ -129,17 +129,23 @@ module TahiStandardTasks
       ActiveSupport::Notifications.instrument 'paper.revised', paper_id: paper.id
     end
 
-    def create_please_revise_card!
-      author = paper.creator
+    def find_or_create_please_revise_card!
+      existing_revise_task = paper.tasks.where(type: "TahiStandardTasks::ReviseTask")
 
-      TaskFactory.build(TahiStandardTasks::ReviseTask,
-                        title: "Revise Manuscript",
-                        role: "user",
-                        phase_id: phase.id,
-                        body: [[{ type: 'text', value: revise_letter }]],
-                        participants: participants << author
-                       ).save!
+      if existing_revise_task.empty?
+        author = paper.creator
 
+        TaskFactory.build(TahiStandardTasks::ReviseTask,
+                          title: "Revise Manuscript",
+                          role: "author",
+                          phase_id: phase.id,
+                          body: [[{ type: 'text', value: revise_letter }]],
+                          participants: participants << author
+                         ).save!
+      else
+        existing_revise_task.first.update!({ completed: false })
+        existing_revise_task.first
+      end
     end
 
     def revise_decision?

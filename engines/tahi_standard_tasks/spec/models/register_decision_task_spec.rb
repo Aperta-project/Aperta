@@ -154,7 +154,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
     context "when the decision is 'revise' and task is completed" do
       let(:please_revise_task) do
         task.paper.tasks.detect do |paper_task|
-          paper_task.title == 'Please Revise'
+          paper_task.type == "TahiStandardTasks::ReviseTask"
         end
       end
 
@@ -186,8 +186,8 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(please_revise_task.paper).to eq paper
       end
 
-      it "task role is `user`" do
-        expect(please_revise_task.role).to eq 'user'
+      it "task role is `author`" do
+        expect(please_revise_task.role).to eq 'author'
       end
 
       it "task participants include the paper's author" do

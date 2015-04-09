@@ -1,4 +1,4 @@
-module TahiSupportingInformation
+module TahiStandardTasks
   class SupportingInformationTask < ::Task
     include ::MetadataTask
 
@@ -6,10 +6,6 @@ module TahiSupportingInformation
 
     def file_access_details
       paper.files.map(&:access_details)
-    end
-
-    def active_model_serializer
-      ::TahiSupportingInformation::TaskSerializer
     end
   end
 end

@@ -1,4 +1,4 @@
-module TahiSupportingInformation
+module TahiStandardTasks
   class SupportingInformationTasksPolicy < ::TasksPolicy
   end
 end

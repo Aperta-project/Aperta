@@ -112,7 +112,7 @@ class Task < ActiveRecord::Base
     true
   end
 
-  # Implement this method Cards that inherit from this Task
+  # Implement this method for Cards that inherit from Task
   def after_update
   end
 

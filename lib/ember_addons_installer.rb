@@ -19,28 +19,17 @@ class EmberAddonsInstaller
 
   def append_addon_paths_to_package
     package['ember-addon'] ||= {}
-    remove_existing_tahi_addons
     addon_paths = package['ember-addon']['paths'] ||= []
 
-    tahi_gem_paths.each do |tahi_gem_path|
+    TahiPlugin.plugins.
+      map { |gem| relative_path_from_root "#{gem.full_gem_path}/client" }.
+      each do |tahi_gem_path|
       unless addon_paths.find { |path| path == tahi_gem_path }
         package['ember-addon']['paths'].push tahi_gem_path
       end
     end
+    remove_missing_addons
     package
-  end
-
-  def tahi_gem_matcher
-    /\A(tahi_|tahi-|plos_|assess)/
-  end
-
-  def tahi_path_matcher
-    /(tahi_|tahi-|plos_|assess)/
-  end
-
-  def tahi_gem_paths
-    Bundler.load.specs.select { |gem| gem.name =~ tahi_gem_matcher }
-                      .map { |gem| relative_path_from_root "#{gem.full_gem_path}/client" }
   end
 
   def relative_path_from_root full_gem_path
@@ -49,8 +38,10 @@ class EmberAddonsInstaller
             .to_s
   end
 
-  def remove_existing_tahi_addons
-    package["ember-addon"]["paths"].reject! { |path| path =~ tahi_path_matcher }
+  def remove_missing_addons
+    package["ember-addon"]["paths"].reject! { |path|
+      !File.directory?(File.join(Rails.root, 'client', path))
+    }
   end
 
   def load_package_as_json

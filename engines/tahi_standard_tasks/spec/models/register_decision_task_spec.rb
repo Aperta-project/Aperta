@@ -125,28 +125,23 @@ describe TahiStandardTasks::RegisterDecisionTask do
       end
     end
 
-    describe "#send_emails" do
+    describe "#send_email" do
       context "if the task transitions to completed" do
         it "sends emails to the paper's author" do
           allow(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain("delay.notify_author_email") { true }
           task.completed = true
           task.save!
-          expect(task.send_emails).to eq true
-        end
-      end
-
-      context "if the task is updated but not completed" do
-        it "does not send emails" do
-          TahiStandardTasks::ReviewerReportMailer = double(:reviewer_report_mailer)
-          task.completed = false # or any other update
-          task.save!
-          expect(task.send_emails).to eq nil
+          expect(task.send_email).to eq true
         end
       end
     end
   end
 
   describe "#after_update" do
+    before do
+      allow_any_instance_of(TahiStandardTasks::RegisterDecisionTask).to receive(:revise_decision?).and_return(true)
+    end
+
     context "when the decision is 'revise' and task is incomplete" do
       it "does not create a new task for the paper" do
         expect {
@@ -168,6 +163,19 @@ describe TahiStandardTasks::RegisterDecisionTask do
         task.save!
         task.update_attributes completed: true
         task.after_update
+      end
+
+      it "paper revise event is broadcasted" do
+        event_subscriber = :not_called
+        event_payload = []
+        TahiNotifier.subscribe 'paper.revised' do |_, payload|
+          event_subscriber = :called
+          event_payload = payload
+        end
+
+        task.after_update
+        expect(event_subscriber).to eq :called
+        expect(event_payload[:paper_id]).to eq(paper.id)
       end
 
       it "task is not nil" do

@@ -17,6 +17,16 @@ test 'normalizeType denamespaces task types', ->
   equal result.qualified_type, 'Foo::BarTask', 'saves the original type as qualified_type'
   equal result.type, 'BarTask', 'strips the namespace off the type'
 
+test 'normalizeType denamespaces deeply namespaced task types', ->
+  result = subject.normalizeType({type: 'Foo::Baz::BarTask'})
+  equal result.qualified_type, 'Foo::Baz::BarTask', 'saves the original type as qualified_type'
+  equal result.type, 'BarTask', 'strips the namespace off the type'
+
+test 'normalizeType denamespaces really deeply namespaced task types', ->
+  result = subject.normalizeType({type: 'Tahi::Foo::Baz::BarTask'})
+  equal result.qualified_type, 'Tahi::Foo::Baz::BarTask', 'saves the original type as qualified_type'
+  equal result.type, 'BarTask', 'strips the namespace off the type'
+
 test 'serializing a model that was originally namespaced will correctly re-namespace it', ->
   Ember.run =>
     task = getStore().createRecord('task', qualifiedType: "Foo::BarTask")

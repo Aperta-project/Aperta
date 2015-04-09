@@ -6,7 +6,7 @@ moduleForModel 'paper', 'Unit: Paper Model',
     'model:question-attachment', 'model:comment-look', 'model:attachable', 'model:affiliation',
     'model:phase', 'model:task', 'model:comment', 'model:participation',
     'model:lite-paper', 'model:card-thumbnail', 'model:question', 'model:collaboration', 'model:attachment',
-    'model:supporting-information-file']
+    'model:supporting-information-file', 'model:event']
 
 test 'displayTitle displays short title if title is missing', ->
   shortTitle = 'test short title'

@@ -6,7 +6,6 @@ module Tahi
     def generate
       system("rails plugin new #{plugin_path} --full --mountable --skip-test-unit --skip-gemfile-entry")
 
-      p client_path, "CLIENT_PATH"
       template 'index.js', File.join(client_path, 'index.js')
       template 'package.json', File.join(client_path, 'package.json')
     end

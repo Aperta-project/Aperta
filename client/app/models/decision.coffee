@@ -10,6 +10,5 @@ Decision = DS.Model.extend
   revisionHumanNumber: Em.computed 'revisionNumber', ->
     @get('revisionNumber') + 1
   createdAt: DS.attr("date")
-}
 
 `export default Decision`

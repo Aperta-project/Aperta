@@ -2,11 +2,11 @@ module TahiStandardTasks
   class RegisterDecisionTask < Task
 
     # TODO: move these attributes from paper to this task model (https://www.pivotaltracker.com/story/show/84690814)
-    delegate :decision, :decision=, :decision_letter, :decision_letter=, to: :paper, prefix: :paper
+    delegate :decision_letter, :decision_letter=, to: :paper, prefix: :paper
     before_save { paper.save! }
 
     def self.permitted_attributes
-      super + [:paper_decision, :paper_decision_letter]
+      super + [:paper_decision_letter]
     end
 
     register_task default_title: "Register Decision", default_role: "editor"

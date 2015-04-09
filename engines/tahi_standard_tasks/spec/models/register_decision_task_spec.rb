@@ -84,8 +84,11 @@ describe TahiStandardTasks::RegisterDecisionTask do
     let(:paper) {
       FactoryGirl.create(:paper, :with_tasks,
         title: "Crazy stubbing tests on rats",
-        decision: "Accepted",
         decision_letter: "Lorem Ipsum")
+    }
+
+    let(:decision) {
+      paper.decisions.first
     }
 
     let(:task) {
@@ -97,19 +100,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
 
     before do
       allow(task).to receive(:paper).and_return(paper)
-    end
-
-    describe "#paper_decision" do
-      it "returns paper's decision" do
-        expect(task.paper_decision).to eq("Accepted")
-      end
-    end
-
-    describe "#paper_decision=" do
-      it "returns paper's decision" do
-        task.paper_decision = "Rejected"
-        expect(task.paper_decision).to eq("Rejected")
-      end
     end
 
     describe "#paper_decision_letter" do
@@ -145,7 +135,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
     context "when the decision is 'revise' and task is incomplete" do
       it "does not create a new task for the paper" do
         expect {
-          task.paper.decision = 'revise'
           task.save!
         }.to_not change { task.paper.tasks.size }
       end
@@ -159,7 +148,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
       end
 
       before do
-        task.paper.decision = 'revise'
         task.save!
         task.update_attributes completed: true
         task.after_update

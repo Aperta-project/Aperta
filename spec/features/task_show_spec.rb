@@ -3,7 +3,14 @@ require 'rails_helper'
 feature "Displaying task", js: true do
   let(:admin) { create :user, :site_admin }
   let(:task) { paper.tasks.first }
-  let!(:paper) { FactoryGirl.create(:paper_with_task, title: "Assign Admin", creator: admin) }
+  let!(:paper) do
+    FactoryGirl.create(:paper_with_task,
+      creator: admin,
+      task_params: {
+        title: "Assign Admin"
+      }
+    )
+  end
 
   before do
     sign_in_page = SignInPage.visit

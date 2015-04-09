@@ -53,14 +53,16 @@ FactoryGirl.define do
 
     factory :paper_with_task do
       transient do
-        title "Adhoc"
-        role "user"
-        type "Task"
+        task_params {}
       end
 
       after(:create) do |paper, evaluator|
         phase = create(:phase, paper: paper)
-        phase.tasks.create(title: evaluator.title, role: evaluator.title, type: evaluator.type)
+        evaluator.task_params[:title] ||= "Ad Hoc"
+        evaluator.task_params[:role] ||= "user"
+        evaluator.task_params[:type] ||= "Task"
+
+        phase.tasks.create(evaluator.task_params)
       end
     end
   end

@@ -2,8 +2,16 @@ require 'rails_helper'
 
 feature "Upload Supporting Information", js: true, selenium: true do
   let(:author) { create :user }
-  let(:journal) { create :journal }
-  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, creator: author }
+  let(:paper) do
+    FactoryGirl.create :paper_with_task,
+      creator: author,
+      task_params: {
+        title: "Supporting Info",
+        role: "author",
+        type: "TahiSupportingInformation::SupportingInformationTask"
+      }
+  end
+
 
   before do
     sign_in_page = SignInPage.visit
@@ -27,8 +35,6 @@ feature "Upload Supporting Information", js: true, selenium: true do
     end
 
     # edit file
-    paper.supporting_information_files.create
-    visit page.current_url
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       find('.attachment-edit-icon').click
       title   = find('.attachment-thumbnail-edit-content input[type=text]')

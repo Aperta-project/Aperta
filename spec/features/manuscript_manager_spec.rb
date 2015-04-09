@@ -35,7 +35,6 @@ feature "Manuscript Manager", js: true, selenium: true do
       expect(new_phases[1]).to eq("New Phase")
       expect(new_phases[3]).to eq("New Phase")
       expect(task_manager_page).to have_no_application_error
-      task_manager_page.reload
       reloaded_phases = TaskManagerPage.new.phases
       expect(reloaded_phases[1]).to eq("New Phase")
       expect(reloaded_phases[3]).to eq("New Phase")

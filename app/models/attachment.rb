@@ -11,4 +11,7 @@ class Attachment < ActiveRecord::Base
       false
     end
   end
+
+  after_destroy { |record| record.attachable.touch }
+
 end

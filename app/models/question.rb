@@ -3,4 +3,7 @@ class Question < ActiveRecord::Base
   has_one :question_attachment, dependent: :destroy
 
   validates :ident, presence: true
+
+  after_destroy { |record| record.task.touch }
+
 end

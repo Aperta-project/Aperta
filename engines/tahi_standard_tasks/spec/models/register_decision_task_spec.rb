@@ -152,7 +152,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
     end
 
     context "when the decision is 'revise' and task is completed" do
-      let(:please_revise_task) do
+      let(:revise_task) do
         task.paper.tasks.detect do |paper_task|
           paper_task.type == "TahiStandardTasks::ReviseTask"
         end
@@ -178,25 +178,36 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(event_payload[:paper_id]).to eq(paper.id)
       end
 
-      it "task is not nil" do
-        expect(please_revise_task).to_not be_nil
+      it "task has no participants" do
+        expect(task.participants).to be_empty
       end
 
-      it "task has paper" do
-        expect(please_revise_task.paper).to eq paper
+      it "task participants does not include author" do
+        expect(task.participants).to_not include paper.creator
       end
 
-      it "task role is `author`" do
-        expect(please_revise_task.role).to eq 'author'
+      describe " Revise Task" do
+        it "task is not nil" do
+          expect(revise_task).to_not be_nil
+        end
+
+        it "task has paper" do
+          expect(revise_task.paper).to eq paper
+        end
+
+        it "task role is `author`" do
+          expect(revise_task.role).to eq 'author'
+        end
+
+        it "task participants include the paper's author" do
+          expect(revise_task.participants).to eq [paper.creator]
+        end
+
+        it "task body includes the revise letter" do
+          expect(revise_task.body.first.first['value']).to include task.revise_letter
+        end
       end
 
-      it "task participants include the paper's author" do
-        expect(please_revise_task.participants).to eq [paper.creator]
-      end
-
-      it "task body includes the revise letter" do
-        expect(please_revise_task.body.first.first['value']).to include task.revise_letter
-      end
     end
   end
 end

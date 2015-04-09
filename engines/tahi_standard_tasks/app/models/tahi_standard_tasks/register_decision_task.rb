@@ -26,10 +26,6 @@ module TahiStandardTasks
       end
     end
 
-    def make_paper_editable!
-      self.paper.update! editable: true
-    end
-
     # no-op
     def send_emails
     end
@@ -140,12 +136,16 @@ module TahiStandardTasks
                           role: "author",
                           phase_id: phase.id,
                           body: [[{ type: 'text', value: revise_letter }]],
-                          participants: participants << author
+                          participants: [author]
                          ).save!
       else
         existing_revise_task.first.update!({ completed: false })
         existing_revise_task.first
       end
+    end
+
+    def make_paper_editable!
+      self.paper.update! editable: true
     end
 
     def revise_decision?

@@ -345,7 +345,6 @@ ActiveRecord::Schema.define(version: 20150409212514) do
   add_index "tahi_standard_tasks_funded_authors", ["author_id", "funder_id"], name: "funded_authors_unique_index", unique: true, using: :btree
   add_index "tahi_standard_tasks_funded_authors", ["author_id"], name: "index_tahi_standard_tasks_funded_authors_on_author_id", using: :btree
   add_index "tahi_standard_tasks_funded_authors", ["funder_id"], name: "index_tahi_standard_tasks_funded_authors_on_funder_id", using: :btree
-  add_index "tahi_standard_tasks_funded_authors", ["id"], name: "tahi_standard_tasks_funded_authors_pkey", using: :btree
 
   create_table "tahi_standard_tasks_funders", force: :cascade do |t|
     t.string   "name",                         limit: 255

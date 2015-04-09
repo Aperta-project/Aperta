@@ -1,5 +1,5 @@
 class FlowManagerPage < Page
-  path :flow_manager
+  path :root
 
   def add_column title
     find('.add-flow-column-button').click

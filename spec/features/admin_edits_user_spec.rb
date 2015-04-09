@@ -10,6 +10,10 @@ feature "Admin can edit user details and initiate password reset", js: true do
 
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in user
+
+    within('.navigation') do
+      click_link 'Admin'
+    end
   end
 
   scenario "Admin saves user details" do

@@ -2,18 +2,26 @@ require 'rails_helper'
 
 feature "Displaying task", js: true do
   let(:admin) { create :user, :site_admin }
-  let(:author) { create :user }
-  let!(:journal) { FactoryGirl.create :journal }
-  let!(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, creator: author }
-  let(:task) { Task.where(title: "Assign Admin").first }
+  let(:task) { paper.tasks.first }
+  let!(:paper) do
+    FactoryGirl.create(:paper_with_task,
+      creator: admin,
+      task_params: {
+        title: "Assign Admin"
+      }
+    )
+  end
 
   before do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
+    click_link paper.title
+    click_link "Workflow"
+    find("div.card-content", text: /#{task.title}/).click
   end
 
   scenario "User visits task's show page" do
-    assign_admin_overlay = CardOverlay.visit [task.paper, task]
+    assign_admin_overlay = CardOverlay.new
     expect(assign_admin_overlay).to_not be_completed
 
     assign_admin_overlay.mark_as_complete

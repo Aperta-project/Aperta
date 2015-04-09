@@ -2,11 +2,14 @@ require 'rails_helper'
 
 feature "Profile Page", js: true do
   let(:admin) { create :user, :site_admin }
-  let(:profile_page) { ProfilePage.visit }
+  let(:profile_page) { ProfilePage.new }
 
   before do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
+    within ".navigation" do
+      click_link admin.full_name
+    end
   end
 
   scenario "the page contains user's info if user is signed in" do
@@ -22,12 +25,6 @@ feature "Profile Page", js: true do
     profile_page.submit
     expect(page).to have_content(/name can't be blank/i)
     expect(profile_page).to have_no_application_error
-  end
-
-  scenario "user can delete an affiliation", selenium: true do
-    admin.affiliations.create(name: 'Yoda University')
-    profile_page.remove_affiliate('Yoda University')
-    expect(page).to have_no_content(/Yoda University/)
   end
 
   describe "canceling affiliation creation" do
@@ -46,6 +43,17 @@ feature "Profile Page", js: true do
       find('a', text: 'cancel').click
       find('a', text: 'ADD NEW AFFILIATION').click
       expect(page).to have_no_content("foo")
+    end
+  end
+
+  context "removing an affiliation" do
+
+    let(:admin) { create :user, :with_affiliation, :site_admin }
+    let(:affiliation) { admin.affiliations.last }
+
+    scenario "user can delete an affiliation", selenium: true do
+      profile_page.remove_affiliate(affiliation.name)
+      expect(page).to have_no_content(/#{affiliation.name}/)
     end
   end
 end

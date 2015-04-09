@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150408234143) do
+ActiveRecord::Schema.define(version: 20150409212514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -233,8 +233,8 @@ ActiveRecord::Schema.define(version: 20150408234143) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
+    t.datetime "last_heartbeat_at"
     t.boolean  "editable",                      default: true
     t.text     "doi"
   end
@@ -345,6 +345,7 @@ ActiveRecord::Schema.define(version: 20150408234143) do
   add_index "tahi_standard_tasks_funded_authors", ["author_id", "funder_id"], name: "funded_authors_unique_index", unique: true, using: :btree
   add_index "tahi_standard_tasks_funded_authors", ["author_id"], name: "index_tahi_standard_tasks_funded_authors_on_author_id", using: :btree
   add_index "tahi_standard_tasks_funded_authors", ["funder_id"], name: "index_tahi_standard_tasks_funded_authors_on_funder_id", using: :btree
+  add_index "tahi_standard_tasks_funded_authors", ["id"], name: "tahi_standard_tasks_funded_authors_pkey", using: :btree
 
   create_table "tahi_standard_tasks_funders", force: :cascade do |t|
     t.string   "name",                         limit: 255
@@ -357,6 +358,7 @@ ActiveRecord::Schema.define(version: 20150408234143) do
     t.datetime "updated_at"
   end
 
+  add_index "tahi_standard_tasks_funders", ["id"], name: "tahi_standard_tasks_funders_pkey", using: :btree
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
 
   create_table "tahi_standard_tasks_reviewer_recommendations", force: :cascade do |t|
@@ -433,8 +435,8 @@ ActiveRecord::Schema.define(version: 20150408234143) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username",               limit: 255
-    t.boolean  "site_admin",                         default: false, null: false
     t.string   "avatar",                 limit: 255
+    t.boolean  "site_admin",                         default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

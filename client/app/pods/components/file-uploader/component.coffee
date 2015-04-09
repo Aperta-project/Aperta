@@ -64,7 +64,7 @@ FileUploaderComponent = Ember.TextField.extend
 
       # make get request to setup s3 keys for actual upload
       $.ajax
-        url: "/request_policy",
+        url: "/s3/request_policy",
         type: 'GET',
         dataType: 'json',
         data:

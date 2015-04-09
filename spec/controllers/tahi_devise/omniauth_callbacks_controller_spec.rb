@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Users::OmniauthCallbacksController do
+describe TahiDevise::OmniauthCallbacksController do
 
   before(:each) do
     # tell devise what route we are using
@@ -11,7 +11,7 @@ describe Users::OmniauthCallbacksController do
 
     context "a new orcid user attempts to log into plos" do
       before(:each) do
-        allow_any_instance_of(Users::OmniauthCallbacksController).to receive(:auth).and_return({uid: "uid", provider: "orcid"})
+        allow_any_instance_of(TahiDevise::OmniauthCallbacksController).to receive(:auth).and_return({uid: "uid", provider: "orcid"})
       end
 
       it "will redirect to registration page" do
@@ -25,7 +25,7 @@ describe Users::OmniauthCallbacksController do
       before(:each) do
         user = FactoryGirl.create(:user, :orcid)
         credential = user.credentials.first
-        allow_any_instance_of(Users::OmniauthCallbacksController).to receive(:auth).and_return({uid: credential.uid, provider: credential.provider})
+        allow_any_instance_of(TahiDevise::OmniauthCallbacksController).to receive(:auth).and_return({uid: credential.uid, provider: credential.provider})
       end
 
       it "will redirect to dashboard" do

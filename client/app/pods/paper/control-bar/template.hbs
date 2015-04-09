@@ -52,7 +52,7 @@
       {{#each downloadType in view.supportedDownloadFormats}}
         <a href="#" {{action "export" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
       {{/each}}
-      {{#direct-download-link link=downloadLink}}
+      {{#direct-download-link link=downloadLink extension=".epub"}}
         {{partial "svg/epub-icon"}}
       {{/direct-download-link}}
       {{#direct-download-link link=downloadLink extension=".pdf"}}

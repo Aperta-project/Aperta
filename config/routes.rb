@@ -7,7 +7,6 @@ Tahi::Application.routes.draw do
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
   mount PlosBioTechCheck::Engine => "/"
   mount PlosBilling::Engine => "/"
-  mount TahiSupportingInformation::Engine => "/", as: "tahi_supporting_information"
 
 
   # Test specific
@@ -42,6 +41,7 @@ Tahi::Application.routes.draw do
   # TODO: namespace to api
   #
   constraints format: :json do
+    resources :supporting_information_files, only: [:create, :destroy, :update]
     resources :affiliations, only: [:index, :create, :destroy]
     resources :attachments, only: [:destroy, :update]
     resources :authors, only: [:create, :update, :destroy]

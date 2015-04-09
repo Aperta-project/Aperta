@@ -4,11 +4,10 @@ module JournalServices
       with_noisy_errors do
         mmt = journal.manuscript_manager_templates.create!(paper_type: 'Research')
         task_types = journal.journal_task_types
-        binding.pry
         raise "No task types configured for journal #{journal.id}" unless task_types.present?
 
         phase = mmt.phase_templates.create! name: "Submission Data"
-        make_tasks phase, task_types, TahiStandardTasks::FigureTask, TahiSupportingInformation::SupportingInformationTask, PlosAuthors::PlosAuthorsTask, TahiUploadManuscript::UploadManuscriptTask
+        make_tasks phase, task_types, TahiStandardTasks::FigureTask, TahiStandardTasks::SupportingInformationTask, PlosAuthors::PlosAuthorsTask, TahiUploadManuscript::UploadManuscriptTask
 
         phase = mmt.phase_templates.create! name: "Invite Editor"
         make_tasks phase, task_types, TahiStandardTasks::PaperEditorTask, TahiStandardTasks::TechCheckTask, TahiStandardTasks::PaperAdminTask

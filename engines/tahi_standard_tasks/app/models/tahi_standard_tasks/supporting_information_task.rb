@@ -7,5 +7,9 @@ module TahiStandardTasks
     def file_access_details
       paper.files.map(&:access_details)
     end
+
+    def active_model_serializer
+      TaskSerializer
+    end
   end
 end

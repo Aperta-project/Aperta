@@ -17,8 +17,8 @@ feature "Upload Supporting Information", js: true, selenium: true do
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in author
 
-    allow(TahiSupportingInformation::DownloadSupportingInfoWorker).to receive(:perform_async) do |supporting_info_id, url|
-      supporting_info = TahiSupportingInformation::File.find(supporting_info_id)
+    allow(DownloadSupportingInfoWorker).to receive(:perform_async) do |supporting_info_id, url|
+      supporting_info = SupportingInformationFile.find(supporting_info_id)
       supporting_info.save
     end
 

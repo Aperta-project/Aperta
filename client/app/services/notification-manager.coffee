@@ -2,37 +2,29 @@
 
 NotificationManager = Ember.Service.extend
 
-  eventStream: Ember.inject.service("event-stream")
-  # TODO: remove this once store is a service ember-data#beta-16
-  store: (-> @container.lookup("store:main")).property()
+  # events for paper
+  events: []
+  # defined on the route
+  registeredNotifications: []
+  # displays a green banner
+  currentNotification: null
 
-  actionNames: []
-  actionNotification: null
+  setup: (registeredNotifications, events) ->
+    @setProperties
+      registeredNotifications: registeredNotifications
+      events: events
 
-  setup: (actionNames) ->
-    @set("actionNames", actionNames)
+  teardown: ->
+    @setProperties
+      events: []
+      registeredNotifications: []
+      currentNotification: null
 
-  reset: ->
-    @set("actionNames", [])
-    @dismiss()
+  notify: ->
+    if Ember.isEmpty(@get("currentNotification"))
+      @set("currentNotification", @get("events").firstObject().get("name"))
 
   dismiss: ->
-    @set("actionNotification", null)
-
-  replayEvents: ->
-    eventStream = @get("eventStream")
-    @get('store').all("event").forEach (event) ->
-      eventStream.emitEvent(event, "afterRender")
-
-  notify: (actionName) ->
-    return if Ember.isPresent(@get("actionNotification"))
-    @set("actionNotification", @get("actionNames").find((name) -> actionName == name))
-
-  events: (->
-    actionNotification = @get("actionNotification")
-    return [] if Ember.isEmpty(actionNotification)
-    @get('store').all('event').filter (event) ->
-      event.get("name") == actionNotification
-  ).property('actionNotification')
+    events.
 
 `export default NotificationManager`

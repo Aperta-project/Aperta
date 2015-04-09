@@ -8,6 +8,9 @@
 `import initializeVisualEditor from 'ember-cli-visualeditor/initializers/initialize_visual_editor'`
 
 PaperEditRoute = AuthorizedRoute.extend EventStreamHandler,
+
+  notificationEvents: ["paper.revised"]
+
   fromSubmitOverlay: false
 
   heartbeatService: null
@@ -59,6 +62,7 @@ PaperEditRoute = AuthorizedRoute.extend EventStreamHandler,
     editor.unfreeze()
 
   actions:
+
     viewCard: (task) ->
       paper = @modelFor('paper')
       redirectParams = ['paper.edit', @modelFor('paper')]
@@ -84,12 +88,6 @@ PaperEditRoute = AuthorizedRoute.extend EventStreamHandler,
         @replaceWith('paper.index', @modelFor('paper'))
       else
         @set 'fromSubmitOverlay', false
-
-    "es::paper::revised": (event) ->
-      revisedPaperId = event.get("target.paper")
-      @store.fetchById("paper", revisedPaperId).then (paper) =>
-        if @modelFor("paper").get("id") == paper.get("id")
-          @get("notificationManager").notify(event.get("name"))
 
     openFigures: ->
       controller = @controllerFor('paper.edit')

@@ -32,4 +32,23 @@ feature "Invite Reviewer", js: true do
       # delayed save and the database truncation during test cleanup.  This will fix it for now.
     end
   end
+
+  scenario "displays invitations from the latest round of revisions" do
+    decision = paper.create_decision!
+    (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
+    (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
+
+    dashboard_page = DashboardPage.new
+    manuscript_page = dashboard_page.view_submitted_paper paper
+    manuscript_page.view_card task.title do |overlay|
+      expect(overlay.invitations.count).to eq 2
+    end
+    decision = paper.create_decision!
+    (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
+    page.visit current_path
+    manuscript_page.view_card task.title do |overlay|
+      expect(overlay.invitations.count).to eq 1
+    end
+
+  end
 end

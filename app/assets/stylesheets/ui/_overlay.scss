@@ -45,6 +45,43 @@
   }
 }
 
+.overlay--top {
+  background-color: rgba(57, 163, 41, 0.96);
+  color: $tahi-white;
+  height: 210px;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: z('event-notification');
+
+  .overlay-close-x {
+    display: block;
+    color: $tahi-white;
+    line-height: 58%;
+  }
+
+  .navigation-toggle {
+    color: $tahi-white;
+    pointer-events: none;
+    position: relative;
+    width: 100%;
+
+    &:hover {
+      color: $tahi-white;
+    }
+  }
+
+  .message-text {
+    margin: 20px auto 40px;
+    max-width: 1120px;
+
+    h1 {
+      margin-bottom: 20px;
+    }
+  }
+}
+
 .overlay--fullscreen {
   background-color: rgba(255,255,255, 0.95);
 

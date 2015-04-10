@@ -12,7 +12,10 @@ EventStreamInitializer =
     else
       EventStream
     store = container.lookup('store:main')
-    container.register('eventstream:main', es.extend({store: store}), singleton: true)
+    router = container.lookup('router:main')
+    container.register('eventstream:main', es.extend({store: store, router: router}), singleton: true)
     application.inject('route', 'eventStream', 'eventstream:main')
+    # TODO: shouldn't have to do this
+    application.inject('service', 'eventStream', 'eventstream:main')
 
 `export default EventStreamInitializer`

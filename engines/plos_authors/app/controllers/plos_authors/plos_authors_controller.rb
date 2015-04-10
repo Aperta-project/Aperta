@@ -1,5 +1,6 @@
 module PlosAuthors
   class PlosAuthorsController < ApplicationController
+    include Notifications::ActivityBroadcaster
     before_action :authenticate_user!
     before_action :enforce_policy
 
@@ -7,13 +8,7 @@ module PlosAuthors
 
     def create
       plos_author.save!
-      ActivityFeed.create(
-        feed_name: 'manuscript',
-        activity_key: 'plos_author.created',
-        subject: plos_author.paper,
-        user: current_user,
-        message: "Added Author"
-      )
+      broadcast(event_name: 'plos_author.created', target: plos_author.paper, scope: plos_author.paper, region_name: "paper")
       render json: plos_authors_for(plos_author.paper)
     end
 

@@ -1,10 +1,9 @@
 class TasksController < ApplicationController
+  include Notifications::ActivityBroadcaster
+
   before_action :authenticate_user!
   before_action :enforce_policy
-
   before_action :unmunge_empty_arrays, only: [:update]
-
-  after_action :notify_task_updated!, only: [:update]
 
   respond_to :json
 
@@ -20,10 +19,9 @@ class TasksController < ApplicationController
 
   def update
     task.assign_attributes(task_params(task.class))
-    @task_completion_change = task.completed_changed?
     task.save!
     task.send_emails if task.respond_to?(:send_emails)
-    task.after_update
+    task.after_update(actor: current_user)
     render task.update_responder.new(task, view_context).response
   end
 
@@ -82,16 +80,10 @@ class TasksController < ApplicationController
   end
 
   def notify_task_updated!
-    if @task_completion_change
-      action = task.completed? ? 'complete' : 'incomplete'
-      feed_name = task.submission_task? ? 'manuscript' : 'workflow'
-      ActivityFeed.create(
-        feed_name: feed_name,
-        activity_key: "task.#{action}",
-        subject: task.paper,
-        user: current_user,
-        message: "#{task.title} card was marked as #{action}"
-      )
+    if task.previous_changes[:completed].present?
+      action = task.completed? ? 'completed' : 'uncompleted'
+      region_name = task.submission_task? ? 'paper' : 'workflow'
+      broadcast(event_name: "task::#{action}", target: task, scope: task.paper, region_name: region_name)
     end
   end
 end

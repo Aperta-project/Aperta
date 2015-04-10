@@ -1,12 +1,16 @@
 `import Ember from 'ember'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
+`import NotificationHandler from 'tahi/mixins/routes/notification-handler'`
 `import LazyLoader from 'tahi/mixins/routes/lazy-loader'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Heartbeat from 'tahi/services/heartbeat'`
 `import ENV from 'tahi/config/environment'`
 `import initializeVisualEditor from 'ember-cli-visualeditor/initializers/initialize_visual_editor'`
 
-PaperEditRoute = AuthorizedRoute.extend
+PaperEditRoute = AuthorizedRoute.extend NotificationHandler,
+
+  notificationEvents: ["paper.revised"]
+
   fromSubmitOverlay: false
 
   heartbeatService: null
@@ -58,6 +62,7 @@ PaperEditRoute = AuthorizedRoute.extend
     editor.unfreeze()
 
   actions:
+
     viewCard: (task) ->
       paper = @modelFor('paper')
       redirectParams = ['paper.edit', @modelFor('paper')]
@@ -87,7 +92,7 @@ PaperEditRoute = AuthorizedRoute.extend
     openFigures: ->
       controller = @controllerFor('paper.edit')
       editor = controller.get('editor')
-      editor.freeze();
+      editor.freeze()
       # do not handle model changes while overlay is open
       controller.disconnectEditor()
       controller.set('hasOverlay', true)

@@ -8,6 +8,13 @@ create_update_events = [
   "invitation:updated"
 ]
 
+TahiNotifier.subscribe("task::updated") do |subscription_name, payload|
+  action = payload[:action]
+  record = payload[:record]
+
+  EventStream.new(action, record, subscription_name).post
+end
+
 TahiNotifier.subscribe(create_update_events) do |subscription_name, payload|
   action = payload[:action]
   record = payload[:record]
@@ -15,6 +22,8 @@ TahiNotifier.subscribe(create_update_events) do |subscription_name, payload|
   EventStream.new(action, record, subscription_name).post
 end
 
+# send these down a public channel because once the resource is destroyed, we lose the connection to the user
+# and don't know how to notify them
 TahiNotifier.subscribe("author:destroyed", "task:destroyed", "participation:destroyed", "figure:destroyed", "invitation:destroyed") do |subscription_name, payload|
   action = payload[:action]
   record = payload[:record]

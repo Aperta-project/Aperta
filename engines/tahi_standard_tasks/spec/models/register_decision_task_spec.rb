@@ -152,6 +152,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
     end
 
     context "when the decision is 'revise' and task is completed" do
+      let(:user) { FactoryGirl.create(:user) }
       let(:please_revise_task) do
         task.paper.tasks.detect do |paper_task|
           paper_task.title == 'Please Revise'
@@ -162,7 +163,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
         task.paper.decision = 'revise'
         task.save!
         task.update_attributes completed: true
-        task.after_update
+        task.after_update(actor: user)
       end
 
       it "paper revise event is broadcasted" do
@@ -173,9 +174,20 @@ describe TahiStandardTasks::RegisterDecisionTask do
           event_payload = payload
         end
 
-        task.after_update
+        task.after_update(actor: user)
         expect(event_subscriber).to eq :called
-        expect(event_payload[:paper_id]).to eq(paper.id)
+      end
+
+      it "paper revise event is broadcasted" do
+        event_subscriber = :not_called
+        event_payload = []
+        TahiNotifier.subscribe 'paper.revised' do |_, payload|
+          event_subscriber = :called
+          event_payload = payload
+        end
+
+        task.after_update(actor: user)
+        expect(event_subscriber).to eq :called
       end
 
       it "task is not nil" do

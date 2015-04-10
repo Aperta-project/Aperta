@@ -1,5 +1,6 @@
 class PapersController < ApplicationController
   include AttrSanitize
+  include Notifications::ActivityBroadcaster
 
   before_action :authenticate_user!
   before_action :enforce_policy, except: [:show]
@@ -20,7 +21,7 @@ class PapersController < ApplicationController
 
   def create
     @paper = PaperFactory.create(paper_params, current_user)
-    notify_paper_created! if @paper.valid?
+    notify_paper!(event_name: "paper::created", paper: paper)
     respond_with(@paper)
   end
 
@@ -34,17 +35,19 @@ class PapersController < ApplicationController
       paper.update(update_paper_params)
     end
 
-    notify_paper_edited! if params[:paper][:locked_by_id].present?
+    if params[:paper][:locked_by_id].present?
+      notify_paper!(event_name: "paper::edited", paper: paper)
+    end
 
     respond_with paper
   end
 
   # non RESTful routes
 
-  def activity_feed
+  def activity
     # TODO: params[:name] probably needs some securitifications
-    activity_feeds = ActivityFeed.where(feed_name: params[:name], subject_id: paper.id).order('created_at DESC')
-    respond_with activity_feeds, each_serializer: ActivityFeedSerializer, root: 'feeds'
+    activities = Activity.public.where(region_name: params[:name], scope: paper).order(created_at: :desc)
+    respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 
   def upload
@@ -84,8 +87,14 @@ class PapersController < ApplicationController
 
   def submit
     paper.update(submitted: true, editable: false)
-    status = paper.valid? ? 200 : 422
-    notify_paper_submitted! if paper.valid?
+    if paper.valid?
+      notify_paper!(event_name: "paper::created", paper: paper)
+      # TODO: uncomment!
+      # notify_paper!(event_name: "paper::revised", paper: paper) if paper.revised?
+      status = 200
+    else
+      status = 422
+    end
     render json: paper, status: status
   end
 
@@ -140,40 +149,15 @@ class PapersController < ApplicationController
     strip_tags!(params[:paper], :title)
   end
 
+  def notify_paper!(event_name:, paper:)
+    return unless paper.valid?
+    broadcast(event_name: event_name, target: paper, scope: paper, region_name: "paper")
+  end
+
   def prevent_update_on_locked!
     if paper.locked? && !paper.locked_by?(current_user)
       paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
       raise ActiveRecord::RecordInvalid, paper
     end
-  end
-
-  def notify_paper_created!
-    ActivityFeed.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.created',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was created'
-    )
-  end
-
-  def notify_paper_edited!
-    ActivityFeed.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.edited',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was edited'
-    )
-  end
-
-  def notify_paper_submitted!
-    ActivityFeed.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.submitted',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was submitted'
-    )
   end
 end

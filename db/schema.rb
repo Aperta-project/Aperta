@@ -18,20 +18,22 @@ ActiveRecord::Schema.define(version: 20150407233310) do
   enable_extension "pg_trgm"
   enable_extension "unaccent"
 
-  create_table "activity_feeds", force: :cascade do |t|
-    t.string   "feed_name"
-    t.integer  "subject_id"
-    t.string   "subject_type"
-    t.string   "activity_key"
-    t.string   "message"
-    t.integer  "user_id"
+  create_table "activities", force: :cascade do |t|
+    t.string   "region_name"
+    t.integer  "target_id"
+    t.string   "target_type"
+    t.string   "event_name"
+    t.integer  "actor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "public",      default: true, null: false
+    t.string   "scope_type"
+    t.integer  "scope_id"
   end
 
-  add_index "activity_feeds", ["subject_id"], name: "index_activity_feeds_on_subject_id", using: :btree
-  add_index "activity_feeds", ["subject_type"], name: "index_activity_feeds_on_subject_type", using: :btree
-  add_index "activity_feeds", ["user_id"], name: "index_activity_feeds_on_user_id", using: :btree
+  add_index "activities", ["actor_id"], name: "index_activities_on_actor_id", using: :btree
+  add_index "activities", ["target_id"], name: "index_activities_on_target_id", using: :btree
+  add_index "activities", ["target_type"], name: "index_activities_on_target_type", using: :btree
 
   create_table "affiliations", force: :cascade do |t|
     t.integer  "user_id"

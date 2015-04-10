@@ -12,19 +12,19 @@ class EventStream
     Accessibility.new(record).users.each do |user|
       channel = EventStreamConnection.channel_name(User, user.id)
       payload = payload_for(user)
-      EventStreamConnection.post_event(channel, payload)
+      EventStreamConnection.post_event(channel_name: channel, payload: payload)
     end
   end
 
   def destroy
     channel = EventStreamConnection::SYSTEM_CHANNEL_NAME
-    EventStreamConnection.post_event(channel, destroyed_payload)
+    EventStreamConnection.post_event(channel_name: channel, payload: destroyed_payload)
   end
 
   def destroy_for(user)
     if Accessibility.new(record).disconnected?(user) && user
       channel = EventStreamConnection.channel_name(User, user.id)
-      EventStreamConnection.post_event(channel, destroyed_payload)
+      EventStreamConnection.post_event(channel_name: channel, payload: destroyed_payload)
     end
   end
 

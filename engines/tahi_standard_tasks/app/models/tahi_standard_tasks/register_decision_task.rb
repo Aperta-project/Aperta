@@ -1,5 +1,6 @@
 module TahiStandardTasks
   class RegisterDecisionTask < Task
+    include Notifications::ActivityBroadcaster
 
     # TODO: move these attributes from paper to this task model (https://www.pivotaltracker.com/story/show/84690814)
     delegate :decision, :decision=, :decision_letter, :decision_letter=, to: :paper, prefix: :paper
@@ -11,7 +12,7 @@ module TahiStandardTasks
 
     register_task default_title: "Register Decision", default_role: "editor"
 
-    def after_update
+    def after_update(actor:)
       send_email
 
       if revise_decision?
@@ -22,7 +23,7 @@ module TahiStandardTasks
           update! completed: false
         end
 
-        broadcast_paper_revised_event
+        broadcast_paper_revised_event(actor)
       end
     end
 
@@ -125,8 +126,8 @@ module TahiStandardTasks
 
     private
 
-    def broadcast_paper_revised_event
-      ActiveSupport::Notifications.instrument 'paper.revised', paper_id: paper.id
+    def broadcast_paper_revised_event(actor)
+      broadcast(event_name: "paper.revised", target: paper, scope: paper, region_name: "paper", actor: actor)
     end
 
     def create_please_revise_card!

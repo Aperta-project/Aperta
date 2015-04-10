@@ -1,0 +1,14 @@
+{{#if shouldDisplayNotification}}
+  <div class="overlay--top messaging-overlay animation-slide-in">
+    <span class="overlay-close-x animation-scale-in" {{action "dismiss"}}>&times;</span>
+    <div class="message-header">
+      <div class="navigation-toggle">
+        Tahi
+      </div>
+    </div>
+    <div class="message-text">
+      <h1>{{header}}</h1>
+      <h4>{{message}}</h4>
+    </div>
+  </div>
+{{/if}}

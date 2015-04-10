@@ -13,6 +13,7 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       }
     },
+
     APP: {},
 
     'ember-cli-visualeditor': {

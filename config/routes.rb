@@ -82,6 +82,7 @@ Tahi::Application.routes.draw do
       resources :tasks, only: [:update, :create, :destroy] do
         resources :comments, only: :create
       end
+      resource :user_inbox, only: [:show]
       member do
         get "/status/:id", to: "paper_conversions#status"
         get "activity_feed/:name", to: "papers#activity_feed"
@@ -110,6 +111,7 @@ Tahi::Application.routes.draw do
       get :authorization, on: :collection
       get :potential_flows, on: :collection
     end
+    resources :user_inboxes, only: [:destroy]
     resources :user_roles, only: [:index, :create, :destroy]
 
     # Internal Admin API

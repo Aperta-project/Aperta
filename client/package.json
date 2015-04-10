@@ -40,8 +40,8 @@
     "paths": [
       "../engines/plos_authors/client",
       "../engines/plos_billing/client",
-      "../../../../../.rbenv/versions/2.2.0/lib/ruby/gems/2.2.0/bundler/gems/plos_bio_tech_check-6b0487ab978a/client",
-      "../../../../../.rbenv/versions/2.2.0/lib/ruby/gems/2.2.0/bundler/gems/tahi_epub-6df8cbc6ed8c/client",
+      "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/plos_bio_tech_check-6b0487ab978a/client",
+      "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/tahi_epub-6df8cbc6ed8c/client",
       "../engines/tahi_standard_tasks/client",
       "../engines/tahi_supporting_information/client",
       "../engines/tahi_upload_manuscript/client"

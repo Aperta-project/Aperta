@@ -1,0 +1,17 @@
+@include keyframes(slideIn) {
+  from   { max-height: 0; }
+  to { max-height: 210px; }
+}
+
+@include keyframes(slideOut) {
+  from   { max-height: 210px; }
+  to { max-height: 0px; }
+}
+
+.animation-slide-in {
+  @include animation(slideIn 300ms normal);
+}
+
+.animation-slide-out {
+  @include animation(slideOut 300ms forwards);
+}

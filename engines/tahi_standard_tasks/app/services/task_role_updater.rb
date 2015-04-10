@@ -11,13 +11,20 @@ class TaskRoleUpdater
   def update
     paper.transaction do
       assign_paper_role!
+
+      assign_related_tasks_to_user
+    end
+  end
+
+  private
+
+  def assign_related_tasks_to_user
+    if paper_role_name != PaperRole::REVIEWER
       related_tasks.each do |task|
         ParticipationFactory.create(task, user)
       end
     end
   end
-
-  private
 
   def assign_paper_role!
     @paper.paper_roles.for_role(@paper_role_name).destroy_all

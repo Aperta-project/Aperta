@@ -1,5 +1,5 @@
 <tbody class='active-invitations'>
-  {{#each latestDecision.invitations as |invitation|}}
+  {{#each latestDecisionInvitations as |invitation|}}
   <tr class='invitation'>
     <td><span>{{user-thumbnail user=invitation.invitee classNames='invitee-thumbnail'}}</span></td>
     <td><span class='invitee-full-name'>{{invitation.inviteeFullName}}</span> has been invited</td>

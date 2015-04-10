@@ -143,12 +143,14 @@ ActiveRecord::Schema.define(version: 20150407233310) do
     t.integer  "invitee_id"
     t.integer  "actor_id"
     t.string   "state"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "decision_id"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
   add_index "invitations", ["code"], name: "index_invitations_on_code", unique: true, using: :btree
+  add_index "invitations", ["decision_id"], name: "index_invitations_on_decision_id", using: :btree
   add_index "invitations", ["email"], name: "index_invitations_on_email", using: :btree
   add_index "invitations", ["invitee_id"], name: "index_invitations_on_invitee_id", using: :btree
   add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree

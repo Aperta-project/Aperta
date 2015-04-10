@@ -79,12 +79,10 @@ Tahi::Application.routes.draw do
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show
       resources :figures, only: :create
-      resources :tasks, only: [:update, :create, :show, :destroy] do
+      resources :tasks, only: [:update, :create, :destroy] do
         resources :comments, only: :create
       end
       member do
-        get "/:publisher_prefix/:suffix" => "papers#show",
-            constraints: { publisher_prefix: Doi::PUBLISHER_PREFIX_FORMAT, suffix: Doi::SUFFIX_FORMAT }
         get "/status/:id", to: "paper_conversions#status"
         get "activity_feed/:name", to: "papers#activity_feed"
         get :export, to: "paper_conversions#export"
@@ -142,7 +140,7 @@ Tahi::Application.routes.draw do
 
   # epub/pdf paper download formats
   #
-  resources :papers, only: [], constraints: { format: [:epub, :pdf] } do
+  resources :papers, only: [], constraints: { format: /(pdf|epub)/ } do
     get :download, on: :member
   end
 

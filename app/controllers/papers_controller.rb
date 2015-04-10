@@ -2,18 +2,19 @@ class PapersController < ApplicationController
   include AttrSanitize
 
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:show]
   before_action :sanitize_title, only: [:create, :update]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
   respond_to :json
 
   def show
-    eager_loaded_models = [
+    rel = Paper.includes([
       :figures, :authors, :supporting_information_files, :paper_roles, :journal, :locked_by, :striking_image,
       phases: { tasks: [:questions, :attachments, :participations, :comments] }
-    ]
-    paper = Paper.includes(eager_loaded_models).find(params[:id])
+    ])
+    paper = rel.find(params[:id])
+    authorize_action!(paper: paper)
     respond_with(paper)
   end
 
@@ -127,9 +128,6 @@ class PapersController < ApplicationController
     @paper ||= begin
       if params[:id].present?
         Paper.find(params[:id])
-      elsif params[:publisher_prefix].present? && params[:suffix].present?
-        doi = "#{params[:publisher_prefix]}/#{params[:suffix]}"
-        Paper.find_by!(doi: doi)
       end
     end
   end

@@ -16,7 +16,7 @@ export default DS.Model.extend({
   // is a somewhat well-known ember data bug. we need to manually
   // update the relationship for now.
   updatePaperFiles: function() {
-    var paperFiles = this.get('paper.supportingInformationFiles')
-    paperFiles.addObject(this)
+    var paperFiles = this.get('paper.supportingInformationFiles');
+    paperFiles.addObject(this);
   }.on('didLoad')
 });

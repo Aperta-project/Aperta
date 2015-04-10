@@ -1,6 +1,6 @@
 module TahiStandardTasks
   class RegisterDecisionTaskSerializer < ::TaskSerializer
-    attributes :id, :decision_letters, :paper_decision, :paper_decision_letter
+    attributes :id, :decision_letters, :paper_decision_letter
 
     has_many :decisions, embed: :ids, include: true, serializer: DecisionSerializer
 

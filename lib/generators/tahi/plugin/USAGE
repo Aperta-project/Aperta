@@ -2,7 +2,7 @@ Description:
     Generate a Tahi plugin.
 
 Example:
-    rails generate tahi:task PLUGIN_NAME [PATH]
+    rails generate tahi:plugin PLUGIN_NAME
 
     If PATH is not specified, engines/PLUGIN_NAME will be used.
 

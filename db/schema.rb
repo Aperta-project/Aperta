@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150409212514) do
+ActiveRecord::Schema.define(version: 20150409235153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -229,7 +229,6 @@ ActiveRecord::Schema.define(version: 20150409212514) do
     t.string   "paper_type",        limit: 255
     t.boolean  "submitted",                     default: false, null: false
     t.integer  "journal_id",                                    null: false
-    t.string   "decision",          limit: 255
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"

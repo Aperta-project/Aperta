@@ -4,6 +4,6 @@ class Question < ActiveRecord::Base
 
   validates :ident, presence: true
 
-  after_destroy { |record| record.task.touch }
+  after_destroy { |question| question.task.touch }
 
 end

@@ -98,7 +98,8 @@ export default Ember.Object.extend({
   displayErrorMessagesFromResponse: function(response) {
     for (var key in response.errors) {
       if(!response.errors.hasOwnProperty(key)) { continue; }
-      this.displayMessage('error', this.formatKey(key) + ' ' + response.errors[key].join(', '));
+      if(Ember.isEmpty(response.errors[key]))  { continue; }
+      this.displayMessage('error', this._formatKey(key) + ' ' + response.errors[key].join(', '));
     }
   },
 

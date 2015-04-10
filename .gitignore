@@ -21,3 +21,5 @@ coverage/
 /node_modules
 doc/ux
 public/assets
+Procfile.local
+

@@ -79,7 +79,7 @@ Tahi::Application.routes.draw do
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show
       resources :figures, only: :create
-      resources :tasks, only: [:update, :create, :show, :destroy] do
+      resources :tasks, only: [:update, :create, :destroy] do
         resources :comments, only: :create
       end
       member do
@@ -91,9 +91,6 @@ Tahi::Application.routes.draw do
         put :toggle_editable
         put :upload
       end
-      get "/:publisher_prefix/:suffix" => "papers#show",
-          constraints: { publisher_prefix: Doi::PUBLISHER_PREFIX_FORMAT, suffix: Doi::SUFFIX_FORMAT },
-          on: :collection
     end
     resources :participations, only: [:create, :show, :destroy]
     resources :phase_templates

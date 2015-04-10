@@ -59,12 +59,6 @@ PATH
       rails (~> 4.2.0)
 
 PATH
-  remote: engines/tahi_supporting_information
-  specs:
-    tahi_supporting_information (0.0.1)
-      rails (~> 4.2.0)
-
-PATH
   remote: engines/tahi_upload_manuscript
   specs:
     tahi_upload_manuscript (0.0.1)
@@ -586,7 +580,6 @@ DEPENDENCIES
   sinatra
   tahi_epub!
   tahi_standard_tasks!
-  tahi_supporting_information!
   tahi_upload_manuscript!
   textacular
   thin

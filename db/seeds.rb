@@ -14,7 +14,7 @@ when 'development'
     user.username = 'admin'
     user.site_admin = true
     user.affiliations.first_or_initialize(name: "PLOS")
-    user.user_roles.first_or_initialize(role: plos_journal.roles.find_by(kind: Role::ADMIN))
+    user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::ADMIN))
   end
 
   User.where(email: 'editor@example.com').first_or_create do |user|
@@ -41,7 +41,7 @@ when 'development'
     user.password = 'password'
     user.username = 'flow_manager'
     user.affiliations.first_or_initialize(name: "PLOS")
-    user.roles.new(journal_id: plos_journal.id, name: "Role flow_manager", kind: Role::FLOW_MANAGER)
+    user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::FLOW_MANAGER))
   end
 
   User.where(email: 'author@example.com').first_or_create do |user|
@@ -50,7 +50,7 @@ when 'development'
     user.password = 'password'
     user.username = 'author'
     user.affiliations.first_or_initialize(name: "PLOS")
-    user.roles.new(journal_id: plos_journal.id, name: "Role author")
+    user.roles.new(journal_id: plos_journal.id, name: "Author")
   end
 
   # Create Paper for Admin

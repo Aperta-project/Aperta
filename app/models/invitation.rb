@@ -3,10 +3,12 @@ class Invitation < ActiveRecord::Base
   include AASM
 
   belongs_to :task
+  belongs_to :decision
   has_one :paper, through: :task
   belongs_to :invitee, class_name: "User", inverse_of: :invitations
   belongs_to :actor, class_name: "User", inverse_of: :invitations
   after_destroy :invitation_rescinded
+  before_create :assign_to_latest_decision
 
   aasm column: :state do
     state :pending, initial: true
@@ -35,6 +37,10 @@ class Invitation < ActiveRecord::Base
   end
 
   private
+
+  def assign_to_latest_decision
+    self.decision = paper.latest_decision
+  end
 
   def invitation_rescinded
     task.invitation_rescinded(paper_id: paper.id, invitee_id: invitee.id)

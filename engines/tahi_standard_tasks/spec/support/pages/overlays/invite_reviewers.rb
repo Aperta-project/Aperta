@@ -25,4 +25,16 @@ class InviteReviewersOverlay < CardOverlay
   def remove_all_paper_reviewers!
     all('a.select2-search-choice-close').each &:click
   end
+
+  def total_invitations
+    all '.invitation'
+  end
+
+  def active_invitations
+    all '.invitees .active-invitations .invitation'
+  end
+
+  def expired_invitations
+    all '.invitees .expired-invitations .invitation'
+  end
 end

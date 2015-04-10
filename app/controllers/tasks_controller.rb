@@ -10,12 +10,12 @@ class TasksController < ApplicationController
 
 
   def show
-    respond_with(task)
+    respond_with(task, location: task_url(task))
   end
 
   def create
     task.save
-    respond_with(task)
+    respond_with(task, location: task_url(task))
   end
 
   def update

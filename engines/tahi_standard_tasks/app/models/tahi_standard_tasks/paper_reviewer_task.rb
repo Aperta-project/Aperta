@@ -12,8 +12,8 @@ module TahiStandardTasks
       transaction do
         TaskRoleUpdater.new(self, invitation.invitee_id, PaperRole::REVIEWER).update
         task = TahiStandardTasks::ReviewerReportTask.create!(phase: reviewer_report_task_phase,
-                                                      role: journal_task_type.role,
-                                                      title: "Review by #{invitation.invitee.full_name}")
+                                                             role: journal_task_type.role,
+                                                             title: "Review by #{invitation.invitee.full_name}")
         ParticipationFactory.create(task, invitation.invitee)
       end
     end

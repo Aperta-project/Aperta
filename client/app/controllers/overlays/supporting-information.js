@@ -12,7 +12,7 @@ export default TaskController.extend(FileUploadMixin, {
       this.uploadFinished(data, filename);
       this.store.pushPayload('supportingInformationFile', data);
       // TODO: Do we need these anymore? Ember-Data should handle relationships now
-      file = this.store.getById('supportingInformationFile', data.supporting_information_file.id);
+      var file = this.store.getById('supportingInformationFile', data.supporting_information_file.id);
       this.get('paper.supportingInformationFiles').pushObject(file);
     },
 

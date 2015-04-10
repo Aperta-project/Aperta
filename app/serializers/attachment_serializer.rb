@@ -1,5 +1,5 @@
 class AttachmentSerializer < ActiveModel::Serializer
-  attributes :id, :title, :caption, :src, :status, :preview_src, :attachable
+  attributes :id, :title, :caption, :src, :status, :preview_src, :created_at, :updated_at, :attachable
 
   def src
     object.file.url

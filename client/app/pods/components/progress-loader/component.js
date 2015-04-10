@@ -22,5 +22,9 @@ export default Ember.Component.extend({
     'admin:admin',
     'white:white',
     'large:large'
-  ]
+  ],
+
+  admin: false,
+  white: false,
+  large: false,
 });

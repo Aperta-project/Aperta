@@ -18,16 +18,16 @@
     content: '';
     position: absolute;
   }
-}
 
-.large:after {
-  @include size(50px, 50px);
-}
+  &.large:after {
+    @include size(50px, 50px);
+  }
 
-.admin:after {
-  @include color-way($tahi-blue-dark, $tahi-blue-light);
-}
+  &.admin:after {
+    @include color-way($tahi-blue-dark, $tahi-blue-light);
+  }
 
-.white:after {
-  @include color-way($tahi-grey-light, $tahi-white);
+  &.white:after {
+    @include color-way($tahi-grey-light, $tahi-white);
+  }
 }

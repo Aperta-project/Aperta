@@ -143,7 +143,7 @@ Tahi::Application.routes.draw do
 
   # epub/pdf paper download formats
   #
-  resources :papers, only: [], constraints: { format: [:epub, :pdf] } do
+  resources :papers, only: [], constraints: { format: /(pdf|epub)/ } do
     get :download, on: :member
   end
 

@@ -195,3 +195,22 @@ html[screen="admin"] .navigation-toggle {
 }
 
 // end Main Content
+
+
+.tahi-generic-loading {
+  .quote {
+    display: inline-block;
+    width: 30%;
+    font-size: 1.5em;
+    font-style: italic;
+    text-align: center;
+    position: absolute;
+    top: 30%;
+    right: 35%;
+  }
+
+  .loader-component-circle:after {
+    top: 22%;
+    right: 48% !important;
+  }
+}

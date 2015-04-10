@@ -357,7 +357,6 @@ ActiveRecord::Schema.define(version: 20150409212514) do
     t.datetime "updated_at"
   end
 
-  add_index "tahi_standard_tasks_funders", ["id"], name: "tahi_standard_tasks_funders_pkey", using: :btree
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
 
   create_table "tahi_standard_tasks_reviewer_recommendations", force: :cascade do |t|

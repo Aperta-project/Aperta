@@ -43,7 +43,7 @@ feature "Invite Reviewer", js: true do
 
     paper.create_decision!
 
-    page.visit current_path
+    manuscript_page.reload
     manuscript_page.view_card task.title do |overlay|
       overlay.paper_reviewers = [neil, albert]
       expect(overlay.active_invitations.count).to eq 2

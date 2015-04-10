@@ -49,10 +49,10 @@ feature "Dashboard", js: true do
       SignInPage.visit.sign_in user
       expect(dashboard.active_invitation_count).to eq 2
       decision = paper.create_decision!
-      page.visit current_path
+      dashboard.reload
       expect(dashboard.active_invitation_count).to eq 0
       (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
-      page.visit current_path
+      dashboard.reload
       expect(dashboard.active_invitation_count).to eq 1
     end
   end

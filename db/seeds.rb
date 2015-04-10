@@ -101,5 +101,5 @@ when 'development'
   Rake::Task['data:create_task_types'].invoke
   Rake::Task['journal:create_default_templates'].invoke
 
-  p "Tahi Seeds have been loaded successfully"
+  puts "Tahi Seeds have been loaded successfully"
 end

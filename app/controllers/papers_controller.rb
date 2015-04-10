@@ -13,12 +13,7 @@ class PapersController < ApplicationController
       :figures, :authors, :supporting_information_files, :paper_roles, :journal, :locked_by, :striking_image,
       phases: { tasks: [:questions, :attachments, :participations, :comments] }
     ])
-    paper = if params[:publisher_prefix].present? && params[:suffix].present?
-      doi = "#{params[:publisher_prefix]}/#{params[:suffix]}"
-      rel.find_by!(doi: doi)
-    else
-      rel.find(params[:id])
-    end
+    paper = rel.find(params[:id])
     authorize_action!(paper: paper)
     respond_with(paper)
   end

@@ -14,12 +14,12 @@
   {{/each}}
 </tbody>
 
-{{#each previousDecisions as |decision|}}
+{{#each previousDecisionsWithFilteredInvitations as |decision|}}
 <tr class='revision-human-number'>
   <td colspan=5>Round {{decision.revisionHumanNumber}}</td>
 </tr>
 <tbody class='expired-invitations'>
-  {{#each decision.invitations as |invitation|}}
+  {{#each decision.filteredInvitations as |invitation|}}
   <tr class='invitation'>
     <td><span>{{user-thumbnail user=invitation.invitee classNames='invitee-thumbnail'}}</span></td>
     <td><span class='invitee-full-name'>{{invitation.inviteeFullName}}</span> has been invited</td>

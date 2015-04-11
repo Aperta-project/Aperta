@@ -5,7 +5,7 @@ ProfileRoute = Ember.Route.extend
     @currentUser
 
   afterModel: (model) ->
-    Ember.$.getJSON('/affiliations', (data)->
+    Ember.$.getJSON('/api/affiliations', (data)->
       model.set('institutions', data.institutions)
     )
 

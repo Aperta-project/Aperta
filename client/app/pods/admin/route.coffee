@@ -3,7 +3,7 @@
 
 AdminRoute = AuthorizedRoute.extend
   beforeModel: ->
-    Ember.$.ajax '/admin/journals/authorization'
+    Ember.$.ajax '/api/admin/journals/authorization'
 
   actions:
     viewUserDetails: (user) ->

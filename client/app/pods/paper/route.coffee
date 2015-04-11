@@ -17,7 +17,7 @@ PaperRoute = Ember.Route.extend
           supportedExportFormats.pushObject({format: dataType, icon: "svg/#{dataType}-icon"})
         controller.set('supportedDownloadFormats', supportedExportFormats)
 
-    Ember.$.getJSON('/formats', setFormats)
+    Ember.$.getJSON('/api/formats', setFormats)
 
   actions:
     addContributors: ->

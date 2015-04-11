@@ -8,7 +8,7 @@ PaperManageRoute = AuthorizedRoute.extend
     promise = new Ember.RSVP.Promise (resolve, reject) ->
       Ember.$.ajax
         method:  'GET'
-        url:     "/papers/#{paper.get('id')}/manuscript_manager"
+        url:     "/api/papers/#{paper.get('id')}/manuscript_manager"
         success: (json) -> Ember.run(null, resolve, json)
         error:   (xhr, status, error) -> Ember.run(null, reject, xhr)
 

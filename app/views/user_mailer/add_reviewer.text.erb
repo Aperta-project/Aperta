@@ -2,6 +2,6 @@ Hello <%= @reviewer_name %>,
 
 You've been assigned as a reviewer on a paper titled <%= @paper.display_title %>:
 
-<%= paper_url(@paper) %>
+<%= root_url + "/papers/#{@paper.id}" %>
 
 We look forward to your contributions!

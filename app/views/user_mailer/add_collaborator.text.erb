@@ -2,6 +2,6 @@ Hello <%= @invitee_name %>
 
 <%= @invitor_name %> just added you as a contributor to a paper titled "<%= @paper.display_title %>." Visit this link to view the paper in Tahi:
 
-<%= "#{paper_url(@paper.id)}/edit" %>
+<%= root_url + "/papers/#{@paper.id}/edit" %>
 
 Team Tahi

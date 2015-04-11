@@ -19,6 +19,7 @@ Tahi::Application.routes.draw do
     post "/update_stream" => StreamServer
     mount UploadServer, at: "/fake_s3/"
   elsif Rails.env.development?
+    get "/styleguide" => "styleguide#index"
     mount EmberCLI::Engine => "ember-tests"
   end
 

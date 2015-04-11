@@ -1,6 +1,6 @@
-`import DS from 'ember-data'`
+`import ApplicationAdapter from 'tahi/adapters/application'`
 
-FeedbackAdapter = DS.ActiveModelAdapter.extend
+FeedbackAdapter = ApplicationAdapter.extend
   pathForType: (type) ->
     'feedback'
 

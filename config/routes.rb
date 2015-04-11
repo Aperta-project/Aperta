@@ -40,7 +40,7 @@ Tahi::Application.routes.draw do
   # Internal API
   # TODO: namespace to api
   #
-  constraints format: :json do
+  scope '/api', constraints: { format: :json } do
     resources :supporting_information_files, only: [:create, :destroy, :update]
     resources :affiliations, only: [:index, :create, :destroy]
     resources :attachments, only: [:destroy, :update]

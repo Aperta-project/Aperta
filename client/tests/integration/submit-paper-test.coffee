@@ -32,7 +32,7 @@ module 'Integration: Submitting Paper',
     paperPayload.addRecords(records.concat([fakeUser]))
     paperResponse = paperPayload.toJSON()
 
-    server.respondWith 'GET', "/papers/#{currentPaper.id}", [
+    server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
 
@@ -43,15 +43,15 @@ module 'Integration: Submitting Paper',
         total_page_count: 0
       ]
 
-    server.respondWith 'PUT', "/papers/#{currentPaper.id}", [
+    server.respondWith 'PUT', "/api/papers/#{currentPaper.id}", [
       204, {"Content-Type": "application/html"}, ""
     ]
 
-    server.respondWith 'PUT', "/papers/#{currentPaper.id}/submit", [
+    server.respondWith 'PUT', "/api/papers/#{currentPaper.id}/submit", [
       200, {"Content-Type": "application/json"}, JSON.stringify({papers: []})
     ]
 
-    server.respondWith 'GET', '/dashboards', [
+    server.respondWith 'GET', '/api/dashboards', [
       200, 'Content-Type': 'application/json', JSON.stringify(dashboardResponse)
     ]
 
@@ -62,4 +62,4 @@ test "User can submit a paper", ->
   click("button.button-submit-paper")
 
   andThen ->
-    ok _.findWhere(server.requests, {method: "PUT", url: "/papers/#{currentPaper.id}/submit"}), "It posts to the server"
+    ok _.findWhere(server.requests, {method: "PUT", url: "/api/papers/#{currentPaper.id}/submit"}), "It posts to the server"

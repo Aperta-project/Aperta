@@ -44,16 +44,16 @@ module 'Integration: EditPaper',
       info: "testroles2, collaborator"
     ]
 
-    server.respondWith 'GET', "/papers/#{currentPaper.id}", [
+    server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
-    server.respondWith 'GET', "/tasks/#{figureTaskId}", [
+    server.respondWith 'GET', "/api/tasks/#{figureTaskId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify figureTaskResponse
     ]
-    server.respondWith 'PUT', /\/tasks\/\d+/, [
+    server.respondWith 'PUT', /\/api\/tasks\/\d+/, [
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
-    server.respondWith 'GET', /\/filtered_users\/users\/\d+/, [
+    server.respondWith 'GET', /\/api\/filtered_users\/users\/\d+/, [
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
@@ -92,7 +92,7 @@ test 'on paper.edit when there are no metadata tasks', ->
   paperPayload.addRecords(records.concat([fakeUser]))
   paperResponse = paperPayload.toJSON()
 
-  server.respondWith 'GET', "/papers/#{currentPaper.id}", [
+  server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
   ]
 
@@ -115,7 +115,7 @@ test 'on paper.index when there are no metadata tasks', ->
   paperPayload.addRecords(records.concat([fakeUser]))
   paperResponse = paperPayload.toJSON()
 
-  server.respondWith 'GET', "/papers/#{currentPaper.id}", [
+  server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
   ]
 

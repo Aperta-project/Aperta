@@ -25,15 +25,15 @@ module "Integration: adding an author",
     app = startApp()
     testHelper = TestHelper.setup(app)
 
-    $.mockjax(url: "/admin/journals/authorization", status: 204)
-    $.mockjax(url: "/user_flows/authorization", status: 204)
+    $.mockjax(url: "/api/admin/journals/authorization", status: 204)
+    $.mockjax(url: "/api/user_flows/authorization", status: 204)
 
     phase = FactoryGuy.make("phase")
     task = FactoryGuy.make("plos-authors-task", { phase: phase })
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task], editable: true })
 
     $.mockjax
-      url: "/plos_authors"
+      url: "/api/plos_authors"
       status: 201
       responseText: {
         plos_authors:[

@@ -61,29 +61,29 @@ module 'Integration: Dashboard',
 
     adminJournalsResponse = {}
 
-    server.respondWith 'GET', '/dashboards', [
+    server.respondWith 'GET', '/api/dashboards', [
       200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
     ]
 
-    server.respondWith 'GET', '/comment_looks', [
+    server.respondWith 'GET', '/api/comment_looks', [
       200, 'Content-Type': 'application/json', JSON.stringify {comment_looks: []}
     ]
 
-    server.respondWith 'GET', '/admin/journals', [
+    server.respondWith 'GET', '/api/admin/journals', [
       200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
     ]
 
-    server.respondWith 'GET', "/admin/journals/authorization", [
+    server.respondWith 'GET', "/api/admin/journals/authorization", [
       204, "Content-Type": "application/html", ""
     ]
 
     # end_index: (page number * 15) - 1
     # begin_index: end_index - 15
-    server.respondWith 'GET', '/lite_papers?page_number=2', [
+    server.respondWith 'GET', '/api/lite_papers?page_number=2', [
       200, 'Content-Type': 'application/json', JSON.stringify (lite_papers: litePapersResponse.lite_papers[15..29])
     ]
 
-    server.respondWith 'GET', '/lite_papers?page_number=3', [
+    server.respondWith 'GET', '/api/lite_papers?page_number=3', [
       200, 'Content-Type': 'application/json', JSON.stringify (lite_papers: litePapersResponse.lite_papers[30..paperCount - 1])
     ]
 

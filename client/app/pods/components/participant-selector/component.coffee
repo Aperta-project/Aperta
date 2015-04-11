@@ -41,7 +41,7 @@ ParticipantSelectorComponent = Ember.Component.extend
         0
 
   remoteSource: (->
-    url: "/filtered_users/users/#{@get('paperId')}/"
+    url: "/api/filtered_users/users/#{@get('paperId')}/"
     dataType: "json"
     quietMillis: 500
     data: (term) ->

@@ -2,11 +2,11 @@ require 'sidekiq/web'
 require 'sidetiq/web'
 
 Tahi::Application.routes.draw do
-  mount TahiStandardTasks::Engine => "/", as: "standard_tasks"
-  mount PlosAuthors::Engine => "/", as: "plos_custom_authors"
+  mount TahiStandardTasks::Engine => "/api", as: "standard_tasks"
+  mount PlosAuthors::Engine => "/api", as: "plos_custom_authors"
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
-  mount PlosBioTechCheck::Engine => "/"
-  mount PlosBilling::Engine => "/"
+  mount PlosBioTechCheck::Engine => "/api"
+  mount PlosBilling::Engine => "/api"
 
 
   # Test specific

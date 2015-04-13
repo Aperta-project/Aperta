@@ -36,15 +36,15 @@ test 'show download links on control bar', ->
   paperResponse = paperPayload.toJSON()
 
   jobId = '232134-324-1234-1234'
-  exportUrl = "/papers/#{currentPaper.id}/export?format=docx"
+  exportUrl = "/api/papers/#{currentPaper.id}/export?format=docx"
 
-  server.respondWith 'GET', "/papers/#{currentPaper.id}", [
+  server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify(paperResponse)
   ]
   server.respondWith 'GET', exportUrl, [
     200, {"Content-Type": "application/json"}, JSON.stringify({job: { id: "#{jobId}" }})
   ]
-  server.respondWith 'GET', "/papers/#{currentPaper.id}/status/#{jobId}", [
+  server.respondWith 'GET', "/api/papers/#{currentPaper.id}/status/#{jobId}", [
     200, {"Content-Type": "application/json"}, JSON.stringify({
       "job": {
         "state": "converted",

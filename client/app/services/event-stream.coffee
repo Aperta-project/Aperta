@@ -44,7 +44,7 @@ EventStream = Ember.Object.extend
     @pause()
     @stop()
     params =
-      url: '/event_stream'
+      url: '/api/event_stream'
       method: 'GET'
       success: (data) =>
         return if data.enabled == 'false'

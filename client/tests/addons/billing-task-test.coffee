@@ -42,16 +42,16 @@ module 'Integration: Billing',
       info: "testroles2, collaborator"
     ]
 
-    server.respondWith 'GET', "/papers/#{currentPaper.id}", [
+    server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
-    server.respondWith 'GET', "/tasks/#{billingTaskId}", [
+    server.respondWith 'GET', "/api/tasks/#{billingTaskId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify billingTaskResponse
     ]
-    server.respondWith 'PUT', /\/tasks\/\d+/, [
+    server.respondWith 'PUT', /\/api\/tasks\/\d+/, [
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
-    server.respondWith 'GET', /\/filtered_users\/users\/\d+/, [
+    server.respondWith 'GET', /\/api\/filtered_users\/users\/\d+/, [
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
@@ -63,4 +63,3 @@ test 'Viewing card', ->
   click '.select2-choice'
   .then ->
     ok Ember.$('.select2-result').length > 0
-    

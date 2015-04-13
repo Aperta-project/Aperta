@@ -31,7 +31,7 @@ PaperEditRoute = AuthorizedRoute.extend
     controller.set('model', model)
     controller.set('commentLooks', @store.all('commentLook'))
     if @currentUser
-      RESTless.authorize(controller, "/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
+      RESTless.authorize(controller, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
 
   deactivate: ->
     @endHeartbeat()

@@ -7,7 +7,7 @@ JournalThumbnailController = Ember.ObjectController.extend FileUploadMixin, Vali
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isEditing: (-> @get 'model.isDirty').property()
   thumbnailId: (-> "journal-logo-#{@get 'model.id'}").property()
-  logoUploadUrl: (-> "/admin/journals/#{@get 'model.id'}/upload_logo").property('model.id')
+  logoUploadUrl: (-> "/api/admin/journals/#{@get 'model.id'}/upload_logo").property('model.id')
   logoPreview: null
   journal: null
   uploadLogoFunction: null

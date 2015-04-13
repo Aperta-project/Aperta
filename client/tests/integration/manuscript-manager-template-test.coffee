@@ -45,40 +45,40 @@ module 'Integration: Manuscript Manager Templates',
     admin = Factory.createRecord('User', siteAdmin: true)
 
     # let us see the manuscript template manager
-    server.respondWith 'GET', /\/flows\/authorization/, [
+    server.respondWith 'GET', /\/api\/flows\/authorization/, [
       204, 'Tahi-Authorization-Check': 'true', ""
     ]
 
-    server.respondWith 'GET', "/admin/journals/1", [
+    server.respondWith 'GET', "/api/admin/journals/1", [
       200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalResponse)
     ]
 
-    server.respondWith 'GET', "/admin/journals/authorization", [
+    server.respondWith 'GET', "/api/admin/journals/authorization", [
       204, "Content-Type": "application/html", ""
     ]
 
-    server.respondWith 'GET', "/users/#{admin.id}", [
+    server.respondWith 'GET', "/api/users/#{admin.id}", [
       200, 'Content-Type': 'application/json', JSON.stringify {user: admin}
     ]
 
-    server.respondWith 'DELETE', "/task_templates/1", [
+    server.respondWith 'DELETE', "/api/task_templates/1", [
       204, "Content-Type": "application/json", JSON.stringify {}
     ]
 
     # related to "save templates" button
-    server.respondWith 'PUT', "/manuscript_manager_templates/1", [
+    server.respondWith 'PUT', "/api/manuscript_manager_templates/1", [
       200, {"Content-Type": "application/json"}, '{}'
     ]
 
-    server.respondWith 'PUT', "/phase_templates/1", [
+    server.respondWith 'PUT', "/api/phase_templates/1", [
       200, {"Content-Type": "application/json"}, '{}'
     ]
 
-    server.respondWith 'POST', "/manuscript_manager_templates/1", [
+    server.respondWith 'POST', "/api/manuscript_manager_templates/1", [
       200, {"Content-Type": "application/json"}, '{}'
     ]
 
-    server.respondWith 'POST', "/phase_templates/1", [
+    server.respondWith 'POST', "/api/phase_templates/1", [
       200, {"Content-Type": "application/json"}, '{}'
     ]
     response = {
@@ -100,7 +100,7 @@ module 'Integration: Manuscript Manager Templates',
       }
     }
 
-    server.respondWith 'POST', "/task_templates", [
+    server.respondWith 'POST', "/api/task_templates", [
       200, {"Content-Type": "application/json"}, JSON.stringify(response)
     ]
 
@@ -184,5 +184,5 @@ test 'click delete confirmation overlay submit button', ->
   andThen ->
     equal find(".card-content").length, 0, "The card is gone"
   andThen ->
-    search = { method: "DELETE", url: "/task_templates/1" }
+    search = { method: "DELETE", url: "/api/task_templates/1" }
     ok _.findWhere(server.responses, search), "It sends DELETE request to the server"

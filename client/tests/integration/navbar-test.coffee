@@ -19,7 +19,7 @@ module 'Integration: Navbar',
 
     dashboardResponse = dashboards: [ id: 1 ]
 
-    server.respondWith 'GET', '/dashboards', [
+    server.respondWith 'GET', '/api/dashboards', [
       200, 'Content-Type': 'application/json', JSON.stringify(dashboardResponse)
     ]
 
@@ -30,24 +30,24 @@ respondAuthorized = ->
       name: "Test Journal of America"
     ]
 
-  server.respondWith 'GET', '/admin/journals', [
+  server.respondWith 'GET', '/api/admin/journals', [
     200, 'Content-Type': 'application/json', JSON.stringify(adminJournalsResponse)
   ]
 
-  server.respondWith 'GET', "/admin/journals/authorization", [
+  server.respondWith 'GET', "/api/admin/journals/authorization", [
     204, "Content-Type": "application/html", ""
   ]
 
-  server.respondWith 'GET', '/user_flows/authorization', [
+  server.respondWith 'GET', '/api/user_flows/authorization', [
     204, 'content-type': 'application/html', ""
   ]
 
 respondUnauthorized = ->
-  server.respondWith 'GET', '/admin/journals/authorization', [
+  server.respondWith 'GET', '/api/admin/journals/authorization', [
     403, 'content-type': 'application/html', ""
   ]
 
-  server.respondWith 'GET', '/user_flows/authorization', [
+  server.respondWith 'GET', '/api/user_flows/authorization', [
     403, 'content-type': 'application/html', ""
   ]
 

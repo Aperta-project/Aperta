@@ -2,6 +2,7 @@
 
 CheckBoxComponent = Ember.Component.extend
   classNames: ["ember-checkbox"]
+  classNameBindings: ["class"]
   tagName: "input"
   attributeBindings: "type checked indeterminate disabled tabindex name autofocus form value".w()
 

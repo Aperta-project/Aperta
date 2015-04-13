@@ -25,23 +25,23 @@ module "Integration: inviting an editor",
     app = startApp()
     testHelper = TestHelper.setup(app)
 
-    $.mockjax(url: "/admin/journals/authorization", status: 204)
-    $.mockjax(url: "/user_flows/authorization", status: 204)
+    $.mockjax(url: "/api/admin/journals/authorization", status: 204)
+    $.mockjax(url: "/api/user_flows/authorization", status: 204)
     $.mockjax
-      url: "/formats"
+      url: "/api/formats"
       status: 200
       responseText:
         "export_formats": [{ "format": "docx" }, { "format": "latex" }]
         "import_formats": [{ "format": "docx" }, { "format": "odt" }]
     $.mockjax
-      url: /\/papers\/\d+\/manuscript_manager/
+      url: /\/api\/papers\/\d+\/manuscript_manager/
       status: 204
       contentType: "application/html"
       headers: { 'tahi-authorization-check': true }
       responseText: ""
 
     $.mockjax
-      url: /filtered_users/
+      url: /\/api\/filtered_users/
       status: 200
       contentType: "application/json"
       responseText:
@@ -53,7 +53,7 @@ module "Integration: inviting an editor",
 
 test "displays the email of the invitee", ->
   $.mockjax
-    url: /filtered_users/
+    url: /\/api\/filtered_users/
     status: 200
     contentType: "application/json"
     responseText:
@@ -80,7 +80,7 @@ test "can withdraw the invitation", ->
 
   $.mockjax
     proxyType: "DELETE"
-    url: "/invitations/#{invitation.get('id')}"
+    url: "/api/invitations/#{invitation.get('id')}"
     status: 204
 
   click(".button-primary:contains('Withdraw invitation')")

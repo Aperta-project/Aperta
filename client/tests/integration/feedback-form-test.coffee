@@ -28,15 +28,15 @@ module 'Integration: Feedback Form',
         total_page_count: 1
       ]
 
-    server.respondWith 'GET', '/dashboards', [
+    server.respondWith 'GET', '/api/dashboards', [
       200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
     ]
 
-    server.respondWith 'GET', "/admin/journals/authorization", [
+    server.respondWith 'GET', "/api/admin/journals/authorization", [
       204, "Content-Type": "application/html", ""
     ]
 
-    server.respondWith 'POST', "/feedback", [
+    server.respondWith 'POST', "/api/feedback", [
       201, "Content-Type": "application/json", "{}"
     ]
 

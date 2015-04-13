@@ -24,11 +24,11 @@ class AddAuthorsOverlay < CardOverlay
 
   private
   def fill_in_author_form(author)
-    fill_in "first-name", with: author[:first_name]
-    fill_in "mi", with: author[:middle_initial]
-    fill_in "last-name", with: author[:last_name]
-    fill_in "email", with: author[:email]
-    fill_in "title", with: author[:title]
-    fill_in "department", with: author[:department]
+    page.find(".add-author-form input.author-first").set(author[:first_name])
+    page.find(".add-author-form input.author-middle").set(author[:middle_initial])
+    page.find(".add-author-form input.author-last").set(author[:last_name])
+    page.find(".add-author-form input.author-email").set(author[:email])
+    page.find(".add-author-form input.author-title").set(author[:title])
+    page.find(".add-author-form input.author-department").set(author[:department])
   end
 end

@@ -32,19 +32,19 @@ module 'Integration: Flow Manager Administration',
     adminJournalPayload = Factory.createPayload('adminJournal')
     adminJournalPayload.addRecords([journal, adminRole])
 
-    server.respondWith 'GET', "/admin/journals/#{journal.id}", [
+    server.respondWith 'GET', "/api/admin/journals/#{journal.id}", [
       200, "Content-Type": "application/json", JSON.stringify(adminJournalPayload.toJSON())
     ]
 
-    server.respondWith 'GET', "/admin/journals/authorization", [
+    server.respondWith 'GET', "/api/admin/journals/authorization", [
       204, "Content-Type": "application/html", ""
     ]
 
-    server.respondWith 'GET', '/user_flows/authorization', [
+    server.respondWith 'GET', '/api/user_flows/authorization', [
       204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
     ]
 
-    server.respondWith 'GET', "/admin/journal_users?journal_id=#{journal.id}", [
+    server.respondWith 'GET', "/api/admin/journal_users?journal_id=#{journal.id}", [
       200, "Content-Type": "application/json", JSON.stringify { admin_journal_users: [] }
     ]
 

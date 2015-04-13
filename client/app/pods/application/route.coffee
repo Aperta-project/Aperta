@@ -6,8 +6,8 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
   setupController: (controller, model) ->
     controller.set('model', model)
     if @currentUser
-      RESTless.authorize(controller, '/admin/journals/authorization', 'canViewAdminLinks')
-      RESTless.authorize(controller, '/user_flows/authorization', 'canViewFlowManagerLink')
+      RESTless.authorize(controller, '/api/admin/journals/authorization', 'canViewAdminLinks')
+      RESTless.authorize(controller, '/api/user_flows/authorization', 'canViewFlowManagerLink')
 
   actions:
     willTransition: (transition) ->

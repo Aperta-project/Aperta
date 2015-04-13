@@ -6,7 +6,7 @@ DocumentDownloadService = Ember.Namespace.create
     @paperId = paperId
     @downloadFormat = downloadFormat
     Ember.$.ajax
-      url: "/papers/#{@paperId}/export",
+      url: "/api/papers/#{@paperId}/export",
       data: {format: @downloadFormat}
       success: (data) =>
         jobId = data['job']['id']
@@ -18,7 +18,7 @@ DocumentDownloadService = Ember.Namespace.create
     status = ""
     @timeout = 2000
     Ember.$.ajax
-      url: "/papers/#{@paperId}/status/#{jobId}",
+      url: "/api/papers/#{@paperId}/status/#{jobId}",
       success: (data) =>
         job = data['job']
         if job.state == "completed"

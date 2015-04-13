@@ -33,7 +33,7 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
     user.email || user.get('email')
 
   select2RemoteUrl: Ember.computed 'model.paper', ->
-    "/filtered_users/editors/#{@get 'model.paper.id'}/"
+    "/api/filtered_users/editors/#{@get 'model.paper.id'}/"
 
   actions:
 

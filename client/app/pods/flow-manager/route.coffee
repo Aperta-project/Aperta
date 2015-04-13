@@ -25,7 +25,7 @@ FlowManagerRoute = AuthorizedRoute.extend
       controller = @controllerFor('overlays/chooseNewFlowManagerColumn')
       controller.set 'isLoading', true
 
-      RESTless.get('/user_flows/potential_flows').then (data) ->
+      RESTless.get('/api/user_flows/potential_flows').then (data) ->
         controller.set 'isLoading', false
         controller.set('flows' , data.flows)
 

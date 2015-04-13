@@ -31,7 +31,7 @@ namespace :tahi do
 
     # modify route
     needle = "### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###"
-    insert_after("config/routes.rb", needle, "  mount #{engine_module}::Engine => '/'")
+    insert_after("config/routes.rb", needle, "  mount #{engine_module}::Engine => '/api'")
 
     # modify application.scss
     needle = "// DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE"

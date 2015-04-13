@@ -8,6 +8,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
   selectedReviewer: null
   resultsTemplate: (user) -> user.email
   selectedTemplate: (user) -> user.email
+
   latestDecision: Ember.computed 'model.decisions.@each.isLatest', ->
     @get('model.decisions').findBy 'isLatest', true
 

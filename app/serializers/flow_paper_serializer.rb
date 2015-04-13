@@ -1,5 +1,5 @@
 class FlowPaperSerializer < ActiveModel::Serializer
-  attributes :id, :short_title, :title, :decision, :decision_letter, :authors
+  attributes :id, :short_title, :title, :decision_letter, :authors
   has_many :phases, embed: :ids, include: true
   # Flow manager page makes a request for the journal when updating the paper,
   # but we just need the id..? Would prefer to not have to include journal to

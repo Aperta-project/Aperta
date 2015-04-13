@@ -84,8 +84,11 @@ describe TahiStandardTasks::RegisterDecisionTask do
     let(:paper) {
       FactoryGirl.create(:paper, :with_tasks,
         title: "Crazy stubbing tests on rats",
-        decision: "Accepted",
         decision_letter: "Lorem Ipsum")
+    }
+
+    let(:decision) {
+      paper.decisions.first
     }
 
     let(:task) {
@@ -97,19 +100,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
 
     before do
       allow(task).to receive(:paper).and_return(paper)
-    end
-
-    describe "#paper_decision" do
-      it "returns paper's decision" do
-        expect(task.paper_decision).to eq("Accepted")
-      end
-    end
-
-    describe "#paper_decision=" do
-      it "returns paper's decision" do
-        task.paper_decision = "Rejected"
-        expect(task.paper_decision).to eq("Rejected")
-      end
     end
 
     describe "#paper_decision_letter" do
@@ -145,21 +135,19 @@ describe TahiStandardTasks::RegisterDecisionTask do
     context "when the decision is 'revise' and task is incomplete" do
       it "does not create a new task for the paper" do
         expect {
-          task.paper.decision = 'revise'
           task.save!
         }.to_not change { task.paper.tasks.size }
       end
     end
 
     context "when the decision is 'revise' and task is completed" do
-      let(:please_revise_task) do
+      let(:revise_task) do
         task.paper.tasks.detect do |paper_task|
-          paper_task.title == 'Please Revise'
+          paper_task.type == "TahiStandardTasks::ReviseTask"
         end
       end
 
       before do
-        task.paper.decision = 'revise'
         task.save!
         task.update_attributes completed: true
         task.after_update
@@ -178,25 +166,36 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(event_payload[:paper_id]).to eq(paper.id)
       end
 
-      it "task is not nil" do
-        expect(please_revise_task).to_not be_nil
+      it "task has no participants" do
+        expect(task.participants).to be_empty
       end
 
-      it "task has paper" do
-        expect(please_revise_task.paper).to eq paper
+      it "task participants does not include author" do
+        expect(task.participants).to_not include paper.creator
       end
 
-      it "task role is `user`" do
-        expect(please_revise_task.role).to eq 'user'
+      describe " Revise Task" do
+        it "task is not nil" do
+          expect(revise_task).to_not be_nil
+        end
+
+        it "task has paper" do
+          expect(revise_task.paper).to eq paper
+        end
+
+        it "task role is `author`" do
+          expect(revise_task.role).to eq 'author'
+        end
+
+        it "task participants include the paper's author" do
+          expect(revise_task.participants).to eq [paper.creator]
+        end
+
+        it "task body includes the revise letter" do
+          expect(revise_task.body.first.first['value']).to include task.revise_letter
+        end
       end
 
-      it "task participants include the paper's author" do
-        expect(please_revise_task.participants).to eq [paper.creator]
-      end
-
-      it "task body includes the revise letter" do
-        expect(please_revise_task.body.first.first['value']).to include task.revise_letter
-      end
     end
   end
 end

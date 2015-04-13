@@ -1,4 +1,4 @@
-`import TaskController from 'tahi/pods/task/controller';`
+`import TaskController from 'tahi/pods/task/controller'`
 
 FinancialDisclosureOverlayController = TaskController.extend
   task: Em.computed.alias("model")
@@ -7,8 +7,6 @@ FinancialDisclosureOverlayController = TaskController.extend
 
   # ye olde tri-state boolean (explicit selection)
   receivedFunding: null
-  explicitNo: Ember.computed.equal('receivedFunding', false)
-  explicitYes: Ember.computed.equal('receivedFunding', true)
 
   numFundersObserver: (->
     # No explicitly chosen, bail

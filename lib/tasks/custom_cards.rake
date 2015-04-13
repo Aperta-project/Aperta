@@ -13,7 +13,9 @@ namespace :tahi do
                else
                  'path'
                end
-    engine_name = path.split(/\//)[-1].gsub(/^tahi-/, '').gsub(/.git$/, '')
+    engine_name = path.split(/\//)[-1].gsub(/.git$/, '')
+    engine_path = engine_name.gsub(/-/, '/')
+    engine_module = engine_path.classify
     insert_after('Gemfile', needle, "gem '#{engine_name}', #{gem_type}: '#{path}'")
     Bundler.with_clean_env do
       sh 'bundle install'
@@ -29,11 +31,11 @@ namespace :tahi do
 
     # modify route
     needle = "### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###"
-    insert_after("config/routes.rb", needle, "  mount #{engine_name.camelize}::Engine => '/'")
+    insert_after("config/routes.rb", needle, "  mount #{engine_module}::Engine => '/'")
 
     # modify application.scss
     needle = "// DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE"
-    insert_after("app/assets/stylesheets/application.scss", needle, "@import '#{engine_name}/application';")
+    insert_after("app/assets/stylesheets/application.scss", needle, "@import '#{engine_path}/application';")
   end
 
   def relative_path(to, from)

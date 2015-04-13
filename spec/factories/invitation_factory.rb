@@ -6,6 +6,7 @@ FactoryGirl.define do
     association(:task, factory: :task)
     association(:invitee, factory: :user)
     association(:actor, factory: :user)
+    association(:decision, factory: :decision)
 
     after(:build) do |invitation, evaluator|
       invitation.email = evaluator.invitee.email

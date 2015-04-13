@@ -24,9 +24,28 @@ class TestTask < Task
 end
 
 describe Invitation do
-  let(:phase) { FactoryGirl.create(:phase) }
-  let(:task) { phase.tasks.create(type: "TestTask", title: "Test", role: "user") }
-  let(:invitation) { FactoryGirl.build(:invitation, task: task) }
+  let(:phase) { FactoryGirl.create :phase }
+  let(:task) { phase.tasks.create type: "TestTask", title: "Test", role: "user" }
+  let(:invitation) { FactoryGirl.build :invitation, task: task }
+
+  describe '#create' do
+    it "belongs to the paper's latest decision" do
+      invitation.save!
+      expect(phase.paper.latest_decision.invitations).to include invitation
+    end
+
+    context 'when there is more than one decision' do
+      it 'is associated with the latest decision' do
+        latest_decision = FactoryGirl.create :decision, paper: phase.paper
+        invitation.save!
+        latest_revision_number = (phase.paper.decisions.pluck :revision_number).max
+        expect(invitation.decision).to eq latest_decision
+        expect(invitation.decision).to eq phase.paper.latest_decision
+        expect(invitation.decision.revision_number).to eq latest_revision_number
+      end
+    end
+
+  end
 
   describe '#destroy' do
     it "calls #after_destroy hook" do

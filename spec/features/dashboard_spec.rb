@@ -5,13 +5,19 @@ feature "Dashboard", js: true do
   let!(:journal) { FactoryGirl.create :journal }
   let(:paper_count) { 1 }
   let!(:papers) do
-    paper_count.times do
+    paper_count.times.map do
       FactoryGirl.create :paper, :with_tasks, journal: journal, submitted: false, creator: user
     end
   end
   let(:dashboard) { DashboardPage.new }
 
-  describe "pagination" do
+  before do
+    allow_any_instance_of(EventStream)
+      .to receive(:post)
+      .and_return :posted
+  end
+
+  feature "pagination" do
     context "when there are more than 15 papers" do
       let(:paper_count) { 18 }
       scenario "only 15 papers are beamed down but total paper count is present" do
@@ -26,4 +32,29 @@ feature "Dashboard", js: true do
       end
     end
   end
+
+  feature "displaying invitations" do
+    let(:paper) { papers.first }
+    let!(:phase) { FactoryGirl.create :phase, paper: paper }
+    let!(:task) { FactoryGirl.create :invitable_task, phase: phase }
+    let(:paper_count) { 3 }
+
+    before do
+      decision = paper.create_decision!
+      (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
+      (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
+    end
+
+    scenario "only displays invitations from latest revision cycle" do
+      SignInPage.visit.sign_in user
+      expect(dashboard.active_invitation_count).to eq 2
+      decision = paper.create_decision!
+      dashboard.reload
+      expect(dashboard.active_invitation_count).to eq 0
+      (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
+      dashboard.reload
+      expect(dashboard.active_invitation_count).to eq 1
+    end
+  end
 end
+

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150407233310) do
+ActiveRecord::Schema.define(version: 20150409235153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,12 +143,14 @@ ActiveRecord::Schema.define(version: 20150407233310) do
     t.integer  "invitee_id"
     t.integer  "actor_id"
     t.string   "state"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "decision_id"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
   add_index "invitations", ["code"], name: "index_invitations_on_code", unique: true, using: :btree
+  add_index "invitations", ["decision_id"], name: "index_invitations_on_decision_id", using: :btree
   add_index "invitations", ["email"], name: "index_invitations_on_email", using: :btree
   add_index "invitations", ["invitee_id"], name: "index_invitations_on_invitee_id", using: :btree
   add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
@@ -227,12 +229,11 @@ ActiveRecord::Schema.define(version: 20150407233310) do
     t.string   "paper_type",        limit: 255
     t.boolean  "submitted",                     default: false, null: false
     t.integer  "journal_id",                                    null: false
-    t.string   "decision",          limit: 255
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
+    t.datetime "last_heartbeat_at"
     t.boolean  "editable",                      default: true
     t.text     "doi"
   end
@@ -323,6 +324,18 @@ ActiveRecord::Schema.define(version: 20150407233310) do
 
   add_index "roles", ["kind"], name: "index_roles_on_kind", using: :btree
 
+  create_table "supporting_information_files", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.string   "title",      limit: 255
+    t.string   "caption",    limit: 255
+    t.string   "attachment", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status",     limit: 255, default: "processing"
+  end
+
+  add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
+
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
     t.integer "author_id"
     t.integer "funder_id"
@@ -359,18 +372,6 @@ ActiveRecord::Schema.define(version: 20150407233310) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "tahi_supporting_information_files", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "title",      limit: 255
-    t.string   "caption",    limit: 255
-    t.string   "attachment", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "status",     limit: 255, default: "processing"
-  end
-
-  add_index "tahi_supporting_information_files", ["paper_id"], name: "index_tahi_supporting_information_files_on_paper_id", using: :btree
 
   create_table "task_templates", force: :cascade do |t|
     t.integer "journal_task_type_id"
@@ -431,12 +432,13 @@ ActiveRecord::Schema.define(version: 20150407233310) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username",               limit: 255
-    t.boolean  "site_admin",                         default: false, null: false
     t.string   "avatar",                 limit: 255
+    t.boolean  "site_admin",                         default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "decisions", "papers"
 end

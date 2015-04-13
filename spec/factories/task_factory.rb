@@ -54,7 +54,7 @@ FactoryGirl.define do
   factory :paper_reviewer_task, class: 'TahiStandardTasks::PaperReviewerTask' do
     phase
     title "Invite Reviewers"
-    role "editor"
+    role "reviewer"
   end
 
   factory :publishing_related_questions_task, class: 'TahiStandardTasks::PublishingRelatedQuestionsTask' do

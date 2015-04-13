@@ -6,17 +6,17 @@ InvitationsDisplay = Ember.Component.extend
   tagName: 'table'
   classNames: ['invitees']
 
-  latestDecisionInvitations: Ember.computed 'latestDecision.invitations', 'decisions.@each.invitations', ->
-    @get('latestDecision.invitations').filterBy('invitationType', 'Reviewer')
+  latestDecisionInvitations: Ember.computed 'latestDecision.invitations', ->
+    @get('latestDecision.invitations').filterBy 'invitationType', 'Reviewer'
 
-  previousDecisions: Em.computed 'latestDecision.invitations', 'decisions.@each.invitations', ->
+  previousDecisions: Em.computed 'decisions', ->
     @get('decisions').without @get('latestDecision')
 
-  previousDecisionsWithFilteredInvitations: Em.computed 'previousDecisions', 'decisions.@each', 'latestDecision', ->
+  previousDecisionsWithFilteredInvitations: Em.computed 'previousDecisions', 'previousDecisions.@each', ->
     @get('previousDecisions').map (decision) =>
-      decision.set 'filteredInvitations', decision.get('invitations').filterBy('invitationType', @get('invitationType'))
+      filteredInvitations = decision.get('invitations').filterBy('invitationType', @get 'invitationType')
+      decision.set 'filteredInvitations', filteredInvitations
       decision
-
 
   actions:
     destroyInvitation: (invitation) ->

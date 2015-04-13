@@ -2,6 +2,7 @@ module TahiStandardTasks
   class ReviewerRecommendationsTask < Task
     # uncomment the following line if you want to enable event streaming for this model
     # include EventStreamNotifier
+    include MetadataTask
 
     register_task default_title: "Reviewer Recommendations", default_role: "author"
 

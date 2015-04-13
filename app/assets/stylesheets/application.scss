@@ -4,7 +4,8 @@
 */
 
 @import "bourbon";
-@import "bootstrap";
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
 @import "variables";
 @import "z-index";
 @import "webfonts";

@@ -19,7 +19,6 @@ gem 'rails', '4.2.1'
 gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
-gem 'bower-rails'
 gem 'ember-cli-rails'
 gem 'sass-rails'
 gem 'uglifier'
@@ -56,6 +55,7 @@ gem 'migration_data'
 gem 'bugsnag'
 gem 'textacular'
 gem 'aasm'
+gem 'bootstrap-sass'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28

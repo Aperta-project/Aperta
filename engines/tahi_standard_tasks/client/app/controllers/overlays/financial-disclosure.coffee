@@ -7,8 +7,6 @@ FinancialDisclosureOverlayController = TaskController.extend
 
   # ye olde tri-state boolean (explicit selection)
   receivedFunding: null
-  explicitNo: Ember.computed.equal('receivedFunding', false)
-  explicitYes: Ember.computed.equal('receivedFunding', true)
 
   numFundersObserver: (->
     # No explicitly chosen, bail
@@ -39,6 +37,6 @@ FinancialDisclosureOverlayController = TaskController.extend
           funder.destroyRecord()
 
     addFunder: ->
-      @get('funders').pushObject(@store.createRecord('funder', task: @get('task')))
+      @store.createRecord('funder', task: @get('task')).save()
 
 `export default FinancialDisclosureOverlayController`

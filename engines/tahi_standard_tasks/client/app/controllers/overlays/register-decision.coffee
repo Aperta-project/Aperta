@@ -6,12 +6,12 @@ RegisterDecisionOverlayController = TaskController.extend
   ).property('model.completed')
 
   latestDecision: (->
-    @get('model.decisions.firstObject')
-  ).property('model.decisions.@each')
+    @get('model.paper.decisions.firstObject')
+  ).property("previousDecisions")
 
   previousDecisions: (->
-    @get('model.decisions').sortBy('revisionNumber').reverse()[1..-1]
-  ).property('model.decisions.@each')
+    @get('model.paper.decisions').sortBy('revisionNumber').reverse()[1..-1]
+  ).property('model.paper.decisions.@each.revisionNumber')
 
   finalDecision: (->
     @get("latestDecision.verdict") is "accepted" or @get("latestDecision.verdict") is "rejected"

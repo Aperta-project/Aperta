@@ -4,7 +4,7 @@
 
 PaperReviewerOverlayController = TaskController.extend Select2Assignees,
   select2RemoteUrl: Ember.computed 'model.paper.id', ->
-    "/filtered_users/reviewers/#{@get 'model.paper.id'}/"
+    "/api/filtered_users/reviewers/#{@get 'model.paper.id'}/"
   selectedReviewer: null
   resultsTemplate: (user) -> user.email
   selectedTemplate: (user) -> user.email

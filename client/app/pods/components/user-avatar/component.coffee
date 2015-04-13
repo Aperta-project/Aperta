@@ -2,7 +2,7 @@
 `import FileUploadMixin from 'tahi/mixins/file-upload'`
 
 UserAvatarComponent = Ember.Component.extend FileUploadMixin,
-  avatarUploadUrl: "/users/update_avatar"
+  avatarUploadUrl: "/api/users/update_avatar"
 
   actions:
     uploadFinished: (data, filename) ->

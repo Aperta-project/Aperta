@@ -78,15 +78,15 @@ module 'Integration: Dashboard',
 
     adminJournalsResponse = {}
 
-    server.respondWith 'GET', '/dashboards', [
+    server.respondWith 'GET', '/api/dashboards', [
       200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
     ]
 
-    server.respondWith 'GET', '/admin/journals', [
+    server.respondWith 'GET', '/api/admin/journals', [
       200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
     ]
 
-    server.respondWith 'GET', "/admin/journals/authorization", [
+    server.respondWith 'GET', "/api/admin/journals/authorization", [
       204, "Content-Type": "application/html", ""
     ]
 
@@ -99,7 +99,7 @@ test 'The dashboard shows papers for a user if they have any role on the paper',
     lite_papers: litePapers
     dashboards: dashboards
 
-  server.respondWith 'GET', '/dashboards', [
+  server.respondWith 'GET', '/api/dashboards', [
     200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
   ]
 
@@ -157,7 +157,7 @@ test 'Hitting escape closes the feedback form', ->
     ok !find(".overlay-footer-content .button-primary:contains('Send Feedback')").length
 
 test 'User sees a thank you message after submission', ->
-  server.respondWith 'POST', "/feedback", [
+  server.respondWith 'POST', "/api/feedback", [
     200, "Content-Type": "application/json", JSON.stringify {}
   ]
 
@@ -168,4 +168,4 @@ test 'User sees a thank you message after submission', ->
   click '.overlay-footer-content .button-primary'
   andThen ->
     ok find(".feedback-overlay-thanks").length
-    ok server.requests.findBy('url', '/feedback')
+    ok server.requests.findBy('url', '/api/feedback')

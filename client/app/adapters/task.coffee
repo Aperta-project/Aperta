@@ -1,6 +1,6 @@
-`import DS from 'ember-data'`
+`import ApplicationAdapter from 'tahi/adapters/application'`
 
-TaskAdapter = DS.ActiveModelAdapter.extend
+TaskAdapter = ApplicationAdapter.extend
   pathForType: (type) ->
     'tasks'
 

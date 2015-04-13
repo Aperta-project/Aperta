@@ -1,6 +1,6 @@
-`import DS from 'ember-data'`
+`import ApplicationAdapter from 'tahi/adapters/application'`
 
-AdminJournalUserAdapter = DS.ActiveModelAdapter.extend
+AdminJournalUserAdapter = ApplicationAdapter.extend
   pathForType: (type) ->
     'admin/journal_users'
 

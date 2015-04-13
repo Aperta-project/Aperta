@@ -40,19 +40,19 @@ module 'Integration: adding a new card',
         lite_paper_id: 1
 
     #let us see the manuscript manager
-    server.respondWith 'GET', /\/papers\/\d+\/manuscript_manager/, [
+    server.respondWith 'GET', /\/api\/papers\/\d+\/manuscript_manager/, [
       204, {}, ""
     ]
-    server.respondWith 'GET', "/papers/1", [
+    server.respondWith 'GET', "\/api\/papers/1", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperWithParticipant().toJSON()
     ]
-    server.respondWith 'POST', "/tasks", [
+    server.respondWith 'POST', "\/api\/tasks", [
       200, {"Content-Type": "application/json"}, JSON.stringify taskPayload
     ]
-    server.respondWith 'GET', '/flows/authorization', [
+    server.respondWith 'GET', '\/api\/flows/authorization', [
       204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
     ]
-    server.respondWith 'GET', '/admin/journals/1', [
+    server.respondWith 'GET', '\/api\/admin/journals/1', [
       200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
     ]
 

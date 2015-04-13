@@ -16,9 +16,11 @@ require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-# NOTE: This will stop working after we move the engines into their own repository.
-Dir[Rails.root.join("engines/**/spec/support/**/*.rb")].each { |f| require f }
-Dir[Rails.root.join("engines/**/spec/factories/**/*.rb")].each { |f| require f }
+# Load support & factories for installed Tahi plugins
+TahiPlugin.plugins.each do |gem|
+  Dir[File.join(gem.full_gem_path, 'spec', 'support', '**', '*.rb')].each { |f| require f }
+  Dir[File.join(gem.full_gem_path, 'spec', 'factories', '**', '*.rb')].each { |f| require f }
+end
 
 Capybara.server_port = ENV["CAPYBARA_SERVER_PORT"]
 Capybara.server do |app, port|
@@ -28,7 +30,9 @@ end
 
 Capybara.register_driver :selenium do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
-  profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.3.1-fx.xpi")
+  if ENV['EMBER_DEBUG']
+    profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.3.1-fx.xpi")
+  end
   Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
 end
 

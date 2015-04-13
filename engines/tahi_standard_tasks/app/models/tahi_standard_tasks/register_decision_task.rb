@@ -2,30 +2,39 @@ module TahiStandardTasks
   class RegisterDecisionTask < Task
 
     # TODO: move these attributes from paper to this task model (https://www.pivotaltracker.com/story/show/84690814)
-    delegate :decision, :decision=, :decision_letter, :decision_letter=, to: :paper, prefix: :paper
+    delegate :decision_letter, :decision_letter=, to: :paper, prefix: :paper
     before_save { paper.save! }
 
     def self.permitted_attributes
-      super + [:paper_decision, :paper_decision_letter]
+      super + [:paper_decision_letter]
     end
 
     register_task default_title: "Register Decision", default_role: "editor"
 
     def after_update
-      make_paper_editable
-      # ultimately, we can call #send_emails here as well
+      send_email
 
-      create_please_revise_card!
+      if revise_decision?
+        transaction do
+          find_or_create_please_revise_card!
+          make_paper_editable!
+          paper.create_decision!
+          update! completed: false
+        end
+
+        broadcast_paper_revised_event
+      end
     end
 
-    def make_paper_editable
-      return unless revise_decision?
-      self.paper.update! editable: true
-    end
-
+    # no-op
     def send_emails
+    end
+
+    def send_email
       return unless on_card_completion?
-      RegisterDecisionMailer.delay.notify_author_email(task_id: id)
+
+      latest_decision = paper.decisions.latest
+      RegisterDecisionMailer.delay.notify_author_email(decision_id: latest_decision.id)
     end
 
     def accept_letter
@@ -112,22 +121,35 @@ module TahiStandardTasks
 
     private
 
-    def create_please_revise_card!
-      return unless revise_decision?
+    def broadcast_paper_revised_event
+      ActiveSupport::Notifications.instrument 'paper.revised', paper_id: paper.id
+    end
 
-      author = paper.creator
+    def find_or_create_please_revise_card!
+      existing_revise_task = paper.tasks.where(type: "TahiStandardTasks::ReviseTask")
 
-      TaskFactory.build(Task,
-        title: "Please Revise",
-        role: "user",
-        phase_id: phase.id,
-        body: [[{type: 'text', value: revise_letter}]],
-        participants: participants << author
-      ).save!
+      if existing_revise_task.empty?
+        author = paper.creator
+
+        TaskFactory.build(TahiStandardTasks::ReviseTask,
+                          title: "Revise Manuscript",
+                          role: "author",
+                          phase_id: phase.id,
+                          body: [[{ type: 'text', value: revise_letter }]],
+                          participants: [author]
+                         ).save!
+      else
+        existing_revise_task.first.update!({ completed: false })
+        existing_revise_task.first
+      end
+    end
+
+    def make_paper_editable!
+      self.paper.update! editable: true
     end
 
     def revise_decision?
-      on_card_completion? && paper.decision == 'revise'
+      on_card_completion? && paper.decisions.latest && paper.decisions.latest.verdict == 'revise'
     end
 
     def template_data

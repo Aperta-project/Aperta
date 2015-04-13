@@ -28,6 +28,12 @@ FactoryGirl.define do
       site_admin true
     end
 
+    trait :with_affiliation do
+      after(:create) do |user, evaluator|
+        create(:affiliation, user: user)
+      end
+    end
+
     trait :orcid do
       credentials { [create(:orcid_credential)] }
     end

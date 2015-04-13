@@ -1,10 +1,26 @@
 require 'rails_helper'
 
 describe Paper do
-  let(:paper) { FactoryGirl.build :paper }
+  let(:paper) { FactoryGirl.create :paper }
   let(:doi) { 'pumpkin/doughnut.888888' }
 
-  describe "initialization" do
+  describe "#create" do
+    it "also create Decision" do
+      expect(paper.decisions.length).to eq 1
+      expect(paper.decisions.first.class).to eq Decision
+    end
+  end
+
+  describe "#destroy" do
+    subject { paper.destroy }
+
+    it "is successful" do
+      expect(subject).to eq paper
+      expect(subject.destroyed?).to eq true
+    end
+  end
+
+  describe "validations" do
     describe "paper_type" do
       it "is required" do
         paper = Paper.new short_title: 'Example'
@@ -12,9 +28,7 @@ describe Paper do
         expect(paper).to have(1).errors_on(:paper_type)
       end
     end
-  end
 
-  describe "validations" do
     describe "short_title" do
       it "must be present" do
         paper = FactoryGirl.build(:paper, short_title: nil)
@@ -36,7 +50,6 @@ describe Paper do
         expect(paper).to_not be_valid
       end
     end
-
   end
 
   describe "callbacks" do
@@ -125,6 +138,24 @@ describe Paper do
       it "returns nothing" do
         expect(paper.role_for(user: user, role: 'chucknorris')).to_not be_present
       end
+    end
+  end
+
+  describe "#latest_decision" do
+    it "returns the most recent decision for the paper" do
+      3.times do |i|
+        paper.decisions.create! letter: "Decision #{i}"
+      end
+      expect(paper.latest_decision.letter).to eq("Decision 2")
+      expect(paper.latest_decision.revision_number).to eq(3)
+    end
+  end
+
+  describe "#create_decision!" do
+    it "creates a blank decision on Paper" do
+      expect {
+        paper.create_decision!
+      }.to change { paper.decisions.count }.by 1
     end
   end
 end

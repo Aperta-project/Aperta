@@ -6,7 +6,7 @@
   <section class="dashboard-section">
     {{#if invitations.length}}
       <h2 class="welcome-message">
-        You have {{invitations.length}} {{make-plural invitations.length "invitation" "invitations"}}.
+        You have <span class="invitation-count">{{invitations.length}}</span> {{make-plural invitations.length "invitation" "invitations"}}.
       </h2>
       <button class="button-primary button--green" {{action "viewInvitations" invitations}}>View invitations</button>
     {{/if}}

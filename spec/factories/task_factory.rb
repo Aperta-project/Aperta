@@ -92,4 +92,36 @@ FactoryGirl.define do
     title "Tech Check"
     role "admin"
   end
+
+  factory :invitable_task, class: 'InvitableTask' do
+    phase
+    title "Invitable Task"
+    role "user"
+  end
 end
+
+class InvitableTask < Task
+  include TaskTypeRegistration
+  include Invitable
+
+  register_task default_title: "Test Task", default_role: "user"
+
+  def invitation_invited(_invitation)
+    :invited
+  end
+
+  def invitation_accepted(_invitation)
+    :accepted
+  end
+
+  def invitation_rejected(_invitation)
+    :rejected
+  end
+
+  def invitation_rescinded(paper_id:, invitee_id:)
+    :rescinded
+  end
+end
+
+class InvitableTasksPolicy < TasksPolicy; end
+

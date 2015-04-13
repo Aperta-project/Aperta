@@ -18,23 +18,7 @@
     </button>
   </div>
 
-  <div class='invitees'>
-  {{#if model.invitations}}
-  <table class='invitees-table'>
-    {{#each model.invitations as |invitation|}}
-    <tr>
-      <td><span>{{user-thumbnail user=invitation.invitee classNames="invitee-thumbnail"}}</span></td>
-      <td><span class='invitee-full-name'>{{invitation.inviteeFullName}}</span> has been invited</td>
-      <td><span class='invitation-updated-at'>{{format-date invitation.updatedAt format='LLL'}}</span></td>
-      <td><span class='invitation-state'>({{invitation.state}})</span></td>
-      {{#unless invitation.accepted}}
-      <td>
-        <span class="glyphicon glyphicon-trash invite-reviewer-remove" {{action "destroyInvitation" invitation}}></span>
-      </td>
-      {{/unless}}
-    </tr>
-    {{/each}}
-  </table>
-  {{/if}}
-  </div>
+  {{invitations-display decisions=decisions
+                        latestDecision=latestDecision
+                        onDestroyInvitation='destroyInvitation'}}
 </div>

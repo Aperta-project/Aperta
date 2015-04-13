@@ -5,14 +5,33 @@ RegisterDecisionOverlayController = TaskController.extend
     !@get("model.completed")
   ).property('model.completed')
 
-  actions:
-    setDecisionTemplate: (decision) ->
-      @setProperties
-        'model.paperDecisionLetter': @get("model.#{decision}LetterTemplate")
-        'model.paperDecision': decision
-        'isSavingData': true
+  latestDecision: (->
+    @get('model.decisions.firstObject')
+  ).property('model.decisions.@each')
 
-      @get('model').save().then =>
+  previousDecisions: (->
+    @get('model.decisions').sortBy('revisionNumber').reverse()[1..-1]
+  ).property('model.decisions.@each')
+
+  finalDecision: (->
+    @get("latestDecision.verdict") is "accepted" or @get("latestDecision.verdict") is "rejected"
+  ).property("latestDecision")
+
+  saveModel: ->
+    @_super()
+      .then () =>
+        @send("saveLatestDecision")
+
+  actions:
+    saveLatestDecision: ->
+      @get('latestDecision').save().then =>
         @set 'isSavingData', false
+
+    setDecisionTemplate: (decision) ->
+      @set "isSavingData", true
+      @get("latestDecision").set "verdict", decision
+      @get("latestDecision").set "letter", @get("model.#{decision}LetterTemplate")
+
+      @send("saveLatestDecision")
 
 `export default RegisterDecisionOverlayController`

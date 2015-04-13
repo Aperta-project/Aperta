@@ -2,34 +2,26 @@ class PapersController < ApplicationController
   include AttrSanitize
 
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:show]
   before_action :sanitize_title, only: [:create, :update]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
-
-  layout 'ember'
 
   respond_to :json
 
   def show
-    respond_to do |format|
-      format.html do
-        render 'ember/index'
-      end
-
-      format.json do
-        render json: paper
-      end
-    end
+    rel = Paper.includes([
+      :figures, :authors, :supporting_information_files, :paper_roles, :journal, :locked_by, :striking_image,
+      phases: { tasks: [:questions, :attachments, :participations, :comments] }
+    ])
+    paper = rel.find(params[:id])
+    authorize_action!(paper: paper)
+    respond_with(paper)
   end
 
   def create
     @paper = PaperFactory.create(paper_params, current_user)
     notify_paper_created! if @paper.valid?
-    respond_with @paper
-  end
-
-  def edit
-    render 'ember/index'
+    respond_with(@paper)
   end
 
   def update
@@ -55,12 +47,8 @@ class PapersController < ApplicationController
     respond_with activity_feeds, each_serializer: ActivityFeedSerializer, root: 'feeds'
   end
 
-  def manage
-    render 'ember/index'
-  end
-
   def upload
-    IhatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_callback_url)
+    IhatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_jobs_url)
     render json: paper
   end
 
@@ -74,7 +62,7 @@ class PapersController < ApplicationController
 
   def download
     respond_to do |format|
-      format.html do
+      format.epub do
         epub = EpubConverter.new paper, current_user
         send_data epub.epub_stream.string, filename: epub.file_name, disposition: 'attachment'
       end
@@ -140,9 +128,6 @@ class PapersController < ApplicationController
     @paper ||= begin
       if params[:id].present?
         Paper.find(params[:id])
-      elsif params[:publisher_prefix].present? && params[:suffix].present?
-        doi = "#{params[:publisher_prefix]}/#{params[:suffix]}"
-        Paper.find_by!(doi: doi)
       end
     end
   end

@@ -21,6 +21,22 @@ describe SerializeIdsWithPolymorphism do
       end
     end
 
+    context "when the task is deeply namespaced" do
+      let(:task_type) { "Tahi::StandardTasks::FigureTask" }
+
+      it "returns the last part of the task type" do
+        expect(result).to eq([{ id: task[0].id, type: "FigureTask" }])
+      end
+    end
+
+    context "when the task is really, deeply namespaced" do
+      let(:task_type) { "Tahi::Standard::Tasks::FigureTask" }
+
+      it "returns the last part of the task type" do
+        expect(result).to eq([{ id: task[0].id, type: "FigureTask" }])
+      end
+    end
+
     context "when the task type is not qualified" do
       let(:task_type) { "Funky::Crazy::blah" }
 

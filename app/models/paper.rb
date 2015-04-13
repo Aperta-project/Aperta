@@ -12,7 +12,7 @@ class Paper < ActiveRecord::Base
   has_one :manuscript, dependent: :destroy
 
   has_many :figures, dependent: :destroy
-  has_many :supporting_information_files, class_name: 'TahiSupportingInformation::File', dependent: :destroy
+  has_many :supporting_information_files, dependent: :destroy
   has_many :paper_roles, inverse_of: :paper, dependent: :destroy
   has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
@@ -21,6 +21,7 @@ class Paper < ActiveRecord::Base
   has_many :journal_roles, through: :journal
   has_many :authors, -> { order 'authors.position ASC' }
   has_many :activity_feeds
+  has_many :decisions, -> { order 'revision_number DESC' }, dependent: :destroy
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true
@@ -96,6 +97,18 @@ class Paper < ActiveRecord::Base
 
   def tasks_for_type(klass_name)
     tasks.where(type: klass_name)
+  end
+
+  def latest_decision
+    decisions.order("created_at DESC").limit(1).first
+  end
+
+  def previous_decisions
+    decisions.order("created_at DESC").offset(1)
+  end
+
+  def create_decision!
+    decisions.create!
   end
 
   # Public: Returns the paper title if it's present, otherwise short title is shown.

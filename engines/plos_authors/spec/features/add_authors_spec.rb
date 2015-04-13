@@ -3,7 +3,7 @@ require 'rails_helper'
 feature "Add contributing authors", js: true do
   let(:creator) { FactoryGirl.create :user }
   let!(:paper) { FactoryGirl.create :paper, creator: creator }
-  let(:task) { FactoryGirl.create(:plos_authors_task, title: "Add Authors", paper: paper) }
+  let!(:task) { FactoryGirl.create(:plos_authors_task, title: "Add Authors", paper: paper) }
 
 
   before do
@@ -15,7 +15,7 @@ feature "Add contributing authors", js: true do
   end
 
   scenario "Author specifies contributing authors" do
-    edit_paper = EditPaperPage.visit paper
+    edit_paper = DashboardPage.new.view_submitted_paper paper
 
     edit_paper.view_card(task.title) do |overlay|
       overlay.add_author(first_name: 'Neils',
@@ -32,13 +32,13 @@ feature "Add contributing authors", js: true do
   context "with an existing author" do
     let!(:author) { FactoryGirl.create :plos_author, paper: paper, plos_authors_task: task }
 
-    skip "editing", selenium: true do
-      edit_paper = EditPaperPage.visit paper
+    scenario "editing", selenium: true do
+      edit_paper = DashboardPage.new.view_submitted_paper paper
       edit_paper.view_card(task.title) do |overlay|
         overlay.edit_author author.first_name,
           last_name: 'rommel',
           email: 'ernie@berlin.de'
-        visit current_url
+        overlay.reload
         within '.authors-overlay-list' do
           expect(page).to have_content "ernie@berlin.de"
           expect(page).to have_content "rommel"
@@ -46,8 +46,8 @@ feature "Add contributing authors", js: true do
       end
     end
 
-    skip "validation on task completion", selenium: true do
-      edit_paper = EditPaperPage.visit paper
+    scenario "validation on task completion", selenium: true do
+      edit_paper = DashboardPage.new.view_submitted_paper paper
       edit_paper.view_card(task.title) do |overlay|
         overlay.edit_author author.first_name,
           email: 'invalid_email_string'
@@ -60,7 +60,7 @@ feature "Add contributing authors", js: true do
     end
 
     scenario "deleting", selenium: true do
-      edit_paper = EditPaperPage.visit paper
+      edit_paper = DashboardPage.new.view_submitted_paper paper
       edit_paper.view_card(task.title) do |overlay|
         overlay.delete_author author.first_name
         within '.authors-overlay-list' do

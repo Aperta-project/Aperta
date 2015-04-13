@@ -1,25 +1,22 @@
 require "rails_helper"
 
-class TestMailer < ActionMailer::Base
-  def notify_rescission paper_id:, invitee_id:
-    mail to: 'test@g.com', subject: 'test email'
-  end
-end
-
 class TestTask < Task
   include TaskTypeRegistration
   include Invitable
   register_task default_title: "Test Task", default_role: "user"
 
-  def invitation_rescinded paper_id:, invitee_id:
-    TestMailer.delay.notify_rescission paper_id: paper_id, invitee_id: invitee_id
+  def invitation_rescinded(paper_id:, invitee_id:)
+    true
   end
 end
+
+class TestTasksPolicy < TasksPolicy; end
 
 describe InvitationsController do
 
   let(:invitee) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create(:task, type: "TestTask") }
+  let(:phase) { FactoryGirl.create(:phase) }
+  let(:task) { phase.tasks.create!(type: "TestTask", title: "Test", role: "user") }
 
   before { sign_in(invitee) }
 
@@ -46,17 +43,24 @@ describe InvitationsController do
     end
   end
 
-  describe "DELETE /invitations/:id" do
+  describe "DELETE /invitations/:id", redis: true do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
-    it "deletes the invitation queues up email job" do
+    it "deletes the invitation queues up email job", redis: true do
       delete(:destroy, {
         format: "json",
         id: invitation.id
       })
       expect(response.status).to eq 204
-      expect(Invitation.find_by id: invitation.id).to be_nil
-      expect(Sidekiq::Extensions::DelayedMailer.jobs.length).to eq 1
+      expect(Invitation.exists?(id: invitation.id)).to eq(false)
+    end
+
+    it "initiates the task callback" do
+      expect_any_instance_of(TestTask).to receive(:invitation_rescinded).with(paper_id: task.paper.id, invitee_id: invitee.id)
+      delete(:destroy, {
+        format: "json",
+        id: invitation.id
+      })
     end
   end
 

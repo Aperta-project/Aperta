@@ -84,8 +84,11 @@ describe TahiStandardTasks::RegisterDecisionTask do
     let(:paper) {
       FactoryGirl.create(:paper, :with_tasks,
         title: "Crazy stubbing tests on rats",
-        decision: "Accepted",
         decision_letter: "Lorem Ipsum")
+    }
+
+    let(:decision) {
+      paper.decisions.first
     }
 
     let(:task) {
@@ -97,19 +100,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
 
     before do
       allow(task).to receive(:paper).and_return(paper)
-    end
-
-    describe "#paper_decision" do
-      it "returns paper's decision" do
-        expect(task.paper_decision).to eq("Accepted")
-      end
-    end
-
-    describe "#paper_decision=" do
-      it "returns paper's decision" do
-        task.paper_decision = "Rejected"
-        expect(task.paper_decision).to eq("Rejected")
-      end
     end
 
     describe "#paper_decision_letter" do
@@ -125,70 +115,87 @@ describe TahiStandardTasks::RegisterDecisionTask do
       end
     end
 
-    describe "#send_emails" do
+    describe "#send_email" do
       context "if the task transitions to completed" do
         it "sends emails to the paper's author" do
           allow(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain("delay.notify_author_email") { true }
           task.completed = true
           task.save!
-          expect(task.send_emails).to eq true
-        end
-      end
-
-      context "if the task is updated but not completed" do
-        it "does not send emails" do
-          TahiStandardTasks::ReviewerReportMailer = double(:reviewer_report_mailer)
-          task.completed = false # or any other update
-          task.save!
-          expect(task.send_emails).to eq nil
+          expect(task.send_email).to eq true
         end
       end
     end
   end
 
   describe "#after_update" do
+    before do
+      allow_any_instance_of(TahiStandardTasks::RegisterDecisionTask).to receive(:revise_decision?).and_return(true)
+    end
+
     context "when the decision is 'revise' and task is incomplete" do
       it "does not create a new task for the paper" do
         expect {
-          task.paper.decision = 'revise'
           task.save!
         }.to_not change { task.paper.tasks.size }
       end
     end
 
     context "when the decision is 'revise' and task is completed" do
-      let(:please_revise_task) do
+      let(:revise_task) do
         task.paper.tasks.detect do |paper_task|
-          paper_task.title == 'Please Revise'
+          paper_task.type == "TahiStandardTasks::ReviseTask"
         end
       end
 
       before do
-        task.paper.decision = 'revise'
         task.save!
         task.update_attributes completed: true
         task.after_update
       end
 
-      it "task is not nil" do
-        expect(please_revise_task).to_not be_nil
+      it "paper revise event is broadcasted" do
+        event_subscriber = :not_called
+        event_payload = []
+        TahiNotifier.subscribe 'paper.revised' do |_, payload|
+          event_subscriber = :called
+          event_payload = payload
+        end
+
+        task.after_update
+        expect(event_subscriber).to eq :called
+        expect(event_payload[:paper_id]).to eq(paper.id)
       end
 
-      it "task has paper" do
-        expect(please_revise_task.paper).to eq paper
+      it "task has no participants" do
+        expect(task.participants).to be_empty
       end
 
-      it "task role is `user`" do
-        expect(please_revise_task.role).to eq 'user'
+      it "task participants does not include author" do
+        expect(task.participants).to_not include paper.creator
       end
 
-      it "task participants include the paper's author" do
-        expect(please_revise_task.participants).to eq [paper.creator]
+      describe " Revise Task" do
+        it "task is not nil" do
+          expect(revise_task).to_not be_nil
+        end
+
+        it "task has paper" do
+          expect(revise_task.paper).to eq paper
+        end
+
+        it "task role is `author`" do
+          expect(revise_task.role).to eq 'author'
+        end
+
+        it "task participants include the paper's author" do
+          expect(revise_task.participants).to eq [paper.creator]
+        end
+
+        it "task body includes the revise letter" do
+          expect(revise_task.body.first.first['value']).to include task.revise_letter
+        end
       end
 
-      it "task body includes the revise letter" do
-        expect(please_revise_task.body.first.first['value']).to include task.revise_letter
-      end
     end
   end
 end

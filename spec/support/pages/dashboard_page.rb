@@ -71,4 +71,9 @@ class DashboardPage < Page
   def load_more_papers_button
     find '.load-more-papers'
   end
+
+  def active_invitation_count
+    invitation_count = all '.invitation-count'
+    invitation_count.empty? ? 0 : invitation_count.first.text.to_i
+  end
 end

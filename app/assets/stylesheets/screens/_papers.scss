@@ -32,8 +32,9 @@
 
 #paper-container {
   @include position(relative, $tahi-control-bar-height+$ve-toolbar-height 0px 0px 0px);
+  @include transition(top 0.2s ease-in-out);
   max-width: $tahi-paper-width;
-  margin: 0 auto;
+  margin: 20px auto;
   background: $tahi-white;
 
   &.paper-container-latex {
@@ -42,7 +43,8 @@
 }
 
 html.control-bar-sub-nav-active #paper-container {
-  top: 103px;
+  @include transition(top 0.2s ease-in-out);
+  top: 145px;
 }
 
 $sidebar-width: 280px;
@@ -88,6 +90,7 @@ $sidebar-width: 280px;
 }
 
 .editor-toolbar {
+  @include transition(top 0.2s ease-in-out);
   width: 100%;
   background: $tahi-white;
   padding: 5px 20px;
@@ -240,9 +243,9 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   .editor-toolbar {
     position: fixed;
     top: 60px;
-    max-width: $tahi-paper-width;
 
     .ve-toolbar {
+      max-width: $tahi-paper-width;
       margin: 0px auto;
     }
   }

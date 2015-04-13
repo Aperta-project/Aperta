@@ -12,18 +12,21 @@ feature "Manuscript Manager", js: true, selenium: true do
 
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
+
+    click_link paper.title
+    click_link "Workflow"
   end
 
   describe "Adding phases" do
     scenario 'Adding a phase' do
-      task_manager_page = TaskManagerPage.visit paper
+      task_manager_page = TaskManagerPage.new
       phase = task_manager_page.phase 'Submission Data'
 
       expect { phase.add_phase; expect(page).to have_content "New Phase" }.to change { task_manager_page.phase_count }.by(1)
     end
 
     scenario 'Preserving order of added phases after reload' do
-      task_manager_page = TaskManagerPage.visit paper
+      task_manager_page = TaskManagerPage.new
       original_phases = task_manager_page.phases
       # put new phases in the second and fourth positions.
       task_manager_page.phase(original_phases[0]).add_phase
@@ -32,17 +35,15 @@ feature "Manuscript Manager", js: true, selenium: true do
       expect(new_phases[1]).to eq("New Phase")
       expect(new_phases[3]).to eq("New Phase")
       expect(task_manager_page).to have_no_application_error
-      task_manager_page.reload
       reloaded_phases = TaskManagerPage.new.phases
       expect(reloaded_phases[1]).to eq("New Phase")
       expect(reloaded_phases[3]).to eq("New Phase")
-
     end
   end
 
   describe "Removing phases" do
     scenario 'Removing an Empty Phase' do
-      task_manager_page = TaskManagerPage.visit paper
+      task_manager_page = TaskManagerPage.new
       phase = task_manager_page.phase 'Submission Data'
       phase.add_phase
       new_phase = task_manager_page.phase 'New Phase'
@@ -52,14 +53,14 @@ feature "Manuscript Manager", js: true, selenium: true do
     end
 
     scenario 'Non-empty phase' do
-      task_manager_page = TaskManagerPage.visit paper
+      task_manager_page = TaskManagerPage.new
       phase = task_manager_page.phase 'Submission Data'
       expect(phase).to have_no_remove_icon
     end
   end
 
   scenario 'Removing a task' do
-    task_manager_page = TaskManagerPage.visit paper
+    task_manager_page = TaskManagerPage.new
 
     phase = task_manager_page.phase 'Submission Data'
     expect(task_manager_page).to have_no_application_error
@@ -81,7 +82,7 @@ feature "Manuscript Manager", js: true, selenium: true do
 
   # Preventing a regression
   scenario 'Opening an Invite Reviewers task', flaky: true do
-    task_manager_page = TaskManagerPage.visit paper
+    task_manager_page = TaskManagerPage.new
 
     within 'body' do
       find('.card-content', text: 'Invite Reviewer').click
@@ -93,7 +94,7 @@ feature "Manuscript Manager", js: true, selenium: true do
   end
 
   scenario "Admin can assign a paper to themselves", flaky: true do
-    task_manager_page = TaskManagerPage.visit paper
+    task_manager_page = TaskManagerPage.new
 
     needs_editor_phase = task_manager_page.phase 'Invite Editor'
     needs_editor_phase.view_card 'Assign Admin' do |overlay|
@@ -104,7 +105,8 @@ feature "Manuscript Manager", js: true, selenium: true do
       expect(overlay).to have_admin(admin.full_name)
     end
 
-    needs_editor_phase = TaskManagerPage.new.phase 'Invite Editor'
+    needs_editor_phase = TaskManagerPage.new
+    needs_editor_phase.phase 'Invite Editor'
     needs_editor_phase.view_card 'Assign Editor' do |overlay|
       expect(overlay).to_not be_completed
     end

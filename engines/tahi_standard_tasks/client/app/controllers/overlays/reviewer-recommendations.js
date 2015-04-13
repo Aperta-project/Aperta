@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import TaskController from 'tahi/pods/task/controller';
+import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-export default TaskController.extend({
+export default TaskController.extend(ValidationErrorsMixin, {
   showNewReviewerForm: false,
   newRecommendation: {},
   reset: function() {
@@ -9,18 +10,23 @@ export default TaskController.extend({
       showNewReviewerForm: false,
       newRecommendation: {}
     });
+
+    this.clearAllValidationErrors();
   },
   actions: {
     toggleReviewerForm: function() {
       this.toggleProperty('showNewReviewerForm');
     },
     saveNewRecommendation: function() {
-      let self = this;
       this.set('newRecommendation.reviewerRecommendationsTask', this.get('model'));
+
       this.store.createRecord('reviewerRecommendation', this.get('newRecommendation'))
-      .save().then(function(savedRecommendation) {
-        self.get('model.reviewerRecommendations').addObject(savedRecommendation);
-      }).finally(function() { self.reset(); });
+      .save().then((savedRecommendation) => {
+        this.get('model.reviewerRecommendations').addObject(savedRecommendation);
+        this.reset();
+      }).catch((response) => {
+        this.displayValidationErrorsFromResponse(response);
+      });
     },
     cancelEdit: function() {
       this.reset();

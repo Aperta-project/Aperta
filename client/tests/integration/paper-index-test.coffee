@@ -32,7 +32,7 @@ test 'on paper.index, contributors are visible', ->
   paperResponse = paperPayload.toJSON()
   paperResponse.paper.submitted = true
 
-  server.respondWith 'GET', "/papers/#{records[0].id}", [
+  server.respondWith 'GET', "/api/papers/#{records[0].id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
   ]
 

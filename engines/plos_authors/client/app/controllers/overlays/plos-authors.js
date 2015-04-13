@@ -13,7 +13,7 @@ export default TaskController.extend({
   fetchAffiliations: function() {
     let self = this;
 
-    Ember.$.getJSON('/affiliations', function(data) {
+    Ember.$.getJSON('/api/affiliations', function(data) {
       self.set('model.institutions', data.institutions);
     });
   }.on('didSetupController'),

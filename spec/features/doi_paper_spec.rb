@@ -41,7 +41,7 @@ feature "Editing paper", selenium: true, js: true do
                                   last_doi_issued: '8887')
       end
 
-      scenario "shows the doi on the page and in the URL" do
+      scenario "shows the doi on the page" do
         visit '/'
         click_button 'Create New Submission'
         within('.overlay-container') do |page|
@@ -53,17 +53,7 @@ feature "Editing paper", selenium: true, js: true do
         within ".task-list-doi" do
           expect(page).to have_content "DOI: vicious/robots.8888"
         end
-        expect(page.current_path).to eq("#{paper_path(Paper.last.id)}/edit")
-      end
-
-      scenario "shows the doi on the page when paper is submitted or uneditable" do
-        visit '/'
-        click_button 'Create New Submission'
-        within('.overlay-container') do |page|
-          fill_in 'paper-short-title', with: "A paper with doi"
-          click_button 'Create'
-        end
-        wait_for_ajax
+        expect(page.current_path).to eq("/papers/#{Paper.last.id}/edit")
 
         click_link 'Workflow'
         uncheck 'paper-editable'
@@ -72,7 +62,7 @@ feature "Editing paper", selenium: true, js: true do
         within ".task-list-doi" do
           expect(page).to have_content "DOI: vicious/robots.8888"
         end
-        expect(page.current_path).to eq("#{paper_path(Paper.last.id)}")
+        expect(page.current_path).to eq("/papers/#{Paper.last.id}")
       end
     end
 

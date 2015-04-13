@@ -29,19 +29,19 @@ module 'Integration: Paper Manage page',
         lite_paper_id: 1
 
     # let us see the manuscript manager
-    server.respondWith 'GET', /\/papers\/\d+\/manuscript_manager/, [
+    server.respondWith 'GET', /\/api\/papers\/\d+\/manuscript_manager/, [
       204, {}, ""
     ]
 
-    server.respondWith 'GET', "/papers/1", [
+    server.respondWith 'GET', "/api/papers/1", [
       200, {"Content-Type": "application/json"}, JSON.stringify(paperWithParticipant().toJSON())
     ]
 
-    server.respondWith 'POST', "/tasks", [
+    server.respondWith 'POST', "/api/tasks", [
       200, {"Content-Type": "application/json"}, JSON.stringify(taskPayload)
     ]
 
-    server.respondWith 'DELETE', "/tasks/1", [
+    server.respondWith 'DELETE', "/api/tasks/1", [
       200, {"Content-Type": "application/json"}, '{}'
     ]
 
@@ -74,5 +74,5 @@ test 'click delete confirmation overlay submit button', ->
     click('.overlay button:contains("Yes, Delete this Card")')
   andThen ->
     equal(find(".card-content").length, 0, "card deleted")
-    req = _.findWhere(server.requests, {method: "DELETE", url: "/tasks/1"})
+    req = _.findWhere(server.requests, {method: "DELETE", url: "/api/tasks/1"})
     equal(req.status, 200, "It sends DELETE request to the server")

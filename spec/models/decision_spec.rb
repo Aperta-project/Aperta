@@ -32,4 +32,15 @@ describe Decision do
 
     expect(invalid_decision.revision_number).to_not eq(1)
   end
+
+  describe '#latest?' do
+    it 'returns true if it is the latest decision' do
+      early_decision = paper.create_decision!
+      paper.create_decision!
+      (FactoryGirl.create :paper).create_decision!
+      latest_decision = paper.create_decision!
+      expect(early_decision.latest?).to be false
+      expect(latest_decision.latest?).to be true
+    end
+  end
 end

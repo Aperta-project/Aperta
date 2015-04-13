@@ -4,7 +4,23 @@ describe Paper do
   let(:paper) { FactoryGirl.create :paper }
   let(:doi) { 'pumpkin/doughnut.888888' }
 
-  describe "initialization" do
+  describe "#create" do
+    it "also create Decision" do
+      expect(paper.decisions.length).to eq 1
+      expect(paper.decisions.first.class).to eq Decision
+    end
+  end
+
+  describe "#destroy" do
+    subject { paper.destroy }
+
+    it "is successful" do
+      expect(subject).to eq paper
+      expect(subject.destroyed?).to eq true
+    end
+  end
+
+  describe "validations" do
     describe "paper_type" do
       it "is required" do
         paper = Paper.new short_title: 'Example'
@@ -12,9 +28,7 @@ describe Paper do
         expect(paper).to have(1).errors_on(:paper_type)
       end
     end
-  end
 
-  describe "validations" do
     describe "short_title" do
       it "must be present" do
         paper = FactoryGirl.build(:paper, short_title: nil)

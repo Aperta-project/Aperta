@@ -16,9 +16,11 @@ export default Ember.Component.extend({
     }
   }.on("init"),
 
-  clearNewAuthor: function() {
+  resetAuthor: function() {
     if (Ember.typeOf(this.get("newAuthor")) === "object") {
       this.set("newAuthor", {contributons: []});
+    } else {
+      this.get("newAuthor").rollback();
     }
   },
 
@@ -47,13 +49,13 @@ export default Ember.Component.extend({
 
   actions: {
     cancelEdit: function() {
-      this.clearNewAuthor();
+      this.resetAuthor();
       this.sendAction("hideAuthorForm");
     },
 
     saveNewAuthor: function() {
       this.sendAction("saveAuthor", this.get("newAuthor"));
-      this.clearNewAuthor();
+      this.resetAuthor();
     },
 
     addContribution: function(name) {

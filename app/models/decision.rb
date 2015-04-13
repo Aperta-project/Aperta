@@ -1,5 +1,6 @@
 class Decision < ActiveRecord::Base
   belongs_to :paper
+  has_many :invitations
 
   before_validation :increment_revision_number
 
@@ -9,6 +10,10 @@ class Decision < ActiveRecord::Base
 
   def self.latest
     first
+  end
+
+  def latest?
+    self == paper.latest_decision
   end
 
   def increment_revision_number

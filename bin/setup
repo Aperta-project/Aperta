@@ -86,6 +86,10 @@ MESSAGE
     system 'cp .env-sample .env.development'
   end
 
+  unless File.exist?('Procfile.local')
+    system 'cp Procfile.template Procfile.local'
+  end
+
   puts '== Add binstubs to PATH in ~/.zshenv like this: =='
   puts 'export PATH=".git/safe/../../bin:$PATH"'
 

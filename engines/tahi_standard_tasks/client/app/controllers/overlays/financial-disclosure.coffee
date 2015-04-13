@@ -1,4 +1,4 @@
-`import TaskController from 'tahi/pods/task/controller'`
+`import TaskController from 'tahi/pods/task/controller';`
 
 FinancialDisclosureOverlayController = TaskController.extend
   task: Em.computed.alias("model")
@@ -39,6 +39,6 @@ FinancialDisclosureOverlayController = TaskController.extend
           funder.destroyRecord()
 
     addFunder: ->
-      @get('funders').pushObject(@store.createRecord('funder', task: @get('task')))
+      @store.createRecord('funder', task: @get('task')).save()
 
 `export default FinancialDisclosureOverlayController`

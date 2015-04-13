@@ -39,6 +39,19 @@ export default Ember.Component.extend({
     });
   }.on('didInsertElement'),
 
+  _windowResizeSetup: function(){
+    $(window).on('resize.codemirror', ()=>{
+      var height = Math.round(window.innerHeight - $('.CodeMirror').offset().top) - 40;
+      this.get('codeMirror').setSize(null, height);
+      $('#paper-container .double-pane').css('height', height);
+      this.refresh();
+    }).resize();
+  },
+
+  _windowResizeTeardown: function() {
+    $(window).off('resize.codemirror');
+  }.on('willDestroyElement'),
+
   _loadAssets: function() {
     this._loadCSS();
     return this._loadScripts();
@@ -86,6 +99,7 @@ export default Ember.Component.extend({
     // Force a refresh on `becameVisible`, since CodeMirror won't render itself
     // onto a hidden element.
     this.on('becameVisible', this, 'refresh');
+    this._windowResizeSetup();
   },
 
   /**

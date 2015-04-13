@@ -74,6 +74,7 @@ $sidebar-width: 280px;
 }
 
 #paper-container .double-pane-editor {
+  overflow: auto;
   @include display(flex);
   @include align-items(stretch);
 }

@@ -2,7 +2,7 @@ class PapersController < ApplicationController
   include AttrSanitize
 
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:show]
+  before_action :enforce_policy, except: [:show, :fake_render_latex]
   before_action :sanitize_title, only: [:create, :update]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
@@ -40,6 +40,11 @@ class PapersController < ApplicationController
   end
 
   # non RESTful routes
+
+  def fake_render_latex
+    puts params
+    render json: { latex_image_url: "http://placekitten.com/g/200/#{300 + rand(50)}" }
+  end
 
   def activity_feed
     # TODO: params[:name] probably needs some securitifications

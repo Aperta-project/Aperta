@@ -13,11 +13,6 @@ class PaperConversionsController < ApplicationController
     render json: JSON.parse(job)
   end
 
-  def fake_render_latex
-    puts params
-    render json: { latex_image_url: "http://placekitten.com/g/200/#{300 + rand(50)}" }
-  end
-
   private
 
   def enforce_policy

@@ -13,7 +13,7 @@ feature "Invite Reviewer", js: true do
     assign_journal_role journal, editor, :editor
     assign_journal_role journal, reviewer1, :reviewer
     assign_journal_role journal, reviewer2, :reviewer
-    paper.paper_roles.create user: editor, role: PaperRole::EDITOR
+    paper.paper_roles.create user: editor, role: PaperRole::COLLABORATOR
     task.participants << editor
 
     sign_in_page = SignInPage.visit

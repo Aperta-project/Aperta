@@ -21,6 +21,7 @@ Task = DS.Model.extend CardThumbnailObserver,
   title: a('string')
   type: a('string')
   qualifiedType: a('string')
+  updatedAt: a('date')
 
   isMetadataTask: a('boolean')
 

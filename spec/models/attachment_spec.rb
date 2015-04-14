@@ -16,4 +16,15 @@ describe Attachment do
       expect(attachment.image?).to eq(false)
     end
   end
+
+  describe "#after_destroy" do
+    #This after_destroy will enable people to show a "last saved" timestamp on cards,
+    #even when an attachment is deleted because it touches the last_updated column of a card.
+    it "updates the last_updated date" do
+      task = create(:task)
+      attachment = Attachment.create(attachable: task)
+      attachment.destroy
+      expect(task.reload.updated_at).to be > (task.reload.created_at)
+    end
+  end
 end

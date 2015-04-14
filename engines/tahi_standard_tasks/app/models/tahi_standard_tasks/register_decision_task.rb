@@ -122,7 +122,7 @@ module TahiStandardTasks
     private
 
     def broadcast_paper_revised_event
-      TahiNotifier.notify(event: "paper.revised", payload: {paper_id: paper.id})
+      TahiNotifier.notify(event: "paper.revised", payload: { paper_id: paper.id })
     end
 
     def find_or_create_please_revise_card!

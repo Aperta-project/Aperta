@@ -179,6 +179,6 @@ class PapersController < ApplicationController
   end
 
   def broadcast_paper_submitted_event
-    TahiNotifier.notify(event: "paper.submitted", payload: {paper_id: paper.id})
+    TahiNotifier.notify(event: "paper.submitted", payload: { paper_id: paper.id })
   end
 end

@@ -26,7 +26,7 @@
               value=newRecommendation.email
               class="form-control"
               placeholder="Email"}}
-
+      {{error-message message=validationErrors.email}}
     </div>
   </div>
 
@@ -64,6 +64,7 @@
                           yesValue="recommend"
                           noLabel="Oppose"
                           noValue="oppose"}}
+    {{error-message message=validationErrors.recommendOrOppose}}
   </div>
 
   <div class="form-group">

@@ -40,7 +40,7 @@ PaperRoute = Ember.Route.extend
       controller = @controllerFor 'overlays/activityFeed'
       controller.set 'isLoading', true
 
-      RESTless.get("/papers/#{paper.get('id')}/activity_feed/#{name}").then (data) =>
+      RESTless.get("/api/papers/#{paper.get('id')}/activity_feed/#{name}").then (data) =>
         controller.setProperties
           isLoading: false
           model: Utils.deepCamelizeKeys(data.feeds)

@@ -24,11 +24,8 @@
 {{/if}}
 
 <div id="paper-manuscript-upload" {{bind-attr class="isUploading::hidden"}}>
-  <div class="preview-container glyphicon glyphicon-file"></div>
   <div {{bind-attr class=":processing isProcessing::hidden"}}>
-    {{progress-spinner visible=true
-                       color="green"
-                       size="small"}}
+    {{progress-spinner visible=true size="small" color="green"}}
     Processing...
   </div>
   <div {{bind-attr class=":progress showProgress::hidden"}}>

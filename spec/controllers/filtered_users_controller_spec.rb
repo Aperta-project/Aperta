@@ -1,4 +1,5 @@
 require 'rails_helper'
+
 class TestTask < Task
   include TaskTypeRegistration
   include Invitable
@@ -16,12 +17,14 @@ end
 
 describe FilteredUsersController do
   let(:user) { create :user }
+  let(:user2) { create :user }
   let(:journal) { FactoryGirl.create(:journal) }
   let(:role) { FactoryGirl.create(:role, :reviewer, journal: journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
 
   before do
     assign_journal_role(journal, user, :reviewer)
+    assign_journal_role(journal, user2, :reviewer)
     sign_in(user)
   end
 

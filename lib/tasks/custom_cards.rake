@@ -63,11 +63,14 @@ namespace :tahi do
   def insert_after(filename, needle, string)
     hay = File.open(filename, "r").read
     needle_index = hay.index(needle)
-    updated_string = hay.insert(needle_index + needle.length, "\n#{string}")
-
-    File.open(filename, "w") do |f|
-      f << updated_string
-      puts "updated #{filename}"
+    if hay.include? string
+      puts "#{filename} already contains #{string}"
+    else
+      updated_string = hay.insert(needle_index + needle.length, "\n#{string}")
+      File.open(filename, "w") do |f|
+        f << updated_string
+        puts "updated #{filename}"
+      end
     end
   end
 end

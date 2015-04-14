@@ -22,7 +22,7 @@ EditFiguresController = Ember.Controller.extend FileUploadMixin,
   ).property('paper.figures.[]')
 
   figureUploadUrl: ( ->
-    "/papers/#{@get('paper.id')}/figures"
+    "/api/papers/#{@get('paper.id')}/figures"
   ).property('paper.id')
 
   actions:

@@ -23,8 +23,13 @@ namespace :tahi do
     Bundler.with_clean_env do
       # need to do this in subshell because our ruby process doesn't
       # know about the engine yet
-      migration_task = "#{engine_name}:install:migrations"
-      sh "bundle exec rake #{migration_task}" if `bundle exec rake -T #{migration_task}`.size > 0
+      migration_task = "#{engine_name.gsub(/-/,'_')}:install:migrations"
+      if `bundle exec rake -T #{migration_task}`.size > 0
+        sh "bundle exec rake #{migration_task}"
+      else
+        puts "No migrations found for this card. You can install card migrations with #{migration_task}."
+      end
+      
       # tahi magic installer
       sh "bundle exec rake data:create_task_types"
     end

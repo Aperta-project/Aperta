@@ -160,6 +160,11 @@ describe PapersController do
       expect(paper.reload.submitted).to eq true
       expect(paper.editable).to eq false
     end
+
+    it "broadcasts 'paper.submitted' event" do
+      expect(TahiNotifier).to receive(:notify).with(event: "paper.submitted", payload: { paper_id: paper.id })
+      put :submit, id: paper.id, format: :json
+    end
   end
 
   describe "PUT 'toggle_editable'" do

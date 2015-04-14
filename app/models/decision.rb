@@ -12,6 +12,10 @@ class Decision < ActiveRecord::Base
     first
   end
 
+  def self.pending
+    where(verdict: nil)
+  end
+
   def latest?
     self == paper.latest_decision
   end

@@ -119,6 +119,7 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
   }
 }
 
+// for old style forms
 .form-group {
   p {
     margin: 15px 0;
@@ -134,6 +135,19 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
       position: absolute;
       color: #5d4aac;
       left: -20px;
+    }
+  }
+}
+
+// for new style forms
+.form-inline {
+  .required {
+    &::before {
+      content: "*";
+      margin: 0 3px 0 -3px;
+      color: $tahi-green;
+      font-size: 18pt;
+      float: left;
     }
   }
 }

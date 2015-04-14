@@ -39,7 +39,7 @@ class Invitation < ActiveRecord::Base
   private
 
   def assign_to_latest_decision
-    self.decision = paper.latest_decision
+    self.decision = paper.decisions.latest
   end
 
   def invitation_rescinded

@@ -7,7 +7,7 @@ namespace :decisions do
     end
 
     Invitation.where(decision_id: nil).each do |invitation|
-      invitation.decision = invitation.paper.latest_decision
+      invitation.decision = invitation.paper.decisions.latest
       invitation.save!
       p invitation
     end

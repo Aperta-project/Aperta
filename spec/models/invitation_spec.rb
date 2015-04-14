@@ -31,7 +31,7 @@ describe Invitation do
   describe '#create' do
     it "belongs to the paper's latest decision" do
       invitation.save!
-      expect(phase.paper.latest_decision.invitations).to include invitation
+      expect(phase.paper.decisions.latest.invitations).to include invitation
     end
 
     context 'when there is more than one decision' do
@@ -40,7 +40,7 @@ describe Invitation do
         invitation.save!
         latest_revision_number = (phase.paper.decisions.pluck :revision_number).max
         expect(invitation.decision).to eq latest_decision
-        expect(invitation.decision).to eq phase.paper.latest_decision
+        expect(invitation.decision).to eq phase.paper.decisions.latest
         expect(invitation.decision.revision_number).to eq latest_revision_number
       end
     end

@@ -99,10 +99,6 @@ class Paper < ActiveRecord::Base
     tasks.where(type: klass_name)
   end
 
-  def latest_decision
-    decisions.order("created_at DESC").limit(1).first
-  end
-
   # Public: Returns the paper title if it's present, otherwise short title is shown.
   #
   # Examples

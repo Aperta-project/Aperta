@@ -17,13 +17,13 @@ class Decision < ActiveRecord::Base
   end
 
   def latest?
-    self == paper.latest_decision
+    self == paper.decisions.latest
   end
 
   def increment_revision_number
     unless persisted?
       # TODO: refactor to a simpler method
-      increment(:revision_number, paper.latest_decision ? paper.latest_decision.revision_number + 1 : 0)
+      increment(:revision_number, paper.decisions.latest ? paper.decisions.latest.revision_number + 1 : 0)
     end
   end
 end

@@ -2,7 +2,7 @@
 
   <div class="form-group form-inline author-top">
     <div {{bind-attr class=":form-group :author-name validationErrors.firstName:error"}}>
-      <span class="text-field-title">
+      <span class="text-field-title required">
         First Name
         {{error-message message=validationErrors.firstName}}
       </span>
@@ -24,7 +24,7 @@
     </div>
 
     <div {{bind-attr class=":form-group :author-name validationErrors.lastName:error"}}>
-      <span class="text-field-title">
+      <span class="text-field-title required">
         Last Name
         {{error-message message=validationErrors.lastName}}
       </span>
@@ -35,7 +35,7 @@
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.email:error"}}>
-      <span class="text-field-title">
+      <span class="text-field-title required">
         Email 
         {{error-message message=validationErrors.email}}
       </span>
@@ -49,7 +49,7 @@
 
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half validationErrors.title:error"}}>
-      <span class="text-field-title">
+      <span class="text-field-title required">
         Title
         {{error-message message=validationErrors.title}}
       </span>
@@ -60,7 +60,7 @@
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.department:error"}}>
-      <span class="text-field-title">
+      <span class="text-field-title required">
         Department
         {{error-message message=validationErrors.department}}
       </span>
@@ -76,7 +76,7 @@
       {{error-message message=validationErrors.affiliation}}
       {{select-2-single value=newAuthor.affiliation
                         class="affiliation-field"
-                        placeholder="Affiliation"
+                        placeholder="* Affiliation"
                         selectedData=selectedAffiliation
                         source=selectableInstitutions}}
     </div>
@@ -102,8 +102,8 @@
     </label>
   </div>
 
-  <div class="form-group author-contributions">
-    <h4>Author Contributions</h4>
+  <div class="form-group author-contributions form-inline">
+    <h4 class="required">Author Contributions</h4>
     {{error-message message=validationErrors.contributions}}
     {{#each contribution in authorContributionOptions}}
       {{author-contribution-checkbox name=contribution

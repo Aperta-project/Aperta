@@ -103,9 +103,6 @@ class Paper < ActiveRecord::Base
     decisions.order("created_at DESC").limit(1).first
   end
 
-  def previous_decisions
-    decisions.order("created_at DESC").offset(1)
-  end
 
   def create_decision!
     decisions.create!

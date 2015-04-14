@@ -36,7 +36,7 @@
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.email:error"}}>
       <span class="text-field-title required">
-        Email 
+        Email
         {{error-message message=validationErrors.email}}
       </span>
       {{input type="text"
@@ -74,20 +74,22 @@
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half validationErrors.affiliation:error"}}>
       {{error-message message=validationErrors.affiliation}}
-      {{select-2-single value=newAuthor.affiliation
-                        class="affiliation-field"
-                        placeholder="* Affiliation"
-                        selectedData=selectedAffiliation
-                        source=selectableInstitutions}}
+      {{select-2-single
+          class="affiliation-field"
+          placeholder="* Affiliation"
+          selectedData=selectedAffiliation
+          source=selectableInstitutions
+          value=newAuthor.affiliation}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.secondaryAffiliation:error"}}>
       {{error-message message=validationErrors.secondaryAffiliation}}
-      {{select-2-single value=newAuthor.secondaryAffiliation
-                        class="secondary-affiliation-field"
-                        placeholder="Secondary Affiliation (optional)"
-                        selectedData=selectedSecondaryAffiliation
-                        source=selectableInstitutions}}
+      {{select-2-single
+          class="secondary-affiliation-field"
+          placeholder="Secondary Affiliation (optional)"
+          selectedData=selectedSecondaryAffiliation
+          source=selectableInstitutions
+          value=newAuthor.secondaryAffiliation}}
     </div>
   </div>
 

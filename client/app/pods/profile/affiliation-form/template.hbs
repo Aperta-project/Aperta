@@ -20,11 +20,14 @@
 
   {{#if showAffiliationForm}}
     <div class="profile-affiliations-form animation-fade-in">
-      <h3>New Affiliation</h3>
-      {{select-2-single value=newAffiliation.name
-                        class="profile-affiliation-field"
-                        placeholder="Affiliation Name"
-                        source=selectableInstitutions}}
+      <h3>
+        New Affiliation
+      </h3>
+      {{select-2-single
+          class="profile-affiliation-field"
+          placeholder="Affiliation Name"
+          source=selectableInstitutions
+          value=newAffiliation.name}}
       {{error-message message=validationErrors.name}}
 
       <div class="form-group">

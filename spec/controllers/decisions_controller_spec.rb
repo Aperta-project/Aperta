@@ -30,7 +30,7 @@ describe DecisionsController do
     let(:new_verdict) { "accepted" }
 
     before do
-      paper.create_decision!
+      paper.decisions.create!
       paper.reload
 
       put :update,

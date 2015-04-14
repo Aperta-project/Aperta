@@ -41,7 +41,7 @@ feature "Invite Reviewer", js: true do
       expect(overlay.active_invitations.count).to eq 2
     end
 
-    paper.create_decision!
+    paper.decisions.create!
 
     manuscript_page.reload
     manuscript_page.view_card task.title do |overlay|

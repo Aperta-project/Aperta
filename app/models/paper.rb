@@ -103,11 +103,6 @@ class Paper < ActiveRecord::Base
     decisions.order("created_at DESC").limit(1).first
   end
 
-
-  def create_decision!
-    decisions.create!
-  end
-
   # Public: Returns the paper title if it's present, otherwise short title is shown.
   #
   # Examples

@@ -41,7 +41,7 @@ describe FilteredUsersController do
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id
         invitation.invite!
-        paper.create_decision!
+        paper.decisions.create!
         get :reviewers, paper_id: paper.id, format: :json
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id

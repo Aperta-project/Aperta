@@ -18,7 +18,7 @@ module TahiStandardTasks
         transaction do
           find_or_create_please_revise_card!
           make_paper_editable!
-          paper.create_decision!
+          paper.decisions.create!
           update! completed: false
         end
 

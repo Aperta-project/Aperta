@@ -63,19 +63,19 @@ describe User do
     let(:user) { FactoryGirl.create(:user) }
     before do
       paper = FactoryGirl.create :paper
-      paper.create_decision!
+      paper.decisions.create!
     end
 
     it 'returns invitations from the latest revision cycle' do
       phase = FactoryGirl.create :phase
-      decision = phase.paper.create_decision!
+      decision = phase.paper.decisions.create!
       task = FactoryGirl.create :invitable_task, phase: phase
       inv1 = FactoryGirl.create :invitation, task: task, invitee: user, decision: decision
       inv2 = FactoryGirl.create :invitation, task: task, invitee: user, decision: decision
       inv1.invite!
       inv2.invite!
       expect(user.invitations_from_latest_revision).to match_array [inv1, inv2]
-      phase.paper.create_decision!
+      phase.paper.decisions.create!
       inv3 = FactoryGirl.create :invitation, task: task, invitee: user
       FactoryGirl.create :invitation, task: task, invitee: user
       inv3.invite!

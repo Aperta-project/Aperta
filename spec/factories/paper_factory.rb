@@ -39,7 +39,7 @@ FactoryGirl.define do
 
     after(:create) do |paper|
       paper.paper_roles.create!(user: paper.creator, role: PaperRole::COLLABORATOR)
-      paper.create_decision!
+      paper.decisions.create!
     end
 
     factory :paper_with_phases do

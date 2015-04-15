@@ -1,0 +1,22 @@
+<div class="overlay-container">
+  <h1>Editor Invitation Email Template</h1>
+  <p>Enter or edit the body of the invitation email that will be sent to editors.</p>
+  <p><em>Note: the start and ending of the email will always be the template shown.</em></p>
+
+  <hr/>
+  <p>Hello <em>Editor Name</em>,</p>
+  <p>You've been assigned as an editor on a paper titled <em>Paper Title</em>:</p>
+
+  {{textarea value=content.editorInviteEmailTemplate placeholder="Type the remainder of the email template here" autofocus="autofocus"}}
+
+  <p>&lt;Invitation URL&gt;</p>
+
+  <p>We look forward to your contributions!</p>
+
+  <hr/>
+
+  <div class="overlay-action-buttons">
+    <a href="#" class="button-link button--grey cancel-link" {{action "closeAction"}}>cancel</a>
+    <button type="button" class="button-primary button--blue" {{action "save"}}>Save</button>
+  </div>
+</div>

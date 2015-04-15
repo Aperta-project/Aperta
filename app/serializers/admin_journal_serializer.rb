@@ -8,6 +8,7 @@ class AdminJournalSerializer < ActiveModel::Serializer
              :epub_css,
              :pdf_css,
              :manuscript_css,
+             :editor_invite_email_template,
              :description,
              :doi_publisher_prefix,
              :doi_journal_prefix,

@@ -105,6 +105,22 @@ class JournalPage < Page
     has_css?('.manuscript-css.save-status', text: "Saved")
   end
 
+  def view_editor_invite_email_template
+    synchronize_content! 'Edit Email Template for Editor Invitation'
+    click_on 'Edit Email Template for Editor Invitation'
+    find('textarea').value
+  end
+
+  def update_editor_invite_email_template body
+    find('button', :text => 'EDIT EMAIL TEMPLATE FOR EDITOR INVITATION').click
+    find('textarea').set body
+    click_on 'Save'
+  end
+
+  def editor_invite_email_template_saved?
+    has_css?('.editor-invite-email-template.save-status', text: "Saved")
+  end
+
   def search_user query
     fill_in 'Admin Search Input', with: query
     find('.admin-user-search-button').click

@@ -61,7 +61,8 @@ class Admin::JournalsController < ApplicationController
       :doi_publisher_prefix, :epub_cover,
       :epub_css, :last_doi_issued,
       :manuscript_css, :name,
-      :pdf_css
+      :pdf_css,
+      :editor_invite_email_template
     )
   end
 end

@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(version: 20150409235153) do
     t.string   "doi_publisher_prefix", limit: 255
     t.string   "doi_journal_prefix",   limit: 255
     t.string   "last_doi_issued",      limit: 255, default: "0"
+    t.text     "editor_invite_email_template"
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|

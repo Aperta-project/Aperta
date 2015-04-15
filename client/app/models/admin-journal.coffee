@@ -23,5 +23,6 @@ AdminJournal = DS.Model.extend
   doiPublisherPrefix: a('string')
   lastDoiIssued: a('number')
   doi: a()
+  editorInviteEmailTemplate: a('string')
 
 `export default AdminJournal`

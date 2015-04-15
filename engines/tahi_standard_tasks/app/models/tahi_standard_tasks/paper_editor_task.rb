@@ -6,7 +6,8 @@ module TahiStandardTasks
 
     def invitation_invited(invitation)
       PaperEditorMailer.delay.notify_invited({
-        invitation_id: invitation.id
+        invitation_id: invitation.id,
+        journal_id: journal.id
       })
     end
 

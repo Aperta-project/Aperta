@@ -3,16 +3,17 @@
 <div class="invite-reviewer-text">
   <div class='invite-reviewers'>
     <label for="reviewer">Email</label>
-    {{select-2-single value=""
-               class="reviewer-select2"
-               name="invite_reviewer"
-               selectionSelected="didSelectReviewer"
-               selectedData=selectedReviewer
-               minimumInputLength=0
-               selectedTemplate=selectedTemplate
-               resultsTemplate=resultsTemplate
-               remoteSource=select2RemoteSource
-               placeholder="Please select reviewer"}}
+    {{select-2-single
+        class="reviewer-select2"
+        minimumInputLength=3
+        name="invite_reviewer"
+        placeholder="Please select reviewer"
+        resultsTemplate=resultsTemplate
+        remoteSource=select2RemoteSource
+        selectedData=selectedReviewer
+        selectedTemplate=selectedTemplate
+        selectionSelected="didSelectReviewer"
+        value=""}}
     <button class="button-primary button--green invite-reviewer-button" {{action "inviteReviewer"}}>
       Invite
     </button>

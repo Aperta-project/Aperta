@@ -48,11 +48,12 @@
 
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half validationErrors.affiliation:error"}}>
-      {{select-2-single value=newRecommendation.affiliation
-                        class="affiliation-field"
-                        placeholder="Affiliation"
-                        selectedData=selectedAffiliation
-                        source=model.institutions}}
+      {{select-2-single
+          class="affiliation-field"
+          placeholder="Affiliation"
+          selectedData=selectedAffiliation
+          source=model.institutions
+          value=newRecommendation.affiliation}}
     </div>
   </div>
 

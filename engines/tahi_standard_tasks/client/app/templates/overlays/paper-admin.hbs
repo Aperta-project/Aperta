@@ -1,12 +1,17 @@
-<h1>Assign Admin</h1>
+<h1>
+  Assign Admin
+</h1>
+
 <label for="admin">Admin</label>
-{{select-2-single value=""
-           class="admin-select2"
-           name="assign_admin"
-           selectionSelected="assignAdmin"
-           selectedData=admin
-           minimumInputLength=0
-           selectedTemplate=selectedTemplate
-           resultsTemplate=resultsTemplate
-           remoteSource=select2RemoteSource
-           placeholder="Please select admin"}}
+
+{{select-2-single
+    class="admin-select2"
+    minimumInputLength=3
+    placeholder="Please select admin"
+    name="assign_admin"
+    remoteSource=select2RemoteSource
+    resultsTemplate=resultsTemplate
+    selectedData=admin
+    selectedTemplate=selectedTemplate
+    selectionSelected="assignAdmin"
+    value=""}}

@@ -98,11 +98,11 @@ feature "Manuscript Manager", js: true, selenium: true do
 
     needs_editor_phase = task_manager_page.phase 'Invite Editor'
     needs_editor_phase.view_card 'Assign Admin' do |overlay|
-      expect(overlay).to have_no_admin(admin.full_name)
+      expect(overlay).to have_no_admin(admin.email)
       overlay.admin = admin
       overlay.mark_as_complete
       expect(overlay).to be_completed
-      expect(overlay).to have_admin(admin.full_name)
+      expect(overlay).to have_admin(admin.email)
     end
 
     needs_editor_phase = TaskManagerPage.new

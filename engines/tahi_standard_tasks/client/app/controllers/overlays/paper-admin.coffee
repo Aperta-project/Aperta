@@ -5,6 +5,12 @@ PaperAdminOverlayController = TaskController.extend Select2Assignees,
   select2RemoteUrl: Ember.computed 'model.paper', ->
     "/api/filtered_users/admins/#{@get 'model.paper.id' }/"
 
+  resultsTemplate: (user) ->
+    user.email
+
+  selectedTemplate: (user) ->
+    user.email || user.get('email')
+
   actions:
     assignAdmin: (select2User) ->
       @store.find('user', select2User.id).then (user) =>

@@ -21,9 +21,9 @@ class Decision < ActiveRecord::Base
   end
 
   def increment_revision_number
-    unless persisted?
-      # TODO: refactor to a simpler method
-      increment(:revision_number, paper.decisions.latest ? paper.decisions.latest.revision_number + 1 : 0)
+    return if persisted?
+    if latest = paper.decisions.latest
+      increment(:revision_number, latest.revision_number + 1)
     end
   end
 end

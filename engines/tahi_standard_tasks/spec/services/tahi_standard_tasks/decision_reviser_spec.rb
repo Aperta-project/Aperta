@@ -8,14 +8,6 @@ describe "TahiStandardTasks::DecisionReviser" do
 
   describe "#process!" do
 
-    describe "RegisterDecisionTask" do
-      it "is marked incomplete" do
-        task.update!(completed: true)
-        service.process!
-        expect(service.task.completed).to eq(false)
-      end
-    end
-
     describe "Paper" do
       it "is marked editable" do
         paper.update!(editable: false)
@@ -55,5 +47,6 @@ describe "TahiStandardTasks::DecisionReviser" do
         end
       end
     end
+
   end
 end

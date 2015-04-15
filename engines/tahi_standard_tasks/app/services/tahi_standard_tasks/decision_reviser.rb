@@ -9,7 +9,6 @@ module TahiStandardTasks
 
     def process!
       task.transaction do
-        task.incomplete!
         setup_paper!
         setup_revise_task!
 

@@ -3,9 +3,10 @@
 
 moduleForModel 'paper', 'Unit: Paper Model',
   needs: ['model:author', 'model:user', 'model:figure', 'model:journal',
-    'model:question-attachment', 'model:comment-look', 'model:attachable', 'model:affiliation',
+    'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment',
+    'model:question-attachment', 'model:comment-look', 'model:attachable',
     'model:phase', 'model:task', 'model:comment', 'model:participation',
-    'model:lite-paper', 'model:card-thumbnail', 'model:question', 'model:collaboration', 'model:attachment',
+    'model:lite-paper', 'model:card-thumbnail', 'model:question', 'model:collaboration',
     'model:supporting-information-file']
 
 test 'displayTitle displays short title if title is missing', ->

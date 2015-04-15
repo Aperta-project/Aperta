@@ -25,7 +25,7 @@
 
 <div id="paper-manuscript-upload" {{bind-attr class="isUploading::hidden"}}>
   <div {{bind-attr class=":processing isProcessing::hidden"}}>
-    {{progress-spinner visible=true size="small" color="green"}}
+    {{progress-loader visible=true}}
     Processing...
   </div>
   <div {{bind-attr class=":progress showProgress::hidden"}}>

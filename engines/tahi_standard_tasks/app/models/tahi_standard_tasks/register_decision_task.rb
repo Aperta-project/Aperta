@@ -18,7 +18,7 @@ module TahiStandardTasks
         transaction do
           find_or_create_please_revise_card!
           make_paper_editable!
-          paper.create_decision!
+          paper.decisions.create!
           update! completed: false
         end
 
@@ -122,7 +122,7 @@ module TahiStandardTasks
     private
 
     def broadcast_paper_revised_event
-      ActiveSupport::Notifications.instrument 'paper.revised', paper_id: paper.id
+      TahiNotifier.notify(event: "paper.revised", payload: { paper_id: paper.id })
     end
 
     def find_or_create_please_revise_card!

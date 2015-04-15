@@ -23,22 +23,6 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
 
       appController.send 'hideNavigation'
 
-    didTransition: ->
-      @animateOverlayOut().then =>
-        @disconnectOutlet
-          outlet: 'loading-overlay'
-          parentView: 'application'
-
-    loading: ->
-      # double render "solution" is referenced here:
-      # https://github.com/emberjs/ember.js/pull/10431/files
-      @render()
-      @render('overlays/loading',
-        into: 'application'
-        outlet: 'loading-overlay'
-        controller: 'overlays/loading'
-      )
-
     error: (response, transition, originRoute) ->
       oldState = transition.router.oldState
       transitionMsg = if oldState
@@ -49,7 +33,6 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
 
       @logError(transitionMsg + "\n" + response.message + "\n" + response.stack + "\n")
       transition.abort()
-      @controllerFor('application').set 'isLoading', false
 
     closeOverlay: ->
       @flash.clearAllMessages()

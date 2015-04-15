@@ -36,15 +36,28 @@ describe FilteredUsersController do
     let(:invitation) { create :invitation, task: task, invitee: user }
 
     context "when a user has any invitation for expired revision cycles" do
-      it "sends the user after a new round of revision cycle starts" do
+      before do
         get :reviewers, paper_id: paper.id, format: :json
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id
         invitation.invite!
-        paper.create_decision!
+        paper.decisions.create!
+      end
+
+      it "sends the user after a new round of revision cycle starts" do
         get :reviewers, paper_id: paper.id, format: :json
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id
+      end
+
+      context "when the user is already a reviewer" do
+        before { make_user_paper_reviewer user, paper }
+
+        it "sends the user" do
+          get :reviewers, paper_id: paper.id, format: :json
+          expect(res_body["filtered_users"].count).to eq 1
+          expect(res_body["filtered_users"].first["id"]).to eq user.id
+        end
       end
     end
 
@@ -57,16 +70,18 @@ describe FilteredUsersController do
       end
     end
 
-    context "when a user does not have a pending invitation" do
-      context "when the user is already a reviewer" do
-        before { make_user_paper_reviewer(user, paper) }
-        it "does not send the user" do
-          get :reviewers, paper_id: paper.id, format: :json
-          expect(res_body["filtered_users"]).to be_empty
-        end
+    context "when a user does not have a pending invitation for the latest revision cycle" do
+      before { paper.decisions.create! }
+
+      it 'sends the user' do
+        get :reviewers, paper_id: paper.id, format: :json
+        expect(res_body["filtered_users"].count).to eq 1
+        expect(res_body["filtered_users"].first["id"]).to eq user.id
+        expect(res_body["filtered_users"].first["email"]).to eq user.email
       end
 
-      it "sends the user" do
+      it "sends the user even if the user is already a paper reviewer" do
+        make_user_paper_reviewer user, paper
         get :reviewers, paper_id: paper.id, format: :json
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id

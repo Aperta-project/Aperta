@@ -19,7 +19,7 @@ Router.map ->
   @resource('author')
 
   @resource 'admin', ->
-    @resource 'journal_user', path: '/journal_users/:journal_id'
+    @resource 'admin.journals', path: '/journals', ->
     @resource 'admin.journal', path: '/journals/:journal_id', ->
       @resource 'admin.journal.manuscript_manager_template', path: '/manuscript_manager_templates', ->
         @route('new')

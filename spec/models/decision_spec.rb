@@ -35,10 +35,10 @@ describe Decision do
 
   describe '#latest?' do
     it 'returns true if it is the latest decision' do
-      early_decision = paper.create_decision!
-      paper.create_decision!
-      (FactoryGirl.create :paper).create_decision!
-      latest_decision = paper.create_decision!
+      early_decision = paper.decisions.create!
+      paper.decisions.create!
+      (FactoryGirl.create :paper).decisions.create!
+      latest_decision = paper.decisions.create!
       expect(early_decision.latest?).to be false
       expect(latest_decision.latest?).to be true
     end

@@ -43,7 +43,7 @@ feature "Register Decision", js: true do
   scenario "User checks previous decision history" do
     paper.decisions.first.update! verdict: "revise",
                                   letter: "Please revise the manuscript"
-    paper.create_decision!
+    paper.decisions.create!
     paper.reload
 
     dashboard_page = DashboardPage.new

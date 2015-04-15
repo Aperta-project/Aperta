@@ -12,7 +12,6 @@
     "ember-qunit": "0.2.8",
     "ember-qunit-notifications": "0.0.7",
     "qunit": "~1.17.1",
-    "spin.js": "2.0.2",
     "jquery-timeago": "1.4.1",
     "chosen-bower": "1.1.0",
     "select2": "3.5.1",
@@ -24,8 +23,7 @@
     "ember-data-factory-guy": "0.9.10",
     "font-awesome": "~4.3.0",
     "jquery-ui": "~1.11.3",
-    "bootstrap": "~3.3.2",
-    "jQuery.dotdotdot": "~1.7.2"
+    "bootstrap": "~3.3.2"
   },
   "resolutions": {
     "ember-data": "1.0.0-beta.16.1"

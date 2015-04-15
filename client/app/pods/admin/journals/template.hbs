@@ -1,0 +1,34 @@
+{{view "control-bar"}}
+{{flash-messages classNames="flash-messages--below-control-bar"}}
+
+<div id="tahi-container" class="admin-screen">
+
+  <div class="row">
+    <div class="col-md-6">
+      {{outlet}}
+    </div>
+    <div class="col-md-4 col-md-offset-2">
+      <h2>Users</h2>
+      <div class="admin-user-search">
+        {{input action="searchUsers" placeholder="SEARCH ALL USERS" class="admin-user-search-input" value=searchQuery}}
+        <button class="admin-user-search-button" {{action "searchUsers"}}><span class="glyphicon glyphicon-search"></span></button>
+      </div>
+
+      {{#if adminJournalUsers}}
+        <table class="admin-users">
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+          </tr>
+          {{#each user in adminJournalUsers}}
+            {{partial "admin/edit-journal-user"}}
+          {{/each}}
+        </table>
+      {{else}}
+        <p class="admin-user-search-default-state-text">{{{placeholderText}}}</p>
+      {{/if}}
+    </div>
+  </div>
+</div>
+

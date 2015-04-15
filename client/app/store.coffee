@@ -16,7 +16,9 @@ ApplicationStore = DS.Store.extend
   findTask: (id) ->
     matchingTask = @allTaskClasses().find (tm) -> tm.idToRecord[id]
     if matchingTask
-      matchingTask.idToRecord[id]
+      matchingTask.idToRecord[id].reload()
+    else
+      null
 
   # resume the event stream after saving
   didSaveRecord: (record, data) ->

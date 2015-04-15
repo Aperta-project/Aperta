@@ -93,4 +93,21 @@ describe UserMailer, redis: true do
       expect(email.body).to include client_paper_task_url(paper, paper.tasks.first)
     end
   end
+
+  describe '#paper_submission' do
+    let(:author) { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, submitted: true }
+    let(:email) { UserMailer.paper_submission(paper.id) }
+
+    it "sends the email to the paper's author" do
+      expect(email.to).to eq [author.email]
+    end
+
+    it "emails the author user they have been mentioned" do
+      expect(email.subject).to eq "Thank You for submitting a Manuscript on Tahi"
+      expect(email.body).to include "Thank you for submitting your manuscript"
+      expect(email.body).to include paper.title
+      expect(email.body).to include paper.journal.name
+    end
+  end
 end

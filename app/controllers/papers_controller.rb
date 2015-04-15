@@ -86,6 +86,7 @@ class PapersController < ApplicationController
     paper.update(submitted: true, editable: false)
     status = paper.valid? ? 200 : 422
     notify_paper_submitted! if paper.valid?
+    UserMailer.delay.paper_submission(paper.id)
     broadcast_paper_submitted_event
     render json: paper, status: status
   end

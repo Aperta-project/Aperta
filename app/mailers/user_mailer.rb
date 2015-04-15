@@ -58,4 +58,13 @@ class UserMailer < ActionMailer::Base
       to: @commentee.try(:email),
       subject: "You've been mentioned on Tahi")
   end
+
+  def paper_submission(paper_id)
+    @paper = Paper.find(paper_id)
+    @author = @paper.creator
+
+    mail(
+      to: @author.try(:email),
+      subject: "Thank You for submitting a Manuscript on Tahi")
+  end
 end

@@ -7,7 +7,6 @@ var app = new EmberApp({
   emberCliFontAwesome: { includeFontAwesomeAssets: false }
 });
 
-app.import('bower_components/spin.js/spin.js');
 app.import('bower_components/jquery-timeago/jquery.timeago.js');
 app.import('bower_components/underscore/underscore-min.js');
 app.import('bower_components/moment/moment.js');

@@ -12,7 +12,6 @@
     "ember-qunit": "0.2.8",
     "ember-qunit-notifications": "0.0.7",
     "qunit": "~1.17.1",
-    "spin.js": "2.0.2",
     "jquery-timeago": "1.4.1",
     "chosen-bower": "1.1.0",
     "select2": "3.5.1",

@@ -21,6 +21,12 @@ export default Ember.Component.extend({
     'visible:loader-component-circle--visible',
     'admin:admin',
     'white:white',
-    'large:large'
-  ]
+    'large:large',
+    'center:loader-component-circle--center'
+  ],
+
+  admin: false,
+  white: false,
+  large: false,
+  center: false
 });

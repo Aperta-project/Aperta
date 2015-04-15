@@ -337,9 +337,3 @@
   // 2011 (IE 10)
   -ms-flex-line-pack: $value-2011;
 }
-
-@mixin flex-center() {
-  @include display('flex');
-  @include box-align('center');
-  @include justify-content('center');
-}

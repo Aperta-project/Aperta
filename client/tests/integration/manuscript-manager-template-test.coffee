@@ -22,7 +22,7 @@ module 'Integration: Manuscript Manager Templates',
     Tahi.__container__.lookup(
       'controller:admin/journal/manuscript-manager-template/edit'
     )._actions.saveTemplateOnClick = Tahi.saveTemplateActionFunction
-  
+
   setup: ->
     app = startApp()
     server = setupMockServer()

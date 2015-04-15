@@ -19,6 +19,7 @@
 
 // Should be placed within form-group div and above the input element
 .text-field-title {
+  pointer-events: none;
   background: $tahi-white;
   color: $tahi-grey;
   margin-left: 10px;

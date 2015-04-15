@@ -27,7 +27,7 @@ namespace :tahi do
       if `bundle exec rake -T #{migration_task}`.size > 0
         sh "bundle exec rake #{migration_task}"
       else
-        puts "No migrations found for this card. You can install card migrations with #{migration_task}."
+        puts "No migration task found for this card. If you add migrations for #{engine_name} in in the future, you can install migrations with #{migration_task}."
       end
       
       # tahi magic installer

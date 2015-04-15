@@ -40,7 +40,7 @@ feature "Dashboard", js: true do
     let(:paper_count) { 3 }
 
     before do
-      decision = paper.create_decision!
+      decision = paper.decisions.create!
       (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
       (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
     end
@@ -48,7 +48,7 @@ feature "Dashboard", js: true do
     scenario "only displays invitations from latest revision cycle" do
       SignInPage.visit.sign_in user
       expect(dashboard.active_invitation_count).to eq 2
-      decision = paper.create_decision!
+      decision = paper.decisions.create!
       dashboard.reload
       expect(dashboard.active_invitation_count).to eq 0
       (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!

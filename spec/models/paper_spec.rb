@@ -140,22 +140,4 @@ describe Paper do
       end
     end
   end
-
-  describe "#latest_decision" do
-    it "returns the most recent decision for the paper" do
-      3.times do |i|
-        paper.decisions.create! letter: "Decision #{i}"
-      end
-      expect(paper.latest_decision.letter).to eq("Decision 2")
-      expect(paper.latest_decision.revision_number).to eq(3)
-    end
-  end
-
-  describe "#create_decision!" do
-    it "creates a blank decision on Paper" do
-      expect {
-        paper.create_decision!
-      }.to change { paper.decisions.count }.by 1
-    end
-  end
 end

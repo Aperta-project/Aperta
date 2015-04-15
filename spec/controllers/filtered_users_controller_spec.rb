@@ -41,10 +41,10 @@ describe FilteredUsersController do
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id
         invitation.invite!
+        paper.decisions.create!
       end
 
       it "sends the user after a new round of revision cycle starts" do
-        paper.create_decision!
         get :reviewers, paper_id: paper.id, format: :json
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id
@@ -54,7 +54,6 @@ describe FilteredUsersController do
         before { make_user_paper_reviewer user, paper }
 
         it "sends the user" do
-          paper.create_decision!
           get :reviewers, paper_id: paper.id, format: :json
           expect(res_body["filtered_users"].count).to eq 1
           expect(res_body["filtered_users"].first["id"]).to eq user.id
@@ -72,7 +71,7 @@ describe FilteredUsersController do
     end
 
     context "when a user does not have a pending invitation for the latest revision cycle" do
-      before { paper.create_decision! }
+      before { paper.decisions.create! }
 
       it 'sends the user' do
         get :reviewers, paper_id: paper.id, format: :json

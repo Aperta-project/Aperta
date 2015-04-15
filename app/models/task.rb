@@ -48,6 +48,20 @@ class Task < ActiveRecord::Base
       where(role: role)
     end
 
+    # Public: Scopes the tasks for a given paper
+    #
+    # paper  - The paper object
+    #
+    # Examples
+    #
+    #   for_paper(Paper.last)
+    #   # => #<ActiveRecord::Relation [<#Task:123>]>
+    #
+    # Returns ActiveRecord::Relation with tasks.
+    def for_paper(paper)
+      joins(:phase).where(phases: { paper_id: paper })
+    end
+
     # Public: Scopes the tasks without the given task
     #
     # task  - Task object

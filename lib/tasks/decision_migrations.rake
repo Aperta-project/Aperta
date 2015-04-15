@@ -3,11 +3,11 @@ namespace :decisions do
   task add_decision_to_papers: :environment do
     papers = Paper.includes(:decisions).where decisions: { id: nil }
     papers.each do |paper|
-      paper.create_decision!
+      paper.decisions.create!
     end
 
     Invitation.where(decision_id: nil).each do |invitation|
-      invitation.decision = invitation.paper.latest_decision
+      invitation.decision = invitation.paper.decisions.latest
       invitation.save!
       p invitation
     end

@@ -1,4 +1,5 @@
 require 'rails_helper'
+include ClientRouteHelper
 
 describe UserMailer, redis: true do
   shared_examples_for "invitor is not available" do
@@ -89,7 +90,7 @@ describe UserMailer, redis: true do
       expect(email.body).to include paper.title
       expect(email.body).to include paper.tasks.first.title
       expect(email.body).to include comment.body
-      expect(email.body).to include paper_task_url(paper.id, paper.tasks.first.id)
+      expect(email.body).to include client_paper_task_url(paper, paper.tasks.first)
     end
   end
 end

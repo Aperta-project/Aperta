@@ -7,6 +7,19 @@ namespace :data do
     end
   end
 
+  desc "Update task types to each tasks's default task type for all journals"
+  task :update_task_types => :environment do
+    Rails.application.config.eager_load_namespaces.each(&:eager_load!)
+    Journal.all.each do |journal|
+      JournalServices::CreateDefaultTaskTypes.call journal, override_existing: true
+    end
+
+    TaskType.types.each do |task_class, defaults|
+      task_class.constantize.update_all role: defaults[:default_role],
+                                        title: defaults[:default_title]
+    end
+  end
+
   task :shorten_supporting_information do
     Task.where(title: "Supporting Information").update_all(title: "Supporting Info")
   end

@@ -1,59 +1,82 @@
 <div class="add-author-form">
   <div class="form-group form-inline author-top">
-    <div {{bind-attr class=":form-group :author-name :required validationErrors.firstName:error"}}>
+    <div {{bind-attr class=":form-group :author-name validationErrors.firstName:error"}}>
+      <span class="text-field-title required">
+        First Name
+        {{error-message message=validationErrors.firstName}}
+      </span>
       {{input type="text"
               value=newRecommendation.firstName
-              class="form-control"
-              placeholder="First name"}}
+              class="form-control tall-text-field"
+              placeholder="Jane"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-middle validationErrors.middleInitial:error"}}>
+      <span class="text-field-title">
+        MI
+        {{error-message message=validationErrors.middleInitial}}
+      </span>
       {{input type="text"
               value=newRecommendation.middleInitial
-              class="form-control"
-              placeholder="MI"}}
+              class="form-control tall-text-field"
+              placeholder="M"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-name :required validationErrors.lastName:error"}}>
+    <div {{bind-attr class=":form-group :author-name validationErrors.lastName:error"}}>
+      <span class="text-field-title required">
+        Last Name
+        {{error-message message=validationErrors.lastName}}
+      </span>
       {{input type="text"
               value=newRecommendation.lastName
-              class="form-control"
-              placeholder="Last name"}}
+              class="form-control tall-text-field"
+              placeholder="Goodall"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :required :author-bump validationErrors.email:error"}}>
+    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.email:error"}}>
+      <span class="text-field-title required">
+        Email
+        {{error-message message=validationErrors.email}}
+      </span>
       {{input type="text"
               value=newRecommendation.email
-              class="form-control"
-              placeholder="Email"}}
-      {{error-message message=validationErrors.email}}
+              class="form-control tall-text-field"
+              placeholder="jane.goodall@science.com"}}
     </div>
   </div>
 
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half validationErrors.title:error"}}>
+      <span class="text-field-title">
+        Title
+        {{error-message message=validationErrors.title}}
+      </span>
       {{input type="text"
               value=newRecommendation.title
-              class="form-control"
-              placeholder="Title"}}
+              class="form-control tall-text-field"
+              placeholder="World's Foremost Expert on Chimpanzees"}}
     </div>
 
     <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.department:error"}}>
+      <span class="text-field-title">
+        Department
+        {{error-message message=validationErrors.department}}
+      </span>
       {{input type="text"
               value=newRecommendation.department
-              class="form-control"
-              placeholder="Department"}}
+              class="form-control tall-text-field"
+              placeholder="Primatology"}}
     </div>
   </div>
 
   <div class="form-group form-inline">
     <div {{bind-attr class=":form-group :author-half validationErrors.affiliation:error"}}>
-      {{select-2-single
-          class="affiliation-field"
-          placeholder="Affiliation"
-          selectedData=selectedAffiliation
-          source=model.institutions
-          value=newRecommendation.affiliation}}
+      {{error-message message=validationErrors.affiliation}}
+      {{select-2-single value=newRecommendation.affiliation
+                        class="affiliation-field"
+                        placeholder="Affiliation"
+                        selectedData=selectedAffiliation
+                        source=model.institutions}}
     </div>
   </div>
 
@@ -81,5 +104,4 @@
       <button class="button-secondary button--green knockout" {{action "saveNewRecommendation"}}>done</button>
     </span>
   </div>
-
 </div>

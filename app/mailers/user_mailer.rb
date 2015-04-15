@@ -49,6 +49,16 @@ class UserMailer < ActionMailer::Base
       subject: "You've been assigned as an editor on Tahi")
   end
 
+  def notify_editor_of_paper_resubmission(paper_id)
+    @paper = Paper.find(paper_id)
+    @editor = @paper.editor
+    @author = @paper.creator
+
+    mail(
+      to: @editor.email,
+      subject: "Manuscript has been resubmitted in Tahi")
+  end
+
   def mention_collaborator(comment, commentee)
     @comment = comment
     @commenter = @comment.commenter

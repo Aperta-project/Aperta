@@ -20,8 +20,11 @@ machine:
 
 ## Customize dependencies
 dependencies:
+  cache_directories:
+    - "~/.rvm/gems/ruby-2.2.0@tahi" #TODO: make this dynamic
+
   pre:
-    - bundle config --global jobs 3
+    - bundle config --global jobs 7
 
   override:
     - bundle install: # note ':' here
@@ -33,8 +36,6 @@ dependencies:
 database:
   override:
     - bundle exec rake db:create db:schema:load
-  cache_directories:
-    - "~/.rvm/gems/ruby-2.2.0@tahi" #TODO: make this dynamic
 
 ## Customize test commands
 test:

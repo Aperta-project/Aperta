@@ -110,4 +110,31 @@ describe UserMailer, redis: true do
       expect(email.body).to include paper.journal.name
     end
   end
+
+  describe '#notify_editor_of_paper_resubmission' do
+    let(:author) { FactoryGirl.create(:user) }
+    let(:editor) { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, submitted: true }
+    let(:email) { UserMailer.notify_editor_of_paper_resubmission(paper.id) }
+
+    before do
+      make_user_paper_editor(editor, paper)
+    end
+
+    it "send email to the paper's editor" do
+      expect(email.to).to eq [editor.email]
+    end
+
+    it "specify subject line" do
+      expect(email.subject).to eq "Manuscript has been resubmitted in Tahi"
+    end
+
+    it "tells the editor paper has been (re)submitted" do
+      expect(email.body).to include "Hello #{editor.full_name}"
+      expect(email.body).to include "#{author.full_name} has resubmitted the manuscript"
+      expect(email.body).to include paper.title
+      expect(email.body).to include client_paper_url(paper)
+      expect(email.body).to include paper.journal.name
+    end
+  end
 end

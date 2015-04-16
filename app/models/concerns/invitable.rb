@@ -77,6 +77,6 @@ module Invitable
   end
 
   def invitee_role
-    raise NotImplementedError, 'Please implemented #invitee_role in the task model'
+    raise NotImplementedError, 'Please implement #invitee_role in the task model'
   end
 end

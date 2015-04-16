@@ -42,7 +42,6 @@ test:
     - bin/circleci.sh:
         parallel: true
 
-
 # Customize deployment commands
 # deployment:
 #   staging:

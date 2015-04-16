@@ -5,6 +5,7 @@ a = DS.attr
 Paper = DS.Model.extend
   authors: DS.hasMany('author')
   collaborations: DS.hasMany('collaboration')
+  decisions: DS.hasMany('decision')
   editors: DS.hasMany('user') # these are editors that have been assigned to the paper.
   figures: DS.hasMany('figure', inverse: 'paper')
   journal: DS.belongsTo('journal')

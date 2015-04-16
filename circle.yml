@@ -20,6 +20,9 @@ machine:
 
 ## Customize dependencies
 dependencies:
+  pre:
+    - bundle config --global jobs 3
+
   override:
     - bundle install: # note ':' here
         timeout: 600 # fail if command has no output for 3 minutes

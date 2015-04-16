@@ -2,15 +2,17 @@
 
 {{view "phase-header" phase=phase}}
 
-<div class="column-content sortable" data-phase-id="{{unbound phase.id}}">
-  {{#each task in sortedTasks}}
-    {{card-preview paper=controller.model.paper
-                   task=task
-                   commentLooks=commentLooks
-                   canRemoveCard=canRemoveCard
-                   showDeleteConfirm="showDeleteConfirm"
-                   canDragCard=true
-                   action="viewCard"}}
-  {{/each}}
+<div class="column-content">
+  <div {{bind-attr class=":sortable noCards:sortable-no-cards"}} data-phase-id="{{unbound phase.id}}">
+    {{#each task in sortedTasks}}
+      {{card-preview paper=controller.model.paper
+                     task=task
+                     commentLooks=commentLooks
+                     canRemoveCard=canRemoveCard
+                     showDeleteConfirm="showDeleteConfirm"
+                     canDragCard=true
+                     action="viewCard"}}
+    {{/each}}
+  </div>
   <a {{action "chooseNewCardTypeOverlay" phase}} class="button-secondary button--green">Add New Card</a>
 </div>

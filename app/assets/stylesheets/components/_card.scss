@@ -88,3 +88,10 @@
 
   .glyphicon { color: #fff; }
 }
+
+
+// .card modifier:
+.card--dragging {
+  @include transform(rotate(2deg) scale(1.05));
+  box-shadow: 0 2px 2px rgba(0,0,0, 0.1);
+}

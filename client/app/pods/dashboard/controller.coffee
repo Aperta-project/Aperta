@@ -16,8 +16,8 @@ IndexController = Ember.Controller.extend
   pageNumber: 1
 
   paginate: (->
-    @get('pageNumber') isnt @get('totalPageCount')
-  ).property('totalPageCount', 'pageNumber')
+    @get('pageNumber') isnt @get('model.totalPageCount')
+  ).property('model.totalPageCount', 'pageNumber')
 
   actions:
     loadMorePapers: ->

@@ -1,22 +1,16 @@
+## Customize machine
 machine:
   timezone:
-    America/Los_Angeles # Set the timezone
+    America/Los_Angeles
 
-  # Version of ruby to use
   ruby:
     version:
       2.2.0
 
-  # Add some environment variables
   environment:
     RAILS_ENV: test
     DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
 
-## Customize checkout
-# checkout:
-#   post:
-#     - git submodule sync
-#     - git submodule update --init # use submodules
 
 ## Customize dependencies
 dependencies:
@@ -25,6 +19,7 @@ dependencies:
 
   pre:
     - bundle config --global jobs 7
+    - bundle config --global without staging:production:performance
 
   override:
     - bundle install: # note ':' here
@@ -32,10 +27,12 @@ dependencies:
     - npm install && bundle exec rake ember-cli:install_dependencies
     - cd client && npm install --save-dev ember-cli-rails-addon@0.0.11 && cd ..
 
+
 ## Customize database setup
 database:
   override:
     - bundle exec rake db:create db:schema:load
+
 
 ## Customize test commands
 test:
@@ -43,15 +40,10 @@ test:
     - bin/circleci.sh:
         parallel: true
 
+
 # Customize deployment commands
 # deployment:
 #   staging:
 #     branch: master
 #     heroku:
 #       appname: tahi-staging
-
-## Custom notifications
-# notify:
-#   webhooks:
-#     # A list of hashes representing hooks. Only the url field is supported.
-#     - url: https://someurl.com/hooks/circle

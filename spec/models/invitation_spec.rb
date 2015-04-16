@@ -1,31 +1,8 @@
 require 'rails_helper'
 
-class TestTask < Task
-  include TaskTypeRegistration
-  include Invitable
-
-  register_task default_title: "Test Task", default_role: "user"
-
-  def invitation_invited(_invitation)
-    "invited"
-  end
-
-  def invitation_accepted(_invitation)
-    "accepted"
-  end
-
-  def invitation_rejected(_invitation)
-    "rejected"
-  end
-
-  def invitation_rescinded(paper_id:, invitee_id:)
-    "rescinded"
-  end
-end
-
 describe Invitation do
   let(:phase) { FactoryGirl.create :phase }
-  let(:task) { phase.tasks.create type: "TestTask", title: "Test", role: "user" }
+  let(:task) { FactoryGirl.create :invitable_task, phase: phase }
   let(:invitation) { FactoryGirl.build :invitation, task: task }
 
   describe '#create' do

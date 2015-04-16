@@ -29,6 +29,6 @@ class InvitationSerializer < ActiveModel::Serializer
   end
 
   def invitation_type
-    object.task.role.capitalize
+    object.task.invitee_role.capitalize
   end
 end

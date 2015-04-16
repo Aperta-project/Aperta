@@ -3,7 +3,7 @@ require 'securerandom'
 FactoryGirl.define do
   factory :invitation do
     code { SecureRandom.hex(4) }
-    association(:task, factory: :task)
+    association(:task, factory: :invitable_task)
     association(:invitee, factory: :user)
     association(:actor, factory: :user)
     association(:decision, factory: :decision)

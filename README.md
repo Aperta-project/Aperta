@@ -27,7 +27,7 @@ We're assuming you have ruby and rubygems configured.
 #### Ember dependencies
 - `brew install watchman` for more performant builds. It will fall back to node if you don't do this.
 - `npm install`
-- `rake ember-cli:install_dependencies`
+- `rake ember:install`
 
 #### Database setup
 
@@ -99,7 +99,7 @@ specs. Firefox will pop up to run integration tests.
 
 #### Running qunit tests from the command line
 
-You can run the javascript specs via the command line with `rake ember-cli:test`.
+You can run the javascript specs via the command line with `rake ember:test`.
 
 #### Running qunit tests from the browser
 

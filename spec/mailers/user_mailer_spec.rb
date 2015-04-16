@@ -103,7 +103,7 @@ describe UserMailer, redis: true do
       expect(email.to).to eq [author.email]
     end
 
-    it "tells the author that they have submitted their paper" do
+    it "emails the author user they have been mentioned" do
       expect(email.subject).to eq "Thank You for submitting a Manuscript on Tahi"
       expect(email.body).to include "Thank you for submitting your manuscript"
       expect(email.body).to include paper.title

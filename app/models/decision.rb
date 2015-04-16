@@ -22,8 +22,8 @@ class Decision < ActiveRecord::Base
 
   def increment_revision_number
     unless persisted?
-      # TODO: refactor to a simpler method
-      increment(:revision_number, paper.decisions.latest ? paper.decisions.latest.revision_number + 1 : 0)
+      incremented_count = !paper.decisions.empty? ? paper.decisions.latest.revision_number + 1 : 0
+      self.revision_number = incremented_count
     end
   end
 end

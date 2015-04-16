@@ -32,9 +32,9 @@ dependencies:
 ## Customize database setup
 database:
   override:
-    # replace CircleCI's generated database.yml
-    # - cp config/database.yml.travis config/database.yml
     - bundle exec rake db:create db:schema:load
+  cache_directories:
+    - "~/.rvm/gems/ruby-2.2.0@tahi" #TODO: make this dynamic
 
 ## Customize test commands
 test:

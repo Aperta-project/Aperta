@@ -154,6 +154,7 @@ describe PapersController do
     expect_policy_enforcement
 
     authorize_policy(PapersPolicy, true)
+
     it "submits the paper" do
       put :submit, id: paper.id, format: :json
       expect(response.status).to eq(200)
@@ -164,6 +165,12 @@ describe PapersController do
     it "broadcasts 'paper.submitted' event" do
       expect(TahiNotifier).to receive(:notify).with(event: "paper.submitted", payload: { paper_id: paper.id })
       put :submit, id: paper.id, format: :json
+    end
+
+    it "queue submission email to author upon paper submission" do
+      expect {
+        put :submit, id: paper.id, format: :json
+      }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
     end
   end
 

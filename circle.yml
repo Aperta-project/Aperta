@@ -1,3 +1,11 @@
+database:
+  post:
+    - psql -c "CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;" -d circle_ruby_test
+    - psql -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" -d circle_ruby_test
+  override:
+    # replace CircleCI's generated database.yml
+    - bundle exec rake db:create db:schema:load
+
 machine:
   timezone:
     America/Los_Angeles # Set the timezone
@@ -25,13 +33,6 @@ dependencies:
         timeout: 600 # fail if command has no output for 3 minutes
     - npm install && bundle exec rake ember-cli:install_dependencies
     - cd client && npm install --save-dev ember-cli-rails-addon@0.0.11 && cd ..
-
-## Customize database setup
-database:
-  override:
-    # replace CircleCI's generated database.yml
-    # - cp config/database.yml.travis config/database.yml
-    - bundle exec rake db:create db:schema:load
 
 ## Customize test commands
 test:

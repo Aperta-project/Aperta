@@ -199,7 +199,7 @@ PaperEditController = BasePaperController.extend
       false
 
     confirmSubmitPaper: ->
-      return unless @get('allMetadataTasksCompleted')
+      return unless @get('model.allMetadataTasksCompleted')
       @get('model').save()
       @get('controllers.overlays/paperSubmit').set 'model', @get('model')
       @send 'showConfirmSubmitOverlay'

@@ -2,7 +2,7 @@
   This work was supported by
 
   {{#if funder.formattedWebsite}}
-    <a {{bind-attr href=funder.formattedWebsite}} target="_blank">
+    <a href={{funder.formattedWebsite}} target="_blank">
       <strong>{{if funder.name funder.name "[funder name]"}}</strong>
     </a>
   {{~else~}}

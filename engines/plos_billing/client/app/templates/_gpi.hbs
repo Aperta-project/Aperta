@@ -20,7 +20,7 @@
   </p>
 
   <div class="form-group form-inline">
-    <div {{bind-attr class=":required :form-group :author-half validationErrors.department:error"}}>
+    <div class="required form-group author-half {{if validationErrors.department "error"}}">
       {{error-message message=null}}
       {{question-select ident="plos_billing.gpi_country"
                         task=model

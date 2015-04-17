@@ -8,7 +8,7 @@
 
 <div class="add-author-form">
   <div class="form-group form-inline author-top">
-    <div {{bind-attr class=":form-group :author-half validationErrors.firstName:error"}}>
+    <div class="form-group author-half {{if validationErrors.firstName "error"}}">
       <span class="text-field-title">
         First Name
         {{error-message message=null}}
@@ -19,7 +19,7 @@
                        placeholderText='Jane'}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.lastName:error"}}>
+    <div class="form-group author-half author-bump {{if validationErrors.lastName "error"}}">
       <span class="text-field-title">
         Last Name
         {{error-message message=null}}
@@ -31,7 +31,7 @@
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half validationErrors.title:error"}}>
+    <div class="form-group author-half {{if validationErrors.title "error"}}">
       <span class="text-field-title">
         Title
         {{error-message message=null}}
@@ -42,7 +42,7 @@
                        placeholderText="World's Foremost Expert on Chimpanzees"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.department:error"}}>
+    <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
       <span class="text-field-title">
         Department
         {{error-message message=null}}
@@ -54,7 +54,7 @@
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half validationErrors.affiliation:error"}}>
+    <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
       {{error-message message=null}}
       {{question-select ident="plos_billing.affiliation1"
                         task=model
@@ -64,7 +64,7 @@
                         placeholderText='Affiliation'}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.secondaryAffiliation:error"}}>
+    <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
       {{error-message message=null}}
       {{question-select ident="plos_billing.affiliation2"
                         task=model
@@ -75,7 +75,7 @@
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half validationErrors.email:error"}}>
+    <div class="form-group author-half {{if validationErrors.email "error"}}">
       <span class="text-field-title">
         Phone
         {{error-message message=null}}
@@ -86,7 +86,7 @@
                        placeholderText="415-555-5555"}}
 
     </div>
-    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.email:error"}}>
+    <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
       <span class="text-field-title">
         Email
         {{error-message message=null}}
@@ -99,7 +99,7 @@
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class="validationErrors.department:error"}}>
+    <div class={{if validationErrors.department "error"}}>
       <span class="text-field-title">
         Address Line 1 (optional)
         {{error-message message=null}}
@@ -111,7 +111,7 @@
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class="validationErrors.department:error"}}>
+    <div class={{validationErrors.department "error"}}>
       <span class="text-field-title">
         Address Line 2 (optional)
         {{error-message message=null}}
@@ -123,7 +123,7 @@
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half validationErrors.department:error"}}>
+    <div class="form-group author-half {{if validationErrors.department "error"}}">
       <span class="text-field-title">
         City
         {{error-message message=null}}
@@ -134,13 +134,13 @@
                        placeholderText="Berkeley"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-name :author-bump validationErrors.department:error"}}>
+    <div class="form-group author-name author-bump {{if validationErrors.department "error"}}">
       {{question-select ident="plos_billing.state"
                         task=model
                         question="Select State"
                         source=states}}
     </div>
-    <div {{bind-attr class=":form-group :author-name validationErrors.department:error"}}>
+    <div class="form-group author-name {{if validationErrors.department "error"}}">
       <span class="text-field-title">
         Postal Code
         {{error-message message=null}}
@@ -152,7 +152,7 @@
     </div>
   </div>
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half validationErrors.department:error"}}>
+    <div class="form-group author-half {{if validationErrors.department "error"}}">
       {{error-message message=null}}
       {{question-select ident="plos_billing.country"
                         task=model
@@ -176,7 +176,7 @@
       How would you like to pay?
     </h3>
 
-    <div {{bind-attr class=":form-group :author-half :author-bump :payment-method validationErrors.affiliation:error"}}>
+    <div class="form-group author-half author-bump payment-method {{if validationErrors.affiliation "error"}}">
       {{error-message message=null}}
       {{question-select ident="plos_billing.payment_method"
                         task=model

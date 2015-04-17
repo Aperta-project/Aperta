@@ -1,7 +1,7 @@
 {{#if currentUser.siteAdmin}}
-  <a {{bind-attr class=":add-new-journal :button-primary :button--blue :pull-right newJournalPresent:button--disabled"}} href="#" {{action "addNewJournal"}}>
+  <button class="add-new-journal button-primary button--blue pull-right {{if newJournalPresent "button--disabled"}}" {{action "addNewJournal"}}>
     Add new journal
-  </a>
+  </button>
 {{/if}}
 
 <h2>Journals</h2>

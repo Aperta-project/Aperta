@@ -4,7 +4,7 @@
   {{partial "paper/edit/toolbar"}}
 </div>
 
-<div id="paper-container" {{bind-attr class="isSidebarEmpty:sidebar-empty"}}>
+<div id="paper-container" class={{if sidebarIsEmpty "sidebar-empty"}}>
 
   {{partial "paper/sidebar"}}
 
@@ -15,7 +15,7 @@
 
       {{flash-messages classNames="flash-messages-paper-editor"}}
 
-      <article {{ bind-attr class=":manuscript isEditing:editing:read-only"}}>
+      <article class="manuscript {{if isEditing "editing" "read-only"}}">
         <div class="manuscript-title-and-placeholder">
           {{content-editable tagName="h2"
                              id="paper-title"

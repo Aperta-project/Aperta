@@ -1,11 +1,11 @@
-<div {{bind-attr class=":figure-item :row hasPlacement::unplaced isEditing:editing: isSaving:saving:"}}>
+<div class="figure-item row {{if hasPlacement "" "unplaced"}} {{if isEditing "editing"}} {{if isSaving "saving"}}">
 
   <div class="figure-item-header">
     <div class="figure-item-header-inner">
       <span class="figure-label">{{#if hasPlacement}} {{unbound label}} {{else}} Not in manuscript {{/if}}
       </span>
       <div class="ve-tool-group first-button-group">
-          <a href="#" {{bind-attr class=":btn :insert-into-manuscript hasManuscriptSelection:enabled:disabled"}} {{action "insertFigure"}} >
+          <a href="#" class="btn insert-into-manuscript {{if hasManuscriptSelection "enabled" "disabled"}}" {{action "insertFigure"}} >
             <i class="fa fa-arrow-right fa-lg"></i>
             <i class="fa fa-file-picture-o fa-lg second"></i>
             Insert into Manuscript
@@ -15,7 +15,7 @@
           <span class="saving-spinner btn enabled">
             <i class="fa fa-spinner fa-spin"></i>
           </span>
-          <a class="btn enabled" target="_blank" {{bind-attr href=attachment.src}}>
+          <a class="btn enabled" target="_blank" href={{attachment.src}}>
             <i class="fa fa-external-link fa-lg"></i>
           </a>
           <a href="#" class="btn enabled" {{action "confirmDestroyAttachment"}}>
@@ -28,7 +28,7 @@
   {{#if attachment.previewSrc}}
     <div class="attachment-thumbnail-image">
       <div class="replace-spinner"></div>
-      <img class="preview" {{bind-attr src=attachment.previewSrc}} {{bind-attr alt=attachment.alt}}>
+      <img class="preview" src={{attachment.previewSrc}} alt={{attachment.alt}}>
       <div class="attachment-thumbnail-edit-overlay">
         <div class="attachment-thumbnail-edit-overlay-buttons">
           {{#replace-image}}
@@ -78,7 +78,7 @@
   {{#if view.previewState}}
     <div class="figure-item-detailed-view attachment-thumbnail-preview col-md-12">
       <div {{action "togglePreview"}} class="attachment-thumbnail-preview-close">&times;</div>
-      <img {{bind-attr src=attachment.detailSrc}} {{bind-attr alt=attachment.alt}}>
+      <img src={{attachment.detailSrc}} alt={{attachment.alt}}>
     </div>
   {{/if}}
 

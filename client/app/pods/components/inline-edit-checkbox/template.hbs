@@ -1,11 +1,11 @@
-<div {{bind-attr class=":inline-edit editing :bodypart-display bodyPartType"}}>
+<div class="inline-edit bodypart-display {{if editing "editing"}} {{bodyPartType}}">
   <label>
-    {{check-box checked=checked action='saveModel'}}
+    {{check-box checked=checked action="saveModel"}}
     {{{bodyPart.value}}}
   </label>
 </div>
 
-<div {{bind-attr class=":inline-edit-form editing"}}>
+<div class="inline-edit-form {{if editing "editing"}}">
   <div class="two-element-form">
     {{content-editable value=bodyPart.value class="editable" tagName='label'}}
     <span class="item-remove" {{action "deleteItem"}}></span>

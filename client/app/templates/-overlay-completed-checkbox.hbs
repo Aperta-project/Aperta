@@ -1,5 +1,5 @@
 <div class="overlay-completed-checkbox">
-  <div {{bind-attr class="validationErrors.completed:error"}}>
+  <div class={{if validationErrors.completed "error"}}>
     {{#if isEditable}}
       {{check-box id="task_completed" name="task_completed" checked=completed action="saveModel"}}
     {{else}}

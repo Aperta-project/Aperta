@@ -1,4 +1,4 @@
-<div {{bind-attr class=":comment-board-form :form-group editing"}}>
+<div class="comment-board-form form-group {{if editing "editing"}}">
   {{user-thumbnail user=currentUser}}
   {{textarea classNames="new-comment-field" value=commentBody placeholder="Type your message here"}}
 

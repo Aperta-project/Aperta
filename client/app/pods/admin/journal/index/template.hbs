@@ -39,7 +39,7 @@
 
     {{error-message message=validationErrors.doi}}
 
-    <label {{bind-attr class=":col-md-3 :form-group doiEditState:required"}}>
+    <label class="col-md-3 form-group {{if doiEditState "required"}}">
       <div class="admin-doi-settings-title">DOI</div>
       {{#if doiEditState}}
         {{input type="text"
@@ -65,7 +65,7 @@
     </label>
 
     {{#if doiStartNumberEditable}}
-      <label {{bind-attr class=":col-md-3 :form-group doiEditState:required doiStartNumberInvalid:error"}}>
+      <label class="col-md-3 form-group {{if doiEditState "required"}} {{if doiStartNumberInvalid "error"}}">
         <div class="admin-doi-settings-title">Article</div>
         {{#if doiEditState}}
           {{input type="text"
@@ -125,7 +125,7 @@
       <br>
       <span class="epub-cover-image">
         {{#if epubCoverUrl}}
-          <a {{bind-attr href=epubCoverUrl}} class="epub-cover" target="_blank">{{epubCoverFileName}}</a>
+          <a href={{epubCoverUrl}} class="epub-cover" target="_blank">{{epubCoverFileName}}</a>
         {{else}}
           <p>There is currently no default ePub cover.</p>
         {{/if}}

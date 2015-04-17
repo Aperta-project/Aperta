@@ -23,10 +23,10 @@
 {{/ve-button-group}}
 <span class="separator"></span>
 {{#ve-button-group name="insert" classNames=""}}
-  <a href="#" {{bind-attr class=":btn :ve-button :ve-tool isEditing:enabled:disabled"}} {{action "openFigures" on="click"}}>
+  <a href="#" class="btn ve-button ve-tool {{if isEditing "enabled" "disabled"}}" {{action "openFigures" on="click"}}>
     {{fa-icon "image"}}
   </a>
-  <a href="#" {{bind-attr class=":btn :ve-button :ve-tool isEditing:enabled:disabled"}} {{action "openTables" on="click"}}>
+  <a href="#" class="btn ve-button ve-tool {{if isEditing "enabled" "disabled"}}" {{action "openTables" on="click"}}>
     {{fa-icon "table"}}
   </a>
 {{/ve-button-group}}
@@ -41,21 +41,21 @@
     {{fa-icon "book"}}<span class="ve-label">Reference</span>
   {{/ve-item}}
 {{/ve-dropdown}}
-{{#if isSidebarEmpty}}
+{{#if sidebarIsEmpty}}
 <span class="separator"></span>
 <div class="ve-toolgroup btn-group pull-right">
-  <a {{action "submit" target="view"}}
-     {{bind-attr class=":no-sidebar-submit-manuscript :button-primary allMetadataTasksCompleted:button--green:button--disabled"}}
-     href="#">Submit Manuscript</a>
-  <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
+  <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if allMetadataTasksCompleted "button--green" "button--disabled"}}">
+    Submit Manuscript
+  </button>
+  <span class="glyphicon glyphicon-lock {{if locked "" "hidden"}}"></span>
 </div>
 {{/if}}
 <div class="ve-tool-group pull-right">
-  <span {{bind-attr class=":saving-spinner isSaving::hidden"}}>
+  <span class=":saving-spinner {{if isSaving "" "hidden"}}">
     <i class="fa fa-spinner fa-spin"></i>
   </span>
   <span class="edit-paper-lock-message">
-    {{display-value statusMessage or=""}}
+    {{if statusMessage statusMessage ""}}
     {{time-ago time=savedAt}}
   </span>
 </div>

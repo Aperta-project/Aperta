@@ -3,7 +3,7 @@
 
     <div class="overlay-container">
       <h1>User Details</h1>
-      <div {{bind-attr class="validationErrors.username:error"}}>
+      <div class={{if validationErrors.username "error"}}>
         <label class="modal-field-label" for="user-detail-username">Username</label>
         <div class="modal-field">
           {{input class="modal-username" id="user-detail-username" value=model.username}}

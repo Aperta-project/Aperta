@@ -46,7 +46,7 @@ BasePaperController = Ember.Controller.extend
       @get('tasks').filterBy('role', 'reviewer')
   ).property('tasks.@each.role')
 
-  isSidebarEmpty: (->
+  sidebarIsEmpty: (->
     Ember.isEmpty(@get('assignedTasks')) && Ember.isEmpty(@get('editorTasks')) && Ember.isEmpty(@get('authorTasks'))
   ).property('assignedTasks.@each', 'editorTasks.@each', 'authorTasks.@each')
 

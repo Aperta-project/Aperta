@@ -3,7 +3,6 @@
 DashboardSerializer = ApplicationSerializer.extend
   normalizeHash:
     tasks: (hash)->
-      hash.qualified_type = hash.type
-      hash.type = hash.type.replace(/.+::/, '')
+      hash = @normalizeType(hash)
 
 `export default DashboardSerializer`

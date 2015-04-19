@@ -23,7 +23,7 @@
 
   {{view "author-drop-target" index=0}}
 
-  {{#each authorWithErrors in sortedAuthorsWithErrors}}
+  {{#each sortedAuthorsWithErrors as |authorWithErrors|}}
     {{author-view isEditable=isEditable
                   institutions=model.institutions
                   delete="removeAuthor"

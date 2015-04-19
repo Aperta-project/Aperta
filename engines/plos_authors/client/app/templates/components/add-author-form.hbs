@@ -107,7 +107,7 @@
   <div class="form-group author-contributions form-inline">
     <h4 class="required">Author Contributions</h4>
     {{error-message message=validationErrors.contributions}}
-    {{#each contribution in authorContributionOptions}}
+    {{#each authorContributionOptions as |contribution|}}
       {{author-contribution-checkbox name=contribution
                                      currentContributions=newAuthor.contributions
                                      checked="addContribution"

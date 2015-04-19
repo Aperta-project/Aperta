@@ -13,19 +13,19 @@
   </span>
 {{/if}}
 <div id="paper-file-uploads">
-  {{#each upload in uploads}}
+  {{#each uploads as |upload|}}
     {{upload-preview upload=upload}}
   {{/each}}
 </div>
 
 <div class="paper-figures">
   {{#if isEditable}}
-    {{#each file in paper.supportingInformationFiles}}
+    {{#each paper.supportingInformationFiles as |file|}}
       {{attachment-thumbnail attachment=file
                              destroyAttachment="destroyAttachment"}}
     {{/each}}
   {{else}}
-    {{#each attachment in paper.supportingInformationFiles}}
+    {{#each paper.supportingInformationFiles as |attachment|}}
       {{partial "attachment_thumbnail_locked"}}
     {{/each}}
   {{/if}}

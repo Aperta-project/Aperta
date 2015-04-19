@@ -21,14 +21,14 @@
 
       <div class="columns manuscript-manager-template-columns">
         {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
-        {{#each phaseTemplate in sortedPhaseTemplates}}
+        {{#each sortedPhaseTemplates as |phaseTemplate|}}
           {{#view "manuscript-manager-column" content=phaseTemplate}}
             {{add-column position=view.nextPosition action="addPhase"}}
 
             {{view "phase-header" phase=phaseTemplate}}
 
             <div class="column-content">
-              {{#each task in phaseTemplate.taskTemplates}}
+              {{#each phaseTemplate.taskTemplates as |task|}}
                 {{card-preview paper=null
                                task=task
                                canRemoveCard=true

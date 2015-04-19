@@ -21,7 +21,7 @@
             <th>Last Name</th>
             <th>Username</th>
           </tr>
-          {{#each user in adminJournalUsers}}
+          {{#each adminJournalUsers as |user|}}
             {{partial "admin/edit-journal-user"}}
           {{/each}}
         </table>

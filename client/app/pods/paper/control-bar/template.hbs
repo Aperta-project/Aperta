@@ -43,13 +43,13 @@
     <div class="contributors {{if view.contributorsVisible "active"}}">
       <a class="contributors-add" {{action "addContributors"}}>Add Contributors</a>
 
-      {{#each contributor in model.collaborators}}
+      {{#each model.collaborators as |contributor|}}
         <div class="contributor">{{unbound contributor.fullName}}</div>
       {{/each}}
     </div>
 
     <div class="manuscript-download-links {{if view.downloadsVisible "active"}}">
-      {{#each downloadType in view.supportedDownloadFormats}}
+      {{#each view.supportedDownloadFormats as |downloadType|}}
         <a href="#" {{action "export" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
       {{/each}}
       {{#direct-download-link link=downloadLink extension=".epub"}}

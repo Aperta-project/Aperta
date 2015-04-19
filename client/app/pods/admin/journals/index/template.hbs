@@ -6,7 +6,7 @@
 
 <h2>Journals</h2>
 <ul class="journals">
-  {{#each journal in arrangedContent}}
+  {{#each arrangedContent as |journal|}}
     {{render "admin.journal.thumbnail" journal}}
   {{/each}}
 </ul>

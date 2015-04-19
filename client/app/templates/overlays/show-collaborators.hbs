@@ -23,7 +23,7 @@
       </div>
 
       <ul class="collaborators-list">
-        {{#each collaborator in collaborators}}
+        {{#each collaborators as |collaborator|}}
           <li class="collaborator">
             <span class="avatar">{{user-thumbnail user=collaborator}}</span>
             <span class="name">{{collaborator.fullName}}</span>

@@ -16,7 +16,7 @@
           <th>Last Name</th>
           <th>Roles</th>
         </tr>
-        {{#each user in adminJournalUsers}}
+        {{#each adminJournalUsers as |user|}}
           {{render "admin/admin-journal-user" user}}
         {{/each}}
       </table>

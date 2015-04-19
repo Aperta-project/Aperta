@@ -10,11 +10,11 @@
 
 <ul class="message-comments">
   {{#if showingAllComments}}
-    {{#each comment in sortedComments}}
+    {{#each sortedComments as |comment|}}
       {{task-comment comment=comment currentUser=currentUser}}
     {{/each}}
   {{else}}
-    {{#each comment in firstComments}}
+    {{#each firstComments as |comment|}}
       {{task-comment comment=comment currentUser=currentUser}}
     {{/each}}
   {{/if}}

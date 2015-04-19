@@ -14,7 +14,7 @@
 {{flash-messages classNames="flash-messages--below-control-bar"}}
 
 <ul class="columns">
-  {{#each flow in model}}
+  {{#each model as |flow|}}
     {{flow-column flow=flow
                   litePapers=flow.litePapers
                   commentLooks=commentLooks

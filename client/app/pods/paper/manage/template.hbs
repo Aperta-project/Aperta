@@ -39,7 +39,7 @@
 <div id="manuscript-manager">
   <div class="columns">
     {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
-    {{#each phase in sortedPhases}}
+    {{#each sortedPhases as |phase|}}
       {{render "phase" phase}}
     {{/each}}
   </div>

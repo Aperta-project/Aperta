@@ -75,7 +75,7 @@
 
 <div class="column-content">
   <ul class="cards">
-    {{#each task in tasks}}
+    {{#each tasks as |task|}}
       {{flow-task-group task=task
                         commentLooks=commentLooks
                         viewCard="viewCard"}}

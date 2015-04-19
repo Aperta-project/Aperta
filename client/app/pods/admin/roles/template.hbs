@@ -5,7 +5,7 @@
   <div class="admin-roles">
     <div class="admin-roles-header admin-role-name">Role Name</div>
     <div class="admin-roles-header admin-role-permissions">Permission</div>
-    {{#each role in model}}
+    {{#each model as |role|}}
       {{render "admin/role" role}}
     {{/each}}
   </div>

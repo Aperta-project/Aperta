@@ -1,14 +1,9 @@
 `import Ember from 'ember'`
 
 DashboardLinkComponent = Ember.Component.extend
-  paperId: Ember.computed.alias('model.id')
-
-  linkIdentifier: (->
-    @get('model.doi') || @get('model.id')
-  ).property('model.id', 'model.doi')
 
   unreadCommentsList: Ember.computed 'unreadComments.@each.readAt', 'unreadComments.@each.paperId', ->
-    paperId = @get('paperId')
+    paperId = @get('model.id')
     @get('unreadComments').filter (c) -> c.get('paperId') == paperId && !c.get('readAt')
 
   unreadCommentsCount: (->

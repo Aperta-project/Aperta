@@ -17,7 +17,7 @@ Route = Ember.Route.extend
 
   actions:
     viewCard: (task) ->
-      paperId = task.get('litePaper.id')
+      paperId = task.get('paper.id')
       redirectParams = ['journal.flow_manager', @modelFor('journal'), @modelFor('journal.flow_manager')]
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('overlayBackground', 'journal.flow_manager')

@@ -25,6 +25,8 @@ Paper = DS.Model.extend
   eventName: a('string')
   strikingImageId: a('string')
   editable: a('boolean')
+  roles: a()
+  relatedAtDate: a('date')
 
   displayTitle: (->
     @get('title') || @get('shortTitle')
@@ -42,9 +44,8 @@ Paper = DS.Model.extend
     @get('allMetadataTasks').everyProperty('completed', true)
   ).property('allMetadataTasks.@each.completed')
 
-  unloadRecord: ->
-    litePaper = @store.getById('lite-paper', @get('id'))
-    @store.unloadRecord(litePaper) if litePaper
-    @_super()
+  roleList: (->
+    @get('roles').sort().join(', ')
+  ).property('roles.@each', 'roles.[]')
 
 `export default Paper`

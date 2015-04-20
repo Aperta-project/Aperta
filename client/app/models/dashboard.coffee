@@ -4,7 +4,7 @@ a = DS.attr
 
 Dashboard = DS.Model.extend
 
-  papers: DS.hasMany('lite-paper')
+  papers: DS.hasMany('paper')
   user: DS.belongsTo('user')
   invitations: DS.hasMany('invitation')
 

@@ -2,7 +2,7 @@
 `import DS from 'ember-data'`
 
 CommonFlowAttrs = Ember.Mixin.create
-  litePapers: DS.hasMany('lite-paper')
+  papers: DS.hasMany('paper')
   tasks: DS.hasMany('card-thumbnail')
   title: DS.attr('string')
   flowId: DS.attr('number')

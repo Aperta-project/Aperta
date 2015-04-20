@@ -8,6 +8,8 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
   doiEditState: false
   doiStartNumberEditable: true
 
+  canDeleteManuscriptMangerTemplates: Ember.computed.gt('model.manuscriptManagerTemplates.length', 1)
+
   epubCoverUploadUrl: (->
     "/admin/journals/#{@get('model.id')}/upload_epub_cover"
   ).property()
@@ -63,6 +65,14 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
 
 
   actions:
+    addMMTemplate: ->
+      @transitionTo('admin.journal.manuscript_manager_template.new')
+
+    destroyMMTemplate: (template) ->
+      if @get('canDeleteManuscriptMangerTemplates')
+        template.destroyRecord().then =>
+          @get('model.manuscriptManagerTemplates').removeObject(template)
+
     searchUsers: ->
       @resetSearch()
       @store.find 'AdminJournalUser', query: @get('searchQuery'), journal_id: @get('model.id')

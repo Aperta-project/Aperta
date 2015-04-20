@@ -3,11 +3,6 @@
   <div class="card-completed-icon"></div>
   {{task.title}}
   {{#if canRemoveCard}}
-  <span {{action "promptDelete" task bubbles=false}}
-       class="card-remove"
-       data-toggle="tooltip"
-       data-placement="right"
-       title="Delete Card">
-  </span>
+    <span {{action "promptDelete" task bubbles=false}} class="card-remove" title="Delete Card"></span>
   {{/if}}
 </div>

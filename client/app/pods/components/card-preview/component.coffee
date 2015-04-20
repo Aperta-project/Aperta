@@ -18,10 +18,6 @@ CardPreviewComponent = Ember.Component.extend
     ).get('length')
   ).property('commentLooks.[]', 'commentLooks.@each.taskId', 'task.id', 'commentLooks.@each.readAt')
 
-  setupTooltip: (->
-    @.$().find('.card-remove').tooltip()
-  ).on('didInsertElement')
-
   actions:
     viewCard: (task) ->
       @sendAction('action', task)

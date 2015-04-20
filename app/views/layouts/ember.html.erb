@@ -7,8 +7,10 @@
 
     <%= csrf_meta_tags %>
 
-    <%= render "layouts/segment_io" %>
-    <%= render "shared/bugsnag_javascript" %>
+    <% if !(Rails.env.test? || Rails.env.development?) %>
+      <%= render "layouts/segment_io" %>
+      <%= render "shared/bugsnag_javascript" %>
+    <% end %>
   </head>
 
   <body>

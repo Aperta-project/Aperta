@@ -343,6 +343,10 @@ GEM
     orm_adapter (0.5.0)
     pdfkit (0.6.2)
     pg (0.18.1)
+    pg_search (1.0.0)
+      activerecord (>= 3.1)
+      activesupport (>= 3.1)
+      arel
     progressbar (0.21.0)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -480,8 +484,6 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
-    textacular (3.2.1)
-      activerecord (>= 3.0, < 5.0)
     thin (1.6.3)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0)
@@ -553,6 +555,7 @@ DEPENDENCIES
   ordinalize
   pdfkit
   pg
+  pg_search
   plos_authors!
   plos_billing!
   plos_bio_tech_check!
@@ -582,7 +585,6 @@ DEPENDENCIES
   tahi_epub!
   tahi_standard_tasks!
   tahi_upload_manuscript!
-  textacular
   thin
   timecop
   timeliness

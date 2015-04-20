@@ -25,7 +25,7 @@ dependencies:
 
   override:
     - bundle install: # note ':' here
-        timeout: 600 # fail if command has no output for 3 minutes
+        timeout: 600
 
 
 ## Customize database setup

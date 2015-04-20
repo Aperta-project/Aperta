@@ -15,7 +15,7 @@ machine:
 ## Customize dependencies
 dependencies:
   cache_directories:
-    - "~/.rvm/gems/ruby-2.2.0@tahi" #TODO: make this dynamic
+    - "~/.rvm/gems/ruby-2.2.0@tahi"
     - "client/node_modules"
     - "client/bower_components"
 

@@ -2,11 +2,17 @@ class PapersController < ApplicationController
   include AttrSanitize
 
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:show]
+  before_action :enforce_policy, except: [:index, :show]
   before_action :sanitize_title, only: [:create, :update]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
   respond_to :json
+
+  def index
+    page = (params[:page_number] || 2).to_i
+    papers = PaperRole.most_recent_for(current_user).page(page).map(&:paper)
+    respond_with(papers, each_serializer: LitePaperSerializer)
+  end
 
   def show
     rel = Paper.includes([

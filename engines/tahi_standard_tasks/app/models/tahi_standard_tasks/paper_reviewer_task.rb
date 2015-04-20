@@ -1,6 +1,6 @@
 module TahiStandardTasks
   class PaperReviewerTask < ::Task
-    register_task default_title: "Invite Reviewers", default_role: "reviewer"
+    register_task default_title: "Invite Reviewers", default_role: "editor"
 
     include Invitable
 
@@ -35,6 +35,10 @@ module TahiStandardTasks
 
     def update_responder
       TahiStandardTasks::UpdateResponders::PaperReviewerTask
+    end
+
+    def invitee_role
+      'reviewer'
     end
 
     private

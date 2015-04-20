@@ -121,6 +121,10 @@ class InvitableTask < Task
   def invitation_rescinded(paper_id:, invitee_id:)
     :rescinded
   end
+
+  def invitee_role
+    'test role'
+  end
 end
 
 class InvitableTasksPolicy < TasksPolicy; end

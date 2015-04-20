@@ -26,14 +26,21 @@ dependencies:
   override:
     - bundle install: # note ':' here
         timeout: 600 # fail if command has no output for 3 minutes
-    - npm install && bundle exec rake ember-cli:install_dependencies
-    - cd client && npm install --save-dev ember-cli-rails-addon@0.0.11 && cd ..
 
 
 ## Customize database setup
 database:
+  pre:
+    # install custom postgres extensions
+    - psql -c "CREATE EXTENSION IF NOT EXISTS plpgsql;" -d circle_test
+    - psql -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" -d circle_test
+    - psql -c "CREATE EXTENSION IF NOT EXISTS unaccent;" -d circle_test
   override:
     - bundle exec rake db:create db:schema:load
+  post:
+    # npm install here so that it is cached by circle for parallel tests
+    - npm install && bundle exec rake ember-cli:install_dependencies
+    - cd client && npm install --save-dev ember-cli-rails-addon@0.0.11 && cd ..
 
 
 ## Customize test commands
@@ -41,10 +48,3 @@ test:
   override:
     - bin/circleci.sh:
         parallel: true
-
-# Customize deployment commands
-# deployment:
-#   staging:
-#     branch: master
-#     heroku:
-#       appname: tahi-staging

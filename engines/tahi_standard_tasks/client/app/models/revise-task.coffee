@@ -4,6 +4,4 @@
 ReviseTask = Task.extend
   qualifiedType: "TahiStandardTasks::ReviseTask"
 
-  decisions: DS.hasMany("decision")
-
 `export default ReviseTask`

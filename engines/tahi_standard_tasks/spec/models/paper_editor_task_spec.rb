@@ -13,6 +13,8 @@ describe TahiStandardTasks::PaperEditorTask do
     end
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
+    it_behaves_like 'a task that sends out invitations', invitee_role: 'editor'
+
     it "notifies the invited editor" do
       expect {
         task.invitation_invited(invitation)

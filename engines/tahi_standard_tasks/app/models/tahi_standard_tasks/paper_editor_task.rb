@@ -1,6 +1,6 @@
 module TahiStandardTasks
   class PaperEditorTask < Task
-    register_task default_title: "Assign Editor", default_role: "editor"
+    register_task default_title: "Assign Editor", default_role: "admin"
 
     include Invitable
 
@@ -12,6 +12,10 @@ module TahiStandardTasks
 
     def invitation_accepted(invitation)
       TaskRoleUpdater.new(self, invitation.invitee_id, PaperRole::EDITOR).update
+    end
+
+    def invitee_role
+      'editor'
     end
   end
 end

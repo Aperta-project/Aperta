@@ -18,7 +18,7 @@ class FlowQuery
     scope
   end
 
-  def lite_papers
+  def papers
     Paper.joins(:tasks).
       includes(:paper_roles).
       where("tasks.id" => tasks.pluck(:id)).

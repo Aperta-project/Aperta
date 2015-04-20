@@ -12,7 +12,6 @@ class PaperSerializer < ActiveModel::Serializer
 
   has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
   has_many :decisions, embed: :ids, include: true, serializer: DecisionSerializer
-  has_one :lite_paper, embed: :id, include: :true, user: :scoped_user, serializer: LitePaperSerializer
   has_many :tasks, embed: :ids, polymorphic: true
   has_many :decisions, embed: :ids, include: true, serializer: DecisionSerializer
   has_one :journal, embed: :id, include: true
@@ -34,10 +33,6 @@ class PaperSerializer < ActiveModel::Serializer
   def collaborations
     # we want the actual join record, not a list of users
     object.paper_roles.collaborators
-  end
-
-  def lite_paper
-    object
   end
 
   def scoped_user

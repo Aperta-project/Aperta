@@ -1,10 +1,10 @@
 class UserFlowSerializer < ActiveModel::Serializer
   attributes :id, :title, :journal_name, :journal_logo
-  has_many :lite_papers, embed: :ids, include: true, serializer: LitePaperSerializer
+  has_many :papers, embed: :ids, include: true, serializer: LitePaperSerializer
   has_many :tasks, embed: :ids, include: true, root: :card_thumbnails, serializer: CardThumbnailSerializer
 
   delegate :tasks, to: :flow_query
-  delegate :lite_papers, to: :flow_query
+  delegate :papers, to: :flow_query
 
   private
 

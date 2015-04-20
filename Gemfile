@@ -53,7 +53,7 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
-gem 'textacular'
+gem 'pg_search'
 gem 'aasm'
 gem 'bootstrap-sass'
 

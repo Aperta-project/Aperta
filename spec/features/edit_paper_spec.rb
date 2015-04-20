@@ -38,21 +38,4 @@ feature "Editing paper", js: true do
       expect(edit_paper).to_not have_css('a.button--disabled')
     end
   end
-
-  context "As an Editor, with reviewers assigned" do
-    let(:paper) { FactoryGirl.create :paper_with_phases, submitted: false, creator: user }
-    let!(:reviewer_card) { paper.phases.first.tasks.create!(title: "ReviewMe", role: "reviewer") }
-
-    before do
-      make_user_paper_editor(user, paper)
-      sign_in_page = SignInPage.visit
-      sign_in_page.sign_in user
-    end
-
-    scenario "the reviewer task is displayed" do
-      click_link(paper.title)
-      edit_paper = EditPaperPage.new
-      expect(edit_paper.cards[:editor]).to include('ReviewMe')
-    end
-  end
 end

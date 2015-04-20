@@ -42,13 +42,13 @@
   {{/ve-item}}
 {{/ve-dropdown}}
 {{#if sidebarIsEmpty}}
-<span class="separator"></span>
-<div class="ve-toolgroup btn-group pull-right">
-  <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allMetadataTasksCompleted "button--green" "button--disabled"}}">
-    Submit Manuscript
-  </button>
-  <span class="glyphicon glyphicon-lock {{if locked "" "hidden"}}"></span>
-</div>
+  <span class="separator"></span>
+  <div class="ve-toolgroup btn-group pull-right">
+    <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allMetadataTasksCompleted "button--green" "button--disabled"}}">
+      Submit Manuscript
+    </button>
+    <span class="glyphicon glyphicon-lock {{if locked "" "hidden"}}"></span>
+  </div>
 {{/if}}
 <div class="ve-tool-group pull-right">
   <span class=":saving-spinner {{if isSaving "" "hidden"}}">

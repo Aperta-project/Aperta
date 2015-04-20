@@ -1,7 +1,7 @@
-{{inline-edit-h1 title=title setTitle="setTitle" editOnOpen=isNewTask}}
+{{inline-edit-h1 title=model.title setTitle="setTitle" editOnOpen=isNewTask}}
 
 <div class="task-body">
-  {{#each template as |block|}}
+  {{#each blocks as |block|}}
     {{#inline-edit-body-part
       block=block
       cancel="resetBlock"

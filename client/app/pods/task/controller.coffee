@@ -9,11 +9,11 @@ TaskController = Ember.Controller.extend SavesDelayed, ControllerParticipants, V
   needs: ['application']
   onClose: 'closeOverlay'
   isLoading: false
-  isMetadata: Ember.computed.alias('isMetadataTask')
-  isUserEditable: Ember.computed 'paper.editable', 'isMetadata', ->
-    @get('paper.editable') || !@get('isMetadata')
+  isMetadata: Ember.computed.alias('model.isMetadataTask')
+  isUserEditable: Ember.computed 'model.paper.editable', 'isMetadata', ->
+    @get('model.paper.editable') || !@get('isMetadata')
 
-  isCurrentUserAdmin: Ember.computed.alias 'controllers.application.currentUser.siteAdmin'
+  isCurrentUserAdmin: Ember.computed.alias 'currentUser.siteAdmin'
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')
 
   # This will get overridden in setupController

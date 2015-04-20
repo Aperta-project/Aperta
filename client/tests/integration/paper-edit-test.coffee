@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import { test } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
-`import { paperWithTask } from '../helpers/setups'`
+`import { paperWithTask, addUserAsParticipant } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
 
@@ -37,7 +37,6 @@ module 'Integration: EditPaper',
     taskPayload = Factory.createPayload('task')
     taskPayload.addRecords([figureTask, litePaper, fakeUser])
     figureTaskResponse = taskPayload.toJSON()
-
     collaborators = [
       id: "35"
       full_name: "Aaron Baker"
@@ -57,10 +56,33 @@ module 'Integration: EditPaper',
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
+test 'on paper.edit as a participant', ->
+  expect(1)
+
+  records = paperWithTask('Task'
+    id: 1
+    title: 'ReviewMe'
+    role: 'reviewer'
+  )
+
+  [currentPaper, task, journal, litePaper, phase] = records
+
+  paperPayload = Factory.createPayload('paper')
+  paperPayload.addRecords(records.concat([fakeUser]))
+  paperResponse = paperPayload.toJSON()
+  paperResponse.participations = [addUserAsParticipant(task, fakeUser)]
+
+  server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
+    200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
+  ]
+
+  visit("/papers/#{currentPaper.id}/edit").then ->
+    ok !!find('#paper-assigned-tasks .card-content:contains("ReviewMe")').length, 'Participant task is displayed'
+
 test 'visiting /edit-paper: Author completes all metadata cards', ->
   expect(2)
   visit("/papers/#{currentPaper.id}/edit").then ->
-    submitButton = find('a:contains("Submit")')
+    submitButton = find('button:contains("Submit")')
     ok(submitButton.hasClass('button--disabled'), "Submit is disabled")
   .then ->
     for card in find('#paper-metadata-tasks .card-content')
@@ -68,7 +90,7 @@ test 'visiting /edit-paper: Author completes all metadata cards', ->
       click '#task_completed'
       click '.overlay-close-button:first'
   andThen ->
-    submitButton = find('a:contains("Submit")')
+    submitButton = find('button:contains("Submit")')
     ok(!submitButton.hasClass('button--disabled'), "Submit is enabled")
 
 test 'on paper.edit when paper.editable changes, user transitions to paper.index', ->
@@ -103,10 +125,11 @@ test 'on paper.edit when there are no metadata tasks', ->
       msg = "There is a submit manuscript button in the main area"
       ok(find('.no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)
 
+
 test 'on paper.index when there are no metadata tasks', ->
   expect(2)
   records = paperWithTask('Task'
-    id: 2
+    id: 3
     role: "admin"
   )
 

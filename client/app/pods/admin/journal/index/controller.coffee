@@ -23,12 +23,12 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
     @set 'placeholderText', null
 
   logo: (->
-    logoUrl = @get("logoUrl")
-    if /no-journal-image/.test logoUrl
+    logoUrl = @get("model.logoUrl")
+    if Ember.isEmpty(logoUrl)
       false
     else
       logoUrl
-  ).property('logoUrl')
+  ).property('model.logoUrl')
 
   journalUrl: (->
     "/admin/journals/#{@get('model.id')}"

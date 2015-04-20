@@ -23,7 +23,7 @@ BasePaperController = Ember.Controller.extend
 
   taskSorting: ['phase.position', 'position']
 
-  authorTasks: Ember.computed.filterBy('tasks', 'role', 'author')
+  authorTasks: Ember.computed.filterBy('model.tasks', 'role', 'author')
 
   canViewManuscriptManager: false
 

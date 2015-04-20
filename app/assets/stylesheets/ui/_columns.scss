@@ -145,11 +145,7 @@
 
 
 .column-content {
-  position: absolute;
-  top: 56px;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  @include position(absolute, 56px 0px 0px 0px);
   overflow-y: auto;
   width: 235px;
   padding: 10px 0 0 15px;
@@ -164,6 +160,32 @@
     color: #999;
     font-size: 19px;
     font-style: italic;
+  }
+}
+
+.column-content--dragging {
+  overflow: visible;
+}
+
+.column-content {
+  .sortable {
+    min-height: 48px;
+  }
+
+  .sortable-no-cards {
+    position: relative;
+    margin-bottom: 8px;
+    border: 1px solid $tahi-grey-light;
+    border-radius: 5px;
+    color: $tahi-grey-light;
+    font-size: 20px;
+    text-align: center;
+
+    &:after {
+      @include position(absolute, 0px 0px 0px 0px);
+      content: 'No Cards';
+      line-height: 45px;
+    }
   }
 }
 

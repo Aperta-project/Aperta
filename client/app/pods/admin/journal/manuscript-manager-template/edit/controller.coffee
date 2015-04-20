@@ -8,7 +8,7 @@ ManuscriptManagerTemplateEditController = Ember.Controller.extend ValidationErro
   journal: Ember.computed.alias('model.journal')
 
   positionSort: ["position:asc"]
-  sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort')
+  sortedPhaseTemplates: Ember.computed.sort('model.phaseTemplates', 'positionSort')
 
   deletedRecords: null
 
@@ -41,7 +41,7 @@ ManuscriptManagerTemplateEditController = Ember.Controller.extend ValidationErro
 
     ).catch (response) =>
       @displayValidationErrorsFromResponse response
-  
+
   successfulSave: (transition) ->
     @reset()
     if transition

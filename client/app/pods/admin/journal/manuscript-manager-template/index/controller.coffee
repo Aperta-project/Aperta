@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 
-ManuscriptManagerTemplateIndexController = Ember.ArrayController.extend
+ManuscriptManagerTemplateIndexController = Ember.Controller.extend
   canDeleteTemplates: Ember.computed.gt('model.length', 1)
 
   actions:

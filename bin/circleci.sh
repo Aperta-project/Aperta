@@ -7,7 +7,7 @@ case $CIRCLE_NODE_INDEX in
     rspec spec --exclude-pattern spec/features --tag ~flaky
     ;;
   1)
-    rake ember-cli:test
+    rake ember:test
     ember_result=$?
     rspec spec/features/[a-j]*_spec.rb --tag ~flaky
     features_result=$?

@@ -50,6 +50,7 @@ module "Integration: inviting an editor",
     phase = FactoryGuy.make("phase")
     task = FactoryGuy.make("paper-editor-task", { phase: phase })
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] })
+    testHelper.handleFind(paper)
 
 test "displays the email of the invitee", ->
   $.mockjax
@@ -70,6 +71,7 @@ test "displays the email of the invitee", ->
     ok(find(".overlay-main-work:contains('aaron@neo.com has been invited to be Editor on this manuscript.')"))
 
 test "can withdraw the invitation", ->
+  testHelper.handleFind("paper", paper)
   invitation = FactoryGuy.make("invitation", email: "foo@bar.com")
   Ember.run =>
     task.set("invitation", invitation)
@@ -78,11 +80,7 @@ test "can withdraw the invitation", ->
   click("#manuscript-manager .card-content:contains('Assign Editors')")
   ok(find(".invite-editor-task:contains('foo@bar.com has been invited to be Editor on this manuscript.')"), "has pending invitation")
 
-  $.mockjax
-    proxyType: "DELETE"
-    url: "/api/invitations/#{invitation.get('id')}"
-    status: 204
-
+  testHelper.handleDelete("invitation", invitation.id)
   click(".button-primary:contains('Withdraw invitation')")
 
   andThen ->

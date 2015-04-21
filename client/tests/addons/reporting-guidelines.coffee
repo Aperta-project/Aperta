@@ -34,13 +34,13 @@ module 'Integration: Reporting Guidelines Card',
     records = ETahi.Setups.paperWithTask "ReportingGuidelinesTask",
       id: TahiTest.reportingGuidelinesId
       question_ids: [TahiTest.questionId]
-    [paper, task, _, litePaper] = records
+    [paper, task, _] = records
 
     paperPayload = ef.createPayload('paper')
     paperPayload.addRecords(records.concat(fakeUser, questionResponse.question))
 
     taskPayload = ef.createPayload('task')
-    taskPayload.addRecords([task, litePaper])
+    taskPayload.addRecords([task])
 
     server.respondWith 'GET', "/papers/#{TahiTest.paperId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()

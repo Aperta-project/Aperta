@@ -26,14 +26,14 @@ module 'Integration: Billing',
       role: "author"
     )
 
-    [currentPaper, billingTask, journal, litePaper, phase] = records
+    [currentPaper, billingTask, journal, phase] = records
 
     paperPayload = Factory.createPayload('paper')
     paperPayload.addRecords(records.concat([fakeUser]))
     paperResponse = paperPayload.toJSON()
 
     taskPayload = Factory.createPayload('task')
-    taskPayload.addRecords([billingTask, litePaper, fakeUser])
+    taskPayload.addRecords([billingTask, fakeUser])
     billingTaskResponse = taskPayload.toJSON()
 
     collaborators = [

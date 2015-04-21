@@ -73,7 +73,7 @@ module 'Integration: Dashboard',
     dashboardResponse =
       users: [fakeUser]
       affiliations: []
-      lite_papers: litePapers
+      papers: litePapers
       dashboards: dashboards
 
     adminJournalsResponse = {}
@@ -96,7 +96,7 @@ test 'The dashboard shows papers for a user if they have any role on the paper',
   dashboardResponse =
     users: [fakeUser]
     affiliations: []
-    lite_papers: litePapers
+    papers: litePapers
     dashboards: dashboards
 
   server.respondWith 'GET', '/api/dashboards', [

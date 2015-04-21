@@ -23,8 +23,13 @@ namespace :tahi do
     Bundler.with_clean_env do
       # need to do this in subshell because our ruby process doesn't
       # know about the engine yet
-      migration_task = "#{engine_name}:install:migrations"
-      sh "bundle exec rake #{migration_task}" if `bundle exec rake -T #{migration_task}`.size > 0
+      migration_task = "#{engine_name.gsub(/-/,'_')}:install:migrations"
+      if `bundle exec rake -T #{migration_task}`.size > 0
+        sh "bundle exec rake #{migration_task}"
+      else
+        puts "No migration task found for this card. If you add migrations for #{engine_name} in in the future, you can install migrations with #{migration_task}."
+      end
+      
       # tahi magic installer
       sh "bundle exec rake data:create_task_types"
     end
@@ -58,11 +63,14 @@ namespace :tahi do
   def insert_after(filename, needle, string)
     hay = File.open(filename, "r").read
     needle_index = hay.index(needle)
-    updated_string = hay.insert(needle_index + needle.length, "\n#{string}")
-
-    File.open(filename, "w") do |f|
-      f << updated_string
-      puts "updated #{filename}"
+    if hay.include? string
+      puts "#{filename} already contains #{string}"
+    else
+      updated_string = hay.insert(needle_index + needle.length, "\n#{string}")
+      File.open(filename, "w") do |f|
+        f << updated_string
+        puts "updated #{filename}"
+      end
     end
   end
 end

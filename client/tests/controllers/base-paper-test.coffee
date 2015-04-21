@@ -4,7 +4,7 @@
 
 # TODO use server.respondWith
 moduleFor 'controller:base-paper', 'BasePaperController',
-  needs: ['controller:application']
+  needs: ['controller:application', 'controller:paper']
   setup: ->
     startApp()
     @phase1 = Ember.Object.create position: 1

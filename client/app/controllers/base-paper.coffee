@@ -2,14 +2,15 @@
 `import DocumentDownload from 'tahi/services/document-download'`
 
 BasePaperController = Ember.Controller.extend
-  needs: ['application']
+  needs: ['application', 'paper']
 
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isAdmin: Ember.computed.alias 'controllers.application.isAdmin'
+  supportedDownloadFormats: Ember.computed.alias('controllers.paper.supportedDownloadFormats')
 
   downloadLink: ( ->
-    "/papers/#{@get('id')}/download"
-  ).property('id')
+    "/papers/#{@get('model.id')}/download"
+  ).property('model.id')
 
   paper: Ember.computed.alias('model')
 
@@ -52,6 +53,6 @@ BasePaperController = Ember.Controller.extend
 
   actions:
     export: (downloadType) ->
-      DocumentDownload.initiate(@get('id'), downloadType.format)
+      DocumentDownload.initiate(@get('model.id'), downloadType.format)
 
 `export default BasePaperController`

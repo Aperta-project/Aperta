@@ -3,7 +3,7 @@
 `import startApp from '../helpers/start-app'`
 
 moduleFor 'controller:paper/edit', 'Unit: paperEditController',
-  needs: ['controller:application', 'controller:overlays/paperSubmit']
+  needs: ['controller:application', 'controller:paper', 'controller:overlays/paperSubmit']
 
   setup: ->
     startApp()

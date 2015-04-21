@@ -11,7 +11,6 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
   decisions: Ember.computed.alias 'model.paper.decisions'
 
   latestDecision: (->
-    debugger
     @get('decisions').findBy 'isLatest', true
   ).property('decisions', 'decisions.@each.isLatest')
 

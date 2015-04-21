@@ -1,4 +1,4 @@
-class SingularTaskRoleUpdater
+class TaskRoleUpdater
   attr_accessor :task, :paper, :assignee, :paper_role_name
 
   def initialize(task:, assignee_id:, paper_role_name:)
@@ -23,6 +23,7 @@ class SingularTaskRoleUpdater
     end
   end
 
+  # only one `assignee` can exist on `paper` with the same `paper_role_name`
   def assign_paper_role!
     paper.paper_roles.for_role(paper_role_name).destroy_all
     paper.paper_roles.for_role(paper_role_name).create!(user: assignee)

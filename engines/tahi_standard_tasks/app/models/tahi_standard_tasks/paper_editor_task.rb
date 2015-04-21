@@ -11,7 +11,7 @@ module TahiStandardTasks
     end
 
     def invitation_accepted(invitation)
-      SingularTaskRoleUpdater.new(task: self, assignee_id: invitation.invitee_id, paper_role_name: PaperRole::EDITOR).update
+      TaskRoleUpdater.new(task: self, assignee_id: invitation.invitee_id, paper_role_name: PaperRole::EDITOR).update
     end
 
     def invitee_role

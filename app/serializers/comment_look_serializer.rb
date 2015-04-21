@@ -6,6 +6,6 @@ class CommentLookSerializer < ActiveModel::Serializer
   end
 
   def paper_id
-    object.paper.id
+    object.phase.paper_id
   end
 end

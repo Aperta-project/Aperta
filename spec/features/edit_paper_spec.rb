@@ -27,7 +27,7 @@ feature "Editing paper", js: true do
       expect(edit_paper).to have_body_text("Contrary to popular belief")
       expect(edit_paper.cards[:metadata]).to match_array ['Upload Manuscript', 'Add Authors', 'Upload Figures', 'Supporting Info']
       expect(edit_paper.cards[:assigned]).to include 'Tech Check', 'Assign Admin'
-      expect(edit_paper).to have_css('a.button--disabled')
+      expect(edit_paper).to have_css('.button--disabled')
 
       # completing the metadata cards
       edit_paper.cards[:metadata].each do |card|
@@ -35,7 +35,7 @@ feature "Editing paper", js: true do
           overlay.mark_as_complete
         end
       end
-      expect(edit_paper).to_not have_css('a.button--disabled')
+      expect(edit_paper).to_not have_css('.button--disabled')
     end
   end
 end

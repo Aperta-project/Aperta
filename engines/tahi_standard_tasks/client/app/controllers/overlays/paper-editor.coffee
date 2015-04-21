@@ -7,8 +7,8 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
 
   selectedUser: null
 
-  hasInvitedInvitation: Ember.computed.equal('invitation.state', 'invited')
-  hasRejectedInvitation: Ember.computed.equal('invitation.state', 'rejected')
+  hasInvitedInvitation: Ember.computed.equal('model.invitation.state', 'invited')
+  hasRejectedInvitation: Ember.computed.equal('model.invitation.state', 'rejected')
 
   showEditorSelect: (->
     return false if @get('model.editor')

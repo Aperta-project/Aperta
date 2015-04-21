@@ -111,7 +111,7 @@
     </div>
   </div>
   <div class="form-group form-inline">
-    <div class={{validationErrors.department "error"}}>
+    <div class={{if validationErrors.department "error"}}>
       <span class="text-field-title">
         Address Line 2 (optional)
         {{error-message message=null}}

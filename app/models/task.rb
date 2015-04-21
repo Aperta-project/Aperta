@@ -99,8 +99,6 @@ class Task < ActiveRecord::Base
     end
   end
 
-  #TODO Research how task generation and templating can be simplified
-  # https://www.pivotaltracker.com/story/show/81718250
   def journal_task_type
     journal.journal_task_types.find_by(kind: self.class.name)
   end

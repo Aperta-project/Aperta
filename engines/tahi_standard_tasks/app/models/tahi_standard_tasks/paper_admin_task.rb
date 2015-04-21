@@ -35,7 +35,7 @@ module TahiStandardTasks
 
     def update_paper_admin_and_tasks
       # TODO: eventually move callback to controller
-      TaskRoleUpdater.new(self, admin_id, PaperRole::ADMIN).update
+      SingularTaskRoleUpdater.new(task: self, assignee_id: admin_id, paper_role_name: PaperRole::ADMIN).update
     end
 
     def paper_admin_changed?

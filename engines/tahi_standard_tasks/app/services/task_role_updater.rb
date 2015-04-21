@@ -27,8 +27,8 @@ class TaskRoleUpdater
   end
 
   def assign_paper_role!
-    @paper.paper_roles.for_role(@paper_role_name).destroy_all
-    @paper.paper_roles.for_role(@paper_role_name).create!(user: @user)
+    paper.paper_roles.for_role(paper_role_name).destroy_all
+    paper.paper_roles.for_role(paper_role_name).create!(user: user)
   end
 
   def related_tasks

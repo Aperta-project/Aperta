@@ -53,9 +53,7 @@ PaperEditController = BasePaperController.extend
     lockedBy and lockedBy is @currentUser
   ).property('model.lockedBy')
 
-  canEdit: ( ->
-    !@get('locked')
-  ).property('locked')
+  canEdit: Ember.computed.not('locked')
 
   defaultBody: 'Type your manuscript here'
 
@@ -110,17 +108,17 @@ PaperEditController = BasePaperController.extend
   updateFigures: ->
     editor = @get('editor')
     # we need to allow model changes
-    modelWasEnabled = editor.isModelEnabled();
+    modelWasEnabled = editor.isModelEnabled()
     unless modelWasEnabled
       editor.enableModel()
 
-    @get('figuresAdapter').loadFromModel();
+    @get('figuresAdapter').loadFromModel()
 
     unless modelWasEnabled
       editor.disableModel()
 
   startEditing: ->
-    @set('lockedBy', @currentUser)
+    @set('model.lockedBy', @currentUser)
     @get('model').save().then (paper) =>
       @connectEditor()
       @send('startEditing')
@@ -128,7 +126,7 @@ PaperEditController = BasePaperController.extend
 
   stopEditing: ->
     @set('model.body', @get('editor').toHtml())
-    @set('lockedBy', null)
+    @set('model.lockedBy', null)
     @send('stopEditing')
     @disconnectEditor()
     @get('model').save().then (paper) =>

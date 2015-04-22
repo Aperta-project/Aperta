@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Upload paper", js: true, selenium: true do
   let(:author) { FactoryGirl.create :user }
-  let(:paper) do
+  let!(:paper) do
     FactoryGirl.create :paper_with_task,
       creator: author,
       task_params: {
@@ -17,7 +17,7 @@ feature "Upload paper", js: true, selenium: true do
     sign_in_page.sign_in author
   end
 
-  scenario "Author uploads paper in Word format", flaky: true do
+  scenario "Author uploads paper in Word format" do
     expect(DownloadManuscriptWorker).to receive(:perform_async) do |manuscript_id, url|
       paper.manuscript.update(status: "done")
       paper.update(title: "This is a Title About Turtles", body: "And this is my subtitle")

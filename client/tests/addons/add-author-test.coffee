@@ -27,6 +27,7 @@ module "Integration: adding an author",
 
     $.mockjax(url: "/api/admin/journals/authorization", status: 204)
     $.mockjax(url: "/api/user_flows/authorization", status: 204)
+    $.mockjax(url: "/api/affiliations", status: 200, responseText: [])
 
     phase = FactoryGuy.make("phase")
     task = FactoryGuy.make("plos-authors-task", { phase: phase })

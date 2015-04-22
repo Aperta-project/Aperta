@@ -23,7 +23,7 @@ DocumentDownloadService = Ember.Namespace.create
         job = data['job']
         if job.state == "completed"
           file = job.outputs.findBy("file_type", @downloadFormat)
-          Utils.windowLocation file.url
+          Utils.windowLocation file.url if file
         else if job.state == "errored"
           alert("The download failed")
         else

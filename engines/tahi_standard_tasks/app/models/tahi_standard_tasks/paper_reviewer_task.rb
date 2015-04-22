@@ -9,7 +9,7 @@ module TahiStandardTasks
     end
 
     def invitation_accepted(invitation)
-      ReviewerReportTaskCreator.new(originating_task: self, assignee_id: invitation.invitee_id, paper_role_name: PaperRole::EDITOR).process
+      ReviewerReportTaskCreator.new(originating_task: self, assignee_id: invitation.invitee_id).process
     end
 
     def invitation_rejected(invitation)

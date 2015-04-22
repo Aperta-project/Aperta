@@ -6,7 +6,7 @@ describe ReviewerReportTaskCreator do
   let(:assignee) { FactoryGirl.create(:user) }
 
   subject do
-    ReviewerReportTaskCreator.new(originating_task: paper_reviewer_task, assignee_id: assignee.id, paper_role_name: PaperRole::REVIEWER)
+    ReviewerReportTaskCreator.new(originating_task: paper_reviewer_task, assignee_id: assignee.id)
   end
 
   it "assigns the specified role to the assignee" do

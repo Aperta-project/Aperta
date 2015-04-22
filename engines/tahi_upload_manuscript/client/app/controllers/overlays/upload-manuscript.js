@@ -12,7 +12,7 @@ export default TaskController.extend(FileUploadMixin, {
   }.property('model.paper.lockedBy', 'isUserEditable', 'isCurrentUserAdmin'),
 
   progressBarStyle: function() {
-    return this.get('progress') + '%';
+    return Ember.String.htmlSafe('width:' + this.get('progress') + '%');
   }.property('progress'),
 
   manuscriptUploadUrl: function() {

@@ -3,8 +3,8 @@
 
 FigureOverlayController = TaskController.extend FileUploadMixin,
   figureUploadUrl: ( ->
-    "/api/papers/#{@get('litePaper.id')}/figures"
-  ).property('litePaper.id')
+    "/api/papers/#{@get('paper.id')}/figures"
+  ).property('paper.id')
 
   figures: ( ->
     figures = @get('paper.figures') || []

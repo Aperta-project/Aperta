@@ -16,8 +16,8 @@ export default TaskController.extend(FileUploadMixin, {
   }.property('progress'),
 
   manuscriptUploadUrl: function() {
-    return '/api/papers/' + this.get('litePaper.id') + '/upload';
-  }.property('litePaper.id'),
+    return '/api/papers/' + this.get('paper.id') + '/upload';
+  }.property('paper.id'),
 
   actions: {
     uploadProgress: function(data) {

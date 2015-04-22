@@ -50,7 +50,7 @@ PaperEditController = BasePaperController.extend
 
   isEditing: (->
     lockedBy = @get('model.lockedBy')
-    lockedBy and lockedBy is @currentUser
+    lockedBy and lockedBy is @get('currentUser')
   ).property('model.lockedBy')
 
   canEdit: Ember.computed.not('locked')

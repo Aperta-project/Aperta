@@ -1,0 +1,8 @@
+Hello <%= @assigner.first_name %>,
+
+<%= @reviewer.full_name %> has accepted your invitation to review the paper: "<%= @paper.title %>"
+
+To see the status of your invitation, click here: <%= paper_task_url(@paper, @invite_reviewer_task) %>
+
+Sincerely,
+<%= @journal.name %> Team

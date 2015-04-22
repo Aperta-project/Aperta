@@ -10,6 +10,7 @@ module TahiStandardTasks
 
     def invitation_accepted(invitation)
       ReviewerReportTaskCreator.new(originating_task: self, assignee_id: invitation.invitee_id).process
+      ReviewerMailer.delay.reviewer_accepted(invite_reviewer_task_id: id, assigner_id: paper.editor.id, reviewer_id: invitation.invitee_id)
     end
 
     def invitation_rejected(invitation)

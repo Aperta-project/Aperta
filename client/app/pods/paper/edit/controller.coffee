@@ -30,28 +30,28 @@ PaperEditController = BasePaperController.extend
   statusMessage: Ember.computed.any 'processingMessage', 'userEditingMessage', 'saveStateMessage'
 
   processingMessage: (->
-    if @get('status') is "processing"
+    if @get('model.status') is "processing"
       "Processing Manuscript"
     else
       null
-  ).property('status')
+  ).property('model.status')
 
   userEditingMessage: ( ->
-    lockedBy = @get('lockedBy')
+    lockedBy = @get('model.lockedBy')
     if lockedBy and lockedBy isnt @currentUser
       "<span class='edit-paper-locked-by'>#{lockedBy.get('fullName')}</span> <span>is editing</span>"
     else
       null
-  ).property('lockedBy')
+  ).property('model.lockedBy')
 
   locked: ( ->
     !Ember.isBlank(@get('processingMessage') || @get('userEditingMessage'))
   ).property('processingMessage', 'userEditingMessage')
 
   isEditing: (->
-    lockedBy = @get('lockedBy')
+    lockedBy = @get('model.lockedBy')
     lockedBy and lockedBy is @currentUser
-  ).property('lockedBy')
+  ).property('model.lockedBy')
 
   canEdit: ( ->
     !@get('locked')
@@ -177,7 +177,7 @@ PaperEditController = BasePaperController.extend
 
   whenPaperBodyChanges: (->
     @updateEditor() unless @get('isEditing')
-  ).observes('body')
+  ).observes('model.body')
 
   willDestroy: ( ->
     @_super()
@@ -186,7 +186,7 @@ PaperEditController = BasePaperController.extend
 
   actions:
     toggleEditing: ->
-      if @get('lockedBy') #unlocking -> Allowing others to edit
+      if @get('model.lockedBy') #unlocking -> Allowing others to edit
         @stopEditing()
       else #locking -> Editing Paper (locking others out)
         @startEditing()
@@ -195,7 +195,7 @@ PaperEditController = BasePaperController.extend
       @savePaperDebounced()
 
     updateDocumentBody: (content) ->
-      @set('body', content)
+      @set('model.body', content)
       false
 
     confirmSubmitPaper: ->

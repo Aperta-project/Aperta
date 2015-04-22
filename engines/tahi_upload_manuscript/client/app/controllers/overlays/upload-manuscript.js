@@ -21,12 +21,11 @@ export default TaskController.extend(FileUploadMixin, {
 
   actions: {
     uploadProgress: function(data) {
-      var self = this;
       this.set('progress', Math.round((data.loaded / data.total) * 100));
 
       if(this.get('progress') >= 100) {
-        setTimeout(function() {
-          self.setProperties({showProgress: false, isProcessing: true});
+        setTimeout(()=> {
+          this.setProperties({showProgress: false, isProcessing: true});
         }, 500);
       }
     },
@@ -36,13 +35,12 @@ export default TaskController.extend(FileUploadMixin, {
     },
 
     uploadFinished: function(data, filename) {
-      var self = this;
       this.uploadFinished(data, filename);
       this.store.pushPayload(data);
-      this.set('completed', true);
+      this.set('model.completed', true);
 
-      this.get('model').save().then(function() {
-        self.send('closeAction');
+      this.get('model').save().then(()=> {
+        this.send('closeAction');
       });
     }
   }

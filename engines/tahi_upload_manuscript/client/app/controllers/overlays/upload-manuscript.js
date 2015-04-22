@@ -8,16 +8,16 @@ export default TaskController.extend(FileUploadMixin, {
   showProgress: true,
 
   isEditable: function() {
-    return !this.get('paper.lockedBy') && (this.get('isUserEditable') || this.get('isCurrentUserAdmin'));
-  }.property('paper.lockedBy', 'isUserEditable', 'isCurrentUserAdmin'),
+    return !this.get('model.paper.lockedBy') && (this.get('isUserEditable') || this.get('isCurrentUserAdmin'));
+  }.property('model.paper.lockedBy', 'isUserEditable', 'isCurrentUserAdmin'),
 
   progressBarStyle: function() {
     return this.get('progress') + '%';
   }.property('progress'),
 
   manuscriptUploadUrl: function() {
-    return '/api/papers/' + this.get('litePaper.id') + '/upload';
-  }.property('litePaper.id'),
+    return '/api/papers/' + this.get('model.paper.id') + '/upload';
+  }.property('model.paper.id'),
 
   actions: {
     uploadProgress: function(data) {

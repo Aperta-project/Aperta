@@ -35,6 +35,7 @@ gem 'sidetiq'
 gem 'sinatra'
 gem 'active_record-acts_as'
 
+gem "premailer-rails"
 gem "nokogiri"
 gem "carrierwave"
 gem "fog"

@@ -3,6 +3,8 @@ module TahiStandardTasks
     include Rails.application.routes.url_helpers
     add_template_helper ClientRouteHelper
 
+    layout "mailer"
+
     default from: ENV.fetch('FROM_EMAIL')
 
     def reviewer_accepted(invite_reviewer_task_id:, reviewer_id:, assigner_id:)

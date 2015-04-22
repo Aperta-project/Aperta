@@ -1,0 +1,16 @@
+<p>
+  Hello <%= @assigner.first_name %>,
+</p>
+
+<p>
+  <%= @reviewer.full_name %> has declined your invitation to review the paper: "<%= @paper.title %>"
+</p>
+
+<p>
+  <a href="<%= client_paper_task_url(@paper, @invite_reviewer_task) %>">View the status of your invitation.</a>
+</p>
+
+<p class="signature">
+  Sincerely,<br>
+  <%= @journal.name %> Team
+</p>

@@ -1,9 +1,19 @@
+<p>
 Hello <%= @editor.full_name %>,
+</p>
 
+<p>
 <%= @author.full_name %> has resubmitted the manuscript, <%= @paper.title %>, to <%= @paper.journal.name %>.
+</p>
+<p>
 Please take a look and invite reviewers to peer review this version.
+</p>
 
+<p>
 <%= client_paper_url(@paper) %>
+</p>
 
-Sincerely,
+<p>
+Sincerely,<br>
 <%= @paper.journal.name %> Team
+</p>

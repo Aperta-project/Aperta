@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::ReviewerMailer do
-  add_template_helper ClientRouteHelper
-
   let(:reviewer_task) { FactoryGirl.create(:task) }
   let(:paper) { reviewer_task.paper }
   let(:reviewer) { FactoryGirl.create(:user) }

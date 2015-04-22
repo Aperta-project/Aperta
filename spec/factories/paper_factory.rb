@@ -33,6 +33,13 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_editor) do
+      after(:create) do |paper|
+        editor = FactoryGirl.build(:user)
+        FactoryGirl.create(:paper_role, :editor, paper: paper, user: editor)
+      end
+    end
+
     after(:build) do |paper|
       paper.paper_type ||= paper.journal.paper_types.first
     end

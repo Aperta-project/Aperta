@@ -25,7 +25,7 @@ class ReviewerReportTaskCreator
 
   # multiple `assignee` can exist on `paper` as a reviewer
   def assign_paper_role!
-    paper.paper_roles.for_role(PaperRole::REVIEWER).create!(user: assignee)
+    paper.paper_roles.for_role(PaperRole::REVIEWER).first_or_create!(user: assignee)
   end
 
   def default_phase

@@ -1,6 +1,6 @@
 Hello <%= @assigner.first_name %>,
 
-<%= @reviewer.full_name %> has accepted your invitation to review the paper: "<%= @paper.title %>"
+<%= @reviewer.full_name %> has declined your invitation to review the paper: "<%= @paper.title %>"
 
 To see the status of your invitation, click here: <%= client_paper_task_url(@paper, @invite_reviewer_task) %>
 

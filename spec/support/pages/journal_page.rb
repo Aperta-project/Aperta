@@ -42,7 +42,7 @@ class JournalPage < Page
 
   def add_role
     find('.admin-add-new-role-button').click
-    RoleFragment.new(find('.admin-role', match: :first))
+    RoleFragment.new(find('.admin-role.is-editing', match: :first))
   end
 
   def find_role(name)

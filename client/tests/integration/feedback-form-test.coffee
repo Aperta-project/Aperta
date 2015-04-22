@@ -41,15 +41,10 @@ module 'Integration: Feedback Form',
     ]
 
 test 'clicking the feedback button sends feedback to the backend', ->
-  visit '/'
-
-  .then ->
-    click '.navigation-toggle'
-  .andThen ->
-    click '.navigation-item-feedback'
-    ok find('.overlay').length
-  .andThen ->
-    fillIn '.overlay textarea', "My feedback"
-    click '.overlay-footer-content .button-primary'
-  .andThen ->
-    ok find('.overlay .thanks')
+  visit('/')
+  click '.navigation-toggle'
+  click '.navigation-item-feedback'
+  fillIn '.overlay textarea', "My feedback"
+  click '.overlay-footer-content .button-primary'
+  andThen ->
+    ok find('.overlay .thanks'), 'Thank you message visible'

@@ -27,7 +27,7 @@ feature "Editing paper", js: true do
       expect(edit_paper).to have_body_text("Contrary to popular belief")
       expect(edit_paper.cards[:metadata]).to match_array ['Upload Manuscript', 'Add Authors', 'Upload Figures', 'Supporting Info']
       expect(edit_paper.cards[:assigned]).to include 'Tech Check', 'Assign Admin'
-      expect(edit_paper).to have_css('a.button--disabled')
+      expect(edit_paper).to have_css('.button--disabled')
 
       # completing the metadata cards
       edit_paper.cards[:metadata].each do |card|
@@ -35,24 +35,7 @@ feature "Editing paper", js: true do
           overlay.mark_as_complete
         end
       end
-      expect(edit_paper).to_not have_css('a.button--disabled')
-    end
-  end
-
-  context "As an Editor, with reviewers assigned" do
-    let(:paper) { FactoryGirl.create :paper_with_phases, submitted: false, creator: user }
-    let!(:reviewer_card) { paper.phases.first.tasks.create!(title: "ReviewMe", role: "reviewer") }
-
-    before do
-      make_user_paper_editor(user, paper)
-      sign_in_page = SignInPage.visit
-      sign_in_page.sign_in user
-    end
-
-    scenario "the reviewer task is displayed" do
-      click_link(paper.title)
-      edit_paper = EditPaperPage.new
-      expect(edit_paper.cards[:editor]).to include('ReviewMe')
+      expect(edit_paper).to_not have_css('.button--disabled')
     end
   end
 end

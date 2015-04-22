@@ -1,4 +1,4 @@
-<div {{bind-attr class=":column-header editing:active"}}>
+<div class="column-header {{if editing "active"}}">
   {{#if editing}}
     {{content-editable tagName="h2"
                        class="column-title"
@@ -17,9 +17,9 @@
 
       <div class="flow-manager-column-sub-title">
         {{#if journalLogo}}
-          <img {{bind-attr src="journalLogo"}}>
+          <img src={{journalLogo}}>
         {{else}}
-          {{display-value journalName or="For all Journals"}}
+          {{if journalName journalName "For all Journals"}}
         {{/if}}
       </div>
 
@@ -75,7 +75,7 @@
 
 <div class="column-content">
   <ul class="cards">
-    {{#each task in tasks}}
+    {{#each tasks as |task|}}
       {{flow-task-group task=task
                         commentLooks=commentLooks
                         viewCard="viewCard"}}

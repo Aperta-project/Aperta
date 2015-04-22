@@ -4,7 +4,6 @@
 
 moduleForComponent 'flow-column', 'Unit: components/flow-column',
   needs: [
-    'helper:display-value'
     'component:segmented-button'
     'component:segmented-buttons'
     'component:progress-loader'

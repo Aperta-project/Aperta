@@ -50,7 +50,7 @@ module 'Integration: Flow Manager Administration',
 
 test 'Flow manager edit link should show up on a role with permission in edit mode', ->
   visit "/admin/journals/#{journal.id}"
-  click('.admin-role-action-button')
+  click('.admin-role-action-button.glyphicon.glyphicon-pencil')
   andThen ->
     ok !find('a:contains("Edit Flows")').length, "No flow manager link should show up without permission"
   click('input[name="role[canViewFlowManager]"]')
@@ -59,7 +59,7 @@ test 'Flow manager edit link should show up on a role with permission in edit mo
 
 test "Admin can add a new column in a role's flow-manager", ->
   visit "/admin/journals/#{journal.id}"
-  click '.admin-role-action-button'
+  click '.admin-role-action-button.glyphicon.glyphicon-pencil'
   click 'input[name="role[canViewFlowManager]"]'
   click 'a:contains("Edit Flows")'
   andThen ->

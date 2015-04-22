@@ -4,7 +4,7 @@
 </div>
 <div class="flow-admin-content">
   <ul class="columns flow-admin">
-    {{#each flow in sortedFlows}}
+    {{#each sortedFlows as |flow|}}
       {{flow-column flow=flow
                     litePaper=litePaper
                     commentLooks=commentLooks

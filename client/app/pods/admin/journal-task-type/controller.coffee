@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 
-JournalTaskTypeController = Ember.ObjectController.extend
+JournalTaskTypeController = Ember.Controller.extend
   needs: ['admin/journal']
   journal: Ember.computed.alias('controllers.admin/journal')
   journalRoleSort: ['name: asc']

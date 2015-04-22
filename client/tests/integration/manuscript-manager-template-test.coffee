@@ -118,19 +118,22 @@ test 'Adding an Ad-Hoc card', ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('a.button--green:contains("Add New Card")')
   pickFromChosenSingle('.task-type-select', 'Ad Hoc')
-  click('.button--green:contains("Add")')
-    .then -> ok find('h1.inline-edit:contains("Ad Hoc")').length
-  click('.adhoc-content-toolbar .glyphicon-plus')
-  click('.adhoc-content-toolbar .adhoc-toolbar-item--text')
-  andThen ->
+  click('.overlay .button--green:contains("Add")').then ->
+    ok find('h1.inline-edit:contains("Ad Hoc")').length
     ok(
       find('h1.inline-edit').hasClass('editing'),
       "The title should be editable to start"
     )
+
+  click('.adhoc-content-toolbar .glyphicon-plus')
+  click('.adhoc-content-toolbar .adhoc-toolbar-item--text')
+
+  andThen ->
     Ember.$('.inline-edit-form div[contenteditable]')
     .html("New contenteditable, yahoo!")
     .trigger('keyup')
     click('.task-body .inline-edit-body-part .button--green:contains("Save")')
+
   andThen ->
     assertText('.inline-edit', 'yahoo')
     click('.inline-edit-body-part .glyphicon-trash')

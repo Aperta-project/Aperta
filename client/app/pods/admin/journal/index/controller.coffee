@@ -1,12 +1,14 @@
 `import Ember from 'ember'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-JournalIndexController = Ember.ObjectController.extend ValidationErrorsMixin,
+JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
   epubCssSaveStatus: ''
   pdfCssSaveStatus: ''
   manuscriptCssSaveStatus: ''
   doiEditState: false
   doiStartNumberEditable: true
+
+  canDeleteManuscriptMangerTemplates: Ember.computed.gt('model.manuscriptManagerTemplates.length', 1)
 
   epubCoverUploadUrl: (->
     "/admin/journals/#{@get('model.id')}/upload_epub_cover"
@@ -21,12 +23,12 @@ JournalIndexController = Ember.ObjectController.extend ValidationErrorsMixin,
     @set 'placeholderText', null
 
   logo: (->
-    logoUrl = @get("logoUrl")
-    if /no-journal-image/.test logoUrl
+    logoUrl = @get("model.logoUrl")
+    if Ember.isEmpty(logoUrl)
       false
     else
       logoUrl
-  ).property('logoUrl')
+  ).property('model.logoUrl')
 
   journalUrl: (->
     "/admin/journals/#{@get('model.id')}"
@@ -63,6 +65,14 @@ JournalIndexController = Ember.ObjectController.extend ValidationErrorsMixin,
 
 
   actions:
+    addMMTemplate: ->
+      @transitionTo('admin.journal.manuscript_manager_template.new')
+
+    destroyMMTemplate: (template) ->
+      if @get('canDeleteManuscriptMangerTemplates')
+        template.destroyRecord().then =>
+          @get('model.manuscriptManagerTemplates').removeObject(template)
+
     searchUsers: ->
       @resetSearch()
       @store.find 'AdminJournalUser', query: @get('searchQuery'), journal_id: @get('model.id')

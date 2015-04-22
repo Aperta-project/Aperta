@@ -17,7 +17,7 @@ UploadPreviewComponent = Ember.Component.extend
   error: null
 
   progressBarStyle: ( ->
-    "width: #{@get('progress')}%;"
+    Ember.String.htmlSafe("width: #{@get('progress')}%;")
   ).property('progress')
 
 

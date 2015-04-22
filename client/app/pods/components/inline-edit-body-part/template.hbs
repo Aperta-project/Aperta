@@ -1,4 +1,4 @@
-<div {{bind-attr class=":inline-edit-body-part confirmDelete editing bodyPartType showState :clearfix"}}>
+<div class="inline-edit-body-part clearfix {{if confirmDelete "confirm-delete"}} {{if editing "editing"}} {{bodyPartType}}">
   {{yield}}
 
   <div class="view-actions">
@@ -7,7 +7,7 @@
   </div>
 
   <div class="edit-actions">
-    <div {{bind-attr class=":button-secondary :button--green :pull-right hasNoContent:button--disabled"}} {{action "save"}}>Save</div>
+    <div class="button-secondary button--green pull-right {{if hasNoContent "button--disabled"}}" {{action "save"}}>Save</div>
     <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>
   </div>
 

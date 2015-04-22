@@ -1,9 +1,9 @@
 <div class="overlay-completed-checkbox">
-  <div {{bind-attr class="validationErrors.completed:error"}}>
+  <div class={{if validationErrors.completed "error"}}>
     {{#if isEditable}}
-      {{check-box id="task_completed" name="task_completed" checked=completed action="saveModel"}}
+      {{check-box id="task_completed" name="task_completed" checked=model.completed action="saveModel"}}
     {{else}}
-      {{check-box id="task_completed" name="task_completed" checked=completed disabled="disabled"}}
+      {{check-box id="task_completed" name="task_completed" checked=model.completed disabled="disabled"}}
     {{/if}}
     <label for="task_completed">Completed</label>
     {{error-message message=validationErrors.completed}}

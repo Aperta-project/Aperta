@@ -96,7 +96,7 @@ feature "Journal Administration", js: true do
       it "show Journal name as text" do
         click_link('Admin')
         click_link(journal.name)
-        first(".admin-role-action-button").click
+        first(".admin-role-action-button.glyphicon.glyphicon-pencil").click
         find("input[name='role[canViewFlowManager]']").set(true)
         click_link("Edit Flows")
         first(".control-bar-link-icon").click

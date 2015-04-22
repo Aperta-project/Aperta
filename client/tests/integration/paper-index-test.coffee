@@ -41,7 +41,7 @@ test 'on paper.index, contributors are visible', ->
     Ember.run ->
       getStore().getById('paper', records[0].id).set('editable', false)
   andThen ->
-    click('.contributors-link')
-    # using JQuery to select an element (the navbar) outside the QUnit container
-    equal $("html.control-bar-sub-nav-active").length, 1
-    equal $(".control-bar-sub-items .contributors.active").is(':visible'), 1
+    click('.contributors-link').then ->
+      # using JQuery to select an element (the navbar) outside the QUnit container
+      equal $("html.control-bar-sub-nav-active").length, 1
+      equal $(".control-bar-sub-items .contributors.active").is(':visible'), true

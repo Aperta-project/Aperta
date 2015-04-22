@@ -1,7 +1,7 @@
 {{#link-to "admin.journal" journal class="journal-thumbnail-show clearfix"}}
   <div class="journal-thumbnail">
     {{#if journal.logoUrl}}
-      <img {{bind-attr src=journal.logoUrl}}>
+      <img src={{journal.logoUrl}}>
     {{else}}
       {{partial "svg/default-journal-logo"}}
     {{/if}}

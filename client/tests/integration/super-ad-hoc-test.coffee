@@ -60,7 +60,7 @@ test "Changing the title on an AdHoc Task", ->
   fillIn '.large-edit input[name=title]', 'Shazam!'
   click '.large-edit .button--green:contains("Save")'
   andThen ->
-    equal(find('h1.inline-edit:contains("Shazam!")').length, 1)
+    equal(find('h1.inline-edit:contains("Shazam!")').length, 1, 'title is changed')
 
 test "Adding a text block to an AdHoc Task", ->
   visit "/papers/#{currentPaper.id}/tasks/1"
@@ -86,14 +86,14 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--list'
   andThen ->
-    equal(find('.inline-edit-form .item-remove').length, 1)
+    equal(find('.inline-edit-form .item-remove').length, 1, 'item remove button visible')
     Ember.$('.inline-edit-form label[contenteditable]')
     .html("Here is a checkbox list item")
     .trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
     assertText('.inline-edit', 'checkbox list item')
-    equal(find('.inline-edit input[type=checkbox]').length, 1)
+    equal(find('.inline-edit input[type=checkbox]').length, 1, 'checkbox item is visble')
     click '.inline-edit-body-part .glyphicon-trash'
   andThen ->
     assertText('.inline-edit-body-part', 'Are you sure?')

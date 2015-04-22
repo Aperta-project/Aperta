@@ -1,6 +1,4 @@
 <label>{{check-box name=ident checked=checked}} {{model.question}}</label>
 {{#if template}}
-  <div {{bind-attr class=":additional-data displayContent::hidden"}}>
-    {{yield}}
-  </div>
+  <div class="additional-data {{if displayContent "" "hidden"}}">{{yield}}</div>
 {{/if}}

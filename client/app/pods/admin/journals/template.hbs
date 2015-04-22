@@ -1,4 +1,4 @@
-{{view "control-bar"}}
+<div class="control-bar"></div>
 {{flash-messages classNames="flash-messages--below-control-bar"}}
 
 <div id="tahi-container" class="admin-screen">
@@ -21,7 +21,7 @@
             <th>Last Name</th>
             <th>Username</th>
           </tr>
-          {{#each user in adminJournalUsers}}
+          {{#each adminJournalUsers as |user|}}
             {{partial "admin/edit-journal-user"}}
           {{/each}}
         </table>
@@ -31,4 +31,3 @@
     </div>
   </div>
 </div>
-

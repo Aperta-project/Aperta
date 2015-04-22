@@ -23,12 +23,12 @@
   <span>Sorry! {{fileName}} is not of an accepted file type</span>
 {{/if}}
 
-<div id="paper-manuscript-upload" {{bind-attr class="isUploading::hidden"}}>
-  <div {{bind-attr class=":processing isProcessing::hidden"}}>
+<div id="paper-manuscript-upload" class={{if isUploading "" "hidden"}}>
+  <div class="processing {{if isProcessing "" "hidden"}}">
     {{progress-loader visible=true}}
     Processing...
   </div>
-  <div {{bind-attr class=":progress showProgress::hidden"}}>
-    <div class="progress-bar" {{bind-attr style=progressBarStyle}}></div>
+  <div class="progress {{if showProgress "" "hidden"}}">
+    <div class="progress-bar" style={{progressBarStyle}}></div>
   </div>
 </div>

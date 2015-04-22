@@ -7,7 +7,7 @@
                       large=true}}
   {{/if}}
   <table>
-    {{#each feed in model}}
+    {{#each model as |feed|}}
       <tr>
         <td class="activity-feed-overlay-message">{{unbound feed.message}}</td>
         <td class="activity-feed-overlay-user">

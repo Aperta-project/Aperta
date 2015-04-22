@@ -56,9 +56,8 @@ module 'Integration: Submitting Paper',
     ]
 
 test "User can submit a paper", ->
-  expect(1)
   visit("/papers/#{currentPaper.id}/edit")
-  click(".edit-paper a:contains('Submit Manuscript')")
+  click(".edit-paper button:contains('Submit Manuscript')")
   click("button.button-submit-paper")
 
   andThen ->

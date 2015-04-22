@@ -1,34 +1,32 @@
 class TaskRoleUpdater
-  attr_accessor :task, :paper, :user, :paper_role_name
+  attr_accessor :task, :paper, :assignee, :paper_role_name
 
-  def initialize(task, user_id, paper_role_name)
+  def initialize(task:, assignee_id:, paper_role_name:)
     @task = task
     @paper = task.paper
-    @user = User.find(user_id)
+    @assignee = User.find(assignee_id)
     @paper_role_name = paper_role_name
   end
 
   def update
     paper.transaction do
       assign_paper_role!
-
-      assign_related_tasks_to_user
+      assign_related_tasks
     end
   end
 
   private
 
-  def assign_related_tasks_to_user
-    if paper_role_name != PaperRole::REVIEWER
-      related_tasks.each do |task|
-        ParticipationFactory.create(task, user)
-      end
+  def assign_related_tasks
+    related_tasks.each do |task|
+      ParticipationFactory.create(task, assignee)
     end
   end
 
+  # only one `assignee` can exist on `paper` with the same `paper_role_name`
   def assign_paper_role!
-    @paper.paper_roles.for_role(@paper_role_name).destroy_all
-    @paper.paper_roles.for_role(@paper_role_name).create!(user: @user)
+    paper.paper_roles.for_role(paper_role_name).destroy_all
+    paper.paper_roles.for_role(paper_role_name).create!(user: assignee)
   end
 
   def related_tasks

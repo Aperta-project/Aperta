@@ -47,9 +47,9 @@ test 'show download links on control bar', ->
   server.respondWith 'GET', "/api/papers/#{currentPaper.id}/status/#{jobId}", [
     200, {"Content-Type": "application/json"}, JSON.stringify({
       "job": {
-        "state": "converted",
+        "state": "completed",
         "id": "#{jobId}",
-        "url": 'https://www.google.com'
+        "outputs": []
       }
     })
   ]

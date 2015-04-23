@@ -9,7 +9,7 @@ AttachmentThumbnailComponent = Ember.Component.extend
   attachmentType: 'attachment'
 
   attachmentUrl: (->
-    "/figures/#{@get('attachment.id')}/update_attachment"
+    "/api/figures/#{@get('attachment.id')}/update_attachment"
   ).property('attachment.id')
 
   focusOnFirstInput: (->

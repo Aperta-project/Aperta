@@ -26,7 +26,7 @@ describe FeedbackController do
         end
 
         expect(ActionMailer::Base.deliveries.size).to eq 1
-        body = ActionMailer::Base.deliveries.first.body.parts.first.body
+        body = ActionMailer::Base.deliveries.first.body.parts.last.body
         expect(body).to include 'foo'
         expect(body).to include 'http://example.com'
         expect(body).to include 'test'

@@ -1,7 +1,15 @@
+<p>
 Hello <%= @recipient.full_name %>,
+</p>
 
+<p>
 A review of '<%= @paper.display_title %>' has been completed. Visit this link to view the Reviewer Report in Tahi:
+</p>
 
+<p>
 <%= client_paper_task_url(@paper, @task) %>
+</p>
 
+<p>
 Team Tahi
+</p>

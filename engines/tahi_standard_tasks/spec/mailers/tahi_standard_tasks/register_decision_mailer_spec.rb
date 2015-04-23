@@ -19,7 +19,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
 
   let(:decision) {
     paper.decisions.create!(
-      letter: "Here's body text of a Decision Letter",
+      letter: "Body text of a Decision Letter",
       verdict: "accepted"
     )
   }
@@ -38,7 +38,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
     end
 
     it "email body is paper.decision_letter" do
-      expect(email.body.raw_source).to eq decision.letter + "\n"
+      expect(email.body.raw_source).to match(decision.letter)
     end
   end
 end

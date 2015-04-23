@@ -51,11 +51,14 @@
   </div>
 {{/if}}
 <div class="ve-tool-group pull-right">
-  <span class=":saving-spinner {{if isSaving "" "hidden"}}">
+  <span class="saving-spinner {{if isSaving "" "hidden"}}">
     <i class="fa fa-spinner fa-spin"></i>
   </span>
   <span class="edit-paper-lock-message">
-    {{if statusMessage statusMessage ""}}
+    {{#if statusMessage}}
+      <span>{{{statusMessage}}}</span>
+    {{/if}}
+
     {{time-ago time=savedAt}}
   </span>
 </div>

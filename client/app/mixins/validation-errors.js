@@ -82,12 +82,11 @@ export default Ember.Mixin.create({
     @return {Array} array of hashes with `model` and `error` keys
   */
 
-  createModelProxyObjectWithErrors: function(models) {
-    var self = this;
-    return models.map(function(model) {
+  createModelProxyObjectWithErrors(models) {
+    return models.map((model) => {
       return Ember.Object.create({
         model: model,
-        errors: self.validationErrorsForModel(model)
+        errors: this.validationErrorsForModel(model)
       });
     });
   },

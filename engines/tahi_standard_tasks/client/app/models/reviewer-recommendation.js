@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 
-var a = DS.attr;
+let a = DS.attr;
 
 export default DS.Model.extend({
   // qualifiedType: 'TahiStandardTask::ReviewerRecommendation',

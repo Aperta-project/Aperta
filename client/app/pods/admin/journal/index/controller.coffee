@@ -11,7 +11,7 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
   canDeleteManuscriptMangerTemplates: Ember.computed.gt('model.manuscriptManagerTemplates.length', 1)
 
   epubCoverUploadUrl: (->
-    "/admin/journals/#{@get('model.id')}/upload_epub_cover"
+    "/api/admin/journals/#{@get('model.id')}/upload_epub_cover"
   ).property()
 
   adminJournalUsers: null

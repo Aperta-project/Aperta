@@ -1,31 +1,34 @@
 <p>
 Feedback from:
+<br>
 <%= @user.username %>
 </p>
 
 <p>
 On the page:
-<%= @feedback[:referrer] %>
+<br>
+<a href="<%= @feedback[:referrer] %>"><%= @feedback[:referrer] %></a>
 </p>
 
 <p>
 Current Rails environment:
+<br>
 <%= Rails.env %>
 </p>
 
 <p>
 Body:
+<br>
 <%= @feedback[:remarks] %>
 </p>
 
 <% if @feedback[:screenshots] %>
-
   <p>
     Screenshots:
+    <br>
     <% @feedback[:screenshots].each do |screenshot| %>
       <%= image_tag screenshot[:url], alt: screenshot[:filename] %>
       <br>
     <% end %>
   </p>
-
 <% end %>

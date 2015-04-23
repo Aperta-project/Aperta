@@ -55,14 +55,6 @@
     margin-top: 0;
     padding-top: 0;
   }
-
-  .progress-spinner {
-    margin-top: 0;
-
-    &:after {
-      right: 46%;
-    }
-  }
 }
 
 .overlay--fullscreen--green {
@@ -162,13 +154,6 @@
   height: 100%;
 }
 
-.inner-content {
-  width: 500px;
-  margin: 0 auto;
-  overflow: hidden;
-  height: 100%
-}
-
 .overlay-action-buttons {
   padding-top: 0;
   float: right;
@@ -179,7 +164,7 @@
 }
 
 .call-to-action {
- margin-top: 20px;
+  margin-top: 20px;
 
   div {
     display: inline-block;

@@ -44,7 +44,7 @@ BasePaperController = Ember.Controller.extend
 
   editorTasks: (->
     if @get('model.editors').contains(@get('currentUser'))
-      @get('tasks').filterBy('role', 'reviewer')
+      @get('model.tasks').filterBy('role', 'reviewer')
   ).property('tasks.@each.role')
 
   sidebarIsEmpty: (->

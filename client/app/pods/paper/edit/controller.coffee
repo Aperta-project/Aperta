@@ -179,7 +179,7 @@ PaperEditController = BasePaperController.extend
 
   willDestroy: ( ->
     @_super()
-    @get('figuresAdapter').dispose()
+    @get('figuresAdapter')?.dispose()
   )
 
   actions:

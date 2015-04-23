@@ -5,13 +5,13 @@
     <span class="button-primary button--green fileinput-button">
       Select and upload a document
       {{file-uploader id="upload-files"
-                      railsMethod='PUT'
-                      accept='.docx'
-                      start='uploadStarted'
-                      progress='uploadProgress'
-                      done='uploadFinished'
-                      error='uploadError'
-                      filePrefix='paper/manuscript'
+                      railsMethod="PUT"
+                      accept=".docx"
+                      start="uploadStarted"
+                      progress="uploadProgress"
+                      done="uploadFinished"
+                      error="uploadError"
+                      filePrefix="paper/manuscript"
                       url=manuscriptUploadUrl}}
     </span>
   </div>
@@ -25,7 +25,7 @@
 
 <div id="paper-manuscript-upload" class={{if isUploading "" "hidden"}}>
   <div class="processing {{if isProcessing "" "hidden"}}">
-    {{progress-loader visible=true}}
+    {{progress-spinner visible=true}}
     Processing...
   </div>
   <div class="progress {{if showProgress "" "hidden"}}">

@@ -1,0 +1,41 @@
+@mixin color-way($dark, $light) {
+  border-top: 2px solid $dark;
+  border-bottom: 2px solid $light;
+  border-left: 2px solid $dark;
+  border-right: 2px solid $light;
+}
+
+.progress-spinner {
+  display: none;
+
+  &:after {
+    @include animation(rotate 2s linear infinite);
+    border-radius: 100%;
+    content: '';
+    position: absolute;
+  }
+
+  &.visible { display: inline-block; }
+
+  // Size Modifiers:
+
+  &.small:after { @include size(30px, 30px); }
+  &.large:after { @include size(50px, 50px); }
+
+  // Color Modifiers:
+
+  &.green:after { @include color-way($tahi-green-dark, $tahi-green-light); }
+  &.blue:after  { @include color-way($tahi-blue-dark, $tahi-blue-light); }
+  &.white:after { @include color-way($tahi-grey-light, $tahi-white); }
+
+  // Position Modifiers:
+
+  &.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    &.small { margin: -15px 0 0 -15px; }
+    &.large { margin: -25px 0 0 -25px; }
+  }
+}

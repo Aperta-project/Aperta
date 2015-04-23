@@ -2,7 +2,7 @@
 
 JournalTaskTypeController = Ember.Controller.extend
   needs: ['admin/journal']
-  journal: Ember.computed.alias('controllers.admin/journal')
+  journal: Ember.computed.alias('controllers.admin/journal.model')
   journalRoleSort: ['name: asc']
   availableTaskRoles: Ember.computed.sort('journal.roles', 'journalRoleSort')
   actions:

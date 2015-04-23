@@ -3,12 +3,13 @@
 AutoSaveIconComponent = Ember.Component.extend
   didInsertElement: (journalTask) ->
     @get 'journalTask.isSaving'
-  
+
   isLoaderShowing: false
   isCheckMarkShowing: false
 
   startShowingLoader:(->
-    if @get 'journalTask.isSaving'
+    console.log(@get('journalTask.isSaving'))
+    if @get('journalTask.isSaving')
       @set 'isLoaderShowing', true
       Ember.run.later (=>
         @hideLoader()
@@ -18,7 +19,7 @@ AutoSaveIconComponent = Ember.Component.extend
 
   hideLoader: ->
     @set('isCheckMarkShowing', true)
-    $('.loader-component-circle--visible').fadeOut =>
+    $('.progress-spinner--visible').fadeOut =>
       Ember.run.later (=>
         @set('isLoaderShowing', false)
       ), 500

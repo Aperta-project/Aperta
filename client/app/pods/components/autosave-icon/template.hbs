@@ -1,7 +1,4 @@
-{{#if isLoaderShowing}}
-  {{progress-loader visible=true
-                    admin=true}}
-{{/if}}
+{{progress-spinner visible=isLoaderShowing color="blue"}}
 
 {{#if isCheckMarkShowing}}
   <div class="save-message">

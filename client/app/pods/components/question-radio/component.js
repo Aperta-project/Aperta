@@ -12,10 +12,10 @@ export default QuestionComponent.extend({
   }.property("model.answer", "noValue"),
 
   actions: {
-    yesAction: function() {
+    yesAction() {
       this.sendAction('yesAction');
     },
-    noAction: function() {
+    noAction() {
       this.sendAction('noAction');
     }
   }

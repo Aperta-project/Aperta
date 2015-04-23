@@ -21,7 +21,7 @@ import Utils from 'tahi/services/utils';
 
   export default Ember.Controller.extend(ValidationErrorsMixin, {
     actions: {
-      save: function() {
+      save() {
         this.get('model').save().then(() => {
           this.clearAllValidationErrors();
         }, (response) => {

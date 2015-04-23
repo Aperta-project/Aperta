@@ -31,18 +31,52 @@ describe TahiStandardTasks::PaperReviewerTask do
     it "notifies the invited reviewer" do
       expect {task.invitation_invited invitation}.to change {
         Sidekiq::Extensions::DelayedMailer.jobs.length
-      }.by 1
+      }.by(1)
     end
   end
 
   describe "#invitation_accepted" do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
+    before do
+      allow(ReviewerReportTaskCreator).to receive(:new).and_return(double(process: nil))
+    end
 
-    it "adds the reviewer to the list of reviewers" do
-      expect(paper.reviewers.count).to eq 0
-      invitation.accept!
-      expect(paper.reviewers.count).to eq 1
-      expect(paper.reload.reviewers).to include invitation.invitee
+    context "with a paper editor" do
+      it "queues the email" do
+        expect {task.invitation_accepted invitation}.to change {
+          Sidekiq::Extensions::DelayedMailer.jobs.length
+        }.by(1)
+      end
+    end
+
+    context "without a paper editor" do
+      before { paper.paper_roles.editors.delete_all }
+      it "queues the email" do
+        expect {task.invitation_accepted invitation}.to change {
+          Sidekiq::Extensions::DelayedMailer.jobs.length
+        }.by(1)
+      end
+    end
+  end
+
+  describe "#invitation_rejected" do
+    let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
+
+    context "with a paper editor" do
+      it "queues the email" do
+        expect {task.invitation_rejected invitation}.to change {
+          Sidekiq::Extensions::DelayedMailer.jobs.length
+        }.by(1)
+      end
+    end
+
+    context "without a paper editor" do
+      before { paper.paper_roles.editors.delete_all }
+      it "queues the email" do
+        expect {task.invitation_rejected invitation}.to change {
+          Sidekiq::Extensions::DelayedMailer.jobs.length
+        }.by(1)
+      end
     end
   end
 

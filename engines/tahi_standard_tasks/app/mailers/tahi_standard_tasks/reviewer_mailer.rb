@@ -8,8 +8,11 @@ module TahiStandardTasks
     default from: ENV.fetch('FROM_EMAIL')
 
     def reviewer_accepted(invite_reviewer_task_id:, reviewer_id:, assigner_id:)
-      @assigner = User.find(assigner_id)
-      @reviewer = User.find(reviewer_id)
+      @assigner = User.find_by(id: assigner_id)
+      @reviewer = User.find_by(id: reviewer_id)
+
+      return unless @assigner.present? && @reviewer.present?
+
       @invite_reviewer_task = Task.find(invite_reviewer_task_id)
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
@@ -18,8 +21,11 @@ module TahiStandardTasks
     end
 
     def reviewer_declined(invite_reviewer_task_id:, reviewer_id:, assigner_id:)
-      @assigner = User.find(assigner_id)
-      @reviewer = User.find(reviewer_id)
+      @assigner = User.find_by(id: assigner_id)
+      @reviewer = User.find_by(id: reviewer_id)
+
+      return unless @assigner.present? && @reviewer.present?
+
       @invite_reviewer_task = Task.find(invite_reviewer_task_id)
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal

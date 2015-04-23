@@ -18,7 +18,7 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: 90ea91f56cf13f87fb5d8568bbd96de60edbd315
+  revision: 865cac3535634798971adb3b830b43ece7db46db
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)
@@ -487,7 +487,7 @@ GEM
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
     slop (3.6.0)
-    sprockets (3.0.1)
+    sprockets (3.0.2)
       rack (~> 1.0)
     sprockets-rails (2.2.4)
       actionpack (>= 3.0)

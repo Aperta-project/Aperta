@@ -45,14 +45,6 @@
   }
 }
 
-.profile-avatar-spinner {
-  .progress-spinner {
-    &:after {
-      right: 40%;
-    }
-  }
-}
-
 .profile-avatar-spinner,
 #profile-avatar-hover {
   @include position(absolute, 0px 0px 0px 0px);

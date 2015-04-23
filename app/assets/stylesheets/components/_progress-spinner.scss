@@ -6,13 +6,14 @@
 }
 
 .progress-spinner {
+  position: relative;
   display: none;
 
   &:after {
+    @include position(absolute, 0px auto auto 0px);
     @include animation(rotate 2s linear infinite);
     border-radius: 100%;
     content: '';
-    position: absolute;
   }
 
   &.visible { display: inline-block; }

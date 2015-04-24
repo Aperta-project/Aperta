@@ -10,7 +10,7 @@
   display: none;
 
   &:after {
-    @include position(absolute, 0px auto auto 0px);
+    @include position(absolute, 0px 0px 0px 0px);
     @include animation(rotate 2s linear infinite);
     border-radius: 100%;
     content: '';
@@ -20,11 +20,8 @@
 
   // Size Modifiers:
 
-  &.small,
-  &.small:after { @include size(30px, 30px); }
-
-  &.large,
-  &.large:after { @include size(50px, 50px); }
+  &.small { @include size(30px, 30px); }
+  &.large { @include size(50px, 50px); }
 
   // Color Modifiers:
 

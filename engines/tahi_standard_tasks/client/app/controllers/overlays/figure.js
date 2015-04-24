@@ -7,10 +7,7 @@ export default TaskController.extend(FileUploadMixin, {
   }.property('model.litePaper.id'),
 
   figures: function() {
-    // TODO: When ember data is updated, remove isDeleted filter.
-    // Ember Data v1.0.0-beta.15-canary
     return (this.get('model.paper.figures') || [])
-              .filter(function(figure) { return !figure.get('isDeleted'); })
               .sortBy('createdAt').reverse();
   }.property('model.paper.figures.[]', 'model.paper.figures.@each.createdAt'),
 

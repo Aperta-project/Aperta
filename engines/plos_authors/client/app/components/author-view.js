@@ -13,8 +13,8 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   }.property('plosAuthor.errors'),
 
   attachHoverEvent: function() {
-    var self = this;
-    var toggleHoverClass = function() {
+    let self = this;
+    let toggleHoverClass = function() {
       self.toggleProperty('hoverState');
     };
 
@@ -31,23 +31,22 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   },
 
   actions: {
-    deleteAuthor: function() {
-      var self = this;
-      this.$().fadeOut(250, function() {
-        self.sendAction('delete', self.get('plosAuthor'));
+    deleteAuthor() {
+      this.$().fadeOut(250, ()=> {
+        this.sendAction('delete', this.get('plosAuthor'));
       });
     },
 
-    save: function() {
+    save() {
       this.sendAction('save', this.get('plosAuthor'));
       this.set('editState', false);
     },
 
-    toggleEditForm: function() {
+    toggleEditForm() {
       this.toggleProperty('editState');
     },
 
-    toggleDeleteConfirmation: function() {
+    toggleDeleteConfirmation() {
       this.toggleProperty('deleteState');
     }
   }

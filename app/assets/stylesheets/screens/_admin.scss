@@ -249,9 +249,10 @@
   top: 0;
   width: 250px;
   height: 40px;
+  text-align: center;
   background-color: rgba(52,123,197, 0.8);
 
-  .loader-component-circle {
+  .progress-spinner {
     margin-top: 5px;
   }
 }
@@ -339,11 +340,11 @@
 }
 
 .loader-container {
-  .loader-component-circle {
+  .progress-spinner {
     margin-top: 0;
     &:after {
       margin-top: 2px;
-      z-index: z('loader-component-circle');
+      z-index: z('progress-spinner');
       left: 68px;
     }
   }

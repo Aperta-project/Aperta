@@ -212,19 +212,12 @@ html[screen="admin"] .navigation-toggle {
 
 
 .tahi-generic-loading {
+  @include position(absolute, 30% 30% auto 30%);
+  text-align: center;
+
   .quote {
-    display: inline-block;
-    width: 30%;
+    padding-top: 4rem;
     font-size: 1.5em;
     font-style: italic;
-    text-align: center;
-    position: absolute;
-    top: 30%;
-    right: 35%;
-  }
-
-  .loader-component-circle:after {
-    top: 22%;
-    right: 48% !important;
   }
 }

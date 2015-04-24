@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   layoutName:  'flash-messages',
 
   actions: {
-    removeMessage: function(message) {
+    removeMessage(message) {
       this.flash.removeMessage(message);
     }
   }

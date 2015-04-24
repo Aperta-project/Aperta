@@ -113,8 +113,7 @@
       <span class="epub-cover-upload">
         {{#if epubCoverUploading}}
           <div class="loader-container">
-            {{progress-loader visible=epubCoverUploading
-                              white=true}}
+            {{progress-spinner visible=true color="white"}}
           </div>
         {{/if}}
         <span class="button-primary button--blue fileinput-button">

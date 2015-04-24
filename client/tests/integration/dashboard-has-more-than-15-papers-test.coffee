@@ -32,25 +32,24 @@ module 'Integration: Dashboard',
     pageCount = 3
 
     data =
-      litePaper: (params) ->
+      paper: (params) ->
         litePapers = []
         for i in [1..params.count] by 1
           litePapers.push
             id: i
             title: "Fake Paper Long Title #{i}"
-            paper_id: i
             short_title: "Fake Paper Short Title #{i}"
             submitted: false
             roles: ['My Paper']
         litePapers
 
     litePapersResponse =
-      lite_papers: data.litePaper count: paperCount
+      papers: data.paper count: paperCount
 
     dashboardResponse =
       users: [fakeUser]
       affiliations: []
-      lite_papers: litePapersResponse.lite_papers[0..14]
+      papers: litePapersResponse.papers[0..14]
       dashboards: [
         id: 1
         user_id: 1
@@ -79,12 +78,12 @@ module 'Integration: Dashboard',
 
     # end_index: (page number * 15) - 1
     # begin_index: end_index - 15
-    server.respondWith 'GET', '/api/lite_papers?page_number=2', [
-      200, 'Content-Type': 'application/json', JSON.stringify (lite_papers: litePapersResponse.lite_papers[15..29])
+    server.respondWith 'GET', '/api/papers?page_number=2', [
+      200, 'Content-Type': 'application/json', JSON.stringify (papers: litePapersResponse.papers[15..29])
     ]
 
-    server.respondWith 'GET', '/api/lite_papers?page_number=3', [
-      200, 'Content-Type': 'application/json', JSON.stringify (lite_papers: litePapersResponse.lite_papers[30..paperCount - 1])
+    server.respondWith 'GET', '/api/papers?page_number=3', [
+      200, 'Content-Type': 'application/json', JSON.stringify (papers: litePapersResponse.papers[30..paperCount - 1])
     ]
 
 test 'With more than 15 papers, there should be a "Load More" button if we are not at the last page', ->

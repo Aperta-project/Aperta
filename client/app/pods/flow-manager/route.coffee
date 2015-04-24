@@ -41,7 +41,7 @@ FlowManagerRoute = AuthorizedRoute.extend
       flow.save()
 
     viewCard: (task) ->
-      paperId = task.get('litePaper.id')
+      paperId = task.get('paper.id')
       redirectParams = ['flow_manager']
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('cachedModel' , @modelFor('flow_manager'))

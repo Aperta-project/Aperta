@@ -2,7 +2,7 @@
 
 CardThumbnailObserver = Ember.Mixin.create
   createThumbnail: ( ->
-    thumbnailParams = @getProperties('id', 'completed', 'title', 'litePaper')
+    thumbnailParams = @getProperties('id', 'completed', 'title', 'paper')
     thumbnailParams.taskType = @get('type')
     @store.push('cardThumbnail', thumbnailParams)
     @setThumbnailRelationship()

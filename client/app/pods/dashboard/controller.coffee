@@ -21,8 +21,8 @@ IndexController = Ember.Controller.extend
 
   actions:
     loadMorePapers: ->
-      @store.find 'lite_paper', page_number: (@get('pageNumber') + 1)
-      .then (litePapers) =>
+      @store.find 'paper', page_number: (@get('pageNumber') + 1)
+      .then (papers) =>
         @incrementProperty 'pageNumber'
 
 `export default IndexController`

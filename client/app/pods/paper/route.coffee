@@ -4,7 +4,7 @@
 
 PaperRoute = Ember.Route.extend
   model: (params) ->
-    @store.find('paper', params.paper_id)
+    @store.fetchById('paper', params.paper_id)
 
   setupController: (controller, model) ->
     controller.set('model', model)

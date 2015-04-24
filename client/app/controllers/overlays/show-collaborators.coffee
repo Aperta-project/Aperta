@@ -20,11 +20,7 @@ ShowCollaboratorsOverlayController = Ember.Controller.extend
   collaborations: null
 
   collaborators: (->
-    # TODO: When ember data is updated, remove this.
-    # Ember Data v1.0.0-beta.15-canary
-    @get('collaborations').filter( (collaboration) ->
-      !collaboration.get 'isDeleted'
-    ).mapBy('user')
+    @get('collaborations').mapBy('user')
   ).property('collaborations.@each')
 
   actions:

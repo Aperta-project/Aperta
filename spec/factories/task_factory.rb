@@ -93,6 +93,13 @@ FactoryGirl.define do
     role "admin"
   end
 
+  factory :changes_for_author_task, class: 'PlosBioTechCheck::ChangesForAuthorTask' do
+    phase
+    title "Changes for Author"
+    role "author"
+    body initialTechCheckBody: 'Default changes for author body'
+  end
+
   factory :invitable_task, class: 'InvitableTask' do
     phase
     title "Invitable Task"

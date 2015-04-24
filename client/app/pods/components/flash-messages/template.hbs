@@ -1,4 +1,4 @@
-{{#each message in flash.messages}}
+{{#each flash.messages as |message|}}
   {{flash-message remove="removeMessage"
                   message=message}}
 {{/each}}

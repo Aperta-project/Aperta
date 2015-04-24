@@ -1,0 +1,15 @@
+<p>
+Hello <%= @reviewer_name %>,
+</p>
+
+<p>
+You've been assigned as a reviewer on a paper titled <%= @paper.display_title %>:
+</p>
+
+<p>
+<%= client_paper_url(@paper) %>
+</p>
+
+<p>
+We look forward to your contributions!
+</p>

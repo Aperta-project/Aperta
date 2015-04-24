@@ -3,7 +3,7 @@
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 `import Utils from 'tahi/services/utils'`
 
-ProfileController = Ember.ObjectController.extend FileUploadMixin, ValidationErrorsMixin,
+ProfileController = Ember.Controller.extend FileUploadMixin, ValidationErrorsMixin,
   showAffiliationForm: false
   errorText: ""
   affiliations: Ember.computed.alias "model.affiliationsByDate"

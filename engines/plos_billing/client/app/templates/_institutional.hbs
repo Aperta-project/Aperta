@@ -23,7 +23,7 @@
     To confirm amounts and details of funding and eligibility, contact the organization as indicated.
   </p>
 
-  <div {{bind-attr class=":form-group :author-half :author-bump :required validationErrors.affiliation:error"}}>
+  <div class="form-group author-half author-bump required {{if validationErrors.affiliation "error"}}">
     {{error-message message=null}}
     {{question-select ident="plos_billing.selected_ringgold"
                       task=model

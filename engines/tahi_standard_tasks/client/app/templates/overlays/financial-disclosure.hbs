@@ -19,7 +19,7 @@
     {{/question-radio}}
   </div>
 
-  {{#each funder in funders}}
+  {{#each funders as |funder|}}
     <div class="question-dataset constrained-form-width">
       {{render "funder" funder}}
     </div>
@@ -35,7 +35,7 @@
       Your Financial Disclosure Statement will appear as:
     </p>
 
-    {{#each funder in funders}}
+    {{#each funders as |funder|}}
       {{view "funder-influence-statement" funder=funder}}
     {{/each}}
   {{/if}}

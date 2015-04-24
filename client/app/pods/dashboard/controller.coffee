@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 
-IndexController = Ember.ObjectController.extend
+IndexController = Ember.Controller.extend
   needs: ['application']
   papers: null
   unreadComments: [] # will be set in setupController
@@ -16,8 +16,8 @@ IndexController = Ember.ObjectController.extend
   pageNumber: 1
 
   paginate: (->
-    @get('pageNumber') isnt @get('totalPageCount')
-  ).property('totalPageCount', 'pageNumber')
+    @get('pageNumber') isnt @get('model.totalPageCount')
+  ).property('model.totalPageCount', 'pageNumber')
 
   actions:
     loadMorePapers: ->

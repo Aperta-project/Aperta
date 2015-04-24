@@ -1,9 +1,9 @@
-<h1 {{bind-attr class=":inline-edit editing"}}>
+<h1 class="inline-edit {{if editing "editing"}}">
   {{title}}
   <span class="glyphicon glyphicon-pencil inline-edit-icon" {{action "toggleEdit"}}></span>
 </h1>
 
-<div {{bind-attr class=":large-edit :inline-edit-form editing"}}>
+<div class="large-edit inline-edit-form {{if editing "editing"}}">
   {{input type="text" name="title" value=title}}
   <div class="button-secondary button--green pull-right" {{action "save"}}>Save</div>
   <div class="button-link button--green pull-right" {{action "toggleEdit"}}>cancel</div>

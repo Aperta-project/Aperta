@@ -1,4 +1,4 @@
-{{#view "control-bar"}}
+<div class="control-bar">
   <div class="control-bar-inner-wrapper">
     <ul>
       {{#if journal.logoUrl}}
@@ -14,7 +14,7 @@
       <li class="control-bar-item">
         <label class="control-bar-link control-bar-button">
           <div class="control-bar-link-icon"></div>
-          {{check-box name="paper-editable" checked=editable action="toggleEditable"}}
+          {{check-box name="paper-editable" checked=model.editable action="toggleEditable"}}
           Editable
         </label>
       </li>
@@ -32,14 +32,14 @@
       </li>
     </ul>
   </div>
-{{/view}}
+</div>
 
 {{flash-messages classNames="flash-messages--below-control-bar"}}
 
 <div id="manuscript-manager">
   <div class="columns">
     {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
-    {{#each phase in sortedPhases}}
+    {{#each sortedPhases as |phase|}}
       {{render "phase" phase}}
     {{/each}}
   </div>

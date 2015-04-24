@@ -2,6 +2,7 @@ import Ember from 'ember';
 import TaskController from 'tahi/pods/task/controller';
 
 export default TaskController.extend({
+  title: 'Add Authors',
   newAuthorFormVisible: false,
 
   authors: (function() {

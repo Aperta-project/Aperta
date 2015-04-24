@@ -10,8 +10,9 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
   selectedTemplate: (user) -> user.email
   decisions: Ember.computed.alias 'model.paper.decisions'
 
-  latestDecision: Ember.computed 'decisions', 'decisions.@each.isLatest', ->
+  latestDecision: (->
     @get('decisions').findBy 'isLatest', true
+  ).property('decisions', 'decisions.@each.isLatest')
 
   actions:
     destroyInvitation: (invitation) -> invitation.destroyRecord()

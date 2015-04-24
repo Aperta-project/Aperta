@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 
-ShowCollaboratorsOverlayController = Ember.ObjectController.extend
+ShowCollaboratorsOverlayController = Ember.Controller.extend
   overlayClass: 'overlay--fullscreen'
 
   availableCollaborators: Ember.computed.setDiff('allUsers', 'collaborators')

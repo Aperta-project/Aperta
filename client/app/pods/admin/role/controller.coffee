@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 
-RoleController = Ember.ObjectController.extend
+RoleController = Ember.Controller.extend
   isEditing: false
   notEditing: Ember.computed.not('isEditing')
 

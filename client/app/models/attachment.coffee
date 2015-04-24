@@ -11,7 +11,7 @@ Attachment = DS.Model.extend
   src: a('string')
   status: a('string')
   title: a('string')
-  attachmentType: a('string')
+  kind: a('string')
 
 
 `export default Attachment`

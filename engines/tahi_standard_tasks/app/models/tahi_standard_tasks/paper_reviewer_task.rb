@@ -9,16 +9,12 @@ module TahiStandardTasks
     end
 
     def invitation_accepted(invitation)
-      transaction do
-        TaskRoleUpdater.new(self, invitation.invitee_id, PaperRole::REVIEWER).update
-        task = TahiStandardTasks::ReviewerReportTask.create!(phase: reviewer_report_task_phase,
-                                                             role: journal_task_type.role,
-                                                             title: "Review by #{invitation.invitee.full_name}")
-        ParticipationFactory.create(task, invitation.invitee)
-      end
+      ReviewerReportTaskCreator.new(originating_task: self, assignee_id: invitation.invitee_id).process
+      ReviewerMailer.delay.reviewer_accepted(invite_reviewer_task_id: id, assigner_id: paper.editor.try(:id), reviewer_id: invitation.try(:invitee_id))
     end
 
     def invitation_rejected(invitation)
+      ReviewerMailer.delay.reviewer_declined(invite_reviewer_task_id: id, assigner_id: paper.editor.try(:id), reviewer_id: invitation.try(:invitee_id))
     end
 
     def invitation_rescinded(paper_id:, invitee_id:)
@@ -39,13 +35,6 @@ module TahiStandardTasks
 
     def invitee_role
       'reviewer'
-    end
-
-    private
-
-    def reviewer_report_task_phase
-      get_reviews_phase = paper.phases.where(name: 'Get Reviews').first
-      get_reviews_phase || phase
     end
   end
 end

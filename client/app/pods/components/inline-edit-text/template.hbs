@@ -1,9 +1,9 @@
-<div {{bind-attr class=":inline-edit editing :bodypart-display bodyPartType"}}>
+<div class="inline-edit bodypart-display {{if editing "editing"}} {{bodyPartType}}">
   <div class="item-text">
     {{{bodyPart.value}}}
   </div>
 </div>
 
-<div {{bind-attr class=":inline-edit-form editing"}}>
+<div class="inline-edit-form {{if editing "editing"}}">
   {{content-editable value=bodyPart.value class="editable"}}
 </div>

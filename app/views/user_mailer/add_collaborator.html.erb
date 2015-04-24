@@ -1,0 +1,15 @@
+<p>
+Hello <%= @invitee_name %>
+</p>
+
+<p>
+<%= @invitor_name %> just added you as a contributor to a paper titled "<%= @paper.display_title %>." Visit this link to view the paper in Tahi:
+</p>
+
+<p>
+<%= client_edit_paper_url(@paper) %>
+</p>
+
+<p>
+Team Tahi
+</p>

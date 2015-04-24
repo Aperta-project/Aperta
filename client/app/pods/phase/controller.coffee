@@ -9,7 +9,9 @@ PhaseController = Ember.Controller.extend
 
   sortedTasks: (->
     @get('model.tasks').sortBy "position"
-  ).property()
+  ).property('model.tasks.[]')
+
+  noCards: Ember.computed.empty('sortedTasks')
 
   tasksToBeDeleted: (->
     currentTaskIds = @get('model.tasks').map (task) -> task.get('id')
@@ -29,15 +31,17 @@ PhaseController = Ember.Controller.extend
         wasDeleted = allTaskIds.indexOf(taskId) == -1
         if wasDeleted
           $("[data-id=#{taskId}]").parent().remove()
-
   ).observes('model.tasks').on('init')
 
+  getTaskByID: (taskId) ->
+    @get('model.tasks').find (t) -> t.get("id") == taskId.toString()
+
+
   actions:
-    changePhaseForTask: (taskId, phaseId) ->
+    changePhaseForTask: (taskId, targetPhaseId) ->
       @beginPropertyChanges()
-      task = @get('model.tasks').filterBy("id", taskId + "")[0]
-      task.set('phase', @store.getById('phase', phaseId))
-      task.save()
+      @store.getById('phase', targetPhaseId)
+            .get('tasks').addObject(@getTaskByID(taskId))
       @endPropertyChanges()
 
     updateSortOrder: (updatedOrder) ->

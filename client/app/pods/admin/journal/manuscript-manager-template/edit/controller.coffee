@@ -2,13 +2,13 @@
 `import Utils from 'tahi/services/utils'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-ManuscriptManagerTemplateEditController = Ember.ObjectController.extend ValidationErrorsMixin,
+ManuscriptManagerTemplateEditController = Ember.Controller.extend ValidationErrorsMixin,
   dirty: false
   editMode: false
   journal: Ember.computed.alias('model.journal')
 
   positionSort: ["position:asc"]
-  sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort')
+  sortedPhaseTemplates: Ember.computed.sort('model.phaseTemplates', 'positionSort')
 
   deletedRecords: null
 
@@ -41,7 +41,7 @@ ManuscriptManagerTemplateEditController = Ember.ObjectController.extend Validati
 
     ).catch (response) =>
       @displayValidationErrorsFromResponse response
-  
+
   successfulSave: (transition) ->
     @reset()
     if transition

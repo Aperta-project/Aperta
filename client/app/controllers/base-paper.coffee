@@ -1,15 +1,16 @@
 `import Ember from 'ember'`
 `import DocumentDownload from 'tahi/services/document-download'`
 
-BasePaperController = Ember.ObjectController.extend
-  needs: ['application']
+BasePaperController = Ember.Controller.extend
+  needs: ['application', 'paper']
 
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isAdmin: Ember.computed.alias 'controllers.application.isAdmin'
+  supportedDownloadFormats: Ember.computed.alias('controllers.paper.supportedDownloadFormats')
 
   downloadLink: ( ->
-    "/papers/#{@get('id')}/download"
-  ).property('id')
+    "/papers/#{@get('model.id')}/download"
+  ).property('model.id')
 
   paper: Ember.computed.alias('model')
 
@@ -23,17 +24,17 @@ BasePaperController = Ember.ObjectController.extend
 
   taskSorting: ['phase.position', 'position']
 
-  authorTasks: Ember.computed.filterBy('tasks', 'role', 'author')
+  authorTasks: Ember.computed.filterBy('model.tasks', 'role', 'author')
 
   canViewManuscriptManager: false
 
   assignedTasks: (->
-    assignedTasks = @get('tasks').filter (task) =>
+    assignedTasks = @get('model.tasks').filter (task) =>
       task.get('participations').mapBy('user').contains(@currentUser)
 
     authorTasks   = @get('authorTasks')
     assignedTasks.filter (t)-> !authorTasks.contains(t)
-  ).property('tasks.@each')
+  ).property('model.tasks.@each')
 
   sortedAuthorTasks: Ember.computed.sort('authorTasks', 'taskSorting')
 
@@ -43,15 +44,15 @@ BasePaperController = Ember.ObjectController.extend
 
   editorTasks: (->
     if @get('model.editors').contains(@get('currentUser'))
-      @get('tasks').filterBy('role', 'reviewer')
+      @get('model.tasks').filterBy('role', 'reviewer')
   ).property('tasks.@each.role')
 
-  isSidebarEmpty: (->
+  sidebarIsEmpty: (->
     Ember.isEmpty(@get('assignedTasks')) && Ember.isEmpty(@get('editorTasks')) && Ember.isEmpty(@get('authorTasks'))
   ).property('assignedTasks.@each', 'editorTasks.@each', 'authorTasks.@each')
 
   actions:
     export: (downloadType) ->
-      DocumentDownload.initiate(@get('id'), downloadType.format)
+      DocumentDownload.initiate(@get('model.id'), downloadType.format)
 
 `export default BasePaperController`

@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class PaperReviewerMailer < ActionMailer::Base
     include Rails.application.routes.url_helpers
+    layout "mailer"
 
     default from: ENV.fetch('FROM_EMAIL')
 

@@ -1,8 +1,11 @@
 import Ember from 'ember';
 
-export default Ember.Controller.extend(Ember.SortableMixin, {
+export default Ember.ArrayController.extend(Ember.SortableMixin, {
+  sortProperties: ['isNew', 'name'],
+  sortAscending: false,
+
   newJournalPresent: function() {
-    this.get('arrangedContent').any((a) => a.get('isNew'));
+    return this.get('arrangedContent').any((a) => a.get('isNew'));
   }.property('arrangedContent.@each.isNew'),
 
   actions: {

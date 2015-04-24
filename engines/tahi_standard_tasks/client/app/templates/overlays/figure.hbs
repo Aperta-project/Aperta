@@ -28,13 +28,13 @@
 {{/if}}
 
 <div id="paper-attachment-uploads">
-  {{#each upload in uploads}}
+  {{#each uploads as |upload|}}
     {{upload-preview upload=upload}}
   {{/each}}
 </div>
 
 {{#if isEditable}}
-  {{#each figure in figures}}
+  {{#each figures as |figure|}}
     {{figure-thumbnail attachment=figure
                        action="changeStrikingImage"
                        saveAttachment="updateStrikingImage"
@@ -44,7 +44,7 @@
                        uploadProgress="uploadProgress"}}
   {{/each}}
 {{else}}
-  {{#each attachment in figures}}
+  {{#each figures as |attachment|}}
     {{partial "attachment_thumbnail_locked"}}
   {{/each}}
 {{/if}}

@@ -24,9 +24,9 @@ addUserAsParticipant = (task, user) ->
     task:
       id: task.id
       type: task.type
-    participant_id: user.id
+    user_id: user.id
 
-  Factory.mergeArrays(task, 'participant_ids', user.id)
+  Factory.mergeArrays(task, 'participation_ids', [participation.id])
 
   participation
 
@@ -40,6 +40,7 @@ paperWithRoles = (id, roles) ->
 export {
   paperWithParticipant,
   paperWithTask,
-  paperWithRoles
+  paperWithRoles,
+  addUserAsParticipant
 }
 `

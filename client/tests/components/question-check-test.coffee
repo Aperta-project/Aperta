@@ -29,9 +29,8 @@ test 'it renders its question', ->
   component = @subject
     ident: "foo"
     task: task
-
-  $component = @render()
-  ok $component.find("label:contains('Test Question')").length
+  @render()
+  ok @subject().$().find("label:contains('Test Question')").length
 
 test 'with additional-datasets it renders them and a buton to add more', ->
   fakeQuestion = Ember.Object.create
@@ -47,9 +46,9 @@ test 'with additional-datasets it renders them and a buton to add more', ->
     task: task
     template: Ember.Handlebars.compile(template)
 
-  $component = @render()
-  equal $component.find(".question-dataset").length, 2, "Renders a dataset for each one in the model"
-  ok $component.find("button:contains('Add Dataset')").length, "Renders an Add Dataset button"
+  @render()
+  equal @subject().$().find(".question-dataset").length, 2, "Renders a dataset for each one in the model"
+  ok @subject().$().find("button:contains('Add Dataset')").length, "Renders an Add Dataset button"
 
 test 'it uses dataset-* components to render attributes on additonalData', ->
   additionalDataItem =
@@ -79,7 +78,8 @@ test 'it uses dataset-* components to render attributes on additonalData', ->
     task: task
     template: Ember.Handlebars.compile(template)
 
-  $component = @render()
+  @render()
+  $component = @subject().$()
   assertValue = (component, selector, value, message) ->
     equal(component.find(selector).val(), value, message)
 

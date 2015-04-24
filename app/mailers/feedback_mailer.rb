@@ -1,4 +1,5 @@
 class FeedbackMailer < ActionMailer::Base
+  layout "mailer"
 
   def contact(user, feedback)
     @user = user

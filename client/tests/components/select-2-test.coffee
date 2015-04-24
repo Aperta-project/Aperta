@@ -40,7 +40,7 @@ test "User can make a selection from the dropdown", ->
   appendBasicComponent(this)
   selectObjectFromDropdown('1')
   andThen ->
-    ok $('.select2-container').select2('val').contains("1")
+    ok $('.select2-container').select2('val').contains("1"), 'Selection made'
 
 test "User can remove a selection from the dropdown", ->
   appendBasicComponent(this)
@@ -48,10 +48,10 @@ test "User can remove a selection from the dropdown", ->
   @component.setProperties
     selectedData: [{id: 1, text: '1'}]
 
-  ok $('.select2-container').select2('val').contains("1")
+  ok $('.select2-container').select2('val').contains("1"), 'Selection made'
 
-  click('.select2-search-choice-close')
-  ok !$('.select2-container').select2('val').contains("1")
+  click('.select2-search-choice-close').then ->
+    ok !$('.select2-container').select2('val').contains("1"), 'removed'
 
 test "Making a selection should trigger a callback to add the object", ->
   appendBasicComponent(this)

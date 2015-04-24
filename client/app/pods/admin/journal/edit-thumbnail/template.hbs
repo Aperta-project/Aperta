@@ -6,7 +6,7 @@
         <span class="journal-logo-preview"></span>
       {{else}}
         {{#if journal.logoUrl}}
-          <img {{bind-attr src=journal.logoUrl}}>
+          <img src={{journal.logoUrl}}>
         {{else}}
           {{partial "svg/default-journal-logo"}}
         {{/if}}
@@ -22,7 +22,7 @@
     {{/if}}
   </div>
 
-  <div {{bind-attr class=":form-group :required validationErrors.name:error"}}>
+  <div class="form-group required {{if validationErrors.name "error"}}">
     {{input type="text"
             value=journal.name
             class="form-control journal-name-edit"
@@ -30,7 +30,7 @@
     {{error-message message=validationErrors.name}}
   </div>
 
-  <div {{bind-attr class=":form-group :required validationErrors.description:error"}}>
+  <div class="form-group required {{if validationErrors.description "error"}}">
     {{textarea value=journal.description
                class="form-group required journal-description-edit form-control"
                placeholder="Journal Description"}}

@@ -1,39 +1,39 @@
 <div class="admin-role-name">
   {{#if isEditing}}
-    {{input name="role[name]" value=name placeholder="Role name" action="save"}}
+    {{input name="role[name]" value=model.name placeholder="Role name" action="save"}}
   {{else}}
     {{#unless required}}
-      <i class="admin-role-action-button role-delete-button glyphicon glyphicon-trash" {{action "delete" bubbles=false target="view"}}></i>
+      <i class="admin-role-action-button role-delete-button glyphicon glyphicon-trash" {{action "delete" bubbles=false}}></i>
     {{/unless}}
     <i class="admin-role-action-button glyphicon glyphicon-pencil"></i>
-    <span class="role-name-field">{{name}}</span>
+    <span class="role-name-field">{{model.name}}</span>
   {{/if}}
 </div>
 
 <div class="admin-role-permissions">
   {{#if isEditing}}
-    <label class="token">{{check-box name="role[canViewAssignedManuscriptManagers]" checked=canViewAssignedManuscriptManagers}} Manuscript Manager</label>
-    <label class="token">{{check-box name="role[canViewAllManuscriptManagers]" checked=canViewAllManuscriptManagers}} All Manuscript Managers</label>
-    <label class="token">{{check-box name="role[canAdministerJournal]" checked=canAdministerJournal}} Admin</label>
-    <label class="token">{{check-box name="role[canViewFlowManager]" checked=canViewFlowManager}} Flow Manager</label>
+    <label class="token">{{check-box name="role[canViewAssignedManuscriptManagers]" checked=model.canViewAssignedManuscriptManagers}} Manuscript Manager</label>
+    <label class="token">{{check-box name="role[canViewAllManuscriptManagers]" checked=model.canViewAllManuscriptManagers}} All Manuscript Managers</label>
+    <label class="token">{{check-box name="role[canAdministerJournal]" checked=model.canAdministerJournal}} Admin</label>
+    <label class="token">{{check-box name="role[canViewFlowManager]" checked=model.canViewFlowManager}} Flow Manager</label>
   {{else}}
-    {{#if canViewAssignedManuscriptManagers}}
+    {{#if model.canViewAssignedManuscriptManagers}}
       <label class="token"><span class="glyphicon glyphicon-ok"></span> Manuscript Manager</label>
     {{/if}}
-    {{#if canViewAllManuscriptManagers}}
+    {{#if model.canViewAllManuscriptManagers}}
       <label class="token"><span class="glyphicon glyphicon-ok"></span> All Manuscript Managers</label>
     {{/if}}
-    {{#if canAdministerJournal}}
+    {{#if model.canAdministerJournal}}
       <label class="token"><span class="glyphicon glyphicon-ok"></span> Admin</label>
     {{/if}}
-    {{#if canViewFlowManager}}
+    {{#if model.canViewFlowManager}}
       <label class="token"><span class="glyphicon glyphicon-ok"></span> Flow Manager</label>
     {{/if}}
   {{/if}}
 
-  {{#if canViewFlowManager}}
+  {{#if model.canViewFlowManager}}
     <div class="admin-modify-flows-link">
-      {{#link-to "admin.journal.flow_manager" journal model}}Edit Flows{{/link-to}}
+      {{#link-to "admin.journal.flow_manager" model.journal model}}Edit Flows{{/link-to}}
     </div>
   {{/if}}
 

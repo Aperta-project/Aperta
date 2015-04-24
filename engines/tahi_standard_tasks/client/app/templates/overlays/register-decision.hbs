@@ -1,4 +1,4 @@
-<div {{bind-attr class=":register-decision-saving-cover isSavingData"}}>
+<div class="register-decision-saving-cover {{if isSavingData "is-saving-data"}}">
   {{progress-loader visible=true large=true center=true}}
 </div>
 

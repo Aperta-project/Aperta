@@ -18,7 +18,7 @@ export default Ember.Component.extend({
     },
 
     textUpdate: function(contributionList) {
-      var contributions = contributionList.split(",");
+      let contributions = contributionList.split(",");
 
       this.sendAction("changed", contributions, this.get("unmatchedContributions"));
     }

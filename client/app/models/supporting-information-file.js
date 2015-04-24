@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 
-var a = DS.attr;
+let a = DS.attr;
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper'),
@@ -16,7 +16,6 @@ export default DS.Model.extend({
   // is a somewhat well-known ember data bug. we need to manually
   // update the relationship for now.
   updatePaperFiles: function() {
-    var paperFiles = this.get('paper.supportingInformationFiles');
-    paperFiles.addObject(this);
+    this.get('paper.supportingInformationFiles').addObject(this);
   }.on('didLoad')
 });

@@ -19,10 +19,10 @@ import Ember from 'ember';
 
   ```
   actions: {
-    save: function() {
+    save() {
       this.get('model').save().then(
         function() {},
-        (response) => {
+        (response)=> {
           this.flash.displayErrorMessagesFromResponse(response);
         }
       );

@@ -36,7 +36,4 @@ class PaperSerializer < LitePaperSerializer
     object.paper_roles.collaborators
   end
 
-  def scoped_user
-    scope.presence || options[:user]
-  end
 end

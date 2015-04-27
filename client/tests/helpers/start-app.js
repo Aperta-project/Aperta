@@ -28,7 +28,7 @@ export default function startApp(attrs) {
     email: "fakeuser@example.com"
   });
 
-  window.currentUser = {user: currentUser};
+  window.currentUserData = {user: currentUser};
 
   Ember.run(function() {
     application = Application.create(attributes);

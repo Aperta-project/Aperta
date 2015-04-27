@@ -16,7 +16,7 @@ module 'Integration: Feedback Form',
   setup: ->
     app = startApp()
     server = setupMockServer()
-    fakeUser = window.currentUser.user
+    fakeUser = window.currentUserData.user
 
     dashboardResponse =
       users: [fakeUser]

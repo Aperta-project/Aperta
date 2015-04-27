@@ -17,7 +17,7 @@ module 'Integration: Billing',
   setup: ->
     app = startApp()
     server = setupMockServer()
-    fakeUser = window.currentUser.user
+    fakeUser = window.currentUserData.user
 
     billingTaskId = 94139
 

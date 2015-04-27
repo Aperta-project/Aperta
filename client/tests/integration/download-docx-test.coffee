@@ -20,7 +20,7 @@ module 'Integration: Paper Docx Download',
   setup: ->
     app = startApp()
     server = setupMockServer()
-    fakeUser = window.currentUser.user
+    fakeUser = window.currentUserData.user
 
 test 'show download links on control bar', ->
   records = paperWithTask('Task'

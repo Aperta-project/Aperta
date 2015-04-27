@@ -23,7 +23,7 @@ module 'Integration: Dashboard',
   setup: ->
     app = startApp()
     server = setupMockServer()
-    fakeUser = window.currentUser.user
+    fakeUser = window.currentUserData.user
 
     paperId = 934
     adminJournalId = 412

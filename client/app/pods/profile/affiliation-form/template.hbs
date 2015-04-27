@@ -2,7 +2,7 @@
 
   <h1>Affiliations:</h1>
 
-  {{#each affiliations as |affiliation|}}
+  {{#each model.affiliations as |affiliation|}}
     <div class="profile-affiliation">
       <div class="profile-affiliation-name">{{affiliation.name}}</div>
       <div class="glyphicon glyphicon-remove-circle profile-remove-affiliation" {{action "removeAffiliation" affiliation}}></div>

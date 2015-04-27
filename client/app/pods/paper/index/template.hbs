@@ -1,6 +1,6 @@
 {{partial "paper/control-bar"}}
 
-<div id="paper-container" class={{if sidebarIsEmpty "sidebar-empty"}}>
+<div id="paper-container" {{bind-attr class="sidebarIsEmpty:sidebar-empty :clearfix"}}>
 
   <aside class="sidebar">
     <div {{action "showActivityFeed" "manuscript"}} class="recent-activity-link">
@@ -10,6 +10,8 @@
       {{partial "paper/task-list"}}
     </div>
   </aside>
+
+  <div class='vertical-divider'></div>
 
   <div class="manuscript-container">
     <main>

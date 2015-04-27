@@ -32,7 +32,7 @@ test 'on paper.index, contributors are visible', ->
   paperResponse = paperPayload.toJSON()
   paperResponse.paper.submitted = true
 
-  server.respondWith 'GET', "/papers/#{records[0].id}", [
+  server.respondWith 'GET', "/api/papers/#{records[0].id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
   ]
 
@@ -41,7 +41,7 @@ test 'on paper.index, contributors are visible', ->
     Ember.run ->
       getStore().getById('paper', records[0].id).set('editable', false)
   andThen ->
-    click('.contributors-link')
-    # using JQuery to select an element (the navbar) outside the QUnit container
-    equal $("html.control-bar-sub-nav-active").length, 1
-    equal $(".control-bar-sub-items .contributors.active").is(':visible'), 1
+    click('.contributors-link').then ->
+      # using JQuery to select an element (the navbar) outside the QUnit container
+      equal $("html.control-bar-sub-nav-active").length, 1
+      equal $(".control-bar-sub-items .contributors.active").is(':visible'), true

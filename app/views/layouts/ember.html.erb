@@ -7,8 +7,10 @@
 
     <%= csrf_meta_tags %>
 
-    <%= render "layouts/segment_io" %>
-    <%= render "shared/bugsnag_javascript" %>
+    <% if !(Rails.env.test? || Rails.env.development?) %>
+      <%= render "layouts/segment_io" %>
+      <%= render "shared/bugsnag_javascript" %>
+    <% end %>
   </head>
 
   <body>
@@ -20,6 +22,7 @@
     <% end %>
 
     <%= include_ember_script_tags :tahi %>
+    <%= include_ember_stylesheet_tags :tahi %>
 
     <% if Rails.env.test? %>
       <% # disable jquery animations %>

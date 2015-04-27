@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   click: function() { this.send('toggle'); },
 
   actions: {
-    toggle: function() {
+    toggle() {
       this.set( 'animationDirection', (this.get('active') ? '_animate-backward' : '_animate-forward') );
       this.toggleProperty('active');
     }

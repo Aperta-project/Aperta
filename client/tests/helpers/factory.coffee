@@ -288,7 +288,7 @@ FactoryAttributes.Paper =
   journal_id: null
 
 FactoryAttributes.LitePaper =
-  _rootKey: 'lite_paper'
+  _rootKey: 'paper'
   id: null
   title: "Foo"
   paper_id: null

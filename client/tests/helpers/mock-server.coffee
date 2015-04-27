@@ -11,26 +11,26 @@ setupMockServer = ->
   server.xhr.addFilter (method, url) -> !!url.match(/assets\/ember-cli-visualeditor\/i18n/)
   server.respondWith 'GET', /assets\/ember-cli-visualeditor\/i18n/, '{}'
 
-  server.respondWith 'GET', '/formats', [
+  server.respondWith 'GET', '/api/formats', [
     200, {"Content-Type": "application/json"}, JSON.stringify({
       "export_formats": ["docx", "latex"],
       "import_formats": ["docx", "odt"]
     })
   ]
 
-  server.respondWith 'GET', '/flows/authorization', [
+  server.respondWith 'GET', '/api/flows/authorization', [
     204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
-  server.respondWith 'GET', '/user_flows/authorization', [
+  server.respondWith 'GET', '/api/user_flows/authorization', [
     204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
-  server.respondWith 'GET', '/admin/journals/authorization', [
+  server.respondWith 'GET', '/api/admin/journals/authorization', [
     204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]
-  server.respondWith 'GET', "/comment_looks", [
+  server.respondWith 'GET', "/api/comment_looks", [
     200, 'Content-Type': 'application/json', JSON.stringify {comment_looks: []}
   ]
-  server.respondWith 'GET', /\/papers\/\d+\/manuscript_manager/, [
+  server.respondWith 'GET', /\/api\/papers\/\d+\/manuscript_manager/, [
     403, {}, JSON.stringify({})
   ]
 

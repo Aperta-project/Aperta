@@ -36,15 +36,15 @@ module 'Integration: Admin Test',
       admin_journals
     ])
 
-    server.respondWith 'GET', '/admin/journals/authorization', [
+    server.respondWith 'GET', '/api/admin/journals/authorization', [
       204, 'Content-Type': 'application/html', ""
     ]
 
-    server.respondWith 'GET', '/admin/journals', [
+    server.respondWith 'GET', '/api/admin/journals', [
       200, 'Content-Type': 'application/json', JSON.stringify adminJournalPayload
     ]
 
-    server.respondWith 'GET', "/admin/journals/#{journalId}", [
+    server.respondWith 'GET', "/api/admin/journals/#{journalId}", [
       200, "Content-Type": "application/json",
       JSON.stringify adminJournalPayload
     ]
@@ -56,11 +56,11 @@ test 'site admin can see the Add New Journal button', ->
   visit("/admin/")
 
   andThen ->
-    ok find('.journal').length
-    ok find('a.add-new-journal').length
+    ok find('.journal').length, 'Journals visible'
+    ok find('.add-new-journal').length, 'Add New Journal button visible'
 
 test 'journal admin can not see the Add New Journal button', ->
   visit "/admin/"
   andThen ->
-    ok find('.journal').length
-    ok !find('a.add-new-journal').length
+    ok find('.journal').length, 'Journals visible'
+    ok !find('.add-new-journal').length, 'Add New Journal button not visible'

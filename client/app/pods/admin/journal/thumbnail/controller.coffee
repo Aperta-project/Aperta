@@ -2,12 +2,12 @@
 `import FileUploadMixin from 'tahi/mixins/file-upload'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
 
-JournalThumbnailController = Ember.ObjectController.extend FileUploadMixin, ValidationErrorsMixin,
+JournalThumbnailController = Ember.Controller.extend FileUploadMixin, ValidationErrorsMixin,
   needs: ['application']
   currentUser: Ember.computed.alias 'controllers.application.currentUser'
   isEditing: (-> @get 'model.isDirty').property()
   thumbnailId: (-> "journal-logo-#{@get 'model.id'}").property()
-  logoUploadUrl: (-> "/admin/journals/#{@get 'model.id'}/upload_logo").property('model.id')
+  logoUploadUrl: (-> "/api/admin/journals/#{@get 'model.id'}/upload_logo").property('model.id')
   logoPreview: null
   journal: null
   uploadLogoFunction: null

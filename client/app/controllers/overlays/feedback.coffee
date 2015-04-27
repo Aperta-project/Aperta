@@ -7,7 +7,6 @@ FeedbackController = Ember.Controller.extend
 
   setupModel: (->
     @resetModel()
-    @set('model.referrer', window.location)
     @set('model.screenshots', [])
   ).on('init')
 
@@ -16,6 +15,7 @@ FeedbackController = Ember.Controller.extend
 
   actions:
     submit: ->
+      @set('model.referrer', window.location)
       @get('model').save().then (feedback) =>
         @set('feedbackSubmitted', true)
         @resetModel()

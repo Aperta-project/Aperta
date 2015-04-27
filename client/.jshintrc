@@ -5,7 +5,8 @@
     "-Promise",
     "Spinner",
     "moment",
-    "CodeMirror"
+    "CodeMirror",
+    "$"
   ],
   "browser": true,
   "boss": true,

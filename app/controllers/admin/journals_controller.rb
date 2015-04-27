@@ -31,12 +31,16 @@ class Admin::JournalsController < ApplicationController
 
   def upload_logo
     journal_with_logo = DownloadLogo.call(journal, params[:url])
-    respond_with(journal_with_logo, serializer: AdminJournalSerializer)
+    respond_with(journal_with_logo) do |format|
+      format.json { render json: journal_with_logo, serializer: AdminJournalSerializer, status: :ok }
+    end
   end
 
   def upload_epub_cover
     journal_with_cover = DownloadEpubCover.call(journal, params[:url])
-    respond_with(journal_with_cover, serializer: AdminJournalSerializer)
+    respond_with(journal_with_cover) do |format|
+      format.json { render json: journal_with_cover, serializer: AdminJournalSerializer, status: :ok }
+    end
   end
 
   private

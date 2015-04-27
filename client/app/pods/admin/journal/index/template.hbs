@@ -16,21 +16,28 @@
           <th>Last Name</th>
           <th>Roles</th>
         </tr>
-        {{#each user in adminJournalUsers}}
+        {{#each adminJournalUsers as |user|}}
           {{render "admin/admin-journal-user" user}}
         {{/each}}
       </table>
     {{/if}}
   </div>
 
-  {{render "admin/roles" roles}}
+  {{render "admin/roles" model.roles}}
 
   <div class="admin-section">
     <h2 class="admin-section-title">Available Task Types</h2>
     <div class="button-primary button--blue" {{action "editTaskTypes"}}>Edit Task Types</div>
   </div>
 
-  {{render "admin/journal/manuscript-manager-template/index" manuscriptManagerTemplates}}
+  <div class="admin-section">
+    <h2 class="admin-section-title">Manuscript Manager Templates</h2>
+    <button class="button-primary button--blue" {{action "addMMTemplate" phase taskType}}>Add New Template</button>
+    <br><br>
+    {{#each model.manuscriptManagerTemplates as |mmt|}}
+      {{view "admin/journal/manuscript-manager-template/thumbnail" content=mmt}}
+    {{/each}}
+  </div>
 
   <div class="admin-section admin-doi-setting-section hide">
     <h2 class="admin-section-title">Document Object Identifier</h2>
@@ -39,7 +46,7 @@
 
     {{error-message message=validationErrors.doi}}
 
-    <label {{bind-attr class=":col-md-3 :form-group doiEditState:required"}}>
+    <label class="col-md-3 form-group {{if doiEditState "required"}}">
       <div class="admin-doi-settings-title">DOI</div>
       {{#if doiEditState}}
         {{input type="text"
@@ -65,7 +72,7 @@
     </label>
 
     {{#if doiStartNumberEditable}}
-      <label {{bind-attr class=":col-md-3 :form-group doiEditState:required doiStartNumberInvalid:error"}}>
+      <label class="col-md-3 form-group {{if doiEditState "required"}} {{if doiStartNumberInvalid "error"}}">
         <div class="admin-doi-settings-title">Article</div>
         {{#if doiEditState}}
           {{input type="text"
@@ -106,8 +113,7 @@
       <span class="epub-cover-upload">
         {{#if epubCoverUploading}}
           <div class="loader-container">
-            {{progress-loader visible=epubCoverUploading
-                              white=true}}
+            {{progress-spinner visible=true color="white"}}
           </div>
         {{/if}}
         <span class="button-primary button--blue fileinput-button">
@@ -125,7 +131,7 @@
       <br>
       <span class="epub-cover-image">
         {{#if epubCoverUrl}}
-          <a {{bind-attr href=epubCoverUrl}} class="epub-cover" target="_blank">{{epubCoverFileName}}</a>
+          <a href={{epubCoverUrl}} class="epub-cover" target="_blank">{{epubCoverFileName}}</a>
         {{else}}
           <p>There is currently no default ePub cover.</p>
         {{/if}}

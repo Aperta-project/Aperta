@@ -36,7 +36,7 @@ TahiNotifier.subscribe("paper_role:destroyed") do |subscription_name, payload|
   EventStream.new(action, record.paper, subscription_name).destroy_for(record.user)
 end
 
-TahiNotifier.subscribe("supporting_information/file:created", "supporting_information/file:updated") do |subscription_name, payload|
+TahiNotifier.subscribe("supporting_information_file:created", "supporting_information_file:updated") do |subscription_name, payload|
   action = payload[:action]
   record = payload[:record]
 

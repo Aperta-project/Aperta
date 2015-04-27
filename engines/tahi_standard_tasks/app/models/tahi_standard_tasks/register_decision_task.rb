@@ -13,17 +13,7 @@ module TahiStandardTasks
 
     def after_update
       send_email
-
-      if revise_decision?
-        transaction do
-          find_or_create_please_revise_card!
-          make_paper_editable!
-          paper.create_decision!
-          update! completed: false
-        end
-
-        broadcast_paper_revised_event
-      end
+      DecisionReviser.new(self).process! if revise_decision?
     end
 
     # no-op
@@ -120,33 +110,6 @@ module TahiStandardTasks
     end
 
     private
-
-    def broadcast_paper_revised_event
-      ActiveSupport::Notifications.instrument 'paper.revised', paper_id: paper.id
-    end
-
-    def find_or_create_please_revise_card!
-      existing_revise_task = paper.tasks.where(type: "TahiStandardTasks::ReviseTask")
-
-      if existing_revise_task.empty?
-        author = paper.creator
-
-        TaskFactory.build(TahiStandardTasks::ReviseTask,
-                          title: "Revise Manuscript",
-                          role: "author",
-                          phase_id: phase.id,
-                          body: [[{ type: 'text', value: revise_letter }]],
-                          participants: [author]
-                         ).save!
-      else
-        existing_revise_task.first.update!({ completed: false })
-        existing_revise_task.first
-      end
-    end
-
-    def make_paper_editable!
-      self.paper.update! editable: true
-    end
 
     def revise_decision?
       on_card_completion? && paper.decisions.latest && paper.decisions.latest.verdict == 'revise'

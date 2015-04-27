@@ -32,25 +32,25 @@ module 'Integration: Flow Manager Administration',
     adminJournalPayload = Factory.createPayload('adminJournal')
     adminJournalPayload.addRecords([journal, adminRole])
 
-    server.respondWith 'GET', "/admin/journals/#{journal.id}", [
+    server.respondWith 'GET', "/api/admin/journals/#{journal.id}", [
       200, "Content-Type": "application/json", JSON.stringify(adminJournalPayload.toJSON())
     ]
 
-    server.respondWith 'GET', "/admin/journals/authorization", [
+    server.respondWith 'GET', "/api/admin/journals/authorization", [
       204, "Content-Type": "application/html", ""
     ]
 
-    server.respondWith 'GET', '/user_flows/authorization', [
+    server.respondWith 'GET', '/api/user_flows/authorization', [
       204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
     ]
 
-    server.respondWith 'GET', "/admin/journal_users?journal_id=#{journal.id}", [
+    server.respondWith 'GET', "/api/admin/journal_users?journal_id=#{journal.id}", [
       200, "Content-Type": "application/json", JSON.stringify { admin_journal_users: [] }
     ]
 
 test 'Flow manager edit link should show up on a role with permission in edit mode', ->
   visit "/admin/journals/#{journal.id}"
-  click('.admin-role-action-button')
+  click('.admin-role-action-button.glyphicon.glyphicon-pencil')
   andThen ->
     ok !find('a:contains("Edit Flows")').length, "No flow manager link should show up without permission"
   click('input[name="role[canViewFlowManager]"]')
@@ -59,7 +59,7 @@ test 'Flow manager edit link should show up on a role with permission in edit mo
 
 test "Admin can add a new column in a role's flow-manager", ->
   visit "/admin/journals/#{journal.id}"
-  click '.admin-role-action-button'
+  click '.admin-role-action-button.glyphicon.glyphicon-pencil'
   click 'input[name="role[canViewFlowManager]"]'
   click 'a:contains("Edit Flows")'
   andThen ->

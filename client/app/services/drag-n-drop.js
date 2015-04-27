@@ -60,7 +60,7 @@ import Ember from 'ember';
   1. Drop event -> Send DragNDrop.dragItem through action
 */
 
-var cancelDragEvent = function(e) {
+let cancelDragEvent = function(e) {
   e.preventDefault();
   e.stopPropagation();
   return false;

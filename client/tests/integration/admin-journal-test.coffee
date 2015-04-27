@@ -35,21 +35,21 @@ module 'Integration: Admin Journal Test',
       user_roles: []
       admin_journal_users: []
 
-    server.respondWith 'GET', '/admin/journals/authorization', [
+    server.respondWith 'GET', '/api/admin/journals/authorization', [
       204, 'Content-Type': 'application/html', ""
     ]
 
-    server.respondWith 'PUT', "/admin/journals/#{journalId}", [
+    server.respondWith 'PUT', "/api/admin/journals/#{journalId}", [
       200, "Content-Type": "application/json",
       JSON.stringify adminJournalPayload.toJSON()
     ]
 
-    server.respondWith 'GET', "/admin/journals/#{journalId}", [
+    server.respondWith 'GET', "/api/admin/journals/#{journalId}", [
       200, "Content-Type": "application/json",
       JSON.stringify adminJournalPayload
     ]
 
-    server.respondWith 'GET', "/admin/journal_users?journal_id=#{journalId}", [
+    server.respondWith 'GET', "/api/admin/journal_users?journal_id=#{journalId}", [
       200, "Content-Type": "application/json", JSON.stringify stubbedAdminJournalUserResponse
     ]
 
@@ -63,10 +63,10 @@ test 'saving doi info will send a put request to the admin journal controller', 
     fillIn('.admin-doi-setting-section .last_doi_issued', '10000')
     click('.admin-doi-setting-section button')
   andThen ->
-    ok _.findWhere(server.requests, { method: 'PUT', url: adminPage })
+    ok _.findWhere(server.requests, { method: 'PUT', url: "/api#{adminPage}" })
 
 test 'saving invalid doi info will display an error', ->
-  server.respondWith 'PUT', "/admin/journals/#{journalId}", [
+  server.respondWith 'PUT', "/api/admin/journals/#{journalId}", [
     422, "Content-Type": "application/json", JSON.stringify {errors: {doi: ["Invalid"]}}
   ]
 

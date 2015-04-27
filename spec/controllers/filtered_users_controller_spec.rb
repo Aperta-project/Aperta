@@ -1,4 +1,5 @@
 require 'rails_helper'
+
 class TestTask < Task
   include TaskTypeRegistration
   include Invitable
@@ -36,15 +37,28 @@ describe FilteredUsersController do
     let(:invitation) { create :invitation, task: task, invitee: user }
 
     context "when a user has any invitation for expired revision cycles" do
-      it "sends the user after a new round of revision cycle starts" do
+      before do
         get :reviewers, paper_id: paper.id, format: :json
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id
         invitation.invite!
-        paper.create_decision!
+        paper.decisions.create!
+      end
+
+      it "sends the user after a new round of revision cycle starts" do
         get :reviewers, paper_id: paper.id, format: :json
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id
+      end
+
+      context "when the user is already a reviewer" do
+        before { make_user_paper_reviewer user, paper }
+
+        it "sends the user" do
+          get :reviewers, paper_id: paper.id, format: :json
+          expect(res_body["filtered_users"].count).to eq 1
+          expect(res_body["filtered_users"].first["id"]).to eq user.id
+        end
       end
     end
 
@@ -57,21 +71,92 @@ describe FilteredUsersController do
       end
     end
 
-    context "when a user does not have a pending invitation" do
-      context "when the user is already a reviewer" do
-        before { make_user_paper_reviewer(user, paper) }
-        it "does not send the user" do
-          get :reviewers, paper_id: paper.id, format: :json
-          expect(res_body["filtered_users"]).to be_empty
-        end
+    context "when a user does not have a pending invitation for the latest revision cycle" do
+      before { paper.decisions.create! }
+
+      it 'sends the user' do
+        get :reviewers, paper_id: paper.id, format: :json
+        expect(res_body["filtered_users"].count).to eq 1
+        expect(res_body["filtered_users"].first["id"]).to eq user.id
+        expect(res_body["filtered_users"].first["email"]).to eq user.email
       end
 
-      it "sends the user" do
+      it "sends the user even if the user is already a paper reviewer" do
+        make_user_paper_reviewer user, paper
         get :reviewers, paper_id: paper.id, format: :json
         expect(res_body["filtered_users"].count).to eq 1
         expect(res_body["filtered_users"].first["id"]).to eq user.id
         expect(res_body["filtered_users"].first["email"]).to eq user.email
       end
     end
+
+    # Create a total of:
+    #  4 Reviewers
+    #  3 Editors
+    #  2 Admins
+    context "when searching from select2 dropdowns" do
+      let(:reviewer2) { FactoryGirl.create :user, email: "reviewer@example.com" }
+      let(:reviewer3) { FactoryGirl.create :user }
+      let(:reviewer4) { FactoryGirl.create :user }
+      let(:editor1)   { FactoryGirl.create :user, email: "editor@example.com" }
+      let(:editor2)   { FactoryGirl.create :user }
+      let(:editor3)   { FactoryGirl.create :user }
+      let(:admin1)    { FactoryGirl.create :user, email: "admin@example.com" }
+      let(:admin2)    { FactoryGirl.create :user }
+
+      before do
+        assign_journal_role(journal, reviewer2, :reviewer)
+        assign_journal_role(journal, reviewer3, :reviewer)
+        assign_journal_role(journal, reviewer4, :reviewer)
+        assign_journal_role(journal, editor1, :editor)
+        assign_journal_role(journal, editor2, :editor)
+        assign_journal_role(journal, editor3, :editor)
+        assign_journal_role(journal, admin1, :admin)
+        assign_journal_role(journal, admin2, :admin)
+      end
+
+      describe "#editors" do
+        it "returns editors" do
+          get :editors, paper_id: paper.id, format: :json
+          expect(res_body["filtered_users"].count).to eq 3
+        end
+
+        it "filters editors by query string" do
+          get :editors, paper_id: paper.id, query: "editor", format: :json
+          expect(res_body["filtered_users"].count).to eq 1
+          expect(res_body["filtered_users"].first["id"]).to eq editor1.id
+          expect(res_body["filtered_users"].first["email"]).to eq editor1.email
+        end
+      end
+
+      describe "#admins" do
+        it "returns admins" do
+          get :admins, paper_id: paper.id, format: :json
+          expect(res_body["filtered_users"].count).to eq 2
+        end
+
+        it "filters admins by query string" do
+          get :admins, paper_id: paper.id, query: "admin", format: :json
+          expect(res_body["filtered_users"].count).to eq 1
+          expect(res_body["filtered_users"].first["id"]).to eq admin1.id
+          expect(res_body["filtered_users"].first["email"]).to eq admin1.email
+        end
+      end
+
+      describe "#reviewers" do
+        it "returns reviewers" do
+          get :reviewers, paper_id: paper.id, format: :json
+          expect(res_body["filtered_users"].count).to eq 4
+        end
+
+        it "returns reviewers by query string" do
+          get :reviewers, paper_id: paper.id, query: "reviewer", format: :json
+          expect(res_body["filtered_users"].count).to eq 1
+          expect(res_body["filtered_users"].first["id"]).to eq reviewer2.id
+          expect(res_body["filtered_users"].first["email"]).to eq reviewer2.email
+        end
+      end
+    end
+
   end
 end

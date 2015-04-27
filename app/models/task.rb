@@ -48,6 +48,20 @@ class Task < ActiveRecord::Base
       where(role: role)
     end
 
+    # Public: Scopes the tasks for a given paper
+    #
+    # paper  - The paper object
+    #
+    # Examples
+    #
+    #   for_paper(Paper.last)
+    #   # => #<ActiveRecord::Relation [<#Task:123>]>
+    #
+    # Returns ActiveRecord::Relation with tasks.
+    def for_paper(paper)
+      joins(:phase).where(phases: { paper_id: paper })
+    end
+
     # Public: Scopes the tasks without the given task
     #
     # task  - Task object
@@ -85,8 +99,6 @@ class Task < ActiveRecord::Base
     end
   end
 
-  #TODO Research how task generation and templating can be simplified
-  # https://www.pivotaltracker.com/story/show/81718250
   def journal_task_type
     journal.journal_task_types.find_by(kind: self.class.name)
   end

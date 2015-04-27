@@ -7,8 +7,8 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
 
   selectedUser: null
 
-  hasInvitedInvitation: Ember.computed.equal('invitation.state', 'invited')
-  hasRejectedInvitation: Ember.computed.equal('invitation.state', 'rejected')
+  hasInvitedInvitation: Ember.computed.equal('model.invitation.state', 'invited')
+  hasRejectedInvitation: Ember.computed.equal('model.invitation.state', 'rejected')
 
   showEditorSelect: (->
     return false if @get('model.editor')
@@ -33,7 +33,7 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
     user.email || user.get('email')
 
   select2RemoteUrl: Ember.computed 'model.paper', ->
-    "/filtered_users/editors/#{@get 'model.paper.id'}/"
+    "/api/filtered_users/editors/#{@get 'model.paper.id'}/"
 
   actions:
 
@@ -42,7 +42,7 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
 
     removeEditor: ->
       promises = []
-      promises.push(RESTless.delete("/papers/#{@get('model.paper.id')}/editor"))
+      promises.push(RESTless.delete("/api/papers/#{@get('model.paper.id')}/editor"))
       promises.push(@get('model.invitation').destroyRecord()) if @get('model.invitation')
       Ember.RSVP.all(promises).then =>
         # TODO: Not dependant on server response - pretend editor is gone

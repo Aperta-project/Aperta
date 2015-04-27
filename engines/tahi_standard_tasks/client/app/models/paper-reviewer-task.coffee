@@ -3,7 +3,6 @@
 
 PaperReviewerTask = Task.extend
   reviewers: DS.hasMany 'user'
-  decisions: DS.hasMany 'decision'
   relationshipsToSerialize: ['reviewers', 'participants']
 
 `export default PaperReviewerTask`

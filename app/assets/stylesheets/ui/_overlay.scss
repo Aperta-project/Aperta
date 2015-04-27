@@ -55,14 +55,6 @@
     margin-top: 0;
     padding-top: 0;
   }
-
-  .loader-component-circle {
-    margin-top: 0;
-
-    &:after {
-      right: 46%;
-    }
-  }
 }
 
 .overlay--fullscreen--green {
@@ -151,6 +143,7 @@
 }
 
 .overlay-main-work {
+  position: relative;
   padding: 0 10px 60px 10px;
 }
 
@@ -159,13 +152,6 @@
   margin-top: 0;
   padding: 0;
   height: 100%;
-}
-
-.inner-content {
-  width: 500px;
-  margin: 0 auto;
-  overflow: hidden;
-  height: 100%
 }
 
 .overlay-action-buttons {
@@ -178,7 +164,7 @@
 }
 
 .call-to-action {
- margin-top: 20px;
+  margin-top: 20px;
 
   div {
     display: inline-block;

@@ -2,20 +2,20 @@
   <div class="overlay-title-text animation-fade-in">
     <h1>Add New Column</h1>
   </div>
-  {{#if isLoading}}
-    {{progress-loader visible=isLoading
-                      large=true}}
-  {{/if}}
+
+  {{progress-spinner visible=isLoading
+                     center=true
+                     size="large"}}
 
   <div class="inner-content">
-    {{#each group in groupedFlows}}
+    {{#each groupedFlows as |group|}}
       {{#if group.logo}}
         <img src={{unbound group.logo}} style="display:block; margin-bottom: 15px;">
       {{else}}
         <h2>{{group.title}}</h2>
       {{/if}}
 
-      {{#each flow in group.flows}}
+      {{#each group.flows as |flow|}}
         <div class="button-secondary button--green flow-manager-button" {{action "createFlow" flow}}>{{flow.title}}</div>
       {{/each}}
 

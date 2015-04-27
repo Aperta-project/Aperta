@@ -4,7 +4,7 @@
   {{#if attachment.previewSrc}}
     <div class="attachment-thumbnail-image">
       <div class="replace-spinner"></div>
-      <img class="attachment-thumbnail-image-preview" {{bind-attr src=attachment.previewSrc}} {{bind-attr alt=attachment.alt}}>
+      <img class="attachment-thumbnail-image-preview" src={{attachment.previewSrc}} alt={{attachment.alt}}>
       <div class="attachment-thumbnail-edit-overlay">
         <div class="attachment-thumbnail-edit-overlay-buttons">
           {{#replace-image}}
@@ -27,11 +27,12 @@
   {{else}}
     <div class="attachment-thumbnail-image attachment-thumbnail-image-placeholder">
       <div class="replace-spinner">
-        {{progress-loader visible=showSpinner}}
+        {{progress-spinner visible=showSpinner}}
       </div>
     </div>
   {{/if}}
-    <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original image" {{bind-attr href=attachment.src}} >{{attachment.filename}}</a>
+
+  <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original image" href={{attachment.src}} >{{attachment.filename}}</a>
 
   {{#if editState}}
     <div class="attachment-thumbnail-edit-content">
@@ -56,12 +57,12 @@
 
   <div class="attachment-thumbnail-text-content">
     <h2 class="attachment-thumbnail-title" {{action "toggleEditState" on="doubleClick"}}>
-      {{display-value attachment.title or="Attachment title"}}
+      {{if attachment.title attachment.title "Attachment title"}}
     </h2>
     <span class="glyphicon glyphicon-pencil attachment-edit-icon" {{action "toggleEditState"}}></span>
 
     <div class="attachment-thumbnail-caption" {{action "toggleEditState" on="doubleClick"}}>
-      {{display-value attachment.caption or="There is no caption for this file."}}
+      {{if attachment.caption attachment.caption "There is no caption for this file."}}
     </div>
   </div>
 
@@ -75,6 +76,6 @@
 {{#if view.previewState}}
   <div class="attachment-thumbnail-preview">
     <div {{action "togglePreview"}} class="attachment-thumbnail-preview-close">&times;</div>
-    <img {{bind-attr src=attachment.detailSrc}} {{bind-attr alt=attachment.alt}}>
+    <img src={{attachment.detailSrc}} alt={{attachment.alt}}>
   </div>
 {{/if}}

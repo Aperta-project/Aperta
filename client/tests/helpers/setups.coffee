@@ -14,20 +14,19 @@ paperWithParticipant = ->
 paperWithTask = (taskType, taskAttrs) ->
   journal = Factory.createRecord('Journal', id: 1)
   paper = Factory.createRecord('Paper', journal_id: journal.id, editable: true, Factory.getNewId('paper'))
-  litePaper = Factory.createLitePaper(paper)
   phase = Factory.createPhase(paper)
   task = Factory.createTask(taskType, paper, phase, taskAttrs)
 
-  [paper, task, journal, litePaper, phase]
+  [paper, task, journal, phase]
 
 addUserAsParticipant = (task, user) ->
   participation = Factory.createRecord 'Participation',
     task:
       id: task.id
       type: task.type
-    participant_id: user.id
+    user_id: user.id
 
-  Factory.mergeArrays(task, 'participant_ids', user.id)
+  Factory.mergeArrays(task, 'participation_ids', [participation.id])
 
   participation
 
@@ -41,6 +40,7 @@ paperWithRoles = (id, roles) ->
 export {
   paperWithParticipant,
   paperWithTask,
-  paperWithRoles
+  paperWithRoles,
+  addUserAsParticipant
 }
 `

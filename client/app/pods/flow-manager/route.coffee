@@ -25,7 +25,7 @@ FlowManagerRoute = AuthorizedRoute.extend
       controller = @controllerFor('overlays/chooseNewFlowManagerColumn')
       controller.set 'isLoading', true
 
-      RESTless.get('/user_flows/potential_flows').then (data) ->
+      RESTless.get('/api/user_flows/potential_flows').then (data) ->
         controller.set 'isLoading', false
         controller.set('flows' , data.flows)
 
@@ -41,7 +41,7 @@ FlowManagerRoute = AuthorizedRoute.extend
       flow.save()
 
     viewCard: (task) ->
-      paperId = task.get('litePaper.id')
+      paperId = task.get('paper.id')
       redirectParams = ['flow_manager']
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('cachedModel' , @modelFor('flow_manager'))

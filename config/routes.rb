@@ -2,11 +2,11 @@ require 'sidekiq/web'
 require 'sidetiq/web'
 
 Tahi::Application.routes.draw do
-  mount TahiStandardTasks::Engine => "/", as: "standard_tasks"
-  mount PlosAuthors::Engine => "/", as: "plos_custom_authors"
+  mount TahiStandardTasks::Engine => "/api", as: "standard_tasks"
+  mount PlosAuthors::Engine => "/api", as: "plos_custom_authors"
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
-  mount PlosBioTechCheck::Engine => "/"
-  mount PlosBilling::Engine => "/"
+  mount PlosBioTechCheck::Engine => "/api"
+  mount PlosBilling::Engine => "/api"
 
 
   # Test specific
@@ -19,6 +19,7 @@ Tahi::Application.routes.draw do
     post "/update_stream" => StreamServer
     mount UploadServer, at: "/fake_s3/"
   elsif Rails.env.development?
+    get "/styleguide" => "styleguide#index"
     mount EmberCLI::Engine => "ember-tests"
   end
 
@@ -40,7 +41,7 @@ Tahi::Application.routes.draw do
   # Internal API
   # TODO: namespace to api
   #
-  constraints format: :json do
+  scope '/api', constraints: { format: :json } do
     resources :supporting_information_files, only: [:create, :destroy, :update]
     resources :affiliations, only: [:index, :create, :destroy]
     resources :attachments, only: [:destroy, :update]
@@ -72,10 +73,9 @@ Tahi::Application.routes.draw do
     end
     resources :journal_task_types, only: :update
     resources :journals, only: [:index, :show]
-    resources :lite_papers, only: :index
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :paper_roles, only: [:show]
-    resources :papers, only: [:create, :show, :update] do
+    resources :papers, only: [:index, :create, :show, :update] do
       post '/fake_render_latex', to: 'papers#fake_render_latex'
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show

@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+# Remember to also change circle.yml when the ruby version changes
 ruby "2.2.0"
 
 # Configuration
@@ -19,7 +20,6 @@ gem 'rails', '4.2.1'
 gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
-gem 'bower-rails'
 gem 'ember-cli-rails'
 gem 'sass-rails'
 gem 'uglifier'
@@ -35,6 +35,7 @@ gem 'sidetiq'
 gem 'sinatra'
 gem 'active_record-acts_as'
 
+gem "premailer-rails"
 gem "nokogiri"
 gem "carrierwave"
 gem "fog"
@@ -54,8 +55,9 @@ gem 'faraday_middleware'
 gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
-gem 'textacular'
+gem 'pg_search'
 gem 'aasm'
+gem 'bootstrap-sass'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28

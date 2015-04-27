@@ -54,7 +54,7 @@ FactoryGirl.define do
   factory :paper_reviewer_task, class: 'TahiStandardTasks::PaperReviewerTask' do
     phase
     title "Invite Reviewers"
-    role "editor"
+    role "reviewer"
   end
 
   factory :publishing_related_questions_task, class: 'TahiStandardTasks::PublishingRelatedQuestionsTask' do
@@ -93,6 +93,13 @@ FactoryGirl.define do
     role "admin"
   end
 
+  factory :changes_for_author_task, class: 'PlosBioTechCheck::ChangesForAuthorTask' do
+    phase
+    title "Changes for Author"
+    role "author"
+    body initialTechCheckBody: 'Default changes for author body'
+  end
+
   factory :invitable_task, class: 'InvitableTask' do
     phase
     title "Invitable Task"
@@ -120,6 +127,10 @@ class InvitableTask < Task
 
   def invitation_rescinded(paper_id:, invitee_id:)
     :rescinded
+  end
+
+  def invitee_role
+    'test role'
   end
 end
 

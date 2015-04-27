@@ -15,23 +15,21 @@
     {{error-message message=validationErrors.corresponding}}
 
     {{#if newAuthorFormVisible}}
-      {{add-author-form
-        institutions=institutions
-        hideAuthorForm="toggleAuthorForm"
-        saveAuthor="saveNewAuthor"}}
+      {{add-author-form institutions=model.institutions
+                        hideAuthorForm="toggleAuthorForm"
+                        saveAuthor="saveNewAuthor"}}
     {{/if}}
   {{/if}}
 
   {{view "author-drop-target" index=0}}
 
-  {{#each authorWithErrors in sortedAuthorsWithErrors}}
-    {{author-view
-      isEditable=isEditable
-      institutions=institutions
-      delete="removeAuthor"
-      save="saveAuthor"
-      plosAuthor=authorWithErrors.model
-      errors=authorWithErrors.errors}}
+  {{#each sortedAuthorsWithErrors as |authorWithErrors|}}
+    {{author-view isEditable=isEditable
+                  institutions=model.institutions
+                  delete="removeAuthor"
+                  save="saveAuthor"
+                  plosAuthor=authorWithErrors.model
+                  errors=authorWithErrors.errors}}
     {{view "author-drop-target" index=authorWithErrors.model.position}}
   {{/each}}
 </div>

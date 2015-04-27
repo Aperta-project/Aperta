@@ -4,12 +4,15 @@
 
 PaperReviewerOverlayController = TaskController.extend Select2Assignees,
   select2RemoteUrl: Ember.computed 'model.paper.id', ->
-    "/filtered_users/reviewers/#{@get 'model.paper.id'}/"
+    "/api/filtered_users/reviewers/#{@get 'model.paper.id'}/"
   selectedReviewer: null
   resultsTemplate: (user) -> user.email
   selectedTemplate: (user) -> user.email
-  latestDecision: Ember.computed 'model.decisions.@each.isLatest', ->
-    @get('model.decisions').findBy 'isLatest', true
+  decisions: Ember.computed.alias 'model.paper.decisions'
+
+  latestDecision: (->
+    @get('decisions').findBy 'isLatest', true
+  ).property('decisions', 'decisions.@each.isLatest')
 
   actions:
     destroyInvitation: (invitation) -> invitation.destroyRecord()

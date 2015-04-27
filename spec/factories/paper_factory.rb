@@ -33,13 +33,20 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_editor) do
+      after(:create) do |paper|
+        editor = FactoryGirl.build(:user)
+        FactoryGirl.create(:paper_role, :editor, paper: paper, user: editor)
+      end
+    end
+
     after(:build) do |paper|
       paper.paper_type ||= paper.journal.paper_types.first
     end
 
     after(:create) do |paper|
       paper.paper_roles.create!(user: paper.creator, role: PaperRole::COLLABORATOR)
-      paper.create_decision!
+      paper.decisions.create!
     end
 
     factory :paper_with_phases do

@@ -1,4 +1,6 @@
-class PaperSerializer < ActiveModel::Serializer
+class PaperSerializer < LitePaperSerializer
+  # TODO Inheriting from LitePaper since we need related_at_date and roles so that
+  # the dashboard updates correctly when the event stream triggers
   attributes :id, :short_title, :title, :doi, :body, :submitted, :paper_type, :status, :updated_at, :editable
 
   %i(phases figures authors supporting_information_files).each do |relation|
@@ -11,8 +13,9 @@ class PaperSerializer < ActiveModel::Serializer
   end
 
   has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
-  has_one :lite_paper, embed: :id, include: :true, user: :scoped_user, serializer: LitePaperSerializer
+  has_many :decisions, embed: :ids, include: true, serializer: DecisionSerializer
   has_many :tasks, embed: :ids, polymorphic: true
+  has_many :decisions, embed: :ids, include: true, serializer: DecisionSerializer
   has_one :journal, embed: :id, include: true
   has_one :locked_by, embed: :id, include: true, root: :users
   has_one :striking_image, embed: :id, include: true, root: :figures
@@ -32,10 +35,6 @@ class PaperSerializer < ActiveModel::Serializer
   def collaborations
     # we want the actual join record, not a list of users
     object.paper_roles.collaborators
-  end
-
-  def lite_paper
-    object
   end
 
   def scoped_user

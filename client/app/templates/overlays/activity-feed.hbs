@@ -2,12 +2,13 @@
   <header class="overlay-title-text animation-fade-in">
     <h1 class="feedback-overlay-thanks">Recent Activity</h1>
   </header>
-  {{#if isLoading}}
-    {{progress-loader visible=true
-                      large=true}}
-  {{/if}}
+
+  {{progress-spinner visible=isLoading
+                     center=true
+                     size="large"}}
+
   <table>
-    {{#each feed in model}}
+    {{#each model as |feed|}}
       <tr>
         <td class="activity-feed-overlay-message">{{unbound feed.message}}</td>
         <td class="activity-feed-overlay-user">

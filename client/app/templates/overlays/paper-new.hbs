@@ -7,26 +7,26 @@
   <div class="inner-content">
     <div class="form-group">
     <span class="text-field-title">Short Title</span>
-      {{input type="text" value=shortTitle class="form-control tall-text-field" placeholder="Crystalized Magnificence in the Modern World" id="paper-short-title"}}
+      {{input type="text" value=model.shortTitle class="form-control tall-text-field" placeholder="Crystalized Magnificence in the Modern World" id="paper-short-title"}}
     </div>
 
     <div class="form-group chosen-style-override">
       {{view "chosen" content=journals
-               name="journal"
-               prompt="Choose Journal"
-               value=journal
-               optionValuePath="content"
-               optionLabelPath="content.name"
-               class="paper-new-journal-select"}}
+                      value=model.journal
+                      optionValuePath="content"
+                      optionLabelPath="content.name"
+                      name="journal"
+                      prompt="Choose Journal"
+                      class="paper-new-journal-select"}}
 
-      {{view "chosen" contentBinding="journal.paperTypes"
-               name="paper_type"
-               prompt="Choose Paper Type"
-               valueBinding="paperType"
-               optionValuePath="content"
-               optionLabelPath="content"
-               disabled=noJournalSelected
-               class="paper-new-paper-type-select"}}
+      {{view "chosen" content=model.journal.paperTypes
+                      value=model.paperType
+                      optionValuePath="content"
+                      optionLabelPath="content"
+                      name="paper_type"
+                      prompt="Choose Paper Type"
+                      disabled=noJournalSelected
+                      class="paper-new-paper-type-select"}}
     </div>
 
     <div class="overlay-action-buttons">

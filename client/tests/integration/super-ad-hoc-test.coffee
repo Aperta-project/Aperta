@@ -37,20 +37,20 @@ module 'Integration: Super AdHoc Card',
       info: "testroles2, collaborator"
     ]
 
-    server.respondWith 'GET', "/dashboards", [
+    server.respondWith 'GET', "/api/dashboards", [
       200, {"Content-Type": "application/json"}, JSON.stringify {dashboards: []}
     ]
 
-    server.respondWith 'GET', "/papers/#{currentPaper.id}", [
+    server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
-    server.respondWith 'PUT', /\/tasks\/\d+/, [
+    server.respondWith 'PUT', /\/api\/tasks\/\d+/, [
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
-    server.respondWith 'GET', "/filtered_users/collaborators/#{currentPaper.id}", [
+    server.respondWith 'GET', "/api/filtered_users/collaborators/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify collaborators
     ]
-    server.respondWith 'GET', /\/filtered_users\/non_participants\/\d+\/\w+/, [
+    server.respondWith 'GET', /\/api\/filtered_users\/non_participants\/\d+\/\w+/, [
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
@@ -60,7 +60,7 @@ test "Changing the title on an AdHoc Task", ->
   fillIn '.large-edit input[name=title]', 'Shazam!'
   click '.large-edit .button--green:contains("Save")'
   andThen ->
-    equal(find('h1.inline-edit:contains("Shazam!")').length, 1)
+    equal(find('h1.inline-edit:contains("Shazam!")').length, 1, 'title is changed')
 
 test "Adding a text block to an AdHoc Task", ->
   visit "/papers/#{currentPaper.id}/tasks/1"
@@ -86,14 +86,14 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
   click '.adhoc-content-toolbar .glyphicon-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--list'
   andThen ->
-    equal(find('.inline-edit-form .item-remove').length, 1)
+    equal(find('.inline-edit-form .item-remove').length, 1, 'item remove button visible')
     Ember.$('.inline-edit-form label[contenteditable]')
     .html("Here is a checkbox list item")
     .trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
     assertText('.inline-edit', 'checkbox list item')
-    equal(find('.inline-edit input[type=checkbox]').length, 1)
+    equal(find('.inline-edit input[type=checkbox]').length, 1, 'checkbox item is visble')
     click '.inline-edit-body-part .glyphicon-trash'
   andThen ->
     assertText('.inline-edit-body-part', 'Are you sure?')
@@ -115,7 +115,7 @@ test "Adding an email block to an AdHoc Task", ->
 
 
 test "User can send an email from an adhoc card", ->
-  server.respondWith 'PUT', /\/tasks\/\d+\/send_message/, [
+  server.respondWith 'PUT', /\/api\/tasks\/\d+\/send_message/, [
     204, {"Content-Type": "application/json"}, JSON.stringify {}
   ]
 
@@ -134,4 +134,4 @@ test "User can send an email from an adhoc card", ->
   andThen ->
     ok find('.bodypart-last-sent').length, 'The sent at time should appear'
     ok find('.bodypart-email-sent-overlay').length, 'The sent confirmation should appear'
-    ok _.findWhere(server.requests, {method: "PUT", url: "/tasks/1/send_message"}), "It posts to the server"
+    ok _.findWhere(server.requests, {method: "PUT", url: "/api/tasks/1/send_message"}), "It posts to the server"

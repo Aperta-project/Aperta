@@ -2,11 +2,17 @@ class PapersController < ApplicationController
   include AttrSanitize
 
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:show, :fake_render_latex]
+  before_action :enforce_policy, except: [:index, :show, :fake_render_latex]
   before_action :sanitize_title, only: [:create, :update]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
   respond_to :json
+
+  def index
+    page = (params[:page_number] || 2).to_i
+    papers = PaperRole.most_recent_for(current_user).page(page).map(&:paper)
+    respond_with(papers, each_serializer: LitePaperSerializer)
+  end
 
   def show
     rel = Paper.includes([
@@ -91,6 +97,8 @@ class PapersController < ApplicationController
     paper.update(submitted: true, editable: false)
     status = paper.valid? ? 200 : 422
     notify_paper_submitted! if paper.valid?
+    UserMailer.delay.paper_submission(paper.id)
+    broadcast_paper_submitted_event
     render json: paper, status: status
   end
 
@@ -180,5 +188,9 @@ class PapersController < ApplicationController
       user: current_user,
       message: 'Paper was submitted'
     )
+  end
+
+  def broadcast_paper_submitted_event
+    TahiNotifier.notify(event: "paper.submitted", payload: { paper_id: paper.id })
   end
 end

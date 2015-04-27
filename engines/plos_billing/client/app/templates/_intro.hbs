@@ -10,7 +10,7 @@
   </p>
 
   <ul>
-    {{#each journal in journals}}
+    {{#each journals as |journal|}}
       <li>
         <i>{{journal.name}}</i>
         ${{journal.price}} USD

@@ -4,6 +4,6 @@
   </div>
   <div class="task-list">
     {{partial "paper/task-list"}}
-    <a {{action "submit" target="view"}} {{bind-attr class=":button-primary allMetadataTasksCompleted:button--green:button--disabled"}} href="#">Submit</a>
+    <button {{action "submit" target="view"}} class="button-primary {{if model.allMetadataTasksCompleted "button--green" "button--disabled"}}">Submit</button>
   </div>
 </aside>

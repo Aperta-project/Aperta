@@ -6,8 +6,8 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
   setupController: (controller, model) ->
     controller.set('model', model)
     if @currentUser
-      RESTless.authorize(controller, '/admin/journals/authorization', 'canViewAdminLinks')
-      RESTless.authorize(controller, '/user_flows/authorization', 'canViewFlowManagerLink')
+      RESTless.authorize(controller, '/api/admin/journals/authorization', 'canViewAdminLinks')
+      RESTless.authorize(controller, '/api/user_flows/authorization', 'canViewFlowManagerLink')
 
   actions:
     willTransition: (transition) ->
@@ -23,22 +23,6 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
 
       appController.send 'hideNavigation'
 
-    didTransition: ->
-      @animateOverlayOut().then =>
-        @disconnectOutlet
-          outlet: 'loading-overlay'
-          parentView: 'application'
-
-    loading: ->
-      # double render "solution" is referenced here:
-      # https://github.com/emberjs/ember.js/pull/10431/files
-      @render()
-      @render('overlays/loading',
-        into: 'application'
-        outlet: 'loading-overlay'
-        controller: 'overlays/loading'
-      )
-
     error: (response, transition, originRoute) ->
       oldState = transition.router.oldState
       transitionMsg = if oldState
@@ -49,14 +33,12 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
 
       @logError(transitionMsg + "\n" + response.message + "\n" + response.stack + "\n")
       transition.abort()
-      @controllerFor('application').set 'isLoading', false
 
     closeOverlay: ->
       @flash.clearAllMessages()
-      @animateOverlayOut().then =>
-        @disconnectOutlet
-          outlet: 'overlay'
-          parentView: 'application'
+      @disconnectOutlet
+        outlet: 'overlay'
+        parentView: 'application'
 
     closeAction: ->
       @send('closeOverlay')

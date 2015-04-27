@@ -5,7 +5,7 @@
 
   {{#if isLoggedIn}}
     {{#link-to "profile" class="navigation-item navigation-item--account"}}
-      <img {{bind-attr src="currentUser.avatarUrl"}} class="user-thumbnail">
+      <img src={{currentUser.avatarUrl}} class="user-thumbnail">
       <span>{{unbound currentUser.fullName}}</span>
     {{/link-to}}
 

@@ -1,0 +1,12 @@
+<p>
+Hello <%= @author.full_name %>,
+</p>
+
+<p>
+Thank you for submitting your manuscript, <%= @paper.title %>, to <%= @paper.journal.name %>. Our staff will be in touch with next steps.
+</p>
+
+<p>
+Sincerely,<br>
+<%= @paper.journal.name %> Team
+</p>

@@ -16,15 +16,19 @@
   }
 
   .individual-task-type {
+    position: relative;
     margin-top: 20px;
 
-    p, div {
-      display: inline-block;
-    }
-    
+    p { display: inline-block; }
+
     .role-dropdown {
       float: right;
     }
+  }
+
+  .inner-content {
+    width: 500px;
+    margin: 0 auto;
   }
 }
 

@@ -43,4 +43,40 @@ module Invitable
   def invitation_rejected(_invitation)
     true
   end
+
+  # Public: guard for custom task behavior before transitioning to "invited" state
+  #
+  # _invitation - the invitation
+  #
+  # Returns true, is a noop if unimplemented
+  def invite_allowed?(_invitation)
+    true
+  end
+
+  # Public: guard for custom task behavior before transitioning to "accepted" state
+  #
+  # _invitation - the invitation
+  #
+  # Examples
+  #
+  #   Implement this guard to to prevent an invitation from being accepted for
+  #   a paper that already has an accepted invitation
+  #
+  # Returns true, is a noop if unimplemented
+  def accept_allowed?(_invitation)
+    true
+  end
+
+  # Public: guard for custom task behavior before transitioning to "rejected" state
+  #
+  # _invitation - the invitation
+  #
+  # Returns true, is a noop if unimplemented
+  def reject_allowed?(_invitation)
+    true
+  end
+
+  def invitee_role
+    raise NotImplementedError, 'Please implement #invitee_role in the task model'
+  end
 end

@@ -1,10 +1,7 @@
-{{#if isLoaderShowing}}
-  {{progress-loader visible=true
-                    admin=true}}
-{{/if}}
+{{progress-spinner visible=isSaving color="blue"}}
 
-{{#if isCheckMarkShowing}}
-  <div class="save-message">
+{{#if showCheckMark}}
+  <div class="autosave-message animation-fade-in">
     <i class="fa fa-check-circle fa-lg"></i>
     <p>Saved</p>
   </div>

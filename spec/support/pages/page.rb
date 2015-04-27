@@ -106,6 +106,7 @@ class PageFragment
 
   def pick_from_select2_single(item_text, label_text, options={})
     session.execute_script(%Q!$(".#{options[:class]}.select2-container:first input").trigger('input').val('#{item_text}').trigger('input')!)
+    session.fill_in "s2id_autogen2_search", with: item_text
     session.find(".select2-result-label", text: label_text).click
   end
 

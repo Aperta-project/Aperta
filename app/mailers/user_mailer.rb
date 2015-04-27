@@ -1,6 +1,8 @@
 class UserMailer < ActionMailer::Base
   include MailerHelper
+  add_template_helper ClientRouteHelper
   default from: ENV.fetch('FROM_EMAIL')
+  layout "mailer"
 
   after_action :prevent_delivery_to_invalid_recipient
 
@@ -48,6 +50,16 @@ class UserMailer < ActionMailer::Base
       subject: "You've been assigned as an editor on Tahi")
   end
 
+  def notify_editor_of_paper_resubmission(paper_id)
+    @paper = Paper.find(paper_id)
+    @editor = @paper.editor
+    @author = @paper.creator
+
+    mail(
+      to: @editor.email,
+      subject: "Manuscript has been resubmitted in Tahi")
+  end
+
   def mention_collaborator(comment, commentee)
     @comment = comment
     @commenter = @comment.commenter
@@ -56,5 +68,14 @@ class UserMailer < ActionMailer::Base
     mail(
       to: @commentee.try(:email),
       subject: "You've been mentioned on Tahi")
+  end
+
+  def paper_submission(paper_id)
+    @paper = Paper.find(paper_id)
+    @author = @paper.creator
+
+    mail(
+      to: @author.try(:email),
+      subject: "Thank You for submitting a Manuscript on Tahi")
   end
 end

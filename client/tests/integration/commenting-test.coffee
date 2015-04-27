@@ -36,11 +36,11 @@ module 'Integration: Commenting',
       info: "testroles2, collaborator"
     ]
 
-    server.respondWith 'GET', "/dashboards", [
+    server.respondWith 'GET', "/api/dashboards", [
       200, {"Content-Type": "application/json"}, JSON.stringify dashboard
     ]
 
-    server.respondWith 'PUT', /\/tasks\/\d+/, [
+    server.respondWith 'PUT', /\/api\/tasks\/\d+/, [
       204, {"Content-Type": "application/json"}, JSON.stringify {}
     ]
 
@@ -65,7 +65,7 @@ test 'A card with more than 5 comments has the show all comments button', ->
   paperPayload = Factory.createPayload('paper')
   paperPayload.addRecords(records.concat(paper, task, fakeUser, comments))
 
-  server.respondWith 'GET', "/papers/#{paper.id}", [
+  server.respondWith 'GET', "\/api\/papers/#{paper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
   ]
 
@@ -96,7 +96,7 @@ test 'A card with less than 5 comments doesnt have the show all comments button'
   paperPayload = Factory.createPayload('paper')
   paperPayload.addRecords(records.concat(paper, task, fakeUser, comments))
 
-  server.respondWith 'GET', "/papers/#{paper.id}", [
+  server.respondWith 'GET', "\/api\/papers/#{paper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
   ]
 
@@ -133,18 +133,18 @@ test 'A task with a commentLook shows up as unread and updates its commentLook',
 
   paperPayload = Factory.createPayload('paper')
   paperPayload.addRecords(records.concat(paper, task, fakeUser, commenter, comment, commentLook))
-  server.respondWith 'GET', "/papers/#{paper.id}", [
+  server.respondWith 'GET', "\/api\/papers/#{paper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
   ]
 
-  server.respondWith 'PUT', /\/comment_looks\/\d+/, [
+  server.respondWith 'PUT', /\/api\/comment_looks\/\d+/, [
     204, {"Content-Type": "application/json"}, JSON.stringify {}
   ]
 
   visit("/papers/#{paper.id}/tasks/#{task.id}")
 
   andThen ->
-    ok(_.findWhere(server.requests, {method: "PUT", url: "/comment_looks/1"}))
+    ok(_.findWhere(server.requests, {method: "PUT", url: "/api/comment_looks/1"}))
     equal(find('.message-comment.unread .comment-body').text(), "Unread comment")
 
 test 'Showing all comments shows them.', ->
@@ -166,7 +166,7 @@ test 'Showing all comments shows them.', ->
 
   paperPayload = Factory.createPayload('paper')
   paperPayload.addRecords(records.concat(paper, task, fakeUser, comments))
-  server.respondWith 'GET', "/papers/#{paper.id}", [
+  server.respondWith 'GET', "/api/papers/#{paper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
   ]
 
@@ -211,11 +211,11 @@ test 'Unread comments do not stay unread when showing all comments if they were 
   paperPayload = Factory.createPayload('paper')
   paperPayload.addRecords(records.concat(paper, task, fakeUser, commenter, comments, commentLook))
 
-  server.respondWith 'GET', "/papers/#{paper.id}", [
+  server.respondWith 'GET', "/api/papers/#{paper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
   ]
 
-  server.respondWith 'PUT', /\/comment_looks\/\d+/, [
+  server.respondWith 'PUT', /\/api\/comment_looks\/\d+/, [
     204, {"Content-Type": "application/json"}, JSON.stringify {}
   ]
 

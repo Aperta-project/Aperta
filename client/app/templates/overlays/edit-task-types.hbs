@@ -9,7 +9,7 @@
         <h3>Role</h3>
     </div>
     <div class="journal-task-types">
-      {{#each journalTaskType in sortedTaskTypes}}
+      {{#each sortedTaskTypes as |journalTaskType|}}
         {{render "admin/journal-task-type" journalTaskType}}
       {{/each}}
     </div>

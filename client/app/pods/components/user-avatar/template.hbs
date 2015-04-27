@@ -1,5 +1,5 @@
 <div id="profile-avatar">
-  <img {{bind-attr src="user.avatarUrl"}}>
+  <img src={{user.avatarUrl}}>
   <div id="profile-avatar-hover">
     <span class="button-secondary button--green fileinput-button">
       <span>Upload New</span>
@@ -15,8 +15,9 @@
   </div>
   {{#if isUploading}}
     <div class="profile-avatar-spinner">
-      {{progress-loader visible=isUploading
-                        white=true}}
+      {{progress-spinner visible=true
+                         color="white"
+                         center=true}}
     </div>
   {{/if}}
 </div>

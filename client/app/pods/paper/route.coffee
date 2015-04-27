@@ -4,7 +4,7 @@
 
 PaperRoute = Ember.Route.extend
   model: (params) ->
-    @store.find('paper', params.paper_id)
+    @store.fetchById('paper', params.paper_id)
 
   setupController: (controller, model) ->
     controller.set('model', model)
@@ -17,7 +17,7 @@ PaperRoute = Ember.Route.extend
           supportedExportFormats.pushObject({format: dataType, icon: "svg/#{dataType}-icon"})
         controller.set('supportedDownloadFormats', supportedExportFormats)
 
-    Ember.$.getJSON('/formats', setFormats)
+    Ember.$.getJSON('/api/formats', setFormats)
 
   actions:
     addContributors: ->
@@ -40,7 +40,7 @@ PaperRoute = Ember.Route.extend
       controller = @controllerFor 'overlays/activityFeed'
       controller.set 'isLoading', true
 
-      RESTless.get("/papers/#{paper.get('id')}/activity_feed/#{name}").then (data) =>
+      RESTless.get("/api/papers/#{paper.get('id')}/activity_feed/#{name}").then (data) =>
         controller.setProperties
           isLoading: false
           model: Utils.deepCamelizeKeys(data.feeds)

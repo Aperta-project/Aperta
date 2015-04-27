@@ -1,117 +1,113 @@
 <div class="add-author-form">
 
   <div class="form-group form-inline author-top">
-    <div {{bind-attr class=":form-group :author-name validationErrors.firstName:error"}}>
-      <span class="text-field-title">
+    <div class="form-group author-name {{if validationErrors.firstName "error"}}">
+      <span class="text-field-title required">
         First Name
         {{error-message message=validationErrors.firstName}}
       </span>
       {{input type="text"
               value=newAuthor.firstName
-              class="form-control tall-text-field"
-              placeholder="Jane"
-              id="first-name"}}
+              class="author-first form-control tall-text-field"
+              placeholder="Jane"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-middle validationErrors.middleInitial:error"}}>
+    <div class="form-group author-middle {{if validationErrors.middleInitial "error"}}">
       <span class="text-field-title">
         MI
         {{error-message message=validationErrors.middleInitial}}
       </span>
       {{input type="text"
               value=newAuthor.middleInitial
-              class="form-control tall-text-field"
-              placeholder="M"
-              id="mi"}}
+              class="author-middle form-control tall-text-field"
+              placeholder="M"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-name validationErrors.lastName:error"}}>
-      <span class="text-field-title">
+    <div class="form-group author-name {{if validationErrors.lastName "error"}}">
+      <span class="text-field-title required">
         Last Name
         {{error-message message=validationErrors.lastName}}
       </span>
       {{input type="text"
               value=newAuthor.lastName
-              class="form-control tall-text-field"
-              placeholder="Goodall"
-              id="last-name"}}
+              class="author-last form-control tall-text-field"
+              placeholder="Goodall"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.email:error"}}>
-      <span class="text-field-title">
-        Email 
+    <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
+      <span class="text-field-title required">
+        Email
         {{error-message message=validationErrors.email}}
       </span>
       {{input type="text"
               value=newAuthor.email
-              class="form-control tall-text-field"
-              placeholder="jane.goodall@science.com"
-              id="email"}}
+              class="author-email form-control tall-text-field"
+              placeholder="jane.goodall@science.com"}}
 
     </div>
   </div>
 
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half validationErrors.title:error"}}>
-      <span class="text-field-title">
+    <div class="form-group author-half {{if validationErrors.title "error"}}">
+      <span class="text-field-title required">
         Title
         {{error-message message=validationErrors.title}}
       </span>
       {{input type="text"
               value=newAuthor.title
-              class="form-control tall-text-field"
-              placeholder="World's Foremost Expert on Chimpanzees"
-              id="title"}}
+              class="author-title form-control tall-text-field"
+              placeholder="World's Foremost Expert on Chimpanzees"}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.department:error"}}>
-      <span class="text-field-title">
+    <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
+      <span class="text-field-title required">
         Department
         {{error-message message=validationErrors.department}}
       </span>
       {{input type="text"
               value=newAuthor.department
-              class="form-control tall-text-field"
-              placeholder="Primatology"
-              id="department"}}
+              class="author-department form-control tall-text-field"
+              placeholder="Primatology"}}
     </div>
   </div>
 
   <div class="form-group form-inline">
-    <div {{bind-attr class=":form-group :author-half validationErrors.affiliation:error"}}>
+    <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
       {{error-message message=validationErrors.affiliation}}
-      {{select-2-single value=newAuthor.affiliation
-                        class="affiliation-field"
-                        placeholder="Affiliation"
-                        selectedData=selectedAffiliation
-                        source=selectableInstitutions}}
+      {{select-2-single
+          class="affiliation-field"
+          placeholder="* Affiliation"
+          selectedData=selectedAffiliation
+          source=selectableInstitutions
+          value=newAuthor.affiliation}}
     </div>
 
-    <div {{bind-attr class=":form-group :author-half :author-bump validationErrors.secondaryAffiliation:error"}}>
+    <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
       {{error-message message=validationErrors.secondaryAffiliation}}
-      {{select-2-single value=newAuthor.secondaryAffiliation
-                        class="secondary-affiliation-field"
-                        placeholder="Secondary Affiliation (optional)"
-                        selectedData=selectedSecondaryAffiliation
-                        source=selectableInstitutions}}
+      {{select-2-single
+          class="secondary-affiliation-field"
+          placeholder="Secondary Affiliation (optional)"
+          selectedData=selectedSecondaryAffiliation
+          source=selectableInstitutions
+          value=newAuthor.secondaryAffiliation}}
     </div>
   </div>
 
   <div class="form-group">
     <label class="author-label">
-      {{check-box checked=newAuthor.corresponding}}
+      {{check-box checked=newAuthor.corresponding class="author-corresponding"}}
       This is a corresponding author
     </label>
     <label class="author-label">
-      {{check-box checked=newAuthor.deceased}}
+      {{check-box checked=newAuthor.deceased class="author-deceased"}}
       This person is deceased
     </label>
   </div>
 
-  <div class="form-group author-contributions">
-    <h4>Author Contributions</h4>
+  <div class="form-group author-contributions form-inline">
+    <h4 class="required">Author Contributions</h4>
     {{error-message message=validationErrors.contributions}}
-    {{#each contribution in authorContributionOptions}}
+    {{#each authorContributionOptions as |contribution|}}
       {{author-contribution-checkbox name=contribution
                                      currentContributions=newAuthor.contributions
                                      checked="addContribution"

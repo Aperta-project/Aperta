@@ -2,7 +2,7 @@ class CommentLooksController < ApplicationController
   respond_to :json
 
   def index
-    respond_with current_user.comment_looks.where('read_at is null').includes(:comment)
+    respond_with current_user.comment_looks.includes(:comment, :phase).where(read_at: nil)
   end
 
   def update

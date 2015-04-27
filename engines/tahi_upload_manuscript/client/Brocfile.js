@@ -1,8 +1,8 @@
 /* global require, module */
 
-var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+let EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-var app = new EmberAddon();
+let app = new EmberAddon();
 
 // Use `app.import` to add additional libraries to the generated
 // output files.

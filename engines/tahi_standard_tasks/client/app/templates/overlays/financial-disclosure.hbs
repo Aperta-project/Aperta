@@ -2,22 +2,24 @@
 
 <div class="question-list">
   <div class="question">
-    <div class="question-text">Did any of the authors receive specific funding for this work?</div>
 
-    {{binary-radio-button name="received-funding"
-                          selection=receivedFunding
-                          yesAction="choseFundingReceived"
-                          noAction="choseFundingNotReceived"}}
+    {{#question-radio ident="financial_disclosure.received_funding"
+                     task=model
+                     question="Did any of the authors receive specific funding for this work?"
+                     yesAction="choseFundingReceived"
+                     noAction="choseFundingNotReceived"}}
+      {{#show-if-parent prop="selectedYes"}}
+        <span>Please describe all sources of funding that have supported your work.</span>
+      {{/show-if-parent}}
 
-    {{#if explicitYes}}
-      <span>Please describe all sources of funding that have supported your work.</span>
-    {{/if}}
-    {{#if explicitNo}}
-      <span>Your Financial Disclosure Statement will appear as: The author(s) received no specific funding for this work.</span>
-    {{/if}}
+      {{#show-if-parent prop="selectedNo"}}
+        <span>Your Financial Disclosure Statement will appear as: The author(s) received no specific funding for this work.</span>
+      {{/show-if-parent}}
+
+    {{/question-radio}}
   </div>
 
-  {{#each funder in funders}}
+  {{#each funders as |funder|}}
     <div class="question-dataset constrained-form-width">
       {{render "funder" funder}}
     </div>
@@ -33,7 +35,7 @@
       Your Financial Disclosure Statement will appear as:
     </p>
 
-    {{#each funder in funders}}
+    {{#each funders as |funder|}}
       {{view "funder-influence-statement" funder=funder}}
     {{/each}}
   {{/if}}

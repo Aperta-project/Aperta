@@ -1,53 +1,49 @@
+## Customize machine
 machine:
   timezone:
-    America/Los_Angeles # Set the timezone
+    America/Los_Angeles
 
-  # Version of ruby to use
   ruby:
     version:
       2.2.0
 
-  # Add some environment variables
   environment:
     RAILS_ENV: test
     DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
 
-## Customize checkout
-# checkout:
-#   post:
-#     - git submodule sync
-#     - git submodule update --init # use submodules
 
 ## Customize dependencies
 dependencies:
+  cache_directories:
+    - "~/.rvm/gems/ruby-2.2.0@tahi"
+    - "client/node_modules"
+    - "client/bower_components"
+
+  pre:
+    - bundle config --global jobs 7
+    - bundle config --global without staging:production:performance
+
   override:
     - bundle install: # note ':' here
-        timeout: 600 # fail if command has no output for 3 minutes
-    - npm install && bundle exec rake ember-cli:install_dependencies
-    - cd client && npm install --save-dev ember-cli-rails-addon@0.0.11 && cd ..
+        timeout: 600
+
 
 ## Customize database setup
 database:
+  pre:
+    # install custom postgres extensions
+    - psql -c "CREATE EXTENSION IF NOT EXISTS plpgsql;" -d circle_test
+    - psql -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" -d circle_test
+    - psql -c "CREATE EXTENSION IF NOT EXISTS unaccent;" -d circle_test
   override:
-    # replace CircleCI's generated database.yml
-    # - cp config/database.yml.travis config/database.yml
     - bundle exec rake db:create db:schema:load
+  post:
+    # npm install here so that it is cached by circle for parallel tests
+    - npm install && bundle exec rake ember:install
+
 
 ## Customize test commands
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) rspec spec engines --tag ~flaky ;; 1) rake ember-cli:test ;; 2) rspec spec engines --tag @flaky ;; esac:
+    - bin/circleci.sh:
         parallel: true
-
-# Customize deployment commands
-# deployment:
-#   staging:
-#     branch: master
-#     heroku:
-#       appname: tahi-staging
-
-## Custom notifications
-# notify:
-#   webhooks:
-#     # A list of hashes representing hooks. Only the url field is supported.
-#     - url: https://someurl.com/hooks/circle

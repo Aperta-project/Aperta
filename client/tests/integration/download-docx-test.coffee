@@ -36,20 +36,20 @@ test 'show download links on control bar', ->
   paperResponse = paperPayload.toJSON()
 
   jobId = '232134-324-1234-1234'
-  exportUrl = "/papers/#{currentPaper.id}/export?format=docx"
+  exportUrl = "/api/papers/#{currentPaper.id}/export?format=docx"
 
-  server.respondWith 'GET', "/papers/#{currentPaper.id}", [
+  server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify(paperResponse)
   ]
   server.respondWith 'GET', exportUrl, [
     200, {"Content-Type": "application/json"}, JSON.stringify({job: { id: "#{jobId}" }})
   ]
-  server.respondWith 'GET', "/papers/#{currentPaper.id}/status/#{jobId}", [
+  server.respondWith 'GET', "/api/papers/#{currentPaper.id}/status/#{jobId}", [
     200, {"Content-Type": "application/json"}, JSON.stringify({
       "job": {
-        "state": "converted",
+        "state": "completed",
         "id": "#{jobId}",
-        "url": 'https://www.google.com'
+        "outputs": []
       }
     })
   ]
@@ -61,14 +61,9 @@ test 'show download links on control bar', ->
     mock = sinon.mock(Utils)
     mock.expects("windowLocation").withArgs("https://www.google.com").returns(true)
 
-    equal find("div.downloads-link div.control-bar-link-icon").length, 1
-    ok click("div.downloads-link div.control-bar-link-icon")
-    equal find("div.manuscript-download-links.active").length, 1
-    equal find('a.docx').length, 1
-    equal find('a.docx').attr('title'), 'Download docx'
-
-    click('a.docx')
+  click('.downloads-link').then ->
+    click('.docx')
 
   andThen ->
-    ok _.findWhere(server.requests, { method: 'GET', url: exportUrl })
+    ok _.findWhere(server.requests, { method: 'GET', url: exportUrl }), 'Download request made'
     mock.restore()

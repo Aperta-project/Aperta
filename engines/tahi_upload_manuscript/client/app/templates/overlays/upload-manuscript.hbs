@@ -5,13 +5,13 @@
     <span class="button-primary button--green fileinput-button">
       Select and upload a document
       {{file-uploader id="upload-files"
-                      railsMethod='PUT'
-                      accept='.docx'
-                      start='uploadStarted'
-                      progress='uploadProgress'
-                      done='uploadFinished'
-                      error='uploadError'
-                      filePrefix='paper/manuscript'
+                      railsMethod="PUT"
+                      accept=".docx"
+                      start="uploadStarted"
+                      progress="uploadProgress"
+                      done="uploadFinished"
+                      error="uploadError"
+                      filePrefix="paper/manuscript"
                       url=manuscriptUploadUrl}}
     </span>
   </div>
@@ -23,15 +23,12 @@
   <span>Sorry! {{fileName}} is not of an accepted file type</span>
 {{/if}}
 
-<div id="paper-manuscript-upload" {{bind-attr class="isUploading::hidden"}}>
-  <div class="preview-container glyphicon glyphicon-file"></div>
-  <div {{bind-attr class=":processing isProcessing::hidden"}}>
-    {{progress-spinner visible=true
-                       color="green"
-                       size="small"}}
+<div id="paper-manuscript-upload" class={{if isUploading "" "hidden"}}>
+  <div class="processing {{if isProcessing "" "hidden"}}">
+    {{progress-spinner visible=true}}
     Processing...
   </div>
-  <div {{bind-attr class=":progress showProgress::hidden"}}>
-    <div class="progress-bar" {{bind-attr style=progressBarStyle}}></div>
+  <div class="progress {{if showProgress "" "hidden"}}">
+    <div class="progress-bar" style={{progressBarStyle}}></div>
   </div>
 </div>

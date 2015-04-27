@@ -4,7 +4,7 @@
 
 # TODO use server.respondWith
 moduleFor 'controller:base-paper', 'BasePaperController',
-  needs: ['controller:application']
+  needs: ['controller:application', 'controller:paper']
   setup: ->
     startApp()
     @phase1 = Ember.Object.create position: 1
@@ -27,4 +27,4 @@ test '#export: calls the export url in Tahi', ->
     url: "http://example.com"
     format: "docx"
   basePaperController.send 'export', downloadType
-  ok jQuery.ajax.calledWithMatch {url: "/papers/#{@paper.id}/export", data: {format: downloadType.format}}
+  ok jQuery.ajax.calledWithMatch {url: "/api/papers/#{@paper.id}/export", data: {format: downloadType.format}}

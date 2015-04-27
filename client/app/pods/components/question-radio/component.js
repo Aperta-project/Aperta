@@ -9,5 +9,14 @@ export default QuestionComponent.extend({
   selectedYes: Ember.computed.equal("model.answer", "Yes"),
   selectedNo: function() {
     return Ember.isEqual(this.get("model.answer"), this.get("noValue"));
-  }.property("model.answer", "noValue")
+  }.property("model.answer", "noValue"),
+
+  actions: {
+    yesAction() {
+      this.sendAction('yesAction');
+    },
+    noAction() {
+      this.sendAction('noAction');
+    }
+  }
 });

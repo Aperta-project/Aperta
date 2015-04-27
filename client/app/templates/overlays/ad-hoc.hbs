@@ -1,11 +1,11 @@
-{{inline-edit-h1 title=title setTitle="setTitle" editOnOpen=isNewTask}}
+{{inline-edit-h1 title=model.title setTitle="setTitle" editOnOpen=isNewTask}}
 
 <div class="task-body">
-  {{#each upload in uploads}}
+  {{#each uploads as |upload|}}
     {{upload-preview upload=upload}}
   {{/each}}
 
-  {{#each block in blocks}}
+  {{#each blocks as |block|}}
     {{#inline-edit-body-part
       block=block
       cancel="resetBlock"
@@ -25,7 +25,7 @@
     {{/inline-edit-body-part}}
   {{/each}}
 
-  {{#each block in newBlocks}}
+  {{#each newBlocks as |block|}}
     {{#inline-edit-body-part
       block=block
       editing=true
@@ -46,7 +46,7 @@
     {{/inline-edit-body-part}}
   {{/each}}
 
-  {{#each attachment in model.attachments}}
+  {{#each model.attachments as |attachment|}}
     {{attachment-thumbnail attachment=attachment
                            destroyAttachment="destroyAttachment"}}
   {{/each}}

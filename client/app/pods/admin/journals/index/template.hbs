@@ -1,0 +1,12 @@
+{{#if currentUser.siteAdmin}}
+  <button class="add-new-journal button-primary button--blue pull-right {{if newJournalPresent "button--disabled"}}" {{action "addNewJournal"}}>
+    Add new journal
+  </button>
+{{/if}}
+
+<h2>Journals</h2>
+<ul class="journals">
+  {{#each arrangedContent as |journal|}}
+    {{render "admin.journal.thumbnail" journal}}
+  {{/each}}
+</ul>

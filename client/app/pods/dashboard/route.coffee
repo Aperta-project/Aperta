@@ -9,7 +9,7 @@ DashboardRoute = Ember.Route.extend
   setupController: (controller, model) ->
     @store.find('commentLook') # don't wait to fulfill
     controller.set('model', model)
-    papers = @store.filter 'litePaper', (p) ->
+    papers = @store.filter 'paper', (p) ->
       !Ember.isEmpty p.get('roles')
 
     controller.set('papers', papers)
@@ -27,7 +27,6 @@ DashboardRoute = Ember.Route.extend
     acceptInvitation: (invitation) ->
       RESTless.putModel(invitation, '/accept').then =>
         invitation.accept()
-        # TODO: Just send back sparse papers when litePapers are removed.
         @store.find('dashboard')
 
     showNewPaperOverlay: () ->

@@ -6,7 +6,7 @@ export default OverlayView.extend({
   cardName: "billing",
 
   didInsertElement: function() {
-    var choice = $(".payment-method .select2-container").select2("val");
+    let choice = $(".payment-method .select2-container").select2("val");
     this.get("controller").set("selectedPaymentMethod", choice);
   }
 });

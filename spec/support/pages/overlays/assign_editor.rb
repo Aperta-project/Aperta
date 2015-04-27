@@ -1,6 +1,6 @@
 class AssignEditorOverlay < CardOverlay
   def paper_editor=(user)
-    pick_from_select2_single user.username, user.email, class: 'editor-select2'
+    pick_from_select2_single user.email, user.email, class: 'editor-select2'
   end
 
   def paper_editor

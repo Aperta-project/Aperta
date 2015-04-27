@@ -16,7 +16,7 @@ describe InvitationsController do
 
   let(:invitee) { FactoryGirl.create(:user) }
   let(:phase) { FactoryGirl.create(:phase) }
-  let(:task) { phase.tasks.create!(type: "TestTask", title: "Test", role: "user") }
+  let(:task) { FactoryGirl.create :invitable_task }
 
   before { sign_in(invitee) }
 
@@ -56,7 +56,7 @@ describe InvitationsController do
     end
 
     it "initiates the task callback" do
-      expect_any_instance_of(TestTask).to receive(:invitation_rescinded).with(paper_id: task.paper.id, invitee_id: invitee.id)
+      expect_any_instance_of(InvitableTask).to receive(:invitation_rescinded).with(paper_id: task.paper.id, invitee_id: invitee.id)
       delete(:destroy, {
         format: "json",
         id: invitation.id

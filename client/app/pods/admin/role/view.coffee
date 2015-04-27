@@ -22,10 +22,6 @@ RoleView = Ember.View.extend
       e.stopPropagation()
 
   actions:
-    delete: ->
-      @$().fadeOut 250, =>
-        @get('controller').send('delete')
-
     cancel: ->
       sendCancel = => @get('controller').send('cancel')
 

@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import RESTless from 'tahi/services/rest-less'`
 
-PaperManageController = Ember.ObjectController.extend
+PaperManageController = Ember.Controller.extend
   positionSort: ["position:asc"]
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort')
 

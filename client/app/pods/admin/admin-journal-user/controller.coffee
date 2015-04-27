@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 
-AdminJournalUserController = Ember.ObjectController.extend
+AdminJournalUserController = Ember.Controller.extend
   needs: ['admin/journal/index']
 
   journalRoles: Ember.computed.alias 'controllers.admin/journal/index.model.roles'

@@ -25,23 +25,23 @@ module "Integration: inviting an editor",
     app = startApp()
     testHelper = TestHelper.setup(app)
 
-    $.mockjax(url: "/admin/journals/authorization", status: 204)
-    $.mockjax(url: "/user_flows/authorization", status: 204)
+    $.mockjax(url: "/api/admin/journals/authorization", status: 204)
+    $.mockjax(url: "/api/user_flows/authorization", status: 204)
     $.mockjax
-      url: "/formats"
+      url: "/api/formats"
       status: 200
       responseText:
         "export_formats": [{ "format": "docx" }, { "format": "latex" }]
         "import_formats": [{ "format": "docx" }, { "format": "odt" }]
     $.mockjax
-      url: /\/papers\/\d+\/manuscript_manager/
+      url: /\/api\/papers\/\d+\/manuscript_manager/
       status: 204
       contentType: "application/html"
       headers: { 'tahi-authorization-check': true }
       responseText: ""
 
     $.mockjax
-      url: /filtered_users/
+      url: /\/api\/filtered_users/
       status: 200
       contentType: "application/json"
       responseText:
@@ -50,10 +50,11 @@ module "Integration: inviting an editor",
     phase = FactoryGuy.make("phase")
     task = FactoryGuy.make("paper-editor-task", { phase: phase })
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] })
+    testHelper.handleFind(paper)
 
 test "displays the email of the invitee", ->
   $.mockjax
-    url: /filtered_users/
+    url: /\/api\/filtered_users/
     status: 200
     contentType: "application/json"
     responseText:
@@ -70,6 +71,7 @@ test "displays the email of the invitee", ->
     ok(find(".overlay-main-work:contains('aaron@neo.com has been invited to be Editor on this manuscript.')"))
 
 test "can withdraw the invitation", ->
+  testHelper.handleFind("paper", paper)
   invitation = FactoryGuy.make("invitation", email: "foo@bar.com")
   Ember.run =>
     task.set("invitation", invitation)
@@ -78,11 +80,7 @@ test "can withdraw the invitation", ->
   click("#manuscript-manager .card-content:contains('Assign Editors')")
   ok(find(".invite-editor-task:contains('foo@bar.com has been invited to be Editor on this manuscript.')"), "has pending invitation")
 
-  $.mockjax
-    proxyType: "DELETE"
-    url: "/invitations/#{invitation.get('id')}"
-    status: 204
-
+  testHelper.handleDelete("invitation", invitation.id)
   click(".button-primary:contains('Withdraw invitation')")
 
   andThen ->

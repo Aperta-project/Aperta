@@ -1,4 +1,4 @@
-<div {{bind-attr class=":column-header editing:active"}}>
+<div class="column-header {{if editing "active"}}">
   {{#if editing}}
     {{content-editable tagName="h2"
                        class="column-title"
@@ -17,9 +17,9 @@
 
       <div class="flow-manager-column-sub-title">
         {{#if journalLogo}}
-          <img {{bind-attr src="journalLogo"}}>
+          <img src={{journalLogo}}>
         {{else}}
-          {{display-value journalName or="For all Journals"}}
+          {{if journalName journalName "For all Journals"}}
         {{/if}}
       </div>
 
@@ -33,53 +33,56 @@
   {{/if}}
   {{#if editable}}
     <div class="edit-column-title glyphicon glyphicon-pencil" {{action "toggleEdit"}}></div>
-    {{select-2-single source=selectableTaskTypes
-                      selectedData=selectedTaskType
-                      selectionSelected="updateTypeQuery"
-                      selectionCleared="removeTypeQuery"
-                      allowClear=true
-                      placeholder="Card Types"}}
+    {{select-2-single
+        allowClear=true
+        placeholder="Card Types"
+        selectedData=selectedTaskType
+        selectionCleared="removeTypeQuery"
+        selectionSelected="updateTypeQuery"
+        source=selectableTaskTypes}}
 
-    {{select-2-single source=selectableTaskStates
-                      selectedData=selectedTaskState
-                      selectionSelected="updateStateQuery"
-                      selectionCleared="removeStateQuery"
-                      allowClear=true
-                      placeholder="Card State"}}
+    {{select-2-single
+        allowClear=true
+        placeholder="Card State"
+        selectedData=selectedTaskState
+        selectionCleared="removeStateQuery"
+        selectionSelected="updateStateQuery"
+        source=selectableTaskStates}}
 
-    {{select-2-single source=selectableTaskAssignments
-                      selectedData=selectedTaskAssignment
-                      selectionSelected="updateAssignmentQuery"
-                      selectionCleared="removeAssignmentQuery"
-                      allowClear=true
-                      placeholder="User"}}
+    {{select-2-single
+        allowClear=true
+        placeholder="User"
+        selectedData=selectedTaskAssignment
+        selectionCleared="removeAssignmentQuery"
+        selectionSelected="updateAssignmentQuery"
+        source=selectableTaskAssignments}}
 
-    {{select-2-single source=selectableTaskRoles
-                      selectedData=selectedTaskRole
-                      selectionSelected="updateRoleQuery"
-                      selectionCleared="removeRoleQuery"
-                      allowClear=true
-                      placeholder="Paper Role"}}
+    {{select-2-single
+        allowClear=true
+        placeholder="Paper Role"
+        selectedData=selectedTaskRole
+        selectionCleared="removeRoleQuery"
+        selectionSelected="updateRoleQuery"
+        source=selectableTaskRoles}}
 
   {{/if}}
   <div class="remove-column glyphicon glyphicon-remove" {{action "removeFlow"}}></div>
 </div>
 
 {{#unless flow.isLoaded}}
-  {{progress-loader visible=true}}
+  {{progress-spinner visible=true}}
 {{/unless}}
 
 <div class="column-content">
   <ul class="cards">
-    {{#each task in tasks}}
+    {{#each tasks as |task|}}
       {{flow-task-group task=task
                         commentLooks=commentLooks
                         viewCard="viewCard"}}
     {{/each}}
   </ul>
 
-  {{#unless flow.litePapers}}
+  {{#unless flow.papers}}
     <div class="empty-text">{{emptyText}}</div>
   {{/unless}}
 </div>
-

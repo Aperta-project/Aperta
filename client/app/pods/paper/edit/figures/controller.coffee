@@ -13,16 +13,11 @@ EditFiguresController = Ember.Controller.extend FileUploadMixin,
 
   figures: ( ->
     figures = @get('paper.figures') || []
-    # TODO: When ember data is updated, remove this.
-    # Ember Data v1.0.0-beta.15-canary
-    figures = figures.filter( (figure) ->
-      !figure.get 'isDeleted'
-    )
     figures.sortBy('createdAt').reverse()
   ).property('paper.figures.[]')
 
   figureUploadUrl: ( ->
-    "/papers/#{@get('paper.id')}/figures"
+    "/api/papers/#{@get('paper.id')}/figures"
   ).property('paper.id')
 
   actions:

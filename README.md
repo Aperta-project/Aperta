@@ -39,35 +39,19 @@ We're assuming you have postgresql installed. We recommend installing it via bre
 
 #### Event server
 
-You will need:
+- Clone the [tahi-slanger](https://github.com/Tahi-project/tahi-slanger) github repository and follow the installation instructions
 
-- Go (`brew install go` is easiest) with your
-  [$GOPATH](http://golang.org/doc/code.html#GOPATH) environment variable set:
+- Set the following variables in `.env`:
 
 ```shell
-  export GOPATH="$HOME/go"
-  export PATH=$PATH:$GOPATH/bin
+  EVENT_STREAM_KEY=the-slanger-app-key #765ec374ae0a69f4ce44
+  EVENT_STREAM_SECRET=the-pusher-secret #509e5d114295
 ```
-- Add the go binary to your $PATH.  If you used brew it'll tell you to do this
-  already.
-- `$ go get github.com/tahi-project/golang-eventsource` to put the event server
-  and its dependencies in your $GOPATH
 
-If you don't want to use Foreman as described in the section below, you can
-always run the event source server manually:
-`$ PORT=8080 TOKEN=token123 go run server.go`
+When you run `foreman start`, slanger will start up as the event stream server.
 
-By default, the eventsource server checks every request for a token that matches
-against its `$TOKEN` environment variable. Tahi's default token is `token123`.
-To change this behavior, set the `ES_TOKEN` environment variable for tahi.
+By default, slanger will listed on port `4567` for API requests (requests coming from tahi rails server) and port `8080` for websocket requests (from tahi browser client).
 
-By default, tahi attempts to connect to a stream server at
-`http://localhost:8080`. To change this behavior, set the `ES_URL` environment
-variable for tahi:
-
-```
-ES_URL=http://your-custom-event-server.example.com rails s
-```
 
 ### Running the server
 - We're using Foreman to run everything in dev.  Run `foreman start` to

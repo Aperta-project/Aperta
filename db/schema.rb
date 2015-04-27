@@ -237,6 +237,7 @@ ActiveRecord::Schema.define(version: 20150420163630) do
     t.datetime "last_heartbeat_at"
     t.boolean  "editable",                      default: true
     t.text     "doi"
+    t.boolean  "latex",             default: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

@@ -15,6 +15,7 @@ Paper = DS.Model.extend
   supportingInformationFiles: DS.hasMany('supporting-information-file')
   tasks: DS.hasMany('task', {async: true, polymorphic: true})
 
+  latex: a('boolean')
   body: a('string')
   doi: a('string')
   shortTitle: a('string')

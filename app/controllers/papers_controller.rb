@@ -111,6 +111,7 @@ class PapersController < ApplicationController
       :journal_id,
       :locked_by_id,
       :striking_image_id,
+      :latex,
       authors: [:first_name, :middle_initial, :last_name, :title, :affiliation, :secondary_affiliation, :department, :email, :deceased, :corresponding_author],
       reviewer_ids: [],
       phase_ids: [],

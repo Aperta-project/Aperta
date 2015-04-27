@@ -1,5 +1,5 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :short_title, :submitted, :roles, :related_at_date, :editable
+  attributes :id, :title, :short_title, :submitted, :roles, :related_at_date, :editable, :latex
 
   def related_at_date
     scoped_user.paper_roles.where(paper: object).order(created_at: :desc).pluck(:created_at).first

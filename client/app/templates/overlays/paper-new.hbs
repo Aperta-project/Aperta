@@ -29,6 +29,12 @@
                       class="paper-new-paper-type-select"}}
     </div>
 
+    <label>
+      {{check-box checked=model.latex}} I wrote this document in LaTeX
+    </label>
+
+    <br><br>
+
     <div class="overlay-action-buttons">
       <span class="button-link button--green" {{action "closeAction"}}>cancel</span>
       <button type="submit" class="button-primary button--green" {{action "createNewPaper"}}>Create</button>

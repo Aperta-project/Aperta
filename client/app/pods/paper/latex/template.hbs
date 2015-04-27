@@ -1,6 +1,6 @@
 {{partial "paper/control-bar"}}
 
-<div id="paper-container" {{bind-attr class="isSidebarEmpty:sidebar-empty :paper-container-latex"}}>
+<div id="paper-container" class="paper-container-latex {{if isSidebarEmpty "sidebar-empty"}}">
 
   {{partial "paper/sidebar"}}
 
@@ -13,17 +13,17 @@
       {{#if isSidebarEmpty}}
         <div class="ve-toolgroup btn-group">
           <a {{action "submit" target="view"}}
-             {{bind-attr class=":no-sidebar-submit-manuscript :button-primary allMetadataTasksCompleted:button--green:button--disabled"}}
-             href="#">Submit Manuscript</a>
-          <span {{bind-attr class=":glyphicon :glyphicon-lock locked::hidden"}}></span>
+            class="no-sidebar-submit-manuscript button-primary {{if allMetadataTasksCompleted "button--green" "button--disabled"}}"
+            href="#">Submit Manuscript</a>
+          <span class="glyphicon glyphicon-lock {{if locked "" "hidden"}}"></span>
         </div>
       {{/if}}
       <div class="ve-tool-group pull-right">
-        <span {{bind-attr class=":saving-spinner isSaving::hidden"}}>
+        <span class="saving-spinner {{if isSaving "" "hidden"}}">
           <i class="fa fa-spinner fa-spin"></i>
         </span>
         <span class="edit-paper-lock-message">
-          {{display-value statusMessage or=""}}
+          {{if statusMessage statusMessage ""}}
           {{time-ago time=savedAt}}
         </span>
       </div>
@@ -33,15 +33,17 @@
 
       {{flash-messages classNames="flash-messages-paper-editor"}}
 
-      <article {{ bind-attr class=":manuscript isEditing:editing:read-only"}}>
+      <article class="manuscript {{if isEditing "editing" "read-only"}}">
+
         <div class="manuscript-title-and-placeholder">
           {{content-editable tagName="h2"
                              id="paper-title"
                              placeholder="Type your manuscript title here"
-                             value=title
+                             value=model.title
                              preventEnterKey="true"}}
 
         </div>
+
         <div class="double-pane-editor">
           <div id="paper-body" class="double-pane left-pane">
             {{code-mirror-editor value=model.body
@@ -49,11 +51,12 @@
           </div>
 
           <div id="rendered-latex" class="double-pane right-pane">
-            {{#if body}}
-              <img {{bind-attr src="renderedLatexUrl"}} />
+            {{#if model.body}}
+              <img src={{renderedLatexUrl}}>
             {{/if}}
           </div>
         </div>
+
       </article>
     </main>
 

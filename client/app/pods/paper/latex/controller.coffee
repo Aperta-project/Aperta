@@ -39,7 +39,7 @@ Controller = BasePaperController.extend
     return unless @get('model.editable')
     return unless @get('model.isDirty')
     @get('model').save()
-    renderUrl = "/papers/#{@get('model.id')}/fake_render_latex"
+    renderUrl = "/api/papers/#{@get('model.id')}/fake_render_latex"
     # post data to our latex service
     $.post(renderUrl, latexContent: @get('model.body')).then =>
       @set('compiledId', Utils.generateUUID())

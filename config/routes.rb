@@ -76,7 +76,7 @@ Tahi::Application.routes.draw do
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :paper_roles, only: [:show]
     resources :papers, only: [:index, :create, :show, :update] do
-      post '/fake_render_latex', to: 'papers#fake_render_latex'
+      post '/fake_render_latex', to: 'papers#fake_render_latex', on: :member
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show
       resources :figures, only: :create

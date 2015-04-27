@@ -1,65 +1,66 @@
 {{#visual-editor-toolbar viewName="toolbar" classNames='navbar-inner'}}
-<div class="ve-toolgroup btn-group">
-  {{toggle-paper-editable action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
-</div>
-{{#ve-button-group name="history btn-group"}}
-  {{#ve-button command="undo"}}{{fa-icon "undo"}}{{/ve-button}}
-  {{#ve-button command="redo" }}{{fa-icon "repeat"}}{{/ve-button}}
-{{/ve-button-group}}
-<span class="separator"></span>
-{{#ve-select name="switch-type"}}
-  {{#ve-option command="paragraph"}}Paragraph{{/ve-option}}
-  {{#ve-option command="heading1"}}Heading 1{{/ve-option}}
-  {{#ve-option command="heading2"}}Heading 2{{/ve-option}}
-  {{#ve-option command="heading3"}}Heading 3{{/ve-option}}
-  {{#ve-option command="preformatted"}}Preformatted{{/ve-option}}
-  {{#ve-option command="blockquote"}}Blockquote{{/ve-option}}
-{{/ve-select}}
-<span class="separator"></span>
-{{#ve-button-group name="annotations"}}
-  {{#ve-button command="bold"}}{{fa-icon "bold"}}{{/ve-button}}
-  {{#ve-button command="italic"}}{{fa-icon "italic"}}{{/ve-button}}
-  {{#ve-button command="link"}}{{fa-icon "link"}}{{/ve-button}}
-{{/ve-button-group}}
-<span class="separator"></span>
-{{#ve-button-group name="insert" classNames=""}}
-  <a href="#" class="btn ve-button ve-tool {{if isEditing "enabled" "disabled"}}" {{action "openFigures" on="click"}}>
-    {{fa-icon "image"}}
-  </a>
-  <a href="#" class="btn ve-button ve-tool {{if isEditing "enabled" "disabled"}}" {{action "openTables" on="click"}}>
-    {{fa-icon "table"}}
-  </a>
-{{/ve-button-group}}
-{{#ve-dropdown name="reference" label="Cite" classNames="btn-group"}}
-  {{#ve-item command="figureReference"}}
-    {{fa-icon "image"}}<span class="ve-label">Figure</span>
-  {{/ve-item}}
-  {{#ve-item command="citeFigure"}}
-    {{fa-icon "table"}}<span class="ve-label">Table</span>
-  {{/ve-item}}
-  {{#ve-item command="citeReference"}}
-    {{fa-icon "book"}}<span class="ve-label">Reference</span>
-  {{/ve-item}}
-{{/ve-dropdown}}
-{{#if sidebarIsEmpty}}
-  <span class="separator"></span>
-  <div class="ve-toolgroup btn-group pull-right">
-    <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allMetadataTasksCompleted "button--green" "button--disabled"}}">
-      Submit Manuscript
-    </button>
-    <span class="glyphicon glyphicon-lock {{if locked "" "hidden"}}"></span>
+  <div class="ve-toolgroup btn-group">
+    {{toggle-paper-editable action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
   </div>
-{{/if}}
-<div class="ve-tool-group pull-right">
-  <span class="saving-spinner {{if isSaving "" "hidden"}}">
-    <i class="fa fa-spinner fa-spin"></i>
-  </span>
-  <span class="edit-paper-lock-message">
-    {{#if statusMessage}}
-      <span>{{{statusMessage}}}</span>
-    {{/if}}
+  {{#ve-button-group name="history btn-group"}}
+    {{#ve-button command="undo"}}{{fa-icon "undo"}}{{/ve-button}}
+    {{#ve-button command="redo" }}{{fa-icon "repeat"}}{{/ve-button}}
+  {{/ve-button-group}}
+  <span class="separator"></span>
+  {{#ve-select name="switch-type"}}
+    {{#ve-option command="paragraph"}}Paragraph{{/ve-option}}
+    {{#ve-option command="heading1"}}Heading 1{{/ve-option}}
+    {{#ve-option command="heading2"}}Heading 2{{/ve-option}}
+    {{#ve-option command="heading3"}}Heading 3{{/ve-option}}
+    {{#ve-option command="preformatted"}}Preformatted{{/ve-option}}
+    {{#ve-option command="blockquote"}}Blockquote{{/ve-option}}
+  {{/ve-select}}
+  <span class="separator"></span>
+  {{#ve-button-group name="annotations"}}
+    {{#ve-button command="bold"}}{{fa-icon "bold"}}{{/ve-button}}
+    {{#ve-button command="italic"}}{{fa-icon "italic"}}{{/ve-button}}
+    {{#ve-button command="link"}}{{fa-icon "link"}}{{/ve-button}}
+  {{/ve-button-group}}
+  <span class="separator"></span>
+  {{#ve-button-group name="insert" classNames=""}}
+    <a href="#" class="btn ve-button ve-tool {{if isEditing "enabled" "disabled"}}" {{action "openFigures" on="click"}}>
+      {{fa-icon "image"}}
+    </a>
+    <a href="#" class="btn ve-button ve-tool {{if isEditing "enabled" "disabled"}}" {{action "openTables" on="click"}}>
+      {{fa-icon "table"}}
+    </a>
+  {{/ve-button-group}}
+  {{#ve-dropdown name="reference" label="Cite" classNames="btn-group"}}
+    {{#ve-item command="figureReference"}}
+      {{fa-icon "image"}}<span class="ve-label">Figure</span>
+    {{/ve-item}}
+    {{#ve-item command="citeFigure"}}
+      {{fa-icon "table"}}<span class="ve-label">Table</span>
+    {{/ve-item}}
+    {{#ve-item command="citeReference"}}
+      {{fa-icon "book"}}<span class="ve-label">Reference</span>
+    {{/ve-item}}
+  {{/ve-dropdown}}
 
-    {{time-ago time=savedAt}}
-  </span>
-</div>
+  {{#if sidebarIsEmpty}}
+    <span class="separator"></span>
+    <div class="ve-toolgroup btn-group pull-right">
+      <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allMetadataTasksCompleted "button--green" "button--disabled"}}">
+        Submit Manuscript
+      </button>
+      <span class="glyphicon glyphicon-lock {{if locked "" "hidden"}}"></span>
+    </div>
+  {{/if}}
+  <div class="ve-tool-group pull-right">
+    <span class="saving-spinner {{if isSaving "" "hidden"}}">
+      <i class="fa fa-spinner fa-spin"></i>
+    </span>
+    <span class="edit-paper-lock-message">
+      {{#if statusMessage}}
+        <span>{{{statusMessage}}}</span>
+      {{/if}}
+
+      {{time-ago time=savedAt}}
+    </span>
+  </div>
 {{/visual-editor-toolbar}}

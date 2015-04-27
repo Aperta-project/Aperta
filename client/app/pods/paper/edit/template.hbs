@@ -10,12 +10,12 @@
 
   <div class="manuscript-container">
 
-
     <main>
 
       {{flash-messages classNames="flash-messages-paper-editor"}}
 
       <article class="manuscript {{if isEditing "editing" "read-only"}}">
+
         <div class="manuscript-title-and-placeholder">
           {{content-editable tagName="h2"
                              id="paper-title"
@@ -27,11 +27,13 @@
             <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
           {{/if}}
         </div>
+
         <div id="paper-body">
           {{visual-editor viewName="editor"
                           initializerContext=controller
                           initializer=controller.setupEditor}}
         </div>
+
       </article>
     </main>
 

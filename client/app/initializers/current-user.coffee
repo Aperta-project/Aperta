@@ -2,10 +2,10 @@ CurrentUser =
   name: 'currentUser'
   after: 'store'
   initialize: (container, application) ->
-    if userInfo = window.currentUser
+    if data = window.currentUserData
       store = container.lookup('store:main')
-      store.pushPayload(userInfo)
-      user = store.getById('user', userInfo.user.id)
+      store.pushPayload(data)
+      user = store.getById('user', data.user.id)
 
       container.register('user:current', user, instantiate: false)
       application.inject('controller', 'currentUser', 'user:current')

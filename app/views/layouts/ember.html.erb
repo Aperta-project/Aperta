@@ -17,7 +17,7 @@
 
     <% if current_user %>
       <script type="text/javascript">
-        window.currentUser = <%= UserSerializer.new(current_user).to_json.html_safe %>;
+        window.currentUserData = <%= CurrentUserSerializer.new(current_user, root: :user).to_json.html_safe %>;
       </script>
     <% end %>
 

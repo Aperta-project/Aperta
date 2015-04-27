@@ -15,7 +15,6 @@ class PaperSerializer < LitePaperSerializer
   has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
   has_many :decisions, embed: :ids, include: true, serializer: DecisionSerializer
   has_many :tasks, embed: :ids, polymorphic: true
-  has_many :decisions, embed: :ids, include: true, serializer: DecisionSerializer
   has_one :journal, embed: :id, include: true
   has_one :locked_by, embed: :id, include: true, root: :users
   has_one :striking_image, embed: :id, include: true, root: :figures

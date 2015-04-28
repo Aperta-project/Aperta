@@ -51,7 +51,6 @@ Tahi::Application.routes.draw do
     resources :comment_looks, only: [:index, :update]
     resource :dashboards, only: :show
     resources :decisions, only: [:create, :update]
-    resource :event_stream, only: :show
     resources :errors, only: :create
     resources :feedback, only: :create
     resources :figures, only: [:destroy, :update] do
@@ -131,9 +130,8 @@ Tahi::Application.routes.draw do
       resources :jobs, only: [:create]
     end
 
-    resource :event_stream, only: [:show] do
-      post :auth
-    end
+    # event stream
+    post "event_stream/auth", controller: :event_stream, as: :auth_event_stream
 
     # s3 request policy
     #

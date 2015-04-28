@@ -1,11 +1,13 @@
 class EventStreamConnection
-  attr_reader :user
+  include Rails.application.routes.url_helpers
 
+  # loaded into ember client via pusher-override.coffee
   def as_json(options={})
     {
       enabled: self.class.enabled?,
       host: ENV["EVENT_STREAM_WS_HOST"],
       port: ENV["EVENT_STREAM_WS_PORT"],
+      auth_endpoint_path: auth_event_stream_path,
       key: Pusher.key,
       channels: default_channels
     }

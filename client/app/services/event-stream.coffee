@@ -9,7 +9,6 @@ EventStream = Ember.Object.extend
   wait: false
   init: ->
     @set('messageQueue', [])
-    @resetChannels()
     @processMessages()
 
   addEventListener: (eventName) ->
@@ -39,23 +38,6 @@ EventStream = Ember.Object.extend
 
   stop: ->
     @get('eventSource').close() if @get('eventSource')
-
-  resetChannels: ->
-    @pause()
-    @stop()
-    params =
-      url: '/api/event_stream'
-      method: 'GET'
-      success: (data) =>
-        return if data.enabled == 'false'
-        @set('eventSource', new EventSource(data.url))
-        Ember.$(window).unload => @stop()
-        @set('channels', data.channels)
-        Utils.debug("Event Stream: updated channels", data.channels)
-        data.channels.forEach (eventName) =>
-          @addEventListener(eventName)
-        @play()
-    Ember.$.ajax(params)
 
   msgResponse: (esData) ->
     action = esData.action

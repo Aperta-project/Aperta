@@ -15,14 +15,7 @@ module.exports = function(environment) {
     },
 
     APP: {
-      PUSHER_OPTS: {
-        key: '765ec374ae0a69f4ce44',
-        connection: {
-          wsHost: "localhost",
-          wsPort: "8080",
-          authEndpoint: "/event_stream/auth"
-        }
-      }
+      // pusher configuration is set in pusher-override.coffee
     },
 
     'ember-cli-visualeditor': {

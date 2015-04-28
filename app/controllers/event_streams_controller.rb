@@ -3,10 +3,6 @@ class EventStreamsController < ApplicationController
 
   before_action :authenticate_user!
 
-  def show
-    render json: EventStreamConnection.new
-  end
-
   def auth
     if connection.authorized?(user: current_user, channel_name: params[:channel_name])
       render json: connection.authenticate(socket_id: params[:socket_id], channel_name: params[:channel_name])

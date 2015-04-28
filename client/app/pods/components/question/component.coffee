@@ -17,6 +17,7 @@ QuestionComponent = Ember.Component.extend
         question: @get('question')
         ident: ident
         task: task
+        decision: @get('decision')
         additionalData: [{}]
 
       task.get('questions').pushObject(question)

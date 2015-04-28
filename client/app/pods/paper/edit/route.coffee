@@ -22,6 +22,8 @@ PaperEditRoute = AuthorizedRoute.extend
       paper.get('tasks').then((tasks) -> resolve(paper)))
 
   afterModel: (model) ->
+    @set('editorLookup', 'paper.edit.' + (if model.get('latex') then 'latex' else 'visualEditor'))
+
     if model.get('editable')
       @set('heartbeatService', Heartbeat.create(resource: model))
       @startHeartbeat()
@@ -29,18 +31,18 @@ PaperEditRoute = AuthorizedRoute.extend
       @replaceWith('paper.index', model)
 
   setupController: (controller, model) ->
-    controllerName = if model.get('latex') then 'paper.edit.latex' else 'paper.edit.visual-editor'
-    @set('controller', @controllerFor(controllerName))
-    @set('controller.model', model)
-    @set('controller.commentLooks', @store.all('commentLook'))
+    editorController = @controllerFor(@get('editorLookup'))
+    editorController.set('model', model)
+    editorController.set('commentLooks', @store.all('commentLook'))
+
     if @currentUser
-      RESTless.authorize(@get('controller'), "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
+      RESTless.authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
 
   renderTemplate: (baseController, model) ->
-    @render 'paper.edit', {
+    @render 'paper.edit',
       into: 'application'
-      controller: this.get('controller')
-    }
+      view: @get('editorLookup')
+      controller: @get('editorLookup')
 
   deactivate: ->
     @endHeartbeat()
@@ -57,8 +59,9 @@ PaperEditRoute = AuthorizedRoute.extend
     lockedBy and lockedBy == @currentUser
 
   closeOverlay: ->
-    controller = @get('controller')
+    controller = @controllerFor(@get('editorLookup'))
     editor = controller.get('editor')
+
     @disconnectOutlet
       outlet: 'overlay'
       parentView: 'application'
@@ -94,23 +97,27 @@ PaperEditRoute = AuthorizedRoute.extend
         @set 'fromSubmitOverlay', false
 
     openFigures: ->
-      controller = @get('controller')
+      controller = @controllerFor(@get('editorLookup'))
       editor = controller.get('editor')
       editor.freeze()
       # do not handle model changes while overlay is open
       controller.disconnectEditor()
       controller.set('hasOverlay', true)
+
+      figureController = @controllerFor('paper/edit/figures')
+      figureController.set('manuscriptEditor', controller.get('editor'))
+
       @render 'paper/edit/figures',
         into: 'application'
         outlet: 'overlay'
-        controller: 'paper/edit/figures'
+        controller: figureController
         model: @modelFor('paper.edit')
 
     openTables: ->
       # TODO
 
     insertFigure: (figureId) ->
-      editor = @get('controller').get('editor')
+      editor = @controllerFor(@get('editorLookup')).get('editor')
       # NOTE: we need to provide the full HTML representation right away
       @closeOverlay()
       figure = @modelFor('paper.edit').get('figures').findBy('id', figureId)

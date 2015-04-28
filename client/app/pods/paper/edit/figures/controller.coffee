@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import FileUploadMixin from 'tahi/mixins/file-upload'`
 
-EditFiguresController = Ember.Controller.extend FileUploadMixin,
+Controller = Ember.Controller.extend FileUploadMixin,
   # initialized via paper/edit/route
   paper: Ember.computed.alias('model')
 
@@ -9,7 +9,9 @@ EditFiguresController = Ember.Controller.extend FileUploadMixin,
   toolbar: null
 
   needs: ['paper/edit']
-  manuscriptEditor: Ember.computed.alias('controllers.paper/edit.editor')
+
+  # set in paper/edit/route
+  manuscriptEditor: null
 
   figures: ( ->
     figures = @get('paper.figures') || []
@@ -23,12 +25,12 @@ EditFiguresController = Ember.Controller.extend FileUploadMixin,
   actions:
 
     updateToolbar: (newState)->
-      toolbar = @get('toolbar');
+      toolbar = @get('toolbar')
       if toolbar
         lastState = @get('lastState')
         if not lastState or newState.hasSelection() or lastState.editor == newState.editor
           # skip if the update is due to a blur while another editor has been focused already
-          toolbar.updateState(newState);
+          toolbar.updateState(newState)
           @set('lastState', newState)
 
     uploadFinished: (data, filename) ->
@@ -46,4 +48,4 @@ EditFiguresController = Ember.Controller.extend FileUploadMixin,
       @get('paper.figures').removeObject(attachment)
       attachment.destroyRecord()
 
-`export default EditFiguresController`
+`export default Controller`

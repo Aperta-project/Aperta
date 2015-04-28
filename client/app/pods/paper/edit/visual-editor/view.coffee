@@ -42,7 +42,7 @@ View = Ember.View.extend PaperEditMixin,
   keyCount: 0
 
   saveEditorChanges: ->
-    documentBody = @get('editor').toHtml()
+    documentBody = @get('controller.editor').toHtml()
     @get('controller').send('updateDocumentBody', documentBody)
 
 `export default View;`

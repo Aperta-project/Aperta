@@ -22,8 +22,6 @@ PaperEditRoute = AuthorizedRoute.extend
       paper.get('tasks').then((tasks) -> resolve(paper)))
 
   afterModel: (model) ->
-    @set('editorLookup', 'paper.edit.' + (if model.get('latex') then 'latex' else 'visualEditor'))
-
     if model.get('editable')
       @set('heartbeatService', Heartbeat.create(resource: model))
       @startHeartbeat()
@@ -31,6 +29,7 @@ PaperEditRoute = AuthorizedRoute.extend
       @replaceWith('paper.index', model)
 
   setupController: (controller, model) ->
+    @set('editorLookup', 'paper.edit.' + (if model.get('latex') then 'latex' else 'visualEditor'))
     editorController = @controllerFor(@get('editorLookup'))
     editorController.set('model', model)
     editorController.set('commentLooks', @store.all('commentLook'))
@@ -72,9 +71,9 @@ PaperEditRoute = AuthorizedRoute.extend
   actions:
     viewCard: (task) ->
       paper = @modelFor('paper')
-      redirectParams = ['paper.edit', @modelFor('paper')]
+      redirectParams = ['paper.edit', paper]
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @controllerFor('application').set('overlayBackground', 'paper/edit')
+      @controllerFor('application').set('overlayBackground', @get('editorLookup'))
       @transitionTo('task', paper.id, task.id)
 
     startEditing: ->

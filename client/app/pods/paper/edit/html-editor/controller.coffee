@@ -1,0 +1,123 @@
+`import Ember from 'ember';`
+`import BasePaperController from 'tahi/controllers/base-paper';`
+`import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';`
+`import TahiEditorExtensions from 'tahi-editor-extensions/index';`
+`import FigureCollectionAdapter from 'tahi/pods/paper/edit/adapters/ve-figure-collection-adapter';`
+
+Controller = BasePaperController.extend PaperEditMixin,
+  # initialized by paper/edit/view
+  toolbar: null
+
+  # used to recover a selection when returning from another context (such as figures)
+  lastEditorState: null
+
+  figuresAdapter: null
+
+  hasOverlay: false
+
+  # called by ember-cli-visualeditor/components/visual-editor (see template for hook)
+  setupEditor: (editor) ->
+    FigureNodeIndex = require('tahi-editor-extensions/figures/model/figure-label-generator')['default']
+    # register extensions
+    editor.registerExtensions(TahiEditorExtensions)
+    editor.registerExtension(
+      afterDocumentCreated: (documentModel) ->
+        figuresIndex = documentModel.getIndex('figure-nodes')
+        figureLabelGenerator = new FigureNodeIndex(figuresIndex)
+        documentModel.addService('figure-labels', figureLabelGenerator)
+        documentModel.addService('main-document',
+          get: ->
+            return documentModel
+        )
+    )
+    doc = editor.getDocument()
+    paper = this.get('model')
+    figuresAdapter = FigureCollectionAdapter.create(
+      controller: @
+      paper: paper
+      doc: doc
+    ).connect()
+
+    # load the document
+    editor.fromHtml(paper.get('body'))
+
+    @set('editor', editor)
+    @set('figuresAdapter', figuresAdapter)
+    editor.removeSelection()
+
+  startEditing: ->
+    @set('model.lockedBy', @currentUser)
+    @get('model').save().then (paper) =>
+      @connectEditor()
+      @send('startEditing')
+      @set('saveState', false)
+
+  stopEditing: ->
+    @set('model.body', @get('editor').toHtml())
+    @set('model.lockedBy', null)
+    @send('stopEditing')
+    @disconnectEditor()
+    @get('model').save().then (paper) =>
+      @set('saveState', true)
+
+  updateEditor: ->
+    editor = @get('editor')
+    if editor
+      editor.fromHtml(@get('paper.body'))
+
+  updateToolbar: (newState) ->
+    toolbar = @get('toolbar')
+    if toolbar
+      toolbar.updateState(newState)
+      @set('lastEditorState', newState)
+
+  savePaper: ->
+    return unless @get('model.editable')
+    editor = @get('editor')
+    paper = @get('model')
+    manuscriptHtml = editor.toHtml()
+    paper.set('body', manuscriptHtml)
+    if paper.get('isDirty')
+      paper.save().then (paper) =>
+        @set('saveState', true)
+        @set('isSaving', false)
+    else
+      @set('isSaving', false)
+
+  updateFigures: ->
+    editor = @get('editor')
+    # we need to allow model changes
+    modelWasEnabled = editor.isModelEnabled()
+    unless modelWasEnabled
+      editor.enableModel()
+
+    @get('figuresAdapter').loadFromModel()
+
+    unless modelWasEnabled
+      editor.disableModel()
+
+  onDocumentChange: ->
+    doc = @get('editor').getDocument()
+    # HACK: in certain moments we need to inhibit saving
+    # e.g., when updating a figure URL, the server provides a new figure URL
+    # leading to an unfinite loop of updates.
+    # See paper/edit/ve-figure-adapter
+    unless @get('inhibitSave')
+      @set('saveState', false)
+      @savePaperDebounced()
+
+  # enables handlers for document changes (saving) and selection changes (toolbar)
+  connectEditor: ->
+    @get('editor').connect @,
+      "document-change": @onDocumentChange
+      "state-changed": @updateToolbar
+
+  disconnectEditor: ->
+    @get('editor').disconnect @
+
+  willDestroy: ( ->
+    @_super()
+    @get('figuresAdapter')?.dispose()
+  )
+
+`export default Controller;`

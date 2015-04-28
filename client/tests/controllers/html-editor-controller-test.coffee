@@ -2,7 +2,7 @@
 `import { test, moduleFor } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
 
-moduleFor 'controller:paper/edit', 'Unit: paperEditController',
+moduleFor 'controller:paper/edit/html-editor', 'Unit: paper/edit/html-editor controller',
   needs: ['controller:application', 'controller:paper', 'controller:overlays/paperSubmit']
 
   setup: ->

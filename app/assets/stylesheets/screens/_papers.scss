@@ -50,7 +50,7 @@ html.control-bar-sub-nav-active #paper-container {
 }
 
 #paper-container .task-list {
-  padding: 15px 30px 0 30px;
+  padding: 15px 30px 30px 30px;
 }
 
 #paper-container .task-list-doi {
@@ -61,7 +61,7 @@ html.control-bar-sub-nav-active #paper-container {
 #paper-container .manuscript-container {
   position: relative;
   background: $tahi-grey-xlight;
-  width: 75%;
+  width: $tahi-paper-width-with-sidebar;
 }
 
 .editor-toolbar {
@@ -108,7 +108,16 @@ article.manuscript {
   background: $tahi-grey-xlight;
   overflow-x:hidden;
   font-family: $tahi-article-font-family;
+}
+
+.vertical-divider {
+  content: '';
+  width: 0;
+  position: absolute;
   border-right: 1px solid $tahi-grey-light;
+  top: 0;
+  bottom: 0;
+  left: $tahi-paper-width-with-sidebar;
 }
 
 // title contenteditable
@@ -239,6 +248,7 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
     }
 
     aside { display: none; }
+    .vertical-divider { display: none; }
 
     .manuscript {
       border-right: none;

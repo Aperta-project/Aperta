@@ -4,16 +4,12 @@
   {{partial "paper/edit/toolbar"}}
 </div>
 
-<div id="paper-container" class={{if sidebarIsEmpty "sidebar-empty"}}>
-
+<div id="paper-container" class="clearfix {{if sidebarIsEmpty 'sidebar-empty'}}">
   {{partial "paper/sidebar"}}
-
+  <div class='vertical-divider'></div>
   <div class="manuscript-container">
-
     <main>
-
       {{flash-messages classNames="flash-messages-paper-editor"}}
-
       <article class="manuscript {{if isEditing "editing" "read-only"}}">
         <div class="manuscript-title-and-placeholder">
           {{content-editable tagName="h2"
@@ -33,7 +29,5 @@
         </div>
       </article>
     </main>
-
   </div>
-
 </div>

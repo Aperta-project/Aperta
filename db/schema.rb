@@ -308,6 +308,7 @@ ActiveRecord::Schema.define(version: 20150429152610) do
     t.json     "additional_data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "revision_number",             default: 0
   end
 
   add_index "questions", ["task_id"], name: "index_questions_on_task_id", using: :btree

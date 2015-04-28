@@ -17,6 +17,7 @@ PaperEditRoute = AuthorizedRoute.extend
 
   model: ->
     paper = @modelFor('paper')
+
     new Ember.RSVP.Promise((resolve, reject) ->
       paper.get('tasks').then((tasks) -> resolve(paper)))
 
@@ -28,10 +29,18 @@ PaperEditRoute = AuthorizedRoute.extend
       @replaceWith('paper.index', model)
 
   setupController: (controller, model) ->
-    controller.set('model', model)
-    controller.set('commentLooks', @store.all('commentLook'))
+    controllerName = if model.get('latex') then 'paper.edit.latex' else 'paper.edit.visual-editor'
+    @set('controller', @controllerFor(controllerName))
+    @set('controller.model', model)
+    @set('controller.commentLooks', @store.all('commentLook'))
     if @currentUser
-      RESTless.authorize(controller, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
+      RESTless.authorize(@get('controller'), "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
+
+  renderTemplate: (baseController, model) ->
+    @render 'paper.edit', {
+      into: 'application'
+      controller: this.get('controller')
+    }
 
   deactivate: ->
     @endHeartbeat()
@@ -48,7 +57,7 @@ PaperEditRoute = AuthorizedRoute.extend
     lockedBy and lockedBy == @currentUser
 
   closeOverlay: ->
-    controller = @controllerFor('paper.edit')
+    controller = @get('controller')
     editor = controller.get('editor')
     @disconnectOutlet
       outlet: 'overlay'
@@ -85,9 +94,9 @@ PaperEditRoute = AuthorizedRoute.extend
         @set 'fromSubmitOverlay', false
 
     openFigures: ->
-      controller = @controllerFor('paper.edit')
+      controller = @get('controller')
       editor = controller.get('editor')
-      editor.freeze();
+      editor.freeze()
       # do not handle model changes while overlay is open
       controller.disconnectEditor()
       controller.set('hasOverlay', true)
@@ -101,7 +110,7 @@ PaperEditRoute = AuthorizedRoute.extend
       # TODO
 
     insertFigure: (figureId) ->
-      editor = @controllerFor('paper.edit').get('editor')
+      editor = @get('controller').get('editor')
       # NOTE: we need to provide the full HTML representation right away
       @closeOverlay()
       figure = @modelFor('paper.edit').get('figures').findBy('id', figureId)

@@ -21,7 +21,7 @@ class DashboardSerializer < ActiveModel::Serializer
   end
 
   def most_recent_paper_roles
-    PaperRole.most_recent_for(user).page(1)
+    @most_recent_paper_roles ||= PaperRole.includes(:paper).most_recent_for(user).page(1)
   end
 
   def user

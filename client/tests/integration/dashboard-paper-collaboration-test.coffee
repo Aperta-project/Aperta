@@ -66,7 +66,7 @@ module 'Integration: Dashboard',
   setup: ->
     app = startApp()
     server = setupMockServer()
-    fakeUser = window.currentUser.user
+    fakeUser = window.currentUserData.user
 
     [litePapers, dashboards] = createDashboardDataWithLitePaper(2)
 

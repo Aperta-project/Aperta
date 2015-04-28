@@ -18,7 +18,7 @@ module 'Integration: PaperIndex',
   setup: ->
     app = startApp()
     server = setupMockServer()
-    fakeUser = window.currentUser.user
+    fakeUser = window.currentUserData.user
 
 test 'on paper.index, contributors are visible', ->
   records = paperWithTask('Task'

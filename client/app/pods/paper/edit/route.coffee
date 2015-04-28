@@ -11,15 +11,23 @@ PaperEditRoute = AuthorizedRoute.extend
 
   heartbeatService: null
 
-  beforeModel: ->
-    initializeVisualEditor(ENV).catch( (err) ->
-      Ember.Logger.error(err) )
-
   model: ->
     paper = @modelFor('paper')
 
-    new Ember.RSVP.Promise((resolve, reject) ->
+    # if paper.get('editorMode') is 'html'
+    #   veInit = initializeVisualEditor(ENV).catch((error) ->
+    #     Ember.Logger.error(error))
+    # else
+    #   veInit = Ember.RSVP.Promise.resolve()
+
+    veInit = initializeVisualEditor(ENV).catch((error) ->
+      Ember.Logger.error(error))
+
+    taskLoad = new Ember.RSVP.Promise((resolve, reject) ->
       paper.get('tasks').then((tasks) -> resolve(paper)))
+
+    Ember.RSVP.all([veInit, taskLoad]).then ->
+      paper
 
   afterModel: (model) ->
     if model.get('editable')
@@ -29,7 +37,10 @@ PaperEditRoute = AuthorizedRoute.extend
       @replaceWith('paper.index', model)
 
   setupController: (controller, model) ->
-    @set('editorLookup', 'paper.edit.' + (if model.get('latex') then 'latex' else 'visualEditor'))
+    # paper/edit controller is not used.
+    # Controller is chosen based on Paper document type
+    # @set('editorLookup', 'paper.edit.' + model.get('editorMode') + '-editor')
+    @set('editorLookup', 'paper.edit.' + 'html' + '-editor')
     editorController = @controllerFor(@get('editorLookup'))
     editorController.set('model', model)
     editorController.set('commentLooks', @store.all('commentLook'))
@@ -37,8 +48,8 @@ PaperEditRoute = AuthorizedRoute.extend
     if @currentUser
       RESTless.authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
 
-  renderTemplate: (baseController, model) ->
-    @render 'paper.edit',
+  renderTemplate: (paperEditController, model) ->
+    @render @get('editorLookup'),
       into: 'application'
       view: @get('editorLookup')
       controller: @get('editorLookup')

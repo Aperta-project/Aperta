@@ -4,7 +4,7 @@
   {{partial "paper/edit/toolbar"}}
 </div>
 
-<div id="paper-container" {{bind-attr class="sidebarIsEmpty:sidebar-empty :clearfix"}}>
+<div id="paper-container" class="clearfix {{if sidebarIsEmpty 'sidebar-empty'}}">
   {{partial "paper/sidebar"}}
   <div class='vertical-divider'></div>
   <div class="manuscript-container">

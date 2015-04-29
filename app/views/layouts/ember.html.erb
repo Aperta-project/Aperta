@@ -18,7 +18,7 @@
     <% if current_user %>
       <script type="text/javascript">
         window.currentUser = <%= UserSerializer.new(current_user).to_json.html_safe %>;
-        window.eventStreamConfig = <%= EventStreamConnection.new.to_json.html_safe %>;
+        window.eventStreamConfig = <%= TahiPusher::Channel.to_json.html_safe %>;
       </script>
     <% end %>
 

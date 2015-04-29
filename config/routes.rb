@@ -131,7 +131,8 @@ Tahi::Application.routes.draw do
     end
 
     # event stream
-    post "event_stream/auth", controller: :event_stream, as: :auth_event_stream
+    #
+    post "event_stream/auth", controller: "api/event_stream", as: :auth_event_stream
 
     # s3 request policy
     #

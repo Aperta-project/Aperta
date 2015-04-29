@@ -11,7 +11,7 @@ class ChannelNameParser
   def channel
     @channel ||= channel_name.split(CHANNEL_SEPARATOR).each_with_object({}) do |token, channel|
       model, id = token.split(MODEL_SEPARATOR)
-      channel[model.to_sym] = id
+      channel[model.to_sym] = id || true
     end
   end
 

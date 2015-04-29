@@ -1,5 +1,7 @@
 module TahiPusher
   class Channel
+    attr_reader :channel_name
+
     # loaded into ember client via pusher-override.coffee
     def self.as_json(options={})
       {
@@ -24,14 +26,18 @@ module TahiPusher
       ENV["PUSHER_ENABLED"] != "false"
     end
 
-    def authorized?(user:, channel_name:)
+    def initialize(channel_name:)
+      @channel_name = channel_name
+    end
+
+    def authorized?(user:)
       channel = ChannelNameParser.new(channel_name: channel_name)
       return true if channel.public?
       return false unless Paper.exists?(channel.get(:paper))
       Accessibility.new(Paper.find(channel.get(:paper))).users.include?(user)
     end
 
-    def authenticate(channel_name:, socket_id:)
+    def authenticate(socket_id:)
       Pusher[channel_name].authenticate(socket_id)
     end
   end

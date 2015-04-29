@@ -4,8 +4,8 @@ class EventStreamController < ApplicationController
   before_action :authenticate_user!
 
   def auth
-    if channel.authorized?(user: current_user, channel_name: params[:channel_name])
-      render json: channel.authenticate(socket_id: params[:socket_id], channel_name: params[:channel_name])
+    if channel.authorized?(user: current_user)
+      render json: channel.authenticate(socket_id: params[:socket_id])
     else
       head 403
     end
@@ -14,6 +14,6 @@ class EventStreamController < ApplicationController
   private
 
   def channel
-    @channel ||= TahiPusher::Channel.new
+    @channel ||= TahiPusher::Channel.new(channel_name: params[:channel_name])
   end
 end

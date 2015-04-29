@@ -1,6 +1,6 @@
 {{partial "paper/control-bar"}}
 
-<div id="paper-container" class="clearfix {{if sidebarIsEmpty "sidebar-empty"}}">
+<div id="paper-container" class="clearfix {{if noTasks "sidebar-empty"}}">
 
   <aside class="sidebar">
     <div {{action "showActivity" "manuscript"}} class="recent-activity-link">

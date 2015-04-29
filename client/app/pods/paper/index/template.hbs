@@ -1,6 +1,6 @@
 {{partial "paper/control-bar"}}
 
-<div id="paper-container" class="clearfix {{if sidebarIsEmpty 'sidebar-empty'}}">
+<div id="paper-container" class="clearfix {{if sidebarIsEmpty "sidebar-empty"}}">
 
   <aside class="sidebar">
     <div {{action "showActivity" "manuscript"}} class="recent-activity-link">
@@ -17,9 +17,9 @@
     <main>
       <article class="manuscript read-only">
         <h2 id="paper-title" class="manuscript-title-and-placeholder">
-          {{{title}}}
+          {{{model.title}}}
         </h2>
-        <div id="paper-body">{{{body}}}</div>
+        <div id="paper-body">{{{model.body}}}</div>
       </article>
     </main>
   </div>

@@ -1,25 +1,23 @@
 import Ember from 'ember';
 import DocumentDownload from 'tahi/services/document-download';
 
-export default Ember.Controller.extend({
+export default Ember.Mixin.create({
   needs: ['application', 'paper'],
   isAdmin: Ember.computed.alias('currentUser.siteAdmin'),
-
   canViewManuscriptManager: false,
   supportedDownloadFormats: Ember.computed.alias('controllers.paper.supportedDownloadFormats'),
 
   downloadLink: function() {
-    return '/papers/' + (this.get('model.id')) + '/download';
+    return '/papers/' + this.get('model.id') + '/download';
   }.property('model.id'),
-
-  paper: Ember.computed.alias('model'),
 
   logoUrl: function() {
     let logoUrl = this.get('model.journal.logoUrl');
     return (/default-journal-logo/.test(logoUrl)) ? false : logoUrl;
   }.property('model.journal.logoUrl'),
 
-  taskSorting: ['phase.position', 'position'],
+
+  // Tasks:
 
   authorTasks: Ember.computed.filterBy('model.tasks', 'role', 'author'),
 
@@ -37,17 +35,19 @@ export default Ember.Controller.extend({
     if (this.get('model.editors').contains(this.get('currentUser'))) {
       return this.get('model.tasks').filterBy('role', 'reviewer');
     }
-  }.property('tasks.@each.role'),
+  }.property('model.tasks.@each.role'),
 
+  taskSorting:         ['phase.position', 'position'],
   sortedAuthorTasks:   Ember.computed.sort('authorTasks',   'taskSorting'),
   sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting'),
   sortedEditorTasks:   Ember.computed.sort('editorTasks',   'taskSorting'),
 
-  sidebarIsEmpty: function() {
+  noTasks: function() {
     return [this.get('assignedTasks'), this.get('editorTasks'), this.get('authorTasks')].every((taskGroup)=> {
       return Ember.isEmpty(taskGroup);
     });
   }.property('assignedTasks.@each', 'editorTasks.@each', 'authorTasks.@each'),
+
 
   actions: {
     'export': function(downloadType) {

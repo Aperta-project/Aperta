@@ -3,7 +3,7 @@
 `import { test, moduleFor } from 'ember-qunit'`
 
 # TODO use server.respondWith
-moduleFor 'controller:base-paper', 'BasePaperController',
+moduleFor 'controller:paper.index', 'PaperIndexController',
   needs: ['controller:application', 'controller:paper']
   setup: ->
     startApp()

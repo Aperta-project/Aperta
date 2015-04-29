@@ -1,7 +1,7 @@
 ##
 # This class represents the paper in the system.
 class Paper < ActiveRecord::Base
-  include EventStreamNotifier
+  include EventStream::Notifier
 
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers

@@ -1,6 +1,6 @@
 module PlosAuthors
   class PlosAuthor < ActiveRecord::Base
-    include EventStreamNotifier
+    include EventStream::Notifier
 
     acts_as :author, dependent: :destroy
     delegate :completed?, to: :plos_authors_task, prefix: :task, allow_nil: true

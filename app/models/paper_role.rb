@@ -1,5 +1,5 @@
 class PaperRole < ActiveRecord::Base
-  include EventStreamNotifier
+  include EventStream::Notifier
 
   REVIEWER = 'reviewer'
   EDITOR = 'editor'

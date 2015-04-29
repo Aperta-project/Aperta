@@ -1,5 +1,5 @@
 class Author < ActiveRecord::Base
-  include EventStreamNotifier
+  include EventStream::Notifier
 
   actable
   acts_as_list

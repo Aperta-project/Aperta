@@ -1,5 +1,5 @@
 class Figure < ActiveRecord::Base
-  include EventStreamNotifier
+  include EventStream::Notifier
 
   belongs_to :paper
 

@@ -1,10 +1,10 @@
-module EventStreamNotifier
+module EventStream::Notifier
   extend ActiveSupport::Concern
   included do
     after_commit :notify
 
     def notify
-      ActiveSupport::Notifications.instrument(namespace, event_stream_payload)
+      TahiNotifier.notify(event: namespace, payload: event_stream_payload)
     end
 
     def event_stream_payload

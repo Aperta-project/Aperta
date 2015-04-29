@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe EventStreamNotifier do
+describe EventStream::Notifier do
 
   # a model with an event_stream_notifier included
   let(:model) { FactoryGirl.build(:paper, id: 4) }

@@ -1,5 +1,5 @@
 class UserRole < ActiveRecord::Base
-  include EventStreamNotifier
+  include EventStream::Notifier
 
   belongs_to :user, inverse_of: :user_roles
   belongs_to :role, inverse_of: :user_roles

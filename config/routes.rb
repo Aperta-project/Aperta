@@ -84,7 +84,7 @@ Tahi::Application.routes.draw do
       end
       member do
         get "/status/:id", to: "paper_conversions#status"
-        get "activity_feed/:name", to: "papers#activity_feed"
+        get "activity/:name", to: "papers#activity"
         get :export, to: "paper_conversions#export"
         put :heartbeat
         put :submit

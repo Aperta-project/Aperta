@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150420163630) do
+ActiveRecord::Schema.define(version: 20150428211927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
   enable_extension "unaccent"
 
-  create_table "activity_feeds", force: :cascade do |t|
+  create_table "activities", force: :cascade do |t|
     t.string   "feed_name"
     t.integer  "subject_id"
     t.string   "subject_type"
@@ -29,9 +29,9 @@ ActiveRecord::Schema.define(version: 20150420163630) do
     t.datetime "updated_at"
   end
 
-  add_index "activity_feeds", ["subject_id"], name: "index_activity_feeds_on_subject_id", using: :btree
-  add_index "activity_feeds", ["subject_type"], name: "index_activity_feeds_on_subject_type", using: :btree
-  add_index "activity_feeds", ["user_id"], name: "index_activity_feeds_on_user_id", using: :btree
+  add_index "activities", ["subject_id"], name: "index_activities_on_subject_id", using: :btree
+  add_index "activities", ["subject_type"], name: "index_activities_on_subject_type", using: :btree
+  add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
 
   create_table "affiliations", force: :cascade do |t|
     t.integer  "user_id"

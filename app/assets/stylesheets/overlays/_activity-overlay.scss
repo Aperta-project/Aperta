@@ -1,4 +1,4 @@
-.activity-feed-overlay {
+.activity-overlay {
   h1  { text-align: center; }
   td  { padding: 0 15px 25px 0; }
   img { margin-right: 6px; }
@@ -9,7 +9,7 @@
   }
 }
 
-.activity-feed-overlay-message {
+.activity-overlay-message {
   font-size: 17px;
 }
 
@@ -21,7 +21,7 @@
   float: right;
 }
 
-.activity-feed-overlay-user {
+.activity-overlay-user {
   font-weight: bold;
   white-space: nowrap;
 }

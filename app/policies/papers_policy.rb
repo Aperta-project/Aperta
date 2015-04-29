@@ -45,7 +45,7 @@ class PapersPolicy < ApplicationPolicy
     can_view_paper?
   end
 
-  def activity_feed?
+  def activity?
     can_view_paper?
   end
 

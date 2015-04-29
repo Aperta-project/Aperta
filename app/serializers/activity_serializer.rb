@@ -1,4 +1,4 @@
-class ActivityFeedSerializer < ActiveModel::Serializer
+class ActivitySerializer < ActiveModel::Serializer
   has_one :user, include: false, embed: :id
 
   attributes :message,

@@ -57,7 +57,7 @@ class ParticipationsController < ApplicationController
 
   def notify_participation_created
     if participation.valid?
-      ActivityFeed.create(
+      Activity.create(
         feed_name: 'manuscript',
         activity_key: 'participation.created',
         subject: participation.paper,
@@ -68,7 +68,7 @@ class ParticipationsController < ApplicationController
   end
 
   def notify_participation_destroyed
-    ActivityFeed.create(
+    Activity.create(
       feed_name: 'manuscript',
       activity_key: 'participation.destroyed',
       subject: participation.paper,

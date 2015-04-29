@@ -85,7 +85,7 @@ class TasksController < ApplicationController
     if @task_completion_change
       action = task.completed? ? 'complete' : 'incomplete'
       feed_name = task.submission_task? ? 'manuscript' : 'workflow'
-      ActivityFeed.create(
+      Activity.create(
         feed_name: feed_name,
         activity_key: "task.#{action}",
         subject: task.paper,

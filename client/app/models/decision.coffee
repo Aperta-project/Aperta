@@ -7,6 +7,7 @@ Decision = DS.Model.extend
   paper: DS.belongsTo("paper")
   isLatest: DS.attr("boolean")
   invitations: DS.hasMany("invitation")
+  questions: DS.hasMany("question")
   revisionHumanNumber: Em.computed 'revisionNumber', ->
     @get('revisionNumber') + 1
   createdAt: DS.attr("date")

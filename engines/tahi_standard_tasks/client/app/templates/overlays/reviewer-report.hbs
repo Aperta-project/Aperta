@@ -69,3 +69,22 @@
       helpText="<li>Your name and review will not be published with the manuscript.</li>"}}
   </li>
 </ol>
+
+{{# if previousDecisions}}
+  <hr>
+
+  <h3>
+    Review History
+  </h3>
+  {{#each previousDecisions as |decision|}}
+    <h5 class="revision-number">Revision: {{decision.revisionHumanNumber}}</h5>
+    <ol>
+      {{#each decision.questions as |question|}}
+        <li>
+          <div class='question-text'>{{question.question}}</div>
+          <div class='answer-text'>{{question.answer}}</div>
+        </li>
+      {{/each}}
+    </ol>
+  {{/each}}
+{{/if}}

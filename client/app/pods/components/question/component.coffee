@@ -9,7 +9,10 @@ QuestionComponent = Ember.Component.extend
     ident = @get('ident')
     throw new Error("You must specify an ident, set to name attr") unless ident
 
-    question = @get('task.questions').findProperty('ident', ident)
+    if @get('decision')
+      question = @get('decision.questions').findProperty('ident', ident)
+    else
+      question = @get('task.questions').findProperty('ident', ident)
 
     unless question
       task = @get('task')

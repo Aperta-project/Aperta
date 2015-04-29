@@ -19,7 +19,7 @@ module 'Integration: Super AdHoc Card',
   setup: ->
     app = startApp()
     server = setupMockServer()
-    fakeUser = window.currentUser.user
+    fakeUser = window.currentUserData.user
 
     records = paperWithTask('Task'
       id: 1

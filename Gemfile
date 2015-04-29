@@ -5,7 +5,7 @@ ruby "2.2.0"
 
 # Configuration
 group :development, :test, :performance do
-  gem 'dotenv-rails'
+  gem 'dotenv-rails', :require => 'dotenv/rails-now'
 end
 
 # Task Engines

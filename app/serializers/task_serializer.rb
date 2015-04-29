@@ -17,10 +17,4 @@ class TaskSerializer < ActiveModel::Serializer
   def is_metadata_task
     object.submission_task?
   end
-
-  private
-
-  def scoped_user
-    scope.presence || options[:user]
-  end
 end

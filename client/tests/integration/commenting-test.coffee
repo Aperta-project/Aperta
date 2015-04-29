@@ -21,7 +21,7 @@ module 'Integration: Commenting',
     app = startApp()
     server = setupMockServer()
     currentUserId = getCurrentUser().get('id')
-    fakeUser = window.currentUser.user
+    fakeUser = window.currentUserData.user
 
     dashboard =
       dashboards: [

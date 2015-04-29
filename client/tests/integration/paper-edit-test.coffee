@@ -19,7 +19,7 @@ module 'Integration: EditPaper',
   setup: ->
     app = startApp()
     server = setupMockServer()
-    fakeUser = window.currentUser.user
+    fakeUser = window.currentUserData.user
 
     figureTaskId = 94139
 

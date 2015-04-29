@@ -20,6 +20,18 @@ describe ReviewerReportTaskCreator do
     }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(1)
   end
 
+  context "with existing ReviewerReportTask for User" do
+    before do
+      subject.process
+    end
+
+    it "finds existing ReviewerReportTask" do
+      expect {
+        subject.process
+      }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(0)
+    end
+  end
+
   it "adds the assignee as a participant to the ReviewerReportTask" do
     subject.process
     expect(paper.tasks_for_type("TahiStandardTasks::ReviewerReportTask").first.participants).to match_array([assignee])

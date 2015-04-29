@@ -1,5 +1,5 @@
-`import BasePaperController from 'tahi/controllers/base-paper'`
+`import BasePaperController from 'tahi/controllers/base-paper';`
 
 PaperIndexController = BasePaperController.extend()
 
-`export default PaperIndexController`
+`export default PaperIndexController;`

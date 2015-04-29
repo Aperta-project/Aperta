@@ -11,14 +11,23 @@ PaperEditRoute = AuthorizedRoute.extend
 
   heartbeatService: null
 
-  beforeModel: ->
-    initializeVisualEditor(ENV).catch( (err) ->
-      Ember.Logger.error(err) )
-
   model: ->
     paper = @modelFor('paper')
-    new Ember.RSVP.Promise((resolve, reject) ->
+
+    # if paper.get('editorMode') is 'html'
+    #   veInit = initializeVisualEditor(ENV).catch((error) ->
+    #     Ember.Logger.error(error))
+    # else
+    #   veInit = Ember.RSVP.Promise.resolve()
+
+    veInit = initializeVisualEditor(ENV).catch((error) ->
+      Ember.Logger.error(error))
+
+    taskLoad = new Ember.RSVP.Promise((resolve, reject) ->
       paper.get('tasks').then((tasks) -> resolve(paper)))
+
+    Ember.RSVP.all([veInit, taskLoad]).then ->
+      paper
 
   afterModel: (model) ->
     if model.get('editable')
@@ -28,10 +37,22 @@ PaperEditRoute = AuthorizedRoute.extend
       @replaceWith('paper.index', model)
 
   setupController: (controller, model) ->
-    controller.set('model', model)
-    controller.set('commentLooks', @store.all('commentLook'))
+    # paper/edit controller is not used.
+    # Controller is chosen based on Paper document type
+    # @set('editorLookup', 'paper.edit.' + model.get('editorMode') + '-editor')
+    @set('editorLookup', 'paper.edit.' + 'html' + '-editor')
+    editorController = @controllerFor(@get('editorLookup'))
+    editorController.set('model', model)
+    editorController.set('commentLooks', @store.all('commentLook'))
+
     if @currentUser
-      RESTless.authorize(controller, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
+      RESTless.authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
+
+  renderTemplate: (paperEditController, model) ->
+    @render @get('editorLookup'),
+      into: 'application'
+      view: @get('editorLookup')
+      controller: @get('editorLookup')
 
   deactivate: ->
     @endHeartbeat()
@@ -48,8 +69,9 @@ PaperEditRoute = AuthorizedRoute.extend
     lockedBy and lockedBy == @currentUser
 
   closeOverlay: ->
-    controller = @controllerFor('paper.edit')
+    controller = @controllerFor(@get('editorLookup'))
     editor = controller.get('editor')
+
     @disconnectOutlet
       outlet: 'overlay'
       parentView: 'application'
@@ -60,9 +82,9 @@ PaperEditRoute = AuthorizedRoute.extend
   actions:
     viewCard: (task) ->
       paper = @modelFor('paper')
-      redirectParams = ['paper.edit', @modelFor('paper')]
+      redirectParams = ['paper.edit', paper]
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @controllerFor('application').set('overlayBackground', 'paper/edit')
+      @controllerFor('application').set('overlayBackground', @get('editorLookup'))
       @transitionTo('task', paper.id, task.id)
 
     startEditing: ->
@@ -85,23 +107,27 @@ PaperEditRoute = AuthorizedRoute.extend
         @set 'fromSubmitOverlay', false
 
     openFigures: ->
-      controller = @controllerFor('paper.edit')
+      controller = @controllerFor(@get('editorLookup'))
       editor = controller.get('editor')
-      editor.freeze();
+      editor.freeze()
       # do not handle model changes while overlay is open
       controller.disconnectEditor()
       controller.set('hasOverlay', true)
+
+      figureController = @controllerFor('paper/edit/figures')
+      figureController.set('manuscriptEditor', controller.get('editor'))
+
       @render 'paper/edit/figures',
         into: 'application'
         outlet: 'overlay'
-        controller: 'paper/edit/figures'
+        controller: figureController
         model: @modelFor('paper.edit')
 
     openTables: ->
       # TODO
 
     insertFigure: (figureId) ->
-      editor = @controllerFor('paper.edit').get('editor')
+      editor = @controllerFor(@get('editorLookup')).get('editor')
       # NOTE: we need to provide the full HTML representation right away
       @closeOverlay()
       figure = @modelFor('paper.edit').get('figures').findBy('id', figureId)

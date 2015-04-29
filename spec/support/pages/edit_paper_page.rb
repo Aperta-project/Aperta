@@ -68,7 +68,7 @@ class EditPaperPage < Page
   # implemented in ember-cli-visualeditor/models/visual-editor.js.
   def body=(string)
     code = <<HERE
-var editorController = Tahi.__container__.lookup("controller:paper/edit");
+var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
 var editor = editorController.get("editor");
 editor.setCursor(0);
 editor.write("#{string}");

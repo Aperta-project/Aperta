@@ -1,5 +1,5 @@
 class CommentLook < ActiveRecord::Base
-  include EventStream::Notifier
+  include EventStream::Notifiable
 
   belongs_to :user, inverse_of: :comment_looks
   belongs_to :comment, inverse_of: :comment_looks

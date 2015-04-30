@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  include EventStream::Notifier
+  include EventStream::Notifiable
 
   belongs_to :task, inverse_of: :comments
   belongs_to :commenter, class_name: 'User', inverse_of: :comments

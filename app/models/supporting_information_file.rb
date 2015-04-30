@@ -1,5 +1,5 @@
 class SupportingInformationFile < ActiveRecord::Base
-  include EventStream::Notifier
+  include EventStream::Notifiable
 
   belongs_to :paper
 

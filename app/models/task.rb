@@ -1,5 +1,5 @@
 class Task < ActiveRecord::Base
-  include EventStream::Notifier
+  include EventStream::Notifiable
   include TaskTypeRegistration
   include Commentable
 

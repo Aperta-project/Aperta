@@ -1,4 +1,4 @@
-module EventStream::Notifier
+module EventStream::Notifiable
   extend ActiveSupport::Concern
   included do
     after_commit :notify

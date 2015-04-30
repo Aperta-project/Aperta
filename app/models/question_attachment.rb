@@ -1,5 +1,5 @@
 class QuestionAttachment < ActiveRecord::Base
-  include EventStream::Notifier
+  include EventStream::Notifiable
 
   belongs_to :question
 

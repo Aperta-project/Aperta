@@ -22,7 +22,7 @@ Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
   ).observes('model.body')
 
   # called by ember-cli-visualeditor/components/visual-editor (see template for hook)
-  setupEditor: ( (editor) ->
+  setupEditor: (editor) ->
     FigureLabelGenerator = require('tahi-editor-extensions/figures/model/figure-label-generator')['default']
     # register extensions
     editor.registerExtensions(TahiEditorExtensions)

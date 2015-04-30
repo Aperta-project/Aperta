@@ -10,7 +10,7 @@ EditTablesController = Ember.Controller.extend
 
   needs: ['paper/edit']
 
-  manuscriptEditor: Ember.computed.alias('controllers.paper/edit.editor')
+  manuscriptEditor: null
 
   tables: Ember.computed.alias('paper.tables')
 

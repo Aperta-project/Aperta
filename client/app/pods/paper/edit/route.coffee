@@ -70,6 +70,10 @@ PaperEditRoute = AuthorizedRoute.extend
     # do not handle model changes while overlay is open
     controller.disconnectEditor()
     controller.set('hasOverlay', true)
+
+    overlayController = @controllerFor(overlayName)
+    overlayController.set('manuscriptEditor', controller.get('editor'))
+
     @render overlayName,
       into: 'application'
       outlet: 'overlay'
@@ -116,8 +120,6 @@ PaperEditRoute = AuthorizedRoute.extend
         @set 'fromSubmitOverlay', false
 
     openFigures: ->
-      figureController = @controllerFor('paper/edit/figures')
-      figureController.set('manuscriptEditor', controller.get('editor'))
       @openOverlay('paper/edit/figures')
 
     openTables: ->
@@ -134,14 +136,14 @@ PaperEditRoute = AuthorizedRoute.extend
         console.error('No figure with id', figureId)
 
     insertTable: (tableId) ->
-      editor = @controllerFor('paper.edit').get('editor')
+      editor = @controllerFor(@get('editorLookup')).get('editor')
       # NOTE: we need to provide the full HTML representation right away
       @closeOverlay()
       table = @modelFor('paper.edit').get('tables').findBy('id', tableId)
       if table
         editor.getSurfaceView().execute('figure', 'insert', table.toHtml())
       else
-        console.error('No figure with id', figureId)
+        console.error('No figure with id', tableId)
 
     closeOverlay: ->
       @closeOverlay()

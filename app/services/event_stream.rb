@@ -1,45 +1,23 @@
 class EventStream
 
-  attr_accessor :action, :record, :subscription_name
+  attr_reader :record, :channel_name
 
-  def initialize(action, record, subscription_name)
-    @action = action
+  def initialize(record)
     @record = record
-    @subscription_name = subscription_name
   end
 
-  def post
-    Accessibility.new(record).users.each do |user|
-      channel = EventStreamConnection.channel_name(User, user.id)
-      payload = payload_for(user)
-      EventStreamConnection.post_event(channel, payload)
-    end
+  def post(action:)
+    TahiPusher::Channel.new(channel_name: channel_name).push(event_name: action, payload: record.payload)
   end
 
-  def destroy
-    channel = EventStreamConnection::SYSTEM_CHANNEL_NAME
-    EventStreamConnection.post_event(channel, destroyed_payload)
+  def destroyed
+    TahiPusher::Channel.new(channel_name: channel_name).push(event_name: "destroyed", payload: record.destroyed_payload)
   end
 
-  def destroy_for(user)
-    if Accessibility.new(record).disconnected?(user) && user
-      channel = EventStreamConnection.channel_name(User, user.id)
-      EventStreamConnection.post_event(channel, destroyed_payload)
-    end
-  end
 
   private
 
-  def payload_for(user)
-    serializer = record.event_stream_serializer(user)
-    serializer.as_json.merge(action: action, subscription_name: subscription_name).to_json
-  end
-
-  def destroyed_payload
-    { action: "destroyed",
-      type: record.class.base_class.name.demodulize.tableize,
-      ids: [record.id],
-      subscription_name: subscription_name
-    }.to_json
+  def channel_name
+    @channel_name ||= TahiPusher::Channel.name(record.channel_id)
   end
 end

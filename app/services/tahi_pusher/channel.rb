@@ -5,6 +5,11 @@ module TahiPusher
 
     attr_reader :channel_name
 
+    # TODO: make this dynamically built based on model class name
+    def self.name(model_id, private: true)
+      "private-paper_#{model_id}"
+    end
+
     def initialize(channel_name:)
       @channel_name = channel_name
     end
@@ -17,6 +22,10 @@ module TahiPusher
 
     def authenticate(socket_id:)
       Pusher[channel_name].authenticate(socket_id)
+    end
+
+    def push(event_name:, payload:)
+      Pusher.trigger(channel_name, event_name, payload)
     end
 
     def private?

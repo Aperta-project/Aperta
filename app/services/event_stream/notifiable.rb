@@ -4,20 +4,35 @@ module EventStream::Notifiable
     after_commit :notify
 
     def notify
-      TahiNotifier.notify(event: namespace, payload: event_stream_payload)
+      TahiNotifier.notify(event: event_name, payload: event_payload)
     end
 
-    def event_stream_payload
+    def event_payload
       { action: action, record: self }
     end
 
-    def event_stream_serializer(user)
-      active_model_serializer.new(self, user: user)
+    def event_stream_serializer
+      active_model_serializer.new(self)
+    end
+
+    def payload
+      event_stream_serializer.to_json
+    end
+
+    def destroyed_payload
+      {
+        type: self.class.base_class.name.demodulize.tableize,
+        ids: [self.id],
+      }.to_json
+    end
+
+    def channel_id
+      raise NotImplementedError
     end
 
     private
 
-    def namespace
+    def event_name
       "#{klass_name}:#{action}"
     end
 

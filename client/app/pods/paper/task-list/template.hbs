@@ -5,7 +5,7 @@
 {{#if assignedTasks}}
   <div id="paper-assigned-tasks">
     {{#each sortedAssignedTasks as |task|}}
-      {{card-preview paper=paper
+      {{card-preview paper=model
                      task=task
                      commentLooks=commentLooks
                      action="viewCard"}}
@@ -17,7 +17,7 @@
 {{#if editorTasks}}
   <div id="paper-editor-tasks">
     {{#each sortedEditorTasks as |task|}}
-      {{card-preview paper=paper
+      {{card-preview paper=model
                      task=task
                      commentLooks=commentLooks
                      action="viewCard"}}
@@ -29,7 +29,7 @@
 {{#if authorTasks}}
   <div id="paper-metadata-tasks">
     {{#each sortedAuthorTasks as |task|}}
-      {{card-preview paper=paper
+      {{card-preview paper=model
                      task=task
                      commentLooks=commentLooks
                      action="viewCard"}}

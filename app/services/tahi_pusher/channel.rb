@@ -7,7 +7,6 @@ module TahiPusher
     end
 
     def authorized?(user:)
-      return true if public?
       return false unless Paper.exists?(extract_model_id(:paper))
       Accessibility.new(Paper.find(extract_model_id(:paper))).users.include?(user)
     end
@@ -18,14 +17,6 @@ module TahiPusher
 
     def push(event_name:, payload:)
       Pusher.trigger(channel_name, event_name, payload)
-    end
-
-    def private?
-      parsed_channel.has_key?(:private)
-    end
-
-    def public?
-      !private?
     end
 
 

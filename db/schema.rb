@@ -340,6 +340,17 @@ ActiveRecord::Schema.define(version: 20150505210110) do
 
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
 
+  create_table "tables", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.string   "title",      limit: 255
+    t.string   "caption",    limit: 255
+    t.text     "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree
+
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
     t.integer "author_id"
     t.integer "funder_id"

@@ -1,6 +1,8 @@
 /* global require, module */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+var mergeTrees = require('broccoli-merge-trees');
+var pickFiles = require('broccoli-static-compiler');
 
 var app = new EmberApp({
   storeConfigInMeta: false,
@@ -29,6 +31,12 @@ app.import('vendor/jquery.fileupload/jquery.fileupload.js');
 
 // Select 2
 app.import('bower_components/select2/select2.js');
+app.import('bower_components/select2/select2.css');
+var select2Assets = pickFiles('bower_components/select2', {
+  srcDir: '/',
+  files: ['*.gif', '*.png'],
+  destDir: '/assets'
+});
 
 // Bootstrap
 // (css is imported Rails side)
@@ -46,4 +54,4 @@ if (app.env === 'production') {
   app.import('bower_components/ember/ember-template-compiler.js');
 }
 
-module.exports = app.toTree();
+module.exports = mergeTrees([app.toTree(), select2Assets], {overwrite: true});

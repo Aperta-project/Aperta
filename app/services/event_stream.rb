@@ -18,6 +18,6 @@ class EventStream
   private
 
   def channel_name
-    @channel_name ||= TahiPusher::Channel.name(record.channel_id)
+    @channel_name ||= TahiPusher::ChannelName.build(record.channel_model)
   end
 end

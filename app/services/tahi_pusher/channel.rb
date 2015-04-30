@@ -1,14 +1,6 @@
 module TahiPusher
   class Channel
-    CHANNEL_SEPARATOR = "-"
-    MODEL_SEPARATOR   = "_"
-
     attr_reader :channel_name
-
-    # TODO: make this dynamically built based on model class name
-    def self.name(model_id, private: true)
-      "private-paper_#{model_id}"
-    end
 
     def initialize(channel_name:)
       @channel_name = channel_name
@@ -36,18 +28,15 @@ module TahiPusher
       !private?
     end
 
+
     private
+
+    def parsed_channel
+      @parsed_channel ||= ChannelName.parse(channel_name)
+    end
 
     def extract_model_id(model_name)
       parsed_channel.fetch(model_name)
-    end
-
-    # "private-paper_4" --> {private: true, paper: 4}
-    def parsed_channel
-      @parsed_channel ||= channel_name.split(CHANNEL_SEPARATOR).each_with_object({}) do |token, channel|
-        model, id = token.split(MODEL_SEPARATOR)
-        channel[model.to_sym] = id || true
-      end
     end
   end
 end

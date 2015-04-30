@@ -308,8 +308,10 @@ ActiveRecord::Schema.define(version: 20150429152610) do
     t.json     "additional_data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "decision_id"
   end
 
+  add_index "questions", ["decision_id"], name: "index_questions_on_decision_id", using: :btree
   add_index "questions", ["task_id"], name: "index_questions_on_task_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
@@ -443,4 +445,5 @@ ActiveRecord::Schema.define(version: 20150429152610) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "decisions", "papers"
+  add_foreign_key "questions", "decisions"
 end

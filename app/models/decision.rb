@@ -1,6 +1,7 @@
 class Decision < ActiveRecord::Base
   belongs_to :paper
   has_many :invitations
+  has_many :questions
 
   before_validation :increment_revision_number
 

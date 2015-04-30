@@ -49,4 +49,8 @@ Paper = DS.Model.extend
     @get('roles').sort().join(', ')
   ).property('roles.@each', 'roles.[]')
 
+  latestDecision: (->
+    @get('decisions').findBy 'isLatest', true
+  ).property('decisions', 'decisions.@each')
+
 `export default Paper`

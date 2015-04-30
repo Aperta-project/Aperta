@@ -1,8 +1,9 @@
 `import Ember from 'ember'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Utils from 'tahi/services/utils'`
+`import AuthorizedRoute from 'tahi/routes/authorized'`
 
-PaperRoute = Ember.Route.extend
+PaperRoute = AuthorizedRoute.extend
   model: (params) ->
     @store.fetchById('paper', params.paper_id)
 

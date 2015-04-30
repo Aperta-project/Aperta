@@ -5,7 +5,7 @@ module TahiPusher
 
     # <#Paper:1234 id:4> --> "private-paper_4"
     def self.build(model, scope: "private")
-      suffix = [model.class.name, model.id].join(MODEL_SEPARATOR)
+      suffix = [model.class.name.downcase, model.id].join(MODEL_SEPARATOR)
       [scope, suffix].join(CHANNEL_SEPARATOR)
     end
 

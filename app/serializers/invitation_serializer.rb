@@ -20,11 +20,12 @@ class InvitationSerializer < ActiveModel::Serializer
   end
 
   def invitee_full_name
-    return nil unless object.invitee
+    return unless object.invitee.present?
     "#{object.invitee.first_name} #{object.invitee.last_name}"
   end
 
   def invitee_avatar_url
+    return unless object.invitee.present?
     object.invitee.avatar.url
   end
 

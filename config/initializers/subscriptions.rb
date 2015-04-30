@@ -19,7 +19,7 @@ TahiNotifier.subscribe("task:*") do |payload|
   action = payload[:action]
   record = payload[:record]
 
-  EventStream.new(record).post(action: action)
+  EventStream.new(record).post(action: action, channel_scope: record.paper)
 end
 
 TahiNotifier.subscribe("author:destroyed",

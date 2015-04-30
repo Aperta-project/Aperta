@@ -26,10 +26,6 @@ module EventStream::Notifiable
       }.to_json
     end
 
-    def channel_model
-      raise NotImplementedError
-    end
-
     private
 
     def event_name

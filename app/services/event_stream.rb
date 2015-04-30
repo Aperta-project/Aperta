@@ -6,8 +6,10 @@ class EventStream
     @record = record
   end
 
-  def post(action:)
-    TahiPusher::Channel.new(channel_name: channel_name).push(event_name: action, payload: payload_for(action))
+  def post(action:, channel_scope:)
+    payload = payload_for(action)
+    channel_name = TahiPusher::ChannelName.build(channel_scope)
+    TahiPusher::Channel.new(channel_name: channel_name).push(event_name: action, payload: payload)
   end
 
 
@@ -19,9 +21,5 @@ class EventStream
     else
       record.payload
     end
-  end
-
-  def channel_name
-    @channel_name ||= TahiPusher::ChannelName.build(record.channel_model)
   end
 end

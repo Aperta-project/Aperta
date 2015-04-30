@@ -70,21 +70,39 @@
   </li>
 </ol>
 
-{{# if previousDecisions}}
+{{#if previousDecisions}}
   <hr>
 
   <h3>
     Review History
   </h3>
-  {{#each previousDecisions as |decision|}}
-    <h5 class="revision-number">Revision: {{decision.revisionHumanNumber}}</h5>
-    <ol>
-      {{#each decision.questions as |question|}}
-        <li>
-          <div class='question-text'>{{question.question}}</div>
-          <div class='answer-text'>{{question.answer}}</div>
-        </li>
+
+  <div class="previous-decisions">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      {{#each previousDecisions as |decision|}}
+      <div class="panel panel-default decision">
+        <div class="panel-heading" role="tab" id="decision-{{unbound decision.id}}" >
+          <h4 class="panel-title">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{unbound decision.id}}" aria-expanded="false" aria-controls="collapse-{{unbound decision.id}}">
+              Revisions
+            </a>
+          </h4>
+        </div>
+        <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
+          <div class="panel-body">
+            <h5 class="revision-number">Revision: {{decision.revisionHumanNumber}}</h5>
+            <ol>
+            {{#each decision.questions as |question|}}
+              <li>
+                <div class='question-text'>{{question.question}}</div>
+                <div class='answer-text'>{{question.answer}}</div>
+              </li>
+            {{/each}}
+            </ol>
+          </div>
+        </div>
+      </div>
       {{/each}}
-    </ol>
-  {{/each}}
+    </div>
+  </div>
 {{/if}}

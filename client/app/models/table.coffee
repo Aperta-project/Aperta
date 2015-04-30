@@ -1,12 +1,13 @@
-`import Ember from 'ember'`
+`import DS from 'ember-data'`
 
-Table = Ember.Object.extend
+a = DS.attr
 
-  paper: null
-  id: ''
-  title: ''
-  tableHtml: ''
-  caption: ''
+Table = DS.Model.extend
+  paper: DS.belongsTo('paper')
+
+  title: a('string')
+  body: a('string')
+  caption: a('string')
 
   toHtml: ->
     """
@@ -17,17 +18,7 @@ Table = Ember.Object.extend
     </figure>
     """
 
-  save: ->
-    console.log('Saving table')
-    return new Promise((resolve, reject) ->
-      resolve()
-    )
-
-
-__id__ = 0
-
-Table.nextId = (->
-  __id__++
-)
+  saveDebounced: ->
+    Ember.run.debounce(@, @save, 2000);
 
 `export default Table`

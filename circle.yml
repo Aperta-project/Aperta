@@ -45,17 +45,14 @@ database:
 ## Customize test commands
 test:
   override:
-    - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml:
-        parallel: true
-        files:
-          - "spec/**/*_spec.rb"
-          - "engines/*/spec/**/*_spec.rb"
-    - bundle exec rake ember:test      
+    # run only our tests, not all tahi test
+    - "bundle exec rspec --format documentation -P \"`bundle show tahi-assess`/spec/**/*_spec.rb,spec/**/*_spec.rb\" --exclude-pattern \"spec/features/**/*.rb\""
+    - "bundle exec rake assets:precompile"
 
 ## Customize heroku deployment
 deployment:
   staging:
-    branch: master
+    branch: assess
     commands:
-      - git push git@heroku.com:tahi-staging.git $CIRCLE_SHA1:refs/heads/master
-      - heroku run rake db:migrate --app tahi-staging
+      - git push git@heroku.com:tahi-assess.git -f $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app tahi-assess

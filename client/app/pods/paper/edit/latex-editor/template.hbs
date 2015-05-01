@@ -1,7 +1,7 @@
 {{partial "paper/control-bar"}}
 
 <div class="paper-toolbar">
-  {{partial "paper/edit/html-editor/toolbar"}}
+  {{partial "paper/edit/latex-editor/toolbar"}}
 </div>
 
 <div id="paper-container" class="clearfix paper-container-html {{if noTasks "sidebar-empty"}}">
@@ -25,11 +25,10 @@
         {{/if}}
       </div>
       <div id="paper-body">
-        {{visual-editor viewName="editor"
-                        initializerContext=controller
-                        initializer=controller.setupEditor}}
+        CodeMirror goes here
       </div>
 
     </article>
   </div>
 </div>
+

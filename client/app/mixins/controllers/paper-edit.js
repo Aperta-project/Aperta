@@ -62,12 +62,6 @@ export default Ember.Mixin.create({
     Ember.run.debounce(this, this.savePaper, 2000);
   },
 
-  paperBodyDidChange: function() {
-    if (!this.get('isEditing')) {
-      this.updateEditor();
-    }
-  }.observes('model.body'),
-
   actions: {
     toggleEditing() {
       if (this.get('model.lockedBy')) {

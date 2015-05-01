@@ -260,9 +260,9 @@ ActiveRecord::Schema.define(version: 20150618161423) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.string   "paper_type",        limit: 255
-    t.boolean  "submitted",                     default: false,  null: false
-    t.integer  "journal_id",                                     null: false
+    t.string   "paper_type"
+    t.boolean  "submitted",         default: false,  null: false
+    t.integer  "journal_id",                         null: false
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
@@ -270,7 +270,7 @@ ActiveRecord::Schema.define(version: 20150618161423) do
     t.integer  "striking_image_id"
     t.boolean  "editable",          default: true
     t.text     "doi"
-    t.string   "editor_mode",                   default: "html", null: false
+    t.string   "editor_mode",       default: "html", null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -379,11 +379,36 @@ ActiveRecord::Schema.define(version: 20150618161423) do
     t.string   "title"
     t.string   "caption"
     t.text     "body"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree
+
+  create_table "tahi_assess_assistants", force: :cascade do |t|
+    t.integer  "task_id"
+    t.string   "first_name"
+    t.string   "middle_initial"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "department"
+    t.string   "title"
+    t.string   "affiliation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tahi_assess_assistants", ["task_id"], name: "index_tahi_assess_assistants_on_task_id", using: :btree
+
+  create_table "tahi_assess_notepads", force: :cascade do |t|
+    t.integer  "user_id",                 null: false
+    t.integer  "paper_id",                null: false
+    t.text     "body",       default: ""
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tahi_assess_notepads", ["user_id", "paper_id"], name: "index_tahi_assess_notepads_on_user_id_and_paper_id", unique: true, using: :btree
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
     t.integer "author_id"

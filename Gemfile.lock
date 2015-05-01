@@ -17,6 +17,13 @@ GIT
       activerecord (>= 3.0)
 
 GIT
+  remote: https://a32661883ad21e1b710268e7e73e39530e1cab95:x-oauth-basic@github.com/PLOS/tahi-assess
+  revision: 5fc7903efd9b95019ad7e076a824671117039807
+  specs:
+    tahi-assess (0.0.1)
+      rails (~> 4.2.0, < 4.3)
+
+GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
   revision: 934d405800c68d011dc86da96d53c479e0e90675
   specs:
@@ -647,6 +654,7 @@ DEPENDENCIES
   sidetiq
   simplecov
   sinatra
+  tahi-assess!
   tahi-assign_team!
   tahi_epub!
   tahi_standard_tasks!
@@ -659,6 +667,3 @@ DEPENDENCIES
   unf
   vcr
   webmock
-
-BUNDLED WITH
-   1.10.3

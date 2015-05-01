@@ -9,6 +9,7 @@ group :development, :test, :performance do
 end
 
 # Task Engines
+gem 'tahi-assess', git: 'https://a32661883ad21e1b710268e7e73e39530e1cab95:x-oauth-basic@github.com/PLOS/tahi-assess'
 gem 'plos_authors', path: 'engines/plos_authors'
 gem 'tahi_standard_tasks', path: 'engines/tahi_standard_tasks'
 gem 'tahi_upload_manuscript', path: 'engines/tahi_upload_manuscript'

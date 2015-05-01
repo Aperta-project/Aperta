@@ -45,13 +45,13 @@ database:
 ## Customize test commands
 test:
   override:
-    - bin/circleci.sh:
-        parallel: true
+    # run only our tests, not all tahi test
+    - "bundle exec rspec --format documentation -P \"`bundle show tahi-assess`/spec/**/*_spec.rb,spec/**/*_spec.rb\" --exclude-pattern \"spec/features/**/*.rb\""
 
 ## Customize heroku deployment
 deployment:
   staging:
-    branch: master
+    branch: assess
     commands:
-      - git push git@heroku.com:tahi-staging.git $CIRCLE_SHA1:refs/heads/master
-      - heroku run rake db:migrate --app tahi-staging
+      - git push git@heroku.com:tahi-assess.git -f $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app tahi-assess

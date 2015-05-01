@@ -352,6 +352,20 @@ ActiveRecord::Schema.define(version: 20150514201530) do
   end
 
   add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree
+  create_table "tahi_assess_assistants", force: :cascade do |t|
+    t.integer  "task_id"
+    t.string   "first_name"
+    t.string   "middle_initial"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "department"
+    t.string   "title"
+    t.string   "affiliation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tahi_assess_assistants", ["task_id"], name: "index_tahi_assess_assistants_on_task_id", using: :btree
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
     t.integer "author_id"

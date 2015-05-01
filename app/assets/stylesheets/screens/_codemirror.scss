@@ -1,0 +1,17 @@
+.code-mirror-split-view {
+  @include display(flex);
+  @include align-items(stretch);
+}
+
+.code-mirror-split {
+  @include flex-grow(1);
+  @include flex-shrink(0);
+  @include flex-basis(50%);
+  padding: 2rem;
+}
+
+.code-mirror-split--left {
+}
+
+.code-mirror-split--right {
+}

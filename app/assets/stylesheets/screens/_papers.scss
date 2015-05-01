@@ -65,7 +65,7 @@ html.control-bar-sub-nav-active #paper-container {
 #paper-container .manuscript-container {
   position: relative;
   background: $tahi-grey-xlight;
-  width: $tahi-paper-width-with-sidebar;
+  width: calc(100% - #{$paper-edit-sidebar-width} - 1px);
 }
 
 .paper-toolbar {
@@ -109,7 +109,7 @@ html.control-bar-sub-nav-active #paper-container {
 }
 
 .manuscript {
-  background: $tahi-grey-xlight;
+  background: #fff;
   overflow-x:hidden;
   font-family: $tahi-article-font-family;
 }
@@ -121,7 +121,7 @@ html.control-bar-sub-nav-active #paper-container {
   border-right: 1px solid $tahi-grey-light;
   top: 0;
   bottom: 0;
-  left: $tahi-paper-width-with-sidebar;
+  right: $paper-edit-sidebar-width;
 }
 
 // title contenteditable
@@ -130,7 +130,6 @@ html.control-bar-sub-nav-active #paper-container {
 
 .manuscript-title-and-placeholder {
   padding: 50px 50px 20px 50px;
-  background: $tahi-white;
 }
 
 #paper-title {
@@ -140,9 +139,11 @@ html.control-bar-sub-nav-active #paper-container {
 
 #paper-body {
   background: $tahi-white;
-  padding: 30px 50px;
   min-height: 600px;
 }
+  .paper-container.html  #paper-body { padding: 30px 50px; }
+  .paper-container-latex #paper-body { padding: 30px 50px 30px 0; }
+
 
 .manuscript.read-only {
   cursor: default;

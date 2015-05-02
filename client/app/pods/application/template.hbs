@@ -4,18 +4,26 @@
   </div>
 
   {{#if isLoggedIn}}
-    {{#link-to "profile" class="navigation-item navigation-item--account"}}
-      <img src={{currentUser.avatarUrl}} class="user-thumbnail">
-      <span>{{unbound currentUser.fullName}}</span>
-    {{/link-to}}
+    <div {{action "hideNavigation"}}>
+      {{#link-to "profile" class="navigation-item navigation-item--account"}}
+        <img src={{currentUser.avatarUrl}} class="user-thumbnail">
+        <span>{{unbound currentUser.fullName}}</span>
+      {{/link-to}}
+    </div>
 
-    {{link-to "Dashboard" "dashboard" class="navigation-item"}}
+    <div {{action "hideNavigation"}}>
+      {{link-to "Dashboard" "dashboard" class="navigation-item"}}
+    </div>
 
     {{#if canViewFlowManagerLink}}
-      {{link-to "Flow Manager" "flow_manager" class="navigation-item"}}
+      <div {{action "hideNavigation"}}>
+        {{link-to "Flow Manager" "flow_manager" class="navigation-item"}}
+      </div>
     {{/if}}
     {{#if canViewAdminLinks}}
-      {{link-to "Admin" "admin" class="navigation-item navigation-item--admin"}}
+      <div {{action "hideNavigation"}}>
+        {{link-to "Admin" "admin" class="navigation-item navigation-item--admin"}}
+      </div>
     {{/if}}
 
      <a class="navigation-item" href="/users/sign_out"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign Out</a>
@@ -23,7 +31,9 @@
 
   <hr>
 
-  <a href="#" class="navigation-item navigation-item-feedback" {{action "feedback"}}>Give Feedback on Tahi</a>
+  <div {{action "hideNavigation"}}>
+    <a href="#" class="navigation-item navigation-item-feedback" {{action "feedback"}}>Give Feedback on Tahi</a>
+  </div>
 </div>
 
 <div class="main-content">

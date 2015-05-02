@@ -23,7 +23,7 @@ class TablesController < ApplicationController
   private
 
   def paper
-    @paper ||= Paper.find(params[:paper_id])
+    @paper ||= Paper.find(params[:table][:paper_id])
   end
 
   def table

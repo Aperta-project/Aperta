@@ -343,7 +343,7 @@ ActiveRecord::Schema.define(version: 20150505210110) do
   create_table "tables", force: :cascade do |t|
     t.integer  "paper_id"
     t.string   "title",      limit: 255
-    t.string   "caption",    limit: 255
+    t.string   "caption"
     t.text     "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

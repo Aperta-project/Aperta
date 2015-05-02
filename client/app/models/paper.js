@@ -6,6 +6,7 @@ export default DS.Model.extend({
   decisions: DS.hasMany('decision'),
   editors: DS.hasMany('user'),
   figures: DS.hasMany('figure', { inverse: 'paper' }),
+  tables: DS.hasMany('table', { inverse: 'paper' }),
   journal: DS.belongsTo('journal'),
   lockedBy: DS.belongsTo('user'),
   phases: DS.hasMany('phase'),

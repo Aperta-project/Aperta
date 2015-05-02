@@ -38,7 +38,6 @@ Controller = Ember.Controller.extend FileUploadMixin,
 
       @store.pushPayload('figure', data)
       figure = @store.getById('figure', data.figure.id)
-
       @get('paper.figures').pushObject(figure)
 
     changeStrikingImage: (newValue) ->

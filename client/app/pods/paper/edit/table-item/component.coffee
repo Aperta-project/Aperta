@@ -124,9 +124,9 @@ TableItemComponent = Ember.Component.extend
     saveTable: ->
       @saveTableDebounced()
 
-    cancelDestroyAttachment: -> @set 'destroyState', false
+    cancelDestroyTable: -> @set 'destroyState', false
 
-    confirmDestroyAttachment: -> @set 'destroyState', true
+    confirmDestroyTable: -> @set 'destroyState', true
 
     destroyTable: ->
       @$().fadeOut 250, =>

@@ -26,10 +26,11 @@ EditTablesController = Ember.Controller.extend
           @set('lastState', newState)
 
     addTable: ->
-      @get('paper').get('tables').pushObject(Table.create(
-        id: Table.nextId()
-        title: ''
-        tableHtml: """
+      table = @store.createRecord 'table',
+        #id: Table.uuid()
+        paper: @get('paper')
+        title: 'Enter title here'
+        body: """
          <table>
            <thead><tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th></tr></thead>
            <tbody>
@@ -44,11 +45,15 @@ EditTablesController = Ember.Controller.extend
            </tbody>
          </table>
         """
-        caption: ''
-      ))
+        caption: 'Enter caption here'
+      @get('paper.tables').pushObject(table)
+      table.save().then =>
+        @get('paper').save()
 
     destroyTable: (table) ->
-      @get('paper').get('tables').removeObject(table)
-
+      console.log('Destroying table', table.get('id'))
+      @get('paper.tables').removeObject(table)
+      table.destroyRecord().then =>
+        @get('paper').save()
 
 `export default EditTablesController`

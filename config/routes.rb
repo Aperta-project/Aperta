@@ -82,6 +82,7 @@ Tahi::Application.routes.draw do
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show
       resources :figures, only: :create
+      resources :tables, only: :create
       resources :tasks, only: [:update, :create, :destroy] do
         resources :comments, only: :create
       end

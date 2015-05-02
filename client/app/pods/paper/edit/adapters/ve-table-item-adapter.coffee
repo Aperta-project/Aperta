@@ -31,28 +31,29 @@ VETableItemAdapter = Ember.Object.extend
 
     @propertyNodes =
       title: titleNode
-      tableHtml: tableNode
+      body: tableNode
       caption: captionNode
     @cachedValues =
       title: table.get('title')
-      tableHtml: table.get('tableHtml')
+      body: table.get('body')
       caption: table.get('caption')
   ).on('init')
-
 
   connect: ->
     # only title and caption can be changed via 'VisualEditor'
     # The image is handled emberly
     table = @get('table')
     for propertyName in @observedProperties
-      @propertyNodes[propertyName].connect @,
-        "change": @propertyEdited
+      if @propertyNodes[propertyName]
+        @propertyNodes[propertyName].connect @,
+          "change": @propertyEdited
     return @
 
   disconnect: ->
     table = @get('table')
     for propertyName in @observedProperties
-      @propertyNodes[propertyName].disconnect @
+      if @propertyNodes[propertyName]
+        @propertyNodes[propertyName].disconnect @
     return @
 
   propertyEdited: (propertyName, newValue) ->

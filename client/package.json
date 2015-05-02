@@ -36,7 +36,7 @@
     "broccoli-static-compiler": "0.2.1",
     "express": "^4.8.5",
     "glob": "^4.0.5",
-    "tahi-editor-extensions": "substance/tahi-editor-extensions#65ece4182b98ae610548b286cd5419f2fceb5cdf"
+    "tahi-editor-extensions": "substance/tahi-editor-extensions#2e0987fc381db78b7ab1e052001ec9a534eb80e3"
   },
   "ember-addon": {
     "paths": [

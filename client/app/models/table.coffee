@@ -13,7 +13,7 @@ Table = DS.Model.extend
     """
     <figure itemscope data-id="#{@get('id')}" data-type="table">
       <h1 itemprop="title">#{@get('title')}</h1>
-      #{@get('tableHtml')}
+      #{@get('body')}
       <figcaption>#{@get('caption')}</figcaption>
     </figure>
     """

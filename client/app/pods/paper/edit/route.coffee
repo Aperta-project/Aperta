@@ -14,6 +14,7 @@ PaperEditRoute = AuthorizedRoute.extend
     paper = @modelFor('paper')
     editorInit = Ember.RSVP.Promise.resolve()
 
+    # Yuck
     if paper.get('editorMode') is 'html'
       editorInit = initializeVisualEditor(ENV).catch((error) ->
         Ember.Logger.error(error))
@@ -64,14 +65,16 @@ PaperEditRoute = AuthorizedRoute.extend
 
   closeOverlay: ->
     controller = @controllerFor(@get('editorLookup'))
-    editor = controller.get('editor')
 
     @disconnectOutlet
       outlet: 'overlay'
       parentView: 'application'
     controller.set('hasOverlay', false)
-    controller.connectEditor()
-    editor.unfreeze()
+
+    # Yuck:
+    if @modelFor('paper').get('editorMode') is 'html'
+      controller.connectEditor()
+      controller.get('editor').unfreeze()
 
   actions:
     viewCard: (task) ->

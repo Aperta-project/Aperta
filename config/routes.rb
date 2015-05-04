@@ -67,7 +67,7 @@ Tahi::Application.routes.draw do
     end
     resources :flows, only: [:show, :create, :update, :destroy]
     resources :formats, only: [:index]
-    resources :invitations, only: [:create, :destroy] do
+    resources :invitations, only: [:index, :create, :destroy] do
       put :accept, on: :member
       put :reject, on: :member
     end

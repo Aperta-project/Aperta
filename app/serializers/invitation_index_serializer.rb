@@ -1,4 +1,4 @@
-class InvitationSerializer < ActiveModel::Serializer
+class InvitationIndexSerializer < ActiveModel::Serializer
   attributes :id,
              :state,
              :title,
@@ -6,9 +6,8 @@ class InvitationSerializer < ActiveModel::Serializer
              :email,
              :invitation_type,
              :created_at,
-             :updated_at
-
-  has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
+             :updated_at,
+             :invitee_id
 
   def title
     object.paper.title

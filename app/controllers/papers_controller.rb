@@ -9,7 +9,7 @@ class PapersController < ApplicationController
   respond_to :json
 
   def index
-    page = (params[:page_number] || 2).to_i
+    page = (params[:page_number] || 1).to_i
     papers = PaperRole.most_recent_for(current_user).page(page).map(&:paper)
     respond_with(papers, each_serializer: LitePaperSerializer)
   end

@@ -22,10 +22,6 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
     $('#paper-body').attr('style', this.get('controller.model.journal.manuscriptCss'));
   }.on('didInsertElement'),
 
-  disableEditingInitially: function() {
-    this.set('controller.lockedBy', null);
-  }.on('didInsertElement'),
-
   subNavVisibleDidChange: function() {
     if (this.get('subNavVisible')) {
       $('.paper-toolbar').css('top', '103px');

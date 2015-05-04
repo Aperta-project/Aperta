@@ -41,7 +41,7 @@ export default Ember.Component.extend({
 
   _windowResizeSetup: function(){
     $(window).on('resize.codemirror', ()=>{
-      var height = Math.round(window.innerHeight - $('.CodeMirror').offset().top) - 40;
+      let height = Math.round(window.innerHeight - $('.CodeMirror').offset().top) - 40;
       this.get('codeMirror').setSize(null, height);
       $('#paper-container .double-pane').css('height', height);
       this.refresh();
@@ -58,7 +58,7 @@ export default Ember.Component.extend({
   },
 
   _loadScripts: function() {
-    var scripts = [
+    let scripts = [
       '/codemirror/codemirror.min.js',
       '/codemirror/mode/stex.js'
     ];
@@ -71,7 +71,7 @@ export default Ember.Component.extend({
   },
 
   _initCodemirror: function() {
-    var codeMirror = CodeMirror.fromTextArea(this.get('element'), {
+    let codeMirror = CodeMirror.fromTextArea(this.get('element'), {
       lineNumbers:     this.get('lineNumbers'),
       lineWrapping:    this.get('lineWrapping'),
       readOnly:        this.get('readOnly'),
@@ -109,7 +109,7 @@ export default Ember.Component.extend({
    * @method _bindCodeMirrorEvent
    */
   _bindCodeMirrorEvent: function(event, target, method) {
-    var callback = Ember.run.bind(target, method);
+    let callback = Ember.run.bind(target, method);
 
     this.get('codeMirror').on(event, callback);
 
@@ -164,7 +164,7 @@ export default Ember.Component.extend({
   },
 
   _valueDidChange: function() {
-    var codeMirror = this.get('codeMirror'),
+    let codeMirror = this.get('codeMirror'),
         value = this.get('value');
 
     if (value !== codeMirror.getValue()) {

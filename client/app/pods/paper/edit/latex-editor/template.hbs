@@ -28,6 +28,7 @@
       <div class="code-mirror-split-view">
         <div id="paper-body" class="code-mirror-split code-mirror-split--left">
           {{code-mirror-editor value=model.body
+                               readOnly=cannotEdit
                                mode="stex"}}
         </div>
         <div class="code-mirror-split code-mirror-split--right">

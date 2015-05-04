@@ -1,3 +1,7 @@
-<img class="edit-paper-stop-icon {{if isEditing "" "hidden"}}" src="/images/stop-sign.svg">
-<span class="edit-paper-start-icon glyphicon {{iconClass}} {{if isEditing "hidden"}}"></span>
+{{#if isEditing}}
+  <img class="edit-paper-stop-icon" src="/images/stop-sign.svg">
+{{else}}
+  <span class="edit-paper-start-icon glyphicon {{iconClass}}"></span>
+{{/if}}
+
 <span class="edit-paper-prompt">{{prompt}}</span>

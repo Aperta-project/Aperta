@@ -1,5 +1,7 @@
 <div class="editor-toolbar">
-  {{toggle-paper-editable action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
+  {{toggle-paper-editable action="toggleEditing"
+                          canEdit=canToggleEditing
+                          isEditing=lockedByCurrentUser}}
 
   {{#if noTasks}}
     <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allMetadataTasksCompleted "button--green" "button--disabled"}}">

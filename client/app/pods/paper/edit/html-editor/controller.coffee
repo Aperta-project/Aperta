@@ -16,7 +16,7 @@ Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
   hasOverlay: false
 
   paperBodyDidChange: ( ->
-    unless @get('isEditing')
+    unless @get('lockedByCurrentUser')
       @updateEditor()
   ).observes('model.body')
 

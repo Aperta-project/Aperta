@@ -1,5 +1,4 @@
 `import Ember from 'ember'`
-`import LazyLoader from 'tahi/mixins/routes/lazy-loader'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Heartbeat from 'tahi/services/heartbeat'`
 `import ENV from 'tahi/config/environment'`
@@ -12,20 +11,17 @@ PaperEditRoute = Ember.Route.extend
 
   model: ->
     paper = @modelFor('paper')
+    editorInit = Ember.RSVP.Promise.resolve()
 
-    # if paper.get('editorMode') is 'html'
-    #   veInit = initializeVisualEditor(ENV).catch((error) ->
-    #     Ember.Logger.error(error))
-    # else
-    #   veInit = Ember.RSVP.Promise.resolve()
-
-    veInit = initializeVisualEditor(ENV).catch((error) ->
-      Ember.Logger.error(error))
+    # Yuck
+    if paper.get('editorMode') is 'html'
+      editorInit = initializeVisualEditor(ENV).catch((error) ->
+        Ember.Logger.error(error))
 
     taskLoad = new Ember.RSVP.Promise((resolve, reject) ->
       paper.get('tasks').then((tasks) -> resolve(paper)))
 
-    Ember.RSVP.all([veInit, taskLoad]).then ->
+    Ember.RSVP.all([editorInit, taskLoad]).then ->
       paper
 
   afterModel: (model) ->
@@ -38,8 +34,7 @@ PaperEditRoute = Ember.Route.extend
   setupController: (controller, model) ->
     # paper/edit controller is not used.
     # Controller is chosen based on Paper document type
-    # @set('editorLookup', 'paper.edit.' + model.get('editorMode') + '-editor')
-    @set('editorLookup', 'paper.edit.' + 'html' + '-editor')
+    @set('editorLookup', 'paper.edit.' + model.get('editorMode') + '-editor')
     editorController = @controllerFor(@get('editorLookup'))
     editorController.set('model', model)
     editorController.set('commentLooks', @store.all('commentLook'))
@@ -69,14 +64,16 @@ PaperEditRoute = Ember.Route.extend
 
   closeOverlay: ->
     controller = @controllerFor(@get('editorLookup'))
-    editor = controller.get('editor')
 
     @disconnectOutlet
       outlet: 'overlay'
       parentView: 'application'
     controller.set('hasOverlay', false)
-    controller.connectEditor()
-    editor.unfreeze()
+
+    # Yuck:
+    if @modelFor('paper').get('editorMode') is 'html'
+      controller.connectEditor()
+      controller.get('editor').unfreeze()
 
   actions:
     viewCard: (task) ->

@@ -22,16 +22,12 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
     $('#paper-body').attr('style', this.get('controller.model.journal.manuscriptCss'));
   }.on('didInsertElement'),
 
-  disableEditingInitially: function() {
-    this.set('controller.lockedBy', null);
-  }.on('didInsertElement'),
-
   subNavVisibleDidChange: function() {
     if (this.get('subNavVisible')) {
-      $('.editor-toolbar').css('top', '103px');
+      $('.paper-toolbar').css('top', '103px');
       $('html').addClass('control-bar-sub-nav-active');
     } else {
-      $('.editor-toolbar').css('top', '60px');
+      $('.paper-toolbar').css('top', '60px');
       $('html').removeClass('control-bar-sub-nav-active');
     }
   }.observes('subNavVisible'),

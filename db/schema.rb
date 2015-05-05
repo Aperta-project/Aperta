@@ -238,6 +238,7 @@ ActiveRecord::Schema.define(version: 20150429152610) do
     t.boolean  "editable",                      default: true
     t.text     "doi"
     t.string   "editor_mode",       default: "html"
+    t.string   "editor_mode",       default: "html", null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

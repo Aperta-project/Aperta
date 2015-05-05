@@ -1,6 +1,5 @@
 `import Ember from 'ember'`
 
-PaperController = Ember.Controller.extend
-  supportedDownloadFormats: []
+PaperController = Ember.Controller.extend()
 
 `export default PaperController`

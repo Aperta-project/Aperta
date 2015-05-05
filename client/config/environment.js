@@ -13,7 +13,9 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       }
     },
-    APP: {},
+    APP: {
+      iHatExportFormats: ['docx']
+    },
 
     'ember-cli-visualeditor': {
       assetsRoot: '/'

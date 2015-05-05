@@ -9,16 +9,6 @@ PaperRoute = Ember.Route.extend
   setupController: (controller, model) ->
     controller.set('model', model)
 
-    setFormats = (data) ->
-      if !data then return # IHAT_URL is not set in rails.
-      Ember.run ->
-        supportedExportFormats = []
-        for dataType in data.export_formats
-          supportedExportFormats.pushObject({format: dataType, icon: "svg/#{dataType}-icon"})
-        controller.set('supportedDownloadFormats', supportedExportFormats)
-
-    Ember.$.getJSON('/api/formats', setFormats)
-
   actions:
     addContributors: ->
       paper = @modelFor('paper')

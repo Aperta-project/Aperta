@@ -1,11 +1,17 @@
 import Ember from 'ember';
 import DocumentDownload from 'tahi/services/document-download';
+import ENV from 'tahi/config/environment';
 
 export default Ember.Mixin.create({
   needs: ['application', 'paper'],
   isAdmin: Ember.computed.alias('currentUser.siteAdmin'),
   canViewManuscriptManager: false,
-  supportedDownloadFormats: Ember.computed.alias('controllers.paper.supportedDownloadFormats'),
+
+  supportedDownloadFormats: function() {
+    return ENV.APP.iHatExportFormats.map(formatType => {
+      return {format: formatType, icon: `svg/${formatType}-icon`};
+    });
+  }.property(),
 
   downloadLink: function() {
     return '/papers/' + this.get('model.id') + '/download';

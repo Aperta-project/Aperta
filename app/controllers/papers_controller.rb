@@ -10,8 +10,13 @@ class PapersController < ApplicationController
 
   def index
     page = (params[:page_number] || 1).to_i
-    papers = PaperRole.most_recent_for(current_user).page(page).map(&:paper)
-    respond_with(papers, each_serializer: LitePaperSerializer)
+    #TODO: This query should be less weird when dashboard is re-assessed
+    paper_roles = PaperRole.most_recent_for(current_user).page(page)
+    papers = paper_roles.map(&:paper)
+    respond_with(papers, {
+      each_serializer: LitePaperSerializer,
+      meta: { total_pages: paper_roles.total_pages }
+    })
   end
 
   def show

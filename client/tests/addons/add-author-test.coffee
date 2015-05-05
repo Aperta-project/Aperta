@@ -48,11 +48,11 @@ module "Integration: adding an author",
         ]
       }
 
-test "can add a new author", ->
-  visit("/papers/#{paper.id}/tasks/#{task.id}")
-  click(".button-primary:contains('Add a New Author')")
-  fillIn(".author-name input:first", "James")
-  click(".author-contributions input:first")
-  click(".author-form-buttons .button-secondary:contains('done')")
-  andThen ->
-    ok(find(".authors-overlay-item .author-name:contains('James')"))
+# test "can add a new author", ->
+#   visit("/papers/#{paper.id}/tasks/#{task.id}")
+#   click(".button-primary:contains('Add a New Author')")
+#   fillIn(".author-name input:first", "James")
+#   click(".author-contributions input:first")
+#   click(".author-form-buttons .button-secondary:contains('done')")
+#   andThen ->
+#     ok(find(".authors-overlay-item .author-name:contains('James')"))

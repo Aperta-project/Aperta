@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150429152610) do
+ActiveRecord::Schema.define(version: 20150505210110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -237,7 +237,6 @@ ActiveRecord::Schema.define(version: 20150429152610) do
     t.datetime "last_heartbeat_at"
     t.boolean  "editable",                      default: true
     t.text     "doi"
-    t.string   "editor_mode",       default: "html"
     t.string   "editor_mode",       default: "html", null: false
   end
 

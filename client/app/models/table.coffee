@@ -9,6 +9,9 @@ Table = DS.Model.extend
   body: a('string')
   caption: a('string')
 
+  createdAt: a('date')
+  updatedAt: a('date')
+
   toHtml: ->
     """
     <figure itemscope data-id="#{@get('id')}" data-type="table">

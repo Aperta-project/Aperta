@@ -1,14 +1,16 @@
 `import Ember from 'ember'`
 `import TahiEditorExtensions from 'tahi-editor-extensions/index'`
-`import VETableItemAdapter from '../adapters/ve-table-item-adapter'`
+`import TableCollectionAdapter from 'tahi/pods/paper/edit/adapters/table-collection-adapter';`
 
 TableItemComponent = Ember.Component.extend
 
   classNameBindings: ['destroyState:_destroy', 'editState:_edit']
 
+  paper: null
+  table: null
+
   manuscriptEditor: null
   editor: null
-  table: null
   adapter: null
 
   label: (->
@@ -48,22 +50,14 @@ TableItemComponent = Ember.Component.extend
           manuscriptEditor.getDocument().getService('table-labels')
         )
     )
-
+    paper = @get('paper')
     table = @get('table');
     editor.fromHtml(table.toHtml())
-
-    docNode = editor.getDocumentNode()
-    tableItemNode = null
-    docNode.traverseBFS( (node) ->
-      if node.type == 'figure'
-        tableItemNode = node
-        #break traversal
-        return false
-    )
-    adapter = VETableItemAdapter.create(
-      component: @
-      table: table
-      node: tableItemNode
+    doc = editor.getDocument();
+    adapter = TableCollectionAdapter.create(
+      doc: doc
+      paper: paper
+      editor: editor
     )
     @set('adapter', adapter)
     @set('editor', editor)
@@ -75,21 +69,17 @@ TableItemComponent = Ember.Component.extend
 
   startEditing: ->
     editor = @get('editor')
-    adapter = @get('adapter')
     unless @get('isEditing')
       @set('isEditing', true)
-      adapter.connect()
       editor.connect @,
         "state-changed": @onSelectionChange
       editor.enable()
 
   stopEditing: ->
     editor = @get('editor')
-    adapter = @get('adapter')
     if @get('isEditing')
       @set('isEditing', false)
       editor.disable()
-      adapter.disconnect()
       editor.disconnect @
       @get('table').save()
 
@@ -100,29 +90,17 @@ TableItemComponent = Ember.Component.extend
       @startEditing()
 
   dispose: ( ->
-    @get('adapter').disconnect()
+    @get('adapter').destroy()
     @get('editor').disconnect @
   ).on('willDestroyElement')
 
   onSelectionChange: (newState) ->
     @sendAction('updateToolbar', newState)
 
-  saveTable: ->
-    @get('table').save().then(=>
-      @set('isSaving', false)
-    )
-
-  saveTableDebounced: ->
-    @set('isSaving', true)
-    Ember.run.debounce(@, @saveTable, 2000);
-
   actions:
     insertTable: ->
       table = @get('table');
       @sendAction('insertTable', table.get('id'))
-
-    saveTable: ->
-      @saveTableDebounced()
 
     cancelDestroyTable: -> @set 'destroyState', false
 

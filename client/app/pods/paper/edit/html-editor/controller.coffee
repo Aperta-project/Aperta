@@ -2,7 +2,9 @@
 `import PaperBaseMixin from 'tahi/mixins/controllers/paper-base';`
 `import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';`
 `import TahiEditorExtensions from 'tahi-editor-extensions/index';`
-`import FigureCollectionAdapter from 'tahi/pods/paper/edit/adapters/ve-figure-collection-adapter';`
+
+`import VeFigureCollectionAdapter from 'tahi/pods/paper/edit/adapters/ve-figure-collection-adapter';`
+`import TableCollectionAdapter from 'tahi/pods/paper/edit/adapters/table-collection-adapter';`
 
 Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
   # initialized by paper/edit/view
@@ -39,19 +41,30 @@ Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
             return documentModel
         )
     )
-    doc = editor.getDocument()
+    # load the document
     paper = this.get('model')
-    figuresAdapter = FigureCollectionAdapter.create(
+    doc = editor.getDocument()
+    editor.fromHtml(paper.get('body'))
+
+    figuresAdapter = VeFigureCollectionAdapter.create(
       controller: @
       paper: paper
       doc: doc
     ).connect()
+    tableCollectionAdapter = TableCollectionAdapter.create(
+      doc: doc
+      paper: paper
+      editor: editor
+    )
 
-    # load the document
-    editor.fromHtml(paper.get('body'))
+    if @get('isEditing')
+      editor.enable()
+    else
+      editor.disable()
 
     @set('editor', editor)
     @set('figuresAdapter', figuresAdapter)
+    @set('tableCollectionAdapter', tableCollectionAdapter)
     editor.removeSelection()
 
   startEditing: ->
@@ -111,7 +124,6 @@ Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
       editor.disableModel()
 
   onDocumentChange: ->
-    doc = @get('editor').getDocument()
     # HACK: in certain moments we need to inhibit saving
     # e.g., when updating a figure URL, the server provides a new figure URL
     # leading to an unfinite loop of updates.
@@ -132,6 +144,7 @@ Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
   willDestroy: ( ->
     @_super()
     @get('figuresAdapter')?.dispose()
+    @get('tableCollectionAdapter')?.destroy()
   )
 
 `export default Controller;`

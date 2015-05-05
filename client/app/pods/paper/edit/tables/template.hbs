@@ -36,10 +36,11 @@
 <div class="figures-body container-fluid">
   {{#each table in tables}}
     {{paper/edit/table-item
-           table=table
-           manuscriptEditor=manuscriptEditor
-           updateToolbar="updateToolbar"
-           insertTable="insertTable"
-           destroyTable="destroyTable"}}
+          paper=paper
+          table=table
+          manuscriptEditor=manuscriptEditor
+          updateToolbar="updateToolbar"
+          insertTable="insertTable"
+          destroyTable="destroyTable"}}
   {{/each}}
 </div>

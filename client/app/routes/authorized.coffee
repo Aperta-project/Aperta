@@ -3,7 +3,8 @@
 AuthorizedRoute = Ember.Route.extend
   handleUnauthorizedRequest: (transition) ->
     transition.abort()
-    @transitionTo 'dashboard'
+    @transitionTo('dashboard').then =>
+      @flash.displayMessage('error', "You don't have access to that content")
 
   actions:
     error: (response, transition) ->

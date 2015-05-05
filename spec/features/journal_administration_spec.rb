@@ -12,6 +12,7 @@ feature "Journal Administration", js: true do
 
   let(:admin_page) { AdminDashboardPage.visit }
   let(:journal_page) { admin_page.visit_journal(journal) }
+  let(:flow_page) { journal_page.add_flow }
 
   describe "journal listing" do
     context "when the user is a site admin" do
@@ -93,14 +94,13 @@ feature "Journal Administration", js: true do
     end
 
     describe "on a Journal's Flow Manager" do
-      it "show Journal name as text" do
-        click_link('Admin')
-        click_link(journal.name)
-        first(".admin-role-action-button.glyphicon.glyphicon-pencil").click
-        find("input[name='role[canViewFlowManager]']").set(true)
-        click_link("Edit Flows")
-        first(".control-bar-link-icon").click
-        expect(page.find(".column-title-wrapper")).to have_content journal.name
+
+      describe do
+        before { flow_page }
+
+        it "show Journal name as text" do
+          expect(page.find(".column-title-wrapper")).to have_content journal.name
+        end
       end
 
       describe do
@@ -113,6 +113,30 @@ feature "Journal Administration", js: true do
           end
         end
       end
+
+      context "editing a flow title" do
+        before { flow_page }
+
+        it "reveals 'cancel / save' buttons" do
+          expect(page).to have_content 'Up for grabs'
+          find('h2.column-title').click()
+          expect(page).to have_button('cancel')
+          expect(page).to have_button('Save')
+        end
+      end
+
+      context "saving an edited flow" do
+        before { flow_page }
+
+        it "removes 'cancel / save' buttons" do
+          expect(page).to have_content 'Up for grabs'
+          find('h2.column-title').click()
+          find('button.column-header-update-save').click()
+          expect(page).not_to have_button('cancel')
+          expect(page).not_to have_button('Save')
+        end
+      end
+
     end
 
   end

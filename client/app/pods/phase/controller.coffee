@@ -1,8 +1,8 @@
 `import Ember from 'ember'`
 
 PhaseController = Ember.Controller.extend
-  needs: ['paper/manage']
-  paperManageController: Em.computed.alias 'controllers.paper/manage'
+  needs: ['paper/workflow']
+  paperManageController: Em.computed.alias 'controllers.paper/workflow'
 
   commentLooks: Em.computed -> @store.all('commentLook')
   canRemoveCard: true

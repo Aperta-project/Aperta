@@ -57,7 +57,7 @@ module 'Integration: adding a new card',
     ]
 
 test 'user sees task overlay when the task is added', ->
-  visit '/papers/1/manage'
+  visit '/papers/1/workflow'
   click("a:contains('Add New Card')")
   pickFromChosenSingle '.task-type-select', 'Ad Hoc'
   click '.button--green:contains("Add")'

@@ -62,7 +62,7 @@ test "displays the email of the invitee", ->
 
   testHelper.handleCreate("invitation")
 
-  visit("/papers/#{paper.id}/manage")
+  visit("/papers/#{paper.id}/workflow")
   click("#manuscript-manager .card-content:contains('Assign Editors')")
   pickFromSelect2(".overlay-main-work", "aaron@neo.com")
   click(".invite-editor-button")
@@ -76,7 +76,7 @@ test "can withdraw the invitation", ->
   Ember.run =>
     task.set("invitation", invitation)
 
-  visit("/papers/#{paper.id}/manage")
+  visit("/papers/#{paper.id}/workflow")
   click("#manuscript-manager .card-content:contains('Assign Editors')")
   ok(find(".invite-editor-task:contains('foo@bar.com has been invited to be Editor on this manuscript.')"), "has pending invitation")
 

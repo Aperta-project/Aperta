@@ -28,9 +28,9 @@ PaperManageRoute = AuthorizedRoute.extend
     viewCard: (task, queryParams) ->
       queryParams || = {queryParams: {}}
       paper = @modelFor('paper')
-      redirectParams = ['paper.manage', @modelFor('paper')]
+      redirectParams = ['paper.workflow', @modelFor('paper')]
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @controllerFor('application').set('overlayBackground', 'paper/manage')
+      @controllerFor('application').set('overlayBackground', 'paper/workflow')
       @transitionTo('task', paper.id, task.id, queryParams)
 
     addTaskType: (phase, taskType) ->

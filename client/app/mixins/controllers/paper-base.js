@@ -18,9 +18,6 @@ export default Ember.Mixin.create({
 
 
   // Tasks:
-
-  authorTasks: Ember.computed.filterBy('model.tasks', 'role', 'author'),
-
   assignedTasks: function() {
     let authorTasks = this.get('authorTasks');
 
@@ -37,6 +34,17 @@ export default Ember.Mixin.create({
     }
   }.property('model.tasks.@each.role'),
 
+  authorTasks: function() {
+    var that = this;
+    return this.get('model.tasks').filter((task) => {
+      return task.get('role') === 'author';
+    })
+    .filter(function(t) {
+      return !(that.get('priorityTasks').contains(t.qualifiedType));
+    });
+  }.property('model.tasks.@each.role'),
+
+  priorityTasks:       ['TahiStandardTasks::ReviseTask'],
   taskSorting:         ['phase.position', 'position'],
   sortedAuthorTasks:   Ember.computed.sort('authorTasks',   'taskSorting'),
   sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting'),

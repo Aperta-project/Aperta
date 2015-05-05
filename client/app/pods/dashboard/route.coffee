@@ -24,7 +24,7 @@ DashboardRoute = Ember.Route.extend
       RESTless.putModel(invitation, '/reject').then -> invitation.reject()
 
     acceptInvitation: (invitation) ->
-      RESTless.putModel(invitation, '/accept').then => invitation.accept()
+      RESTless.putModel(invitation, '/accept').then -> invitation.accept()
 
     showNewPaperOverlay: () ->
       @store.find('journal').then (journals) =>

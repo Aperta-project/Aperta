@@ -128,10 +128,6 @@ class Task < ActiveRecord::Base
   def after_update
   end
 
-  def channel_model
-    paper
-  end
-
   private
 
   def on_card_completion?

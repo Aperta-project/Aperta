@@ -66,5 +66,6 @@ TaskController = Ember.Controller.extend SavesDelayed, ControllerParticipants, V
           return
 
       @clearCachedModel(transition)
+      @clearAllValidationErrors()
 
 `export default TaskController`

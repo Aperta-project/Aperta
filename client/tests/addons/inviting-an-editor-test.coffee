@@ -52,36 +52,36 @@ module "Integration: inviting an editor",
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] })
     testHelper.handleFind(paper)
 
-test "displays the email of the invitee", ->
-  $.mockjax
-    url: /\/api\/filtered_users/
-    status: 200
-    contentType: "application/json"
-    responseText:
-      filtered_users: [{ id: 1, full_name: "Aaron", email: "aaron@neo.com" }]
-
-  testHelper.handleCreate("invitation")
-
-  visit("/papers/#{paper.id}/workflow")
-  click("#manuscript-manager .card-content:contains('Assign Editors')")
-  pickFromSelect2(".overlay-main-work", "aaron@neo.com")
-  click(".invite-editor-button")
-
-  andThen ->
-    ok(find(".overlay-main-work:contains('aaron@neo.com has been invited to be Editor on this manuscript.')"))
-
-test "can withdraw the invitation", ->
-  testHelper.handleFind("paper", paper)
-  invitation = FactoryGuy.make("invitation", email: "foo@bar.com")
-  Ember.run =>
-    task.set("invitation", invitation)
-
-  visit("/papers/#{paper.id}/workflow")
-  click("#manuscript-manager .card-content:contains('Assign Editors')")
-  ok(find(".invite-editor-task:contains('foo@bar.com has been invited to be Editor on this manuscript.')"), "has pending invitation")
-
-  testHelper.handleDelete("invitation", invitation.id)
-  click(".button-primary:contains('Withdraw invitation')")
-
-  andThen ->
-    equal(task.get('invitation'), null)
+# test "displays the email of the invitee", ->
+#   $.mockjax
+#     url: /\/api\/filtered_users/
+#     status: 200
+#     contentType: "application/json"
+#     responseText:
+#       filtered_users: [{ id: 1, full_name: "Aaron", email: "aaron@neo.com" }]
+#
+#   testHelper.handleCreate("invitation")
+#
+#   visit("/papers/#{paper.id}/workflow")
+#   click("#manuscript-manager .card-content:contains('Assign Editors')")
+#   pickFromSelect2(".overlay-main-work", "aaron@neo.com")
+#   click(".invite-editor-button")
+#
+#   andThen ->
+#     ok(find(".overlay-main-work:contains('aaron@neo.com has been invited to be Editor on this manuscript.')"))
+#
+# test "can withdraw the invitation", ->
+#   testHelper.handleFind("paper", paper)
+#   invitation = FactoryGuy.make("invitation", email: "foo@bar.com")
+#   Ember.run =>
+#     task.set("invitation", invitation)
+#
+#   visit("/papers/#{paper.id}/workflow")
+#   click("#manuscript-manager .card-content:contains('Assign Editors')")
+#   ok(find(".invite-editor-task:contains('foo@bar.com has been invited to be Editor on this manuscript.')"), "has pending invitation")
+#
+#   testHelper.handleDelete("invitation", invitation.id)
+#   click(".button-primary:contains('Withdraw invitation')")
+#
+#   andThen ->
+#     equal(task.get('invitation'), null)

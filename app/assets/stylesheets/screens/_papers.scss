@@ -51,6 +51,11 @@ html.control-bar-sub-nav-active #paper-container {
   float: right;
   width: $paper-edit-sidebar-width;
   background: $tahi-white;
+
+  h5 {
+    padding-top: 10px;
+    color: $tahi-grey-dark;
+  }
 }
 
 #paper-container .task-list {

@@ -1,19 +1,43 @@
 module TahiPusher
   class ChannelName
     CHANNEL_SEPARATOR = "-"
-    MODEL_SEPARATOR   = "_"
+    MODEL_SEPARATOR   = "@"
+    PUBLIC_SCOPE      = "public"
 
-    # <#Paper:1234 id:4> --> "private-paper_4"
-    def self.build(model, scope: "private")
-      suffix = [model.class.name.downcase, model.id].join(MODEL_SEPARATOR)
-      [scope, suffix].join(CHANNEL_SEPARATOR)
+    # <#Paper:1234 @id=4> --> "private-paper@4"
+    def self.build(target:, scope:)
+      prefix = scope unless scope == PUBLIC_SCOPE
+      suffix = if target.is_a?(ActiveRecord::Base)
+                 [target.class.name.downcase, target.id].join(MODEL_SEPARATOR)
+               else
+                 target
+               end
+      [prefix, suffix].compact.join(CHANNEL_SEPARATOR)
     end
 
-    # "private-paper_4" --> {private: true, paper: 4}
+    # "private-paper@4" --> <#TahiPusher::ChannelName @prefix="private" @suffix="paper@4">
     def self.parse(channel_name)
-      channel_name.split(CHANNEL_SEPARATOR).each_with_object({}) do |token, channel|
-        model, id = token.split(MODEL_SEPARATOR)
-        channel[model.to_sym] = id || true
+      new(channel_name)
+    end
+
+
+    attr_reader :name, :prefix, :suffix
+
+    def initialize(name)
+      @name = name
+      @prefix, _, @suffix = name.rpartition(CHANNEL_SEPARATOR)
+    end
+
+    def scope
+      prefix.presence || PUBLIC_SCOPE
+    end
+
+    def target
+      model, _, id = suffix.partition(MODEL_SEPARATOR)
+      if id.present?
+        model.classify.constantize.find(id)
+      else
+        model
       end
     end
   end

@@ -28,7 +28,7 @@
     "ember-cli-qunit": "0.3.10",
     "ember-cli-rails-addon": "0.0.11",
     "ember-cli-uglify": "1.0.1",
-    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#85449868e49dae0b62a11a70b7998ecd01fc0837",
+    "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#440127b70d8a8e7768953dba356add832d57fe81",
     "ember-data": "1.0.0-beta.16.1",
     "ember-data-factory-guy": "1.0.7",
     "ember-export-application-global": "^1.0.2",
@@ -36,7 +36,7 @@
     "broccoli-static-compiler": "0.2.1",
     "express": "^4.8.5",
     "glob": "^4.0.5",
-    "tahi-editor-extensions": "substance/tahi-editor-extensions#2e0987fc381db78b7ab1e052001ec9a534eb80e3"
+    "tahi-editor-extensions": "substance/tahi-editor-extensions#88643b93f14c13f57f57652bd4813b4d51761bb4"
   },
   "ember-addon": {
     "paths": [

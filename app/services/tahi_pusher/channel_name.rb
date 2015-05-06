@@ -2,11 +2,13 @@ module TahiPusher
   class ChannelName
     CHANNEL_SEPARATOR = "-"
     MODEL_SEPARATOR   = "@"
-    PUBLIC_SCOPE      = "public"
+    PRESENCE          = "presence"
+    PRIVATE           = "private"
+    PUBLIC            = "public"
 
     # <#Paper:1234 @id=4> --> "private-paper@4"
-    def self.build(target:, scope:)
-      prefix = scope unless scope == PUBLIC_SCOPE
+    def self.build(target:, access:)
+      prefix = access unless access == PUBLIC
       suffix = if target.is_a?(ActiveRecord::Base)
                  [target.class.name.downcase, target.id].join(MODEL_SEPARATOR)
                else
@@ -28,8 +30,8 @@ module TahiPusher
       @prefix, _, @suffix = name.rpartition(CHANNEL_SEPARATOR)
     end
 
-    def scope
-      prefix.presence || PUBLIC_SCOPE
+    def access
+      prefix.presence || PUBLIC
     end
 
     def target

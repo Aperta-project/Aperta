@@ -5,8 +5,8 @@ describe TahiPusher::ChannelName do
   describe ".build" do
     context "public channel" do
       context "without model" do
-        it "builds channel name without scope" do
-          channel_name = TahiPusher::ChannelName.build(target: "system", scope: "public")
+        it "builds channel name without access" do
+          channel_name = TahiPusher::ChannelName.build(target: "system", access: "public")
           expect(channel_name).to eq("system")
         end
       end
@@ -14,8 +14,8 @@ describe TahiPusher::ChannelName do
       context "with model" do
         let(:paper) { FactoryGirl.create(:paper) }
 
-        it "builds channel name without scope" do
-          channel_name = TahiPusher::ChannelName.build(target: paper, scope: "public")
+        it "builds channel name without access" do
+          channel_name = TahiPusher::ChannelName.build(target: paper, access: "public")
           expect(channel_name).to eq("paper@#{paper.id}")
         end
       end
@@ -24,8 +24,8 @@ describe TahiPusher::ChannelName do
 
     context "private channel" do
       context "without model" do
-        it "builds channel name with scope" do
-          channel_name = TahiPusher::ChannelName.build(target: "system", scope: "private")
+        it "builds channel name with access" do
+          channel_name = TahiPusher::ChannelName.build(target: "system", access: "private")
           expect(channel_name).to eq("private-system")
         end
       end
@@ -33,8 +33,8 @@ describe TahiPusher::ChannelName do
       context "with model" do
         let(:paper) { FactoryGirl.create(:paper) }
 
-        it "builds channel name with scope" do
-          channel_name = TahiPusher::ChannelName.build(target: paper, scope: "private")
+        it "builds channel name with access" do
+          channel_name = TahiPusher::ChannelName.build(target: paper, access: "private")
           expect(channel_name).to eq("private-paper@#{paper.id}")
         end
       end
@@ -45,8 +45,8 @@ describe TahiPusher::ChannelName do
     describe "system" do
       let(:channel_name) { "system" }
 
-      it "has a public scope" do
-        expect(TahiPusher::ChannelName.parse(channel_name).scope).to eq("public")
+      it "has a public access" do
+        expect(TahiPusher::ChannelName.parse(channel_name).access).to eq("public")
       end
 
       it "has a string target" do
@@ -58,8 +58,8 @@ describe TahiPusher::ChannelName do
       let(:paper) { FactoryGirl.create(:paper) }
       let(:channel_name) { "paper@#{paper.id}" }
 
-      it "has a public scope" do
-        expect(TahiPusher::ChannelName.parse(channel_name).scope).to eq("public")
+      it "has a public access" do
+        expect(TahiPusher::ChannelName.parse(channel_name).access).to eq("public")
       end
 
       it "has a model target" do
@@ -71,8 +71,8 @@ describe TahiPusher::ChannelName do
       let(:paper) { FactoryGirl.create(:paper) }
       let(:channel_name) { "private-paper@#{paper.id}" }
 
-      it "has a private scope" do
-        expect(TahiPusher::ChannelName.parse(channel_name).scope).to eq("private")
+      it "has a private access" do
+        expect(TahiPusher::ChannelName.parse(channel_name).access).to eq("private")
       end
 
       it "has a model target" do
@@ -83,8 +83,8 @@ describe TahiPusher::ChannelName do
     describe "private-latex" do
       let(:channel_name) { "private-latex" }
 
-      it "has a private scope" do
-        expect(TahiPusher::ChannelName.parse(channel_name).scope).to eq("private")
+      it "has a private access" do
+        expect(TahiPusher::ChannelName.parse(channel_name).access).to eq("private")
       end
 
       it "has a string target" do

@@ -36,11 +36,19 @@ module TahiPusher
 
     def target
       model, _, id = suffix.partition(MODEL_SEPARATOR)
-      if id.present?
+      if active_record_backed?
         model.classify.constantize.find(id)
       else
         model
       end
+    end
+
+    # "private-paper@4" --> true, "system" --> false
+    def active_record_backed?
+      model, _ = suffix.partition(MODEL_SEPARATOR)
+      model.classify.constantize.new.is_a?(ActiveRecord::Base)
+    rescue NameError
+      false # model could not be constantized
     end
   end
 end

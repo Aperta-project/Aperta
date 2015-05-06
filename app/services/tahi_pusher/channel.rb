@@ -6,11 +6,6 @@ module TahiPusher
       @channel_name = channel_name
     end
 
-    def authorized?(user:)
-      return false unless Paper.exists?(extract_model_id(:paper))
-      Accessibility.new(Paper.find(extract_model_id(:paper))).users.include?(user)
-    end
-
     def authenticate(socket_id:)
       message = "Authenticating channel_name=#{channel_name}, socket=#{socket_id}"
       with_logging(message) do
@@ -25,15 +20,21 @@ module TahiPusher
       end
     end
 
+    def authorized?(user:)
+      message = "Checking authorization on channel_name=#{channel_name} for user=#{user}"
+      with_logging(message) do
+        return true unless parsed_channel.active_record_backed?
+        Accessibility.new(parsed_channel.target).users.include?(user)
+      end
+    rescue ActiveRecord::NotFound
+      return false
+    end
+
 
     private
 
     def parsed_channel
       @parsed_channel ||= ChannelName.parse(channel_name)
-    end
-
-    def extract_model_id(model_name)
-      parsed_channel.fetch(model_name)
     end
 
     def with_logging(message)

@@ -52,6 +52,10 @@ describe TahiPusher::ChannelName do
       it "has a string target" do
         expect(TahiPusher::ChannelName.parse(channel_name).target).to eq("system")
       end
+
+      it "is not active record backed" do
+        expect(TahiPusher::ChannelName.parse(channel_name)).to_not be_active_record_backed
+      end
     end
 
     describe "paper@4" do
@@ -64,6 +68,10 @@ describe TahiPusher::ChannelName do
 
       it "has a model target" do
         expect(TahiPusher::ChannelName.parse(channel_name).target).to eq(paper)
+      end
+
+      it "is active record backed" do
+        expect(TahiPusher::ChannelName.parse(channel_name)).to be_active_record_backed
       end
     end
 
@@ -78,6 +86,10 @@ describe TahiPusher::ChannelName do
       it "has a model target" do
         expect(TahiPusher::ChannelName.parse(channel_name).target).to eq(paper)
       end
+
+      it "is active record backed" do
+        expect(TahiPusher::ChannelName.parse(channel_name)).to be_active_record_backed
+      end
     end
 
     describe "private-latex" do
@@ -89,6 +101,10 @@ describe TahiPusher::ChannelName do
 
       it "has a string target" do
         expect(TahiPusher::ChannelName.parse(channel_name).target).to eq("latex")
+      end
+
+      it "is not active record backed" do
+        expect(TahiPusher::ChannelName.parse(channel_name)).to_not be_active_record_backed
       end
     end
   end

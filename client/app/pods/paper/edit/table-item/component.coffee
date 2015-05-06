@@ -21,7 +21,7 @@ TableItemComponent = Ember.Component.extend
   ).property('table', 'manuscriptEditor')
 
   hasPlacement: ( ->
-    return !!@get('label')
+    !!@get('label')
   ).property('label')
 
   hasManuscriptSelection: (->
@@ -32,9 +32,13 @@ TableItemComponent = Ember.Component.extend
       return false
   ).property('manuscriptEditor')
 
+  canInsert: ( ->
+    return !@get('hasPlacement') and @get('hasManuscriptSelection')
+  ).property('hasPlacement', 'hasManuscriptSelection')
+
   isEditing: false
 
-  isSaving: false
+  isSaving: Ember.computed.alias('adapter.isSaving')
 
   setupEditor: ( (editor) ->
     manuscriptEditor = @get('manuscriptEditor');

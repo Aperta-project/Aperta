@@ -1,4 +1,4 @@
-`import Ember from 'ember'`
+`import Ember from 'ember';`
 
 # Observes items of a table collection and updates the corresponding VE model or the Ember model vice versa.
 CollectionAdapterMixin = Ember.Mixin.create
@@ -14,6 +14,8 @@ CollectionAdapterMixin = Ember.Mixin.create
   updatedAt: null
   dirtyNodes: null
   dirtyModels: null
+
+  isSaving: false
 
   getUpdateTimestamp: (model) ->
     model.get('updatedAt') || model.get('createdAt')
@@ -80,10 +82,14 @@ CollectionAdapterMixin = Ember.Mixin.create
     @saveDebounced()
 
   saveDirtyNodes: ->
+    return if @get('isDestroyed')
+
     dirtyNodes = @get('dirtyNodes')
     @set('dirtyNodes', {})
+    @set('isSaving', true)
     for id, node of dirtyNodes
       @saveToModel(node)
+    @set('isSaving', false)
 
   saveToModel: (node) ->
     @get('paper').store.findById(@get('modelType'), node.getId()).then (model) =>
@@ -125,4 +131,4 @@ CollectionAdapterMixin = Ember.Mixin.create
   loadDebounced: ->
     Ember.run.debounce(@, @loadUpdatedModels, 100);
 
-`export default CollectionAdapterMixin`
+`export default CollectionAdapterMixin;`

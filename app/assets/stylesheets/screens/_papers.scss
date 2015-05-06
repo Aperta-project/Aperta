@@ -568,6 +568,29 @@ article.manuscript figure[data-content-type=table] {
   display: block;
 }
 
+.figure-item-editor figure {
+  margin: 0px;
+  border: none;
+}
+
+.figure-item-editor .figure-title:before {
+  content: "Title:";
+  margin-right: 100px;
+}
+
+.figure-item-editor .figure-image {
+  display: none;
+}
+
+.figure-item-editor figcaption label {
+  display: none;
+}
+
+.figure-item-editor figcaption .caption:before {
+  content: "Caption:";
+  margin-right: 90px;
+}
+
 .figure-item-editor label {
   font-weight: bold;
   margin: 0px;

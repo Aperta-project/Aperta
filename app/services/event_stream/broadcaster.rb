@@ -7,20 +7,14 @@ module EventStream
     end
 
     def post(action:, channel_scope:)
-      payload = payload_for(action)
-      channel_name = TahiPusher::ChannelName.build(channel_scope)
-      TahiPusher::Channel.new(channel_name: channel_name).push(event_name: action, payload: payload)
-    end
-
-
-    private
-
-    def payload_for(action)
       if action == "destroyed"
-        record.destroyed_payload
+        payload = record.destroyed_payload
+        channel_name = TahiPusher::ChannelName.build(target: "system", access: TahiPusher::ChannelName::PUBLIC)
       else
-        record.payload
+        payload = record.payload
+        channel_name = TahiPusher::ChannelName.build(target: channel_scope, access: TahiPusher::ChannelName::PRIVATE)
       end
+      TahiPusher::Channel.new(channel_name: channel_name).push(event_name: action, payload: payload)
     end
   end
 end

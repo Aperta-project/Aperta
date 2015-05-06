@@ -30,7 +30,7 @@ class Paper < ActiveRecord::Base
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
-  after_update :paper_submitted, if: -> (paper) { paper.submitted == true }
+  after_update :paper_submitted, if: -> { self.submitted_changed? from: false, to: true }
 
   class << self
     # Public: Find papers in the 'submitted' state only.

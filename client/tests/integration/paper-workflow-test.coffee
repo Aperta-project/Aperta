@@ -8,7 +8,7 @@
 app = null
 server = null
 
-module 'Integration: Paper Manage page',
+module 'Integration: Paper Workflow page',
 
   teardown: ->
     server.restore()
@@ -46,7 +46,7 @@ module 'Integration: Paper Manage page',
     ]
 
 test 'show delete confirmation overlay on deletion of a Task', ->
-  visit '/papers/1/manage'
+  visit '/papers/1/workflow'
   andThen ->
     $("div.card .card-remove").show()
     click("div.card .card-remove")
@@ -57,7 +57,7 @@ test 'show delete confirmation overlay on deletion of a Task', ->
     equal(find('.overlay button:contains("Yes, Delete this Card")').length, 1)
 
 test 'click delete confirmation overlay cancel button', ->
-  visit '/papers/1/manage'
+  visit '/papers/1/workflow'
   andThen ->
     equal find(".card-content").length, 1
     $("div.card .card-remove").show()
@@ -66,7 +66,7 @@ test 'click delete confirmation overlay cancel button', ->
     equal find(".card-content").length, 1
 
 test 'click delete confirmation overlay submit button', ->
-  visit '/papers/1/manage'
+  visit '/papers/1/workflow'
   andThen ->
     equal(find(".card-content").length, 1, "card exists")
     $("div.card .card-remove").show()

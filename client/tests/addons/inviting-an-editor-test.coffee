@@ -62,21 +62,21 @@ module "Integration: inviting an editor",
 #
 #   testHelper.handleCreate("invitation")
 #
-#   visit("/papers/#{paper.id}/manage")
+#   visit("/papers/#{paper.id}/workflow")
 #   click("#manuscript-manager .card-content:contains('Assign Editors')")
 #   pickFromSelect2(".overlay-main-work", "aaron@neo.com")
 #   click(".invite-editor-button")
 #
 #   andThen ->
 #     ok(find(".overlay-main-work:contains('aaron@neo.com has been invited to be Editor on this manuscript.')"))
-
+#
 # test "can withdraw the invitation", ->
 #   testHelper.handleFind("paper", paper)
 #   invitation = FactoryGuy.make("invitation", email: "foo@bar.com")
 #   Ember.run =>
 #     task.set("invitation", invitation)
 #
-#   visit("/papers/#{paper.id}/manage")
+#   visit("/papers/#{paper.id}/workflow")
 #   click("#manuscript-manager .card-content:contains('Assign Editors')")
 #   ok(find(".invite-editor-task:contains('foo@bar.com has been invited to be Editor on this manuscript.')"), "has pending invitation")
 #

@@ -153,7 +153,7 @@ createCard = ->
   andThen ->
     click '.overlay-close-button:first'
 
-# see also paper_manage_test.js.coffee; tests are very similar
+# see also paper_workflow_test.js.coffee; tests are very similar
 test 'show delete confirmation overlay on deletion of a card', ->
   createCard()
   andThen ->

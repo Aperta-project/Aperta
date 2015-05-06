@@ -47,3 +47,11 @@ test:
   override:
     - bin/circleci.sh:
         parallel: true
+
+## Customize heroku deployment
+deployment:
+  staging:
+    branch: master
+    commands:
+      - git push git@heroku.com:tahi-staging.git $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app tahi-staging

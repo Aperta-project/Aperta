@@ -18,6 +18,7 @@ moduleFor 'controller:paper/edit/html-editor', 'Unit: paper/edit/html-editor con
       body: 'hello'
       editable: true
       lockedBy: null
+      editorType: 'html'
 
     @editor =
       fromHtml: sinon.stub()

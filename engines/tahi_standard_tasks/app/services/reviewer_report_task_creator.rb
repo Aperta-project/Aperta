@@ -10,17 +10,26 @@ class ReviewerReportTaskCreator
   def process
     paper.transaction do
       assign_paper_role!
-      create_related_task!
+      find_or_create_related_task
     end
   end
 
   private
 
-  def create_related_task!
-    task = TahiStandardTasks::ReviewerReportTask.create!(phase: default_phase,
-                      role: PaperRole::REVIEWER,
-                      title: "Review by #{assignee.full_name}")
-    ParticipationFactory.create(task, assignee)
+  def find_or_create_related_task
+    if existing_reviewer_report_task.empty?
+      task = TahiStandardTasks::ReviewerReportTask.create!(phase: default_phase,
+                        role: PaperRole::REVIEWER,
+                        title: "Review by #{assignee.full_name}")
+
+      ParticipationFactory.create(task, assignee)
+    else
+      existing_reviewer_report_task.first.update(completed: false)
+    end
+  end
+
+  def existing_reviewer_report_task
+    paper.tasks.includes(:participations).where type: "TahiStandardTasks::ReviewerReportTask", participations: { user_id: assignee.id }
   end
 
   # multiple `assignee` can exist on `paper` as a reviewer

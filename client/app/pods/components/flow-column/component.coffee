@@ -97,6 +97,7 @@ FlowColumnComponent = Ember.Component.extend
 
     save: ->
       @sendAction 'saveFlow', @get('flow')
+      @send 'toggleEdit'
       Ember.run.schedule('afterRender', this, Utils.resizeColumnHeaders)
 
     cancel: ->

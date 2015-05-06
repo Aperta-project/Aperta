@@ -124,6 +124,13 @@ class JournalPage < Page
     self
   end
 
+  def add_flow
+    first(".admin-role-action-button.glyphicon.glyphicon-pencil").click
+    find("input[name='role[canViewFlowManager]']").set(true)
+    click_link("Edit Flows")
+    first(".control-bar-link-icon").click
+  end
+
   private
 
   def user_result_row user

@@ -6,7 +6,7 @@ FlowManagerRoute = AuthorizedRoute.extend
     @handleUnauthorizedRequest(transition) unless @currentUser
 
   model: ->
-    if cachedModel =  @controllerFor('application').get('cachedModel')
+    if cachedModel = @controllerFor('application').get('cachedModel')
       @controllerFor('application').set('cachedModel' , null)
       cachedModel
     else
@@ -44,7 +44,7 @@ FlowManagerRoute = AuthorizedRoute.extend
       paperId = task.get('paper.id')
       redirectParams = ['flow_manager']
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @controllerFor('application').set('cachedModel' , @modelFor('flow_manager'))
+      @controllerFor('application').set('cachedModel', @modelFor('flow_manager'))
       @controllerFor('application').set('overlayBackground', 'flow_manager')
       @transitionTo('task', paperId, task.get('id'))
 

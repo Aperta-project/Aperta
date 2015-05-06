@@ -1,10 +1,10 @@
 `import Ember from 'ember';`
-`import BasePaperController from 'tahi/controllers/base-paper';`
+`import PaperBaseMixin from 'tahi/mixins/controllers/paper-base';`
 `import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';`
 `import TahiEditorExtensions from 'tahi-editor-extensions/index';`
 `import FigureCollectionAdapter from 'tahi/pods/paper/edit/adapters/ve-figure-collection-adapter';`
 
-Controller = BasePaperController.extend PaperEditMixin,
+Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
   # initialized by paper/edit/view
   toolbar: null
 
@@ -14,6 +14,11 @@ Controller = BasePaperController.extend PaperEditMixin,
   figuresAdapter: null
 
   hasOverlay: false
+
+  paperBodyDidChange: ( ->
+    unless @get('lockedByCurrentUser')
+      @updateEditor()
+  ).observes('model.body')
 
   # called by ember-cli-visualeditor/components/visual-editor (see template for hook)
   setupEditor: (editor) ->
@@ -63,7 +68,7 @@ Controller = BasePaperController.extend PaperEditMixin,
   updateEditor: ->
     editor = @get('editor')
     if editor
-      editor.fromHtml(@get('paper.body'))
+      editor.fromHtml(@get('model.body'))
 
   updateToolbar: (newState) ->
     toolbar = @get('toolbar')

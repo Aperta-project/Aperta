@@ -10,7 +10,6 @@ ApplicationController = Ember.Controller.extend
     !Ember.isBlank(@currentUser)
   ).property('currentUser')
 
-  isAdmin: Ember.computed.alias 'currentUser.siteAdmin'
   canViewAdminLinks: false
   canViewFlowManagerLink: false
 

@@ -1,3 +1,5 @@
+$paper-edit-sidebar-width: 280px;
+
 #control-bar-paper-journal-logo {
   height: 71px;
   margin-top: 9px;
@@ -33,20 +35,27 @@
 #paper-container {
   @include position(relative, $tahi-control-bar-height+$ve-toolbar-height 0px 0px 0px);
   @include transition(top 0.2s ease-in-out);
-  max-width: $tahi-paper-width;
   margin: 20px auto;
   background: $tahi-white;
+
+  &.paper-container-html {
+    max-width: $tahi-paper-width;
+  }
 }
 
 html.control-bar-sub-nav-active #paper-container {
-  @include transition(top 0.2s ease-in-out);
   top: 145px;
 }
 
 #paper-container .sidebar {
   float: right;
-  width: 25%;
+  width: $paper-edit-sidebar-width;
   background: $tahi-white;
+
+  h5 {
+    padding-top: 10px;
+    color: $tahi-grey-dark;
+  }
 }
 
 #paper-container .task-list {
@@ -61,10 +70,10 @@ html.control-bar-sub-nav-active #paper-container {
 #paper-container .manuscript-container {
   position: relative;
   background: $tahi-grey-xlight;
-  width: $tahi-paper-width-with-sidebar;
+  width: calc(100% - #{$paper-edit-sidebar-width} - 1px);
 }
 
-.editor-toolbar {
+.paper-toolbar {
   @include transition(top 0.2s ease-in-out);
   width: 100%;
   background: $tahi-white;
@@ -78,14 +87,14 @@ html.control-bar-sub-nav-active #paper-container {
   height: 34px;
 }
 
-.editor-toolbar .saving-spinner {
+.paper-toolbar .saving-spinner {
   color: $tahi-black;
   line-height: 30px;
   -webkit-animation: spin 500ms linear infinite;
   animation: spin 500ms linear infinite;
 }
 
-.editor-toolbar .saving-spinner.hidden {
+.paper-toolbar .saving-spinner.hidden {
   visibility: hidden;
 }
 
@@ -104,8 +113,8 @@ html.control-bar-sub-nav-active #paper-container {
   z-index: 1
 }
 
-article.manuscript {
-  background: $tahi-grey-xlight;
+.manuscript {
+  background: #fff;
   overflow-x:hidden;
   font-family: $tahi-article-font-family;
 }
@@ -117,7 +126,7 @@ article.manuscript {
   border-right: 1px solid $tahi-grey-light;
   top: 0;
   bottom: 0;
-  left: $tahi-paper-width-with-sidebar;
+  right: $paper-edit-sidebar-width;
 }
 
 // title contenteditable
@@ -125,8 +134,7 @@ article.manuscript {
 //  to have that within the editing area
 
 .manuscript-title-and-placeholder {
-  background: $tahi-white;
-  padding: 50px 50px 20px;
+  padding: 50px 50px 20px 50px;
 }
 
 #paper-title {
@@ -136,15 +144,17 @@ article.manuscript {
 
 #paper-body {
   background: $tahi-white;
-  padding: 30px 50px;
   min-height: 600px;
 }
+  .paper-container-html  #paper-body { padding: 30px 50px; }
+  .paper-container-latex #paper-body { padding: 30px 0; }
 
-article.manuscript.read-only {
+
+.manuscript.read-only {
   cursor: default;
 }
 
-article.manuscript .ve-ui-surface .ve-ce-documentNode {
+.manuscript .ve-ui-surface .ve-ce-documentNode {
   font-size: 0.95em;
   min-height: 600px;
   // HACK: without padding the cursor is not visible
@@ -227,15 +237,13 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
   min-width: 100px;
 }
 
-.edit-paper {
-  .editor-toolbar {
-    position: fixed;
-    top: 60px;
+.paper-toolbar {
+  position: fixed;
+  top: 60px;
 
-    .ve-toolbar {
-      max-width: $tahi-paper-width;
-      margin: 0px auto;
-    }
+  .ve-toolbar {
+    max-width: $tahi-paper-width;
+    margin: 0px auto;
   }
 }
 
@@ -250,16 +258,13 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
     aside { display: none; }
     .vertical-divider { display: none; }
 
-    .manuscript {
-      border-right: none;
-    }
-
     .manuscript-container {
       width: 100%;
     }
 
-    article {
+    .manuscript {
       width: 100%;
+      border-right: none;
       padding-left: 0px;
       padding-right: 0px;
 
@@ -357,7 +362,7 @@ article.manuscript .ve-ui-surface .ve-ce-documentNode {
 
 // figures
 
-article.manuscript figure {
+.manuscript figure {
   margin-top: 20px;
   margin-bottom: 20px;
 

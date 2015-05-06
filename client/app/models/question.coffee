@@ -1,18 +1,16 @@
 `import DS from 'ember-data'`
 
-a = DS.attr
-
 Question = DS.Model.extend
-
   questionAttachment: DS.belongsTo('question-attachment')
   task: DS.belongsTo('task', polymorphic: true, inverse: 'questions')
+  decision: DS.belongsTo('decision')
 
-  ident: a('string')
-  question: a('string')
-  answer: a('string')
-  createdAt: a('date')
-  updatedAt: a('date')
-  additionalData: a()
-  url: a('string')
+  ident: DS.attr('string')
+  question: DS.attr('string')
+  answer: DS.attr('string')
+  additionalData: DS.attr()
+  url: DS.attr('string')
+  createdAt: DS.attr('date')
+  updatedAt: DS.attr('date')
 
 `export default Question`

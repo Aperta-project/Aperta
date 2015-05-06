@@ -20,6 +20,25 @@ describe ReviewerReportTaskCreator do
     }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(1)
   end
 
+  context "with existing ReviewerReportTask for User" do
+    before do
+      subject.process
+      TahiStandardTasks::ReviewerReportTask.first.update(completed: true)
+    end
+
+    it "finds existing ReviewerReportTask" do
+      expect {
+        subject.process
+      }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(0)
+    end
+
+    it "uncompletes ReviewerReportTask" do
+      ReviewerReportTaskCreator.new(originating_task: paper_reviewer_task, assignee_id: assignee.id).process
+      expect(TahiStandardTasks::ReviewerReportTask.count).to eq 1
+      expect(TahiStandardTasks::ReviewerReportTask.first.completed).to eq false
+    end
+  end
+
   it "adds the assignee as a participant to the ReviewerReportTask" do
     subject.process
     expect(paper.tasks_for_type("TahiStandardTasks::ReviewerReportTask").first.participants).to match_array([assignee])

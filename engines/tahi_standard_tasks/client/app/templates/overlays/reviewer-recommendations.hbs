@@ -7,7 +7,7 @@
 <a class="button-primary button--green" {{action "toggleReviewerForm"}}>New Reviewer Recommendation</a>
 {{/if}}
 
-{{#each reviewerRecommendations as |reviewerRecommendation|}}
+{{#each model.reviewerRecommendations as |reviewerRecommendation|}}
   <div class="authors-overlay-item--text">
     <div class="author-name">{{reviewerRecommendation.fullName}}</div>
     {{reviewerRecommendation.email}}<br>

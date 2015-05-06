@@ -23,7 +23,6 @@ gem 'pg'
 gem 'ember-cli-rails'
 gem 'sass-rails'
 gem 'uglifier'
-gem 'coffee-rails'
 gem 'acts_as_list', github: 'swanandp/acts_as_list', ref: "84325ede9ad528acbf68a97c5070cff113ee6a17"
 gem 'devise'
 gem 'bourbon'

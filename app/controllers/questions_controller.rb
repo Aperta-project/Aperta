@@ -20,7 +20,7 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:ident, :task_id, :question, :answer, :url).tap do |whitelisted|
+    params.require(:question).permit(:ident, :task_id, :decision_id, :question, :answer, :url).tap do |whitelisted|
       whitelisted[:additional_data] = params[:question][:additional_data]
     end
   end
@@ -37,9 +37,8 @@ class QuestionsController < ApplicationController
     @question ||=
       if params[:id]
         Question.find(params[:id])
-      elsif question_params[:task_id]
-        task = Task.find(question_params[:task_id])
-        task.questions.new(question_params.except(:url))
+      else
+        Question.new question_params.except(:url)
       end
   end
 

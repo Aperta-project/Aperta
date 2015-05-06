@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150428211927) do
+ActiveRecord::Schema.define(version: 20150505210110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -237,6 +237,7 @@ ActiveRecord::Schema.define(version: 20150428211927) do
     t.datetime "last_heartbeat_at"
     t.boolean  "editable",                      default: true
     t.text     "doi"
+    t.string   "editor_mode",       default: "html", null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -307,8 +308,10 @@ ActiveRecord::Schema.define(version: 20150428211927) do
     t.json     "additional_data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "decision_id"
   end
 
+  add_index "questions", ["decision_id"], name: "index_questions_on_decision_id", using: :btree
   add_index "questions", ["task_id"], name: "index_questions_on_task_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
@@ -442,4 +445,5 @@ ActiveRecord::Schema.define(version: 20150428211927) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "decisions", "papers"
+  add_foreign_key "questions", "decisions"
 end

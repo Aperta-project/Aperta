@@ -1,6 +1,6 @@
 {{#visual-editor-toolbar viewName="toolbar" classNames='navbar-inner'}}
 <div class="ve-toolgroup btn-group">
-  {{toggle-paper-editable action="toggleEditing" canEdit=canEdit isEditing=isEditing}}
+  {{toggle-paper-editable action="toggleEditing" canEdit=canToggleEditing isEditing=lockedByCurrentUser}}
 </div>
 {{#ve-button-group name="history btn-group"}}
   {{#ve-button command="undo"}}{{fa-icon "undo"}}{{/ve-button}}
@@ -41,7 +41,7 @@
     {{fa-icon "book"}}<span class="ve-label">Reference</span>
   {{/ve-item}}
 {{/ve-dropdown}}
-{{#if sidebarIsEmpty}}
+{{#if noTasks}}
   <span class="separator"></span>
   <div class="ve-toolgroup btn-group pull-right">
     <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allMetadataTasksCompleted "button--green" "button--disabled"}}">

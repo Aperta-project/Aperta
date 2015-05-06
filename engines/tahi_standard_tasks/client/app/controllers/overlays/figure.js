@@ -3,8 +3,8 @@ import FileUploadMixin from 'tahi/mixins/file-upload';
 
 export default TaskController.extend(FileUploadMixin, {
   figureUploadUrl: function() {
-    return `/api/papers/${this.get('model.litePaper.id')}/figures`;
-  }.property('model.litePaper.id'),
+    return `/api/papers/${this.get('model.paper.id')}/figures`;
+  }.property('model.paper.id'),
 
   figures: function() {
     return (this.get('model.paper.figures') || [])

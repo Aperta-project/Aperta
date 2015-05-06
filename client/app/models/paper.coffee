@@ -22,6 +22,7 @@ Paper = DS.Model.extend
   status: a('string')
   title: a('string')
   paperType: a('string')
+  editorMode: a('string', {defaultValue: 'html'})
   eventName: a('string')
   strikingImageId: a('string')
   editable: a('boolean')
@@ -47,5 +48,9 @@ Paper = DS.Model.extend
   roleList: (->
     @get('roles').sort().join(', ')
   ).property('roles.@each', 'roles.[]')
+
+  latestDecision: (->
+    @get('decisions').findBy 'isLatest', true
+  ).property('decisions', 'decisions.@each')
 
 `export default Paper`

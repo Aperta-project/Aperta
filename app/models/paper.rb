@@ -30,6 +30,8 @@ class Paper < ActiveRecord::Base
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
+  after_update :paper_submitted, if: -> (paper) { paper.submitted == true }
+
   class << self
     # Public: Find papers in the 'submitted' state only.
     #
@@ -216,6 +218,11 @@ class Paper < ActiveRecord::Base
   end
 
   private
+
+  def paper_submitted
+    itc_task = tasks.detect { |t| t.is_a? PlosBioTechCheck::InitialTechCheckTask }
+    itc_task.increment_round! if itc_task
+  end
 
   def uncompleted_tasks?
     tasks.metadata.count != tasks.metadata.completed.count

@@ -10,7 +10,7 @@ class Author < ActiveRecord::Base
     where(actable_id: nil, actable_type: nil)
   end
 
-  def event_stream_serializer(user)
-    AuthorsSerializer.new(paper.authors, user: user, root: :authors)
+  def event_stream_serializer
+    AuthorsSerializer.new(paper.authors, root: :authors)
   end
 end

@@ -30,6 +30,27 @@
           value=newAffiliation.name}}
       {{error-message message=validationErrors.name}}
 
+      {{input type="text"
+              value=newAffiliation.department
+              placeholder="Department"
+              class="profile-affiliation-field form-control"}}
+
+      {{input type="text"
+              value=newAffiliation.title
+              placeholder="Title"
+              class="profile-affiliation-field form-control"}}
+
+      {{select-2-single
+        class=class
+        minimumResultsForSearch=10
+        placeholder="Country"
+        selectedData=selectedData
+        selectionSelected="selectionSelected"
+        source=countries
+        value=newAffiliation.country
+        width=width
+      }}
+
       <div class="form-group">
         {{#datepicker-group}}
           {{date-picker type="text"

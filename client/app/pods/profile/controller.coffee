@@ -14,6 +14,11 @@ ProfileController = Ember.Controller.extend FileUploadMixin, ValidationErrorsMix
       text: institution
   ).property('model.institutions')
 
+  countries: [
+    {id: 1, text: "USA"},
+    {id: 2, text: "Mexico"}
+  ]
+
   actions:
     hideNewAffiliationForm: ->
       @clearAllValidationErrors()

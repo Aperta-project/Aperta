@@ -1,8 +1,8 @@
 `import Ember from 'ember'`
-`import AnimateElement from 'tahi/mixins/routes/animate-element'`
+`import AnimateOverlay from 'tahi/mixins/animate-overlay'`
 `import RESTless from 'tahi/services/rest-less'`
 
-ApplicationRoute = Ember.Route.extend AnimateElement,
+ApplicationRoute = Ember.Route.extend AnimateOverlay,
   setupController: (controller, model) ->
     controller.set('model', model)
     if @currentUser
@@ -36,9 +36,10 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
 
     closeOverlay: ->
       @flash.clearAllMessages()
-      @disconnectOutlet
-        outlet: 'overlay'
-        parentView: 'application'
+      @animateOverlayOut().then =>
+        @disconnectOutlet
+          outlet: 'overlay'
+          parentView: 'application'
 
     closeAction: ->
       @send('closeOverlay')

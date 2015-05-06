@@ -23,6 +23,11 @@ body { background: transparent; } // override bootstrap
 // override bootstrap
 label { font-weight: normal; }
 
+// override bootstrap
+textarea.form-control {
+  height: 70px;
+}
+
 // remove chrome outline on form fields
 input:focus, textarea:focus, *[contenteditable] {
   outline: none;
@@ -168,6 +173,10 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
 }
 
 // Main Content:
+
+html.overlay-open .main-content {
+  @include filter(grayscale(100%) blur(3px));
+}
 
 .main-content-cover {
   @include position(fixed, 0px 0px 0px 0px);

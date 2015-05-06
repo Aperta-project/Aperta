@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
-`import AnimateElement from 'tahi/mixins/routes/animate-element'`
+`import AnimateOverlay from 'tahi/mixins/animate-overlay'`
 
-OverlayView = Ember.View.extend AnimateElement,
+OverlayView = Ember.View.extend AnimateOverlay,
   animateIn: (->
     Ember.run.scheduleOnce('afterRender', this, @animateOverlayIn)
   ).on('didInsertElement')

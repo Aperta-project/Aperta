@@ -30,7 +30,7 @@ export default Ember.Mixin.create({
       });
 
       $('html').removeClass('overlay-open');
-      element.removeClass('animation-fade-in').addClass('animation-fade-out')
+      element.removeClass('animation-fade-in').addClass('animation-fade-out');
 
       return promise;
     } else {

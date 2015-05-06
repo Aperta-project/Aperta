@@ -44,7 +44,7 @@ export default Ember.Mixin.create({
     });
   }.property('model.tasks.@each.role'),
 
-  priorityTasks:       ['TahiStandardTasks::ReviseTask'],
+  priorityTasks:       ['TahiStandardTasks::ReviseTask', 'PlosBioTechCheck::ChangesForAuthorTask'],
   taskSorting:         ['phase.position', 'position'],
   sortedAuthorTasks:   Ember.computed.sort('authorTasks',   'taskSorting'),
   sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting'),

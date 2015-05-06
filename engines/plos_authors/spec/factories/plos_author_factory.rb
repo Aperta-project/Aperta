@@ -12,5 +12,6 @@ FactoryGirl.define do
     affiliation 'university of dagobah'
     position 1
     contributions ["bought cookies"]
+    paper
   end
 end

@@ -1,5 +1,7 @@
 module TahiPusher
   class Config
+    SYSTEM_CHANNEL = "system"
+
     # injected into ember layout (ember.html.erb)
     # then loaded into ember client (pusher-override.coffee)
     def self.as_json(options={})
@@ -18,7 +20,7 @@ module TahiPusher
     end
 
     def self.default_channels
-      ["system"]
+      [SYSTEM_CHANNEL]
     end
 
     def self.enabled?

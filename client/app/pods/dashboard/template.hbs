@@ -16,7 +16,7 @@
     <h2 class="welcome-message">
       Hi, {{currentUser.firstName}}.
       {{#if papers.length}}
-        You have {{model.totalPaperCount}} {{make-plural model.totalPaperCount "manuscript" "manuscripts"}}.
+        You have {{totalPaperCount}} {{make-plural totalPaperCount "manuscript" "manuscripts"}}.
       {{else}}
         You have no manuscripts.
       {{/if}}

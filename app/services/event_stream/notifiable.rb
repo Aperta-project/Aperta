@@ -22,7 +22,7 @@ module EventStream::Notifiable
     def destroyed_payload
       {
         type: self.class.base_class.name.demodulize.tableize,
-        ids: [self.id],
+        ids: [self.id]
       }.to_json
     end
 

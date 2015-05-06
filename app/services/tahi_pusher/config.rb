@@ -29,6 +29,7 @@ module TahiPusher
     end
 
     def self.verbose_logging?
+      # detailed rails server logs will be recorded for pusher communication
       ENV["PUSHER_VERBOSE_LOGGING"] == "true"
     end
   end

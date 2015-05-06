@@ -12,11 +12,17 @@ module TahiPusher
     end
 
     def authenticate(socket_id:)
-      Pusher[channel_name].authenticate(socket_id)
+      message = "Authenticating channel_name=#{channel_name}, socket=#{socket_id}"
+      with_logging(message) do
+        Pusher[channel_name].authenticate(socket_id)
+      end
     end
 
     def push(event_name:, payload:)
-      Pusher.trigger(channel_name, event_name, payload)
+      message = "Pushing event_name=#{event_name}, channel=#{channel_name}, payload=#{payload}"
+      with_logging(message) do
+        Pusher.trigger(channel_name, event_name, payload)
+      end
     end
 
 
@@ -28,6 +34,11 @@ module TahiPusher
 
     def extract_model_id(model_name)
       parsed_channel.fetch(model_name)
+    end
+
+    def with_logging(message)
+      Pusher.logger.info("** [Pusher] #{message}") if TahiPusher::Config.verbose_logging?
+      yield
     end
   end
 end

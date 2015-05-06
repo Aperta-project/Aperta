@@ -4,4 +4,5 @@ if TahiPusher::Config.enabled?
   Pusher.secret = ENV.fetch("EVENT_STREAM_SECRET")
   Pusher.host   = ENV.fetch("EVENT_STREAM_API_HOST")
   Pusher.port   = ENV.fetch("EVENT_STREAM_API_PORT").to_i
+  Pusher.logger = Rails.logger
 end

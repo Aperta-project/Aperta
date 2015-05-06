@@ -25,5 +25,9 @@ module TahiPusher
       # assume enabled even if environment variable is not set
       ENV["PUSHER_ENABLED"] != "false"
     end
+
+    def self.verbose_logging?
+      ENV["PUSHER_VERBOSE_LOGGING"] == "true"
+    end
   end
 end

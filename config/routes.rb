@@ -48,7 +48,7 @@ Tahi::Application.routes.draw do
     resources :authors, only: [:create, :update, :destroy]
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]
-    resources :comment_looks, only: [:index, :update]
+    resources :comment_looks, only: [:index, :destroy]
     resources :decisions, only: [:create, :update]
     resource :event_stream, only: :show
     resources :errors, only: :create

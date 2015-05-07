@@ -12,13 +12,4 @@ Comment = DS.Model.extend
   createdAt: a('date')
   entities: a()
 
-  isUnreadBy: (user) ->
-    if commentLook = @get('commentLook')
-      Ember.isEmpty(commentLook.get('readAt'))
-
-  markReadBy: (user) ->
-    cl = @get('commentLook')
-    cl.set('readAt', new Date())
-    cl.save()
-
 `export default Comment`

@@ -15,12 +15,12 @@
 
   <body>
 
-    <% if current_user %>
       <script type="text/javascript">
-        window.currentUserData = <%= CurrentUserSerializer.new(current_user, root: :user).to_json.html_safe %>;
         window.eventStreamConfig = <%= TahiPusher::Config.to_json.html_safe %>;
+        <% if current_user %>
+            window.currentUserData = <%= CurrentUserSerializer.new(current_user, root: :user).to_json.html_safe %>;
+        <% end %>
       </script>
-    <% end %>
 
     <%= include_ember_script_tags :tahi %>
     <%= include_ember_stylesheet_tags :tahi %>

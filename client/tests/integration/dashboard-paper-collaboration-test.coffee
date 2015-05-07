@@ -148,14 +148,6 @@ test 'User can show the feedback form', ->
   andThen ->
     ok find(".overlay-action-buttons .button-primary:contains('Send Feedback')").length
 
-test 'Hitting escape closes the feedback form', ->
-  visit '/'
-  click '.navigation-toggle'
-  click '.navigation-item-feedback'
-  keyEvent '.overlay', 'keyup', 27
-  andThen ->
-    ok !find(".overlay-footer-content .button-primary:contains('Send Feedback')").length
-
 test 'User sees a thank you message after submission', ->
   server.respondWith 'POST', "/api/feedback", [
     200, "Content-Type": "application/json", JSON.stringify {}

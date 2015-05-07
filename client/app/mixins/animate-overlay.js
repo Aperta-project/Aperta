@@ -1,18 +1,18 @@
 import Ember from 'ember';
 
-let transitionEventName = function() {
-  var t;
+let animationEventName = function() {
+  var a;
   var el = document.createElement('fakeelement');
-  var transitions = {
-    'transition':'transitionend',
-    'OTransition':'oTransitionEnd',
-    'MozTransition':'transitionend',
-    'WebkitTransition':'webkitTransitionEnd'
+  var animations = {
+    'animation': 'animationend',
+    'OAnimation': 'oanimationend',
+    'MSAnimation': 'msAnimationEnd',
+    'WebkitAnimation': 'webkitAnimationEnd'
   };
 
-  for(t in transitions){
-    if(el.style[t] !== undefined){
-      return transitions[t];
+  for(a in animations){
+    if(el.style[a] !== undefined){
+      return animations[a];
     }
   }
 };
@@ -20,19 +20,15 @@ let transitionEventName = function() {
 export default Ember.Mixin.create({
   out: function() {
     let element   = $('.overlay');
-    let eventName = transitionEventName();
+    let eventName = animationEventName();
 
     if(eventName) {
-      let promise = new Ember.RSVP.Promise(function(resolve) {
-        element.one(eventName, function() {
-          resolve();
-        });
+      return new Ember.RSVP.Promise(function(resolve) {
+        $('html').removeClass('overlay-open');
+        element.removeClass('animation-fade-in')
+               .addClass('animation-fade-out')
+               .one(eventName, function() { resolve(); });
       });
-
-      $('html').removeClass('overlay-open');
-      element.removeClass('animation-fade-in').addClass('animation-fade-out');
-
-      return promise;
     } else {
       // NEEDED FOR IE9. Remove if statements when IE9 support is dropped!
       let defer = new Ember.RSVP.defer();
@@ -48,19 +44,14 @@ export default Ember.Mixin.create({
 
   "in": function() {
     let element   = $('.overlay');
-    let eventName = transitionEventName();
+    let eventName = animationEventName();
 
     if(eventName) {
-      let promise = new Ember.RSVP.Promise(function(resolve) {
-        element.one(eventName, function() {
-          resolve();
-        });
+      return new Ember.RSVP.Promise(function(resolve) {
+        Ember.run.later(function() { $('html').addClass('overlay-open'); }, 30);
+        element.addClass('animation-fade-in')
+               .one(eventName, function() { resolve(); });
       });
-
-      Ember.run.later(function() { $('html').addClass('overlay-open'); }, 30);
-      element.addClass('animation-fade-in');
-
-      return promise;
     } else {
       // NEEDED FOR IE9. Remove if statements when IE9 support is dropped!
       let defer = new Ember.RSVP.defer();

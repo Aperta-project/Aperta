@@ -6,7 +6,7 @@ Comment = DS.Model.extend
 
   commenter: DS.belongsTo('user')
   task: DS.belongsTo('task', polymorphic: true)
-  commentLook: DS.belongsTo('comment-look')
+  commentLook: DS.belongsTo('commentLook', inverse: 'comment')
 
   body: a('string')
   createdAt: a('date')

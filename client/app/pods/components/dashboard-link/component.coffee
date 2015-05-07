@@ -2,13 +2,9 @@
 
 DashboardLinkComponent = Ember.Component.extend
 
-  unreadCommentsList: Ember.computed 'unreadComments.@each.readAt', 'unreadComments.@each.paperId', ->
-    paperId = @get('model.id')
-    @get('unreadComments').filter (c) -> c.get('paperId') == paperId && !c.get('readAt')
-
   unreadCommentsCount: (->
-    @get('unreadCommentsList.length')
-  ).property('unreadCommentsList.length')
+    @get('model.commentLooks.length')
+  ).property('model.commentLooks.@each')
 
   refreshTooltips: ->
     Ember.run.scheduleOnce 'afterRender', @, =>

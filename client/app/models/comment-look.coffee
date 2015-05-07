@@ -4,12 +4,11 @@ a = DS.attr
 
 CommentLook = DS.Model.extend
 
-  comment: DS.belongsTo('comment')
+  paper: DS.belongsTo('paper')
+  task: DS.belongsTo('task', polymorphic: true, inverse: 'commentLooks')
+  comment: DS.belongsTo('comment', inverse: 'commentLook')
   user: DS.belongsTo('user')
 
   readAt: a('date')
-  taskId: a('string')
-  paperId: a('string')
-
 
 `export default CommentLook`

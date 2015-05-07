@@ -14,6 +14,7 @@ Paper = DS.Model.extend
   decisions: DS.hasMany('decision')
   supportingInformationFiles: DS.hasMany('supporting-information-file')
   tasks: DS.hasMany('task', {async: true, polymorphic: true})
+  commentLooks: DS.hasMany('comment-look', inverse: 'paper')
 
   body: a('string')
   doi: a('string')

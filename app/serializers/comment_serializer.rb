@@ -6,7 +6,7 @@ class CommentSerializer < ActiveModel::Serializer
   has_one :comment_look, include: true, embed: :id
 
   def comment_look
-    object.comment_looks.where('read_at is null').find_by(user: scoped_user)
+    object.comment_looks.where(read_at: nil).find_by(user: scoped_user)
   end
 
   private

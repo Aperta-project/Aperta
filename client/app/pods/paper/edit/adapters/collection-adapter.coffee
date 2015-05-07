@@ -1,6 +1,7 @@
 `import Ember from 'ember';`
 
-# Observes items of a table collection and updates the corresponding VE model or the Ember model vice versa.
+# Observes items of a collection and updates the corresponding VE model or the Ember model vice versa.
+# TODO: describe mandatory overrides
 CollectionAdapterMixin = Ember.Mixin.create
 
   doc: null
@@ -50,7 +51,6 @@ CollectionAdapterMixin = Ember.Mixin.create
   ).on('init')
 
   willDestroy: ( () ->
-    console.log('Destroying collection adapter for', @get('modelType'))
     @_super()
     @get('doc').disconnect @
     @getNodeIndex().disconnect @
@@ -112,9 +112,8 @@ CollectionAdapterMixin = Ember.Mixin.create
     oldUpdatedAt = @get('updatedAt')[id]
     # only update if updatedAt timestamp has changed
     return if oldUpdatedAt and ( updatedAt.getTime() <= oldUpdatedAt.getTime() )
-    tableNodes = @get('doc').getIndex('table-nodes')
     # Note: there are potentially multiple nodes associated with one collection item
-    nodes = tableNodes.getById(id)
+    nodes = @getNodeIndex().getById(id)
     if nodes.length > 0
       @set('isUpdating', true)
       editor = @get('editor')

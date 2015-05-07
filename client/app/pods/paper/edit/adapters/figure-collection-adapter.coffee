@@ -18,18 +18,27 @@ FigureCollectionAdapter = Ember.Object.extend CollectionAdapter,
     model.set('title', newTitle)
     # caption
     newCaption = node.getPropertyNode('caption').toHtml()
+    console.log('.... saving changed figure caption', newCaption)
     model.set('caption', newCaption)
 
   loadNodeFromModel: (node, model) ->
+    surface = @get('editor').getSurface()
     # title
     oldTitle = node.getPropertyNode('title').toHtml()
     newTitle = model.get('title')
     if oldTitle != newTitle
-      node.getPropertyNode('title').fromHtml(newTitle)
+      node.getPropertyNode('title').fromHtml(newTitle, surface)
+    #src
+    oldSrc = node.getPropertyNode('image').getAttribute('src')
+    newSrc = model.get('src')
+    if oldSrc != newSrc
+      console.log('.... loading changed figure image src', newSrc, 'old', oldSrc)
+      node.getPropertyNode('image').setSrc(newSrc, surface)
     #caption
     oldCaption = node.getPropertyNode('caption').toHtml()
     newCaption = model.get('caption')
     if oldCaption != newCaption
-      node.getPropertyNode('caption').fromHtml(newCaption)
+      console.log('.... loading changed figure caption', newCaption, 'old', oldCaption)
+      node.getPropertyNode('caption').fromHtml(newCaption, surface)
 
 `export default FigureCollectionAdapter;`

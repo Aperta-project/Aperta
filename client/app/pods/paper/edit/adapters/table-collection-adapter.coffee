@@ -26,7 +26,7 @@ TableCollectionAdapter = Ember.Object.extend CollectionAdapter,
     oldTitle = node.getPropertyNode('title').toHtml()
     newTitle = model.get('title')
     if oldTitle != newTitle
-      node.getPropertyNode('title').fromHtml(newTitle)
+      node.getPropertyNode('title').fromHtml(newTitle, surface)
     # body
     oldBody = node.getPropertyNode('table').toHtml()
     newBody = model.get('body')
@@ -36,6 +36,6 @@ TableCollectionAdapter = Ember.Object.extend CollectionAdapter,
     oldCaption = node.getPropertyNode('caption').toHtml()
     newCaption = model.get('caption')
     if oldCaption != newCaption
-      node.getPropertyNode('caption').fromHtml(newCaption)
+      node.getPropertyNode('caption').fromHtml(newCaption, surface)
 
 `export default TableCollectionAdapter;`

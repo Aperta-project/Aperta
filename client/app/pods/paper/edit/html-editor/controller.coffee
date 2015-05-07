@@ -58,11 +58,6 @@ Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
       editor: editor
     )
 
-    if @get('isEditing')
-      editor.enable()
-    else
-      editor.disable()
-
     @set('editor', editor)
     @set('figureCollectionAdapter', figureCollectionAdapter)
     @set('tableCollectionAdapter', tableCollectionAdapter)

@@ -5308,6 +5308,10 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		( selection instanceof ve.dm.TableSelection && selection.isSingleCell() )
 	) {
 		range = selection.getRanges()[0];
+	} else if (selection instanceof ve.dm.TableSelection && selection.isFullTable()) {
+		this.pasteIntoTable(selection.getTableNode(), clipboardData);
+		e.preventDefault();
+		return;
 	} else {
 		e.preventDefault();
 		return;
@@ -5409,6 +5413,53 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	// Restore scroll position after focusing the paste target
 	this.setScrollPosition( this.beforePasteData.scrollTop );
 
+};
+
+ve.ce.Surface.prototype.pasteIntoTable = function(tableNode, clipboardData) {
+	var html, htmlDoc, doc, importRules, docNode, data, selection, pastedTableNode,
+		pastedTableData, tx, children, i;
+	html = clipboardData.getData( 'text/html' );
+	if (!html) {
+		return;
+	}
+	htmlDoc = ve.createDocumentFromHtml( html );
+	if (!htmlDoc) {
+		return;
+	}
+	$(htmlDoc).find('[style]').removeAttr('style');
+	// External paste
+	// TODO: what about 'lang' and 'dir'?
+	doc = ve.dm.converter.getModelFromDom( htmlDoc, this.getModel().getDocument().getHtmlDocument(), null, null, this.getModel().getDocument());
+	data = doc.data;
+	// Clear metadata
+	doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
+	importRules = this.getSurface().getImportRules();
+	data.sanitize( importRules.external, this.pasteSpecial );
+	if ( importRules.all ) {
+		data.sanitize( importRules.all );
+	}
+	data.remapInternalListKeys( this.model.getDocument().getInternalList() );
+	// Initialize node tree
+	doc.buildNodeTree();
+	docNode = doc.getDocumentNode();
+	// Find the pasted table node
+	pastedTableNode = null;
+	children = docNode.getChildren();
+	for (i = 0; i < children.length; i++) {
+		if (children[i] instanceof ve.dm.TableNode) {
+			pastedTableNode = children[i];
+			break;
+		}
+	}
+	if (!pastedTableNode) {
+		return;
+	}
+	pastedTableData = doc.getData(pastedTableNode.getRange());
+	tx = ve.dm.Transaction.newFromReplacement(
+			this.documentView.model, tableNode.getRange(), pastedTableData);
+	selection = this.model.getSelection();
+	this.model.change( tx, selection.collapseToStart() );
+	this.model.setSelection( selection.collapseToEnd() );
 };
 
 /**

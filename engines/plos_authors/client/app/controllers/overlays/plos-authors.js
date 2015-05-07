@@ -35,7 +35,7 @@ export default TaskController.extend({
 
     saveNewAuthor: function(newAuthorHash) {
       Ember.merge(newAuthorHash, {
-        paper: this.get('paper'),
+        paper: this.get('model.paper'),
         plosAuthorsTask: this.get('model'),
         position: 0
       });

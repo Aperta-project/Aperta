@@ -24,7 +24,7 @@ module TahiPusher
       message = "Checking authorization on channel_name=#{channel_name} for user_id=#{user.id}"
       with_logging(message) do
         return true unless parsed_channel.active_record_backed?
-        Accessibility.new(parsed_channel.target).users.include?(user)
+        authorized_users.include?(user)
       end
     rescue ActiveRecord::RecordNotFound
       return false
@@ -32,6 +32,10 @@ module TahiPusher
 
 
     private
+
+    def authorized_users
+      Accessibility.new(parsed_channel.target).users
+    end
 
     def parsed_channel
       @parsed_channel ||= ChannelName.parse(channel_name)

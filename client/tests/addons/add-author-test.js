@@ -4,17 +4,6 @@ import startApp from "tahi/tests/helpers/start-app";
 import FactoryGuy from "ember-data-factory-guy";
 import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 
-TestHelper.mapFind = function(modelName, json) {
-  let responseJson = {};
-  if ((/Task/).test(modelName)) {
-    responseJson["tasks"] = json;
-  } else {
-    responseJson[Ember.String.pluralize(modelName)] = json;
-  }
-  return responseJson;
-};
-
-
 let App, paper, phase, task;
 
 module("Integration: adding an author", {

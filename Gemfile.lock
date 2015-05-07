@@ -64,6 +64,12 @@ PATH
     tahi_upload_manuscript (0.0.1)
       rails (~> 4.2.0)
 
+PATH
+  remote: ~/Documents/code/neo/plos_bio_internal_review
+  specs:
+    plos_bio_internal_review (0.0.1)
+      rails (~> 4.2.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -559,6 +565,7 @@ DEPENDENCIES
   pg_search
   plos_authors!
   plos_billing!
+  plos_bio_internal_review!
   plos_bio_tech_check!
   premailer-rails
   progressbar

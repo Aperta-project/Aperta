@@ -100,6 +100,12 @@ FactoryGirl.define do
     body initialTechCheckBody: 'Default changes for author body'
   end
 
+  factory :editor_discussion_task, class: 'PlosBioInternalReview::EditorDiscussionTask' do
+    phase
+    title "Editor Discussion"
+    role "admin"
+  end
+
   factory :invitable_task, class: 'InvitableTask' do
     phase
     title "Invitable Task"

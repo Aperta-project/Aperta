@@ -100,9 +100,9 @@ FactoryGirl.define do
     body initialTechCheckBody: 'Default changes for author body'
   end
 
-  factory :editor_discussion_task, class: 'PlosBioInternalReview::EditorDiscussionTask' do
+  factory :editors_discussion_task, class: 'PlosBioInternalReview::EditorsDiscussionTask' do
     phase
-    title "Editor Discussion"
+    title "Editor's Discussion"
     role "admin"
   end
 

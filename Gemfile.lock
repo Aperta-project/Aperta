@@ -17,6 +17,13 @@ GIT
       activerecord (>= 3.0)
 
 GIT
+  remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
+  revision: 09d71f4e6ec9c856c26ffea42cf56e77c123e752
+  specs:
+    plos_bio_internal_review (0.0.1)
+      rails (~> 4.2.1)
+
+GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
   revision: 77ff39509e4167b449982d6f77748f75806ea3f5
   specs:
@@ -63,12 +70,6 @@ PATH
   specs:
     tahi_upload_manuscript (0.0.1)
       rails (~> 4.2.0)
-
-PATH
-  remote: ~/Documents/code/neo/plos_bio_internal_review
-  specs:
-    plos_bio_internal_review (0.0.1)
-      rails (~> 4.2.1)
 
 GEM
   remote: https://rubygems.org/

@@ -93,6 +93,12 @@ FactoryGirl.define do
     role "admin"
   end
 
+  factory :initial_tech_check_task, class: 'PlosBioTechCheck::InitialTechCheckTask' do
+    phase
+    title 'Initial Tech Check'
+    role 'admin'
+  end
+
   factory :changes_for_author_task, class: 'PlosBioTechCheck::ChangesForAuthorTask' do
     phase
     title "Changes for Author"
@@ -135,4 +141,3 @@ class InvitableTask < Task
 end
 
 class InvitableTasksPolicy < TasksPolicy; end
-

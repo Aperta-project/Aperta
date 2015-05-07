@@ -415,6 +415,7 @@ GEM
     redis (3.2.1)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
+    request_store (1.1.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rest-client (1.7.3)
@@ -578,6 +579,7 @@ DEPENDENCIES
   rack-timeout
   rails (= 4.2.1)
   rails_12factor
+  request_store
   rest-client
   rspec-collection_matchers
   rspec-instafail

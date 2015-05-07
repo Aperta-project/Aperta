@@ -8,7 +8,7 @@ module EventStream::Notifiable
     end
 
     def event_payload
-      { action: action, record: self }
+      { action: action, record: self, requester_socket_id: RequestStore.store[:requester_pusher_socket_id] }
     end
 
     def event_stream_serializer

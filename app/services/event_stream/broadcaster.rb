@@ -6,7 +6,7 @@ module EventStream
       @record = record
     end
 
-    def post(action:, channel_scope:)
+    def post(action:, channel_scope:, excluded_socket_id:)
       if action == "destroyed"
         payload = record.destroyed_payload
         channel_name = TahiPusher::ChannelName.build(
@@ -20,7 +20,7 @@ module EventStream
           access: TahiPusher::ChannelName::PRIVATE
         )
       end
-      TahiPusher::Channel.new(channel_name: channel_name).push(event_name: action, payload: payload)
+      TahiPusher::Channel.new(channel_name: channel_name).push(event_name: action, payload: payload, excluded_socket_id: excluded_socket_id)
     end
   end
 end

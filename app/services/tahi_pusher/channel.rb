@@ -13,10 +13,12 @@ module TahiPusher
       end
     end
 
-    def push(event_name:, payload:)
-      message = "Pushing event_name=#{event_name}, channel=#{channel_name}, payload=#{payload}"
+    def push(event_name:, payload:, excluded_socket_id: nil)
+      message = "Pushing event_name=#{event_name}, channel=#{channel_name}, payload=#{payload}, excluded_socket_id=#{excluded_socket_id}"
       with_logging(message) do
-        Pusher.trigger(channel_name, event_name, payload)
+        excluded_socket = {}
+        excluded_socket.merge!( { socket_id: excluded_socket_id }) if excluded_socket_id.present?
+        Pusher.trigger(channel_name, event_name, payload, excluded_socket)
       end
     end
 

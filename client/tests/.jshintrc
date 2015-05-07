@@ -21,7 +21,9 @@
     "andThen",
     "currentURL",
     "currentPath",
-    "currentRouteName"
+    "currentRouteName",
+    "pickFromSelect2",
+    "pickFromChosenSingle"
   ],
   "node": false,
   "browser": false,

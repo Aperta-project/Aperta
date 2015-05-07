@@ -6,17 +6,31 @@ $comments-animation-speed: 0.3s;
 
 /* start comment form */
 
-.comment-board .user-thumbnail { margin: 0 7px 0 10px; }
-
 .comment-board-form {
   overflow: hidden;
   position: relative;
   padding-bottom: 0;
   @include transition(all $comments-animation-speed);
 
-  &.editing { padding-bottom: 45px; }
-}
+  &.editing {
+    padding-bottom: 45px;
 
+    .message-comment-buttons {
+      height: auto;
+      bottom: 0;
+      opacity: 1.0;
+    }
+
+    .new-comment-field {
+      height: 74px;
+    }
+  }
+
+  .user-thumbnail {
+    float: left;
+    margin: 0 7px 0 10px;
+  }
+}
 
 .new-comment-field {
   width: 644px;
@@ -25,10 +39,6 @@ $comments-animation-speed: 0.3s;
   border: 1px solid #ddd;
   padding: 5px;
   @include transition(height $comments-animation-speed)
-}
-
-.comment-board-form.editing .new-comment-field {
-  height: 74px;
 }
 
 .message-comment-buttons {
@@ -45,14 +55,7 @@ $comments-animation-speed: 0.3s;
   }
 }
 
-.comment-board-form.editing .message-comment-buttons {
-  height: auto;
-  bottom: 0;
-  opacity: 1.0;
-}
-
 /* end comment form */
-
 
 .message-comments {
   list-style-type: none;

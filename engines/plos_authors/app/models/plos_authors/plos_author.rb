@@ -13,6 +13,7 @@ module PlosAuthors
     validates :first_name, :last_name, :affiliation, :department, :title, :email, presence: true, if: :task_completed?
     validates :email, format: { with: Devise.email_regexp, message: "needs to be a valid email address" }, if: :task_completed?
     validates :contributions, presence: { message: "one must be selected" }, if: :task_completed?
+    validates :paper, presence: true
 
     def self.for_paper(paper)
       where(paper_id: paper)

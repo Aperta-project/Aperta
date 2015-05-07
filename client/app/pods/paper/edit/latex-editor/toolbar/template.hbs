@@ -1,0 +1,21 @@
+<div class="editor-toolbar">
+  {{toggle-paper-editable action="toggleEditing"
+                          canEdit=canToggleEditing
+                          isEditing=lockedByCurrentUser}}
+
+  {{#if noTasks}}
+    <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allMetadataTasksCompleted "button--green" "button--disabled"}}">
+      Submit Manuscript
+    </button>
+    <span class="glyphicon glyphicon-lock {{if locked "" "hidden"}}"></span>
+  {{/if}}
+
+  <span class="saving-spinner {{if isSaving "" "hidden"}}">
+    <i class="fa fa-spinner fa-spin"></i>
+  </span>
+
+  <span class="edit-paper-lock-message">
+    {{#if statusMessage}}<span>{{{statusMessage}}}</span>{{/if}}
+    {{time-ago time=savedAt}}
+  </span>
+</div>

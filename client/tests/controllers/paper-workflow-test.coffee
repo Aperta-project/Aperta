@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import { test, moduleFor } from 'ember-qunit'`
 
-moduleFor 'controller:paper/manage', 'PaperManageController',
+moduleFor 'controller:paper/workflow', 'PaperWorkflowController',
   needs: ['controller:application']
   setup: ->
     @phase1 = Ember.Object.create position: 1
@@ -13,26 +13,26 @@ moduleFor 'controller:paper/manage', 'PaperManageController',
       phases: [ ]
 
 test '#sortedPhases: phases are sorted by position', ->
-  paperManageController = @subject()
-  paperManageController.set('model', @paper)
-  paperManageController.set 'model.phases', [ @phase3, @phase2, @phase4 ]
+  paperWorkflowController = @subject()
+  paperWorkflowController.set('model', @paper)
+  paperWorkflowController.set 'model.phases', [ @phase3, @phase2, @phase4 ]
 
-  sortedPositionArray = paperManageController.get('sortedPhases').mapBy('position').toArray()
+  sortedPositionArray = paperWorkflowController.get('sortedPhases').mapBy('position').toArray()
   deepEqual sortedPositionArray, [ 2, 3, 4 ]
 
-  paperManageController.get('model.phases').pushObject @phase1
-  sortedPositionArray = paperManageController.get('sortedPhases').mapBy('position').toArray()
+  paperWorkflowController.get('model.phases').pushObject @phase1
+  sortedPositionArray = paperWorkflowController.get('sortedPhases').mapBy('position').toArray()
   deepEqual sortedPositionArray, [ 1, 2, 3, 4 ]
 
 test '#updatePositions: phase positions are updated accordingly', ->
   equal @phase3.get('position'), 3
   equal @phase4.get('position'), 4
 
-  paperManageController = @subject()
-  paperManageController.set('model', @paper)
-  paperManageController.set 'model.phases', [ @phase1, @phase2, @phase3, @phase4 ]
+  paperWorkflowController = @subject()
+  paperWorkflowController.set('model', @paper)
+  paperWorkflowController.set 'model.phases', [ @phase1, @phase2, @phase3, @phase4 ]
   @phase1.setProperties position: 3
-  paperManageController.updatePositions @phase1
+  paperWorkflowController.updatePositions @phase1
 
   equal @phase3.get('position'), 4
   equal @phase4.get('position'), 5

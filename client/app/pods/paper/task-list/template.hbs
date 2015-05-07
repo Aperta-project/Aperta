@@ -4,6 +4,7 @@
 
 {{#if assignedTasks}}
   <div id="paper-assigned-tasks">
+    <h5>Assigned Cards</h5>
     {{#each sortedAssignedTasks as |task|}}
       {{card-preview paper=model
                      task=task
@@ -11,11 +12,11 @@
                      action="viewCard"}}
     {{/each}}
   </div>
-  <hr>
 {{/if}}
 
 {{#if editorTasks}}
   <div id="paper-editor-tasks">
+    <h5>Editor Cards</h5>
     {{#each sortedEditorTasks as |task|}}
       {{card-preview paper=model
                      task=task
@@ -23,11 +24,11 @@
                      action="viewCard"}}
     {{/each}}
   </div>
-  <hr>
 {{/if}}
 
 {{#if authorTasks}}
   <div id="paper-metadata-tasks">
+    <h5>Author Cards</h5>
     {{#each sortedAuthorTasks as |task|}}
       {{card-preview paper=model
                      task=task
@@ -35,5 +36,4 @@
                      action="viewCard"}}
     {{/each}}
   </div>
-  <hr>
 {{/if}}

@@ -31,6 +31,19 @@ module Invitable
     true
   end
 
+  # Public: after transition hook for custom task behavior upon being deleted
+  #
+  # _invitation - the invitation
+  #
+  # Examples
+  #
+  #   Sending an email to notify the user their invitation is no longer valid
+  #
+  # Returns true, is a noop if unimplemented
+  def invitation_rescinded(_invitation)
+    true
+  end
+
   # Public: after transition hook for custom task behavior upon transitioning to "rejected" state
   #
   # _invitation - the invitation

@@ -1,46 +1,35 @@
 {
-  "app/assets/javascripts/models/*.js.coffee": {
+  "app/assets/stylesheets/*.scss":            { "command": "css", },
+  "app/assets/stylesheets/animations/*.scss": { "command": "cssanim", },
+  "app/assets/stylesheets/components/*.scss": { "command": "csscomp", },
+  "app/assets/stylesheets/overlays/*.scss":   { "command": "cssover", },
+  "app/assets/stylesheets/screens/*.scss":    { "command": "cssscreen", },
+  "app/assets/stylesheets/ui/*.scss":         { "command": "cssui", },
+
+  "client/app/models/*.js": {
     "command": "jmodel",
-    "alternate": "test/javascripts/models/%s_test.js.coffee",
-    "related": "app/assets/javascripts/serializers/%_serializer.js.coffee",
-    "template": "ETahi.%S = DS.Model.extend"
+    "alternate": "client/tests/models/%s-test.coffee",
+    "template": "import Ember from 'ember';\nimport DS from 'ember-data';\n\nexport default DS.Model.extend();"
   },
 
-  "app/assets/javascripts/serializers/*_serializer.js.coffee": {
-    "command": "jserializer",
-    "related": "app/assets/javascripts/models/%s.js.coffee",
-    "template": "ETahi.%S = ETahi.ApplicationSerializer.extend"
+  "client/app/mixins/*.js": {
+    "command": "jmixin",
+    "template": "import Ember from 'ember';\n\nexport default Ember.Mixin.create();"
   },
 
-  "app/assets/javascripts/controllers/*_controller.js.coffee": {
-    "command": "jcontroller",
-    "alternate": "test/javascripts/controllers/%s_test.js.coffee",
-    "related":  "app/assets/javascripts/routes/%s_route.js.coffee",
-    "template": "ETahi.%SController = Ember.ObjectController.extend"
-  },
+  "client/app/pods/*.hbs":         { "command": "jtemplate" },
 
-  "app/assets/javascripts/views/*_view.js.coffee": {
-    "command": "jview",
-    "alternate": "test/javascripts/views/%s_test.js.coffee",
-    "related": "app/assets/javascripts/templates/%s.hbs",
-    "template": "%SView = Ember.View.extend"
-  },
+  "client/app/adapters/*.js":     { "command": "jadapt" },
+  "client/app/helpers/*.js":      { "command": "jhelper" },
+  "client/app/initializers/*.js": { "command": "jinit" },
+  "client/app/pods/*.js":         { "command": "jpod" },
+  "client/app/router.js":         { "command": "jrouter" },
+  "client/app/serializers/*.js":  { "command": "jserial" },
+  "client/app/services/*.js":     { "command": "jservice" },
 
-  "app/assets/javascripts/router.js.coffee": {
-    "command": "jrouter"
-  },
-
-  "app/assets/javascripts/routes/*_route.js.coffee": {
-    "command": "jroute",
-    "alternate": "test/javascripts/routes/%s_test.js.coffee",
-    "related": "app/assets/javascripts/controllers/%s_controller.js.coffee",
-    "template": "ETahi.%SRoute = Ember.Route.extend"
-  },
-
-  "app/assets/javascripts/templates/*.hbs": {
-    "command": "jtemplate",
-    "related": "app/assets/javascripts/views/%s_view.js.coffee"
-  },
+  "client/package.json":  { "command": "jpackage" },
+  "client/bower.json":    { "command": "jbower" },
+  "client/Brocfile.json": { "command": "jbroc" },
 
   "app/serializers/*_serializer.rb": {
     "command": "serializer",
@@ -54,17 +43,5 @@
     "alternate": "spec/policies/%s_policy_spec.rb",
     "related": "app/controllers/%p_controller.rb",
     "template": "class %SPolicy < ApplicationPolicy\nend"
-  },
-
-  "app/assets/stylesheets/*.scss": {
-    "command": "css",
-  },
-
-  "app/assets/stylesheets/screens/*.scss": {
-    "command": "cssscreen",
-  },
-
-  "app/assets/stylesheets/ui/*.scss": {
-    "command": "cssui",
-  },
+  }
 }

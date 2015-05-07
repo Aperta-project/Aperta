@@ -15,58 +15,43 @@ export default Ember.Mixin.create({
   statusMessage: Ember.computed.any('processingMessage', 'userEditingMessage', 'saveStateMessage'),
 
   processingMessage: function() {
-    if (this.get('model.status') === 'processing') {
-      return 'Processing Manuscript';
-    } else {
-      return null;
-    }
+    return this.get('model.status') === 'processing' ? 'Processing Manuscript' : null;
   }.property('model.status'),
 
-  userEditingMessage: (function() {
-    let lockedBy = this.get('model.lockedBy');
-
-    if (lockedBy && lockedBy !== this.get('currentUser')) {
-      return '<span class="edit-paper-locked-by">' + (lockedBy.get('fullName')) + '</span> <span>is editing</span>';
+  userEditingMessage: function() {
+    if (this.get('model.lockedBy') && !this.get('lockedByCurrentUser')) {
+      return '<span class="edit-paper-locked-by">' + this.get('model.lockedBy.fullName') + '</span> <span>is editing</span>';
     } else {
       return null;
     }
-  }).property('model.lockedBy'),
+  }.property('model.lockedBy', 'lockedByCurrentUser'),
 
-  locked: function() {
-    return !Ember.isBlank(this.get('processingMessage') || this.get('userEditingMessage'));
-  }.property('processingMessage', 'userEditingMessage'),
+  cannotEdit: function() {
+    return this.get('model.status') === 'processing' || !this.get('lockedByCurrentUser');
+  }.property('model.status', 'lockedByCurrentUser'),
 
-  canEdit: Ember.computed.not('locked'),
+  canEdit: Ember.computed.not('cannotEdit'),
 
-  isEditing: function() {
+  canToggleEditing: function() {
+    return this.get('canEdit') || Ember.isEmpty(this.get('model.lockedBy'));
+  }.property('model.lockedBy', 'canEdit'),
+
+  lockedByCurrentUser: function() {
     let lockedBy = this.get('model.lockedBy');
-    return lockedBy && lockedBy === this.get('currentUser');
+    return !!(lockedBy && lockedBy === this.get('currentUser'));
   }.property('model.lockedBy'),
 
   saveStateDidChange: function() {
-    if (this.get('saveState')) {
-      this.setProperties({
-        saveStateMessage: 'Saved',
-        savedAt: new Date()
-      });
-    } else {
-      this.setProperties({
-        saveStateMessage: null,
-        savedAt: null
-      });
-    }
+    this.setProperties({
+      saveStateMessage: this.get('saveState') ? 'Saved' : null,
+      savedAt: this.get('saveState') ? new Date() : null
+    });
   }.observes('saveState'),
 
   savePaperDebounced() {
     this.set('isSaving', true);
     Ember.run.debounce(this, this.savePaper, 2000);
   },
-
-  paperBodyDidChange: function() {
-    if (!this.get('isEditing')) {
-      this.updateEditor();
-    }
-  }.observes('model.body'),
 
   actions: {
     toggleEditing() {

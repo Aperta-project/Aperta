@@ -22,7 +22,7 @@ Paper = DS.Model.extend
   status: a('string')
   title: a('string')
   paperType: a('string')
-  editorMode: a('string')
+  editorMode: a('string', {defaultValue: 'html'})
   eventName: a('string')
   strikingImageId: a('string')
   editable: a('boolean')

@@ -1,33 +1,35 @@
 {{partial "paper/control-bar"}}
 
-<div class="editor-toolbar">
-  {{partial "paper/edit/toolbar"}}
+<div class="paper-toolbar">
+  {{partial "paper/edit/html-editor/toolbar"}}
 </div>
 
-<div id="paper-container" class="clearfix {{if noTasks "sidebar-empty"}}">
+<div id="paper-container" class="clearfix paper-container-html {{if noTasks "sidebar-empty"}}">
   {{partial "paper/sidebar"}}
-  <div class='vertical-divider'></div>
-  <div class="manuscript-container">
-    <main>
-      {{flash-messages classNames="flash-messages-paper-editor"}}
-      <article class="manuscript {{if isEditing "editing" "read-only"}}">
-        <div class="manuscript-title-and-placeholder">
-          {{content-editable tagName="h2"
-                             id="paper-title"
-                             placeholder="Type your manuscript title here"
-                             value=model.title
-                             preventEnterKey="true"}}
 
-          {{#if showPlaceholder}}
-            <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
-          {{/if}}
-        </div>
-        <div id="paper-body">
-          {{visual-editor viewName="editor"
-                          initializerContext=controller
-                          initializer=controller.setupEditor}}
-        </div>
-      </article>
-    </main>
+  <div class="vertical-divider"></div>
+
+  <div class="manuscript-container">
+    {{flash-messages classNames="flash-messages-paper-editor"}}
+    <article class="manuscript {{if isEditing "editing" "read-only"}}">
+
+      <div class="manuscript-title-and-placeholder">
+        {{content-editable tagName="h2"
+                           id="paper-title"
+                           placeholder="Type your manuscript title here"
+                           value=model.title
+                           preventEnterKey="true"}}
+
+        {{#if showPlaceholder}}
+          <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
+        {{/if}}
+      </div>
+      <div id="paper-body">
+        {{visual-editor viewName="editor"
+                        initializerContext=controller
+                        initializer=controller.setupEditor}}
+      </div>
+
+    </article>
   </div>
 </div>

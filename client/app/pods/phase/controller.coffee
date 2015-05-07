@@ -1,8 +1,8 @@
 `import Ember from 'ember'`
 
 PhaseController = Ember.Controller.extend
-  needs: ['paper/manage']
-  paperManageController: Em.computed.alias 'controllers.paper/manage'
+  needs: ['paper/workflow']
+  paperWorkflowController: Em.computed.alias 'controllers.paper/workflow'
 
   commentLooks: Em.computed -> @store.all('commentLook')
   canRemoveCard: true
@@ -19,15 +19,15 @@ PhaseController = Ember.Controller.extend
 
     newTaskAddedId = _.difference(currentTaskIds,
                                   sortedTaskIds,
-                                  @get('paperManageController.allTaskIdsSnapshot'))[0]
+                                  @get('paperWorkflowController.allTaskIdsSnapshot'))[0]
 
-    allTaskIds = @get('paperManageController').allTaskIds()
+    allTaskIds = @get('paperWorkflowController').allTaskIds()
 
     if newTaskAddedId
       @set 'sortedTasks', @get('model.tasks').sortBy('position')
-      @set 'paperManageController.allTaskIdsSnapshot', allTaskIds
+      @set 'paperWorkflowController.allTaskIdsSnapshot', allTaskIds
     else
-      @get('paperManageController.allTaskIdsSnapshot').forEach (taskId) ->
+      @get('paperWorkflowController.allTaskIdsSnapshot').forEach (taskId) ->
         wasDeleted = allTaskIds.indexOf(taskId) == -1
         if wasDeleted
           $("[data-id=#{taskId}]").parent().remove()

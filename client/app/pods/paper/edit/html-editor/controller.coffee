@@ -15,6 +15,11 @@ Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
 
   hasOverlay: false
 
+  paperBodyDidChange: ( ->
+    unless @get('lockedByCurrentUser')
+      @updateEditor()
+  ).observes('model.body')
+
   # called by ember-cli-visualeditor/components/visual-editor (see template for hook)
   setupEditor: (editor) ->
     FigureNodeIndex = require('tahi-editor-extensions/figures/model/figure-label-generator')['default']

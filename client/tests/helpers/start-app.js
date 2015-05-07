@@ -10,6 +10,7 @@ import chosenHelpers from './chosen-helpers';
 import customAssertions from './custom-assertions';
 
 import Factory from './factory';
+import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 
 export default function startApp(attrs) {
   var application;
@@ -29,6 +30,19 @@ export default function startApp(attrs) {
   });
 
   window.currentUserData = {user: currentUser};
+
+  TestHelper.reopen({
+    mapFind: function(modelName, json) {
+      var responseJson = {};
+      // hack to work around
+      // https://github.com/danielspaniel/ember-data-factory-guy/issues/82
+      if ((/Task/).test(modelName)) {
+        modelName = 'task';
+      }
+      responseJson[Ember.String.pluralize(modelName)] = json;
+      return responseJson;
+    }
+  });
 
   Ember.run(function() {
     application = Application.create(attributes);

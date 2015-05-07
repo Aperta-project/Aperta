@@ -6,6 +6,7 @@ describe PlosAuthors::PlosAuthorsController do
 
   let(:user) { FactoryGirl.create(:user, :site_admin) }
   let(:task) { FactoryGirl.create(:plos_authors_task, completed: false) }
+  let(:paper) { FactoryGirl.create(:paper) }
   let!(:author) { FactoryGirl.create(:plos_author, plos_authors_task: task)}
 
   before do
@@ -15,7 +16,7 @@ describe PlosAuthors::PlosAuthorsController do
   describe "#create" do
     it "creates a plos author" do
       expect do
-        post :create, format: :json, plos_author: { email: "spock@starwars.com" }
+        post :create, format: :json, plos_author: { email: "spock@starwars.com", paper_id: paper.id }
       end.to change { PlosAuthors::PlosAuthor.count }.by(1)
       expect(response).to be_success
     end

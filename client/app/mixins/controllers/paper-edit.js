@@ -26,6 +26,8 @@ export default Ember.Mixin.create({
     }
   }.property('model.lockedBy', 'lockedByCurrentUser'),
 
+  isEditing: Ember.computed.alias('lockedByCurrentUser'),
+
   cannotEdit: function() {
     return this.get('model.status') === 'processing' || !this.get('lockedByCurrentUser');
   }.property('model.status', 'lockedByCurrentUser'),

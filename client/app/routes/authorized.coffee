@@ -14,4 +14,7 @@ AuthorizedRoute = Ember.Route.extend
       console.log "Error in transition to #{transition.targetName}"
       true # bubble for other error handling
 
+  _pusherEventsId: ->
+    # needed for the `wire` and `unwire` method to think we have `ember-pusher/bindings` mixed in
+    return this.toString()
 `export default AuthorizedRoute`

@@ -6,6 +6,12 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
   setupController: (controller, model) ->
     controller.set('model', model)
     if @currentUser
+      # subscribe to user and system
+      userChannelName = "private-user@#{@currentUser.get('id')}"
+      pusher = @get('pusher')
+      pusher.wire(@, userChannelName, ["created", "updated"])
+      pusher.wire(@, "system", ["destroyed"])
+
       RESTless.authorize(controller, '/api/admin/journals/authorization', 'canViewAdminLinks')
       RESTless.authorize(controller, '/api/user_flows/authorization', 'canViewFlowManagerLink')
 
@@ -53,5 +59,18 @@ ApplicationRoute = Ember.Route.extend AnimateElement,
         into: 'application'
         outlet: 'overlay'
         controller: 'overlays/feedback')
+
+    created: (payload) ->
+      console.log("created!", payload)
+
+    updated: (payload) ->
+      console.log("updated!", payload)
+
+    destroyed: (payload) ->
+      console.log("destroyed!", payload)
+
+  _pusherEventsId: ->
+    # needed for the `wire` and `unwire` method to think we have `ember-pusher/bindings` mixed in
+    return this.toString()
 
 `export default ApplicationRoute`

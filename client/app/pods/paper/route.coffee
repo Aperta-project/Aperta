@@ -1,15 +1,15 @@
 `import Ember from 'ember'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Utils from 'tahi/services/utils'`
-`import { Bindings } from 'ember-pusher/bindings'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
 
-PaperRoute = AuthorizedRoute.extend Bindings,
+PaperRoute = AuthorizedRoute.extend
   model: (params) ->
     @store.fetchById('paper', params.paper_id)
 
   afterModel: (model, transition) ->
-    @get('pusher.connection').subscribe("private-user_1-paper_3")
+    channelName = "private-paper@#{model.get('id')}"
+    @get('pusher').wire(@, channelName, ["created", "updated"])
 
   setupController: (controller, model) ->
     controller.set('model', model)

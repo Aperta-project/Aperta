@@ -1,6 +1,7 @@
 `import Ember from 'ember'`
+`import AuthorizedRoute from 'tahi/routes/authorized'`
 
-TaskRoute = Ember.Route.extend
+TaskRoute = AuthorizedRoute.extend
   model: (params) ->
     @store.find('paper', params.paper_id).then =>
       @store.find('task', params.task_id)

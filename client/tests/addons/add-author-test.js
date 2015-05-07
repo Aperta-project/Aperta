@@ -24,7 +24,7 @@ module("Integration: adding an author", {
 
     phase = FactoryGuy.make("phase");
     task = FactoryGuy.make("plos-authors-task", { phase: phase });
-    paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task], editable: true });
+    paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task], editable: true });
   }
 });
 

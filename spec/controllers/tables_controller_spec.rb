@@ -9,7 +9,7 @@ describe TablesController do
   describe "#create" do
     let(:table_attributes) { FactoryGirl.attributes_for(:table) }
 
-    it "creates a new table record" do
+    pending "creates a new table record" do
       expect {
         post :create, paper_id: paper.id, table: table_attributes, format: :json
       }.to change{ paper.tables.reload.count }.by(1)

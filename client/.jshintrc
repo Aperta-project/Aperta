@@ -6,7 +6,8 @@
     "Spinner",
     "moment",
     "$",
-    "CodeMirror"
+    "CodeMirror",
+    "Bugsnag"
   ],
   "browser": true,
   "boss": true,

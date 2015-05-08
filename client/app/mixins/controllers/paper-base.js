@@ -35,7 +35,7 @@ export default Ember.Mixin.create({
   }.property('model.tasks.@each.role'),
 
   authorTasks: function() {
-    var that = this;
+    let that = this;
     return this.get('model.tasks').filter((task) => {
       return task.get('role') === 'author';
     })

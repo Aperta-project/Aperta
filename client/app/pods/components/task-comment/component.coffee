@@ -17,10 +17,9 @@ TaskCommentComponent = Ember.Component.extend
   setUnreadState: ( ->
     Ember.run =>
       c = @get('comment')
-      user = @get('currentUser')
-      if c.isUnreadBy(user)
+      if c.isUnread()
         @set('unread', true)
-        c.markReadBy(user)
+        c.markRead()
       else
         @set('unread', false)
   ).on('init')

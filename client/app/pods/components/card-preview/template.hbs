@@ -1,7 +1,5 @@
 <div class="card-content" {{action "viewCard" task}} data-id="{{unbound task.id}}">
-  {{#if unreadCommentsCount}}
-    <span class="badge unread-comments-count">{{unreadCommentsCount}}</span>
-  {{/if}}
+  {{badge-count unreadCommentsCount "unread-comments-count"}}
   <div class="card-completed-icon"></div>
   {{task.title}}
   {{#if canRemoveCard}}

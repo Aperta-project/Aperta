@@ -25,7 +25,10 @@
           {{#view "manuscript-manager-column" content=phaseTemplate}}
             {{add-column position=view.nextPosition action="addPhase"}}
 
-            {{view "phase-header" phase=phaseTemplate}}
+            {{phase-header phase=phaseTemplate
+                           savePhase="savePhase"
+                           removePhase="removePhase"
+                           rollbackPhase="rollbackPhase"}}
 
             <div class="column-content">
               {{#each phaseTemplate.taskTemplates as |task|}}

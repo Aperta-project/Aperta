@@ -14,7 +14,7 @@ export default Ember.Component.extend({
   }),
 
   setupFocus: function() {
-    this.$('.new-comment-field').on('focus', (e)=> {
+    this.$('.new-comment-field').on('focus', ()=> {
       this.set('editing', true);
     });
   }.on('didInsertElement'),

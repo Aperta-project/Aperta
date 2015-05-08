@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import { test, moduleFor } from 'ember-qunit'`
 
-moduleFor 'controller:task', 'TaskController',
+moduleFor 'controller:paper/task', 'TaskController',
   needs: ['controller:application']
   setup: ->
     @paper = Ember.Object.create

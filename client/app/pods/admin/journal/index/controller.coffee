@@ -34,14 +34,6 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
     "/admin/journals/#{@get('model.id')}"
   ).property('model.id')
 
-  epubCoverUploadedAgo: (->
-    uploadTime = @get('epubCoverUploadedAt')
-    if uploadTime
-      $.timeago @get('epubCoverUploadedAt')
-    else
-      null
-  ).property('epubCoverUploadedAt')
-
   formattedDOI: (->
     if @get 'doiInvalid'
       ''

@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ValidationErrorsMixin, {
   classNameBindings: [':admin-role', 'isEditing:is-editing:not-editing'],
   isEditing: false,
   notEditing: Ember.computed.not('isEditing'),
@@ -39,21 +40,14 @@ export default Ember.Component.extend({
     save() {
       this.get('model').save().then(()=> {
         this.set('isEditing', false);
-      }, function() {
-        // ignore 422. we're displaying errors
+      }, (response)=> {
+        this.displayValidationErrorsFromResponse(response);
       });
     },
 
     cancel() {
-      if(this.get('model.isNew')) {
-        this.$().fadeOut(200, ()=> {
-          this.set('isEditing', false);
-          this.get('model').deleteRecord();
-        });
-      } else {
-        this.set('isEditing', false);
-        this.get('model').rollback();
-      }
+      this.get('model')[this.get('model.isNew') ? 'deleteRecord' : 'rollback']();
+      this.set('isEditing', false);
     },
 
     deleteRole() {

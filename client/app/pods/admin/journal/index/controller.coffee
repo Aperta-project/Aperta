@@ -65,6 +65,9 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
 
 
   actions:
+    addRole: ->
+      this.get('model.roles').addObject(this.store.createRecord('role'))
+
     addMMTemplate: ->
       @transitionTo('admin.journal.manuscript_manager_template.new')
 

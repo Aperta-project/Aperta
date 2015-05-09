@@ -6,6 +6,6 @@ class CommentLooksController < ApplicationController
   end
 
   def destroy
-    respond_with(CommentLook.destroy(params[:id]))
+    respond_with(current_user.comment_looks.destroy(params[:id]))
   end
 end

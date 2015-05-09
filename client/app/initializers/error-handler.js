@@ -4,7 +4,7 @@ import ENV from 'tahi/config/environment';
 export default {
   name: 'errorHandler',
   after: 'flashMessages',
-  initialize: function(container, application) {
+  initialize(container, application) {
     let flash = container.lookup('flashMessages:main');
 
     let logError = function(msg) {

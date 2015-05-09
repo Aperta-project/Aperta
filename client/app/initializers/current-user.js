@@ -1,7 +1,7 @@
 export default {
   name: 'currentUser',
   after: 'store',
-  initialize: function(container, application) {
+  initialize(container, application) {
     let data = window.currentUserData;
 
     if (data) {

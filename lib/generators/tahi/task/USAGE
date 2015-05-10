@@ -1,16 +1,25 @@
 Description:
     Generate a Tahi task in an existing Tahi plugin.
 
+    Tahi plugins must begin with the string `tahi-` and will be part
+    of the `Tahi` module.
+
+    Tasks should named foo_bar and will have the string `task`
+    appended appropriately.
+    
 Example:
-    rails generate tahi:task TASK_NAME PLUGIN_NAME
+    rails generate tahi:task FOO_BAR tahi-BAZ
 
     This will create:
-        engines/PLUGIN_NAME/app/models/PLUGIN_NAME/TASK_NAME_task.rb
-        engines/PLUGIN_NAME/app/serializers/PLUGIN_NAME/TASK_NAME_task_serializer.rb
-        engines/PLUGIN_NAME/app/policies/PLUGIN_NAME/TASK_NAME_tasks_policy.rb
-        engines/PLUGIN_NAME/client/app/adapters/TASK-NAME-task.js
-        engines/PLUGIN_NAME/client/app/controllers/overlays/TASK-NAME.js
-        engines/PLUGIN_NAME/client/app/models/TASK-NAME-task.js
-        engines/PLUGIN_NAME/client/app/serializers/TASK-NAME-task.js
-        engines/PLUGIN_NAME/client/app/templates/overlays/TASK-NAME.hbs
-        engines/PLUGIN_NAME/client/app/views/overlays/TASK-NAME.js
+        engines/tahi-BAZ/app/models/tahi/BAZ/FOO_BAR_task.rb
+        engines/tahi-BAZ/app/policies/tahi/BAZ/FOO_BAR_tasks_policy.rb
+        engines/tahi-BAZ/app/serializers/tahi/BAZ/FOO_BAR_task_serializer.rb
+
+        engines/tahi-BAZ/client/app/adapters/FOO-BAR-task.js
+        engines/tahi-BAZ/client/app/controllers/overlays/FOO-BAR.js
+        engines/tahi-BAZ/client/app/models/FOO-BAR-task.js
+        engines/tahi-BAZ/client/app/serializers/FOO-BAR-task.js
+        engines/tahi-BAZ/client/app/templates/overlays/FOO-BAR.hbs
+        engines/tahi-BAZ/client/app/views/overlays/FOO-BAR.js
+
+(Do not use UPPERCASE, this is simply for emphasis.)

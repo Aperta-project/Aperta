@@ -20,7 +20,7 @@ TaskCommentComponent = Ember.Component.extend
       commentLook = @get('comment.commentLook')
       if Ember.isPresent(commentLook)
         @set("unread", true)
-        commentLook.destroyRecord() 
+        commentLook.destroyRecord()
   ).on('init')
 
   highlightBody: (body, mentions) ->

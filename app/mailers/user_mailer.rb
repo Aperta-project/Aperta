@@ -40,6 +40,15 @@ class UserMailer < ActionMailer::Base
       subject: "You've been added as a reviewer on Tahi")
   end
 
+  def add_editor_to_editors_discussion(invitee_id, task_id)
+    @task = Task.find(task_id)
+    invitee = User.find_by(id: invitee_id)
+
+    mail(
+      to: invitee.try(:email),
+      subject: "You've been invited to the Editors' Discussion for paper \"#{@task.paper.display_title}\"")
+  end
+
   def assigned_editor(editor_id, paper_id)
     @paper = Paper.find(paper_id)
     user = User.find(editor_id)

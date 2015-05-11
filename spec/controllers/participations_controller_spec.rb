@@ -87,10 +87,19 @@ describe ParticipationsController do
     let(:task) { FactoryGirl.create(:task) }
     let(:new_participant) { FactoryGirl.create(:user) }
 
-    it "adds an email to the sidekiq queue if new participant is not current user" do
-      expect {
-        post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id }
-      }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+    context "when the task type is EditorsDiscussionTask" do
+      it "sends a different email to the editor participants" do
+        expect(UserMailer).to receive_message_chain(:delay, :add_editor_to_editors_discussion)
+        post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id, task_type: 'EditorsDiscussionTask' }
+      end
+    end
+
+    context "when the task type is not EditorDiscussionTask" do
+      it "adds an email to the sidekiq queue if new participant is not current user" do
+        expect {
+          post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id, task_type: 'AdHocTask' }
+        }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+      end
     end
 
     it "does not add an email to the sidekiq queue if new participant is the current user" do

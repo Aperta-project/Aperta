@@ -12,7 +12,7 @@ class ParticipationsController < ApplicationController
     if participation.save
       CommentLookManager.sync_task(task)
       if participation.user_id != current_user.id
-        UserMailer.delay.add_participant(current_user.id, participation.user_id, task.id)
+        notify_participant_by_email
       end
     end
     respond_with participation
@@ -53,6 +53,14 @@ class ParticipationsController < ApplicationController
 
   def enforce_policy
     authorize_action!(participation: participation)
+  end
+
+  def notify_participant_by_email
+    if params[:participation][:task_type] == 'EditorsDiscussionTask'
+      UserMailer.delay.add_editor_to_editors_discussion participation.user_id, task.id
+    else
+      UserMailer.delay.add_participant current_user.id, participation.user_id, task.id
+    end
   end
 
   def notify_participation_created

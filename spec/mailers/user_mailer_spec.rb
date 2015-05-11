@@ -58,6 +58,17 @@ describe UserMailer, redis: true do
     end
   end
 
+  describe '#add_editor_to_editors_discussion' do
+    let(:invitee) { FactoryGirl.create(:user) }
+    let(:task) { FactoryGirl.create(:editors_discussion_task) }
+    let(:email) { UserMailer.add_editor_to_editors_discussion(invitee.id, task.id) }
+
+    it 'sends a specific email to the editor invitee' do
+      expect(email.subject).to eq "You've been invited to the Editors' Discussion for paper \"#{task.paper.display_title}\""
+      expect(email.body).to match /View Discussion/
+    end
+  end
+
   describe '#assigned_editor' do
     let(:invitee) { FactoryGirl.create(:user) }
     let(:task) { FactoryGirl.create(:task) }

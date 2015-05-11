@@ -47,7 +47,7 @@ Paper = DS.Model.extend
   ).property('allMetadataTasks.@each.completed')
 
   roleList: (->
-    @get('roles').sort().join(', ')
+    @get('roles')?.sort().join(', ')
   ).property('roles.@each', 'roles.[]')
 
   latestDecision: (->

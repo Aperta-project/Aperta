@@ -2,7 +2,7 @@ class CommentLooksController < ApplicationController
   respond_to :json
 
   def index
-    respond_with current_user.comment_looks.includes(:comment, :phase).where(read_at: nil)
+    respond_with current_user.comment_looks.includes(:comment, :phase)
   end
 
   def destroy

@@ -9,6 +9,4 @@ CommentLook = DS.Model.extend
   comment: DS.belongsTo('comment', inverse: 'commentLook')
   user: DS.belongsTo('user')
 
-  readAt: a('date')
-
 `export default CommentLook`

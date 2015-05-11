@@ -328,6 +328,22 @@ FactoryAttributes.Task =
   participant_ids: []
   comment_ids: []
 
+FactoryAttributes.ReviseTask =
+  _rootKey: 'task'
+  id: null
+  title: "Revise Task"
+  type: "ReviseTask"
+  completed: false
+  body: []
+  paper_title: "Foo"
+  role: "admin"
+  phase_id: null
+  paper_id: null
+  lite_paper_id: null
+  assignee_ids: []
+  participant_ids: []
+  comment_ids: []
+
 FactoryAttributes.BillingTask =
   _rootKey: 'task'
   id: null
@@ -469,5 +485,11 @@ FactoryAttributes.Participation =
   id: null
   task: null
   participant_id: null
+
+FactoryAttributes.Collaboration =
+  _rootKey: 'collaboration'
+  id: null
+  paper_id: null
+  user_id: null
 
 `export default Factory`

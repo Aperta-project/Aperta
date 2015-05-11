@@ -1,0 +1,33 @@
+<h4 class="block-title">FUNDER</h4>
+<span {{action "removeFunder"}} class="remove-funder glyphicon glyphicon-trash small"></span>
+<div class="form-group">
+  <span class="text-field-title">Funder</span>
+  {{input type="text" name="name" value=model.name class="form-control tall-text-field" placeholder="Funder Name"}}
+</div>
+
+<div class="form-group">
+  <span class="text-field-title">Grant Number</span>
+  {{input type="text" name="grant_number" value=model.grantNumber class="form-control tall-text-field" placeholder="502-686353647"}}
+</div>
+
+<div class="form-group">
+  <span class="text-field-title">Website</span>
+  {{input type="text" name="website" value=model.website class="form-control tall-text-field" placeholder="www.funder.org"}}
+</div>
+
+<div class="question-text">
+  Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?
+</div>
+
+{{binary-radio-button name=uniqueName selection=model.funderHadInfluence}}
+
+{{#if model.funderHadInfluence}}
+  <p class="question-text">
+    Describe the role of any sponsors or funders in the study design, data collection and analysis, 
+    decision to publish, or preparation of the manuscript.
+  </p>
+  <div class="form-group">
+    <span class="text-field-title">Role of sponsors or funders</span>
+    {{textarea value=model.funderInfluenceDescription class="form-control tall-textarea" placeholder="Description"}}
+  </div>
+{{/if}}

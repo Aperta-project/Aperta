@@ -57,6 +57,14 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
 
 
   actions:
+    assignRoleToUser: (roleID, user)->
+      role = this.store.getById('role', roleID)
+
+      this.store.createRecord('userRole',
+        user: user,
+        role: role
+      ).save()
+
     addRole: ->
       this.get('model.roles').addObject(this.store.createRecord('role'))
 

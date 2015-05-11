@@ -7,7 +7,8 @@
     "moment",
     "$",
     "CodeMirror",
-    "Bugsnag"
+    "Bugsnag",
+    "_"
   ],
   "browser": true,
   "boss": true,

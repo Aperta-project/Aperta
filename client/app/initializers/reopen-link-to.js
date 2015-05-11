@@ -1,0 +1,10 @@
+import Ember from 'ember';
+
+export default {
+  name: 'reopenLinkTo',
+  initialize() {
+    Ember.LinkView.reopen({
+      attributeBindings: ['data-toggle', 'data-placement', 'title']
+    });
+  }
+};

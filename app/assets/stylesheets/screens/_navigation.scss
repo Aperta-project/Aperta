@@ -1,10 +1,10 @@
 .navigation {
   overflow: auto;
-  @include position(fixed, 0px auto 0px -280px);
-  width: $tahi-navigation-width;
+  @include position(fixed, 0px auto 0px -310px);
+  width: 310px;
+  padding-left: 50px;
   background: rgba(30,30,30, 0.92);
   z-index: z('navigation');
-  @include transition(left 0.2s);
   @include user-select(none);
 
   hr {
@@ -19,7 +19,8 @@
 }
 
 html.navigation-visible .navigation {
-  left: 0;
+  @extend .navigation-animate-in;
+  left: -30px;
 }
 
 

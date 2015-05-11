@@ -1,4 +1,4 @@
-`import TaskController from 'tahi/pods/task/controller'`
+`import TaskController from 'tahi/pods/paper/task/controller'`
 `import Select2Assignees from 'tahi/mixins/controllers/select-2-assignees'`
 `import RESTless from 'tahi/services/rest-less'`
 `import Ember from 'ember'`

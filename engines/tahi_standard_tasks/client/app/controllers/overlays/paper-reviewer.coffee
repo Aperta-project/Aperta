@@ -1,4 +1,4 @@
-`import TaskController from 'tahi/pods/task/controller'`
+`import TaskController from 'tahi/pods/paper/task/controller'`
 `import Select2Assignees from 'tahi/mixins/controllers/select-2-assignees'`
 `import { formatDate } from 'tahi/helpers/format-date'`
 

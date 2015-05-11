@@ -17,7 +17,7 @@ PaperIndexRoute = AuthorizedRoute.extend
       redirectParams = ['paper.index', @modelFor('paper')]
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('overlayBackground', 'paper/index')
-      @transitionTo('task', paper.id, task.id)
+      @transitionTo('paper.task', paper, task.id)
 
     editableDidChange: ->
       @replaceWith('paper.edit', @modelFor('paper'))

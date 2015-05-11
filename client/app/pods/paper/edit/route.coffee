@@ -3,8 +3,9 @@
 `import Heartbeat from 'tahi/services/heartbeat'`
 `import ENV from 'tahi/config/environment'`
 `import initializeVisualEditor from 'ember-cli-visualeditor/initializers/initialize_visual_editor'`
+`import AuthorizedRoute from 'tahi/routes/authorized'`
 
-PaperEditRoute = Ember.Route.extend
+PaperEditRoute = AuthorizedRoute.extend
   fromSubmitOverlay: false
 
   heartbeatService: null
@@ -81,7 +82,7 @@ PaperEditRoute = Ember.Route.extend
       redirectParams = ['paper.edit', paper]
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('overlayBackground', @get('editorLookup'))
-      @transitionTo('task', paper.id, task.id)
+      @transitionTo('paper.task', paper, task.id)
 
     startEditing: ->
       @startHeartbeat()

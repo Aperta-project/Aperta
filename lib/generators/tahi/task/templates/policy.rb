@@ -1,4 +1,6 @@
-module <%= @plugin.camelize %>
-  class <%= class_name %>TasksPolicy < ::TasksPolicy
+module Tahi
+  module <%= @plugin_short.camelize %>
+    class <%= class_name %>TasksPolicy < ::TasksPolicy
+    end
   end
 end

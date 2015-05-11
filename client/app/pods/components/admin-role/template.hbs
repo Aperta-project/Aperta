@@ -2,8 +2,8 @@
   {{#if isEditing}}
     {{input name="role[name]" value=model.name placeholder="Role name" action="save"}}
   {{else}}
-    {{#unless required}}
-      <i class="admin-role-action-button role-delete-button glyphicon glyphicon-trash" {{action "delete" bubbles=false}}></i>
+    {{#unless model.required}}
+      <i class="admin-role-action-button role-delete-button glyphicon glyphicon-trash" {{action "deleteRole" bubbles=false}}></i>
     {{/unless}}
     <i class="admin-role-action-button glyphicon glyphicon-pencil"></i>
     <span class="role-name-field">{{model.name}}</span>

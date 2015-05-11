@@ -19,16 +19,16 @@
         </label>
       </li>
       <li class="control-bar-item">
-        {{#link-to "paper.edit" model class="control-bar-link control-bar-button"}}
-          <div class="control-bar-link-icon">{{partial "svg/manuscript-icon"}}</div>
-          Manuscript
-        {{/link-to}}
-      </li>
-      <li class="control-bar-item">
         <div class="control-bar-link contributors-link __with-icon" {{action "showActivity" "workflow"}}>
           <div class="control-bar-link-icon">{{partial "svg/heartbeat"}}</div>
           <div class="control-bar-link-text">Recent Activity</div>
         </div>
+      </li>
+      <li class="control-bar-item">
+        {{#link-to "paper.edit" model class="control-bar-link control-bar-button"}}
+          <div class="control-bar-link-icon">{{partial "svg/manuscript-icon"}}</div>
+          Manuscript
+        {{/link-to}}
       </li>
     </ul>
   </div>

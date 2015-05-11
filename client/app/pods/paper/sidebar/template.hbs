@@ -1,7 +1,4 @@
 <aside class="sidebar">
-  <div {{action "showActivity" "manuscript"}} class="recent-activity-link">
-    {{partial "svg/heartbeat"}} Recent Activity
-  </div>
   <div class="task-list">
     {{partial "paper/task-list"}}
     <button {{action "submit" target="view"}} class="button-primary {{if model.allMetadataTasksCompleted "button--green" "button--disabled"}}">Submit</button>

@@ -10,7 +10,7 @@ class PapersController < ApplicationController
 
   def index
     page = (params[:page_number] || 1).to_i
-    #TODO: This query should be less weird when dashboard is re-assessed
+    # TODO: This query should be less weird when dashboard is re-assessed
     unique_paper_roles = PaperRole.most_recent_for(current_user).page(page)
     papers = unique_paper_roles.map(&:paper)
     respond_with(papers, {

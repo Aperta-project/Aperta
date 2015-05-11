@@ -8,7 +8,7 @@ App = null
 
 module 'Integration: Commenting',
   teardown: ->
-    Ember.run =>
+    Ember.run ->
       TestHelper.teardown()
       App.destroy()
 
@@ -58,7 +58,7 @@ test 'A task with a commentLook shows up as unread and deletes its comment look'
   comments = FactoryGuy.makeList("comment", 2, "unread")
   task = FactoryGuy.make("task", paper: paper, comments: comments)
 
-  andThen =>
+  andThen ->
     comments.forEach (comment) ->
       TestHelper.handleDelete("comment-look", comment.get("commentLook.id"))
 

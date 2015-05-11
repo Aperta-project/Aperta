@@ -27,6 +27,6 @@ test "#unreadCommentsCount returns unread comments count", ->
 test "#unreadCommentsCount gets updated when commentLook is 'read'", ->
   task = FactoryGuy.make("task", "withUnreadComments")
   component = @subject(task: task)
-  Ember.run =>
+  Ember.run ->
     task.get("commentLooks").removeAt(0,2)
     equal(component.get('unreadCommentsCount'), 0)

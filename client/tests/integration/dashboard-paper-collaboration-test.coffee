@@ -18,7 +18,7 @@ setupEventStream = ->
 module 'Integration: Dashboard Collaboration',
 
   teardown: ->
-    Ember.run =>
+    Ember.run ->
       TestHelper.teardown()
       App.destroy()
 
@@ -30,7 +30,7 @@ module 'Integration: Dashboard Collaboration',
 
 
 test 'The dashboard shows papers for a user if they have any role on the paper', ->
-  Ember.run =>
+  Ember.run ->
     TestHelper.handleFindAll("comment-look", 0)
     TestHelper.handleFindAll("invitation", 0)
     TestHelper.handleFindAll("paper", 6)
@@ -43,7 +43,7 @@ test 'The dashboard shows papers for a user if they have any role on the paper',
 test 'The dashboard shows paginated papers', ->
   perPage =  15
   extra = 2
-  Ember.run =>
+  Ember.run ->
     TestHelper.handleFindAll("comment-look", 0)
     TestHelper.handleFindAll("invitation", 0)
     TestHelper.handleFindAll("paper", perPage)

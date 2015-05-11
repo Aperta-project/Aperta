@@ -2,8 +2,6 @@ import FactoryGuy from "ember-data-factory-guy";
 
 FactoryGuy.define("paper", {
   default: {
-    journal: FactoryGuy.belongsTo("journal"),
-
     title: '',
     shortTitle: '',
     submitted: false,

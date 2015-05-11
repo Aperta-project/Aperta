@@ -46,6 +46,6 @@ FlowManagerRoute = AuthorizedRoute.extend
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('cachedModel', @modelFor('flow_manager'))
       @controllerFor('application').set('overlayBackground', 'flow_manager')
-      @transitionTo('task', paperId, task.get('id'))
+      @transitionTo('paper.task', paperId, task.get('id'))
 
 `export default FlowManagerRoute`

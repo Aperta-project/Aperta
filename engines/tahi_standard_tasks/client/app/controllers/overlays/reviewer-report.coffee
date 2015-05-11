@@ -1,4 +1,4 @@
-`import TaskController from 'tahi/pods/task/controller'`
+`import TaskController from 'tahi/pods/paper/task/controller'`
 
 ReviewerReportOverlayController = TaskController.extend
   overlayClass: 'reviewer-form'

@@ -1,4 +1,4 @@
-`import TaskController from 'tahi/pods/task/controller'`
+`import TaskController from 'tahi/pods/paper/task/controller'`
 
 FinancialDisclosureOverlayController = TaskController.extend
   task: Em.computed.alias("model")

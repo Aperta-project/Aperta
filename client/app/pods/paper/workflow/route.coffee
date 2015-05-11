@@ -31,7 +31,7 @@ PaperManageRoute = AuthorizedRoute.extend
       redirectParams = ['paper.workflow', @modelFor('paper')]
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
       @controllerFor('application').set('overlayBackground', 'paper/workflow')
-      @transitionTo('task', paper.id, task.id, queryParams)
+      @transitionTo('paper.task', paper, task.id, queryParams)
 
     addTaskType: (phase, taskType) ->
       return unless taskType

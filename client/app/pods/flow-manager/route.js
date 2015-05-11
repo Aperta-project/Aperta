@@ -10,10 +10,15 @@ export default AuthorizedRoute.extend({
 
   model() {
     let cachedModel = this.controllerFor('application').get('cachedModel');
-    return cachedModel ? cachedModel : this.store.find('userFlow');
+    if (cachedModel) {
+      this.controllerFor('application').set('cachedModel', null);
+      return cachedModel;
+    } else {
+      return this.store.find('userFlow');
+    }
   },
 
-  afterModel: function() {
+  afterModel() {
     return this.store.find('commentLook');
   },
 
@@ -42,23 +47,16 @@ export default AuthorizedRoute.extend({
       });
     },
 
-    removeFlow(flow) {
-      flow.destroyRecord();
-    },
-
-    saveFlow(flow) {
-      flow.save();
-    },
+    removeFlow(flow) { flow.destroyRecord(); },
+    saveFlow(flow)   { flow.save(); },
 
     viewCard(task) {
       let paperId = task.get('paper.id');
       let redirectParams = ['flow_manager'];
-
       this.controllerFor('application').get('overlayRedirect').pushObject(redirectParams);
       this.controllerFor('application').set('cachedModel', this.modelFor('flow_manager'));
       this.controllerFor('application').set('overlayBackground', 'flow_manager');
-
-      this.transitionTo('task', paperId, task.get('id'));
+      this.transitionTo('paper.task', paperId, task.get('id'));
     }
   }
 });

@@ -8,7 +8,8 @@ CardPreviewComponent = Ember.Component.extend
   classes: ''
 
   unreadCommentsCount: (->
-    @get('task.commentLooks').length
+    # note: this is used for "task-templates", who do not have comment-looks
+    (@get('task.commentLooks') || []).length
   ).property('task.commentLooks.@each')
 
   actions:

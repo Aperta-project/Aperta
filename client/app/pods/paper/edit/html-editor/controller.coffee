@@ -9,6 +9,7 @@ Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
   toolbar: null
 
   # used to recover a selection when returning from another context (such as figures)
+  isEditing: Ember.computed.alias('lockedByCurrentUser')
   lastEditorState: null
 
   figuresAdapter: null
@@ -68,7 +69,12 @@ Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
   updateEditor: ->
     editor = @get('editor')
     if editor
+      # HACK: need to enable the editor so that changes to the model are possible
+      if not @get('isEditing')
+        editor.enable()
       editor.fromHtml(@get('model.body'))
+      if not @get('isEditing')
+        editor.disable()
 
   updateToolbar: (newState) ->
     toolbar = @get('toolbar')

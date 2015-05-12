@@ -6,7 +6,15 @@ IndexController = Ember.Controller.extend
   unreadComments: []
 
   hasPapers: Ember.computed.notEmpty('papers')
-  totalPaperCount: (-> @store.metadataFor("paper").total_papers).property()
+  totalPaperCount: (->
+    numPapersFromServer = @store.metadataFor("paper").total_papers
+    numDashboardPapersInStore = @get('papers.length')
+
+    if numDashboardPapersInStore > numPapersFromServer
+      numDashboardPapersInStore
+    else
+      numPapersFromServer
+  ).property('papers.length')
 
   relatedAtSort: ['relatedAtDate:desc']
   sortedPapers: Ember.computed.sort('papers', 'relatedAtSort')

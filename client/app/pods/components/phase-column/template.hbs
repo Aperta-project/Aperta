@@ -1,4 +1,4 @@
-{{add-column position=view.nextPosition action='addPhase'}}
+{{add-column position=nextPosition action="addPhase"}}
 
 {{phase-header phase=phase
                savePhase="savePhase"
@@ -8,10 +8,10 @@
 <div class="column-content">
   <div {{bind-attr class=":sortable noCards:sortable-no-cards"}} data-phase-id="{{unbound phase.id}}">
     {{#each task in sortedTasks}}
-      {{card-preview paper=controller.model.paper
+      {{card-preview paper=paper
                      task=task
                      commentLooks=commentLooks
-                     canRemoveCard=canRemoveCard
+                     canRemoveCard=true
                      showDeleteConfirm="showDeleteConfirm"
                      canDragCard=true
                      action="viewCard"}}

@@ -1,5 +1,5 @@
 import ApplicationAdapter from 'tahi/adapters/application';
 
 export default ApplicationAdapter.extend({
-  pathForType: function() { return 'feedback'; }
+  pathForType() { return 'feedback'; }
 });

@@ -8,5 +8,13 @@ FactoryGuy.define("paper", {
     roles: [],
     relatedAtDate: "2014-09-28T13:54:58.028Z",
     editable: true,
+  },
+
+  traits: {
+
+    withRoles: {
+      roles: ["participant"]
+    }
+
   }
 });

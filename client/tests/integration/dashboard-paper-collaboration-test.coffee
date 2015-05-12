@@ -33,7 +33,7 @@ test 'The dashboard shows papers for a user if they have any role on the paper',
   Ember.run ->
     TestHelper.handleFindAll("comment-look", 0)
     TestHelper.handleFindAll("invitation", 0)
-    TestHelper.handleFindAll("paper", 6)
+    TestHelper.handleFindAll("paper", 6, "withRoles")
 
     visit('/')
 
@@ -46,7 +46,7 @@ test 'The dashboard shows paginated papers', ->
   Ember.run ->
     TestHelper.handleFindAll("comment-look", 0)
     TestHelper.handleFindAll("invitation", 0)
-    TestHelper.handleFindAll("paper", perPage)
+    TestHelper.handleFindAll("paper", perPage, "withRoles")
 
     getStore().metadataFor("paper")["total_pages"] = 2
     getStore().metadataFor("paper")["total_papers"] = 17
@@ -59,7 +59,7 @@ test 'The dashboard shows paginated papers', ->
       equal(find('.dashboard-submitted-papers .dashboard-paper-title').length, perPage, "num papers per page")
 
     andThen ->
-      morePapers = FactoryGuy.makeList("paper", extra)
+      morePapers = FactoryGuy.makeList("paper", extra, "withRoles")
       TestHelper.handleFindQuery("paper", ["page_number"], morePapers)
 
       click '.load-more-papers'
@@ -73,7 +73,7 @@ test 'Adding and removing papers via the event stream', ->
     paperCount = 1
     TestHelper.handleFindAll("comment-look", 0)
     TestHelper.handleFindAll("invitation", 0)
-    TestHelper.handleFindAll("paper", paperCount)
+    TestHelper.handleFindAll("paper", paperCount, "withRoles")
 
     visit('/')
 
@@ -81,7 +81,7 @@ test 'Adding and removing papers via the event stream', ->
 
     andThen ->
       Ember.run ->
-        data = Ember.merge({ paper: FactoryGuy.build("paper")}, { action: "created" })
+        data = Ember.merge({ paper: FactoryGuy.build("paper", "withRoles")}, { action: "created" })
         es.msgResponse(data)
 
         andThen ->
@@ -104,7 +104,7 @@ test 'User can use the feedback form', ->
   Ember.run ->
     TestHelper.handleFindAll("comment-look", 0)
     TestHelper.handleFindAll("invitation", 0)
-    TestHelper.handleFindAll("paper", 0)
+    TestHelper.handleFindAll("paper", 0, "withRoles")
     $.mockjax(type: "POST", url: "/api/feedback", status: 200, responseText: {})
 
     visit '/'

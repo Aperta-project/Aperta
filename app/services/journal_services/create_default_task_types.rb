@@ -5,8 +5,6 @@ module JournalServices
       with_noisy_errors do
         TaskType.types.each do |task_klass, details|
           jtt = journal.journal_task_types.find_or_initialize_by kind: task_klass
-          # journal_task_type_scope = journal.journal_task_types.where(kind: task_klass)
-          # jtt = journal_task_type_scope.first.present? ? journal_task_type_scope.first : journal_task_type_scope.build
           if override_existing
             jtt.role = details[:default_role]
             jtt.title = details[:default_title]

@@ -26,6 +26,8 @@ test 'A card with more than 5 comments has the show all comments button', ->
   comments = FactoryGuy.makeList("comment", 10)
   task = FactoryGuy.make("task", paper: paper, comments: comments)
 
+  TestHelper.handleFind(paper)
+
   visit("/papers/#{paper.get("id")}/tasks/#{task.get("id")}")
 
   andThen ->
@@ -44,6 +46,8 @@ test 'A card with less than 5 comments doesnt have the show all comments button'
   comments = FactoryGuy.makeList("comment", 3)
   task = FactoryGuy.make("task", paper: paper, comments: comments)
 
+  TestHelper.handleFind(paper)
+
   visit("/papers/#{paper.get("id")}/tasks/#{task.get("id")}")
 
   andThen ->
@@ -57,6 +61,8 @@ test 'A task with a commentLook shows up as unread and deletes its comment look'
   paper = FactoryGuy.make("paper")
   comments = FactoryGuy.makeList("comment", 2, "unread")
   task = FactoryGuy.make("task", paper: paper, comments: comments)
+
+  TestHelper.handleFind(paper)
 
   andThen ->
     comments.forEach (comment) ->

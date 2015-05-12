@@ -137,4 +137,31 @@ describe UserMailer, redis: true do
       expect(email.body).to include paper.journal.name
     end
   end
+
+  describe '#notify_admin_of_paper_submission' do
+    let(:author) { FactoryGirl.create(:user) }
+    let(:admin) { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, submitted: true }
+    let(:email) { UserMailer.notify_admin_of_paper_submission(paper.id, admin.id) }
+
+    before do
+      make_user_paper_admin(admin, paper)
+    end
+
+    it "send email to the paper's admin" do
+      expect(email.to).to eq [admin.email]
+    end
+
+    it "specify subject line" do
+      expect(email.subject).to eq "Manuscript #{paper.title} has been submitted on Tahi"
+    end
+
+    it "tells admin that paper has been submitted" do
+      expect(email.body).to include "Hello #{admin.full_name}"
+      expect(email.body).to include "The following Paper has been submitted:"
+      expect(email.body).to include paper.abstract
+      expect(email.body).to include client_paper_url(paper)
+      expect(email.body).to include paper.journal.name
+    end
+  end
 end

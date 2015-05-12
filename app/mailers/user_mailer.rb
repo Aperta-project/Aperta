@@ -78,4 +78,14 @@ class UserMailer < ActionMailer::Base
       to: @author.try(:email),
       subject: "Thank You for submitting a Manuscript on Tahi")
   end
+
+  def notify_admin_of_paper_submission(paper_id, user_id)
+    @paper = Paper.find paper_id
+    @journal = @paper.journal
+    @admin = User.find user_id
+
+    mail(
+      to: @admin.email,
+      subject: "Manuscript #{@paper.title} has been submitted on Tahi")
+  end
 end

@@ -140,4 +140,26 @@ describe Paper do
       end
     end
   end
+
+  describe "#abstract" do
+    before do
+      paper.update(body: "a bunch of words")
+    end
+
+    context "with an #abstract field value" do
+      before do
+        paper.update(abstract: "an abstract about a bunch of words")
+      end
+
+      it "returns #abstract" do
+        expect(paper.abstract).to eq "an abstract about a bunch of words"
+      end
+    end
+
+    context "without an #abstract field value" do
+      it "returns #default_abstract" do
+        expect(paper.abstract).to eq "a bunch of words"
+      end
+    end
+  end
 end

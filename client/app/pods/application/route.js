@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import AnimateElement from 'tahi/mixins/routes/animate-element';
 import RESTless from 'tahi/services/rest-less';
+import Utils from 'tahi/services/utils';
 
 export default Ember.Route.extend(AnimateElement, {
   setupController: function(controller, model) {
@@ -80,17 +81,20 @@ export default Ember.Route.extend(AnimateElement, {
     },
 
     created(payload) {
-      console.log("created!", payload);
+      let description = "Pusher: created";
+      Utils.debug(description, payload);
       this.store.pushPayload(payload);
     },
 
     updated(payload) {
-      console.log("updated!", payload);
+      let description = "Pusher: updated";
+      Utils.debug(description, payload);
       this.store.pushPayload(payload);
     },
 
     destroyed(payload) {
-      console.log("destroyed!", payload);
+      let description = "Pusher: destroyed";
+      Utils.debug(description, payload);
       let type = this.get('applicationSerializer').typeForRoot(payload.type);
       payload.ids.forEach((id) => {
         let record;

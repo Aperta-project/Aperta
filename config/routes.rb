@@ -151,6 +151,7 @@ Tahi::Application.routes.draw do
 
   # Fall through to ember app
   #
-  get "*route" => "ember#index"
+  get "*route", to: "ember#index", constraints: { format: /html/ }
+
   root "ember#index"
 end

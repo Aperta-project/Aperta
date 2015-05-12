@@ -10,7 +10,7 @@ DashboardRoute = Ember.Route.extend
   setupController: (controller, model) ->
     @store.find("comment-look").then (commentLooks) ->
       controller.set("unreadComments", commentLooks)
-    controller.set("papers", model.papers)
+    controller.set("papers", @store.filter('paper', (p) -> Ember.isPresent(p.get('roles'))))
     controller.set("invitations", @currentUser.get("invitedInvitations"))
 
     @_super(controller, model)

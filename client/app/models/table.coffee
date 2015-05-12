@@ -22,6 +22,6 @@ Table = DS.Model.extend
     """
 
   saveDebounced: ->
-    Ember.run.debounce(@, @save, 2000);
+    Ember.run.debounce(@, @save, 2000)
 
 `export default Table`

@@ -56,7 +56,7 @@ FigureItemComponent = AttachmentThumbnailComponent.extend
     )
     paper = @get('paper')
     figure = @get('figure')
-    doc = editor.getDocument();
+    doc = editor.getDocument()
     editor.fromHtml(figure.toHtml())
     adapter = FigureCollectionAdapter.create(
       doc: doc

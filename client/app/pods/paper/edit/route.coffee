@@ -66,7 +66,7 @@ PaperEditRoute = AuthorizedRoute.extend
   openOverlay: (overlayName) ->
     controller = @controllerFor(@get('editorLookup'))
     editor = controller.get('editor')
-    editor.freeze();
+    editor.freeze()
     # do not handle model changes while overlay is open
     controller.disconnectEditor()
     controller.set('hasOverlay', true)

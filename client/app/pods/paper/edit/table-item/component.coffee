@@ -1,5 +1,5 @@
-`import Ember from 'ember'`
-`import TahiEditorExtensions from 'tahi-editor-extensions/index'`
+`import Ember from 'ember';`
+`import TahiEditorExtensions from 'tahi-editor-extensions/index';`
 `import TableCollectionAdapter from 'tahi/pods/paper/edit/adapters/table-collection-adapter';`
 
 TableItemComponent = Ember.Component.extend
@@ -15,7 +15,7 @@ TableItemComponent = Ember.Component.extend
 
   label: (->
     table = @get('table')
-    doc = @get('manuscriptEditor').getDocument();
+    doc = @get('manuscriptEditor').getDocument()
     labels = doc.getService('table-labels')
     return labels.getFigureLabel(table.get('id'))
   ).property('table', 'manuscriptEditor')
@@ -27,7 +27,7 @@ TableItemComponent = Ember.Component.extend
   hasManuscriptSelection: (->
     manuscriptEditor = @get('manuscriptEditor')
     if manuscriptEditor
-      return manuscriptEditor.getState().hasSelection();
+      return manuscriptEditor.getState().hasSelection()
     else
       return false
   ).property('manuscriptEditor')
@@ -41,7 +41,7 @@ TableItemComponent = Ember.Component.extend
   isSaving: Ember.computed.alias('adapter.isSaving')
 
   setupEditor: ( (editor) ->
-    manuscriptEditor = @get('manuscriptEditor');
+    manuscriptEditor = @get('manuscriptEditor')
     # register extensions
     editor.registerExtensions(TahiEditorExtensions)
     editor.registerExtension(
@@ -55,9 +55,9 @@ TableItemComponent = Ember.Component.extend
         )
     )
     paper = @get('paper')
-    table = @get('table');
+    table = @get('table')
     editor.fromHtml(table.toHtml())
-    doc = editor.getDocument();
+    doc = editor.getDocument()
     adapter = TableCollectionAdapter.create(
       doc: doc
       paper: paper
@@ -103,7 +103,7 @@ TableItemComponent = Ember.Component.extend
 
   actions:
     insertTable: ->
-      table = @get('table');
+      table = @get('table')
       @sendAction('insertTable', table.get('id'))
 
     cancelDestroyTable: -> @set 'destroyState', false

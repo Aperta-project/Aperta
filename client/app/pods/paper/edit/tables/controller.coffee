@@ -17,12 +17,12 @@ EditTablesController = Ember.Controller.extend
   actions:
 
     updateToolbar: (newState)->
-      toolbar = @get('toolbar');
+      toolbar = @get('toolbar')
       if toolbar
         lastState = @get('lastState')
         if not lastState or newState.hasSelection() or lastState.editor == newState.editor
           # skip if the update is due to a blur while another editor has been focused already
-          toolbar.updateState(newState);
+          toolbar.updateState(newState)
           @set('lastState', newState)
 
     addTable: ->

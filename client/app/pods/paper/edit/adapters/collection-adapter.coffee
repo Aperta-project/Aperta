@@ -125,9 +125,9 @@ CollectionAdapterMixin = Ember.Mixin.create
       @get('updatedAt')[id] = updatedAt
 
   saveDebounced: ->
-    Ember.run.debounce(@, @saveDirtyNodes, 2000);
+    Ember.run.debounce(@, @saveDirtyNodes, 2000)
 
   loadDebounced: ->
-    Ember.run.debounce(@, @loadUpdatedModels, 100);
+    Ember.run.debounce(@, @loadUpdatedModels, 100)
 
 `export default CollectionAdapterMixin;`

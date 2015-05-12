@@ -69,7 +69,7 @@ test 'The dashboard shows paginated papers', ->
       ok(!find('.load-more-papers').length, "no longer sees load more button")
 
 test 'Adding and removing papers via the event stream', ->
-  Ember.run =>
+  Ember.run ->
     paperCount = 1
     TestHelper.handleFindAll("comment-look", 0)
     TestHelper.handleFindAll("invitation", 0)

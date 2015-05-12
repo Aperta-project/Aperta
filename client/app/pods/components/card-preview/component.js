@@ -8,7 +8,8 @@ export default Ember.Component.extend({
   canRemoveCard: false,
 
   unreadCommentsCount: function() {
-    // note: this fn is also used for "task-templates", who do not have comment-looks
+    // NOTE: this fn is also used for "task-templates", who do
+    // not have comment-looks
     return (this.get('task.commentLooks') || []).length;
   }.property('task.commentLooks.@each'),
 

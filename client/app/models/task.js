@@ -4,6 +4,7 @@ import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
 export default DS.Model.extend(CardThumbnailObserver, {
   attachments: DS.hasMany('attachment'),
   cardThumbnail: DS.belongsTo('card-thumbnail', { inverse: 'task' }),
+  commentLooks: DS.hasMany('comment-look', { inverse: 'task' }),
   comments: DS.hasMany('comment'),
   paper: DS.belongsTo('paper', { inverse: 'tasks' }),
   participations: DS.hasMany('participation'),

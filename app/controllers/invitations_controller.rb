@@ -1,27 +1,34 @@
 class InvitationsController < ApplicationController
   before_action :authenticate_user!
 
+  respond_to :json
+
+  def index
+    invitations = current_user.invitations_from_latest_revision
+    respond_with(invitations, each_serializer: InvitationIndexSerializer)
+  end
+
   def create
     invitation = task.invitations.create(invitation_params)
     invitation.invite!
-    render json: invitation, status: :created
+    respond_with(invitation)
   end
 
   def destroy
     invitation.destroy
-    render json: nil, status: :no_content
+    respond_with(invitation)
   end
 
   def accept
     invitation.actor = current_user
     invitation.accept!
-    render json: nil, status: :no_content
+    respond_with(invitation)
   end
 
   def reject
     invitation.actor = current_user
     invitation.reject!
-    render json: nil, status: :no_content
+    respond_with(invitation)
   end
 
   private

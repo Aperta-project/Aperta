@@ -1,9 +1,7 @@
 class CommentLookSerializer < ActiveModel::Serializer
-  attributes :id, :read_at, :comment_id, :user_id, :task_id, :paper_id
+  attributes :id, :comment_id, :user_id, :paper_id
 
-  def task_id
-    object.comment.task_id
-  end
+  has_one :task, embed: :id, polymorphic: true
 
   def paper_id
     object.phase.paper_id

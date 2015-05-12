@@ -50,8 +50,7 @@ Tahi::Application.routes.draw do
     resources :authors, only: [:create, :update, :destroy]
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]
-    resources :comment_looks, only: [:index, :update]
-    resource :dashboards, only: :show
+    resources :comment_looks, only: [:index, :destroy]
     resources :decisions, only: [:create, :update]
     resource :event_stream, only: :show
     resources :errors, only: :create
@@ -70,7 +69,7 @@ Tahi::Application.routes.draw do
     end
     resources :flows, only: [:show, :create, :update, :destroy]
     resources :formats, only: [:index]
-    resources :invitations, only: [:create, :destroy] do
+    resources :invitations, only: [:index, :create, :destroy] do
       put :accept, on: :member
       put :reject, on: :member
     end

@@ -23,7 +23,8 @@ module('Integration: Feedback Form', {
 
     // NOTE: We don't care about having data on the page when testing the feedback form
     TestHelper.handleFindAll('journal', 0);
-    TestHelper.handleFindAll('dashboard', 0);
+    TestHelper.handleFindAll('paper', 0);
+    TestHelper.handleFindAll('invitation', 0);
     TestHelper.handleFindAll('comment-look', 0);
   }
 });

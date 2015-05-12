@@ -5,6 +5,7 @@ a = DS.attr
 CardThumbnail = DS.Model.extend
   paper: DS.belongsTo('paper')
   task: DS.belongsTo('task', polymorphic: true)
+  commentLooks: DS.hasMany('comment-look', inverse: "cardThumbnail")
 
   completed: a('boolean')
   createdAt: a('string')

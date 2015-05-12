@@ -13,7 +13,7 @@ FlowManagerRoute = AuthorizedRoute.extend
       @store.find('userFlow')
 
   afterModel: ->
-    @store.find('commentLook')
+    @store.find('comment-look')
 
   setupController: (controller, model) ->
     controller.set('model', model)

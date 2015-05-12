@@ -6,10 +6,10 @@ DashboardRoute = Ember.Route.extend
     Ember.RSVP.hash
       papers: @store.find('paper')
       invitations: @store.find('invitation')
-      commentLooks: @store.find('commentLook')
 
   setupController: (controller, model) ->
-    controller.set('unreadComments', model.commentLooks)
+    @store.find("comment-look").then (commentLooks) ->
+      controller.set("unreadComments", commentLooks)
     controller.set("papers", model.papers)
     controller.set("invitations", @currentUser.get("invitedInvitations"))
 

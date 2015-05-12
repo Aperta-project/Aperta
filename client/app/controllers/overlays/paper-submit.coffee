@@ -22,4 +22,7 @@ PaperSubmitOverlayController = Ember.Controller.extend
         .then =>
           @set 'paperSubmitted', false
 
+    closeAction: ->
+      @send("closeSuccessOverlay")
+
 `export default PaperSubmitOverlayController`

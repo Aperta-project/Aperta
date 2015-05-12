@@ -6,6 +6,12 @@ export default Ember.Route.extend(AnimateElement, {
   setupController: function(controller, model) {
     controller.set('model', model);
     if (this.currentUser) {
+      // subscribe to user and system channels
+      let userChannelName = `private-user@${ this.currentUser.get('id') }`;
+      let pusher = this.get('pusher');
+      pusher.wire(this, userChannelName, ["created", "updated"]);
+      pusher.wire(this, "system", ["destroyed"]);
+
       RESTless.authorize(controller, '/api/admin/journals/authorization', 'canViewAdminLinks');
       RESTless.authorize(controller, '/api/user_flows/authorization', 'canViewFlowManagerLink');
     }
@@ -67,6 +73,23 @@ export default Ember.Route.extend(AnimateElement, {
         outlet: 'overlay',
         controller: 'overlays/feedback'
       });
-    }
+    },
+
+    created(payload) {
+      console.log("created!", payload);
+    },
+
+    updated(payload) {
+      console.log("updated!", payload);
+    },
+
+    destroyed(payload) {
+      console.log("destroyed!", payload);
+    },
+  },
+
+  _pusherEventsId() {
+    // needed for the `wire` and `unwire` method to think we have `ember-pusher/bindings` mixed in
+    return this.toString()
   }
 });

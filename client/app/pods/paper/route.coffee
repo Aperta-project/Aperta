@@ -7,9 +7,11 @@ PaperRoute = AuthorizedRoute.extend
   model: (params) ->
     @store.fetchById('paper', params.paper_id)
 
+  channelName: (id) ->
+    "private-paper@#{id}"
+
   afterModel: (model, transition) ->
-    channelName = "private-paper@#{model.get('id')}"
-    @get('pusher').wire(@, channelName, ["created", "updated"])
+    @get('pusher').wire(@, @channelName(model.get('id')), ["created", "updated"])
 
   setupController: (controller, model) ->
     controller.set('model', model)
@@ -23,6 +25,9 @@ PaperRoute = AuthorizedRoute.extend
         controller.set('supportedDownloadFormats', supportedExportFormats)
 
     Ember.$.getJSON('/api/formats', setFormats)
+
+  deactivate: ->
+    @get('pusher').unwire(@, @channelName(@modelFor('paper').get('id')))
 
   actions:
     addContributors: ->

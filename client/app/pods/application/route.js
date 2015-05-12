@@ -17,6 +17,10 @@ export default Ember.Route.extend(AnimateElement, {
     }
   },
 
+  applicationSerializer: Ember.computed(function() {
+    return this.get('container').lookup("serializer:application");
+  }),
+
   actions: {
     willTransition(transition) {
       let appController, currentRouteController;
@@ -77,15 +81,27 @@ export default Ember.Route.extend(AnimateElement, {
 
     created(payload) {
       console.log("created!", payload);
+      this.store.pushPayload(payload);
     },
 
     updated(payload) {
       console.log("updated!", payload);
+      this.store.pushPayload(payload);
     },
 
     destroyed(payload) {
       console.log("destroyed!", payload);
-    },
+      let type = this.get('applicationSerializer').typeForRoot(payload.type);
+      payload.ids.forEach((id) => {
+        let record;
+        if (type === "task")
+          record = this.store.findTask(id);
+        else
+          record = this.store.getById(type, id);
+        if (record)
+          record.unloadRecord();
+      });
+    }
   },
 
   _pusherEventsId() {

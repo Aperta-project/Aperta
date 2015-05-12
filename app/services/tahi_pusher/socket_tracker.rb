@@ -3,8 +3,7 @@ module TahiPusher::SocketTracker
 
   included do
     def set_pusher_socket
-      # TODO: determine how ember will send this param in
-      RequestStore.store[:requester_pusher_socket_id] = params[:socket_id]
+      RequestStore.store[:requester_pusher_socket_id] = request.headers["HTTP_PUSHER_SOCKET_ID"]
     end
   end
 end

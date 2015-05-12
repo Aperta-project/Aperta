@@ -34,14 +34,6 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
     "/admin/journals/#{@get('model.id')}"
   ).property('model.id')
 
-  epubCoverUploadedAgo: (->
-    uploadTime = @get('epubCoverUploadedAt')
-    if uploadTime
-      $.timeago @get('epubCoverUploadedAt')
-    else
-      null
-  ).property('epubCoverUploadedAt')
-
   formattedDOI: (->
     if @get 'doiInvalid'
       ''
@@ -65,6 +57,14 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
 
 
   actions:
+    assignRoleToUser: (roleID, user)->
+      role = this.store.getById('role', roleID)
+
+      this.store.createRecord('userRole',
+        user: user,
+        role: role
+      ).save()
+
     addRole: ->
       this.get('model.roles').addObject(this.store.createRecord('role'))
 

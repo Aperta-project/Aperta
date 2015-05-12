@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import { test } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
-`import { paperWithTask, addUserAsParticipant } from '../helpers/setups'`
+`import { paperWithTask, addUserAsParticipant, addUserAsCollaborator } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
 
@@ -56,7 +56,7 @@ module 'Integration: EditPaper',
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
-test 'on paper.edit as a participant', ->
+test 'on paper.edit as a participant on a task but not author of paper', ->
   expect(1)
 
   records = paperWithTask('Task'
@@ -77,7 +77,33 @@ test 'on paper.edit as a participant', ->
   ]
 
   visit("/papers/#{currentPaper.id}/edit").then ->
-    ok !!find('#paper-assigned-tasks .card-content:contains("ReviewMe")').length, 'Participant task is displayed'
+    ok !find('#paper-assigned-tasks .card-content:contains("ReviewMe")').length,
+      "Participant task is not displayed in '#paper-assigned-tasks' for non-author"
+
+test 'on paper.edit as a participant on a task and author of paper', ->
+  expect(1)
+
+  records = paperWithTask('ReviseTask'
+    id: 1
+    qualifiedType: "TahiStandardTasks::ReviseTask"
+    role: 'author'
+  )
+
+  [currentPaper, task, journal, litePaper, phase] = records
+
+  paperPayload = Factory.createPayload('paper')
+  paperPayload.addRecords(records.concat([fakeUser]))
+  paperResponse = paperPayload.toJSON()
+  paperResponse.participations = [addUserAsParticipant(task, fakeUser)]
+  paperResponse.collaborations = [addUserAsCollaborator(currentPaper, fakeUser)]
+
+  server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
+    200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
+  ]
+
+  visit("/papers/#{currentPaper.id}/edit").then ->
+    ok !!find('#paper-assigned-tasks .card-content:contains("Revise Task")'),
+      "Participant task is displayed in '#paper-assigned-tasks' for author"
 
 test 'visiting /edit-paper: Author completes all metadata cards', ->
   expect(2)

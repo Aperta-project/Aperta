@@ -20,9 +20,11 @@ export default Ember.Mixin.create({
   // Tasks:
   assignedTasks: function() {
     let authorTasks = this.get('authorTasks');
+    var that = this;
 
     return this.get('model.tasks').filter((task) => {
-      return task.get('participations').mapBy('user').contains(this.currentUser);
+      return task.get('participations').mapBy('user').contains(this.currentUser) &&
+             that.get('model.collaborations').mapBy('user').contains(this.currentUser);
     }).filter(function(t) {
       return !authorTasks.contains(t);
     });
@@ -35,7 +37,7 @@ export default Ember.Mixin.create({
   }.property('model.tasks.@each.role'),
 
   authorTasks: function() {
-    var that = this;
+    let that = this;
     return this.get('model.tasks').filter((task) => {
       return task.get('role') === 'author';
     })

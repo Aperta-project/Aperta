@@ -1,0 +1,21 @@
+{{add-column position=nextPosition action="addPhase"}}
+
+{{phase-header phase=phase
+               savePhase="savePhase"
+               removePhase="removePhase"
+               rollbackPhase="rollbackPhase"}}
+
+<div class="column-content">
+  <div {{bind-attr class=":sortable noCards:sortable-no-cards"}} data-phase-id="{{unbound phase.id}}">
+    {{#each task in sortedTasks}}
+      {{card-preview paper=paper
+                     task=task
+                     commentLooks=commentLooks
+                     canRemoveCard=true
+                     showDeleteConfirm="showDeleteConfirm"
+                     canDragCard=true
+                     action="viewCard"}}
+    {{/each}}
+  </div>
+  <a {{action "chooseNewCardTypeOverlay" phase}} class="button-secondary button--green">Add New Card</a>
+</div>

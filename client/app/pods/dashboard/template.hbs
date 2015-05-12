@@ -6,7 +6,7 @@
   <section class="dashboard-section">
     {{#if invitations.length}}
       <h2 class="welcome-message">
-        You have <span class="invitation-count">{{invitations.length}}</span> {{make-plural invitations.length "invitation" "invitations"}}.
+        You have <span class="invitation-count">{{pluralize invitations.length "invitation"}}</span>.
       </h2>
       <button class="button-primary button--green" {{action "viewInvitations" invitations}}>View invitations</button>
     {{/if}}
@@ -16,7 +16,7 @@
     <h2 class="welcome-message">
       Hi, {{currentUser.firstName}}.
       {{#if papers.length}}
-        You have {{model.totalPaperCount}} {{make-plural model.totalPaperCount "manuscript" "manuscripts"}}.
+        You have {{pluralize model.totalPaperCount "manuscript"}}.
       {{else}}
         You have no manuscripts.
       {{/if}}

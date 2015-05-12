@@ -1,9 +1,11 @@
-`import Ember from 'ember'`
-`import RESTless from 'tahi/services/rest-less'`
+`import Ember from 'ember';`
+`import RESTless from 'tahi/services/rest-less';`
 
-PaperManageController = Ember.Controller.extend
+Controller = Ember.Controller.extend
   positionSort: ["position:asc"]
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort')
+
+  commentLooks: Em.computed -> @store.all('commentLook')
 
   allTaskIds: ->
     @store.all('phase').reduce((taskIds, phase) ->
@@ -25,6 +27,12 @@ PaperManageController = Ember.Controller.extend
   canRemoveCard: true
 
   actions:
+    changePhaseForTask: (task, targetPhaseId) ->
+      @beginPropertyChanges()
+      @store.getById('phase', targetPhaseId)
+            .get('tasks').addObject(task)
+      @endPropertyChanges()
+
     addPhase: (position) ->
       paper = @get('model')
       phase = @store.createRecord 'phase',
@@ -57,4 +65,4 @@ PaperManageController = Ember.Controller.extend
           else "There was a problem saving.  Please reload."
         @flash.displayMessage 'error', message
 
-`export default PaperManageController`
+`export default Controller;`

@@ -13,13 +13,13 @@ import Utils from 'tahi/services/utils';
   </label>
   ```
 
-  In your Controller or Component:
+  In your component:
 
   ```
   import Ember from 'ember';
   import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-  export default Ember.Controller.extend(ValidationErrorsMixin, {
+  export default Ember.Component.extend(ValidationErrorsMixin, {
     actions: {
       save() {
         this.get('model').save().then(() => {

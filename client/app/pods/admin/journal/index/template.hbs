@@ -17,7 +17,9 @@
           <th>Roles</th>
         </tr>
         {{#each adminJournalUsers as |user|}}
-          {{render "admin/admin-journal-user" user}}
+          {{admin-journal-user model=user
+                               journalRoles=model.roles
+                               assignRole="assignRoleToUser"}}
         {{/each}}
       </table>
     {{/if}}

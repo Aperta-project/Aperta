@@ -1,0 +1,50 @@
+import Ember from 'ember';
+import Utils from 'tahi/services/utils';
+
+export default Ember.Component.extend({
+  classNames: ['column-header'],
+  classNameBindings: ['active'],
+
+  active: false,
+  previousContent: null,
+
+  currentHeaderHeight: Ember.computed('phase.name', function() {
+    return this.$().find('.column-title').height();
+  }),
+
+  focusIn(e) {
+    this.set('active', true);
+    if ($(e.target).attr('contentEditable')) {
+      this.set('oldPhaseName', this.get('phase.name'));
+    }
+  },
+
+  input() {
+    if (this.get('currentHeaderHeight') <= 58) {
+      return this.set('previousContent', this.get('phase.name'));
+    } else {
+      return this.set('phase.name', this.get('previousContent'));
+    }
+  },
+
+  phaseNameDidChange: function() {
+    return Ember.run.scheduleOnce('afterRender', this, Utils.resizeColumnHeaders);
+  }.observes('phase.name'),
+
+  actions: {
+    save() {
+      this.set('active', false);
+      this.sendAction('savePhase', this.get('phase'));
+    },
+
+    remove() {
+      this.sendAction('removePhase', this.get('phase'));
+    },
+
+    cancel() {
+      this.set('active', false);
+      this.sendAction('rollbackPhase', this.get('phase'), this.get('oldPhaseName'));
+      Ember.run.scheduleOnce('afterRender', this, Utils.resizeColumnHeaders);
+    }
+  }
+});

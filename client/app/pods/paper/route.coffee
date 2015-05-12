@@ -55,4 +55,8 @@ PaperRoute = AuthorizedRoute.extend
         outlet: 'overlay',
         controller: controller
 
+  _pusherEventsId: ->
+    # needed for the `wire` and `unwire` method to think we have `ember-pusher/bindings` mixed in
+    return @toString()
+
 `export default PaperRoute`

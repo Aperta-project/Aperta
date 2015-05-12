@@ -40,7 +40,16 @@
   <div class="columns">
     {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
     {{#each sortedPhases as |phase|}}
-      {{render "phase" phase}}
+      {{phase-column phase=phase
+                     paper=model
+                     commentLooks=commentLooks
+                     savePhase="savePhase"
+                     addPhase="addPhase"
+                     showDeleteConfirm="showDeleteConfirm"
+                     removePhase="removePhase"
+                     viewCard="viewCard"
+                     chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
+                     changePhaseForTask="changePhaseForTask"}}
     {{/each}}
   </div>
 </div>

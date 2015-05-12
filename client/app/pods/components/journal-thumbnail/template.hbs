@@ -55,7 +55,7 @@
         {{partial "svg/default-journal-logo"}}
       {{/if}}
     </div>
-    <span class='journal-paper-count'>{{format-number model.paperCount}} {{make-plural model.paperCount 'article' 'articles'}}</span>
+    <span class="journal-paper-count">{{pluralize model.paperCount "article"}}</span>
     <h3 class="journal-name">{{model.name}}</h3>
     <p>{{model.description}}</p>
   {{/link-to}}

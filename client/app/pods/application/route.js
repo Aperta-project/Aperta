@@ -66,10 +66,6 @@ export default Ember.Route.extend(AnimateElement, {
       this.send('closeOverlay');
     },
 
-    addPaperToEventStream(paper) {
-      this.eventStream.addEventListener(paper.get('eventName'));
-    },
-
     editableDidChange() { return null; },
 
     feedback() {

@@ -1,4 +1,4 @@
-`import TaskController from 'tahi/pods/task/controller'`
+`import TaskController from 'tahi/pods/paper/task/controller'`
 
 ReviseOverlayController = TaskController.extend
   # offset by 1, since the first Decision should be an empty decision,

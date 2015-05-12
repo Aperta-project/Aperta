@@ -74,6 +74,6 @@ class DashboardPage < Page
 
   def active_invitation_count
     invitation_count = all '.invitation-count'
-    invitation_count.empty? ? 0 : invitation_count.first.text.to_i
+    invitation_count.empty? ? 0 : invitation_count.first.text[/\d+/].to_i
   end
 end

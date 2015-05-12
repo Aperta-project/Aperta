@@ -1,0 +1,47 @@
+<div class="admin-role-name">
+  {{#if isEditing}}
+    <span class={{if validationErrors.name "error"}}>
+      {{input name="role[name]" value=model.name placeholder="Role name" action="save"}}
+    </span>
+    {{error-message message=validationErrors.name}}
+  {{else}}
+    {{#unless model.required}}
+      <i class="admin-role-action-button role-delete-button glyphicon glyphicon-trash" {{action "deleteRole" bubbles=false}}></i>
+    {{/unless}}
+    <i class="admin-role-action-button glyphicon glyphicon-pencil"></i>
+    <span class="role-name-field">{{model.name}}</span>
+  {{/if}}
+</div>
+
+<div class="admin-role-permissions">
+  {{#if isEditing}}
+    <label class="token">{{check-box name="role[canViewAssignedManuscriptManagers]" checked=model.canViewAssignedManuscriptManagers}} Manuscript Manager</label>
+    <label class="token">{{check-box name="role[canViewAllManuscriptManagers]" checked=model.canViewAllManuscriptManagers}} All Manuscript Managers</label>
+    <label class="token">{{check-box name="role[canAdministerJournal]" checked=model.canAdministerJournal}} Admin</label>
+    <label class="token">{{check-box name="role[canViewFlowManager]" checked=model.canViewFlowManager}} Flow Manager</label>
+  {{else}}
+    {{#if model.canViewAssignedManuscriptManagers}}
+      <label class="token"><span class="glyphicon glyphicon-ok"></span> Manuscript Manager</label>
+    {{/if}}
+    {{#if model.canViewAllManuscriptManagers}}
+      <label class="token"><span class="glyphicon glyphicon-ok"></span> All Manuscript Managers</label>
+    {{/if}}
+    {{#if model.canAdministerJournal}}
+      <label class="token"><span class="glyphicon glyphicon-ok"></span> Admin</label>
+    {{/if}}
+    {{#if model.canViewFlowManager}}
+      <label class="token"><span class="glyphicon glyphicon-ok"></span> Flow Manager</label>
+    {{/if}}
+  {{/if}}
+
+  {{#if model.canViewFlowManager}}
+    <div class="admin-modify-flows-link">
+      {{#link-to "admin.journal.flow_manager" model.journal model}}Edit Flows{{/link-to}}
+    </div>
+  {{/if}}
+
+  <div class="action-buttons">
+    <button class="column-header-update-save button-primary button--blue" {{action "save"   bubbles=false}}>Save</button>
+    <button class="column-header-update-cancel button-link button--blue"  {{action "cancel" bubbles=false}}>cancel</button>
+  </div>
+</div>

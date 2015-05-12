@@ -1,0 +1,9 @@
+<td>{{model.username}}</td>
+<td>{{model.firstName}}</td>
+<td>{{model.lastName}}</td>
+<td>
+  {{user-role-selector journalRoles=selectableJournalRoles
+                       userJournalRoles=selectableUserJournalRoles
+                       selected="assignRole"
+                       removed="removeRole"}}
+</td>

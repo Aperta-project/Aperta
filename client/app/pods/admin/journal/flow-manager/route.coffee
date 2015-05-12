@@ -18,10 +18,10 @@ Route = Ember.Route.extend
   actions:
     viewCard: (task) ->
       paperId = task.get('paper.id')
-      redirectParams = ['journal.flow_manager', @modelFor('journal'), @modelFor('journal.flow_manager')]
+      redirectParams = ['admin.journal.flow_manager', @modelFor('admin.journal'), @modelFor('admin.journal.flow_manager')]
       @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @controllerFor('application').set('overlayBackground', 'journal.flow_manager')
-      @transitionTo('task', paperId, task.get('id'))
+      @controllerFor('application').set('overlayBackground', 'admin.journal.flow_manager')
+      @transitionTo('paper.task', paperId, task.get('id'))
 
 
 `export default Route`

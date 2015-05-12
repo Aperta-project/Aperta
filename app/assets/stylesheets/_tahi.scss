@@ -2,7 +2,9 @@ html {
   overflow: -moz-scrollbars-vertical;
 
   &.matte { background-color: #f5f5f5; }
-  &.navigation-visible { overflow: hidden; }
+  &.navigation-visible {
+    overflow: hidden;
+  }
 }
 
 body { background: transparent; } // override bootstrap
@@ -168,6 +170,14 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
 }
 
 // Main Content:
+
+.main-content {
+  @include transition(all 0.4s);
+}
+
+.navigation-visible .main-content {
+  @include filter(grayscale(50%));
+}
 
 .main-content-cover {
   @include position(fixed, 0px 0px 0px 0px);

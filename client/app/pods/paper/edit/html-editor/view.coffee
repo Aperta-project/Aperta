@@ -23,6 +23,10 @@ View = Ember.View.extend PaperEditMixin,
         editor.disable()
   ).observes('isEditing')
 
+  initializeEditingState: ( ->
+    @updateEditorLockedState()
+  ).on('didInsertElement')
+
   destroyEditor: ( ->
     Ember.$(document).off 'keyup.autoSave'
   ).on('willDestroyElement')

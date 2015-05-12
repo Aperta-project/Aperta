@@ -12,9 +12,34 @@ feature "Manuscript Manager", js: true, selenium: true do
 
     sign_in_page = SignInPage.visit
     sign_in_page.sign_in admin
+    visit "/papers/#{paper.id}/workflow"
+  end
 
-    click_link paper.title
-    click_link "Workflow"
+  describe "navigation" do
+    before do
+      visit root_path
+    end
+
+    it "navigate from sign in through workflow" do
+      click_link paper.title
+      click_link "Workflow"
+
+      expect(current_path).to eq "/papers/#{paper.id}/workflow"
+    end
+  end
+
+  describe "page content" do
+    let(:task_manager_page) { TaskManagerPage.new }
+
+    it "display paper name" do
+      expect(task_manager_page.paper_title).to eq paper.title
+    end
+
+    context "a Journal without a logo" do
+      it "display Journal name" do
+        expect(task_manager_page.journal_name).to eq journal.name
+      end
+    end
   end
 
   describe "Adding phases" do

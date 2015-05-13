@@ -12,7 +12,6 @@ export default Ember.Controller.extend({
   actions: {
     createNewPaper() {
       this.get('model').save().then((paper)=> {
-        this.send('addPaperToEventStream', paper);
         this.transitionToRoute('paper.edit', paper);
       }, (response)=> {
         this.flash.displayErrorMessagesFromResponse(response);

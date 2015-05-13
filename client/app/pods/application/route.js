@@ -101,12 +101,14 @@ export default Ember.Route.extend(AnimateElement, {
       let type = this.get('applicationSerializer').typeForRoot(payload.type);
       payload.ids.forEach((id) => {
         let record;
-        if (type === "task")
+        if (type === "task") {
           record = this.store.findTask(id);
-        else
+        } else {
           record = this.store.getById(type, id);
-        if (record)
+        }
+        if (record) {
           record.unloadRecord();
+        }
       });
     }
   },

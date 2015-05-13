@@ -13,19 +13,6 @@ PaperRoute = AuthorizedRoute.extend
   afterModel: (model, transition) ->
     @get('pusher').wire(@, @channelName(model.get('id')), ["created", "updated"])
 
-  setupController: (controller, model) ->
-    controller.set('model', model)
-
-    setFormats = (data) ->
-      if !data then return # IHAT_URL is not set in rails.
-      Ember.run ->
-        supportedExportFormats = []
-        for dataType in data.export_formats
-          supportedExportFormats.pushObject({format: dataType, icon: "svg/#{dataType}-icon"})
-        controller.set('supportedDownloadFormats', supportedExportFormats)
-
-    Ember.$.getJSON('/api/formats', setFormats)
-
   deactivate: ->
     @get('pusher').unwire(@, @channelName(@modelFor('paper').get('id')))
 

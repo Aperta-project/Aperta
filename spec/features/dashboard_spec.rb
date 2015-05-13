@@ -11,12 +11,6 @@ feature "Dashboard", js: true do
   end
   let(:dashboard) { DashboardPage.new }
 
-  before do
-    allow_any_instance_of(EventStream)
-      .to receive(:post)
-      .and_return :posted
-  end
-
   feature "pagination" do
     context "when there are more than 15 papers" do
       let(:paper_count) { 18 }

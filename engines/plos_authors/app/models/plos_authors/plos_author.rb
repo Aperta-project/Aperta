@@ -19,8 +19,8 @@ module PlosAuthors
       where(paper_id: paper)
     end
 
-    def event_stream_serializer(user)
-      PlosAuthorsSerializer.new(plos_authors_task.plos_authors, user: user, root: :plos_authors)
+    def event_stream_serializer
+      PlosAuthorsSerializer.new(plos_authors_task.plos_authors, root: :plos_authors)
     end
   end
 end

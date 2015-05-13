@@ -7,6 +7,7 @@ export default DS.Model.extend({
   alt: DS.attr('string'),
   caption: DS.attr('string'),
   createdAt: DS.attr('date'),
+  updatedAt: DS.attr('date'),
   detailSrc: DS.attr('string'),
   filename: DS.attr('string'),
   previewSrc: DS.attr('string'),

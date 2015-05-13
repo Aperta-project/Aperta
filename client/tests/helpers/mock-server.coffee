@@ -11,13 +11,6 @@ setupMockServer = ->
   server.xhr.addFilter (method, url) -> !!url.match(/assets\/ember-cli-visualeditor\/i18n/)
   server.respondWith 'GET', /assets\/ember-cli-visualeditor\/i18n/, '{}'
 
-  server.respondWith 'GET', '/api/formats', [
-    200, {"Content-Type": "application/json"}, JSON.stringify({
-      "export_formats": ["docx", "latex"],
-      "import_formats": ["docx", "odt"]
-    })
-  ]
-
   server.respondWith 'GET', '/api/flows/authorization', [
     204, 'content-type': 'application/html', 'tahi-authorization-check': true, ""
   ]

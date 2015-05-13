@@ -1,14 +1,11 @@
 `import Ember from 'ember'`
 `import startApp from '../helpers/start-app'`
-`import { test } from 'ember-qunit'`
-`import { paperWithRoles } from '../helpers/setups'`
-`import setupMockServer from '../helpers/mock-server'`
-`import Factory from '../helpers/factory'`
-`import EventStream from 'tahi/services/event-stream'`
+`import { module, test } from 'qunit'`
+`import FactoryGuy from 'ember-data-factory-guy'`
+`import TestHelper from "ember-data-factory-guy/factory-guy-test-helper"`
+`import EventStream from "tahi/services/event-stream"`
 
-app = null
-server = null
-fakeUser = null
+App = null
 
 setupEventStream = ->
   store = getStore()
@@ -17,155 +14,120 @@ setupEventStream = ->
     init: ->
   [es, store]
 
-createDashboardDataWithLitePaper = (paperCount, litePaper) ->
-  litePapers = []
-  for i in [1..paperCount] by 1
-    lp = Factory.createLitePaper
-      id: i
-      title: "Fake Paper Long Title #{i}"
-      short_title: "Fake Paper Short Title #{i}"
-      submitted: false
-    lp.roles = ['Collaborator']
-    lp.related_at_date = "2014-09-28T13:54:58.028Z"
-    litePapers.pushObject(lp)
-  litePapers.pushObject(litePaper) if litePaper
-  paperIds = litePapers.map (lp) -> lp.id
 
-  [litePapers, [
-    id: 1
-    user_id: 1
-    paper_ids: paperIds
-    total_paper_count: litePapers.length
-    total_page_count: 1
-  ]]
+module 'Integration: Dashboard Collaboration',
 
-createDashboardDataWithLitePaperRoles = (roleArray) ->
-  litePapers = roleArray.map (role, index) ->
-    lp = Factory.createLitePaper
-      id: index + 1
-      title: "Fake Paper Long Title #{index}"
-      short_title: "Fake Paper Short Title #{index}"
-      submitted: false
-    lp.roles = [role]
-    lp.related_at_date = "2014-09-28T13:54:58.028Z"
-    lp
-  [litePapers, [
-    id: 1
-    user_id: 1
-    paper_ids: litePapers.mapBy('id')
-    total_paper_count: litePapers.length
-    total_page_count: 1
-  ]]
-
-
-module 'Integration: Dashboard',
   teardown: ->
-    server.restore()
-    Ember.run(app, app.destroy)
+    Ember.run ->
+      TestHelper.teardown()
+      App.destroy()
 
   setup: ->
-    app = startApp()
-    server = setupMockServer()
-    fakeUser = window.currentUserData.user
+    App = startApp()
+    TestHelper.setup(App)
+    $.mockjax(url: "/api/admin/journals/authorization", status: 204)
+    $.mockjax(url: "/api/user_flows/authorization", status: 204)
 
-    [litePapers, dashboards] = createDashboardDataWithLitePaper(2)
-
-    dashboardResponse =
-      users: [fakeUser]
-      affiliations: []
-      papers: litePapers
-      dashboards: dashboards
-
-    adminJournalsResponse = {}
-
-    server.respondWith 'GET', '/api/dashboards', [
-      200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
-    ]
-
-    server.respondWith 'GET', '/api/admin/journals', [
-      200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
-    ]
-
-    server.respondWith 'GET', "/api/admin/journals/authorization", [
-      204, "Content-Type": "application/html", ""
-    ]
 
 test 'The dashboard shows papers for a user if they have any role on the paper', ->
-  roles = ['Collaborator', 'Reviewer', 'Editor', 'Admin', 'My Paper', 'Circus Clown']
-  [litePapers, dashboards] = createDashboardDataWithLitePaperRoles(roles)
-  dashboardResponse =
-    users: [fakeUser]
-    affiliations: []
-    papers: litePapers
-    dashboards: dashboards
+  Ember.run ->
+    TestHelper.handleFindAll("comment-look", 0)
+    TestHelper.handleFindAll("invitation", 0)
+    TestHelper.handleFindAll("paper", 6, "withRoles")
 
-  server.respondWith 'GET', '/api/dashboards', [
-    200, 'Content-Type': 'application/json', JSON.stringify dashboardResponse
-  ]
+    visit('/')
 
-  visit '/'
-  .then ->
-    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 6, 'All papers with roles should be visible'
+    andThen ->
+      equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 6, 'All papers with roles should be visible'
 
-test 'When paper is added, only shows if user is allowed to see the paper', ->
-  visit '/'
-  .then ->
-    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
-  andThen ->
-    # receives paper update with no roles
+test 'The dashboard shows paginated papers', ->
+  perPage =  15
+  extra = 2
+  Ember.run ->
+    TestHelper.handleFindAll("comment-look", 0)
+    TestHelper.handleFindAll("invitation", 0)
+    TestHelper.handleFindAll("paper", perPage, "withRoles")
+
+    getStore().metadataFor("paper")["total_pages"] = 2
+    getStore().metadataFor("paper")["total_papers"] = 17
+
+    visit '/'
+
+    andThen ->
+      ok(find('.load-more-papers').length, "sees load more button")
+      ok(Ember.isPresent(find('.welcome-message').text().match("You have #{perPage + extra} manuscripts")), "sees welcome message")
+      equal(find('.dashboard-submitted-papers .dashboard-paper-title').length, perPage, "num papers per page")
+
+    andThen ->
+      morePapers = FactoryGuy.makeList("paper", extra, "withRoles")
+      TestHelper.handleFindQuery("paper", ["page_number"], morePapers)
+
+      click '.load-more-papers'
+
+    andThen ->
+      equal(find('.dashboard-submitted-papers .dashboard-paper-title').length, perPage + extra, "paginated result count")
+      ok(!find('.load-more-papers').length, "no longer sees load more button")
+
+test 'Adding and removing papers via the event stream', ->
+  Ember.run ->
+    paperCount = 1
+    TestHelper.handleFindAll("comment-look", 0)
+    TestHelper.handleFindAll("invitation", 0)
+    TestHelper.handleFindAll("paper", paperCount, "withRoles")
+
+    visit('/')
+
     [es, store] = setupEventStream()
-    paperPayload = Factory.createPayload('paper')
-    records = paperWithRoles(200, [])
-    paperPayload.addRecords(records.concat([fakeUser]))
-    data = Ember.merge(paperPayload.toJSON(), action: "updated")
 
-    Ember.run =>
-      es.msgResponse(data)
-  andThen ->
-    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2, "paper with no roles does not show on dashboard"
+    andThen ->
+      Ember.run ->
+        data = Ember.merge({ paper: FactoryGuy.build("paper", "withRoles")}, { action: "created" })
+        es.msgResponse(data)
 
-test 'When user is removed from collaborating on paper', ->
-  visit '/'
-  .then ->
-    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 2
-  andThen ->
-    # receives eventstream push to remove collaboration
-    [es, store] = setupEventStream()
-    paperPayload = Factory.createPayload('paper')
-    records = paperWithRoles(1, [])
-    paperPayload.addRecords(records.concat([fakeUser]))
-    data = Ember.merge(paperPayload.toJSON(), action: "updated")
+        andThen ->
+          equal find('.dashboard-submitted-papers .dashboard-paper-title').length, paperCount+1, "paper added via event stream"
 
-    Ember.run =>
-      es.msgResponse(data)
-  andThen ->
-    equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 1
+    andThen ->
+      Ember.run ->
+        paper = store.all("paper").objectAt(0)
+        data = {
+          action: "destroyed",
+          type: "papers",
+          ids: [paper.get("id")]
+        }
+        es.msgResponse(data)
 
-test 'User can show the feedback form', ->
-  visit '/'
-  click '.navigation-toggle'
-  click '.navigation-item-feedback'
-  andThen ->
-    ok find(".overlay-action-buttons .button-primary:contains('Send Feedback')").length
+        andThen ->
+          equal find('.dashboard-submitted-papers .dashboard-paper-title').length, paperCount, "paper removed via event stream"
 
-test 'Hitting escape closes the feedback form', ->
-  visit '/'
-  click '.navigation-toggle'
-  click '.navigation-item-feedback'
-  keyEvent '.overlay', 'keyup', 27
-  andThen ->
-    ok !find(".overlay-footer-content .button-primary:contains('Send Feedback')").length
+test 'User can use the feedback form', ->
+  Ember.run ->
+    TestHelper.handleFindAll("comment-look", 0)
+    TestHelper.handleFindAll("invitation", 0)
+    TestHelper.handleFindAll("paper", 0, "withRoles")
+    $.mockjax(type: "POST", url: "/api/feedback", status: 200, responseText: {})
 
-test 'User sees a thank you message after submission', ->
-  server.respondWith 'POST', "/api/feedback", [
-    200, "Content-Type": "application/json", JSON.stringify {}
-  ]
+    visit '/'
+    click '.navigation-toggle'
+    click '.navigation-item-feedback'
+    fillIn '.feedback-overlay-remarks', 'all my feedback'
 
-  visit '/'
-  click '.navigation-toggle'
-  click '.navigation-item-feedback'
-  fillIn '.feedback-overlay-remarks', 'all my feedback'
-  click '.overlay-footer-content .button-primary'
-  andThen ->
-    ok find(".feedback-overlay-thanks").length
-    ok server.requests.findBy('url', '/api/feedback')
+    andThen ->
+      click '.overlay-footer-content .button-primary'
+
+      andThen ->
+        ok(find(".feedback-overlay-thanks").length, "User sees thank you message")
+        click(".overlay-close-x")
+
+    andThen ->
+      visit '/'
+      click '.navigation-toggle'
+      click '.navigation-item-feedback'
+
+      andThen ->
+        ok(find(".overlay-footer-content .button-primary:contains('Send Feedback')").length, "user sees feedback form")
+
+      keyEvent '.overlay', 'keyup', 27
+
+      andThen ->
+        ok(!find(".overlay-footer-content .button-primary:contains('Send Feedback')").length, "user dismisses feedback form")

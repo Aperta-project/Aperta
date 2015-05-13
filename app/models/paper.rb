@@ -12,6 +12,7 @@ class Paper < ActiveRecord::Base
   has_one :manuscript, dependent: :destroy
 
   has_many :figures, dependent: :destroy
+  has_many :tables, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
   has_many :paper_roles, inverse_of: :paper, dependent: :destroy
   has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user
@@ -217,7 +218,16 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  # overload this method for use in emails
+  def abstract
+    super.present? ? super : default_abstract
+  end
+
   private
+
+  def default_abstract
+    Nokogiri::HTML(body).text.truncate_words 100
+  end
 
   def paper_submitted
     itc_task = tasks.detect { |t| t.is_a? PlosBioTechCheck::InitialTechCheckTask }

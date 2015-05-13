@@ -30,6 +30,7 @@ Tahi::Application.routes.draw do
   devise_scope :user do
     get "users/sign_out" => "devise/sessions#destroy"
   end
+
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => "/sidekiq"
   end
@@ -45,14 +46,14 @@ Tahi::Application.routes.draw do
     resources :authors, only: [:create, :update, :destroy]
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]
-    resources :comment_looks, only: [:index, :update]
-    resource :dashboards, only: :show
+    resources :comment_looks, only: [:index, :destroy]
     resources :decisions, only: [:create, :update]
     resources :errors, only: :create
     resources :feedback, only: :create
     resources :figures, only: [:destroy, :update] do
       put :update_attachment, on: :member
     end
+    resources :tables, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
         get "admins/:paper_id", to: "filtered_users#admins"
@@ -63,7 +64,7 @@ Tahi::Application.routes.draw do
     end
     resources :flows, only: [:show, :create, :update, :destroy]
     resources :formats, only: [:index]
-    resources :invitations, only: [:create, :destroy] do
+    resources :invitations, only: [:index, :create, :destroy] do
       put :accept, on: :member
       put :reject, on: :member
     end
@@ -75,6 +76,7 @@ Tahi::Application.routes.draw do
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show
       resources :figures, only: :create
+      resources :tables, only: :create
       resources :tasks, only: [:update, :create, :destroy] do
         resources :comments, only: :create
       end
@@ -147,6 +149,7 @@ Tahi::Application.routes.draw do
 
   # Fall through to ember app
   #
-  get "*route" => "ember#index"
+  get "*route", to: "ember#index", constraints: { format: /html/ }
+
   root "ember#index"
 end

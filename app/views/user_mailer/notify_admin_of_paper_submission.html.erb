@@ -1,0 +1,27 @@
+<p>
+Hello <%= @admin.full_name %>,
+</p>
+
+<p>
+  The following Paper has been submitted:
+</p>
+
+<hr>
+
+<p>
+  <%= @journal.logo_url ? image_tag(@journal.logo_url) : @journal.name %>
+</p>
+
+<h3>
+  Abstract
+</h3>
+
+<p>
+  <%= @paper.abstract %>
+</p>
+
+<hr>
+
+<p>
+  <%= link_to "View Paper", client_paper_url(@paper) %>
+</p>

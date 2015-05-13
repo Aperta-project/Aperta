@@ -2,7 +2,8 @@
 `import { test, moduleForModel } from 'ember-qunit'`
 
 moduleForModel 'paper', 'Unit: Paper Model',
-  needs: ['model:author', 'model:user', 'model:figure', 'model:journal',
+  needs: ['model:author', 'model:user', 'model:figure', 'model:table',
+    'model:journal',
     'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment',
     'model:question-attachment', 'model:comment-look', 'model:attachable',
     'model:phase', 'model:task', 'model:comment', 'model:participation',

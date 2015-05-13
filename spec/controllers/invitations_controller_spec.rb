@@ -20,6 +20,24 @@ describe InvitationsController do
 
   before { sign_in(invitee) }
 
+  describe "GET /invitations" do
+    let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee) }
+
+    it "returns required fields" do
+      get(:index, format: :json)
+      expect(response.status).to eq(200)
+
+      data = JSON.parse(response.body).with_indifferent_access
+
+      expect(data).to have_key(:invitations)
+      invitation_json = data[:invitations][0]
+
+      expect(invitation_json).to have_key(:title)
+      expect(invitation_json).to have_key(:abstract)
+      expect(invitation_json).to have_key(:invitation_type)
+    end
+  end
+
   describe "POST /invitations" do
 
     it "creates a invited invitation" do
@@ -95,6 +113,5 @@ describe InvitationsController do
         expect(invitation.actor).to eq(invitee)
       end
     end
-
   end
 end

@@ -24,9 +24,10 @@ module Tahi
 
     def engine_path
       @engine_path ||= begin
-                         spec = Bundler.load.specs.detect { |s| s.name == plugin }
-                         fail Exception, "Could not find gem '#{plugin}' in the current bundle." unless spec
-                         spec.full_gem_path
+                         # use path_sources to find only Gemfile entries installed via :path
+                         source = Bundler.definition.send(:sources).path_sources.detect { |s| s.name == plugin }
+                         fail Exception, "Could not find gem '#{plugin}' in the current bundle. Please ensure that it is a gem with a :path source." unless source
+                         source.path.to_s
                        end
     end
   end

@@ -22,6 +22,8 @@ moduleFor 'controller:paper/edit/html-editor', 'Unit: paper/edit/html-editor con
 
     @editor =
       fromHtml: sinon.stub()
+      enable: sinon.stub()
+      disable: sinon.stub()
 
     @subject().set 'model', paper
     @subject().set 'currentUser', currentUser

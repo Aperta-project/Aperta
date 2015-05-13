@@ -19,7 +19,7 @@ export default AuthorizedRoute.extend({
   },
 
   afterModel() {
-    return this.store.find('commentLook');
+    return this.store.find('comment-look');
   },
 
   setupController(controller, model) {

@@ -1,23 +1,29 @@
 `import Ember from 'ember'`
 
 IndexController = Ember.Controller.extend
-  needs: ['application']
-  papers: null
-  unreadComments: [] # will be set in setupController
+  papers: []
   invitations: []
-
-  currentUser: Ember.computed.alias 'controllers.application.currentUser'
+  unreadComments: []
 
   hasPapers: Ember.computed.notEmpty('papers')
+  totalPaperCount: (->
+    numPapersFromServer = @store.metadataFor("paper").total_papers
+    numDashboardPapersInStore = @get('papers.length')
+
+    if numDashboardPapersInStore > numPapersFromServer
+      numDashboardPapersInStore
+    else
+      numPapersFromServer
+  ).property('papers.length')
 
   relatedAtSort: ['relatedAtDate:desc']
   sortedPapers: Ember.computed.sort('papers', 'relatedAtSort')
 
   pageNumber: 1
 
-  paginate: (->
-    @get('pageNumber') isnt @get('model.totalPageCount')
-  ).property('model.totalPageCount', 'pageNumber')
+  canLoadMore: (->
+    @get('pageNumber') isnt @store.metadataFor("paper").total_pages
+  ).property('pageNumber')
 
   actions:
     loadMorePapers: ->

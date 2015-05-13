@@ -3,9 +3,11 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   authors: DS.hasMany('author'),
   collaborations: DS.hasMany('collaboration'),
+  commentLooks: DS.hasMany('comment-look', { inverse: 'paper' }),
   decisions: DS.hasMany('decision'),
   editors: DS.hasMany('user'),
   figures: DS.hasMany('figure', { inverse: 'paper' }),
+  tables: DS.hasMany('table', { inverse: 'paper' }),
   journal: DS.belongsTo('journal'),
   lockedBy: DS.belongsTo('user'),
   phases: DS.hasMany('phase'),

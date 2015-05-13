@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505210110) do
+ActiveRecord::Schema.define(version: 20150511180214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,7 +77,6 @@ ActiveRecord::Schema.define(version: 20150505210110) do
   create_table "comment_looks", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "comment_id"
-    t.datetime "read_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -339,6 +338,17 @@ ActiveRecord::Schema.define(version: 20150505210110) do
   end
 
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
+
+  create_table "tables", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.string   "title",      limit: 255
+    t.string   "caption"
+    t.text     "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
     t.integer "author_id"

@@ -130,8 +130,6 @@ html.control-bar-sub-nav-active #paper-container {
 }
 
 // title contenteditable
-// HACK: this is not the final solution. We will use our 'structure' extension
-//  to have that within the editing area
 
 .manuscript-title-and-placeholder {
   padding: 50px 50px 20px 50px;
@@ -369,6 +367,23 @@ html.control-bar-sub-nav-active #paper-container {
   img {
     max-width: 600px;
   }
+
+  [itemprop=title] {
+    margin-bottom: 10px;
+  }
+
+  figcaption {
+    margin-top: 10px;
+  }
+}
+
+article.manuscript figure[data-content-type=table] {
+  border-left: none;
+  padding-left: 0px;
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
 }
 
 // figures overlay section
@@ -549,19 +564,31 @@ html.control-bar-sub-nav-active #paper-container {
   display: none;
 }
 
-.figure-item-editor .ve-ce-branchNode-slug.text-property-slug {
-  display: block;
-}
-
-.figure-item-editor label {
-  font-weight: bold;
+.figure-item-editor figure {
   margin: 0px;
-  padding: 0px;
-  min-width: 100px;
+  border: none;
 }
 
 .figure-item-editor .figure-title {
   font-size: 21px;
+}
+
+.figure-item-editor .figure-title:before {
+  content: "Title:";
+  margin-right: 100px;
+}
+
+.figure-item-editor .figure-image {
+  display: none;
+}
+
+.figure-item-editor figcaption label {
+  display: none;
+}
+
+.figure-item-editor figcaption .text-input-view.caption:before {
+  content: "Caption:";
+  margin-right: 90px;
 }
 
 .figure-item-editor .form-entry-view.figure-caption {
@@ -632,3 +659,51 @@ html.control-bar-sub-nav-active #paper-container {
 .figure-item-detailed-view {
   margin-top: 40px;
 }
+
+
+// tables overlay
+
+.table-item {
+  padding: 0px;
+}
+
+.table-item .figure-item-header {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.table-item .figure-item-header-inner {
+  padding-left: 20px;
+}
+
+.table-item .figure-item-editor {
+  position: relative;
+}
+
+.table-item .ve-ce-surface {
+  width: 100%;
+  max-width: initial;
+  padding: 20px 20px;
+}
+
+.table-item figure {
+  border-left: none;
+  padding-left: 0px;
+}
+
+.table-item table {
+  margin: 20px 0px;
+  width: 100%;
+  min-height: 200px !important;
+  table-layout: fixed;
+}
+
+.table-item table .ve-ce-branchNode-slug {
+  display:initial;
+}
+
+.table-item figcaption label {
+  display: none;
+}
+

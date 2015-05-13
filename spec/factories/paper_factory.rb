@@ -71,6 +71,7 @@ FactoryGirl.define do
         evaluator.task_params[:type] ||= "Task"
 
         phase.tasks.create(evaluator.task_params)
+        paper.reload
       end
     end
   end

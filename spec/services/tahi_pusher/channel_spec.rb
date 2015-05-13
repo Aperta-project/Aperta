@@ -24,7 +24,7 @@ describe TahiPusher::Channel do
     let(:payload) { { somejson: true } }
 
     it "sends payload to pusher channel" do
-      expect(Pusher).to receive(:trigger).with(channel_name, event_name, payload)
+      expect(Pusher).to receive(:trigger).with(channel_name, event_name, payload, {})
       channel.push(event_name: event_name, payload: payload)
     end
   end

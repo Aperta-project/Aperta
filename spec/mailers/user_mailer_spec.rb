@@ -62,10 +62,27 @@ describe UserMailer, redis: true do
     let(:invitee) { FactoryGirl.create(:user) }
     let(:task) { FactoryGirl.create(:editors_discussion_task) }
     let(:email) { UserMailer.add_editor_to_editors_discussion(invitee.id, task.id) }
+    let(:abstract) { 'Tongue twister tong t.' }
 
-    it 'sends a specific email to the editor invitee' do
-      expect(email.subject).to eq "You've been invited to the Editors' Discussion for paper \"#{task.paper.display_title}\""
-      expect(email.body).to match /View Discussion/
+    before { task.paper.update! body: "Dragon red blue green yellow." }
+
+    context 'when the paper has an abstract' do
+      it 'sends a specific email to the editor invitee' do
+        task.paper.update! abstract: abstract
+        expect(email.subject).to eq "You've been invited to the Editors' Discussion for paper \"#{task.paper.display_title}\""
+        expect(email.body).to include 'View Discussion'
+        expect(email.body).to include abstract
+      end
+    end
+
+    context 'when the paper has no abstract' do
+      it 'sends a specific email to the editor invitee' do
+        expect(email.subject).to eq "You've been invited to the Editors' Discussion for paper \"#{task.paper.display_title}\""
+        expect(email.body).to include 'View Discussion'
+        expect(email.body).to_not include abstract
+        expect(email.body).to match task.paper.body
+      end
+
     end
   end
 

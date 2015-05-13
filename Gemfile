@@ -103,6 +103,7 @@ group :test do
   gem 'webmock'
   gem 'thin'
   gem 'timecop'
+  gem 'pusher-fake'
 end
 
 group :staging, :performance do

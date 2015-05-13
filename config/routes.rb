@@ -13,11 +13,7 @@ Tahi::Application.routes.draw do
   # Test specific
   #
   if Rails.env.test?
-    # TODO: Remove the need for this with pusher
-    require_relative "../spec/support/stream_server/stream_server"
     require_relative "../spec/support/upload_server/upload_server"
-    get "/stream" => StreamServer
-    post "/update_stream" => StreamServer
     mount UploadServer, at: "/fake_s3/"
   elsif Rails.env.development?
     get "/styleguide" => "styleguide#index"

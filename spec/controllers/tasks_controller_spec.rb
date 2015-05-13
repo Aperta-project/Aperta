@@ -94,9 +94,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET 'show'" do
-    let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
-    let(:task) { paper.tasks.first }
-
+    let(:task) { FactoryGirl.create(:task) }
     subject(:do_request) { get :show, { id: task.id, format: format } }
 
     context "html requests" do
@@ -117,8 +115,7 @@ describe TasksController, redis: true do
   end
 
   describe "PUT 'send_message'" do
-    let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
-    let(:task) { paper.tasks.first }
+    let(:task) { FactoryGirl.create(:task) }
 
     subject(:do_request) { put :send_message, { id: task.id, format: "json", task: {subject: "Hello", body: "Greetings from Vulcan!", recepients: [user.id]} } }
 

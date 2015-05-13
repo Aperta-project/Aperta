@@ -1,4 +1,4 @@
-TahiNotifier.subscribe("paper.submitted") do |subscription_name, payload|
+TahiNotifier.subscribe("paper.submitted") do |payload|
   record_id = payload[:paper_id]
 
   paper = Paper.find(record_id)

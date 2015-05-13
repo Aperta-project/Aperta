@@ -60,10 +60,12 @@ class UserMailer < ActionMailer::Base
       subject: "Manuscript has been resubmitted in Tahi")
   end
 
-  def mention_collaborator(comment, commentee)
-    @comment = comment
+  def mention_collaborator(comment_id, commentee_id)
+    @comment = Comment.find(comment_id)
     @commenter = @comment.commenter
-    @commentee = commentee
+    @commentee = User.find(commentee_id)
+    @task = @comment.task
+    @paper = @task.paper
 
     mail(
       to: @commentee.try(:email),

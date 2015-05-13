@@ -31,7 +31,7 @@ class PaperFactory
       add_collaborator(paper, creator)
       if paper.valid?
         if template
-          paper.save
+          paper.save!
           paper.decisions.create!
           apply_template
         else

@@ -14,7 +14,7 @@ module EventStream
           access: TahiPusher::ChannelName::PUBLIC
         )
       else
-        payload = record.payload
+        payload = channel_scope.is_a?(User) ? record.payload(user: channel_scope) : record.payload
         channel_name = TahiPusher::ChannelName.build(
           target: channel_scope,
           access: TahiPusher::ChannelName::PRIVATE

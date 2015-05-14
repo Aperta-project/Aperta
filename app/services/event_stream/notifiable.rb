@@ -19,14 +19,14 @@ module EventStream::Notifiable
       }
     end
 
-    def event_stream_serializer
-      # active_model_serializer.new(self)
-      # TODO: uncomment above once users have been removed from serializer
-      active_model_serializer.new(self, user: User.last)
+    def payload(user: nil)
+      # user can be optionally passed into serializer
+      event_stream_serializer(user: user).to_json
     end
 
-    def payload
-      event_stream_serializer.to_json
+    def event_stream_serializer(user: nil)
+      # user can be optionally passed into serializer
+      active_model_serializer.new(self, user: user)
     end
 
     def destroyed_payload

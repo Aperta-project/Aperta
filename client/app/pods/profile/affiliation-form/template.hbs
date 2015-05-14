@@ -1,12 +1,20 @@
 <div class="profile-section">
 
   <h1>Affiliations:</h1>
-
   {{#each model.affiliations as |affiliation|}}
     <div class="profile-affiliation">
       <div class="profile-affiliation-name">{{affiliation.name}}</div>
       <div class="glyphicon glyphicon-remove-circle profile-remove-affiliation" {{action "removeAffiliation" affiliation}}></div>
       <div>
+      <div>
+        {{affiliation.department}}
+      </div>
+      <div>
+        {{affiliation.title}}
+      </div>
+      <div>
+        {{affiliation.country}}
+      </div>
         {{format-date affiliation.startDate}} - {{#if affiliation.isCurrent}} Current {{else}} {{format-date affiliation.endDate}} {{/if}}
       </div>
       <div>{{affiliation.email}}</div>
@@ -41,14 +49,11 @@
               class="profile-affiliation-field form-control"}}
 
       {{select-2-single
-        class=class
-        minimumResultsForSearch=10
+        class="profile-affiliation-field"
         placeholder="Country"
         selectedData=selectedData
-        selectionSelected="selectionSelected"
         source=countries
         value=newAffiliation.country
-        width=width
       }}
 
       <div class="form-group">

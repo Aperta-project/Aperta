@@ -15,7 +15,6 @@ feature "Event streaming", js: true, selenium: true do
   context "on the workflow page" do
     before do
       click_link(paper.title)
-      edit_paper = EditPaperPage.new
       click_link("Workflow")
     end
 
@@ -78,6 +77,22 @@ feature "Event streaming", js: true, selenium: true do
       # removed as a participant
       participant_paper.paper_roles.participants.destroy_all
       expect(page).to_not have_text(participant_paper.title)
+    end
+  end
+
+  context "on a task" do
+    before do
+      upload_task.participants.destroy_all
+    end
+
+    scenario "commenter is added as a participant" do
+      click_link paper.title
+      edit_paper_page = EditPaperPage.new
+      edit_paper_page.view_card(upload_task.title) do |card|
+        card.post_message 'Hello'
+        expect(card).to have_participants(author)
+        expect(card).to have_last_comment_posted_by(author)
+      end
     end
   end
 end

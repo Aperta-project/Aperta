@@ -158,8 +158,8 @@ describe UserMailer, redis: true do
     end
 
     it "tells the editor paper has been (re)submitted" do
-      expect(email.body).to include "Hello #{editor.full_name}"
-      expect(email.body).to include "#{author.full_name} has resubmitted the manuscript"
+      expect(email.body).to include "Hello #{editor.first_name}"
+      expect(email.body).to include "A new version has been submitted"
       expect(email.body).to include paper.title
       expect(email.body).to include client_paper_url(paper)
       expect(email.body).to include paper.journal.name
@@ -185,8 +185,8 @@ describe UserMailer, redis: true do
     end
 
     it "tells admin that paper has been submitted" do
-      expect(email.body).to include "Hello #{admin.full_name}"
-      expect(email.body).to include "The following Paper has been submitted:"
+      expect(email.body).to include "Hello #{admin.first_name}"
+      expect(email.body).to include "A new version has been submitted"
       expect(email.body).to include paper.abstract
       expect(email.body).to include client_paper_url(paper)
       expect(email.body).to include paper.journal.name

@@ -6,7 +6,7 @@ let Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('dashboard', { path: '/' });
+  this.route('dashboard', { path: '/' }, function() {});
 
   this.route('flow_manager');
 

@@ -42,3 +42,12 @@ TahiNotifier.subscribe("paper_role:*") do |payload|
   # serialize the paper down the user channel
   EventStream::Broadcaster.new(record.paper).post(action: action, channel_scope: record.user, excluded_socket_id: excluded_socket_id)
 end
+
+TahiNotifier.subscribe("comment_look:*") do |payload|
+  action = payload[:action]
+  record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
+
+  # serialize the comment_look down the user channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.user, excluded_socket_id: excluded_socket_id)
+end

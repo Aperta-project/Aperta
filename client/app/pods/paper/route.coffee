@@ -7,6 +7,10 @@ PaperRoute = AuthorizedRoute.extend
   model: (params) ->
     @store.fetchById('paper', params.paper_id)
 
+  setupController: (controller, model) ->
+    model.get("commentLooks")
+    @_super(controller, model)
+
   channelName: (id) ->
     "private-paper@#{id}"
 

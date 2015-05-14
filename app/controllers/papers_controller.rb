@@ -2,7 +2,7 @@ class PapersController < ApplicationController
   include AttrSanitize
 
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index, :show]
+  before_action :enforce_policy, except: [:index, :show, :comment_looks]
   before_action :sanitize_title, only: [:create, :update]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
@@ -50,7 +50,10 @@ class PapersController < ApplicationController
     respond_with paper
   end
 
-  # non RESTful routes
+  def comment_looks
+    comment_looks = paper.comment_looks.includes(task: :phase).where(user: current_user)
+    respond_with(comment_looks, root: :comment_looks)
+  end
 
   def activity
     # TODO: params[:name] probably needs some securitifications

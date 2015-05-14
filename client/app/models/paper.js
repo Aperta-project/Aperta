@@ -3,7 +3,7 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   authors: DS.hasMany('author'),
   collaborations: DS.hasMany('collaboration'),
-  commentLooks: DS.hasMany('comment-look', { inverse: 'paper' }),
+  commentLooks: DS.hasMany('comment-look', { inverse: 'paper', async: true }),
   decisions: DS.hasMany('decision'),
   editors: DS.hasMany('user'),
   figures: DS.hasMany('figure', { inverse: 'paper' }),

@@ -18,6 +18,8 @@ class Paper < ActiveRecord::Base
   has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
   has_many :tasks, through: :phases
+  has_many :comments, through: :tasks
+  has_many :comment_looks, through: :comments
   has_many :participants, through: :tasks
   has_many :journal_roles, through: :journal
   has_many :authors, -> { order 'authors.position ASC' }

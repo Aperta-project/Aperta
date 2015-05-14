@@ -76,4 +76,12 @@ class DashboardPage < Page
     invitation_count = all '.invitation-count'
     invitation_count.empty? ? 0 : invitation_count.first.text[/\d+/].to_i
   end
+
+  def view_invitations
+    click_button 'View invitations'
+    yield(all('.pending-invitation').map do |invitation|
+      PendingInvitationFragment.new invitation
+    end)
+    find('.overlay-close-x').click
+  end
 end

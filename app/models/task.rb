@@ -128,7 +128,7 @@ class Task < ActiveRecord::Base
   end
 
   def notify_new_participant(current_user, participation)
-    UserMailer.delay.add_participant current_user.id, participation.user_id, self.id
+    UserMailer.delay.add_participant current_user.id, participation.user_id, id
   end
 
   private

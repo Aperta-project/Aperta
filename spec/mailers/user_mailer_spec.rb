@@ -134,7 +134,7 @@ describe UserMailer, redis: true do
       expect(email.body).to include "A new version has been submitted"
       expect(email.body).to include paper.title
       expect(email.body).to include client_paper_url(paper)
-      expect(email.body).to include paper.journal.name || paper.journal.logo_url
+      expect(email.body).to include paper.journal.name
     end
   end
 
@@ -157,8 +157,8 @@ describe UserMailer, redis: true do
     end
 
     it "tells admin that paper has been submitted" do
-      expect(email.body).to include "Hello #{admin.full_name}"
-      expect(email.body).to include "The following Paper has been submitted:"
+      expect(email.body).to include "Hello #{admin.first_name}"
+      expect(email.body).to include "A new version has been submitted"
       expect(email.body).to include paper.abstract
       expect(email.body).to include client_paper_url(paper)
       expect(email.body).to include paper.journal.name

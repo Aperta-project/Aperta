@@ -11,13 +11,13 @@
     </div>
 
     <div class="form-group chosen-style-override">
-      {{view "chosen" content=journals
-                      value=model.journal
-                      optionValuePath="content"
-                      optionLabelPath="content.name"
-                      name="journal"
-                      prompt="Choose Journal"
-                      class="paper-new-journal-select"}}
+      {{select-2-single placeholder="Choose Journal"
+                        selectionSelected="selectJournal"
+                        source=journalProxies
+                        class="paper-new-journal-select"
+                        selectedData=selectedJournal
+                        prompt="Choose Journal"
+                        width="275"}}
 
       {{view "chosen" content=model.journal.paperTypes
                       value=model.paperType

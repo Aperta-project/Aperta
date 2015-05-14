@@ -20,6 +20,7 @@ feature 'Comments on cards', js: true do
       end
     end
 
+    # TODO: FAILING - participant is being added as an after effect and socket is being ignored
     scenario "becoming a participant" do
       task_manager_page = TaskManagerPage.new
       task_manager_page.view_card task.title, CardOverlay do |card|

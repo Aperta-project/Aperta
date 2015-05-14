@@ -18,15 +18,15 @@ class UserMailer < ActionMailer::Base
       subject: "You've been added as a collaborator to a paper on Tahi")
   end
 
-  def add_participant(invitor_id, invitee_id, task_id)
+  def add_participant(assigner_id, assignee_id, task_id)
     @task = Task.find(task_id)
-    invitor = User.find_by(id: invitor_id)
-    invitee = User.find_by(id: invitee_id)
-    @invitor_name = display_name(invitor)
-    @invitee_name = display_name(invitee)
+    assigner = User.find_by(id: assigner_id)
+    assignee = User.find_by(id: assignee_id)
+    @assigner_name = display_name(assigner)
+    @assignee_name = display_name(assignee)
 
     mail(
-      to: invitee.try(:email),
+      to: assignee.try(:email),
       subject: "You've been added to a conversation on Tahi")
   end
 

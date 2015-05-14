@@ -3,12 +3,20 @@ module EventStream::Notifiable
   included do
     after_commit :notify
 
+    # if false (default), do not send event stream message to original requester
+    # if true, send event stream message to the original requester
+    attr_accessor :notify_requester
+
     def notify
       TahiNotifier.notify(event: event_name, payload: event_payload)
     end
 
     def event_payload
-      { action: action, record: self, requester_socket_id: RequestStore.store[:requester_pusher_socket_id] }
+      {
+        action: action,
+        record: self,
+        requester_socket_id: (RequestStore.store[:requester_pusher_socket_id] unless notify_requester)
+      }
     end
 
     def event_stream_serializer

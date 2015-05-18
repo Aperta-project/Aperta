@@ -23,7 +23,7 @@ export default Ember.Mixin.create({
   }.property('model.journal.logoUrl'),
 
   isHtmlEditor: function() {
-    return this.get('model.editorMode') === 'html'
+    return this.get('model.editorMode') === 'html';
   }.property('model.editorMode'),
 
   // Tasks:

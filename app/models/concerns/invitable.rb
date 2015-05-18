@@ -2,7 +2,7 @@ module Invitable
   extend ActiveSupport::Concern
 
   included do
-    has_many :invitations, inverse_of: :task, foreign_key: :task_id
+    has_many :invitations, inverse_of: :task, foreign_key: :task_id, dependent: :destroy
   end
 
   # Public: after transition hook for custom task behavior upon transitioning to "invited" state

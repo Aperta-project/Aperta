@@ -40,6 +40,17 @@ class UserMailer < ActionMailer::Base
       subject: "You've been added as a reviewer on Tahi")
   end
 
+  def add_editor_to_editors_discussion(invitee_id, task_id)
+    @task = Task.find task_id
+    invitee = User.find invitee_id
+    @invitee_name = display_name(invitee)
+    @paper_preview = paper_preview
+
+    mail(
+      to: invitee.email,
+      subject: "You've been invited to the Editors' Discussion for paper \"#{@task.paper.display_title}\"")
+  end
+
   def assigned_editor(editor_id, paper_id)
     @paper = Paper.find(paper_id)
     user = User.find(editor_id)
@@ -89,5 +100,13 @@ class UserMailer < ActionMailer::Base
     mail(
       to: @admin.email,
       subject: "Manuscript #{@paper.title} has been submitted on Tahi")
+  end
+
+  private
+
+  # Might make sense to move it to the paper model, but it's good enough for this one use case.
+  def paper_preview
+    return @task.paper.abstract if @task.paper.abstract.present?
+    "#{@task.paper.body.split[0..100].join ' '}..."
   end
 end

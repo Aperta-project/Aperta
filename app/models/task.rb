@@ -16,7 +16,6 @@ class Task < ActiveRecord::Base
   scope :completed,   -> { where(completed: true) }
   scope :incomplete,  -> { where(completed: false) }
 
-
   scope :on_journals, ->(journals) { joins(:journal).where("journals.id" => journals.map(&:id)) }
 
   has_one :paper, through: :phase
@@ -126,6 +125,10 @@ class Task < ActiveRecord::Base
 
   # Implement this method for Cards that inherit from Task
   def after_update
+  end
+
+  def notify_new_participant(current_user, participation)
+    UserMailer.delay.add_participant current_user.id, participation.user_id, id
   end
 
   private

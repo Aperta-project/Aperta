@@ -72,4 +72,18 @@ describe Task do
       end
     end
   end
+
+  describe "#invitations" do
+    let(:phase) { FactoryGirl.create :phase }
+    let(:task) { FactoryGirl.create :invitable_task, phase: phase }
+    let!(:invitation) { FactoryGirl.create :invitation, task: task }
+
+    context "on #destroy" do
+      it "destroy invitations" do
+        expect {
+          task.destroy!
+        }.to change { Invitation.count }.by(-1)
+      end
+    end
+  end
 end

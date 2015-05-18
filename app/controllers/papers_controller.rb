@@ -63,7 +63,7 @@ class PapersController < ApplicationController
 
   def upload
     IhatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_jobs_url)
-    render json: paper
+    respond_with paper
   end
 
   def heartbeat

@@ -18,8 +18,8 @@ feature "Upload paper", js: true, selenium: true do
   end
 
   scenario "Author uploads paper in Word format" do
-    expect(DownloadManuscriptWorker).to receive(:perform_async) do |manuscript_id, url|
-      paper.manuscript.update(status: "done")
+    allow_any_instance_of(IhatJobRequest).to receive(:queue) do
+      paper.create_manuscript(status: "done")
       paper.update(title: "This is a Title About Turtles", body: "And this is my subtitle")
     end
 

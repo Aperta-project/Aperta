@@ -4,7 +4,7 @@ IndexController = Ember.Controller.extend
   papers: []
   invitations: []
   unreadComments: []
-
+  pendingInvitations: Ember.computed.filterBy 'invitations', 'state', 'invited'
   hasPapers: Ember.computed.notEmpty('papers')
   totalPaperCount: (->
     numPapersFromServer = @store.metadataFor("paper").total_papers

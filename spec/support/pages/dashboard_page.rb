@@ -82,6 +82,5 @@ class DashboardPage < Page
     yield(all('.pending-invitation').map do |invitation|
       PendingInvitationFragment.new invitation
     end)
-    find('.overlay-close-x').click
   end
 end

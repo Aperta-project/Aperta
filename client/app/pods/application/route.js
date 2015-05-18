@@ -115,6 +115,6 @@ export default Ember.Route.extend(AnimateElement, {
 
   _pusherEventsId() {
     // needed for the `wire` and `unwire` method to think we have `ember-pusher/bindings` mixed in
-    return this.toString()
+    return this.toString();
   }
 });

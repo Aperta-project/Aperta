@@ -48,6 +48,7 @@ app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 if (app.env !== 'production') {
   app.import('bower_components/sinon/index.js', { type: 'test' });
   app.import('bower_components/ember/ember-template-compiler.js', { type: 'test' });
+  app.import('vendor/pusher-test-stub.js', { type: 'test' });
 }
 
 module.exports = mergeTrees([app.toTree(), select2Assets], {overwrite: true});

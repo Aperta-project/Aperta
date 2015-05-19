@@ -10,23 +10,21 @@
       {{input type="text" value=model.shortTitle class="form-control tall-text-field" placeholder="Crystalized Magnificence in the Modern World" id="paper-short-title"}}
     </div>
 
-    <div class="form-group chosen-style-override">
-      {{view "chosen" content=journals
-                      value=model.journal
-                      optionValuePath="content"
-                      optionLabelPath="content.name"
-                      name="journal"
-                      prompt="Choose Journal"
-                      class="paper-new-journal-select"}}
+    <div class="form-group">
+      {{select-2-single placeholder="Choose Journal"
+                        class="paper-new-journal-select"
+                        width="300"
+                        selectionSelected="selectJournal"
+                        source=journalProxies
+                        selectedData=selectedJournal }}
 
-      {{view "chosen" content=model.journal.paperTypes
-                      value=model.paperType
-                      optionValuePath="content"
-                      optionLabelPath="content"
-                      name="paper_type"
-                      prompt="Choose Paper Type"
-                      disabled=noJournalSelected
-                      class="paper-new-paper-type-select"}}
+      {{select-2-single placeholder="Choose Paper Type"
+                        class="paper-new-paper-type-select"
+                        width="300"
+                        disabled=noJournalSelected
+                        selectionSelected="selectPaperType"
+                        source=paperTypeProxies
+                        selectedData=selectedPaperType }}
     </div>
 
     <div class="overlay-action-buttons">

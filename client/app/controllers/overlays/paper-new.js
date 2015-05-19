@@ -16,6 +16,9 @@ export default Ember.Controller.extend({
 
   // Select-2 requires data to be an object with an id key :\
   paperTypeProxies: function() {
+    let paperTypes = this.get('model.journal.paperTypes');
+    if(Ember.isEmpty(paperTypes)) { return []; }
+
     return this.get('model.journal.paperTypes').map(function(paperType) {
       return {
         id: paperType,

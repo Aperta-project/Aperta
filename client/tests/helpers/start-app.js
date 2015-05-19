@@ -6,7 +6,6 @@ import config from '../../config/environment';
 import asyncHelpers from './async-helpers';
 import storeHelpers from './store-helpers';
 import containerHelpers from './container-helpers';
-import chosenHelpers from './chosen-helpers';
 import select2Helpers from './select2-helpers';
 import customAssertions from './custom-assertions';
 

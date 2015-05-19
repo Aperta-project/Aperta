@@ -10,9 +10,5 @@ export default DS.Model.extend({
   isLatest: DS.attr('boolean'),
   letter: DS.attr('string'),
   revisionNumber: DS.attr('number'),
-  verdict: DS.attr('string'),
-
-  revisionHumanNumber: Ember.computed('revisionNumber', function() {
-    return this.get('revisionNumber') + 1;
-  })
+  verdict: DS.attr('string')
 });

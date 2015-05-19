@@ -40,7 +40,7 @@ test('clicking the feedback button sends feedback to the backend', function(asse
   });
 });
 
-test('Regression: Opening view invitation overlay then feedback overlay shows feedback overflay', function(assert) {
+test('Regression: Opening new paper overlay then feedback overlay shows feedback overflay', function(assert) {
   visit('/');
   click('.button-primary:contains(Create New Submission)');
   click('.overlay-close-x');

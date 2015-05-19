@@ -9,12 +9,16 @@ PaperAdminOverlayController = TaskController.extend Select2Assignees,
     user.email
 
   selectedTemplate: (user) ->
-    user.email || user.get('email')
+    # Handle raw object or ember model
+    if typeof(user.email) is "string"
+      user.email
+    else
+      user.get('email')
 
   actions:
     assignAdmin: (select2User) ->
       @store.find('user', select2User.id).then (user) =>
-        @set('admin', user)
+        @set('model.admin', user)
         @send('saveModel')
 
 `export default PaperAdminOverlayController`

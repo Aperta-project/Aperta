@@ -18,14 +18,14 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
-  revision: 497775a418d35a1adbef21236a358fe78d0a8e98
+  revision: 965b8ea606e341adcf3d20c6932a67c930968bd0
   specs:
     plos_bio_internal_review (0.0.1)
       rails (~> 4.2.1)
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: 37707040ffd9547bc18ee7e7b8e9eea8160fe82c
+  revision: ea5e059093e4731dcaded7570cd9d9c7941f6551
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)

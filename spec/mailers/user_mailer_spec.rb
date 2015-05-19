@@ -58,6 +58,34 @@ describe UserMailer, redis: true do
     end
   end
 
+  describe '#add_editor_to_editors_discussion' do
+    let(:invitee) { FactoryGirl.create(:user) }
+    let(:task) { FactoryGirl.create(:editors_discussion_task) }
+    let(:email) { UserMailer.add_editor_to_editors_discussion(invitee.id, task.id) }
+    let(:abstract) { 'Tongue twister tong t.' }
+
+    before { task.paper.update! body: "Dragon red blue green yellow." }
+
+    context 'when the paper has an abstract' do
+      it 'sends a specific email to the editor invitee' do
+        task.paper.update! abstract: abstract
+        expect(email.subject).to eq "You've been invited to the Editors' Discussion for paper \"#{task.paper.display_title}\""
+        expect(email.body).to include 'View Discussion'
+        expect(email.body).to include abstract
+      end
+    end
+
+    context 'when the paper has no abstract' do
+      it 'sends a specific email to the editor invitee' do
+        expect(email.subject).to eq "You've been invited to the Editors' Discussion for paper \"#{task.paper.display_title}\""
+        expect(email.body).to include 'View Discussion'
+        expect(email.body).to_not include abstract
+        expect(email.body).to match task.paper.body
+      end
+
+    end
+  end
+
   describe '#assigned_editor' do
     let(:invitee) { FactoryGirl.create(:user) }
     let(:task) { FactoryGirl.create(:task) }
@@ -130,8 +158,8 @@ describe UserMailer, redis: true do
     end
 
     it "tells the editor paper has been (re)submitted" do
-      expect(email.body).to include "Hello #{editor.full_name}"
-      expect(email.body).to include "#{author.full_name} has resubmitted the manuscript"
+      expect(email.body).to include "Hello #{editor.first_name}"
+      expect(email.body).to include "A new version has been submitted"
       expect(email.body).to include paper.title
       expect(email.body).to include client_paper_url(paper)
       expect(email.body).to include paper.journal.name
@@ -157,8 +185,8 @@ describe UserMailer, redis: true do
     end
 
     it "tells admin that paper has been submitted" do
-      expect(email.body).to include "Hello #{admin.full_name}"
-      expect(email.body).to include "The following Paper has been submitted:"
+      expect(email.body).to include "Hello #{admin.first_name}"
+      expect(email.body).to include "A new version has been submitted"
       expect(email.body).to include paper.abstract
       expect(email.body).to include client_paper_url(paper)
       expect(email.body).to include paper.journal.name

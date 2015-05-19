@@ -4,7 +4,7 @@ module JournalServices
     def self.call(journal, override_existing: false)
       with_noisy_errors do
         TaskType.types.each do |task_klass, details|
-          jtt = journal.journal_task_types.where(kind: task_klass).first_or_create!
+          jtt = journal.journal_task_types.find_or_initialize_by kind: task_klass
           if override_existing
             jtt.role = details[:default_role]
             jtt.title = details[:default_title]

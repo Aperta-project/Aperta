@@ -5,6 +5,7 @@ TaskCommentComponent = Ember.Component.extend
   classNameBindings: [':message-comment', 'unread']
 
   unread: false
+
   commenter: Ember.computed.alias 'comment.commenter'
   createdAt: Ember.computed.alias 'comment.createdAt'
   body: Ember.computed.alias 'comment.body'
@@ -15,14 +16,11 @@ TaskCommentComponent = Ember.Component.extend
   ).property('body')
 
   setUnreadState: ( ->
-    Ember.run =>
-      c = @get('comment')
-      user = @get('currentUser')
-      if c.isUnreadBy(user)
-        @set('unread', true)
-        c.markReadBy(user)
-      else
-        @set('unread', false)
+    Ember.run.schedule "afterRender", =>
+      commentLook = @get('comment.commentLook')
+      if Ember.isPresent(commentLook)
+        @set("unread", true)
+        commentLook.destroyRecord()
   ).on('init')
 
   highlightBody: (body, mentions) ->

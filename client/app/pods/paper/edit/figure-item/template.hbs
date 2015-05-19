@@ -5,7 +5,7 @@
       <span class="figure-label">{{#if hasPlacement}} {{unbound label}} {{else}} Not in manuscript {{/if}}
       </span>
       <div class="ve-tool-group first-button-group">
-          <a href="#" class="btn insert-into-manuscript {{if hasManuscriptSelection "enabled" "disabled"}}" {{action "insertFigure"}} >
+          <a href="#" class="btn insert-into-manuscript {{if canInsert "enabled" "disabled"}}" {{action "insertFigure"}} >
             <i class="fa fa-arrow-right fa-lg"></i>
             <i class="fa fa-file-picture-o fa-lg second"></i>
             Insert into Manuscript

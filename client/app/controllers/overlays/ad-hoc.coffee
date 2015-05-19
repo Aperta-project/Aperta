@@ -1,18 +1,19 @@
 `import Ember from 'ember'`
-`import TaskController from 'tahi/pods/task/controller'`
+`import TaskController from 'tahi/pods/paper/task/controller'`
 `import BuildsTaskTemplate from 'tahi/mixins/controllers/builds-task-template'`
 `import FileUploadMixin from 'tahi/mixins/file-upload'`
 `import RESTless from 'tahi/services/rest-less'`
 
 AdHocOverlayController = TaskController.extend BuildsTaskTemplate, FileUploadMixin,
-  needs: ['task']
+  needs: ['paper/task']
   blocks: Ember.computed.alias('model.body')
 
   imageUploadUrl: (->
     "/api/tasks/#{@get('model.id')}/attachments"
   ).property()
 
-  isNewTask: Ember.computed.alias 'controllers.task.isNewTask'
+  taskController: Ember.computed.alias 'controllers.paper/task'
+  isNewTask: Ember.computed.alias 'taskController.isNewTask'
 
   actions:
     setTitle: (title) ->

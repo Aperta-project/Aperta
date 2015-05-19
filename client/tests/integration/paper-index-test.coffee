@@ -43,5 +43,4 @@ test 'on paper.index, contributors are visible', ->
   andThen ->
     click('.contributors-link').then ->
       # using JQuery to select an element (the navbar) outside the QUnit container
-      equal $("html.control-bar-sub-nav-active").length, 1
       equal $(".control-bar-sub-items .contributors.active").is(':visible'), true

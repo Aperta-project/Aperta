@@ -1,4 +1,4 @@
-`import TaskController from 'tahi/pods/task/controller'`
+`import TaskController from 'tahi/pods/paper/task/controller'`
 
 RegisterDecisionOverlayController = TaskController.extend
   isEditable: (->

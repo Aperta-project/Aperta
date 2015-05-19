@@ -1,11 +1,7 @@
 {{partial "paper/control-bar"}}
 
-<div id="paper-container" class="clearfix {{if noTasks "sidebar-empty"}}">
-
+<div id="paper-container" class="clearfix {{if isHtmlEditor "paper-container-html" "paper-container-latex"}} {{if noTasks "sidebar-empty"}}">
   <aside class="sidebar">
-    <div {{action "showActivity" "manuscript"}} class="recent-activity-link">
-      {{partial "svg/heartbeat"}} Recent Activity
-    </div>
     <div class="task-list">
       {{partial "paper/task-list"}}
     </div>

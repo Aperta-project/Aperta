@@ -17,13 +17,26 @@
           <th>Roles</th>
         </tr>
         {{#each adminJournalUsers as |user|}}
-          {{render "admin/admin-journal-user" user}}
+          {{admin-journal-user model=user
+                               journalRoles=model.roles
+                               assignRole="assignRoleToUser"}}
         {{/each}}
       </table>
     {{/if}}
   </div>
 
-  {{render "admin/roles" model.roles}}
+  <div class="admin-section">
+    <h2 class="admin-section-title">Roles</h2>
+    <button class="button-primary button--blue admin-add-new-role-button" {{action "addRole"}}>Add New Role</button>
+    <br><br>
+    <div class="admin-roles">
+      <div class="admin-roles-header admin-role-name">Role Name</div>
+      <div class="admin-roles-header admin-role-permissions">Permission</div>
+      {{#each model.roles as |role|}}
+        {{admin-role model=role}}
+      {{/each}}
+    </div>
+  </div>
 
   <div class="admin-section">
     <h2 class="admin-section-title">Available Task Types</h2>

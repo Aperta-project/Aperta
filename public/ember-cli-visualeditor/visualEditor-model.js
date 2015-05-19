@@ -14645,6 +14645,12 @@ ve.dm.TableSelection.prototype.isFullCol = function () {
 	return this.endRow - this.startRow === matrix.getRowCount() - 1;
 };
 
+ve.dm.TableSelection.prototype.isFullTable = function () {
+	var matrix = this.getTableNode().getMatrix();
+	return (this.startCol === 0 && this.endCol === matrix.getColCount()-1 &&
+		this.startRow === 0 && this.endRow === matrix.getRowCount()-1)
+};
+
 /* Registration */
 
 ve.dm.selectionFactory.register( ve.dm.TableSelection );

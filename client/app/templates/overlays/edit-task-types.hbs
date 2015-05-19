@@ -10,7 +10,8 @@
     </div>
     <div class="journal-task-types">
       {{#each sortedTaskTypes as |journalTaskType|}}
-        {{render "admin/journal-task-type" journalTaskType}}
+        {{journal-task-type-edit model=journalTaskType
+                                 roles=model.roles}}
       {{/each}}
     </div>
   </div>

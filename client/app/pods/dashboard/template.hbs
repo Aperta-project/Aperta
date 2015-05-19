@@ -6,7 +6,7 @@
   <section class="dashboard-section">
     {{#if invitations.length}}
       <h2 class="welcome-message">
-        You have <span class="invitation-count">{{invitations.length}}</span> {{make-plural invitations.length "invitation" "invitations"}}.
+        You have <span class="invitation-count">{{pluralize invitations.length "invitation"}}</span>.
       </h2>
       <button class="button-primary button--green" {{action "viewInvitations" invitations}}>View invitations</button>
     {{/if}}
@@ -16,7 +16,7 @@
     <h2 class="welcome-message">
       Hi, {{currentUser.firstName}}.
       {{#if papers.length}}
-        You have {{model.totalPaperCount}} {{make-plural model.totalPaperCount "manuscript" "manuscripts"}}.
+        You have {{pluralize totalPaperCount "manuscript"}}.
       {{else}}
         You have no manuscripts.
       {{/if}}
@@ -26,13 +26,13 @@
     {{#if hasPapers}}
       <ul class="dashboard-submitted-papers">
         {{#each sortedPapers as |paper|}}
-          {{dashboard-link model=paper unreadComments=unreadComments}}
+          {{dashboard-link model=paper}}
         {{/each}}
       </ul>
-      {{#if paginate}}
-        <a {{action "loadMorePapers"}} href="#" class="button-secondary button--green load-more-papers">
+      {{#if canLoadMore}}
+        <button {{action "loadMorePapers"}} href="#" class="button-secondary button--green load-more-papers">
           Load More
-        </a>
+        </button>
       {{/if }}
     {{else}}
       <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>

@@ -3,19 +3,17 @@
 
 DashboardRoute = Ember.Route.extend
   model: ->
-    @store.find('dashboard').then (dashboardArray) ->
-      dashboardArray.get 'firstObject'
+    Ember.RSVP.hash
+      papers: @store.find('paper')
+      invitations: @store.find('invitation')
 
   setupController: (controller, model) ->
-    @store.find('commentLook') # don't wait to fulfill
-    controller.set('model', model)
-    papers = @store.filter 'paper', (p) ->
-      !Ember.isEmpty p.get('roles')
+    @store.find("comment-look").then (commentLooks) ->
+      controller.set("unreadComments", commentLooks)
+    controller.set("papers", @store.filter('paper', (p) -> Ember.isPresent(p.get('roles'))))
+    controller.set("invitations", @currentUser.get("invitedInvitations"))
 
-    controller.set('papers', papers)
-    controller.set('unreadComments', @store.all('commentLook'))
-    controller.set 'invitations', @store.filter 'invitation', (invitation) =>
-      invitation.get('state') is "invited" and invitation.get("inviteeId") is @currentUser.get("id")
+    @_super(controller, model)
 
   actions:
     didTransition: () ->
@@ -24,10 +22,9 @@ DashboardRoute = Ember.Route.extend
 
     rejectInvitation: (invitation) ->
       RESTless.putModel(invitation, '/reject').then -> invitation.reject()
+
     acceptInvitation: (invitation) ->
-      RESTless.putModel(invitation, '/accept').then =>
-        invitation.accept()
-        @store.find('dashboard')
+      RESTless.putModel(invitation, '/accept').then -> invitation.accept()
 
     showNewPaperOverlay: () ->
       @store.find('journal').then (journals) =>

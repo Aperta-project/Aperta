@@ -3,7 +3,7 @@ class PaperSerializer < LitePaperSerializer
   # the dashboard updates correctly when the event stream triggers
   attributes :id, :short_title, :title, :doi, :body, :submitted, :paper_type, :status, :updated_at, :editable, :editor_mode
 
-  %i(phases figures authors supporting_information_files).each do |relation|
+  %i(phases figures tables authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
   end
 

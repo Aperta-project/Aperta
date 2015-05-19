@@ -5,8 +5,8 @@ export default Ember.Controller.extend({
   overlayClass: 'overlay--fullscreen invitations-overlay',
   pendingInvitations: Ember.computed.alias('controllers.dashboard.pendingInvitations'),
   didCompleteAllInvitations: function() {
-    if(Ember.isEmpty(this.get('model'))) {
+    if(Ember.isEmpty(this.get('pendingInvitations'))) {
       this.send('closeOverlay');
     }
-  }.observes('model.@each')
+  }.observes('pendingInvitations.@each')
 });

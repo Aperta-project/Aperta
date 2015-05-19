@@ -77,10 +77,19 @@ class DashboardPage < Page
     invitation_count.empty? ? 0 : invitation_count.first.text[/\d+/].to_i
   end
 
-  def view_invitations
+  def view_invitations &block
     click_button 'View invitations'
-    yield(all('.pending-invitation').map do |invitation|
-      PendingInvitationFragment.new invitation
-    end)
+
+    if block_given?
+      block.call(pending_invitations.map do |invitation|
+        PendingInvitationFragment.new invitation
+      end)
+    else
+      pending_invitations
+    end
+  end
+
+  def pending_invitations
+    all '.pending-invitation'
   end
 end

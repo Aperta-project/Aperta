@@ -263,6 +263,10 @@ ProfileController = Ember.Controller.extend FileUploadMixin, ValidationErrorsMix
     ]
 
   actions:
+    resetPassword: ->
+      $.get("/api/users/reset").always =>
+        this.set('resetPasswordSuccess', true)
+
     hideNewAffiliationForm: ->
       @clearAllValidationErrors()
       @set 'showAffiliationForm', false

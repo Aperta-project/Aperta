@@ -2,6 +2,11 @@
 `import Utils from 'tahi/services/utils'`
 
 RESTless = Ember.Namespace.create
+  pathFor: (model) ->
+    adapter = model.get('store').adapterFor(model)
+    resourceType = model.constructor.typeKey
+    adapter.buildURL(resourceType, model.get('id'))
+
   ajaxPromise: (method, path, data) ->
     new Ember.RSVP.Promise (resolve, reject) ->
       Ember.$.ajax
@@ -25,7 +30,7 @@ RESTless = Ember.Namespace.create
     @ajaxPromise('GET', path, data)
 
   putModel: (model, path, data) ->
-    @put("#{model.path()}#{path}", data)
+    @put("#{@pathFor(model)}#{path}", data)
 
   putUpdate: (model, path, data) ->
     @putModel(model, path).then (response) ->

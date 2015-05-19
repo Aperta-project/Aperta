@@ -13,11 +13,13 @@ module Tahi
     private
 
     def client_path
-      plugin_path + "/client"
+      File.join(plugin_path, 'client')
     end
 
     def plugin_path
-      path || Rails.root.join('engines', name.underscore)
+      @plugin_path ||= (path || Rails.root.join('engines', name.underscore))
+      fail Exception, 'Cannot find plugin path!' if @plugin_path.blank?
+      @plugin_path
     end
 
     def dasherized_module_name

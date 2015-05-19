@@ -22,7 +22,7 @@ export default Ember.Controller.extend({
 
   actions: {
     loadMorePapers() {
-      this.store.find('paper', { page_number: this.get('pageNumber') + 1 }).then((papers)=> {
+      this.store.find('paper', { page_number: this.get('pageNumber') + 1 }).then(()=> {
         this.incrementProperty('pageNumber');
       });
     }

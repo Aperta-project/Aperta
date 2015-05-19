@@ -23,7 +23,7 @@
 .overlay {
   overflow: auto;
   @include position(fixed, 0px 0px 0px 0px);
-  background-color: rgba(0,0,0, 0.7);
+  background-color: rgba(0,0,0, 0.68);
   display: none;
   z-index: z('overlay', 'base');
 
@@ -51,7 +51,7 @@
 }
 
 .overlay--fullscreen {
-  background-color: rgba(255,255,255, 0.95);
+  background-color: rgba(255,255,255, 0.92);
 
   .overlay-close-x { display: block; }
 

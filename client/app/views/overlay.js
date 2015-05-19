@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import AnimateElement from 'tahi/mixins/routes/animate-element';
+import AnimateOverlay from 'tahi/mixins/animate-overlay';
 
-export default Ember.View.extend(AnimateElement, {
+export default Ember.View.extend(AnimateOverlay, {
   animateIn: function() {
     Ember.run.scheduleOnce('afterRender', this, this.animateOverlayIn);
   }.on('didInsertElement'),

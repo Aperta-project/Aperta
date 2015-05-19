@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import AnimateElement from 'tahi/mixins/routes/animate-element';
+import AnimateOverlay from 'tahi/mixins/animate-overlay';
 import RESTless from 'tahi/services/rest-less';
 
-export default Ember.Route.extend(AnimateElement, {
+export default Ember.Route.extend(AnimateOverlay, {
   setupController: function(controller, model) {
     controller.set('model', model);
     if (this.currentUser) {
@@ -45,20 +45,18 @@ export default Ember.Route.extend(AnimateElement, {
 
     closeOverlay() {
       this.flash.clearAllMessages();
-      this.animateOverlayOut().then(()=>{
-        this.disconnectOutlet({
-          outlet: 'overlay',
-          parentView: 'application'
-        });
+      this.animateOverlayOut();
+      this.disconnectOutlet({
+        outlet: 'overlay',
+        parentView: 'application'
       });
     },
 
     closeFeedbackOverlay() {
-      this.animateOverlayOut('#feedback-overlay').then(()=> {
-        this.disconnectOutlet({
-          outlet: 'feedback-overlay',
-          parentView: 'application'
-        });
+      this.animateOverlayOut('#feedback-overlay');
+      this.disconnectOutlet({
+        outlet: 'feedback-overlay',
+        parentView: 'application'
       });
     },
 

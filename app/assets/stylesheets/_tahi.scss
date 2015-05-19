@@ -171,12 +171,11 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
 
 // Main Content:
 
-.main-content {
-  @include transition(all 0.4s);
-}
-
 .navigation-visible .main-content {
   @include filter(grayscale(50%));
+}
+.overlay-open .main-content {
+  @include filter(grayscale(50%) blur(3px));
 }
 
 .main-content-cover {

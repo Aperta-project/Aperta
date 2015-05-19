@@ -23,6 +23,6 @@ class AffiliationsController < ApplicationController
   end
 
   def affiliation_params
-    params.require(:affiliation).permit(:name, :start_date, :end_date, :email)
+    params.require(:affiliation).permit(:name, :start_date, :end_date, :email, :department, :title, :country)
   end
 end

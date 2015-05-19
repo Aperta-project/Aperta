@@ -46,8 +46,7 @@ describe ParticipationsController do
       it "returns the new participation as json" do
         do_request
         expect(response.status).to eq(201)
-        json = JSON.parse(response.body)
-        expect(json["participation"]["id"]).to eq(Participation.last.id)
+        expect(res_body["participation"]["id"]).to eq(Participation.last.id)
       end
       it_behaves_like "an unauthenticated json request"
     end
@@ -85,12 +84,29 @@ describe ParticipationsController do
     authorize_policy(ParticipationsPolicy, true)
 
     let(:task) { FactoryGirl.create(:task) }
+    let(:editors_discussion_task) { FactoryGirl.create :editors_discussion_task }
     let(:new_participant) { FactoryGirl.create(:user) }
 
-    it "adds an email to the sidekiq queue if new participant is not current user" do
-      expect {
-        post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id }
-      }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+    subject :do_request do
+      post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id, task_type: 'AdHocTask' }
+    end
+
+    it "calls the task's #notify_new_participant method" do
+      expect_any_instance_of(Task).to receive :notify_new_participant
+      do_request
+    end
+
+    context "when the task type is not EditorDiscussionTask" do
+      it "adds an email to the sidekiq queue if new participant is not current user" do
+        expect { do_request }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+      end
+    end
+
+    context "when the task type is EditorsDiscussionTask" do
+      it "sends a different email to the editor participants" do
+        expect(UserMailer).to receive_message_chain(:delay, :add_editor_to_editors_discussion)
+        post :create, format: 'json', participation: { user_id: new_participant.id, task_id: editors_discussion_task.id }
+      end
     end
 
     it "does not add an email to the sidekiq queue if new participant is the current user" do

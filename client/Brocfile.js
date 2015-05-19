@@ -45,10 +45,7 @@ app.import('bower_components/bootstrap/js/tooltip.js');
 app.import('bower_components/bootstrap-datepicker/css/datepicker3.css');
 app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 
-
-if (app.env === 'production') {
-  app.import('bower_components/event-source-polyfill/eventsource.js');
-} else {
+if (app.env !== 'production') {
   app.import('bower_components/sinon/index.js');
   app.import('bower_components/ember/ember-template-compiler.js');
 }

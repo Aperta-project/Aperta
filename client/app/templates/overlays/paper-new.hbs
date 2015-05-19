@@ -12,21 +12,19 @@
 
     <div class="form-group chosen-style-override">
       {{select-2-single placeholder="Choose Journal"
+                        class="paper-new-journal-select"
+                        width="300"
                         selectionSelected="selectJournal"
                         source=journalProxies
-                        class="paper-new-journal-select"
-                        selectedData=selectedJournal
-                        prompt="Choose Journal"
-                        width="275"}}
+                        selectedData=selectedJournal }}
 
-      {{view "chosen" content=model.journal.paperTypes
-                      value=model.paperType
-                      optionValuePath="content"
-                      optionLabelPath="content"
-                      name="paper_type"
-                      prompt="Choose Paper Type"
-                      disabled=noJournalSelected
-                      class="paper-new-paper-type-select"}}
+      {{select-2-single placeholder="Choose Paper Type"
+                        class="paper-new-paper-type-select"
+                        width="300"
+                        disabled=noJournalSelected
+                        selectionSelected="selectPaperType"
+                        source=paperTypeProxies
+                        selectedData=selectedPaperType }}
     </div>
 
     <div class="overlay-action-buttons">

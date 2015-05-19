@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
 
 export default Ember.Controller.extend({
   overlayClass: 'overlay--fullscreen paper-new-overlay',
@@ -15,10 +14,11 @@ export default Ember.Controller.extend({
     });
   }.property('journal.@each'),
 
+  // Select-2 requires data to be an object with an id key :\
   paperTypeProxies: function() {
     return this.get('model.journal.paperTypes').map(function(paperType) {
       return {
-        id: Utils.generateUUID(),
+        id: paperType,
         text: paperType
       };
     });
@@ -31,6 +31,14 @@ export default Ember.Controller.extend({
     return { id:   journal.get('id'),
              text: journal.get('name') };
   }.property('model.journal'),
+
+  selectedPaperType: function() {
+    let paperType = this.get('model.paperType');
+    if(Ember.isEmpty(paperType)) { return; }
+
+    return { id:   paperType,
+             text: paperType };
+  }.property('model.paperType'),
 
   journalDidChange: function() {
     this.set('model.paperType', this.get('model.journal.paperTypes.firstObject'));
@@ -52,8 +60,7 @@ export default Ember.Controller.extend({
     },
 
     selectPaperType(paperTypeProxy) {
-      let paperType = this.get('model.journal.paperTypes').findBy('id', paperTypeProxy.id);
-      this.set('model.paperType', paperType);
+      this.set('model.paperType', paperTypeProxy.text);
     }
   }
 });

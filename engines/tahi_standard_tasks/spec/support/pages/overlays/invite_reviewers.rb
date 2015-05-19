@@ -3,7 +3,7 @@ class InviteReviewersOverlay < CardOverlay
   def paper_reviewers=(reviewers)
     reviewers.each do |reviewer|
       session.has_no_css?('#delayedSave', visible: false)
-      pick_from_select2_single(reviewer.email, reviewer.email, class: 'reviewer-select2')
+      select2 reviewer.email, css: '.reviewer-select2'
       if find('.select2-chosen').text == reviewer.email
         find('.invite-reviewer-button').click
       else

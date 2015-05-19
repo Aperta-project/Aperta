@@ -12,10 +12,6 @@ var app = new EmberApp({
 app.import('bower_components/underscore/underscore-min.js');
 app.import('bower_components/moment/moment.js');
 
-// Chosen
-// (css is imported Rails side)
-app.import('bower_components/chosen-bower/chosen.jquery.min.js');
-
 // jQuery UI
 app.import('bower_components/jquery-ui/ui/core.js');
 app.import('bower_components/jquery-ui/ui/widget.js');

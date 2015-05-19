@@ -15,6 +15,13 @@ import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 export default function startApp(attrs) {
   var application;
 
+  attrs = attrs || {};
+  attrs['PUSHER_OPTS'] = {
+    connection: {
+      // enabledTransports: []
+    }
+  };
+
   var attributes = Ember.merge({}, config.APP);
   attributes = Ember.merge(attributes, attrs); // use defaults, but you can override;
 
@@ -30,6 +37,13 @@ export default function startApp(attrs) {
   });
 
   window.currentUserData = {user: currentUser};
+
+  window.eventStreamConfig = {
+    key: "fakeAppKey123456",
+    host: "localhost",
+    port: "59198",
+    auth_endpoint_path: "/event_stream/auth"
+  };
 
   TestHelper.reopen({
     mapFind: function(modelName, json) {

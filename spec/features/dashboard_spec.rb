@@ -54,6 +54,13 @@ feature "Dashboard", js: true do
       (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
       dashboard.reload
       expect(dashboard.active_invitation_count).to eq 1
+      dashboard.view_invitations do |invitations|
+        expect(invitations.count).to eq 1
+        invitations.first.reject
+        expect(dashboard.pending_invitations.count).to eq 0
+      end
+      dashboard.reload
+      expect(dashboard.pending_invitations.count).to eq 0
     end
   end
 end

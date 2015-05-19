@@ -44,8 +44,8 @@
   {{outlet}}
 </div>
 
-{{outlet "overlay"}}
-{{outlet "feedback-overlay"}}
+<div class="overlay" id="overlay">{{outlet "overlay"}}</div>
+<div class="overlay" id="feedback-overlay">{{outlet "feedback-overlay"}}</div>
 
 {{#if showSaveStatusDiv}}
   <div id="delayedSave"></div>

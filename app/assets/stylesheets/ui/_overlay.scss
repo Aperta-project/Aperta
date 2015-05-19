@@ -24,8 +24,13 @@
   overflow: auto;
   @include position(fixed, 0px 0px 0px 0px);
   background-color: rgba(0,0,0, 0.7);
+  display: none;
   z-index: z('overlay', 'base');
-  opacity: 0;
+
+  &.overlay--loading {
+    display: block;
+    .overlay-container { min-height: 600px; }
+  }
 
   h1 {
     margin: 0 0 1em 0;

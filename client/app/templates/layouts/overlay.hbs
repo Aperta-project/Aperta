@@ -1,23 +1,21 @@
-<div class="overlay {{overlayClass}}">
-  <span class="overlay-close-x animation-scale-in" {{action "closeAction"}}>&times;</span>
-  <div class="overlay-container">
+<span class="overlay-close-x animation-scale-in" {{action "closeAction"}}>&times;</span>
+<div class="overlay-container">
 
-    {{partial "overlay-header"}}
+  {{partial "overlay-header"}}
 
-    <main class="overlay-content">
-      <div class="overlay-main-work">{{yield}}</div>
-      {{partial "discussion"}}
-    </main>
+  <main class="overlay-content">
+    <div class="overlay-main-work">{{yield}}</div>
+    {{partial "discussion"}}
+  </main>
 
-    <footer class="overlay-footer">
-      <div class="overlay-footer-content">
-        {{partial "overlay-completed-checkbox"}}
-        {{participant-selector currentParticipants=participants
-                               onRemove="removeParticipant"
-                               paperId=model.paper.id
-                               onSelect="saveNewParticipant"}}
-        <a class="button-secondary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
-      </div>
-    </footer>
-  </div>
+  <footer class="overlay-footer">
+    <div class="overlay-footer-content">
+      {{partial "overlay-completed-checkbox"}}
+      {{participant-selector currentParticipants=participants
+                             onRemove="removeParticipant"
+                             paperId=model.paper.id
+                             onSelect="saveNewParticipant"}}
+      <a class="button-secondary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
+    </div>
+  </footer>
 </div>

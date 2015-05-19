@@ -25,7 +25,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     resetPassword(user) {
-      $.get(`/admin/journal_users/${user.get('id')}/reset`).always(()=> {
+      $.get(`/api/admin/journal_users/${user.get('id')}/reset`).always(()=> {
         this.set('resetPasswordSuccess', true);
       });
     }

@@ -4,6 +4,7 @@ export default Ember.Controller.extend({
   papers: [],
   invitations: [],
   unreadComments: [],
+  pendingInvitations: Ember.computed.filterBy('invitations', 'state', 'invited'),
   hasPapers: Ember.computed.notEmpty('papers'),
   pageNumber: 1,
   relatedAtSort: ['relatedAtDate:desc'],

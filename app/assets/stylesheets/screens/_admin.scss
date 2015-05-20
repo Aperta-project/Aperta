@@ -79,13 +79,6 @@
         margin-bottom: 10px;
       }
 
-      .success {
-        color: $tahi-green;
-      }
-
-      .error {
-        color: $tahi-error-red;
-      }
     }
 
     span.save-status {
@@ -368,4 +361,12 @@
     width: 100%;
     height: 450px;
   }
+}
+
+.success {
+  color: $tahi-green;
+}
+
+.error {
+  color: $tahi-error-red;
 }

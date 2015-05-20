@@ -89,6 +89,7 @@ group :development, :test, :performance do
   gem 'pry-rails'
   gem 'foreman'
   gem 'quiet_assets'
+  gem 'generator_spec'
 end
 
 group :test do

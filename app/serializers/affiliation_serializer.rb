@@ -4,5 +4,8 @@ class AffiliationSerializer < ActiveModel::Serializer
     :name,
     :start_date,
     :end_date,
-    :email
+    :email,
+    :department,
+    :title,
+    :country
 end

@@ -22,6 +22,9 @@ export default Ember.Mixin.create({
     return (/default-journal-logo/.test(logoUrl)) ? false : logoUrl;
   }.property('model.journal.logoUrl'),
 
+  isHtmlEditor: function() {
+    return this.get('model.editorMode') === 'html';
+  }.property('model.editorMode'),
 
   // Tasks:
   assignedTasks: function() {

@@ -26,7 +26,11 @@
     {{partial "profile/affiliation-form"}}
 
     <br><br>
-    <a href="#" id="reset-password">Reset my password</a>
-  </div>
 
+    {{#if resetPasswordSuccess}}
+      <div class="success">Reset password instructions have been sent to the your email address.</div>
+    {{else}}
+      <a href="#" class="reset-password-link button-secondary button--green" {{action "resetPassword"}}>Reset password</a>
+    {{/if}}
+  </div>
 </div>

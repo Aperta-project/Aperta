@@ -103,6 +103,7 @@ Tahi::Application.routes.draw do
     end
     resources :task_templates
     resources :users, only: [:show, :index] do
+      get :reset, on: :collection
       put :update_avatar, on: :collection
     end
     resources :user_flows do

@@ -97,17 +97,36 @@ class PageFragment
   protected
   attr_reader :context
 
-  def select_from_chosen(item_text, options={})
-    session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first").mousedown()!)
-    find(".#{options[:class]}.chosen-container input[type=text]").set(item_text)
-    session.execute_script(%Q!$(".#{options[:class]}.chosen-container:first input").trigger(jQuery.Event("keyup", { keyCode: 13 }))!)
-    synchronize_content!(item_text) unless options[:skip_synchronize]
-  end
+  def select2(value, options = {})
+    raise "Must pass a hash containing 'from' or 'xpath' or 'css'" unless options.is_a?(Hash) and [:from, :xpath, :css].any? { |k| options.has_key? k }
 
-  def pick_from_select2_single(item_text, label_text, options={})
-    session.execute_script(%Q!$(".#{options[:class]}.select2-container:first input").trigger('input').val('#{item_text}').trigger('input')!)
-    session.fill_in "s2id_autogen2_search", with: item_text
-    session.find(".select2-result-label", text: label_text).click
+    if options.has_key? :xpath
+      select2_container = first(:xpath, options[:xpath])
+    elsif options.has_key? :css
+      select2_container = first(:css, options[:css])
+    else
+      select_name = options[:from]
+      select2_container = first("label", text: select_name).find(:xpath, '..').find(".select2-container")
+    end
+
+    # Open select2 field
+    if select2_container.has_selector?(".select2-choice")
+      select2_container.find(".select2-choice").click
+    else
+      select2_container.find(".select2-choices").click
+    end
+
+    if options.has_key? :search
+      find(:xpath, "//body").find(".select2-with-searchbox input.select2-input").set(value)
+      page.execute_script(%|$("input.select2-input:visible").keyup();|)
+      drop_container = ".select2-results"
+    else
+      drop_container = ".select2-drop"
+    end
+
+    [value].flatten.each do |value|
+      find(:xpath, "//body").find("#{drop_container} li.select2-result-selectable", text: value).click
+    end
   end
 
 

@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: 37707040ffd9547bc18ee7e7b8e9eea8160fe82c
+  revision: ea5e059093e4731dcaded7570cd9d9c7941f6551
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)
@@ -292,6 +292,9 @@ GEM
     foreman (0.78.0)
       thor (~> 0.19.1)
     formatador (0.2.5)
+    generator_spec (0.9.3)
+      activesupport (>= 3.0.0)
+      railties (>= 3.0.0)
     gepub (0.7.0beta1)
       nokogiri (~> 1.6.1)
       rubyzip (>= 1.1.1)
@@ -574,6 +577,7 @@ DEPENDENCIES
   faraday_middleware
   fog
   foreman
+  generator_spec
   gepub (~> 0.7.0beta1)
   heroku-deflater
   kaminari

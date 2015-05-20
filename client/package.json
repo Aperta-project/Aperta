@@ -30,7 +30,7 @@
     "ember-cli-rails-addon": "0.0.11",
     "ember-cli-uglify": "1.0.1",
     "ember-cli-visualeditor": "substance/ember-cli-visualeditor.git#440127b70d8a8e7768953dba356add832d57fe81",
-    "ember-data": "1.0.0-beta.16.1",
+    "ember-data": "1.0.0-beta.17",
     "ember-data-factory-guy": "1.0.7",
     "ember-export-application-global": "^1.0.2",
     "broccoli-merge-trees": "0.2.1",

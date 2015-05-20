@@ -15,13 +15,6 @@ import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 export default function startApp(attrs) {
   var application;
 
-  attrs = attrs || {};
-  attrs['PUSHER_OPTS'] = {
-    connection: {
-      // enabledTransports: []
-    }
-  };
-
   var attributes = Ember.merge({}, config.APP);
   attributes = Ember.merge(attributes, attrs); // use defaults, but you can override;
 

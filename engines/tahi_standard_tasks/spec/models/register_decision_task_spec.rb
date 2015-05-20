@@ -156,7 +156,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
       it "paper revise event is broadcasted" do
         event_subscriber = :not_called
         event_payload = []
-        TahiNotifier.subscribe 'paper.revised' do |_, payload|
+        TahiNotifier.subscribe 'paper.revised' do |payload|
           event_subscriber = :called
           event_payload = payload
         end

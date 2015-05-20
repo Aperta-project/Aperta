@@ -159,6 +159,7 @@ GEM
     coderay (1.1.0)
     columnize (0.9.0)
     connection_pool (2.1.2)
+    cookiejar (0.3.2)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     css_parser (1.3.6)
@@ -178,6 +179,17 @@ GEM
     dotenv (2.0.0)
     dotenv-rails (2.0.0)
       dotenv (= 2.0.0)
+    em-http-request (1.1.2)
+      addressable (>= 2.3.4)
+      cookiejar
+      em-socksify (>= 0.3)
+      eventmachine (>= 1.0.3)
+      http_parser.rb (>= 0.6.0)
+    em-socksify (0.3.0)
+      eventmachine (>= 1.0.0.beta.4)
+    em-websocket (0.5.1)
+      eventmachine (>= 0.12.9)
+      http_parser.rb (~> 0.6.0)
     ember-cli-rails (0.3.1)
       railties (>= 3.1, < 5)
       sprockets (>= 2.0)
@@ -293,6 +305,8 @@ GEM
       rack (>= 1.4.5)
     hitimes (1.2.2)
     htmlentities (4.3.3)
+    http_parser.rb (0.6.0)
+    httpclient (2.6.0.1)
     humanize (1.1.0)
     i18n (0.7.0)
     ice_cube (0.11.1)
@@ -377,6 +391,15 @@ GEM
       pry (>= 0.9.11)
     puma (2.11.1)
       rack (>= 1.1, < 2.0)
+    pusher (0.14.4)
+      httpclient (~> 2.5)
+      multi_json (~> 1.0)
+      signature (~> 0.1.8)
+    pusher-fake (1.3.0)
+      em-http-request (~> 1.1)
+      em-websocket (~> 0.5)
+      multi_json (~> 1.6)
+      thin (~> 1.5)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.1)
@@ -420,6 +443,7 @@ GEM
     redis (3.2.1)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
+    request_store (1.1.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rest-client (1.7.3)
@@ -480,6 +504,7 @@ GEM
       celluloid (>= 0.14.1)
       ice_cube (= 0.11.1)
       sidekiq (>= 3.0.0)
+    signature (0.1.8)
     simplecov (0.10.0)
       docile (~> 1.1.0)
       json (~> 1.8)
@@ -579,10 +604,13 @@ DEPENDENCIES
   pry-rescue
   pry-stack_explorer
   puma
+  pusher
+  pusher-fake
   quiet_assets
   rack-timeout
   rails (= 4.2.1)
   rails_12factor
+  request_store
   rest-client
   rspec-collection_matchers
   rspec-instafail

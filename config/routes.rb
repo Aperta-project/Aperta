@@ -13,11 +13,7 @@ Tahi::Application.routes.draw do
   # Test specific
   #
   if Rails.env.test?
-    # TODO: Remove the need for this with pusher
-    require_relative "../spec/support/stream_server/stream_server"
     require_relative "../spec/support/upload_server/upload_server"
-    get "/stream" => StreamServer
-    post "/update_stream" => StreamServer
     mount UploadServer, at: "/fake_s3/"
   elsif Rails.env.development?
     get "/styleguide" => "styleguide#index"
@@ -52,7 +48,6 @@ Tahi::Application.routes.draw do
     resources :comments, only: [:create, :show]
     resources :comment_looks, only: [:index, :destroy]
     resources :decisions, only: [:create, :update]
-    resource :event_stream, only: :show
     resources :errors, only: :create
     resources :feedback, only: :create
     resources :figures, only: [:destroy, :update] do
@@ -88,6 +83,7 @@ Tahi::Application.routes.draw do
       member do
         get "/status/:id", to: "paper_conversions#status"
         get "activity/:name", to: "papers#activity"
+        get :comment_looks
         get :export, to: "paper_conversions#export"
         put :heartbeat
         put :submit
@@ -134,6 +130,10 @@ Tahi::Application.routes.draw do
     namespace :ihat do
       resources :jobs, only: [:create]
     end
+
+    # event stream
+    #
+    post "event_stream/auth", controller: "api/event_stream", as: :auth_event_stream
 
     # s3 request policy
     #

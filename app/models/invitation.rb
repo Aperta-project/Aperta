@@ -1,5 +1,5 @@
 class Invitation < ActiveRecord::Base
-  include EventStreamNotifier
+  include EventStream::Notifiable
   include AASM
 
   belongs_to :task

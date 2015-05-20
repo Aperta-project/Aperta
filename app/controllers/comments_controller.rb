@@ -6,8 +6,7 @@ class CommentsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def create
-    add_user_as_participant unless comment.task.participants.include? current_user
-
+    ParticipationFactory.create(task: comment.task, assignee: current_user, assigner: current_user)
     respond_with comment if CommentLookManager.sync_comment(comment)
   end
 
@@ -41,9 +40,5 @@ class CommentsController < ApplicationController
 
   def enforce_policy
     authorize_action!(comment: comment)
-  end
-
-  def add_user_as_participant
-    Participation.create(user: current_user, task: comment.task)
   end
 end

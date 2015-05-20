@@ -1,44 +1,53 @@
-create_update_events = [
-  "comment:created", "comment:updated",
-  "task:created", "task:updated",
-  "paper:created", "paper:updated",
-  "author:created", "author:updated",
-  "figure:created", "figure:updated",
-  "question_attachment:created", "question_attachment:updated",
-  "invitation:updated"
-]
-
-TahiNotifier.subscribe(create_update_events) do |subscription_name, payload|
+TahiNotifier.subscribe("paper:*") do |payload|
   action = payload[:action]
   record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
 
-  EventStream.new(action, record, subscription_name).post
+  # serialize the paper down the paper channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record, excluded_socket_id: excluded_socket_id)
 end
 
-TahiNotifier.subscribe("author:destroyed", "task:destroyed", "participation:destroyed", "figure:destroyed", "invitation:destroyed") do |subscription_name, payload|
+TahiNotifier.subscribe("task:*", "author:*", "figure:*", "invitation:*", "supporting_information_file:*") do |payload|
   action = payload[:action]
   record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
 
-  EventStream.new(action, record, subscription_name).destroy
+  # serialize the respective model down the paper channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.paper, excluded_socket_id: excluded_socket_id)
 end
 
-TahiNotifier.subscribe("paper_role:created", "participation:created") do |subscription_name, payload|
+TahiNotifier.subscribe("comment:*", "participation:*") do |payload|
   action = payload[:action]
   record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
 
-  EventStream.new(action, record.paper, subscription_name).post
+  # serialize the comment or participation down the paper channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.task.paper, excluded_socket_id: excluded_socket_id)
 end
 
-TahiNotifier.subscribe("paper_role:destroyed") do |subscription_name, payload|
+TahiNotifier.subscribe("question_attachment:*") do |payload|
   action = payload[:action]
   record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
 
-  EventStream.new(action, record.paper, subscription_name).destroy_for(record.user)
+  # serialize the question_attachment down the paper channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.question.task.paper, excluded_socket_id: excluded_socket_id)
 end
 
-TahiNotifier.subscribe("supporting_information_file:created", "supporting_information_file:updated") do |subscription_name, payload|
+TahiNotifier.subscribe("paper_role:*") do |payload|
   action = payload[:action]
   record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
 
-  EventStream.new(action, record, subscription_name).post
+  # serialize the paper down the user channel
+  EventStream::Broadcaster.new(record.paper).post(action: action, channel_scope: record.user, excluded_socket_id: excluded_socket_id)
+end
+
+TahiNotifier.subscribe("comment_look:*") do |payload|
+  action = payload[:action]
+  record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
+
+  # serialize the comment_look down the user channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.user, excluded_socket_id: excluded_socket_id)
 end

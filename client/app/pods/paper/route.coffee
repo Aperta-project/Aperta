@@ -8,7 +8,17 @@ PaperRoute = AuthorizedRoute.extend
     @store.fetchById('paper', params.paper_id)
 
   setupController: (controller, model) ->
-    controller.set('model', model)
+    model.get("commentLooks")
+    @_super(controller, model)
+
+  channelName: (id) ->
+    "private-paper@#{id}"
+
+  afterModel: (model, transition) ->
+    @get('pusher').wire(@, @channelName(model.get('id')), ["created", "updated"])
+
+  deactivate: ->
+    @get('pusher').unwire(@, @channelName(@modelFor('paper').get('id')))
 
   actions:
     addContributors: ->
@@ -40,5 +50,9 @@ PaperRoute = AuthorizedRoute.extend
         into: 'application',
         outlet: 'overlay',
         controller: controller
+
+  _pusherEventsId: ->
+    # needed for the `wire` and `unwire` method to think we have `ember-pusher/bindings` mixed in
+    return @toString()
 
 `export default PaperRoute`

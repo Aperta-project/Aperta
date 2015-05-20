@@ -22,7 +22,7 @@ class ReviewerReportTaskCreator
                         role: PaperRole::REVIEWER,
                         title: "Review by #{assignee.full_name}")
 
-      ParticipationFactory.create(task, assignee)
+      ParticipationFactory.create(task: task, assignee: assignee)
     else
       existing_reviewer_report_task.first.update(completed: false)
     end

@@ -34,6 +34,7 @@ gem 'sidekiq'
 gem 'sidetiq'
 gem 'sinatra'
 gem 'active_record-acts_as'
+gem 'request_store'
 
 gem "premailer-rails"
 gem "nokogiri"
@@ -58,6 +59,7 @@ gem 'bugsnag'
 gem 'pg_search'
 gem 'aasm'
 gem 'bootstrap-sass'
+gem 'pusher'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28
@@ -102,6 +104,7 @@ group :test do
   gem 'webmock'
   gem 'thin'
   gem 'timecop'
+  gem 'pusher-fake'
 end
 
 group :staging, :performance do

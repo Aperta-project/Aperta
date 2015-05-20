@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: http://localhost:3000/jobs
+    uri: http://ihat.example.com/jobs
     body:
       encoding: ASCII-8BIT
       string: !binary |-
@@ -119,7 +119,7 @@ http_interactions:
   recorded_at: Mon, 17 Nov 2014 23:03:13 GMT
 - request:
     method: get
-    uri: http://localhost:3000/jobs/d5ee706f-a473-46ed-9777-3b7cd2905d08
+    uri: http://ihat.example.com/jobs/d5ee706f-a473-46ed-9777-3b7cd2905d08
     body:
       encoding: US-ASCII
       string: ''

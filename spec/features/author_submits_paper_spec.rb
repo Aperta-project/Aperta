@@ -9,7 +9,7 @@ feature "Paper Submission" do
   end
 
   scenario "Author creates a submission", js: true, selenium: true do
-    journal = create :journal
+    journal = FactoryGirl.create(:journal)
 
     dashboard_page = DashboardPage.new
     new_submission_page = dashboard_page.new_submission

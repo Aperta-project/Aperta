@@ -19,7 +19,7 @@ class TaskRoleUpdater
 
   def assign_related_tasks
     related_tasks.each do |task|
-      ParticipationFactory.create(task, assignee)
+      ParticipationFactory.create(task: task, assignee: assignee)
     end
   end
 

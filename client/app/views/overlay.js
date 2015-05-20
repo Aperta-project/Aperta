@@ -2,12 +2,15 @@ import Ember from 'ember';
 import AnimateOverlay from 'tahi/mixins/animate-overlay';
 
 export default Ember.View.extend(AnimateOverlay, {
-  animateIn: function() {
-    Ember.run.scheduleOnce('afterRender', this, this.animateOverlayIn);
-  }.on('didInsertElement'),
+  instant: true,
 
-  addExtraClasses: function() {
-    $('.overlay').addClass(this.get('controller.overlayClass'));
+  animateIn: function() {
+    let options = {
+      extraClasses: this.get('controller.overlayClass'),
+      instant: this.get('instant')
+    };
+
+    Ember.run.scheduleOnce('afterRender', this, this.animateOverlayIn, options);
   }.on('didInsertElement'),
 
   removeExtraClasses: function() {
@@ -15,7 +18,7 @@ export default Ember.View.extend(AnimateOverlay, {
   }.on('willDestroyElement'),
 
   setupKeyup: function() {
-    $('body').on('keyup.overlay', (e)=> {
+    $('body').on('keyup.' + this.get('elementId'), (e)=> {
       if (e.keyCode === 27 || e.which === 27) {
         if ($(e.target).is(':not(input, textarea)')) {
           this.get('controller').send('closeAction');
@@ -25,6 +28,6 @@ export default Ember.View.extend(AnimateOverlay, {
   }.on('didInsertElement'),
 
   tearDownKeyup: function() {
-    $('body').off('keyup.overlay');
+    $('body').off('keyup.' + this.get('elementId'));
   }.on('willDestroyElement')
 });

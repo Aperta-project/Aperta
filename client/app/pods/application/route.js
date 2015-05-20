@@ -53,10 +53,11 @@ export default Ember.Route.extend(AnimateOverlay, {
     },
 
     closeFeedbackOverlay() {
-      this.animateOverlayOut('#feedback-overlay');
-      this.disconnectOutlet({
-        outlet: 'feedback-overlay',
-        parentView: 'application'
+      this.animateOverlayOut({selector: '#feedback-overlay'}).then(()=> {
+        this.disconnectOutlet({
+          outlet: 'feedback-overlay',
+          parentView: 'application'
+        });
       });
     },
 

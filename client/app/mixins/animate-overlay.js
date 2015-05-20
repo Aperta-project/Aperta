@@ -1,46 +1,76 @@
 import Ember from 'ember';
 
-export default Ember.Mixin.create({
-  out: function(selector, speed) {
-    let defer = new Ember.RSVP.defer();
-    $(selector).hide();
+let animationEventName = function() {
+  var a;
+  var el = document.createElement('fakeelement');
+  var animations = {
+    'animation': 'animationend',
+    'OAnimation': 'oanimationend',
+    'MSAnimation': 'msAnimationEnd',
+    'WebkitAnimation': 'webkitAnimationEnd'
+  };
 
-    if(Ember.testing) {
-      defer.resolve();
-      return { then(hollaback) { hollaback.apply(this); } };
+  for(a in animations){
+    if(el.style[a] !== undefined){
+      return animations[a];
+    }
+  }
+};
+
+$.fn.redraw = function() {
+  return $(this).each(function() {
+    return this.offsetHeight;
+  });
+};
+
+export default Ember.Mixin.create({
+  out: function(options) {
+    $(options.selector).hide().attr('class', 'overlay');
+
+    return {
+      then(callback) {
+        if(callback) { callback(); }
+      }
+    };
+  },
+
+  'in': function(options) {
+    let animationName = animationEventName();
+    let overlayElement = $(options.selector).hide();
+
+    if(options.extraClasses) {
+      overlayElement.addClass(options.extraClasses);
     }
 
-    Ember.run.later(defer, function() {
-      defer.resolve();
-    }, speed);
+    if(options.instant || Ember.testing || !animationName) {
+      overlayElement.show().addClass('overlay--visible');
 
-    return defer.promise;
+      return {
+        then(callback) {
+          if(callback) { callback();}
+        }
+      };
+    }
+
+    return new Ember.RSVP.Promise(function(resolve) {
+      overlayElement.show()
+                    .redraw()
+                    .addClass('animation-fade-in')
+                    .one(animationName, function() { resolve(); });
+    });
   },
 
-  'in': function(selector, speed) {
-    let defer = new Ember.RSVP.defer();
-    $(selector).show();
+  animateOverlayIn: function(options={}) {
+    if (!options.selector) { options.selector = '#overlay'; }
 
-    Ember.run.later(defer, function() {
-      defer.resolve();
-    }, speed);
+    Ember.run.later(function() { $('html').addClass('overlay-open'); }, 30);
 
-    return defer.promise;
+    return this['in'](options);
   },
 
-  animateOverlayIn: function(selector) {
-    if (selector == null) { selector = '#overlay'; }
-
-    Ember.run.later(function() {
-      $('html').addClass('overlay-open');
-    }, 30);
-
-    return this['in'](selector, 150);
-  },
-
-  animateOverlayOut: function(selector) {
-    if (selector == null) { selector = '#overlay'; }
+  animateOverlayOut: function(options={}) {
+    if (!options.selector) { options.selector = '#overlay'; }
     $('html').removeClass('overlay-open');
-    return this.out(selector, 150);
+    return this.out(options);
   }
 });

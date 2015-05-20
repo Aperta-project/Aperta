@@ -11,6 +11,7 @@ PusherInitializer =
         wsHost: window.eventStreamConfig.host
         wsPort: window.eventStreamConfig.port
         authEndpoint: window.eventStreamConfig.auth_endpoint_path
+        encrypted: false
         disableStats: true
         enabledTransports: ['ws']
 

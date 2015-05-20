@@ -5,6 +5,11 @@ export default Ember.Mixin.create({
     let defer = new Ember.RSVP.defer();
     $(selector).hide();
 
+    if(Ember.testing) {
+      defer.resolve();
+      return { then(hollaback) { hollaback.apply(this); } };
+    }
+
     Ember.run.later(defer, function() {
       defer.resolve();
     }, speed);
@@ -12,7 +17,7 @@ export default Ember.Mixin.create({
     return defer.promise;
   },
 
-  "in": function(selector, speed) {
+  'in': function(selector, speed) {
     let defer = new Ember.RSVP.defer();
     $(selector).show();
 

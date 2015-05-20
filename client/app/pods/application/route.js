@@ -13,9 +13,8 @@ export default Ember.Route.extend(AnimateOverlay, {
 
   actions: {
     willTransition(transition) {
-      let appController, currentRouteController;
-      appController = this.controllerFor('application');
-      currentRouteController = this.controllerFor(appController.get('currentRouteName'));
+      let appController = this.controllerFor('application');
+      let currentRouteController = this.controllerFor(appController.get('currentRouteName'));
       if (currentRouteController.get('isUploading')) {
         if (confirm('You are uploading. Are you sure you want abort uploading?')) {
           currentRouteController.send('cancelUploads');
@@ -45,10 +44,11 @@ export default Ember.Route.extend(AnimateOverlay, {
 
     closeOverlay() {
       this.flash.clearAllMessages();
-      this.animateOverlayOut();
-      this.disconnectOutlet({
-        outlet: 'overlay',
-        parentView: 'application'
+      this.animateOverlayOut().then(()=> {
+        this.disconnectOutlet({
+          outlet: 'overlay',
+          parentView: 'application'
+        });
       });
     },
 

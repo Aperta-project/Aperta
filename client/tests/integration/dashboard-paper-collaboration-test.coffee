@@ -3,7 +3,6 @@
 `import { module, test } from 'qunit'`
 `import FactoryGuy from 'ember-data-factory-guy'`
 `import TestHelper from "ember-data-factory-guy/factory-guy-test-helper"`
-`import EventStream from "tahi/services/event-stream"`
 
 App = null
 
@@ -67,38 +66,6 @@ test 'The dashboard shows paginated papers', ->
     andThen ->
       equal(find('.dashboard-submitted-papers .dashboard-paper-title').length, perPage + extra, "paginated result count")
       ok(!find('.load-more-papers').length, "no longer sees load more button")
-
-test 'Adding and removing papers via the event stream', ->
-  Ember.run ->
-    paperCount = 1
-    TestHelper.handleFindAll("comment-look", 0)
-    TestHelper.handleFindAll("invitation", 0)
-    TestHelper.handleFindAll("paper", paperCount, "withRoles")
-
-    visit('/')
-
-    [es, store] = setupEventStream()
-
-    andThen ->
-      Ember.run ->
-        data = Ember.merge({ paper: FactoryGuy.build("paper", "withRoles")}, { action: "created" })
-        es.msgResponse(data)
-
-        andThen ->
-          equal find('.dashboard-submitted-papers .dashboard-paper-title').length, paperCount+1, "paper added via event stream"
-
-    andThen ->
-      Ember.run ->
-        paper = store.all("paper").objectAt(0)
-        data = {
-          action: "destroyed",
-          type: "papers",
-          ids: [paper.get("id")]
-        }
-        es.msgResponse(data)
-
-        andThen ->
-          equal find('.dashboard-submitted-papers .dashboard-paper-title').length, paperCount, "paper removed via event stream"
 
 test 'User can use the feedback form', ->
   Ember.run ->

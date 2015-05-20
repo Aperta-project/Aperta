@@ -1,6 +1,6 @@
 module PlosAuthors
   class PlosAuthor < ActiveRecord::Base
-    include EventStreamNotifier
+  include EventStream::Notifiable
 
     acts_as :author, dependent: :destroy
     delegate :completed?, to: :plos_authors_task, prefix: :task, allow_nil: true
@@ -19,8 +19,8 @@ module PlosAuthors
       where(paper_id: paper)
     end
 
-    def event_stream_serializer(user)
-      PlosAuthorsSerializer.new(plos_authors_task.plos_authors, user: user, root: :plos_authors)
+    def event_stream_serializer(user: nil)
+      PlosAuthorsSerializer.new(plos_authors_task.plos_authors, root: :plos_authors)
     end
   end
 end

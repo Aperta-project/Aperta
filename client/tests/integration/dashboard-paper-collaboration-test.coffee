@@ -3,7 +3,6 @@
 `import { module, test } from 'qunit'`
 `import FactoryGuy from 'ember-data-factory-guy'`
 `import TestHelper from "ember-data-factory-guy/factory-guy-test-helper"`
-`import EventStream from "tahi/services/event-stream"`
 
 App = null
 

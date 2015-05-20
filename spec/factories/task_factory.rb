@@ -141,6 +141,10 @@ class InvitableTask < Task
     :rescinded
   end
 
+  def active_model_serializer
+    ::TaskSerializer
+  end
+
   def invitee_role
     'test role'
   end

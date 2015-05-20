@@ -55,7 +55,7 @@ FactoryGirl.define do
       end
 
       after(:create) do |paper, evaluator|
-        create_list(:phase, evaluator.phases_count, paper: paper)
+        paper.phases << FactoryGirl.build_list(:phase, evaluator.phases_count)
       end
     end
 
@@ -71,6 +71,7 @@ FactoryGirl.define do
         evaluator.task_params[:type] ||= "Task"
 
         phase.tasks.create(evaluator.task_params)
+        paper.reload
       end
     end
   end

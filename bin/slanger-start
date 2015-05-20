@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+require "bundler"
+require "dotenv"
+
+SLANGER_DIR = "../tahi-slanger"
+
+def validate_slanger!
+  unless Dir.exist?(SLANGER_DIR)
+    raise "The slanger repository was expected, but not found here: #{SLANGER_DIR}.  Please clone this repository first."
+  end
+end
+
+def validate_event_stream_config!
+  ["EVENT_STREAM_KEY", "EVENT_STREAM_SECRET"].each do |required|
+    if ENV[required].nil?
+      raise "#{required} was not set in your .env.#{ENV['RAILS_ENV']} and is required to start slanger."
+    end
+  end
+end
+
+def rails_env
+  @rails_env ||= ENV.fetch("RAILS_ENV")
+end
+
+Bundler.with_clean_env do
+  Dotenv.load(".env.#{rails_env}")
+  validate_slanger!
+  validate_event_stream_config!
+  verbose = "-v" if rails_env == "development"
+  Dir.chdir(SLANGER_DIR) do
+    exec("bin/slanger --app_key #{ENV.fetch("EVENT_STREAM_KEY")} --secret #{ENV.fetch("EVENT_STREAM_SECRET")} #{verbose}")
+  end
+end

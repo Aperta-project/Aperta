@@ -15,7 +15,6 @@ feature "Event streaming", js: true, selenium: true do
   context "on the workflow page" do
     before do
       click_link(paper.title)
-      edit_paper = EditPaperPage.new
       click_link("Workflow")
     end
 
@@ -39,7 +38,6 @@ feature "Event streaming", js: true, selenium: true do
 
     describe "updating completion status" do
       scenario "on the overlay" do
-        # completion of tasks
         edit_paper = EditPaperPage.new
         edit_paper.view_card('Upload Manuscript')
         expect(page).to have_css("#task_completed:not(:checked)")
@@ -47,13 +45,6 @@ feature "Event streaming", js: true, selenium: true do
         upload_task.save
         expect(page).to have_css("#task_completed:checked")
         expect(page).to have_css(".card--completed", count: 1)
-
-        # commenting on a task
-        upload_task.comments.create(body: "This is my comment", commenter_id: create(:user).id)
-        CommentLookManager.sync_task(upload_task)
-        within '.message-comments' do
-          expect(page).to have_css('.message-comment.unread', text: "This is my comment")
-        end
       end
     end
   end
@@ -79,5 +70,23 @@ feature "Event streaming", js: true, selenium: true do
       participant_paper.paper_roles.participants.destroy_all
       expect(page).to_not have_text(participant_paper.title)
     end
+  end
+
+  context "on a task" do
+    before do
+      upload_task.participants.destroy_all
+    end
+
+    scenario "commenter is added as a participant" do
+      click_link paper.title
+      edit_paper_page = EditPaperPage.new
+      edit_paper_page.view_card(upload_task.title) do |card|
+        card.post_message 'Hello'
+        expect(card).to have_participants(author)
+        expect(card).to have_last_comment_posted_by(author)
+      end
+    end
+
+    #TODO Add test to check unread status of comment
   end
 end

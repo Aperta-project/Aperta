@@ -18,12 +18,6 @@ ApplicationStore = DS.Store.extend
     if matchingTask
       matchingTask.idToRecord[id]
 
-  # resume the event stream after saving
-  didSaveRecord: (record, data) ->
-    @_super(record, data)
-    es = @container.lookup('eventstream:main')
-    es.play()
-
   # all task classes including subclasses
   allTaskClasses: ->
     Ember.keys(@typeMaps).reduce((memo, key) =>

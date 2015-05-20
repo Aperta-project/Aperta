@@ -1,15 +1,26 @@
 import Ember from 'ember';
 import AnimateOverlay from 'tahi/mixins/animate-overlay';
 import RESTless from 'tahi/services/rest-less';
+import Utils from 'tahi/services/utils';
 
 export default Ember.Route.extend(AnimateOverlay, {
   setupController: function(controller, model) {
     controller.set('model', model);
     if (this.currentUser) {
+      // subscribe to user and system channels
+      let userChannelName = `private-user@${ this.currentUser.get('id') }`;
+      let pusher = this.get('pusher');
+      pusher.wire(this, userChannelName, ["created", "updated"]);
+      pusher.wire(this, "system", ["destroyed"]);
+
       RESTless.authorize(controller, '/api/admin/journals/authorization', 'canViewAdminLinks');
       RESTless.authorize(controller, '/api/user_flows/authorization', 'canViewFlowManagerLink');
     }
   },
+
+  applicationSerializer: Ember.computed(function() {
+    return this.get('container').lookup("serializer:application");
+  }),
 
   actions: {
     willTransition(transition) {
@@ -65,10 +76,6 @@ export default Ember.Route.extend(AnimateOverlay, {
       this.send('closeOverlay');
     },
 
-    addPaperToEventStream(paper) {
-      this.eventStream.addEventListener(paper.get('eventName'));
-    },
-
     editableDidChange() { return null; },
 
     feedback() {
@@ -77,6 +84,40 @@ export default Ember.Route.extend(AnimateOverlay, {
         outlet: 'feedback-overlay',
         controller: 'overlays/feedback'
       });
+    },
+
+    created(payload) {
+      let description = "Pusher: created";
+      Utils.debug(description, payload);
+      this.store.pushPayload(payload);
+    },
+
+    updated(payload) {
+      let description = "Pusher: updated";
+      Utils.debug(description, payload);
+      this.store.pushPayload(payload);
+    },
+
+    destroyed(payload) {
+      let description = "Pusher: destroyed";
+      Utils.debug(description, payload);
+      let type = this.get('applicationSerializer').typeForRoot(payload.type);
+      payload.ids.forEach((id) => {
+        let record;
+        if (type === "task") {
+          record = this.store.findTask(id);
+        } else {
+          record = this.store.getById(type, id);
+        }
+        if (record) {
+          record.unloadRecord();
+        }
+      });
     }
+  },
+
+  _pusherEventsId() {
+    // needed for the `wire` and `unwire` method to think we have `ember-pusher/bindings` mixed in
+    return this.toString();
   }
 });

@@ -7,6 +7,28 @@ export default AuthorizedRoute.extend({
     return this.store.fetchById('paper', params.paper_id);
   },
 
+  setupController: function(controller, model) {
+    model.get('commentLooks');
+    this._super(controller, model);
+  },
+
+  channelName: function(id) {
+    return 'private-paper@' + id;
+  },
+
+  afterModel: function(model, transition) {
+    this.get('pusher').wire(this, this.channelName(model.get('id')), ['created', 'updated']);
+  },
+
+  deactivate: function() {
+    this.get('pusher').unwire(this, this.channelName(this.modelFor('paper').get('id')));
+  }
+
+  _pusherEventsId: function() {
+    // needed for the `wire` and `unwire` method to think we have `ember-pusher/bindings` mixed in
+    return this.toString();
+  },
+
   actions: {
     addContributors() {
       let controller     = this.controllerFor('overlays/showCollaborators');

@@ -31,6 +31,13 @@ export default function startApp(attrs) {
 
   window.currentUserData = {user: currentUser};
 
+  window.eventStreamConfig = {
+    key: "fakeAppKey123456",
+    host: "localhost",
+    port: "59198",
+    auth_endpoint_path: "/event_stream/auth"
+  };
+
   TestHelper.reopen({
     mapFind: function(modelName, json) {
       var responseJson = {};

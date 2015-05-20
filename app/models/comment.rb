@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  include EventStreamNotifier
+  include EventStream::Notifiable
 
   belongs_to :task, inverse_of: :comments
   belongs_to :commenter, class_name: 'User', inverse_of: :comments
@@ -18,7 +18,7 @@ class Comment < ActiveRecord::Base
 
   def notify_mentioned_people
     people_mentioned.each do |mentionee|
-      UserMailer.mention_collaborator(self, mentionee).deliver_later
+      UserMailer.mention_collaborator(self.id, mentionee.id).deliver_later
     end
   end
 

@@ -14,6 +14,8 @@ module.exports = function(environment) {
       }
     },
     APP: {
+      // pusher configuration is set in pusher-override.coffee
+
       iHatExportFormats: ['docx']
     },
 

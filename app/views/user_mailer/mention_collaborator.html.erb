@@ -3,7 +3,7 @@ Hi <%= @commentee.full_name %>,
 </p>
 
 <p>
-You've been mentioned by <%= @commenter.full_name %> on <%= @comment.task.paper.title %>'s <%= @comment.task.title %>:
+You've been mentioned by <%= @commenter.full_name %> on <%= @paper.title %>'s <%= @task.title %>:
 </p>
 
 <p>
@@ -12,7 +12,7 @@ You've been mentioned by <%= @commenter.full_name %> on <%= @comment.task.paper.
 
 
 <p>
-View the card here: <%= client_paper_task_url(@comment.task.paper, @comment.task) %>.
+View the card here: <%= client_paper_task_url(@paper, @task) %>.
 </p>
 
 <p>

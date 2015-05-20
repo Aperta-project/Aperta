@@ -51,7 +51,6 @@ export default Ember.Controller.extend(AnimateOverlay, {
   actions: {
     createNewPaper() {
       this.get('model').save().then((paper)=> {
-        this.send('addPaperToEventStream', paper);
         this.animateOverlayOut().then(()=> {
           this.transitionToRoute('paper.edit', paper);
         });

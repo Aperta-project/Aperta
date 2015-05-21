@@ -42,7 +42,7 @@ export default Ember.Mixin.create({
       overlayElement.addClass(options.extraClasses);
     }
 
-    if(options.instant || Ember.testing || !animationName) {
+    if(options.skipAnimation || Ember.testing || !animationName) {
       overlayElement.show().addClass('overlay--visible');
 
       return {

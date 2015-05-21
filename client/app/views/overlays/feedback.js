@@ -4,12 +4,12 @@ import OverlayView from 'tahi/views/overlay';
 export default OverlayView.extend({
   templateName: 'overlays/feedback',
   layoutName: 'layouts/blank-overlay',
-  instant: false,
+  skipAnimation: false,
 
   animateIn: function() {
     let options = {
       selector: '#feedback-overlay',
-      instant: this.get('instant'),
+      skipAnimation: this.get('skipAnimation'),
       extraClasses: this.get('controller.overlayClass')
     };
 

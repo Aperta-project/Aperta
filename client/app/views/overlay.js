@@ -10,7 +10,10 @@ export default Ember.View.extend(AnimateOverlay, {
       instant: this.get('instant')
     };
 
-    Ember.run.scheduleOnce('afterRender', this, this.animateOverlayIn, options);
+    Ember.run.scheduleOnce('afterRender', this, function() {
+      this.$().addClass('animation-fade-in');
+      this.animateOverlayIn(options);
+    });
   }.on('didInsertElement'),
 
   removeExtraClasses: function() {

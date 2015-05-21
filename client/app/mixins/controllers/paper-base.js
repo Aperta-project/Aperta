@@ -32,8 +32,7 @@ export default Ember.Mixin.create({
     var that = this;
 
     return this.get('model.tasks').filter((task) => {
-      return task.get('participations').mapBy('user').contains(this.currentUser) &&
-             that.get('model.collaborations').mapBy('user').contains(this.currentUser);
+      return task.get('participations').mapBy('user').contains(that.get('currentUser'));
     }).filter(function(t) {
       return !authorTasks.contains(t);
     });

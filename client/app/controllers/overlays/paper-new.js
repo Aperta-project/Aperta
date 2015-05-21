@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import AnimateOverlay from 'tahi/mixins/animate-overlay';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(AnimateOverlay, {
   overlayClass: 'overlay--fullscreen paper-new-overlay',
   journals: null,
   noJournalSelected: Ember.computed.not('model.journal'),
@@ -50,7 +51,9 @@ export default Ember.Controller.extend({
   actions: {
     createNewPaper() {
       this.get('model').save().then((paper)=> {
-        this.transitionToRoute('paper.edit', paper);
+        this.animateOverlayOut().then(()=> {
+          this.transitionToRoute('paper.edit', paper);
+        });
       }, (response)=> {
         this.flash.displayErrorMessagesFromResponse(response);
       });

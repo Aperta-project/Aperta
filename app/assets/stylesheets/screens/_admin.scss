@@ -67,27 +67,6 @@
     button { float: right; }
   }
 
-  .admin-modal {
-    .reset-password {
-      clear: both;
-      margin-left: 33.33333333333333%;
-      padding-top: 20px;
-      padding-left: 15px;
-
-      .reset-password-link {
-        display: inline-block;
-        margin-bottom: 10px;
-      }
-
-    }
-
-    span.save-status {
-      color: $tahi-blue;
-      vertical-align: -6px;
-      font-style: italic;
-    }
-  }
-
   .journals {
     padding: 0;
   }
@@ -369,4 +348,25 @@
 
 .error {
   color: $tahi-error-red;
+}
+
+.user-detail-overlay {
+  .reset-password {
+    clear: both;
+    margin-left: 33.33333333333333%;
+    padding-top: 20px;
+    padding-left: 15px;
+
+    .reset-password-link {
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+  }
+
+  span.save-status {
+    color: $tahi-blue;
+    vertical-align: -6px;
+    font-style: italic;
+  }
 }

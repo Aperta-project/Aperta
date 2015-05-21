@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import AnimateElement from 'tahi/mixins/routes/animate-element';
+import AnimateOverlay from 'tahi/mixins/animate-overlay';
 import RESTless from 'tahi/services/rest-less';
 import Utils from 'tahi/services/utils';
 
-export default Ember.Route.extend(AnimateElement, {
+export default Ember.Route.extend(AnimateOverlay, {
   setupController: function(controller, model) {
     controller.set('model', model);
     if (this.currentUser) {
@@ -24,9 +24,8 @@ export default Ember.Route.extend(AnimateElement, {
 
   actions: {
     willTransition(transition) {
-      let appController, currentRouteController;
-      appController = this.controllerFor('application');
-      currentRouteController = this.controllerFor(appController.get('currentRouteName'));
+      let appController = this.controllerFor('application');
+      let currentRouteController = this.controllerFor(appController.get('currentRouteName'));
       if (currentRouteController.get('isUploading')) {
         if (confirm('You are uploading. Are you sure you want abort uploading?')) {
           currentRouteController.send('cancelUploads');
@@ -56,16 +55,20 @@ export default Ember.Route.extend(AnimateElement, {
 
     closeOverlay() {
       this.flash.clearAllMessages();
-      this.disconnectOutlet({
-        outlet: 'overlay',
-        parentView: 'application'
+      this.animateOverlayOut().then(()=> {
+        this.disconnectOutlet({
+          outlet: 'overlay',
+          parentView: 'application'
+        });
       });
     },
 
     closeFeedbackOverlay() {
-      this.disconnectOutlet({
-        outlet: 'feedback-overlay',
-        parentView: 'application'
+      this.animateOverlayOut({selector: '#feedback-overlay'}).then(()=> {
+        this.disconnectOutlet({
+          outlet: 'feedback-overlay',
+          parentView: 'application'
+        });
       });
     },
 

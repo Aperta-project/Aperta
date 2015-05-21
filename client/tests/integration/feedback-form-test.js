@@ -40,13 +40,13 @@ test('clicking the feedback button sends feedback to the backend', function(asse
   });
 });
 
-test('Regression: Opening new paper overlay then feedback overlay shows feedback overflay', function(assert) {
+test('Regression: Opening new paper overlay then feedback overlay shows feedback overlay', function(assert) {
   visit('/');
   click('.button-primary:contains(Create New Submission)');
   click('.overlay-close-x');
   click('.navigation-toggle');
   click('.navigation-item-feedback');
   andThen(function() {
-    assert.ok(Ember.isPresent(find('.overlay-container.full.feedback')), 'Feeback overlay visible');
+    assert.ok(Ember.isPresent(find('.feedback-overlay')), 'Feeback overlay visible');
   });
 });

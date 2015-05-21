@@ -2,6 +2,7 @@
 
 PaperSubmitOverlayView = OverlayView.extend
   templateName: 'overlays/paper-submit'
-  layoutName: 'layouts/blank-overlay'
+  layoutName: 'layouts/blank-overlay',
+  instant: false
 
 `export default PaperSubmitOverlayView`

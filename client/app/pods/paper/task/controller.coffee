@@ -2,8 +2,9 @@
 `import SavesDelayed from 'tahi/mixins/controllers/saves-delayed'`
 `import ControllerParticipants from 'tahi/mixins/controllers/controller-participants'`
 `import ValidationErrorsMixin from 'tahi/mixins/validation-errors'`
+`import AnimateOverlay from 'tahi/mixins/animate-overlay';`
 
-TaskController = Ember.Controller.extend SavesDelayed, ControllerParticipants, ValidationErrorsMixin, Ember.Evented,
+TaskController = Ember.Controller.extend AnimateOverlay, SavesDelayed, ControllerParticipants, ValidationErrorsMixin, Ember.Evented,
   queryParams: ['isNewTask']
   isNewTask: false
   needs: ['application']
@@ -39,7 +40,8 @@ TaskController = Ember.Controller.extend SavesDelayed, ControllerParticipants, V
   actions:
 
     closeAction: ->
-      @send(@get('onClose'))
+      @animateOverlayOut().then =>
+        @send(@get('onClose'))
 
     redirect: ->
       @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect.lastObject'))

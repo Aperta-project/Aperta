@@ -66,35 +66,3 @@ test 'The dashboard shows paginated papers', ->
     andThen ->
       equal(find('.dashboard-submitted-papers .dashboard-paper-title').length, perPage + extra, "paginated result count")
       ok(!find('.load-more-papers').length, "no longer sees load more button")
-
-test 'User can use the feedback form', ->
-  Ember.run ->
-    TestHelper.handleFindAll("comment-look", 0)
-    TestHelper.handleFindAll("invitation", 0)
-    TestHelper.handleFindAll("paper", 0, "withRoles")
-    $.mockjax(type: "POST", url: "/api/feedback", status: 200, responseText: {})
-
-    visit '/'
-    click '.navigation-toggle'
-    click '.navigation-item-feedback'
-    fillIn '.feedback-overlay-remarks', 'all my feedback'
-
-    andThen ->
-      click '.overlay-footer-content .button-primary'
-
-      andThen ->
-        ok(find(".feedback-overlay-thanks").length, "User sees thank you message")
-        click(".overlay-close-x")
-
-    andThen ->
-      visit '/'
-      click '.navigation-toggle'
-      click '.navigation-item-feedback'
-
-      andThen ->
-        ok(find(".overlay-footer-content .button-primary:contains('Send Feedback')").length, "user sees feedback form")
-
-      keyEvent '.overlay', 'keyup', 27
-
-      andThen ->
-        ok(!find(".overlay-footer-content .button-primary:contains('Send Feedback')").length, "user dismisses feedback form")

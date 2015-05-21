@@ -3,8 +3,6 @@
 PaperNewOverlayView = OverlayView.extend
   templateName: 'overlays/paper-new'
   layoutName: 'layouts/blank-overlay'
-
-  didInsertElement: ->
-    $('#paper-short-title').focus()
+  instant: false
 
 `export default PaperNewOverlayView`

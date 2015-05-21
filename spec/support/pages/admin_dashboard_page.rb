@@ -84,7 +84,7 @@ class UserRowInSearch < PageFragment
   def edit_user_details
     click
     synchronize_content! "User Details"
-    EditModal.new(context.find('.admin-modal'), context: context)
+    EditModal.new(context.find('.user-detail-overlay'), context: context)
   end
 end
 

@@ -82,15 +82,14 @@ PaperEditRoute = AuthorizedRoute.extend
 
   closeOverlay: ->
     controller = @controllerFor(@get('editorLookup'))
-    @disconnectOutlet
-      outlet: 'overlay'
-      parentView: 'application'
     controller.set('hasOverlay', false)
 
     # Yuck:
     if @modelFor('paper').get('editorMode') is 'html'
       controller.connectEditor()
       controller.get('editor').unfreeze()
+
+    return true
 
   actions:
     viewCard: (task) ->

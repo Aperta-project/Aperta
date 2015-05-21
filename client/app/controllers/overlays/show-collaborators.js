@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  overlayClass: 'overlay--fullscreen',
+  overlayClass: 'overlay--fullscreen show-collaborators-overlay',
   availableCollaborators: Ember.computed.setDiff('allUsers', 'collaborators'),
 
   formattedCollaborators: function() {

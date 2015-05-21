@@ -6,14 +6,16 @@ let Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('dashboard', { path: '/' });
+  this.route('dashboard', { path: '/' }, function() {});
 
   this.route('flow_manager');
 
   this.resource('paper', { path: '/papers/:paper_id' }, function() {
     this.route('edit');
     this.route('workflow');
-    this.route('task', { path: '/tasks/:task_id' });
+    this.route('task', { path: '/tasks' }, function() {
+      this.route('index', { path: '/:task_id' });
+    });
   });
 
   this.route('profile', { path: '/profile' });

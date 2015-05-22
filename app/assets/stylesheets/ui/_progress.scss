@@ -1,0 +1,10 @@
+.progress {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  margin-top: 40px;
+
+  .progress-bar {
+    background: $tahi-green;
+  }
+}

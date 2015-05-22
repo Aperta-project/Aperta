@@ -33,26 +33,15 @@ app.import('bower_components/select2/select2.css');
 var select2Assets = pickFiles('bower_components/select2', {
   srcDir: '/',
   files: ['*.gif', '*.png'],
-  destDir: '/assets'
+  destDir: 'assets'
 });
 
 // Bootstrap
-// (css is imported Rails side)
 app.import('bower_components/bootstrap/js/collapse.js');
 app.import('bower_components/bootstrap/js/dropdown.js');
 app.import('bower_components/bootstrap/js/tooltip.js');
 app.import('bower_components/bootstrap-datepicker/css/datepicker3.css');
 app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
-
-// Font-Awesome
-app.import("bower_components/font-awesome/css/font-awesome.css");
-app.import("bower_components/font-awesome/fonts/fontawesome-webfont.eot", { destDir: "fonts" });
-app.import("bower_components/font-awesome/fonts/fontawesome-webfont.svg", { destDir: "fonts" });
-app.import("bower_components/font-awesome/fonts/fontawesome-webfont.ttf", { destDir: "fonts" });
-app.import("bower_components/font-awesome/fonts/fontawesome-webfont.woff", { destDir: "fonts" });
-app.import("bower_components/font-awesome/fonts/fontawesome-webfont.woff2", { destDir: "fonts" });
-app.import("bower_components/font-awesome/fonts/FontAwesome.otf", { destDir: "fonts" });
-
 
 if (app.env === 'production') {
   app.import('bower_components/event-source-polyfill/eventsource.js');

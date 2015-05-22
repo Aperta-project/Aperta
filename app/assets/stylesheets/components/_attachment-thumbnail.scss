@@ -207,13 +207,12 @@
   &:hover { min-height: 200px; }
 
   .progress-text {
-    margin-top: 100px;
+    margin-top: 70px;
   }
 
   .progress-spinner {
-    &:after {
-      left: 45%;
-    }
+    position: relative;
+    top: 35px;
   }
 }
 

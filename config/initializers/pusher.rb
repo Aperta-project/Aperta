@@ -8,7 +8,7 @@ if TahiPusher::Config.enabled?
 
   # SSL enabled for non-development
   unless ["development", "test"].include?(Rails.env)
-    Pusher.encrypted = ENV.fetch("PUSHER_ENCRYPTED")
+    Pusher.encrypted = true
     Pusher.default_client.sync_http_client.ssl_config.verify_mode = OpenSSL::SSL::VERIFY_NONE
   end
 end

@@ -29,6 +29,8 @@ gem 'devise'
 gem 'bourbon'
 gem 'kaminari'
 
+gem "compass"
+gem 'compass-rails', github: 'Compass/compass-rails', branch: '2-0-stable'
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'
 gem 'sidetiq'
@@ -57,7 +59,7 @@ gem 'migration_data'
 gem 'bugsnag'
 gem 'pg_search'
 gem 'aasm'
-gem 'bootstrap-sass'
+# gem 'bootstrap-sass'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28

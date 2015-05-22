@@ -6,7 +6,10 @@ var pickFiles = require('broccoli-static-compiler');
 
 var app = new EmberApp({
   storeConfigInMeta: false,
-  emberCliFontAwesome: { includeFontAwesomeAssets: false }
+  emberCliFontAwesome: { includeFontAwesomeAssets: false },
+  'ember-cli-bootstrap-sassy': {
+    'glyphicons': false
+  }
 });
 
 app.import('bower_components/underscore/underscore-min.js');
@@ -40,6 +43,15 @@ app.import('bower_components/bootstrap/js/dropdown.js');
 app.import('bower_components/bootstrap/js/tooltip.js');
 app.import('bower_components/bootstrap-datepicker/css/datepicker3.css');
 app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
+
+// Font-Awesome
+app.import("bower_components/font-awesome/css/font-awesome.css");
+app.import("bower_components/font-awesome/fonts/fontawesome-webfont.eot", { destDir: "fonts" });
+app.import("bower_components/font-awesome/fonts/fontawesome-webfont.svg", { destDir: "fonts" });
+app.import("bower_components/font-awesome/fonts/fontawesome-webfont.ttf", { destDir: "fonts" });
+app.import("bower_components/font-awesome/fonts/fontawesome-webfont.woff", { destDir: "fonts" });
+app.import("bower_components/font-awesome/fonts/fontawesome-webfont.woff2", { destDir: "fonts" });
+app.import("bower_components/font-awesome/fonts/FontAwesome.otf", { destDir: "fonts" });
 
 
 if (app.env === 'production') {

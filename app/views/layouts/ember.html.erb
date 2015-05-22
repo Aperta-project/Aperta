@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Tahi</title>
-    <%= include_ember_stylesheet_tags :tahi %>
     <%= stylesheet_link_tag "application", media: "all" %>
 
     <%= csrf_meta_tags %>
@@ -22,7 +21,8 @@
     <% end %>
 
     <%= include_ember_script_tags :tahi %>
-    <%= include_ember_stylesheet_tags :tahi %>
+    <%#= include_ember_stylesheet_tags :tahi %>
+    <%= stylesheet_link_tag "tahi/app" %>
 
     <% if Rails.env.test? %>
       <% # disable jquery animations %>

@@ -149,7 +149,7 @@ Tahi::Application.routes.draw do
 
 
   # Fall through to ember app
-  #
+  # #
   get "*route", to: "ember#index", constraints: { format: /html/ }
 
   root "ember#index"

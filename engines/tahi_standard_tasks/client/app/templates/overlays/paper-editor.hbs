@@ -19,7 +19,7 @@
     {{#if model.editor}}
       {{user-thumbnail user=editor}}
       {{model.editor.name}}&nbsp;is now the Editor.
-      <div class="glyphicon glyphicon-trash invite-editor-remove" {{action "removeEditor"}}></div>
+      <div class="fa fa-trash invite-editor-remove" {{action "removeEditor"}}></div>
     {{else}}
       {{#if hasRejectedInvitation}}
         <p>{{model.invitation.email}} has declined this invitation.</p>

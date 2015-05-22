@@ -4,7 +4,7 @@
   {{#each model.affiliations as |affiliation|}}
     <div class="profile-affiliation">
       <div class="profile-affiliation-name">{{affiliation.name}}</div>
-      <div class="glyphicon glyphicon-remove-circle profile-remove-affiliation" {{action "removeAffiliation" affiliation}}></div>
+      <div class="fa fa-times-circle-o profile-remove-affiliation" {{action "removeAffiliation" affiliation}}></div>
       <div>
       <div>
         {{affiliation.department}}
@@ -22,7 +22,7 @@
   {{/each}}
 
   <a class="button-secondary button--grey button--small" {{action "showNewAffiliationForm"}}>
-    <span class="glyphicon glyphicon-plus-sign"></span>
+    <span class="fa fa-plus-sign"></span>
     Add New Affiliation
   </a>
 

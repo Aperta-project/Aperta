@@ -3,7 +3,7 @@
     <ul>
       <li id="control-bar-paper-journal-logo" class="control-bar-item">
         {{#if logoUrl}}
-          <img src="{{unbound logoUrl}}" alt="{{unbound model.journal.name}}">
+          <img src="{{unbound model.journal.logoUrl}}" alt="{{unbound model.journal.name}}">
         {{else}}
           <div class="paper-journal">{{unbound model.journal.name}}</div>
         {{/if}}
@@ -28,9 +28,15 @@
           </div>
         </div>
       </li>
+      <li class="control-bar-item">
+        <div class="control-bar-link activity-link __with-icon" {{action "showActivity" "manuscript"}}>
+          <div class="control-bar-link-icon">{{partial "svg/heartbeat"}}</div>
+          <div class="control-bar-link-text">Recent Activity</div>
+        </div>
+      </li>
       {{#if canViewManuscriptManager}}
         <li class="control-bar-item">
-          {{#link-to "paper.manage" model class="control-bar-link control-bar-button"}}
+          {{#link-to "paper.workflow" model class="control-bar-link control-bar-button"}}
             <div class="control-bar-link-icon">{{partial "svg/manuscript-manager-icon"}}</div>
             Workflow
           {{/link-to}}

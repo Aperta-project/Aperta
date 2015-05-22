@@ -9,6 +9,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rspec'
 require 'sidekiq/testing'
+require 'pusher-fake/support/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -23,15 +24,11 @@ TahiPlugin.plugins.each do |gem|
 end
 
 Capybara.server_port = ENV["CAPYBARA_SERVER_PORT"]
-Capybara.server do |app, port|
-  require 'rack/handler/thin'
-  Rack::Handler::Thin.run(app, :Port => port)
-end
 
 Capybara.register_driver :selenium do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
   if ENV['EMBER_DEBUG']
-    profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.3.1-fx.xpi")
+    profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.8.0-fx.xpi")
   end
   Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
 end
@@ -63,12 +60,7 @@ VCR.configure do |config|
   config.default_cassette_options = { record: :once }
   config.configure_rspec_metadata!
   config.ignore_hosts 'codeclimate.com'
-  config.ignore_request do |request|
-    uri = URI(request.uri)
-    host = uri.host
-    port = uri.port
-    (host == 'localhost' || host == '127.0.0.1') && (port == 8981 || port == 31_337 || port == 7055)
-  end
+  config.ignore_localhost = true
 end
 
 RSpec.configure do |config|

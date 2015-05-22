@@ -3,5 +3,6 @@
 ShowCollaboratorsOverlayView = OverlayView.extend
   templateName: 'overlays/show-collaborators'
   layoutName: 'layouts/blank-overlay'
+  instant: false
 
 `export default ShowCollaboratorsOverlayView`

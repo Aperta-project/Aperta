@@ -1,37 +1,33 @@
-<div class="overlay-container full">
-  <div class="overlay-title-text">
-    <h1>Create a New Submission</h1>
+<div class="overlay-title-text">
+  <h1>Create a New Submission</h1>
+</div>
+
+{{flash-messages}}
+<div class="inner-content">
+  <div class="inset-form-control form-group">
+    <label class="inset-form-control-text">Short Title</label>
+    {{input type="text" value=model.shortTitle class="inset-form-control-input" placeholder="Crystalized Magnificence in the Modern World" id="paper-short-title"}}
   </div>
 
-  {{flash-messages}}
-  <div class="inner-content">
-    <div class="inset-form-control form-group">
-      <label class="inset-form-control-text">Short Title</label>
-      {{input type="text" value=model.shortTitle class="inset-form-control-input" placeholder="Crystalized Magnificence in the Modern World" id="paper-short-title"}}
-    </div>
+  <div class="form-group">
+    {{select-2-single placeholder="Choose Journal"
+                      class="paper-new-journal-select"
+                      width="300"
+                      selectionSelected="selectJournal"
+                      source=journalProxies
+                      selectedData=selectedJournal }}
 
-    <div class="form-group chosen-style-override">
-      {{view "chosen" content=journals
-                      value=model.journal
-                      optionValuePath="content"
-                      optionLabelPath="content.name"
-                      name="journal"
-                      prompt="Choose Journal"
-                      class="paper-new-journal-select"}}
-
-      {{view "chosen" content=model.journal.paperTypes
-                      value=model.paperType
-                      optionValuePath="content"
-                      optionLabelPath="content"
-                      name="paper_type"
-                      prompt="Choose Paper Type"
+    {{select-2-single placeholder="Choose Paper Type"
+                      class="paper-new-paper-type-select"
+                      width="300"
                       disabled=noJournalSelected
-                      class="paper-new-paper-type-select"}}
-    </div>
+                      selectionSelected="selectPaperType"
+                      source=paperTypeProxies
+                      selectedData=selectedPaperType }}
+  </div>
 
-    <div class="overlay-action-buttons">
-      <span class="button-link button--green" {{action "closeAction"}}>cancel</span>
-      <button type="submit" class="button-primary button--green" {{action "createNewPaper"}}>Create</button>
-    </div>
+  <div class="overlay-action-buttons">
+    <span class="button-link button--green" {{action "closeAction"}}>cancel</span>
+    <button type="submit" class="button-primary button--green" {{action "createNewPaper"}}>Create</button>
   </div>
 </div>

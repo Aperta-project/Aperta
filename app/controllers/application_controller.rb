@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Authorizations
+  include TahiPusher::SocketTracker
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -8,6 +9,7 @@ class ApplicationController < ActionController::Base
   before_bugsnag_notify :add_user_info_to_bugsnag
 
   before_action :authenticate_with_basic_http
+  before_action :set_pusher_socket
   before_filter :configure_permitted_parameters, if: :devise_controller?
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   rescue_from ActiveRecord::RecordNotFound, with: :render_404

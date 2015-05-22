@@ -18,15 +18,15 @@ class UserMailer < ActionMailer::Base
       subject: "You've been added as a collaborator to a paper on Tahi")
   end
 
-  def add_participant(invitor_id, invitee_id, task_id)
+  def add_participant(assigner_id, assignee_id, task_id)
     @task = Task.find(task_id)
-    invitor = User.find_by(id: invitor_id)
-    invitee = User.find_by(id: invitee_id)
-    @invitor_name = display_name(invitor)
-    @invitee_name = display_name(invitee)
+    assigner = User.find_by(id: assigner_id)
+    assignee = User.find_by(id: assignee_id)
+    @assigner_name = display_name(assigner)
+    @assignee_name = display_name(assignee)
 
     mail(
-      to: invitee.try(:email),
+      to: assignee.try(:email),
       subject: "You've been added to a conversation on Tahi")
   end
 
@@ -38,6 +38,17 @@ class UserMailer < ActionMailer::Base
     mail(
       to: user.try(:email),
       subject: "You've been added as a reviewer on Tahi")
+  end
+
+  def add_editor_to_editors_discussion(invitee_id, task_id)
+    @task = Task.find task_id
+    invitee = User.find invitee_id
+    @invitee_name = display_name(invitee)
+    @paper_preview = paper_preview
+
+    mail(
+      to: invitee.email,
+      subject: "You've been invited to the Editors' Discussion for paper \"#{@task.paper.display_title}\"")
   end
 
   def assigned_editor(editor_id, paper_id)
@@ -60,10 +71,12 @@ class UserMailer < ActionMailer::Base
       subject: "Manuscript has been resubmitted in Tahi")
   end
 
-  def mention_collaborator(comment, commentee)
-    @comment = comment
+  def mention_collaborator(comment_id, commentee_id)
+    @comment = Comment.find(comment_id)
     @commenter = @comment.commenter
-    @commentee = commentee
+    @commentee = User.find(commentee_id)
+    @task = @comment.task
+    @paper = @task.paper
 
     mail(
       to: @commentee.try(:email),
@@ -77,5 +90,23 @@ class UserMailer < ActionMailer::Base
     mail(
       to: @author.try(:email),
       subject: "Thank You for submitting a Manuscript on Tahi")
+  end
+
+  def notify_admin_of_paper_submission(paper_id, user_id)
+    @paper = Paper.find paper_id
+    @journal = @paper.journal
+    @admin = User.find user_id
+
+    mail(
+      to: @admin.email,
+      subject: "Manuscript #{@paper.title} has been submitted on Tahi")
+  end
+
+  private
+
+  # Might make sense to move it to the paper model, but it's good enough for this one use case.
+  def paper_preview
+    return @task.paper.abstract if @task.paper.abstract.present?
+    "#{@task.paper.body.split[0..100].join ' '}..."
   end
 end

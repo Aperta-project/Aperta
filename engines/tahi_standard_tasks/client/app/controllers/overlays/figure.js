@@ -1,4 +1,4 @@
-import TaskController from 'tahi/pods/task/controller';
+import TaskController from 'tahi/pods/paper/task/controller';
 import FileUploadMixin from 'tahi/mixins/file-upload';
 
 export default TaskController.extend(FileUploadMixin, {

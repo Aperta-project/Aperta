@@ -1,9 +1,9 @@
-<div class="overlay-container feedback">
-  <header class="overlay-header animation-fade-in">
-    <h1 class="overlay-header-title feedback-overlay-thanks">Here are your invitations.</h1>
-  </header>
-  <ul class="dashboard-submitted-papers">
-    {{#each model as |invitation|}}
+<header class="overlay-header animation-fade-in">
+  <h1 class="overlay-header-title feedback-overlay-thanks">Here are your invitations.</h1>
+</header>
+<ul class="dashboard-submitted-papers">
+  {{#each pendingInvitations as |invitation|}}
+    <div class='pending-invitation'>
       <h4>{{invitation.invitationType}} Invitation</h4>
       <li class="dashboard-paper-title">
         {{partial "svg/manuscript-icon"}}
@@ -15,6 +15,6 @@
         <button class="button-secondary button--green" {{action "acceptInvitation" invitation}}> yes </button>
         <button class="button-secondary button--green" {{action "rejectInvitation" invitation}}> no </button>
       </li>
-    {{/each}}
-  </ul>
-</div>
+    </div>
+  {{/each}}
+</ul>

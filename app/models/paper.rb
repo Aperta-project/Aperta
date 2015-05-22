@@ -1,7 +1,7 @@
 ##
 # This class represents the paper in the system.
 class Paper < ActiveRecord::Base
-  include EventStreamNotifier
+  include EventStream::Notifiable
 
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers
@@ -12,11 +12,14 @@ class Paper < ActiveRecord::Base
   has_one :manuscript, dependent: :destroy
 
   has_many :figures, dependent: :destroy
+  has_many :tables, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
   has_many :paper_roles, inverse_of: :paper, dependent: :destroy
   has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
   has_many :tasks, through: :phases
+  has_many :comments, through: :tasks
+  has_many :comment_looks, through: :comments
   has_many :participants, through: :tasks
   has_many :journal_roles, through: :journal
   has_many :authors, -> { order 'authors.position ASC' }
@@ -29,6 +32,8 @@ class Paper < ActiveRecord::Base
   validate :metadata_tasks_completed?, if: :submitting?
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
+
+  after_update :paper_submitted, if: -> { self.submitted_changed? from: false, to: true }
 
   class << self
     # Public: Find papers in the 'submitted' state only.
@@ -215,7 +220,21 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  # overload this method for use in emails
+  def abstract
+    super.present? ? super : default_abstract
+  end
+
   private
+
+  def default_abstract
+    Nokogiri::HTML(body).text.truncate_words 100
+  end
+
+  def paper_submitted
+    itc_task = tasks.detect { |t| t.is_a? PlosBioTechCheck::InitialTechCheckTask }
+    itc_task.increment_round! if itc_task
+  end
 
   def uncompleted_tasks?
     tasks.metadata.count != tasks.metadata.completed.count

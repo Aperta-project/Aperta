@@ -1,33 +1,12 @@
 class InvitationSerializer < ActiveModel::Serializer
   attributes :id,
              :state,
-             :title,
-             :abstract,
              :email,
-             :invitation_type,
-             :invitee_id,
-             :invitee_full_name,
-             :invitee_avatar_url,
              :created_at,
-             :updated_at
+             :updated_at,
+             :invitation_type
 
-  def title
-    object.paper.title
-  end
-
-  def abstract
-    object.paper.abstract
-  end
-
-  def invitee_full_name
-    return unless object.invitee.present?
-    "#{object.invitee.first_name} #{object.invitee.last_name}"
-  end
-
-  def invitee_avatar_url
-    return unless object.invitee.present?
-    object.invitee.avatar.url
-  end
+  has_one :invitee, serializer: UserSerializer, embed: :id, root: :users, include: true
 
   def invitation_type
     object.task.invitee_role.capitalize

@@ -3,5 +3,6 @@
 AddManuscriptTemplateCardOverlayView = OverlayView.extend
   templateName: 'overlays/add-manuscript-template-card'
   layoutName: 'layouts/blank_overlay'
+  instant: false
 
 `export default AddManuscriptTemplateCardOverlayView`

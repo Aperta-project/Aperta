@@ -90,7 +90,7 @@
         </div>
         <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
           <div class="panel-body">
-            <h5 class="revision-number">Revision: {{decision.revisionHumanNumber}}</h5>
+            <h5 class="revision-number">Revision {{decision.revisionNumber}}</h5>
             <ol>
             {{#each decision.questions as |question|}}
               <li>

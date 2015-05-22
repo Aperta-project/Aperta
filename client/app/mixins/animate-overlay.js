@@ -1,79 +1,76 @@
 import Ember from 'ember';
 
-let transitionEventName = function() {
-  var t;
+let animationEventName = function() {
+  var a;
   var el = document.createElement('fakeelement');
-  var transitions = {
-    'transition':'transitionend',
-    'OTransition':'oTransitionEnd',
-    'MozTransition':'transitionend',
-    'WebkitTransition':'webkitTransitionEnd'
+  var animations = {
+    'animation': 'animationend',
+    'OAnimation': 'oanimationend',
+    'MSAnimation': 'msAnimationEnd',
+    'WebkitAnimation': 'webkitAnimationEnd'
   };
 
-  for(t in transitions){
-    if(el.style[t] !== undefined){
-      return transitions[t];
+  for(a in animations){
+    if(el.style[a] !== undefined){
+      return animations[a];
     }
   }
 };
 
+$.fn.redraw = function() {
+  return $(this).each(function() {
+    return this.offsetHeight;
+  });
+};
+
 export default Ember.Mixin.create({
-  out: function() {
-    let element   = $('.overlay');
-    let eventName = transitionEventName();
+  out: function(options) {
+    $(options.selector).hide().attr('class', 'overlay');
 
-    if(eventName) {
-      let promise = new Ember.RSVP.Promise(function(resolve) {
-        element.one(eventName, function() {
-          resolve();
-        });
-      });
-
-      $('html').removeClass('overlay-open');
-      element.removeClass('animation-fade-in').addClass('animation-fade-out');
-
-      return promise;
-    } else {
-      // NEEDED FOR IE9. Remove if statements when IE9 support is dropped!
-      let defer = new Ember.RSVP.defer();
-
-      $('.overlay').removeClass('animation-fade-in').addClass('animation-fade-out');
-      Ember.run.later(defer, function() {
-        defer.resolve();
-      }, 230);
-
-      return defer.promise;
-    }
+    return {
+      then(callback) {
+        if(callback) { callback(); }
+      }
+    };
   },
 
-  "in": function() {
-    let element   = $('.overlay');
-    let eventName = transitionEventName();
+  'in': function(options) {
+    let animationName = animationEventName();
+    let overlayElement = $(options.selector).hide();
 
-    if(eventName) {
-      let promise = new Ember.RSVP.Promise(function(resolve) {
-        element.one(eventName, function() {
-          resolve();
-        });
-      });
-
-      Ember.run.later(function() { $('html').addClass('overlay-open'); }, 30);
-      element.addClass('animation-fade-in');
-
-      return promise;
-    } else {
-      // NEEDED FOR IE9. Remove if statements when IE9 support is dropped!
-      let defer = new Ember.RSVP.defer();
-
-      $('.overlay').addClass('animation-fade-in');
-      Ember.run.later(defer, function() {
-        defer.resolve();
-      }, 330);
-
-      return defer.promise;
+    if(options.extraClasses) {
+      overlayElement.addClass(options.extraClasses);
     }
+
+    if(options.instant || Ember.testing || !animationName) {
+      overlayElement.show().addClass('overlay--visible');
+
+      return {
+        then(callback) {
+          if(callback) { callback();}
+        }
+      };
+    }
+
+    return new Ember.RSVP.Promise(function(resolve) {
+      overlayElement.show()
+                    .redraw()
+                    .addClass('animation-fade-in')
+                    .one(animationName, function() { resolve(); });
+    });
   },
 
-  animateOverlayIn:  function() { return this['in']();  },
-  animateOverlayOut: function() { return this['out'](); }
+  animateOverlayIn: function(options={}) {
+    if (!options.selector) { options.selector = '#overlay'; }
+
+    Ember.run.later(function() { $('html').addClass('overlay-open'); }, 30);
+
+    return this['in'](options);
+  },
+
+  animateOverlayOut: function(options={}) {
+    if (!options.selector) { options.selector = '#overlay'; }
+    $('html').removeClass('overlay-open');
+    return this.out(options);
+  }
 });

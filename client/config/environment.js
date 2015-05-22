@@ -13,7 +13,11 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       }
     },
-    APP: {},
+    APP: {
+      // pusher configuration is set in pusher-override.coffee
+
+      iHatExportFormats: ['docx']
+    },
 
     'ember-cli-visualeditor': {
       assetsRoot: '/'

@@ -1,9 +1,9 @@
 class PaperSerializer < LitePaperSerializer
   # TODO Inheriting from LitePaper since we need related_at_date and roles so that
   # the dashboard updates correctly when the event stream triggers
-  attributes :id, :short_title, :title, :doi, :body, :submitted, :paper_type, :status, :updated_at, :editable, :editor_mode
+  attributes :id, :short_title, :title, :doi, :body, :submitted, :paper_type, :status, :updated_at, :editable, :links
 
-  %i(phases figures authors supporting_information_files).each do |relation|
+  %i(phases figures tables authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
   end
 
@@ -34,6 +34,10 @@ class PaperSerializer < LitePaperSerializer
   def collaborations
     # we want the actual join record, not a list of users
     object.paper_roles.collaborators
+  end
+
+  def links
+    { comment_looks: comment_looks_paper_path(object) }
   end
 
 end

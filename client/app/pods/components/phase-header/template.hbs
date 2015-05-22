@@ -1,0 +1,17 @@
+<div class="column-title-wrapper">
+  {{content-editable tagName="h2"
+                     class="column-title"
+                     value=phase.name
+                     plaintext="true"
+                     preventEnterKey="true"}}
+
+  <div class="column-title-update-buttons">
+    <button class="column-header-update-cancel btn-link" {{action "cancel"}}>cancel</button>
+    <button class="column-header-update-save button-primary button--green" {{action "save"}}>Save</button>
+  </div>
+
+  <span class="glyphicon glyphicon-pencil edit-icon column-icon"></span>
+  {{#if phase.noTasks}}
+    <span class="glyphicon glyphicon-remove remove-icon column-icon" {{action "remove"}}></span>
+  {{/if}}
+</div>

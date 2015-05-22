@@ -3,5 +3,6 @@
 EditTaskTypesOverlayView = OverlayView.extend
   templateName: 'overlays/edit-task-types'
   layoutName: 'layouts/blank-overlay'
+  instant: false
 
 `export default EditTaskTypesOverlayView`

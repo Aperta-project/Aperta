@@ -24,8 +24,17 @@
   overflow: auto;
   @include position(fixed, 0px 0px 0px 0px);
   background-color: rgba(0,0,0, 0.68);
+  display: none;
   z-index: z('overlay', 'base');
-  opacity: 0;
+
+  &.overlay-visible {
+    display: block;
+  }
+
+  &.overlay--loading {
+    display: block;
+    .overlay-container { min-height: 600px; }
+  }
 
   h1 {
     margin: 0 0 1em 0;
@@ -51,23 +60,16 @@
   .overlay-close-x { display: block; }
 
   .overlay-container {
-    background: transparent;
+    width: 700px;
     margin-top: 0;
-    padding-top: 0;
+    padding: 0;
+    background: transparent;
   }
 }
 
-.overlay--fullscreen--green {
+.overlay--green {
+  color: #fff;
   background-color: rgba(57,163,41, 0.95);
-  color: white;
-
-  .overlay-close-x { display: block; }
-
-  .overlay-container {
-    background: transparent;
-    margin-top: 0;
-    padding-top: 0;
-  }
 }
 
 .overlay-close-x {
@@ -85,6 +87,7 @@
   position: relative;
   width: 1120px;
   margin: 40px auto 0 auto;
+  border-radius: 5px;
   padding: 10px 80px;
   background: white;
 }
@@ -145,13 +148,6 @@
 .overlay-main-work {
   position: relative;
   padding: 0 10px 60px 10px;
-}
-
-.overlay-container.full {
-  width: 700px;
-  margin-top: 0;
-  padding: 0;
-  height: 100%;
 }
 
 .overlay-action-buttons {

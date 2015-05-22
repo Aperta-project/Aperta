@@ -3,7 +3,7 @@
 RadioButtonActionComponent = Ember.Component.extend
   tagName: 'input'
   type: 'radio'
-  attributeBindings: ['name', 'type', 'value', 'checked:checked']
+  attributeBindings: ['name', 'type', 'value', 'checked:checked', 'disabled']
 
   checked: (->
     @get('selection') == @get('value')

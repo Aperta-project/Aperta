@@ -2,7 +2,7 @@ module Invitable
   extend ActiveSupport::Concern
 
   included do
-    has_many :invitations, inverse_of: :task, foreign_key: :task_id
+    has_many :invitations, inverse_of: :task, foreign_key: :task_id, dependent: :destroy
   end
 
   # Public: after transition hook for custom task behavior upon transitioning to "invited" state
@@ -28,6 +28,19 @@ module Invitable
   #
   # Returns true, is a noop if unimplemented
   def invitation_accepted(_invitation)
+    true
+  end
+
+  # Public: after transition hook for custom task behavior upon being deleted
+  #
+  # _invitation - the invitation
+  #
+  # Examples
+  #
+  #   Sending an email to notify the user their invitation is no longer valid
+  #
+  # Returns true, is a noop if unimplemented
+  def invitation_rescinded(_invitation)
     true
   end
 

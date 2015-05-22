@@ -2,16 +2,21 @@ class PapersController < ApplicationController
   include AttrSanitize
 
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index, :show]
+  before_action :enforce_policy, except: [:index, :show, :comment_looks]
   before_action :sanitize_title, only: [:create, :update]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
   respond_to :json
 
   def index
-    page = (params[:page_number] || 2).to_i
-    papers = PaperRole.most_recent_for(current_user).page(page).map(&:paper)
-    respond_with(papers, each_serializer: LitePaperSerializer)
+    page = (params[:page_number] || 1).to_i
+    # TODO: This query should be less weird when dashboard is re-assessed
+    unique_paper_roles = PaperRole.most_recent_for(current_user).page(page)
+    papers = unique_paper_roles.map(&:paper)
+    respond_with(papers, {
+      each_serializer: LitePaperSerializer,
+      meta: { total_pages: unique_paper_roles.total_pages, total_papers: unique_paper_roles.total_count }
+    })
   end
 
   def show
@@ -45,7 +50,10 @@ class PapersController < ApplicationController
     respond_with paper
   end
 
-  # non RESTful routes
+  def comment_looks
+    comment_looks = paper.comment_looks.includes(task: :phase).where(user: current_user)
+    respond_with(comment_looks, root: :comment_looks)
+  end
 
   def activity
     # TODO: params[:name] probably needs some securitifications
@@ -55,7 +63,7 @@ class PapersController < ApplicationController
 
   def upload
     IhatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_jobs_url)
-    render json: paper
+    respond_with paper
   end
 
   def heartbeat

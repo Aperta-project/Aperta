@@ -46,7 +46,7 @@ describe SupportingInformationFilesController, redis: true do
       with_aws_cassette 'supporting_info_files_controller' do
         do_request
 
-        file = paper.supporting_information_files.last
+        file = paper.reload.supporting_information_files.last
         expect(file.caption).to eq("new caption")
         expect(file.title).to eq("new title")
       end

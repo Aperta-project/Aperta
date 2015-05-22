@@ -1,29 +1,24 @@
-<div class="overlay-container full">
-  <div class="overlay-title-text">
-    <h1>Pick the type of card to add</h1>
-  </div>
+<div class="overlay-title-text">
+  <h1>Pick the type of card to add</h1>
+</div>
 
-  <div class="inner-content">
-    <div class="call-to-action">
-      {{#if journalTaskTypes}}
-        {{view "chosen" content=journalTaskTypes
-                   name="task_types"
-                   width="200px"
-                   prompt="Select a task type"
-                   class="task-type-select"
-                   value=taskType
-                   optionValuePath="content"
-                   optionLabelPath="content.title"}}
+<div class="inner-content">
+  {{#if formattedTaskTypesReady}}
+    {{select-2-single placeholder="Select a task type"
+                      selectedData=selectedData
+                      selectionSelected="taskTypeSelected"
+                      source=formattedTaskTypes
+                      class="task-type-select"
+                      value=""
+                      width="200"}}
 
-        <div class="overlay-action-buttons">
-          <button class="button-primary button--green" {{action "addTaskType" phase taskType}}>Add</button>
-          <button class="button-link button--green cancel" {{action "closeAction"}}>cancel</button>
-        </div>
-      {{else}}
-        {{progress-spinner visible=true
-                           center=true
-                           size="large"}}
-      {{/if}}
+    <div class="overlay-action-buttons">
+      <button class="button-primary button--green" {{action "addTaskType" phase taskType}}>Add</button>
+      <button class="button-link button--green cancel" {{action "closeAction"}}>cancel</button>
     </div>
-  </div>
+  {{else}}
+    {{progress-spinner visible=true
+                       center=true
+                       size="large"}}
+  {{/if}}
 </div>

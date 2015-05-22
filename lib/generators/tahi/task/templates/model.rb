@@ -1,12 +1,16 @@
-module <%= @plugin.camelize %>
-  class <%= class_name %>Task < Task
-    # uncomment the following line if you want to enable event streaming for this model
-    # include EventStreamNotifier
+module Tahi
+  module <%= @plugin_short.camelize %>
+    class <%= class_name %>Task < Task
 
-    register_task default_title: "<%= class_name %> Task", default_role: "author"
+      # uncomment the following line if you want to enable event
+      # streaming for this model
+      # include EventStreamNotifier
 
-    def active_model_serializer
-      <%= class_name %>TaskSerializer
+      register_task default_title: '<%= @task_name %>', default_role: 'author'
+
+      def active_model_serializer
+        <%= class_name %>TaskSerializer
+      end
     end
   end
 end

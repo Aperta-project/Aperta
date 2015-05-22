@@ -1,0 +1,11 @@
+<p>{{model.title}}</p>
+<div class="role-dropdown">
+  {{select-2-single placeholder="No Role Assigned"
+                    selectionSelected="save"
+                    source=formattedTaskRoles
+                    class="collaborator-select"
+                    selectedData=selectedRole
+                    width="150"}}
+</div>
+
+{{autosave-icon modelIsSaving=model.isSaving}}

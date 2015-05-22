@@ -117,7 +117,9 @@ test 'Changing phase name', ->
 test 'Adding an Ad-Hoc card', ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('a.button--green:contains("Add New Card")')
-  pickFromChosenSingle('.task-type-select', 'Ad Hoc')
+
+  pickFromSelect2('.overlay', 'Ad Hoc')
+
   click('.overlay .button--green:contains("Add")').then ->
     ok find('h1.inline-edit:contains("Ad Hoc")').length
     ok(
@@ -147,13 +149,13 @@ test 'Adding an Ad-Hoc card', ->
 createCard = ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('a.button--green:contains("Add New Card")')
-  pickFromChosenSingle('.task-type-select', 'Ad Hoc')
+  pickFromSelect2('.overlay', 'Ad Hoc')
   click '.button--green:contains("Add")'
     .then -> ok find('h1.inline-edit:contains("Ad Hoc")').length, 'It finds the ad hocs'
   andThen ->
     click '.overlay-close-button:first'
 
-# see also paper_manage_test.js.coffee; tests are very similar
+# see also paper_workflow_test.js.coffee; tests are very similar
 test 'show delete confirmation overlay on deletion of a card', ->
   createCard()
   andThen ->

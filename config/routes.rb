@@ -5,6 +5,7 @@ Tahi::Application.routes.draw do
   mount TahiStandardTasks::Engine => "/api", as: "standard_tasks"
   mount PlosAuthors::Engine => "/api", as: "plos_custom_authors"
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
+  mount PlosBioInternalReview::Engine => '/api'
   mount PlosBioTechCheck::Engine => "/api"
   mount PlosBilling::Engine => "/api"
 
@@ -12,11 +13,7 @@ Tahi::Application.routes.draw do
   # Test specific
   #
   if Rails.env.test?
-    # TODO: Remove the need for this with pusher
-    require_relative "../spec/support/stream_server/stream_server"
     require_relative "../spec/support/upload_server/upload_server"
-    get "/stream" => StreamServer
-    post "/update_stream" => StreamServer
     mount UploadServer, at: "/fake_s3/"
   elsif Rails.env.development?
     get "/styleguide" => "styleguide#index"
@@ -33,6 +30,7 @@ Tahi::Application.routes.draw do
   devise_scope :user do
     get "users/sign_out" => "devise/sessions#destroy"
   end
+
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => "/sidekiq"
   end
@@ -48,15 +46,14 @@ Tahi::Application.routes.draw do
     resources :authors, only: [:create, :update, :destroy]
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]
-    resources :comment_looks, only: [:index, :update]
-    resource :dashboards, only: :show
+    resources :comment_looks, only: [:index, :destroy]
     resources :decisions, only: [:create, :update]
-    resource :event_stream, only: :show
     resources :errors, only: :create
     resources :feedback, only: :create
     resources :figures, only: [:destroy, :update] do
       put :update_attachment, on: :member
     end
+    resources :tables, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
         get "admins/:paper_id", to: "filtered_users#admins"
@@ -67,7 +64,7 @@ Tahi::Application.routes.draw do
     end
     resources :flows, only: [:show, :create, :update, :destroy]
     resources :formats, only: [:index]
-    resources :invitations, only: [:create, :destroy] do
+    resources :invitations, only: [:index, :create, :destroy] do
       put :accept, on: :member
       put :reject, on: :member
     end
@@ -79,12 +76,14 @@ Tahi::Application.routes.draw do
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show
       resources :figures, only: :create
+      resources :tables, only: :create
       resources :tasks, only: [:update, :create, :destroy] do
         resources :comments, only: :create
       end
       member do
         get "/status/:id", to: "paper_conversions#status"
         get "activity/:name", to: "papers#activity"
+        get :comment_looks
         get :export, to: "paper_conversions#export"
         put :heartbeat
         put :submit
@@ -104,6 +103,7 @@ Tahi::Application.routes.draw do
     end
     resources :task_templates
     resources :users, only: [:show, :index] do
+      get :reset, on: :collection
       put :update_avatar, on: :collection
     end
     resources :user_flows do
@@ -131,6 +131,10 @@ Tahi::Application.routes.draw do
       resources :jobs, only: [:create]
     end
 
+    # event stream
+    #
+    post "event_stream/auth", controller: "api/event_stream", as: :auth_event_stream
+
     # s3 request policy
     #
     namespace :s3 do
@@ -147,6 +151,7 @@ Tahi::Application.routes.draw do
 
   # Fall through to ember app
   #
-  get "*route" => "ember#index"
+  get "*route", to: "ember#index", constraints: { format: /html/ }
+
   root "ember#index"
 end

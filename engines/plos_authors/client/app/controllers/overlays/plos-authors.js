@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import TaskController from 'tahi/pods/task/controller';
+import TaskController from 'tahi/pods/paper/task/controller';
 
 export default TaskController.extend({
   title: 'Add Authors',
@@ -35,7 +35,7 @@ export default TaskController.extend({
 
     saveNewAuthor: function(newAuthorHash) {
       Ember.merge(newAuthorHash, {
-        paper: this.get('paper'),
+        paper: this.get('model.paper'),
         plosAuthorsTask: this.get('model'),
         position: 0
       });

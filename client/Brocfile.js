@@ -9,13 +9,8 @@ var app = new EmberApp({
   emberCliFontAwesome: { includeFontAwesomeAssets: false }
 });
 
-app.import('bower_components/jquery-timeago/jquery.timeago.js');
 app.import('bower_components/underscore/underscore-min.js');
 app.import('bower_components/moment/moment.js');
-
-// Chosen
-// (css is imported Rails side)
-app.import('bower_components/chosen-bower/chosen.jquery.min.js');
 
 // jQuery UI
 app.import('bower_components/jquery-ui/ui/core.js');
@@ -46,12 +41,10 @@ app.import('bower_components/bootstrap/js/tooltip.js');
 app.import('bower_components/bootstrap-datepicker/css/datepicker3.css');
 app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
 
-
-if (app.env === 'production') {
-  app.import('bower_components/event-source-polyfill/eventsource.js');
-} else {
-  app.import('bower_components/sinon/index.js');
-  app.import('bower_components/ember/ember-template-compiler.js');
+if (app.env !== 'production') {
+  app.import('bower_components/sinon/index.js', { type: 'test' });
+  app.import('bower_components/ember/ember-template-compiler.js', { type: 'test' });
+  app.import('vendor/pusher-test-stub.js', { type: 'test' });
 }
 
 module.exports = mergeTrees([app.toTree(), select2Assets], {overwrite: true});

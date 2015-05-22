@@ -1,4 +1,4 @@
-TahiNotifier.subscribe("author:created") do |subscription_name, payload|
+TahiNotifier.subscribe("author:created") do |payload|
   record = payload[:record]
 
   # generic Authors may have been created in a different task, so
@@ -8,16 +8,11 @@ TahiNotifier.subscribe("author:created") do |subscription_name, payload|
   end
 end
 
-TahiNotifier.subscribe("plos_authors/plos_author:created", "plos_authors/plos_author:updated") do |subscription_name, payload|
+TahiNotifier.subscribe("plos_authors/plos_author:*") do |payload|
   action = payload[:action]
   record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
 
-  EventStream.new(action, record, subscription_name).post
-end
-
-TahiNotifier.subscribe("plos_authors/plos_author:destroyed") do |subscription_name, payload|
-  action = payload[:action]
-  record = payload[:record]
-
-  EventStream.new(action, record, subscription_name).destroy
+  # serialize the plos_author down the paper channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.plos_authors_task.paper, excluded_socket_id: excluded_socket_id)
 end

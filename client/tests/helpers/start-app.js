@@ -6,10 +6,11 @@ import config from '../../config/environment';
 import asyncHelpers from './async-helpers';
 import storeHelpers from './store-helpers';
 import containerHelpers from './container-helpers';
-import chosenHelpers from './chosen-helpers';
+import select2Helpers from './select2-helpers';
 import customAssertions from './custom-assertions';
 
 import Factory from './factory';
+import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 
 export default function startApp(attrs) {
   var application;
@@ -29,6 +30,26 @@ export default function startApp(attrs) {
   });
 
   window.currentUserData = {user: currentUser};
+
+  window.eventStreamConfig = {
+    key: "fakeAppKey123456",
+    host: "localhost",
+    port: "59198",
+    auth_endpoint_path: "/event_stream/auth"
+  };
+
+  TestHelper.reopen({
+    mapFind: function(modelName, json) {
+      var responseJson = {};
+      // hack to work around
+      // https://github.com/danielspaniel/ember-data-factory-guy/issues/82
+      if ((/Task/).test(modelName)) {
+        modelName = 'task';
+      }
+      responseJson[Ember.String.pluralize(modelName)] = json;
+      return responseJson;
+    }
+  });
 
   Ember.run(function() {
     application = Application.create(attributes);

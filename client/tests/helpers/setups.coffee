@@ -30,6 +30,15 @@ addUserAsParticipant = (task, user) ->
 
   participation
 
+addUserAsCollaborator = (paper, user) ->
+  collaboration = Factory.createRecord 'Collaboration',
+    paper_id: paper.id
+    user_id: user.id
+
+  Factory.mergeArrays(paper, 'collaboration_ids', [collaboration.id])
+
+  collaboration
+
 paperWithRoles = (id, roles) ->
   journal = Factory.createRecord('Journal', id: 1)
   paper = Factory.createRecord('Paper', journal_id: journal.id, id: id)
@@ -41,6 +50,7 @@ export {
   paperWithParticipant,
   paperWithTask,
   paperWithRoles,
-  addUserAsParticipant
+  addUserAsParticipant,
+  addUserAsCollaborator
 }
 `

@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://localhost:3000/
+    uri: http://ihat.example.com/
     body:
       encoding: US-ASCII
       string: ''

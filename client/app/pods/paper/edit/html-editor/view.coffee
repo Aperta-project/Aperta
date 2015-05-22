@@ -8,12 +8,6 @@ View = Ember.View.extend PaperEditMixin,
     @set('controller.toolbar', @get('toolbar'))
   ).observes('toolbar')
 
-  _updateFigures: (->
-    # HACK: unfortunately we have to wait for the UI
-    # to be able to use the adapter to manipulate the VE model
-    @get('controller').updateFigures()
-  ).on('didInsertElement')
-
   updateEditorLockedState: ( ->
     editor = @get('controller.editor')
     if editor
@@ -22,6 +16,10 @@ View = Ember.View.extend PaperEditMixin,
       else
         editor.disable()
   ).observes('isEditing')
+
+  initializeEditingState: ( ->
+    @updateEditorLockedState()
+  ).on('didInsertElement')
 
   destroyEditor: ( ->
     Ember.$(document).off 'keyup.autoSave'

@@ -13,6 +13,7 @@ gem 'plos_authors', path: 'engines/plos_authors'
 gem 'tahi_standard_tasks', path: 'engines/tahi_standard_tasks'
 gem 'tahi_upload_manuscript', path: 'engines/tahi_upload_manuscript'
 gem 'plos_bio_tech_check', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check"
+gem 'plos_bio_internal_review', git: 'https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review'
 gem 'plos_billing', path: 'engines/plos_billing'
 
 # Gems
@@ -33,6 +34,7 @@ gem 'sidekiq'
 gem 'sidetiq'
 gem 'sinatra'
 gem 'active_record-acts_as'
+gem 'request_store'
 
 gem "premailer-rails"
 gem "nokogiri"
@@ -57,6 +59,7 @@ gem 'bugsnag'
 gem 'pg_search'
 gem 'aasm'
 gem 'bootstrap-sass'
+gem 'pusher'
 
 # NOTE: Using this fork because it uses a compatible omniauth version
 # https://github.com/dlindahl/omniauth-cas/pull/28
@@ -88,6 +91,7 @@ group :development, :test, :performance do
   gem 'pry-rails'
   gem 'foreman'
   gem 'quiet_assets'
+  gem 'generator_spec'
 end
 
 group :test do
@@ -100,6 +104,7 @@ group :test do
   gem 'webmock'
   gem 'thin'
   gem 'timecop'
+  gem 'pusher-fake'
 end
 
 group :staging, :performance do

@@ -1,42 +1,37 @@
-<div class="overlay-container full show-collaborators-overlay">
+<div id="show-collaborators">
+  <header class="overlay-title-text">
+    <h1>Who can edit this manuscript?</h1>
+  </header>
 
-  <div id="show-collaborators" class="chosen-style-override">
-    <header class="overlay-title-text">
-      <h1>Who can edit this manuscript?</h1>
-    </header>
+  <div class="inner-content">
+    <div class="call-to-action">
 
-    <div class="inner-content">
-      <div class="call-to-action">
+      {{select-2-single class="collaborator-select"
+                        name="collaborators"
+                        placeholder="Add collaborator"
+                        selectionSelected="addNewCollaborator"
+                        source=formattedCollaborators
+                        value=""}}
 
-        {{select-2-single
-            class="collaborator-select"
-            name="collaborators"
-            placeholder="Add collaborator"
-            selectionSelected="addNewCollaborator"
-            source=formattedCollaborators
-            value=""}}
-
-        <div class="overlay-action-buttons">
-          <a class="button-link button--green" {{action "cancel"}}>cancel</a>
-          <button class="button-primary button--green" {{action "save" phase}}>Save</button>
-        </div>
+      <div class="overlay-action-buttons">
+        <a class="button-link button--green" {{action "cancel"}}>cancel</a>
+        <button class="button-primary button--green" {{action "save" phase}}>Save</button>
       </div>
-
-      <ul class="collaborators-list">
-        {{#each collaborators as |collaborator|}}
-          <li class="collaborator">
-            <span class="avatar">{{user-thumbnail user=collaborator}}</span>
-            <span class="name">{{collaborator.fullName}}</span>
-            <span class="email">{{collaborator.email}}
-              <span
-                class="delete-button glyphicon glyphicon-trash"
-                {{action "removeCollaborator" collaborator}}>
-              </span>
-            </span>
-          </li>
-        {{/each}}
-      </ul>
     </div>
-  </div>
 
+    <ul class="collaborators-list">
+      {{#each collaborators as |collaborator|}}
+        <li class="collaborator">
+          <span class="avatar">{{user-thumbnail user=collaborator}}</span>
+          <span class="name">{{collaborator.fullName}}</span>
+          <span class="email">{{collaborator.email}}
+            <span
+              class="delete-button glyphicon glyphicon-trash"
+              {{action "removeCollaborator" collaborator}}>
+            </span>
+          </span>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
 </div>

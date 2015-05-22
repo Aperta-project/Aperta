@@ -6,7 +6,10 @@ var pickFiles = require('broccoli-static-compiler');
 
 var app = new EmberApp({
   storeConfigInMeta: false,
-  emberCliFontAwesome: { includeFontAwesomeAssets: false }
+  emberCliFontAwesome: { includeFontAwesomeAssets: false },
+  'ember-cli-bootstrap-sassy': {
+    'glyphicons': false
+  }
 });
 
 app.import('bower_components/underscore/underscore-min.js');
@@ -30,11 +33,20 @@ app.import('bower_components/select2/select2.css');
 var select2Assets = pickFiles('bower_components/select2', {
   srcDir: '/',
   files: ['*.gif', '*.png'],
-  destDir: '/assets'
+  destDir: 'assets'
+});
+
+// Add Ember-cli styles that live in Rails' /app/engines/
+var addons = ["tahi_standard_tasks", "plos_authors"];
+var addonStyles = addons.map(function(engineName) {
+  return pickFiles('../engines/' + engineName + '/client/app/styles', {
+    srcDir: '/' + engineName,
+    files: ['*'],
+    destDir: 'assets'
+  });
 });
 
 // Bootstrap
-// (css is imported Rails side)
 app.import('bower_components/bootstrap/js/collapse.js');
 app.import('bower_components/bootstrap/js/dropdown.js');
 app.import('bower_components/bootstrap/js/tooltip.js');
@@ -47,4 +59,4 @@ if (app.env !== 'production') {
   app.import('vendor/pusher-test-stub.js', { type: 'test' });
 }
 
-module.exports = mergeTrees([app.toTree(), select2Assets], {overwrite: true});
+module.exports = mergeTrees([app.toTree(), select2Assets].concat(addonStyles), {overwrite: true});

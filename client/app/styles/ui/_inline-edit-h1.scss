@@ -80,7 +80,7 @@
     .item-remove {
       margin: 10px;
       color: $tahi-green;
-      @extend .glyphicon, .glyphicon-remove-circle;
+      @extend .fa, .fa-times-circle-o;
     }
   }
 
@@ -124,7 +124,7 @@
   margin: 10px 0;
   @include transition(min-height, 0.3s);
 
-  .glyphicon.inline-edit-icon {
+  .fa.inline-edit-icon {
     top: 3px;
   }
 
@@ -174,9 +174,9 @@
 }
 
 .overlay-content .bodypart-email-sent-overlay {
-  .glyphicon-remove {
+  .fa-remove {
     @include position(absolute, 0px 0px auto auto);
-    width: auto !important; //bootstrap/glyphicon override
+    width: auto !important; //bootstrap/fa override
     padding: 25px;
     color: #fff;
     font-size: 32px;

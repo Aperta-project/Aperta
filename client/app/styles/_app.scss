@@ -30,7 +30,7 @@ input:focus, textarea:focus, *[contenteditable] {
   outline: none;
 }
 
-a, button, .glyphicon, {
+a, button, .fa, {
   @include transition(all 0.1s ease-in-out);
 }
 

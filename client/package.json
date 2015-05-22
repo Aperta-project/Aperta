@@ -15,14 +15,17 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.2",
+    "broccoli-merge-trees": "0.2.1",
+    "broccoli-static-compiler": "0.2.1",
     "ember-cli": "0.2.3",
     "ember-cli-app-version": "0.3.3",
     "ember-cli-babel": "^5.0.0",
+    "ember-cli-bootstrap-sassy": "0.0.18",
     "ember-cli-coffeescript": "~0.4.0",
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-dependency-checker": "0.0.8",
     "ember-cli-font-awesome": "0.0.9",
-    "ember-cli-htmlbars": "0.7.4",
+    "ember-cli-htmlbars": "^0.7.6",
     "ember-cli-ic-ajax": "0.1.1",
     "ember-cli-inject-live-reload": "^1.3.0",
     "ember-cli-pusher": "0.1.1",
@@ -33,8 +36,6 @@
     "ember-data": "1.0.0-beta.17",
     "ember-data-factory-guy": "1.0.7",
     "ember-export-application-global": "^1.0.2",
-    "broccoli-merge-trees": "0.2.1",
-    "broccoli-static-compiler": "0.2.1",
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "tahi-editor-extensions": "substance/tahi-editor-extensions#5b664647d3bf5c9a19bcd9343078b2b4ea7ce0a4"
@@ -46,7 +47,8 @@
       "../engines/tahi_standard_tasks/client",
       "../engines/tahi_upload_manuscript/client",
       "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/plos_bio_tech_check-6b0487ab978a/client",
-      "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/plos_bio_tech_check-8f194af16c88/client"
+      "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/plos_bio_internal_review-965b8ea606e3/client",
+      "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/plos_bio_tech_check-ea5e059093e4/client"
     ]
   }
 }

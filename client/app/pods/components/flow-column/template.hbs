@@ -32,7 +32,7 @@
     </div>
   {{/if}}
   {{#if editable}}
-    <div class="edit-column-title glyphicon glyphicon-pencil" {{action "toggleEdit"}}></div>
+    <div class="edit-column-title fa fa-pencil" {{action "toggleEdit"}}></div>
     {{select-2-single
         allowClear=true
         placeholder="Card Types"
@@ -66,7 +66,7 @@
         source=selectableTaskRoles}}
 
   {{/if}}
-  <div class="remove-column glyphicon glyphicon-remove" {{action "removeFlow"}}></div>
+  <div class="remove-column fa fa-remove" {{action "removeFlow"}}></div>
 </div>
 
 {{#unless flow.isLoaded}}

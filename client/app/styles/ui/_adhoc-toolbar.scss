@@ -8,7 +8,7 @@
     position: relative;
     z-index: 1;
 
-    .glyphicon-remove {
+    .fa-remove {
       position: relative;
       top: 2px;
       display: none;
@@ -21,7 +21,7 @@
     @include transform(scale(0));
     @include transition(all 0.1s ease-in-out);
 
-    .glyphicon {
+    .fa {
       @include transform(scale(0));
       @include transition-property (transform);
       @include transition-duration(0.2s);
@@ -45,7 +45,7 @@
 
   &._active {
     .button-primary {
-      .glyphicon-plus {
+      .fa-plus {
         top: 2px;
         @include transform(rotate(45deg));
       }
@@ -55,7 +55,7 @@
       opacity: 1.0;
       @include transform(scale(1));
 
-      .glyphicon {
+      .fa {
         @include transform(scale(1));
       }
     }

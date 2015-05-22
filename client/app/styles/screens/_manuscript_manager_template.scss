@@ -40,7 +40,7 @@ $template-thumbnail-height: 135px;
   background-color: rgba(52, 123, 197, 0.6);
   padding: 15px 12px;
 
-  .glyphicon {
+  .fa {
     margin: 0 10px;
     color: #fff;
     font-size: 28px;
@@ -101,13 +101,13 @@ $template-thumbnail-height: 135px;
   font-size: 20px;
   cursor: pointer;
 
-  .glyphicon {
+  .fa {
     margin-left: 2px;
     font-size: 16px;
     opacity: 0.5;
   }
 
-  &:hover .glyphicon {
+  &:hover .fa {
     opacity: 1;
   }
 }

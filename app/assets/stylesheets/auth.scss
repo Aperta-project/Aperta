@@ -1,7 +1,6 @@
 @import 'bourbon';
 @import 'variables';
 @import 'webfonts';
-@import 'mixins';
 @import 'ui/buttons';
 
 html { box-sizing: border-box; }
@@ -42,7 +41,7 @@ html.bg-3 { background-image: url(image-path('auth/bg-3.jpg')); }
 input { font-size: 14px; }
 input:focus, textarea:focus, *[contenteditable] { outline: none; }
 
-a, button, .glyphicon, { @include transition(all 0.1s ease-in-out); }
+a, button, .fa, { @include transition(all 0.1s ease-in-out); }
 
 a {
   color: $tahi-green;
@@ -160,4 +159,3 @@ a {
   padding-right: 55px;
   padding-left: 55px;
 }
-

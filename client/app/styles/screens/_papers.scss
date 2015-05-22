@@ -202,7 +202,7 @@ html.control-bar-sub-nav-active #paper-container {
   span { display: inline-block; }
 }
 
-.edit-paper .glyphicon-lock,
+.edit-paper .fa-lock,
 .edit-paper .edit-paper-lock-message span {
   overflow: hidden;
 }
@@ -706,4 +706,3 @@ article.manuscript figure[data-content-type=table] {
 .table-item figcaption label {
   display: none;
 }
-

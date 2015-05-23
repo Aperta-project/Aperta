@@ -36,10 +36,14 @@ var select2Assets = pickFiles('bower_components/select2', {
   destDir: 'assets'
 });
 
-var tahiStandardTaskStyles = pickFiles('../engines/tahi_standard_tasks/client/app/styles', {
-  srcDir: '/tahi_standard_tasks',
-  files: ['*'],
-  destDir: 'assets'
+// Add Ember-cli styles that live in Rails' /app/engines/
+var addons = ["tahi_standard_tasks", "plos_authors"];
+var addonStyles = addons.map(function(engineName) {
+  return pickFiles('../engines/' + engineName + '/client/app/styles', {
+    srcDir: '/' + engineName,
+    files: ['*'],
+    destDir: 'assets'
+  });
 });
 
 // Bootstrap
@@ -56,4 +60,4 @@ if (app.env === 'production') {
   app.import('bower_components/ember/ember-template-compiler.js');
 }
 
-module.exports = mergeTrees([app.toTree(), select2Assets, tahiStandardTaskStyles], {overwrite: true});
+module.exports = mergeTrees([app.toTree(), select2Assets].concat(addonStyles), {overwrite: true});

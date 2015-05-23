@@ -26,13 +26,6 @@
 }
 
 .card-remove {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  display: none;
-  font-size: 14px;
-  color: #fff;
-  cursor: pointer;
   @extend .fa, .fa-times-circle-o;
 }
 
@@ -59,6 +52,16 @@
     left: 15px;
     top: 15px;
   }
+  .card-remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: none;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+  }
+
 }
 
 // .card modifier:

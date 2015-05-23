@@ -36,6 +36,12 @@ var select2Assets = pickFiles('bower_components/select2', {
   destDir: 'assets'
 });
 
+var tahiStandardTaskStyles = pickFiles('../engines/tahi_standard_tasks/client/app/styles', {
+  srcDir: '/tahi_standard_tasks',
+  files: ['*'],
+  destDir: 'assets'
+});
+
 // Bootstrap
 app.import('bower_components/bootstrap/js/collapse.js');
 app.import('bower_components/bootstrap/js/dropdown.js');
@@ -50,4 +56,4 @@ if (app.env === 'production') {
   app.import('bower_components/ember/ember-template-compiler.js');
 }
 
-module.exports = mergeTrees([app.toTree(), select2Assets], {overwrite: true});
+module.exports = mergeTrees([app.toTree(), select2Assets, tahiStandardTaskStyles], {overwrite: true});

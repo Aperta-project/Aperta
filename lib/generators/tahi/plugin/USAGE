@@ -31,4 +31,4 @@ Example:
         engines/PLUGIN_NAME/bin/rails
         engines/PLUGIN_NAME/client/index.js
         engines/PLUGIN_NAME/client/package.json
-        engines/PLUGIN_NAME/client/styles/application.scss
+        engines/PLUGIN_NAME/client/styles/PLUGIN_NAME/application.scss

@@ -15,8 +15,8 @@
 @import "app";
 
 // STANDARD CARDS
-@import "tahi_standard_tasks";
-@import "plos_authors";
+@import "tahi_standard_tasks/application";
+@import "plos_authors/application";
 
 // DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE
 @import 'plos_bio_internal_review/application';

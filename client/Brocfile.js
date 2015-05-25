@@ -37,7 +37,7 @@ var select2Assets = pickFiles('bower_components/select2', {
 });
 
 // Ember-cli styles that live in Rails' /app/engines/
-var addons = ["tahi_standard_tasks", "plos_authors", "plos_bio_internal_review", "plos_bio_tech_check", "plos_billing", "tahi_upload_manuscript"];
+var addons = ["tahi_standard_tasks", "plos_authors", "tahi_upload_manuscript"];
 
 // Engine addons are expected to have css at /client/app/styles/
 var addonStyles = addons.map(function(engineName) {

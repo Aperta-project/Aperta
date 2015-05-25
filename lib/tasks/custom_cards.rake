@@ -29,7 +29,7 @@ namespace :tahi do
       else
         puts "No migration task found for this card. If you add migrations for #{engine_name} in in the future, you can install migrations with #{migration_task}."
       end
-      
+
       # tahi magic installer
       sh "bundle exec rake data:create_task_types"
     end
@@ -40,7 +40,12 @@ namespace :tahi do
 
     # modify application.scss
     needle = "// DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE"
-    insert_after("app/assets/stylesheets/application.scss", needle, "@import '#{engine_path}/application';")
+
+    insert_after("/client/app/styles/tahi.scss", needle, "@import '#{engine_path}/application';")
+
+    # offer help
+    help_url = "https://github.com/Tahi-project/tahi/wiki/HOWTO:-Customizing-Custom-Cards#custom-card-styles"
+    puts "For more information on how to Customize Tahi Cards, visit: #{help_url}"
   end
 
   def relative_path(to, from)

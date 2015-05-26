@@ -122,9 +122,6 @@ GEM
     bcrypt (3.1.9)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bourbon (4.2.3)
-      sass (~> 3.4)
-      thor
     bugsnag (2.8.6)
       multi_json (~> 1.0)
     builder (3.2.2)
@@ -556,7 +553,6 @@ DEPENDENCIES
   activemodel-globalid!
   acts_as_list!
   american_date
-  bourbon
   bugsnag
   capybara
   capybara-webkit

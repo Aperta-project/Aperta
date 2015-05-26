@@ -25,7 +25,7 @@ export default Ember.Mixin.create({
   actions: {
     saveNewParticipant(newParticipantId) {
       this.store.find('user', newParticipantId).then(function(user) {
-        let part = this.createParticipant(user)
+        let part = this.createParticipant(user);
         if (!part) { return; }
 
         if (!this.get('model.isNew')) {
@@ -35,7 +35,7 @@ export default Ember.Mixin.create({
     },
 
     removeParticipant(participantId) {
-      let part = this.findParticipation('' + participantId)
+      let part = this.findParticipation('' + participantId);
       if (!part) { return; }
 
       part.deleteRecord();

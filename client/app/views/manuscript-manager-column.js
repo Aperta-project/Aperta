@@ -12,7 +12,7 @@ export default Ember.View.extend(DragNDrop.DroppableMixin, {
     this.$().removeClass('current-drop-target');
   },
 
-  dragOver(e) {
+  dragOver() {
     this.$().addClass('current-drop-target');
   },
 

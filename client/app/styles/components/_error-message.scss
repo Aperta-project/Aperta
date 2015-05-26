@@ -1,0 +1,10 @@
+.error-message {
+  color: $tahi-error-red;
+  font-size: 12px;
+  display: inline-block;
+  margin-left: 15px;
+}
+
+.error-message--hidden {
+  display: none;
+}

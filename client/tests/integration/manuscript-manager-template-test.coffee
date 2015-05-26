@@ -127,7 +127,7 @@ test 'Adding an Ad-Hoc card', ->
       "The title should be editable to start"
     )
 
-  click('.adhoc-content-toolbar .glyphicon-plus')
+  click('.adhoc-content-toolbar .fa-plus')
   click('.adhoc-content-toolbar .adhoc-toolbar-item--text')
 
   andThen ->
@@ -138,7 +138,7 @@ test 'Adding an Ad-Hoc card', ->
 
   andThen ->
     assertText('.inline-edit', 'yahoo')
-    click('.inline-edit-body-part .glyphicon-trash')
+    click('.inline-edit-body-part .fa-trash')
   andThen ->
     assertText('.inline-edit-body-part', 'Are you sure?')
     click('.inline-edit-body-part .delete-button')

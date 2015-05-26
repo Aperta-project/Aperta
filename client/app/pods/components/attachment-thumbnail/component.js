@@ -40,7 +40,7 @@ export default Ember.Component.extend({
       this.get('attachment').rollback();
     },
 
-    toggleEditState(focusSelector) {
+    toggleEditState() {
       this.toggleProperty('editState');
       if (this.get('editState')) {
         this.focusOnFirstInput();
@@ -62,7 +62,7 @@ export default Ember.Component.extend({
 
     destroyAttachment() {
       this.$().fadeOut(250, ()=> {
-        this.sendAction('destroyAttachment', _this.get('attachment'));
+        this.sendAction('destroyAttachment', this.get('attachment'));
       });
     },
 

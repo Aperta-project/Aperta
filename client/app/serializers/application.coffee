@@ -26,9 +26,9 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
   # uses correct model name for sideloaded payloads
   extractTypeName: (prop, hash) ->
     if hash.type
-      @typeForRoot hash.type
+      @modelNameFromPayloadKey hash.type
     else
-      @typeForRoot prop
+      @modelNameFromPayloadKey prop
 
   # private function taken directly from ember.js
   coerceId: (id) ->
@@ -45,7 +45,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
     primaryTypeName = @primaryTypeName(primaryType)
     primaryRecord = undefined
     for prop of payload
-      typeName = @typeForRoot(prop)
+      typeName = @modelNameFromPayloadKey(prop)
       type = store.modelFor(typeName)
       isPrimary = type.typeKey is primaryTypeName
       # legacy support for singular resources
@@ -92,7 +92,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
       if prop.charAt(0) is '_'
         forcedSecondary = true
         typeKey = prop.substr(1)
-      typeName = @typeForRoot(typeKey)
+      typeName = @modelNameFromPayloadKey(typeKey)
       type = store.modelFor(typeName)
       arrayTypeSerializer = store.serializerFor(type) # cache the serializer based on the array's type key
       isPrimary = (not forcedSecondary and (type.typeKey is primaryTypeName))
@@ -117,7 +117,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
   pushPayload: (store, payload) ->
     payload = @normalizePayload(payload)
     for prop of payload
-      typeName = @typeForRoot(prop)
+      typeName = @modelNameFromPayloadKey(prop)
 
       #jshint loopfunc:true
       normalizedArray = Ember.ArrayPolyfills.map.call(Ember.makeArray(payload[prop]), (hash) ->

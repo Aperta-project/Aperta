@@ -34,6 +34,8 @@ module TahiPusher
     def self.socket_options
       if Rails.env.test?
         PusherFake.configuration.socket_options
+      elsif ENV.key?('PUSHER_SOCKET_URL')
+        {}
       else
         {
           host: ENV["EVENT_STREAM_WS_HOST"],

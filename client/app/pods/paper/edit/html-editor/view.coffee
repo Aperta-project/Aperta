@@ -2,19 +2,20 @@
 `import PaperEditMixin from 'tahi/mixins/views/paper-edit';`
 
 View = Ember.View.extend PaperEditMixin,
-  toolbar: null
 
-  propagateToolbar: ( ->
-    @set('controller.toolbar', @get('toolbar'))
-  ).observes('toolbar')
+  editor: null
+
+  propagateEditor: (->
+    @set('controller.editor', @get('editor'))
+  ).observes('editor')
 
   updateEditorLockedState: ( ->
     editor = @get('controller.editor')
-    if editor
-      if @get('isEditing')
-        editor.enable()
-      else
-        editor.disable()
+    return unless editor
+    if @get('isEditing')
+      editor.enable()
+    else
+      editor.disable()
   ).observes('isEditing')
 
   initializeEditingState: ( ->
@@ -40,7 +41,7 @@ View = Ember.View.extend PaperEditMixin,
   keyCount: 0
 
   saveEditorChanges: ->
-    documentBody = @get('controller.editor').toHtml()
+    documentBody = @get('controller').getBodyHtml()
     @get('controller').send('updateDocumentBody', documentBody)
 
 `export default View;`

@@ -77,8 +77,7 @@ test 'on paper.edit as a participant on a task but not author of paper', ->
   ]
 
   visit("/papers/#{currentPaper.id}/edit").then ->
-    ok !find('#paper-assigned-tasks .card-content:contains("ReviewMe")').length,
-      "Participant task is not displayed in '#paper-assigned-tasks' for non-author"
+    ok find('#paper-assigned-tasks .card-content:contains("ReviewMe")').length
 
 test 'on paper.edit as a participant on a task and author of paper', ->
   expect(1)

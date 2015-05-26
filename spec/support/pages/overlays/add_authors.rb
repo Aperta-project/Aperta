@@ -11,14 +11,14 @@ class AddAuthorsOverlay < CardOverlay
 
   def edit_author(locator_text, new_info)
     page.execute_script "$('.authors-overlay-item:contains(#{locator_text})').trigger('mouseover')"
-    page.execute_script "$('.authors-overlay-item--actions .glyphicon-pencil').click()"
+    page.execute_script "$('.authors-overlay-item--actions .fa-pencil').click()"
     fill_in_author_form new_info
     click_button 'done'
   end
 
   def delete_author(locator_text)
     page.execute_script "$('.authors-overlay-item:contains(#{locator_text})').trigger('mouseover')"
-    page.execute_script "$('.glyphicon-trash').click()"
+    page.execute_script "$('.fa-trash').click()"
     find('.button-secondary', text: "DELETE FOREVER").click
   end
 

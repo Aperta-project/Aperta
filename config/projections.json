@@ -1,10 +1,10 @@
 {
-  "app/assets/stylesheets/*.scss":            { "command": "css", },
-  "app/assets/stylesheets/animations/*.scss": { "command": "cssanim", },
-  "app/assets/stylesheets/components/*.scss": { "command": "csscomp", },
-  "app/assets/stylesheets/overlays/*.scss":   { "command": "cssover", },
-  "app/assets/stylesheets/screens/*.scss":    { "command": "cssscreen", },
-  "app/assets/stylesheets/ui/*.scss":         { "command": "cssui", },
+  "client/app/styles/*.scss":            { "command": "css", },
+  "client/app/styles/animations/*.scss": { "command": "cssanim", },
+  "client/app/styles/components/*.scss": { "command": "csscomp", },
+  "client/app/styles/overlays/*.scss":   { "command": "cssover", },
+  "client/app/styles/screens/*.scss":    { "command": "cssscreen", },
+  "client/app/styles/ui/*.scss":         { "command": "cssui", },
 
   "client/app/models/*.js": {
     "command": "jmodel",

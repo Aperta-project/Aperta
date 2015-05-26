@@ -36,7 +36,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
 
   # allow the sti serializers to override this easily.
   primaryTypeName: (primaryType) ->
-    primaryType.typeKey?.camelize()
+    primaryType.modelName
 
   # This is overridden from the RESTSerializer because finding a 'task' and getting back a root key of 'author_task' will
   # break the isPrimary check.
@@ -47,7 +47,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
     for prop of payload
       typeName = @modelNameFromPayloadKey(prop)
       type = store.modelFor(typeName)
-      isPrimary = type.typeKey is primaryTypeName
+      isPrimary = type.modelName is primaryTypeName
       # legacy support for singular resources
       if isPrimary and Ember.typeOf(payload[prop]) isnt 'array'
         hash = payload[prop]
@@ -95,7 +95,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
       typeName = @modelNameFromPayloadKey(typeKey)
       type = store.modelFor(typeName)
       arrayTypeSerializer = store.serializerFor(type) # cache the serializer based on the array's type key
-      isPrimary = (not forcedSecondary and (type.typeKey is primaryTypeName))
+      isPrimary = (not forcedSecondary and (type.modelName is primaryTypeName))
 
       #jshint loopfunc:true
       normalizedArray = Ember.ArrayPolyfills.map.call(payload[prop], (hash) ->
@@ -108,6 +108,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
         itemType = store.modelFor(@extractTypeName(prop, hash))
         itemSerializer.normalize(itemType, hash, prop)
       , this)
+
       if isPrimary
         primaryArray = normalizedArray
       else

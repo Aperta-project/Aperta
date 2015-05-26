@@ -1,5 +1,5 @@
 <div class="attachment-thumbnail">
-  <span class="glyphicon glyphicon-trash attachment-thumbnail-destroy-icon" {{action "confirmDestroyAttachment"}}></span>
+  <span class="fa fa-trash attachment-thumbnail-destroy-icon" {{action "confirmDestroyAttachment"}}></span>
 
   {{#if attachment.previewSrc}}
     <div class="attachment-thumbnail-image">
@@ -20,7 +20,7 @@
                 done="uploadFinished"
                 cancel="cancelUploads"}}
           {{/replace-image}}
-          <button class="button-secondary button--green knockout view-attachment-detail" {{action "togglePreview"}}><span class="glyphicon glyphicon-zoom-in"></span>View Detail</button>
+          <button class="button-secondary button--green knockout view-attachment-detail" {{action "togglePreview"}}><span class="fa fa-search-plus"></span>View Detail</button>
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
     <h2 class="attachment-thumbnail-title" {{action "toggleEditState" on="doubleClick"}}>
       {{if attachment.title attachment.title "Attachment title"}}
     </h2>
-    <span class="glyphicon glyphicon-pencil attachment-edit-icon" {{action "toggleEditState"}}></span>
+    <span class="fa fa-pencil attachment-edit-icon" {{action "toggleEditState"}}></span>
 
     <div class="attachment-thumbnail-caption" {{action "toggleEditState" on="doubleClick"}}>
       {{if attachment.caption attachment.caption "There is no caption for this file."}}

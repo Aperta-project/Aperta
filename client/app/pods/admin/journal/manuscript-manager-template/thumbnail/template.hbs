@@ -5,9 +5,9 @@
 </ul>
 
 <div class="mmt-thumbnail-overlay mmt-thumbnail-overlay--edit-options">
-  {{link-to "" "admin.journal.manuscript_manager_template.edit" view.content class="glyphicon glyphicon-pencil animation-scale-in"}}
+  {{link-to "" "admin.journal.manuscript_manager_template.edit" view.content class="fa fa-pencil animation-scale-in"}}
   {{#if view.canDeleteTemplates}}
-    <span class="glyphicon glyphicon-trash animation-scale-in" {{action "toggleWillDestroyTemplate" target="view"}}></span>
+    <span class="fa fa-trash animation-scale-in" {{action "toggleWillDestroyTemplate" target="view"}}></span>
   {{/if}}
 </div>
 <div class="mmt-thumbnail-overlay mmt-thumbnail-overlay--confirm-destroy">

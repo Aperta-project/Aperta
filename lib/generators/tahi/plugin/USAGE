@@ -26,9 +26,9 @@ Example:
         engines/PLUGIN_NAME/lib/tasks/PLUGIN_NAME_tasks.rake
         engines/PLUGIN_NAME/lib/PLUGIN_NAME/version.rb
         engines/PLUGIN_NAME/lib/PLUGIN_NAME/engine.rb
-        engines/PLUGIN_NAME/app/assets/stylesheets/PLUGIN_NAME/application.css
         engines/PLUGIN_NAME/app/assets/javascripts/PLUGIN_NAME/application.js
         engines/PLUGIN_NAME/bin
         engines/PLUGIN_NAME/bin/rails
         engines/PLUGIN_NAME/client/index.js
         engines/PLUGIN_NAME/client/package.json
+        engines/PLUGIN_NAME/client/styles/PLUGIN_NAME/application.scss

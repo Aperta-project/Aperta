@@ -6,9 +6,9 @@
     {{error-message message=validationErrors.name}}
   {{else}}
     {{#unless model.required}}
-      <i class="admin-role-action-button role-delete-button glyphicon glyphicon-trash" {{action "deleteRole" bubbles=false}}></i>
+      <i class="admin-role-action-button role-delete-button fa fa-trash" {{action "deleteRole" bubbles=false}}></i>
     {{/unless}}
-    <i class="admin-role-action-button glyphicon glyphicon-pencil"></i>
+    <i class="admin-role-action-button fa fa-pencil"></i>
     <span class="role-name-field">{{model.name}}</span>
   {{/if}}
 </div>
@@ -21,16 +21,16 @@
     <label class="token">{{check-box name="role[canViewFlowManager]" checked=model.canViewFlowManager}} Flow Manager</label>
   {{else}}
     {{#if model.canViewAssignedManuscriptManagers}}
-      <label class="token"><span class="glyphicon glyphicon-ok"></span> Manuscript Manager</label>
+      <label class="token"><span class="fa fa-check"></span> Manuscript Manager</label>
     {{/if}}
     {{#if model.canViewAllManuscriptManagers}}
-      <label class="token"><span class="glyphicon glyphicon-ok"></span> All Manuscript Managers</label>
+      <label class="token"><span class="fa fa-check"></span> All Manuscript Managers</label>
     {{/if}}
     {{#if model.canAdministerJournal}}
-      <label class="token"><span class="glyphicon glyphicon-ok"></span> Admin</label>
+      <label class="token"><span class="fa fa-check"></span> Admin</label>
     {{/if}}
     {{#if model.canViewFlowManager}}
-      <label class="token"><span class="glyphicon glyphicon-ok"></span> Flow Manager</label>
+      <label class="token"><span class="fa fa-check"></span> Flow Manager</label>
     {{/if}}
   {{/if}}
 

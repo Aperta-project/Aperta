@@ -27,14 +27,14 @@ class JournalPage < Page
   def visit_mmt(mmt)
     thumb = mmt_thumbnail(mmt)
     thumb.hover
-    thumb.find('.glyphicon-pencil').click
+    thumb.find('.fa-pencil').click
     ManuscriptManagerTemplatePage.new
   end
 
   def delete_mmt(mmt)
     thumb = mmt_thumbnail(mmt)
     thumb.hover
-    thumb.find('.glyphicon-trash').click
+    thumb.find('.fa-trash').click
     find('.mmt-thumbnail-overlay--confirm-destroy .mmt-thumbnail-delete-button').click
     synchronize_no_content! mmt.paper_type
     self
@@ -125,7 +125,7 @@ class JournalPage < Page
   end
 
   def add_flow
-    first(".admin-role-action-button.glyphicon.glyphicon-pencil").click
+    first(".admin-role-action-button.fa.fa-pencil").click
     find("input[name='role[canViewFlowManager]']").set(true)
     click_link("Edit Flows")
     first(".control-bar-link-icon").click

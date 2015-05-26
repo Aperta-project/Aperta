@@ -55,7 +55,7 @@ feature "Upload Supporting Information", js: true, selenium: true do
     # delete file
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       find('.attachment-thumbnail').hover
-      find('.glyphicon-trash').click
+      find('.fa-trash').click
       find('.attachment-delete-button').click
       expect(overlay).to_not have_selector('.attachment-image')
     end

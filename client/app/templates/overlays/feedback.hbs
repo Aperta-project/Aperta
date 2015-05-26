@@ -31,7 +31,7 @@
       <ul class="feedback-overlay-screenshots">
         {{#each model.screenshots as |screenshot|}}
         <li class="animation-fade-in">
-          <span class="glyphicon glyphicon-trash feedback-overlay-remove-screenshot" {{action "removeScreenshot" screenshot}}></span>
+          <span class="fa fa-trash feedback-overlay-remove-screenshot" {{action "removeScreenshot" screenshot}}></span>
           <a target="_blank" href="{{unbound screenshot.url}}">{{unbound screenshot.filename}}</a>
         </li>
         {{/each}}

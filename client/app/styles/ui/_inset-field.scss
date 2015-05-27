@@ -20,12 +20,13 @@
 
 .inset-form-control {
   position: relative;
+  margin-bottom: 15px;
 
   label { color: $tahi-grey; }
 }
 
 .inset-form-control-text {
-  @include position(absolute, 4px 13px auto 13px);
+  @include position(absolute, 5px 13px auto 13px);
   @include display(flex);
   pointer-events: none;
 
@@ -50,7 +51,7 @@
 .inset-form-control-input {
   @extend .form-control;
   height: 50px;
-  padding-top: 25px;
+  padding-top: 26px;
   @include placeholder { color: $tahi-grey-light; }
 }
 

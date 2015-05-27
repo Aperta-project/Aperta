@@ -25,6 +25,11 @@ body { background: transparent; } // override bootstrap
 // override bootstrap
 label { font-weight: normal; }
 
+// override bootstrap
+textarea.form-control {
+  height: 70px;
+}
+
 // remove chrome outline on form fields
 input:focus, textarea:focus, *[contenteditable] {
   outline: none;

@@ -2,12 +2,12 @@ import Ember from 'ember';
 import AnimateOverlay from 'tahi/mixins/animate-overlay';
 
 export default Ember.View.extend(AnimateOverlay, {
-  instant: true,
+  skipAnimation: true,
 
   animateIn: function() {
     let options = {
       extraClasses: this.get('controller.overlayClass'),
-      instant: this.get('instant')
+      skipAnimation: this.get('skipAnimation')
     };
 
     Ember.run.scheduleOnce('afterRender', this, function() {
